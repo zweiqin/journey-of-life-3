@@ -1,0 +1,123 @@
+.container {
+  padding: 26upx;
+}
+.container .header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 72upx;
+  background-color: #fff;
+}
+.container .header.header-fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  padding: 26upx;
+}
+.container .header .img {
+  width: 32upx;
+  height: 40upx;
+}
+.container .header .loaction {
+  margin: 0 20upx 0 10upx;
+}
+.container .header .search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 12upx;
+  height: 100%;
+  border-radius: 100px;
+  padding: 0 34upx;
+  background-color: #EFEFEF;
+}
+.container .header .search img {
+  width: 32upx;
+  height: 32upx;
+  margin-right: 30upx;
+}
+.container .banner {
+  width: 100%;
+  height: 284upx;
+  border-radius: 20upx;
+  overflow: hidden;
+  margin-top: 28upx;
+}
+.container .banner .swiper {
+  width: 100%;
+  height: 284upx;
+}
+.container .banner .swiper /deep/ .uni-swiper-dot-active {
+  border-radius: 0;
+  width: 40upx !important;
+}
+.container .banner .swiper /deep/ .uni-swiper-dot {
+  border-radius: 0px;
+  height: 4upx;
+  width: 4upx;
+  margin-right: 6upx;
+}
+.container .banner .swiper img {
+  width: 100%;
+  height: 284upx;
+}
+.container .nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32upx;
+}
+.container .nav .item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24upx;
+  padding-bottom: 16upx;
+}
+.container .nav .item.active::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 70%;
+  height: 4upx;
+  background-color: #3662EC;
+  border-radius: 2upx;
+}
+.container .nav .item .img {
+  width: 60upx;
+  height: 60upx;
+  margin-bottom: 20upx;
+}
+.container .main {
+  margin-top: 40upx;
+}
+.container .main .goods-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20upx;
+}
+.silder {
+  position: fixed;
+  right: 16upx;
+  bottom: 128upx;
+}
+.silder .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80upx;
+  height: 80upx;
+  background-color: #FF8F1F;
+  border-radius: 50%;
+  margin-bottom: 20upx;
+}
+.silder .item img {
+  width: 60%;
+  height: 60%;
+}
