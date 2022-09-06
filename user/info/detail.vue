@@ -109,7 +109,7 @@
         @confirm="handleConfirmEditNickname"
       >
         <view class="edit-input">
-          <view>
+          <view class="input-wrapper">
             <view class="title">（修改昵称）</view>
             <input v-model="nickname" type="text" />
           </view>
@@ -272,7 +272,7 @@ export default {
   .edit-input {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     width: 100%;
     color: #3d3d3d;
@@ -280,11 +280,21 @@ export default {
     margin: 14upx 0;
     border-bottom: 1upx solid #d8d8d8;
 
+    .input-wrapper{
+      display: flex;
+      align-items: center;
+    }
+
     .title {
       white-space: nowrap;
     }
 
     .error {
+      height: 0;
+      overflow: hidden;
+      margin-left: 10px;
+      color: #f40;
+      transition: all 350ms linear;
     }
   }
 }

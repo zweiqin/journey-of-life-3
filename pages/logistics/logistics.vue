@@ -6,21 +6,21 @@
     <view class="tools">
       <img
         class="left"
-        @click="handleToPage('/logistics/mail')"
+        @click="handleToPage('https://www.zhult.com/h5/#/order/add')"
         src="../../static/images/wuliu/jikuaidi.png"
         alt=""
       />
       <view class="right">
         <img
           class="img"
-          @click="handleToPage('/logistics/collect-package')"
-          src="../../static/images/wuliu/qukuaidi.jpg"
+          @click="handleToPage('https://www.zhult.com/h5/#/check/check')"
+          src="../../static/images/wuliu/qukuaidi.png"
           alt=""
         />
 
         <img
           class="img"
-          @click="handleToPage('/logistics/find-logistics')"
+          @click="handleToPage('https://www.zhult.com/h5/#/check/logistics')"
           src="../../static/images/wuliu/quanguo.png"
           alt=""
         />
@@ -45,11 +45,11 @@
       >
     </view>
 
-    <view class="views" v-show="currentTab === 0">
+    <!-- <view class="views" v-show="currentTab === 0">
       <view class="item"> 待取件 <text class="number">3</text> </view>
       <view class="item"> 派送中 <text class="number">3</text> </view>
       <view class="item"> 运输中 <text class="number">3</text> </view>
-    </view>
+    </view> -->
 
     <view class="orders">
       <img class="banner" src="../../static/images/wuliu/banner.png" alt="" />
@@ -178,9 +178,8 @@ export default {
       if (!route) {
         return;
       }
-      uni.navigateTo({
-        url: route,
-      });
+      
+      location.href = route
     },
   },
 };
