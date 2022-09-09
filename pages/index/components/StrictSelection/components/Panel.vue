@@ -59,7 +59,7 @@ export default {
 
     .title {
       color: #3d3d3d;
-      font-size: 24upx;
+      font-size: 32upx;
       font-weight: bold;
     }
 
@@ -69,7 +69,7 @@ export default {
 
       .route {
         color: #999999;
-        font-size: 16upx;
+        font-size: 24upx;
       }
     }
   }

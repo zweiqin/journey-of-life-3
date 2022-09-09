@@ -174,9 +174,9 @@ page {
   position: absolute;
   top: -12upx;
   left: 50%;
-  transform: translateX(-50%) scale(0.8);
+  transform: translateX(-50%);
   content: "猜你喜欢";
-  font-size: 16upx;
+  font-size: 24upx;
   background-color: #fff;
   padding: 0 22upx;
   color: #999999;

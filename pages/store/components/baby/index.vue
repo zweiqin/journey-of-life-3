@@ -65,7 +65,6 @@ export default {
       font-size: 20upx;
       margin-right: 36upx;
       font-size: 16upx;
-      transform: scale(0.9);
       transition: all 200ms linear;
 
       &.active {

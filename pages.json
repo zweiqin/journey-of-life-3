@@ -272,6 +272,15 @@
 					"style": {
 						"navigationBarTitleText": ""
 					}
+				},
+				{
+					"path": "site/home"
+				},
+				{
+					"path": "site/more-site"
+				},
+				{
+					"path": "site/union"
 				}
 			]
 		},

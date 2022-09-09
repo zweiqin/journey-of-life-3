@@ -5,8 +5,8 @@
       :key="item"
       :src="
         item <= rate
-          ? '../../static/images/index/star-active.png'
-          : '../../static/images/index/star.png'
+          ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png'
+          : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/79gzmwafa4xkndbn75k1.png'
       "
       :style="{
         width: size + 'px',

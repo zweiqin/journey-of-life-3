@@ -4,10 +4,7 @@
       <text class="title">{{ title }}</text>
       <view class="route-wrapper" v-if="routeText" @click="handleToLink">
         <text class="route">{{ routeText }}</text>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          alt="icon"
-        />
+        <img src="../../static/images/common/chevron-states.png" alt="icon" />
       </view>
     </view>
 
@@ -33,6 +30,9 @@ export default {
   },
   methods: {
     handleToLink() {
+      if (!this.route) {
+        return;
+      }
       uni.navigateTo({
         url: this.route,
       });
