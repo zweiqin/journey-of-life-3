@@ -1,6 +1,6 @@
 {
     "name" : "yamikejimall4j",
-    "appid" : "__UNI__B07FE0F",
+    "appid" : "__UNI__D06AE70",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -43,8 +43,12 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
-            "sdkConfigs" : {}
+            "ios" : {
+                "dSYMs" : false
+            },
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     "quickapp" : {},
