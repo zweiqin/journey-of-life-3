@@ -94,8 +94,7 @@ export default {
 
       .name {
         color: #3d3d3d;
-        font-size: 20upx;
-        transform: scale(0.9);
+        font-size: 24upx;
         margin-top: 10rpx;
       }
     }

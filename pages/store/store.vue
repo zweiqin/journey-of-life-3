@@ -196,13 +196,11 @@ export default {
           align-items: center;
           margin-right: 10upx;
           padding: 2upx 34upx;
-          font-size: 16upx;
+          font-size: 24upx;
           background: linear-gradient(to right, #ffd2b4, #ff1810);
           border-radius: 10upx;
           color: #fff;
           font-weight: 100;
-          transform: scale(0.8);
-          margin-left: -20upx;
         }
       }
 

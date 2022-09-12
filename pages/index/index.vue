@@ -6,16 +6,16 @@
       <img
         v-if="currentNav === 0"
         class="img"
-        src="../../static/images/index/location.png"
+        :src="require('../../static/images/index/location.png')"
         alt="定位"
       />
 
       <text class="loaction" v-if="currentNav === 0">佛山市</text>
       <view class="search">
-        <img src="../../static/images/icon/search.png" alt="" />
+        <img :src="require('../../static/images/icon/search.png')" alt="" />
         <input type="text" />
       </view>
-      <img class="img" src="../../static/images/index/ling.png" alt="响铃" />
+      <img class="img" :src="require('../../static/images/index/ling.png')" alt="响铃" />
     </view>
 
     <!-- banner -->
@@ -28,13 +28,13 @@
         indicator-active-color="#fff"
       >
         <swiper-item>
-          <img src="../../static/images/index/banner1.webp" alt="" />
+          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
         </swiper-item>
         <swiper-item>
-          <img src="../../static/images/index/banner1.webp" alt="" />
+          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
         </swiper-item>
         <swiper-item>
-          <img src="../../static/images/index/banner1.webp" alt="" />
+          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
         </swiper-item>
       </swiper>
     </view>
@@ -77,10 +77,10 @@
     <!-- sider -->
     <view class="silder">
       <view class="item">
-        <img src="../../static/images/index/shop-car.png" alt="" />
+        <img :src="require('../../static/images/index/shop-car.png')" alt="" />
       </view>
       <view class="item" @click="backToTop">
-        <img src="../../static/images/index/up.png" alt="" />
+        <img :src="require('../../static/images/index/up.png')" alt="" />
       </view>
     </view>
   </view>

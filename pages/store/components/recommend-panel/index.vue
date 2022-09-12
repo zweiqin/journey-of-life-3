@@ -177,8 +177,7 @@ export default {
 
           .right {
             color: #999999;
-            font-size: 16upx;
-            transform: scale(0.9);
+            font-size: 10upx;
           }
         }
       }

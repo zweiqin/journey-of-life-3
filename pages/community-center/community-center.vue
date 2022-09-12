@@ -80,8 +80,13 @@
 
     <view class="wrapper">
       <!-- 附近服务站 -->
-      <Panel title="团蜂家居社区服务站" routeText="更多站点">
+      <Panel
+        title="团蜂家居社区服务站"
+        route="/community-center/site/more-site"
+        routeText="更多站点"
+      >
         <img
+          @click="handleToPage('/community-center/site/home')"
           class="store-img"
           src="../../static/images/con-center/store.png"
           alt=""
@@ -89,7 +94,11 @@
       </Panel>
 
       <!-- 联盟商家 -->
-      <Panel title="附近联盟商家" routeText="查看全部">
+      <Panel
+        title="附近联盟商家"
+        route="/community-center/site/union"
+        routeText="查看全部"
+      >
         <view class="business-wrapper">
           <view class="item">
             <img

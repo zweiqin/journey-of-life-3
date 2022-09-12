@@ -12,7 +12,7 @@
 
     <view class="main" v-if="false">
       <view class="item">
-        <img class="img" src="../static/temp/矩形 179.png" alt="" />
+        <img class="img" src="../static/temp/juxing 179.png" alt="" />
         <view class="info">
           <view class="name">顺吉平物流</view>
           <view class="address"
@@ -22,7 +22,7 @@
       </view>
 
       <view class="item">
-        <img class="img" src="../static/temp/矩形 179.png" alt="" />
+        <img class="img" src="../static/temp/juxing 179.png" alt="" />
         <view class="info">
           <view class="name">顺吉平物流</view>
           <view class="address"
@@ -32,7 +32,7 @@
       </view>
 
       <view class="item">
-        <img class="img" src="../static/temp/矩形 179.png" alt="" />
+        <img class="img" src="../static/temp/juxing 179.png" alt="" />
         <view class="info">
           <view class="name">顺吉平物流</view>
           <view class="address"
@@ -42,7 +42,7 @@
       </view>
 
       <view class="item">
-        <img class="img" src="../static/temp/矩形 179.png" alt="" />
+        <img class="img" src="../static/temp/juxing 179.png" alt="" />
         <view class="info">
           <view class="name">顺吉平物流</view>
           <view class="address"
@@ -52,7 +52,7 @@
       </view>
 
       <view class="item">
-        <img class="img" src="../static/temp/矩形 179.png" alt="" />
+        <img class="img" src="../static/temp/juxing 179.png" alt="" />
         <view class="info">
           <view class="name">顺吉平物流</view>
           <view class="address"

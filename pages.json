@@ -272,6 +272,15 @@
 					"style": {
 						"navigationBarTitleText": ""
 					}
+				},
+				{
+					"path": "site/home"
+				},
+				{
+					"path": "site/more-site"
+				},
+				{
+					"path": "site/union"
 				}
 			]
 		},
@@ -344,6 +353,18 @@
 					"style": {
 						"navigationBarTitleText": ""
 					}
+				},
+				{
+					"path": "sender",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "consignee",
+					"style": {
+						"navigationBarTitleText": ""
+					}
 				}
 			]
 		},
@@ -405,7 +426,10 @@
 			"root": "stuff",
 			"pages": [
 				{
-					"path": "detail"
+					"path": "detail",
+					"usingComponents": {
+						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+					}
 				}
 			]
 		}

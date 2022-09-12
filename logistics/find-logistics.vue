@@ -28,73 +28,73 @@
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 179.png"
+          src="../static/temp/juxing 179.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 180.png"
+          src="../static/temp/juxing 180.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 181.png"
+          src="../static/temp/juxing 183.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 182.png"
+          src="../static/temp/juxing 186.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 183.png"
+          src="../static/temp/juxing 183.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 184.png"
+          src="../static/temp/juxing 184.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 185.png"
+          src="../static/temp/juxing 185.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 186.png"
+          src="../static/temp/juxing 186.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 191.png"
+          src="../static/temp/juxing 191.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 192.png"
+          src="../static/temp/juxing 192.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 193.png"
+          src="../static/temp/juxing 193.png"
           alt=""
         />
         <img
           @click="toDetail"
           class="img"
-          src="../static/temp/矩形 194.png"
+          src="../static/temp/juxing 196.png"
           alt=""
         />
       </view>

@@ -213,8 +213,6 @@
   </view>
 </template>
 
-
-
 <script>
 const { debounce } = require("../utils/util");
 
@@ -232,7 +230,9 @@ export default {
 
   methods: {
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/logistics/logistics",
+      });
     },
 
     /**

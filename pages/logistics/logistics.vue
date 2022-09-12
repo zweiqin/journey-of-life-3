@@ -6,21 +6,21 @@
     <view class="tools">
       <img
         class="left"
-        @click="handleToPage('https://www.zhult.com/h5/#/order/add')"
+        @click="handleToPage('/logistics/mail')"
         src="../../static/images/wuliu/jikuaidi.png"
         alt=""
       />
       <view class="right">
         <img
           class="img"
-          @click="handleToPage('https://www.zhult.com/h5/#/check/check')"
+          @click="handleToPage('/logistics/collect-package')"
           src="../../static/images/wuliu/qukuaidi.png"
           alt=""
         />
 
         <img
           class="img"
-          @click="handleToPage('https://www.zhult.com/h5/#/check/logistics')"
+          @click="handleToPage('/logistics/find-logistics')"
           src="../../static/images/wuliu/quanguo.png"
           alt=""
         />
@@ -157,6 +157,14 @@ import Carousel from "../../components/carousel";
 import Menus from "../../components/Menus";
 import { menus } from "./config";
 import Panel from "../../components/panel";
+import {
+  jiSenderInfo,
+  jiRemarks,
+  jiconsigneeInfo,
+  jiOrderGoodsList,
+} from "../../constant";
+import { removeCache } from "../../utils/DWHutils";
+
 export default {
   components: {
     Search,
@@ -178,9 +186,13 @@ export default {
       if (!route) {
         return;
       }
-      
-      location.href = route
+
+      location.href = route;
     },
+  },
+
+  onShow() {
+    removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList]);
   },
 };
 </script>
