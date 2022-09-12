@@ -122,7 +122,7 @@
             "port" : 8989
         },
         "router" : {
-            "mode" : "hash",
+            "mode" : "history",
             "base" : "/TFShop_Uni_H5/"
         }
     }

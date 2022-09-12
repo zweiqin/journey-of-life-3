@@ -7,7 +7,7 @@
         src="../static/images/common/back.png"
         alt=""
       />
-      <view class="title">取件</view>
+      <view class="title">查件</view>
     </view>
 
     <view class="order-info item">
@@ -45,7 +45,7 @@
 
         <view class="op">
           <text class="copy" @click="copy">复制</text>
-          <a href="tel:17633721125" class="phone">打电话</a>
+          <a href="javascript:;" @click="call('19877665544')" class="phone">打电话</a>
         </view>
       </view>
     </view>
@@ -71,6 +71,16 @@ export default {
     back() {
       uni.navigateBack();
     },
+
+    /**
+     * @description 点击打电话
+     */
+    call(mobile){
+      if(!mobile) return 
+      uni.makePhoneCall({
+        phoneNumber: mobile,
+      })
+    }
   },
 };
 </script>

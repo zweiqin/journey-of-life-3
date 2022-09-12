@@ -12,15 +12,25 @@
 
     <!-- 收发货人信息 -->
     <view class="item info">
-      <view class="info-item">
+      <view class="info-item" @click="changeServe('/logistics/sender')">
         <view class="icon">寄</view>
-        <view class="main-value">请输入寄件人信息(出发地）</view>
+        <view class="main-value">
+          {{
+            senderUserInfoString
+              ? senderUserInfoString
+              : "请输入寄件人信息(出发地）"
+          }}</view
+        >
         <img src="../static/images/common/chevron-states.png" alt="" />
       </view>
       <view class="line"></view>
-      <view class="info-item">
+      <view class="info-item" @click="changeServe('/logistics/consignee')">
         <view class="icon" style="background: #00b578">收</view>
-        <view class="main-value">请输入收件人信息(目的地）</view>
+        <view class="main-value">{{
+          consigneeUserInfoString
+            ? consigneeUserInfoString
+            : "请输入收件人信息(目的地）"
+        }}</view>
         <img src="../static/images/common/chevron-states.png" alt="" />
       </view>
     </view>
@@ -129,7 +139,7 @@
     </view>
 
     <view class="submit-order">
-      <button class="btn">提交订单</button>
+      <button class="btn" @click="submitOrder">提交订单</button>
     </view>
 
     <uni-popup ref="inputDialog" type="dialog">
@@ -147,6 +157,8 @@
 
 <script>
 import { serveConfig, goodsConfig } from "./config";
+import { jiSenderInfo, jiRemarks, jiconsigneeInfo } from "../constant";
+
 export default {
   components: {},
   data() {
@@ -159,6 +171,8 @@ export default {
       serveConfig,
       goodsConfig,
       goodsCollapse: true,
+      senderUserInfoString: "",
+      consigneeUserInfoString: "",
     };
   },
   methods: {
@@ -166,7 +180,9 @@ export default {
      * @description 返回上一页
      */
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/logistics/logistics",
+      });
     },
 
     /**
@@ -225,18 +241,27 @@ export default {
      */
     confirmOrderRemarks(val) {
       this.orderForm.remarks = val;
+      uni.setStorageSync(jiRemarks, val);
     },
+
+    /**
+     * @description 点击提交订单
+     */
+    submitOrder() {},
   },
 
   computed: {
+    /**
+     * @description 统计当前的货物信息
+     */
     goodsInfo() {
       let totalCounter = 0;
       let totalWeight = 0;
       let totalVolume = 0;
       this.orderForm.goodsList.forEach((item) => {
-        totalCounter += item.packAmount;
-        totalWeight += item.weight;
-        totalVolume += item.volume;
+        totalCounter += item.packAmount * 1;
+        totalWeight += item.weight * 1;
+        totalVolume += item.volume * 1;
       });
 
       totalCounter = (totalCounter + "").includes(".")
@@ -275,6 +300,41 @@ export default {
     const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST");
     if (goodsList && goodsList.length > 0) {
       this.orderForm.goodsList = goodsList;
+    }
+
+    /**
+     * @description 获取收货人信息
+     */
+    const senderUserInfo = uni.getStorageSync(jiSenderInfo);
+    if (senderUserInfo) {
+      let str = "";
+      for (const key in senderUserInfo) {
+        str += senderUserInfo[key] + " ";
+      }
+
+      this.senderUserInfoString =
+        str === this.senderUserInfoString ? this.senderUserInfoString : str;
+    }
+
+    const consigneeUserInfo = uni.getStorageSync(jiconsigneeInfo);
+    if (consigneeUserInfo) {
+      let str = "";
+      for (const key in consigneeUserInfo) {
+        str += consigneeUserInfo[key] + " ";
+      }
+
+      this.consigneeUserInfoString =
+        str === this.consigneeUserInfoString
+          ? this.consigneeUserInfoString
+          : str;
+    }
+
+    /**
+     * @description 获取备注
+     */
+    const remarks = uni.getStorageSync(jiRemarks);
+    if (remarks) {
+      this.orderForm.remarks = remarks;
     }
   },
 };
@@ -353,7 +413,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 86upx;
+      min-height: 86upx;
       padding: 16upx;
       border-radius: 20upx;
       background-color: #cde1fd;
@@ -369,7 +429,7 @@ export default {
 
       .main-value {
         flex: 1;
-        color: #999999;
+        color: #000;
         font-size: 24upx;
       }
     }

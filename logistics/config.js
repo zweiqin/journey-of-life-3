@@ -277,3 +277,55 @@ export const mapStatusColor = (status) => {
     '派送中': '#3662EC'
   }[status]
 }
+
+export const senderInfo = [
+  {
+    label: '姓名',
+    field: 'senderName',
+    placeholder: '请输入真实姓名'
+  },{
+    label: '手机',
+    field: 'senderMobile',
+    placeholder: '请输入您的手机号码'
+  },{
+    label: '选择城市',
+    field: 'senderAddress',
+    placeholder: '请选择城市'
+  },{
+    label: '详细地址',
+    field: 'senderAddressDetail',
+    placeholder: '请输入详细地址'
+  },{
+    label: '保险',
+    field: 'microInsuranceAmount',
+    placeholder: '请填写保险份数'
+  }
+]
+
+export const consigneeInfo = [
+  {
+    label: '姓名',
+    field: 'consigneeName',
+    placeholder: '请输入真实姓名'
+  },{
+    label: '手机',
+    field: 'consigneeMobile',
+    placeholder: '请输入您的手机号码'
+  },{
+    label: '选择城市',
+    field: 'consigneeAddress',
+    placeholder: '请选择城市'
+  },{
+    label: '详细地址',
+    field: 'consigneeAddressDetail',
+    placeholder: '请输入详细地址'
+  },{
+    label: '电梯',
+    field: 'isHasElevator',
+    placeholder: '请选择是否有电梯'
+  }, {
+    label: '楼层',
+    field: 'consigneeFloor',
+    placeholder: '请输入楼层'
+  }
+]
