@@ -38,7 +38,8 @@ export const serve = {
   menus: [
     {
       label: '商品收藏',
-      icon: require('../../static/images/user/shangpinshocang.png')
+      icon: require('../../static/images/user/shangpinshocang.png'),
+      url:"/user/Collection/Goods-Collection"
     },
     {
       label: '我的拼团',
@@ -46,15 +47,18 @@ export const serve = {
     },
     {
       label: '地址管理',
-      icon: require('../../static/images/user/dizhiguanli.png')
+      icon: require('../../static/images/user/dizhiguanli.png'),
+      url:"/user/site/site-manage"
     },
     {
       label: '购物车',
-      icon: require('../../static/images/user/gouwuche.png')
+      icon: require('../../static/images/user/gouwuche.png'),
+      url: "/user/sever/shop-car"
     },
     {
       label: '优惠劵',
       icon: require('../../static/images/user/youhuijuan.png')
+     
     },
     {
       label: '联系客服',

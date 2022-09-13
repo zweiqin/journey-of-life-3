@@ -391,6 +391,34 @@
 							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
 						}
 					}
+				},	{
+					"path": "sever/shop-car",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+						}
+					}
+				},	{
+					"path": "site/site-manage",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+						}
+					}
+				},{
+					"path": "site/add-site",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+						}
+					}
+				},{
+					"path": "Collection/Goods-Collection",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+						}
+					}
 				}
 			]
 		},
