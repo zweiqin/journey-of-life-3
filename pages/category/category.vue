@@ -38,6 +38,7 @@
         <view v-if="configs[selIndex].length > 0" class="cont-item">
           <view
             class="item"
+            @click="handleToDetail"
             v-for="item in configs[selIndex]"
             :key="item.label"
           >
@@ -213,6 +214,12 @@ export default {
     toSearchPage: function () {
       uni.navigateTo({
         url: "/pages/search-page/search-page",
+      });
+    },
+
+    handleToDetail(){
+      uni.navigateTo({
+         url: '/stuff/detail'
       });
     },
 

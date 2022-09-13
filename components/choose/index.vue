@@ -3,7 +3,7 @@
     <view
       class="choose flex-center"
       :class="{ active: active }"
-      @click="active = !active"
+      @click="handleClickTitle"
     >
       <view class="title">{{ title }}</view>
       <view class="tag"></view>
@@ -18,6 +18,11 @@ export default {
       type: String,
       required: true,
     },
+
+    value: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
@@ -26,9 +31,23 @@ export default {
     };
   },
 
+  methods: {
+    handleClickTitle() {
+      this.$emit("input", this.title);
+
+      if (this.active) {
+        this.$emit("close");
+      }
+    },
+  },
+
   watch: {
-    active(status) {
-      this.$emit("change", status);
+    value: {
+      handler(val) {
+        this.active = val === this.title;
+      },
+
+      immediate: true,
     },
   },
 };

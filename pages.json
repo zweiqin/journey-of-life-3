@@ -218,19 +218,19 @@
 				"pagePath": "pages/community-center/community-center",
 				"text": "社区中心",
 				"iconPath": "/static/images/tabbar/community.png",
-				"selectedIconPath": "/static/images/tabbar/community.png"
+				"selectedIconPath": "/static/images/tabbar/community-active.png"
 			},
 			{
 				"pagePath": "pages/logistics/logistics",
 				"text": "物流",
 				"iconPath": "/static/images/tabbar/logistics.png",
-				"selectedIconPath": "/static/images/tabbar/logistics.png"
+				"selectedIconPath": "/static/images/tabbar/logistics-active.png"
 			},
 			{
 				"pagePath": "pages/user/user",
 				"text": "我的",
 				"iconPath": "/static/images/tabbar/mine.png",
-				"selectedIconPath": "/static/images/tabbar/mine.png"
+				"selectedIconPath": "/static/images/tabbar/mine-active.png"
 			}
 		]
 	},
