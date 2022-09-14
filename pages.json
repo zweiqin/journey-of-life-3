@@ -293,7 +293,9 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog",
+							"uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+							"uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item"
 						}
 					}
 				},
@@ -391,33 +393,40 @@
 							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
 						}
 					}
-				},	{
+				},
+				{
 					"path": "sever/shop-car",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},	{
+				},
+				{
 					"path": "site/site-manage",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},{
+				},
+				{
 					"path": "site/add-site",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},{
+				},
+				{
 					"path": "Collection/Goods-Collection",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/coupon",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
 					}
 				}
 			]

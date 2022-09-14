@@ -8,7 +8,7 @@
         @click="back"
       />
 
-      <h2>收件地址</h2>
+      <h2>寄件地址</h2>
     </view>
 
     <view class="main">
@@ -16,7 +16,7 @@
         <view class="sub-title">{{ item.label }}</view>
         <view class="value">
           <template v-if="item.field === 'senderAddress'">
-            <view
+            <!-- <view
               class="form_address_input"
               @click="() => (visibleMuti = true)"
             >
@@ -35,7 +35,8 @@
                   cursor-spacing="180"
                 />
               </pick-regions>
-            </view>
+            </view> -->
+            广东省佛山市顺德区
           </template>
           <input
             v-else
@@ -47,7 +48,9 @@
         </view>
       </view>
 
-      <IntelligentRecognition></IntelligentRecognition>
+      <IntelligentRecognition
+        @intelligent="handleIntelligent"
+      ></IntelligentRecognition>
     </view>
 
     <button class="save-btn" @click="saveInfo">保存</button>
@@ -72,7 +75,7 @@ export default {
       senderInfoForm: {
         senderName: "",
         senderMobile: "",
-        senderAddress: "",
+        senderAddress: "广东省佛山市顺德区",
         senderAddressDetail: "",
         microInsuranceAmount: 1,
       },
@@ -110,6 +113,12 @@ export default {
     cityChange(value) {
       this.senderInfoForm.senderAddress =
         value[0].name + value[1].name + value[2].name;
+    },
+
+    handleIntelligent(info) {
+      this.senderInfoForm.senderName = info.person;
+      this.senderInfoForm.senderMobile = info.phonenum;
+      this.senderInfoForm.senderAddressDetail = info.town + info.detail;
     },
   },
 

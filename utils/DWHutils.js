@@ -26,3 +26,4 @@ export const removeCache = (cacheArr) => {
     uni.removeStorageSync(item);
   }
 }
+

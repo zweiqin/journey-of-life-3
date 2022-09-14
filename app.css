@@ -6,6 +6,10 @@
   font-family: helvetica, 'Heiti SC', PingFangSC-Light;
 }
 
+page{
+  height: 100%;
+}
+
 .price {
   font-family: Arial;
   display: inline-block;

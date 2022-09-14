@@ -1,15 +1,44 @@
 <template>
   <view class="intelligent-recognition-container">
     <view class="title"> 地址智能识别： </view>
-    <textarea class="textarea"></textarea>
+    <textarea
+      v-model.trim="address"
+      placeholder="地址智能识别: 如：广东省佛山市顺德区乐从镇和乐电商园1座李小明17000989898"
+      class="textarea"
+    ></textarea>
     <view class="btn-wrapper">
-      <button class="btn">智能识别</button>
+      <button class="btn" @click="handleShiBie">智能识别</button>
     </view>
   </view>
 </template>
 
 <script>
-export default {};
+import { addressIntelligentRecogApi } from "../../api/logistics";
+export default {
+  data() {
+    return {
+      address: "",
+    };
+  },
+  methods: {
+    async handleShiBie() {
+      if (!this.address) {
+        uni.showToast({
+          title: "请输入信息",
+          duration: 2000,
+          icon: "none",
+        });
+        return;
+      }
+
+      const { data } = await addressIntelligentRecogApi(this.address);
+
+      if (data) {
+        this.$emit("intelligent", data);
+      }
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

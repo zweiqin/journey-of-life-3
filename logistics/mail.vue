@@ -41,9 +41,16 @@
         >指定/默认仓库</view
       >
 
-      <picker mode="selector" :range="['暂无物流公司']">
+      <picker
+        mode="selector"
+        :range="warehouseList"
+        range-key="showKey"
+        @change="handleChooseWarehouse"
+      >
         <view class="flex" style="align-items: center">
-          <view class="title">请选择物流公司</view>
+          <view class="title">{{
+            orderForm.warehouseId ? warehouseInfoString : "请选择物流公司"
+          }}</view>
           <img src="../static/images/common/chevron-states.png" alt="" />
         </view>
       </picker>
@@ -138,6 +145,49 @@
       <img src="../static/images/common/chevron-states.png" alt="" />
     </view>
 
+    <!-- 报价 -->
+    <uni-collapse ref="collapse" v-if="orderForm.priceDetail">
+      <uni-collapse-item title="默认开启">
+        <template #title>
+          <view class="collapse-header">
+            总价：
+            <text
+              :class="{
+                line:
+                  orderForm.priceDetail.sumDiscountPrice !==
+                  orderForm.priceDetail.sumPrice,
+              }"
+              >{{ orderForm.priceDetail.sumPrice }}</text
+            >
+            <text
+              v-if="
+                orderForm.priceDetail.sumDiscountPrice !==
+                orderForm.priceDetail.sumPrice
+              "
+              style="color: #fa5151; margin-left: 10px"
+              >会员价：{{ orderForm.priceDetail.sumDiscountPrice }}</text
+            ></view
+          >
+        </template>
+        <view class="collapse-content">
+          <view class="collapse-content-item"
+            >配送费：{{ orderForm.priceDetail.detailsVo.deliveryPrice }}</view
+          >
+          <view class="collapse-content-item"
+            >安装费：{{ orderForm.priceDetail.detailsVo.installPrice }}</view
+          >
+          <view class="collapse-content-item"
+            >小额保：{{
+              orderForm.priceDetail.detailsVo.microInsurePrice
+            }}</view
+          >
+          <view class="collapse-content-item"
+            >干线费：{{ orderForm.priceDetail.detailsVo.trunkLinePrice }}</view
+          >
+        </view>
+      </uni-collapse-item>
+    </uni-collapse>
+
     <view class="submit-order">
       <button class="btn" @click="submitOrder">提交订单</button>
     </view>
@@ -156,8 +206,9 @@
 </template>
 
 <script>
-import { serveConfig, goodsConfig } from "./config";
+import { serveConfig, goodsConfig, mapDeliveryType } from "./config";
 import { jiSenderInfo, jiRemarks, jiconsigneeInfo } from "../constant";
+import { getWarehouseListApi, getOrderQuoteApi } from "../api/logistics";
 
 export default {
   components: {},
@@ -167,12 +218,19 @@ export default {
         serve: {},
         goodsList: [],
         remarks: "",
+        senderInfo: null,
+        consigneeInfo: null,
+        warehouseId: null,
+        priceDetail: null,
       },
       serveConfig,
       goodsConfig,
       goodsCollapse: true,
       senderUserInfoString: "",
       consigneeUserInfoString: "",
+      warehouseList: ["暂无物流公司"],
+      warehouseInfoString: "",
+      priceValue: [],
     };
   },
   methods: {
@@ -244,6 +302,75 @@ export default {
       uni.setStorageSync(jiRemarks, val);
     },
 
+    // 获取仓库列表
+    async getWarehouseList() {
+      if (!this.orderForm.senderInfo || !this.orderForm.consigneeInfo) {
+        return;
+      }
+
+      const { data } = await getWarehouseListApi({
+        senderAddress: this.orderForm.senderInfo.senderAddress,
+        consigneeAddress: this.orderForm.consigneeInfo.consigneeAddress,
+      });
+
+      if (!data) {
+        uni.showToast({
+          title: "仓库列表获取失败",
+          duration: 2000,
+        });
+
+        return;
+      }
+
+      this.warehouseList = data.map((item) => {
+        item.showKey = `${item.wuliuName}-${item.kefu}`;
+        return item;
+      });
+
+      this.chooseWarehouse(this.warehouseList[0]);
+    },
+
+    // 点击选择仓库
+    handleChooseWarehouse(e) {
+      const selectIndex = e.detail.value;
+      this.chooseWarehouse(this.warehouseList[selectIndex]);
+    },
+
+    // 设置选中仓库信息
+    chooseWarehouse(warehouseInfo) {
+      this.orderForm.warehouseId = warehouseInfo.warehouseId;
+      this.warehouseInfoString =
+        warehouseInfo.showKey + "-" + warehouseInfo.address;
+    },
+
+    // 获取物流报价
+    async getOrderQuote() {
+      if (
+        !this.orderForm.senderInfo ||
+        !this.orderForm.consigneeInfo ||
+        !this.orderForm.goodsList.length
+      ) {
+        return;
+      }
+      const goodsList = JSON.parse(JSON.stringify(this.orderForm.goodsList));
+      const data = {
+        microInsuranceAmount: this.orderForm.senderInfo.microInsuranceAmount,
+        isPickUp: this.orderForm.serve.take === "上门提货" ? true : false,
+        deliveryType: mapDeliveryType(this.orderForm.serve.delivery),
+        isHasElevator:
+          this.orderForm.consigneeInfo.isHasElevator === "有" ? true : false,
+        consigneeFloor: this.orderForm.consigneeInfo.consigneeFloor * 1,
+        senderAddress: this.orderForm.senderInfo.senderAddress,
+        consigneeAddress: this.orderForm.consigneeInfo.consigneeAddress,
+        goodsList: goodsList.map((goods) => {
+          delete goods.id;
+          return goods;
+        }),
+      };
+      const { data: price } = await getOrderQuoteApi(data);
+      this.orderForm.priceDetail = price;
+    },
+
     /**
      * @description 点击提交订单
      */
@@ -307,6 +434,7 @@ export default {
      */
     const senderUserInfo = uni.getStorageSync(jiSenderInfo);
     if (senderUserInfo) {
+      this.orderForm.senderInfo = senderUserInfo;
       let str = "";
       for (const key in senderUserInfo) {
         str += senderUserInfo[key] + " ";
@@ -318,6 +446,7 @@ export default {
 
     const consigneeUserInfo = uni.getStorageSync(jiconsigneeInfo);
     if (consigneeUserInfo) {
+      this.orderForm.consigneeInfo = consigneeUserInfo;
       let str = "";
       for (const key in consigneeUserInfo) {
         str += consigneeUserInfo[key] + " ";
@@ -336,6 +465,10 @@ export default {
     if (remarks) {
       this.orderForm.remarks = remarks;
     }
+
+    this.getWarehouseList();
+
+    this.getOrderQuote();
   },
 };
 </script>
@@ -350,6 +483,26 @@ export default {
   }
   100% {
     transform: scale(0.9);
+  }
+}
+
+/deep/ .uni-collapse {
+  border-radius: 20upx;
+  margin-top: 20upx;
+}
+
+.collapse-header {
+  padding: 20upx;
+}
+
+.collapse-content {
+  padding: 0 20upx 20upx 20upx;
+  display: flex;
+  flex-wrap: wrap;
+
+  &-item {
+    width: 49%;
+    padding: 20upx 0;
   }
 }
 
