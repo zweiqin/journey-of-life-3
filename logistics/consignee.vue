@@ -141,9 +141,10 @@ export default {
 
     // 智能识别
     handleIntelligent(info) {
-      this.consigneeInfoForm.senderName = info.person;
-      this.senderInfoForm.senderMobile = info.phonenum;
-      this.senderInfoForm.senderAddressDetail = info.town + info.detail;
+      this.consigneeInfoForm.consigneeName = info.person;
+      this.consigneeInfoForm.consigneeMobile = info.phonenum;
+      this.consigneeInfoForm.consigneeAddress = info.province + info.city + info.county
+      this.consigneeInfoForm.consigneeAddressDetail = info.town + info.detail
     },
   },
 

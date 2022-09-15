@@ -192,7 +192,7 @@ export default {
   },
 
   onShow() {
-    removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList]);
+    // removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList]);
   },
 };
 </script>

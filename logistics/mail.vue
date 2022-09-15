@@ -206,9 +206,24 @@
 </template>
 
 <script>
-import { serveConfig, goodsConfig, mapDeliveryType } from "./config";
-import { jiSenderInfo, jiRemarks, jiconsigneeInfo } from "../constant";
-import { getWarehouseListApi, getOrderQuoteApi } from "../api/logistics";
+import {
+  serveConfig,
+  goodsConfig,
+  mapDeliveryType,
+  mapCategoryControlType,
+} from "./config";
+import {
+  jiSenderInfo,
+  jiRemarks,
+  jiconsigneeInfo,
+  jiOrderGoodsList,
+} from "../constant";
+import {
+  getWarehouseListApi,
+  getOrderQuoteApi,
+  createOrderApi,
+} from "../api/logistics";
+import { formatTime, removeCache } from "../utils";
 
 export default {
   components: {},
@@ -222,6 +237,7 @@ export default {
         consigneeInfo: null,
         warehouseId: null,
         priceDetail: null,
+        estimateDays: "",
       },
       serveConfig,
       goodsConfig,
@@ -338,6 +354,7 @@ export default {
 
     // 设置选中仓库信息
     chooseWarehouse(warehouseInfo) {
+      this.orderForm.estimateDays = warehouseInfo.estimateDays;
       this.orderForm.warehouseId = warehouseInfo.warehouseId;
       this.warehouseInfoString =
         warehouseInfo.showKey + "-" + warehouseInfo.address;
@@ -374,7 +391,120 @@ export default {
     /**
      * @description 点击提交订单
      */
-    submitOrder() {},
+    async submitOrder() {
+      if (!this.orderForm.senderInfo) {
+        uni.showToast({
+          title: "请填写寄件地址",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      if (!this.orderForm.consigneeInfo) {
+        uni.showToast({
+          title: "请填写收件地址",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      if (!this.orderForm.warehouseId) {
+        uni.showToast({
+          title: "请选择发货物流",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      if (!this.orderForm.goodsList.length) {
+        uni.showToast({
+          title: "请添加商品信息",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      const data = JSON.parse(JSON.stringify(this.orderForm));
+      const postData = {
+        ...data.senderInfo,
+        ...data.consigneeInfo,
+        deliveryType: mapDeliveryType(data.serve.delivery),
+        isPickUp: data.serve.take === "上门提货",
+        warehouseId: data.warehouseId,
+        cargoControlType: mapCategoryControlType(data.serve.controlGoods),
+        paymentMethod:
+          data.serve.payType === "现付"
+            ? 1
+            : data.serve.payType === "到付"
+            ? 2
+            : null,
+        pricingType: data.serve.valuation === "系统计价" ? 1 : 2,
+        orderTime: formatTime(new Date()),
+        estimateDays: data.estimateDays,
+        goodsList: data.goodsList.map((item) => {
+          delete item.id;
+          return item;
+        }),
+        // TODO userid 从本地拿
+        userId: "150",
+        remarks: data.remarks,
+      };
+      postData.consigneeFloor = postData.consigneeFloor * 1;
+      postData.isHasElevator = postData.isHasElevator === "有";
+
+      try {
+        uni.showLoading({
+          title: "加载中",
+        });
+        const res = await createOrderApi(postData);
+        if (res.statusCode === 20000) {
+          uni.showToast({
+            title: "订单创建成功",
+            duration: 2000,
+          });
+
+          this.orderForm.serve = {};
+          this.orderForm.goodsList = [];
+          this.orderForm.remarks = "";
+          this.orderForm.senderInfo = null;
+          this.orderForm.consigneeInfo = null;
+          this.orderForm.warehouseId = null;
+          this.orderForm.priceDetail = null;
+          this.orderForm.estimateDays = "";
+          this.senderUserInfoString = "";
+          this.consigneeUserInfoString = "";
+
+          removeCache([
+            jiSenderInfo,
+            jiRemarks,
+            jiconsigneeInfo,
+            jiOrderGoodsList,
+          ]);
+        } else {
+          uni.showToast({
+            title: res.statusMsg,
+            duration: 2000,
+            icon: "none",
+          });
+        }
+      } catch (error) {
+        uni.showToast({
+          title: "订单创建失败",
+          duration: 2000,
+          icon: "none",
+        });
+      } finally {
+        uni.hideLoading();
+      }
+    },
   },
 
   computed: {
@@ -467,7 +597,6 @@ export default {
     }
 
     this.getWarehouseList();
-
     this.getOrderQuote();
   },
 };
@@ -493,6 +622,23 @@ export default {
 
 .collapse-header {
   padding: 20upx;
+
+  .line {
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      max-width: 80upx;
+      height: 1px;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      background-color: #000;
+      transform: rotate(45deg);
+    }
+  }
 }
 
 .collapse-content {

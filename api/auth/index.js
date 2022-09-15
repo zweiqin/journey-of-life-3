@@ -1,6 +1,11 @@
-import { request } from "../../utils"
+import { request } from "../../utils";
 
 // 校验登录
 export const whoami = () => {
-  return request
+  return request;
+};
+
+// 注册
+export const userRegisterApi = (data) => {
+  return request('/auth/register', data)
 };

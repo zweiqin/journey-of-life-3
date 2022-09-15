@@ -1,3 +1,6 @@
+import { USER_ID } from "../constant";
+import { whoami } from "../api/auth";
+
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
  * @param {Number, String} data 数字
@@ -24,4 +27,10 @@ export const removeCache = (cacheArr) => {
   for (const item of cacheArr) {
     uni.removeStorageSync(item);
   }
+};
+
+export const checkWhoami = () => {
+  new Promise((resolve, reject) => {
+    // const userId =
+  });
 };

@@ -20,3 +20,17 @@ export const getOrderQuoteApi = (data) => {
 export const addressIntelligentRecogApi = (address) => {
   return request('/laoa-huozhu/api/hz/order/third/addressAnalyze', {address})
 };
+
+/**
+ * 提交创建订单
+ */
+export const createOrderApi = data => {
+  return request('/laoa-huozhu/api/hz/order/third/orderCreate', data)
+}
+
+/**
+ * 查询订单
+ */
+export const expressInquiryApi = (data) => {
+  return request('/laoa-huozhu/api/hz/order/third/list', data)
+}

@@ -11,14 +11,22 @@
 
 <script>
 import AuthForm from "../../components/auth-form";
+import { userRegisterApi } from "../../api/auth";
 export default {
   components: {
     AuthForm,
   },
 
   methods: {
-    submit(form) {
+    async submit(form) {
       console.log(form);
+      const data = {
+        username: form.mobile,
+        password: form.password,
+        mobile: form.mobile,
+      };
+      const res = await userRegisterApi(data);
+      console.log(res);
     },
   },
 };
