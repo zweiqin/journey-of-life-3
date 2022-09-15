@@ -14,13 +14,7 @@
       indicator-color="#fff"
       indicator-active-color="#fff"
     >
-      <swiper-item>
-        <img src="../../static/images/index/banner1.webp" alt="" />
-      </swiper-item>
-      <swiper-item>
-        <img src="../../static/images/index/banner1.webp" alt="" />
-      </swiper-item>
-      <swiper-item>
+      <swiper-item v-for="item in 4" :key="item">
         <img src="../../static/images/index/banner1.webp" alt="" />
       </swiper-item>
     </swiper>
