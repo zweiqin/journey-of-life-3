@@ -29,8 +29,19 @@ export const removeCache = (cacheArr) => {
   }
 };
 
+/**
+ * 检测登录是否有效
+ */
 export const checkWhoami = () => {
   new Promise((resolve, reject) => {
     // const userId =
   });
+};
+
+/**
+ * 获取用户userid
+ * @returns
+ */
+export const getUserId = () => {
+  return 150;
 };

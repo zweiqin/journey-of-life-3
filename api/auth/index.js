@@ -7,5 +7,10 @@ export const whoami = () => {
 
 // 注册
 export const userRegisterApi = (data) => {
-  return request('/auth/register', data)
+  return request("/auth/register", data);
+};
+
+// 登录
+export const userLoginApi = (data) => {
+  return request('/auth/login', data)
 };

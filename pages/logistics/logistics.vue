@@ -162,6 +162,8 @@ import {
   jiRemarks,
   jiconsigneeInfo,
   jiOrderGoodsList,
+  VALUE_ADDED_SERVICES,
+  JI_EDIT_ORDER_ID
 } from "../../constant";
 import { removeCache } from "../../utils/DWHutils";
 
@@ -192,7 +194,7 @@ export default {
   },
 
   onShow() {
-    // removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList]);
+    removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, JI_EDIT_ORDER_ID, VALUE_ADDED_SERVICES]);
   },
 };
 </script>

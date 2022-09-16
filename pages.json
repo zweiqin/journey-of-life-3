@@ -323,7 +323,8 @@
 				{
 					"path": "collect-package",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "",
+						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 					}
 				},
 				{

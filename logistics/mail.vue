@@ -189,7 +189,9 @@
     </uni-collapse>
 
     <view class="submit-order">
-      <button class="btn" @click="submitOrder">提交订单</button>
+      <button class="btn" @click="submitOrder">
+        {{ editId ? "确认修改" : "提交订单" }}
+      </button>
     </view>
 
     <uni-popup ref="inputDialog" type="dialog">
@@ -217,11 +219,14 @@ import {
   jiRemarks,
   jiconsigneeInfo,
   jiOrderGoodsList,
+  JI_EDIT_ORDER_ID,
+  VALUE_ADDED_SERVICES,
 } from "../constant";
 import {
   getWarehouseListApi,
   getOrderQuoteApi,
   createOrderApi,
+  editeOrderApi,
 } from "../api/logistics";
 import { formatTime, removeCache } from "../utils";
 
@@ -247,6 +252,7 @@ export default {
       warehouseList: ["暂无物流公司"],
       warehouseInfoString: "",
       priceValue: [],
+      editId: null,
     };
   },
   methods: {
@@ -392,6 +398,7 @@ export default {
      * @description 点击提交订单
      */
     async submitOrder() {
+      const _this = this;
       if (!this.orderForm.senderInfo) {
         uni.showToast({
           title: "请填写寄件地址",
@@ -454,20 +461,25 @@ export default {
           return item;
         }),
         // TODO userid 从本地拿
-        userId: "150",
+        userId: 150,
         remarks: data.remarks,
       };
       postData.consigneeFloor = postData.consigneeFloor * 1;
       postData.isHasElevator = postData.isHasElevator === "有";
 
+      const api = this.editId ? editeOrderApi : createOrderApi;
+      if (this.editId) {
+        postData.id = this.editId;
+      }
+
       try {
         uni.showLoading({
           title: "加载中",
         });
-        const res = await createOrderApi(postData);
+        const res = await api(postData);
         if (res.statusCode === 20000) {
           uni.showToast({
-            title: "订单创建成功",
+            title: _this.editId ? "订单修改成功" : "订单创建成功",
             duration: 2000,
           });
 
@@ -487,6 +499,8 @@ export default {
             jiRemarks,
             jiconsigneeInfo,
             jiOrderGoodsList,
+            JI_EDIT_ORDER_ID,
+            VALUE_ADDED_SERVICES
           ]);
         } else {
           uni.showToast({
@@ -497,7 +511,7 @@ export default {
         }
       } catch (error) {
         uni.showToast({
-          title: "订单创建失败",
+          title: _this.editId ? "订单修改失败" : "订单创建失败",
           duration: 2000,
           icon: "none",
         });
@@ -596,6 +610,11 @@ export default {
       this.orderForm.remarks = remarks;
     }
 
+    /**
+     * 获取edit id 判断当前单是否是编辑的状态
+     */
+    this.editId = uni.getStorageSync(JI_EDIT_ORDER_ID) || null;
+    console.log(this.editId);
     this.getWarehouseList();
     this.getOrderQuote();
   },

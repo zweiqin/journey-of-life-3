@@ -109,7 +109,9 @@ export default {
   methods: {
     // 返回
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/logistics/logistics",
+      });
     },
 
     // 去物流详情

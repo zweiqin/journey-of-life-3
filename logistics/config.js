@@ -351,12 +351,85 @@ export const consigneeInfo = [
 ];
 
 export const mapDeliveryType = (type) => {
-  return { 送货安装: 1, 送货到家: 2, 送货到楼下: 3, 客户自提: 4 }[type];
+  const types = { 送货安装: 1, 送货到家: 2, 送货到楼下: 3, 客户自提: 4 };
+  if (typeof type !== "number") {
+    return types[type];
+  } else {
+    for (const key in types) {
+      if (type === types[key]) {
+        return key;
+      }
+    }
+  }
+};
+
+export const mapPayType = (type) => {
+  if (type === null) {
+    return "未支付";
+  }
+  const types = { 余额支付: 1, 助信通支付: 2, 通联支付: 3 };
+  if (typeof type !== "number") {
+    return types[type];
+  } else {
+    for (const key in types) {
+      if (type === types[key]) {
+        return key;
+      }
+    }
+  }
 };
 
 export const mapCategoryControlType = (type) => {
-  if (!type) {
-    return;
+  const types = { 不控货: 1, 等通知发货: 2, 等通知配送: 3, 拼单: 4 };
+  if (typeof type !== "number") {
+    return types[type];
+  } else {
+    for (const key in types) {
+      if (type === types[key]) {
+        return key;
+      }
+    }
   }
-  return { 不控货: 1, 等通知发货: 2, 等通知配送: 3, 拼单: 4 }[type.trim()];
 };
+
+export const collectPages = [
+  {
+    label: "全部",
+    value: undefined,
+  },
+  {
+    label: "待支付",
+    value: 10,
+  },
+  {
+    label: "运输中",
+    value: 33,
+  },
+  {
+    label: "已签收",
+    value: 40,
+  },
+  {
+    label: "已取消",
+    value: 99,
+  },
+];
+
+export const cancelList = [
+  {
+    label: "订单下错了",
+    value: "订单下错了",
+  },
+  {
+    label: "订单取消了",
+    value: "订单取消了",
+  },
+  {
+    label: "货物未生产",
+    value: "货物未生产",
+  },
+  {
+    label: "仓库无现货",
+    value: "仓库无现货",
+  },
+];
