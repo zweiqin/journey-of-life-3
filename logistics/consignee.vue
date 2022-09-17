@@ -52,7 +52,9 @@
         </view>
       </view>
 
-      <IntelligentRecognition></IntelligentRecognition>
+      <IntelligentRecognition
+        @intelligent="handleIntelligent"
+      ></IntelligentRecognition>
     </view>
 
     <button class="save-btn" @click="saveInfo">保存</button>
@@ -135,6 +137,14 @@ export default {
           },
         });
       }
+    },
+
+    // 智能识别
+    handleIntelligent(info) {
+      this.consigneeInfoForm.consigneeName = info.person;
+      this.consigneeInfoForm.consigneeMobile = info.phonenum;
+      this.consigneeInfoForm.consigneeAddress = info.province + info.city + info.county
+      this.consigneeInfoForm.consigneeAddressDetail = info.town + info.detail
     },
   },
 

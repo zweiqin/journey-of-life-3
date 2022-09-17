@@ -15,7 +15,11 @@
         <img :src="require('../../static/images/icon/search.png')" alt="" />
         <input type="text" />
       </view>
-      <img class="img" :src="require('../../static/images/index/ling.png')" alt="响铃" />
+      <img
+        class="img"
+        :src="require('../../static/images/index/ling.png')"
+        alt="响铃"
+      />
     </view>
 
     <!-- banner -->
@@ -27,14 +31,8 @@
         indicator-color="#fff"
         indicator-active-color="#fff"
       >
-        <swiper-item>
-          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
-        </swiper-item>
-        <swiper-item>
-          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
-        </swiper-item>
-        <swiper-item>
-          <img :src="require('../../static/images/index/banner1.webp')" alt="" />
+        <swiper-item v-for="banner in strictSelectionBanner" :key="banner.id">
+          <img :src="banner.url" alt="" />
         </swiper-item>
       </swiper>
     </view>
@@ -55,12 +53,16 @@
 
     <!-- main -->
     <view class="main">
-      <StrictSelection v-show="currentNav === 0"></StrictSelection>
+      <StrictSelection
+        :channel="channel"
+        :discount="discount"
+        :explosion="explosion"
+        v-show="currentNav === 0"
+      ></StrictSelection>
       <BrandFactory v-show="currentNav === 1"></BrandFactory>
       <Design v-show="currentNav === 2"></Design>
       <view v-show="currentNav === 3">
         <Carousel></Carousel>
-
         <view class="goods-wrapper">
           <Goods></Goods>
           <Goods></Goods>
@@ -91,14 +93,13 @@
 <script>
 //index.js
 //获取应用实例
-var config = require("../../utils/config.js");
-const app = getApp();
 import { navs } from "./config.js";
 import StrictSelection from "./components/StrictSelection/index.vue";
 import BrandFactory from "./components/BrandFactory/index.vue";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
+import { getIndexDataApi } from "../../api/home";
 
 export default {
   data() {
@@ -106,6 +107,10 @@ export default {
       navs,
       currentNav: 0,
       scroll: false,
+      strictSelectionBanner: [],
+      channel: [], // 风格
+      explosion: [], // 爆款专区
+      discount: [], // 优惠
     };
   },
   components: { StrictSelection, BrandFactory, Design, Carousel, Goods },
@@ -116,6 +121,8 @@ export default {
     window.addEventListener("scroll", function (e) {
       _this.scroll = document.documentElement.scrollTop !== 0;
     });
+
+    this.getData();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
@@ -135,6 +142,20 @@ export default {
     handleSwitchPanel(value) {
       this.currentNav = value;
     },
+
+    /**
+     * 获取首页相关信息
+     */
+    async getData() {
+      const res = await getIndexDataApi();
+      console.log(res.data);
+      this.channel = res.data.channel;
+      this.strictSelectionBanner = res.data.banner;
+      this.explosion = res.data.hotGoodsList;
+      this.discount = res.data.newGoodsList
+
+      console.log(this.discount);
+    },
   },
   watch: {
     currentNav(val) {
@@ -143,6 +164,6 @@ export default {
   },
 };
 </script>
-<style scope>
-@import "./index.css";
+<style scope lang="less">
+@import "./index.less";
 </style>

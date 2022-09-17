@@ -19,113 +19,123 @@
             src="../static/images/wuliu/wuliu-icon.png"
             alt=""
           />
-          <view class="to desc">选择到达</view>
+          <view
+            class="to desc form_address_input"
+            @click="() => (visibleMuti = true)"
+          >
+            <pick-regions
+              :visibleMuti.sync="visibleMuti"
+              @getRegion="cityChange"
+            >
+              <input
+                type="text"
+                class="uni-input"
+                disabled
+                v-model="toAddress"
+                placeholder="选择到达"
+                placeholder-class="size"
+                adjust-position
+                cursor-spacing="180"
+              />
+            </pick-regions>
+          </view>
         </view>
 
         <button class="find-btn" @click="handleFindWuliu">查找物流</button>
       </view>
-      <view class="wuliu-list">
+      <view class="wuliu-list" v-if="list && list.length">
         <img
-          @click="toDetail"
+          v-for="item in list"
+          :key="item.qiyeId"
+          @click="toDetail(item.qiyeId)"
           class="img"
-          src="../static/temp/juxing 179.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 180.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 183.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 186.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 183.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 184.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 185.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 186.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 191.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 192.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 193.png"
-          alt=""
-        />
-        <img
-          @click="toDetail"
-          class="img"
-          src="../static/temp/juxing 196.png"
+          :src="item.image"
           alt=""
         />
       </view>
+
+      <NoData v-else></NoData>
     </view>
   </view>
 </template>
 
-
-
 <script>
+import {
+  findAdLogisticsSpaceByPageApi,
+  increamentClickNumApi,
+} from "../api/logistics";
+import NoData from "../components/no-data";
+import PickRegions from "../components/pick-regions/pick-regions.vue";
+
 export default {
+  components: {
+    NoData,
+    PickRegions,
+  },
+  data() {
+    return {
+      query: {
+        pageNo: 1,
+        pageSize: 10,
+      },
+
+      list: [],
+      visibleMuti: false,
+      toAddress: "",
+    };
+  },
+  created() {
+    this.findAdLogisticsSpaceByPage();
+  },
   methods: {
     // 返回
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/logistics/logistics",
+      });
     },
 
     // 去物流详情
-    toDetail() {
-      uni.navigateTo({
-        url: "/logistics/wuliu-detail",
-      });
+    async toDetail(id) {
+      try {
+        await increamentClickNumApi({
+          qiyeId: id,
+        });
+      } finally {
+        uni.navigateTo({
+          url: "/logistics/wuliu-detail?id=" + id,
+        });
+      }
     },
 
     /**
      * @description 点击搜索物流
      */
     handleFindWuliu() {
+      const _this = this
       uni.navigateTo({
-        url: "/logistics/search-wuliu",
+        url: "/logistics/search-wuliu?to=" + _this.toAddress,
       });
+    },
+
+    // 获取物流工厂列表
+    async findAdLogisticsSpaceByPage(isoadingMore) {
+      const res = await findAdLogisticsSpaceByPageApi(this.query);
+      if (res.statusCode === 20000) {
+        this.list = res.data.records;
+        console.log(res.data);
+      } else {
+        uni.showToast({
+          title: res.statusMsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
+    },
+
+    // 选择
+    cityChange(value) {
+      this.toAddress = value[1].name
     },
   },
 };
@@ -135,6 +145,7 @@ export default {
 .value-added-services {
   padding: 60upx 26upx;
   box-sizing: border-box;
+  min-height: 100vh;
   background: linear-gradient(180deg, #07b9b9 0%, #ffffff 100%);
 
   .header {
@@ -175,6 +186,12 @@ export default {
         font-size: 36upx;
         font-weight: bold;
 
+        .from{
+          flex-shrink: 0;
+          flex: 1;
+          text-align: right;
+        }
+
         .icon {
           width: 72upx;
           margin: 0 110upx;
@@ -182,6 +199,7 @@ export default {
 
         .desc {
           color: #999999;
+          flex: 1;
         }
       }
 

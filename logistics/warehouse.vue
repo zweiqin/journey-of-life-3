@@ -11,35 +11,13 @@
     </view>
 
     <view class="list">
-      <view class="item">
-        <view class="name">万马奔腾物流</view>
-        <view class="text">联系人：宋绍循</view>
+      <view class="item" v-for="item in list" :key="item.warehouseId">
+        <view class="name">{{ item.warehouseName }}</view>
+        <view class="text">联系人：{{ item.contactName }}</view>
         <view class="text"
-          >地 址：广东省佛山市顺德区乐从镇富饶物流园E座6-7仓</view
-        >
-      </view>
-
-      <view class="item">
-        <view class="name">万马奔腾物流</view>
-        <view class="text">联系人：宋绍循</view>
-        <view class="text"
-          >地 址：广东省佛山市顺德区乐从镇富饶物流园E座6-7仓</view
-        >
-      </view>
-
-      <view class="item">
-        <view class="name">万马奔腾物流</view>
-        <view class="text">联系人：宋绍循</view>
-        <view class="text"
-          >地 址：广东省佛山市顺德区乐从镇富饶物流园E座6-7仓</view
-        >
-      </view>
-
-      <view class="item">
-        <view class="name">万马奔腾物流</view>
-        <view class="text">联系人：宋绍循</view>
-        <view class="text"
-          >地 址：广东省佛山市顺德区乐从镇富饶物流园E座6-7仓</view
+          >地 址：{{
+            item.warehouseAddress + item.warehouseAddressDetail
+          }}</view
         >
       </view>
     </view>
@@ -49,11 +27,41 @@
 
 
 <script>
+import { getDropOffPointApi } from "../api/logistics";
 export default {
+  data() {
+    return {
+      qiyeId: null,
+      list: [],
+    };
+  },
+  created() {
+    this.getDropOffPoint();
+  },
   methods: {
     back() {
       uni.navigateBack();
     },
+
+    async getDropOffPoint() {
+      const res = await getDropOffPointApi({
+        qiyeId: this.qiyeId,
+      });
+
+      if (res.statusCode === 20000) {
+        this.list = res.data;
+      } else {
+        uni.showToast({
+          title: res.statusMsg,
+          icon: "none",
+          duration: 2000,
+        });
+      }
+    },
+  },
+
+  onLoad(options) {
+    this.qiyeId = options.id;
   },
 };
 </script>

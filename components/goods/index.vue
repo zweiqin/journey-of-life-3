@@ -1,26 +1,25 @@
 <template>
   <div class="goods">
-    <!-- <img
-      class="img"
-      src="https://img0.baidu.com/it/u=3975497057,3839357552&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"
-      alt=""
-    /> -->
     <img
       class="img"
-      src="https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305"
+      :src="
+        url ||
+        'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'
+      "
       alt=""
     />
 
     <view class="body">
-      <view class="name">GLOSTAD </view>
-      <view class="name">二人沙发 </view>
+      <view class="name">{{ name || "GLOSTAD" }} </view>
+      <view class="name">{{ sname || "二人沙发" }} </view>
       <view class="info">
         <view class="left">
-          <text class="icon">￥</text><text class="price">500</text>
+          <text class="icon">￥</text
+          ><text class="price">{{ price || "500" }}</text>
         </view>
 
         <view class="right">
-          <view>1000+付款</view>
+          <view>{{ payNumber || "1000" }}+付款</view>
         </view>
       </view>
     </view>
@@ -28,7 +27,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    name: String,
+    sname: String,
+    price: String,
+    payNumber: String,
+    url: String
+  },
+
+  mounted() {
+    console.log(this.name, this.sname, this.price, this.payNumber);
+  },
+};
 </script>
 
 <style lang="less" scoped>

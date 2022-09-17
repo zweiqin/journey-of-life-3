@@ -62,7 +62,7 @@
         <view class="value">
           <input
             type="text"
-            v-model="orderInfo.goodAmount"
+            v-model.number="orderInfo.goodAmount"
             placeholder="请输入商品套数"
           />
         </view>
@@ -73,7 +73,7 @@
         <view class="value">
           <input
             type="number"
-            v-model="orderInfo.packAmount"
+            v-model.number="orderInfo.packAmount"
             placeholder="请输入包装件数"
           />
         </view>
@@ -106,7 +106,7 @@
         <view class="value">
           <input
             type="number"
-            v-model="orderInfo.insuredPrice"
+            v-model.number="orderInfo.insuredPrice"
             placeholder="请输入物品保价"
           />
         </view>

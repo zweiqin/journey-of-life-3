@@ -9,56 +9,61 @@
     >
       <template v-if="item.value === 0">
         <view class="style">
-          <view class="item" v-for="item in styleList" :key="item.id">
-            <img class="img" :src="item.styleUrl" alt="" />
-            <text class="text">{{ item.styleName }}</text>
+          <view class="item" v-for="item in channel" :key="item.id">
+            <img class="img" :src="item.iconUrl" alt="" />
+            <text class="text">{{ item.name }}</text>
           </view>
         </view>
       </template>
 
       <template v-if="item.value === 1">
-        <img
-          class="explosion"
-          src="../../../../static/images/index/explosion.webp"
-          alt=""
-        />
+        <img class="explosion" :src="explosion[0].picUrl" alt="" />
       </template>
 
       <template v-if="item.value === 2">
         <view class="explosion">
-          <img
-            class="img"
-            src="../../../../static/images/index/explosion.webp"
-            alt=""
-          />
-          <img
-            class="img"
-            src="../../../../static/images/index/explosion.webp"
-            alt=""
-          />
+          <img class="img" :src="discount[9].picUrl" alt="" />
+          <img class="img" :src="discount[8].picUrl" alt="" />
         </view>
       </template>
     </Panel>
 
     <view class="goods-list">
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods><Goods></Goods>
-      <Goods></Goods>
+      <Goods
+        v-for="item in discount"
+        :key="item.id"
+        :name="item.name"
+        :sname="item.brief"
+        :url="item.picUrl"
+        :price="item.retailPrice"
+      ></Goods>
     </view>
   </div>
 </template>
 
 <script>
 import Panel from "../../../../components/panel/index.vue";
-import Goods from "./components/Goods";
+import Goods from "../../../../components/goods";
 import http from "../../../../utils/http";
 import { panels } from "./config";
 export default {
   components: {
     Panel,
     Goods,
+  },
+  props: {
+    channel: {
+      type: Array,
+      required: true,
+    },
+    explosion: {
+      type: Array,
+      required: true,
+    },
+    discount: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return { panels, styleList: [] };
@@ -73,6 +78,8 @@ export default {
       },
     });
   },
+
+  methods: {},
 };
 </script>
 
@@ -118,8 +125,9 @@ export default {
 
       .img {
         width: 232upx;
-        height: 306upx;
+        // height: 306upx;
         border-radius: 20upx;
+        object-fit: cover;
       }
 
       .text {
@@ -138,6 +146,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    padding-bottom: 70px;
   }
 }
 </style>

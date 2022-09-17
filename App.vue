@@ -46,6 +46,10 @@
 		display: none;
 	}
 
+	uni-page-wrapper{
+		height: 100%;
+	}
+
 	/* 轮播图指示点 */
 	uni-swiper .uni-swiper-dots-horizontal {
 		bottom: 20px !important;

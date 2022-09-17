@@ -24,13 +24,13 @@
           <view class="name">手机号码</view>
           <input v-model="form.mobile" class="input" type="text" />
         </view>
-        <view class="form-item" v-if="type !== 'login'">
+        <!-- <view class="form-item" v-if="type !== 'login'">
           <view class="name">短信验证</view>
           <input v-model="form.code" class="input" type="text" />
           <view class="get-qr" @click="getQr">{{
             isSendCode ? count : "获取验证码"
           }}</view>
-        </view>
+        </view> -->
         <view class="form-item">
           <input style="padding-left: 0" v-model="form.password" class="input" :type="inputType" />
           <img

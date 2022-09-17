@@ -1,5 +1,5 @@
 <template>
-  <view class="value-added-services">
+  <view class="value-added-services" v-if="info">
     <view class="header">
       <img
         class="back"
@@ -11,11 +11,7 @@
     </view>
 
     <view class="main">
-      <img
-        class="wuliu-img"
-        src="https://img1.baidu.com/it/u=1015643622,1928101130&fm=253&fmt=auto&app=138&f=JPEG?w=947&h=500"
-        alt=""
-      />
+      <img class="wuliu-img" :src="info.logo" alt="" />
 
       <view class="main-info">
         <view class="info">
@@ -26,7 +22,7 @@
               alt=""
             />
             <view class="text">联系人：</view>
-            <view class="text">蔡智</view>
+            <view class="text">{{ info.contactsName }}</view>
           </view>
 
           <view class="info-item">
@@ -36,7 +32,9 @@
               alt=""
             />
             <view class="text">电话：</view>
-            <view class="text" style="color: #3662ec">19877665544</view>
+            <view class="text" style="color: #3662ec">{{
+              info.contactsMobile
+            }}</view>
           </view>
 
           <view class="info-item">
@@ -46,10 +44,7 @@
               alt=""
             />
             <view class="text">地址：</view>
-            <view class="text" style="color: #3662ec"
-              >广东省佛山市顺德区乐从镇富饶
-              物流园E座6物流园E座6物流园E座6-7仓</view
-            >
+            <view class="text" style="color: #3662ec">{{ info.address }}</view>
           </view>
         </view>
 
@@ -60,45 +55,118 @@
         <view class="lines">
           <view class="title">专线</view>
           <view class="line">
-            <text class="city">沈阳市</text>
-            <text class="city">乌鲁木齐市乌鲁木齐市乌鲁木齐市乌鲁木齐市</text>
-            <text class="city">辽宁市</text>
-            <text class="city">曹县</text>
-            <text class="city">北京</text>
-            <text class="city">呼和浩特</text>
+            <text class="city" v-for="item in endCities" :key="item">{{
+              item
+            }}</text>
           </view>
         </view>
 
-        <button class="order-btn" @click="toOrder">下单</button>
+        <view class="btns">
+          <button
+            class="follow-btn"
+            :class="{ 'un-follow': info.isFollow }"
+            @click="handleFollow"
+          >
+            {{ info.isFollow ? "取消关注" : "关注" }}
+          </button>
+          <button class="order-btn" @click="toOrder">下单</button>
+        </view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+import { getUserId } from "../utils";
+import {
+  getLogisticsInfoApi,
+  followWuliuApi,
+  unFollowWuliuApi,
+} from "../api/logistics";
+
 export default {
+  data() {
+    return {
+      qiyeId: null,
+      info: null,
+      endCities: [],
+    };
+  },
+  created() {
+    this.getQiyeDetailInfo();
+  },
   methods: {
     back() {
       uni.navigateBack();
     },
 
-    /**
-     * 下单
-     */
+    // 下单
     toOrder() {
       uni.navigateTo({
         url: "/logistics/mail",
       });
     },
 
-    /**
-     * 查看落货点
-     */
+    // 查看落货点
     viewWarehouse() {
       uni.navigateTo({
-        url: "/logistics/warehouse",
+        url: "/logistics/warehouse?id=" + this.qiyeId,
       });
     },
+
+    // 获取企业详情数据
+    async getQiyeDetailInfo() {
+      const res = await getLogisticsInfoApi({
+        qiyeId: this.qiyeId,
+        userId: getUserId(),
+      });
+
+      if (res.statusCode === 20000) {
+        this.info = res.data;
+        const endCityList =
+          this.info.endCityList[0] && JSON.parse(this.info.endCityList[0]);
+        if (endCityList && endCityList.length) {
+          this.endCities = endCityList.map((item) => {
+            return item[1] !== "市辖区" ? item[1] : item[0];
+          });
+        }
+      } else {
+        uni.showToast({
+          title: res.statusMsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
+    },
+
+    // 是否关注
+    async handleFollow() {
+      const api = this.info.isFollow ? unFollowWuliuApi : followWuliuApi;
+      const text = `${this.info.isFollow ? "取消" : "关注"}成功`;
+      const res = await api({
+        wuliuQiyeId: this.qiyeId,
+        userId: getUserId(),
+      });
+
+      if (res.statusCode === 20000) {
+        uni.showToast({
+          title: text,
+          duration: 2000,
+        });
+
+        this.getQiyeDetailInfo();
+      } else {
+        uni.showToast({
+          title: res.statusMsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
+    },
+  },
+
+  onLoad(options) {
+    this.qiyeId = options.id;
   },
 };
 </script>
@@ -136,6 +204,7 @@ export default {
       height: 420upx;
       width: 100%;
       margin-top: 40upx;
+      object-fit: cover;
     }
 
     .main-info {
@@ -216,15 +285,36 @@ export default {
         }
       }
 
-      .order-btn {
-        width: 414upx;
-        height: 80upx;
-        margin-top: 120upx;
-        background-color: #3662ec;
-        color: #fff;
-        font-size: 36upx;
-        line-height: 80upx;
-        border-radius: 40upx;
+      .btns {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50upx;
+
+        .follow-btn {
+          width: 40%;
+          height: 80upx;
+          line-height: 80upx;
+          background-color: #67c23a;
+          padding: 0;
+          color: #fff;
+          border-radius: 50px;
+          transition: all 350ms linear;
+
+          &.un-follow {
+            background-color: #409eff;
+          }
+        }
+
+        .order-btn {
+          flex: 1;
+          margin: 0 20upx;
+          height: 80upx;
+          background-color: #3662ec;
+          color: #fff;
+          font-size: 36upx;
+          line-height: 80upx;
+          border-radius: 40upx;
+        }
       }
     }
   }

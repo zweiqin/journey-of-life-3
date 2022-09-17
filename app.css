@@ -6,6 +6,10 @@
   font-family: helvetica, 'Heiti SC', PingFangSC-Light;
 }
 
+page {
+  height: 100%;
+}
+
 .price {
   font-family: Arial;
   display: inline-block;
@@ -15,7 +19,7 @@
 
 }
 
-li{
+li {
   list-style: none;
 }
 
@@ -175,4 +179,9 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 
 .b-c {
   background-color: #EFEFEF;
+}
+
+.call-phone {
+  color: #0078d4;
+  padding: 0 20upx;
 }

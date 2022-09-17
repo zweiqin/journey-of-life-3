@@ -11,15 +11,59 @@
 
 <script>
 import AuthForm from "../../components/auth-form";
+import { userRegisterApi } from "../../api/auth";
 export default {
   components: {
     AuthForm,
   },
 
+  data() {
+    return {
+      timer: null,
+    };
+  },
+
   methods: {
-    submit(form) {
+    async submit(form) {
       console.log(form);
+      const data = {
+        username: form.mobile,
+        password: form.password,
+        mobile: form.mobile,
+      };
+      try {
+        const res = await userRegisterApi(data);
+        if (res.errno === 0) {
+          uni.showToast({
+            title: "注册成功",
+            duration: 2000,
+          });
+
+          this.timer = setTimeout(() => {
+            uni.navigateTo({
+               url: '/pages/login/login'
+            })
+          }, 1000);
+        } else {
+          uni.showToast({
+            title: res.errmsg,
+            duration: 2000,
+            icon: "none",
+          });
+        }
+      } catch (error) {
+        uni.showToast({
+          title: "注册失败",
+          duration: 2000,
+          icon: "none",
+        });
+      }
     },
+  },
+
+  deactivated() {
+    clearTimeout(this.timer);
+    this.timer = null;
   },
 };
 </script>

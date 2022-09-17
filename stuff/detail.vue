@@ -3,6 +3,7 @@
     <!-- 头部区域 -->
     <view class="header">
       <img
+        @click="back"
         class="back"
         src="../static/images/store/chevron-states.png"
         alt=""
@@ -19,11 +20,11 @@
 
     <!-- 筛选区域1 -->
     <scroll-view scroll-x="true" class="screen1">
-      <img
+      <!-- <img
         class="toggle breath"
         src="../static/images/common/toggle1.png"
         alt=""
-      />
+      /> -->
       <view class="scroll-view-item active">
         <img
           class="product-img"
@@ -83,12 +84,18 @@
     </scroll-view>
 
     <!-- 筛选区域2 -->
-    <view class="screen2">
+    <view class="screen2" ref="screen2Ref">
       <ul>
         <li>综合排序</li>
-        <li><Choose title="尺寸"></Choose></li>
-        <li><Choose title="价格"></Choose></li>
-        <li><Choose title="颜色"></Choose></li>
+        <li>
+          <Choose @close="closeModal" v-model="active" title="尺寸"></Choose>
+        </li>
+        <li>
+          <Choose @close="closeModal" v-model="active" title="价格"></Choose>
+        </li>
+        <li>
+          <Choose @close="closeModal" v-model="active" title="颜色"></Choose>
+        </li>
       </ul>
     </view>
 
@@ -101,10 +108,19 @@
       <Goods></Goods>
     </view>
 
-    <!-- 选择 -->
-    <view class="choose-area">
-      <view class="mask"></view>
-      <view class="content"> 123456 </view>
+    <!-- 筛选弹出框 -->
+    <view class="modal" ref="modalRef">
+      <view class="mask" @click="closeModal"></view>
+      <view class="modal">
+        <Size v-show="active === '尺寸'"></Size>
+        <Price v-show="active === '价格'"></Price>
+        <Color v-show="active === '颜色'"></Color>
+
+        <view class="footer" v-show="active !== '价格'">
+          <button class="reset-btn" :style="resetBtnStyle">重置</button>
+          <button class="confirm-btn" :style="confirmBtnStyle">确定</button>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -112,10 +128,67 @@
 <script>
 import Choose from "../components/choose";
 import Goods from "../components/goods";
+import Size from "./components/size.vue";
+import Price from "./components/price";
+import Color from "./components/color";
+
 export default {
   components: {
     Choose,
     Goods,
+    Size,
+    Price,
+    Color,
+  },
+
+  data() {
+    return {
+      active: "",
+      containerRef: null,
+      modalRef: null,
+      resetBtnStyle: {},
+      confirmBtnStyle: {},
+    };
+  },
+
+  methods: {
+    closeModal() {
+      document.body.style.overflow = "auto";
+      this.containerRef.style.top = "0px";
+      this.containerRef.style.opacity = 0;
+      this.containerRef.style.zIndex = -1;
+
+      this.modalRef.style.top = "0px";
+      this.modalRef.style.zIndex = -2;
+      this.modalRef.style.opacity = 0;
+
+      this.active = "";
+    },
+
+    back() {
+      uni.navigateBack();
+    },
+  },
+
+  mounted() {
+    this.containerRef = this.$refs.modalRef.$el;
+    this.modalRef = this.containerRef.querySelector(".modal");
+  },
+
+  watch: {
+    active(value) {
+      if (value) {
+        document.body.style.overflow = "hidden";
+        const locale = this.$refs.screen2Ref.$el.getBoundingClientRect();
+        this.containerRef.style.top = locale.top + locale.height + 6 + "px";
+        this.containerRef.style.opacity = 1;
+        this.containerRef.style.zIndex = 10;
+
+        this.modalRef.style.top = locale.top + locale.height + 5 + "px";
+        this.modalRef.style.zIndex = 11;
+        this.modalRef.style.opacity = 1;
+      }
+    },
   },
 };
 </script>
@@ -252,6 +325,59 @@ export default {
       left: 0;
       width: 100%;
       background-color: #fff;
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    z-index: -1;
+    transition: all 350ms;
+
+    .mask {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(153, 153, 153, 0.6);
+      transition: all 350ms;
+    }
+
+    .modal {
+      width: 100%;
+      height: auto;
+      background-color: @cw;
+      padding: 20upx;
+      box-sizing: border-box;
+
+      .footer {
+        .flex(center, center);
+        margin-top: 28upx;
+
+        .reset-btn,
+        .confirm-btn {
+          width: 190upx;
+          height: 72upx;
+          border-radius: @r20;
+          font-size: @f14;
+          color: @c0;
+
+          &::after {
+            border: none;
+          }
+        }
+
+        .reset-btn {
+          background: #efefef;
+        }
+
+        .confirm-btn {
+          background: #ff8f1f;
+          color: #fff;
+        }
+      }
     }
   }
 }
