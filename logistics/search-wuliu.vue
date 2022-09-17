@@ -10,70 +10,72 @@
       <view class="title">查找物流</view>
     </view>
 
-    <view class="main" v-if="false">
-      <view class="item">
-        <img class="img" src="../static/temp/juxing 179.png" alt="" />
+    <view class="main" v-if="list && list.length">
+      <view
+        class="item"
+        v-for="item in list"
+        :key="item.qiyeId"
+        @click="handleToDetail(item)"
+      >
+        <img class="img" :src="item.logo" alt="" />
         <view class="info">
-          <view class="name">顺吉平物流</view>
-          <view class="address"
-            >地 址:广东省佛山市顺德区乐从镇 富饶物流园E座6-7仓</view
-          >
-        </view>
-      </view>
-
-      <view class="item">
-        <img class="img" src="../static/temp/juxing 179.png" alt="" />
-        <view class="info">
-          <view class="name">顺吉平物流</view>
-          <view class="address"
-            >地 址:广东省佛山市顺德区乐从镇 富饶物流园E座6-7仓</view
-          >
-        </view>
-      </view>
-
-      <view class="item">
-        <img class="img" src="../static/temp/juxing 179.png" alt="" />
-        <view class="info">
-          <view class="name">顺吉平物流</view>
-          <view class="address"
-            >地 址:广东省佛山市顺德区乐从镇 富饶物流园E座6-7仓</view
-          >
-        </view>
-      </view>
-
-      <view class="item">
-        <img class="img" src="../static/temp/juxing 179.png" alt="" />
-        <view class="info">
-          <view class="name">顺吉平物流</view>
-          <view class="address"
-            >地 址:广东省佛山市顺德区乐从镇 富饶物流园E座6-7仓</view
-          >
-        </view>
-      </view>
-
-      <view class="item">
-        <img class="img" src="../static/temp/juxing 179.png" alt="" />
-        <view class="info">
-          <view class="name">顺吉平物流</view>
-          <view class="address"
-            >地 址:广东省佛山市顺德区乐从镇 富饶物流园E座6-7仓</view
-          >
+          <view class="name">{{ item.name }}</view>
+          <view class="address">地 址: {{ item.address }}</view>
         </view>
       </view>
     </view>
 
-    <view class="no-data"> 未搜到该线路的物流公司 </view>
+    <view class="no-data" v-else> 未搜到该线路的物流公司 </view>
   </view>
 </template>
 
 
 
 <script>
+import { searchWuliuApi } from "../api/logistics";
 export default {
+  data() {
+    return {
+      query: {
+        start: "佛山市",
+        end: "",
+        pageNo: 1,
+        pageSize: 20,
+      },
+
+      listTotal: null,
+      list: [],
+    };
+  },
   methods: {
     back() {
       uni.navigateBack();
     },
+
+    async searchWuliu() {
+      const res = await searchWuliuApi(this.query);
+      if (res.statusCode === 20000) {
+        this.listTotal = res.data.total;
+        this.list = res.data.records;
+      } else {
+        uni.showToast({
+          title: res.statusMsg,
+          icon: "none",
+          duration: 2000,
+        });
+      }
+    },
+
+    handleToDetail(info) {
+      uni.navigateTo({
+        url: "/logistics/wuliu-detail?id=" + info.qiyeId,
+      });
+      console.log(info);
+    },
+  },
+  onLoad(options) {
+    this.query.end = options.to;
+    this.searchWuliu();
   },
 };
 </script>
@@ -136,7 +138,7 @@ export default {
     }
   }
 
-  .no-data{
+  .no-data {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,7 +151,6 @@ export default {
     border-radius: 30upx;
     color: gray;
     letter-spacing: 4upx;
-
   }
 }
 </style>

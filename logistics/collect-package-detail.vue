@@ -229,7 +229,8 @@ export default {
 <style lang="less" scoped>
 .value-added-services {
   padding: 30upx 26upx;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   box-sizing: border-box;
   background: linear-gradient(180deg, #00b578 0%, #ffffff 100%);
 

@@ -429,6 +429,9 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},
+				{
+					"path": "digital-store/marketing-portrait"
 				}
 			]
 		},

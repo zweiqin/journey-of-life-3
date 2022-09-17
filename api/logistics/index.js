@@ -69,3 +69,70 @@ export const cancelOrderApi = (data) => {
 export const editeOrderApi = (data) => {
   return request("/laoa-huozhu/api/hz/order/third/orderEdit", data);
 };
+
+/**
+ * 获取物流广告位分页列表
+ * @param {*} data
+ */
+export const findAdLogisticsSpaceByPageApi = (data) => {
+  return request(
+    "/laoa-huozhu/api/hz/order/third/findAdLogisticsSpaceByPage",
+    data
+  );
+};
+
+/**
+ * 获取物流公司详情
+ * @param {*} qiyeId
+ * @returns
+ */
+export const getLogisticsInfoApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/getLogisticsInfo", data);
+};
+
+/**
+ * 落货点查看
+ * @param {*} data
+ * @returns
+ */
+export const getDropOffPointApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/getWarehouseList", data);
+};
+
+/**
+ * 关注物流
+ */
+export const followWuliuApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/followCompany", data);
+};
+
+/**
+ * 取关物流
+ */
+export const unFollowWuliuApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/unfollowCompany", data);
+};
+
+/**
+ * 点击量
+ */
+export const increamentClickNumApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/clickNum", data);
+};
+
+/**
+ * 搜索物流
+ */
+export const searchWuliuApi = (data) => {
+  return request(
+    "/laoa-huozhu/api/hz/order/third/wxQueryStartAndEndList",
+    data
+  );
+};
+
+/**
+ * 获取关注列表
+ */
+export const getFollowListApi = () => {
+  return request('')
+}

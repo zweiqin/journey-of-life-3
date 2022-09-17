@@ -28,6 +28,7 @@ export default {};
 
   .empty-img{
     .img(80%, 80%);
+    margin-bottom: 20px;
   }
 }
 </style>

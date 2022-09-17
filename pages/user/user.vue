@@ -87,7 +87,7 @@
         :showShadow="false"
         :data="marketingTools"
       ></UserPanel>
-      <UserPanel :row="3" :showShadow="false" :data="otherServe"></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
     </view>
   </view>
 </template>
