@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-12 15:54:29
+ * @LastEditTime: 2022-09-15 14:26:21
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -145,6 +145,7 @@ export default {
   components: {
     Goods,
   },
+
   data() {
     return {
       collectstatus: 1,

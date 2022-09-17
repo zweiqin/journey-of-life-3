@@ -391,33 +391,71 @@
 							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
 						}
 					}
-				},	{
+				},
+				{
 					"path": "sever/shop-car",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},	{
+				},
+				{
 					"path": "site/site-manage",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},{
+				},
+				{
 					"path": "site/add-site",
 					"style": {
 						"navigationBarTitleText": "",
-						"usingComponents": {
-						}
+						"usingComponents": {}
 					}
-				},{
+				},
+				{
 					"path": "Collection/Goods-Collection",
 					"style": {
 						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "orderForm/order-form",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "orderForm/order-form-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "subscription/subscription",
+					"style": {
+						"navigationBarTitleText": "",
 						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 						}
+					}
+				},
+				{
+					"path": "sever/userUp",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				}
+				,
+				{
+					"path": "sever/coupon",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
 					}
 				}
 			]

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 16:21:06
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-07 10:41:05
+ * @LastEditTime: 2022-09-15 15:35:03
  * @FilePath: \tuan-uniapp\pages\user\user.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -63,7 +63,21 @@
 
     <!-- 第一个 -->
     <view class="collection">
-      <UserPanel :data="one">
+      <view class="collection-chose" @click="choseCollection">
+        <view
+          @click="changeTab(0)"
+          :class="{ active : currentTab === 0}"
+          class="item"
+          >商品订单</view
+        >
+        <view
+          @click="changeTab(1)"
+          :class="{ active : currentTab === 1}"
+          class="item"
+          >社区订单</view
+        >
+      </view>
+      <UserPanel :currentTab="currentTab" :data="one"  v-if="currentTab === 0">
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
@@ -73,14 +87,30 @@
             <text class="title">足迹</text>
             <text class="value">56</text>
           </view>
+          <view class="item"  @click="bindtapsubscription">
+            <text class="title">订阅</text>
+            <text class="value">123</text>
+          </view>
+        </view>
+      </UserPanel>
+      <UserPanel  :currentTab="currentTab" :data="two"  v-if="currentTab === 1">
+        <view class="info">
           <view class="item">
+            <text class="title">收藏</text>
+            <text class="value">10</text>
+          </view>
+          <view class="item">
+            <text class="title">足迹</text>
+            <text class="value">56</text>
+          </view>
+          <view class="item" @click="bindtapsubscription">
             <text class="title">订阅</text>
             <text class="value">123</text>
           </view>
         </view>
       </UserPanel>
       <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
-      
+
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
       <UserPanel
         :row="4"
@@ -97,6 +127,7 @@ import UserPanel from "./components/user-panel.vue";
 import {
   tools,
   one,
+  two,
   serve,
   digitalStore,
   marketingTools,
@@ -110,10 +141,14 @@ export default {
     return {
       tools,
       one,
+      two,
       serve,
       digitalStore,
       marketingTools,
       otherServe,
+      collectiontype: 1,
+      currentTab: 0,
+      
     };
   },
 
@@ -126,11 +161,42 @@ export default {
         url: "/user/info/detail",
       });
     },
+    choseCollection() {
+      let collectiontype = this.collectiontype;
+      if (collectiontype == 1) {
+        this.collectiontype = 2;
+      } else {
+        this.collectiontype = 1;
+      }
+    },
+
+  changeTab(tab) {
+    console.log(this.currentTab);
+      this.currentTab = tab;
+    },
+    bindtapsubscription(){
+            uni.navigateTo({
+        url: "/user/subscription/subscription",
+      });
+    }
   },
 };
 </script>
 
 <style lang="less" scoped>
+ .item {
+  font-size: 24upx;
+  padding:0 24upx ;
+
+        &.active {
+          font-weight: bold;
+          color: #3d3d3d;
+        }
+      }
+.collection-chose {
+  display: flex;
+
+}
 .user-page {
   padding: 20upx;
   padding-bottom: 80upx;

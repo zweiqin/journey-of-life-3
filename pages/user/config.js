@@ -15,23 +15,58 @@ export const one = {
   menus: [
     {
       label: '待付款',
-      icon: require('../../static/images/user/daifukuan.png')
+      icon: require('../../static/images/user/daifukuan.png'),
+      url:"/user/orderForm/order-form"
     },
     {
       label: '待发货',
-      icon: require('../../static/images/user/daifahuo.png')
+      icon: require('../../static/images/user/daifahuo.png'),
+      url:"/user/orderForm/order-form"
+      
     }, {
       label: '待收货',
-      icon: require('../../static/images/user/daishouhuo.png')
+      icon: require('../../static/images/user/daishouhuo.png'),
+      url:"/user/orderForm/order-form"
     }, {
       label: '待评价',
-      icon: require('../../static/images/user/daipingjia.png')
+      icon: require('../../static/images/user/daipingjia.png'),
+      url:"/user/orderForm/order-form"
     }, {
       label: '所有订单',
-      icon: require('../../static/images/user//suoyoudingdan.png')
+      icon: require('../../static/images/user//suoyoudingdan.png'),
+      url:"/user/orderForm/order-form"
     },
   ]
 }
+export const two = {
+  title: null,
+  menus: [
+    {
+      label: '待付款',
+      icon: require('../../static/images/user/daifukuan.png'),
+      url:"/user/orderForm/order-form"
+    
+    },
+    {
+      label: '待发货',
+      icon: require('../../static/images/user/daifahuo.png'),
+      url:"/user/orderForm/order-form"
+    },{
+      label: '待安装',
+      icon: require('../../static/images/lqb/user/daianzhuang.png'),
+      url:"/user/orderForm/order-form"
+    }, {
+      label: '待评价',
+      icon: require('../../static/images/user/daipingjia.png'),
+      url:"/user/orderForm/order-form"
+    }, {
+      label: '所有订单',
+      icon: require('../../static/images/user//suoyoudingdan.png'),
+      url:"/user/orderForm/order-form"
+    },
+  ]
+}
+
 
 export const serve = {
   title: '我的服务',
@@ -57,7 +92,8 @@ export const serve = {
     },
     {
       label: '优惠劵',
-      icon: require('../../static/images/user/youhuijuan.png')
+      icon: require('../../static/images/user/youhuijuan.png'),
+      url:"/user/sever/coupon"
      
     },
     {
@@ -66,7 +102,9 @@ export const serve = {
     },
     {
       label: '会员升级',
-      icon: require('../../static/images/user/huiyuanshengji.png')
+      icon: require('../../static/images/user/huiyuanshengji.png'),
+      url:"/user/sever/userUp"
+      
     },
     {
       label: '推广码',
