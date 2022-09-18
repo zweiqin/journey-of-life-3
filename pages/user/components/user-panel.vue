@@ -45,7 +45,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    currentTab: Number
+    currentTab: Number,
   },
   methods: {
     bindtap(item) {

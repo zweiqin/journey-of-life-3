@@ -85,7 +85,8 @@ export default {
   background: linear-gradient(180deg, #07b9b9 0%, #ffffff 100%);
   padding: 60upx 24upx;
   box-sizing: border-box;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
 
   .header {
     display: flex;

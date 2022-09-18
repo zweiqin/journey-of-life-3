@@ -139,11 +139,20 @@
 
 <script>
 import A from "./components/a.vue";
+import { getMarketingPortraitDataApi } from "../../api/user";
 export default {
   components: { A },
+  mounted() {
+    this.getData();
+  },
   methods: {
     back() {
       uni.navigateBack();
+    },
+
+    async getData() {
+      const res = await getMarketingPortraitDataApi();
+      console.log(res);
     },
   },
 };
@@ -172,7 +181,7 @@ export default {
     }
 
     h2 {
-      font-size: @f16;
+      font-size: 32upx;
       display: inline;
       font-weight: normal;
       color: @cw;
@@ -181,7 +190,7 @@ export default {
 
   .item {
     margin-top: 40upx;
-    font-size: @f12;
+    font-size: 24upx;
 
     .title {
       font-weight: 500;
@@ -239,7 +248,7 @@ export default {
           box-shadow: inset 0px 0px 5px 0px #ffffff;
         }
 
-        border-radius: @r20;
+        border-radius: 24upx;
         color: @cw;
 
         .icon {
@@ -260,7 +269,7 @@ export default {
       padding: 22upx 40upx 22upx 50upx;
       box-sizing: border-box;
       .flex();
-      border-radius: @r20;
+      border-radius: 24upx;
       color: @cw;
       font-size: @f12;
 
@@ -314,7 +323,7 @@ export default {
         #07b9b9 122%
       );
       box-shadow: inset 0px 0px 5px 0px #ffffff;
-      border-radius: @r20;
+      border-radius: 24upx;
     }
   }
 

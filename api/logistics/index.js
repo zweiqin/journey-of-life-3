@@ -133,6 +133,8 @@ export const searchWuliuApi = (data) => {
 /**
  * 获取关注列表
  */
-export const getFollowListApi = () => {
-  return request('')
+export const getFollowListApi = (data) => {
+  return request('/laoa-huozhu/api/hz/order/third/getFollwCompanyList', data)
 }
+
+

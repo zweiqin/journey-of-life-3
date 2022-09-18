@@ -452,13 +452,24 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
-				}
-				,
+				},
 				{
 					"path": "sever/coupon",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/information-sentry",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "digital-store/marketing-portrait",
+					"style": {
+						"navigationBarTitleText": ""
 					}
 				}
 			]

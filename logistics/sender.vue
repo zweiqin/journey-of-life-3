@@ -146,7 +146,7 @@ export default {
 
     h2 {
       color: @c0;
-      font-size: @f16;
+      font-size: 32upx;
       font-weight: bold;
       flex: 1;
       text-align: center;
@@ -167,7 +167,7 @@ export default {
 
     .item {
       display: flex;
-      font-size: @f14;
+      font-size: 28upx;
       padding: 40upx 0;
       .border-bottom(#D8D8D8);
 
@@ -179,11 +179,11 @@ export default {
 
       .value {
         .text-input {
-          font-size: @f14;
+          font-size: 28upx;
 
           &::placeholder {
             color: @c9;
-            font-size: @f14;
+            font-size: 28upx;
           }
         }
       }

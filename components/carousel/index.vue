@@ -14,8 +14,8 @@
       indicator-color="#fff"
       indicator-active-color="#fff"
     >
-      <swiper-item v-for="item in 4" :key="item">
-        <img src="../../static/images/index/banner1.webp" alt="" />
+      <swiper-item v-for="item in list" :key="item">
+        <img style="height: 100%; 'border-radius':10px " :src="item" alt="" />
       </swiper-item>
     </swiper>
   </view>
@@ -32,6 +32,14 @@ export default {
     top: {
       type: Number,
       default: 14,
+    },
+    list: {
+      type: Array,
+      default: () => [
+        "https://img0.baidu.com/it/u=138670212,3825563627&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=248",
+        "https://img0.baidu.com/it/u=906034522,1602987140&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=208",
+        "https://img2.baidu.com/it/u=3652009798,4006120259&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=479",
+      ],
     },
   },
 };

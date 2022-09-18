@@ -6,7 +6,7 @@
     <text class="loaction">佛山市</text>
     <view class="search">
       <img src="../../static/images/icon/search.png" alt="" />
-      <input type="text" />
+      <input type="text" @focus="$emit('focus')" />
     </view>
     <img class="img" src="../../static/images/index/ling.png" alt="响铃" />
   </view>

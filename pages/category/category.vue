@@ -69,6 +69,7 @@ var http = require("../../utils/http.js");
 var config = require("../../utils/config.js");
 import { config as configs } from "./config";
 import Carousel from "../../components/carousel";
+import { getStuffListApi } from "../../api/stuff";
 
 export default {
   components: {
@@ -135,68 +136,24 @@ export default {
       categoryImg: "",
       prodid: "",
       configs,
+      query: {
+        // id: null,
+        goodsType: 2,
+      },
     };
   },
-  props: {},
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    // var ths = this; //加载分类列表
-    // var params = {
-    //   url: "/category/categoryInfo",
-    //   method: "GET",
-    //   data: {
-    //     parentId: 1,
-    //   },
-    //   callBack: function (res) {
-    //     // console.log(res);
-    //     ths.setData({
-    //       categoryImg: res[0].pic,
-    //       categoryList: res,
-    //     });
-    //     ths.getProdList(res[0].categoryId);
-    //   },
-    // };
-    // http.request(params);
+  mounted() {
+    this.getStuffList();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {},
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {},
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {},
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {},
   methods: {
+    // 加载类目数据
+    async getStuffList() {
+      const res = await getStuffListApi(this.query);
+      console.log(res);
+    },
+
     /**
      * 分类点击事件
      */
@@ -217,9 +174,9 @@ export default {
       });
     },
 
-    handleToDetail(){
+    handleToDetail() {
       uni.navigateTo({
-         url: '/stuff/detail'
+        url: "/stuff/detail",
       });
     },
 
