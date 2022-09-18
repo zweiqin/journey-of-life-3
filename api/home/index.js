@@ -1,9 +1,9 @@
-import { request } from "../../utils";
+import { RuanRequest } from "../../utils";
 
 /**
  * 获取首页商品列表
- * @returns 
+ * @returns
  */
 export const getIndexDataApi = () => {
-  return request("/home/index", null, 'get');
+  return RuanRequest("/home/index", null, "get");
 };
