@@ -57,12 +57,14 @@ export default {
     height: 100%;
 
     /deep/ .uni-swiper-dot-active {
+      transition: all 350ms;
       border-radius: 0;
       width: 40upx !important;
     }
 
     /deep/ .uni-swiper-dot {
       border-radius: 0px;
+      transition: all 350ms;
       height: 4upx;
       width: 4upx;
       margin-right: 6upx;
