@@ -1,4 +1,4 @@
-import { request } from "../../utils";
+import { RuanRequest } from "../../utils";
 
 /**
  * @description 获取材料的分类列表
@@ -9,5 +9,5 @@ import { request } from "../../utils";
  * @returns
  */
 export const getStuffListApi = (data) => {
-  return request("/catalog/index", data, 'get');
+  return RuanRequest("/catalog/index", data, 'get');
 };

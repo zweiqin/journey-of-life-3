@@ -138,7 +138,7 @@ export default {
       configs,
       query: {
         // id: null,
-        goodsType: 2,
+        goodsType: 1,
       },
     };
   },

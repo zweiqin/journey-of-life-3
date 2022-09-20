@@ -37,7 +37,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.name, this.sname, this.price, this.payNumber);
+    // console.log(this.name, this.sname, this.price, this.payNumber);
   },
 };
 </script>
