@@ -2,20 +2,23 @@
   <view class="conversion-pane-container">
     <img
       class="avatar"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp"
+      :src="
+        info.userAvatar ||
+        'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp'
+      "
       alt=""
     />
 
     <view class="info">
       <view class="item">
-        <view class="name"> 戴某呀</view>
-        <view class="phone text">电话：13800138000</view>
-        <view class="text s-text">创建时间: 2022-09-17</view></view
+        <view class="name"> {{ info.userName }}</view>
+        <view class="phone text">电话：{{ info.userTel || "暂无" }}</view>
+        <view class="text s-text">创建时间: {{ info.createTime }}</view></view
       >
 
       <view class="item">
-        <view class="phone text">购买时间：2022-01-09</view>
-        <view class="phone text">购买次数：12</view>
+        <view class="phone text">购买时间：{{ info.updateTime }}</view>
+        <view class="phone text">购买次数：{{ info.buyCount }}</view>
         <view class="text select">活动方案</view>
       </view>
     </view>
@@ -24,6 +27,10 @@
 
 <script>
 export default {
+  props: {
+    info: Object,
+  },
+
   methods: {
     handleIsVisit() {
       uni.showActionSheet({

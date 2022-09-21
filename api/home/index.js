@@ -1,4 +1,4 @@
-import { RuanRequest } from "../../utils";
+import { getUserId, RuanRequest } from "../../utils";
 
 /**
  * 获取首页商品列表

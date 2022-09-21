@@ -469,7 +469,10 @@
 				{
 					"path": "digital-store/information-sentry",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "",
+						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+						}
 					}
 				},
 				{
@@ -477,6 +480,15 @@
 					"style": {
 						"navigationBarTitleText": ""
 					}
+				},
+				{
+					"path": "digital-store/add",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "digital-store/choose-words"
 				}
 			]
 		},

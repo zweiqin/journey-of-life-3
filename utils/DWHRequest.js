@@ -1,4 +1,4 @@
-import { BASE_URL, RUAN_URL } from "../config";
+import { BASE_URL, RUAN_URL, LANG_FEE_URL } from "../config";
 
 const request = (base_url) => {
   return function (url, data = {}, method = "post", cb) {
@@ -24,3 +24,4 @@ const request = (base_url) => {
 
 export const GyRequest = request(BASE_URL);
 export const RuanRequest = request(RUAN_URL);
+export const LTRequest = request(LANG_FEE_URL)

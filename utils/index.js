@@ -1,3 +1,3 @@
-export { GyRequest as request, RuanRequest } from "./DWHRequest";
+export { GyRequest as request, RuanRequest, LTRequest } from "./DWHRequest";
 export { fomartNumber, removeCache, getUserId } from "./DWHutils";
 export { formatTime } from "./util";

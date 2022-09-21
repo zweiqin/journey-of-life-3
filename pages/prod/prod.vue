@@ -1,7 +1,12 @@
 <template>
   <view class="prod-wrapper">
     <view class="carousel">
-      <Carousel :height="370" :top="0" :radius="0"></Carousel>
+      <Carousel
+        :list="[goodsInfo.info.picUrl]"
+        :height="370"
+        :top="0"
+        :radius="0"
+      ></Carousel>
       <img
         @click="back"
         class="back"
@@ -13,10 +18,10 @@
     <view class="promotion">
       <view class="left">
         <view class="top">
-          ￥<text class="number">2809.87</text>
-          <view class="tag">
+          ￥<text class="number">{{ goodsInfo.info.retailPrice }}</text>
+          <!-- <view class="tag">
             新人价 <view class="price">￥<text class="number">1900</text></view>
-          </view>
+          </view> -->
         </view>
 
         <view class="bottom">
@@ -71,12 +76,12 @@
 
       <view class="info">
         <view class="left">
-          <view class="name">BILLY 毕利 / OXBERG 奥克伯家具餐桌</view>
+          <view class="name">{{ goodsInfo.info.name }}</view>
           <view class="style">家庭餐桌带椅子，白色/灰色</view>
           <view class="ranking"> 第二名 | 家具餐桌热销榜 </view>
         </view>
         <view class="right">
-          <div class="item">
+          <div class="item" @click="handleCollect">
             <img
               class="img"
               src="../../static/images/goods/shoucang.png"
@@ -154,14 +159,52 @@
 
 <script>
 import Carousel from "../../components/carousel";
+import { getGoodsDetailApi, collectionApi } from "../../api/goods";
+import { getUserId } from "../../utils";
+
 export default {
   components: {
     Carousel,
+  },
+  data() {
+    return {
+      goodsId: "",
+      goodsInfo: {},
+    };
   },
   methods: {
     back() {
       uni.navigateBack();
     },
+
+    async getGoodsDetail() {
+      const res = await getGoodsDetailApi(this.goodsId);
+
+      if (res.errno === 0) {
+        this.goodsInfo = res.data;
+        console.log(res.data);
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+        });
+      }
+    },
+
+    async handleCollect() {
+      const res = await collectionApi({
+        userId: getUserId(),
+        type: 0,
+        valueId: this.goodsId,
+      });
+
+      console.log(res);
+    },
+  },
+
+  onLoad(options) {
+    this.goodsId = options.goodsId;
+    this.getGoodsDetail();
   },
 };
 </script>

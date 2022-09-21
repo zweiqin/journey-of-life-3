@@ -7,13 +7,13 @@
     />
     <view class="info">
       <view class="top">
-        <view class="text name">戴某呀</view>
-        <view class="text time">创建时间:2022-09-28</view>
+        <view class="text name">{{ info.userName }}</view>
+        <view class="text time">创建时间:{{ info.createTime }}</view>
       </view>
 
       <view class="bottom">
-        <view class="text">电话：19877665544</view>
-        <view class="text time">购买次数：12</view>
+        <view class="text">电话：{{ info.userTel || "未获得" }}</view>
+        <view class="text time">购买次数：{{ info.buyCount }}</view>
         <view class="text" style="color: #ff8f1f" @click="handleSwtich"
           >是否转化</view
         >
@@ -23,15 +23,31 @@
 </template>
 
 <script>
+import { postConversionApi } from "../../../api/user";
+import { getUserId } from "../../../utils";
+
 export default {
+  props: {
+    info: Object,
+  },
   methods: {
     handleSwtich() {
+      const _this = this;
       uni.showActionSheet({
         itemList: ["已转化", "未转化"],
         title: "是否转化",
-        success: function (res) {
+        success: async function (res) {
           const index = res.tapIndex + 1;
-          console.log("选中了第" + index + "个按钮");
+          if (index === 1) {
+            const res = await postConversionApi({
+              id: _this.info.id,
+              userId: getUserId(),
+            });
+
+            if (res === "转化成功") {
+              _this.$emit('success')
+            }
+          }
         },
         fail: function (res) {
           // 点击了取消

@@ -27,6 +27,8 @@
           class="search-input"
           placeholder="输入手机号昵称搜索"
           type="text"
+          @input="handleSearchFn"
+          :value="query.search"
         />
       </view>
     </div>
@@ -34,7 +36,7 @@
     <view class="navs">
       <view
         class="item"
-        :class="{ active: currentTab === item.value }"
+        :class="{ active: query.status === item.value }"
         v-for="item in navs"
         :key="item.label"
         @click="changeCurrentTab(item.value)"
@@ -42,32 +44,60 @@
       >
     </view>
 
-    <view class="main">
-      <view v-show="currentTab === 0">
-        <CollectPane></CollectPane>
+    <view class="main" v-show="list.length">
+      <view v-show="query.status === 1">
+        <CollectPane
+          @success="handleConversionSuccess"
+          v-for="item in list"
+          :key="item.id"
+          :info="item"
+        ></CollectPane>
       </view>
 
-      <view v-show="currentTab === 1">
-        <ConversionPane></ConversionPane>
-        <ConversionPane></ConversionPane>
-        <ConversionPane></ConversionPane>
-        <ConversionPane></ConversionPane>
+      <view v-show="query.status === 2">
+        <ConversionPane
+          v-for="item in list"
+          :key="item.id"
+          :info="item"
+          @success="handleConversionSuccess"
+        ></ConversionPane>
       </view>
 
-      <view v-show="currentTab === 2">
-        <PursueSalePane></PursueSalePane>
-        <PursueSalePane></PursueSalePane>
-        <PursueSalePane></PursueSalePane>
-        <PursueSalePane></PursueSalePane>
+      <view v-show="query.status === 3">
+        <PursueSalePane
+          v-for="item in list"
+          :key="item.id"
+          :info="item"
+          @success="handleConversionSuccess"
+        ></PursueSalePane>
       </view>
 
-      <view v-show="currentTab === 3">
-        <StanPane></StanPane>
-        <StanPane></StanPane>
-        <StanPane></StanPane>
-        <StanPane></StanPane>
+      <view v-show="query.status === 4">
+        <StanPane
+          v-for="item in list"
+          :key="item.id"
+          :info="item"
+          @success="handleConversionSuccess"
+        ></StanPane>
       </view>
     </view>
+
+    <NoData v-show="!list.length"></NoData>
+
+    <img
+      class="add-icon"
+      @click="handleToAdd"
+      v-show="query.status !== 4"
+      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8osmldqpu5nthwxlwha9.png"
+      alt=""
+    />
+
+    <AddPopup
+      :words="words"
+      :type="query.status"
+      :list="list"
+      ref="addPopupRef"
+    ></AddPopup>
   </view>
 </template>
 
@@ -77,13 +107,28 @@ import CollectPane from "./components/collect-pane.vue";
 import ConversionPane from "./components/conversion-pane.vue";
 import PursueSalePane from "./components/pursue-sale-pane.vue";
 import StanPane from "./components/stan-pane.vue";
+import { getMsgSentryListApi, getWordsApi } from "../../api/user";
+import { getUserId } from "../../utils";
+import NoData from "../../components/no-data";
+import { WORDS_LIST, SELECT_WORDS } from "../../constant";
+import AddPopup from "./components/add-popup.vue";
+const { debounce } = require("../../utils/util");
 
 export default {
   data() {
     return {
       searchActive: false,
       navs: informationSentryNavs,
-      currentTab: 0,
+      currentTab: 1,
+      query: {
+        userId: getUserId(),
+        status: 1,
+        search: "",
+      },
+      list: [],
+      popupVisiable: false,
+      words: "",
+      handleSearchFn: null,
     };
   },
 
@@ -92,6 +137,13 @@ export default {
     ConversionPane,
     PursueSalePane,
     StanPane,
+    NoData,
+    AddPopup,
+  },
+
+  created() {
+    this.getListData();
+    this.handleSearchFn = debounce(this.search, 500);
   },
 
   methods: {
@@ -102,13 +154,68 @@ export default {
 
     // 点击切换tab
     changeCurrentTab(tab) {
-      this.currentTab = tab;
+      this.query.status = tab;
+      this.getListData();
+      this.getWordsList();
+      this.$refs.addPopupRef.clear();
+      uni.setStorageSync(SELECT_WORDS, "");
     },
 
     // 回退
     handleBack() {
       uni.navigateBack();
     },
+
+    // 获取列表数据
+    async getListData() {
+      uni.showLoading({
+        title: "加载中",
+      });
+      const res = await getMsgSentryListApi(this.query);
+
+      this.list = res;
+      // if (res.errno === 0) {
+      //   console.log(res);
+      // } else {
+      //   uni.showToast({
+      //     title: res.errmsg,
+      //     duration: 2000,
+      //     icon: "none",
+      //   });
+      // }
+
+      uni.hideLoading();
+    },
+
+    // 转化成功
+    handleConversionSuccess() {
+      this.getListData();
+    },
+
+    // 获取话术列表
+    async getWordsList() {
+      const res = await getWordsApi(this.query.status);
+      uni.setStorageSync(WORDS_LIST, res);
+    },
+
+    handleToAdd() {
+      if (this.query.status === 1) {
+        uni.navigateTo({
+          url: "/user/digital-store/add",
+        });
+      } else {
+        this.$refs.addPopupRef.open();
+      }
+    },
+
+    search(e) {
+      this.query.search = e.detail.value;
+      this.getListData();
+    },
+  },
+
+  onShow() {
+    this.words = uni.getStorageSync(SELECT_WORDS);
   },
 };
 </script>
@@ -184,6 +291,14 @@ export default {
         color: #ff8f1f;
       }
     }
+  }
+
+  .add-icon {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 60px;
+    height: 60px;
   }
 }
 </style>

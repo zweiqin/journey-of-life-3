@@ -21,7 +21,7 @@
         </view>
       </template>
 
-      <!-- <template v-if="item.value === 1">
+      <template v-if="item.value === 1">
         <img class="explosion" :src="explosion[0].picUrl" alt="" />
       </template>
 
@@ -30,19 +30,20 @@
           <img class="img" :src="discount[9].picUrl" alt="" />
           <img class="img" :src="discount[8].picUrl" alt="" />
         </view>
-      </template> -->
+      </template>
     </Panel>
 
-    <!-- <view class="goods-list">
+    <view class="goods-list">
       <Goods
         v-for="item in discount"
         :key="item.id"
+        :id="item.id"
         :name="item.name"
         :sname="item.brief"
         :url="item.picUrl"
         :price="item.retailPrice"
       ></Goods>
-    </view> -->
+    </view>
   </div>
 </template>
 

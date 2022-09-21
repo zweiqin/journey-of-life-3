@@ -1,5 +1,5 @@
 <template>
-  <div class="goods">
+  <div class="goods" @click="handeViewDetail">
     <img
       class="img"
       :src="
@@ -27,17 +27,24 @@
 </template>
 
 <script>
+import { getGoodsDetailApi } from "../../api/home";
+
 export default {
   props: {
     name: String,
     sname: String,
     price: String,
     payNumber: String,
-    url: String
+    url: String,
+    id: [Number, String],
   },
 
-  mounted() {
-    // console.log(this.name, this.sname, this.price, this.payNumber);
+  methods: {
+    handeViewDetail() {
+      uni.navigateTo({
+        url: `/pages/prod/prod?goodsId=${this.id}`,
+      });
+    },
   },
 };
 </script>

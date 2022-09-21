@@ -12,3 +12,7 @@ export const USER_ID = "USER_ID";
 
 // home page
 export const STYLE_LIST = "STYLE_LIST";
+
+// user center
+export const WORDS_LIST = "WORDS_LIST";
+export const SELECT_WORDS = "SELECT_WORDS";

@@ -1,5 +1,5 @@
 <template>
-  <view class="marketing-portrait-container">
+  <view class="marketing-portrait-container" v-if="info">
     <view class="header">
       <img
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1676ilbo4t26udpy067z.png"
@@ -22,7 +22,7 @@
             alt=""
           />
           <view class="sub-title">导入数</view>
-          <view class="value">123456</view>
+          <view class="value">{{ info.importCount || 0 }}</view>
         </view>
 
         <view class="item">
@@ -32,7 +32,7 @@
             alt=""
           />
           <view class="sub-title">访问数</view>
-          <view class="value">123456</view>
+          <view class="value">{{ info.visitCount || 0 }}</view>
         </view>
 
         <view class="item">
@@ -42,7 +42,7 @@
             alt=""
           />
           <view class="sub-title">新增数</view>
-          <view class="value">123456</view>
+          <view class="value">{{ info.insertCount || 0 }}</view>
         </view>
 
         <view class="item">
@@ -52,7 +52,7 @@
             alt=""
           />
           <view class="sub-title">消费数</view>
-          <view class="value">123456</view>
+          <view class="value">{{ info.consumeCount || 0 }}</view>
         </view>
       </view>
     </view>
@@ -67,27 +67,33 @@
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/do2noi0ljm3kl3u93a1z.png"
             alt=""
           />
-          <view class="sub-title">100000</view>
+          <view class="sub-title">{{
+            fomartNumber(info.manCount * 100) + "%" || "0%"
+          }}</view>
           <view class="value">男性</view>
         </view>
 
         <view class="item">
           <img
             class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/do2noi0ljm3kl3u93a1z.png"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m38xyx13s4mv5sxrethp.png"
             alt=""
           />
-          <view class="sub-title">100000</view>
+          <view class="sub-title">{{
+            fomartNumber(info.womanCount * 100) + "%" || "0%"
+          }}</view>
           <view class="value">女性</view>
         </view>
 
         <view class="item">
           <img
             class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/do2noi0ljm3kl3u93a1z.png"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tl5f6cdio4uj4nthg24i.png"
             alt=""
           />
-          <view class="sub-title">100000</view>
+          <view class="sub-title">{{
+            fomartNumber(info.unknownCount * 100) + "%" || "0%"
+          }}</view>
           <view class="value">未知</view>
         </view>
       </view>
@@ -97,7 +103,8 @@
     <view class="in-store-analysis item">
       <view class="title"> 每日进店分析 </view>
       <view class="body">
-        <A></A>
+        <!-- <A></A> -->
+        {{ info.dayNumber || 0 }}
       </view>
     </view>
 
@@ -108,28 +115,36 @@
         <view class="item">
           <view class="wrapper">
             <text class="text">未消费</text>
-            <text class="text">123</text>
+            <text class="text">{{
+              fomartNumber(info.statusCount.count1 || 0) * 100 + "%"
+            }}</text>
           </view>
         </view>
 
         <view class="item">
           <view class="wrapper">
             <text class="text">一次性消费</text>
-            <text class="text">123</text>
+            <text class="text">{{
+              fomartNumber(info.statusCount.count2 || 0) * 100 + "%"
+            }}</text>
           </view>
         </view>
 
         <view class="item">
           <view class="wrapper">
             <text class="text">二次性消费</text>
-            <text class="text">123</text>
+            <text class="text">{{
+              fomartNumber((info.statusCount.count3 || 0) * 100) + "%"
+            }}</text>
           </view>
         </view>
 
         <view class="item">
           <view class="wrapper">
             <text class="text">三次及以上消费</text>
-            <text class="text">123</text>
+            <text class="text">{{
+              fomartNumber((info.statusCount.count4 || 0) * 100) + "%"
+            }}</text>
           </view>
         </view>
       </view>
@@ -138,21 +153,39 @@
 </template>
 
 <script>
-import A from "./components/a.vue";
 import { getMarketingPortraitDataApi } from "../../api/user";
+import { fomartNumber } from "../../utils";
+
 export default {
-  components: { A },
   mounted() {
     this.getData();
+  },
+  data() {
+    return {
+      info: null,
+    };
   },
   methods: {
     back() {
       uni.navigateBack();
     },
+    fomartNumber,
 
     async getData() {
       const res = await getMarketingPortraitDataApi();
+      this.info = res;
+      return;
       console.log(res);
+      if (res.errno === 0) {
+        this.info = res.data;
+        console.log(this.info);
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
     },
   },
 };
@@ -315,6 +348,10 @@ export default {
     .body {
       margin-top: 40upx;
       height: 545upx;
+      line-height: 545upx;
+      text-align: center;
+      font-size: 100upx;
+      color: #fff;
       padding: 10px;
       box-sizing: border-box;
       background: linear-gradient(
