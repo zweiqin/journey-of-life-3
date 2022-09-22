@@ -288,6 +288,27 @@
 				},
 				{
 					"path": "site/union"
+				},
+				{
+					"path": "delivery-install"
+				},
+				{
+					"path": "delivery"
+				},
+				{
+					"path": "consignee"
+				},
+				{
+					"path": "goods",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index"
+					}
+				},
+				{
+					"path": "repair"
+				},
+				{
+					"path": "repair-goods"
 				}
 			]
 		},
