@@ -11,6 +11,10 @@
 			}
 		},
 		{
+			"path": "pages/stuff/stuff",
+			"style": {}
+		},
+		{
 			"path": "pages/index/design-detail",
 			"style": {}
 		},
@@ -149,7 +153,10 @@
 		{
 			"path": "pages/prod/prod",
 			"style": {
-				"navigationBarTitleText": "商品详情"
+				"navigationBarTitleText": "商品详情",
+				"usingComponents": {
+					"uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
+				}
 			}
 		},
 		{
@@ -209,7 +216,7 @@
 				"selectedIconPath": "/static/images/tabbar/furniture-active.png"
 			},
 			{
-				"pagePath": "pages/category/category",
+				"pagePath": "pages/stuff/stuff",
 				"text": "材料",
 				"iconPath": "/static/images/tabbar/stuff.png",
 				"selectedIconPath": "/static/images/tabbar/stuff-active.png"

@@ -78,11 +78,14 @@
 
     <!-- sider -->
     <view class="silder">
-      <view class="item">
+      <view class="item" @click="handleToShopCar">
         <img :src="require('../../static/images/index/shop-car.png')" alt="" />
       </view>
       <view class="item" @click="backToTop">
-        <img :src="require('../../static/images/index/up.png')" alt="" />
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5eyamrkxkolwe4ebzf4p.png"
+          alt=""
+        />
       </view>
     </view>
   </view>
@@ -206,6 +209,12 @@ export default {
         id: 1001002,
       });
       console.log(res);
+    },
+
+    handleToShopCar() {
+      uni.navigateTo({
+        url: "/user/sever/shop-car",
+      });
     },
   },
   watch: {

@@ -22,13 +22,28 @@
       </template>
 
       <template v-if="item.value === 1">
-        <img class="explosion" :src="explosion[0].picUrl" alt="" />
+        <img
+          class="explosion"
+          @click="handleToDoodsDetail(explosion[0])"
+          :src="explosion[0].picUrl"
+          alt=""
+        />
       </template>
 
       <template v-if="item.value === 2">
         <view class="explosion">
-          <img class="img" :src="discount[9].picUrl" alt="" />
-          <img class="img" :src="discount[8].picUrl" alt="" />
+          <img
+            @click="handleToDoodsDetail(discount[9])"
+            class="img"
+            :src="discount[9].picUrl"
+            alt=""
+          />
+          <img
+            @click="handleToDoodsDetail(discount[8])"
+            class="img"
+            :src="discount[8].picUrl"
+            alt=""
+          />
         </view>
       </template>
     </Panel>
@@ -95,6 +110,12 @@ export default {
     handleViewStyle(item) {
       uni.navigateTo({
         url: "/home/styles?id=" + item.id,
+      });
+    },
+
+    handleToDoodsDetail(item) {
+      uni.navigateTo({
+        url: "/pages/prod/prod?goodsId=" + item.id,
       });
     },
   },

@@ -19,3 +19,48 @@ export const getGoodsDetailApi = (id) => {
 export const collectionApi = (data) => {
   return RuanRequest("/collect/addordelete", data);
 };
+
+/**
+ * @description 大家都在看
+ * @param {*} categoryId
+ * @returns
+ */
+export const everyLookApi = (categoryId) => {
+  return RuanRequest("/goods/related", { id: categoryId }, "get");
+};
+
+/**
+ * @description 获取购物车数据
+ * @returns
+ */
+export const getShopCarApi = () => {
+  return RuanRequest(
+    "/cart/index",
+    {
+      userId: getUserId(),
+    },
+    "get"
+  );
+};
+
+/**
+ * @description 添加购物车
+ * @param {
+ *  "userId": 219,
+ *  "goodsId": 1,
+ *  "productId": 1,
+ *  "number": 1
+ * } data
+ * @returns
+ */
+export const addShopCarApi = (data) => {
+  return RuanRequest("/cart/add", data);
+};
+
+/**
+ * @description 获取购物车数量
+ * @returns
+ */
+export const getCarShopNumberApi = () => {
+  return RuanRequest("/cart/goodscount", { userId: getUserId() }, "get");
+};

@@ -27,13 +27,12 @@
 </template>
 
 <script>
-import { getGoodsDetailApi } from "../../api/home";
 
 export default {
   props: {
     name: String,
     sname: String,
-    price: String,
+    price: [String, Number],
     payNumber: String,
     url: String,
     id: [Number, String],
