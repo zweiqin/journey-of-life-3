@@ -128,10 +128,13 @@ export const digitalStore = {
     {
       label: "业绩哨兵",
       icon: require("../../static/images/user/yejishaobing.png"),
+      url: "/user/digital-store/performance"
     },
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
+      url: "/user/digital-store/business/index"
+    
     },
   ],
 };

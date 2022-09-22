@@ -1,3 +1,11 @@
+/*
+ * @Author: 13008300191 904947348@qq.com
+ * @Date: 2022-09-12 16:21:10
+ * @LastEditors: 13008300191 904947348@qq.com
+ * @LastEditTime: 2022-09-22 10:47:20
+ * @FilePath: \团蜂商城 - 副本\tuan-uniapp\utils\DWHutils.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { USER_ID } from "../constant";
 import { whoami } from "../api/auth";
 
@@ -43,5 +51,8 @@ export const checkWhoami = () => {
  * @returns
  */
 export const getUserId = () => {
-  return 150;
+  return 200;
+};
+export const getUserIdRuan = () => {
+  return 219;
 };

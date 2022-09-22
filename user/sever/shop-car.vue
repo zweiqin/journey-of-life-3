@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-12 10:04:59
+ * @LastEditTime: 2022-09-22 17:19:41
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,30 +29,52 @@
         >
       </block>
     </view>
-    <view class="shop-car-goodsDetail">
-      <view>
-        <radio class="shop-car-chose" value="" checked="false" color="">
-        </radio>
-      </view>
-      <img class="shop-car-img" src="../../static/images/goods/shop-car.png" />
-      <view class="shop-car-view-right">
-        <view class="shop-car-goodsName">
-          BILLY 毕利 / OXBERG 奥克伯家具餐桌
+    <view v-for="(item, id) in cartList" :key="id">
+      <view
+        class="shop-car-goodsDetail"
+        v-for="(item1, id1) in item.cartList"
+        :data-list="item1"
+        :key="id1"
+        @click="window"
+      >
+        <view v-if="collectstatus == 1">
+          <img
+            v-if="item1.checked"
+            class="shop-car-chose"
+            src="../../static/images/lqb/site/site-defaule.png"
+            alt=""
+            @click="chosechecked"
+          />
+          <img
+            v-else
+            class="shop-car-chose"
+            src="../../static/images/lqb/site/site-nodefaule.png"
+            alt=""
+            @click="chosechecked"
+          />
         </view>
-        <view class="shop-car-view-right-top">
-          <view class="shop-car-goodsSpec">家庭餐桌带椅子</view>
-          <view class="shop-car-goodsColor">灰色</view>
+        <view class="shop-car-chose" v-if="collectstatus == 2" @click=" goodsgetout">
+          x
         </view>
-        <view style="display: flex; justify-content: space-between">
-          <view class="shop-car-money"
-            >￥<text>{{ goodsmoney }}</text></view
-          >
-          <view class="shop-car-goods-add">
-            <view class="reduce" @click="goodsdelete">- </view>
-            <view class="shop-car-goodsNumber" style="font-size: 12px">{{
-              goodsnumber
-            }}</view>
-            <view class="add" @click="goodsadd"> + </view>
+        <img class="shop-car-img" :src="item1.picUrl" />
+        <view class="shop-car-view-right">
+          <view class="shop-car-goodsName">
+            {{ item1.goodsName }}
+          </view>
+          <view class="shop-car-view-right-top">
+            <view class="shop-car-goodsSpec">{{ item1.goodsSn }}</view>
+          </view>
+          <view style="display: flex; justify-content: space-between">
+            <view class="shop-car-money"
+              >￥<text>{{ item1.price }}</text></view
+            >
+            <view class="shop-car-goods-add">
+              <view class="reduce" @click="goodsdelete">- </view>
+              <view class="shop-car-goodsNumber" style="font-size: 12px">{{
+                item1.number
+              }}</view>
+              <view class="add" @click="goodsadd"> + </view>
+            </view>
           </view>
         </view>
       </view>
@@ -112,21 +134,60 @@
 
 <script>
 import Goods from "../../components/goods";
+import {
+  getCartIndexApi,
+  getCartGoodscountApi,
+  getCartCheckedApi,
+  getCartUpdateApi,
+  getCartDeleteApi,
+  getCartCheckoutApi,
+} from "../../api/cart";
+import { getUserIdRuan } from "../../utils";
 export default {
   components: {
     Goods,
   },
   data() {
     return {
+      goodsCount: "",
+      checkedGoodsCount: "",
       collectstatus: 1,
-      goodsnumber:1,
-      goodsmoney:1900,
-      goodsallmoney:0,
+      goodsnumber: 1,
+      goodsmoney: 1900,
+      goodsallmoney: 0,
+      badgoodschose: 0,
+      cartList: [],
+      goodsId: "",
+      number: "",
+      productId: "",
+      checked: "",
+      isChecked: "",
+      id: "",
+      data: [],
     };
   },
 
   methods: {
-    handleBack(){
+    window: function (e) {
+      console.log(e);
+      this.number = e.currentTarget.dataset.list.number;
+      this.productId = e.currentTarget.dataset.list.productId;
+      this.goodsId = e.currentTarget.dataset.list.goodsId;
+      this.checked = e.currentTarget.dataset.list.checked;
+      this.id = e.currentTarget.dataset.list.id;
+    },
+    chosechecked: function (e) {
+      setTimeout(() => {
+        if (this.checked) {
+          this.isChecked = 0;
+        } else {
+          this.isChecked = 1;
+        }
+      }, 10);
+      this.getCartChecked();
+      this.getCartIndex();
+    },
+    handleBack() {
       uni.navigateBack();
     },
     collect() {
@@ -137,28 +198,118 @@ export default {
         this.collectstatus = 1;
       }
     },
-    goodsadd(){
-      let goodsnumber = this.goodsnumber
-      if (goodsnumber>=1) {
-        this.goodsnumber = goodsnumber+1
-      }
+    goodsadd() {
+      setTimeout(() => {
+        this.getCartUpdateadd();
+      }, 10);
     },
-    goodsdelete(){
-      let goodsnumber = this.goodsnumber
-      if (goodsnumber>1) {
-        this.goodsnumber = goodsnumber-1
-      }else{
-        console.log(2222);
+    goodsdelete() {
+      setTimeout(() => {
+        this.getCartUpdateminus();
+      }, 10);
+    },
+    goodsgetout() {
+      setTimeout(() => {
+        this.getCartDelete();
+      }, 10);
+    },
+    // 获取购物车信息
+    async getCartIndex() {
+      // console.log("1");
+      const res = await getCartIndexApi({
+        userId: getUserIdRuan(),
+      });
+      console.log("商品信息", res);
+      this.cartList = res.data.brandCartgoods;
+      // console.log(this.cartList);
+    },
+    // 获取购物车商品数量
+    async getCartGoodscount() {
+      console.log("1");
+      const res = await getCartGoodscountApi({
+        userId: getUserIdRuan(),
+      });
+      console.log(res);
+    },
+    // 获取购物车商品勾选状态
+    async getCartChecked() {
+      // console.log("1");
+      const res = await getCartCheckedApi({
+        userId: getUserIdRuan(),
+        isChecked: this.isChecked * 1,
+        // productIds: this.productId *1,
+        // isChecked: 1,
+        productIds: [this.productId],
+      });
+      console.log(res);
+    },
+    // 修改购物车商品数量 加
+    async getCartUpdateadd() {
+      // console.log("1");
+      const res = await getCartUpdateApi({
+        userId: getUserIdRuan(),
+        goodsId: this.goodsId,
+        productId: this.productId,
+        number: this.number * 1 + 1,
+        id: this.id,
+      });
+      console.log(res);
+    },
+    // 减
+    async getCartUpdateminus() {
+      // console.log("1");
+      if (this.number == 1) {
+        console.log("删除");
+      } else {
+        const res = await getCartUpdateApi({
+          userId: getUserIdRuan(),
+          goodsId: this.goodsId,
+          productId: this.productId,
+          number: this.number * 1 - 1,
+          id: this.id,
+        });
       }
+      // console.log(res);
+    },
+    // 商品信息删除
+    async getCartDelete() {
+      console.log("1");
+      const res = await getCartDeleteApi({
+        userId: getUserIdRuan(),
+        productIds: [1],
+      });
+      console.log(res);
+    },
+    // 购物车结算
+    async getCartCheckout() {
+      console.log("1");
+      const res = await getCartCheckoutApi({
+        userId: getUserIdRuan(),
+        cartId: 858,
+        // 是否使用代金券
+        useVoucher: 1,
+        // 收货地址id
+        addressId: "",
+        couponId: "",
+        grouponRulesId: "",
+      });
+      console.log(res);
     },
   },
 
-computed:{
-  totalMoney(){
-    return this.goodsnumber * this.goodsmoney
-  }
-}
-  
+  computed: {
+    totalMoney() {
+      return this.goodsnumber * this.goodsmoney;
+    },
+  },
+  onLoad() {
+    this.getCartIndex();
+    this.getCartGoodscount();
+    // this.getCartChecked();
+    // this.getCartUpdate();
+    // this.getCartDelete();
+    // this.getCartCheckout();
+  },
 };
 </script>
 
@@ -196,10 +347,14 @@ computed:{
   }
   .shop-car-goodsName {
     height: 34upx;
+    width: 400upx;
     font-size: 24upx;
     margin-bottom: 14upx;
     font-weight: 500;
     color: #3d3d3d;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .shop-car-view-right-top {
     display: flex;
@@ -215,9 +370,13 @@ computed:{
   }
   .shop-car-goodsSpec {
     font-size: 20upx;
+    width: 400upx;
     color: #3d3d3d;
     margin-right: 26upx;
     font-weight: 350;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .shop-car-goodsColor {
     font-size: 20upx;
@@ -243,6 +402,8 @@ computed:{
   .shop-car-chose {
     margin-top: 40upx;
     margin-right: 28upx;
+    height: 34upx;
+    width: 34upx;
   }
   .shop-car-love-title {
     display: flex;

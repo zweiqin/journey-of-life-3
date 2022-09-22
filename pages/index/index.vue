@@ -79,7 +79,7 @@
     <!-- sider -->
     <view class="silder">
       <view class="item">
-        <img :src="require('../../static/images/index/shop-car.png')" alt="" />
+        <img @click="shopCar" :src="require('../../static/images/index/shop-car.png')" alt="" />
       </view>
       <view class="item" @click="backToTop">
         <img :src="require('../../static/images/index/up.png')" alt="" />
@@ -127,6 +127,11 @@ export default {
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    shopCar(){
+      uni.navigateTo({
+         url: '../../user/sever/shop-car'
+      });
+    },
     /**
      * @description 回到顶部
      */

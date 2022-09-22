@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-15 14:26:21
+ * @LastEditTime: 2022-09-22 17:21:04
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,9 +28,9 @@
           src="../../static/images/lqb/collection/shop-car.png"
           alt=""
         />
-        <view  v-if="goodsnumber == 0" style="padding-right:30upx;"></view>
-        <view   class="shop-car-redbackground-number" v-else>
-          <view  class="shop-car-redbackground-text">{{ goodsnumber }}</view>
+        <view v-if="goodsnumber == 0" style="padding-right: 30upx"></view>
+        <view class="shop-car-redbackground-number" v-else>
+          <view class="shop-car-redbackground-text">{{ goodsnumber }}</view>
         </view>
         <view class="right-view-text" @click="collect"> 编辑</view>
       </view>
@@ -41,16 +41,16 @@
           src="../../static/images/lqb/collection/shop-car.png"
           alt=""
         />
-        <view  v-if="goodsnumber == 0" style="padding-right:30upx;"></view>
-        <view   class="shop-car-redbackground-number" v-else>
-          <view  class="shop-car-redbackground-text">{{ goodsnumber }}</view>
+        <view v-if="goodsnumber == 0" style="padding-right: 30upx"></view>
+        <view class="shop-car-redbackground-number" v-else>
+          <view class="shop-car-redbackground-text">{{ goodsnumber }}</view>
         </view>
         <view class="right-view-text" @click="collect"> 完成</view></view
       >
     </view>
     <!-- 商品详情页 -->
     <view class="shop-car-goodsDetail">
-      <view class="left-chose"  v-if="collectstatus == 2">
+      <view class="left-chose" v-if="collectstatus == 2">
         <img
           v-if="badgoodschose == 1"
           class="shop-car-goods-choes"
@@ -58,15 +58,13 @@
           alt=""
           @click="chosebadgoods"
         />
-          <img
+        <img
           v-if="badgoodschose == 0"
           class="shop-car-goods-choes"
           src="../../static/images/lqb/site/site-nodefaule.png"
           alt=""
           @click="chosebadgoods"
         />
-        
-
       </view>
       <img class="shop-car-img" src="../../static/images/goods/shop-car.png" />
       <view class="shop-car-view-right">
@@ -83,7 +81,7 @@
           </view>
           <view
             ><img
-            @click="addshopcar"
+              @click="addshopcar"
               src="../../static/images/lqb/collection/collectionadd.png"
               alt=""
               class="love-img"
@@ -141,6 +139,8 @@
 
 <script>
 import Goods from "../../components/goods";
+import { getCollectListApi, getCollectAddordeleteApi } from "../../api/collect";
+import { getUserIdRuan } from "../../utils";
 export default {
   components: {
     Goods,
@@ -157,14 +157,20 @@ export default {
   },
 
   methods: {
+    async getCollectList() {
+      const res = await getCollectListApi({
+        userId: getUserIdRuan(),
+      });
+      console.log(res);
+    },
     handleBack() {
       uni.navigateBack();
     },
-    addshopcar(){
-      this.goodsnumber = this.goodsnumber+1
+    addshopcar() {
+      this.goodsnumber = this.goodsnumber + 1;
     },
     chosebadgoods() {
-        let badgoodschose = this.badgoodschose;
+      let badgoodschose = this.badgoodschose;
       if (badgoodschose == 0) {
         this.badgoodschose = 1;
       } else {
@@ -179,7 +185,7 @@ export default {
         this.collectstatus = 1;
       }
     },
-   
+
     gotoshopcar() {
       uni.navigateTo({
         url: "../sever/shop-car",
@@ -192,12 +198,15 @@ export default {
       return this.goodsnumber * this.goodsmoney;
     },
   },
+  onLoad(){
+    this.getCollectList
+  }
 };
 </script>
 // 当心css，没有嵌套
 <style lang="less" scoped>
-.left-chose{
-  margin:auto 0;
+.left-chose {
+  margin: auto 0;
 }
 .shop-car-container {
   .title {
@@ -409,8 +418,8 @@ export default {
 .shop-car-redbackground-text {
   font-size: 24upx;
   position: absolute;
-    right: 2upx;
-    top: -2upx;
+  right: 2upx;
+  top: -2upx;
   color: white;
 }
 .delete-badgoods {

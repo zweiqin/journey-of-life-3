@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-16 11:42:13
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-17 16:25:21
+ * @LastEditTime: 2022-09-21 19:20:14
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\sever\coupon.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -80,11 +80,65 @@
             <view class="middle-second">
               <view class="second-left">
                 <view class="left-background">
-
+                  <img
+                    src="../../static/images/lqb/coupon/gouwujin.png"
+                    alt=""
+                    class="left-img"
+                  />
+                  <view class="left-right">
+                    <view class="shop-money">购物金</view>
+                    <view class="shopmoney-detail">拼团领取购物金</view>
+                    <view class="background-text">去拼团</view>
+                  </view>
                 </view>
               </view>
-              <view class="second-right"></view>
+              <view class="second-left">
+                <view class="left-background">
+                  <img
+                    src="../../static/images/lqb/coupon/fenxiang.png"
+                    alt=""
+                    class="left-img"
+                  />
+                  <view class="left-right">
+                    <view class="shop-money">分享券</view>
+                    <view class="shopmoney-detail">分享领取优惠券</view>
+                    <view class="background-text">去分享</view>
+                  </view>
+                </view>
+              </view>
             </view>
+            <view class="middle-thire">
+              <view class="background">
+                <view class="left-view">享半价</view>
+                <view class="right-view">
+                  <view class="right-top">全店前10名付款</view>
+                  <view class="right-bottom">
+                    <view class="thire">9月15日 18：00开启</view>
+                    <view class="first"> <view class="second"> </view></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="blue-off">
+              <img
+                src="../../static/images/lqb/coupon/bigbule.png"
+                alt=""
+                class="img"
+              />
+              <view class="off-text">50%OFF</view>
+            </view>
+          </view>
+          <view class="else-bottom">
+            <img
+              src="../../static/images/lqb/coupon/好物推荐 直降100.png"
+              alt=""
+              class="title"
+            />
+      
+    
+          </view>
+                    <view>
+              <Goods></Goods>
           </view>
         </view>
       </view>
@@ -93,7 +147,12 @@
 </template>
 
 <script>
-export default {};
+import Goods from "../../components/goods/coupon";
+export default {
+  components: {
+      Goods,
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -243,7 +302,6 @@ export default {};
               font-weight: 700;
               margin-right: 50upx;
               margin-bottom: 35px;
-
             }
             .left-number {
               font-size: 110upx;
@@ -284,17 +342,143 @@ export default {};
           }
         }
       }
-      .middle-second{
-        .second-left{
+      .middle-second {
+        display: flex;
+        justify-content: space-around;
+        .second-left {
           display: flex;
-          .left-background{
-            background: linear-gradient(180deg, #FEFCFC 0%, #F0DEDE 100%);
+          .left-background {
+            background: linear-gradient(180deg, #fefcfc 0%, #f0dede 100%);
             height: 170upx;
-            width: 43%;
+            width: 300upx;
             border-radius: 20upx;
-            
-         }
-         
+            display: flex;
+            .left-img {
+              width: 52upx;
+              height: 52upx;
+              margin: 16upx 18upx 0upx 22upx;
+            }
+            .left-right {
+              .shop-money {
+                font-size: 32upx;
+                font-weight: 600;
+                margin: 28upx 0 6upx 0;
+              }
+              .shopmoney-detail {
+                font-size: 24upx;
+                font-weight: 400;
+                margin: 0 0 6upx 0;
+              }
+              .background-text {
+                border-radius: 40upx;
+                background: linear-gradient(
+                  360deg,
+                  #07b9b9 1%,
+                  rgba(7, 185, 185, 0) 143%
+                );
+                box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+                width: 132upx;
+                height: 35upx;
+                color: white;
+                font-size: 24upx;
+                font-weight: 500;
+                padding-top: 5upx;
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+      .middle-thire {
+        margin-top: 30upx;
+        .background {
+          border-radius: 20upx;
+          background: linear-gradient(180deg, #fdfbfb 0%, #f0dfdf 100%);
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+          width: 635upx;
+          height: 172upx;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          .left-view {
+            width: 180upx;
+            font-size: 60upx;
+            font-family: Source Han Sans CN-Bold, Source Han Sans CN;
+            font-weight: bold;
+            background: linear-gradient(180deg, #f78150 0%, #fa5151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 70upx 0 0 40upx;
+          }
+          .right-view {
+            margin-top: 46upx;
+            margin-right: 20upx;
+            .right-top {
+              font-size: 40upx;
+              color: #3d3d3d;
+            }
+            .right-bottom {
+              margin-right: 42upx;
+
+              .thire {
+                font-size: 20upx;
+                font-weight: 350;
+                color: white;
+                position: absolute;
+                margin-top: 3upx;
+                z-index: 200;
+                margin-left: 50upx;
+              }
+              .first {
+                left: 141px;
+                top: 39px;
+                width: 143px;
+                height: 20px;
+                border-radius: 50px;
+                background: linear-gradient(
+                  180deg,
+                  #000000 37%,
+                  rgba(135, 132, 132, 0) 200%
+                );
+                .second {
+                  position: relative;
+                  left: 20upx;
+                  top: 10upx;
+                  width: 58upx;
+                  height: 18upx;
+                  border-radius: 40upx;
+                  background: #82d8d9;
+                  box-sizing: border-box;
+                  border: 1px solid #ffffff;
+                }
+              }
+            }
+          }
+        }
+      }
+      .blue-off {
+        position: relative;
+        top: -144upx;
+        left: 160upx;
+        .img {
+          width: 132upx;
+          height: 46upx;
+        }
+        .off-text {
+          font-size: 24upx;
+          color: white;
+          position: relative;
+          top: -54upx;
+          left: 14upx;
+        }
+      }
+      .else-bottom {
+      display: flex;
+      .title{
+      
+          width: 480upx;
+          height: 66upx;
+         margin: 0 auto;
         }
       }
     }

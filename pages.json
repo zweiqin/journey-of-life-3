@@ -461,6 +461,38 @@
 						"usingComponents": {}
 					}
 				}
+				,
+				{
+					"path": "digital-store/marketing-portrait",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				}
+					,
+				{
+					"path": "digital-store/business/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				}
+				,
+				{
+					"path": "digital-store/performance",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				}
+				,
+				{
+					"path": "digital-store/addperformance",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				}
 			]
 		},
 		{
