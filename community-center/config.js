@@ -229,8 +229,8 @@ export const mapDeliveryTypeFilter = (type) => {
 // TODO 检查一下作用
 export const mapBackRoute = (tag) => {
   const routes = {
-    CONSIGNEE_: "/end/delivery-install",
-    REPAIR_: "/end/repair",
+    CONSIGNEE_: "/community-center/delivery-install",
+    REPAIR_: "/community-center/repair",
   };
 
   return routes[tag];
@@ -299,7 +299,14 @@ export async function getOrderSetting(key) {
   let data = uni.getStorageSync("OrderClaimSetting");
   if (!data) {
     data = await getGoodsConfigApi({ accountType: "企业" });
-    uni.setStorageSync("OrderClaimSetting", data);
+    if (data.statusCode === 20000) {
+      uni.setStorageSync("OrderClaimSetting", data.data);
+    } else {
+      uni.showToast({
+        title: "获取商品类型失败",
+        duration: 2000,
+      });
+    }
   }
   return data[key];
 }

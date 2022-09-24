@@ -100,7 +100,7 @@ export default {
 
       wx.setStorageSync("DELIVERY_INFO", JSON.stringify(this.deliveryForm));
       uni.redirectTo({
-        url: "/end/delivery-install",
+        url: "/community-center/delivery-install",
       });
     },
     // 选择省市区
@@ -111,6 +111,7 @@ export default {
     },
     // 点击识别
     handleDistinguish(result) {
+      console.log(result);
       this.deliveryForm.deliveryName = result.person;
       this.deliveryForm.deliveryMobile = result.phonenum;
       this.deliveryForm.deliveryAddress =

@@ -35,7 +35,7 @@ export const cancelOrderApi = (data) => {
 
 // 获取商品配置
 export const getGoodsConfigApi = (data) => {
-  return request("/api/common/getOrderClaimSetting", data);
+  return request("/laoa-huozhu/api/hz/order/third/getOrderClaimSetting", data);
 };
 
 // 创建维修订单
@@ -45,5 +45,24 @@ export const createRepairOrderApi = (data) => {
 
 // 获取服务需求
 export const getDictListApi = () => {
-  return request('/laoa-huozhu/api/hz/order/third/getDictList', null, 'get')
-}
+  return request("/laoa-huozhu/api/hz/order/third/getDictList", null, "get");
+};
+
+/**
+ *
+ * @param {*
+ *  orderNo: 订单号
+ *  userId: 用户id
+ * } data
+ * @returns
+ */
+export const payOrderForEndApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
+};
+
+/**
+ * @description 获取末端订单列表
+ */
+export const getEndOrderListApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/orderPagelist", data);
+};

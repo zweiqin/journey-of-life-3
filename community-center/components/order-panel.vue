@@ -99,7 +99,9 @@ export default {
     toEdit() {
       const _this = this;
       let url =
-        this.data.deliveryType === 4 ? "/end/repair" : "/end/delivery-install";
+        this.data.deliveryType === 4
+          ? "/community-center/repair"
+          : "/community-center/delivery-install";
       uni.navigateTo({
         url: url + "?orderNo=" + _this.data.orderNo,
       });
@@ -126,7 +128,7 @@ export default {
       const _this = this;
       uni.navigateTo({
         url:
-          "/end/pay?price=" +
+          "/community-center/pay?price=" +
           _this.data.actualPrice +
           "&orderNo=" +
           _this.data.orderNo,

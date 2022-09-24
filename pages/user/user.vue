@@ -24,38 +24,41 @@
         <img
           @click="toViewMineInfo"
           class="avatar"
-          src="https://img1.baidu.com/it/u=2321295900,2090443872&fm=253&fmt=auto&app=138&f=JPEG?w=724&h=500"
+          :src="userInfo.avatarUrl"
           alt=""
         />
         <view class="right">
-          <view class="name">徐达那</view>
+          <view class="name">{{ userInfo.nickName }}</view>
           <view class="vip-info">
-            <text class="id">团蜂ID 13800138000</text>
-            <img
+            <text class="id">团蜂ID {{ userInfo.userId }}</text>
+            <!-- <img
               class="hu-icon"
               src="../../static/images/user/huyuan.png"
               alt=""
             />
+            <text style="background: #fff" class="id">{{
+              userInfo.userLevelDesc
+            }}</text> -->
           </view>
         </view>
       </view>
       <view class="prices">
         <view class="item">
           <view class="title"> 会员 </view>
-          <view class="value"> 用户类型 </view>
+          <view class="value"> {{ userInfo.userLevelDesc }} </view>
         </view>
         <view class="item">
-          <view class="title"> 1000<view class="bl-text">元</view> </view>
+          <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 余额 </view>
         </view>
         <view class="item">
           <view class="title">
-            <view>10</view>
+            <view>0</view>
           </view>
           <view class="value"> 代金劵 </view>
         </view>
         <view class="item">
-          <view class="title"> 1099<view class="bl-text">元</view> </view>
+          <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 收入佣金 </view>
         </view>
       </view>
@@ -66,18 +69,19 @@
       <view class="collection-chose" @click="choseCollection">
         <view
           @click="changeTab(0)"
-          :class="{ active : currentTab === 0}"
+          :class="{ active: currentTab === 0 }"
           class="item"
           >商品订单</view
         >
         <view
           @click="changeTab(1)"
-          :class="{ active : currentTab === 1}"
+          :class="{ active: currentTab === 1 }"
           class="item"
           >社区订单</view
         >
       </view>
-      <UserPanel :currentTab="currentTab" :data="one"  v-if="currentTab === 0">
+      
+      <UserPanel :currentTab="currentTab" :data="one" v-if="currentTab === 0">
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
@@ -87,13 +91,13 @@
             <text class="title">足迹</text>
             <text class="value">56</text>
           </view>
-          <view class="item"  @click="bindtapsubscription">
+          <view class="item" @click="bindtapsubscription">
             <text class="title">订阅</text>
             <text class="value">123</text>
           </view>
         </view>
       </UserPanel>
-      <UserPanel  :currentTab="currentTab" :data="two"  v-if="currentTab === 1">
+      <UserPanel :currentTab="currentTab" :data="two" v-if="currentTab === 1">
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
@@ -133,6 +137,9 @@ import {
   marketingTools,
   otherServe,
 } from "./config";
+import { checkWhoami } from "../../utils";
+import { user_INFO } from "../../constant";
+
 export default {
   components: {
     UserPanel,
@@ -148,7 +155,7 @@ export default {
       otherServe,
       collectiontype: 1,
       currentTab: 0,
-      
+      userInfo: {},
     };
   },
 
@@ -170,32 +177,35 @@ export default {
       }
     },
 
-  changeTab(tab) {
-    console.log(this.currentTab);
+    changeTab(tab) {
+      console.log(this.currentTab);
       this.currentTab = tab;
     },
-    bindtapsubscription(){
-            uni.navigateTo({
+    bindtapsubscription() {
+      uni.navigateTo({
         url: "/user/subscription/subscription",
       });
-    }
+    },
+  },
+  mounted() {
+    checkWhoami();
+    this.userInfo = uni.getStorageSync(user_INFO);
   },
 };
 </script>
 
 <style lang="less" scoped>
- .item {
+.item {
   font-size: 24upx;
-  padding:0 24upx ;
+  padding: 0 24upx;
 
-        &.active {
-          font-weight: bold;
-          color: #3d3d3d;
-        }
-      }
+  &.active {
+    font-weight: bold;
+    color: #3d3d3d;
+  }
+}
 .collection-chose {
   display: flex;
-
 }
 .user-page {
   padding: 20upx;

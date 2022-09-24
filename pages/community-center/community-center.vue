@@ -230,6 +230,8 @@ import { mainNav, navs } from "./config";
 import Goods from "../../components/goods";
 import Panel from "../../components/panel/index.vue";
 import { removeCache } from "../../utils";
+import { checkWhoami } from "../../utils";
+
 export default {
   components: {
     Panel,
@@ -247,6 +249,10 @@ export default {
         url: route,
       });
     },
+  },
+
+  mounted() {
+    checkWhoami();
   },
 
   onShow() {

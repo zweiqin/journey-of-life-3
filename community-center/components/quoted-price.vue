@@ -60,7 +60,7 @@ export default {
         "border-bottom": this.isCollapse ? "1upx solid #ccc" : "",
       };
     },
-  }
+  },
 };
 </script>
 

@@ -77,7 +77,7 @@
 <script>
 import Remarks from "./components/remarks.vue";
 import Button from "./components/button.vue";
-import { removeCache } from "../utils";
+import { getUserId, removeCache } from "../utils";
 import DatetimePicker from "../components/datetime-picker/index.vue";
 import Header from "./components/header.vue";
 import {
@@ -183,6 +183,8 @@ export default {
         JSON.stringify({ ...this.repairForm, ...this.consigneeMsg })
       );
 
+      postData.userId = getUserId();
+
       postData.id = uni.getStorageSync("EDIT_REPAIR_ID");
 
       delete postData.floor;
@@ -195,25 +197,33 @@ export default {
         delete item.id;
       }
 
-      createRepairOrderApi(postData).then(() => {
-        uni.showToast({
-          title: postData.id ? "修改成功" : "提交成功",
-        });
-
-        removeCache(cacheArr);
-
-        this.repairForm.remarks = "";
-        this.repairForm.installDate = "";
-        this.repairForm.orderGoodsList = [];
-        this.consigneeMsg = {};
-        this.consigneeStr = "";
-        this.repairForm.dictName = "";
-
-        setTimeout(() => {
-          uni.navigateTo({
-            url: "/end/order",
+      createRepairOrderApi(postData).then((res) => {
+        if (res.statusCode === 20000) {
+          uni.showToast({
+            title: postData.id ? "修改成功" : "提交成功",
           });
-        }, 1000);
+
+          removeCache(cacheArr);
+
+          this.repairForm.remarks = "";
+          this.repairForm.installDate = "";
+          this.repairForm.orderGoodsList = [];
+          this.consigneeMsg = {};
+          this.consigneeStr = "";
+          this.repairForm.dictName = "";
+
+          setTimeout(() => {
+            uni.navigateTo({
+              url: "/community-center/order",
+            });
+          }, 1000);
+        } else {
+          uni.showToast({
+            title: res.statusMsg,
+            duration: 2000,
+            icon: "none",
+          });
+        }
       });
     },
 
@@ -228,95 +238,56 @@ export default {
       }
 
       getOrderDetailApi(orderNo).then((res) => {
-        const info = res.data.data[0];
-        if (!info) {
-          uni.showToast({
-            title: "订单信息获取失败",
-            icon: "none",
-          });
+        console.log("我操了", res);
+        if (res.statusCode === 20000) {
+          const info = res.data[0];
+          if (!info) {
+            uni.showToast({
+              title: "订单信息获取失败",
+              icon: "none",
+            });
 
-          uni.navigateBack();
-          return;
-        }
-        _this.repairForm.remarks = info.remarks;
-        _this.repairForm.id = info.id;
-        _this.repairForm.dictName = info.dictName;
+            uni.navigateBack();
+            return;
+          }
 
-        const consigneeCacheData = {
-          consigneeName: info.consigneeName,
-          consigneeMobile: info.consigneeMobile,
-          consigneeAddress: info.consigneeAddress,
-          consigneeAddressDetail: info.consigneeAddressDetail,
-        };
+          _this.repairForm.remarks = info.remarks;
+          _this.repairForm.id = info.id;
+          _this.repairForm.dictName = info.dictName;
 
-        const goodsList = [];
-
-        for (const item of res.data.data) {
-          const good = {
-            id: new Date().getTime(),
-            goodsUrl: item.goodsUrl ? item.goodsUrl.split(",") : [],
-            categoryName: item.categoryName,
+          const consigneeCacheData = {
+            consigneeName: info.consigneeName,
+            consigneeMobile: info.consigneeMobile,
+            consigneeAddress: info.consigneeAddress,
+            consigneeAddressDetail: info.consigneeAddressDetail,
           };
-          goodsList.push(good);
+
+          const goodsList = [];
+
+          for (const item of res.data) {
+            const good = {
+              id: new Date().getTime(),
+              goodsUrl: item.goodsUrl ? item.goodsUrl.split(",") : [],
+              categoryName: item.categoryName,
+            };
+            goodsList.push(good);
+          }
+
+          uni.setStorageSync("REPAIR_INFO", consigneeCacheData);
+          uni.setStorageSync("REPAIR_GOODS", goodsList);
+          uni.setStorageSync("REPAIR_TIME", info.installDate.split(" ")[0]);
+          uni.setStorageSync("EDIT_REPAIR_ID", info.id);
+          uni.setStorageSync("REPAIR_REMARKS", info.remarks);
+          uni.setStorageSync("REPAIR_SERVE_TYPE", info.dictName);
+
+          _this.setData();
+        } else {
+          uni.showToast({
+            title: res.statusMsg,
+            duration: 2000,
+          });
         }
-
-        uni.setStorageSync("REPAIR_INFO", consigneeCacheData);
-        uni.setStorageSync("REPAIR_GOODS", goodsList);
-        uni.setStorageSync("REPAIR_TIME", info.installDate.split(" ")[0]);
-        uni.setStorageSync("EDIT_REPAIR_ID", info.id);
-        uni.setStorageSync("REPAIR_REMARKS", info.remarks);
-        uni.setStorageSync("REPAIR_SERVE_TYPE", info.dictName);
-
-        _this.setData();
       });
-
-      // request.laoa_huozhu_get(
-      //   "/api/md/order/details",
-      //   ,
-      //   function (res) {
-      //     console.log(res);
-      //     const info = res.data.data[0];
-      //     if (!info) {
-      //       uni.showToast({
-      //         title: "订单信息获取失败",
-      //         icon: "none",
-      //       });
-
-      //       uni.navigateBack();
-      //       return;
-      //     }
-      //     _this.repairForm.remarks = info.remarks;
-      //     _this.repairForm.id = info.id;
-      //     _this.repairForm.dictName = info.dictName;
-
-      //     const consigneeCacheData = {
-      //       consigneeName: info.consigneeName,
-      //       consigneeMobile: info.consigneeMobile,
-      //       consigneeAddress: info.consigneeAddress,
-      //       consigneeAddressDetail: info.consigneeAddressDetail,
-      //     };
-
-      //     const goodsList = [];
-
-      //     for (const item of res.data.data) {
-      //       const good = {
-      //         id: new Date().getTime(),
-      //         goodsUrl: item.goodsUrl ? item.goodsUrl.split(",") : [],
-      //         categoryName: item.categoryName,
-      //       };
-      //       goodsList.push(good);
-      //     }
-
-      //     uni.setStorageSync("REPAIR_INFO", consigneeCacheData);
-      //     uni.setStorageSync("REPAIR_GOODS", goodsList);
-      //     uni.setStorageSync("REPAIR_TIME", info.installDate.split(" ")[0]);
-      //     uni.setStorageSync("EDIT_REPAIR_ID", info.id);
-      //     uni.setStorageSync("REPAIR_REMARKS", info.remarks);
-      //     uni.setStorageSync("REPAIR_SERVE_TYPE", info.dictName);
-
-      //     _this.setData();
-      //   }
-      // );
     },
 
     /**
@@ -347,39 +318,14 @@ export default {
      */
     getServeTypeList() {
       const _this = this;
-      getDictListApi()
-        .then((res) => {
-          _this.serveTypeList = res.data.data;
-          const index = _this.serveTypeList.findIndex((item) => {
-            return item.name === _this.repairForm.dictName;
-          });
-
-          _this.typeSelectIndex = index;
-        })
-        .catch(() => {
-          uni.showToast({
-            title: "服务类型获取失败",
-            icon: "none",
-          });
+      getDictListApi().then((res) => {
+        _this.serveTypeList = res.data;
+        const index = _this.serveTypeList.findIndex((item) => {
+          return item.name === _this.repairForm.dictName;
         });
-      // request.laoa_huozhu_get(
-      //   "/api/md/order/getDictList",
-      //   null,
-      //   (res) => {
-      //     _this.serveTypeList = res.data.data;
-      //     const index = _this.serveTypeList.findIndex((item) => {
-      //       return item.name === _this.repairForm.dictName;
-      //     });
 
-      //     _this.typeSelectIndex = index;
-      //   },
-      //   (err) => {
-      //     uni.showToast({
-      //       title: "服务类型获取失败",
-      //       icon: "none",
-      //     });
-      //   }
-      // );
+        _this.typeSelectIndex = index;
+      });
     },
 
     /**

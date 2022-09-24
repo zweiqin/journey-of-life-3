@@ -1,6 +1,9 @@
 <template>
   <view class="delivey-info">
-    <Header title="收货信息"></Header>
+    <Header
+      title="收货信息"
+      redirect="/pages/community-center/community-center"
+    ></Header>
     <view class="info">
       <view class="title">收货信息</view>
       <!-- {{ consigneeForm }} -->
@@ -84,7 +87,6 @@ export default {
     const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`);
 
     if (consigneeInfo) {
-      console.log("操了", consigneeInfo);
       this.consigneeForm.consigneeName = consigneeInfo.consigneeName;
       this.consigneeForm.consigneeMobile = consigneeInfo.consigneeMobile;
       this.consigneeForm.consigneeAddress = consigneeInfo.consigneeAddress;

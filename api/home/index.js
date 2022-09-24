@@ -35,3 +35,8 @@ export const getTypeDetailList = (data) => {
 export const getGoodsById = (data) => {
   return RuanRequest("/goods/list", data, "get");
 };
+
+
+export const getUserCouponApi = (data) => {
+  return RuanRequest('/coupon/getUserCoupon', data, 'get')
+}

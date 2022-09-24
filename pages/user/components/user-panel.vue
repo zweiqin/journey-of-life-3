@@ -49,9 +49,17 @@ export default {
   },
   methods: {
     bindtap(item) {
-      console.log(1, this.data);
+      if (this.currentTab === 1) {
+        uni.navigateTo({
+          url: item.url,
+        });
+
+        console.log(item.url);
+
+        return
+      }
       uni.navigateTo({
-        url: item.url+"?collectiontype="+this.currentTab
+        url: item.url + "?collectiontype=" + this.currentTab,
       });
     },
   },

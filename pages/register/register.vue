@@ -25,7 +25,15 @@ export default {
 
   methods: {
     async submit(form) {
-      console.log(form);
+      if (form.mobile.length !== 11) {
+        uni.showToast({
+          title: "手机号格式错误",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
       const data = {
         username: form.mobile,
         password: form.password,
@@ -41,8 +49,8 @@ export default {
 
           this.timer = setTimeout(() => {
             uni.navigateTo({
-               url: '/pages/login/login'
-            })
+              url: "/pages/login/login",
+            });
           }, 1000);
         } else {
           uni.showToast({

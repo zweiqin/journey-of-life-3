@@ -107,6 +107,7 @@ import {
   getIndexDataApi,
   getTypeDetailList,
 } from "../../api/home";
+import { checkWhoami } from "../../utils/DWHutils.js";
 
 export default {
   data() {
@@ -143,6 +144,7 @@ export default {
     this.getData();
     this.getIndexData();
     this.getTehui();
+    checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},

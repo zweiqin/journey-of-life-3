@@ -1,6 +1,9 @@
 <template>
   <view class="delivery-install">
-    <Header title="配货安装"></Header>
+    <Header
+      title="配送安装"
+      redirect="/pages/community-center/community-center"
+    ></Header>
     <view class="person-info">
       <view class="icon">
         <view class="icon-item start">起</view>
@@ -94,7 +97,7 @@ import {
   createOrderPabApi,
   getOrderDetailApi,
 } from "../api/community-center";
-import { removeCache } from "../utils";
+import { getUserId, removeCache } from "../utils";
 import DRemarks from "./components/remarks";
 import Button from "./components/button.vue";
 import DatetimePicker from "../components/datetime-picker/index.vue";
@@ -238,8 +241,16 @@ export default {
         orderGoodsList: postDate.orderDetailList,
       };
       getOrderOfferApi(data).then((res) => {
-        this.orderPrice = res;
-        this.getDistancePrice();
+        if (res.statusCode === 20000) {
+          this.orderPrice = res.data;
+          this.getDistancePrice();
+        } else {
+          uni.showToast({
+            title: "获取报价失败",
+            duration: 2000,
+            icon: "none",
+          });
+        }
       });
     },
 
@@ -268,9 +279,9 @@ export default {
         consigneeAddress,
         consigneeAddressDetail,
       }).then((res) => {
-        _this.orderPrice.sumPrice = _this.orderPrice.sumPrice + res;
-        _this.orderPrice.vipPrice = _this.orderPrice.vipPrice + res;
-        _this.orderPrice.exceedDistancePrice = res;
+        _this.orderPrice.sumPrice = _this.orderPrice.sumPrice + res.data;
+        _this.orderPrice.vipPrice = _this.orderPrice.vipPrice + res.data;
+        _this.orderPrice.exceedDistancePrice = res.data;
         _this.isOffer = false;
       });
     },
@@ -341,10 +352,11 @@ export default {
         orderGoodsList: this.orderInfo.orderDetailList,
         remarks: this.totalRemarks,
         installDate: this.orderInfo.serveTime,
+        userId: getUserId(),
       };
 
       createOrderPabApi(data).then((res) => {
-        if (res) {
+        if (res.statusCode === 20000) {
           const title = data.id ? "修改成功" : "提交成功";
           uni.showToast({
             title,
@@ -353,8 +365,11 @@ export default {
           removeCache(deleteCache);
 
           const url = data.id
-            ? "/end/order"
-            : "/end/pay?price=" + _this.orderPrice.vipPrice + "&orderNo=" + res;
+            ? "/community-center/order"
+            : "/community-center/pay?price=" +
+              _this.orderPrice.vipPrice +
+              "&orderNo=" +
+              res.data;
 
           setTimeout(() => {
             uni.navigateTo({
@@ -364,6 +379,7 @@ export default {
         } else {
           uni.showToast({
             title: res.statusMsg,
+            icon: "none",
           });
         }
       });
@@ -383,50 +399,64 @@ export default {
 
       try {
         const res = await getOrderDetailApi(orderNo);
-        const baseInfo = res.data.data[0];
 
-        const delivery = {
-          deliveryName: baseInfo.senderName,
-          deliveryMobile: baseInfo.senderMobile,
-          deliveryAddress: baseInfo.senderAddress,
-          deliveryAddressDetaile: baseInfo.senderAddressDetail,
-        };
-
-        const consignee = {
-          consigneeName: baseInfo.consigneeName,
-          consigneeMobile: baseInfo.consigneeMobile,
-          consigneeAddress: baseInfo.consigneeAddress,
-          consigneeAddressDetail: baseInfo.consigneeAddressDetail,
-          isElevator: baseInfo.isHasElevator,
-          floor: baseInfo.consigneeFloor,
-        };
-
-        const orderGoodsList = [];
-        for (const item of res.data.data) {
-          const good = {
-            goodsHostType: "家具",
-            goodsType: item.goodsType,
-            categoryName: item.categoryName,
-            commodityNumber: item.commodityNumber,
-            quantity: item.quantity,
-            volume: item.volume,
-            weight: item.weight,
-            goodsUrl: item.goodsUrl ? item.goodsUrl.split(",") : [],
+        if (res.statusCode === 20000) {
+          const baseInfo = res.data[0];
+          console.log(baseInfo);
+          const delivery = {
+            deliveryName: baseInfo.senderName,
+            deliveryMobile: baseInfo.senderMobile,
+            deliveryAddress: baseInfo.senderAddress,
+            deliveryAddressDetaile: baseInfo.senderAddressDetail,
           };
 
-          orderGoodsList.push(good);
-        }
+          const consignee = {
+            consigneeName: baseInfo.consigneeName,
+            consigneeMobile: baseInfo.consigneeMobile,
+            consigneeAddress: baseInfo.consigneeAddress,
+            consigneeAddressDetail: baseInfo.consigneeAddressDetail,
+            isElevator: baseInfo.isHasElevator,
+            floor: baseInfo.consigneeFloor,
+          };
 
-        uni.setStorageSync("DELIVERY_INFO", JSON.stringify(delivery));
-        uni.setStorageSync("CONSIGNEE_INFO", consignee);
-        uni.setStorageSync(
-          "INSTALL_TIME",
-          baseInfo.installDate && baseInfo.installDate.split(" ")[0]
-        );
-        uni.setStorageSync("ORDER_GOODS_LIST", JSON.stringify(orderGoodsList));
-        uni.setStorageSync("DELIVERY_INSTALL_EDIT_ID", baseInfo.id);
-        _this.totalRemarks = baseInfo.remarks;
-        _this.setData();
+          const orderGoodsList = [];
+          console.log(1);
+          for (const item of res.data) {
+            const good = {
+              goodsHostType: "家具",
+              goodsType: item.goodsType,
+              categoryName: item.categoryName,
+              commodityNumber: item.commodityNumber,
+              quantity: item.quantity,
+              volume: item.volume,
+              weight: item.weight,
+              goodsUrl: item.goodsUrl ? item.goodsUrl.split(",") : [],
+            };
+
+            orderGoodsList.push(good);
+          }
+
+          console.log(orderGoodsList);
+
+          uni.setStorageSync("DELIVERY_INFO", JSON.stringify(delivery));
+          uni.setStorageSync("CONSIGNEE_INFO", consignee);
+          uni.setStorageSync(
+            "INSTALL_TIME",
+            baseInfo.installDate && baseInfo.installDate.split(" ")[0]
+          );
+          uni.setStorageSync(
+            "ORDER_GOODS_LIST",
+            JSON.stringify(orderGoodsList)
+          );
+          uni.setStorageSync("DELIVERY_INSTALL_EDIT_ID", baseInfo.id);
+          _this.totalRemarks = baseInfo.remarks;
+          _this.setData();
+        } else {
+          uni.showToast({
+            title: res.statusMsg,
+            duration: 2000,
+          });
+        }
       } catch (error) {}
 
       // request.laoa_huozhu_get(

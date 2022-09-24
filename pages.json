@@ -5,9 +5,7 @@
 			"style": {
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "mall4j"
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
@@ -301,14 +299,23 @@
 				{
 					"path": "goods",
 					"usingComponents": {
-						"van-uploader": "/wxcomponents/vant/dist/uploader/index"
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
 					}
 				},
 				{
 					"path": "repair"
 				},
 				{
-					"path": "repair-goods"
+					"path": "repair-goods",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+					}
+				},
+				{
+					"path": "order"
+				},
+				{
+					"path": "pay"
 				}
 			]
 		},
@@ -528,6 +535,15 @@
 					"usingComponents": {
 						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 					}
+				},
+				{
+					"path": "industry/infomation-list"
+				},
+				{
+					"path": "industry/infomation-detail"
+				},
+				{
+					"path": "store/index"
 				}
 			]
 		}

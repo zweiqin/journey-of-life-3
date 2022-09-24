@@ -1,14 +1,9 @@
 <template>
-  <view
-    class="header-container"
-    :style="{
-      background: bgc,
-    }"
-  >
+  <view class="header-container">
     <img
       @click="back"
       class="back"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eo1rayuh8vu1qtnbdj0l.png"
+      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png"
       alt=""
     />
     <view>{{ title }}</view>
@@ -23,11 +18,6 @@ export default {
       required: true,
     },
 
-    bgc: {
-      type: String,
-      default: "#0090ff",
-    },
-
     redirect: String,
   },
   methods: {
@@ -39,6 +29,7 @@ export default {
 
         return;
       }
+
       uni.navigateBack();
     },
   },
@@ -53,12 +44,12 @@ export default {
   padding: 0 20upx;
   box-sizing: border-box;
   text-align: center;
-  color: #fff;
+  color: #3d3d3d;
 
   .back {
-    width: 16upx;
+    width: 46upx;
     float: left;
-    margin-top: 40upx;
+    margin-top: 30upx;
   }
 }
 </style>

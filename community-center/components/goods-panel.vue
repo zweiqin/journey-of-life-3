@@ -34,7 +34,7 @@
             :src="item"
             class="upload-img"
           />
-          <van-uploader
+          <Upload
             class="upload-icon"
             @after-read="afterRead"
             max-count="3"
@@ -68,10 +68,12 @@
 import Field from "./field.vue";
 import { getOrderSetting } from "../config";
 import { goodsPanelInfo } from "../config";
+import Upload from "../../wxcomponents/vant/dist/uploader/index.vue";
 
 export default {
   components: {
     Field,
+    Upload,
   },
   props: {
     index: {
@@ -111,7 +113,7 @@ export default {
       let that = this;
       const token = uni.getStorageSync("authToken");
       uni.uploadFile({
-        url: "https://www.zhult.com/laoa-huozhu/api/common/upload/ordinary",
+        url: "http://192.168.0.68:8781/laoa-huozhu/api/hz/order/third/upload/ordinary",
         filePath: file.path,
         name: "pictureFile",
         header: {

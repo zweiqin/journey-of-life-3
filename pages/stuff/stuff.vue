@@ -61,7 +61,16 @@
 
     <!-- main -->
     <view class="main">
-      <view class="navs2">
+      <view class="more-wrapper">
+        <img
+          @click="handleShowMore"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/x9xze79iv60dy6rt1eb6.png"
+          class="more"
+          alt=""
+        />
+      </view>
+
+      <view class="navs2" ref="navs2Ref">
         <view
           class="item"
           :class="{ active: item.value === currentTab }"
@@ -70,98 +79,123 @@
           @click="switchTab(item.value)"
           >{{ item.label }}</view
         >
+
+        <view class="modal" ref="modalRef">
+          <view
+            class="item"
+            :class="{ active: item.value === currentTab }"
+            v-for="item in navs2"
+            :key="item.label"
+            @click="switchTab(item.value)"
+            >{{ item.label }}</view
+          >
+        </view>
       </view>
 
-      <view class="block">
-        <view class="title">供求信息</view>
-        <viiew class="block-main">
-          <view class="navs3">
-            <view class="item" :class="{ active: currentForOfferTab === 0 }"
-              >采购列表</view
-            >
-            <view class="item" :class="{ active: currentForOfferTab === 1 }"
-              >供应列表</view
-            >
-          </view>
+      <Pane title="供求信息">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
+          style="width: 100%"
+          alt=""
+        />
+      </Pane>
 
-          <view class="table">
-            <table>
-              <tr class="header">
-                <th>类别</th>
-                <th>地区</th>
-                <th>颜色</th>
-                <th>数量</th>
-                <th>联系</th>
-                <th>时间</th>
-              </tr>
-              <tr>
-                <td>五金</td>
-                <td>广东</td>
-                <td>无</td>
-                <td>1000</td>
-                <td>19877665544</td>
-                <td>08:12</td>
-              </tr>
-              <tr>
-                <td>五金</td>
-                <td>广东</td>
-                <td>无</td>
-                <td>1000</td>
-                <td>19877665544</td>
-                <td>08:12</td>
-              </tr>
-              <tr>
-                <td>五金</td>
-                <td>广东</td>
-                <td>无</td>
-                <td>1000</td>
-                <td>19877665544</td>
-                <td>08:12</td>
-              </tr>
-              <tr>
-                <td>五金</td>
-                <td>广东</td>
-                <td>无</td>
-                <td>1000</td>
-                <td>19877665544</td>
-                <td>08:12</td>
-              </tr>
-            </table>
-          </view>
-        </viiew>
-      </view>
+      <Pane title="价格指数">
+        <img
+          style="width: 100%"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/wilav6bgzf3pq8aggn3a.png"
+          alt=""
+        />
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7094z8pue08ld6ndubcx.png"
+          style="width: 100%"
+          alt=""
+        />
+        <Carousel
+          height="74"
+          :list="[
+            'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
+            'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
+            'https://img0.baidu.com/it/u=3042247612,2856662613&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=427',
+          ]"
+        ></Carousel>
+      </Pane>
 
-      <view class="block">
-        <view class="title">价格指数</view>
-      </view>
+      <Pane title="行业信息" route="/stuff/industry/infomation-list">
+        <IndustryInformation></IndustryInformation>
+        <IndustryInformation></IndustryInformation>
+        <IndustryInformation></IndustryInformation>
+        <IndustryInformation></IndustryInformation>
+        <IndustryInformation></IndustryInformation>
+      </Pane>
 
-      <view class="block">
-        <view class="title">行业信息</view>
-      </view>
-
-      <view class="block">
-        <view class="title">店铺推荐</view>
-      </view>
+      <Pane title="店铺推荐">
+        <view class="wrapper">
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+        </view>
+      </Pane>
     </view>
   </view>
 </template>
 
 <script>
 import { navs, navs2 } from "./config";
+import Pane from "./components/pane.vue";
+import Table from "./components/table.vue";
+import IndustryInformation from "./components/industry-information-pane.vue";
+import StuffStore from "./components/stuff-store.vue";
+import Carousel from "../../components/carousel";
+import { checkWhoami } from "../../utils";
+
 export default {
+  components: {
+    Pane,
+    Table,
+    IndustryInformation,
+    StuffStore,
+    Carousel,
+  },
   data() {
     return {
       navs,
       navs2,
       currentTab: 0,
       currentForOfferTab: 0,
+      showMoreVisible: false,
     };
   },
 
   methods: {
     switchTab(index) {
       this.currentTab = index;
+
+      // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
+      // const local = currentNavs.getBoundingClientRect();
     },
+
+    // 点击显示更多
+    handleShowMore() {
+      this.showMoreVisible = !this.showMoreVisible;
+      const navs2Local = this.$refs.navs2Ref.$el.getBoundingClientRect();
+      this.$refs.modalRef.$el.style.top =
+        navs2Local.top + navs2Local.height + 5 + "px";
+
+      if (this.showMoreVisible) {
+        this.$refs.modalRef.$el.style.transform = "scaleY(1)";
+        document.body.style.overflow = "hidden";
+      } else {
+        this.$refs.modalRef.$el.style.transform = "scaleY(0)";
+        document.body.style.overflow = "auto";
+      }
+    },
+  },
+
+  mounted() {
+    this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
+    checkWhoami();
   },
 };
 </script>
@@ -170,9 +204,18 @@ export default {
 @import "../../style/var.less";
 @import "../../style/mixin.less";
 
+.p-container {
+  border-bottom: 1upx solid #ccc;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
 .stuff-container {
   position: relative;
   background-color: #efefef;
+  padding-bottom: 140upx;
 
   // 表格
   .table {
@@ -260,9 +303,11 @@ export default {
   }
 
   .navs {
+    position: relative;
     padding: 32upx 26upx;
     box-sizing: border-box;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     background-color: @cw;
 
@@ -296,16 +341,58 @@ export default {
   }
 
   .main {
+    position: relative;
     width: 100%;
     margin-top: 14upx;
     padding: 20upx 26upx;
     box-sizing: border-box;
     background-color: @cw;
 
+    .more-wrapper {
+      width: 40upx;
+      position: absolute;
+      right: 0;
+      top: 28upx;
+      padding-right: 10px;
+      background-color: #fff;
+      // top: 10px;
+      box-shadow: -6px 0 0 rgba(255, 255, 255, 0.64);
+      z-index: 1000;
+
+      .more {
+        width: 40upx;
+      }
+    }
+
     .navs2 {
+      position: relative;
       display: flex;
       align-items: center;
       overflow-x: scroll;
+
+      .modal {
+        position: fixed;
+        width: 375px;
+        left: 0;
+        background-color: rgb(255, 255, 255);
+        transform: scaleY(0);
+        transform-origin: top center;
+        transition: all 200ms;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 20upx;
+        box-sizing: border-box;
+        z-index: 300;
+
+        .item {
+          border: none;
+          width: 24%;
+
+          .active {
+          }
+        }
+      }
 
       &::-webkit-scrollbar {
         display: none;
@@ -326,31 +413,11 @@ export default {
         }
       }
     }
+  }
 
-    .block {
-      .title {
-        margin: 32upx auto 28upx 0;
-        font-size: @f14;
-        color: @c3d;
-        font-weight: bold;
-        padding-left: 14upx;
-        border-left: 4upx solid #fa5151;
-      }
-
-      .block-main {
-        .navs3 {
-          display: flex;
-          font-size: @f10;
-
-          .item {
-            margin-right: 20px;
-            &.active {
-              color: #3662ec;
-            }
-          }
-        }
-      }
-    }
+  .wrapper {
+    .flex();
+    flex-wrap: wrap;
   }
 }
 </style>

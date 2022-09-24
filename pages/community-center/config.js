@@ -7,13 +7,13 @@ export const mainNav = [
     route: "/community-center/delivery-install",
   },
   {
-    label: "家具维修维修",
+    label: "家具维修",
     icon: require("../../static/images/con-center/fix.png"),
     background: "linear-gradient(139deg, #FA5151 0%, rgba(204,27,27,0) 100%)",
     route: "/community-center/repair",
   },
   {
-    label: "杀菌除螨除螨",
+    label: "杀菌除螨",
     icon: require("../../static/images/con-center/chuman.png"),
     background: "linear-gradient(148deg, #00B578 0%, rgba(9,161,110,0) 100%)",
   },

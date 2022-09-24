@@ -68,9 +68,16 @@ export default {
         //   }
         // );
 
-        const res = await addressIntelligentRecogApi(this.info)
-
-        this.$emit("distinguish", res);
+        const res = await addressIntelligentRecogApi(this.info);
+        if (res.statusCode == 20000) {
+          this.$emit("distinguish", res.data);
+        } else {
+          uni.showToast({
+            title: res.statusMsg,
+            duration: 2000,
+            icon: "none",
+          });
+        }
       } catch (error) {
         uni.showToast({
           title: "识别失败",

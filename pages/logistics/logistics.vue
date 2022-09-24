@@ -143,7 +143,7 @@ import {
   JI_EDIT_ORDER_ID,
   APPONIT_WULIU_QIYE_ID,
 } from "../../constant";
-import { getUserId, removeCache } from "../../utils/DWHutils";
+import { getUserId, removeCache, checkWhoami } from "../../utils/DWHutils";
 import { collectPages } from "../../logistics/config";
 import NoData from "../../components/no-data";
 
@@ -160,6 +160,7 @@ export default {
   },
   created() {
     this.getData();
+    checkWhoami();
   },
   methods: {
     /**

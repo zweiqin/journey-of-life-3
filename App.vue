@@ -2,6 +2,7 @@
 //app.js
 var http = require("./utils/http.js");
 var util = require("./utils/util.js");
+import { getUserId } from "./utils";
 
 export default {
   onLaunach: function () {},
@@ -24,6 +25,8 @@ export default {
     // 	}
     http.getCartCount();
     // }
+
+    getUserId();
   },
   globalData: {
     // 定义全局请求队列

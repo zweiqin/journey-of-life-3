@@ -35,7 +35,7 @@
             :src="img"
             alt=""
           />
-          <van-uploader
+          <Update
             class="img"
             @after-read="afterRead"
             max-count="3"
@@ -48,10 +48,15 @@
 </template>
 
 <script>
+import Update from "../../wxcomponents/vant/dist/uploader/index.vue";
+
 export default {
   props: {
     value: Object,
     index: Number,
+  },
+  components: {
+    Update,
   },
   data() {
     return {
@@ -85,7 +90,7 @@ export default {
       let that = this;
       const token = uni.getStorageSync("authToken");
       uni.uploadFile({
-        url: "https://www.zhult.com/laoa-huozhu/api/common/upload/ordinary",
+        url: "http://192.168.0.68:8781/laoa-huozhu/api/hz/order/third/upload/ordinary",
         filePath: file.path,
         name: "pictureFile",
         header: {

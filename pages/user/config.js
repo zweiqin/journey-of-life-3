@@ -46,27 +46,27 @@ export const two = {
     {
       label: "待付款",
       icon: require("../../static/images/user/daifukuan.png"),
-      url: "/user/orderForm/order-form",
+      url: "/community-center/order",
     },
     {
       label: "待发货",
       icon: require("../../static/images/user/daifahuo.png"),
-      url: "/user/orderForm/order-form",
+      url: "/community-center/order",
     },
     {
       label: "待安装",
       icon: require("../../static/images/lqb/user/daianzhuang.png"),
-      url: "/user/orderForm/order-form",
+      url: "/community-center/order",
     },
     {
       label: "待评价",
       icon: require("../../static/images/user/daipingjia.png"),
-      url: "/user/orderForm/order-form",
+      url: "/community-center/order",
     },
     {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
-      url: "/user/orderForm/order-form",
+      url: "/community-center/order",
     },
   ],
 };
