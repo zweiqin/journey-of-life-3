@@ -23,7 +23,8 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1tb0ngcqozl7d58fjj0z.png",
     bgc: "linear-gradient(139deg, #FA5151 23%, rgba(204,27,27,0.00) 147%)",
     label: "品牌",
-  },
+
+    },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/paidkez017ajxewjrp3z.png",
     bgc: "linear-gradient(137deg, #00B578 0%, #FFFFFF 100%)",

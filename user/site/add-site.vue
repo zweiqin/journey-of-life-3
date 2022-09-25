@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-08 15:44:15
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 11:16:38
+ * @LastEditTime: 2022-09-25 17:49:59
  * @FilePath: \tuan-uniapp\user\site\add-site.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,9 +23,8 @@
           <input
             class="add-site-input-name"
             type="text"
-            @input="nameInput"
+            v-model="name"
             placeholder="请输入收货人姓名"
-            value=""
             name=""
             id=""
         /></view>
@@ -33,7 +32,7 @@
           <view class="text2"> 手机号码</view>
           <input
             class="add-site-input-phone"
-            @input="numberInput"
+            v-model="number"
             type="number"
             placeholder="请输入手机号码"
             name=""
@@ -59,7 +58,7 @@
             ><input
               type="text"
               class="input"
-              @input="detailInput"
+              v-model="detail"
               placeholder="请输入详细地址"
           /></view>
           <view> </view>
@@ -112,6 +111,7 @@
 
 <script>
 import { getRegionListApi, getAddressSaveApi } from "../../api/address";
+import icons from "../../uni_modules/uni-icons/components/uni-icons/icons";
 import { getUserId } from "../../utils";
 export default {
   data() {
@@ -280,6 +280,7 @@ export default {
     async getAddressSave() {
       const res = await getAddressSaveApi(
         {
+          id: this.id,
           name: this.name,
           userId: getUserId(),
           provinceId: this.provinceId,
@@ -303,6 +304,30 @@ export default {
       console.log(res);
       // console.log(res.data);
       // this.resgionList = res.data;
+      if (res.erron == 0 || res.errmsg == "成功") {
+        // console.log(傻逼);
+        uni.showToast({
+          title: "添加成功",
+          duration: 2000,
+        });
+        setTimeout(() => {
+          uni.navigateBack();
+        }, 2000);
+      } else if (this.id) {
+        uni.showToast({
+          title: "修改成功",
+          duration: 2000,
+        });
+        setTimeout(() => {
+          uni.navigateBack();
+        }, 2000);
+      } else {
+        uni.showToast({
+          title: "添加失败",
+          duration: 2000,
+          icon: "none",
+        });
+      }
     },
     handleBack() {
       uni.navigateBack();
@@ -322,7 +347,17 @@ export default {
       }
     },
   },
-  onLoad() {
+  onLoad: function (option) {
+    console.log(option);
+    this.number = option.mobile;
+    this.detail = option.detailedAddress;
+    this.name = option.name;
+    this.isDefault = option.isDefault;
+    this.id = option.id;
+    console.log(this.id);
+    this.getRegionList();
+  },
+  onShow() {
     this.getRegionList();
   },
 };

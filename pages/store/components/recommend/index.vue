@@ -63,16 +63,19 @@
 
     <!-- 其他 -->
     <RecommendPanel style="margin-top: 20px"></RecommendPanel>
-    <RecommendPanel :newType="false" style="margin-top: 20px"></RecommendPanel>
-    <RecommendPanel :newType="false" style="margin-top: 20px"></RecommendPanel>
+    <RecommendPanel1 :newType="false" style="margin-top: 20px"></RecommendPanel1>
   </div>
 </template>
 
 <script>
 import RecommendPanel from "../recommend-panel/index.vue";
+import RecommendPanel1 from "../recommend-panel/index1.vue";
+
 export default {
   components: {
     RecommendPanel,
+    RecommendPanel1,
+
   },
   data() {
     return {};

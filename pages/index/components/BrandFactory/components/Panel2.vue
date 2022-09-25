@@ -4,7 +4,7 @@
       <img
         class="avatar"
         src="
-        https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q1d9h393r2ng8c25tucz.png"
+       https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/rhvdjqnwdsux0t1nndkc.png"
         alt=""
       />
       <view class="info">
@@ -38,17 +38,23 @@
     <view class="goods-layout">
       <img
         class="store"
-        src="https://img2.baidu.com/it/u=1365692656,2723364399&fm=253&fmt=auto&app=138&f=PNG?w=702&h=462"
+        src="
+        	
+https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bj4sgcep6mfrv0ri1ofu.png"
         alt=""
       />
       <view class="right">
         <img
-          src="https://img2.baidu.com/it/u=4044691584,3728595922&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+          src="	
+	
+https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tsyg47rrqryzwbuxdgg3.png"
           alt=""
         />
 
         <img
-          src="https://img0.baidu.com/it/u=1624261074,370820778&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+          src="	
+	
+https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/19lxnh0hqdpmwxz841w2.png"
           alt=""
         />
       </view>
@@ -146,13 +152,15 @@ export default {
       width: 496upx;
       height: 300upx;
       border-radius: 20upx 0 0 20upx;
+      flex-shrink: 0;
+
     }
 
     .right {
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-
+      margin-left: 8upx;
       img {
         height: 146upx;
         border-radius: 0 20upx 20upx 0;
