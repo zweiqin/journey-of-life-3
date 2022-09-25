@@ -229,6 +229,9 @@
 import { mainNav, navs } from "./config";
 import Goods from "../../components/goods";
 import Panel from "../../components/panel/index.vue";
+import { removeCache } from "../../utils";
+import { checkWhoami } from "../../utils";
+
 export default {
   components: {
     Panel,
@@ -246,6 +249,35 @@ export default {
         url: route,
       });
     },
+  },
+
+  mounted() {
+    checkWhoami();
+  },
+
+  onShow() {
+    const deleteCache = [
+      "DELIVERY_INFO",
+      "CONSIGNEE_INFO",
+      "ORDER_GOODS_LIST",
+      "INSTALL_TIME",
+      "DELIVERY_TYPE",
+      "EDIT_DELVERY_INSTALL_ORDERDERNO",
+      "DELIVERY_INSTALL_EDIT_ID",
+    ];
+
+    const repairCache = [
+      "REPAIR_INFO",
+      "REPAIR_TIME",
+      "REPAIR_GOODS",
+      "EDIT_REPAIR_ORDER",
+      "EDIT_REPAIR_ID",
+      "REPAIR_REMARKS",
+      "REPAIR_SERVE_TYPE",
+    ];
+
+    removeCache(deleteCache);
+    removeCache(repairCache);
   },
 };
 </script>

@@ -5,9 +5,7 @@
 			"style": {
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "mall4j"
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
@@ -51,15 +49,15 @@
 				"navigationBarTextStyle": "black"
 			}
 		},
-		{
-			"path": "pages/category/category",
-			"style": {
-				"backgroundTextStyle": "light",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTitleText": "分类商品",
-				"navigationBarTextStyle": "black"
-			}
-		},
+		// {
+		// 	"path": "pages/category/category",
+		// 	"style": {
+		// 		"backgroundTextStyle": "light",
+		// 		"navigationBarBackgroundColor": "#fff",
+		// 		"navigationBarTitleText": "分类商品",
+		// 		"navigationBarTextStyle": "black"
+		// 	}
+		// },
 		{
 			"path": "pages/search-page/search-page",
 			"style": {
@@ -288,6 +286,36 @@
 				},
 				{
 					"path": "site/union"
+				},
+				{
+					"path": "delivery-install"
+				},
+				{
+					"path": "delivery"
+				},
+				{
+					"path": "consignee"
+				},
+				{
+					"path": "goods",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+					}
+				},
+				{
+					"path": "repair"
+				},
+				{
+					"path": "repair-goods",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+					}
+				},
+				{
+					"path": "order"
+				},
+				{
+					"path": "pay"
 				}
 			]
 		},
@@ -539,6 +567,15 @@
 					"usingComponents": {
 						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 					}
+				},
+				{
+					"path": "industry/infomation-list"
+				},
+				{
+					"path": "industry/infomation-detail"
+				},
+				{
+					"path": "store/index"
 				}
 			]
 		}

@@ -9,6 +9,8 @@ export const APPONIT_WULIU_QIYE_ID = "APPONIT_WULIU_QIYE_ID";
 
 // auth
 export const USER_ID = "USER_ID";
+export const USER_TOKEN = "USER_TOKEN";
+export const user_INFO = 'user_INFO'
 
 // home page
 export const STYLE_LIST = "STYLE_LIST";

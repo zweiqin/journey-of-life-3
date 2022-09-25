@@ -4,6 +4,7 @@
       <img
         src="../../static/images/store/chevron-states.png"
         alt=""
+        @click="handleBack"
         class="back"
       />
       <view class="title">个人信息</view>
@@ -21,7 +22,7 @@
     <view class="detail-container">
       <view class="item" @click="showEditDialog">
         <view class="title font-14 f-c-3d">昵称</view>
-        <view class="value font-14 f-c-3d">白大拿</view>
+        <view class="value font-14 f-c-3d">{{ userInfo.nickName }}</view>
         <img
           src="../../static/images/common/chevron-states.png"
           class="icon"
@@ -31,7 +32,7 @@
 
       <view class="item">
         <view class="title font-14 f-c-3d">用户ID</view>
-        <view class="value font-14 f-c-3d">13800138000</view>
+        <view class="value font-14 f-c-3d">{{ userInfo.userId }}</view>
         <img
           src="../../static/images/common/chevron-states.png"
           class="icon"
@@ -51,7 +52,7 @@
 
       <view class="item">
         <view class="title font-14 f-c-3d">手机号</view>
-        <view class="value font-14 f-c-3d">19877665544</view>
+        <view class="value font-14 f-c-3d">{{ userInfo.phone }}</view>
         <img
           src="../../static/images/common/chevron-states.png"
           class="icon"
@@ -61,17 +62,18 @@
 
       <view class="item">
         <view class="title font-14 f-c-3d">微信账号</view>
-        <view class="unbound font-14 f-c-9" @click="handleUnboundWX">解绑</view>
+        <!-- <view class="unbound font-14 f-c-9" @click="handleUnboundWX">解绑</view> -->
+        <view class="unbound font-14 f-c-9">未绑定</view>
       </view>
 
-      <view class="item">
+      <!-- <view class="item">
         <view class="title font-14 f-c-3d">解绑账号</view>
         <img
           src="../../static/images/common/chevron-states.png"
           class="icon"
           alt=""
         />
-      </view>
+      </view> -->
     </view>
 
     <view class="logout">
@@ -83,8 +85,8 @@
     <view class="picker" v-show="showLogout">
       <view class="mask" @click="showLogout = false"></view>
       <view class="items font-14 f-c-14">
-        <view class="item">更换账号</view>
-        <view class="item">确定退出</view>
+        <!-- <view class="item">更换账号</view> -->
+        <view class="item" @click="handleLagout">确定退出</view>
         <view class="item">取消</view>
       </view>
     </view>
@@ -121,16 +123,31 @@
 </template>
 
 <script>
+import { USER_ID, user_INFO, USER_TOKEN } from "../../constant";
+import { layoutApi } from "../../api/auth";
+import { getUserId } from "../../utils";
+
 export default {
   data() {
     return {
       showLogout: false,
       nickname: "",
+      userInfo: {},
     };
+  },
+  mounted() {
+    this.userInfo = uni.getStorageSync(user_INFO);
+    console.log(this.userInfo);
   },
   methods: {
     handleClickLogout() {
       this.showLogout = true;
+    },
+
+    handleBack() {
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
     },
 
     /**
@@ -159,6 +176,30 @@ export default {
      */
     handleConfirmEditNickname() {
       console.log(this.nickname);
+    },
+
+    /**
+     * 点击退出
+     */
+    async handleLagout() {
+      const res = await layoutApi(getUserId());
+      if (res.errno === 0) {
+        uni.removeStorageSync(USER_ID);
+        uni.removeStorageSync(USER_TOKEN);
+        uni.removeStorageSync(user_INFO);
+
+        uni.navigateTo({
+          url: "/pages/login/login",
+        });
+
+        return;
+      }
+
+      uni.showToast({
+        title: "退出失败",
+        duration: 2000,
+        icon: "none",
+      });
     },
   },
 };
@@ -280,7 +321,7 @@ export default {
     margin: 14upx 0;
     border-bottom: 1upx solid #d8d8d8;
 
-    .input-wrapper{
+    .input-wrapper {
       display: flex;
       align-items: center;
     }

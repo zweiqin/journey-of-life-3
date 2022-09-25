@@ -24,38 +24,41 @@
         <img
           @click="toViewMineInfo"
           class="avatar"
-          src="https://img1.baidu.com/it/u=2321295900,2090443872&fm=253&fmt=auto&app=138&f=JPEG?w=724&h=500"
+          :src="userInfo.avatarUrl"
           alt=""
         />
         <view class="right">
-          <view class="name">徐达那</view>
+          <view class="name">{{ userInfo.nickName }}</view>
           <view class="vip-info">
-            <text class="id">团蜂ID 13800138000</text>
-            <img
+            <text class="id">团蜂ID {{ userInfo.userId }}</text>
+            <!-- <img
               class="hu-icon"
               src="../../static/images/user/huyuan.png"
               alt=""
             />
+            <text style="background: #fff" class="id">{{
+              userInfo.userLevelDesc
+            }}</text> -->
           </view>
         </view>
       </view>
       <view class="prices">
         <view class="item">
           <view class="title"> 会员 </view>
-          <view class="value"> 用户类型 </view>
+          <view class="value"> {{ userInfo.userLevelDesc }} </view>
         </view>
         <view class="item">
-          <view class="title"> 1000<view class="bl-text">元</view> </view>
+          <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 余额 </view>
         </view>
         <view class="item">
           <view class="title">
-            <view>10</view>
+            <view>0</view>
           </view>
           <view class="value"> 代金劵 </view>
         </view>
         <view class="item">
-          <view class="title"> 1099<view class="bl-text">元</view> </view>
+          <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 收入佣金 </view>
         </view>
       </view>
@@ -134,6 +137,9 @@ import {
   marketingTools,
   otherServe,
 } from "./config";
+import { checkWhoami } from "../../utils";
+import { user_INFO } from "../../constant";
+
 export default {
   components: {
     UserPanel,
@@ -150,6 +156,7 @@ export default {
       otherServe,
       collectiontype: 1,
       currentTab: 0,
+      userInfo: {},
     };
   },
 
@@ -172,6 +179,7 @@ export default {
     },
 
     changeTab(tab) {
+      console.log(this.currentTab);
       this.currentTab = tab;
       console.log(this.currentTab);
     },
@@ -180,6 +188,10 @@ export default {
         url: "/user/subscription/subscription",
       });
     },
+  },
+  mounted() {
+    checkWhoami();
+    this.userInfo = uni.getStorageSync(user_INFO);
   },
 };
 </script>

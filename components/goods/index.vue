@@ -27,7 +27,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     name: String,
@@ -40,6 +39,9 @@ export default {
 
   methods: {
     handeViewDetail() {
+      if (!this.id) {
+        return;
+      }
       uni.navigateTo({
         url: `/pages/prod/prod?goodsId=${this.id}`,
       });
