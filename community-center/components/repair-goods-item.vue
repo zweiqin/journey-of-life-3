@@ -90,7 +90,7 @@ export default {
       let that = this;
       const token = uni.getStorageSync("authToken");
       uni.uploadFile({
-        url: "http://192.168.0.68:8781/laoa-huozhu/api/hz/order/third/upload/ordinary",
+        url: "https://www.zhult.com/laoa-huozhu/api/hz/order/third/upload/ordinary",
         filePath: file.path,
         name: "pictureFile",
         header: {

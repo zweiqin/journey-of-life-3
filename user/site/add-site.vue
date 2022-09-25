@@ -322,7 +322,7 @@ export default {
       }
     },
   },
-  onLoad() {
+  onLoad(options) {
     this.getRegionList();
   },
 };

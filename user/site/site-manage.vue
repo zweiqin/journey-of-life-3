@@ -45,9 +45,12 @@
                 <view class="area">顺德区</view> -->
               </view>
               <img
+                v-if="!isSelect"
                 class="compile"
                 src="../../static/images/lqb/site/compile.png"
               />
+
+              <view v-else @click="handleChooseAddress(item)">选择该地址</view>
             </view>
             <view class="detail-site">{{ item.detailedAddress }} </view>
             <view v-if="manageok == 2">
@@ -60,7 +63,7 @@
                       src="../../static/images/lqb/site/site-defaule.png"
                       alt=""
                     />
-                    <view class="site-default-text" >默认地址</view>
+                    <view class="site-default-text">默认地址</view>
                   </view>
                 </view>
                 <view>
@@ -76,322 +79,6 @@
         </view>
       </view>
     </view>
-
-    <!-- 假数据 -->
-    <!-- <view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="site-detail">
-        <view class="site-detail-frame">
-          <view class="site-detail-fram-text">
-            <view class="site-detail-top">
-              <img
-                src="../../static/images/lqb/site/site-nopitch.png"
-                class="site-detail-icon"
-              />
-              <view class="site-detail-name">张一公</view>
-              <view class="site-detail-phone">13800138000</view>
-            </view>
-            <view class="site-detail-allsite">
-              <view class="site-detail-pca">
-                <view class="site-detail-pca1">
-                  <view class="province">广东省</view>
-                  <view class="city">佛山市</view>
-                  <view class="area">顺德区</view>
-                </view>
-                <img
-                  class="compile"
-                  src="../../static/images/lqb/site/compile.png"
-                />
-              </view>
-              <view class="detail-site"
-                >龙江镇亚洲国际家具材料交易城团蜂科技</view
-              >
-            </view>
-            <view v-if="manageok == 2">
-              <view class="site-detail-boundary"> </view>
-              <view class="site-detail-chose-default">
-                <view class="site-default">
-                  <view style="display: flex">
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                    />
-                    <view class="site-default-text">默认地址</view>
-                  </view>
-                </view>
-                <view>
-                  <img
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view> -->
     <view class="site-bottom-background-white" @click="addsite">
       <view class="site-bottom">添加新的地址</view>
     </view>
@@ -399,19 +86,26 @@
 </template>
 
 <script>
-import { getAddressListApi, getRegionListApi,getAddressDeleteApi } from "../../api/address";
+import {
+  getAddressListApi,
+  getRegionListApi,
+  getAddressDeleteApi,
+} from "../../api/address";
 import { getUserId } from "../../utils";
+import { SELECT_ADDRESS } from "../../constant";
+
 export default {
   data() {
     return {
       manageok: 1,
       sitedefault: 1,
       siteList: [],
-      type:'',
+      type: "",
+      isSelect: false,
     };
   },
   methods: {
-      async getAddressDelete() {
+    async getAddressDelete() {
       const res = await getAddressDeleteApi({
         userId: getUserId(),
       });
@@ -427,7 +121,7 @@ export default {
     },
     async getRegionList() {
       const res = await getRegionListApi({
-        pid:this.type,
+        pid: this.type,
       });
       console.log(res);
       this.siteList = res.data;
@@ -448,10 +142,15 @@ export default {
         url: "/user/site/add-site",
       });
     },
+
+    handleChooseAddress(item) {
+      uni.setStorageSync(SELECT_ADDRESS, item);
+      uni.navigateBack();
+    },
   },
-  onLoad() {
+  onLoad(options) {
     this.getAddressList();
-    this.getAddressDelete()
+    this.isSelect = !!options.appoint;
   },
 };
 </script>
@@ -568,7 +267,7 @@ export default {
     display: flex;
     background: #ff8f1f;
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     z-index: 999;
     justify-content: space-around;
     align-items: center;

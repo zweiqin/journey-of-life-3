@@ -67,14 +67,14 @@
 
     <!-- main -->
     <view class="main">
-      <view class="more-wrapper">
+      <!-- <view class="more-wrapper">
         <img
           @click="handleShowMore"
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/x9xze79iv60dy6rt1eb6.png"
           class="more"
           alt=""
         />
-      </view>
+      </view> -->
 
       <view class="navs2" ref="navs2Ref">
         <view
@@ -251,7 +251,7 @@ export default {
 
   mounted() {
     this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
-    checkWhoami();
+    // checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
   },

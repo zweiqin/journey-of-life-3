@@ -173,18 +173,20 @@ export default {
 
     async getData() {
       const res = await getMarketingPortraitDataApi();
-      this.info = res;
-      return;
-      console.log(res);
       if (res.errno === 0) {
         this.info = res.data;
-        console.log(this.info);
       } else {
         uni.showToast({
-          title: res.errmsg,
-          duration: 2000,
+          title: "您还不是业务员",
+          duration: 1500,
           icon: "none",
         });
+
+        setTimeout(() => {
+          uni.switchTab({
+            url: "/pages/user/user",
+          });
+        }, 2000);
       }
     },
   },

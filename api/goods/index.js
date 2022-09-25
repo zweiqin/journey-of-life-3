@@ -64,3 +64,8 @@ export const addShopCarApi = (data) => {
 export const getCarShopNumberApi = () => {
   return RuanRequest("/cart/goodscount", { userId: getUserId() }, "get");
 };
+
+// 提交订单
+export const submitOrderApi = (data) => {
+  return RuanRequest("/order/submit", data)
+}

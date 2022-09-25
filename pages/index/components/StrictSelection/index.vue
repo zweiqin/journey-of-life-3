@@ -21,7 +21,7 @@
         </view>
       </template>
 
-      <template v-if="item.value === 1">
+      <template v-if="item.value === 1 && explosion">
         <img
           class="explosion"
           @click="handleToDoodsDetail(explosion[0])"
@@ -30,7 +30,7 @@
         />
       </template>
 
-      <template v-if="item.value === 2">
+      <template v-if="item.value === 2 && discount">
         <view class="explosion">
           <img
             @click="handleToDoodsDetail(discount[9])"
@@ -48,7 +48,7 @@
       </template>
     </Panel>
 
-    <view class="goods-list">
+    <view class="goods-list" v-if="discount">
       <Goods
         v-for="item in discount"
         :key="item.id"

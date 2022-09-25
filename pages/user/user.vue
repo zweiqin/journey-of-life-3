@@ -24,7 +24,12 @@
         <img
           @click="toViewMineInfo"
           class="avatar"
-          :src="userInfo.avatarUrl"
+          :src="
+            userInfo.avatarUrl ===
+            'https://avatar.csdnimg.cn/8/A/0/2_qiguliuxing.jpg'
+              ? 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
+              : userInfo.avatarUrl
+          "
           alt=""
         />
         <view class="right">
@@ -51,12 +56,12 @@
           <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 余额 </view>
         </view>
-        <view class="item">
+        <!-- <view class="item">
           <view class="title">
             <view>0</view>
           </view>
           <view class="value"> 代金劵 </view>
-        </view>
+        </view> -->
         <view class="item">
           <view class="title"> 0<view class="bl-text">元</view> </view>
           <view class="value"> 收入佣金 </view>
@@ -190,7 +195,7 @@ export default {
     },
   },
   mounted() {
-    checkWhoami();
+    // checkWhoami();
     this.userInfo = uni.getStorageSync(user_INFO);
   },
 };

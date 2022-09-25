@@ -173,16 +173,21 @@ export default {
       });
       const res = await getMsgSentryListApi(this.query);
 
-      this.list = res;
-      // if (res.errno === 0) {
-      //   console.log(res);
-      // } else {
-      //   uni.showToast({
-      //     title: res.errmsg,
-      //     duration: 2000,
-      //     icon: "none",
-      //   });
-      // }
+      if (res.errno === 0) {
+        console.log(res);
+      } else {
+        uni.showToast({
+          title: "您还不是业务员，无法访问",
+          duration: 2000,
+          icon: "none",
+        });
+
+        setTimeout(() => {
+          uni.switchTab({
+            url: "/pages/user/user",
+          });
+        }, 2000);
+      }
 
       uni.hideLoading();
     },

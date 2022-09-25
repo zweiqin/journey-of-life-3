@@ -1,6 +1,13 @@
 <template>
-  <view class="recommend-goods-container">
-    <view class="title"></view>
+  <view
+    class="recommend-goods-container"
+    :style="
+       {
+        padding: padding + 'px'
+      }
+    "
+  >
+    <view class="title" v-if="showTitle"></view>
     <ul>
       <li v-for="item in list" :key="item.id">
         <Goods
@@ -24,6 +31,13 @@ export default {
       type: [Number, String],
       default: 14,
     },
+
+    showTitle: {
+      type: Boolean,
+      default: true,
+    },
+
+    padding: [Number, String]
   },
 
   components: {

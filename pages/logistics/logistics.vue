@@ -160,7 +160,7 @@ export default {
   },
   created() {
     this.getData();
-    checkWhoami();
+    // checkWhoami();
   },
   methods: {
     /**
@@ -179,7 +179,9 @@ export default {
         return;
       }
 
-      location.href = route;
+      uni.navigateTo({
+        url: route,
+      });
     },
 
     // 获取寄件列表

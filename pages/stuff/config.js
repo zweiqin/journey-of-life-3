@@ -32,7 +32,7 @@ export const navs = [
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o1ggeb8ts0o8gfrasmes.png",
     bgc: "linear-gradient(137deg, #FFC300 7%, #FFFFFF 143%)",
-    label: "一件采购",
+    label: "一键采购",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/kyj7yetxus88ld8eh5tb.png",

@@ -9,6 +9,15 @@
 			}
 		},
 		{
+			"path": "pages/pre-order/pre-order",
+			"style": {
+				"usingComponents": {
+					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+					"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+				}
+			}
+		},
+		{
 			"path": "pages/stuff/stuff",
 			"style": {}
 		},
@@ -208,16 +217,16 @@
 		"color": "#b8b8b8",
 		"list": [
 			{
-				"pagePath": "pages/index/index",
-				"text": "家具",
-				"iconPath": "/static/images/tabbar/furniture.png",
-				"selectedIconPath": "/static/images/tabbar/furniture-active.png"
-			},
-			{
 				"pagePath": "pages/stuff/stuff",
 				"text": "材料",
 				"iconPath": "/static/images/tabbar/stuff.png",
 				"selectedIconPath": "/static/images/tabbar/stuff-active.png"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"text": "家具",
+				"iconPath": "/static/images/tabbar/furniture.png",
+				"selectedIconPath": "/static/images/tabbar/furniture-active.png"
 			},
 			{
 				"pagePath": "pages/community-center/community-center",
@@ -524,32 +533,28 @@
 				},
 				{
 					"path": "digital-store/choose-words"
-				}
-				,
+				},
 				{
 					"path": "digital-store/marketing-portrait",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
-				}
-					,
+				},
 				{
 					"path": "digital-store/business/index",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
-				}
-				,
+				},
 				{
 					"path": "digital-store/performance",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
-				}
-				,
+				},
 				{
 					"path": "digital-store/addperformance",
 					"style": {

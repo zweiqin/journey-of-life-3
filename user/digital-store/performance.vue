@@ -136,6 +136,11 @@ export default {
     };
   },
   methods: {
+    back() {
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
+    },
     getrepetitionMonth() {
       var arr = this.timeList;
       var map = {},

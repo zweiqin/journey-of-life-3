@@ -418,6 +418,11 @@ export default {
       // ...
 
       this.$refs.popup.close();
+      this.$refs.userUp.close();
+
+      this.$refs.useradd.close();
+
+      this.$refs.windowtext.close();
     },
     /**
      * 点击确认按钮触发
@@ -497,7 +502,9 @@ export default {
       this.queryMsgSentryList();
     },
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
     },
     window: function (e) {
       this.id = e.currentTarget.dataset.list.id;

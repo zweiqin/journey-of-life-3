@@ -16,7 +16,7 @@ export default {
   props: {
     title: String,
     routeText: String,
-    route: String
+    route: String,
   },
 
   methods: {
@@ -32,7 +32,7 @@ export default {
         url: this.route,
       });
     },
-  },
+  }
 };
 </script>
 

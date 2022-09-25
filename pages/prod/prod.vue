@@ -2,6 +2,7 @@
   <view class="prod-wrapper">
     <view class="carousel">
       <Carousel
+        v-if="goodsInfo.info"
         :list="[goodsInfo.info.picUrl]"
         :height="370"
         :top="0"
@@ -30,7 +31,7 @@
           <view class="tag">团蜂家具商城</view>
         </view>
       </view>
-      <view class="right">
+      <!-- <view class="right">
         <view class="fast">
           <img
             class="text"
@@ -53,7 +54,7 @@
         </view>
 
         <view class="on-time">准时开抢</view>
-      </view>
+      </view> -->
     </view>
 
     <view class="main">
@@ -163,6 +164,8 @@
       </view>
     </view>
 
+    <view class="detail-img" v-html="goodsInfo.info.detail"></view>
+
     <!-- 常见问题 -->
     <view class="problems">
       <view class="title"></view>
@@ -269,6 +272,7 @@ import {
 } from "../../api/goods";
 import { getUserId } from "../../utils";
 import RecommendGoods from "../../components/recommend-goods";
+import { PAY_GOODS } from "../../constant";
 
 export default {
   components: {
@@ -298,10 +302,23 @@ export default {
 
     async getGoodsDetail() {
       const res = await getGoodsDetailApi(this.goodsId);
-
       if (res.errno === 0) {
         this.goodsInfo = res.data;
-        console.log(res.data);
+        console.log(res.data.info.detail);
+        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+          "width=",
+          ""
+        );
+        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+          "<img",
+          "<img width='100%' "
+        );
+        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+          "height=",
+          ""
+        );
+
+        this.specificationListInfo.currentGoodsImg = res.data.info.picUrl;
       } else {
         uni.showToast({
           title: res.errmsg,
@@ -450,7 +467,23 @@ export default {
     // 立即购买
     handlePayGoods() {
       if (this.specificationListInfo.number) {
-        console.log(12345);
+        uni.setStorageSync(PAY_GOODS, {
+          ...this.specificationListInfo,
+          status: 0,
+          ...this.goodsInfo,
+        });
+        uni.navigateTo({
+          url: "/pages/pre-order/pre-order",
+        });
+      } else if (
+        this.selectedSpecificationInfoStr &&
+        !this.specificationListInfo.number
+      ) {
+        uni.showToast({
+          title: "请选择购买数量",
+          duration: 2000,
+          icon: "none",
+        });
       } else {
         this.handleChoosespecificationList();
       }
