@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-23 20:35:57
+ * @LastEditTime: 2022-09-25 15:56:31
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,7 +29,9 @@
         >
       </block>
     </view>
+    <view class="nogoods" v-if="listLength == 0">购物车没有商品，快去选择吧！</view>
     <view v-for="(item, id) in cartList" :key="id">
+      
       <view
         class="shop-car-goodsDetail"
         v-for="(item1, id1) in item.cartList"
@@ -37,23 +39,30 @@
         :key="id1"
         @click="window"
       >
+      
         <view v-if="collectstatus == 1">
           <img
             v-if="item1.checked"
             class="shop-car-chose"
             src="../../static/images/lqb/site/site-defaule.png"
             alt=""
-            @click="chosechecked"
+            :data-list="item1"
+            @click="chosechecked(item1)"
           />
           <img
             v-else
             class="shop-car-chose"
             src="../../static/images/lqb/site/site-nodefaule.png"
             alt=""
-            @click="chosechecked"
+            :data-list="item1"
+            @click="chosechecked(item1)"
           />
         </view>
-        <view class="shop-car-chose" v-if="collectstatus == 2" @click=" goodsgetout">
+        <view
+          class="shop-car-chose"
+          v-if="collectstatus == 2"
+          @click="goodsgetout"
+        >
           x
         </view>
         <img class="shop-car-img" :src="item1.picUrl" />
@@ -80,7 +89,7 @@
       </view>
     </view>
     <view class="shop-car-love">
-      <view class="shop-car-love-title">
+      <!-- <view class="shop-car-love-title">
         <img
           src="../../static/images/common/guesslove-left.png"
           alt=""
@@ -92,26 +101,22 @@
           alt=""
           class="guessloveright"
         />
-      </view>
+      </view> -->
       <view class="shop-car-love-goods">
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
+        <RecommendGoods :id="12"></RecommendGoods>
       </view>
     </view>
 
     <view v-if="collectstatus == 1" class="shop-car-paymoney">
       <view class="bottom-left">
-        <radio class="shop-car-choseall" value="" checked="false" color="">
+        <!-- <radio class="shop-car-choseall" value="" checked="false" color="">
         </radio>
-        <view class="shop-car-choseall-text">全选</view>
+        <view class="shop-car-choseall-text">全选</view> -->
       </view>
       <view class="bottom-middle">
         <view class="shop-car-allmoneytext">合计：</view>
-        <view class="shop-car-allmoney">￥ {{ totalMoney }}</view>
+
+        <view class="shop-car-allmoney">￥ {{ this.goodsallmoney }}</view>
       </view>
       <view class="bottom-right">
         <view class="shop-car-givemoney">结算</view>
@@ -120,9 +125,9 @@
 
     <view v-if="collectstatus == 2" class="shop-car-collect">
       <view class="bottom-left">
-        <radio class="shop-car-choseall" value="" checked="false" color="">
+        <!-- <radio class="shop-car-choseall" value="" checked="false" color="">
         </radio>
-        <view class="shop-car-choseall-text">全选</view>
+        <view class="shop-car-choseall-text">全选</view> -->
       </view>
       <view style="display: flex">
         <view class="addcollect">移入收藏</view>
@@ -133,6 +138,8 @@
 </template>
 
 <script>
+import RecommendGoods from "../../components/recommend-goods";
+
 import Goods from "../../components/goods";
 import {
   getCartIndexApi,
@@ -146,6 +153,7 @@ import { getUserId } from "../../utils";
 export default {
   components: {
     Goods,
+    RecommendGoods,
   },
   data() {
     return {
@@ -164,6 +172,7 @@ export default {
       isChecked: "",
       id: "",
       data: [],
+      goodsallmoney: "",
     };
   },
 
@@ -176,16 +185,18 @@ export default {
       this.checked = e.currentTarget.dataset.list.checked;
       this.id = e.currentTarget.dataset.list.id;
     },
-    chosechecked: function (e) {
-      setTimeout(() => {
-        if (this.checked) {
-          this.isChecked = 0;
-        } else {
-          this.isChecked = 1;
-        }
-      }, 10);
+    chosechecked: function (item1) {
+      console.log(item1.productId);
+      this.productId = item1.productId;
+      if (item1.checked) {
+        this.isChecked = 0;
+        console.log("isChecked", this.isChecked);
+      } else {
+        this.isChecked = 1;
+        console.log("isChecked", this.isChecked);
+      }
+
       this.getCartChecked();
-      this.getCartIndex();
     },
     handleBack() {
       uni.navigateBack();
@@ -221,6 +232,8 @@ export default {
       });
       console.log("商品信息", res);
       this.cartList = res.data.brandCartgoods;
+      this.goodsallmoney = res.data.cartTotal.goodsAmount;
+      this.listLength = res.data.brandCartgoods.length
       // console.log(this.cartList);
     },
     // 获取购物车商品数量
@@ -242,6 +255,7 @@ export default {
         productIds: [this.productId],
       });
       console.log(res);
+      this.getCartIndex();
     },
     // 修改购物车商品数量 加
     async getCartUpdateadd() {
@@ -254,6 +268,7 @@ export default {
         id: this.id,
       });
       console.log(res);
+      this.getCartIndex();
     },
     // 减
     async getCartUpdateminus() {
@@ -269,6 +284,8 @@ export default {
           id: this.id,
         });
       }
+      this.getCartIndex();
+
       // console.log(res);
     },
     // 商品信息删除
@@ -428,7 +445,6 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 26upx;
     padding-bottom: 112upx;
   }
   .shop-car-paymoney {
@@ -508,5 +524,11 @@ export default {
   position: fixed;
   bottom: 0;
   z-index: 999;
+}
+.nogoods {
+  height: 100upx;
+  text-align: center;
+  color: #999999;
+  line-height: 100upx;
 }
 </style>

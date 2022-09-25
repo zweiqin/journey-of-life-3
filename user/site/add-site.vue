@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-08 15:44:15
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-23 19:17:32
+ * @LastEditTime: 2022-09-25 11:16:38
  * @FilePath: \tuan-uniapp\user\site\add-site.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -186,7 +186,7 @@ export default {
         this.selectRegionList[0].name =
           e.currentTarget.dataset.regionlistdetail.name;
         this.selectRegionList[0].pid = 0;
-        this.provinceId = e.currentTarget.dataset.regionlistdetail.code;
+        this.provinceId = e.currentTarget.dataset.regionlistdetail.id;
         this.provinceName = e.currentTarget.dataset.regionlistdetail.name;
         this.type = this.type + 1;
         this.getRegionList();
@@ -204,7 +204,7 @@ export default {
           this.selectRegionList[1].pid =
             e.currentTarget.dataset.regionlistdetail.pid;
           this.type = this.type + 1;
-          this.cityId = e.currentTarget.dataset.regionlistdetail.code;
+          this.cityId = e.currentTarget.dataset.regionlistdetail.id;
           this.cityName = e.currentTarget.dataset.regionlistdetail.name;
 
           this.getRegionList();
@@ -225,7 +225,7 @@ export default {
             e.currentTarget.dataset.regionlistdetail.name;
           this.selectRegionList[2].pid =
             e.currentTarget.dataset.regionlistdetail.pid;
-          this.areaId = e.currentTarget.dataset.regionlistdetail.code;
+          this.areaId = e.currentTarget.dataset.regionlistdetail.id;
           this.areaName = e.currentTarget.dataset.regionlistdetail.name;
           this.area = 2;
           this.getRegionList();
@@ -279,26 +279,26 @@ export default {
     },
     async getAddressSave() {
       const res = await getAddressSaveApi(
-        //   {
-        //   name: this.name,
-        //   userId: 222,
-        //   provinceId: this.provinceId,
-        //   cityId: this.cityId,
-        //   areaId: this.areaId,
-        //   address: this.detail,
-        //   mobile: this.number,
-        //   isDefault: this.isDefault,
-        // }
         {
-          name: "222",
-          userId: 222,
-          provinceId: 1,
-          cityId: 1,
-          areaId: 1,
-          address: "123",
-          mobile: "18779571111",
-          isDefault: 1,
+          name: this.name,
+          userId: getUserId(),
+          provinceId: this.provinceId,
+          cityId: this.cityId,
+          areaId: this.areaId,
+          address: this.detail,
+          mobile: this.number,
+          isDefault: this.isDefault,
         }
+        // {
+        //   name: "222",
+        //   userId: 222,
+        //   provinceId: 1,
+        //   cityId: 1,
+        //   areaId: 1,
+        //   address: "123",
+        //   mobile: "18779571111",
+        //   isDefault: 1,
+        // }
       );
       console.log(res);
       // console.log(res.data);

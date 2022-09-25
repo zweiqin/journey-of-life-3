@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 09:24:14
+ * @LastEditTime: 2022-09-25 15:55:17
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -49,6 +49,9 @@
       >
     </view>
     <!-- 商品详情页 -->
+    <view class="nogoods" v-if="dataLength == 0"
+      >没有喜欢的商品，快去选择吧！</view
+    >
     <view
       class="shop-car-goodsDetail"
       v-for="(item, id) in collectList"
@@ -89,7 +92,7 @@
     </view>
     <!-- 猜你喜欢 -->
     <view class="shop-car-love">
-      <view class="shop-car-love-title">
+      <!-- <view class="shop-car-love-title">
         <img
           src="../../static/images/common/guesslove-left.png"
           alt=""
@@ -101,14 +104,9 @@
           alt=""
           class="guessloveright"
         />
-      </view>
+      </view> -->
       <view class="shop-car-love-goods">
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
+        <RecommendGoods :id="12"></RecommendGoods>
       </view>
     </view>
     <!-- 底部导航栏 -->
@@ -136,12 +134,14 @@
 </template>
 
 <script>
+import RecommendGoods from "../../components/recommend-goods";
 import Goods from "../../components/goods";
 import { getCollectListApi, getCollectAddordeleteApi } from "../../api/collect";
 import { getUserId } from "../../utils";
 export default {
   components: {
     Goods,
+    RecommendGoods,
   },
 
   data() {
@@ -152,6 +152,7 @@ export default {
       goodsallmoney: 0,
       badgoodschose: 0,
       collectList: [],
+      dataLength: "",
       valueId: "",
     };
   },
@@ -178,6 +179,7 @@ export default {
       });
       console.log(res);
       this.collectList = res.data.collectList;
+      this.dataLength = res.data.collectList.length;
     },
     handleBack() {
       uni.navigateBack();
@@ -191,7 +193,7 @@ export default {
       }, 10);
       setTimeout(() => {
         // window.location.reload();
-        this.getCollectList()
+        this.getCollectList();
       }, 100);
     },
     collect() {
@@ -224,6 +226,12 @@ export default {
 <style lang="less" scoped>
 .left-chose {
   margin: auto 0;
+}
+.nogoods {
+  height: 100upx;
+  text-align: center;
+  color: #999999;
+  line-height: 100upx;
 }
 .shop-car-container {
   .title {
@@ -333,7 +341,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 26upx;
+    // padding: 26upx;
     padding-bottom: 112upx;
   }
   .shop-car-paymoney {
