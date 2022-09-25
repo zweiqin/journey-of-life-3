@@ -112,7 +112,7 @@
 
 <script>
 import { getRegionListApi, getAddressSaveApi } from "../../api/address";
-import { getUserIdRuan } from "../../utils";
+import { getUserId } from "../../utils";
 export default {
   data() {
     return {

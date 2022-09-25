@@ -143,7 +143,7 @@
 
 <script>
 import loginVue from "../../pages/login/login.vue";
-import { getUserIdRuan } from "../../utils";
+import { getUserId } from "../../utils";
 import {
   getOrderListApi,
   getOrderCancelApi,
@@ -172,28 +172,28 @@ export default {
     },
     async getOrderRefund() {
       const res = await getOrderRefundApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         orderId: this.orderId,
       });
       console.log(res);
     },
     async getOrderDelete() {
       const res = await getOrderDeleteApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         orderId: this.orderId,
       });
       console.log(res);
     },
     async getOrderConfirm() {
       const res = await getOrderConfirmApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         orderId: this.orderId,
       });
       console.log(res);
     },
     async getOrderCancel() {
       const res = await getOrderCancelApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         // showType:this.showType,
         orderId: this.orderId,
       });
@@ -205,7 +205,7 @@ export default {
     },
     async getOrderList() {
       const res = await getOrderListApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         // showType:this.showType,
         showType: this.showType,
         page: this.page,

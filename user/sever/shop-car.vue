@@ -142,7 +142,7 @@ import {
   getCartDeleteApi,
   getCartCheckoutApi,
 } from "../../api/cart";
-import { getUserIdRuan } from "../../utils";
+import { getUserId } from "../../utils";
 export default {
   components: {
     Goods,
@@ -217,7 +217,7 @@ export default {
     async getCartIndex() {
       // console.log("1");
       const res = await getCartIndexApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
       });
       console.log("商品信息", res);
       this.cartList = res.data.brandCartgoods;
@@ -227,7 +227,7 @@ export default {
     async getCartGoodscount() {
       console.log("1");
       const res = await getCartGoodscountApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
       });
       console.log(res);
     },
@@ -235,7 +235,7 @@ export default {
     async getCartChecked() {
       // console.log("1");
       const res = await getCartCheckedApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         isChecked: this.isChecked * 1,
         // productIds: this.productId *1,
         // isChecked: 1,
@@ -247,7 +247,7 @@ export default {
     async getCartUpdateadd() {
       // console.log("1");
       const res = await getCartUpdateApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         goodsId: this.goodsId,
         productId: this.productId,
         number: this.number * 1 + 1,
@@ -262,7 +262,7 @@ export default {
         console.log("删除");
       } else {
         const res = await getCartUpdateApi({
-          userId: getUserIdRuan(),
+          userId: getUserId(),
           goodsId: this.goodsId,
           productId: this.productId,
           number: this.number * 1 - 1,
@@ -275,7 +275,7 @@ export default {
     async getCartDelete() {
       console.log("1");
       const res = await getCartDeleteApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         productIds: [1],
       });
       console.log(res);
@@ -284,7 +284,7 @@ export default {
     async getCartCheckout() {
       console.log("1");
       const res = await getCartCheckoutApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
         cartId: 858,
         // 是否使用代金券
         useVoucher: 1,

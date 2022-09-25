@@ -400,7 +400,7 @@
 
 <script>
 import { getAddressListApi, getRegionListApi,getAddressDeleteApi } from "../../api/address";
-import { getUserIdRuan } from "../../utils";
+import { getUserId } from "../../utils";
 export default {
   data() {
     return {
@@ -413,14 +413,14 @@ export default {
   methods: {
       async getAddressDelete() {
       const res = await getAddressDeleteApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
       });
       console.log(res);
       // this.siteList = res.data;
     },
     async getAddressList() {
       const res = await getAddressListApi({
-        userId: getUserIdRuan(),
+        userId: getUserId(),
       });
       console.log(res);
       this.siteList = res.data;
