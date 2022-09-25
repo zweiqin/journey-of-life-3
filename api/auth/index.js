@@ -1,16 +1,16 @@
-import { request } from "../../utils";
+import { RuanRequest } from "../../utils";
 
 // 校验登录
 export const whoami = () => {
-  return request;
+  return RuanRequest;
 };
 
 // 注册
 export const userRegisterApi = (data) => {
-  return request("/auth/register", data);
+  return RuanRequest("/auth/register", data);
 };
 
 // 登录
 export const userLoginApi = (data) => {
-  return request('/auth/login', data)
+  return RuanRequest('/auth/login', data)
 };

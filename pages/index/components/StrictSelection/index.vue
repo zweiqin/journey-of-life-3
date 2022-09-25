@@ -9,7 +9,12 @@
     >
       <template v-if="item.value === 0">
         <view class="style">
-          <view class="item" v-for="item in channel" :key="item.id">
+          <view
+            class="item"
+            @click="handleViewStyle(item)"
+            v-for="item in styleList"
+            :key="item.id"
+          >
             <img class="img" :src="item.iconUrl" alt="" />
             <text class="text">{{ item.name }}</text>
           </view>
@@ -17,13 +22,28 @@
       </template>
 
       <template v-if="item.value === 1">
-        <img class="explosion" :src="explosion[0].picUrl" alt="" />
+        <img
+          class="explosion"
+          @click="handleToDoodsDetail(explosion[0])"
+          :src="explosion[0].picUrl"
+          alt=""
+        />
       </template>
 
       <template v-if="item.value === 2">
         <view class="explosion">
-          <img class="img" :src="discount[9].picUrl" alt="" />
-          <img class="img" :src="discount[8].picUrl" alt="" />
+          <img
+            @click="handleToDoodsDetail(discount[9])"
+            class="img"
+            :src="discount[9].picUrl"
+            alt=""
+          />
+          <img
+            @click="handleToDoodsDetail(discount[8])"
+            class="img"
+            :src="discount[8].picUrl"
+            alt=""
+          />
         </view>
       </template>
     </Panel>
@@ -32,6 +52,7 @@
       <Goods
         v-for="item in discount"
         :key="item.id"
+        :id="item.id"
         :name="item.name"
         :sname="item.brief"
         :url="item.picUrl"
@@ -44,8 +65,9 @@
 <script>
 import Panel from "../../../../components/panel/index.vue";
 import Goods from "../../../../components/goods";
-import http from "../../../../utils/http";
-import { panels } from "./config";
+import { panels, mapStyleImg } from "./config";
+import { STYLE_LIST } from "../../../../constant";
+
 export default {
   components: {
     Panel,
@@ -69,17 +91,34 @@ export default {
     return { panels, styleList: [] };
   },
 
-  mounted() {
-    http.request({
-      url: "/wx/api/style/getDtsStyleList",
-      method: "GET",
-      callBack: (data) => {
-        this.styleList = data.data;
-      },
-    });
+  watch: {
+    channel(value) {
+      if (value && value.length) {
+        this.styleList = value.filter((item) => {
+          item.iconUrl = item.iconUrl || mapStyleImg[item.name];
+          return item.name.includes("风格");
+        });
+
+        uni.setStorageSync(STYLE_LIST, this.styleList);
+      }
+    },
   },
 
-  methods: {},
+  mounted() {},
+
+  methods: {
+    handleViewStyle(item) {
+      uni.navigateTo({
+        url: "/home/styles?id=" + item.id,
+      });
+    },
+
+    handleToDoodsDetail(item) {
+      uni.navigateTo({
+        url: "/pages/prod/prod?goodsId=" + item.id,
+      });
+    },
+  },
 };
 </script>
 
@@ -125,7 +164,7 @@ export default {
 
       .img {
         width: 232upx;
-        // height: 306upx;
+        height: 306upx;
         border-radius: 20upx;
         object-fit: cover;
       }

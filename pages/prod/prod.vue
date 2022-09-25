@@ -1,7 +1,12 @@
 <template>
   <view class="prod-wrapper">
     <view class="carousel">
-      <Carousel :height="370" :top="0" :radius="0"></Carousel>
+      <Carousel
+        :list="[goodsInfo.info.picUrl]"
+        :height="370"
+        :top="0"
+        :radius="0"
+      ></Carousel>
       <img
         @click="back"
         class="back"
@@ -13,10 +18,10 @@
     <view class="promotion">
       <view class="left">
         <view class="top">
-          ￥<text class="number">2809.87</text>
-          <view class="tag">
+          ￥<text class="number">{{ goodsInfo.info.retailPrice }}</text>
+          <!-- <view class="tag">
             新人价 <view class="price">￥<text class="number">1900</text></view>
-          </view>
+          </view> -->
         </view>
 
         <view class="bottom">
@@ -71,12 +76,12 @@
 
       <view class="info">
         <view class="left">
-          <view class="name">BILLY 毕利 / OXBERG 奥克伯家具餐桌</view>
+          <view class="name">{{ goodsInfo.info.name }}</view>
           <view class="style">家庭餐桌带椅子，白色/灰色</view>
           <view class="ranking"> 第二名 | 家具餐桌热销榜 </view>
         </view>
         <view class="right">
-          <div class="item">
+          <div class="item" @click="handleCollect">
             <img
               class="img"
               src="../../static/images/goods/shoucang.png"
@@ -90,16 +95,16 @@
               src="../../static/images/goods/fenxiang.png"
               alt=""
             />
-            <text class="text">分享</text>
+            <text class="text" @click="handleShareGoods">分享</text>
           </div>
         </view>
       </view>
 
       <view class="selects">
-        <view class="item">
+        <!-- <view class="item">
           <view class="title">已选</view>
           <view class="value">灰色 1件 可选套餐</view>
-        </view>
+        </view> -->
 
         <view class="item">
           <view class="title">服务</view>
@@ -133,6 +138,106 @@
           </view>
         </view>
       </view>
+
+      <!-- 规格 -->
+      <view class="specificationList" @click="handleChoosespecificationList">
+        {{
+          selectedSpecificationInfoStr
+            ? `已选：${selectedSpecificationInfoStr}`
+            : "请规格数量选择"
+        }}
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png"
+          class="right-arrow"
+          alt=""
+        />
+      </view>
+    </view>
+
+    <!-- 商品参数 -->
+    <view class="params" v-if="goodsInfo.attribute.length">
+      <view class="title">商品参数</view>
+      <view class="item" v-for="item in goodsInfo.attribute" :key="item.id">
+        <text class="sub-title">{{ item.attribute }}</text>
+        <text>{{ item.value }}</text>
+      </view>
+    </view>
+
+    <!-- 常见问题 -->
+    <view class="problems">
+      <view class="title"></view>
+      <ul>
+        <li v-for="item in goodsInfo.issue" :key="item.id">
+          <view class="question">{{ item.question }}</view>
+          <view class="answer">{{ item.answer }}</view>
+        </li>
+      </ul>
+    </view>
+
+    <RecommendGoods :id="goodsId"></RecommendGoods>
+
+    <view
+      class="choose-specificationList"
+      :style="{
+        height: specificationListInfoVisible ? '100vh' : 0,
+      }"
+      ref="chooseSpecificationListRef"
+    >
+      <view class="mask" @click="handleCloseModal"></view>
+      <view
+        class="mask-main"
+        ref="maskMainAreaRef"
+        @transitionend="handleTransitionend"
+      >
+        <view class="info">
+          <img
+            :src="
+              specificationListInfo.currentGoodsImg || goodsInfo.info.picUrl
+            "
+            alt=""
+            class="goods-img"
+          />
+          <view class="info-chhose">
+            <view class="item"
+              >￥{{
+                specificationListInfo.currentPrice || goodsInfo.info.retailPrice
+              }}</view
+            >
+            <view class="item">{{
+              selectedSpecificationInfoStr || "请选择规格数量"
+            }}</view>
+          </view>
+        </view>
+
+        <view
+          class="area"
+          v-for="(item, index) in goodsInfo.specificationList"
+          :key="index"
+        >
+          <view class="sub-title">{{ item.name }}</view>
+          <view class="values">
+            <view
+              class="value-item"
+              :class="{
+                active:
+                  specificationListInfo.currentSpecification[item.name] ===
+                  value.value,
+              }"
+              v-for="value in item.valueList"
+              :key="value.id"
+              @click="chooseCurrentSpecification(item.name, value)"
+              >{{ value.value }}</view
+            >
+          </view>
+        </view>
+
+        <view class="choose-number">
+          数量
+          <uni-number-box
+            v-model="specificationListInfo.number"
+          ></uni-number-box>
+        </view>
+      </view>
     </view>
 
     <view class="footer">
@@ -140,12 +245,13 @@
         <img class="kefu" src="../../static/images/goods/kefu.png" alt="" />
         <text class="text">客服</text>
       </view>
-      <view class="item">
+      <view class="item" @click="toShopCar">
         <img class="car" src="../../static/images/goods/gouwuche.png" alt="" />
+        <view class="bage" v-if="carGoodsNumer">{{ carGoodsNumer }}</view>
         <text class="text">购物车</text>
       </view>
       <view class="btns">
-        <button>加入购物车</button>
+        <button @click="handleAddCar">加入购物车</button>
         <button>立即购买</button>
       </view>
     </view>
@@ -154,21 +260,223 @@
 
 <script>
 import Carousel from "../../components/carousel";
+import {
+  getGoodsDetailApi,
+  collectionApi,
+  getShopCarApi,
+  addShopCarApi,
+  getCarShopNumberApi,
+} from "../../api/goods";
+import { getUserId } from "../../utils";
+import RecommendGoods from "../../components/recommend-goods";
+
 export default {
   components: {
     Carousel,
+    RecommendGoods,
+  },
+  data() {
+    return {
+      goodsId: "",
+      goodsInfo: {},
+      specificationListInfo: {
+        number: 0,
+        currentSpecification: {},
+        currentGoodsImg: "",
+        currentPrice: "",
+      },
+      specificationListInfoVisible: false,
+      selectedSpecificationInfoStr: "",
+      shopCarList: [],
+      carGoodsNumer: 0,
+    };
   },
   methods: {
     back() {
       uni.navigateBack();
     },
+
+    async getGoodsDetail() {
+      const res = await getGoodsDetailApi(this.goodsId);
+
+      if (res.errno === 0) {
+        this.goodsInfo = res.data;
+        console.log(res.data);
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+        });
+      }
+    },
+
+    async handleCollect() {
+      const res = await collectionApi({
+        userId: getUserId(),
+        type: 0,
+        valueId: this.goodsId,
+      });
+
+      uni.showToast({
+        title: res.data.type === "add" ? "收藏成功" : "取消收藏成功",
+        duration: 2000,
+      });
+    },
+
+    // 点击选择规格
+    handleChoosespecificationList() {
+      // this.specificationListInfoVisible = true;
+      this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(1)";
+      // this.$refs.maskMainAreaRef.$el.style.transform = 'sca'
+    },
+
+    // 点击阴影关闭
+    handleCloseModal() {
+      this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(0)";
+    },
+
+    // 监听动画完成
+    handleTransitionend() {
+      this.specificationListInfoVisible = !this.specificationListInfoVisible;
+    },
+
+    // 点击选择规格
+    chooseCurrentSpecification(name, item) {
+      this.specificationListInfo.currentSpecification[`${name}`] = item.value;
+      this.selectedSpecificationInfoStr = "";
+
+      for (const key in this.specificationListInfo.currentSpecification) {
+        this.selectedSpecificationInfoStr +=
+          this.specificationListInfo.currentSpecification[key] + ", ";
+      }
+
+      this.selectedSpecificationInfoStr +=
+        this.specificationListInfo.number + "件";
+    },
+
+    // 获取购物车数据
+    async getShopCar() {
+      const res = await getShopCarApi();
+      this.shopCarList = res.data.brandCartgoods;
+    },
+
+    // 点击添加购物车
+    async handleAddCar() {
+      if (!this.selectedSpecificationInfoStr) {
+        this.handleChoosespecificationList();
+        return;
+      }
+
+      if (!this.specificationListInfo.number) {
+        uni.showToast({
+          title: "请选择规格数量",
+          duration: 2000,
+          icon: "none",
+        });
+
+        this.handleChoosespecificationList();
+        return;
+      }
+
+      const productInfo = this.goodsInfo.productList.find((item) => {
+        let tag = true;
+        for (const key in this.specificationListInfo.currentSpecification) {
+          tag = item.specifications.includes(
+            this.specificationListInfo.currentSpecification[key]
+          );
+        }
+
+        if (tag) {
+          return item;
+        }
+      });
+
+      if (!productInfo) {
+        uni.showToast({
+          title: "该商品暂无库存",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      const data = {
+        userId: getUserId(),
+        goodsId: this.goodsId,
+        number: this.specificationListInfo.number,
+        productId: productInfo.id,
+      };
+
+      const res = await addShopCarApi(data);
+      if (res.errno === 0) {
+        uni.showToast({
+          title: "添加成功",
+          duration: 2000,
+        });
+        this.handleCloseModal();
+        this.getCarShopNumber();
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
+    },
+
+    // 获取购物车商品数量
+    async getCarShopNumber() {
+      const res = await getCarShopNumberApi();
+      this.carGoodsNumer = res.data;
+    },
+
+    // 去购物车
+    toShopCar() {
+      uni.navigateTo({
+        url: "/user/sever/shop-car",
+      });
+    },
+
+    // handleShareGoods
+    handleShareGoods() {
+      // uni.share({
+      //   type: 2,
+      //   href: '',
+      //   imageUr: ''
+      // })
+    },
+  },
+
+  watch: {
+    "specificationListInfo.number": {
+      handler(value) {
+        const infoArr = this.selectedSpecificationInfoStr.split(",");
+        const index = infoArr.findIndex((item) => item.includes("件"));
+        if (index !== -1) {
+          infoArr.splice(index, 1);
+        }
+        infoArr.push(`${value}件`);
+        this.selectedSpecificationInfoStr = infoArr.join(",");
+      },
+    },
+  },
+
+  onLoad(options) {
+    this.goodsId = options.goodsId;
+    this.getGoodsDetail();
+    this.getShopCar();
+    this.getCarShopNumber();
   },
 };
 </script>
 
 <style lang="less" scoped>
+@import "../../style/var.less";
+@import "../../style/mixin.less";
+
 .prod-wrapper {
-  padding-bottom: 120upx;
+  padding-bottom: 160upx;
 
   .carousel {
     position: relative;
@@ -432,6 +740,192 @@ export default {
     }
   }
 
+  .params {
+    background: @cw;
+    margin: 20upx 0;
+    box-sizing: border-box;
+    padding: 16upx 22upx;
+
+    .title {
+      font-size: @f14;
+      color: @c3d;
+      margin-bottom: 10px;
+    }
+
+    .item {
+      background-color: #f2f2f2;
+      padding: 20upx 10upx;
+      margin-bottom: 5px;
+      font-size: @f12;
+
+      .sub-title {
+        margin-right: 30px;
+      }
+    }
+  }
+
+  // 常见问题
+  .problems {
+    .title {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 1px;
+      border-top: 1upx solid black;
+      margin: 20px 0 20px 0;
+
+      &::before {
+        position: absolute;
+        content: "常见问题";
+        display: block;
+        background-color: @cw;
+        padding: 0 20px;
+        font-size: @f14;
+        top: -10px;
+        left: 50%;
+        white-space: nowrap;
+        transform: translateX(-50%);
+      }
+    }
+
+    ul {
+      box-sizing: border-box;
+      padding: 16upx 22upx 16upx 40upx;
+
+      .question {
+        position: relative;
+        font-size: @f14;
+        color: @c3d;
+        font-weight: bold;
+        margin-bottom: 3px;
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          left: -9px;
+          transform: translateY(-50%);
+          content: "";
+          display: block;
+          width: 4px;
+          height: 4px;
+          background-color: red;
+          border-radius: 50%;
+        }
+      }
+
+      .answer {
+        font-size: @f12;
+        color: @c3d;
+        line-height: 2;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .specificationList {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: @f14;
+    color: @c3d;
+    height: 90upx;
+    line-height: 90upx;
+    border-bottom: 0.5px solid #ccc;
+
+    .right-arrow {
+      width: 40upx;
+      transform: rotate(180deg);
+    }
+  }
+
+  .choose-specificationList {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    transition: all 200ms;
+
+    .mask {
+      height: 100%;
+      background-color: rgba(153, 153, 153, 0.6);
+    }
+
+    .mask-main {
+      position: absolute;
+      width: 100%;
+      background-color: @cw;
+      bottom: 140upx;
+      padding: 40upx;
+      box-sizing: border-box;
+      border-radius: 20upx 20upx 0 0;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: all 200ms;
+
+      .info {
+        display: flex;
+        padding-bottom: 30upx;
+        border-bottom: 1upx solid #ccc;
+
+        .goods-img {
+          .img(160upx, 10upx);
+          flex-shrink: 0;
+          margin-right: 20upx;
+        }
+
+        .info-choose {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
+
+        .item {
+          display: flex;
+          margin: 20upx 0;
+          font-size: @f14;
+        }
+      }
+
+      .area {
+        font-size: @f14;
+        color: @c3d;
+
+        .sub-title {
+          margin: 20upx 0;
+        }
+
+        .values {
+          display: flex;
+          flex-wrap: wrap;
+
+          .value-item {
+            font-size: @f12;
+            padding: 10upx 20upx;
+            border-radius: 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+
+            &.active {
+              background-color: #fbdcd9;
+              color: #e05c5b;
+              border: 1upx solid #e05c5b;
+            }
+          }
+        }
+      }
+
+      .choose-number {
+        font-size: @f14;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+
   .footer {
     position: fixed;
     bottom: 0;
@@ -441,6 +935,7 @@ export default {
     align-items: center;
     padding: 14upx 22upx;
     background-color: #fff;
+    z-index: 201;
 
     .item {
       display: flex;
@@ -448,9 +943,21 @@ export default {
       justify-content: center;
       align-items: center;
       margin-right: 20upx;
+      position: relative;
 
       .kefu {
         width: 40upx;
+      }
+
+      .bage {
+        position: absolute;
+        top: -10px;
+        right: 5px;
+        font-size: 10px;
+        padding: 2upx 10upx;
+        background-color: #fa5151;
+        border-radius: 8px;
+        color: @cw;
       }
 
       .text {

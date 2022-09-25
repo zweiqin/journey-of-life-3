@@ -37,9 +37,17 @@
 
     <!-- 物流 -->
     <view class="item wuliu">
-      <view class="apponit" @click="changeServe('/logistics/appoint')"
-        >指定/默认仓库</view
-      >
+      <view class="apponit"
+        ><view @click="changeServe('/logistics/appoint?apponit=true')"
+          >指定/默认仓库</view
+        >
+        <text
+          v-show="appointWuliuQiyeID"
+          style="color: #3662ec; font-weight: normal"
+          @click="cancelApponit"
+          >取消指定</text
+        >
+      </view>
 
       <picker
         mode="selector"
@@ -221,12 +229,14 @@ import {
   jiOrderGoodsList,
   JI_EDIT_ORDER_ID,
   VALUE_ADDED_SERVICES,
+  APPONIT_WULIU_QIYE_ID,
 } from "../constant";
 import {
   getWarehouseListApi,
   getOrderQuoteApi,
   createOrderApi,
   editeOrderApi,
+  getDropOffPointApi,
 } from "../api/logistics";
 import { formatTime, removeCache } from "../utils";
 
@@ -253,6 +263,7 @@ export default {
       warehouseInfoString: "",
       priceValue: [],
       editId: null,
+      appointWuliuQiyeID: null,
     };
   },
   methods: {
@@ -327,6 +338,9 @@ export default {
     // 获取仓库列表
     async getWarehouseList() {
       if (!this.orderForm.senderInfo || !this.orderForm.consigneeInfo) {
+        this.warehouseList = ["暂无物流公司"];
+        this.orderForm.warehouseId = null;
+        this.warehouseInfoString = "";
         return;
       }
 
@@ -345,7 +359,7 @@ export default {
       }
 
       this.warehouseList = data.map((item) => {
-        item.showKey = `${item.wuliuName}-${item.kefu}`;
+        item.showKey = `${item.wuliuName}-${item.address}`;
         return item;
       });
 
@@ -361,9 +375,8 @@ export default {
     // 设置选中仓库信息
     chooseWarehouse(warehouseInfo) {
       this.orderForm.estimateDays = warehouseInfo.estimateDays;
-      this.orderForm.warehouseId = warehouseInfo.warehouseId;
-      this.warehouseInfoString =
-        warehouseInfo.showKey + "-" + warehouseInfo.address;
+      this.orderForm.warehouseId = warehouseInfo.warehouseId + "";
+      this.warehouseInfoString = warehouseInfo.showKey;
     },
 
     // 获取物流报价
@@ -500,7 +513,8 @@ export default {
             jiconsigneeInfo,
             jiOrderGoodsList,
             JI_EDIT_ORDER_ID,
-            VALUE_ADDED_SERVICES
+            VALUE_ADDED_SERVICES,
+            APPONIT_WULIU_QIYE_ID,
           ]);
         } else {
           uni.showToast({
@@ -518,6 +532,49 @@ export default {
       } finally {
         uni.hideLoading();
       }
+    },
+
+    /**
+     * @description 获取指定物流仓库列表
+     */
+    async getApponitWuliuList() {
+      console.log(this.appointWuliuQiyeID);
+      const { data } = await getDropOffPointApi({
+        qiyeId: this.appointWuliuQiyeID,
+      });
+
+      if (!data) {
+        uni.removeStorageSync(APPONIT_WULIU_QIYE_ID);
+        uni.showToast({
+          title: "指定失败",
+          duration: 2000,
+          icon: "none",
+        });
+        this.getWarehouseList();
+        return;
+      }
+
+      this.warehouseList = data.map((item) => {
+        item.showKey = `${item.warehouseName}-${
+          item.warehouseAddress + item.warehouseAddressDetail
+        }`;
+        return item;
+      });
+
+      this.chooseWarehouse(this.warehouseList[0]);
+    },
+
+    /**
+     * 取消指定物流
+     */
+    cancelApponit() {
+      this.appointWuliuQiyeID = null;
+      uni.removeStorageSync(APPONIT_WULIU_QIYE_ID);
+      this.getWarehouseList();
+      uni.showToast({
+        title: "取消成功",
+        duration: 2000,
+      });
     },
   },
 
@@ -614,8 +671,17 @@ export default {
      * 获取edit id 判断当前单是否是编辑的状态
      */
     this.editId = uni.getStorageSync(JI_EDIT_ORDER_ID) || null;
-    console.log(this.editId);
-    this.getWarehouseList();
+
+    /**
+     * 获取appoinit物流企业id，判断当前是否指定物流
+     */
+    this.appointWuliuQiyeID = uni.getStorageSync(APPONIT_WULIU_QIYE_ID);
+    if (this.appointWuliuQiyeID) {
+      this.getApponitWuliuList();
+    } else {
+      this.getWarehouseList();
+    }
+
     this.getOrderQuote();
   },
 };
@@ -763,9 +829,11 @@ export default {
   .wuliu {
     line-height: 40upx;
     .apponit {
-      color: #000000;
+      color: #3662ec;
       font-size: 32upx;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
     }
 
     .title {

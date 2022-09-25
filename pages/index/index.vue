@@ -1,8 +1,16 @@
+<!--
+ * @Author: 13008300191 904947348@qq.com
+ * @Date: 2022-09-12 16:17:05
+ * @LastEditors: 13008300191 904947348@qq.com
+ * @LastEditTime: 2022-09-22 17:27:42
+ * @FilePath: \团蜂商城 - 副本\tuan-uniapp\pages\index\index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <!--index.wxml-->
-  <view class="container" @scroll="handleScroll">
+  <view class="container">
     <!-- 头部 -->
-    <view class="header" :class="{ 'header-fixed': scroll }" ref="headerRef">
+    <view class="header" ref="headerRef">
       <img
         v-if="currentNav === 0"
         class="img"
@@ -78,11 +86,14 @@
 
     <!-- sider -->
     <view class="silder">
-      <view class="item">
-        <img @click="shopCar" :src="require('../../static/images/index/shop-car.png')" alt="" />
+      <view class="item" @click="handleToShopCar">
+        <img :src="require('../../static/images/index/shop-car.png')" alt="" />
       </view>
       <view class="item" @click="backToTop">
-        <img :src="require('../../static/images/index/up.png')" alt="" />
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5eyamrkxkolwe4ebzf4p.png"
+          alt=""
+        />
       </view>
     </view>
   </view>
@@ -99,15 +110,35 @@ import BrandFactory from "./components/BrandFactory/index.vue";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
-import { getIndexDataApi } from "../../api/home";
+import {
+  getGoodsTypesApi,
+  getIndexDataApi,
+  getTypeDetailList,
+} from "../../api/home";
 
 export default {
   data() {
     return {
       navs,
       currentNav: 0,
-      scroll: false,
-      strictSelectionBanner: [],
+      strictSelectionBanner: [
+        {
+          id: 1,
+          url: "https://img0.baidu.com/it/u=4086366480,1335391394&fm=253&fmt=auto&app=138&f=JPEG?w=1280&h=500",
+        },
+        {
+          id: 2,
+          url: "https://img1.baidu.com/it/u=802717398,2482973253&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=345",
+        },
+        {
+          id: 3,
+          url: "https://img2.baidu.com/it/u=1592211744,900572881&fm=253&fmt=auto&app=138&f=JPEG?w=1067&h=500",
+        },
+        {
+          id: 4,
+          url: "https://img2.baidu.com/it/u=1799258866,161245570&fm=253&fmt=auto&app=138&f=JPEG?w=1500&h=500",
+        },
+      ],
       channel: [], // 风格
       explosion: [], // 爆款专区
       discount: [], // 优惠
@@ -117,12 +148,9 @@ export default {
   props: {},
   onLoad: function () {},
   mounted() {
-    const _this = this;
-    window.addEventListener("scroll", function (e) {
-      _this.scroll = document.documentElement.scrollTop !== 0;
-    });
-
     this.getData();
+    this.getIndexData();
+    this.getTehui();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
@@ -152,14 +180,54 @@ export default {
      * 获取首页相关信息
      */
     async getData() {
-      const res = await getIndexDataApi();
-      console.log(res.data);
-      this.channel = res.data.channel;
-      this.strictSelectionBanner = res.data.banner;
-      this.explosion = res.data.hotGoodsList;
-      this.discount = res.data.newGoodsList
+      const res = await getGoodsTypesApi({
+        goodsType: 1,
+      });
 
-      console.log(this.discount);
+      if (res.errno === 0) {
+        this.channel = res.data.categoryList;
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+        });
+      }
+
+      // console.log("操了", res);
+      // console.log(res.data);
+      // this.channel = res.data.channel;
+      // this.strictSelectionBanner = res.data.banner;
+      // this.explosion = res.data.hotGoodsList;
+      // this.discount = res.data.newGoodsList;
+    },
+
+    async getIndexData() {
+      const res = await getIndexDataApi();
+      if (res.errno === 0) {
+        // this.strictSelectionBanner = res.data.banner;
+        this.explosion = res.data.hotGoodsList;
+        this.discount = res.data.newGoodsList;
+
+        console.log(this.explosion, this.discount);
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+        });
+      }
+    },
+
+    async getTehui() {
+      const res = await getTypeDetailList({
+        id: 1001002,
+      });
+      console.log(res);
+    },
+
+    handleToShopCar() {
+      uni.navigateTo({
+        url: "/user/sever/shop-car",
+      });
     },
   },
   watch: {

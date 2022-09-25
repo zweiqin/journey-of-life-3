@@ -1,7 +1,14 @@
 <template>
   <view class="logistics-page">
-    <Search></Search>
-    <Carousel :height="152"></Carousel>
+    <Search @focus="handleSearch"></Search>
+    <Carousel
+      :list="[
+        'https://img0.baidu.com/it/u=1781395553,1101009469&fm=253&fmt=auto&app=138&f=JPEG?w=540&h=300',
+        'https://img0.baidu.com/it/u=3581503522,3128729929&fm=253&fmt=auto&app=138&f=JPEG?w=903&h=500',
+        'https://img2.baidu.com/it/u=483246757,1868984082&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=210',
+      ]"
+      :height="152"
+    ></Carousel>
 
     <view class="tools">
       <img
@@ -134,6 +141,7 @@ import {
   jiOrderGoodsList,
   VALUE_ADDED_SERVICES,
   JI_EDIT_ORDER_ID,
+  APPONIT_WULIU_QIYE_ID,
 } from "../../constant";
 import { getUserId, removeCache } from "../../utils/DWHutils";
 import { collectPages } from "../../logistics/config";
@@ -173,10 +181,11 @@ export default {
       location.href = route;
     },
 
+    // 获取寄件列表
     async getData() {
       const res = await expressInquiryApi({
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         userId: getUserId(),
       });
 
@@ -206,6 +215,13 @@ export default {
         url: "/logistics/collect-package",
       });
     },
+
+    // 点击搜索去搜索物流
+    handleSearch() {
+      uni.navigateTo({
+        url: "/logistics/find-logistics",
+      });
+    },
   },
 
   filters: {
@@ -227,6 +243,7 @@ export default {
       jiOrderGoodsList,
       JI_EDIT_ORDER_ID,
       VALUE_ADDED_SERVICES,
+      APPONIT_WULIU_QIYE_ID,
     ]);
   },
 };
