@@ -49,15 +49,15 @@
 				"navigationBarTextStyle": "black"
 			}
 		},
-		{
-			"path": "pages/category/category",
-			"style": {
-				"backgroundTextStyle": "light",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTitleText": "分类商品",
-				"navigationBarTextStyle": "black"
-			}
-		},
+		// {
+		// 	"path": "pages/category/category",
+		// 	"style": {
+		// 		"backgroundTextStyle": "light",
+		// 		"navigationBarBackgroundColor": "#fff",
+		// 		"navigationBarTitleText": "分类商品",
+		// 		"navigationBarTextStyle": "black"
+		// 	}
+		// },
 		{
 			"path": "pages/search-page/search-page",
 			"style": {

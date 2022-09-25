@@ -25,19 +25,25 @@
       >
         <swiper-item>
           <img
-            src="https://img0.baidu.com/it/u=281212525,3135931031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w8v0c8qw8juyl5pnhf2i.jpg"
             alt=""
           />
         </swiper-item>
         <swiper-item>
           <img
-            src="https://img2.baidu.com/it/u=2075742647,1178517082&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=428"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/x20ln5fw3vse5k9utba6.jpg"
             alt=""
           />
         </swiper-item>
         <swiper-item>
           <img
-            src="https://img2.baidu.com/it/u=3592206539,1858276708&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=354"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s1ufx6r67xxz4eyvyrdg.jpg"
+            alt=""
+          />
+        </swiper-item>
+        <swiper-item>
+          <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cwom158kn14893wt9top.jpg"
             alt=""
           />
         </swiper-item>
@@ -98,6 +104,8 @@
           style="width: 100%"
           alt=""
         />
+
+        <!-- <Tables></Tables> -->
       </Pane>
 
       <Pane title="价格指数">
@@ -121,12 +129,19 @@
         ></Carousel>
       </Pane>
 
-      <Pane title="行业信息" route="/stuff/industry/infomation-list">
-        <IndustryInformation></IndustryInformation>
-        <IndustryInformation></IndustryInformation>
-        <IndustryInformation></IndustryInformation>
-        <IndustryInformation></IndustryInformation>
-        <IndustryInformation></IndustryInformation>
+      <Pane
+        title="行业信息"
+        v-if="informationList.length"
+        route="/stuff/industry/infomation-list"
+      >
+        <IndustryInformation
+          v-for="item in informationList"
+          :key="item.id"
+          :title="item.title"
+          :img="item.imgUrl"
+          :id="item.id"
+          :time="item.updateTime"
+        ></IndustryInformation>
       </Pane>
 
       <Pane title="店铺推荐">
@@ -149,6 +164,11 @@ import IndustryInformation from "./components/industry-information-pane.vue";
 import StuffStore from "./components/stuff-store.vue";
 import Carousel from "../../components/carousel";
 import { checkWhoami } from "../../utils";
+import {
+  getIndustryInformationListApi,
+  getSupplyListApi,
+} from "../../api/stuff";
+import Tables from "../../stuff/components/table";
 
 export default {
   components: {
@@ -157,6 +177,7 @@ export default {
     IndustryInformation,
     StuffStore,
     Carousel,
+    Tables,
   },
   data() {
     return {
@@ -165,12 +186,17 @@ export default {
       currentTab: 0,
       currentForOfferTab: 0,
       showMoreVisible: false,
+      informationList: [],
+      supplyList: [],
     };
   },
 
   methods: {
     switchTab(index) {
       this.currentTab = index;
+      if (this.showMoreVisible) {
+        this.handleShowMore();
+      }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
       // const local = currentNavs.getBoundingClientRect();
@@ -191,11 +217,43 @@ export default {
         document.body.style.overflow = "auto";
       }
     },
+
+    // 获取行业信息
+    async getIndustryInformationList() {
+      const res = await getIndustryInformationListApi({
+        page: 1,
+        limit: 5,
+      });
+
+      if (res.errno === 0) {
+        this.informationList = res.data.items;
+      } else {
+        this.informationList = [];
+      }
+
+      console.log(res);
+    },
+
+    // 供应列表
+    async getSupplyList() {
+      const res = await getSupplyListApi();
+      if (res.errno === 0) {
+        this.supplyList = res.data;
+        console.log(this.supplyList);
+      } else {
+        uni.showToast({
+          title: "供应列表失败",
+          duration: 2000,
+        });
+      }
+    },
   },
 
   mounted() {
     this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
     checkWhoami();
+    this.getIndustryInformationList();
+    this.getSupplyList();
   },
 };
 </script>

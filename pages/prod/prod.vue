@@ -252,7 +252,7 @@
       </view>
       <view class="btns">
         <button @click="handleAddCar">加入购物车</button>
-        <button>立即购买</button>
+        <button @click="handlePayGoods">立即购买</button>
       </view>
     </view>
   </view>
@@ -445,6 +445,15 @@ export default {
       //   href: '',
       //   imageUr: ''
       // })
+    },
+
+    // 立即购买
+    handlePayGoods() {
+      if (this.specificationListInfo.number) {
+        console.log(12345);
+      } else {
+        this.handleChoosespecificationList();
+      }
     },
   },
 

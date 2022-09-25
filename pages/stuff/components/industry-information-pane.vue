@@ -1,28 +1,20 @@
 <template>
   <view class="p-container" @click="handleToViewDetail">
     <view class="info">
-      <view class="title"
-        >震惊！！！家居产业再迎新机遇，业再迎新机遇，业再迎新机遇，市场再次
-        迎来大发展...</view
-      >
-      <view class="time">11:23</view>
+      <view class="title">{{ title }}</view>
+      <view class="time" v-if="time">{{ time.split(" ")[1] }}</view>
     </view>
-    <img
-      class="img"
-      src="https://img0.baidu.com/it/u=2858541912,2398659634&fm=253&fmt=auto&app=138&f=JPEG?w=1000&h=500"
-      alt=""
-    />
+    <img class="img" :src="img" alt="" />
   </view>
 </template>
 
 <script>
 export default {
-  props: ["title", "titme", "img", "id"],
-
+  props: ["title", "time", "img", "id"],
   methods: {
     handleToViewDetail() {
       uni.navigateTo({
-        url: "/stuff/industry/infomation-detail",
+        url: "/stuff/industry/infomation-detail?id=" + this.id,
       });
     },
   },
