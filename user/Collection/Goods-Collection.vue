@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-22 17:21:04
+ * @LastEditTime: 2022-09-24 16:16:56
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -49,35 +49,33 @@
       >
     </view>
     <!-- 商品详情页 -->
-    <view class="shop-car-goodsDetail">
+    <view
+      class="shop-car-goodsDetail"
+      v-for="(item, id) in collectList"
+      :key="id"
+      :data-list="item"
+      @click="listDetail"
+    >
       <view class="left-chose" v-if="collectstatus == 2">
         <img
-          v-if="badgoodschose == 1"
           class="shop-car-goods-choes"
-          src="../../static/images/lqb/site/site-defaule.png"
-          alt=""
-          @click="chosebadgoods"
-        />
-        <img
-          v-if="badgoodschose == 0"
-          class="shop-car-goods-choes"
-          src="../../static/images/lqb/site/site-nodefaule.png"
+          src="../../static/images/lqb/collection/delete-badgoods.png"
           alt=""
           @click="chosebadgoods"
         />
       </view>
-      <img class="shop-car-img" src="../../static/images/goods/shop-car.png" />
+      <img class="shop-car-img" :src="item.picUrl" />
       <view class="shop-car-view-right">
         <view class="shop-car-goodsName">
-          BILLY 毕利 / OXBERG 奥克伯家具餐桌
+          {{ item.name }}
         </view>
         <view class="shop-car-view-right-top">
-          <view class="shop-car-goodsSpec">家庭餐桌带椅子</view>
-          <view class="shop-car-goodsColor">灰色</view>
+          <!-- <view class="shop-car-goodsSpec">家庭餐桌带椅子</view>
+          <view class="shop-car-goodsColor">灰色</view> -->
         </view>
         <view style="display: flex; justify-content: space-between">
           <view class="shop-car-money">
-            ￥<text>{{ goodsmoney }}</text>
+            ￥<text>{{ item.retailPrice }}</text>
           </view>
           <view
             ><img
@@ -140,7 +138,7 @@
 <script>
 import Goods from "../../components/goods";
 import { getCollectListApi, getCollectAddordeleteApi } from "../../api/collect";
-import { getUserIdRuan } from "../../utils";
+import { getUserIdRuan, getUserId } from "../../utils";
 export default {
   components: {
     Goods,
@@ -153,15 +151,33 @@ export default {
       goodsmoney: 1900,
       goodsallmoney: 0,
       badgoodschose: 0,
+      collectList: [],
+      valueId: "",
     };
   },
 
   methods: {
-    async getCollectList() {
-      const res = await getCollectListApi({
-        userId: getUserIdRuan(),
+    listDetail: function (e) {
+      console.log(e);
+      this.valueId = e.currentTarget.dataset.list.valueId;
+      console.log(this.valueId);
+    },
+    async getCollectAddordelete() {
+      const res = await getCollectAddordeleteApi({
+        userId: getUserId(),
+        type: 0,
+        valueId: this.valueId,
       });
       console.log(res);
+      this.collectList = res.data.collectList;
+    },
+    async getCollectList() {
+      const res = await getCollectListApi({
+        userId: getUserId(),
+        type: 0,
+      });
+      console.log(res);
+      this.collectList = res.data.collectList;
     },
     handleBack() {
       uni.navigateBack();
@@ -170,12 +186,13 @@ export default {
       this.goodsnumber = this.goodsnumber + 1;
     },
     chosebadgoods() {
-      let badgoodschose = this.badgoodschose;
-      if (badgoodschose == 0) {
-        this.badgoodschose = 1;
-      } else {
-        this.badgoodschose = 0;
-      }
+      setTimeout(() => {
+        this.getCollectAddordelete();
+      }, 10);
+      setTimeout(() => {
+        // window.location.reload();
+        this.getCollectList()
+      }, 100);
     },
     collect() {
       let collectstatus = this.collectstatus;
@@ -198,9 +215,9 @@ export default {
       return this.goodsnumber * this.goodsmoney;
     },
   },
-  onLoad(){
-    this.getCollectList
-  }
+  onLoad() {
+    this.getCollectList();
+  },
 };
 </script>
 // 当心css，没有嵌套

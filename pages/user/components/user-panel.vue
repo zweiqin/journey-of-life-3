@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 16:21:06
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-15 14:36:10
+ * @LastEditTime: 2022-09-24 11:07:35
  * @FilePath: \tuan-uniapp\pages\user\components\user-panel.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -46,12 +46,13 @@ export default {
       default: true,
     },
     currentTab: Number,
+    showType: Number,
   },
   methods: {
     bindtap(item) {
-      console.log(1, this.data);
+      // console.log(1, item.showType);
       uni.navigateTo({
-        url: item.url+"?collectiontype="+this.currentTab
+        url: item.url+"?collectiontype="+item.showType +"&orderType="+this.currentTab 
       });
     },
   },

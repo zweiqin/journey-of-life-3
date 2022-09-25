@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-08 15:44:15
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-12 09:37:27
+ * @LastEditTime: 2022-09-23 19:17:32
  * @FilePath: \tuan-uniapp\user\site\add-site.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,6 +23,8 @@
           <input
             class="add-site-input-name"
             type="text"
+            @input="nameInput"
+            placeholder="请输入收货人姓名"
             value=""
             name=""
             id=""
@@ -31,14 +33,17 @@
           <view class="text2"> 手机号码</view>
           <input
             class="add-site-input-phone"
+            @input="numberInput"
             type="number"
-            value=""
+            placeholder="请输入手机号码"
             name=""
             id=""
         /></view>
         <view class="add-site-location">
           <view class="text2"> 所在地区 </view>
-          <view class="add-site-chose">广东省 佛山市 顺德区 龙江镇</view>
+          <view class="add-site-chose">
+            {{ this.provinceName }} {{ this.cityName }} {{ this.areaName }}
+          </view>
           <view>
             <img
               @click="toucharea"
@@ -51,43 +56,255 @@
         <view class="add-site-location-detail">
           <view class="text2" style="flex-shrink: 0">详细地址</view>
           <view class="add-site-chose-detail"
-            >广东省佛山市顺德区龙江镇亚洲国际家具材料交易城五座三楼团蜂科技有限公司
-          </view>
-          <view>
-            <img
-              @click="touchdetailed"
-              class="add-site-choes-img-add-site-detail"
-              src="../../static/images/lqb/site/add-site-detail.png"
-              alt=""
-            />
-          </view>
+            ><input
+              type="text"
+              class="input"
+              @input="detailInput"
+              placeholder="请输入详细地址"
+          /></view>
+          <view> </view>
         </view>
       </view>
     </view>
 
     <view class="add-site-default">
       <view class="add-site-default-text"> 设为默认地址 </view>
-      <switch class="switch" color="#0256FF" checked="false" />
+      <switch @change="switchChange" class="switch" color="#0256FF" />
     </view>
-    <view class="save-button"> 保存 </view>
+    <view class="save-button" @click="getAddressSave"> 保存 </view>
     <!-- 所在地区弹窗 -->
     <view class="area" v-if="area == 1">
       <view class="area-text">请选择省、市、区/县、镇</view>
+      <view class="ok" style="color: rgb(184, 184, 184)" v-if="type < 3"
+        >确定
+      </view>
+      <view class="ok" v-if="type == 3" @click="toucharea">确定 </view>
+
+      <view class="top">
+        <view
+          class="top-detail"
+          v-for="(item, id) in selectRegionList"
+          :key="id"
+          :data-selectRegion="item"
+          @click="selectDetail"
+        >
+          {{ item.name }}
+        </view>
+      </view>
+      <view class="left">
+        <view
+          class="left-detail"
+          v-for="(item1, id1) in resgionList"
+          :key="id1"
+          :data-regionListdetail="item1"
+          @click="regiondetail"
+        >
+          <scroll-view scroll-y="true" class="item">
+            {{ item1.name }}
+          </scroll-view>
+        </view>
+      </view>
     </view>
-    <!-- 详细地址弹窗 -->
-    <view class="detailed-address" v-if="area == 3"> </view>
+    <!-- 详细地址弹窗
+    <view class="detailed-address" v-if="area == 3"> </view> -->
   </view>
 </template>
 
 <script>
+import { getRegionListApi, getAddressSaveApi } from "../../api/address";
+import { getUserIdRuan } from "../../utils";
 export default {
   data() {
     return {
       area: 0,
+      number: "",
+      detail: "",
+      name: "",
+      selectRegionList: [
+        {
+          id: 0,
+          name: "省份",
+          pid: 0,
+          type: 1,
+        },
+        {
+          id: 0,
+          name: "城市",
+          pid: 0,
+          type: 2,
+        },
+        {
+          id: 0,
+          name: "区县",
+          pid: 0,
+          type: 3,
+        },
+      ],
+      resgionList: [],
+      type: 1,
+      pid: 0,
+      address: "",
+      areaId: "",
+      areaName: "",
+      cityId: "",
+      cityName: "",
+      id: "",
+      isDefault: "",
+      mobile: "",
+      name: "",
+      provinceId: 0,
+      provinceName: "",
     };
   },
+
   methods: {
-       handleBack() {
+    switchChange: function (e) {
+      if (e.detail.value) {
+        this.isDefault = 1;
+      } else {
+        this.isDefault = 0;
+      }
+      console.log(this.isDefault);
+    },
+    detailInput(e) {
+      console.log(e.detail.value);
+      this.detail = e.detail.value;
+    },
+    numberInput(e) {
+      console.log(e.detail.value);
+      this.number = e.detail.value;
+    },
+    nameInput(e) {
+      console.log(e.detail.value);
+      this.name = e.detail.value;
+    },
+
+    regiondetail: function (e) {
+      console.log(e.currentTarget.dataset.regionlistdetail);
+      this.pid = e.currentTarget.dataset.regionlistdetail.id;
+      if (this.type == 1) {
+        this.selectRegionList[0].name =
+          e.currentTarget.dataset.regionlistdetail.name;
+        this.selectRegionList[0].pid = 0;
+        this.provinceId = e.currentTarget.dataset.regionlistdetail.code;
+        this.provinceName = e.currentTarget.dataset.regionlistdetail.name;
+        this.type = this.type + 1;
+        this.getRegionList();
+      } else if (this.type == 2) {
+        if (this.selectRegionList[0].name == "省份") {
+          this.selectRegionList[0].name =
+            e.currentTarget.dataset.regionlistdetail.name;
+          this.selectRegionList[0].pid =
+            e.currentTarget.dataset.regionlistdetail.pid;
+          this.type = 2;
+          this.getRegionList();
+        } else {
+          this.selectRegionList[1].name =
+            e.currentTarget.dataset.regionlistdetail.name;
+          this.selectRegionList[1].pid =
+            e.currentTarget.dataset.regionlistdetail.pid;
+          this.type = this.type + 1;
+          this.cityId = e.currentTarget.dataset.regionlistdetail.code;
+          this.cityName = e.currentTarget.dataset.regionlistdetail.name;
+
+          this.getRegionList();
+        }
+      } else if (this.type == 3) {
+        if (
+          this.selectRegionList[0].name == "省份" ||
+          this.selectRegionList[1].name == "城市"
+        ) {
+          this.selectRegionList[0].name =
+            e.currentTarget.dataset.regionlistdetail.name;
+          this.selectRegionList[0].pid =
+            e.currentTarget.dataset.regionlistdetail.pid;
+          this.type = 2;
+          this.getRegionList();
+        } else {
+          this.selectRegionList[2].name =
+            e.currentTarget.dataset.regionlistdetail.name;
+          this.selectRegionList[2].pid =
+            e.currentTarget.dataset.regionlistdetail.pid;
+          this.areaId = e.currentTarget.dataset.regionlistdetail.code;
+          this.areaName = e.currentTarget.dataset.regionlistdetail.name;
+          this.area = 2;
+          this.getRegionList();
+        }
+      }
+    },
+    selectDetail: function (e) {
+      console.log(e.currentTarget.dataset.selectregion);
+      let thistype = e.currentTarget.dataset.selectregion.type;
+
+      if (this.type > thistype && thistype == 1) {
+        this.selectRegionList = [
+          {
+            id: 0,
+            name: "省份",
+            pid: 0,
+            type: 1,
+          },
+          {
+            id: 0,
+            name: "城市",
+            pid: 0,
+            type: 2,
+          },
+          {
+            id: 0,
+            name: "区县",
+            pid: 0,
+            type: 3,
+          },
+        ];
+      } else if (this.type > thistype && thistype == 2) {
+        this.selectRegionList[1].name = "城市";
+        this.selectRegionList[1].pid = 0;
+        this.selectRegionList[1].id = 0;
+        this.selectRegionList[2].name = "区县";
+        this.selectRegionList[2].pid = 0;
+        this.selectRegionList[2].id = 0;
+      }
+      this.type = e.currentTarget.dataset.selectregion.type;
+      this.pid = e.currentTarget.dataset.selectregion.pid;
+      this.getRegionList();
+    },
+    async getRegionList() {
+      const res = await getRegionListApi({
+        pid: this.pid,
+      });
+      // console.log(res);
+      // console.log(res.data);
+      this.resgionList = res.data;
+    },
+    async getAddressSave() {
+      const res = await getAddressSaveApi(
+        //   {
+        //   name: this.name,
+        //   userId: 222,
+        //   provinceId: this.provinceId,
+        //   cityId: this.cityId,
+        //   areaId: this.areaId,
+        //   address: this.detail,
+        //   mobile: this.number,
+        //   isDefault: this.isDefault,
+        // }
+        {
+          name: "222",
+          userId: 222,
+          provinceId: 1,
+          cityId: 1,
+          areaId: 1,
+          address: "123",
+          mobile: "18779571111",
+          isDefault: 1,
+        }
+      );
+      console.log(res);
+      // console.log(res.data);
+      // this.resgionList = res.data;
+    },
+    handleBack() {
       uni.navigateBack();
     },
     toucharea() {
@@ -104,6 +321,9 @@ export default {
         this.area = 3;
       }
     },
+  },
+  onLoad() {
+    this.getRegionList();
   },
 };
 </script>
@@ -122,6 +342,7 @@ export default {
     margin-top: 70upx;
   }
   .area {
+    overflow: scroll;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -137,6 +358,25 @@ export default {
       font-weight: 500;
       text-align: center;
       margin-top: 28upx;
+    }
+    .ok {
+      position: absolute;
+      right: 50upx;
+    }
+    .top {
+      display: flex;
+      margin-top: 20upx;
+      .top-detail {
+        padding-left: 30upx;
+        margin: 0 20upx;
+      }
+    }
+    .left {
+      margin-top: 20upx;
+      .left-detail {
+        padding-left: 10upx;
+        margin: 10upx 20upx;
+      }
     }
   }
   .detailed-address {
@@ -172,7 +412,7 @@ export default {
     .add-site-input-text {
       margin-left: 56upx;
       margin-top: 54upx;
-      font-size: 24upx;
+      font-size: 27upx;
       .add-site-name {
         display: flex;
         margin-bottom: 54upx;
@@ -197,14 +437,13 @@ export default {
     //   margin-left: 34upx;
     //   font-size: 24upx;
     //   font-weight: 350;
-      .add-site-input-name::placeholder {
-        margin-bottom: 40upx;
-        font-size: 20upx;
-      }
-      .add-site-input-phone {
-        margin-bottom: 40upx;
-
-      }
+    .add-site-input-name::placeholder {
+      margin-bottom: 40upx;
+      font-size: 20upx;
+    }
+    .add-site-input-phone {
+      margin-bottom: 40upx;
+    }
     // }
   }
   .add-site-choes-img-add-site {
@@ -230,6 +469,9 @@ export default {
   }
   .add-site-chose-detail {
     flex: 1;
+    .input {
+      width: 600upx;
+    }
   }
   .switch {
     transform: scale(0.5);

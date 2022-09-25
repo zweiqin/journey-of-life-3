@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-07 10:29:03
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-08 16:47:34
+ * @LastEditTime: 2022-09-23 16:58:13
  * @FilePath: \tuan-uniapp\user\site\site-manage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,7 +25,7 @@
       </view>
     </view>
 
-    <view class="site-detail">
+    <view class="site-detail" v-for="(item, id) in siteList" :key="id">
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
           <view class="site-detail-top">
@@ -33,25 +33,23 @@
               src="../../static/images/lqb/site/site-pitch.png"
               class="site-detail-icon"
             />
-            <view class="site-detail-name">张公公</view>
-            <view class="site-detail-phone">13800138000</view>
+            <view class="site-detail-name">{{ item.name }}</view>
+            <view class="site-detail-phone">{{ item.mobile }}</view>
             <view class="default-site">默认</view>
           </view>
           <view class="site-detail-allsite">
             <view class="site-detail-pca">
               <view class="site-detail-pca1">
-                <view class="province">广东省</view>
+                <!-- <view class="province">广东省</view>
                 <view class="city">佛山市</view>
-                <view class="area">顺德区</view>
+                <view class="area">顺德区</view> -->
               </view>
               <img
                 class="compile"
                 src="../../static/images/lqb/site/compile.png"
               />
             </view>
-            <view class="detail-site"
-              >龙江镇亚洲国际家具材料交易城团蜂科技
-            </view>
+            <view class="detail-site">{{ item.detailedAddress }} </view>
             <view v-if="manageok == 2">
               <view class="site-detail-boundary"> </view>
               <view class="site-detail-chose-default">
@@ -80,7 +78,7 @@
     </view>
 
     <!-- 假数据 -->
-    <view>
+    <!-- <view>
       <view class="site-detail">
         <view class="site-detail-frame">
           <view class="site-detail-fram-text">
@@ -393,7 +391,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
     <view class="site-bottom-background-white" @click="addsite">
       <view class="site-bottom">添加新的地址</view>
     </view>
@@ -401,14 +399,39 @@
 </template>
 
 <script>
+import { getAddressListApi, getRegionListApi,getAddressDeleteApi } from "../../api/address";
+import { getUserIdRuan } from "../../utils";
 export default {
   data() {
     return {
       manageok: 1,
       sitedefault: 1,
+      siteList: [],
+      type:'',
     };
   },
   methods: {
+      async getAddressDelete() {
+      const res = await getAddressDeleteApi({
+        userId: getUserIdRuan(),
+      });
+      console.log(res);
+      // this.siteList = res.data;
+    },
+    async getAddressList() {
+      const res = await getAddressListApi({
+        userId: getUserIdRuan(),
+      });
+      console.log(res);
+      this.siteList = res.data;
+    },
+    async getRegionList() {
+      const res = await getRegionListApi({
+        pid:this.type,
+      });
+      console.log(res);
+      this.siteList = res.data;
+    },
     handleBack() {
       uni.navigateBack();
     },
@@ -420,11 +443,15 @@ export default {
         this.manageok = 1;
       }
     },
-    addsite(){
+    addsite() {
       uni.navigateTo({
-         url: '/user/site/add-site'
+        url: "/user/site/add-site",
       });
-    }
+    },
+  },
+  onLoad() {
+    this.getAddressList();
+    this.getAddressDelete()
   },
 };
 </script>
