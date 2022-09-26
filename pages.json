@@ -122,6 +122,15 @@
 			}
 		},
 		{
+			"path": "pages/stuff/brand/index",
+			"style": {
+				"backgroundTextStyle": "light",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTitleText": "提交订单",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/binding-phone/binding-phone",
 			"style": {
 				"backgroundTextStyle": "light",

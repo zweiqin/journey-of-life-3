@@ -8,21 +8,20 @@
       <view class="goods-item">
         <img
           class="goods-img"
-          src="https://img0.baidu.com/it/u=1164982935,3514796448&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+          src="
+    https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/dwev3772kqubwl0pmh9r.jpg"
           alt=""
         />
         <view class="info">
           <view>
-            <view class="name">
-              雅兰头层真皮床架1.8m床意式 轻奢现代1.5米双人主卧床实木...
-            </view>
+            <view class="name"> bsvva1002393 </view>
 
-            <view class="tag">本店皮艺床热销第一名</view>
+            <view class="tag">本店卧室家具热销第一名</view>
           </view>
 
           <view class="footer">
-            <view class="left">￥<text class="price">400</text> </view>
-            <view class="right"> 3215人付款 </view>
+            <view class="left">￥<text class="price">6201</text> </view>
+            <view class="right"> 392人付款 </view>
           </view>
         </view>
       </view>
@@ -31,18 +30,63 @@
         <img
           class="goods-img"
           src="
-          https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/u89pd9mupqyiq76knk9j.jpg"          alt=""
+          
+       https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tx6iirauk5su09edztrn.jpg"
+          alt=""
         />
         <view class="info">
           <view>
-            <view class="name"> BM20210903KQMUM52 </view>
+            <view class="name"> BSJT067B </view>
 
-            <view class="tag">本店沙发热销第一名</view>
+            <view class="tag">本店床头柜热销第一名</view>
           </view>
 
           <view class="footer">
-            <view class="left">￥<text class="price">3201</text> </view>
-            <view class="right"> 1326人付款 </view>
+            <view class="left">￥<text class="price">1200</text> </view>
+            <view class="right"> 921人付款 </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="goods-item">
+        <img
+          class="goods-img"
+          src="
+        	
+https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/swtbiwmuvfzqos8sq4pa.jpg"
+          alt=""
+        />
+        <view class="info">
+          <view>
+            <view class="name"> BSGX822 </view>
+
+            <view class="tag">本店皮艺椅子热销第一名</view>
+          </view>
+
+          <view class="footer">
+            <view class="left">￥<text class="price">2181</text> </view>
+            <view class="right"> 1789人付款 </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="goods-item">
+        <img
+          class="goods-img"
+          src="
+    https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mdvb77erlq18gl255ol6.jpg"
+          alt=""
+        />
+        <view class="info">
+          <view>
+            <view class="name"> BSDY09 </view>
+
+            <view class="tag">本店懒人沙发热销第一名</view>
+          </view>
+
+          <view class="footer">
+            <view class="left">￥<text class="price">2976</text> </view>
+            <view class="right"> 2741·人付款 </view>
           </view>
         </view>
       </view>
