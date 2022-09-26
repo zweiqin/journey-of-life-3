@@ -106,7 +106,7 @@
         />
       </view> -->
       <view class="shop-car-love-goods">
-        <RecommendGoods :id="12"></RecommendGoods>
+        <!-- <RecommendGoods :id="12"></RecommendGoods> -->
       </view>
     </view>
     <!-- 底部导航栏 -->

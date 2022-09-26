@@ -13,7 +13,8 @@
       <view class="coupon-title">
         <view class="title-img">
           <img
-            src="../../static/images/lqb/userUp/whiteback.png"
+            @click="back"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1676ilbo4t26udpy067z.png"
             alt=""
             class="img"
           />
@@ -107,7 +108,7 @@
                 </view>
               </view>
             </view>
-            <view class="middle-thire">
+            <!-- <view class="middle-thire">
               <view class="background">
                 <view class="left-view">享半价</view>
                 <view class="right-view">
@@ -118,8 +119,8 @@
                   </view>
                 </view>
               </view>
-            </view>
-            <view class="blue-off">
+            </view> -->
+            <!-- <view class="blue-off">
               <img
                 src="../../static/images/lqb/coupon/bigbule.png"
                 alt=""
@@ -139,6 +140,7 @@
           </view>
                     <view>
               <Goods></Goods>
+          </view> -->
           </view>
         </view>
       </view>
@@ -150,7 +152,15 @@
 import Goods from "../../components/goods/coupon";
 export default {
   components: {
-      Goods,
+    Goods,
+  },
+
+  methods: {
+    back() {
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
+    },
   },
 };
 </script>
@@ -473,12 +483,11 @@ export default {
         }
       }
       .else-bottom {
-      display: flex;
-      .title{
-      
+        display: flex;
+        .title {
           width: 480upx;
           height: 66upx;
-         margin: 0 auto;
+          margin: 0 auto;
         }
       }
     }

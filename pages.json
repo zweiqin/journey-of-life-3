@@ -226,16 +226,16 @@
 		"color": "#b8b8b8",
 		"list": [
 			{
-				"pagePath": "pages/stuff/stuff",
-				"text": "材料",
-				"iconPath": "/static/images/tabbar/stuff.png",
-				"selectedIconPath": "/static/images/tabbar/stuff-active.png"
-			},
-			{
 				"pagePath": "pages/index/index",
 				"text": "家具",
 				"iconPath": "/static/images/tabbar/furniture.png",
 				"selectedIconPath": "/static/images/tabbar/furniture-active.png"
+			},
+			{
+				"pagePath": "pages/stuff/stuff",
+				"text": "材料",
+				"iconPath": "/static/images/tabbar/stuff.png",
+				"selectedIconPath": "/static/images/tabbar/stuff-active.png"
 			},
 			{
 				"pagePath": "pages/community-center/community-center",
