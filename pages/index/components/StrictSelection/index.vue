@@ -47,6 +47,7 @@
         </view>
       </template>
     </Panel>
+    <view class="you-love">猜你喜欢</view>
 
     <view class="goods-list" v-if="discount">
       <Goods
@@ -96,7 +97,7 @@ export default {
       if (value && value.length) {
         this.styleList = value.filter((item) => {
           item.iconUrl = item.iconUrl || mapStyleImg[item.name];
-          return item.name.includes("风格");
+          return item.name.includes("风格") || item.name.includes("画");
         });
 
         uni.setStorageSync(STYLE_LIST, this.styleList);
@@ -179,7 +180,13 @@ export default {
       }
     }
   }
-
+  .you-love {
+    color: #3d3d3d;
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 10upx;
+    padding-left: 10upx;
+  }
   .goods-list {
     display: flex;
     align-items: center;

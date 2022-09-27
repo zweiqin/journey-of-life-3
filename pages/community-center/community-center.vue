@@ -361,7 +361,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 0 26upx;
+    padding: 0 16upx;
     margin-top: 20upx;
 
     .item {
