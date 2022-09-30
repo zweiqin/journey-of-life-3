@@ -467,10 +467,33 @@ export default {
     // 立即购买
     handlePayGoods() {
       if (this.specificationListInfo.number) {
+        const productInfo = this.goodsInfo.productList.find((item) => {
+          let tag = true;
+          for (const key in this.specificationListInfo.currentSpecification) {
+            tag = item.specifications.includes(
+              this.specificationListInfo.currentSpecification[key]
+            );
+          }
+
+          if (tag) {
+            return item;
+          }
+        });
+
+        if (!productInfo) {
+          uni.showToast({
+            title: "该商品暂无库存",
+            duration: 2000,
+            icon: "none",
+          });
+
+          return;
+        }
         uni.setStorageSync(PAY_GOODS, {
           ...this.specificationListInfo,
           status: 0,
           ...this.goodsInfo,
+          selectedProduct: productInfo,
         });
         uni.navigateTo({
           url: "/pages/pre-order/pre-order",

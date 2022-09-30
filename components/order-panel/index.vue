@@ -165,7 +165,7 @@ import Goods from "../goods";
 import { PAY_GOODS, SELECT_ADDRESS } from "../../constant";
 import { getBaseInfo } from "./config";
 import { getAddressListApi } from "../../api/address";
-import { submitOrderApi } from "../../api/goods";
+import { submitOrderApi, firstAddCar, payOrderGoodsApi } from "../../api/goods";
 import { getUserId } from "../../utils";
 import RecommendGoods from "../recommend-goods";
 
@@ -259,19 +259,69 @@ export default {
 
     // 点击支付
     async handlePay() {
+      // console.log(this.defaultAddress);
+      const _this = this;
+      // return;
       const data = {
         userId: getUserId(),
-        addressId: this.defaultAddress.id,
-        message: this.orderForm.message,
-        cartId: 12,
+        goodsId: this.orderInfo.info.id,
+        productId: this.orderInfo.selectedProduct.id,
+        number: this.orderInfo.number,
       };
+      let carId = null;
+      const res = await firstAddCar(data);
+      carId = res.data;
+      if (res.errno === 0) {
+        const submitData = {
+          userId: getUserId(),
+          cartId: carId,
+          addressId: _this.defaultAddress.id,
+          couponId: 0,
+          message: _this.message || undefined,
+          useVoucher: false,
+          grouponRulesId: "",
+          grouponLinkId: "",
+        };
 
-      uni.showToast({
-        title: "暂无法支付",
-        duration: 2000,
-        icon: "none",
-      });
+        const submitRes = await submitOrderApi(submitData);
+        if (submitRes.errno === 0) {
+          console.log(submitRes);
+          payOrderGoodsApi({
+            orderNo: submitRes.data.orderSn,
+            userId: getUserId(),
+            payType: 1
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
 
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        } else {
+          uni.showToast({
+            title: "支付错误",
+            duration: 2000,
+            icon: "none",
+          });
+        }
+      } else {
+        uni.showToast({
+          title: "支付错误",
+          duration: 2000,
+          icon: "none",
+        });
+      }
       return;
     },
   },
