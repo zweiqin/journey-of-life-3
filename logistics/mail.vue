@@ -238,7 +238,7 @@ import {
   editeOrderApi,
   getDropOffPointApi,
 } from "../api/logistics";
-import { formatTime, removeCache } from "../utils";
+import { formatTime, getUserId, removeCache } from "../utils";
 
 export default {
   components: {},
@@ -399,6 +399,7 @@ export default {
         senderAddress: this.orderForm.senderInfo.senderAddress,
         consigneeAddress: this.orderForm.consigneeInfo.consigneeAddress,
         goodsList: goodsList.map((goods) => {
+          console.log("这里", goods);
           delete goods.id;
           return goods;
         }),
@@ -471,10 +472,13 @@ export default {
         estimateDays: data.estimateDays,
         goodsList: data.goodsList.map((item) => {
           delete item.id;
+          if (!item.insuredPrice) {
+            delete item.insuredPrice;
+          }
+          item.volume = item.volume * 1;
           return item;
         }),
-        // TODO userid 从本地拿
-        userId: 150,
+        userId: getUserId(),
         remarks: data.remarks,
       };
       postData.consigneeFloor = postData.consigneeFloor * 1;
@@ -496,26 +500,47 @@ export default {
             duration: 2000,
           });
 
-          this.orderForm.serve = {};
-          this.orderForm.goodsList = [];
-          this.orderForm.remarks = "";
-          this.orderForm.senderInfo = null;
-          this.orderForm.consigneeInfo = null;
-          this.orderForm.warehouseId = null;
-          this.orderForm.priceDetail = null;
-          this.orderForm.estimateDays = "";
-          this.senderUserInfoString = "";
-          this.consigneeUserInfoString = "";
+          if (res.statusCode === 20000) {
+            uni.showToast({
+              title: "订单创建成功",
+              duration: 2000,
+            });
 
-          removeCache([
-            jiSenderInfo,
-            jiRemarks,
-            jiconsigneeInfo,
-            jiOrderGoodsList,
-            JI_EDIT_ORDER_ID,
-            VALUE_ADDED_SERVICES,
-            APPONIT_WULIU_QIYE_ID,
-          ]);
+            console.log(res);
+
+            // this.orderForm.serve = {};
+            // this.orderForm.goodsList = [];
+            // this.orderForm.remarks = "";
+            // this.orderForm.senderInfo = null;
+            // this.orderForm.consigneeInfo = null;
+            // this.orderForm.warehouseId = null;
+            // this.orderForm.priceDetail = null;
+            // this.orderForm.estimateDays = "";
+            // this.senderUserInfoString = "";
+            // this.consigneeUserInfoString = "";
+
+            // removeCache([
+            //   jiSenderInfo,
+            //   jiRemarks,
+            //   jiconsigneeInfo,
+            //   jiOrderGoodsList,
+            //   JI_EDIT_ORDER_ID,
+            //   VALUE_ADDED_SERVICES,
+            //   APPONIT_WULIU_QIYE_ID,
+            // ]);
+
+            setTimeout(() => {
+              
+            }, 1000)
+          } else {
+            uni.showToast({
+              title: "订单创建失败",
+              duration: 2000,
+              icon: "none",
+            });
+          }
+
+          console.log(res);
         } else {
           uni.showToast({
             title: res.statusMsg,
@@ -627,7 +652,12 @@ export default {
      */
     const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST");
     if (goodsList && goodsList.length > 0) {
-      this.orderForm.goodsList = goodsList;
+      this.orderForm.goodsList = goodsList.map((item) => {
+        if (!item.weight) {
+          item.weight = 0;
+        }
+        return item;
+      });
     }
 
     /**

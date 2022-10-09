@@ -51,8 +51,23 @@
     </view>
 
     <!-- nav -->
+
+    <view class="navs" style="padding: 16px 13px 6px">
+      <view class="item" v-for="item in navs.slice(0, 5)" :key="item.label">
+        <view
+          :style="{
+            background: item.bgc,
+          }"
+          class="icon-wrapper"
+        >
+          <img :src="item.icon" class="icon" :alt="item.label" />
+        </view>
+        <view class="name">{{ item.label }}</view>
+      </view>
+    </view>
+
     <view class="navs">
-      <view class="item" v-for="item in navs" :key="item.label">
+      <view class="item" v-for="item in navs.slice(5)" :key="item.label">
         <view
           :style="{
             background: item.bgc,
@@ -370,7 +385,7 @@ export default {
 
   .navs {
     position: relative;
-    padding: 32upx 26upx;
+    padding: 12upx 26upx;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -382,7 +397,6 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      width: 20%;
       box-sizing: border-box;
 
       .icon-wrapper {
@@ -401,7 +415,7 @@ export default {
       .name {
         font-size: @f12;
         color: @c3d;
-        margin: 20upx auto 30upx auto;
+        margin: 20upx auto 10px auto;
       }
     }
   }

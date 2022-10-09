@@ -103,7 +103,11 @@ import Button from "./components/button.vue";
 import DatetimePicker from "../components/datetime-picker/index.vue";
 import QuotedPrice from "./components/quoted-price.vue";
 import Header from "./components/header.vue";
-import { deliveryTypeList, mapDeliveryTypeFilter } from "./config";
+import {
+  deliveryTypeList,
+  mapDeliveryTypeFilter,
+  getOrderSetting,
+} from "./config";
 
 const deleteCache = [
   "DELIVERY_INFO",
@@ -313,16 +317,26 @@ export default {
         return;
       }
 
-      if (!this.orderInfo.serveTime) {
+      // if (!this.orderInfo.serveTime) {
+      //   uni.showToast({
+      //     title: "请选择安装日期",
+      //     icon: "none",
+      //   });
+      //   return;
+      // }
+
+      if (!this.orderInfo.orderDetailList.length) {
         uni.showToast({
-          title: "请选择安装日期",
+          title: "请添加商品",
+          duration: 2000,
           icon: "none",
         });
+
         return;
       }
 
       for (let item of this.orderInfo.orderDetailList) {
-        item.goodsUrl = item.goodsUrl.join(",");
+        item.goodsUrl = item.goodsUrl.length && item.goodsUrl.join(",");
         item.volume = item.volume * 1;
         item.weight = item.weight * 1;
         item.quantity = item.quantity * 1;
@@ -525,6 +539,7 @@ export default {
 
   mounted() {
     console.log(this.$refs.datetimeRef[0].$children[0].visible);
+    getOrderSetting("commodityType");
   },
 
   onShow() {

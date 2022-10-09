@@ -95,7 +95,7 @@
         <view class="value">
           <input
             type="number"
-            v-model="orderInfo.weight"
+            v-model.number="orderInfo.weight"
             placeholder="请输入物品重量"
           />
         </view>

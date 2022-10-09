@@ -69,3 +69,12 @@ export const getCarShopNumberApi = () => {
 export const submitOrderApi = (data) => {
   return RuanRequest("/order/submit", data)
 }
+
+// 快速添加购物车
+export const firstAddCar = (data) => {
+  return RuanRequest("/cart/fastadd", data)
+}
+
+export const payOrderGoodsApi = (data) => {
+  return RuanRequest("/api/syb/orderPayH5", data)
+}

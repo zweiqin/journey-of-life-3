@@ -80,7 +80,7 @@ export default {
     // 提交
     submitGoods() {
       for (const item of this.goodsList) {
-        if (!item.categoryName && !item.goodsType) {
+        if (!item.categoryName || !item.goodsType) {
           uni.showToast({
             title: "类型和品名是必填项",
             icon: "none",
