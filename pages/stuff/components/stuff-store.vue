@@ -26,8 +26,17 @@
 <script>
 import { getBrandListApi } from "../../../api/brand";
 export default {
-  mounted(){
-    this.getBrandList()
+  props: {
+    name: String,
+    picRul: String,
+  },
+  data() {
+    return {
+      brandList: [],
+    };
+  },
+  mounted() {
+    this.getBrandList();
   },
   props: ["url"],
   methods: {
@@ -38,11 +47,10 @@ export default {
     },
     async getBrandList() {
       const res = await getBrandListApi({});
-      console.log('stuff',res);
+      console.log("stuff", res.data.brandList);
+      this.brandList = res.data.brandList;
     },
   },
-  
-  
 };
 </script>
 
