@@ -570,6 +570,13 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},
+				{
+					"path": "sever/order-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
 				}
 			]
 		},
@@ -590,6 +597,24 @@
 				},
 				{
 					"path": "store/index"
+				},
+				{
+					"path": "hotBuy/hotBuy"
+				},
+				{
+					"path": "stock/stock"
+				},
+				{
+					"path": "gongqiu/gongqiu"
+				},
+				{
+					"path": "shop/shop"
+				},
+				{
+					"path": "brand/brand"
+				},
+				{
+					"path": "price/price"
 				}
 			]
 		}

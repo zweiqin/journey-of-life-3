@@ -58,6 +58,7 @@
             background: item.bgc,
           }"
           class="icon-wrapper"
+          @click="bindtapStuff(item)"
         >
           <img :src="item.icon" class="icon" :alt="item.label" />
         </view>
@@ -192,6 +193,13 @@ export default {
   },
 
   methods: {
+    bindtapStuff(item){
+      console.log(item.Url);
+      
+     uni.navigateTo({
+         url:item.Url 
+      });
+    },
     switchTab(index) {
       this.currentTab = index;
       if (this.showMoreVisible) {

@@ -24,7 +24,11 @@
 </template>
 
 <script>
+import { getBrandListApi } from "../../../api/brand";
 export default {
+  mounted(){
+    this.getBrandList()
+  },
   props: ["url"],
   methods: {
     handleToStoreHome() {
@@ -32,7 +36,13 @@ export default {
         url: "/stuff/store/index",
       });
     },
+    async getBrandList() {
+      const res = await getBrandListApi({});
+      console.log('stuff',res);
+    },
   },
+  
+  
 };
 </script>
 

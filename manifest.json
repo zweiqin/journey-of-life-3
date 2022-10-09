@@ -118,7 +118,11 @@
             "base" : "/TFShop_Uni_H5/"
         },
         "sdkConfigs" : {
-            "maps" : {}
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
         }
     }
 }
