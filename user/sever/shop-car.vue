@@ -29,9 +29,10 @@
         >
       </block>
     </view>
-    <view class="nogoods" v-if="listLength == 0">购物车没有商品，快去选择吧！</view>
+    <view class="nogoods" v-if="listLength == 0"
+      >购物车没有商品，快去选择吧！</view
+    >
     <view v-for="(item, id) in cartList" :key="id">
-      
       <view
         class="shop-car-goodsDetail"
         v-for="(item1, id1) in item.cartList"
@@ -39,7 +40,6 @@
         :key="id1"
         @click="window"
       >
-      
         <view v-if="collectstatus == 1">
           <img
             v-if="item1.checked"
@@ -61,7 +61,7 @@
         <view
           class="shop-car-chose"
           v-if="collectstatus == 2"
-          @click="goodsgetout"
+          @click="goodsgetout(item1)"
         >
           x
         </view>
@@ -103,7 +103,7 @@
         />
       </view> -->
       <view class="shop-car-love-goods">
-        <RecommendGoods :id="12"></RecommendGoods>
+        <RecommendGoods></RecommendGoods>
       </view>
     </view>
 
@@ -173,7 +173,8 @@ export default {
       id: "",
       data: [],
       goodsallmoney: "",
-      listLength:""
+      listLength: "",
+      productIds: [],
     };
   },
 
@@ -210,6 +211,10 @@ export default {
         this.collectstatus = 1;
       }
     },
+    goodsgetout(item) {
+      this.productIds.push(this.productId);
+      this.getCartDelete(item);
+    },
     goodsadd() {
       setTimeout(() => {
         this.getCartUpdateadd();
@@ -220,11 +225,7 @@ export default {
         this.getCartUpdateminus();
       }, 10);
     },
-    goodsgetout() {
-      setTimeout(() => {
-        this.getCartDelete();
-      }, 10);
-    },
+
     // 获取购物车信息
     async getCartIndex() {
       // console.log("1");
@@ -234,7 +235,7 @@ export default {
       console.log("商品信息", res);
       this.cartList = res.data.brandCartgoods;
       this.goodsallmoney = res.data.cartTotal.goodsAmount;
-      this.listLength = res.data.brandCartgoods.length
+      this.listLength = res.data.brandCartgoods.length;
       // console.log(this.cartList);
     },
     // 获取购物车商品数量
@@ -274,8 +275,10 @@ export default {
     // 减
     async getCartUpdateminus() {
       // console.log("1");
+
       if (this.number == 1) {
-        console.log("删除");
+        this.productIds.push(this.productId);
+        this.getCartDelete();
       } else {
         const res = await getCartUpdateApi({
           userId: getUserId(),
@@ -290,13 +293,15 @@ export default {
       // console.log(res);
     },
     // 商品信息删除
-    async getCartDelete() {
-      console.log("1");
+    async getCartDelete(item) {
+      console.log("删除信息", item);
+      this.productIds.push(item.productId);
       const res = await getCartDeleteApi({
         userId: getUserId(),
-        productIds: [1],
+        productIds: this.productIds,
       });
       console.log(res);
+      this.getCartIndex();
     },
     // 购物车结算
     async getCartCheckout() {

@@ -184,8 +184,9 @@ export default {
     color: #3d3d3d;
     font-size: 12px;
     font-weight: bold;
-    padding-bottom: 10upx;
+    padding-bottom: 30upx;
     padding-left: 10upx;
+
   }
   .goods-list {
     display: flex;

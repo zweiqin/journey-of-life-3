@@ -220,10 +220,13 @@
 		{
 			"path": "pages/store/store"
 		}
+
 	],
 	"tabBar": {
 		"selectedColor": "#FF8F1F",
+		"backgroundColor": "#fff",
 		"color": "#b8b8b8",
+		"borderStyle": "white",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
@@ -590,6 +593,36 @@
 				},
 				{
 					"path": "store/index"
+				},
+				{
+					"path": "hotBuy/hotBuy"
+				},
+				{
+					"path": "stock/stock"
+				},
+				{
+					"path": "gongqiu/gongqiu"
+				},
+				{
+					"path": "shop/store"
+				},
+				{
+					"path": "brand/brand"
+				},
+				{
+					"path": "price/price"
+				},
+				{
+					"path": "purchase/purchase"
+				},
+				{
+					"path": "buyer/buyer"
+				},
+				{
+					"path": "direct-sale store/direct-sale store"
+				},
+				{
+					"path": "more/more"
 				}
 			]
 		}
