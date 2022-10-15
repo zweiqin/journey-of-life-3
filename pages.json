@@ -573,6 +573,13 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},
+				{
+					"path": "sever/order-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
 				}
 			]
 		},

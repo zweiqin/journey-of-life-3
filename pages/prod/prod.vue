@@ -91,6 +91,7 @@
               src="../../static/images/goods/shoucang.png"
               alt=""
             />
+            
             <text class="text">收藏</text>
           </div>
           <div class="item">
@@ -616,7 +617,7 @@ export default {
 
       .bottom {
         color: #fff;
-        font-size: 16upx;
+        font-size: 24upx;
         display: flex;
         align-items: center;
 
@@ -765,7 +766,7 @@ export default {
 
           .text {
             color: #999;
-            font-size: 16upx;
+            font-size: 12upx;
             transform: scale(0.9);
           }
         }
@@ -1045,6 +1046,7 @@ export default {
 
     .btns {
       display: flex;
+      padding-left: 25upx;
       margin-top: -20upx;
 
       button {

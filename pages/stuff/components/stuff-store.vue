@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { getBrandListApi } from "../../../api/brand";
 export default {
   // props: ["url"],
   data(){
@@ -53,6 +54,11 @@ export default {
       uni.navigateTo({
         url: "/stuff/store/index?id="+id,
       });
+    },
+    async getBrandList() {
+      const res = await getBrandListApi({});
+      console.log("stuff", res.data.brandList);
+      this.brandList = res.data.brandList;
     },
   },
 };

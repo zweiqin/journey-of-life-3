@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-12 16:17:05
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-26 10:43:23
+ * @LastEditTime: 2022-09-27 17:20:32
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\pages\user\config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,31 +25,31 @@ export const one = {
       label: "待付款",
       icon: require("../../static/images/user/daifukuan.png"),
       url: "/user/orderForm/order-form",
-      showType:1,
+      showType: 1,
     },
     {
       label: "待发货",
       icon: require("../../static/images/user/daifahuo.png"),
       url: "/user/orderForm/order-form",
-      showType:2,
+      showType: 2,
     },
     {
       label: "待收货",
       icon: require("../../static/images/user/daishouhuo.png"),
       url: "/user/orderForm/order-form",
-      showType:3,
+      showType: 3,
     },
     {
       label: "待评价",
       icon: require("../../static/images/user/daipingjia.png"),
       url: "/user/orderForm/order-form",
-      showType:4,
+      showType: 4,
     },
     {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType:0
+      showType: 0
     },
   ],
 };
@@ -91,31 +91,31 @@ export const three = {
       label: "待付款",
       icon: require("../../static/images/user/daifukuan.png"),
       url: "/user/orderForm/order-form",
-      showType:1,
+      showType: 1,
     },
     {
       label: "待发货",
       icon: require("../../static/images/user/daifahuo.png"),
       url: "/user/orderForm/order-form",
-      showType:2,
+      showType: 2,
     },
     {
       label: "待收货",
       icon: require("../../static/images/user/daishouhuo.png"),
       url: "/user/orderForm/order-form",
-      showType:3,
+      showType: 3,
     },
     {
       label: "待评价",
       icon: require("../../static/images/user/daipingjia.png"),
       url: "/user/orderForm/order-form",
-      showType:4,
+      showType: 4,
     },
     {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType:0
+      showType: 0
     },
   ],
 };
@@ -158,7 +158,7 @@ export const serve = {
     {
       label: "推广码",
       icon: require("../../static/images/user/tuiguangma.png"),
-      url:"/pages/stuff/brand/index"
+      url: "/pages/stuff/brand/index"
     },
   ],
 };
@@ -185,7 +185,7 @@ export const digitalStore = {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
       url: "/user/digital-store/business/index"
-    
+
     },
   ],
 };
@@ -235,6 +235,21 @@ export const otherServe = {
       label: "进销存",
       icon: require("../../static/images/user//jinxiaocun.png"),
     },
+    {
+      label: "关注物流",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
+      url: "/logistics/appoint",
+    },
+    {
+      label: "",
+      icon: "",
+      url: ""
+    },
+    {
+      label: "",
+      icon: "",
+      url: ""
+    },
     // {
     //   label: "代金券充值",
     //   icon: require("../../static/images/user/daijinjuanchongzhi.png"),
@@ -243,10 +258,6 @@ export const otherServe = {
     //   label: "代金券转赠",
     //   icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
     // },
-    {
-      label: "关注物流",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
-      url: "/logistics/appoint",
-    },
+
   ],
 };
