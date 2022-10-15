@@ -105,15 +105,15 @@
           <view class="title">供应列表</view>
           </view>
         <view class="list-type">  
-          <!-- <img
+          <img
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
             style="width: 100%"
             alt=""
-          /> -->
+          />
 
-          <Table
+          <!-- <Table
           
-          ></Table>
+          ></Table> -->
         </view>
       </Pane>
 
