@@ -25,31 +25,31 @@ export const one = {
       label: "待付款",
       icon: require("../../static/images/user/daifukuan.png"),
       url: "/user/orderForm/order-form",
-      showType:1,
+      showType: 1,
     },
     {
       label: "待发货",
       icon: require("../../static/images/user/daifahuo.png"),
       url: "/user/orderForm/order-form",
-      showType:2,
+      showType: 2,
     },
     {
       label: "待收货",
       icon: require("../../static/images/user/daishouhuo.png"),
       url: "/user/orderForm/order-form",
-      showType:3,
+      showType: 3,
     },
     {
       label: "待评价",
       icon: require("../../static/images/user/daipingjia.png"),
       url: "/user/orderForm/order-form",
-      showType:4,
+      showType: 4,
     },
     {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType:0
+      showType: 0,
     },
   ],
 };
@@ -91,31 +91,31 @@ export const three = {
       label: "待付款",
       icon: require("../../static/images/user/daifukuan.png"),
       url: "/user/orderForm/order-form",
-      showType:1,
+      showType: 1,
     },
     {
       label: "待发货",
       icon: require("../../static/images/user/daifahuo.png"),
       url: "/user/orderForm/order-form",
-      showType:2,
+      showType: 2,
     },
     {
       label: "待收货",
       icon: require("../../static/images/user/daishouhuo.png"),
       url: "/user/orderForm/order-form",
-      showType:3,
+      showType: 3,
     },
     {
       label: "待评价",
       icon: require("../../static/images/user/daipingjia.png"),
       url: "/user/orderForm/order-form",
-      showType:4,
+      showType: 4,
     },
     {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType:0
+      showType: 0,
     },
   ],
 };
@@ -158,7 +158,7 @@ export const serve = {
     {
       label: "推广码",
       icon: require("../../static/images/user/tuiguangma.png"),
-      url:"/pages/stuff/brand/index"
+      url: "/pages/stuff/brand/index",
     },
   ],
 };
@@ -179,13 +179,12 @@ export const digitalStore = {
     {
       label: "业绩哨兵",
       icon: require("../../static/images/user/yejishaobing.png"),
-      url: "/user/digital-store/performance"
+      url: "/user/digital-store/performance",
     },
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
-      url: "/user/digital-store/business/index"
-    
+      url: "/user/digital-store/business/index",
     },
   ],
 };
@@ -196,6 +195,7 @@ export const marketingTools = {
     {
       label: "门店申请",
       icon: require("../../static/images/user/mendiankanban.png"),
+      // url: "/user/marketing-tool/store-application",
     },
     {
       label: "红包发放",
