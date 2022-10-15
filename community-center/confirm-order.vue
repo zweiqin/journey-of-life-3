@@ -1,9 +1,7 @@
 <template>
   <view class="confirm-order">
-    <PageHeader
-      style="margin: 0 auto; position: inherit"
-      title="确认订单"
-    ></PageHeader>
+    <PageHeader style="margin: 0 auto; position: inherit" title="确认订单">
+    </PageHeader>
 
     <view class="order-item order-info">
       <view class="item">

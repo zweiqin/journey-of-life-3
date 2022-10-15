@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-05 17:08:18
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 20:22:31
+ * @LastEditTime: 2022-10-05 15:47:23
  * @FilePath: \tuan-uniapp\user\sever\shop-car.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,9 +29,10 @@
         >
       </block>
     </view>
-    <view class="nogoods" v-if="listLength == 0">购物车没有商品，快去选择吧！</view>
+    <view class="nogoods" v-if="listLength == 0"
+      >购物车没有商品，快去选择吧！</view
+    >
     <view v-for="(item, id) in cartList" :key="id">
-      
       <view
         class="shop-car-goodsDetail"
         v-for="(item1, id1) in item.cartList"
@@ -39,7 +40,6 @@
         :key="id1"
         @click="window"
       >
-      
         <view v-if="collectstatus == 1">
           <img
             v-if="item1.checked"
@@ -61,7 +61,7 @@
         <view
           class="shop-car-chose"
           v-if="collectstatus == 2"
-          @click="goodsgetout"
+          @click="goodsgetout(item1)"
         >
           x
         </view>
@@ -103,7 +103,7 @@
         />
       </view> -->
       <view class="shop-car-love-goods">
-        <RecommendGoods :id="12"></RecommendGoods>
+        <RecommendGoods></RecommendGoods>
       </view>
     </view>
 
@@ -119,7 +119,7 @@
         <view class="shop-car-allmoney">￥ {{ this.goodsallmoney }}</view>
       </view>
       <view class="bottom-right">
-        <view class="shop-car-givemoney">结算</view>
+        <view class="shop-car-givemoney" @click="ischeckGoods">结算</view>
       </view>
     </view>
 
@@ -161,7 +161,6 @@ export default {
       checkedGoodsCount: "",
       collectstatus: 1,
       goodsnumber: 1,
-      goodsmoney: 1900,
       goodsallmoney: 0,
       badgoodschose: 0,
       cartList: [],
@@ -173,11 +172,35 @@ export default {
       id: "",
       data: [],
       goodsallmoney: "",
-      listLength:""
+      listLength: "",
+      productIds: [],
     };
   },
 
   methods: {
+    ischeckGoods() {
+      console.log("cao", this.cartList);
+      this.getCartCheckout(() => {
+        uni.navigateTo({
+          // url: '../sever/order-detail?collectiontype = this.goodsDetail',
+          url: "/user/sever/order-detail",
+        });
+      });
+
+      // const b = [];
+      // for (let i = 0; i < this.cartList.length; i++) {
+      //   for (let j = 0; j < this.cartList[i].cartList.length; j++) {
+      //     const a = this.cartList[i].cartList[j];
+      //     console.log(a);
+      //     b.push(a);
+      //     console.log(b);
+      //   }
+      // }
+      // const c = b.filter((item) => item.checked);
+      // console.log("c", c);
+      // const d = c.map(function(item,index,arr){})
+      // console.log(d);
+    },
     window: function (e) {
       console.log(e);
       this.number = e.currentTarget.dataset.list.number;
@@ -210,6 +233,10 @@ export default {
         this.collectstatus = 1;
       }
     },
+    goodsgetout(item) {
+      this.productIds.push(this.productId);
+      this.getCartDelete(item);
+    },
     goodsadd() {
       setTimeout(() => {
         this.getCartUpdateadd();
@@ -220,11 +247,7 @@ export default {
         this.getCartUpdateminus();
       }, 10);
     },
-    goodsgetout() {
-      setTimeout(() => {
-        this.getCartDelete();
-      }, 10);
-    },
+
     // 获取购物车信息
     async getCartIndex() {
       // console.log("1");
@@ -234,7 +257,7 @@ export default {
       console.log("商品信息", res);
       this.cartList = res.data.brandCartgoods;
       this.goodsallmoney = res.data.cartTotal.goodsAmount;
-      this.listLength = res.data.brandCartgoods.length
+      this.listLength = res.data.brandCartgoods.length;
       // console.log(this.cartList);
     },
     // 获取购物车商品数量
@@ -274,8 +297,10 @@ export default {
     // 减
     async getCartUpdateminus() {
       // console.log("1");
+
       if (this.number == 1) {
-        console.log("删除");
+        this.productIds.push(this.productId);
+        this.getCartDelete();
       } else {
         const res = await getCartUpdateApi({
           userId: getUserId(),
@@ -290,28 +315,36 @@ export default {
       // console.log(res);
     },
     // 商品信息删除
-    async getCartDelete() {
-      console.log("1");
+    async getCartDelete(item) {
+      console.log("删除信息", item);
+      this.productIds.push(item.productId);
       const res = await getCartDeleteApi({
         userId: getUserId(),
-        productIds: [1],
+        productIds: this.productIds,
       });
       console.log(res);
+      this.getCartIndex();
     },
     // 购物车结算
-    async getCartCheckout() {
+    async getCartCheckout(cb) {
       console.log("1");
       const res = await getCartCheckoutApi({
         userId: getUserId(),
-        cartId: 858,
+        cartId: 0,
         // 是否使用代金券
-        useVoucher: 1,
+        useVoucher: 0,
         // 收货地址id
         addressId: "",
         couponId: "",
         grouponRulesId: "",
       });
       console.log(res);
+      this.goodsAll = res.data;
+      this.goodsDetail = res.data.brandCartgoods;
+      uni.setStorageSync('CAR_GOODS_DETAIL', this.goodsDetail)
+      uni.setStorageSync('CAR_GOODS_DETAIL_ALL',this.goodsAll)
+
+      cb && typeof cb === "function" && cb();
     },
   },
 

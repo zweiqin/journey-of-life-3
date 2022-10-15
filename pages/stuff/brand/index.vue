@@ -2,7 +2,7 @@
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-25 19:35:59
  * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-26 16:48:38
+ * @LastEditTime: 2022-09-28 17:02:35
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\stuff\brand\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,7 @@
         class="title-lastimg"
       />
       <view class="second-background">
-        <view class="second-title">
+        <view class="second-chose">
           <view
             @click="changeTab(1)"
             :class="{ active: currentTab === 1 }"
@@ -53,14 +53,37 @@
             >材料
           </view>
         </view>
-        <view class="second-detail"> </view>
+        <view class="second-title"
+          >《家具材料/家具五金/家具皮革十大排行榜》</view
+        >
+        <view class="second-detail-title">
+          <view class="no">序号</view>
+          <view class="brand">品牌</view>
+          <view class="name">名称</view>
+          <view class="grade">评分</view>
+        </view>
+        <view class="border"></view>
+
+        <view class="second-detail" v-for="(item, id) in shopList" :key="id">
+          <view class="no-detail">{{ item.id }}</view>
+          <img :src="item.picUrl" alt="" class="brand-detail" />
+          <view class="name-detail">{{ item.name }}</view>
+          <view
+            ><Rate :rate="5" :size="10" :space="1" class="grade-detail"></Rate>
+          </view>
+          <view class="border"></view>
+        </view>
       </view>
     </view>
   </div>
 </template>
 
 <script>
+import Rate from "../../../components/rate";
 export default {
+  components: {
+    Rate,
+  },
   data() {
     return {
       nameList: [
@@ -89,53 +112,63 @@ export default {
         {
           id: 1,
           name: "智阁",
-          picUrl: "../../../static/images/stuff/智阁.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/fcxgk282gr1zjyyv7o39.png",
         },
         {
-          id: 1,
+          id: 2,
           name: "壮象",
-          picUrl: "../../../static/images/stuff/壮象.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/i05x90mb9kdf1gizcv7u.jpg",
         },
         {
-          id: 1,
+          id: 3,
           name: "伟业",
-          picUrl: "../../../static/images/stuff/伟业.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/i05x90mb9kdf1gizcv7u.jpg",
         },
         {
-          id: 1,
+          id: 4,
           name: "鹏鸿",
-          picUrl: "../../../static/images/stuff/鹏鸿.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/7g6augliyepi45wzc6j9.jpg",
         },
 
         {
-          id: 1,
+          id: 5,
           name: "韩氏",
-          picUrl: "../../../static/images/stuff/韩氏.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
         {
-          id: 1,
+          id: 6,
           name: "好太太",
-          picUrl: "../../../static/images/stuff/好太太.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
         {
-          id: 1,
+          id: 7,
           name: "圣鹿国际",
-          picUrl: "../../../static/images/stuff/圣鹿国际.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
         {
-          id: 1,
+          id: 8,
           name: "福湘",
-          picUrl: "../../../static/images/stuff/福湘.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
         {
-          id: 1,
+          id: 9,
           name: "万象",
-          picUrl: "../../../static/images/stuff/万象.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
         {
-          id: 1,
+          id: 10,
           name: "平安树",
-          picUrl: "../../../static/images/stuff/平安树.png",
+          picUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xgq7q5obobjj6pl9po52.jpg",
         },
       ],
       currentTab: 1,
@@ -159,7 +192,7 @@ export default {
     font-size: 32upx;
     font-weight: 500;
   }
-  .title-img {
+  .title-img { 
     margin-top: 37upx;
     margin-left: 146upx;
     width: 460upx;
@@ -177,9 +210,9 @@ export default {
     height: 10000upx;
     margin: 0 auto;
     position: relative;
-    display: flex;
+    top: -52upx;
     justify-content: space-around;
-    .second-title {
+    .second-chose {
       margin: 0 auto;
       display: flex;
       justify-content: space-around;
@@ -198,8 +231,60 @@ export default {
       }
     }
 
-    top: -52upx;
-    .thistitle {
+    .second-title {
+      text-align: center;
+      font-size: 24upx;
+      font-weight: 700;
+      padding-top: 29upx;
+    }
+    .second-detail-title {
+      font-size: 24upx;
+      font-weight: 350;
+      display: flex;
+      .no {
+        padding-left: 55upx;
+      }
+      .brand {
+        padding-left: 69upx;
+      }
+      .name {
+        padding-left: 155upx;
+      }
+      .grade {
+        padding-left: 128upx;
+      }
+    }
+    .second-detail {
+      font-size: 24upx;
+      font-weight: 350;
+      display: flex;
+      flex-flow: wrap;
+      height: 77upx;
+      line-height: 77upx;
+      padding: 10upx 0;
+      .no-detail {
+        margin-left: 55upx;
+        text-align: center;
+        width: 48upx;
+      }
+      .brand-detail {
+        margin-left: 32upx;
+        margin-right: 84upx;
+        width: 130upx;
+        height: 72upx;
+      }
+      .name-detail {
+        width: 96upx;
+        text-align: center;
+        margin-right: 80upx;
+      }
+      .grade-detail {
+      }
+      .border {
+        border: 0.5px solid #d8d8d8;
+        width: 90%;
+        margin: 0 auto;
+      }
     }
   }
 }

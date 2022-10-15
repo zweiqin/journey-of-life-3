@@ -1,3 +1,11 @@
+<!--
+ * @Author: 13008300191 904947348@qq.com
+ * @Date: 2022-09-12 16:17:04
+ * @LastEditors: 13008300191 904947348@qq.com
+ * @LastEditTime: 2022-09-28 11:21:12
+ * @FilePath: \团蜂商城 - 副本\tuan-uniapp\components\rate\index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <view class="rate-container">
     <img
@@ -11,7 +19,7 @@
       :style="{
         width: size + 'px',
         height: size + 'px',
-        'margin-right': '7px',
+        'margin-right': space + 'px',
       }"
       alt=""
       @click="handleClickStar(item)"
@@ -31,6 +39,11 @@ export default {
       type: Number,
       required: true,
     },
+
+    space:{
+      type: Number,
+      default: 7
+    }
   },
 
   methods: {

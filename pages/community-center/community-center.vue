@@ -361,7 +361,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 0 16upx;
+    padding: 0 26upx;
     margin-top: 20upx;
 
     .item {
@@ -371,7 +371,7 @@ export default {
       flex-direction: column;
 
       .title {
-        font-size: 28upx;
+        font-size: 24upx;
         color: #3d3d3d;
       }
 
