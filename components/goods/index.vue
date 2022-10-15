@@ -11,7 +11,7 @@
 
     <view class="body">
       <view class="name">{{ name || "GLOSTAD" }} </view>
-      <view class="name">{{ sname || "二人沙发" }} </view>
+      <view style="font-weight: 500;" class="name">{{ sname || "二人沙发" }} </view>
       <view class="info">
         <view class="left">
           <text class="icon">￥</text
@@ -72,6 +72,7 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-weight: 600;
 
       &:nth-child(2) {
         margin: 6upx 0 12upx 0;

@@ -577,6 +577,16 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},{
+					"path": "marketing-tool/store-application",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+					}
+				},{
+					"path": "marketing-tool/shopApply/index",
+					"usingComponents": {
+						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+					}
 				}
 			]
 		},

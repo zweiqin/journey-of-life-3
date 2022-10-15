@@ -196,6 +196,8 @@ export const marketingTools = {
     {
       label: "门店申请",
       icon: require("../../static/images/user/mendiankanban.png"),
+      url: "/user/marketing-tool/shopApply/index"
+
     },
     {
       label: "红包发放",
