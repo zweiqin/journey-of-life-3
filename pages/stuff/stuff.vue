@@ -166,6 +166,10 @@
           <StuffStore></StuffStore>
           <StuffStore></StuffStore>
           <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
+          <StuffStore></StuffStore>
         </view>
       </Pane>
     </view>
@@ -208,11 +212,11 @@ export default {
   },
 
   methods: {
-    bindtapStuff(item){
+    bindtapStuff(item) {
       console.log(item.Url);
-      
-     uni.navigateTo({
-         url:item.Url 
+
+      uni.navigateTo({
+        url: item.Url,
       });
     },
     switchTab(index) {
