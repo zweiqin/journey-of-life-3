@@ -11,7 +11,7 @@
 
     <view class="body">
       <view class="name">{{ name || "GLOSTAD" }} </view>
-      <view style="font-weight: 500;" class="name">{{ sname || "二人沙发" }} </view>
+      <view class="sname">{{ sname || "二人沙发" }} </view>
       <view class="info">
         <view class="left">
           <text class="icon">￥</text
@@ -58,6 +58,8 @@ export default {
 
   .img {
     width: 334upx;
+    height: 300upx;
+    
   }
 
   .body {
@@ -73,10 +75,18 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       font-weight: 600;
-
       &:nth-child(2) {
         margin: 6upx 0 12upx 0;
       }
+
+    }
+    .sname{
+      width: 334upx;
+      color: #3d3d3d;
+      font-size: 20upx;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .info {

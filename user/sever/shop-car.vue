@@ -61,7 +61,7 @@
         <view
           class="shop-car-chose"
           v-if="collectstatus == 2"
-          @click="goodsgetout"
+          @click="goodsgetout(item1)"
         >
           x
         </view>
@@ -103,7 +103,7 @@
         />
       </view> -->
       <view class="shop-car-love-goods">
-        <RecommendGoods :id="12"></RecommendGoods>
+        <RecommendGoods></RecommendGoods>
       </view>
     </view>
 
@@ -173,8 +173,7 @@ export default {
       data: [],
       goodsallmoney: "",
       listLength: "",
-      goodsDetail: [],
-      goodsAll:[],
+      productIds: [],
     };
   },
 
@@ -234,6 +233,10 @@ export default {
         this.collectstatus = 1;
       }
     },
+    goodsgetout(item) {
+      this.productIds.push(this.productId);
+      this.getCartDelete(item);
+    },
     goodsadd() {
       setTimeout(() => {
         this.getCartUpdateadd();
@@ -244,11 +247,7 @@ export default {
         this.getCartUpdateminus();
       }, 10);
     },
-    goodsgetout() {
-      setTimeout(() => {
-        this.getCartDelete();
-      }, 10);
-    },
+
     // 获取购物车信息
     async getCartIndex() {
       // console.log("1");
@@ -298,8 +297,10 @@ export default {
     // 减
     async getCartUpdateminus() {
       // console.log("1");
+
       if (this.number == 1) {
-        console.log("删除");
+        this.productIds.push(this.productId);
+        this.getCartDelete();
       } else {
         const res = await getCartUpdateApi({
           userId: getUserId(),
@@ -314,13 +315,15 @@ export default {
       // console.log(res);
     },
     // 商品信息删除
-    async getCartDelete() {
-      console.log("1");
+    async getCartDelete(item) {
+      console.log("删除信息", item);
+      this.productIds.push(item.productId);
       const res = await getCartDeleteApi({
         userId: getUserId(),
-        productIds: [1],
+        productIds: this.productIds,
       });
       console.log(res);
+      this.getCartIndex();
     },
     // 购物车结算
     async getCartCheckout(cb) {

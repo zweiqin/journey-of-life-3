@@ -3,7 +3,10 @@
     <view class="info">
       <img
         class="bgm"
-        src="https://img2.baidu.com/it/u=2113609285,1938081570&fm=253&fmt=auto&app=120&f=JPEG?w=751&h=500"
+        :src="
+          picUrl ||
+          'https://img2.baidu.com/it/u=2113609285,1938081570&fm=253&fmt=auto&app=120&f=JPEG?w=751&h=500'
+        "
         alt=""
       />
 
@@ -17,12 +20,15 @@
       <view class="store-info">
         <img
           class="avatar"
-          src="https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+          :src="
+          picUrl ||
+          'https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
+          "
           alt=""
         />
 
         <view class="wrapper">
-          <view class="name">团蜂家具材料店</view>
+          <view class="name">{{ name || "暂无简介" }}</view>
           <view class="rate">
             综合体验分<Rate :rate="4"></Rate>粉丝数102.5万
           </view>
@@ -39,14 +45,12 @@
       <view class="about-me">
         <view class="title">店铺介绍</view>
         <view class="my-info">
-          团蜂家具材料成立于2009年，主要经营材料供应和采购，
-          目前位于佛山顺德区，开店以来一直诚信经营，品质保证，
-          店内产品数量众多，欢迎采购！
+          {{ desc || "暂无简介" }}
 
           <view class="address">
-            <view>地址：顺德区龙江镇亚洲国际材料交易城团蜂家具材料店</view>
+            <view>地址：{{ address || "暂无地址" }}</view>
             <view class="mobile"
-              >电话：13800138000
+              >电话：{{ phone || "暂无电话" }}
               <view class="ops">
                 <view>
                   在线咨询
@@ -93,6 +97,8 @@
         </view>
       </view>
 
+
+
       <Carousel
         height="311"
         :list="[
@@ -107,6 +113,18 @@
       </view>
 
       <view class="goods-wrapper">
+        <Goods
+        v-for="item in goodsList"
+        :key="item.id"
+        :id="item.id"
+        :name="item.name"
+        :sname="item.brief"
+        :price="item.retailPrice"
+        :url="item.picUrl"
+        
+        
+        ></Goods>
+        <!-- <Goods></Goods>
         <Goods></Goods>
         <Goods></Goods>
         <Goods></Goods>
@@ -116,9 +134,7 @@
         <Goods></Goods>
         <Goods></Goods>
         <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
+        <Goods></Goods> -->
       </view>
     </view>
   </view>
@@ -129,6 +145,7 @@ import Rate from "../../components/rate";
 import { navs2 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
+import { getBrandDetailApi, getBrandListBySelectApi } from "../../api/brand";
 
 export default {
   components: {
@@ -141,17 +158,78 @@ export default {
     return {
       currentTab: 0,
       navs2,
+      id: "",
+      brandDetail: [],
+      name: "",
+      desc: "",
+      phone: "",
+      picUrl: "",
+      shareUrl: "",
+      address: "",
+      picUrl: "",
+      idcardConsUrl: "",
+      brandId: "",
+      goodsList:[],
     };
+  },
+  props: {
+    name: String,
+    url: String,
+    desc: String,
   },
 
   methods: {
-    switchTab(tab) {
-      this.currentTab = tab;
-    },
+    // switchTab(tab) {
+    //   this.currentTab = tab;
+    // },
 
     handleBack() {
       uni.navigateBack();
     },
+//门店详情接口
+    async getBrandDetail() {
+      const res = await getBrandDetailApi({
+        id: this.brandId,
+      });
+      this.brandDetail = res.data.brand;
+      console.log("brandDetail", this.brandDetail);
+      this.id = this.id;
+      this.desc = this.brandDetail.desc;
+      this.name = this.brandDetail.name;
+      this.address = this.brandDetail.address;
+      this.phone = this.brandDetail.phone;
+      this.picUrl = this.brandDetail.picUrl;
+      this.idcardConsUrl = this.brandDetail.idcardConsUrl;
+    },
+    //品牌和前十商品列表
+    async getBrandListBySelect() {
+      const res = await getBrandListBySelectApi({
+        
+        id: this.brandId,
+        name: "",
+        page: "",
+        limit: "",
+        sort: "",
+        order: "",
+      });
+      console.log(res);
+      this.goodsList = res.data.brandList[0].goodsList;
+    },
+
+    //商品分类接口
+
+
+
+
+  },
+  //进入该界面就运行一次（仅一次）
+  onLoad: function (option) {
+    // 使用该方法
+    // this.brandId为自己定义的变量
+    this.brandId = option.id
+    console.log(this.brandId);
+    this.getBrandDetail();
+    this.getBrandListBySelect();
   },
 };
 </script>

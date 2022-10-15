@@ -51,23 +51,8 @@
     </view>
 
     <!-- nav -->
-
-    <view class="navs" style="padding: 16px 13px 6px">
-      <view class="item" v-for="item in navs.slice(0, 5)" :key="item.label">
-        <view
-          :style="{
-            background: item.bgc,
-          }"
-          class="icon-wrapper"
-        >
-          <img :src="item.icon" class="icon" :alt="item.label" />
-        </view>
-        <view class="name">{{ item.label }}</view>
-      </view>
-    </view>
-
     <view class="navs">
-      <view class="item" v-for="item in navs.slice(5)" :key="item.label">
+      <view class="item" v-for="item in navs" :key="item.label">
         <view
           :style="{
             background: item.bgc,
@@ -154,10 +139,8 @@
           style="width: 100%"
           alt=""
         /> -->
-
-        <!-- <Tables></Tables> -->
       </Pane>
-
+</view>
       <Pane title="价格指数">
         <img
           style="width: 100%"
@@ -196,12 +179,15 @@
 
       <Pane title="店铺推荐">
         <view class="wrapper">
+          <StuffStore
+            v-for="item in brandList"
+            :key="item.id"
+            :name="item.name"
+            :picUrl="item.picUrl"
+            :desc="item.desc"
+            :id="item.id"
+          ></StuffStore>
           <!-- <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
           <StuffStore></StuffStore>
           <StuffStore></StuffStore> -->
         </view>
@@ -225,6 +211,8 @@ import {
 } from "../../api/stuff";
 import Tables from "../../stuff/components/table";
 
+import { getBrandListApi } from "../../api/brand";
+
 export default {
   components: {
     Pane,
@@ -244,6 +232,7 @@ export default {
       showMoreVisible: false,
       informationList: [],
       supplyList: [],
+      brandList: [],
     };
   },
 
@@ -330,6 +319,19 @@ export default {
       }
       console.log("采购列表", res);
     },
+    //店铺列表
+    async getBrandList() {
+      const res = await getBrandListApi({
+        brandgenreId: "",
+        page: this.page,
+      });
+      console.log(res);
+      this.brandList = res.data.brandList;
+    },
+  },
+  created() {},
+  onLoad() {
+    this.getBrandList();
   },
 
   mounted() {
@@ -341,6 +343,9 @@ export default {
   },
 };
 </script>
+
+
+
 
 <style lang="less" scoped>
 @import "../../style/var.less";
@@ -446,7 +451,7 @@ export default {
 
   .navs {
     position: relative;
-    padding: 12upx 26upx;
+    padding: 32upx 16upx;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -458,6 +463,7 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      width: 20%;
       box-sizing: border-box;
 
       .icon-wrapper {
@@ -474,9 +480,9 @@ export default {
       }
 
       .name {
-        font-size: @f12;
+        font-size: 28upx;
         color: @c3d;
-        margin: 20upx auto 10px auto;
+        margin: 20upx auto 30upx auto;
       }
     }
   }
@@ -629,6 +635,23 @@ export default {
         }
       }
     }
+    
+      
+      .list{
+        display: flex;
+        
+        font-size: 20upx;
+        .title{
+          padding-right: 30upx;
+        }
+      }
+      .list-type{
+      
+      }
+
+
+
+
   }
 
   .wrapper {

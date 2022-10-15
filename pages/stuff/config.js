@@ -9,7 +9,7 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/uidozr14z2bc6xbbrmsr.png",
     bgc: "linear-gradient(148deg, #00B578 19%, rgba(9,161,110,0.00) 132%)",
     label: "店铺",
-    Url:"../../stuff/shop/shop"
+    Url:"../../stuff/shop/store"
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/640s4r4xzparv8880d6r.png",
@@ -40,21 +40,25 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o1ggeb8ts0o8gfrasmes.png",
     bgc: "linear-gradient(137deg, #FFC300 7%, #FFFFFF 143%)",
     label: "一键采购",
+    Url:"../../stuff/purchase/purchase"
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/kyj7yetxus88ld8eh5tb.png",
     bgc: "linear-gradient(137deg, #FA5151 0%, #FFFFFF 100%)",
     label: "全球买手",
+    Url:"../../stuff/buyer/buyer"
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bmsrik8jajqyamfu5308.png",
     bgc: "linear-gradient(139deg, #8A38F5 23%, rgba(204,27,27,0.00) 147%)",
     label: "直营店",
+    Url:"../../stuff/direct-sale store/direct-sale store"
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mfsnhhay1aqw8blcesch.png",
     bgc: "linear-gradient(137deg, #EB2F96 7%, rgba(225,125,25,0.00) 143%)",
     label: "更多",
+    Url:"../../stuff/more/more"
   },
 ];
 

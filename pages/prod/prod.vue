@@ -19,7 +19,10 @@
     <view class="promotion">
       <view class="left">
         <view class="top">
-          ￥<text class="number">{{ goodsInfo.info.retailPrice }}</text>
+          <text class="number"
+            ><text class="money">￥</text>
+            {{ goodsInfo.info.retailPrice }}</text
+          >
           <!-- <view class="tag">
             新人价 <view class="price">￥<text class="number">1900</text></view>
           </view> -->
@@ -58,7 +61,7 @@
     </view>
 
     <view class="main">
-      <view class="line">
+      <!-- <view class="line">
         <view class="left">
           <img
             class="img"
@@ -73,7 +76,7 @@
         </view>
 
         <text class="coupons-btn">领劵</text>
-      </view>
+      </view> -->
 
       <view class="info">
         <view class="left">
@@ -563,7 +566,6 @@ export default {
     align-items: center;
     width: 100%;
     padding-top: 28upx;
-    background-color: #089a9d;
     box-sizing: border-box;
     border-radius: 20upx 20upx 0 0;
     margin-top: -28upx;
@@ -576,7 +578,7 @@ export default {
       box-sizing: border-box;
       flex: 1;
       height: 100%;
-      background-color: #09b8b8;
+
       padding-top: 16upx;
       padding-left: 28upx;
       padding-bottom: 12upx;
@@ -588,7 +590,11 @@ export default {
         font-size: 24upx;
         margin-bottom: 16upx;
         .number {
-          font-size: 48upx;
+          font-size: 56upx;
+          color: red;
+          .money {
+            font-size: 40upx;
+          }
         }
 
         .tag {
@@ -617,10 +623,10 @@ export default {
 
         .tag {
           padding: 2upx 22upx;
-          background-color: #1f9695;
-          color: #fff;
+          color: red;
           border-radius: 20upx;
           margin-right: 18upx;
+          border: 0.5px solid red;
         }
       }
     }
@@ -743,12 +749,13 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding-right: 10upx;
         .item {
           display: flex;
           justify-content: center;
           align-items: center;
           flex-direction: column;
-          margin-right: 34upx;
+          margin-right: 24upx;
           &:nth-child(2) {
             margin-right: 0;
           }
@@ -1028,7 +1035,7 @@ export default {
 
       .text {
         color: #3d3d3d;
-        font-size: 16uxp;
+        font-size: 20uxp;
         transform: scale(0.8);
       }
 
@@ -1047,7 +1054,7 @@ export default {
         align-items: center;
         justify-content: center;
         height: 88upx;
-        padding: 20upx 40upx;
+        padding: 20upx 55upx 20upx 40upx;
         color: #fff;
         font-size: 36upx;
         background-color: #07b9b9;

@@ -13,7 +13,6 @@
         src="../../static/images/stuff/热销.png"
         alt=""
       />
-      
       <view class="background2">
         <view class="title-detail">
           <view class="text1">推荐</view>
