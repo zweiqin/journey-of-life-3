@@ -49,7 +49,7 @@ export const one = {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType: 0
+      showType: 0,
     },
   ],
 };
@@ -115,7 +115,7 @@ export const three = {
       label: "所有订单",
       icon: require("../../static/images/user//suoyoudingdan.png"),
       url: "/user/orderForm/order-form",
-      showType: 0
+      showType: 0,
     },
   ],
 };
@@ -158,7 +158,7 @@ export const serve = {
     {
       label: "推广码",
       icon: require("../../static/images/user/tuiguangma.png"),
-      url: "/pages/stuff/brand/index"
+      url: "/pages/stuff/brand/index",
     },
   ],
 };
@@ -179,13 +179,12 @@ export const digitalStore = {
     {
       label: "业绩哨兵",
       icon: require("../../static/images/user/yejishaobing.png"),
-      url: "/user/digital-store/performance"
+      url: "/user/digital-store/performance",
     },
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
       url: "/user/digital-store/business/index"
-
     },
   ],
 };

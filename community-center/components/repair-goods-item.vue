@@ -86,6 +86,7 @@ export default {
         return;
       }
       const { file } = event.detail;
+      console.log("操了", file);
       // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
       let that = this;
       const token = uni.getStorageSync("authToken");

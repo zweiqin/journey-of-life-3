@@ -87,7 +87,7 @@
           >{{ item.label }}</view
         >
 
-        <view class="modal" ref="modalRef">
+        <!-- <view class="modal" ref="modalRef">
           <view
             class="item"
             :class="{ active: item.value === currentTab }"
@@ -96,151 +96,161 @@
             @click="switchTab(item.value)"
             >{{ item.label }}</view
           >
-        </view>
+        </view> -->
       </view>
 
-      <Pane title="供求信息">
-        <view class="tradeLeads">
-          <view class="topchose">
-            <view
-              @click="changeTab(0)"
-              :class="{ active: currentTab1 === 0 }"
-              class="item"
-              >采购列表</view
-            >
-            <view
-              @click="changeTab(1)"
-              :class="{ active: currentTab1 === 1 }"
-              class="item"
-              >供应列表</view
-            >
+      <view class="tradeLeads">
+        <view class="topchose" style="margin-bottom: 10px">
+          <view
+            @click="changeTab(0)"
+            :class="{ active: currentTab1 === 0 }"
+            class="item"
+            >采购列表</view
+          >
+          <view
+            @click="changeTab(1)"
+            :class="{ active: currentTab1 === 1 }"
+            class="item"
+            >供应列表</view
+          >
+        </view>
+        <view class="border" v-if="currentTab1 == 0">
+          <view class="top">
+            <view class="text">时间</view>
+            <view class="text1">类别</view>
+            <view class="text2">地区</view>
+            <view class="text3">颜色</view>
+            <view class="text4">数量</view>
+            <view class="text5">联系方式</view>
           </view>
-          <view class="border" v-if="currentTab1 == 0">
-            <view class="top">
-              <view class="text">时间</view>
-              <view class="text1">类别</view>
-              <view class="text2">地区</view>
-              <view class="text3">颜色</view>
-              <view class="text4">数量</view>
-              <view class="text5">联系方式</view>
+          <view class="text-border"></view>
+          <view v-for="(item1, id1) in PcToday" :key="id1">
+            <view class="detail">
+              <view class="time">{{ item1.addTime | formatTime }}</view>
+              <view class="name">{{ item1.materialsCategory }}</view>
+              <view class="address">{{ item1.materialsRegion }}</view>
+              <view class="color">{{ item1.materialsColor }}</view>
+              <view class="number">{{ item1.materialsNumber }}</view>
+              <view class="phone">{{ item1.materialsPhone }}</view>
             </view>
             <view class="text-border"></view>
-            <view v-for="(item1, id1) in PcToday" :key="id1">
-              <view class="detail">
-                <view class="time">{{ item1.addTime | formatTime }}</view>
-                <view class="name">{{ item1.materialsCategory }}</view>
-                <view class="address">{{ item1.materialsRegion }}</view>
-                <view class="color">{{ item1.materialsColor }}</view>
-                <view class="number">{{ item1.materialsNumber }}</view>
-                <view class="phone">{{ item1.materialsPhone }}</view>
-              </view>
-              <view class="text-border"></view>
-            </view>
-          </view>
-          <!-- 供应 -->
-          <view class="border" v-if="currentTab1 == 1">
-            <view class="top">
-              <view class="text">类别</view>
-              <view class="text1">地区</view>
-              <view class="text2">材质</view>
-              <view class="text3">销量</view>
-              <view class="text4">参考价</view>
-              <view class="text5">联系方式</view>
-            </view>
-            <view class="text-border"></view>
-
-            <view v-for="(item, id) in supplyList" :key="id">
-              <view class="detail">
-                <view class="time1">{{ item.materialsCategory }}</view>
-                <view class="name">{{ item.materialsRegion }}</view>
-                <view class="address">{{ item.materialsTexture }}</view>
-                <view class="color1">{{ item.sales }}</view>
-                <view class="number">￥{{ item.referenceMoney }}</view>
-                <view class="phone">{{ item.materialsPhone }}</view>
-              </view>
-              <view class="text-border"></view>
-            </view>
           </view>
         </view>
+        <!-- 供应 -->
+        <view class="border" v-if="currentTab1 == 1">
+          <view class="top">
+            <view class="text">类别</view>
+            <view class="text1">地区</view>
+            <view class="text2">材质</view>
+            <view class="text3">销量</view>
+            <view class="text4">参考价</view>
+            <view class="text5">联系方式</view>
+          </view>
+          <view class="text-border"></view>
+
+          <view v-for="(item, id) in supplyList" :key="id">
+            <view class="detail">
+              <view class="time1">{{ item.materialsCategory }}</view>
+              <view class="name">{{ item.materialsRegion }}</view>
+              <view class="address">{{ item.materialsTexture }}</view>
+              <view class="color1">{{ item.sales }}</view>
+              <view class="number">￥{{ item.referenceMoney }}</view>
+              <view class="phone">{{ item.materialsPhone }}</view>
+            </view>
+            <view class="text-border"></view>
+          </view>
+        </view>
+      </view>
+      <view class="list-type">
         <!-- <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
+            style="width: 100%"
+            alt=""
+          /> -->
+
+        <!-- <Table
+          
+          ></Table> -->
+      </view>
+      <!-- <img
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
           style="width: 100%"
           alt=""
         /> -->
-      </Pane>
-    </view>
-    <Pane title="价格指数">
-      <img
-        style="width: 100%"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/wilav6bgzf3pq8aggn3a.png"
-        alt=""
-      />
-      <view class="Prices">
-        <view class="border">
-          <view class="list-title">
-            <view class="name">类别</view>
-            <view class="sname">品名</view>
-            <view class="sku">规格</view>
-            <view class="stuff">材质</view>
-            <view class="quality">品质</view>
-            <view class="money">价格</view>
-            <view class="unit">单位</view>
-          </view>
-          <view class="text-border"></view>
-          <view v-for="(item2, id2) in PricesList" :key="id2">
-            <view class="list-detail">
-              <view class="nametext">{{ item2.materialsCategory }}</view>
-              <view class="snametext">{{ item2.materialsName }}</view>
-              <view class="skutext">{{ item2.materialsSku }}</view>
-              <view class="stufftext">{{ item2.materialsTexture }}</view>
-              <view class="qualitytext">{{ item2.materialsQuality }}</view>
-              <view class="moneytext">{{ item2.materialsMoney }}</view>
-              <view class="unittext">{{ item2.materialsUnit }}</view>
+
+      <Pane title="价格指数">
+        <img
+          style="width: 100%"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/wilav6bgzf3pq8aggn3a.png"
+          alt=""
+        />
+        <view class="Prices">
+          <view class="border">
+            <view class="list-title">
+              <view class="name">类别</view>
+              <view class="sname">品名</view>
+              <view class="sku">规格</view>
+              <view class="stuff">材质</view>
+              <view class="quality">品质</view>
+              <view class="money">价格</view>
+              <view class="unit">单位</view>
             </view>
             <view class="text-border"></view>
+            <view v-for="(item2, id2) in PricesList" :key="id2">
+              <view class="list-detail">
+                <view class="nametext">{{ item2.materialsCategory }}</view>
+                <view class="snametext">{{ item2.materialsName }}</view>
+                <view class="skutext">{{ item2.materialsSku }}</view>
+                <view class="stufftext">{{ item2.materialsTexture }}</view>
+                <view class="qualitytext">{{ item2.materialsQuality }}</view>
+                <view class="moneytext">{{ item2.materialsMoney }}</view>
+                <view class="unittext">{{ item2.materialsUnit }}</view>
+              </view>
+              <view class="text-border"></view>
+            </view>
           </view>
         </view>
-      </view>
-      <Carousel
-        :height="74"
-        :list="[
-          'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
-          'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
-          'https://img0.baidu.com/it/u=3042247612,2856662613&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=427',
-        ]"
-      ></Carousel>
-    </Pane>
+        <Carousel
+          :height="74"
+          :list="[
+            'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
+            'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
+            'https://img0.baidu.com/it/u=3042247612,2856662613&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=427',
+          ]"
+        ></Carousel>
+      </Pane>
 
-    <Pane
-      title="行业信息"
-      v-if="informationList.length"
-      route="/stuff/industry/infomation-list"
-    >
-      <IndustryInformation
-        v-for="item in informationList"
-        :key="item.id"
-        :title="item.title"
-        :img="item.imgUrl"
-        :id="item.id"
-        :time="item.updateTime"
-      ></IndustryInformation>
-    </Pane>
-
-    <Pane title="店铺推荐">
-      <view class="wrapper">
-        <StuffStore
-          v-for="item in brandList"
+      <Pane
+        title="行业信息"
+        v-if="informationList.length"
+        route="/stuff/industry/infomation-list"
+      >
+        <IndustryInformation
+          v-for="item in informationList"
           :key="item.id"
-          :name="item.name"
-          :picUrl="item.picUrl"
-          :desc="item.desc"
+          :title="item.title"
+          :img="item.imgUrl"
           :id="item.id"
-        ></StuffStore>
-        <!-- <StuffStore></StuffStore>
+          :time="item.updateTime"
+        ></IndustryInformation>
+      </Pane>
+
+      <Pane title="店铺推荐">
+        <view class="wrapper">
+          <StuffStore
+            v-for="item in brandList"
+            :key="item.id"
+            :name="item.name"
+            :picUrl="item.picUrl"
+            :desc="item.desc"
+            :id="item.id"
+          ></StuffStore>
+          <!-- <StuffStore></StuffStore>
           <StuffStore></StuffStore>
           <StuffStore></StuffStore> -->
-      </view>
-    </Pane>
+        </view>
+      </Pane>
+    </view>
   </view>
 </template>
 
@@ -409,7 +419,7 @@ export default {
   },
 
   mounted() {
-    this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
+    // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
     // checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
@@ -468,7 +478,7 @@ export default {
     position: absolute;
     width: 95%;
     height: 72upx;
-    top: 54upx;
+    top: 14upx;
     left: 50%;
     padding: 16upx 24upx;
     transform: translateX(-50%);
@@ -504,6 +514,7 @@ export default {
     height: 552upx;
     border-radius: 0 0 20upx 20upx;
     overflow: hidden;
+    padding-top: 100upx;
 
     .swiper {
       width: 100%;
@@ -574,15 +585,21 @@ export default {
     box-sizing: border-box;
     background-color: @cw;
     .tradeLeads {
+      padding-top: 20upx;
       .topchose {
         display: flex;
+        padding-left: 14upx;
+        border-left: 4upx solid #fa5151;
         .item {
-          font-size: 20upx;
-          padding: 0 24upx;
+          padding-right: 24upx;
           color: #3d3d3d;
+          font-weight: bold;
+          font-size: 28upx;
+
           &.active {
             font-weight: bold;
             color: #3662ec;
+            font-size: 28upx;
           }
         }
       }
@@ -798,7 +815,6 @@ export default {
   }
 }
 .Prices {
-  padding: 0 26upx;
   .border {
     border-radius: 5px;
     background: #ffffff;
@@ -809,6 +825,7 @@ export default {
       font-size: 20upx;
       color: #999999;
       font-weight: 350;
+      padding-bottom: 10upx;
       .name {
         text-align: center;
         width: 14%;
@@ -842,6 +859,7 @@ export default {
       display: flex;
       font-size: 20upx;
       font-weight: 400;
+      padding: 10upx 0;
       .nametext {
         width: 14%;
         text-align: center;
