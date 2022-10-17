@@ -87,7 +87,7 @@
           >{{ item.label }}</view
         >
 
-        <view class="modal" ref="modalRef">
+        <!-- <view class="modal" ref="modalRef">
           <view
             class="item"
             :class="{ active: item.value === currentTab }"
@@ -96,25 +96,60 @@
             @click="switchTab(item.value)"
             >{{ item.label }}</view
           >
-        </view>
+        </view> -->
       </view>
 
       <Pane title="供求信息">
-        <view class="list">
-          <view class="title">采购列表</view>
-          <view class="title">供应列表</view>
+        <view class="tradeLeads">
+          <view class="topchose" style="margin-bottom: 10px">
+            <view
+              @click="changeTab(0)"
+              :class="{ active: currentTab1 === 0 }"
+              class="item"
+              >采购列表</view
+            >
+            <view
+              @click="changeTab(1)"
+              :class="{ active: currentTab1 === 1 }"
+              class="item"
+              >供应列表</view
+            >
           </view>
-        <view class="list-type">  
-          <img
+          <view class="border" style="padding: 10px 0">
+            <view class="top">
+              <view class="text">时间</view>
+              <view class="text1">类别</view>
+              <view class="text2">地区</view>
+              <view class="text3">颜色</view>
+              <view class="text4">数量</view>
+              <view class="text5">联系方式</view>
+            </view>
+            <view class="detail">
+              <view class="time">08:45</view>
+              <view class="name">五金</view>
+              <view class="address">广东</view>
+              <view class="color">无</view>
+              <view class="number">1000</view>
+              <view class="phone">13800138000</view>
+            </view>
+          </view>
+        </view>
+        <view class="list-type">
+          <!-- <img
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
             style="width: 100%"
             alt=""
-          />
+          /> -->
 
           <!-- <Table
           
           ></Table> -->
         </view>
+        <!-- <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
+          style="width: 100%"
+          alt=""
+        /> -->
       </Pane>
 
       <Pane title="价格指数">
@@ -183,6 +218,7 @@ import { checkWhoami } from "../../utils";
 import {
   getIndustryInformationListApi,
   getSupplyListApi,
+  getPcTodayListApi,
 } from "../../api/stuff";
 import Tables from "../../stuff/components/table";
 
@@ -202,6 +238,7 @@ export default {
       navs,
       navs2,
       currentTab: 0,
+      currentTab1: 0,
       currentForOfferTab: 0,
       showMoreVisible: false,
       informationList: [],
@@ -217,6 +254,11 @@ export default {
       uni.navigateTo({
         url: item.Url,
       });
+    },
+    changeTab(tab) {
+      console.log(this.currentTab);
+      this.currentTab1 = tab;
+      console.log(this.currentTab);
     },
     switchTab(index) {
       this.currentTab = index;
@@ -272,6 +314,21 @@ export default {
           duration: 2000,
         });
       }
+      console.log("供应列表", res);
+    },
+    // 采购列表
+    async getPcTodayList() {
+      const res = await getPcTodayListApi();
+      if (res.errno === 0) {
+        this.supplyList = res.data;
+        console.log(this.supplyList);
+      } else {
+        uni.showToast({
+          title: "供应列表失败",
+          duration: 2000,
+        });
+      }
+      console.log("采购列表", res);
     },
     //店铺列表
     async getBrandList() {
@@ -289,10 +346,11 @@ export default {
   },
 
   mounted() {
-    this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
+    // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
     // checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
+    this.getPcTodayList();
   },
 };
 </script>
@@ -447,7 +505,80 @@ export default {
     padding: 20upx 26upx;
     box-sizing: border-box;
     background-color: @cw;
-
+    .tradeLeads {
+      .topchose {
+        display: flex;
+        .item {
+          font-size: 20upx;
+          padding: 0 24upx;
+          color: #3d3d3d;
+          &.active {
+            font-weight: bold;
+            color: #3662ec;
+          }
+        }
+      }
+      .border {
+        border-radius: 5px;
+        background: #ffffff;
+        box-sizing: border-box;
+        border: 0.5px solid #999999;
+        .top {
+          display: flex;
+          font-size: 20upx;
+          .text {
+            padding-left: 34upx;
+            color: #999999;
+          }
+          .text1 {
+            margin-left: 40upx;
+            color: #999999;
+          }
+          .text2 {
+            margin-left: 54upx;
+            color: #999999;
+          }
+          .text3 {
+            margin-left: 48upx;
+            color: #999999;
+          }
+          .text4 {
+            margin-left: 62upx;
+            color: #999999;
+          }
+          .text5 {
+            margin-left: 80upx;
+            color: #999999;
+          }
+        }
+        .detail {
+          display: flex;
+          font-size: 20upx;
+          font-weight: 400;
+          .time {
+            color: #fa5151;
+            padding-left: 30upx;
+          }
+          .name {
+            margin-left: 26upx;
+          }
+          .address {
+            margin-left: 58upx;
+          }
+          .color {
+            margin-left: 52upx;
+          }
+          .number {
+            color: #fa5151;
+            margin-left: 74upx;
+          }
+          .phone {
+            color: #3662ec;
+            margin-left: 52upx;
+          }
+        }
+      }
+    }
     .more-wrapper {
       width: 40upx;
       position: absolute;
@@ -513,23 +644,15 @@ export default {
         }
       }
     }
-    
-      
-      .list{
-        display: flex;
-        
-        font-size: 20upx;
-        .title{
-          padding-right: 30upx;
-        }
+
+    .list {
+      display: flex;
+
+      font-size: 20upx;
+      .title {
+        padding-right: 30upx;
       }
-      .list-type{
-      
-      }
-
-
-
-
+    }
   }
 
   .wrapper {

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import Update from "../../wxcomponents/vant/dist/uploader/index.vue";
 import FieldPane from "./components/field-pane.vue";
 import UploadPane from "./components/upload-pane.vue";
 import { applyStoreOne, applyStoreTow } from "./config";
@@ -28,6 +29,7 @@ export default {
   components: {
     FieldPane,
     UploadPane,
+    Update,
   },
   data() {
     return {
