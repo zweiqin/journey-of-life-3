@@ -205,6 +205,8 @@
       </Pane>
     </view>
   <!-- </view> -->
+</view>
+
 </template>
 
 <script>
@@ -244,6 +246,7 @@ export default {
       informationList: [],
       supplyList: [],
       brandList: [],
+
     };
   },
 
