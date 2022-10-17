@@ -13,7 +13,7 @@
       <img
         class="back"
         @click="handleBack"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1676ilbo4t26udpy067z.png"
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bpxhsjmf5zhejt921o75.png"
         alt=""
       />
 
@@ -257,7 +257,7 @@ export default {
     }
 
     .back {
-      width: 16upx;
+      width: 48upx;
     }
 
     .store-info {

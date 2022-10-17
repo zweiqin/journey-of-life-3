@@ -144,7 +144,7 @@ export default {
       console.log(res);
       this.navs2 = res.data.items;
       console.log(this.navs2);
-      this.navs2.unshift({storeName: "全部"})
+      this.navs2.unshift({storeName: "全部",id:0})
     },
   },
 

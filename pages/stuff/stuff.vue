@@ -99,58 +99,84 @@
         </view> -->
       </view>
 
-      <Pane title="供求信息">
-        <view class="tradeLeads">
-          <view class="topchose" style="margin-bottom: 10px">
-            <view
-              @click="changeTab(0)"
-              :class="{ active: currentTab1 === 0 }"
-              class="item"
-              >采购列表</view
-            >
-            <view
-              @click="changeTab(1)"
-              :class="{ active: currentTab1 === 1 }"
-              class="item"
-              >供应列表</view
-            >
+      <view class="tradeLeads">
+        <view class="topchose" style="margin-bottom: 10px">
+          <view
+            @click="changeTab(0)"
+            :class="{ active: currentTab1 === 0 }"
+            class="item"
+            >采购列表</view
+          >
+          <view
+            @click="changeTab(1)"
+            :class="{ active: currentTab1 === 1 }"
+            class="item"
+            >供应列表</view
+          >
+        </view>
+        <view class="border" v-if="currentTab1 == 0">
+          <view class="top">
+            <view class="text">时间</view>
+            <view class="text1">类别</view>
+            <view class="text2">地区</view>
+            <view class="text3">颜色</view>
+            <view class="text4">数量</view>
+            <view class="text5">联系方式</view>
           </view>
-          <view class="border" style="padding: 10px 0">
-            <view class="top">
-              <view class="text">时间</view>
-              <view class="text1">类别</view>
-              <view class="text2">地区</view>
-              <view class="text3">颜色</view>
-              <view class="text4">数量</view>
-              <view class="text5">联系方式</view>
-            </view>
+          <view class="text-border"></view>
+          <view v-for="(item1, id1) in PcToday" :key="id1">
             <view class="detail">
-              <view class="time">08:45</view>
-              <view class="name">五金</view>
-              <view class="address">广东</view>
-              <view class="color">无</view>
-              <view class="number">1000</view>
-              <view class="phone">13800138000</view>
+              <view class="time">{{ item1.addTime | formatTime }}</view>
+              <view class="name">{{ item1.materialsCategory }}</view>
+              <view class="address">{{ item1.materialsRegion }}</view>
+              <view class="color">{{ item1.materialsColor }}</view>
+              <view class="number">{{ item1.materialsNumber }}</view>
+              <view class="phone">{{ item1.materialsPhone }}</view>
             </view>
+            <view class="text-border"></view>
           </view>
         </view>
-        <view class="list-type">
-          <!-- <img
+        <!-- 供应 -->
+        <view class="border" v-if="currentTab1 == 1">
+          <view class="top">
+            <view class="text">类别</view>
+            <view class="text1">地区</view>
+            <view class="text2">材质</view>
+            <view class="text3">销量</view>
+            <view class="text4">参考价</view>
+            <view class="text5">联系方式</view>
+          </view>
+          <view class="text-border"></view>
+
+          <view v-for="(item, id) in supplyList" :key="id">
+            <view class="detail">
+              <view class="time1">{{ item.materialsCategory }}</view>
+              <view class="name">{{ item.materialsRegion }}</view>
+              <view class="address">{{ item.materialsTexture }}</view>
+              <view class="color1">{{ item.sales }}</view>
+              <view class="number">￥{{ item.referenceMoney }}</view>
+              <view class="phone">{{ item.materialsPhone }}</view>
+            </view>
+            <view class="text-border"></view>
+          </view>
+        </view>
+      </view>
+      <view class="list-type">
+        <!-- <img
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
             style="width: 100%"
             alt=""
           /> -->
 
-          <!-- <Table
+        <!-- <Table
           
           ></Table> -->
-        </view>
-        <!-- <img
+      </view>
+      <!-- <img
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
           style="width: 100%"
           alt=""
         /> -->
-      </Pane>
 
       <Pane title="价格指数">
         <img
@@ -158,13 +184,34 @@
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/wilav6bgzf3pq8aggn3a.png"
           alt=""
         />
-        <img
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7094z8pue08ld6ndubcx.png"
-          style="width: 100%"
-          alt=""
-        />
+        <view class="Prices">
+          <view class="border">
+            <view class="list-title">
+              <view class="name">类别</view>
+              <view class="sname">品名</view>
+              <view class="sku">规格</view>
+              <view class="stuff">材质</view>
+              <view class="quality">品质</view>
+              <view class="money">价格</view>
+              <view class="unit">单位</view>
+            </view>
+            <view class="text-border"></view>
+            <view v-for="(item2, id2) in PricesList" :key="id2">
+              <view class="list-detail">
+                <view class="nametext">{{ item2.materialsCategory }}</view>
+                <view class="snametext">{{ item2.materialsName }}</view>
+                <view class="skutext">{{ item2.materialsSku }}</view>
+                <view class="stufftext">{{ item2.materialsTexture }}</view>
+                <view class="qualitytext">{{ item2.materialsQuality }}</view>
+                <view class="moneytext">{{ item2.materialsMoney }}</view>
+                <view class="unittext">{{ item2.materialsUnit }}</view>
+              </view>
+              <view class="text-border"></view>
+            </view>
+          </view>
+        </view>
         <Carousel
-          height="74"
+          :height="74"
           :list="[
             'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
             'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
@@ -221,6 +268,7 @@ import {
   getIndustryInformationListApi,
   getSupplyListApi,
   getPcTodayListApi,
+  getPricesListApi,
 } from "../../api/stuff";
 import Tables from "../../stuff/components/table";
 
@@ -246,10 +294,16 @@ export default {
       informationList: [],
       supplyList: [],
       brandList: [],
-
+      PcToday: [],
+      PricesList: [],
     };
   },
-
+  filters: {
+    formatTime(time) {
+      const a = time.split(" ")[1].split(":");
+      return a[0] + ":" + a[1];
+    },
+  },
   methods: {
     bindtapStuff(item) {
       console.log(item.Url);
@@ -259,9 +313,13 @@ export default {
       });
     },
     changeTab(tab) {
-      console.log(this.currentTab);
       this.currentTab1 = tab;
-      console.log(this.currentTab);
+      if (this.currentTab1 == 0) {
+        this.getPcTodayList();
+      } else if (this.currentTab1 == 1) {
+        this.getSupplyList();
+      }
+      console.log(this.currentTab1);
     },
     switchTab(index) {
       this.currentTab = index;
@@ -304,34 +362,48 @@ export default {
 
       console.log(res);
     },
-
+    // 价格列表
+    async getPricesList() {
+      const res = await getPricesListApi();
+      if (res.errno === 0) {
+      } else {
+        uni.showToast({
+          title: "价格列表失败",
+          duration: 2000,
+        });
+      }
+      console.log("价格列表", res.data.items);
+      this.PricesList = res.data.items;
+      this.PricesList = this.PricesList.slice(0, 7);
+    },
     // 供应列表
     async getSupplyList() {
       const res = await getSupplyListApi();
       if (res.errno === 0) {
-        this.supplyList = res.data;
-        console.log(this.supplyList);
       } else {
         uni.showToast({
           title: "供应列表失败",
           duration: 2000,
         });
       }
-      console.log("供应列表", res);
+      this.supplyList = res.data.items;
+      this.supplyList = this.supplyList.slice(0, 5);
+      console.log("供应列表", this.supplyList);
     },
     // 采购列表
     async getPcTodayList() {
       const res = await getPcTodayListApi();
       if (res.errno === 0) {
-        this.supplyList = res.data;
-        console.log(this.supplyList);
       } else {
         uni.showToast({
-          title: "供应列表失败",
+          title: "采购列表失败",
           duration: 2000,
         });
       }
-      console.log("采购列表", res);
+
+      console.log("采购列表", res.data);
+      this.PcToday = res.data.items;
+      this.PcToday = this.PcToday.slice(0, 5);
     },
     //店铺列表
     async getBrandList() {
@@ -354,6 +426,7 @@ export default {
     this.getIndustryInformationList();
     this.getSupplyList();
     this.getPcTodayList();
+    this.getPricesList();
   },
 };
 </script>
@@ -364,7 +437,11 @@ export default {
 <style lang="less" scoped>
 @import "../../style/var.less";
 @import "../../style/mixin.less";
-
+.text-border {
+  border: 0.5px solid #d8d8d8;
+  width: 97%;
+  margin: 0 auto;
+}
 .p-container {
   border-bottom: 1upx solid #ccc;
 
@@ -403,7 +480,7 @@ export default {
     position: absolute;
     width: 95%;
     height: 72upx;
-    top: 54upx;
+    top: 14upx;
     left: 50%;
     padding: 16upx 24upx;
     transform: translateX(-50%);
@@ -439,6 +516,7 @@ export default {
     height: 552upx;
     border-radius: 0 0 20upx 20upx;
     overflow: hidden;
+    padding-top: 100upx;
 
     .swiper {
       width: 100%;
@@ -509,75 +587,148 @@ export default {
     box-sizing: border-box;
     background-color: @cw;
     .tradeLeads {
+      padding-top: 20upx;
       .topchose {
         display: flex;
+        padding-left: 14upx;
+        border-left: 4upx solid #fa5151;
         .item {
-          font-size: 20upx;
-          padding: 0 24upx;
+          padding-right: 24upx;
           color: #3d3d3d;
+          font-weight: bold;
+          font-size: 28upx;
+
           &.active {
             font-weight: bold;
             color: #3662ec;
+            font-size: 28upx;
           }
         }
       }
       .border {
         border-radius: 5px;
         background: #ffffff;
-        box-sizing: border-box;
         border: 0.5px solid #999999;
+        padding: 10upx 0 20upx 0;
         .top {
           display: flex;
           font-size: 20upx;
+          font-weight: 400;
+          padding: 5upx 10upx;
           .text {
-            padding-left: 34upx;
+            width: 15%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .text1 {
-            margin-left: 40upx;
+            width: 15%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .text2 {
-            margin-left: 54upx;
+            width: 15%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .text3 {
-            margin-left: 48upx;
+            width: 15%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .text4 {
-            margin-left: 62upx;
+            width: 15%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .text5 {
-            margin-left: 80upx;
+            width: 25%;
             color: #999999;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
         .detail {
           display: flex;
           font-size: 20upx;
           font-weight: 400;
+          padding: 5upx 10upx;
           .time {
             color: #fa5151;
-            padding-left: 30upx;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .time1 {
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .name {
-            margin-left: 26upx;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .address {
-            margin-left: 58upx;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .color {
-            margin-left: 52upx;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .color1 {
+            color: #00b578;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .number {
             color: #fa5151;
-            margin-left: 74upx;
+            width: 15%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .phone {
             color: #3662ec;
-            margin-left: 52upx;
+            width: 25%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }
@@ -656,11 +807,113 @@ export default {
         padding-right: 30upx;
       }
     }
+    .list-type {
+    }
   }
 
   .wrapper {
     .flex();
     flex-wrap: wrap;
+  }
+}
+.Prices {
+  .border {
+    border-radius: 5px;
+    background: #ffffff;
+    border: 0.5px solid #999999;
+    padding: 10upx 0 20upx 0;
+    .list-title {
+      display: flex;
+      font-size: 20upx;
+      color: #999999;
+      font-weight: 350;
+      padding-bottom: 10upx;
+      .name {
+        text-align: center;
+        width: 14%;
+      }
+      .sname {
+        text-align: center;
+        width: 14%;
+      }
+      .sku {
+        text-align: center;
+        width: 14%;
+      }
+      .stuff {
+        text-align: center;
+        width: 14%;
+      }
+      .quality {
+        text-align: center;
+        width: 14%;
+      }
+      .money {
+        text-align: center;
+        width: 15%;
+      }
+      .unit {
+        width: 15%;
+        text-align: center;
+      }
+    }
+    .list-detail {
+      display: flex;
+      font-size: 20upx;
+      font-weight: 400;
+      padding: 10upx 0;
+      .nametext {
+        width: 14%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .snametext {
+        width: 14%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .skutext {
+        width: 14%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .stufftext {
+        width: 14%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #ff8f1f;
+      }
+      .qualitytext {
+        width: 14%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .moneytext {
+        width: 15%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #fa5151;
+      }
+      .unittext {
+        width: 15%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
 }
 </style>
