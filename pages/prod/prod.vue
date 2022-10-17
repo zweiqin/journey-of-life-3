@@ -1005,8 +1005,8 @@ export default {
     width: 100%;
     height: 116upx;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 14upx 22upx;
     background-color: #fff;
     z-index: 201;
 

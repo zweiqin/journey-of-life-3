@@ -87,7 +87,7 @@
           >{{ item.label }}</view
         >
 
-        <view class="modal" ref="modalRef">
+        <!-- <view class="modal" ref="modalRef">
           <view
             class="item"
             :class="{ active: item.value === currentTab }"
@@ -96,12 +96,12 @@
             @click="switchTab(item.value)"
             >{{ item.label }}</view
           >
-        </view>
+        </view> -->
       </view>
 
       <Pane title="供求信息">
         <view class="tradeLeads">
-          <view class="topchose">
+          <view class="topchose" style="margin-bottom: 10px">
             <view
               @click="changeTab(0)"
               :class="{ active: currentTab1 === 0 }"
@@ -115,7 +115,7 @@
               >供应列表</view
             >
           </view>
-          <view class="border">
+          <view class="border" style="padding: 10px 0">
             <view class="top">
               <view class="text">时间</view>
               <view class="text1">类别</view>
@@ -134,13 +134,24 @@
             </view>
           </view>
         </view>
+        <view class="list-type">
+          <!-- <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
+            style="width: 100%"
+            alt=""
+          /> -->
+
+          <!-- <Table
+          
+          ></Table> -->
+        </view>
         <!-- <img
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
           style="width: 100%"
           alt=""
         /> -->
       </Pane>
-</view>
+
       <Pane title="价格指数">
         <img
           style="width: 100%"
@@ -335,7 +346,7 @@ export default {
   },
 
   mounted() {
-    this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
+    // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
     // checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
@@ -564,8 +575,6 @@ export default {
           .phone {
             color: #3662ec;
             margin-left: 52upx;
-
-          
           }
         }
       }
@@ -635,23 +644,15 @@ export default {
         }
       }
     }
-    
-      
-      .list{
-        display: flex;
-        
-        font-size: 20upx;
-        .title{
-          padding-right: 30upx;
-        }
+
+    .list {
+      display: flex;
+
+      font-size: 20upx;
+      .title {
+        padding-right: 30upx;
       }
-      .list-type{
-      
-      }
-
-
-
-
+    }
   }
 
   .wrapper {

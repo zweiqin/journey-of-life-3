@@ -48,6 +48,7 @@ export default {
 
 .pane-container {
   margin: 26upx auto 20upx auto;
+  background-color: #fff
 }
 
 .header {
