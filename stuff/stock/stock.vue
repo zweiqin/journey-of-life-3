@@ -1,11 +1,6 @@
 <template>
   <div>
     <view class="kucun">
-      <img
-        class="background"
-        src="../../static/images/stuff/background.png"
-        alt=""
-      />
       <view class="title">库存</view>
       <img
         class="fanhui"
@@ -18,11 +13,8 @@
         src="../../static/images/stuff/热销.png"
         alt=""
       />
-      <img
-        class="background2"
-        src="../../static/images/stuff/《工厂直销，材料大放送》.png"
-        alt=""
-      />
+
+      <view class="background2">《工厂直销，材料大放送》</view>
       <view class="background3">
         <view class="title-list">
           <view
@@ -35,8 +27,14 @@
           <view class="text">五金配件</view>
           <view class="text">沙发材料</view>
           <view class="text">椅类配件</view>
+
+          <img
+            class="anniu"
+            src="../../static/images/stuff/Vector1.png"
+            alt=""
+          />
         </view>
-        <img class="anniu" src="../../static/images/stuff/Vector1.png" alt="" />
+
         <view class="goods-list">
           <view class="goods-detail">
             <view class="left">
@@ -315,45 +313,53 @@ export default {
 
 <style lang="less" scoped>
 .kucun {
+  width: 100%;
+  height: 380upx;
+  background: linear-gradient(180deg, #fa5151 0%, rgba(255, 143, 31, 0) 136%);
+
   .title {
-    top: 68upx;
-    left: 342upx;
-    position: absolute;
-    font-family: SourceHanSansCN-Medium;
+    text-align: center;
+    padding-top: 68upx;
     font-size: 32upx;
     font-weight: 500;
     color: #ffffff;
   }
   .fanhui {
     position: absolute;
-    top: 78upx;
+    top: 70upx;
     left: 40upx;
+    width: 48upx;
+    height: 48upx;
   }
   .background1 {
     position: absolute;
     top: 190upx;
     left: -0.5upx;
+    width: 100%;
   }
   .background2 {
-    position: absolute;
-    left: 102upx;
-    top: 166upx;
+    padding-top: 40upx;
+    text-align: center;
+    font-size: 48upx;
+    letter-spacing: 0.1em;
+    background: linear-gradient(to bottom, #ffffff, #fff8c6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .background3 {
     position: absolute;
     top: 240upx;
-    width: 750upx;
-    height: 2012upx;
+    width: 100%;
     border-radius: 20px;
     background: #ffffff;
 
     .title-list {
       display: flex;
       padding-top: 46upx;
-      padding-left: 32upx;
+      padding-left: 50upx;
+      justify-content: space-between;
       .text {
-        padding-right: 56upx;
-        font-family: SourceHanSansCN-Normal;
         font-size: 24upx;
         font-weight: 350;
         color: #3d3d3d;
@@ -362,33 +368,32 @@ export default {
           color: #3d3d3d;
         }
       }
+      .anniu {
+        padding-right: 20upx;
+        width: 34upx;
+        height: 24upx;
+      }
     }
-    .anniu {
-      top: 50upx;
-      right: 44upx;
-      position: absolute;
-      width: 16.67px;
-      height: 11.67px;
-    }
+
     .goods-list {
       .goods-detail {
         display: flex;
+        width: 100%;
+        justify-content: space-between;
         .left {
           .cailiao {
             padding-left: 48upx;
             padding-top: 56upx;
-            padding-right: 78upx;
             width: 220upx;
             height: 220upx;
           }
         }
         .right {
+          padding-right: 110upx;
           .goods-name {
             padding-top: 30upx;
-            font-family: SourceHanSansCN-Medium;
             font-size: 24upx;
             font-weight: 500;
-            letter-spacing: 0em;
             color: #3d3d3d;
           }
           .geiqian {
@@ -398,26 +403,21 @@ export default {
           }
           .yishou {
             padding-top: 4upx;
-            font-family: SourceHanSansCN-Regular;
             font-size: 24upx;
-            font-weight: normal;
-            letter-spacing: 0em;
             color: rgba(0, 0, 0, 0.85);
           }
           .jiage {
             display: flex;
             .xianjia {
               padding-top: 6upx;
-              font-size: 18px;
+              font-size: 36upx;
               font-weight: 500;
-              font-family: SourceHanSansCN-Medium;
-              letter-spacing: 0em;
               color: #fa5151;
             }
             .yuanjia {
               padding-top: 18upx;
               padding-left: 14upx;
-              font-size: 10px;
+              font-size: 20upx;
               font-weight: normal;
               color: #999999;
             }
@@ -426,7 +426,7 @@ export default {
             .xiadan1 {
               padding-top: 14upx;
               padding-left: 13upx;
-              font-size: 18px;
+              font-size: 36upx;
               font-weight: 500;
               z-index: 100;
               position: absolute;
@@ -434,14 +434,12 @@ export default {
             }
             .juxing1 {
               position: absolute;
-
               padding-top: 6upx;
               width: 207upx;
               height: 62upx;
             }
             .juxing2 {
               position: absolute;
-
               padding-left: 176upx;
               padding-top: 6upx;
               width: 80upx;

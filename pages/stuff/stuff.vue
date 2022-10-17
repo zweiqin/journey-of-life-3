@@ -193,7 +193,7 @@
         </view>
       </Pane>
     </view>
-  </view>
+  <!-- </view> -->
 </template>
 
 <script>
