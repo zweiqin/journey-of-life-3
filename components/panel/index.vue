@@ -12,7 +12,10 @@
       <text class="title">{{ title }}</text>
       <view class="route-wrapper" v-if="routeText" @click="handleToLink">
         <text class="route">{{ routeText }}</text>
-        <img src="../../static/images/common/chevron-states.png" alt="icon" />
+        <img
+          src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/enj9w1khufx441fo4fe8.png"
+          alt="icon"
+        />
       </view>
     </view>
 
@@ -52,7 +55,7 @@ export default {
 <style lang="less" scoped>
 .panel {
   width: 100%;
-  margin-bottom: 40upx;
+  margin-bottom: upx;
 
   .header {
     display: flex;
@@ -67,7 +70,7 @@ export default {
 
     .title {
       color: #3d3d3d;
-      font-size: 24upx;
+      font-size: 28upx;
       font-weight: bold;
     }
 
@@ -76,8 +79,10 @@ export default {
       align-items: center;
 
       .route {
-        color: #999999;
+        padding-right: 10upx;
+        color: #3d3d3d;
         font-size: 20upx;
+        font-weight: 350;
       }
     }
   }

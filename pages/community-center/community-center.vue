@@ -62,7 +62,7 @@
     <!-- sub-nav -->
     <view class="sub-nav">
       <view class="item" v-for="item in navs.slice(0, 5)" :key="item.label">
-        <view class="img-wrapper">
+        <view class="img-wrapper" :style="{ background: item.background }">
           <img class="img" :src="item.icon" alt="" />
         </view>
         <text class="title">{{ item.label }}</text>
@@ -71,7 +71,7 @@
 
     <view class="sub-nav">
       <view class="item" v-for="item in navs.slice(5)" :key="item.label">
-        <view class="img-wrapper">
+        <view class="img-wrapper" :style="{ background: item.background }">
           <img class="img" :src="item.icon" alt="" />
         </view>
         <text class="title">{{ item.label }}</text>
@@ -88,7 +88,7 @@
         <img
           @click="handleToPage('/community-center/site/home')"
           class="store-img"
-          src="../../static/images/con-center/store.png"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lzip9yu31ezatbbti7h8.png"
           alt=""
         />
       </Panel>
@@ -103,21 +103,25 @@
           <view class="item">
             <img
               class="img"
-              src="https://img1.baidu.com/it/u=3918730108,3120524177&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/4ioqj3035qm3wdcv2kcc.png"
               alt=""
             />
             <view class="info">
-              <view class="title">厨具深度保洁14小时厨具深度保洁14小时</view>
-              <view class="price"> ￥<text class="text">400</text> </view>
+              <view class="title">团蜂家居社区...（龙江店）</view>
+              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+              <view class="sign">
+                <view class="show">官方直营</view>
+                <view class="show">品牌老店</view>
+              </view>
               <view class="footer">
-                <view class="left">
+                <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
                     alt=""
                   />
                   <view class="name">团蜂社区服务站</view>
-                </view>
+                </view> -->
                 <view class="right">
                   <img
                     class="views"
@@ -133,21 +137,25 @@
           <view class="item">
             <img
               class="img"
-              src="https://img1.baidu.com/it/u=3918730108,3120524177&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vvnjnrc2edczp0depm3t.png"
               alt=""
             />
             <view class="info">
-              <view class="title">厨具深度保洁14小时厨具深度保洁14小时</view>
-              <view class="price"> ￥<text class="text">400</text> </view>
+              <view class="title">团蜂家居社区...（龙江店）</view>
+              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+              <view class="sign">
+                <view class="show">官方直营</view>
+                <view class="show">品牌老店</view>
+              </view>
               <view class="footer">
-                <view class="left">
+                <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
                     alt=""
                   />
                   <view class="name">团蜂社区服务站</view>
-                </view>
+                </view> -->
                 <view class="right">
                   <img
                     class="views"
@@ -163,21 +171,25 @@
           <view class="item">
             <img
               class="img"
-              src="https://img1.baidu.com/it/u=3918730108,3120524177&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+              src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xdokj5x4h29bka31rf7a.png"
               alt=""
             />
             <view class="info">
-              <view class="title">厨具深度保洁14小时厨具深度保洁14小时</view>
-              <view class="price"> ￥<text class="text">400</text> </view>
+              <view class="title">团蜂家居社区...（龙江店）</view>
+              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+              <view class="sign">
+                <view class="show">官方直营</view>
+                <view class="show">品牌老店</view>
+              </view>
               <view class="footer">
-                <view class="left">
+                <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
                     alt=""
                   />
                   <view class="name">团蜂社区服务站</view>
-                </view>
+                </view> -->
                 <view class="right">
                   <img
                     class="views"
@@ -193,21 +205,25 @@
           <view class="item">
             <img
               class="img"
-              src="https://img1.baidu.com/it/u=3918730108,3120524177&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+              src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9yq1bskgb9z6j6zythwp.png"
               alt=""
             />
             <view class="info">
-              <view class="title">厨具深度保洁14小时厨具深度保洁14小时</view>
-              <view class="price"> ￥<text class="text">400</text> </view>
+              <view class="title">团蜂家居社区...（龙江店）</view>
+              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+              <view class="sign">
+                <view class="show">官方直营</view>
+                <view class="show">品牌老店</view>
+              </view>
               <view class="footer">
-                <view class="left">
+                <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
                     alt=""
                   />
                   <view class="name">团蜂社区服务站</view>
-                </view>
+                </view> -->
                 <view class="right">
                   <img
                     class="views"
@@ -373,6 +389,7 @@ export default {
       .title {
         font-size: 24upx;
         color: #3d3d3d;
+        font-weight: 400;
       }
 
       .img-wrapper {
@@ -392,13 +409,14 @@ export default {
   }
 
   .wrapper {
-    padding: 22upx;
+    padding: 42upx 22upx 22upx 22upx;
 
     .store-img {
       width: 100%;
       height: 160upx;
       border-radius: 20upx;
-      margin-top: 20upx;
+      margin-top: 14upx;
+      margin-bottom: 14upx;
     }
 
     .business-wrapper {
@@ -409,7 +427,7 @@ export default {
 
       .item {
         width: 348upx;
-        margin-top: 20upx;
+        margin-top: 14upx;
 
         .img {
           width: 100%;
@@ -422,15 +440,32 @@ export default {
           justify-content: center;
           align-items: flex-start;
           flex-direction: column;
-          padding: 14upx 18upx 10upx 20upx;
+          padding: 8upx 18upx 10upx 20upx;
 
           .title {
-            width: 348upx;
+            width: 284upx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             color: #3d3d3d;
             font-size: 24upx;
+          }
+          .sign {
+            padding-top: 12upx;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            .show {
+              text-align: center;
+              font-size: 20upx;
+              font-weight: 350;
+              width: 126upx;
+              height: 36upx;
+              color: #fa5151;
+              border-radius: 20upx;
+              // box-sizing: border-box;
+              border: 1upx solid #fa5151;
+            }
           }
 
           .price {
@@ -445,8 +480,11 @@ export default {
           }
 
           .footer {
+            padding-top: 18upx;
+            justify-content: flex-end;
+            width: 100%;
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             align-items: center;
             .left {
               display: flex;
@@ -469,17 +507,17 @@ export default {
             }
 
             .right {
-              margin-left: 20upx;
               display: flex;
               align-items: center;
 
               .views {
-                width: 20upx;
+                width: 22upx;
+                height: 18upx;
               }
 
               .numbers {
                 color: #999999;
-                font-size: 16upx;
+                font-size: 20upx;
                 transform: scale(0.9);
               }
             }
