@@ -327,7 +327,7 @@ export default {
     async performanceList() {
       const res = await performanceListApi({
         // userId: getUserId(),
-        userId: 200,
+        userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,
