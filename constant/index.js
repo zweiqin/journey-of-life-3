@@ -22,3 +22,4 @@ export const SELECT_WORDS = "SELECT_WORDS";
 // goods
 export const PAY_GOODS = "PAY_GOODS";
 export const SELECT_ADDRESS = "SELECT_ADDRESS";
+export const STORE_TYPES = "STORE_TYPES";

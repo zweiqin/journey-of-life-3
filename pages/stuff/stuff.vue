@@ -54,9 +54,7 @@
     <view class="navs">
       <view class="item" v-for="item in navs" :key="item.label">
         <view
-          :style="{
-            background: item.bgc,
-          }"
+    
           class="icon-wrapper"
           @click="bindtapStuff(item)"
         >
@@ -420,7 +418,7 @@ export default {
 
   mounted() {
     // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
-    // checkWhoami();
+    checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
     this.getPcTodayList();
@@ -482,11 +480,12 @@ export default {
     left: 50%;
     padding: 16upx 24upx;
     transform: translateX(-50%);
-    background-color: #fff;
+    background-color: white;
     color: #000000;
     font-size: 24upx;
     border-radius: 50upx;
     z-index: 200;
+
 
     .local-wrapper {
       display: flex;
@@ -565,7 +564,7 @@ export default {
         border-radius: 10px;
 
         .icon {
-          width: 40upx;
+          width: 80upx;
         }
       }
 

@@ -152,7 +152,7 @@ export default {
     this.getData();
     this.getIndexData();
     this.getTehui();
-    // checkWhoami();
+    checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},

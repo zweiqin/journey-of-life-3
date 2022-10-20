@@ -1,6 +1,6 @@
 export const navs = [
   {
-    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/uidozr14z2bc6xbbrmsr.png",
+    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/jwv4xe8d3jnm4susrz79.png",
     bgc: "linear-gradient(148deg, #00B578 19%, rgba(9,161,110,0.00) 132%)",
     label: "店铺",
     Url: "../../stuff/shop/store",

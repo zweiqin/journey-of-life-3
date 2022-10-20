@@ -6,15 +6,15 @@ Vue.config.productionTip = false;
 
 Vue.mixin({
 	methods: {
-		setData: function(obj) {
+		setData: function (obj) {
 			let that = this;
 			let keys = [];
 			let val, data;
-			Object.keys(obj).forEach(function(key) {
+			Object.keys(obj).forEach(function (key) {
 				keys = key.split('.');
 				val = obj[key];
 				data = that.$data;
-				keys.forEach(function(key2, index) {
+				keys.forEach(function (key2, index) {
 					if (index + 1 == keys.length) {
 						that.$set(data, key2, val);
 					} else {
@@ -25,7 +25,14 @@ Vue.mixin({
 					data = data[key2];
 				})
 			});
-		}
+		},
+		$showToast(text, icon) {
+			uni.showToast({
+				title: text,
+				duration: 2000,
+				icon: icon || "none",
+			});
+		},
 	}
 });
 

@@ -252,7 +252,7 @@ export default {
   },
 
   mounted() {
-    // checkWhoami();
+    checkWhoami();
   },
 
   onShow() {

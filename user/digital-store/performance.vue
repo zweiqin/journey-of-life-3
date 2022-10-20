@@ -403,14 +403,15 @@ export default {
   position: fixed;
   bottom: 0px;
   left: 0px;
+  padding-top: 20upx;
   margin-top: 20upx;
-  margin-bottom: 20upx;
   background-color: white;
   width: 750upx;
-  height: 110upx;
+  height: 90upx;
   font-size: 28upx;
   text-align: center;
   .item {
+
     margin: 0 auto;
 
     &.active {

@@ -6,7 +6,7 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\user\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { LTRequest, getUserId } from "../../utils";
+import { LTRequest, getUserId,RuanRequest  } from "../../utils";
 
 // 业务管理升级
 export const upbussinessApi = (data) => {
@@ -105,4 +105,41 @@ export const addCustomerApi = (data) => {
  */
 export const addMyWordsApi = (data) => {
   return LTRequest("/api/msgSentry/saveMsgSay", data);
+};
+
+// 上传图片
+export const uploadFle = (data) => {
+  return RuanRequest("/storage/upload", data);
+};
+
+// 获取门店类型
+export const getStoreTypesApi = () => {
+  return RuanRequest("/storeType/list", {}, "get");
+};
+
+// 提交申请门店
+// 该字段决定保存或提交 （true 为提交）
+export const submitApplyStoreInfo = (type, data) => {
+  return RuanRequest("/userUpInfo/save?isSubmit=" + type, data);
+};
+
+// 获取省市区地址
+export const getCitiesApi = (data) => {
+  return RuanRequest("/region/list", data, "get");
+};
+//会员查询保存的信息
+export const getUserUpInfoReadApi = (data) => {
+  return RuanRequest("/userUpInfo/read", data, "get");
+};
+//会员查询申请记录表
+export const getUserUpInfoListApi = (data) => {
+  return RuanRequest("/userUpInfo/list", data, "get");
+};
+//升级支付（门店）
+export const getLevelPaySalesmanPrepayBySybApi = (data) => {
+  return RuanRequest("/levelPay/SalesmanPrepayBySyb", data, );
+};
+//会员支付h5
+export const paySybForEndApi = (data) => {
+  return request("/laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
 };

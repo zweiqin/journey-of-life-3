@@ -129,7 +129,7 @@ export default {
       query: {
         pageNo: 1,
         pageSize: 10,
-        userId: 150,
+        userId: getUserId(),
         keyword: undefined,
         status: undefined,
       },

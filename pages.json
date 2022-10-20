@@ -592,6 +592,18 @@
 					"usingComponents": {
 						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
 					}
+				},
+				{
+					"path": "marketing-tools/store-application"
+				},
+				{
+					"path": "marketing-tools/apply-vip-history"
+				},
+				{
+					"path": "marketing-tools/marketing-planner"
+				},
+				{
+					"path": "marketing-tools/red-envelope-distribution"
 				}
 			]
 		},
