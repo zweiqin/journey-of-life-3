@@ -336,6 +336,9 @@
 				},
 				{
 					"path": "pay"
+				},
+				{
+					"path": "furniture-maintenance"
 				}
 			]
 		},
