@@ -173,6 +173,7 @@ export default {
 
     async getData() {
       const res = await getMarketingPortraitDataApi();
+      console.log(res);
       if (res.errno === 0) {
         this.info = res.data;
       } else {

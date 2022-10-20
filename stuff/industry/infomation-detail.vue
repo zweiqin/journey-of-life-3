@@ -7,7 +7,7 @@
         <view class="time">{{ articleInfo.updateTime }}</view>
         <view class="author">{{ articleInfo.author }}</view>
       </view>
-      <Carousel height="78"></Carousel>
+      <!-- <Carousel height="78"></Carousel> -->
       <view class="article-main" v-html="articleInfo.content"> </view>
       <view class="other-acticle" v-if="recommonList.length">
         <view class="tag">相关阅读</view>

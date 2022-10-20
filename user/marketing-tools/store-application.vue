@@ -307,9 +307,11 @@ export default {
           title: "提示",
           content: "审核已通过，是否支付？",
           success: function (res) {
-            if (confirm) {
+            if (res.confirm) {
+              // console.log(res);
               _this.payOrderForEnd();
             } else {
+              // console.log('o,g');
             }
           },
         });

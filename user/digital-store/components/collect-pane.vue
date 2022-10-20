@@ -44,7 +44,7 @@ export default {
               userId: getUserId(),
             });
 
-            if (res === "转化成功") {
+            if (res.errno === 0) {
               _this.$emit('success')
             }
           }

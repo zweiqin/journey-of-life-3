@@ -59,7 +59,7 @@ export default {
               status: 4,
             });
 
-            if (changeRes === "回访成功") {
+            if (changeRes.errno === 0) {
               uni.showToast({
                 title: "回访成功",
                 duration: 2000,
