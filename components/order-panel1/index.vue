@@ -243,7 +243,8 @@ export default {
       if (res.errno === 0) {
         const submitData = {
           userId: getUserId(),
-          cartId: 0,
+          cartId: carId,
+          // cartId: 0,
           addressId: _this.defaultAddress.id,
           couponId: 0,
           message: _this.message || undefined,
@@ -274,7 +275,6 @@ export default {
             const form = document.createElement("form");
             form.setAttribute("action", res.url);
             form.setAttribute("method", "POST");
-
             const data = JSON.parse(res.data);
             let input;
             for (const key in data) {

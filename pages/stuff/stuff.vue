@@ -103,13 +103,13 @@
             @click="changeTab(0)"
             :class="{ active: currentTab1 === 0 }"
             class="item"
-            >采购列表</view
+            >我的采购</view
           >
           <view
             @click="changeTab(1)"
             :class="{ active: currentTab1 === 1 }"
             class="item"
-            >供应列表</view
+            >我的供应</view
           >
         </view>
         <view class="border" v-if="currentTab1 == 0">
@@ -209,7 +209,7 @@
           </view>
         </view>
         <Carousel
-          :height="74"
+          :height="140"
           :list="[
             'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
             'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
@@ -298,8 +298,8 @@ export default {
   },
   filters: {
     formatTime(time) {
-      const a = time.split(" ")[1].split(":");
-      return a[0] + ":" + a[1];
+      const a = time.split(" ")[0].split("-");
+      return a[1] + "-" + a[2];
     },
   },
   methods: {

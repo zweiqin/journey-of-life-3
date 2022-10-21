@@ -465,6 +465,12 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},			{
+					"path": "sever/shopUp",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
 				},
 				{
 					"path": "site/site-manage",

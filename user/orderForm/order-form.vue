@@ -137,13 +137,17 @@
       </view>
     </view>
 
-    <view class="bottom"></view>
+    <view class="bottom" v-if="length == 0">
+      <view class="detail">暂无订单</view>
+    </view>
+    <RecommendGoods></RecommendGoods>
   </view>
 </template>
 
 <script>
 import loginVue from "../../pages/login/login.vue";
 import { getUserId } from "../../utils";
+import RecommendGoods from "../../components/recommend-goods";
 import {
   getOrderListApi,
   getOrderCancelApi,
@@ -152,6 +156,9 @@ import {
   getOrderRefundApi,
 } from "../../api/order";
 export default {
+  components: {
+    RecommendGoods,
+  },
   methods: {
     bindRefund(e) {
       this.orderId = e.currentTarget.dataset.canceldetail.orderId;
@@ -212,6 +219,7 @@ export default {
         size: this.size,
       });
       this.orderList = res.data.data;
+      this.length = res.data.count;
     },
     back() {
       uni.navigateBack();
@@ -237,6 +245,7 @@ export default {
       showType: 0,
       collectiontype: "",
       currentTab: 0,
+      length: "",
       // goodslist: [
       //   {
       //     id: 1,
@@ -348,6 +357,7 @@ export default {
   padding: 0 44upx 0 32upx;
   .goods-left {
     margin-right: 36upx;
+    width: 30%;
     .goods-left-img {
       width: 200upx;
       height: 150upx;
@@ -356,6 +366,7 @@ export default {
   .goods-middle {
     flex: 1;
     margin-top: 10upx;
+    width: 48%;
     .goods-name {
       font-size: 24upx;
       font-weight: 500;
@@ -370,7 +381,6 @@ export default {
       font-weight: 350;
       overflow: hidden;
       display: flex;
-
       white-space: nowrap;
       text-overflow: ellipsis;
       .goods-size {
@@ -394,6 +404,9 @@ export default {
     font-size: 20upx;
     font-weight: 350;
     color: #fa5151;
+    width: 22%;
+    margin-left: 10upx;
+    padding-bottom: 20upx;
     .right-top {
     }
     .right-bottom {
@@ -403,6 +416,12 @@ export default {
   }
 }
 .bottom {
-  padding-top: 50upx;
+  .detail {
+    width: 750upx;
+    padding-top: 50upx;
+    color: #999999;
+    text-align: center;
+    font-size: 36upx;
+  }
 }
 </style>
