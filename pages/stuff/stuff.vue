@@ -542,7 +542,7 @@ export default {
 
   .navs {
     position: relative;
-    padding: 32upx 16upx;
+    padding: 32upx 0upx;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;

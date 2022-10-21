@@ -265,7 +265,7 @@ export default {
         userId: getUserId(),
 
         // // 传输的数据
-        // alarmMoney: "333",
+        // alarmMoney: "333", 
         // alarmTime: "2022-09-19 16:37:37",
         // day: "19",
         // headName: "123",

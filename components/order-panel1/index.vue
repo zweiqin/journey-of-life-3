@@ -148,6 +148,7 @@ export default {
       defaultAddress: null,
       goodsAll: [],
       allMoney: "",
+      orderSn:'',
     };
   },
 
@@ -242,22 +243,33 @@ export default {
       if (res.errno === 0) {
         const submitData = {
           userId: getUserId(),
-          cartId: carId,
+          cartId: 0,
           addressId: _this.defaultAddress.id,
           couponId: 0,
           message: _this.message || undefined,
           useVoucher: false,
           grouponRulesId: "",
           grouponLinkId: "",
+          // userId: 277,
+          // cartId: 0,
+          // addressId: 96,
+          // couponId: 0,
+          // message: "测试",
+          // grouponRulesId: "",
+          // grouponLinkId: "",
+          // useVoucher: false,
         };
 
         const submitRes = await submitOrderApi(submitData);
+        // console.log("下单",submitRes.data.orderSn);
+        this.orderSn = submitRes.data.orderSn
+        // console.log('订单号',this.orderSn);
         if (submitRes.errno === 0) {
           console.log(submitRes);
           payOrderGoodsApi({
-            orderNo: submitRes.data.orderSn,
+            orderNo: this.orderSn,
             userId: getUserId(),
-            payType: 1
+            payType: 1,
           }).then((res) => {
             const form = document.createElement("form");
             form.setAttribute("action", res.url);
