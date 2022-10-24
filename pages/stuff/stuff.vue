@@ -53,11 +53,7 @@
     <!-- nav -->
     <view class="navs">
       <view class="item" v-for="item in navs" :key="item.label">
-        <view
-    
-          class="icon-wrapper"
-          @click="bindtapStuff(item)"
-        >
+        <view class="icon-wrapper" @click="bindtapStuff(item)">
           <img :src="item.icon" class="icon" :alt="item.label" />
         </view>
         <view class="name">{{ item.label }}</view>
@@ -78,11 +74,11 @@
       <view class="navs2" ref="navs2Ref">
         <view
           class="item"
-          :class="{ active: item.value === currentTab }"
+          :class="{ active: item.id === currentTab }"
           v-for="item in navs2"
-          :key="item.label"
-          @click="switchTab(item.value)"
-          >{{ item.label }}</view
+          :key="item.id"
+          @click="switchTab(item.id)"
+          >{{ item.storeName }}</view
         >
 
         <!-- <view class="modal" ref="modalRef">
@@ -249,9 +245,8 @@
         </view>
       </Pane>
     </view>
-  <!-- </view> -->
-</view>
-
+    <!-- </view> -->
+  </view>
 </template>
 
 <script>
@@ -268,6 +263,7 @@ import {
   getPcTodayListApi,
   getPricesListApi,
 } from "../../api/stuff";
+import { getBrandTypeApi } from "../../api/brand";
 import Tables from "../../stuff/components/table";
 
 import { getBrandListApi } from "../../api/brand";
@@ -284,7 +280,7 @@ export default {
   data() {
     return {
       navs,
-      navs2,
+      navs2:[],
       currentTab: 0,
       currentTab1: 0,
       currentForOfferTab: 0,
@@ -344,7 +340,15 @@ export default {
         document.body.style.overflow = "auto";
       }
     },
-
+    //门店分类
+    async getBrandType() {
+      const res = await getBrandTypeApi({
+        storeName: "",
+      });
+      console.log("门店分类", res.data.items);
+      this.navs2 = res.data.items
+      this.navs2.unshift({storeName: "综合",id:0})
+    },
     // 获取行业信息
     async getIndustryInformationList() {
       const res = await getIndustryInformationListApi({
@@ -425,6 +429,7 @@ export default {
     this.getSupplyList();
     this.getPcTodayList();
     this.getPricesList();
+    this.getBrandType();
   },
 };
 </script>
@@ -487,7 +492,6 @@ export default {
     font-size: 24upx;
     border-radius: 50upx;
     z-index: 200;
-
 
     .local-wrapper {
       display: flex;

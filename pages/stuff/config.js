@@ -67,48 +67,48 @@ export const navs2 = [
     value: 0,
   },
   {
-    label: "功能配件",
+    label: "沙发辅料",
     value: 1,
   },
   {
-    label: "五金配件",
+    label: "软床材料",
     value: 2,
   },
   {
-    label: "沙发材料",
+    label: "五金配件",
     value: 3,
   },
   {
-    label: "椅类配件",
+    label: "办公配件",
     value: 4,
   },
   {
-    label: "软体材料",
+    label: "皮革皮料",
     value: 5,
   },
 
   {
-    label: "版式材料",
+    label: "布艺布织 ",
     value: 6,
   },
-  {
-    label: "家具皮革",
-    value: 7,
-  },
-  {
-    label: "家具布艺",
-    value: 8,
-  },
-  {
-    label: "家具海绵",
-    value: 9,
-  },
-  {
-    label: "家具化工",
-    value: 10,
-  },
-  {
-    label: "家具机械",
-    value: 11,
-  },
+  // {
+  //   label: "家具皮革",
+  //   value: 7,
+  // },
+  // {
+  //   label: "家具布艺",
+  //   value: 8,
+  // },
+  // {
+  //   label: "家具海绵",
+  //   value: 9,
+  // },
+  // {
+  //   label: "家具化工",
+  //   value: 10,
+  // },
+  // {
+  //   label: "家具机械",
+  //   value: 11,
+  // },
 ];

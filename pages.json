@@ -473,6 +473,13 @@
 					}
 				},
 				{
+					"path": "sever/applyHistory",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
 					"path": "site/site-manage",
 					"style": {
 						"navigationBarTitleText": "",

@@ -24,42 +24,10 @@
         </view>
         <view class="right-view"> </view>
       </view>
-      <!-- 会员卡标题 -->
-      <view class="userup-text"> 我的会员卡 </view>
-      <!-- 会员详情 -->
-      <view class="userup-detail">
-        <view class="detail-orange">
-          <view class="detail-text"> 会员时间: 2022.07.22-2023.07.22 </view>
-          <view class="detail-white">
-            <view class="detail-top">
-              <view class="detail-username"> 团蜂家居会员 </view>
-              <img
-                src="../../static/images/lqb/userUp/huangguan .png"
-                alt=""
-                class="top-img"
-              />
-              <view class="up-text">升级</view>
-            </view>
-            <view class="detail-bottom">
-              <view class="user-type">
-                <view class="type-text">会员状态</view>
-                <view class="type-number">会员</view>
-              </view>
-              <view class="mycoupon">
-                <view class="coupon-text">我的优惠券</view>
-                <view class="coupon-number">10</view>
-              </view>
-              <view class="shopmoney">
-                <view class="shopmoney-text">购物金</view>
-                <view class="shopmoney-number">10</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+
       <!-- 会员升级介绍 -->
       <view class="userup-say">
-        <view class="say-text"> 会员升级 </view>
+        <view class="say-text"> 门店升级 </view>
         <view class="say-img">
           <img
             class="img"
@@ -81,23 +49,23 @@
           </view>
           <view class="good-detail">
             <img
-              src="../../static/images/lqb/userUp/user-detail.png"
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u5eplf8zp6uh343rioyg.png"
               alt=""
               class="detail-img"
             />
           </view>
-          <view class="bottom-button">
+          <view class="bottom-button" @click="fillInformation">
             <view class="button-background">
               <view class="button-text">
                 <text
                   style="
                     font-size: 36upx;
-                    padding-left: 150upx;
+                    padding-left: 120upx;
                     padding-top: 28upx;
                   "
                   >￥</text
                 >
-                <text style="font-size: 72upx">99</text>
+                <text style="font-size: 72upx">3000</text>
                 <view>
                   <text
                     style="
@@ -105,7 +73,7 @@
                       padding-left: 38upx;
                       font-weight: 700;
                     "
-                    >会员升级</text
+                    >门店申请</text
                   >
                 </view>
               </view>
@@ -140,7 +108,12 @@
           </view>
         </uni-popup>
       </view>
+      <view class="bottom-button1">
+      <view class="left" @click="applyHistory"> 申请记录 </view>
+      <view class="right"> 我的会员 </view>
     </view>
+    </view>
+
   </view>
 </template>
 
@@ -152,6 +125,12 @@ export default {
     return {};
   },
   methods: {
+    fillInformation() {
+      uni.navigateTo({ url: "../marketing-tools/store-application" });
+    },
+    applyHistory(){
+      uni.navigateTo({ url: './applyHistory' })
+    },
     window() {
       this.$refs.popup.open("bottom");
     },
@@ -168,7 +147,8 @@ export default {
 .background {
   background: url("../../static/images/lqb/userUp/background.png");
   height: 100%;
-  padding-bottom: 44upx;
+  padding-bottom: 200upx;
+
   .userup-title {
     display: flex;
     color: white;
@@ -286,7 +266,6 @@ export default {
   }
   .userup-say {
     background-color: white;
-
     margin: 0 auto;
     border-radius: 20upx;
     width: 95%;
@@ -296,6 +275,7 @@ export default {
       padding-top: 24upx;
       padding-left: 45upx;
       padding-bottom: 38upx;
+      margin-top: 40upx;
     }
     .say-img {
       text-align: center;
@@ -347,9 +327,9 @@ export default {
       }
       .good-detail {
         .detail-img {
-          padding-top: 44upx;
-          padding-left: 44upx;
-          padding-bottom: 180upx;
+          height: 300upx;
+          margin: 20upx 0;
+          padding-left: 35upx;
         }
       }
       .bottom-button {
@@ -396,6 +376,25 @@ export default {
     text-align: center;
     font-weight: 700;
     .window-text {
+    }
+  }
+  .bottom-button1 {
+    display: flex;
+    background-color: white;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 20upx 0;
+    .left {
+      border: 1upx solid #777777;
+      border-radius: 100upx;
+      padding: 10upx 80upx;
+    }
+    .right {
+      border: 1upx solid #777777;
+      border-radius: 100upx;
+      padding: 10upx 80upx;
     }
   }
 }

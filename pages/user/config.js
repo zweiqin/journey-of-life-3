@@ -158,7 +158,7 @@ export const serve = {
     {
       label: "推广码",
       icon: require("../../static/images/user/tuiguangma.png"),
-      url: "/pages/stuff/brand/index",
+      // url: "/pages/stuff/brand/index",
     },
   ],
 };
@@ -195,7 +195,7 @@ export const marketingTools = {
     {
       label: "门店申请",
       icon: require("../../static/images/user/mendiankanban.png"),
-      url: "/user/marketing-tools/store-application",
+      url: "/user/sever/shopUp",
 
     },
     {
