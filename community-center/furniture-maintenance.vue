@@ -62,9 +62,10 @@
         />
       </view>
       <img
-        src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/46moq31sonr8aimvy2ke.png"
+        src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j53rp2zc53n5iz96444l.png"
         alt=""
         class="return"
+        @click="handleBack"
       />
     </view>
 
@@ -96,12 +97,14 @@
           <view class="right">
             <view class="service-top">
               <view class="service-name">木制品维修</view>
+
               <view class="message">
                 <view class="detail">详情</view>
                 <img
-                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ewmyt9mwytbw3psrzv4x.png"
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/okx3511yuuh9fsdl290h.png"
                   alt=""
                   class="jump"
+                  @click="handleToServiceDetail"
                 />
               </view>
             </view>
@@ -116,7 +119,7 @@
             >
             <view class="order">
               <view class="abc"></view>
-              <view class="order-title">立即预约</view>
+              <view class="order-title" @click="handleToServiceOrder">立即预约</view>
             </view>
           </view>
         </view>
@@ -131,12 +134,14 @@
           <view class="right">
             <view class="service-top">
               <view class="service-name">木制品维修</view>
+
               <view class="message">
                 <view class="detail">详情</view>
                 <img
-                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ewmyt9mwytbw3psrzv4x.png"
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/okx3511yuuh9fsdl290h.png"
                   alt=""
                   class="jump"
+                  @click="handleToServiceDetail"
                 />
               </view>
             </view>
@@ -151,7 +156,7 @@
             >
             <view class="order">
               <view class="abc"></view>
-              <view class="order-title">立即预约</view>
+              <view class="order-title" @click="handleToServiceOrder">立即预约</view>
             </view>
           </view>
         </view>
@@ -171,7 +176,20 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    handleToServiceDetail() {
+      console.log(123);
+      uni.navigateTo({ url: "../community-center/service-detail" });
+    },
+    handleBack() {
+      uni.navigateBack();
+    },
+    handleToServiceOrder() {
+      console.log(123);
+      uni.navigateTo({ url: "../community-center/service-order" });
+    },
+  },
+
   created() {},
 };
 </script>
@@ -194,7 +212,7 @@ export default {
     height: 420upx;
     .top {
       .top-title {
-        margin-top: 72upx;
+        margin-top: 60upx;
         text-align: center;
         font-size: 32upx;
         font-weight: bold;
@@ -238,8 +256,10 @@ export default {
     }
     .return {
       position: absolute;
-      top: 80upx;
-      left: 42upx;
+      top: 60upx;
+      left: 18upx;
+      width: 48upx;
+      height: 48upx;
     }
   }
   .main {
@@ -314,9 +334,9 @@ export default {
                 color: #999999;
               }
               .jump {
-                width: 16upx;
-                height: 18upx;
-                padding-top: 8upx;
+                width: 32upx;
+                height: 32upx;
+                padding-top: 0upx;
                 padding-left: 14upx;
               }
             }
@@ -353,14 +373,14 @@ export default {
             justify-content: space-between;
 
             .order-title {
-              padding-top: 4upx;
+              padding-top: 8upx;
               margin-top: 4upx;
               font-size: 24upx;
               font-weight: 500;
               color: #ffffff;
               text-align: center;
               width: 164upx;
-              height: 46upx;
+              height: 44upx;
               border-radius: 20upx;
               background: #fa5151;
             }

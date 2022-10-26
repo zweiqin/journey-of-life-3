@@ -285,6 +285,7 @@ export default {
     handleBack() {
       uni.navigateBack();
     },
+    
   },
 };
 </script>
