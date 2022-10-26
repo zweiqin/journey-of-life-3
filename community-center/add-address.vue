@@ -1,14 +1,13 @@
 <template>
   <view class="add-address">
-    <view class="top">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j53rp2zc53n5iz96444l.png"
-        alt=""
-        class="return"
-        @click="handleBack"
-      />
-      <view class="title">添加地址</view>
-    </view>
+    <view class="title">添加地址</view>
+    <img
+      src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j53rp2zc53n5iz96444l.png"
+      alt=""
+      class="return"
+      @click="handleBack"
+    />
+
     <!-- {{form}} -->
     <view class="main">
       <view class="contacts">
@@ -128,22 +127,23 @@ export default {
 .add-address {
   padding: 60upx 30upx;
   box-sizing: border-box;
-  .top {
-    display: flex;
-    .title {
-      padding-bottom: 100upx;
-      flex: 1;
-      text-align: center;
-      font-size: 32upx;
-      font-weight: 500;
-      color: #3d3d3d;
-    }
-    .return {
-      width: 48upx;
-      height: 48upx;
-    }
+
+  .title {
+    text-align: center;
+    font-size: 32upx;
+    font-weight: 500;
+    color: #3d3d3d;
   }
+  .return {
+    position: absolute;
+    top: 60upx;
+    left: 18upx;
+    width: 48upx;
+    height: 48upx;
+  }
+
   .main {
+    padding-top: 100upx;
     .contacts {
       display: flex;
 
