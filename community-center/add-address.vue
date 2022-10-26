@@ -259,15 +259,14 @@ export default {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 100upx;
+    height: 118upx;
     box-sizing: border-box;
-    padding-right: 30upx;
-    padding-left: 30upx;
-    padding-top: 12upx;
+    padding-right: 68upx;
+    padding-left: 68upx;
+    padding-top: 26upx;
     .save {
-      padding-top: 14upx;
+      padding-top: 8upx;
       text-align: center;
-      // width: 614upx;
       width: 100%;
       height: 64upx;
       border-radius: 60upx;

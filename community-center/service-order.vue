@@ -245,16 +245,12 @@ export default {
       padding-left: 68upx;
       padding-right: 68upx;
       box-sizing: border-box;
-      // margin-top: 50upx;
       padding-top: 26upx;
-
       height: 118upx;
       background: #ffffff;
       .place-order {
         text-align: center;
         padding-top: 8upx;
-        // margin-top: 24upx;
-        // margin-left: 68upx;
         width: 100%;
         height: 64upx;
         border-radius: 60upx;
