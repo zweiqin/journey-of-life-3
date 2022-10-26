@@ -63,7 +63,7 @@ export default {
               status: 3,
             });
 
-            if (changeRes === "回访成功") {
+            if (changeRes.errno === 0) {
               _this.$emit("success");
             }
           }

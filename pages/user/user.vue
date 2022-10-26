@@ -200,7 +200,7 @@ export default {
     },
   },
   mounted() {
-    // checkWhoami();
+    checkWhoami();
     this.userInfo = uni.getStorageSync(user_INFO);
   },
 };

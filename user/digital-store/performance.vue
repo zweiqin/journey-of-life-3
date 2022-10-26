@@ -327,7 +327,7 @@ export default {
     async performanceList() {
       const res = await performanceListApi({
         // userId: getUserId(),
-        userId: 200,
+        userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,
@@ -403,14 +403,15 @@ export default {
   position: fixed;
   bottom: 0px;
   left: 0px;
+  padding-top: 20upx;
   margin-top: 20upx;
-  margin-bottom: 20upx;
   background-color: white;
   width: 750upx;
-  height: 110upx;
+  height: 90upx;
   font-size: 28upx;
   text-align: center;
   .item {
+
     margin: 0 auto;
 
     &.active {

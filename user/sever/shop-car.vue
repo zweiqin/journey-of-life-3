@@ -179,7 +179,6 @@ export default {
 
   methods: {
     ischeckGoods() {
-      console.log("cao", this.cartList);
       this.getCartCheckout(() => {
         uni.navigateTo({
           // url: '../sever/order-detail?collectiontype = this.goodsDetail',
@@ -247,7 +246,6 @@ export default {
         this.getCartUpdateminus();
       }, 10);
     },
-
     // 获取购物车信息
     async getCartIndex() {
       // console.log("1");
@@ -345,6 +343,15 @@ export default {
       uni.setStorageSync('CAR_GOODS_DETAIL_ALL',this.goodsAll)
 
       cb && typeof cb === "function" && cb();
+    },
+    //购物车勾选商品价格
+    shopAllMoney(){
+      let cartList = this.cartList
+      for (let i = 0; i < cartList.length; i++) {
+        const a = cartList[i];
+        
+        
+      }
     },
   },
 

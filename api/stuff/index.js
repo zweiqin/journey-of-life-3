@@ -29,7 +29,7 @@ export const getSupplyListApi = (data) => {
 
 // 采购列表
 export const getPcTodayListApi = (data) => {
-  return RuanRequest("/tradeLeads/PcToday", data, "get");
+  return RuanRequest("/tradeLeads/PcList", data, "get");
 };
 //价格列表
 export const getPricesListApi = (data) => {

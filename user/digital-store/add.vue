@@ -122,7 +122,7 @@ export default {
       console.log(this.form);
 
       const res = await addCustomerApi(this.form);
-      if (res === "新增成功") {
+      if (res.errno === 0) {
         uni.showToast({
           title: "客户添加成功",
           duration: 2000,

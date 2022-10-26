@@ -53,13 +53,7 @@
     <!-- nav -->
     <view class="navs">
       <view class="item" v-for="item in navs" :key="item.label">
-        <view
-          :style="{
-            background: item.bgc,
-          }"
-          class="icon-wrapper"
-          @click="bindtapStuff(item)"
-        >
+        <view class="icon-wrapper" @click="bindtapStuff(item)">
           <img :src="item.icon" class="icon" :alt="item.label" />
         </view>
         <view class="name">{{ item.label }}</view>
@@ -80,11 +74,11 @@
       <view class="navs2" ref="navs2Ref">
         <view
           class="item"
-          :class="{ active: item.value === currentTab }"
+          :class="{ active: item.id === currentTab }"
           v-for="item in navs2"
-          :key="item.label"
-          @click="switchTab(item.value)"
-          >{{ item.label }}</view
+          :key="item.id"
+          @click="switchTab(item.id)"
+          >{{ item.storeName }}</view
         >
 
         <!-- <view class="modal" ref="modalRef">
@@ -105,13 +99,13 @@
             @click="changeTab(0)"
             :class="{ active: currentTab1 === 0 }"
             class="item"
-            >采购列表</view
+            >我的采购</view
           >
           <view
             @click="changeTab(1)"
             :class="{ active: currentTab1 === 1 }"
             class="item"
-            >供应列表</view
+            >我的供应</view
           >
         </view>
         <view class="border" v-if="currentTab1 == 0">
@@ -211,7 +205,7 @@
           </view>
         </view>
         <Carousel
-          :height="74"
+          :height="140"
           :list="[
             'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
             'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
@@ -251,9 +245,8 @@
         </view>
       </Pane>
     </view>
-  <!-- </view> -->
-</view>
-
+    <!-- </view> -->
+  </view>
 </template>
 
 <script>
@@ -270,6 +263,7 @@ import {
   getPcTodayListApi,
   getPricesListApi,
 } from "../../api/stuff";
+import { getBrandTypeApi } from "../../api/brand";
 import Tables from "../../stuff/components/table";
 
 import { getBrandListApi } from "../../api/brand";
@@ -286,7 +280,7 @@ export default {
   data() {
     return {
       navs,
-      navs2,
+      navs2:[],
       currentTab: 0,
       currentTab1: 0,
       currentForOfferTab: 0,
@@ -300,8 +294,8 @@ export default {
   },
   filters: {
     formatTime(time) {
-      const a = time.split(" ")[1].split(":");
-      return a[0] + ":" + a[1];
+      const a = time.split(" ")[0].split("-");
+      return a[1] + "-" + a[2];
     },
   },
   methods: {
@@ -346,7 +340,15 @@ export default {
         document.body.style.overflow = "auto";
       }
     },
-
+    //门店分类
+    async getBrandType() {
+      const res = await getBrandTypeApi({
+        storeName: "",
+      });
+      console.log("门店分类", res.data.items);
+      this.navs2 = res.data.items
+      this.navs2.unshift({storeName: "综合",id:0})
+    },
     // 获取行业信息
     async getIndustryInformationList() {
       const res = await getIndustryInformationListApi({
@@ -422,11 +424,12 @@ export default {
 
   mounted() {
     // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
-    // checkWhoami();
+    checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
     this.getPcTodayList();
     this.getPricesList();
+    this.getBrandType();
   },
 };
 </script>
@@ -484,7 +487,7 @@ export default {
     left: 50%;
     padding: 16upx 24upx;
     transform: translateX(-50%);
-    background-color: #fff;
+    background-color: white;
     color: #000000;
     font-size: 24upx;
     border-radius: 50upx;
@@ -543,7 +546,7 @@ export default {
 
   .navs {
     position: relative;
-    padding: 32upx 16upx;
+    padding: 32upx 0upx;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -567,7 +570,7 @@ export default {
         border-radius: 10px;
 
         .icon {
-          width: 40upx;
+          width: 80upx;
         }
       }
 

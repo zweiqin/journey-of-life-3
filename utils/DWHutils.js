@@ -1,5 +1,5 @@
 import { whoami } from "../api/auth";
-import { USER_ID } from "../constant";
+import { USER_ID, USER_TOKEN } from "../constant";
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -65,6 +65,7 @@ export const getUserId = () => {
   }
   return userId;
 };
+
 
 /**
  * 点击复制

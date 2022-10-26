@@ -174,7 +174,7 @@ export default {
       const res = await getMsgSentryListApi(this.query);
 
       if (res.errno === 0) {
-        console.log(res);
+        this.list = res.data
       } else {
         uni.showToast({
           title: "您还不是业务员，无法访问",

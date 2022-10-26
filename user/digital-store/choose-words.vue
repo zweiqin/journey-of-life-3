@@ -115,7 +115,7 @@ export default {
         type: this.type,
       });
 
-      if (res === "新增成功") {
+      if (res.errno === 0) {
         uni.showToast({
           title: "新增成功",
           duration: 2000,
@@ -144,6 +144,10 @@ export default {
 <style lang="less" scoped>
 @import "../../style/mixin.less";
 @import "../../style/var.less";
+
+page{
+  overflow: scroll;
+}
 
 .choose-words-container {
   padding: 30upx 40upx;
