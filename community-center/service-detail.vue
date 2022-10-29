@@ -484,9 +484,14 @@ export default {
           justify-content: space-around;
 
           .item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             .img {
               width: 48upx;
               height: 48upx;
+              padding-bottom: 12upx;
             }
             .name {
               font-size: 24upx;
@@ -586,9 +591,14 @@ export default {
           justify-content: space-evenly;
           padding-right: 0upx;
           .item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             .img {
               width: 48upx;
               height: 48upx;
+              padding-bottom: 12upx;
             }
             .name {
               font-size: 24upx;
