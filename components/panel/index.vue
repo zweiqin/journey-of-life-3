@@ -72,6 +72,7 @@ export default {
       color: #3d3d3d;
       font-size: 28upx;
       font-weight: bold;
+      padding: 10upx 0;
     }
 
     .route-wrapper {

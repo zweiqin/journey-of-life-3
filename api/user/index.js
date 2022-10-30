@@ -6,7 +6,7 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\user\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { LTRequest, getUserId,RuanRequest  } from "../../utils";
+import { LTRequest, getUserId,RuanRequest,XZLRequest  } from "../../utils";
 
 // 业务管理升级
 export const upbussinessApi = (data) => {

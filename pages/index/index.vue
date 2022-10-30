@@ -65,9 +65,11 @@
         :channel="channel"
         :discount="discount"
         :explosion="explosion"
+        :brandList="brandList"
         v-show="currentNav === 0"
       ></StrictSelection>
-      <BrandFactory v-show="currentNav === 1"></BrandFactory>
+      <BrandFactory v-show="currentNav === 1"
+      ></BrandFactory>
       <Design v-show="currentNav === 2"></Design>
       <view v-show="currentNav === 3">
         <Carousel></Carousel>
@@ -107,6 +109,7 @@
 import { navs } from "./config.js";
 import StrictSelection from "./components/StrictSelection/index.vue";
 import BrandFactory from "./components/BrandFactory/index.vue";
+import { getBrandListApi } from "../../api/brand";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
@@ -121,6 +124,7 @@ export default {
   data() {
     return {
       navs,
+      brandList: [],
       currentNav: 0,
       strictSelectionBanner: [
         {
@@ -152,14 +156,24 @@ export default {
     this.getData();
     this.getIndexData();
     this.getTehui();
+    this.getBrandList();
     checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
-    shopCar(){
+    async getBrandList() {
+      const res = await getBrandListApi({
+        brandgenreId: 0,
+        page: "",
+        size: "",
+      });
+      console.log("123", res);
+      this.brandList = res.data.brandList
+    },
+    shopCar() {
       uni.navigateTo({
-         url: '../../user/sever/shop-car'
+        url: "../../user/sever/shop-car",
       });
     },
     /**

@@ -125,6 +125,7 @@
         :showShadow="false"
         :data="marketingTools"
       ></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
       <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
     </view>
   </view>
@@ -144,6 +145,7 @@ import {
   digitalStore,
   marketingTools,
   otherServe,
+  communityServices,
 } from "./config";
 import { checkWhoami } from "../../utils";
 import { user_INFO } from "../../constant";
@@ -166,6 +168,7 @@ export default {
       otherServe,
       collectiontype: 1,
       currentTab: 0,
+      communityServices,
       userInfo: {},
     };
   },

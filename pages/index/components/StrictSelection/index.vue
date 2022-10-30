@@ -25,7 +25,7 @@
         <img
           class="explosion"
           @click="handleToDoodsDetail(explosion[0])"
-          :src="explosion[0].picUrl"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/k55kew9nndt3z4oegjx7.png"
           alt=""
         />
       </template>
@@ -87,6 +87,10 @@ export default {
       type: Array,
       required: true,
     },
+    brandList:{
+      type:Array,
+      required:true,
+    }
   },
   data() {
     return { panels, styleList: [] };
@@ -105,9 +109,15 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+  this.seebrandList()
+  },
 
   methods: {
+    seebrandList(){
+      //获得传输的数据
+      console.log('223344',this.brandList);
+    },
     handleViewStyle(item) {
       uni.navigateTo({
         url: "/home/styles?id=" + item.id,
@@ -182,9 +192,10 @@ export default {
   }
   .you-love {
     color: #3d3d3d;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     padding-bottom: 30upx;
+    padding-top: 10upx;
     padding-left: 10upx;
 
   }

@@ -94,7 +94,7 @@ export default {
     switchTab(brandgenreId) {
       console.log(brandgenreId);
       this.currentTab = brandgenreId;
-      
+
       this.brandgenreId = brandgenreId;
       this.getBrandList();
 
@@ -120,7 +120,7 @@ export default {
       const res = await getBrandListApi({
         brandgenreId: this.brandgenreId,
         page: this.page,
-        size:100,
+        size: 100,
       });
       console.log(res);
       // let shoplist = res.data.brandList;
@@ -139,18 +139,16 @@ export default {
         page: "",
         limit: "",
         sort: "",
-        order: "",
+        order: '',
       });
       console.log(res);
       this.navs2 = res.data.items;
       console.log(this.navs2);
-      this.navs2.unshift({storeName: "全部",id:0})
+      this.navs2.unshift({ storeName: "全部", id: 0 });
     },
   },
 
-  created() {
-
-  },
+  created() {},
   onLoad() {
     this.getBrandList();
     this.getBrandType();

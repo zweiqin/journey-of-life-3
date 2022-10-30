@@ -15,7 +15,8 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/itt7zhw456zi52z9gxzq.png",
     bgc: "linear-gradient(144deg, #07B9B9 21%, rgba(13,158,158,0.00) 122%)",
     label: "价格",
-    Url: "../../stuff/price/price",
+    // Url: "../../stuff/price/price",
+    Url: "../../stuff/price/echar",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/egdr6p9tk32k2t0ijrn6.png",

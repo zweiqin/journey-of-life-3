@@ -326,8 +326,8 @@ export default {
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
+        userId: 200,
         // userId: getUserId(),
-        userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,

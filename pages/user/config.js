@@ -199,8 +199,9 @@ export const marketingTools = {
 
     },
     {
-      label: "红包发放",
-      icon: require("../../static/images/user/hongbaofafang.png"),
+      label: "我的名片",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png",
+      url: "/user/postCard/index"
     },
     {
       label: "每日签到",
@@ -228,6 +229,30 @@ export const marketingTools = {
     },
   ],
 };
+export const communityServices = {
+  title: "社区服务",
+  menus: [
+    {
+      label: "师傅",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xypr9jh25oftnzjd7m22.png",
+      url: "/pages/otherUrl/otherUrl?url=https://www.zhult.com/shifu/#/login"
+    },
+    {
+      label: "站长",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nbpf99anaovw4jivc085.png",
+      url: "/pages/otherUrl/otherUrl?url=https://www.zhult.com/zhanzhang/#/login"
+    }, {
+      label: "",
+      icon: "",
+      url: ""
+    },
+    {
+      label: "",
+      icon: "",
+      url: ""
+    },
+  ]
+}
 
 export const otherServe = {
   title: "其他服务",

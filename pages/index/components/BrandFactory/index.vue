@@ -44,17 +44,23 @@
 <script>
 import Panel from "./components/Panel";
 import Panel1 from "./components/Panel1";
-
 import Panel2 from "./components/Panel2";
 
-
 export default {
+  data(){
+    return{
+    }
+  },
   components: {
     Panel,
     Panel1,
     Panel2,
 
   },
+
+  methods:{
+
+  }
 };
 </script>
 

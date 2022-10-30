@@ -76,7 +76,7 @@
     <view
       v-for="(item, id) in orderList"
       :key="id"
-      @click="bindtapdetail"
+      @click="bindtapdetail(item)"
       :data-orderdetail="item"
     >
       <view
@@ -154,6 +154,7 @@ import {
   getOrderConfirmApi,
   getOrderDeleteApi,
   getOrderRefundApi,
+  getOrderDetailApi,
 } from "../../api/order";
 export default {
   components: {
@@ -221,6 +222,16 @@ export default {
       this.orderList = res.data.data;
       this.length = res.data.count;
     },
+    // 订单详情
+    async getOrderDetail() {
+      const res = await getOrderDetailApi({
+        userId: getUserId(),
+        orderId: this.orderId,
+        // userId:219,
+        // orderId:208
+      });
+      console.log(res);
+    },
     back() {
       uni.navigateBack();
     },
@@ -233,8 +244,13 @@ export default {
     bindgoodsdetail(e) {
       console.log("goods", e);
     },
-    bindtapdetail(e) {
-      console.log(e);
+    bindtapdetail(item) {
+      console.log(item);
+      this.orderId = item.id
+      this.getOrderDetail()
+      uni.navigateTo({ url: './order-form-detail' })
+      uni.setStorageSync('CAR_GOODS_DETAIL', item)
+
       // uni.navigateTo({
       //   url: "../orderForm/order-form-detail",
       // });
@@ -246,48 +262,7 @@ export default {
       collectiontype: "",
       currentTab: 0,
       length: "",
-      // goodslist: [
-      //   {
-      //     id: 1,
-      //     name: "空调安装",
-      //     size: "正一匹",
-      //     number: 2,
-      //     money: 300,
-      //     type: 1,
-      //   },
-      //   {
-      //     id: 2,
-      //     name: "空调安装",
-      //     size: "正一匹",
-      //     number: 2,
-      //     money: 300,
-      //     type: 2,
-      //   },
-      //   {
-      //     id: 3,
-      //     name: "空调安装",
-      //     size: "正一匹",
-      //     number: 2,
-      //     money: 300,
-      //     type: 3,
-      //   },
-      //   {
-      //     id: 4,
-      //     name: "空调安装",
-      //     size: "正一匹",
-      //     number: 2,
-      //     money: 300,
-      //     type: 4,
-      //   },
-      //   {
-      //     id: 5,
-      //     name: "空调安装",
-      //     size: "正一匹",
-      //     number: 2,
-      //     money: 300,
-      //     type: 1,
-      //   },
-      // ],
+      orderId: "",
       orderList: [],
     };
   },
