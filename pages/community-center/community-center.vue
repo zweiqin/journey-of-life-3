@@ -99,22 +99,23 @@
         route="/community-center/site/union"
         routeText="查看全部"
       >
-        <view class="business-wrapper">
-          <view class="item">
-            <img
-              class="img"
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/4ioqj3035qm3wdcv2kcc.png"
-              alt=""
-            />
-            <view class="info">
-              <view class="title">团蜂家居社区...（龙江店）</view>
-              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
-              <view class="sign">
-                <view class="show">官方直营</view>
-                <view class="show">品牌老店</view>
-              </view>
-              <view class="footer">
-                <!-- <view class="left">
+        <view class="body">
+          <view class="business-wrapper">
+            <view class="item">
+              <img
+                class="img"
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/4ioqj3035qm3wdcv2kcc.png"
+                alt=""
+              />
+              <view class="info">
+                <view class="title">团蜂家居社区...（龙江店）</view>
+                <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+                <view class="sign">
+                  <view class="show">官方直营</view>
+                  <view class="show">品牌老店</view>
+                </view>
+                <view class="footer">
+                  <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
@@ -122,33 +123,33 @@
                   />
                   <view class="name">团蜂社区服务站</view>
                 </view> -->
-                <view class="right">
-                  <img
-                    class="views"
-                    src="../../static/images/con-center/visited.png"
-                    alt=""
-                  />
-                  <view class="numbers">10w+</view>
+                  <view class="right">
+                    <img
+                      class="views"
+                      src="../../static/images/con-center/visited.png"
+                      alt=""
+                    />
+                    <view class="numbers">10w+</view>
+                  </view>
                 </view>
               </view>
             </view>
-          </view>
 
-          <view class="item">
-            <img
-              class="img"
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vvnjnrc2edczp0depm3t.png"
-              alt=""
-            />
-            <view class="info">
-              <view class="title">团蜂家居社区...（龙江店）</view>
-              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
-              <view class="sign">
-                <view class="show">官方直营</view>
-                <view class="show">品牌老店</view>
-              </view>
-              <view class="footer">
-                <!-- <view class="left">
+            <view class="item">
+              <img
+                class="img"
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vvnjnrc2edczp0depm3t.png"
+                alt=""
+              />
+              <view class="info">
+                <view class="title">团蜂家居社区...（龙江店）</view>
+                <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+                <view class="sign">
+                  <view class="show">官方直营</view>
+                  <view class="show">品牌老店</view>
+                </view>
+                <view class="footer">
+                  <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
@@ -156,33 +157,33 @@
                   />
                   <view class="name">团蜂社区服务站</view>
                 </view> -->
-                <view class="right">
-                  <img
-                    class="views"
-                    src="../../static/images/con-center/visited.png"
-                    alt=""
-                  />
-                  <view class="numbers">10w+</view>
+                  <view class="right">
+                    <img
+                      class="views"
+                      src="../../static/images/con-center/visited.png"
+                      alt=""
+                    />
+                    <view class="numbers">10w+</view>
+                  </view>
                 </view>
               </view>
             </view>
-          </view>
 
-          <view class="item">
-            <img
-              class="img"
-              src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xdokj5x4h29bka31rf7a.png"
-              alt=""
-            />
-            <view class="info">
-              <view class="title">团蜂家居社区...（龙江店）</view>
-              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
-              <view class="sign">
-                <view class="show">官方直营</view>
-                <view class="show">品牌老店</view>
-              </view>
-              <view class="footer">
-                <!-- <view class="left">
+            <view class="item">
+              <img
+                class="img"
+                src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xdokj5x4h29bka31rf7a.png"
+                alt=""
+              />
+              <view class="info">
+                <view class="title">团蜂家居社区...（龙江店）</view>
+                <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+                <view class="sign">
+                  <view class="show">官方直营</view>
+                  <view class="show">品牌老店</view>
+                </view>
+                <view class="footer">
+                  <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
@@ -190,33 +191,33 @@
                   />
                   <view class="name">团蜂社区服务站</view>
                 </view> -->
-                <view class="right">
-                  <img
-                    class="views"
-                    src="../../static/images/con-center/visited.png"
-                    alt=""
-                  />
-                  <view class="numbers">10w+</view>
+                  <view class="right">
+                    <img
+                      class="views"
+                      src="../../static/images/con-center/visited.png"
+                      alt=""
+                    />
+                    <view class="numbers">10w+</view>
+                  </view>
                 </view>
               </view>
             </view>
-          </view>
 
-          <view class="item">
-            <img
-              class="img"
-              src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9yq1bskgb9z6j6zythwp.png"
-              alt=""
-            />
-            <view class="info">
-              <view class="title">团蜂家居社区...（龙江店）</view>
-              <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
-              <view class="sign">
-                <view class="show">官方直营</view>
-                <view class="show">品牌老店</view>
-              </view>
-              <view class="footer">
-                <!-- <view class="left">
+            <view class="item">
+              <img
+                class="img"
+                src="	https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9yq1bskgb9z6j6zythwp.png"
+                alt=""
+              />
+              <view class="info">
+                <view class="title">团蜂家居社区...（龙江店）</view>
+                <!-- <view class="price"> ￥<text class="text">400</text> </view> -->
+                <view class="sign">
+                  <view class="show">官方直营</view>
+                  <view class="show">品牌老店</view>
+                </view>
+                <view class="footer">
+                  <!-- <view class="left">
                   <img
                     class="avatar"
                     src="https://img1.baidu.com/it/u=556380733,746692031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
@@ -224,13 +225,14 @@
                   />
                   <view class="name">团蜂社区服务站</view>
                 </view> -->
-                <view class="right">
-                  <img
-                    class="views"
-                    src="../../static/images/con-center/visited.png"
-                    alt=""
-                  />
-                  <view class="numbers">10w+</view>
+                  <view class="right">
+                    <img
+                      class="views"
+                      src="../../static/images/con-center/visited.png"
+                      alt=""
+                    />
+                    <view class="numbers">10w+</view>
+                  </view>
                 </view>
               </view>
             </view>
@@ -418,107 +420,109 @@ export default {
       margin-top: 14upx;
       margin-bottom: 14upx;
     }
+    .body {
+      margin: 0upx 0upx 100upx 0upx;
+      .business-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
 
-    .business-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+        .item {
+          width: 348upx;
+          padding-top: 14upx;
 
-      .item {
-        width: 348upx;
-        margin-top: 14upx;
-
-        .img {
-          width: 100%;
-          height: 208upx;
-          border-radius: 20upx 20upx 0 0;
-        }
-
-        .info {
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          flex-direction: column;
-          padding: 8upx 18upx 10upx 20upx;
-
-          .title {
-            width: 284upx;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #3d3d3d;
-            font-size: 24upx;
-          }
-          .sign {
-            padding-top: 12upx;
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-            .show {
-              text-align: center;
-              font-size: 20upx;
-              font-weight: 350;
-              width: 126upx;
-              height: 36upx;
-              color: #fa5151;
-              border-radius: 20upx;
-              // box-sizing: border-box;
-              border: 1upx solid #fa5151;
-            }
-          }
-
-          .price {
-            color: #fa5151;
-            font-size: 20upx;
-            padding: 0;
-            line-height: 1.5;
-
-            .text {
-              font-size: 32upx;
-            }
-          }
-
-          .footer {
-            padding-top: 18upx;
-            justify-content: flex-end;
+          .img {
             width: 100%;
-            display: flex;
-            // justify-content: space-between;
-            align-items: center;
-            .left {
-              display: flex;
-              align-items: center;
-              .avatar {
-                width: 40upx;
-                height: 40upx;
-                border-radius: 50%;
-              }
+            height: 208upx;
+            border-radius: 20upx 20upx 0 0;
+          }
 
-              .name {
-                width: 150upx;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                color: #999999;
+          .info {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 8upx 18upx 10upx 20upx;
+
+            .title {
+              width: 284upx;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              color: #3d3d3d;
+              font-size: 24upx;
+            }
+            .sign {
+              padding-top: 12upx;
+              width: 90%;
+              display: flex;
+              justify-content: space-between;
+              .show {
+                text-align: center;
                 font-size: 20upx;
-                transform: scale(0.9);
+                font-weight: 350;
+                width: 126upx;
+                height: 36upx;
+                color: #fa5151;
+                border-radius: 20upx;
+                // box-sizing: border-box;
+                border: 1upx solid #fa5151;
               }
             }
 
-            .right {
-              display: flex;
-              align-items: center;
+            .price {
+              color: #fa5151;
+              font-size: 20upx;
+              padding: 0;
+              line-height: 1.5;
 
-              .views {
-                width: 22upx;
-                height: 18upx;
+              .text {
+                font-size: 32upx;
+              }
+            }
+
+            .footer {
+              padding-top: 18upx;
+              justify-content: flex-end;
+              width: 100%;
+              display: flex;
+              // justify-content: space-between;
+              align-items: center;
+              .left {
+                display: flex;
+                align-items: center;
+                .avatar {
+                  width: 40upx;
+                  height: 40upx;
+                  border-radius: 50%;
+                }
+
+                .name {
+                  width: 150upx;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  color: #999999;
+                  font-size: 20upx;
+                  transform: scale(0.9);
+                }
               }
 
-              .numbers {
-                color: #999999;
-                font-size: 20upx;
-                transform: scale(0.9);
+              .right {
+                display: flex;
+                align-items: center;
+
+                .views {
+                  width: 22upx;
+                  height: 18upx;
+                }
+
+                .numbers {
+                  color: #999999;
+                  font-size: 20upx;
+                  transform: scale(0.9);
+                }
               }
             }
           }
