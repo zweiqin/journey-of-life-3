@@ -1,5 +1,5 @@
 import { request } from "../../utils";
-
+import { XZLRquest } from "../../utils";
 /**
  * @description 获取报价
  * @param {*} data
@@ -48,6 +48,8 @@ export const getDictListApi = () => {
   return request("/laoa-huozhu/api/hz/order/third/getDictList", null, "get");
 };
 
+
+
 /**
  *
  * @param {*
@@ -65,4 +67,14 @@ export const payOrderForEndApi = (data) => {
  */
 export const getEndOrderListApi = (data) => {
   return request("/laoa-huozhu/api/hz/order/third/orderPagelist", data);
+};
+
+
+//查询社区服务分类
+// export const getServiceSortApi = (data) =>{
+//   return RuanRequest("/api/community/serverInfo/getServerTypeList",data);
+// };
+//查询社区服务分类
+export const getServiceSortApi = (data) =>{
+  return XZLRquest("/community/serverInfo/getServerTypeList",data);
 };
