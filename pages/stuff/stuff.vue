@@ -125,7 +125,7 @@
               <view class="address">{{ item1.materialsRegion }}</view>
               <view class="color">{{ item1.materialsColor }}</view>
               <view class="number">{{ item1.materialsNumber }}</view>
-              <view class="phone">{{ item1.materialsPhone }}</view>
+              <view class="phone">{{ item1.materialsPhone  | replacestar}}</view>
             </view>
             <view class="text-border"></view>
           </view>

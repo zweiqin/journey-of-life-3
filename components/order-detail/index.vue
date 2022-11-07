@@ -1,17 +1,22 @@
 <template>
   <view class="order-panel">
     <PageHeader title="订单详情"></PageHeader>
-    <view class="status" :style="statusStyles">
-      {{ status ? "交易完成" : "交易待完成" }}
+    <view class="status" v-if="goodsDetail.orderStatusText =='已完成'">
+      {{ goodsDetail.orderStatusText}}
+    </view>
+    <view class="status1" v-else>
+
+      {{ goodsDetail.orderStatusText}}
+
     </view>
     <!-- 客户信息 -->
-    <view class="item" style="margin: 0" v-if="defaultAddress">
+    <view class="item" style="margin: 0">
       <view class="line" v-for="item in baseInfo" :key="item.id">
         <img class="icon" :src="item.icon" alt="" />
         <view class="text">{{ item.label }}</view>
         <view class="text-value">
           <template v-if="item.id === 0">
-            {{ defaultAddress.name }} {{ defaultAddress.mobile }}
+            {{ goodsDetail.consignee }} {{ goodsDetail.mobile }}
           </template>
           <template v-if="item.id === 1">
             <view style="color: #ff8f1f" class="text"
@@ -20,24 +25,19 @@
           </template>
           <template v-if="item.id === 2">
             <view class="text" style="color: #07b9b9">{{
-              defaultAddress ? defaultAddress.detailedAddress : "请选择地址"
+              goodsDetail.address
             }}</view>
           </template>
         </view>
       </view>
 
-      <view class="change" @click="handleChooseAddress">更改收货信息</view>
-
       <!-- 订单信息 -->
       <view class="order-info">
         <view class="item">
-          <view v-for="(item, id) in this.goodsDetail" :key="id">
-            <view class="detail-top">
-              <view class="brandName"> {{ item.brandName }} </view>
-            </view>
+     
             <view
               class="detail-bottom"
-              v-for="(item1, id1) in item.cartList"
+              v-for="(item1, id1) in this.goodsList"
               :key="id1"
             >
               <img :src="item1.picUrl" alt="" class="goods-img" />
@@ -51,21 +51,12 @@
                   {{ item2 }}
                 </view>
                 <view> 数量:{{ item1.number }}</view>
-              </view>
             </view>
           </view>
         </view>
       </view>
     </view>
 
-    <view
-      v-else
-      class="item flex"
-      @click="handleChooseAddress"
-      style="justify-content: space-between"
-      >请选择收货地址
-      <img src="../../static/images/common/chevron-states.png" alt="" />
-    </view>
     <!-- 订单疑问 -->
     <view
       class="item flex"
@@ -92,7 +83,7 @@
     </view>
 
     <!-- 底部两个按钮 -->
-    <view class="footer">
+    <view class="footer" v-if="goodsDetail.orderStatusText == '未付款' ">
       <view
         >总计：<text style="color: red"> ￥{{ allmoney }} </text></view
       >
@@ -145,11 +136,15 @@ export default {
       orderForm: {
         message: "",
       },
+
+
+
       defaultAddress: null,
       goodsAll: [],
       allMoney: "",
       orderSn: "",
       cartId: [],
+      goodsList:[],
     };
   },
 
@@ -173,8 +168,8 @@ export default {
     console.log("goodsdetail", this.goodsDetail);
     console.log("goodsAll", this.goodsAll);
     this.allmoney();
-    this.cleanCartId();
     this.cartid();
+    this.cleanCartId();
   },
 
   computed: {
@@ -197,7 +192,10 @@ export default {
 
   methods: {
     allmoney() {
-      this.allmoney = this.goodsAll.goodsTotalPrice;
+      this.allmoney = this.goodsDetail.actualPrice;
+      this.goodsList = this.goodsDetail.goodsList
+      console.log(this.goodsList);
+
     },
     // 打开输入订单备注popup
     handleInputRemarks() {
@@ -243,7 +241,7 @@ export default {
         cartId.push(goodlist[j].id);
         // console.log("cartId", cartId);
       }
-      console.log(cartId);
+      // console.log(cartId);
       this.cartId = cartId;
     },
     cleanCartId() {
@@ -254,57 +252,70 @@ export default {
       // console.log(this.defaultAddress);
       const _this = this;
       // return;
-
-      let carId = null;
-      console.log(this.cartId);
-
-      const submitData = {
+      const data = {
         userId: getUserId(),
-        cartId: this.cartId,
-        // cartId: 0,
-        addressId: _this.defaultAddress.id,
-        couponId: 0,
-        message: _this.message || undefined,
-        useVoucher: false,
-        grouponRulesId: "",
-        grouponLinkId: "",
-        // userId: 277,
-        // cartId: 0,
-        // addressId: 96,
-        // couponId: 0,
-        // message: "测试",
-        // grouponRulesId: "",
-        // grouponLinkId: "",
-        // useVoucher: false,
+        goodsId: this.orderInfo.info.id,
+        productId: this.orderInfo.selectedProduct.id,
+        number: this.orderInfo.number,
       };
-
-      const submitRes = await submitOrderApi(submitData);
-      // console.log("下单",submitRes.data.orderSn);
-      this.orderSn = submitRes.data.orderSn;
-      // console.log('订单号',this.orderSn);
-      if (submitRes.errno === 0) {
-        console.log(submitRes);
-        payOrderGoodsApi({
-          orderNo: this.orderSn,
+      let carId = null;
+      const res = await firstAddCar(data);
+      carId = res.data;
+      if (res.errno === 0) {
+        const submitData = {
           userId: getUserId(),
-          payType: 1,
-        }).then((res) => {
-          const form = document.createElement("form");
-          form.setAttribute("action", res.url);
-          form.setAttribute("method", "POST");
-          const data = JSON.parse(res.data);
-          let input;
-          for (const key in data) {
-            input = document.createElement("input");
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
-          }
+          cartId: this.cartId,
+          // cartId: 0,
+          addressId: _this.defaultAddress.id,
+          couponId: 0,
+          message: _this.message || undefined,
+          useVoucher: false,
+          grouponRulesId: "",
+          grouponLinkId: "",
+          // userId: 277,
+          // cartId: 0,
+          // addressId: 96,
+          // couponId: 0,
+          // message: "测试",
+          // grouponRulesId: "",
+          // grouponLinkId: "",
+          // useVoucher: false,
+        };
 
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-        });
+        const submitRes = await submitOrderApi(submitData);
+        // console.log("下单",submitRes.data.orderSn);
+        this.orderSn = submitRes.data.orderSn;
+        // console.log('订单号',this.orderSn);
+        if (submitRes.errno === 0) {
+          console.log(submitRes);
+          payOrderGoodsApi({
+            orderNo: this.orderSn,
+            userId: getUserId(),
+            payType: 1,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        } else {
+          uni.showToast({
+            title: "支付错误",
+            duration: 2000,
+            icon: "none",
+          });
+        }
       } else {
         uni.showToast({
           title: "支付错误",
@@ -312,7 +323,6 @@ export default {
           icon: "none",
         });
       }
-
       return;
     },
   },
@@ -337,7 +347,7 @@ export default {
 
   .text {
     color: #3d3d3d;
-    font-size: 20upx;
+
     flex-shrink: 0;
     margin: 0 20upx 0 20upx;
   }
@@ -354,6 +364,28 @@ export default {
     color: #fff;
     font-size: 36upx;
     height: 114upx;
+    background: linear-gradient(270deg,  rgba(0,181,120,0), #07B9B9);
+    margin-top: 120upx;
+
+    &::before {
+      position: absolute;
+      content: "";
+      left: 60upx;
+      width: 44upx;
+      height: 44upx;
+      background: url("../../static/images/con-center/status.png");
+      background-size: cover;
+    }
+  }
+  .status1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 124upx;
+    color: #fff;
+    font-size: 36upx;
+    height: 114upx;
+    background: linear-gradient(270deg,#FFFFFF,  #FA5151);
     margin-top: 120upx;
 
     &::before {
@@ -433,6 +465,7 @@ export default {
         }
         .detail-bottom {
           display: flex;
+          padding: 20upx 0;
           .name {
             margin-bottom: 20upx;
           }

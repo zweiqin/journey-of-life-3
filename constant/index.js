@@ -23,3 +23,5 @@ export const SELECT_WORDS = "SELECT_WORDS";
 export const PAY_GOODS = "PAY_GOODS";
 export const SELECT_ADDRESS = "SELECT_ADDRESS";
 export const STORE_TYPES = "STORE_TYPES";
+export const CAR_GOODS_DETAIL = "CAR_GOODS_DETAIL";
+export const CAR_GOODS_DETAIL_ALL = "CAR_GOODS_DETAIL_ALL";

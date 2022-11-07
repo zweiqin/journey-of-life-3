@@ -1,5 +1,5 @@
 <template>
-  <view class="stuff-store-container"  @click="handleToStoreHome(id)">
+  <view class="stuff-store-container" @click="handleToStoreHome(id)">
     <img
       class="store-img"
       :src="
@@ -18,8 +18,8 @@
     <view class="footer">
       <img
         :src="
-        picUrl ||
-        'https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
+          picUrl ||
+          'https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
         "
         alt=""
         class="avatar"
@@ -33,9 +33,8 @@
 import { getBrandListApi } from "../../../api/brand";
 export default {
   // props: ["url"],
-  data(){
-    return{
-    }
+  data() {
+    return {};
   },
   props: {
     name: String,
@@ -44,15 +43,15 @@ export default {
     id: Number,
   },
   // <view class="stuff-store-container"  @click="handleToStoreHome(id)">
-// 通过点击事件handleToStoreHome 拿到item.id的值。
-//id是在组件使用的界面拿到，并且传递到组件内的。
-//组件内没有id 全靠组件外传递
-//能拿到的不是查到的 是已经获取到的
+  // 通过点击事件handleToStoreHome 拿到item.id的值。
+  //id是在组件使用的界面拿到，并且传递到组件内的。
+  //组件内没有id 全靠组件外传递
+  //能拿到的不是查到的 是已经获取到的
   methods: {
     handleToStoreHome(id) {
-      console.log("门店详情",id);
+      console.log("门店详情", id);
       uni.navigateTo({
-        url: "/stuff/store/index?id="+id,
+        url: "/stuff/store/index?id=" + id,
       });
     },
     async getBrandList() {
@@ -84,6 +83,9 @@ export default {
   .name {
     font-size: @f14;
     color: @c3d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .tags {
@@ -111,6 +113,9 @@ export default {
       color: @c9;
       font-size: @f10;
       margin-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

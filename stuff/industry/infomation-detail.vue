@@ -123,7 +123,7 @@ export default {
   text-indent: 2em;
   line-height: 1.5;
   margin: 10px 0;
-  font-size: 14px;
+  font-size: 18px;
   color: @c3d;
 }
 

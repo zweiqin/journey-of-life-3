@@ -276,6 +276,8 @@ export default {
       this.form.imgs.brandIdcardProsUrl = list.brandIdcardProsUrl;
       this.form.imgs.brandIdcardConsUrl = list.brandIdcardConsUrl;
 
+      console.log(this.form.imgs);
+
       this.status = list.status;
       this.upOrderId = list.id;
       this.form.accountInfo.username = list.username;

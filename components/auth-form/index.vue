@@ -32,7 +32,8 @@
           }}</view>
         </view> -->
         <view class="form-item">
-          <input style="padding-left: 0" v-model="form.password" class="input" :type="inputType" />
+          <view class="name">输入密码</view>
+          <input  v-model="form.password" class="input" :type="inputType" />
           <img
             @click="isView = !isView"
             class="icon"
@@ -269,6 +270,7 @@ export default {
 
     .icon {
       width: 28upx;
+      font-size: 28upx;
     }
   }
 }

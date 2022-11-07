@@ -97,6 +97,9 @@
 			}
 		},
 		{
+			"path": "pages/otherUrl/otherUrl"
+		},
+		{
 			"path": "pages/editAddress/editAddress",
 			"style": {
 				"backgroundTextStyle": "light",
@@ -650,6 +653,15 @@
 				},
 				{
 					"path": "marketing-tools/red-envelope-distribution"
+				},
+				{
+					"path": "postCard/index"
+				},
+				{
+					"path": "postCard/myPostCard"
+				},
+				{
+					"path": "postCard/addPostCard"
 				}
 			]
 		},
@@ -688,6 +700,9 @@
 				},
 				{
 					"path": "price/price"
+				},
+				{
+					"path": "price/echar"
 				},
 				{
 					"path": "purchase/purchase"
