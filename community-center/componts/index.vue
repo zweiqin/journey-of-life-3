@@ -3,7 +3,12 @@
     <!-- <slot></slot> -->
     <view class="title">{{ serverNameTwo }}</view>
     <view class="form">
-      <view class="sub" v-for="item in detailList" :key="item.serverNameThree" @click="handleToServiceDetail">
+      <view
+        class="sub"
+        v-for="item in detailList"
+        :key="item.serverNameThree"
+        @click="handleToServiceDetail(item)"
+      >
         <img
           :src="
             item.serverImageUrl ||
@@ -15,18 +20,6 @@
 
         <view class="name">{{ item.serverNameThree }}</view>
       </view>
-      <!-- <view class="sub">
-        <img src="" alt="" class="goods" />
-        <view class="name">床体安装</view>
-      </view>
-      <view class="sub">
-        <img src="" alt="" class="goods" />
-        <view class="name">床体安装</view>
-      </view>
-      <view class="sub">
-        <img src="" alt="" class="goods" />
-        <view class="name">床体安装</view>
-      </view> -->
     </view>
   </view>
 </template>
@@ -48,23 +41,37 @@ export default {
     serverNameTwo: String,
     serverNameThree: String,
     serverImageUrl: String,
-    id: Number,
+    // id: Number,
     detailList: Array,
   },
   data() {
-    return {};
+    return {
+      name: "",
+      id: "",
+    };
   },
   computed: {},
   methods: {
-    handleToServiceDetail() {
-      console.log("服务详情");
-      uni.navigateTo({ url: "../community-center/community-detail" });
+    handleToServiceDetail(item) {
+      console.log("服务详情", item);
+      const name = item.serverNameThree;
+      const id = item.id;
+      // uni.navigateTo({ url: "../community-center/community-detail?id="+item });
+      uni.navigateTo({
+        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}`,
+        
+      });
+      
     },
   },
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕
-  mounted() {},
+  mounted() {
+    // setTimeout(() => {
+    //   console.log('草', this.detailList);
+    // }, 1000);
+  },
   // 组件周期函数--监听组件数据更新之前
   beforeUpdate() {},
   // 组件周期函数--监听组件数据更新之后

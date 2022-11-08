@@ -8,7 +8,7 @@
           class="return"
           @click="handleBack"
         />
-        <view class="title">木制品维修</view>
+        <view class="title">{{ title }}</view>
         <view class="location">
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png"
@@ -26,7 +26,7 @@
         />
       </view>
       <view class="name-list">
-        <view class="name">木制品维修</view>
+        <view class="name">{{ title }}</view>
         <view class="a">
           <view class="share">
             <img
@@ -38,17 +38,25 @@
           </view>
         </view>
       </view>
-      <view class="price-list">
-        <view class="logo">￥</view>
-        <view class="number">150.00</view>
-        <view class="unit">/台</view>
-      </view>
+
       <view class="brief">
         <view class="introduce">服务内容介绍</view>
         <view class="content"
           >对木质家具、木门、木地板等产品的划伤、破损、开裂、
           断裂等问题进行修复，恢复其外观，延长使用寿命。
         </view>
+      </view>
+
+      <view class="price-list" ref="price-list">
+        <item
+          v-for="item in serviceDetail"
+          :key="item.id"
+          :class="{ active: item.id == currentTab }"
+          @choose="switchTab(item)"
+          :serverInfoName="item.serverInfoName"
+          :serverPrice="item.serverPrice"
+          :serverUnit="item.serverUnit"
+        ></item>
       </view>
     </view>
     <view class="mid">
@@ -72,7 +80,7 @@
       </view>
       <view class="middle">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zyxgv8d3eblx5y6kanh4.png"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png"
           alt=""
           class="mid-img"
         />
@@ -151,11 +159,28 @@
 
 
 <script>
+import item from "../community-center/componts/item";
+import { getServiceDetailApi } from "../api/community-center";
 export default {
   name: "Community-detail",
   props: {},
+  components: {
+    item,
+  },
   data() {
-    return {};
+    return {
+      serviceDetail: [],
+      id: "",
+      serverTypeId: "",
+      serverInfoName: "",
+      serverInfoUrl: "",
+      serverIntroduction: "",
+      isArtificialArtificial: "",
+      serverPrice: "",
+      title: "",
+      serverUnit: "",
+      currentTab: 0,
+    };
   },
   methods: {
     handleBack() {
@@ -166,11 +191,56 @@ export default {
       uni.navigateTo({ url: "../community-center/service-sort" });
     },
     handleToServiceOrderHome() {
-      console.log("服务订单");
-      uni.navigateTo({ url: "../community-center/community-order" });
+      //需要传 图片 价格 名称 单位
+      // uni.navigateTo({ url: "../community-center/community-order" });
+      // const let var
+      const id = this.currentTab;
+      if (id == 0) {
+        console.log('sbbbbbb');
+      } else {
+        uni.navigateTo({
+          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}`,
+        });
+      }
+    },
+
+    switchTab(item1) {
+      console.log("12345", item1);
+      this.currentTab = item1.id;
+      this.serverTypeId = item1.serverTypeId;
+      this.serverPrice = item1.serverPrice;
+      this.serverInfoName = item1.serverInfoName;
+      this.serverUnit = item1.serverUnit;
+      this.serverInfoUrl = item1.serverInfoUrl;
+    },
+
+    //社区服务详情
+    async getServiceDetail() {
+      // this.serverTypeId=this.serviceDetail.serverTypeId;
+      const res = await getServiceDetailApi({
+        // serverTypeId: 109,
+        serverTypeId: this.serverTypeId,
+      });
+      this.serviceDetail = res.data;
+      console.log(this.serviceDetail);
+      this.id = this.serviceDetail.id;
+      this.serverTypeId = this.serviceDetail.serverTypeId;
+      this.serverInfoName = this.serviceDetail.serverInfoName;
+      this.serverInfoUrl = this.serviceDetail.serverInfoUrl;
+      this.serverIntroduction = this.serviceDetail.serverIntroduction;
+      this.isArtificialArtificial = this.serviceDetail.isArtificialArtificial;
+      this.serverPrice = this.serviceDetail.serverPrice;
+      this.serverUnit = this.serviceDetail.serverUnit;
     },
   },
   created() {},
+  onLoad(options) {
+    console.log(options);
+    this.serverTypeId = options.id;
+    this.title = options.serverNameThree;
+
+    this.getServiceDetail();
+  },
 };
 </script>
 
@@ -261,27 +331,9 @@ export default {
         }
       }
     }
-    .price-list {
-      display: flex;
-      align-items: center;
-      padding-left: 36upx;
-      .logo {
-        font-size: 28upx;
-        font-weight: 700;
-        color: #fa5151;
-      }
-      .number {
-        font-size: 40upx;
-        font-weight: bold;
-        color: #fa5151;
-      }
-      .unit {
-        font-size: 28upx;
-        font-weight: 700;
-      }
-    }
+
     .brief {
-      padding: 14upx 18upx 58upx 36upx;
+      padding: 14upx 18upx 40upx 36upx;
       .introduce {
         font-size: 28upx;
         font-weight: 500;
@@ -292,6 +344,71 @@ export default {
         font-size: 28upx;
         color: #3d3d3d;
       }
+    }
+    .price-list {
+      padding-left: 36upx;
+      padding-right: 36upx;
+      padding-bottom: 14upx;
+      display: flex;
+      flex-wrap: wrap;
+      // .item {
+      //   margin-right: 10upx;
+      //   margin-bottom: 40upx;
+      //   width: 210upx;
+      //   height: 70upx;
+      //   border-radius: 10upx;
+      //   border: 2upx solid #999999;
+      //   &.active {
+      //     background: #fa5151;
+      //     color: #fa5151;
+      //   }
+
+      //   .m {
+      //     padding-left: 6upx;
+      //     width: 210upx;
+      //     height: 70upx;
+      //     display: flex;
+      //     flex-direction: column;
+      //     justify-content: center;
+      //     .first {
+      //       font-size: 28upx;
+      //       font-weight: 400;
+      //       color: #999999;
+      //     }
+      //     .second {
+      //       // margin-top: 4upx;
+      //       .row {
+      //         display: flex;
+      //         align-items: center;
+      //         .specs {
+      //           font-size: 24upx;
+      //           font-weight: 400;
+      //           color: #999999;
+      //         }
+      //         .number {
+      //           font-size: 28upx;
+      //           font-weight: 400;
+      //           color: #999999;
+      //         }
+      //         .money {
+      //           font-size: 24upx;
+      //           font-weight: 400;
+      //           color: #999999;
+      //         }
+      //         .unit {
+      //           font-size: 24upx;
+      //           font-weight: 400;
+      //           color: #999999;
+      //         }
+      //         .qi {
+      //           font-size: 24upx;
+      //           font-weight: 400;
+      //           color: #999999;
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
   .mid {

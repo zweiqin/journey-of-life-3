@@ -9,11 +9,54 @@
       />
       <view class="title">完善服务信息</view>
     </view>
+
+    <view class="top">
+      <img
+        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png"
+        alt=""
+        class="shop"
+      />
+      <view class="title-name">{{ name }}</view>
+      <view class="price-list">
+        <view class="logo">￥</view>
+        <view class="number">{{ price }}</view>
+        <view class="point">.00</view>
+        <view class="slash">/</view>
+        <view class="unit">{{ unit }}</view>
+      </view>
+      <view class="choice-list">
+        <view class="choice">已选</view>
+        <view class="type">{{ type }}</view>
+        <view class="logo">￥</view>
+        <view class="number">{{ price }}</view>
+      </view>
+      <view class="specs-list">
+        <view class="name">规格</view>
+        <view class="w-list">
+          <view
+            class="w"
+            v-for="item in air"
+            :class="{ active: item.value === currentTab }"
+            :key="item.value"
+            @click="switchTab(item.value)"
+          >
+            <view class="specs">{{ item.label }}</view>
+            <view class="logo">￥</view>
+            <view class="money">{{ item.money }}</view>
+            <view class="slash">/</view>
+            <view class="unit">{{ unit }}</view>
+            <view class="qi">起</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    
     <view class="body">
       <view class="top-list">
         <view class="item-type">
           <view class="tag">*</view>
-          <view class="type">物品类型</view>
+          <view class="type">服务类型</view>
         </view>
         <view class="please">
           <view class="choice">请选择</view>
@@ -67,18 +110,36 @@
 
 
 <script>
+import { air } from "./config";
 export default {
   name: "Community-order",
   props: {},
   data() {
-    return {};
+    return {
+      air,
+      currentTab: 1,
+      name: "",
+      price: "",
+      unit: "",
+    };
   },
   methods: {
+    switchTab(item) {
+      console.log(item);
+      this.currentTab = item;
+    },
     handleBack() {
       uni.navigateBack();
     },
   },
   created() {},
+  onLoad(options) {
+    console.log(options);
+    this.name = options.name;
+    this.price = options.serverPrice;
+    this.unit = options.serverUnit;
+    this.type = options.serverInfoName;
+  },
 };
 </script>
 
@@ -104,8 +165,138 @@ export default {
       color: #3d3d3d;
     }
   }
+
+  .top {
+    .shop {
+      width: 100%;
+    }
+    .title-name {
+      padding-left: 30upx;
+      padding-bottom: 36upx;
+      // padding-top: 30upx;
+      font-size: 36upx;
+      font-weight: bold;
+      color: #3d3d3d;
+    }
+    .price-list {
+      display: flex;
+      align-items: center;
+      padding-left: 30upx;
+      padding-bottom: 36upx;
+      .logo {
+        font-size: 28upx;
+        font-weight: 400;
+        color: #fa5151;
+      }
+      .number {
+        font-size: 36upx;
+        font-weight: bold;
+        color: #fa5151;
+      }
+      .point {
+        font-size: 36upx;
+        font-weight: bold;
+        color: #fa5151;
+      }
+      .slash {
+        font-size: 28upx;
+        font-weight: 400;
+        color: #000000;
+      }
+      .unit {
+        font-size: 28upx;
+        font-weight: 400;
+        color: #000000;
+      }
+    }
+    .choice-list {
+      padding-left: 30upx;
+      padding-bottom: 36upx;
+      display: flex;
+      align-items: center;
+      .choice {
+        font-size: 28upx;
+        font-weight: 350;
+        color: #3d3d3d;
+      }
+      .type {
+        padding-left: 18upx;
+        font-size: 32upx;
+        color: #3d3d3d;
+      }
+      .logo {
+        font-size: 32upx;
+        color: #3d3d3d;
+      }
+      .number {
+        font-size: 32upx;
+        color: #3d3d3d;
+      }
+    }
+    .specs-list {
+      padding-left: 30upx;
+      .name {
+        padding-bottom: 18upx;
+        font-size: 32upx;
+        font-weight: 500;
+        color: #3d3d3d;
+      }
+
+      .w-list {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+        .w {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 260upx;
+          height: 80upx;
+          margin: 10upx 94upx 10upx 0upx;
+          border-radius: 10upx;
+          box-sizing: border-box;
+          border: 2upx solid #999999;
+          &.active {
+            border: 2upx solid #fa5151;
+          }
+          .specs {
+            font-size: 28upx;
+            font-weight: 400;
+            color: #3d3d3d;
+          }
+          .logo {
+            font-size: 36upx;
+            font-weight: 400;
+            color: #fa5151;
+          }
+          .money {
+            font-size: 36upx;
+            font-weight: 400;
+            color: #fa5151;
+          }
+          .slash {
+            font-size: 28upx;
+            font-weight: 400;
+            color: #000000;
+          }
+          .unit {
+            font-size: 28upx;
+            font-weight: 400;
+            color: #3d3d3d;
+          }
+          .qi {
+            font-size: 28upx;
+            font-weight: 400;
+            color: #3d3d3d;
+          }
+        }
+      }
+    }
+  }
   .body {
-    padding: 74upx 30upx 0upx 30upx;
+    padding: 36upx 30upx 0upx 30upx;
+
     .top-list {
       display: flex;
       justify-content: space-between;
@@ -118,7 +309,7 @@ export default {
           color: #fa5151;
         }
         .type {
-          font-size: 28upx;
+          font-size: 32upx;
           font-weight: 500;
           color: #3d3d3d;
         }
@@ -147,13 +338,13 @@ export default {
     .item-image {
       display: flex;
       align-items: center;
-      padding-top: 50upx;
+      padding-top: 36upx;
       .tag {
         font-weight: 600;
         color: #fa5151;
       }
       .name {
-        font-size: 28upx;
+        font-size: 32upx;
         font-weight: 500;
         color: #3d3d3d;
       }
@@ -183,10 +374,10 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 200upx;
+      width: 220upx;
       height: 44upx;
       .text1 {
-        font-size: 28upx;
+        font-size: 32upx;
         font-weight: 500;
         color: #3d3d3d;
       }

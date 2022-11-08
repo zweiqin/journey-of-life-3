@@ -27,5 +27,5 @@ export const XZLRequest = request(XZL_URL)
 export const RuanRequest = request(RUAN_URL);
 export const LTRequest = request(LANG_FEE_URL)
 export const DEYIRequest = request(DEYI_URL)
-export const XZLRquest = request(XZL_URL)
+export const XZLRquest = request(XZL_URL);
 

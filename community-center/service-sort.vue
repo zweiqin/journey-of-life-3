@@ -1,6 +1,6 @@
 <template>
   <view class="service-sort">
-    <view class="head" @click="handleToServiceDetail">
+    <view class="head" >
       <view class="search-bar">
         <view class="location">
           <view class="text">佛山市</view>
@@ -37,18 +37,18 @@
           >{{ item.serverNameOne }}</view
         >
       </view>
+
       <view class="main">
         <view class="mid">
-          <view v-for="item in sort" :key="item.id">
-            <sort
-              v-for="item1 in item.children"
-              :key="item1.id"
-              :serverNameTwo="item1.serverNameTwo"
-              :id="item1.id"
-              :pid="item1.pid"
-              :detailList="item1.children"
-            >
-              <!-- <view 
+          <sort
+            v-for="item1 in sort.children"
+            :key="item1.id"
+            :serverNameTwo="item1.serverNameTwo"
+            :id="item1.id"
+            :pid="item1.pid"
+            :detailList="item1.children"
+          >
+            <!-- <view 
               v-for="item2 in item1.children" 
               :key="item2.id"
               :serverNameThree="item2.serverNameThree"
@@ -57,8 +57,7 @@
               :pid="item2.pid"
               ></view>
              -->
-            </sort>
-          </view>
+          </sort>
         </view>
       </view>
     </view>
@@ -77,48 +76,39 @@ export default {
   data() {
     return {
       navbar: [],
-      currentTab: 0,
+      currentTab: 1,
       sort: [],
+      id: "",
+      serverNameOne: "",
       // data: [],
-      // id: "",
-      // pid: "",
-      // serverNameOne: "",
-      // serverNameTwo: "",
-      // serverNameThree: "",
-      // serverImageUrl: "",
-      // serverThreeInfo: "",
-      // children: "",
     };
   },
   methods: {
     switchTab(index) {
-      console.log(index);
       this.currentTab = index;
+      this.sort = this.data.find((item) => item.id === index);
     },
-    handleToServiceDetail() {
-      console.log("服务详情");
-      uni.navigateTo({ url: "../community-center/community-detail" });
-    },
+
+    // handleToServiceDetail(id) {
+    //   console.log("服务详情",id);
+    //   uni.navigateTo({ url: "../community-center/community-detail?id=" + id });
+
+    //   uni.navigateTo({
+    //     url: `/community-center/community-detail?id=${id}&name=   `
+    //   })
+    // },
 
     //查询社区服务分类接口
     async getServiceSort() {
       const res = await getServiceSortApi({
-        // serverNameOne: "",
-        // serverNameTwo: "",
-        // serverNameThree: "",
-        // serverImageUrl: "",
-        // serverThreeInfo: "",
-        // id: "",
-        // pid: "",
-        // children: "",
+        id: this.id,
       });
       console.log(res);
 
       this.navbar = res.data;
-      console.log(this.navbar);
-
-      this.sort = res.data;
-      console.log(this.sort);
+      this.sort = res.data[0];
+      this.data = res.data;
+      console.log(res.data[0]);
     },
   },
   created() {},
@@ -134,6 +124,7 @@ export default {
     width: 100%;
     height: 172upx;
     background: #ffffff;
+    // position: fixed;
     .search-bar {
       position: absolute;
       width: 95%;
@@ -186,11 +177,14 @@ export default {
   .body {
     display: flex;
     .navbar {
-      margin-top: 28upx;
+      // margin-top: 28upx;
       width: 22%;
       display: flex;
       flex-direction: column;
       align-items: center;
+      // position: fixed;
+      // top: 200upx;
+      // background: #ffffff;
       .item {
         width: 130upx;
         height: 52upx;
@@ -207,18 +201,20 @@ export default {
         }
       }
     }
+
+    display: flex;
     .main {
       width: 78%;
       // height: 2697px;
       border-radius: 10upx 0upx 0upx 0upx;
       background: #f1f2f6;
-
+      // position: fixed;
+      // right: 0upx;
+      // top: 172upx;
       .mid {
         margin: 18upx 0upx 0upx 12upx;
         border-radius: 10upx 0upx 0upx 0upx;
         background: #ffffff;
-
-        
       }
     }
   }

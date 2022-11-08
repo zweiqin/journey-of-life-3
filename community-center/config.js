@@ -310,3 +310,26 @@ export async function getOrderSetting(key) {
   }
   return data[key];
 }
+
+/**
+ * 空调样式
+ */
+export const air =[
+  {
+    value:1,
+    label:"1匹",
+    money:150,
+  }, {
+    value:2,
+    label:"2匹",
+    money:250,
+  }, {
+    value:3,
+    label:"大2匹",
+    money:350,
+  }, {
+    value:4,
+    label:"大3匹",
+    money:450,
+  },
+]

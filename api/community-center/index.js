@@ -78,3 +78,8 @@ export const getEndOrderListApi = (data) => {
 export const getServiceSortApi = (data) =>{
   return XZLRquest("/community/serverInfo/getServerTypeList",data);
 };
+
+//查询社区服务详情
+export const getServiceDetailApi = (data) =>{
+  return XZLRquest("/community/serverInfo/getServerInfoById",data,"get");
+};
