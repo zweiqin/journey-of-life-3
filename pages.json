@@ -372,6 +372,12 @@
 				},
 				{
 					"path": "community-order"
+				},
+				{
+					"path": "customer-information"
+				},
+				{
+					"path": "confirm-order"
 				}
 			]
 		},

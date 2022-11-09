@@ -46,7 +46,7 @@
           断裂等问题进行修复，恢复其外观，延长使用寿命。
         </view>
       </view>
-
+      <view v-if="isArtificialArtificial" class="type">服务类型</view>
       <view class="price-list" ref="price-list">
         <item
           v-for="item in serviceDetail"
@@ -56,6 +56,7 @@
           :serverInfoName="item.serverInfoName"
           :serverPrice="item.serverPrice"
           :serverUnit="item.serverUnit"
+          :isArtificialArtificial="item.isArtificialArtificial"
         ></item>
       </view>
     </view>
@@ -175,7 +176,7 @@ export default {
       serverInfoName: "",
       serverInfoUrl: "",
       serverIntroduction: "",
-      isArtificialArtificial: "",
+      isArtificialArtificial: false,
       serverPrice: "",
       title: "",
       serverUnit: "",
@@ -194,14 +195,26 @@ export default {
       //需要传 图片 价格 名称 单位
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
-      const id = this.currentTab;
-      if (id == 0) {
-        console.log('sbbbbbb');
+
+      if (this.serviceDetail.length == 0) {
+        console.log("abc");
+        uni.navigateTo({
+          url: `/community-center/community-order`,
+        });
       } else {
         uni.navigateTo({
-          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}`,
+          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}`,
         });
       }
+
+      // const id = this.currentTab;
+      // if (id == 0) {
+      //   console.log('sbbbbbb');
+      // } else {
+      //   uni.navigateTo({
+      //     url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}`,
+      //   });
+      // }
     },
 
     switchTab(item1) {
@@ -211,7 +224,7 @@ export default {
       this.serverPrice = item1.serverPrice;
       this.serverInfoName = item1.serverInfoName;
       this.serverUnit = item1.serverUnit;
-      this.serverInfoUrl = item1.serverInfoUrl;
+      
     },
 
     //社区服务详情
@@ -222,15 +235,17 @@ export default {
         serverTypeId: this.serverTypeId,
       });
       this.serviceDetail = res.data;
-      console.log(this.serviceDetail);
-      this.id = this.serviceDetail.id;
-      this.serverTypeId = this.serviceDetail.serverTypeId;
-      this.serverInfoName = this.serviceDetail.serverInfoName;
-      this.serverInfoUrl = this.serviceDetail.serverInfoUrl;
-      this.serverIntroduction = this.serviceDetail.serverIntroduction;
-      this.isArtificialArtificial = this.serviceDetail.isArtificialArtificial;
-      this.serverPrice = this.serviceDetail.serverPrice;
-      this.serverUnit = this.serviceDetail.serverUnit;
+      console.log("666",this.serviceDetail);
+      // this.id = this.serviceDetail.id;
+      // this.serverTypeId = this.serviceDetail.serverTypeId;
+      // this.serverInfoName = this.serviceDetail.serverInfoName;
+      // console.log("名称",this.serverInfoName);
+      // this.serverInfoUrl = this.serviceDetail.serverInfoUrl;
+      // this.serverIntroduction = this.serviceDetail.serverIntroduction;
+      // this.isArtificialArtificial = this.serviceDetail.isArtificialArtificial;
+      // console.log("123",this.isArtificialArtificial);
+      // this.serverPrice = this.serviceDetail.serverPrice;
+      // this.serverUnit = this.serviceDetail.serverUnit;
     },
   },
   created() {},
@@ -344,6 +359,13 @@ export default {
         font-size: 28upx;
         color: #3d3d3d;
       }
+    }
+    .type {
+      padding-left: 36upx;
+      padding-bottom: 20upx;
+      font-size: 36upx;
+      font-weight: bold;
+      color: #3d3d3d;
     }
     .price-list {
       padding-left: 36upx;

@@ -1,5 +1,8 @@
 <template>
+
   <view class="community-order">
+    <!-- <view v-if="isArtificialArtificial">123</view>
+    <view v-else-if="!isArtificialArtificial">223</view> -->
     <view class="title-list">
       <img
         src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
@@ -31,7 +34,7 @@
         <view class="number">{{ price }}</view>
       </view>
       <view class="specs-list">
-        <view class="name">规格</view>
+        <view v-if="id" class="name">规格</view>
         <view class="w-list">
           <view
             class="w"
@@ -51,7 +54,6 @@
       </view>
     </view>
 
-    
     <view class="body">
       <view class="top-list">
         <view class="item-type">
@@ -98,7 +100,7 @@
         </view>
       </view>
       <view class="foot">
-        <view class="on">确认</view>
+        <view class="on" @click="handleToServiceInformation">确认</view>
       </view>
     </view>
   </view>
@@ -121,6 +123,8 @@ export default {
       name: "",
       price: "",
       unit: "",
+      id: 97,
+      // isArtificialArtificial:true
     };
   },
   methods: {
@@ -131,6 +135,11 @@ export default {
     handleBack() {
       uni.navigateBack();
     },
+    handleToServiceInformation() {
+      uni.navigateTo({
+        url: `/community-center/customer-information`,
+      });
+    },
   },
   created() {},
   onLoad(options) {
@@ -139,6 +148,7 @@ export default {
     this.price = options.serverPrice;
     this.unit = options.serverUnit;
     this.type = options.serverInfoName;
+    this.id =options.serverTypeId;
   },
 };
 </script>
