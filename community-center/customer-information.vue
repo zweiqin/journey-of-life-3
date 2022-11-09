@@ -53,7 +53,7 @@
         />
       </view>
     </view>
-    <view class="middle">
+    <view  class="middle1">
       <view class="detail">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
@@ -61,10 +61,10 @@
           class="goods"
         />
         <view class="item">
-          <view class="text">空调清洗</view>
+          <view class="text">空调安装</view>
           <view class="price-list">
             <view class="logo">￥</view>
-            <view class="number">150</view>
+            <view class="number">{{price1}}</view>
             <view class="point">.00</view>
             <view class="xie">/</view>
             <view class="unit">台</view>
@@ -78,6 +78,38 @@
           class="img"
         />
         <view class="number">1</view>
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
+          alt=""
+          class="img"
+        />
+      </view>
+    </view>
+    <view v-if="id2==97" class="middle2">
+      <view class="detail">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          alt=""
+          class="goods"
+        />
+        <view class="item">
+          <view class="text">匹数</view>
+          <!-- <view class="price-list">
+            <view class="logo">￥</view>
+            <view class="number">150</view>
+            <view class="point">.00</view>
+            <view class="xie">/</view>
+            <view class="unit">台</view>
+          </view> -->
+        </view>
+      </view>
+      <view class="add">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
+          alt=""
+          class="img"
+        />
+        <view class="number">{{specsId}}</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
           alt=""
@@ -131,7 +163,11 @@ export default {
   name: "Customer-information",
   props: {},
   data() {
-    return {};
+    return {
+      id2:"",
+      specsId:"",
+      price1:"",
+    };
   },
   methods: {
     handleBack() {
@@ -144,6 +180,12 @@ export default {
     },
   },
   created() {},
+  onLoad(options) {
+    console.log(options);
+    this.id2 =options.id1;
+    this.specsId=options.specsId;
+    this.price1=options.price;
+  },
 };
 </script>
 
@@ -256,7 +298,82 @@ export default {
       }
     }
   }
-  .middle {
+  .middle1 {
+    width: 100%;
+    height: 200upx;
+    background: #ffffff;
+    margin-top: 20upx;
+    margin-bottom: 20upx;
+    display: flex;
+    padding-top: 52upx;
+    justify-content: space-between;
+    .detail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 460upx;
+      height: 100upx;
+      // padding-top: 50upx;
+      .goods {
+        width: 212upx;
+        height: 96upx;
+      }
+      .item {
+        width: 200upx;
+        .text {
+          padding-left: 6upx;
+          font-size: 32upx;
+          color: #3d3d3d;
+        }
+        .price-list {
+          display: flex;
+          align-items: center;
+          .logo {
+            font-size: 36upx;
+            font-weight: 500;
+            color: #fa5151;
+          }
+          .number {
+            font-size: 36upx;
+            font-weight: 700;
+            color: #fa5151;
+          }
+          .point {
+            font-size: 36upx;
+            font-weight: 700;
+            color: #fa5151;
+          }
+          .xie {
+            font-size: 28upx;
+            font-weight: 400;
+          }
+          .unit {
+            font-size: 28upx;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    .add {
+      padding-top: 20upx;
+      padding-right: 30upx;
+      width: 160upx;
+      height: 50upx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .img {
+        width: 48upx;
+        height: 48upx;
+      }
+      .number {
+        font-size: 32upx;
+        font-weight: 500;
+        color: #3d3d3d;
+      }
+    }
+  }
+  .middle2 {
     width: 100%;
     height: 200upx;
     background: #ffffff;

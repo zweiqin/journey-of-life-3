@@ -318,18 +318,18 @@ export const air =[
   {
     value:1,
     label:"1匹",
-    money:150,
+    money:0,
   }, {
     value:2,
     label:"2匹",
-    money:250,
+    money:100,
   }, {
     value:3,
-    label:"大2匹",
-    money:350,
+    label:"3匹",
+    money:200,
   }, {
     value:4,
-    label:"大3匹",
-    money:450,
+    label:"4匹",
+    money:300,
   },
 ]

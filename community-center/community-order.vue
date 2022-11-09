@@ -1,5 +1,4 @@
 <template>
-
   <view class="community-order">
     <!-- <view v-if="isArtificialArtificial">123</view>
     <view v-else-if="!isArtificialArtificial">223</view> -->
@@ -13,7 +12,7 @@
       <view class="title">完善服务信息</view>
     </view>
 
-    <view class="top">
+    <view class="top" v-if="price">
       <img
         src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png"
         alt=""
@@ -33,58 +32,60 @@
         <view class="logo">￥</view>
         <view class="number">{{ price }}</view>
       </view>
+    </view>
+    <template v-if="id == 97">
       <view class="specs-list">
-        <view v-if="id" class="name">规格</view>
+        <view class="name">规格</view>
         <view class="w-list">
           <view
             class="w"
             v-for="item in air"
-            :class="{ active: item.value === currentTab }"
+            :class="{ active: item.value == currentTab }"
             :key="item.value"
             @click="switchTab(item.value)"
           >
             <view class="specs">{{ item.label }}</view>
-            <view class="logo">￥</view>
+            <view class="logo">+</view>
             <view class="money">{{ item.money }}</view>
-            <view class="slash">/</view>
-            <view class="unit">{{ unit }}</view>
-            <view class="qi">起</view>
+
+            <view class="unit">元</view>
+            <view class="qi"></view>
           </view>
         </view>
       </view>
-    </view>
-
+    </template>
     <view class="body">
-      <view class="top-list">
-        <view class="item-type">
-          <view class="tag">*</view>
-          <view class="type">服务类型</view>
+      <template v-if="!price">
+        <view class="top-list">
+          <view class="item-type">
+            <view class="tag">*</view>
+            <view class="type">服务类型</view>
+          </view>
+          <!-- <view class="please">
+            <view class="choice">请选择</view>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
+              alt=""
+              class="more"
+            />
+          </view> -->
         </view>
-        <view class="please">
-          <view class="choice">请选择</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
-            alt=""
-            class="more"
-          />
-        </view>
-      </view>
-      <input
-        type="text"
-        class="text"
-        placeholder="（服务类型可以自动填写数量/尺寸/体积/重量/面积）"
-      />
+        <view class="text">{{ name }}</view>
+      </template>
       <view class="item-image">
         <view class="tag">*</view>
         <view class="name">物品图片</view>
       </view>
-      <view class="upload">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/11y7t9j0dh9s74bcyoz5.png"
-          alt=""
-          class="img"
-        />
-        <view class="text">上传图片</view>
+      <view style="display:flex">
+        <view class="upload" @click="chooseImg">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/11y7t9j0dh9s74bcyoz5.png"
+            alt=""
+            class="img"
+          />
+          <view class="text">上传图片</view>
+        </view>
+        <img v-for="img in images" :key="img" :src="img" alt="" />
       </view>
       <view class="explain">
         <view class="text1">需求说明</view>
@@ -113,6 +114,8 @@
 
 <script>
 import { air } from "./config";
+import { USER_TOKEN } from "../constant";
+import { getUserId } from "../utils";
 export default {
   name: "Community-order",
   props: {},
@@ -123,21 +126,44 @@ export default {
       name: "",
       price: "",
       unit: "",
-      id: 97,
+      id: "",
+      images: [],
+
       // isArtificialArtificial:true
     };
   },
   methods: {
-    switchTab(item) {
-      console.log(item);
-      this.currentTab = item;
-    },
     handleBack() {
       uni.navigateBack();
     },
     handleToServiceInformation() {
       uni.navigateTo({
-        url: `/community-center/customer-information`,
+        url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}`,
+      });
+    },
+
+    switchTab(item1) {
+      console.log("规格", item1);
+      this.currentTab = item1;
+      this.specsId = item1;
+    },
+    chooseImg() {
+      const _this = this;
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          uni.uploadFile({
+            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            filePath: chooseImageRes.tempFiles[0].path,
+            name: "file",
+            formData: {
+              token: uni.getStorageSync(USER_TOKEN),
+              userId: getUserId(),
+            },
+            success: (uploadFileRes) => {
+              _this.images.push(JSON.parse(uploadFileRes.data).data.url);
+            },
+          });
+        },
       });
     },
   },
@@ -148,7 +174,7 @@ export default {
     this.price = options.serverPrice;
     this.unit = options.serverUnit;
     this.type = options.serverInfoName;
-    this.id =options.serverTypeId;
+    this.id = options.id;
   },
 };
 </script>
@@ -243,63 +269,63 @@ export default {
         color: #3d3d3d;
       }
     }
-    .specs-list {
-      padding-left: 30upx;
-      .name {
-        padding-bottom: 18upx;
-        font-size: 32upx;
-        font-weight: 500;
-        color: #3d3d3d;
-      }
+  }
+  .specs-list {
+    padding-left: 30upx;
+    .name {
+      padding-bottom: 18upx;
+      font-size: 32upx;
+      font-weight: 500;
+      color: #3d3d3d;
+    }
 
-      .w-list {
-        width: 100%;
+    .w-list {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .w {
         display: flex;
-        flex-wrap: wrap;
-
-        .w {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 260upx;
-          height: 80upx;
-          margin: 10upx 94upx 10upx 0upx;
-          border-radius: 10upx;
-          box-sizing: border-box;
-          border: 2upx solid #999999;
-          &.active {
-            border: 2upx solid #fa5151;
-          }
-          .specs {
-            font-size: 28upx;
-            font-weight: 400;
-            color: #3d3d3d;
-          }
-          .logo {
-            font-size: 36upx;
-            font-weight: 400;
-            color: #fa5151;
-          }
-          .money {
-            font-size: 36upx;
-            font-weight: 400;
-            color: #fa5151;
-          }
-          .slash {
-            font-size: 28upx;
-            font-weight: 400;
-            color: #000000;
-          }
-          .unit {
-            font-size: 28upx;
-            font-weight: 400;
-            color: #3d3d3d;
-          }
-          .qi {
-            font-size: 28upx;
-            font-weight: 400;
-            color: #3d3d3d;
-          }
+        align-items: center;
+        justify-content: center;
+        width: 260upx;
+        height: 80upx;
+        margin: 10upx 94upx 10upx 0upx;
+        border-radius: 10upx;
+        box-sizing: border-box;
+        border: 2upx solid #999999;
+        &.active {
+          border: 2upx solid #fa5151;
+        }
+        .specs {
+          font-size: 28upx;
+          font-weight: 400;
+          color: #3d3d3d;
+        }
+        .logo {
+          font-size: 36upx;
+          font-weight: 400;
+          color: #fa5151;
+        }
+        .money {
+          font-size: 36upx;
+          font-weight: 400;
+          color: #fa5151;
+        }
+        .slash {
+          font-size: 28upx;
+          font-weight: 400;
+          color: #000000;
+        }
+        .unit {
+          font-size: 28upx;
+          font-weight: 400;
+          color: #3d3d3d;
+        }
+        .qi {
+          font-size: 28upx;
+          font-weight: 400;
+          color: #3d3d3d;
         }
       }
     }
