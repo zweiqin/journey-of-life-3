@@ -9,7 +9,7 @@
   >
     <swiper
       class="swiper"
-      indicator-dots
+      :indicator-dots=indicationPoint
       autoplay
       indicator-color="#fff"
       indicator-active-color="#fff"
@@ -41,6 +41,10 @@ export default {
         "https://img2.baidu.com/it/u=3652009798,4006120259&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=479",
       ],
     },
+    indicationPoint:{
+      type:Boolean,
+      default:true,
+    }  
   },
 };
 </script>

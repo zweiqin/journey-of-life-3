@@ -27,14 +27,10 @@
 
     <!-- 社区信息 -->
     <view class="community-info">
-      <img
-        class="avatar"
-        src="https://img0.baidu.com/it/u=3608430476,1945954109&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=494"
-        alt=""
-      />
+      <img class="avatar" :src="picUrl" alt="" />
 
       <view class="wrapper">
-        <view class="name">GIVENCHY团蜂家具社区旗舰店</view>
+        <view class="name">{{ name }}</view>
         <view class="footer">
           <text class="desc">综合体验</text>
           <view class="rate">
@@ -73,8 +69,12 @@
         >
       </view>
 
-      <Recommend v-if="currentTab === 0"></Recommend>
-      <Baby v-else></Baby>
+      <Recommend
+        v-if="currentTab === 0"
+        :allgoodsList="allgoodsList"
+        :goodsRankList="goodsRankList"
+      ></Recommend>
+      <Baby v-else :allgoodsList="allgoodsList" :brandId="brandId"></Baby>
     </view>
   </view>
 </template>
@@ -82,7 +82,9 @@
 <script>
 import Recommend from "./components/recommend/index.vue";
 import Baby from "./components/baby/index.vue";
-
+import { goodsMaxSaleGoodsApi, goodsListApi } from "../../api/goods";
+import { getBrandDetailApi } from "../../api/brand";
+import { number } from "echarts";
 export default {
   components: {
     Recommend,
@@ -93,9 +95,46 @@ export default {
       isSearch: false,
       searchKey: "",
       currentTab: 0,
+      brandId: "",
+      name: "",
+      picUrl: "",
+      shareUrl: "",
+      allgoodsList: {},
+      goodsRankList: {},
     };
   },
+  onLoad(options) {
+    console.log(options);
+    this.brandId = options.brandId;
+    this.goodsMaxSaleGoods();
+    this.goodsList();
+    this.getBrandDetail();
+  },
   methods: {
+    async getBrandDetail() {
+      const res = await getBrandDetailApi({
+        id: this.brandId,
+      });
+      console.log("门店详情", res);
+      this.name = res.data.brand.name;
+      this.picUrl = res.data.brand.picUrl;
+      this.shareUrl = res.data.brand.shareUrl;
+    },
+    async goodsList() {
+      const res = await goodsListApi({
+        brandId: this.brandId,
+      });
+      console.log("商品列表", res);
+      this.allgoodsList = res.data;
+    },
+
+    async goodsMaxSaleGoods() {
+      const res = await goodsMaxSaleGoodsApi({
+        brandId: this.brandId,
+      });
+      console.log("分类排名", res);
+      this.goodsRankList = res.data;
+    },
     /**
      * @description 返回上一级
      */

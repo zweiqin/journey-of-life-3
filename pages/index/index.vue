@@ -9,6 +9,7 @@
 <template>
   <!--index.wxml-->
   <view class="container">
+    <!-- <accountcement></accountcement> -->
     <!-- 头部 -->
     <view class="header" ref="headerRef">
       <img
@@ -43,6 +44,35 @@
           <img :src="banner.url" alt="" />
         </swiper-item>
       </swiper>
+      <view class="flex">
+        <view class="brief" v-for="item in briefIntroduction" :key="item.value">
+          <img :src="item.icon" class="brief-img" />
+          <view class="brief-text">{{ item.lable }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="affiche" v-if="currentNav === 0">
+      <img
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93wpaaxvpg67whbtul3e.png "
+        alt=""
+        class="bell"
+      />
+      <view class="title">近期公告</view>
+      <swiper
+        :indicator-dots="false"
+        autoplay
+        :circular="true"
+        :vertical="true"
+        class="text-swiper"
+      >
+        <swiper-item
+          class="swiper-text"
+          v-for="item in affiche"
+          :key="item.value"
+        >
+          <view>{{ item.lable }}</view>
+        </swiper-item>
+      </swiper>
     </view>
 
     <!-- nav -->
@@ -66,9 +96,12 @@
         :discount="discount"
         :explosion="explosion"
         :brandList="brandList"
+        :guessLike="guessLike"
         v-show="currentNav === 0"
       ></StrictSelection>
-      <BrandFactory v-show="currentNav === 1"
+      <BrandFactory
+        :BrandFactory="BrandFactory"
+        v-show="currentNav === 1"
       ></BrandFactory>
       <Design v-show="currentNav === 2"></Design>
       <view v-show="currentNav === 3">
@@ -106,26 +139,35 @@
 <script>
 //index.js
 //获取应用实例
-import { navs } from "./config.js";
+import { navs, briefIntroduction, affiche } from "./config.js";
 import StrictSelection from "./components/StrictSelection/index.vue";
 import BrandFactory from "./components/BrandFactory/index.vue";
 import { getBrandListApi } from "../../api/brand";
+import { getGoodsByIdApi } from "../../api/home";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
+import lqbtitle from "./components/lqbTitle";
+import lqbCompany from "./components/lqbCompany";
+import accountcement from "./components/lqbAnnouncement";
 import {
   getGoodsTypesApi,
   getIndexDataApi,
   getTypeDetailList,
 } from "../../api/home";
 import { checkWhoami } from "../../utils/DWHutils.js";
-
 export default {
   data() {
     return {
+      title: "爆款专区",
+      englishTitle: "EXPLOSIVE SECTION",
       navs,
+      affiche,
       brandList: [],
+      guessLike: [],
+      BrandFactory: [],
       currentNav: 0,
+      briefIntroduction,
       strictSelectionBanner: [
         {
           id: 1,
@@ -133,15 +175,11 @@ export default {
         },
         {
           id: 2,
-          url: "https://img1.baidu.com/it/u=802717398,2482973253&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=345",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/rfhy2z3or8ksz65xv01t.png",
         },
         {
           id: 3,
           url: "https://img2.baidu.com/it/u=1592211744,900572881&fm=253&fmt=auto&app=138&f=JPEG?w=1067&h=500",
-        },
-        {
-          id: 4,
-          url: "https://img2.baidu.com/it/u=1799258866,161245570&fm=253&fmt=auto&app=138&f=JPEG?w=1500&h=500",
         },
       ],
       channel: [], // 风格
@@ -149,7 +187,16 @@ export default {
       discount: [], // 优惠
     };
   },
-  components: { StrictSelection, BrandFactory, Design, Carousel, Goods },
+  components: {
+    StrictSelection,
+    BrandFactory,
+    Design,
+    Carousel,
+    accountcement,
+    Goods,
+    lqbtitle,
+    lqbCompany,
+  },
   props: {},
   onLoad: function () {},
   mounted() {
@@ -157,19 +204,42 @@ export default {
     this.getIndexData();
     this.getTehui();
     this.getBrandList();
-    checkWhoami();
+    this.getGoodsById();
+    this.getBrandFactory();
+    // checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    async getBrandFactory() {
+      const res = await getBrandListApi({
+        brandgenreId: 23,
+        page: 1,
+        size: 10,
+      });
+      console.log("品牌工厂", res);
+      // this.BrandFactory= res.data.brandList
+      this.BrandFactory = res.data.brandList.slice(0, 3);
+      console.log("品牌工厂1", this.BrandFactory);
+    },
+    async getGoodsById() {
+      let number = Math.ceil(Math.random() * 10) + 1; //ceil向上取整，即生成1-10的随机整数，取0的概率极小
+      console.log("123", number);
+      const res = await getGoodsByIdApi({
+        page: number,
+        size: 20,
+      });
+      console.log("guessLike", res.data.goodsList);
+      this.guessLike = res.data.goodsList;
+    },
     async getBrandList() {
       const res = await getBrandListApi({
         brandgenreId: 0,
         page: "",
         size: "",
       });
-      console.log("123", res);
-      this.brandList = res.data.brandList
+
+      this.brandList = res.data.brandList;
     },
     shopCar() {
       uni.navigateTo({
@@ -220,9 +290,12 @@ export default {
     async getIndexData() {
       const res = await getIndexDataApi();
       if (res.errno === 0) {
+        console.log(res);
         // this.strictSelectionBanner = res.data.banner;
         this.explosion = res.data.hotGoodsList;
         this.discount = res.data.newGoodsList;
+        this.explosion = this.explosion.slice(0, 6);
+        this.discount = this.discount.slice(0, 6);
 
         console.log(this.explosion, this.discount);
       } else {
@@ -255,4 +328,52 @@ export default {
 </script>
 <style scope lang="less">
 @import "./index.less";
+.flex {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20upx;
+  .brief {
+    display: flex;
+    .brief-img {
+      width: 32upx;
+      height: 32upx;
+      margin-right: 6upx;
+    }
+    .brief-text {
+      color: #999;
+      font-size: 24upx;
+    }
+  }
+}
+.affiche {
+  display: flex;
+  align-items: center;
+  .bell {
+    width: 40upx;
+    height: 40upx;
+  }
+  .title {
+    color: #fa5151;
+    font-size: 28upx;
+    margin-left: 22upx;
+  }
+  .text-swiper {
+    flex: 1;
+    height: 45upx;
+    .swiper-text {
+      height: 40upx;
+      display: flex;
+      align-items: center;
+      margin-left: 22upx;
+      view {
+        overflow: hidden;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 28upx;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+}
 </style>

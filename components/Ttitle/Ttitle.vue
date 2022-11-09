@@ -7,12 +7,14 @@
     />
     <view class="text">{{ title }}</view>
     <view v-if="search">
-    <img
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/l4syvc2hz42parggqf0o.png"
-      alt=""
-      class="search"
-    />
-</view>
+      <img
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/l4syvc2hz42parggqf0o.png"
+        alt=""
+        class="search"
+        @click="openInput"
+      />
+      <!-- <input type="text" class="input" @input="handleinput" :value="value" /> -->
+    </view>
     <view class="search" v-else></view>
   </view>
 </template>
@@ -21,12 +23,21 @@
 export default {
   props: {
     title: String,
-    search:Boolean,
+    search: Boolean,
+    // value: {
+    //   type: Object,
+    //   required: true,
+    // },
   },
   methods: {
-    back(){
-        uni.navigateBack()
-    }
+    back() {
+      uni.navigateBack();
+    },
+    openInput() {},
+    handleinput(event) {
+      //父组件在绑定v-model时，其实就绑定的input事件，因此父组件不需要再声明事件了
+      this.$emit("input", event.target.value);
+    },
   },
 };
 </script>
@@ -43,7 +54,7 @@ export default {
     font-size: 32upx;
     font-weight: 600;
   }
-  .search{
+  .search {
     width: 40upx;
     height: 40upx;
   }

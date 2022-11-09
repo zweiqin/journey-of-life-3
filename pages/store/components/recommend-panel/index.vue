@@ -5,44 +5,29 @@
       <img class="img" src="../../../../static/images/store/bar.png" alt="" />
     </view>
     <view class="main">
-      <view class="goods-item">
-        <img
-          class="goods-img"
-          src="https://img0.baidu.com/it/u=1164982935,3514796448&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-          alt=""
-        />
+      <view
+        class="goods-item"
+        v-for="item in goodsRankList.data"
+        :key="item.goodsList"
+        @click="goodsDetail(item.goods[0].id)"
+      >
+        <img class="goods-img" :src="item.goods[0].picUrl" alt="" />
         <view class="info">
           <view>
             <view class="name">
-              雅兰头层真皮床架1.8m床意式 轻奢现代1.5米双人主卧床实木...
+              {{ item.goods[0].name }}
             </view>
 
-            <view class="tag">本店皮艺床热销第一名</view>
+            <view class="tag">本店{{ item.category.name }}热销第一名</view>
           </view>
-
+          <view class="goodsSn">{{ item.goods[0].goodsSn }}</view>
           <view class="footer">
-            <view class="left">￥<text class="price">400</text> </view>
-            <view class="right"> 3215人付款 </view>
-          </view>
-        </view>
-      </view>
-
-      <view class="goods-item">
-        <img
-          class="goods-img"
-          src="
-          https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/u89pd9mupqyiq76knk9j.jpg"          alt=""
-        />
-        <view class="info">
-          <view>
-            <view class="name"> BM20210903KQMUM52 </view>
-
-            <view class="tag">本店沙发热销第一名</view>
-          </view>
-
-          <view class="footer">
-            <view class="left">￥<text class="price">3201</text> </view>
-            <view class="right"> 1326人付款 </view>
+            <view class="left"
+              >￥<text class="price"
+                >{{ item.goods[0].retailPrice }}/{{ item.goods[0].unit }}</text
+              >
+            </view>
+            <!-- <view class="right"> 3215人付款 </view> -->
           </view>
         </view>
       </view>
@@ -56,6 +41,27 @@ export default {
     newType: {
       type: Boolean,
       default: true,
+    },
+    goodsRankList: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      goodsId: "",
+    };
+  },
+  mounted() {
+    console.log(this.goodsRankList);
+  },
+  methods: {
+    goodsDetail(item) {
+      console.log(item);
+      this.goodsId = item
+      uni.navigateTo({
+        url:'/pages/prod/prod?goodsId='+this.goodsId
+      })
+      // uni.navigateTo({ url: '../../../../pages/prod/prod?goodsId='+this.goodsId })
     },
   },
 };
@@ -100,13 +106,15 @@ export default {
     .goods-item {
       display: flex;
       width: 100%;
-      padding: 52upx 88upx 52upx 16upx;
+      padding: 42upx 88upx 52upx 16upx;
       background-color: #fff;
       box-sizing: border-box;
 
       .goods-img {
-        width: 184upx;
+        width: 200upx;
+        height: 200upx;
         border-radius: 10upx;
+        object-fit: cover;
         flex-shrink: 0;
       }
 
@@ -116,11 +124,14 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         margin-left: 88upx;
-
+        .goodsSn {
+          color: #999999;
+          font-size: 24upx;
+        }
         .name {
           color: #3d3d3d;
-          font-size: 24upx;
-          font-weight: 100;
+          font-size: 28upx;
+          font-weight: 500;
           display: -webkit-box;
           overflow: hidden;
           -webkit-box-orient: vertical;
@@ -130,7 +141,7 @@ export default {
 
         .tag {
           color: #ff8f1f;
-          font-size: 16upx;
+          font-size: 24upx;
           transform: scale(0.9);
           margin-left: -20upx;
         }

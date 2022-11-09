@@ -41,7 +41,7 @@ export const getTypeDetailList = (data) => {
  * @param {*} data
  * @returns
  */
-export const getGoodsById = (data) => {
+export const getGoodsByIdApi = (data) => {
   return RuanRequest("/goods/list", data, "get");
 };
 

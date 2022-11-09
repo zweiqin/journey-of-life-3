@@ -22,270 +22,22 @@
             alt=""
           />
         </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
-        <view class="goods-detail">
-          <view class="left">
-            <img
-              class="cailiao"
-              src="../../static/images/stuff/材料.png"
-              alt=""
-            />
-          </view>
-          <view class="right">
-            <view class="goods-name">革沙布料真皮荔枝纹皮料子</view>
-            <img
-              class="geiqian"
-              src="../../static/images/stuff/买贵必赔.png"
-              alt=""
-            />
-            <view class="yishou">已售1000+</view>
-            <view class="jiage">
-              <view class="xianjia">￥19.9</view>
-              <view class="yuanjia">原价:￥39.9</view>
-            </view>
-            <view class="xiadan">
-              <view class="xiadan1">立即下单</view>
-              <img
-                class="juxing1"
-                src="../../static/images/stuff/下单1.png"
-                alt=""
-              />
-              <img
-                class="juxing2"
-                src="../../static/images/stuff/下单2.png"
-                alt=""
-              />
-            </view>
-          </view>
-        </view>
+        <view class="hotgoods">  <hotGoods></hotGoods></view>
       </view>
-
-      <img
-        class="fanhui"
-        src="../../static/images/stuff/chevron-states 1.png"
-        @click="handleBack"
-        alt=""
-      />
     </view>
   </div>
 </template>
 
 <script>
+import hotGoods from "./hotGoods";
 export default {
+  components: {
+    hotGoods,
+  },
   methods: {
     handleBack() {
       uni.navigateBack();
     },
-    
   },
 };
 </script>
@@ -368,7 +120,6 @@ export default {
         width: 34upx;
         height: 24upx;
         padding-right: 20upx;
-        
       }
     }
     .goods-detail {
@@ -441,6 +192,9 @@ export default {
           }
         }
       }
+    }
+    .hotgoods{
+      
     }
   }
 

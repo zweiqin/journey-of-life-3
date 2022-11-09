@@ -9,30 +9,15 @@
         indicator-color="#fff"
         indicator-active-color="#fff"
       >
-        <swiper-item>
-          <img
-            src="https://img0.baidu.com/it/u=3773662411,3569512847&fm=253&fmt=auto&app=120&f=JPEG?w=690&h=1035"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://img0.baidu.com/it/u=3773662411,3569512847&fm=253&fmt=auto&app=120&f=JPEG?w=690&h=1035"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://img0.baidu.com/it/u=3773662411,3569512847&fm=253&fmt=auto&app=120&f=JPEG?w=690&h=1035"
-            alt=""
-          />
+        <swiper-item v-for="item in rankList1" :key="item.id" @click="handeViewDetail(item.id)" >
+          <img :src="item.picUrl" alt="" />
         </swiper-item>
       </swiper>
     </view>
 
     <!-- 网红爆款 -->
     <view class="popular-online">
-      <view class="header">
+      <view class="header" @click="seeInformation">
         <view class="main-title">网红爆款</view>
         <view class="sub-title">Internet celebrity hot style</view>
       </view>
@@ -40,45 +25,81 @@
       <view class="wrapper">
         <view class="left">
           <img
-            src="https://img1.baidu.com/it/u=312925832,1369195926&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+            @click="handeViewDetail(rankList2[0].id)"
+            :src="rankList2[0].picUrl"
             alt=""
+            style="height: 244upx"
           />
-          <img
-            src="https://img1.baidu.com/it/u=1922047720,1066257576&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-            alt=""
-          />
+          <img   @click="handeViewDetail(rankList2[1].id)" :src="rankList2[1].picUrl" alt="" />
         </view>
         <view class="right">
-          <img
-            src="https://img1.baidu.com/it/u=1922047720,1066257576&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-            alt=""
-          />
-          <img
-            src="https://img1.baidu.com/it/u=312925832,1369195926&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
-            alt=""
-          />
+          <img   @click="handeViewDetail(rankList2[2].id)" :src="rankList2[2].picUrl" alt="" />
+          <img   @click="handeViewDetail(rankList2[3].id)" :src="rankList2[3].picUrl" alt="" style="height: 244upx" />
         </view>
       </view>
     </view>
 
     <!-- 其他 -->
-    <RecommendPanel style="margin-top: 20px"></RecommendPanel>
-    <RecommendPanel1 :newType="false" style="margin-top: 20px"></RecommendPanel1>
+    <RecommendPanel
+      :goodsRankList="goodsRankList"
+      style="margin-top: 20px"
+    ></RecommendPanel>
   </div>
 </template>
 
 <script>
 import RecommendPanel from "../recommend-panel/index.vue";
-import RecommendPanel1 from "../recommend-panel/index1.vue";
-
 export default {
+  props: {
+    allgoodsList: Object,
+    goodsRankList: Object,
+  },
   components: {
     RecommendPanel,
-    RecommendPanel1,
-
+  },
+  methods: {
+    handeViewDetail(item) {
+      console.log(item);
+      this.id = item
+      if (!this.id) {
+        return;
+      }
+      uni.navigateTo({
+        url: `/pages/prod/prod?goodsId=${this.id}`,
+      });
+    },
+    seeInformation() {
+      console.log("商品", this.allgoodsList);
+      console.log("排行", this.goodsRankList);
+    },
   },
   data() {
-    return {};
+    return {
+      rankList: [],
+      rankList1: [],
+      rankList2: [],
+      id:"",
+    };
+  },
+  watch: {
+    allgoodsList: {
+      handler(value) {
+        this.rankList = value.goodsList;
+        console.log("ranklist", this.rankList);
+        this.rankList1 = this.rankList.slice(0, 4);
+        this.rankList2 = this.rankList.slice(4, 8);
+        console.log(this.rankList2);
+        // const rankList = this.rankList
+        // rankList = this.rankList.slice(0,3);
+      },
+      deep: true, //深度鉴定,如果allgoodslist是对象则可以监听内部的值，如有变化则执行
+      immediate: true, //立刻执行allgoodsList
+    },
+  },
+  mounted() {
+    // console.log("商品", this.allgoodsList);
+    // console.log("排行", this.goodsRankList);
+    // this.rankList = this.allgoodsList.goodsList;
   },
 };
 </script>
@@ -181,6 +202,7 @@ export default {
 
         img {
           width: 100%;
+          object-fit: cover;
         }
       }
     }

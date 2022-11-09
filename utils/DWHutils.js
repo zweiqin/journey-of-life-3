@@ -51,16 +51,28 @@ export const checkWhoami = () => {
 export const getUserId = () => {
   const userId = uni.getStorageSync(USER_ID);
   if (!userId) {
-    uni.showToast({
-      title: "登录已失效，请重新登录",
-      duration: 2000,
-      icon: "none",
-    });
+    // uni.showToast({
+    //   title: "登录已失效，请重新登录",
+    //   duration: 2000,
+    //   icon: "none",
+    // });
 
-    uni.navigateTo({
-      url: "/pages/login/login",
+    // uni.navigateTo({
+    //   url: "/pages/login/login",
+    // });
+    uni.showModal({
+      title: "提示",
+      content: "您还未登录，是否去登录？",
+      success: function (res) {
+        if (res.confirm) {
+          uni.navigateTo({
+            url: "/pages/login/login",
+          });
+        } else if (res.cancel) {
+          // uni.navigateBack();
+        }
+      },
     });
-
     return;
   }
   return userId;

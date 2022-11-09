@@ -38,7 +38,7 @@ export const detail =[
     },
     {
         id:5,
-        title:"时间",
+        title:"日期",
         width:"15%",
 
     },

@@ -1,83 +1,140 @@
-<template><div id="bar" style="width: 750upx; height: 400px"></div></template>
+<template>
+  <div class="MonthsCon">
+    <div id="MonthsConChart" style="height: 600upx"></div>
+  </div>
+</template>
 
 <script>
-//局部或全局定义
-
+import { number } from "echarts";
 export default {
   data() {
     return {};
   },
+  mounted() {
+    this.initMap();
+  },
+  props: {
+    lastMoney: Number,
+    money: Number,
+    viewPicture: String,
+    status: String,
+  },
   methods: {
-    barEcharts() {
-      var myChart = this.$echarts.init(document.getElementById("bar"));
-      // 配置图表
-      var option = {
-        title: {
-          text: "标题",
-        },
-        //提示框
-        tooltip: {},
+    initMap() {
+      var myChart = this.$echarts.init(
+        document.getElementById("MonthsConChart")
+      );
+      const option = {
+        // title:{
+        //   text:"每日涨幅"
+        // },
         legend: {
-          data: ["销量", "销售额"],
-        },
-        //x轴显示种类
-        xAxis: {
-          data: ["种类一", "种类二", "种类三", "种类四", "种类五", "种类六"],
-        },
-        //y轴可填数值等
-        yAxis: {},
-        series: [
-          {
-            name: "销量",
-            type: "bar",
-            //y轴数值
-            data: [
-              5,
-              {
-                value: 20,
-                itemStyle: {
-                  color: "#FFB5C5",
-                },
-              },
-              36,
-              10,
-              10,
-              20,
-            ],
+          icon: "rect", //形状  类型包括 circle，rect,line，roundRect，triangle，diamond，pin，arrow，none
+          itemWidth: 10, // 设置宽度
+          itemHeight: 4, // 设置高度
+          itemGap: 24, // 设置间距
+          //文字居下
+          x: "center",
+          // y: "bottom",
+          // xdata: ["昨天", "今天"],
+          // data: ["昨天涨幅", "今天涨幅", "整体涨幅"],
+          textStyle: {
+            //文字样式
+            color: "#c1dafc",
+            fontSize: "12",
           },
+          right: "30%",
+        },
+        dataZoom: [
           {
-            name: "销售额",
-            type: "bar",
-            data: [
-              3,
-              {
-                value: 12,
-                itemStyle: {
-                  color: "#FFB5C5",
-                },
-              },
-              36,
-              10,
-              10,
-              20,
-            ],
-          },
-          {
-            name: "昨日",
-            type: "line",
-            data: [5, 20, 36, 10, 10, 20],
+            xAxisIndex: 0, //这里是从X轴的0刻度开始
+            show: true,
+            startValue: 0, // 从头开始。
+            endValue: 5, // 一次性展示6个
           },
         ],
+        xAxis: [
+          {
+  
+            data: [
+              "春天",
+              "夏天",
+              "秋天",
+              "冬天",
+              "春天",
+              "夏天",
+              "秋天",
+              "冬天",
+              "春天",
+              "夏天",
+              "秋天",
+              "冬天",
+            ],
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "价格",
+            interval: 10,
+            axisLabel: {
+              formatter: "{value}",
+            },
+          },
+          {
+            type: "value",
+            name: "涨幅",
+            interval: 5,
+            axisLabel: {
+              formatter: "{value}%",
+            },
+          },
+        ],
+        series: [
+          {
+            name: "今天涨幅",
+            type: "line",
+            yAxisIndex: 1,
+            barWidth: "10%",
+            data: [1, 9, 5, 7],
+          },
+          {
+            name: "昨天涨幅",
+            type: "line",
+            yAxisIndex: 1,
+            barWidth: "10%",
+            data: [3, 8, 1, 7],
+          },
+          {
+            name: "整体涨幅",
+            type: "line",
+            yAxisIndex: 1,
+            barWidth: "10%",
+            data: [2, 2, 3, 4],
+          },
+          {
+            name: "今天",
+            type: "bar",
+            barWidth: "10%",
+            yAxisIndex: 0,
+            data: [20, 20, 30, 40],
+          },
+          {
+            name: "昨天",
+            type: "bar",
+            barWidth: "10%",
+            yAxisIndex: 0,
+            data: [20, 20, 30, 40],
+          },
+        ],
+        // color: ["#b1de6a", "#4ab0ee"],
       };
+
       myChart.setOption(option);
     },
   },
-  //设置
-  mounted() {
-    this.barEcharts();
-  },
 };
 </script>
-
-<style lang="less" scoped>
-</style>

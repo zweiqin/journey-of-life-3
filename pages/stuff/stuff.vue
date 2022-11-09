@@ -15,41 +15,42 @@
     </view>
 
     <!-- 轮播 -->
-    <view class="banner">
-      <swiper
-        class="swiper"
-        indicator-dots
-        autoplay
-        indicator-color="#fff"
-        indicator-active-color="#fff"
-      >
-        <swiper-item>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w8v0c8qw8juyl5pnhf2i.jpg"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/x20ln5fw3vse5k9utba6.jpg"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s1ufx6r67xxz4eyvyrdg.jpg"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cwom158kn14893wt9top.jpg"
-            alt=""
-          />
-        </swiper-item>
-      </swiper>
+    <view style="padding: 10upx">
+      <view class="banner">
+        <swiper
+          class="swiper"
+          indicator-dots
+          autoplay
+          indicator-color="#fff"
+          indicator-active-color="#fff"
+        >
+          <swiper-item>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/frinmcnc1ozzv9pwahig.jpg "
+              alt=""
+            />
+          </swiper-item>
+          <swiper-item>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/szzgw6dxoibrsxh1cwh0.jpg"
+              alt=""
+            />
+          </swiper-item>
+          <swiper-item>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dp5o8q1l34utxsj8mkba.jpg"
+              alt=""
+            />
+          </swiper-item>
+          <swiper-item>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/37nqp8lds95nbn3efi6j.jpg "
+              alt=""
+            />
+          </swiper-item>
+        </swiper>
+      </view>
     </view>
-
     <!-- nav -->
     <view class="navs">
       <view class="item" v-for="item in navs" :key="item.label">
@@ -108,9 +109,9 @@
             >我的供应</view
           >
         </view>
-        <view class="border" v-if="currentTab1 == 0">
+        <view class="border" v-if="currentTab1 == 0" @click="gongqiu(0)">
           <view class="top">
-            <view class="text">时间</view>
+            <view class="text">日期</view>
             <view class="text1">类别</view>
             <view class="text2">地区</view>
             <view class="text3">颜色</view>
@@ -125,13 +126,15 @@
               <view class="address">{{ item1.materialsRegion }}</view>
               <view class="color">{{ item1.materialsColor }}</view>
               <view class="number">{{ item1.materialsNumber }}</view>
-              <view class="phone">{{ item1.materialsPhone  | replacestar}}</view>
+              <view class="phone">{{
+                item1.materialsPhone | replacestar
+              }}</view>
             </view>
             <view class="text-border"></view>
           </view>
         </view>
         <!-- 供应 -->
-        <view class="border" v-if="currentTab1 == 1">
+        <view class="border" v-if="currentTab1 == 1" @click="gongqiu(1)">
           <view class="top">
             <view class="text">类别</view>
             <view class="text1">地区</view>
@@ -149,7 +152,7 @@
               <view class="address">{{ item.materialsTexture }}</view>
               <view class="color1">{{ item.sales }}</view>
               <view class="number">￥{{ item.referenceMoney }}</view>
-              <view class="phone">{{ item.materialsPhone }}</view>
+              <view class="phone">{{ item.materialsPhone | replacestar }}</view>
             </view>
             <view class="text-border"></view>
           </view>
@@ -205,11 +208,13 @@
           </view>
         </view>
         <Carousel
-          :height="140"
+          :height="240"
+          :indicationPoint="false"
           :list="[
-            'https://img1.baidu.com/it/u=1412719983,2107220829&fm=253&fmt=auto&app=138&f=JPEG?w=1180&h=492',
-            'https://img0.baidu.com/it/u=1849283036,1575466364&fm=253&fmt=auto&app=138&f=JPEG?w=840&h=350',
-            'https://img0.baidu.com/it/u=3042247612,2856662613&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=427',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/jg96690py71mw8mdbodb.jpg',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raxb244t6ncjb99cozm8.jpg ',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/aujfb3gezbdn541j4efw.jpg ',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/r02d64jabo6awjob1kz0.png ',
           ]"
         ></Carousel>
       </Pane>
@@ -280,7 +285,7 @@ export default {
   data() {
     return {
       navs,
-      navs2:[],
+      navs2: [],
       currentTab: 0,
       currentTab1: 0,
       currentForOfferTab: 0,
@@ -299,6 +304,11 @@ export default {
     },
   },
   methods: {
+    gongqiu() {
+      uni.navigateTo({
+        url: "../../stuff/gongqiu/gongqiu",
+      });
+    },
     bindtapStuff(item) {
       console.log(item.Url);
 
@@ -346,8 +356,8 @@ export default {
         storeName: "",
       });
       console.log("门店分类", res.data.items);
-      this.navs2 = res.data.items
-      this.navs2.unshift({storeName: "综合",id:0})
+      this.navs2 = res.data.items;
+      this.navs2.unshift({ storeName: "综合", id: 0 });
     },
     // 获取行业信息
     async getIndustryInformationList() {
@@ -376,7 +386,7 @@ export default {
       }
       console.log("价格列表", res.data.items);
       this.PricesList = res.data.items;
-      this.PricesList = this.PricesList.slice(0, 7);
+      this.PricesList = this.PricesList.slice(0, 6);
     },
     // 供应列表
     async getSupplyList() {
@@ -389,7 +399,7 @@ export default {
         });
       }
       this.supplyList = res.data.items;
-      this.supplyList = this.supplyList.slice(0, 5);
+      this.supplyList = this.supplyList.slice(0, 8);
       console.log("供应列表", this.supplyList);
     },
     // 采购列表
@@ -405,16 +415,19 @@ export default {
 
       console.log("采购列表", res.data);
       this.PcToday = res.data.items;
-      this.PcToday = this.PcToday.slice(0, 5);
+      this.PcToday = this.PcToday.slice(0, 8);
     },
     //店铺列表
     async getBrandList() {
       const res = await getBrandListApi({
         brandgenreId: "",
         page: this.page,
+        limit: 15,
       });
       console.log(res);
       this.brandList = res.data.brandList;
+      this.brandList.splice(1, 6);
+      console.log(this.brandList);
     },
   },
   created() {},
@@ -424,7 +437,7 @@ export default {
 
   mounted() {
     // this.$refs.modalRef.$el.style.width = document.body.clientWidth + "px";
-    checkWhoami();
+    // checkWhoami();
     this.getIndustryInformationList();
     this.getSupplyList();
     this.getPcTodayList();
@@ -457,6 +470,7 @@ export default {
   position: relative;
   background-color: #efefef;
   padding-bottom: 140upx;
+  padding-top: 90upx;
 
   // 表格
   .table {
@@ -514,13 +528,12 @@ export default {
     }
   }
   // 轮播
+
   .banner {
     width: 100%;
     height: 552upx;
-    border-radius: 0 0 20upx 20upx;
+    border-radius: 20upx;
     overflow: hidden;
-    padding-top: 100upx;
-
     .swiper {
       width: 100%;
       height: 552upx;

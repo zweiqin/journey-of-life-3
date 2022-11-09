@@ -151,7 +151,7 @@ export const serve = {
       icon: require("../../static/images/user/lianxikefu.png"),
     },
     {
-      label: "会员升级",
+      label: "社区管家",
       icon: require("../../static/images/user/huiyuanshengji.png"),
       url: "/user/sever/userUp",
     },

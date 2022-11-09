@@ -1,11 +1,14 @@
 <template>
   <div class="selection">
-    <Panel
+    <!-- <lqbCompany></lqbCompany> -->
+    <lqbTitle
       v-for="item in panels"
       :key="item.label"
       :title="item.label"
-      :routeText="item.routeText"
-      :route="item.route"
+      :englishTitle="item.english"
+      :status="item.value"
+      :companyTitle="item.title"
+      :type="item.type"
     >
       <template v-if="item.value === 0">
         <view class="style">
@@ -15,57 +18,63 @@
             v-for="item in styleList"
             :key="item.id"
           >
-            <img class="img" :src="item.iconUrl" alt="" />
+            <view>
+              <img class="img" :src="item.iconUrl" alt="" />
+            </view>
             <text class="text">{{ item.name }}</text>
           </view>
         </view>
       </template>
 
       <template v-if="item.value === 1 && explosion">
-        <img
-          class="explosion"
-          @click="handleToDoodsDetail(explosion[0])"
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/k55kew9nndt3z4oegjx7.png"
-          alt=""
-        />
+        <view class="goods-list" v-if="explosion">
+          <Goods
+            v-for="item in explosion"
+            :key="item.id"
+            :id="item.id"
+            :name="item.name"
+            :sname="item.brief"
+            :url="item.picUrl"
+            :price="item.retailPrice"
+          ></Goods>
+        </view>
       </template>
 
       <template v-if="item.value === 2 && discount">
-        <view class="explosion">
-          <img
-            @click="handleToDoodsDetail(discount[9])"
-            class="img"
-            :src="discount[9].picUrl"
-            alt=""
-          />
-          <img
-            @click="handleToDoodsDetail(discount[8])"
-            class="img"
-            :src="discount[8].picUrl"
-            alt=""
-          />
+        <view class="goods-list" v-if="discount">
+          <Goods
+            v-for="item in discount"
+            :key="item.id"
+            :id="item.id"
+            :name="item.name"
+            :sname="item.brief"
+            :url="item.picUrl"
+            :price="item.retailPrice"
+          ></Goods>
         </view>
       </template>
-    </Panel>
-    <view class="you-love">猜你喜欢</view>
-
-    <view class="goods-list" v-if="discount">
-      <Goods
-        v-for="item in discount"
-        :key="item.id"
-        :id="item.id"
-        :name="item.name"
-        :sname="item.brief"
-        :url="item.picUrl"
-        :price="item.retailPrice"
-      ></Goods>
-    </view>
+      <template v-if="item.value === 3 && guessLike">
+        <view class="goods-list" v-if="guessLike">
+          <Goods
+            v-for="item in guessLike"
+            :key="item.id"
+            :id="item.id"
+            :name="item.name"
+            :sname="item.brief"
+            :url="item.picUrl"
+            :price="item.retailPrice"
+          ></Goods>
+        </view>
+      </template>
+    </lqbTitle>
   </div>
 </template>
 
 <script>
 import Panel from "../../../../components/panel/index.vue";
 import Goods from "../../../../components/goods";
+import lqbTitle from "../lqbTitle";
+import lqbCompany from "../lqbCompany";
 import { panels, mapStyleImg } from "./config";
 import { STYLE_LIST } from "../../../../constant";
 
@@ -73,6 +82,8 @@ export default {
   components: {
     Panel,
     Goods,
+    lqbTitle,
+    lqbCompany,
   },
   props: {
     channel: {
@@ -87,10 +98,18 @@ export default {
       type: Array,
       required: true,
     },
-    brandList:{
-      type:Array,
-      required:true,
-    }
+    brandList: {
+      type: Array,
+      required: true,
+    },
+    guessLike: {
+      type: Array,
+      required: true,
+    },
+    // hotGoodsList: {
+    //   type: Array,
+    //   required: true,
+    // },
   },
   data() {
     return { panels, styleList: [] };
@@ -110,14 +129,14 @@ export default {
   },
 
   mounted() {
-  this.seebrandList()
+    // this.seebrandList();
   },
 
   methods: {
-    seebrandList(){
-      //获得传输的数据
-      console.log('223344',this.brandList);
-    },
+    // seebrandList() {
+    //     //获得传输的数据
+    //   console.log(this.brandList);
+    // },
     handleViewStyle(item) {
       uni.navigateTo({
         url: "/home/styles?id=" + item.id,
@@ -164,29 +183,33 @@ export default {
   .style {
     display: flex;
     overflow: scroll;
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
 
+    &::-webkit-scrollbar {
+      width: 0;
+    }
     .item {
       position: relative;
       margin-right: 32upx;
-
       &:last-child {
         margin-right: 0;
       }
 
       .img {
-        width: 232upx;
-        height: 306upx;
+        width: 300upx;
+        height: 300upx;
         border-radius: 20upx;
         object-fit: cover;
       }
 
       .text {
-        position: absolute;
-        bottom: 18upx;
-        left: 32upx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-weight: bold;
         font-size: 36upx;
-        color: #fff;
+        color: black;
       }
     }
   }
@@ -197,7 +220,6 @@ export default {
     padding-bottom: 30upx;
     padding-top: 10upx;
     padding-left: 10upx;
-
   }
   .goods-list {
     display: flex;

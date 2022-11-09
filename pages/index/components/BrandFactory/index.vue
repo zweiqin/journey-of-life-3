@@ -9,19 +9,28 @@
         indicator-active-color="#fff"
       >
         <swiper-item>
-          <img src="../../../../static/images/index/banner1.webp" alt="" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q60ani1r4qkex6u9gaar.png  "
+            alt=""
+          />
         </swiper-item>
         <swiper-item>
-          <img src="../../../../static/images/index/banner1.webp" alt="" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/jpvph69uc58iv9pxolni.png "
+            alt=""
+          />
         </swiper-item>
         <swiper-item>
-          <img src="../../../../static/images/index/banner1.webp" alt="" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/k70n6d2xhj43hayhvsjj.png "
+            alt=""
+          />
         </swiper-item>
       </swiper>
     </view>
 
     <view class="navs">
-      <view class="item">综合排序</view>
+      <!-- <view class="item">综合排序</view>
       <view class="item">销售为先</view>
       <view class="item">信用</view>
       <view class="item">品类</view>
@@ -32,12 +41,11 @@
           src="../../../../static/images/index/screen.png"
           alt=""
         />
-      </view>
+      </view> -->
     </view>
-
-    <Panel></Panel>
-    <Panel1></Panel1>
-    <Panel2></Panel2>
+    <view v-for="item in BrandFactory" :key="item.id">
+      <Panel :name="item.name" :brandId="item.id" :picUrl="item.picUrl"></Panel
+    ></view>
   </div>
 </template>
 
@@ -45,22 +53,29 @@
 import Panel from "./components/Panel";
 import Panel1 from "./components/Panel1";
 import Panel2 from "./components/Panel2";
-
+import { getBrandListApi } from "../../../../api/brand";
 export default {
-  data(){
-    return{
-    }
+  props: {
+    BrandFactory: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {};
   },
   components: {
     Panel,
     Panel1,
     Panel2,
-
   },
 
-  methods:{
-
-  }
+  methods: {
+    BrandFactoryList() {
+      console.log("2b", this.BrandFactory);
+    },
+  },
+  mounted() {},
 };
 </script>
 

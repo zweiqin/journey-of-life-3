@@ -32,7 +32,7 @@ export default {
     name: String,
     sname: String,
     price: [String, Number],
-    payNumber: String,
+    payNumber: [Number,String],
     url: String,
     id: [Number, String],
   },
@@ -70,11 +70,11 @@ export default {
     .name {
       width: 334upx;
       color: #3d3d3d;
-      font-size: 20upx;
+      font-size: 28upx;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-weight: 600;
+      font-weight: 700;
       &:nth-child(2) {
         margin: 6upx 0 12upx 0;
       }
@@ -83,10 +83,12 @@ export default {
     .sname{
       width: 334upx;
       color: #3d3d3d;
-      font-size: 20upx;
+      font-weight: 500;
+      font-size: 24upx;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin: 10upx 0;
     }
 
     .info {
@@ -94,14 +96,17 @@ export default {
       justify-content: space-between;
 
       .icon {
-        color: #3d3d3d;
-        font-size: 20upx;
+        color: #FA5151;
+        font-size: 34upx;
         vertical-align: top;
+        font-weight: 400;
+
       }
 
       .price {
-        color: #ff8f1f;
-        font-size: 36upx;
+        color: #FA5151;
+        font-size: 40upx;
+        font-weight: 600;
         padding: 0;
       }
 

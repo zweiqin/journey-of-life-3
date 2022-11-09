@@ -1,14 +1,9 @@
 <template>
-  <div class="panel">
+  <div class="panel" @click="handleEnterStore">
     <view class="header">
-      <img
-        class="avatar"
-        src="
-        https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q1d9h393r2ng8c25tucz.png"
-        alt=""
-      />
+      <img class="avatar" :src="picUrl" alt="" />
       <view class="info">
-        <view class="name">GIVENCHY团蜂家具社区旗舰店</view>
+        <view class="name">{{ name }}</view>
         <view class="tem">
           <view class="rate">
             <img
@@ -29,26 +24,29 @@
             />
             <img src="../../../../../static/images/index/star.png" alt="" />
           </view>
-          <view class="type">家具店</view>
-          <view class="year">10年老店</view>
+          <view class="type">品牌工厂</view>
+          <view class="year">10年老厂</view>
         </view>
       </view>
-      <button class="btn" @click="handleEnterStore">进店</button>
+      <button class="btn">进店</button>
     </view>
     <view class="goods-layout">
       <img
         class="store"
-        src="https://img2.baidu.com/it/u=1365692656,2723364399&fm=253&fmt=auto&app=138&f=PNG?w=702&h=462"
+        :src="
+          leftImg ||
+          'https://img2.baidu.com/it/u=1365692656,2723364399&fm=253&fmt=auto&app=138&f=PNG?w=702&h=462'
+        "
         alt=""
       />
       <view class="right">
         <img
-          src="https://img2.baidu.com/it/u=4044691584,3728595922&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+          :src="rightImg1 || 'https://img2.baidu.com/it/u=4044691584,3728595922&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500'"
           alt=""
         />
 
         <img
-          src="https://img0.baidu.com/it/u=1624261074,370820778&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+        :src="rightImg2 || 'https://img0.baidu.com/it/u=1624261074,370820778&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'"
           alt=""
         />
       </view>
@@ -57,16 +55,46 @@
 </template>
 
 <script>
+import { getBrandListBySelectApi } from "../../../../../api/brand";
 export default {
+  props: {
+    name: String,
+    picUrl: String,
+    brandId: Number,
+  },
+  data() {
+    return {
+      goodList: [],
+      goodPicUrl: [],
+      leftImg: "",
+      rightImg1: "",
+      rightImg2: "",
+    };
+  },
+
   methods: {
+    //做到照片 未放置到首页上
+    async getBrandListBySelect() {
+      const res = await getBrandListBySelectApi({
+        id: this.brandId,
+      });
+      this.goodList = res.data.brandList[0].goodsList;
+      console.log(this.goodList[0]);
+      this.leftImg = this.goodList[0].picUrl;
+      this.rightImg1 = this.goodList[1].picUrl;
+      this.rightImg2 = this.goodList[2].picUrl;
+    },
     /**
      * @description 点击进店
      */
     handleEnterStore() {
       uni.navigateTo({
-        url: "/pages/store/store",
+        url: "/pages/store/store?brandId="+this.brandId,
       });
     },
+  },
+  mounted() {
+    this.getBrandListBySelect();
   },
 };
 </script>
@@ -149,6 +177,8 @@ export default {
     }
 
     .right {
+      flex: 1;
+      margin-left: 6upx;
       display: flex;
       justify-content: space-between;
       flex-direction: column;

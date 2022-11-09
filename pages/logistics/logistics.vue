@@ -160,7 +160,7 @@ export default {
   },
   created() {
     this.getData();
-    checkWhoami();
+    // checkWhoami();
   },
   methods: {
     /**

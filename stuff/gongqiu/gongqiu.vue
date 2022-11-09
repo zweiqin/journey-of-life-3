@@ -1,6 +1,6 @@
 <template>
   <view class="gongqiu">
-    <Ttitle :title="title" :search="search"></Ttitle>
+    <Ttitle :title="title" :search="search" v-model="inputDetail"></Ttitle>
     <view class="choseType">
       <view
         class="information"
@@ -25,7 +25,12 @@
           >{{ item.title }}</view
         ></view
       >
-      <view class="supply" v-for="item1 in PcToday" :key="item1.id">
+      <view
+        class="supply"
+        v-for="item1 in PcToday"
+        :key="item1.id"
+        @click="mydetail(item1)"
+      >
         <view class="no">{{ item1.id }}</view>
         <view class="category">{{ item1.materialsCategory }}</view>
         <view class="address">{{ item1.materialsRegion }}</view>
@@ -46,15 +51,43 @@
         >
       </view>
 
-      <view class="Pctoday" v-for="item1 in supplyList" :key="item1.id">
+      <view
+        class="Pctoday"
+        v-for="item1 in supplyList"
+        :key="item1.id"
+        @click="thisDetail(item1)"
+      >
         <view class="no1">{{ item1.id }}</view>
         <view class="category1">{{ item1.materialsCategory }}</view>
         <view class="address1">{{ item1.materialsRegion }}</view>
-        <view class="material">{{ item1.materialsCategory }}</view>
-        <view class="number">{{ item1.materialsTexture }}</view>
-        <view class="much">{{ item1.referenceMoney }}</view>
+        <view class="material">{{ item1.materialsTexture }}</view>
+        <view class="number">{{ item1.sales }}</view>
+        <view class="much">{{ item1.referenceMoney }}元</view>
         <view class="phone1">{{ item1.materialsPhone | replacestar }}</view>
       </view>
+    </view>
+    <view>
+      <uni-popup ref="popup" type="center">
+        <view class="whiteBackground">
+          <view>序号：{{ id }}</view>
+          <view>类别：{{ materialsCategory }}</view>
+          <view>地区：{{ materialsRegion }}</view>
+          <view>颜色：{{ materialsColor }}</view>
+          <view>手机号：{{ materialsPhone }}</view>
+          <view>发布时间：{{ addTime }}</view></view
+        >
+      </uni-popup>
+      <uni-popup ref="popup1" type="center">
+        <view class="whiteBackground">
+          <view>序号：{{ id }}</view>
+          <view>类别：{{ materialsCategory }}</view>
+          <view>地区：{{ materialsRegion }}</view>
+          <view>材质：{{ materialsTexture }}</view>
+          <view>销量：{{ sales }}</view>
+          <view>参考价：{{ referenceMoney }}</view>
+          <view>手机号：{{ materialsPhone }}</view></view
+        >
+      </uni-popup>
     </view>
   </view>
 </template>
@@ -74,6 +107,16 @@ export default {
       nowTime: "",
       supplyList: [],
       PcToday: [],
+      inputDetail: "",
+      id: "",
+      materialsCategory: "",
+      materialsRegion: "",
+      materialsColor: "",
+      materialsPhone: "",
+      addTime: "",
+      materialsTexture: "",
+      referenceMoney: "",
+      sales: "",
     };
   },
   filters: {
@@ -88,6 +131,28 @@ export default {
     this.getPcTodayList();
   },
   methods: {
+    
+    thisDetail(item1) {
+      this.$refs.popup1.open("center");
+      console.log(item1);
+      this.id = item1.id;
+      this.materialsCategory = item1.materialsCategory;
+      this.sales = item1.sales;
+      this.materialsRegion = item1.materialsRegion;
+      this.materialsTexture = item1.materialsTexture;
+      this.referenceMoney = item1.referenceMoney;
+      this.materialsPhone = item1.materialsPhone;
+    },
+    mydetail(item1) {
+      console.log(item1);
+      this.$refs.popup.open("center");
+      this.id = item1.id;
+      this.materialsCategory = item1.materialsCategory;
+      this.materialsRegion = item1.materialsRegion;
+      this.materialsColor = item1.materialsColor;
+      this.materialsPhone = item1.materialsPhone;
+      this.addTime = item1.addTime;
+    },
     // 供应列表
     async getSupplyList() {
       const res = await getSupplyListApi();
@@ -151,6 +216,13 @@ export default {
 <style lang="less" scoped>
 .gongqiu {
   padding: 72upx 24upx 0upx 24upx;
+  .whiteBackground {
+    background-color: white;
+    border-radius: 20upx;
+    padding: 40upx 120upx;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .choseType {
     display: flex;
     margin-top: 26upx;
@@ -162,6 +234,7 @@ export default {
 
       &.active {
         color: #3662ec;
+        font-weight: 700;
       }
     }
   }
@@ -196,29 +269,52 @@ export default {
       font-size: 24upx;
       text-align: center;
       margin: 10upx 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
       .no {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .category {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .address {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .color {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .phone {
         width: 25%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        color: #3662ec;
       }
       .time {
         width: 15%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        color: #fa5151;
       }
       .else {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     .Pctoday {
@@ -231,25 +327,49 @@ export default {
       text-overflow: ellipsis;
       .no1 {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .category1 {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .address1 {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .material {
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .number {
+        color: #fa5151;
         width: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .much {
+        color: #fa5151;
         width: 15%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .phone1 {
+        color: #3662ec;
         width: 25%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

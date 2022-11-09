@@ -20,7 +20,7 @@
           />
         </view>
         <view class="middle-view">
-          <view class="text">会员升级</view>
+          <view class="text">社区管家</view>
         </view>
         <view class="right-view"> </view>
       </view>
@@ -86,10 +86,11 @@
               class="detail-img"
             />
           </view>
-          <view class="bottom-button">
+          <view class="bottom-button" @click="levelUp">
             <view class="button-background">
               <view class="button-text">
                 <text
+                  class="tesw"
                   style="
                     font-size: 36upx;
                     padding-left: 150upx;
@@ -97,7 +98,7 @@
                   "
                   >￥</text
                 >
-                <text style="font-size: 72upx">99</text>
+                <text class="number11" style="font-size: 72upx">99</text>
                 <view>
                   <text
                     style="
@@ -121,6 +122,8 @@
       <!-- 详情弹窗 -->
       <view>
         <uni-popup ref="popup" :type="bottom">
+          <br />
+
           <view class="detail-window">
             会员升级权益
             <text class="window-text">
@@ -146,12 +149,51 @@
 
 <script>
 import uniPopup from "../../uni_modules/uni-popup/components/uni-popup/uni-popup.vue";
+import { levelPayVipPrepayBySybApi } from "../../api/userUp";
+import { getUserId } from "../../utils";
+import { payOrderGoodsApi } from "../../api/goods";
 export default {
   components: { uniPopup },
   data() {
-    return {};
+    return {
+      payOrderID: "",
+    };
   },
   methods: {
+    async payOrderForEnd() {
+      const res123 = await levelPayVipPrepayBySybApi({
+        userId: getUserId(),
+      });
+      // 拿到该userId的VIP升级订单号
+      console.log(res123.data.payOrderID);
+      this.payOrderID = res123.data.payOrderID;
+      console.log(this.payOrderID);
+      payOrderGoodsApi({
+        orderNo: this.payOrderID,
+        userId: getUserId(),
+        payType: 4,
+      }).then((res) => {
+        const form = document.createElement("form");
+        form.setAttribute("action", res.url);
+        form.setAttribute("method", "POST");
+
+        const data = JSON.parse(res.data);
+        let input;
+        for (const key in data) {
+          input = document.createElement("input");
+          input.name = key;
+          input.value = data[key];
+          form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      });
+    },
+    levelUp() {
+      this.payOrderForEnd();
+    },
     window() {
       this.$refs.popup.open("bottom");
     },
@@ -242,6 +284,7 @@ export default {
         }
         .detail-bottom {
           display: flex;
+          padding-bottom: 30upx;
           .user-type {
             margin-right: 88upx;
             .type-text {
@@ -384,6 +427,7 @@ export default {
     }
   }
   .detail-window {
+    padding-top: 20upx;
     position: fixed;
     height: 1000upx;
     width: 95%;

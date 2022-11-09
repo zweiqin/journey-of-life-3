@@ -75,7 +75,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 24upx;
+  font-size: 28upx;
   padding-bottom: 16upx;
 }
 .container .nav .item.active::before {

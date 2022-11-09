@@ -1,4 +1,4 @@
-import { getUserId, RuanRequest,XZLRequest } from "../../utils";
+import { getUserId, RuanRequest, XZLRequest } from "../../utils";
 
 /**
  * @description 查询商品详情
@@ -81,3 +81,13 @@ export const payOrderGoodsApi = (data) => {
 // export const payOrderGoodsApi = (data) => {
 //   return XZLRequest("/api/syb/orderPayH5", data)
 // }
+
+//获取门店下各类目的商品销量排行榜
+export const goodsMaxSaleGoodsApi = (data) => {
+  return RuanRequest("/goods/maxSaleGoods", data, 'get')
+
+}
+// 获取当前门店的商品
+export const goodsListApi = (data) =>{
+  return RuanRequest("/goods/list",data,'get')
+}

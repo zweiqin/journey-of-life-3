@@ -10,18 +10,35 @@ export const panels = [
   {
     label: "风格专区",
     value: 0,
+    title: "产品中心",
+    english: "STYLE ZONE",
+    type: false,
   },
   {
     label: "爆款专区",
+    title: "推荐商品",
     routeText: "更多爆款",
     route: "",
     value: 1,
+    type: true,
+    english: "EXPLOSIVE SECTION"
+
   },
   {
     label: "优惠专区",
     routeText: "了解更多",
     route: "",
+    title: "",
     value: 2,
+    type: false,
+    english: "PREFERENTOAL AREA"
+  }, {
+    label: "猜你喜欢",
+    route: "",
+    title: "",
+    value: 3,
+    type: false,
+    english: "GUESS YOU LIKE"
   },
 ];
 
