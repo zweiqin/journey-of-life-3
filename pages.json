@@ -37,6 +37,17 @@
 				"navigationBarTitleText": "社区服务中心"
 			}
 		},
+
+
+		{
+			"path": "pages/community-center/community-centerr",
+			"style": {
+				"navigationBarTitleText": "社区服务中心"
+			}
+		},
+
+
+
 		{
 			"path": "pages/logs/logs",
 			"style": {
@@ -229,6 +240,7 @@
 		{
 			"path": "pages/store/store"
 		}
+
 	],
 	"tabBar": {
 		"selectedColor": "#FF8F1F",
@@ -249,7 +261,7 @@
 				"selectedIconPath": "/static/images/tabbar/stuff-active.png"
 			},
 			{
-				"pagePath": "pages/community-center/community-center",
+				"pagePath": "pages/community-center/community-centerr",
 				"text": "社区中心",
 				"iconPath": "/static/images/tabbar/community.png",
 				"selectedIconPath": "/static/images/tabbar/community-active.png"
@@ -357,6 +369,21 @@
 				},
 				{
 					"path": "add-address"
+				},
+				{
+					"path": "service-sort"
+				},
+				{
+					"path": "community-detail"
+				},
+				{
+					"path": "community-order"
+				},
+				{
+					"path": "customer-information"
+				},
+				{
+					"path": "confirm-order"
 				}
 			]
 		},
