@@ -1,4 +1,4 @@
-import { BASE_URL, RUAN_URL, LANG_FEE_URL ,DEYI_URL,XZL_URL} from "../config";
+import { BASE_URL, RUAN_URL, LANG_FEE_URL ,DEYI_URL,XZL_URL,SheQu_URL} from "../config";
 
 const request = (base_url) => {
   return function (url, data = {}, method = "post", cb) {
@@ -23,9 +23,10 @@ const request = (base_url) => {
 };
 
 export const GyRequest = request(BASE_URL);
-export const XZLRequest = request(XZL_URL)
+export const XZLRequest = request(XZL_URL);
 export const RuanRequest = request(RUAN_URL);
 export const LTRequest = request(LANG_FEE_URL)
 export const DEYIRequest = request(DEYI_URL)
-export const XZLRquest = request(XZL_URL);
+export const SheQuRequest = request(SheQu_URL)
+
 

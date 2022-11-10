@@ -53,8 +53,6 @@ export default {
 .item {
   margin-right: 10upx;
   margin-bottom: 40upx;
-  width: 210upx;
-  height: 70upx;
   border-radius: 10upx;
   color: #999999;
   border: 2upx solid #999999;
@@ -65,8 +63,6 @@ export default {
 
   .m {
     padding-left: 6upx;
-    width: 210upx;
-    height: 70upx;
     display: flex;
     flex-direction: column;
     justify-content: center;

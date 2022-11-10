@@ -20,7 +20,10 @@
       </view>
       <view class="goods">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png"
+          :src="
+            serverInfoUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
+          "
           alt=""
           class="img"
         />
@@ -41,23 +44,22 @@
 
       <view class="brief">
         <view class="introduce">服务内容介绍</view>
-        <view class="content"
-          >对木质家具、木门、木地板等产品的划伤、破损、开裂、
-          断裂等问题进行修复，恢复其外观，延长使用寿命。
-        </view>
+        <view class="content">{{ serverIntroduction }}</view>
       </view>
-      <view v-if="isArtificialArtificial" class="type">服务类型</view>
-      <view class="price-list" ref="price-list">
-        <item
-          v-for="item in serviceDetail"
-          :key="item.id"
-          :class="{ active: item.id == currentTab }"
-          @choose="switchTab(item)"
-          :serverInfoName="item.serverInfoName"
-          :serverPrice="item.serverPrice"
-          :serverUnit="item.serverUnit"
-          :isArtificialArtificial="item.isArtificialArtificial"
-        ></item>
+      <view v-if="isArtificial">
+        <view class="type">服务类型</view>
+        <view class="price-list" ref="price-list">
+          <item
+            v-for="item in serviceDetail"
+            :key="item.id"
+            :class="{ active: item.id == currentTab }"
+            @choose="switchTab(item)"
+            :serverInfoName="item.serverInfoName"
+            :serverPrice="item.serverPrice"
+            :serverUnit="item.serverUnit"
+            :isArtificialArtificial="item.isArtificialArtificial"
+          ></item>
+        </view>
       </view>
     </view>
     <view class="mid">
@@ -176,11 +178,12 @@ export default {
       serverInfoName: "",
       serverInfoUrl: "",
       serverIntroduction: "",
-      isArtificialArtificial: false,
+      isArtificial: "",
       serverPrice: "",
       title: "",
       serverUnit: "",
       currentTab: 0,
+      length: "",
     };
   },
   methods: {
@@ -196,15 +199,19 @@ export default {
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
 
-      if (this.serviceDetail.length == 0) {
+      if (!this.isArtificial) {
         console.log("abc");
         uni.navigateTo({
-          url: `/community-center/community-order`,
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}`,
         });
       } else {
-        uni.navigateTo({
-          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}`,
-        });
+        if (!this.serverPrice == 0) {
+          uni.navigateTo({
+            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}`,
+          });
+        } else {
+          console.log("sb kuaixuan");
+        }
       }
 
       // const id = this.currentTab;
@@ -224,7 +231,7 @@ export default {
       this.serverPrice = item1.serverPrice;
       this.serverInfoName = item1.serverInfoName;
       this.serverUnit = item1.serverUnit;
-      
+      this.serverIntroduction = item1.serverIntroduction;
     },
 
     //社区服务详情
@@ -235,7 +242,17 @@ export default {
         serverTypeId: this.serverTypeId,
       });
       this.serviceDetail = res.data;
-      console.log("666",this.serviceDetail);
+      console.log("666", this.serviceDetail);
+      this.isArtificial = this.serviceDetail[0].isArtificial;
+      this.length = this.serviceDetail.length;
+      console.log(this.isArtificial);
+
+      this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
+      console.log("介绍", this.serverIntroduction);
+
+      this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
+      console.log("图片", this.serverInfoUrl);
+
       // this.id = this.serviceDetail.id;
       // this.serverTypeId = this.serviceDetail.serverTypeId;
       // this.serverInfoName = this.serviceDetail.serverInfoName;

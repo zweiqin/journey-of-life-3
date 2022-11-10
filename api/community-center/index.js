@@ -1,5 +1,5 @@
 import { request } from "../../utils";
-import { XZLRquest } from "../../utils";
+import { XZLRquest, RuanRequest ,SheQuRequest} from "../../utils";
 /**
  * @description 获取报价
  * @param {*} data
@@ -70,16 +70,29 @@ export const getEndOrderListApi = (data) => {
 };
 
 
-//查询社区服务分类
+
+
+// // 查询社区服务分类
 // export const getServiceSortApi = (data) =>{
-//   return RuanRequest("/api/community/serverInfo/getServerTypeList",data);
+//   return XZLRquest("/community/serverInfo/getServerTypeList",data);
 // };
+
+
+
+// //查询社区服务详情
+// export const getServiceDetailApi = (data) =>{
+//   return XZLRquest("/community/serverInfo/getServerInfoById",data,"get");
+// };
+
+
+
+
 //查询社区服务分类
-export const getServiceSortApi = (data) =>{
-  return XZLRquest("/community/serverInfo/getServerTypeList",data);
+export const getServiceSortApi = (data) => {
+  return SheQuRequest("/api/community/serverInfo/getServerTypeList", data);
 };
 
 //查询社区服务详情
-export const getServiceDetailApi = (data) =>{
-  return XZLRquest("/community/serverInfo/getServerInfoById",data,"get");
+export const getServiceDetailApi = (data) => {
+  return SheQuRequest("/api/community/serverInfo/getServerInfoById", data, "get");
 };
