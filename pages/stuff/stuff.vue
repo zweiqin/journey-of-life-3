@@ -358,6 +358,12 @@ export default {
       console.log("门店分类", res.data.items);
       this.navs2 = res.data.items;
       this.navs2.unshift({ storeName: "综合", id: 0 });
+      const a = this.navs2.findIndex(item =>{
+        return item.storeName =="品牌工厂"
+      })
+      // console.log(a);
+      const b = this.navs2.splice(a,1)
+      // console.log(this.navs2);
     },
     // 获取行业信息
     async getIndustryInformationList() {

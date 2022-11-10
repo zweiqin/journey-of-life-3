@@ -139,12 +139,17 @@ export default {
         page: "",
         limit: "",
         sort: "",
-        order: '',
+        order: "",
       });
       console.log(res);
       this.navs2 = res.data.items;
       console.log(this.navs2);
       this.navs2.unshift({ storeName: "全部", id: 0 });
+      const a = this.navs2.findIndex((item) => {
+        return item.storeName == "品牌工厂";
+      });
+      // console.log(a);
+      const b = this.navs2.splice(a, 1);
     },
   },
 
