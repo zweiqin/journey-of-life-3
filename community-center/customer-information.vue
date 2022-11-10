@@ -17,26 +17,42 @@
           class="location"
         />
         <view class="text">填写上门地址</view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-          alt=""
-          class="more"
+        <JCity @confirm="City($event.area)" :text="address"> </JCity>
+      </view>
+      <view class="adreDetail">
+        <textarea
+          class="input"
+          v-model="addressDetail"
+          placeholder="请输入详细地址"
+          placeholder-class="input-placeholder"
         />
       </view>
       <view class="content"></view>
-      <view class="people-list">
+      <!-- <view class="people-list">
         <img src="" alt="" class="people" />
         <view class="text">联系人</view>
-      </view>
-      <view class="content"></view>
+      </view> -->
+      <!-- <view class="content"></view> -->
       <view class="iphone-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
           alt=""
           class="iphone"
         />
-        <view class="text">联系电话</view>
+        <view class="text">联系方式</view>
       </view>
+      <input
+        class="adreDetail"
+        v-model="name"
+        placeholder="姓名/称呼"
+        placeholder-class="input-placeholder"
+      />
+      <input
+        class="adreDetail"
+        v-model="phoneNumber"
+        placeholder="手机号"
+        placeholder-class="input-placeholder"
+      />
       <view class="content"></view>
       <view class="time-list">
         <img
@@ -45,7 +61,23 @@
           class="time"
         />
         <view class="text">上门时间</view>
-        <view class="number">12345678</view>
+        <!-- 
+        <uni-section
+          :title="'日期时间用法：' + datetimesingle"
+          type="line"
+        ></uni-section> -->
+
+        <view class="example-body">
+          <uni-datetime-picker
+            class="datatime"
+            type="datetime"
+            v-model="datetimesingle"
+            @change="changeLog"
+            :clear-icon="false"
+            :border="false"
+          />
+        </view>
+
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
           alt=""
@@ -53,7 +85,7 @@
         />
       </view>
     </view>
-    <view  class="middle1">
+    <view class="middle1">
       <view class="detail">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
@@ -62,13 +94,14 @@
         />
         <view class="item">
           <view class="text">空调安装</view>
-          <view class="price-list">
+          <view class="price-list" v-if="pricingType == 1">
             <view class="logo">￥</view>
-            <view class="number">{{price1}}</view>
+            <view class="number">{{ price1 }}</view>
             <view class="point">.00</view>
             <view class="xie">/</view>
             <view class="unit">台</view>
           </view>
+          <view v-if="pricingType == 2"></view>
         </view>
       </view>
       <view class="add">
@@ -85,7 +118,7 @@
         />
       </view>
     </view>
-    <view v-if="id2==97" class="middle2">
+    <view v-if="id2 == 97" class="middle2">
       <view class="detail">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
@@ -109,7 +142,7 @@
           alt=""
           class="img"
         />
-        <view class="number">{{specsId}}</view>
+        <view class="number">{{ specsId }}</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
           alt=""
@@ -118,38 +151,41 @@
       </view>
     </view>
     <view class="main">
-      <view class="total-list">
-        <view class="total">订单总额</view>
-        <view class="price-list">
-          <view class="logo">￥</view>
-          <view class="number">150</view>
+      <template v-if="pricingType == 1">
+        <view class="total-list">
+          <view class="total">订单总额</view>
+          <view class="price-list">
+            <view class="logo">￥</view>
+            <view class="number">150</view>
+          </view>
         </view>
-      </view>
-      <view class="coupon-list">
-        <view class="coupon">优惠券</view>
-        <view class="text-list">
-          <view class="text">暂无</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-            alt=""
-            class="more"
-          />
+        <view class="coupon-list">
+          <view class="coupon">优惠券</view>
+          <view class="text-list">
+            <view class="text">暂无</view>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
+              alt=""
+              class="more"
+            />
+          </view>
         </view>
-      </view>
-      <view class="pay-list">
-        <view class="pay">应付</view>
-        <view class="price-list">
-          <view class="logo">￥</view>
-          <view class="number">150</view>
+        <view class="pay-list">
+          <view class="pay">应付</view>
+          <view class="price-list">
+            <view class="logo">￥</view>
+            <view class="number">150</view>
+          </view>
         </view>
-      </view>
+      </template>
     </view>
     <view class="foot">
-      <view class="price-list">
+      <view class="price-list" v-if="pricingType == 1">
         <view class="logo">￥</view>
         <view class="number">150</view>
         <view class="point">.00</view>
       </view>
+      <view v-else></view>
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
   </view>
@@ -159,17 +195,34 @@
 
 
 <script>
+import JCity from "../components/JCity/JCity.vue";
 export default {
+  components: { JCity },
   name: "Customer-information",
   props: {},
   data() {
     return {
-      id2:"",
-      specsId:"",
-      price1:"",
+      id2: "",
+      specsId: "",
+      price1: "",
+      addressDetail: "",
+      address: "",
+      name: "",
+      phoneNumber: "",
+      datetimesingle: "",
+      time: "",
+      pricingType: 2,
     };
   },
   methods: {
+    changeLog(e) {
+      console.log("change事件:", e);
+      this.time = e;
+    },
+    City(item) {
+      console.log(item);
+      this.address = item;
+    },
     handleBack() {
       uni.navigateBack();
     },
@@ -182,9 +235,9 @@ export default {
   created() {},
   onLoad(options) {
     console.log(options);
-    this.id2 =options.id1;
-    this.specsId=options.specsId;
-    this.price1=options.price;
+    this.id2 = options.id1;
+    this.specsId = options.specsId;
+    this.price1 = options.price;
   },
 };
 </script>
@@ -195,6 +248,7 @@ export default {
 <style lang="less" scoped>
 .customer-information {
   background: #f1f2f6;
+
   .title-list {
     padding: 88upx 34upx 36upx 26upx;
     display: flex;
@@ -229,16 +283,28 @@ export default {
         color: #000000;
         flex: 1;
       }
-      .more{
+      .example-body {
+        .uni-input-input {
+          color: #fa5151;
+          font-size: 32upx;
+        }
+      }
+      .more {
         width: 40upx;
         height: 40upx;
       }
     }
+    .adreDetail {
+      padding-left: 56upx;
+      padding-top: 20upx;
+      .input {
+        height: 90upx;
+      }
+    }
     .content {
       width: 90%;
-      height: 80upx;
       border-bottom: 2upx solid #d8d8d8;
-      margin-left: 54upx;
+      margin: 30upx 0 20upx 54upx;
     }
     .people-list {
       display: flex;
