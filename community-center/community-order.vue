@@ -70,23 +70,40 @@
             />
           </view> -->
         </view>
-        <view class="text">{{ name }}</view>
+        <view class="text-type">{{ name }}</view>
       </template>
       <view class="item-image">
         <view class="tag">*</view>
         <view class="name">物品图片</view>
       </view>
-      <view style="display:flex">
-        <view class="upload" @click="chooseImg">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/11y7t9j0dh9s74bcyoz5.png"
-            alt=""
-            class="img"
+
+      <view class="upload-pane">
+        <view class="left">
+          <view @click="chooseImg" class="upload" v-if="!imgUrl">+</view>
+          <image
+            v-else-if="imgUrl"
+            class="iamge-background"
+            :src="imgUrl"
+            mode=""
           />
-          <view class="text">上传图片</view>
         </view>
-        <img v-for="img in images" :key="img" :src="img" alt="" />
+        <view style="border: 1upx solid #d8d8d8;display:flex;border-radius: 20upx;width: 100%;">
+        <view
+          v-for="img in images"
+          :key="img"
+          style="position: relative; width: 160upx; height: 160upx;"
+        >
+          <img :src="img" alt="" class="img1" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
+            alt=""
+            class="img2"
+            @click="removeBackground(img)"
+          />
+        </view>
+        </view>
       </view>
+
       <view class="explain">
         <view class="text1">需求说明</view>
         <view class="text2">(选填)</view>
@@ -118,11 +135,13 @@ import { USER_TOKEN } from "../constant";
 import { getUserId } from "../utils";
 export default {
   name: "Community-order",
-  props: {},
+  props: {
+    imgUrl: String,
+  },
   data() {
     return {
       air,
-      currentTab: 1,
+      currentTab: 0,
       name: "",
       price: "",
       unit: "",
@@ -147,6 +166,7 @@ export default {
       this.currentTab = item1;
       this.specsId = item1;
     },
+
     chooseImg() {
       const _this = this;
       uni.chooseImage({
@@ -156,13 +176,25 @@ export default {
             filePath: chooseImageRes.tempFiles[0].path,
             name: "file",
             formData: {
-              token: uni.getStorageSync(USER_TOKEN),
+              token: USER_TOKEN,
               userId: getUserId(),
             },
             success: (uploadFileRes) => {
               _this.images.push(JSON.parse(uploadFileRes.data).data.url);
             },
           });
+        },
+      });
+    },
+
+    removeBackground(img) {
+      const _this = this;
+      uni.showModal({
+        title: "提示",
+        content: "确定删除当前图片吗？",
+        success: function (res) {
+          const index = _this.images.findIndex((item) => item === img);
+          _this.images.splice(index, 1);
         },
       });
     },
@@ -350,26 +382,26 @@ export default {
           color: #3d3d3d;
         }
       }
-      .please {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 156upx;
-        .choice {
-          font-size: 28upx;
-          font-weight: 500;
-          color: #3d3d3d;
-        }
-        .more {
-          width: 40upx;
-          height: 40upx;
-        }
-      }
+      // .please {
+      //   display: flex;
+      //   justify-content: space-between;
+      //   align-items: center;
+      //   width: 156upx;
+      //   .choice {
+      //     font-size: 28upx;
+      //     font-weight: 500;
+      //     color: #3d3d3d;
+      //   }
+      //   .more {
+      //     width: 40upx;
+      //     height: 40upx;
+      //   }
+      // }
     }
-    .text {
-      padding-top: 16upx;
-      font-size: 24upx;
-      color: #999999;
+    .text-type {
+      padding-top: 20upx;
+      font-size: 28upx;
+      color: #3d3d3d;
     }
     .item-image {
       display: flex;
@@ -385,24 +417,75 @@ export default {
         color: #3d3d3d;
       }
     }
-    .upload {
-      margin-top: 34upx;
-      width: 160upx;
-      height: 160upx;
-      border-radius: 10upx;
-      background: #f1f2f6;
+    // .upload {
+    //   margin-top: 34upx;
+    //   width: 160upx;
+    //   height: 160upx;
+    //   border-radius: 10upx;
+    //   background: #f1f2f6;
+    //   display: flex;
+    //   flex-direction: column;
+    //   justify-content: center;
+    //   align-items: center;
+    //   .img {
+    //     width: 60upx;
+    //     height: 60upx;
+    //   }
+    //   .text {
+    //     font-size: 24upx;
+    //     font-weight: 500;
+    //     color: #d8d8d8;
+    //   }
+    // }
+
+    .upload-pane {
+      // border: 1upx solid #d8d8d8;
+      
+      padding: 32upx 24upx;
+      box-sizing: border-box;
+      border-radius: 20upx;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      .img {
-        width: 60upx;
-        height: 60upx;
+      // justify-content: space-between;
+      // align-items: flex-end;
+
+      .delete-icon {
+        width: 32upx;
+        height: 36upx;
       }
-      .text {
-        font-size: 24upx;
-        font-weight: 500;
-        color: #d8d8d8;
+
+      .img1 {
+        width: 160upx;
+        height: 160upx;
+        position: absolute;
+      }
+      .img2 {
+        width: 40upx;
+        height: 40upx;
+        position: absolute;
+        right: 0;
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+      }
+
+      .upload {
+        margin: 0;
+        width: 160upx;
+        height: 160upx;
+        background-color: #ececec;
+        border-radius: 20upx;
+        color: #767676;
+        text-align: center;
+        line-height: 160upx;
+        font-size: 60upx;
+      }
+
+      .iamge-background {
+        width: 160upx;
+        height: 160upx;
+        object-fit: cover;
       }
     }
     .explain {

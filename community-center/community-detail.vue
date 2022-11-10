@@ -368,8 +368,8 @@ export default {
       padding: 14upx 18upx 40upx 36upx;
       .introduce {
         font-size: 28upx;
-        font-weight: 500;
-        color: #999999;
+        font-weight: bold;
+        color: #3d3d3d;
       }
       .content {
         padding-top: 14upx;
@@ -380,7 +380,7 @@ export default {
     .type {
       padding-left: 36upx;
       padding-bottom: 20upx;
-      font-size: 36upx;
+      font-size: 28upx;
       font-weight: bold;
       color: #3d3d3d;
     }
