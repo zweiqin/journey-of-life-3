@@ -28,7 +28,7 @@
           <view class="year">10年老厂</view>
         </view>
       </view>
-      <button class="btn">进店</button>
+      <button class="btn">进入展厅</button>
     </view>
     <view class="goods-layout">
       <img
@@ -156,7 +156,6 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 110upx;
       height: 36upx;
       background-color: #07b9b9;
       border-radius: 40upx;
