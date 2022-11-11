@@ -94,6 +94,9 @@ export default {
       this.currentTab = index;
       this.sort = this.data.find((item) => item.id === index);
     },
+    handleBack() {
+      uni.navigateBack();
+    },
 
     // handleToServiceDetail(id) {
     //   console.log("服务详情",id);
