@@ -127,7 +127,7 @@ export default {
     .item {
       font-size: 20upx;
       margin-right: 36upx;
-      font-size: 16upx;
+      font-size: 24upx;
       transition: all 200ms linear;
       &.active {
         color: #ff8f1f;

@@ -26,6 +26,7 @@
         >
           <swiper-item>
             <img
+              class="img9"
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/frinmcnc1ozzv9pwahig.jpg "
               alt=""
             />
@@ -33,18 +34,21 @@
           <swiper-item>
             <img
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/szzgw6dxoibrsxh1cwh0.jpg"
+              class="img9"
               alt=""
             />
           </swiper-item>
           <swiper-item>
             <img
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dp5o8q1l34utxsj8mkba.jpg"
+              class="img9"
               alt=""
             />
           </swiper-item>
           <swiper-item>
             <img
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/37nqp8lds95nbn3efi6j.jpg "
+              class="img9"
               alt=""
             />
           </swiper-item>
@@ -178,7 +182,7 @@
       <Pane title="价格指数">
         <img
           style="width: 100%"
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/wilav6bgzf3pq8aggn3a.png"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gxawxw339ne2sb1isdw8.png "
           alt=""
         />
         <view class="Prices">
@@ -358,11 +362,11 @@ export default {
       console.log("门店分类", res.data.items);
       this.navs2 = res.data.items;
       this.navs2.unshift({ storeName: "综合", id: 0 });
-      const a = this.navs2.findIndex(item =>{
-        return item.storeName =="品牌工厂"
-      })
+      const a = this.navs2.findIndex((item) => {
+        return item.storeName == "品牌工厂";
+      });
       // console.log(a);
-      const b = this.navs2.splice(a,1)
+      const b = this.navs2.splice(a, 1);
       // console.log(this.navs2);
     },
     // 获取行业信息
@@ -393,6 +397,9 @@ export default {
       console.log("价格列表", res.data.items);
       this.PricesList = res.data.items;
       this.PricesList = this.PricesList.slice(0, 6);
+      this.PricesList.sort(function(x,y){
+      return x.materialsCategory.length > y.materialsCategory.length?1:-1;
+    })
     },
     // 供应列表
     async getSupplyList() {
@@ -543,7 +550,6 @@ export default {
     .swiper {
       width: 100%;
       height: 552upx;
-
       /deep/ .uni-swiper-dot-active {
         border-radius: 0;
         width: 40upx !important;

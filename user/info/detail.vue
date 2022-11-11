@@ -182,24 +182,15 @@ export default {
      * 点击退出
      */
     async handleLagout() {
-      const res = await layoutApi(getUserId());
-      if (res.errno === 0) {
-        uni.removeStorageSync(USER_ID);
-        uni.removeStorageSync(USER_TOKEN);
-        uni.removeStorageSync(user_INFO);
-
-        uni.navigateTo({
-          url: "/pages/login/login",
-        });
-
-        return;
-      }
-
+      uni.clearStorageSync();
       uni.showToast({
-        title: "退出失败",
-        duration: 2000,
-        icon: "none",
+        title: "退出成功",
+        icon: "success",
+        mask: true,
       });
+      setTimeout(() => {
+        uni.redirectTo({ url: "/pages/login/login" });
+      }, 1000);
     },
   },
 };

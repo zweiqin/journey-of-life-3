@@ -70,7 +70,7 @@ export const affiche = [
     lable: "社区维修，到团蜂社区"
   }, {
     value: 3,
-    lable: "材料选购，到团蜂家具材料网"
+    lable: "材料选购，到团蜂·亚洲国际家具材料网"
   },
 
 ]

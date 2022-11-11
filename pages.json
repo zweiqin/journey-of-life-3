@@ -711,7 +711,10 @@
 					"path": "brand/brand"
 				},
 				{
-					"path": "price/price"
+					"path": "price/price",
+					"style": {
+						"navigationBarTitleText": "价格指数"
+					}
 				},
 				{
 					"path": "price/echar"

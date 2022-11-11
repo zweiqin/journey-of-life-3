@@ -1,5 +1,10 @@
 <template>
   <view class="store-home-container">
+    <suspenButton
+      @top="shopCar"
+      @left="backHome"
+      @bottom="service"
+    ></suspenButton>
     <view class="info">
       <img
         class="bgm"
@@ -21,8 +26,8 @@
         <img
           class="avatar"
           :src="
-          picUrl ||
-          'https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
+            picUrl ||
+            'https://img2.baidu.com/it/u=3949966856,2992083594&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
           "
           alt=""
         />
@@ -52,14 +57,7 @@
             <view class="mobile"
               >电话：{{ phone || "暂无电话" }}
               <view class="ops">
-                <view>
-                  在线咨询
-                  <img
-                    class="icon"
-                    src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ediomt05zf5jzbowsrk2.png"
-                    alt=""
-                  />
-                </view>
+     
 
                 <view>
                   到这里去
@@ -97,10 +95,8 @@
         </view>
       </view>
 
-
-
       <Carousel
-        height="311"
+      :height="311"
         :list="[
           'https://img1.baidu.com/it/u=934539030,2839442749&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
           'https://img0.baidu.com/it/u=2897486836,2967666712&fm=253&fmt=auto&app=120&f=JPEG?w=640&h=786',
@@ -114,15 +110,13 @@
 
       <view class="goods-wrapper">
         <Goods
-        v-for="item in goodsList"
-        :key="item.id"
-        :id="item.id"
-        :name="item.name"
-        :sname="item.brief"
-        :price="item.retailPrice"
-        :url="item.picUrl"
-        
-        
+          v-for="item in goodsList"
+          :key="item.id"
+          :id="item.id"
+          :name="item.name"
+          :sname="item.brief"
+          :price="item.retailPrice"
+          :url="item.picUrl"
         ></Goods>
         <!-- <Goods></Goods>
         <Goods></Goods>
@@ -146,12 +140,14 @@ import { navs2 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
 import { getBrandDetailApi, getBrandListBySelectApi } from "../../api/brand";
+import suspenButton from "../../components/px-suspen-button";
 
 export default {
   components: {
     Rate,
     Carousel,
     Goods,
+    suspenButton,
   },
 
   data() {
@@ -169,7 +165,7 @@ export default {
       picUrl: "",
       idcardConsUrl: "",
       brandId: "",
-      goodsList:[],
+      goodsList: [],
     };
   },
   props: {
@@ -182,11 +178,64 @@ export default {
     // switchTab(tab) {
     //   this.currentTab = tab;
     // },
+    shopCar() {
+      console.log("购物车");
+      uni.navigateTo({
+        url: "../../user/sever/shop-car",
+      });
+    },
+    backHome() {
+      console.log("回到首页");
+      uni.switchTab({ url: "/pages/stuff/stuff"})
+    },
 
+    service() {
+      const phone = this.phone
+      console.log("传入的电话", phone);
+      const res = uni.getSystemInfoSync();
+      // ios系统默认有个模态框
+      if (res.platform == "ios") {
+        uni.makePhoneCall({
+          phoneNumber: phone,
+
+          success() {
+            console.log("拨打成功了");
+          },
+          fail() {
+            console.log("拨打失败了");
+          },
+        });
+      } else {
+        //安卓手机手动设置一个showActionSheet
+        uni.showActionSheet({
+          itemList: [phone, "呼叫"],
+          success: function (res) {
+            console.log(res);
+            if (res.tapIndex == 1) {
+              uni.makePhoneCall({
+                phoneNumber: phone,
+              });
+            }
+          },
+        });
+      }
+
+      // let text = "要复制的文本内容";
+
+      // uni.setClipboardData({
+      //   data: text,
+      //   success: function (res) {
+      //     console.log("复制的信息：", text);
+      //     uni.showToast({
+      //       title: "复制成功",
+      //     });
+      //   },
+      // });
+    },
     handleBack() {
       uni.navigateBack();
     },
-//门店详情接口
+    //门店详情接口
     async getBrandDetail() {
       const res = await getBrandDetailApi({
         id: this.brandId,
@@ -204,7 +253,6 @@ export default {
     //品牌和前十商品列表
     async getBrandListBySelect() {
       const res = await getBrandListBySelectApi({
-        
         id: this.brandId,
         name: "",
         page: "",
@@ -217,16 +265,12 @@ export default {
     },
 
     //商品分类接口
-
-
-
-
   },
   //进入该界面就运行一次（仅一次）
   onLoad: function (option) {
     // 使用该方法
     // this.brandId为自己定义的变量
-    this.brandId = option.id
+    this.brandId = option.id;
     console.log(this.brandId);
     this.getBrandDetail();
     this.getBrandListBySelect();

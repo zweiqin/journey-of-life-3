@@ -15,38 +15,26 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/itt7zhw456zi52z9gxzq.png",
     bgc: "linear-gradient(144deg, #07B9B9 21%, rgba(13,158,158,0.00) 122%)",
     label: "价格",
-    // Url: "../../stuff/price/price",
-    Url: "../../stuff/price/echar",
+    Url: "../../stuff/price/price",
+    // Url: "../../stuff/price/echar",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/egdr6p9tk32k2t0ijrn6.png",
     bgc: "linear-gradient(137deg, #FF8F1F 7%, rgba(225,125,25,0.00) 143%)",
     label: "热销",
-    Url: "../../stuff/hotBuy/hotBuy",
+    // Url: "../../stuff/hotBuy/hotBuy",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dccvg8b9cypwye31pjka.png",
     bgc: "linear-gradient(139deg, #FA5151 23%, rgba(204,27,27,0.00) 147%)",
     label: "品牌",
-    Url: "../../stuff/brand/brand",
+    // Url: "../../stuff/brand/brand",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/su6fygqdai0ome7guhxt.png",
     bgc: "linear-gradient(137deg, #00B578 0%, #FFFFFF 100%)",
     label: "库存",
-    Url: "../../stuff/stock/stock",
-  },
-  {
-    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c7b200swpyfd2ntksxnn.png",
-    bgc: "linear-gradient(137deg, #FFC300 7%, #FFFFFF 143%)",
-    label: "一键采购",
-    Url: "../../stuff/purchase/purchase",
-  },
-  {
-    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tqdnj221uexjbn511viq.png",
-    bgc: "linear-gradient(137deg, #FA5151 0%, #FFFFFF 100%)",
-    label: "全球买手",
-    Url: "../../stuff/buyer/buyer",
+    // Url: "../../stuff/stock/stock",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ksadd8iyi8iut5orq35d.png",
@@ -54,6 +42,19 @@ export const navs = [
     label: "超市",
     // Url: "../../stuff/direct-sale store/direct-sale store",
   },
+  {
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c7b200swpyfd2ntksxnn.png",
+    bgc: "linear-gradient(137deg, #FFC300 7%, #FFFFFF 143%)",
+    label: "一键采购",
+    // Url: "../../stuff/purchase/purchase",
+  },
+  {
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tqdnj221uexjbn511viq.png",
+    bgc: "linear-gradient(137deg, #FA5151 0%, #FFFFFF 100%)",
+    label: "全球买手",
+    // Url: "../../stuff/buyer/buyer",
+  },
+
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/er2fof0w6rye27dpn5jd.png",
     bgc: "linear-gradient(137deg, #EB2F96 7%, rgba(225,125,25,0.00) 143%)",

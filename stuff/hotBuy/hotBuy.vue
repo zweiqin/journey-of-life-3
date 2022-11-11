@@ -30,6 +30,7 @@
 
 <script>
 import hotGoods from "./hotGoods";
+import { getCatalogAllApi } from "../../api/stuff";
 export default {
   components: {
     hotGoods,
@@ -38,7 +39,16 @@ export default {
     handleBack() {
       uni.navigateBack();
     },
+    async getCatalogAll(){
+      const res = await getCatalogAllApi({
+        goodsType:2
+      })
+      console.log(res);
+    }
   },
+  onLoad(options) {
+    this.getCatalogAll()
+  }
 };
 </script>
 

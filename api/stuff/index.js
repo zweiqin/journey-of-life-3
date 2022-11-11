@@ -36,3 +36,8 @@ export const getPricesListApi = (data) => {
   return RuanRequest("/prices/list", data, "get");
 };
 
+//所有分类数据
+export const getCatalogAllApi = (data) =>{
+  return RuanRequest("/catalog/all",data,"get")
+}
+

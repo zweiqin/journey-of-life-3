@@ -37,7 +37,6 @@
           >
         </view> -->
       </view>
-
       <view class="goods-list">
         <Store
           v-for="item in brandList"
@@ -55,6 +54,11 @@
         <Store></Store>
         <Store></Store> -->
       </view>
+      <Thine
+        v-if="brandList.length == 0"
+        :picUrl="picUrl"
+        :text="text"
+      ></Thine>
     </view>
   </div>
 </template>
@@ -85,6 +89,9 @@ export default {
       navs2: [],
       currentTab: 0,
       brandgenreId: "",
+      length: "",
+      picUrl:"https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mu11ydme6t73slzqkjgc.png",
+      text:"暂无门店"
     };
   },
   methods: {
@@ -126,7 +133,7 @@ export default {
       // let shoplist = res.data.brandList;
       // this.brandList.push(shoplist)
       this.brandList = res.data.brandList;
-
+      this.length = res.data.brandList.length;
       // b = a;
       // this.brandList = this.brandList.push.apply(b,a)
       // const c = b.concat(a);
