@@ -1,8 +1,14 @@
 <template>
   <view class="service-sort">
-    <view class="head" >
+    <view class="head">
       <view class="search-bar">
         <view class="location">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+            alt=""
+            class="return"
+            @click="handleBack"
+          />
           <view class="text">佛山市</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
@@ -135,6 +141,10 @@ export default {
       .location {
         display: flex;
         align-items: center;
+        .return {
+          width: 48upx;
+          height: 48upx;
+        }
         .text {
           font-size: 36upx;
           font-weight: bold;

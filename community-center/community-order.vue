@@ -29,8 +29,9 @@
       <view class="choice-list">
         <view class="choice">已选</view>
         <view class="type">{{ type }}</view>
-        <view class="logo">￥</view>
-        <view class="number">{{ price }}</view>
+
+        <!-- <view class="logo">￥</view>
+        <view class="number">{{ price }}</view> -->
       </view>
     </view>
     <template v-if="id == 97">
@@ -87,20 +88,27 @@
             mode=""
           />
         </view>
-        <view style="border: 1upx solid #d8d8d8;display:flex;border-radius: 20upx;width: 100%;">
         <view
-          v-for="img in images"
-          :key="img"
-          style="position: relative; width: 160upx; height: 160upx;"
+          style="
+            border: 1upx solid #d8d8d8;
+            display: flex;
+            border-radius: 20upx;
+            width: 100%;
+          "
         >
-          <img :src="img" alt="" class="img1" />
-          <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
-            alt=""
-            class="img2"
-            @click="removeBackground(img)"
-          />
-        </view>
+          <view
+            v-for="img in images"
+            :key="img"
+            style="position: relative; width: 160upx; height: 160upx"
+          >
+            <img :src="img" alt="" class="img1" />
+            <img
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
+              alt=""
+              class="img2"
+              @click="removeBackground(img)"
+            />
+          </view>
         </view>
       </view>
 
@@ -110,7 +118,17 @@
       </view>
       <view class="jx">
         <view class="content">
-          <input type="text" class="show" placeholder="说明内容实例" />
+          <!-- <input type="text" class="show" placeholder="说明内容实例" /> -->
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            class="show"
+            placeholder="说明内容实例"
+            v-model="text"
+          ></textarea>
+          
           <view class="list">
             <view class="number">0/150</view>
             <view class="example">示例</view>
@@ -146,8 +164,9 @@ export default {
       price: "",
       unit: "",
       id: "",
+      text: "",
       images: [],
-
+      priceType: "",
       // isArtificialArtificial:true
     };
   },
@@ -157,8 +176,31 @@ export default {
     },
     handleToServiceInformation() {
       uni.navigateTo({
-        url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}`,
+        url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
       });
+      // if (!this.price) {
+      //   console.log("人工报价");
+      //   uni.navigateTo({
+      //     url: `/community-center/customer-information?name=${this.name}`,
+      //   });
+      // } else {
+      //   console.log("一口价");
+      //   if (!this.id == 97) {
+
+      //     uni.navigateTo({
+      //       url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
+      //     });
+      //   } else {
+      //     if (this.specsId) {
+      //       console.log("已选");
+      //       uni.navigateTo({
+      //         url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
+      //       });
+      //     } else {
+      //       console.log("还没选匹数呢");
+      //     }
+      //   }
+      // }
     },
 
     switchTab(item1) {
@@ -207,6 +249,15 @@ export default {
     this.unit = options.serverUnit;
     this.type = options.serverInfoName;
     this.id = options.id;
+
+    this.detailId1 = options.detailId;
+    this.priceType = options.priceType;
+    console.log("是否一口价", this.priceType);
+    // if (a === "true") {
+    //   this.priceType = 1;
+    // } else {
+    //   this.priceType = 2;
+    // }
   },
 };
 </script>
@@ -440,7 +491,7 @@ export default {
 
     .upload-pane {
       // border: 1upx solid #d8d8d8;
-      
+
       padding: 32upx 24upx;
       box-sizing: border-box;
       border-radius: 20upx;
