@@ -13,7 +13,7 @@
     <view class="main">
       <view class="service-list">
         <view class="text">安装服务</view>
-        <view class="name">空调安装</view>
+        <view class="name">{{this.name1}}</view>
       </view>
       <view class="order-list">
         <view class="text">订单编号</view>
@@ -23,7 +23,7 @@
         <view class="text">安装费用</view>
         <view class="price-list">
           <view class="logo">￥</view>
-          <view class="number">150</view>
+          <view class="number">{{this.oughtPrice}}</view>
           <view class="point">.00</view>
         </view>
       </view>
@@ -39,7 +39,7 @@
 
     <view class="pay">
       <view class="logo">￥</view>
-      <view class="number">150</view>
+      <view class="number">{{this.oughtPrice}}</view>
       <view class="point">.00</view>
     </view>
     <view class="on-pay">确定支付</view>
@@ -63,6 +63,18 @@ export default {
     },
   },
   created() {},
+  onLoad(options) {
+    console.log(options);
+    this.name1 = options.name1;
+    this.oughtPrice = options.oughtPrice;
+    this.content = options.content;
+    this.consigneeName = options.consigneeName;
+    this.consigneeMobile = options.consigneeMobile;
+    this.consigneeAddress = options.consigneeAddress;
+    this.consigneeAddressDetail = options.consigneeAddressDetail;
+    this.installDate = options.installDate;
+
+  },
 };
 </script>
 

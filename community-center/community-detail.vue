@@ -182,7 +182,7 @@ export default {
       serverPrice: "",
       title: "",
       serverUnit: "",
-      currentTab: 0,
+      currentTab: 1,
       length: "",
     };
   },
@@ -202,12 +202,12 @@ export default {
       if (!this.isArtificial) {
         console.log("abc");
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}`,
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}`,
         });
       } else {
         if (!this.serverPrice == 0) {
           uni.navigateTo({
-            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}`,
+            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}`,
           });
         } else {
           console.log("sb kuaixuan");
@@ -232,6 +232,8 @@ export default {
       this.serverInfoName = item1.serverInfoName;
       this.serverUnit = item1.serverUnit;
       this.serverIntroduction = item1.serverIntroduction;
+      this.detailId = item1.id;
+      console.log("详情id", this.detailId);
     },
 
     //社区服务详情
@@ -243,26 +245,22 @@ export default {
       });
       this.serviceDetail = res.data;
       console.log("666", this.serviceDetail);
+
       this.isArtificial = this.serviceDetail[0].isArtificial;
       this.length = this.serviceDetail.length;
-      console.log(this.isArtificial);
+      console.log("是否一口价",this.isArtificial);
 
       this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
       console.log("介绍", this.serverIntroduction);
 
       this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
       console.log("图片", this.serverInfoUrl);
+      
+      // this.detailId = this.serviceDetail[0].id;
+      // console.log("详情id", this.detailId);
+      
 
-      // this.id = this.serviceDetail.id;
-      // this.serverTypeId = this.serviceDetail.serverTypeId;
-      // this.serverInfoName = this.serviceDetail.serverInfoName;
-      // console.log("名称",this.serverInfoName);
-      // this.serverInfoUrl = this.serviceDetail.serverInfoUrl;
-      // this.serverIntroduction = this.serviceDetail.serverIntroduction;
-      // this.isArtificialArtificial = this.serviceDetail.isArtificialArtificial;
-      // console.log("123",this.isArtificialArtificial);
-      // this.serverPrice = this.serviceDetail.serverPrice;
-      // this.serverUnit = this.serviceDetail.serverUnit;
+      
     },
   },
   created() {},
@@ -368,8 +366,8 @@ export default {
       padding: 14upx 18upx 40upx 36upx;
       .introduce {
         font-size: 28upx;
-        font-weight: 500;
-        color: #999999;
+        font-weight: bold;
+        color: #3d3d3d;
       }
       .content {
         padding-top: 14upx;
@@ -380,7 +378,7 @@ export default {
     .type {
       padding-left: 36upx;
       padding-bottom: 20upx;
-      font-size: 36upx;
+      font-size: 28upx;
       font-weight: bold;
       color: #3d3d3d;
     }

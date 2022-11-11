@@ -43,7 +43,7 @@
       </view>
       <input
         class="adreDetail"
-        v-model="name"
+        v-model="addname"
         placeholder="姓名/称呼"
         placeholder-class="input-placeholder"
       />
@@ -93,15 +93,17 @@
           class="goods"
         />
         <view class="item">
-          <view class="text">空调安装</view>
-          <view class="price-list" v-if="pricingType == 1">
-            <view class="logo">￥</view>
-            <view class="number">{{ price1 }}</view>
-            <view class="point">.00</view>
-            <view class="xie">/</view>
-            <view class="unit">台</view>
-          </view>
-          <view v-if="pricingType == 2"></view>
+          <view class="text">{{ name1 }}</view>
+          <template v-if="pricingType == 1">
+            <view class="price-list">
+              <view class="logo">￥</view>
+              <view class="number">{{ price1 }}</view>
+              <view class="point">.00</view>
+              <view class="xie">/</view>
+              <view class="unit">{{ unit1 }}</view>
+            </view>
+          </template>
+          <!-- <view v-if="pricingType == 2"></view> -->
         </view>
       </view>
       <view class="add">
@@ -109,12 +111,14 @@
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
           alt=""
           class="img"
+          @click="goodsdelete"
         />
-        <view class="number">1</view>
+        <view class="number">{{ number }}</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
           alt=""
           class="img"
+          @click="goodsadd"
         />
       </view>
     </view>
@@ -141,12 +145,14 @@
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
           alt=""
           class="img"
+          @click="piecedelete"
         />
         <view class="number">{{ specsId }}</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
           alt=""
           class="img"
+          @click="pieceadd"
         />
       </view>
     </view>
@@ -156,7 +162,7 @@
           <view class="total">订单总额</view>
           <view class="price-list">
             <view class="logo">￥</view>
-            <view class="number">150</view>
+            <view class="number">{{ sumPrice }}</view>
           </view>
         </view>
         <view class="coupon-list">
@@ -174,18 +180,22 @@
           <view class="pay">应付</view>
           <view class="price-list">
             <view class="logo">￥</view>
-            <view class="number">150</view>
+            <view class="number">{{ oughtPrice }}</view>
           </view>
         </view>
       </template>
     </view>
-    <view class="foot">
-      <view class="price-list" v-if="pricingType == 1">
+    <view class="foot1" v-if="pricingType == 1">
+      <view class="price-list">
         <view class="logo">￥</view>
-        <view class="number">150</view>
+        <view class="number">{{ oughtPrice }}</view>
         <view class="point">.00</view>
       </view>
-      <view v-else></view>
+      <!-- <view v-else></view> -->
+      <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
+    </view>
+
+    <view class="foot2" v-if="pricingType == 2">
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
   </view>
@@ -196,6 +206,8 @@
 
 <script>
 import JCity from "../components/JCity/JCity.vue";
+import { getServicePriceApi } from "../api/community-center";
+import { getUserId } from "../utils";
 export default {
   components: { JCity },
   name: "Customer-information",
@@ -203,7 +215,9 @@ export default {
   data() {
     return {
       id2: "",
+      serverInfoId: '',
       specsId: "",
+      number: 1,
       price1: "",
       addressDetail: "",
       address: "",
@@ -211,7 +225,16 @@ export default {
       phoneNumber: "",
       datetimesingle: "",
       time: "",
-      pricingType: 2,
+      pricingType: "",
+      orderPrice: [],
+      sumPrice: "",
+      oughtPrice: "",
+      name1: "",
+      unit1: "",
+      addname:"",
+      horsepower:'',
+      // userId:127,
+      // serverInfoId:1,
     };
   },
   methods: {
@@ -228,16 +251,101 @@ export default {
     },
     handleToServiceConfirmOrder() {
       uni.navigateTo({
-        url: `/community-center/confirm-order`,
+        url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
+        &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
+        &installDate=${this.datetimesingle}`,
       });
+    },
+
+
+
+    //安装数量加减
+    goodsadd() {
+      if (this.number > 0 || this.number == 1) {
+        this.number++;
+        this.getServicePrice();
+      }
+    },
+    goodsdelete() {
+      if (this.number < 0 || this.number == 1) {
+        console.log("已经最少了");
+      } else {
+        this.number--;
+        this.getServicePrice();
+      }
+    },
+
+    //匹数加减
+    pieceadd() {
+      if (this.specsId > 0 || this.specsId == 1) {
+        this.specsId++;
+        this.getServicePrice();
+      }
+    },
+    piecedelete() {
+      if (this.specsId < 0 || this.specsId == 1) {
+        console.log("已经最少了");
+      } else {
+        this.specsId--;
+        this.getServicePrice();
+      }
+    },
+
+    //获取订单报价
+    async getServicePrice() {
+      if (this.id2 == 97) {
+        const res = await getServicePriceApi({
+          userId: getUserId(),
+          serverInfoId: this.detailId2 * 1,
+          quantity: this.number,
+          horsepower: this.specsId * 1,
+          // userId: 127,
+          // serverInfoId: 42,
+          // quantity: 1,
+          // horsepower: 0 ,
+        });
+        this.orderPrice = res.data;
+        console.log("订单报价", this.orderPrice);
+        this.sumPrice = this.orderPrice.sumPrice;
+        this.oughtPrice = this.orderPrice.oughtPrice;
+      } else {
+        const res = await getServicePriceApi({
+          userId: getUserId(),
+          serverInfoId: this.detailId2,
+          quantity: this.number,
+
+          // userId: 127,
+          // serverInfoId: 42,
+          // quantity: 1,
+          // horsepower: 0 ,
+        });
+        this.orderPrice = res.data;
+        console.log("订单报价", this.orderPrice);
+        this.sumPrice = this.orderPrice.sumPrice;
+        this.oughtPrice = this.orderPrice.oughtPrice;
+      }
     },
   },
   created() {},
   onLoad(options) {
     console.log(options);
     this.id2 = options.id1;
+    console.log("服务详情id", this.id2);
     this.specsId = options.specsId;
     this.price1 = options.price;
+    this.name1 = options.name;
+    this.unit1 = options.unit;
+    this.detailId2 = options.detailId1;
+    this.content = options.text;
+    const a = options.priceType1;
+    console.log("是否一口价", a);
+    if (a === "true") {
+      this.pricingType = 1;
+    } else {
+      this.pricingType = 2;
+    }
+
+    this.getServicePrice();
   },
 };
 </script>
@@ -593,7 +701,7 @@ export default {
       }
     }
   }
-  .foot {
+  .foot1 {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -624,6 +732,31 @@ export default {
         color: #fa5151;
       }
     }
+    .to-pay {
+      width: 310upx;
+      height: 80upx;
+      border-radius: 100upx;
+      background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
+      font-size: 32upx;
+      font-weight: 500;
+      color: #ffffff;
+      text-align: center;
+      line-height: 70upx;
+    }
+  }
+  .foot2 {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #ffffff;
+    width: 100%;
+    height: 168upx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 26upx 20upx;
+    box-sizing: border-box;
+    border-top: 4upx solid #f1f2f6;
     .to-pay {
       width: 310upx;
       height: 80upx;

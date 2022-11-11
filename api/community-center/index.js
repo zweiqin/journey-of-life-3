@@ -1,5 +1,5 @@
 import { request } from "../../utils";
-import { XZLRquest, RuanRequest ,SheQuRequest} from "../../utils";
+import { XZLRequest, RuanRequest ,SheQuRequest} from "../../utils";
 /**
  * @description 获取报价
  * @param {*} data
@@ -72,21 +72,11 @@ export const getEndOrderListApi = (data) => {
 
 
 
-// // 查询社区服务分类
-// export const getServiceSortApi = (data) =>{
-//   return XZLRquest("/community/serverInfo/getServerTypeList",data);
-// };
-
-
-
-// //查询社区服务详情
-// export const getServiceDetailApi = (data) =>{
-//   return XZLRquest("/community/serverInfo/getServerInfoById",data,"get");
-// };
 
 
 
 
+//线上
 //查询社区服务分类
 export const getServiceSortApi = (data) => {
   return SheQuRequest("/api/community/serverInfo/getServerTypeList", data);
@@ -96,3 +86,29 @@ export const getServiceSortApi = (data) => {
 export const getServiceDetailApi = (data) => {
   return SheQuRequest("/api/community/serverInfo/getServerInfoById", data, "get");
 };
+//获取订单报价
+export const getServicePriceApi = (data) =>{
+  return SheQuRequest("/api/community/serverInfo/getOrderQuote",data);
+};
+//新建社区订单
+export const getServiceOrderApi = (data) =>{
+  return SheQuRequest("/api/hz/order/third/createOrderPabWx",data);
+};
+
+
+
+
+//本地
+//查询社区服务分类
+// export const getServiceSortApi = (data) => {
+//   return XZLRequest("/community/serverInfo/getServerTypeList", data);
+// };
+
+// //查询社区服务详情
+// export const getServiceDetailApi = (data) => {
+//   return XZLRequest("/community/serverInfo/getServerInfoById", data, "get");
+// };
+// //获取订单报价
+// export const getServicePriceApi = (data) =>{
+//   return XZLRequest("/community/serverInfo/getOrderQuote",data);
+// };
