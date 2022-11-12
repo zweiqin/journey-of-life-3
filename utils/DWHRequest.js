@@ -8,26 +8,27 @@ const request = (base_url) => {
         data,
         method,
         success: (res) => {
-          if (res.data.errno !== 0) {
-            uni.showToast({
-              title: res.data.errmsg,
-              icon: 'none',
-              mask: true,
-            })
-            reject(res.data.errmsg)
-            return
-          } else if (res.data.errno == 403 || res.data.errmsg == "用户未登录") {
-            uni.showModal({
-              title: '提示',
-              content: '您还未登录，请先去登录',
-              showCancel: true,
-              success: function (res) {
-                uni.navigateTo({ url: '/pages/login/login', })
-              }
-            });
-          }else{
-            resolve(res.data);
-          }
+          // if (res.data.errno !== 0) {
+          //   uni.showToast({
+          //     title: res.data.errmsg,
+          //     icon: 'none',
+          //     mask: true,
+          //   })
+          //   reject(res.data.errmsg)
+          //   return
+          // } else if (res.data.errno == 403 || res.data.errmsg == "用户未登录") {
+          //   uni.showModal({
+          //     title: '提示',
+          //     content: '您还未登录，请先去登录',
+          //     showCancel: true,
+          //     success: function (res) {
+          //       uni.navigateTo({ url: '/pages/login/login', })
+          //     }
+          //   });
+          // }else{
+          //   resolve(res.data);
+          // }
+          resolve(res.data)
         },
         fail: (error) => {
           reject(error);

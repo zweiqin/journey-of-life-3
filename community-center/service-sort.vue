@@ -112,6 +112,8 @@ export default {
       const res = await getServiceSortApi({
         id: this.id,
       });
+
+      // console.log();
       console.log(res);
 
       this.navbar = res.data;
