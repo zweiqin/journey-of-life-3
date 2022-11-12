@@ -8,7 +8,7 @@
  */
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
-export { GyRequest as request, RuanRequest, LTRequest, XZLRequest,SheQuRequest } from "./DWHRequest";
+export { GyRequest as request, RuanRequest, LTRequest, XZLRequest,SheQuRequest,SheQuRequest1 } from "./DWHRequest";
 export {
   fomartNumber,
   removeCache,

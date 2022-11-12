@@ -128,7 +128,7 @@
             placeholder="说明内容实例"
             v-model="text"
           ></textarea>
-          
+
           <view class="list">
             <view class="number">0/150</view>
             <view class="example">示例</view>
@@ -175,32 +175,25 @@ export default {
       uni.navigateBack();
     },
     handleToServiceInformation() {
-      uni.navigateTo({
-        url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
-      });
-      // if (!this.price) {
-      //   console.log("人工报价");
-      //   uni.navigateTo({
-      //     url: `/community-center/customer-information?name=${this.name}`,
-      //   });
-      // } else {
-      //   console.log("一口价");
-      //   if (!this.id == 97) {
+      // uni.navigateTo({
+      //   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
+      // });
 
-      //     uni.navigateTo({
-      //       url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
-      //     });
-      //   } else {
-      //     if (this.specsId) {
-      //       console.log("已选");
-      //       uni.navigateTo({
-      //         url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
-      //       });
-      //     } else {
-      //       console.log("还没选匹数呢");
-      //     }
-      //   }
-      // }
+      if (this.id != 97) {
+        console.log("id", this.id);
+        uni.navigateTo({
+          url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
+        });
+      } else if (this.id == 97 && this.specsId) {
+        console.log("id", this.id);
+        uni.navigateTo({
+          url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
+        });
+      } else {
+        console.log("no", this.id);
+      }
+
+  
     },
 
     switchTab(item1) {
@@ -270,7 +263,7 @@ export default {
 <style lang="less" scoped>
 .community-order {
   .title-list {
-    padding: 88upx 34upx 36upx 26upx;
+    padding: 20upx 34upx 36upx 26upx;
     display: flex;
     .return {
       width: 48upx;

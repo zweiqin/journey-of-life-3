@@ -13,18 +13,25 @@
     <view class="main">
       <view class="service-list">
         <view class="text">安装服务</view>
-        <view class="name">{{this.name1}}</view>
+        <view class="name">{{ this.name1 }}</view>
       </view>
       <view class="order-list">
         <view class="text">订单编号</view>
-        <view class="name">1111111</view>
+        <view class="name">{{ data }}</view>
       </view>
       <view class="install-list">
         <view class="text">安装费用</view>
-        <view class="price-list">
+
+        <view class="price-list1" v-if="pricingType == 1">
           <view class="logo">￥</view>
-          <view class="number">{{this.oughtPrice}}</view>
+          <view class="number">{{ this.oughtPrice }}</view>
           <view class="point">.00</view>
+        </view>
+        <view class="price-list2" v-if="pricingType == 2">
+          <!-- <view class="logo">￥</view>
+          <view class="number">{{ this.oughtPrice }}</view>
+          <view class="point">.00</view> -->
+          <view class="text">人工报价</view>
         </view>
       </view>
       <view class="pay-list">
@@ -37,12 +44,18 @@
       </view>
     </view>
 
-    <view class="pay">
-      <view class="logo">￥</view>
-      <view class="number">{{this.oughtPrice}}</view>
-      <view class="point">.00</view>
+    <view class="foot1" v-if="pricingType == 1">
+      <view class="pay">
+        <view class="logo">￥</view>
+        <view class="number">{{ this.oughtPrice }}</view>
+        <view class="point">.00</view>
+      </view>
+      <view class="on-pay" @click="getServiceOrderPay">确定支付</view>
     </view>
-    <view class="on-pay">确定支付</view>
+
+    <view class="foot2" v-if="pricingType == 2">
+      <view class="on-pay" @click="handleToOrderList">确认订单</view>
+    </view>
   </view>
 </template>
 
@@ -51,23 +64,87 @@
 
 
 <script>
+import { getServiceOrderApi } from "../api/community-center";
+import { getServiceOrderPayApi } from "../api/community-center";
+import { payOrderGoodsApi } from "../api/goods";
+import { getUserId } from "../utils";
 export default {
   name: "Confirm-order",
   props: {},
   data() {
-    return {};
+    return {
+      orderType: 1,
+      paymentMethod: 1,
+      deliveryType: 4,
+      oughtPrice: "",
+      consigneeName: "",
+      consigneeMobile: "",
+      consigneeAddress: "",
+      consigneeAddressDetail: "",
+      content: "",
+      installDate: "",
+      data: "",
+      dataUrl: "",
+      pricingType: "",
+    };
   },
   methods: {
     handleBack() {
       uni.navigateBack();
     },
 
+    handleToOrderList(){
+      uni.navigateTo({ url: `../community-center/order` });
+    },
 
     //新建社区订单
-    
+    async getServiceOrder() {
+      const res = await getServiceOrderApi({
+        userId: getUserId(),
+        orderType: this.orderType,
+        pricingType: this.pricingType,
+        paymentMethod: this.paymentMethod,
+        deliveryType: this.deliveryType,
+        price: this.oughtPrice,
+        actualPrice: this.oughtPrice,
+        consigneeName: this.consigneeName,
+        consigneeMobile: this.consigneeMobile,
+        consigneeAddress: this.consigneeAddress,
+        consigneeAddressDetail: this.consigneeAddressDetail,
+        remarks: this.content,
+        installDate: this.installDate,
+        dictName: this.name1,
+      });
+      this.data = res.data;
+      console.log("订单号", this.data);
+    },
 
+    //订单支付
+    async getServiceOrderPay() {
+      let res = await getServiceOrderPayApi({
+        orderNo: this.data,
+        userId: getUserId(),
+      });
 
+      res = JSON.parse(res.data);
 
+      const form = document.createElement("form");
+      form.setAttribute("action", res.url);
+      form.setAttribute("method", "POST");
+
+      const data1 = JSON.parse(res.data);
+      let input;
+      for (const key in data1) {
+        input = document.createElement("input");
+        input.name = key;
+        input.value = data1[key];
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    },
   },
   created() {},
   onLoad(options) {
@@ -80,7 +157,10 @@ export default {
     this.consigneeAddress = options.consigneeAddress;
     this.consigneeAddressDetail = options.consigneeAddressDetail;
     this.installDate = options.installDate;
+    this.pricingType = options.pricingType;
+    console.log("报价类型", this.pricingType);
 
+    this.getServiceOrder();
   },
 };
 </script>
@@ -88,7 +168,7 @@ export default {
 <style lang="less" scoped>
 .confirm-order {
   .title-list {
-    padding: 88upx 34upx 36upx 26upx;
+    padding: 20upx 34upx 36upx 26upx;
     display: flex;
     .return {
       width: 48upx;
@@ -143,13 +223,22 @@ export default {
         color: #999999;
         flex: 1;
       }
-      .price-list {
+      .price-list1 {
         display: flex;
         font-size: 32upx;
         color: rgba(0, 0, 0, 0.85);
-        .logo{}
-        .number{}
-        .point{}
+        .logo {
+        }
+        .number {
+        }
+        .point {
+        }
+      }
+      .price-list2 {
+        .text {
+          font-size: 32upx;
+          color: rgba(0, 0, 0, 0.85);
+        }
       }
     }
 
@@ -184,28 +273,74 @@ export default {
       }
     }
   }
-  .pay{
-    margin-top: 290upx;
+
+  .foot1 {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #ffffff;
+    width: 100%;
+    height: 168upx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 26upx 20upx;
+    box-sizing: border-box;
+    border-top: 4upx solid #f1f2f6;
+    .pay {
+      // margin-top: 290upx;
+      display: flex;
+      justify-content: center;
+      font-size: 48upx;
+      font-weight: 500;
+      color: #fa5151;
+      .logo {
+      }
+      .number {
+      }
+      .point {
+      }
+    }
+    .on-pay {
+      // margin: 86upx auto;
+      width: 310upx;
+      height: 80upx;
+      border-radius: 100upx;
+      background: linear-gradient(90deg, #00b578 0%, #079a9a 100%);
+      font-size: 32upx;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+      line-height: 70upx;
+    }
+  }
+
+  .foot2 {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #ffffff;
+    width: 100%;
+    height: 168upx;
     display: flex;
     justify-content: center;
-    font-size: 48upx;
-    font-weight: 500;
-    color: #FA5151;
-    .logo{}
-    .number{}
-    .point{}
-  }
-  .on-pay{
-    margin: 86upx auto;
-    width: 310upx;
-    height: 80upx;
-    border-radius: 100upx;
-    background: linear-gradient(90deg, #00B578 0%, #079A9A 100%);
-    font-size: 32upx;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 70upx;
+    align-items: center;
+    padding: 26upx 20upx;
+    box-sizing: border-box;
+    border-top: 4upx solid #f1f2f6;
+
+    .on-pay {
+      // margin: 86upx auto;
+      width: 310upx;
+      height: 80upx;
+      border-radius: 100upx;
+      background: linear-gradient(90deg, #00b578 0%, #079a9a 100%);
+      font-size: 32upx;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+      line-height: 70upx;
+    }
   }
 }
 </style>
