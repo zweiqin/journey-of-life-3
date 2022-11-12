@@ -104,12 +104,18 @@
           <view class="goods-money">￥{{ item1.price }}</view>
         </view>
         <view class="goods-right"
-          ><view class="right-top">{{ item.orderStatusText }} </view>
+          ><view class="right-top"
+            >{{
+              item.orderStatusText == "已取消(系统)"
+                ? "已取消"
+                : item.orderStatusText
+            }}
+          </view>
           <view
             class="right-bottom"
             @click="bindCancel"
-            :data-cancelDetail="item1"
             v-if="currentTab === 1"
+            :data-cancelDetail="item1"
             >取消订单</view
           >
           <view
@@ -184,6 +190,11 @@ export default {
         orderId: this.orderId,
       });
       console.log(res);
+      uni.showToast({
+        title: res.errmsg,
+        icon: "success",
+        mask: true,
+      });
     },
     async getOrderDelete() {
       const res = await getOrderDeleteApi({
@@ -191,6 +202,11 @@ export default {
         orderId: this.orderId,
       });
       console.log(res);
+      uni.showToast({
+        title: res.errmsg,
+        icon: "success",
+        mask: true,
+      });
     },
     async getOrderConfirm() {
       const res = await getOrderConfirmApi({
@@ -198,6 +214,11 @@ export default {
         orderId: this.orderId,
       });
       console.log(res);
+      uni.showToast({
+        title: res.errmsg,
+        icon: "success",
+        mask: true,
+      });
     },
     async getOrderCancel() {
       const res = await getOrderCancelApi({
@@ -210,6 +231,11 @@ export default {
       if (res.errno == 725 || res.errmsg == "订单不能取消") {
         console.log("sb");
       }
+      uni.showToast({
+        title: res.errmsg,
+        icon: "success",
+        mask: true,
+      });
     },
     async getOrderList() {
       const res = await getOrderListApi({
@@ -246,10 +272,10 @@ export default {
     },
     bindtapdetail(item) {
       console.log(item);
-      this.orderId = item.id
-      this.getOrderDetail()
-      uni.navigateTo({ url: './order-form-detail' })
-      uni.setStorageSync('CAR_GOODS_DETAIL', item)
+      this.orderId = item.id;
+      this.getOrderDetail();
+      uni.navigateTo({ url: "./order-form-detail" });
+      uni.setStorageSync("CAR_GOODS_DETAIL", item);
 
       // uni.navigateTo({
       //   url: "../orderForm/order-form-detail",
@@ -356,11 +382,18 @@ export default {
       font-weight: 350;
       overflow: hidden;
       display: flex;
+      height: 30upx;
+      align-items: flex-start;
       white-space: nowrap;
       text-overflow: ellipsis;
       .goods-size {
         margin-right: 20upx;
         display: flex;
+        overflow: scroll;
+
+        &::-webkit-scrollbar {
+          width: 0 !important;
+        }
       }
     }
     .goods-number {
@@ -383,10 +416,17 @@ export default {
     margin-left: 10upx;
     padding-bottom: 20upx;
     .right-top {
+      white-space: nowrap;
+      text-align: center;
     }
     .right-bottom {
       color: black;
       margin-top: 20upx;
+      border-radius: 20upx;
+      padding: 6upx 15upx;
+      background-color: rgb(223, 223, 223);
+      text-align: center;
+      white-space: nowrap;
     }
   }
 }

@@ -88,7 +88,7 @@
     <view class="middle1">
       <view class="detail">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          src="https://www. .cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
           alt=""
           class="goods"
         />

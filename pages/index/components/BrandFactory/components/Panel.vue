@@ -1,7 +1,14 @@
 <template>
   <div class="panel" @click="handleEnterStore">
     <view class="header">
-      <img class="avatar" :src="picUrl" alt="" />
+      <img
+        class="avatar"
+        :src="
+          picUrl ||
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/alo7i1qewcuj4305mrr3.png  '
+        "
+        alt=""
+      />
       <view class="info">
         <view class="name">{{ name }}</view>
         <view class="tem">
@@ -41,12 +48,18 @@
       />
       <view class="right">
         <img
-          :src="rightImg1 || 'https://img2.baidu.com/it/u=4044691584,3728595922&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500'"
+          :src="
+            rightImg1 ||
+            'https://img2.baidu.com/it/u=4044691584,3728595922&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500'
+          "
           alt=""
         />
 
         <img
-        :src="rightImg2 || 'https://img0.baidu.com/it/u=1624261074,370820778&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'"
+          :src="
+            rightImg2 ||
+            'https://img0.baidu.com/it/u=1624261074,370820778&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
+          "
           alt=""
         />
       </view>
@@ -89,7 +102,7 @@ export default {
      */
     handleEnterStore() {
       uni.navigateTo({
-        url: "/pages/store/store?brandId="+this.brandId,
+        url: "/pages/store/store?brandId=" + this.brandId,
       });
     },
   },

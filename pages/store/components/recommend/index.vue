@@ -107,7 +107,7 @@ export default {
         console.log("ranklist", this.rankList);
         if (this.rankList.length >= 8) {
           this.rankList1 = this.rankList.slice(0, 4);
-          this.rankList2 = this.rankList.slice(4, 8);
+          this.rankList2 = this.rankList.slice(5, 9);
         } else {
           this.rankList1 = this.rankList.slice(0, 4);
           this.rankList2 = this.rankList.slice(0, 4);

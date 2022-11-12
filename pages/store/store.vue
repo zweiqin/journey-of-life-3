@@ -27,7 +27,14 @@
 
     <!-- 社区信息 -->
     <view class="community-info">
-      <img class="avatar" :src="picUrl" alt="" />
+      <img
+        class="avatar"
+        :src="
+          picUrl ||
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/alo7i1qewcuj4305mrr3.png '
+        "
+        alt=""
+      />
 
       <view class="wrapper">
         <view class="name">{{ name }}</view>
@@ -74,7 +81,12 @@
         :allgoodsList="allgoodsList"
         :goodsRankList="goodsRankList"
       ></Recommend>
-      <Baby v-else :allgoodsList="allgoodsList" :brandId="brandId"></Baby>
+      <Baby
+        v-else
+        :allgoodsList="allgoodsList"
+        :brandId="brandId"
+        :goodsList1="goodsList1"
+      ></Baby>
     </view>
   </view>
 </template>
@@ -101,6 +113,8 @@ export default {
       shareUrl: "",
       allgoodsList: {},
       goodsRankList: {},
+      goodsList1: [],
+      page: 1,
     };
   },
   onLoad(options) {
@@ -123,11 +137,22 @@ export default {
     async goodsList() {
       const res = await goodsListApi({
         brandId: this.brandId,
+        size: this.size,
+        page: this.page,
       });
       console.log("商品列表", res);
       this.allgoodsList = res.data;
+      this.goodsList1 = res.data.goodsList;
     },
-
+    async moreGoodsList() {
+      const res = await goodsListApi({
+        brandId: this.brandId,
+        page: this.page,
+      });
+      console.log("moregoods", res);
+      this.goodsList1.push(...res.data.goodsList);
+      console.log("goodlist1", this.goodsList1);
+    },
     async goodsMaxSaleGoods() {
       const res = await goodsMaxSaleGoodsApi({
         brandId: this.brandId,
@@ -164,6 +189,22 @@ export default {
     handleSwitchTab(tab) {
       this.currentTab = tab;
     },
+  },
+  onReachBottom() {
+    if (this.currentTab == 0) {
+      uni.showToast({
+        title: "已经到底，想看更多商品请移步宝贝板块",
+        icon: "none",
+        mask: true,
+      });
+    } else {
+      if (this.page >= this.allgoodsList.totalPages) {
+        console.log('sibusi');
+      } else {
+        this.page = this.page + 1;
+        this.moreGoodsList();
+      }
+    }
   },
 };
 </script>
