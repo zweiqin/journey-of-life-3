@@ -97,6 +97,9 @@
         :explosion="explosion"
         :brandList="brandList"
         :guessLike="guessLike"
+        :goodlist1="goodlist1"
+        :goodlist2="goodlist2"
+        :goodlist3="goodlist3"
         v-show="currentNav === 0"
       ></StrictSelection>
       <BrandFactory
@@ -144,6 +147,7 @@ import StrictSelection from "./components/StrictSelection/index.vue";
 import BrandFactory from "./components/BrandFactory/index.vue";
 import { getBrandListApi } from "../../api/brand";
 import { getGoodsByIdApi } from "../../api/home";
+import { goodsListApi } from "../../api/goods";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
@@ -166,6 +170,9 @@ export default {
       brandList: [],
       guessLike: [],
       BrandFactory: [],
+      goodlist1:[],
+      goodlist2:[],
+      goodlist3:[],
       currentNav: 0,
       briefIntroduction,
       strictSelectionBanner: [
@@ -206,11 +213,23 @@ export default {
     this.getBrandList();
     this.getGoodsById();
     this.getBrandFactory();
+    this.getgoodsList();
     // checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    async getgoodsList(){
+      const res = await goodsListApi({
+        brandId:1001194,
+        size:100
+      })
+      console.log('goodsList',res);
+      const fklist = res.data.goodsList
+      this.goodlist1 = fklist.slice(0,6)
+      this.goodlist2 = fklist.slice(7,13)
+      this.goodlist3 = fklist.slice(14,34)
+    },
     async getBrandFactory() {
       const res = await getBrandListApi({
         brandgenreId: 23,

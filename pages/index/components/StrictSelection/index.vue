@@ -10,7 +10,7 @@
       :companyTitle="item.title"
       :type="item.type"
     >
-      <template v-if="item.value === 0">
+      <!-- <template v-if="item.value === 0">
         <view class="style">
           <view
             class="item"
@@ -24,12 +24,12 @@
             <text class="text">{{ item.name }}</text>
           </view>
         </view>
-      </template>
+      </template> -->
 
       <template v-if="item.value === 1 && explosion">
         <view class="goods-list" v-if="explosion">
           <Goods
-            v-for="item in explosion"
+            v-for="item in goodlist1"
             :key="item.id"
             :id="item.id"
             :name="item.name"
@@ -43,7 +43,7 @@
       <template v-if="item.value === 2 && discount">
         <view class="goods-list" v-if="discount">
           <Goods
-            v-for="item in discount"
+            v-for="item in goodlist2"
             :key="item.id"
             :id="item.id"
             :name="item.name"
@@ -56,7 +56,7 @@
       <template v-if="item.value === 3 && guessLike">
         <view class="goods-list" v-if="guessLike">
           <Goods
-            v-for="item in guessLike"
+            v-for="item in goodlist3"
             :key="item.id"
             :id="item.id"
             :name="item.name"
@@ -86,6 +86,9 @@ export default {
     lqbCompany,
   },
   props: {
+    goodlist1:Array,
+    goodlist2:Array,
+    goodlist3:Array,
     channel: {
       type: Array,
       required: true,
@@ -226,7 +229,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-bottom: 70px;
+    padding-bottom: 70upx;
   }
 }
 </style>

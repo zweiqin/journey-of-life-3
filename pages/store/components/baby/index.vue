@@ -122,13 +122,17 @@ export default {
   .navs {
     display: flex;
     align-items: center;
-    margin: 20upx 0;
-
+    margin: 20upx 0 0 0;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      width: 0 !important;
+    }
     .item {
       font-size: 20upx;
       margin-right: 36upx;
       font-size: 24upx;
       transition: all 200ms linear;
+      white-space: nowrap;
       &.active {
         color: #ff8f1f;
       }

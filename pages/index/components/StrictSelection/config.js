@@ -7,13 +7,13 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 export const panels = [
-  {
-    label: "风格专区",
-    value: 0,
-    title: "产品中心",
-    english: "STYLE ZONE",
-    type: false,
-  },
+  // {
+  //   label: "风格专区",
+  //   value: 0,
+  //   title: "产品中心",
+  //   english: "STYLE ZONE",
+  //   type: false,
+  // },
   {
     label: "爆款专区",
     title: "推荐商品",
