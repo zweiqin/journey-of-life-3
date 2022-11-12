@@ -1,17 +1,20 @@
 <template>
-  <view class="pre-order">
-    <OrderPanel></OrderPanel>
-  </view>
+	<view class="pre-order"><OrderPanel ref="orderPaneRef"></OrderPanel></view>
 </template>
 
 <script>
-import OrderPanel from "../../components/order-panel";
+import OrderPanel from '../../components/order-panel';
 export default {
-  components: {
-    OrderPanel,
-  },
+	components: {
+		OrderPanel
+	},
+
+	onShow() {
+		this.$nextTick(() => {
+			this.$refs.orderPaneRef.setChooseAddress();
+		});
+	}
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

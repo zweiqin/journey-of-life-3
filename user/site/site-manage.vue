@@ -1,31 +1,36 @@
-<!--
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-07 10:29:03
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 18:01:02
- * @FilePath: \tuan-uniapp\user\site\site-manage.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="site">
     <view class="site-title">
       <view class="title-left-view">
-        <view>
+        <!-- <view>
           <img
             class="back"
             @click="handleBack"
             src="../../static/images/store/chevron-states.png"
           />
-        </view>
+        </view> -->
+
+        <JBack
+          :tabbar="backUrl"
+          style="margin-top: 10upx; margin-left: 20upx"
+          width="50"
+          height="50"
+          dark
+        ></JBack>
         <view class="site-mine">我的地址</view>
       </view>
-      <view class="title-right-view">
+      <view class="title-right-view" v-if="!isSelect">
         <view class="manage" @click="manage" v-if="manageok == 1"> 管理 </view>
         <view class="manage" @click="manage" v-if="manageok == 2"> 完成 </view>
       </view>
     </view>
 
-    <view class="site-detail" v-for="(item, id) in siteList" :key="id">
+    <NoData
+      v-if="!siteList.length"
+      :img="false"
+      text="还没有地址，快去添加吧~"
+    ></NoData>
+    <view v-else class="site-detail" v-for="(item, id) in siteList" :key="id">
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
           <view class="site-detail-top">
@@ -54,31 +59,22 @@
                 v-if="!isSelect"
                 class="compile"
                 src="../../static/images/lqb/site/compile.png"
-                @click="addressAlter(item)"
+                @click="editAddress(item)"
               />
 
-              <view v-else @click="handleChooseAddress(item)">选择该地址</view>
+              <view
+                class="choose-address"
+                v-else
+                @click="handleChooseAddress(item)"
+                >选择该地址</view
+              >
             </view>
             <view class="detail-site">{{ item.detailedAddress }} </view>
             <view v-if="manageok == 2">
               <view class="site-detail-boundary"> </view>
               <view class="site-detail-chose-default">
                 <view class="site-default">
-                  <view style="display: flex">
-                    <!-- <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-defaule.png"
-                      alt=""
-                      v-if="item.isDefault"
-                    />
-                    <img
-                      class="site-default-img"
-                      src="../../static/images/lqb/site/site-nodefaule.png"
-                      alt=""
-                      v-else
-                    />
-                    <view class="site-default-text">默认地址</view> -->
-                  </view>
+                  <view style="display: flex"> </view>
                 </view>
                 <view>
                   <img
@@ -94,8 +90,6 @@
         </view>
       </view>
     </view>
-
-    <view> </view>
     <view class="site-bottom-background-white" @click="addsite">
       <view class="site-bottom">添加新的地址</view>
     </view>
@@ -106,12 +100,16 @@
 import {
   getAddressListApi,
   getRegionListApi,
-  getAddressDeleteApi,
+  deleteAddressApi,
 } from "../../api/address";
 import { getUserId } from "../../utils";
 import { SELECT_ADDRESS } from "../../constant";
+import NoData from "../../components/no-data";
 
 export default {
+  components: {
+    NoData,
+  },
   data() {
     return {
       manageok: 1,
@@ -122,20 +120,28 @@ export default {
     };
   },
   methods: {
-    async getAddressDelete() {
-      const res = await getAddressDeleteApi({
-        userId: getUserId(),
-        id: this.id,
+    addressDelete(item) {
+      const _this = this;
+      uni.showModal({
+        title: "提示",
+        content: "确定要删除当前地址？",
+        success: function (res) {
+          if (res.confirm) {
+            deleteAddressApi({
+              userId: getUserId(),
+              id: item.id,
+            }).then((res) => {
+              _this.$showToast("删除成功", "success");
+              _this.getAddressList();
+            });
+          }
+        },
       });
-      console.log(res);
-      // this.siteList = res.data;
-      this.getAddressList();
     },
     async getAddressList() {
       const res = await getAddressListApi({
         userId: getUserId(),
       });
-      console.log(res);
       this.siteList = res.data;
     },
     async getRegionList() {
@@ -150,6 +156,9 @@ export default {
     },
     manage() {
       let manageok = this.manageok;
+      if (manageok === 1 && !this.siteList.length) {
+        return;
+      }
       if (manageok == 1) {
         this.manageok = 2;
       } else {
@@ -159,6 +168,20 @@ export default {
     addsite() {
       uni.navigateTo({
         url: "/user/site/add-site",
+      });
+    },
+
+    editAddress(item) {
+      uni.showModal({
+        title: "提示",
+        content: "确定要修改当前收货信息吗",
+        success: function (res) {
+          if (res.confirm) {
+            uni.navigateTo({
+              url: `/user/site/add-site?editId=${item.id}`,
+            });
+          }
+        },
       });
     },
 
@@ -176,6 +199,12 @@ export default {
     console.log("sb");
     this.getAddressList();
   },
+
+  computed: {
+    backUrl() {
+      return this.isSelect ? "" : "/pages/user/user";
+    },
+  },
 };
 </script>
 
@@ -183,7 +212,9 @@ export default {
 @import "../../style/var.less";
 
 .site {
-  padding-bottom: 72upx;
+  padding-bottom: 120upx;
+  box-sizing: border-box;
+
   .site-title {
     display: flex;
     align-items: center;
@@ -191,6 +222,7 @@ export default {
     margin-top: 74upx;
     margin-bottom: 18upx;
   }
+
   .title-left-view {
     display: flex;
     align-items: center;
@@ -218,7 +250,7 @@ export default {
       border-radius: 10px;
       background: #ffffff;
       box-sizing: border-box;
-      border: 0.5px solid #999999;
+      border: 0.5px solid #ececec;
       margin: 0 auto;
       padding: 36upx 42upx 28upx 38upx;
     }
@@ -232,6 +264,7 @@ export default {
     .site-detail-top {
       display: flex;
       margin-bottom: 6upx;
+      align-items: center;
     }
     .site-detail-icon {
       width: 32upx;
@@ -245,6 +278,7 @@ export default {
     }
     .detail-site {
       font-size: @f14;
+      margin: 20upx 0;
     }
 
     .site-detail-name {
@@ -287,21 +321,15 @@ export default {
   .site-bottom {
     width: 95%;
     height: 72upx;
-    border-radius: 100upx;
+    margin: 0 auto;
     display: flex;
-    background: #ff8f1f;
-    position: fixed;
-    bottom: 20px;
-    z-index: 999;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    border-radius: 100upx;
+    background: #ff8f1f;
     color: white;
     font-size: 36upx;
     font-weight: 500;
-    margin: 0 auto;
-    transform: translateX(-50%);
-    left: 50%;
-    margin-bottom: 80upx;
   }
   .site-detail-boundary {
     margin-top: 14upx;
@@ -322,9 +350,22 @@ export default {
     }
   }
   .site-bottom-background-white {
-    background-color: white;
-    width: 750upx;
-    height: 72upx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100upx;
+    background-color: #fff;
+    padding-top: 10upx;
+    box-sizing: border-box;
+  }
+
+  .choose-address {
+    color: #fc7037;
+    padding: 10upx 20upx;
+    color: #fff;
+    border-radius: 100px;
+    background-color: #fc7037;
   }
 }
 </style>

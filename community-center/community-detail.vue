@@ -288,7 +288,7 @@ export default {
     .title-list {
       display: flex;
       align-items: center;
-      padding: 88upx 34upx 36upx 26upx;
+      padding: 44upx 34upx 36upx 26upx;
       .return {
         width: 48upx;
         height: 48upx;

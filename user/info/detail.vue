@@ -11,12 +11,10 @@
     </view>
 
     <view class="avatar-container">
-      <img
-        src="https://img1.baidu.com/it/u=1831586528,1339508464&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        alt=""
-        class="avatar"
-      />
-      <view class="change-btn font-14">更换头像</view>
+      <img :src="userInfo.avatarUrl" alt="" class="avatar" />
+      <view class="change-btn font-14" @click="handleChangeAvatar"
+        >更换头像</view
+      >
     </view>
 
     <view class="detail-container">
@@ -119,13 +117,19 @@
         </view>
       </uni-popup-dialog>
     </uni-popup>
+
+    <JUploadAvatar
+      @close="handleCloseUpload"
+      ref="jUploadAvatarRef"
+      @success="handleUpDateAvatar"
+    ></JUploadAvatar>
   </view>
 </template>
 
 <script>
-import { USER_ID, user_INFO, USER_TOKEN } from "../../constant";
-import { layoutApi } from "../../api/auth";
+import { updateUserInfoApi, refrshUserInfoApi } from "../../api/user";
 import { getUserId } from "../../utils";
+import { user_INFO } from "../../constant";
 
 export default {
   data() {
@@ -135,9 +139,10 @@ export default {
       userInfo: {},
     };
   },
+
   mounted() {
     this.userInfo = uni.getStorageSync(user_INFO);
-    console.log(this.userInfo);
+    this.nickName = this.userInfo.nickName;
   },
   methods: {
     handleClickLogout() {
@@ -175,22 +180,67 @@ export default {
      * @description 点击确定修改昵称
      */
     handleConfirmEditNickname() {
-      console.log(this.nickname);
+      this.updateUserInfo("nickname", this.nickname);
     },
 
     /**
      * 点击退出
      */
     async handleLagout() {
+      // await layoutApi(getUserId());
       uni.clearStorageSync();
       uni.showToast({
         title: "退出成功",
-        icon: "success",
-        mask: true,
+        duration: 2000,
       });
+
       setTimeout(() => {
-        uni.redirectTo({ url: "/pages/login/login" });
-      }, 1000);
+        uni.redirectTo({
+          url: "/pages/login/login",
+        });
+      }, 2000);
+    },
+
+    // 点击更换头像
+    handleChangeAvatar() {
+      this.$refs.jUploadAvatarRef.$el.style.left = "0";
+    },
+
+    // 点击关闭
+    handleCloseUpload() {
+      this.$refs.jUploadAvatarRef.$el.style.left = "-100%";
+    },
+
+    // 更换头像
+    handleUpDateAvatar(res) {
+      const url = JSON.parse(res.data).data.url;
+      this.updateUserInfo("avatar", url);
+    },
+
+    // 更新用户信息
+    updateUserInfo(key, value) {
+      uni.showLoading();
+      const _this = this;
+      const originData = {
+        nickname: this.userInfo.nickName,
+        avatar: this.userInfo.avatarUrl,
+        password: this.userInfo.password,
+        id: getUserId(),
+      };
+
+      originData[key] = value;
+
+      updateUserInfoApi(originData).then(() => {
+        refrshUserInfoApi({
+          userId: getUserId(),
+        }).then(({ data }) => {
+          uni.hideLoading();
+          _this.handleCloseUpload();
+          _this.$showToast("修改成功", "success");
+          uni.setStorageSync(user_INFO, data);
+          _this.userInfo = uni.getStorageSync(user_INFO);
+        });
+      });
     },
   },
 };
