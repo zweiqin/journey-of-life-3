@@ -54,15 +54,6 @@
             :pid="item1.pid"
             :detailList="item1.children"
           >
-            <!-- <view 
-              v-for="item2 in item1.children" 
-              :key="item2.id"
-              :serverNameThree="item2.serverNameThree"
-              :serverImageUrl="item2.serverImageUrl"
-              :id="item2.id"
-              :pid="item2.pid"
-              ></view>
-             -->
           </sort>
         </view>
       </view>
@@ -130,14 +121,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .service-sort {
   .head {
     width: 100%;
-    height: 172upx;
+    height: 120upx;
+    line-height: 120upx;
     background: #ffffff;
     // position: fixed;
     .search-bar {
-      position: absolute;
       width: 95%;
       left: 3%;
       top: 80upx;
@@ -146,6 +138,7 @@ export default {
       .location {
         display: flex;
         align-items: center;
+        margin: 0 20upx;
         .return {
           width: 48upx;
           height: 48upx;
@@ -171,11 +164,15 @@ export default {
         background: #f1f2f6;
         .search {
           width: 48upx;
-          height: 32upx;
-          border-right: 2upx solid #d8d8d8;
-          .img {
-            width: 32upx;
-            height: 32upx;
+          height: 74upx;
+          line-height: 74upx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .img{
+            width: 30upx;
+            height: 30upx;
           }
         }
         .content {
@@ -191,15 +188,16 @@ export default {
 
   .body {
     display: flex;
+    overflow: hidden;
+
     .navbar {
       // margin-top: 28upx;
       width: 22%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      // position: fixed;
-      // top: 200upx;
-      // background: #ffffff;
+      overflow: scroll;
+
       .item {
         width: 130upx;
         height: 52upx;
@@ -220,7 +218,6 @@ export default {
     display: flex;
     .main {
       width: 78%;
-      // height: 2697px;
       border-radius: 10upx 0upx 0upx 0upx;
       background: #f1f2f6;
       // position: fixed;

@@ -29,6 +29,7 @@ const request = (base_url) => {
           //   resolve(res.data);
           // }
           resolve(res.data)
+          // }
         },
         fail: (error) => {
           reject(error);

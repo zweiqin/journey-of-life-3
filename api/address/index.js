@@ -7,27 +7,36 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-import { RuanRequest } from "../../utils";
+import {
+	RuanRequest
+} from "../../utils";
 /**
- * 
- * @param {地址列表} data 
- * @returns 
+ *
+ * @param {地址列表} data
+ * @returns
  */
- export const getAddressListApi = (data) =>{
-    return RuanRequest("/address/list",data,'get')
+export const getAddressListApi = (data) => {
+	return RuanRequest("/address/list", data, "get");
 };
 /**
- * 
- * @param {区域列表} data 
- * @returns 
+ *
+ * @param {区域列表} data
+ * @returns
  */
-export const getRegionListApi = (data) =>{
-    return RuanRequest("/region/list",data,'get')
+export const getRegionListApi = (data) => {
+	return RuanRequest("/region/list", data, "get");
 };
 
-export const getAddressSaveApi = (data) =>{
-    return RuanRequest("/address/save",data)
+// 地址新增，修改
+export const getAddressSaveApi = (data) => {
+	return RuanRequest("/address/save", data);
 };
-export const getAddressDeleteApi = (data) =>{
-    return RuanRequest("/address/delete",data)
+
+// 地址详情
+export const getAddressDetailApi = (data) => {
+	return RuanRequest("/address/detail", data, "get");
+};
+
+export const deleteAddressApi = (data) => {
+	return RuanRequest("/address/delete", data);
 };
