@@ -46,6 +46,7 @@ export default {
   },
   props: {
     allgoodsList: Object,
+    goodsList1:Array,
     brandId: [Number, String],
   },
   data() {
@@ -71,6 +72,7 @@ export default {
     };
   },
   methods: {
+    //分类获取商品
     async goodsList() {
       const res = await goodsListApi({
         brandId: this.brandId,
@@ -84,7 +86,7 @@ export default {
       this.categoryId = tab;
       const categoryId = this.categoryId;
       if (categoryId == 0) {
-        this.brandgoodsList = this.allgoodsList1;
+        this.brandgoodsList = this.goodsList1;
       } else {
         this.goodsList();
       }
@@ -94,8 +96,9 @@ export default {
       //   id: 0,
       //   name: "全部",
       // };
+      console.log('this.allgoodsList',this.allgoodsList);
       console.log("纯商品", this.allgoodsList.goodsList);
-      this.brandgoodsList = this.allgoodsList.goodsList;
+      this.brandgoodsList = this.allgoodsList.goodsList1;
       this.allgoodsList1 = this.allgoodsList.goodsList;
       console.log("纯商品分类", this.allgoodsList.filterCategoryList);
       this.filterCategoryList = this.allgoodsList.filterCategoryList;
@@ -110,6 +113,17 @@ export default {
       }
     },
   },
+  watch:{
+    goodsList1:{
+      handler(value){
+        console.log(value);
+        this.brandgoodsList = value
+      },
+
+      immediate: true,
+      deep: true
+    }
+  },
   mounted() {
     this.catchList();
     this.goodsList();
@@ -122,13 +136,17 @@ export default {
   .navs {
     display: flex;
     align-items: center;
-    margin: 20upx 0;
-
+    margin: 20upx 0 0 0;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      width: 0 !important;
+    }
     .item {
       font-size: 20upx;
       margin-right: 36upx;
       font-size: 24upx;
       transition: all 200ms linear;
+      white-space: nowrap;
       &.active {
         color: #ff8f1f;
       }

@@ -52,7 +52,7 @@ export default {
           });
         } else {
           uni.switchTab({
-            url: "/pages/stuff/stuff",
+            url: "/pages/community-center/community-centerr",
           });
         }
       } else {

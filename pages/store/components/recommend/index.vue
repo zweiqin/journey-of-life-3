@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" >
     <!-- 轮播图 -->
     <view class="banner">
       <swiper
@@ -9,12 +9,16 @@
         indicator-color="#fff"
         indicator-active-color="#fff"
       >
-        <swiper-item v-for="item in rankList1" :key="item.id" @click="handeViewDetail(item.id)" >
+        <swiper-item
+          v-for="item in rankList1"
+          :key="item.id"
+          @click="handeViewDetail(item.id)"
+        >
           <img :src="item.picUrl" alt="" />
         </swiper-item>
       </swiper>
     </view>
-
+    <view></view>
     <!-- 网红爆款 -->
     <view class="popular-online">
       <view class="header" @click="seeInformation">
@@ -30,11 +34,26 @@
             alt=""
             style="height: 244upx"
           />
-          <img   @click="handeViewDetail(rankList2[1].id)" :src="rankList2[1].picUrl" alt="" />
+          <img
+            @click="handeViewDetail(rankList2[1].id)"
+            :src="rankList2[1].picUrl"
+            alt=""
+            style="height: 332upx"
+          />
         </view>
         <view class="right">
-          <img   @click="handeViewDetail(rankList2[2].id)" :src="rankList2[2].picUrl" alt="" />
-          <img   @click="handeViewDetail(rankList2[3].id)" :src="rankList2[3].picUrl" alt="" style="height: 244upx" />
+          <img
+            @click="handeViewDetail(rankList2[2].id)"
+            :src="rankList2[2].picUrl"
+            alt=""
+            style="height: 332upx"
+          />
+          <img
+            @click="handeViewDetail(rankList2[3].id)"
+            :src="rankList2[3].picUrl"
+            alt=""
+            style="height: 244upx"
+          />
         </view>
       </view>
     </view>
@@ -60,7 +79,7 @@ export default {
   methods: {
     handeViewDetail(item) {
       console.log(item);
-      this.id = item
+      this.id = item;
       if (!this.id) {
         return;
       }
@@ -78,7 +97,7 @@ export default {
       rankList: [],
       rankList1: [],
       rankList2: [],
-      id:"",
+      id: "",
     };
   },
   watch: {
@@ -86,8 +105,15 @@ export default {
       handler(value) {
         this.rankList = value.goodsList;
         console.log("ranklist", this.rankList);
-        this.rankList1 = this.rankList.slice(0, 4);
-        this.rankList2 = this.rankList.slice(4, 8);
+        if (this.rankList.length >= 8) {
+          this.rankList1 = this.rankList.slice(0, 4);
+          this.rankList2 = this.rankList.slice(5, 9);
+        } else {
+          this.rankList1 = this.rankList.slice(0, 4);
+          this.rankList2 = this.rankList.slice(0, 4);
+        
+        }
+
         console.log(this.rankList2);
         // const rankList = this.rankList
         // rankList = this.rankList.slice(0,3);

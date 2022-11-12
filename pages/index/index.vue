@@ -12,14 +12,16 @@
     <!-- <accountcement></accountcement> -->
     <!-- 头部 -->
     <view class="header" ref="headerRef">
-      <img
+      <TLocale></TLocale>
+
+      <!-- <img
         v-if="currentNav === 0"
         class="img"
         :src="require('../../static/images/index/location.png')"
         alt="定位"
-      />
+      /> -->
 
-      <text class="loaction" v-if="currentNav === 0">佛山市</text>
+      <!-- <text class="loaction" v-if="currentNav === 0">佛山市</text> -->
       <view class="search">
         <img :src="require('../../static/images/icon/search.png')" alt="" />
         <input type="text" />
@@ -97,6 +99,9 @@
         :explosion="explosion"
         :brandList="brandList"
         :guessLike="guessLike"
+        :goodlist1="goodlist1"
+        :goodlist2="goodlist2"
+        :goodlist3="goodlist3"
         v-show="currentNav === 0"
       ></StrictSelection>
       <BrandFactory
@@ -144,6 +149,7 @@ import StrictSelection from "./components/StrictSelection/index.vue";
 import BrandFactory from "./components/BrandFactory/index.vue";
 import { getBrandListApi } from "../../api/brand";
 import { getGoodsByIdApi } from "../../api/home";
+import { goodsListApi } from "../../api/goods";
 import Design from "./components/Design";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
@@ -166,6 +172,11 @@ export default {
       brandList: [],
       guessLike: [],
       BrandFactory: [],
+      goodlist1: [],
+      page: 1,
+      size: "",
+      goodlist2: [],
+      goodlist3: [],
       currentNav: 0,
       briefIntroduction,
       strictSelectionBanner: [
@@ -206,11 +217,37 @@ export default {
     this.getBrandList();
     this.getGoodsById();
     this.getBrandFactory();
+    this.getgoodsList();
+    this.moreGoodsList();
     // checkWhoami();
   },
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    async moreGoodsList() {
+      const res = await goodsListApi({
+        page: this.page,
+        size: this.size,
+      });
+
+      console.log("allgoods", res);
+      if (this.goodlist3.length == 0) {
+        this.goodlist3 = res.data.goodsList;
+      } else {
+        this.goodlist3.push(...res.data.goodsList);
+      }
+    },
+    async getgoodsList() {
+      const res = await goodsListApi({
+        brandId: 1001199,
+        size: 100,
+      });
+      console.log("goodsList", res);
+      const fklist = res.data.goodsList;
+      this.goodlist1 = fklist.slice(31, 37);
+      this.goodlist2 = fklist.slice(38, 42);
+    },
+
     async getBrandFactory() {
       const res = await getBrandListApi({
         brandgenreId: 23,
@@ -323,6 +360,18 @@ export default {
     currentNav(val) {
       console.log("nav-切换了", val);
     },
+  },
+  onReachBottom() {
+    if (this.page == this.goodlist3.totalPages) {
+      uni.showToast({
+        title: "已经到底",
+        duration: 2000,
+        icon: "none",
+      });
+    } else {
+      this.page = this.page + 1;
+      this.moreGoodsList();
+    }
   },
 };
 </script>
