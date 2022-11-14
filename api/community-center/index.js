@@ -99,7 +99,7 @@ export const getServiceOrderApi = (data) =>{
 
 //订单支付
 export const getServiceOrderPayApi = (data) =>{
-  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayTfH5",data);
+  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
 };
 
 

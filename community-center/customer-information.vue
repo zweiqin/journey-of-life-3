@@ -24,6 +24,7 @@
         <view class="detail-address">详细地址</view>
         <view class="addDetail">
           <textarea
+            name="input"
             class="address"
             v-model="addressDetail"
             placeholder="请输入详细地址"
@@ -106,7 +107,10 @@
     <view class="middle1">
       <view class="detail">
         <img
-          src="https://www. .cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          :src="
+            imgUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+          "
           alt=""
           class="goods"
         />
@@ -143,7 +147,10 @@
     <view v-if="id2 == 97" class="middle2">
       <view class="detail">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          :src="
+            imgUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+          "
           alt=""
           class="goods"
         />
@@ -251,6 +258,7 @@ export default {
       unit1: "",
       addname: "",
       horsepower: "",
+      imgUrl: "",
       // userId:127,
       // serverInfoId:1,
     };
@@ -268,11 +276,23 @@ export default {
       uni.navigateBack();
     },
     handleToServiceConfirmOrder() {
+
+      uni.showToast({
+        title: "请完善服务信息",
+        icon: "none",
+        duration:2000
+      });
+
+      if(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle){
+      console.log(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle);
       uni.navigateTo({
         url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
         &installDate=${this.datetimesingle}&pricingType=${this.pricingType}`,
       });
+
+    }
+
     },
 
     //安装数量加减
@@ -353,6 +373,7 @@ export default {
     this.unit1 = options.unit;
     this.detailId2 = options.detailId1;
     this.content = options.text;
+    this.imgUrl = options.imgUrl;
     const a = options.priceType1;
     console.log("是否一口价", a);
     if (a === "true") {
@@ -422,28 +443,35 @@ export default {
     .add-list {
       display: flex;
       justify-content: space-between;
+      width: 100%;
+      height: 90upx;
+      padding-top: 20upx;
       .detail-address {
-        height: 140upx;
+        height: 100%;
         display: flex;
         align-items: center;
       }
 
       .addDetail {
         margin-left: 0upx;
-        padding-top: 20upx;
-        width: 80%;
-        height: 140upx;
+        padding-top: 26upx;
+        width: 78%;
+        height: 100%;
+        background: #f1f2f6;
+        border-radius: 10upx;
         .address {
           // height: 90upx;
           line-height: 40upx;
           width: 100%;
-          height: 110upx;
+          height: 100%;
           border-radius: 10upx;
           background: #f1f2f6;
+          // margin-top: 32upx;
+          margin-bottom: 0upx;
         }
         .input-placeholder {
-          display: flex;
-          align-items: center;
+          // display: flex;
+          // align-items: center;
         }
       }
     }
@@ -471,7 +499,7 @@ export default {
     .iphone-list {
       display: flex;
       align-items: center;
-      padding-top: 28upx;
+      padding-top: 56upx;
       .iphone {
         width: 40upx;
         height: 40upx;
@@ -487,44 +515,49 @@ export default {
     .name-list {
       display: flex;
       justify-content: space-between;
+      width: 100%;
+      height: 80upx;
       .man {
-        height: 140upx;
         display: flex;
         align-items: center;
       }
       .name {
         margin-left: 0upx;
-        padding-top: 20upx;
+        padding-top: 0upx;
+        width: 78%;
+        height: 100%;
         .contact {
-          width: 580upx;
-          height: 90upx;
+          width: 100%;
+          height: 100%;
           border-radius: 10upx;
           background: #f1f2f6;
         }
       }
     }
 
-
-    .number-list{
+    .number-list {
+      margin-top: 20upx;
       display: flex;
       justify-content: space-between;
-      .dihua{
-        height: 140upx;
+      width: 100%;
+      height: 80upx;
+      .dihua {
         display: flex;
         align-items: center;
       }
-    .phone-number {
-      margin-left: 0upx;
-      padding-top: 20upx;
-      .phone {
-        width: 580upx;
-        height: 90upx;
-        border-radius: 10upx;
-        background: #f1f2f6;
+      .phone-number {
+        width: 78%;
+        height: 100%;
+        margin-left: 0upx;
+        padding-top: 0upx;
+        .phone {
+          width: 100%;
+          height: 100%;
+          border-radius: 10upx;
+          background: #f1f2f6;
+        }
       }
     }
-
-  }
 
     .time-list {
       display: flex;

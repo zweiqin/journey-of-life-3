@@ -64,21 +64,22 @@
         </view>
         <view class="item">
           <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gbcrduo4m2xyahmxnqj5.png"
-            alt=""
-            class="img"
-          />
-
-          <text class="name">翻新</text>
-        </view>
-        <view class="item">
-          <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/yiqi09molj4xr1du0vje.png"
             alt=""
             class="img"
           />
 
           <text class="name">维修</text>
+        </view>
+
+        <view class="item">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gbcrduo4m2xyahmxnqj5.png"
+            alt=""
+            class="img"
+          />
+
+          <text class="name">翻新</text>
         </view>
       </view>
       <img

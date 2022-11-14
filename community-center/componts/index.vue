@@ -58,7 +58,7 @@ export default {
       const id = item.id;
       // uni.navigateTo({ url: "../community-center/community-detail?id="+item });
       uni.navigateTo({
-        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}`,
+        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
         
       });
       

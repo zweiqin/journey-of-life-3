@@ -240,7 +240,7 @@ export default {
       margin-left: 0upx;
       display: flex;
       align-items: center;
-      width: 80%;
+      width: 78%;
       height: 90upx;
       border-radius: 10upx;
       background: #f1f2f6;
