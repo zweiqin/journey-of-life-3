@@ -397,9 +397,9 @@ export default {
       console.log("价格列表", res.data.items);
       this.PricesList = res.data.items;
       this.PricesList = this.PricesList.slice(0, 6);
-      this.PricesList.sort(function(x,y){
-      return x.materialsCategory.length > y.materialsCategory.length?1:-1;
-    })
+      this.PricesList.sort(function (x, y) {
+        return x.materialsCategory.length > y.materialsCategory.length ? 1 : -1;
+      });
     },
     // 供应列表
     async getSupplyList() {
@@ -435,12 +435,22 @@ export default {
       const res = await getBrandListApi({
         brandgenreId: "",
         page: this.page,
-        limit: 15,
+        size: 100,
       });
+      // 佛山市奥丽思家具五金配件有限公司;
+      // 大创家具材料店;
+      // 成鑫木业有限公司;
+      // 里翎皮革;
       console.log(res);
       this.brandList = res.data.brandList;
-      this.brandList.splice(1, 6);
       console.log(this.brandList);
+      this.brandList = this.brandList.filter(
+        (item) =>
+          item.name == "佛山市奥丽思家具五金配件有限公司" ||
+          item.name == "大创家具材料店" ||
+          item.name == "成鑫木业有限公司" ||
+          item.name == "里翎皮革"
+      );
     },
   },
   created() {},

@@ -23,14 +23,14 @@
     </view>
     <view class="text-border"></view>
 
-    <view class="priceDetail" v-for="item in priceList" :key="item.id">
-      <view class="list">
+    <view class="priceDetail" v-for="item in littlepriceList" :key="item.id">
+      <view class="list" @click="listDetail(item)">
         <view class="name">{{ item.id }}</view>
         <view class="sname">{{ item.materialsName }}</view>
         <view class="sku">{{ item.materialsSku }}</view>
         <view class="stuff">{{ item.materialsCategory }}</view>
         <view class="quality">{{ item.materialsQuality }}</view>
-        <view class="money">{{ item.materialsMoney }}</view>
+        <view class="money">{{ item.materialsMoney }}元</view>
         <view class="unit">{{ item.materialsUnit }}</view>
       </view>
       <view class="text-border"></view>
@@ -51,15 +51,27 @@ export default {
       search: true,
       priceTitle,
       priceList: [],
+      price: [],
+      page: 1,
+      total: "",
+      littlepriceList: [],
     };
   },
   methods: {
-    more(){
-      uni.showToast({
-        title: '已无更多',
-        icon: 'success',
-        mask: true
-      })
+    listDetail(item) {
+      console.log(item);
+    },
+    more() {
+      const a = this.littlepriceList == this.priceList;
+      if (a) {
+        uni.showToast({
+          title: "已无更多",
+          icon: "success",
+          mask: true,
+        });
+      } else {
+        this.littlepriceList = this.priceList;
+      }
     },
     async getPricesList() {
       const res = await getPricesListApi();
@@ -71,7 +83,10 @@ export default {
         });
       }
       console.log(res.data);
+      this.price = res.data;
+      this.total = res.data.total;
       this.priceList = res.data.items;
+      this.littlepriceList = res.data.items.slice(0, 10);
     },
 
     getNowTime() {
@@ -93,6 +108,13 @@ export default {
     onLoad(options) {
       this.getNowTime();
       this.getPricesList();
+    },
+    onReachBottom() {
+      uni.showToast({
+        title: "已无更多",
+        icon: "success",
+        mask: true,
+      });
     },
   },
 };

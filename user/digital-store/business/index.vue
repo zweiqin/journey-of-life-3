@@ -266,7 +266,7 @@ https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ifpelt2gfb91m
         @click="useradd"
       />
     </view>
-    <!-- 提示弹窗 -->
+    <!-- 提示弹窗 --> 
     <view>
       <uni-popup ref="windowtext" type="center">
         <view>{{ windowtext }}</view>
@@ -351,6 +351,16 @@ export default {
       });
       this.userlist = res.data;
       console.log(res);
+      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
+        uni.showToast({
+          title: res.errmsg,
+          icon: 'none',
+          mask: true
+        })
+        setTimeout(() => {
+          uni.switchTab({ url: '/pages/user/user' })
+        }, 2000);
+      }
     },
     async saveMsgSentry() {
       const res = await saveMsgSentryApi({

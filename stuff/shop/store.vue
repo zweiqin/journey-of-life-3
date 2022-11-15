@@ -133,6 +133,7 @@ export default {
       // let shoplist = res.data.brandList;
       // this.brandList.push(shoplist)
       this.brandList = res.data.brandList;
+      this.brandList = this.brandList.filter(item=>item.brandgenre !== 23)
       this.length = res.data.brandList.length;
       // b = a;
       // this.brandList = this.brandList.push.apply(b,a)

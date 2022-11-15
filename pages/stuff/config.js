@@ -22,7 +22,7 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/egdr6p9tk32k2t0ijrn6.png",
     bgc: "linear-gradient(137deg, #FF8F1F 7%, rgba(225,125,25,0.00) 143%)",
     label: "热销",
-    // Url: "../../stuff/hotBuy/hotBuy",
+    Url: "../../stuff/hotBuy/hotBuy",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dccvg8b9cypwye31pjka.png",

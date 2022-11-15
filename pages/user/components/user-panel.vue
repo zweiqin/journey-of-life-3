@@ -100,7 +100,7 @@ export default {
       margin-top: 30upx;
 
       .icon {
-        width: 50upx;
+        width: 60upx;
       }
 
       .name {

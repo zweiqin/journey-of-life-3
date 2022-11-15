@@ -81,11 +81,16 @@
             <view
               v-for="img in images"
               :key="img"
-              style="position: relative; width: 160upx; height: 160upx"
+              style="
+                position: relative;
+                width: 160upx;
+                height: 160upx;
+                margin-right: 20upx;
+              "
             >
               <img :src="img" alt="" class="img1" />
               <img
-                src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
                 alt=""
                 class="img2"
                 @click="removeBackground(img)"
@@ -128,7 +133,7 @@
           ></textarea>
 
           <view class="list">
-            <view class="number">0/150</view>
+            <view class="number">{{ text.length }}/140</view>
             <view class="example">示例</view>
           </view>
         </view>
@@ -157,7 +162,7 @@ export default {
   data() {
     return {
       air,
-      img:"",
+      img: "",
       currentTab: 0,
       name: "",
       price: "",
@@ -182,10 +187,10 @@ export default {
       uni.showToast({
         title: "图片不能为空",
         icon: "none",
-        duration:2000
+        duration: 2000,
       });
       if (this.id != 97 && this.images.length) {
-        console.log("id", this.id );
+        console.log("id", this.id);
         uni.navigateTo({
           url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}&imgUrl=${this.serverImgUrl}`,
         });
@@ -231,8 +236,11 @@ export default {
         title: "提示",
         content: "确定删除当前图片吗？",
         success: function (res) {
-          const index = _this.images.findIndex((item) => item === img);
+          if (res.confirm) {
+            const index = _this.images.findIndex((item) => item === img);
           _this.images.splice(index, 1);
+          }
+
         },
       });
     },
@@ -487,13 +495,17 @@ export default {
       .img1 {
         width: 160upx;
         height: 160upx;
-        position: absolute;
+        border-radius: 20upx;
       }
       .img2 {
         width: 40upx;
         height: 40upx;
         position: absolute;
-        right: 0;
+        right: -15upx;
+        top: -15upx;
+        background: white;
+        border-radius: 50%;
+
       }
 
       .left {
@@ -557,13 +569,13 @@ export default {
           color: #999999;
         }
         .list {
-          width: 120upx;
           height: 34upx;
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           .number {
             font-size: 24upx;
             color: #999999;
+            padding-right: 20upx;
           }
           .example {
             font-size: 24upx;

@@ -231,10 +231,12 @@
 		}
 	],
 	"tabBar": {
-		"selectedColor": "#FF8F1F",
+		"selectedColor": "#E95D20",
 		"backgroundColor": "#fff",
-		"color": "#b8b8b8",
+		"color": "#3D3D3D",
 		"borderStyle": "white",
+		"iconWidth": "30px",
+		"height": "60px",
 		"list": [
 			{
 				"pagePath": "pages/index/index",

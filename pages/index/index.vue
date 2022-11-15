@@ -242,8 +242,9 @@ export default {
         size: 100,
       });
       const fklist = res.data.goodsList;
-      this.goodlist1 = fklist.slice(0, 6);
-      this.goodlist2 = fklist.slice(7, 13);
+      this.goodlist1 = fklist.slice(0, 8);
+      this.goodlist2 = fklist.slice(63 , 75);
+      console.log(this.goodlist1);
     },
 
     async getBrandFactory() {

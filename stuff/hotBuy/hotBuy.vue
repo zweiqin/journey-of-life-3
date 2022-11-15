@@ -1,7 +1,16 @@
 <template>
   <div>
     <view class="background">
-      <view class="title">热销</view>
+      <view class="title">
+        <img
+          class="back"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gzyrqkx0nekbiau7vivk.png"
+          alt=""
+          @click="back"
+        />
+        <view>热销</view>
+        <view style="width: 48upx"></view>
+      </view>
       <view class="top-title">《热销材料大采购》</view>
 
       <img
@@ -22,7 +31,17 @@
             alt=""
           />
         </view>
-        <view class="hotgoods">  <hotGoods></hotGoods></view>
+        <view class="hotgoods">
+          <view v-for="item in stuffGoodsList" :key="item.id">
+            <hotGoods
+              :name="item.name"
+              :originalPrice="item.counterPrice"
+              :currentPrice="item.retailPrice"
+              :goodsId="item.id"
+              :picUrl="item.picUrl"
+              :sales="item.sales"
+            ></hotGoods></view
+        ></view>
       </view>
     </view>
   </div>
@@ -31,24 +50,67 @@
 <script>
 import hotGoods from "./hotGoods";
 import { getCatalogAllApi } from "../../api/stuff";
+import { goodsListApi } from "../../api/goods";
 export default {
   components: {
     hotGoods,
+  },
+  data() {
+    return {
+      stuffGoodsList: [],
+      page: 1,
+      totalPage: "",
+    };
   },
   methods: {
     handleBack() {
       uni.navigateBack();
     },
-    async getCatalogAll(){
+    async getCatalogAll() {
       const res = await getCatalogAllApi({
-        goodsType:2
-      })
+        goodsType: 2,
+      });
       console.log(res);
+    },
+    async goodsList() {
+      const res = await goodsListApi({
+        goodsType: 2,
+      });
+      this.totalPage = res.data.totalPages;
+      console.log(res);
+      this.stuffGoodsList = res.data.goodsList;
+    },
+    async addGoodsList() {
+      const res = await goodsListApi({
+        goodsType: 2,
+        categoryId: "",
+        page: this.page,
+      });
+      console.log(res.data.goodsList);
+      this.stuffGoodsList.push(...res.data.goodsList);
+      this.totalPage = res.data.totalPages;
+    },
+    back(){
+      uni.navigateBack({ })
     }
   },
   onLoad(options) {
-    this.getCatalogAll()
-  }
+    this.goodsList();
+  },
+  onReachBottom() {
+    this.page = this.page + 1;
+    console.log(this.page);
+    console.log(this.totalPage);
+    if (this.page >= this.totalPage) {
+      uni.showToast({
+        title: "加载完毕",
+        icon: "success",
+        mask: true,
+      });
+    } else {
+      this.addGoodsList();
+    }
+  },
 };
 </script>
 
@@ -59,13 +121,17 @@ export default {
   background: linear-gradient(181deg, #fa5151 1%, rgba(255, 143, 31, 0) 141%);
 
   .title {
+    display: flex;
     text-align: center;
-
     padding-top: 72upx;
     font-size: 32upx;
     font-weight: 500;
-
+    justify-content: space-between;
     color: #ffffff;
+    .back {
+      width: 48upx;
+      height: 48upx;
+    }
   }
   .top-title {
     padding-top: 40upx;
@@ -203,8 +269,7 @@ export default {
         }
       }
     }
-    .hotgoods{
-      
+    .hotgoods {
     }
   }
 

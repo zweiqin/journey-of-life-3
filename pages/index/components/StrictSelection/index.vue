@@ -33,7 +33,7 @@
             :key="item.id"
             :id="item.id"
             :name="item.name"
-            :sname="item.brief"
+            :sname="item.goodsSn"
             :url="item.picUrl"
             :price="item.retailPrice"
           ></Goods>
@@ -47,7 +47,7 @@
             :key="item.id"
             :id="item.id"
             :name="item.name"
-            :sname="item.brief"
+            :sname="item.goodsSn"
             :url="item.picUrl"
             :price="item.retailPrice"
           ></Goods>
@@ -60,7 +60,7 @@
             :key="item.id"
             :id="item.id"
             :name="item.name"
-            :sname="item.brief"
+            :sname="item.goodsSn"
             :url="item.picUrl"
             :price="item.retailPrice"
           ></Goods>
