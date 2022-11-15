@@ -359,7 +359,10 @@
 					"path": "add-address"
 				},
 				{
-					"path": "service-sort"
+					"path": "service-sort",
+					"style": {
+						"navigationBarTitleText": "社区服务分类"
+					}
 				},
 				{
 					"path": "community-detail"

@@ -1,13 +1,16 @@
 <template>
   <view class="j-city">
-    <view
-      class="value"
-      :style="{
-        color: text ? '' : '#999',
-      }"
-      @click="open"
-      >{{ text || "请选择城市" }}</view
-    >
+    <view class="address">
+      <view class="diqu">所在地区</view>
+      <view
+        class="value"
+        :style="{
+          color: text ? '' : 'grey',
+        }"
+        @click="open"
+        >{{ text || "请选择城市" }}</view
+      >
+    </view>
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
       <view class="city-wrapper">
         <view class="header">
@@ -218,10 +221,31 @@ export default {
 @import "../../style/mixin.less";
 
 .j-city {
+  padding-left: 0upx;
+  padding-top: 20upx;
   .active {
     color: #fa5151;
   }
 
+  .address {
+    display: flex;
+    justify-content: space-between;
+    .diqu {
+      height: 90upx;
+      display: flex;
+      align-items: center;
+    }
+    .value {
+      // line-height: 60upx;
+      margin-left: 0upx;
+      display: flex;
+      align-items: center;
+      width: 78%;
+      height: 90upx;
+      border-radius: 10upx;
+      background: #f1f2f6;
+    }
+  }
   .city-wrapper {
     background-color: #fff;
     height: 600upx;

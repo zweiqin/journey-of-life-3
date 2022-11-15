@@ -29,7 +29,7 @@
     <view class="middle">
       <view class="i">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k5idg5l3ooqtni5lgo2a.png"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h3jdhfhznou12monzux.png"
           alt=""
           class="img"
         />
@@ -42,7 +42,7 @@
             class="img"
           />
 
-          <text class="name">送装</text>
+          <text class="name">安装</text>
         </view>
         <view class="item">
           <img
@@ -64,21 +64,22 @@
         </view>
         <view class="item">
           <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/yiqi09molj4xr1du0vje.png"
+            alt=""
+            class="img"
+          />
+
+          <text class="name">维修</text>
+        </view>
+
+        <view class="item">
+          <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gbcrduo4m2xyahmxnqj5.png"
             alt=""
             class="img"
           />
 
           <text class="name">翻新</text>
-        </view>
-        <view class="item">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/yiqi09molj4xr1du0vje.png"
-            alt=""
-            class="img"
-          />
-
-          <text class="name">贴膜</text>
         </view>
       </view>
       <img
@@ -167,19 +168,6 @@
             </view>
             <view class="item">
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png"
-                alt=""
-                class="img"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png"
-                alt=""
-                class="shadow"
-              />
-              <view class="text">水电灯具</view>
-            </view>
-            <view class="item">
-              <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png"
                 alt=""
                 class="img"
@@ -191,6 +179,20 @@
               />
               <view class="text">家电服务</view>
             </view>
+            <view class="item">
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png"
+                alt=""
+                class="img"
+              />
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png"
+                alt=""
+                class="shadow"
+              />
+              <view class="text">水电灯具</view>
+            </view>
+
             <view class="item">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png"
@@ -438,13 +440,13 @@ export default {
   // position: relative;
   .head {
     width: 100%;
-    height: 172upx;
+    height: 130upx;
     background: #e95d20;
     .search-bar {
       position: absolute;
       width: 95%;
       left: 3%;
-      top: 80upx;
+      top: 30upx;
       display: flex;
       align-items: center;
       .location {
@@ -493,14 +495,14 @@ export default {
     height: 938upx;
     background: linear-gradient(180deg, #e95d20 0%, #ff8f1f 56%, #f1f2f6 100%);
     .i {
-      padding: 76upx 196upx 0upx 66upx;
+      padding: 60upx 196upx 0upx 66upx;
       .img {
-        width: 100%;
+        width: 520upx;
         height: 50upx;
       }
     }
     .service-list {
-      padding: 32upx 226upx 32upx 70upx;
+      padding: 32upx 226upx 40upx 70upx;
       display: flex;
       width: 100%;
       justify-content: space-between;
@@ -538,7 +540,7 @@ export default {
       width: 198upx;
       height: 298upx;
       position: absolute;
-      top: 204upx;
+      top: 140upx;
       right: 12upx;
     }
     .w {
@@ -663,7 +665,7 @@ export default {
     width: 100%;
     // height: 200upx;
     background: #f1f2f6;
-    padding: 180upx 30upx 200upx 30upx;
+    padding: 140upx 30upx 200upx 30upx;
     box-sizing: border-box;
     .jx {
       display: flex;

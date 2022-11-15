@@ -17,17 +17,23 @@
           class="location"
         />
         <view class="text">填写上门地址</view>
-        <JCity @confirm="City($event.area)" :text="address"> </JCity>
       </view>
-      <view class="adreDetail">
-        <textarea
-          class="input"
-          v-model="addressDetail"
-          placeholder="请输入详细地址"
-          placeholder-class="input-placeholder"
-        />
+      <JCity @confirm="City($event.area)" :text="address"> </JCity>
+
+      <view class="add-list">
+        <view class="detail-address">详细地址</view>
+        <view class="addDetail">
+          <textarea
+            name="input"
+            class="address"
+            v-model="addressDetail"
+            placeholder="请输入详细地址"
+            placeholder-class="input-placeholder"
+          />
+        </view>
       </view>
-      <view class="content"></view>
+
+      <!-- <view class="content"></view> -->
       <!-- <view class="people-list">
         <img src="" alt="" class="people" />
         <view class="text">联系人</view>
@@ -41,19 +47,32 @@
         />
         <view class="text">联系方式</view>
       </view>
-      <input
-        class="adreDetail"
-        v-model="addname"
-        placeholder="姓名/称呼"
-        placeholder-class="input-placeholder"
-      />
-      <input
-        class="adreDetail"
-        v-model="phoneNumber"
-        placeholder="手机号"
-        placeholder-class="input-placeholder"
-      />
-      <view class="content"></view>
+
+      <view class="name-list">
+        <view class="man">联系人</view>
+        <view class="name">
+          <input
+            class="contact"
+            v-model="addname"
+            placeholder="姓名/称呼"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+      </view>
+
+      <view class="number-list">
+        <view class="dihua">联系电话</view>
+        <view class="phone-number">
+          <input
+            class="phone"
+            v-model="phoneNumber"
+            placeholder="手机号"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+      </view>
+
+      <!-- <view class="content"></view> -->
       <view class="time-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
@@ -88,7 +107,10 @@
     <view class="middle1">
       <view class="detail">
         <img
-          src="https://www. .cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          :src="
+            imgUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+          "
           alt=""
           class="goods"
         />
@@ -125,7 +147,10 @@
     <view v-if="id2 == 97" class="middle2">
       <view class="detail">
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/tppymsocx2829zumrqls.png"
+          :src="
+            imgUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+          "
           alt=""
           class="goods"
         />
@@ -215,7 +240,7 @@ export default {
   data() {
     return {
       id2: "",
-      serverInfoId: '',
+      serverInfoId: "",
       specsId: "",
       number: 1,
       price1: "",
@@ -231,8 +256,9 @@ export default {
       oughtPrice: "",
       name1: "",
       unit1: "",
-      addname:"",
-      horsepower:'',
+      addname: "",
+      horsepower: "",
+      imgUrl: "",
       // userId:127,
       // serverInfoId:1,
     };
@@ -250,14 +276,24 @@ export default {
       uni.navigateBack();
     },
     handleToServiceConfirmOrder() {
+
+      uni.showToast({
+        title: "请完善服务信息",
+        icon: "none",
+        duration:2000
+      });
+
+      if(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle){
+      console.log(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle);
       uni.navigateTo({
         url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
-        &installDate=${this.datetimesingle}`,
+        &installDate=${this.datetimesingle}&pricingType=${this.pricingType}`,
       });
+
+    }
+
     },
-
-
 
     //安装数量加减
     goodsadd() {
@@ -337,6 +373,7 @@ export default {
     this.unit1 = options.unit;
     this.detailId2 = options.detailId1;
     this.content = options.text;
+    this.imgUrl = options.imgUrl;
     const a = options.priceType1;
     console.log("是否一口价", a);
     if (a === "true") {
@@ -358,7 +395,7 @@ export default {
   background: #f1f2f6;
 
   .title-list {
-    padding: 88upx 34upx 36upx 26upx;
+    padding: 20upx 34upx 20upx 26upx;
     display: flex;
     background: #ffffff;
     .return {
@@ -374,7 +411,7 @@ export default {
     }
   }
   .top {
-    padding: 40upx 30upx 0upx 30upx;
+    padding: 30upx 12upx 0upx 12upx;
     background: #ffffff;
     .address-list {
       display: flex;
@@ -402,13 +439,43 @@ export default {
         height: 40upx;
       }
     }
-    .adreDetail {
-      padding-left: 56upx;
+
+    .add-list {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 90upx;
       padding-top: 20upx;
-      .input {
-        height: 90upx;
+      .detail-address {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .addDetail {
+        margin-left: 0upx;
+        padding-top: 26upx;
+        width: 78%;
+        height: 100%;
+        background: #f1f2f6;
+        border-radius: 10upx;
+        .address {
+          // height: 90upx;
+          line-height: 40upx;
+          width: 100%;
+          height: 100%;
+          border-radius: 10upx;
+          background: #f1f2f6;
+          // margin-top: 32upx;
+          margin-bottom: 0upx;
+        }
+        .input-placeholder {
+          // display: flex;
+          // align-items: center;
+        }
       }
     }
+
     .content {
       width: 90%;
       border-bottom: 2upx solid #d8d8d8;
@@ -432,7 +499,7 @@ export default {
     .iphone-list {
       display: flex;
       align-items: center;
-      padding-top: 28upx;
+      padding-top: 56upx;
       .iphone {
         width: 40upx;
         height: 40upx;
@@ -444,6 +511,54 @@ export default {
         color: #000000;
       }
     }
+
+    .name-list {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 80upx;
+      .man {
+        display: flex;
+        align-items: center;
+      }
+      .name {
+        margin-left: 0upx;
+        padding-top: 0upx;
+        width: 78%;
+        height: 100%;
+        .contact {
+          width: 100%;
+          height: 100%;
+          border-radius: 10upx;
+          background: #f1f2f6;
+        }
+      }
+    }
+
+    .number-list {
+      margin-top: 20upx;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 80upx;
+      .dihua {
+        display: flex;
+        align-items: center;
+      }
+      .phone-number {
+        width: 78%;
+        height: 100%;
+        margin-left: 0upx;
+        padding-top: 0upx;
+        .phone {
+          width: 100%;
+          height: 100%;
+          border-radius: 10upx;
+          background: #f1f2f6;
+        }
+      }
+    }
+
     .time-list {
       display: flex;
       align-items: center;

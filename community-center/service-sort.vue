@@ -32,7 +32,7 @@
         </view>
       </view>
     </view>
-    <view class="body">
+    <view class="body" :style="{ height: scrollHeight + 'px' }">
       <view class="navbar" ref="nav-barRef">
         <view
           class="item"
@@ -78,6 +78,7 @@ export default {
       id: "",
       serverNameOne: "",
       // data: [],
+      scrollHeight: 667,
     };
   },
   methods: {
@@ -103,6 +104,8 @@ export default {
       const res = await getServiceSortApi({
         id: this.id,
       });
+
+      // console.log();
       console.log(res);
 
       this.navbar = res.data;
@@ -111,15 +114,24 @@ export default {
       console.log(res.data[0]);
     },
   },
-  created() {},
+  mounted() {},
   onLoad() {
     this.getServiceSort();
+    const _this = this;
+    uni.getSystemInfo({
+      success(res) {
+        _this.scrollHeight = res.safeArea.height - 60;
+      },
+    });
   },
 };
 </script>
 
 <style lang="less" scoped>
-
+uni-page-body {
+  overflow: hidden;
+  height: auto;
+}
 .service-sort {
   .head {
     width: 100%;
@@ -168,7 +180,7 @@ export default {
           justify-content: center;
           align-items: center;
 
-          .img{
+          .img {
             width: 30upx;
             height: 30upx;
           }
@@ -186,7 +198,8 @@ export default {
 
   .body {
     display: flex;
-    overflow: hidden;
+    overflow: scroll;
+    overflow: scroll;
 
     .navbar {
       // margin-top: 28upx;
@@ -195,6 +208,9 @@ export default {
       flex-direction: column;
       align-items: center;
       overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .item {
         width: 130upx;
@@ -218,6 +234,11 @@ export default {
       width: 78%;
       border-radius: 10upx 0upx 0upx 0upx;
       background: #f1f2f6;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
       // position: fixed;
       // right: 0upx;
       // top: 172upx;

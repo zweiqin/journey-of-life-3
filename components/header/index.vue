@@ -30,7 +30,8 @@ export default {
         return;
       }
 
-      uni.navigateBack();
+      // uni.navigateBack();
+      uni.switchTab({ url: '/pages/user/user' });
     },
   },
 };

@@ -1,7 +1,5 @@
 <template>
   <view class="community-order">
-    <!-- <view v-if="isArtificialArtificial">123</view>
-    <view v-else-if="!isArtificialArtificial">223</view> -->
     <view class="title-list">
       <img
         src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
@@ -13,11 +11,16 @@
     </view>
 
     <view class="top" v-if="price">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png"
-        alt=""
-        class="shop"
-      />
+      <view class="goods">
+        <img
+          :src="
+            serverImgUrl ||
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+          "
+          alt=""
+          class="shop"
+        />
+      </view>
       <view class="title-name">{{ name }}</view>
       <view class="price-list">
         <view class="logo">￥</view>
@@ -62,14 +65,6 @@
             <view class="tag">*</view>
             <view class="type">服务类型</view>
           </view>
-          <!-- <view class="please">
-            <view class="choice">请选择</view>
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
-              alt=""
-              class="more"
-            />
-          </view> -->
         </view>
         <view class="text-type">{{ name }}</view>
       </template>
@@ -78,37 +73,40 @@
         <view class="name">物品图片</view>
       </view>
 
-      <view class="upload-pane">
-        <view class="left">
-          <view @click="chooseImg" class="upload" v-if="!imgUrl">+</view>
+      <view class="upload-list">
+        <view class="upload-pane">
+          <!-- <view class="left"></view> -->
+
+          <view style="display: flex; flex-wrap: wrap">
+            <view
+              v-for="img in images"
+              :key="img"
+              style="position: relative; width: 160upx; height: 160upx"
+            >
+              <img :src="img" alt="" class="img1" />
+              <img
+                src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
+                alt=""
+                class="img2"
+                @click="removeBackground(img)"
+              />
+            </view>
+          </view>
+
+          <view
+            @click="chooseImg"
+            class="upload"
+            v-if="!imgUrl"
+            style="margin-right: 6upx"
+            >+</view
+          >
+
           <image
             v-else-if="imgUrl"
             class="iamge-background"
             :src="imgUrl"
             mode=""
           />
-        </view>
-        <view
-          style="
-            border: 1upx solid #d8d8d8;
-            display: flex;
-            border-radius: 20upx;
-            width: 100%;
-          "
-        >
-          <view
-            v-for="img in images"
-            :key="img"
-            style="position: relative; width: 160upx; height: 160upx"
-          >
-            <img :src="img" alt="" class="img1" />
-            <img
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
-              alt=""
-              class="img2"
-              @click="removeBackground(img)"
-            />
-          </view>
         </view>
       </view>
 
@@ -128,7 +126,7 @@
             placeholder="说明内容实例"
             v-model="text"
           ></textarea>
-          
+
           <view class="list">
             <view class="number">0/150</view>
             <view class="example">示例</view>
@@ -159,6 +157,7 @@ export default {
   data() {
     return {
       air,
+      img:"",
       currentTab: 0,
       name: "",
       price: "",
@@ -167,6 +166,8 @@ export default {
       text: "",
       images: [],
       priceType: "",
+      serverImgUrl: "",
+      length: "",
       // isArtificialArtificial:true
     };
   },
@@ -175,32 +176,27 @@ export default {
       uni.navigateBack();
     },
     handleToServiceInformation() {
-      uni.navigateTo({
-        url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
+      // uni.navigateTo({
+      //   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
+      // });
+      uni.showToast({
+        title: "图片不能为空",
+        icon: "none",
+        duration:2000
       });
-      // if (!this.price) {
-      //   console.log("人工报价");
-      //   uni.navigateTo({
-      //     url: `/community-center/customer-information?name=${this.name}`,
-      //   });
-      // } else {
-      //   console.log("一口价");
-      //   if (!this.id == 97) {
-
-      //     uni.navigateTo({
-      //       url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
-      //     });
-      //   } else {
-      //     if (this.specsId) {
-      //       console.log("已选");
-      //       uni.navigateTo({
-      //         url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}`,
-      //       });
-      //     } else {
-      //       console.log("还没选匹数呢");
-      //     }
-      //   }
-      // }
+      if (this.id != 97 && this.images.length) {
+        console.log("id", this.id );
+        uni.navigateTo({
+          url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}&imgUrl=${this.serverImgUrl}`,
+        });
+      } else if (this.id == 97 && this.specsId && this.images.length) {
+        console.log("id", this.id && this.images);
+        uni.navigateTo({
+          url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}&imgUrl=${this.serverImgUrl}`,
+        });
+      } else {
+        console.log("no", this.id);
+      }
     },
 
     switchTab(item1) {
@@ -249,6 +245,7 @@ export default {
     this.unit = options.serverUnit;
     this.type = options.serverInfoName;
     this.id = options.id;
+    this.serverImgUrl = options.imgUrl;
 
     this.detailId1 = options.detailId;
     this.priceType = options.priceType;
@@ -270,7 +267,7 @@ export default {
 <style lang="less" scoped>
 .community-order {
   .title-list {
-    padding: 88upx 34upx 36upx 26upx;
+    padding: 20upx 34upx 36upx 26upx;
     display: flex;
     .return {
       width: 48upx;
@@ -286,13 +283,20 @@ export default {
   }
 
   .top {
-    .shop {
+    .goods {
       width: 100%;
+      height: 340upx;
+      display: flex;
+      justify-content: center;
+      .shop {
+        width: 588upx;
+        height: 340upx;
+      }
     }
     .title-name {
       padding-left: 30upx;
+      padding-top: 30upx;
       padding-bottom: 36upx;
-      // padding-top: 30upx;
       font-size: 36upx;
       font-weight: bold;
       color: #3d3d3d;
@@ -458,6 +462,7 @@ export default {
       display: flex;
       align-items: center;
       padding-top: 36upx;
+      padding-bottom: 28upx;
       .tag {
         font-weight: 600;
         color: #fa5151;
@@ -468,36 +473,11 @@ export default {
         color: #3d3d3d;
       }
     }
-    // .upload {
-    //   margin-top: 34upx;
-    //   width: 160upx;
-    //   height: 160upx;
-    //   border-radius: 10upx;
-    //   background: #f1f2f6;
-    //   display: flex;
-    //   flex-direction: column;
-    //   justify-content: center;
-    //   align-items: center;
-    //   .img {
-    //     width: 60upx;
-    //     height: 60upx;
-    //   }
-    //   .text {
-    //     font-size: 24upx;
-    //     font-weight: 500;
-    //     color: #d8d8d8;
-    //   }
-    // }
 
     .upload-pane {
-      // border: 1upx solid #d8d8d8;
-
-      padding: 32upx 24upx;
-      box-sizing: border-box;
       border-radius: 20upx;
       display: flex;
-      // justify-content: space-between;
-      // align-items: flex-end;
+      flex-wrap: wrap;
 
       .delete-icon {
         width: 32upx;
@@ -539,6 +519,7 @@ export default {
         object-fit: cover;
       }
     }
+
     .explain {
       margin-top: 84upx;
       display: flex;

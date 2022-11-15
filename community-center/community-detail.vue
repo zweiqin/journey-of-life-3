@@ -199,15 +199,23 @@ export default {
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
 
+
+      uni.showToast({
+        title: "请选择服务类型",
+        icon: "none",
+        duration:2000
+      });
+
+
       if (!this.isArtificial) {
         console.log("abc");
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}`,
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverInfoUrl}`,
         });
       } else {
         if (!this.serverPrice == 0) {
           uni.navigateTo({
-            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}`,
+            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverInfoUrl}`,
           });
         } else {
           console.log("sb kuaixuan");
@@ -253,8 +261,8 @@ export default {
       this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
       console.log("介绍", this.serverIntroduction);
 
-      this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
-      console.log("图片", this.serverInfoUrl);
+      // this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
+      // console.log("图片", this.serverInfoUrl);
       
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
@@ -268,7 +276,7 @@ export default {
     console.log(options);
     this.serverTypeId = options.id;
     this.title = options.serverNameThree;
-
+    this.serverInfoUrl = options.serverImageUrl;
     this.getServiceDetail();
   },
 };
@@ -288,7 +296,7 @@ export default {
     .title-list {
       display: flex;
       align-items: center;
-      padding: 44upx 34upx 36upx 26upx;
+      padding: 20upx 8upx 36upx 26upx;
       .return {
         width: 48upx;
         height: 48upx;
@@ -331,6 +339,7 @@ export default {
       display: flex;
       justify-content: space-between;
       padding-left: 36upx;
+      padding-top: 30upx;
 
       .name {
         font-size: 36upx;
