@@ -127,13 +127,13 @@
       </view>
     </view>
     <view class="other">
-      <view class="other-service">
+      <view class="other-service" @click="handleToServiceListHome">
         <view class="text">其他服务</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
           alt=""
           class="show"
-          @click="handleToServiceListHome"
+          
         />
       </view>
     </view>

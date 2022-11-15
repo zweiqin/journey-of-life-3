@@ -180,7 +180,7 @@ export default {
       //   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
       // });
       uni.showToast({
-        title: "图片不能为空",
+        title: "请上传物品图片",
         icon: "none",
         duration:2000
       });

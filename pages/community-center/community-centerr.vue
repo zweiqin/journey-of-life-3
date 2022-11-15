@@ -327,6 +327,53 @@
           />
         </view>
       </view>
+      <view class="nearby">附近联盟商家</view>
+      <community></community>
+      <community></community>
+      <community></community>
+      <community></community>
+
+      <view class="supermarket">
+        <view class="mid">
+          <view class="name-list">
+            <view class="name">普材超市</view>
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5jubpkvccdhm5nl74duo.png"
+              alt=""
+              class="more"
+            />
+          </view>
+          <view class="goods-list">
+            <view class="goods">
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/m0m8sn88q7d4s394s89t.png"
+                alt=""
+                class="good"
+              />
+              <view class="good-name">贴瓷砖</view>
+              <view class="service-number">
+                <view class="already">已服务</view>
+                <view class="number">15022</view>
+                <view class="fate">次</view>
+              </view>
+            </view>
+            <view class="goods">
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/98fet22rieuiwrp7bb1w.png"
+                alt=""
+                class="good"
+              />
+              <view class="good-name">打地平</view>
+              <view class="service-number">
+                <view class="already">已服务</view>
+                <view class="number">15022</view>
+                <view class="fate">次</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <view class="share">
         <view class="item">
           <view class="text">居家经验</view>
@@ -404,9 +451,6 @@
           </view>
         </view>
       </view>
-
-      <view class="nearby">附近联盟商家</view>
-      <community></community>
     </view>
   </view>
 </template>
@@ -444,8 +488,8 @@ export default {
     background: #e95d20;
     .search-bar {
       position: absolute;
-      width: 95%;
-      left: 3%;
+      width: 93%;
+      left: 30upx;
       top: 30upx;
       display: flex;
       align-items: center;
@@ -495,14 +539,21 @@ export default {
     height: 938upx;
     background: linear-gradient(180deg, #e95d20 0%, #ff8f1f 56%, #f1f2f6 100%);
     .i {
-      padding: 60upx 196upx 0upx 66upx;
+      // padding: 60upx 196upx 0upx 66upx;
+      position: relative;
+      left: 66upx;
+      top: 56upx;
+      width: 70%;
+      height: 50upx;
       .img {
-        width: 520upx;
-        height: 50upx;
+        // width: 520upx;
+        width: 100%;
+        height: 100%;
+        // height: 50upx;
       }
     }
     .service-list {
-      padding: 32upx 226upx 40upx 70upx;
+      padding: 100upx 226upx 0upx 56upx;
       display: flex;
       width: 100%;
       justify-content: space-between;
@@ -544,7 +595,7 @@ export default {
       right: 12upx;
     }
     .w {
-      margin: 0upx 34upx;
+      margin: 40upx 34upx 0upx 34upx;
       .w1 {
         position: relative;
         // top: 154upx;
@@ -1000,6 +1051,66 @@ export default {
       font-weight: bold;
       color: #3d3d3d;
       margin: 52upx 0upx 22upx 24upx;
+    }
+    .supermarket {
+      width: 100%;
+      height: 436upx;
+      margin-top: 36upx;
+      border-radius: 20upx;
+      background: linear-gradient(181deg, #ffe7d0 0%, #ffffff 99%);
+      .mid {
+        padding: 26upx 14upx 16upx 30upx;
+        .name-list {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .name {
+            font-size: 36upx;
+            font-weight: bold;
+            color: #3d3d3d;
+          }
+          .more {
+            width: 40upx;
+            height: 40upx;
+          }
+        }
+        .goods-list {
+          width: 98%;
+          display: flex;
+          justify-content: space-between;
+          .goods {
+            padding-top: 12upx;
+            width: 300upx;
+
+            .good {
+              width: 300upx;
+              height: 220upx;
+            }
+            .good-name {
+              margin-top: 6upx;
+              font-size: 36upx;
+              font-weight: 500;
+              color: #3d3d3d;
+            }
+            .service-number {
+              display: flex;
+              font-size: 14px;
+              font-weight: 400;
+              margin-top: 6upx;
+              .already {
+                color: #999999;
+              }
+              .number {
+                color: #3d3d3d;
+              }
+              .fate {
+                color: #999999;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

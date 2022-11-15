@@ -10,6 +10,38 @@
       <view class="title">完善服务信息</view>
     </view>
     <view class="top">
+      <view class="iphone-list">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
+          alt=""
+          class="iphone"
+        />
+        <view class="text">联系方式</view>
+      </view>
+
+      <view class="name-list">
+        <view class="man">联系人</view>
+        <view class="name">
+          <input
+            class="contact"
+            v-model="addname"
+            placeholder="请输入姓名"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+      </view>
+
+      <view class="number-list">
+        <view class="dihua">联系电话</view>
+        <view class="phone-number">
+          <input
+            class="phone"
+            v-model="phoneNumber"
+            placeholder="请输入手机号"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+      </view>
       <view class="address-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ihtpa3x378wrofqdiqrj.png"
@@ -33,75 +65,40 @@
         </view>
       </view>
 
-      <!-- <view class="content"></view> -->
-      <!-- <view class="people-list">
-        <img src="" alt="" class="people" />
-        <view class="text">联系人</view>
-      </view> -->
-      <!-- <view class="content"></view> -->
-      <view class="iphone-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
-          alt=""
-          class="iphone"
-        />
-        <view class="text">联系方式</view>
-      </view>
-
-      <view class="name-list">
-        <view class="man">联系人</view>
-        <view class="name">
-          <input
-            class="contact"
-            v-model="addname"
-            placeholder="姓名/称呼"
-            placeholder-class="input-placeholder"
-          />
-        </view>
-      </view>
-
-      <view class="number-list">
-        <view class="dihua">联系电话</view>
-        <view class="phone-number">
-          <input
-            class="phone"
-            v-model="phoneNumber"
-            placeholder="手机号"
-            placeholder-class="input-placeholder"
-          />
-        </view>
-      </view>
-
-      <!-- <view class="content"></view> -->
+      
       <view class="time-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
-          alt=""
-          class="time"
-        />
-        <view class="text">上门时间</view>
+        <view class="left">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
+            alt=""
+            class="time"
+          />
+          <view class="text">上门时间</view>
+        </view>
         <!-- 
         <uni-section
           :title="'日期时间用法：' + datetimesingle"
           type="line"
         ></uni-section> -->
 
-        <view class="example-body">
-          <uni-datetime-picker
-            class="datatime"
-            type="datetime"
-            v-model="datetimesingle"
-            @change="changeLog"
-            :clear-icon="false"
-            :border="false"
+        <view class="right">
+          <view class="example-body" style="">
+            <uni-datetime-picker
+              class="datatime"
+              type="datetime"
+              v-model="datetimesingle"
+              @change="changeLog"
+              :clear-icon="false"
+              :border="false"
+            />
+          </view>
+
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
+            alt=""
+            class="more"
           />
         </view>
-
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-          alt=""
-          class="more"
-        />
       </view>
     </view>
     <view class="middle1">
@@ -276,23 +273,32 @@ export default {
       uni.navigateBack();
     },
     handleToServiceConfirmOrder() {
-
       uni.showToast({
         title: "请完善服务信息",
         icon: "none",
-        duration:2000
+        duration: 2000,
       });
 
-      if(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle){
-      console.log(this.address&&this.addressDetail&&this.addname&&this.phoneNumber&&this.datetimesingle);
-      uni.navigateTo({
-        url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
+      if (
+        this.address &&
+        this.addressDetail &&
+        this.addname &&
+        this.phoneNumber &&
+        this.datetimesingle
+      ) {
+        console.log(
+          this.address &&
+            this.addressDetail &&
+            this.addname &&
+            this.phoneNumber &&
+            this.datetimesingle
+        );
+        uni.navigateTo({
+          url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
         &installDate=${this.datetimesingle}&pricingType=${this.pricingType}`,
-      });
-
-    }
-
+        });
+      }
     },
 
     //安装数量加减
@@ -411,29 +417,25 @@ export default {
     }
   }
   .top {
-    padding: 30upx 12upx 0upx 12upx;
+    padding: 30upx 30upx 0upx 30upx;
     background: #ffffff;
     .address-list {
       display: flex;
       align-items: center;
-      width: 100%;
+      // width: 36%;
+      width: 250upx;
+      justify-content: space-between;
+      margin-top: 50upx;
       .location {
         width: 40upx;
         height: 40upx;
-        padding-right: 16upx;
       }
       .text {
         font-size: 32upx;
         font-weight: bold;
         color: #000000;
-        flex: 1;
       }
-      .example-body {
-        .uni-input-input {
-          color: #fa5151;
-          font-size: 32upx;
-        }
-      }
+
       .more {
         width: 40upx;
         height: 40upx;
@@ -444,34 +446,41 @@ export default {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      height: 90upx;
-      padding-top: 20upx;
+      height: 100upx;
+      padding-top: 30upx;
       .detail-address {
         height: 100%;
         display: flex;
-        align-items: center;
+        margin-top: 10upx;
+        font-size: 32upx;
+        font-weight: bold;
+        color: #000000;
       }
 
       .addDetail {
         margin-left: 0upx;
-        padding-top: 26upx;
+        padding-top: 12upx;
         width: 78%;
         height: 100%;
         background: #f1f2f6;
-        border-radius: 10upx;
+        border-radius: 20upx;
+        
         .address {
-          // height: 90upx;
           line-height: 40upx;
           width: 100%;
           height: 100%;
-          border-radius: 10upx;
+          border-radius: 20upx;
           background: #f1f2f6;
-          // margin-top: 32upx;
           margin-bottom: 0upx;
+          padding-left: 20upx;
+          box-sizing: border-box;
+          font-size: 30upx;
         }
         .input-placeholder {
           // display: flex;
           // align-items: center;
+          padding-left: 0upx;
+          box-sizing: border-box;
         }
       }
     }
@@ -499,11 +508,13 @@ export default {
     .iphone-list {
       display: flex;
       align-items: center;
-      padding-top: 56upx;
+      justify-content: space-between;
+      padding-top: 0upx;
+      // width: 27%;
+      width: 186upx;
       .iphone {
         width: 40upx;
         height: 40upx;
-        padding-right: 16upx;
       }
       .text {
         font-size: 32upx;
@@ -517,26 +528,39 @@ export default {
       justify-content: space-between;
       width: 100%;
       height: 80upx;
+      margin-top: 30upx;
       .man {
         display: flex;
         align-items: center;
+        font-size: 32upx;
+        font-weight: bold;
+        color: #000000;
       }
       .name {
         margin-left: 0upx;
         padding-top: 0upx;
         width: 78%;
         height: 100%;
+        
+
         .contact {
           width: 100%;
           height: 100%;
-          border-radius: 10upx;
+          border-radius: 20upx;
           background: #f1f2f6;
+          padding-left: 20upx;
+          box-sizing: border-box;
+          font-size: 30upx;
+        }
+        .input-placeholder {
+          padding-left: 0upx;
+          box-sizing: border-box;
         }
       }
     }
 
     .number-list {
-      margin-top: 20upx;
+      margin-top: 30upx;
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -544,17 +568,28 @@ export default {
       .dihua {
         display: flex;
         align-items: center;
+        font-size: 32upx;
+        font-weight: bold;
+        color: #000000;
       }
       .phone-number {
         width: 78%;
         height: 100%;
         margin-left: 0upx;
         padding-top: 0upx;
+        
         .phone {
           width: 100%;
           height: 100%;
-          border-radius: 10upx;
+          border-radius: 20upx;
           background: #f1f2f6;
+          padding-left: 20upx;
+          box-sizing: border-box;
+          font-size: 30upx;
+        }
+        .input-placeholder {
+          padding-left: 0upx;
+          box-sizing: border-box;
         }
       }
     }
@@ -562,34 +597,61 @@ export default {
     .time-list {
       display: flex;
       align-items: center;
-      padding-top: 28upx;
-      padding-bottom: 80upx;
+      justify-content: space-between;
+      margin-top: 50upx;
+      padding-bottom: 40upx;
       width: 100%;
-      .time {
-        width: 40upx;
-        height: 40upx;
-        padding-right: 16upx;
+
+      .left {
+        // width: 27%;
+        width: 186upx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .time {
+          width: 40upx;
+          height: 40upx;
+          // padding-right: 16upx;
+        }
+        .text {
+          font-size: 32upx;
+          font-weight: bold;
+          color: #000000;
+          // flex: 1;
+        }
       }
-      .text {
-        font-size: 32upx;
-        font-weight: bold;
-        color: #000000;
-        flex: 1;
+      .right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        // width: 60%;
+        width: 414upx;
+        .example-body {
+          .uni-input-input {
+            color: #fa5151;
+            font-size: 32upx;
+          }
+
+          .datatime {
+            
+          }
+        }
+        .more {
+          width: 40upx;
+          height: 40upx;
+        }
       }
-      .number {
-        font-size: 32upx;
-        color: #fa5151;
-        flex: 2;
-      }
-      .more {
-        width: 40upx;
-        height: 40upx;
-      }
+
+      // .number {
+      //   font-size: 32upx;
+      //   color: #fa5151;
+      //   flex: 2;
+      // }
     }
   }
   .middle1 {
     width: 100%;
-    height: 200upx;
+    height: 170upx;
     background: #ffffff;
     margin-top: 20upx;
     margin-bottom: 20upx;
@@ -664,7 +726,7 @@ export default {
   }
   .middle2 {
     width: 100%;
-    height: 200upx;
+    height: 170upx;
     background: #ffffff;
     margin-top: 20upx;
     margin-bottom: 20upx;
@@ -779,6 +841,7 @@ export default {
       }
       .text-list {
         display: flex;
+        align-items: center;
         .text {
           font-size: 32upx;
           font-weight: 500;

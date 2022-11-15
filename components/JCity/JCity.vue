@@ -8,7 +8,7 @@
           color: text ? '' : 'grey',
         }"
         @click="open"
-        >{{ text || "请选择城市" }}</view
+        >{{ text || "选择城市" }}</view
       >
     </view>
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
@@ -222,7 +222,7 @@ export default {
 
 .j-city {
   padding-left: 0upx;
-  padding-top: 20upx;
+  margin-top: 30upx;
   .active {
     color: #fa5151;
   }
@@ -234,6 +234,9 @@ export default {
       height: 90upx;
       display: flex;
       align-items: center;
+      font-size: 32upx;
+      font-weight: bold;
+      color: #000000;
     }
     .value {
       // line-height: 60upx;
@@ -242,8 +245,11 @@ export default {
       align-items: center;
       width: 78%;
       height: 90upx;
-      border-radius: 10upx;
+      border-radius: 20upx;
       background: #f1f2f6;
+      padding-left: 20upx;
+      box-sizing: border-box;
+      font-size: 30upx;
     }
   }
   .city-wrapper {
@@ -279,7 +285,7 @@ export default {
         padding: 0 2upx;
         line-height: 1;
         margin: 0;
-        font-size: 24upx;
+        font-size: 32upx;
         color: #fa5151;
         transition: all 350ms;
       }

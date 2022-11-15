@@ -54,7 +54,7 @@
           </view>
           <view class="item">
             <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ydj4jwijg8bp3b33xabx.png"
               alt=""
               class="shop"
             />
@@ -68,7 +68,7 @@
           </view>
           <view class="item">
             <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eil7f59u81kz3trubl7a.png"
               alt=""
               class="shop"
             />
