@@ -31,7 +31,7 @@ export default {
       }
 
       // uni.navigateBack();
-      uni.switchTab({ url: '/pages/user/user' });
+      uni.switchTab({ url: '/pages/community-center/community-centerr' });
     },
   },
 };

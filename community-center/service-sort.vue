@@ -86,9 +86,14 @@ export default {
       this.currentTab = index;
       this.sort = this.data.find((item) => item.id === index);
     },
-    handleBack() {
-      uni.navigateBack();
+    // handleBack() {
+    //   uni.navigateBack();
+    // },
+
+    handleBack(){
+      uni.switchTab({ url:'/pages/community-center/community-centerr' });
     },
+    
 
     // handleToServiceDetail(id) {
     //   console.log("服务详情",id);

@@ -37,8 +37,7 @@
       <view>
         <button
           type="primary"
-          style="
-            margin-right: 5px;
+          style="margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
             background: #d2691e;
@@ -51,7 +50,7 @@
       </view>
       <view>
         <button
-          v-if="data.status === 0 && data.deliveryType !== 4"
+          v-if="data.status === 0"
           type="primary"
           style="margin-bottom: 5px; margin-top: 5px; background: #015cb7"
           size="mini"

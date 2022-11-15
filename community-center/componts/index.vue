@@ -35,6 +35,7 @@
 
 <script>
 import { number } from "echarts";
+import { getUserId } from '../../utils';
 export default {
   name: "componts",
   props: {
@@ -61,6 +62,21 @@ export default {
         url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
         
       });
+
+      // uni.showModal({
+        
+      //   title: '提示',
+      //   content: '请登录',
+      //   showCancel: true,
+      //   // success: ({ confirm, cancel }) => {}
+      //   success:function(res){
+      //     if(res.confirm){
+      //       uni.navigateTo({
+      //         url:`/community-center/order`,
+      //       });
+      //     }
+      //   }
+      // })
       
     },
   },
