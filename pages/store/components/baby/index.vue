@@ -46,7 +46,8 @@ export default {
   },
   props: {
     allgoodsList: Object,
-    goodsList1:Array,
+    goodsList2: Array,
+    goodsList1: Array,
     brandId: [Number, String],
   },
   data() {
@@ -73,14 +74,16 @@ export default {
   },
   methods: {
     //分类获取商品
-    async goodsList() {
-      const res = await goodsListApi({
-        brandId: this.brandId,
-        categoryId: this.categoryId,
-      });
-      console.log(res);
-      this.brandgoodsList = res.data.goodsList;
-    },
+    // async goodsList() {
+    //   const res = await goodsListApi({
+    //     brandId: this.brandId,
+    //     categoryId: this.categoryId,
+    //   });
+    //   console.log(res);
+    //   this.brandgoodsList = res.data.goodsList;
+    //   this.brandgoodsList.push(...res.data.brandgoodsList);
+    // },
+
     switchNav(tab) {
       this.currentTab = tab;
       this.categoryId = tab;
@@ -88,17 +91,19 @@ export default {
       if (categoryId == 0) {
         this.brandgoodsList = this.goodsList1;
       } else {
-        this.goodsList();
+        // this.goodsList();
+        this.brandgoodsList = this.goodsList1
       }
+      this.$emit("categoryId", this.categoryId);
     },
     catchList() {
       // const a = {
       //   id: 0,
       //   name: "全部",
       // };
-      console.log('this.allgoodsList',this.allgoodsList);
+      console.log("this.allgoodsList", this.allgoodsList);
       console.log("纯商品", this.allgoodsList.goodsList);
-      this.brandgoodsList = this.allgoodsList.goodsList1;
+      this.brandgoodsList = this.allgoodsList.goodsList;
       this.allgoodsList1 = this.allgoodsList.goodsList;
       console.log("纯商品分类", this.allgoodsList.filterCategoryList);
       this.filterCategoryList = this.allgoodsList.filterCategoryList;
@@ -113,20 +118,29 @@ export default {
       }
     },
   },
-  watch:{
-    goodsList1:{
-      handler(value){
+  watch: {
+    goodsList1: {
+      handler(value) {
         console.log(value);
-        this.brandgoodsList = value
+        this.brandgoodsList = value;
       },
 
       immediate: true,
-      deep: true
-    }
+      deep: true,
+    },
+    // goodsList2: {
+    //   handler(value) {
+    //     console.log(value);
+    //     this.brandgoodsList = value;
+    //   },
+
+    //   immediate: true,
+    //   deep: true,
+    // },
   },
   mounted() {
     this.catchList();
-    this.goodsList();
+    // this.goodsList();
   },
 };
 </script>

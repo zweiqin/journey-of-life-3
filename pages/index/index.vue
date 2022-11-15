@@ -230,7 +230,6 @@ export default {
         size: this.size,
       });
 
-      console.log("allgoods", res);
       if (this.goodlist3.length == 0) {
         this.goodlist3 = res.data.goodsList;
       } else {
@@ -242,31 +241,26 @@ export default {
         brandId: 1001199,
         size: 100,
       });
-      console.log("goodsList", res);
       const fklist = res.data.goodsList;
-      this.goodlist1 = fklist.slice(31, 37);
-      this.goodlist2 = fklist.slice(38, 42);
+      this.goodlist1 = fklist.slice(0, 6);
+      this.goodlist2 = fklist.slice(7, 13);
     },
 
     async getBrandFactory() {
       const res = await getBrandListApi({
         brandgenreId: 23,
         page: 1,
-        size: 10,
+        size: 100,
       });
-      console.log("品牌工厂", res);
       // this.BrandFactory= res.data.brandList
-      this.BrandFactory = res.data.brandList.slice(0, 3);
-      console.log("品牌工厂1", this.BrandFactory);
+      this.BrandFactory = res.data.brandList;
     },
     async getGoodsById() {
       let number = Math.ceil(Math.random() * 10) + 1; //ceil向上取整，即生成1-10的随机整数，取0的概率极小
-      console.log("123", number);
       const res = await getGoodsByIdApi({
         page: number,
         size: 20,
       });
-      console.log("guessLike", res.data.goodsList);
       this.guessLike = res.data.goodsList;
     },
     async getBrandList() {
@@ -327,14 +321,12 @@ export default {
     async getIndexData() {
       const res = await getIndexDataApi();
       if (res.errno === 0) {
-        console.log(res);
         // this.strictSelectionBanner = res.data.banner;
         this.explosion = res.data.hotGoodsList;
         this.discount = res.data.newGoodsList;
         this.explosion = this.explosion.slice(0, 6);
         this.discount = this.discount.slice(0, 6);
 
-        console.log(this.explosion, this.discount);
       } else {
         uni.showToast({
           title: res.errmsg,
@@ -347,7 +339,6 @@ export default {
       const res = await getTypeDetailList({
         id: 1001002,
       });
-      console.log(res);
     },
 
     handleToShopCar() {
@@ -362,15 +353,17 @@ export default {
     },
   },
   onReachBottom() {
-    if (this.page == this.goodlist3.totalPages) {
-      uni.showToast({
-        title: "已经到底",
-        duration: 2000,
-        icon: "none",
-      });
-    } else {
-      this.page = this.page + 1;
-      this.moreGoodsList();
+    if (this.currentNav == 0) {
+      if (this.page == this.goodlist3.totalPages) {
+        uni.showToast({
+          title: "已经到底",
+          duration: 2000,
+          icon: "none",
+        });
+      } else {
+        this.page = this.page + 1;
+        this.moreGoodsList();
+      }
     }
   },
 };

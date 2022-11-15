@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="brandFactory">
     <view class="banner">
       <swiper
         class="swiper"
@@ -30,6 +30,15 @@
     </view>
 
     <view class="navs">
+      <view
+        v-for="item in brandClassify"
+        :key="item.value"
+        :class="{ active: item.value == currentTab }"
+        class="style"
+        @click="choseType(item)"
+      >
+        {{ item.label }}
+      </view>
       <!-- <view class="item">综合排序</view>
       <view class="item">销售为先</view>
       <view class="item">信用</view>
@@ -43,7 +52,7 @@
         />
       </view> -->
     </view>
-    <view v-for="item in BrandFactory" :key="item.id">
+    <view v-for="item in brandList" :key="item.id">
       <Panel :name="item.name" :brandId="item.id" :picUrl="item.picUrl"></Panel
     ></view>
   </div>
@@ -51,8 +60,7 @@
 
 <script>
 import Panel from "./components/Panel";
-import Panel1 from "./components/Panel1";
-import Panel2 from "./components/Panel2";
+import { brandClassify } from "./config";
 import { getBrandListApi } from "../../../../api/brand";
 export default {
   props: {
@@ -62,24 +70,55 @@ export default {
     },
   },
   data() {
-    return {};
+    return { brandClassify, currentTab: 0, brandList: [] };
   },
   components: {
     Panel,
-    Panel1,
-    Panel2,
   },
-
-  methods: {
-    BrandFactoryList() {
-      console.log("2b", this.BrandFactory);
+  watch: {
+    BrandFactory: {
+      handler(value) {
+        this.brandList  = value.filter((item1) =>
+          item1.name.includes("团蜂")
+        );
+      },
+      immediate: true,
+      deep: true,
     },
   },
-  mounted() {},
+  methods: {
+    BrandFactoryList() {
+      console.log(this.BrandFactory);
+      this.brandList = this.BrandFactory.filter((item1) =>
+        item1.name.includes("团蜂")
+      );
+      console.log("a", this.BrandFactory);
+    },
+    choseType(item) {
+      this.currentTab = item.value;
+      this.brandList = this.BrandFactory;
+      if (item.value == 5) {
+        this.brandList = this.BrandFactory;
+        console.log(this.brandList);
+      } else {
+        this.brandList = this.BrandFactory.filter((item1) =>
+          item1.name.includes(item.keyWord)
+        );
+      }
+      console.log(this.BrandFactory);
+      console.log(this.brandList);
+    },
+  },
+  mounted() {
+    // this.BrandFactoryList();
+  },
 };
 </script>
 
 <style lang="less" scoped>
+.brandFactory{
+  padding-bottom: 200upx;
+}
 .banner {
   width: 100%;
   height: 284upx;
@@ -116,6 +155,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin: 20upx 0 34upx 0;
+  .style {
+    font-size: 28upx;
+    font-weight: 500;
+    &.active {
+      font-size: 28upx;
+      font-weight: 600;
+      color: #07b9b9;
+    }
+  }
 
   .item {
     .img {

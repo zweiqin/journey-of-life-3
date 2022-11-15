@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend" >
+  <div class="recommend">
     <!-- 轮播图 -->
     <view class="banner">
       <swiper
@@ -108,10 +108,19 @@ export default {
         if (this.rankList.length >= 8) {
           this.rankList1 = this.rankList.slice(0, 4);
           this.rankList2 = this.rankList.slice(5, 9);
-        } else {
+        } else if (8 > this.rankList.length >= 4) {
           this.rankList1 = this.rankList.slice(0, 4);
           this.rankList2 = this.rankList.slice(0, 4);
-        
+        } else {
+          uni.showModal({
+            title: '商品不足，暂时不予开放',
+            content: '请移步其他品牌工厂',
+            showCancel: true,
+            success: () => {
+              uni.navigateBack({ })
+            }
+          })
+    
         }
 
         console.log(this.rankList2);

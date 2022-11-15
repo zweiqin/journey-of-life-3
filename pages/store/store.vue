@@ -86,6 +86,7 @@
         :allgoodsList="allgoodsList"
         :brandId="brandId"
         :goodsList1="goodsList1"
+        @categoryId="acquireCategoryId"
       ></Baby>
     </view>
   </view>
@@ -113,8 +114,10 @@ export default {
       shareUrl: "",
       allgoodsList: {},
       goodsRankList: {},
+      // goodsList1: [],
       goodsList1: [],
       page: 1,
+      categoryId: "",
     };
   },
   onLoad(options) {
@@ -123,8 +126,20 @@ export default {
     this.goodsMaxSaleGoods();
     this.goodsList();
     this.getBrandDetail();
+    this.acquireCategoryId();
+    this.goodsHint()
   },
   methods: {
+    goodsHint() {
+      console.log(this.allgoodsList,this.goodsRankList,this.goodsList1);
+      if (this.allgoodsList.count < 8) {
+        uni.showToast({
+          title: 'asdasds',
+          icon: 'success',
+          mask: true
+        })
+      }
+    },
     async getBrandDetail() {
       const res = await getBrandDetailApi({
         id: this.brandId,
@@ -150,8 +165,72 @@ export default {
         page: this.page,
       });
       console.log("moregoods", res);
-      this.goodsList1.push(...res.data.goodsList);
+      // this.goodsList1.push(...res.data.goodsList);
       console.log("goodlist1", this.goodsList1);
+    },
+    async moreGoodsList1(type) {
+      const res = await goodsListApi({
+        brandId: this.brandId,
+        categoryId: this.categoryId,
+        page: this.page,
+      });
+
+      console.log("moreGoodsList1", res);
+      if (type) {
+        console.log(this.goodsList1.length, res.data.count);
+        if (this.goodsList1.length >= res.data.count) {
+          uni.showToast({
+            title: "商品加载完毕",
+            mask: true,
+          });
+          return;
+        } else {
+          this.goodsList1.push(...res.data.goodsList);
+          console.log("1");
+        }
+      } else {
+        this.goodsList1 = res.data.goodsList;
+        console.log("2");
+      }
+      console.log("goodlist1", this.goodsList1);
+    },
+    async goodsMaxSaleGoods() {
+      const res = await goodsMaxSaleGoodsApi({
+        brandId: this.brandId,
+      });
+      console.log("分类排名", res);
+      this.goodsRankList = res.data;
+    },
+    //商品分类接口
+    //问题1:barandId拿到的比接口晚，后续优化
+    async moreCateGoodsList() {
+      if (!this.brandId) {
+        console.log("没有brandId");
+      }
+      const res = await goodsListApi({
+        brandId: this.brandId,
+        categoryId: this.categoryId,
+        page: this.page,
+      });
+      console.log("moreCateGoodsList", res);
+      this.goodsList1 = res.data.goodsList;
+      // this.goodsList1.push(...res.data.goodsList);
+      console.log("goodlist2", this.goodsList1);
+    },
+    async moreCateGoodsList1(type) {
+      const res = await goodsListApi({
+        brandId: this.brandId,
+        categoryId: this.categoryId,
+        page: this.page,
+      });
+
+      console.log("moreCateGoodsList", res);
+      if (type) {
+        this.goodsList1.push(...res.data.goodsList);
+      } else {
+        this.goodsList1 = res.data.goodsList;
+      }
+      console.log("goodlist2", this.goodsList1);
     },
     async goodsMaxSaleGoods() {
       const res = await goodsMaxSaleGoodsApi({
@@ -165,6 +244,10 @@ export default {
      */
     back() {
       uni.navigateBack();
+    },
+    acquireCategoryId(item) {
+      console.log("acquireCategoryId", item);
+      this.categoryId = item;
     },
 
     /**
@@ -199,12 +282,41 @@ export default {
       });
     } else {
       if (this.page >= this.allgoodsList.totalPages) {
-        console.log('sibusi');
+        uni.showToast({
+          title: "商品加载完毕",
+          mask: true,
+        });
       } else {
-        this.page = this.page + 1;
-        this.moreGoodsList();
+        if (this.categoryId == 0 || !this.categoryId) {
+          this.page = this.page + 1;
+          console.log(this.page);
+          this.moreCateGoodsList1(true);
+          console.log("123");
+        } else {
+          this.page = this.page + 1;
+          this.moreGoodsList1(true);
+          console.log("其他商品");
+        }
       }
     }
+  },
+  watch: {
+    categoryId: {
+      handler(value) {
+        console.log("监听", value);
+        // type = false
+        if (value == 0) {
+          this.page = 1;
+          this.moreCateGoodsList();
+        } else {
+          this.page = 1;
+          this.moreCateGoodsList();
+        }
+      },
+
+      immediate: true,
+      deep: true,
+    },
   },
 };
 </script>

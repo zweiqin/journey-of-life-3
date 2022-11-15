@@ -18,7 +18,7 @@ export const navs = [
     value: 1
   },
   {
-    label: '全屋定制',
+    label: '满屋定制',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0jjbopl9loda5itlbmj4.png",
     value: 2
   },

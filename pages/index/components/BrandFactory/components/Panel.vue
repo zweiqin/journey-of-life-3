@@ -86,13 +86,11 @@ export default {
   },
 
   methods: {
-    //做到照片 未放置到首页上
     async getBrandListBySelect() {
       const res = await getBrandListBySelectApi({
         id: this.brandId,
       });
       this.goodList = res.data.brandList[0].goodsList;
-      console.log(this.goodList[0]);
       this.leftImg = this.goodList[0].picUrl;
       this.rightImg1 = this.goodList[1].picUrl;
       this.rightImg2 = this.goodList[2].picUrl;

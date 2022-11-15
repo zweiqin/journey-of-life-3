@@ -21,6 +21,21 @@
         >{{ item.label }}</view
       >
     </view>
+    <view class="text-border"></view>
+
+    <view class="priceDetail" v-for="item in priceList" :key="item.id">
+      <view class="list">
+        <view class="name">{{ item.id }}</view>
+        <view class="sname">{{ item.materialsName }}</view>
+        <view class="sku">{{ item.materialsSku }}</view>
+        <view class="stuff">{{ item.materialsCategory }}</view>
+        <view class="quality">{{ item.materialsQuality }}</view>
+        <view class="money">{{ item.materialsMoney }}</view>
+        <view class="unit">{{ item.materialsUnit }}</view>
+      </view>
+      <view class="text-border"></view>
+    </view>
+    <view class="seeMore" @click="more">查看更多</view>
   </view>
 </template>
 
@@ -35,12 +50,30 @@ export default {
       nowTime: "",
       search: true,
       priceTitle,
+      priceList: [],
     };
   },
   methods: {
-    getPricesList(){
-      async
+    more(){
+      uni.showToast({
+        title: '已无更多',
+        icon: 'success',
+        mask: true
+      })
     },
+    async getPricesList() {
+      const res = await getPricesListApi();
+      if (res.errno === 0) {
+      } else {
+        uni.showToast({
+          title: "价格列表失败",
+          duration: 2000,
+        });
+      }
+      console.log(res.data);
+      this.priceList = res.data.items;
+    },
+
     getNowTime() {
       let date = new Date();
       let year = new Date().getFullYear();
@@ -59,6 +92,7 @@ export default {
     },
     onLoad(options) {
       this.getNowTime();
+      this.getPricesList();
     },
   },
 };
@@ -82,14 +116,81 @@ export default {
   }
   .title {
     display: flex;
-    .title-text{
+    .title-text {
       font-size: 24upx;
       color: #999999;
       text-align: center;
     }
-    .content{
-      
+    .content {
     }
+  }
+  .text-border {
+    border: 0.5px solid #d8d8d8;
+    width: 97%;
+    margin: 10upx auto;
+  }
+  .priceDetail {
+    font-size: 26upx;
+    .list {
+      display: flex;
+      font-size: 24upx;
+      .name {
+        width: 12%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .sname {
+        width: 13%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .sku {
+        width: 18%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .stuff {
+        width: 18%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .quality {
+        width: 13%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #fa5151;
+        text-overflow: ellipsis;
+      }
+      .money {
+        width: 13%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #fa5151;
+      }
+      .unit {
+        width: 13%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .seeMore {
+    text-align: center;
+    font-size: 28upx;
+    color: #999999;
   }
 }
 </style>
