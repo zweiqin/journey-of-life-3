@@ -3,11 +3,11 @@
     <view class="navs">
       <view
         class="item"
-        :class="{ active: currentTab === item.id }"
+        :class="{ active: currentTab === item.value }"
         v-for="item in filterCategoryList"
-        :key="item.id"
-        @click="switchNav(item.id)"
-        >{{ item.name }}</view
+        :key="item.value"
+        @click="switchNav(item.value)"
+        >{{ item.label }}</view
       >
       <!-- {{ filterCategoryList }} -->
     </view>
@@ -107,13 +107,13 @@ export default {
       this.allgoodsList1 = this.allgoodsList.goodsList;
       console.log("纯商品分类", this.allgoodsList.filterCategoryList);
       this.filterCategoryList = this.allgoodsList.filterCategoryList;
-      const fristId = this.filterCategoryList[0].id;
+      const fristId = this.filterCategoryList[0].value;
       if (fristId == 0) {
-        console.log(123);
+        // console.log(123);
       } else {
         this.filterCategoryList.unshift({
-          id: 0,
-          name: "全部",
+          value: 0,
+          label: "全部",
         });
       }
     },
@@ -158,6 +158,7 @@ export default {
     .item {
       font-size: 20upx;
       margin-right: 36upx;
+      margin-bottom: 20upx;
       font-size: 24upx;
       transition: all 200ms linear;
       white-space: nowrap;

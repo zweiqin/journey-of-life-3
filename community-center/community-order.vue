@@ -25,7 +25,7 @@
       <view class="price-list">
         <view class="logo">￥</view>
         <view class="number">{{ price }}</view>
-        <view class="point">.00</view>
+        <view class="point"></view>
         <view class="slash">/</view>
         <view class="unit">{{ unit }}</view>
       </view>

@@ -17,7 +17,10 @@
         alt=""
         class="giveMoney"
       />
-      <view class="sales">已售{{ salse || "1000+ " }}</view>
+      <view class="stockSales">
+        <view class="sales">已售{{ salse || "1000+ " }}</view>
+        <view class="stockNumber">库存仅剩：100</view>
+      </view>
       <view class="money">
         <view class="now">￥{{ currentPrice || 19.9 }}</view>
         <view class="formerly">原价:￥{{ originalPrice || 39.9 }}</view>
@@ -102,10 +105,18 @@ export default {
       margin-bottom: 10upx;
       height: 34upx;
     }
-    .sales {
+    .stockSales {
+      display: flex;
       margin-bottom: 10upx;
-      font-size: 26upx;
+      font-size: 24upx;
+      .sales {
+      }
+      .stockNumber {
+        padding-left: 20upx;
+        color: #3662EC ;
+      }
     }
+
     .nowBuy {
       width: 236upx;
       height: 62upx;

@@ -223,21 +223,6 @@
         ></Carousel>
       </Pane>
 
-      <Pane
-        title="行业信息"
-        v-if="informationList.length"
-        route="/stuff/industry/infomation-list"
-      >
-        <IndustryInformation
-          v-for="item in informationList"
-          :key="item.id"
-          :title="item.title"
-          :img="item.imgUrl"
-          :id="item.id"
-          :time="item.updateTime"
-        ></IndustryInformation>
-      </Pane>
-
       <Pane title="店铺推荐">
         <view class="wrapper">
           <StuffStore
@@ -252,6 +237,21 @@
           <StuffStore></StuffStore>
           <StuffStore></StuffStore> -->
         </view>
+      </Pane>
+
+      <Pane
+        title="行业信息"
+        v-if="informationList.length"
+        route="/stuff/industry/infomation-list"
+      >
+        <IndustryInformation
+          v-for="item in informationList"
+          :key="item.id"
+          :title="item.title"
+          :img="item.imgUrl"
+          :id="item.id"
+          :time="item.updateTime"
+        ></IndustryInformation>
       </Pane>
     </view>
     <!-- </view> -->
