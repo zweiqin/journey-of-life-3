@@ -109,6 +109,8 @@ export default {
       console.log(this.storeTypesArr);
     },
     handleInput(field, e) {
+      // console.log(field,e);
+      // console.log(this.form);
       if (field === "address") {
         this.form[field] = e.area;
         return;

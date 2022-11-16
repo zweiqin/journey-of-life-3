@@ -20,16 +20,14 @@
       />
       <view class="background2">
         <view class="title-detail">
-          <view class="text1">推荐</view>
-          <view class="text2">功能配件</view>
-          <view class="text3">五金配件</view>
-          <view class="text4">沙发材料</view>
-          <view class="text5">椅类配件</view>
-          <img
-            class="anniu"
-            src="../../static/images/stuff/Vector1.png"
-            alt=""
-          />
+          <view
+            class="text1"
+            v-for="item in stuffCategoryList"
+            :key="item.value"
+            :class="{ text2: item.value == currentTab }"
+            @click="choseType(item.value)"
+            >{{ item.label }}</view
+          >
         </view>
         <view class="hotgoods">
           <view v-for="item in stuffGoodsList" :key="item.id">
@@ -58,13 +56,33 @@ export default {
   data() {
     return {
       stuffGoodsList: [],
+      stuffGoodsList1: [],
+      stuffCategoryList: [],
       page: 1,
       totalPage: "",
+      currentTab: 0,
+      categoryId: "",
     };
   },
   methods: {
+    choseType(item) {
+      console.log(item);
+      this.currentTab = item;
+      this.categoryId = item;
+      if (this.categoryId == 0) {
+        this.stuffGoodsList = this.stuffGoodsList1;
+      }else{
+        this.getCateGoryGoodList()
+      }
+    },
     handleBack() {
       uni.navigateBack();
+    },
+    async getCateGoryGoodList(){
+      const res = await goodsListApi({
+        categoryId:this.categoryId
+      })
+      this.stuffGoodsList = res.data.goodsList
     },
     async getCatalogAll() {
       const res = await getCatalogAllApi({
@@ -78,7 +96,13 @@ export default {
       });
       this.totalPage = res.data.totalPages;
       console.log(res);
+      this.stuffCategoryList = res.data.filterCategoryList;
+      this.stuffCategoryList.unshift({
+        value: 0,
+        label: "推荐",
+      });
       this.stuffGoodsList = res.data.goodsList;
+      this.stuffGoodsList1 = res.data.goodsList;
     },
     async addGoodsList() {
       const res = await goodsListApi({
@@ -90,17 +114,15 @@ export default {
       this.stuffGoodsList.push(...res.data.goodsList);
       this.totalPage = res.data.totalPages;
     },
-    back(){
-      uni.navigateBack({ })
-    }
+    back() {
+      uni.navigateBack({});
+    },
   },
   onLoad(options) {
     this.goodsList();
   },
   onReachBottom() {
     this.page = this.page + 1;
-    console.log(this.page);
-    console.log(this.totalPage);
     if (this.page >= this.totalPage) {
       uni.showToast({
         title: "加载完毕",
@@ -165,33 +187,25 @@ export default {
     .title-detail {
       display: flex;
       padding-top: 46upx;
-      font-size: 24upx;
-      justify-content: space-between;
+      padding-left: 20upx;
+      font-size: 26upx;
+      overflow-x: scroll;
+      white-space: nowrap;
+      &::-webkit-scrollbar {
+        width: 0 !important;
+      }
+
       .text1 {
-        padding-left: 30upx;
-        font-weight: 500;
-        color: rgba(0, 0, 0, 0.85);
-      }
-      .text2 {
-        padding-left: 50upx;
+        margin-left: 20upx;
         font-weight: 350;
         color: #3d3d3d;
+        &.text2 {
+          margin-left: 20upx;
+          font-weight: 600;
+          color: rgba(0, 0, 0, 0.85);
+        }
       }
-      .text3 {
-        padding-left: 58upx;
-        font-weight: 350;
-        color: #3d3d3d;
-      }
-      .text4 {
-        padding-left: 60upx;
-        font-weight: 350;
-        color: #3d3d3d;
-      }
-      .text5 {
-        padding-left: 58upx;
-        font-weight: 350;
-        color: #3d3d3d;
-      }
+
       .anniu {
         width: 34upx;
         height: 24upx;

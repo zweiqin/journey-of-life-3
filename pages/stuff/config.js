@@ -28,13 +28,13 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dccvg8b9cypwye31pjka.png",
     bgc: "linear-gradient(139deg, #FA5151 23%, rgba(204,27,27,0.00) 147%)",
     label: "品牌",
-    // Url: "../../stuff/brand/brand",
+    // Url: "../../pages/stuff/brand/index",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/su6fygqdai0ome7guhxt.png",
     bgc: "linear-gradient(137deg, #00B578 0%, #FFFFFF 100%)",
     label: "库存",
-    // Url: "../../stuff/stock/stock",
+    Url: "../../stuff/stock/stock",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ksadd8iyi8iut5orq35d.png",
