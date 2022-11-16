@@ -27,7 +27,8 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/au0lt13ad4mjposzwh8p.webp", // gouwuche
   modal:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vmdsaejtrqyluz8uhfkb.png", // 勋章
-    'red-modal': "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eefc6ub7z9qprfscgr03.png",
+  "red-modal":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eefc6ub7z9qprfscgr03.png",
   "local-black":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2lvq1mi90v8e73xx7ozh.png", // 黑色定位
   filter:
@@ -44,20 +45,43 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d1z1fo4me13g8imhqgql.png", // 代金劵转增
   active:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bds8o7xtgjyh5341bffp.png", // 活动
-    notice: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hlmwhiejjar5eyz1oajz.png', // 广播
-    redBag: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu569nggd0ibd0nqjwxp.png", // 红包
-    price: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m5edz05hnrtqkuiacj93.png", // 钱
-    store: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvp8wwsr2pkefwo22kdl.png", // 门店
-    coupon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png", // 代金劵
-    'color-voucher': "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d53fje7jgft1srkwej8m.png", // colorful voucher
-    'to': 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xgqzhvjxft4yx4g8c5s6.png',
-    "blue-locale": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w7yyxfyk34alhk9qjt29.png", // 导航
-    "main-locale": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zp9ytk6g2z05bp0gi631.png",
-    "gray-locale": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gie52p3486xt4huyx5bn.png", // 定位 灰
-    "full-store": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ib1o7q9o50hsuu5uu1xs.png", // 红色门店
-    "delete": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tzyw7gxj87akhja5cl55.png", // 删除
-    "phone": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vv5xwu9a6qqzpzho6x75.png", //蓝色-phone
-    'tuanfeng': 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/na0ctefkhoyxslb4bthz.png', // 团蜂
-    "mobile": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zxaumfzs792kmow7mkvt.png",  //触屏手机 
-    "weiXin": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cn6pi0k9jkuu3jfsv3wr.png", //微信，灰
+  notice:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hlmwhiejjar5eyz1oajz.png", // 广播
+  redBag:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu569nggd0ibd0nqjwxp.png", // 红包
+  price:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m5edz05hnrtqkuiacj93.png", // 钱
+  store:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvp8wwsr2pkefwo22kdl.png", // 门店
+  coupon:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png", // 代金劵
+  "color-voucher":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d53fje7jgft1srkwej8m.png", // colorful voucher
+  to: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xgqzhvjxft4yx4g8c5s6.png",
+  "blue-locale":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w7yyxfyk34alhk9qjt29.png", // 导航
+  "main-locale":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zp9ytk6g2z05bp0gi631.png",
+  "gray-locale":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gie52p3486xt4huyx5bn.png", // 定位 灰
+  "full-store":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ib1o7q9o50hsuu5uu1xs.png", // 红色门店
+  delete:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tzyw7gxj87akhja5cl55.png", // 删除
+  phone:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vv5xwu9a6qqzpzho6x75.png", //蓝色-phone
+  tuanfeng:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/na0ctefkhoyxslb4bthz.png", // 团蜂
+  mobile:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zxaumfzs792kmow7mkvt.png", //触屏手机
+  weiXin:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cn6pi0k9jkuu3jfsv3wr.png", //微信，灰
+  "community-bg":
+    "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/dhhnb4dom2odxgkpuvf0.png", // 社区优惠
+  prices:
+    "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ug9ogna5q5906j42d82.png", // 社区优惠右下角
+  "mask-close":
+    "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/fnjb9x2bi02wi0lt9j0h.png",
+  "red-back":
+    "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/fr00y8h4nibjq2vyp827.png",
 };

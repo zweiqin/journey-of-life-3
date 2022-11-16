@@ -377,6 +377,12 @@
 				},
 				{
 					"path": "confirm-order"
+				},
+				{
+					"path": "vip-center/vip-detail",
+					"style": {
+						"navigationBarTitleText": "套餐详情"
+					}
 				}
 			]
 		},
