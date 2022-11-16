@@ -35,7 +35,7 @@
 
 <script>
 import { number } from "echarts";
-import { getUserId } from '../../utils';
+import { getUserId } from "../../utils";
 export default {
   name: "componts",
   props: {
@@ -49,6 +49,7 @@ export default {
     return {
       name: "",
       id: "",
+      userId: "",
     };
   },
   computed: {},
@@ -57,29 +58,43 @@ export default {
       console.log("服务详情", item);
       const name = item.serverNameThree;
       const id = item.id;
-      // uni.navigateTo({ url: "../community-center/community-detail?id="+item });
-      uni.navigateTo({
-        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
-        
-      });
+      this.userId = getUserId();
+      // uni.navigateTo({
+      //   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
 
-      // uni.showModal({
-        
-      //   title: '提示',
-      //   content: '请登录',
-      //   showCancel: true,
-      //   // success: ({ confirm, cancel }) => {}
-      //   success:function(res){
-      //     if(res.confirm){
-      //       uni.navigateTo({
-      //         url:`/community-center/order`,
-      //       });
-      //     }
-      //   }
-      // })
-      
+      // });
+
+      if (!this.userId) {
+        console.log("userId", this.userId);
+        uni.showModal({
+          title: "提示",
+          content: "你还没登录,请登录",
+          showCancel: true,
+          // success: ({ confirm, cancel }) => {}
+          success: function (res) {
+            if (res.confirm) {
+              console.log('确定');
+              uni.navigateTo({
+                url: `/pages/login/login`,
+              });
+            } else if(res.confirm){
+              console.log('取消');
+            }
+          },
+        });
+      }else{
+        uni.navigateTo({
+        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
+});
+      }
     },
   },
+
+
+
+
+
+
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕
