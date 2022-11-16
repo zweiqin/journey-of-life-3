@@ -10,14 +10,14 @@
       <view class="title">完善服务信息</view>
     </view>
     <view class="top">
-      <view class="iphone-list">
+      <!-- <view class="iphone-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
           alt=""
           class="iphone"
         />
         <view class="text">联系方式</view>
-      </view>
+      </view> -->
 
       <view class="name-list">
         <view class="man">联系人</view>
@@ -42,14 +42,14 @@
           />
         </view>
       </view>
-      <view class="address-list">
+      <!-- <view class="address-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ihtpa3x378wrofqdiqrj.png"
           alt=""
           class="location"
         />
         <view class="text">填写上门地址</view>
-      </view>
+      </view> -->
       <JCity @confirm="City($event.area)" :text="address"> </JCity>
 
       <view class="add-list">
@@ -65,15 +65,14 @@
         </view>
       </view>
 
-      
       <view class="time-list">
         <view class="left">
-          <img
+          <!-- <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
             alt=""
             class="time"
-          />
-          <view class="text">上门时间</view>
+          /> -->
+          <view class="text">期待上门时间</view>
         </view>
         <!-- 
         <uni-section
@@ -82,7 +81,7 @@
         ></uni-section> -->
 
         <view class="right">
-          <view class="example-body" style="">
+          <!-- <view class="example-body" style="">
             <uni-datetime-picker
               class="datatime"
               type="datetime"
@@ -91,13 +90,25 @@
               :clear-icon="false"
               :border="false"
             />
+          </view> -->
+
+          <uni-section
+            :title="'日期时间范围用法：' + '[' + datetimerange + ']'"
+            type="line"
+          ></uni-section>
+          <view class="example-body">
+            <uni-datetime-picker
+              v-model="datetimerange"
+              type="datetimerange"
+              rangeSeparator="至"
+            />
           </view>
 
-          <img
+          <!-- <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
             alt=""
             class="more"
-          />
+          /> -->
         </view>
       </view>
     </view>
@@ -117,7 +128,7 @@
             <view class="price-list">
               <view class="logo">￥</view>
               <view class="number">{{ price1 }}</view>
-              <view class="point">.00</view>
+              <view class="point"></view>
               <view class="xie">/</view>
               <view class="unit">{{ unit1 }}</view>
             </view>
@@ -211,7 +222,7 @@
       <view class="price-list">
         <view class="logo">￥</view>
         <view class="number">{{ oughtPrice }}</view>
-        <view class="point">.00</view>
+        <view class="point"></view>
       </view>
       <!-- <view v-else></view> -->
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
@@ -246,6 +257,7 @@ export default {
       name: "",
       phoneNumber: "",
       datetimesingle: "",
+      datetimerange:"",
       time: "",
       pricingType: "",
       orderPrice: [],
@@ -256,10 +268,12 @@ export default {
       addname: "",
       horsepower: "",
       imgUrl: "",
+      length: "",
       // userId:127,
       // serverInfoId:1,
     };
   },
+
   methods: {
     changeLog(e) {
       console.log("change事件:", e);
@@ -272,31 +286,55 @@ export default {
     handleBack() {
       uni.navigateBack();
     },
+
+    
+
     handleToServiceConfirmOrder() {
-      uni.showToast({
-        title: "请完善服务信息",
-        icon: "none",
-        duration: 2000,
-      });
+      // uni.showToast({
+      //   title: "请完善服务信息",
+      //   icon: "none",
+      //   duration: 2000,
+      // });
+
+     
 
       if (
-        this.address &&
-        this.addressDetail &&
-        this.addname &&
-        this.phoneNumber &&
-        this.datetimesingle
+        !this.address ||
+        !this.addressDetail ||
+        !this.addname ||
+        !this.phoneNumber ||
+        !this.datetimerange
       ) {
         console.log(
           this.address &&
             this.addressDetail &&
             this.addname &&
             this.phoneNumber &&
-            this.datetimesingle
+            this.datetimerange
         );
+        // uni.navigateTo({
+        //   url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
+        // &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
+        // &installDate=${this.datetimesingle}&pricingType=${this.pricingType}`,
+        // });
+
+        uni.showToast({
+          title: "请完善服务信息",
+          icon: "none",
+          duration: 2000,
+        });
+      } else if (this.phoneNumber.length !== 11) {
+        console.log(this.phoneNumber.length);
+        uni.showToast({
+          title: "手机号格式错误",
+          duration: 2000,
+          icon: "none",
+        });
+      } else {
         uni.navigateTo({
           url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
-        &installDate=${this.datetimesingle}&pricingType=${this.pricingType}`,
+        &installDate=${this.datetimerange}&pricingType=${this.pricingType}`,
         });
       }
     },
@@ -417,7 +455,7 @@ export default {
     }
   }
   .top {
-    padding: 30upx 30upx 0upx 30upx;
+    padding: 20upx 30upx 0upx 30upx;
     background: #ffffff;
     .address-list {
       display: flex;
@@ -464,7 +502,7 @@ export default {
         height: 100%;
         background: #f1f2f6;
         border-radius: 20upx;
-        
+
         .address {
           line-height: 40upx;
           width: 100%;
@@ -528,7 +566,7 @@ export default {
       justify-content: space-between;
       width: 100%;
       height: 80upx;
-      margin-top: 30upx;
+      // margin-top: 30upx;
       .man {
         display: flex;
         align-items: center;
@@ -541,7 +579,6 @@ export default {
         padding-top: 0upx;
         width: 78%;
         height: 100%;
-        
 
         .contact {
           width: 100%;
@@ -577,7 +614,7 @@ export default {
         height: 100%;
         margin-left: 0upx;
         padding-top: 0upx;
-        
+
         .phone {
           width: 100%;
           height: 100%;
@@ -595,16 +632,16 @@ export default {
     }
 
     .time-list {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 50upx;
+      // display: flex;
+      // align-items: center;
+      // justify-content: space-between;
+      padding-top: 50upx;
       padding-bottom: 40upx;
       width: 100%;
 
       .left {
         // width: 27%;
-        width: 186upx;
+        width: 250upx;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -621,11 +658,13 @@ export default {
         }
       }
       .right {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        // display: flex;
+        // align-items: center;
+        // justify-content: flex-end;
         // width: 60%;
-        width: 414upx;
+        // width: 290upx;
+        padding-top: 30upx;
+        width: 100%;
         .example-body {
           .uni-input-input {
             color: #fa5151;
@@ -633,7 +672,6 @@ export default {
           }
 
           .datatime {
-            
           }
         }
         .more {

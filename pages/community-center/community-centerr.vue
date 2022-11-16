@@ -327,7 +327,7 @@
           />
         </view>
       </view>
-      <view class="nearby">附近联盟商家</view>
+      <view class="nearby">附近服务站</view>
       <community></community>
       <community></community>
       <community></community>

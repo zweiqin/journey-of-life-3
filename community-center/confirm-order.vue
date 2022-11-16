@@ -25,7 +25,7 @@
         <view class="price-list1" v-if="pricingType == 1">
           <view class="logo">￥</view>
           <view class="number">{{ this.oughtPrice }}</view>
-          <view class="point">.00</view>
+          <view class="point"></view>
         </view>
         <view class="price-list2" v-if="pricingType == 2">
           <!-- <view class="logo">￥</view>
@@ -48,7 +48,7 @@
       <view class="pay">
         <view class="logo">￥</view>
         <view class="number">{{ this.oughtPrice }}</view>
-        <view class="point">.00</view>
+        <view class="point"></view>
       </view>
       <view class="on-pay" @click="getServiceOrderPay">确定支付</view>
     </view>
