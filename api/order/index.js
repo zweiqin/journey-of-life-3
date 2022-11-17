@@ -1,68 +1,60 @@
-/*
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-23 17:34:37
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-29 17:26:42
- * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\order\index.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import { RuanRequest } from "../../utils";
 /**
- * 
- * @param {订单列表查询} data 
- * @returns 
+ *
+ * @param {订单列表查询} data
+ * @returns
  */
 export const getOrderListApi = (data) => {
-    return RuanRequest("/order/list", data, 'get')
+  return RuanRequest("/order/list", data, "get");
 };
 /**
- * 
- * @param {删除订单} data 
- * @returns 
+ *
+ * @param {删除订单} data
+ * @returns
  */
-export const getOrderCancelApi = (data) => {
-    return RuanRequest("/order/cancel", data)
+export const orderCancelApi = (data) => {
+  return RuanRequest("/order/cancel", data);
 };
 /**
- * 
- * @param {确认收货} data 
- * @returns 
+ *
+ * @param {确认收货} data
+ * @returns
  */
 export const getOrderConfirmApi = (data) => {
-    return RuanRequest("/order/confirm", data)
+  return RuanRequest("/order/confirm", data);
 };
 /**
- * 
- * @param {订单删除} data 
- * @returns 
+ *
+ * @param {订单删除} data
+ * @returns
  */
-export const getOrderDeleteApi = (data) => {
-    return RuanRequest("/order/delete", data)
+export const orderDeleteApi = (data) => {
+  return RuanRequest("/order/delete", data);
 };
 /**
- * 
- * @param {订单申请退款} data 
- * @returns 
+ *
+ * @param {订单申请退款} data
+ * @returns
  */
 export const getOrderRefundApi = (data) => {
-    return RuanRequest("/order/refund", data)
+  return RuanRequest("/order/refund", data);
 };
-/**
- * 订单下单
- * @param {*} data 
- * @returns 
- */
 
-export const getOrderSubmitApi = (data) => {
-    return RuanRequest("/order/refund", data)
-};
-/**
- * 订单详情
- * @param {*} data 
- * @returns 
- */
 export const getOrderDetailApi = (data) => {
-    return RuanRequest("/order/detail", data,'get')
+  return RuanRequest("/order/detail", data, "get");
 };
 
 
+/**
+ * 确认收货
+ */
+export const receiveGoodsApi = (data) => {
+  return RuanRequest("/order/confirm", data)
+}
+
+/**
+ * 评论
+ */
+export const sendCommentApi = data => {
+  return RuanRequest("/order/comment", data)
+}

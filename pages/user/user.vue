@@ -67,7 +67,9 @@
           <view class="value"> 代金劵 </view>
         </view> -->
         <view class="item">
-          <view class="title"> 0<view class="bl-text">元</view> </view>
+          <view class="title">
+            {{ userInfo.commission || 0 }}<view class="bl-text">元</view>
+          </view>
           <view class="value"> 收入佣金 </view>
         </view>
       </view>
@@ -76,16 +78,10 @@
     <!-- 第一个 -->
     <view class="collection">
       <view class="collection-chose" @click="choseCollection">
-        <view
-          @click="changeTab(0)"
-          :class="{ active: currentTab === 0 }"
-          class="item"
+        <view @click="changeTab(0)" :class="{ active: currentTab === 0 }" class="item"
           >商品订单</view
         >
-        <view
-          @click="changeTab(1)"
-          :class="{ active: currentTab === 1 }"
-          class="item"
+        <view @click="changeTab(1)" :class="{ active: currentTab === 1 }" class="item"
           >社区订单</view
         >
       </view>
@@ -93,15 +89,15 @@
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
-            <text class="value">10</text>
+            <text class="value">{{ userInfo.collectCount || 0 }}</text>
           </view>
           <view class="item">
             <text class="title">足迹</text>
-            <text class="value">56</text>
+            <text class="value"> {{ userInfo.footprintCount || 0 }} </text>
           </view>
           <view class="item" @click="bindtapsubscription">
             <text class="title">订阅</text>
-            <text class="value">123</text>
+            <text class="value"> {{ userInfo.rssCount || 0 }}</text>
           </view>
         </view>
       </UserPanel>
@@ -124,17 +120,14 @@
       <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
 
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="marketingTools"></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
       <UserPanel
+        @clickItem="handleClick"
         :row="4"
         :showShadow="false"
-        :data="marketingTools"
+        :data="otherServe"
       ></UserPanel>
-      <UserPanel
-        :row="4"
-        :showShadow="false"
-        :data="communityServices"
-      ></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
     </view>
   </view>
 </template>
@@ -142,6 +135,7 @@
 <script>
 import UserPanel from "./components/user-panel.vue";
 import UserPanel1 from "./components/user-panel1.vue";
+import { refrshUserInfoApi } from "../../api/user";
 
 import {
   tools,
@@ -210,10 +204,27 @@ export default {
         url: "/user/subscription/subscription",
       });
     },
+
+    handleClick(item) {
+      if (item.type && item.type === "extension") {
+        this.getExtensionCode();
+      }
+
+      if (item.label === "进销存") {
+        location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
+      }
+    },
   },
   onShow() {
     // checkWhoami();
-    this.userInfo = uni.getStorageSync(user_INFO);
+    const _this = this;
+    refrshUserInfoApi({
+      userId: getUserId(),
+    }).then(({ data }) => {
+      uni.setStorageSync(user_INFO, data);
+      _this.userInfo = uni.getStorageSync(user_INFO);
+      console.log(_this.userInfo);
+    });
   },
 };
 </script>
