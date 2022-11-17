@@ -219,7 +219,7 @@
       </view>
     </view>
     <view class="main">
-      <view class="jx">
+      <view class="jx" @click="go('/community-center/vip-center/vip-detail')">
         <view class="left">
           <view class="red">积分商城</view>
           <view class="title-list">
@@ -269,7 +269,7 @@
         </view>
         <view class="right">
           <view class="member">
-            <view class="l">
+            <view class="l" @click="">
               <view class="orange">会员套餐</view>
               <view class="title">
                 <view class="text">开通会员</view>

@@ -50,19 +50,16 @@ export default {
   },
   methods: {
     bindtap(item) {
+      this.$emit("clickItem", item);
       if (this.currentTab === 1) {
         uni.navigateTo({
           url: item.url,
         });
-
-        console.log(item.url);
-
-        return
+        return;
       }
       uni.navigateTo({
         url: item.url + "?collectiontype=" + this.currentTab,
       });
-
     },
   },
 };

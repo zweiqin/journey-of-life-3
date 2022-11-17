@@ -25,16 +25,15 @@
           @click="toViewMineInfo"
           class="avatar"
           :src="
-            userInfo.avatarUrl ===
-            'https://avatar.csdnimg.cn/8/A/0/2_qiguliuxing.jpg'
-              ? 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
-              : userInfo.avatarUrl
+            userInfo
+              ? userInfo.avatarUrl
+              : 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
           "
           alt=""
         />
         <view class="right">
           <view class="name">{{ userInfo.nickName }}</view>
-          <view class="vip-info">
+          <view class="vip-info" v-if="userInfo">
             <text class="id">团蜂ID {{ userInfo.userId }}</text>
             <!-- <img
               class="hu-icon"
@@ -45,12 +44,17 @@
               userInfo.userLevelDesc
             }}</text> -->
           </view>
+          <view class="no-data" v-else>
+            您还未登录，<text class="text" @click="go('/pages/login/login')"
+              >去登录~</text
+            >
+          </view>
         </view>
       </view>
       <view class="prices">
         <view class="item">
           <view class="title"> 会员 </view>
-          <view class="value"> {{ userInfo.userLevelDesc }} </view>
+          <view class="value"> {{ userInfo.userLevelDesc || "游客" }} </view>
         </view>
         <view class="item">
           <view class="title"> 0<view class="bl-text">元</view> </view>
@@ -63,7 +67,9 @@
           <view class="value"> 代金劵 </view>
         </view> -->
         <view class="item">
-          <view class="title"> 0<view class="bl-text">元</view> </view>
+          <view class="title">
+            {{ userInfo.commission || 0 }}<view class="bl-text">元</view>
+          </view>
           <view class="value"> 收入佣金 </view>
         </view>
       </view>
@@ -72,16 +78,10 @@
     <!-- 第一个 -->
     <view class="collection">
       <view class="collection-chose" @click="choseCollection">
-        <view
-          @click="changeTab(0)"
-          :class="{ active: currentTab === 0 }"
-          class="item"
+        <view @click="changeTab(0)" :class="{ active: currentTab === 0 }" class="item"
           >商品订单</view
         >
-        <view
-          @click="changeTab(1)"
-          :class="{ active: currentTab === 1 }"
-          class="item"
+        <view @click="changeTab(1)" :class="{ active: currentTab === 1 }" class="item"
           >社区订单</view
         >
       </view>
@@ -89,15 +89,15 @@
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
-            <text class="value">10</text>
+            <text class="value">{{ userInfo.collectCount || 0 }}</text>
           </view>
           <view class="item">
             <text class="title">足迹</text>
-            <text class="value">56</text>
+            <text class="value"> {{ userInfo.footprintCount || 0 }} </text>
           </view>
           <view class="item" @click="bindtapsubscription">
             <text class="title">订阅</text>
-            <text class="value">123</text>
+            <text class="value"> {{ userInfo.rssCount || 0 }}</text>
           </view>
         </view>
       </UserPanel>
@@ -120,13 +120,14 @@
       <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
 
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="marketingTools"></UserPanel>
+      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
       <UserPanel
+        @clickItem="handleClick"
         :row="4"
         :showShadow="false"
-        :data="marketingTools"
+        :data="otherServe"
       ></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
     </view>
   </view>
 </template>
@@ -134,7 +135,7 @@
 <script>
 import UserPanel from "./components/user-panel.vue";
 import UserPanel1 from "./components/user-panel1.vue";
-
+import { refrshUserInfoApi } from "../../api/user";
 
 import {
   tools,
@@ -147,14 +148,13 @@ import {
   otherServe,
   communityServices,
 } from "./config";
-import { checkWhoami } from "../../utils";
+import { checkWhoami, getUserId } from "../../utils";
 import { user_INFO } from "../../constant";
 
 export default {
   components: {
     UserPanel,
     UserPanel1,
-
   },
   data() {
     return {
@@ -178,6 +178,9 @@ export default {
      * @description 查看自己的信息
      */
     toViewMineInfo() {
+      if (!getUserId()) {
+        return;
+      }
       uni.navigateTo({
         url: "/user/info/detail",
       });
@@ -201,10 +204,27 @@ export default {
         url: "/user/subscription/subscription",
       });
     },
+
+    handleClick(item) {
+      if (item.type && item.type === "extension") {
+        this.getExtensionCode();
+      }
+
+      if (item.label === "进销存") {
+        location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
+      }
+    },
   },
-  mounted() {
+  onShow() {
     // checkWhoami();
-    this.userInfo = uni.getStorageSync(user_INFO);
+    const _this = this;
+    refrshUserInfoApi({
+      userId: getUserId(),
+    }).then(({ data }) => {
+      uni.setStorageSync(user_INFO, data);
+      _this.userInfo = uni.getStorageSync(user_INFO);
+      console.log(_this.userInfo);
+    });
   },
 };
 </script>
@@ -251,6 +271,9 @@ export default {
         margin-right: 40upx;
       }
       .right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         .name {
           color: #3d3d3d;
           font-size: 28upx;
@@ -342,6 +365,15 @@ export default {
         color: #3d3d3d;
         font-weight: bold;
       }
+    }
+  }
+
+  .no-data {
+    font-size: 28upx;
+    line-height: 3;
+
+    .text {
+      color: #48b6eb;
     }
   }
 }

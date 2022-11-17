@@ -45,12 +45,28 @@ export default {
 
 <style lang="less" scoped>
 .package-pane-container {
+  position: relative;
   font-size: 32upx;
   width: 100%;
   background-color: #fff;
   border-radius: 20upx;
   overflow: hidden;
   margin-bottom: 40upx;
+  z-index: 2;
+
+  &::after{
+    top: 20%;
+    right: -243upx;
+    content: '';
+    position: absolute;
+    display: block;
+    width: 486upx;
+    height: 486upx;
+    background: url(https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/whh1ey69ojd25b4iuhj1.png) no-repeat;
+    background-size: contain;
+    z-index: 1; 
+  }
+
 
   .in-time {
     color: #fa5151;
@@ -66,6 +82,7 @@ export default {
   }
 
   .package-name {
+    position: relative;
     font-size: 48upx;
     font-weight: bold;
     text-align: center;
@@ -73,11 +90,20 @@ export default {
     margin-bottom: 22upx;
 
     .tags {
-      .tag {
-      }
-    }
+      position: absolute;
+      display: flex;
+      align-items: center;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
 
-    .title {
+      .tag {
+        width: 24upx;
+        height: 24upx;
+        border-radius: 50%;
+        background-color: #F6BE86;
+        margin-right: 10upx;
+      }
     }
   }
 
@@ -93,6 +119,8 @@ export default {
   }
 
   .footer {
+    position: relative;
+    z-index: 3;
     padding-top: 16upx;
     margin-top: 20upx;
     border-top: 1upx dotted #fa5151;
