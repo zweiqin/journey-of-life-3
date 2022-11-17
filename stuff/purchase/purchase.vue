@@ -1,9 +1,14 @@
 <template>
   <div class="purchase">
+    <Ttitle :title="title"></Ttitle>
     <purchaseInput
       v-model="form.stuffDetail"
       :fields="purrchaseInput"
     ></purchaseInput>
+    <view>上传图片/视频</view>
+    <JUpload></JUpload>
+    <JUpload></JUpload>
+    <purchaseInput v-model="form.linkMan" :fields="linkMan"></purchaseInput>
   </div>
 </template>
 
@@ -29,6 +34,7 @@ export default {
     return {
       keywords: "",
       purrchaseType,
+      title: "一件采购",
       purrchaseInput,
       upLoadImgVlog,
       linkMan,
