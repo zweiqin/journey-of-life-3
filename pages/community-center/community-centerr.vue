@@ -452,19 +452,29 @@
         </view>
       </view>
     </view>
+
+    <DiscountPopup v-model="showPopup"></DiscountPopup>
   </view>
 </template>
 
 <script>
 import community from "./components/community";
+import DiscountPopup from "./components/discount.vue";
 
 export default {
   name: "Community-centerr",
   components: {
     community,
+    DiscountPopup,
   },
   data() {
-    return {};
+    return {
+      showPopup: false,
+    };
+  },
+
+  onLoad(){
+    this.showPopup = true
   },
   methods: {
     handleToServiceListHome() {
@@ -476,12 +486,8 @@ export default {
 };
 </script>
 
-
-
-
 <style lang="less" scoped>
 .community-centerr {
-  // position: relative;
   .head {
     width: 100%;
     height: 130upx;
