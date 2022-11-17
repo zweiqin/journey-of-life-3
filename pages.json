@@ -229,6 +229,7 @@
 		{
 			"path": "pages/store/store"
 		}
+		
 	],
 	"tabBar": {
 		"selectedColor": "#E95D20",
@@ -374,6 +375,11 @@
 				},
 				{
 					"path": "customer-information"
+					// "usingComponents": {
+					// 	"van-picker": "wxcomponents/vant/dist/picker/index.vue",
+					// 	"van-button":"/wxcomponents/vant/dist/button/index.vue",
+					// 	"van-popup": "/wxcomponents/vant/dist/popup/index.vue"
+					// }
 				},
 				{
 					"path": "confirm-order"

@@ -104,13 +104,13 @@
             </view>
           </view>
         </view>
-        <view class="w2" @click="handleToServiceListHome">
+        <view class="w2" >
           <view class="title">
             <text>专业性强</text>
             <text>及时服务</text>
           </view>
           <view class="img-list">
-            <view class="people">
+            <view class="people" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png"
                 alt=""
@@ -121,10 +121,10 @@
                 alt=""
                 class="round"
               />
-              <view class="name">维修</view>
+              <view class="name">{{text ||"维修"}}</view>
             </view>
 
-            <view class="people">
+            <view class="people" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png"
                 alt=""
@@ -138,7 +138,7 @@
               <view class="name">安装</view>
             </view>
 
-            <view class="people">
+            <view class="people" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png"
                 alt=""
@@ -207,7 +207,7 @@
               <view class="text">清洗保洁</view>
             </view>
           </view>
-          <view class="more">
+          <view class="more" @click="handleToServiceListHome">
             <view class="text">更多服务</view>
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/nsez71tgcrlgpeu93h2s.png"
@@ -481,6 +481,12 @@ export default {
       console.log("服务分类列表");
       uni.navigateTo({ url: "../../community-center/service-sort" });
     },
+
+    handleToServiceList(){
+      console.log("维修服务分类列表");
+      uni.navigateTo({ url: "../../community-center/service-sort" });
+    },
+
   },
   created() {},
 };

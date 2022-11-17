@@ -238,7 +238,7 @@ export const communityServices = {
       url: "/pages/otherUrl/otherUrl?url=https://www.zhult.com/shifu/#/login"
     },
     {
-      label: "站长",
+      label: "城市合伙人",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nbpf99anaovw4jivc085.png",
       url: "/pages/otherUrl/otherUrl?url=https://www.zhult.com/zhanzhang/#/login"
     }, {
