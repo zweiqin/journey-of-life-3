@@ -25,16 +25,15 @@
           @click="toViewMineInfo"
           class="avatar"
           :src="
-            userInfo.avatarUrl ===
-            'https://avatar.csdnimg.cn/8/A/0/2_qiguliuxing.jpg'
-              ? 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
-              : userInfo.avatarUrl
+            userInfo
+              ? userInfo.avatarUrl
+              : 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
           "
           alt=""
         />
         <view class="right">
           <view class="name">{{ userInfo.nickName }}</view>
-          <view class="vip-info">
+          <view class="vip-info" v-if="userInfo">
             <text class="id">团蜂ID {{ userInfo.userId }}</text>
             <!-- <img
               class="hu-icon"
@@ -45,12 +44,17 @@
               userInfo.userLevelDesc
             }}</text> -->
           </view>
+          <view class="no-data" v-else>
+            您还未登录，<text class="text" @click="go('/pages/login/login')"
+              >去登录~</text
+            >
+          </view>
         </view>
       </view>
       <view class="prices">
         <view class="item">
           <view class="title"> 会员 </view>
-          <view class="value"> {{ userInfo.userLevelDesc }} </view>
+          <view class="value"> {{ userInfo.userLevelDesc || "游客" }} </view>
         </view>
         <view class="item">
           <view class="title"> 0<view class="bl-text">元</view> </view>
@@ -125,7 +129,11 @@
         :showShadow="false"
         :data="marketingTools"
       ></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
+      <UserPanel
+        :row="4"
+        :showShadow="false"
+        :data="communityServices"
+      ></UserPanel>
       <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
     </view>
   </view>
@@ -134,7 +142,6 @@
 <script>
 import UserPanel from "./components/user-panel.vue";
 import UserPanel1 from "./components/user-panel1.vue";
-
 
 import {
   tools,
@@ -147,14 +154,13 @@ import {
   otherServe,
   communityServices,
 } from "./config";
-import { checkWhoami } from "../../utils";
+import { checkWhoami, getUserId } from "../../utils";
 import { user_INFO } from "../../constant";
 
 export default {
   components: {
     UserPanel,
     UserPanel1,
-
   },
   data() {
     return {
@@ -178,6 +184,9 @@ export default {
      * @description 查看自己的信息
      */
     toViewMineInfo() {
+      if (!getUserId()) {
+        return;
+      }
       uni.navigateTo({
         url: "/user/info/detail",
       });
@@ -202,7 +211,7 @@ export default {
       });
     },
   },
-  mounted() {
+  onShow() {
     // checkWhoami();
     this.userInfo = uni.getStorageSync(user_INFO);
   },
@@ -251,6 +260,9 @@ export default {
         margin-right: 40upx;
       }
       .right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         .name {
           color: #3d3d3d;
           font-size: 28upx;
@@ -342,6 +354,15 @@ export default {
         color: #3d3d3d;
         font-weight: bold;
       }
+    }
+  }
+
+  .no-data {
+    font-size: 28upx;
+    line-height: 3;
+
+    .text {
+      color: #48b6eb;
     }
   }
 }
