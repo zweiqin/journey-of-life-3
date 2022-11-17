@@ -36,6 +36,7 @@ export default {
   align-items: center;
   padding: 0 60upx;
   box-sizing: border-box;
+  z-index: 200;
 
   .item {
     display: flex;
