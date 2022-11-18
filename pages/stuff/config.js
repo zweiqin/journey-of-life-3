@@ -46,7 +46,7 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c7b200swpyfd2ntksxnn.png",
     bgc: "linear-gradient(137deg, #FFC300 7%, #FFFFFF 143%)",
     label: "一键采购",
-    // Url: "../../stuff/purchase/purchase",
+    Url: "../../stuff/purchase/purchase",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tqdnj221uexjbn511viq.png",

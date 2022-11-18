@@ -32,7 +32,8 @@
           ></uni-datetime-picker>
         </view>
       </view>
-      <view class="border"></view>
+      <view v-if="item.type == 'textArea'"></view>
+      <view class="border" v-else ></view>
     </view>
   </div>
 </template>
@@ -94,6 +95,7 @@ export default {
   .a {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .input-placeholder {
     display: flex;
@@ -115,6 +117,10 @@ export default {
   .input {
     display: flex;
     justify-content: space-between;
+    flex:1;
+    margin-left: 20upx;
+    text-align: right;
+
   }
   .textarea {
     background-color: #efefef;

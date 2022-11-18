@@ -228,15 +228,20 @@
 		},
 		{
 			"path": "pages/store/store"
+		},
+		{
+			"path": "stuff/stuffGoods/index",
+			"style": {
+				"navigationBarTitleText": "stuffGoods"
+			}
 		}
-		
 	],
 	"tabBar": {
 		"selectedColor": "#E95D20",
 		"backgroundColor": "#fff",
 		"color": "#3D3D3D",
 		"borderStyle": "white",
-		"iconWidth": "30px",
+		"iconWidth": "28px",
 		"height": "60px",
 		"list": [
 			{

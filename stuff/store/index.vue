@@ -57,8 +57,6 @@
             <view class="mobile"
               >电话：{{ phone || "暂无电话" }}
               <view class="ops">
-     
-
                 <view>
                   到这里去
                   <img
@@ -76,27 +74,17 @@
       <view class="navs2" ref="navs2Ref">
         <view
           class="item"
-          :class="{ active: item.value === currentTab }"
-          v-for="item in navs2"
-          :key="item.label"
-          @click="switchTab(item.value)"
-          >{{ item.label }}</view
+          :class="{ active: item.id == currentTab }"
+          v-for="item in catalogList"
+          :key="item.name"
+          @click="switchTab(item.id)"
+          >{{ item.name }}</view
         >
-
-        <view class="modal" ref="modalRef">
-          <view
-            class="item"
-            :class="{ active: item.value === currentTab }"
-            v-for="item in navs2"
-            :key="item.label"
-            @click="switchTab(item.value)"
-            >{{ item.label }}</view
-          >
-        </view>
       </view>
 
       <Carousel
-      :height="311"
+        v-if="currentTab == 0"
+        :height="311"
         :list="[
           'https://img1.baidu.com/it/u=934539030,2839442749&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
           'https://img0.baidu.com/it/u=2897486836,2967666712&fm=253&fmt=auto&app=120&f=JPEG?w=640&h=786',
@@ -104,7 +92,7 @@
         ]"
       ></Carousel>
 
-      <view class="split-title-wrapper">
+      <view class="split-title-wrapper" v-if="currentTab == 0">
         <view class="split-title">热销产品</view>
       </view>
 
@@ -139,7 +127,12 @@ import Rate from "../../components/rate";
 import { navs2 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
-import { getBrandDetailApi, getBrandListBySelectApi } from "../../api/brand";
+import {
+  getBrandDetailApi,
+  getBrandListBySelectApi,
+  getCatalogIdByBrandApi,
+} from "../../api/brand";
+import { goodsListApi } from "../../api/goods";
 import suspenButton from "../../components/px-suspen-button";
 
 export default {
@@ -166,6 +159,8 @@ export default {
       idcardConsUrl: "",
       brandId: "",
       goodsList: [],
+      catalogList: [],
+      categoryId: "",
     };
   },
   props: {
@@ -175,9 +170,24 @@ export default {
   },
 
   methods: {
-    // switchTab(tab) {
-    //   this.currentTab = tab;
-    // },
+    switchTab(tab) {
+      this.currentTab = tab;
+      console.log(this.currentTab);
+      this.categoryId = tab;
+      if (this.currentTab == 0) {
+        this.getBrandListBySelect();
+      } else {
+        this.getGoodsList()
+      }
+    },
+    async getGoodsList() {
+      const res = await goodsListApi({
+        categoryId: this.categoryId,
+        brandId :this.brandId
+      });
+      console.log(res);
+      this.goodsList = res.data.goodsList
+    },
     shopCar() {
       console.log("购物车");
       uni.navigateTo({
@@ -186,11 +196,11 @@ export default {
     },
     backHome() {
       console.log("回到首页");
-      uni.switchTab({ url: "/pages/stuff/stuff"})
+      uni.switchTab({ url: "/pages/stuff/stuff" });
     },
 
     service() {
-      const phone = this.phone
+      const phone = this.phone;
       console.log("传入的电话", phone);
       const res = uni.getSystemInfoSync();
       // ios系统默认有个模态框
@@ -263,6 +273,14 @@ export default {
       console.log(res);
       this.goodsList = res.data.brandList[0].goodsList;
     },
+    async getCatalogIdByBrand() {
+      const res = await getCatalogIdByBrandApi({
+        brandId: this.brandId,
+      });
+      this.catalogList = res.data.catalogList;
+      console.log(this.catalogList);
+      const a = this.catalogList.unshift({ id: 0, name: "推荐" });
+    },
 
     //商品分类接口
   },
@@ -274,6 +292,7 @@ export default {
     console.log(this.brandId);
     this.getBrandDetail();
     this.getBrandListBySelect();
+    this.getCatalogIdByBrand();
   },
 };
 </script>
@@ -421,8 +440,10 @@ export default {
     }
 
     .goods-wrapper {
+
       .flex();
       flex-wrap: wrap;
+      margin-top: 20upx;
     }
   }
 

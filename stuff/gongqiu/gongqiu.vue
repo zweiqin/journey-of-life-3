@@ -27,11 +27,11 @@
       >
       <view
         class="supply"
-        v-for="item1 in PcToday"
+        v-for="(item1, index) in PcToday"
         :key="item1.id"
         @click="mydetail(item1)"
       >
-        <view class="no">{{ item1.id }}</view>
+        <view class="no">{{ index + 1 }}</view>
         <view class="category">{{ item1.materialsCategory }}</view>
         <view class="address">{{ item1.materialsRegion }}</view>
         <view class="color">{{ "无" || item1.materialsColor }}</view>
@@ -53,11 +53,11 @@
 
       <view
         class="Pctoday"
-        v-for="item1 in supplyList"
+        v-for="(item1, index) in supplyList"
         :key="item1.id"
         @click="thisDetail(item1)"
       >
-        <view class="no1">{{ item1.id }}</view>
+        <view class="no1">{{ index + 1 }}</view>
         <view class="category1">{{ item1.materialsCategory }}</view>
         <view class="address1">{{ item1.materialsRegion }}</view>
         <view class="material">{{ item1.materialsTexture }}</view>
@@ -69,7 +69,7 @@
     <view>
       <uni-popup ref="popup" type="center">
         <view class="whiteBackground">
-          <view>序号：{{ id }}</view>
+          <!-- <view>序号：{{ id }}</view> -->
           <view>类别：{{ materialsCategory }}</view>
           <view>地区：{{ materialsRegion }}</view>
           <view>颜色：{{ materialsColor }}</view>
@@ -79,7 +79,7 @@
       </uni-popup>
       <uni-popup ref="popup1" type="center">
         <view class="whiteBackground">
-          <view>序号：{{ id }}</view>
+          <!-- <view>序号：{{ id }}</view> -->
           <view>类别：{{ materialsCategory }}</view>
           <view>地区：{{ materialsRegion }}</view>
           <view>材质：{{ materialsTexture }}</view>
@@ -89,6 +89,7 @@
         >
       </uni-popup>
     </view>
+    <!-- <view class="seeMore">查看更多</view> -->
   </view>
 </template>
 
@@ -105,7 +106,7 @@ export default {
       search: true,
       choseTab: 0,
       nowTime: "",
-      supplyList: [],
+      supply: [],
       PcToday: [],
       inputDetail: "",
       id: "",
@@ -117,6 +118,9 @@ export default {
       materialsTexture: "",
       referenceMoney: "",
       sales: "",
+      supplyList: [],
+      PcTodayList: [],
+      page: 1,
     };
   },
   filters: {
@@ -125,13 +129,13 @@ export default {
       return a[1] + "-" + a[2];
     },
   },
+
   onLoad(options) {
     this.getNowTime();
     this.getSupplyList();
     this.getPcTodayList();
   },
   methods: {
-    
     thisDetail(item1) {
       this.$refs.popup1.open("center");
       console.log(item1);
@@ -155,7 +159,9 @@ export default {
     },
     // 供应列表
     async getSupplyList() {
-      const res = await getSupplyListApi();
+      const res = await getSupplyListApi({
+        page: this.page,
+      });
       if (res.errno === 0) {
       } else {
         uni.showToast({
@@ -164,15 +170,18 @@ export default {
         });
       }
       this.supplyList = res.data.items;
-      this.supplyList.sort(function (x, y) {
-        return x.id > y.id ? 1 : -1;
-      });
+      // this.supplyList.sort(function (x, y) {
+      //   return x.id > y.id ? 1 : -1;
+      // });
       // this.supplyList = this.supplyList.slice(0, 5);
       console.log("供应列表", this.supplyList);
+      this.supply = res.data;
     },
     // 采购列表
     async getPcTodayList() {
-      const res = await getPcTodayListApi();
+      const res = await getPcTodayListApi({
+        page: this.page,
+      });
       if (res.errno === 0) {
       } else {
         uni.showToast({
@@ -180,17 +189,26 @@ export default {
           duration: 2000,
         });
       }
-
-      console.log("采购列表", res.data);
-      this.PcToday = res.data.items;
-      this.PcToday.sort(function (x, y) {
-        return x.id > y.id ? 1 : -1;
-      });
-      // this.PcToday = this.PcToday.slice(0, 5);
+      if (this.PcToday == []) {
+        console.log("2b");
+        this.Pctoday.push(res.data.items);
+      } else {
+        console.log("3b");
+        this.PcToday = res.data.items;
+        console.log("采购列表", res.data);
+        this.PcTodayList = res.data;
+      }
     },
     touch(item) {
       this.choseTab = item;
       console.log(item);
+    },
+    bottomHint() {
+      uni.showToast({
+        title: "数据加载完毕",
+        icon: "none",
+        mask: true,
+      });
     },
     //获取当前时间
     getNowTime() {
@@ -210,12 +228,29 @@ export default {
       this.nowTime = time;
     },
   },
+  onReachBottom() {
+    if (this.choseTab == 0) {
+      if (this.page * 10 <= this.PcTodayList.total) {
+        this.page = this.page + 1;
+        this.getPcTodayList();
+      } else {
+        this.bottomHint();
+      }
+    } else if (this.choseTab == 1) {
+      if (this.page * 10 <= this.supply.total) {
+        this.page = this.page + 1;
+        this.getSupplyList();
+      } else {
+        this.bottomHint();
+      }
+    }
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .gongqiu {
-  padding: 72upx 24upx 0upx 24upx;
+  padding: 72upx 24upx 100upx 24upx;
   .whiteBackground {
     background-color: white;
     border-radius: 20upx;
@@ -260,6 +295,8 @@ export default {
         color: #999999;
         text-align: center;
         font-size: 24upx;
+        border-bottom: #d8d8d8 1upx solid;
+        padding-bottom: 10upx;
         font-weight: 400;
       }
     }
@@ -268,8 +305,12 @@ export default {
       display: flex;
       font-size: 24upx;
       text-align: center;
-      margin: 10upx 0;
-
+      margin: 20upx 0;
+      padding-bottom: 10upx;
+      border-bottom: #d8d8d8 1upx solid;
+      &:last-child {
+        border: none;
+      }
       .no {
         width: 12%;
         white-space: nowrap;
@@ -318,13 +359,18 @@ export default {
       }
     }
     .Pctoday {
-      margin: 10upx 0;
+      margin: 20upx 0;
       display: flex;
       font-size: 24upx;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
+      padding-bottom: 10upx;
+      border-bottom: #d8d8d8 1upx solid;
       text-overflow: ellipsis;
+      &:last-child {
+        border: none;
+      }
       .no1 {
         width: 12%;
         white-space: nowrap;
@@ -372,6 +418,13 @@ export default {
         text-overflow: ellipsis;
       }
     }
+  }
+  .seeMore {
+    color: #999999;
+    align-items: center;
+    text-align: center;
+    font-size: 28upx;
+    padding-top: 50upx;
   }
 }
 </style>

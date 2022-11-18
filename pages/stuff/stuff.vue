@@ -79,13 +79,12 @@
       <view class="navs2" ref="navs2Ref">
         <view
           class="item"
-          :class="{ active: item.id === currentTab }"
+          :class="{ active: item.value === currentTab }"
           v-for="item in navs2"
-          :key="item.id"
-          @click="switchTab(item.id)"
-          >{{ item.storeName }}</view
+          :key="item.value"
+          @click="switchTab(item.value)"
+          >{{ item.label }}</view
         >
-
         <!-- <view class="modal" ref="modalRef">
           <view
             class="item"
@@ -162,23 +161,7 @@
           </view>
         </view>
       </view>
-      <view class="list-type">
-        <!-- <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
-            style="width: 100%"
-            alt=""
-          /> -->
-
-        <!-- <Table
-          
-          ></Table> -->
-      </view>
-      <!-- <img
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
-          style="width: 100%"
-          alt=""
-        /> -->
-
+      <view class="list-type"> </view>
       <Pane title="价格指数">
         <img
           style="width: 100%"
@@ -233,15 +216,13 @@
             :desc="item.desc"
             :id="item.id"
           ></StuffStore>
-          <!-- <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore> -->
         </view>
       </Pane>
 
       <Pane
         title="行业信息"
         v-if="informationList.length"
+        v-show="currentTab == 0"
         route="/stuff/industry/infomation-list"
       >
         <IndustryInformation
@@ -254,7 +235,6 @@
         ></IndustryInformation>
       </Pane>
     </view>
-    <!-- </view> -->
   </view>
 </template>
 
@@ -264,6 +244,7 @@ import Pane from "./components/pane.vue";
 import Table from "./components/table.vue";
 import IndustryInformation from "./components/industry-information-pane.vue";
 import StuffStore from "./components/stuff-store.vue";
+import { goodsListApi } from "../../api/goods";
 import Carousel from "../../components/carousel";
 import { checkWhoami } from "../../utils";
 import {
@@ -274,9 +255,7 @@ import {
 } from "../../api/stuff";
 import { getBrandTypeApi } from "../../api/brand";
 import Tables from "../../stuff/components/table";
-
 import { getBrandListApi } from "../../api/brand";
-
 export default {
   components: {
     Pane,
@@ -299,6 +278,8 @@ export default {
       brandList: [],
       PcToday: [],
       PricesList: [],
+      brandgenreId: "",
+      page: 1,
     };
   },
   filters: {
@@ -308,6 +289,14 @@ export default {
     },
   },
   methods: {
+    async stuffGoodsList() {
+      const res = await goodsListApi({
+        goodsType: 2,
+      });
+      console.log(res);
+      this.navs2 = res.data.filterCategoryList;
+      this.navs2.unshift({ label: "综合", value: 0 });
+    },
     gongqiu() {
       uni.navigateTo({
         url: "../../stuff/gongqiu/gongqiu",
@@ -331,8 +320,13 @@ export default {
     },
     switchTab(index) {
       this.currentTab = index;
-      if (this.showMoreVisible) {
-        this.handleShowMore();
+      this.brandgenreId = index;
+      // console.log(this.brandgenreId);
+      if (this.brandgenreId == 0) {
+      } else {
+        uni.navigateTo({
+          url: `../../stuff/stuffGoods/index?id=${index}`,
+        });
       }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
@@ -354,7 +348,7 @@ export default {
         document.body.style.overflow = "auto";
       }
     },
-    //门店分类
+    // 门店分类
     async getBrandType() {
       const res = await getBrandTypeApi({
         storeName: "",
@@ -452,6 +446,15 @@ export default {
           item.name == "里翎皮革"
       );
     },
+    //点击后触发
+    async touchBrandList() {
+      const res = await getBrandListApi({
+        brandgenreId: this.brandgenreId,
+        page: this.page,
+      });
+      console.log(res);
+      this.brandList = res.data.brandList;
+    },
   },
   created() {},
   onLoad() {
@@ -466,6 +469,7 @@ export default {
     this.getPcTodayList();
     this.getPricesList();
     this.getBrandType();
+    this.stuffGoodsList();
   },
 };
 </script>
