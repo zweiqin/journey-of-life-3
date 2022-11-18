@@ -306,7 +306,7 @@
 				{
 					"path": "confirm-order",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "确认订单"
 					}
 				},
 				{
@@ -376,18 +376,22 @@
 					"path": "community-detail"
 				},
 				{
-					"path": "community-order"
+					"path": "community-order",
+					"style": {
+						"navigationBarTitleText": "服务信息"
+					}
 				},
 				{
-					"path": "customer-information"
-					// "usingComponents": {
-					// 	"van-picker": "wxcomponents/vant/dist/picker/index.vue",
-					// 	"van-button":"/wxcomponents/vant/dist/button/index.vue",
-					// 	"van-popup": "/wxcomponents/vant/dist/popup/index.vue"
-					// }
+					"path": "customer-information",
+					"style": {
+						"navigationBarTitleText": "服务信息"
+					}
 				},
 				{
-					"path": "confirm-order"
+					"path": "confirm-order",
+					"style": {
+						"navigationBarTitleText": "确认订单"
+					}
 				},
 				{
 					"path": "vip-center/vip-detail",
@@ -684,6 +688,12 @@
 				},
 				{
 					"path": "postCard/addPostCard"
+				},
+				{
+					"path": "sever/view-history",
+					"style": {
+						"navigationBarTitleText": "历史"
+					}
 				}
 			]
 		},

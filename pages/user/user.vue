@@ -78,24 +78,30 @@
     <!-- 第一个 -->
     <view class="collection">
       <view class="collection-chose" @click="choseCollection">
-        <view @click="changeTab(0)" :class="{ active: currentTab === 0 }" class="item"
+        <view
+          @click="changeTab(0)"
+          :class="{ active: currentTab === 0 }"
+          class="item"
           >商品订单</view
         >
-        <view @click="changeTab(1)" :class="{ active: currentTab === 1 }" class="item"
+        <view
+          @click="changeTab(1)"
+          :class="{ active: currentTab === 1 }"
+          class="item"
           >社区订单</view
         >
       </view>
       <UserPanel :currentTab="currentTab" :data="one" v-if="currentTab === 0">
         <view class="info">
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('collection')">
             <text class="title">收藏</text>
             <text class="value">{{ userInfo.collectCount || 0 }}</text>
           </view>
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('history')">
             <text class="title">足迹</text>
             <text class="value"> {{ userInfo.footprintCount || 0 }} </text>
           </view>
-          <view class="item" @click="bindtapsubscription">
+          <view class="item" @click="handleToViewHistory('follow')">
             <text class="title">订阅</text>
             <text class="value"> {{ userInfo.rssCount || 0 }}</text>
           </view>
@@ -103,25 +109,33 @@
       </UserPanel>
       <UserPanel :currentTab="currentTab" :data="two" v-if="currentTab === 1">
         <view class="info">
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('collection')">
             <text class="title">收藏</text>
-            <text class="value">10</text>
+            <text class="value">{{ userInfo.collectCount || 0 }}</text>
           </view>
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('history')">
             <text class="title">足迹</text>
-            <text class="value">56</text>
+            <text class="value">{{ userInfo.footprintCount || 0 }}</text>
           </view>
-          <view class="item" @click="bindtapsubscription">
+          <view class="item" @click="handleToViewHistory('follow')">
             <text class="title">订阅</text>
-            <text class="value">123</text>
+            <text class="value">{{ userInfo.rssCount || 0 }}</text>
           </view>
         </view>
       </UserPanel>
       <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
 
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="marketingTools"></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="communityServices"></UserPanel>
+      <UserPanel
+        :row="4"
+        :showShadow="false"
+        :data="marketingTools"
+      ></UserPanel>
+      <UserPanel
+        :row="4"
+        :showShadow="false"
+        :data="communityServices"
+      ></UserPanel>
       <UserPanel
         @clickItem="handleClick"
         :row="4"
@@ -213,6 +227,12 @@ export default {
       if (item.label === "进销存") {
         location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
       }
+    },
+
+    handleToViewHistory(page) {
+      uni.navigateTo({
+        url: "/user/sever/view-history?page=" + page,
+      });
     },
   },
   onShow() {

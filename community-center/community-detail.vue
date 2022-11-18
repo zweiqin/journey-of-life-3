@@ -8,7 +8,9 @@
           class="return"
           @click="handleBack"
         />
-        <view class="title">{{ title }}</view>
+        <view class="title">
+          <text class="page-title">{{ title }}</text>
+        </view>
         <view class="location">
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png"
@@ -279,7 +281,10 @@ export default {
     console.log(options);
     this.serverTypeId = options.id;
     this.title = options.serverNameThree;
-    this.serverUrl = options.serverImageUrl;
+    uni.setNavigationBarTitle({
+      title: this.title,
+    });
+    this.serverInfoUrl = options.serverImageUrl;
     this.getServiceDetail();
     this.getLocation();
   },
@@ -296,7 +301,10 @@ export default {
 .community-detail {
   background: #f7f8fa;
   .head {
+    padding-top: 10px;
     background: #ffffff;
+    padding-right: 10px;
+    box-sizing: border-box;
     .title-list {
       display: flex;
       align-items: center;
@@ -311,6 +319,7 @@ export default {
         font-size: 36upx;
         font-weight: bold;
         color: #3d3d3d;
+        text-align: left;
       }
       .location {
         // width: 124upx;
