@@ -110,22 +110,29 @@
             <text>及时服务</text>
           </view>
           <view class="img-list">
-            <view class="people" v-for="item2 in serviceType" :key="item2.value" @click="handleToServiceListType(item2.value)">
+            <view
+              class="people"
+              v-for="item2 in serviceType"
+              :key="item2.value"
+              @click="handleToServiceListType(item2.value)"
+            >
               <img
                 :src="
-                item2.a ||
-                'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png'"
+                  item2.a ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png'
+                "
                 alt=""
                 class="a"
               />
               <img
                 :src="
-                item2.round ||
-                'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png'"
+                  item2.round ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png'
+                "
                 alt=""
                 class="round"
               />
-              <view class="name">{{item2.label}}</view>
+              <view class="name">{{ item2.label }}</view>
             </view>
 
             <!-- <view class="people" @click="handleToServiceListType">
@@ -395,20 +402,97 @@
       </view>
 
       <view class="share">
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(0)"
+          :class="{ active: currentTab === 0 }"
+        >
           <view class="text">居家经验</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
             alt=""
             class="img"
+            v-if="currentTab == 0"
           />
         </view>
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(1)"
+          :class="{ active: currentTab === 1 }"
+        >
           <view class="text">家居分享</view>
-          <img src="" alt="" class="img" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
+            alt=""
+            class="img"
+            v-if="currentTab == 1"
+          />
         </view>
       </view>
-      <view class="fx">
+      <view class="fx" v-if="currentTab == 0">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
+          alt=""
+          class="img"
+        />
+        <view class="midd">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/sj8pr4z00tz2ghkcbr23.png"
+            alt=""
+            class="tip"
+          />
+        </view>
+        <view class="white">
+          <view class="z">
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="fx" v-if="currentTab == 1">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
           alt=""
@@ -492,6 +576,7 @@ export default {
   },
   data() {
     return {
+      currentTab: "",
       moreService,
       list,
       serviceType,
@@ -505,6 +590,7 @@ export default {
   onLoad() {
     this.showPopup = true;
 
+    this.address = "定位中...";
     const _this = this;
     uni.getLocation({
       type: "gcj02",
@@ -517,7 +603,6 @@ export default {
             _this.address = result.town.title;
             // const result = res.result;
             // _this.address = result;
-            
           }
         });
       },
@@ -540,11 +625,16 @@ export default {
       });
     },
 
-    handleToServiceListType(item){
+    handleToServiceListType(item) {
       this.value = item;
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
       });
+    },
+
+    choice(index) {
+      this.currentTab = index;
+      console.log(this.currentTab);
     },
   },
   created() {},
@@ -599,8 +689,8 @@ export default {
           padding-left: 14upx;
           flex: 1;
           font-size: 24upx;
-          font-weight: 500;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
         }
       }
     }
@@ -1036,12 +1126,14 @@ export default {
       justify-content: space-between;
       .item {
         display: flex;
+        color: #3d3d3d;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        &.active {
+        }
         .text {
           font-size: 36upx;
-          color: #3d3d3d;
         }
         .img {
           width: 84upx;

@@ -211,8 +211,9 @@ uni-page-body {
           padding-left: 14upx;
           flex: 1;
           font-size: 24upx;
-          font-weight: 500;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
+          border-left: 2upx solid #D8D8D8;
         }
       }
     }

@@ -277,7 +277,7 @@ export default {
 .community-order {
   padding-bottom: 180upx;
   .title-list {
-    padding: 20upx 34upx 36upx 26upx;
+    padding: 40upx 54upx 36upx 26upx;
     display: flex;
     .return {
       width: 48upx;

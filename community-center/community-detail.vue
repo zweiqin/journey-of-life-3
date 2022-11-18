@@ -284,7 +284,7 @@ export default {
     uni.setNavigationBarTitle({
       title: this.title,
     });
-    this.serverInfoUrl = options.serverImageUrl;
+    this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
     this.getLocation();
   },
@@ -301,13 +301,15 @@ export default {
 .community-detail {
   background: #f7f8fa;
   .head {
-    padding-top: 10px;
+    padding-top: 20upx;
     background: #ffffff;
-    padding-right: 10px;
+    padding-right: 20upx;
     box-sizing: border-box;
     .title-list {
+      position: relative;
       display: flex;
       align-items: center;
+      
       padding: 20upx 8upx 36upx 26upx;
       .return {
         width: 48upx;
@@ -319,7 +321,7 @@ export default {
         font-size: 36upx;
         font-weight: bold;
         color: #3d3d3d;
-        text-align: left;
+        
       }
       .location {
         // width: 124upx;
@@ -327,6 +329,8 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: absolute;
+        right: 0upx;
 
         .icon {
           width: 28upx;

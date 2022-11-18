@@ -51,10 +51,14 @@
         <view class="text">填写上门地址</view>
       </view> -->
 
-      <view class="diqu" style="position: relative">
-        
+      <view class="area" style="position: relative">
         <JCity @confirm="City($event.area)" :text="address"> </JCity>
-        <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
+        <JIcon
+          type="locale"
+          width="34"
+          height="40"
+          style="position: absolute; top: 20upx; right: 0upx"
+        ></JIcon>
       </view>
 
       <view class="add-list">
