@@ -85,7 +85,6 @@
           @click="switchTab(item.id)"
           >{{ item.storeName }}</view
         >
-
         <!-- <view class="modal" ref="modalRef">
           <view
             class="item"
@@ -98,7 +97,7 @@
         </view> -->
       </view>
 
-      <view class="tradeLeads">
+      <view class="tradeLeads" v-if="currentTab == 0">
         <view class="topchose" style="margin-bottom: 10px">
           <view
             @click="changeTab(0)"
@@ -162,24 +161,8 @@
           </view>
         </view>
       </view>
-      <view class="list-type">
-        <!-- <img
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
-            style="width: 100%"
-            alt=""
-          /> -->
-
-        <!-- <Table
-          
-          ></Table> -->
-      </view>
-      <!-- <img
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/t5vvz7sdgpruaq7actgm.png"
-          style="width: 100%"
-          alt=""
-        /> -->
-
-      <Pane title="价格指数">
+      <view class="list-type"> </view>
+      <Pane title="价格指数" v-if="currentTab == 0">
         <img
           style="width: 100%"
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gxawxw339ne2sb1isdw8.png "
@@ -233,15 +216,13 @@
             :desc="item.desc"
             :id="item.id"
           ></StuffStore>
-          <!-- <StuffStore></StuffStore>
-          <StuffStore></StuffStore>
-          <StuffStore></StuffStore> -->
         </view>
       </Pane>
 
       <Pane
         title="行业信息"
         v-if="informationList.length"
+        v-show="currentTab == 0"
         route="/stuff/industry/infomation-list"
       >
         <IndustryInformation
@@ -254,7 +235,6 @@
         ></IndustryInformation>
       </Pane>
     </view>
-    <!-- </view> -->
   </view>
 </template>
 
@@ -274,9 +254,7 @@ import {
 } from "../../api/stuff";
 import { getBrandTypeApi } from "../../api/brand";
 import Tables from "../../stuff/components/table";
-
 import { getBrandListApi } from "../../api/brand";
-
 export default {
   components: {
     Pane,
@@ -299,6 +277,8 @@ export default {
       brandList: [],
       PcToday: [],
       PricesList: [],
+      brandgenreId: "",
+      page: 1,
     };
   },
   filters: {
@@ -331,8 +311,12 @@ export default {
     },
     switchTab(index) {
       this.currentTab = index;
-      if (this.showMoreVisible) {
-        this.handleShowMore();
+      this.brandgenreId = index;
+      // console.log(this.brandgenreId);
+      if (this.brandgenreId == 0) {
+        this.getBrandType();
+      } else {
+        this.touchBrandList();
       }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
@@ -451,6 +435,15 @@ export default {
           item.name == "成鑫木业有限公司" ||
           item.name == "里翎皮革"
       );
+    },
+    //点击后触发
+    async touchBrandList() {
+      const res = await getBrandListApi({
+        brandgenreId: this.brandgenreId,
+        page: this.page,
+      });
+      console.log(res);
+      this.brandList = res.data.brandList;
     },
   },
   created() {},

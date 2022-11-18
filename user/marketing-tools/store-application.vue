@@ -71,11 +71,6 @@ export default {
       },
       // 门店类型列表
       storeType: [],
-
-      handleSaveImg(field, imgUrl) {
-        this.form.imgs[field] = imgUrl;
-        this.$forceUpdate();
-      },
     };
   },
 
@@ -88,6 +83,10 @@ export default {
   },
 
   methods: {
+    handleSaveImg(field, imgUrl) {
+      this.form.imgs[field] = imgUrl;
+      this.$forceUpdate();
+    },
     // 点击提交按钮
     submit(tag) {
       const _this = this;
@@ -240,27 +239,27 @@ export default {
       // });
       // console.log(res);
       payOrderGoodsApi({
-            orderNo: this.payOrderID,
-            userId: getUserId(),
-            payType: 4
-          }).then((res) => {
-            const form = document.createElement("form");
-            form.setAttribute("action", res.url);
-            form.setAttribute("method", "POST");
+        orderNo: this.payOrderID,
+        userId: getUserId(),
+        payType: 4,
+      }).then((res) => {
+        const form = document.createElement("form");
+        form.setAttribute("action", res.url);
+        form.setAttribute("method", "POST");
 
-            const data = JSON.parse(res.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
+        const data = JSON.parse(res.data);
+        let input;
+        for (const key in data) {
+          input = document.createElement("input");
+          input.name = key;
+          input.value = data[key];
+          form.appendChild(input);
+        }
 
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          });
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      });
     },
     async getUserUpInfoRead() {
       this.token = uni.getStorageSync(USER_TOKEN);

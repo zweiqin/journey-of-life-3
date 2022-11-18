@@ -68,12 +68,12 @@ export const upLoadImgVlog = [
     {
         value: 0,
         lable: "上传图片",
-        field: "upLoad",
+        field: "img",
         type: "upLoad"
     }, {
         value: 1,
         lable: "上传视频",
-        field: "upLoad",
+        field: "vlog",
         type: "upLoad"
     },
 
