@@ -23,31 +23,32 @@ export const one = {
   menus: [
     {
       label: "待付款",
-      icon: require("../../static/images/user/daifukuan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6oy1doklr6qy59uida1r.png ",
       url: "/user/orderForm/order-form?type=1",
       showType: 1,
     },
     {
       label: "待发货",
-      icon: require("../../static/images/user/daifahuo.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zufcag92apxavgddfdx1.png ",
+
       url: "/user/orderForm/order-form?type=2",
       showType: 2,
     },
     {
       label: "待收货",
-      icon: require("../../static/images/user/daishouhuo.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qb8dsznp8mkh5f5oumi8.png ",
       url: "/user/orderForm/order-form?type=3",
       showType: 3,
     },
     {
       label: "待评价",
-      icon: require("../../static/images/user/daipingjia.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/g5stm4mlnteyf71nnedx.png ",
       url: "/user/orderForm/order-form?type=4",
       showType: 4,
     },
     {
       label: "所有订单",
-      icon: require("../../static/images/user//suoyoudingdan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tj750f4yk1bv8z972ubf.png ",
       url: "/user/orderForm/order-form?type=0",
       showType: 0,
     },
@@ -58,27 +59,27 @@ export const two = {
   menus: [
     {
       label: "待付款",
-      icon: require("../../static/images/user/daifukuan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6oy1doklr6qy59uida1r.png ",
       url: "/community-center/order",
     },
     {
       label: "待发货",
-      icon: require("../../static/images/user/daifahuo.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zufcag92apxavgddfdx1.png ",
       url: "/community-center/order",
     },
     {
       label: "待安装",
-      icon: require("../../static/images/lqb/user/daianzhuang.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/kx30q97obt0wxhy6qk9f.png ",
       url: "/community-center/order",
     },
     {
       label: "待评价",
-      icon: require("../../static/images/user/daipingjia.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/g5stm4mlnteyf71nnedx.png ",
       url: "/community-center/order",
     },
     {
       label: "所有订单",
-      icon: require("../../static/images/user//suoyoudingdan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tj750f4yk1bv8z972ubf.png ",
       url: "/community-center/order",
     },
   ],
@@ -124,40 +125,40 @@ export const serve = {
   menus: [
     {
       label: "商品收藏",
-      icon: require("../../static/images/user/shangpinshocang.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/v5yond28i8fx4lyu5ulv.png",
       url: "/user/Collection/Goods-Collection",
     },
     {
       label: "我的拼团",
-      icon: require("../../static/images/user/wodepintuan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/amhee3jrsp4gvj52s7gj.png ",
     },
     {
       label: "地址管理",
-      icon: require("../../static/images/user/dizhiguanli.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/r76h31omvpyz32bqpfs6.png ",
       url: "/user/site/site-manage",
     },
     {
       label: "购物车",
-      icon: require("../../static/images/user/gouwuche.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/j75unnyxcbtnf3wwfsrs.png ",
       url: "/user/sever/shop-car",
     },
     {
       label: "优惠劵",
-      icon: require("../../static/images/user/youhuijuan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4u948ko5bu56bbw0v0cd.png ",
       url: "/user/sever/coupon",
     },
     {
       label: "联系客服",
-      icon: require("../../static/images/user/lianxikefu.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1wtntegtsfarlxi4e1p1.png ",
     },
     {
       label: "社区管家",
-      icon: require("../../static/images/user/huiyuanshengji.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8bqv4rk32snko0cncwr6.png ",
       url: "/user/sever/userUp",
     },
     {
       label: "推广码",
-      icon: require("../../static/images/user/tuiguangma.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qreq9r6so29qkurcjeoc.png ",
       // url: "/pages/stuff/brand/index",
     },
   ],
@@ -168,22 +169,22 @@ export const digitalStore = {
   menus: [
     {
       label: "营销画像",
-      icon: require("../../static/images/user/yingxiaohuaxiang.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ovt68z4ewzdqba6l8yte.png ",
       url: "/user/digital-store/marketing-portrait",
     },
     {
       label: "信息哨兵",
-      icon: require("../../static/images/user/xinxishaobing.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/uyp6zsta1v2iookr5af9.png ",
       url: "/user/digital-store/information-sentry",
     },
     {
       label: "业绩哨兵",
-      icon: require("../../static/images/user/yejishaobing.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ct6nqpua5ttw22rvr4ih.png ",
       url: "/user/digital-store/performance",
     },
     {
       label: "业务管理",
-      icon: require("../../static/images/user/yewuguanli.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w0dp1m3i5no3deeuv34e.png ",
       url: "/user/digital-store/business/index"
     },
   ],
@@ -194,7 +195,7 @@ export const marketingTools = {
   menus: [
     {
       label: "门店申请",
-      icon: require("../../static/images/user/mendiankanban.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dmr04pozfeiw33qvoqgq.png",
       url: "/user/sever/shopUp",
 
     },
@@ -205,23 +206,23 @@ export const marketingTools = {
     },
     {
       label: "每日签到",
-      icon: require("../../static/images/user/meiriqiandao.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z9sw8wqqfm3pw67z1yce.png ",
     },
     {
       label: "门店看板",
-      icon: require("../../static/images/user/mendiankanban.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4fbzhcn6vvipxzta6fs8.png ",
     },
     {
       label: "智能画册",
-      icon: require("../../static/images/user/zhinenghuace.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gd7fnlasc89w4bwgo7ox.png ",
     },
     {
       label: "秒杀活动",
-      icon: require("../../static/images/user/miaoshahuodong.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zbi9v1dns5mb7uyzyhkx.png ",
     },
     {
       label: "分享券",
-      icon: require("../../static/images/user/fenxiangjuan.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d5c5ihwrrrfzxc670l1d.png ",
     },
     {
       label: "推广中心",
@@ -259,11 +260,11 @@ export const otherServe = {
   menus: [
     {
       label: "进销存",
-      icon: require("../../static/images/user//jinxiaocun.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hgmuqnspah5ik2jzh1pl.png",
     },
     {
       label: "关注物流",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tu5v33oy9x1vabhnyyg8.png ",
       url: "/logistics/appoint",
     },
     {
