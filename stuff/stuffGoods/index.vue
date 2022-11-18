@@ -1,5 +1,8 @@
 <template>
-  <div class="stuffGoods">stuffGoods</div>
+  <div class="stuffGoods">
+    <Ttitle
+    :title="'商品选购'"/>
+  </div>
 </template>
 
 <script>

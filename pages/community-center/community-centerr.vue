@@ -110,21 +110,25 @@
             <text>及时服务</text>
           </view>
           <view class="img-list">
-            <view class="people" @click="handleToServiceListHome">
+            <view class="people" v-for="item2 in serviceType" :key="item2.value" @click="handleToServiceListType(item2.value)">
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png"
+                :src="
+                item2.a ||
+                'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png'"
                 alt=""
                 class="a"
               />
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png"
+                :src="
+                item2.round ||
+                'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png'"
                 alt=""
                 class="round"
               />
-              <view class="name">维修</view>
+              <view class="name">{{item2.label}}</view>
             </view>
 
-            <view class="people" @click="handleToServiceListHome">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png"
                 alt=""
@@ -136,9 +140,9 @@
                 class="round"
               />
               <view class="name">安装</view>
-            </view>
+            </view> -->
 
-            <view class="people" @click="handleToServiceListHome">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png"
                 alt=""
@@ -150,7 +154,7 @@
                 class="round"
               />
               <view class="name">清洁</view>
-            </view>
+            </view> -->
           </view>
           <view class="s-list">
             <view
@@ -479,6 +483,7 @@ import DiscountPopup from "./components/discount.vue";
 import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import { list } from "./config";
 import { moreService } from "./config";
+import { serviceType } from "./config";
 export default {
   name: "Community-centerr",
   components: {
@@ -489,6 +494,7 @@ export default {
     return {
       moreService,
       list,
+      serviceType,
       value: "",
       serviceName: "",
       showPopup: false,
@@ -528,6 +534,13 @@ export default {
 
     handleToServiceList(item) {
       console.log("服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
+    },
+
+    handleToServiceListType(item){
       this.value = item;
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,

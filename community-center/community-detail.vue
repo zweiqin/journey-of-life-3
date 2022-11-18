@@ -15,7 +15,7 @@
             alt=""
             class="icon"
           />
-          <view class="address">龙江镇</view>
+          <view class="address">{{ address }}</view>
         </view>
       </view>
       <view class="goods">
@@ -133,7 +133,6 @@
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
           alt=""
           class="show"
-          
         />
       </view>
     </view>
@@ -164,6 +163,7 @@
 <script>
 import item from "../community-center/componts/item";
 import { getServiceDetailApi } from "../api/community-center";
+import { getAdressDetailByLngLat } from "../utils/DWHutils";
 export default {
   name: "Community-detail",
   props: {},
@@ -172,6 +172,7 @@ export default {
   },
   data() {
     return {
+      address: "",
       serviceDetail: [],
       id: "",
       serverTypeId: "",
@@ -199,13 +200,11 @@ export default {
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
 
-
       uni.showToast({
         title: "请选择服务类型",
         icon: "none",
-        duration:2000
+        duration: 2000,
       });
-
 
       if (!this.isArtificial) {
         console.log("abc");
@@ -221,15 +220,22 @@ export default {
           console.log("sb kuaixuan");
         }
       }
+    },
 
-      // const id = this.currentTab;
-      // if (id == 0) {
-      //   console.log('sbbbbbb');
-      // } else {
-      //   uni.navigateTo({
-      //     url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}`,
-      //   });
-      // }
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result.address_reference;
+              _this.address = result.town.title;
+            }
+          });
+        },
+      });
     },
 
     switchTab(item1) {
@@ -256,19 +262,16 @@ export default {
 
       this.isArtificial = this.serviceDetail[0].isArtificial;
       this.length = this.serviceDetail.length;
-      console.log("是否一口价",this.isArtificial);
+      console.log("是否一口价", this.isArtificial);
 
       this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
       console.log("介绍", this.serverIntroduction);
 
       this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
       console.log("图片", this.serverInfoUrl);
-      
+
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
-      
-
-      
     },
   },
   created() {},
@@ -278,6 +281,7 @@ export default {
     this.title = options.serverNameThree;
     this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
+    this.getLocation();
   },
 };
 </script>
@@ -309,7 +313,8 @@ export default {
         color: #3d3d3d;
       }
       .location {
-        width: 124upx;
+        // width: 124upx;
+        height: 40upx;
         display: flex;
         align-items: center;
         justify-content: space-between;

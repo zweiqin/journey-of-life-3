@@ -9,7 +9,7 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">龙江镇</view>
+          <view class="text">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -64,11 +64,15 @@
 <script>
 import { getServiceSortApi } from "../api/community-center";
 import sort from "../community-center/componts";
+import { getAdressDetailByLngLat } from "../utils/DWHutils";
 export default {
   name: "Service-sort",
   components: {
     sort,
   },
+  // mounted() {
+  //   this.getLocation();
+  // },
   props: {},
   data() {
     return {
@@ -77,7 +81,7 @@ export default {
       sort: [],
       id: "",
       serverNameOne: "",
-      // data: [],
+      address: "",
       scrollHeight: 667,
     };
   },
@@ -95,14 +99,21 @@ export default {
       uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
 
-    // handleToServiceDetail(id) {
-    //   console.log("服务详情",id);
-    //   uni.navigateTo({ url: "../community-center/community-detail?id=" + id });
-
-    //   uni.navigateTo({
-    //     url: `/community-center/community-detail?id=${id}&name=   `
-    //   })
-    // },
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result.address_reference;
+              _this.address = result.town.title;
+            }
+          });
+        },
+      });
+    },
 
     //查询社区服务分类接口
     async getServiceSort() {
@@ -122,7 +133,7 @@ export default {
   onLoad(options) {
     this.currentTab = options.value * 1;
     console.log(this.currentTab);
-
+    this.getLocation();
     this.getServiceSort();
     const _this = this;
     uni.getSystemInfo({
@@ -145,23 +156,27 @@ uni-page-body {
     height: 120upx;
     line-height: 120upx;
     background: #ffffff;
+    padding-left: 16upx;
+    padding-right: 26upx;
+    box-sizing: border-box;
     // position: fixed;
     .search-bar {
-      width: 95%;
-      left: 3%;
-      top: 80upx;
+      width: 100%;
+      // left: 3%;
+      // top: 80upx;
       display: flex;
       align-items: center;
       .location {
         display: flex;
         align-items: center;
-        margin: 0 20upx;
+        // margin: 0 20upx;
+        margin-right: 5px;
         .return {
           width: 48upx;
           height: 48upx;
         }
         .text {
-          font-size: 36upx;
+          font-size: 32upx;
           font-weight: bold;
           color: #3d3d3d;
         }
@@ -171,7 +186,7 @@ uni-page-body {
         }
       }
       .search-box {
-        padding: 0upx 24upx;
+        padding: 0upx 16upx;
         display: flex;
         flex: 1;
         align-items: center;
