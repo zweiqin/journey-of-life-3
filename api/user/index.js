@@ -158,3 +158,13 @@ export const updateUserInfoApi = (data) => {
 export const refrshUserInfoApi = (data) => {
 	return RuanRequest("/user/refreshUser", data, "get");
 };
+
+// 查询用户足迹
+export const getUserViewHistoryApi = (data) => {
+  return RuanRequest("/footprint/list", data, "get");
+};
+
+// 获取收藏数据
+export const getUserCollectionListApi = (data) => {
+  return RuanRequest("/collect/list", data, "get");
+};

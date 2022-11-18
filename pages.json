@@ -229,7 +229,6 @@
 		{
 			"path": "pages/store/store"
 		}
-		
 	],
 	"tabBar": {
 		"selectedColor": "#E95D20",
@@ -679,6 +678,12 @@
 				},
 				{
 					"path": "postCard/addPostCard"
+				},
+				{
+					"path": "sever/view-history",
+					"style": {
+						"navigationBarTitleText": "历史"
+					}
 				}
 			]
 		},
