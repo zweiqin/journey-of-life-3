@@ -228,6 +228,12 @@
 		},
 		{
 			"path": "pages/store/store"
+		},
+		{
+			"path": "stuff/stuffGoods/index",
+			"style": {
+				"navigationBarTitleText": "stuffGoods"
+			}
 		}
 	],
 	"tabBar": {

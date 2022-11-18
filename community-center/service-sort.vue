@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       navbar: [],
-      currentTab: 1,
+      currentTab: "",
       sort: [],
       id: "",
       serverNameOne: "",
@@ -83,6 +83,7 @@ export default {
   },
   methods: {
     switchTab(index) {
+      console.log(this.currentTab);
       this.currentTab = index;
       this.sort = this.data.find((item) => item.id === index);
     },
@@ -90,10 +91,9 @@ export default {
     //   uni.navigateBack();
     // },
 
-    handleBack(){
-      uni.switchTab({ url:'/pages/community-center/community-centerr' });
+    handleBack() {
+      uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
-    
 
     // handleToServiceDetail(id) {
     //   console.log("服务详情",id);
@@ -106,9 +106,7 @@ export default {
 
     //查询社区服务分类接口
     async getServiceSort() {
-      const res = await getServiceSortApi({
-        id: this.id,
-      });
+      const res = await getServiceSortApi({});
 
       // console.log();
       console.log(res);
@@ -117,10 +115,14 @@ export default {
       this.sort = res.data[0];
       this.data = res.data;
       console.log(res.data[0]);
+      this.sort = this.data.find((item) => item.id === this.currentTab);
     },
   },
   mounted() {},
-  onLoad() {
+  onLoad(options) {
+    this.currentTab = options.value * 1;
+    console.log(this.currentTab);
+
     this.getServiceSort();
     const _this = this;
     uni.getSystemInfo({
