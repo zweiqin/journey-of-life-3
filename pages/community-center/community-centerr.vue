@@ -3,7 +3,7 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <view class="text">佛山市</view>
+          <view class="text">龙江镇</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -269,7 +269,7 @@
         </view>
         <view class="right">
           <view class="member">
-            <view class="l" @click="">
+            <view class="l">
               <view class="orange">会员套餐</view>
               <view class="title">
                 <view class="text">开通会员</view>
