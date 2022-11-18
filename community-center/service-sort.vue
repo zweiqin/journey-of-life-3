@@ -227,6 +227,7 @@ uni-page-body {
         text-align: center;
         line-height: 52upx;
         margin-bottom: 62upx;
+        transition: all 100ms;
         &.active {
           background: linear-gradient(270deg, #e95d20 0%, #faae63 99%);
           color: #ffffff;

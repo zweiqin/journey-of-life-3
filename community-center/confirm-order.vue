@@ -168,7 +168,7 @@ export default {
 <style lang="less" scoped>
 .confirm-order {
   .title-list {
-    padding: 20upx 34upx 36upx 26upx;
+    padding: 40upx 34upx 36upx 26upx;
     display: flex;
     .return {
       width: 48upx;
@@ -311,7 +311,7 @@ export default {
       font-weight: bold;
       color: #ffffff;
       text-align: center;
-      line-height: 70upx;
+      line-height: 80upx;
     }
   }
 

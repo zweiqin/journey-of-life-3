@@ -86,6 +86,7 @@
                 width: 160upx;
                 height: 160upx;
                 margin-right: 20upx;
+                margin-bottom: 20upx
               "
             >
               <img :src="img" alt="" class="img1" />
@@ -274,6 +275,7 @@ export default {
 
 <style lang="less" scoped>
 .community-order {
+  padding-bottom: 180upx;
   .title-list {
     padding: 20upx 34upx 36upx 26upx;
     display: flex;
@@ -557,7 +559,7 @@ export default {
       margin-top: 56upx;
       // width: 690upx;
       width: 100%;
-      height: 800upx;
+      // height: 800upx;
       border-radius: 10upx;
 
       .content {

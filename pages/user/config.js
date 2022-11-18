@@ -183,7 +183,7 @@ export const digitalStore = {
     },
     {
       label: "业务管理",
-      icon: require("../../static/images/user/yewuguanli.png"),
+      icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
       url: "/user/digital-store/business/index"
     },
   ],
@@ -221,7 +221,7 @@ export const marketingTools = {
     },
     {
       label: "分享券",
-      icon: require("../../static/images/user/fenxiangjuan.png"),
+      icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6p7orj3wo5yu6ysil9hg.png',
     },
     {
       label: "推广中心",
@@ -259,11 +259,11 @@ export const otherServe = {
   menus: [
     {
       label: "进销存",
-      icon: require("../../static/images/user//jinxiaocun.png"),
+      icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/a0xirky4ux574y6frenu.png',
     },
     {
       label: "关注物流",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
+      icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/bi9sucikii11iub2k811.png",
       url: "/logistics/appoint",
     },
     {
