@@ -3,7 +3,7 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <view class="text">龙江镇</view>
+          <view class="text">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -104,13 +104,13 @@
             </view>
           </view>
         </view>
-        <view class="w2" >
+        <view class="w2">
           <view class="title">
             <text>专业性强</text>
             <text>及时服务</text>
           </view>
           <view class="img-list">
-            <view class="people" @click="handleToServiceList">
+            <view class="people" @click="handleToServiceListHome">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png"
                 alt=""
@@ -121,10 +121,10 @@
                 alt=""
                 class="round"
               />
-              <view class="name">{{text ||"维修"}}</view>
+              <view class="name">维修</view>
             </view>
 
-            <view class="people" @click="handleToServiceList">
+            <view class="people" @click="handleToServiceListHome">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png"
                 alt=""
@@ -138,7 +138,7 @@
               <view class="name">安装</view>
             </view>
 
-            <view class="people" @click="handleToServiceList">
+            <view class="people" @click="handleToServiceListHome">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png"
                 alt=""
@@ -153,20 +153,31 @@
             </view>
           </view>
           <view class="s-list">
-            <view class="item">
+            <view
+              class="item"
+              v-for="item in list"
+              :key="item.value"
+              @click="handleToServiceList(item.value)"
+            >
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png"
+                :src="
+                  item.icon ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png'
+                "
                 alt=""
                 class="img"
               />
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png"
+                :src="
+                  item.shadow ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png'
+                "
                 alt=""
                 class="shadow"
               />
-              <view class="text">家具服务</view>
+              <view class="text">{{ item.label }}</view>
             </view>
-            <view class="item">
+            <!-- <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png"
                 alt=""
@@ -179,7 +190,7 @@
               />
               <view class="text">家电服务</view>
             </view>
-            <view class="item">
+            <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png"
                 alt=""
@@ -193,7 +204,7 @@
               <view class="text">水电灯具</view>
             </view>
 
-            <view class="item">
+            <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png"
                 alt=""
@@ -205,10 +216,15 @@
                 class="shadow"
               />
               <view class="text">清洗保洁</view>
-            </view>
+            </view> -->
           </view>
-          <view class="more" @click="handleToServiceListHome">
-            <view class="text">更多服务</view>
+          <view
+            class="more"
+            v-for="item1 in moreService"
+            :key="item1.value"
+            @click="handleToServiceListHome(item1.value)"
+          >
+            <view class="text">{{ item1.moreName }}</view>
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/nsez71tgcrlgpeu93h2s.png"
               alt=""
@@ -460,7 +476,9 @@
 <script>
 import community from "./components/community";
 import DiscountPopup from "./components/discount.vue";
-
+import { getAdressDetailByLngLat } from "../../utils/DWHutils";
+import { list } from "./config";
+import { moreService } from "./config";
 export default {
   name: "Community-centerr",
   components: {
@@ -469,24 +487,52 @@ export default {
   },
   data() {
     return {
+      moreService,
+      list,
+      value: "",
+      serviceName: "",
       showPopup: false,
+      address: "",
     };
   },
 
-  onLoad(){
-    this.showPopup = true
+  onLoad() {
+    this.showPopup = true;
+
+    const _this = this;
+    uni.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+          if (res.status === 0) {
+            // const result = res.result.address_component;
+            // _this.address = result.street;
+            const result = res.result.address_reference;
+            _this.address = result.town.title;
+            // const result = res.result;
+            // _this.address = result;
+            
+          }
+        });
+      },
+    });
   },
   methods: {
-    handleToServiceListHome() {
-      console.log("服务分类列表");
-      uni.navigateTo({ url: "../../community-center/service-sort" });
+    handleToServiceListHome(item) {
+      console.log("更多服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
     },
 
-    handleToServiceList(){
-      console.log("维修服务分类列表");
-      uni.navigateTo({ url: "../../community-center/service-sort" });
+    handleToServiceList(item) {
+      console.log("服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
     },
-
   },
   created() {},
 };

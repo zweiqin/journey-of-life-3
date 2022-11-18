@@ -21,7 +21,7 @@
       <view class="goods">
         <img
           :src="
-            serverInfoUrl ||
+            serverUrl ||
             'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
           "
           alt=""
@@ -210,12 +210,12 @@ export default {
       if (!this.isArtificial) {
         console.log("abc");
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverInfoUrl}`,
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`,
         });
       } else {
         if (!this.serverPrice == 0) {
           uni.navigateTo({
-            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverInfoUrl}`,
+            url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}`,
           });
         } else {
           console.log("sb kuaixuan");
@@ -261,8 +261,8 @@ export default {
       this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
       console.log("介绍", this.serverIntroduction);
 
-      // this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
-      // console.log("图片", this.serverInfoUrl);
+      this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
+      console.log("图片", this.serverInfoUrl);
       
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
@@ -276,7 +276,7 @@ export default {
     console.log(options);
     this.serverTypeId = options.id;
     this.title = options.serverNameThree;
-    this.serverInfoUrl = options.serverImageUrl;
+    this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
   },
 };
