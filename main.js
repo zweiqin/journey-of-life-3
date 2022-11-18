@@ -45,6 +45,12 @@ Vue.mixin({
 				duration: 2000,
 				icon: icon || "none",
 			});
+		},
+		go(url){
+			if(!url) return
+			uni.navigateTo({
+				 url
+			});
 		}
 	}
 });

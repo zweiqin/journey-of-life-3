@@ -15,7 +15,7 @@
             alt=""
             class="icon"
           />
-          <view class="address">佛山市</view>
+          <view class="address">龙江镇</view>
         </view>
       </view>
       <view class="goods">

@@ -50,7 +50,12 @@
         />
         <view class="text">填写上门地址</view>
       </view> -->
-      <JCity @confirm="City($event.area)" :text="address"> </JCity>
+
+      <view class="diqu" style="position: relative">
+        
+        <JCity @confirm="City($event.area)" :text="address"> </JCity>
+        <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
+      </view>
 
       <view class="add-list">
         <view class="detail-address">详细地址</view>
@@ -72,7 +77,7 @@
             alt=""
             class="time"
           /> -->
-          <view class="text">期待上门时间</view>
+          <view class="text">期望上门时间</view>
         </view>
         <!-- 
         <uni-section
@@ -103,6 +108,8 @@
               rangeSeparator="至"
             />
           </view>
+
+          <!-- <timeList></timeList> -->
 
           <!-- <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
@@ -239,10 +246,13 @@
 
 <script>
 import JCity from "../components/JCity/JCity.vue";
+
 import { getServicePriceApi } from "../api/community-center";
 import { getUserId } from "../utils";
+import { getAdressDetailByLngLat } from "../utils/DWHutils";
+
 export default {
-  components: { JCity },
+  components: { JCity, Location },
   name: "Customer-information",
   props: {},
   data() {
@@ -257,7 +267,7 @@ export default {
       name: "",
       phoneNumber: "",
       datetimesingle: "",
-      datetimerange:"",
+      datetimerange: "",
       time: "",
       pricingType: "",
       orderPrice: [],
@@ -287,16 +297,12 @@ export default {
       uni.navigateBack();
     },
 
-    
-
     handleToServiceConfirmOrder() {
       // uni.showToast({
       //   title: "请完善服务信息",
       //   icon: "none",
       //   duration: 2000,
       // });
-
-     
 
       if (
         !this.address ||
@@ -427,6 +433,19 @@ export default {
     }
 
     this.getServicePrice();
+
+    const _this = this;
+    uni.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+          if (res.status === 0) {
+            const result = res.result.address_component;
+            _this.address = result.province + result.city + result.district;
+          }
+        });
+      },
+    });
   },
 };
 </script>

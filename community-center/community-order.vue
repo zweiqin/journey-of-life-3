@@ -128,7 +128,7 @@
             cols="30"
             rows="10"
             class="show"
-            placeholder="说明内容实例"
+            placeholder="请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)"
             v-model="text"
           ></textarea>
 
@@ -389,38 +389,41 @@ export default {
         border-radius: 10upx;
         box-sizing: border-box;
         border: 2upx solid #999999;
+        color: #999999;
         &.active {
-          border: 2upx solid #fa5151;
+          // border: 2upx solid #007aff;
+          color: white;
+          background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
         }
         .specs {
           font-size: 28upx;
           font-weight: 400;
-          color: #3d3d3d;
+          
         }
         .logo {
           font-size: 36upx;
           font-weight: 400;
-          color: #fa5151;
+          // color: #999999;
         }
         .money {
           font-size: 36upx;
           font-weight: 400;
-          color: #fa5151;
+          // color: #999999;
         }
         .slash {
           font-size: 28upx;
           font-weight: 400;
-          color: #000000;
+          // color: #000000;
         }
         .unit {
           font-size: 28upx;
           font-weight: 400;
-          color: #3d3d3d;
+          // color: #999999;
         }
         .qi {
           font-size: 28upx;
           font-weight: 400;
-          color: #3d3d3d;
+          // color: #3d3d3d;
         }
       }
     }
@@ -566,7 +569,9 @@ export default {
         background: #f1f2f6;
         .show {
           font-size: 28upx;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
+          
         }
         .list {
           height: 34upx;
@@ -579,7 +584,7 @@ export default {
           }
           .example {
             font-size: 24upx;
-            color: #ea5f1f;
+            color: #007aff;
           }
         }
       }

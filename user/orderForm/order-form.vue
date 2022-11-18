@@ -1,442 +1,416 @@
-<!--
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-12 17:02:23
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 09:10:15
- * @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\orderForm\order-form.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-  <view>
-    <!-- 标题页 -->
-    <view class="order-form-title">
-      <view class="order-form-title-left-view">
-        <img
-          @click="back"
-          class="order-form-title-left-img"
-          src="../../static/images/store/chevron-states.png"
-          alt=""
-        />
-        <view class="order-form-title-text">我的订单</view>
-      </view>
-      <view class="order-form-title-right-view">
-        <img
-          class="order-form-title-right-img"
-          src="../../static/images/lqb/orderform/search.png"
-          alt=""
-        />
-      </view>
+  <view class="orders-container">
+    <view class="header">
+      <JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
+      <h2>我的订单</h2>
     </view>
-    <!-- 订单选择卡 -->
-    <view class="order-form-chose">
-      <view class="order-form-chose-text">
-        <view
-          @click="changeTab(0)"
-          :class="{ active: currentTab === 0 }"
-          class="item"
-          >全部</view
-        >
-        <view
-          @click="changeTab(1)"
-          :class="{ active: currentTab === 1 }"
-          class="item"
-          >待付款</view
-        >
-        <view
-          @click="changeTab(2)"
-          :class="{ active: currentTab === 2 }"
-          class="item"
-          >待发货</view
-        >
-        <view
-          v-if="collectiontype == 0"
-          @click="changeTab(3)"
-          :class="{ active: currentTab === 3 }"
-          class="item"
-          >待安装</view
-        >
-        <view
-          v-if="collectiontype == 1"
-          @click="changeTab(3)"
-          :class="{ active: currentTab === 3 }"
-          class="item"
-          >待收货</view
-        >
-        <view
-          @click="changeTab(4)"
-          :class="{ active: currentTab === 4 }"
-          class="item"
-          >待评价</view
-        >
-      </view>
-    </view>
-    <!-- 分界线 -->
-    <view class="order-form-boundary"> </view>
-    <!-- 商品详情 + 状态判断 0 = 全部 1 = 待付款  2 = 待发货  3= 待安装 4 = 待评价 -->
-    <view
-      v-for="(item, id) in orderList"
-      :key="id"
-      @click="bindtapdetail(item)"
-      :data-orderdetail="item"
-    >
+
+    <view class="navs">
       <view
-        v-for="(item1, id1) in item.goodsList"
-        :key="id1"
-        :data-goodsDetail="item1"
-        @click="bindgoodsdetail"
-        class="order-form-goods"
+        class="nav-item"
+        :class="{ 'nav-item-active': currentStatus === item.value }"
+        v-for="item in orderTypes"
+        :key="item.value"
+        @click="handleSwitchStatus(item.value)"
       >
-        <view class="goods-left">
-          <img class="goods-left-img" :src="item1.picUrl" alt="" />
-        </view>
-        <view class="goods-middle">
-          <view class="goods-name"> {{ item1.goodsName }}</view>
-          <view class="goods-detail">
-            <view class="detail-text">规格：</view>
-            <view
-              class="goods-size"
-              v-for="(item2, id2) in item1.specifications"
-              :key="id2"
-              >{{ item2 }}</view
-            >
-          </view>
-          <view class="goods-number">数量：{{ item1.number }}</view>
-          <view class="goods-money">￥{{ item1.price }}</view>
-        </view>
-        <view class="goods-right"
-          ><view class="right-top"
-            >{{
-              item.orderStatusText == "已取消(系统)"
-                ? "已取消"
-                : item.orderStatusText
-            }}
-          </view>
-          <view
-            class="right-bottom"
-            @click="bindCancel"
-            v-if="currentTab === 1"
-            :data-cancelDetail="item1"
-            >取消订单</view
-          >
-          <view
-            class="right-bottom"
-            @click="bindRefund"
-            :data-cancelDetail="item1"
-            v-if="currentTab === 2"
-            >申请退款</view
-          >
-          <view
-            class="right-bottom"
-            @click="bindConfirm"
-            :data-cancelDetail="item1"
-            v-if="currentTab === 3"
-            >确认收货</view
-          >
-          <view
-            class="right-bottom"
-            @click="bindDelete"
-            :data-cancelDetail="item1"
-            v-if="currentTab === 4"
-            >删除订单</view
-          >
-        </view>
+        {{ item.label }}
       </view>
     </view>
 
-    <view class="bottom" v-if="length == 0">
-      <view class="detail">暂无订单</view>
+    <view class="order-list-wrapper" v-if="orderList && orderList.length">
+      <view class="goods-pane" v-for="item in orderList" :key="item.id">
+        <view class="order-no-status" @click="handleToViewOrderDetail(item)">
+          <view class="order-no">订单号:{{ item.orderSn }}</view>
+          <view class="order-status">{{ item.orderStatusText }}</view>
+        </view>
+
+        <view class="goods-list" @click="handleToViewOrderDetail(item)">
+          <view
+            class="goods-item"
+            v-for="goods in item.goodsList"
+            :key="goods.id"
+          >
+            <image class="goods-img" :src="goods.picUrl" mode="" />
+
+            <view class="info">
+              <view class="name">{{ goods.goodsName }}</view>
+
+              <view class="good-sp-pr">
+                <view class="sp">标准</view>
+                <view class="pr">￥{{ goods.price }}</view>
+              </view>
+            </view>
+
+            <view>
+              <view class="number" style="text-align: right">
+                共 {{ goods.number }} 件商品
+              </view>
+              <button
+                v-if="item.handleOption.comment"
+                class="ev-btn uni-btn"
+                @click.stop="handleOpOrder(item, 'comment', goods)"
+              >
+                去评论
+              </button>
+            </view>
+          </view>
+        </view>
+
+        <view class="goods-ops">
+          <view class="actual-price">
+            实付：<text class="number">￥{{ item.actualPrice }}</text>
+          </view>
+
+          <view class="btns">
+            <view v-for="btn in orderOpButtons" :key="btn.label">
+              <button
+                :style="{
+                  background: btn.color,
+                }"
+                @click="handleOpOrder(item, btn.key)"
+                class="uni-btn"
+                v-if="item.handleOption[btn.key] && btn.label !== '去评论'"
+              >
+                {{ btn.label }}
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <uni-load-more
+        style="background: #fff"
+        v-if="loadingStatus !== 'hidden'"
+        :status="loadingStatus"
+      ></uni-load-more>
     </view>
-    <RecommendGoods></RecommendGoods>
+
+    <JNoData
+      v-if="loadingStatus === 'hidden' && !orderList.length"
+      text="无购物记录"
+      type="order-shop"
+    ></JNoData>
   </view>
 </template>
 
 <script>
-import loginVue from "../../pages/login/login.vue";
-import { getUserId } from "../../utils";
-import RecommendGoods from "../../components/recommend-goods";
+import { orderTypes, orderOpButtons } from "./config";
 import {
   getOrderListApi,
-  getOrderCancelApi,
-  getOrderConfirmApi,
-  getOrderDeleteApi,
-  getOrderRefundApi,
-  getOrderDetailApi,
+  orderCancelApi,
+  orderDeleteApi,
+  receiveGoodsApi,
 } from "../../api/order";
+import { payOrderGoodsApi } from "../../api/goods";
+import { getUserId } from "../../utils";
 export default {
-  components: {
-    RecommendGoods,
-  },
-  methods: {
-    bindRefund(e) {
-      this.orderId = e.currentTarget.dataset.canceldetail.orderId;
-      this.getOrderRefund();
-    },
-    bindDelete(e) {
-      this.orderId = e.currentTarget.dataset.canceldetail.orderId;
-      this.getOrderDelete();
-    },
-    bindConfirm(e) {
-      this.orderId = e.currentTarget.dataset.canceldetail.orderId;
-      this.getOrderConfirm();
-    },
-    bindCancel(e) {
-      console.log("cancel", e.currentTarget.dataset.canceldetail.orderId);
-      this.orderId = e.currentTarget.dataset.canceldetail.orderId;
-      this.getOrderCancel();
-    },
-    async getOrderRefund() {
-      const res = await getOrderRefundApi({
-        userId: getUserId(),
-        orderId: this.orderId,
-      });
-      console.log(res);
-      uni.showToast({
-        title: res.errmsg,
-        icon: "success",
-        mask: true,
-      });
-    },
-    async getOrderDelete() {
-      const res = await getOrderDeleteApi({
-        userId: getUserId(),
-        orderId: this.orderId,
-      });
-      console.log(res);
-      uni.showToast({
-        title: res.errmsg,
-        icon: "success",
-        mask: true,
-      });
-    },
-    async getOrderConfirm() {
-      const res = await getOrderConfirmApi({
-        userId: getUserId(),
-        orderId: this.orderId,
-      });
-      console.log(res);
-      uni.showToast({
-        title: res.errmsg,
-        icon: "success",
-        mask: true,
-      });
-    },
-    async getOrderCancel() {
-      const res = await getOrderCancelApi({
-        userId: getUserId(),
-        // showType:this.showType,
-        orderId: this.orderId,
-      });
-      // this.orderList = res.data.data;
-      console.log(res);
-      if (res.errno == 725 || res.errmsg == "订单不能取消") {
-        console.log("sb");
-      }
-      uni.showToast({
-        title: res.errmsg,
-        icon: "success",
-        mask: true,
-      });
-    },
-    async getOrderList() {
-      const res = await getOrderListApi({
-        userId: getUserId(),
-        // showType:this.showType,
-        showType: this.showType,
-        page: this.page,
-        size: this.size,
-      });
-      this.orderList = res.data.data;
-      this.length = res.data.count;
-    },
-    // 订单详情
-    async getOrderDetail() {
-      const res = await getOrderDetailApi({
-        userId: getUserId(),
-        orderId: this.orderId,
-        // userId:219,
-        // orderId:208
-      });
-      console.log(res);
-    },
-    back() {
-      uni.navigateBack();
-    },
-    changeTab(tab) {
-      this.currentTab = tab;
-      console.log(tab);
-      this.showType = tab;
-      this.getOrderList();
-    },
-    bindgoodsdetail(e) {
-      console.log("goods", e);
-    },
-    bindtapdetail(item) {
-      console.log(item);
-      this.orderId = item.id;
-      this.getOrderDetail();
-      uni.navigateTo({ url: "./order-form-detail" });
-      uni.setStorageSync("CAR_GOODS_DETAIL", item);
-
-      // uni.navigateTo({
-      //   url: "../orderForm/order-form-detail",
-      // });
-    },
-  },
   data() {
     return {
-      showType: 0,
-      collectiontype: "",
-      currentTab: 0,
-      length: "",
-      orderId: "",
+      orderTypes,
+      currentStatus: 0,
+      query: {
+        page: 1,
+        size: 10,
+      },
+      orderOpButtons,
+      totalPages: 0,
       orderList: [],
+      loadingStatus: "loading",
     };
   },
-  onLoad(e) {
-    this.collectiontype = e.collectiontype;
+
+  onLoad(options) {
+    this.currentStatus = options.type[0] * 1 || 0;
+  },
+
+  onShow() {
     this.getOrderList();
+  },
+
+  methods: {
+    // 获取订单信息
+    getOrderList(loadMore) {
+      uni.showLoading();
+      this.loadingStatus = "loading";
+      getOrderListApi({
+        userId: getUserId(),
+        showType: this.currentStatus,
+        ...this.query,
+      }).then(({ data }) => {
+        if (loadMore) {
+          this.orderList.push(...data.data);
+        } else {
+          this.orderList = data.data;
+        }
+        this.totalPages = data.totalPages;
+        this.loadingStatus = "hidden";
+        uni.hideLoading();
+
+        console.log(data);
+      });
+    },
+
+    // 切换状态
+    handleSwitchStatus(status) {
+      this.currentStatus = status;
+      this.query.page = 1;
+      this.query.size = 20;
+      this.getOrderList();
+    },
+
+    // 点击操作按钮
+    handleOpOrder(goods, key, currentGoods) {
+      if (key === "comment") {
+        this.handleToViewOrderDetail(goods, currentGoods);
+        return;
+      }
+      const mapMethods = {
+        cancel: {
+          text: "确定要取消当前订单吗?",
+          api: orderCancelApi,
+        },
+        delete: {
+          text: "确定要删除当前订单吗?",
+          api: orderDeleteApi,
+        },
+        confirm: {
+          text: "确定要收货吗",
+          api: receiveGoodsApi,
+        },
+      };
+
+      const _this = this;
+      if (
+        goods.handleOption[key] &&
+        ["cancel", "delete", "confirm"].includes(key)
+      ) {
+        uni.showModal({
+          title: "提示",
+          content: mapMethods[key].text,
+          success: function (res) {
+            if (res.confirm) {
+              mapMethods[key]
+                .api({
+                  userId: getUserId(),
+                  orderId: goods.id,
+                })
+                .then(() => {
+                  _this.query.page = 1;
+                  _this.getOrderList();
+                });
+            }
+          },
+        });
+      } else {
+        if (key === "pay") {
+          payOrderGoodsApi({
+            orderNo: goods.orderSn,
+            userId: getUserId(),
+            payType: 1,
+          }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
+            const form = document.createElement("form");
+            form.setAttribute("action", payData.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(payData.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        }
+      }
+    },
+
+    // 查看详情
+    handleToViewOrderDetail(goods, currentGoods) {
+      uni.navigateTo({
+        url:
+          "/user/orderForm/order-form-detail?id=" +
+          goods.id +
+          (currentGoods ? "&goodsId=" + currentGoods.id : ""),
+      });
+    },
+  },
+
+  onReachBottom() {
+    if (this.orderList.length < this.query.size) {
+      this.loadingStatus = "noMore";
+      return;
+    }
+
+    if (this.query.page >= this.totalPages) {
+      this.loadingStatus = "noMore";
+      return;
+    }
+
+    this.query.page++;
+    this.getOrderList(true);
   },
 };
 </script>
 
 <style lang="less" scoped>
-.order-form-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 74upx;
-  .order-form-title-left-view {
+.orders-container {
+  font-size: 28upx;
+  color: #3d3d3d;
+  padding: 60upx 0;
+
+  .header {
     display: flex;
     align-items: center;
-    margin-left: 32upx;
-    .order-form-title-left-img {
-      height: 48upx;
-      width: 48upx;
-      margin-right: 32upx;
-    }
-    .order-form-title-text {
-      font-size: 32upx;
-      font-weight: 500;
-    }
-  }
-  .order-form-title-right-view {
-    margin-right: 48upx;
-    .order-form-title-right-img {
-      height: 33upx;
-      width: 33upx;
-    }
-  }
-}
-.order-form-chose {
-  margin-top: 34upx;
-  margin-left: 44upx;
-  margin-right: 44upx;
+    justify-content: flex-start;
+    color: #000;
+    padding: 0 32upx;
+    box-sizing: border-box;
 
-  .order-form-chose-text {
+    h2 {
+      font-weight: normal;
+      font-size: 32upx;
+      margin-top: -8upx;
+    }
+  }
+
+  .navs {
     display: flex;
-    justify-content: space-evenly;
-    font-size: 24upx;
-    color: #999999;
-    margin-bottom: 14upx;
-    .item {
-      &.active {
-        font-weight: bold;
+    justify-content: space-between;
+    margin: 34upx 0;
+    padding-bottom: 20upx;
+    padding: 0 32upx;
+    box-sizing: border-box;
+
+    .nav-item {
+      transition: all 350ms;
+      &.nav-item-active {
         color: #ff8f1f;
       }
     }
   }
-}
-.order-form-boundary {
-  border: 0.5px solid #d8d8d8;
-  width: 90%;
-  margin: 0 auto;
-}
-.order-form-goods {
-  display: flex;
-  margin-top: 22upx;
-  justify-content: space-between;
-  padding: 0 44upx 0 32upx;
-  .goods-left {
-    margin-right: 36upx;
-    width: 30%;
-    .goods-left-img {
-      width: 200upx;
-      height: 150upx;
-    }
-  }
-  .goods-middle {
-    flex: 1;
-    margin-top: 10upx;
-    width: 48%;
-    .goods-name {
-      font-size: 24upx;
-      font-weight: 500;
-      width: 320upx;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .goods-detail {
-      font-size: 20upx;
-      color: #3d3d3d;
-      font-weight: 350;
-      overflow: hidden;
-      display: flex;
-      height: 30upx;
-      align-items: flex-start;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      .goods-size {
-        margin-right: 20upx;
-        display: flex;
-        overflow: scroll;
 
-        &::-webkit-scrollbar {
-          width: 0 !important;
+  .order-list-wrapper {
+    background-color: #f6f6f6;
+    padding-top: 10px;
+    font-size: 24upx;
+
+    .goods-pane {
+      padding: 32upx;
+      box-sizing: border-box;
+      background-color: #fff;
+      margin-bottom: 20upx;
+
+      &:nth-of-type(:last-child) {
+        margin-bottom: 0;
+      }
+
+      .order-no-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16upx;
+        border-bottom: 1upx solid #dbdbdb;
+
+        .order-status {
+          color: #f40;
+        }
+      }
+
+      .goods-list {
+        padding: 20upx 0;
+
+        .goods-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30upx;
+
+          .info {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+
+            .name {
+              font-size: 28upx;
+              font-weight: 500;
+              width: 300upx;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            .good-sp-pr {
+              margin-top: 20upx;
+              .sp {
+                line-height: 1.5;
+                color: #565656;
+              }
+
+              .pr {
+                font-size: 28upx;
+              }
+            }
+          }
+
+          .goods-img {
+            width: 140upx;
+            height: 140upx;
+            object-fit: cover;
+            margin-right: 20upx;
+          }
+        }
+      }
+
+      .goods-ops {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20upx;
+        border-top: 1upx solid #dbdbdb;
+
+        .actual-price {
+          font-size: 28upx;
+          font-weight: 500;
+
+          .number {
+            color: #f40;
+          }
+        }
+
+        .btns {
+          display: flex;
+          align-items: center;
+
+          .uni-btn {
+            font-size: 24upx;
+            color: #fff;
+            padding: 0 28upx;
+            background-color: #f40;
+            white-space: nowrap;
+            margin-left: 20upx;
+            border-radius: 4upx;
+          }
         }
       }
     }
-    .goods-number {
-      font-size: 20upx;
-      color: #3d3d3d;
-      font-weight: 350;
-    }
-    .goods-money {
-      color: #fa5151;
-      font-size: 28upx;
-      font-weight: 350;
-    }
-  }
-  .goods-right {
-    margin: auto 0;
-    font-size: 20upx;
-    font-weight: 350;
-    color: #fa5151;
-    width: 22%;
-    margin-left: 10upx;
-    padding-bottom: 20upx;
-    .right-top {
+
+    .ev-btn {
+      font-size: 24upx;
+      color: #fff;
+      padding: 18upx 28upx;
+      background-color: rgb(132, 195, 65);
       white-space: nowrap;
-      text-align: center;
-    }
-    .right-bottom {
-      color: black;
+      margin-left: 20upx;
+      border-radius: 4upx;
       margin-top: 20upx;
-      border-radius: 20upx;
-      padding: 6upx 15upx;
-      background-color: rgb(223, 223, 223);
-      text-align: center;
-      white-space: nowrap;
     }
-  }
-}
-.bottom {
-  .detail {
-    width: 750upx;
-    padding-top: 50upx;
-    color: #999999;
-    text-align: center;
-    font-size: 36upx;
   }
 }
 </style>
