@@ -2,7 +2,8 @@
   <view class="community-centerr">
     <view class="head">
       <view class="search-bar">
-        <view class="location">
+        <view class="location" @click.stop="handleClick">
+          <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
           <view class="text">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
@@ -106,8 +107,9 @@
         </view>
         <view class="w2">
           <view class="title">
-            <text>专业性强</text>
-            <text>及时服务</text>
+            <view class="text" v-for="items in names" :key="items.names">{{
+              items.text
+            }}</view>
           </view>
           <view class="img-list">
             <view
@@ -408,12 +410,14 @@
           :class="{ active: currentTab === 0 }"
         >
           <view class="text">居家经验</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
-            alt=""
-            class="img"
-            v-if="currentTab == 0"
-          />
+          
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
+              alt=""
+              class="img"
+              v-if="currentTab == 0"
+            />
+          
         </view>
         <view
           class="item"
@@ -576,7 +580,7 @@ export default {
   },
   data() {
     return {
-      currentTab: "",
+      currentTab: 0,
       moreService,
       list,
       serviceType,
@@ -584,29 +588,30 @@ export default {
       serviceName: "",
       showPopup: false,
       address: "",
+      names: [{ text: "专业性强" }, { text: "及时服务" }],
     };
   },
 
   onLoad() {
     this.showPopup = true;
-
-    this.address = "定位中...";
-    const _this = this;
-    uni.getLocation({
-      type: "gcj02",
-      success: function (res) {
-        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-          if (res.status === 0) {
-            // const result = res.result.address_component;
-            // _this.address = result.street;
-            const result = res.result.address_reference;
-            _this.address = result.town.title;
-            // const result = res.result;
-            // _this.address = result;
-          }
-        });
-      },
-    });
+    this.getLocation();
+    // this.address = "定位中...";
+    // const _this = this;
+    // uni.getLocation({
+    //   type: "gcj02",
+    //   success: function (res) {
+    //     getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+    //       if (res.status === 0) {
+    //         // const result = res.result.address_component;
+    //         // _this.address = result.street;
+    // const result = res.result.address_reference;
+    // _this.address = result.town.title;
+    //         // const result = res.result;
+    //         // _this.address = result;
+    //       }
+    //     });
+    //   },
+    // });
   },
   methods: {
     handleToServiceListHome(item) {
@@ -635,6 +640,42 @@ export default {
     choice(index) {
       this.currentTab = index;
       console.log(this.currentTab);
+    },
+
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then((res) => {
+              if (res.status === 0) {
+                const result = res.result.address_reference;
+                _this.address = result.town.title;
+              }
+            })
+            .catch(() => {
+              _this.address = "定位失败";
+            });
+        },
+      });
+    },
+
+    handleClick() {
+      const _this = this;
+      if (this.address === "定位失败" || this.address === "定位中...") {
+        uni.showModal({
+          title: "提示",
+          confirmText: "我已打开定位",
+          content: "请确认您已开启了定位",
+          success: function (res) {
+            if (res.confirm) {
+              _this.getLocation();
+            }
+          },
+        });
+      }
     },
   },
   created() {},
@@ -668,7 +709,7 @@ export default {
         }
       }
       .search-box {
-        padding: 0upx 24upx;
+        padding: 0upx 20upx;
         display: flex;
         flex: 1;
         align-items: center;
@@ -678,7 +719,7 @@ export default {
         background: #ffffff;
         .search {
           width: 48upx;
-          height: 32upx;
+          // height: 32upx;
           border-right: 2upx solid #d8d8d8;
           .img {
             width: 32upx;
@@ -757,16 +798,18 @@ export default {
     }
     .w {
       margin: 40upx 34upx 0upx 34upx;
+      position: relative;
       .w1 {
-        position: relative;
+        position: absolute;
         // top: 154upx;
         width: 100%;
-        height: 720upx;
+        // height: 720upx;
         border-radius: 20upx;
         background: linear-gradient(180deg, #ffe5cc 59%, #ffffff 86%);
         box-shadow: inset 0upx 8upx 20upx 0upx #ffffff;
         .list {
           padding-top: 600upx;
+          padding-bottom: 30upx;
           display: flex;
           justify-content: space-around;
           .item {
@@ -778,29 +821,36 @@ export default {
               font-size: 44upx;
               font-weight: bold;
               color: #e95d20;
+              white-space: nowrap;
             }
             .text {
               font-size: 28upx;
               color: #999999;
+              white-space: nowrap;
             }
           }
         }
       }
       .w2 {
-        position: relative;
-        top: -720upx;
+        position: absolute;
+        top: 0upx;
         width: 100%;
-        height: 572upx;
+        // height: 572upx;
         border-radius: 20upx;
         background: #ffffff;
         box-shadow: 0upx 10upx 20upx 0upx #ffe5cc;
         .title {
-          padding: 30upx 188upx 0upx 188upx;
+          // height: 48upx;
+          padding: 30upx 170upx 0upx 170upx;
           display: flex;
           justify-content: space-between;
           font-size: 36upx;
           font-weight: bold;
           color: #3d3d3d;
+
+          .text {
+            white-space: nowrap;
+          }
         }
         .img-list {
           display: flex;
@@ -852,6 +902,7 @@ export default {
               font-size: 28upx;
               font-weight: 500;
               color: #3d3d3d;
+              white-space: nowrap;
               // position: relative;
               // top: -20upx;
             }
@@ -860,10 +911,12 @@ export default {
         .more {
           display: flex;
           justify-content: center;
-          margin-top: 16upx;
+          padding-top: 16upx;
+          padding-bottom: 30upx;
           .text {
             font-size: 28upx;
             color: #999999;
+            white-space: nowrap;
           }
           .img {
             width: 40upx;
@@ -877,7 +930,7 @@ export default {
     width: 100%;
     // height: 200upx;
     background: #f1f2f6;
-    padding: 140upx 30upx 200upx 30upx;
+    padding: 140upx 30upx 160upx 30upx;
     box-sizing: border-box;
     .jx {
       display: flex;
@@ -908,6 +961,7 @@ export default {
           .title {
             font-size: 28upx;
             font-weight: 500;
+            white-space: nowrap;
             // color: #3d3d3d;
           }
         }
@@ -1001,6 +1055,7 @@ export default {
               .text {
                 font-size: 28upx;
                 font-weight: 500;
+                white-space: nowrap;
                 // color: #3D3D3D;
               }
             }
@@ -1056,6 +1111,7 @@ export default {
               .text {
                 font-size: 28upx;
                 font-weight: 500;
+                white-space: nowrap;
                 // color: #3D3D3D;
               }
             }
@@ -1125,20 +1181,24 @@ export default {
       display: flex;
       justify-content: space-between;
       .item {
+        height: 70upx;
         display: flex;
         color: #3d3d3d;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         &.active {
+          font-weight: bold;
         }
         .text {
           font-size: 36upx;
         }
+        
         .img {
           width: 84upx;
           height: 12upx;
         }
+      
       }
     }
     .fx {
@@ -1150,13 +1210,15 @@ export default {
         top: 10upx;
       }
       .midd {
-        width: 70%;
-        left: 15%;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        // left: 15%;
         position: absolute;
         top: 20upx;
         .tip {
-          width: 239.75px;
-          height: 108.61px;
+          width: 480upx;
+          height: 218upx;
         }
       }
       .white {
