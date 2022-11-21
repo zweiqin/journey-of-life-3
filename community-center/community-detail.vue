@@ -266,9 +266,6 @@ export default {
       
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
-      
-
-      
     },
   },
   created() {},
@@ -281,13 +278,6 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-
-
 <style lang="less" scoped>
 .community-detail {
   background: #f7f8fa;

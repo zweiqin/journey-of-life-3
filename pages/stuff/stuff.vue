@@ -325,7 +325,8 @@ export default {
       if (this.brandgenreId == 0) {
       } else {
         uni.navigateTo({
-          url: `../../stuff/stuffGoods/index?id=${index}`,
+          // url: `../../stuff/stuffGoods/index?id=${index}`,
+          url:"../../pages/payAccomplish/index"
         });
       }
 

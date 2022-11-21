@@ -1,30 +1,24 @@
 <template>
-  <div class="stuffGoods">
-    <view class="left-title">
-      
-    </view>
+  <div class="payAccomplish">
+    <Ttitle :title="'支付结果'"></Ttitle>
+    
   </div>
 </template>
 
 <script>
-import {  } from "../../api/goods";
 export default {
-
+  name: "payAccomplish",
   components: {},
+  props: {},
   data() {
-    return {
-      id: "",
-    };
+    return {}
   },
   computed: {},
   methods: {},
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad(options) {
-    this.id = options.id;
-    console.log(this.id);
-  },
+  onLoad() {},
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
@@ -41,8 +35,7 @@ export default {
   // onPageScroll(event) {},
   // 页面处理函数--用户点击右上角分享
   // onShareAppMessage(options) {},
-};
+} 
 </script>
 
-<style lang="less" scoped>
-</style>
+<style scoped></style>
