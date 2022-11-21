@@ -13,13 +13,13 @@
       :key="item"
       :src="
         item <= rate
-          ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png'
+          ? 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/rzfose8fvybro9qhuomq.png'
           : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/79gzmwafa4xkndbn75k1.png'
       "
       :style="{
-        width: size + 'px',
-        height: size + 'px',
-        'margin-right': space + 'px',
+        width: size + 'upx',
+        height: size + 'upx',
+        'margin-right': space + 'upx',
       }"
       alt=""
       @click="handleClickStar(item)"
@@ -32,7 +32,7 @@ export default {
   props: {
     size: {
       type: Number,
-      default: 15,
+      default: 30,
     },
 
     rate: {
@@ -42,7 +42,7 @@ export default {
 
     space:{
       type: Number,
-      default: 7
+      default: 14,
     }
   },
 

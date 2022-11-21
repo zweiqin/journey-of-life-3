@@ -262,39 +262,13 @@
               alt=""
               class="hand"
             />
-            <!-- <view class="money">
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/d5ad6kxqovvkzzdlnfi8.png"
-                alt=""
-                class="m1"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gayph4tuo3bnkhwf2o4v.png"
-                alt=""
-                class="m2"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mjhuqr4l210srac6vm35.png"
-                alt=""
-                class="m3"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/up91fnjb0wd5ld1xyy9z.png"
-                alt=""
-                class="m4"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zr4kgghb0oa8id241v05.png"
-                alt=""
-                class="m5"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9m6kin074ltnf8h9du9p.png"
-                alt=""
-                class="m6"
-              />
-            </view> -->
           </view>
+
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/pheiqjmlmvy4q40dx7hd.png"
+            alt=""
+            class="gold-coin"
+          />
         </view>
         <view class="right">
           <view class="member">
@@ -410,14 +384,13 @@
           :class="{ active: currentTab === 0 }"
         >
           <view class="text">居家经验</view>
-          
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
-              alt=""
-              class="img"
-              v-if="currentTab == 0"
-            />
-          
+
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
+            alt=""
+            class="img"
+            v-if="currentTab == 0"
+          />
         </view>
         <view
           class="item"
@@ -939,7 +912,7 @@ export default {
         position: relative;
         width: 50%;
         // width: 346upx;
-        height: 380upx;
+        // height: 380upx;
         border-radius: 20upx;
         background: linear-gradient(214deg, #f9dfe3 24%, #cde1fd 87%);
         .red {
@@ -966,7 +939,7 @@ export default {
           }
         }
         .abc {
-          padding: 0upx 20upx 12upx 14upx;
+          padding: 0upx 20upx 0upx 14upx;
           .order {
             width: 140upx;
             height: 40upx;
@@ -977,48 +950,23 @@ export default {
             border: 1upx solid #fa3445;
             text-align: center;
             line-height: 40upx;
+            position: absolute;
           }
           .hand {
             width: 100%;
             // width: 310upx;
             height: 264upx;
-            position: relative;
-            top: -44upx;
+            
+            top: 0upx;
           }
-          .money {
-            display: flex;
-            flex-direction: column;
-            height: 160upx;
-            // width: 0upx;
-            justify-content: space-evenly;
-            position: absolute;
-            top: 120upx;
-            right: 0upx;
-            .m1 {
-              width: 44upx;
-              height: 24upx;
-            }
-            .m2 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m3 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m4 {
-              width: 40upx;
-              height: 24upx;
-            }
-            .m5 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m6 {
-              width: 56upx;
-              height: 56upx;
-            }
-          }
+        }
+
+        .gold-coin {
+          width: 160upx;
+          height: 240upx;
+          position: absolute;
+          top: 104upx;
+          right: -40upx;
         }
       }
       .right {
@@ -1029,7 +977,7 @@ export default {
         .member {
           width: 100%;
           // width: 320upx;
-          height: 170upx;
+          // height: 170upx;
           border-radius: 20upx;
           background: #ffe5cc;
           display: flex;
@@ -1085,7 +1033,7 @@ export default {
         .collate {
           width: 100%;
           // width: 320upx;
-          height: 170upx;
+          // height: 170upx;
           border-radius: 20upx;
           background: #dff8fd;
           display: flex;
@@ -1106,8 +1054,9 @@ export default {
               line-height: 40upx;
             }
             .title {
-              padding-top: 10upx;
+              padding-top: 12upx;
               padding-left: 12upx;
+              padding-bottom: 36upx;
               .text {
                 font-size: 28upx;
                 font-weight: 500;
@@ -1124,6 +1073,8 @@ export default {
               // width: 100%;
               width: 98upx;
               height: 104upx;
+              padding-top: 4upx;
+              padding-bottom: 66upx;
             }
             .coll {
               width: 140upx;
@@ -1136,7 +1087,7 @@ export default {
               text-align: center;
               line-height: 40upx;
               position: absolute;
-              bottom: 12upx;
+              bottom: 16upx;
             }
           }
         }
@@ -1193,12 +1144,11 @@ export default {
         .text {
           font-size: 36upx;
         }
-        
+
         .img {
           width: 84upx;
           height: 12upx;
         }
-      
       }
     }
     .fx {
