@@ -3,7 +3,7 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <view class="text">龙江镇</view>
+          <view class="text">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -104,27 +104,38 @@
             </view>
           </view>
         </view>
-        <view class="w2" >
+        <view class="w2">
           <view class="title">
             <text>专业性强</text>
             <text>及时服务</text>
           </view>
           <view class="img-list">
-            <view class="people" @click="handleToServiceList">
+            <view
+              class="people"
+              v-for="item2 in serviceType"
+              :key="item2.value"
+              @click="handleToServiceListType(item2.value)"
+            >
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png"
+                :src="
+                  item2.a ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png'
+                "
                 alt=""
                 class="a"
               />
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png"
+                :src="
+                  item2.round ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png'
+                "
                 alt=""
                 class="round"
               />
-              <view class="name">{{text ||"维修"}}</view>
+              <view class="name">{{ item2.label }}</view>
             </view>
 
-            <view class="people" @click="handleToServiceList">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png"
                 alt=""
@@ -136,9 +147,9 @@
                 class="round"
               />
               <view class="name">安装</view>
-            </view>
+            </view> -->
 
-            <view class="people" @click="handleToServiceList">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png"
                 alt=""
@@ -150,23 +161,34 @@
                 class="round"
               />
               <view class="name">清洁</view>
-            </view>
+            </view> -->
           </view>
           <view class="s-list">
-            <view class="item">
+            <view
+              class="item"
+              v-for="item in list"
+              :key="item.value"
+              @click="handleToServiceList(item.value)"
+            >
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png"
+                :src="
+                  item.icon ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png'
+                "
                 alt=""
                 class="img"
               />
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png"
+                :src="
+                  item.shadow ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png'
+                "
                 alt=""
                 class="shadow"
               />
-              <view class="text">家具服务</view>
+              <view class="text">{{ item.label }}</view>
             </view>
-            <view class="item">
+            <!-- <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png"
                 alt=""
@@ -179,7 +201,7 @@
               />
               <view class="text">家电服务</view>
             </view>
-            <view class="item">
+            <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png"
                 alt=""
@@ -193,7 +215,7 @@
               <view class="text">水电灯具</view>
             </view>
 
-            <view class="item">
+            <view class="item" @click="handleToServiceList">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png"
                 alt=""
@@ -205,10 +227,15 @@
                 class="shadow"
               />
               <view class="text">清洗保洁</view>
-            </view>
+            </view> -->
           </view>
-          <view class="more" @click="handleToServiceListHome">
-            <view class="text">更多服务</view>
+          <view
+            class="more"
+            v-for="item1 in moreService"
+            :key="item1.value"
+            @click="handleToServiceListHome(item1.value)"
+          >
+            <view class="text">{{ item1.moreName }}</view>
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/nsez71tgcrlgpeu93h2s.png"
               alt=""
@@ -375,20 +402,97 @@
       </view>
 
       <view class="share">
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(0)"
+          :class="{ active: currentTab === 0 }"
+        >
           <view class="text">居家经验</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
             alt=""
             class="img"
+            v-if="currentTab == 0"
           />
         </view>
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(1)"
+          :class="{ active: currentTab === 1 }"
+        >
           <view class="text">家居分享</view>
-          <img src="" alt="" class="img" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
+            alt=""
+            class="img"
+            v-if="currentTab == 1"
+          />
         </view>
       </view>
-      <view class="fx">
+      <view class="fx" v-if="currentTab == 0">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
+          alt=""
+          class="img"
+        />
+        <view class="midd">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/sj8pr4z00tz2ghkcbr23.png"
+            alt=""
+            class="tip"
+          />
+        </view>
+        <view class="white">
+          <view class="z">
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="fx" v-if="currentTab == 1">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
           alt=""
@@ -460,7 +564,10 @@
 <script>
 import community from "./components/community";
 import DiscountPopup from "./components/discount.vue";
-
+import { getAdressDetailByLngLat } from "../../utils/DWHutils";
+import { list } from "./config";
+import { moreService } from "./config";
+import { serviceType } from "./config";
 export default {
   name: "Community-centerr",
   components: {
@@ -469,24 +576,66 @@ export default {
   },
   data() {
     return {
+      currentTab: "",
+      moreService,
+      list,
+      serviceType,
+      value: "",
+      serviceName: "",
       showPopup: false,
+      address: "",
     };
   },
 
-  onLoad(){
-    this.showPopup = true
+  onLoad() {
+    this.showPopup = true;
+
+    this.address = "定位中...";
+    const _this = this;
+    uni.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+          if (res.status === 0) {
+            // const result = res.result.address_component;
+            // _this.address = result.street;
+            const result = res.result.address_reference;
+            _this.address = result.town.title;
+            // const result = res.result;
+            // _this.address = result;
+          }
+        });
+      },
+    });
   },
   methods: {
-    handleToServiceListHome() {
-      console.log("服务分类列表");
-      uni.navigateTo({ url: "../../community-center/service-sort" });
+    handleToServiceListHome(item) {
+      console.log("更多服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
     },
 
-    handleToServiceList(){
-      console.log("维修服务分类列表");
-      uni.navigateTo({ url: "../../community-center/service-sort" });
+    handleToServiceList(item) {
+      console.log("服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
     },
 
+    handleToServiceListType(item) {
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
+    },
+
+    choice(index) {
+      this.currentTab = index;
+      console.log(this.currentTab);
+    },
   },
   created() {},
 };
@@ -540,8 +689,8 @@ export default {
           padding-left: 14upx;
           flex: 1;
           font-size: 24upx;
-          font-weight: 500;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
         }
       }
     }
@@ -977,12 +1126,14 @@ export default {
       justify-content: space-between;
       .item {
         display: flex;
+        color: #3d3d3d;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        &.active {
+        }
         .text {
           font-size: 36upx;
-          color: #3d3d3d;
         }
         .img {
           width: 84upx;

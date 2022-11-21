@@ -7,9 +7,17 @@
           transform: `translateY(${value ? 0 : '-100%'})`,
         }"
       >
+        <JIcon
+          @click="$emit('input', false)"
+          style="margin-top: 30upx"
+          type="mask-close"
+          width="70"
+          height="70"
+          class="closeIcon"
+        ></JIcon>
         <image
           class="top-img"
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/dhhnb4dom2odxgkpuvf0.png"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lm5x8d30n7i5wd88b5eb.png"
           mode="aspectFit"
         />
         <view class="main">
@@ -39,14 +47,6 @@
           <JIcon type="prices" class="icon"></JIcon>
         </view>
       </view>
-
-      <JIcon
-        @click="$emit('input', false)"
-        style="margin-top: 30upx"
-        type="mask-close"
-        width="100"
-        height="100"
-      ></JIcon>
     </view>
   </view>
 </template>
@@ -90,7 +90,7 @@ export default {
   text-align: center;
   background-color: rgba($color: #626262, $alpha: 0.74);
   /* box-sizing: border-box; */
-  z-index: 1000;
+  z-index: 10;
   overflow: scroll;
   padding-bottom: 100upx;
   box-sizing: border-box;
@@ -102,17 +102,29 @@ export default {
     width: 100%;
     height: 100%;
     overflow: scroll;
-    padding-top: 50upx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding-top: 50upx;
   }
 
   .main-container {
-    width: 660upx;
-    margin: 0 auto;
+    // position: relative;
+    width: 590upx;
+    // margin: 0 auto;
     background-color: #fa5151;
     border-radius: 20upx;
-    margin-bottom: 20px;
-    transform: translateY(-100%);
+    // margin-bottom: 20px;
+    // transform: translateY(-100%);
     transition: all 350ms -20ms;
+    margin-bottom: 60upx;
+
+    .closeIcon {
+      position: absolute;
+      top: 10upx;
+      right: 20upx;
+      z-index: 10;
+    }
 
     .top-img {
       width: 100%;
@@ -123,12 +135,12 @@ export default {
       padding: 0 40upx;
       /* padding-bottom: 20upx; */
       box-sizing: border-box;
-      top: -66upx;
+      top: -72upx;
       margin-bottom: -40upx;
 
       .item {
         width: 100%;
-        height: 180upx;
+        height: 160upx;
         background-color: #ffffff;
         border-radius: 10upx;
         display: flex;
@@ -213,11 +225,11 @@ export default {
           #ffd100 0%,
           #fff8c6 81%
         );
-        height: 96upx;
+        height: 70upx;
         border-radius: 100px;
 
         .img {
-          height: 50upx;
+          height: 40upx;
         }
       }
 

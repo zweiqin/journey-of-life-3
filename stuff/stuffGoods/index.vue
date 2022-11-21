@@ -1,8 +1,7 @@
 <template>
   <div class="stuffGoods">
-    <view class="left-title">
-      
-    </view>
+    <Ttitle
+    :title="'商品选购'"/>
   </div>
 </template>
 

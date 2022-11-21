@@ -8,7 +8,14 @@
  */
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
-export { GyRequest as request, RuanRequest, LTRequest, XZLRequest,SheQuRequest,SheQuRequest1 } from "./DWHRequest";
+export {
+  GyRequest as request,
+  RuanRequest,
+  LTRequest,
+  XZLRequest,
+  SheQuRequest,
+  SheQuRequest1,
+} from './DWHRequest'
 export {
   fomartNumber,
   removeCache,
@@ -16,5 +23,6 @@ export {
   checkWhoami,
   useCopy,
   handleDebounce,
-} from "./DWHutils";
-export { formatTime } from "./util";
+  getRandom,
+} from './DWHutils'
+export { formatTime } from './util'

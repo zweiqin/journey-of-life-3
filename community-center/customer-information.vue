@@ -51,10 +51,14 @@
         <view class="text">填写上门地址</view>
       </view> -->
 
-      <view class="diqu" style="position: relative">
-        
+      <view class="area" style="position: relative">
         <JCity @confirm="City($event.area)" :text="address"> </JCity>
-        <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
+        <JIcon
+          type="locale"
+          width="34"
+          height="40"
+          style="position: absolute; top: 20upx; right: 0upx"
+        ></JIcon>
       </view>
 
       <view class="add-list">
@@ -234,7 +238,6 @@
       <!-- <view v-else></view> -->
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
-
     <view class="foot2" v-if="pricingType == 2">
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
@@ -456,11 +459,13 @@ export default {
 <style lang="less" scoped>
 .customer-information {
   background: #f1f2f6;
+  padding-bottom: 84px;
 
   .title-list {
-    padding: 20upx 34upx 20upx 26upx;
+    padding: 40upx 34upx 20upx 26upx;
     display: flex;
     background: #ffffff;
+
     .return {
       width: 48upx;
       height: 48upx;
@@ -858,9 +863,9 @@ export default {
   }
   .main {
     background: #ffffff;
-    padding: 46upx 22upx 0upx 34upx;
+    padding: 46upx 22upx 20upx 34upx;
     width: 100%;
-    height: 800upx;
+    // height: 800upx;
     box-sizing: border-box;
     .total-list {
       display: flex;
