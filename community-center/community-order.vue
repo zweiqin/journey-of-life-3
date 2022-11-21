@@ -277,7 +277,7 @@ export default {
 .community-order {
   padding-bottom: 180upx;
   .title-list {
-    padding: 40upx 54upx 36upx 26upx;
+    padding: 40upx 54upx 36upx 16upx;
     display: flex;
     .return {
       width: 48upx;
@@ -573,7 +573,8 @@ export default {
           font-size: 28upx;
           font-weight: 400;
           color: #3d3d3d;
-          
+          width: 100%;
+          height: 80%;
         }
         .list {
           height: 34upx;
@@ -605,6 +606,7 @@ export default {
       border-top: 8upx solid #f7f8fa;
       .on {
         font-size: 32upx;
+        font-weight: bold;
         color: #ffffff;
         width: 408upx;
         height: 80upx;

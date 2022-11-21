@@ -309,14 +309,13 @@ export default {
       position: relative;
       display: flex;
       align-items: center;
-      
-      padding: 20upx 8upx 36upx 26upx;
+      padding: 20upx 0upx 36upx 16upx;
       .return {
         width: 48upx;
         height: 48upx;
       }
       .title {
-        flex: 1;
+        // flex: 1;
         text-align: center;
         font-size: 36upx;
         font-weight: bold;

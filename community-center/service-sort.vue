@@ -9,7 +9,7 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">{{ address }}</view>
+          <view class="text" @click.stop="handleClick">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -105,14 +105,34 @@ export default {
       uni.getLocation({
         type: "gcj02",
         success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === 0) {
-              const result = res.result.address_reference;
-              _this.address = result.town.title;
-            }
-          });
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then((res) => {
+              if (res.status === 0) {
+                const result = res.result.address_reference;
+                _this.address = result.town.title;
+              }
+            })
+            .catch(() => {
+              _this.address = "定位失败";
+            });
         },
       });
+    },
+
+    handleClick() {
+      const _this = this;
+      if (this.address === "定位失败" || this.address === "定位中...") {
+        uni.showModal({
+          title: "提示",
+          confirmText: "我已打开定位",
+          content: "请确认您已开启了定位",
+          success: function (res) {
+            if (res.confirm) {
+              _this.getLocation();
+            }
+          },
+        });
+      }
     },
 
     //查询社区服务分类接口

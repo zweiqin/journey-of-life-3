@@ -51,13 +51,48 @@
         <view class="text">填写上门地址</view>
       </view> -->
 
-      <view class="area" style="position: relative">
-        <JCity @confirm="City($event.area)" :text="address"> </JCity>
+      <view
+        class="area"
+        style="
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 30upx;
+        "
+      >
+        <view
+          class="diqu"
+          style="
+            height: 90upx;
+            display: flex;
+            align-items: center;
+            font-size: 32upx;
+            font-weight: bold;
+            color: #000000;
+          "
+          >所在地区</view
+        >
+        <JCity
+          @confirm="City($event.area)"
+          :text="address"
+          style="
+            padding-top: 24upx;
+            width: 78%;
+            height: 90upx;
+            border-radius: 20upx;
+            background: #f1f2f6;
+            padding-left: 20upx;
+            box-sizing: border-box;
+            font-size: 30upx;
+          "
+        >
+        </JCity>
+
         <JIcon
           type="locale"
           width="34"
           height="40"
-          style="position: absolute; top: 20upx; right: 0upx"
+          style="position: absolute; top: 20upx; right: 20upx"
         ></JIcon>
       </view>
 
@@ -459,7 +494,7 @@ export default {
 <style lang="less" scoped>
 .customer-information {
   background: #f1f2f6;
-  padding-bottom: 84px;
+  padding-bottom: 168upx;
 
   .title-list {
     padding: 40upx 34upx 20upx 26upx;
@@ -978,10 +1013,13 @@ export default {
       border-radius: 100upx;
       background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
       font-size: 32upx;
-      font-weight: 500;
+      font-weight: bold;
       color: #ffffff;
-      text-align: center;
-      line-height: 70upx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // text-align: center;
+      // line-height: 70upx;
     }
   }
   .foot2 {
@@ -1003,10 +1041,13 @@ export default {
       border-radius: 100upx;
       background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
       font-size: 32upx;
-      font-weight: 500;
+      font-weight: bold;
       color: #ffffff;
-      text-align: center;
-      line-height: 70upx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // text-align: center;
+      // line-height: 70upx;
     }
   }
 }
