@@ -138,7 +138,7 @@ export default {
     //查询社区服务分类接口
     async getServiceSort() {
       const res = await getServiceSortApi({});
-
+      
       // console.log();
       console.log(res);
 

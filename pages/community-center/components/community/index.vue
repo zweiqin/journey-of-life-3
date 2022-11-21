@@ -176,8 +176,8 @@ export default {
           width: 80%;
           justify-content: space-between;
           .text {
-            width: 112upx;
-            height: 36upx;
+            // width: 112upx;
+            // height: 36upx;
             border-radius: 4upx;
             border: 2upx solid #3662ec;
             box-sizing: border-box;
