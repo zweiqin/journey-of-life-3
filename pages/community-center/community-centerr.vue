@@ -593,7 +593,7 @@ export default {
   },
 
   onLoad() {
-    this.showPopup = true;
+    this.showPopup = false;
     this.getLocation();
     // this.address = "定位中...";
     // const _this = this;

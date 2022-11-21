@@ -244,9 +244,10 @@ export default {
         payType: 4,
       }).then((res) => {
         const form = document.createElement("form");
-        form.setAttribute("action", res.url);
+        form.setAttribute("action", res.h5PayUrl);
         form.setAttribute("method", "POST");
-
+        uni.removeStorageSync(PAY_ORDER);
+        uni.setStorageSync(PAY_ORDER, res.orderNo);
         const data = JSON.parse(res.data);
         let input;
         for (const key in data) {

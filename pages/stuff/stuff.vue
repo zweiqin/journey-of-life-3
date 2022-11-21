@@ -297,7 +297,7 @@ export default {
       this.navs2 = res.data.filterCategoryList;
       this.navs2.unshift({ label: "综合", value: 0 });
     },
-    gongqiu() {
+    gongqiu(item) {
       uni.navigateTo({
         url: "../../stuff/gongqiu/gongqiu",
       });
@@ -322,13 +322,14 @@ export default {
       this.currentTab = index;
       this.brandgenreId = index;
       // console.log(this.brandgenreId);
-      if (this.brandgenreId == 0) {
-      } else {
-        uni.navigateTo({
-          // url: `../../stuff/stuffGoods/index?id=${index}`,
-          url:"../../pages/payAccomplish/index"
-        });
-      }
+      
+      // if (this.brandgenreId == 0) {
+      // } else {
+      //   uni.navigateTo({
+      //     // url: `../../stuff/stuffGoods/index?id=${index}`,
+      //     url:"../../pages/payAccomplish/index"
+      //   });
+      // }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
       // const local = currentNavs.getBoundingClientRect();
@@ -444,7 +445,10 @@ export default {
           item.name == "佛山市奥丽思家具五金配件有限公司" ||
           item.name == "大创家具材料店" ||
           item.name == "成鑫木业有限公司" ||
-          item.name == "里翎皮革"
+          item.name == "里翎皮革" ||
+          item.name == "佛山市南海金玮金属制品厂" ||
+          item.name == "思应布艺" 
+
       );
     },
     //点击后触发

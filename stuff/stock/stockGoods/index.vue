@@ -19,7 +19,7 @@
       />
       <view class="stockSales">
         <view class="sales">已售{{ salse || "1000+ " }}</view>
-        <view class="stockNumber">库存仅剩：100</view>
+        <view class="stockNumber">库存仅剩：{{ repertory || "100+" }} </view>
       </view>
       <view class="money">
         <view class="now">￥{{ currentPrice || 19.9 }}</view>
@@ -46,6 +46,7 @@ export default {
     goodsId: Number,
     salse: Number,
     picUrl: String,
+    repertory:Number,
   },
   data() {
     return {};
@@ -113,7 +114,7 @@ export default {
       }
       .stockNumber {
         padding-left: 20upx;
-        color: #3662EC ;
+        color: #3662ec;
       }
     }
 
