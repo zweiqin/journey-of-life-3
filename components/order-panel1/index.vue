@@ -117,8 +117,9 @@
 <script>
 import PageHeader from "../page-header";
 import LineBar from "../line-bar";
+import { getSybOrderPayH5 } from "../../api/order";
 import Goods from "../goods";
-import { PAY_GOODS, SELECT_ADDRESS } from "../../constant";
+import { PAY_GOODS, SELECT_ADDRESS, PAY_ORDER } from "../../constant";
 import { getBaseInfo } from "./config";
 import { getAddressListApi } from "../../api/address";
 import { submitOrderApi, firstAddCar, payOrderGoodsApi } from "../../api/goods";
@@ -284,14 +285,16 @@ export default {
       // console.log('订单号',this.orderSn);
       if (submitRes.errno === 0) {
         console.log(submitRes);
-        payOrderGoodsApi({
+        getSybOrderPayH5({
           orderNo: this.orderSn,
           userId: getUserId(),
           payType: 1,
         }).then((res) => {
           const form = document.createElement("form");
-          form.setAttribute("action", res.url);
+          form.setAttribute("action", res.h5PayUrl);
           form.setAttribute("method", "POST");
+          uni.removeStorageSync(PAY_ORDER);
+          uni.setStorageSync(PAY_ORDER, res.orderNo);
           const data = JSON.parse(res.data);
           let input;
           for (const key in data) {

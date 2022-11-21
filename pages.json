@@ -234,6 +234,12 @@
 			"style": {
 				"navigationBarTitleText": "stuffGoods"
 			}
+		},
+		{
+			"path": "pages/payAccomplish/index",
+			"style": {
+				"navigationBarTitleText": "payAccomplish"
+			}
 		}
 	],
 	"tabBar": {

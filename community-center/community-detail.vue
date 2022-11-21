@@ -290,13 +290,6 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-
-
 <style lang="less" scoped>
 .community-detail {
   background: #f7f8fa;
