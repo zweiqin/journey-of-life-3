@@ -145,7 +145,7 @@ export const serve = {
     {
       label: "优惠劵",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4u948ko5bu56bbw0v0cd.png ",
-      url: "/user/sever/coupon",
+      // url: "/user/sever/coupon",
     },
     {
       label: "联系客服",

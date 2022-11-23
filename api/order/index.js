@@ -67,3 +67,11 @@ export const sendCommentApi = data => {
 export const getSybOrderPayH5 = data => {
   return XZLRequest("/wx/api/syb/orderPayH5", data)
 }
+/**
+ * 查询是否支付成功
+ * @param {*} data 
+ * @returns 
+ */
+export const getSybGetIsPaySucceedApi = data =>{
+  return XZLRequest("/wx/api/syb/getIsPaySucceed",data,'get')
+}

@@ -10,7 +10,7 @@ https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5yrh2paxxwv3r3
       <view class="title-text">数 字 化 营 销 的 领 跑 者</view>
       <view class="newPostCard" @click="newpostcard">新建名片</view>
       <view class="myPostCard" @click="mypostcard">我的名片</view>
-      <view class="back">退出</view>
+      <view class="back" @click="back">退出</view>
     </view>
   </view>
 </template>
@@ -23,6 +23,9 @@ export default {
         },
         mypostcard(){
             uni.navigateTo({ url: './myPostCard' })
+        },
+        back(){
+          uni.switchTab({ url: '/pages/user/user' })
         }
     }
 };

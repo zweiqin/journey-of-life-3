@@ -1,24 +1,40 @@
 <template>
   <div class="payAccomplish">
     <Ttitle :title="'支付结果'"></Ttitle>
-    
   </div>
 </template>
 
 <script>
+import { PAY_ORDER } from "../../constant";
+import { getSybGetIsPaySucceedApi } from "../../api/order";
 export default {
   name: "payAccomplish",
   components: {},
   props: {},
   data() {
-    return {}
+    return {
+      orderId: "",
+    };
   },
   computed: {},
-  methods: {},
+  methods: {
+    getOrderNo() {
+      this.orderId = uni.getStorageSync(PAY_ORDER);
+      console.log(this.orderId);
+    },
+    async getSybGetIsPaySucceed() {
+      const res = await getSybGetIsPaySucceedApi({
+        payOrderNo: this.orderId,
+      });
+    },
+  },
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad() {},
+  onLoad() {
+    this.getOrderNo();
+    this.getSybGetIsPaySucceed(); 
+  },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
@@ -35,7 +51,7 @@ export default {
   // onPageScroll(event) {},
   // 页面处理函数--用户点击右上角分享
   // onShareAppMessage(options) {},
-} 
+};
 </script>
 
 <style scoped></style>
