@@ -9,7 +9,9 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text" @click.stop="handleClick">{{ address }}</view>
+          <view class="text" @click.stop="handleClick">{{
+            addressDetail
+          }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -53,6 +55,7 @@
             :id="item1.id"
             :pid="item1.pid"
             :detailList="item1.children"
+            :tips="tips"
           >
           </sort>
         </view>
@@ -65,6 +68,7 @@
 import { getServiceSortApi } from "../api/community-center";
 import sort from "../community-center/componts";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
+import { getIsOpenServerAreaApi } from "../api/community-center";
 export default {
   name: "Service-sort",
   components: {
@@ -83,6 +87,8 @@ export default {
       serverNameOne: "",
       address: "",
       scrollHeight: 667,
+      tips: "",
+      addressDetail: "",
     };
   },
   methods: {
@@ -99,29 +105,12 @@ export default {
       uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
 
-    getLocation() {
-      this.address = "定位中...";
-      const _this = this;
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === 0) {
-                const result = res.result.address_reference;
-                _this.address = result.town.title;
-              }
-            })
-            .catch(() => {
-              _this.address = "定位失败";
-            });
-        },
-      });
-    },
-
     handleClick() {
       const _this = this;
-      if (this.address === "定位失败" || this.address === "定位中...") {
+      if (
+        this.addressDetail === "定位失败" ||
+        this.addressDetail === "定位中..."
+      ) {
         uni.showModal({
           title: "提示",
           confirmText: "我已打开定位",
@@ -135,10 +124,21 @@ export default {
       }
     },
 
+    async a() {
+      console.log(123456);
+      const res = await getIsOpenServerAreaApi({
+        address: this.address,
+      });
+
+      console.log("获取到的信息", res);
+      this.tips = res.data;
+      console.log("tips", this.tips);
+    },
+
     //查询社区服务分类接口
     async getServiceSort() {
       const res = await getServiceSortApi({});
-      
+
       // console.log();
       console.log(res);
 
@@ -148,19 +148,48 @@ export default {
       console.log(res.data[0]);
       this.sort = this.data.find((item) => item.id === this.currentTab);
     },
+
+    //根据用户地址判断该区域是否开通了站长
+    async getIsOpenServerArea() {
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result;
+              _this.addressDetail = result.address_reference.town.title;
+              console.log("this.addressDetail", _this.addressDetail);
+
+              _this.address =
+                result.address_component.province +
+                result.address_component.city +
+                result.address_component.district;
+              console.log("this.address", _this.address);
+
+              _this.a();
+            }
+          });
+        },
+      });
+    },
   },
   mounted() {},
   onLoad(options) {
     this.currentTab = options.value * 1;
     console.log(this.currentTab);
-    this.getLocation();
+
     this.getServiceSort();
+    this.getIsOpenServerArea();
+
     const _this = this;
     uni.getSystemInfo({
       success(res) {
         _this.scrollHeight = res.safeArea.height - 60;
       },
     });
+
+    // const _this = this;
   },
 };
 </script>
@@ -233,7 +262,7 @@ uni-page-body {
           font-size: 24upx;
           font-weight: 400;
           color: #3d3d3d;
-          border-left: 2upx solid #D8D8D8;
+          border-left: 2upx solid #d8d8d8;
         }
       }
     }

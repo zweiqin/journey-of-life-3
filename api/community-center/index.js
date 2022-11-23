@@ -102,6 +102,15 @@ export const getServiceOrderPayApi = (data) =>{
   return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
 };
 
+//根据用户地址判断该区域是否开通了站长
+export const getIsOpenServerAreaApi = (data) => {
+  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/getIsOpenServerArea", data, "get");
+};
+
+//查询用户过往信息
+export const getUserInfoByIdApi = (data) => {
+  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
+};
 
 
 
@@ -129,4 +138,14 @@ export const getServiceOrderPayApi = (data) =>{
 // //订单支付
 // export const getServiceOrderPayApi = (data) =>{
 //   return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
+// };
+
+//根据用户地址判断该区域是否开通了站长
+// export const getIsOpenServerAreaApi = (data) => {
+//   return XZLRequest("/laoa-huozhu/api/hz/order/third/getIsOpenServerArea", data, "get");
+// };
+
+// //查询用户过往信息
+// export const getUserInfoByIdApi = (data) => {
+//   return XZLRequest("/laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
 // };

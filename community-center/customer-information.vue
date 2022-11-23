@@ -10,14 +10,14 @@
       <view class="title">完善服务信息</view>
     </view>
     <view class="top">
-      <!-- <view class="iphone-list">
+      <view class="iphone-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
           alt=""
           class="iphone"
         />
-        <view class="text">联系方式</view>
-      </view> -->
+        <view class="text">联系电话</view>
+      </view>
 
       <view class="name-list">
         <view class="man">联系人</view>
@@ -25,7 +25,7 @@
           <input
             class="contact"
             v-model="addname"
-            placeholder="请输入姓名"
+            placeholder="(请输入姓名)"
             placeholder-class="input-placeholder"
           />
         </view>
@@ -42,14 +42,14 @@
           />
         </view>
       </view>
-      <!-- <view class="address-list">
+      <view class="address-list">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ihtpa3x378wrofqdiqrj.png"
           alt=""
           class="location"
         />
         <view class="text">填写上门地址</view>
-      </view> -->
+      </view>
 
       <view
         class="area"
@@ -58,6 +58,7 @@
           display: flex;
           justify-content: space-between;
           margin-top: 30upx;
+          border-bottom: 2upx solid #d8d8d8;
         "
       >
         <view
@@ -67,8 +68,7 @@
             display: flex;
             align-items: center;
             font-size: 32upx;
-            font-weight: bold;
-            color: #000000;
+            color: #3662ec;
           "
           >所在地区</view
         >
@@ -80,7 +80,6 @@
             width: 78%;
             height: 90upx;
             border-radius: 20upx;
-            background: #f1f2f6;
             padding-left: 20upx;
             box-sizing: border-box;
             font-size: 30upx;
@@ -88,12 +87,24 @@
         >
         </JCity>
 
-        <JIcon
+        <!-- <JIcon
           type="locale"
           width="34"
           height="40"
           style="position: absolute; top: 20upx; right: 20upx"
-        ></JIcon>
+        ></JIcon> -->
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png"
+          alt=""
+          class="location"
+          style="
+            width: 40upx;
+            height: 40upx;
+            position: absolute;
+            top: 20upx;
+            right: 20upx;
+          "
+        />
       </view>
 
       <view class="add-list">
@@ -103,40 +114,36 @@
             name="input"
             class="address"
             v-model="addressDetail"
-            placeholder="请输入详细地址"
+            placeholder="(请输入详细地址)"
             placeholder-class="input-placeholder"
           />
         </view>
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png"
+          alt=""
+          class="edit"
+          style="
+            width: 32upx;
+            height: 32upx;
+            position: absolute;
+            right: 20upx;
+            bottom: 30upx;
+          "
+        />
       </view>
 
       <view class="time-list">
         <view class="left">
-          <!-- <img
+          <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
             alt=""
             class="time"
-          /> -->
+          />
           <view class="text">期望上门时间</view>
         </view>
-        <!-- 
-        <uni-section
-          :title="'日期时间用法：' + datetimesingle"
-          type="line"
-        ></uni-section> -->
 
         <view class="right">
-          <!-- <view class="example-body" style="">
-            <uni-datetime-picker
-              class="datatime"
-              type="datetime"
-              v-model="datetimesingle"
-              @change="changeLog"
-              :clear-icon="false"
-              :border="false"
-            />
-          </view> -->
-
-          <uni-section
+          <!-- <uni-section
             :title="'日期时间范围用法：' + '[' + datetimerange + ']'"
             type="line"
           ></uni-section>
@@ -146,15 +153,23 @@
               type="datetimerange"
               rangeSeparator="至"
             />
-          </view>
+          </view> -->
+          
+          <template>
+            <view class="tiem-list">
+              <chooseTime @choose="handleChoose" v-model="show"></chooseTime>
+              <!-- <button class="btn-show-btn" @click="show = true"></button> -->
 
-          <!-- <timeList></timeList> -->
-
-          <!-- <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-            alt=""
-            class="more"
-          /> -->
+              <view class="choice-time" @click="show = true">
+                <view class="input">{{ datetimerange || "选择时间" }}</view>
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
+                  alt=""
+                  class="btn-show-btn"
+                />
+              </view>
+            </view>
+          </template>
         </view>
       </view>
     </view>
@@ -264,7 +279,13 @@
         </view>
       </template>
     </view>
-    <view class="foot1" v-if="pricingType == 1">
+    <view
+      class="foot1"
+      :style="{
+        transform: show ? 'translateY(168upx)' : 'translateY(0)',
+      }"
+      v-if="pricingType == 1"
+    >
       <view class="price-list">
         <view class="logo">￥</view>
         <view class="number">{{ oughtPrice }}</view>
@@ -273,7 +294,13 @@
       <!-- <view v-else></view> -->
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
-    <view class="foot2" v-if="pricingType == 2">
+    <view
+      class="foot2"
+      :style="{
+        transform: show ? 'translateY(168upx)' : 'translateY(0)',
+      }"
+      v-if="pricingType == 2"
+    >
       <view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
     </view>
   </view>
@@ -284,17 +311,20 @@
 
 <script>
 import JCity from "../components/JCity/JCity.vue";
-
+import chooseTime from "./componts/choose-time.vue";
 import { getServicePriceApi } from "../api/community-center";
 import { getUserId } from "../utils";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
+import { getUserInfoByIdApi } from "../api/community-center";
+import { getIsOpenServerAreaApi } from "../api/community-center";
 
 export default {
-  components: { JCity, Location },
+  components: { JCity, Location, chooseTime },
   name: "Customer-information",
   props: {},
   data() {
     return {
+      show: false,
       id2: "",
       serverInfoId: "",
       specsId: "",
@@ -309,6 +339,7 @@ export default {
       time: "",
       pricingType: "",
       orderPrice: [],
+      info: [],
       sumPrice: "",
       oughtPrice: "",
       name1: "",
@@ -317,12 +348,19 @@ export default {
       horsepower: "",
       imgUrl: "",
       length: "",
+      contactName: "",
+      contactPhone: "",
       // userId:127,
       // serverInfoId:1,
     };
   },
 
   methods: {
+    handleChoose(time) {
+      console.log(time);
+      this.datetimerange = time;
+    },
+
     changeLog(e) {
       console.log("change事件:", e);
       this.time = e;
@@ -330,6 +368,28 @@ export default {
     City(item) {
       console.log(item);
       this.address = item;
+      this.a();
+      
+      // if( this.type ==2 ){
+      //   console.log("区域判断", this.type);
+      //   uni.showModal({
+      //     title: "提示",
+      //     content: "你所在区域不在接单范围内",
+      //     showCancel: true,
+      //     // success: ({ confirm, cancel }) => {}
+      //     success: function (res) {
+      //       if (res.confirm) {
+      //         console.log("确定");
+      //         // uni.navigateTo({
+      //         //   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
+      //         // });
+      //       } else if (res.confirm) {
+      //         console.log("取消");
+      //       }
+      //     },
+      //   });
+      // }
+
     },
     handleBack() {
       uni.navigateBack();
@@ -449,6 +509,83 @@ export default {
         this.oughtPrice = this.orderPrice.oughtPrice;
       }
     },
+
+    //查询用户过往信息
+    async getUserInfoById() {
+      const res = await getUserInfoByIdApi({
+        userId: getUserId(),
+      });
+      this.info = res.data;
+      console.log(res);
+      console.log("this.info", this.info);
+      this.addname = this.info.contactName;
+      console.log("用户名", this.addname);
+      this.phoneNumber = this.info.contactPhone;
+      console.log("手机号码", this.phoneNumber);
+    },
+
+    async a() {
+      console.log(123456);
+      const res = await getIsOpenServerAreaApi({
+        address: this.address,
+      });
+
+      console.log("res", res);
+      this.tips = res.data;
+      console.log("tips", this.tips);
+      this.type = this.tips ? 1: 2;
+      console.log("type",this.type);
+
+      if( this.type ==2 ){
+        console.log("区域判断", this.type);
+        uni.showModal({
+          title: "提示",
+          content: "你所在区域不在接单范围内",
+          showCancel: true,
+          // success: ({ confirm, cancel }) => {}
+          success: function (res) {
+            if (res.confirm) {
+              console.log("确定");
+              // uni.navigateTo({
+              //   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
+              // });
+            } else if (res.confirm) {
+              console.log("取消");
+            }
+          },
+        });
+      }
+    },
+
+
+    //根据用户地址判断该区域是否开通了站长
+    async getIsOpenServerArea() {
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result;
+              _this.addressDetail = result.address_reference.town.title;
+              console.log("this.addressDetail", _this.addressDetail);
+
+              _this.address =
+                result.address_component.province +
+                result.address_component.city +
+                result.address_component.district;
+              console.log("this.address", _this.address);
+
+              _this.a();
+            }
+          });
+        },
+      });
+    },
+
+
+
+
   },
   created() {},
   onLoad(options) {
@@ -471,19 +608,28 @@ export default {
     }
 
     this.getServicePrice();
+    this.getUserInfoById();
+    this.getIsOpenServerArea();
 
-    const _this = this;
-    uni.getLocation({
-      type: "gcj02",
-      success: function (res) {
-        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-          if (res.status === 0) {
-            const result = res.result.address_component;
-            _this.address = result.province + result.city + result.district;
-          }
-        });
-      },
-    });
+    // const _this = this;
+    // uni.getLocation({
+    //   type: "gcj02",
+    //   success: function (res) {
+    //     getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+    //       if (res.status === 0) {
+    //         const result = res.result;
+    //         _this.address =
+    //           result.address_component.province +
+    //           result.address_component.city +
+    //           result.address_component.district;
+
+    //         _this.addressDetail = result.address_component.street_number;
+    //       }
+    //     });
+    //   },
+    // });
+
+    
   },
 };
 </script>
@@ -529,7 +675,7 @@ export default {
       }
       .text {
         font-size: 32upx;
-        font-weight: bold;
+        font-weight: 500;
         color: #000000;
       }
 
@@ -540,26 +686,28 @@ export default {
     }
 
     .add-list {
+      position: relative;
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       width: 100%;
-      height: 100upx;
+      height: 140upx;
       padding-top: 30upx;
+      border-bottom: 2upx solid #d8d8d8;
       .detail-address {
         height: 100%;
         display: flex;
         margin-top: 10upx;
         font-size: 32upx;
-        font-weight: bold;
-        color: #000000;
+        // font-weight: bold;
+        color: #3662ec;
       }
 
       .addDetail {
         margin-left: 0upx;
         padding-top: 12upx;
-        width: 78%;
+        width: 70%;
         height: 100%;
-        background: #f1f2f6;
+        // background: #f1f2f6;
         border-radius: 20upx;
 
         .address {
@@ -567,9 +715,9 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 20upx;
-          background: #f1f2f6;
+          // background: #f1f2f6;
           margin-bottom: 0upx;
-          padding-left: 20upx;
+          padding-left: 42upx;
           box-sizing: border-box;
           font-size: 30upx;
         }
@@ -615,12 +763,13 @@ export default {
       }
       .text {
         font-size: 32upx;
-        font-weight: bold;
+        font-weight: 500;
         color: #000000;
       }
     }
 
     .name-list {
+      border-bottom: 2upx solid #d8d8d8;
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -630,8 +779,8 @@ export default {
         display: flex;
         align-items: center;
         font-size: 32upx;
-        font-weight: bold;
-        color: #000000;
+        // font-weight: bold;
+        color: #3662ec;
       }
       .name {
         margin-left: 0upx;
@@ -643,7 +792,7 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 20upx;
-          background: #f1f2f6;
+          // background: #f1f2f6;
           padding-left: 20upx;
           box-sizing: border-box;
           font-size: 30upx;
@@ -656,6 +805,7 @@ export default {
     }
 
     .number-list {
+      border-bottom: 2upx solid #d8d8d8;
       margin-top: 30upx;
       display: flex;
       justify-content: space-between;
@@ -665,8 +815,8 @@ export default {
         display: flex;
         align-items: center;
         font-size: 32upx;
-        font-weight: bold;
-        color: #000000;
+        // font-weight: bold;
+        color: #3662ec;
       }
       .phone-number {
         width: 78%;
@@ -678,7 +828,7 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 20upx;
-          background: #f1f2f6;
+          // background: #f1f2f6;
           padding-left: 20upx;
           box-sizing: border-box;
           font-size: 30upx;
@@ -711,7 +861,7 @@ export default {
         }
         .text {
           font-size: 32upx;
-          font-weight: bold;
+          font-weight: 500;
           color: #000000;
           // flex: 1;
         }
@@ -724,6 +874,33 @@ export default {
         // width: 290upx;
         padding-top: 30upx;
         width: 100%;
+        .tiem-list {
+          .choice-time {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .input {
+              // padding-left: 300upx;
+              text-align: center;
+              width: 100%;
+              white-space: nowrap;
+              font-size: 32upx;
+              color: #fa5151;
+              // border: 2upx solid #d8d8d8;
+            }
+            .btn-show-btn {
+              width: 40upx;
+              height: 40upx;
+              // z-index: 1;
+              position: static;
+
+              &::after {
+                position: static;
+              }
+            }
+          }
+        }
+
         .example-body {
           .uni-input-input {
             color: #fa5151;
@@ -732,10 +909,6 @@ export default {
 
           .datatime {
           }
-        }
-        .more {
-          width: 40upx;
-          height: 40upx;
         }
       }
 
@@ -989,6 +1162,7 @@ export default {
     padding: 26upx 20upx;
     box-sizing: border-box;
     border-top: 4upx solid #f1f2f6;
+    transform: translateY(-168upx);
     .price-list {
       display: flex;
       .logo {
@@ -1050,5 +1224,14 @@ export default {
       // line-height: 70upx;
     }
   }
+
+  // .btn-show-btn {
+  //   z-index: 1;
+  //   position: static;
+
+  //   &::after {
+  //     position: static;
+  //   }
+  // }
 }
 </style>
