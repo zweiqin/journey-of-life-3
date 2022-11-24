@@ -173,8 +173,8 @@ export default {
         }
         .sign {
           display: flex;
-          width: 80%;
-          justify-content: space-between;
+          // width: 60%;
+          // justify-content: space-between;
           .text {
             // width: 112upx;
             // height: 36upx;
@@ -186,22 +186,25 @@ export default {
             color: #3662ec;
             text-align: center;
             white-space: nowrap;
+            margin-right: 28upx;
           }
         }
         .main {
           font-size: 28upx;
           color: #999999;
           display: flex;
-          justify-content: space-between;
-          width: 75%;
+          // justify-content: space-between;
+          // width: 65%;
+          white-space: nowrap;
           .name {
           }
           .home {
-            border-right: 1px solid #d8d8d8;
-            width: 72upx;
+            border-right: 2upx solid #d8d8d8;
+            width: 70upx;
             height: 36upx;
           }
           .repair {
+            margin-left: 26upx;
           }
         }
       }

@@ -535,12 +535,14 @@
     </view>
 
     <DiscountPopup v-model="showPopup"></DiscountPopup>
+    <DispatchPopup v-model="show"></DispatchPopup>
   </view>
 </template>
 
 <script>
 import community from "./components/community";
 import DiscountPopup from "./components/discount.vue";
+import DispatchPopup from "./components/dispatch.vue";
 import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import { list } from "./config";
 import { moreService } from "./config";
@@ -550,6 +552,7 @@ export default {
   components: {
     community,
     DiscountPopup,
+    DispatchPopup,
   },
   data() {
     return {
@@ -560,6 +563,7 @@ export default {
       value: "",
       serviceName: "",
       showPopup: false,
+      show:false,
       address: "",
       names: [{ text: "专业性强" }, { text: "及时服务" }],
     };
@@ -567,6 +571,7 @@ export default {
 
   onLoad() {
     this.showPopup = false;
+    this.show = true;
     this.getLocation();
     // this.address = "定位中...";
     // const _this = this;

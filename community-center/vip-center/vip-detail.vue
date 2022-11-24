@@ -2,11 +2,17 @@
   <view class="vip-detail-conatiner">
     <view class="header">
       <img
-        style="width: 100%"
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wt2xsw30pkqpznisbd9m.png"
+        style="width: 100%;padding-top: 80upx;padding-bottom: 30upx;"
+        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png"
         alt=""
       />
-      <JIcon @click="handleClickBack" class="back" type="red-back"></JIcon>
+      <!-- <JIcon @click="handleClickBack" class="back" type="red-back"></JIcon> -->
+      <img
+        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png"
+        alt=""
+        class="back"
+        @click="handleClickBack"
+      />
 
       <view class="main">
         <PackagePane
