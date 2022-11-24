@@ -404,6 +404,12 @@
 					"style": {
 						"navigationBarTitleText": "套餐详情"
 					}
+				},
+				{
+					"path": "order-status",
+					"style": {
+						"navigationBarTitleText": "订单状态"
+					}
 				}
 			]
 		},

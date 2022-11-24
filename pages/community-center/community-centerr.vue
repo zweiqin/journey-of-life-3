@@ -631,6 +631,7 @@ export default {
               if (res.status === 0) {
                 const result = res.result.address_reference;
                 _this.address = result.town.title;
+                
               }
             })
             .catch(() => {
