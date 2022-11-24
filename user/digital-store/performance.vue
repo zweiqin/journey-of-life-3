@@ -368,6 +368,13 @@ export default {
     this.performanceList();
     this.getrepetitionMonth();
   },
+  onShow() {
+    this.thistime();
+    this.week = "";
+    this.day = "";
+    this.performanceList();
+    this.getrepetitionMonth();
+  },
 };
 </script>
 

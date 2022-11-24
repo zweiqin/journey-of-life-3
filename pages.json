@@ -240,6 +240,24 @@
 			"style": {
 				"navigationBarTitleText": "payAccomplish"
 			}
+		},
+		{
+			"path": "pages/brandFactory/index",
+			"style": {
+				"navigationBarTitleText": "品牌工厂"
+			}
+		},
+		{
+			"path": "pages/brandFactory/myBrand",
+			"style": {
+				"navigationBarTitleText": "品牌工厂"
+			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/index",
+			"style": {
+				"navigationBarTitleText": "newBusiness"
+			}
 		}
 	],
 	"tabBar": {

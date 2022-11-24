@@ -1,9 +1,9 @@
 <template>
   <view class="local-wrapper" @click.stop="handleClick">
-    <JIcon type="locale" width="34" height="40"></JIcon><text
-      class="locale"
-      >{{ address }}</text
-    ></view
+    <JIcon type="locale" width="34" height="40" v-if="icon"></JIcon
+    ><text class="locale" :class="{ whitelocale: color }" >{{
+      address
+    }}</text></view
   >
 </template>
   
@@ -12,6 +12,16 @@ import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 export default {
   mounted() {
     this.getLocation();
+  },
+  props: {
+    color: {
+      type: Boolean,
+      default: false,
+    },
+    icon:{
+      type:Boolean,
+      default:true
+    }
   },
 
   data() {
@@ -68,7 +78,12 @@ export default {
 
   .locale {
     padding: 0 10upx;
-    border-right: 1px solid #ccc;
+      color: white;
+      border-right: 1px solid #ccc;
+    &.whitelocale {
+      padding: 0 10upx;
+      border-right: 1px solid #ccc;
+    }
   }
 }
 </style>

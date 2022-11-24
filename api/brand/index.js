@@ -43,3 +43,12 @@ export const getBrandListBySelectApi = (data) => {
 export const getCatalogIdByBrandApi = (data) => {
     return RuanRequest("/catalog/getCatalogIdByBrand", data, 'get')
 }
+/**
+ * 门店风格
+ * @param {*} data 
+ * @returns 
+ */
+
+export const getBrandStyleListApi = (data) =>{
+    return RuanRequest("/brandStyle/list",data,'get')
+}

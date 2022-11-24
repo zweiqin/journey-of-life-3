@@ -295,6 +295,7 @@ export default {
           form.setAttribute("method", "POST");
           uni.removeStorageSync(PAY_ORDER);
           uni.setStorageSync(PAY_ORDER, res.orderNo);
+          // uni.navigateTo({ url: '../../pages/payAccomplish/index' })
           const data = JSON.parse(res.data);
           let input;
           for (const key in data) {
