@@ -15,7 +15,9 @@ export const navs = [
   {
     label: '品牌工厂',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fnnpwfyewgyrgqcjdb3n.png",
-    // value: 2
+    value: 2,
+    url: "../../pages/brandFactory/index"
+
   },
   {
     label: '满屋定制',

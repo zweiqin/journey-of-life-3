@@ -5,6 +5,7 @@
       class="title"
       :style="{
         color: !dark ? '#fff' : '',
+        
       }"
       >{{ title }}</view
     >

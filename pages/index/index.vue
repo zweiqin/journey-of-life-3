@@ -23,7 +23,8 @@
       <!-- <text class="loaction" v-if="currentNav === 0">佛山市</text> -->
       <view class="search">
         <img :src="require('../../static/images/icon/search.png')" alt="" />
-        <input type="text" />
+          <input type="text"  />
+ 
       </view>
       <img
         class="img"
@@ -52,7 +53,7 @@
         </view>
       </view>
     </view>
-    <view class="affiche" v-if="currentNav === 0">
+    <view class="affiche" v-if="currentNav === 1">
       <img
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93wpaaxvpg67whbtul3e.png "
         alt=""
@@ -80,10 +81,9 @@
     <view class="nav">
       <view
         class="item"
-        :class="{ active: currentNav === item.value }"
         v-for="item in navs"
         :key="item.label"
-        @click="handleSwitchPanel(item.value)"
+        @click="navTouch(item.url)"
       >
         <img class="img" :src="item.icon" alt="" />
         <span>{{ item.label }}</span>
@@ -103,10 +103,10 @@
         :goodlist3="goodlist3"
         v-show="currentNav === 1"
       ></StrictSelection>
-      <!-- <BrandFactory
+      <BrandFactory
         :BrandFactory="BrandFactory"
         v-show="currentNav === 2"
-      ></BrandFactory> -->
+      ></BrandFactory>
       <!-- <Design v-show="currentNav === 3"></Design>
       <view v-show="currentNav === 4">
         <Carousel></Carousel>
@@ -178,19 +178,18 @@ export default {
       goodlist3: [],
       currentNav: 1,
       briefIntroduction,
-
       strictSelectionBanner: [
         {
           id: 1,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mdt89ghy6n3w0vjnsqm8.png ",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sv2rof6zwas3w1ha6d3p.png  ",
         },
         {
           id: 2,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/pc8lgv7grxqv2aikz25c.png ",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
         },
         {
           id: 3,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1kpizbwedga2kirpc9sk.png ",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0ulrhv81aq17dk6fk5n5.png",
         },
       ],
       channel: [], // 风格
@@ -224,6 +223,9 @@ export default {
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    navTouch(item) {
+      uni.navigateTo({ url: item });
+    },
     async moreGoodsList() {
       const res = await goodsListApi({
         page: this.page,
@@ -255,6 +257,7 @@ export default {
       });
       // this.BrandFactory= res.data.brandList
       this.BrandFactory = res.data.brandList;
+      console.log(this.BrandFactory);
     },
     async getGoodsById() {
       let number = Math.ceil(Math.random() * 10) + 1; //ceil向上取整，即生成1-10的随机整数，取0的概率极小
@@ -292,10 +295,9 @@ export default {
      */
     handleSwitchPanel(value) {
       if (value) {
-      this.currentNav = value;
-        
-      }else{
-        console.log('value不存在');
+        this.currentNav = value;
+      } else {
+        console.log("value不存在");
       }
     },
 
@@ -395,6 +397,7 @@ export default {
 .affiche {
   display: flex;
   align-items: center;
+  padding: 0 26upx;
   .bell {
     width: 40upx;
     height: 40upx;

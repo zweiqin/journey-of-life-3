@@ -117,10 +117,9 @@
       <view class="headName">
         <view class="headName-text">报警时间：</view>
         <view class="example-body">
-          <uni-datetime-picker
-            v-model="currentTime"
-            @change="timechange"
-          ></uni-datetime-picker>
+          <uni-datetime-picker v-model="currentTime" @change="timechange">{{
+            currentTime || "选择报警时间"
+          }}</uni-datetime-picker>
         </view>
       </view>
       <view class="headName">
@@ -265,7 +264,7 @@ export default {
         userId: getUserId(),
 
         // // 传输的数据
-        // alarmMoney: "333", 
+        // alarmMoney: "333",
         // alarmTime: "2022-09-19 16:37:37",
         // day: "19",
         // headName: "123",
@@ -283,9 +282,12 @@ export default {
           icon: "success",
           mask: true,
         });
-      }else{
+        setTimeout(() => {
+          uni.navigateBack({});
+        }, 2000);
+      } else {
         uni.showToast({
-          title: "添加失败，"+res.errmsg,
+          title: "添加失败，" + res.errmsg,
           icon: "none",
           mask: true,
         });
@@ -294,6 +296,7 @@ export default {
   },
   onLoad() {
     this.thistime();
+    this.currentTime = "";
   },
 };
 </script>

@@ -44,6 +44,8 @@ const request = (base_url) => {
   };
 };
 
+
+
 export const GyRequest = request(BASE_URL);
 export const XZLRequest = request(XZL_URL)
 export const RuanRequest = request(RUAN_URL);

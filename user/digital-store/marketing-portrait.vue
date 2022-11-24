@@ -176,7 +176,8 @@ export default {
       console.log(res);
       if (res.errno === 0) {
         this.info = res.data;
-      } else {
+      } 
+      else {
         uni.showToast({
           title: "您还不是业务员",
           duration: 1500,

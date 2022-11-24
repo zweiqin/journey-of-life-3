@@ -1,6 +1,9 @@
 <template>
   <div class="payAccomplish">
-    <Ttitle :title="'支付结果'"></Ttitle>
+    <view class="title"> 支付结果</view>
+    <view class="all">
+      <view class="background"> <view class="payColor">羊</view></view></view
+    >
   </div>
 </template>
 
@@ -14,6 +17,8 @@ export default {
   data() {
     return {
       orderId: "",
+      orderType: "",
+      orderNo: "",
     };
   },
   computed: {},
@@ -26,6 +31,13 @@ export default {
       const res = await getSybGetIsPaySucceedApi({
         payOrderNo: this.orderId,
       });
+      this.orderType = res.errmsg;
+      this.orderNo = res.errno;
+      uni.showToast({
+        title: res.errmsg,
+        icon: "none",
+        mask: true,
+      });
     },
   },
   watch: {},
@@ -33,25 +45,33 @@ export default {
   // 页面周期函数--监听页面加载
   onLoad() {
     this.getOrderNo();
-    this.getSybGetIsPaySucceed(); 
+    this.getSybGetIsPaySucceed();
   },
-  // 页面周期函数--监听页面初次渲染完成
-  onReady() {},
-  // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
-  // 页面周期函数--监听页面隐藏
-  onHide() {},
-  // 页面周期函数--监听页面卸载
-  onUnload() {},
-  // 页面处理函数--监听用户下拉动作
-  // onPullDownRefresh() { uni.stopPullDownRefresh(); },
-  // 页面处理函数--监听用户上拉触底
-  // onReachBottom() {},
-  // 页面处理函数--监听页面滚动(not-nvue)
-  // onPageScroll(event) {},
-  // 页面处理函数--用户点击右上角分享
-  // onShareAppMessage(options) {},
 };
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .background {
+    background: red;
+    width: 140upx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 140upx;
+    .payColor {
+      color: white;
+      font-size: 72upx;
+      font-weight: 800;
+    }
+  }
+}
+</style>
