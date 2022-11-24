@@ -6,6 +6,7 @@
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nkrijs42ry7sdxdedukv.png "
           class="titleImg"
           alt=""
+          @click="back"
         />
         <view class="titleText">品牌工厂</view>
         <view class="titleImg"></view>
@@ -98,6 +99,9 @@ export default {
   },
   computed: {},
   methods: {
+    back() {
+      uni.switchTab({ url: '/pages/index/index' });
+    },
     async getBrandFactory() {
       const res = await getBrandListApi({
         brandgenreId: 23,
