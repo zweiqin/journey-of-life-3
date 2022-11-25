@@ -112,6 +112,11 @@ export const getUserInfoByIdApi = (data) => {
   return SheQuRequest1("/laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
 };
 
+//订单详情
+export const detailsMdApi = (data) => {
+  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/detailsMd", data, "get");
+};
+
 
 
 // 本地

@@ -26,12 +26,14 @@
             margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #015cb7;
+            background: #EFEFEF;
+            color: #999999;
+            border-radius: 5px;
           "
           size="mini"
           @click.stop="toEdit"
         >
-          编辑
+          订单详情
         </button>
       </view>
       <view>
@@ -40,12 +42,13 @@
           style="margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #d2691e;
+            background: #07B9B9;
+            color: #FFFFFF;
           "
           size="mini"
           @click.stop="handleCancel"
         >
-          取消
+          取消订单
         </button>
       </view>
       <view>
@@ -56,7 +59,7 @@
           size="mini"
           @click.stop="handlePay"
         >
-          支付
+          去支付
         </button>
       </view>
     </view>
@@ -95,15 +98,20 @@ export default {
     /**
      * @description 去编辑
      */
-    toEdit() {
-      const _this = this;
-      let url =
-        this.data.deliveryType === 4
-          ? "/community-center/repair"
-          : "/community-center/delivery-install";
-      uni.navigateTo({
-        url: url + "?orderNo=" + _this.data.orderNo,
-      });
+    // toEdit() {
+    //   const _this = this;
+    //   let url =
+    //     this.data.deliveryType === 4
+    //       ? "/community-center/repair"
+    //       : "/community-center/delivery-install";
+    //   uni.navigateTo({
+    //     url: url + "?orderNo=" + _this.data.orderNo,
+    //   });
+    // },
+
+    //订单详情
+    toEdit(){
+      uni.navigateTo({ url: `/community-center/order-status` });
     },
 
     /**
