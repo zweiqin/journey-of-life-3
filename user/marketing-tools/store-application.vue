@@ -233,34 +233,38 @@ export default {
     },
     //付钱
     async payOrderForEnd() {
-      // const res = await payOrderGoodsApi({
-      //   orderNo: this.payOrderID,
-      //   userId: getUserId(),
-      //   payType: 4,
-      // });
-      // console.log(res);
-      payOrderGoodsApi({
-        orderNo: this.payOrderID,
+      getLevelPaySalesmanPrepayBySybApi({
         userId: getUserId(),
-        payType: 4,
+        upOrderId: this.upOrderId,
       }).then((res) => {
-        const payData = JSON.parse(res.h5PayUrl);
-        const form = document.createElement("form");
-        form.setAttribute("action", payData.url);
-        form.setAttribute("method", "POST");
-        const data = JSON.parse(payData.data);
-        console.log(data);
-        let input;
-        for (const key in data) {
-          input = document.createElement("input");
-          input.name = key;
-          input.value = data[key];
-          form.appendChild(input);
+        alert(res.data.payOrderID)
+        if (res.errno === 0) {
+          payOrderGoodsApi({
+            orderNo: res.data.payOrderID,
+            userId: getUserId(),
+            payType: 4,
+          }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
+            const form = document.createElement("form");
+            form.setAttribute("action", payData.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(payData.data);
+            console.log(data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
         }
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
       });
+      return;
+
       // const form = document.createElement("form");
       // form.setAttribute("action", res.h5PayUrl);
       // form.setAttribute("method", "POST");
@@ -293,10 +297,11 @@ export default {
       this.form.imgs.brandIdcardProsUrl = list.brandIdcardProsUrl;
       this.form.imgs.brandIdcardConsUrl = list.brandIdcardConsUrl;
 
-      console.log(this.form.imgs);
-
       this.status = list.status;
       this.upOrderId = list.id;
+
+      console.log("来了老弟", list);
+
       this.form.accountInfo.username = list.username;
       this.form.accountInfo.password = list.password;
       this.form.accountInfo.brandPhone = list.brandPhone;
@@ -308,7 +313,7 @@ export default {
       this.form.storeInfo.desc = list.desc;
 
       this.payWindow();
-      this.getLevelPaySalesmanPrepayBySyb();
+      // this.getLevelPaySalesmanPrepayBySyb();
     },
     // async getUserUpInfoList() {
     //   const res = await getUserUpInfoListApi({});
