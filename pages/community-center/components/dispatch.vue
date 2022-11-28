@@ -1,21 +1,21 @@
 <template>
   <view class="dispatch" v-show="value">
 
-    <view id="main" class="sub animate__animated animate__slideInDown">
+    <view id="sub" class="sub ">
     <view class="main">
       <view class="background">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/bluymdw18gabv1xygll0.png"
           alt=""
-          class="img1"
+          class="img1 animate__animated animate__slideInDown"
         />
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ryb0ley5o3onb7ulb04n.png"
           alt=""
-          class="img2"
+          class="img2 animate__animated animate__slideInDown"
         />
       </view>
-      <view class="front">
+      <view class="front animate__animated animate__slideInDown">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/10wne3xyxvf7kdsoc9nb.png"
           alt=""
@@ -29,7 +29,7 @@
     <JIcon
       @click="$emit('input', false)"
       type="mask-close"
-      class="closeIcon"
+      class="closeIcon animate__animated animate__bounce"
     ></JIcon>
 
 </view>
@@ -61,8 +61,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#main{
-  animation-duration: 350ms;
+#sub{
+  animation-duration: 1000ms;
 }
 
 .dispatch {

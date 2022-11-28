@@ -54,7 +54,7 @@
     </view>
 
     <view class="foot2" v-if="pricingType == 2">
-      <view class="on-pay" @click="handleToOrderList">确认订单</view>
+      <view class="on-pay" @click="handleToOrderStatus">确认订单</view>
     </view>
   </view>
 </template>
@@ -93,8 +93,8 @@ export default {
       uni.navigateBack();
     },
 
-    handleToOrderList(){
-      uni.navigateTo({ url: `../community-center/order` });
+    handleToOrderStatus(){
+      uni.navigateTo({ url: `/community-center/order-status?orderNo=${this.data}` });
     },
 
     //新建社区订单

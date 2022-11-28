@@ -154,7 +154,7 @@
               rangeSeparator="至"
             />
           </view> -->
-          
+
           <template>
             <view class="tiem-list">
               <chooseTime @choose="handleChoose" v-model="show"></chooseTime>
@@ -173,83 +173,87 @@
         </view>
       </view>
     </view>
-    <view class="middle1">
-      <view class="detail">
-        <img
-          :src="
-            imgUrl ||
-            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-          "
-          alt=""
-          class="goods"
-        />
-        <view class="item">
-          <view class="text">{{ name1 }}</view>
-          <template v-if="pricingType == 1">
-            <view class="price-list">
-              <view class="logo">￥</view>
-              <view class="number">{{ price1 }}</view>
-              <view class="point"></view>
-              <view class="xie">/</view>
-              <view class="unit">{{ unit1 }}</view>
-            </view>
-          </template>
-          <!-- <view v-if="pricingType == 2"></view> -->
+
+    <view class="middle">
+      <view class="middle1">
+        <view class="detail">
+          <img
+            :src="
+              imgUrl ||
+              'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+            "
+            alt=""
+            class="goods"
+          />
+          <view class="item">
+            <view class="text">{{ name1 }}</view>
+            <template v-if="pricingType == 1">
+              <view class="price-list">
+                <view class="logo">￥</view>
+                <view class="number">{{ price1 }}</view>
+                <view class="point"></view>
+                <view class="xie">/</view>
+                <view class="unit">{{ unit1 }}</view>
+              </view>
+            </template>
+            <!-- <view v-if="pricingType == 2"></view> -->
+          </view>
+        </view>
+        <view class="add">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
+            alt=""
+            class="img"
+            @click="goodsdelete"
+          />
+          <view class="number">{{ number }}</view>
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
+            alt=""
+            class="img"
+            @click="goodsadd"
+          />
         </view>
       </view>
-      <view class="add">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
-          alt=""
-          class="img"
-          @click="goodsdelete"
-        />
-        <view class="number">{{ number }}</view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
-          alt=""
-          class="img"
-          @click="goodsadd"
-        />
-      </view>
-    </view>
-    <view v-if="id2 == 97" class="middle2">
-      <view class="detail">
-        <img
-          :src="
-            imgUrl ||
-            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-          "
-          alt=""
-          class="goods"
-        />
-        <view class="item">
-          <view class="text">匹数</view>
-          <!-- <view class="price-list">
+      <view v-if="id2 == 97" class="middle2">
+        <view class="detail">
+          <img
+            :src="
+              imgUrl ||
+              'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+            "
+            alt=""
+            class="goods"
+          />
+          <view class="item">
+            <view class="text">匹数</view>
+            <!-- <view class="price-list">
             <view class="logo">￥</view>
             <view class="number">150</view>
             <view class="point">.00</view>
             <view class="xie">/</view>
             <view class="unit">台</view>
           </view> -->
+          </view>
+        </view>
+        <view class="add">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
+            alt=""
+            class="img"
+            @click="piecedelete"
+          />
+          <view class="number">{{ specsId }}</view>
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
+            alt=""
+            class="img"
+            @click="pieceadd"
+          />
         </view>
       </view>
-      <view class="add">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
-          alt=""
-          class="img"
-          @click="piecedelete"
-        />
-        <view class="number">{{ specsId }}</view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
-          alt=""
-          class="img"
-          @click="pieceadd"
-        />
-      </view>
     </view>
+
     <view class="main">
       <template v-if="pricingType == 1">
         <view class="total-list">
@@ -369,7 +373,7 @@ export default {
       console.log(item);
       this.address = item;
       this.a();
-      
+
       // if( this.type ==2 ){
       //   console.log("区域判断", this.type);
       //   uni.showModal({
@@ -389,7 +393,6 @@ export default {
       //     },
       //   });
       // }
-
     },
     handleBack() {
       uni.navigateBack();
@@ -533,22 +536,19 @@ export default {
       console.log("res", res);
       this.tips = res.data;
       console.log("tips", this.tips);
-      this.type = this.tips ? 1: 2;
-      console.log("type",this.type);
+      this.type = this.tips ? 1 : 2;
+      console.log("type", this.type);
 
-      if( this.type ==2 ){
+      if (this.type == 2) {
         console.log("区域判断", this.type);
         uni.showModal({
           title: "提示",
-          content: "你所在区域不在接单范围内",
+          content: "你选择的区域不在接单范围内",
           showCancel: true,
           // success: ({ confirm, cancel }) => {}
           success: function (res) {
             if (res.confirm) {
               console.log("确定");
-              // uni.navigateTo({
-              //   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
-              // });
             } else if (res.confirm) {
               console.log("取消");
             }
@@ -556,7 +556,6 @@ export default {
         });
       }
     },
-
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
@@ -567,25 +566,23 @@ export default {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
             if (res.status === 0) {
               const result = res.result;
-              _this.addressDetail = result.address_reference.town.title;
-              console.log("this.addressDetail", _this.addressDetail);
-
+              // _this.addressDetail = result.address_reference.town.title;
+              // console.log("this.addressDetail", _this.addressDetail);
               _this.address =
                 result.address_component.province +
                 result.address_component.city +
                 result.address_component.district;
               console.log("this.address", _this.address);
-
+              
               _this.a();
+
+              _this.addressDetail = result.address_reference.town.title;
+              console.log("this.addressDetail", _this.addressDetail);
             }
           });
         },
       });
     },
-
-
-
-
   },
   created() {},
   onLoad(options) {
@@ -628,8 +625,6 @@ export default {
     //     });
     //   },
     // });
-
-    
   },
 };
 </script>
@@ -639,7 +634,7 @@ export default {
 
 <style lang="less" scoped>
 .customer-information {
-  background: #f1f2f6;
+  // background: #f1f2f6;
   padding-bottom: 168upx;
 
   .title-list {
@@ -919,156 +914,159 @@ export default {
       // }
     }
   }
-  .middle1 {
-    width: 100%;
-    height: 170upx;
-    background: #ffffff;
-    margin-top: 20upx;
-    margin-bottom: 20upx;
-    display: flex;
-    padding-top: 52upx;
-    justify-content: space-between;
-    .detail {
+
+  .middle {
+    background: #f1f2f6;
+    padding-top: 20upx;
+    padding-bottom: 20upx;
+    .middle1 {
+      width: 100%;
+      height: 170upx;
+      background: #ffffff;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      width: 460upx;
-      height: 100upx;
-      // padding-top: 50upx;
-      .goods {
-        width: 212upx;
-        height: 96upx;
-      }
-      .item {
-        width: 200upx;
-        .text {
-          padding-left: 6upx;
-          font-size: 32upx;
-          color: #3d3d3d;
+      .detail {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 460upx;
+        height: 100upx;
+        // padding-top: 50upx;
+        .goods {
+          width: 212upx;
+          height: 96upx;
         }
-        .price-list {
-          display: flex;
-          align-items: center;
-          .logo {
-            font-size: 36upx;
-            font-weight: 500;
-            color: #fa5151;
+        .item {
+          width: 200upx;
+          .text {
+            padding-left: 6upx;
+            font-size: 32upx;
+            color: #3d3d3d;
           }
-          .number {
-            font-size: 36upx;
-            font-weight: 700;
-            color: #fa5151;
+          .price-list {
+            display: flex;
+            align-items: center;
+            .logo {
+              font-size: 36upx;
+              font-weight: 500;
+              color: #fa5151;
+            }
+            .number {
+              font-size: 36upx;
+              font-weight: 700;
+              color: #fa5151;
+            }
+            .point {
+              font-size: 36upx;
+              font-weight: 700;
+              color: #fa5151;
+            }
+            .xie {
+              font-size: 28upx;
+              font-weight: 400;
+            }
+            .unit {
+              font-size: 28upx;
+              font-weight: 400;
+            }
           }
-          .point {
-            font-size: 36upx;
-            font-weight: 700;
-            color: #fa5151;
-          }
-          .xie {
-            font-size: 28upx;
-            font-weight: 400;
-          }
-          .unit {
-            font-size: 28upx;
-            font-weight: 400;
-          }
+        }
+      }
+      .add {
+        padding-top: 20upx;
+        padding-right: 30upx;
+        width: 160upx;
+        height: 50upx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .img {
+          width: 48upx;
+          height: 48upx;
+        }
+        .number {
+          font-size: 32upx;
+          font-weight: 500;
+          color: #3d3d3d;
         }
       }
     }
-    .add {
-      padding-top: 20upx;
-      padding-right: 30upx;
-      width: 160upx;
-      height: 50upx;
+    .middle2 {
+      width: 100%;
+      // height: 170upx;
+      background: #ffffff;
+      margin-top: 20upx;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      .img {
-        width: 48upx;
-        height: 48upx;
+      .detail {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 460upx;
+        height: 100upx;
+        // padding-top: 50upx;
+        .goods {
+          width: 212upx;
+          height: 96upx;
+        }
+        .item {
+          width: 200upx;
+          .text {
+            padding-left: 6upx;
+            font-size: 32upx;
+            color: #3d3d3d;
+          }
+          .price-list {
+            display: flex;
+            align-items: center;
+            .logo {
+              font-size: 36upx;
+              font-weight: 500;
+              color: #fa5151;
+            }
+            .number {
+              font-size: 36upx;
+              font-weight: 700;
+              color: #fa5151;
+            }
+            .point {
+              font-size: 36upx;
+              font-weight: 700;
+              color: #fa5151;
+            }
+            .xie {
+              font-size: 28upx;
+              font-weight: 400;
+            }
+            .unit {
+              font-size: 28upx;
+              font-weight: 400;
+            }
+          }
+        }
       }
-      .number {
-        font-size: 32upx;
-        font-weight: 500;
-        color: #3d3d3d;
+      .add {
+        padding-top: 20upx;
+        padding-right: 30upx;
+        width: 160upx;
+        height: 50upx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .img {
+          width: 48upx;
+          height: 48upx;
+        }
+        .number {
+          font-size: 32upx;
+          font-weight: 500;
+          color: #3d3d3d;
+        }
       }
     }
   }
-  .middle2 {
-    width: 100%;
-    height: 170upx;
-    background: #ffffff;
-    margin-top: 20upx;
-    margin-bottom: 20upx;
-    display: flex;
-    padding-top: 52upx;
-    justify-content: space-between;
-    .detail {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 460upx;
-      height: 100upx;
-      // padding-top: 50upx;
-      .goods {
-        width: 212upx;
-        height: 96upx;
-      }
-      .item {
-        width: 200upx;
-        .text {
-          padding-left: 6upx;
-          font-size: 32upx;
-          color: #3d3d3d;
-        }
-        .price-list {
-          display: flex;
-          align-items: center;
-          .logo {
-            font-size: 36upx;
-            font-weight: 500;
-            color: #fa5151;
-          }
-          .number {
-            font-size: 36upx;
-            font-weight: 700;
-            color: #fa5151;
-          }
-          .point {
-            font-size: 36upx;
-            font-weight: 700;
-            color: #fa5151;
-          }
-          .xie {
-            font-size: 28upx;
-            font-weight: 400;
-          }
-          .unit {
-            font-size: 28upx;
-            font-weight: 400;
-          }
-        }
-      }
-    }
-    .add {
-      padding-top: 20upx;
-      padding-right: 30upx;
-      width: 160upx;
-      height: 50upx;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .img {
-        width: 48upx;
-        height: 48upx;
-      }
-      .number {
-        font-size: 32upx;
-        font-weight: 500;
-        color: #3d3d3d;
-      }
-    }
-  }
+
   .main {
     background: #ffffff;
     padding: 46upx 22upx 20upx 34upx;

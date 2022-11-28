@@ -75,7 +75,7 @@
 
       <view class="upload-list">
         <view class="upload-pane">
-          <!-- <view class="left"></view> -->
+          
 
           <view style="display: flex; flex-wrap: wrap">
             <view
