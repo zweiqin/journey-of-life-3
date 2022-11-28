@@ -26,7 +26,7 @@
             margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #EFEFEF;
+            background: #efefef;
             color: #999999;
             border-radius: 5px;
           "
@@ -39,11 +39,12 @@
       <view>
         <button
           type="primary"
-          style="margin-right: 5px;
+          style="
+            margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #07B9B9;
-            color: #FFFFFF;
+            background: #07b9b9;
+            color: #ffffff;
           "
           size="mini"
           @click.stop="handleCancel"
@@ -55,7 +56,12 @@
         <button
           v-if="data.status === 0"
           type="primary"
-          style="margin-bottom: 5px; margin-top: 5px; background: #015cb7"
+          style="
+            margin-bottom: 5px;
+            margin-top: 5px;
+            background: #fa5151;
+            color: #ffffff;
+          "
           size="mini"
           @click.stop="handlePay"
         >
@@ -108,10 +114,10 @@ export default {
     //     url: url + "?orderNo=" + _this.data.orderNo,
     //   });
     // },
-
+ 
     //订单详情
-    toEdit(){
-      uni.navigateTo({ url: `/community-center/order-status` });
+    toEdit() {
+      uni.navigateTo({ url: `/community-center/order-status?orderNo=${this.data.orderNo}` });
     },
 
     /**

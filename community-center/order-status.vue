@@ -60,7 +60,7 @@
             </view>
             <view class="service-name">{{ this.dictName }}</view>
             <view class="worker-list">
-              <view class="worker-name">黄师傅</view>
+              <view class="worker-name">{{ this.serverMasterName }}</view>
               <view class="contact">联系师傅</view>
             </view>
             <view class="yet">暂未完成</view>
@@ -68,7 +68,7 @@
         </view>
       </view>
     </view>
-    <view class="bottom" v-if="this.a == 2">
+    <view class="bottom" v-if="this.a == 6">
       <view class="bot">
         <view class="first-list">
           <view class="eva">评价</view>
@@ -76,7 +76,9 @@
         </view>
         <view class="second-list">
           <view class="satisfied">满意</view>
-          <star :rate="3" style="white-space: nowrap"></star>
+          <star :rate="abc" @change="bright" style="white-space: nowrap"></star>
+          
+          <!-- <star></star> -->
         </view>
         <view class="comment">评论:</view>
         <textarea
@@ -132,7 +134,7 @@
         </view>
       </view>
     </view>
-    <view class="foot" v-if="this.a == 2">
+    <view class="foot" v-if="this.a == 6">
       <view class="foot-list">
         <view class="ask">
           <img
@@ -167,15 +169,22 @@ export default {
       info: [],
       status: "",
       dictName: "",
+      abc: 3,
       statusName: "",
       createTime: "",
-      a: '',
+      a: "",
+      serverMasterName: "",
+      serverMasterTel: "",
     };
   },
   methods: {
     handleToOrderList() {
       uni.navigateTo({ url: `../community-center/order` });
     },
+    bright(e) {
+      this.abc = e * 1;
+    },
+    
 
     chooseImg() {
       const _this = this;
@@ -216,32 +225,40 @@ export default {
       });
       this.info = res.data;
       console.log("info", this.info);
+
       this.status = this.info[0].status;
       console.log("status", this.status);
+
+      this.serverMasterName = this.info[0].serverMasterName;
+      console.log("师傅名字", this.serverMasterName);
+
+      this.serverMasterTel = this.info[0].serverMasterTel;
+      console.log("电话", this.serverMasterTel);
+
       this.a = this.status;
       console.log("a", this.a);
-      if ((this.a == 0)) {
+      if (this.a == 0) {
         this.statusName = "待支付";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 1)) {
+      } else if (this.a == 1) {
         this.statusName = "待接单";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 2)) {
+      } else if (this.a == 2) {
         this.statusName = "待报价";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 3)) {
+      } else if (this.a == 3) {
         this.statusName = "待分配";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 4)) {
+      } else if (this.a == 4) {
         this.statusName = "已分配";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 5)) {
+      } else if (this.a == 5) {
         this.statusName = "配送中";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 6)) {
+      } else if (this.a == 6) {
         this.statusName = "已完成";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 7)) {
+      } else if (this.a == 7) {
         this.statusName = "已取消";
         console.log("订单状态", this.statusName);
       } else {
@@ -259,6 +276,7 @@ export default {
   onLoad(options) {
     console.log(options);
     this.orderNo = options.orderNo;
+
     console.log("orderNo", this.orderNo);
     this.detailsMd();
   },

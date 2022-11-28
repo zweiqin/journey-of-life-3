@@ -1,7 +1,7 @@
 <template>
   <view class="dispatch" v-show="value">
 
-    <view id="sub" class="sub ">
+    <view id="front" class="sub ">
     <view class="main">
       <view class="background">
         <img
@@ -26,11 +26,21 @@
     <view class="foot animate__animated animate__bounce" @click="handleToViewDetail">
       <text>立即使用</text>
     </view>
-    <JIcon
+    <!-- <JIcon
       @click="$emit('input', false)"
       type="mask-close"
       class="closeIcon animate__animated animate__bounce"
-    ></JIcon>
+    ></JIcon> -->
+
+    <image
+      src="../../../static/images/con-center/close.png"
+      mode="scaleToFill"
+      @click="$emit('input', false)"
+      type="mask-close"
+      class="closeIcon animate__animated animate__bounce"
+    />
+
+
 
 </view>
   </view>
@@ -61,12 +71,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#sub{
+#front{
   animation-duration: 1000ms;
 }
 
 .dispatch {
-  background-color: rgba(98, 98, 98, 0.90);
+  background-color: rgba(98, 98, 98, 0.33);
   position: fixed;
   left: 0;
   top: 0upx;
