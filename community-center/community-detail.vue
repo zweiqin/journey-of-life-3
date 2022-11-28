@@ -275,7 +275,7 @@ export default {
     uni.setNavigationBarTitle({
       title: this.title,
     });
-    this.serverInfoUrl = options.serverImageUrl;
+    this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
   },
 };
