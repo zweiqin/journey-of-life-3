@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       redirect: "",
+      isBind: false,
     };
   },
 
@@ -46,14 +47,23 @@ export default {
         uni.setStorageSync(USER_ID, res.data.userInfo.userId);
         uni.setStorageSync(USER_TOKEN, res.data.token);
 
-        if (this.redirect) {
-          uni.redirectTo({
-            url: _this.redirect,
-          });
-        } else {
+        if (this.isBind) {
           uni.switchTab({
-            url: "/pages/community-center/community-centerr",
+            url: "/pages/user/user",
           });
+
+          uni.setStorageSync("BIND_ID", this.params.userId);
+          return;
+        } else {
+          if (this.redirect) {
+            uni.redirectTo({
+              url: _this.redirect,
+            });
+          } else {
+            uni.switchTab({
+              url: "/pages/community-center/community-centerr",
+            });
+          }
         }
       } else {
         uni.showToast({
@@ -67,6 +77,22 @@ export default {
 
   onLoad(options) {
     this.redirect = options.to;
+    this.params = options;
+
+    this.isBind = !!(options.type === "bind");
+
+    const userId = uni.getStorageSync(USER_ID);
+    if (userId) {
+      if (this.isBind) {
+        uni.switchTab({
+          url: "/pages/user/user?bindId=" + options.userId,
+        });
+        return;
+      }
+      uni.switchTab({
+        url: "/",
+      });
+    }
   },
 };
 </script>

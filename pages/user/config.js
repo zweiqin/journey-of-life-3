@@ -160,6 +160,7 @@ export const serve = {
       label: "推广码",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qreq9r6so29qkurcjeoc.png ",
       // url: "/pages/stuff/brand/index",
+      type: 'extension'
     },
   ],
 };
@@ -185,7 +186,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
-      url: "/user/digital-store/business/index"
+      url: "/user/digital-store/newBusiness/index"
     },
   ],
 };
