@@ -17,7 +17,7 @@
             alt=""
             class="icon"
           />
-          <view class="address">龙江镇</view>
+          <view class="address">{{ address }}</view>
         </view>
       </view>
       <view class="goods">
@@ -165,6 +165,7 @@
 <script>
 import item from "../community-center/componts/item";
 import { getServiceDetailApi } from "../api/community-center";
+import { getAdressDetailByLngLat } from "../utils/DWHutils";
 export default {
   name: "Community-detail",
   props: {},
@@ -173,6 +174,7 @@ export default {
   },
   data() {
     return {
+      address: "",
       serviceDetail: [],
       id: "",
       serverTypeId: "",
@@ -220,15 +222,22 @@ export default {
           console.log("sb kuaixuan");
         }
       }
+    },
 
-      // const id = this.currentTab;
-      // if (id == 0) {
-      //   console.log('sbbbbbb');
-      // } else {
-      //   uni.navigateTo({
-      //     url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}`,
-      //   });
-      // }
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result.address_reference;
+              _this.address = result.town.title;
+            }
+          });
+        },
+      });
     },
 
     switchTab(item1) {
@@ -262,7 +271,7 @@ export default {
 
       this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
       console.log("图片", this.serverInfoUrl);
-      
+
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
     },
@@ -277,45 +286,43 @@ export default {
     });
     this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
+    this.getLocation();
   },
 };
 </script>
-
-
-
-
-
-
-
 <style lang="less" scoped>
 .community-detail {
   background: #f7f8fa;
   .head {
-    padding-top: 10px;
+    padding-top: 20upx;
     background: #ffffff;
-    padding-right: 10px;
+    padding-right: 20upx;
     box-sizing: border-box;
     .title-list {
+      position: relative;
       display: flex;
       align-items: center;
-      padding: 20upx 8upx 36upx 26upx;
+      padding: 20upx 0upx 36upx 16upx;
       .return {
         width: 48upx;
         height: 48upx;
       }
       .title {
-        flex: 1;
+        // flex: 1;
         text-align: center;
         font-size: 36upx;
         font-weight: bold;
         color: #3d3d3d;
-        text-align: left;
+        
       }
       .location {
-        width: 124upx;
+        // width: 124upx;
+        height: 40upx;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: absolute;
+        right: 0upx;
 
         .icon {
           width: 28upx;

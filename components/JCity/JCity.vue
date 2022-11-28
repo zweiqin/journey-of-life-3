@@ -1,7 +1,7 @@
 <template>
   <view class="j-city">
     <view class="address">
-      <view class="diqu">所在地区</view>
+      <view class="diqu"></view>
       <view
         class="value"
         :style="{
@@ -221,15 +221,15 @@ export default {
 @import "../../style/mixin.less";
 
 .j-city {
-  padding-left: 0upx;
-  margin-top: 30upx;
+  // padding-left: 0upx;
+  // margin-top: 30upx;
   .active {
     color: #fa5151;
   }
 
   .address {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     .diqu {
       height: 90upx;
       display: flex;
@@ -240,16 +240,17 @@ export default {
     }
     .value {
       // line-height: 60upx;
-      margin-left: 0upx;
-      display: flex;
-      align-items: center;
-      width: 78%;
-      height: 90upx;
-      border-radius: 20upx;
-      background: #f1f2f6;
-      padding-left: 20upx;
-      box-sizing: border-box;
-      font-size: 30upx;
+
+      // margin-left: 0upx;
+      // display: flex;
+      // align-items: center;
+      // width: 78%;
+      // height: 90upx;
+      // border-radius: 20upx;
+      // background: #f1f2f6;
+      // padding-left: 20upx;
+      // box-sizing: border-box;
+      // font-size: 30upx;
     }
   }
   .city-wrapper {

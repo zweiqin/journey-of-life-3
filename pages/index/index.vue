@@ -13,7 +13,6 @@
     <!-- 头部 -->
     <view class="header" ref="headerRef">
       <TLocale></TLocale>
-
       <!-- <img
         v-if="currentNav === 0"
         class="img"
@@ -24,7 +23,8 @@
       <!-- <text class="loaction" v-if="currentNav === 0">佛山市</text> -->
       <view class="search">
         <img :src="require('../../static/images/icon/search.png')" alt="" />
-        <input type="text" />
+          <input type="text"  />
+ 
       </view>
       <img
         class="img"
@@ -34,7 +34,7 @@
     </view>
 
     <!-- banner -->
-    <view class="banner" v-if="currentNav === 0">
+    <view class="banner" v-if="currentNav === 1">
       <swiper
         class="swiper"
         indicator-dots
@@ -53,7 +53,7 @@
         </view>
       </view>
     </view>
-    <view class="affiche" v-if="currentNav === 0">
+    <view class="affiche" v-if="currentNav === 1">
       <img
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93wpaaxvpg67whbtul3e.png "
         alt=""
@@ -81,10 +81,9 @@
     <view class="nav">
       <view
         class="item"
-        :class="{ active: currentNav === item.value }"
         v-for="item in navs"
         :key="item.label"
-        @click="handleSwitchPanel(item.value)"
+        @click="navTouch(item.url)"
       >
         <img class="img" :src="item.icon" alt="" />
         <span>{{ item.label }}</span>
@@ -102,14 +101,14 @@
         :goodlist1="goodlist1"
         :goodlist2="goodlist2"
         :goodlist3="goodlist3"
-        v-show="currentNav === 0"
+        v-show="currentNav === 1"
       ></StrictSelection>
       <BrandFactory
         :BrandFactory="BrandFactory"
-        v-show="currentNav === 1"
+        v-show="currentNav === 2"
       ></BrandFactory>
-      <Design v-show="currentNav === 2"></Design>
-      <view v-show="currentNav === 3">
+      <!-- <Design v-show="currentNav === 3"></Design>
+      <view v-show="currentNav === 4">
         <Carousel></Carousel>
         <view class="goods-wrapper">
           <Goods></Goods>
@@ -121,7 +120,7 @@
           <Goods></Goods>
           <Goods></Goods>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <!-- sider -->
@@ -177,20 +176,20 @@ export default {
       size: "",
       goodlist2: [],
       goodlist3: [],
-      currentNav: 0,
+      currentNav: 1,
       briefIntroduction,
       strictSelectionBanner: [
         {
           id: 1,
-          url: "https://img0.baidu.com/it/u=4086366480,1335391394&fm=253&fmt=auto&app=138&f=JPEG?w=1280&h=500",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sv2rof6zwas3w1ha6d3p.png  ",
         },
         {
           id: 2,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/rfhy2z3or8ksz65xv01t.png",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
         },
         {
           id: 3,
-          url: "https://img2.baidu.com/it/u=1592211744,900572881&fm=253&fmt=auto&app=138&f=JPEG?w=1067&h=500",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0ulrhv81aq17dk6fk5n5.png",
         },
       ],
       channel: [], // 风格
@@ -224,6 +223,9 @@ export default {
   onShow: function () {},
   onPullDownRefresh: function () {},
   methods: {
+    navTouch(item) {
+      uni.navigateTo({ url: item });
+    },
     async moreGoodsList() {
       const res = await goodsListApi({
         page: this.page,
@@ -243,7 +245,7 @@ export default {
       });
       const fklist = res.data.goodsList;
       this.goodlist1 = fklist.slice(0, 8);
-      this.goodlist2 = fklist.slice(63 , 75);
+      this.goodlist2 = fklist.slice(63, 75);
       console.log(this.goodlist1);
     },
 
@@ -255,6 +257,7 @@ export default {
       });
       // this.BrandFactory= res.data.brandList
       this.BrandFactory = res.data.brandList;
+      console.log(this.BrandFactory);
     },
     async getGoodsById() {
       let number = Math.ceil(Math.random() * 10) + 1; //ceil向上取整，即生成1-10的随机整数，取0的概率极小
@@ -291,7 +294,11 @@ export default {
      * @description 切换面板
      */
     handleSwitchPanel(value) {
-      this.currentNav = value;
+      if (value) {
+        this.currentNav = value;
+      } else {
+        console.log("value不存在");
+      }
     },
 
     /**
@@ -327,7 +334,6 @@ export default {
         this.discount = res.data.newGoodsList;
         this.explosion = this.explosion.slice(0, 6);
         this.discount = this.discount.slice(0, 6);
-
       } else {
         uni.showToast({
           title: res.errmsg,
@@ -391,6 +397,7 @@ export default {
 .affiche {
   display: flex;
   align-items: center;
+  padding: 0 26upx;
   .bell {
     width: 40upx;
     height: 40upx;

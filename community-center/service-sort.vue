@@ -9,7 +9,9 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">龙江镇</view>
+          <view class="text" @click.stop="handleClick">{{
+            addressDetail
+          }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -53,6 +55,7 @@
             :id="item1.id"
             :pid="item1.pid"
             :detailList="item1.children"
+            :tips="tips"
           >
           </sort>
         </view>
@@ -64,11 +67,16 @@
 <script>
 import { getServiceSortApi } from "../api/community-center";
 import sort from "../community-center/componts";
+import { getAdressDetailByLngLat } from "../utils/DWHutils";
+import { getIsOpenServerAreaApi } from "../api/community-center";
 export default {
   name: "Service-sort",
   components: {
     sort,
   },
+  // mounted() {
+  //   this.getLocation();
+  // },
   props: {},
   data() {
     return {
@@ -77,8 +85,10 @@ export default {
       sort: [],
       id: "",
       serverNameOne: "",
-      // data: [],
+      address: "",
       scrollHeight: 667,
+      tips: "",
+      addressDetail: "",
     };
   },
   methods: {
@@ -95,14 +105,35 @@ export default {
       uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
 
-    // handleToServiceDetail(id) {
-    //   console.log("服务详情",id);
-    //   uni.navigateTo({ url: "../community-center/community-detail?id=" + id });
+    handleClick() {
+      const _this = this;
+      if (
+        this.addressDetail === "定位失败" ||
+        this.addressDetail === "定位中..."
+      ) {
+        uni.showModal({
+          title: "提示",
+          confirmText: "我已打开定位",
+          content: "请确认您已开启了定位",
+          success: function (res) {
+            if (res.confirm) {
+              _this.getLocation();
+            }
+          },
+        });
+      }
+    },
 
-    //   uni.navigateTo({
-    //     url: `/community-center/community-detail?id=${id}&name=   `
-    //   })
-    // },
+    async a() {
+      console.log(123456);
+      const res = await getIsOpenServerAreaApi({
+        address: this.address,
+      });
+
+      console.log("获取到的信息", res);
+      this.tips = res.data;
+      console.log("tips", this.tips);
+    },
 
     //查询社区服务分类接口
     async getServiceSort() {
@@ -117,6 +148,31 @@ export default {
       console.log(res.data[0]);
       this.sort = this.data.find((item) => item.id === this.currentTab);
     },
+
+    //根据用户地址判断该区域是否开通了站长
+    async getIsOpenServerArea() {
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+            if (res.status === 0) {
+              const result = res.result;
+              _this.addressDetail = result.address_reference.town.title;
+              console.log("this.addressDetail", _this.addressDetail);
+
+              _this.address =
+                result.address_component.province +
+                result.address_component.city +
+                result.address_component.district;
+              console.log("this.address", _this.address);
+
+              _this.a();
+            }
+          });
+        },
+      });
+    },
   },
   mounted() {},
   onLoad(options) {
@@ -124,12 +180,16 @@ export default {
     console.log(this.currentTab);
 
     this.getServiceSort();
+    this.getIsOpenServerArea();
+
     const _this = this;
     uni.getSystemInfo({
       success(res) {
         _this.scrollHeight = res.safeArea.height - 60;
       },
     });
+
+    // const _this = this;
   },
 };
 </script>
@@ -145,23 +205,27 @@ uni-page-body {
     height: 120upx;
     line-height: 120upx;
     background: #ffffff;
+    padding-left: 16upx;
+    padding-right: 26upx;
+    box-sizing: border-box;
     // position: fixed;
     .search-bar {
-      width: 95%;
-      left: 3%;
-      top: 80upx;
+      width: 100%;
+      // left: 3%;
+      // top: 80upx;
       display: flex;
       align-items: center;
       .location {
         display: flex;
         align-items: center;
-        margin: 0 20upx;
+        // margin: 0 20upx;
+        margin-right: 5px;
         .return {
           width: 48upx;
           height: 48upx;
         }
         .text {
-          font-size: 36upx;
+          font-size: 32upx;
           font-weight: bold;
           color: #3d3d3d;
         }
@@ -171,7 +235,7 @@ uni-page-body {
         }
       }
       .search-box {
-        padding: 0upx 24upx;
+        padding: 0upx 16upx;
         display: flex;
         flex: 1;
         align-items: center;
@@ -196,8 +260,9 @@ uni-page-body {
           padding-left: 14upx;
           flex: 1;
           font-size: 24upx;
-          font-weight: 500;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
+          border-left: 2upx solid #d8d8d8;
         }
       }
     }

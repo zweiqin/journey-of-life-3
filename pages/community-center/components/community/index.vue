@@ -11,7 +11,7 @@
               class="img"
             />
             <view class="year">1年</view>
-            <star rate="5"></star>
+            <star rate="5" style="white-space: nowrap"></star>
             <view class="star">5.0星</view>
           </view>
           <view class="sign">
@@ -131,7 +131,7 @@ export default {
 <style lang="less" scoped>
 .service-station {
   // width: 100%;
-  height: 544upx;
+  // height: 544upx;
   border-radius: 20upx;
   background: #ffffff;
   margin-bottom: 20upx;
@@ -150,6 +150,7 @@ export default {
           font-size: 32upx;
           font-weight: 600;
           color: #3d3d3d;
+          white-space: nowrap;
         }
         .eva {
           display: flex;
@@ -162,19 +163,21 @@ export default {
           .year {
             font-size: 28upx;
             color: #999999;
+            white-space: nowrap;
           }
           .star {
             font-size: 28upx;
             color: #ff8f1f;
+            white-space: nowrap;
           }
         }
         .sign {
           display: flex;
-          width: 80%;
-          justify-content: space-between;
+          // width: 60%;
+          // justify-content: space-between;
           .text {
-            width: 112upx;
-            height: 36upx;
+            // width: 112upx;
+            // height: 36upx;
             border-radius: 4upx;
             border: 2upx solid #3662ec;
             box-sizing: border-box;
@@ -182,22 +185,26 @@ export default {
             font-weight: 500;
             color: #3662ec;
             text-align: center;
+            white-space: nowrap;
+            margin-right: 28upx;
           }
         }
         .main {
           font-size: 28upx;
           color: #999999;
           display: flex;
-          justify-content: space-between;
-          width: 75%;
+          // justify-content: space-between;
+          // width: 65%;
+          white-space: nowrap;
           .name {
           }
           .home {
-            border-right: 1px solid #d8d8d8;
-            width: 72upx;
+            border-right: 2upx solid #d8d8d8;
+            width: 70upx;
             height: 36upx;
           }
           .repair {
+            margin-left: 26upx;
           }
         }
       }
@@ -235,14 +242,14 @@ export default {
     .mid {
       padding-top: 12upx;
       // width: 100%;
-      height: 300upx;
+      // height: 300upx;
       .shop-list {
         // width: 100%;
         display: flex;
         justify-content: space-between;
         .item {
           width: 200upx;
-          height: 300upx;
+          // height: 300upx;
           .shop {
             width: 200upx;
             height: 200upx;
@@ -257,6 +264,7 @@ export default {
             .name {
               font-size: 28upx;
               font-weight: 500;
+              white-space: nowrap;
             }
             .p {
               display: flex;

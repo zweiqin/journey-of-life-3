@@ -38,6 +38,7 @@
               :goodsId="item.id"
               :picUrl="item.picUrl"
               :sales="item.sales"
+              :repertory="item.repertory"
             ></hotGoods></view
         ></view>
       </view>

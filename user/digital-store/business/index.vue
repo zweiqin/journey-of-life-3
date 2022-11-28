@@ -266,7 +266,7 @@ https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ifpelt2gfb91m
         @click="useradd"
       />
     </view>
-    <!-- 提示弹窗 --> 
+    <!-- 提示弹窗 -->
     <view>
       <uni-popup ref="windowtext" type="center">
         <view>{{ windowtext }}</view>
@@ -328,7 +328,7 @@ export default {
         birthday: this.userBirthday,
       });
 
-      if (res.errno === 0) {
+      if (res.errno == 0) {
         uni.showToast({
           title: "升级成功",
           icon: "success",
@@ -336,8 +336,8 @@ export default {
         });
       } else {
         uni.showToast({
-          title: "升级成功",
-          icon: "success",
+          title: "升级失败",
+          icon: "none",
           mask: true,
         });
       }
@@ -345,22 +345,23 @@ export default {
     },
     async queryMsgSentryList() {
       const res = await queryMsgSentryListApi({
-        userId: getUserId(),
+        // userId: getUserId(),
+        userId: 200,
         status: this.status * 1,
         // search:this.searchinput,搜索晚点搞
       });
       this.userlist = res.data;
       console.log(res);
-      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
-        uni.showToast({
-          title: res.errmsg,
-          icon: 'none',
-          mask: true
-        })
-        setTimeout(() => {
-          uni.switchTab({ url: '/pages/user/user' })
-        }, 2000);
-      }
+      // if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
+      //   uni.showToast({
+      //     title: res.errmsg,
+      //     icon: 'none',
+      //     mask: true
+      //   })
+      //   setTimeout(() => {
+      //     uni.switchTab({ url: '/pages/user/user' })
+      //   }, 2000);
+      // }
     },
     async saveMsgSentry() {
       const res = await saveMsgSentryApi({
@@ -373,7 +374,7 @@ export default {
         belongsDepartment: this.belongsDepartment,
       });
       console.log(res);
-      if (res.errno === 0) {
+      if (res.errno == 0) {
         uni.showToast({
           title: "添加成功",
           icon: "success",
@@ -701,7 +702,6 @@ export default {
   .input-detail {
     margin: 10upx 0;
     border: 1px solid #999999;
-    
   }
   .button-background {
     padding-top: 40upx;

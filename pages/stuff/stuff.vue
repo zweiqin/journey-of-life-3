@@ -27,31 +27,31 @@
           <swiper-item>
             <img
               class="img9"
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/frinmcnc1ozzv9pwahig.jpg "
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ur2e5bmuhtgwfrmf90g0.png"
               alt=""
             />
           </swiper-item>
           <swiper-item>
             <img
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/szzgw6dxoibrsxh1cwh0.jpg"
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/g9y17p6jku0rhj3xva6d.png"
               class="img9"
               alt=""
             />
           </swiper-item>
           <swiper-item>
             <img
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dp5o8q1l34utxsj8mkba.jpg"
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5qaujsjioq7m64525ebh.png"
               class="img9"
               alt=""
             />
           </swiper-item>
-          <swiper-item>
+          <!-- <swiper-item>
             <img
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/37nqp8lds95nbn3efi6j.jpg "
               class="img9"
               alt=""
             />
-          </swiper-item>
+          </swiper-item> -->
         </swiper>
       </view>
     </view>
@@ -198,10 +198,9 @@
           :height="240"
           :indicationPoint="false"
           :list="[
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/jg96690py71mw8mdbodb.jpg',
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raxb244t6ncjb99cozm8.jpg ',
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/aujfb3gezbdn541j4efw.jpg ',
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/r02d64jabo6awjob1kz0.png ',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o5dhyows2dawvfy3gmee.jpg ',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mcjlnq1jdor0w04kg08h.png  ',
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tvac5axvhk9xqvrqfdls.png  ',
           ]"
         ></Carousel>
       </Pane>
@@ -297,7 +296,7 @@ export default {
       this.navs2 = res.data.filterCategoryList;
       this.navs2.unshift({ label: "综合", value: 0 });
     },
-    gongqiu() {
+    gongqiu(item) {
       uni.navigateTo({
         url: "../../stuff/gongqiu/gongqiu",
       });
@@ -322,12 +321,14 @@ export default {
       this.currentTab = index;
       this.brandgenreId = index;
       // console.log(this.brandgenreId);
-      if (this.brandgenreId == 0) {
-      } else {
-        uni.navigateTo({
-          url: `../../stuff/stuffGoods/index?id=${index}`,
-        });
-      }
+
+      // if (this.brandgenreId == 0) {
+      // } else {
+      //   uni.navigateTo({
+      //     // url: `../../stuff/stuffGoods/index?id=${index}`,
+      //     url:"../../pages/payAccomplish/index"
+      //   });
+      // }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
       // const local = currentNavs.getBoundingClientRect();
@@ -443,7 +444,9 @@ export default {
           item.name == "佛山市奥丽思家具五金配件有限公司" ||
           item.name == "大创家具材料店" ||
           item.name == "成鑫木业有限公司" ||
-          item.name == "里翎皮革"
+          item.name == "里翎皮革" ||
+          item.name == "佛山市南海金玮金属制品厂" ||
+          item.name == "思应布艺"
       );
     },
     //点击后触发

@@ -1,29 +1,21 @@
 <template>
-  <div class="stuffGoods">
-    <Ttitle
-    :title="'商品选购'"/>
-  </div>
+  <div class="newBusiness">newBusiness</div>
 </template>
 
 <script>
-import {  } from "../../api/goods";
 export default {
-
+  name: "newBusiness",
   components: {},
+  props: {},
   data() {
-    return {
-      id: "",
-    };
+    return {};
   },
   computed: {},
   methods: {},
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad(options) {
-    this.id = options.id;
-    console.log(this.id);
-  },
+  onLoad() {},
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
@@ -44,4 +36,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 </style>

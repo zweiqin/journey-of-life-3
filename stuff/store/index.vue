@@ -8,10 +8,8 @@
     <view class="info">
       <img
         class="bgm"
-        :src="
-          picUrl ||
-          'https://img2.baidu.com/it/u=2113609285,1938081570&fm=253&fmt=auto&app=120&f=JPEG?w=751&h=500'
-        "
+        src="
+        https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s2ghz5p3xzct9ksc4kfy.jpg      "
         alt=""
       />
 
@@ -177,16 +175,16 @@ export default {
       if (this.currentTab == 0) {
         this.getBrandListBySelect();
       } else {
-        this.getGoodsList()
+        this.getGoodsList();
       }
     },
     async getGoodsList() {
       const res = await goodsListApi({
         categoryId: this.categoryId,
-        brandId :this.brandId
+        brandId: this.brandId,
       });
       console.log(res);
-      this.goodsList = res.data.goodsList
+      this.goodsList = res.data.goodsList;
     },
     shopCar() {
       console.log("购物车");
@@ -440,7 +438,6 @@ export default {
     }
 
     .goods-wrapper {
-
       .flex();
       flex-wrap: wrap;
       margin-top: 20upx;

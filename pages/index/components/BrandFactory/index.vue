@@ -1,6 +1,6 @@
 <template>
   <div class="brandFactory">
-    <view class="banner">
+    <!-- <view class="banner">
       <swiper
         class="swiper"
         indicator-dots
@@ -26,8 +26,9 @@
             alt=""
           />
         </swiper-item>
+
       </swiper>
-    </view>
+    </view> -->
 
     <view class="navs">
       <view
@@ -78,9 +79,7 @@ export default {
   watch: {
     BrandFactory: {
       handler(value) {
-        this.brandList  = value.filter((item1) =>
-          item1.name.includes("团蜂")
-        );
+        this.brandList = value.filter((item1) => item1.name.includes("团蜂"));
       },
       immediate: true,
       deep: true,
@@ -116,8 +115,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.brandFactory{
-  padding-bottom: 200upx;
+.brandFactory {
+  padding: 0upx 26upx 200upx 26upx;
 }
 .banner {
   width: 100%;

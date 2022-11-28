@@ -300,34 +300,34 @@ export default {
     // 增加用户
     async addperformance() {
       const res = await addperformanceApi({
-        // month: this.month,
-        // status: this.status,
-        // week: this.week,
-        // year: this.year,
-        // day: this.day,
-        // headName: this.headName,
-        // alarmMoney: this.alarmMoney,
-        // targetMoney: this.targetMoney,
-        // alarmTime: this.alarmTime,
+        month: this.month,
+        status: this.status,
+        week: this.week,
+        year: this.year,
+        day: this.day,
+        headName: this.headName,
+        alarmMoney: this.alarmMoney,
+        targetMoney: this.targetMoney,
+        alarmTime: this.alarmTime,
 
         // 传输的数据
-        alarmMoney: "333",
-        alarmTime: "2022-09-19 16:37:37",
-        day: "19",
-        headName: "123",
-        month: "09",
-        status: 1,
-        targetMoney: "223",
-        userId: 200,
-        week: "3",
-        year: "2022",
+        // alarmMoney: "333",
+        // alarmTime: "2022-09-19 16:37:37",
+        // day: "19",
+        // headName: "123",
+        // month: "09",
+        // status: 1,
+        // targetMoney: "223",
+        // userId: 200,
+        // week: "3",
+        // year: "2022",
       });
     },
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
-        userId: 200,
-        // userId: getUserId(),
+        // userId: 200,
+        userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,
@@ -337,6 +337,21 @@ export default {
       this.timeList = res;
       console.log(this.timeList);
       this.getrepetitionMonth();
+      if (res.errno === 0) {
+        this.info = res.data;
+      } else {
+        uni.showToast({
+          title: "您还不是业务员",
+          duration: 1500,
+          icon: "none",
+        });
+
+        setTimeout(() => {
+          uni.switchTab({
+            url: "/pages/user/user",
+          });
+        }, 2000);
+      }
     },
     // 查询业绩明细
     async getPerformanceInfo() {
@@ -347,6 +362,13 @@ export default {
     },
   },
   onLoad() {
+    this.thistime();
+    this.week = "";
+    this.day = "";
+    this.performanceList();
+    this.getrepetitionMonth();
+  },
+  onShow() {
     this.thistime();
     this.week = "";
     this.day = "";
@@ -411,7 +433,6 @@ export default {
   font-size: 28upx;
   text-align: center;
   .item {
-
     margin: 0 auto;
 
     &.active {

@@ -65,8 +65,8 @@
             <view class="tag">*</view>
             <view class="type">服务类型</view>
           </view>
+          <view class="text-type">{{ name }}</view>
         </view>
-        <view class="text-type">{{ name }}</view>
       </template>
       <view class="item-image">
         <view class="tag">*</view>
@@ -75,7 +75,7 @@
 
       <view class="upload-list">
         <view class="upload-pane">
-          <!-- <view class="left"></view> -->
+          
 
           <view style="display: flex; flex-wrap: wrap">
             <view
@@ -86,7 +86,7 @@
                 width: 160upx;
                 height: 160upx;
                 margin-right: 20upx;
-                margin-bottom: 20upx
+                margin-bottom: 20upx;
               "
             >
               <img :src="img" alt="" class="img1" />
@@ -239,9 +239,8 @@ export default {
         success: function (res) {
           if (res.confirm) {
             const index = _this.images.findIndex((item) => item === img);
-          _this.images.splice(index, 1);
+            _this.images.splice(index, 1);
           }
-
         },
       });
     },
@@ -277,7 +276,7 @@ export default {
 .community-order {
   padding-bottom: 180upx;
   .title-list {
-    padding: 20upx 34upx 36upx 26upx;
+    padding: 40upx 54upx 36upx 16upx;
     display: flex;
     .return {
       width: 48upx;
@@ -400,7 +399,6 @@ export default {
         .specs {
           font-size: 28upx;
           font-weight: 400;
-          
         }
         .logo {
           font-size: 36upx;
@@ -467,8 +465,8 @@ export default {
       // }
     }
     .text-type {
-      padding-top: 20upx;
-      font-size: 28upx;
+      // padding-top: 20upx;
+      font-size: 32upx;
       color: #3d3d3d;
     }
     .item-image {
@@ -510,7 +508,6 @@ export default {
         top: -15upx;
         background: white;
         border-radius: 50%;
-
       }
 
       .left {
@@ -573,7 +570,8 @@ export default {
           font-size: 28upx;
           font-weight: 400;
           color: #3d3d3d;
-          
+          width: 100%;
+          height: 80%;
         }
         .list {
           height: 34upx;
@@ -605,6 +603,7 @@ export default {
       border-top: 8upx solid #f7f8fa;
       .on {
         font-size: 32upx;
+        font-weight: bold;
         color: #ffffff;
         width: 408upx;
         height: 80upx;

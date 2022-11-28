@@ -117,3 +117,24 @@ export const moreService =[
     moreName:"更多服务",
   }
 ]
+
+export const serviceType =[
+  {
+    value:1,
+    label:"维修",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png",
+  },
+  {
+    value:2,
+    label:"安装",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/clt44rg47v4gwwg3tbub.png",
+  },
+  {
+    value:3,
+    label:"清洁",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kgqq2ciwp09an1eq9678.png",
+  },
+]

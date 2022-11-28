@@ -44,12 +44,15 @@ export default {
     serverImageUrl: String,
     // id: Number,
     detailList: Array,
+
+    tips: Boolean,
   },
   data() {
     return {
       name: "",
       id: "",
       userId: "",
+      address: "",
     };
   },
   computed: {},
@@ -59,6 +62,14 @@ export default {
       const name = item.serverNameThree;
       const id = item.id;
       this.userId = getUserId();
+
+      // const a = this.tips;
+      // console.log("a的信息", a);
+      // if (a === "true") {
+      //   this.type = 1;
+      // } else {
+      //   this.type = 2;
+      // }
       // uni.navigateTo({
       //   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
 
@@ -73,35 +84,49 @@ export default {
           // success: ({ confirm, cancel }) => {}
           success: function (res) {
             if (res.confirm) {
-              console.log('确定');
+              console.log("确定");
               uni.navigateTo({
                 url: `/pages/login/login`,
               });
-            } else if(res.confirm){
-              console.log('取消');
+            } else if (res.confirm) {
+              console.log("取消");
             }
           },
         });
-      }else{
+      } else if (this.type == 2) {
+        console.log("区域判断", this.type);
+        uni.showModal({
+          title: "提示",
+          content: "你所在区域不在接单范围内",
+          showCancel: true,
+          // success: ({ confirm, cancel }) => {}
+          success: function (res) {
+            if (res.confirm) {
+              console.log("确定");
+              uni.navigateTo({
+                url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
+              });
+            } else if (res.confirm) {
+              console.log("取消");
+            }
+          },
+        });
+      } else {
         uni.navigateTo({
-        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
-});
+          url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
+        });
       }
     },
   },
-
-
-
-
-
 
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕
   mounted() {
-    // setTimeout(() => {
-    //   console.log('草', this.detailList);
-    // }, 1000);
+    setTimeout(() => {
+      this.type = this.tips ? 1 : 2;
+      console.log("type", this.type);
+    }, 1000);
   },
   // 组件周期函数--监听组件数据更新之前
   beforeUpdate() {},

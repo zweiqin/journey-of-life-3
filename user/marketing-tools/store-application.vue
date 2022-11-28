@@ -34,6 +34,7 @@
 
 <script>
 import FieldPane from "./components/field-pane.vue";
+import { PAY_ORDER } from "../../constant";
 import {
   applyStoreOne,
   applyStoreTow,
@@ -243,11 +244,12 @@ export default {
         userId: getUserId(),
         payType: 4,
       }).then((res) => {
+        const payData = JSON.parse(res.h5PayUrl);
         const form = document.createElement("form");
-        form.setAttribute("action", res.url);
+        form.setAttribute("action", payData.url);
         form.setAttribute("method", "POST");
-
-        const data = JSON.parse(res.data);
+        const data = JSON.parse(payData.data);
+        console.log(data);
         let input;
         for (const key in data) {
           input = document.createElement("input");
@@ -255,11 +257,27 @@ export default {
           input.value = data[key];
           form.appendChild(input);
         }
-
         document.body.appendChild(form);
         form.submit();
         document.body.removeChild(form);
       });
+      // const form = document.createElement("form");
+      // form.setAttribute("action", res.h5PayUrl);
+      // form.setAttribute("method", "POST");
+      // uni.removeStorageSync(PAY_ORDER);
+      // uni.setStorageSync(PAY_ORDER, res.orderNo);
+      // const data = JSON.parse(res.h5PayUrl);
+      // let input;
+      // for (const key in data) {
+      //   input = document.createElement("input");
+      //   input.name = key;
+      //   input.value = data[key];
+      //   form.appendChild(input);
+      // }
+
+      // document.body.appendChild(form);
+      // form.submit();
+      // document.body.removeChild(form);
     },
     async getUserUpInfoRead() {
       this.token = uni.getStorageSync(USER_TOKEN);

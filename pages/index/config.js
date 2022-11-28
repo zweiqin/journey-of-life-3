@@ -10,22 +10,24 @@ export const navs = [
   {
     label: '团蜂严选',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6rf9ec7yj654tdtaduha.png",
-    value: 0
+    value: 1
   },
   {
     label: '品牌工厂',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fnnpwfyewgyrgqcjdb3n.png",
-    value: 1
+    value: 2,
+    url: "../../pages/brandFactory/index"
+
   },
   {
     label: '满屋定制',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0jjbopl9loda5itlbmj4.png",
-    value: 2
+    // value: 3
   },
   {
     label: '智能选配',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o6rm3zfaumv6jcbxrrrp.png",
-    value: 3
+    // value: 4
   }
 ]
 export const briefIntroduction = [

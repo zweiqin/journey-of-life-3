@@ -1,4 +1,4 @@
-import { RuanRequest } from "../../utils";
+import { RuanRequest, XZLRequest } from "../../utils";
 /**
  *
  * @param {订单列表查询} data
@@ -57,4 +57,21 @@ export const receiveGoodsApi = (data) => {
  */
 export const sendCommentApi = data => {
   return RuanRequest("/order/comment", data)
+}
+/**
+ * 预支付接口
+ * @param {*} data 
+ * @returns 
+ */
+
+export const getSybOrderPayH5 = data => {
+  return RuanRequest("/api/syb/orderPayH5", data)
+}
+/**
+ * 查询是否支付成功
+ * @param {*} data 
+ * @returns 
+ */
+export const getSybGetIsPaySucceedApi = data =>{
+  return RuanRequest("/api/syb/getIsPaySucceed",data,'get')
 }

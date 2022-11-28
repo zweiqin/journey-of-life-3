@@ -145,7 +145,7 @@ export const serve = {
     {
       label: "优惠劵",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4u948ko5bu56bbw0v0cd.png ",
-      url: "/user/sever/coupon",
+      // url: "/user/sever/coupon",
     },
     {
       label: "联系客服",
@@ -185,7 +185,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
-      url: "/user/digital-store/business/index"
+      url: "/user/digital-store/newBusiness/index"
     },
   ],
 };

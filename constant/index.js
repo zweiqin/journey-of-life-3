@@ -25,3 +25,4 @@ export const SELECT_ADDRESS = "SELECT_ADDRESS";
 export const STORE_TYPES = "STORE_TYPES";
 export const CAR_GOODS_DETAIL = "CAR_GOODS_DETAIL";
 export const CAR_GOODS_DETAIL_ALL = "CAR_GOODS_DETAIL_ALL";
+export const PAY_ORDER ="PAY_ORDER"

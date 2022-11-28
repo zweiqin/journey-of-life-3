@@ -2,7 +2,8 @@
   <view class="community-centerr">
     <view class="head">
       <view class="search-bar">
-        <view class="location">
+        <view class="location" @click.stop="handleClick">
+          <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
           <view class="text">{{ address }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
@@ -106,25 +107,37 @@
         </view>
         <view class="w2">
           <view class="title">
-            <text>专业性强</text>
-            <text>及时服务</text>
+            <view class="text" v-for="items in names" :key="items.names">{{
+              items.text
+            }}</view>
           </view>
           <view class="img-list">
-            <view class="people" @click="handleToServiceListHome">
+            <view
+              class="people"
+              v-for="item2 in serviceType"
+              :key="item2.value"
+              @click="handleToServiceListType(item2.value)"
+            >
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png"
+                :src="
+                  item2.a ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png'
+                "
                 alt=""
                 class="a"
               />
               <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png"
+                :src="
+                  item2.round ||
+                  'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png'
+                "
                 alt=""
                 class="round"
               />
-              <view class="name">维修</view>
+              <view class="name">{{ item2.label }}</view>
             </view>
 
-            <view class="people" @click="handleToServiceListHome">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png"
                 alt=""
@@ -136,9 +149,9 @@
                 class="round"
               />
               <view class="name">安装</view>
-            </view>
+            </view> -->
 
-            <view class="people" @click="handleToServiceListHome">
+            <!-- <view class="people" @click="handleToServiceListType">
               <img
                 src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png"
                 alt=""
@@ -150,7 +163,7 @@
                 class="round"
               />
               <view class="name">清洁</view>
-            </view>
+            </view> -->
           </view>
           <view class="s-list">
             <view
@@ -249,39 +262,13 @@
               alt=""
               class="hand"
             />
-            <!-- <view class="money">
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/d5ad6kxqovvkzzdlnfi8.png"
-                alt=""
-                class="m1"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gayph4tuo3bnkhwf2o4v.png"
-                alt=""
-                class="m2"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mjhuqr4l210srac6vm35.png"
-                alt=""
-                class="m3"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/up91fnjb0wd5ld1xyy9z.png"
-                alt=""
-                class="m4"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zr4kgghb0oa8id241v05.png"
-                alt=""
-                class="m5"
-              />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9m6kin074ltnf8h9du9p.png"
-                alt=""
-                class="m6"
-              />
-            </view> -->
           </view>
+
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/pheiqjmlmvy4q40dx7hd.png"
+            alt=""
+            class="gold-coin"
+          />
         </view>
         <view class="right">
           <view class="member">
@@ -391,20 +378,98 @@
       </view>
 
       <view class="share">
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(0)"
+          :class="{ active: currentTab === 0 }"
+        >
           <view class="text">居家经验</view>
+
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
             alt=""
             class="img"
+            v-if="currentTab == 0"
           />
         </view>
-        <view class="item">
+        <view
+          class="item"
+          @click="choice(1)"
+          :class="{ active: currentTab === 1 }"
+        >
           <view class="text">家居分享</view>
-          <img src="" alt="" class="img" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/br1hzb4kjqpfypgmkp65.png"
+            alt=""
+            class="img"
+            v-if="currentTab == 1"
+          />
         </view>
       </view>
-      <view class="fx">
+      <view class="fx" v-if="currentTab == 0">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
+          alt=""
+          class="img"
+        />
+        <view class="midd">
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/sj8pr4z00tz2ghkcbr23.png"
+            alt=""
+            class="tip"
+          />
+        </view>
+        <view class="white">
+          <view class="z">
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+            <view class="w3">
+              <view class="brief">
+                <view class="text"
+                  >洗衣机细菌超标高达 81.3%。教你一招，不必请...</view
+                >
+              </view>
+              <view class="m">
+                <img
+                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zk4j89krat0mkjwlep01.png"
+                  alt=""
+                  class="image"
+                />
+                <view class="mid">洗衣机清洗</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="fx" v-if="currentTab == 1">
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/frg0jw8khhgytqcp4pxs.png"
           alt=""
@@ -470,52 +535,61 @@
     </view>
 
     <DiscountPopup v-model="showPopup"></DiscountPopup>
+    <DispatchPopup v-model="show"></DispatchPopup>
   </view>
 </template>
 
 <script>
 import community from "./components/community";
 import DiscountPopup from "./components/discount.vue";
+import DispatchPopup from "./components/dispatch.vue";
 import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import { list } from "./config";
 import { moreService } from "./config";
+import { serviceType } from "./config";
 export default {
   name: "Community-centerr",
   components: {
     community,
     DiscountPopup,
+    DispatchPopup,
   },
   data() {
     return {
+      currentTab: 0,
       moreService,
       list,
+      serviceType,
       value: "",
       serviceName: "",
       showPopup: false,
+      show:false,
       address: "",
+      names: [{ text: "专业性强" }, { text: "及时服务" }],
     };
   },
 
   onLoad() {
-    this.showPopup = true;
-
-    const _this = this;
-    uni.getLocation({
-      type: "gcj02",
-      success: function (res) {
-        getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-          if (res.status === 0) {
-            // const result = res.result.address_component;
-            // _this.address = result.street;
-            const result = res.result.address_reference;
-            _this.address = result.town.title;
-            // const result = res.result;
-            // _this.address = result;
-            
-          }
-        });
-      },
-    });
+    this.showPopup = false;
+    this.show = true;
+    this.getLocation();
+    // this.address = "定位中...";
+    // const _this = this;
+    // uni.getLocation({
+    //   type: "gcj02",
+    //   success: function (res) {
+    //     getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+    //       if (res.status === 0) {
+    //         // const result = res.result.address_component;
+    //         // _this.address = result.street;
+    // const result = res.result.address_reference;
+    // _this.address = result.town.title;
+    //         // const result = res.result;
+    //         // _this.address = result;
+    //       }
+    //     });
+    //   },
+    // });
   },
   methods: {
     handleToServiceListHome(item) {
@@ -532,6 +606,55 @@ export default {
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
       });
+    },
+
+    handleToServiceListType(item) {
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
+    },
+
+    choice(index) {
+      this.currentTab = index;
+      console.log(this.currentTab);
+    },
+
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then((res) => {
+              if (res.status === 0) {
+                const result = res.result.address_reference;
+                _this.address = result.town.title;
+                
+              }
+            })
+            .catch(() => {
+              _this.address = "定位失败";
+            });
+        },
+      });
+    },
+
+    handleClick() {
+      const _this = this;
+      if (this.address === "定位失败" || this.address === "定位中...") {
+        uni.showModal({
+          title: "提示",
+          confirmText: "我已打开定位",
+          content: "请确认您已开启了定位",
+          success: function (res) {
+            if (res.confirm) {
+              _this.getLocation();
+            }
+          },
+        });
+      }
     },
   },
   created() {},
@@ -565,7 +688,7 @@ export default {
         }
       }
       .search-box {
-        padding: 0upx 24upx;
+        padding: 0upx 20upx;
         display: flex;
         flex: 1;
         align-items: center;
@@ -575,7 +698,7 @@ export default {
         background: #ffffff;
         .search {
           width: 48upx;
-          height: 32upx;
+          // height: 32upx;
           border-right: 2upx solid #d8d8d8;
           .img {
             width: 32upx;
@@ -586,8 +709,8 @@ export default {
           padding-left: 14upx;
           flex: 1;
           font-size: 24upx;
-          font-weight: 500;
-          color: #999999;
+          font-weight: 400;
+          color: #3d3d3d;
         }
       }
     }
@@ -654,16 +777,18 @@ export default {
     }
     .w {
       margin: 40upx 34upx 0upx 34upx;
+      position: relative;
       .w1 {
-        position: relative;
+        position: absolute;
         // top: 154upx;
         width: 100%;
-        height: 720upx;
+        // height: 720upx;
         border-radius: 20upx;
         background: linear-gradient(180deg, #ffe5cc 59%, #ffffff 86%);
         box-shadow: inset 0upx 8upx 20upx 0upx #ffffff;
         .list {
           padding-top: 600upx;
+          padding-bottom: 30upx;
           display: flex;
           justify-content: space-around;
           .item {
@@ -675,29 +800,36 @@ export default {
               font-size: 44upx;
               font-weight: bold;
               color: #e95d20;
+              white-space: nowrap;
             }
             .text {
               font-size: 28upx;
               color: #999999;
+              white-space: nowrap;
             }
           }
         }
       }
       .w2 {
-        position: relative;
-        top: -720upx;
+        position: absolute;
+        top: 0upx;
         width: 100%;
-        height: 572upx;
+        // height: 572upx;
         border-radius: 20upx;
         background: #ffffff;
         box-shadow: 0upx 10upx 20upx 0upx #ffe5cc;
         .title {
-          padding: 30upx 188upx 0upx 188upx;
+          // height: 48upx;
+          padding: 30upx 170upx 0upx 170upx;
           display: flex;
           justify-content: space-between;
           font-size: 36upx;
           font-weight: bold;
           color: #3d3d3d;
+
+          .text {
+            white-space: nowrap;
+          }
         }
         .img-list {
           display: flex;
@@ -749,6 +881,7 @@ export default {
               font-size: 28upx;
               font-weight: 500;
               color: #3d3d3d;
+              white-space: nowrap;
               // position: relative;
               // top: -20upx;
             }
@@ -757,10 +890,12 @@ export default {
         .more {
           display: flex;
           justify-content: center;
-          margin-top: 16upx;
+          padding-top: 16upx;
+          padding-bottom: 30upx;
           .text {
             font-size: 28upx;
             color: #999999;
+            white-space: nowrap;
           }
           .img {
             width: 40upx;
@@ -774,7 +909,7 @@ export default {
     width: 100%;
     // height: 200upx;
     background: #f1f2f6;
-    padding: 140upx 30upx 200upx 30upx;
+    padding: 140upx 30upx 160upx 30upx;
     box-sizing: border-box;
     .jx {
       display: flex;
@@ -783,7 +918,7 @@ export default {
         position: relative;
         width: 50%;
         // width: 346upx;
-        height: 380upx;
+        // height: 380upx;
         border-radius: 20upx;
         background: linear-gradient(214deg, #f9dfe3 24%, #cde1fd 87%);
         .red {
@@ -805,11 +940,12 @@ export default {
           .title {
             font-size: 28upx;
             font-weight: 500;
+            white-space: nowrap;
             // color: #3d3d3d;
           }
         }
         .abc {
-          padding: 0upx 20upx 12upx 14upx;
+          padding: 0upx 20upx 0upx 14upx;
           .order {
             width: 140upx;
             height: 40upx;
@@ -820,48 +956,23 @@ export default {
             border: 1upx solid #fa3445;
             text-align: center;
             line-height: 40upx;
+            position: absolute;
           }
           .hand {
             width: 100%;
             // width: 310upx;
             height: 264upx;
-            position: relative;
-            top: -44upx;
+            
+            top: 0upx;
           }
-          .money {
-            display: flex;
-            flex-direction: column;
-            height: 160upx;
-            // width: 0upx;
-            justify-content: space-evenly;
-            position: absolute;
-            top: 120upx;
-            right: 0upx;
-            .m1 {
-              width: 44upx;
-              height: 24upx;
-            }
-            .m2 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m3 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m4 {
-              width: 40upx;
-              height: 24upx;
-            }
-            .m5 {
-              width: 12upx;
-              height: 10upx;
-            }
-            .m6 {
-              width: 56upx;
-              height: 56upx;
-            }
-          }
+        }
+
+        .gold-coin {
+          width: 160upx;
+          height: 240upx;
+          position: absolute;
+          top: 104upx;
+          right: -40upx;
         }
       }
       .right {
@@ -872,7 +983,7 @@ export default {
         .member {
           width: 100%;
           // width: 320upx;
-          height: 170upx;
+          // height: 170upx;
           border-radius: 20upx;
           background: #ffe5cc;
           display: flex;
@@ -898,6 +1009,7 @@ export default {
               .text {
                 font-size: 28upx;
                 font-weight: 500;
+                white-space: nowrap;
                 // color: #3D3D3D;
               }
             }
@@ -927,7 +1039,7 @@ export default {
         .collate {
           width: 100%;
           // width: 320upx;
-          height: 170upx;
+          // height: 170upx;
           border-radius: 20upx;
           background: #dff8fd;
           display: flex;
@@ -948,11 +1060,13 @@ export default {
               line-height: 40upx;
             }
             .title {
-              padding-top: 10upx;
+              padding-top: 12upx;
               padding-left: 12upx;
+              padding-bottom: 36upx;
               .text {
                 font-size: 28upx;
                 font-weight: 500;
+                white-space: nowrap;
                 // color: #3D3D3D;
               }
             }
@@ -965,6 +1079,8 @@ export default {
               // width: 100%;
               width: 98upx;
               height: 104upx;
+              padding-top: 4upx;
+              padding-bottom: 66upx;
             }
             .coll {
               width: 140upx;
@@ -977,7 +1093,7 @@ export default {
               text-align: center;
               line-height: 40upx;
               position: absolute;
-              bottom: 12upx;
+              bottom: 16upx;
             }
           }
         }
@@ -1022,14 +1138,19 @@ export default {
       display: flex;
       justify-content: space-between;
       .item {
+        height: 70upx;
         display: flex;
+        color: #3d3d3d;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        &.active {
+          font-weight: bold;
+        }
         .text {
           font-size: 36upx;
-          color: #3d3d3d;
         }
+
         .img {
           width: 84upx;
           height: 12upx;
@@ -1045,13 +1166,15 @@ export default {
         top: 10upx;
       }
       .midd {
-        width: 70%;
-        left: 15%;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        // left: 15%;
         position: absolute;
         top: 20upx;
         .tip {
-          width: 239.75px;
-          height: 108.61px;
+          width: 480upx;
+          height: 218upx;
         }
       }
       .white {
