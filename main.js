@@ -46,10 +46,10 @@ Vue.mixin({
 				icon: icon || "none",
 			});
 		},
-		go(url){
-			if(!url) return
+		go(url) {
+			if (!url) return
 			uni.navigateTo({
-				 url
+				url
 			});
 		}
 	}
@@ -61,3 +61,8 @@ const app = new Vue({
 	...App
 });
 app.$mount();
+
+import filters from './utils/filter'  //导入过滤器文件
+Object.keys(filters).forEach(key => {    //通过Object.key方法取出过滤器中导出的每个方法并挂在vue.filter上
+	Vue.filter(key, filters[key])
+})

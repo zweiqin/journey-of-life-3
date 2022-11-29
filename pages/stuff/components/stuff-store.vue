@@ -104,7 +104,7 @@ export default {
   .footer {
     display: flex;
     margin-top: 10px;
-
+    align-items: center;
     .avatar {
       .img(40upx, 50%);
     }

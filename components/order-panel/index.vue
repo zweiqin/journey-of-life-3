@@ -1,9 +1,9 @@
 <template>
-  <view class="order-panel">
-    <PageHeader title="订单详情"></PageHeader>
-    <view class="status" :style="statusStyles">{{
-      status ? "交易完成" : "交易待完成"
-    }}</view>
+  <view class="order-panel" v-if="orderInfo.info">
+    <JHeader width="50" height="50" title="订单详情"></JHeader>
+    <view class="status" :style="statusStyles">
+      {{ status ? "交易完成" : "交易待完成" }}
+    </view>
     <!-- 客户信息 -->
     <view class="item" style="margin: 0" v-if="defaultAddress">
       <view class="line" v-for="item in baseInfo" :key="item.id">
@@ -15,8 +15,8 @@
           </template>
           <template v-if="item.id === 1">
             <view style="color: #ff8f1f" class="text"
-              >08月18日（周四）19：00</view
-            >
+              >08月18日（周四）19：00
+            </view>
           </template>
           <template v-if="item.id === 2">
             <view class="text" style="color: #07b9b9">{{
@@ -27,17 +27,6 @@
       </view>
 
       <view class="change" @click="handleChooseAddress">更改收货信息</view>
-
-      <!-- 订单信息 -->
-      <view class="order-info">
-        <view class="item">
-          <img class="goods-img" :src="orderInfo.currentGoodsImg" alt="" />
-          <view class="info">
-            <view class="name">{{ orderInfo.info.name }}</view>
-            <view>{{ goodsInfoStr }}</view>
-          </view>
-        </view>
-      </view>
     </view>
 
     <view
@@ -45,9 +34,19 @@
       class="item flex"
       @click="handleChooseAddress"
       style="justify-content: space-between"
-    >
-      请选择收货地址
+      >请选择收货地址
       <img src="../../static/images/common/chevron-states.png" alt="" />
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="order-info">
+      <view class="item">
+        <img class="goods-img" :src="orderInfo.info.picUrl" alt="" />
+        <view class="info">
+          <view class="name">{{ orderInfo.info.name }}</view>
+          <view>{{ goodsInfoStr }}</view>
+        </view>
+      </view>
     </view>
 
     <!-- 评价 -->
@@ -99,7 +98,11 @@
     <!-- 订单疑问 -->
     <view
       class="item flex"
-      style="justify-content: space-between; margin-bottom: 10px"
+      style="
+        justify-content: space-between;
+        margin-bottom: 10px;
+        border-bottom: 1upx solid #d8d8d8;
+      "
       @click="handleInputRemarks"
     >
       <view class="text" style="margin: 0">订单备注</view>
@@ -108,6 +111,9 @@
       }}</view>
       <img src="../../static/images/common/chevron-states.png" alt="" />
     </view>
+
+    <!-- 代金劵使用 -->
+
 
     <!-- 详细信息 -->
     <!-- <view class="item detail">
@@ -123,25 +129,24 @@
     </view> -->
 
     <!-- 猜你喜欢 -->
-    <view class="guess">
+    <!-- <view class="guess">
       <view class="title">猜你喜欢</view>
-      <view class="guess-goods"
-        ><RecommendGoods
+      <view class="guess-goods">
+        <RecommendGoods
           :showTitle="false"
           :padding="0"
-          :id="12"
-        ></RecommendGoods
-      ></view>
-    </view>
+          :id="14"
+        ></RecommendGoods>
+      </view>
+    </view> -->
 
     <!-- 底部两个按钮 -->
     <view class="footer">
-      <view>
-        总计：
-        <text style="color: red">{{
+      <view
+        >总计：<text style="color: red">{{
           "￥" + orderInfo.info.retailPrice * orderInfo.number
-        }}</text>
-      </view>
+        }}</text></view
+      >
       <!-- <button class="btn">取消订单</button> -->
       <button class="btn" @click="handlePay">去支付</button>
     </view>
@@ -164,7 +169,7 @@
 import PageHeader from "../page-header";
 import LineBar from "../line-bar";
 import Goods from "../goods";
-import { PAY_GOODS, SELECT_ADDRESS } from "../../constant";
+import { PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 import { getBaseInfo } from "./config";
 import { getAddressListApi } from "../../api/address";
 import { submitOrderApi, firstAddCar, payOrderGoodsApi } from "../../api/goods";
@@ -191,6 +196,9 @@ export default {
         message: "",
       },
       defaultAddress: null,
+      allAddress: [],
+      voucherNumber: "",
+      isUserVoucher: true,
     };
   },
 
@@ -204,10 +212,8 @@ export default {
   mounted() {
     this.baseInfo = getBaseInfo(this.type);
     this.orderInfo = uni.getStorageSync(PAY_GOODS);
-    console.log(this.orderInfo);
+
     this.getAddressList();
-    const res = uni.getStorageSync(SELECT_ADDRESS);
-    this.defaultAddress = res;
   },
 
   computed: {
@@ -245,6 +251,8 @@ export default {
         userId: getUserId(),
       });
 
+      this.allAddress = res.data;
+
       for (const address of res.data) {
         if (address.isDefault) {
           this.defaultAddress = address;
@@ -252,16 +260,9 @@ export default {
       }
     },
 
-    //
-    handleChooseAddress() {
-      uni.navigateTo({
-        url: "/user/site/site-manage?appoint=true",
-      });
-    },
-
     // 选择地址回来
     setChooseAddress() {
-      const res = uni.getStorageSync(SELECT_ADDRESS);
+      const res = uni.getStorageSync(J_SELECT_ADDRESS);
       if (!res) {
         for (const address of res.data) {
           if (address.isDefault) {
@@ -273,9 +274,17 @@ export default {
       }
     },
 
+    //
+    handleChooseAddress() {
+      uni.navigateTo({
+        url: "/user/site/site-manage?appoint=true",
+      });
+    },
+
     // 点击支付
     async handlePay() {
       // console.log(this.defaultAddress);
+
       const _this = this;
       // return;
       const data = {
@@ -283,6 +292,7 @@ export default {
         goodsId: this.orderInfo.info.id,
         productId: this.orderInfo.selectedProduct.id,
         number: this.orderInfo.number,
+        useVoucher: this.isUserVoucher,
       };
       let carId = null;
       const res = await firstAddCar(data);
@@ -297,22 +307,22 @@ export default {
           useVoucher: false,
           grouponRulesId: "",
           grouponLinkId: "",
+          brandId: _this.orderInfo.brandId,
+          useVoucher: _this.isUserVoucher,
         };
 
         const submitRes = await submitOrderApi(submitData);
         if (submitRes.errno === 0) {
-          console.log(submitRes);
           payOrderGoodsApi({
             orderNo: submitRes.data.orderSn,
             userId: getUserId(),
             payType: 1,
           }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
-            form.setAttribute("action", res.h5PayUrl);
+            form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");
-            uni.removeStorageSync(PAY_ORDER);
-            uni.setStorageSync(PAY_ORDER, res.orderNo);
-            const data = JSON.parse(res.data);
+            const data = JSON.parse(payData.data);
             let input;
             for (const key in data) {
               input = document.createElement("input");
@@ -341,13 +351,16 @@ export default {
       }
       return;
     },
+
+
   },
 };
 </script>
 
 <style lang="less" scoped>
 .order-panel {
-  background-color: #efefef;
+  padding: 40upx 0;
+  background-color: #f4f4f4;
 
   .flex {
     display: flex;
@@ -357,19 +370,19 @@ export default {
   .change {
     color: #3d3d3d;
     text-decoration: underline;
-    font-size: 12px;
+    font-size: 28upx;
     text-align: right;
   }
 
   .text {
     color: #3d3d3d;
-    font-size: 20upx;
+    font-size: 24upx;
     flex-shrink: 0;
     margin: 0 20upx 0 20upx;
   }
 
   .text-value {
-    font-size: 20upx;
+    font-size: 24upx;
   }
 
   .status {
@@ -380,7 +393,7 @@ export default {
     color: #fff;
     font-size: 36upx;
     height: 114upx;
-    margin-top: 120upx;
+    margin-top: 20upx;
 
     &::before {
       position: absolute;
@@ -441,30 +454,6 @@ export default {
       }
     }
 
-    .order-info {
-      padding-top: 30upx;
-      border-top: 1upx solid #d8d8d8;
-
-      .item {
-        padding: 10upx;
-        display: flex;
-        // justify-content: space-between;
-        align-items: center;
-        font-size: 14upx;
-
-        .name {
-          margin-bottom: 20upx;
-        }
-
-        .goods-img {
-          width: 270upx;
-          height: 200upx;
-          object-fit: cover;
-          margin-right: 10px;
-        }
-      }
-    }
-
     .line {
       display: flex;
       align-items: flex-start;
@@ -480,6 +469,30 @@ export default {
 
       .icon {
         width: 26upx;
+      }
+    }
+  }
+
+  .order-info {
+    // padding-top: 30upx;
+    border-top: 1upx solid #d8d8d8;
+
+    .item {
+      padding: 10upx;
+      display: flex;
+      // justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+
+      .name {
+        margin-bottom: 20upx;
+      }
+
+      .goods-img {
+        width: 270upx;
+        height: 200upx;
+        object-fit: cover;
+        margin-right: 10px;
       }
     }
   }

@@ -15,7 +15,11 @@
       indicator-active-color="#fff"
     >
       <swiper-item v-for="item in list" :key="item">
-        <img style="height: 100%; 'border-radius':10px " :src="item" alt="" />
+        <image
+          style="height: 100%; width: 100%; 'border-radius':10px "
+          :src="item"
+          alt=""
+        />
       </swiper-item>
     </swiper>
   </view>

@@ -142,7 +142,7 @@ export default {
       });
     },
     getrepetitionMonth() {
-      var arr = this.timeList;
+      var arr = this.timeList.data;
       var map = {},
         dest = [];
       for (var i = 0; i < arr.length; i++) {
@@ -169,7 +169,7 @@ export default {
       this.monthList = dest;
     },
     getrepetitionWeek() {
-      var arr1 = this.timeList;
+      var arr1 = this.timeList.data;
       var map1 = {},
         dest1 = [];
 
@@ -210,7 +210,7 @@ export default {
 
     //判断天----------------------------------------------------------------------------------
     getrepetitionDay() {
-      var arr2 = this.timeList;
+      var arr2 = this.timeList.data;
       var map1 = {},
         dest2 = [];
 
@@ -326,8 +326,8 @@ export default {
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
-        // userId: 200,
-        userId: getUserId(),
+        userId: 269,
+        // userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,

@@ -227,6 +227,7 @@ export const marketingTools = {
     {
       label: "推广中心",
       icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gox9z18bukb6ws0l2595.png",
+      // url:"/user/promotionCenter/index"
     },
   ],
 };

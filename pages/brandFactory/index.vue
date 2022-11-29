@@ -273,7 +273,8 @@ export default {
     flex-wrap: wrap;
     font-size: 28upx;
     &.openBoard {
-      height: 200upx;
+      padding-top: 30upx;
+      height: 170upx;
       width: 100%;
     }
     .screenBoradDetail {

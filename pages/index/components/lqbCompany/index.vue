@@ -59,11 +59,13 @@ export default {
     }
     .title1 {
       font-size: 28upx;
-      font-weight: 700;
+  font-family: auto;
+  font-weight: 700;
       color: black;
     }
     .setTitle {
-      font-size: 26upx;
+  font-family: auto;
+  font-size: 26upx;
       font-weight: 500;
       color: #999;
     }
