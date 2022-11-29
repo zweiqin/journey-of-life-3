@@ -573,7 +573,7 @@ export default {
                 result.address_component.city +
                 result.address_component.district;
               console.log("this.address", _this.address);
-              
+
               _this.a();
 
               _this.addressDetail = result.address_reference.town.title;

@@ -11,11 +11,14 @@
           <text class="text">{{ data.consigneeName }}</text>
           <text class="text">{{ data.consigneeMobile }}</text>
         </view>
-        <view class="address">
-          {{ data.consigneeAddress }}{{ data.consigneeAddressDetail }}
+        <view class="address-list">
+          <text class="name">上门地址:</text>
+          <text class="address">
+            {{ data.consigneeAddress }}{{ data.consigneeAddressDetail }}
+          </text>
         </view>
       </view>
-      <img class="icon" :src="receiveBase64Source" alt="" />
+      <!-- <img class="icon" :src="receiveBase64Source" alt="" /> -->
     </view>
 
     <view class="bts" v-if="data.status <= 2">
@@ -114,10 +117,12 @@ export default {
     //     url: url + "?orderNo=" + _this.data.orderNo,
     //   });
     // },
- 
+
     //订单详情
     toEdit() {
-      uni.navigateTo({ url: `/community-center/order-status?orderNo=${this.data.orderNo}` });
+      uni.navigateTo({
+        url: `/community-center/order-status?orderNo=${this.data.orderNo}`,
+      });
     },
 
     /**
@@ -161,7 +166,7 @@ export default {
 
   .header {
     padding-bottom: 20upx;
-    border-bottom: 1upx dashed #ddd;
+    border-bottom: 2upx dashed #ddd;
     font-size: 28upx;
     display: flex;
     align-items: center;
@@ -172,7 +177,7 @@ export default {
     }
 
     .status {
-      color: #148aff;
+      color: #FA5151;
     }
   }
 
@@ -201,8 +206,18 @@ export default {
           }
         }
       }
-      .address {
-        color: #8b8b8b;
+
+      .address-list {
+        // display: flex;
+        .name {
+          margin-right: 20upx;
+          color: #060606;
+          font-size: 28upx;
+        }
+        .address {
+          color: #060606;
+          font-size: 28upx;
+        }
       }
     }
   }
