@@ -28,7 +28,7 @@
               <view class="right-info">
                 <view class="number-list">
                   <view class="number">{{ this.orderNo }}</view>
-                  <view class="copy">复制</view>
+                  <view class="copy" @tap="copyText(orderNo)">复制</view>
                 </view>
                 <view class="service-name">{{ this.dictName }}</view>
                 <view class="time">{{ this.createTime }}</view>
@@ -56,19 +56,21 @@
           <view class="info-right">
             <view class="number-list">
               <view class="number">{{ this.orderNo }}</view>
-              <view class="copy">复制</view>
+              <view class="copy" @tap="copyText(orderNo)">复制</view>
             </view>
             <view class="service-name">{{ this.dictName }}</view>
             <view class="worker-list">
-              <view class="worker-name">黄师傅</view>
-              <view class="contact">联系师傅</view>
+              <view class="worker-name">{{ this.serverMasterName }}</view>
+              <view class="contact" @click="contact(serverMasterTel)"
+                >联系师傅</view
+              >
             </view>
-            <view class="yet">暂未完成</view>
+            <view class="yet">{{ this.updateTime }}</view>
           </view>
         </view>
       </view>
     </view>
-    <view class="bottom" v-if="this.a == 2">
+    <view class="bottom" v-if="this.a == 6">
       <view class="bot">
         <view class="first-list">
           <view class="eva">评价</view>
@@ -76,7 +78,9 @@
         </view>
         <view class="second-list">
           <view class="satisfied">满意</view>
-          <star :rate="3" style="white-space: nowrap"></star>
+          <star :rate="abc" @change="bright" style="white-space: nowrap"></star>
+
+          <!-- <star></star> -->
         </view>
         <view class="comment">评论:</view>
         <textarea
@@ -132,7 +136,7 @@
         </view>
       </view>
     </view>
-    <view class="foot" v-if="this.a == 2">
+    <view class="foot" v-if="this.a == 6">
       <view class="foot-list">
         <view class="ask">
           <img
@@ -167,14 +171,61 @@ export default {
       info: [],
       status: "",
       dictName: "",
+      abc: 3,
       statusName: "",
       createTime: "",
-      a: '',
+      updateTime: "",
+      a: "",
+      serverMasterName: "",
+      serverMasterTel: "",
+      orderNo: "",
     };
   },
   methods: {
     handleToOrderList() {
       uni.navigateTo({ url: `../community-center/order` });
+    },
+    bright(e) {
+      this.abc = e * 1;
+    },
+
+    copyText(value) {
+      uni.setClipboardData({
+        data: value,
+        success: function () {
+          console.log("success", value);
+        },
+      });
+    },
+
+    contact(phone) {
+      console.log("传入的电话", phone);
+      const res = uni.getSystemInfoSync();
+      //ios
+      if (res.platform == "ios") {
+        uni.makePhoneCall({
+          phoneNumber: phone,
+          success() {
+            console.log("拨打成功");
+          },
+          fail() {
+            console.log("拨打失败");
+          },
+        });
+      } else {
+        //安卓
+        uni.showActionSheet({
+          itemList: [phone, "呼叫"],
+          success: function (res) {
+            console.log(res);
+            if (res.tapIndex == 1) {
+              uni.makePhoneCall({
+                phoneNumber: phone,
+              });
+            }
+          },
+        });
+      }
     },
 
     chooseImg() {
@@ -216,32 +267,41 @@ export default {
       });
       this.info = res.data;
       console.log("info", this.info);
+
       this.status = this.info[0].status;
       console.log("status", this.status);
+
+      this.serverMasterName = this.info[0].serverMasterName;
+      console.log("师傅名字", this.serverMasterName);
+
+      this.serverMasterTel = this.info[0].serverMasterTel;
+      console.log("电话", this.serverMasterTel);
+      this.serverMasterTel = "123456789";
+
       this.a = this.status;
       console.log("a", this.a);
-      if ((this.a == 0)) {
+      if (this.a == 0) {
         this.statusName = "待支付";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 1)) {
+      } else if (this.a == 1) {
         this.statusName = "待接单";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 2)) {
+      } else if (this.a == 2) {
         this.statusName = "待报价";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 3)) {
+      } else if (this.a == 3) {
         this.statusName = "待分配";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 4)) {
+      } else if (this.a == 4) {
         this.statusName = "已分配";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 5)) {
+      } else if (this.a == 5) {
         this.statusName = "配送中";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 6)) {
+      } else if (this.a == 6) {
         this.statusName = "已完成";
         console.log("订单状态", this.statusName);
-      } else if ((this.a == 7)) {
+      } else if (this.a == 7) {
         this.statusName = "已取消";
         console.log("订单状态", this.statusName);
       } else {
@@ -253,12 +313,15 @@ export default {
       console.log("dictName", this.dictName);
       this.createTime = this.info[0].createTime;
       console.log("createTime", this.createTime);
+      this.updateTime = this.info[0].updateTime;
+      console.log("updateTime", this.updateTime);
     },
   },
   created() {},
   onLoad(options) {
     console.log(options);
     this.orderNo = options.orderNo;
+
     console.log("orderNo", this.orderNo);
     this.detailsMd();
   },

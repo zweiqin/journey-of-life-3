@@ -1,12 +1,13 @@
 <template>
   <view class="order-page">
-    <Header title="社区订单"></Header>
+    <Header title="社区订单" style="background: #FFFFFF;"></Header>
     <!-- 搜索 -->
     <SearchBar
       @input="search"
       :radius="100"
       placeholder="请输入订单号"
       class="top-search"
+      style="background: #FFFFFF;"
     ></SearchBar>
 
     <!-- nav-bar -->
@@ -17,7 +18,7 @@
         v-for="item in orders"
         :key="item.label"
         :style="{
-          color: query.status === item.value ? '#015cb7' : '',
+          color: query.status === item.value ? '#E95D20' : '',
         }"
       >
         {{ item.label }}
@@ -145,6 +146,10 @@ export default {
      */
     handleCancelSuccess() {
       this.getOrderList();
+      uni.showToast({
+            title: "取消成功",
+            icon: "none",
+          });
     },
   },
 
@@ -164,6 +169,7 @@ export default {
 
 <style lang="less" scoped>
 .order-page {
+  background: #F1F2F6;
   .navbar {
     display: flex;
     align-items: center;
@@ -171,7 +177,7 @@ export default {
     height: 88upx;
     line-height: 88upx;
     background-color: #fff;
-    border-top: 1upx solid rgb(230, 230, 230);
+    // border-top: 1upx solid rgb(230, 230, 230);
 
     &::-webkit-scrollbar {
       width: 0 !important;
@@ -188,7 +194,8 @@ export default {
   }
 
   main {
-    margin: 20upx;
+    // margin: 20upx;
+    margin: 20upx 0upx 20upx 0upx;
   }
 
   .no-data {

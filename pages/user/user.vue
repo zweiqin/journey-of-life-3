@@ -123,7 +123,13 @@
           </view>
         </view>
       </UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
+
+      <UserPanel
+        :row="4"
+        @clickItem="handleClick"
+        :showShadow="false"
+        :data="serve"
+      ></UserPanel>
 
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
       <UserPanel
@@ -143,13 +149,41 @@
         :data="otherServe"
       ></UserPanel>
     </view>
+
+    <view
+      @click="extensionCodeUrl = ''"
+      class="code-mask"
+      :style="{
+        opacity: extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
+        'z-index':
+          extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '-1',
+      }"
+    >
+      <view
+        class="code-wrapper"
+        :style="{
+          transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)',
+        }"
+      >
+        <view class="code-title"
+          >{{ userInfo && userInfo.nickName }}
+          {{ userInfo && userInfo.userId }}</view
+        >
+        <img class="code" :src="extensionCodeUrl" alt="" />
+        <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
 import UserPanel from "./components/user-panel.vue";
 import UserPanel1 from "./components/user-panel1.vue";
-import { refrshUserInfoApi } from "../../api/user";
+import {
+  refrshUserInfoApi,
+  getExtensionCodeApi,
+  bindLastUserApi,
+} from "../../api/user";
 
 import {
   tools,
@@ -184,6 +218,7 @@ export default {
       currentTab: 0,
       communityServices,
       userInfo: {},
+      extensionCodeUrl: "",
     };
   },
 
@@ -220,6 +255,7 @@ export default {
     },
 
     handleClick(item) {
+      console.log(item);
       if (item.type && item.type === "extension") {
         this.getExtensionCode();
       }
@@ -229,10 +265,46 @@ export default {
       }
     },
 
+    getExtensionCode() {
+      uni.showLoading({
+        title: "加载中",
+      });
+      let url = "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login";
+      if (this.userInfo.userLevel === 1) {
+        url = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?userId=${getUserId()}&type=bind`;
+      }
+
+      getExtensionCodeApi({
+        url: url,
+      }).then(({ data }) => {
+        this.extensionCodeUrl = data;
+        uni.hideLoading();
+      });
+    },
+
     handleToViewHistory(page) {
       uni.navigateTo({
         url: "/user/sever/view-history?page=" + page,
       });
+    },
+
+    async handleBindId() {
+      const bindId = uni.getStorageSync("BIND_ID");
+      if (bindId) {
+        const res = await bindLastUserApi({
+          salesmanId: bindId,
+          userId: [getUserId()],
+        });
+
+        if (res.errno !== 0) {
+          uni.showToast({
+            title: res.errmsg,
+            icon: "none",
+          });
+
+          uni.removeStorageSync("BIND_ID");
+        }
+      }
     },
   },
   onShow() {
@@ -245,6 +317,10 @@ export default {
       _this.userInfo = uni.getStorageSync(user_INFO);
       console.log(_this.userInfo);
     });
+  },
+
+  onLoad() {
+    this.handleBindId();
   },
 };
 </script>
@@ -394,6 +470,61 @@ export default {
 
     .text {
       color: #48b6eb;
+    }
+  }
+}
+
+// 推广码
+.code-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 350ms;
+  opacity: 0;
+
+  .code-wrapper {
+    width: 600upx;
+    padding: 30upx;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 20upx;
+    transform: scale(0);
+    transition: all 350ms;
+
+    .code-title {
+      text-align: center;
+      font-size: 36upx;
+      font-weight: bold;
+      margin-top: 20upx;
+    }
+
+    .code {
+      width: 540upx;
+      height: 540upx;
+      object-fit: cover;
+    }
+
+    .uni-btn {
+      line-height: 1;
+      margin: 0;
+      border: none;
+      padding: 0;
+      background: transparent;
+      padding-top: 20upx;
+      border-top: 1upx solid #ccc;
+      font-size: 32upx;
+      letter-spacing: 1em;
+      color: #ccc;
+
+      &::after {
+        border: none;
+      }
     }
   }
 }

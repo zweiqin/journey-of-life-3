@@ -11,11 +11,14 @@
           <text class="text">{{ data.consigneeName }}</text>
           <text class="text">{{ data.consigneeMobile }}</text>
         </view>
-        <view class="address">
-          {{ data.consigneeAddress }}{{ data.consigneeAddressDetail }}
+        <view class="address-list">
+          <text class="name">上门地址:</text>
+          <text class="address">
+            {{ data.consigneeAddress }}{{ data.consigneeAddressDetail }}
+          </text>
         </view>
       </view>
-      <img class="icon" :src="receiveBase64Source" alt="" />
+      <!-- <img class="icon" :src="receiveBase64Source" alt="" /> -->
     </view>
 
     <view class="bts" v-if="data.status <= 2">
@@ -26,7 +29,7 @@
             margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #EFEFEF;
+            background: #efefef;
             color: #999999;
             border-radius: 5px;
           "
@@ -39,11 +42,12 @@
       <view>
         <button
           type="primary"
-          style="margin-right: 5px;
+          style="
+            margin-right: 5px;
             margin-bottom: 5px;
             margin-top: 5px;
-            background: #07B9B9;
-            color: #FFFFFF;
+            background: #07b9b9;
+            color: #ffffff;
           "
           size="mini"
           @click.stop="handleCancel"
@@ -55,7 +59,12 @@
         <button
           v-if="data.status === 0"
           type="primary"
-          style="margin-bottom: 5px; margin-top: 5px; background: #015cb7"
+          style="
+            margin-bottom: 5px;
+            margin-top: 5px;
+            background: #fa5151;
+            color: #ffffff;
+          "
           size="mini"
           @click.stop="handlePay"
         >
@@ -110,8 +119,10 @@ export default {
     // },
 
     //订单详情
-    toEdit(){
-      uni.navigateTo({ url: `/community-center/order-status` });
+    toEdit() {
+      uni.navigateTo({
+        url: `/community-center/order-status?orderNo=${this.data.orderNo}`,
+      });
     },
 
     /**
@@ -155,7 +166,7 @@ export default {
 
   .header {
     padding-bottom: 20upx;
-    border-bottom: 1upx dashed #ddd;
+    border-bottom: 2upx dashed #ddd;
     font-size: 28upx;
     display: flex;
     align-items: center;
@@ -166,7 +177,7 @@ export default {
     }
 
     .status {
-      color: #148aff;
+      color: #FA5151;
     }
   }
 
@@ -195,8 +206,18 @@ export default {
           }
         }
       }
-      .address {
-        color: #8b8b8b;
+
+      .address-list {
+        // display: flex;
+        .name {
+          margin-right: 20upx;
+          color: #060606;
+          font-size: 28upx;
+        }
+        .address {
+          color: #060606;
+          font-size: 28upx;
+        }
       }
     }
   }

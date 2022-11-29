@@ -8,7 +8,7 @@
           class="return"
           @click="handleBack"
         />
-        <view class="title">
+        <view class="title" @click="handleBack">
           <text class="page-title">{{ title }}</text>
         </view>
         <view class="location">

@@ -80,6 +80,8 @@ export default {
       };
       if (this.cancelRadio !== "其它") {
         params.cancelRemarks = this.cancelRadio;
+        
+        
       } else {
         if (!this.cancelInput) {
           uni.showToast({
@@ -103,6 +105,13 @@ export default {
       //   },
       //   () => {}
       // );
+
+      uni.showToast({
+          title: "已取消",
+          duration: 2000,
+          icon: "none",
+        });
+
     },
   },
 };

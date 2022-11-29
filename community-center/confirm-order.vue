@@ -90,11 +90,19 @@ export default {
   },
   methods: {
     handleBack() {
-      uni.navigateBack();
+      uni.navigateTo({
+        url: `/community-center/order`,
+      });
     },
 
-    handleToOrderStatus(){
-      uni.navigateTo({ url: `/community-center/order-status?orderNo=${this.data}` });
+    // handleBack() {
+    //   uni.switchTab({ url: "/community-center/customer-information" });
+    // },
+
+    handleToOrderStatus() {
+      uni.navigateTo({
+        url: `/community-center/order-status?orderNo=${this.data}`,
+      });
     },
 
     //新建社区订单

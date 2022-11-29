@@ -73,7 +73,7 @@ export const two = {
       url: "/community-center/order",
     },
     {
-      label: "待评价",
+      label: "评价",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/g5stm4mlnteyf71nnedx.png ",
       url: "/community-center/order",
     },
@@ -160,6 +160,7 @@ export const serve = {
       label: "推广码",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qreq9r6so29qkurcjeoc.png ",
       // url: "/pages/stuff/brand/index",
+      type: 'extension'
     },
   ],
 };
