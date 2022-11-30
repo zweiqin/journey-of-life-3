@@ -110,7 +110,7 @@ export default {
 
       .text {
         font-size: 36upx;
-        font-weight: 700;
+        font-weight: 500;
         font-family: auto;
       }
       .show {

@@ -1,7 +1,7 @@
 <template>
   <view class="brandFactory">
     <view class="titleBackground">
-      <view class="title">
+      <!-- <view class="title">
         <img
           src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nkrijs42ry7sdxdedukv.png "
           class="titleImg"
@@ -10,16 +10,26 @@
         />
         <view class="titleText">品牌工厂</view>
         <view class="titleImg"></view>
-      </view>
-      <view class="header"
-        ><TLocale :color="true" :icon="false"></TLocale
-        ><view class="search">
+      </view> -->
+      <view class="header">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nkrijs42ry7sdxdedukv.png "
+          class="titleImg"
+          alt=""
+          @click="back" />
+        <TLocale :color="true" :icon="false"></TLocale>
+        <view class="search">
           <img
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n9uvs8riv79g44w711bj.png "
             alt=""
-            placeholder="输入工厂名称，查找厂家"
           />
-          <input type="text" /> </view
+          <input
+            type="text"
+            placeholder="输入工厂名称，查找厂家"
+            key=""
+            placeholder-class="input-placeholder"
+          />
+    </view
       ></view>
     </view>
     <view class="style">
@@ -100,7 +110,7 @@ export default {
   computed: {},
   methods: {
     back() {
-      uni.switchTab({ url: '/pages/index/index' });
+      uni.switchTab({ url: "/pages/index/index" });
     },
     async getBrandFactory() {
       const res = await getBrandListApi({
@@ -175,14 +185,11 @@ export default {
   background-color: #f1f2f6;
   .titleBackground {
     background-color: #e95d20;
-    padding: 20upx 0;
+    padding: 10upx 0 20upx 0;
     .title {
       justify-content: space-between;
       display: flex;
-      .titleImg {
-        width: 48upx;
-        height: 48upx;
-      }
+
       .titleText {
         font-size: 36upx;
         font-weight: 700;
@@ -230,6 +237,9 @@ export default {
           width: 32upx;
           height: 32upx;
           margin-right: 30upx;
+        }
+        .input-placeholder{
+          font-size: 24upx;
         }
       }
     }
@@ -285,6 +295,10 @@ export default {
     }
   }
   .shop {
+  }
+  .titleImg {
+    width: 48upx;
+    height: 48upx;
   }
 }
 </style>

@@ -11,7 +11,7 @@
   <view class="container">
     <!-- <accountcement></accountcement> -->
     <!-- 头部 -->
-    <THeadSearch></THeadSearch>
+    <THeadSearch :placeholder="'请输入您想搜索的家具'">></THeadSearch>
 
     <!-- banner -->
     <view class="banner" v-if="currentNav === 1">
