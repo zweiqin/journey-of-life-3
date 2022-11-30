@@ -33,7 +33,7 @@
     ></JIcon> -->
 
     <image
-      src="../../../static/images/con-center/close.png"
+      src="../../../static/images/con-center/close-circle-fill.png"
       mode="scaleToFill"
       @click="$emit('input', false)"
       type="mask-close"
@@ -76,7 +76,7 @@ export default {
 }
 
 .dispatch {
-  background-color: rgba(98, 98, 98, 0.33);
+  background-color: rgba(98, 98, 98, 0.54);
   position: fixed;
   left: 0;
   top: 0upx;
