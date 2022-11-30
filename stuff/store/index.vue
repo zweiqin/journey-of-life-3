@@ -479,7 +479,7 @@ export default {
     }
 
     .item {
-      font-size: @f12;
+      font-size:28upx;
       color: @c3d;
       margin-right: 60upx;
       white-space: nowrap;
