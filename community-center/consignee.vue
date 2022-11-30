@@ -1,11 +1,9 @@
 <template>
   <view class="delivey-info">
-    <Header
-      title="收货信息"
-      redirect="/pages/community-center/community-center"
-    ></Header>
+    <Header title="地址信息"></Header>
+    <!-- redirect="/pages/community-center/community-center" -->
     <view class="info">
-      <view class="title">收货信息</view>
+      <view class="title">地址信息</view>
       <!-- {{ consigneeForm }} -->
       <view class="main-wrapper">
         <Field
@@ -42,11 +40,11 @@
       </view>
     </view>
 
-    <Remarks
+    <!-- <Remarks
       style="margin-top: 20px"
       @distinguish="handleDistinguish"
       :isDistinguish="true"
-    ></Remarks>
+    ></Remarks> -->
 
     <Button @click="confirm">确定</Button>
   </view>

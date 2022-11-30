@@ -2,20 +2,20 @@
   <view class="service-sort">
     <view class="head">
       <view class="search-bar">
-        <view class="location">
+        <view class="location" @click="handleBack">
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
             alt=""
             class="return"
-            @click="handleBack"
           />
-          <view class="text" @click.stop="handleClick">{{
+          <view class="text">{{
             addressDetail
           }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
             class="show"
+            @click.stop="handleClick"
           />
         </view>
         <view class="search-box">
@@ -106,6 +106,7 @@ export default {
     },
 
     handleClick() {
+      
       const _this = this;
       if (
         this.addressDetail === "定位失败" ||
@@ -151,6 +152,7 @@ export default {
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
+      this.addressDetail = "定位中...";
       const _this = this;
       uni.getLocation({
         type: "gcj02",

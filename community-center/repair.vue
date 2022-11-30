@@ -1,6 +1,6 @@
 <template>
   <view class="repair-page">
-    <Header title="维修订单"></Header>
+    <Header title="修改订单"></Header>
     <view class="consignee" @click="handleCollectConsigneeInfo">
       <view class="left">
         <view class="main-title">客户信息</view>
@@ -12,7 +12,7 @@
       <view class="right">信息簿</view>
     </view>
 
-    <view class="item">
+    <!-- <view class="item">
       <view class="main-title">服务需求</view>
       <view class="desc">
         <picker
@@ -29,9 +29,9 @@
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
         alt=""
       />
-    </view>
+    </view> -->
 
-    <view class="item">
+    <!-- <view class="item">
       <view class="main-title">维修日期</view>
       <view class="desc">
         <DatetimePicker @confirm="handleSelectTime">
@@ -46,10 +46,10 @@
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
         alt=""
       />
-    </view>
+    </view> -->
 
-    <view class="item">
-      <view class="main-title">维修商品</view>
+    <!-- <view class="item">
+      <view class="main-title">服务商品</view>
       <view class="desc" @click="handleCollectRepairGoods">
         已选 &nbsp;
         <span style="color: #4395ff"
@@ -61,11 +61,11 @@
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
         alt=""
       />
-    </view>
+    </view> -->
 
     <Remarks
-      title="维修说明"
-      :desc="'维修说明\n请描述维修商品的伤口数量，颜色以及材质'"
+      title="需求说明"
+      :desc="'请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)'"
       v-model="repairForm.remarks"
       style="'margin-top':10px "
     ></Remarks>
@@ -152,32 +152,32 @@ export default {
      * @description 提交订单
      */
     async handleCreateOrder() {
-      if (!this.consigneeMsg.consigneeName) {
-        uni.showToast({
-          title: "请填写客户信息",
-          icon: "none",
-        });
+      // if (!this.consigneeMsg.consigneeName) {
+      //   uni.showToast({
+      //     title: "请填写客户信息",
+      //     icon: "none",
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
 
-      if (!this.repairForm.installDate) {
-        uni.showToast({
-          title: "请选择维修时间",
-          icon: "none",
-        });
+      // if (!this.repairForm.installDate) {
+      //   uni.showToast({
+      //     title: "请选择维修时间",
+      //     icon: "none",
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
 
-      if (this.repairForm.orderGoodsList.length === 0) {
-        uni.showToast({
-          title: "请添加维修产品",
-          icon: "none",
-        });
+      // if (this.repairForm.orderGoodsList.length === 0) {
+      //   uni.showToast({
+      //     title: "请添加维修产品",
+      //     icon: "none",
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
 
       const postData = JSON.parse(
         JSON.stringify({ ...this.repairForm, ...this.consigneeMsg })
