@@ -8,13 +8,14 @@
             alt=""
             class="return"
           />
-          <view class="text" @click.stop="handleClick">{{
+          <view class="text">{{
             addressDetail
           }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
             class="show"
+            @click.stop="handleClick"
           />
         </view>
         <view class="search-box">
@@ -105,6 +106,7 @@ export default {
     },
 
     handleClick() {
+      
       const _this = this;
       if (
         this.addressDetail === "定位失败" ||
@@ -150,6 +152,7 @@ export default {
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
+      this.addressDetail = "定位中...";
       const _this = this;
       uni.getLocation({
         type: "gcj02",
