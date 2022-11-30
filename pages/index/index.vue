@@ -11,27 +11,7 @@
   <view class="container">
     <!-- <accountcement></accountcement> -->
     <!-- 头部 -->
-    <view class="header" ref="headerRef">
-      <TLocale></TLocale>
-      <!-- <img
-        v-if="currentNav === 0"
-        class="img"
-        :src="require('../../static/images/index/location.png')"
-        alt="定位"
-      /> -->
-
-      <!-- <text class="loaction" v-if="currentNav === 0">佛山市</text> -->
-      <view class="search">
-        <img :src="require('../../static/images/icon/search.png')" alt="" />
-          <input type="text"  />
- 
-      </view>
-      <img
-        class="img"
-        :src="require('../../static/images/index/ling.png')"
-        alt="响铃"
-      />
-    </view>
+    <THeadSearch></THeadSearch>
 
     <!-- banner -->
     <view class="banner" v-if="currentNav === 1">
@@ -150,6 +130,7 @@ import { getBrandListApi } from "../../api/brand";
 import { getGoodsByIdApi } from "../../api/home";
 import { goodsListApi } from "../../api/goods";
 import Design from "./components/Design";
+import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
 import lqbtitle from "./components/lqbTitle";
@@ -177,6 +158,7 @@ export default {
       goodlist2: [],
       goodlist3: [],
       currentNav: 1,
+      address: "",
       briefIntroduction,
       strictSelectionBanner: [
         {
@@ -213,6 +195,7 @@ export default {
     this.getData();
     this.getIndexData();
     this.getTehui();
+    this.getLocation();
     this.getBrandList();
     this.getGoodsById();
     this.getBrandFactory();
@@ -341,7 +324,43 @@ export default {
         });
       }
     },
+    getLocation() {
+      this.address = "定位中...";
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then((res) => {
+              console.log("地址", res);
+              if (res.status === 0) {
+                const result = res.result.address_reference;
+                _this.address = result.town.title;
+              }
+            })
+            .catch(() => {
+              console.log("地址", res);
+              _this.address = "定位失败";
+            });
+        },
+      });
+    },
 
+    handleClick() {
+      const _this = this;
+      if (this.address === "定位失败" || this.address === "定位中...") {
+        uni.showModal({
+          title: "提示",
+          confirmText: "我已打开定位",
+          content: "请确认您已开启了定位",
+          success: function (res) {
+            if (res.confirm) {
+              _this.getLocation();
+            }
+          },
+        });
+      }
+    },
     async getTehui() {
       const res = await getTypeDetailList({
         id: 1001002,
@@ -377,6 +396,7 @@ export default {
 </script>
 <style scope lang="less">
 @import "./index.less";
+
 .flex {
   display: flex;
   justify-content: space-around;
@@ -390,6 +410,7 @@ export default {
     }
     .brief-text {
       color: #999;
+      font-family: auto;
       font-size: 24upx;
     }
   }
@@ -404,14 +425,17 @@ export default {
   }
   .title {
     color: #fa5151;
+    font-family: auto;
     font-size: 28upx;
     margin-left: 22upx;
   }
   .text-swiper {
     flex: 1;
+
     height: 45upx;
     .swiper-text {
       height: 40upx;
+      font-family: auto;
       display: flex;
       align-items: center;
       margin-left: 22upx;

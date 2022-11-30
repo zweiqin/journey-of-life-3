@@ -345,23 +345,23 @@ export default {
     },
     async queryMsgSentryList() {
       const res = await queryMsgSentryListApi({
-        // userId: getUserId(),
-        userId: 200,
+        userId: getUserId(),
+        // userId: 200,
         status: this.status * 1,
         // search:this.searchinput,搜索晚点搞
       });
       this.userlist = res.data;
       console.log(res);
-      // if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
-      //   uni.showToast({
-      //     title: res.errmsg,
-      //     icon: 'none',
-      //     mask: true
-      //   })
-      //   setTimeout(() => {
-      //     uni.switchTab({ url: '/pages/user/user' })
-      //   }, 2000);
-      // }
+      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
+        uni.showToast({
+          title: res.errmsg,
+          icon: "none",
+          mask: true,
+        });
+        setTimeout(() => {
+          uni.switchTab({ url: "/pages/user/user" });
+        }, 2000);
+      }
     },
     async saveMsgSentry() {
       const res = await saveMsgSentryApi({

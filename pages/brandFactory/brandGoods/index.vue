@@ -94,6 +94,7 @@ export default {
     flex: 1;
     width: 160upx;
     background-color: #f1f2f6;
+    padding-bottom: 100upx;
   }
   .Goods {
   }

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { number } from 'echarts';
+import { number } from "echarts";
 import { company } from "../../config";
 import lqbCompany from "../lqbCompany";
 export default {
@@ -76,6 +76,7 @@ export default {
     .text {
       margin: 0 56upx;
       font-size: 32upx;
+      font-family: auto;
       font-weight: 700;
     }
   }
@@ -84,6 +85,7 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 24upx;
+    font-family: auto;
     font-weight: 700;
     margin-top: 10upx;
     margin-bottom: 20upx;

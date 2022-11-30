@@ -1,7 +1,7 @@
 <template>
   <view class="stuff-container">
     <!-- 搜索 -->
-    <view class="search-bar">
+    <!-- <view class="search-bar">
       <view class="local-wrapper">
         <img
           class="location"
@@ -12,8 +12,8 @@
       >
       <input type="text" />
       <img class="location" src="../../static/images/store/search.png" alt="" />
-    </view>
-
+    </view> -->
+    <THeadSearch :placeholder="'请输入您想搜索的材料'"></THeadSearch>
     <!-- 轮播 -->
     <view style="padding: 10upx">
       <view class="banner">
@@ -25,11 +25,26 @@
           indicator-active-color="#fff"
         >
           <swiper-item>
+            <image
+              src="../../static/images/stuff/stuffImg3.jpg"
+              class="img10"
+              mode="scaleToFill"
+            />
+          </swiper-item>
+
+          <swiper-item>
             <img
               class="img9"
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ur2e5bmuhtgwfrmf90g0.png"
               alt=""
             />
+          </swiper-item>
+          <swiper-item>
+            <image
+              class="img10"
+              mode="scaleToFill"
+              src="../../static/images/stuff/stuffImg2.jpg"
+            ></image>
           </swiper-item>
           <swiper-item>
             <img
@@ -38,6 +53,7 @@
               alt=""
             />
           </swiper-item>
+
           <swiper-item>
             <img
               src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5qaujsjioq7m64525ebh.png"
@@ -55,6 +71,8 @@
         </swiper>
       </view>
     </view>
+    <view style="height: 20upx; width: 100%; background: #f5f5f5"></view>
+
     <!-- nav -->
     <view class="navs">
       <view class="item" v-for="item in navs" :key="item.label">
@@ -64,6 +82,7 @@
         <view class="name">{{ item.label }}</view>
       </view>
     </view>
+    <view style="height: 20upx; width: 100%; background: #f5f5f5"></view>
 
     <!-- main -->
     <view class="main">
@@ -126,7 +145,9 @@
             <view class="detail">
               <view class="time">{{ item1.addTime | formatTime }}</view>
               <view class="name">{{ item1.materialsCategory }}</view>
-              <view class="address">{{ item1.materialsRegion }}</view>
+              <view class="address">{{
+                item1.materialsRegion.slice(0, 2)
+              }}</view>
               <view class="color">{{ item1.materialsColor }}</view>
               <view class="number">{{ item1.materialsNumber }}</view>
               <view class="phone">{{
@@ -151,7 +172,7 @@
           <view v-for="(item, id) in supplyList" :key="id">
             <view class="detail">
               <view class="time1">{{ item.materialsCategory }}</view>
-              <view class="name">{{ item.materialsRegion }}</view>
+              <view class="name">{{ item.materialsRegion.slice(0, 2) }}</view>
               <view class="address">{{ item.materialsTexture }}</view>
               <view class="color1">{{ item.sales }}</view>
               <view class="number">￥{{ item.referenceMoney }}</view>
@@ -198,9 +219,9 @@
           :height="240"
           :indicationPoint="false"
           :list="[
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o5dhyows2dawvfy3gmee.jpg ',
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mcjlnq1jdor0w04kg08h.png  ',
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tvac5axvhk9xqvrqfdls.png  ',
+            '../../static/images/stuff/stuffImg4.jpg ',
+            '../../static/images/stuff/stuffImg5.jpg ',
+            '../../static/images/stuff/stuffImg6.jpg  ',
           ]"
         ></Carousel>
       </Pane>
@@ -255,6 +276,7 @@ import {
 import { getBrandTypeApi } from "../../api/brand";
 import Tables from "../../stuff/components/table";
 import { getBrandListApi } from "../../api/brand";
+import THeadSearch from "../../components/THeadSearch/THeadSearch.vue";
 export default {
   components: {
     Pane,
@@ -263,6 +285,7 @@ export default {
     StuffStore,
     Carousel,
     Tables,
+    THeadSearch,
   },
   data() {
     return {
@@ -498,9 +521,9 @@ export default {
 
 .stuff-container {
   position: relative;
-  background-color: #efefef;
+  background-color: white;
   padding-bottom: 140upx;
-  padding-top: 90upx;
+  padding-top: 50upx;
 
   // 表格
   .table {
@@ -587,6 +610,7 @@ export default {
   }
 
   .navs {
+    margin-top: 20upx;
     position: relative;
     padding: 32upx 0upx;
     box-sizing: border-box;
@@ -829,9 +853,9 @@ export default {
       }
 
       .item {
-        font-size: @f12;
+        font-size: 28upx;
         color: @c3d;
-        margin-right: 60upx;
+        margin-right: 34upx;
         white-space: nowrap;
         padding: 10upx 0;
         border-bottom: 4upx solid transparent;
@@ -960,5 +984,9 @@ export default {
       }
     }
   }
+}
+.img10 {
+  width: 100%;
+  height: 276px;
 }
 </style>

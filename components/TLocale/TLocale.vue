@@ -1,7 +1,7 @@
 <template>
   <view class="local-wrapper" @click.stop="handleClick">
     <JIcon type="locale" width="34" height="40" v-if="icon"></JIcon
-    ><text class="locale" :class="{ whitelocale: color }" >{{
+    ><text class="locale" :class="{ whitelocale: color }">{{
       address
     }}</text></view
   >
@@ -18,10 +18,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    icon:{
-      type:Boolean,
-      default:true
-    }
+    icon: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -78,11 +78,9 @@ export default {
 
   .locale {
     padding: 0 10upx;
-      color: white;
-      border-right: 1px solid #ccc;
+    color: white;
     &.whitelocale {
       padding: 0 10upx;
-      border-right: 1px solid #ccc;
     }
   }
 }

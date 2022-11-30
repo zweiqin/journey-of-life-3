@@ -210,6 +210,7 @@ export default {
           width: 28upx;
         }
         .addressText {
+          font-weight: 500;
           color: #999999;
           overflow: hidden;
           text-overflow: ellipsis;

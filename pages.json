@@ -258,6 +258,12 @@
 			"style": {
 				"navigationBarTitleText": "newBusiness"
 			}
+		},
+		{
+			"path": "user/promotionCenter/index",
+			"style": {
+				"navigationBarTitleText": "推广中心"
+			}
 		}
 	],
 	"tabBar": {

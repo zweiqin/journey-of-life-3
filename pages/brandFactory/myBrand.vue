@@ -249,6 +249,10 @@ export default {
         success: ({ confirm, cancel }) => {
           if (confirm) {
             this.currentTab = 2;
+            uni.pageScrollTo({
+              scrollTop: 0, //滚动到距离顶部为0
+              duration: 500, //滚动时长
+            });
           }
         },
       });
@@ -261,6 +265,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.myBrand{
+}
 .background {
   height: 400upx;
   width: 750upx;
@@ -283,10 +289,10 @@ export default {
 }
 .brandDetail {
   background: white;
-  padding: 0 20upx;
+  padding: 20upx 20upx;
   position: relative;
   border-radius: 20upx 20upx 0 0;
-  top: -70upx;
+  top: -20upx;
   .detailTop {
     display: flex;
     .left {
@@ -372,6 +378,7 @@ export default {
       justify-content: space-between;
       .brandDetailName {
         font-size: 28upx;
+        padding-left: 5upx;
       }
       .navigation {
         display: flex;
@@ -410,6 +417,7 @@ export default {
         text-overflow: ellipsis;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        padding: 0 20upx;
         &.brandDescAll {
           font-size: 28upx;
           color: #777777;
