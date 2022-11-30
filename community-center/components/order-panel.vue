@@ -19,9 +19,15 @@
         </view>
       </view>
       <!-- <img class="icon" :src="receiveBase64Source" alt="" /> -->
+      <!-- <image 
+      src="../../static/images/con-center/edit.png" 
+      mode="scaleToFill" 
+      class="icon"
+      @click.stop="toEdit"
+      /> -->
     </view>
 
-    <view class="bts" v-if="data.status <= 2">
+    <view class="bts" v-if="data.status <= 6">
       <view>
         <button
           type="primary"
@@ -34,13 +40,14 @@
             border-radius: 5px;
           "
           size="mini"
-          @click.stop="toEdit"
+          @click.stop="toDetail"
         >
           订单详情
         </button>
       </view>
       <view>
         <button
+          v-if="data.status <= 5"
           type="primary"
           style="
             margin-right: 5px;
@@ -107,19 +114,20 @@ export default {
     /**
      * @description 去编辑
      */
-    // toEdit() {
-    //   const _this = this;
-    //   let url =
-    //     this.data.deliveryType === 4
-    //       ? "/community-center/repair"
-    //       : "/community-center/delivery-install";
-    //   uni.navigateTo({
-    //     url: url + "?orderNo=" + _this.data.orderNo,
-    //   });
-    // },
+    //编辑
+    toEdit() {
+      const _this = this;
+      let url =
+        this.data.deliveryType === 4
+          ? "/community-center/repair"
+          : "/community-center/delivery-install";
+      uni.navigateTo({
+        url: url + "?orderNo=" + _this.data.orderNo,
+      });
+    },
 
     //订单详情
-    toEdit() {
+    toDetail() {
       uni.navigateTo({
         url: `/community-center/order-status?orderNo=${this.data.orderNo}`,
       });
@@ -177,18 +185,19 @@ export default {
     }
 
     .status {
-      color: #FA5151;
+      color: #fa5151;
     }
   }
 
   .main {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 28upx 0 48upx 0;
 
     .icon {
-      width: 50upx;
-      height: 60upx;
+      width: 40upx;
+      height: 40upx;
     }
 
     .info {

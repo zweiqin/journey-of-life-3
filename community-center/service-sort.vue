@@ -2,12 +2,11 @@
   <view class="service-sort">
     <view class="head">
       <view class="search-bar">
-        <view class="location">
+        <view class="location" @click="handleBack">
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
             alt=""
             class="return"
-            @click="handleBack"
           />
           <view class="text" @click.stop="handleClick">{{
             addressDetail

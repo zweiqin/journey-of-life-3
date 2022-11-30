@@ -51,7 +51,7 @@
             <view class="order-name">订单编号</view>
             <view class="service-content">服务内容</view>
             <view class="worker">服务师傅</view>
-            <view class="check">验收时间</view>
+            <!-- <view class="check">验收时间</view> -->
           </view>
           <view class="info-right">
             <view class="number-list">
@@ -61,11 +61,14 @@
             <view class="service-name">{{ this.dictName }}</view>
             <view class="worker-list">
               <view class="worker-name">{{ this.serverMasterName }}</view>
-              <view class="contact" @click="contact(serverMasterTel)"
+              <view
+                class="contact"
+                @click="contact(serverMasterTel)"
+                v-if="this.a >= 4"
                 >联系师傅</view
               >
             </view>
-            <view class="yet">{{ this.updateTime }}</view>
+            <!-- <view class="yet">{{ this.updateTime }}</view> -->
           </view>
         </view>
       </view>
@@ -276,7 +279,7 @@ export default {
 
       this.serverMasterTel = this.info[0].serverMasterTel;
       console.log("电话", this.serverMasterTel);
-      this.serverMasterTel = "123456789";
+      // this.serverMasterTel = "123456789";
 
       this.a = this.status;
       console.log("a", this.a);

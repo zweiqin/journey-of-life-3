@@ -108,7 +108,7 @@ export const consigneeInfo = [
     require: true,
   },
   {
-    label: "收获地址",
+    label: "上门地址",
     field: "consigneeAddress",
     placeholder: "请输入收货地址",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
