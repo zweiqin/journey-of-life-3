@@ -11,12 +11,14 @@
         >收入占比</view
       ></view
     >
-    <template v-if="currentTab == 0">
-      <incomeDetail :showTime="showTime"></incomeDetail>
-    </template>
-    <template v-if="currentTab == 1">
-      <incomeProportion></incomeProportion>
-    </template>
+    <view class="income">
+      <template v-if="currentTab == 0">
+        <incomeDetail :showTime="showTime"></incomeDetail>
+      </template>
+      <template v-if="currentTab == 1">
+        <incomeProportion></incomeProportion> </template
+    >
+  </view>
   </view>
 </template>
 

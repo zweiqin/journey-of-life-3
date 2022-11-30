@@ -47,7 +47,7 @@ export default {
           axisPointer: {
             type: "shadow",
           },
-        },  
+        },
         // dataZoom: [
         //   {
         //     xAxisIndex: 0, //这里是从X轴的0刻度开始
@@ -108,3 +108,10 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+.MonthsCon {
+  border: 1px solid #d8d8d8;
+  border-radius: 20upx;
+  margin-top: 20upx;
+}
+</style>

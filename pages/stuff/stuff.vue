@@ -23,14 +23,20 @@
           autoplay
           indicator-color="#fff"
           indicator-active-color="#fff"
-        >
-          <swiper-item>
-            <image
-              src="../../static/images/stuff/stuffImg3.jpg"
-              class="img10"
-              mode="scaleToFill"
-            />
-          </swiper-item>
+        > 
+        <swiper-item>
+          <image
+            src="../../static/images/stuff/stuffImg7.png"
+            class="img10"
+            mode="scaleToFill"
+          />
+        </swiper-item>          <swiper-item>
+          <image
+            src="../../static/images/stuff/stuffImg3.jpg"
+            class="img10"
+            mode="scaleToFill"
+          />
+        </swiper-item>
 
           <swiper-item>
             <img

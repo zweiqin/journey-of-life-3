@@ -1,6 +1,6 @@
 <template>
   <view class="price1">
-    <Ttitle :title="title" :search="search"></Ttitle>
+    <Ttitle :title="''" :search="search"></Ttitle>
     <img
       style="width: 100%; padding-top: 20upx"
       src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gxawxw339ne2sb1isdw8.png "
@@ -122,7 +122,7 @@ export default {
 
 <style lang="less" scoped>
 .price1 {
-  padding: 72upx 30upx 40upx 30upx;
+  padding: 10upx 30upx 40upx 30upx;
   .nowTime {
     display: flex;
     font-size: 28upx;

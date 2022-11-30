@@ -163,16 +163,29 @@ export default {
       strictSelectionBanner: [
         {
           id: 1,
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5jul4egtimnftbt17u5n.png ",
+        },
+        {
+          id: 4,
           url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sv2rof6zwas3w1ha6d3p.png  ",
         },
         {
-          id: 2,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
+          id: 5,
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u54lnoipm2vwzvcgqmoi.png ",
         },
         {
           id: 3,
           url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0ulrhv81aq17dk6fk5n5.png",
         },
+        {
+          id: 6,
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8dmengx6mffuc9ozg9q6.png   ",
+        },
+
+        // {
+        //   id: 2,
+        //   url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
+        // },
       ],
       channel: [], // 风格
       explosion: [], // 爆款专区
