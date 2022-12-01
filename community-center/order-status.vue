@@ -77,7 +77,7 @@
       <view class="bot">
         <view class="first-list">
           <view class="eva">评价</view>
-          <view class="publish">发布</view>
+          <view class="publish" @click="publish">发布</view>
         </view>
         <view class="second-list">
           <view class="satisfied">满意</view>
@@ -92,6 +92,7 @@
           placeholder="(请输入评价)"
           placeholder-class="textarea-placeholder"
         />
+
         <view class="name-list">晒图</view>
         <view class="upload-pane">
           <view style="display: flex; flex-wrap: wrap">
@@ -199,6 +200,10 @@ export default {
           console.log("success", value);
         },
       });
+    },
+
+    publish() {
+      uni.navigateTo({ url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}` });
     },
 
     contact(phone) {

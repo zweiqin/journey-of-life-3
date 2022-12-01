@@ -231,9 +231,10 @@ export default {
         type: "gcj02",
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === 0) {
-              const result = res.result.address_reference;
-              _this.address = result.town.title;
+            if (res.status === '1') {
+              const result = res.regeocode;
+              _this.address = result.addressComponent.township;
+              console.log("address",_this.address);
             }
           });
         },

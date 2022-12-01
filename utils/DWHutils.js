@@ -123,19 +123,22 @@ export function handleDebounce(func, wait, immediate) {
     }
   }
 }
+
 export const getAdressDetailByLngLat = (lat, lng) => {
   return new Promise((resolve, reject) => {
-    jsonp('http://apis.map.qq.com/ws/geocoder/v1/', {
-      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
-      location: `${lat},${lng}`,
-      output: 'jsonp',
+
+    // #ifdef H5
+    jsonp('https://restapi.amap.com/v3/geocode/regeo', {
+      key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+      location: `${lng},${lat}`
     })
       .then(res => {
         resolve(res)
       })
       .catch(err => {
         reject(err)
-      })
+      });
+    // #endif
   })
 }
 
