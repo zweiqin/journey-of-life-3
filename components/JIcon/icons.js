@@ -1,4 +1,5 @@
 export const types = {
+  edit: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eerrn9k4wio38zy6kg3k.png',
   "fill-down-triangle":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5teywnd193jbmcvm6prp.png", // 实心下箭头
   locale:
@@ -43,8 +44,6 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3lkvu6mm2t8m2oloyq82.png", // 代金劵充值
   "voucher-transform":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d1z1fo4me13g8imhqgql.png", // 代金劵转增
-  active:
-    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bds8o7xtgjyh5341bffp.png", // 活动
   notice:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hlmwhiejjar5eyz1oajz.png", // 广播
   redBag:

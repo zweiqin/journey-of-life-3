@@ -22,7 +22,9 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.6",
     "echarts": "^5.4.0",
+    "jweixin-module": "^1.6.0",
     "marked": "^4.2.2",
-    "vue-jsonp": "^2.0.0"
+    "vue-jsonp": "^2.0.0",
+    "weixin-js-sdk": "^1.6.0"
   }
 }

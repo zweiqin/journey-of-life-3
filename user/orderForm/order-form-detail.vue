@@ -519,6 +519,7 @@ export default {
       border: 1upx solid #3d3d3d;
       padding: 0 28upx;
       color: #3d3d3d;
+      line-height: 2.5;
       font-size: 28upx;
       margin-left: 30upx;
     }

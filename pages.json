@@ -555,6 +555,33 @@
 					}
 				},
 				{
+					"path": "marketing-tools/contact-guide/index"
+				},
+				{
+					"path": "marketing-tools/contact-guide/my-cards",
+					"style": {
+						"navigationBarTitleText": "名片夹"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/create-namezcard",
+					"style": {
+						"navigationBarTitleText": "新建名片"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/name-card-detail",
+					"style": {
+						"navigationBarTitleText": "我的名片"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/share-card",
+					"style": {
+						"navigationBarTitleText": "分享名片"
+					}
+				},
+				{
 					"path": "sever/shop-car",
 					"style": {
 						"navigationBarTitleText": "",
