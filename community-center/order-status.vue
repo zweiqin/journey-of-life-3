@@ -51,7 +51,7 @@
             <view class="order-name">订单编号</view>
             <view class="service-content">服务内容</view>
             <view class="worker">服务师傅</view>
-            <view class="check">验收时间</view>
+            <!-- <view class="check">验收时间</view> -->
           </view>
           <view class="info-right">
             <view class="number-list">
@@ -61,11 +61,14 @@
             <view class="service-name">{{ this.dictName }}</view>
             <view class="worker-list">
               <view class="worker-name">{{ this.serverMasterName }}</view>
-              <view class="contact" @click="contact(serverMasterTel)"
+              <view
+                class="contact"
+                @click="contact(serverMasterTel)"
+                v-if="this.a >= 4"
                 >联系师傅</view
               >
             </view>
-            <view class="yet">{{ this.updateTime }}</view>
+            <!-- <view class="yet">{{ this.updateTime }}</view> -->
           </view>
         </view>
       </view>
@@ -74,7 +77,7 @@
       <view class="bot">
         <view class="first-list">
           <view class="eva">评价</view>
-          <view class="publish">发布</view>
+          <view class="publish" @click="publish">发布</view>
         </view>
         <view class="second-list">
           <view class="satisfied">满意</view>
@@ -89,6 +92,7 @@
           placeholder="(请输入评价)"
           placeholder-class="textarea-placeholder"
         />
+
         <view class="name-list">晒图</view>
         <view class="upload-pane">
           <view style="display: flex; flex-wrap: wrap">
@@ -198,6 +202,10 @@ export default {
       });
     },
 
+    publish() {
+      uni.navigateTo({ url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}` });
+    },
+
     contact(phone) {
       console.log("传入的电话", phone);
       const res = uni.getSystemInfoSync();
@@ -276,7 +284,7 @@ export default {
 
       this.serverMasterTel = this.info[0].serverMasterTel;
       console.log("电话", this.serverMasterTel);
-      this.serverMasterTel = "123456789";
+      // this.serverMasterTel = "123456789";
 
       this.a = this.status;
       console.log("a", this.a);

@@ -108,7 +108,7 @@ export const consigneeInfo = [
     require: true,
   },
   {
-    label: "收获地址",
+    label: "上门地址",
     field: "consigneeAddress",
     placeholder: "请输入收货地址",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
@@ -333,3 +333,24 @@ export const air =[
     money:300,
   },
 ]
+
+//评价
+export const navList =[
+  {
+    value:1,
+    label:"全部",
+  },
+  {
+    value:2,
+    label:"最新",
+  },
+  {
+    value:3,
+    label:"有图",
+  },
+  {
+    value:4,
+    label:"追评",
+  },
+]
+

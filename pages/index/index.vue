@@ -11,7 +11,7 @@
   <view class="container">
     <!-- <accountcement></accountcement> -->
     <!-- 头部 -->
-    <THeadSearch></THeadSearch>
+    <THeadSearch :placeholder="'请输入您想搜索的家具'">></THeadSearch>
 
     <!-- banner -->
     <view class="banner" v-if="currentNav === 1">
@@ -333,9 +333,10 @@ export default {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
               console.log("地址", res);
-              if (res.status === 0) {
-                const result = res.result.address_reference;
-                _this.address = result.town.title;
+              if (res.status === '1') {
+                const result = res.regeocode;
+                _this.address = result.addressComponent.township;
+                console.log("address",_this.address);
               }
             })
             .catch(() => {

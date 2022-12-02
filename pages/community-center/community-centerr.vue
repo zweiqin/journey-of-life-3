@@ -320,6 +320,9 @@
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5jubpkvccdhm5nl74duo.png"
               alt=""
               class="more"
+              v-for="item1 in moreService"
+              :key="item1.value"
+              @click="handleToServiceListHome(item1.value)"
             />
           </view>
           <view class="service">一站式服务</view>
@@ -563,7 +566,7 @@ export default {
       value: "",
       serviceName: "",
       showPopup: false,
-      show:false,
+      show: false,
       address: "",
       names: [{ text: "专业性强" }, { text: "及时服务" }],
     };
@@ -571,7 +574,7 @@ export default {
 
   onLoad() {
     this.showPopup = false;
-    this.show = true;
+    this.show = false;
     this.getLocation();
     // this.address = "定位中...";
     // const _this = this;
@@ -628,10 +631,10 @@ export default {
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
-              if (res.status === 0) {
-                const result = res.result.address_reference;
-                _this.address = result.town.title;
-                
+              if (res.status === "1") {
+                const result = res.regeocode;
+                _this.address = result.addressComponent.township;
+                console.log("address", _this.address);
               }
             })
             .catch(() => {
@@ -962,7 +965,7 @@ export default {
             width: 100%;
             // width: 310upx;
             height: 264upx;
-            
+
             top: 0upx;
           }
         }
