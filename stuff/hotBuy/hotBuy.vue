@@ -8,7 +8,7 @@
           alt=""
           @click="back"
         />
-        <view>热销</view>
+        <view></view>
         <view style="width: 48upx"></view>
       </view>
       <view class="top-title">《热销材料大采购》</view>
@@ -145,7 +145,7 @@ export default {
   .title {
     display: flex;
     text-align: center;
-    padding-top: 72upx;
+    padding-top: 10upx;
     font-size: 32upx;
     font-weight: 500;
     justify-content: space-between;
@@ -188,7 +188,7 @@ export default {
       display: flex;
       padding-top: 46upx;
       padding-left: 20upx;
-      font-size: 26upx;
+      font-size: 28upx;
       overflow-x: scroll;
       white-space: nowrap;
       &::-webkit-scrollbar {
@@ -196,12 +196,12 @@ export default {
       }
 
       .text1 {
-        margin-left: 20upx;
-        font-weight: 350;
+        margin-left: 40upx;
+        font-weight: 500;
         color: #3d3d3d;
         &.text2 {
-          margin-left: 20upx;
-          font-weight: 600;
+          margin-left: 40upx;
+          font-weight: 700;
           color: rgba(0, 0, 0, 0.85);
         }
       }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <view class="store">
-      <view class="top-title">店铺</view>
+      <view class="top-title"></view>
       <img
         src="../../static/images/stuff/Vector8.png"
         alt=""
@@ -189,11 +189,10 @@ export default {
   .top-title {
     text-align: center;
     font-size: 32upx;
-    margin: 72upx 0upx 48upx 0upx;
+    margin: 10upx 0upx 48upx 0upx;
   }
   .fanhui {
-    position: absolute;
-    margin: -80upx 0upx 0upx 36upx;
+    margin-left: 30upx;
   }
 
   // .title-list {
@@ -244,7 +243,7 @@ export default {
     }
 
     .item {
-      font-size: 24upx;
+      font-size: 28upx;
       color: #3d3d3d;
       margin-right: 60upx;
       white-space: nowrap;

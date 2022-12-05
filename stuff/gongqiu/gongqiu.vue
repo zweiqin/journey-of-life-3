@@ -1,6 +1,6 @@
 <template>
   <view class="gongqiu">
-    <Ttitle :title="title" :search="search" v-model="inputDetail"></Ttitle>
+    <Ttitle :title="''" :search="search" v-model="inputDetail"></Ttitle>
     <view class="choseType">
       <view
         class="information"
@@ -33,7 +33,7 @@
       >
         <view class="no">{{ index + 1 }}</view>
         <view class="category">{{ item1.materialsCategory }}</view>
-        <view class="address">{{ item1.materialsRegion }}</view>
+        <view class="address">{{ item1.materialsRegion.slice(0, 2) }}</view>
         <view class="color">{{ "无" || item1.materialsColor }}</view>
         <view class="phone">{{ item1.materialsPhone | replacestar }}</view>
         <view class="time">{{ item1.addTime | formatTime }}</view>
@@ -59,7 +59,7 @@
       >
         <view class="no1">{{ index + 1 }}</view>
         <view class="category1">{{ item1.materialsCategory }}</view>
-        <view class="address1">{{ item1.materialsRegion }}</view>
+        <view class="address1">{{ item1.materialsRegion.slice(0, 2) }}</view>
         <view class="material">{{ item1.materialsTexture }}</view>
         <view class="number">{{ item1.sales }}</view>
         <view class="much">{{ item1.referenceMoney }}元</view>
@@ -250,7 +250,7 @@ export default {
 
 <style lang="less" scoped>
 .gongqiu {
-  padding: 72upx 24upx 100upx 24upx;
+  padding: 10upx 24upx 100upx 24upx;
   .whiteBackground {
     background-color: white;
     border-radius: 20upx;
@@ -320,6 +320,7 @@ export default {
       .category {
         width: 12%;
         white-space: nowrap;
+        text-align: start;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -381,6 +382,7 @@ export default {
       .category1 {
         width: 12%;
         white-space: nowrap;
+        text-align: start;
         overflow: hidden;
         text-overflow: ellipsis;
       }

@@ -186,7 +186,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
-      url: "/user/digital-store/newBusiness/index"
+      url: "/user/digital-store/business/index"
     },
   ],
 };

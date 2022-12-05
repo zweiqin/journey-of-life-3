@@ -264,6 +264,12 @@
 			"style": {
 				"navigationBarTitleText": "推广中心"
 			}
+		},
+		{
+			"path": "user/promotionCenter/detailIncome/index",
+			"style": {
+				"navigationBarTitleText": "detailIncome"
+			}
 		}
 	],
 	"tabBar": {
@@ -439,6 +445,12 @@
 					"path": "eva",
 					"style": {
 						"navigationBarTitleText": "评价"
+					}
+				},
+				{
+					"path": "search",
+					"style": {
+						"navigationBarTitleText": "搜索"
 					}
 				}
 			]
@@ -785,16 +797,28 @@
 					"path": "store/index"
 				},
 				{
-					"path": "hotBuy/hotBuy"
+					"path": "hotBuy/hotBuy",
+					"style": {
+						"navigationBarTitleText": "热销"
+					}
 				},
 				{
-					"path": "stock/stock"
+					"path": "stock/stock",
+					"style": {
+						"navigationBarTitleText": "库存"
+					}
 				},
 				{
-					"path": "gongqiu/gongqiu"
+					"path": "gongqiu/gongqiu",
+					"style": {
+						"navigationBarTitleText": "供求指数"
+					}
 				},
 				{
-					"path": "shop/store"
+					"path": "shop/store",
+					"style": {
+						"navigationBarTitleText": "店铺"
+					}
 				},
 				{
 					"path": "brand/brand"
@@ -809,7 +833,10 @@
 					"path": "price/echar"
 				},
 				{
-					"path": "purchase/purchase"
+					"path": "purchase/purchase",
+					"style": {
+						"navigationBarTitleText": "一件采购"
+					}
 				},
 				{
 					"path": "buyer/buyer"

@@ -326,8 +326,8 @@ export default {
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
-        userId: 269,
-        // userId: getUserId(),
+        // userId: 229,
+        userId: getUserId(),
         month: this.month * 1,
         status: this.status,
         week: this.week * 1,
@@ -336,10 +336,7 @@ export default {
       });
       this.timeList = res;
       console.log(this.timeList);
-      this.getrepetitionMonth();
-      if (res.errno === 0) {
-        this.info = res.data;
-      } else {
+      if (res.errno == 780) {
         uni.showToast({
           title: "您还不是业务员",
           duration: 1500,
@@ -351,7 +348,10 @@ export default {
             url: "/pages/user/user",
           });
         }, 2000);
+      } else {
+        this.info = res.data;
       }
+      this.getrepetitionMonth();
     },
     // 查询业绩明细
     async getPerformanceInfo() {

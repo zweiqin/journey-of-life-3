@@ -43,13 +43,13 @@ export default {
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: @f12;
+    font-size: 28upx;
     line-height: 1.5;
   }
 
   .time {
     color: #999;
-    font-size: 10px;
+    font-size: 24upx;
     margin-top: 5px;
   }
 }
