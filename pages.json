@@ -264,6 +264,12 @@
 			"style": {
 				"navigationBarTitleText": "推广中心"
 			}
+		},
+		{
+			"path": "user/promotionCenter/detailIncome/index",
+			"style": {
+				"navigationBarTitleText": "detailIncome"
+			}
 		}
 	],
 	"tabBar": {
