@@ -26,7 +26,7 @@
         > 
         <swiper-item>
           <image
-            src="../../static/images/stuff/stuffImg7.png"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zspzmfjzb1fj05nckjva.png "
             class="img10"
             mode="scaleToFill"
           />
@@ -349,15 +349,15 @@ export default {
     switchTab(index) {
       this.currentTab = index;
       this.brandgenreId = index;
-      // console.log(this.brandgenreId);
+      console.log(this.brandgenreId);
 
-      // if (this.brandgenreId == 0) {
-      // } else {
-      //   uni.navigateTo({
-      //     // url: `../../stuff/stuffGoods/index?id=${index}`,
-      //     url:"../../pages/payAccomplish/index"
-      //   });
-      // }
+      if (this.brandgenreId == 0) {
+      } else {
+        uni.navigateTo({
+          url: `../../stuff/stuffGoods/index?id=${index}`,
+          // url:"../../pages/payAccomplish/index"
+        });
+      }
 
       // const currentNavs = this.$refs.navs2Ref.$el.querySelector(".item.active");
       // const local = currentNavs.getBoundingClientRect();
