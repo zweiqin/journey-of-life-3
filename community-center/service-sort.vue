@@ -134,8 +134,6 @@ export default {
     //   uni.navigateTo({ url: '/community-center/search' })
     // },
 
-    
-
     // handleBack() {
     //   uni.navigateBack();
     // },

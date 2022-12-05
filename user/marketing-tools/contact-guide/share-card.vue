@@ -136,7 +136,7 @@ export default {
           desc: this.data.position + "-" + this.data.intro,
           imgUrl: this.data.headPic,
           link:
-            "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
+            "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
             _this.data.id,
         });
       });
