@@ -12,54 +12,63 @@ import { RuanRequest } from "../../utils";
  * 购物车添加
  * @returns  
  */
-export const getCartAddApi = (data) =>{
-    return RuanRequest("/cart/add",data)
+export const getCartAddApi = (data) => {
+    return RuanRequest("/cart/add", data)
 };
 /**
  * 
  * @param {获取购物车信息} data 
  * @returns 
  */
-export const getCartIndexApi = (data) =>{
-    return RuanRequest("/cart/index",data,'get')
+export const getCartIndexApi = (data) => {
+    return RuanRequest("/cart/index", data, 'get')
 }
 /**
  * 
  * @param {获取购物车商品数量} data 
  * @returns 
  */
-export const getCartGoodscountApi = (data) =>{
-    return RuanRequest("/cart/goodscount",data,'get')
+export const getCartGoodscountApi = (data) => {
+    return RuanRequest("/cart/goodscount", data, 'get')
 }
 /**
  * 
  * @param {获取购物车商品勾选状态} data 
  * @returns 
  */
-export const getCartCheckedApi = (data) =>{
-    return RuanRequest("/cart/checked",data)
+export const getCartCheckedApi = (data) => {
+    return RuanRequest("/cart/checked", data)
 };
 /**
  * 
  * @param {修改购物车商品数量} data 
  * @returns 
  */
-export const getCartUpdateApi = (data) =>{
-    return RuanRequest("/cart/update",data)
+export const getCartUpdateApi = (data) => {
+    return RuanRequest("/cart/update", data)
 };
 /**
  * 
  * @param {商品信息删除} data 
  * @returns 
  */
-export const getCartDeleteApi = (data) =>{
-    return RuanRequest("/cart/delete",data)
+export const getCartDeleteApi = (data) => {
+    return RuanRequest("/cart/delete", data)
 };
 /**
  * 
  * @param {购物车下单} data 
  * @returns 
  */
-export const getCartCheckoutApi = (data) =>{
-    return RuanRequest("/cart/checkout",data,'get')
+export const getCartCheckoutApi = (data) => {
+    return RuanRequest("/cart/checkout", data, 'get')
+}
+
+/**
+ *
+ * @param {购物车结算} data
+ * @returns
+ */
+export const payShopCarApi = data => {
+    return RuanRequest('/cart/checkout', data, 'get')
 }

@@ -559,25 +559,29 @@ export default {
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
+
       const _this = this;
       uni.getLocation({
         type: "gcj02",
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === 0) {
-              const result = res.result;
+            if (res.status === '1') {
+              console.log("1111",res);
+              const result = res.regeocode;
               // _this.addressDetail = result.address_reference.town.title;
               // console.log("this.addressDetail", _this.addressDetail);
               _this.address =
-                result.address_component.province +
-                result.address_component.city +
-                result.address_component.district;
+                result.addressComponent.province +
+                result.addressComponent.city +
+                result.addressComponent.district;
               console.log("this.address", _this.address);
 
               _this.a();
 
-              _this.addressDetail = result.address_reference.town.title;
-              console.log("this.addressDetail", _this.addressDetail);
+              _this.s = result.formatted_address;
+              _this.addressDetail = _this.s.slice(_this.address.length);
+              console.log("addressDetail",_this.addressDetail);
+              
             }
           });
         },

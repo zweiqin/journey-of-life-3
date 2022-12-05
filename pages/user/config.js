@@ -203,7 +203,7 @@ export const marketingTools = {
     {
       label: "我的名片",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png",
-      url: "/user/postCard/index"
+      url: "/user/marketing-tools/contact-guide/index"
     },
     {
       label: "每日签到",

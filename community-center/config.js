@@ -333,3 +333,24 @@ export const air =[
     money:300,
   },
 ]
+
+//评价
+export const navList =[
+  {
+    value:1,
+    label:"全部",
+  },
+  {
+    value:2,
+    label:"最新",
+  },
+  {
+    value:3,
+    label:"有图",
+  },
+  {
+    value:4,
+    label:"追评",
+  },
+]
+
