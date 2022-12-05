@@ -156,15 +156,15 @@ export default {
     color: #3d3d3d;
   }
   .form {
-    padding-top: 52upx;
+    margin-top: 52upx;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     .sub {
       width: 160upx;
       height: 206upx;
-      padding-bottom: 70upx;
-      padding-right: 16upx;
+      margin-bottom: 70upx;
+      margin-right: 16upx;
       .goods {
         width: 160upx;
         height: 160upx;

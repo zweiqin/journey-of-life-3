@@ -440,6 +440,12 @@
 					"style": {
 						"navigationBarTitleText": "评价"
 					}
+				},
+				{
+					"path": "search",
+					"style": {
+						"navigationBarTitleText": "搜索"
+					}
 				}
 			]
 		},
