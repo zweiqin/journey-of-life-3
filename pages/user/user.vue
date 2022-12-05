@@ -165,11 +165,18 @@
           transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)',
         }"
       >
-        <view class="code-title"
-          >{{ userInfo && userInfo.nickName }}
-          {{ userInfo && userInfo.userId }}</view
-        >
-        <img class="code" :src="extensionCodeUrl" alt="" />
+        <view class="big-wrapper">
+          <image src="/static/images/user/center-logo.png" class="big-icon" />
+        </view>
+
+        <view class="images">
+          <view class="zhiwen">
+            <image src="/static/images/user/zhi.png" alt="" />
+            <text>长按扫码</text>
+          </view>
+          <image class="code" :src="extensionCodeUrl" alt="" />
+        </view>
+
         <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
       </view>
     </view>
@@ -290,7 +297,7 @@ export default {
 
     async handleBindId() {
       const bindId = uni.getStorageSync("BIND_ID");
-      if (bindId) {
+      if (bindId && getUserId()) {
         const res = await bindLastUserApi({
           salesmanId: bindId,
           userId: [getUserId()],
@@ -488,6 +495,63 @@ export default {
   transition: all 350ms;
   opacity: 0;
 
+  .uni-btn {
+    line-height: 1;
+    margin: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+    padding-top: 20upx;
+    border-top: 1upx solid #ccc;
+    font-size: 32upx;
+    letter-spacing: 1em;
+    color: #ccc;
+
+    &::after{
+      border: none;
+    }
+  }
+
+  // .code-wrapper {
+  //   width: 600upx;
+  //   padding: 30upx;
+  //   box-sizing: border-box;
+  //   background-color: #fff;
+  //   border-radius: 20upx;
+  //   transform: scale(0);
+  //   transition: all 350ms;
+
+  //   .code-title {
+  //     text-align: center;
+  //     font-size: 36upx;
+  //     font-weight: bold;
+  //     margin-top: 20upx;
+  //   }
+
+  //   .code {
+  //     width: 540upx;
+  //     height: 540upx;
+  //     object-fit: cover;
+  //   }
+
+  //   .uni-btn {
+  //     line-height: 1;
+  //     margin: 0;
+  //     border: none;
+  //     padding: 0;
+  //     background: transparent;
+  //     padding-top: 20upx;
+  //     border-top: 1upx solid #ccc;
+  //     font-size: 32upx;
+  //     letter-spacing: 1em;
+  //     color: #ccc;
+
+  //     &::after {
+  //       border: none;
+  //     }
+  //   }
+  // }
+
   .code-wrapper {
     width: 600upx;
     padding: 30upx;
@@ -496,6 +560,56 @@ export default {
     border-radius: 20upx;
     transform: scale(0);
     transition: all 350ms;
+
+    .images {
+      display: flex;
+      margin: 30upx 0;
+      justify-content: space-around;
+
+      .zhiwen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #999999;
+
+        image {
+          width: 120upx;
+          height: 120upx;
+          margin-bottom: 10upx;
+        }
+      }
+
+      image {
+        width: 200upx;
+        height: 200upx;
+        object-fit: cover;
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .header-icon {
+        width: 60upx;
+        height: 60upx;
+        margin-right: 10px;
+      }
+    }
+
+    .big-wrapper {
+      width: 100%;
+      margin-top: 70upx;
+      justify-content: center;
+      display: flex;
+      .big-icon {
+        width: 400upx;
+        height: 400upx;
+        object-fit: cover;
+      }
+    }
 
     .code-title {
       text-align: center;
@@ -508,23 +622,7 @@ export default {
       width: 540upx;
       height: 540upx;
       object-fit: cover;
-    }
-
-    .uni-btn {
-      line-height: 1;
-      margin: 0;
-      border: none;
-      padding: 0;
-      background: transparent;
-      padding-top: 20upx;
-      border-top: 1upx solid #ccc;
-      font-size: 32upx;
-      letter-spacing: 1em;
-      color: #ccc;
-
-      &::after {
-        border: none;
-      }
+      border-radius: 54upx;
     }
   }
 }

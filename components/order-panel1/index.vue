@@ -358,7 +358,6 @@ export default {
     color: #fff;
     font-size: 36upx;
     height: 114upx;
-    margin-top: 120upx;
 
     &::before {
       position: absolute;

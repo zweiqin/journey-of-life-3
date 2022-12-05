@@ -6,6 +6,14 @@
   font-family: helvetica, 'Heiti SC', PingFangSC-Light, serif;
 }
 
+.uni-btn {
+  line-height: 1;
+  margin: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
 page {
   height: 100%;
 }

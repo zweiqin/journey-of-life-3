@@ -391,6 +391,7 @@ export default {
           .uni-btn {
             font-size: 24upx;
             color: #fff;
+            line-height: 2.5;
             padding: 0 28upx;
             background-color: #f40;
             white-space: nowrap;

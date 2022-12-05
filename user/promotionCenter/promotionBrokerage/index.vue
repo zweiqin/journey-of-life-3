@@ -74,13 +74,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .promotionBrokerage {
-  border: 1px solid #999999;
+  border: 1px solid #d8d8d8;
   border-radius: 10upx;
   .title {
+    margin: 10upx 0;
     display: flex;
     padding: 0 16upx 0 0;
     justify-content: space-around;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #d8d8d8;
 
     .leftDetail {
       display: flex;
@@ -100,7 +101,8 @@ export default {
 
     .titleRight {
       display: flex;
-      margin: 4upx 0;
+      margin: 10upx 2upx;
+      padding-left: 20upx;
       align-items: center;
       border-left: 6upx solid #d8d8d8;
       .moneyIcon {
@@ -118,8 +120,8 @@ export default {
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid #d8d8d8;
-      margin: 0 52upx;
-      padding: 10upx 0 12upx 0;
+      margin: 20upx 32upx;
+      padding: 10upx 20upx 12upx 20upx;
       .titleText {
         font-size: 26upx;
         color: #3d3d3d;
@@ -130,10 +132,11 @@ export default {
       }
     }
   }
-  .explain{
+  .explain {
     color: #999999;
     font-size: 26upx;
     padding: 0 46upx;
+    margin-bottom: 30upx;
   }
 }
 </style>

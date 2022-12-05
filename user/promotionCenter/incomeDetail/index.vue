@@ -40,14 +40,13 @@ export default {
             color: "#c1dafc",
             fontSize: "12",
           },
-          right: "30%",
         },
         tooltip: {
           trigger: "axis",
           axisPointer: {
             type: "shadow",
           },
-        },  
+        },
         // dataZoom: [
         //   {
         //     xAxisIndex: 0, //这里是从X轴的0刻度开始
@@ -61,6 +60,11 @@ export default {
             data: [...this.showTime],
             axisPointer: {
               type: "shadow",
+            },
+            axisLabel: {
+              //x轴文字的配置
+              show: true,
+              interval:1, //使x轴文字显示全
             },
           },
         ],
@@ -88,16 +92,14 @@ export default {
             type: "line",
             color: "#FA5151",
             yAxisIndex: 0,
-            barWidth: "10%",
-            data: [1, 9, 5, 50, 1, 9, 5, 7, 1, 9, 5, 11, 15, 17],
+            data: [1, 9, 5, 50, 1, 9, 5, 7, 1, 9, 5, 11, 15, 17, 11],
           },
           {
             name: "笔数",
             type: "line",
             color: "#07B9B9",
             yAxisIndex: 1,
-            barWidth: "10%",
-            data: [3, 8, 1, 7, 3, 8, 25, 7, 3, 8, 1, 3, 2, 9],
+            data: [3, 8, 1, 7, 3, 8, 25, 7, 3, 8, 1, 12, 11, 15, 17],
           },
         ],
         // color: ["#b1de6a", "#4ab0ee"],
@@ -108,3 +110,10 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+.MonthsCon {
+  border: 1px solid #d8d8d8;
+  border-radius: 20upx;
+  margin-top: 20upx;
+}
+</style>

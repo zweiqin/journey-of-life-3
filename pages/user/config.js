@@ -186,7 +186,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
-      url: "/user/digital-store/newBusiness/index"
+      url: "/user/digital-store/business/index"
     },
   ],
 };
@@ -203,7 +203,7 @@ export const marketingTools = {
     {
       label: "我的名片",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png",
-      url: "/user/postCard/index"
+      url: "/user/marketing-tools/contact-guide/index"
     },
     {
       label: "每日签到",

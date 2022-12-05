@@ -142,7 +142,7 @@ export const getUserUpInfoListApi = (data) => {
 };
 //升级支付（门店）
 export const getLevelPaySalesmanPrepayBySybApi = (data) => {
-	return RuanRequest("/levelPay/SalesmanPrepayBySyb", data, );
+	return RuanRequest("/levelPay/SalesmanPrepayBySyb", data,);
 };
 //会员支付h5
 export const paySybForEndApi = (data) => {
@@ -161,12 +161,12 @@ export const refrshUserInfoApi = (data) => {
 
 // 查询用户足迹
 export const getUserViewHistoryApi = (data) => {
-  return RuanRequest("/footprint/list", data, "get");
+	return RuanRequest("/footprint/list", data, "get");
 };
 
 // 获取收藏数据
 export const getUserCollectionListApi = (data) => {
-  return RuanRequest("/collect/list", data, "get");
+	return RuanRequest("/collect/list", data, "get");
 };
 
 /**
@@ -175,10 +175,39 @@ export const getUserCollectionListApi = (data) => {
 
 // 获取推广码
 export const getExtensionCodeApi = data => {
-  return RuanRequest('/qrCode/getQrCodeByH5', data, 'get')
+	return RuanRequest('/qrCode/getQrCodeByH5', data, 'get')
 }
 
 // 绑定上级
 export const bindLastUserApi = data => {
-  return RuanRequest('/bindUser/add', data)
+	return RuanRequest('/bindUser/add', data)
+}
+
+/**
+ * 名片
+ */
+
+// 新建名片
+export const buildNewMyCardApi = data => {
+	return RuanRequest('/businessCard/add', data)
+}
+
+// 获取名片列表
+export const getNameCardList = data => {
+	return RuanRequest('/businessCard/list', data, 'get')
+}
+
+// 修改明信片背景色
+export const changeNameCardBgApi = data => {
+	return RuanRequest('/businessCard/updateBgColor', data)
+}
+
+// 获取名片详情
+export const getNameCardDetailApi = data => {
+	return RuanRequest('/businessCard/detail', data, 'get')
+}
+
+// 修改名片
+export const updateNameCardApi = data => {
+	return RuanRequest('/businessCard/update', data)
 }

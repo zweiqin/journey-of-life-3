@@ -84,7 +84,7 @@
         v-if="currentTab == 0"
         :height="311"
         :list="[
-          'https://img1.baidu.com/it/u=934539030,2839442749&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rbz9wpljd6mj4u9p7td.png',
           'https://img0.baidu.com/it/u=2897486836,2967666712&fm=253&fmt=auto&app=120&f=JPEG?w=640&h=786',
           'https://img0.baidu.com/it/u=3303379795,1457228468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
         ]"
@@ -479,7 +479,7 @@ export default {
     }
 
     .item {
-      font-size:28upx;
+      font-size: 28upx;
       color: @c3d;
       margin-right: 60upx;
       white-space: nowrap;

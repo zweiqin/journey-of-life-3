@@ -249,10 +249,13 @@ export default {
     // 获取购物车信息
     async getCartIndex() {
       // console.log("1");
+      uni.showLoading({
+        title: '加载中'
+      });
       const res = await getCartIndexApi({
         userId: getUserId(),
       });
-      console.log("商品信息", res);
+      uni.hideLoading()
       this.cartList = res.data.brandCartgoods;
       this.goodsallmoney = res.data.cartTotal.goodsAmount;
       this.listLength = res.data.brandCartgoods.length;

@@ -14,7 +14,7 @@
     <THeadSearch :placeholder="'请输入您想搜索的家具'">></THeadSearch>
 
     <!-- banner -->
-    <view class="banner" v-if="currentNav === 1">
+    <!-- <view class="banner" v-if="currentNav === 1">
       <swiper
         class="swiper"
         indicator-dots
@@ -55,7 +55,7 @@
           <view>{{ item.lable }}</view>
         </swiper-item>
       </swiper>
-    </view>
+    </view> -->
 
     <!-- nav -->
     <view class="nav">
@@ -163,16 +163,29 @@ export default {
       strictSelectionBanner: [
         {
           id: 1,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sv2rof6zwas3w1ha6d3p.png  ",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5jul4egtimnftbt17u5n.png ",
         },
         {
           id: 2,
-          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sv2rof6zwas3w1ha6d3p.png  ",
         },
         {
           id: 3,
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u54lnoipm2vwzvcgqmoi.png ",
+        },
+        {
+          id: 4,
           url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0ulrhv81aq17dk6fk5n5.png",
         },
+        {
+          id: 5,
+          url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8dmengx6mffuc9ozg9q6.png   ",
+        },
+
+        // {
+        //   id: 2,
+        //   url: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/izhvv9bdklhy92kr85jk.png",
+        // },
       ],
       channel: [], // 风格
       explosion: [], // 爆款专区
@@ -340,7 +353,7 @@ export default {
               }
             })
             .catch(() => {
-              console.log("地址", res);
+              // console.log("地址", res);
               _this.address = "定位失败";
             });
         },
@@ -380,7 +393,8 @@ export default {
     },
   },
   onReachBottom() {
-    if (this.currentNav == 0) {
+    this.currentNav = 1;
+    if (this.currentNav == 1) {
       if (this.page == this.goodlist3.totalPages) {
         uni.showToast({
           title: "已经到底",

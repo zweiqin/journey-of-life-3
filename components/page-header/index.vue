@@ -41,12 +41,12 @@ export default {
   position: relative;
   display: flex;
   justify-content: space-between;
-  top: 72upx;
   left: 0;
-  padding: 0 40upx;
+  padding: 30upx 40upx;
   width: 100%;
   font-weight: 500;
   box-sizing: border-box;
+  background-color: #fff;
 
   .back {
     width: 48upx;
