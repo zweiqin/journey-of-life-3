@@ -203,7 +203,7 @@ export default {
     },
 
     publish() {
-      uni.navigateTo({ url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}` });
+      uni.navigateTo({ url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}&evaluate=${this.evaluate}&dictName=${this.dictName}` });
     },
 
     contact(phone) {

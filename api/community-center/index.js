@@ -121,6 +121,11 @@ export const detailsMdApi = (data) => {
 //   return XZLRequest("/laoa-huozhu/api/hz/order/third/detailsMd", data, "get");
 // };
 
+//搜索查询
+export const getSearchDataApi = (data) => {
+  return XZLRequest("/demo/api/community/serverInfo/getSearchData", data, "get");
+};
+
 
 
 // 本地

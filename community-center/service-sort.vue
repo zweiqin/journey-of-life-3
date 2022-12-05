@@ -2,15 +2,14 @@
   <view class="service-sort">
     <view class="head">
       <view class="search-bar">
-        <view class="location" @click="handleBack">
+        <view class="location">
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
             alt=""
             class="return"
+            @click="handleBack"
           />
-          <view class="text">{{
-            addressDetail
-          }}</view>
+          <view class="text">{{ addressDetail }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -30,8 +29,31 @@
             type="text"
             class="content"
             placeholder="搜索社区服务，一站式解决家居问题"
+            @click="goToSearch"
           />
         </view>
+
+        <!-- <uni-card :is-shadow="false" is-full>
+          <text class="uni-h6"></text>
+        </uni-card>
+        <uni-section
+          title="无边框"
+          subTitle="使用 border = false 取消边框"
+          type="line"
+        >
+          <view class="example-body">
+            <uni-combox
+              :border="false"
+              labelKey="serverTypeName"
+              :candidates="candidates"
+              placeholder="请选择"
+              @input="inoutWatcher"
+              @confirm="jump"
+            ></uni-combox>
+          </view>
+        </uni-section> -->
+
+        
       </view>
     </view>
     <view class="body" :style="{ height: scrollHeight + 'px' }">
@@ -66,6 +88,7 @@
 
 <script>
 import { getServiceSortApi } from "../api/community-center";
+// import { getSearchDataApi } from "../api/community-center";
 import sort from "../community-center/componts";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
 import { getIsOpenServerAreaApi } from "../api/community-center";
@@ -89,6 +112,9 @@ export default {
       scrollHeight: 667,
       tips: "",
       addressDetail: "",
+      candidates: [],
+      city: "",
+      searchName: "",
     };
   },
   methods: {
@@ -97,6 +123,19 @@ export default {
       this.currentTab = index;
       this.sort = this.data.find((item) => item.id === index);
     },
+
+    inoutWatcher(e) {
+      console.log("111",e);
+      // this.searchName = e;
+      // this.getSearchData();
+    },
+
+    // goToSearch(){
+    //   uni.navigateTo({ url: '/community-center/search' })
+    // },
+
+    
+
     // handleBack() {
     //   uni.navigateBack();
     // },
@@ -106,7 +145,6 @@ export default {
     },
 
     handleClick() {
-      
       const _this = this;
       if (
         this.addressDetail === "定位失败" ||
@@ -145,9 +183,20 @@ export default {
 
       this.navbar = res.data;
       this.sort = res.data[0];
+      console.log("sort",this.sort);
       this.data = res.data;
       console.log(res.data[0]);
       this.sort = this.data.find((item) => item.id === this.currentTab);
+    },
+
+    //搜索查询接口
+    async getSearchData() {
+      const res = await getSearchDataApi({
+        searchName: this.searchName,
+      });
+
+      this.candidates =res.data.map(item => item.serverTypeName)
+      // console.log(this.candidates);
     },
 
     //根据用户地址判断该区域是否开通了站长
@@ -158,7 +207,7 @@ export default {
         type: "gcj02",
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === '1') {
+            if (res.status === "1") {
               const result = res.regeocode;
               _this.addressDetail = result.addressComponent.township;
               console.log("this.addressDetail", _this.addressDetail);
@@ -183,7 +232,7 @@ export default {
 
     this.getServiceSort();
     this.getIsOpenServerArea();
-
+    this.getSearchData();
     const _this = this;
     uni.getSystemInfo({
       success(res) {
@@ -266,6 +315,10 @@ uni-page-body {
           color: #3d3d3d;
           border-left: 2upx solid #d8d8d8;
         }
+      }
+      .example-body {
+        background: #f1f2f6;
+        border-radius: 100upx;
       }
     }
   }

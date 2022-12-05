@@ -12,7 +12,7 @@
       <view class="right">信息簿</view>
     </view>
 
-    <!-- <view class="item">
+    <view class="item">
       <view class="main-title">服务需求</view>
       <view class="desc">
         <picker
@@ -29,7 +29,7 @@
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
         alt=""
       />
-    </view> -->
+    </view>
 
     <!-- <view class="item">
       <view class="main-title">维修日期</view>

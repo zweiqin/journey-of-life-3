@@ -39,7 +39,7 @@
           <view class="time">2022-12-1</view>
         </view>
       </view>
-      <view class="second">师傅非常热情，安装非常到位，向师傅点赞。</view>
+      <view class="second">{{this.evaluate}}</view>
 
       <view class="third">
         <view v-for="img in images" :key="img">
@@ -48,14 +48,13 @@
       </view>
       <view class="info-list">
         <view class="info">服务信息:</view>
-        <view class="name">空调安装</view>
+        <view class="name">{{this.dictName}}</view>
       </view>
       <view class="reply">
         <view class="content">
-          
           <view class="l">[店家回复]</view>
-          <view class="r">感谢您的认可</view>
-
+          <view class="r">感谢您的认可，好开心您能满意， 祝您生活愉快!!</view>
+          
         </view>
       </view>
     </view>
@@ -80,6 +79,7 @@ export default {
       navList,
       currenTab: 1,
       abc: "",
+      evaluate:"",
     };
   },
   methods: {
@@ -98,12 +98,16 @@ export default {
 
     this.images = JSON.parse(decodeURIComponent(options.images));
     console.log("images", this.images);
+    this.evaluate = options.evaluate;
+    this.dictName = options.dictName;
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .eva {
+  width: 100%;
+  border-bottom: 12upx solid #EFEFEF;
   .title-list {
     padding: 40upx 34upx 20upx 26upx;
     display: flex;
@@ -142,13 +146,15 @@ export default {
     }
   }
   .sub {
-    padding: 28upx 22upx 80upx 38upx;
+    padding: 28upx 22upx 50upx 38upx;
     .first {
+      padding-left: 6upx;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       .left {
         .head-list {
+          padding-bottom: 14upx;
           display: flex;
           align-items: center;
           font-size: 28upx;
@@ -172,6 +178,8 @@ export default {
       }
     }
     .second {
+      padding-left: 6upx;
+      padding-top: 14upx;
       font-size: 28upx;
       font-weight: 350;
       color: #3d3d3d;
@@ -186,31 +194,39 @@ export default {
       }
     }
     .info-list {
+      padding-left: 6upx;
+      padding-top: 6upx;
       display: flex;
       font-size: 24upx;
       font-weight: 350;
       color: #999999;
-      .info{
-        padding-right: 10upx;
+      .info {
+        padding-right: 16upx;
       }
-      .name{}
+      .name {
+      }
     }
     .reply {
-      .content{
+      padding-left: 6upx;
+      padding-top: 16upx;
+      .content {
         border-radius: 10upx;
-        background: #EFEFEF;
+        background: #efefef;
         display: flex;
         padding: 14upx;
-        .l{
+
+        .l {
+          white-space: nowrap;
           font-size: 24upx;
           font-weight: 500;
-          color: #3D3D3D;
-          padding-right: 14upx;
+          color: #3d3d3d;
+          padding-right: 20upx;
         }
-        .r{
+        .r {
+          padding: 0upx 100upx 20upx 0upx;
           font-size: 24upx;
           font-weight: 350;
-          color: #3D3D3D;
+          color: #3d3d3d;
         }
       }
     }
