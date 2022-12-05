@@ -23,7 +23,7 @@ import StyleOne from "./mould/style-one.vue";
 import { getNameCardDetailApi } from "../../../api/user";
 import { getConfigApi } from "../../../api/auth";
 import ayQrcode from "../../../components/ay-qrcode/ay-qrcode.vue";
-import { J_USER_TOKEN } from "../../../constant";
+import { USER_TOKEN } from "../../../constant";
 import { domToImage } from "../../../utils";
 
 // #ifdef H5
@@ -40,7 +40,7 @@ export default {
       data: {},
       qrcode: "",
       modal_qr: false,
-      url: "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=",
+      url: "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=",
     };
   },
 
@@ -56,6 +56,7 @@ export default {
       // uni.hideLoading()
       this.$refs.qrcode.crtQrCode();
       uni.hideLoading();
+
       // #ifdef H5
       this.shareNamecard();
       // #endif
@@ -128,7 +129,7 @@ export default {
       const _this = this;
       getConfigApi({
         url: currentUrl,
-        token: uni.getStorageSync(J_USER_TOKEN),
+        token: uni.getStorageSync(USER_TOKEN),
       }).then(({ data }) => {
         share.wxRegister(data, {
           title: this.data.name,

@@ -189,6 +189,11 @@ export default {
         }
       }
 
+      if(!this.form.headPic){
+        this.$showToast('请上传头像')
+        return
+      }
+
       const api = this.editId ? updateNameCardApi : buildNewMyCardApi;
 
       api({ ...this.form, id: this.editId * 1 }).then(() => {
