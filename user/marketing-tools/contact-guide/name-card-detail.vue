@@ -39,7 +39,11 @@
 
         <view class="main-card-item">
           <JIcon width="30" height="30" type="phone"></JIcon
-          ><view class="main-card-text">{{ nameCardDetail.phone }}</view></view
+          ><view
+            class="main-card-text"
+            @click="callPhone(nameCardDetail.phone)"
+            >{{ nameCardDetail.phone }}</view
+          ></view
         >
 
         <view class="main-card-item">
@@ -89,7 +93,9 @@
         <view class="pane-cheat-item">
           <JIcon width="36" height="36" type="mobile"></JIcon>
           <view class="title">手机</view>
-          <view class="value">{{ nameCardDetail.phone }}</view>
+          <view class="value" @click="callPhone(nameCardDetail.phone)">{{
+            nameCardDetail.phone
+          }}</view>
         </view>
 
         <view class="pane-cheat-item">
@@ -107,12 +113,18 @@
 
       <view class="pane" v-if="nameCardDetail.intro">
         <view class="pane-title">业务简介</view>
-        <view class="content" v-html="nameCardDetail.intro"></view>
+        <view
+          class="content"
+          v-html="nameCardDetail.intro.replaceAll('\n', '<br/>')"
+        ></view>
       </view>
 
       <view class="pane" v-if="nameCardDetail.companyProfile">
         <view class="pane-title">公司简介</view>
-        <view class="content" v-html="nameCardDetail.companyProfile"></view>
+        <view
+          class="content"
+          v-html="nameCardDetail.companyProfile.replaceAll('\n', '<br/>')"
+        ></view>
       </view>
 
       <view
@@ -213,6 +225,12 @@ export default {
         url:
           "/user/marketing-tools/contact-guide/share-card?id=" +
           this.nameCardId,
+      });
+    },
+
+    callPhone(phone) {
+      uni.makePhoneCall({
+        phoneNumber: phone,
       });
     },
   },
@@ -347,6 +365,7 @@ export default {
       font-size: 24upx;
       color: #3d3d3d;
       line-height: 2;
+      font-size: 28upx;
     }
 
     .img-wrapper {

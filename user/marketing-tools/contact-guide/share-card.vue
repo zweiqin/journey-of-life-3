@@ -60,7 +60,7 @@ export default {
       // #ifdef H5
       this.shareNamecard();
       // #endif
-    }, 50);
+    }, 500);
   },
 
   methods: {
@@ -85,6 +85,7 @@ export default {
 
     // 分享名片
     shareNamecard() {
+      console.log(this.data.position + '\n' + this.data.phone);
       // #ifdef H5
       // const url = domToImage(this.$refs.namecardRef.$el);
       // uni.uploadFile({
@@ -127,13 +128,14 @@ export default {
 
       const currentUrl = window.location.href.replace("#", "ericToken");
       const _this = this;
+
       getConfigApi({
         url: currentUrl,
         token: uni.getStorageSync(USER_TOKEN),
       }).then(({ data }) => {
         share.wxRegister(data, {
           title: this.data.name,
-          desc: this.data.position + "-" + this.data.intro,
+          desc: this.data.position + '\n' + this.data.phone,
           imgUrl: this.data.headPic,
           link:
             "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
@@ -152,7 +154,7 @@ export default {
           "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
           this.data.id, // 分享跳转的链接
         title: this.data.name, // 分享标题
-        summary: this.data.position + "-" + this.data.intro, // 分享内容文字
+        summary: this.data.position + '\n' + this.data.phone, // 分享内容文字
         imageUrl: this.data.headPic, //分享封面图片
         success: function (res) {
           // 此处是调起微信分享成功的回调
