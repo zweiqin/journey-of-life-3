@@ -1,7 +1,7 @@
 <template>
   <view class="title">
     <img
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nhmcr5vmidiujek9l3dt.png"
+      src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
       class="back"
       @click="back"
     />

@@ -1,5 +1,5 @@
 <template>
-  <view class="stuffGoods">
+  <view class="furniture">
     <!-- <Ttitle :title="''" style="padding-top: 20upx;padding-bottom: 20upx" /> -->
     <view class="head">
       <view class="search-bar">
@@ -85,7 +85,7 @@
 
 <script>
 import { goodsListApi } from "../../api/goods";
-import sort from "../components/sub.vue";
+import sort from "../../components/subs/subs.vue";
 import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 export default {
   components: {
@@ -149,18 +149,18 @@ export default {
     //获取商品列表接口
     async stuffGoodsList() {
       const res = await goodsListApi({
-        goodsType: 2,
+        goodsType: 1,
       });
       console.log("材料商品列表", res);
       this.navbar = res.data.filterCategoryList;
-      this.navbar.unshift({ label: "综合", value: 0 });
+      // this.navbar.unshift({ label: "综合", value: 0 });
       console.log("navbar", this.navbar);
     },
 
     //获取商品分类接口
     async stuffGoodsSort() {
       const res = await goodsListApi({
-        goodsType: 2,
+        goodsType: 1,
         categoryId: this.id,
         page: 1,
         size: 100,
@@ -171,28 +171,28 @@ export default {
     },
 
     //获取综合商品
-    async stuffGoods() {
-      const res = await goodsListApi({
-        goodsType: 2,
-        page: 1,
-        size: 100,
-      });
-      console.log("综合", res);
-      this.sub = res.data.goodsList;
-      console.log("sub", this.sub);
-    },
+    // async stuffGoods() {
+    //   const res = await goodsListApi({
+    //     goodsType: 2,
+    //     page: 1,
+    //     size: 100,
+    //   });
+    //   console.log("综合", res);
+    //   this.sub = res.data.goodsList;
+    //   console.log("sub", this.sub);
+    // },
 
     switchTab(index) {
       this.currentTab = index * 1;
       console.log(this.currentTab);
       this.id = index;
       console.log("id", this.id);
-
-      if (index == 0) {
-        this.stuffGoods();
-      } else {
-        this.stuffGoodsSort();
-      }
+      this.stuffGoodsSort();
+      // if (index == 0) {
+      //   this.stuffGoods();
+      // } else {
+      //   this.stuffGoodsSort();
+      // }
 
       // this.sub = this.data.find((item) => item.value === index);
     },
@@ -201,9 +201,9 @@ export default {
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.id = options.id;
-    this.currentTab = options.id * 1;
-    console.log(this.id);
+    // this.id = options.id;
+    // this.currentTab = options.id * 1;
+    // console.log(this.id);
     const _this = this;
     uni.getSystemInfo({
       success(res) {
@@ -239,7 +239,7 @@ uni-page-body {
   overflow: hidden;
   height: auto;
 }
-.stuffGoods {
+.furniture {
   .head {
     width: 100%;
     height: 120upx;
