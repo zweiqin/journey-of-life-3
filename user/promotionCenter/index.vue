@@ -35,6 +35,7 @@
             v-for="item in incomeInfotmation"
             :key="item.value"
             :style="{ background: item.color }"
+            @click="incomeAll(item.img)"
           >
             <view class="incomeText">{{ item.label }}</view>
             <image class="incomeImg" :src="item.url" mode="scaleToFill" />
@@ -183,6 +184,9 @@ export default {
   },
   computed: {},
   methods: {
+    incomeAll(e) {
+      uni.navigateTo({ url: e });
+    },
     promotionChose(e) {
       this.promotionTab = e;
     },
@@ -295,7 +299,6 @@ export default {
     padding: 20upx 0;
     margin: 20upx 0;
     border-radius: 20upx;
-    
   }
   .fansData {
     display: flex;

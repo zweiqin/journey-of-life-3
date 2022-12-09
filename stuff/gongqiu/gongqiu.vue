@@ -34,7 +34,7 @@
         <view class="no">{{ index + 1 }}</view>
         <view class="category">{{ item1.materialsCategory }}</view>
         <view class="address">{{ item1.materialsRegion.slice(0, 2) }}</view>
-        <view class="color">{{ "无" || item1.materialsColor }}</view>
+        <view class="color">{{ item1.materialsColor || "无" }}</view>
         <view class="phone">{{ item1.materialsPhone | replacestar }}</view>
         <view class="time">{{ item1.addTime | formatTime }}</view>
         <view class="else">无</view>

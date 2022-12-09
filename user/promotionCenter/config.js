@@ -3,7 +3,8 @@ export const incomeInfotmation = [
         value: 0,
         label: "收入明细",
         url: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/w4zvv3ri472cs1xnse03.png",
-        color: "linear-gradient(180deg, #07B9B9 45%, #00B578 120%)"
+        color: "linear-gradient(180deg, #07B9B9 45%, #00B578 120%)",
+        // img:"./detailIncome/index"
     }, {
         value: 1,
         label: "收入明细",
@@ -102,13 +103,13 @@ export const otherIncome = [
     },
 ]
 
-export const promotion =[
+export const promotion = [
     {
-        value:0,
-        label:"推广订单"
+        value: 0,
+        label: "推广订单"
     },
     {
-        value:1,
-        label:"推广粉丝"
+        value: 1,
+        label: "推广粉丝"
     }
 ]

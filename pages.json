@@ -270,6 +270,24 @@
 			"style": {
 				"navigationBarTitleText": "商品分类"
 			}
+		},
+		{
+			"path": "user/promotionCenter/detailIncome/index",
+			"style": {
+				"navigationBarTitleText": "detailIncome"
+			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/addUser/index",
+			"style": {
+				"navigationBarTitleText": "addUser"
+			}
+		},
+		{
+			"path": "pages/index/newIndex/index",
+			"style": {
+				"navigationBarTitleText": "newIndex"
+			}
 		}
 	],
 	"tabBar": {

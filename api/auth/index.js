@@ -26,3 +26,8 @@ export const layoutApi = (id) => {
 export const resetPasswodApi = (data) => {
   return RuanRequest("/auth/reset", data);
 };
+
+// 获取公共号配置
+export const getConfigApi = data => {
+  return RuanRequest("/qrCode/getSignature", data, 'get')
+}

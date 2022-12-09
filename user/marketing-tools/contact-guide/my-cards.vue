@@ -37,7 +37,6 @@
             <view class="name-wrapper">
               <view class="name">{{ nameCard.name }}</view>
               <JIcon
-                @click="go('/user/marketing-tools/contact-guide/share-card')"
                 width="36"
                 height="36"
                 type="share"
