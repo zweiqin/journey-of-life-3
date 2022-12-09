@@ -65,7 +65,6 @@
           v-model.trim="form.intro"
           placeholder="请输入业务简介"
           class="desc-detail"
-          maxlength="1000"
         ></textarea>
       </view>
     </Collapse>
@@ -78,7 +77,6 @@
           v-model="form.companyProfile"
           placeholder="请输入公司简介"
           class="desc-detail"
-          maxlength="1000"
         ></textarea>
       </view>
     </Collapse>
@@ -308,7 +306,7 @@ export default {
         _this.form.wechat = detailInfo.wechat;
         _this.form.imgs = detailInfo.imgs;
         _this.form.video = detailInfo.video;
-        _this.form.companyProfile = detailInfo.companyProfile
+        _this.form.companyProfile = detailInfo.companyProfile;
 
         // Object.assign(_this.form, detailInfo);
       });
