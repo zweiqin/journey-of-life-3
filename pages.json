@@ -232,7 +232,7 @@
 		{
 			"path": "stuff/stuffGoods/index",
 			"style": {
-				"navigationBarTitleText": "stuffGoods"
+				"navigationBarTitleText": "商品选购"
 			}
 		},
 		{
@@ -263,6 +263,12 @@
 			"path": "user/promotionCenter/index",
 			"style": {
 				"navigationBarTitleText": "推广中心"
+			}
+		},
+		{
+			"path": "pages/furniture/furniture",
+			"style": {
+				"navigationBarTitleText": "商品分类"
 			}
 		},
 		{
@@ -855,6 +861,9 @@
 				},
 				{
 					"path": "more/more"
+				},
+				{
+					"path": "directsalestore/directsalestore"
 				}
 			]
 		}

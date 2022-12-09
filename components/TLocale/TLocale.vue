@@ -39,9 +39,9 @@ export default {
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
-              if (res.status === 0) {
-                const result = res.result.address_component;
-                _this.address = result.district ? result.district : result.city;
+              if (res.status === '1') {
+                const result = res.regeocode;
+                _this.address = result.addressComponent.township;
               }
             })
             .catch(() => {

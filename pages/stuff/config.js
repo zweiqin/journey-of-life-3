@@ -40,7 +40,7 @@ export const navs = [
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ksadd8iyi8iut5orq35d.png",
     bgc: "linear-gradient(139deg, #8A38F5 23%, rgba(204,27,27,0.00) 147%)",
     label: "超市",
-    // Url: "../../stuff/direct-sale store/direct-sale store",
+    Url: "../../stuff/directsalestore/directsalestore?id=1001211",
   },
   {
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c7b200swpyfd2ntksxnn.png",
@@ -113,4 +113,23 @@ export const navs2 = [
   //   label: "家具机械",
   //   value: 11,
   // },
+];
+
+export const navs1 = [
+  {
+    label: "商品",
+    value: 1,
+  },
+  {
+    label: "视频",
+    value: 2,
+  },
+  {
+    label: "VR展厅",
+    value: 3,
+  },
+  {
+    label: "验厂报告",
+    value: 4,
+  },
 ];

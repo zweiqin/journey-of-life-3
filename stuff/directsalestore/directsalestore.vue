@@ -1,5 +1,5 @@
 <template>
-  <view class="store-home-container">
+  <view class="directsalestore">
     <suspenButton
       @top="shopCar"
       @left="backHome"
@@ -8,8 +8,10 @@
     <view class="info">
       <img
         class="bgm"
-        src="
-        https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s2ghz5p3xzct9ksc4kfy.jpg      "
+        :src="
+          picUrl ||
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s2ghz5p3xzct9ksc4kfy.jpg'
+        "
         alt=""
       />
 
@@ -36,8 +38,8 @@
             综合体验分<Rate :rate="4"></Rate>粉丝数102.5万
           </view>
           <view class="tags">
-            <view class="tag">热销门店</view>
-            <view class="tag">热销门店</view>
+            <view class="tag">官方直营</view>
+            <view class="tag">品质保障</view>
             <view class="order">订阅</view>
           </view>
         </view>
@@ -46,14 +48,30 @@
 
     <view class="main">
       <view class="about-me">
-        <view class="title">店铺介绍</view>
+        <view class="title">官方直营</view>
         <view class="my-info">
           {{ desc || "暂无简介" }}
 
           <view class="address">
             <view>地址：{{ address || "暂无地址" }}</view>
-            <view class="mobile"
-              >电话：{{ phone || "暂无电话" }}
+            <view class="mobile">电话：{{ phone || "暂无电话" }} </view>
+            <view class="bot">
+              <view class="map">
+                <view class="text">地图</view>
+                <image
+                  src="../../static/images/stuff/global-fill.png"
+                  mode="scaleToFill"
+                  class="icon"
+                />
+              </view>
+              <view class="ask">
+                <view class="text">在线咨询</view>
+                <image
+                  src="../../static/images/stuff/message-3-fill.png"
+                  mode="scaleToFill"
+                  class="icon"
+                />
+              </view>
               <view class="ops">
                 <view>
                   到这里去
@@ -69,32 +87,42 @@
         </view>
       </view>
 
-      <view class="navs2" ref="navs2Ref">
+      <Carousel
+        :height="311"
+        :list="[
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rbz9wpljd6mj4u9p7td.png',
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zspzmfjzb1fj05nckjva.png',
+          'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/f1g2lacmqqrbypqf0ak0.png',
+        ]"
+      ></Carousel>
+
+      <view class="navs1" ref="navsRef">
+        <view
+          class="sub"
+          :class="{ active: sub.value == current }"
+          v-for="sub in navs1"
+          :key="sub.value"
+          @click="clickTab(sub.value)"
+          >{{ sub.label }}
+        </view>
+      </view>
+
+      <view class="navs2" ref="navs2Ref" v-if="current == 1">
         <view
           class="item"
           :class="{ active: item.id == currentTab }"
           v-for="item in catalogList"
-          :key="item.name"
+          :key="item.id"
           @click="switchTab(item.id)"
           >{{ item.name }}</view
         >
       </view>
 
-      <Carousel
-        v-if="currentTab == 0"
-        :height="311"
-        :list="[
-          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rbz9wpljd6mj4u9p7td.png',
-          'https://img0.baidu.com/it/u=2897486836,2967666712&fm=253&fmt=auto&app=120&f=JPEG?w=640&h=786',
-          'https://img0.baidu.com/it/u=3303379795,1457228468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-        ]"
-      ></Carousel>
-
-      <view class="split-title-wrapper" v-if="currentTab == 0">
+      <!-- <view class="split-title-wrapper" v-if="currentTab == 0">
         <view class="split-title">热销产品</view>
-      </view>
+      </view> -->
 
-      <view class="goods-wrapper">
+      <view class="goods-wrapper" v-if="current == 1">
         <Goods
           v-for="item in goodsList"
           :key="item.id"
@@ -104,18 +132,19 @@
           :price="item.retailPrice"
           :url="item.picUrl"
         ></Goods>
-        <!-- <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods> -->
       </view>
+
+      <view
+        class="white"
+        v-if="current !== 1"
+        style="
+          display: flex;
+          justify-content: center;
+          padding-top: 20upx;
+          color: #888;
+        "
+        >此服务尚未开通,敬请期待</view
+      >
     </view>
   </view>
 </template>
@@ -123,6 +152,7 @@
 <script>
 import Rate from "../../components/rate";
 import { navs2 } from "../../pages/stuff/config";
+import { navs1 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
 import Goods from "../../components/goods";
 import {
@@ -144,7 +174,9 @@ export default {
   data() {
     return {
       currentTab: 0,
+      current: 1,
       navs2,
+      navs1,
       id: "",
       brandDetail: [],
       name: "",
@@ -162,9 +194,9 @@ export default {
     };
   },
   props: {
-    name: String,
+    // name: String,
     url: String,
-    desc: String,
+    // desc: String,
   },
 
   methods: {
@@ -178,11 +210,14 @@ export default {
         this.getGoodsList();
       }
     },
+    clickTab(index) {
+      this.current = index;
+      console.log(this.current);
+    },
     async getGoodsList() {
       const res = await goodsListApi({
         categoryId: this.categoryId,
         brandId: this.brandId,
-        goodsType: 2,
       });
       console.log(res);
       this.goodsList = res.data.goodsList;
@@ -300,7 +335,7 @@ export default {
 @import "../../style/var.less";
 @import "../../style/mixin.less";
 
-.store-home-container {
+.directsalestore {
   .info {
     position: relative;
     width: 100%;
@@ -385,6 +420,8 @@ export default {
 
       .title {
         margin-bottom: 20upx;
+        font-size: 24upx;
+        color: #3d3d3d;
       }
 
       .my-info {
@@ -395,14 +432,55 @@ export default {
         line-height: 1.5;
 
         .address {
-          margin-top: 10px;
-          padding-top: 10px;
-          border-top: 1upx solid @c9;
+          margin-top: 20upx;
+          padding-top: 10upx;
+          border-top: 1upx solid #d8d8d8;
         }
 
         .mobile {
+          padding-top: 8upx;
           .flex();
+        }
+        .bot {
+          padding-top: 12upx;
+          display: flex;
+          .map {
+            display: flex;
+            align-items: center;
+            margin-right: 30upx;
+            .text {
+              font-size: 20upx;
+              font-weight: 350;
+              color: #3662ec;
+            }
+            .icon {
+              width: 40upx;
+              height: 40upx;
+              margin-left: 12upx;
+              margin-right: 20upx;
+            }
+          }
+          .ask {
+            display: flex;
+            align-items: center;
+            margin-right: 30upx;
+            .text {
+              font-size: 20upx;
+              font-weight: 350;
+              color: #3662ec;
+            }
+            .icon {
+              width: 32upx;
+              height: 32upx;
+              margin-left: 12upx;
+              margin-right: 20upx;
+            }
+          }
           .ops {
+            font-size: 20upx;
+            font-weight: 350;
+            color: #3662ec;
+
             .flex();
             .icon {
               width: 28upx;
@@ -441,11 +519,27 @@ export default {
     .goods-wrapper {
       .flex();
       flex-wrap: wrap;
-      margin-top: 20upx;
+      margin-top: 24upx;
+    }
+  }
+
+  .navs1 {
+    padding-top: 36upx;
+    border-bottom: 0.5px solid #d8d8d8;
+    height: 64upx;
+    display: flex;
+    .sub {
+      font-size: 32upx;
+      font-weight: 500;
+      padding-right: 46upx;
+      &.active {
+        color: #3662ec;
+      }
     }
   }
 
   .navs2 {
+    padding-top: 6upx;
     position: relative;
     display: flex;
     align-items: center;

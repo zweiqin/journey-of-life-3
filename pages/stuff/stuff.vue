@@ -352,6 +352,10 @@ export default {
       console.log(this.brandgenreId);
 
       if (this.brandgenreId == 0) {
+        uni.navigateTo({
+          url: `../../stuff/stuffGoods/index?id=${index}`,
+          // url:"../../pages/payAccomplish/index"
+        });
       } else {
         uni.navigateTo({
           url: `../../stuff/stuffGoods/index?id=${index}`,
