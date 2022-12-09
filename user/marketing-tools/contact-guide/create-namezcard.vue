@@ -59,6 +59,7 @@
     <Collapse style="margin-top: 20px" title="业务简介">
       <view class="detail-wrapper">
         <textarea
+          maxlength="1000"
           ref="textareaRef"
           @blur="handleTextareaBlur"
           v-model.trim="form.intro"
@@ -72,6 +73,7 @@
     <Collapse style="margin-top: 20px" title="公司简介">
       <view class="detail-wrapper">
         <textarea
+          maxlength="1000"
           ref="textareaRef"
           v-model="form.companyProfile"
           placeholder="请输入公司简介"
@@ -191,6 +193,11 @@ export default {
         }
       }
 
+      if (!this.form.headPic) {
+        this.$showToast("请上传头像");
+        return;
+      }
+
       const api = this.editId ? updateNameCardApi : buildNewMyCardApi;
 
       api({ ...this.form, id: this.editId * 1 }).then(() => {
@@ -226,7 +233,7 @@ export default {
     // 删除图片
     handleDeleteImg(img) {
       const index = this.form.imgs.findIndex((item) => item === img);
-      if (index !== 0) {
+      if (index !== -1) {
         this.form.imgs.splice(index, 1);
       }
     },
@@ -301,6 +308,7 @@ export default {
         _this.form.wechat = detailInfo.wechat;
         _this.form.imgs = detailInfo.imgs;
         _this.form.video = detailInfo.video;
+        _this.form.companyProfile = detailInfo.companyProfile
 
         // Object.assign(_this.form, detailInfo);
       });
