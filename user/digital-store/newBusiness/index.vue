@@ -77,8 +77,8 @@ export default {
     },
     async queryMsgSentryList() {
       const res = await queryMsgSentryListApi({
-        userId: getUserId(),
-        // userId: 269,
+        // userId: getUserId(),
+        userId: 269,
         status: this.value,
       });
       if (res.errno == 780) {
