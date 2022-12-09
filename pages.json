@@ -270,6 +270,18 @@
 			"style": {
 				"navigationBarTitleText": "detailIncome"
 			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/addUser/index",
+			"style": {
+				"navigationBarTitleText": "addUser"
+			}
+		},
+		{
+			"path": "pages/index/newIndex/index",
+			"style": {
+				"navigationBarTitleText": "newIndex"
+			}
 		}
 	],
 	"tabBar": {

@@ -186,7 +186,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/eptx81v81fqd4xggfagx.png',
-      url: "/user/digital-store/business/index"
+      url: "/user/digital-store/newBusiness/index"
     },
   ],
 };
@@ -223,12 +223,12 @@ export const marketingTools = {
     },
     {
       label: "分享券",
-      icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6p7orj3wo5yu6ysil9hg.png',
+      icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kyzqtejrqt0lxme20rc7.png',
     },
     {
       label: "推广中心",
       icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gox9z18bukb6ws0l2595.png",
-      url:"/user/promotionCenter/index"
+      url: "/user/promotionCenter/index"
     },
   ],
 };

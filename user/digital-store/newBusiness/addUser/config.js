@@ -1,0 +1,77 @@
+export const addDetail = [
+    {
+        value: 0,
+        label: '姓名',
+        status: 5,
+        field: 'userName',
+        type: 'text',
+        placeholder: '请输入姓名'
+    }, {
+        value: 1,
+        label: '性别',
+        status: 5,
+        field: 'userGender',
+        type: 'sex',
+        placeholder: '请输入姓名'
+
+    }, {
+        value: 2,
+        label: '手机号',
+        status: 5,
+        field: 'userTel',
+        type: 'number',
+        placeholder: '请输入手机号'
+    }, {
+        value: 3,
+        label: '职业类型',
+        status: 5,
+        field: 'professional',
+        type: 'text',
+        placeholder: '请输入职业类型'
+    }, {
+        value: 4,
+        label: '所属业务员',
+        status: 5,
+        field: 'belongsSalesman',
+        type: 'text',
+        placeholder: '请输入所属业务员',
+        show: false
+
+    }, {
+        value: 5,
+        label: '业务员部门',
+        status: 5,
+        field: 'belongsDepartment',
+        type: 'text',
+        placeholder: '请输入业务员所属部门',
+        show: false
+    }, {
+        value: 6,
+        label: '爱好',
+        status: 6,
+        field: 'hobby',
+        type: 'text',
+        placeholder: '请输入爱好'
+    }, {
+        value: 7,
+        label: '工作地址',
+        status: 6,
+        field: 'workingPlace',
+        type: 'text',
+        placeholder: '请输入工作地址'
+    }, {
+        value: 8,
+        label: '家庭地址',
+        status: 7,
+        field: 'homeAddress',
+        type: 'text',
+        placeholder: '请输入家庭地址'
+    }, {
+        value: 9,
+        label: '生日',
+        status: 7,
+        field: 'birthday',
+        type: 'birthday',
+        placeholder: '请输入生日'
+    },
+] 

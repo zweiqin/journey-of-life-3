@@ -64,6 +64,7 @@
           v-model.trim="form.intro"
           placeholder="请输入业务简介"
           class="desc-detail"
+          maxlength="1000"
         ></textarea>
       </view>
     </Collapse>
@@ -75,6 +76,7 @@
           v-model="form.companyProfile"
           placeholder="请输入公司简介"
           class="desc-detail"
+          maxlength="1000"
         ></textarea>
       </view>
     </Collapse>
@@ -153,7 +155,7 @@ export default {
         isDefault: false,
         bgColor: "#183869",
         video: "",
-        companyProfile:''
+        companyProfile: "",
       },
 
       imgSrc: "",
