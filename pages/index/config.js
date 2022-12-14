@@ -23,7 +23,7 @@ export const navs = [
     label: '满屋定制',
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0jjbopl9loda5itlbmj4.png",
     // value: 3
-    // url: "/pages/index/newIndex/index"
+    url: "/pages/index/newIndex/index"
   },
   {
     label: '智能选配',
