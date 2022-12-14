@@ -14,7 +14,8 @@
         v-for="item in tools"
         :key="item.icon"
         :src="item.icon"
-        alt=""
+        :value="item.value"
+        @click="toJump(item.value)"
       />
     </view>
 
@@ -272,6 +273,18 @@ export default {
       }
     },
 
+    toJump(item) {
+      console.log(item);
+      this.value = item;
+      if (this.value == 1) {
+        this.getExtensionCode();
+      } else if (this.value == 2) {
+        this.toViewMineInfo();
+      }else{
+        return;
+      }
+    },
+
     getExtensionCode() {
       uni.showLoading({
         title: "加载中",
@@ -347,7 +360,7 @@ export default {
 }
 .user-page {
   padding: 20upx;
-  padding-bottom: 80upx;
+  padding-bottom: 140upx;
   background-color: #fdfdfd;
 
   .tools {
@@ -507,7 +520,7 @@ export default {
     letter-spacing: 1em;
     color: #ccc;
 
-    &::after{
+    &::after {
       border: none;
     }
   }

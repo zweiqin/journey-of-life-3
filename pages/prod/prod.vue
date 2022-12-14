@@ -234,7 +234,7 @@ import {
 } from "../../api/goods";
 import { getUserId } from "../../utils";
 import RecommendGoods from "../../components/recommend-goods";
-import { PAY_GOODS, SELECT_ADDRESS } from "../../constant";
+import { PAY_GOODS, SELECT_ADDRESS, USER_ID } from "../../constant";
 
 export default {
   components: {
@@ -364,7 +364,19 @@ export default {
     // 点击添加购物车
     async handleAddCar() {
       if (!this.isLogin) {
-        this.$showToast("请先登录");
+        // this.$showToast("请先登录");
+
+        uni.showModal({
+          title: "提示",
+          content: "您还未登录，请先登录",
+          success: ({ confirm }) => {
+            if (confirm) {
+              uni.navigateTo({
+                url: `/pages/login/login?to=/pages/prod/prod?goodsId=${this.goodsId}`,
+              });
+            }
+          },
+        });
         return;
       }
 
@@ -450,7 +462,17 @@ export default {
     // 去购物车
     toShopCar() {
       if (!this.isLogin) {
-        this.$showToast("请先登录");
+        uni.showModal({
+          title: "提示",
+          content: "您还未登录，请先登录",
+          success: ({ confirm }) => {
+            if (confirm) {
+              uni.navigateTo({
+                url: `/pages/login/login?to=/pages/prod/prod?goodsId=${this.goodsId}`,
+              });
+            }
+          },
+        });
         return;
       }
       uni.navigateTo({
@@ -461,7 +483,17 @@ export default {
     // 立即购买
     async handlePayGoods() {
       if (!this.isLogin) {
-        this.$showToast("请先登录");
+        uni.showModal({
+          title: "提示",
+          content: "您还未登录，请先登录",
+          success: ({ confirm }) => {
+            if (confirm) {
+              uni.navigateTo({
+                url: `/pages/login/login?to=/pages/prod/prod?goodsId=${this.goodsId}`,
+              });
+            }
+          },
+        });
         return;
       }
 
@@ -559,11 +591,11 @@ export default {
     this.goodsId = options.goodsId;
     this.getGoodsDetail();
 
-    this.isLogin = !!getUserId();
-    // if (this.isLogin) {
-    //   this.getShopCar();
-    //   this.getCarShopNumber();
-    // }
+    this.isLogin = !!uni.getStorageSync(USER_ID);
+    if (this.isLogin) {
+      this.getShopCar();
+      this.getCarShopNumber();
+    }
   },
 
   computed: {

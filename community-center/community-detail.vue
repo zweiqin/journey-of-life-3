@@ -97,13 +97,7 @@
           class="process-img"
         />
       </view>
-      <view class="tips">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png"
-          alt=""
-          class="img-tips"
-        />
-      </view>
+
       <view class="case-show">
         <view class="text">
           <view class="text1">案例</view>
@@ -127,9 +121,21 @@
           />
         </view>
       </view>
+      <view class="tips">
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png"
+          alt=""
+          class="img-tips"
+        />
+      </view>
     </view>
     <view class="other">
-      <view class="other-service" @click="handleToServiceListHome">
+      <view
+        class="other-service"
+        v-for="item in moreService"
+        :key="item.value"
+        @click="handleToServiceListHome(item.value)"
+      >
         <view class="text">其他服务</view>
         <img
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
@@ -166,6 +172,7 @@
 import item from "../community-center/componts/item";
 import { getServiceDetailApi } from "../api/community-center";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
+import { moreService } from "../pages/community-center/config";
 export default {
   name: "Community-detail",
   props: {},
@@ -174,6 +181,7 @@ export default {
   },
   data() {
     return {
+      moreService,
       address: "",
       serviceDetail: [],
       id: "",
@@ -193,9 +201,12 @@ export default {
     handleBack() {
       uni.navigateBack();
     },
-    handleToServiceListHome() {
-      console.log("服务分类列表");
-      uni.navigateTo({ url: "../community-center/service-sort" });
+    handleToServiceListHome(item) {
+      console.log("更多服务分类列表", item);
+      this.value = item;
+      uni.navigateTo({
+        url: `/community-center/service-sort?value=${this.value}`,
+      });
     },
     handleToServiceOrderHome() {
       //需要传 图片 价格 名称 单位
@@ -231,10 +242,10 @@ export default {
         type: "gcj02",
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === '1') {
+            if (res.status === "1") {
               const result = res.regeocode;
               _this.address = result.addressComponent.township;
-              console.log("address",_this.address);
+              console.log("address", _this.address);
             }
           });
         },
@@ -314,7 +325,6 @@ export default {
         font-size: 36upx;
         font-weight: bold;
         color: #3d3d3d;
-        
       }
       .location {
         // width: 124upx;
@@ -559,7 +569,7 @@ export default {
     }
   }
   .other {
-    margin-top: 20upx;
+    // margin-top: 20upx;
     background: #ffffff;
     width: 100%;
     height: 280upx;
@@ -610,6 +620,7 @@ export default {
         }
         .name {
           font-size: 24upx;
+          white-space: nowrap;
         }
       }
       .order-list {
