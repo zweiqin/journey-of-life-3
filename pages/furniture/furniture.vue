@@ -318,7 +318,7 @@ uni-page-body {
     overflow: scroll;
     .navbar {
       // margin-top: 28upx;
-      width: 18%;
+      width: 22%;
       display: flex;
       flex-direction: column;
       align-items: center;

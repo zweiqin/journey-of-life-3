@@ -28,14 +28,14 @@ export default {
     return {};
   },
   methods: {
-    // handeViewDetail() {
-    //   if (!this.id) {
-    //     return;
-    //   }
-    //   uni.navigateTo({
-    //     url: `/pages/prod/prod?goodsId=${this.id}`,
-    //   });
-    // },
+    handeViewDetail() {
+      if (!this.id) {
+        return;
+      }
+      uni.navigateTo({
+        url: `/pages/prod/prod?goodsId=${this.id}`,
+      });
+    },
   },
   created() {},
 };
@@ -50,10 +50,11 @@ export default {
 // }
 .form {
   margin-top: 20upx;
-  padding-right: 16upx;
+  padding-right: 8upx;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  padding-bottom: 6upx;
   .sub {
     width: 160upx;
     // margin-bottom: 70upx;

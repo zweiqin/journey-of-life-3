@@ -8,12 +8,15 @@
  */
 export const tools = [
   {
+    value: 1,
     icon: require("../../static/images/user/erweima.png"),
   },
   {
+    value: 2,
     icon: require("../../static/images/user/shezhi.png"),
   },
   {
+    value: 3,
     icon: require("../../static/images/user/xinxi.png"),
   },
 ];

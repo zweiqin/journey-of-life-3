@@ -51,10 +51,11 @@ export default {
 // }
 .form {
   margin-top: 20upx;
-  padding-right: 16upx;
+  padding-right: 10upx;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  padding-bottom: 6upx;
   .sub {
     width: 160upx;
     // margin-bottom: 70upx;
