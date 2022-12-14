@@ -173,14 +173,14 @@ export default {
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.userInformation = JSON.parse(options.data);
     this.id = options.id;
-    this.from = this.userInformation;
     if (options.type == 0) {
       this.titleText = "添加客户信息";
     } else if (options.type == 1) {
       this.titleText = "修改客户信息";
       // this.addDetail.splice(4, 2);
+      this.userInformation = JSON.parse(options.data);
+      this.from = this.userInformation;
       // console.log(this.addDetail);
     }
     if (options.value && options.type) {
