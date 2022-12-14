@@ -5,7 +5,7 @@ import { getUserId, RuanRequest, XZLRequest } from "../../utils";
  * @param {*} id 商品id
  */
 export const getGoodsDetailApi = (id) => {
-  return RuanRequest("/goods/detail", { id: id, userId: getUserId() }, "get");
+  return RuanRequest("/goods/detail", { id: id }, "get");
 };
 
 /**
