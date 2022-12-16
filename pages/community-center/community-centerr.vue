@@ -550,6 +550,7 @@ import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import { list } from "./config";
 import { moreService } from "./config";
 import { serviceType } from "./config";
+import { getBrandTypeApi } from "../../api/brand";
 export default {
   name: "Community-centerr",
   components: {
@@ -576,6 +577,7 @@ export default {
     this.showPopup = false;
     this.show = false;
     this.getLocation();
+    this.getBrandType();
     // this.address = "定位中...";
     // const _this = this;
     // uni.getLocation({
@@ -659,6 +661,14 @@ export default {
         });
       }
     },
+
+    //门店类型接口
+    // async getBrandType(){
+    //   const res = await getBrandTypeApi({
+
+    //   });
+
+    // }
   },
   created() {},
 };

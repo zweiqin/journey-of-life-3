@@ -170,6 +170,10 @@ export default {
       console.log("sub", this.sub);
     },
 
+    goToSearch(){
+      uni.navigateTo({ url: '/stuff/search' })
+    },
+
     //获取综合商品
     async stuffGoods() {
       const res = await goodsListApi({

@@ -28,6 +28,7 @@
           "
           alt=""
           class="img"
+          @click="preview(serverUrl)"
         />
       </view>
       <view class="name-list">
@@ -105,9 +106,13 @@
         </view>
         <view class="show-img">
           <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png"
+            :src="
+              serverInfoUrl ||
+              'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
+            "
             alt=""
             class="img1"
+            @click="previewImage(serverInfoUrl)"
           />
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png"
@@ -173,6 +178,7 @@ import item from "../community-center/componts/item";
 import { getServiceDetailApi } from "../api/community-center";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
 import { moreService } from "../pages/community-center/config";
+
 export default {
   name: "Community-detail",
   props: {},
@@ -195,6 +201,8 @@ export default {
       serverUnit: "",
       currentTab: 1,
       length: "",
+      serverUrl: "",
+      index: "",
     };
   },
   methods: {
@@ -286,6 +294,29 @@ export default {
 
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
+    },
+
+    //预览图
+    preview(index) {
+      console.log(index);
+      let imgsArray = [];
+      imgsArray[0] = index;
+
+      uni.previewImage({
+        urls: imgsArray,
+        current: 0,
+      });
+    },
+
+    previewImage(index) {
+      console.log(index);
+      let imgsArray = [];
+      imgsArray[0] = index;
+
+      uni.previewImage({
+        urls: imgsArray,
+        current: 0,
+      });
     },
   },
   created() {},
