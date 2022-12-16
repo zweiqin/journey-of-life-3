@@ -34,10 +34,6 @@
 			}
 		},
 		{
-			"path": "pages/index/design-detail",
-			"style": {}
-		},
-		{
 			"path": "pages/logs/logs",
 			"style": {
 				"navigationBarTitleText": "查看启动日志"
@@ -64,15 +60,6 @@
 				"navigationBarTextStyle": "black"
 			}
 		},
-		// {
-		// 	"path": "pages/category/category",
-		// 	"style": {
-		// 		"backgroundTextStyle": "light",
-		// 		"navigationBarBackgroundColor": "#fff",
-		// 		"navigationBarTitleText": "分类商品",
-		// 		"navigationBarTextStyle": "black"
-		// 	}
-		// },
 		{
 			"path": "pages/search-page/search-page",
 			"style": {
@@ -281,12 +268,6 @@
 			"path": "user/digital-store/newBusiness/addUser/index",
 			"style": {
 				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/index/newIndex/index",
-			"style": {
-				"navigationBarTitleText": "newIndex"
 			}
 		}
 	],
