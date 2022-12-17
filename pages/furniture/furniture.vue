@@ -103,7 +103,7 @@ export default {
   computed: {},
   methods: {
     handleBack() {
-      uni.switchTab({ url: "/pages/stuff/stuff" });
+      uni.switchTab({ url: "/pages/index/index" });
     },
 
     handleClick() {

@@ -9,7 +9,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "团蜂科技",
+				"navigationBarTitleText": "全屋严选",
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black"
@@ -259,6 +259,12 @@
 			}
 		},
 		{
+			"path": "pages/goods-filter/goods-filter",
+			"style": {
+				"navigationBarTitleText": "商品筛选"
+			}
+		},
+		{
 			"path": "user/promotionCenter/detailIncome/index",
 			"style": {
 				"navigationBarTitleText": "detailIncome"
@@ -281,7 +287,7 @@
 		"list": [
 			{
 				"pagePath": "pages/index/index",
-				"text": "家具",
+				"text": "全屋严选",
 				"iconPath": "/static/images/tabbar/furniture.png",
 				"selectedIconPath": "/static/images/tabbar/furniture-active.png"
 			},

@@ -2,17 +2,22 @@
   <view class="index-container" :style="{ paddingTop: paddingTop + 'px' }">
     <HeaderView
       ref="headerRef"
-      v-model="currentIndex"
+      :value="currentIndex"
+      @input="handleSwitchTab"
       class="pane header-view"
     ></HeaderView>
 
     <view class="main">
-      <SearchFurniture @reachBottom="handleReachBottom"></SearchFurniture>
+      <SearchFurniture
+        :goodsList="searchGoodsList"
+        @reachBottom="handleReachBottom"
+      ></SearchFurniture>
     </view>
   </view>
 </template>
 
 <script>
+import { getGoodsByIdApi } from "../../api/home";
 import HeaderView from "./components/header.vue";
 import SearchFurniture from "./components/search-furniture";
 export default {
@@ -30,31 +35,68 @@ export default {
       startPosition: 0,
       startTime: 0,
       endPosition: 0,
+
+      // 分页数据
+      queryInfo: {
+        page: 1,
+        size: 20,
+      },
+      totalPages: 0,
+      searchGoodsList: [],
     };
   },
   onLoad() {},
   mounted() {
     this.getSize();
+    this.getGoodsList();
   },
   methods: {
-    handleSwitch(e) {
-      this.currentIndex = e.detail.current;
-    },
-
     async getSize() {
       const size = await this.$refs.headerRef.getSize();
       this.paddingTop = size;
     },
+
+    handleSwitchTab(e) {
+      if (e === 1) {
+        uni.navigateTo({ url: "/pages/brandFactory/index" });
+        return;
+      }
+
+      this.currentIndex = e;
+    },
+
+    async getGoodsList(isLoadmore) {
+      uni.showLoading();
+      const res = await getGoodsByIdApi({ ...this.queryInfo });
+      if (res.errno === 0) {
+        this.totalPages = res.data.totalPages;
+
+        if (isLoadmore) {
+          this.searchGoodsList.push(...res.data.goodsList);
+        } else {
+          this.searchGoodsList = res.data.goodsList;
+        }
+        uni.hideLoading();
+      } else {
+        uni.hideLoading();
+        uni.showToast({
+          title: res.errmsg,
+        });
+      }
+    },
   },
 
   onReachBottom() {
-    uni.showLoading({
-      title: "加载中",
-    });
+    if (this.totalPages <= this.queryInfo.page) {
+      return;
+    }
 
-    setTimeout(() => {
-      uni.hideLoading();
-    }, 2000);
+    if (this.searchGoodsList.length < this.queryInfo.size) {
+      return;
+    }
+
+    this.queryInfo.page++;
+    this.getGoodsList(true);
   },
 };
 </script>

@@ -3,6 +3,7 @@
     <view class="nav-container">
       <view class="navs" v-for="item in 2" :key="item">
         <view
+          @click="go(item.url)"
           class="nav-item"
           v-for="item in item == 1
             ? searchFeNavs.slice(0, 4)
@@ -31,14 +32,7 @@
 
     <scroll-view scroll-y="true" @scrolltolower="handleClick">
       <view class="goods-container">
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
-        <Goods></Goods>
+        <Goods :data="goods" v-for="goods in goodsList" :key="goods.id"></Goods>
       </view>
     </scroll-view>
   </view>
@@ -50,6 +44,12 @@ import Goods from "./goods.vue";
 export default {
   components: {
     Goods,
+  },
+  props: {
+    goodsList: {
+      type: Array,
+      default: [],
+    },
   },
   data() {
     return {
@@ -67,9 +67,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.search-fe-container {
-}
-
 .nav-container {
   margin: 10upx 0 20upx 0;
 }
@@ -106,7 +103,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   background-color: #fff;
-  padding: 30upx 0;
+  padding: 20upx 0;
 
   .item {
     display: flex;

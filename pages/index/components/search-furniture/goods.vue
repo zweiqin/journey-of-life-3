@@ -1,10 +1,6 @@
 <template>
-  <view class="goods-wrapper">
-    <image
-      class="good-img"
-      src="https://img0.baidu.com/it/u=1234459922,450400833&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750"
-      mode=""
-    />
+  <view @click="go('/pages/prod/prod?goodsId='+data.id )" class="goods-wrapper" v-if="data">
+    <image class="good-img" :src="data.picUrl" mode="" />
     <view class="goods-info">
       <view class="goods-name">
         <view class="icon-wrapper"
@@ -13,7 +9,7 @@
             src="../../../../static/images/index/miaosha.png"
             mode=""
         /></view>
-        <view class="name">话函数定义回复于亚化石阅读</view>
+        <view class="name">{{ data.name }}</view>
       </view>
 
       <view class="tags">
@@ -22,7 +18,7 @@
       </view>
 
       <view class="goods-price">
-        <view class="text">劵后￥12</view>
+        <view class="text">劵后<text style="fontSize: 32upx">￥{{ data.counterPrice }}</text></view>
         <view class="salsed">100+付款</view>
       </view>
     </view>
@@ -30,7 +26,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -101,18 +104,18 @@ export default {};
     }
   }
 
-  .goods-price{
+  .goods-price {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
 
-    .text{
+    .text {
       font-size: 24upx;
-      color: #FA5151;
+      color: #fa5151;
       font-weight: 500;
     }
 
-    .salsed{
+    .salsed {
       font-size: 20upx;
       color: #999999;
     }

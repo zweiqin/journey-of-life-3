@@ -123,7 +123,7 @@ export default {
 
 <style lang="less" scoped>
 .newBusiness {
-  padding: 0 10upx;
+  padding: 30upx 10upx 0;
   .head {
     display: flex;
     border-bottom: 1px solid #d8d8d8;
@@ -145,7 +145,7 @@ export default {
 }
 .bottom {
   position: fixed;
-  bottom: 0;
+  bottom: 40upx;
   height: 80upx;
   line-height: 80upx;
   background: white;
@@ -153,7 +153,7 @@ export default {
   .status {
     display: flex;
     justify-content: space-around;
-    font-size: 28upx;
+  padding-bottom: 60upx;
     .item {
       &.active {
         color: #fa5151;

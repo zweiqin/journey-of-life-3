@@ -4,7 +4,7 @@
     <view class="carousel">
       <Carousel
         v-if="goodsInfo.info"
-        :list="goodsInfo.info.gallery"
+        :list="goodsInfo.info.gallery.length ? goodsInfo.info.gallery : [goodsInfo.info.picUrl]"
         :height="370"
         :top="0"
         :radius="0"
@@ -454,7 +454,7 @@ export default {
     async getCarShopNumber() {
       const res = await getCarShopNumberApi({
         userId: getUserId(),
-        brandId: this.goodsInfo.brand.id,
+        // brandId: this.goodsInfo.brand.id,
       });
       this.carGoodsNumer = res.data;
     },
@@ -593,7 +593,7 @@ export default {
 
     this.isLogin = !!uni.getStorageSync(USER_ID);
     if (this.isLogin) {
-      this.getShopCar();
+      // this.getShopCar();
       this.getCarShopNumber();
     }
   },
