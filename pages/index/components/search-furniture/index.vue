@@ -3,19 +3,15 @@
     <view class="nav-container">
       <view class="navs" v-for="item in 2" :key="item">
         <view
-          @click="go(item.url)"
+          @click="go('/pages/furniture/furniture?id=' + item.id)"
           class="nav-item"
           v-for="item in item == 1
-            ? searchFeNavs.slice(0, 4)
-            : searchFeNavs.slice(4)"
-          :key="item.label"
+            ? categories.slice(0, 4)
+            : categories.slice(4)"
+          :key="item.id"
         >
-          <image
-            :src="item.icon"
-            :style="{ width: item.width + 'upx', height: item.height + 'upx' }"
-            mode=""
-          />
-          <text>{{ item.label }}</text>
+          <image :src="item.iconUrl" mode="" />
+          <text>{{ item.name }}</text>
         </view>
       </view>
     </view>
@@ -32,6 +28,7 @@
 
     <scroll-view scroll-y="true" @scrolltolower="handleClick">
       <view class="goods-container">
+        <load-after v-if="!goodsList.length"></load-after>
         <Goods :data="goods" v-for="goods in goodsList" :key="goods.id"></Goods>
       </view>
     </scroll-view>
@@ -39,7 +36,9 @@
 </template>
 
 <script>
-import { searchFeNavs, bannerConfig } from "./config";
+import { bannerConfig, defaultCategoryConfig } from "./config";
+import { getGoodsTypesApi } from "../../../../api/home";
+
 import Goods from "./goods.vue";
 export default {
   components: {
@@ -53,14 +52,38 @@ export default {
   },
   data() {
     return {
-      searchFeNavs,
       bannerConfig,
+      categories: defaultCategoryConfig,
     };
+  },
+
+  mounted() {
+    this.getCategoryList();
   },
 
   methods: {
     handleClick() {
       console.log(1);
+    },
+
+    // 获取类目信息
+    async getCategoryList() {
+      const res = await getGoodsTypesApi({
+        goodsType: 1,
+      });
+
+      if (res.errno === 0) {
+        const categories = res.data.categoryList
+          .filter((item) => item.desc === "搜家具")
+          .slice(0, 7);
+        this.categories = categories;
+        this.categories.push({
+          iconUrl:
+            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png",
+          id: null,
+          name: "更多",
+        });
+      }
     },
   },
 };

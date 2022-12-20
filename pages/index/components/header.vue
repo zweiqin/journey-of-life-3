@@ -52,6 +52,8 @@ const navs = [
     label: "智能选配",
   },
 ];
+
+
 export default {
   props: {
     value: {
@@ -131,6 +133,8 @@ export default {
           .exec();
       });
     },
+
+    
   },
 };
 </script>

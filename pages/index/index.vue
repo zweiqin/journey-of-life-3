@@ -50,6 +50,10 @@ export default {
     this.getSize();
     this.getGoodsList();
   },
+
+  onShow() {
+    this.$refs.headerRef && this.$refs.headerRef.setBarPosition();
+  },
   methods: {
     async getSize() {
       const size = await this.$refs.headerRef.getSize();
@@ -62,7 +66,7 @@ export default {
         return;
       }
 
-      this.currentIndex = e;
+      // this.currentIndex = e;
     },
 
     async getGoodsList(isLoadmore) {

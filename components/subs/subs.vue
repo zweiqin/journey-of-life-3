@@ -23,6 +23,7 @@ export default {
     name: String,
     picUrl: String,
     id: [Number, String],
+    category: Boolean,
   },
   data() {
     return {};
@@ -30,6 +31,11 @@ export default {
   methods: {
     handeViewDetail() {
       if (!this.id) {
+        return;
+      }
+
+      if (this.category) {
+        this.$emit("item-click", this.id);
         return;
       }
       uni.navigateTo({
@@ -62,7 +68,7 @@ export default {
     .goods {
       width: 160upx;
       height: 160upx;
-      border-radius: 20upx;
+      border-radius: 10upx;
     }
     .name {
       font-size: 28upx;

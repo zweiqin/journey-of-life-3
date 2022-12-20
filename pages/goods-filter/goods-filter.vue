@@ -51,6 +51,8 @@
       </view>
     </view>
 
+    <view class="filter-pane"> 1 </view>
+
     <view class="main">
       <Goods></Goods>
       <Goods></Goods>
@@ -67,11 +69,11 @@
 </template>
 
 <script>
-import Goods from '../index/components/search-furniture/goods.vue'
+import Goods from "../index/components/search-furniture/goods.vue";
 export default {
   components: {
-    Goods
-  }
+    Goods,
+  },
 };
 </script>
 
@@ -108,6 +110,7 @@ export default {
   }
 
   .filters {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -190,8 +193,14 @@ export default {
   }
 }
 
-.main{
-  padding: 20upx;
+.filter-pane {
+  background-color: #ffffff;
+  width: 100%;
+  margin-top: 20upx;
+}
+
+.main {
+  padding: 0 20upx 20upx 20upx;
   box-sizing: border-box;
 
   display: flex;

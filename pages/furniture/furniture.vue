@@ -33,26 +33,6 @@
             @click="goToSearch"
           />
         </view>
-
-        <!-- <uni-card :is-shadow="false" is-full>
-          <text class="uni-h6"></text>
-        </uni-card>
-        <uni-section
-          title="无边框"
-          subTitle="使用 border = false 取消边框"
-          type="line"
-        >
-          <view class="example-body">
-            <uni-combox
-              :border="false"
-              labelKey="serverTypeName"
-              :candidates="candidates"
-              placeholder="请选择"
-              @input="inoutWatcher"
-              @confirm="jump"
-            ></uni-combox>
-          </view>
-        </uni-section> -->
       </view>
     </view>
     <view class="body" :style="{ height: scrollHeight + 'px' }">
@@ -60,33 +40,38 @@
         <view
           class="item"
           v-for="item in navbar"
-          :class="{ active: item.value == currentTab }"
-          :key="item.value"
-          @click="switchTab(item.value)"
-          >{{ item.label }}</view
+          :class="{ active: item.id == currentTab }"
+          :key="item.id"
+          @click="switchTab(item.id)"
+          >{{ item.name }}</view
         >
       </view>
 
       <view class="main">
-        <view class="mid">
+        <view class="mid" v-if="sub.length">
           <sort
+            category
             v-for="item1 in sub"
             :key="item1.id"
             :name="item1.name"
             :id="item1.id"
             :picUrl="item1.picUrl"
+            @item-click="handleClickCategory"
           >
           </sort>
         </view>
+
+        <view class="no-data" v-else> 暂无分类 </view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-import { goodsListApi } from "../../api/goods";
 import sort from "../../components/subs/subs.vue";
 import { getAdressDetailByLngLat } from "../../utils/DWHutils";
+import { getGoodsTypesApi, getTypeDetailList } from "../../api/home";
+
 export default {
   components: {
     sort,
@@ -95,7 +80,7 @@ export default {
     return {
       navbar: [],
       sub: [],
-      currentTab: "",
+      currentTab: null,
       scrollHeight: 667,
       picUrl: "",
     };
@@ -148,62 +133,59 @@ export default {
 
     //获取商品列表接口
     async stuffGoodsList() {
-      const res = await goodsListApi({
+      const res = await getGoodsTypesApi({
         goodsType: 1,
       });
-      console.log("材料商品列表", res);
-      this.navbar = res.data.filterCategoryList;
-      // this.navbar.unshift({ label: "综合", value: 0 });
-      console.log("navbar", this.navbar);
+
+      if (res.errno === 0) {
+        const categories = res.data.categoryList.filter(
+          (item) => item.desc === "搜家具"
+        );
+        this.navbar = categories;
+        if (!!this.currentTab) {
+          this.currentTab = this.navbar[0].id;
+        }
+        this.stuffGoodsSort();
+      }
     },
 
     //获取商品分类接口
     async stuffGoodsSort() {
-      const res = await goodsListApi({
-        goodsType: 1,
-        categoryId: this.id,
-        page: 1,
-        size: 100,
+      uni.showLoading({
+        title: "加载中",
       });
-      console.log("res", res);
-      this.sub = res.data.goodsList;
-      console.log("sub", this.sub);
-    },
+      const res = await getTypeDetailList({
+        id: this.currentTab,
+      });
+      uni.hideLoading();
 
-    //获取综合商品
-    // async stuffGoods() {
-    //   const res = await goodsListApi({
-    //     goodsType: 2,
-    //     page: 1,
-    //     size: 100,
-    //   });
-    //   console.log("综合", res);
-    //   this.sub = res.data.goodsList;
-    //   console.log("sub", this.sub);
-    // },
+      if (res.errno === 0) {
+        this.sub = res.data.currentSubCategory;
+      } else {
+        this.sub = [];
+      }
+    },
 
     switchTab(index) {
       this.currentTab = index * 1;
-      console.log(this.currentTab);
       this.id = index;
-      console.log("id", this.id);
       this.stuffGoodsSort();
-      // if (index == 0) {
-      //   this.stuffGoods();
-      // } else {
-      //   this.stuffGoodsSort();
-      // }
+    },
 
-      // this.sub = this.data.find((item) => item.value === index);
+    handleClickCategory(id) {
+      uni.navigateTo({
+        url:
+          "/pages/goods-filter/goods-filter?id=" +
+          this.currentTab +
+          "sub=" +
+          id,
+      });
     },
   },
-  watch: {},
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    // this.id = options.id;
-    // this.currentTab = options.id * 1;
-    // console.log(this.id);
+    this.currentTab = options.id;
     const _this = this;
     uni.getSystemInfo({
       success(res) {
@@ -211,26 +193,8 @@ export default {
       },
     });
     this.stuffGoodsList();
-    this.stuffGoodsSort();
     this.getLocation();
-    // this.stuffGoods();
   },
-  // 页面周期函数--监听页面初次渲染完成
-  onReady() {},
-  // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
-  // 页面周期函数--监听页面隐藏
-  onHide() {},
-  // 页面周期函数--监听页面卸载
-  onUnload() {},
-  // 页面处理函数--监听用户下拉动作
-  // onPullDownRefresh() { uni.stopPullDownRefresh(); },
-  // 页面处理函数--监听用户上拉触底
-  // onReachBottom() {},
-  // 页面处理函数--监听页面滚动(not-nvue)
-  // onPageScroll(event) {},
-  // 页面处理函数--用户点击右上角分享
-  // onShareAppMessage(options) {},
 };
 </script>
 
@@ -239,6 +203,15 @@ uni-page-body {
   overflow: hidden;
   height: auto;
 }
+
+.no-data {
+  width: 100%;
+  height: 300px;
+  line-height: 300px;
+  text-align: center;
+  color: #999;
+}
+
 .furniture {
   .head {
     width: 100%;
