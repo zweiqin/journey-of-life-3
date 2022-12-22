@@ -851,6 +851,9 @@
 				},
 				{
 					"path": "directsalestore/directsalestore"
+				},
+				{
+					"path": "search"
 				}
 			]
 		}

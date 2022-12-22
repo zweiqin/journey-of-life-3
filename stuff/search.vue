@@ -6,7 +6,7 @@
         :radius="100"
         placeholder="搜索"
         cancelButton="none"
-        style="width:100%"
+        style="width: 100%"
       ></uni-search-bar>
       <view class="text" @click="cancel">取消</view>
     </view>
@@ -16,11 +16,11 @@
       <view
         class="sugg-item"
         v-for="item in searchResults"
-        :key="item.serverTypeId"
-        :serverTypeId="item.serverTypeId"
-        @click="gotoDetail(item.serverTypeId)"
+        :key="item.id"
+        :id="item.id"
+        @click="gotoDetail(item.id)"
       >
-        <view class="goods-name">{{ item.serverTypeName }}</view>
+        <view class="goods-name">{{ item.name }}</view>
         <uni-icons type="arrowright" size="16"></uni-icons>
       </view>
     </view>
@@ -49,13 +49,15 @@
 
 
 <script>
-import { getSearchDataApi } from "../api/community-center";
+import { goodsListApi } from "../api/goods";
+import { getUserId } from "../utils";
 export default {
   data() {
     return {
       timer: null,
       kw: "",
       searchName: "",
+      keyword: "",
       // 搜索的结果列表
       searchResults: [],
       // 搜索历史的数组
@@ -64,8 +66,8 @@ export default {
     };
   },
   onLoad() {
-    if (uni.getStorageSync("searchName")) {
-      this.historyList = uni.getStorageSync("searchName") || [];
+    if (uni.getStorageSync("keyword")) {
+      this.historyList = uni.getStorageSync("keyword") || [];
     }
   },
   methods: {
@@ -76,35 +78,39 @@ export default {
       // 重新启动一个延时器，并把 timerId 赋值给 this.timer
       this.timer = setTimeout(() => {
         // 如果 500 毫秒内，没有触发新的输入事件，则为搜索关键词赋值
-        this.searchName = e;
+        this.keyword = e;
         this.getSearchList();
       }, 800);
     },
 
-    cancel(){
-      uni.navigateBack();
+    cancel() {
+      uni.navigateTo({
+        url:"/stuff/stuffGoods/index"
+      });
     },
 
     //搜索查询
     async getSearchList() {
       // 判断搜索关键词是否为空
-      if (this.searchName.length === 0) {
+      if (this.keyword.length === 0) {
         this.searchResults = [];
         return;
       }
 
-      const res = await getSearchDataApi({
-        searchName: this.searchName,
+      const res = await goodsListApi({
+        keyword: this.keyword,
+        goodsType: 2,
+        userId: getUserId(),
       });
       // this.searchResults = res.data.map(item => item.serverTypeName);
-      this.searchResults = res.data;
+      this.searchResults = res.data.goodsList;
       console.log("123", this.searchResults);
       this.saveSearchHistory();
     },
     gotoDetail(e) {
       console.log("id", e);
       uni.navigateTo({
-        url: "/community-center/community-detail?id=" + e,
+        url: "/pages/prod/prod?goodsId=" + e,
       });
     },
 
@@ -112,18 +118,18 @@ export default {
       // this.historyList.push(this.kw)
 
       const set = new Set(this.historyList);
-      set.delete(this.searchName);
-      set.add(this.searchName);
+      set.delete(this.keyword);
+      set.add(this.keyword);
 
       this.historyList = Array.from(set);
 
       // 对搜索数据的储存
-      uni.setStorageSync("searchName", this.historyList);
+      uni.setStorageSync("keyword", this.historyList);
     },
     // 清空搜索历史
     clean() {
       this.historyList = [];
-      uni.setStorageSync("searchName", []);
+      uni.setStorageSync("keyword", []);
     },
     // gotoGoodsList(e) {
     //   console.log("id", e);
