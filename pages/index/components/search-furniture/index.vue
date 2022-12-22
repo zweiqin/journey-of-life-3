@@ -17,7 +17,7 @@
     </view>
 
     <view class="banner-container">
-      <view class="item" v-for="(item, index) in bannerConfig" :key="index">
+      <view class="item" v-for="(item, index) in bannerConfig" :key="index" @click="go(item.url)">
         <image class="banner-icon" :src="item.icon" mode="" />
         <view class="right-wrapper">
           <image :src="item.title" class="banner-titme-icon" mode="" />

@@ -161,9 +161,9 @@ export default {
         right: -10px;
       }
       /deep/ .locale {
-        color: #3d3d3d;
+        color: #000;
         font-size: 36upx;
-        font-weight: bold;
+        font-weight: 500;
       }
     }
 

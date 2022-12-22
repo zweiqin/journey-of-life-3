@@ -2,7 +2,11 @@
   <div class="goods-filter">
     <view class="header-container">
       <view class="header">
-        <JBack dark width="50" height="50" style="margin-top: 10upx"></JBack>
+        <image
+          class="icon"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+          mode=""
+        />
         <TLocale :icon="false"></TLocale>
         <view class="search-wrapper">
           <image
@@ -17,62 +21,143 @@
             mode=""
           />
         </view>
-        <image
-          class="chat"
-          src="../../static/images/user/daipingjia.png"
-          mode=""
-        />
       </view>
 
-      <view class="tags">
-        <view class="tag active">全部</view>
-        <view class="tag">客厅家具</view>
-        <view class="tag">卧室家具</view>
-        <view class="tag">餐厅家具</view>
-      </view>
+      <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
 
-      <view class="filters">
-        <view class="filter-item">
-          <text>价格</text>
-          <image src="../../static/images/common/tag.png" mode="" />
-        </view>
-        <view class="filter-item">
-          <text>风格</text>
-          <image src="../../static/images/common/tag.png" mode="" />
-        </view>
-        <view class="filter-item">
-          <text>产地</text>
-          <image src="../../static/images/common/tag.png" mode="" />
-        </view>
-        <view class="filter-item">
-          <text>材质</text>
-          <image src="../../static/images/common/tag.png" mode="" />
-        </view>
+      <view :class="{ 'stic-top': scrollDis > 200 }">
+        <FilterPane></FilterPane>
+        <SubMenus
+          ref="subMenusRef"
+          :currentId="subId"
+          @change="handleClickSubMenus"
+        ></SubMenus>
       </view>
     </view>
 
-    <view class="filter-pane"> 1 </view>
-
     <view class="main">
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
-      <Goods></Goods>
+      <Goods v-for="item in goodsList" :key="item.id" :data="item"></Goods>
+      <load-after v-if="isShowLoading"></load-after>
+    </view>
+
+    <view class="main" v-show="!goodsList.length">
+      <view class="no-data">暂无商品</view>
     </view>
   </div>
 </template>
 
 <script>
 import Goods from "../index/components/search-furniture/goods.vue";
+import MainMenus from "./components/main-menus.vue";
+import SubMenus from "./components/sub-menus.vue";
+import FilterPane from "./components/filter-pane.vue";
+import { goodsListApi } from "../../api/goods";
+
 export default {
   components: {
     Goods,
+    MainMenus,
+    SubMenus,
+    FilterPane,
+  },
+
+  data() {
+    return {
+      mainId: null,
+      subId: null,
+      totalPages: 0,
+      goodsList: [],
+      isShowLoading: false,
+      scrollDis: 0,
+      queryInfo: {
+        page: 1,
+        size: 10,
+      },
+    };
+  },
+
+  mounted() {
+    this.getPostion();
+  },
+
+  onLoad(options) {
+    console.log(options);
+    this.mainId = options.id * 1;
+    this.subId = options.sub * 1;
+    this.setData();
+  },
+
+  methods: {
+    handleChooseItem(onceId) {
+      this.mainId = onceId;
+      this.setData();
+    },
+
+    handleClickSubMenus(id) {
+      this.subId = id;
+      this.queryInfo.page = 1;
+      this.getGoodsList();
+    },
+
+    setData() {
+      this.$nextTick(() => {
+        this.$refs.subMenusRef.getSubMenus(this.mainId);
+      });
+    },
+
+    async getGoodsList(isLoadMore) {
+      this.isShowLoading = true;
+      uni.showLoading({
+        title: "加载中",
+      });
+
+      // return
+      const res = await goodsListApi({
+        categoryId: this.subId === -1 ? this.mainId : this.subId,
+        ...this.queryInfo,
+      });
+
+      if (res.errno === 0) {
+        this.totalPages = res.data.totalPages;
+
+        if (isLoadMore) {
+          this.goodsList.push(...res.data.goodsList);
+        } else {
+          this.goodsList = res.data.goodsList;
+        }
+      }
+
+      uni.hideLoading();
+      this.isShowLoading = false;
+    },
+
+    getPostion() {
+      const _this = this;
+      const query = uni.createSelectorQuery().in(this);
+      query
+        .select("#stic-top")
+        .boundingClientRect((data) => {
+          console.log("草泥吗", data);
+        })
+        .exec();
+    },
+  },
+
+  onReachBottom() {
+    if (this.goodsList.length < this.queryInfo.size) {
+      return;
+    }
+
+    if (this.totalPages === this.queryInfo.page) {
+      return;
+    }
+
+    this.queryInfo.page++;
+    this.getGoodsList(true);
+  },
+
+  onPageScroll(e) {
+    this.scrollDis = e.scrollTop;
   },
 };
 </script>
@@ -84,60 +169,37 @@ export default {
   font-size: 28upx;
 }
 
+.stic-top {
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
 .header-container {
   background-color: #ffffff;
-  padding: 32upx 32upx 20upx 32upx;
+  // padding: 32upx 32upx 20upx 32upx;
   box-sizing: border-box;
-
-  .tags {
-    display: flex;
-    margin: 34upx 0 26upx 0;
-
-    .tag {
-      line-height: 1.5;
-      padding: 0 20upx;
-      background-color: #f1f2f6;
-      margin-right: 34upx;
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &.active {
-        color: #e95d20;
-      }
-    }
-  }
-
-  .filters {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .filter-item {
-      display: flex;
-      align-items: center;
-    }
-
-    image {
-      width: 18upx;
-      height: 9upx;
-      margin-left: 10upx;
-      margin-top: 4upx;
-    }
-  }
 }
 .header {
   display: flex;
   align-items: center;
+  padding: 32upx 32upx 20upx 32upx;
+  box-sizing: border-box;
+
+  .icon{
+    width: 48upx;
+    height: 48upx;
+  }
 
   .local-wrapper {
     position: relative;
     margin-right: 20upx;
     &::after {
       content: "";
-      border: 6px solid #000000;
+      border: 4px solid #000000;
       border-bottom-color: transparent;
       border-left-color: transparent;
       border-right-color: transparent;
@@ -146,9 +208,9 @@ export default {
       right: -10px;
     }
     /deep/ .locale {
-      color: #3d3d3d;
-      font-size: 36upx;
-      font-weight: bold;
+      color: #000;
+      font-size: 32upx;
+      font-weight: 500;
     }
   }
 
@@ -164,6 +226,7 @@ export default {
     background-color: #f1f2f6;
     height: 74upx;
     margin: 0 20upx;
+    margin-right: 0;
     border-radius: 100px;
     padding: 0 26upx;
     box-sizing: border-box;
@@ -200,12 +263,20 @@ export default {
 }
 
 .main {
-  padding: 0 20upx 20upx 20upx;
+  padding: 20upx 20upx 20upx 20upx;
   box-sizing: border-box;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.no-data {
+  text-align: center;
+  line-height: 300upx;
+  height: 300upx;
+  color: #ccc;
+  width: 100%;
 }
 </style>

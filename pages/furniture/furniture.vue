@@ -142,7 +142,7 @@ export default {
           (item) => item.desc === "搜家具"
         );
         this.navbar = categories;
-        if (!!this.currentTab) {
+        if (this.currentTab==='null') {
           this.currentTab = this.navbar[0].id;
         }
         this.stuffGoodsSort();
@@ -177,7 +177,7 @@ export default {
         url:
           "/pages/goods-filter/goods-filter?id=" +
           this.currentTab +
-          "sub=" +
+          "&sub=" +
           id,
       });
     },

@@ -1,6 +1,17 @@
 <template>
-  <view @click="go('/pages/prod/prod?goodsId='+data.id )" class="goods-wrapper" v-if="data">
-    <image class="good-img" :src="data.picUrl" mode="" />
+  <view
+    @click="go('/pages/prod/prod?goodsId=' + data.id)"
+    class="goods-wrapper"
+    v-if="data"
+  >
+    <view class="goods-image-wrapper">
+      <image class="good-img" :src="data.picUrl" mode="" />
+      <image
+        class="icon"
+        src="../../../../static/images/common/color-bottom.png"
+        mode=""
+      />
+    </view>
     <view class="goods-info">
       <view class="goods-name">
         <view class="icon-wrapper"
@@ -8,7 +19,8 @@
             class="icon"
             src="../../../../static/images/index/miaosha.png"
             mode=""
-        /></view>
+          />
+        </view>
         <view class="name">{{ data.name }}</view>
       </view>
 
@@ -18,7 +30,9 @@
       </view>
 
       <view class="goods-price">
-        <view class="text">劵后<text style="fontSize: 32upx">￥{{ data.counterPrice }}</text></view>
+        <view class="text"
+          >劵后<text class="text-price">￥{{ data.counterPrice }}</text></view
+        >
         <view class="salsed">100+付款</view>
       </view>
     </view>
@@ -44,10 +58,21 @@ export default {
   font-size: 28upx;
   margin-bottom: 20upx;
 
+  .goods-image-wrapper {
+    position: relative;
+    .icon {
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+      height: 66upx;
+    }
+  }
+
   .good-img {
     width: 100%;
     height: 320upx;
     object-fit: cover;
+    display: block;
   }
 
   .goods-info {
@@ -81,6 +106,7 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-weight: 500;
       }
     }
 
@@ -113,6 +139,10 @@ export default {
       font-size: 24upx;
       color: #fa5151;
       font-weight: 500;
+    }
+
+    .text-price{
+      font-size: 32upx;
     }
 
     .salsed {

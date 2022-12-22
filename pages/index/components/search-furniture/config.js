@@ -7,7 +7,8 @@ export const bannerConfig = [
   {
     icon: require('../../../../static/images/index/brand.png'),
     title: require('../../../../static/images/index/brand-banner.png'),
-    desc: '商家区域全覆盖'
+    desc: '商家区域全覆盖',
+    url: '/pages/brandFactory/index'
   },
 ]
 
