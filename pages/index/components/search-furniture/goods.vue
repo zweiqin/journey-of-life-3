@@ -106,7 +106,7 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        font-weight: 500;
+        font-weight: bold;
       }
     }
 
@@ -143,6 +143,7 @@ export default {
 
     .text-price{
       font-size: 32upx;
+      font-weight: bold;
     }
 
     .salsed {

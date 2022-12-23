@@ -45,7 +45,7 @@ export default {
 <style lang="less" scoped>
 .tags {
   display: flex;
-  padding: 34upx 20upx 26upx 20upx;
+  padding: 30upx 20upx 26upx 20upx;
   box-sizing: border-box;
   background-color: #fff;
   .tag {

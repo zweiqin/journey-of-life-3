@@ -82,7 +82,7 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 20upx 10upx;
-  color: #929292;
+  color: #000000;
   margin-right: 20upx;
   transition: transform 350ms;
 

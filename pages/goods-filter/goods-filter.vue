@@ -3,6 +3,7 @@
     <view class="header-container">
       <view class="header">
         <image
+          @click="handleBack"
           class="icon"
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
           mode=""
@@ -76,10 +77,6 @@ export default {
     };
   },
 
-  mounted() {
-    this.getPostion();
-  },
-
   onLoad(options) {
     console.log(options);
     this.mainId = options.id * 1;
@@ -131,15 +128,9 @@ export default {
       this.isShowLoading = false;
     },
 
-    getPostion() {
-      const _this = this;
-      const query = uni.createSelectorQuery().in(this);
-      query
-        .select("#stic-top")
-        .boundingClientRect((data) => {
-          console.log("草泥吗", data);
-        })
-        .exec();
+    // 回退
+    handleBack() {
+      uni.navigateBack();
     },
   },
 
@@ -189,7 +180,7 @@ export default {
   padding: 32upx 32upx 20upx 32upx;
   box-sizing: border-box;
 
-  .icon{
+  .icon {
     width: 48upx;
     height: 48upx;
   }
