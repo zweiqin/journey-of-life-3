@@ -49,3 +49,7 @@ export const getGoodsByIdApi = (data) => {
 export const getUserCouponApi = (data) => {
   return RuanRequest('/coupon/getUserCoupon', data, 'get')
 }
+
+export const getHomeGoodsListApi = data => {
+  return RuanRequest("/goods/homeList", data, 'get')
+}

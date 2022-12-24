@@ -1,5 +1,5 @@
 <template>
-  <view class="order-detail">
+  <view class="order-detail" v-if="calcOrderMsg">
     <JHeader title="商品订单详情" width="50" height="50"></JHeader>
     <view
       class="address container"
@@ -26,8 +26,8 @@
 
         <view class="info">
           <view class="goods-name">{{ orderInfo.info.name }}</view>
-          <view class="spa">{{ goodsSp }}</view>
-          <view class="dan-price">￥{{ orderInfo.selectedProduct.price }}</view>
+          <view class="spa">{{ orderInfo.currentSpecification }}</view>
+          <view class="dan-price">￥{{ orderInfo.currentPrice }}</view>
         </view>
       </view>
 
@@ -44,7 +44,7 @@
 
       <view class="line">
         <view class="title">商品金额：</view>
-        <view class="value">￥{{ sumGoodsPrice }}</view>
+        <view class="value">￥{{ calcOrderMsg.goodsTotalPrice }}</view>
       </view>
 
       <view class="line">
@@ -105,7 +105,7 @@ export default {
     // 获取地址
     getAddressList() {
       const address = uni.getStorageSync(SELECT_ADDRESS);
-			console.log("有", address);
+      console.log("有", address);
       if (address) {
         this.defaultAddress = address;
         return;
@@ -129,24 +129,33 @@ export default {
     // 获取订单信息
     getOrderInfo() {
       this.orderInfo = uni.getStorageSync(PAY_GOODS);
+      console.log(this.orderInfo);
       this.getCardId();
     },
 
     // 计算订单费用
-    getCardId() {
-      const _this = this;
+    async getCardId() {
+      console.log(this.orderInfo);
       const data = {
         userId: getUserId(),
         goodsId: this.orderInfo.info.id,
-        productId: this.orderInfo.selectedProduct.id,
+        productId: this.orderInfo.selectedProduct.product.id,
         number: this.orderInfo.number,
         useVoucher: this.isUserVoucher,
       };
 
-      firstAddCar(data).then(({ data }) => {
-        _this.cartId = data;
-        _this.calcOrderCost();
-      });
+      const res = await firstAddCar(data);
+
+      if (res.errno === 0) {
+        this.cartId = res.data;
+        this.calcOrderCost();
+      } else {
+        uni.showToast({
+          title: res.errmsg,
+          duration: 2000,
+          icon: "none",
+        });
+      }
     },
 
     // 计算订单费用
@@ -214,23 +223,10 @@ export default {
   },
 
   computed: {
-    // 用户选中的规格
-    goodsSp() {
-      if (this.orderInfo) {
-        let str = "";
-        for (const sp in this.orderInfo.currentSpecification) {
-          str += this.orderInfo.currentSpecification[sp] + "，";
-        }
-        return str + this.orderInfo.number + (this.orderInfo.info.unit || "个");
-      }
-
-      return;
-    },
-
     // 商品总金额
     sumGoodsPrice() {
       if (this.orderInfo) {
-        return this.orderInfo.number * this.orderInfo.selectedProduct.price;
+        return this.orderInfo.number * this.orderInfo.selectedProduct.product.price;
       }
     },
   },
@@ -307,7 +303,7 @@ export default {
       }
 
       .info {
-				flex: 1;
+        flex: 1;
         .goods-name {
           margin-bottom: 20upx;
         }

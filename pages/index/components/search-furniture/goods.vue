@@ -6,11 +6,11 @@
   >
     <view class="goods-image-wrapper">
       <image class="good-img" :src="data.picUrl" mode="" />
-      <image
+      <!-- <image
         class="icon"
         src="../../../../static/images/common/color-bottom.png"
         mode=""
-      />
+      /> -->
     </view>
     <view class="goods-info">
       <view class="goods-name">

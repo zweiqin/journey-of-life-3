@@ -1,11 +1,11 @@
 <template>
   <view class="promotionUser">
-    <view class="left">
-      <image src="../image/userimg.png" mode="scaleToFill" class="userImg" />
+    <view class="left" v-if="userInfo">
+      <image :src="userInfo.avatarUrl" mode="scaleToFill" class="userImg" />
       <view class="userDetail">
-        <view class="name">蔡守腾</view>
+        <view class="name">{{ userInfo.nickName }}</view>
         <view class="identity">
-          <view class="moreidentity" v-for="item in 2" :key="item">123</view>
+          <view class="moreidentity">{{ userInfo.userLevelDesc }}</view>
         </view>
       </view>
     </view>
@@ -16,27 +16,22 @@
 </template>
 
 <script>
+import { user_INFO } from "../../../constant";
+
 export default {
   props: {},
   data() {
-    return {};
+    return {
+      userInfo: null
+    };
   },
   computed: {},
   methods: {},
   watch: {},
-
-  // 组件周期函数--监听组件挂载完毕
-  mounted() {},
-  // 组件周期函数--监听组件数据更新之前
-  beforeUpdate() {},
-  // 组件周期函数--监听组件数据更新之后
-  updated() {},
-  // 组件周期函数--监听组件激活(显示)
-  activated() {},
-  // 组件周期函数--监听组件停用(隐藏)
-  deactivated() {},
-  // 组件周期函数--监听组件销毁之前
-  beforeDestroy() {},
+  mounted(){
+    console.log(1);
+    this.userInfo = uni.getStorageSync(user_INFO)
+  }
 };
 </script>
 <style lang="less" scoped>

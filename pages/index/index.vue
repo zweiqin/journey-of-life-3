@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getGoodsByIdApi } from "../../api/home";
+import { getHomeGoodsListApi } from "../../api/home";
 import HeaderView from "./components/header.vue";
 import SearchFurniture from "./components/search-furniture";
 export default {
@@ -39,7 +39,7 @@ export default {
       // 分页数据
       queryInfo: {
         page: 1,
-        size: 20,
+        size: 200,
       },
       totalPages: 0,
       searchGoodsList: [],
@@ -71,7 +71,7 @@ export default {
 
     async getGoodsList(isLoadmore) {
       uni.showLoading();
-      const res = await getGoodsByIdApi({ ...this.queryInfo });
+      const res = await getHomeGoodsListApi({ ...this.queryInfo });
       if (res.errno === 0) {
         this.totalPages = res.data.totalPages;
 

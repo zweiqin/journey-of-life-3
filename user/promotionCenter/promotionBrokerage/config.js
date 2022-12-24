@@ -27,22 +27,22 @@ export const brokerageTitle = [
     }, {
         value: 1,
         label: "已提现收入",
-        money: 7766
+        money: 1569
     }, {
         value: 2,
         label: "未提现收入",
-        money: 7766
+        money: 3589
     }, {
         value: 3,
         label: "提现中收入",
-        money: 7766
+        money: 2213
     }, {
         value: 4,
         label: "团队粉丝",
-        money: 7766
+        money: 192
     }, {
         value: 5,
         label: "直推粉丝",
-        money: 7766
+        money: 29
     },
 ]

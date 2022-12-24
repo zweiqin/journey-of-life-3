@@ -11,7 +11,7 @@
 
     <view class="body">
       <view class="name">{{ name || "GLOSTAD" }} </view>
-      <view class="sname">{{ sname || "二人沙发" }} </view>
+      <!-- <view class="sname">{{ sname || "二人沙发" }} </view> -->
       <view class="info">
         <view class="left">
           <text class="icon">￥</text

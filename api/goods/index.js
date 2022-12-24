@@ -4,8 +4,8 @@ import { getUserId, RuanRequest, XZLRequest } from "../../utils";
  * @description 查询商品详情
  * @param {*} id 商品id
  */
-export const getGoodsDetailApi = (id) => {
-  return RuanRequest("/goods/detail", { id: id }, "get");
+export const getGoodsDetailApi = (id, userId) => {
+  return RuanRequest("/goods/detail", { id: id, userId: userId }, "get");
 };
 
 /**

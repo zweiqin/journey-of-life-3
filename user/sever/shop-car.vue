@@ -257,6 +257,7 @@ export default {
       });
       uni.hideLoading()
       this.cartList = res.data.brandCartgoods;
+      console.log("我开u", this.cartList);
       this.goodsallmoney = res.data.cartTotal.goodsAmount;
       this.listLength = res.data.brandCartgoods.length;
       // console.log(this.cartList);

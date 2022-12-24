@@ -21,7 +21,8 @@
 				"usingComponents": {
 					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
 					"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
-				}
+				},
+				"navigationBarTitleText": "订单详情"
 			}
 		},
 		{
@@ -77,8 +78,7 @@
 				"navigationBarTitleText": "收货地址",
 				"navigationBarTextStyle": "black"
 			}
-		},
-		{
+		}, {
 			"path": "pages/otherUrl/otherUrl"
 		},
 		{
@@ -168,7 +168,8 @@
 				"navigationBarTitleText": "商品详情",
 				"usingComponents": {
 					"uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
-				}
+				},
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -274,6 +275,13 @@
 			"path": "user/digital-store/newBusiness/addUser/index",
 			"style": {
 				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/hot/hot",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 		}
 	],
