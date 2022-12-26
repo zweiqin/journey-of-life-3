@@ -13,7 +13,7 @@
         :radius="0"
       ></Carousel>
 
-      <view class="header-top">
+      <view class="header-top" v-if="!showTopNav">
         <view
           ><image
             @click="handleBack"
@@ -25,6 +25,39 @@
           ><image src="../../static/images/detail/brand.png" mode="" />
           <image src="../../static/images/detail/share.png" mode=""
         /></view>
+      </view>
+
+      <view class="scroll-top-nav" v-else>
+        <!-- <image src="../../static/images/detail/top-back.png" mode="" /> -->
+        <view class="center">
+          <view
+            class="item"
+            :class="{ active: scrollTop < evalPosition - 20 }"
+            @click="moveToDetail(0)"
+            >商品</view
+          >
+
+          <view
+            :class="{
+              active:
+                (scrollTop >= evalPosition &&
+                  scrollTop < detailPosition - 20) ||
+                currentMoveTag == 1,
+            }"
+            class="item"
+            @click="moveToDetail(1)"
+            >评价</view
+          >
+          <view
+            class="item"
+            :class="{
+              active: scrollTop + 20 > detailPosition || currentMoveTag == 2,
+            }"
+            @click="moveToDetail(2)"
+            v-if="goodsDetail.info.detail"
+            >详情</view
+          >
+        </view>
       </view>
     </view>
 
@@ -134,7 +167,7 @@
     </view>
 
     <!-- 宝贝详情 -->
-    <view class="goods-detail" v-if="goodsDetail.info.detail">
+    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail">
       <text>宝贝详情</text>
     </view>
 
@@ -230,6 +263,11 @@ export default {
       isCollect: false,
       userId: null,
       brandOtherGoods: null,
+      showTopNav: false,
+      evalPosition: 0,
+      detailPosition: 0,
+      scrollTop: 0,
+      currentMoveTag: 0,
     };
   },
   onLoad(options) {
@@ -377,7 +415,7 @@ export default {
           },
         });
 
-        return
+        return;
       }
 
       const res = await collectionApi({
@@ -408,6 +446,82 @@ export default {
         duration: 1000,
       });
     },
+
+    // 获取移动的位置
+    initMovePosition() {
+      const _this = this;
+      const query = uni.createSelectorQuery().in(this);
+      query
+        .select(".eval")
+        .boundingClientRect((data) => {
+          _this.evalPosition = data.top;
+        })
+        .exec();
+
+      query
+        .select("#goods-detail")
+        .boundingClientRect((data) => {
+          _this.detailPosition = data.top;
+        })
+        .exec();
+
+      console.log("草泥吗", query.select("#goods-detail"));
+    },
+
+    // 点击移动到对应的位置
+    moveToDetail(tag) {
+      const _this = this;
+      this.currentMoveTag = tag;
+      switch (tag) {
+        case 0:
+          uni.pageScrollTo({
+            scrollTop: 0,
+            duration: 300,
+          });
+          break;
+        case 1:
+          uni.pageScrollTo({
+            scrollTop: _this.evalPosition,
+            duration: 300,
+          });
+          break;
+
+        case 2:
+          uni.pageScrollTo({
+            scrollTop: _this.detailPosition,
+            duration: 300,
+          });
+          break;
+      }
+    },
+  },
+
+  watch: {
+    goodsDetail: {
+      handler(value) {
+        if (value && this.brandOtherGoods) {
+          this.$nextTick(() => {
+            this.initMovePosition();
+          });
+        }
+      },
+
+      immediate: true,
+      deep: true,
+    },
+
+    brandOtherGoods: {
+      handler(value) {
+        if (value && this.goodsDetail) {
+          this.$nextTick(() => {
+            this.initMovePosition();
+          });
+        }
+      },
+
+      immediate: true,
+      deep: true,
+    },
   },
 
   computed: {
@@ -424,6 +538,11 @@ export default {
       this.getCarShopNumber();
     }
     uni.stopPullDownRefresh();
+  },
+
+  onPageScroll(e) {
+    this.showTopNav = !!e.scrollTop;
+    this.scrollTop = e.scrollTop;
   },
 };
 </script>
@@ -460,6 +579,46 @@ export default {
 
       &:last-child {
         margin-left: 20upx;
+      }
+    }
+  }
+
+  .scroll-top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 70upx;
+    padding: 0 18upx;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-size: 28upx;
+
+    image {
+      height: 40upx;
+      width: 40upx;
+    }
+
+    .center {
+      display: flex;
+      align-items: flex-end;
+
+      .item {
+        width: 160upx;
+        height: 70upx;
+        line-height: 70upx;
+        text-align: center;
+        box-sizing: border-box;
+        border-bottom: 6upx solid transparent;
+        transition: all 300ms;
+
+        &.active {
+          border-bottom-color: #fe9f21;
+        }
       }
     }
   }
