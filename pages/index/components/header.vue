@@ -152,7 +152,7 @@ export default {
       margin-right: 20upx;
       &::after {
         content: "";
-        border: 6px solid #000000;
+        border: 8upx solid #000000;
         border-bottom-color: transparent;
         border-left-color: transparent;
         border-right-color: transparent;

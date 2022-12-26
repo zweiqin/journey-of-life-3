@@ -94,12 +94,13 @@ export default {
     .info {
       display: flex;
       justify-content: space-between;
+      align-items: flex-end;
 
       .icon {
         color: #fa5151;
         font-family: auto;
         font-size: 34upx;
-        vertical-align: top;
+        // vertical-align: top;
         font-weight: 400;
       }
 
@@ -120,15 +121,15 @@ export default {
         font-family: auto;
         font-size: 20upx;
 
-        &::after {
-          position: absolute;
-          right: 0;
-          bottom: -10px;
-          content: "...";
-          font-weight: bold;
-          font-family: auto;
-          font-size: 40upx;
-        }
+        // &::after {
+        //   position: absolute;
+        //   right: 0;
+        //   bottom: -10px;
+        //   content: "...";
+        //   font-weight: bold;
+        //   font-family: auto;
+        //   font-size: 40upx;
+        // }
 
         // .dots {
         //   color: #767676;

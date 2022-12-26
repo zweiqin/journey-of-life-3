@@ -5,7 +5,7 @@
         <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
         <view class="text">{{ address }}</view>
         <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
           alt=""
           class="show"
         />

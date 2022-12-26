@@ -376,6 +376,8 @@ export default {
             }
           },
         });
+
+        return
       }
 
       const res = await collectionApi({
