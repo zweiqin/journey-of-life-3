@@ -290,13 +290,11 @@ export default {
           userId: getUserId(),
           payType: 1,
         }).then((res) => {
+          const payData = JSON.parse(res.h5PayUrl);
           const form = document.createElement("form");
-          form.setAttribute("action", res.h5PayUrl);
+          form.setAttribute("action", payData.url);
           form.setAttribute("method", "POST");
-          uni.removeStorageSync(PAY_ORDER);
-          uni.setStorageSync(PAY_ORDER, res.orderNo);
-          // uni.navigateTo({ url: '../../pages/payAccomplish/index' })
-          const data = JSON.parse(res.data);
+          const data = JSON.parse(payData.data);
           let input;
           for (const key in data) {
             input = document.createElement("input");

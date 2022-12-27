@@ -13,7 +13,7 @@
         :radius="0"
       ></Carousel>
 
-      <view class="header-top" v-if="!showTopNav">
+      <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
         <view
           ><image
             @click="handleBack"
@@ -27,22 +27,29 @@
         /></view>
       </view>
 
-      <view class="scroll-top-nav" v-else>
-        <!-- <image src="../../static/images/detail/top-back.png" mode="" /> -->
+      <view
+        class="scroll-top-nav"
+        :style="{
+          opacity: showTopNav ? 1 : 0,
+          'z-index': showTopNav ? 100 : -1,
+        }"
+      >
+        <image
+          @click="handleBack"
+          src="../../static/images/detail/top-back.png"
+          mode=""
+        />
         <view class="center">
           <view
             class="item"
-            :class="{ active: scrollTop < evalPosition - 20 }"
+            :class="{ active: currentMoveTag == 0 }"
             @click="moveToDetail(0)"
             >商品</view
           >
 
           <view
             :class="{
-              active:
-                (scrollTop >= evalPosition &&
-                  scrollTop < detailPosition - 20) ||
-                currentMoveTag == 1,
+              active: currentMoveTag == 1,
             }"
             class="item"
             @click="moveToDetail(1)"
@@ -51,7 +58,7 @@
           <view
             class="item"
             :class="{
-              active: scrollTop + 20 > detailPosition || currentMoveTag == 2,
+              active: currentMoveTag == 2,
             }"
             @click="moveToDetail(2)"
             v-if="goodsDetail.info.detail"
@@ -103,7 +110,7 @@
       </view>
 
       <view class="eval">
-        <text>评价(1)</text>
+        <text>评价(0)</text>
         <image src="../../static/images/detail/right-arrow.png" mode="" />
       </view>
 
@@ -277,6 +284,10 @@ export default {
     if (this.userId) {
       this.getCarShopNumber();
     }
+    uni.pageScrollTo({
+      scrollTop: 0,
+      duration: 200,
+    });
   },
 
   methods: {
@@ -418,11 +429,15 @@ export default {
         return;
       }
 
+      uni.showLoading();
+
       const res = await collectionApi({
         userId: getUserId(),
         type: 0,
         valueId: this.goodsId,
       });
+
+      uni.hideLoading();
 
       if (res.errno === 0) {
         uni.showToast({
@@ -464,32 +479,30 @@ export default {
           _this.detailPosition = data.top;
         })
         .exec();
-
-      console.log("草泥吗", query.select("#goods-detail"));
     },
 
     // 点击移动到对应的位置
     moveToDetail(tag) {
       const _this = this;
-      this.currentMoveTag = tag;
+      // this.currentMoveTag = tag;
       switch (tag) {
         case 0:
           uni.pageScrollTo({
             scrollTop: 0,
-            duration: 300,
+            duration: 200,
           });
           break;
         case 1:
           uni.pageScrollTo({
             scrollTop: _this.evalPosition,
-            duration: 300,
+            duration: 200,
           });
           break;
 
         case 2:
           uni.pageScrollTo({
             scrollTop: _this.detailPosition,
-            duration: 300,
+            duration: 200,
           });
           break;
       }
@@ -543,6 +556,24 @@ export default {
   onPageScroll(e) {
     this.showTopNav = !!e.scrollTop;
     this.scrollTop = e.scrollTop;
+    if (this.detailPosition) {
+      if (e.scrollTop < this.evalPosition - 60) {
+        this.currentMoveTag = 0;
+      } else if (
+        e.scrollTop >= this.evalPosition - 60 &&
+        e.scrollTop < this.detailPosition - 60
+      ) {
+        this.currentMoveTag = 1;
+      } else if (e.scrollTop > this.detailPosition - 60) {
+        this.currentMoveTag = 2;
+      }
+    } else {
+      if (e.scrollTop < this.evalPosition - 60) {
+        this.currentMoveTag = 0;
+      } else if (e.scrollTop >= this.evalPosition - 60) {
+        this.currentMoveTag = 1;
+      }
+    }
   },
 };
 </script>
@@ -551,6 +582,13 @@ export default {
 .goods-detail-container {
   font-size: 28upx;
   padding-bottom: 100upx;
+}
+
+/deep/ .wxParse {
+  image,
+  img {
+    display: block;
+  }
 }
 
 .pane {
@@ -592,15 +630,20 @@ export default {
     left: 0;
     z-index: 100;
     width: 100%;
-    height: 70upx;
+    height: 100upx;
     padding: 0 18upx;
     box-sizing: border-box;
     background-color: #fff;
     font-size: 28upx;
+    transition: opacity 350ms;
 
     image {
-      height: 40upx;
-      width: 40upx;
+      position: absolute;
+      top: 50%;
+      left: 36upx;
+      transform: translateY(-50%);
+      height: 28upx;
+      width: 16upx;
     }
 
     .center {
@@ -609,8 +652,8 @@ export default {
 
       .item {
         width: 160upx;
-        height: 70upx;
-        line-height: 70upx;
+        height: 100upx;
+        line-height: 100upx;
         text-align: center;
         box-sizing: border-box;
         border-bottom: 6upx solid transparent;
