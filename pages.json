@@ -78,7 +78,8 @@
 				"navigationBarTitleText": "收货地址",
 				"navigationBarTextStyle": "black"
 			}
-		}, {
+		},
+		{
 			"path": "pages/otherUrl/otherUrl"
 		},
 		{
@@ -492,7 +493,7 @@
 				{
 					"path": "goods-info",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "商品信息",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 						}

@@ -1,307 +1,583 @@
 <template>
-  <view class="value-added-services">
+  <view class="fast-input">
     <view class="header">
-      <img
+      <image
+        @click="handleBack"
         class="back"
-        @click="back"
-        src="../static/images/common/back.png"
-        alt=""
+        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+        mode=""
       />
-      <view class="title">货物信息</view>
+      <TLocale :icon="false"></TLocale>
+      <view class="search-wrapper">
+        <image
+          class="search-icon"
+          src="../static/images/index/search.png"
+          mode=""
+        />
+        <input
+          ref="inputRef"
+          @focus="isFocus = true"
+          @blur="isFocus = false"
+          @confirm="handleSearch"
+          confirm-type="search"
+          placeholder="请输入您想要的产品"
+          class="text"
+        />
+        <image class="camera" src="../static/images/index/camera.png" mode="" />
+      </view>
+      <button class="uni-btn" @click="handleSearch">搜索</button>
     </view>
 
     <view class="main">
-      <view class="item">
-        <view class="title required">货物类型</view>
-        <view class="value">
-          <picker
-            @columnchange="handleChooseTypeColumnChange"
-            @change="handleTypeChange"
-            mode="multiSelector"
-            :range="goodsType"
-          >
-            <view v-if="!orderInfo.goodType" class="placeholder"
-              >请选择物品类型</view
+      <view class="left">
+        <scroll-view scroll-y="true" :style="{ height: scrollHeight + 'px' }">
+          <view class="left-container">
+            <view
+              class="item"
+              @click="currentMainType = item"
+              :class="{ active: item === currentMainType }"
+              v-for="(item, index) in Object.keys(commoditySelect)"
+              :key="index"
             >
-            <view v-else>{{ orderInfo.goodType }}</view>
-          </picker>
-        </view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
+              {{ item }}
+            </view>
+          </view>
+        </scroll-view>
       </view>
-
-      <view class="item">
-        <view class="title required">物品名称</view>
-        <view class="value">
-          <input
-            type="text"
-            v-model="orderInfo.goodName"
-            placeholder="请输入物品名称"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title">物品包装</view>
-        <view class="value">
-          <picker
-            mode="selector"
-            @change="handleSelectPickType"
-            :range="pickTypeList"
-          >
-            <view v-if="!orderInfo.packType" class="placeholder"
-              >请选择物品包装</view
-            >
-            <view v-else>{{ orderInfo.packType }}</view>
-          </picker>
-        </view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
-      </view>
-
-      <view class="item">
-        <view class="title required">商品套数</view>
-        <view class="value">
-          <input
-            type="text"
-            v-model.number="orderInfo.goodAmount"
-            placeholder="请输入商品套数"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title required">包装件数</view>
-        <view class="value">
-          <input
-            type="number"
-            v-model.number="orderInfo.packAmount"
-            placeholder="请输入包装件数"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title required">包装体积</view>
-        <view class="value">
-          <input
-            v-model="orderInfo.volume"
-            type="number"
-            placeholder="请输入包装体积"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title">物品重量</view>
-        <view class="value">
-          <input
-            type="number"
-            v-model.number="orderInfo.weight"
-            placeholder="请输入物品重量"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title">物品保价</view>
-        <view class="value">
-          <input
-            type="number"
-            v-model.number="orderInfo.insuredPrice"
-            placeholder="请输入物品保价"
-          />
-        </view>
-      </view>
-
-      <view class="item">
-        <view class="title">物品规格</view>
-        <view class="value">
-          <input
-            type="text"
-            v-model="orderInfo.goodSpecification"
-            placeholder="请输入物品规格"
-          />
-        </view>
+      <view class="right">
+        <scroll-view
+          scroll-y="true"
+          :style="{ height: scrollHeight + 'px' }"
+          :scroll-into-view="currentChildId"
+          scroll-with-animation
+        >
+          <view class="right-container">
+            <view class="main-area">
+              <view
+                class="item"
+                :class="{ 'current-item': currentChildId === 'item' + index }"
+                v-for="(item, index) in categoryList"
+                :key="index"
+                :id="'item' + index"
+              >
+                <view class="detail-info" @click="handleChoose(item, true)">
+                  <image
+                    src="https://img2.baidu.com/it/u=19120479,2473789576&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                    class="category-img"
+                    mode=""
+                  />
+                  <text class="name">{{ item.label }}</text>
+                  <view class="sps">
+                    <text class="number">{{
+                      (selectData[`${currentMainType},${item.label}`] &&
+                        selectData[`${currentMainType},${item.label}`][
+                          "goodAmount"
+                        ]) ||
+                      1
+                    }}</text>
+                    <text>套</text>
+                    <text class="number">
+                      {{
+                        (selectData[`${currentMainType},${item.label}`] &&
+                          selectData[`${currentMainType},${item.label}`][
+                            "packAmount"
+                          ]) ||
+                        1
+                      }}
+                    </text>
+                    <text>件</text>
+                  </view>
+                </view>
+                <image
+                  :src="
+                    !selectList.includes(`${currentMainType},${item.label}`)
+                      ? require('../static/images/wuliu/default.png')
+                      : require('../static/images/wuliu/active.png')
+                  "
+                  class="select-img"
+                  mode=""
+                  @click="handleChoose(item)"
+                />
+              </view>
+            </view>
+          </view>
+        </scroll-view>
       </view>
     </view>
 
-    <button class="btn" @click="save">
-      {{ isEdit ? "保存修改" : "保存" }}
-    </button>
+    <ChoosePane @confirm="handleConfirm" ref="choosePaneRef"></ChoosePane>
+
+    <view class="footer" v-show="!isFocus">
+      <view class="all"
+        >已选择:<text style="color: #e95d20; margin: 0 5px">{{
+          statisticsData.allGoodAmount
+        }}</text
+        >套 /
+        <text style="color: #e95d20; margin: 0 5px">{{
+          statisticsData.allPackAmount
+        }}</text
+        >件/
+        <text style="color: #e95d20; margin: 0 5px">{{
+          statisticsData.allVolume
+        }}</text
+        >方</view
+      >
+      <button class="uni-btn" @click="handleSubmit">确认</button>
+    </view>
   </view>
 </template>
 
 <script>
-import { goodsType, commoditySelect, pickTypeList } from "./config";
+import { commoditySelect } from "./config";
+import ChoosePane from "./component/choose-pane.vue";
+import { jiOrderGoodsList } from "../constant";
 
 export default {
   data() {
     return {
-      goodsType,
-      pickTypeList,
-      serveForm: {},
-      typeSelecterInfo: {
-        left: 0,
-        right: 0,
+      scrollHeight: 0,
+      commoditySelect,
+      currentMainType: "常规家具",
+      selectList: [],
+      selectData: {},
+      statisticsData: {
+        allPackAmount: 0,
+        allGoodAmount: 0,
+        allVolume: 0,
       },
-      orderInfo: {
-        goodType: "", // 类型
-        goodName: "", // 品名
-        packType: "", // 包装类型
-        weight: "", // 重量
-        volume: "", // 体积
-        goodSpecification: "", // 规格
-        goodAmount: "", // 套数
-        packAmount: "", // 件数
-        insuredPrice: "", // 保价
-      },
-      isEdit: false,
-      editIndex: null,
+      subType: "",
+      isFocus: false,
     };
   },
-
-  onLoad(options) {
-    if (options.edit) {
-      this.isEdit = true;
-      this.editIndex = +options.edit;
-      const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST");
-      Object.assign(this.orderInfo, goodsList[+options.edit]);
+  components: {
+    ChoosePane,
+  },
+  onLoad(params) {
+    if (params.goodType) {
+      this.currentMainType = params.goodType.split(",")[0];
+      this.subType = params.goodName;
     }
+    uni.showLoading({
+      mask: true,
+    });
+    const localData = uni.getStorageSync(jiOrderGoodsList) || [];
+    for (const goodsInfo of localData) {
+      this.selectData[goodsInfo.goodType] = goodsInfo;
+      this.selectList.push(goodsInfo.goodType);
+    }
+    this.clacStatistics();
+    uni.hideLoading();
+  },
+
+  mounted() {
+    this.initPosition();
   },
 
   methods: {
-    back() {
+    initPosition() {
+      const _this = this;
+      const query = uni.createSelectorQuery().in(this);
+      let headerPosition = 0;
+      let footerPosition = 0;
+
+      uni.getSystemInfo({
+        success(res) {
+          query
+            .select(".header")
+            .boundingClientRect((data) => {
+              headerPosition = data.height;
+            })
+            .exec();
+          query
+            .select(".footer")
+            .boundingClientRect((data) => {
+              footerPosition = data.height;
+            })
+            .exec();
+          _this.scrollHeight =
+            res.safeArea.height - footerPosition - headerPosition;
+        },
+      });
+    },
+
+    handleBack() {
       uni.navigateBack();
     },
 
-    /**
-     * 类型picker切换了
-     */
-    handleChooseTypeColumnChange(e) {
-      const { column, value } = e.detail;
-      if (column === 0) {
-        this.$set(goodsType, 1, commoditySelect[goodsType[0][value]]);
+    handleChoose(item, isEdit) {
+      const str = `${this.currentMainType},${item.label}`;
+
+      if (isEdit && this.selectData[str]) {
+        this.$refs.choosePaneRef.showPane({
+          ...this.selectData[str],
+          url: item.url,
+        });
+        return;
       }
-    },
 
-    /**
-     * 类型框发生变化，即点击了确认按钮
-     */
-    handleTypeChange(e) {
-      const valueIndexs = e.detail.value;
-      this.typeSelecterInfo.left = valueIndexs[0];
-      this.typeSelecterInfo.right = valueIndexs[1];
-      const mainType = this.goodsType[0][valueIndexs[0]];
-      this.orderInfo.goodName = this.goodsType[1][valueIndexs[1]];
-      this.orderInfo.goodType = mainType + "," + this.orderInfo.goodName;
-    },
-
-    /**
-     * @description 点击确定选择包装
-     */
-    handleSelectPickType(e) {
-      const index = e.detail.value;
-      this.orderInfo.packType = this.pickTypeList[index];
-    },
-
-    /**
-     * @description 保存按钮
-     */
-    save() {
-      const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST") || [];
-      if (this.isEdit) {
-        goodsList[this.editIndex] = this.orderInfo;
+      const index = this.selectList.indexOf(str);
+      if (index !== -1) {
+        this.selectList.splice(index, 1);
+        delete this.selectData[str];
+        this.$forceUpdate();
       } else {
-        goodsList.push({ ...this.orderInfo, id: new Date().getTime() });
+        this.selectList.push(str);
+        const data = {
+          goodType: str,
+          goodName: item.label,
+          goodAmount: 1,
+          packAmount: 1,
+          volume: 0,
+        };
+        this.selectData[str] = data;
+        this.$refs.choosePaneRef.showPane({ ...data, url: item.url });
       }
-      uni.setStorageSync("JI_ORDER_GOODS_LIST", goodsList);
+
+      this.clacStatistics();
+    },
+
+    handleConfirm(data) {
+      uni.showLoading({
+        mask: true,
+      });
+      this.$set(this.selectData, data.goodType, data);
+      this.clacStatistics();
+      this.$forceUpdate();
+      uni.hideLoading();
+    },
+
+    clacStatistics() {
+      let allPackAmount = 0; // 总套数
+      let allGoodAmount = 0; // 总件数
+      let allVolume = 0; // 总体积
+      for (const item of Object.values(this.selectData)) {
+        allGoodAmount += item.goodAmount * 1;
+        allPackAmount += item.packAmount * 1;
+        allVolume += item.volume * 1;
+      }
+
+      this.statisticsData = { allPackAmount, allGoodAmount, allVolume };
+    },
+
+    handleSubmit() {
+      if (!this.statisticsData.allVolume) {
+        uni.showToast({
+          title: "商品总体积不能为0",
+          icon: "none",
+        });
+        return;
+      }
+      const data = Object.values(JSON.parse(JSON.stringify(this.selectData)));
+      uni.setStorageSync(jiOrderGoodsList, data);
       uni.navigateBack();
+    },
+
+    // 搜索
+    handleSearch(e) {
+      uni.showLoading();
+      const value = e.detail.value;
+      if (!value) {
+        uni.showToast({
+          title: "请输入搜索的内容",
+          icon: "none",
+        });
+
+        return;
+      }
+      uni.hideKeyboard();
+
+      const mainType = Object.keys(this.commoditySelect);
+      const index = mainType.findIndex((item) => item.includes(value));
+      if (index !== -1) {
+        this.currentMainType = mainType[index];
+      } else {
+        const subType = Object.values(this.commoditySelect).flat(Infinity);
+        const subIndex = subType.findIndex((item) =>
+          item.label.includes(value)
+        );
+        uni.hideLoading();
+        if (subIndex !== -1) {
+          this.currentMainType = subType[subIndex].parentNode;
+          this.subType = subType[subIndex].label;
+        } else {
+          uni.showToast({
+            title: "未搜到",
+            icon: "none",
+          });
+        }
+      }
+    },
+  },
+
+  computed: {
+    categoryList() {
+      return this.commoditySelect[this.currentMainType];
+    },
+
+    currentChildId() {
+      if (this.categoryList && this.categoryList.length) {
+        const index = this.categoryList.findIndex(
+          (item) => item.label === this.subType
+        );
+        return "item" + index;
+      } else {
+        return "item1";
+      }
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-/deep/ .uni-popup__wrapper {
-  background-color: #fff;
-}
-
-.placeholder {
-  color: gray;
-}
-.value-added-services {
-  padding: 60upx 24upx;
-  background: linear-gradient(180deg, #3662ec, rgba(205, 225, 253, 0));
+.fast-input {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-size: 28upx;
 
   .header {
+    width: 100%;
+    height: 134upx;
+    background-color: rgb(255, 255, 255);
+    padding: 26upx 26upx;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
 
-    .back {
-      width: 16upx;
+    .uni-btn {
+      font-size: 28upx;
+      color: #e95d20;
     }
 
-    .title {
+    .back {
+      width: 48upx;
+      height: 48upx;
+      // margin-top: 10upx;
+    }
+
+    .local-wrapper {
       position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 32upx;
+      margin-right: 20upx;
+      &::after {
+        content: "";
+        border: 8upx solid #000000;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        position: absolute;
+        top: 50%;
+        right: -10px;
+      }
+      /deep/ .locale {
+        color: #000;
+        font-size: 36upx;
+        font-weight: 500;
+      }
+    }
+
+    .chat {
+      width: 33.2upx;
+      height: 30upx;
+      object-fit: cover;
+    }
+
+    .search-wrapper {
+      flex: 1;
+
+      background-color: #f1f2f6;
+      height: 74upx;
+      margin: 0 20upx;
+      border-radius: 100px;
+      padding: 0 26upx;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .search-icon {
+        width: 26.6upx;
+        height: 26.6upx;
+      }
+
+      .text {
+        font-size: 24upx;
+        color: #999999;
+        margin-left: 20upx;
+        padding-left: 20upx;
+        border-left: 1upx solid #d8d8d8;
+        flex: 1;
+      }
+
+      .camera {
+        width: 33.2upx;
+        height: 30upx;
+        object-fit: cover;
+      }
     }
   }
 
   .main {
-    background-color: #fff;
-    width: 99%;
-    margin: 34upx auto 0;
-    border-radius: 20upx;
-    padding: 44upx;
-    box-sizing: border-box;
+    flex: 1;
+    display: flex;
 
-    .item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 28upx 0;
-      border-bottom: 1upx solid #d8d8d8;
+    .left {
+      width: 168upx;
+      background-color: #fff;
 
-      &:last-child {
-        border: none;
-      }
+      .left-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 20upx;
 
-      .title {
-        position: relative;
-        color: #3d3d3d;
-        font-size: 32upx;
-        font-weight: bold;
-        margin-right: 40upx;
-        &.required {
-          &::before {
-            position: absolute;
-            content: "*";
-            color: red;
-            display: block;
-            left: -10px;
+        .item {
+          position: relative;
+          width: 130upx;
+          height: 52upx;
+          text-align: center;
+          line-height: 52upx;
+          color: #000;
+          margin-bottom: 40upx;
+          border-radius: 10upx;
+          transition: background-color 350ms;
+
+          &.active {
+            background: linear-gradient(90deg, #e95d20 0%, #faae63 100%);
+            color: #fff;
+
+            .mark {
+              background-color: #e95d20;
+              color: #fff;
+            }
           }
         }
       }
+    }
 
-      .value {
-        flex: 1;
+    .right {
+      flex: 1;
+      background-color: #f1f2f6;
+      border-radius: 10upx 0 0 0;
+
+      .right-container {
+        height: 100%;
+        width: 100%;
+        padding: 18upx 0 0 18upx;
+        box-sizing: border-box;
+
+        .main-area {
+          width: 100%;
+          background-color: #fff;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          padding: 26upx 26upx 0 50upx;
+          box-sizing: border-box;
+
+          .item {
+            display: flex;
+            width: 224upx;
+            margin-bottom: 24upx;
+            transition: transform 350ms;
+            &.current-item {
+              animation: ani 1s;
+            }
+
+            @keyframes ani {
+              0% {
+                transform: scale(1);
+              }
+              50% {
+                transform: scale(1.2);
+              }
+              100% {
+                transform: scale(1);
+              }
+            }
+
+            .name {
+              margin: 10upx 0;
+              text-align: center;
+            }
+
+            .sps {
+              font-size: 24upx;
+
+              .number {
+                color: #e95d20;
+                margin: 0 6upx;
+              }
+            }
+
+            &:nth-child(2n-1) {
+              position: relative;
+
+              &::after {
+                position: absolute;
+                content: "";
+                display: block;
+
+                width: 1upx;
+                height: 100upx;
+                top: 40upx;
+                right: 0;
+                background-color: #d8d8d8;
+              }
+            }
+
+            .detail-info {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+
+              .category-img {
+                width: 160upx;
+                height: 160upx;
+                border-radius: 10upx;
+                object-fit: cover;
+              }
+            }
+
+            .select-img {
+              width: 34upx;
+              height: 34upx;
+              object-fit: cover;
+              margin-left: 20upx;
+              flex-shrink: 0;
+            }
+          }
+        }
       }
     }
   }
 
-  .btn {
-    margin: 120upx auto 20upx;
+  .footer {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 180upx;
+    background-color: #fff;
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 260upx;
-    height: 72upx;
-    background-color: #3662ec;
-    border-radius: 10upx;
-    color: #fff;
-    font-size: 36upx;
+    justify-content: center;
+    flex-direction: column;
+
+    .all {
+      margin-bottom: 20upx;
+    }
+
+    .uni-btn {
+      height: 80upx;
+      width: 628upx;
+      color: #fff;
+      text-align: center;
+      line-height: 80upx;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #e95d20 0%, #ff8f1f 100%);
+    }
   }
 }
 </style>

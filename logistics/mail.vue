@@ -119,13 +119,13 @@
           </view>
 
           <view class="op">
-            <img
-              @click="handleEditGoods(index)"
+            <image
+              @click="handleEditGoods(goods)"
               class="op-img"
               src="../static/images/wuliu/edit.png"
               alt=""
             />
-            <img
+            <image
               @click="handleDeleteGood(index)"
               class="op-img"
               src="../static/images/wuliu/delete.png"
@@ -299,9 +299,9 @@ export default {
     /**
      * @description 修改商品信息
      */
-    handleEditGoods(index) {
+    handleEditGoods(item) {
       uni.navigateTo({
-        url: `/logistics/goods-info?edit=${index}`,
+        url: `/logistics/goods-info?goodType=${item.goodType}&goodName=${item.goodName}`,
       });
     },
 
@@ -399,7 +399,6 @@ export default {
         senderAddress: this.orderForm.senderInfo.senderAddress,
         consigneeAddress: this.orderForm.consigneeInfo.consigneeAddress,
         goodsList: goodsList.map((goods) => {
-          console.log("这里", goods);
           delete goods.id;
           return goods;
         }),
@@ -506,32 +505,28 @@ export default {
               duration: 2000,
             });
 
-            console.log(res);
+            this.orderForm.serve = {};
+            this.orderForm.goodsList = [];
+            this.orderForm.remarks = "";
+            this.orderForm.senderInfo = null;
+            this.orderForm.consigneeInfo = null;
+            this.orderForm.warehouseId = null;
+            this.orderForm.priceDetail = null;
+            this.orderForm.estimateDays = "";
+            this.senderUserInfoString = "";
+            this.consigneeUserInfoString = "";
 
-            // this.orderForm.serve = {};
-            // this.orderForm.goodsList = [];
-            // this.orderForm.remarks = "";
-            // this.orderForm.senderInfo = null;
-            // this.orderForm.consigneeInfo = null;
-            // this.orderForm.warehouseId = null;
-            // this.orderForm.priceDetail = null;
-            // this.orderForm.estimateDays = "";
-            // this.senderUserInfoString = "";
-            // this.consigneeUserInfoString = "";
+            removeCache([
+              jiSenderInfo,
+              jiRemarks,
+              jiconsigneeInfo,
+              jiOrderGoodsList,
+              JI_EDIT_ORDER_ID,
+              VALUE_ADDED_SERVICES,
+              APPONIT_WULIU_QIYE_ID,
+            ]);
 
-            // removeCache([
-            //   jiSenderInfo,
-            //   jiRemarks,
-            //   jiconsigneeInfo,
-            //   jiOrderGoodsList,
-            //   JI_EDIT_ORDER_ID,
-            //   VALUE_ADDED_SERVICES,
-            //   APPONIT_WULIU_QIYE_ID,
-            // ]);
-
-            setTimeout(() => {
-              
-            }, 1000)
+            setTimeout(() => {}, 1000);
           } else {
             uni.showToast({
               title: "订单创建失败",
@@ -653,7 +648,7 @@ export default {
     const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST");
     if (goodsList && goodsList.length > 0) {
       this.orderForm.goodsList = goodsList.map((item) => {
-        if (!item.weight) {
+        if (item && !item.weight) {
           item.weight = 0;
         }
         return item;
@@ -934,8 +929,9 @@ export default {
       justify-content: flex-end;
       margin-top: 20upx;
 
-      &-img {
+      image {
         width: 36upx;
+        height: 36upx;
 
         &:nth-child(1) {
           margin-right: 20upx;
