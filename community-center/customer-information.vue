@@ -323,7 +323,7 @@ import { getUserInfoByIdApi } from "../api/community-center";
 import { getIsOpenServerAreaApi } from "../api/community-center";
 
 export default {
-  components: { JCity, Location, chooseTime },
+  components: { JCity, chooseTime },
   name: "Customer-information",
   props: {},
   data() {

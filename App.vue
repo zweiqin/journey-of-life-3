@@ -41,6 +41,7 @@ export default {
 </script>
 <style>
 @import "./app.css";
+@import "";
 
 /* 隐藏头部 */
 uni-page-head {

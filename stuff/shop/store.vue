@@ -2,12 +2,15 @@
   <div>
     <view class="store">
       <view class="top-title"></view>
-      <img
+			<!-- #ifdef H5 -->
+			 <image
         src="../../static/images/stuff/Vector8.png"
         alt=""
         class="fanhui"
         @click="handleBack"
       />
+			<!-- #endif -->
+     
       <!-- <view class="title-list">
         <view class="text">综合</view>
         <view class="text">功能配件</view>
@@ -192,6 +195,8 @@ export default {
     margin: 10upx 0upx 48upx 0upx;
   }
   .fanhui {
+    width: 24upx;
+    height: 32upx;
     margin-left: 30upx;
   }
 

@@ -3,12 +3,15 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <img
+					<!-- #ifdef H5 -->
+					 <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
             alt=""
             class="return"
             @click="handleBack"
           />
+					<!-- #endif -->
+         
           <view class="text">{{ addressDetail }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
@@ -29,7 +32,6 @@
             type="text"
             class="content"
             placeholder="搜索社区服务，一站式解决家居问题"
-            @click="goToSearch"
           />
         </view>
 
@@ -88,7 +90,7 @@
 
 <script>
 import { getServiceSortApi } from "../api/community-center";
-// import { getSearchDataApi } from "../api/community-center";
+import { getSearchDataApi } from "../api/community-center";
 import sort from "../community-center/componts";
 import { getAdressDetailByLngLat } from "../utils/DWHutils";
 import { getIsOpenServerAreaApi } from "../api/community-center";
@@ -119,13 +121,11 @@ export default {
   },
   methods: {
     switchTab(index) {
-      console.log(this.currentTab);
       this.currentTab = index;
       this.sort = this.data.find((item) => item.id === index);
     },
 
     inoutWatcher(e) {
-      console.log("111",e);
       // this.searchName = e;
       // this.getSearchData();
     },
@@ -162,28 +162,20 @@ export default {
     },
 
     async a() {
-      console.log(123456);
       const res = await getIsOpenServerAreaApi({
         address: this.address,
       });
 
-      console.log("获取到的信息", res);
       this.tips = res.data;
-      console.log("tips", this.tips);
     },
 
     //查询社区服务分类接口
     async getServiceSort() {
       const res = await getServiceSortApi({});
 
-      // console.log();
-      console.log(res);
-
       this.navbar = res.data;
       this.sort = res.data[0];
-      console.log("sort",this.sort);
       this.data = res.data;
-      console.log(res.data[0]);
       this.sort = this.data.find((item) => item.id === this.currentTab);
     },
 
@@ -194,7 +186,6 @@ export default {
       });
 
       this.candidates =res.data.map(item => item.serverTypeName)
-      // console.log(this.candidates);
     },
 
     //根据用户地址判断该区域是否开通了站长
@@ -208,13 +199,11 @@ export default {
             if (res.status === "1") {
               const result = res.regeocode;
               _this.addressDetail = result.addressComponent.township;
-              console.log("this.addressDetail", _this.addressDetail);
 
               _this.address =
                 result.addressComponent.province +
                 result.addressComponent.city +
                 result.addressComponent.district;
-              console.log("this.address", _this.address);
 
               _this.a();
             }
@@ -226,7 +215,6 @@ export default {
   mounted() {},
   onLoad(options) {
     this.currentTab = options.value * 1;
-    console.log(this.currentTab);
 
     this.getServiceSort();
     this.getIsOpenServerArea();

@@ -6,14 +6,14 @@
       @bottom="service"
     ></suspenButton>
     <view class="info">
-      <img
+      <image
         class="bgm"
-        src="
-        https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s2ghz5p3xzct9ksc4kfy.jpg      "
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/s2ghz5p3xzct9ksc4kfy.jpg"
         alt=""
+        mode="aspectFill"
       />
 
-      <img
+      <image
         class="back"
         @click="handleBack"
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bpxhsjmf5zhejt921o75.png"
@@ -21,7 +21,7 @@
       />
 
       <view class="store-info">
-        <img
+        <image
           class="avatar"
           :src="
             picUrl ||
@@ -57,7 +57,7 @@
               <view class="ops">
                 <view>
                   到这里去
-                  <img
+                  <image
                     class="icon"
                     src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gous09leumg1u3fykzfb.png"
                     alt=""
@@ -293,6 +293,16 @@ export default {
     this.getBrandListBySelect();
     this.getCatalogIdByBrand();
   },
+
+  watch: {
+    name(newValue) {
+      if (newValue) {
+        uni.setNavigationBarTitle({
+          title: newValue,
+        });
+      }
+    },
+  },
 };
 </script>
 
@@ -320,6 +330,7 @@ export default {
 
     .back {
       width: 48upx;
+      height: 48upx;
     }
 
     .store-info {
@@ -406,6 +417,7 @@ export default {
             .flex();
             .icon {
               width: 28upx;
+              height: 28upx;
               vertical-align: -2px;
               margin-left: 12upx;
 
@@ -435,6 +447,7 @@ export default {
         background-color: #fff;
         font-weight: bold;
         padding: 0 30upx;
+        white-space: nowrap
       }
     }
 

@@ -1,6 +1,9 @@
 <template>
   <view class="infomation-detail-container">
-    <Header title=" "></Header>
+		<!-- #ifdef H5 -->
+		<Header title=" "></Header>
+		<!-- #endif -->
+    
     <view class="main">
       <view class="article-title"> {{ articleInfo.title }}</view>
       <view class="bage">
@@ -54,6 +57,9 @@ export default {
       const res = await getIndustryInformationDetalApi(this.id);
       if (res.errno === 0) {
         this.articleInfo = res.data;
+        uni.setNavigationBarTitle({
+          title: res.data.title
+        })
       } else {
         uni.showToast({
           title: "文章详情获取失败",

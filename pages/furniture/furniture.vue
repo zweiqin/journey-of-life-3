@@ -30,7 +30,6 @@
             type="text"
             class="content"
             placeholder="输入你想搜索的品类/单品/品牌"
-            @click="goToSearch"
           />
         </view>
       </view>

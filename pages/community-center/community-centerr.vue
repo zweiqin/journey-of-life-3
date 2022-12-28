@@ -577,7 +577,7 @@ export default {
     this.showPopup = false;
     this.show = false;
     this.getLocation();
-    this.getBrandType();
+    // this.getBrandType();
     // this.address = "定位中...";
     // const _this = this;
     // uni.getLocation({

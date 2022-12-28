@@ -2,18 +2,21 @@
   <div>
     <view class="background">
       <view class="title">
-        <img
+				<!-- #ifdef H5 -->
+				<img
           class="back"
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/gzyrqkx0nekbiau7vivk.png"
           alt=""
           @click="back"
         />
+				<!-- #endif -->
+        
         <view></view>
         <view style="width: 48upx"></view>
       </view>
       <view class="top-title">《工厂直销，材料大放送》</view>
 
-      <img
+      <image
         class="background1"
         src="../../static/images/stuff/热销.png"
         alt=""
@@ -29,7 +32,7 @@
             >{{ item.label }}</view
           >
         </view>
-        <view class="hotgoods">
+        <view class="hotgoods" v-if="stuffGoodsList && stuffGoodsList.length">
           <view v-for="item in stuffGoodsList" :key="item.id">
             <hotGoods
               :name="item.name"
@@ -39,8 +42,10 @@
               :picUrl="item.picUrl"
               :sales="item.sales"
               :repertory="item.repertory"
-            ></hotGoods></view
-        ></view>
+            ></hotGoods>
+          </view>
+        </view>
+        <view class="no-data" v-else>暂无商品</view>
       </view>
     </view>
   </div>
@@ -67,23 +72,25 @@ export default {
   },
   methods: {
     choseType(item) {
-      console.log(item);
+      uni.showLoading();
       this.currentTab = item;
       this.categoryId = item;
       if (this.categoryId == 0) {
         this.stuffGoodsList = this.stuffGoodsList1;
-      }else{
-        this.getCateGoryGoodList()
+      } else {
+        this.getCateGoryGoodList();
       }
+
+      uni.hideLoading();
     },
     handleBack() {
       uni.navigateBack();
     },
-    async getCateGoryGoodList(){
+    async getCateGoryGoodList() {
       const res = await goodsListApi({
-        categoryId:this.categoryId
-      })
-      this.stuffGoodsList = res.data.goodsList
+        categoryId: this.categoryId,
+      });
+      this.stuffGoodsList = res.data.goodsList;
     },
     async getCatalogAll() {
       const res = await getCatalogAllApi({
@@ -92,9 +99,11 @@ export default {
       console.log(res);
     },
     async goodsList() {
+      uni.showLoading();
       const res = await goodsListApi({
         goodsType: 2,
       });
+      uni.hideLoading();
       this.totalPage = res.data.totalPages;
       console.log(res);
       this.stuffCategoryList = res.data.filterCategoryList;
@@ -295,5 +304,13 @@ export default {
     width: 48upx;
     height: 48upx;
   }
+}
+
+.no-data{
+  width: 100%;
+  height: 300upx;
+  text-align: center;
+  line-height: 300upx;
+  color: #ccc;
 }
 </style>

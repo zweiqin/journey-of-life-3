@@ -75,8 +75,6 @@
 
       <view class="upload-list">
         <view class="upload-pane">
-          
-
           <view style="display: flex; flex-wrap: wrap">
             <view
               v-for="img in images"
@@ -215,18 +213,23 @@ export default {
       const _this = this;
       uni.chooseImage({
         success: (chooseImageRes) => {
-          uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
-            filePath: chooseImageRes.tempFiles[0].path,
-            name: "file",
-            formData: {
-              token: USER_TOKEN,
-              userId: getUserId(),
-            },
-            success: (uploadFileRes) => {
-              _this.images.push(JSON.parse(uploadFileRes.data).data.url);
-            },
-          });
+          for (const imgFile of chooseImageRes.tempFiles) {
+            uni.showLoading();
+            uni.uploadFile({
+              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              filePath: imgFile.path,
+              name: "file",
+              formData: {
+                token: USER_TOKEN,
+                userId: getUserId(),
+              },
+              success: (uploadFileRes) => {
+                uni.hideLoading();
+                _this.images.push(JSON.parse(uploadFileRes.data).data.url);
+              },
+            });
+          }
+          return;
         },
       });
     },

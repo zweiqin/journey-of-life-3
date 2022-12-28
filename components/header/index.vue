@@ -30,8 +30,8 @@ export default {
         return;
       }
 
-      // uni.navigateBack();
-      uni.switchTab({ url: "/pages/community-center/community-centerr" });
+      uni.navigateBack();
+      // uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
   },
 };

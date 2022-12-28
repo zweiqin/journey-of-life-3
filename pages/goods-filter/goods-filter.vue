@@ -15,13 +15,20 @@
             src="../../static/images/index/search.png"
             mode=""
           />
-          <text class="text">输入你想搜索的产品</text>
+          <input
+            v-model="queryInfo.keyword"
+            @confirm="handleSearch"
+            class="text"
+            placeholder="输入你想搜索的产品"
+          />
           <image
             class="camera"
             src="../../static/images/index/camera.png"
             mode=""
           />
         </view>
+
+        <button class="uni-btn" @click="handleSearch">搜索</button>
       </view>
 
       <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
@@ -73,26 +80,29 @@ export default {
       queryInfo: {
         page: 1,
         size: 10,
+        keyword: "",
       },
     };
   },
 
   onLoad(options) {
-    console.log(options);
     this.mainId = options.id * 1;
     this.subId = options.sub * 1;
     this.setData();
   },
 
   methods: {
+    // 选中一级分类
     handleChooseItem(onceId) {
       this.mainId = onceId;
+      // this.resetQueryInfo()
       this.setData();
     },
 
     handleClickSubMenus(id) {
       this.subId = id;
       this.queryInfo.page = 1;
+      this.queryInfo.keyword = ""
       this.getGoodsList();
     },
 
@@ -131,6 +141,20 @@ export default {
     // 回退
     handleBack() {
       uni.navigateBack();
+    },
+
+    // 搜索
+    handleSearch() {
+      this.queryInfo.page = 1;
+      this.queryInfo.size = 10;
+      this.getGoodsList();
+    },
+
+    // 重置搜索条件
+    resetQueryInfo() {
+      this.queryInfo.page = 1;
+      this.queryInfo.size = 10;
+      this.queryInfo.keyword = "";
     },
   },
 
@@ -269,5 +293,10 @@ export default {
   height: 300upx;
   color: #ccc;
   width: 100%;
+}
+
+.uni-btn {
+  font-size: 28upx;
+  color: #1b1b1b;
 }
 </style>

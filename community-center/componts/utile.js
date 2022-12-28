@@ -44,8 +44,8 @@ function _isLeapYear(year) {
 }
 
 function _fomatDate(date, op, desc) {
-  if (date.month == 12 && date.date > 25) {
-    return `明年 ${date.year + 1} 01-${date.date * 1 + op * 1 - date.date}`
+  if (date.month == 12 && date.date + op > 31) {
+    return `明年 ${date.year + 1} 01-0${date.date * 1 + op * 1 - 31}`
   } else {
     const currentMonthDays = _getDays(date.month)
     if (date.date + op <= currentMonthDays) {

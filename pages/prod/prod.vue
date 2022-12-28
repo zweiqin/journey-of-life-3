@@ -21,10 +21,10 @@
             mode=""
         /></view>
 
-        <view
-          ><image src="../../static/images/detail/brand.png" mode="" />
-          <image src="../../static/images/detail/share.png" mode=""
-        /></view>
+        <view>
+          <image src="../../static/images/detail/brand.png" mode="" />
+          <image src="../../static/images/detail/share.png" mode="" />
+        </view>
       </view>
 
       <view
@@ -34,11 +34,14 @@
           'z-index': showTopNav ? 100 : -1,
         }"
       >
+        <!-- #ifdef H5 -->
         <image
           @click="handleBack"
           src="../../static/images/detail/top-back.png"
           mode=""
         />
+        <!-- #endif -->
+
         <view class="center">
           <view
             class="item"
@@ -53,8 +56,9 @@
             }"
             class="item"
             @click="moveToDetail(1)"
-            >评价</view
           >
+            评价
+          </view>
           <view
             class="item"
             :class="{
@@ -62,21 +66,21 @@
             }"
             @click="moveToDetail(2)"
             v-if="goodsDetail.info.detail"
-            >详情</view
           >
+            详情
+          </view>
         </view>
       </view>
     </view>
 
     <view class="pane goods-info">
-      <view class="detail-price"
-        >￥<text class="price-text">{{ goodsDetail.info.counterPrice }}</text
-        >起</view
-      >
-
-      <view class="goods-name">
-        {{ goodsDetail.info.name }}
+      <view class="detail-price">
+        ￥
+        <text class="price-text">{{ goodsDetail.info.counterPrice }}</text>
+        起
       </view>
+
+      <view class="goods-name">{{ goodsDetail.info.name }}</view>
 
       <view class="salsed">
         <text>月销100+</text>
@@ -131,9 +135,18 @@
             <view class="brand-name">{{ goodsDetail.brand.name }}</view>
             <view class="brand-desc">{{ goodsDetail.brand.desc }}</view>
             <view class="serve">
-              <text>宝贝描述<text class="apponit">4.5</text></text>
-              <text>卖家服务<text class="apponit">4.8</text></text>
-              <text>物流服务<text class="apponit">4.7</text></text>
+              <text>
+                宝贝描述
+                <text class="apponit">4.5</text>
+              </text>
+              <text>
+                卖家服务
+                <text class="apponit">4.8</text>
+              </text>
+              <text>
+                物流服务
+                <text class="apponit">4.7</text>
+              </text>
             </view>
           </view>
         </view>
@@ -163,20 +176,21 @@
           >
             <image :src="item.picUrl" mode="" />
 
-            <view class="recommend-goods-name">{{ item.name }} </view>
+            <view class="recommend-goods-name">{{ item.name }}</view>
 
-            <text class="recommend-goods-price"
-              >￥<text>{{ item.counterPrice }}</text></text
-            >
+            <text class="recommend-goods-price">
+              ￥
+              <text>{{ item.counterPrice }}</text>
+            </text>
           </view>
         </view>
       </view>
     </view>
 
     <!-- 宝贝详情 -->
-    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail">
-      <text>宝贝详情</text>
-    </view>
+    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"
+      ><text>宝贝详情</text></view
+    >
 
     <u-parse
       v-if="goodsDetail.info.detail"
@@ -187,9 +201,7 @@
 
     <!-- 为你推荐 -->
     <view class="recommd-container">
-      <view class="goods-detail">
-        <text>为你推荐</text>
-      </view>
+      <view class="goods-detail"><text>为你推荐</text></view>
     </view>
 
     <RecommendGoods :showTitle="false" :id="goodsId"></RecommendGoods>
@@ -685,6 +697,9 @@ export default {
 
 // 商品信息
 .goods-info {
+	/* #ifdef APP */
+	margin-top: 30upx;
+	/* #endif */
   .detail-price {
     color: #fa5151;
 

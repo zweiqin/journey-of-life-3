@@ -321,7 +321,6 @@ export default {
       const res = await goodsListApi({
         goodsType: 2,
       });
-      console.log(res);
       this.navs2 = res.data.filterCategoryList;
       this.navs2.unshift({ label: "综合", value: 0 });
     },
@@ -331,8 +330,6 @@ export default {
       });
     },
     bindtapStuff(item) {
-      console.log(item.Url);
-
       uni.navigateTo({
         url: item.Url,
       });
@@ -344,12 +341,10 @@ export default {
       } else if (this.currentTab1 == 1) {
         this.getSupplyList();
       }
-      console.log(this.currentTab1);
     },
     switchTab(index) {
       this.currentTab = index;
       this.brandgenreId = index;
-      console.log(this.brandgenreId);
 
       if (this.brandgenreId == 0) {
         uni.navigateTo({
@@ -387,15 +382,12 @@ export default {
       const res = await getBrandTypeApi({
         storeName: "",
       });
-      console.log("门店分类", res.data.items);
       this.navs2 = res.data.items;
       this.navs2.unshift({ storeName: "综合", id: 0 });
       const a = this.navs2.findIndex((item) => {
         return item.storeName == "品牌工厂";
       });
-      // console.log(a);
       const b = this.navs2.splice(a, 1);
-      // console.log(this.navs2);
     },
     // 获取行业信息
     async getIndustryInformationList() {
@@ -409,8 +401,6 @@ export default {
       } else {
         this.informationList = [];
       }
-
-      console.log(res);
     },
     // 价格列表
     async getPricesList() {
@@ -422,7 +412,6 @@ export default {
           duration: 2000,
         });
       }
-      console.log("价格列表", res.data.items);
       this.PricesList = res.data.items;
       this.PricesList = this.PricesList.slice(0, 6);
       this.PricesList.sort(function (x, y) {
@@ -441,7 +430,6 @@ export default {
       }
       this.supplyList = res.data.items;
       this.supplyList = this.supplyList.slice(0, 8);
-      console.log("供应列表", this.supplyList);
     },
     // 采购列表
     async getPcTodayList() {
@@ -454,7 +442,6 @@ export default {
         });
       }
 
-      console.log("采购列表", res.data);
       this.PcToday = res.data.items;
       this.PcToday = this.PcToday.slice(0, 8);
     },
@@ -469,9 +456,7 @@ export default {
       // 大创家具材料店;
       // 成鑫木业有限公司;
       // 里翎皮革;
-      console.log(res);
       this.brandList = res.data.brandList;
-      console.log(this.brandList);
       this.brandList = this.brandList.filter(
         (item) =>
           item.name == "佛山市奥丽思家具五金配件有限公司" ||
@@ -488,7 +473,6 @@ export default {
         brandgenreId: this.brandgenreId,
         page: this.page,
       });
-      console.log(res);
       this.brandList = res.data.brandList;
     },
   },
