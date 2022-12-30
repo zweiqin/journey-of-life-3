@@ -1,208 +1,361 @@
 <template>
-  <view>
-    <view class="mask" :class="{ 'show-mask': show }"></view>
-    <view
-      class="choose-pane-container"
-      :style="{
-        transform: show
-          ? 'scale(1) translate(-50%, -50%) '
-          : 'scale(0) translate(-50%, -50%)',
-      }"
-    >
-      <view class="pane">
-        <view v-if="paneData.goodType" class="fu-info">
-          <text>{{ paneData.goodType.split(",")[1] }}</text>
-          <image
-            :src="
-              paneData.url ||
-              'https://img2.baidu.com/it/u=2714638453,2125597042&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
-            "
-            mode=""
-          />
+  <view class="choose-pane-container">
+    <view class="mask" :style="maskStyle"></view>
+    <view class="main-wrapper" :style="mainStyle">
+      <view class="menu-info" v-if="chooseData">
+        <image class="image" :src="chooseData.url" mode="" />
+        <view class="menu-detail">
+          <view class="name">
+            <view>{{ chooseData.goodName }}</view>
+            <image
+              @click="close"
+              class="close"
+              src="../../static/images/wuliu/close.png"
+              mode=""
+            />
+          </view>
+          <view class="selected"> 已选择：{{ selectStr }} </view>
         </view>
-        <view class="ops">
-          <image
-            class="close"
-            @click="close"
-            src="../../static/images/wuliu/close.png"
-            mode=""
+      </view>
+
+      <view class="bar-item" v-if="chooseData">
+        <view class="title">套数</view>
+
+        <Numbers
+          @op="handleOpPackAmount('goodAmount', $event)"
+          :number="chooseData.goodAmount"
+        ></Numbers>
+      </view>
+
+      <view class="bar-item" v-if="chooseData">
+        <view class="title">件数</view>
+        <Numbers
+          :number="chooseData.packAmount"
+          @op="handleOpPackAmount('packAmount', $event)"
+        ></Numbers>
+      </view>
+
+      <view class="bar-item" v-if="chooseData">
+        <view class="title">体积</view>
+        <view class="volumn">
+          <input
+            type="digit"
+            v-model="chooseData.volume"
+            placeholder="选填"
+            placeholder-class="placeholder-text"
           />
-          <view class="op-wrapper">
-            <view class="tao">
-              <view class="numbers"
-                ><text class="fu" @click="op('goodAmount', -1)">-</text>
-                <text>{{ paneData.goodAmount }}</text>
-                <text class="fu" @click="op('goodAmount', +1)">+</text></view
-              >
-              <text class="unit">套</text>
-            </view>
-            <view class="tao">
-              <view class="numbers">
-                <text class="fu" @click="op('packAmount', -1)">-</text>
-                <text>{{ paneData.packAmount }}</text>
-                <text class="fu" @click="op('packAmount', +1)">+</text>
-              </view>
-              <text class="unit">件</text>
-            </view>
-            <view class="tao">
-              <view class="numbers">
-                <input v-model="paneData.volume" type="text" />
-              </view>
-              <text class="unit">方</text>
-            </view>
+          方
+        </view>
+      </view>
+
+      <!-- <view
+        class="bar-item colunm"
+        v-for="item in chooseData.attributes"
+        :key="item.name"
+      >
+        <view class="title">{{ item.name === "door" ? "规格" : "类型" }}</view>
+        <view class="wrapper">
+          <view class="item active" v-for="item1 in item.values" :key="item1"
+            >{{ item1 }}{{ item.unit }}</view
+          >
+        </view>
+      </view> -->
+
+      <view
+        class="bar-item colunm"
+        v-if="
+          isShowSpecifications &&
+          chooseData &&
+          chooseData.attributes &&
+          chooseData.attributes['specifications']
+        "
+      >
+        <view class="title">规格</view>
+        <view class="wrapper">
+          <view
+            class="item"
+            @click="handleClickChoose('specifications', item)"
+            :class="{
+              active: chooseData['specifications'] === item,
+            }"
+            v-for="item in chooseData.attributes['specifications'].values"
+            :key="item"
+            >{{ item }}{{ chooseData.attributes["specifications"].unit }}
           </view>
         </view>
       </view>
+
+      <view
+        class="bar-item colunm"
+        v-if="
+          chooseData &&
+          chooseData.attributes &&
+          chooseData.attributes['pretendStyle']
+        "
+      >
+        <view class="title">类型</view>
+        <view class="wrapper">
+          <view
+            class="item"
+            @click="handleClickChoose('pretendStyle', item)"
+            :class="{
+              active: chooseData['pretendStyle'] === item,
+            }"
+            v-for="item in chooseData.attributes['pretendStyle'].values"
+            :key="item"
+            >{{ item }}</view
+          >
+        </view>
+      </view>
+
       <button class="uni-btn" @click="handleConfirm">确定</button>
     </view>
   </view>
 </template>
 
 <script>
+import Numbers from "./numbers.vue";
+
 export default {
+  components: { Numbers },
   data() {
     return {
-      show: false,
-      paneData: {},
+      visiable: false,
+      chooseData: null,
+      isShowSpecifications: true,
     };
   },
 
   methods: {
-    // 关闭
-    close() {
-      this.show = false;
+    show(data, isEdit) {
+      this.chooseData = data;
+      !isEdit && this.addParams();
+      this.$nextTick(() => {
+        this.visiable = true;
+      });
     },
-    showPane(data) {
-      this.paneData = data;
-      this.show = true;
-    },
-    handleConfirm() {
-      const data = JSON.parse(JSON.stringify(this.paneData));
-      delete data.url;
-      if (Number(data.volume)!== 0 && !Number(data.volume)) {
-        uni.showToast({
-          title: "方数输入错误" ,
-          icon: 'none'
-        });
 
-        return;
+    close() {
+      this.visiable = false;
+      this.$emit("confirm", this.chooseData);
+    },
+
+    // 件数
+    handleOpPackAmount(key, number) {
+      const afterNumber = this.chooseData[key] + number;
+      if (afterNumber >= 0) {
+        this.chooseData[key] = afterNumber;
       }
-      this.$emit("confirm", data);
+    },
+
+    handleClickChoose(key, value) {
+      this.chooseData[key] = value;
+      this.changeSpVisiable();
+      this.$forceUpdate();
+    },
+
+    // 添加其他参数
+    addParams() {
+      for (const key in this.chooseData.attributes) {
+        this.chooseData[key] = this.chooseData.attributes[key].values[0];
+        this.changeSpVisiable();
+      }
+    },
+
+    //
+    changeSpVisiable() {
+      if (
+        this.chooseData &&
+        this.chooseData.attributes &&
+        this.chooseData.attributes.specifications
+      ) {
+        const apponit = this.chooseData.attributes.specifications.apponit;
+        if (apponit) {
+          this.isShowSpecifications = this.chooseData.pretendStyle === apponit;
+        } else {
+          this.isShowSpecifications = true;
+        }
+      }
+    },
+
+    // 点击确定
+    handleConfirm() {
       this.close();
     },
-    op(tag, number) {
-      if (this.paneData[tag] + number >= 1) {
-        this.paneData[tag] += number;
+
+    // 检查体积是否输入正确
+    handleCheckVolume() {},
+  },
+
+  computed: {
+    maskStyle() {
+      return {
+        opacity: this.visiable ? 1 : 0,
+        zIndex: this.visiable ? 12 : -1,
+      };
+    },
+
+    mainStyle() {
+      return {
+        transform: this.visiable ? "translateY(0)" : "translateY(1000px)",
+      };
+    },
+
+    selectStr() {
+      let baseStr = `${this.chooseData.goodName}/${
+        this.chooseData.goodAmount
+      }套/${this.chooseData.packAmount}件/${this.chooseData.volumn || 0}方`;
+      if (this.chooseData.specifications) {
+        baseStr +=
+          "/" +
+            this.chooseData.specifications +
+            this.chooseData.attributes.specifications.unit || "";
       }
+
+      if (this.chooseData.pretendStyle) {
+        baseStr += "/" + this.chooseData.pretendStyle;
+      }
+
+      return baseStr;
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-
-  &.show-mask {
-    height: 100vh;
-    background-color: transparent;
-  }
-}
 .choose-pane-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 350ms;
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    font-size: 28upx;
+    background-color: rgba(228, 228, 228, 0.413);
+    transition: all 350ms;
+  }
 
-  .pane {
-    width: 474upx;
-    height: 320upx;
+  .main-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     background-color: #fff;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.302);
-    border-radius: 10upx;
-    padding: 26upx 24upx 66upx 46upx;
-    display: flex;
+    width: 100%;
+    border-radius: 40upx 40upx 0 0;
+    padding: 40upx 50upx;
+    padding-bottom: 0;
     box-sizing: border-box;
+    transition: transform 350ms;
+    z-index: 100;
 
-    .fu-info {
+    .menu-info {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      flex: 1;
-      image {
+
+      .image {
         width: 160upx;
         height: 160upx;
-        border-radius: 10upx;
+        border-radius: 20upx;
+        flex-shrink: 0;
       }
-    }
 
-    .ops {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-left: 40upx;
-      margin-right: 20upx;
-    }
-
-    .op-wrapper {
-      .tao {
+      .menu-detail {
+        flex: 1;
+        margin-left: 30upx;
         display: flex;
-        align-items: center;
-        margin-top: 20upx;
+        flex-direction: column;
+        justify-content: space-between;
 
-        .unit {
-          margin-left: 10upx;
+        .name {
+          font-size: 32upx;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .close {
+            width: 30upx;
+            height: 30upx;
+          }
+        }
+        .selected {
+          width: 100%;
+          height: 86upx;
+          padding: 0 20upx;
+          line-height: 86upx;
+          background-color: #f9f9f9;
+          font-size: 24upx;
+          white-space: nowrap;
         }
       }
-      .numbers {
-        width: 116upx;
+    }
+
+    .bar-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26upx 0;
+      border-bottom: 1upx solid #efefef;
+
+      &.colunm {
+        display: block;
+      }
+
+      .volumn {
         display: flex;
-        justify-content: space-between;
         align-items: center;
 
         input {
-          width: 100%;
-          height: 36upx;
-          min-height: 36upx;
-          border: 1upx solid #777777;
+          text-align: center;
+          width: 128upx;
+          height: 42upx;
+          border: 1upx solid #dfdfdf;
+          margin-right: 20upx;
+          font-size: 28upx;
         }
 
-        .fu {
-          display: block;
-          width: 28upx;
-          height: 28upx;
-          text-align: center;
-          line-height: 24upx;
-          background-color: #e95d20;
-          color: #fff;
+        .placeholder-text {
+          font-size: 24upx;
         }
       }
-    }
 
-    .close {
-      width: 30upx;
-      height: 30upx;
+      .wrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        .item {
+          min-width: 44upx;
+          height: 42upx;
+          border: 1upx solid transparent;
+          margin-right: 24upx;
+          border-radius: 10upx;
+          text-align: center;
+          line-height: 42upx;
+          margin-top: 30upx;
+          padding: 0 20upx;
+          white-space: nowrap;
+
+          &.active {
+            border-color: #e95d20;
+            color: #e95d20;
+          }
+        }
+      }
     }
   }
 
   .uni-btn {
-    width: 218upx;
-    height: 64upx;
-    margin: 0 auto;
+    width: 100%;
+    height: 80upx;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #e95d20 0%, #ff8f1f 100%);
+    font-size: 32upx;
+    color: #fff;
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: #e95d20;
-    margin-top: 22upx;
-    font-size: 28upx;
-    background-color: #fff;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.302);
+    justify-content: center;
+    margin-top: 40upx;
+    margin-bottom: 20upx;
   }
 }
 </style>

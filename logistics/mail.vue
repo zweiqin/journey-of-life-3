@@ -301,7 +301,7 @@ export default {
      */
     handleEditGoods(item) {
       uni.navigateTo({
-        url: `/logistics/goods-info?goodType=${item.goodType}&goodName=${item.goodName}`,
+        url: `/logistics/goods-info?goodType=已选&goodName=${item.goodName}`,
       });
     },
 
@@ -535,7 +535,6 @@ export default {
             });
           }
 
-          console.log(res);
         } else {
           uni.showToast({
             title: res.statusMsg,
@@ -558,7 +557,6 @@ export default {
      * @description 获取指定物流仓库列表
      */
     async getApponitWuliuList() {
-      console.log(this.appointWuliuQiyeID);
       const { data } = await getDropOffPointApi({
         qiyeId: this.appointWuliuQiyeID,
       });

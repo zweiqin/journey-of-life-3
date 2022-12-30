@@ -1,6 +1,11 @@
 <template>
   <view class="fast-input">
     <view class="header">
+      <SearchPane
+        @search="handleSearch"
+        :searchValue="searchValue"
+        v-model="showSearchPane"
+      ></SearchPane>
       <image
         @click="handleBack"
         class="back"
@@ -16,16 +21,16 @@
         />
         <input
           ref="inputRef"
-          @focus="isFocus = true"
-          @blur="isFocus = false"
-          @confirm="handleSearch"
+          @focus="handleSeachInputFocus"
+          @blur="handleSearchBlur"
+          v-model="searchValue"
           confirm-type="search"
           placeholder="请输入您想要的产品"
           class="text"
+          :adjust-position="false"
         />
         <image class="camera" src="../static/images/index/camera.png" mode="" />
       </view>
-      <button class="uni-btn" @click="handleSearch">搜索</button>
     </view>
 
     <view class="main">
@@ -34,12 +39,12 @@
           <view class="left-container">
             <view
               class="item"
-              @click="currentMainType = item"
-              :class="{ active: item === currentMainType }"
-              v-for="(item, index) in Object.keys(commoditySelect)"
+              @click="handleSwitchMainType(item)"
+              :class="{ active: item.label === currentMainType }"
+              v-for="(item, index) in mainTypeMenus"
               :key="index"
             >
-              {{ item }}
+              {{ item.label }}
             </view>
           </view>
         </scroll-view>
@@ -52,7 +57,7 @@
           scroll-with-animation
         >
           <view class="right-container">
-            <view class="main-area">
+            <view class="main-area" v-if="currentMainType !== '已选'">
               <view
                 class="item"
                 :class="{ 'current-item': currentChildId === 'item' + index }"
@@ -61,11 +66,7 @@
                 :id="'item' + index"
               >
                 <view class="detail-info" @click="handleChoose(item, true)">
-                  <image
-                    src="https://img2.baidu.com/it/u=19120479,2473789576&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                    class="category-img"
-                    mode=""
-                  />
+                  <image :src="item.url" class="category-img" mode="" />
                   <text class="name">{{ item.label }}</text>
                   <view class="sps">
                     <text class="number">{{
@@ -100,6 +101,17 @@
                 />
               </view>
             </view>
+            <view class="main-area selected" v-else>
+              <Selected
+                @delete="handleDelete"
+                v-for="(item, index) in Object.values(selectData)"
+                :key="index"
+                :data="item"
+                @edit="handleEdit"
+                :class="{ 'current-item': currentChildId === 'item' + index }"
+                :id="'item' + index"
+              ></Selected>
+            </view>
           </view>
         </scroll-view>
       </view>
@@ -107,7 +119,7 @@
 
     <ChoosePane @confirm="handleConfirm" ref="choosePaneRef"></ChoosePane>
 
-    <view class="footer" v-show="!isFocus">
+    <view class="footer">
       <view class="all"
         >已选择:<text style="color: #e95d20; margin: 0 5px">{{
           statisticsData.allGoodAmount
@@ -122,7 +134,9 @@
         }}</text
         >方</view
       >
-      <button class="uni-btn" @click="handleSubmit">确认</button>
+      <button :disabled="isFocus" class="uni-btn" @click="handleSubmit">
+        确认
+      </button>
     </view>
   </view>
 </template>
@@ -131,13 +145,15 @@
 import { commoditySelect } from "./config";
 import ChoosePane from "./component/choose-pane.vue";
 import { jiOrderGoodsList } from "../constant";
+import SearchPane from "./component/search-pane.vue";
+import Selected from "./component/selected.vue";
 
 export default {
   data() {
     return {
       scrollHeight: 0,
       commoditySelect,
-      currentMainType: "常规家具",
+      currentMainType: "全屋",
       selectList: [],
       selectData: {},
       statisticsData: {
@@ -147,12 +163,20 @@ export default {
       },
       subType: "",
       isFocus: false,
+      searchValue: "",
+      headerPosition: null,
+      showSearchPane: false,
     };
   },
   components: {
     ChoosePane,
+    SearchPane,
+    Selected,
   },
   onLoad(params) {
+    uni.setNavigationBarTitle({
+      title: this.currentMainType,
+    });
     if (params.goodType) {
       this.currentMainType = params.goodType.split(",")[0];
       this.subType = params.goodName;
@@ -174,10 +198,29 @@ export default {
   },
 
   methods: {
+    // 切换一级类目
+    handleSwitchMainType(item) {
+      this.currentMainType = item.label;
+      this.subType = null;
+      uni.setNavigationBarTitle({
+        title: this.currentMainType,
+      });
+    },
+
+    handleSeachInputFocus(e) {
+      this.isFocus = true;
+      this.showSearchPane = true;
+    },
+
+    handleSearchBlur() {
+      this.isFocus = false;
+      setTimeout(() => {
+        this.showSearchPane = false
+      }, 100)
+    },
     initPosition() {
       const _this = this;
       const query = uni.createSelectorQuery().in(this);
-      let headerPosition = 0;
       let footerPosition = 0;
 
       uni.getSystemInfo({
@@ -185,7 +228,7 @@ export default {
           query
             .select(".header")
             .boundingClientRect((data) => {
-              headerPosition = data.height;
+              _this.headerPosition = data.height;
             })
             .exec();
           query
@@ -195,7 +238,7 @@ export default {
             })
             .exec();
           _this.scrollHeight =
-            res.safeArea.height - footerPosition - headerPosition;
+            res.safeArea.height - footerPosition - _this.headerPosition;
         },
       });
     },
@@ -204,14 +247,42 @@ export default {
       uni.navigateBack();
     },
 
+    handleDelete(info) {
+      const index = this.selectList.indexOf(info.goodType);
+      uni.showModal({
+        title: "删除",
+        content: `确定要删除<${info.goodName}>吗?`,
+        success: ({ confirm }) => {
+          if (confirm) {
+            this.selectList.splice(index, 1);
+            delete this.selectData[info.goodType];
+            this.$forceUpdate();
+          }
+        },
+      });
+    },
+
+    handleEdit(info) {
+      this.$refs.choosePaneRef.show(
+        {
+          ...this.selectData[info.goodType],
+        },
+        true
+      );
+    },
+
     handleChoose(item, isEdit) {
       const str = `${this.currentMainType},${item.label}`;
 
       if (isEdit && this.selectData[str]) {
-        this.$refs.choosePaneRef.showPane({
-          ...this.selectData[str],
-          url: item.url,
-        });
+        this.$refs.choosePaneRef.show(
+          {
+            ...this.selectData[str],
+            attributes: item.attributes,
+            url: item.url,
+          },
+          true
+        );
         return;
       }
 
@@ -228,9 +299,10 @@ export default {
           goodAmount: 1,
           packAmount: 1,
           volume: 0,
+          attributes: item.attributes,
         };
         this.selectData[str] = data;
-        this.$refs.choosePaneRef.showPane({ ...data, url: item.url });
+        this.$refs.choosePaneRef.show({ ...data, url: item.url });
       }
 
       this.clacStatistics();
@@ -273,45 +345,59 @@ export default {
     },
 
     // 搜索
-    handleSearch(e) {
-      uni.showLoading();
-      const value = e.detail.value;
-      if (!value) {
-        uni.showToast({
-          title: "请输入搜索的内容",
-          icon: "none",
-        });
+    // handleSearch(e) {
+    //   uni.showLoading();
+    //   const value = e.detail.value || this.searchValue;
+    //   if (!value) {
+    //     uni.showToast({
+    //       title: "请输入搜索的内容",
+    //       icon: "none",
+    //     });
 
-        return;
-      }
+    //     return;
+    //   }
+    //   uni.hideKeyboard();
+
+    //   const mainType = Object.keys(this.commoditySelect);
+    //   const index = mainType.findIndex((item) => item.includes(value));
+    //   if (index !== -1) {
+    //     this.currentMainType = mainType[index];
+    //   } else {
+    //     const subType = Object.values(this.commoditySelect).flat(Infinity);
+    //     const subIndex = subType.findIndex((item) =>
+    //       item.label.includes(value)
+    //     );
+    //     uni.hideLoading();
+    //     if (subIndex !== -1) {
+    //       this.currentMainType = subType[subIndex].parentNode;
+    //       this.subType = subType[subIndex].label;
+    //     } else {
+    //       uni.showToast({
+    //         title: "未搜到",
+    //         icon: "none",
+    //       });
+    //     }
+    //   }
+    // },
+
+    handleSearch(item) {
+      // this.searchValue = "";
       uni.hideKeyboard();
-
-      const mainType = Object.keys(this.commoditySelect);
-      const index = mainType.findIndex((item) => item.includes(value));
-      if (index !== -1) {
-        this.currentMainType = mainType[index];
-      } else {
-        const subType = Object.values(this.commoditySelect).flat(Infinity);
-        const subIndex = subType.findIndex((item) =>
-          item.label.includes(value)
-        );
-        uni.hideLoading();
-        if (subIndex !== -1) {
-          this.currentMainType = subType[subIndex].parentNode;
-          this.subType = subType[subIndex].label;
-        } else {
-          uni.showToast({
-            title: "未搜到",
-            icon: "none",
-          });
-        }
-      }
+      this.currentMainType = item.parentNode;
+      this.$nextTick(() => {
+        this.subType = item.label;
+      });
     },
   },
 
   computed: {
     categoryList() {
-      return this.commoditySelect[this.currentMainType];
+      if (this.currentMainType !== "已选") {
+        const itemList = this.commoditySelect.find(
+          (item) => item.label === this.currentMainType
+        );
+        return itemList.itemList;
+      }
     },
 
     currentChildId() {
@@ -321,8 +407,20 @@ export default {
         );
         return "item" + index;
       } else {
-        return "item1";
+        if (this.currentMainType === "已选" && Object.values(this.selectData)) {
+          const index = Object.values(this.selectData).findIndex((item) => {
+            return item.goodName === this.subType;
+          });
+
+          return index !== -1 ? "item" + index : "";
+        } else {
+          return "";
+        }
       }
+    },
+
+    mainTypeMenus() {
+      return [...this.commoditySelect, { label: "已选" }];
     },
   },
 };
@@ -338,6 +436,7 @@ export default {
   font-size: 28upx;
 
   .header {
+    position: relative;
     width: 100%;
     height: 134upx;
     background-color: rgb(255, 255, 255);
@@ -475,6 +574,21 @@ export default {
           flex-wrap: wrap;
           padding: 26upx 26upx 0 50upx;
           box-sizing: border-box;
+
+          &.selected {
+            padding: 20upx;
+            box-sizing: border-box;
+
+            .current-item {
+              background-color: #ebebeb;
+            }
+
+            .selected-container {
+              &:last-child {
+                border-bottom: none;
+              }
+            }
+          }
 
           .item {
             display: flex;
