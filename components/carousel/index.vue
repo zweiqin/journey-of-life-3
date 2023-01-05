@@ -13,9 +13,11 @@
       autoplay
       indicator-color="#fff"
       indicator-active-color="#fff"
+      @change="handleChange"
     >
       <swiper-item v-for="item in list" :key="item">
         <image
+          mode="aspectFill"
           style="height: 100%; width: 100%; 'border-radius':10px "
           :src="item"
           alt=""
@@ -48,6 +50,12 @@ export default {
     indicationPoint: {
       type: Boolean,
       default: true,
+    },
+  },
+
+  methods: {
+    handleChange(e) {
+      this.$emit("change", e.detail.current);
     },
   },
 };

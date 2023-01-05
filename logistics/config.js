@@ -51,7 +51,7 @@ export const commoditySelect = [
         "label": "茶几（岩板）",
         "url": require('../static/images/wuliu-menus/quanwu/chaji（yanban）.png'),
         "parentNode": "全屋"
-      },{
+      }, {
         "label": "电视柜",
         "url": require('../static/images/wuliu-menus/quanwu/dianshigui.png'),
         "parentNode": "全屋"
@@ -90,7 +90,7 @@ export const commoditySelect = [
         "label": "餐边柜",
         "url": require('../static/images/wuliu-menus/quanwu/canbiangui.png'),
         "parentNode": "全屋"
-      },{
+      }, {
         "label": "梳妆台（带玻璃）",
         "url": require('../static/images/wuliu-menus/quanwu/shuzhuangtai（daiboli）.png'),
         "parentNode": "全屋"
@@ -105,7 +105,7 @@ export const commoditySelect = [
         "url": require('../static/images/wuliu-menus/quanwu/yigui（putongmen）.png'),
         "parentNode": "全屋"
       },
-      
+
       {
         "label": "衣柜（推拉门）",
         "url": require('../static/images/wuliu-menus/quanwu/yigui（tuilamen）.png'),
@@ -126,12 +126,12 @@ export const commoditySelect = [
         "url": require('../static/images/wuliu-menus/quanwu/shangxiachuang（tigui）.png'),
         "parentNode": "全屋"
       },
-      
+
       {
         "label": "斗柜",
         "url": require('../static/images/wuliu-menus/quanwu/dougui.png'),
         "parentNode": "全屋"
-      },{
+      }, {
         "label": "间厅柜",
         "url": require('../static/images/wuliu-menus/quanwu/jiantinggui.jpg'),
         "parentNode": "全屋"
@@ -144,12 +144,38 @@ export const commoditySelect = [
       {
         "label": "软体沙发（套）",
         "url": require('../static/images/wuliu-menus/keting/ruantishafa（tao）.png'),
-        "parentNode": "客厅"
+        "parentNode": "客厅",
+        attributes: {
+          specifications: {
+            values: ["单人位", "双人位", "三人位", "四人位", "贵妃位", "脚踏"],
+            unit: '',
+            isMulti: true
+          },
+        }
+      },
+      {
+        "label": "板式沙发（套）",
+        "url": require('../static/images/wuliu-menus/quanwu/banshishafa（tao）.png'),
+        "parentNode": "客厅",
+        attributes: {
+          specifications: {
+            values: ["单人位", "双人位", "三人位", "四人位", "贵妃位", "脚踏"],
+            unit: '',
+            isMulti: true
+          },
+        }
       },
       {
         "label": "欧美沙发",
         "url": require('../static/images/wuliu-menus/keting/oumeishafa.png'),
-        "parentNode": "客厅"
+        "parentNode": "客厅",
+        attributes: {
+          specifications: {
+            values: ["单人位", "双人位", "三人位", "四人位", "贵妃位", "脚踏"],
+            unit: '',
+            isMulti: true
+          },
+        }
       },
       {
         "label": "茶几",
@@ -221,7 +247,7 @@ export const commoditySelect = [
         "url": require('../static/images/wuliu-menus/keting/shafachuang.png'),
         "parentNode": "客厅"
       },
-     
+
       {
         "label": "沙发床（板式）",
         "url": require('../static/images/wuliu-menus/keting/shafachuang（banshi）.png'),
@@ -247,7 +273,7 @@ export const commoditySelect = [
         "url": require('../static/images/wuliu-menus/keting/yaoyi（shensuo）.png'),
         "parentNode": "客厅"
       },
-      
+
       {
         "label": "儿童椅",
         "url": require('../static/images/wuliu-menus/keting/ertongyi.png'),
@@ -273,13 +299,13 @@ export const commoditySelect = [
         "url": require('../static/images/wuliu-menus/keting/zhedieyi.png'),
         "parentNode": "客厅"
       },
-      
+
       {
         "label": "间厅柜",
         "url": require('../static/images/wuliu-menus/keting/jiantinggui.jpg'),
         "parentNode": "客厅"
       },
-      
+
       {
         "label": "鞋柜",
         "url": require('../static/images/wuliu-menus/keting/xiegui.png'),
@@ -339,7 +365,7 @@ export const commoditySelect = [
         "label": "梳妆台（无玻璃）",
         "url": require('../static/images/wuliu-menus/woshi/shuzhuangtai（wuboli）.png'),
         "parentNode": "卧室"
-      },{
+      }, {
         "label": "上下床",
         "url": require('../static/images/wuliu-menus/woshi/shangxiachuang.png'),
         "parentNode": "卧室"

@@ -2,7 +2,10 @@
   <view class="header-wrapper">
     <view class="header">
       <TLocale :icon="false"></TLocale>
-      <view class="search-wrapper">
+      <view
+        class="search-wrapper"
+        @click="go('/pages/goods-filter/goods-filter')"
+      >
         <image
           class="search-icon"
           src="../../../static/images/index/search.png"
@@ -22,105 +25,19 @@
       />
     </view>
 
-    <view class="navs">
-      <view
-        class="nav-item"
-        :class="{ active: index === value }"
-        v-for="(nav, index) in navs"
-        @click="handleClick(index)"
-        :key="index"
-        >{{ nav.label }}</view
-      >
-
-      <view class="bar" :style="{ left: barLeft + 'px' }"></view>
-    </view>
+    <view class="navs-wrapper" :style="{ height: navsHeight + 'px' }"> </view>
   </view>
 </template>
 
 <script>
-const navs = [
-  {
-    label: "搜家具",
-  },
-  {
-    label: "品牌工厂",
-  },
-  {
-    label: "全屋定制",
-  },
-  {
-    label: "智能选配",
-  },
-];
-
-
 export default {
-  props: {
-    value: {
-      type: Number,
-      required: true,
-    },
-  },
   data() {
     return {
-      navs,
-      currentNav: 0,
-      barLeft: 0,
+      navsHeight: 0,
     };
   },
 
-  mounted() {
-    this.setBarPosition();
-  },
-
-  watch: {
-    value() {
-      this.setBarPosition();
-    },
-  },
-
   methods: {
-    // 设置bar的滚动位置
-    setBarPosition() {
-      const _this = this;
-      this.$nextTick(() => {
-        const query = uni.createSelectorQuery().in(_this);
-        let headerPosition = null;
-        let barPosition = null;
-
-        query
-          .select(".header")
-          .boundingClientRect((position) => {
-            headerPosition = position;
-          })
-          .exec();
-
-        query
-          .select(".bar")
-          .boundingClientRect((data) => {
-            barPosition = data;
-          })
-          .exec();
-
-        query
-          .select(".active")
-          .boundingClientRect((data) => {
-            _this.barLeft =
-              data.left -
-              headerPosition.left +
-              data.width / 2 -
-              barPosition.width / 2;
-          })
-          .exec();
-      });
-    },
-
-    // 切换tab
-    handleClick(index) {
-      this.$emit("input", index);
-      this.setBarPosition();
-    },
-
     // 获取尺寸
     getSize() {
       const query = uni.createSelectorQuery().in(this);
@@ -133,15 +50,15 @@ export default {
           .exec();
       });
     },
-
-    
   },
 };
 </script>
 
 <style lang="less" scoped>
 .header-wrapper {
-  padding: 50upx 30upx 20upx;
+  padding: 30upx;
+  padding-bottom: 0;
+  box-sizing: border-box;
 
   .header {
     display: flex;
@@ -208,34 +125,9 @@ export default {
     }
   }
 
-  .navs {
-    position: relative;
-    font-size: 28upx;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40upx;
-    color: #000000;
-    padding-bottom: 20upx;
+  .navs-wrapper {
     transition: all 350ms;
-
-    .nav-item {
-      &.active {
-        color: #e95d20;
-      }
-    }
-
-    .bar {
-      position: absolute;
-      height: 4upx;
-      background-color: #e95d20;
-      width: 40upx;
-      left: 0;
-      bottom: 0upx;
-      transition: all 350ms;
-      border-radius: 100px;
-    }
+    overflow: hidden;
   }
 }
 </style>

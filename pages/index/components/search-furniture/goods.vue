@@ -5,7 +5,12 @@
     v-if="data"
   >
     <view class="goods-image-wrapper">
-      <image class="good-img" :src="data.picUrl" mode="" />
+      <!-- <image class="good-img"  mode="" /> -->
+      <fast-lazy-load
+        width="100%"
+        height="320upx"
+        :src="data.picUrl"
+      ></fast-lazy-load>
       <!-- <image
         class="icon"
         src="../../../../static/images/common/color-bottom.png"
@@ -141,7 +146,7 @@ export default {
       font-weight: 500;
     }
 
-    .text-price{
+    .text-price {
       font-size: 32upx;
       font-weight: bold;
     }

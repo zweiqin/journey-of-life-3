@@ -6,7 +6,7 @@
         :list="
           goodsDetail.info.gallery.length
             ? goodsDetail.info.gallery
-            : goodsDetail.info.picUrl
+            : [goodsDetail.info.picUrl]
         "
         :height="390"
         :top="0"
@@ -287,19 +287,21 @@ export default {
       detailPosition: 0,
       scrollTop: 0,
       currentMoveTag: 0,
+      redirect: "/pages/prod/prod?goodsId=",
     };
   },
   onLoad(options) {
+    uni.pageScrollTo({
+      scrollTop: 0,
+      duration: 0,
+    });
     this.goodsId = options.goodsId * 1;
+    this.redirect += this.goodsId;
     this.userId = uni.getStorageSync(USER_ID);
     this.getGoodsDetail();
     if (this.userId) {
       this.getCarShopNumber();
     }
-    uni.pageScrollTo({
-      scrollTop: 0,
-      duration: 200,
-    });
   },
 
   methods: {
@@ -373,7 +375,7 @@ export default {
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login",
+                url: "/pages/login/login?to=" + this.redirect,
               });
             }
           },
@@ -697,9 +699,14 @@ export default {
 
 // 商品信息
 .goods-info {
-	/* #ifdef APP */
-	margin-top: 30upx;
-	/* #endif */
+  /* #ifdef APP */
+  margin-top: 30upx;
+  /* #endif */
+
+  /* #ifdef H5 */
+  margin-top: -34upx;
+  /* #endif */
+
   .detail-price {
     color: #fa5151;
 

@@ -56,6 +56,7 @@ export default {
           return;
         } else {
           if (this.redirect) {
+            console.log(this.redirect);
             uni.redirectTo({
               url: _this.redirect,
             });

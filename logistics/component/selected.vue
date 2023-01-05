@@ -30,7 +30,8 @@ export default {
     selectedStr() {
       let baseStr = `${this.data.goodName}/${this.data.goodAmount}套/${
         this.data.packAmount
-      }件/${this.data.volumn || 0}方`;
+      }件/${this.data.volume || 0}方`;
+
       if (this.data.specifications) {
         baseStr +=
           "/" +
@@ -76,6 +77,7 @@ export default {
     .goods-name {
       font-size: 32upx;
       font-weight: 600;
+      margin-bottom: 20upx;
     }
 
     .chhose {

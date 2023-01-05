@@ -298,5 +298,6 @@ export default {
 .uni-btn {
   font-size: 28upx;
   color: #1b1b1b;
+  margin-left: 10upx;
 }
 </style>

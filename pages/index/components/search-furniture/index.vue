@@ -3,7 +3,7 @@
     <view class="nav-container">
       <view class="navs" v-for="item in 2" :key="item">
         <view
-          @click="go('/pages/furniture/furniture?id=' + item.id)"
+          @click="handleToFilter(item)"
           class="nav-item"
           v-for="item in item == 1
             ? categories.slice(0, 4)
@@ -17,7 +17,12 @@
     </view>
 
     <view class="banner-container">
-      <view class="item" v-for="(item, index) in bannerConfig" :key="index" @click="go(item.url)">
+      <view
+        class="item"
+        v-for="(item, index) in bannerConfig"
+        :key="index"
+        @click="go(item.url)"
+      >
         <image class="banner-icon" :src="item.icon" mode="" />
         <view class="right-wrapper">
           <image :src="item.title" class="banner-titme-icon" mode="" />
@@ -28,8 +33,8 @@
 
     <scroll-view scroll-y="true" @scrolltolower="handleClick">
       <view class="goods-container">
-        <load-after v-if="!goodsList.length"></load-after>
-        <Goods :data="goods" v-for="goods in goodsList" :key="goods.id"></Goods>
+        <load-after v-if="!searchGoodsList.length"></load-after>
+        <Goods :data="goods" v-for="goods in searchGoodsList" :key="goods.id"></Goods>
       </view>
     </scroll-view>
   </view>
@@ -38,27 +43,30 @@
 <script>
 import { bannerConfig, defaultCategoryConfig } from "./config";
 import { getGoodsTypesApi } from "../../../../api/home";
+import { goodsListApi } from "../../../../api/goods";
 
 import Goods from "./goods.vue";
 export default {
   components: {
     Goods,
   },
-  props: {
-    goodsList: {
-      type: Array,
-      default: [],
-    },
-  },
   data() {
     return {
       bannerConfig,
       categories: defaultCategoryConfig,
+      // 分页数据
+      queryInfo: {
+        page: 1,
+        size: 20,
+      },
+      totalPages: 0,
+      searchGoodsList: []
     };
   },
 
   mounted() {
     this.getCategoryList();
+    this.getGoodsList();
   },
 
   methods: {
@@ -84,6 +92,52 @@ export default {
           name: "更多",
         });
       }
+    },
+
+    // 跳转到筛选
+    handleToFilter(item) {
+      if (item.id) {
+        uni.navigateTo({
+          url: `/pages/goods-filter/goods-filter?id=${item.id}`,
+        });
+      } else {
+        uni.navigateTo({
+          url: `/pages/furniture/furniture?id=${item.id}`,
+        });
+      }
+    },
+
+    async getGoodsList(isLoadmore) {
+      uni.showLoading();
+      const res = await goodsListApi({ ...this.queryInfo });
+      if (res.errno === 0) {
+        this.totalPages = res.data.totalPages;
+
+        if (isLoadmore) {
+          this.searchGoodsList.push(...res.data.goodsList);
+        } else {
+          this.searchGoodsList = res.data.goodsList;
+        }
+        uni.hideLoading();
+      } else {
+        uni.hideLoading();
+        uni.showToast({
+          title: res.errmsg,
+        });
+      }
+    },
+
+    reachBottom() {
+      if (this.totalPages <= this.queryInfo.page) {
+        return 'no-more';
+      }
+
+      if (this.searchGoodsList.length < this.queryInfo.size) {
+        return 'lack';
+      }
+
+      this.queryInfo.page++;
+      this.getGoodsList(true);
     },
   },
 };

@@ -199,3 +199,12 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   color: #0078d4;
   padding: 0 20upx;
 }
+
+.hidden-sb {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hidden-sb::-webkit-scrollbar{
+  display: none;
+}

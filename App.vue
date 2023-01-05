@@ -8,11 +8,8 @@ export default {
   onLaunach: function () {},
   onShow: function () {
     // 判断浏览器环境
-    var ua = navigator.userAgent.toLowerCase();
-    // if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync('appType')) {
-    // 	// 微信环境
-    // 	uni.setStorageSync('appType', 2)
-    // 	http.mpAuthLogin()
+    // var ua = navigator.userAgent.toLowerCase();
+    // if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
     // }
     // const state = util.getUrlKey('state')
     // const code = util.getUrlKey('code')

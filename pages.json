@@ -41,6 +41,18 @@
 			}
 		},
 		{
+			"path": "pages/index/components/intelligent-selection/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/index/brandFactory/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "个人中心"

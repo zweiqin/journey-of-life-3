@@ -40,7 +40,7 @@
         <view class="volumn">
           <input
             type="digit"
-            v-model="chooseData.volume"
+            v-model.number="chooseData.volume"
             placeholder="选填"
             placeholder-class="placeholder-text"
           />
@@ -74,9 +74,17 @@
         <view class="wrapper">
           <view
             class="item"
-            @click="handleClickChoose('specifications', item)"
+            @click="
+              handleClickChoose(
+                'specifications',
+                item,
+                chooseData.attributes['specifications']
+              )
+            "
             :class="{
-              active: chooseData['specifications'] === item,
+              active: chooseData.attributes['specifications'].isMulti
+                ? chooseData['specifications'].includes(item)
+                : chooseData['specifications'] === item,
             }"
             v-for="item in chooseData.attributes['specifications'].values"
             :key="item"
@@ -148,8 +156,18 @@ export default {
       }
     },
 
-    handleClickChoose(key, value) {
-      this.chooseData[key] = value;
+    handleClickChoose(key, value, config) {
+      console.log("我们的爱", key, value, config);
+      if (config && config.isMulti) {
+        const index = this.chooseData[key].indexOf(value);
+        if (index !== -1) {
+          this.chooseData[key].splice(index, 1);
+        } else {
+          this.chooseData[key].push(value);
+        }
+      } else {
+        this.chooseData[key] = value;
+      }
       this.changeSpVisiable();
       this.$forceUpdate();
     },
@@ -157,7 +175,11 @@ export default {
     // 添加其他参数
     addParams() {
       for (const key in this.chooseData.attributes) {
-        this.chooseData[key] = this.chooseData.attributes[key].values[0];
+        if (this.chooseData.attributes[key].isMulti) {
+          this.chooseData[key] = [this.chooseData.attributes[key].values[0]];
+        } else {
+          this.chooseData[key] = this.chooseData.attributes[key].values[0];
+        }
         this.changeSpVisiable();
       }
     },
@@ -280,12 +302,12 @@ export default {
         }
         .selected {
           width: 100%;
-          height: 86upx;
+          min-height: 86upx;
           padding: 0 20upx;
           line-height: 86upx;
           background-color: #f9f9f9;
           font-size: 24upx;
-          white-space: nowrap;
+          // white-space: nowrap;
         }
       }
     }

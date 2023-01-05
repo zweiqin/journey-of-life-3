@@ -2,12 +2,13 @@
   <view class="main-menus-conatainer">
     <scroll-view
       scroll-x="true"
-      :scroll-into-view="'item_' + value"
+      :scroll-into-view="scrollIntoViewId"
       scroll-with-animation
     >
       <view class="wrapper">
         <view
           class="item"
+          :class="{ active: value === item.id }"
           @click="handleClickOnceMenuItem(item)"
           v-for="item in onceMenus"
           :key="item.id"
@@ -32,11 +33,15 @@ export default {
   },
   mounted() {
     this.getGoodsTypes();
+    this.$nextTick(() => {
+      this.getItemId();
+    });
   },
 
   data() {
     return {
       onceMenus: [],
+      scrollIntoViewId: "item1",
     };
   },
 
@@ -55,6 +60,13 @@ export default {
 
     handleClickOnceMenuItem(item) {
       this.$emit("choose", item.id);
+      this.scrollIntoViewId = "item_" + item.id;
+    },
+
+    getItemId() {
+      setTimeout(() => {
+        this.scrollIntoViewId = "item_" + this.value;
+      }, 500);
     },
   },
 };
@@ -85,12 +97,17 @@ export default {
   color: #000000;
   margin-right: 20upx;
   transition: transform 350ms;
+  border-radius: 4px;
 
   image {
     width: 120upx;
     height: 120upx;
     object-fit: cover;
     margin-bottom: 10upx;
+  }
+
+  &.active {
+    border: 1upx solid #e95d20;
   }
 }
 </style>
