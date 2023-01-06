@@ -33,7 +33,7 @@
         </view> -->
         <view class="form-item">
           <view class="name">输入密码</view>
-          <input  v-model="form.password" class="input" :type="inputType" />
+          <input v-model="form.password" class="input" :type="inputType" />
           <img
             @click="isView = !isView"
             class="icon"
@@ -42,8 +42,8 @@
           />
         </view>
       </view>
-      <view class="forget-ps" v-if="type === 'login'" @click="reset"
-        >忘记密码</view
+      <view class="forget-ps" v-if="type === 'login'"
+        ><text @click="reset">忘记密码</text></view
       >
 
       <button

@@ -1,5 +1,5 @@
 <template>
-  <view class="info-detail-container">
+  <view class="info-detail-container" v-if="userInfo">
     <view class="op">
       <img
         src="../../static/images/store/chevron-states.png"
@@ -11,7 +11,20 @@
     </view>
 
     <view class="avatar-container">
-      <img :src="userInfo.avatarUrl" alt="" class="avatar" />
+      <img
+        @click="handleChangeAvatar"
+        :src="$baseImgUrl + userInfo.avatarUrl"
+        alt=""
+        class="avatar"
+      />
+      <uni-img-cropper
+        ref="gmyImgCropper"
+        :quality="1"
+        cropperType="fixed"
+        :imgSrc="imageUrl"
+        @getImg="getImg"
+        class="avatar"
+      ></uni-img-cropper>
       <view class="change-btn font-14" @click="handleChangeAvatar"
         >更换头像</view
       >
@@ -111,18 +124,12 @@
         <view class="edit-input">
           <view class="input-wrapper">
             <view class="title">（修改昵称）</view>
-            <input v-model="nickname" type="text" />
+            <input v-model="newNickname" type="text" />
           </view>
           <view class="error">请输入昵称</view>
         </view>
       </uni-popup-dialog>
     </uni-popup>
-
-    <JUploadAvatar
-      @close="handleCloseUpload"
-      ref="jUploadAvatarRef"
-      @success="handleUpDateAvatar"
-    ></JUploadAvatar>
   </view>
 </template>
 
@@ -130,19 +137,15 @@
 import { updateUserInfoApi, refrshUserInfoApi } from "../../api/user";
 import { getUserId } from "../../utils";
 import { user_INFO } from "../../constant";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
       showLogout: false,
-      nickname: "",
-      userInfo: {},
+      newNickname: "",
+      imageUrl: "",
     };
-  },
-
-  mounted() {
-    this.userInfo = uni.getStorageSync(user_INFO);
-    this.nickName = this.userInfo.nickName;
   },
   methods: {
     handleClickLogout() {
@@ -180,67 +183,58 @@ export default {
      * @description 点击确定修改昵称
      */
     handleConfirmEditNickname() {
-      this.updateUserInfo("nickname", this.nickname);
+      // this.updateUserInfo("nickname", this.newNickname);
+      this.$store.dispatch("auth/updateUserInfo", {
+        key: "nickname",
+        value: this.newNickname,
+      });
     },
 
+    // 获取图片
+    getImg(e) {
+      const _this = this;
+      uni.showLoading({
+        title: "头像上传中",
+      });
+      uni.uploadFile({
+        url: "https://www.tuanfengkeji.cn:9527/tf-app-api/wx/storage/upload",
+        filePath: e,
+        name: "file",
+        success: (uploadFileRes) => {
+          _this.handleUpDateAvatar(JSON.parse(uploadFileRes.data).data.url);
+          uni.hideLoading();
+        },
+        complete: () => {
+          uni.hideLoading();
+        },
+      });
+    },
     /**
      * 点击退出
      */
-    async handleLagout() {
-      // await layoutApi(getUserId());
-      uni.clearStorageSync();
-      uni.showToast({
-        title: "退出成功",
-        duration: 2000,
-      });
-
-      setTimeout(() => {
-        uni.redirectTo({
-          url: "/pages/login/login",
-        });
-      }, 2000);
+    handleLagout() {
+      this.$store.dispatch("auth/logout");
     },
 
     // 点击更换头像
     handleChangeAvatar() {
-      this.$refs.jUploadAvatarRef.$el.style.left = "0";
-    },
-
-    // 点击关闭
-    handleCloseUpload() {
-      this.$refs.jUploadAvatarRef.$el.style.left = "-100%";
+      this.$refs.gmyImgCropper.chooseImage();
     },
 
     // 更换头像
-    handleUpDateAvatar(res) {
-      const url = JSON.parse(res.data).data.url;
-      this.updateUserInfo("avatar", url);
-    },
-
-    // 更新用户信息
-    updateUserInfo(key, value) {
-      uni.showLoading();
-      const _this = this;
-      const originData = {
-        nickname: this.userInfo.nickName,
-        avatar: this.userInfo.avatarUrl,
-        password: this.userInfo.password,
-        id: getUserId(),
-      };
-
-      originData[key] = value;
-
-      updateUserInfoApi(originData).then(() => {
-        refrshUserInfoApi({
-          userId: getUserId(),
-        }).then(({ data }) => {
-          uni.hideLoading();
-          _this.handleCloseUpload();
-          _this.$showToast("修改成功", "success");
-          uni.setStorageSync(user_INFO, data);
-          _this.userInfo = uni.getStorageSync(user_INFO);
-        });
+    handleUpDateAvatar(url) {
+      this.$store.dispatch("auth/updateUserInfo", {
+        key: "avatar",
+        value: url,
       });
+    },
+  },
+
+  computed: {
+    ...mapGetters(["userInfo"]),
+
+    nickname() {
+      return this.userInfo.nickName;
     },
   },
 };

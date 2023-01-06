@@ -39,33 +39,18 @@ export default {
         password: form.password,
         mobile: form.mobile,
       };
-      try {
-        const res = await userRegisterApi(data);
-        if (res.errno === 0) {
-          uni.showToast({
-            title: "注册成功",
-            duration: 2000,
-          });
+      await userRegisterApi(data);
+      
+      uni.showToast({
+        title: "注册成功",
+        duration: 2000,
+      });
 
-          this.timer = setTimeout(() => {
-            uni.navigateTo({
-              url: "/pages/login/login",
-            });
-          }, 1000);
-        } else {
-          uni.showToast({
-            title: res.errmsg,
-            duration: 2000,
-            icon: "none",
-          });
-        }
-      } catch (error) {
-        uni.showToast({
-          title: "注册失败",
-          duration: 2000,
-          icon: "none",
+      this.timer = setTimeout(() => {
+        uni.navigateTo({
+          url: "/pages/login/login",
         });
-      }
+      }, 1000);
     },
   },
 

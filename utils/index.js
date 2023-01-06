@@ -15,6 +15,7 @@ export {
   XZLRequest,
   SheQuRequest,
   SheQuRequest1,
+  shopRequest
 } from './DWHRequest'
 export {
   fomartNumber,

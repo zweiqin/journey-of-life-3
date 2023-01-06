@@ -1,4 +1,4 @@
-import { getUserId, RuanRequest, XZLRequest } from "../../utils";
+import { getUserId, RuanRequest, shopRequest } from "../../utils";
 
 /**
  * @description 查询商品详情
@@ -88,6 +88,22 @@ export const goodsMaxSaleGoodsApi = (data) => {
 
 }
 // 获取当前门店的商品
-export const goodsListApi = (data) =>{
-  return RuanRequest("/goods/list",data,'get')
+export const goodsListApi = (data) => {
+  return RuanRequest("/goods/list", data, 'get')
+}
+
+
+// 查询材质列表
+export const goodsTextureListApi = (data) => {
+  return ShadowRoot("/goods/goodsTextureList", data, 'get')
+}
+
+// 查询风格列表
+export const getStyleListApi = data => {
+  return shopRequest("/goods/goodsStyleList", data, 'get')
+}
+
+// 查询产地列表
+export const getProductPlaceList = data => {
+  return shopRequest('/goods/productPlaceList', data, 'get')
 }
