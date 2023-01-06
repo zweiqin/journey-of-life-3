@@ -34,7 +34,7 @@
       <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
 
       <view :class="{ 'stic-top': scrollDis > 200 }">
-        <FilterPane></FilterPane>
+        <FilterPane @confirm="handleFilter"></FilterPane>
         <SubMenus
           ref="subMenusRef"
           :currentId="subId"
@@ -102,7 +102,7 @@ export default {
     handleClickSubMenus(id) {
       this.subId = id;
       this.queryInfo.page = 1;
-      this.queryInfo.keyword = ""
+      this.queryInfo.keyword = "";
       this.getGoodsList();
     },
 
@@ -112,7 +112,7 @@ export default {
       });
     },
 
-    async getGoodsList(isLoadMore) {
+    async getGoodsList(isLoadMore, filterData = {}) {
       this.isShowLoading = true;
       uni.showLoading({
         title: "加载中",
@@ -122,6 +122,7 @@ export default {
       const res = await goodsListApi({
         categoryId: this.subId === -1 ? this.mainId : this.subId,
         ...this.queryInfo,
+        ...filterData
       });
 
       if (res.errno === 0) {
@@ -155,6 +156,12 @@ export default {
       this.queryInfo.page = 1;
       this.queryInfo.size = 10;
       this.queryInfo.keyword = "";
+    },
+
+    handleFilter(data) {
+      this.queryInfo.page = 1;
+      this.queryInfo.size = 10;
+      this.getGoodsList(false, data)
     },
   },
 

@@ -298,6 +298,12 @@
 			}
 		}
 	],
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
+		}
+	},
 	"tabBar": {
 		"selectedColor": "#E95D20",
 		"backgroundColor": "#fff",

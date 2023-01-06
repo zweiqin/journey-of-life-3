@@ -94,8 +94,8 @@ export const goodsListApi = (data) => {
 
 
 // 查询材质列表
-export const goodsTextureListApi = (data) => {
-  return ShadowRoot("/goods/goodsTextureList", data, 'get')
+export const getGoodsTextureListApi = (data) => {
+  return shopRequest("/goods/goodsTextureList", data, 'get')
 }
 
 // 查询风格列表
