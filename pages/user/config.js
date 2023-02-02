@@ -87,7 +87,6 @@ export const two = {
     },
   ],
 };
-
 export const three = {
   title: null,
   menus: [
@@ -167,7 +166,6 @@ export const serve = {
     },
   ],
 };
-
 export const digitalStore = {
   title: "数字化营销门店",
   menus: [
@@ -193,7 +191,6 @@ export const digitalStore = {
     },
   ],
 };
-
 export const marketingTools = {
   title: "营销工具",
   menus: [
@@ -259,7 +256,6 @@ export const communityServices = {
     },
   ]
 }
-
 export const otherServe = {
   title: "其他服务",
   menus: [
@@ -293,3 +289,84 @@ export const otherServe = {
 
   ],
 };
+
+
+// - center 2.0 ---------------------------------------------------------------------------------------------------
+export const topMenuData = [
+  {
+    label: "收藏",
+    icon: require('../../static/images/center-2.0/collection.png'),
+    url: "/user/Collection/Goods-Collection",
+    showType: 1,
+  },
+  {
+    label: "足迹",
+    icon: require('../../static/images/center-2.0/footprint.png'),
+    url: "/user/sever/view-history?page=history",
+    showType: 1,
+  },
+  {
+    label: "订阅店铺",
+    icon: require('../../static/images/center-2.0/order.png'),
+    url: "/user/sever/view-history?page=follow",
+    showType: 1,
+  },
+  {
+    label: "我的钱包",
+    icon: require('../../static/images/center-2.0/wallet.png'),
+    url: "",
+    showType: 1,
+  }
+]
+
+export const myServe = {
+  title: "我的服务",
+  menus: [
+    {
+      label: "购物车",
+      icon: require('../../static/images/center-2.0/shopping-cart-2-fill.png')
+    },
+    {
+      label: "优惠劵",
+      icon: require('../../static/images/center-2.0/coupon-2-fill.png')
+    }, {
+      label: "每日签到",
+      icon: require('../../static/images/center-2.0/calendar-check-fill.png')
+    }, {
+      label: "会员升级",
+      icon: require('../../static/images/center-2.0/vip-crown-2-fill.png')
+    }, {
+      label: "商品收藏",
+      icon: require('../../static/images/center-2.0/star-smile-fill.png')
+    }, {
+      label: "联系客服",
+      icon: require('../../static/images/center-2.0/customer-service-2-fill.png')
+    }, {
+      label: "我的拼团",
+      icon: require('../../static/images/center-2.0/group-fill.png')
+    }, {
+      label: "地址管理",
+      icon: require('../../static/images/center-2.0/map-pin-fill.png')
+    },
+  ]
+}
+
+export const otherIcons = {
+  title: '我的权益',
+  menus: [
+    {
+      label: '余额',
+      name: 'count'
+    },
+    {
+      label: "优惠劵",
+      name: 'voucher'
+    },
+    {
+
+    },
+    {
+
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 <template>
   <view class="selected-container" v-if="data">
-    <image :src="data.url" mode="" />
+    <image :src="data.imageUrl" mode="" />
     <view class="goods-info">
-      <view class="goods-name">{{ data.goodName }}</view>
+      <view class="goods-name">{{ data.name }}</view>
       <view class="chhose">已选择：{{ selectedStr }}</view>
     </view>
     <view class="ops">
@@ -12,7 +12,12 @@
         @click="$emit('delete', data)"
         mode=""
       />
-      <image @click="$emit('edit', data)" class="icon" src="../../static/images/wuliu/edit.png" mode="" />
+      <image
+        @click="$emit('edit', data)"
+        class="icon"
+        src="../../static/images/wuliu/edit.png"
+        mode=""
+      />
     </view>
   </view>
 </template>
@@ -28,19 +33,15 @@ export default {
 
   computed: {
     selectedStr() {
-      let baseStr = `${this.data.goodName}/${this.data.goodAmount}套/${
+      let baseStr = `${this.data.name}/${this.data.goodAmount}套/${
         this.data.packAmount
       }件/${this.data.volume || 0}方`;
-
-      if (this.data.specifications) {
-        baseStr +=
-          "/" +
-            this.data.specifications +
-            this.data.attributes.specifications.unit || "";
+      if (this.data.specificationData) {
+        baseStr += "/" + this.data.specificationData + this.data.unit || "";
       }
 
-      if (this.data.pretendStyle) {
-        baseStr += "/" + this.data.pretendStyle;
+      if (this.data.typeData) {
+        baseStr += "/" + this.data.typeData;
       }
 
       return baseStr;
@@ -96,6 +97,10 @@ export default {
       height: 40upx;
       flex-shrink: 0;
       border-radius: 0;
+
+      &:nth-child(1){
+        margin-bottom: 20upx;
+      }
     }
   }
 }

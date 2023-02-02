@@ -30,7 +30,7 @@
       <view
         class="scroll-top-nav"
         :style="{
-          opacity: showTopNav ? 1 : 0,
+          opacity: showTopNav && isShowTop ? 1 : 0,
           'z-index': showTopNav ? 100 : -1,
         }"
       >
@@ -119,7 +119,10 @@
       </view>
 
       <!-- 店铺信息 -->
-      <view class="brand-wrapper" v-if="goodsDetail.brand.name">
+      <view
+        class="brand-wrapper"
+        v-if="goodsDetail.brand && goodsDetail.brand.name"
+      >
         <view class="top">
           <image
             class="image"
@@ -288,6 +291,7 @@ export default {
       scrollTop: 0,
       currentMoveTag: 0,
       redirect: "/pages/prod/prod?goodsId=",
+      isShowTop: false
     };
   },
   onLoad(options) {
@@ -483,6 +487,7 @@ export default {
       query
         .select(".eval")
         .boundingClientRect((data) => {
+          console.log("叼臭泥1");
           _this.evalPosition = data.top;
         })
         .exec();
@@ -490,9 +495,12 @@ export default {
       query
         .select("#goods-detail")
         .boundingClientRect((data) => {
+          console.log("叼臭泥2");
           _this.detailPosition = data.top;
         })
         .exec();
+
+      this.isShowTop = true;
     },
 
     // 点击移动到对应的位置

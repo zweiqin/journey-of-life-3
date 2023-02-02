@@ -261,9 +261,9 @@
 			}
 		},
 		{
-			"path": "user/promotionCenter/index",
+			"path": "user/account-book/index",
 			"style": {
-				"navigationBarTitleText": "推广中心"
+				"navigationBarTitleText": "小账本"
 			}
 		},
 		{
@@ -276,12 +276,6 @@
 			"path": "pages/goods-filter/goods-filter",
 			"style": {
 				"navigationBarTitleText": "商品筛选"
-			}
-		},
-		{
-			"path": "user/promotionCenter/detailIncome/index",
-			"style": {
-				"navigationBarTitleText": "detailIncome"
 			}
 		},
 		{
@@ -697,9 +691,16 @@
 					}
 				},
 				{
-					"path": "sever/userUp",
+					"path": "sever/userUp/index",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "会员升级",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/userUp/partner-appay",
+					"style": {
+						"navigationBarTitleText": "会员升级",
 						"usingComponents": {}
 					}
 				},

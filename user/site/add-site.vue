@@ -135,7 +135,6 @@ export default {
 				userId: getUserId(),
 				id: this.editId
 			}).then(({ data }) => {
-				console.log('操了', data);
 				_this.form.name = data.name;
 				_this.form.mobile = data.mobile;
 				_this.form.address = data.address;

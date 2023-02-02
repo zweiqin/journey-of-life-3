@@ -140,6 +140,10 @@ export default {
     };
   },
 
+  onShow(){
+    this.getOrders()
+  },
+
   mounted() {
     this.search = debounce(this.searchWuliu, 500);
     this.getOrders();
@@ -295,7 +299,7 @@ export default {
       uni.setStorageSync(JI_EDIT_ORDER_ID, orderInfo.id);
 
       uni.navigateTo({
-        url: "/logistics/mail",
+        url: "/logistics/mail?type=edit",
       });
     },
   },

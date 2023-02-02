@@ -54,6 +54,7 @@ export default {
     background-color: #f1f2f6;
     margin-right: 34upx;
     border-radius: 4px;
+    white-space: nowrap;
 
     &:last-child {
       margin-right: 0;

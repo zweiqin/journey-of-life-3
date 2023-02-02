@@ -3,10 +3,10 @@
     <view class="mask" :style="maskStyle"></view>
     <view class="main-wrapper" :style="mainStyle">
       <view class="menu-info" v-if="chooseData">
-        <image class="image" :src="chooseData.url" mode="" />
+        <image class="image" :src="chooseData.imageUrl" mode="" />
         <view class="menu-detail">
           <view class="name">
-            <view>{{ chooseData.goodName }}</view>
+            <view>{{ chooseData.name }}</view>
             <image
               @click="close"
               class="close"
@@ -14,7 +14,7 @@
               mode=""
             />
           </view>
-          <view class="selected"> 已选择：{{ selectStr }} </view>
+          <view class="selected"> 已选择：{{ selectStr() }} </view>
         </view>
       </view>
 
@@ -61,58 +61,57 @@
         </view>
       </view> -->
 
-      <view
-        class="bar-item colunm"
-        v-if="
-          isShowSpecifications &&
-          chooseData &&
-          chooseData.attributes &&
-          chooseData.attributes['specifications']
-        "
-      >
-        <view class="title">规格</view>
-        <view class="wrapper">
-          <view
-            class="item"
-            @click="
-              handleClickChoose(
-                'specifications',
-                item,
-                chooseData.attributes['specifications']
-              )
-            "
-            :class="{
-              active: chooseData.attributes['specifications'].isMulti
-                ? chooseData['specifications'].includes(item)
-                : chooseData['specifications'] === item,
-            }"
-            v-for="item in chooseData.attributes['specifications'].values"
-            :key="item"
-            >{{ item }}{{ chooseData.attributes["specifications"].unit }}
+      <view v-if="chooseData && !chooseData.installAmount">
+        <view
+          class="bar-item colunm"
+          v-if="
+            isShowSpecifications &&
+            chooseData &&
+            chooseData['specificationList'] &&
+            chooseData['specificationList'].length
+          "
+        >
+          <view class="title">规格</view>
+          <view class="wrapper">
+            <view
+              class="item"
+              @click="handleClickChoose('specificationData', item, chooseData)"
+              :class="{
+                active: chooseData.isMultipleChoice
+                  ? chooseData['specificationData'].includes(
+                      Object.keys(item)[0]
+                    )
+                  : chooseData['specificationData'] == Object.keys(item)[0],
+              }"
+              :id="Object.keys(item)[0]"
+              v-for="(item, index) in chooseData['specificationList']"
+              :key="index"
+              >{{ Object.keys(item)[0] }}{{ chooseData.unit }}
+            </view>
           </view>
         </view>
-      </view>
 
-      <view
-        class="bar-item colunm"
-        v-if="
-          chooseData &&
-          chooseData.attributes &&
-          chooseData.attributes['pretendStyle']
-        "
-      >
-        <view class="title">类型</view>
-        <view class="wrapper">
-          <view
-            class="item"
-            @click="handleClickChoose('pretendStyle', item)"
-            :class="{
-              active: chooseData['pretendStyle'] === item,
-            }"
-            v-for="item in chooseData.attributes['pretendStyle'].values"
-            :key="item"
-            >{{ item }}</view
-          >
+        <view
+          class="bar-item colunm"
+          v-if="
+            chooseData &&
+            chooseData['typeList'] &&
+            chooseData['typeList'].length
+          "
+        >
+          <view class="title">类型</view>
+          <view class="wrapper">
+            <view
+              class="item"
+              @click="handleClickChoose('typeData', item)"
+              :class="{
+                active: chooseData['typeData'] == Object.keys(item)[0],
+              }"
+              v-for="(item, index) in chooseData['typeList']"
+              :key="index"
+              >{{ Object.keys(item)[0] }}</view
+            >
+          </view>
         </view>
       </view>
 
@@ -138,6 +137,13 @@ export default {
     show(data, isEdit) {
       this.chooseData = data;
       !isEdit && this.addParams();
+      if (data.typeList && data.typeList.length) {
+        const currentSps = this.chooseData.typeData;
+        for (const item of data.typeList) {
+          const res = Object.entries(item)[0];
+          this.isShowSpecifications = res[0] === currentSps && !res[1];
+        }
+      }
       this.$nextTick(() => {
         this.visiable = true;
       });
@@ -145,6 +151,7 @@ export default {
 
     close() {
       this.visiable = false;
+      this.isShowSpecifications = true;
       this.$emit("confirm", this.chooseData);
     },
 
@@ -156,48 +163,98 @@ export default {
       }
     },
 
-    handleClickChoose(key, value, config) {
-      console.log("我们的爱", key, value, config);
-      if (config && config.isMulti) {
-        const index = this.chooseData[key].indexOf(value);
-        if (index !== -1) {
-          this.chooseData[key].splice(index, 1);
+    handleClickChoose(key, value) {
+      const selectValue = Object.keys(value)[0];
+      if (this.chooseData.isMultipleChoice && selectValue !== "（四件套内）") {
+        if (!Array.isArray(this.chooseData.specificationData)) {
+          this.chooseData.specificationData = [selectValue];
         } else {
-          this.chooseData[key].push(value);
+          const index = this.chooseData.specificationData.findIndex(
+            (item) => item === selectValue
+          );
+
+          if (index !== -1 && this.chooseData.specificationData.length > 1) {
+            if (this.chooseData.specificationData.length === 1) {
+              uni.showToast({
+                title: "最少选择一个规格",
+                icon: "none",
+                duration: 1000,
+              });
+            } else {
+              this.chooseData.specificationData.splice(index, 1);
+            }
+          } else if (this.chooseData.specificationData.length === 4) {
+            uni.showToast({
+              title: "最多选择四个规格",
+              icon: "none",
+              duration: 1000,
+            });
+          } else {
+            this.chooseData.specificationData.push(selectValue);
+          }
         }
       } else {
-        this.chooseData[key] = value;
+        this.chooseData[key] = selectValue;
       }
-      this.changeSpVisiable();
+
+      if (key === "typeData") {
+        this.chooseData[key] = selectValue;
+        this.isShowSpecifications = !(
+          key === "typeData" && Object.values(value)[0]
+        );
+
+        if (!this.isShowSpecifications && key === "typeData") {
+          this.chooseData.specificationData = "";
+        } else if (key === "typeData") {
+          this.chooseData.specificationData = Object.keys(
+            this.chooseData.specificationList[0]
+          )[0];
+        }
+      }
+
+      console.log(this.chooseData.specificationData);
+
       this.$forceUpdate();
+      this.selectStr();
     },
 
     // 添加其他参数
     addParams() {
-      for (const key in this.chooseData.attributes) {
-        if (this.chooseData.attributes[key].isMulti) {
-          this.chooseData[key] = [this.chooseData.attributes[key].values[0]];
-        } else {
-          this.chooseData[key] = this.chooseData.attributes[key].values[0];
-        }
-        this.changeSpVisiable();
-      }
-    },
+      console.log(this.chooseData);
+      if (this.chooseData.typeList) {
+        this.chooseData["typeData"] = Object.keys(
+          this.chooseData.typeList[0]
+        )[0];
+        this.isShowSpecifications = !Object.values(
+          this.chooseData.typeList[0]
+        )[0];
 
-    //
-    changeSpVisiable() {
-      if (
-        this.chooseData &&
-        this.chooseData.attributes &&
-        this.chooseData.attributes.specifications
-      ) {
-        const apponit = this.chooseData.attributes.specifications.apponit;
-        if (apponit) {
-          this.isShowSpecifications = this.chooseData.pretendStyle === apponit;
-        } else {
-          this.isShowSpecifications = true;
+        if (!this.isShowSpecifications) {
+          this.chooseData.specificationData = "";
+        } else if (this.chooseData.specificationList) {
+          this.chooseData.specificationData = Object.keys(
+            this.chooseData.specificationList[0]
+          )[0];
         }
+        console.log(1);
+      } else if (
+        this.chooseData.specificationList &&
+        this.chooseData.specificationList.length &&
+        this.chooseData.isMultipleChoice
+      ) {
+        this.chooseData.specificationData = [
+          Object.keys(this.chooseData.specificationList[0])[0],
+        ];
+      } else if (
+        this.chooseData.specificationList &&
+        this.chooseData.specificationList.length
+      ) {
+        this.chooseData.specificationData = Object.keys(
+          this.chooseData.specificationList[0]
+        )[0];
       }
+
+      this.selectStr();
     },
 
     // 点击确定
@@ -207,6 +264,47 @@ export default {
 
     // 检查体积是否输入正确
     handleCheckVolume() {},
+
+    selectStr() {
+      let baseStr = `${this.chooseData.name}/${this.chooseData.goodAmount}套/${
+        this.chooseData.packAmount
+      }件/${this.chooseData.volume || 0}方`;
+
+      if (this.chooseData.specificationData) {
+        if (
+          Array.isArray(this.chooseData.specificationData) &&
+          this.chooseData.specificationData.length > 1
+        ) {
+          baseStr += "/" + "（四件套内）";
+        } else {
+          baseStr +=
+            "/" +
+            this.chooseData.specificationData +
+            (this.chooseData.unit ? this.chooseData.uni : "");
+        }
+      }
+
+      if (this.chooseData.typeData) {
+        baseStr += "/" + this.chooseData.typeData;
+      }
+
+      return baseStr;
+    },
+  },
+
+  watch: {
+    "chooseData.volume"(value) {
+      if (value && !Number(value)) {
+        uni.showToast({
+          title: "体积输入不合法",
+          duration: 2000,
+        });
+
+        this.chooseData.volumn = 0;
+      }
+
+      this.selectStr();
+    },
   },
 
   computed: {
@@ -221,24 +319,6 @@ export default {
       return {
         transform: this.visiable ? "translateY(0)" : "translateY(1000px)",
       };
-    },
-
-    selectStr() {
-      let baseStr = `${this.chooseData.goodName}/${
-        this.chooseData.goodAmount
-      }套/${this.chooseData.packAmount}件/${this.chooseData.volumn || 0}方`;
-      if (this.chooseData.specifications) {
-        baseStr +=
-          "/" +
-            this.chooseData.specifications +
-            this.chooseData.attributes.specifications.unit || "";
-      }
-
-      if (this.chooseData.pretendStyle) {
-        baseStr += "/" + this.chooseData.pretendStyle;
-      }
-
-      return baseStr;
     },
   },
 };
@@ -304,7 +384,7 @@ export default {
           width: 100%;
           min-height: 86upx;
           padding: 0 20upx;
-          line-height: 86upx;
+          line-height: 2.5;
           background-color: #f9f9f9;
           font-size: 24upx;
           // white-space: nowrap;

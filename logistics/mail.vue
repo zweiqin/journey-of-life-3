@@ -154,7 +154,14 @@
     </view>
 
     <!-- 报价 -->
-    <uni-collapse ref="collapse" v-if="orderForm.priceDetail">
+    <uni-collapse
+      ref="collapse"
+      v-if="
+        orderForm.priceDetail &&
+        orderForm.serve.valuation === '系统计价' &&
+        orderForm.goodsList.length > 0
+      "
+    >
       <uni-collapse-item title="默认开启">
         <template #title>
           <view class="collapse-header">
@@ -239,6 +246,9 @@ import {
   getDropOffPointApi,
 } from "../api/logistics";
 import { formatTime, getUserId, removeCache } from "../utils";
+import { payOrder } from "../api/logistics";
+import stanPaneVue from "../user/digital-store/components/stan-pane.vue";
+import { types } from '../components/JIcon/icons';
 
 export default {
   components: {},
@@ -264,6 +274,7 @@ export default {
       priceValue: [],
       editId: null,
       appointWuliuQiyeID: null,
+      isEdit: false,
     };
   },
   methods: {
@@ -294,6 +305,7 @@ export default {
     handleDeleteGood(index) {
       this.orderForm.goodsList.splice(index, 1);
       uni.setStorageSync("JI_ORDER_GOODS_LIST", [...this.orderForm.goodsList]);
+      this.getOrderQuote();
     },
 
     /**
@@ -400,6 +412,14 @@ export default {
         consigneeAddress: this.orderForm.consigneeInfo.consigneeAddress,
         goodsList: goodsList.map((goods) => {
           delete goods.id;
+          if (Array.isArray(goods.specificationData)) {
+            goods.specificationData = goods.specificationData
+              .filter((item) => !!item)
+              .join(",");
+          } else {
+            goods.specificationData = "";
+          }
+          // goods.specificationData = goods.specificationData.toString()
           return goods;
         }),
       };
@@ -475,6 +495,9 @@ export default {
             delete item.insuredPrice;
           }
           item.volume = item.volume * 1;
+          item.specificationData = Array.isArray(item.specificationData)
+            ? item.specificationData.join(",")
+            : item.specificationData;
           return item;
         }),
         userId: getUserId(),
@@ -495,15 +518,41 @@ export default {
         const res = await api(postData);
         if (res.statusCode === 20000) {
           uni.showToast({
-            title: _this.editId ? "订单修改成功" : "订单创建成功",
+            title: _this.isEdit ? "订单修改成功" : "订单创建成功",
             duration: 2000,
           });
 
           if (res.statusCode === 20000) {
             uni.showToast({
-              title: "订单创建成功",
+              title: _this.isEdit ? "订单修改成功" : "订单创建成功",
               duration: 2000,
             });
+
+            if (!_this.editId) {
+              payOrder({
+                orderNo: res.data.orderNo,
+                userId: getUserId(),
+              }).then((res) => {
+                const payData = JSON.parse(res.data);
+                const form = document.createElement("form");
+                form.setAttribute("action", payData.url);
+                form.setAttribute("method", "POST");
+                const data = JSON.parse(payData.data);
+                let input;
+                for (const key in data) {
+                  input = document.createElement("input");
+                  input.name = key;
+                  input.value = data[key];
+                  form.appendChild(input);
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+              });
+            } else {
+              uni.navigateBack();
+            }
 
             this.orderForm.serve = {};
             this.orderForm.goodsList = [];
@@ -534,7 +583,6 @@ export default {
               icon: "none",
             });
           }
-
         } else {
           uni.showToast({
             title: res.statusMsg,
@@ -543,6 +591,7 @@ export default {
           });
         }
       } catch (error) {
+        console.log(error);
         uni.showToast({
           title: _this.editId ? "订单修改失败" : "订单创建失败",
           duration: 2000,
@@ -649,6 +698,102 @@ export default {
         if (item && !item.weight) {
           item.weight = 0;
         }
+
+        if (this.isEdit) {
+          if (
+            item.isMultipleChoice &&
+            typeof item.specificationData === "string"
+          ) {
+            item.specificationData = item.specificationData.split(",");
+          }
+
+          const unit = item.unit ? item.unit : "";
+          const type = item.typeData ? item.typeData : "";
+          let sps = "";
+          if (Array.isArray(item.specificationData)) {
+            sps = item.specificationData[0]
+              ? item.specificationData + unit
+              : "";
+          } else if (
+            item.specificationData &&
+            typeof item.specificationData !== "string"
+          ) {
+            sps = "";
+          } else {
+            sps = item.specificationData ? item.specificationData + unit : "";
+          }
+
+          const reverseGoodsNames = ["实木沙发"];
+          const params = reverseGoodsNames.includes(item.name)
+            ? sps + type
+            : type + sps;
+
+          if (
+            item.isMultipleChoice &&
+            Array.isArray(item.specificationData) &&
+            item.specificationData.length > 1
+          ) {
+            item.goodType =
+              item.parentName +
+              "," +
+              item.name +
+              (reverseGoodsNames.includes(item.name)
+                ? type + "（四件套内）"
+                : "（四件套内）" + type);
+
+            item.goodName =
+              item.name +
+              (reverseGoodsNames.includes(item.name)
+                ? type + "（四件套内）"
+                : "（四件套内）" + type);
+          } else {
+            item.goodType = item.parentName + "," + item.name + params;
+            item.goodName = item.name + params;
+          }
+
+          if (!item.productTypeNewId) {
+            item.productTypeNewId = item.id;
+          }
+          return item;
+        } else {
+          const unit = item.unit ? item.unit : "";
+          const type = item.typeData ? item.typeData : "";
+          const sps = item.specificationData
+            ? item.specificationData + unit
+            : "";
+          const reverseGoodsNames = ["实木沙发"];
+          const params = reverseGoodsNames.includes(item.name)
+            ? sps + type
+            : type + sps;
+
+          if (
+            item.isMultipleChoice &&
+            Array.isArray(item.specificationData) &&
+            item.specificationData.length > 1
+          ) {
+            item.goodType =
+              item.parentName +
+              "," +
+              item.name +
+              (reverseGoodsNames.includes(item.name)
+                ? type + "（四件套内）"
+                : "（四件套内）" + type);
+
+            item.goodName =
+              item.name +
+              (reverseGoodsNames.includes(item.name)
+                ? type + "（四件套内）"
+                : "（四件套内）" + type);
+          } else {
+            item.goodType = item.parentName + "," + item.name + params;
+            item.goodName = item.name + params;
+          }
+          item.specificationData = Array.isArray(item.specificationData)
+            ? item.specificationData.join(",")
+            : item.specificationData;
+          item.productTypeNewId = item.id;
+        }
+
         return item;
       });
     }
@@ -706,6 +851,11 @@ export default {
     }
 
     this.getOrderQuote();
+    this.$forceUpdate();
+  },
+
+  onLoad(params) {
+    this.isEdit = params.type === "edit";
   },
 };
 </script>

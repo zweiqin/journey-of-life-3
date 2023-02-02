@@ -26,7 +26,14 @@
         v-for="item in data.menus"
         :key="item.label"
       >
-        <img class="icon" :src="item.icon" alt="" />
+        <slot :name="item.name">
+          <img
+            class="icon"
+            :style="{ width: width * 2 + 'upx' }"
+            :src="item.icon"
+            alt=""
+          />
+        </slot>
         <view class="name">{{ item.label }}</view>
       </view>
     </view>
@@ -34,6 +41,7 @@
 </template>
 
 <script>
+import { number } from "echarts";
 export default {
   props: {
     data: {
@@ -47,6 +55,7 @@ export default {
     },
     currentTab: Number,
     showType: Number,
+    width: number,
   },
   methods: {
     bindtap(item) {

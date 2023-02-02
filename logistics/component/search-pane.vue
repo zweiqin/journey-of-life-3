@@ -41,6 +41,7 @@ export default {
 
   watch: {
     searchValue(newValue) {
+      return
       this.search(newValue);
     },
   },

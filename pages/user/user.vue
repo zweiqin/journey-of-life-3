@@ -1,233 +1,74 @@
-<!--
- * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-09-05 16:21:06
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-27 17:21:13
- * @FilePath: \tuan-uniapp\pages\user\user.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-  <view class="user-page">
-    <view class="tools">
-      <img
-        class="tool-img"
-        v-for="item in tools"
-        :key="item.icon"
-        :src="item.icon"
-        :value="item.value"
-        @click="toJump(item.value)"
-      />
-    </view>
+  <view class="user-container">
+    <UserInfo @detail="toViewMineInfo" :data="userInfo"></UserInfo>
+    <view class="main-area">
+      <tui-grid :unlined="false" :border="false">
+        <block v-for="(item, index) in topMenus" :key="index">
+          <tui-grid-item :border="false" :cell="4" @click="handleToPage(item)">
+            <view class="tui-grid-icon">
+              <image :src="item.icon" mode="" />
+            </view>
+            <text class="tui-grid-label">{{ item.label }}</text>
+          </tui-grid-item>
+        </block>
+      </tui-grid>
 
-    <!-- 用户信息 -->
-    <view class="user-info">
-      <view class="base">
-        <img
-          @click="toViewMineInfo"
-          class="avatar"
-          :src="
-            userInfo
-              ? userInfo.avatarUrl
-              : 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
-          "
-          alt=""
-        />
-        <view class="right">
-          <view class="name">{{ userInfo.nickName }}</view>
-          <view class="vip-info" v-if="userInfo">
-            <text class="id">团蜂ID {{ userInfo.userId }}</text>
-            <!-- <img
-              class="hu-icon"
-              src="../../static/images/user/huyuan.png"
-              alt=""
-            />
-            <text style="background: #fff" class="id">{{
-              userInfo.userLevelDesc
-            }}</text> -->
-          </view>
-          <view class="no-data" v-else>
-            您还未登录，<text class="text" @click="go('/pages/login/login')"
-              >去登录~</text
-            >
+      <OrderList @click="handleToPage" class="section"></OrderList>
+      <UserPane @click="handleToPage" isGrid class="section" :data="myEquity">
+        <view slot="count">
+          <view class="slot-wrapper">
+            ￥ <text id="user-count">0.00</text>
           </view>
         </view>
-      </view>
-      <view class="prices">
-        <view class="item">
-          <view class="title"> 会员 </view>
-          <view class="value"> {{ userInfo.userLevelDesc || "游客" }} </view>
+        <view slot="coupon">
+          <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
         </view>
-        <view class="item">
-          <view class="title"> 0<view class="bl-text">元</view> </view>
-          <view class="value"> 余额 </view>
-        </view>
-        <!-- <view class="item">
-          <view class="title">
-            <view>0</view>
-          </view>
-          <view class="value"> 代金劵 </view>
-        </view> -->
-        <view class="item">
-          <view class="title">
-            {{ userInfo.commission || 0 }}<view class="bl-text">元</view>
-          </view>
-          <view class="value"> 收入佣金 </view>
-        </view>
-      </view>
-    </view>
-
-    <!-- 第一个 -->
-    <view class="collection">
-      <view class="collection-chose" @click="choseCollection">
-        <view
-          @click="changeTab(0)"
-          :class="{ active: currentTab === 0 }"
-          class="item"
-          >商品订单</view
-        >
-        <view
-          @click="changeTab(1)"
-          :class="{ active: currentTab === 1 }"
-          class="item"
-          >社区订单</view
-        >
-      </view>
-      <UserPanel :currentTab="currentTab" :data="one" v-if="currentTab === 0">
-        <view class="info">
-          <view class="item" @click="handleToViewHistory('collection')">
-            <text class="title">收藏</text>
-            <text class="value">{{ userInfo.collectCount || 0 }}</text>
-          </view>
-          <view class="item" @click="handleToViewHistory('history')">
-            <text class="title">足迹</text>
-            <text class="value"> {{ userInfo.footprintCount || 0 }} </text>
-          </view>
-          <view class="item" @click="handleToViewHistory('follow')">
-            <text class="title">订阅</text>
-            <text class="value"> {{ userInfo.rssCount || 0 }}</text>
-          </view>
-        </view>
-      </UserPanel>
-      <UserPanel :currentTab="currentTab" :data="two" v-if="currentTab === 1">
-        <view class="info">
-          <view class="item" @click="handleToViewHistory('collection')">
-            <text class="title">收藏</text>
-            <text class="value">{{ userInfo.collectCount || 0 }}</text>
-          </view>
-          <view class="item" @click="handleToViewHistory('history')">
-            <text class="title">足迹</text>
-            <text class="value">{{ userInfo.footprintCount || 0 }}</text>
-          </view>
-          <view class="item" @click="handleToViewHistory('follow')">
-            <text class="title">订阅</text>
-            <text class="value">{{ userInfo.rssCount || 0 }}</text>
-          </view>
-        </view>
-      </UserPanel>
-
-      <UserPanel
-        :row="4"
-        @clickItem="handleClick"
-        :showShadow="false"
-        :data="serve"
-      ></UserPanel>
-
-      <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
-      <UserPanel
-        :row="4"
-        :showShadow="false"
-        :data="marketingTools"
-      ></UserPanel>
-      <UserPanel
-        :row="4"
-        :showShadow="false"
-        :data="communityServices"
-      ></UserPanel>
-      <UserPanel
-        @clickItem="handleClick"
-        :row="4"
-        :showShadow="false"
-        :data="otherServe"
-      ></UserPanel>
-    </view>
-
-    <view
-      @click="extensionCodeUrl = ''"
-      class="code-mask"
-      :style="{
-        opacity: extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
-        'z-index':
-          extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '-1',
-      }"
-    >
-      <view
-        class="code-wrapper"
-        :style="{
-          transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)',
-        }"
-      >
-        <view class="big-wrapper">
-          <image src="/static/images/user/center-logo.png" class="big-icon" />
-        </view>
-
-        <view class="images">
-          <view class="zhiwen">
-            <image src="/static/images/user/zhi.png" alt="" />
-            <text>长按扫码</text>
-          </view>
-          <image class="code" :src="extensionCodeUrl" alt="" />
-        </view>
-
-        <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
-      </view>
+      </UserPane>
+      <UserPane @click="handleToPage" isGrid class="section" :data="vipEquity">
+      </UserPane>
+      <UserPane
+        @click="handleToPage"
+        isGrid
+        :row="2"
+        class="section"
+        :data="normalMenus"
+      ></UserPane>
     </view>
   </view>
 </template>
 
 <script>
-import UserPanel from "./components/user-panel.vue";
-import UserPanel1 from "./components/user-panel1.vue";
+import UserInfo from './components/user-info.vue'
+import OrderList from './components/order-list.vue'
+import UserPane from './components/user-pane.vue'
+import { topMenus, normalMenus, myEquity, vipEquity } from '../../data/user'
 import {
   refrshUserInfoApi,
   getExtensionCodeApi,
   bindLastUserApi,
-} from "../../api/user";
-
-import {
-  tools,
-  one,
-  two,
-  three,
-  serve,
-  digitalStore,
-  marketingTools,
-  otherServe,
-  communityServices,
-} from "./config";
-import { checkWhoami, getUserId } from "../../utils";
-import { user_INFO } from "../../constant";
+} from '../../api/user'
+import { getUserId } from '../../utils'
+import { user_INFO, USER_ID } from '../../constant'
 
 export default {
   components: {
-    UserPanel,
-    UserPanel1,
+    UserInfo,
+    OrderList,
+    UserPane,
   },
+
   data() {
     return {
-      tools,
-      one,
-      two,
-      three,
-      serve,
-      digitalStore,
-      marketingTools,
-      otherServe,
+      topMenus: Object.freeze(topMenus),
+      normalMenus: Object.freeze(normalMenus),
+      myEquity: Object.freeze(myEquity),
+      vipEquity: Object.freeze(vipEquity),
       collectiontype: 1,
       currentTab: 0,
-      communityServices,
       userInfo: {},
-      extensionCodeUrl: "",
-    };
+      extensionCodeUrl: '',
+      userId: null,
+    }
   },
 
   methods: {
@@ -235,408 +76,196 @@ export default {
      * @description 查看自己的信息
      */
     toViewMineInfo() {
-      if (!getUserId()) {
-        return;
+      if (!this.userId) {
+        return
       }
       uni.navigateTo({
-        url: "/user/info/detail",
-      });
+        url: '/user/info/detail',
+      })
     },
+
     choseCollection() {
-      let collectiontype = this.collectiontype;
+      let collectiontype = this.collectiontype
       if (collectiontype == 1) {
-        this.collectiontype = 2;
+        this.collectiontype = 2
       } else {
-        this.collectiontype = 1;
+        this.collectiontype = 1
       }
     },
 
     changeTab(tab) {
-      console.log(this.currentTab);
-      this.currentTab = tab;
-      console.log(this.currentTab);
+      console.log(this.currentTab)
+      this.currentTab = tab
+      console.log(this.currentTab)
     },
     bindtapsubscription() {
       uni.navigateTo({
-        url: "/user/subscription/subscription",
-      });
+        url: '/user/subscription/subscription',
+      })
     },
 
     handleClick(item) {
-      console.log(item);
-      if (item.type && item.type === "extension") {
-        this.getExtensionCode();
+      console.log(item)
+      if (item.type && item.type === 'extension') {
+        this.getExtensionCode()
       }
 
-      if (item.label === "进销存") {
-        location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
+      if (item.label === '进销存') {
+        location.href = 'weixin://dl/business/?t=fT0Ivve8Fli'
       }
     },
 
     toJump(item) {
-      console.log(item);
-      this.value = item;
+      this.value = item
       if (this.value == 1) {
-        this.getExtensionCode();
+        this.getExtensionCode()
       } else if (this.value == 2) {
-        this.toViewMineInfo();
-      }else{
-        return;
+        this.toViewMineInfo()
+      } else {
+        return
       }
     },
 
     getExtensionCode() {
       uni.showLoading({
-        title: "加载中",
-      });
-      let url = "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login";
+        title: '加载中',
+      })
+      let url = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
       if (this.userInfo.userLevel === 1) {
-        url = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?userId=${getUserId()}&type=bind`;
+        url = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?userId=${this.userId}&type=bind`
       }
 
       getExtensionCodeApi({
         url: url,
       }).then(({ data }) => {
-        this.extensionCodeUrl = data;
-        uni.hideLoading();
-      });
+        this.extensionCodeUrl = data
+        uni.hideLoading()
+      })
     },
 
     handleToViewHistory(page) {
       uni.navigateTo({
-        url: "/user/sever/view-history?page=" + page,
-      });
+        url: '/user/sever/view-history?page=' + page,
+      })
     },
 
     async handleBindId() {
-      const bindId = uni.getStorageSync("BIND_ID");
-      if (bindId && getUserId()) {
+      const bindId = uni.getStorageSync('BIND_ID')
+      if (bindId && this.userId) {
         const res = await bindLastUserApi({
           salesmanId: bindId,
-          userId: [getUserId()],
-        });
+          userId: [this.userId],
+        })
 
         if (res.errno !== 0) {
           uni.showToast({
             title: res.errmsg,
-            icon: "none",
-          });
+            icon: 'none',
+          })
 
-          uni.removeStorageSync("BIND_ID");
+          uni.removeStorageSync('BIND_ID')
         }
       }
     },
+
+    // 点击了按钮
+    handleToPage(info) {
+      console.log(info);
+      if (!this.userId) {
+        uni.showModal({
+          title: '提示',
+          content: '您还未登录，登录后可访问',
+          confirmText: '去登录',
+          success: res => {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/pages/login/login?to=/pages/user/user',
+              })
+            }
+          },
+        })
+
+        return
+      }
+
+      this.go(info.url)
+    },
   },
+
   onShow() {
     // checkWhoami();
-    const _this = this;
+    this.userId = uni.getStorageSync(USER_ID)
+    const _this = this
     refrshUserInfoApi({
-      userId: getUserId(),
+      userId: this.userId,
     }).then(({ data }) => {
-      uni.setStorageSync(user_INFO, data);
-      _this.userInfo = uni.getStorageSync(user_INFO);
-      console.log(_this.userInfo);
-    });
+      uni.setStorageSync(user_INFO, data)
+      _this.userInfo = uni.getStorageSync(user_INFO)
+      console.log(_this.userInfo)
+    })
   },
 
   onLoad() {
-    this.handleBindId();
+    this.handleBindId()
+    this.userId = uni.getStorageSync(USER_ID)
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
-.item {
-  font-size: 24upx;
-  padding: 0 24upx;
+.user-container {
+  width: 100%;
+  min-height: 70vh;
+  font-size: 28upx;
+  padding-bottom: 50px;
+  background: linear-gradient(to right, #ed374d, #fa793f);
 
-  &.active {
-    font-weight: bold;
-    color: #3d3d3d;
-  }
-}
-.collection-chose {
-  display: flex;
-}
-.user-page {
-  padding: 20upx;
-  padding-bottom: 140upx;
-  background-color: #fdfdfd;
-
-  .tools {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 14upx;
-
-    .tool-img {
-      width: 32upx;
-      margin-left: 52upx;
-    }
+  image {
+    width: 48upx;
+    height: 48upx;
   }
 
-  .user-info {
-    padding: 20upx 20upx 0 20upx;
-    margin-top: 8upx;
-    .base {
-      display: flex;
-      .avatar {
-        width: 108upx;
-        height: 108upx;
-        border-radius: 50%;
-        margin-right: 40upx;
-      }
-      .right {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .name {
-          color: #3d3d3d;
-          font-size: 28upx;
-          margin-bottom: 20upx;
-          font-weight: bold;
-        }
-        .vip-info {
-          display: flex;
-          align-items: center;
-          .id {
-            color: #3d3d3d;
-            font-size: 20upx;
-            font-weight: 100;
-            padding: 4upx 34upx;
-            background-color: #efefef;
-            border-radius: 40px;
-          }
-          .hu-icon {
-            width: 34upx;
-            margin-left: 18upx;
-          }
-        }
-      }
-    }
-
-    .prices {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 52upx 0 30upx 0;
-
-      .item {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .title {
-          display: flex;
-          align-items: flex-end;
-          color: #3d3d3d;
-          font-size: 28upx;
-          font-weight: bold;
-          margin-bottom: 16upx;
-
-          .bl-text {
-            font-weight: normal;
-            font-size: 20upx;
-            transform: scale(0.8);
-          }
-        }
-
-        .value {
-          color: #999999;
-          font-size: 24upx;
-          letter-spacing: 2px;
-        }
-      }
-    }
-  }
-
-  .info {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1upx solid #d8d8d8;
-    padding: 24upx 0;
-
-    .item {
-      padding: 0 54upx;
-      border-right: 1upx solid #d8d8d8;
-
-      &:last-child {
-        border: none;
-      }
-
-      .title,
-      .value {
-        font-size: 24upx;
-        font-weight: normal;
-      }
-
-      .title {
-        color: #999999;
-        margin-right: 12upx;
-      }
-
-      .value {
-        color: #3d3d3d;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .no-data {
-    font-size: 28upx;
-    line-height: 3;
-
-    .text {
-      color: #48b6eb;
-    }
-  }
-}
-
-// 推广码
-.code-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: all 350ms;
-  opacity: 0;
-
-  .uni-btn {
-    line-height: 1;
-    margin: 0;
-    border: none;
-    padding: 0;
-    background: transparent;
-    padding-top: 20upx;
-    border-top: 1upx solid #ccc;
-    font-size: 32upx;
-    letter-spacing: 1em;
-    color: #ccc;
-
-    &::after {
-      border: none;
-    }
-  }
-
-  // .code-wrapper {
-  //   width: 600upx;
-  //   padding: 30upx;
-  //   box-sizing: border-box;
-  //   background-color: #fff;
-  //   border-radius: 20upx;
-  //   transform: scale(0);
-  //   transition: all 350ms;
-
-  //   .code-title {
-  //     text-align: center;
-  //     font-size: 36upx;
-  //     font-weight: bold;
-  //     margin-top: 20upx;
-  //   }
-
-  //   .code {
-  //     width: 540upx;
-  //     height: 540upx;
-  //     object-fit: cover;
-  //   }
-
-  //   .uni-btn {
-  //     line-height: 1;
-  //     margin: 0;
-  //     border: none;
-  //     padding: 0;
-  //     background: transparent;
-  //     padding-top: 20upx;
-  //     border-top: 1upx solid #ccc;
-  //     font-size: 32upx;
-  //     letter-spacing: 1em;
-  //     color: #ccc;
-
-  //     &::after {
-  //       border: none;
-  //     }
-  //   }
-  // }
-
-  .code-wrapper {
-    width: 600upx;
-    padding: 30upx;
+  .section {
+    padding: 36upx 24upx;
     box-sizing: border-box;
     background-color: #fff;
-    border-radius: 20upx;
-    transform: scale(0);
-    transition: all 350ms;
+    margin: 20upx 0;
+    border-radius: 10upx;
+  }
 
-    .images {
-      display: flex;
-      margin: 30upx 0;
-      justify-content: space-around;
+  .main-area {
+    box-sizing: border-box;
+    padding: 40upx 20upx 0;
+    min-height: calc(100vh - 248upx - 60px);
+    background: #fff;
+    border-radius: 20upx 20upx 0 0;
+    background: linear-gradient(180deg, #ffffff 0%, #fffaf9 3%, #f7f7f7 100%);
+  }
 
-      .zhiwen {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: #999999;
-
-        image {
-          width: 120upx;
-          height: 120upx;
-          margin-bottom: 10upx;
-        }
-      }
-
-      image {
-        width: 200upx;
-        height: 200upx;
-        object-fit: cover;
-      }
+  .slot-wrapper {
+    text {
+      font-size: 40upx;
+      font-weight: 500;
     }
+  }
 
-    .header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  /deep/ .tui-grid-4 {
+    padding: 0 !important;
+  }
 
-      .header-icon {
-        width: 60upx;
-        height: 60upx;
-        margin-right: 10px;
-      }
-    }
+  /deep/ .tui-grid-bg {
+    text-align: center;
+    padding: 20upx 0;
+  }
 
-    .big-wrapper {
-      width: 100%;
-      margin-top: 70upx;
-      justify-content: center;
-      display: flex;
-      .big-icon {
-        width: 400upx;
-        height: 400upx;
-        object-fit: cover;
-      }
-    }
-
-    .code-title {
-      text-align: center;
-      font-size: 36upx;
-      font-weight: bold;
-      margin-top: 20upx;
-    }
-
-    .code {
-      width: 540upx;
-      height: 540upx;
-      object-fit: cover;
-      border-radius: 54upx;
-    }
+  /deep/ .tui-grid-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10upx;
   }
 }
 </style>

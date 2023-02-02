@@ -129,7 +129,7 @@ export default {
     // 获取订单信息
     getOrderInfo() {
       this.orderInfo = uni.getStorageSync(PAY_GOODS);
-      console.log(this.orderInfo);
+      console.log('1111111111', this.orderInfo);
       this.getCardId();
     },
 

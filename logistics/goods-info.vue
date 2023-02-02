@@ -40,11 +40,11 @@
             <view
               class="item"
               @click="handleSwitchMainType(item)"
-              :class="{ active: item.label === currentMainType }"
+              :class="{ active: item.name === currentMainType }"
               v-for="(item, index) in mainTypeMenus"
               :key="index"
             >
-              {{ item.label }}
+              {{ item.name }}
             </view>
           </view>
         </scroll-view>
@@ -54,7 +54,7 @@
           scroll-y="true"
           :style="{ height: scrollHeight + 'px' }"
           :scroll-into-view="currentChildId"
-          scroll-with-animation
+          scroll-with-anitem.nameimation
         >
           <view class="right-container">
             <view class="main-area" v-if="currentMainType !== '已选'">
@@ -66,12 +66,19 @@
                 :id="'item' + index"
               >
                 <view class="detail-info" @click="handleChoose(item, true)">
-                  <image :src="item.url" class="category-img" mode="" />
-                  <text class="name">{{ item.label }}</text>
+                  <image
+                    :src="
+                      item.imageUrl ||
+                      'https://img0.baidu.com/it/u=3623336039,4242912317&fm=253&fmt=auto&app=138&f=JPEG?w=300&h=300'
+                    "
+                    class="category-img"
+                    mode=""
+                  />
+                  <text class="name">{{ item.name }}</text>
                   <view class="sps">
                     <text class="number">{{
-                      (selectData[`${currentMainType},${item.label}`] &&
-                        selectData[`${currentMainType},${item.label}`][
+                      (selectData[`${item.parentName},${item.name}`] &&
+                        selectData[`${item.parentName},${item.name}`][
                           "goodAmount"
                         ]) ||
                       1
@@ -79,8 +86,8 @@
                     <text>套</text>
                     <text class="number">
                       {{
-                        (selectData[`${currentMainType},${item.label}`] &&
-                          selectData[`${currentMainType},${item.label}`][
+                        (selectData[`${item.parentName},${item.name}`] &&
+                          selectData[`${item.parentName},${item.name}`][
                             "packAmount"
                           ]) ||
                         1
@@ -91,26 +98,35 @@
                 </view>
                 <image
                   :src="
-                    !selectList.includes(`${currentMainType},${item.label}`)
+                    !selectList.includes(`${item.parentName},${item.name}`)
                       ? require('../static/images/wuliu/default.png')
                       : require('../static/images/wuliu/active.png')
                   "
                   class="select-img"
                   mode=""
-                  @click="handleChoose(item)"
+                  @click="
+                    handleChoose(
+                      item,
+                      !selectList.includes(`${item.parentName},${item.name}`)
+                    )
+                  "
                 />
               </view>
             </view>
             <view class="main-area selected" v-else>
-              <Selected
-                @delete="handleDelete"
-                v-for="(item, index) in Object.values(selectData)"
-                :key="index"
-                :data="item"
-                @edit="handleEdit"
-                :class="{ 'current-item': currentChildId === 'item' + index }"
-                :id="'item' + index"
-              ></Selected>
+              <view v-if="Object.values(selectData).length">
+                <Selected
+                  @delete="handleDelete"
+                  v-for="(item, index) in Object.values(selectData)"
+                  :key="index"
+                  :data="item"
+                  @edit="handleEdit"
+                  :class="{ 'current-item': currentChildId === 'item' + index }"
+                  :id="'item' + index"
+                ></Selected>
+              </view>
+
+              <view class="no-data" v-else> 暂无选择 </view>
             </view>
           </view>
         </scroll-view>
@@ -142,18 +158,19 @@
 </template>
 
 <script>
-import { commoditySelect } from "./config";
+import { getMainType } from "./config";
 import ChoosePane from "./component/choose-pane.vue";
 import { jiOrderGoodsList } from "../constant";
 import SearchPane from "./component/search-pane.vue";
 import Selected from "./component/selected.vue";
+import { getCategoryListApi } from "../api/logistics";
 
 export default {
   data() {
     return {
       scrollHeight: 0,
-      commoditySelect,
-      currentMainType: "全屋",
+      commoditySelect: [],
+      currentMainType: "客厅",
       selectList: [],
       selectData: {},
       statisticsData: {
@@ -191,6 +208,19 @@ export default {
     }
     this.clacStatistics();
     uni.hideLoading();
+
+    const _this = this;
+    // uni.request({
+    //   url: "http://192.168.0.27:8781/laoa-huozhu/api/hz/order/third/productTypeListNew", //仅为示例，并非真实接口地址。
+    //   method: "POST",
+    //   success: (res) => {
+    //     _this.commoditySelect = res.data.data;
+    //   },
+    // });
+
+    getCategoryListApi().then(({ data }) => {
+      this.commoditySelect = data;
+    });
   },
 
   mounted() {
@@ -200,7 +230,7 @@ export default {
   methods: {
     // 切换一级类目
     handleSwitchMainType(item) {
-      this.currentMainType = item.label;
+      this.currentMainType = item.name;
       this.subType = null;
       uni.setNavigationBarTitle({
         title: this.currentMainType,
@@ -215,8 +245,8 @@ export default {
     handleSearchBlur() {
       this.isFocus = false;
       setTimeout(() => {
-        this.showSearchPane = false
-      }, 100)
+        this.showSearchPane = false;
+      }, 100);
     },
     initPosition() {
       const _this = this;
@@ -251,11 +281,12 @@ export default {
       const index = this.selectList.indexOf(info.goodType);
       uni.showModal({
         title: "删除",
-        content: `确定要删除<${info.goodName}>吗?`,
+        content: `确定要删除<${info.name}>吗?`,
         success: ({ confirm }) => {
           if (confirm) {
             this.selectList.splice(index, 1);
             delete this.selectData[info.goodType];
+            this.clacStatistics();
             this.$forceUpdate();
           }
         },
@@ -272,8 +303,7 @@ export default {
     },
 
     handleChoose(item, isEdit) {
-      const str = `${this.currentMainType},${item.label}`;
-
+      const str = `${item.parentName},${item.name}`;
       if (isEdit && this.selectData[str]) {
         this.$refs.choosePaneRef.show(
           {
@@ -294,15 +324,14 @@ export default {
       } else {
         this.selectList.push(str);
         const data = {
+          ...item,
           goodType: str,
-          goodName: item.label,
           goodAmount: 1,
           packAmount: 1,
           volume: 0,
-          attributes: item.attributes,
         };
         this.selectData[str] = data;
-        this.$refs.choosePaneRef.show({ ...data, url: item.url });
+        this.$refs.choosePaneRef.show({ ...data, url: item.url }, false);
       }
 
       this.clacStatistics();
@@ -341,7 +370,9 @@ export default {
       }
       const data = Object.values(JSON.parse(JSON.stringify(this.selectData)));
       uni.setStorageSync(jiOrderGoodsList, data);
-      uni.navigateBack();
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 500);
     },
 
     // 搜索
@@ -365,7 +396,7 @@ export default {
     //   } else {
     //     const subType = Object.values(this.commoditySelect).flat(Infinity);
     //     const subIndex = subType.findIndex((item) =>
-    //       item.label.includes(value)
+    //       item.name.includes(value)
     //     );
     //     uni.hideLoading();
     //     if (subIndex !== -1) {
@@ -385,7 +416,7 @@ export default {
       uni.hideKeyboard();
       this.currentMainType = item.parentNode;
       this.$nextTick(() => {
-        this.subType = item.label;
+        this.subType = item.name;
       });
     },
   },
@@ -394,16 +425,17 @@ export default {
     categoryList() {
       if (this.currentMainType !== "已选") {
         const itemList = this.commoditySelect.find(
-          (item) => item.label === this.currentMainType
+          (item) => item.name === this.currentMainType
         );
-        return itemList.itemList;
+
+        return (itemList && itemList.itemList) || [];
       }
     },
 
     currentChildId() {
       if (this.categoryList && this.categoryList.length) {
         const index = this.categoryList.findIndex(
-          (item) => item.label === this.subType
+          (item) => item.name === this.subType
         );
         return "item" + index;
       } else {
@@ -420,7 +452,10 @@ export default {
     },
 
     mainTypeMenus() {
-      return [...this.commoditySelect, { label: "已选" }];
+      return [
+        { name: "已选" },
+        ...this.commoditySelect.filter((item) => item.itemList.length),
+      ];
     },
   },
 };
@@ -561,13 +596,14 @@ export default {
       border-radius: 10upx 0 0 0;
 
       .right-container {
-        height: 100%;
+        min-height: 100%;
         width: 100%;
         padding: 18upx 0 0 18upx;
         box-sizing: border-box;
 
         .main-area {
           width: 100%;
+          height: 100%;
           background-color: #fff;
           display: flex;
           justify-content: space-between;
@@ -693,5 +729,13 @@ export default {
       background: linear-gradient(90deg, #e95d20 0%, #ff8f1f 100%);
     }
   }
+}
+
+.no-data {
+  height: 400upx;
+  width: 100%;
+  text-align: center;
+  line-height: 400upx;
+  color: #999999;
 }
 </style>

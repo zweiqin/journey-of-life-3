@@ -137,4 +137,13 @@ export const getFollowListApi = (data) => {
   return request('/laoa-huozhu/api/hz/order/third/getFollwCompanyList', data)
 }
 
+// 获取物流配置信息
+export const getCategoryListApi = data => {
+  return request("/laoa-huozhu/api/hz/order/third/productTypeListNew", data)
+}
 
+
+// 创建订单
+export const payOrder = data => {
+  return request("/laoa-huozhu/api/hz/order/third/orderPayTfH5", data)
+}

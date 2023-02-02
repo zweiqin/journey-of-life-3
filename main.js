@@ -52,6 +52,15 @@ Vue.mixin({
 			uni.navigateTo({
 				url
 			});
+		},
+		getSize(selecter) {
+			const _this = this
+			return new Promise((resolve, reject) => {
+				const query = uni.createSelectorQuery().in(_this);
+				query.select(selecter).boundingClientRect(data => {
+					resolve(data)
+				}).exec();
+			})
 		}
 	}
 });
