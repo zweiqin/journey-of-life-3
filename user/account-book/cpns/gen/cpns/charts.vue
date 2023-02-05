@@ -20,7 +20,7 @@
           class="tip"
           v-if="isShowTip"
           :style="{ background: item.color }"
-          >{{ item.value }}</view
+          >{{ item.orderQuantity }}</view
         >
       </view>
       <view class="title">{{ item.label }}</view>
@@ -35,6 +35,12 @@
 <script>
 import { formLabels } from './config'
 export default {
+  props: {
+    data1: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       data: formLabels,
@@ -43,21 +49,33 @@ export default {
     }
   },
 
-  mounted() {
-    this.initCharts()
+  watch: {
+    data1: {
+      handler(value) {
+        this.initCharts(value)
+      },
+
+      immediate: true,
+      deep: true,
+    },
   },
 
   methods: {
-    initCharts() {
-      setTimeout(() => {
-        const values = formLabels.map(item => item.value)
-        const maxCount = Math.max(...values)
-        this.data = formLabels.map(item => {
-          item.height = Math.floor((item.value / maxCount) * 70)
-          return item
-        })
-        this.isShowTip = true
-      }, 1000)
+    initCharts(value) {
+      if (!Array.isArray(value)) {
+        return
+      }
+
+      const values = value.map(item => item.orderQuantity)
+      console.log(values);
+      const maxCount = Math.max(...values)
+      this.data = formLabels.map((item, index) => {
+        // const currentItem = value.find(item1 => item1.typeName === item.label)
+        item.height = Math.floor((values[index] / maxCount) * 70)
+        item.orderQuantity = values[index]
+        return item
+      })
+      this.isShowTip = true
     },
   },
 }
@@ -73,7 +91,6 @@ export default {
   display: flex;
   align-items: center;
 
-
   .item {
     position: relative;
     height: 100%;
@@ -82,7 +99,7 @@ export default {
 
     .line {
       position: absolute;
-      bottom: 0;
+      bottom: 46upx;
       left: 50%;
       transform: translateX(-50%);
       width: 1px;

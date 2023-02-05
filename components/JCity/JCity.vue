@@ -5,10 +5,10 @@
       <view
         class="value"
         :style="{
-          color: text ? '' : 'grey',
+          color: text ? textColor : 'gray',
         }"
         @click="open"
-        >{{ text || "选择城市" }}</view
+        >{{ text || '选择城市' }}</view
       >
     </view>
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
@@ -21,7 +21,7 @@
               :class="{
                 active: current === 'province',
               }"
-              >{{ areaInfo.province.text || "省份" }}</view
+              >{{ areaInfo.province.text || '省份' }}</view
             >
             <view
               class="item"
@@ -29,7 +29,7 @@
                 active: current === 'city',
               }"
               @click="change('city')"
-              >{{ areaInfo.city.text || "城市" }}</view
+              >{{ areaInfo.city.text || '城市' }}</view
             >
             <view
               class="item"
@@ -37,7 +37,7 @@
               :class="{
                 active: current === 'county',
               }"
-              >{{ areaInfo.county.text || "区县" }}</view
+              >{{ areaInfo.county.text || '区县' }}</view
             >
           </view>
           <button
@@ -71,154 +71,159 @@
 </template>
 
 <script>
-import { getCitiesApi } from "../../api/user";
+import { getCitiesApi } from '../../api/user'
 
 export default {
   props: {
     text: String,
+    textColor: String,
   },
   data() {
     return {
-      current: "province",
+      current: 'province',
       data: [],
       areaInfo: {
         province: {
-          text: "",
+          text: '',
           id: null,
         },
         city: {
-          text: "",
+          text: '',
           id: null,
         },
         county: {
-          text: "",
+          text: '',
           id: null,
         },
       },
-      areaString: "",
-    };
+      areaString: '',
+    }
   },
   methods: {
     // 打开popup
     open() {
-      this.$refs.popup.open("bottom");
+      this.$refs.popup.open('bottom')
     },
 
     // 切换区域
     change(field) {
       if (this.current === field) {
-        return;
+        return
       }
 
-      if (field === "city" && !this.areaInfo.province.id) {
-        return;
+      if (field === 'city' && !this.areaInfo.province.id) {
+        return
       }
 
-      if (field === "county" && !this.areaInfo.city.id) {
-        return;
+      if (field === 'county' && !this.areaInfo.city.id) {
+        return
       }
 
-      if (field === "province") {
+      if (field === 'province') {
         this.getCity({
           pid: 0,
-        });
-      } else if (field === "city") {
+        })
+      } else if (field === 'city') {
         this.getCity({
           pid: this.areaInfo.province.id,
-        });
-      } else if (field === "county") {
+        })
+      } else if (field === 'county') {
         this.getCity({
           pid: this.areaInfo.city.id,
-        });
+        })
       }
 
-      this.current = field;
+      this.current = field
     },
 
     // 获取地址信息
     getCity(data) {
-      getCitiesApi(data).then((res) => {
-        this.data = res.data;
-      });
+      getCitiesApi(data).then(res => {
+        this.data = res.data
+      })
     },
 
     // 选择区域
     chooseCity(cityInfo) {
-      this.areaInfo[this.current]["text"] = cityInfo.name;
-      this.areaInfo[this.current]["id"] = cityInfo.id;
+      this.areaInfo[this.current]['text'] = cityInfo.name
+      this.areaInfo[this.current]['id'] = cityInfo.id
+      this.areaInfo[this.current]['code'] = cityInfo.code
 
-      if (this.current !== "county") {
+      if (this.current !== 'county') {
         this.getCity({
           pid: cityInfo.id,
-        });
+        })
       }
 
-      if (this.current === "province") {
-        this.current = "city";
+      if (this.current === 'province') {
+        this.current = 'city'
         this.areaInfo.city = {
-          text: "",
-          id: "",
-        };
+          text: '',
+          id: '',
+        }
 
         this.areaInfo.county = {
-          text: "",
-          id: "",
-        };
-      } else if (this.current === "city") {
-        this.current = "county";
+          text: '',
+          id: '',
+        }
+      } else if (this.current === 'city') {
+        this.current = 'county'
         this.areaInfo.county = {
-          text: "",
-          id: "",
-        };
+          text: '',
+          id: '',
+        }
       }
     },
 
     // 监控popup的状态发生改变
     onPopupStatusChange(e) {
-      this.current = "province";
+      this.current = 'province'
       this.getCity({
         pid: 0,
-      });
+      })
       if (!e.show) {
         this.areaInfo = {
           province: {
-            text: "",
+            text: '',
             id: null,
+            code: null
           },
           city: {
-            text: "",
+            text: '',
             id: null,
+            code: null
           },
           county: {
-            text: "",
+            text: '',
             id: null,
+            code: null
           },
-        };
+        }
       }
     },
 
     // 点击确定按钮
     handleConfirmArea() {
       if (!this.areaInfo.county.text) {
-        return;
+        return
       }
       this.areaString =
         this.areaInfo.province.text +
         this.areaInfo.city.text +
-        this.areaInfo.county.text;
-      this.$emit("confirm", { ...this.areaInfo, area: this.areaString });
-      this.$refs.popup.close();
+        this.areaInfo.county.text
+      this.$emit('confirm', { ...this.areaInfo, area: this.areaString })
+      this.$refs.popup.close()
     },
   },
 
   mounted() {
-    this.getCity({ pid: 0 });
+    this.getCity({ pid: 0 })
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
-@import "../../style/mixin.less";
+@import '../../style/mixin.less';
 
 .j-city {
   // padding-left: 0upx;

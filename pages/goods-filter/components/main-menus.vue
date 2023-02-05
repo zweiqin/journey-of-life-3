@@ -80,6 +80,8 @@ export default {
 .main-menus-conatainer {
   padding: 20upx;
   background-color: #f3f3f3;
+  position: relative;
+  z-index: 100000000000;
 
   .wrapper {
     display: flex;

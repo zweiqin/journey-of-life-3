@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { USER_INFO } from '../../constant'
 export default {
   props: {
     data: {
@@ -73,6 +74,7 @@ export default {
   data() {
     return {
       barLeft: 0,
+      menus: [],
       barTop: 0,
       barWidth: 0,
       baseLeft: 23,
@@ -112,7 +114,7 @@ export default {
       },
 
       immediate: true,
-    },
+    }
   },
 
   computed: {

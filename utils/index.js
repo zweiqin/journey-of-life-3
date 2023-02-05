@@ -27,3 +27,4 @@ export {
   getRandom,
 } from './DWHutils'
 export { formatTime } from './util'
+export { tradeOrderNo, payFn } from './pay'

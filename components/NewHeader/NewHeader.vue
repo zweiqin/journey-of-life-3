@@ -9,7 +9,7 @@
     }"
   >
     <view
-    @click="$emit('back')"
+      @click="$emit('back')"
       class="back p-center"
       :style="{
         left: left * 2 + 'upx',

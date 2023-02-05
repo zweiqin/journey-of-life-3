@@ -1,3 +1,5 @@
+import { USER_INFO } from "../../constant";
+
 /*
  * @Author: 13008300191 904947348@qq.com
  * @Date: 2022-09-12 16:17:05
@@ -295,25 +297,25 @@ export const otherServe = {
 export const topMenuData = [
   {
     label: "收藏",
-    icon: require('../../static/images/center-2.0/collection.png'),
+    icon: require('../../static/images/center/collection.png'),
     url: "/user/Collection/Goods-Collection",
     showType: 1,
   },
   {
     label: "足迹",
-    icon: require('../../static/images/center-2.0/footprint.png'),
+    icon: require('../../static/images/center/footprint.png'),
     url: "/user/sever/view-history?page=history",
     showType: 1,
   },
   {
     label: "订阅店铺",
-    icon: require('../../static/images/center-2.0/order.png'),
+    icon: require('../../static/images/center/order.png'),
     url: "/user/sever/view-history?page=follow",
     showType: 1,
   },
   {
     label: "我的钱包",
-    icon: require('../../static/images/center-2.0/wallet.png'),
+    icon: require('../../static/images/center/wallet.png'),
     url: "",
     showType: 1,
   }
@@ -324,29 +326,29 @@ export const myServe = {
   menus: [
     {
       label: "购物车",
-      icon: require('../../static/images/center-2.0/shopping-cart-2-fill.png')
+      icon: require('../../static/images/center/shopping-cart-2-fill.png')
     },
     {
       label: "优惠劵",
-      icon: require('../../static/images/center-2.0/coupon-2-fill.png')
+      icon: require('../../static/images/center/coupon-2-fill.png')
     }, {
       label: "每日签到",
-      icon: require('../../static/images/center-2.0/calendar-check-fill.png')
+      icon: require('../../static/images/center/calendar-check-fill.png')
     }, {
       label: "会员升级",
-      icon: require('../../static/images/center-2.0/vip-crown-2-fill.png')
+      icon: require('../../static/images/center/vip-crown-2-fill.png')
     }, {
       label: "商品收藏",
-      icon: require('../../static/images/center-2.0/star-smile-fill.png')
+      icon: require('../../static/images/center/star-smile-fill.png')
     }, {
       label: "联系客服",
-      icon: require('../../static/images/center-2.0/customer-service-2-fill.png')
+      icon: require('../../static/images/center/customer-service-2-fill.png')
     }, {
       label: "我的拼团",
-      icon: require('../../static/images/center-2.0/group-fill.png')
+      icon: require('../../static/images/center/group-fill.png')
     }, {
       label: "地址管理",
-      icon: require('../../static/images/center-2.0/map-pin-fill.png')
+      icon: require('../../static/images/center/map-pin-fill.png')
     },
   ]
 }
@@ -369,4 +371,97 @@ export const otherIcons = {
 
     }
   ]
+}
+
+export const getMenus = (userLevel) => {
+
+
+  const myEquity = {
+    title: "我的权益",
+    menus: [
+      {
+        label: "余额",
+        slotName: 'count',
+      },
+      {
+        label: "优惠劵",
+        slotName: "coupon",
+      },
+      {
+        label: "小账本",
+        icon: require('../../static/images/center/book-open-fill.png'),
+        url: "/user/account-book/index",
+        role: [1, 6, 7]
+      },
+      {
+        label: "微店",
+        icon: require('../../static/images/center/store-3-fill.png'),
+        role: [1, 6, 7]
+      }
+
+    ]
+  }
+
+
+  const normalMenus = {
+    title: '我的服务',
+    menus: [
+      {
+        label: "购物车",
+        icon: require('../../static/images/center/shopping-cart-2-fill.png'),
+        url: "/user/sever/shop-car",
+      },
+      {
+        label: "优惠劵",
+        icon: require('../../static/images/center/coupon-2-fill.png')
+      },
+      {
+        label: '每日签到',
+        icon: require('../../static/images/center/calendar-check-fill.png')
+      },
+      {
+        label: '商品收藏',
+        icon: require('../../static/images/center/star-smile-fill.png'),
+        url: "/user/sever/view-history?page=collection"
+      },
+      {
+        label: '联系客服',
+        icon: require('../../static/images/center/customer-service-2-fill.png')
+      },
+      {
+        label: '我的拼团',
+        icon: require('../../static/images/center/group-fill.png')
+      },
+      {
+        label: '地址管理',
+        icon: require('../../static/images/center/map-pin-fill.png'),
+        url: "/user/site/site-manage",
+      }
+    ]
+  }
+
+  if ([6, 5].includes(userLevel)) {
+    normalMenus.menus.splice(3, 0,
+      {
+        label: "会员升级",
+        icon: require('../../static/images/center/vip-crown-2-fill.png'),
+        url: "/user/sever/userUp/index"
+      }
+    )
+  }
+
+  if ([7, 1].includes(userLevel)) {
+    normalMenus.menus.splice(3, 0,
+      {
+        label: "申请开店",
+        icon: require('../../static/images/center/brand-apply.png'),
+        url: ''
+      }
+    )
+  }
+
+  return {
+    myEquity,
+    normalMenus
+  }
 }

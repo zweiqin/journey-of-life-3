@@ -2,7 +2,7 @@ export const formLabels = [
   {
     label: '新零售',
     color: "#07B9B9",
-    value: 40,
+    value: 0,
     height: 0
   },
   {

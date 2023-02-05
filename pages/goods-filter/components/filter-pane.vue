@@ -1,84 +1,53 @@
 <template>
   <view class="filter-pane-container">
     <view id="wrapper">
-      <view class="filter-item" @click="handleFilter">
-        <text>价格</text>
-        <image src="../../../static/images/common/tag.png" mode="" />
-      </view>
-      <view class="filter-item" @click="handleFilter">
-        <text>风格</text>
-        <image src="../../../static/images/common/tag.png" mode="" />
-      </view>
-      <view class="filter-item" @click="handleFilter">
-        <text>产地</text>
-        <image src="../../../static/images/common/tag.png" mode="" />
-      </view>
-      <view class="filter-item" @click="handleFilter">
-        <text>材质</text>
+      <view
+        v-for="(item, index) in filterMenus"
+        :key="index"
+        class="filter-item"
+        @click="handleFilter(item.ename)"
+      >
+        <text>{{ formLabel[item.key] || item.label }}</text>
         <image src="../../../static/images/common/tag.png" mode="" />
       </view>
     </view>
 
-    <!-- <view
-      class="filter-container"
-      :style="{
-        top: position + 'px',
-        transform: isShowPane ? 'scaleY(1)' : 'scaleY(0)',
-      }"
-    >
-    </view> -->
-
-    <tui-bottom-popup
-      backgroundColor="transparent"
-      :height="900"
+    <!-- 新的弹出 -->
+    <tui-top-dropdown
       :show="isShowPane"
+      style="left: 0"
+      :translatey="translatey"
       @close="cloasePopup"
+      :maskZIndex="10"
+      :height="0"
     >
-      <view class="main-popup">
-        <view class="main-title">全部筛选</view>
-        <view class="filter-title">价格</view>
+      <view class="filter-wrapper">
         <view class="filter-values">
           <view
+            v-for="item in data"
+            :key="item.value"
             class="fllter-item"
-            :class="{ active: order === 'desc' }"
-            @click="handleOrder('desc')"
-            >由高到低</view
+            @click="handleOrder(item)"
           >
-          <view
-            class="fllter-item"
-            :class="{ active: order === 'asc' }"
-            @click="handleOrder('asc')"
-            >由低到高</view
-          >
+            {{ item[keyValus['label']] }}
+            <tui-icon
+              margin="0 30upx 0 0"
+              :class="{
+                active:
+                  form[formMap[currentFilterCategory]] == item[keyValus.value],
+              }"
+              name="circle-fill"
+              :color="
+                form[formMap[currentFilterCategory]] == item[keyValus.value]
+                  ? '#e95d20'
+                  : '#fff'
+              "
+              :size="20"
+            ></tui-icon
+          ></view>
         </view>
-        <view class="filter-title">风格</view>
-        <view class="filter-values">
-          <view
-            @click="handleSetStyle(item.id)"
-            :class="{ active: currentStyle === item.id }"
-            class="fllter-item"
-            v-for="item in styleList"
-            :key="item.id"
-            >{{ item.value }}</view
-          >
-        </view>
-        <view class="filter-title">产地</view>
-        <view class="filter-values">
-          <view
-            class="fllter-item"
-            @click="handleSetCity(item.code)"
-            :class="{
-              active: currentCity === item.code,
-            }"
-            v-for="item in citiList"
-            :key="item.code"
-            >{{ item.desc }}</view
-          >
-        </view>
-
-        <tui-button shape="circle" @click="handleConfirm">确定</tui-button>
       </view>
-    </tui-bottom-popup>
+    </tui-top-dropdown>
   </view>
 </template>
 
@@ -87,92 +56,154 @@ import {
   getGoodsTextureListApi,
   getStyleListApi,
   getProductPlaceList,
-} from "../../../api/goods";
+} from '../../../api/goods'
+
+import { filrMenus, orderPrice, formMap, mapSearchPaneKes } from './config'
+
 export default {
+  props: {
+    scrollTop: {
+      type: Number,
+      default: 0
+    },
+  },
   data() {
     return {
-      position: 0,
+      orderPrice: Object.freeze(orderPrice),
+      filterMenus: Object.freeze(filrMenus),
+      currentFilterCategory: 'retail_price',
+      filrData: {
+        retail_price: orderPrice,
+        texture: [],
+        styleId: [],
+        productPlace: [],
+      },
       isShowPane: false,
-      styleList: [],
-      citiList: [],
-      currentStyle: null,
-      currentCity: null,
-      sort: "retail_price",
-      order: "",
-    };
+      form: {
+        sort: '',
+        styleId: '',
+        productPlace: '',
+        texture: '',
+        sort: 'retail_price',
+      },
+      formLabel: {
+        order: '',
+        styleId: '',
+        productPlace: '',
+        texture: '',
+      },
+      formMap: Object.freeze(formMap),
+    }
   },
   mounted() {
-    this.setTop();
-    this.initFilterData();
+    this.initFilterData()
   },
   methods: {
-    setTop() {
-      const _this = this;
-      const query = uni.createSelectorQuery().in(this);
-      query
-        .select("#wrapper")
-        .boundingClientRect((data) => {
-          _this.position = data.height + data.top / 2;
-        })
-        .exec();
+    resetData() {
+      this.form = {
+        sort: '',
+        styleId: '',
+        productPlace: '',
+        texture: '',
+        sort: 'retail_price',
+      }
+      this.formLabel = {
+        order: '',
+        styleId: '',
+        productPlace: '',
+        texture: '',
+      }
     },
-
-    handleFilter() {
-      this.isShowPane = true;
-    },
-
-    cloasePopup() {
-      this.isShowPane = false;
-    },
-
     initFilterData() {
-      const _this = this;
+      getGoodsTextureListApi().then(({ data }) => {
+        this.filrData.texture = data.data
+        this.filrData.texture.unshift({
+          desc: '不限',
+          code: '',
+        })
+      })
+
       getStyleListApi().then(({ data }) => {
-        _this.styleList = data.data;
-      });
+        this.filrData.styleId = data.data
+        this.filrData.styleId.unshift({
+          value: '不限',
+          id: '',
+        })
+      })
 
       getProductPlaceList().then(({ data }) => {
-        _this.citiList = data.data;
-      });
+        this.filrData.productPlace = data.data
+        this.filrData.productPlace.unshift({
+          desc: '不限',
+          code: '',
+        })
+      })
+    },
+    // 点击筛选
+    handleFilter(key) {
+      this.currentFilterCategory = key
+      this.isShowPane = true
     },
 
-    handleConfirm() {
-      this.$emit("confirm", {
-        styleId: this.currentStyle,
-        productPlace: this.currentCity,
-        sort: this.sort,
-        order: this.order,
-      });
-      this.isShowPane = false;
+    // 关闭
+    cloasePopup() {
+      this.isShowPane = false
     },
 
-    handleOrder(desc) {
-      this.order = desc === this.order ? "" : desc;
-    },
+    // 点击item
+    handleOrder(value) {
+      this.form[formMap[this.currentFilterCategory]] =
+        value[this.keyValus.value]
+      this.formLabel[formMap[this.currentFilterCategory]] =
+        value[this.keyValus.label]
+      this.$emit('confirm', { ...this.form })
+      this.isShowPane = false
 
-    handleSetStyle(id) {
-      this.currentStyle = this.currentStyle === id ? null : id;
-    },
-
-    handleSetCity(code) {
-      this.currentCity = this.currentCity === code ? null : code;
+      console.log(this.formLabel)
     },
   },
-};
+
+  computed: {
+    data() {
+      return this.filrData[this.currentFilterCategory]
+    },
+
+    keyValus() {
+      const a = filrMenus.find(item => {
+        return item.ename === this.currentFilterCategory
+      })
+
+      return mapSearchPaneKes[a.key]
+    },
+
+    translatey() {
+      if (this.scrollTop > 200) {
+        return 78
+      } else {
+        return 440 - this.scrollTop * 2
+      }
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
 .filter-pane-container {
   width: 100%;
   // background-color: aqua;
-  padding: 26upx 20upx 0 20upx;
-  box-sizing: border-box;
+
   position: relative;
+  background-color: #fff;
+  // z-index: 10000000000;
 
   #wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: #fff;
+    height: 100%;
+    padding: 26upx 20upx 20upx 20upx;
+    box-sizing: border-box;
   }
 
   .filter-item {
@@ -202,6 +233,12 @@ export default {
   }
 }
 
+#wrapper {
+  position: relative;
+  z-index: 1000000;
+  background: #fff;
+}
+
 /deep/ .tui-popup-list {
   width: 100% !important;
   background-color: #fff;
@@ -226,7 +263,9 @@ export default {
     align-items: center;
     margin: 30upx 0 40upx 0;
     flex-wrap: wrap;
+
     .fllter-item {
+      width: 50%;
       padding: 20upx 30upx;
       border-radius: 100px;
       background-color: #ececec;
@@ -242,7 +281,44 @@ export default {
   }
 }
 
-/deep/ .tui-btn{
+/deep/ .tui-btn {
   background: linear-gradient(45deg, #ffcc03, #fe773e) !important;
+}
+
+/deep/ .tui-top-dropdown {
+  left: 0;
+  max-height: 600upx;
+  overflow: scroll;
+  padding-bottom: 20upx;
+}
+
+.filter-wrapper {
+  width: 100%;
+  // height: 100%;
+  border-top: 1upx solid #f9f9f9;
+
+  background-color: #fff;
+  overflow: scroll;
+  padding-top: 20upx;
+
+  .filter-values {
+    // display: flex;
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+
+    .fllter-item {
+      width: 100%;
+      height: 80upx;
+      line-height: 80upx;
+      padding: 0 20upx;
+      box-sizing: border-box;
+      border-bottom: 1upx solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      // background-color: #f1f1f1;
+      box-sizing: border-box;
+    }
+  }
 }
 </style>

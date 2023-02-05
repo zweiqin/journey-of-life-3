@@ -1,5 +1,5 @@
 <template>
-  <view class="user-pane">
+  <view class="user-pane" v-if="data.title">
     <view class="title">{{ data.title }}</view>
 
     <Tabs

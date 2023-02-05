@@ -34,7 +34,7 @@
       <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
 
       <view :class="{ 'stic-top': scrollDis > 200 }">
-        <FilterPane @confirm="handleFilter"></FilterPane>
+        <FilterPane ref="filterPaneRef" :scrollTop="scrollDis" @confirm="handleFilter"></FilterPane>
         <SubMenus
           ref="subMenusRef"
           :currentId="subId"
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import Goods from "../index/components/search-furniture/goods.vue";
-import MainMenus from "./components/main-menus.vue";
-import SubMenus from "./components/sub-menus.vue";
-import FilterPane from "./components/filter-pane.vue";
-import { goodsListApi } from "../../api/goods";
+import Goods from '../index/components/search-furniture/goods.vue'
+import MainMenus from './components/main-menus.vue'
+import SubMenus from './components/sub-menus.vue'
+import FilterPane from './components/filter-pane.vue'
+import { goodsListApi } from '../../api/goods'
 
 export default {
   components: {
@@ -80,108 +80,118 @@ export default {
       queryInfo: {
         page: 1,
         size: 10,
-        keyword: "",
+        keyword: '',
       },
-    };
+    }
   },
 
   onLoad(options) {
-    this.mainId = options.id * 1;
-    this.subId = options.sub * 1;
-    this.setData();
+    this.mainId = options.id * 1
+    this.subId = options.sub * 1
+    this.setData()
   },
 
   methods: {
     // 选中一级分类
     handleChooseItem(onceId) {
-      this.mainId = onceId;
+      this.mainId = onceId
       // this.resetQueryInfo()
-      this.setData();
+      this.setData()
+      uni.pageScrollTo({
+        scrollTop: 0,
+        duration: 0
+      })
     },
 
     handleClickSubMenus(id) {
-      this.subId = id;
-      this.queryInfo.page = 1;
-      this.queryInfo.keyword = "";
-      this.getGoodsList();
+      this.subId = id
+      this.queryInfo.page = 1
+      this.queryInfo.keyword = ''
+      this.$refs.filterPaneRef.resetData()
+      this.getGoodsList()
     },
 
-    setData() {
+    async setData() {
       this.$nextTick(() => {
-        this.$refs.subMenusRef.getSubMenus(this.mainId);
-      });
+        this.$refs.subMenusRef.getSubMenus(this.mainId)
+      })
     },
 
     async getGoodsList(isLoadMore, filterData = {}) {
-      this.isShowLoading = true;
+      this.isShowLoading = true
       uni.showLoading({
-        title: "加载中",
-      });
+        title: '加载中',
+      })
 
       // return
       const res = await goodsListApi({
         categoryId: this.subId === -1 ? this.mainId : this.subId,
         ...this.queryInfo,
-        ...filterData
-      });
+        ...filterData,
+      })
 
       if (res.errno === 0) {
-        this.totalPages = res.data.totalPages;
+        this.totalPages = res.data.totalPages
 
         if (isLoadMore) {
-          this.goodsList.push(...res.data.goodsList);
+          this.goodsList.push(...res.data.goodsList)
         } else {
-          this.goodsList = res.data.goodsList;
+          this.goodsList = res.data.goodsList
         }
       }
 
-      uni.hideLoading();
-      this.isShowLoading = false;
+      uni.hideLoading()
+      this.isShowLoading = false
     },
 
     // 回退
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
 
     // 搜索
     handleSearch() {
-      this.queryInfo.page = 1;
-      this.queryInfo.size = 10;
-      this.getGoodsList();
+      this.queryInfo.page = 1
+      this.queryInfo.size = 10
+      this.getGoodsList()
     },
 
     // 重置搜索条件
     resetQueryInfo() {
-      this.queryInfo.page = 1;
-      this.queryInfo.size = 10;
-      this.queryInfo.keyword = "";
+      this.queryInfo.page = 1
+      this.queryInfo.size = 10
+      this.queryInfo.keyword = ''
     },
 
     handleFilter(data) {
-      this.queryInfo.page = 1;
-      this.queryInfo.size = 10;
+      this.filterValue = data
+      this.queryInfo.page = 1
+      this.queryInfo.size = 10
+      uni.pageScrollTo({
+        scrollTop: 0,
+        duration: 0
+      })
       this.getGoodsList(false, data)
     },
   },
 
   onReachBottom() {
     if (this.goodsList.length < this.queryInfo.size) {
-      return;
+      return
     }
 
     if (this.totalPages === this.queryInfo.page) {
-      return;
+      return
     }
 
-    this.queryInfo.page++;
-    this.getGoodsList(true);
+    this.queryInfo.page++
+    this.getGoodsList(true)
   },
 
   onPageScroll(e) {
-    this.scrollDis = e.scrollTop;
+    this.scrollDis = e.scrollTop
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -210,6 +220,9 @@ export default {
   align-items: center;
   padding: 32upx 32upx 20upx 32upx;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1000000000;
+  background-color: #fff;
 
   .icon {
     width: 48upx;
@@ -220,7 +233,7 @@ export default {
     position: relative;
     margin-right: 20upx;
     &::after {
-      content: "";
+      content: '';
       border: 4px solid #000000;
       border-bottom-color: transparent;
       border-left-color: transparent;

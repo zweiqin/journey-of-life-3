@@ -42,6 +42,7 @@
 import Pane from './cpns/pane.vue'
 import { hehuoWq } from '../../../data/user'
 import { getUserId } from '../../../utils'
+import { USER_INFO } from '../../../constant'
 export default {
   data() {
     return {
@@ -55,15 +56,52 @@ export default {
 
   methods: {
     handleUserUp(price) {
+      const userInfo = uni.getStorageSync(USER_INFO)
+      console.log(userInfo)
       if (getUserId()) {
         if (price == 1000) {
+          if (userInfo.userLevel == 6) {
+            uni.showToast({
+              title: '您已经是合伙人了，无需申请',
+              icon: 'none',
+            })
+            return
+          }
 
-          // '/user/sever/'
+          if (userInfo.userLevel == 7) {
+            uni.showToast({
+              title: '您已经是超级合伙人了，无需申请',
+              icon: 'none',
+            })
+            return
+          }
 
+          if (userInfo.userLevel == 1) {
+            uni.showToast({
+              title: '您已经是门店了，无需申请',
+              icon: 'none',
+            })
+            return
+          }
           uni.navigateTo({
             url: '/user/sever/userUp/partner-appay?type=partner',
           })
         } else {
+          if (userInfo.userLevel == 7) {
+            uni.showToast({
+              title: '您已经是超级合伙人了，无需申请',
+              icon: 'none',
+            })
+            return
+          }
+
+          if (userInfo.userLevel == 1) {
+            uni.showToast({
+              title: '您已经是门店了，无需申请',
+              icon: 'none',
+            })
+            return
+          }
           uni.navigateTo({
             url: '/user/sever/userUp/partner-appay?type=sup-partner',
           })
@@ -79,6 +117,7 @@ export default {
     },
 
     handleBack() {
+      console.log(1)
       uni.switchTab({
         url: '/pages/user/user',
       })

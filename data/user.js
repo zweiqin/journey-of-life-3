@@ -97,6 +97,13 @@ export const normalMenus = {
       label: "会员升级",
       icon: require('../static/images/center/vip-crown-2-fill.png'),
       url: "/user/sever/userUp/index",
+      role: [6, 5]
+    },
+    {
+      label: "申请开店",
+      icon: require('../static/images/center/brand-apply.png'),
+      url: '',
+      role: [7, 1]
     },
     {
       label: '商品收藏',
@@ -134,11 +141,15 @@ export const myEquity = {
     {
       label: "小账本",
       icon: require('../static/images/center/book-open-fill.png'),
-      url: "/user/account-book/index"
+      url: "/user/account-book/index",
+      role: [6, 7],
+      isExistence: true
     },
     {
       label: "微店",
-      icon: require('../static/images/center/store-3-fill.png')
+      icon: require('../static/images/center/store-3-fill.png'),
+      role: [6, 7],
+      isExistence: true
     }
   ]
 }

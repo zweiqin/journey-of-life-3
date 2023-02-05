@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getTypeDetailList } from "../../../api/home";
+import { getTypeDetailList } from '../../../api/home'
 export default {
   props: {
     currentId: Number,
@@ -24,22 +24,22 @@ export default {
   data() {
     return {
       data: [],
-    };
+    }
   },
   methods: {
     async getSubMenus(id) {
-      const res = await getTypeDetailList({ id });
+      const res = await getTypeDetailList({ id })
       if (res.errno === 0) {
-        this.data = res.data.currentSubCategory;
-        this.data.unshift({ id: -1, name: "全部" });
-        const isExtire = this.data.every((item) => this.currentId !== item.id);
+        this.data = res.data.currentSubCategory
+        this.data.unshift({ id: -1, name: '全部' })
+        const isExtire = this.data.every(item => this.currentId !== item.id)
         isExtire
-          ? this.$emit("change", -1)
-          : this.$emit("change", this.currentId);
+          ? this.$emit('change', -1)
+          : this.$emit('change', this.currentId)
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -48,6 +48,11 @@ export default {
   padding: 30upx 20upx 26upx 20upx;
   box-sizing: border-box;
   background-color: #fff;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .tag {
     line-height: 1.5;
     padding: 0 20upx;

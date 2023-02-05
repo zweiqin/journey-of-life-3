@@ -5,13 +5,11 @@
         <image
           @click="$emit('detail')"
           :src="
-            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' +
             data.avatarUrl
           "
           mode=""
         />
       </view>
-
       <view class="user-info-detail">
         <view class="username">{{ data.nickName }}</view>
         <view class="type">会员类型：{{ data.userLevelDesc }}</view>
@@ -56,7 +54,7 @@ export default {
       required: true,
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

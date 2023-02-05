@@ -2,6 +2,7 @@
   <view class="account-book-container">
     <view class="main">
       <NewHeader
+        @back="handleBack"
         title="小账本"
         position="left"
         top="37%"
@@ -15,10 +16,10 @@
         </block>
       </NewHeader>
 
-      <Extension></Extension>
-      <Fans></Fans>
-      <Gen></Gen>
-      <Analysis></Analysis>
+      <Extension :data="extensionData"></Extension>
+      <Fans :data="fansData"></Fans>
+      <Gen :yesterdayIncome="data.yesterdayIncome" :data="genData"></Gen>
+      <Analysis :data="analysisData"></Analysis>
     </view>
   </view>
 </template>
@@ -28,12 +29,50 @@ import Extension from './cpns/extension.vue'
 import Fans from './cpns/fans.vue'
 import Gen from './cpns/gen/gen.vue'
 import Analysis from './cpns/analysis/index.vue'
+import { getAccountBookApi } from '../../api/user'
+
 export default {
   components: {
     Extension,
     Fans,
     Gen,
     Analysis,
+  },
+
+  data() {
+    return {
+      data: {},
+      extensionData: {},
+      fansData: {},
+      analysisData: [],
+      genData: [],
+    }
+  },
+
+  onLoad() {
+    getAccountBookApi().then(({ data }) => {
+      this.data = data
+      this.extensionData = {
+        cumulativeIncome: data.cumulativeIncome,
+        holdingIncome: data.holdingIncome,
+        withdrawnIncome: data.withdrawnIncome,
+      }
+      this.fansData = {
+        superPartner: data.superPartner,
+        partner: data.partner,
+        ordinaryMember: data.ordinaryMember,
+      }
+      this.genData = data.informationTypeVoList
+      this.analysisData = data.informationTypeVoList2
+    })
+  },
+
+  methods: {
+    handleBack() {
+      uni.switchTab({
+        url: '/pages/user/user',
+      })
+    },
   },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <view class="partner-apply-container">
     <NewHeader
-      @click="handleBack"
+      @back="handleBack"
       title="合伙人申请"
       top="61%"
       position="left"
@@ -13,7 +13,11 @@
     <view class="main-area">
       <ApplyType v-model="currentApplyType"></ApplyType>
 
-      <ApplyForm v-model="partnerForm" :type="currentApplyType"></ApplyForm>
+      <ApplyForm
+        @chooseCity="handlChooseCity"
+        v-model="partnerForm"
+        :type="currentApplyType"
+      ></ApplyForm>
 
       <EquityList></EquityList>
     </view>
@@ -35,6 +39,9 @@
 import ApplyType from './cpns/apply-type.vue'
 import ApplyForm from './cpns/apply-form.vue'
 import EquityList from './cpns/equity-list.vue'
+import { partnerApplyApi } from '../../../api/user'
+import { getUserId, tradeOrderNo, payFn } from '../../../utils'
+
 export default {
   components: {
     ApplyType,
@@ -50,16 +57,79 @@ export default {
         password: '',
       },
       currentApplyType: 'partner',
+      selectCode: null,
     }
   },
 
   methods: {
     handlePay() {
-      console.log(this.partnerForm)
+      if (!this.selectCode) {
+        uni.showToast({
+          title: '请选择区域',
+          icon: 'none',
+        })
+        return
+      }
+
+      if (!this.partnerForm.personLiable) {
+        uni.showToast({
+          title: '请选择业务责任人',
+          icon: 'none',
+        })
+        return
+      }
+
+      const data = {
+        orderNo: tradeOrderNo(),
+        userId: getUserId(),
+        payType: 5,
+        isPartner: this.currentApplyType === 'partner' ? 1 : 2,
+        partnerApplyInfo: {
+          userId: getUserId(),
+          applicationType: this.currentApplyType === 'partner' ? 6 : 7,
+          referrerName: this.partnerForm.personLiable,
+          // referrerName: '17633721125',
+          regionCode: this.selectCode * 1,
+        },
+      }
+
+      if (this.currentApplyType === 'sup-partner') {
+        if (this.partnerForm.username.length < 6) {
+          uni.showToast({
+            title: '帐号不能少于6位',
+            icon: 'none',
+          })
+
+          return
+        }
+
+        if (this.partnerForm.password.length < 6) {
+          uni.showToast({
+            title: '密码不能少于6位',
+            icon: 'none',
+          })
+
+          return
+        }
+
+        data.partnerApplyInfo.username = this.partnerForm.username
+        data.partnerApplyInfo.password = this.partnerForm.password
+      }
+
+      uni.showLoading({
+        title: '加载中',
+        mask: false,
+      })
+
+      partnerApplyApi(data).then(payFn)
+    },
+
+    handlChooseCity(cityData) {
+      this.selectCode = cityData['county'].code
     },
 
     handleBack() {
-      uni.navigateBack()
+      uni.navigateTo({ url: '/user/sever/userUp/index' })
     },
   },
 

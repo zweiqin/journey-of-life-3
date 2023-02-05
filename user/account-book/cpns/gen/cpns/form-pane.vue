@@ -1,10 +1,10 @@
 <template>
   <view class="form-pane">
-    <view class="item" v-for="(item, index) in formLabels" :key="index">
-      <view class="form-title">{{ item.label }}</view>
+    <view class="item" v-for="(item, index) in data2" :key="index">
+      <view class="form-title">{{ item.typeName }}</view>
       <view class="counts-wrapper">
-        <text>订单：1000</text>
-        <text>收益：1000</text>
+        <text>订单：{{ item.orderQuantity }}</text>
+        <text>收益：{{ item.orderIncome }}</text>
       </view>
     </view>
   </view>
@@ -13,6 +13,12 @@
 <script>
 import { formLabels } from './config'
 export default {
+  props: {
+    data2: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       formLabels: Object.freeze(formLabels),
@@ -50,6 +56,14 @@ export default {
     .form-title{
       margin-bottom: 10upx;
       font-weight: bold;
+    }
+  }
+}
+
+.counts-wrapper{
+  text{
+    &:nth-child(1){
+      margin-right: 10upx;
     }
   }
 }

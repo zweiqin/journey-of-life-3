@@ -599,6 +599,16 @@
 					}
 				},
 				{
+					"path": "info/cropper",
+					"style": {
+						"navigationBarTitleText": "修改头像",
+						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+						}
+					}
+				},
+				{
 					"path": "marketing-tools/contact-guide/index"
 				},
 				{

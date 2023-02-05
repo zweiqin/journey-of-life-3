@@ -108,39 +108,6 @@
                 </view>
               </view>
             </view>
-            <!-- <view class="middle-thire">
-              <view class="background">
-                <view class="left-view">享半价</view>
-                <view class="right-view">
-                  <view class="right-top">全店前10名付款</view>
-                  <view class="right-bottom">
-                    <view class="thire">9月15日 18：00开启</view>
-                    <view class="first"> <view class="second"> </view></view>
-                  </view>
-                </view>
-              </view>
-            </view> -->
-            <!-- <view class="blue-off">
-              <img
-                src="../../static/images/lqb/coupon/bigbule.png"
-                alt=""
-                class="img"
-              />
-              <view class="off-text">50%OFF</view>
-            </view>
-          </view>
-          <view class="else-bottom">
-            <img
-              src="../../static/images/lqb/coupon/好物推荐 直降100.png"
-              alt=""
-              class="title"
-            />
-      
-    
-          </view>
-                    <view>
-              <Goods></Goods>
-          </view> -->
           </view>
         </view>
       </view>

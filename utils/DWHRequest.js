@@ -1,7 +1,7 @@
-import { BASE_URL, RUAN_URL, LANG_FEE_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL } from "../config";
+import { BASE_URL, RUAN_URL, LANG_FEE_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, TEST_URL } from "../config";
 
 const request = (base_url) => {
-  return function (url, data = {}, method = "post", cb) {
+  return function (url, data = {}, method = "post", cb, header) {
     return new Promise((resolve, reject) => [
       uni.request({
         url: base_url + url,
@@ -25,14 +25,24 @@ const request = (base_url) => {
 
 
 const service = (base_url, hideLoading) => {
-  return function (url, data = {}, method = "post", cb) {
+  return function (url, data = {}, method = "post", cb, header) {
     uni.showLoading()
     return new Promise((resolve, reject) => [
       uni.request({
         url: base_url + url,
         data,
+        header,
         method,
         success: (res) => {
+          if (res.errno === 780) {
+            uni.showToast({
+              title: "系统内部错误",
+              icon: 'none',
+              mask: true,
+            })
+            reject(res.data.errmsg)
+            return
+          }
           if (res.data.errno !== 0) {
             uni.showToast({
               title: res.data.errmsg,
@@ -83,5 +93,6 @@ export const SheQuRequest1 = request(SheQu1_URL)
 
 
 export const shopRequest = service(RUAN_URL)
+// export const textLang = service(TEST_URL)
 
 

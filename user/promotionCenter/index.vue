@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import Profit from "./cpns/profit.vue";
-import Fans from "./cpns/fans.vue";
-import Gen from "./cpns/gen/index.vue";
-import Analysis from "./cpns/analysis/index.vue";
+import Profit from './cpns/profit.vue'
+import Fans from './cpns/fans.vue'
+import Gen from './cpns/gen/index.vue'
+import Analysis from './cpns/analysis/index.vue'
 export default {
   components: {
     Profit,
@@ -40,14 +40,16 @@ export default {
     Analysis,
   },
 
+ 
+
   methods: {
     handleBack() {
       uni.switchTab({
-        url: "/pages/user/user",
-      });
+        url: '/pages/user/user',
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -60,7 +62,7 @@ export default {
   box-sizing: border-box;
 
   &::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0;

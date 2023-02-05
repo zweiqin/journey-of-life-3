@@ -8,15 +8,15 @@
 
     <view class="slot-pane">
       <view class="item">
-        <view>累计收益</view>
-        <view class="value" id="fans_1">15.29</view>
+        <view>超级合伙人</view>
+        <view class="value" id="fans_1">0</view>
       </view>
       <view class="item">
-        <view>累计提现</view>
-        <view class="value" id="fans_2">15.29</view> </view
+        <view>合伙人</view>
+        <view class="value" id="fans_2">0</view> </view
       ><view class="item">
-        <view>当前佣金</view>
-        <view class="value" id="fans_3">15.29</view>
+        <view>普通会员</view>
+        <view class="value" id="fans_3">0</view>
       </view>
     </view>
   </Pane>
@@ -28,15 +28,31 @@ import Pane from './pane.vue'
 export default {
   components: { Pane },
 
-  mounted() {
-    const option = {
-      decimalPlaces: 2,
-      duration: 1.5,
-    }
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
 
-    new CountUp('fans_1', 129.8, option).start()
-    new CountUp('fans_2', 100, option).start()
-    new CountUp('fans_3', 12, option).start()
+
+  watch: {
+    data: {
+      handler(value) {
+        const option = {
+          decimalPlaces: 0,
+          duration: 1.5,
+        }
+        if (value.superPartner) {
+          new CountUp('fans_1', this.data.superPartner, option).start()
+          new CountUp('fans_2', this.data.partner, option).start()
+          new CountUp('fans_3', this.data.ordinaryMember, option).start()
+        }
+      },
+    },
+
+    immediate: true,
+    deep: true
   },
 }
 </script>

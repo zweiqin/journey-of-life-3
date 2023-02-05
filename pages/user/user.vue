@@ -14,7 +14,14 @@
       </tui-grid>
 
       <OrderList @click="handleToPage" class="section"></OrderList>
-      <UserPane @click="handleToPage" isGrid class="section" :data="myEquity">
+
+      <UserPane
+        v-if="[6, 7, 1].includes(userLevel)"
+        @click="handleToPage"
+        isGrid
+        class="section"
+        :data="myEquity"
+      >
         <view slot="count">
           <view class="slot-wrapper">
             ￥ <text id="user-count">0.00</text>
@@ -24,7 +31,13 @@
           <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
         </view>
       </UserPane>
-      <UserPane @click="handleToPage" isGrid class="section" :data="vipEquity">
+      <UserPane
+        v-if="[6, 7, 1].includes(userLevel)"
+        @click="handleToPage"
+        isGrid
+        class="section"
+        :data="vipEquity"
+      >
       </UserPane>
       <UserPane
         @click="handleToPage"
@@ -33,6 +46,23 @@
         class="section"
         :data="normalMenus"
       ></UserPane>
+
+      <UserPane
+        v-if="userLevel === 5"
+        @click="handleToPage"
+        isGrid
+        class="section"
+        :data="myEquity"
+      >
+        <view slot="count">
+          <view class="slot-wrapper">
+            ￥ <text id="user-count">0.00</text>
+          </view>
+        </view>
+        <view slot="coupon">
+          <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
+        </view>
+      </UserPane>
     </view>
   </view>
 </template>
@@ -49,6 +79,7 @@ import {
 } from '../../api/user'
 import { getUserId } from '../../utils'
 import { user_INFO, USER_ID } from '../../constant'
+import { getMenus } from './config'
 
 export default {
   components: {
@@ -60,14 +91,15 @@ export default {
   data() {
     return {
       topMenus: Object.freeze(topMenus),
-      normalMenus: Object.freeze(normalMenus),
-      myEquity: Object.freeze(myEquity),
+      normalMenus: {},
+      myEquity: {},
       vipEquity: Object.freeze(vipEquity),
       collectiontype: 1,
       currentTab: 0,
       userInfo: {},
       extensionCodeUrl: '',
       userId: null,
+      userLevel: 5,
     }
   },
 
@@ -170,7 +202,27 @@ export default {
 
     // 点击了按钮
     handleToPage(info) {
-      console.log(info);
+      if (info.role && !info.role.includes(this.userInfo.userLevel)) {
+        uni.showModal({
+          title: '提示',
+          content: '升级会员即可查看，是否去升级？',
+          success: function (res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/user/sever/userUp/index',
+              })
+            }
+          },
+        })
+
+        return
+      }
+
+      if (!info.url) {
+        this.empty()
+        return
+      }
+
       if (!this.userId) {
         uni.showModal({
           title: '提示',
@@ -190,6 +242,17 @@ export default {
 
       this.go(info.url)
     },
+
+    // 设置菜单
+    setMenus() {
+      const userInfo = uni.getStorageSync(user_INFO) || {}
+      const userLevel = userInfo.userLevel || 5
+      this.userLevel = userLevel
+      const menus = getMenus(userLevel)
+      this.myEquity = menus.myEquity
+      this.normalMenus = menus.normalMenus
+      this.$forceUpdate()
+    },
   },
 
   onShow() {
@@ -201,7 +264,7 @@ export default {
     }).then(({ data }) => {
       uni.setStorageSync(user_INFO, data)
       _this.userInfo = uni.getStorageSync(user_INFO)
-      console.log(_this.userInfo)
+      this.setMenus()
     })
   },
 

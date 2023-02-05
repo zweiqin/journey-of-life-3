@@ -15,7 +15,7 @@
     ></SwitchBtns>
 
     <view class="total">
-      <view class="total-count">0.00</view>
+      <view class="total-count">{{ yesterdayIncome }}</view>
       <view class="tip">昨日收益（元）</view>
     </view>
 
@@ -28,11 +28,11 @@
     ></Tabs>
 
     <view v-show="currentLegend === 0">
-      <Charts ref="chartsRef"></Charts>
+      <Charts :data1="data" ref="chartsRef"></Charts>
     </view>
 
     <view v-show="currentLegend === 1">
-      <FormPane></FormPane>
+      <FormPane :data2="data"></FormPane>
     </view>
   </Pane>
 </template>
@@ -49,6 +49,16 @@ export default {
     SwitchBtns,
     FormPane,
     Charts,
+  },
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+    yesterdayIncome: {
+      type: Number,
+      required: true,
+    },
   },
 
   data() {
@@ -91,7 +101,7 @@ export default {
         })
       }
     },
-  }
+  },
 }
 </script>
 

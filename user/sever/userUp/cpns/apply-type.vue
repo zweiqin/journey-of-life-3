@@ -5,7 +5,7 @@
     <view class="pane-container">
       <view
         class="item"
-        @click="$emit('input', 'partner')"
+        @click="changeVipType('partner')"
         :class="{ active: value === 'partner' }"
       >
         <image
@@ -19,7 +19,7 @@
 
       <view
         class="item"
-        @click="$emit('input', 'sup-partner')"
+        @click="changeVipType('sup-partner')"
         :class="{ active: value === 'sup-partner' }"
       >
         <image
@@ -35,11 +35,64 @@
 </template>
 
 <script>
+import { USER_INFO } from '../../../../constant'
 export default {
   props: {
     value: {
       type: String,
       required: true,
+    },
+  },
+
+  methods: {
+    changeVipType(tag) {
+      const userInfo = uni.getStorageSync(USER_INFO)
+
+      if (tag === 'partner') {
+        if (userInfo.userLevel == 6) {
+          uni.showToast({
+            title: '您已经是合伙人了，无需申请',
+            icon: 'none',
+          })
+          return
+        }
+
+        if (userInfo.userLevel == 7) {
+          uni.showToast({
+            title: '您已经是超级合伙人了，无需申请',
+            icon: 'none',
+          })
+          return
+        }
+
+        if (userInfo.userLevel == 1) {
+          uni.showToast({
+            title: '您已经是门店了，无需申请',
+            icon: 'none',
+          })
+          return
+        }
+
+        this.$emit('input', tag)
+      } else {
+        if (userInfo.userLevel == 7) {
+          uni.showToast({
+            title: '您已经是超级合伙人了，无需申请',
+            icon: 'none',
+          })
+          return
+        }
+
+        if (userInfo.userLevel == 1) {
+          uni.showToast({
+            title: '您已经是门店了，无需申请',
+            icon: 'none',
+          })
+          return
+        }
+
+        this.$emit('input', tag)
+      }
     },
   },
 }
@@ -81,8 +134,8 @@ export default {
 
         &::after {
           position: absolute;
-          right: 0;
-          bottom: 0;
+          right: -1upx;
+          bottom: -1upx;
           content: '';
           width: 60upx;
           height: 60upx;

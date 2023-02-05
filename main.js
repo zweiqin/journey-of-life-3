@@ -61,6 +61,13 @@ Vue.mixin({
 					resolve(data)
 				}).exec();
 			})
+		},
+
+		empty() {
+			uni.showToast({
+				title: '功能升级中...',
+				icon: "none"
+			})
 		}
 	}
 });

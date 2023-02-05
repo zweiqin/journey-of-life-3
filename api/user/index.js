@@ -6,6 +6,7 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\user\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { USER_TOKEN } from "../../constant";
 import {
 	LTRequest,
 	getUserId,
@@ -210,4 +211,26 @@ export const getNameCardDetailApi = data => {
 // 修改名片
 export const updateNameCardApi = data => {
 	return RuanRequest('/businessCard/update', data)
+}
+
+
+// 小账本
+export const getAccountBookApi = data => {
+	return RuanRequest('/smallledger', data, 'get')
+}
+
+
+/**
+ * 会员升级
+ */
+// 获取业务员列表
+export const getBusinessResponsiblePersonListApi = (data) => {
+	return RuanRequest("/partnerApply/getBusinessResponsiblePersonList", data, 'get')
+}
+
+// 升级(超级)合伙人
+export const partnerApplyApi = data => {
+	return RuanRequest("/api/syb/orderPayH5", data, 'post', null, {
+		"X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN)
+	})
 }
