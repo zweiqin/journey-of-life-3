@@ -2,21 +2,58 @@
   <view class="user-info">
     <view class="left-wrapper" v-if="data">
       <view class="image-wrapper">
-        <image
-          @click="$emit('detail')"
-          :src="
-            data.avatarUrl
-          "
-          mode=""
-        />
+        <image @click="$emit('detail')" :src="data.avatarUrl" mode="" />
       </view>
-      <view class="user-info-detail">
-        <view class="username">{{ data.nickName }}</view>
-        <view class="type">会员类型：{{ data.userLevelDesc }}</view>
+      <view class="wrapper">
+        <view class="top-wrapper">
+          <view class="user-info-detail">
+            <view class="username">{{ data.nickName }}</view>
+            <view class="type">会员类型：{{ data.userLevelDesc }}</view>
+          </view>
+
+          <view class="right-wrapper">
+            <view class="item" @click="$emit('detail')">
+              <image src="../../../static/images/center/setting.png" mode="" />
+              <text>设置</text>
+            </view>
+            <view class="item">
+              <image src="../../../static/images/center/chart.png" mode="" />
+              <text>聊天</text>
+            </view>
+          </view>
+        </view>
+
         <view class="list-item">
-          <text>足迹{{ data.footprintCount || 0 }}</text>
-          <text>订阅{{ data.rssCount || 0 }}</text>
-          <text>收藏{{ data.collectCount || 0 }}</text>
+          <view class="left">
+            <navigator
+              url="/user/sever/view-history?page=history"
+              hover-class="none"
+            >
+              <text style="margin-left: 0"
+                >足迹{{ data.footprintCount || 0 }}</text
+              >
+            </navigator>
+
+            <navigator
+              url="/user/sever/view-history?page=follow"
+              hover-class="none"
+            >
+              <text>订阅{{ data.rssCount || 0 }}</text>
+            </navigator>
+
+            <navigator
+              url="/user/sever/view-history?page=collection"
+              hover-class="none"
+            >
+              <text style="border-right: none"
+                >收藏{{ data.collectCount || 0 }}</text
+              >
+            </navigator>
+          </view>
+
+          <view v-if="data.invitationCode" class="code" @click="handleCopyCode"
+            >编号：{{ data.invitationCode }}
+          </view>
         </view>
       </view>
     </view>
@@ -32,17 +69,6 @@
         >
       </view>
     </view>
-
-    <view class="right-wrapper">
-      <view class="item" @click="$emit('detail')">
-        <image src="../../../static/images/center/setting.png" mode="" />
-        <text>设置</text>
-      </view>
-      <view class="item">
-        <image src="../../../static/images/center/chart.png" mode="" />
-        <text>聊天</text>
-      </view>
-    </view>
   </view>
 </template>
 
@@ -54,6 +80,20 @@ export default {
       required: true,
     },
   },
+
+  methods: {
+    handleCopyCode() {
+      uni.setClipboardData({
+        data: this.data.invitationCode,
+        success: () => {
+          uni.showToast({
+            title: '编号复制成功',
+            duration: 2000,
+          })
+        },
+      })
+    },
+  },
 }
 </script>
 
@@ -61,7 +101,7 @@ export default {
 .user-info {
   position: relative;
   width: 100%;
-  height: 248upx;
+  height: 270upx;
   // background: url("../../static/images/center-2.0/Vector.png") no-repeat;
   background-size: cover;
   padding: 70upx 36upx 0 42upx;
@@ -70,9 +110,24 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   box-sizing: border-box;
+  background: linear-gradient(to right, #ed374d, #fa793f);
+
+  .wrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    flex: 1;
+
+    .top-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 
   .left-wrapper {
     display: flex;
+    width: 100%;
 
     .image-wrapper {
       width: 160upx;
@@ -108,21 +163,26 @@ export default {
         margin: 10upx 0;
         color: #fff;
       }
+    }
+  }
 
-      .list-item {
-        text {
-          padding: 0 10upx;
-          color: #fff;
-          border-right: 1px solid #fff;
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-          &:nth-child(1) {
-            padding-left: 0;
-          }
+    .left {
+      display: flex;
+      align-items: center;
 
-          &:nth-child(3) {
-            border-right: 0;
-          }
-        }
+      &:nth-child(1) {
+        padding-left: 0;
+      }
+
+      text {
+        padding: 0 10upx;
+        color: #fff;
+        border-right: 1px solid #fff;
       }
     }
   }

@@ -2,7 +2,7 @@
   <div>
     <view class="background">
       <img 
-      src="../../static/images/stuff/矩形7.png" 
+      src="../../static/images/stuff/juxing7.png" 
       alt="" 
       class="red"
       />

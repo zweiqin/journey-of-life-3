@@ -3,7 +3,7 @@
     <view class="background">
       <view class="brand">品牌</view>
       <img
-        src="../../static/images/stuff/家具材料排行榜.png"
+        src="../../static/images/stuff/jiajucailpaihangbang.png"
         alt=""
         class="top-title"
       />
@@ -33,7 +33,7 @@
           <view class="column3">名称</view>
           <view class="column4">评分</view>
         </view>
-        <img src="../../static/images/stuff/直线1.png" alt="" class="zhixian" />
+        <img src="../../static/images/stuff/zhixina1.png" alt="" class="zhixian" />
 
         <view class="brand-list">
           <view class="brand-detail">
@@ -47,7 +47,7 @@
             <img src="../../static/images/stuff/star.png" alt="" class="star" />
           </view>
           <img
-            src="../../static/images/stuff/直线1.png"
+            src="../../static/images/stuff/zhixina1.png"
             alt=""
             class="zhixian1"
           />
@@ -60,7 +60,7 @@
           <view class="column3">名称</view>
           <view class="column4">评分</view>
         </view>
-        <img src="../../static/images/stuff/直线1.png" alt="" class="zhixian" />
+        <img src="../../static/images/stuff/zhixina1.png" alt="" class="zhixian" />
 
         <view class="brand-list">
           <view class="brand-detail">
@@ -74,7 +74,7 @@
             <img src="../../static/images/stuff/star.png" alt="" class="star" />
           </view>
           <img
-            src="../../static/images/stuff/直线1.png"
+            src="../../static/images/stuff/zhixina1.png"
             alt=""
             class="zhixian1"
           />

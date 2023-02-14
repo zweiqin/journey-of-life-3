@@ -543,16 +543,16 @@
 </template>
 
 <script>
-import community from "./components/community";
-import DiscountPopup from "./components/discount.vue";
-import DispatchPopup from "./components/dispatch.vue";
-import { getAdressDetailByLngLat } from "../../utils/DWHutils";
-import { list } from "./config";
-import { moreService } from "./config";
-import { serviceType } from "./config";
-import { getBrandTypeApi } from "../../api/brand";
+import community from './components/community'
+import DiscountPopup from './components/discount.vue'
+import DispatchPopup from './components/dispatch.vue'
+import { getAdressDetailByLngLat } from '../../utils/DWHutils'
+import { list } from './config'
+import { moreService } from './config'
+import { serviceType } from './config'
+import { getBrandTypeApi } from '../../api/brand'
 export default {
-  name: "Community-centerr",
+  name: 'Community-centerr',
   components: {
     community,
     DiscountPopup,
@@ -564,19 +564,19 @@ export default {
       moreService,
       list,
       serviceType,
-      value: "",
-      serviceName: "",
+      value: '',
+      serviceName: '',
       showPopup: false,
       show: false,
-      address: "",
-      names: [{ text: "专业性强" }, { text: "及时服务" }],
-    };
+      address: '',
+      names: [{ text: '专业性强' }, { text: '及时服务' }],
+    }
   },
 
   onLoad() {
-    this.showPopup = false;
-    this.show = false;
-    this.getLocation();
+    this.showPopup = false
+    this.show = false
+    this.getLocation()
     // this.getBrandType();
     // this.address = "定位中...";
     // const _this = this;
@@ -598,67 +598,67 @@ export default {
   },
   methods: {
     handleToServiceListHome(item) {
-      console.log("更多服务分类列表", item);
-      this.value = item;
+      console.log('更多服务分类列表', item)
+      this.value = item
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
-      });
+      })
     },
 
     handleToServiceList(item) {
-      console.log("服务分类列表", item);
-      this.value = item;
+      console.log('服务分类列表', item)
+      this.value = item
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
-      });
+      })
     },
 
     handleToServiceListType(item) {
-      this.value = item;
+      this.value = item
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
-      });
+      })
     },
 
     choice(index) {
-      this.currentTab = index;
-      console.log(this.currentTab);
+      this.currentTab = index
+      console.log(this.currentTab)
     },
 
     getLocation() {
-      this.address = "定位中...";
-      const _this = this;
+      this.address = '定位中...'
+      const _this = this
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === "1") {
-                const result = res.regeocode;
-                _this.address = result.addressComponent.township;
-                console.log("address", _this.address);
+            .then(res => {
+              if (res.status === '1') {
+                const result = res.regeocode
+                _this.address = result.addressComponent.township
+                console.log('address', _this.address)
               }
             })
             .catch(() => {
-              _this.address = "定位失败";
-            });
+              _this.address = '定位失败'
+            })
         },
-      });
+      })
     },
 
     handleClick() {
-      const _this = this;
-      if (this.address === "定位失败" || this.address === "定位中...") {
+      const _this = this
+      if (this.address === '定位失败' || this.address === '定位中...') {
         uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
+          title: '提示',
+          confirmText: '我已打开定位',
+          content: '请确认您已开启了定位',
           success: function (res) {
             if (res.confirm) {
-              _this.getLocation();
+              _this.getLocation()
             }
           },
-        });
+        })
       }
     },
 
@@ -671,7 +671,7 @@ export default {
     // }
   },
   created() {},
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -922,7 +922,14 @@ export default {
     width: 100%;
     // height: 200upx;
     background: #f1f2f6;
+    /* #ifdef H5 */
     padding: 140upx 30upx 160upx 30upx;
+    /* #endif */
+
+    /* #ifdef APP-PLUS */
+    padding: 140upx 30upx 20upx 30upx;
+    /* #endif */
+
     box-sizing: border-box;
     .jx {
       display: flex;

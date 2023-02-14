@@ -92,7 +92,7 @@ export default {
       });
       this.currentIndex = e;
       if (e == 0) {
-        this.paddingTop = 0;
+        this.paddingTop = 92;
         return;
       }
 

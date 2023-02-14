@@ -13,7 +13,7 @@
       />
       <view v-else class="avatar"> {{ data.brand.name }} </view>
       <view class="info-pane">
-        <view class="name-inter">
+        <view class="name-inter" @click="go(`/pages/index/brandFactory/detail?brandId=${data.brand.id}`)">
           <view class="name">{{ data.brand.name }}</view>
           <navigator
             :url="`/pages/index/brandFactory/detail?brandId=${data.brand.id}`"
@@ -21,7 +21,7 @@
           >
         </view>
 
-        <view class="desc">{{ data.brand.desc || "暂无简介" }} </view>
+        <view class="desc">{{ data.brand.desc || '暂无简介' }} </view>
 
         <view class="h-address">
           <view class="h-list">
@@ -48,7 +48,7 @@
           <view v-for="item in data.goodsList" :key="item.id">
             <navigator
               hover-class="none"
-              :url="`/pages/prod/prod?goodsId=${item.id}`"
+              :url="`/pages/prod/prod?goodsId=${item.id}&showBrand=true`"
             >
               <!-- <image :src="item.picUrl" mode="" /> -->
               <fast-lazy-load
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { goodsListApi } from "../../../../api/goods";
+import { goodsListApi } from '../../../../api/goods'
 export default {
   props: {
     data: {
@@ -89,14 +89,14 @@ export default {
   data() {
     return {
       goodsList: [],
-    };
+    }
   },
 
   watch: {
     data: {
       handler(newValue) {
         if (newValue.id) {
-          this.getGoodsList(newValue.id);
+          this.getGoodsList(newValue.id)
         }
       },
 
@@ -111,14 +111,14 @@ export default {
         brandId: id,
         page: 1,
         size: 5,
-      });
+      })
 
       if (res.errno === 0) {
-        this.goodsList = res.data.goodsList.slice(0, 5);
+        this.goodsList = res.data.goodsList.slice(0, 5)
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

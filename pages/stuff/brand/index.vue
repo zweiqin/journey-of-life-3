@@ -11,7 +11,7 @@
     <view class="background">
       <view class="title">品牌</view>
       <img
-        src="../../../static/images/stuff/家具材料排行榜.png"
+        src="../../../static/images/stuff/jiajucailpaihangbang.png"
         alt=""
         class="title-img"
       />

@@ -21,7 +21,7 @@
         class="item"
         v-for="(item, index) in bannerConfig"
         :key="index"
-        @click="go(item.url)"
+        @click="handelTo(item)"
       >
         <image class="banner-icon" :src="item.icon" mode="" />
         <view class="right-wrapper">
@@ -34,18 +34,22 @@
     <scroll-view scroll-y="true" @scrolltolower="handleClick">
       <view class="goods-container">
         <load-after v-if="!searchGoodsList.length"></load-after>
-        <Goods :data="goods" v-for="goods in searchGoodsList" :key="goods.id"></Goods>
+        <Goods
+          :data="goods"
+          v-for="goods in searchGoodsList"
+          :key="goods.id"
+        ></Goods>
       </view>
     </scroll-view>
   </view>
 </template>
 
 <script>
-import { bannerConfig, defaultCategoryConfig } from "./config";
-import { getGoodsTypesApi } from "../../../../api/home";
-import { goodsListApi } from "../../../../api/goods";
+import { bannerConfig, defaultCategoryConfig } from './config'
+import { getGoodsTypesApi } from '../../../../api/home'
+import { goodsListApi } from '../../../../api/goods'
 
-import Goods from "./goods.vue";
+import Goods from './goods.vue'
 export default {
   components: {
     Goods,
@@ -60,37 +64,37 @@ export default {
         size: 20,
       },
       totalPages: 0,
-      searchGoodsList: []
-    };
+      searchGoodsList: [],
+    }
   },
 
   mounted() {
-    this.getCategoryList();
-    this.getGoodsList();
+    this.getCategoryList()
+    this.getGoodsList()
   },
 
   methods: {
     handleClick() {
-      console.log(1);
+      console.log(1)
     },
 
     // 获取类目信息
     async getCategoryList() {
       const res = await getGoodsTypesApi({
         goodsType: 1,
-      });
+      })
 
       if (res.errno === 0) {
         const categories = res.data.categoryList
-          .filter((item) => item.desc === "搜家具")
-          .slice(0, 7);
-        this.categories = categories;
+          .filter(item => item.desc === '搜家具')
+          .slice(0, 7)
+        this.categories = categories
         this.categories.push({
           iconUrl:
-            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png",
+            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png',
           id: null,
-          name: "更多",
-        });
+          name: '更多',
+        })
       }
     },
 
@@ -99,48 +103,58 @@ export default {
       if (item.id) {
         uni.navigateTo({
           url: `/pages/goods-filter/goods-filter?id=${item.id}`,
-        });
+        })
       } else {
         uni.navigateTo({
           url: `/pages/furniture/furniture?id=${item.id}`,
-        });
+        })
       }
     },
 
     async getGoodsList(isLoadmore) {
-      uni.showLoading();
-      const res = await goodsListApi({ ...this.queryInfo });
+      uni.showLoading()
+      const res = await goodsListApi({ ...this.queryInfo })
       if (res.errno === 0) {
-        this.totalPages = res.data.totalPages;
+        this.totalPages = res.data.totalPages
 
         if (isLoadmore) {
-          this.searchGoodsList.push(...res.data.goodsList);
+          this.searchGoodsList.push(...res.data.goodsList)
         } else {
-          this.searchGoodsList = res.data.goodsList;
+          this.searchGoodsList = res.data.goodsList
         }
-        uni.hideLoading();
+        uni.hideLoading()
       } else {
-        uni.hideLoading();
+        uni.hideLoading()
         uni.showToast({
           title: res.errmsg,
-        });
+        })
       }
     },
 
     reachBottom() {
       if (this.totalPages <= this.queryInfo.page) {
-        return 'no-more';
+        return 'no-more'
       }
 
       if (this.searchGoodsList.length < this.queryInfo.size) {
-        return 'lack';
+        return 'lack'
       }
 
-      this.queryInfo.page++;
-      this.getGoodsList(true);
+      this.queryInfo.page++
+      this.getGoodsList(true)
+    },
+
+    handelTo(item) {
+      if (!item.url) {
+        this.empty()
+      } else {
+        uni.navigateTo({
+          url: item.url,
+        })
+      }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

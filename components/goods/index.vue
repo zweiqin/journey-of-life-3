@@ -35,6 +35,10 @@ export default {
     payNumber: [Number, String],
     url: String,
     id: [Number, String],
+    isShowBrand: {
+      type: Boolean,
+      default: false
+    }
   },
 
   methods: {
@@ -42,8 +46,12 @@ export default {
       if (!this.id) {
         return;
       }
+      let url = `/pages/prod/prod?goodsId=${this.id}`
+      if(this.isShowBrand){
+        url += '&showBrand=true'
+      }
       uni.navigateTo({
-        url: `/pages/prod/prod?goodsId=${this.id}`,
+        url,
       });
     },
   },

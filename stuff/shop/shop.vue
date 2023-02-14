@@ -30,7 +30,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -38,34 +38,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -96,7 +96,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -104,34 +104,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -162,7 +162,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -170,34 +170,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -228,7 +228,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -236,34 +236,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -294,7 +294,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -302,34 +302,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -360,7 +360,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -368,34 +368,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -426,7 +426,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -434,34 +434,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -492,7 +492,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -500,34 +500,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -558,7 +558,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -566,34 +566,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -624,7 +624,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -632,34 +632,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>
@@ -690,7 +690,7 @@
             <view class="brand-name">团蜂家具材料店</view>
             <img
               class="juxing"
-              src="../../static/images/stuff/矩形 2.png"
+              src="../../static/images/stuff/juxinger.png"
               alt=""
             />
             <view class="zuijin">最近</view>
@@ -698,34 +698,34 @@
           <view class="tiyan">
             <img
               class="blue"
-              src="../../static/images/stuff/矩形 1.png"
+              src="../../static/images/stuff/juxingyi.png"
               alt=""
             />
             <view class="pingfen">体验评分</view>
             <view class="star-list">
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star"
-                src="../../static/images/stuff/星形.png"
+                src="../../static/images/stuff/xingxing.png"
                 alt=""
               />
               <img
                 class="star1"
-                src="../../static/images/stuff/星形1.png"
+                src="../../static/images/stuff/xingxing1.png"
                 alt=""
               />
             </view>

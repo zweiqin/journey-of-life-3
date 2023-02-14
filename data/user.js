@@ -102,8 +102,8 @@ export const normalMenus = {
     {
       label: "申请开店",
       icon: require('../static/images/center/brand-apply.png'),
-      url: '',
-      role: [7, 1]
+      url: '/user/sever/applyStore/index',
+      role: [7, 1],
     },
     {
       label: '商品收藏',

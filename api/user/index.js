@@ -11,7 +11,8 @@ import {
 	LTRequest,
 	getUserId,
 	RuanRequest,
-	XZLRequest
+	XZLRequest,
+	shopRequest
 } from "../../utils";
 
 // 业务管理升级
@@ -231,6 +232,13 @@ export const getBusinessResponsiblePersonListApi = (data) => {
 // 升级(超级)合伙人
 export const partnerApplyApi = data => {
 	return RuanRequest("/api/syb/orderPayH5", data, 'post', null, {
+		"X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN)
+	})
+}
+
+// 升级为门店
+export const applyStoreApi = data => {
+	return shopRequest("/partnerApply/saveAndSignin", data, 'post', null, {
 		"X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN)
 	})
 }

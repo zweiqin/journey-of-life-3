@@ -225,7 +225,10 @@
 			"path": "pages/accountLogin/accountLogin"
 		},
 		{
-			"path": "pages/register/register"
+			"path": "pages/register/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
 		},
 		{
 			"path": "pages/store/store"
@@ -635,11 +638,24 @@
 						"navigationBarTitleText": "分享名片"
 					}
 				},
+				// {
+				// 	"path": "sever/shop-car",
+				// 	"style": {
+				// 		"navigationBarTitleText": "购物车",
+				// 		"usingComponents": {}
+				// 	}
+				// },
 				{
-					"path": "sever/shop-car",
+					"path": "sever/shopCar/shopCar",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "购物车",
 						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/shopCar/order",
+					"style": {
+						"navigationBarTitleText": "确认订单"
 					}
 				},
 				{
@@ -668,6 +684,12 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/applyStore/index",
+					"style": {
+						"navigationBarTitleText": "申请开店"
 					}
 				},
 				{

@@ -5,7 +5,7 @@
       padding: padding,
       textAlign: position,
       display: position === 'center' ? 'block' : 'flex',
-      backgroundColor: backgroundColor,
+      background: backgroundColor,
     }"
   >
     <view
@@ -91,6 +91,10 @@ export default {
   h1 {
     font-size: 32upx;
     font-weight: normal;
+  }
+
+  .back{
+    z-index: 10000;
   }
 }
 </style>

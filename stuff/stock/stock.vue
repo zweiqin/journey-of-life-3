@@ -18,7 +18,7 @@
 
       <image
         class="background1"
-        src="../../static/images/stuff/热销.png"
+        src="../../static/images/stuff/rexiao.png"
         alt=""
       />
       <view class="background2">

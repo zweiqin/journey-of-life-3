@@ -12,11 +12,11 @@
           mode=""
         />
         <text class="text">输入你想搜索的产品</text>
-        <image
+        <!-- <image
           class="camera"
           src="../../../static/images/index/camera.png"
           mode=""
-        />
+        /> -->
       </view>
       <image
         class="chat"

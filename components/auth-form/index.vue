@@ -1,7 +1,7 @@
 <template>
   <view class="login-page">
     <view class="header">
-      <img
+      <image
         @click="back"
         class="back"
         src="../../static/images/store/chevron-states.png"
@@ -11,7 +11,7 @@
       <view class="title" @click="toRoute">{{ routeText }}</view>
     </view>
     <view class="main">
-      <img
+      <image
         class="title-img"
         src="../../static/images/common/login-log.png"
         alt=""
@@ -34,7 +34,7 @@
         <view class="form-item">
           <view class="name">输入密码</view>
           <input v-model="form.password" class="input" :type="inputType" />
-          <img
+          <image
             @click="isView = !isView"
             class="icon"
             src="../../static/images/common/views.png"
@@ -65,7 +65,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: "login",
+      default: 'login',
     },
 
     btnTop: {
@@ -75,7 +75,7 @@ export default {
 
     btnText: {
       type: String,
-      default: "登录",
+      default: '登录',
     },
 
     title: String,
@@ -86,66 +86,66 @@ export default {
   data() {
     return {
       form: {
-        mobile: "",
-        code: "",
-        password: "",
+        mobile: '',
+        code: '',
+        password: '',
       },
 
       timer: null,
       count: 60,
       isSendCode: false,
       isView: false,
-    };
+    }
   },
 
   methods: {
     submit() {
-      this.$emit("submit", { ...this.form });
+      this.$emit('submit', { ...this.form })
     },
 
     register() {
       uni.navigateTo({
-        url: "/pages/register/register",
-      });
+        url: '/pages/register/register',
+      })
     },
 
     reset() {
       uni.navigateTo({
-        url: "/pages/reset-password/reset-password",
-      });
+        url: '/pages/reset-password/reset-password',
+      })
     },
 
     back() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
 
     toRoute() {
       if (!this.route) {
-        return;
+        return
       }
       uni.navigateTo({
         url: this.route,
-      });
+      })
     },
 
     // 点击获取验证码
     getQr() {
       if (this.isSendCode) {
         uni.showToast({
-          title: "验证码已发送，请耐心等待",
-          icon: "none",
-        });
+          title: '验证码已发送，请耐心等待',
+          icon: 'none',
+        })
 
-        return;
+        return
       }
 
       if (!this.form.mobile.trim()) {
         uni.showToast({
-          title: "请输入电话号码",
-          icon: "none",
-        });
+          title: '请输入电话号码',
+          icon: 'none',
+        })
 
-        return;
+        return
       }
 
       // if (this.form.mobile !== 11) {
@@ -158,25 +158,25 @@ export default {
       // }
 
       this.timer = setInterval(() => {
-        this.isSendCode = true;
+        this.isSendCode = true
 
         if (this.count === 0) {
-          clearInterval(this.timer);
-          this.timer = null;
-          this.isSendCode = false;
-          return;
+          clearInterval(this.timer)
+          this.timer = null
+          this.isSendCode = false
+          return
         }
-        this.count--;
-      }, 1000);
+        this.count--
+      }, 1000)
     },
   },
 
   computed: {
     inputType() {
-      return this.isView ? "text" : "password";
+      return this.isView ? 'text' : 'password'
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -185,7 +185,7 @@ export default {
   height: 100vh;
   padding: 180upx 66upx 0;
   box-sizing: border-box;
-  background: url("../../static/images/common/login-bg.png") no-repeat;
+  background: url('../../static/images/common/login-bg.png') no-repeat;
   background-size: cover;
 
   .header {
@@ -198,6 +198,7 @@ export default {
 
     .back {
       width: 48upx;
+      height: 48upx;
     }
 
     .title {
@@ -208,6 +209,7 @@ export default {
 
   .title-img {
     width: 464upx;
+    height: 40upx;
   }
 
   .sub-title {
@@ -270,6 +272,7 @@ export default {
 
     .icon {
       width: 28upx;
+      height: 22upx;
       font-size: 28upx;
     }
   }

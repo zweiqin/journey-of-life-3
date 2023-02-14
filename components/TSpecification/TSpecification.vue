@@ -41,6 +41,8 @@
           <uni-number-box :min="1" v-model="number"></uni-number-box>
         </view>
       </view>
+
+      <button @click="$emit('confirm')" class="uni-btn">{{ btnText }}</button>
     </view>
   </view>
 </template>
@@ -62,31 +64,36 @@ export default {
       type: Number,
       required: true,
     },
+
+    btnText: {
+      type: String,
+      default: '确定',
+    },
   },
 
   data() {
     return {
       number: 1,
       sps: {},
-      spStr: "请选择商品规格",
+      spStr: '请选择商品规格',
       product: null,
-    };
+    }
   },
 
   methods: {
     // 点击选择
     handleChoose(name, tag) {
-      this.sps[name] = tag.value;
-      this.getSpStr();
-      this.product = this.getProduct();
-      this.$forceUpdate();
+      this.sps[name] = tag.value
+      this.getSpStr()
+      this.product = this.getProduct()
+      this.$forceUpdate()
     },
 
     // 获取规格字符串
     getSpStr() {
-      let str = "";
+      let str = ''
       for (const sp in this.sps) {
-        str += this.sps[sp] + "，";
+        str += this.sps[sp] + '，'
       }
 
       // this.spStr =
@@ -94,27 +101,27 @@ export default {
       //   this.number +
       //   (this.data.info.unit + "").replaceAll("‘", "").replaceAll("’", "");
 
-      this.spStr = str + this.number + this.data.info.unit;
+      this.spStr = str + this.number + this.data.info.unit
     },
 
     // 获取product
     getProduct() {
-      let currentProduct = null;
-      this.data.productList.forEach((item) => {
-        let tag = true;
+      let currentProduct = null
+      this.data.productList.forEach(item => {
+        let tag = true
         for (const sp in this.sps) {
           if (!item.specifications.includes(this.sps[sp])) {
-            tag = false;
-            break;
+            tag = false
+            break
           }
         }
 
         if (tag) {
-          currentProduct = item;
+          currentProduct = item
         }
-      });
+      })
 
-      return currentProduct ? currentProduct : this.data.productList[0];
+      return currentProduct ? currentProduct : this.data.productList[0]
     },
 
     // 获取结果
@@ -123,7 +130,7 @@ export default {
         number: this.number,
         product: this.product,
         spStr: this.spStr,
-      };
+      }
     },
   },
 
@@ -132,11 +139,11 @@ export default {
       handler(newVal) {
         if (newVal) {
           for (const sp of newVal.specificationList) {
-            this.sps[sp.name] = sp.valueList[0].value;
+            this.sps[sp.name] = sp.valueList[0].value
           }
 
-          this.getSpStr();
-          this.product = this.getProduct();
+          this.getSpStr()
+          this.product = this.getProduct()
         }
       },
       immediate: true,
@@ -144,7 +151,7 @@ export default {
     },
 
     number() {
-      this.getSpStr();
+      this.getSpStr()
     },
   },
 
@@ -153,10 +160,10 @@ export default {
       return {
         opacity: this.value ? 1 : 0,
         zIndex: this.value ? 12 : -1,
-      };
+      }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -180,11 +187,12 @@ export default {
     left: 0;
     bottom: -1000px;
     width: 100%;
-    z-index: 101;
+    z-index: 100000000;
     padding: 16upx 32upx;
     box-sizing: border-box;
     transition: all 500ms;
     border-radius: 20upx 20upx 0 0;
+    // padding-bottom: 100upx;
 
     .goods-info {
       display: flex;
@@ -248,5 +256,18 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20upx;
+}
+
+.uni-btn {
+  margin-top: 40upx;
+  width: 100%;
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+  height: 40px;
+  text-align: center;
+  border-radius: 100px;
+  line-height: 40px;
+  background: linear-gradient(90deg, #ffd100, #fe753f);
 }
 </style>

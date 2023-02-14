@@ -3,6 +3,7 @@
     <line-title background="#fff" title="网红爆款"></line-title>
     <view class="goods-wrapper">
       <goods
+        isShowBrand
         v-for="item in hot"
         :key="item.id"
         :name="item.name"
@@ -16,6 +17,7 @@
     <line-title background="#fff" title="新品发布"></line-title>
     <view class="goods-wrapper">
       <goods
+        isShowBrand
         v-for="item in newGoods"
         :key="item.id"
         :name="item.name"
@@ -29,7 +31,7 @@
 </template>
 
 <script>
-import Goods from "../../../../components/goods";
+import Goods from '../../../../components/goods'
 export default {
   props: {
     hot: {
@@ -44,7 +46,7 @@ export default {
   },
 
   components: { Goods },
-};
+}
 </script>
 
 <style lang="less" scoped>

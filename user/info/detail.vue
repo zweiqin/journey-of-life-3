@@ -37,6 +37,13 @@
         </view>
       </tui-list-cell>
 
+      <tui-list-cell v-if="userInfo.invitationCode">
+        <view class="user-info-item">
+          <view class="title">会员编号</view>
+          <view class="value">{{ userInfo.invitationCode }}</view>
+        </view>
+      </tui-list-cell>
+
       <tui-list-cell arrow>
         <view class="user-info-item">
           <view class="title">性别</view>

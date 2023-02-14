@@ -6,14 +6,14 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\cate\cataAdd.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { RuanRequest } from "../../utils";
+import { shopRequest } from "../../utils";
 
 /**
  * 购物车添加
  * @returns  
  */
 export const getCartAddApi = (data) => {
-    return RuanRequest("/cart/add", data)
+    return shopRequest("/cart/add", data)
 };
 /**
  * 
@@ -21,7 +21,7 @@ export const getCartAddApi = (data) => {
  * @returns 
  */
 export const getCartIndexApi = (data) => {
-    return RuanRequest("/cart/index", data, 'get')
+    return shopRequest("/cart/index", data, 'get')
 }
 /**
  * 
@@ -29,7 +29,7 @@ export const getCartIndexApi = (data) => {
  * @returns 
  */
 export const getCartGoodscountApi = (data) => {
-    return RuanRequest("/cart/goodscount", data, 'get')
+    return shopRequest("/cart/goodscount", data, 'get')
 }
 /**
  * 
@@ -37,7 +37,7 @@ export const getCartGoodscountApi = (data) => {
  * @returns 
  */
 export const getCartCheckedApi = (data) => {
-    return RuanRequest("/cart/checked", data)
+    return shopRequest("/cart/checked", data)
 };
 /**
  * 
@@ -45,7 +45,7 @@ export const getCartCheckedApi = (data) => {
  * @returns 
  */
 export const getCartUpdateApi = (data) => {
-    return RuanRequest("/cart/update", data)
+    return shopRequest("/cart/update", data)
 };
 /**
  * 
@@ -53,7 +53,7 @@ export const getCartUpdateApi = (data) => {
  * @returns 
  */
 export const getCartDeleteApi = (data) => {
-    return RuanRequest("/cart/delete", data)
+    return shopRequest("/cart/delete", data)
 };
 /**
  * 
@@ -61,7 +61,7 @@ export const getCartDeleteApi = (data) => {
  * @returns 
  */
 export const getCartCheckoutApi = (data) => {
-    return RuanRequest("/cart/checkout", data, 'get')
+    return shopRequest("/cart/checkout", data, 'get')
 }
 
 /**
@@ -70,5 +70,5 @@ export const getCartCheckoutApi = (data) => {
  * @returns
  */
 export const payShopCarApi = data => {
-    return RuanRequest('/cart/checkout', data, 'get')
+    return shopRequest('/cart/checkout', data, 'get')
 }

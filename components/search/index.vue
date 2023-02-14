@@ -1,14 +1,14 @@
 <template>
   <!-- 头部 -->
   <view class="header">
-    <img class="img" src="../../static/images/index/location.png" alt="定位" />
+    <image class="img" src="../../static/images/index/location.png" alt="定位" />
 
     <text class="loaction">佛山市</text>
     <view class="search">
-      <img src="../../static/images/icon/search.png" alt="" />
+      <image class="search-icon" src="../../static/images/icon/search.png" alt="" />
       <input type="text" @focus="$emit('focus')" />
     </view>
-    <img class="img" src="../../static/images/index/ling.png" alt="响铃" />
+    <image class="img" src="../../static/images/index/ling.png" alt="响铃" />
   </view>
 </template>
 
@@ -17,6 +17,10 @@ export default {};
 </script>
 
 <style lang="less" scoped>
+.search-icon{
+  width: 38upx;
+  height: 28upx;
+}
 .header {
   display: flex;
   justify-content: center;

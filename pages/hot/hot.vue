@@ -26,28 +26,91 @@
     <view class="banner"></view>
 
     <view class="main">
-      <Navs></Navs>
+      <Navs @click="handleChooseMenu"></Navs>
+
+      <view class="goods-container" v-if="goodsList.length">
+        <Goods v-for="goods in goodsList" :key="goods.id" :data="goods"></Goods>
+      </view>
+
+      <JNoData
+        v-else
+        type="namecard"
+        width="300"
+        text="暂无爆品"
+      ></JNoData>
     </view>
   </view>
 </template>
 
 <script>
+import { goodsListApi } from '../../api/goods'
 import Navs from './navs.vue'
+import Goods from '../index/components/search-furniture/goods.vue'
+
 export default {
-	components: {
-		Navs
-	},
-  data() {
-    return {};
+  components: {
+    Navs,
+    Goods,
   },
+  onLoad() {
+    this.getGoods()
+  },
+  data() {
+    return {
+      query: {
+        page: 1,
+        size: 20,
+        isHot: true,
+        categoryId: null,
+      },
+      goodsList: [],
+      total: 0,
+      scrollTop: 0,
+    }
+  },
+
   methods: {
     handleBack() {
       uni.switchTab({
-        url: "/pages/index/index",
-      });
+        url: '/pages/index/index',
+      })
+    },
+
+    getGoods(isLoadMore) {
+      uni.showLoading({
+        title: '加载中',
+      })
+      goodsListApi(this.query).then(({ data }) => {
+        console.log(data)
+        if (isLoadMore) {
+          this.goodsList.push(...data.goodsList)
+        } else {
+          this.goodsList = data.goodsList
+        }
+        this.total = data.totalPages
+
+        uni.hideLoading()
+      })
+    },
+
+    onReachBottom() {
+      if (this.query.page >= this.totalPages) {
+        this.status = 'no-more'
+        return
+      }
+
+      this.query.page++
+      this.getGoods(true)
+    },
+
+    handleChooseMenu(item) {
+      console.log(item)
+      this.query.categoryId = item.id
+      this.query.page = 1
+      this.getGoods()
     },
   },
-};
+}
 </script>
 
 <style lang="less">
@@ -69,7 +132,7 @@ export default {
       position: relative;
       margin-right: 20upx;
       &::after {
-        content: "";
+        content: '';
         border: 4px solid #ffffff;
         border-bottom-color: transparent;
         border-left-color: transparent;
@@ -130,7 +193,7 @@ export default {
     position: relative;
     width: 100%;
     height: 308upx;
-    background: url("../../static/images/index/hot-banner-page.png") no-repeat;
+    background: url('../../static/images/index/hot-banner-page.png') no-repeat;
     background-size: cover;
     z-index: -1;
   }
@@ -143,6 +206,19 @@ export default {
     margin-top: -40upx;
     padding: 40upx 20upx;
     box-sizing: border-box;
+  }
+
+  .goods-container {
+    padding: 30upx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: #ffffff;
+
+    /deep/ .goods-image-wrapper {
+      width: 350upx;
+    }
   }
 }
 </style>

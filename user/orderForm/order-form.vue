@@ -94,15 +94,16 @@
 </template>
 
 <script>
-import { orderTypes, orderOpButtons } from "./config";
+import { orderTypes, orderOpButtons } from './config'
 import {
   getOrderListApi,
   orderCancelApi,
   orderDeleteApi,
   receiveGoodsApi,
-} from "../../api/order";
-import { payOrderGoodsApi } from "../../api/goods";
-import { getUserId } from "../../utils";
+} from '../../api/order'
+import { payOrderGoodsApi } from '../../api/goods'
+import { getUserId } from '../../utils'
+import { TUAN_ORDER_SN, PAY_SHORT_ORDER_NO } from '../../constant'
 export default {
   data() {
     return {
@@ -115,77 +116,79 @@ export default {
       orderOpButtons,
       totalPages: 0,
       orderList: [],
-      loadingStatus: "loading",
-    };
+      loadingStatus: 'loading',
+    }
   },
 
   onLoad(options) {
-    this.currentStatus = options.type[0] * 1 || 0;
+    this.currentStatus = options.type[0] * 1 || 0
+    this.getOrderList()
   },
 
   onShow() {
-    this.getOrderList();
+    uni.removeStorageSync(PAY_SHORT_ORDER_NO)
+    uni.removeStorageSync(TUAN_ORDER_SN)
   },
 
   methods: {
     // 获取订单信息
     getOrderList(loadMore) {
-      uni.showLoading();
-      this.loadingStatus = "loading";
+      uni.showLoading()
+      this.loadingStatus = 'loading'
       getOrderListApi({
         userId: getUserId(),
         showType: this.currentStatus,
         ...this.query,
       }).then(({ data }) => {
         if (loadMore) {
-          this.orderList.push(...data.data);
+          this.orderList.push(...data.data)
         } else {
-          this.orderList = data.data;
+          this.orderList = data.data
         }
-        this.totalPages = data.totalPages;
-        this.loadingStatus = "hidden";
-        uni.hideLoading();
+        this.totalPages = data.totalPages
+        this.loadingStatus = 'hidden'
+        uni.hideLoading()
 
-        console.log(data);
-      });
+        console.log(data)
+      })
     },
 
     // 切换状态
     handleSwitchStatus(status) {
-      this.currentStatus = status;
-      this.query.page = 1;
-      this.query.size = 20;
-      this.getOrderList();
+      this.currentStatus = status
+      this.query.page = 1
+      this.query.size = 20
+      this.getOrderList()
     },
 
     // 点击操作按钮
     handleOpOrder(goods, key, currentGoods) {
-      if (key === "comment") {
-        this.handleToViewOrderDetail(goods, currentGoods);
-        return;
+      if (key === 'comment') {
+        this.handleToViewOrderDetail(goods, currentGoods)
+        return
       }
       const mapMethods = {
         cancel: {
-          text: "确定要取消当前订单吗?",
+          text: '确定要取消当前订单吗?',
           api: orderCancelApi,
         },
         delete: {
-          text: "确定要删除当前订单吗?",
+          text: '确定要删除当前订单吗?',
           api: orderDeleteApi,
         },
         confirm: {
-          text: "确定要收货吗",
+          text: '确定要收货吗',
           api: receiveGoodsApi,
         },
-      };
+      }
 
-      const _this = this;
+      const _this = this
       if (
         goods.handleOption[key] &&
-        ["cancel", "delete", "confirm"].includes(key)
+        ['cancel', 'delete', 'confirm'].includes(key)
       ) {
         uni.showModal({
-          title: "提示",
+          title: '提示',
           content: mapMethods[key].text,
           success: function (res) {
             if (res.confirm) {
@@ -195,36 +198,36 @@ export default {
                   orderId: goods.id,
                 })
                 .then(() => {
-                  _this.query.page = 1;
-                  _this.getOrderList();
-                });
+                  _this.query.page = 1
+                  _this.getOrderList()
+                })
             }
           },
-        });
+        })
       } else {
-        if (key === "pay") {
+        if (key === 'pay') {
           payOrderGoodsApi({
             orderNo: goods.orderSn,
             userId: getUserId(),
             payType: 1,
-          }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
+          }).then(res => {
+            const payData = JSON.parse(res.h5PayUrl)
+            const form = document.createElement('form')
+            form.setAttribute('action', payData.url)
+            form.setAttribute('method', 'POST')
+            const data = JSON.parse(payData.data)
+            let input
             for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
+              input = document.createElement('input')
+              input.name = key
+              input.value = data[key]
+              form.appendChild(input)
             }
 
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          });
+            document.body.appendChild(form)
+            form.submit()
+            document.body.removeChild(form)
+          })
         }
       }
     },
@@ -233,28 +236,28 @@ export default {
     handleToViewOrderDetail(goods, currentGoods) {
       uni.navigateTo({
         url:
-          "/user/orderForm/order-form-detail?id=" +
+          '/user/orderForm/order-form-detail?id=' +
           goods.id +
-          (currentGoods ? "&goodsId=" + currentGoods.id : ""),
-      });
+          (currentGoods ? '&goodsId=' + currentGoods.id : ''),
+      })
     },
   },
 
   onReachBottom() {
     if (this.orderList.length < this.query.size) {
-      this.loadingStatus = "noMore";
-      return;
+      this.loadingStatus = 'noMore'
+      return
     }
 
     if (this.query.page >= this.totalPages) {
-      this.loadingStatus = "noMore";
-      return;
+      this.loadingStatus = 'noMore'
+      return
     }
 
-    this.query.page++;
-    this.getOrderList(true);
+    this.query.page++
+    this.getOrderList(true)
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

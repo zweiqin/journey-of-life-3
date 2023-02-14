@@ -6,6 +6,7 @@
     "versionCode" : 102,
     "transformPx" : false,
     "app-plus" : {
+        "animationType" : "slide-in-left",
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -15,7 +16,9 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "modules" : {},
+        "modules" : {
+            "Geolocation" : {}
+        },
         "distribute" : {
             "android" : {
                 "permissions" : [

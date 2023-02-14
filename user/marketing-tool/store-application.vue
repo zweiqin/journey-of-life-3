@@ -28,7 +28,7 @@ import { applyStoreOne, applyStoreTow } from "./config";
 export default {
   components: {
     FieldPane,
-    UploadPane,
+    // UploadPane,
     Update,
   },
   data() {

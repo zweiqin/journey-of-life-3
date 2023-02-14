@@ -4,7 +4,6 @@
     btn-text="确定"
     :btn-top="100"
     type="reset"
-    title="重置密码"
   ></AuthForm>
 </template>
 

@@ -37,7 +37,7 @@
           <navigator
             hover-class="none"
             class="goods-item"
-            :url="`/pages/prod/prod?goodsId=${goods.id}`"
+            :url="`/pages/prod/prod?goodsId=${goods.id}&showBrand=true`"
           >
             <image :src="goods.picUrl" mode="" />
 

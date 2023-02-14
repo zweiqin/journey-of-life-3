@@ -43,6 +43,7 @@ const service = (base_url, hideLoading) => {
             reject(res.data.errmsg)
             return
           }
+
           if (res.data.errno !== 0) {
             uni.showToast({
               title: res.data.errmsg,
@@ -69,6 +70,7 @@ const service = (base_url, hideLoading) => {
           // }
         },
         fail: (error) => {
+          console.log("操了");
           uni.hideLoading()
           reject(error);
         },

@@ -31,14 +31,14 @@
           <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
         </view>
       </UserPane>
-      <UserPane
+      <!-- <UserPane
         v-if="[6, 7, 1].includes(userLevel)"
         @click="handleToPage"
         isGrid
         class="section"
         :data="vipEquity"
       >
-      </UserPane>
+      </UserPane> -->
       <UserPane
         @click="handleToPage"
         isGrid
@@ -59,6 +59,7 @@
             ￥ <text id="user-count">0.00</text>
           </view>
         </view>
+
         <view slot="coupon">
           <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
         </view>
@@ -281,7 +282,6 @@ export default {
   min-height: 70vh;
   font-size: 28upx;
   padding-bottom: 50px;
-  background: linear-gradient(to right, #ed374d, #fa793f);
 
   image {
     width: 48upx;

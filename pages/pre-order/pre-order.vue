@@ -77,7 +77,7 @@ import { getAddressListApi } from "../../api/address";
 import { firstAddCar, submitOrderApi, payOrderGoodsApi } from "../../api/goods";
 import { getUserId } from "../../utils";
 import { payShopCarApi } from "../../api/cart";
-import { PAY_GOODS, SELECT_ADDRESS } from "../../constant";
+import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from "../../constant";
 export default {
   onLoad() {
     this.getAddressList();
@@ -86,6 +86,11 @@ export default {
 
   onShow() {
     this.getAddressList();
+    if(uni.getStorageSync(TUAN_ORDER_SN)){
+      uni.redirectTo({
+         url: '/user/orderForm/order-form?type=1'
+      });
+    }
   },
 
   data() {
@@ -196,6 +201,7 @@ export default {
         ..._this.opForm,
       };
       submitOrderApi(submitData).then(({ data }) => {
+        uni.setStorageSync(TUAN_ORDER_SN, data.orderSn)
         payOrderGoodsApi({
           orderNo: data.orderSn,
           userId: getUserId(),

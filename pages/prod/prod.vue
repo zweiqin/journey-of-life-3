@@ -22,8 +22,16 @@
         /></view>
 
         <view>
-          <image src="../../static/images/detail/brand.png" mode="" />
-          <image src="../../static/images/detail/share.png" mode="" />
+          <image
+            @click="empty"
+            src="../../static/images/detail/brand.png"
+            mode=""
+          />
+          <image
+            @click="empty"
+            src="../../static/images/detail/share.png"
+            mode=""
+          />
         </view>
       </view>
 
@@ -84,11 +92,11 @@
 
       <view class="salsed">
         <text>月销100+</text>
-        <image
+        <!-- <image
           class="share-tran"
           src="../../static/images/detail/share-tran.png"
           mode=""
-        />
+        /> -->
       </view>
 
       <view class="sub-info">
@@ -104,10 +112,13 @@
           class="item"
           v-for="(item, index) in goodsInfoConfig"
           :key="index"
+          @click="handleClickMenu(item)"
         >
           <image :src="item.icon" mode="" />
           <view>
-            <view class="label">{{ item.label }}</view>
+            <view class="label">{{
+              selectForm[item.model] || item.label
+            }}</view>
             <view class="desc" v-if="item.desc">{{ item.desc }}</view>
           </view>
         </view>
@@ -121,7 +132,7 @@
       <!-- 店铺信息 -->
       <view
         class="brand-wrapper"
-        v-if="goodsDetail.brand && goodsDetail.brand.name"
+        v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand"
       >
         <view class="top">
           <image
@@ -211,7 +222,7 @@
 
     <view class="footer">
       <view class="icon-wrapper">
-        <view class="item" @click="go('/user/sever/shop-car')">
+        <view class="item" @click="go('/user/sever/shopCar/shopCar')">
           <image src="../../static/images/detail/shap-active.png" mode="" />
           <text>购物车</text>
           <view class="number" v-if="shopCarNumber">{{ shopCarNumber }}</view>
@@ -237,27 +248,31 @@
       </view>
 
       <view class="buttons">
-        <button class="uni-btn" @click="addShopCar">加入购物车</button>
-        <button class="uni-btn" @click="fastBuy">立即购买</button>
+        <button class="uni-btn" @click="addShopCar(selectInfo)">
+          加入购物车
+        </button>
+        <button class="uni-btn" @click="fastBuy(selectInfo)">立即购买</button>
       </view>
     </view>
 
     <TSpecification
+      :btn-text="btnStatus"
+      @confirm="handleChooseSp"
       :data="goodsDetail"
       ref="specificationRef"
-      :bottom="100"
+      :bottom="0"
       v-model="showSpecification"
     ></TSpecification>
   </view>
 </template>
 
 <script>
-import Carousel from "../../components/carousel";
-import { subInfoConfig, goodsInfoConfig } from "./config";
-import uParse from "../../components/u-parse/u-parse.vue";
-import { marked } from "marked";
-import { PAY_GOODS, USER_ID } from "../../constant";
-import RecommendGoods from "../../components/recommend-goods";
+import Carousel from '../../components/carousel'
+import { subInfoConfig, goodsInfoConfig } from './config'
+import uParse from '../../components/u-parse/u-parse.vue'
+import { marked } from 'marked'
+import { PAY_GOODS, USER_ID } from '../../constant'
+import RecommendGoods from '../../components/recommend-goods'
 
 import {
   getGoodsDetailApi,
@@ -266,8 +281,8 @@ import {
   addShopCarApi,
   getCarShopNumberApi,
   goodsListApi,
-} from "../../api/goods";
-import { getUserId } from "../../utils";
+} from '../../api/goods'
+import { getUserId } from '../../utils'
 
 export default {
   components: {
@@ -290,70 +305,89 @@ export default {
       detailPosition: 0,
       scrollTop: 0,
       currentMoveTag: 0,
-      redirect: "/pages/prod/prod?goodsId=",
-      isShowTop: false
-    };
+      redirect: '/pages/prod/prod?goodsId=',
+      isShowTop: false,
+      btnStatus: '确定',
+      selectInfo: null,
+      selectForm: {
+        spsStr: '',
+      },
+      isShowBrand: false,
+    }
   },
   onLoad(options) {
+    this.isShowBrand = !!options.showBrand
     uni.pageScrollTo({
       scrollTop: 0,
       duration: 0,
-    });
-    this.goodsId = options.goodsId * 1;
-    this.redirect += this.goodsId;
-    this.userId = uni.getStorageSync(USER_ID);
-    this.getGoodsDetail();
+    })
+    this.goodsId = options.goodsId * 1
+    this.redirect += this.goodsId
+    this.userId = uni.getStorageSync(USER_ID)
+    this.getGoodsDetail()
     if (this.userId) {
-      this.getCarShopNumber();
+      this.getCarShopNumber()
     }
   },
 
   methods: {
     // 回退
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
     // 获取商品详情
     async getGoodsDetail() {
-      uni.showLoading();
-      const res = await getGoodsDetailApi(this.goodsId, this.userId);
-      uni.hideLoading();
+      uni.showLoading()
+      const res = await getGoodsDetailApi(this.goodsId, this.userId)
+      uni.hideLoading()
       if (res.errno === 0) {
-        this.goodsDetail = res.data;
-        this.isCollect = !!res.data.userHasCollect;
-        this.getBrandOtherGoods(res.data.brand.id);
+        this.goodsDetail = res.data
+        this.isCollect = !!res.data.userHasCollect
+        this.getBrandOtherGoods(res.data.brand.id)
       }
     },
 
     // 加入购物车
-    async addShopCar() {
-      const goodsInfo = await this.getSpacification();
+    async addShopCar(selectInfo) {
+      this.btnStatus = '确定加入购物车'
+      let goodsInfo = null
+      if (!selectInfo || !this.selectInfo) {
+        goodsInfo = await this.getSpacification()
+      } else {
+        goodsInfo = selectInfo
+      }
 
       const data = {
         userId: getUserId(),
         goodsId: this.goodsDetail.info.id,
         number: goodsInfo.number,
         productId: goodsInfo.product.id,
-      };
+      }
 
-      const res = await addShopCarApi(data);
+      const res = await addShopCarApi(data)
       if (res.errno === 0) {
         uni.showToast({
-          title: "添加成功",
-          icon: "none",
-        });
-        this.showSpecification = false;
-        this.getCarShopNumber();
+          title: '添加成功',
+          icon: 'none',
+        })
+        this.showSpecification = false
+        this.getCarShopNumber()
       } else {
         uni.showToast({
-          title: "购物车添加失败",
-          icon: "none",
-        });
+          title: '购物车添加失败',
+          icon: 'none',
+        })
       }
     },
     // 立即购买
-    async fastBuy() {
-      const goodsInfo = await this.getSpacification();
+    async fastBuy(selectInfo) {
+      this.btnStatus = '立即购买'
+      let goodsInfo = null
+      if (!selectInfo || !this.selectInfo) {
+        goodsInfo = await this.getSpacification()
+      } else {
+        goodsInfo = selectInfo
+      }
       uni.setStorageSync(PAY_GOODS, {
         currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
         currentSpecification: goodsInfo.spStr,
@@ -363,69 +397,69 @@ export default {
         ...this.goodsDetail,
         selectedProduct: goodsInfo,
         brandId: this.goodsDetail.brand.id,
-      });
+      })
 
       uni.navigateTo({
-        url: "/pages/pre-order/pre-order",
-      });
+        url: '/pages/pre-order/pre-order',
+      })
     },
 
     // 获取商品规格参数
     getSpacification() {
       if (!this.userId) {
         uni.showModal({
-          title: "提示",
-          content: "您还未登录，请先登录",
+          title: '提示',
+          content: '您还未登录，请先登录',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login?to=" + this.redirect,
-              });
+                url: '/pages/login/login?to=' + this.redirect,
+              })
             }
           },
-        });
+        })
 
-        return;
+        return
       }
       return new Promise((resolve, reject) => {
         if (this.showSpecification) {
-          const goodsInfo = this.$refs.specificationRef.getVal();
+          const goodsInfo = this.$refs.specificationRef.getVal()
           if (goodsInfo.number > goodsInfo.product.number) {
-            this.$showToast("该货品库存为" + goodsInfo.product.number);
-            reject();
+            this.$showToast('该货品库存为' + goodsInfo.product.number)
+            reject()
           }
-          resolve(goodsInfo);
+          resolve(goodsInfo)
         } else {
-          this.showSpecification = true;
+          this.showSpecification = true
         }
-      });
+      })
     },
 
     // 获取购物车数量
     async getCarShopNumber() {
-      const res = await getCarShopNumberApi();
+      const res = await getCarShopNumberApi()
       if (res.errno === 0) {
-        this.shopCarNumber = res.data;
+        this.shopCarNumber = res.data
       }
     },
 
     // 获取品牌商的其他商品
     async getBrandOtherGoods(id) {
-      if (!id) return;
+      if (!id) return
       const res = await goodsListApi({
         page: 1,
         size: 6,
         brandId: id,
-      });
+      })
 
       if (res.errno === 0) {
-        this.brandOtherGoods = res.data.goodsList;
-        console.log(this.brandOtherGoods);
+        this.brandOtherGoods = res.data.goodsList
+        console.log(this.brandOtherGoods)
       } else {
         uni.showLoading({
           title: res.errmsg,
-          icon: "none",
-        });
+          icon: 'none',
+        })
       }
     },
 
@@ -433,100 +467,123 @@ export default {
     async handleCollect() {
       if (!this.userId) {
         uni.showModal({
-          title: "提示",
-          content: "您还未登录，请先登录",
+          title: '提示',
+          content: '您还未登录，请先登录',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login",
-              });
+                url: '/pages/login/login',
+              })
             }
           },
-        });
+        })
 
-        return;
+        return
       }
 
-      uni.showLoading();
+      uni.showLoading()
 
       const res = await collectionApi({
         userId: getUserId(),
         type: 0,
         valueId: this.goodsId,
-      });
+      })
 
-      uni.hideLoading();
+      uni.hideLoading()
 
       if (res.errno === 0) {
         uni.showToast({
-          title: res.data.type === "add" ? "收藏成功" : "取消收藏成功",
+          title: res.data.type === 'add' ? '收藏成功' : '取消收藏成功',
           duration: 2000,
-        });
+        })
 
-        this.isCollect = !this.isCollect;
+        this.isCollect = !this.isCollect
       } else {
         uni.showLoading({
-          title: "操作失败",
-          icon: "none",
-        });
+          title: '操作失败',
+          icon: 'none',
+        })
       }
     },
 
     handleKefu() {
       uni.showLoading({
-        title: "暂未开放",
-        icon: "none",
+        title: '暂未开放',
+        icon: 'none',
         duration: 1000,
-      });
+      })
     },
 
     // 获取移动的位置
     initMovePosition() {
-      const _this = this;
-      const query = uni.createSelectorQuery().in(this);
+      const _this = this
+      const query = uni.createSelectorQuery().in(this)
       query
-        .select(".eval")
-        .boundingClientRect((data) => {
-          console.log("叼臭泥1");
-          _this.evalPosition = data.top;
+        .select('.eval')
+        .boundingClientRect(data => {
+          _this.evalPosition = data.top
         })
-        .exec();
+        .exec()
 
       query
-        .select("#goods-detail")
-        .boundingClientRect((data) => {
-          console.log("叼臭泥2");
-          _this.detailPosition = data.top;
+        .select('#goods-detail')
+        .boundingClientRect(data => {
+          _this.detailPosition = data.top
         })
-        .exec();
+        .exec()
 
-      this.isShowTop = true;
+      this.isShowTop = true
     },
 
     // 点击移动到对应的位置
     moveToDetail(tag) {
-      const _this = this;
+      const _this = this
       // this.currentMoveTag = tag;
       switch (tag) {
         case 0:
           uni.pageScrollTo({
             scrollTop: 0,
             duration: 200,
-          });
-          break;
+          })
+          break
         case 1:
           uni.pageScrollTo({
             scrollTop: _this.evalPosition,
             duration: 200,
-          });
-          break;
+          })
+          break
 
         case 2:
           uni.pageScrollTo({
             scrollTop: _this.detailPosition,
             duration: 200,
-          });
-          break;
+          })
+          break
+      }
+    },
+
+    // 点击
+    handleClickMenu(item) {
+      if (item.key == 'sp') {
+        this.btnStatus = '确定'
+        this.showSpecification = true
+      }
+    },
+
+    // 确定选择规格
+    async handleChooseSp() {
+      console.log(1)
+      const sps = await this.getSpacification()
+      // this.showSpecification = false
+      // debugger
+      if (this.btnStatus === '确定加入购物车') {
+        this.addShopCar(sps)
+      } else if (this.btnStatus === '立即购买') {
+        this.fastBuy(sps)
+      } else {
+        this.selectInfo = sps
+        this.selectForm.spsStr = '已选' + sps.spStr
+        this.showSpecification = false
       }
     },
   },
@@ -536,8 +593,8 @@ export default {
       handler(value) {
         if (value && this.brandOtherGoods) {
           this.$nextTick(() => {
-            this.initMovePosition();
-          });
+            this.initMovePosition()
+          })
         }
       },
 
@@ -549,8 +606,8 @@ export default {
       handler(value) {
         if (value && this.goodsDetail) {
           this.$nextTick(() => {
-            this.initMovePosition();
-          });
+            this.initMovePosition()
+          })
         }
       },
 
@@ -563,41 +620,41 @@ export default {
     goodsInfoDetail() {
       return this.goodsDetail.info.detail
         ? marked(this.goodsDetail.info.detail)
-        : "";
+        : ''
     },
   },
 
   onPullDownRefresh() {
-    this.getGoodsDetail();
+    this.getGoodsDetail()
     if (this.userId) {
-      this.getCarShopNumber();
+      this.getCarShopNumber()
     }
-    uni.stopPullDownRefresh();
+    uni.stopPullDownRefresh()
   },
 
   onPageScroll(e) {
-    this.showTopNav = !!e.scrollTop;
-    this.scrollTop = e.scrollTop;
+    this.showTopNav = !!e.scrollTop
+    this.scrollTop = e.scrollTop
     if (this.detailPosition) {
       if (e.scrollTop < this.evalPosition - 60) {
-        this.currentMoveTag = 0;
+        this.currentMoveTag = 0
       } else if (
         e.scrollTop >= this.evalPosition - 60 &&
         e.scrollTop < this.detailPosition - 60
       ) {
-        this.currentMoveTag = 1;
+        this.currentMoveTag = 1
       } else if (e.scrollTop > this.detailPosition - 60) {
-        this.currentMoveTag = 2;
+        this.currentMoveTag = 2
       }
     } else {
       if (e.scrollTop < this.evalPosition - 60) {
-        this.currentMoveTag = 0;
+        this.currentMoveTag = 0
       } else if (e.scrollTop >= this.evalPosition - 60) {
-        this.currentMoveTag = 1;
+        this.currentMoveTag = 1
       }
     }
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -968,7 +1025,7 @@ export default {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     width: 400upx;
     height: 1upx;

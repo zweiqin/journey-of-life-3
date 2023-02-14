@@ -3,7 +3,7 @@ export const bannerConfig = [
     icon: require('../../../../static/images/index/hot.png'),
     title: require('../../../../static/images/index/hot-banner.png'),
     desc: '好货抢不停',
-    // url: '/pages/hot/hot'
+    url: '/pages/hot/hot'
   },
   {
     icon: require('../../../../static/images/index/brand.png'),
