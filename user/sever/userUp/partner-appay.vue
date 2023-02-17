@@ -121,7 +121,29 @@ export default {
         mask: false,
       })
 
-      partnerApplyApi(data).then(payFn)
+      try {
+        partnerApplyApi(data).then(res => {
+          if(res.errno !== 0){
+            uni.showToast({
+              title: res.errmsg,
+              icon: 'none'
+            })
+
+            return
+          }
+
+          console.log(res);
+
+          payFn(res.data)
+        })
+      } catch (error) {
+        console.log(error);
+        uni.hideLoading();
+        uni.showToast({
+          title: error,
+          icon: 'none'
+        })
+      }
     },
 
     handlChooseCity(cityData) {

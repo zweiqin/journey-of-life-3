@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import AuthForm from "../../components/auth-form";
-import { userRegisterApi } from "../../api/auth";
+import AuthForm from '../../components/auth-form'
+import { userRegisterApi } from '../../api/auth'
 export default {
   components: {
     AuthForm,
@@ -20,43 +20,54 @@ export default {
   data() {
     return {
       timer: null,
-    };
+      to: null,
+    }
+  },
+
+  onLoad(params) {
+    this.to = params.to == 'undefined' ? '' : params.to
   },
 
   methods: {
     async submit(form) {
       if (form.mobile.length !== 11) {
         uni.showToast({
-          title: "手机号格式错误",
+          title: '手机号格式错误',
           duration: 2000,
-          icon: "none",
-        });
+          icon: 'none',
+        })
 
-        return;
+        return
       }
       const data = {
         username: form.mobile,
         password: form.password,
         mobile: form.mobile,
-      };
-      await userRegisterApi(data);
-      
+      }
+      await userRegisterApi(data)
+
       uni.showToast({
-        title: "注册成功",
+        title: '注册成功',
         duration: 2000,
-      });
+      })
 
       this.timer = setTimeout(() => {
-        uni.navigateTo({
-          url: "/pages/login/login",
-        });
-      }, 1000);
+        if (this.to) {
+          uni.navigateTo({
+            url: '/pages/login/login?to=' + this.to,
+          })
+        } else {
+          uni.navigateTo({
+            url: '/pages/login/login',
+          })
+        }
+      }, 1000)
     },
   },
 
   deactivated() {
-    clearTimeout(this.timer);
-    this.timer = null;
+    clearTimeout(this.timer)
+    this.timer = null
   },
-};
+}
 </script>

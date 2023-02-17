@@ -1,5 +1,5 @@
 <template>
-  <view class="account-book-container">
+  <view class="account-book-container" v-if="data">
     <view class="main">
       <NewHeader
         @back="handleBack"
@@ -18,7 +18,12 @@
 
       <Extension :data="extensionData"></Extension>
       <Fans :data="fansData"></Fans>
-      <Gen :yesterdayIncome="data.yesterdayIncome" :data="genData"></Gen>
+      <Gen
+        :yesterdayIncome="data.yesterdayIncome"
+        :data="genData"
+        :yesterdayVermicelli="data.yesterdayVermicelli"
+        :vermicelliVoList="data.vermicelliVoList"
+      ></Gen>
       <Analysis :data="analysisData"></Analysis>
     </view>
   </view>
@@ -30,6 +35,7 @@ import Fans from './cpns/fans.vue'
 import Gen from './cpns/gen/gen.vue'
 import Analysis from './cpns/analysis/index.vue'
 import { getAccountBookApi } from '../../api/user'
+import { getUserId } from '../../utils'
 
 export default {
   components: {
@@ -41,7 +47,7 @@ export default {
 
   data() {
     return {
-      data: {},
+      data: null,
       extensionData: {},
       fansData: {},
       analysisData: [],
@@ -50,8 +56,11 @@ export default {
   },
 
   onLoad() {
-    getAccountBookApi().then(({ data }) => {
+    getAccountBookApi({
+      userId: getUserId(),
+    }).then(({ data }) => {
       this.data = data
+      console.log(data)
       this.extensionData = {
         cumulativeIncome: data.cumulativeIncome,
         holdingIncome: data.holdingIncome,
@@ -62,8 +71,8 @@ export default {
         partner: data.partner,
         ordinaryMember: data.ordinaryMember,
       }
-      this.genData = data.informationTypeVoList
-      this.analysisData = data.informationTypeVoList2
+      this.genData = data.orderVoList
+      this.analysisData = data.orderVoList
     })
   },
 

@@ -40,6 +40,7 @@ export default {
           uni.showToast({
             title: '登录成功'
           })
+          console.log(data);
           resolve(data)
         }).catch(err => {
           reject(err)

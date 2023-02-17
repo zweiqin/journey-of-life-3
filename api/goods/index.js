@@ -76,7 +76,7 @@ export const firstAddCar = (data) => {
 }
 
 export const payOrderGoodsApi = (data) => {
-  return RuanRequest("/api/syb/orderPayH5", data)
+  return shopRequest("/api/syb/orderPayH5", data)
 }
 // export const payOrderGoodsApi = (data) => {
 //   return XZLRequest("/api/syb/orderPayH5", data)

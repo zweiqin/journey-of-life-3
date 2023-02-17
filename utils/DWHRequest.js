@@ -1,31 +1,38 @@
-import { BASE_URL, RUAN_URL, LANG_FEE_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, TEST_URL } from "../config";
+import {
+  BASE_URL,
+  RUAN_URL,
+  LANG_FEE_URL,
+  DEYI_URL,
+  XZL_URL,
+  SheQu_URL,
+  SheQu1_URL,
+  TEST_URL,
+} from '../config'
 
-const request = (base_url) => {
-  return function (url, data = {}, method = "post", cb, header) {
+const request = base_url => {
+  return function (url, data = {}, method = 'post', cb, header) {
     return new Promise((resolve, reject) => [
       uni.request({
         url: base_url + url,
         data,
         method,
-        success: (res) => {
+        success: res => {
           resolve(res.data)
         },
-        fail: (error) => {
-          reject(error);
+        fail: error => {
+          reject(error)
         },
 
         complete: () => {
-          cb && typeof cb === "function" && cb();
+          cb && typeof cb === 'function' && cb()
         },
-
       }),
-    ]);
-  };
-};
-
+    ])
+  }
+}
 
 const service = (base_url, hideLoading) => {
-  return function (url, data = {}, method = "post", cb, header) {
+  return function (url, data = {}, method = 'post', cb, header) {
     uni.showLoading()
     return new Promise((resolve, reject) => [
       uni.request({
@@ -33,10 +40,11 @@ const service = (base_url, hideLoading) => {
         data,
         header,
         method,
-        success: (res) => {
+        success: res => {
+          console.log(res);
           if (res.errno === 780) {
             uni.showToast({
-              title: "系统内部错误",
+              title: '系统内部错误',
               icon: 'none',
               mask: true,
             })
@@ -52,49 +60,41 @@ const service = (base_url, hideLoading) => {
             })
             reject(res.data.errmsg)
             return
-          } else if (res.data.errmsg == "用户未登录") {
+          } else if (res.data.errmsg == '用户未登录') {
             uni.showModal({
               title: '提示',
               content: '您还未登录，请先去登录',
               showCancel: true,
               success: function (res) {
-                uni.navigateTo({ url: '/pages/login/login', })
-              }
-            });
+                uni.navigateTo({ url: '/pages/login/login' })
+              },
+            })
           } else {
-            resolve(res.data);
+            resolve(res.data)
           }
 
           uni.hideLoading()
-          // resolve(res.data)
-          // }
         },
-        fail: (error) => {
-          console.log("操了");
+        fail: error => {
           uni.hideLoading()
-          reject(error);
+          reject(error)
         },
 
         complete: () => {
-          cb && typeof cb === "function" && cb();
+          cb && typeof cb === 'function' && cb()
         },
-
       }),
-    ]);
-  };
-};
+    ])
+  }
+}
 
-
-export const GyRequest = request(BASE_URL);
+export const GyRequest = request(BASE_URL)
 export const XZLRequest = request(XZL_URL)
-export const RuanRequest = request(RUAN_URL);
+export const RuanRequest = request(RUAN_URL)
 export const LTRequest = request(LANG_FEE_URL)
 export const DEYIRequest = request(DEYI_URL)
 export const SheQuRequest = request(SheQu_URL)
 export const SheQuRequest1 = request(SheQu1_URL)
 
-
 export const shopRequest = service(RUAN_URL)
 // export const textLang = service(TEST_URL)
-
-

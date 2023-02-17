@@ -15,7 +15,7 @@ export {
   XZLRequest,
   SheQuRequest,
   SheQuRequest1,
-  shopRequest
+  shopRequest,
 } from './DWHRequest'
 export {
   fomartNumber,
@@ -28,3 +28,4 @@ export {
 } from './DWHutils'
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'
+export { saveImg } from './upload'

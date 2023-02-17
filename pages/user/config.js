@@ -427,8 +427,10 @@ export const getMenus = userLevel => {
         url: '/user/sever/shopCar/shopCar',
       },
       {
-        label: '优惠劵',
-        icon: require('../../static/images/center/coupon-2-fill.png'),
+        label: '我的推广',
+        icon: require('../../static/images/user/code.png'),
+        url: '/user/sever/code/code',
+        role: [1, 6, 7],
       },
       {
         label: '每日签到',

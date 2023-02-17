@@ -840,6 +840,18 @@
 					"style": {
 						"navigationBarTitleText": "历史"
 					}
+				},
+				{
+					"path": "sever/code/code",
+					"style": {
+						"navigationBarTitleText": "我的推广"
+					}
+				},
+				{
+					"path": "sever/code/fille-code",
+					"style": {
+						"navigationBarTitleText": "填写邀请码"
+					}
 				}
 			]
 		},

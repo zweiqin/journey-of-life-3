@@ -81,6 +81,7 @@ export default {
     title: String,
     routeText: String,
     route: String,
+    to: String
   },
 
   data() {
@@ -105,13 +106,13 @@ export default {
 
     register() {
       uni.navigateTo({
-        url: '/pages/register/register',
+        url: '/pages/register/register?to=' + this.to,
       })
     },
 
     reset() {
       uni.navigateTo({
-        url: '/pages/reset-password/reset-password',
+        url: '/pages/reset-password/reset-password?to=' + this.to,
       })
     },
 

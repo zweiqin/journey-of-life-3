@@ -15,24 +15,40 @@
     ></SwitchBtns>
 
     <view class="total">
-      <view class="total-count">{{ yesterdayIncome }}</view>
-      <view class="tip">昨日收益（元）</view>
+      <view class="total-count">{{
+        !currentCategory ? yesterdayIncome : yesterdayVermicelli
+      }}</view>
+      <view class="tip">{{
+        !currentCategory ? '昨日收益（元）' : '昨日新增粉丝数'
+      }}</view>
     </view>
 
-    <Tabs
-      padding="0"
-      @click="handleChangeViews"
-      isShowScrollBar
-      :currentIndex="currentNav"
-      :data="tabs"
-    ></Tabs>
+    <view v-if="!currentCategory">
+      <Tabs
+        padding="0"
+        isShowScrollBar
+        :currentIndex="currentNav"
+        :data="tabs"
+      ></Tabs>
 
-    <view v-show="currentLegend === 0">
-      <Charts :data1="data" ref="chartsRef"></Charts>
+      <view v-show="currentLegend === 0">
+        <Charts :data1="data" ref="chartsRef"></Charts>
+      </view>
+
+      <view v-show="currentLegend === 1">
+        <FormPane :data2="data"></FormPane>
+      </view>
     </view>
 
-    <view v-show="currentLegend === 1">
-      <FormPane :data2="data"></FormPane>
+    <view v-else>
+      <FansCharts
+        :data1="vermicelliVoList"
+        v-show="currentLegend === 0"
+      ></FansCharts>
+      <FansTable
+        v-show="currentLegend === 1"
+        :data="vermicelliVoList"
+      ></FansTable>
     </view>
   </Pane>
 </template>
@@ -42,6 +58,8 @@ import Pane from '../pane.vue'
 import SwitchBtns from './cpns/switch.vue'
 import FormPane from './cpns/form-pane.vue'
 import Charts from './cpns/charts.vue'
+import FansTable from './cpns/FansTable.vue'
+import FansCharts from './cpns/FansCharts.vue'
 
 export default {
   components: {
@@ -49,6 +67,8 @@ export default {
     SwitchBtns,
     FormPane,
     Charts,
+    FansTable,
+    FansCharts,
   },
   props: {
     data: {
@@ -59,11 +79,19 @@ export default {
       type: Number,
       required: true,
     },
+    yesterdayVermicelli: {
+      type: Number,
+      required: true,
+    },
+    vermicelliVoList: {
+      type: Array,
+      required: true,
+    },
   },
 
   data() {
     return {
-      currentLegend: 0,
+      currentLegend: 1,
       currentCategory: 0,
       currentNav: 0,
 
@@ -86,19 +114,10 @@ export default {
     }
   },
 
-  methods: {
-    // 点击了tab
-    handleChangeViews(info) {
-      this.currentNav = this.tabs.findIndex(item => item.label === info.label)
-    },
-  },
-
   watch: {
     currentLegend(value) {
-      if (value === 0) {
-        this.$nextTick(() => {
-          this.$refs.chartsRef.initCharts()
-        })
+      if(!value){
+        this.$refs.chartsRef.init()
       }
     },
   },

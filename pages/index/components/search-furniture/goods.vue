@@ -36,7 +36,7 @@
 
       <view class="goods-price">
         <view class="text"
-          >劵后<text class="text-price">￥{{ data.counterPrice }}</text></view
+          ><text class="text-price">￥{{ data.counterPrice }}</text></view
         >
         <view class="salsed">100+付款</view>
       </view>

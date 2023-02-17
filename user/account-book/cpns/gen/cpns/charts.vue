@@ -1,39 +1,11 @@
 <template>
-  <view class="charts-container">
-    <view
-      class="item"
-      :style="{ width: 100 / formLabels.length + '%' }"
-      v-for="(item, index) in data"
-      :key="index"
-    >
-      <view
-        @transitionend="isShowTip = true"
-        class="line"
-        :style="{ borderColor: item.color, height: item.height * 1.1 + '%' }"
-      >
-        <view
-          class="dot"
-          :style="{ background: item.color, bottom: item.height + '%' }"
-        ></view>
-
-        <view
-          class="tip"
-          v-if="isShowTip"
-          :style="{ background: item.color }"
-          >{{ item.orderQuantity }}</view
-        >
-      </view>
-      <view class="title">{{ item.label }}</view>
-    </view>
-
-    <view class="mask">
-      <view class="mask-item" v-for="item in 10" :key="item"></view>
-    </view>
-  </view>
+  <view>
+    <l-echart ref="chart" custom-style="width: 100%" @finished="init"></l-echart
+  ></view>
 </template>
 
 <script>
-import { formLabels } from './config'
+import * as echarts from '@/uni_modules/lime-echart/static/echarts.min'
 export default {
   props: {
     data1: {
@@ -41,143 +13,111 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      data: formLabels,
-      formLabels: Object.freeze(formLabels),
-      isShowTip: false,
-    }
-  },
-
   watch: {
     data1: {
       handler(value) {
-        this.initCharts(value)
+        console.log(value)
       },
 
       immediate: true,
       deep: true,
     },
   },
-
+  data() {
+    return {
+      option: {
+        color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985',
+            },
+          },
+        },
+        legend: {
+          show: false,
+        },
+        grid: {
+          left: '20',
+          right: '20',
+          bottom: '20',
+          containLabel: false,
+        },
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+              lineStyle: {
+                color: '#ccc',
+              },
+            },
+            data: [...this.data1.map(item => item.typeName)],
+          },
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            show: false,
+          },
+        ],
+        series: [
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0,
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgb(128, 255, 165)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgb(1, 191, 236)',
+                },
+              ]),
+            },
+            emphasis: {
+              focus: 'series',
+            },
+            data: [...this.data1.map(item => item.orderQuantity)],
+          },
+        ],
+      },
+    }
+  },
+  // 组件能被调用必须是组件的节点已经被渲染到页面上
+  // 1、在页面mounted里调用，有时候mounted 组件也未必渲染完成
+  mounted() {
+    // init(echarts, theme?:string, opts?:{}, chart => {})
+    // echarts 必填， 非nvue必填，nvue不用填
+    // theme 可选，应用的主题，目前只支持名称，如：'dark'
+    // opts = { // 可选
+    //  locale?: string  // 从 `5.0.0` 开始支持
+    // }
+    // chart => {} ， callback 必填，返回图表实例
+    this.$refs.chart.init(echarts, chart => {
+      chart.setOption(this.option)
+    })
+  },
+  // 2、或者使用组件的finished事件里调用
   methods: {
-    initCharts(value) {
-      if (!Array.isArray(value)) {
-        return
-      }
-
-      const values = value.map(item => item.orderQuantity)
-      console.log(values);
-      const maxCount = Math.max(...values)
-      this.data = formLabels.map((item, index) => {
-        // const currentItem = value.find(item1 => item1.typeName === item.label)
-        item.height = Math.floor((values[index] / maxCount) * 70)
-        item.orderQuantity = values[index]
-        return item
+    init() {
+      this.$refs.chart.init(echarts, chart => {
+        chart.setOption(this.option)
       })
-      this.isShowTip = true
     },
   },
 }
 </script>
 
-<style lang="less" scoped>
-.charts-container {
-  position: relative;
-  width: 100%;
-  height: 600upx;
-  margin-top: 30upx;
-  margin-bottom: 20upx;
-  display: flex;
-  align-items: center;
-
-  .item {
-    position: relative;
-    height: 100%;
-    padding-bottom: 40upx;
-    z-index: 10;
-
-    .line {
-      position: absolute;
-      bottom: 46upx;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      border-left: 1px dotted rgba(0, 255, 145, 0.726);
-      height: calc(100% - 40upx);
-
-      .dot {
-        position: absolute;
-        background-color: rgb(244, 0, 0);
-        bottom: 0;
-        left: 50%;
-        width: 14upx;
-        height: 14upx;
-        border-radius: 50%;
-        transform: translateX(-10upx);
-        transition: bottom 500ms ease-in-out;
-      }
-
-      .tip {
-        position: absolute;
-        top: 0;
-        // left: 50%;
-        height: 34upx;
-        width: 84upx;
-        color: #fff;
-        text-align: center;
-        line-height: 34upx;
-        transform: translateX(-50%);
-        transition: all 350ms;
-        // opacity: 0;
-        animation: fadeInUp 500ms ease-in-out;
-      }
-
-      @keyframes fadeInUp {
-        0% {
-          opacity: 0;
-          -webkit-transform: translate3d(0, 100%, 0);
-          transform: translate3d(-50%, 100%, 0);
-        }
-
-        100% {
-          opacity: 1;
-          -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(-50%, 0, 0);
-        }
-      }
-    }
-
-    .title {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      height: 40upx;
-      width: 100%;
-      // background-color: aquamarine;
-      text-align: center;
-      color: #000 !important;
-      background-color: #fff;
-      padding-top: 10upx;
-      // font-weight: bold;
-    }
-  }
-
-  .mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-
-    .mask-item {
-      width: 100%;
-      height: 60upx;
-      box-sizing: border-box;
-      border-bottom: 1upx dotted #ccc;
-    }
-  }
-}
-</style>
+<style lang="less" scoped></style>

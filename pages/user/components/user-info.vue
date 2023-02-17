@@ -29,7 +29,7 @@
               url="/user/sever/view-history?page=history"
               hover-class="none"
             >
-              <text style="margin-left: 0"
+              <text style="margin-left: 0; padding-left: 0"
                 >足迹{{ data.footprintCount || 0 }}</text
               >
             </navigator>
