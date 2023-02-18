@@ -852,6 +852,21 @@
 					"style": {
 						"navigationBarTitleText": "填写邀请码"
 					}
+				},
+				{
+					"path": "sever/microstore/microstore",
+					"style": {
+						"navigationBarTitleText": "我的微店"
+					}
+				},
+				{
+					"path": "chat/chat",
+					"style": {
+						"navigationBarTitleText": "消息"
+					}
+				},
+				{
+					"path": "chat/chat-detail"
 				}
 			]
 		},

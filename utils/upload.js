@@ -7,7 +7,7 @@ export const saveImg = (url, cb) => {
   uniappA.click()
   uniappA.remove()
   cb && typeof cb === 'function' && cb()
-  // #ifdef
+  // #endif
 
   // #ifdef APP
   uni.saveImageToPhotosAlbum({
@@ -16,5 +16,5 @@ export const saveImg = (url, cb) => {
       cb && typeof cb === 'function' && cb()
     },
   })
-  // #ifdef
+  // #endif
 }

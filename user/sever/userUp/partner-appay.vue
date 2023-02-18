@@ -26,7 +26,7 @@
       <button class="uni-btn" @click="handlePay">
         <text class="pay-text">立即支付</text>
         <text class="cost-text">
-          ￥<text>{{ currentApplyType === 'partner' ? 1000 : 5000 }}</text
+          ￥<text>{{ currentApplyType === 'partner' ? 2000 : 5000 }}</text
           >/年
         </text>
       </button>

@@ -13,7 +13,7 @@
           mode=""
         />
         <view class="vip-type-name">合伙人</view>
-        <view class="vip-cost">￥<text>1000</text>/年</view>
+        <view class="vip-cost">￥<text>2000</text>/年</view>
         <tui-icon class="icon" :size="28" color="#fff" name="check"></tui-icon>
       </view>
 

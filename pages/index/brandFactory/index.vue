@@ -64,7 +64,6 @@ export default {
         } else {
           this.brandList = res.data.brandList;
         }
-
         this.totalPages = res.data.totalPages;
       } else {
         uni.showToast({

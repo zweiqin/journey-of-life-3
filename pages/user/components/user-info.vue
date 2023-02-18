@@ -16,7 +16,7 @@
               <image src="../../../static/images/center/setting.png" mode="" />
               <text>设置</text>
             </view>
-            <view class="item">
+            <view class="item" @click="go('/user/chat/chat')">
               <image src="../../../static/images/center/chart.png" mode="" />
               <text>聊天</text>
             </view>

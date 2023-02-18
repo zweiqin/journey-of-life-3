@@ -395,25 +395,7 @@ export const getMenus = userLevel => {
         label: '微店',
         icon: require('../../static/images/center/store-3-fill.png'),
         role: [1, 6, 7],
-      },
-      {
-        label: '余额',
-        slotName: 'count',
-      },
-      {
-        label: '优惠劵',
-        slotName: 'coupon',
-      },
-      {
-        label: '小账本',
-        icon: require('../../static/images/center/book-open-fill.png'),
-        url: '/user/account-book/index',
-        role: [1, 6, 7],
-      },
-      {
-        label: '微店',
-        icon: require('../../static/images/center/store-3-fill.png'),
-        role: [1, 6, 7],
+        url: '/user/sever/microstore/microstore',
       },
     ],
   }

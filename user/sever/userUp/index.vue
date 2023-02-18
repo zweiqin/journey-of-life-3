@@ -19,7 +19,7 @@
         @click="handleUserUp"
         :equity="equity"
         text="合伙人升级"
-        price="1000"
+        price="2000"
       ></Pane>
       <Pane
         @click="handleUserUp"

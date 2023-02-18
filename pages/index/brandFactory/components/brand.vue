@@ -13,7 +13,12 @@
       />
       <view v-else class="avatar"> {{ data.brand.name }} </view>
       <view class="info-pane">
-        <view class="name-inter" @click="go(`/pages/index/brandFactory/detail?brandId=${data.brand.id}`)">
+        <view
+          class="name-inter"
+          @click="
+            go(`/pages/index/brandFactory/detail?brandId=${data.brand.id}`)
+          "
+        >
           <view class="name">{{ data.brand.name }}</view>
           <navigator
             :url="`/pages/index/brandFactory/detail?brandId=${data.brand.id}`"
@@ -95,8 +100,9 @@ export default {
   watch: {
     data: {
       handler(newValue) {
-        if (newValue.id) {
-          this.getGoodsList(newValue.id)
+        // console.log('草泥吗', newValue.brand.id)
+        if (newValue.brand.id) {
+          this.getGoodsList(newValue.brand.id)
         }
       },
 

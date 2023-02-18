@@ -118,6 +118,7 @@ export default {
       if (this.userLevel === 1) {
         uni.showToast({
           title: '你已经申请了门店，无需重复申请',
+          icon: 'none',
         })
         return
       }
