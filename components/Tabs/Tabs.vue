@@ -1,7 +1,7 @@
 <template>
   <view class="tabs-container" :style="{ padding: padding }">
     <view
-      :style="{ width: isGrid ? 100 / data.length + '%' : '' }"
+      :style="{ width: isGrid ? 100 / 4 + '%' : '' }"
       class="item"
       v-for="(item, index) in data"
       :class="{ active: currentIndex === index }"

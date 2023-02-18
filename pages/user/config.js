@@ -419,6 +419,11 @@ export const getMenus = userLevel => {
         icon: require('../../static/images/center/calendar-check-fill.png'),
       },
       {
+        label: '会员升级',
+        icon: require('../../static/images/center/vip-crown-2-fill.png'),
+        url: '/user/sever/userUp/index',
+      },
+      {
         label: '商品收藏',
         icon: require('../../static/images/center/star-smile-fill.png'),
         url: '/user/sever/view-history?page=collection',
@@ -437,14 +442,6 @@ export const getMenus = userLevel => {
         url: '/user/site/site-manage',
       },
     ],
-  }
-
-  if ([6, 5].includes(userLevel)) {
-    normalMenus.menus.splice(3, 0, {
-      label: '会员升级',
-      icon: require('../../static/images/center/vip-crown-2-fill.png'),
-      url: '/user/sever/userUp/index',
-    })
   }
 
   if ([7, 1].includes(userLevel)) {
