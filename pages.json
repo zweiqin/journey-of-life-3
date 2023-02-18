@@ -222,7 +222,10 @@
 			}
 		},
 		{
-			"path": "pages/accountLogin/accountLogin"
+			"path": "pages/service-agreement/service-agreement",
+			"style": {
+				"navigationBarTitleText": "团蜂服务协议"
+			}
 		},
 		{
 			"path": "pages/register/register",
