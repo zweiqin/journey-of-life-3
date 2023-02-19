@@ -161,7 +161,7 @@ export default {
           orderNo: data.orderSn,
           userId: getUserId(),
           payType: 1,
-        }).then(res => payFn(res))
+        }).then(res => payFn(res.data))
       })
     },
   },

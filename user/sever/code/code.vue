@@ -104,11 +104,35 @@ export default {
 
 <style lang="scss" scoped>
 .code-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: auto;
   background: url('../../../static/images/user/code/code-bg.png') no-repeat;
   background-size: cover;
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 20upx;
+    height: 40upx;
+    border-radius: 0 100px 100px 0;
+    background-color: #ffcb05;
+    top: 564upx;
+    left: 62upx;
+  }
+
+  &::before {
+    position: absolute;
+    content: '';
+    width: 20upx;
+    height: 40upx;
+    border-radius: 100px 0 0 100px;
+    background-color: #ffcb05;
+    top: 564upx;
+    right: 62upx;
+    z-index: 10;
+  }
 
   .wrapper {
     height: 100%;
@@ -125,7 +149,7 @@ export default {
     justify-content: space-between;
     flex-direction: column;
     width: 622upx;
-    height: 1126upx;
+    height: 1160upx;
     margin: 0 auto;
     // background: url('../../../static/images/user/code/mian-bg.png') no-repeat;
     // background-size: cover;
@@ -138,8 +162,15 @@ export default {
       position: absolute;
       content: '';
       width: 574upx;
-      height: 0;
-      border-bottom: 1upx dotted #d8d8d8;
+      height: 1px;
+      background-image: linear-gradient(
+        to right,
+        #ccc 0%,
+        #ccc 50%,
+        transparent 50%
+      );
+      background-size: 8px 1px;
+      background-repeat: repeat-x;
     }
 
     .text-code {
@@ -186,6 +217,9 @@ export default {
       .qr-code-img {
         width: 320upx;
         height: 320upx;
+        padding: 14upx;
+        border: 2upx solid #F1F1F0;
+        border-radius: 24upx;
       }
 
       .tip {

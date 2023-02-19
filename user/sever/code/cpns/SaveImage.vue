@@ -20,7 +20,8 @@
           <l-painter-view
             css="padding: 32rpx;
               display: flex;
-              justifyContent: space-between"
+              justifyContent: space-between; 
+               width: 622rpx;"
           >
             <l-painter-view css="width: 350rpx">
               <l-painter-text
@@ -48,7 +49,7 @@
               ></l-painter-image>
             </l-painter-view>
 
-            <l-painter-view css="width: 160rpx;textAlign:center">
+            <l-painter-view css="width: 160rpx;textAlign:center;marginLeft:48rpx">
               <l-painter-image
                 :src="code"
                 css="width: 160rpx;
