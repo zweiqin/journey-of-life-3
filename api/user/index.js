@@ -13,6 +13,7 @@ import {
   RuanRequest,
   XZLRequest,
   shopRequest,
+  huangRequest,
 } from '../../utils'
 
 // 业务管理升级
@@ -177,7 +178,7 @@ export const getUserCollectionListApi = data => {
 
 // 获取推广码
 export const getExtensionCodeApi = data => {
-  return shopRequest('/binding/getCode', data, 'get')
+  return shopRequest('/binding/getCode', data)
 }
 
 // 绑定上级
@@ -248,4 +249,24 @@ export const applyStoreApi = data => {
   return shopRequest('/partnerApply/saveAndSignin', data, 'post', null, {
     'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
   })
+}
+
+// 进入微店
+export const enterSHopApi = data => {
+  return huangRequest('/microshop/toShop', data, 'get')
+}
+
+// 获取微店数据列表
+export const getMyshopGoodsListApi = data => {
+  return huangRequest('/microshop/queryUpList', data, 'get')
+}
+
+// 上架商品
+export const upGoodsApi = data => {
+  return huangRequest('/microshop/up', data, 'get')
+}
+
+// 下架商品
+export const downGoodsApi = data => {
+  return huangRequest('/microshop/down', data, 'get')
 }

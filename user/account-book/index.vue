@@ -65,6 +65,7 @@ export default {
         cumulativeIncome: data.cumulativeIncome,
         holdingIncome: data.holdingIncome,
         withdrawnIncome: data.withdrawnIncome,
+        commissionOnTheWay: data.commissionOnTheWay
       }
       this.fansData = {
         superPartner: data.superPartner,

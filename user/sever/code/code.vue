@@ -13,13 +13,9 @@
 
         <view class="copy-code">
           <view class="code-wrapper">
-            {{ userInfo.invitationCode || '邀请码获取失败' }}
+            {{ tuanCode || '邀请码获取失败' }}
           </view>
-          <button
-            v-if="userInfo.invitationCode"
-            class="uni-btn"
-            @click="handleCopyCode"
-          >
+          <button v-if="tuanCode" class="uni-btn" @click="handleCopyCode">
             复制邀请码
           </button>
         </view>
@@ -55,6 +51,7 @@ export default {
       userInfo: uni.getStorageSync(USER_INFO) || {},
       qrcode: '',
       fillCodeVisible: false,
+      tuanCode: (uni.getStorageSync(USER_INFO) || {}).invitationCode,
     }
   },
 
@@ -88,9 +85,10 @@ export default {
         url:
           'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?bindId=' +
           getUserId(),
+        userId: getUserId(),
       }).then(res => {
-        console.log(res)
-        this.qrcode = 'data:image/jpeg;base64,' + res.data
+        this.qrcode = 'data:image/jpeg;base64,' + res.data.url
+        this.tuanCode = res.data.code
       })
     },
 
@@ -218,7 +216,7 @@ export default {
         width: 320upx;
         height: 320upx;
         padding: 14upx;
-        border: 2upx solid #F1F1F0;
+        border: 2upx solid #f1f1f0;
         border-radius: 24upx;
       }
 

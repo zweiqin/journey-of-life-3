@@ -7,6 +7,7 @@ import {
   SheQu_URL,
   SheQu1_URL,
   TEST_URL,
+  HUANG_URL
 } from '../config'
 
 const request = base_url => {
@@ -41,7 +42,6 @@ const service = (base_url, hideLoading) => {
         header,
         method,
         success: res => {
-          console.log(res);
           if (res.errno === 780) {
             uni.showToast({
               title: '系统内部错误',
@@ -98,3 +98,4 @@ export const SheQuRequest1 = request(SheQu1_URL)
 
 export const shopRequest = service(RUAN_URL)
 // export const textLang = service(TEST_URL)
+export const huangRequest = service(RUAN_URL)

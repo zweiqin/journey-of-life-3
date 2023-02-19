@@ -870,6 +870,12 @@
 				},
 				{
 					"path": "chat/chat-detail"
+				},
+				{
+					"path": "sever/microstore/m-microstore",
+					"style": {
+						"navigationBarTitleText": "微店"
+					}
 				}
 			]
 		},

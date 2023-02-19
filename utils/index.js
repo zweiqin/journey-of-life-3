@@ -16,6 +16,7 @@ export {
   SheQuRequest,
   SheQuRequest1,
   shopRequest,
+  huangRequest
 } from './DWHRequest'
 export {
   fomartNumber,

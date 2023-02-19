@@ -19,3 +19,6 @@ export const SheQu1_URL ="https://www.zhult.com";
 
 
 export const TEST_URL = "http://192.168.0.74:8080/demo/wx/api/syb/orderPayH5"
+
+
+export const HUANG_URL = "http://pc-20230204bcta:8080/demo/wx"

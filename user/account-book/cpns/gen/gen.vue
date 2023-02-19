@@ -116,7 +116,7 @@ export default {
 
   watch: {
     currentLegend(value) {
-      if(!value){
+      if (!value && !this.currentCategory) {
         this.$refs.chartsRef.init()
       }
     },

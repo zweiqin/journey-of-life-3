@@ -17,6 +17,7 @@
           <input v-model="searchValue" type="text" placeholder="搜索" />
         </view>
         <view
+          @click="handleSearch"
           class="uni-btn search-btn"
           :style="{ background: searchValue ? '#ffc117' : '#ccc' }"
           >搜索</view
@@ -25,7 +26,7 @@
 
       <!-- 头部 menu -->
 
-      <view class="header-nav-container" :class="{ fixed: scrollTop > 0 }">
+      <view class="header-nav-container" :class="{ fixed: scrollTop > 200 }">
         <view
           class="item"
           @click="handleSwichTab(index)"
@@ -38,58 +39,88 @@
     </view>
     <view class="main">
       <!-- 列表 -->
-      <view class="goods-list">
-        <view class="item" v-for="item in 30" :key="item">
-          <navigator url="" hover-class="none">
-            <image
-              class="goods-img"
-              src="https://img1.baidu.com/it/u=1375922276,3116406937&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-              mode=""
-            />
-          </navigator>
+      <ShopGoodsList
+        @opGoods="handleOpDoods"
+        v-show="currentMenu === 0"
+        :data="myShopGoodsList"
+      ></ShopGoodsList>
 
-          <view class="goods-info">
-            <view class="goods-name">juaiushdjufiuahsujdufihausyuqhya</view>
-            <view class="btns">
-              <button class="uni-btn off-shelf-btn">
-                <image
-                  src="../../../static/images/user/weidian/download.png"
-                  mode=""
-                />
-                <text>下架</text>
-              </button>
-              <button class="uni-btn share-btn">
-                <image
-                  src="../../../static/images/user/weidian/share.png"
-                  mode=""
-                />
-                <text>分享</text>
-              </button>
-            </view>
-          </view>
-        </view>
-      </view>
+      <ShopGoodsList
+        @opGoods="handleOpDoods"
+        :type="1"
+        v-show="currentMenu === 1"
+        :data="platformGoodsList"
+      ></ShopGoodsList>
+
+      <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
     </view>
   </view>
 </template>
 
 <script>
+import {
+  downGoodsApi,
+  enterSHopApi,
+  getMyshopGoodsListApi,
+  upGoodsApi,
+} from '../../../api/user'
+import { getConfigApi } from '../../../api/auth'
+import { getUserId } from '../../../utils'
+import { USER_TOKEN } from '../../../constant'
+import ShopGoodsList from './cpns/ShopGoodsList'
+import { getGoodsByIdApi } from '../../../api/home'
+// #ifdef H5
+import share from '../../../utils/wxshare'
+// #endif
+
 export default {
+  components: {
+    ShopGoodsList,
+  },
   data() {
     return {
-      menus: Object.freeze(['上架商品', '平台商品', '门店商品']),
+      menus: Object.freeze(['上架商品', '平台商品']),
       currentMenu: 0,
       searchValue: '',
       scrollTop: 0,
+      brandInfo: {},
+      queryInfo: {
+        page: 1,
+        size: 20,
+        keywords: '',
+      },
+
+      platformQuery: {
+        page: 1,
+        size: 20,
+        keywords: '',
+      },
+
+      myShopGoodsList: {},
+      myShopGoodsTotalPages: 0,
+      platformGoodsList: {},
+      platformGoodsTotalPage: 0,
+      status: 'none',
     }
+  },
+
+  onLoad() {
+    this.enterShop()
   },
 
   methods: {
     // 切换 nav
     handleSwichTab(index) {
       this.currentMenu = index
-
-      console.log(this.currentMenu)
+      if (index === 1) {
+        this.queryInfo.keywords = ''
+        this.queryInfo.page = 1
+        this.getPlatformGoods()
+      } else {
+        this.platformQuery.keywords = ''
+        this.platformQuery.page = 1
+        this.getGoodsList(this.brandInfo.id)
+      }
     },
 
     // 返回
@@ -97,6 +128,155 @@ export default {
       uni.switchTab({
         url: '/pages/user/user',
       })
+    },
+
+    // 进入微店
+    async enterShop() {
+      const { data } = await enterSHopApi({ userId: getUserId() + '' })
+      this.brandInfo = data
+      this.setWexinShare({
+        title: '我的微店',
+        imgUrl: '',
+        link:
+          'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/microstore/m-microstore?shopId=' +
+          this.brandInfo.id,
+      })
+      this.getGoodsList(data.id)
+    },
+
+    // 获取门店商品
+    async getGoodsList(id, isLoadMore) {
+      this.status = 'loading'
+      const res = await getMyshopGoodsListApi({
+        shopId: id,
+        ...this.queryInfo,
+      })
+
+      if (isLoadMore) {
+        this.myShopGoodsList.goodsList.push(...res.data.goodsList)
+      } else {
+        this.myShopGoodsList = res.data
+      }
+
+      this.myShopGoodsTotalPages = res.data.totalPages
+      this.status = 'none'
+    },
+
+    // 获取平台商品
+    async getPlatformGoods(isLoadMore) {
+      this.status = 'loading'
+      const { data } = await getGoodsByIdApi(this.platformQuery)
+      if (isLoadMore) {
+        this.platformGoodsList.goodsList.push(...data.goodsList)
+      } else {
+        this.platformGoodsList = data
+      }
+      this.platformGoodsTotalPage = data.totalPages
+      this.status = 'none'
+    },
+
+    // 操作商品
+    async handleOpDoods(info) {
+      const { goodsInfo } = info
+      switch (info.type) {
+        case 'on':
+          try {
+            await upGoodsApi({
+              userId: getUserId(),
+              shopId: this.brandInfo.id,
+              productId: goodsInfo.id,
+            })
+
+            uni.showToast({
+              title: '上架成功',
+              duration: 2000,
+            })
+          } catch (error) {
+            uni.showToast({
+              title: '上架失败',
+              duration: 2000,
+              icon: 'none',
+            })
+          }
+          break
+
+        case 'off':
+          try {
+            await downGoodsApi({
+              userId: getUserId(),
+              shopId: this.brandInfo.id,
+              productId: goodsInfo.id,
+            })
+
+            uni.showToast({
+              title: '下架成功',
+              duration: 2000,
+            })
+
+            this.getGoodsList(this.brandInfo.id)
+          } catch (error) {
+            uni.showToast({
+              title: '下架失败',
+              icon: 'none',
+            })
+          }
+          break
+
+        case 'share':
+          this.setWexinShare(
+            {
+              title: goodsInfo.name,
+              imgUrl: goodsInfo.picUrl,
+              desc: goodsInfo.brief,
+              link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=${goodsInfo.id}`,
+            },
+            () => {
+              uni.showToast({
+                title: '请点击右上角三点分享',
+                duration: 2000,
+                icon: 'none',
+              })
+            }
+          )
+          break
+      }
+    },
+
+    // 搜索商品
+    handleSearch() {
+      if (!this.searchValue.trim()) {
+        uni.showToast({
+          title: '请输入搜索内容',
+          duration: 2000,
+          icon: 'none',
+        })
+
+        return
+      }
+
+      if (this.currentMenu === 0) {
+        this.queryInfo.keywords = this.searchValue
+        this.queryInfo.page = 1
+        this.myShopGoodsList = {}
+        this.getGoodsList(this.brandInfo.id)
+      } else {
+        this.platformQuery.page = 1
+        this.platformQuery.keywords = this.searchValue
+        this.platformGoodsList = {}
+        this.getPlatformGoods()
+      }
+    },
+
+    // 配置微信分享配置
+    async setWexinShare(shareData, cb) {
+      const currentUrl = window.location.href.replace('#', 'ericToken')
+      const { data } = await getConfigApi({
+        url: currentUrl,
+        token: uni.getStorageSync(USER_TOKEN),
+      })
+
+      share.wxRegister(data, shareData)
+      cb && typeof cb === 'function' && cb()
     },
   },
 
@@ -108,6 +288,50 @@ export default {
 
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
+  },
+
+  onReachBottom() {
+    if (this.currentMenu === 0) {
+      if (this.queryInfo.size > this.myShopGoodsList.goodsList.length) {
+        this.status = 'none'
+        return
+      }
+
+      if (this.queryInfo.page >= this.myShopGoodsTotalPages) {
+        this.status = 'no-more'
+        return
+      }
+      this.queryInfo.page++
+      this.getGoodsList(this.brandInfo.id, true)
+    } else {
+      if (this.platformQuery.size > this.platformGoodsList.goodsList.length) {
+        this.status = 'none'
+        return
+      }
+
+      if (this.platformQuery.page >= this.platformGoodsTotalPage) {
+        this.status = 'no-more'
+        return
+      }
+      this.platformQuery.page++
+      this.getPlatformGoods(true)
+    }
+  },
+
+  watch: {
+    searchValue(value) {
+      if (!value) {
+        this.queryInfo.keywords = ''
+        this.platformQuery.keywords = ''
+        if (this.currentMenu === 0) {
+          this.queryInfo.page = 1
+          this.getGoodsList(this.brandInfo.id)
+        } else {
+          this.platformQuery.page = 1
+          this.getPlatformGoods()
+        }
+      }
+    },
   },
 }
 </script>
@@ -146,7 +370,7 @@ export default {
     .item {
       position: relative;
       display: inline-block;
-      width: 33%;
+      width: 50%;
       font-size: 32upx;
       height: 100%;
       text-align: center;
@@ -221,75 +445,6 @@ export default {
   .main {
     padding: 20upx;
     box-sizing: border-box;
-
-    // 商品列表
-    .goods-list {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-
-      .item {
-        width: 350upx;
-        border-radius: 24upx;
-        overflow: hidden;
-        background-color: #fff;
-        margin-bottom: 20upx;
-
-        .goods-img {
-          width: 350upx;
-          height: 348upx;
-          object-fit: cover;
-        }
-
-        .goods-info {
-          padding: 24upx;
-          box-sizing: border-box;
-
-          .goods-name {
-            width: 300upx;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-
-          .btns {
-            display: flex;
-            align-items: center;
-            margin-top: 18upx;
-
-            image {
-              width: 32upx;
-              height: 32upx;
-            }
-
-            .uni-btn {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: 80upx;
-              flex: 1;
-              color: #fff;
-              font-size: 28upx;
-
-              text {
-                margin-left: 6upx;
-              }
-            }
-
-            .off-shelf-btn {
-              background-color: #ffc117;
-              border-radius: 100upx 0 0 100upx;
-            }
-
-            .share-btn {
-              background-color: #3a3629;
-              border-radius: 0 100upx 100upx 0;
-            }
-          }
-        }
-      }
-    }
   }
 }
 </style>

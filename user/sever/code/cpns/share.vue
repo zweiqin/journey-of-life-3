@@ -36,6 +36,7 @@ const shareList = [
     key: 'link',
   },
 ]
+
 export default {
   components: {
     SaveImage,

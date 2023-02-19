@@ -246,7 +246,7 @@ export default {
   width: 622upx;
   height: 754upx;
   background: #fff;
-  border-radius: 40upx 40upx 0 0;
+  border-radius: 40upx;
   overflow: hidden;
 }
 

@@ -16,6 +16,10 @@
         <view>当前佣金</view>
         <view class="value" id="ex_3">0</view>
       </view>
+      <view class="item">
+        <view>途中佣金</view>
+        <view class="value" id="ex_4">0</view>
+      </view>
     </view>
   </Pane>
 </template>
@@ -44,6 +48,7 @@ export default {
           new CountUp('ex_1', this.data.cumulativeIncome, option).start()
           new CountUp('ex_2', this.data.holdingIncome, option).start()
           new CountUp('ex_3', this.data.withdrawnIncome, option).start()
+          new CountUp('ex_4', this.data.commissionOnTheWay, option).start()
         }
       },
     },
