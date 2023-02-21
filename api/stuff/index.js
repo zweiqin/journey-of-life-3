@@ -1,4 +1,4 @@
-import { RuanRequest } from "../../utils";
+import { RuanRequest, shopRequest } from "../../utils";
 
 /**
  * @description 获取材料的分类列表
@@ -14,7 +14,7 @@ export const getStuffListApi = (data) => {
 
 // 获取行业详情列表
 export const getIndustryInformationListApi = (data) => {
-  return RuanRequest("/richText/list", data, "get");
+  return shopRequest("/richText/list", data, "get");
 };
 
 // 获取行业详情列表详情

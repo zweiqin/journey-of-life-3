@@ -108,7 +108,6 @@ export default {
             _this.timer = setTimeout(() => {
               cb && typeof cb === 'function' && cb()
             }, 1000)
-
             reject()
           })
       })

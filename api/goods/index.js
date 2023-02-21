@@ -89,7 +89,7 @@ export const goodsMaxSaleGoodsApi = (data) => {
 }
 // 获取当前门店的商品
 export const goodsListApi = (data) => {
-  return RuanRequest("/goods/list", data, 'get')
+  return shopRequest("/goods/list", data, 'get')
 }
 
 

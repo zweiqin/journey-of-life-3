@@ -60,10 +60,10 @@
         <view
           class="item"
           v-for="item in navbar"
-          :class="{ active: item.value == currentTab }"
-          :key="item.value"
-          @click="switchTab(item.value)"
-          >{{ item.label }}</view
+          :class="{ active: item.id == currentTab }"
+          :key="item.id"
+          @click="switchTab(item.id)"
+          >{{ item.name }}</view
         >
       </view>
 
@@ -84,9 +84,10 @@
 </template>
 
 <script>
-import { goodsListApi } from "../../api/goods";
-import sort from "../components/sub.vue";
-import { getAdressDetailByLngLat } from "../../utils/DWHutils";
+import { getGoodsTypesApi } from '../../api/home'
+import { goodsListApi } from '../../api/goods'
+import sort from '../components/sub.vue'
+import { getAdressDetailByLngLat } from '../../utils/DWHutils'
 export default {
   components: {
     sort,
@@ -95,66 +96,64 @@ export default {
     return {
       navbar: [],
       sub: [],
-      currentTab: "",
+      currentTab: '',
       scrollHeight: 667,
-      picUrl: "",
-    };
+      picUrl: '',
+    }
   },
   computed: {},
   methods: {
     handleBack() {
-      uni.switchTab({ url: "/pages/stuff/stuff" });
+      uni.switchTab({ url: '/pages/stuff/stuff' })
     },
 
     handleClick() {
-      const _this = this;
+      const _this = this
       if (
-        this.addressDetail === "定位失败" ||
-        this.addressDetail === "定位中..."
+        this.addressDetail === '定位失败' ||
+        this.addressDetail === '定位中...'
       ) {
         uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
+          title: '提示',
+          confirmText: '我已打开定位',
+          content: '请确认您已开启了定位',
           success: function (res) {
             if (res.confirm) {
-              _this.getLocation();
+              _this.getLocation()
             }
           },
-        });
+        })
       }
     },
 
     getLocation() {
-      this.addressDetail = "定位中...";
-      const _this = this;
+      this.addressDetail = '定位中...'
+      const _this = this
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === "1") {
-                const result = res.regeocode;
-                _this.addressDetail = result.addressComponent.township;
-                console.log("addressDetail", _this.addressDetail);
+            .then(res => {
+              if (res.status === '1') {
+                const result = res.regeocode
+                _this.addressDetail = result.addressComponent.township
+                console.log('addressDetail', _this.addressDetail)
               }
             })
             .catch(() => {
-              _this.addressDetail = "定位失败";
-            });
+              _this.addressDetail = '定位失败'
+            })
         },
-      });
+      })
     },
 
     //获取商品列表接口
     async stuffGoodsList() {
-      const res = await goodsListApi({
+      const res = await getGoodsTypesApi({
         goodsType: 2,
-      });
-      console.log("材料商品列表", res);
-      this.navbar = res.data.filterCategoryList;
-      this.navbar.unshift({ label: "综合", value: 0 });
-      console.log("navbar", this.navbar);
+      })
+      console.log('材料商品列表', res)
+      this.navbar = res.data.categoryList
     },
 
     //获取商品分类接口
@@ -164,39 +163,21 @@ export default {
         categoryId: this.id,
         page: 1,
         size: 100,
-      });
-      console.log("res", res);
-      this.sub = res.data.goodsList;
-      console.log("sub", this.sub);
+      })
+      console.log('草咯额', res)
+      this.sub = res.data.goodsList
+      console.log('sub', this.sub)
     },
 
-    goToSearch(){
+    goToSearch() {
       uni.navigateTo({ url: '/stuff/search' })
     },
 
-    //获取综合商品
-    async stuffGoods() {
-      const res = await goodsListApi({
-        goodsType: 2,
-        page: 1,
-        size: 100,
-      });
-      console.log("综合", res);
-      this.sub = res.data.goodsList;
-      console.log("sub", this.sub);
-    },
-
     switchTab(index) {
-      this.currentTab = index * 1;
-      console.log(this.currentTab);
-      this.id = index;
-      console.log("id", this.id);
+      this.currentTab = index * 1
+      this.id = index
 
-      if (index == 0) {
-        this.stuffGoods();
-      } else {
-        this.stuffGoodsSort();
-      }
+      this.stuffGoodsSort()
 
       // this.sub = this.data.find((item) => item.value === index);
     },
@@ -205,37 +186,20 @@ export default {
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.id = options.id;
-    this.currentTab = options.id * 1;
-    console.log(this.id);
-    const _this = this;
+    this.id = options.id
+    this.currentTab = options.id * 1
+    const _this = this
     uni.getSystemInfo({
       success(res) {
-        _this.scrollHeight = res.safeArea.height - 60;
+        _this.scrollHeight = res.safeArea.height - 60
       },
-    });
-    this.stuffGoodsList();
-    this.stuffGoodsSort();
-    this.getLocation();
+    })
+    this.stuffGoodsList()
+    this.stuffGoodsSort()
+    this.getLocation()
     // this.stuffGoods();
   },
-  // 页面周期函数--监听页面初次渲染完成
-  onReady() {},
-  // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
-  // 页面周期函数--监听页面隐藏
-  onHide() {},
-  // 页面周期函数--监听页面卸载
-  onUnload() {},
-  // 页面处理函数--监听用户下拉动作
-  // onPullDownRefresh() { uni.stopPullDownRefresh(); },
-  // 页面处理函数--监听用户上拉触底
-  // onReachBottom() {},
-  // 页面处理函数--监听页面滚动(not-nvue)
-  // onPageScroll(event) {},
-  // 页面处理函数--用户点击右上角分享
-  // onShareAppMessage(options) {},
-};
+}
 </script>
 
 <style lang="less" scoped>

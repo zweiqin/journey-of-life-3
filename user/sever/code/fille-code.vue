@@ -12,6 +12,8 @@
       </view>
 
       <button class="uni-btn" @click="handelBind">提交</button>
+
+      {{ res }}
     </view>
   </view>
 </template>

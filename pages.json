@@ -889,7 +889,10 @@
 					}
 				},
 				{
-					"path": "industry/infomation-list"
+					"path": "industry/infomation-list",
+					"style": {
+						"navigationBarTitleText": "行业资讯"
+					}
 				},
 				{
 					"path": "industry/infomation-detail"
@@ -936,7 +939,8 @@
 				{
 					"path": "purchase/purchase",
 					"style": {
-						"navigationBarTitleText": "一件采购"
+						"navigationBarTitleText": "需求发布",
+						"enablePullDownRefresh": false
 					}
 				},
 				{
@@ -950,6 +954,37 @@
 				},
 				{
 					"path": "search"
+				},
+				// 2.0
+				{
+					"path": "brand-materials/brand-materials",
+					"style": {
+						"navigationBarTitleText": "品牌材料"
+					}
+				},
+				{
+					"path": "strict-materials/strict-materials",
+					"style": {
+						"navigationBarTitleText": "材料严选"
+					}
+				},
+				{
+					"path": "material-market/material-market",
+					"style": {
+						"navigationBarTitleText": "材料市场"
+					}
+				},
+				{
+					"path": "material-supmarket/material-supmarket",
+					"style": {
+						"navigationBarTitleText": "材料超市"
+					}
+				},
+				{
+					"path": "new-materials/new-materials",
+					"style": {
+						"navigationBarTitleText": "新材料"
+					}
 				}
 			]
 		}
