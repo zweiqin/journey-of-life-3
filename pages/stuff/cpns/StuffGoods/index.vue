@@ -38,15 +38,12 @@
       <view class="brand-info">
         <image
           class="avatar"
-          src="https://img2.baidu.com/it/u=1003588495,832055361&fm=253&fmt=auto&app=138&f=JPEG?w=460&h=345"
+          :src="data.picUrl"
           mode=""
         />
 
         <view class="brand-name"
-          >Lorem ipsum dolor, sit amet consectetur adipisicing elit. At,
-          adipisci! Iusto veritatis eaque quia quam voluptas? Non dolor vel,
-          ipsum dolorem expedita eius ipsam perspiciatis accusantium
-          necessitatibus obcaecati in rem.</view
+          >{{ data.name }}</view
         >
       </view>
 

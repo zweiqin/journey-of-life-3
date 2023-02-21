@@ -4,7 +4,7 @@
       <view class="search-bar">
         <view class="location" @click.stop="handleClick">
           <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
-          <view class="text">{{ address }}</view>
+          <view class="text">{{ $store.getters.currentCity || '定位中...' }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -576,25 +576,6 @@ export default {
   onLoad() {
     this.showPopup = false
     this.show = false
-    this.getLocation()
-    // this.getBrandType();
-    // this.address = "定位中...";
-    // const _this = this;
-    // uni.getLocation({
-    //   type: "gcj02",
-    //   success: function (res) {
-    //     getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-    //       if (res.status === 0) {
-    //         // const result = res.result.address_component;
-    //         // _this.address = result.street;
-    // const result = res.result.address_reference;
-    // _this.address = result.town.title;
-    //         // const result = res.result;
-    //         // _this.address = result;
-    //       }
-    //     });
-    //   },
-    // });
   },
   methods: {
     handleToServiceListHome(item) {
@@ -623,43 +604,6 @@ export default {
     choice(index) {
       this.currentTab = index
       console.log(this.currentTab)
-    },
-
-    getLocation() {
-      this.address = '定位中...'
-      const _this = this
-      uni.getLocation({
-        type: 'gcj02',
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then(res => {
-              if (res.status === '1') {
-                const result = res.regeocode
-                _this.address = result.addressComponent.township
-                console.log('address', _this.address)
-              }
-            })
-            .catch(() => {
-              _this.address = '定位失败'
-            })
-        },
-      })
-    },
-
-    handleClick() {
-      const _this = this
-      if (this.address === '定位失败' || this.address === '定位中...') {
-        uni.showModal({
-          title: '提示',
-          confirmText: '我已打开定位',
-          content: '请确认您已开启了定位',
-          success: function (res) {
-            if (res.confirm) {
-              _this.getLocation()
-            }
-          },
-        })
-      }
     },
 
     //门店类型接口

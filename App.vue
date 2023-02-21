@@ -1,7 +1,7 @@
 <script>
 //app.js
-var http = require("./utils/http.js");
-var util = require("./utils/util.js");
+var http = require('./utils/http.js')
+var util = require('./utils/util.js')
 // import { getUserId } from "./utils";
 
 export default {
@@ -20,7 +20,7 @@ export default {
     // 		path = path.substring(0, path.indexOf('code=') - 1)
     // 		history.replaceState({}, '', path)
     // 	}
-    http.getCartCount();
+    http.getCartCount()
     // }
 
     // getUserId();
@@ -34,11 +34,15 @@ export default {
     totalCartCount: 0,
   },
   methods: {},
-};
+
+  mounted() {
+    this.$store.dispatch('location/getCurrentLocation')
+  },
+}
 </script>
 <style>
-@import "./app.css";
-@import "";
+@import './app.css';
+@import '';
 
 /* 隐藏头部 */
 uni-page-head {

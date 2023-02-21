@@ -17,7 +17,7 @@
             alt=""
             class="icon"
           />
-          <view class="address">{{ address }}</view>
+          <view class="address">{{ $store.getters.currentCity || '定位中...' }}</view>
         </view>
       </view>
       <view class="goods">
@@ -243,23 +243,6 @@ export default {
       }
     },
 
-    getLocation() {
-      this.address = "定位中...";
-      const _this = this;
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === "1") {
-              const result = res.regeocode;
-              _this.address = result.addressComponent.township;
-              console.log("address", _this.address);
-            }
-          });
-        },
-      });
-    },
-
     switchTab(item1) {
       console.log("12345", item1);
       this.currentTab = item1.id;
@@ -321,7 +304,6 @@ export default {
   },
   created() {},
   onLoad(options) {
-    console.log(options);
     this.serverTypeId = options.id;
     this.title = options.serverNameThree;
     uni.setNavigationBarTitle({
@@ -329,7 +311,6 @@ export default {
     });
     this.serverUrl = options.serverImageUrl;
     this.getServiceDetail();
-    this.getLocation();
   },
 };
 </script>

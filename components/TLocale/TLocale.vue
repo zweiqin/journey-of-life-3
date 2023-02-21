@@ -1,18 +1,14 @@
 <template>
   <view class="local-wrapper" @click.stop="handleClick">
     <JIcon type="locale" width="34" height="40" v-if="icon"></JIcon
-    ><text class="locale" :class="{ whitelocale: color }">{{
-      address
-    }}</text></view
+    ><text class="locale" :class="{ whitelocale: color }"
+      >{{ $store.getters.currentCity || '定位中...' }}
+    </text></view
   >
 </template>
-  
-  <script>
-import { getAdressDetailByLngLat } from "../../utils/DWHutils";
+
+<script>
 export default {
-  mounted() {
-    this.getLocation();
-  },
   props: {
     color: {
       type: Boolean,
@@ -26,51 +22,13 @@ export default {
 
   data() {
     return {
-      address: "位置",
-    };
+      address: '位置',
+    }
   },
-
-  methods: {
-    getLocation() {
-      this.address = "定位中...";
-      const _this = this;
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === '1') {
-                const result = res.regeocode;
-                _this.address = result.addressComponent.township;
-              }
-            })
-            .catch(() => {
-              _this.address = "定位失败";
-            });
-        },
-      });
-    },
-
-    handleClick() {
-      const _this = this;
-      if (this.address === "定位失败" || this.address === "定位中...") {
-        uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
-          success: function (res) {
-            if (res.confirm) {
-              _this.getLocation();
-            }
-          },
-        });
-      }
-    },
-  },
-};
+}
 </script>
-  
-  <style lang="less" scoped>
+
+<style lang="less" scoped>
 .local-wrapper {
   display: flex;
   justify-content: space-between;

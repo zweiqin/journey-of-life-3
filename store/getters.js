@@ -6,5 +6,8 @@ export default {
   // 购物车
   shopCarInfo: state => state.shopCar.shopCarInfo,
   currentMode: state => state.shopCar.currentMode,
-  deleteList: state => state.shopCar.deleteList
+  deleteList: state => state.shopCar.deleteList,
+
+  // 位置
+  currentCity: state => state.location.currentCity,
 }

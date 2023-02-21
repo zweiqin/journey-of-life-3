@@ -32,12 +32,7 @@
         <Goods v-for="goods in goodsList" :key="goods.id" :data="goods"></Goods>
       </view>
 
-      <JNoData
-        v-else
-        type="namecard"
-        width="300"
-        text="暂无爆品"
-      ></JNoData>
+      <JNoData v-else type="namecard" width="300" text="暂无爆品"></JNoData>
     </view>
   </view>
 </template>
@@ -45,7 +40,7 @@
 <script>
 import { goodsListApi } from '../../api/goods'
 import Navs from './navs.vue'
-import Goods from '../index/components/search-furniture/goods.vue'
+import Goods from '../index/cpns/goods.vue'
 
 export default {
   components: {

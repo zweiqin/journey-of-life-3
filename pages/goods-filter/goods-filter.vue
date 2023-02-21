@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import Goods from '../index/components/search-furniture/goods.vue'
+import Goods from '../index/cpns/goods.vue'
 import MainMenus from './components/main-menus.vue'
 import SubMenus from './components/sub-menus.vue'
 import FilterPane from './components/filter-pane.vue'

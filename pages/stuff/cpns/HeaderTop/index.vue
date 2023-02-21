@@ -5,7 +5,7 @@
 
     <view class="search-container">
       <view class="locale">
-        <text>龙江镇</text>
+        <text>{{ $store.getters.currentCity || '定位中...' }}</text>
         <image
           class="locale-icon"
           src="../../../../static/images/new-brand/index/down-arrow.png"

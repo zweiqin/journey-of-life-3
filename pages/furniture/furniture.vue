@@ -10,7 +10,7 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">{{ addressDetail }}</view>
+          <view class="text">{{ $store.getters.currentCity || '定位中...' }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -68,7 +68,6 @@
 
 <script>
 import sort from "../../components/subs/subs.vue";
-import { getAdressDetailByLngLat } from "../../utils/DWHutils";
 import { getGoodsTypesApi, getTypeDetailList } from "../../api/home";
 
 export default {
@@ -88,46 +87,6 @@ export default {
   methods: {
     handleBack() {
       uni.switchTab({ url: "/pages/index/index" });
-    },
-
-    handleClick() {
-      const _this = this;
-      if (
-        this.addressDetail === "定位失败" ||
-        this.addressDetail === "定位中..."
-      ) {
-        uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
-          success: function (res) {
-            if (res.confirm) {
-              _this.getLocation();
-            }
-          },
-        });
-      }
-    },
-
-    getLocation() {
-      this.addressDetail = "定位中...";
-      const _this = this;
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === "1") {
-                const result = res.regeocode;
-                _this.addressDetail = result.addressComponent.township;
-                console.log("addressDetail", _this.addressDetail);
-              }
-            })
-            .catch(() => {
-              _this.addressDetail = "定位失败";
-            });
-        },
-      });
     },
 
     //获取商品列表接口
@@ -192,7 +151,6 @@ export default {
       },
     });
     this.stuffGoodsList();
-    this.getLocation();
   },
 };
 </script>

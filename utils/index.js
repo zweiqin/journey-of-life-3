@@ -16,7 +16,7 @@ export {
   SheQuRequest,
   SheQuRequest1,
   shopRequest,
-  huangRequest
+  huangRequest,
 } from './DWHRequest'
 export {
   fomartNumber,
@@ -30,3 +30,4 @@ export {
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'
 export { saveImg } from './upload'
+export { getAdressDetailByLngLat } from './localtion'
