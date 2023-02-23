@@ -26,6 +26,7 @@ export {
   useCopy,
   handleDebounce,
   getRandom,
+  randomRGB
 } from './DWHutils'
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'

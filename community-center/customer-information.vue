@@ -363,6 +363,7 @@ export default {
     handleChoose(time) {
       console.log(time);
       this.datetimerange = time;
+      this.show = false
     },
 
     changeLog(e) {

@@ -22,7 +22,12 @@
       <view class="auth-form">
         <view class="form-item">
           <view class="name">手机号码</view>
-          <input v-model="form.mobile" class="input" type="text" />
+          <input
+            :adjust-position="false"
+            v-model="form.mobile"
+            class="input"
+            type="text"
+          />
         </view>
         <!-- <view class="form-item" v-if="type !== 'login'">
           <view class="name">短信验证</view>
@@ -33,7 +38,12 @@
         </view> -->
         <view class="form-item">
           <view class="name">输入密码</view>
-          <input v-model="form.password" class="input" :type="inputType" />
+          <input
+            :adjust-position="false"
+            v-model="form.password"
+            class="input"
+            :type="inputType"
+          />
           <image
             @click="isView = !isView"
             class="icon"
@@ -57,10 +67,18 @@
         >注册账号</view
       >
     </view>
+
+    <checkbox-group class="argument-container" @change="handleChange">
+      <checkbox value="gou" :checked="isChecked" />
+      <view class="argument" @click="handleToViewArgument"
+        >《团蜂服务平台协议》</view
+      >
+    </checkbox-group>
   </view>
 </template>
 
 <script>
+import { LOGIN_FORM } from '../../constant'
 export default {
   props: {
     type: {
@@ -81,7 +99,7 @@ export default {
     title: String,
     routeText: String,
     route: String,
-    to: String
+    to: String,
   },
 
   data() {
@@ -96,11 +114,22 @@ export default {
       count: 60,
       isSendCode: false,
       isView: false,
+      isChecked: false,
     }
   },
 
   methods: {
     submit() {
+      if (!this.isChecked) {
+        uni.showToast({
+          title: '请勾选平台协议',
+          icon: 'none',
+        })
+
+        uni.setStorageSync(LOGIN_FORM, this.form)
+
+        return
+      }
       this.$emit('submit', { ...this.form })
     },
 
@@ -170,12 +199,31 @@ export default {
         this.count--
       }, 1000)
     },
+
+    // 勾选状态
+    handleChange(e) {
+      this.isChecked = e.detail.value[0] === 'gou'
+    },
+
+    handleToViewArgument() {
+      uni.setStorageSync(LOGIN_FORM, this.form)
+      uni.navigateTo({
+        url: '/pages/service-agreement/service-agreement',
+      })
+    },
   },
 
   computed: {
     inputType() {
       return this.isView ? 'text' : 'password'
     },
+  },
+
+  mounted() {
+    const loginForm = uni.getStorageSync(LOGIN_FORM)
+    if(loginForm){
+      Object.assign(this.form, loginForm)
+    }
   },
 }
 </script>
@@ -277,5 +325,29 @@ export default {
       font-size: 28upx;
     }
   }
+}
+
+.argument-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // position: absolute;
+  // bottom: 30upx;
+  // left: 50%;
+  // transform: translateX(-50%);
+  margin-top: 200upx;
+}
+
+.argument {
+  font-size: 28upx;
+  color: #ff8f1f;
+}
+
+/deep/ uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
+  border-color: #ff8f1f;
+}
+
+/deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked {
+  background-color: #ff8f1f;
 }
 </style>

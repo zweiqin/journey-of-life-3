@@ -218,6 +218,7 @@ export default {
             input.value = data[key];
             form.appendChild(input);
           }
+          
 
           document.body.appendChild(form);
           form.submit();

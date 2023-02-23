@@ -1,16 +1,29 @@
 <template>
-  <view class="brand-pane-container">
-    <Carousel></Carousel>
-    <view class="brand-info">
+  <view
+    class="brand-pane-container"
+    v-if="data && data.goodsList.length && data.brand.brandgenre == 23"
+  >
+    <Carousel :list="images"></Carousel>
+    <view
+      class="brand-info"
+      @click="
+        go(`/pages/index-copy-2/brandFactory/detail?brandId=${data.brand.id}`)
+      "
+    >
       <image
+        v-if="data.brand.picUrl"
         class="brand-avatar"
-        src="https://img0.baidu.com/it/u=2256442941,3471177641&fm=253&fmt=auto&app=138&f=JPEG?w=480&h=854"
+        :src="data.brand.picUrl"
         mode=""
       />
 
+      <view :style="{ background: randomRGB() }" v-else class="brand-avatar">
+        {{ data.brand.name.slice(0, 2) }}
+      </view>
+
       <view class="detail-info">
         <view class="brand-title">
-          <view class="title">团粉科技</view>
+          <view class="title">{{ data.brand.name }}</view>
           <button class="uni-btn">
             进入展厅
             <tui-icon color="ffc117" name="arrowright" :size="20"></tui-icon>
@@ -52,9 +65,30 @@
 
 <script>
 import Carousel from '../../../components/carousel'
+import { randomRGB } from '../../../utils'
 export default {
   components: {
     Carousel,
+  },
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  methods: { randomRGB },
+
+  computed: {
+    images() {
+      if (this.data && this.data.goodsList.length) {
+        return this.data.goodsList.map(goods => {
+          return goods.picUrl
+        })
+      } else {
+        return []
+      }
+    },
   },
 }
 </script>
@@ -89,11 +123,16 @@ export default {
   border-radius: 0 0 24upx 24upx;
 
   .brand-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 160upx;
     height: 160upx;
     border-radius: 16upx;
     flex-shrink: 0;
     margin-right: 24upx;
+    font-size: 36upx;
+    color: #fff;
   }
 
   .detail-info {
@@ -125,7 +164,7 @@ export default {
   }
 }
 
-.brand-pane-container{
+.brand-pane-container {
   margin-bottom: 20upx;
 }
 

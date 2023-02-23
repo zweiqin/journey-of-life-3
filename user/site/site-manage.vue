@@ -34,12 +34,12 @@
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
           <view class="site-detail-top">
-            <img
+            <image
               src="../../static/images/lqb/site/site-pitch.png"
               class="site-detail-icon"
               v-if="item.isDefault"
             />
-            <img
+            <image
               src="../../static/images/lqb/site/site-nopitch.png"
               class="site-detail-icon"
               v-else
@@ -55,13 +55,13 @@
                 <view class="city">佛山市</view>
                 <view class="area">顺德区</view> -->
               </view>
-              <img
+              <image
                 v-if="!isSelect"
                 class="compile"
+                style="width: 32upx"
                 src="../../static/images/lqb/site/compile.png"
                 @click="editAddress(item)"
               />
-
               <view
                 class="choose-address"
                 v-else
@@ -77,7 +77,7 @@
                   <view style="display: flex"> </view>
                 </view>
                 <view>
-                  <img
+                  <image
                     class="site-delete"
                     src="../../static/images/lqb/site/delete.png"
                     alt=""

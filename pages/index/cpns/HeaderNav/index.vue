@@ -1,5 +1,5 @@
 <template>
-  <view class="header-nav" :class="{ fixed: scrollTop > 200 }">
+  <view class="header-nav" :class="{ fixed: scrollTop > 300 }">
     <view class="search-container">
       <view class="locale-wrapper">
         <text class="locale">{{ $store.getters.currentCity || '定位中...' }}</text>
@@ -68,6 +68,8 @@ export default {
 
 <style lang="less" scoped>
 .header-nav {
+  position: relative;
+  z-index: 10000;
   background-color: #fff;
   padding: 20upx;
   box-sizing: border-box;

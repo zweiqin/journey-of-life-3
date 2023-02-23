@@ -11,7 +11,7 @@
         <text>确认订单</text>
       </view>
 
-      <view class="address-container">
+      <view class="address-container" v-if="defaultAddress">
         <view class="bas-info">
           <view class="info">
             收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view
@@ -169,7 +169,7 @@ export default {
   onLoad() {
     this.$store.dispatch('shopCar/getShopCarList')
     this.getAddrees()
-    this.getData()
+    // this.getData()
   },
 
   computed: {

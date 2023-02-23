@@ -172,7 +172,7 @@
       </view>
 
       <!-- 店铺推荐 -->
-      <view
+      <!-- <view
         class="brand-recommend"
         v-if="brandOtherGoods && brandOtherGoods.length"
       >
@@ -198,7 +198,7 @@
             </text>
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 宝贝详情 -->

@@ -72,13 +72,12 @@
 import UserInfo from './components/user-info.vue'
 import OrderList from './components/order-list.vue'
 import UserPane from './components/user-pane.vue'
-import { topMenus, normalMenus, myEquity, vipEquity } from '../../data/user'
+import { topMenus, vipEquity } from '../../data/user'
 import {
   refrshUserInfoApi,
   getExtensionCodeApi,
   bindLastUserApi,
 } from '../../api/user'
-import { getUserId } from '../../utils'
 import { user_INFO, USER_ID } from '../../constant'
 import { getMenus } from './config'
 
@@ -116,6 +115,7 @@ export default {
         url: '/user/info/detail',
       })
     },
+    
 
     choseCollection() {
       let collectiontype = this.collectiontype
@@ -127,9 +127,7 @@ export default {
     },
 
     changeTab(tab) {
-      console.log(this.currentTab)
       this.currentTab = tab
-      console.log(this.currentTab)
     },
     bindtapsubscription() {
       uni.navigateTo({

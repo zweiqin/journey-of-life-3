@@ -4065,14 +4065,25 @@ export default {
   data() {
     return {
       scrollTop: 0,
+      tabbar: null,
     }
   },
   methods: {
     handleBack() {
-      uni.redirectTo({
-        url: '/pages/login/login',
-      })
+      if (this.tabbar) {
+        uni.switchTab({
+          url: this.tabbar,
+        })
+      } else {
+        uni.redirectTo({
+          url: '/pages/login/login',
+        })
+      }
     },
+  },
+
+  onLoad(params) {
+    this.tabbar = params.from
   },
 
   onPageScroll(e) {

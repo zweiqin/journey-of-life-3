@@ -12,11 +12,16 @@
         v-show="current === 0"
       ></SearchFurniture>
 
-      <BrandFactory v-show="current === 1"></BrandFactory>
-
-      <WholehouseCustomization v-show="current === 2"></WholehouseCustomization>
-
-      <IntelligentSelection v-show="current === 3"></IntelligentSelection>
+      <BrandFactory ref="brandFactoryRef" v-show="current === 1"></BrandFactory>
+      <WholehouseCustomization
+        :scrollTop="scrollTop"
+        ref="wholehouseCustomizationRef"
+        v-show="current === 2"
+      ></WholehouseCustomization>
+      <IntelligentSelection
+        ref="intelligentSelectionRef"
+        v-show="current === 3"
+      ></IntelligentSelection>
     </view>
   </view>
 </template>
@@ -27,8 +32,12 @@ import SearchFurniture from './SearchFurniture'
 import BrandFactory from './BrandFactory'
 import WholehouseCustomization from './WholehouseCustomization'
 import IntelligentSelection from './IntelligentSelection'
+
 const mapRefs = {
   0: 'searchFurnitureRef',
+  1: 'brandFactoryRef',
+  2: 'wholehouseCustomizationRef',
+  3: 'intelligentSelectionRef',
 }
 export default {
   components: {
@@ -60,6 +69,8 @@ export default {
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
   },
+
+ 
 }
 </script>
 

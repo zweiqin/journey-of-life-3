@@ -15,7 +15,10 @@
 </template>
 
 <script>
+// #ifdef H5
 import share from '../../../../utils/wxshare'
+// #endif
+
 import { USER_INFO, USER_TOKEN } from '../../../../constant'
 import SaveImage from './SaveImage.vue'
 import { getConfigApi } from '../../../../api/auth'
@@ -87,6 +90,7 @@ export default {
     },
 
     // 配置微信分享配置
+    // #ifdef H5
     async setWexinShare() {
       const userInfo = uni.getStorageSync(USER_INFO)
 
@@ -105,6 +109,7 @@ export default {
           userInfo.invitationCode,
       })
     },
+    // #endif
   },
 }
 </script>

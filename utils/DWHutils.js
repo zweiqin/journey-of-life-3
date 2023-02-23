@@ -126,7 +126,6 @@ export function handleDebounce(func, wait, immediate) {
 
 export const getAdressDetailByLngLat = (lat, lng) => {
   return new Promise((resolve, reject) => {
-
     // #ifdef H5
     jsonp('https://restapi.amap.com/v3/geocode/regeo', {
       key: 'fcd4b7ee70f357abeffaef7b43d364b3',
@@ -144,4 +143,12 @@ export const getAdressDetailByLngLat = (lat, lng) => {
 
 export function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min)
+}
+
+
+export const randomRGB = () => {
+  const r = Math.floor(Math.random() * 255)
+  const g = Math.floor(Math.random() * 255)
+  const b = Math.floor(Math.random() * 255)
+  return `rgb(${r}, ${g}, ${b})`
 }

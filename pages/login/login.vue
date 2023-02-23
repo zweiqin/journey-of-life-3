@@ -1,8 +1,6 @@
 <template>
   <view class="login-containter">
     <AuthForm :to="redirect" @submit="submit"></AuthForm>
-
-    <view class="argument" @click="go('/pages/service-agreement/service-agreement')">《团蜂服务平台协议》</view>
   </view>
 </template>
 
@@ -173,15 +171,5 @@ export default {
 <style lang="less" scoped>
 .login-containter {
   position: relative;
-
-  .argument {
-    position: absolute;
-    bottom: 30upx;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 28upx;
-    color: #ff8f1f;
-
-  }
 }
 </style>

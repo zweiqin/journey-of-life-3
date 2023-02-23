@@ -24,7 +24,11 @@
     </view>
 
     <view class="brand-list">
-      <BrandPane v-for="item in 10" :key="item"></BrandPane>
+      <BrandPane
+        v-for="item in brandList"
+        :key="item.brand.id"
+        :data="item"
+      ></BrandPane>
     </view>
   </view>
 </template>
@@ -32,15 +36,67 @@
 <script>
 import { stylesList } from './data'
 import BrandPane from './BrandPane'
+import { getBrandListBySelectApi } from '../../../api/brand'
+
 export default {
   components: {
     BrandPane,
+  },
+  mounted() {
+    this.getBrandList()
   },
   data() {
     return {
       stylesList: Object.freeze(stylesList),
       currentSubMenu: 0,
+      totalPages: 0,
+      brandList: [],
+      queryInfo: {
+        page: 1,
+        limt: 10,
+      },
     }
+  },
+
+  methods: {
+    async getBrandList(isLoadMore) {
+      uni.showLoading()
+      const res = await getBrandListBySelectApi({ ...this.queryInfo })
+      
+      uni.hideLoading()
+      if (res.errno === 0) {
+        if (isLoadMore) {
+          this.brandList.push(...res.data.brandList)
+        } else {
+          this.brandList = res.data.brandList
+        }
+
+        console.log(this.brandList[4])
+        this.totalPages = res.data.totalPages
+      } else {
+        uni.showToast({
+          title: '品牌工厂获取失败',
+          icon: 'none',
+        })
+      }
+    },
+
+    reachBottom() {
+      if (this.totalPages <= this.queryInfo.page) {
+        return 'no-more'
+      }
+
+      if (this.brandList.length < this.queryInfo.size) {
+        return 'lack'
+      }
+
+      this.queryInfo.page++
+      this.getBrandList(true)
+
+      if (this.totalPages <= this.queryInfo.page) {
+        return 'no-more'
+      }
+    },
   },
 }
 </script>

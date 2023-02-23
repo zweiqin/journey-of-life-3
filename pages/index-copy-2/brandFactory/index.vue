@@ -14,6 +14,7 @@
     </view>
 
     <Brand v-for="item in brandList" :key="item.id" :data="item"></Brand>
+    <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
   </view>
 </template>
 
@@ -21,12 +22,12 @@
 import {
   getBrandStyleListApi,
   getBrandListBySelectApi,
-} from "../../../api/brand";
-import Brand from "./components/brand.vue";
+} from '../../../api/brand'
+import Brand from './components/brand.vue'
 export default {
   mounted() {
-    this.getBrandStyleList();
-    this.getBrandList();
+    this.getBrandStyleList()
+    this.getBrandList()
   },
   components: {
     Brand,
@@ -44,65 +45,69 @@ export default {
         page: 1,
         limt: 10,
       },
-    };
+      status: 'none',
+    }
   },
   methods: {
     async getBrandStyleList() {
-      const res = await getBrandStyleListApi({});
+      const res = await getBrandStyleListApi({})
       if (res.errno === 0) {
-        console.log(res.data.items);
+        console.log(res.data.items)
       }
     },
 
     async getBrandList(isLoadMore) {
-      uni.showLoading();
-      const res = await getBrandListBySelectApi({ ...this.queryInfo });
-      uni.hideLoading();
+      this.status = 'loading'
+      const res = await getBrandListBySelectApi({ ...this.queryInfo })
+      this.status = 'none'
       if (res.errno === 0) {
         if (isLoadMore) {
-          this.brandList.push(...res.data.brandList);
+          this.brandList.push(...res.data.brandList)
         } else {
-          this.brandList = res.data.brandList;
+          this.brandList = res.data.brandList
         }
-        this.totalPages = res.data.totalPages;
+        this.totalPages = res.data.totalPages
       } else {
         uni.showToast({
-          title: "品牌工厂获取失败",
-          icon: "none",
-        });
+          title: '品牌工厂获取失败',
+          icon: 'none',
+        })
       }
     },
 
     reachBottom() {
       if (this.totalPages <= this.queryInfo.page) {
-        return "no-more";
+        this.status = 'no-more'
+        return
       }
 
       if (this.brandList.length < this.queryInfo.size) {
-        return "lack";
+        this.status = 'none'
+        return
       }
 
-      this.queryInfo.page++;
-      this.getBrandList(true);
+      this.queryInfo.page++
+      this.getBrandList(true)
 
       if (this.totalPages <= this.queryInfo.page) {
-        return "no-more";
+        this.status = 'no-more'
+        return
       }
     },
 
     getPosition() {
-      const query = uni.createSelectorQuery().in(this);
+      const query = uni.createSelectorQuery().in(this)
       return new Promise((resolve, reject) => {
         query
-          .select(".main-pane")
-          .boundingClientRect((position) => {
-            resolve(position.height);
+          .select('.main-pane')
+          .boundingClientRect(position => {
+            resolve(position.height)
           })
-          .exec();
-      });
+          .exec()
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

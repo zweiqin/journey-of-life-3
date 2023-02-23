@@ -1,18 +1,9 @@
 <template>
-  <view class="package-container">
-    <image
-      src="https://img0.baidu.com/it/u=1261507648,1194160786&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750"
-      class="package-img"
-      mode=""
-    />
+  <view class="package-container" v-if="data">
+    <image :src="data.picUrl" class="package-img" mode="" />
 
     <view class="package-detail-info">
-      <view class="name"
-        >Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit dolores
-        alias nesciunt dolore pariatur vitae at harum libero. Sit facere nostrum
-        dolorem eveniet tempore distinctio sed consequatur, fuga nihil
-        iste!</view
-      >
+      <view class="name">{{ data.name }}</view>
 
       <view class="desc">
         <text>1房1厅</text>
@@ -38,7 +29,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -110,12 +108,12 @@ export default {}
     font-weight: 700;
     font-size: 26upx;
 
-    text{
+    text {
       font-size: 36upx;
     }
 
-    .salsed{
-      color: #8F8D85;
+    .salsed {
+      color: #8f8d85;
       font-size: 26upx;
       font-weight: normal;
     }

@@ -1,34 +1,25 @@
 <template>
-  <view class="design-company-container">
+  <view class="design-company-container" v-if="data">
     <view class="company-wrapper">
-      <image
-        class="company-avatar"
-        src="https://img0.baidu.com/it/u=253042110,3732757332&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        mode=""
-      />
+      <image class="company-avatar" :src="data.logo" mode="" />
 
       <view class="company-detail">
         <view class="info1">
-          <view class="name"
-            >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique
-            quo explicabo praesentium laboriosam debitis id veniam harum ipsam
-            et magnam sint quaerat molestiae earum itaque ipsum vel ex, nisi
-            soluta.</view
-          >
+          <view class="name">{{ data.name }}</view>
           <view class="address">
             <image
               class="mark-icon"
               src="../../../static/images/new-index/mark.png"
               mode=""
             />
-            32.1km
+            {{ data.dis }}km
           </view>
         </view>
 
         <view class="info2">
-          <text>设计工作室</text>
-          <text>从业31年</text>
-          <text>￥500-1000/㎡</text>
+          <text>{{ data.text1 }}</text>
+          <text>{{ data.text2 }}</text>
+          <text>{{ data.text3 }}</text>
         </view>
 
         <view class="tags">
@@ -41,28 +32,20 @@
     </view>
 
     <view class="image-list">
-      <image
-        src="https://img1.baidu.com/it/u=374190476,1290845357&fm=253&fmt=auto&app=120&f=JPEG?w=1186&h=800"
-        mode=""
-      />
-      <image
-        src="https://img1.baidu.com/it/u=3029506204,1595316155&fm=253&fmt=auto&app=138&f=JPEG?w=749&h=500"
-        mode=""
-      />
-      <image
-        src="https://img0.baidu.com/it/u=3245413741,932789082&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
-        mode=""
-      />
-      <image
-        src="https://img2.baidu.com/it/u=1191991536,780003752&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=426"
-        mode=""
-      />
+      <image v-for="img in data.images" :key="img" :src="img" mode="" />
     </view>
   </view>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

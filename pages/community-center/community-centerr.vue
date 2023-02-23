@@ -4,7 +4,9 @@
       <view class="search-bar">
         <view class="location" @click.stop="handleClick">
           <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
-          <view class="text">{{ $store.getters.currentCity || '定位中...' }}</view>
+          <view class="text">{{
+            $store.getters.currentCity || '定位中...'
+          }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -539,6 +541,7 @@
 
     <DiscountPopup v-model="showPopup"></DiscountPopup>
     <DispatchPopup v-model="show"></DispatchPopup>
+    <AppRoleApply v-model="isShowPopup"></AppRoleApply>
   </view>
 </template>
 
@@ -548,18 +551,22 @@ import DiscountPopup from './components/discount.vue'
 import DispatchPopup from './components/dispatch.vue'
 import { getAdressDetailByLngLat } from '../../utils/DWHutils'
 import { list } from './config'
+import { IN_TIMES } from '../../constant'
 import { moreService } from './config'
 import { serviceType } from './config'
 import { getBrandTypeApi } from '../../api/brand'
+import AppRoleApply from './AppRoleApply.vue'
 export default {
   name: 'Community-centerr',
   components: {
     community,
     DiscountPopup,
     DispatchPopup,
+    AppRoleApply,
   },
   data() {
     return {
+      isShowPopup: false,
       currentTab: 0,
       moreService,
       list,
@@ -576,6 +583,13 @@ export default {
   onLoad() {
     this.showPopup = false
     this.show = false
+
+    // #ifdef APP
+    if (!uni.getStorageSync(IN_TIMES)) {
+      this.isShowPopup = true
+      uni.setStorageSync(IN_TIMES, true)
+    }
+    // #endif
   },
   methods: {
     handleToServiceListHome(item) {

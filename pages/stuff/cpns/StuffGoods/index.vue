@@ -38,12 +38,12 @@
       <view class="brand-info">
         <image
           class="avatar"
-          :src="data.picUrl"
+          :src="data.brandPicUrl"
           mode=""
         />
 
         <view class="brand-name"
-          >{{ data.name }}</view
+          >{{ data.brandName }}</view
         >
       </view>
 

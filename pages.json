@@ -40,18 +40,18 @@
 				"navigationBarTitleText": "查看启动日志"
 			}
 		},
-		// {
-		// 	"path": "pages/index/components/intelligent-selection/detail",
-		// 	"style": {
-		// 		"navigationBarTitleText": "详情"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/index/brandFactory/detail",
-		// 	"style": {
-		// 		"navigationBarTitleText": "详情"
-		// 	}
-		// },
+		{
+			"path": "pages/index/WholehouseCustomization/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/index-copy-2/brandFactory/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
 		{
 			"path": "pages/user/user",
 			"style": {

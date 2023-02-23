@@ -11,5 +11,8 @@
     "node_modules",
     "dist",
     "build"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
 }
