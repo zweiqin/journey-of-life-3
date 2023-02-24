@@ -851,6 +851,12 @@
 					}
 				},
 				{
+					"path": "sever/customer-service/customer-service",
+					"style": {
+						"navigationBarTitleText": "联系客服"
+					}
+				},
+				{
 					"path": "sever/code/fille-code",
 					"style": {
 						"navigationBarTitleText": "填写邀请码"
