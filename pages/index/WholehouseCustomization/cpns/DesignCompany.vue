@@ -1,5 +1,9 @@
 <template>
-  <view class="design-company-container" v-if="data">
+  <view
+    class="design-company-container"
+    v-if="data"
+    @click="go('/pages/index/WholehouseCustomization/detail/detail')"
+  >
     <view class="company-wrapper">
       <image class="company-avatar" :src="data.logo" mode="" />
 
@@ -9,7 +13,7 @@
           <view class="address">
             <image
               class="mark-icon"
-              src="../../../static/images/new-index/mark.png"
+              src="../../../../static/images/new-index/mark.png"
               mode=""
             />
             {{ data.dis }}km

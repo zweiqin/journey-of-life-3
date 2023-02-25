@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { allFilters } from './data'
+import { allFilters } from '../data'
 export default {
   props: {
     value: {

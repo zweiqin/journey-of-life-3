@@ -41,7 +41,7 @@
 			}
 		},
 		{
-			"path": "pages/index/WholehouseCustomization/detail",
+			"path": "pages/index/WholehouseCustomization/detail/detail",
 			"style": {
 				"navigationBarTitleText": "详情"
 			}

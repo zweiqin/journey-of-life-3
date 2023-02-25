@@ -48,10 +48,10 @@
 
 <script>
 import { filters, tempData } from './data'
-import DesignCompany from './DesignCompany.vue'
-import PricePopup from './PricePopup.vue'
-import ServiceScopePopup from './ServiceScopePopup.vue'
-import AllFilter from './ALLFilter.vue'
+import DesignCompany from './cpns/DesignCompany.vue'
+import PricePopup from './cpns/PricePopup.vue'
+import ServiceScopePopup from './cpns/ServiceScopePopup.vue'
+import AllFilter from './cpns/ALLFilter.vue'
 export default {
   components: {
     DesignCompany,
