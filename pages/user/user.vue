@@ -42,7 +42,7 @@
       <UserPane
         @click="handleToPage"
         isGrid
-        :row="2"
+        :row="3"
         class="section"
         :data="normalMenus"
       ></UserPane>

@@ -57,7 +57,7 @@ export default {
       })
       setTimeout(() => {
         uni.switchTab({
-          url: '/pages/index/index'
+          url: '/pages/community-center/community-centerr'
         })
       }, 2000)
     },

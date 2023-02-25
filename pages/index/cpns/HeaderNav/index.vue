@@ -26,6 +26,7 @@
       </view>
 
       <image
+        @click="go('/user/sever/customer-service/customer-service')"
         class="message-icon"
         src="../../../../static/images/new-index/message.png"
         mode=""

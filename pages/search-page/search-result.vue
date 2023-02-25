@@ -8,7 +8,7 @@
           <input
             v-model="searchValue"
             type="text"
-            :adjust-position="fasle"
+            :adjust-position="false"
             confirm-type="search"
             placeholder="请输入您要搜索的商品"
             @confirm="handelSearch()"
@@ -118,7 +118,7 @@ export default {
       const { data } = await goodsListApi({
         ...this.query,
         keyword: this.searchValue,
-        userid: uni.getStorageSync(USER_ID) || '',
+        userId: uni.getStorageSync(USER_ID) || '',
       })
       this.loading = 'none'
 

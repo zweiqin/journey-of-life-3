@@ -25,30 +25,43 @@
       </button>
     </view>
 
-    <view class="search-history">
+    <view class="search-history" v-if="searchData && userId">
       <view class="title-container">
         <view class="search-title">搜索历史</view>
-        <view class="delete">
+        <view class="delete" @click="handleClearSearchHostory">
           <tui-icon :size="15" name="delete"></tui-icon>
           <text style="font-size: 28upx; color: #605d52">清空搜索</text>
         </view>
       </view>
 
-      <view class="keywords-wraper">
+      <view
+        class="keywords-wraper"
+        v-if="searchData && searchData.historyKeywordList.length"
+      >
+        <view
+          class="item"
+          @click="handelSearch(item.keyword)"
+          v-for="item in searchData.historyKeywordList"
+          :key="item.id"
+          >{{ item.keyword }}</view
+        >
+      </view>
+
+      <view class="keywords-wraper" v-else>
         <view class="no-data">暂无搜索记录</view>
       </view>
     </view>
 
-    <view class="hot-search">
+    <view class="hot-search" v-if="searchData">
       <view class="search-title"> 热门搜索 </view>
 
       <view class="keywords-wraper">
         <view
           class="item"
-          @click="handelSearch(item)"
-          v-for="item in keywordsList"
-          :key="item"
-          >{{ item }}</view
+          @click="handelSearch(item.keyword)"
+          v-for="item in searchData.hotKeywordList"
+          :key="item.id"
+          >{{ item.keyword }}</view
         >
       </view>
     </view>
@@ -57,28 +70,32 @@
 
 <script>
 import { USER_ID } from 'constant'
-import { getUserSearchHistoryApi } from '../../api/goods'
+import { getUserId } from '../../utils'
+import {
+  getUserSearchHistoryApi,
+  clearSearchSearchHistoryApi,
+} from '../../api/goods'
 export default {
   data() {
     return {
       searchValue: '',
       keywordsList: ['沙发', '床', '儿童床', '办公椅', '茶几', '餐桌'],
+      searchData: null,
+      userId: uni.getStorageSync(USER_ID),
     }
   },
 
-  onLoad() {
+  onShow() {
     this.getUserSearchHistory()
   },
 
   methods: {
     async getUserSearchHistory() {
-      if (uni.getStorageSync(USER_ID)) {
-        const { data } = await getUserSearchHistoryApi({
-          userId: uni.getStorageSync(USER_ID),
-        })
+      const { data } = await getUserSearchHistoryApi({
+        userId: uni.getStorageSync(USER_ID),
+      })
 
-        console.log(data)
-      }
+      this.searchData = data
     },
 
     handelSearch(keywords) {
@@ -99,6 +116,19 @@ export default {
     handleBack() {
       uni.switchTab({
         url: '/pages/index/index',
+      })
+    },
+
+    handleClearSearchHostory() {
+      const _this = this
+      clearSearchSearchHistoryApi({
+        userId: getUserId(),
+      }).then(() => {
+        uni.showToast({
+          title: '清除成功',
+        })
+
+        _this.getUserSearchHistory()
       })
     },
   },
