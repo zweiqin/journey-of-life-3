@@ -24,6 +24,7 @@ export const filters = [
 
 export const tempData = [
   {
+    id: 0,
     logo: require('../../../static/images/new-index/temp/shoumeng.png'),
     name: '首檬设计公司',
     text1: '设计工作室',
@@ -36,8 +37,15 @@ export const tempData = [
       require('../../../static/images/new-index/temp/shou4.png'),
     ],
     dis: '32.1',
+    taoImgs: [
+      require('../../../static/images/new-index/temp/quwu/tao2.png'),
+      require('../../../static/images/new-index/temp/quwu/tao3.png'),
+      require('../../../static/images/new-index/temp/quwu/tao4.png'),
+      require('../../../static/images/new-index/temp/quwu/tao1.png'),
+    ],
   },
   {
+    id: 1,
     logo: require('../../../static/images/new-index/temp/yi1.png'),
     name: '佑泽设计',
     text1: '个人设计师',
@@ -50,8 +58,15 @@ export const tempData = [
       require('../../../static/images/new-index/temp/yi5.png'),
     ],
     dis: '13.9',
+    taoImgs: [
+      require('../../../static/images/new-index/temp/quwu/t3.png'),
+      require('../../../static/images/new-index/temp/quwu/t4.png'),
+      require('../../../static/images/new-index/temp/quwu/t1.png'),
+      require('../../../static/images/new-index/temp/quwu/t2.png'),
+    ],
   },
   {
+    id: 3,
     logo: require('../../../static/images/new-index/temp/logo.png'),
     name: '前齐设计公司',
     text1: '设计工作室',
@@ -64,6 +79,12 @@ export const tempData = [
       require('../../../static/images/new-index/temp/image-5.png'),
     ],
     dis: '13.9',
+    taoImgs: [
+      require('../../../static/images/new-index/temp/quwu/ta1.png'),
+      require('../../../static/images/new-index/temp/quwu/ta4.png'),
+      require('../../../static/images/new-index/temp/quwu/ta3.png'),
+      require('../../../static/images/new-index/temp/quwu/ta2.png'),
+    ],
   },
 ]
 

@@ -72,7 +72,6 @@ export default {
       };
 
       originData[updateData['key']] = updateData['value']
-
       updateUserInfoApi(originData).then(() => {
         uni.showToast({
           title: '修改成功'
@@ -91,6 +90,5 @@ export default {
         commit(CHNAGE_USER_ID, data.userId)
       })
     }
-
   }
 }

@@ -107,3 +107,8 @@ export const getStyleListApi = data => {
 export const getProductPlaceList = data => {
   return shopRequest('/goods/productPlaceList', data, 'get')
 }
+
+
+export const getUserSearchHistoryApi = (data) => {
+  return shopRequest('/search/index', data, 'get')
+}

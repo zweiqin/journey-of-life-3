@@ -66,7 +66,7 @@ import {
 } from '../../../api/user'
 import { getConfigApi } from '../../../api/auth'
 import { getUserId } from '../../../utils'
-import { USER_TOKEN } from '../../../constant'
+import { USER_INFO, USER_TOKEN } from '../../../constant'
 import ShopGoodsList from './cpns/ShopGoodsList'
 import { getGoodsByIdApi } from '../../../api/home'
 // #ifdef H5
@@ -132,11 +132,13 @@ export default {
 
     // 进入微店
     async enterShop() {
+      const userInfo = uni.getStorageSync(USER_INFO)
       const { data } = await enterSHopApi({ userId: getUserId() + '' })
       this.brandInfo = data
       this.setWexinShare({
         title: '我的微店',
-        imgUrl: '',
+        imgUrl: userInfo.avatarUrl,
+        desc: '快来我的微店逛逛吧',
         link:
           'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/microstore/m-microstore?shopId=' +
           this.brandInfo.id,
@@ -223,11 +225,12 @@ export default {
           break
 
         case 'share':
+          console.log('我擦', goodsInfo)
           this.setWexinShare(
             {
               title: goodsInfo.name,
               imgUrl: goodsInfo.picUrl,
-              desc: goodsInfo.brief,
+              desc: '快来我的微店看看吧！',
               link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=${goodsInfo.id}`,
             },
             () => {

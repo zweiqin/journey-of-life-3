@@ -33,11 +33,11 @@ const shareList = [
     icon: require('../../../../static/images/user/code/save.png'),
     key: 'image',
   },
-  {
-    label: '分享链接',
-    icon: require('../../../../static/images/user/code/link.png'),
-    key: 'link',
-  },
+  // {
+  //   label: '分享链接',
+  //   icon: require('../../../../static/images/user/code/link.png'),
+  //   key: 'link',
+  // },
 ]
 
 export default {

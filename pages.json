@@ -83,6 +83,12 @@
 			}
 		},
 		{
+			"path": "pages/search-page/search-result",
+			"style": {
+				"navigationBarTitleText": "搜索商品"
+			}
+		},
+		{
 			"path": "pages/delivery-address/delivery-address",
 			"style": {
 				"backgroundTextStyle": "light",

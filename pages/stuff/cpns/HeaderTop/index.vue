@@ -18,7 +18,15 @@
           src="../../../../static/images/new-brand/index/search-icon.png"
           mode=""
         />
-        <input type="text" placeholder="铜奶嘴钉" />
+        <input
+          v-model="searchValue"
+          confirm-type="search"
+          type="text"
+          @confirm="
+            go('/pages/search-page/search-result?keywords=' + searchValue)
+          "
+          placeholder="铜奶嘴钉"
+        />
       </view>
 
       <button
@@ -54,6 +62,7 @@ export default {
   data() {
     return {
       topMenu: Object.freeze(topMenu),
+      searchValue: '',
     }
   },
 }

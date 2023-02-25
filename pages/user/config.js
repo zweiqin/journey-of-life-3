@@ -396,9 +396,7 @@ export const getMenus = userLevel => {
         icon: require('../../static/images/center/store-3-fill.png'),
         role: [1, 6, 7],
         url: '/user/sever/microstore/microstore',
-      },
-      // {},
-      // {}
+      }
     ],
   }
 
@@ -443,7 +441,9 @@ export const getMenus = userLevel => {
         icon: require('../../static/images/center/map-pin-fill.png'),
         url: '/user/site/site-manage',
       },
+      {},{}
     ],
+
   }
 
   if ([7, 1].includes(userLevel)) {

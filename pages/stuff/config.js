@@ -149,9 +149,10 @@ export const topMenu = [
     url: '/stuff/strict-materials/strict-materials',
   },
   {
-    label: '材料超市',
-    url: '/stuff/material-supmarket/material-supmarket',
+    label: '材料市场',
+    url: '/stuff/material-market/material-market',
   },
+
   {
     label: '新材料',
     url: '/stuff/new-materials/new-materials',
@@ -166,8 +167,8 @@ export const topMenu = [
   },
 
   {
-    label: '材料市场',
-    url: '/stuff/material-market/material-market',
+    label: '材料超市',
+    url: '/stuff/material-supmarket/material-supmarket',
   },
   {
     label: '行业资讯',

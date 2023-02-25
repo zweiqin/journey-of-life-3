@@ -3,9 +3,6 @@
     "baseUrl": ".",
     "experimentalDecorators": true,
     "jsx": "preserve",
-    "types": [
-      "element-plus/global"
-    ]
   },
   "exclude": [
     "node_modules",

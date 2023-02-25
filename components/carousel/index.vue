@@ -57,7 +57,7 @@ export default {
     handleChange(e) {
       this.$emit("change", e.detail.current);
     },
-  },
+  }
 };
 </script>
 

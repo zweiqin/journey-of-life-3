@@ -10,7 +10,9 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">{{ $store.getters.currentCity || '定位中...' }}</view>
+          <view class="text">{{
+            $store.getters.currentCity || '定位中...'
+          }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -27,6 +29,7 @@
             />
           </view>
           <input
+            @click="go('/pages/search-page/search-page')"
             type="text"
             class="content"
             placeholder="输入你想搜索的品类/单品/品牌"
@@ -67,8 +70,8 @@
 </template>
 
 <script>
-import sort from "../../components/subs/subs.vue";
-import { getGoodsTypesApi, getTypeDetailList } from "../../api/home";
+import sort from '../../components/subs/subs.vue'
+import { getGoodsTypesApi, getTypeDetailList } from '../../api/home'
 
 export default {
   components: {
@@ -80,79 +83,79 @@ export default {
       sub: [],
       currentTab: null,
       scrollHeight: 667,
-      picUrl: "",
-    };
+      picUrl: '',
+    }
   },
   computed: {},
   methods: {
     handleBack() {
-      uni.switchTab({ url: "/pages/index/index" });
+      uni.switchTab({ url: '/pages/index/index' })
     },
 
     //获取商品列表接口
     async stuffGoodsList() {
       const res = await getGoodsTypesApi({
         goodsType: 1,
-      });
+      })
 
       if (res.errno === 0) {
         const categories = res.data.categoryList.filter(
-          (item) => item.desc === "搜家具"
-        );
-        this.navbar = categories;
-        if (this.currentTab==='null') {
-          this.currentTab = this.navbar[0].id;
+          item => item.desc === '搜家具'
+        )
+        this.navbar = categories
+        if (this.currentTab === 'null') {
+          this.currentTab = this.navbar[0].id
         }
-        this.stuffGoodsSort();
+        this.stuffGoodsSort()
       }
     },
 
     //获取商品分类接口
     async stuffGoodsSort() {
       uni.showLoading({
-        title: "加载中",
-      });
+        title: '加载中',
+      })
       const res = await getTypeDetailList({
         id: this.currentTab,
-      });
-      uni.hideLoading();
+      })
+      uni.hideLoading()
 
       if (res.errno === 0) {
-        this.sub = res.data.currentSubCategory;
+        this.sub = res.data.currentSubCategory
       } else {
-        this.sub = [];
+        this.sub = []
       }
     },
 
     switchTab(index) {
-      this.currentTab = index * 1;
-      this.id = index;
-      this.stuffGoodsSort();
+      this.currentTab = index * 1
+      this.id = index
+      this.stuffGoodsSort()
     },
 
     handleClickCategory(id) {
       uni.navigateTo({
         url:
-          "/pages/goods-filter/goods-filter?id=" +
+          '/pages/goods-filter/goods-filter?id=' +
           this.currentTab +
-          "&sub=" +
+          '&sub=' +
           id,
-      });
+      })
     },
   },
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.currentTab = options.id;
-    const _this = this;
+    this.currentTab = options.id
+    const _this = this
     uni.getSystemInfo({
       success(res) {
-        _this.scrollHeight = res.safeArea.height - 60;
+        _this.scrollHeight = res.safeArea.height - 60
       },
-    });
-    this.stuffGoodsList();
+    })
+    this.stuffGoodsList()
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

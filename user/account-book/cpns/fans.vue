@@ -9,14 +9,14 @@
     <view class="slot-pane">
       <view class="item">
         <view>超级合伙人</view>
-        <view class="value" id="fans_1">0</view>
+        <view class="value" id="fans_1">{{ data.superPartner || 0 }}</view>
       </view>
       <view class="item">
         <view>合伙人</view>
-        <view class="value" id="fans_2">0</view> </view
+        <view class="value" id="fans_2">{{ data.partner || 0 }}</view> </view
       ><view class="item">
         <view>普通会员</view>
-        <view class="value" id="fans_3">0</view>
+        <view class="value" id="fans_3">{{ data.ordinaryMember || 0 }}</view>
       </view>
     </view>
   </Pane>
@@ -35,7 +35,6 @@ export default {
     },
   },
 
-
   watch: {
     data: {
       handler(value) {
@@ -52,7 +51,7 @@ export default {
     },
 
     immediate: true,
-    deep: true
+    deep: true,
   },
 }
 </script>

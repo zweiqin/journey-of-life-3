@@ -3,7 +3,7 @@
     class="brand-pane-container"
     v-if="data && data.goodsList.length && data.brand.brandgenre == 23"
   >
-    <Carousel :list="images"></Carousel>
+    <Carousel :list="data.brand.picUrls"></Carousel>
     <view
       class="brand-info"
       @click="
@@ -78,18 +78,6 @@ export default {
   },
 
   methods: { randomRGB },
-
-  computed: {
-    images() {
-      if (this.data && this.data.goodsList.length) {
-        return this.data.goodsList.map(goods => {
-          return goods.picUrl
-        })
-      } else {
-        return []
-      }
-    },
-  },
 }
 </script>
 

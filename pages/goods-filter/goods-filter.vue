@@ -16,6 +16,7 @@
             mode=""
           />
           <input
+            @click="go('/pages/search-page/search-page')"
             v-model="queryInfo.keyword"
             @confirm="handleSearch"
             class="text"
@@ -34,7 +35,11 @@
       <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
 
       <view :class="{ 'stic-top': scrollDis > 200 }">
-        <FilterPane ref="filterPaneRef" :scrollTop="scrollDis" @confirm="handleFilter"></FilterPane>
+        <FilterPane
+          ref="filterPaneRef"
+          :scrollTop="scrollDis"
+          @confirm="handleFilter"
+        ></FilterPane>
         <SubMenus
           ref="subMenusRef"
           :currentId="subId"
@@ -99,7 +104,7 @@ export default {
       this.setData()
       uni.pageScrollTo({
         scrollTop: 0,
-        duration: 0
+        duration: 0,
       })
     },
 
@@ -169,7 +174,7 @@ export default {
       this.queryInfo.size = 10
       uni.pageScrollTo({
         scrollTop: 0,
-        duration: 0
+        duration: 0,
       })
       this.getGoodsList(false, data)
     },

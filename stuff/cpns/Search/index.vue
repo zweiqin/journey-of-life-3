@@ -19,7 +19,7 @@
       </view>
     </view>
 
-    <scroll-view scroll-x="true">
+    <scroll-view v-if="!isCustorm" scroll-x="true">
       <view class="menus">
         <view
           @click="$emit('change', item.id)"
@@ -32,6 +32,10 @@
         >
       </view>
     </scroll-view>
+
+    <view v-else>
+      <slot></slot>
+    </view>
   </view>
 </template>
 
@@ -52,6 +56,10 @@ export default {
     scrollTop: {
       type: Number,
       default: 0,
+    },
+    isCustorm: {
+      type: Boolean,
+      default: false,
     },
   },
 

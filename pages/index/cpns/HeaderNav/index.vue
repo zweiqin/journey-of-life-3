@@ -2,7 +2,9 @@
   <view class="header-nav" :class="{ fixed: scrollTop > 300 }">
     <view class="search-container">
       <view class="locale-wrapper">
-        <text class="locale">{{ $store.getters.currentCity || '定位中...' }}</text>
+        <text class="locale">{{
+          $store.getters.currentCity || '定位中...'
+        }}</text>
         <image
           class="locale-icon"
           src="../../../../static/images/new-brand/index/down-arrow.png"
@@ -16,7 +18,11 @@
           src="../../../../static/images/new-brand/index/search-icon.png"
           mode=""
         />
-        <input type="text" placeholder="请输入你想要的家具" />
+        <input
+          @click="go('/pages/search-page/search-page')"
+          type="text"
+          placeholder="请输入你想要的家具"
+        />
       </view>
 
       <image
@@ -87,6 +93,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .locale-wrapper {
       display: flex;
       align-items: center;
@@ -108,6 +115,8 @@ export default {
       background-color: #f6f6f5;
       border-radius: 100px;
       margin: 0 35upx 0 26upx;
+      padding: 0 20upx;
+      box-sizing: border-box;
 
       .search-icon {
         width: 32upx;

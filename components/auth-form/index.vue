@@ -68,12 +68,12 @@
       >
     </view>
 
-    <checkbox-group class="argument-container" @change="handleChange">
+  <!--  <checkbox-group class="argument-container" @change="handleChange">
       <checkbox value="gou" :checked="isChecked" />
       <view class="argument" @click="handleToViewArgument"
         >《团蜂服务平台协议》</view
       >
-    </checkbox-group>
+    </checkbox-group> -->
   </view>
 </template>
 
@@ -120,16 +120,16 @@ export default {
 
   methods: {
     submit() {
-      if (!this.isChecked) {
-        uni.showToast({
-          title: '请勾选平台协议',
-          icon: 'none',
-        })
+      // if (!this.isChecked) {
+      //   uni.showToast({
+      //     title: '请勾选平台协议',
+      //     icon: 'none',
+      //   })
 
-        uni.setStorageSync(LOGIN_FORM, this.form)
+      //   uni.setStorageSync(LOGIN_FORM, this.form)
 
-        return
-      }
+      //   return
+      // }
       this.$emit('submit', { ...this.form })
     },
 

@@ -5,7 +5,31 @@
       @change="handleSwitchTab"
       :current="currentMenu"
       @search="handleSearch"
-    ></Search>
+      isCustorm
+    >
+      <scroll-view scroll-x="true">
+        <view class="menus">
+          <view
+            @click="handleSwitchTab(item)"
+            class="item"
+            :class="{ active: currentMenu == item.id }"
+            v-for="item in menus"
+            :key="item.id"
+          >
+            {{ item.name }}</view
+          >
+        </view>
+      </scroll-view>
+    </Search>
+
+    <view class="image-wrapper">
+      {{ currentCompany }}
+    </view>
+
+
+    <view class="goods-title">
+      · 商户推荐 ·
+    </view>
 
     <view class="goods-list">
       <StuffGoods
@@ -23,6 +47,7 @@
 import Search from '../cpns/Search'
 import StuffGoods from '../../pages/stuff/cpns/StuffGoods'
 import { goodsListApi } from '../../api/goods'
+import { menus } from './data'
 
 export default {
   components: {
@@ -44,6 +69,8 @@ export default {
       },
       totalPages: 0,
       status: 'none',
+      menus: Object.freeze(menus),
+      currentCompany: '亚洲国际材料城',
     }
   },
 
@@ -52,9 +79,10 @@ export default {
   },
 
   methods: {
-    handleSwitchTab(id) {
-      this.currentMenu = id
-      if (!id) {
+    handleSwitchTab(item) {
+      this.currentMenu = item.id
+      this.currentCompany = item.name
+      if (!item.id) {
         this.query.categoryId = null
       }
 
@@ -118,5 +146,65 @@ export default {
     padding: 20upx;
     box-sizing: border-box;
   }
+}
+
+.menus {
+  display: flex;
+  white-space: nowrap;
+  margin: 32upx 0 38upx 0;
+
+  .item {
+    position: relative;
+    margin-right: 40upx;
+    line-height: 48upx;
+    font-size: 28upx;
+    color: #141000;
+    transition: all 50ms;
+
+    &::after {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      content: '';
+      display: block;
+      width: 0;
+      height: 8upx;
+      background-color: #ffc117;
+      border-radius: 100px;
+      transition: all 350ms;
+    }
+
+    &.active {
+      font-size: 34upx;
+      line-height: 52upx;
+      font-weight: bold;
+
+      &::after {
+        width: 40upx;
+      }
+    }
+  }
+}
+
+.image-wrapper {
+  width: 710upx;
+  height: 200upx;
+  background: url('../../static/images/new-brand/index/brand-bg.png') no-repeat;
+  background-size: cover;
+  border-radius: 16upx;
+  margin: 20upx auto;
+  color: #fff;
+  font-size: 52upx;
+  text-align: center;
+  line-height: 200upx;
+  font-weight: bold;
+}
+
+.goods-title{
+  text-align: center;
+  line-height: 60upx;
+  font-size: 34upx;
+  color: #141000;
+  font-weight: bold;
 }
 </style>

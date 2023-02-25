@@ -7,21 +7,17 @@
     ></Search>
 
     <view class="product-list">
-      <view class="product-item" v-for="item in 20" :key="item">
-        <Carousel :height="173"></Carousel>
+      <view class="product-item" v-for="item in brandList" :key="item.id">
+        <Carousel :list="[item.goods.url]" :height="173"></Carousel>
         <view class="product-info">
           <view class="product-name">
-            纯铜法式金色衣柜拉手柜子门把手美式柜门抽屉金...
+            {{ item.goods.name }}
           </view>
 
           <view class="brand-info">
-            <image
-              class="brand-avatar"
-              src="https://img2.baidu.com/it/u=974730897,2942359363&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-              mode=""
-            />
+            <image class="brand-avatar" :src="item.picUrl" mode="" />
             <view class="wrapper">
-              <view class="brand-name">佛山市南海金玮金属五金店</view>
+              <view class="brand-name">{{ item.name }}</view>
               <view class="foot-info">
                 <view class="tags">
                   <view class="tag">
@@ -54,7 +50,7 @@
                       src="../../static/images/new-brand/index/collection.png"
                       mode=""
                     />
-                    <text>9872837</text>
+                    <text>{{ getRandom(1000, 10000) }}</text>
                   </view>
 
                   <view class="collection-wrapper">
@@ -63,7 +59,7 @@
                       src="../../static/images/new-brand/index/zan.png"
                       mode=""
                     />
-                    <text>9872837</text>
+                    <text>{{ getRandom(1000, 10000) }}</text>
                   </view>
                 </view>
               </view>
@@ -78,6 +74,10 @@
 <script>
 import Search from '../cpns/Search'
 import Carousel from '../../components/carousel/index.vue'
+import { getBrandListApi } from '../../api/brand'
+import { getRandom } from '../../utils'
+import { data } from '../brand-materials/templateDate'
+
 export default {
   components: {
     Search,
@@ -88,6 +88,7 @@ export default {
     return {
       currentMenu: 0,
       scrollTop: 0,
+      brandList: [],
     }
   },
 
@@ -95,6 +96,39 @@ export default {
     handleSwitchTab(id) {
       this.currentMenu = id
     },
+
+    getRandom,
+
+    async getBrandList() {
+      const res = await getBrandListApi({
+        brandgenreId: '',
+        page: this.page,
+        size: 100,
+      })
+      // 佛山市奥丽思家具五金配件有限公司;
+      // 大创家具材料店;
+      // 成鑫木业有限公司;
+      // 里翎皮革;
+      this.brandList = res.data.brandList
+      this.brandList = this.brandList.filter(
+        item =>
+          item.name == '佛山市奥丽思家具五金配件有限公司' ||
+          item.name == '大创家具材料店' ||
+          item.name == '成鑫木业有限公司' ||
+          item.name == '里翎皮革' ||
+          item.name == '佛山市南海金玮金属制品厂' ||
+          item.name == '思应布艺'
+      )
+
+      this.brandList = this.brandList.map((item, index) => {
+        item.goods = data[index]
+        return item
+      })
+    },
+  },
+
+  onLoad() {
+    this.getBrandList()
   },
 
   onPageScroll(e) {

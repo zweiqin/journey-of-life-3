@@ -53,7 +53,7 @@ export default {
         setTimeout(() => {
           if (this.to) {
             uni.navigateTo({
-              url: '/pages/login/login?to=' + this.to,
+              url: '/pages/login/login?code=' + this.to,
             })
           } else {
             uni.navigateTo({

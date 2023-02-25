@@ -1,6 +1,6 @@
 <template>
   <view class="login-containter">
-    <AuthForm :to="redirect" @submit="submit"></AuthForm>
+    <AuthForm :to="bindId" @submit="submit"></AuthForm>
   </view>
 </template>
 
@@ -127,8 +127,12 @@ export default {
 
   async onLoad(options) {
     this.redirect = options.to
-    this.params = options
-    this.bindId = options.bindId
+
+    this.bindId = options.code
+
+    if (this.redirect.indexOf('?') > -1) {
+      this.bindId = this.redirect
+    }
     if (this.bindId) {
       uni.setStorageSync(NEW_BIND_ID, this.bindId)
     }

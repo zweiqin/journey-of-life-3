@@ -2,7 +2,9 @@
   <view
     class="design-company-container"
     v-if="data"
-    @click="go('/pages/index/WholehouseCustomization/detail/detail')"
+    @click="
+      go('/pages/index/WholehouseCustomization/detail/detail?id=' + data.id)
+    "
   >
     <view class="company-wrapper">
       <image class="company-avatar" :src="data.logo" mode="" />

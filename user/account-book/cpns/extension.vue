@@ -7,25 +7,31 @@
     <view class="slot-pane">
       <view class="item">
         <view>累计收益</view>
-        <view class="value" id="ex_1">0</view>
+        <view class="value" id="ex_1">
+          {{ data.cumulativeIncome || 0 }}
+        </view>
       </view>
       <view class="item">
         <view>累计提现</view>
-        <view class="value" id="ex_2">0</view> </view
+        <view class="value" id="ex_2">
+          {{ data.holdingIncome || 0 }}
+        </view> </view
       ><view class="item">
         <view>当前佣金</view>
-        <view class="value" id="ex_3">0</view>
+        <view class="value" id="ex_3">
+          {{ data.withdrawnIncome || 0 }}
+        </view>
       </view>
       <view class="item">
         <view>途中佣金</view>
-        <view class="value" id="ex_4">0</view>
+        <view class="value" id="ex_4">{{ data.commissionOnTheWay || 0 }}</view>
       </view>
     </view>
   </Pane>
 </template>
 
 <script>
-import { CountUp } from 'countup.js'
+// import { CountUp } from 'countup.js'
 import Pane from './pane.vue'
 export default {
   components: { Pane },
@@ -35,24 +41,32 @@ export default {
       required: true,
     },
   },
-  mounted() {},
+  // mounted() {},
 
-  watch: {
-    data: {
-      handler(value) {
-        const option = {
-          decimalPlaces: 2,
-          duration: 1.5,
-        }
-        if (value.cumulativeIncome) {
-          new CountUp('ex_1', this.data.cumulativeIncome, option).start()
-          new CountUp('ex_2', this.data.holdingIncome, option).start()
-          new CountUp('ex_3', this.data.withdrawnIncome, option).start()
-          new CountUp('ex_4', this.data.commissionOnTheWay, option).start()
-        }
-      },
-    },
-  },
+  // watch: {
+  //   data: {
+  //     handler(value) {
+  //       this.setData(value)
+  //     },
+  //     immediate: true,
+  //     deep: true,
+  //   },
+  // },
+
+  // methods: {
+  //   setData(value) {
+  //     console.log('操了')
+  //     // const option = {
+  //     //   decimalPlaces: 2,
+  //     //   duration: 1.5,
+  //     // }
+  //     console.log(value.commissionOnTheWay)
+  //     new CountUp('ex_1', value.cumulativeIncome).start()
+  //     new CountUp('ex_2', value.holdingIncome).start()
+  //     new CountUp('ex_3', value.withdrawnIncome).start()
+  //     new CountUp('ex_4', value.commissionOnTheWay).start()
+  //   },
+  // },
 }
 </script>
 

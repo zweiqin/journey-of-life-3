@@ -86,7 +86,7 @@ export default {
       if (!this.userInfo.invitationCode) {
         getExtensionCodeApi({
           url:
-            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?bindId=' +
+            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
             this.userInfo.invitationCode,
           userId: getUserId(),
         }).then(res => {
@@ -95,7 +95,7 @@ export default {
 
           getExtensionCodeApi({
             url:
-              'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?bindId=' +
+              'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
               res.data.code,
             userId: getUserId(),
           }).then(res2 => {
@@ -106,7 +106,7 @@ export default {
       } else {
         getExtensionCodeApi({
           url:
-            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?bindId=' +
+            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
             this.userInfo.invitationCode,
           userId: getUserId(),
         }).then(res => {

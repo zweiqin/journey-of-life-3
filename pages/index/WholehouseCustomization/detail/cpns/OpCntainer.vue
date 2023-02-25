@@ -1,6 +1,6 @@
 <template>
   <view class="op-container" :style="opContainerStyle">
-    <view class="back">
+    <view @click="handleBack" class="back">
       <tui-icon color="#fff" name="arrowleft"></tui-icon>
     </view>
 
@@ -29,6 +29,14 @@ export default {
     scrollTop: {
       type: Number,
       default: 0,
+    },
+  },
+
+  methods: {
+    handleBack() {
+      uni.navigateBack({
+        delta: 2,
+      })
     },
   },
 

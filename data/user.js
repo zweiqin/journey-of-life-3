@@ -18,6 +18,7 @@ export const topMenus = [
     label: '我的钱包',
     icon: require('../static/images/center/wallet.png'),
   },
+  // {}
 ]
 
 export const shopMenus = [
@@ -122,20 +123,22 @@ export const normalMenus = {
       icon: require('../static/images/center/map-pin-fill.png'),
       url: '/user/site/site-manage',
     },
+    {},
+    {}
   ],
 }
 
 export const myEquity = {
   title: '我的权益',
   menus: [
-    {
-      label: '余额',
-      slotName: 'count',
-    },
-    {
-      label: '优惠劵',
-      slotName: 'coupon',
-    },
+    // {
+    //   label: '余额',
+    //   slotName: 'count',
+    // },
+    // {
+    //   label: '优惠劵',
+    //   slotName: 'coupon',
+    // },
     {
       label: '小账本',
       icon: require('../static/images/center/book-open-fill.png'),
@@ -150,6 +153,7 @@ export const myEquity = {
       isExistence: true,
       Url: '/user/sever/microstore/microstore',
     },
+    {},{}
   ],
 }
 

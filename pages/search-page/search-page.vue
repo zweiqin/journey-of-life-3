@@ -1,213 +1,197 @@
 <template>
-  <!--pages/search-page/search-page.wxml-->
-  <view class="container">
-    <!-- 搜索框 -->
-    <view class="search-bar">
-      <view class="search-box">
+  <view class="search-page-container">
+    <view class="search-container">
+      <tui-icon @click="handleBack" name="arrowleft"></tui-icon>
+      <view class="search-wrapper">
+        <tui-icon name="search" :size="20" class="search-icon"></tui-icon>
         <input
-          placeholder="输入关键字搜索"
-          class="sear-input"
+          v-model="searchValue"
+          type="text"
           confirm-type="search"
-          @confirm="toSearchProdPage"
-          @input="getSearchContent"
-          :value="prodName"
+          placeholder="请输入您要搜索的商品"
+          @confirm="handelSearch(searchValue)"
         />
-        <image src="/static/images/icon/search.png" class="search-img"></image>
+        <tui-icon
+          v-show="searchValue"
+          name="close"
+          :size="20"
+          class="close-icon"
+          @click="searchValue = ''"
+        ></tui-icon>
       </view>
-      <text class="search-hint" @tap="goBackIndex">取消</text>
+
+      <button class="uni-btn search-btn" @click="handelSearch(searchValue)">
+        搜索
+      </button>
     </view>
 
-    <view class="search-display">
-      <!-- 热门搜索 -->
-      <!-- <view class="hot-search">
-      <view class="title-text">
-        热门搜索
-      </view>
-      <view v-if="hotSearchList && hotSearchList.length" class="hot-search-tags">
-       <block v-for="(item, index) in hotSearchList" :key="index">
-        <text class="tags" @tap="onHistSearch" :data-name="item.content">{{item.title}}</text>
-        </block> 
-      </view>
-      <view v-else class="search-tit-empty">暂无数据</view>
-    
-    </view> -->
-
-      <!-- 搜索历史 -->
-      <view v-if="recentSearch && recentSearch.length" class="history-search">
-        <view class="title-text history-line">
-          搜索历史
-          <view class="clear-history">
-            <image
-              src="/static/images/icon/clear-his.png"
-              @tap="clearSearch"
-            ></image>
-          </view>
+    <view class="search-history">
+      <view class="title-container">
+        <view class="search-title">搜索历史</view>
+        <view class="delete">
+          <tui-icon :size="15" name="delete"></tui-icon>
+          <text style="font-size: 28upx; color: #605d52">清空搜索</text>
         </view>
-        <block v-for="(item, index) in recentSearch" :key="index">
-          <view class="his-search-tags">
-            <text class="tags" @tap="onHistSearch" :data-name="item">{{
-              item
-            }}</text>
-          </view>
-        </block>
       </view>
 
-      <view class="history-search">
-        <view class="title-text history-line"> 猜你喜欢 </view>
-        <block>
-          <img
-            class="guess-img"
-            src="https://img0.baidu.com/it/u=1088731986,324059000&fm=253&fmt=auto?w=500&h=217"
-            alt=""
-          />
-        </block>
+      <view class="keywords-wraper">
+        <view class="no-data">暂无搜索记录</view>
+      </view>
+    </view>
+
+    <view class="hot-search">
+      <view class="search-title"> 热门搜索 </view>
+
+      <view class="keywords-wraper">
+        <view
+          class="item"
+          @click="handelSearch(item)"
+          v-for="item in keywordsList"
+          :key="item"
+          >{{ item }}</view
+        >
       </view>
     </view>
   </view>
 </template>
 
 <script>
-// pages/search-page/search-page.js
-var http = require("../../utils/http.js");
-
+import { USER_ID } from 'constant'
+import { getUserSearchHistoryApi } from '../../api/goods'
 export default {
   data() {
     return {
-      hotSearchList: [],
-      prodName: "",
-      recentSearch: ["唉", "哈哈哈", "嘿嘿", "呵呵"],
-    };
+      searchValue: '',
+      keywordsList: ['沙发', '床', '儿童床', '办公椅', '茶几', '餐桌'],
+    }
   },
 
-  components: {},
-  props: {},
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {},
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    var ths = this; //热门搜索
-
-    var params = {
-      url: "/search/hotSearchByShopId",
-      method: "GET",
-      data: {
-        number: 10,
-        shopId: 1,
-        sort: 1,
-      },
-      callBack: function (res) {
-        ths.setData({
-          hotSearchList: res,
-        });
-      },
-    };
-    http.request(params); // 获取历史搜索
-
-    this.getRecentSearch();
+  onLoad() {
+    this.getUserSearchHistory()
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    this.prodName = "";
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {},
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {},
   methods: {
-    /**
-     * 获取历史搜索
-     */
-    getRecentSearch: function () {
-      // let recentSearch = uni.getStorageSync("recentSearch");
-      // this.setData({
-      //   recentSearch,
-      // });
-    },
+    async getUserSearchHistory() {
+      if (uni.getStorageSync(USER_ID)) {
+        const { data } = await getUserSearchHistoryApi({
+          userId: uni.getStorageSync(USER_ID),
+        })
 
-    /**
-     * 搜索提交
-     */
-    toSearchProdPage: function () {
-      if (this.prodName.trim()) {
-        // 记录最近搜索
-        let recentSearch = uni.getStorageSync("recentSearch") || [];
-        recentSearch = recentSearch.filter((item) => item !== this.prodName);
-        recentSearch.unshift(this.prodName);
-
-        if (recentSearch.length > 10) {
-          recentSearch.pop();
-        }
-
-        uni.setStorageSync("recentSearch", recentSearch); // 跳转到商品列表页
-
-        uni.navigateTo({
-          url:
-            "/pages/search-prod-show/search-prod-show?prodName=" +
-            this.prodName,
-        });
+        console.log(data)
       }
     },
 
-    /**
-     * 清空搜索历史
-     */
-    clearSearch: function () {
-      uni.removeStorageSync("recentSearch");
-      this.getRecentSearch();
+    handelSearch(keywords) {
+      if (!keywords) {
+        uni.showToast({
+          title: '请输入搜索的商品',
+          icon: 'none',
+        })
+
+        return
+      }
+
+      uni.navigateTo({
+        url: '/pages/search-page/search-result?keywords=' + keywords,
+      })
     },
-    // 返回首页
-    goBackIndex: function () {
-      uni.navigateBack({
-        // url: '/pages/search-page/search-page',
-      });
-    },
-    //输入商品名获取数据 || 绑定输入值
-    getSearchContent: function (e) {
-      this.setData({
-        prodName: e.detail.value,
-      }); // this.data.prodName=e.detail.value
-    },
-    //点击搜素历史
-    onHistSearch: function (e) {
-      var name = e.currentTarget.dataset.name;
-      this.setData({
-        prodName: name,
-      });
-      this.toSearchProdPage();
+
+    handleBack() {
+      uni.switchTab({
+        url: '/pages/index/index',
+      })
     },
   },
-};
+}
 </script>
-<style>
-@import "./search-page.css";
+
+<style lang="less" scoped>
+.search-page-container {
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20upx 20upx 20upx 0;
+
+    .search-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f6f6f5;
+      border-radius: 100px;
+      height: 72upx;
+      margin-right: 24upx;
+      padding: 20upx 24upx;
+      box-sizing: border-box;
+
+      .search-icon {
+        padding-right: 16upx;
+        margin-right: 16upx !important;
+        border-right: 1upx solid #ccc;
+      }
+
+      input {
+        font-size: 28upx;
+        color: #3a3629;
+        flex: 1;
+      }
+    }
+
+    .search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 128upx;
+      height: 72upx;
+      border-radius: 100px;
+      background-color: #ffc117;
+      color: #fff;
+      font-size: 26upx;
+    }
+  }
+
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .no-data {
+    flex: 1;
+    text-align: center;
+    padding: 30upx 0;
+    color: #9e9e9e;
+    font-size: 28upx;
+  }
+
+  .hot-search,
+  .search-history {
+    padding: 20upx;
+    box-sizing: border-box;
+  }
+
+  .search-title {
+    color: #9e9e9e;
+    font-size: 28upx;
+    margin-bottom: 20upx;
+  }
+
+  .keywords-wraper {
+    padding: 10upx;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .item {
+      padding: 7upx 32upx;
+      background-color: #f6f6f5;
+      border-radius: 100px;
+      margin-right: 20upx;
+      margin-bottom: 20upx;
+      color: #3a3629;
+      font-size: 28upx;
+    }
+  }
+}
 </style>
