@@ -1,4 +1,4 @@
-import { queryCustomer, createChat, queryChatList, queryChatMessage } from '../../api/customerService'
+import { queryCustomer, createChat, queryChatList, queryChatMessage, queryChatMessageBack } from '../../api/customerService'
 import { CHANGE_CUSTOMER_SERVICE_INFO, CHANGE_WS_INFO, CHANGE_CHAT_LIST } from './type'
 import { getUserId } from '../../utils'
 // import { USER_INFO } from '../../../constant' // uni.getStorageSync(USER_INFO)
@@ -72,23 +72,23 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			})
-			const res = await queryChatList({
+			const result = await queryChatList({
 				userType: 'APP',
 				userId: getUserId(),
 				page: 1,
 				limit: 9999
 			})
 			uni.hideLoading()
-			commit(CHANGE_CHAT_LIST, res.data.items)
+			commit(CHANGE_CHAT_LIST, result.data.items)
 			if (data) {
-				if (res.data.total !== 0) {
+				if (result.data.total !== 0) {
 					uni.showModal({
 						title: '提示',
 						content: '已经与客服取得联系，是否继续与该客服进行沟通？',
 						success(res) {
 							if (res.confirm) {
 								uni.redirectTo({
-									url: '/user/chat/chat'
+									url: `/user/chat/chat-detail?chat=${result.data.items[0].chatId}&name=${result.data.items[0].name}`
 								})
 							} else {
 								uni.switchTab({
@@ -155,14 +155,33 @@ export default {
 		async queryChatMessage({ dispatch, rootState }, data) {
 			try {
 				uni.showLoading()
-				// const res1 = await queryChatMessage(data)
+				const res = await queryChatMessage(data)
 				// const res = { data: { items: [ {
-				// 	chatId: 1,
-				// 	sendUserId: 10,
-				// 	message: '{"event":"","message":{"id":1677241842000,"status":"succeed","type":"text","sendTime":1677241842000,"content":"酒伴我","toContactId":"1","fromUser":{"id":632,"displayName":"13888888888","avatar":"https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cefvyfkp64k4d19ofb3m.png"},"isGroup":true}}',
-				// 	addTime: '2023-02-19 16:11:26'
+				// 	'chatId': 17,
+				// 	'sendUserId': 8,
+				// 	'message': '{"event":"","message":{"id":1677311426451,"status":"succeed","type":"text","sendTime":1677311426451,"content":"开屎聊天","toContactId":17,"fileSize":0,"fileName":"","fromUser":{"id":8,"displayName":"Tuanfeng","avatar":"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png"},"isGroup":true}}',
+				// 	'userType': 'ADMIN',
+				// 	'addTime': '2023-02-25 15:50:26',
+				// 	'username': 'Tuanfeng',
+				// 	'avatar': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png'
 				// } ] } }
-				const res = []
+				// 本测试用户是\"id\":537,\"displayName\":\"13888888888\
+				return res.data.items || []
+			} catch (error) {
+				uni.showToast({
+					title: '获取历史消息失败',
+					icon: 'none'
+				})
+			} finally {
+				uni.hideLoading()
+			}
+		},
+
+		// 查消息（往后查）
+		async queryChatMessageBack({ dispatch, rootState }, data) {
+			try {
+				uni.showLoading()
+				const res = await queryChatMessageBack(data)
 				return res.data.items || []
 			} catch (error) {
 				uni.showToast({

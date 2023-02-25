@@ -102,14 +102,15 @@ export default {
 	methods: {
 		timestampToTime,
 		onOpen() {
-			const _this = this
 			console.log('连接成功')
 			this.$store.dispatch('customerService/queryChatMessage', {
 				chatId: this.chat,
-				limit: 15,
-				endTime: ''
+				limit: 30,
+				endTime: '',
+				order: 'desc'
 			}).then((res) => {
-				this.groupMessages = res.map((item) => JSON.parse(item.message)).concat(this.groupMessages)
+				this.groupMessages = res.map((item) => JSON.parse(item.message)).reverse()
+					.concat(this.groupMessages)
 			})
 			// if (_this.action.method === 'createGame') {
 			// 	_this.send(_this.action)
@@ -181,6 +182,8 @@ export default {
 					sendTime: Date.parse(new Date()),
 					content: this.words,
 					toContactId: this.chat,
+					fileSize: 0,
+					fileName: '',
 					fromUser: {
 						id: this.userInfo.userId,
 						displayName: this.userInfo.nickName,
@@ -225,10 +228,18 @@ export default {
 
 		handleRefresherrefresh(e) {
 			this.isRefresherTriggered = true
-			console.log(e, 2)
-			setTimeout(() => {
+			// console.log(e, timestampToTime(this.groupMessages[0].message.sendTime))
+			this.$store.dispatch('customerService/queryChatMessageBack', {
+				chatId: this.chat,
+				limit: 30,
+				endTime: timestampToTime(this.groupMessages[0].message.sendTime)
+				// order: 'desc'
+			}).then((res) => {
+				// console.log(res)
+				if (res.length === 0) uni.showToast({ title: '没有更多消息了', icon: 'none' })
+				this.groupMessages = res.map((item) => JSON.parse(item.message)).concat(this.groupMessages)
 				this.isRefresherTriggered = false
-			}, 2000)
+			})
 		}
 	}
 
