@@ -270,3 +270,13 @@ export const upGoodsApi = data => {
 export const downGoodsApi = data => {
   return huangRequest('/microshop/down', data, 'get')
 }
+
+// 申请区域代理
+export const applyRegionagentApi = data => {
+  return shopRequest('/regionagent/saveRegionAgent', data)
+}
+
+// 查询区域代理状态
+export const getApplyRegionagentStatusApi = data => {
+  return shopRequest('/regionagent/queryIsApproved', data, 'get')
+}

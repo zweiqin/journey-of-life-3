@@ -60,6 +60,7 @@ export default {
         goodsType: 2,
         page: 1,
         size: 20,
+        categoryId: 100101502
       },
       totalPages: 0,
       status: 'none',

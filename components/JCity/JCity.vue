@@ -294,6 +294,10 @@ export default {
         font-size: 32upx;
         color: #fa5151;
         transition: all 350ms;
+
+        &::after{
+          border: none;
+        }
       }
     }
 
