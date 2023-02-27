@@ -7,7 +7,7 @@
 			>
 				<view class="tui-list__item">
 					<image class="tui-avatar" :src="item.avatar"></image>
-					<view class="tui-name">{{ item.displayName }}</view>
+					<view class="tui-name">{{ `客服${subi+1}号【${item.displayName}】` }}</view>
 				</view>
 			</tui-list-cell>
 		</template>

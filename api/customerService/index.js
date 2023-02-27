@@ -41,3 +41,4 @@ export const queryChatList = (data) => RuanRequest('/ws/queryChatList', data, 'g
  */
 
 export const queryChatMessage = (data) => RuanRequest('/ws/queryChatMessage', data, 'get')
+export const queryChatMessageBack = (data) => RuanRequest('/ws/queryChatMessage2', data, 'get')
