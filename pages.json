@@ -746,9 +746,9 @@
 					}
 				},
 				{
-					"path": "sever/coupon",
+					"path": "sever/coupon/coupon",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "我的优惠劵",
 						"usingComponents": {}
 					}
 				},

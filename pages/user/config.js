@@ -368,6 +368,7 @@ export const otherIcons = {
     {
       label: '优惠劵',
       name: 'voucher',
+      url: '/user/sever/coupon',
     },
     {},
     {},
@@ -385,6 +386,7 @@ export const getMenus = userLevel => {
       {
         label: '优惠劵',
         slotName: 'coupon',
+        url: '/user/sever/coupon/coupon',
       },
       {
         label: '小账本',
@@ -445,13 +447,13 @@ export const getMenus = userLevel => {
         icon: require('../../static/images/center/map-pin-fill.png'),
         url: '/user/site/site-manage',
       },
-      {
-        label: '区域代理',
-        icon: require('../../static/images/center/map-pin-fill.png'),
-        url: '/user/sever/regional-agent/regional-agent',
-      },
-			{},
-			{}
+      // {
+      //   label: '区域代理',
+      //   icon: require('../../static/images/center/map-pin-fill.png'),
+      //   url: '/user/sever/regional-agent/regional-agent',
+      // },
+      // {},
+      // {}
     ],
   }
 

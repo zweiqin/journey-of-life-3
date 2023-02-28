@@ -280,3 +280,18 @@ export const applyRegionagentApi = data => {
 export const getApplyRegionagentStatusApi = data => {
   return shopRequest('/regionagent/queryIsApproved', data, 'get')
 }
+
+// 查询所有可领取的优惠劵
+export const getAvailableCouponListApi = data => {
+  return shopRequest('/coupon/getUserCoupon', data, 'get')
+}
+
+// 领取优惠劵
+export const receiveCouponApi = data => {
+  return shopRequest('/coupon/receive', data)
+}
+
+// 查看自己持有
+export const getCouponListApi = data => {
+  return shopRequest('/coupon/mylist', data, 'get')
+}

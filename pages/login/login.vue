@@ -70,6 +70,7 @@ export default {
         return
       } else {
         if (this.redirect) {
+          console.log("进来了", this.redirect);
           if (tabbarList.includes(this.redirect)) {
             uni.switchTab({
               url: this.redirect,

@@ -205,6 +205,11 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   -ms-overflow-style: none;
 }
 
-.hidden-sb::-webkit-scrollbar{
+.hidden-sb::-webkit-scrollbar {
   display: none;
 }
+
+/* view,
+text {
+  line-height: 1.5;
+} */

@@ -123,25 +123,25 @@ export default {
 
       try {
         partnerApplyApi(data).then(res => {
-          if(res.errno !== 0){
+          if (res.errno !== 0) {
             uni.showToast({
               title: res.errmsg,
-              icon: 'none'
+              icon: 'none',
             })
 
             return
           }
 
-          console.log(res);
+          console.log(res)
 
           payFn(res.data)
         })
       } catch (error) {
-        console.log(error);
-        uni.hideLoading();
+        console.log(error)
+        uni.hideLoading()
         uni.showToast({
           title: error,
-          icon: 'none'
+          icon: 'none',
         })
       }
     },
@@ -151,7 +151,7 @@ export default {
     },
 
     handleBack() {
-      uni.navigateTo({ url: '/user/sever/userUp/index' })
+      uni.switchTab({ url: '/pages/user/user' })
     },
   },
 

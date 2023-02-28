@@ -239,18 +239,7 @@ export default {
     handleClickModal(e) {
       const { index } = e
       if (index) {
-        uni.clearStorageSync()
-        uni.showToast({
-          title: '退出成功',
-          duration: 500,
-          mask: true,
-        })
-
-        setTimeout(() => {
-          uni.switchTab({
-            url: '/pages/index/index',
-          })
-        }, 500)
+        this.$store.dispatch('auth/logout')
       }
       this.isShowModal = false
     },
