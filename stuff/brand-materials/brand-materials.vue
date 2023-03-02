@@ -7,7 +7,7 @@
     ></Search>
 
     <view class="product-list">
-      <view class="product-item" v-for="item in brandList" :key="item.id">
+      <!-- <view class="product-item" v-for="item in brandList" :key="item.id">
         <Carousel :list="[item.goods.url]" :height="173"></Carousel>
         <view class="product-info">
           <view class="product-name">
@@ -66,22 +66,26 @@
             </view>
           </view>
         </view>
-      </view>
+      </view> -->
+      <BrandPane
+        v-for="item in brandList"
+        :key="item.brand.id"
+        :data="item"
+      ></BrandPane>
     </view>
   </view>
 </template>
 
 <script>
 import Search from '../cpns/Search'
-import Carousel from '../../components/carousel/index.vue'
-import { getBrandListApi } from '../../api/brand'
+import { getBrandListBySelectApi } from '../../api/brand'
 import { getRandom } from '../../utils'
-import { data } from './templateDate'
+import BrandPane from './BrandPane.vue'
 
 export default {
   components: {
     Search,
-    Carousel,
+    BrandPane,
   },
 
   data() {
@@ -89,6 +93,11 @@ export default {
       currentMenu: 0,
       scrollTop: 0,
       brandList: [],
+      query: {
+        page: 1,
+        limit: 20,
+        brandgenreId: '',
+      },
     }
   },
 
@@ -103,30 +112,12 @@ export default {
     getRandom,
 
     async getBrandList() {
-      const res = await getBrandListApi({
-        brandgenreId: '',
-        page: this.page,
-        size: 100,
+      const { data } = await getBrandListBySelectApi({
+        ...this.query,
+        labelId: 2,
       })
-      // 佛山市奥丽思家具五金配件有限公司;
-      // 大创家具材料店;
-      // 成鑫木业有限公司;
-      // 里翎皮革;
-      this.brandList = res.data.brandList
-      this.brandList = this.brandList.filter(
-        item =>
-          item.name == '佛山市奥丽思家具五金配件有限公司' ||
-          item.name == '大创家具材料店' ||
-          item.name == '成鑫木业有限公司' ||
-          item.name == '里翎皮革' ||
-          item.name == '佛山市南海金玮金属制品厂' ||
-          item.name == '思应布艺'
-      )
-
-      this.brandList = this.brandList.map((item, index) => {
-        item.goods = data[index]
-        return item
-      })
+      console.log(data)
+      this.brandList = data.brandList
     },
   },
 

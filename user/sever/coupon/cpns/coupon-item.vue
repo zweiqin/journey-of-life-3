@@ -27,6 +27,11 @@
         >
           立即使用
         </button>
+
+        <view class="watermark">
+          <image v-if="data.status === 1" src="../../../../static/images/user/coupon/used.png" mode="" />
+          <image v-if="data.status === 2" src="../../../../static/images/user/coupon/timeout.png" mode="" />
+        </view>
       </view>
     </view>
   </view>
@@ -53,6 +58,7 @@ export default {
 
 <style lang="less" scoped>
 .coupon-item-container {
+  position: relative;
   background-color: #ffc117;
   height: 188upx;
   border-radius: 24upx;
@@ -155,6 +161,17 @@ export default {
       font-size: 24upx;
       color: #fff;
       line-height: 48upx;
+    }
+  }
+
+  .watermark{
+    position: absolute;
+    right: 170upx;
+
+    image{
+      width: 104upx;
+      height: 104upx;
+      border-radius: 50%;
     }
   }
 }

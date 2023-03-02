@@ -24,13 +24,17 @@
         />
       </swiper-item>
     </swiper>
+
   </view>
 </template>
 
 <script>
 export default {
   props: {
-    height: Number,
+    height: {
+      type: Number,
+      default: 190
+    },
     radius: {
       type: Number,
       default: 10,
@@ -42,9 +46,9 @@ export default {
     list: {
       type: Array,
       default: () => [
-        "https://img0.baidu.com/it/u=138670212,3825563627&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=248",
-        "https://img0.baidu.com/it/u=906034522,1602987140&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=208",
-        "https://img2.baidu.com/it/u=3652009798,4006120259&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=479",
+        'https://img0.baidu.com/it/u=138670212,3825563627&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=248',
+        'https://img0.baidu.com/it/u=906034522,1602987140&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=208',
+        'https://img2.baidu.com/it/u=3652009798,4006120259&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=479',
       ],
     },
     indicationPoint: {
@@ -55,10 +59,10 @@ export default {
 
   methods: {
     handleChange(e) {
-      this.$emit("change", e.detail.current);
+      this.$emit('change', e.detail.current)
     },
-  }
-};
+  },
+}
 </script>
 
 <style lang="less" scoped>

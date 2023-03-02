@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       couponStatusList: Object.freeze(couponStatusList),
-      currentStatus: 3,
+      currentStatus: 0,
       // 可领取优惠劵
       availableCouponQuery: {
         page: 1,

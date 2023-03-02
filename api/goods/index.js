@@ -115,3 +115,13 @@ export const getUserSearchHistoryApi = data => {
 export const clearSearchSearchHistoryApi = data => {
   return shopRequest('/search/clearhistory', data)
 }
+
+// 查看会员价
+export const watchVipPriceApi = data => {
+  return shopRequest('/goods/getGoodsVipPrice', data, 'get')
+}
+
+// 查询当前可用优惠劵
+export const getCanUseCouponListApi = data => {
+  return shopRequest('/coupon/selectlist', data, 'get')
+}

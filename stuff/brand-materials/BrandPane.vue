@@ -1,15 +1,15 @@
 <template>
-  <view
-    class="brand-pane-container"
-    v-if="data && data.goodsList.length && data.brand.brandgenre == 23"
-  >
-    <Carousel :height="150" :list="data.brand.picUrls"></Carousel>
+  <view class="brand-pane-container" v-if="data && data.goodsList.length">
+    <Carousel
+      :list="
+        data.brand.picUrls.length ? data.brand.picUrls : [data.brand.picUrl]
+      "
+    ></Carousel>
     <view
       class="brand-info"
-      @click="
-        go(`/pages/index-copy-2/brandFactory/detail?brandId=${data.brand.id}`)
-      "
+      @click="go(`/stuff/brand-detail/brand-detail?brandId=${data.brand.id}`)"
     >
+    <!-- <view class="brand-info"> -->
       <image
         v-if="data.brand.picUrl"
         class="brand-avatar"
@@ -35,7 +35,7 @@
             <view class="img-wrapper">
               <image
                 class="icon"
-                src="../../../static/images/new-brand/index/shiming.png"
+                src="../../static/images/new-brand/index/shiming.png"
                 mode=""
               />
             </view>
@@ -46,7 +46,7 @@
             <view class="img-wrapper">
               <image
                 class="icon"
-                src="../../../static/images/new-brand/index/shiming.png"
+                src="../../static/images/new-brand/index/shiming.png"
                 mode=""
               />
             </view>
@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import Carousel from '../../../components/carousel/index'
-import { randomRGB } from '../../../utils'
+import Carousel from '../../components/carousel'
+import { randomRGB } from '../../utils'
 export default {
   components: {
     Carousel,
@@ -82,12 +82,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-/deep/ .brand-pane-container {
-  /deep/ .banner {
-    border-radius: 24upx 24upx 0 0 !important;
-    margin-top: 0 !important;
-    height: 380upx !important;
-  }
+/deep/ .banner {
+  border-radius: 24upx 24upx 0 0 !important;
+  margin-top: 0 !important;
 }
 
 /deep/ .uni-swiper-dot {

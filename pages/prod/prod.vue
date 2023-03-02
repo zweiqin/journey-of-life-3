@@ -84,8 +84,18 @@
     <view class="pane goods-info">
       <view class="detail-price">
         ￥
-        <text class="price-text">{{ goodsDetail.info.counterPrice }}</text>
+        <text class="price-text"
+          ><text :class="{ normalPrice: vipPrice }">{{
+            goodsDetail.info.counterPrice
+          }}</text>
+          <text v-show="vipPrice">{{ vipPrice }}</text>
+        </text>
+
         起
+
+        <text class="watch-vip-price" @click="handleWatchVipPrice"
+          >{{ vipPrice ? '隐藏' : '查看' }}会员价</text
+        >
       </view>
 
       <view class="goods-name">{{ goodsDetail.info.name }}</view>
@@ -274,7 +284,7 @@ import Carousel from '../../components/carousel'
 import { subInfoConfig, goodsInfoConfig } from './config'
 import uParse from '../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
-import { PAY_GOODS, USER_ID } from '../../constant'
+import { PAY_GOODS, USER_ID, USER_INFO } from '../../constant'
 import RecommendGoods from '../../components/recommend-goods'
 
 import {
@@ -284,6 +294,7 @@ import {
   addShopCarApi,
   getCarShopNumberApi,
   goodsListApi,
+  watchVipPriceApi,
 } from '../../api/goods'
 import { getUserId } from '../../utils'
 
@@ -316,6 +327,7 @@ export default {
         spsStr: '',
       },
       isShowBrand: false,
+      vipPrice: null,
     }
   },
   onLoad(options) {
@@ -589,6 +601,56 @@ export default {
         this.showSpecification = false
       }
     },
+
+    // 查看会员价
+    handleWatchVipPrice() {
+      const userInfo = uni.getStorageSync(USER_INFO)
+
+      console.log(userInfo.userLevel)
+
+      if (!userInfo || !this.userId) {
+        uni.showModal({
+          title: '提示',
+          content: '登录后方可查看',
+          success: ({ confirm }) => {
+            if (confirm) {
+              uni.navigateTo({
+                url: '/pages/login/login',
+              })
+            }
+          },
+        })
+        return
+      }
+
+      if (userInfo.userLevel == 5 && !userInfo.isRegionAgent) {
+        uni.showModal({
+          title: '提示',
+          content: '你还不是会员，是否去升级？',
+          success: ({ confirm }) => {
+            if (confirm) {
+              uni.navigateTo({
+                url: '/user/sever/userUp/partner-appay',
+              })
+            }
+          },
+        })
+
+        return
+      }
+
+      const _this = this
+
+      if (this.vipPrice) {
+        this.vipPrice = null
+      } else {
+        watchVipPriceApi({
+          id: this.goodsId,
+        }).then(({ data }) => {
+          _this.vipPrice = data
+        })
+      }
+    },
   },
 
   watch: {
@@ -671,6 +733,11 @@ export default {
   img {
     display: block;
   }
+}
+
+.watch-vip-price {
+  margin-left: 20upx;
+  color: #3d3d3d;
 }
 
 .pane {
@@ -782,6 +849,12 @@ export default {
       font-weight: bold;
       font-size: 48upx;
       margin: 0 4upx;
+    }
+
+    .normalPrice {
+      color: #3d3d3d;
+      font-size: 28upx;
+      text-decoration: line-through;
     }
   }
 

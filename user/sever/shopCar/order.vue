@@ -30,6 +30,14 @@
         >
       </view>
 
+      <view class="coupon-container" @click="couponPopupVisible = true">
+        <text class="title">优惠劵</text>
+        <view class="choose-coupon">
+          <text v-if="couponPrice">-{{ couponPrice }}</text>
+          <tui-icon name="arrowright" :size="20"></tui-icon>
+        </view>
+      </view>
+
       <view class="goods-container">
         <view
           class="goods-info"
@@ -61,8 +69,10 @@
         </view>
       </view>
 
-
-      <RecommendGoods v-if="goodsInfo && goodsInfo.length" :id="goodsInfo[0].id"></RecommendGoods>
+      <RecommendGoods
+        v-if="goodsInfo && goodsInfo.length"
+        :id="goodsInfo[0].id"
+      ></RecommendGoods>
     </view>
 
     <view class="footer">
@@ -71,6 +81,12 @@
       >
       <button class="uni-btn" @click="handleToPay">去支付</button>
     </view>
+
+    <CouponPopup
+      @confirm="handleChooseCoupon"
+      v-model="couponPopupVisible"
+      :cartId="0"
+    ></CouponPopup>
   </view>
 </template>
 
@@ -87,13 +103,16 @@ import RecommendGoods from '../../../components/recommend-goods/index.vue'
 
 export default {
   components: {
-    RecommendGoods
+    RecommendGoods,
   },
   data() {
     return {
       defaultAddress: null,
       goodsInfo: null,
       actualPrice: 0,
+      couponPopupVisible: false,
+      couponId: -1,
+      couponPrice: 0,
     }
   },
   onShow() {
@@ -119,11 +138,13 @@ export default {
         userId: getUserId(),
         cartId: 0,
         addressId: this.defaultAddress.id,
+        couponId: this.couponId,
         useVoucher: 0,
       }).then(({ data }) => {
         console.log(data)
         this.goodsInfo = data.brandCartgoods
         this.actualPrice = data.actualPrice
+        this.couponPrice = data.couponPrice
       })
     },
 
@@ -149,7 +170,7 @@ export default {
         // cartId: this.cartId,
         cartId: 0,
         addressId: this.defaultAddress.id,
-        couponId: 0,
+        couponId: this.couponId,
         useVoucher: false,
         grouponRulesId: '',
         grouponLinkId: '',
@@ -163,6 +184,11 @@ export default {
           payType: 1,
         }).then(res => payFn(res.data))
       })
+    },
+
+    handleChooseCoupon(couponInfo) {
+      this.couponId = couponInfo.id
+      this.getData()
     },
   },
 
@@ -181,8 +207,6 @@ export default {
         this.shopCarInfo.brandCartgoods.forEach(item => {
           item.cartList.filter(item => item.checked)
         })
-
-        console.log(this.shopCarInfo)
         return this.shopCarInfo
       }
     },
@@ -192,7 +216,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../style/mixin.less';
-/deep/ .recommend-goods-container{
+/deep/ .recommend-goods-container {
   padding: 0 !important;
 }
 .order-container {
@@ -273,6 +297,23 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: column;
+      }
+    }
+  }
+
+  .coupon-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30upx;
+    box-sizing: border-box;
+
+    .choose-coupon{
+      display: flex;
+      align-items: center;
+
+      /deep/ .tui-icon{
+        margin-top: 4upx !important;
       }
     }
   }

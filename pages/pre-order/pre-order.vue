@@ -51,6 +51,14 @@
         <view class="title">运费：</view>
         <view class="value">￥{{ calcOrderMsg.freightPrice }}</view>
       </view>
+
+      <view class="line" @click="handleChooseCoupon">
+        <view class="title">优惠劵：</view>
+        <text class="coupon-wrapper">
+          <text v-if="couponPrice">-{{ couponPrice }}</text>
+          <tui-icon name="arrowright" :size="20"></tui-icon>
+        </text>
+      </view>
     </view>
 
     <view class="prder-cost container" v-if="calcOrderMsg">
@@ -69,73 +77,82 @@
       合计：<text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text>
       <button class="uni-btn" @click="handleToPay">提交订单</button>
     </view>
+
+    <CouponPopup
+      @confirm="handleConfirmChooseCoupon"
+      :cartId="cartId"
+      v-model="couponPopupVisible"
+    ></CouponPopup>
   </view>
 </template>
 
 <script>
-import { getAddressListApi } from "../../api/address";
-import { firstAddCar, submitOrderApi, payOrderGoodsApi } from "../../api/goods";
-import { getUserId } from "../../utils";
-import { payShopCarApi } from "../../api/cart";
-import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from "../../constant";
+import { getAddressListApi } from '../../api/address'
+import { firstAddCar, submitOrderApi, payOrderGoodsApi } from '../../api/goods'
+import { getUserId } from '../../utils'
+import { payShopCarApi } from '../../api/cart'
+import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from '../../constant'
 export default {
   onLoad() {
-    this.getAddressList();
-    this.getOrderInfo();
+    this.getAddressList()
+    this.getOrderInfo()
   },
 
   onShow() {
-    this.getAddressList();
-    if(uni.getStorageSync(TUAN_ORDER_SN)){
+    this.getAddressList()
+    if (uni.getStorageSync(TUAN_ORDER_SN)) {
       uni.redirectTo({
-         url: '/user/orderForm/order-form?type=1'
-      });
+        url: '/user/orderForm/order-form?type=1',
+      })
     }
   },
 
   data() {
     return {
-      defaultAddress: "", // 收货地址
+      defaultAddress: '', // 收货地址
       orderInfo: null, // 订单相关信息
-      cartId: "", // 购物车id
+      cartId: '', // 购物车id
       opForm: {
-        message: "",
+        message: '',
         useVoucher: false,
       },
       calcOrderMsg: null, // 计算现在的费用
-    };
+      couponPopupVisible: false,
+      couponId: -1, // 优惠劵id
+      couponPrice: null,
+      couponPrice: 0,
+    }
   },
 
   methods: {
     // 获取地址
     getAddressList() {
-      const address = uni.getStorageSync(SELECT_ADDRESS);
-      console.log("有", address);
+      const address = uni.getStorageSync(SELECT_ADDRESS)
+      console.log('有', address)
       if (address) {
-        this.defaultAddress = address;
-        return;
+        this.defaultAddress = address
+        return
       }
       getAddressListApi({
         userId: getUserId(),
       }).then(({ data }) => {
-        console.log(data);
-        const _this = this;
-        data.forEach((address) => {
+        console.log(data)
+        const _this = this
+        data.forEach(address => {
           if (address.isDefault) {
-            _this.defaultAddress = address;
+            _this.defaultAddress = address
           }
-        });
+        })
         if (!this.defaultAddress) {
-          this.defaultAddress = data[0];
+          this.defaultAddress = data[0]
         }
-      });
+      })
     },
 
     // 获取订单信息
     getOrderInfo() {
-      this.orderInfo = uni.getStorageSync(PAY_GOODS);
-      console.log('1111111111', this.orderInfo);
-      this.getCardId();
+      this.orderInfo = uni.getStorageSync(PAY_GOODS)
+      this.getCardId()
     },
 
     // 计算订单费用
@@ -146,85 +163,95 @@ export default {
         productId: this.orderInfo.selectedProduct.product.id,
         number: this.orderInfo.number,
         useVoucher: this.isUserVoucher,
-      };
+      }
 
-      const res = await firstAddCar(data);
+      const res = await firstAddCar(data)
 
       if (res.errno === 0) {
-        this.cartId = res.data;
-        this.calcOrderCost();
+        this.cartId = res.data
+        this.calcOrderCost()
       } else {
         uni.showToast({
           title: res.errmsg,
           duration: 2000,
-          icon: "none",
-        });
+          icon: 'none',
+        })
       }
     },
 
     // 计算订单费用
     calcOrderCost() {
-      uni.showLoading();
-      const _this = this;
+      uni.showLoading()
+      const _this = this
       const data = {
         // addressId: this.defaultAddress.id,
         brandId: this.orderInfo.info.brandId,
         cartId: this.cartId,
         userId: getUserId(),
-        couponId: 0,
-        grouponRulesId: "",
+        couponId: this.couponId,
+        grouponRulesId: '',
         useVoucher: this.opForm.useVoucher,
-      };
+      }
       payShopCarApi(data).then(({ data }) => {
-        _this.calcOrderMsg = data;
-        uni.hideLoading();
-      });
+        _this.calcOrderMsg = data
+        uni.hideLoading()
+      })
     },
 
     // 提交订单支付
     handleToPay() {
       if (!this.defaultAddress || !this.defaultAddress.id) {
-        this.$showToast("请选择地址");
-        return;
+        this.$showToast('请选择地址')
+        return
       }
 
-      const _this = this;
+      const _this = this
       const submitData = {
         userId: getUserId(),
         cartId: this.cartId,
         addressId: _this.defaultAddress.id,
-        couponId: 0,
-        grouponRulesId: "",
-        grouponLinkId: "",
+        couponId: this.couponId,
+        grouponRulesId: '',
+        grouponLinkId: '',
         brandId: _this.orderInfo.brandId,
         ..._this.opForm,
-      };
+      }
       submitOrderApi(submitData).then(({ data }) => {
         uni.setStorageSync(TUAN_ORDER_SN, data.orderSn)
         payOrderGoodsApi({
           orderNo: data.orderSn,
           userId: getUserId(),
           payType: 1,
-        }).then((res) => {
-          const payData = JSON.parse(res.data.h5PayUrl);
-          const form = document.createElement("form");
-          form.setAttribute("action", payData.url);
-          form.setAttribute("method", "POST");
-          const data = JSON.parse(payData.data);
-          let input;
+        }).then(res => {
+          const payData = JSON.parse(res.data.h5PayUrl)
+          const form = document.createElement('form')
+          form.setAttribute('action', payData.url)
+          form.setAttribute('method', 'POST')
+          const data = JSON.parse(payData.data)
+          let input
           for (const key in data) {
-            input = document.createElement("input");
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
+            input = document.createElement('input')
+            input.name = key
+            input.value = data[key]
+            form.appendChild(input)
           }
-          
 
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-        });
-      });
+          document.body.appendChild(form)
+          form.submit()
+          document.body.removeChild(form)
+        })
+      })
+    },
+
+    // 选择订单
+    handleChooseCoupon() {
+      this.couponPopupVisible = !this.couponPopupVisible
+    },
+
+    handleConfirmChooseCoupon(couponInfo) {
+      this.couponId = couponInfo.id
+      this.couponPrice = couponInfo.price
+      this.calcOrderCost()
     },
   },
 
@@ -232,11 +259,13 @@ export default {
     // 商品总金额
     sumGoodsPrice() {
       if (this.orderInfo) {
-        return this.orderInfo.number * this.orderInfo.selectedProduct.product.price;
+        return (
+          this.orderInfo.number * this.orderInfo.selectedProduct.product.price
+        )
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -279,6 +308,16 @@ export default {
 
     .address-text {
       margin-left: 20upx;
+    }
+  }
+
+  .coupon-wrapper {
+    display: flex;
+    align-items: center;
+    color: #ef5452;
+
+    /deep/ .tui-icon {
+      vertical-align: text-top !important;
     }
   }
 

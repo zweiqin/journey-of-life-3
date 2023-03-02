@@ -16,7 +16,7 @@
             v-for="item in menus"
             :key="item.id"
           >
-            {{ item.name }}</view
+            {{ item.materialCityName }}</view
           >
         </view>
       </scroll-view>
@@ -26,10 +26,7 @@
       {{ currentCompany }}
     </view>
 
-
-    <view class="goods-title">
-      · 商户推荐 ·
-    </view>
+    <view class="goods-title"> · 商户推荐 · </view>
 
     <view class="goods-list">
       <StuffGoods
@@ -47,6 +44,7 @@
 import Search from '../cpns/Search'
 import StuffGoods from '../../pages/stuff/cpns/StuffGoods'
 import { goodsListApi } from '../../api/goods'
+import { getStuffBrandListApi } from '../../api/brand'
 import { menus } from './data'
 
 export default {
@@ -58,7 +56,7 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      currentMenu: 0,
+      currentMenu: 1,
       goodsList: [],
       query: {
         goodsType: 2,
@@ -69,13 +67,14 @@ export default {
       },
       totalPages: 0,
       status: 'none',
-      menus: Object.freeze(menus),
+      menus: [],
       currentCompany: '亚洲国际材料城',
     }
   },
 
   mounted() {
     this.getGoodsList()
+    this.getStuffBrandList()
   },
 
   methods: {
@@ -109,6 +108,16 @@ export default {
     handleSearch(serachValue) {
       this.query.keyword = serachValue
       this.getGoodsList()
+    },
+
+    // 获取材料成数据
+    async getStuffBrandList() {
+      const { data } = await getStuffBrandListApi({
+        page: 1,
+        limit: 100,
+      })
+
+      this.menus = data.items
     },
   },
 
@@ -200,7 +209,7 @@ export default {
   font-weight: bold;
 }
 
-.goods-title{
+.goods-title {
   text-align: center;
   line-height: 60upx;
   font-size: 34upx;
