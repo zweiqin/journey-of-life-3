@@ -33,7 +33,7 @@ export default {
   props: {
     height: {
       type: Number,
-      default: 190
+      default: 150
     },
     radius: {
       type: Number,

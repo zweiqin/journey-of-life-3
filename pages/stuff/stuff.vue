@@ -19,7 +19,7 @@
       ></Carousel>
 
       <view class="goods-wrapper">
-        <view class="title">· 品牌材料企业推荐 ·</view>
+        <!-- <view class="title">· 品牌材料企业推荐 ·</view>
         <view class="goods-container">
           <StuffGoods
             v-for="item in goodsList"
@@ -30,7 +30,15 @@
             v-show="status !== 'none'"
             :status="status"
           ></LoadingMore>
-        </view>
+        </view> -->
+
+        <BrandPane
+          v-for="item in brandList"
+          :key="item.brand.id"
+          :data="item"
+        ></BrandPane>
+
+        <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
       </view>
     </view>
   </view>
@@ -43,6 +51,8 @@ import Pane from './cpns/Pane'
 import Carousel from '../../components/carousel'
 import StuffGoods from './cpns/StuffGoods'
 import { goodsListApi } from '../../api/goods'
+import BrandPane from '../../stuff/brand-materials/BrandPane.vue'
+import { getBrandListBySelectApi } from '../../api/brand'
 
 export default {
   components: {
@@ -51,6 +61,7 @@ export default {
     Pane,
     Carousel,
     StuffGoods,
+    BrandPane,
   },
 
   data() {
@@ -60,15 +71,23 @@ export default {
         goodsType: 2,
         page: 1,
         size: 20,
-        categoryId: 100101502
+        categoryId: 100101502,
       },
       totalPages: 0,
       status: 'none',
+
+      brandList: [],
+      brandQuery: {
+        page: 1,
+        limit: 20,
+      },
+      totalBrandPages: 0,
     }
   },
 
   onLoad() {
     this.getGoodsList()
+    this.getBrandListBySelect()
   },
 
   methods: {
@@ -84,22 +103,49 @@ export default {
 
       this.status = 'none'
     },
+
+    async getBrandListBySelect(isLoadMore) {
+      const { data } = await getBrandListBySelectApi({
+        ...this.brandQuery,
+        labelId: 2,
+      })
+      console.log(data)
+      if (isLoadMore) {
+        this.brandList.push(...data.brandList)
+      } else {
+        this.brandList = data.brandList
+      }
+      this.totalBrandPages = data.totalPages
+    },
   },
 
-  onReachBottom(){
-    if(this.query.page >= this.totalPages){
+  onReachBottom() {
+    // if (this.query.page >= this.totalPages) {
+    //   this.status = 'no-more'
+    //   return
+    // }
+
+    // if (this.query.size > this.goodsList.length) {
+    //   this.status = 'none'
+    //   return
+    // }
+
+    // this.query.page++
+    // this.getGoodsList(true)
+
+    if (this.brandQuery.page >= this.totalBrandPages) {
       this.status = 'no-more'
       return
     }
 
-    if(this.query.size > this.goodsList.length){
+    if (this.brandQuery.limit > this.brandList.length) {
       this.status = 'none'
       return
     }
 
-    this.query.page++
-    this.getGoodsList(true)
-  }
+    this.brandQuery.page++
+    this.getBrandListBySelect(true)
+  },
 }
 </script>
 
@@ -141,6 +187,7 @@ export default {
     }
 
     .goods-wrapper {
+      margin-top: 30upx;
       .title {
         margin: 30upx 0 24upx 0;
         color: #141000;

@@ -145,14 +145,13 @@ export const topMenu = [
     url: '/stuff/brand-materials/brand-materials',
   },
   {
-    label: '材料严选',
-    url: '/stuff/strict-materials/strict-materials',
-  },
-  {
     label: '材料市场',
     url: '/stuff/material-market/material-market',
   },
-
+  {
+    label: '材料严选',
+    url: '/stuff/strict-materials/strict-materials',
+  },
   {
     label: '新材料',
     url: '/stuff/new-materials/new-materials',

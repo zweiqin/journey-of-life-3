@@ -164,6 +164,10 @@ export default {
     box-sizing: border-box;
     background-color: #fff;
 
+    .swiper{
+      height: 174upx;
+    }
+
     .swiper-item {
       height: 400upx;
       overflow-y: scroll;

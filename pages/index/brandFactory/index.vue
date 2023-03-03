@@ -54,6 +54,7 @@ export default {
       queryInfo: {
         page: 1,
         limt: 10,
+				labelId: 1
       },
     }
   },

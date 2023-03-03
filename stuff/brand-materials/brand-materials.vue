@@ -72,6 +72,8 @@
         :key="item.brand.id"
         :data="item"
       ></BrandPane>
+
+      <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
     </view>
   </view>
 </template>
@@ -98,11 +100,13 @@ export default {
         limit: 20,
         brandgenreId: '',
       },
+      status: 'none',
+      totalBrandPages: 0,
     }
   },
 
   onLoad() {
-    this.getBrandList()
+    this.getBrandListBySelect()
   },
 
   methods: {
@@ -111,18 +115,38 @@ export default {
     },
     getRandom,
 
-    async getBrandList() {
+    async getBrandListBySelect(isLoadMore) {
       const { data } = await getBrandListBySelectApi({
         ...this.query,
         labelId: 2,
       })
       console.log(data)
-      this.brandList = data.brandList
+      if (isLoadMore) {
+        this.brandList.push(...data.brandList)
+      } else {
+        this.brandList = data.brandList
+      }
+      this.totalBrandPages = data.totalPages
     },
   },
 
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
+  },
+
+  onReachBottom() {
+    if (this.query.page >= this.totalBrandPages) {
+      this.status = 'no-more'
+      return
+    }
+
+    if (this.query.limit > this.brandList.length) {
+      this.status = 'none'
+      return
+    }
+
+    this.query.page++
+    this.getBrandListBySelect(true)
   },
 }
 </script>
