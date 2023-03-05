@@ -55,8 +55,8 @@
         </view>
 
         <view class="rate">
-          <view class="item">2.8k人访问</view>
-          <view class="item">2.8k人关注</view>
+        <view class="item">{{ data.brand.trafficVolume || 0 }}人访问</view>
+          <view class="item">{{ data.brand.collectVolume || 0 }}人关注</view>
         </view>
       </view>
     </view>

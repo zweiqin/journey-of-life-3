@@ -38,7 +38,7 @@
         <view class="text"
           ><text class="text-price">￥{{ data.counterPrice }}</text></view
         >
-        <view class="salsed">100+付款</view>
+        <view class="salsed">{{ data.trafficVolume || 0 }}人浏览</view>
       </view>
     </view>
   </view>

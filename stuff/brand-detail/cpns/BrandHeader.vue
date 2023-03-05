@@ -61,7 +61,7 @@
           />
         </view>
 
-        <text>3.4k人已订阅</text>
+        <text>{{ brand.collectVolume || 0 }}人已订阅</text>
       </view>
     </view>
 

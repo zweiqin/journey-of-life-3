@@ -50,7 +50,7 @@
                   <text>{{ goods.counterPrice }}</text>
                 </view>
 
-                <text>100+付款</text>
+                <!-- <text>100+付款</text> -->
               </view>
             </view>
           </navigator>

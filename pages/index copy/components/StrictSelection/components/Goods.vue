@@ -20,7 +20,8 @@
         </view>
 
         <view class="right">
-          <view>1000+付款</view>
+        <view class="salsed">{{ data.trafficVolume || 0 }}人浏览</view>
+
         </view>
       </view>
     </view>

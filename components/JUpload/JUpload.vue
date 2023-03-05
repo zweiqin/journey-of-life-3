@@ -47,10 +47,6 @@ export default {
             url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
             filePath: chooseImageRes.tempFiles[0].path,
             name: "file",
-            formData:{
-              'token':USER_TOKEN,
-              'userId':getUserId()
-            },
             success: (uploadFileRes) => {
               _this.$emit("upload", JSON.parse(uploadFileRes.data).data.url);
             },

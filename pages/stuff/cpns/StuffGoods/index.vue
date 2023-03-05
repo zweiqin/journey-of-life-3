@@ -36,15 +36,9 @@
       </view>
 
       <view class="brand-info">
-        <image
-          class="avatar"
-          :src="data.brandPicUrl"
-          mode=""
-        />
+        <image class="avatar" :src="data.brandPicUrl" mode="" />
 
-        <view class="brand-name"
-          >{{ data.brandName }}</view
-        >
+        <view class="brand-name">{{ data.brandName }}</view>
       </view>
 
       <view class="rate-info">
@@ -54,7 +48,7 @@
             src="../../../../static/images/new-brand/index/collection.png"
             mode=""
           />
-          <text>9872837</text>
+          <text>{{ data.collectVolume || 0 }}</text>
         </view>
 
         <view class="collection-wrapper">
@@ -63,7 +57,7 @@
             src="../../../../static/images/new-brand/index/zan.png"
             mode=""
           />
-          <text>9872837</text>
+          <text>{{ data.clickVolume || 0 }}</text>
         </view>
       </view>
     </view>
