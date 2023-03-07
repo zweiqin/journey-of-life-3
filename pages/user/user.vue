@@ -31,14 +31,14 @@
           <view class="slot-wrapper"> <text id="user-coupon">0</text> 张 </view>
         </view>
       </UserPane>
-      <!-- <UserPane
+      <UserPane
         v-if="[6, 7, 1].includes(userLevel)"
         @click="handleToPage"
         isGrid
         class="section"
         :data="vipEquity"
       >
-      </UserPane> -->
+      </UserPane>
       <UserPane
         @click="handleToPage"
         isGrid

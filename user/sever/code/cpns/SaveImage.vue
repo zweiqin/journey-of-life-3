@@ -49,7 +49,9 @@
               ></l-painter-image>
             </l-painter-view>
 
-            <l-painter-view css="width: 160rpx;textAlign:center;marginLeft:48rpx">
+            <l-painter-view
+              css="width: 160rpx;textAlign:center;marginLeft:48rpx"
+            >
               <l-painter-image
                 :src="code"
                 css="width: 160rpx;

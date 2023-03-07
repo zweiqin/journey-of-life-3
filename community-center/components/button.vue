@@ -18,6 +18,8 @@ export default {
     type: {
       type: String,
     },
+
+    bgc: String
   },
 };
 </script>

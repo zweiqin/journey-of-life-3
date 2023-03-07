@@ -19,22 +19,26 @@ export default {
     },
 
     redirect: String,
+    tabbar: String,
   },
   methods: {
     back() {
       if (this.redirect) {
         uni.switchTab({
           url: this.redirect,
-        });
+        })
 
-        return;
+        return
+      } else if (this.tabbar) {
+        uni.switchTab({
+          url: this.tabbar,
+        })
+      } else {
+        uni.navigateBack()
       }
-
-      uni.navigateBack();
-      // uni.switchTab({ url: "/pages/community-center/community-centerr" });
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

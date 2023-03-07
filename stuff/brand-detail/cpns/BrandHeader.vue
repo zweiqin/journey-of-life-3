@@ -1,7 +1,12 @@
 <template>
   <view class="brand-header-container" v-if="brand">
     <view class="op-container" :class="{ fixed: scrollTop > 200 }">
-      <tui-icon @click="handleBack" name="arrowleft" color="#fff"></tui-icon>
+      <tui-icon
+        class="back"
+        @click="handleBack"
+        name="arrowleft"
+        color="#fff"
+      ></tui-icon>
       <view class="search-container">
         <image
           class="search-icon"
@@ -19,6 +24,14 @@
       </view>
       <view class="home" @click="handleToIndex">
         <image src="../../../static/images/new-brand/detail/home.png" mode="" />
+      </view>
+
+      <view class="follow-wrapper">
+        <image
+          class="follow-icon"
+          src="../../../static/images/new-brand/detail/follow.png"
+          mode=""
+        />
       </view>
     </view>
 
@@ -52,16 +65,9 @@
         </view>
       </view>
 
-      <view class="follow">
-        <view class="follow-wrapper">
-          <image
-            class="follow-icon"
-            src="../../../static/images/new-brand/detail/follow.png"
-            mode=""
-          />
-        </view>
-
-        <text>{{ brand.collectVolume || 0 }}人已订阅</text>
+      <view class="numbers">
+        <text>{{ brand.collectVolume || 0 }}人关注</text>
+        <text>{{ brand.clickVolume || 0 }}人点击</text>
       </view>
     </view>
 
@@ -116,7 +122,6 @@ export default {
 <style lang="less" scoped>
 .brand-header-container {
   position: relative;
-  position: relative;
 
   &::after {
     content: '';
@@ -151,6 +156,11 @@ export default {
       background-color: #565656a0;
     }
 
+    .back {
+      position: relative;
+      z-index: 10000;
+    }
+
     .home {
       display: flex;
       align-items: center;
@@ -166,13 +176,30 @@ export default {
       }
     }
 
+    .follow-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72upx;
+      height: 72upx;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: #ffc117;
+      margin-left: 24upx;
+
+      .follow-icon {
+        width: 40upx;
+        height: 40upx;
+      }
+    }
+
     .search-container {
       display: flex;
       align-items: center;
       flex: 1;
       height: 72upx;
       border-radius: 100px;
-      background: #f5f5f4;
+      background: rgba(245, 245, 244, 0.8);
       padding: 20upx 24upx;
       box-sizing: border-box;
       margin: 0 32upx;
@@ -194,7 +221,7 @@ export default {
 
   .brand-info-detail {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     position: absolute;
     bottom: 0;
@@ -293,38 +320,40 @@ export default {
       }
     }
 
-    .follow {
+    .numbers {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      .follow-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 72upx;
-        height: 72upx;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.2);
 
-        .follow-icon {
-          width: 40upx;
-          height: 40upx;
-        }
-      }
       text {
+        position: relative;
         font-size: 24upx;
         color: #fff;
-        font-weight: bold;
-        margin-top: 8upx;
+
+        &:nth-child(1) {
+          padding-bottom: 12upx;
+          margin-bottom: 12upx;
+
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 46upx;
+            height: 1upx;
+            background-color: #dfdfdf;
+            right: 0;
+            bottom: 0;
+          }
+        }
       }
     }
   }
 
   .brand-bg {
     width: 100%;
-    height: 336upx;
+    height: 280upx;
     object-fit: cover;
+    filter: blur(4px);
   }
 }
 </style>

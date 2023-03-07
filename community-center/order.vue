@@ -1,6 +1,6 @@
 <template>
   <view class="order-page">
-    <Header title="社区订单" style="background: #FFFFFF;"></Header>
+    <Header tabbar="/pages/user/user" title="社区订单" style="background: #FFFFFF;"></Header>
     <!-- 搜索 -->
     <SearchBar
       @input="search"

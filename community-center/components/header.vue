@@ -25,24 +25,31 @@ export default {
 
     bgc: {
       type: String,
-      default: "#0090ff",
+      default: '#0090ff',
     },
 
     redirect: String,
+    tabbar: String,
   },
   methods: {
     back() {
+      console.log(this.tabbar)
       if (this.redirect) {
         uni.switchTab({
           url: this.redirect,
-        });
+        })
 
-        return;
+        return
+      } else if (this.tabbar) {
+        uni.switchTab({
+          url: this.tabbar,
+        })
+      } else {
+        uni.navigateBack()
       }
-      uni.navigateBack();
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

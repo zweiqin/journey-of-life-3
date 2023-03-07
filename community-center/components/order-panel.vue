@@ -10,6 +10,16 @@
         <view class="base">
           <text class="text">{{ data.consigneeName }}</text>
           <text class="text">{{ data.consigneeMobile }}</text>
+
+          <view class="edit" @click.stop="toEdit">
+            <image
+              v-if="data.status <= 2"
+              src="../../static/images/con-center/edit.png"
+              mode="scaleToFill"
+              class="icon"
+            ></image>
+            <text>修改订单</text>
+          </view>
         </view>
         <view class="address-list">
           <text class="name">上门地址:</text>
@@ -19,12 +29,6 @@
         </view>
       </view>
       <!-- <img class="icon" :src="receiveBase64Source" alt="" /> -->
-      <!-- <image 
-      src="../../static/images/con-center/edit.png" 
-      mode="scaleToFill" 
-      class="icon"
-      @click.stop="toEdit"
-      /> -->
     </view>
 
     <view class="bts" v-if="data.status <= 6">
@@ -85,8 +89,8 @@
 </template>
 
 <script>
-import CancelOrderPopup from "./CancelOrderPopup.vue";
-import { receiveBase64Source, mapStatus } from "../config";
+import CancelOrderPopup from './CancelOrderPopup.vue'
+import { receiveBase64Source, mapStatus } from '../config'
 
 export default {
   components: {
@@ -103,7 +107,7 @@ export default {
       receiveBase64Source,
       buttons: [],
       showCancel: false,
-    };
+    }
   },
   methods: {
     /**
@@ -116,52 +120,52 @@ export default {
      */
     //编辑
     toEdit() {
-      const _this = this;
+      const _this = this
       let url =
         this.data.deliveryType === 4
-          ? "/community-center/repair"
-          : "/community-center/delivery-install";
+          ? '/community-center/repair'
+          : '/community-center/delivery-install'
       uni.navigateTo({
-        url: url + "?orderNo=" + _this.data.orderNo,
-      });
+        url: url + '?orderNo=' + _this.data.orderNo,
+      })
     },
 
     //订单详情
     toDetail() {
       uni.navigateTo({
         url: `/community-center/order-status?orderNo=${this.data.orderNo}`,
-      });
+      })
     },
 
     /**
      * @description 取消订单
      */
     async handleCancel() {
-      const _this = this;
+      const _this = this
       this.$refs.CancelOrderPopup.show({
         data: _this.data,
         onSuccess: () => {
-          _this.$emit("success");
+          _this.$emit('success')
         },
-      });
+      })
     },
 
     /**
      * @description
      */
     handlePay() {
-      console.log(this.data);
-      const _this = this;
+      console.log(this.data)
+      const _this = this
       uni.navigateTo({
         url:
-          "/community-center/pay?price=" +
+          '/community-center/pay?price=' +
           _this.data.actualPrice +
-          "&orderNo=" +
+          '&orderNo=' +
           _this.data.orderNo,
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -195,15 +199,28 @@ export default {
     align-items: center;
     padding: 28upx 0 48upx 0;
 
-    .icon {
-      width: 40upx;
-      height: 40upx;
+    .edit {
+      flex: 1;
+      text-align: right;
+
+      .icon {
+        width: 40upx;
+        height: 40upx;
+        vertical-align: bottom;
+        margin-right: 6upx;
+      }
+
+      text {
+        border-bottom: 1upx solid #ccc;
+      }
     }
 
     .info {
       color: #060606;
       font-size: 28upx;
       .base {
+        display: flex;
+        align-items: center;
         margin-bottom: 20upx;
 
         .text {

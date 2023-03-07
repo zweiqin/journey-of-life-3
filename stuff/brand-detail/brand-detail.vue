@@ -5,28 +5,56 @@
       :scrollTop="scrollTop"
       :brand="brandDetail"
     ></BrandHeader>
+
+    <view class="iamge-wrapper" v-if="brandDetail">
+      <image
+        class="advan-img"
+        :src="
+          brandDetail.logoUrl || '/static/bda77ab102ee8a0283c84462386a674.png'
+        "
+        mode="widthfix"
+      />
+    </view>
+
     <view class="main">
       <view class="menus">
         <view class="goods-menu">
-          <view
-            class="item"
-            :class="{ active: currentMenu === 0 }"
-            @click="handleSwitchTab(0)"
-            >全部商品</view
-          >
           <view
             class="item"
             :class="{ active: currentMenu === 1 }"
             @click="handleSwitchTab(1)"
             >简介</view
           >
+          <view
+            class="item"
+            :class="{ active: currentMenu === 0 }"
+            @click="handleSwitchTab(0)"
+            >全部商品</view
+          >
         </view>
 
-        <view class="filter-btn" @click="handleFilter">
+        <view
+          class="filter-btn"
+          v-show="currentMenu === 0"
+          @click="handleFilter"
+        >
           <text>筛选</text>
           <image
             class="filter-icon"
             src="../../static/images/new-brand/detail/filter.png"
+            mode=""
+          />
+        </view>
+
+        <view
+          class="filter-btn"
+          v-show="currentMenu === 1"
+          @click="handleShare"
+        >
+          <text>分享海报</text>
+          <image
+            class="filter-icon"
+            src="../../static/images/new-brand/detail/share.png"
             mode=""
           />
         </view>
@@ -67,7 +95,27 @@
     </view>
 
     <BrandOpBar @navigate="handleNavigate" @call="handleContact"></BrandOpBar>
-    <FilterPane @change="handleConfirm" :catalogList="catalogList" v-model="filterVisible"></FilterPane>
+    <FilterPane
+      @change="handleConfirm"
+      :catalogList="catalogList"
+      v-model="filterVisible"
+    ></FilterPane>
+
+    <!-- 分享海报 -->
+    <PosterPopup
+      :logo="brandDetail.picUrl"
+      :desc="brandDetail.desc"
+      ref="posterPopupRef"
+    ></PosterPopup>
+
+    <!-- 生成二维码 -->
+    <uqrcode
+      class="generate-code-container"
+      @complete="handleCompleteCode"
+      ref="uqrcode"
+      canvas-id="qrcode"
+      :value="qrcodeUrl + brandDetail.id"
+    ></uqrcode>
   </view>
 </template>
 
@@ -78,18 +126,21 @@ import BrandHeader from './cpns/BrandHeader.vue'
 import BrandGoods from './cpns/BrandGoods.vue'
 import BrandOpBar from './cpns/BrandOpBar.vue'
 import FilterPane from './cpns/FilterPane.vue'
+import PosterPopup from './cpns/PosterPopup.vue'
 import { getLngLatByAddress, navigationAddress } from '../../utils/localtion'
+
 export default {
   components: {
     BrandHeader,
     BrandGoods,
     BrandOpBar,
     FilterPane,
+    PosterPopup,
   },
 
   data() {
     return {
-      currentMenu: 0,
+      currentMenu: 1,
       brandDetail: null,
       timer: null,
       brandId: null,
@@ -103,7 +154,11 @@ export default {
       goodsList: [],
       scrollTop: 0,
       filterVisible: false,
-      catalogList: []
+      catalogList: [],
+      posterPopupVisible: false,
+      qrcodeUrl:
+        'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/stuff/brand-detail/brand-detail?brandId=',
+      shareCode: '',
     }
   },
 
@@ -125,12 +180,12 @@ export default {
       try {
         const { data } = await getBrandDetailApi({ id })
         this.brandDetail = data.brand
-        console.log(data)
       } catch (error) {
-        this.ttoast({
-          type: '该店铺不存在',
-          content: '即将跳转到材料网首页',
-          type: 'fail',
+        console.log(error)
+        uni.showToast({
+          title: '该店铺不存在',
+          duration: 2000,
+          icon: 'none',
         })
 
         this.timer = setTimeout(() => {
@@ -215,10 +270,42 @@ export default {
     },
 
     // 开始筛选
-    handleConfirm(query){
-      this.query = {...this.query, ...query}
+    handleConfirm(query) {
+      this.query = { ...this.query, ...query }
       this.getGoodsList()
-    }
+    },
+
+    // 点击分享海报
+    handleShare() {
+      uni.showLoading({
+        title: '海报生成中...',
+      })
+      const _this = this
+      this.$refs.uqrcode.make({
+        success: () => {
+          uni.hideLoading()
+          _this.$refs.posterPopupRef.show({
+            shareCode: this.shareCode,
+            logo: this.brandDetail.picUrl,
+            desc: this.brandDetail.desc,
+          })
+        },
+      })
+    },
+
+    // 完成
+    handleCompleteCode(e) {
+      const _this = this
+      if (e.success) {
+        this.$refs.uqrcode.toTempFilePath({
+          success: res => {
+            if (!_this.shareCode) {
+              _this.shareCode = res.tempFilePath
+            }
+          },
+        })
+      }
+    },
   },
 
   onReachBottom() {
@@ -247,7 +334,7 @@ export default {
   width: 100%;
   min-height: 100vh;
   background-color: #f1f1f0;
-  padding-bottom: 120upx;
+  padding-bottom: 140upx;
 
   .main {
     padding: 0 20upx;
@@ -257,7 +344,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 77upx;
+      margin-top: 20upx;
       margin-bottom: 38upx;
 
       .goods-menu {
@@ -320,7 +407,7 @@ export default {
     position: relative;
     display: flex;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 24upx;
     padding: 0 152upx;
 
@@ -357,7 +444,26 @@ export default {
     .filter-icon {
       width: 32upx;
       height: 32upx;
+      margin-left: 6upx;
     }
   }
+}
+
+.iamge-wrapper {
+  padding: 0 20upx;
+  margin-top: 40upx;
+  box-sizing: border-box;
+}
+
+.advan-img {
+  width: 100%;
+  height: 862upx;
+  border-radius: 24upx;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.generate-code-container {
+  position: absolute;
+  top: -10000upx;
 }
 </style>
