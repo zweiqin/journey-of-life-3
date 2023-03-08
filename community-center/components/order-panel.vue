@@ -8,8 +8,16 @@
     <view class="main">
       <view class="info">
         <view class="base">
-          <text class="text">{{ data.consigneeName }}</text>
-          <text class="text">{{ data.consigneeMobile }}</text>
+          <text v-if="data.consigneeName" class="text">{{
+            data.consigneeName
+          }}</text>
+          <text v-if="data.consigneeName" class="text">{{
+            data.consigneeMobile
+          }}</text>
+
+          <text v-else style="color: #fa5151" @click.stop="toEdit"
+            >请完善上门信息</text
+          >
 
           <view class="edit" @click.stop="toEdit">
             <image
@@ -194,7 +202,7 @@ export default {
   }
 
   .main {
-    display: flex;
+    // display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 28upx 0 48upx 0;

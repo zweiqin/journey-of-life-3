@@ -2,8 +2,8 @@
   <view class="confirm-btn">
     <button
       :style="{
-        background: type === 'error' ? '#f90' : '',
-        'border-color': type === 'error' ? '#f90' : '',
+        background: type === 'error' ? '#f90' : bgc ? bgc : '',
+        'border-color': type === 'error' ? '#f90' : bgc ? bgc : '',
       }"
       @click="$emit('click')"
     >
@@ -19,9 +19,9 @@ export default {
       type: String,
     },
 
-    bgc: String
+    bgc: String,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

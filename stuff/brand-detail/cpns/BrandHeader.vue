@@ -28,6 +28,7 @@
 
       <view class="follow-wrapper">
         <image
+          @click="handleFollowStore"
           class="follow-icon"
           src="../../../static/images/new-brand/detail/follow.png"
           mode=""
@@ -76,6 +77,8 @@
 </template>
 
 <script>
+import { collectionApi } from '../../../api/goods'
+import { getUserId } from '../../../utils'
 export default {
   props: {
     brand: {
@@ -114,6 +117,30 @@ export default {
       uni.switchTab({
         url: '/pages/stuff/stuff',
       })
+    },
+
+    // 点击关注
+    async handleFollowStore() {
+      try {
+        const { data } = await collectionApi({
+          userId: getUserId(
+            '/stuff/brand-detail/brand-detail?brandId=' + this.brand.id
+          ),
+          type: 2,
+          valueId: this.brand.id,
+        })
+
+        uni.showToast({
+          title: data.type === 'add' ? '关注成功' : '取消关注成功',
+          duration: 2000,
+        })
+      } catch (err) {
+        uni.showToast({
+          title: '操作失败',
+          duration: 2000,
+          icon: 'none',
+        })
+      }
     },
   },
 }

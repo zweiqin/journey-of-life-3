@@ -35,7 +35,7 @@ export default {
     back() {
       console.log(this.tabbar)
       if (this.redirect) {
-        uni.switchTab({
+        uni.redirectTo({
           url: this.redirect,
         })
 

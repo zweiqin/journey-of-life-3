@@ -447,11 +447,11 @@ export const getMenus = userLevel => {
         icon: require('../../static/images/center/map-pin-fill.png'),
         url: '/user/site/site-manage',
       },
-      // {
-      //   label: '我的名片',
-      //   icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png',
-      //   url: '/user/marketing-tools/contact-guide/index',
-      // },
+      {
+        label: '我的名片',
+        icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png',
+        url: '/user/marketing-tools/contact-guide/index',
+      },
       // {
       //   label: '区域代理',
       //   icon: require('../../static/images/center/map-pin-fill.png'),
@@ -473,7 +473,7 @@ export const getMenus = userLevel => {
   const row = Math.floor(normalMenus.menus.length % 4)
   if (row) {
     for (let i = 0; i < 4 - row; i++) {
-      normalMenus.menus.push({})
+      normalMenus.menus.push({ url: '' })
     }
   }
 

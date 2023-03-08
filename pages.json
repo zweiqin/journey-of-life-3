@@ -490,6 +490,12 @@
 					"style": {
 						"navigationBarTitleText": "搜索"
 					}
+				},
+				{
+					"path": "active-consignee",
+					"style": {
+						"navigationBarTitleText": ""
+					}
 				}
 			]
 		},
