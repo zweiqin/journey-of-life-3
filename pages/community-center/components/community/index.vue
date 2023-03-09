@@ -11,7 +11,7 @@
               class="img"
             />
             <view class="year">1年</view>
-            <star rate="5" style="white-space: nowrap"></star>
+            <star :rate="5" style="white-space: nowrap"></star>
             <view class="star">5.0星</view>
           </view>
           <view class="sign">
@@ -24,6 +24,7 @@
             <view class="repair">维修...</view>
           </view>
         </view>
+				
         <view class="right">
           <view class="enter">进店</view>
           <view class="address">

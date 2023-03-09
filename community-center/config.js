@@ -144,6 +144,56 @@ export const consigneeInfo = [
   },
 ];
 
+export const consigneeVipInfo = [
+  {
+    label: "姓名",
+    field: "consigneeName",
+    placeholder: "请输入联系人姓名",
+    require: true,
+  },
+  {
+    label: "联系电话",
+    field: "consigneeMobile",
+    placeholder: "请输入联系人电话",
+    require: true,
+  },
+  {
+    label: "上门地址",
+    field: "consigneeAddress",
+    placeholder: "请输入收货地址",
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
+    require: true,
+    width: 8,
+    height: 13,
+    select: true,
+  },
+  {
+    field: "consigneeAddressDetail",
+    placeholder: "请输入详细地址",
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png",
+    require: true,
+    width: 14,
+    height: 17,
+  },
+  {
+    field: "isElevator",
+    label: "有无电梯",
+    placeholder: "有无电梯",
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
+    width: 8,
+    height: 13,
+    select: true,
+  },
+  {
+    field: "floor",
+    label: "居住楼层",
+    placeholder: "请输入居住楼层",
+    icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
+    width: 8,
+    height: 13,
+  },
+];
+
 export const goodsPanelInfo = [
   {
     label: "商品类别",

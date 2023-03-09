@@ -542,6 +542,9 @@
     <DiscountPopup v-model="showPopup"></DiscountPopup>
     <DispatchPopup v-model="show"></DispatchPopup>
     <AppRoleApply v-model="isShowPopup"></AppRoleApply>
+    <!-- #ifdef APP -->
+    <CheckedVersion ref="checkedVersion"></CheckedVersion>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -628,7 +631,11 @@ export default {
 
     // }
   },
-  created() {},
+  mounted() {
+    // #ifdef APP
+    this.$refs.checkedVersion.checkedVersion()
+    // #endif
+  },
 }
 </script>
 

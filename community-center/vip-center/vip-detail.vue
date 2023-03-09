@@ -54,7 +54,7 @@
               v-for="(item, index) in beeSteward"
               :key="index"
             >
-              <text>({{ index }}) {{ item }}</text>
+              <text>({{ index + 1}}) {{ item }}</text>
             </li>
           </view>
         </PackagePane>

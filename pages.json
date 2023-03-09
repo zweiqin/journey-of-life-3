@@ -979,7 +979,6 @@
 				{
 					"path": "search"
 				},
-				// 2.0
 				{
 					"path": "brand-materials/brand-materials",
 					"style": {

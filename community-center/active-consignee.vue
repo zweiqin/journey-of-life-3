@@ -91,7 +91,7 @@ import PickRegions from '../components/pick-regions/pick-regions.vue'
 import Button from './components/button.vue'
 import Remarks from './components/remarks.vue'
 import Header from './components/header.vue'
-import { consigneeInfo, mapBackRoute } from './config'
+import { consigneeVipInfo, mapBackRoute } from './config'
 import { getUserId } from '../utils'
 import {
   createRepairOrderApi,
@@ -283,7 +283,7 @@ export default {
 
     // 过滤列表
     filterDate() {
-      let data = consigneeInfo
+      let data = consigneeVipInfo
       if (this.cacheName === 'REPAIR_') {
         data = data.filter(item => {
           console.log(item.field !== 'isElevator')
