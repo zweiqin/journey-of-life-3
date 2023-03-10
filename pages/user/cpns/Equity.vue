@@ -1,7 +1,7 @@
 <template>
   <view class="order-pane">
     <view class="title-wrapper">
-      <view class="title-item">我的服务</view>
+      <view class="title-item">我的权益</view>
     </view>
 
     <view class="menus-container">
@@ -9,7 +9,7 @@
         <view
           class="menu-item"
           @click="$emit('handleNavigate', item)"
-          v-for="item in myServe"
+          v-for="item in myEquity"
           :key="item.name"
         >
           <image class="menu-icon" :src="item.icon" mode="" />
@@ -21,19 +21,18 @@
 </template>
 
 <script>
-import { myServe } from '../data'
+import { myEquity } from '../data'
 export default {
   data() {
     return {
-      myServe: Object.freeze(myServe),
+      myEquity: Object.freeze(myEquity),
     }
   },
 }
 </script>
 
 <style lang="less" scoped>
-view,
-text {
+view,text{
   line-height: 1.5 !important;
 }
 .order-pane {
@@ -55,20 +54,23 @@ text {
   }
 
   .menus-container {
-    height: 120upx;
+    // height: 260upx;
     .swiper-item {
-      padding: 28upx 0 32upx 0;
+      // padding: 28upx 20upx 32upx 20upx;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-
-      .menu-item {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-      }
+			flex-wrap: wrap;
+			height: 280upx;
+      // justify-content: space-between;
+			.menu-item{
+				// flex: 3;
+				// margin-right: 0upx;
+				width: 25%;
+				height: 104upx;
+				.menu-icon{}
+				.menu-title{}
+			}
     }
   }
 }

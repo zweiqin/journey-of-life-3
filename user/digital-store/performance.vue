@@ -24,7 +24,7 @@
         alt=""
         @click="back"
       />
-      <h2>业绩哨兵</h2>
+      <h2>业务哨兵</h2>
     </view>
     <!-- 业绩管理选择栏 -->
     <view class="performance-chose-top">

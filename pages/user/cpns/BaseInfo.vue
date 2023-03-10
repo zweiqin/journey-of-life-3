@@ -64,12 +64,13 @@
     </view>
 
     <view class="account-container">
-      <view class="account-item">
+			<view class="account-item">
+      <!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
         <view class="account-number"> 0 </view>
         <view class="account-title">余额</view>
       </view>
 
-      <view class="account-item">
+      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
         <view class="account-number"> 0 </view>
         <view class="account-title">优惠劵</view>
       </view>
