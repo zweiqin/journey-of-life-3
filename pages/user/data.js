@@ -75,7 +75,7 @@ export const myEquity = [
   {
     name: '区域代理',
     icon: require('../../static/images/new-user/equity/regional-agent.png'),
-    url: '/user/sever/regional-agent/regional-agent',
+    url: '',
   },
   {
     name: '我的推广',
@@ -83,6 +83,12 @@ export const myEquity = [
     url: '/user/sever/code/code',
     role: [1, 6, 7],
   },
+	{
+		name: '申请开店',
+		icon: require('../../static/images/new-user/equity/apply-for.png'),
+		url: '/user/sever/applyStore/index',
+		role: [ 1, 6, 7 ],
+	},
 ]
 
 export const myServe = [
@@ -96,12 +102,12 @@ export const myServe = [
     icon: require('../../static/images/new-user/serve/chat.png'),
     url: '/user/sever/customer-service/customer-service',
   },
-  {
-    name: '我的拼团',
-    icon: require('../../static/images/new-user/serve/collage.png'),
-  },
-  {
-    name: '每日签到',
-    icon: require('../../static/images/new-user/serve/qian.png'),
-  },
+  // {
+  //   name: '我的拼团',
+  //   icon: require('../../static/images/new-user/serve/collage.png'),
+  // },
+  // {
+  //   name: '每日签到',
+  //   icon: require('../../static/images/new-user/serve/qian.png'),
+  // },
 ]

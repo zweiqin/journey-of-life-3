@@ -359,6 +359,16 @@ export default {
         this.goodsDetail = res.data
         this.isCollect = !!res.data.userHasCollect
         this.getBrandOtherGoods(res.data.brand.id)
+      } else {
+        uni.showToast({
+          title: '商品不存在',
+          duration: 2000,
+          icon: 'none',
+        })
+
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 500)
       }
     },
 

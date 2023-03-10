@@ -14,6 +14,7 @@
       >
     </view>
 
+
     <view class="coupon-list" v-show="currentStatus === 3">
       <CouponItem
         @receive="handleReceiveCoupon"
@@ -61,7 +62,7 @@ export default {
   data() {
     return {
       couponStatusList: Object.freeze(couponStatusList),
-      currentStatus: 0,
+      currentStatus: 3,
       // 可领取优惠劵
       availableCouponQuery: {
         page: 1,

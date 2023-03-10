@@ -1,5 +1,9 @@
 <template>
-  <view class="brand-pane-container" v-if="data && data.goodsList.length">
+  <view
+    @click="go(`/stuff/brand-detail/brand-detail?brandId=${data.brand.id}`)"
+    class="brand-pane-container"
+    v-if="data && data.goodsList.length"
+  >
     <Carousel
       :list="
         data.brand.picUrls.length ? data.brand.picUrls : [data.brand.picUrl]
@@ -9,7 +13,7 @@
       class="brand-info"
       @click="go(`/stuff/brand-detail/brand-detail?brandId=${data.brand.id}`)"
     >
-    <!-- <view class="brand-info"> -->
+      <!-- <view class="brand-info"> -->
       <image
         v-if="data.brand.picUrl"
         class="brand-avatar"
@@ -55,8 +59,8 @@
         </view>
 
         <view class="rate">
-          <view class="item">2.8k人访问</view>
-          <view class="item">2.8k人关注</view>
+          <view class="item">{{ data.brand.trafficVolume || 0 }}人访问</view>
+          <view class="item">{{ data.brand.collectVolume || 0 }}人关注</view>
         </view>
       </view>
     </view>

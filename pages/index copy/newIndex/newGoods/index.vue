@@ -12,7 +12,7 @@
       </view>
       <view class="bottom">
         <view class="money">劵后￥1080</view>
-        <view class="sales">1000+付款</view>
+        <view class="sales">{{ data.trafficVolume || 0 }}人浏览</view>
       </view>
     </view>
   </view>

@@ -54,13 +54,23 @@ view,text{
   }
 
   .menus-container {
-    height: 120upx;
+    // height: 260upx;
     .swiper-item {
-      padding: 28upx 20upx 32upx 20upx;
+      // padding: 28upx 20upx 32upx 20upx;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+			flex-wrap: wrap;
+			height: 280upx;
+      // justify-content: space-between;
+			.menu-item{
+				// flex: 3;
+				// margin-right: 0upx;
+				width: 25%;
+				height: 104upx;
+				.menu-icon{}
+				.menu-title{}
+			}
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <view class="delivey-info">
-    <Header title="地址信息"></Header>
+    <Header bgc="#f90" title="地址信息"></Header>
     <!-- redirect="/pages/community-center/community-center" -->
     <view class="info">
       <view class="title">地址信息</view>
@@ -46,7 +46,7 @@
       :isDistinguish="true"
     ></Remarks> -->
 
-    <Button @click="confirm">确定</Button>
+    <Button type="error" @click="confirm">确定</Button>
   </view>
 </template>
 

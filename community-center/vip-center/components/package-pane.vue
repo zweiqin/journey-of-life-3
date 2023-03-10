@@ -15,18 +15,17 @@
       <view v-if="data.subTitle" class="sub-title"> {{ data.subTitle }} </view>
 
       <ul class="list">
-        <li v-for="(key, index) in data.desc" :key="index">{{ key }}</li>
+        <slot></slot>
       </ul>
 
       <view class="footer">
         <view class="real-price">
-          <text class="text">￥{{ data.price }}</text
-          >/年
+          <text class="text">￥{{ data.price }}</text>
         </view>
         <view class="now-price" v-if="data.originPrice"
           >原价:{{ data.originPrice }}</view
         >
-        <button class="uni-btn">点击购买</button>
+        <button class="uni-btn" @click="$emit('pay')">点击购买</button>
       </view>
     </view>
   </view>
@@ -40,7 +39,7 @@ export default {
       required: true,
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -54,7 +53,7 @@ export default {
   margin-bottom: 40upx;
   z-index: 2;
 
-  &::after{
+  &::after {
     top: 20%;
     right: -243upx;
     content: '';
@@ -62,11 +61,11 @@ export default {
     display: block;
     width: 486upx;
     height: 486upx;
-    background: url(https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/whh1ey69ojd25b4iuhj1.png) no-repeat;
+    background: url(https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/whh1ey69ojd25b4iuhj1.png)
+      no-repeat;
     background-size: contain;
-    z-index: 1; 
+    z-index: 1;
   }
-
 
   .in-time {
     color: #fa5151;
@@ -101,7 +100,7 @@ export default {
         width: 24upx;
         height: 24upx;
         border-radius: 50%;
-        background-color: #F6BE86;
+        background-color: #f6be86;
         margin-right: 10upx;
       }
     }

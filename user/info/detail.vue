@@ -64,6 +64,14 @@
           <view class="value">未绑定</view>
         </view>
       </tui-list-cell>
+      <!-- #ifdef APP -->
+      <tui-list-cell arrow @click="handleCheckedVersion">
+        <view class="user-info-item">
+          <view class="title">检查更新</view>
+          <view class="value">当前版本：{{ currentVersion }}</view>
+        </view>
+      </tui-list-cell>
+      <!-- #endif -->
     </view>
 
     <view class="logout section">
@@ -73,6 +81,10 @@
         </view>
       </tui-list-cell>
     </view>
+
+    <!-- #ifdef APP -->
+    <CheckedVersion ref="checkedVersion"></CheckedVersion>
+    <!-- #endif -->
 
     <tui-modal
       @click="handleClickModal"
@@ -121,6 +133,7 @@ export default {
       newNickname: '',
       isFocus: false,
       userInfo: {},
+      currentVersion: '',
     }
   },
   methods: {
@@ -254,10 +267,24 @@ export default {
         this.$forceUpdate()
       })
     },
+
+    // 检查版本更新
+    handleCheckedVersion() {
+      this.$refs.checkedVersion.checkedVersion()
+    },
   },
 
   onShow() {
     this.userInfo = uni.getStorageSync(USER_INFO)
+  },
+
+  onLoad() {
+    const _this = this
+    uni.getSystemInfo({
+      success: function (res) {
+        _this.currentVersion = res.appVersion
+      },
+    })
   },
 }
 </script>

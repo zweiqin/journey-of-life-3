@@ -490,6 +490,12 @@
 					"style": {
 						"navigationBarTitleText": "搜索"
 					}
+				},
+				{
+					"path": "active-consignee",
+					"style": {
+						"navigationBarTitleText": ""
+					}
 				}
 			]
 		},
@@ -985,7 +991,6 @@
 				{
 					"path": "search"
 				},
-				// 2.0
 				{
 					"path": "brand-materials/brand-materials",
 					"style": {

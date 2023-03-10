@@ -19,7 +19,7 @@
         </view>
 
         <view class="right">
-          <view>{{ payNumber || "1000" }}+付款</view>
+          <view>{{ payNumber || 0 }}人浏览</view>
         </view>
       </view>
     </view>

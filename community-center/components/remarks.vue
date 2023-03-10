@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { addressIntelligentRecogApi } from "../../api/logistics";
+import { addressIntelligentRecogApi } from '../../api/logistics'
 
 export default {
   props: {
@@ -37,17 +37,22 @@ export default {
     },
     title: {
       type: String,
-      default: "特殊要求",
+      default: '特殊要求',
     },
+    remark: {
+      type: String,
+      default:
+        '填写特别注意事项 \n1.此处可以填写安装或图片内容的详细解释 \n2.不能填写需要师傅额外付出时间、劳动成本等内容，如增加数量和型号，否则师傅可以增加费用',
+    },
+    distinguish: {
+      type: String,
+      default: '粘贴地址信息，自动拆分物流公司、电话和地址\n例如：马*明，135467****，广东省佛山市顺德区xxxxx'
+    }
   },
   data() {
     return {
-      remark:
-        "填写特别注意事项 \n1.此处可以填写安装或图片内容的详细解释 \n2.不能填写需要师傅额外付出时间、劳动成本等内容，如增加数量和型号，否则师傅可以增加费用",
-      distinguish:
-        "粘贴地址信息，自动拆分物流公司、电话和地址\n例如：助力通，135467****，广东省佛山市顺德区xxxxx",
-      info: "",
-    };
+      info: '',
+    }
   },
 
   methods: {
@@ -68,39 +73,39 @@ export default {
         //   }
         // );
 
-        const res = await addressIntelligentRecogApi(this.info);
+        const res = await addressIntelligentRecogApi(this.info)
         if (res.statusCode == 20000) {
-          this.$emit("distinguish", res.data);
+          this.$emit('distinguish', res.data)
         } else {
           uni.showToast({
             title: res.statusMsg,
             duration: 2000,
-            icon: "none",
-          });
+            icon: 'none',
+          })
         }
       } catch (error) {
         uni.showToast({
-          title: "识别失败",
-          icon: "none",
-        });
+          title: '识别失败',
+          icon: 'none',
+        })
       }
     },
   },
 
   watch: {
     info(val) {
-      this.$emit("input", val);
+      this.$emit('input', val)
     },
 
     value: {
       handler(val) {
-        this.info = val;
+        this.info = val
       },
 
       immediate: true,
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

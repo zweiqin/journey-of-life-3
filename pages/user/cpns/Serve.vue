@@ -63,7 +63,7 @@ text {
       align-items: center;
 
       .menu-item {
-        flex: 1;
+        flex: 0.25;
         display: flex;
         align-items: center;
         justify-content: center;

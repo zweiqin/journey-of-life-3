@@ -2,7 +2,7 @@
   <view class="vip-detail-conatiner">
     <view class="header">
       <img
-        style="width: 100%;padding-top: 80upx;padding-bottom: 30upx;"
+        style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
         src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png"
         alt=""
       />
@@ -16,21 +16,62 @@
 
       <view class="main">
         <PackagePane
-          v-for="item in vipList"
-          :key="item.name"
-          :data="item"
-        ></PackagePane>
+          @pay="handlePayTH"
+          :key="vipList[0].name"
+          :data="vipList[0]"
+        >
+          <view class="list">
+            <li
+              class="indulgence-item"
+              @click="handleChooseIndulgence(item)"
+              v-for="(item, index) in indulgenceData"
+              :key="index"
+            >
+              <tui-icon
+                :color="
+                  currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
+                "
+                :size="25"
+                :name="
+                  currentIndulgence === item.serverContent
+                    ? 'circle-fill'
+                    : 'circle'
+                "
+              ></tui-icon>
+              <text>{{ item.serverContent }}</text>
+            </li>
+          </view>
+        </PackagePane>
+
+        <PackagePane
+          @pay="handlePayBS"
+          :key="vipList[1].name"
+          :data="vipList[1]"
+        >
+          <view class="list">
+            <li
+              class="indulgence-item"
+              v-for="(item, index) in beeSteward"
+              :key="index"
+            >
+              <text>({{ index + 1}}) {{ item }}</text>
+            </li>
+          </view>
+        </PackagePane>
       </view>
     </view>
 
-    <Tabbar></Tabbar>
+    <JCity @confirm="handleChooseCity" ref="jCityRef"></JCity>
   </view>
 </template>
 
 <script>
-import PackagePane from "./components/package-pane.vue";
-import Tabbar from "./components/tabbar.vue";
-import { vipList } from "./config";
+import PackagePane from './components/package-pane.vue'
+import Tabbar from './components/tabbar.vue'
+import { vipList } from './config'
+import { getServeListApi } from '../../api/community-center'
+import { USER_ID } from '../../constant'
+
 export default {
   components: {
     PackagePane,
@@ -39,23 +80,121 @@ export default {
   data() {
     return {
       vipList,
-    };
+      indulgenceData: [],
+      beeSteward: null,
+      currentIndulgence: '空调清洗一台 (免拆)',
+      address: '',
+      userId: null,
+    }
+  },
+  onLoad() {
+    this.getServeList()
+    this.userId = uni.getStorageSync(USER_ID)
   },
   methods: {
     handleClickBack() {
       uni.switchTab({
-        url: "/",
-      });
+        url: '/',
+      })
+    },
+
+    // 获取服务列表
+    async getServeList() {
+      uni.showLoading({
+        title: '加载中',
+      })
+
+      const res = await getServeListApi()
+      uni.hideLoading()
+      if (res.statusCode === 20000) {
+        this.allServeList = res.data
+        this.beeSteward = res.data
+          .find(item => item.serverType === 1)
+          .serverContent.split(',')
+        this.indulgenceData = res.data.filter(item => item.serverType === 2)
+      }
+    },
+
+    // 选择地址
+    handleChooseCity(data) {
+      this.address = data.area
+    },
+
+    // 选择特惠
+    handleChooseIndulgence(item) {
+      this.currentIndulgence = item.serverContent
+    },
+
+    // 购买特惠
+    async handlePayTH() {
+      if (!this.userId) {
+        uni.showModal({
+          title: '提示',
+          content: '你还未登录，是否先去登录？',
+          success: function (res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/pages/login/login?to=/community-center/vip-center/vip-detail',
+              })
+            }
+          },
+        })
+        return
+      }
+      if (!this.currentIndulgence) {
+        uni.showToast({
+          title: '请选择服务项',
+          duration: 2000,
+          icon: 'none',
+        })
+
+        return
+      }
+
+      const currentServe = this.allServeList.find(
+        item => item.serverContent === this.currentIndulgence
+      )
+
+      uni.navigateTo({
+        url:
+          '/community-center/active-consignee?data=' +
+          JSON.stringify(currentServe) +
+          '&repair=true',
+      })
+    },
+
+    // 购买金管家
+    async handlePayBS() {
+      if (!this.userId) {
+        uni.showModal({
+          title: '提示',
+          content: '你还未登录，是否先去登录？',
+          success: function (res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/pages/login/login?to=/community-center/vip-center/vip-detail',
+              })
+            }
+          },
+        })
+        return
+      }
+      const currentServe = this.allServeList.find(item => item.serverType === 1)
+      uni.navigateTo({
+        url:
+          '/community-center/active-consignee?data=' +
+          JSON.stringify(currentServe) +
+          '&repair=true',
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
 .vip-detail-conatiner {
   background-color: #fa5151;
   font-size: 32upx;
-  padding-bottom: 110upx;
 
   .header {
     position: relative;
@@ -72,5 +211,23 @@ export default {
     padding: 22upx;
     box-sizing: border-box;
   }
+
+  .indulgence-item {
+    margin: 20upx 0;
+
+    text {
+      margin-left: 20upx;
+      color: #3d3d3d;
+    }
+  }
+}
+
+/deep/ .address {
+  display: none !important;
+}
+
+li {
+  display: flex;
+  align-items: center;
 }
 </style>

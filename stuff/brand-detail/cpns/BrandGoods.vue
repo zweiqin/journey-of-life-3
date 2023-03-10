@@ -1,19 +1,19 @@
 <template>
-  <view class="brand-goods-container" @click="go('/pages/prod/prod?goodsId=' + data.id)" v-if="data">
-    <image
-      class="goods-img"
-      :src="data.picUrl"
-      mode=""
-    />
+  <view
+    class="brand-goods-container"
+    @click="go('/pages/prod/prod?goodsId=' + data.id)"
+    v-if="data"
+  >
+    <image class="goods-img" :src="data.picUrl" mode="" />
 
     <view class="goods-info">
-      <view class="goods-name"
-        >{{data.name}}</view
-      >
+      <view class="goods-name">{{ data.name }}</view>
 
       <view class="price-watch">
-        <view class="price-text"> ￥<text>{{ data.counterPrice }}</text> </view>
-        <view class="watch-text">2.4k人浏览</view>
+        <view class="price-text">
+          ￥<text>{{ data.counterPrice }}</text>
+        </view>
+        <view class="watch-text">{{ data.trafficVolume || 0 }}人浏览</view>
       </view>
     </view>
   </view>
@@ -24,9 +24,9 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
 
@@ -57,24 +57,24 @@ export default {
       font-size: 28upx;
     }
 
-    .price-watch{
+    .price-watch {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-top: 16upx;
 
-      .price-text{
+      .price-text {
         font-weight: bold;
         color: #141000;
         font-size: 26upx;
-        text{
+        text {
           font-size: 36upx;
         }
       }
 
-      .watch-text{
+      .watch-text {
         font-size: 22upx;
-        color: #8F8D85;
+        color: #8f8d85;
       }
     }
   }

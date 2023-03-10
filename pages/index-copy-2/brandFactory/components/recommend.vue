@@ -11,6 +11,7 @@
         :price="item.retailPrice"
         :id="item.id"
         :url="item.picUrl"
+        :payNumber="item.trafficVolume || 0"
       ></goods>
     </view>
 
@@ -25,6 +26,7 @@
         :price="item.retailPrice"
         :id="item.id"
         :url="item.picUrl"
+        :payNumber="item.trafficVolume || 0"
       ></goods>
     </view>
   </view>

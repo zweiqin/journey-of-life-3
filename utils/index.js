@@ -9,27 +9,28 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export {
-	GyRequest as request,
-	RuanRequest,
-	LTRequest,
-	XZLRequest,
-	SheQuRequest,
-	SheQuRequest1,
-	shopRequest,
-	huangRequest
+  GyRequest as request,
+  RuanRequest,
+  LTRequest,
+  XZLRequest,
+  SheQuRequest,
+  SheQuRequest1,
+  shopRequest,
+  huangRequest,
 } from './DWHRequest'
 export {
-	fomartNumber,
-	removeCache,
-	getUserId,
-	checkWhoami,
-	useCopy,
-	handleDebounce,
-	getRandom,
-	randomRGB,
-	timestampToTime
+  fomartNumber,
+  removeCache,
+  getUserId,
+  checkWhoami,
+  useCopy,
+  handleDebounce,
+  getRandom,
+  randomRGB,
+  timestampToTime,
 } from './DWHutils'
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'
 export { saveImg } from './upload'
 export { getAdressDetailByLngLat } from './localtion'
+export { QRCode as generateCode} from './generateQrcode'

@@ -243,10 +243,11 @@ export default {
         title: "头像上传中",
       });
       uni.uploadFile({
-        url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+        url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
         filePath: e,
         name: "file",
         success: (uploadFileRes) => {
+          console.log(JSON.parse(uploadFileRes.data).data.url);
           _this.form.headPic = JSON.parse(uploadFileRes.data).data.url;
           uni.hideLoading();
         },
@@ -272,7 +273,7 @@ export default {
             title: "视频上传中",
           });
           uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
             filePath: res.tempFilePath,
             name: "file",
             success: (uploadFileRes) => {
