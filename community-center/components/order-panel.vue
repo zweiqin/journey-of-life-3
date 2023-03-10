@@ -1,6 +1,6 @@
 <template>
   <view class="order-panel">
-    <view class="header">
+    <view class="header" @click.stop="toDetail">
       <view class="orderNo">订单号：{{ data.orderNo }}</view>
       <view class="status">{{ mapStatus(data.status) }}</view>
     </view>
@@ -8,7 +8,7 @@
     <view class="main">
       <view class="info">
         <view class="base">
-          <text v-if="data.consigneeName" class="text">{{
+          <text @click.stop="toDetail" v-if="data.consigneeName" class="text">{{
             data.consigneeName
           }}</text>
           <text v-if="data.consigneeName" class="text">{{
@@ -29,7 +29,8 @@
             <text>修改订单</text>
           </view>
         </view>
-        <view class="address-list">
+
+        <view class="address-list" @click.stop="toDetail">
           <text class="name">上门地址:</text>
           <text class="address">
             {{ data.consigneeAddress }}{{ data.consigneeAddressDetail }}

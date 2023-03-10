@@ -17,7 +17,9 @@
             alt=""
             class="icon"
           />
-          <view class="address">{{ $store.getters.currentCity || '定位中...' }}</view>
+          <view class="address">{{
+            $store.getters.currentCity || '定位中...'
+          }}</view>
         </view>
       </view>
       <view class="goods">
@@ -34,7 +36,7 @@
       <view class="name-list">
         <view class="name">{{ title }}</view>
         <view class="a">
-          <view class="share">
+          <view class="share" @click="handleShare">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
               alt=""
@@ -160,7 +162,7 @@
           <view class="name">在线咨询</view>
         </view>
         <view class="order-list">
-          <view class="join">加入需求清单</view>
+          <!-- <view class="join">加入需求清单</view> -->
           <view class="order" @click="handleToServiceOrderHome">立即下单</view>
         </view>
       </view>
@@ -168,19 +170,18 @@
   </view>
 </template>
 
-
-
-
-
-
 <script>
-import item from "../community-center/componts/item";
-import { getServiceDetailApi } from "../api/community-center";
-import { getAdressDetailByLngLat } from "../utils/DWHutils";
-import { moreService } from "../pages/community-center/config";
+import { getConfigApi } from '../api/auth'
+import item from '../community-center/componts/item'
+import { getServiceDetailApi } from '../api/community-center'
+import { getAdressDetailByLngLat } from '../utils/DWHutils'
+import { moreService } from '../pages/community-center/config'
+// #ifdef H5
+import share from '../utils/wxshare'
+// #endif
 
 export default {
-  name: "Community-detail",
+  name: 'Community-detail',
   props: {},
   components: {
     item,
@@ -188,33 +189,33 @@ export default {
   data() {
     return {
       moreService,
-      address: "",
+      address: '',
       serviceDetail: [],
-      id: "",
-      serverTypeId: "",
-      serverInfoName: "",
-      serverInfoUrl: "",
-      serverIntroduction: "",
-      isArtificial: "",
-      serverPrice: "",
-      title: "",
-      serverUnit: "",
+      id: '',
+      serverTypeId: '',
+      serverInfoName: '',
+      serverInfoUrl: '',
+      serverIntroduction: '',
+      isArtificial: '',
+      serverPrice: '',
+      title: '',
+      serverUnit: '',
       currentTab: 1,
-      length: "",
-      serverUrl: "",
-      index: "",
-    };
+      length: '',
+      serverUrl: '',
+      index: '',
+    }
   },
   methods: {
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
     handleToServiceListHome(item) {
-      console.log("更多服务分类列表", item);
-      this.value = item;
+      console.log('更多服务分类列表', item)
+      this.value = item
       uni.navigateTo({
         url: `/community-center/service-sort?value=${this.value}`,
-      });
+      })
     },
     handleToServiceOrderHome() {
       //需要传 图片 价格 名称 单位
@@ -222,37 +223,37 @@ export default {
       // const let var
 
       uni.showToast({
-        title: "请选择服务类型",
-        icon: "none",
+        title: '请选择服务类型',
+        icon: 'none',
         duration: 2000,
-      });
+      })
 
       if (!this.isArtificial) {
-        console.log("abc");
+        console.log('abc')
         uni.navigateTo({
           url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`,
-        });
+        })
       } else {
         if (!this.serverPrice == 0) {
           uni.navigateTo({
             url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}`,
-          });
+          })
         } else {
-          console.log("sb kuaixuan");
+          console.log('sb kuaixuan')
         }
       }
     },
 
     switchTab(item1) {
-      console.log("12345", item1);
-      this.currentTab = item1.id;
-      this.serverTypeId = item1.serverTypeId;
-      this.serverPrice = item1.serverPrice;
-      this.serverInfoName = item1.serverInfoName;
-      this.serverUnit = item1.serverUnit;
-      this.serverIntroduction = item1.serverIntroduction;
-      this.detailId = item1.id;
-      console.log("详情id", this.detailId);
+      console.log('12345', item1)
+      this.currentTab = item1.id
+      this.serverTypeId = item1.serverTypeId
+      this.serverPrice = item1.serverPrice
+      this.serverInfoName = item1.serverInfoName
+      this.serverUnit = item1.serverUnit
+      this.serverIntroduction = item1.serverIntroduction
+      this.detailId = item1.id
+      console.log('详情id', this.detailId)
     },
 
     //社区服务详情
@@ -261,19 +262,19 @@ export default {
       const res = await getServiceDetailApi({
         // serverTypeId: 109,
         serverTypeId: this.serverTypeId,
-      });
-      this.serviceDetail = res.data;
-      console.log("666", this.serviceDetail);
+      })
+      this.serviceDetail = res.data
+      console.log('666', this.serviceDetail)
 
-      this.isArtificial = this.serviceDetail[0].isArtificial;
-      this.length = this.serviceDetail.length;
-      console.log("是否一口价", this.isArtificial);
+      this.isArtificial = this.serviceDetail[0].isArtificial
+      this.length = this.serviceDetail.length
+      console.log('是否一口价', this.isArtificial)
 
-      this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
-      console.log("介绍", this.serverIntroduction);
+      this.serverIntroduction = this.serviceDetail[0].serverIntroduction
+      console.log('介绍', this.serverIntroduction)
 
-      this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl;
-      console.log("图片", this.serverInfoUrl);
+      this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl
+      console.log('图片', this.serverInfoUrl)
 
       // this.detailId = this.serviceDetail[0].id;
       // console.log("详情id", this.detailId);
@@ -281,38 +282,64 @@ export default {
 
     //预览图
     preview(index) {
-      console.log(index);
-      let imgsArray = [];
-      imgsArray[0] = index;
+      console.log(index)
+      let imgsArray = []
+      imgsArray[0] = index
 
       uni.previewImage({
         urls: imgsArray,
         current: 0,
-      });
+      })
     },
 
     previewImage(index) {
-      console.log(index);
-      let imgsArray = [];
-      imgsArray[0] = index;
+      console.log(index)
+      let imgsArray = []
+      imgsArray[0] = index
 
       uni.previewImage({
         urls: imgsArray,
         current: 0,
-      });
+      })
+    },
+
+    // 微信分享
+    async setWxShareConfig() {
+      const currentUrl = window.location.href.replace('#', 'ericToken')
+      const { data } = await getConfigApi({
+        url: currentUrl,
+        token: uni.getStorageSync(USER_TOKEN),
+      })
+
+      share(data, {
+        title: this.title,
+        imgUrl: this.serverImageUrl,
+        desc: '售后质保·服务专业·极速退款·意外承包',
+        link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${this.serverTypeId}&serverNameThree=${this.title}&serverImageUrl=${serverUrl}`,
+      })
+    },
+
+    // 点击右上角三点分享
+    handleShare() {
+      uni.showToast({
+        title: '点击右上角三点分享',
+        duration: 2000,
+        icon: 'none',
+      })
     },
   },
   created() {},
   onLoad(options) {
-    this.serverTypeId = options.id;
-    this.title = options.serverNameThree;
+    this.serverTypeId = options.id
+    this.title = options.serverNameThree
     uni.setNavigationBarTitle({
       title: this.title,
-    });
-    this.serverUrl = options.serverImageUrl;
-    this.getServiceDetail();
+    })
+    this.serverUrl = options.serverImageUrl
+    this.setWxShareConfig()
+    this.getServiceDetail()
   },
-};
+}
 </script>
 <style lang="less" scoped>
 .community-detail {
@@ -637,7 +664,7 @@ export default {
       }
       .order-list {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         width: 75%;
         .join {
           font-size: 32upx;

@@ -301,7 +301,7 @@ export const orderStatusList = () => {
       value: 0,
     },
     {
-      label: "待接单",
+      label: "待完成",
       value: 1,
     },
     {

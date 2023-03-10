@@ -3,7 +3,7 @@
     <view class="centre">
       <view class="top">
         <view class="left">
-          <view class="title">团蜂家居社区服务站</view>
+          <view class="title">团蜂家居社区服务中心(龙江店)</view>
           <view class="eva">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/g58vmepof8496v2stqvc.png"
@@ -24,7 +24,7 @@
             <view class="repair">维修...</view>
           </view>
         </view>
-				
+
         <view class="right">
           <view class="enter">进店</view>
           <view class="address">
@@ -39,7 +39,7 @@
       </view>
       <view class="mid">
         <view class="shop-list">
-          <view class="item">
+          <!-- <view class="item">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
               alt=""
@@ -80,7 +80,7 @@
                 <view class="money">3099</view>
               </view>
             </view>
-          </view>
+          </view> -->
           <!-- <view class="item">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
@@ -95,6 +95,23 @@
               </view>
             </view>
           </view> -->
+
+          <scroll-view scroll-x="true">
+            <view class="images">
+              <image
+                src="../../../../static/images/con-center/brand-img/1f18076a681ddb8aabfee22b9e1714b.jpg"
+                mode=""
+              />
+              <image
+                src="../../../../static/images/con-center/brand-img/237769c6dccf6e85ca264aa383a377c.jpg"
+                mode=""
+              />
+              <image
+                src="../../../../static/images/con-center/brand-img/4bbccdb1cff4b17e3acdf9ddcb5ec09.jpg"
+                mode=""
+              />
+            </view>
+          </scroll-view>
         </view>
       </view>
     </view>
@@ -102,14 +119,14 @@
 </template>
 
 <script>
-import star from "../../../../components/rate";
+import star from '../../../../components/rate'
 export default {
-  name: "community",
+  name: 'community',
   props: {},
   components: { star },
 
   data() {
-    return {};
+    return {}
   },
   computed: {},
   methods: {},
@@ -127,7 +144,7 @@ export default {
   deactivated() {},
   // 组件周期函数--监听组件销毁之前
   beforeDestroy() {},
-};
+}
 </script>
 <style lang="less" scoped>
 .service-station {
@@ -284,6 +301,17 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .images {
+    white-space: nowrap;
+
+    image {
+      width: 560upx;
+      height: 360upx;
+      margin-right: 30upx;
+      border-radius: 24upx;
     }
   }
 }
