@@ -30,36 +30,36 @@ export const orderOpButtons = [
   {
     label: "删除订单",
     key: "delete",
-    color: "#f40",
+		color: "#FFC117",
   },
+	{
+		label: "取消订单",
+		key: "cancel",
+		color: "#ccc",
+	},
   {
     label: "去支付",
     key: "pay",
-    color: "#84c341",
-  },
-  {
-    label: "取消订单",
-    key: "cancel",
-    color: "#ccc",
+		color: "#FFC117",
   },
   {
     label: "确认收货",
     key: "confirm",
-    color: "#84c341",
+		color: "#FFC117",
   },
   {
     label: "申请退款",
     key: "refund",
-    color: "#84c341",
+		color: "#FFC117",
   },
   {
     label: "再次购买",
     key: "rebuy",
-    color: "#84c341",
+		color: "#FFC117",
   },
   {
     label: "去评论",
     key: "comment",
-    color: "#84c341",
+		color: "#FFC117",
   },
 ];

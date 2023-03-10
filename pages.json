@@ -603,7 +603,7 @@
 				{
 					"path": "info/detail",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "信息设置",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
 							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
@@ -711,7 +711,7 @@
 				{
 					"path": "orderForm/order-form",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "全部订单",
 						"usingComponents": {}
 					}
 				},
@@ -893,6 +893,18 @@
 					"path": "sever/regional-agent/regional-agent",
 					"style": {
 						"navigationBarTitleText": "区域代理"
+					}
+				},
+				{
+					"path": "sever/surplus/surplus",
+					"style": {
+						"navigationBarTitleText": "余额"
+						}
+				},
+				{
+					"path": "sever/recharge/recharge",
+					"style": {
+						"navigationBarTitleText": "充值中心"
 					}
 				}
 			]
