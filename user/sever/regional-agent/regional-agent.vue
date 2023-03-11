@@ -1,7 +1,7 @@
 <template>
   <view class="regional-agent-container">
     <view class="regional-agent-title">
-      <tui-icon name=""></tui-icon>
+      <tui-icon @click="handleBack" name="arrowleft" color="#fff"></tui-icon>
     </view>
     <view class="main-area">
       <view class="title">区域代理申请</view>
@@ -148,12 +148,19 @@ export default {
 
       console.log(data)
     },
+
+    handleBack() {
+      uni.switchTab({
+        url: '/pages/user/user',
+      })
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
 .regional-agent-container {
+  position: relative;
   width: 100%;
   min-height: 100vh;
   background-color: #ffdb52;
@@ -161,6 +168,12 @@ export default {
   background-size: cover;
   box-sizing: border-box;
   padding-top: 200upx;
+
+  .regional-agent-title {
+    position: absolute;
+    top: 40upx;
+    left: 32upx;
+  }
 
   .main-area {
     position: relative;

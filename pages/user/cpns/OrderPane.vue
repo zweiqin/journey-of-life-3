@@ -42,6 +42,16 @@
           >
             <image class="menu-icon" :src="item.icon" mode="" />
             <text class="menu-title">{{ item.name }}</text>
+            <tui-badge
+              type="danger"
+              absolute
+              :scaleRatio="0.8"
+              translateX="40%"
+              top="-6rpx"
+              v-show="conOrderNumbers[item.numberKey]"
+            >
+              {{ conOrderNumbers[item.numberKey] }}
+            </tui-badge>
           </view>
         </swiper-item>
       </swiper>
@@ -51,25 +61,51 @@
 
 <script>
 import { shequOrderMenus, shopOrderMneus } from '../data'
+import { getOrderNumberApi } from '../../../api/community-center'
+import { USER_ID } from '../../../constant'
 export default {
   data() {
     return {
       currentMenu: 0,
       shequOrderMenus: Object.freeze(shequOrderMenus),
       shopOrderMneus: Object.freeze(shopOrderMneus),
+      conOrderNumbers: {},
+      userId: null,
     }
+  },
+
+  mounted() {
+    this.userId = uni.getStorageSync(USER_ID)
   },
 
   methods: {
     handleSwitchSwiper(e) {
       this.currentMenu = e.detail.current
+      if (
+        e.detail.current === 1 &&
+        JSON.stringify(this.conOrderNumbers) === '{}' &&
+        this.userId
+      ) {
+        this.getOrderNumbers()
+      }
+    },
+
+    async getOrderNumbers() {
+      const res = await getOrderNumberApi({
+        userId: this.userId,
+      })
+
+      if (res.statusCode === 20000) {
+        this.conOrderNumbers = res.data
+      }
     },
   },
 }
 </script>
 
 <style lang="less" scoped>
-view,text{
+view,
+text {
   line-height: 1.5 !important;
 }
 .order-pane {
@@ -104,6 +140,10 @@ view,text{
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      .menu-item {
+        position: relative;
+      }
     }
   }
 }

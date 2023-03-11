@@ -131,7 +131,7 @@ export default {
 
     this.bindId = options.code
 
-    if (this.redirect.indexOf('?') > -1) {
+    if (this.redirect && this.redirect.indexOf('?') > -1) {
       this.bindId = this.redirect
     }
     if (this.bindId) {

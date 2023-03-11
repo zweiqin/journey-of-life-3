@@ -12,7 +12,8 @@
             data.consigneeName
           }}</text>
           <text v-if="data.consigneeName" class="text">{{
-            data.consigneeMobile
+            data.consigneeMobile &&
+            (data.consigneeMobile + '').slice(0, 3) + '****' + (data.consigneeMobile + '').slice(7)
           }}</text>
 
           <text v-else style="color: #fa5151" @click.stop="toEdit"

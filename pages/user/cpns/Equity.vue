@@ -14,6 +14,16 @@
         >
           <image class="menu-icon" :src="item.icon" mode="" />
           <text class="menu-title">{{ item.name }}</text>
+          <!-- <tui-badge
+            v-if="item.name === '区域代理'"
+            type="danger"
+            absolute
+            :scaleRatio="0.8"
+            translateX="40%"
+            top="6rpx"
+            right="44rpx"
+            >{{ applyResult }}</tui-badge
+          > -->
         </view>
       </view>
     </view>
@@ -22,17 +32,40 @@
 
 <script>
 import { myEquity } from '../data'
+import { USER_ID } from '../../../constant'
+import { getApplyRegionagentStatusApi } from '../../../api/user'
+
 export default {
   data() {
     return {
       myEquity: Object.freeze(myEquity),
+      userId: null,
+      applyResult: null,
     }
+  },
+
+  mounted() {
+    this.userId = uni.getStorageSync(USER_ID)
+    if (this.userId) {
+      this.getApplyRegionagentStatus()
+    }
+  },
+
+  methods: {
+    async getApplyRegionagentStatus() {
+      const res = await getApplyRegionagentStatusApi({
+        userId: this.userId,
+      })
+
+      this.applyResult = res.errmsg
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
-view,text{
+view,
+text {
   line-height: 1.5 !important;
 }
 .order-pane {
@@ -56,21 +89,24 @@ view,text{
   .menus-container {
     // height: 260upx;
     .swiper-item {
+      position: relative;
       // padding: 28upx 20upx 32upx 20upx;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-			flex-wrap: wrap;
-			height: 280upx;
+      flex-wrap: wrap;
+      height: 280upx;
       // justify-content: space-between;
-			.menu-item{
-				// flex: 3;
-				// margin-right: 0upx;
-				width: 25%;
-				height: 104upx;
-				.menu-icon{}
-				.menu-title{}
-			}
+      .menu-item {
+        // flex: 3;
+        // margin-right: 0upx;
+        width: 25%;
+        height: 104upx;
+        .menu-icon {
+        }
+        .menu-title {
+        }
+      }
     }
   }
 }

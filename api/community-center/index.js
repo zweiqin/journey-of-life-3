@@ -234,3 +234,16 @@ export const searchServeApi = data => {
     'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
   })
 }
+
+// 获取订单数量红点
+export const getOrderNumberApi = data => {
+  return SheQuRequest1(
+    '/laoa-huozhu/api/hz/order/third/getOrderReminder',
+    data,
+    'get',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}
