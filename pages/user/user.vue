@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { refrshUserInfoApi } from '../../api/user'
 import BaseInfo from './cpns/BaseInfo'
 import OrderPane from './cpns/OrderPane.vue'
 import Equity from './cpns/Equity.vue'
@@ -35,14 +34,7 @@ export default {
 
 	},
 	onShow() {
-		this.userId = uni.getStorageSync(USER_ID)
-		const _this = this
-		refrshUserInfoApi({
-			userId: this.userId,
-		}).then(({ data }) => {
-			uni.setStorageSync(user_INFO, data)
-			_this.userInfo = uni.getStorageSync(user_INFO)
-		})
+		this.$store.dispatch('auth/refrshUserInfo')
 	},
 	mixins: [showModalMixin()],
 	data() {

@@ -1,6 +1,7 @@
 <template>
   <view class="avatar-container">
     <image
+		
       :src="src"
       :mode="mode"
       :style="{

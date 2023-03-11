@@ -30,6 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .shop-car-list {
+	background: rgb(239, 239, 239);
   width: 100%;
   height: 100vh;
   display: flex;
