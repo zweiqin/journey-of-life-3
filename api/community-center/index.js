@@ -214,3 +214,36 @@ export const payOrderForBeeStewadApi = data => {
     }
   )
 }
+
+// 热门搜索
+export const getHotSearchKeyApi = data => {
+  return SheQuRequest(
+    '/api/community/serverInfo/getHotSearch',
+    data,
+    'get',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}
+
+// 搜索服务
+export const searchServeApi = data => {
+  return SheQuRequest('/api/community/serverInfo/getSearchData', data, 'get', {
+    'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+  })
+}
+
+// 获取订单数量红点
+export const getOrderNumberApi = data => {
+  return SheQuRequest1(
+    '/laoa-huozhu/api/hz/order/third/getOrderReminder',
+    data,
+    'get',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}

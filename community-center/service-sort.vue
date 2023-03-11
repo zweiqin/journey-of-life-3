@@ -1,17 +1,17 @@
 <template>
   <view class="service-sort">
     <view class="head">
-      <view class="search-bar">
+      <view class="search-bar" @click="goToSearch">
         <view class="location">
-					<!-- #ifdef H5 -->
-					 <img
+          <!-- #ifdef H5 -->
+          <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
             alt=""
             class="return"
             @click="handleBack"
           />
-					<!-- #endif -->
-         
+          <!-- #endif -->
+
           <view class="text">{{ addressDetail }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
@@ -29,6 +29,7 @@
             />
           </view>
           <input
+            confirm-type="search"
             type="text"
             class="content"
             placeholder="搜索社区服务，一站式解决家居问题"
@@ -54,8 +55,6 @@
             ></uni-combox>
           </view>
         </uni-section> -->
-
-        
       </view>
     </view>
     <view class="body" :style="{ height: scrollHeight + 'px' }">
@@ -89,13 +88,13 @@
 </template>
 
 <script>
-import { getServiceSortApi } from "../api/community-center";
-import { getSearchDataApi } from "../api/community-center";
-import sort from "../community-center/componts";
-import { getAdressDetailByLngLat } from "../utils/DWHutils";
-import { getIsOpenServerAreaApi } from "../api/community-center";
+import { getServiceSortApi } from '../api/community-center'
+import { getSearchDataApi } from '../api/community-center'
+import sort from '../community-center/componts'
+import { getAdressDetailByLngLat } from '../utils/DWHutils'
+import { getIsOpenServerAreaApi } from '../api/community-center'
 export default {
-  name: "Service-sort",
+  name: 'Service-sort',
   components: {
     sort,
   },
@@ -106,23 +105,23 @@ export default {
   data() {
     return {
       navbar: [],
-      currentTab: "",
+      currentTab: '',
       sort: [],
-      id: "",
-      serverNameOne: "",
-      address: "",
+      id: '',
+      serverNameOne: '',
+      address: '',
       scrollHeight: 667,
-      tips: "",
-      addressDetail: "",
+      tips: '',
+      addressDetail: '',
       candidates: [],
-      city: "",
-      searchName: "",
-    };
+      city: '',
+      searchName: '',
+    }
   },
   methods: {
     switchTab(index) {
-      this.currentTab = index;
-      this.sort = this.data.find((item) => item.id === index);
+      this.currentTab = index
+      this.sort = this.data.find(item => item.id === index)
     },
 
     inoutWatcher(e) {
@@ -130,105 +129,106 @@ export default {
       // this.getSearchData();
     },
 
-    // goToSearch(){
-    //   uni.navigateTo({ url: '/community-center/search' })
-    // },
+    goToSearch(){
+      uni.navigateTo({ url: '/community-center/search' })
+    },
 
     // handleBack() {
     //   uni.navigateBack();
     // },
 
     handleBack() {
-      uni.switchTab({ url: "/pages/community-center/community-centerr" });
+      uni.switchTab({ url: '/pages/community-center/community-centerr' })
     },
 
     handleClick() {
-      const _this = this;
+      const _this = this
       if (
-        this.addressDetail === "定位失败" ||
-        this.addressDetail === "定位中..."
+        this.addressDetail === '定位失败' ||
+        this.addressDetail === '定位中...'
       ) {
         uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
+          title: '提示',
+          confirmText: '我已打开定位',
+          content: '请确认您已开启了定位',
           success: function (res) {
             if (res.confirm) {
-              _this.getLocation();
+              _this.getLocation()
             }
           },
-        });
+        })
       }
     },
 
     async a() {
       const res = await getIsOpenServerAreaApi({
         address: this.address,
-      });
+      })
 
-      this.tips = res.data;
+      this.tips = res.data
     },
 
     //查询社区服务分类接口
     async getServiceSort() {
-      const res = await getServiceSortApi({});
+      const res = await getServiceSortApi({})
 
-      this.navbar = res.data;
-      this.sort = res.data[0];
-      this.data = res.data;
-      this.sort = this.data.find((item) => item.id === this.currentTab);
+      this.navbar = res.data
+      console.log(res.data.flat(Infinity));
+      this.sort = res.data[0]
+      this.data = res.data
+      this.sort = this.data.find(item => item.id === this.currentTab)
     },
 
     //搜索查询接口
     async getSearchData() {
       const res = await getSearchDataApi({
         searchName: this.searchName,
-      });
+      })
 
-      this.candidates =res.data.map(item => item.serverTypeName)
+      this.candidates = res.data.map(item => item.serverTypeName)
     },
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
-      this.addressDetail = "定位中...";
-      const _this = this;
+      this.addressDetail = '定位中...'
+      const _this = this
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === "1") {
-              const result = res.regeocode;
-              _this.addressDetail = result.addressComponent.township;
+          getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+            if (res.status === '1') {
+              const result = res.regeocode
+              _this.addressDetail = result.addressComponent.township
 
               _this.address =
                 result.addressComponent.province +
                 result.addressComponent.city +
-                result.addressComponent.district;
+                result.addressComponent.district
 
-              _this.a();
+              _this.a()
             }
-          });
+          })
         },
-      });
+      })
     },
   },
   mounted() {},
   onLoad(options) {
-    this.currentTab = options.value * 1;
+    this.currentTab = options.value * 1
 
-    this.getServiceSort();
-    this.getIsOpenServerArea();
-    this.getSearchData();
-    const _this = this;
+    this.getServiceSort()
+    this.getIsOpenServerArea()
+    this.getSearchData()
+    const _this = this
     uni.getSystemInfo({
       success(res) {
-        _this.scrollHeight = res.safeArea.height - 60;
+        _this.scrollHeight = res.safeArea.height - 60
       },
-    });
+    })
 
     // const _this = this;
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

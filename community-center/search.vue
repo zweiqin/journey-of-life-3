@@ -1,204 +1,254 @@
 <template>
-  <view>
-    <view class="search-box">
-      <uni-search-bar
-        @input="input"
-        :radius="100"
-        placeholder="搜索"
-        cancelButton="none"
-        style="width:100%"
-      ></uni-search-bar>
-      <view class="text" @click="cancel">取消</view>
+  <view class="search-container">
+    <view class="search-wrapper" :class="{ fixed: scrollTop > 100 }">
+      <tui-icon name="arrowleft" @click="handleBack"></tui-icon>
+
+      <view class="wrapper">
+        <image
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
+          alt=""
+          class="search-icon"
+        />
+        <input
+          confirm-type="search"
+          @confirm="handleSearchServe"
+          v-model="searchValue"
+          type="text"
+          placeholder="请输入您想要的服务"
+        />
+      </view>
+
+      <button class="uni-btn">搜索</button>
     </view>
 
-    <!-- 搜索建议列表 -->
-    <view class="sugg-list" v-if="searchResults.length !== 0">
+    <view class="search-list item-pane">
+      <view class="loading-container" v-show="loading"> 搜索中... </view>
       <view
-        class="sugg-item"
-        v-for="item in searchResults"
-        :key="item.serverTypeId"
-        :serverTypeId="item.serverTypeId"
-        @click="gotoDetail(item.serverTypeId)"
+        class="no-data"
+        v-show="searchValue && !searchResult.length && !loading"
+        >暂无该服务</view
       >
-        <view class="goods-name">{{ item.serverTypeName }}</view>
-        <uni-icons type="arrowright" size="16"></uni-icons>
+
+      <view
+        class="serach-result-item"
+        v-for="result in searchResult"
+        :key="result.serverTypeId"
+        @click="
+          hanldeChoose(
+            result.serverTypeName,
+            result.serverTypeId,
+            result.serverImageUrl
+          )
+        "
+      >
+        <text> {{ result.serverTypeName }} </text>
+        <tui-icon :size="20" color="#ccc" name="arrowright"></tui-icon>
       </view>
     </view>
 
-    <!-- 搜索历史 -->
-    <view class="history-box" v-else>
-      <!-- 标题区域 -->
-      <view class="history-title">
-        <text>搜索历史</text>
-        <uni-icons type="trash" size="17" @click="clean"></uni-icons>
-      </view>
-      <!-- 列表区域 -->
-      <view class="history-list">
-        <uni-tag
-          :text="item"
-          v-for="item in histories"
-          :key="item.serverTypeId"
-          @click="gotoGoodsList(item.serverTypeId)"
-        ></uni-tag>
+    <view class="hot-key item-pane">
+      <view class="title">热门搜索</view>
+      <view class="list">
+        <view
+          class="list-item"
+          @click="hanldeChoose(item.name, item.code, item.url)"
+          v-for="item in hotKey"
+          :key="item.code"
+        >
+          {{ item.name }}
+        </view>
       </view>
     </view>
   </view>
 </template>
 
-
-
-
 <script>
-import { getSearchDataApi } from "../api/community-center";
+import {
+  getHotSearchKeyApi,
+  searchServeApi,
+} from '../api/community-center/index'
 export default {
   data() {
     return {
-      timer: null,
-      kw: "",
-      searchName: "",
-      // 搜索的结果列表
-      searchResults: [],
-      // 搜索历史的数组
-      historyList: [],
-      serverTypeId: "",
-    };
-  },
-  onLoad() {
-    if (uni.getStorageSync("searchName")) {
-      this.historyList = uni.getStorageSync("searchName") || [];
+      searchValue: '',
+      hotKey: [],
+      searchResult: [],
+      scrollTop: 0,
+      loading: false,
     }
   },
+
+  onLoad() {
+    this.getHotSearchKey()
+  },
+
   methods: {
-    // input 输入事件的处理函数
-    input(e) {
-      // 清除 timer 对应的延时器
-      clearTimeout(this.timer);
-      // 重新启动一个延时器，并把 timerId 赋值给 this.timer
-      this.timer = setTimeout(() => {
-        // 如果 500 毫秒内，没有触发新的输入事件，则为搜索关键词赋值
-        this.searchName = e;
-        this.getSearchList();
-      }, 800);
-    },
+    handleSearchServe() {
+      const _this = this
+      if (!this.searchValue) {
+        uni.showToast({
+          title: '请输入要搜索的服务名称',
+          duration: 2000,
+          icon: 'none',
+        })
 
-    cancel(){
-      uni.navigateBack();
-    },
-
-    //搜索查询
-    async getSearchList() {
-      // 判断搜索关键词是否为空
-      if (this.searchName.length === 0) {
-        this.searchResults = [];
-        return;
+        return
       }
 
-      const res = await getSearchDataApi({
-        searchName: this.searchName,
-      });
-      // this.searchResults = res.data.map(item => item.serverTypeName);
-      this.searchResults = res.data;
-      console.log("123", this.searchResults);
-      this.saveSearchHistory();
+      this.loading = true
+      searchServeApi({
+        searchName: this.searchValue,
+      }).then(res => {
+        if (res.statusCode === 20000) {
+          _this.loading = false
+          _this.searchResult = res.data
+        }
+      })
     },
-    gotoDetail(e) {
-      console.log("id", e);
+    getHotSearchKey() {
+      const _this = this
+      getHotSearchKeyApi().then(({ data }) => {
+        _this.hotKey = data
+      })
+    },
+
+    // 选中搜索
+    hanldeChoose(name, id, url) {
       uni.navigateTo({
-        url: "/community-center/community-detail?id=" + e,
-      });
+        url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${url}`,
+      })
     },
 
-    saveSearchHistory() {
-      // this.historyList.push(this.kw)
-
-      const set = new Set(this.historyList);
-      set.delete(this.searchName);
-      set.add(this.searchName);
-
-      this.historyList = Array.from(set);
-
-      // 对搜索数据的储存
-      uni.setStorageSync("searchName", this.historyList);
-    },
-    // 清空搜索历史
-    clean() {
-      this.historyList = [];
-      uni.setStorageSync("searchName", []);
-    },
-    // gotoGoodsList(e) {
-    //   console.log("id", e);
-    //   uni.navigateTo({
-    //     url: "/community-center/community-detail?id=" + e,
-    //   });
-    // },
-  },
-  computed: {
-    histories() {
-      return [...this.historyList].reverse();
+    // 返回
+    handleBack() {
+      uni.navigateBack()
     },
   },
-};
+
+  onPageScroll(e) {
+    this.scrollTop = e.scrollTop
+  },
+}
 </script>
 
+<style lang="less" scoped>
+.search-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f3f3f3;
 
-
-
-
-<style lang="scss" scoped>
-/* 吸顶效果 */
-.search-box {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .text {
-    white-space: nowrap;
-    padding-right: 20upx;
-    font-size: 28upx;
-  }
-}
-.sugg-list {
-  padding: 0 10upx;
-  .sugg-item {
-    font-size: 24upx;
-    padding: 26upx 0;
-    border-bottom: 2upx solid #efefef;
+  .search-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .goods-name {
-      // 文字不允许换行（单行文本）
-      white-space: nowrap;
-      // 溢出部分隐藏
-      overflow: hidden;
-      // 文本溢出后，使用 ... 代替
-      text-overflow: ellipsis;
-      margin-right: 6upx;
+    width: 100%;
+    height: 128upx;
+    background-color: #fff;
+    padding: 0 10upx;
+    box-sizing: border-box;
+
+    &.fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+    }
+
+    .wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background-color: #f1f2f6;
+      padding: 20upx;
+      border-radius: 100px;
+
+      .search-icon {
+        width: 30upx;
+        height: 30upx;
+        flex-shrink: 0;
+        margin-right: 16upx;
+        padding-right: 16upx;
+        border-right: 1upx solid #000;
+      }
+
+      input {
+        font-size: 28upx;
+      }
+    }
+
+    .uni-btn {
+      width: 80upx;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28upx;
+      color: #ccc;
     }
   }
-}
 
-.history-box {
-  padding: 0 10upx;
+  .hot-key {
+    padding: 20upx;
+    box-sizing: border-box;
 
-  .history-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80upx;
-    font-size: 26upx;
-    border-bottom: 2upx solid #efefef;
+    .title {
+      font-size: 32upx;
+      font-weight: 500;
+      margin-bottom: 20upx;
+    }
+
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+
+      .list-item {
+        font-size: 28upx;
+        padding: 10upx 20upx;
+        background-color: #f1f2f6;
+        border-radius: 10upx;
+        margin: 0 20upx 20upx 0;
+        transition: all 350ms;
+        color: #3d3d3d;
+
+        &:active {
+          background-color: rgb(216, 216, 216);
+        }
+      }
+    }
   }
 
-  .history-list {
-    display: flex;
-    flex-wrap: wrap;
+  .item-pane {
+    margin-top: 20upx;
+    // height: calc(100vh - 148upx);
+    background-color: #fff;
+    box-sizing: border-box;
+    // padding: 20upx;
 
-    .uni-tag {
-      margin-top: 10upx;
-      margin-right: 10upx;
+    .loading-container,
+    .no-data {
+      text-align: center;
+      padding: 20upx 0;
+      font-size: 28upx;
+      color: #ccc;
+      letter-spacing: 2px;
+    }
+
+    .serach-result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80upx;
+      border-bottom: 1upx solid #f0f0f0;
+      transition: all 350ms;
+      padding: 10upx 20upx;
+
+      &:active {
+        background-color: rgb(216, 216, 216);
+      }
+      text {
+        font-size: 28upx;
+      }
     }
   }
 }

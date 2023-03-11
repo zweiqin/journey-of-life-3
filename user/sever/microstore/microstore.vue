@@ -225,7 +225,6 @@ export default {
           break
 
         case 'share':
-          console.log('我擦', goodsInfo)
           this.setWexinShare(
             {
               title: goodsInfo.name,
