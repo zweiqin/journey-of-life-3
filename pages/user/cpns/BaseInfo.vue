@@ -74,7 +74,7 @@
         class="account-item"
         @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })"
       >
-        <view class="account-number"> {{ couponNumber }} </view>
+        <view class="account-number"> {{ $store.getters.couponNumber || 0 }} </view>
         <view class="account-title">优惠劵</view>
       </view>
     </view>
@@ -82,36 +82,10 @@
 </template>
 
 <script>
-import { USER_ID } from '../../../constant'
-import { getCouponListApi } from '../../../api/user'
 export default {
   data() {
     return {
-      userId: null,
-      couponNumber: 0,
     }
-  },
-
-  mounted() {
-    this.userId = uni.getStorageSync(USER_ID)
-    if (this.userId) {
-      this.getCouponNumber()
-    }
-  },
-
-  methods: {
-    async getCouponNumber() {
-      const { data } = await getCouponListApi({
-        page: 1,
-        size: 10,
-        status: 0,
-        userId: 265,
-      })
-
-      console.log(data.count)
-
-      this.couponNumber = data.count
-    },
   },
 }
 </script>

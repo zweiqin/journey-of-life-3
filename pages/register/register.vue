@@ -39,6 +39,17 @@ export default {
 
         return
       }
+
+      if (form.password.length < 6) {
+        uni.showToast({
+          title: '密码至少为六位，请重新输入',
+          duration: 2000,
+          icon: 'none'
+        })
+
+        return
+      }
+
       const data = {
         username: form.mobile,
         password: form.password,

@@ -10,25 +10,33 @@
       ></tui-icon>
       <text v-show="isAllCheck && currentMode === ON_EDIT">全选</text>
       <text v-if="!isAllCheck && currentMode === ON_EDIT"
-        >已选({{ shopCarInfo.cartTotal.checkedGoodsCount }})</text
+        >已选({{
+          shopCarInfo.cartTotal ? shopCarInfo.cartTotal.checkedGoodsCount : 0
+        }})</text
       >
       <text v-if="currentMode === ON_CONFIRM"
         >已选({{ deleteList.length }})</text
       >
     </view>
-    <view v-show="currentMode === ON_EDIT" class="info-wrapper">
+    <view
+      v-show="currentMode === ON_EDIT && shopCarInfo.cartTotal"
+      class="info-wrapper"
+    >
       <view class="total"
         >合计：<text
-          >￥{{ shopCarInfo.cartTotal.checkedGoodsAmount }}</text
+          >￥{{
+            shopCarInfo.cartTotal ? shopCarInfo.cartTotal.checkedGoodsAmount : 0
+          }}</text
         ></view
       >
       <button
         @click="handleToPay"
         class="uni-btn"
         :style="{
-          background: shopCarInfo.cartTotal.checkedGoodsCount
-            ? 'linear-gradient(to right, #ed374d, #fa793f)'
-            : '#777',
+          background:
+            shopCarInfo.cartTotal && shopCarInfo.cartTotal.checkedGoodsCount
+              ? 'linear-gradient(to right, #ed374d, #fa793f)'
+              : '#777',
         }"
       >
         结算

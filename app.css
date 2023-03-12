@@ -213,3 +213,8 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 text {
   line-height: 1.5;
 } */
+
+.tui-badge.tui-danger.tui-badge-scale{
+  box-shadow: 0px 0 1upx #ed3f14;
+  border: 4upx solid #fff;
+}

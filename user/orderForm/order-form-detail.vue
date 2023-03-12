@@ -232,7 +232,7 @@ export default {
             userId: getUserId(),
             payType: 1,
           }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
+            const payData = JSON.parse(res.data.h5PayUrl);
             const form = document.createElement("form");
             form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");

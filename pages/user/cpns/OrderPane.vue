@@ -48,9 +48,9 @@
               :scaleRatio="0.8"
               translateX="40%"
               top="-6rpx"
-              v-show="conOrderNumbers[item.numberKey]"
+              v-show="$store.getters.communityOrderInfo[item.numberKey]"
             >
-              {{ conOrderNumbers[item.numberKey] }}
+              {{ $store.getters.communityOrderInfo[item.numberKey] }}
             </tui-badge>
           </view>
         </swiper-item>
@@ -61,43 +61,18 @@
 
 <script>
 import { shequOrderMenus, shopOrderMneus } from '../data'
-import { getOrderNumberApi } from '../../../api/community-center'
-import { USER_ID } from '../../../constant'
 export default {
   data() {
     return {
       currentMenu: 0,
       shequOrderMenus: Object.freeze(shequOrderMenus),
       shopOrderMneus: Object.freeze(shopOrderMneus),
-      conOrderNumbers: {},
-      userId: null,
     }
-  },
-
-  mounted() {
-    this.userId = uni.getStorageSync(USER_ID)
   },
 
   methods: {
     handleSwitchSwiper(e) {
       this.currentMenu = e.detail.current
-      if (
-        e.detail.current === 1 &&
-        JSON.stringify(this.conOrderNumbers) === '{}' &&
-        this.userId
-      ) {
-        this.getOrderNumbers()
-      }
-    },
-
-    async getOrderNumbers() {
-      const res = await getOrderNumberApi({
-        userId: this.userId,
-      })
-
-      if (res.statusCode === 20000) {
-        this.conOrderNumbers = res.data
-      }
     },
   },
 }

@@ -26,9 +26,9 @@
             :scaleRatio="0.8"
             translateX="40%"
             top="-6rpx"
-            v-show="shopGoodsNumber"
+            v-show="$store.getters.shopCarNumber"
           >
-            {{ shopGoodsNumber || 0 }}
+            {{ $store.getters.shopCarNumber || 0 }}
           </tui-badge>
         </view>
 
@@ -53,9 +53,9 @@
             translateX="40%"
             top="-6rpx"
             right="50rpx"
-            v-show="userInfo.collectCount"
+            v-show="$store.getters.historyInfo.collection"
           >
-            {{ userInfo.collectCount || 0 }}
+            {{ $store.getters.historyInfo.collection || 0 }}
           </tui-badge>
         </view>
 
@@ -80,9 +80,9 @@
             :scaleRatio="0.8"
             translateX="40%"
             top="-6rpx"
-            v-show="userInfo.footprintCount"
+            v-show="$store.getters.historyInfo.footPrint"
           >
-            {{ userInfo.footprintCount || 0 }}
+            {{ $store.getters.historyInfo.footPrint || 0 }}
           </tui-badge>
         </view>
 
@@ -107,9 +107,9 @@
             translateX="40%"
             top="-6rpx"
             right="50rpx"
-            v-show="userInfo.rssCount"
+            v-show="$store.getters.historyInfo.follow"
           >
-            {{ userInfo.rssCount || 0 }}
+            {{ $store.getters.historyInfo.follow || 0 }}
           </tui-badge>
         </view>
 
@@ -145,35 +145,17 @@
 </template>
 
 <script>
+import { USER_INFO } from 'constant'
 import { myEquity } from '../data'
-import { USER_ID, user_INFO } from '../../../constant'
-import { getCarShopNumberApi } from '../../../api/goods'
+
 export default {
   data() {
     return {
       myEquity: Object.freeze(myEquity),
-      userId: '',
-      userInfo: {},
-      shopGoodsNumber: 0,
-    }
-  },
-
-  mounted() {
-    this.userId = uni.getStorageSync(USER_ID)
-    if (this.userId) {
-      this.userInfo = uni.getStorageSync(user_INFO)
-      this.getShopCarNumber()
     }
   },
 
   methods: {
-    async getShopCarNumber() {
-      const { data } = await getCarShopNumberApi({
-        userId: this.userId,
-      })
-
-      this.shopGoodsNumber = data
-    },
   },
 }
 </script>

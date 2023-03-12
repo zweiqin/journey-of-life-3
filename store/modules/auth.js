@@ -10,6 +10,11 @@ export default {
       userId: uni.getStorageSync(USER_ID),
       userInfo: uni.getStorageSync(USER_INFO),
       userToken: uni.getStorageSync(USER_TOKEN),
+      historyInfo: {
+        collection: 0,
+        footPrint: 0,
+        follow: 0,
+      },
     }
   },
 
@@ -21,7 +26,11 @@ export default {
     },
 
     [CHNAGE_USER_INFO](state, userInfo) {
+      console.log("你妈的");
       state.userInfo = userInfo
+      state.historyInfo.collection = userInfo.collectCount || 0
+      state.historyInfo.footprintCount = userInfo.footprintCount || 0
+      state.historyInfo.follow = userInfo.rssCount || 0
       uni.setStorageSync(USER_INFO, userInfo)
     },
 
@@ -85,6 +94,7 @@ export default {
     },
 
     refrshUserInfo({ state, commit }) {
+      console.log(11111);
       refrshUserInfoApi({
         userId: state.userId,
       }).then(({ data }) => {
