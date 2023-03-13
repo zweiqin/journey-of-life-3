@@ -2,7 +2,7 @@
   <view class="order-detail" v-if="calcOrderMsg">
     <!-- <JHeader title="" width="50" height="50"></JHeader> -->
     <view class="back">
-      <img
+      <image
         src="../../static/images/user/back.png"
         alt=""
         class="back-img"
@@ -25,7 +25,7 @@
           >
         </view>
         <view class="location"
-          ><img
+          ><image
             src="../../static/images/icon/location-logo.png"
             alt=""
             class="location-logo"

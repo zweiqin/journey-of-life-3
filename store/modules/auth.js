@@ -22,11 +22,9 @@ export default {
 		[CHNAGE_USER_ID](state, userId) {
 			state.userId = userId
 			uni.setStorageSync(USER_ID, userId)
-			console.log('执行了妈的', userId, state.userId)
 		},
 
     [CHNAGE_USER_INFO](state, userInfo) {
-      console.log("你妈的");
       state.userInfo = userInfo
       state.historyInfo.collection = userInfo.collectCount || 0
       state.historyInfo.footprintCount = userInfo.footprintCount || 0

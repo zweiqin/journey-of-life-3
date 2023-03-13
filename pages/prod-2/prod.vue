@@ -529,8 +529,6 @@ export default {
             return;
           }
 
-          console.log("你妈的", productInfo);
-
           return
           uni.setStorageSync(PAY_GOODS, {
             ...this.specificationListInfo,

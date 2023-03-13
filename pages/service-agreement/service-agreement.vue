@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <tui-sticky stickyTop="0" :scrollTop="scrollTop" stickyHeight="0rpx">
+   <!-- <tui-sticky stickyTop="0" :scrollTop="scrollTop" stickyHeight="0rpx">
       <template v-slot:header>
         <NewHeader
           @back="handleBack"
@@ -12,7 +12,7 @@
         >
         </NewHeader>
       </template>
-    </tui-sticky>
+    </tui-sticky> -->
 
     <h3
       style="
@@ -31,7 +31,7 @@
           font-weight: bold;
           text-transform: none;
         "
-        >提示条款</span
+        >服务协议</span
       >
     </h3>
     <p style="background-color: #ffffff; line-height: 22.5pt; margin: 0pt">

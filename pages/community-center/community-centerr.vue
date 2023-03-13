@@ -538,7 +538,7 @@
 
     <DiscountPopup v-model="showPopup"></DiscountPopup>
     <DispatchPopup v-model="show"></DispatchPopup>
-    <AppRoleApply v-model="isShowPopup"></AppRoleApply>
+    <!-- <AppRoleApply v-model="isShowPopup"></AppRoleApply> -->
     <!-- #ifdef APP -->
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
@@ -590,6 +590,8 @@ export default {
       uni.setStorageSync(IN_TIMES, true)
     }
     // #endif
+
+    
   },
   methods: {
     handleToServiceListHome(item) {
@@ -630,7 +632,7 @@ export default {
   },
   mounted() {
     // #ifdef APP
-    this.$refs.checkedVersion.checkedVersion()
+    this.$refs.checkedVersion.checkedVersion(true)
     // #endif
   },
 }
