@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { refrshUserInfoApi } from '../../api/user'
 import BaseInfo from './cpns/BaseInfo'
 import OrderPane from './cpns/OrderPane.vue'
 import Equity from './cpns/Equity.vue'

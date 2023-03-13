@@ -18,12 +18,12 @@ export default {
     }
   },
 
-  mutations: {
-    [CHNAGE_USER_ID](state, userId) {
-      state.userId = userId
-      uni.setStorageSync(USER_ID, userId)
-      console.log('执行了妈的', userId, state.userId)
-    },
+	mutations: {
+		[CHNAGE_USER_ID](state, userId) {
+			state.userId = userId
+			uni.setStorageSync(USER_ID, userId)
+			console.log('执行了妈的', userId, state.userId)
+		},
 
     [CHNAGE_USER_INFO](state, userInfo) {
       console.log("你妈的");
@@ -34,73 +34,79 @@ export default {
       uni.setStorageSync(USER_INFO, userInfo)
     },
 
-    [CHNAGE_USER_TOKEN](state, token) {
-      state.userToken = token
-      uni.setStorageSync(USER_TOKEN, token)
-    },
-  },
+		[CHNAGE_USER_TOKEN](state, token) {
+			state.userToken = token
+			uni.setStorageSync(USER_TOKEN, token)
+		},
+	},
 
-  actions: {
-    loginAction({ commit }, loginData) {
-      return new Promise((resolve, reject) => {
-        userLoginApi({ ...loginData })
-          .then(({ data }) => {
-            commit(CHNAGE_USER_ID, data.userInfo.userId)
-            commit(CHNAGE_USER_INFO, data.userInfo)
-            commit(CHNAGE_USER_TOKEN, data.token)
-            uni.showToast({
-              title: '登录成功',
-            })
-            console.log(data)
-            resolve(data)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
+	actions: {
+		loginAction({ commit }, loginData) {
+			return new Promise((resolve, reject) => {
+				userLoginApi({ ...loginData })
+					.then(({ data }) => {
+						commit(CHNAGE_USER_ID, data.userInfo.userId)
+						commit(CHNAGE_USER_INFO, data.userInfo)
+						commit(CHNAGE_USER_TOKEN, data.token)
+						uni.showToast({
+							title: '登录成功',
+						})
+						console.log(data)
+						resolve(data)
+					})
+					.catch(err => {
+						reject(err)
+					})
+			})
+		},
 
-    logout({ commit }) {
-      uni.clearStorageSync()
-      uni.showToast({
-        title: '退出成功',
-      })
-      commit(CHNAGE_USER_ID, '')
-      commit(CHNAGE_USER_INFO, {})
-      commit(CHNAGE_USER_TOKEN, '')
-      setTimeout(() => {
-        uni.switchTab({
-          url: '/pages/community-center/community-centerr',
-        })
-      }, 2000)
-    },
+		logout({ commit }) {
+			uni.showToast({
+				title: '退出成功',
+			})
+			uni.removeStorageSync(USER_ID)
+			uni.removeStorageSync(USER_INFO)
+			uni.removeStorageSync(USER_TOKEN)
+			commit(CHNAGE_USER_ID, '')
+			commit(CHNAGE_USER_INFO, {})
+			commit(CHNAGE_USER_TOKEN, '')
+			setTimeout(() => {
+				uni.clearStorageSync()
 
-    updateUserInfo({ state, dispatch }, updateData) {
-      const originData = {
-        nickname: state.userInfo.nickName,
-        avatar: state.userInfo.avatarUrl,
-        password: state.userInfo.password,
-        id: state.userId,
-      }
+				uni.switchTab({
+					url: '/pages/community-center/community-centerr',
+				})
+			}, 2000)
+		},
 
-      originData[updateData['key']] = updateData['value']
-      updateUserInfoApi(originData).then(() => {
-        uni.showToast({
-          title: '修改成功',
-        })
+		updateUserInfo({ state, dispatch }, updateData) {
+			const originData = {
+				nickname: state.userInfo.nickName,
+				avatar: state.userInfo.avatarUrl,
+				password: state.userInfo.password,
+				id: state.userId,
+			}
 
-        dispatch('refrshUserInfo')
-      })
-    },
+			originData[updateData['key']] = updateData['value']
+			updateUserInfoApi(originData).then(() => {
+				uni.showToast({
+					title: '修改成功',
+				})
 
-    refrshUserInfo({ state, commit }) {
-      console.log(11111);
-      refrshUserInfoApi({
-        userId: state.userId,
-      }).then(({ data }) => {
-        commit(CHNAGE_USER_INFO, data)
-        commit(CHNAGE_USER_ID, data.userId)
-      })
-    },
-  },
+				dispatch('refrshUserInfo')
+			})
+		},
+
+		refrshUserInfo({ state, commit }) {
+			if (!state.userId) {
+				return
+			}
+			refrshUserInfoApi({
+				userId: state.userId,
+			}).then(({ data }) => {
+				commit(CHNAGE_USER_INFO, data)
+				commit(CHNAGE_USER_ID, data.userId)
+			})
+		},
+	},
 }

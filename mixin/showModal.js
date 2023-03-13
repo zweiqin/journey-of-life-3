@@ -8,6 +8,7 @@ export default () => {
 		},
 		methods: {
 			_handleClickTuiModel(e, cb, backUrl) {
+				this.$data._isShowTuiModel = false
 				if (e.index) {
 					if (typeof cb === 'string') {
 						switch (cb) {
@@ -25,7 +26,6 @@ export default () => {
 					}
 				} else {
 					this.$data._isShowTuiModel = false
-
 				}
 				this.$data._opInfo = null
 			},

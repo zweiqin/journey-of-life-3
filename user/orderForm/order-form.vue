@@ -28,7 +28,7 @@
 							<view class="name">{{ goods.goodsName }}</view>
 
 							<view class="good-sp-pr">
-								<view class="sp">标准</view>
+								<view class="sp">{{goods.specifications.join(',') }}</view>
 								<view class="pr">￥{{ goods.price }}</view>
 							</view>
 						</view>

@@ -7,7 +7,7 @@
         :size="28"
         name="arrowleft"
       ></tui-icon>
-      <text>购物车</text>
+      <text class="title">全部商品</text>
     </view>
 
     <button
@@ -45,19 +45,28 @@ export default {
 <style lang="less" scoped>
 @import '../../../../style/mixin.less';
 .shop-car-header {
+	border-radius: 0upx 0upx 24upx 24upx;
+	background: #FFFFFF;
   .h-flex();
   font-size: 28upx;
   width: 100%;
   height: 120upx;
   box-sizing: border-box;
-  padding-right: 30upx;
+  
 
   .uni-btn {
     font-size: 28upx;
+		color: #3A3629;
+		padding-right: 32upx;
   }
 
   .title-wrapper {
+		padding-left: 26upx;
     .h-flex(flex-start);
+		.title{
+			font-size: 28upx;
+			color: #8F8D85;
+		}
   }
 }
 </style>
