@@ -267,7 +267,7 @@ export default {
 
 		.detail-site {
 			// font-size: @f14;
-			font-size: 32upx;
+			font-size: 28upx;
 			font-weight: 500;
 			margin: 20upx 0;
 			color: #141000;
