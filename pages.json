@@ -696,14 +696,14 @@
 				{
 					"path": "site/site-manage",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "地址管理",
 						"usingComponents": {}
 					}
 				},
 				{
 					"path": "site/add-site",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "添加收货地址",
 						"usingComponents": {}
 					}
 				},
@@ -859,7 +859,7 @@
 				{
 					"path": "sever/view-history",
 					"style": {
-						"navigationBarTitleText": "历史"
+						"navigationBarTitleText": "商品"
 					}
 				},
 				{

@@ -13,7 +13,7 @@
             class="show"
           />
         </view>
-        <view class="search-box">
+        <view class="search-box" @click="goToSearch">
           <view class="search">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
@@ -594,6 +594,10 @@ export default {
     
   },
   methods: {
+		goToSearch() {
+			uni.navigateTo({ url: '/community-center/search' })
+		},
+
     handleToServiceListHome(item) {
       console.log('更多服务分类列表', item)
       this.value = item
