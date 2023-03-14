@@ -1,5 +1,5 @@
 import { queryCustomer, createChat, queryChatList, queryChatMessage, queryChatMessageBack } from '../../api/customerService'
-import { CHANGE_CUSTOMER_SERVICE_INFO, CHANGE_WS_INFO, CHANGE_CHAT_LIST } from './type'
+import { CHANGE_CUSTOMER_SERVICE_INFO, CHANGE_WS_INFO, CHANGE_WSINFO_INFO, CHANGE_CHAT_LIST } from './type'
 import { getUserId } from '../../utils'
 // import { USER_INFO } from '../../../constant' // uni.getStorageSync(USER_INFO)
 
@@ -11,6 +11,7 @@ export default {
 	state: () => ({
 		customerServiceInfo: [ { letter: '我的客服', data: [] } ],
 		chatListData: [],
+		wsHandleInfo: '',
 		wsHandle: ''
 		// currentMode: ON_EDIT,
 		// deleteList: []
@@ -22,6 +23,10 @@ export default {
 
 		[CHANGE_CHAT_LIST](state, chatListData) {
 			state.chatListData = chatListData
+		},
+
+		[CHANGE_WSINFO_INFO](state, wsHandleInfo) {
+			state.wsHandleInfo = wsHandleInfo
 		},
 
 		[CHANGE_WS_INFO](state, wsHandle) {
@@ -143,12 +148,21 @@ export default {
 		},
 
 		// 进入聊天页面，创建聊天，存储wsHandle
-		joinCustomerServiceChat({ commit, rootState, state }, { ref, wsHandle }) {
+		joinCustomerServiceChat({ commit, rootState, state }, { ref, wsHandle, wsHandleInfo }) {
+			commit('CHANGE_WSINFO_INFO', wsHandleInfo)
 			commit('CHANGE_WS_INFO', wsHandle)
-			wsHandle.onopen = ref.onOpen
-			wsHandle.onmessage = ref.onMessage
-			wsHandle.onclose = ref.onError
-			wsHandle.onerror = ref.onError
+			// wsHandle.onopen = ref.onOpen
+			// wsHandle.onmessage = ref.onMessage
+			// wsHandle.onclose = ref.onError
+			// wsHandle.onerror = ref.onError
+			wsHandle.onOpen(ref.onOpen)
+			wsHandle.onMessage(ref.onMessage)
+			wsHandle.onClose(ref.onError)
+			wsHandle.onError(ref.onError)
+			wsHandleInfo.onOpen(ref.onOpenInfo)
+			wsHandleInfo.onMessage(ref.onMessageInfo)
+			wsHandleInfo.onClose(ref.onErrorInfo)
+			wsHandleInfo.onError(ref.onErrorInfo)
 		},
 
 		// 查消息

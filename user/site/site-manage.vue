@@ -164,10 +164,10 @@ export default {
 		this.isSelect = !!options.appoint;
 	},
 
-	onShow() {
-		console.log("sb");
-		this.getAddressList();
-	},
+  onShow() {
+    // console.log("sb");
+    this.getAddressList();
+  },
 
 	computed: {
 		backUrl() {
