@@ -196,7 +196,7 @@ export default {
   },
 
   onShow() {
-    console.log("sb");
+    // console.log("sb");
     this.getAddressList();
   },
 

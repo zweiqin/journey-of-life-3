@@ -93,7 +93,6 @@ export default {
 
   onLoad(params) {
     this.code = params.code
-    console.log("你妈的", this.code);
   },
 
   destroyed() {

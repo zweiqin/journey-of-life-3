@@ -12,34 +12,101 @@
 
 		<scroll-view
 			refresher-enabled refresher-background="#3f3d3d" scroll-y="true" class="scroll-Y"
-			:refresher-triggered="isRefresherTriggered"
+			:refresher-triggered="isRefresherTriggered" scroll-with-animation :scroll-top="scrollTop"
 			@scrolltoupper="handleScrolltoupper" @refresherrefresh="handleRefresherrefresh"
 		>
-			<view v-for="item in groupMessages" :key="item.message.id" class="message-wrapper">
-				<view v-if="item.event === '1'" class="message-slot">
-					<view class="time-wrapper"> <text class="time">10:26</text> </view>
-					<view class="kefu-wrapper">
+			<view id="scroll-view-chat" @click="isShowBubblePopup = false">
+				<view v-for="item in groupMessages" :key="item.message.id" class="message-wrapper">
+					<!-- <view v-if="item.event === '1'" class="message-slot">
+						<view class="time-wrapper"> <text class="time">10:26</text> </view>
+						<view class="kefu-wrapper">
 						<view class="words">您好！有什么可以帮到您的吗？</view>
-					</view>
-					<view class="my-wrapper">
+						</view>
+						<view class="my-wrapper">
 						<view class="words">没有，再见</view>
-					</view>
-				</view>
-				<view v-else class="message-slot">
-					<view v-if="item.message.isGroup === true">
-						<view v-if="item.message.type === 'text'">
+						</view>
+						</view> -->
+					<view class="message-slot">
+						<view v-if="item.message.isGroup === true">
 							<view class="time-wrapper">
-								<text
-									class="time"
-								>
+								<text class="time">
 									{{ timestampToTime(item.message.sendTime) }}
 								</text>
 							</view>
-							<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
-								<view class="words">{{ item.message.content }}</view>
+							<view v-if="item.message.type === 'text'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="words">{{ item.message.content }}</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="words">{{ item.message.content }}</view>
+								</view>
 							</view>
-							<view v-else class="kefu-wrapper">
-								<view class="words">{{ item.message.content }}</view>
+
+							<view v-else-if="item.message.type === 'image'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="image">
+										<image
+											style="width: 350upx;" class="img" :src="item.message.content" mode="widthFix"
+											@click="preview(item.message.content)"
+										/>
+									</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="image">
+										<image
+											style="width: 350upx;" class="img" :src="item.message.content" mode="widthFix"
+											@click="preview(item.message.content)"
+										/>
+									</view>
+								</view>
+							</view>
+
+							<view v-else-if="item.message.type === 'order'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="order">
+										<tui-card :title="{ text: '订单' }" :tag="{ text: item.message.content.orderSn }" full border>
+											<template #body>
+												<view style="padding: 6px 10px;">订单状态：{{ item.message.content.orderStatusText }}</view>
+												<view style="padding: 6px 10px;">商品总费用：{{ item.message.content.goodsPrice }}</view>
+												<view style="padding: 6px 10px;">实付费用：{{ item.message.content.actualPrice }}</view>
+												<view style="padding: 6px 10px;">收货人手机号：{{ item.message.content.mobile }}</view>
+											</template>
+										</tui-card>
+									</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="order">
+										<tui-card :title="{ text: '订单' }" :tag="{ text: item.message.content.orderSn }" full border>
+											<template #body>
+												<view style="padding: 6px 10px;">订单状态：{{ item.message.content.orderStatusText }}</view>
+												<view style="padding: 6px 10px;">商品总费用：{{ item.message.content.goodsPrice }}</view>
+												<view style="padding: 6px 10px;">实付费用：{{ item.message.content.actualPrice }}</view>
+												<view style="padding: 6px 10px;">收货人手机号：{{ item.message.content.mobile }}</view>
+											</template>
+										</tui-card>
+									</view>
+								</view>
+							</view>
+
+							<view v-else-if="item.message.type === 'goods'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="goods">
+										<tui-card :title="{ text: '商品' }" :tag="{ text: item.message.content.goodsSn }" full border>
+											<template #body>
+												<view style="padding: 6px 10px;">商品名称：{{ item.message.content.goodsName }}</view>
+											</template>
+										</tui-card>
+									</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="goods">
+										<tui-card :title="{ text: '商品' }" :tag="{ text: item.message.content.goodsSn }" full border>
+											<template #body>
+												<view style="padding: 6px 10px;">商品名称：{{ item.message.content.goodsName }}</view>
+											</template>
+										</tui-card>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -49,23 +116,35 @@
 
 		<view class="op-footer">
 			<view class="send-wrapper">
-				<input
-					v-model="words" type="text" placeholder="请输入..." confirm-type="send"
-					@confirm="handleSendMessage"
-				/>
+				<input v-model="words" type="text" placeholder="请输入..." confirm-type="send" @confirm="handleSendMessage" />
 			</view>
 
-			<!-- <image
-				class="upload-img"
-				src="../../static/images/user/up-img.png"
-				mode=""
-				@click="handleSendImg"
-				/> -->
+			<view class="upload-container">
+				<tui-bubble-popup
+					ref="refBubblePopup" :show="isShowBubblePopup" :mask="false" position="absolute"
+					direction="bottom"
+					width="180rpx" right="0" top="0rpx" translate-y="-110%"
+					triangle-right="28rpx" triangle-bottom="-22rpx"
+				>
+					<view class="tui-menu-item" @click="handleSendImg">发送图片</view>
+					<view class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
+					<view class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
+				</tui-bubble-popup>
+				<image class="upload" src="../../static/images/wuliu/add.png" mode="" @click="isShowBubblePopup = !isShowBubblePopup" />
+			</view>
 		</view>
+		<tui-bottom-popup :show="isShowOrderPopup" @close="handleClosePopup('Order')">
+			<OrderList v-if="isShowOrderPopup" @send="handleSend"></OrderList>
+		</tui-bottom-popup>
+		<tui-bottom-popup :show="isShowGoodsPopup" @close="handleClosePopup('Goods')">
+			<GoodsList v-if="isShowGoodsPopup" @send="handleSend"></GoodsList>
+		</tui-bottom-popup>
 	</view>
 </template>
 
 <script>
+import OrderList from './components/order-list.vue'
+import GoodsList from './components/goods-list.vue'
 import {
 	BASE_WS_API
 } from '../../config'
@@ -78,6 +157,8 @@ import {
 } from '../../constant'
 
 export default {
+	name: 'ChatDetail',
+	components: { OrderList, GoodsList },
 	data() {
 		return {
 			isRefresherTriggered: false,
@@ -85,7 +166,11 @@ export default {
 			chat: '',
 			name: '',
 			userInfo: uni.getStorageSync(USER_INFO),
-			groupMessages: []
+			groupMessages: [],
+			scrollTop: '',
+			isShowBubblePopup: false,
+			isShowOrderPopup: false,
+			isShowGoodsPopup: false
 		}
 	},
 	onLoad(options) {
@@ -94,72 +179,106 @@ export default {
 		if (this.chat) {
 			this.$store.dispatch('customerService/joinCustomerServiceChat', {
 				ref: this,
-				wsHandle: new WebSocket(`${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`)
+				// wsHandle: new WebSocket(`${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`),
+				wsHandleInfo: uni.connectSocket({
+					url: `${BASE_WS_API}/APP/${getUserId()}`,
+					// data() {
+					// 	return {
+					// 		x: '',
+					// 		y: ''
+					// 	}
+					// },
+					// header: {
+					// 	'content-type': 'application/json'
+					// },
+					// protocols: [ 'protocol1' ],
+					// method: 'GET',
+					complete: () => { }
+				}),
+				wsHandle: uni.connectSocket({
+					url: `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`,
+					complete: () => { }
+				})
 			})
 		}
 		// console.log(this.chat, `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`)
 	},
 	methods: {
 		timestampToTime,
+		onOpenInfo() {
+			console.log('onOpenInfo连接成功')
+		},
+		onMessageInfo(evt) {
+			const dataAll = JSON.parse(evt.data)
+			const data = JSON.parse(dataAll.message)
+			this.groupMessages.push(data)
+			console.log(data)
+			this.scrollToBottom()
+			if (data.message.fromUser.id === this.userInfo.userId) return
+		},
+		onErrorInfo() {
+			console.log('onErrorInfo出错了')
+			uni.showLoading({
+				title: '断线了，正在重新连接......',
+				mask: true
+			})
+		},
+		onCloseInfo() {
+			console.log('onCloseInfo关闭了')
+		},
+
 		onOpen() {
-			console.log('连接成功')
+			console.log('onOpen连接成功')
 			this.$store.dispatch('customerService/queryChatMessage', {
 				chatId: this.chat,
 				limit: 30,
 				endTime: '',
 				order: 'desc'
 			}).then((res) => {
+				const tempDate = Date.now()
 				this.groupMessages = res.map((item) => JSON.parse(item.message)).reverse()
-					.concat(this.groupMessages)
+					.concat([ {
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'text',
+							sendTime: tempDate,
+							content: '您好，请问有什么能够帮到您？',
+							toContactId: getUserId(),
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: this.chat,
+								displayName: '客服',
+								avatar: '/static/logo.png'
+							},
+							isGroup: true
+						}
+					} ])
+				this.scrollToBottom()
 			})
-			// if (_this.action.method === 'createGame') {
-			// 	_this.send(_this.action)
-			// }
 		},
-
 		onMessage(evt) {
-			const _this = this
-			const dataAll = JSON.parse(evt.data)
-			const data = JSON.parse(dataAll.message)
-			this.groupMessages.push(data)
-			console.log(data)
-			if (data.message.fromUser.id === this.userInfo.userId) return
+			console.log('onMessage收到消息', evt)
 		},
-
 		onError() {
-			console.log('出错了')
-			const _this = this
+			console.log('onError出错了')
 			uni.showLoading({
 				title: '断线了，正在重新连接......',
 				mask: true
 			})
-			_this.isReconnect = true
-			if (_this.action.method === 'createGame') {
-				// console.log('发送')
-				_this.action.method = 'rejoinGame'
-				_this.init(_this.action)
-			}
-			if (_this.action.method === 'joinGame') {
-				_this.init(_this.action)
-			}
-			if (_this.action.method === 'rejoinGame') {
-				_this.init(_this.action)
-			}
 		},
 		onClose() {
-			console.log('关闭了')
+			console.log('onClose关闭了')
 		},
 
 		send(sendMsg) {
 			if (typeof sendMsg === 'string') {
-				this.wsHandle.send(sendMsg)
+				// send(sendMsg)
 			} else if (typeof sendMsg === 'object') {
 				const messages = JSON.stringify(sendMsg)
-				this.$store.getters.wsHandle.send(messages)
-				if (messages.event === 'close') {
-					// 关闭websocket连接
-					this.wsHandle.close()
-				}
+				this.$store.getters.wsHandle.send({ data: messages })
 			}
 		},
 
@@ -173,13 +292,14 @@ export default {
 					duration: 2000
 				})
 			}
+			const tempDate = Date.now()
 			this.send({
 				event: '',
 				message: {
-					id: Date.parse(new Date()),
+					id: tempDate,
 					status: 'succeed',
 					type: 'text',
-					sendTime: Date.parse(new Date()),
+					sendTime: tempDate,
 					content: this.words,
 					toContactId: this.chat,
 					fileSize: 0,
@@ -197,22 +317,97 @@ export default {
 
 		// 点击选择图片
 		handleSendImg() {
-			//  uni.chooseImage({
-			//   success: (chooseImageRes) => {
-			//     const tempFilePaths = chooseImageRes.tempFilePaths;
-			//     uni.uploadFile({
-			//       url: 'https://www.example.com/upload', //仅为示例，非真实的接口地址
-			//       filePath: tempFilePaths[0],
-			//       name: 'file',
-			//       formData: {
-			//         'user': 'test'
-			//       },
-			//       success: (uploadFileRes) => {
-			//         console.log(uploadFileRes.data);
-			//       }
-			//     });
-			//   }
-			//  });
+			uni.chooseImage({
+				count: 1,
+				success: (chooseImageRes) => {
+					uni.showLoading({
+						title: '图片上传中...'
+					})
+					const tempFilePaths = chooseImageRes.tempFilePaths
+					uni.uploadFile({
+						url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload', // 仅为示例，非真实的接口地址
+						filePath: tempFilePaths[0],
+						name: 'file',
+						formData: {
+							'user': 'test'
+						},
+						success: (uploadFileRes) => {
+							console.log(uploadFileRes, uploadFileRes.data)
+							const messageUrl = JSON.parse(uploadFileRes.data).data.url
+							const tempDate = Date.now()
+							this.send({
+								event: '',
+								message: {
+									id: tempDate,
+									status: 'succeed',
+									type: 'image',
+									sendTime: tempDate,
+									content: messageUrl,
+									toContactId: this.chat,
+									fileSize: 0,
+									fileName: '',
+									fromUser: {
+										id: this.userInfo.userId,
+										displayName: this.userInfo.nickName,
+										avatar: this.userInfo.avatarUrl
+									},
+									isGroup: true
+								}
+							})
+							uni.showToast({
+								title: '图片上传成功'
+							})
+							uni.hideLoading()
+						},
+						fail: () => {
+							uni.hideLoading()
+							this.ttoast('图片上传失败')
+						},
+						complete: () => {
+							uni.hideLoading()
+						}
+					})
+				}
+			})
+		},
+		handlePopup(meaning) {
+			this.isShowBubblePopup = false
+			if (meaning === 'Order') {
+				this.isShowOrderPopup = true
+			} else if (meaning === 'Goods') {
+				this.isShowGoodsPopup = true
+			}
+		},
+		handleClosePopup(meaning) {
+			if (meaning === 'Order') {
+				this.isShowOrderPopup = false
+			} else if (meaning === 'Goods') {
+				this.isShowGoodsPopup = false
+			}
+		},
+		handleSend(obj) {
+			this.isShowGoodsPopup = false
+			this.isShowOrderPopup = false
+			const tempDate = Date.now()
+			this.send({
+				event: '',
+				message: {
+					id: tempDate,
+					status: 'succeed',
+					type: obj.meaning,
+					sendTime: tempDate,
+					content: obj.msg,
+					toContactId: this.chat,
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: this.userInfo.userId,
+						displayName: this.userInfo.nickName,
+						avatar: this.userInfo.avatarUrl
+					},
+					isGroup: true
+				}
+			})
 		},
 
 		// 回退
@@ -231,7 +426,7 @@ export default {
 			// console.log(e, timestampToTime(this.groupMessages[0].message.sendTime))
 			this.$store.dispatch('customerService/queryChatMessageBack', {
 				chatId: this.chat,
-				limit: 30,
+				limit: 10,
 				endTime: timestampToTime(this.groupMessages[0].message.sendTime)
 				// order: 'desc'
 			}).then((res) => {
@@ -240,157 +435,226 @@ export default {
 				this.groupMessages = res.map((item) => JSON.parse(item.message)).concat(this.groupMessages)
 				this.isRefresherTriggered = false
 			})
+		},
+		// onPageScroll(e) {
+		// 	console.log(e, 1)
+		// },
+
+		scrollToBottom() {
+			this.$nextTick(() => {
+				uni.createSelectorQuery().in(this)
+					.select('#scroll-view-chat')
+					.boundingClientRect((res) => {
+						const top = res.height
+						if (top > 0) {
+							this.scrollTop = top
+						}
+					})
+					.exec()
+			})
+		},
+
+		// 预览图
+		preview(index) {
+			// console.log(index)
+			const imgsArray = []
+			imgsArray[0] = index
+
+			uni.previewImage({
+				urls: imgsArray,
+				current: 0
+			})
 		}
 	}
-
-	// onPageScroll(e) {
-	// 	console.log(e, 1)
-	// }
 }
 </script>
 
 <style lang="less" scoped>
-	.chat-detail {
+.chat-detail {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	background-color: #f6f6f5;
+
+	.scroll-Y {
+		flex: 1;
+		height: 0;
+		padding-bottom: 144upx;
+	}
+
+	.header-container {
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
 		width: 100%;
-		height: 100vh;
-		background-color: #f6f6f5;
+		height: 120upx;
+		background-color: #fff;
+		border-radius: 0 0 48upx 48upx;
+		padding: 32upx;
+		box-sizing: border-box;
 
-		.scroll-Y {
-			flex: 1;
-			height: 0;
-			padding-bottom: 144upx;
-		}
+		// &.fixed {
+		// 	position: fixed;
+		// 	top: 0;
+		// 	left: 0;
+		// 	right: 0;
+		// }
 
-		.header-container {
+		.kefu-conatiner {
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
-			width: 100%;
-			height: 120upx;
-			background-color: #fff;
-			border-radius: 0 0 48upx 48upx;
-			padding: 32upx;
-			box-sizing: border-box;
+			justify-content: flex-start;
 
-			// &.fixed {
-			// 	position: fixed;
-			// 	top: 0;
-			// 	left: 0;
-			// 	right: 0;
-			// }
-
-			.kefu-conatiner {
-				display: flex;
-				align-items: center;
-				justify-content: flex-start;
-
-				.back-icon {
-					width: 24upx;
-					height: 48upx;
-				}
-
-				.avatar {
-					width: 80upx;
-					height: 80upx;
-					border-radius: 50%;
-					margin: 0 16upx 0 32upx;
-				}
-
-				.kefu-name {
-					color: #3a3629;
-					font-size: 28upx;
-				}
+			.back-icon {
+				width: 24upx;
+				height: 48upx;
 			}
 
-			.tip {
-				text-align: center;
-				line-height: 56upx;
-				width: 140upx;
-				height: 56upx;
-				border-radius: 100upx;
-				background-color: #f3f3f2;
-				font-size: 24upx;
+			.avatar {
+				width: 80upx;
+				height: 80upx;
+				border-radius: 50%;
+				margin: 0 16upx 0 32upx;
+			}
+
+			.kefu-name {
+				color: #3a3629;
+				font-size: 28upx;
+			}
+		}
+
+		.tip {
+			text-align: center;
+			line-height: 56upx;
+			width: 140upx;
+			height: 56upx;
+			border-radius: 100upx;
+			background-color: #f3f3f2;
+			font-size: 24upx;
+			color: #8f8d85;
+		}
+	}
+
+	.message-wrapper {
+		padding: 32upx;
+		box-sizing: border-box;
+	}
+
+	.message-slot {
+		overflow: hidden;
+
+		.time-wrapper {
+			text-align: center;
+			margin: 20upx 0;
+
+			.time {
+				margin: 0 auto;
+				display: inline-block;
+				padding: 7upx 24upx;
+				line-height: 42upx;
+				background-color: #fff;
+				border-radius: 100px;
 				color: #8f8d85;
 			}
 		}
 
-		.message-wrapper {
-			padding: 32upx;
+		.words {
+			// max-width: 750upx;
+			padding: 24upx;
 			box-sizing: border-box;
+			font-size: 28upx;
+			line-height: 42upx;
+			word-break: break-all;
+			background: #fff;
+			clear: both;
 		}
 
-		.message-slot {
-			overflow: hidden;
-
-			.time-wrapper {
-				text-align: center;
-				margin: 20upx 0;
-
-				.time {
-					margin: 0 auto;
-					display: inline-block;
-					padding: 7upx 24upx;
-					line-height: 42upx;
-					background-color: #fff;
-					border-radius: 100px;
-					color: #8f8d85;
-				}
-			}
-
+		.kefu-wrapper {
 			.words {
-				padding: 24upx;
-				box-sizing: border-box;
-				font-size: 28upx;
-				line-height: 42upx;
-				background: #fff;
-				clear: both;
+				float: left;
+				border-radius: 0px 24px 24px 24px;
 			}
 
-			.kefu-wrapper {
-				.words {
-					float: left;
-					border-radius: 0px 24px 24px 24px;
-				}
+			.image {
+				float: left;
+				border-radius: 0px 24px 24px 24px;
 			}
 
-			.my-wrapper {
-				.words {
-					float: right;
-					background-color: #fff1ca;
-					border-radius: 24px 0 24px 24px;
-				}
+			.goods {
+				float: left;
+				border-radius: 0px 24px 24px 24px;
+			}
+
+			.order {
+				float: left;
+				border-radius: 0px 24px 24px 24px;
 			}
 		}
 
-		.op-footer {
-			position: fixed;
-			bottom: 0;
-			padding: 32upx;
-			box-sizing: border-box;
+		.my-wrapper {
+			.words {
+				float: right;
+				background-color: #fff1ca;
+				border-radius: 24px 0 24px 24px;
+			}
+
+			.image {
+				float: right;
+				background-color: #fff1ca;
+				border-radius: 24px 0 24px 24px;
+			}
+
+			.order {
+				float: right;
+				background-color: #fff1ca;
+				border-radius: 24px 0 24px 24px;
+			}
+
+			.goods {
+				float: right;
+				background-color: #fff1ca;
+				border-radius: 24px 0 24px 24px;
+			}
+		}
+	}
+
+	.op-footer {
+		position: fixed;
+		bottom: 0;
+		padding: 32upx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+
+		.send-wrapper {
+			flex: 1;
+			background-color: brown;
+			background-color: #fff;
+			border-radius: 100upx;
+			height: 80upx;
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
-			width: 100%;
+			padding: 20upx 30upx;
+			box-sizing: border-box;
 
-			.send-wrapper {
-				flex: 1;
-				background-color: brown;
-				background-color: #fff;
-				border-radius: 100upx;
-				height: 80upx;
-				display: flex;
-				align-items: center;
-				padding: 20upx 30upx;
+			input {
+				width: 100%;
+			}
+		}
+
+		.upload-container {
+			position: relative;
+
+			.tui-menu-item {
+				width: 100%;
+				padding: 16upx 10upx;
 				box-sizing: border-box;
-
-				input {
-					width: 100%;
-				}
 			}
 
-			.upload-img {
+			.upload {
 				width: 64upx;
 				height: 64upx;
 				border-radius: 50%;
@@ -401,4 +665,8 @@ export default {
 			}
 		}
 	}
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh!important;
+	}
+}
 </style>

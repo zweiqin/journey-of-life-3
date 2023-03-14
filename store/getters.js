@@ -14,5 +14,6 @@ export default {
 	// 聊天
 	customerServiceInfo: (state) => state.customerService.customerServiceInfo,
 	chatListData: (state) => state.customerService.chatListData,
+	wsHandleInfo: (state) => state.customerService.wsHandleInfo,
 	wsHandle: (state) => state.customerService.wsHandle
 }

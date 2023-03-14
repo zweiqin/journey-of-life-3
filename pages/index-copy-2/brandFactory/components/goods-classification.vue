@@ -162,7 +162,6 @@ export default {
     menus: {
       handler(value) {
         if (value) {
-          console.log("你妈的", value);
           this.currentCategoryId = value[0].value;
           this.getGoodsList();
         }

@@ -10,8 +10,8 @@ module.exports = {
 			jsx: true, // 启用 JSX
 			experimentalObjectRestSpread: false // 启用实验性的 object rest/spread properties 支持
 		},
-		parser: 'esprima' // 建议在项目为uniapp项目时使用
-		// parser: 'babel-eslint' // ESLint 默认使用"espree"（Espree）作为其解析器，你也可以在配置文件中指定一个不同的解析器，"esprima"，Babel-ESLint（'babel-eslint'是一款用于 ESLint 的语法分析器，它支持使用 ESLint 分析所有 babel 兼容的代码）或@typescript-eslint/parser。
+		// parser: 'esprima' // 建议在项目为uniapp项目时使用
+		parser: 'babel-eslint' // ESLint 默认使用"espree"（Espree）作为其解析器，你也可以在配置文件中指定一个不同的解析器，"esprima"，Babel-ESLint（'babel-eslint'是一款用于 ESLint 的语法分析器，它支持使用 ESLint 分析所有 babel 兼容的代码）或@typescript-eslint/parser。
 	},
 	// 在配置文件里配置插件时，可以使用 plugins 关键字来存放插件名字的列表。插件名称可以省略 eslint-plugin- 前缀。插件是相对于 ESLint 进程的当前工作目录解析的
 	// plugins: ['a-plugin'],
@@ -582,7 +582,7 @@ module.exports = {
 			}
 		], // Disallow unnecessary parentheses in <template>
 		'vue/no-irregular-whitespace': 2, // Disallow irregular whitespace in .vue files
-		'vue/no-loss-of-precision': 1, // Disallow literal numbers that lose precision in <template> // 额外的
+		// 'vue/no-loss-of-precision': 1, // Disallow literal numbers that lose precision in <template> // 额外的
 		'vue/no-restricted-syntax': 0, // Disallow specified syntax in <template>
 		'vue/no-sparse-arrays': 2, // Disallow sparse arrays in <template>
 		'vue/no-useless-concat': 2, // Disallow unnecessary concatenation of literals or template literals in <template>
@@ -905,7 +905,7 @@ module.exports = {
 			}
 		],
 		'line-comment-position': 0, // 强制行注释的位置。（字符串或对象）选项："position"：above (默认) 强制行注释只在代码上方单独成行，beside 强制行注释只在代码行后面。
-		'linebreak-style': [2, 'unix'], // -强制使用一致的换行风格。选项："unix" (默认)，"windows"
+		'linebreak-style': [0, 'unix'], // -强制使用一致的换行风格。选项："unix" (默认)，"windows"
 		'lines-around-comment': [
 			// -要求在注释周围有空行。行前和行后备注
 			2,
