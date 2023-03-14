@@ -18,7 +18,7 @@
         />
       </view>
 
-      <button class="uni-btn">搜索</button>
+      <button class="uni-btn" :style="{color: searchValue ? '#f40' : ''}" @click="handleSearchServe">搜索</button>
     </view>
 
     <view class="search-list item-pane">

@@ -120,7 +120,6 @@ export default {
       } finally {
         uni.hideLoading()
       }
-
     }
   }
 }

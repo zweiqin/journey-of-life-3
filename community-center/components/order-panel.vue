@@ -13,16 +13,17 @@
           }}</text>
           <text v-if="data.consigneeName" class="text">{{
             data.consigneeMobile &&
-            (data.consigneeMobile + '').slice(0, 3) + '****' + (data.consigneeMobile + '').slice(7)
+            (data.consigneeMobile + '').slice(0, 3) +
+              '****' +
+              (data.consigneeMobile + '').slice(7)
           }}</text>
 
           <text v-else style="color: #fa5151" @click.stop="toEdit"
             >请完善上门信息</text
           >
 
-          <view class="edit" @click.stop="toEdit">
+          <view class="edit" @click.stop="toEdit" v-if="data.status <= 2">
             <image
-              v-if="data.status <= 2"
               src="../../static/images/con-center/edit.png"
               mode="scaleToFill"
               class="icon"

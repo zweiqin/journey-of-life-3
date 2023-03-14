@@ -6,7 +6,7 @@
     </view> -->
 
 		<view class="navs">
-			<img src="../../static/images/user/back.png" alt="" class="back" @click="handleBack">
+			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack">
 			<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
 				:key="item.value" @click="handleSwitchStatus(item.value)">
 				{{ item.label }}
@@ -192,7 +192,7 @@ export default {
 						userId: getUserId(),
 						payType: 1,
 					}).then(res => {
-						const payData = JSON.parse(res.h5PayUrl)
+						const payData = JSON.parse(res.data.h5PayUrl)
 						const form = document.createElement('form')
 						form.setAttribute('action', payData.url)
 						form.setAttribute('method', 'POST')

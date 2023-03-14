@@ -54,7 +54,7 @@
         <tui-icon color="#ffc117" :size="40" name="coupon"></tui-icon>
         <text>暂无优惠劵~</text>
       </view>
-      <view class="confirm-btn">
+      <view class="confirm-btn" v-if="couponList.length">
         <button
           class="uni-btn"
           :style="{ opacity: currentCouponId ? 1 : 0.5 }"

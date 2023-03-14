@@ -4,14 +4,19 @@ import { userLoginApi, updateUserInfo } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
 
 export default {
-	namespaced: true,
-	state() {
-		return {
-			userId: uni.getStorageSync(USER_ID),
-			userInfo: uni.getStorageSync(USER_INFO),
-			userToken: uni.getStorageSync(USER_TOKEN),
-		}
-	},
+  namespaced: true,
+  state() {
+    return {
+      userId: uni.getStorageSync(USER_ID),
+      userInfo: uni.getStorageSync(USER_INFO),
+      userToken: uni.getStorageSync(USER_TOKEN),
+      historyInfo: {
+        collection: 0,
+        footPrint: 0,
+        follow: 0,
+      },
+    }
+  },
 
 	mutations: {
 		[CHNAGE_USER_ID](state, userId) {
@@ -19,10 +24,13 @@ export default {
 			uni.setStorageSync(USER_ID, userId)
 		},
 
-		[CHNAGE_USER_INFO](state, userInfo) {
-			state.userInfo = userInfo
-			uni.setStorageSync(USER_INFO, userInfo)
-		},
+    [CHNAGE_USER_INFO](state, userInfo) {
+      state.userInfo = userInfo
+      state.historyInfo.collection = userInfo.collectCount || 0
+      state.historyInfo.footprintCount = userInfo.footprintCount || 0
+      state.historyInfo.follow = userInfo.rssCount || 0
+      uni.setStorageSync(USER_INFO, userInfo)
+    },
 
 		[CHNAGE_USER_TOKEN](state, token) {
 			state.userToken = token

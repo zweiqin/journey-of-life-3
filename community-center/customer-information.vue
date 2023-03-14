@@ -161,7 +161,7 @@
               <!-- <button class="btn-show-btn" @click="show = true"></button> -->
 
               <view class="choice-time" @click="show = true">
-                <view class="input">{{ datetimerange || "选择时间" }}</view>
+                <view class="input">{{ datetimerange || '选择时间' }}</view>
                 <img
                   src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
                   alt=""
@@ -310,70 +310,67 @@
   </view>
 </template>
 
-
-
-
 <script>
-import JCity from "../components/JCity/JCity.vue";
-import chooseTime from "./componts/choose-time.vue";
-import { getServicePriceApi } from "../api/community-center";
-import { getUserId } from "../utils";
-import { getAdressDetailByLngLat } from "../utils/DWHutils";
-import { getUserInfoByIdApi } from "../api/community-center";
-import { getIsOpenServerAreaApi } from "../api/community-center";
+import JCity from '../components/JCity/JCity.vue'
+import chooseTime from './componts/choose-time.vue'
+import { getServicePriceApi } from '../api/community-center'
+import { getUserId } from '../utils'
+import { getAdressDetailByLngLat } from '../utils/DWHutils'
+import { getUserInfoByIdApi } from '../api/community-center'
+import { getIsOpenServerAreaApi } from '../api/community-center'
 
 export default {
   components: { JCity, chooseTime },
-  name: "Customer-information",
+  name: 'Customer-information',
   props: {},
   data() {
     return {
       show: false,
-      id2: "",
-      serverInfoId: "",
-      specsId: "",
+      id2: '',
+      serverInfoId: '',
+      specsId: '',
       number: 1,
-      price1: "",
-      addressDetail: "",
-      address: "",
-      name: "",
-      phoneNumber: "",
-      datetimesingle: "",
-      datetimerange: "",
-      time: "",
-      pricingType: "",
+      price1: '',
+      addressDetail: '',
+      address: '',
+      name: '',
+      phoneNumber: '',
+      datetimesingle: '',
+      datetimerange: '',
+      time: '',
+      pricingType: '',
       orderPrice: [],
       info: [],
-      sumPrice: "",
-      oughtPrice: "",
-      name1: "",
-      unit1: "",
-      addname: "",
-      horsepower: "",
-      imgUrl: "",
-      length: "",
-      contactName: "",
-      contactPhone: "",
+      sumPrice: '',
+      oughtPrice: '',
+      name1: '',
+      unit1: '',
+      addname: '',
+      horsepower: '',
+      imgUrl: '',
+      length: '',
+      contactName: '',
+      contactPhone: '',
       // userId:127,
       // serverInfoId:1,
-    };
+    }
   },
 
   methods: {
     handleChoose(time) {
-      console.log(time);
-      this.datetimerange = time;
+      console.log(time)
+      this.datetimerange = time
       this.show = false
     },
 
     changeLog(e) {
-      console.log("change事件:", e);
-      this.time = e;
+      console.log('change事件:', e)
+      this.time = e
     },
     City(item) {
-      console.log(item);
-      this.address = item;
-      this.a();
+      console.log(item)
+      this.address = item
+      this.a()
 
       // if( this.type ==2 ){
       //   console.log("区域判断", this.type);
@@ -396,7 +393,7 @@ export default {
       // }
     },
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
 
     handleToServiceConfirmOrder() {
@@ -419,7 +416,7 @@ export default {
             this.addname &&
             this.phoneNumber &&
             this.datetimerange
-        );
+        )
         // uni.navigateTo({
         //   url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         // &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
@@ -427,55 +424,55 @@ export default {
         // });
 
         uni.showToast({
-          title: "请完善服务信息",
-          icon: "none",
+          title: '请完善服务信息',
+          icon: 'none',
           duration: 2000,
-        });
+        })
       } else if (this.phoneNumber.length !== 11) {
-        console.log(this.phoneNumber.length);
+        console.log(this.phoneNumber.length)
         uni.showToast({
-          title: "手机号格式错误",
+          title: '手机号格式错误',
           duration: 2000,
-          icon: "none",
-        });
+          icon: 'none',
+        })
       } else {
         uni.navigateTo({
           url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
         &installDate=${this.datetimerange}&pricingType=${this.pricingType}`,
-        });
+        })
       }
     },
 
     //安装数量加减
     goodsadd() {
       if (this.number > 0 || this.number == 1) {
-        this.number++;
-        this.getServicePrice();
+        this.number++
+        this.getServicePrice()
       }
     },
     goodsdelete() {
       if (this.number < 0 || this.number == 1) {
-        console.log("已经最少了");
+        console.log('已经最少了')
       } else {
-        this.number--;
-        this.getServicePrice();
+        this.number--
+        this.getServicePrice()
       }
     },
 
     //匹数加减
     pieceadd() {
       if (this.specsId > 0 || this.specsId == 1) {
-        this.specsId++;
-        this.getServicePrice();
+        this.specsId++
+        this.getServicePrice()
       }
     },
     piecedelete() {
       if (this.specsId < 0 || this.specsId == 1) {
-        console.log("已经最少了");
+        console.log('已经最少了')
       } else {
-        this.specsId--;
-        this.getServicePrice();
+        this.specsId--
+        this.getServicePrice()
       }
     },
 
@@ -491,11 +488,11 @@ export default {
           // serverInfoId: 42,
           // quantity: 1,
           // horsepower: 0 ,
-        });
-        this.orderPrice = res.data;
-        console.log("订单报价", this.orderPrice);
-        this.sumPrice = this.orderPrice.sumPrice;
-        this.oughtPrice = this.orderPrice.oughtPrice;
+        })
+        this.orderPrice = res.data
+        console.log('订单报价', this.orderPrice)
+        this.sumPrice = this.orderPrice.sumPrice
+        this.oughtPrice = this.orderPrice.oughtPrice
       } else {
         const res = await getServicePriceApi({
           userId: getUserId(),
@@ -506,11 +503,11 @@ export default {
           // serverInfoId: 42,
           // quantity: 1,
           // horsepower: 0 ,
-        });
-        this.orderPrice = res.data;
-        console.log("订单报价", this.orderPrice);
-        this.sumPrice = this.orderPrice.sumPrice;
-        this.oughtPrice = this.orderPrice.oughtPrice;
+        })
+        this.orderPrice = res.data
+        console.log('订单报价', this.orderPrice)
+        this.sumPrice = this.orderPrice.sumPrice
+        this.oughtPrice = this.orderPrice.oughtPrice
       }
     },
 
@@ -518,99 +515,98 @@ export default {
     async getUserInfoById() {
       const res = await getUserInfoByIdApi({
         userId: getUserId(),
-      });
-      this.info = res.data;
-      console.log(res);
-      console.log("this.info", this.info);
-      this.addname = this.info.contactName;
-      console.log("用户名", this.addname);
-      this.phoneNumber = this.info.contactPhone;
-      console.log("手机号码", this.phoneNumber);
+      })
+      this.info = res.data
+      console.log(res)
+      console.log('this.info', this.info)
+      this.addname = this.info && this.info.contactName
+      console.log('用户名', this.addname)
+      this.phoneNumber = this.info && this.info.contactPhone
+      console.log('手机号码', this.phoneNumber)
     },
 
     async a() {
       const res = await getIsOpenServerAreaApi({
-        address: this.address,content
-      });
+        address: this.address,
+        content,
+      })
 
-      console.log("res", res);
-      this.tips = res.data;
-      console.log("tips", this.tips);
-      this.type = this.tips ? 1 : 2;
-      console.log("type", this.type);
+      console.log('res', res)
+      this.tips = res.data
+      console.log('tips', this.tips)
+      this.type = this.tips ? 1 : 2
+      console.log('type', this.type)
 
       if (this.type == 2) {
-        console.log("区域判断", this.type);
+        console.log('区域判断', this.type)
         uni.showModal({
-          title: "提示",
-          content: "你选择的区域不在接单范围内",
+          title: '提示',
+          content: '你选择的区域不在接单范围内',
           showCancel: true,
           // success: ({ confirm, cancel }) => {}
           success: function (res) {
             if (res.confirm) {
-              console.log("确定");
+              console.log('确定')
             } else if (res.confirm) {
-              console.log("取消");
+              console.log('取消')
             }
           },
-        });
+        })
       }
     },
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
-
-      const _this = this;
+      const _this = this
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
+          getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
             if (res.status === '1') {
-              console.log("1111",res);
-              const result = res.regeocode;
+              console.log('1111', res)
+              const result = res.regeocode
               // _this.addressDetail = result.address_reference.town.title;
               // console.log("this.addressDetail", _this.addressDetail);
               _this.address =
                 result.addressComponent.province +
                 result.addressComponent.city +
-                result.addressComponent.district;
-              console.log("this.address", _this.address);
+                result.addressComponent.district
+              console.log('this.address', _this.address)
 
-              _this.a();
+              _this.a()
 
-              _this.s = result.formatted_address;
-              _this.addressDetail = _this.s.slice(_this.address.length);
-              console.log("addressDetail",_this.addressDetail);
-              
+              _this.s = result.formatted_address
+              _this.addressDetail = _this.s.slice(_this.address.length)
+              console.log('addressDetail', _this.addressDetail)
             }
-          });
+          })
         },
-      });
+      })
     },
   },
   created() {},
   onLoad(options) {
-    console.log(options);
-    this.id2 = options.id1;
-    console.log("服务详情id", this.id2);
-    this.specsId = options.specsId;
-    this.price1 = options.price;
-    this.name1 = options.name;
-    this.unit1 = options.unit;
-    this.detailId2 = options.detailId1;
-    this.content = options.text;
-    this.imgUrl = options.imgUrl;
-    const a = options.priceType1;
-    console.log("是否一口价", a);
-    if (a === "true") {
-      this.pricingType = 1;
+    console.log(options)
+    this.id2 = options.id1
+    console.log('服务详情id', this.id2)
+    this.specsId = options.specsId
+    this.price1 = options.price
+    this.name1 = options.name
+    this.unit1 = options.unit
+    this.detailId2 = options.detailId1
+    this.content = options.text
+    this.imgUrl = options.imgUrl
+    const a = options.priceType1
+    console.log('是否一口价', a)
+    if (a === 'true') {
+      this.pricingType = 1
     } else {
-      this.pricingType = 2;
+      this.pricingType = 2
     }
 
-    this.getServicePrice();
-    this.getUserInfoById();
-    this.getIsOpenServerArea();
+    this.getServicePrice()
+    this.getUserInfoById()
+    this.getIsOpenServerArea()
 
     // const _this = this;
     // uni.getLocation({
@@ -630,11 +626,8 @@ export default {
     //   },
     // });
   },
-};
+}
 </script>
-
-
-
 
 <style lang="less" scoped>
 .customer-information {

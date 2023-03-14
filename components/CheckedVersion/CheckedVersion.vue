@@ -80,7 +80,7 @@ export default {
     }
   },
   methods: {
-    async checkedVersion() {
+    async checkedVersion(tag) {
       const _this = this
       uni.getSystemInfo({
         success: async function (res) {
@@ -90,11 +90,13 @@ export default {
             _this.logVisible = true
             _this.logs = data.data
           } else {
-            uni.showToast({
-              title: '当前已是最新版本',
-              duration: 2000,
-              icon: 'none'
-            })
+            if (!tag) {
+              uni.showToast({
+                title: '当前已是最新版本',
+                duration: 2000,
+                icon: 'none',
+              })
+            }
           }
         },
       })

@@ -5,6 +5,7 @@ import auth from './modules/auth'
 import shopCar from './modules/shopCar'
 import customerService from './modules/customerService'
 import location from './modules/location'
+import user from './modules/user'
 
 Vue.use(VueX)
 
@@ -15,6 +16,7 @@ export default new VueX.Store({
     auth,
     shopCar,
 		customerService,
-    location
+    location,
+    user
   }
 })

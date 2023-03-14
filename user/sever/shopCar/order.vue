@@ -11,21 +11,22 @@
         <text>确认订单</text>
       </view>
 
-      <view class="address-container" v-if="defaultAddress">
+      <view class="address-container">
         <view class="bas-info">
-          <view class="info">
+          <view class="info" v-if="defaultAddress">
             收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view
           >
+          <view class="" v-else> 请选择收货地址 </view>
           <view
             class="right"
             @click="go('/user/site/site-manage?appoint=true')"
           >
-            <text>更换</text>
+            <text>{{ defaultAddress ? '更换' : '去选择' }}</text>
             <tui-icon :size="20" name="arrowright"></tui-icon>
           </view>
         </view>
 
-        <view class="address">
+        <view class="address" v-if="defaultAddress">
           地址： {{ defaultAddress.detailedAddress }}</view
         >
       </view>
@@ -137,7 +138,7 @@ export default {
       getCartCheckoutApi({
         userId: getUserId(),
         cartId: 0,
-        addressId: this.defaultAddress.id,
+        addressId: this.defaultAddress && this.defaultAddress.id,
         couponId: this.couponId,
         useVoucher: 0,
       }).then(({ data }) => {
@@ -165,6 +166,14 @@ export default {
 
     // 点击去支付
     handleToPay() {
+      if (!this.defaultAddress) {
+        uni.showToast({
+          title: '请选择收货地址',
+          duration: 2000,
+          icon: 'none'
+        })
+        return
+      }
       const data = {
         userId: getUserId(),
         // cartId: this.cartId,
@@ -301,18 +310,18 @@ export default {
     }
   }
 
-  .coupon-container{
+  .coupon-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 30upx;
     box-sizing: border-box;
 
-    .choose-coupon{
+    .choose-coupon {
       display: flex;
       align-items: center;
 
-      /deep/ .tui-icon{
+      /deep/ .tui-icon {
         margin-top: 4upx !important;
       }
     }

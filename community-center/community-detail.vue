@@ -176,6 +176,7 @@ import item from '../community-center/componts/item'
 import { getServiceDetailApi } from '../api/community-center'
 import { getAdressDetailByLngLat } from '../utils/DWHutils'
 import { moreService } from '../pages/community-center/config'
+import { USER_TOKEN } from '../constant'
 // #ifdef H5
 import share from '../utils/wxshare'
 // #endif
@@ -311,11 +312,11 @@ export default {
         token: uni.getStorageSync(USER_TOKEN),
       })
 
-      share(data, {
+      share.wxRegister(data, {
         title: this.title,
         imgUrl: this.serverImageUrl,
         desc: '售后质保·服务专业·极速退款·意外承包',
-        link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${this.serverTypeId}&serverNameThree=${this.title}&serverImageUrl=${serverUrl}`,
+        link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${this.serverTypeId}&serverNameThree=${this.title}&serverImageUrl=${this.serverUrl}`,
       })
     },
 

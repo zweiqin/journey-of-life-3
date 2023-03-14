@@ -1,5 +1,5 @@
 <template>
-  <view class="avatar-container">
+  <view class="avatar-container" @click="$emit('click')">
     <image
 		
       :src="src"

@@ -357,8 +357,14 @@
 		"navigationBarTitleText": "团蜂家居",
 		"navigationBarTextStyle": "black",
 		"app-plus": {
-			"animationType": "fade-in",
-			"animationDuration": 500
+			"animationType": "slide-in-right",
+			"animationDuration": 300
+		}
+	},
+	"style": {
+		"app-plus": {
+			"animationType": "slide-in-right",
+			"animationDuration": 300
 		}
 	},
 	"subPackages": [
@@ -905,7 +911,7 @@
 					"path": "sever/surplus/surplus",
 					"style": {
 						"navigationBarTitleText": "余额"
-						}
+					}
 				},
 				{
 					"path": "sever/recharge/recharge",
