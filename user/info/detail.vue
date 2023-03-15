@@ -1,11 +1,17 @@
 <template>
 	<view class="user-detain-info-container">
-		<NewHeader @back="handleBack" title="" position="left" top="61%" padding="40upx 60upx 20upx 0"
-			tabbar="/pages/user/user"></NewHeader>
+		<!-- <NewHeader @back="handleBack" title="" position="left" top="61%" padding="40upx 60upx 20upx 0"
+			tabbar="/pages/user/user"></NewHeader> -->
+			<image
+				src="../../static/images/user/back.png"
+				mode="scaleToFill"
+				class="return"
+				@click="handleBack"
+			/>
 		<view class="section">
 			<view class="avatar">
 				<view class="image-wrapper">
-					<image :src="userInfo.avatarUrl" mode="" />
+					<image :src="userInfo.avatarUrl" mode="" style="width: 100%;height: 100%;"/>
 				</view>
 				<text @click="handleChooseImage">更换头像</text>
 			</view>
@@ -23,14 +29,14 @@
 			<tui-list-cell arrow>
 				<view class="user-info-item">
 					<view class="title">团蜂ID</view>
-					<view class="value">{{ userInfo.userId }}</view>
+					<view class="value" style="color: #B0B0AF">{{ userInfo.userId }}</view>
 				</view>
 			</tui-list-cell>
 
 			<tui-list-cell v-if="userInfo.invitationCode">
 				<view class="user-info-item">
 					<view class="title">会员编号</view>
-					<view class="value">{{ userInfo.invitationCode }}</view>
+					<view class="value" style="color: #B0B0AF">{{ userInfo.invitationCode }}</view>
 				</view>
 			</tui-list-cell>
 
@@ -283,13 +289,18 @@ export default {
 	::after{
 		    border-bottom: 0 solid #eaeef1 !important;
 	}
-
+.return{
+	width: 24upx;
+	height: 48upx;
+	padding: 36upx 0 56upx 40upx;
+}
 
 .section {
 	// width: 100%;
 	background-color: #fff;
 	border-radius: 24upx;
 	margin: 0 40upx;
+	min-height: 880upx;
 }
 
 .avatar {
@@ -297,19 +308,22 @@ export default {
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 30upx;
+	margin-bottom: 38upx;
 
 	.image-wrapper {
-		width: 190upx;
-		height: 190upx;
+		box-sizing: border-box;
+		width: 160upx;
+		height: 160upx;
 		// @include flex(center);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgb(184, 184, 184);
+		// background-color: rgb(184, 184, 184);
+		background: #fff;
 		border-radius: 50%;
-		margin-top: 100upx;
-		margin-bottom: 20upx;
+		border: 4upx solid #F1F1F0;
+		margin-top: 64upx;
+		margin-bottom: 8upx;
 
 		image {
 			width: 188upx;
@@ -319,7 +333,8 @@ export default {
 	}
 
 	text {
-		color: #fc8c07;
+		color: #FFC117;
+		font-size: 28upx;
 	}
 }
 
@@ -330,6 +345,12 @@ export default {
 	justify-content: space-between;
 	padding-right: 40upx;
 	// margin: 20upx 0;
+	.title{
+		color: #605D52;
+	}
+	.value{
+		color: #141000;
+	}
 }
 
 .logout {

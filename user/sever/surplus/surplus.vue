@@ -12,7 +12,7 @@
 					<view class="number">9999</view>
 				</view>
 				<view class="square">
-					<view class="left">
+					<view class="left" @click="go('/user/sever/recharge/recharge')">
 						<view class="recharge">
 							<view class="recharge-l">
 								<view class="recharge-round">
