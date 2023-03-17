@@ -58,7 +58,7 @@
         </view>
       </tui-list-cell>
 
-      <tui-list-cell arrow>
+      <tui-list-cell arrow @click="handleBindWxChat">
         <view class="user-info-item">
           <view class="title">微信账号</view>
           <view class="value">未绑定</view>
@@ -125,6 +125,7 @@
 <script>
 import { USER_INFO } from '../../constant'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
+import { getOpenIdApi, handleBindOpenIdApi } from '../../api/app'
 export default {
   data() {
     return {
@@ -134,6 +135,9 @@ export default {
       isFocus: false,
       userInfo: {},
       currentVersion: '',
+      code: '',
+      openId: '',
+      mobile: '',
     }
   },
   methods: {
@@ -271,6 +275,62 @@ export default {
     // 检查版本更新
     handleCheckedVersion() {
       this.$refs.checkedVersion.checkedVersion()
+    },
+
+    // 绑定微信号
+
+    async handleBindWxChat() {
+      const appid = 'wxb19ccb829623be12'
+      const local =
+        'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/info/detail'
+      this.code = this.getUrlCode().code
+
+      if (this.code == null || this.code === '') {
+        window.location.href =
+          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+          appid +
+          '&redirect_uri=' +
+          encodeURIComponent(local) +
+          '&response_type=code&scope=snsapi_base#wechat_redirect'
+      } else {
+        const res = await getOpenIdApi({
+          code: this.code,
+        })
+        this.openId = res.openId
+        this.mobile = res.mobile
+
+        try {
+          await handleBindOpenIdApi({
+            userId: this.$store.getters.userId,
+            phone: res.mobile,
+            openId: res.openId,
+          })
+
+          uni.showToast({
+            title: '微信绑定成功',
+            duration: 2000,
+          })
+        } catch (error) {
+          uni.showToast({
+            title: '微信绑定失败',
+            duration: 2000,
+          })
+        }
+      }
+    },
+
+    // 获取url code
+    getUrlCode() {
+      var url = location.search
+      var theRequest = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.substr(1)
+        var strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
+        }
+      }
+      return theRequest
     },
   },
 
