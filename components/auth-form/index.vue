@@ -68,11 +68,11 @@
       >
     </view>
 
-    <tui-icon
+    <!-- <tui-icon
       @click="go('/pages/login-wx/login')"
       name="wechat"
       color="#2fdb72"
-    ></tui-icon>
+    ></tui-icon> -->
 
     <!--  <checkbox-group class="argument-container" @change="handleChange">
       <checkbox value="gou" :checked="isChecked" />

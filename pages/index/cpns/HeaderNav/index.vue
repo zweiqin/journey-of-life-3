@@ -2,9 +2,11 @@
   <view class="header-nav" :class="{ fixed: scrollTop > 300 }">
     <view class="search-container">
       <view class="locale-wrapper">
-        <text class="locale">{{
-          $store.getters.currentCity || '定位中...'
-        }}</text>
+        <TuanLocation>
+          <text class="locale">{{
+            $store.getters.currentCity || '龙江镇'
+          }}</text>
+        </TuanLocation>
         <image
           class="locale-icon"
           src="../../../../static/images/new-brand/index/down-arrow.png"

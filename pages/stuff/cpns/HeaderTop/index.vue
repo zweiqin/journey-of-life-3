@@ -4,13 +4,15 @@
     <h2>全球最大的家具材料产业集群</h2>
 
     <view class="search-container">
-      <view class="locale">
-        <text>{{ $store.getters.currentCity || '定位中...' }}</text>
-        <image
-          class="locale-icon"
-          src="../../../../static/images/new-brand/index/down-arrow.png"
-        ></image>
-      </view>
+      <TuanLocation>
+        <view class="locale">
+          <text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+          <image
+            class="locale-icon"
+            src="../../../../static/images/new-brand/index/down-arrow.png"
+          ></image>
+        </view>
+      </TuanLocation>
 
       <view class="search-wrapper">
         <image

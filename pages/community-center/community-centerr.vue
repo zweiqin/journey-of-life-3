@@ -4,9 +4,12 @@
       <view class="search-bar">
         <view class="location" @click.stop="handleClick">
           <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
-          <view class="text">{{
-            $store.getters.currentCity || '定位中...'
-          }}</view>
+          <TuanLocation>
+            <view class="text">{{
+              $store.getters.currentCity || '龙江镇'
+            }}</view>
+          </TuanLocation>
+
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -543,18 +546,7 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-popup
-      :duration="500"
-      :modeClass="['fade-in']"
-      :styles="styles"
-      :show="showAuthPopupVisible"
-      @click="showAuthPopupVisible = false"
-    >
-      <view class="address-text">
-        <tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
-        "团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
-      </view>
-    </tui-popup>
+    
   </view>
 </template>
 
@@ -590,19 +582,6 @@ export default {
       show: false,
       address: '',
       names: [{ text: '专业性强' }, { text: '及时服务' }],
-      styles: {
-        position: 'fixed',
-        bottom: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'flex-start',
-        'background-color': 'rgba(0, 0, 0, 0.5)',
-        padding: '50rpx 0 0 0',
-      },
-      showAuthPopupVisible: false,
     }
   },
 
@@ -614,16 +593,6 @@ export default {
     if (!uni.getStorageSync(IN_TIMES)) {
       this.isShowPopup = true
       uni.setStorageSync(IN_TIMES, true)
-    }
-    // #endif
-
-    // #ifdef APP
-    const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-    if (appAuthorizeSetting.locationAuthorized !== 'authorized') {
-      this.showAuthPopupVisible = true
-      this.$store.dispatch('location/getCurrentLocation')
-    } else {
-      this.$store.dispatch('location/getCurrentLocation')
     }
     // #endif
   },
@@ -655,14 +624,6 @@ export default {
       this.currentTab = index
       console.log(this.currentTab)
     },
-
-    //门店类型接口
-    // async getBrandType(){
-    //   const res = await getBrandTypeApi({
-
-    //   });
-
-    // }
   },
   mounted() {
     // #ifdef APP
@@ -1314,19 +1275,5 @@ export default {
   }
 }
 
-.address-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 600upx;
-  padding: 26upx;
-  background-color: #fff;
-  border-radius: 20upx;
-  font-size: 32upx;
-  line-height: 1.5;
 
-  /deep/ .tui-icon {
-    margin-right: 10upx !important;
-  }
-}
 </style>

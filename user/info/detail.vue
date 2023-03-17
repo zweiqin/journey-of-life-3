@@ -278,7 +278,6 @@ export default {
     },
 
     // 绑定微信号
-
     async handleBindWxChat() {
       const appid = 'wxb19ccb829623be12'
       const local =
@@ -296,6 +295,9 @@ export default {
         const res = await getOpenIdApi({
           code: this.code,
         })
+
+        alert(res)
+
         this.openId = res.openId
         this.mobile = res.mobile
 

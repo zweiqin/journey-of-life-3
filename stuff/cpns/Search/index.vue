@@ -28,7 +28,7 @@
           v-for="item in menus"
           :key="item.id"
         >
-          {{ item.name }}</view
+          {{ item.styleName }}</view
         >
       </view>
     </scroll-view>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getGoodsTypesApi } from '../../../api/home'
+import { getMaterialBrandStyleListApi } from '../../../api/brand'
 export default {
   props: {
     placeholder: {
@@ -84,12 +84,22 @@ export default {
 
   methods: {
     async getMenus() {
-      const { data } = await getGoodsTypesApi({
-        goodsType: 2,
+      const { data } = await getMaterialBrandStyleListApi({
+        page: 1,
+        limit: 100,
       })
 
-      console.log(data.categoryList)
-      this.menus = [{ id: 0, name: '综合' }, ...data.categoryList]
+      console.log(data)
+      this.menus = [
+        {
+          createTime: '2023-03-17 08:18:12',
+          id: -100,
+          isDelete: false,
+          styleName: '综合',
+          updateTime: '2023-03-17 08:18:12',
+        },
+        ...data.items,
+      ]
     },
 
     handleBack() {

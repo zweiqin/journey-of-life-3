@@ -137,6 +137,15 @@
 			}
 		},
 		{
+			"path": "pages/choose-location/choose-location",
+			"style": {
+				"backgroundTextStyle": "light",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTitleText": "选择位置",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/stuff/brand/index",
 			"style": {
 				"backgroundTextStyle": "light",
