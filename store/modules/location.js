@@ -27,23 +27,20 @@ export default {
   actions: {
     async getCurrentLocation({ commit }) {
       // #ifdef APP
-      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-      if (appAuthorizeSetting.locationAuthorized) {
-        uni.getLocation({
-          type: 'gcj02',
-          success: function (res) {
-            getAdressDetailByLngLat(res.latitude, res.longitude)
-              .then(res => {
-                if (res.status === '1') {
-                  commit(CHANGE_LOCATION_INFO, res.regeocode)
-                }
-              })
-              .catch(() => {
-                _this.address = '定位失败'
-              })
-          },
-        })
-      }
+      uni.getLocation({
+        type: 'gcj02',
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then(res => {
+              if (res.status === '1') {
+                commit(CHANGE_LOCATION_INFO, res.regeocode)
+              }
+            })
+            .catch(() => {
+              _this.address = '定位失败'
+            })
+        },
+      })
       // #endif
 
       // #ifdef H5

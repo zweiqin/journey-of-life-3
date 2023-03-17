@@ -178,10 +178,10 @@ export default {
   .main-area {
     position: relative;
     width: 622upx;
-    height: 500px;
+    min-height: 500px;
     background-color: #fff;
     margin: 0 auto;
-    padding: 112upx 32upx 20upx;
+    padding: 112upx 32upx 40upx;
     box-sizing: border-box;
     border-radius: 24upx;
 

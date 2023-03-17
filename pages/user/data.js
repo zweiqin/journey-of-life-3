@@ -79,7 +79,7 @@ export const myEquity = [
   {
     name: '区域代理',
     icon: require('../../static/images/new-user/equity/regional-agent.png'),
-    url: '',
+    url: '/user/sever/regional-agent/regional-agent',
   },
   {
     name: '我的推广',

@@ -198,6 +198,12 @@
 			}
 		},
 		{
+			"path": "pages/login-wx/login",
+			"style": {
+				"navigationBarTitleText": "微信授权登录"
+			}
+		},
+		{
 			"path": "pages/reset-password/reset-password",
 			"style": {
 				"navigationBarTitleText": "重置密码"

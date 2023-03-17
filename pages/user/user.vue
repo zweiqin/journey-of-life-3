@@ -1,5 +1,15 @@
 <template>
+  <!-- <view
+    class="user-page-container"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+    @touchmove="calcDis"
+  > -->
+
   <view class="user-page-container">
+    <view :style="{ height: moveDis / 2 + 'px' }" class="loading-pane">
+      <tui-loading type="row" text="正在刷新中..."></tui-loading>
+    </view>
     <BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
 
     <view class="main-area">
@@ -29,13 +39,15 @@
 </template>
 
 <script>
+import { throttle } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
 import OrderPane from './cpns/OrderPane.vue'
 import Equity from './cpns/Equity.vue'
 import MyFunction from './cpns/MyFunction.vue'
 import Serve from './cpns/Serve.vue'
 import showModalMixin from '../../mixin/showModal'
-import { USER_ID, user_INFO } from 'constant'
+import { USER_ID } from 'constant'
+
 export default {
   components: {
     BaseInfo,
@@ -44,29 +56,42 @@ export default {
     MyFunction,
     Serve,
   },
-  onShow() {
-    this.userId = uni.getStorageSync(USER_ID)
-
-    if (this.userId) {
-      this.$store.dispatch('auth/refrshUserInfo')
-      this.$store.dispatch('user/count', this.userId)
-    }
-
-    this.$forceUpdate()
-  },
   mixins: [showModalMixin()],
+  onLoad() {
+    // #ifdef H5
+    this.init()
+    this.calcDis = throttle(this.handleTouchMove, 50)
+    // #endif
+  },
+  onShow() {
+    this.init()
+  },
   data() {
     return {
       isShow: false,
+      moveDis: 0,
+      touchStartDis: 0,
+      calcDis: null,
     }
   },
   methods: {
+    init() {
+      this.userId = uni.getStorageSync(USER_ID)
+
+      if (this.userId) {
+        this.$store.dispatch('auth/refrshUserInfo')
+        this.$store.dispatch('user/count', this.userId)
+      }
+
+      this.$forceUpdate()
+    },
     handleNavigate(item, cb) {
       if (this.isLogin()) {
         if (
           item.role &&
           item.role.length &&
-          !item.role.includes(this.$store.getters.userInfo.userLevel)
+          !item.role.includes(this.$store.getters.userInfo.userLevel) &&
+          !this.$store.getters.userInfo.isRegionAgent
         ) {
           this.isShow = true
           return
@@ -99,6 +124,25 @@ export default {
       }
 
       this.isShow = false
+    },
+
+    // 点击触摸
+    handleTouchStart(e) {
+      this.touchStartDis = e.changedTouches[0].pageY
+    },
+
+    // 触摸结束
+    handleTouchEnd() {
+      this.init()
+      this.moveDis = 0
+    },
+
+    // 手指移动
+    handleTouchMove(e) {
+      this.moveDis = e.changedTouches[0].pageY - this.touchStartDis
+      if (this.moveDis > 100) {
+        this.moveDis = 150
+      }
     },
   },
 }
@@ -142,5 +186,34 @@ text {
       margin-top: 20upx;
     }
   }
+}
+
+.loading-pane {
+  overflow: hidden;
+  transition: all 100ms;
+  background: linear-gradient(360deg, #f6e6d8, #eff5f0);
+}
+
+/deep/ .tui-loading-init {
+  position: inherit;
+  transform: translate(0, 0);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-width: 100vw;
+  max-width: 100vw;
+  flex-direction: row;
+  // padding-top: 30upx;
+}
+
+/deep/ .tui-loadmore-tips {
+  color: #ff7a4e;
+  margin-bottom: 40upx;
+}
+
+/deep/ .tui-loading-center {
+  border-color: #ff7a4e;
 }
 </style>

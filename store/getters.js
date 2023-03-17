@@ -21,4 +21,5 @@ export default {
   shopCarNumber: state => state.user.shopCarNumber,
   couponNumber: state => state.user.couponNumber,
   communityOrderInfo: state => state.user.communityOrderInfo,
+  applyRegionAgentStatus: state => state.user.applyRegionAgentStatus
 }

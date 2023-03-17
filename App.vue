@@ -36,7 +36,9 @@ export default {
   methods: {},
 
   mounted() {
+    // #ifdef H5
     this.$store.dispatch('location/getCurrentLocation')
+    // #endif
   },
 }
 </script>
