@@ -1,5 +1,6 @@
 export const BASE_URL = 'https://www.zhult.com'
 export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 生产
+// export const RUAN_URL = 'https://www.tuanfengkeji.cn:8098/dts-app-api/wx' // 测试
 // export const RUAN_URL = 'http://192.168.0.108:8080/demo/'
 
 
@@ -25,5 +26,5 @@ export const TEST_URL = 'http://192.168.0.74:8080/demo/wx/api/syb/orderPayH5'
 
 export const HUANG_URL = 'http://pc-20230204bcta:8080/demo/wx'
 
-export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:9527/dts-admin-api/webSocket'  // 生产
-// export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket'  // 生产
+// export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:9527/dts-admin-api/webSocket'  // 生产
+export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket'  // 测试

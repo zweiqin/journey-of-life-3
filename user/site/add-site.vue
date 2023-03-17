@@ -1,43 +1,55 @@
 <template>
 	<view class="add-site-container">
 		<view class="header">
-			<JBack dark width="50" height="50"></JBack>
-			<h2>添加新的地址</h2>
+			<!-- <JBack dark width="50" height="50"></JBack> -->
+			<!-- <h2>添加新的地址</h2> -->
+			<image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
 		</view>
 
 		<view class="add-site-content">
 			<view class="item-wrapper">
 				<view class="add-site-title">收货人</view>
-				<view class="add-site-value"><input v-model="form.name" type="text" class="common-text" placeholder="请填写收货人姓名" /></view>
+				<view class="add-site-value"><input v-model="form.name" type="text" class="common-text" placeholder="请填写收货人姓名" style="padding-bottom: 32upx"/>
+				</view>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">手机号码</view>
-				<view class="add-site-value"><input v-model="form.mobile" type="text" class="common-text" placeholder="请填写收货人电话" /></view>
+				<view class="add-site-value"><input v-model="form.mobile" type="text" class="common-text"
+						placeholder="请填写收货人电话" style="padding-bottom: 32upx"/></view>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">所在地区</view>
-				<view class="add-site-value"><JCity :text="area" @confirm="handleChooseCity"></JCity></view>
+				<view class="add-site-value" style="display: flex;
+					    		justify-content: space-between;">
+					<JCity :text="area" @confirm="handleChooseCity"></JCity>
+					<JIcon style="margin-top: 18upx" type="fill-down-triangle" width="24" height="12"></JIcon>
+				</view>
 
-				<JIcon style="margin-top: 18upx" type="fill-down-triangle" width="24" height="12"></JIcon>
+
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">详细地址</view>
-				<view class="add-site-value"><textarea v-model="form.address" class="common-text" placeholder="请填写收货人详细地址" /></view>
+				<view class="add-site-value" style="display: flex;justify-content: space-between;"><textarea v-model="form.address" class="common-text"
+						placeholder="请填写收货人详细地址" style="padding-right: 40upx;"/>
+					<JIcon type="locale" width="32" height="32"></JIcon>
+				</view>
 
-				<JIcon type="locale" width="26.66" height="32"></JIcon>
+
 			</view>
 
 			<view class="item-wrapper" style="align-items: center">
 				<view class="add-site-title add-site-title-checked">设为默认收货地址</view>
 
-				<switch style="transform: scale(0.5) translateX(50%)" :checked="!!form.isDefault" @change="handleChangeIsDefaultAddress" />
+				<switch style="transform: scale(0.5) translateX(50%)" :checked="!!form.isDefault"
+					@change="handleChangeIsDefaultAddress" />
 			</view>
 		</view>
-
-		<button class="btn" @click="handleAddSite">确认</button>
+		<view class="foot">
+			<button class="btn" @click="handleAddSite">保存</button>
+		</view>
 	</view>
 </template>
 
@@ -72,6 +84,10 @@ export default {
 	},
 
 	methods: {
+		handleBack() {
+			uni.navigateBack();
+		},
+
 		// 点击确定选择地区
 		handleChooseCity(area) {
 			this.area = area.area;
@@ -153,44 +169,61 @@ export default {
 @import '../../style/mixin.less';
 
 .add-site-container {
-	padding: 72upx 96upx 44upx 56upx;
+	// padding: 72upx 96upx 44upx 56upx;
 	box-sizing: border-box;
-	.flex(flex-start, flex-start);
-	flex-direction: column;
-	height: 100%;
+	// .flex(flex-start, flex-start);
+	// flex-direction: column;
+	// height: 100%;
+	background-color: #f6f6f6;
+	width: 100vw;
+	min-height: 100vh;
 
 	.header {
-		.flex(center, flex-start);
+		padding-top: 36upx;
+		padding-left: 40upx;
 
-		.j-back-container {
-			margin-top: 10upx;
+		// .flex(center, flex-start);
+		.return {
+			width: 24upx;
+			height: 48upx;
 		}
 
-		h2 {
-			font-size: 36upx;
-			font-weight: bold;
-			margin-left: 34upx;
-		}
+		// .j-back-container {
+		// 	margin-top: 10upx;
+		// }
+
+		// h2 {
+		// 	font-size: 36upx;
+		// 	font-weight: bold;
+		// 	margin-left: 34upx;
+		// }
 	}
 
 	.add-site-content {
-		flex: 1;
-		width: 100%;
+		// flex: 1;
+		// width: 100%;
+		background: #FFFFFF;
+		border-radius: 24upx;
+		margin: 36upx 20upx 0 20upx;
+		padding: 32upx 32upx 0 32upx;
 
 		.item-wrapper {
 			display: flex;
 			align-items: flex-start;
 			justify-content: space-between;
-			margin-top: 46upx;
-			width: 100%;
+			// margin-top: 46upx;
+			// width: 100%;
+			// height: 74upx;
+			padding-bottom: 32upx;
 
 			.add-site-title {
 				flex: 0 0 140upx;
 				text-align: left;
 				font-size: 28upx;
-				color: #3d3d3d;
-				font-weight: bold;
+				color: #141000;
 
+				// font-weight: bold;
+				// height: 100%;
 				&.add-site-title-checked {
 					white-space: nowrap;
 					width: auto;
@@ -202,14 +235,19 @@ export default {
 			}
 
 			.common-text {
-				color: #3d3d3d;
+				color: #141000;
 				font-size: 28upx;
+				// padding-bottom: 20upx;
 			}
 
 			.add-site-value {
 				flex: 1;
 				// max-width: 340upx;
-				margin-right: 96upx;
+				// margin-right: 96upx;
+				width: 100%;
+				// height: 100%;
+				border-bottom: 1px solid #F1F1F0;
+
 			}
 
 			textarea {
@@ -229,16 +267,34 @@ export default {
 		&::before {
 			background-color: #bebebe;
 		}
+		
 	}
+	/deep/.uni-switch-input.uni-switch-input-checked{
+			background-color: #FFCB05 !important;
+			border-color: #FFCB05 !important;
+		}
 
-	.btn {
-		width: 380upx;
-		height: 73upx;
-		.flex(center, center);
-		font-size: 32upx;
-		color: #fff;
-		background-color: #07b9b9;
-		border-radius: 100px;
+	.foot {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		border-radius: 24upx 24upx 0upx 0upx;
+		background: #FFFFFF;
+		height: 120upx;
+
+		.btn {
+			// width: 380upx;
+			// height: 73upx;
+			.flex(center, center);
+			font-size: 32upx;
+			font-weight: 500;
+			color: #fff;
+			background-color: #FFCB05;
+			border-radius: 44upx;
+			margin: 0 32upx;
+			margin-top: 18upx;
+		}
 	}
 }
 </style>

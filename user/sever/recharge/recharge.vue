@@ -1,7 +1,7 @@
 <template>
 	<view class="recharge">
 		<view class="return">
-			<img src="../../../static/images/icon/return.png" alt="" class="return-logo">
+			<img src="../../../static/images/icon/return.png" alt="" class="return-logo" @click="handleBack">
 		</view>
 		<view class="orange">
 			<view class="money">可用余额</view>
@@ -23,6 +23,9 @@ export default {
 		return {}
 	},
 	methods: {
+		handleBack() {
+			uni.navigateBack()
+		}
 	},
 	created() { }
 }

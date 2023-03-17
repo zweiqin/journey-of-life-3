@@ -1,7 +1,7 @@
 <template>
   <view class="service-sort">
     <view class="head">
-      <view class="search-bar" @click="goToSearch">
+      <view class="search-bar">
         <view class="location">
           <!-- #ifdef H5 -->
           <img
@@ -20,7 +20,7 @@
             @click.stop="handleClick"
           />
         </view>
-        <view class="search-box">
+        <view class="search-box"  @click="goToSearch">
           <view class="search">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"

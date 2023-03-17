@@ -71,58 +71,66 @@ export default {
 
 <style lang="less" scoped>
 .collections {
+	background: #FFFFFF;
   font-size: 28upx;
-  margin: 20upx 0;
-
+  margin: 20upx 20upx 20upx 20upx;
+	border-radius: 24upx;
   .collection-item {
     display: flex;
-    align-items: center;
-    margin-bottom: 30upx;
+    // align-items: center;
+    padding: 32upx;
     // justify-content: space-between;
     .collection-image {
-      width: 202upx;
-      height: 196upx;
+      width: 168upx;
+      height: 168upx;
       object-fit: cover;
-      border-radius: 10upx;
+      border-radius: 16upx;
       flex-shrink: 0;
-      margin-right: 72upx;
+      margin-right: 24upx;
     }
 
     .collection-detail-info {
       flex: 1;
-
+			border-bottom: 1upx solid #F1F1F0;
       .name {
-        color: #3d3d3d;
+        color: #3A3629;
+				font-size: 28upx;
       }
 
       .collection-number {
         font-size: 24upx;
-        color: #777;
-        margin: 26upx 0 18upx 0;
+        color: #8F8D85;
+        margin: 12upx 0 24upx 0;
       }
 
       .collection-footer {
         display: flex;
         justify-content: space-between;
-        align-items: centerF;
+        align-items: center;
+				margin-bottom: 34upx;
         .collection-price {
-          color: #fa5151ff;
+          color: #141000;
+					font-size: 28upx;
+					font-weight: 500;
         }
 
         .uni-btn.view-btn {
           width: 120upx;
           height: 48upx;
-          text-align: center;
-          line-height: 48upx;
-          border: 1upx solid #fa5151;
+          // text-align: center;
+          // line-height: 48upx;
+          border: 1upx solid #FFC117;
           border-radius: 10upx;
           font-size: 24upx;
-          color: #fa5151;
+          color: #FFC117;
+					display: flex;
+					align-items: center;
+					justify-content: center;
         }
 
         .unfollow-btn {
-          color: #3d3d3d !important;
-          border-color: #3d3d3d !important;
+          color: #8F8D85 !important;
+          border-color: #8F8D85 !important;
         }
       }
     }

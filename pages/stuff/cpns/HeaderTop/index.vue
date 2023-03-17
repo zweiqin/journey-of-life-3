@@ -27,7 +27,7 @@
           @confirm="
             go('/pages/search-page/search-result?keywords=' + searchValue)
           "
-          placeholder="铜奶嘴钉"
+          placeholder="科技布"
         />
       </view>
 
