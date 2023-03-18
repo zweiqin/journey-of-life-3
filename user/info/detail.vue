@@ -26,7 +26,7 @@
 				</view>
 			</tui-list-cell>
 
-			<tui-list-cell arrow>
+			<tui-list-cell >
 				<view class="user-info-item">
 					<view class="title">团蜂ID</view>
 					<view class="value" style="color: #B0B0AF">{{ userInfo.userId }}</view>
@@ -300,7 +300,7 @@ export default {
 	background-color: #fff;
 	border-radius: 24upx;
 	margin: 0 40upx;
-	min-height: 880upx;
+	// min-height: 880upx;
 }
 
 .avatar {
