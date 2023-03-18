@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      currentMenu: 0,
+      currentMenu: -100,
       goodsList: [],
       query: {
         goodsType: 2,

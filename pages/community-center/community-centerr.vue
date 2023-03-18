@@ -4,9 +4,12 @@
       <view class="search-bar">
         <view class="location" @click.stop="handleClick">
           <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
-          <view class="text">{{
-            $store.getters.currentCity || '定位中...'
-          }}</view>
+          <TuanLocation>
+            <view class="text">{{
+              $store.getters.currentCity || '龙江镇'
+            }}</view>
+          </TuanLocation>
+
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
             alt=""
@@ -542,6 +545,8 @@
     <!-- #ifdef APP -->
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
+
+    
   </view>
 </template>
 
@@ -590,8 +595,6 @@ export default {
       uni.setStorageSync(IN_TIMES, true)
     }
     // #endif
-
-    
   },
   methods: {
 		goToSearch() {
@@ -625,14 +628,6 @@ export default {
       this.currentTab = index
       console.log(this.currentTab)
     },
-
-    //门店类型接口
-    // async getBrandType(){
-    //   const res = await getBrandTypeApi({
-
-    //   });
-
-    // }
   },
   mounted() {
     // #ifdef APP
@@ -1283,4 +1278,6 @@ export default {
     }
   }
 }
+
+
 </style>

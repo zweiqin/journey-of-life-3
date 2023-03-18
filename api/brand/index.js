@@ -67,3 +67,18 @@ export const getStuffBrandListApi = data => {
     }
   )
 }
+
+/**
+ * 获取材料分类
+ */
+export const getMaterialBrandStyleListApi = data => {
+  return RuanRequest(
+    '/materialBrandStyle/getMaterialBrandStyleList',
+    data,
+    'post',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}

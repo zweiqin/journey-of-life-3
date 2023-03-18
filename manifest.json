@@ -44,7 +44,7 @@
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
                         "appkey_ios" : "",
-                        "appkey_android" : ""
+                        "appkey_android" : "4f316ac58524f5d7b978dc8b0a702c0c"
                     }
                 },
                 "maps" : {

@@ -18,7 +18,7 @@
             class="icon"
           />
           <view class="address">{{
-            $store.getters.currentCity || '定位中...'
+            $store.getters.currentCity || '龙江镇'
           }}</view>
         </view>
       </view>

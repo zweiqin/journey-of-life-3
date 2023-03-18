@@ -1,11 +1,20 @@
 <template>
   <!-- 头部 -->
   <view class="header">
-    <image class="img" src="../../static/images/index/location.png" alt="定位" />
-
-    <text class="loaction">佛山市</text>
+    <image
+      class="img"
+      src="../../static/images/index/location.png"
+      alt="定位"
+    />
+    <TuanLocation>
+      <text class="loaction">{{ $store.getters.currentCity || '龙江镇'}}</text>
+    </TuanLocation>
     <view class="search">
-      <image class="search-icon" src="../../static/images/icon/search.png" alt="" />
+      <image
+        class="search-icon"
+        src="../../static/images/icon/search.png"
+        alt=""
+      />
       <input type="text" @focus="$emit('focus')" />
     </view>
     <image class="img" src="../../static/images/index/ling.png" alt="响铃" />
@@ -13,11 +22,11 @@
 </template>
 
 <script>
-export default {};
+export default {}
 </script>
 
 <style lang="less" scoped>
-.search-icon{
+.search-icon {
   width: 38upx;
   height: 28upx;
 }

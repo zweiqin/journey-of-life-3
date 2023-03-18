@@ -14,16 +14,18 @@
         >
           <image class="menu-icon" :src="item.icon" mode="" />
           <text class="menu-title">{{ item.name }}</text>
-          <!-- <tui-badge
-            v-if="item.name === '区域代理'"
+          <tui-badge
+            v-if="
+              item.name === '区域代理' && $store.getters.applyRegionAgentStatus
+            "
             type="danger"
             absolute
             :scaleRatio="0.8"
             translateX="40%"
             top="6rpx"
             right="44rpx"
-            >{{ applyResult }}</tui-badge
-          > -->
+            >{{ $store.getters.applyRegionAgentStatus }}</tui-badge
+          >
         </view>
       </view>
     </view>
@@ -32,33 +34,12 @@
 
 <script>
 import { myEquity } from '../data'
-import { USER_ID } from '../../../constant'
-import { getApplyRegionagentStatusApi } from '../../../api/user'
 
 export default {
   data() {
     return {
       myEquity: Object.freeze(myEquity),
-      userId: null,
-      applyResult: null,
     }
-  },
-
-  mounted() {
-    this.userId = uni.getStorageSync(USER_ID)
-    if (this.userId) {
-      this.getApplyRegionagentStatus()
-    }
-  },
-
-  methods: {
-    async getApplyRegionagentStatus() {
-      const res = await getApplyRegionagentStatusApi({
-        userId: this.userId,
-      })
-
-      this.applyResult = res.errmsg
-    },
   },
 }
 </script>

@@ -1,73 +1,85 @@
 <template>
-<view>
-<!--pages/login/login.wxml-->
-<image src="http://img-test.gz-yami.com/mini/logo.jpg" class="c-logo"></image>
-<view class="title">mall4j</view>
-<view class="msg">申请获得你的公开信息（昵称、头像等）</view>
-<button color="#eb2444" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo" class>微信授权</button>
-</view>
+  <view>
+    <!--pages/login/login.wxml-->
+    <image
+      src="http://img-test.gz-yami.com/mini/logo.jpg"
+      class="c-logo"
+    ></image>
+    <view class="title">mall4j</view>
+    <view class="msg">申请获得你的公开信息（昵称、头像等）</view>
+    <button
+      color="#eb2444"
+      open-type="getUserInfo"
+      lang="zh_CN"
+      @click="getWeChatCode"
+      class
+    >
+      微信授权
+    </button>
+  </view>
 </template>
 
 <script>
-var http = require("../../utils/http.js");
 
 export default {
-  data() {
-    return {};
+  onLoad() {
+    console.log(window.location.href);
+    const hasWechatLogin = uni.getStorageSync('wechat_login_tag') || null
+    if (hasWechatLogin) {
+      this.checkWeChatCode()
+    }
   },
 
-  components: {},
-  props: {},
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {},
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {},
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {},
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {},
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {},
   methods: {
-    onGotUserInfo: function (res) {
-      http.updateUserInfo();
-      uni.navigateBack({
-        delta: 1
-      });
-    }
-  }
-};
+    // 看地址中有没有code参数,如果没有code参数的话则请求微信官方的接口并获取包含code的回调链接
+    getWeChatCode() {
+      //用于退出登录回来不会再调一次授权登录
+      uni.setStorageSync('wechat_login_tag', 'true')
+
+      const appID = '' //公众号appID
+      const callBack = '' //回调地址 就是你的完整地址登录页
+
+      //通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
+      window.location.href =
+        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+        appID +
+        '&redirect_uri=' +
+        encodeURIComponent(callBack) +
+        '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+    },
+
+    // 重定向回来本页面检查有没有code
+    checkWeChatCode() {
+      let code = this.getUrlCode('code')
+      if (code) {
+        this.handleToLogin(code)
+      }
+    },
+    // 正则匹配请求地址中的参数函数
+    getUrlCode(name) {
+      return (
+        decodeURIComponent(
+          (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(
+            location.href
+          ) || [, ''])[1].replace(/\+/g, '%20')
+        ) || null
+      )
+    },
+    // 把后端需要的code以及其他信息调用接口传过去
+    //比如调用接口loginIn
+    handleToLogin(code) {
+      loginIn({
+        code,
+      }).then(res => {
+        console.log('登录成功')
+        uni.redirectTo({
+          url: '/pages/index/index',
+        })
+      })
+    },
+  },
+}
 </script>
 <style>
-@import "./login.css";
+@import './login.css';
 </style>

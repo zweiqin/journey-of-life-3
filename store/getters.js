@@ -18,8 +18,9 @@ export default {
 	wsHandleInfo: (state) => state.customerService.wsHandleInfo,
 	wsHandle: (state) => state.customerService.wsHandle,
 
-	// 个人中心
-	shopCarNumber: (state) => state.user.shopCarNumber,
-	couponNumber: (state) => state.user.couponNumber,
-	communityOrderInfo: (state) => state.user.communityOrderInfo
+  // 个人中心
+  shopCarNumber: state => state.user.shopCarNumber,
+  couponNumber: state => state.user.couponNumber,
+  communityOrderInfo: state => state.user.communityOrderInfo,
+  applyRegionAgentStatus: state => state.user.applyRegionAgentStatus
 }

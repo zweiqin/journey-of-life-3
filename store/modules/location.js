@@ -1,4 +1,5 @@
 import { CHANGE_CURRENT_CITY, CHANGE_LOCATION_INFO } from './type'
+import { CURRENT_ADDRESS } from '../../constant'
 import { getAdressDetailByLngLat } from '@/utils'
 
 export default {
@@ -7,7 +8,7 @@ export default {
     return {
       locationInfo: {},
       detailAddress: '',
-      currentCity: '',
+      currentCity: uni.getStorageSync(CURRENT_ADDRESS),
     }
   },
 
@@ -15,11 +16,10 @@ export default {
     [CHANGE_LOCATION_INFO](state, location) {
       state.locationInfo = location.addressComponent
       state.detailAddress = location.formatted_address
-      if (!state.currentCity) {
-        state.currentCity = location.addressComponent.township
-      }
+      state.currentCity = location.addressComponent.township
     },
     [CHANGE_CURRENT_CITY](state, chooseCity) {
+      uni.setStorageSync(CURRENT_ADDRESS, chooseCity)
       state.currentCity = chooseCity
     },
   },
@@ -27,23 +27,20 @@ export default {
   actions: {
     async getCurrentLocation({ commit }) {
       // #ifdef APP
-      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-      if (appAuthorizeSetting.locationAuthorized) {
-        uni.getLocation({
-          type: 'gcj02',
-          success: function (res) {
-            getAdressDetailByLngLat(res.latitude, res.longitude)
-              .then(res => {
-                if (res.status === '1') {
-                  commit(CHANGE_LOCATION_INFO, res.regeocode)
-                }
-              })
-              .catch(() => {
-                _this.address = '定位失败'
-              })
-          },
-        })
-      }
+      uni.getLocation({
+        type: 'gcj02',
+        success: function (res) {
+          getAdressDetailByLngLat(res.latitude, res.longitude)
+            .then(res => {
+              if (res.status === '1') {
+                commit(CHANGE_LOCATION_INFO, res.regeocode)
+              }
+            })
+            .catch(() => {
+              _this.address = '定位失败'
+            })
+        },
+      })
       // #endif
 
       // #ifdef H5

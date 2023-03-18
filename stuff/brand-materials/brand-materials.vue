@@ -74,6 +74,10 @@
       ></BrandPane>
 
       <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
+
+      <view class="no-data" v-show="!brandList.length && status === 'none'">
+        暂无相关门店...
+      </view>
     </view>
   </view>
 </template>
@@ -92,7 +96,7 @@ export default {
 
   data() {
     return {
-      currentMenu: 0,
+      currentMenu: -100,
       scrollTop: 0,
       brandList: [],
       query: {
@@ -112,15 +116,19 @@ export default {
   methods: {
     handleSwitchTab(id) {
       this.currentMenu = id
+      this.getBrandListBySelect()
     },
     getRandom,
 
     async getBrandListBySelect(isLoadMore) {
+      this.status = 'loading'
       const { data } = await getBrandListBySelectApi({
         ...this.query,
         labelId: 2,
+        materialBrandStyleId:
+          this.currentMenu == -100 ? null : this.currentMenu,
       })
-      console.log(data)
+      this.status = 'none'
       if (isLoadMore) {
         this.brandList.push(...data.brandList)
       } else {
@@ -315,5 +323,13 @@ export default {
     justify-content: space-between;
     margin-top: 8upx;
   }
+}
+
+.no-data{
+  width: 100%;
+  height: 600upx;
+  color: #ccc;
+  text-align: center;
+  line-height: 600upx;
 }
 </style>

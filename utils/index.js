@@ -28,6 +28,7 @@ export {
   getRandom,
   randomRGB,
   timestampToTime,
+  throttle
 } from './DWHutils'
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'

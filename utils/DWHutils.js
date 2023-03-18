@@ -173,3 +173,18 @@ export const timestampToTime = timestamp => {
   return Y + M + D + h + m + s
   // console.log(timestampToTime(1670145353)); //2022-12-04 17:15:53
 }
+
+export const throttle = (fn, interval) => {
+  let lastTime = 0
+  // 事件对象e也好，其他也罢，直接使用...运算符收集起来
+  const _throttle = function (...args) {
+    const nowTime = new Date().getTime()
+    const remainTime = interval - (nowTime - lastTime)
+    if (remainTime <= 0) {
+      // 使用apply进行绑定this
+      fn.apply(this, args)
+      lastTime = nowTime
+    }
+  }
+  return _throttle
+}

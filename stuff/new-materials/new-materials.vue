@@ -86,7 +86,7 @@ export default {
 
   data() {
     return {
-      currentMenu: 0,
+      currentMenu: -100,
       scrollTop: 0,
       brandList: [],
     }

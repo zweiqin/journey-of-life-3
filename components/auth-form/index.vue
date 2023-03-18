@@ -68,7 +68,13 @@
       >
     </view>
 
-  <!--  <checkbox-group class="argument-container" @change="handleChange">
+    <!-- <tui-icon
+      @click="go('/pages/login-wx/login')"
+      name="wechat"
+      color="#2fdb72"
+    ></tui-icon> -->
+
+    <!--  <checkbox-group class="argument-container" @change="handleChange">
       <checkbox value="gou" :checked="isChecked" />
       <view class="argument" @click="handleToViewArgument"
         >《团蜂服务平台协议》</view
@@ -221,7 +227,7 @@ export default {
 
   mounted() {
     const loginForm = uni.getStorageSync(LOGIN_FORM)
-    if(loginForm){
+    if (loginForm) {
       Object.assign(this.form, loginForm)
     }
   },
