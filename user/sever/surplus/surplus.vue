@@ -25,7 +25,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="right">
+					<view class="right" @click="go('/user/sever/tixian/tixian')">
 						<view class="cash">
 							<view class="cash-l">
 								<view class="cash-round">

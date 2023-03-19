@@ -22,7 +22,7 @@
 		<view class="custom-recharge">
 			<view class="logo">￥</view>
 			<!-- <view class="num">0.00</view> -->
-			<input type="text" class="input" placeholder="0.00" placeholder-class="num">
+			<input type="text" class="input" placeholder="0.00" placeholder-class="num" v-model="number">
 		</view>
 		<view class="type">选择充值方式</view>
 		<view class="type-list">
@@ -57,6 +57,7 @@ export default {
 		return {
 			items,
 			currentTab:'',
+			number:'',
 		}
 	},
 	methods: {
