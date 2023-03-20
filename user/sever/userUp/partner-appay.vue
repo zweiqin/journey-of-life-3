@@ -21,7 +21,7 @@
 
 			<!-- <EquityList></EquityList> -->
 			<view class="foot">
-				<view class="btn">
+				<view class="btn" @click="handlePay">
 					<text>立即支付</text>
 					<text>
 						￥<text>{{ currentApplyType === 'partner' ? 2000 : 5000 }}</text>
@@ -208,15 +208,20 @@ export default {
 		background: #FFFFFF;
 		border-radius: 24upx;
 		margin: 0 20upx;
-
+		padding-bottom: 108upx;
 		.foot {
-			// width: 100%;
+			width: 100%;
 			height: 88upx;
-			margin: 60upx 32upx 0upx 32upx;
-			padding-bottom: 48upx;
-
+			// margin: 60upx 32upx 0upx 32upx;
+			// padding-bottom: 48upx;
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 20upx;
+			display: flex;
+			justify-content: center;
 			.btn {
-				// width: 100%;
+				width: 87%;
 				height: 88upx;
 				border-radius: 44upx;
 				background: #FFCB05;
