@@ -160,7 +160,9 @@ export default {
 		handleSwitchTab(currentPage) {
 			this.currentPage = currentPage
 			this.currentPageInfo = mapCurrentInfo[this.currentPage]
-
+			this.showNoData =
+				JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
+				JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
 			if (
 				JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
 				JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
