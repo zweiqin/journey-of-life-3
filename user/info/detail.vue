@@ -71,6 +71,7 @@
           <view class="value">未绑定</view>
         </view>
       </tui-list-cell>
+
       <!-- #ifdef APP -->
       <tui-list-cell arrow @click="handleCheckedVersion">
         <view class="user-info-item">
@@ -131,6 +132,7 @@
 
 <script>
 import { USER_INFO } from '../../constant'
+import { getOpenIdApi, handleBindOpenIdApi } from '../../api/app'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
 export default {
   data() {
@@ -282,12 +284,15 @@ export default {
 
     // 绑定微信号
     async handleBindWxChat() {
+      const _this = this
       const appid = 'wxb19ccb829623be12'
       const local =
         'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/info/detail'
       const code = this.getUrlCode().code
 
-			alert('获取code', code)
+      console.log('获取code', code)
+      // alert('获取code', code)
+
 
       if (code == null || code === '') {
         window.location.href =
@@ -297,29 +302,36 @@ export default {
           encodeURIComponent(local) +
           '&response_type=code&scope=snsapi_base#wechat_redirect'
       } else {
-        const res = await getOpenIdApi({
-          code
-        })
-
-        alert("拿到结果", res)
-
-        this.openId = res.openId
-        this.mobile = res.mobile
-
         try {
-          await handleBindOpenIdApi({
-            userId: this.$store.getters.userId,
-            phone: res.mobile,
-            openId: res.openId,
+          const res = await getOpenIdApi({
+            code: code,
           })
 
-          uni.showToast({
-            title: '微信绑定成功',
-            duration: 2000,
-          })
+          _this.openId = res.data.openId
+          _this.mobile = res.data.mobile
+
+          try {
+            await handleBindOpenIdApi({
+              userId: _this.$store.getters.userId,
+              phone: _this.$store.getters.userInfo.phone,
+              openId: res.data.openId,
+            })
+
+            uni.showToast({
+              title: '微信绑定成功',
+              duration: 2000,
+            })
+          } catch (error) {
+            uni.showToast({
+              title: '微信绑定失败',
+              duration: 2000,
+              icon: 'none',
+            })
+          }
         } catch (error) {
-          uni.showToast({
-            title: '微信绑定失败',
+          uni.showLoading({
+            title: '获取您的信息失败',
+            icon: 'none',
             duration: 2000,
           })
         }
@@ -337,13 +349,13 @@ export default {
           theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
         }
       }
+
+      console.log('code结果', theRequest)
       return theRequest
     },
   },
 
-  onShow() {
-    this.userInfo = uni.getStorageSync(USER_INFO)
-  },
+  onShow() {},
 
   onLoad() {
     const _this = this
@@ -352,6 +364,13 @@ export default {
         _this.currentVersion = res.appVersion
       },
     })
+
+    this.userInfo = uni.getStorageSync(USER_INFO)
+    console.log('当前路径', location)
+    const code = this.getUrlCode().code
+    if (code) {
+      this.handleBindWxChat()
+    }
   },
 }
 </script>

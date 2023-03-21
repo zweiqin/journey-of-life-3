@@ -11,7 +11,7 @@ export const getOpenIdApi = data => {
   return SheQuRequest1(
     '/samrtWorker/api/wechat/message/getOpenIdByCode',
     data,
-    'post',
+    'get',
     null,
     {
       'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),

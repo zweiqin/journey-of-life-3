@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-   <!-- <tui-sticky stickyTop="0" :scrollTop="scrollTop" stickyHeight="0rpx">
+    <!-- <tui-sticky stickyTop="0" :scrollTop="scrollTop" stickyHeight="0rpx">
       <template v-slot:header>
         <NewHeader
           @back="handleBack"
@@ -1522,6 +1522,21 @@
         "
         >平台不承担责任。</span
       >
+    </p>
+    <p
+      style="
+        background-color: #ffffff;
+        line-height: 22.5pt;
+        margin: 0pt;
+        font-weight: bold;
+      "
+    >
+      我们的应用程序收集设备的MAC地址和软件安装列表，以提供更好的用户体验和优化我们的产品功能。我们承诺保护您的隐私，并只会使用这些信息来实现以下目的：
+      识别您的设备并提供更好的服务：我们使用您的设备MAC地址来识别您的设备，并在必要时为您提供更好的服务和支持。
+      优化产品功能：我们会分析您的软件安装列表，以了解我们的应用程序如何在不同设备上运行，并优化我们的产品功能。
+      不与第三方共享：我们承诺不会向任何第三方出售、共享或披露您的设备MAC地址和软件安装列表。
+      我们会尽最大努力保护您的隐私和安全。我们会采取适当的安全措施，防止未经授权的访问、使用或泄露您的个人信息。同时，我们会遵守所有适用的法律法规，以保护您的权利和利益。
+      如果您不同意我们收集您的设备MAC地址和软件安装列表，请不要使用我们的应用程序。如果您使用我们的应用程序，即表示您同意我们根据本隐私政策收集、使用和披露您的个人信息
     </p>
     <h4 style="background-color: #ffffff; line-height: 12pt; margin: 0pt">
       <span
