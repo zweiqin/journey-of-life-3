@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
+import globalMixin from './mixin/global'
 
 Vue.config.productionTip = false
 //echar引入
@@ -19,6 +20,7 @@ Vue.filter('replacestar', function (value) {
   }
   return str
 })
+
 Vue.mixin({
   methods: {
     setData: function (obj) {
@@ -79,6 +81,8 @@ Vue.mixin({
     },
   },
 })
+
+Vue.use(globalMixin)
 
 App.mpType = 'app'
 

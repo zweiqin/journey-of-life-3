@@ -176,15 +176,32 @@ export const timestampToTime = timestamp => {
 
 export const throttle = (fn, interval) => {
   let lastTime = 0
-  // 事件对象e也好，其他也罢，直接使用...运算符收集起来
   const _throttle = function (...args) {
     const nowTime = new Date().getTime()
     const remainTime = interval - (nowTime - lastTime)
     if (remainTime <= 0) {
-      // 使用apply进行绑定this
       fn.apply(this, args)
       lastTime = nowTime
     }
   }
   return _throttle
 }
+
+
+// 获取 微信 code
+// #ifdef H5
+export const getUrlCode = () => {
+  var url = location.search
+  var theRequest = new Object()
+  if (url.indexOf('?') != -1) {
+    var str = url.substr(1)
+    var strs = str.split('&')
+    for (var i = 0; i < strs.length; i++) {
+      theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
+    }
+  }
+
+  console.log('code结果', theRequest)
+  return theRequest
+}
+// #endif

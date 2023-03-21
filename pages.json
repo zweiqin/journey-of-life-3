@@ -255,6 +255,12 @@
 			}
 		},
 		{
+			"path": "pages/login/login-message",
+			"style": {
+				"navigationBarTitleText": "短信登录"
+			}
+		},
+		{
 			"path": "pages/store/store"
 		},
 		{

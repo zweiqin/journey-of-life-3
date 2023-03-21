@@ -94,12 +94,10 @@
       </view>
 
       <view class="more-login">
-        <TuanWXLogin>
-          <view class="item">
-            <image src="../../static/images/new-auth/wx.png" mode="" />
-            <text>微信登录</text>
-          </view>
-        </TuanWXLogin>
+        <view class="item">
+          <image src="../../static/images/new-auth/wx.png" mode="" />
+          <text>微信登录</text>
+        </view>
 
         <view class="item" @click="go('/pages/login/login-message')">
           <image src="../../static/images/new-auth/message.png" mode="" />
@@ -128,6 +126,7 @@ export default {
   data() {
     return {
       timer: null,
+      awaitSecond: 60,
       agreementStatus: false,
       loginForm: {
         phone: '',

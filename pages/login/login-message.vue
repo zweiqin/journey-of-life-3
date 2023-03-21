@@ -22,30 +22,28 @@
           @confirm="handleClickConfirmType(0)"
           :confirm-type="keybordEnterText"
         ></tui-input>
+
         <tui-input
-          color="#141000"
+          class="reset-wrapper"
+          label="验证码"
           padidng="0 0 28rpx 0"
-          label="密码"
+          borderTop
+          placeholder="请输入验证码"
+          color="#141000"
           :focus="focusMap[1]"
           @confirm="handleClickConfirmType(1)"
           :confirm-type="keybordEnterText"
-          class="reset-wrapper"
-          :lineLeft="false"
-          :type="isShowPassword ? 'text' : 'password'"
-          placeholder="请输入密码"
-          v-model="loginForm.password"
+          v-model="loginForm.code"
         >
           <block slot="right">
-            <image
-              class="password-status"
-              @click="isShowPassword = !isShowPassword"
-              :src="
-                isShowPassword
-                  ? '../../static/images/common/view-password .png'
-                  : '../../static/images/common/close-password.png'
-              "
-              mode=""
-            />
+            <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">
+              获取验证码
+            </button>
+
+            <view v-show="timer" class="awaiting">
+              <text class="second-text">{{ awaitSecond }}s</text>
+              <text>后重新获取</text>
+            </view>
           </block>
         </tui-input>
       </tui-form>
@@ -71,14 +69,6 @@
             <text style="color: #ffc117">《团蜂用户协议》</text>
           </TuanServe>
         </view>
-
-        <navigator
-          class="forget-assword"
-          url="/pages/reset-password/reset-password"
-          hover-class="none"
-        >
-          忘记密码
-        </navigator>
       </view>
 
       <button
@@ -101,9 +91,9 @@
           </view>
         </TuanWXLogin>
 
-        <view class="item" @click="go('/pages/login/login-message')">
-          <image src="../../static/images/new-auth/message.png" mode="" />
-          <text>短信登录</text>
+        <view class="item" @click="go('/pages/login/login')">
+          <image src="../../static/images/new-auth/password.png" mode="" />
+          <text>密码登录</text>
         </view>
       </view>
     </view>
@@ -112,10 +102,11 @@
 </template>
 
 <script>
-import loginRule from './rules'
+import { verificationCodeRule } from './rules'
 import { throttle } from '../../utils'
 import { NEW_BIND_ID, USER_ID, USER_INFO } from '../../constant'
 import { bindLastUserApi, checkBindApi } from '../../api/user'
+import { getCodeApi } from '../../api/auth'
 
 const tabbarList = [
   '/pages/user/user',
@@ -128,14 +119,15 @@ export default {
   data() {
     return {
       timer: null,
+      awaitSecond: 60,
       agreementStatus: false,
       loginForm: {
         phone: '',
-        password: '',
+        code: '',
       },
       to: null,
       onlogin: null,
-      isShowPassword: false,
+      onGetCode: null,
       focusMap: {
         0: false,
         1: false,
@@ -149,6 +141,7 @@ export default {
   },
   async onLoad(options) {
     this.onlogin = throttle(this.handlelogin, 1000)
+    this.onGetCode = throttle(this.handleGetCode, 1000)
 
     this.redirect = options.to
 
@@ -194,6 +187,46 @@ export default {
     }
   },
   methods: {
+    // 获取验证码
+    async handleGetCode() {
+      if (this.loginForm.phone.length !== 11) {
+        this.ttoast({
+          type: 'fail',
+          title: '请输入合法的手机号码',
+        })
+        return
+      }
+
+      uni.showLoading({
+        title: '加载中...',
+      })
+
+      try {
+        await getCodeApi({
+          phone: this.loginForm.phone,
+          flag: 2,
+        })
+
+        this.timer = setInterval(() => {
+          this.awaitSecond--
+
+          if (this.awaitSecond === 0) {
+            this.awaitSecond = 60
+            clearInterval(this.timer)
+            this.timer = null
+          }
+        }, 1000)
+      } catch (error) {
+        console.log(error)
+        this.ttoast({
+          type: 'fail',
+          title: '验证码发送失败',
+          content: '请稍后重试',
+        })
+      } finally {
+        uni.hideLoading()
+      }
+    },
     // 点击注册
     async handlelogin() {
       if (!this.agreementStatus) {
@@ -205,11 +238,11 @@ export default {
       }
       const _this = this
       this.$refs.form
-        .validate(this.loginForm, loginRule)
+        .validate(this.loginForm, verificationCodeRule)
         .then(async () => {
-          const res = await this.$store.dispatch('auth/loginAction', {
-            username: _this.loginForm.phone,
-            password: _this.loginForm.password,
+          const res = await this.$store.dispatch('auth/codeLoginAction', {
+            phone: _this.loginForm.phone,
+            code: _this.loginForm.code,
           })
 
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
@@ -316,17 +349,11 @@ export default {
 
   computed: {
     btnStatus() {
-      return (
-        this.agreementStatus && this.loginForm.password && this.loginForm.phone
-      )
+      return this.agreementStatus && this.loginForm.code && this.loginForm.phone
     },
 
     keybordEnterText() {
-      return this.agreementStatus &&
-        this.loginForm.password &&
-        this.loginForm.phone
-        ? 'done'
-        : 'next'
+      return this.agreementStatus && this.loginForm.phone ? 'done' : 'next'
     },
   },
 }
@@ -412,6 +439,22 @@ text {
       flex-shrink: 0;
       margin-top: 12upx;
     }
+
+    .get-code {
+      color: #ffc117;
+      font-size: 28upx;
+      margin-top: 24upx;
+    }
+
+    .awaiting {
+      font-size: 28upx;
+      color: #b3b2ad;
+      margin-top: 12upx;
+
+      .second-text {
+        color: #605d52;
+      }
+    }
   }
 
   .service-agreement-wrapper {
@@ -424,11 +467,6 @@ text {
       margin-top: 1upx;
       margin-left: 6upx;
     }
-  }
-
-  .forget-assword {
-    font-size: 24upx;
-    color: #8f8d85;
   }
 
   .login-btn {
