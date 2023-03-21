@@ -933,6 +933,12 @@
 					"style": {
 						"navigationBarTitleText": "充值中心"
 					}
+				},
+				{
+					"path": "sever/tixian/tixian",
+					"style": {
+						"navigationBarTitleText": "提现中心"
+					}
 				}
 			]
 		},

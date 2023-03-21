@@ -43,6 +43,7 @@
             :size="28"
             :borderBottom="false"
             placeholder="请填写后台帐号"
+						placeholderStyle="color: #B3B2AD"
           ></tui-input>
         </view>
       </view>
@@ -57,6 +58,7 @@
             :size="28"
             :borderBottom="false"
             placeholder="请填写后台密码"
+						placeholderStyle="color: #B3B2AD"
           ></tui-input>
         </view>
       </view>
@@ -207,15 +209,16 @@ export default {
 
       .label{
         position: relative;
-        padding-left: 10upx;
-
-        &::after{
-          content: "*";
-          position: absolute;
-          top: 0;
-          left: -10upx;
-          color: red;
-        }
+        // padding-left: 10upx;
+				font-size: 28upx;
+				color: #141000;
+        // &::after{
+        //   content: "*";
+        //   position: absolute;
+        //   top: 0;
+        //   left: -10upx;
+        //   color: red;
+        // }
       }
 
       .wrapper {
@@ -225,13 +228,13 @@ export default {
         justify-content: center;
         position: relative;
         width: 100%;
-        height: 60upx;
-        border-radius: 10upx;
-        border: 1upx solid #fdc041;
+        height: 96upx;
+        border-radius: 16upx;
+        // border: 1upx solid #fdc041;
         padding-right: 50upx;
         padding-left: 6upx;
         box-sizing: border-box;
-
+				background: #F6F6F5;
         .arrowdown {
           position: absolute;
           top: 50%;
@@ -245,8 +248,13 @@ export default {
 
           .value {
             width: 100%;
+						text-indent: 0.5em;
           }
         }
+				/deep/ .tui-input__wrap{
+					background: #F6F6F5 !important;
+					text-indent: 0.5em;
+				}
       }
     }
   }

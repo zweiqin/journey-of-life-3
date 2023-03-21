@@ -400,11 +400,12 @@ export default {
 }
 
 .section {
-  // width: 100%;
-  background-color: #fff;
-  border-radius: 24upx;
-  margin: 0 40upx;
-  // min-height: 880upx;
+	// width: 100%;
+	background-color: #fff;
+	border-radius: 24upx;
+	margin: 0 40upx;
+	padding-bottom: 20upx;
+	// min-height: 880upx;
 }
 
 .avatar {

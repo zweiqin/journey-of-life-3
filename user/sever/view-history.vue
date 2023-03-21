@@ -90,224 +90,224 @@ const mapCurrentInfo = {
 }
 
 export default {
-  components: {
-    FootPrint,
-    Collections,
-    FollowStore,
-  },
-  computed: {
-    ...mapGetters(['currentMode']),
-  },
-  data() {
-    return {
-      currentPage: '',
-      currentPageInfo: '',
-      ON_EDIT,
-      ON_CONFIRM,
-      historyInfo: {
-        query: {
-          page: 1,
-          size: 20,
-        },
+	components: {
+		FootPrint,
+		Collections,
+		FollowStore,
+	},
+	computed: {
+		...mapGetters(['currentMode']),
+	},
+	data() {
+		return {
+			currentPage: '',
+			currentPageInfo: '',
+			ON_EDIT,
+			ON_CONFIRM,
+			historyInfo: {
+				query: {
+					page: 1,
+					size: 20,
+				},
 
-        data: {},
-        totalPage: 0,
-      },
+				data: {},
+				totalPage: 0,
+			},
 
-      collectionInfo: {
-        query: {
-          page: 1,
-          size: 20,
-        },
-        data: [],
-        totalPage: 0,
-      },
+			collectionInfo: {
+				query: {
+					page: 1,
+					size: 20,
+				},
+				data: [],
+				totalPage: 0,
+			},
 
-      followStore: {
-        query: {
-          page: 1,
-          size: 20,
-        },
+			followStore: {
+				query: {
+					page: 1,
+					size: 20,
+				},
 
-        data: [],
-        totalPage: 0,
-      },
+				data: [],
+				totalPage: 0,
+			},
 
-      labelList: [
-        {
-          name: '收藏',
-          value: 'collection',
-        },
-        {
-          name: '足迹',
-          value: 'history',
-        },
-        {
-          name: '订阅',
-          value: 'follow',
-        },
-      ],
-      currentActive: 0,
-      info: {
-        range: true,
-        insert: false,
-        selected: [],
-      },
-      currentTime: '',
+			labelList: [
+				{
+					name: '收藏',
+					value: 'collection',
+				},
+				{
+					name: '足迹',
+					value: 'history',
+				},
+				{
+					name: '订阅',
+					value: 'follow',
+				},
+			],
+			currentActive: 0,
+			info: {
+				range: true,
+				insert: false,
+				selected: [],
+			},
+			currentTime: '',
 
-      loadingStatus: 'loading',
-      showNoData: false,
-    }
-  },
-  onLoad(options) {
-    this.currentPage = options.page
-    this.currentPageInfo = mapCurrentInfo[this.currentPage]
-    if (this.currentPageInfo.api) {
-      this[this.currentPageInfo.api]()
-    } else {
-      this.loadingStatus = 'hidden'
-      this.showNoData = true
-    }
-  },
+			loadingStatus: 'loading',
+			showNoData: false,
+		}
+	},
+	onLoad(options) {
+		this.currentPage = options.page
+		this.currentPageInfo = mapCurrentInfo[this.currentPage]
+		if (this.currentPageInfo.api) {
+			this[this.currentPageInfo.api]()
+		} else {
+			this.loadingStatus = 'hidden'
+			this.showNoData = true
+		}
+	},
 
-  methods: {
-    handleBack() {
-      uni.switchTab({
-        url: '/pages/user/user',
-      })
-    },
+	methods: {
+		handleBack() {
+			uni.switchTab({
+				url: '/pages/user/user',
+			})
+		},
 
-    // 切换nav
-    handleChangeCurrentPane(index) {
-      this.currentActive = index
-    },
+		// 切换nav
+		handleChangeCurrentPane(index) {
+			this.currentActive = index
+		},
 
-    handleSwitchTab(currentPage) {
-      this.currentPage = currentPage
-      this.currentPageInfo = mapCurrentInfo[this.currentPage]
-      this.showNoData =
-        JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
-        JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
-      if (
-        JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
-        JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
-      ) {
-        this.currentPageInfo.api
-          ? this[this.currentPageInfo.api]()
-          : (this.showNoData = true)
-      }
-    },
+		handleSwitchTab(currentPage) {
+			this.currentPage = currentPage
+			this.currentPageInfo = mapCurrentInfo[this.currentPage]
+			this.showNoData =
+				JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
+				JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
+			if (
+				JSON.stringify(this[this.currentPageInfo.data].data) === '[]' ||
+				JSON.stringify(this[this.currentPageInfo.data].data) === '{}'
+			) {
+				this.currentPageInfo.api
+					? this[this.currentPageInfo.api]()
+					: (this.showNoData = true)
+			}
+		},
 
-    // 获取足迹数据
-    getFootPrint() {
-      const _this = this
-      this.loadingStatus = 'loading'
+		// 获取足迹数据
+		getFootPrint() {
+			const _this = this
+			this.loadingStatus = 'loading'
 
-      getUserViewHistoryApi({
-        ...this.historyInfo.query,
-        userId: getUserId(),
-      }).then(({ data }) => {
-        _this.historyInfo.totalPage = data.totalPages
-        for (const item of data.footprintList) {
-          const key = item.addTime.split(' ')[0]
-          const data = _this.historyInfo.data
-          if (!data[key]) {
-            data[key] = [item]
-          } else {
-            data[key].push(item)
-          }
-        }
+			getUserViewHistoryApi({
+				...this.historyInfo.query,
+				userId: getUserId(),
+			}).then(({ data }) => {
+				_this.historyInfo.totalPage = data.totalPages
+				for (const item of data.footprintList) {
+					const key = item.addTime.split(' ')[0]
+					const data = _this.historyInfo.data
+					if (!data[key]) {
+						data[key] = [item]
+					} else {
+						data[key].push(item)
+					}
+				}
 
-        this.loadingStatus = 'hidden'
-        this.$refs.footerPrintRef.setData(this.historyInfo.data)
-        this.showNoData = JSON.stringify(this.historyInfo.data) === '{}'
-      })
-    },
+				this.loadingStatus = 'hidden'
+				this.$refs.footerPrintRef.setData(this.historyInfo.data)
+				this.showNoData = JSON.stringify(this.historyInfo.data) === '{}'
+			})
+		},
 
-    // 获取收藏数据
-    getCollections() {
-      const _this = this
-      this.loadingStatus = 'loading'
-      getUserCollectionListApi({
-        ...this.collectionInfo.query,
-        userId: getUserId(),
-        type: 0,
-      }).then(({ data }) => {
-        _this.collectionInfo.totalPage = data.totalPages
-        _this.collectionInfo.data = data.collectList
-        _this.loadingStatus = 'hidden'
-        this.showNoData = this.collectionInfo.data.length == 0
-      })
-    },
+		// 获取收藏数据
+		getCollections() {
+			const _this = this
+			this.loadingStatus = 'loading'
+			getUserCollectionListApi({
+				...this.collectionInfo.query,
+				userId: getUserId(),
+				type: 0,
+			}).then(({ data }) => {
+				_this.collectionInfo.totalPage = data.totalPages
+				_this.collectionInfo.data = data.collectList
+				_this.loadingStatus = 'hidden'
+				this.showNoData = this.collectionInfo.data.length == 0
+			})
+		},
 
-    // 获取订阅店铺
-    getFollowStoreList() {
-      const _this = this
-      this.loadingStatus = 'loading'
-      getUserCollectionListApi({
-        ...this.followStore.query,
-        userId: getUserId(),
-        type: 2,
-      }).then(({ data }) => {
-        _this.followStore.totalPage = data.totalPages
-        _this.followStore.data = data.collectList
-        _this.loadingStatus = 'hidden'
-        this.showNoData = this.followStore.data.length == 0
-      })
-    },
-  },
+		// 获取订阅店铺
+		getFollowStoreList() {
+			const _this = this
+			this.loadingStatus = 'loading'
+			getUserCollectionListApi({
+				...this.followStore.query,
+				userId: getUserId(),
+				type: 2,
+			}).then(({ data }) => {
+				_this.followStore.totalPage = data.totalPages
+				_this.followStore.data = data.collectList
+				_this.loadingStatus = 'hidden'
+				this.showNoData = this.followStore.data.length == 0
+			})
+		},
+	},
 
-  onReachBottom() {
-    switch (this.currentPage) {
-      case 'history':
-        if (this.historyInfo.data.length < this.historyInfo.query.size) {
-          return
-        }
+	onReachBottom() {
+		switch (this.currentPage) {
+			case 'history':
+				if (this.historyInfo.data.length < this.historyInfo.query.size) {
+					return
+				}
 
-        if (this.historyInfo.query.page >= this.historyInfo.totalPage) {
-          this.loadingStatus = 'noMore'
-          return
-        }
+				if (this.historyInfo.query.page >= this.historyInfo.totalPage) {
+					this.loadingStatus = 'noMore'
+					return
+				}
 
-        if (this.historyInfo.query.page < this.historyInfo.totalPage) {
-          this.historyInfo.query.page++
-          this.getFootPrint()
-        }
-        break
+				if (this.historyInfo.query.page < this.historyInfo.totalPage) {
+					this.historyInfo.query.page++
+					this.getFootPrint()
+				}
+				break
 
-      case 'collection':
-        if (this.collectionInfo.data.length < this.collectionInfo.query.size) {
-          return
-        }
+			case 'collection':
+				if (this.collectionInfo.data.length < this.collectionInfo.query.size) {
+					return
+				}
 
-        if (this.collectionInfo.query.page >= this.collectionInfo.totalPage) {
-          this.loadingStatus = 'noMore'
-          return
-        }
+				if (this.collectionInfo.query.page >= this.collectionInfo.totalPage) {
+					this.loadingStatus = 'noMore'
+					return
+				}
 
-        if (this.collectionInfo.query.page < this.collectionInfo.totalPage) {
-          this.collectionInfo.query.page++
-          this.getCollections()
-        }
-        break
+				if (this.collectionInfo.query.page < this.collectionInfo.totalPage) {
+					this.collectionInfo.query.page++
+					this.getCollections()
+				}
+				break
 
-      case 'follow':
-        if (this.followStore.data.length < this.followStore.query.size) {
-          return
-        }
+			case 'follow':
+				if (this.followStore.data.length < this.followStore.query.size) {
+					return
+				}
 
-        if (this.followStore.query.page >= this.followStore.totalPage) {
-          this.loadingStatus = 'noMore'
-          return
-        }
+				if (this.followStore.query.page >= this.followStore.totalPage) {
+					this.loadingStatus = 'noMore'
+					return
+				}
 
-        if (this.followStore.query.page < this.followStore.totalPage) {
-          this.followStore.query.page++
-          this.getCollections()
-        }
-        break
-    }
-  },
+				if (this.followStore.query.page < this.followStore.totalPage) {
+					this.followStore.query.page++
+					this.getCollections()
+				}
+				break
+		}
+	},
 }
 </script>
 
