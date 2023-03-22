@@ -65,12 +65,14 @@
         </view>
       </tui-list-cell>
 
+      <!-- #ifdef H5 -->
       <tui-list-cell arrow @click="handleBindWxChat">
         <view class="user-info-item">
           <view class="title">微信账号</view>
-          <view class="value">未绑定</view>
+          <view class="value">{{ bindPhone || '未绑定' }}</view>
         </view>
       </tui-list-cell>
+      <!-- #endif -->
 
       <!-- #ifdef APP -->
       <tui-list-cell arrow @click="handleCheckedVersion">
@@ -132,7 +134,11 @@
 
 <script>
 import { USER_INFO } from '../../constant'
-import { getOpenIdApi, handleBindOpenIdApi } from '../../api/app'
+import {
+  getOpenIdApi,
+  handleBindOpenIdApi,
+  queryIsBindPhoneApi,
+} from '../../api/app'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
 export default {
   data() {
@@ -143,6 +149,7 @@ export default {
       isFocus: false,
       userInfo: {},
       currentVersion: '',
+      bindPhone: null,
     }
   },
   methods: {
@@ -284,6 +291,9 @@ export default {
 
     // 绑定微信号
     async handleBindWxChat() {
+      if (this.bindPhone) {
+        return
+      }
       const _this = this
       const appid = 'wxb19ccb829623be12'
       const local =
@@ -292,7 +302,6 @@ export default {
 
       console.log('获取code', code)
       // alert('获取code', code)
-
 
       if (code == null || code === '') {
         window.location.href =
@@ -353,11 +362,21 @@ export default {
       console.log('code结果', theRequest)
       return theRequest
     },
+
+    // 查询微信是否绑定
+    async queryBindInfo() {
+      const res = await queryIsBindPhoneApi({
+        userId: this.$store.getters.userId,
+      })
+
+      this.bindPhone = res.data ? res.data.phone : null
+    },
   },
 
   onShow() {},
 
   onLoad() {
+    this.queryBindInfo()
     const _this = this
     uni.getSystemInfo({
       success: function (res) {
@@ -400,12 +419,12 @@ export default {
 }
 
 .section {
-	// width: 100%;
-	background-color: #fff;
-	border-radius: 24upx;
-	margin: 0 40upx;
-	padding-bottom: 20upx;
-	// min-height: 880upx;
+  // width: 100%;
+  background-color: #fff;
+  border-radius: 24upx;
+  margin: 0 40upx;
+  padding-bottom: 20upx;
+  // min-height: 880upx;
 }
 
 .avatar {

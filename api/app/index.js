@@ -1,4 +1,4 @@
-import { RuanRequest, SheQuRequest1 } from 'utils'
+import { RuanRequest, SheQuRequest1, request2 } from 'utils'
 import { USER_TOKEN } from '../../constant'
 
 // 检查版本号
@@ -25,6 +25,19 @@ export const handleBindOpenIdApi = data => {
     '/samrtWorker/api/wechat/message/bindingOpenId',
     data,
     'post',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}
+
+// 查询是否绑定了电话
+export const queryIsBindPhoneApi = data => {
+  return SheQuRequest1(
+    '/samrtWorker/api/wechat/message/getUserInfoByUserId',
+    data,
+    'get',
     null,
     {
       'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
