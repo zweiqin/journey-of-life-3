@@ -203,10 +203,23 @@ export default {
 		}
 		// console.log(this.chat, `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`)
 	},
+	beforeUnmount() {
+		this.$store.getters.wsHandle.close()
+		this.$store.getters.wsHandleInfo.close()
+		this.connectCloseInfoAgain ? clearInterval(this.connectCloseInfoAgain) : ''
+		this.connectCloseAgain ? clearInterval(this.connectCloseAgain) : ''
+	},
 	methods: {
 		timestampToTime,
-		onOpenInfo() {
-			console.log('onOpenInfo连接成功')
+		onOpenInfo(isReconnect) {
+			return () => {
+				// console.log('socketInfo连接成功')
+				if (isReconnect) {
+					this.connectCloseInfoAgain && clearInterval(this.connectCloseInfoAgain)
+					this.connectCloseInfoAgain = ''
+				}
+				console.log('onOpenInfo连接成功')
+			}
 		},
 		onMessageInfo(evt) {
 			const dataAll = JSON.parse(evt.data)
@@ -216,61 +229,98 @@ export default {
 			this.scrollToBottom()
 			if (data.message.fromUser.id === this.userInfo.userId) return
 		},
-		onErrorInfo() {
+		onErrorInfo(errMsg) {
 			console.log('onErrorInfo出错了')
-			uni.showLoading({
-				title: '断线了，正在重新连接......',
-				mask: true
+			// uni.showLoading({
+			// 	title: '断线了，正在重新连接......',
+			// 	mask: true
+			// })
+			uni.showToast({
+				title: 'ErrorInfo出错了' + errMsg,
+				icon: 'none',
+				duration: 2000
 			})
 		},
 		onCloseInfo() {
 			console.log('onCloseInfo关闭了')
+			this.connectCloseInfoAgain = setInterval(() => {
+				this.$store.dispatch('customerService/joinCustomerServiceChat', {
+					ref: this,
+					wsHandleInfo: uni.connectSocket({
+						url: `${BASE_WS_API}/APP/${getUserId()}`,
+						complete: () => { }
+					}),
+					wsHandle: ''
+				})
+			}, 2000)
 		},
 
-		onOpen() {
-			console.log('onOpen连接成功')
-			this.$store.dispatch('customerService/queryChatMessage', {
-				chatId: this.chat,
-				limit: 30,
-				endTime: '',
-				order: 'desc'
-			}).then((res) => {
-				const tempDate = Date.now()
-				this.groupMessages = res.map((item) => JSON.parse(item.message)).reverse()
-					.concat([ {
-						event: '',
-						message: {
-							id: tempDate,
-							status: 'succeed',
-							type: 'text',
-							sendTime: tempDate,
-							content: '您好，请问有什么能够帮到您？',
-							toContactId: getUserId(),
-							fileSize: 0,
-							fileName: '',
-							fromUser: {
-								id: this.chat,
-								displayName: '客服',
-								avatar: '/static/logo.png'
-							},
-							isGroup: true
-						}
-					} ])
-				this.scrollToBottom()
-			})
+		onOpen(isReconnection) {
+			return () => {
+				// console.log('socketInfo连接成功')
+				if (isReconnection) {
+					this.connectCloseInfoAgain && clearInterval(this.connectCloseInfoAgain)
+					this.connectCloseInfoAgain = ''
+				}
+				console.log('onOpen连接成功')
+				this.$store.dispatch('customerService/queryChatMessage', {
+					chatId: this.chat,
+					limit: 30,
+					endTime: '',
+					order: 'desc'
+				}).then((res) => {
+					const tempDate = Date.now()
+					this.groupMessages = res.map((item) => JSON.parse(item.message)).reverse()
+						.concat([ {
+							event: '',
+							message: {
+								id: tempDate,
+								status: 'succeed',
+								type: 'text',
+								sendTime: tempDate,
+								content: '您好，请问有什么能够帮到您？',
+								toContactId: getUserId(),
+								fileSize: 0,
+								fileName: '',
+								fromUser: {
+									id: this.chat,
+									displayName: '客服',
+									avatar: '/static/logo.png'
+								},
+								isGroup: true
+							}
+						} ])
+					this.scrollToBottom()
+				})
+			}
 		},
 		onMessage(evt) {
 			console.log('onMessage收到消息', evt)
 		},
-		onError() {
+		onError(errMsg) {
 			console.log('onError出错了')
-			uni.showLoading({
-				title: '断线了，正在重新连接......',
-				mask: true
+			// uni.showLoading({
+			// 	title: '断线了，正在重新连接......',
+			// 	mask: true
+			// })
+			uni.showToast({
+				title: 'Error出错了' + errMsg,
+				icon: 'none',
+				duration: 2000
 			})
 		},
 		onClose() {
 			console.log('onClose关闭了')
+			this.connectCloseAgain = setInterval(() => {
+				this.$store.dispatch('customerService/joinCustomerServiceChat', {
+					ref: this,
+					wsHandleInfo: '',
+					wsHandle: uni.connectSocket({
+						url: `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`,
+						complete: () => { }
+					})
+				})
+			}, 2000)
 		},
 
 		send(sendMsg) {

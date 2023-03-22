@@ -155,14 +155,26 @@ export default {
 			// wsHandle.onmessage = ref.onMessage
 			// wsHandle.onclose = ref.onError
 			// wsHandle.onerror = ref.onError
-			wsHandle.onOpen(ref.onOpen)
-			wsHandle.onMessage(ref.onMessage)
-			wsHandle.onClose(ref.onError)
-			wsHandle.onError(ref.onError)
-			wsHandleInfo.onOpen(ref.onOpenInfo)
-			wsHandleInfo.onMessage(ref.onMessageInfo)
-			wsHandleInfo.onClose(ref.onErrorInfo)
-			wsHandleInfo.onError(ref.onErrorInfo)
+			if (wsHandle && !wsHandleInfo) {
+				wsHandle.onOpen(ref.onOpen(true))
+				wsHandle.onMessage(ref.onMessage)
+				wsHandle.onClose(ref.onError)
+				wsHandle.onError(ref.onError)
+			} else if (!wsHandle && wsHandleInfo) {
+				wsHandleInfo.onOpen(ref.onOpenInfo(true))
+				wsHandleInfo.onMessage(ref.onMessageInfo)
+				wsHandleInfo.onClose(ref.onErrorInfo)
+				wsHandleInfo.onError(ref.onErrorInfo)
+			} else if (wsHandle && wsHandleInfo) {
+				wsHandle.onOpen(ref.onOpen(false))
+				wsHandle.onMessage(ref.onMessage)
+				wsHandle.onClose(ref.onError)
+				wsHandle.onError(ref.onError)
+				wsHandleInfo.onOpen(ref.onOpenInfo(false))
+				wsHandleInfo.onMessage(ref.onMessageInfo)
+				wsHandleInfo.onClose(ref.onErrorInfo)
+				wsHandleInfo.onError(ref.onErrorInfo)
+			}
 		},
 
 		// 查消息
