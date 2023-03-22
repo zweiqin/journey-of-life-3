@@ -82,7 +82,7 @@ export const verificationCodeApi = data => {
 // 微信登录
 export const wxLoginApi = data => {
   return request2({
-    url: '/wechat/userInfo',
+    url: '/api/wechat/userInfo',
     data,
     loading: true,
     method: 'get',

@@ -330,6 +330,13 @@ export default {
               title: '微信绑定成功',
               duration: 2000,
             })
+
+            // #ifdef H5
+            window.location.href =
+              window.location.origin +
+              window.location.pathname +
+              window.location.hash
+            // #endif
           } catch (error) {
             uni.showToast({
               title: '微信绑定失败',

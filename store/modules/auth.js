@@ -1,6 +1,6 @@
 import { USER_INFO, USER_ID, USER_TOKEN } from '../../constant'
 import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN } from './type'
-import { loginApi, verificationCodeApi } from '../../api/auth'
+import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
 
 export default {
@@ -73,6 +73,25 @@ export default {
               title: '登录成功',
             })
             console.log(data)
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+
+    // 微信登陆
+    wxLogin({ commit }, code) {
+      return new Promise((resolve, reject) => {
+        wxLoginApi({ code })
+          .then(({ data }) => {
+            commit(CHNAGE_USER_ID, data.userInfo.userId)
+            commit(CHNAGE_USER_INFO, data.userInfo)
+            commit(CHNAGE_USER_TOKEN, data.token)
+            uni.showToast({
+              title: '登录成功',
+            })
             resolve(data)
           })
           .catch(err => {
