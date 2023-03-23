@@ -96,9 +96,10 @@ export default {
 									url: `/user/chat/chat-detail?chat=${result.data.items[0].chatId}&name=${result.data.items[0].name}`
 								})
 							} else {
-								uni.switchTab({
-									url: '/pages/user/user'
-								})
+								uni.navigateBack()
+								// uni.switchTab({
+								// 	url: '/pages/user/user'
+								// })
 							}
 						}
 					})

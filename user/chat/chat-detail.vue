@@ -446,9 +446,10 @@ export default {
 
 		// 回退
 		handleBack() {
-			uni.navigateTo({
-				url: '/user/chat/chat'
-			})
+			uni.navigateBack()
+			// uni.navigateTo({
+			// 	url: '/user/chat/chat'
+			// })
 		},
 
 		handleScrolltoupper(e) {
