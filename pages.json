@@ -249,6 +249,12 @@
 			}
 		},
 		{
+			"path": "pages/service-agreement/privacy-policy",
+			"style": {
+				"navigationBarTitleText": "团蜂隐私协议"
+			}
+		},
+		{
 			"path": "pages/register/register",
 			"style": {
 				"navigationBarTitleText": "注册"

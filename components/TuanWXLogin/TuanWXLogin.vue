@@ -8,13 +8,10 @@
 <script>
 // #ifdef H5
 import { getUrlCode } from '../../utils'
-import { wxLoginApi } from '../../api/auth'
 // #endif
 export default {
   methods: {
     async handleWXLogin() {
-      this.empty()
-      return
       // #ifdef H5
       const _this = this
       const appid = 'wxb19ccb829623be12'
@@ -22,7 +19,7 @@ export default {
         'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
       const code = getUrlCode().code
 
-      console.log('获取code', code)
+      // console.log('获取code', code)
       // alert('获取code', code)
 
       if (code == null || code === '') {
@@ -33,9 +30,8 @@ export default {
           encodeURIComponent(local) +
           '&response_type=code&scope=snsapi_userinfo#wechat_redirect'
       } else {
-        await wxLoginApi({
-          code: '22222',
-        })
+        const data = await this.$store.dispatch('auth/wxLogin', code)
+        this.$emit('login', data)
       }
       // #endif
     },

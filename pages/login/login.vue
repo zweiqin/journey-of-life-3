@@ -94,7 +94,7 @@
       </view>
 
       <view class="more-login">
-        <TuanWXLogin>
+        <TuanWXLogin @login="handleWXLoginAfter">
           <view class="item">
             <image src="../../static/images/new-auth/wx.png" mode="" />
             <text>微信登录</text>
@@ -311,6 +311,53 @@ export default {
             reject(false)
           })
       })
+    },
+
+    // 微信登陆后续
+    async handleWXLoginAfter(res) {
+      // #ifdef H5
+      window.location.href =
+        window.location.origin + window.location.pathname + window.location.hash
+      // #endif
+      const _this = this
+      if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
+        try {
+          await _this.checkBind({ userId: res.userInfo.userId })
+        } catch (error) {
+          _this.bindId = uni.getStorageSync(NEW_BIND_ID)
+          await _this.binding(res.userInfo.userId, () => {
+            uni.switchTab({
+              url: '/',
+            })
+          })
+        }
+      }
+
+      if (_this.bindId) {
+        await _this.binding(res.userInfo.userId, () => {
+          uni.switchTab({
+            url: '/',
+          })
+        })
+        return
+      } else {
+        if (this.redirect) {
+          // console.log('进来了', this.redirect)
+          if (tabbarList.includes(_this.redirect)) {
+            uni.switchTab({
+              url: _this.redirect,
+            })
+          } else {
+            uni.redirectTo({
+              url: _this.redirect,
+            })
+          }
+        } else {
+          uni.switchTab({
+            url: '/pages/community-center/community-centerr',
+          })
+        }
+      }
     },
   },
 
