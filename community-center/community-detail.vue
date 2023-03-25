@@ -219,6 +219,7 @@ export default {
 				serverTypeId: this.serverTypeId,
 			})
 			this.serviceDetail = res.data
+			this.currentTab = res.data[0].id
 			console.log('666', this.serviceDetail)
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
