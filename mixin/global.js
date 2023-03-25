@@ -2,7 +2,6 @@ import { toastIcons } from './data'
 export default {
   install(Vue) {
     Vue.mixin({
-
       methods: {
         /**
          * title: 提示标题
@@ -41,14 +40,14 @@ export default {
           }
         },
 
-        empty() {
+        empty(text) {
           this.ttoast({
             type: 'info',
-            title: '功能尚未开放',
+            title: text || '功能尚未开放',
             content: '敬请期待~',
           })
-        }
-      }
+        },
+      },
     })
   },
 }

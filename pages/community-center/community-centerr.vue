@@ -253,7 +253,7 @@
       </view>
     </view>
     <view class="main">
-      <view class="jx" @click="go('/community-center/vip-center/vip-detail')">
+      <!-- <view class="jx" @click="go('/community-center/vip-center/vip-detail')">
         <view class="left">
           <view class="red">积分商城</view>
           <view class="title-list">
@@ -311,6 +311,27 @@
               <view class="coll">去拼单</view>
             </view>
           </view>
+        </view>
+      </view> -->
+
+      <view class="vip-container">
+        <image
+          @click="go('/community-center/vip-center/vip-detail?type=1')"
+          class="vip-39"
+          src="../../static/images/con-center/new-home/39.9.png"
+          mode=""
+        />
+        <view class="right">
+          <image
+            @click="go('/community-center/vip-center/vip-detail?type=2')"
+            src="../../static/images/con-center/new-home/299.png"
+            mode=""
+          />
+          <image
+            @click="empty('套餐升级中')"
+            src="../../static/images/con-center/new-home/1399.png"
+            mode=""
+          />
         </view>
       </view>
       <view class="station">
@@ -546,7 +567,7 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -597,9 +618,9 @@ export default {
     // #endif
   },
   methods: {
-		goToSearch() {
-			uni.navigateTo({ url: '/community-center/search' })
-		},
+    goToSearch() {
+      uni.navigateTo({ url: '/community-center/search' })
+    },
 
     handleToServiceListHome(item) {
       console.log('更多服务分类列表', item)
@@ -1279,5 +1300,32 @@ export default {
   }
 }
 
+.vip-container {
+  display: flex;
+  box-sizing: border-box;
+  height: 320upx;
 
+  image {
+    flex-shrink: 0;
+  }
+
+  .vip-39 {
+    width: 350upx;
+    height: 320upx;
+    margin-right: 20upx;
+  }
+
+  .right {
+    height: 320upx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    image {
+      width: 320upx;
+      height: 150upx;
+    }
+  }
+}
 </style>

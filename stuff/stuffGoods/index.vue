@@ -10,7 +10,11 @@
             class="return"
             @click="handleBack"
           />
-          <view class="text">{{ addressDetail }}</view>
+          <TuanLocation>
+            <text class="locale">{{
+              $store.getters.currentCity || '龙江镇'
+            }}</text>
+          </TuanLocation>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""

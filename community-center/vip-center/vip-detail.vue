@@ -16,6 +16,7 @@
 
       <view class="main">
         <PackagePane
+          v-if="type == 1"
           @pay="handlePayTH"
           :key="vipList[0].name"
           :data="vipList[0]"
@@ -44,6 +45,7 @@
         </PackagePane>
 
         <PackagePane
+          v-if="type == 2"
           @pay="handlePayBS"
           :key="vipList[1].name"
           :data="vipList[1]"
@@ -54,7 +56,7 @@
               v-for="(item, index) in beeSteward"
               :key="index"
             >
-              <text>({{ index + 1}}) {{ item }}</text>
+              <text>({{ index + 1 }}) {{ item }}</text>
             </li>
           </view>
         </PackagePane>
@@ -85,12 +87,25 @@ export default {
       currentIndulgence: '空调清洗一台 (免拆)',
       address: '',
       userId: null,
+      type: null,
     }
   },
-  onLoad() {
+  onLoad(option) {
+    this.type = option.type
+    if (this.type) {
+      uni.setStorageSync('SERVE_TYPE', option.type)
+    }
     this.getServeList()
     this.userId = uni.getStorageSync(USER_ID)
   },
+
+  onShow() {
+    // debugger
+    if (!this.type) {
+      this.type = uni.getStorageSync('SERVE_TYPE')
+    }
+  },
+
   methods: {
     handleClickBack() {
       uni.switchTab({
@@ -195,6 +210,7 @@ export default {
 .vip-detail-conatiner {
   background-color: #fa5151;
   font-size: 32upx;
+  min-height: 100vh;
 
   .header {
     position: relative;

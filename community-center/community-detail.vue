@@ -17,9 +17,11 @@
             alt=""
             class="icon"
           />
-          <view class="address">{{
-            $store.getters.currentCity || '龙江镇'
-          }}</view>
+          <TuanLocation>
+            <text class="locale">{{
+              $store.getters.currentCity || '龙江镇'
+            }}</text>
+          </TuanLocation>
         </view>
       </view>
       <view class="goods">

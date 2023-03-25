@@ -255,6 +255,12 @@
 			}
 		},
 		{
+			"path": "pages/login/enroll",
+			"style": {
+				"navigationBarTitleText": "立即报名"
+			}
+		},
+		{
 			"path": "pages/register/register",
 			"style": {
 				"navigationBarTitleText": "注册"
@@ -527,7 +533,7 @@
 				{
 					"path": "active-consignee",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "完善服务信息"
 					}
 				}
 			]

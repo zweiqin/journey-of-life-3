@@ -12,7 +12,11 @@
           />
           <!-- #endif -->
 
-          <view class="text">{{ addressDetail }}</view>
+          <TuanLocation>
+            <text class="locale">{{
+              $store.getters.currentCity || '龙江镇'
+            }}</text>
+          </TuanLocation>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
             alt=""
@@ -20,7 +24,7 @@
             @click.stop="handleClick"
           />
         </view>
-        <view class="search-box"  @click="goToSearch">
+        <view class="search-box" @click="goToSearch">
           <view class="search">
             <img
               src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
@@ -129,7 +133,7 @@ export default {
       // this.getSearchData();
     },
 
-    goToSearch(){
+    goToSearch() {
       uni.navigateTo({ url: '/community-center/search' })
     },
 
@@ -173,7 +177,7 @@ export default {
       const res = await getServiceSortApi({})
 
       this.navbar = res.data
-      console.log(res.data.flat(Infinity));
+      console.log(res.data.flat(Infinity))
       this.sort = res.data[0]
       this.data = res.data
       this.sort = this.data.find(item => item.id === this.currentTab)

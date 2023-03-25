@@ -44,3 +44,12 @@ export const queryIsBindPhoneApi = data => {
     }
   )
 }
+
+//
+export const enrollApi = data => {
+  return request2({
+    method: 'post',
+    url: '/customerscancode/save',
+    data,
+  })
+}
