@@ -5,12 +5,14 @@
 		</view>
 
 		<view v-if="chatListData.length" class="message-list">
-			<view v-for="item in chatListData" :key="item.chatId" class="item"
-				@click="go(`/user/chat/chat-detail?chat=${item.chatId}&name=${item.name}`)">
+			<view
+				v-for="item in chatListData" :key="item.chatId" class="item"
+				@click="go(`/user/chat/chat-detail?chat=${item.chatId}&name=${item.name}`)"
+			>
 				<image class="avatar" src="/static/logo.png" mode="" />
 				<view class="chat-wrapper">
 					<view class="name-time">
-						<text class="name">{{item.name}}</text>
+						<text class="name">{{ item.name }}</text>
 						<text class="time">
 							<!-- 2022-01-01 10：89 -->
 						</text>
@@ -26,24 +28,25 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex'
-	export default {
-		computed: {
-			...mapGetters(['chatListData']),
-		},
-		onShow() {
-			this.$store.dispatch('customerService/getChatList')
-		},
-		methods: {
-			handleBack() {
-				uni.switchTab({
-					url: '/pages/user/user'
-				})
-			}
+import {
+	mapGetters
+} from 'vuex'
+export default {
+	computed: {
+		...mapGetters([ 'chatListData' ])
+	},
+	onShow() {
+		this.$store.dispatch('customerService/getChatList')
+	},
+	methods: {
+		handleBack() {
+			uni.navigateBack()
+			// uni.switchTab({
+			// 	url: '/pages/user/user'
+			// })
 		}
 	}
+}
 </script>
 
 <style lang="less" scoped>

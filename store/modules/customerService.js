@@ -96,9 +96,10 @@ export default {
 									url: `/user/chat/chat-detail?chat=${result.data.items[0].chatId}&name=${result.data.items[0].name}`
 								})
 							} else {
-								uni.switchTab({
-									url: '/pages/user/user'
-								})
+								uni.navigateBack()
+								// uni.switchTab({
+								// 	url: '/pages/user/user'
+								// })
 							}
 						}
 					})
@@ -149,30 +150,22 @@ export default {
 
 		// 进入聊天页面，创建聊天，存储wsHandle
 		joinCustomerServiceChat({ commit, rootState, state }, { ref, wsHandle, wsHandleInfo }) {
-			commit('CHANGE_WSINFO_INFO', wsHandleInfo)
-			commit('CHANGE_WS_INFO', wsHandle)
 			// wsHandle.onopen = ref.onOpen
 			// wsHandle.onmessage = ref.onMessage
 			// wsHandle.onclose = ref.onError
 			// wsHandle.onerror = ref.onError
-			if (wsHandle && !wsHandleInfo) {
-				wsHandle.onOpen(ref.onOpen(true))
+			if (wsHandle) {
+				commit('CHANGE_WS_INFO', wsHandle)
+				wsHandle.onOpen(ref.onOpen)
 				wsHandle.onMessage(ref.onMessage)
-				wsHandle.onClose(ref.onError)
+				wsHandle.onClose(ref.onClose)
 				wsHandle.onError(ref.onError)
-			} else if (!wsHandle && wsHandleInfo) {
-				wsHandleInfo.onOpen(ref.onOpenInfo(true))
+			}
+			if (wsHandleInfo) {
+				commit('CHANGE_WSINFO_INFO', wsHandleInfo)
+				wsHandleInfo.onOpen(ref.onOpenInfo)
 				wsHandleInfo.onMessage(ref.onMessageInfo)
-				wsHandleInfo.onClose(ref.onErrorInfo)
-				wsHandleInfo.onError(ref.onErrorInfo)
-			} else if (wsHandle && wsHandleInfo) {
-				wsHandle.onOpen(ref.onOpen(false))
-				wsHandle.onMessage(ref.onMessage)
-				wsHandle.onClose(ref.onError)
-				wsHandle.onError(ref.onError)
-				wsHandleInfo.onOpen(ref.onOpenInfo(false))
-				wsHandleInfo.onMessage(ref.onMessageInfo)
-				wsHandleInfo.onClose(ref.onErrorInfo)
+				wsHandleInfo.onClose(ref.onCloseInfo)
 				wsHandleInfo.onError(ref.onErrorInfo)
 			}
 		},

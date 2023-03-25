@@ -23,9 +23,10 @@ export default {
 	},
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			uni.navigateBack()
+			// uni.switchTab({
+			// 	url: '/pages/user/user'
+			// })
 		}
 	}
 }
