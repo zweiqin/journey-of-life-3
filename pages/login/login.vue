@@ -67,7 +67,7 @@
           <text @click="agreementStatus = !agreementStatus"
             >我已阅读并同意</text
           >
-          <TuanServe>
+          <TuanServe @op="agreementStatus = $event">
             <text style="color: #ffc117">《团蜂用户协议》</text>
           </TuanServe>
         </view>
@@ -94,12 +94,12 @@
       </view>
 
       <view class="more-login">
-        <TuanWXLogin @login="handleWXLoginAfter">
+        <!-- <TuanWXLogin @login="handleWXLoginAfter">
           <view class="item">
             <image src="../../static/images/new-auth/wx.png" mode="" />
             <text>微信登录</text>
           </view>
-        </TuanWXLogin>
+        </TuanWXLogin> -->
 
         <view class="item" @click="go('/pages/login/login-message')">
           <image src="../../static/images/new-auth/message.png" mode="" />
@@ -164,6 +164,7 @@ export default {
     const userId = uni.getStorageSync(USER_ID)
     const userInfo = uni.getStorageSync(USER_INFO)
 
+    // #ifdef H5
     if (uni.getStorageSync(NEW_BIND_ID) && userId && !this.bindId) {
       this.bindId = uni.getStorageSync(NEW_BIND_ID)
 
@@ -177,6 +178,7 @@ export default {
         })
       }
     }
+    // #endif
 
     // return
     if (userId && userInfo.userId) {
@@ -194,7 +196,7 @@ export default {
     }
   },
   methods: {
-    // 点击注册
+    // 登录
     async handlelogin() {
       if (!this.agreementStatus) {
         this.ttoast({
@@ -212,6 +214,7 @@ export default {
             password: _this.loginForm.password,
           })
 
+          // #ifdef H5
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
             try {
               await _this.checkBind({ userId: res.userInfo.userId })
@@ -224,7 +227,9 @@ export default {
               })
             }
           }
+          // #endif
 
+          // #ifdef H5
           if (_this.bindId) {
             await _this.binding(res.userInfo.userId, () => {
               uni.switchTab({
@@ -233,6 +238,7 @@ export default {
             })
             return
           } else {
+            // #endif
             if (this.redirect) {
               // console.log('进来了', this.redirect)
               if (tabbarList.includes(_this.redirect)) {
@@ -249,7 +255,10 @@ export default {
                 url: '/pages/community-center/community-centerr',
               })
             }
+
+            // #ifdef H5
           }
+          // #endif
         })
         .catch(errors => {})
     },
@@ -320,6 +329,8 @@ export default {
         window.location.origin + window.location.pathname + window.location.hash
       // #endif
       const _this = this
+
+      // #ifdef H5
       if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
         try {
           await _this.checkBind({ userId: res.userInfo.userId })
@@ -332,7 +343,9 @@ export default {
           })
         }
       }
+      // #endif
 
+      // #ifdef H5
       if (_this.bindId) {
         await _this.binding(res.userInfo.userId, () => {
           uni.switchTab({
@@ -341,6 +354,7 @@ export default {
         })
         return
       } else {
+        // #endif
         if (this.redirect) {
           // console.log('进来了', this.redirect)
           if (tabbarList.includes(_this.redirect)) {
@@ -357,7 +371,9 @@ export default {
             url: '/pages/community-center/community-centerr',
           })
         }
+        // #ifdef H5
       }
+      // #endif
     },
   },
 

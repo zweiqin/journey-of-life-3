@@ -4488,6 +4488,15 @@
             <span style="font-family: Calibri; font-size: 10.5pt">&#xa0;</span>
           </p>
         </view>
+
+        <view class="btns">
+          <button @click.stop="handleClickServe(false)" class="uni-btn">
+            拒绝
+          </button>
+          <button @click.stop="handleClickServe(true)" class="uni-btn">
+            同意
+          </button>
+        </view>
       </view>
     </tui-popup>
   </view>
@@ -4516,6 +4525,11 @@ export default {
     handleShowServe() {
       this.servePopupVisible = true
     },
+
+    handleClickServe(tag) {
+      this.servePopupVisible = false
+      this.$emit('op', tag)
+    },
   },
 }
 </script>
@@ -4528,5 +4542,26 @@ export default {
   overflow: auto;
   padding: 30upx;
   border-radius: 30upx;
+
+  .container {
+    height: 720upx;
+    overflow: scroll;
+  }
+
+  .btns {
+    height: 100upx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .uni-btn {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28upx;
+    }
+  }
 }
 </style>

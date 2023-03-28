@@ -6,7 +6,12 @@
     <!-- nav -->
     <view class="navs-container">
       <view class="navs">
-        <view class="item" v-for="(item, index) in navs" :key="index">
+        <view
+          class="item"
+          @click="go(item.url)"
+          v-for="(item, index) in navs"
+          :key="index"
+        >
           <image class="nav-icon" :src="item.icon" mode="" />
           <text>{{ item.name }}</text>
         </view>
@@ -17,12 +22,21 @@
     <view class="vip-container">
       <image
         class="vip-39"
+        @click="go('/community-center/vip-center/vip-detail?type=1')"
         src="../../static/images/con-center/new-home/39.9.png"
         mode=""
       />
       <view class="right">
-        <image src="../../static/images/con-center/new-home/299.png" mode="" />
-        <image src="../../static/images/con-center/new-home/1399.png" mode="" />
+        <image
+          @click="go('/community-center/vip-center/vip-detail?type=2')"
+          src="../../static/images/con-center/new-home/299.png"
+          mode=""
+        />
+        <image
+          @click="empty('套餐升级中')"
+          src="../../static/images/con-center/new-home/1399.png"
+          mode=""
+        />
       </view>
     </view>
 
@@ -33,6 +47,8 @@
       <ServiceStationPane></ServiceStationPane>
       <ServeListPane></ServeListPane>
     </view>
+
+    <tui-toast ref="toast"></tui-toast> 
   </view>
 </template>
 

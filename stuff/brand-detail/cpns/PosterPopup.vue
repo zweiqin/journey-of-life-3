@@ -99,6 +99,8 @@
       id="tui-color-palette"
       canvas-id="tui-color-palette"
     ></canvas>
+
+    <tui-toast ref="toast"></tui-toast>
   </tui-popup>
 </template>
 
@@ -149,11 +151,26 @@ export default {
       })
     },
     handleSaveImage() {
+      const _this = this
+      // #ifdef H5
       uni.showToast({
         title: '长按海报即可分享和保存海报',
         duration: 2000,
         icon: 'none',
       })
+      // #endif
+
+      // #ifdef APP
+      uni.saveFile({
+        tempFilePath: this.posterImage,
+        success: function (res) {
+          var savedFilePath = res.savedFilePath
+          _this.ttoast({
+            title: '海报保存成功'
+          })
+        },
+      })
+      // #endif
     },
 
     // 绘制海报成功

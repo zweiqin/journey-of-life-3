@@ -65,6 +65,14 @@
         </view>
       </tui-list-cell>
 
+      <!-- #ifdef APP -->
+      <tui-list-cell arrow @click="go('/user/info/privacy')">
+        <view class="user-info-item">
+          <view class="title">我的隐私</view>
+        </view>
+      </tui-list-cell>
+      <!-- #endif -->
+
       <!-- #ifdef H5 -->
       <tui-list-cell arrow @click="handleBindWxChat">
         <view class="user-info-item">
@@ -83,6 +91,16 @@
       </tui-list-cell>
       <!-- #endif -->
     </view>
+
+    <!-- #ifdef APP -->
+    <view
+      @click="handleDestoryAccount"
+      class="section"
+      style="padding-bottom: 0"
+    >
+      <button class="uni-btn destory">注销账户</button>
+    </view>
+    <!-- #endif -->
 
     <view class="logout section">
       <tui-list-cell style="background: rgba(0, 0, 0, 0)">
@@ -378,6 +396,14 @@ export default {
 
       this.bindPhone = res.data ? res.data.phone : null
     },
+
+    // 点击注销
+    handleDestoryAccount() {
+      this.ttoast({
+        type: 'info',
+        title: '请联系客服注销',
+      })
+    },
   },
 
   onShow() {},
@@ -531,5 +557,17 @@ export default {
     padding: 30upx 0;
     border-radius: 100px;
   }
+}
+
+.destory {
+  width: 100%;
+  height: 88upx;
+  background-color: #fff;
+  border-radius: 20upx;
+  line-height: 88upx;
+  background-color: #eaeaea;
+  color: #b7b7b7;
+  margin-top: 30upx;
+  font-size: 28upx;
 }
 </style>

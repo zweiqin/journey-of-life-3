@@ -187,7 +187,6 @@ export const throttle = (fn, interval) => {
   return _throttle
 }
 
-
 // 获取 微信 code
 // #ifdef H5
 export const getUrlCode = () => {
@@ -205,3 +204,15 @@ export const getUrlCode = () => {
   return theRequest
 }
 // #endif
+
+// 判断当前是否处于微信环境
+export const isInWx = () => {
+  // #ifdef H5
+  var ua = navigator.userAgent.toLowerCase()
+  return ua.match(/MicroMessenger/i) == 'micromessenger'
+  // #endif
+
+  // #ifdef APP
+  return false
+  // #endif
+}

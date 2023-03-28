@@ -38,14 +38,16 @@
       <view class="name-list">
         <view class="name">{{ title }}</view>
         <view class="a">
-          <view class="share" @click="handleShare">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
-              alt=""
-              class="image"
-            />
-            <view class="text">分享</view>
-          </view>
+          <TuanWxShare ref="tuanWxShareRef" @click="handleShareServe">
+            <view class="share">
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
+                alt=""
+                class="image"
+              />
+              <view class="text">分享</view>
+            </view>
+          </TuanWxShare>
         </view>
       </view>
 
@@ -176,9 +178,9 @@
 import { getConfigApi } from '../api/auth'
 import item from '../community-center/componts/item'
 import { getServiceDetailApi } from '../api/community-center'
-import { getAdressDetailByLngLat } from '../utils/DWHutils'
 import { moreService } from '../pages/community-center/config'
 import { USER_TOKEN } from '../constant'
+import { getUserId } from '../utils'
 // #ifdef H5
 import share from '../utils/wxshare'
 // #endif
@@ -225,6 +227,10 @@ export default {
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
 
+      if (!getUserId()) {
+        return
+      }
+
       uni.showToast({
         title: '请选择服务类型',
         icon: 'none',
@@ -248,7 +254,6 @@ export default {
     },
 
     switchTab(item1) {
-      console.log('12345', item1)
       this.currentTab = item1.id
       this.serverTypeId = item1.serverTypeId
       this.serverPrice = item1.serverPrice
@@ -306,29 +311,21 @@ export default {
       })
     },
 
-    // 微信分享
-    async setWxShareConfig() {
-      const currentUrl = window.location.href.replace('#', 'ericToken')
-      const { data } = await getConfigApi({
-        url: currentUrl,
-        token: uni.getStorageSync(USER_TOKEN),
-      })
+    // 点击分享
+    handleShareServe(isQuit) {
+      const _this = this
+      const data = {
+        data: {
+          title: _this.title,
+          desc: '售后质保·服务专业·极速退款·意外承包',
+          link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}`,
+          imageUrl: _this.serverImageUrl,
+        },
+        successCb: () => {},
+        failCb: () => {},
+      }
 
-      share.wxRegister(data, {
-        title: this.title,
-        imgUrl: this.serverImageUrl,
-        desc: '售后质保·服务专业·极速退款·意外承包',
-        link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${this.serverTypeId}&serverNameThree=${this.title}&serverImageUrl=${this.serverUrl}`,
-      })
-    },
-
-    // 点击右上角三点分享
-    handleShare() {
-      uni.showToast({
-        title: '点击右上角三点分享',
-        duration: 2000,
-        icon: 'none',
-      })
+      this.$refs.tuanWxShareRef.share(data, isQuit)
     },
   },
   created() {},
@@ -339,8 +336,12 @@ export default {
       title: this.title,
     })
     this.serverUrl = options.serverImageUrl
-    this.setWxShareConfig()
     this.getServiceDetail()
+    // #ifdef H5
+    this.$nextTick(() => {
+      this.handleShareServe(true)
+    })
+    // #endif
   },
 }
 </script>

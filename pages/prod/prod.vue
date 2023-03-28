@@ -1,5 +1,6 @@
 <template>
   <view class="goods-detail-container" v-if="goodsDetail">
+    <tui-toast ref="toast"></tui-toast>
     <!-- 轮播图 -->
     <view class="carousel-wrapper">
       <Carousel
@@ -21,17 +22,22 @@
             mode=""
         /></view>
 
-        <view>
+        <view style="display: flex">
           <image
-            @click="empty"
+            style="margin-right: 20upx"
+            @click="empty()"
             src="../../static/images/detail/brand.png"
             mode=""
           />
-          <image
-            @click="empty"
-            src="../../static/images/detail/share.png"
-            mode=""
-          />
+
+          <TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
+            <!-- <image
+              @click=""
+              src="../../static/images/detail/share.png"
+              mode=""
+            /> -->
+            <image src="../../static/images/detail/share.png" mode="" />
+          </TuanWxShare>
         </view>
       </view>
 
@@ -357,6 +363,11 @@ export default {
       uni.hideLoading()
       if (res.errno === 0) {
         this.goodsDetail = res.data
+        // #ifdef H5
+        this.$nextTick(() => {
+          this.handleShareGoods(true)
+        })
+        // #endif
         this.isCollect = !!res.data.userHasCollect
         this.getBrandOtherGoods(res.data.brand.id)
       } else {
@@ -660,6 +671,35 @@ export default {
           _this.vipPrice = data
         })
       }
+    },
+
+    // 分享
+    handleShareGoods(isQuit) {
+      const _this = this
+      const data = {
+        data: {
+          title: _this.goodsDetail.info.name,
+          desc: _this.goodsDetail.productList
+            .map(item => {
+              return item.specifications.join(',')
+            })
+            .join(','),
+
+          link:
+            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' +
+            _this.goodsId,
+          imageUrl:
+            _this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl,
+        },
+        successCb: () => {},
+        failCb: () => {},
+      }
+
+      this.$refs.tuanWxShareRef.share(
+        data,
+        isQuit,
+        '/pages/prod/prod?goodsId' + this.goodsId
+      )
     },
   },
 

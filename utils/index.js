@@ -29,6 +29,7 @@ export {
   randomRGB,
   timestampToTime,
   throttle,
+  isInWx
 } from './DWHutils'
 export { formatTime } from './util'
 export { tradeOrderNo, payFn } from './pay'

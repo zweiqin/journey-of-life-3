@@ -14,7 +14,7 @@ export default () => {
 						switch (cb) {
 							case 'login':
 								uni.navigateTo({
-									url: '/pages/login/login?redirect=' + backUrl,
+									url: '/pages/login/login?to=' + backUrl,
 								})
 								break
 						}

@@ -11,6 +11,8 @@
     </view>
 
     <SaveImage :code="code" v-model="showSaveImage"></SaveImage>
+
+    <TuanWxShare style="position: absolute" ref="tuanWxShareRef"></TuanWxShare>
   </view>
 </template>
 
@@ -60,14 +62,26 @@ export default {
   },
 
   methods: {
-    async handleClickShareItem(shareItem) {
+    async handleClickShareItem(shareItem, isQuit) {
       const userInfo = uni.getStorageSync(USER_INFO)
+      console.log(this.code);
+      const _this = this
       switch (shareItem) {
         case 'wechat':
-          uni.showToast({
-            title: '请点击右上角分享',
-            icon: 'none',
-          })
+          const data = {
+            data: {
+              title: '加入团蜂',
+              desc: '扫一扫',
+              link:
+                'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
+                userInfo.invitationCode,
+              imageUrl: _this.code,
+            },
+            successCb: () => {},
+            failCb: () => {},
+          }
+
+          _this.$refs.tuanWxShareRef.share(data, isQuit)
           break
 
         case 'image':
@@ -88,28 +102,6 @@ export default {
           break
       }
     },
-
-    // 配置微信分享配置
-    // #ifdef H5
-    async setWexinShare() {
-      const userInfo = uni.getStorageSync(USER_INFO)
-
-      const currentUrl = window.location.href.replace('#', 'ericToken')
-      const { data } = await getConfigApi({
-        url: currentUrl,
-        token: uni.getStorageSync(USER_TOKEN),
-      })
-
-      share.wxRegister(data, {
-        title: '加入团蜂',
-        desc: '扫一扫',
-        imgUrl: this.code,
-        link:
-          'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
-          userInfo.invitationCode,
-      })
-    },
-    // #endif
   },
 }
 </script>
