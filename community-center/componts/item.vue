@@ -42,51 +42,57 @@ export default {
 
 <style lang="less" scoped>
 .item {
-  margin-right: 44upx;
-  margin-bottom: 40upx;
-  border-radius: 10upx;
-  color: #999999;
-  border: 2upx solid #999999;
+  margin-right: 20upx;
+  // margin-bottom: 40upx;
+  border-radius: 12upx;
+  color: #605D52;
+  border: 2upx solid #F1F1F0;
   &.active {
-    border: 2upx solid #fa5151;
+    border: 2upx solid #FC4023;
     color: #fa5151;
-    background-color: #ffeded;
+    background: #FFF8F6;
+		font-weight: bold;
+		
   }
 
   .m {
-    padding: 20upx;
+    padding: 20upx 30upx;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+		
     .name {
       font-size: 28upx;
-      font-weight: 500;
-      color: #000;
+      // font-weight: 500;
+      // color: #000;
       margin-bottom: 8upx;
     }
 
     .row {
       display: flex;
       align-items: center;
-      color: red;
+      // color: red;
 
       .logo {
-        font-size: 28upx;
-        font-weight: 400;
+        font-size: 30upx;
+        font-weight: bold;
+				line-height: 46upx;
+
       }
       .number {
-        font-size: 34upx;
+        font-size: 30upx;
         font-weight: bold;
+				line-height: 46upx;
+
       }
       .slash {
-        font-size: 28upx;
-        font-weight: 400;
+        font-size: 22upx;
+        line-height: 34upx;
       }
       .unit {
-        font-size: 28upx;
-        font-weight: 400;
+        font-size: 22upx;
+       line-height: 34upx;
       }
       .qi {
         font-size: 28upx;
