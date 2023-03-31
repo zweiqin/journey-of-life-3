@@ -38,7 +38,7 @@ export default {
             })
             .catch(() => {
               _this.address = '定位失败'
-            })
+            })  
         },
       })
       // #endif

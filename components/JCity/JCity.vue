@@ -2,65 +2,36 @@
   <view class="j-city">
     <view class="address">
       <view class="diqu"></view>
-      <view
-        class="value"
-        :style="{
-          color: text ? textColor : 'gray',
-        }"
-        @click="open"
-        >{{ text || '选择城市' }}</view
-      >
+      <view class="value" :style="{
+        color: text ? textColor : 'gray',
+      }" @click="open">{{ text || '选择城市' }}</view>
     </view>
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
       <view class="city-wrapper">
         <view class="header">
           <view class="citys">
-            <view
-              class="item"
-              @click="change('province')"
-              :class="{
-                active: current === 'province',
-              }"
-              >{{ areaInfo.province.text || '省份' }}</view
-            >
-            <view
-              class="item"
-              :class="{
-                active: current === 'city',
-              }"
-              @click="change('city')"
-              >{{ areaInfo.city.text || '城市' }}</view
-            >
-            <view
-              class="item"
-              @click="change('county')"
-              :class="{
-                active: current === 'county',
-              }"
-              >{{ areaInfo.county.text || '区县' }}</view
-            >
+            <view class="item" @click="change('province')" :class="{
+              active: current === 'province',
+            }">{{ areaInfo.province.text || '省份' }}</view>
+            <view class="item" :class="{
+              active: current === 'city',
+            }" @click="change('city')">{{ areaInfo.city.text || '城市' }}</view>
+            <view class="item" @click="change('county')" :class="{
+              active: current === 'county',
+            }">{{ areaInfo.county.text || '区县' }}</view>
           </view>
-          <button
-            class="confirm"
-            :style="{
-              color: areaInfo.county.text ? '#fa5151' : '#8b8b8b',
-            }"
-            @click="handleConfirmArea"
-          >
+          <button class="confirm" :style="{
+            color: areaInfo.county.text ? '#fa5151' : '#8b8b8b',
+          }" @click="handleConfirmArea">
             确定
           </button>
         </view>
 
         <view class="body">
           <ul>
-            <li
-              :class="{
-                active: item.id === areaInfo[current].id,
-              }"
-              v-for="item in data"
-              :key="item.id"
-              @click="chooseCity(item)"
-            >
+            <li :class="{
+              active: item.id === areaInfo[current].id,
+            }" v-for="item in data" :key="item.id" @click="chooseCity(item)">
               {{ item.name }}
             </li>
           </ul>
@@ -77,6 +48,10 @@ export default {
   props: {
     text: String,
     textColor: String,
+    control: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -97,6 +72,7 @@ export default {
         },
       },
       areaString: '',
+
     }
   },
   methods: {
@@ -204,13 +180,18 @@ export default {
 
     // 点击确定按钮
     handleConfirmArea() {
-      if (!this.areaInfo.county.text) {
-        return
+      if (this.control) {
+        if (!this.areaInfo.county.text) {
+          return
+        }
       }
+
       this.areaString =
         this.areaInfo.province.text +
         this.areaInfo.city.text +
         this.areaInfo.county.text
+
+      console.log("来了", this.areaString);
       this.$emit('confirm', { ...this.areaInfo, area: this.areaString })
       this.$refs.popup.close()
     },
@@ -226,6 +207,7 @@ export default {
 @import '../../style/mixin.less';
 
 .j-city {
+
   // padding-left: 0upx;
   // margin-top: 30upx;
   .active {
@@ -234,6 +216,7 @@ export default {
 
   .address {
     display: flex;
+
     // justify-content: space-between;
     .diqu {
       height: 90upx;
@@ -243,6 +226,7 @@ export default {
       font-weight: bold;
       color: #000000;
     }
+
     .value {
       // line-height: 60upx;
 
@@ -258,6 +242,7 @@ export default {
       // font-size: 30upx;
     }
   }
+
   .city-wrapper {
     background-color: #fff;
     height: 600upx;
@@ -295,7 +280,7 @@ export default {
         color: #fa5151;
         transition: all 350ms;
 
-        &::after{
+        &::after {
           border: none;
         }
       }
@@ -310,6 +295,7 @@ export default {
       ul {
         margin: 0;
         padding: 0;
+
         li {
           margin: 0;
           padding: 20upx 0;

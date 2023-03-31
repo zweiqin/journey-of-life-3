@@ -13,10 +13,15 @@
       </view>
       <view class="item">
         <view>合伙人</view>
-        <view class="value" id="fans_2">{{ data.partner || 0 }}</view> </view
-      ><view class="item">
+        <view class="value" id="fans_2">{{ data.partner || 0 }}</view>
+      </view>
+      <view class="item">
         <view>普通会员</view>
         <view class="value" id="fans_3">{{ data.ordinaryMember || 0 }}</view>
+      </view>
+      <view class="item">
+        <view>代理</view>
+        <view class="value" id="fans_3">{{ data.regionalAgent || 0 }}</view>
       </view>
     </view>
   </Pane>

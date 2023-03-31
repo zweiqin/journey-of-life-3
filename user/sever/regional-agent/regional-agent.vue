@@ -9,7 +9,7 @@
         <view class="item-title">区域</view>
         <view class="field-wrapper">
           <!-- <input disabled readonly type="text" placeholder="请选择代理区域" /> -->
-          <JCity :text="cityText" @confirm="handleChooseCity"></JCity>
+          <JCity :control="false" :text="cityText" @confirm="handleChooseCity"></JCity>
           <tui-icon name="arrowdown" :size="24"></tui-icon>
         </view>
       </view>
@@ -17,33 +17,21 @@
       <view class="item">
         <view class="item-title">详细地址</view>
         <view class="field-wrapper">
-          <input
-            v-model.trim="form.companyAddress"
-            type="text"
-            placeholder="请填写您的详细地址"
-          />
+          <input v-model.trim="form.companyAddress" type="text" placeholder="请填写您的详细地址" />
         </view>
       </view>
 
       <view class="item">
         <view class="item-title">姓名</view>
         <view class="field-wrapper">
-          <input
-            v-model.trim="form.legalPerson"
-            type="text"
-            placeholder="请填写您的姓名"
-          />
+          <input v-model.trim="form.legalPerson" type="text" placeholder="请填写您的姓名" />
         </view>
       </view>
 
       <view class="item">
         <view class="item-title">手机号</view>
         <view class="field-wrapper">
-          <input
-            v-model.trim="form.legalP"
-            type="number"
-            placeholder="请填写您的手机号"
-          />
+          <input v-model.trim="form.legalP" type="number" placeholder="请填写您的手机号" />
         </view>
       </view>
 
@@ -104,7 +92,7 @@ export default {
   methods: {
     handleChooseCity(data) {
       this.cityText = data.area
-      this.form.agentCode = data.county.code + ''
+      this.form.agentCode = (data.county.code || data.city.code || data.province.code) + ''
     },
 
     // 提交申请
@@ -190,8 +178,7 @@ export default {
       color: #fff;
       width: 502upx;
       height: 112upx;
-      background: url('../../../static/images/user/daili/title-wrapper.png')
-        no-repeat;
+      background: url('../../../static/images/user/daili/title-wrapper.png') no-repeat;
       background-size: cover;
       top: -26upx;
       left: 50%;
@@ -210,6 +197,7 @@ export default {
         font-size: 28upx;
         margin-bottom: 18upx;
       }
+
       .field-wrapper {
         width: 100%;
         background-color: #f6f6f5;

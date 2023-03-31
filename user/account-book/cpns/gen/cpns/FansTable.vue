@@ -2,21 +2,12 @@
   <view class="tables-container">
     <tui-table v-if="data.length">
       <tui-tr>
-        <tui-td
-          bold
-          v-for="(item, index) in header"
-          :key="index"
-          :span="item.span"
-          >{{ item.title }}</tui-td
-        >
+        <tui-td alignItems="center" bold v-for="(item, index) in header" :key="index" :span="item.span">{{ item.title
+        }}</tui-td>
       </tui-tr>
       <tui-tr v-for="(item, index) in data" :key="index">
-        <tui-td
-          :index="index"
-          :span="obj.span"
-          v-for="(obj, idx) in header"
-          :key="idx"
-        >
+        <tui-td textAlign="center" alignItems="center" :index="index" :span="obj.span" v-for="(obj, idx) in header"
+          :key="idx">
           <text v-if="obj.key === 'index'">{{ index }}</text>
           <text v-else>{{ item[obj.key] }}</text>
         </tui-td>
@@ -46,13 +37,13 @@ export default {
           span: 4,
         },
         {
-          title: '粉丝姓名',
+          title: '用户名',
           key: 'userName',
           span: 12,
         },
         {
-          title: '订单数',
-          key: 'totalQuantity',
+          title: '属性',
+          key: 'userLavel',
           span: 8,
         },
         {
@@ -88,7 +79,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.no-data{
+.no-data {
   text-align: center;
   width: 100%;
   height: 200upx;
