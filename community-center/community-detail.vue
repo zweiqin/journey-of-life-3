@@ -2,14 +2,14 @@
 	<view class="community-detail">
 		<view class="head">
 			<view class="title-list">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-					class="return" @click="handleBack" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+					alt="" class="return" @click="handleBack" />
 				<view class="title" @click="handleBack">
 					<text class="page-title">{{ title }}</text>
 				</view>
 				<view class="location">
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt=""
-						class="icon" />
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png"
+						alt="" class="icon" />
 					<TuanLocation>
 						<text class="locale">{{
 							$store.getters.currentCity || '龙江镇'
@@ -23,57 +23,52 @@
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" />
 			</view>
-			<!-- <view class="range" v-if="!isArtificial">￥98~128</view> -->
 			<view class="name-list">
-				<view class="name-detail">
-					<view class="name">{{ title }}</view>
-
-					<view class="content">{{ serverIntroduction }}</view>
-
-				</view>
+				<view class="name">{{ title }}</view>
 				<view class="a">
-					<view class="share" @click="handleShare">
-						<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png" alt=""
-							class="image" />
-						<view class="text">分享</view>
-					</view>
+					<TuanWxShare ref="tuanWxShareRef" @click="handleShareServe">
+						<view class="share">
+							<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
+								alt="" class="image" />
+							<view class="text">分享</view>
+						</view>
+					</TuanWxShare>
 				</view>
 			</view>
 
-
-			<view class="type" v-if="isArtificial">一口价</view>
-			<view class="type" v-if="!isArtificial">人工报价</view>
+			<view class="brief">
+				<view class="introduce">服务内容介绍</view>
+				<view class="content">{{ serverIntroduction }}</view>
+			</view>
 			<view v-if="isArtificial">
-				<scroll-view scroll-x="true">
-					<view class="price-list" ref="price-list">
-						<item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
-							@choose="switchTab(item)" :serverInfoName="item.serverInfoName" :serverPrice="item.serverPrice"
-							:serverUnit="item.serverUnit" :isArtificialArtificial="item.isArtificialArtificial"></item>
-					</view>
-				</scroll-view>
+				<view class="type">服务类型</view>
+				<view class="price-list" ref="price-list">
+					<item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
+						@choose="switchTab(item)" :serverInfoName="item.serverInfoName" :serverPrice="item.serverPrice"
+						:serverUnit="item.serverUnit" :isArtificialArtificial="item.isArtificialArtificial"></item>
+				</view>
 			</view>
 		</view>
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
 				<view class="poster">售后质保·服务专业·极速退款·意外承包</view>
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
-					class="more" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png"
+					alt="" class="more" />
 			</view>
 		</view>
 		<view class="body">
-			<!-- <view class="top">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
-					class="top-img" />
-			</view> -->
-			<charge></charge>
+			<view class="top">
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png"
+					alt="" class="top-img" />
+			</view>
 			<view class="middle">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
-					class="mid-img" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png"
+					alt="" class="mid-img" />
 			</view>
 			<view class="process">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/alfwfqtuvrwg4xjacanj.png" alt=""
-					class="process-img" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/alfwfqtuvrwg4xjacanj.png"
+					alt="" class="process-img" />
 			</view>
 
 			<view class="case-show">
@@ -86,30 +81,30 @@
 						serverInfoUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
 					" alt="" class="img1" @click="previewImage(serverInfoUrl)" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png" alt=""
-						class="img2" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png" alt=""
-						class="img3" />
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png"
+						alt="" class="img2" />
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png"
+						alt="" class="img3" />
 				</view>
 			</view>
 			<view class="tips">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
-					class="img-tips" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png"
+					alt="" class="img-tips" />
 			</view>
 		</view>
 		<view class="other">
 			<view class="other-service" v-for="item in moreService" :key="item.value"
 				@click="handleToServiceListHome(item.value)">
 				<view class="text">其他服务</view>
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt=""
-					class="show" />
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
+					alt="" class="show" />
 			</view>
 		</view>
 		<view class="foot">
 			<view class="list">
-				<view class="online">
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
-						class="seek" />
+				<view class="online" @click="empty('暂未开放...')">
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png"
+						alt="" class="seek" />
 					<view class="name">在线咨询</view>
 				</view>
 				<view class="order-list">
@@ -118,13 +113,14 @@
 				</view>
 			</view>
 		</view>
+
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
-
+  
 <script>
 import { getConfigApi } from '../api/auth'
 import item from '../community-center/componts/item'
-import charge from '../community-center/componts/charge'
 import { getServiceDetailApi } from '../api/community-center'
 import { moreService } from '../pages/community-center/config'
 import { USER_TOKEN } from '../constant'
@@ -138,7 +134,6 @@ export default {
 	props: {},
 	components: {
 		item,
-		charge,
 	},
 	data() {
 		return {
@@ -154,11 +149,10 @@ export default {
 			serverPrice: '',
 			title: '',
 			serverUnit: '',
-			currentTab: '',
+			currentTab: 1,
 			length: '',
 			serverUrl: '',
 			index: '',
-			priceType: '',
 		}
 	},
 	methods: {
@@ -176,6 +170,10 @@ export default {
 			//需要传 图片 价格 名称 单位
 			// uni.navigateTo({ url: "../community-center/community-order" });
 			// const let var
+
+			if (!getUserId()) {
+				return
+			}
 
 			uni.showToast({
 				title: '请选择服务类型',
@@ -200,7 +198,7 @@ export default {
 		},
 
 		switchTab(item1) {
-			console.log('12345', item1)
+			console.log("madehaauhcusucguszgcuisgaukc", item1);
 			this.currentTab = item1.id
 			this.serverTypeId = item1.serverTypeId
 			this.serverPrice = item1.serverPrice
@@ -219,19 +217,12 @@ export default {
 				serverTypeId: this.serverTypeId,
 			})
 			this.serviceDetail = res.data
-			this.currentTab = res.data[0].id
 			console.log('666', this.serviceDetail)
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
+			this.switchTab(this.serviceDetail[0])
 			this.length = this.serviceDetail.length
 			console.log('是否一口价', this.isArtificial)
-			// const type = this.isArtificial
-			// console.log('type', type)
-			// if (type === 'true') {
-			// 	this.a = 1
-			// } else {
-			// 	this.a = 2
-			// }
 
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
 			console.log('介绍', this.serverIntroduction)
@@ -239,6 +230,8 @@ export default {
 			this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl
 			console.log('图片', this.serverInfoUrl)
 
+			// this.detailId = this.serviceDetail[0].id;
+			// console.log("详情id", this.detailId);
 		},
 
 		//预览图
@@ -264,29 +257,21 @@ export default {
 			})
 		},
 
-		// 微信分享
-		async setWxShareConfig() {
-			const currentUrl = window.location.href.replace('#', 'ericToken')
-			const { data } = await getConfigApi({
-				url: currentUrl,
-				token: uni.getStorageSync(USER_TOKEN),
-			})
+		// 点击分享
+		handleShareServe(isQuit) {
+			const _this = this
+			const data = {
+				data: {
+					title: _this.title,
+					desc: '售后质保·服务专业·极速退款·意外承包',
+					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}`,
+					imageUrl: _this.serverImageUrl,
+				},
+				successCb: () => { },
+				failCb: () => { },
+			}
 
-			share.wxRegister(data, {
-				title: this.title,
-				imgUrl: this.serverImageUrl,
-				desc: '售后质保·服务专业·极速退款·意外承包',
-				link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${this.serverTypeId}&serverNameThree=${this.title}&serverImageUrl=${this.serverUrl}`,
-			})
-		},
-
-		// 点击右上角三点分享
-		handleShare() {
-			uni.showToast({
-				title: '点击右上角三点分享',
-				duration: 2000,
-				icon: 'none',
-			})
+			this.$refs.tuanWxShareRef.share(data, isQuit)
 		},
 	},
 	created() { },
@@ -297,8 +282,12 @@ export default {
 			title: this.title,
 		})
 		this.serverUrl = options.serverImageUrl
-		this.setWxShareConfig()
 		this.getServiceDetail()
+		// #ifdef H5
+		this.$nextTick(() => {
+			this.handleShareServe(true)
+		})
+		// #endif
 	},
 }
 </script>
@@ -309,7 +298,7 @@ export default {
 	.head {
 		padding-top: 20upx;
 		background: #ffffff;
-		// padding-right: 20upx;
+		padding-right: 20upx;
 		box-sizing: border-box;
 
 		.title-list {
@@ -338,7 +327,7 @@ export default {
 				align-items: center;
 				justify-content: space-between;
 				position: absolute;
-				right: 20upx;
+				right: 0upx;
 
 				.icon {
 					width: 28upx;
@@ -365,35 +354,16 @@ export default {
 			}
 		}
 
-		.range {
-			font-size: 46upx;
-			font-weight: bold;
-			line-height: 70upx;
-			color: #FC4023;
-			padding: 18upx 0 0 24upx;
-			border-top: 1px solid #F1F1F0;
-		}
-
 		.name-list {
 			display: flex;
 			justify-content: space-between;
-			padding-left: 30upx;
+			padding-left: 36upx;
 			padding-top: 30upx;
 
-			.name-detail {
-				.name {
-					font-size: 32upx;
-					font-weight: bold;
-					color: #141000;
-				}
-
-				.content {
-					padding-top: 12upx;
-					font-size: 28upx;
-					line-height: 36upx;
-					color: #8F8D85;
-				}
-
+			.name {
+				font-size: 36upx;
+				font-weight: bold;
+				color: #3d3d3d;
 			}
 
 			.a {
@@ -424,26 +394,36 @@ export default {
 			}
 		}
 
+		.brief {
+			padding: 14upx 18upx 40upx 36upx;
 
+			.introduce {
+				font-size: 28upx;
+				font-weight: bold;
+				color: #3d3d3d;
+			}
+
+			.content {
+				padding-top: 14upx;
+				font-size: 28upx;
+				color: #3d3d3d;
+			}
+		}
 
 		.type {
-			margin-left: 30upx;
+			padding-left: 36upx;
 			padding-bottom: 20upx;
-			padding-top: 30upx;
 			font-size: 28upx;
 			font-weight: bold;
 			color: #3d3d3d;
-			border-bottom: 1px solid #F1F1F0;
 		}
 
 		.price-list {
-			padding-top: 30upx;
-			padding-left: 30upx;
-			padding-right: 30upx;
-			padding-bottom: 30upx;
-			white-space: nowrap;
+			padding-left: 36upx;
+			padding-right: 36upx;
+			padding-bottom: 14upx;
 			display: flex;
-			// flex-wrap: wrap;
+			flex-wrap: wrap;
 			// .item {
 			//   margin-right: 10upx;
 			//   margin-bottom: 40upx;
@@ -705,3 +685,4 @@ export default {
 	}
 }
 </style>
+  

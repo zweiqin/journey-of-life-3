@@ -18,7 +18,7 @@
       @preview="isSwitchPage = $event"
     >
       <!-- <picker
-        mode="multiSelector"
+        mode="multiSelector"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
       >
         <input
           type="text"
