@@ -38,7 +38,7 @@ export default {}
   display: flex;
   align-items: center;
   padding: 0 30upx;
-  height: 120upx;
+  height: 110upx;
   box-sizing: border-box;
   background-color: #e95d20;
   .location {

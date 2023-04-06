@@ -1,28 +1,3 @@
-// 社区2.0
-export const bannerListIcon = [
-  {
-    name: "安装",
-    icon: require("../../static/images/con-center/new-home/anzahugn.png"),
-  },
-  {
-    name: "清洁",
-    icon: require("../../static/images/con-center/new-home/qingjie.png"),
-  },
-  {
-    name: "保养",
-    icon: require("../../static/images/con-center/new-home/baoyang.png"),
-  },
-  {
-    name: "维修",
-    icon: require("../../static/images/con-center/new-home/weixiu.png"),
-  },
-  {
-    name: "翻新",
-    icon: require("../../static/images/con-center/new-home/fanxin.png"),
-  },
-];
-
-// 社区1.0
 export const mainNav = [
   {
     label: "家具维修",
@@ -106,80 +81,60 @@ export const navs = [
   },
 ];
 
+
 //首页分类查询
 export const list = [
   {
     value: 1,
-    label: "家具服务",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png",
-    shadow:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+    label:"家具服务",
+    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png",
+    shadow:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+    
   },
   {
     value: 2,
-    label: "家电服务",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png",
-    shadow:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+    label:"家电服务",
+    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png",
+    shadow:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 3,
-    label: "水电灯具",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png",
-    shadow:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+    label:"水电灯具",
+    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png",
+    shadow:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 4,
-    label: "清洗保洁",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png",
-    shadow:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+    label:"清洗保洁",
+    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png",
+    shadow:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
-];
+]
 
-export const moreService = [
+export const moreService =[
   {
-    value: 1,
-    moreName: "更多服务",
-  },
-];
+    value:1,
+    moreName:"更多服务",
+  }
+]
 
-export const serviceType = [
+export const serviceType =[
   {
-    value: 1,
-    label: "维修",
-    a: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png",
-    round:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png",
+    value:1,
+    label:"维修",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png",
   },
   {
-    value: 2,
-    label: "安装",
-    a: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png",
-    round:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/clt44rg47v4gwwg3tbub.png",
+    value:2,
+    label:"安装",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/clt44rg47v4gwwg3tbub.png",
   },
   {
-    value: 4,
-    label: "清洁",
-    a: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png",
-    round:
-      "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kgqq2ciwp09an1eq9678.png",
+    value:3,
+    label:"清洁",
+    a:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/xuja4se2vvmvwtistt7s.png",
+    round:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kgqq2ciwp09an1eq9678.png",
   },
-];
-
-export const countList = [
-  {
-    name: "服务内容",
-    value: "100+",
-  },
-  {
-    name: "实体门店",
-    value: "1000+",
-  },
-  {
-    name: "服务家庭",
-    value: "120万+",
-  },
-];
+]

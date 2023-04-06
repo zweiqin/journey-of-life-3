@@ -68,7 +68,7 @@ export default {}
   padding: 20upx;
   background-color: #fff;
   border-radius: 20upx;
-  margin: 50upx 0 30upx 0;
+  margin: 20upx 0 30upx 0;
 
   .store-name {
     color: #141000;

@@ -1,186 +1,134 @@
 <template>
   <view class="community-center-container">
-    <!-- search -->
+    <!-- 顶部搜索 -->
     <TopHead></TopHead>
 
-    <!-- nav -->
-    <view class="navs-container">
-      <view class="navs">
-        <view
-          class="item"
-          @click="go(item.url)"
-          v-for="(item, index) in navs"
-          :key="index"
-        >
-          <image class="nav-icon" :src="item.icon" mode="" />
-          <text>{{ item.name }}</text>
+    <!-- 主要menu区域 -->
+    <view class="main-menu">
+      <!-- 团蜂家具社区服务中心 -->
+      <TuanImage radius="0" :height="36" :width="257" style="margin-left: 28upx"
+        :src="require('../../static/images/con-center/new-home/top-banner.png')"></TuanImage>
+
+      <!-- 五个介绍 -->
+      <view class="icons-wrapper">
+        <view class="item" v-for="item in bannerListIcon" :key="item.name">
+          <TuanIcon :size="30" :src="item.icon"></TuanIcon>
+          <text class="name">{{ item.name }}</text>
         </view>
       </view>
-    </view>
 
-    <!-- vip -->
-    <view class="vip-container">
-      <image
-        class="vip-39"
-        @click="go('/community-center/vip-center/vip-detail?type=1')"
-        src="../../static/images/con-center/new-home/39.9.png"
-        mode=""
-      />
-      <view class="right">
-        <image
-          @click="go('/community-center/vip-center/vip-detail?type=2')"
-          src="../../static/images/con-center/new-home/299.png"
-          mode=""
-        />
-        <image
-          @click="empty('套餐升级中')"
-          src="../../static/images/con-center/new-home/1399.png"
-          mode=""
-        />
+      <!-- 右边的小人 -->
+      <view class="person-wrapper">
+        <TuanImage :width="104" :height="149" :src="require('../../static/images/con-center/new-home/person.png')">
+        </TuanImage>
       </view>
-    </view>
 
-    <!-- nearby -->
-    <view class="service-station">
-      <view class="brand-title"> 附近服务站 </view>
+      <!-- 主要的menu区域 -->
+      <MainMenu></MainMenu>
 
+      <!-- vip -->
+      <view class="vip-container">
+        <image class="vip-39" @click="go('/community-center/vip-center/vip-detail?type=1')"
+          src="../../static/images/con-center/new-home/39.9.png" mode="" />
+        <view class="right">
+          <image @click="go('/community-center/vip-center/vip-detail?type=2')"
+            src="../../static/images/con-center/new-home/299.png" mode="" />
+          <image @click="empty('套餐升级中')" src="../../static/images/con-center/new-home/1399.png" mode="" />
+        </view>
+      </view>
+
+      <!-- 社区店 -->
       <ServiceStationPane></ServiceStationPane>
-      <!-- <ServeListPane></ServeListPane> -->
+
+      <!-- 经验分享 -->
+      <ArticleList></ArticleList>
     </view>
 
-    <tui-toast ref="toast"></tui-toast> 
+
+    <!-- 组件支持 -->
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import TopHead from './cpns/TopHead.vue'
-import { homeNavConfig } from './data'
-import ServiceStationPane from './cpns/ServiceStationPane.vue'
-import ServeListPane from './cpns/ServeListPane.vue'
-export default {
-  components: {
-    TopHead,
-    ServiceStationPane,
-    ServeListPane,
-  },
+import TopHead from './cpns/TopHead.vue';
+import MainMenu from './cpns/MainMenu.vue';
+import { bannerListIcon } from './config'
+import ServiceStationPane from './cpns/ServiceStationPane.vue';
+import ArticleList from './cpns/Article.vue'
 
+export default {
+  components: { TopHead, MainMenu, ServiceStationPane, ArticleList },
   data() {
     return {
-      navs: Object.freeze(homeNavConfig),
+      bannerListIcon: Object.freeze(bannerListIcon),
     }
   },
 }
 </script>
 
 <style lang="less" scoped>
-view,
-text {
-  line-height: 1.5;
-}
 .community-center-container {
-  background: #f1f1f0;
-  padding-bottom: 100px;
-  .navs-container {
-    height: 411upx;
+  min-height: 100vh;
+  background-color: #F8F8F8;
+
+  .main-menu {
+    position: relative;
     width: 100%;
-    background: linear-gradient(
-      180deg,
-      #e95d20 0%,
-      #ff8f1f 47%,
-      rgba(241, 240, 240, 0) 100%
-    );
-    padding: 30upx;
+    height: 938upx;
+    background: linear-gradient(180deg, #E95D20 0%, #FF8F1F 56%, #F8F8F8);
+    padding: 68upx 34upx 0;
     box-sizing: border-box;
 
-    .navs {
+    .icons-wrapper {
+      margin-left: 34upx;
       display: flex;
       align-items: center;
-      // justify-content: space-between;
-      flex-wrap: wrap;
-      width: 100%;
-      height: 100%;
-      background-color: #fff;
-      border-radius: 20upx;
-      padding: 34upx 30upx;
-      box-sizing: border-box;
+      margin-top: 32upx;
 
       .item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        width: 96upx;
-        margin-right: 36upx;
-
-        &:nth-of-type(5n) {
-          margin-right: 0;
-        }
-
-        .nav-icon {
-          width: 80upx;
-          height: 80upx;
-        }
+        margin-right: 40upx;
 
         text {
-          color: #3a3629;
-          font-size: 24upx;
+          font-size: 28upx;
+          color: #fff;
         }
       }
-    }
-  }
 
-  .vip-container {
-    display: flex;
-    padding: 30upx;
-    box-sizing: border-box;
-    height: 320upx;
-
-    image {
-      flex-shrink: 0;
     }
 
-    .vip-39 {
-      width: 350upx;
-      height: 320upx;
-      margin-right: 20upx;
+    .person-wrapper {
+      position: absolute;
+      top: 30upx;
+      right: 8upx;
     }
 
-    .right {
-      height: 320upx;
+    .vip-container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-direction: column;
+      height: 320upx;
+      margin-top: 200upx;
 
       image {
-        width: 320upx;
-        height: 150upx;
+        flex-shrink: 0;
       }
-    }
-  }
 
-  .service-station {
-    padding: 30upx;
-    box-sizing: border-box;
-    margin-top: 36upx;
+      .vip-39 {
+        width: 340upx;
+        height: 320upx;
+        margin-right: 20upx;
+      }
 
-    .brand-title {
-      position: relative;
-      color: #141000;
-      font-size: 36upx;
-      padding-left: 20upx;
+      .right {
+        height: 320upx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
 
-      &::after {
-        content: '';
-        display: block;
-        width: 8upx;
-        height: 40upx;
-        border-radius: 10px;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        background: linear-gradient(180deg, #ffd556 0%, #e95d20 100%);
+        image {
+          width: 320upx;
+          height: 150upx;
+        }
       }
     }
   }
