@@ -747,6 +747,25 @@
 					}
 				},
 				{
+					"path": "smartAlbum/index",
+					"style": {
+						"navigationBarTitleText": "智能画册",
+						"onReachBottomDistance": 0
+					}
+				},
+				{
+					"path": "smartAlbum/add-album",
+					"style": {
+						"navigationBarTitleText": "新建画册"
+					}
+				},
+				{
+					"path": "smartAlbum/album-detail",
+					"style": {
+						"navigationBarTitleText": "画册详情"
+					}
+				},
+				{
 					"path": "Collection/Goods-Collection",
 					"style": {
 						"navigationBarTitleText": "",
