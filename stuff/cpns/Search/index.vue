@@ -3,33 +3,20 @@
     <view class="search-ontainer">
       <tui-icon @click="handleBack" name="arrowleft"></tui-icon>
       <view class="search-container">
-        <image
-          class="search-icon"
-          src="../../../static/images/new-brand/index/search-icon.png"
-          mode=""
-        />
+        <image class="search-icon" src="../../../static/images/new-brand/index/search-icon.png" mode="" />
 
-        <input
-          v-model="serachValue"
-          @confirm="$emit('search', serachValue)"
-          confirm-type="search"
-          type="text"
-          :placeholder="placeholder"
-        />
+        <input v-model="serachValue" @confirm="$emit('search', serachValue)" confirm-type="search" type="text"
+          :placeholder="placeholder" />
+
+        <button @click="$emit('search', serachValue)" :class="{ show: serachValue }" class="uni-btn">搜索</button>
       </view>
     </view>
 
     <scroll-view v-if="!isCustorm" scroll-x="true">
       <view class="menus">
-        <view
-          @click="$emit('change', item.id)"
-          class="item"
-          :class="{ active: current == item.id }"
-          v-for="item in menus"
-          :key="item.id"
-        >
-          {{ item.styleName }}</view
-        >
+        <view @click="$emit('change', item.id)" class="item" :class="{ active: current == item.id }" v-for="item in menus"
+          :key="item.id">
+          {{ item.styleName }}</view>
       </view>
     </scroll-view>
 
@@ -151,6 +138,18 @@ export default {
       input {
         font-size: 28upx;
         flex: 1;
+      }
+
+      .uni-btn {
+        font-size: 28upx;
+        transform: translateX(100px);
+        opacity: 0;
+        transition: all 350ms;
+
+        &.show {
+          transform: translateX(0);
+          opacity: 1;
+        }
       }
     }
   }

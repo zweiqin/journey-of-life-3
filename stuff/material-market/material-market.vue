@@ -1,23 +1,12 @@
 <template>
   <view class="strict-materials-container">
-    <Search
-      :scrollTop="scrollTop"
-      @change="handleSwitchTab"
-      :current="currentMenu"
-      @search="handleSearch"
-      isCustorm
-    >
+    <Search :scrollTop="$data._scrollTop" @change="handleSwitchTab" :current="currentMenu" @search="handleSearch"
+      isCustorm>
       <scroll-view scroll-x="true">
         <view class="menus">
-          <view
-            @click="handleSwitchTab(item)"
-            class="item"
-            :class="{ active: currentMenu == item.id }"
-            v-for="item in menus"
-            :key="item.id"
-          >
-            {{ item.materialCityName }}</view
-          >
+          <view @click="handleSwitchTab(item)" class="item" :class="{ active: currentMenu == item.id }"
+            v-for="item in menus" :key="item.id">
+            {{ item.materialCityName }}</view>
         </view>
       </scroll-view>
     </Search>
@@ -26,88 +15,70 @@
       {{ currentCompany }}
     </view>
 
-    <view class="goods-title"> · 商户推荐 · </view>
+    <view class="goods-title" v-if="!(!$data._list.length && $data._status !== 'loading')"> · 商户推荐 · </view>
 
     <view class="goods-list">
-      <StuffGoods
-        v-for="item in goodsList"
-        :key="item.id"
-        :data="item"
-      ></StuffGoods>
+      <!-- <StuffGoods v-for="item in goodsList" :key="item.id" :data="item"></StuffGoods> -->
+      <BrandPane v-for="brand in $data._list" :key="brand.id" :data="brand"></BrandPane>
+      <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
+    </view>
 
-      <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
+    <view v-show="!$data._list.length && $data._status !== 'loading'" class="no-data">
+      {{ serachValue ? '暂无门店' : '该地区暂未开通' }}
     </view>
   </view>
 </template>
 
 <script>
 import Search from '../cpns/Search'
-import StuffGoods from '../../pages/stuff/cpns/StuffGoods'
-import { goodsListApi } from '../../api/goods'
-import { getStuffBrandListApi } from '../../api/brand'
-import { menus } from './data'
+import { getStuffBrandListApi, getBrandListBySelectApi } from '../../api/brand'
+import loadMore from '../../mixin/loadMore'
+import BrandPane from '../brand-materials/BrandPane.vue'
 
 export default {
   components: {
     Search,
-    StuffGoods,
+    BrandPane
   },
+
+  mixins: [loadMore({
+    api: getBrandListBySelectApi,
+    mapKey: { totalPages: "totalPages", list: "brandList", size: "limit" }
+  })],
 
   data() {
     return {
-      scrollTop: 0,
       currentMenu: 1,
-      goodsList: [],
-      query: {
-        goodsType: 2,
-        page: 1,
-        size: 20,
-        categoryId: null,
-        keyword: '',
-      },
-      totalPages: 0,
-      status: 'none',
-      menus: [],
       currentCompany: '亚洲国际材料城',
+      menus: [],
+      serachValue: ''
     }
   },
 
   mounted() {
-    this.getGoodsList()
     this.getStuffBrandList()
+    this.$set(this.$data._query, 'labelId', 2)
+    this._loadData()
   },
 
   methods: {
     handleSwitchTab(item) {
       this.currentMenu = item.id
-      this.currentCompany = item.name
-      if (!item.id) {
-        this.query.categoryId = null
-      }
-
-      this.goodsList = []
-      this.totalPages = 0
-      this.getGoodsList()
+      this.$data._query.materialCityId = item.id
+      this.currentCompany = item.materialCityName
+      this.$data._query.page = 1
+      this._loadData()
     },
 
-    // 获取商品列表
-    async getGoodsList(isLoadMore) {
-      this.status = 'loading'
-      const { data } = await goodsListApi(this.query)
-      this.totalPages = data.totalPages
-      if (isLoadMore) {
-        this.goodsList.push(...data.goodsList)
-      } else {
-        this.goodsList = data.goodsList
-      }
-
-      this.status = 'none'
-    },
 
     // 搜索
     handleSearch(serachValue) {
-      this.query.keyword = serachValue
-      this.getGoodsList()
+      this.serachValue = serachValue
+      if (serachValue) {
+        this.$data._query.page = 1
+        this.$data._query.name = serachValue
+        this._loadData()
+      }
     },
 
     // 获取材料成数据
@@ -120,29 +91,14 @@ export default {
       this.menus = data.items
     },
   },
-
-  onReachBottom() {
-    if (this.query.page >= this.totalPages) {
-      this.status = 'no-more'
-      return
-    }
-
-    if (this.query.size > this.goodsList.length) {
-      this.status = 'none'
-      return
-    }
-
-    this.query.page++
-    this.getGoodsList(true)
-  },
-
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop
-  },
 }
 </script>
 
 <style lang="scss" scoped>
+/deep/ .brand-pane-container {
+  width: 100%;
+}
+
 .strict-materials-container {
   width: 100vw;
   min-height: 100vh;
@@ -215,5 +171,14 @@ export default {
   font-size: 34upx;
   color: #141000;
   font-weight: bold;
+}
+
+.no-data {
+  color: #ccc;
+  width: 100%;
+  height: 400upx;
+  text-align: center;
+  line-height: 400upx;
+  font-size: 32upx;
 }
 </style>

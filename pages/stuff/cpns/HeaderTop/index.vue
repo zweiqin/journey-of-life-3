@@ -7,51 +7,26 @@
       <TuanLocation>
         <view class="locale">
           <text>{{ $store.getters.currentCity || '龙江镇' }}</text>
-          <image
-            class="locale-icon"
-            src="../../../../static/images/new-brand/index/down-arrow.png"
-          ></image>
+          <image class="locale-icon" src="../../../../static/images/new-brand/index/down-arrow.png"></image>
         </view>
       </TuanLocation>
 
       <view class="search-wrapper">
-        <image
-          class="search-icon"
-          src="../../../../static/images/new-brand/index/search-icon.png"
-          mode=""
-        />
-        <input
-          v-model="searchValue"
-          confirm-type="search"
-          type="text"
-          @confirm="
-            go('/pages/search-page/search-result?keywords=' + searchValue)
-          "
-          placeholder="科技布"
-        />
+        <image class="search-icon" src="../../../../static/images/new-brand/index/search-icon.png" mode="" />
+        <input v-model="searchValue" confirm-type="search" type="text" @confirm="
+          go('/pages/search-page/search-result?keywords=' + searchValue)
+        " placeholder="科技布" />
       </view>
 
-      <button
-        class="uni-btn distribute"
-        @click="go('/stuff/purchase/purchase')"
-      >
-        <image
-          class="add-icon"
-          src="../../../../static/images/new-brand/index/add-icon.png"
-          mode=""
-        />
+      <button class="uni-btn distribute" @click="go('/stuff/purchase/purchase')">
+        <image class="add-icon" src="../../../../static/images/new-brand/index/add-icon.png" mode="" />
         <text>需求发布</text>
       </button>
     </view>
 
     <scroll-view scroll-x="true" :show-scrollbar="false">
       <view class="top-menus">
-        <view
-          class="item"
-          @click="go(item.url)"
-          v-for="item in topMenu"
-          :key="item.label"
-          >{{ item.label }}
+        <view class="item" @click="go(item.url)" v-for="item in topMenu" :key="item.label">{{ item.label }}
         </view>
       </view>
     </scroll-view>
@@ -76,9 +51,9 @@ export default {
   box-sizing: border-box;
   height: 560upx;
   width: 100%;
-  background: url('../../../../static/images/new-brand/index/top-bg.png')
-    no-repeat;
+  background: url('../../../../static/images/new-brand/index/top-bg.png') no-repeat;
   background-size: cover;
+
 
   h1 {
     line-height: 60upx;
@@ -99,6 +74,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin: 40upx 0 48upx 0;
+
     .locale {
       display: flex;
       align-items: center;

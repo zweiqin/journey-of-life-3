@@ -1,27 +1,14 @@
 <template>
-  <view
-    class="banner"
-    :style="{
-      height: height + 'px',
-      'border-radius': radius + 'px',
-      'margin-top': top + 'px',
-    }"
-  >
-    <swiper
-      class="swiper"
-      :indicator-dots="indicationPoint"
-      autoplay
-      indicator-color="#fff"
-      indicator-active-color="#fff"
-      @change="handleChange"
-    >
+  <view class="banner" :style="{
+    height: height + 'px',
+    'border-radius': radius + 'px',
+    'margin-top': top + 'px',
+  }">
+    <swiper class="swiper" :indicator-dots="indicationPoint" autoplay indicator-color="#fff" indicator-active-color="#fff"
+      @change="handleChange">
       <swiper-item v-for="item in list" :key="item">
-        <image
-          mode="aspectFill"
-          style="height: 100%; width: 100%; 'border-radius':10px "
-          :src="item"
-          alt=""
-        />
+        <tui-lazyload-img height="100%" mode="aspectFill" style="height: 100%; width: 100%; 'border-radius':10px"
+          :src="item" alt="" />
       </swiper-item>
     </swiper>
 
@@ -91,6 +78,11 @@ export default {
     }
 
     img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /deep/ uni-image {
       width: 100%;
       height: 100%;
     }

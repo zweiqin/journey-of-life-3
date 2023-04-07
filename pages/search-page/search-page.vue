@@ -1,23 +1,14 @@
 <template>
   <view class="search-page-container">
     <view class="search-container">
-      <tui-icon @click="handleBack" name="arrowleft"></tui-icon>
+      <TuanBack>
+        <tui-icon name="arrowleft"></tui-icon>
+      </TuanBack>
       <view class="search-wrapper">
         <tui-icon name="search" :size="20" class="search-icon"></tui-icon>
-        <input
-          v-model="searchValue"
-          type="text"
-          confirm-type="search"
-          placeholder="请输入您要搜索的商品"
-          @confirm="handelSearch(searchValue)"
-        />
-        <tui-icon
-          v-show="searchValue"
-          name="close"
-          :size="20"
-          class="close-icon"
-          @click="searchValue = ''"
-        ></tui-icon>
+        <input v-model="searchValue" type="text" confirm-type="search" placeholder="请输入您要搜索的商品"
+          @confirm="handelSearch(searchValue)" />
+        <tui-icon v-show="searchValue" name="close" :size="20" class="close-icon" @click="searchValue = ''"></tui-icon>
       </view>
 
       <button class="uni-btn search-btn" @click="handelSearch(searchValue)">
@@ -34,17 +25,9 @@
         </view>
       </view>
 
-      <view
-        class="keywords-wraper"
-        v-if="searchData && searchData.historyKeywordList.length"
-      >
-        <view
-          class="item"
-          @click="handelSearch(item.keyword)"
-          v-for="item in searchData.historyKeywordList"
-          :key="item.id"
-          >{{ item.keyword }}</view
-        >
+      <view class="keywords-wraper" v-if="searchData && searchData.historyKeywordList.length">
+        <view class="item" @click="handelSearch(item.keyword)" v-for="item in searchData.historyKeywordList"
+          :key="item.id">{{ item.keyword }}</view>
       </view>
 
       <view class="keywords-wraper" v-else>
@@ -56,13 +39,8 @@
       <view class="search-title"> 热门搜索 </view>
 
       <view class="keywords-wraper">
-        <view
-          class="item"
-          @click="handelSearch(item.keyword)"
-          v-for="item in searchData.hotKeywordList"
-          :key="item.id"
-          >{{ item.keyword }}</view
-        >
+        <view class="item" @click="handelSearch(item.keyword)" v-for="item in searchData.hotKeywordList" :key="item.id">{{
+          item.keyword }}</view>
       </view>
     </view>
   </view>

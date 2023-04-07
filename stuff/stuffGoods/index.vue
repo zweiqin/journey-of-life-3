@@ -4,38 +4,22 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-            alt=""
-            class="return"
-            @click="handleBack"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+            class="return" @click="handleBack" />
           <TuanLocation>
             <text class="locale">{{
               $store.getters.currentCity || '龙江镇'
             }}</text>
           </TuanLocation>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
-            alt=""
-            class="show"
-            @click.stop="handleClick"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
+            class="show" @click.stop="handleClick" />
         </view>
         <view class="search-box">
           <view class="search">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
-              alt=""
-              class="img"
-            />
+            <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
+              class="img" />
           </view>
-          <input
-            type="text"
-            class="content"
-            placeholder="输入你想搜索的品类/单品/品牌"
-            @click="goToSearch"
-          />
+          <input type="text" class="content" placeholder="输入你想搜索的品类/单品/品牌" @click="goToSearch" />
         </view>
 
         <!-- <uni-card :is-shadow="false" is-full>
@@ -61,25 +45,13 @@
     </view>
     <view class="body" :style="{ height: scrollHeight + 'px' }">
       <view class="navbar" ref="nav-barRef">
-        <view
-          class="item"
-          v-for="item in navbar"
-          :class="{ active: item.id == currentTab }"
-          :key="item.id"
-          @click="switchTab(item.id)"
-          >{{ item.name }}</view
-        >
+        <view class="item" v-for="item in navbar" :class="{ active: item.id == currentTab }" :key="item.id"
+          @click="switchTab(item.id)">{{ item.name }}</view>
       </view>
 
       <view class="main">
         <view class="mid">
-          <sort
-            v-for="item1 in sub"
-            :key="item1.id"
-            :name="item1.name"
-            :id="item1.id"
-            :picUrl="item1.picUrl"
-          >
+          <sort v-for="item1 in sub" :key="item1.id" :name="item1.name" :id="item1.id" :picUrl="item1.picUrl">
           </sort>
         </view>
       </view>
@@ -174,7 +146,7 @@ export default {
     },
 
     goToSearch() {
-      uni.navigateTo({ url: '/stuff/search' })
+      uni.navigateTo({ url: '/pages/search-page/search-page' })
     },
 
     switchTab(index) {
@@ -211,6 +183,7 @@ uni-page-body {
   overflow: hidden;
   height: auto;
 }
+
 .stuffGoods {
   .head {
     width: 100%;
@@ -220,6 +193,7 @@ uni-page-body {
     padding-left: 16upx;
     padding-right: 26upx;
     box-sizing: border-box;
+
     // position: fixed;
     .search-bar {
       width: 100%;
@@ -227,25 +201,30 @@ uni-page-body {
       // top: 80upx;
       display: flex;
       align-items: center;
+
       .location {
         display: flex;
         align-items: center;
         // margin: 0 20upx;
         margin-right: 5px;
+
         .return {
           width: 48upx;
           height: 48upx;
         }
+
         .text {
           font-size: 32upx;
           font-weight: bold;
           color: #3d3d3d;
         }
+
         .show {
           width: 32upx;
           height: 32upx;
         }
       }
+
       .search-box {
         padding: 0upx 16upx;
         display: flex;
@@ -255,6 +234,7 @@ uni-page-body {
         height: 74upx;
         border-radius: 100upx;
         background: #f1f2f6;
+
         .search {
           width: 48upx;
           height: 74upx;
@@ -268,6 +248,7 @@ uni-page-body {
             height: 30upx;
           }
         }
+
         .content {
           padding-left: 14upx;
           flex: 1;
@@ -277,6 +258,7 @@ uni-page-body {
           border-left: 2upx solid #d8d8d8;
         }
       }
+
       .example-body {
         background: #f1f2f6;
         border-radius: 100upx;
@@ -288,6 +270,7 @@ uni-page-body {
     display: flex;
     overflow: scroll;
     overflow: scroll;
+
     .navbar {
       // margin-top: 28upx;
       width: 22%;
@@ -295,6 +278,7 @@ uni-page-body {
       flex-direction: column;
       align-items: center;
       overflow: scroll;
+
       &::-webkit-scrollbar {
         display: none;
       }
@@ -310,6 +294,7 @@ uni-page-body {
         line-height: 52upx;
         margin-bottom: 62upx;
         transition: all 100ms;
+
         &.active {
           background: linear-gradient(270deg, #e95d20 0%, #faae63 99%);
           color: #ffffff;
@@ -324,6 +309,7 @@ uni-page-body {
       overflow: scroll;
       border-top: 16upx solid #f1f2f6;
       border-left: 12upx solid #f1f2f6;
+
       &::-webkit-scrollbar {
         display: none;
       }
