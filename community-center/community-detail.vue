@@ -18,10 +18,19 @@
 				</view>
 			</view>
 			<view class="goods">
+				<image src="../static/images/con-center/imgbg.png" mode="" />
 				<img :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" />
+				<view class="goods-name">{{ title }}</view>
+				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
+				<view class="goods-price" v-if="!isArtificial">
+					<view class="logo">￥<text>{{ startPrice || '30' }}</text></view>/起
+				</view>
+				<view class="goods-price" v-if="isArtificial">
+					<view class="logo">￥<text>{{ serverPrice }}</text></view>
+				</view>
 			</view>
 			<!-- <view class="range" v-if="!isArtificial">￥98~128</view> -->
 			<view class="name-list">
@@ -54,6 +63,7 @@
 					</view>
 				</scroll-view>
 			</view>
+			<view class="start-price" v-if="!isArtificial">￥<text>{{ startPrice || '30' }}</text>/起</view>
 		</view>
 		<view class="mid">
 			<view class="text-list">
@@ -68,7 +78,14 @@
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
 					class="top-img" />
 			</view> -->
-			<charge></charge>
+			<charge :data="serviceDetail.chargeDetailsList"></charge>
+
+			<view class="explain">
+				<view class="explain-title">收费说明:</view>
+				<view class="explain-text">{{ chargeDescription
+					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费，房屋业务除外；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
+			</view>
+
 			<view class="middle">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
 					class="mid-img" />
@@ -124,6 +141,7 @@
 </template>
 
 <script>
+import { splitProject } from './componts/utile'
 import { getConfigApi } from '../api/auth'
 import item from '../community-center/componts/item'
 import charge from '../community-center/componts/charge'
@@ -144,6 +162,7 @@ export default {
 	},
 	data() {
 		return {
+
 			moreService,
 			address: '',
 			serviceDetail: [],
@@ -161,9 +180,14 @@ export default {
 			serverUrl: '',
 			index: '',
 			priceType: '',
+			startPrice: '',
+			chargeDescription: '',
+			serverInfo: '',
+			chargeDetailsList: '',
 		}
 	},
 	methods: {
+		splitProject,
 		handleBack() {
 			uni.navigateBack()
 		},
@@ -221,6 +245,41 @@ export default {
 				serverTypeId: this.serverTypeId,
 			})
 			this.serviceDetail = res.data
+			this.serviceDetail.chargeDetailsList = splitProject(res.data.chargeDetailsList || [
+				{
+					parentName: '维修项目',
+					projectName: '普通维修',
+					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
+					lowestPrice: '98',
+					highestPrice: '128',
+					unit: '台',
+				},
+				{
+					parentName: '维修项目',
+					projectName: '全面维修',
+					contentDescription: '价值冷制、清理氟系统堵塞、维修遥控接收板、更换接水盘（外机）、维修风机、维修排水系统、更换空开、漏保、维修空开、漏保、更换温度探头、换相序板、维修相序版、更换电辅热、维修电辅热、更换光电开关、维修光电开关、清理过滤网等等',
+					lowestPrice: '108',
+					highestPrice: '798',
+					unit: '台',
+				},
+				{
+					parentName: '特殊项目',
+					projectName: '全面维修',
+					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
+					lowestPrice: '108',
+					highestPrice: '798',
+					unit: '台',
+				},
+				{
+					parentName: '附加项目',
+					projectName: '全面维修',
+					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
+					lowestPrice: '108',
+					highestPrice: '798',
+					unit: '台',
+				},
+			])
+			console.log('123',this.serviceDetail.chargeDetailsList);
 			this.currentTab = res.data[0].id
 			this.switchTab(this.serviceDetail[0])
 			console.log('666', this.serviceDetail)
@@ -241,6 +300,20 @@ export default {
 
 			this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl
 			console.log('图片', this.serverInfoUrl)
+
+			this.startPrice = this.serviceDetail[0].startPrice
+			console.log('起步价', this.startPrice);
+
+			this.chargeDescription = this.serviceDetail[0].chargeDescription
+			console.log('收费说明', this.chargeDescription);
+
+			this.serverInfo = this.serviceDetail[0].serverInfo
+			console.log('服务详情', this.serverInfo);
+
+			// this.chargeDetailsList = this.serviceDetail[0].chargeDetailsList
+			// console.log('项目数据', this.chargeDetailsList);
+			
+
 
 		},
 
@@ -355,13 +428,74 @@ export default {
 		.goods {
 			// margin: 0upx 82upx;
 			width: 100%;
-			height: 340upx;
+			height: 476upx;
 			display: flex;
 			justify-content: center;
+			align-items: center;
+			position: relative;
 
 			.img {
 				width: 588upx;
 				height: 340upx;
+
+			}
+
+			image {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+
+			.goods-name {
+				white-space: nowrap;
+				position: absolute;
+				bottom: 28upx;
+				left: 68upx;
+				font-size: 42upx;
+				font-weight: bold;
+				color: #FFFFFF;
+				width: 380upx;
+				height: 94upx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.price-name {
+				position: absolute;
+				bottom: 112upx;
+				right: 74upx;
+				font-size: 28upx;
+				font-weight: bold;
+				color: #0519D4;
+				width: 150upx;
+				height: 40upx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.goods-price {
+				position: absolute;
+				display: flex;
+				align-items: baseline;
+				justify-content: center;
+				white-space: nowrap;
+				color: #FFFFFF;
+				font-size: 24upx;
+				font-weight: bold;
+				right: 80upx;
+				bottom: 20upx;
+				width: 150upx;
+				height: 84upx;
+
+				.logo {
+					font-size: 42upx;
+				}
+
+				text {
+					font-size: 52upx;
+				}
 			}
 		}
 
@@ -371,7 +505,7 @@ export default {
 			line-height: 70upx;
 			color: #FC4023;
 			padding: 18upx 0 0 24upx;
-			border-top: 1px solid #F1F1F0;
+			border-top: 2upx solid #F1F1F0;
 		}
 
 		.name-list {
@@ -429,7 +563,7 @@ export default {
 		.type {
 			margin-left: 30upx;
 			padding-bottom: 20upx;
-			padding-top: 30upx;
+			padding-top: 10upx;
 			font-size: 28upx;
 			font-weight: bold;
 			color: #3d3d3d;
@@ -503,6 +637,20 @@ export default {
 			//   }
 			// }
 		}
+
+		.start-price {
+			margin-left: 30upx;
+			padding-top: 16upx;
+			padding-bottom: 30upx;
+			color: #FC4023;
+			font-size: 30upx;
+			font-weight: 500;
+
+			text {
+				font-size: 60upx;
+				font-weight: bold;
+			}
+		}
 	}
 
 	.mid {
@@ -546,6 +694,21 @@ export default {
 				// width: 752upx;
 				// height: 760upx;
 				width: 100%;
+			}
+		}
+
+		.explain {
+			padding: 0upx 30upx 40upx 30upx;
+
+			.explain-title {
+				font-size: 28upx;
+				font-weight: bold;
+			}
+
+			.explain-text {
+				font-size: 28upx;
+				color: #8F8D85;
+				padding-top: 20upx;
 			}
 		}
 

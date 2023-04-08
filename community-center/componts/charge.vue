@@ -5,52 +5,41 @@
 				@click="switchTab(item)">{{ item.name }}</view>
 		</view>
 		<view class="project">
-			<view class="repair">
+			<view class="repair" v-for="(project, index) in data" :key="index">
 				<view class="top">
-					<text>维修项目</text>
-					<view @click="a = !a">
-						<image src="../../static/images/组1.png" mode="" v-if="!a" />
-						<image src="../../static/images/组2.png" mode="" v-if="a" />
+					<text>{{ project.parentName }}</text>
+					<view @click="a = a === project.parentName + index ? '' : project.parentName + index">
+						<image src="../../static/images/a1.png" mode="" v-if="!a" />
+						<image src="../../static/images/a2.png" mode="" v-if="a" />
 					</view>
-					<!-- <view @click="choice(1)" :class="{ active: currentAble === 1 }">
-						<image src="../../static/images/组2.png" mode="" v-if="currentAble == 1"/>
-					</view> -->
 				</view>
-				<view class="main" :style="{ height: a ? 0 : '', margin: a ? '6upx' : '' }">
-					<view class="sub" v-for="sub in subs" :key="sub.id">
+				<view class="main" :style="{ height: a === project.parentName + index ? 0 : '', margin: a === project.parentName + index ? '6upx' : '' }">
+					<view class="sub" v-for="sub in project.children" :key="sub.id">
 						<view class="first">
-							<text>{{ sub.title }}</text>
-							<text>{{ }}</text>
+							<text>{{ sub.projectName }}</text>
+							<view class="range">￥<text>{{ sub.lowestPrice }}</text>~<text>{{ sub.highestPrice }}</text>/{{ sub.unit }}
+							</view>
 						</view>
-						<view class="second">{{ sub.text }}</view>
+						<view class="second">{{ sub.contentDescription }}</view>
 					</view>
 				</view>
-			</view>
-			<view class="special">
-				<text>特殊项目</text>
-				<image src="../../static/images/组2.png" mode="" />
-			</view>
-			<view class="add">
-				<text>附加项目</text>
-				<image src="../../static/images/组2.png" mode="" />
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { items, subs } from './data'
+import { items } from './data'
 export default {
 	name: "Charge",
 	props: {
-
+		data: Array
 	},
 	data() {
 		return {
 			items,
-			subs,
 			currentTab: 1,
-			a: false
+			a: ''
 		}
 	},
 	methods: {
@@ -69,6 +58,7 @@ export default {
 
 <style lang="less" scoped>
 .charge {
+
 	.top-list {
 		padding: 30upx 80upx 0 80upx;
 		display: flex;
@@ -114,6 +104,7 @@ export default {
 			border-radius: 16upx;
 			box-sizing: border-box;
 			border: 2upx solid #E95D20;
+			margin-bottom: 20upx;
 
 			.top {
 				width: 100%;
@@ -155,6 +146,11 @@ export default {
 						padding-bottom: 20upx;
 
 						text {
+							font-size: 28upx;
+							color: #141000;
+						}
+
+						.range {
 							font-size: 28upx;
 							color: #141000;
 						}
