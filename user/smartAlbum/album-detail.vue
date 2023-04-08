@@ -202,6 +202,11 @@ export default {
 						name: '复制链接',
 						icon: 'link',
 						size: 28
+					}, {
+						name: '生成二维码',
+						icon: 'refresh',
+						size: 30
+					}, {
 						// }, {
 						// 	name: '刷新',
 						// 	icon: 'refresh',
