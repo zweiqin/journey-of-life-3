@@ -113,3 +113,36 @@ export const getTimeSlot = (isNow) => {
 
   return data
 }
+
+export const splitProject = data => {
+	const res = [];
+	for (const project of data) {
+		const index = res.findIndex(item => item.parentName === project.parentName);
+		if (index == -1) {
+			res.push({
+				parentName: project.parentName,
+				id: new Date().getTime().toString() + Math.random() * 100,
+				children: [
+					{
+						id: new Date().getTime().toString() + Math.random() * 100,
+						projectName: project.projectName,
+						lowestPrice: project.lowestPrice,
+						highestPrice: project.highestPrice,
+						unit: project.unit,
+						contentDescription: project.contentDescription
+					}
+				]
+			});
+		} else {
+			res[index].children.push({
+				id: new Date().getTime().toString() + Math.random() * 100,
+				projectName: project.projectName,
+				lowestPrice: project.lowestPrice,
+				highestPrice: project.highestPrice,
+				unit: project.unit,
+				contentDescription: project.contentDescription
+			});
+		}
+	}
+	return res;
+};
