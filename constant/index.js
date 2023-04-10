@@ -12,7 +12,7 @@ export const USER_ID = 'USER_ID'
 export const USER_TOKEN = 'USER_TOKEN'
 export const user_INFO = 'user_INFO'
 export const USER_INFO = 'user_INFO'
-export const LOGIN_FORM = "LOGIN_FORM"
+export const LOGIN_FORM = 'LOGIN_FORM'
 
 // home page
 export const STYLE_LIST = 'STYLE_LIST'
@@ -38,7 +38,8 @@ export const ADD_DELETE_GOODS_EVENT = 'ADD_DELETE_GOODS_EVENT'
 export const CHANGE_DELETE_LIST_EVENT = 'CHANGE_DELETE_LIST_EVENT'
 
 export const NEW_BIND_ID = 'NEW_BIND_ID'
+export const NEW_BIND_ACTIVITY_ID = 'NEW_BIND_ACTIVITY_ID'
 export const IN_TIMES = 'IN_TIMES'
 
-export const CURRENT_ADDRESS = "CURRENT_ADDRESS"
+export const CURRENT_ADDRESS = 'CURRENT_ADDRESS'
 

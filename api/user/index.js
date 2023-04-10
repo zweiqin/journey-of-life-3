@@ -199,6 +199,12 @@ export const getBindingUserApi = (data) => RuanRequest(
 	'get'
 )
 
+// 生成活动二维码
+export const getActivityGetCodeApi = (data) => shopRequest('/activity/activityGetCode', data)
+
+// 活动码绑定
+export const changeActivityUserBindingApi = (data) => shopRequest('/activity/activityUserBinding', data)
+
 // 升级(超级)合伙人
 export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post', null, {
 	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)

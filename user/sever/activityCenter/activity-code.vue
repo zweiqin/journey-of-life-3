@@ -16,7 +16,7 @@
 						{{ tuanCode || '邀请码获取失败' }}
 					</view>
 					<button v-if="tuanCode" class="uni-btn" @click="handleCopyCode">
-						复制邀请码
+						复制活动邀请码
 					</button>
 				</view>
 			</view>
@@ -25,7 +25,7 @@
 				<image v-if="qrcode" class="qr-code-img" :src="qrcode" mode="" />
 				<view class="tip"> 面对面扫码邀请，或分享扫码邀请 </view>
 
-				<button class="uni-btn" @click="handleFillCode">填写邀请码</button>
+				<button class="uni-btn" @click="handleFillCode">填写活动邀请码</button>
 			</view>
 		</view>
 
@@ -38,9 +38,10 @@
 import Share from './cpns/share.vue'
 import FillCode from './cpns/FillCode.vue'
 import { USER_INFO } from '../../../constant'
-import { getExtensionCodeApi } from '../../../api/user'
+import { getActivityGetCodeApi } from '../../../api/user'
 import { getUserId } from '../../../utils'
 export default {
+	name: 'ActivityCode',
 	components: {
 		Share,
 		FillCode
@@ -61,9 +62,7 @@ export default {
 
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			uni.navigateBack()
 		},
 
 		// 点击复制邀请码
@@ -79,23 +78,23 @@ export default {
 			})
 		},
 
-		// 获取推广码
+		// 获取活动码
 		getCode() {
 			const _this = this
-
+			console.log(this.userInfo.invitationCode)
 			if (!this.userInfo.invitationCode) {
-				getExtensionCodeApi({
+				getActivityGetCodeApi({
 					url:
-						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
+						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
 						this.userInfo.invitationCode,
 					userId: getUserId()
 				}).then((res) => {
 					_this.qrcode = 'data:image/jpeg;base64,' + res.data.url
 					_this.tuanCode = res.data.code
 
-					getExtensionCodeApi({
+					getActivityGetCodeApi({
 						url:
-							'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
+							'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
 							res.data.code,
 						userId: getUserId()
 					}).then((res2) => {
@@ -104,9 +103,9 @@ export default {
 					})
 				})
 			} else {
-				getExtensionCodeApi({
+				getActivityGetCodeApi({
 					url:
-						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?code=' +
+						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
 						this.userInfo.invitationCode,
 					userId: getUserId()
 				}).then((res) => {

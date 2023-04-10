@@ -1,41 +1,41 @@
 <template>
-  <!-- <view
-    class="user-page-container"
-    @touchstart="handleTouchStart"
-    @touchend="handleTouchEnd"
-    @touchmove="calcDis"
-  > -->
+	<!-- <view
+		class="user-page-container"
+		@touchstart="handleTouchStart"
+		@touchend="handleTouchEnd"
+		@touchmove="calcDis"
+		> -->
 
-  <view class="user-page-container">
-    <view :style="{ height: moveDis / 2 + 'px' }" class="loading-pane">
-      <tui-loading type="row" text="正在刷新中..."></tui-loading>
-    </view>
-    <BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
+	<view class="user-page-container">
+		<view :style="{ height: moveDis / 2 + 'px' }" class="loading-pane">
+			<tui-loading type="row" text="正在刷新中..."></tui-loading>
+		</view>
+		<BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
 
-    <view class="main-area">
-      <OrderPane @handleNavigate="handleNavigate"></OrderPane>
-      <Equity @handleNavigate="handleNavigate"></Equity>
-      <MyFunction
-        ref="myFunctionRef"
-        @handleNavigate="handleNavigate"
-      ></MyFunction>
-      <Serve @handleNavigate="handleNavigate"></Serve>
-    </view>
+		<view class="main-area">
+			<OrderPane @handleNavigate="handleNavigate"></OrderPane>
+			<Equity @handleNavigate="handleNavigate"></Equity>
+			<MyFunction
+				ref="myFunctionRef"
+				@handleNavigate="handleNavigate"
+			></MyFunction>
+			<Serve @handleNavigate="handleNavigate"></Serve>
+		</view>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-    ></tui-modal>
+		<tui-modal
+			:show="$data._isShowTuiModel"
+			title="提示"
+			content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
+		></tui-modal>
 
-    <tui-modal
-      :show="isShow"
-      title="提示"
-      content="您的会员等级不够，是否前去升级？"
-      @click="handleVipUp"
-    ></tui-modal>
-  </view>
+		<tui-modal
+			:show="isShow"
+			title="提示"
+			content="您的会员等级不够，是否前去升级？"
+			@click="handleVipUp"
+		></tui-modal>
+	</view>
 </template>
 
 <script>
@@ -46,105 +46,168 @@ import Equity from './cpns/Equity.vue'
 import MyFunction from './cpns/MyFunction.vue'
 import Serve from './cpns/Serve.vue'
 import showModalMixin from '../../mixin/showModal'
-import { USER_ID } from 'constant'
+import { NEW_BIND_ACTIVITY_ID, USER_ID, USER_INFO } from '../../constant'
+import { changeActivityUserBindingApi } from '../../api/user'
 
 export default {
-  components: {
-    BaseInfo,
-    OrderPane,
-    Equity,
-    MyFunction,
-    Serve,
-  },
-  mixins: [showModalMixin()],
-  onLoad() {
-    // #ifdef H5
-    this.init()
-    this.calcDis = throttle(this.handleTouchMove, 50)
-    // #endif
-  },
-  onShow() {
-    this.init()
-  },
-  data() {
-    return {
-      isShow: false,
-      moveDis: 0,
-      touchStartDis: 0,
-      calcDis: null,
-    }
-  },
-  methods: {
-    init() {
-      this.userId = uni.getStorageSync(USER_ID)
+	name: 'User',
+	components: {
+		BaseInfo,
+		OrderPane,
+		Equity,
+		MyFunction,
+		Serve
+	},
+	mixins: [ showModalMixin() ],
+	async onLoad(options) {
+		// #ifdef H5
+		this.init()
+		this.calcDis = throttle(this.handleTouchMove, 50)
+		// #endif
 
-      if (this.userId) {
-        this.$store.dispatch('auth/refrshUserInfo')
-        this.$store.dispatch('user/count', this.userId)
-      }
+		this.bindActivityId = options.code
+		if (this.bindActivityId) {
+			uni.setStorageSync(NEW_BIND_ACTIVITY_ID, this.bindActivityId)
+		}
+		const userId = uni.getStorageSync(USER_ID)
+		const userInfo = uni.getStorageSync(USER_INFO)
+		// #ifdef H5
+		if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID) && userId && !this.bindActivityId) {
+			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID)
+			// try {
+			//   await this.checkBind({ userId: userId })
+			// } catch (error) {
+			await this.binding(userId, () => {
+				uni.switchTab({
+					url: '/pages/user/user'
+				})
+			})
+			// }
+		}
+		// #endif
+		// return
+		if (userId && userInfo.userId) {
+			if (this.bindActivityId) {
+				await this.binding(userId, () => {
+					uni.switchTab({
+						url: '/pages/user/user'
+					})
+				})
+			} else {
+				uni.switchTab({
+					url: '/pages/user/user'
+				})
+			}
+		}
+	},
+	onShow() {
+		this.init()
+	},
+	data() {
+		return {
+			timer: null,
+			isShow: false,
+			moveDis: 0,
+			touchStartDis: 0,
+			calcDis: null,
+			bindActivityId: null,
+			userId: null
+		}
+	},
+	methods: {
+		init() {
+			this.userId = uni.getStorageSync(USER_ID)
 
-      this.$forceUpdate()
-    },
-    handleNavigate(item, cb) {
-      if (this.isLogin()) {
-        if (
-          item.role &&
-          item.role.length &&
-          !item.role.includes(this.$store.getters.userInfo.userLevel) &&
-          !this.$store.getters.userInfo.isRegionAgent
-        ) {
-          this.isShow = true
-          return
-        }
+			if (this.userId) {
+				this.$store.dispatch('auth/refrshUserInfo')
+				this.$store.dispatch('user/count', this.userId)
+			}
 
-        if (!item.url) {
-          this.empty()
-          return
-        }
+			this.$forceUpdate()
+		},
+		// 绑定
+		binding(userId, cb) {
+			const _this = this
+			return new Promise((resolve, reject) => {
+				changeActivityUserBindingApi({
+					userId,
+					userCode: this.bindActivityId
+				})
+					.then((res) => {
+						_this.timer = setTimeout(() => {
+							cb && typeof cb === 'function' && cb()
+						}, 1000)
+						resolve()
+					})
+					.catch((err) => {
+						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
+						_this.timer = setTimeout(() => {
+							cb && typeof cb === 'function' && cb()
+						}, 1000)
+						reject()
+					})
+			})
+		},
+		handleNavigate(item, cb) {
+			if (this.isLogin()) {
+				if (
+					item.role &&
+					item.role.length &&
+					!item.role.includes(this.$store.getters.userInfo.userLevel) &&
+					!this.$store.getters.userInfo.isRegionAgent
+				) {
+					this.isShow = true
+					return
+				}
 
-        if (cb && typeof cb === 'function' && cb()) {
-          uni.navigateTo({
-            url: item.url,
-          })
-        } else {
-          uni.navigateTo({
-            url: item.url,
-          })
-        }
-      } else {
-        this.$data._isShowTuiModel = true
-      }
-    },
+				if (!item.url) {
+					this.empty()
+					return
+				}
 
-    handleVipUp(e) {
-      if (e.index) {
-        uni.navigateTo({
-          url: '/user/sever/userUp/partner-appay',
-        })
-      }
+				if (cb && typeof cb === 'function' && cb()) {
+					uni.navigateTo({
+						url: item.url
+					})
+				} else {
+					uni.navigateTo({
+						url: item.url
+					})
+				}
+			} else {
+				this.$data._isShowTuiModel = true
+			}
+		},
 
-      this.isShow = false
-    },
+		handleVipUp(e) {
+			if (e.index) {
+				uni.navigateTo({
+					url: '/user/sever/userUp/partner-appay'
+				})
+			}
 
-    // 点击触摸
-    handleTouchStart(e) {
-      this.touchStartDis = e.changedTouches[0].pageY
-    },
+			this.isShow = false
+		},
 
-    // 触摸结束
-    handleTouchEnd() {
-      this.init()
-      this.moveDis = 0
-    },
+		// 点击触摸
+		handleTouchStart(e) {
+			this.touchStartDis = e.changedTouches[0].pageY
+		},
 
-    // 手指移动
-    handleTouchMove(e) {
-      this.moveDis = e.changedTouches[0].pageY - this.touchStartDis
-      if (this.moveDis > 100) {
-        this.moveDis = 150
-      }
-    },
-  },
+		// 触摸结束
+		handleTouchEnd() {
+			this.init()
+			this.moveDis = 0
+		},
+
+		// 手指移动
+		handleTouchMove(e) {
+			this.moveDis = e.changedTouches[0].pageY - this.touchStartDis
+			if (this.moveDis > 100) {
+				this.moveDis = 150
+			}
+		}
+	}
 }
 </script>
 

@@ -1,83 +1,83 @@
 <template>
-  <tui-popup
-    :duration="500"
-    :show="value"
-    :styles="{
-      position: 'fixed',
-      bottom: 0,
-      top: 0,
-      left: 0,
-      right: 0,
-      display: 'flex',
-      'justify-content': 'center',
-      'align-items': 'center',
-      backgroundColor: 'rgba(0,0,0,.6)',
-    }"
-    :modeClass="['fade']"
-  >
-    <view class="popup-container">
-      <view class="input-wrapper">
-        <input v-model="code" type="text" placeholder="请输入邀请码" />
-      </view>
+	<tui-popup
+		:duration="500"
+		:show="value"
+		:styles="{
+			'position': 'fixed',
+			'bottom': 0,
+			'top': 0,
+			'left': 0,
+			'right': 0,
+			'display': 'flex',
+			'justify-content': 'center',
+			'align-items': 'center',
+			'backgroundColor': 'rgba(0,0,0,.6)'
+		}"
+		:mode-class="[ 'fade' ]"
+	>
+		<view class="popup-container">
+			<view class="input-wrapper">
+				<input v-model="code" type="text" placeholder="请输入邀请码" />
+			</view>
 
-      <view class="btn-wrapper">
-        <button class="uni-btn cancel" @click="$emit('input', false)">
-          取消
-        </button>
-        <button class="uni-btn" @click="handelBind">提交</button>
-      </view>
-    </view>
-  </tui-popup>
+			<view class="btn-wrapper">
+				<button class="uni-btn cancel" @click="$emit('input', false)">
+					取消
+				</button>
+				<button class="uni-btn" @click="handelBind">提交</button>
+			</view>
+		</view>
+	</tui-popup>
 </template>
 
 <script>
-import { bindLastUserApi } from '../../../../api/user'
+import { changeActivityUserBindingApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
-  props: {
-    value: {
-      type: Boolean,
-      default: false,
-    },
-  },
+	props: {
+		value: {
+			type: Boolean,
+			default: false
+		}
+	},
 
-  data() {
-    return {
-      code: '',
-    }
-  },
-  methods: {
-    async handelBind() {
-      if (!this.code) {
-        uni.showToast({
-          title: '请输入邀请码',
-          duration: 2000,
-          icon: 'none',
-        })
+	data() {
+		return {
+			code: ''
+		}
+	},
+	methods: {
+		async handelBind() {
+			if (!this.code) {
+				uni.showToast({
+					title: '请输入邀请码',
+					duration: 2000,
+					icon: 'none'
+				})
 
-        return
-      }
+				return
+			}
 
-      try {
-        await bindLastUserApi({
-          userId: getUserId(),
-          userCode: this.code,
-        })
+			try {
+				await changeActivityUserBindingApi({
+					userId: getUserId(),
+					userCode: this.code
+				})
 
-        uni.showToast({
-          title: '绑定成功',
-          duration: 500,
-        })
-      } catch (error) {
-        uni.showToast({
-          title: error,
-          icon: 'none',
-        })
-      } finally {
-        this.$emit('value', false)
-      }
-    },
-  },
+				uni.showToast({
+					title: '绑定成功',
+					duration: 500
+				})
+			} catch (error) {
+				uni.showToast({
+					title: error,
+					icon: 'none'
+				})
+			} finally {
+				this.$emit('value', false)
+			}
+		}
+	}
 }
 </script>
 
