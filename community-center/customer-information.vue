@@ -439,7 +439,7 @@ export default {
         uni.navigateTo({
           url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
-        &installDate=${this.datetimerange}&pricingType=${this.pricingType}`,
+        &installDate=${this.datetimerange}&pricingType=${this.pricingType}&images=${JSON.stringify(this.images)}`,
         })
       }
     },
@@ -603,6 +603,9 @@ export default {
     } else {
       this.pricingType = 2
     }
+
+		this.images = JSON.parse(options.images)
+		console.log('images',this.images);
 
     this.getServicePrice()
     this.getUserInfoById()

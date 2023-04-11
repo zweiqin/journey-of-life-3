@@ -18,11 +18,11 @@
 				</view>
 			</view>
 			<view class="goods">
-				<image src="../static/images/con-center/imgbg.png" mode="" />
-				<img :src="
+				<image :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" />
+				<image src="../static/images/con-center/imgbg.png" mode="" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view class="goods-price" v-if="!isArtificial">
@@ -86,6 +86,46 @@
 					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费，房屋业务除外；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
 			</view>
 
+			<view class="background">
+				<image src="../static/images/con-center/tfbg.png" mode="" class="bg" />
+				<image src="../static/images/con-center/bg-logo.png" mode="" class="bg-logo" />
+				<view class="bg-text"><text>{{ title }}</text><text>就找团蜂社区</text></view>
+				<view class="bg-image">
+					<image :src="serverUrl" mode="" class="bg-img" />
+				</view>
+			</view>
+
+			<view class="mid-content">
+				<view class="mid-text">您的{{ title }}</view>
+				<view class="mid-text">我们<text>全心全意</text>解决</view>
+			</view>
+
+			<view class="serverContent-list">
+				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
+			</view>
+
+			<view class="case-show">
+				<!-- <view class="text">
+					<view class="text1">案例</view>
+					<view class="text2">展示</view>
+				</view> -->
+				<!-- <view class="show-img">
+					<img :src="
+						serverInfoUrl ||
+						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
+					" alt="" class="img1" @click="previewImage(serverInfoUrl)" />
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png" alt=""
+						class="img2" />
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png" alt=""
+						class="img3" />
+				</view> -->
+
+				<view class="show-img">
+					<u-parse v-if="serverInfo" :content="goodsInfoDetail"></u-parse>
+				</view>
+
+			</view>
+
 			<view class="middle">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
 					class="mid-img" />
@@ -95,22 +135,7 @@
 					class="process-img" />
 			</view>
 
-			<view class="case-show">
-				<view class="text">
-					<view class="text1">案例</view>
-					<view class="text2">展示</view>
-				</view>
-				<view class="show-img">
-					<img :src="
-						serverInfoUrl ||
-						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
-					" alt="" class="img1" @click="previewImage(serverInfoUrl)" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png" alt=""
-						class="img2" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png" alt=""
-						class="img3" />
-				</view>
-			</view>
+
 			<view class="tips">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
 					class="img-tips" />
@@ -141,6 +166,8 @@
 </template>
 
 <script>
+import uParse from '../components/u-parse/u-parse.vue'
+import { marked } from 'marked'
 import { splitProject } from './componts/utile'
 import { getConfigApi } from '../api/auth'
 import item from '../community-center/componts/item'
@@ -159,6 +186,7 @@ export default {
 	components: {
 		item,
 		charge,
+		uParse,
 	},
 	data() {
 		return {
@@ -183,7 +211,8 @@ export default {
 			startPrice: '',
 			chargeDescription: '',
 			serverInfo: '',
-			chargeDetailsList: '',
+			chargeDetailsList: [],
+			serverContent: '',
 		}
 	},
 	methods: {
@@ -244,45 +273,19 @@ export default {
 				// serverTypeId: 109,
 				serverTypeId: this.serverTypeId,
 			})
+
 			this.serviceDetail = res.data
-			this.serviceDetail.chargeDetailsList = splitProject(res.data.chargeDetailsList || [
-				{
-					parentName: '维修项目',
-					projectName: '普通维修',
-					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
-					lowestPrice: '98',
-					highestPrice: '128',
-					unit: '台',
-				},
-				{
-					parentName: '维修项目',
-					projectName: '全面维修',
-					contentDescription: '价值冷制、清理氟系统堵塞、维修遥控接收板、更换接水盘（外机）、维修风机、维修排水系统、更换空开、漏保、维修空开、漏保、更换温度探头、换相序板、维修相序版、更换电辅热、维修电辅热、更换光电开关、维修光电开关、清理过滤网等等',
-					lowestPrice: '108',
-					highestPrice: '798',
-					unit: '台',
-				},
-				{
-					parentName: '特殊项目',
-					projectName: '全面维修',
-					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
-					lowestPrice: '108',
-					highestPrice: '798',
-					unit: '台',
-				},
-				{
-					parentName: '附加项目',
-					projectName: '全面维修',
-					contentDescription: '调试设备/紧固线束、更换遥控器、更换排水管、线路修复、外机清洗',
-					lowestPrice: '108',
-					highestPrice: '798',
-					unit: '台',
-				},
-			])
-			console.log('123',this.serviceDetail.chargeDetailsList);
+
+			this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList)
+			console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
+
 			this.currentTab = res.data[0].id
 			this.switchTab(this.serviceDetail[0])
 			console.log('666', this.serviceDetail)
+
+			this.serverInfo = this.serviceDetail[0].serverInfo
+			console.log('serverInfo', this.serverInfo);
+
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
 			this.length = this.serviceDetail.length
@@ -298,8 +301,8 @@ export default {
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
 			console.log('介绍', this.serverIntroduction)
 
-			this.serverInfoUrl = this.serviceDetail[0].serverInfoUrl
-			console.log('图片', this.serverInfoUrl)
+			this.serverUrl = this.serviceDetail[0].serverImageUrl
+			console.log('图片', this.serverUrl)
 
 			this.startPrice = this.serviceDetail[0].startPrice
 			console.log('起步价', this.startPrice);
@@ -307,12 +310,16 @@ export default {
 			this.chargeDescription = this.serviceDetail[0].chargeDescription
 			console.log('收费说明', this.chargeDescription);
 
-			this.serverInfo = this.serviceDetail[0].serverInfo
-			console.log('服务详情', this.serverInfo);
+			this.serverContent = this.serviceDetail[0].serverContent.split('，')
+			console.log('服务具体内容', this.serverContent);
+
+
+			// this.serverInfo = this.serviceDetail[0].serverInfo
+			// console.log('服务详情', this.serverInfo);
 
 			// this.chargeDetailsList = this.serviceDetail[0].chargeDetailsList
 			// console.log('项目数据', this.chargeDetailsList);
-			
+
 
 
 		},
@@ -358,6 +365,15 @@ export default {
 			this.$refs.tuanWxShareRef.share(data, isQuit)
 		},
 	},
+
+	computed: {
+		goodsInfoDetail() {
+			return this.serverInfo
+				? marked(this.serverInfo)
+				: ''
+		},
+	},
+
 	created() { },
 	onLoad(options) {
 		this.serverTypeId = options.id
@@ -365,7 +381,7 @@ export default {
 		uni.setNavigationBarTitle({
 			title: this.title,
 		})
-		this.serverUrl = options.serverImageUrl
+		// this.serverUrl = options.serverImageUrl
 		// #ifdef H5
 		this.$nextTick(() => {
 			this.handleShareServe(true)
@@ -437,13 +453,13 @@ export default {
 			.img {
 				width: 588upx;
 				height: 340upx;
-
+				position: absolute;
 			}
 
 			image {
 				width: 100%;
 				height: 100%;
-				position: absolute;
+
 			}
 
 			.goods-name {
@@ -712,6 +728,106 @@ export default {
 			}
 		}
 
+		.background {
+			position: relative;
+			width: 100%;
+
+			.bg {
+				width: 100%;
+				height: 850upx;
+			}
+
+			.bg-logo {
+				width: 360upx;
+				height: 70upx;
+				position: absolute;
+				top: 60upx;
+				left: 44upx;
+			}
+
+			.bg-text {
+				width: 100%;
+				position: absolute;
+				top: 174upx;
+				left: 0upx;
+				font-size: 64upx;
+				color: #FFFFFF;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				white-space: nowrap;
+			}
+
+			.bg-image {
+				display: flex;
+				justify-content: center;
+				position: absolute;
+				top: 400upx;
+				left: 0;
+				width: 100%;
+
+				.bg-img {
+					width: 436upx;
+					height: 178upx;
+				}
+			}
+		}
+
+		.mid-content {
+			padding-top: 40upx;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			height: 144upx;
+			font-size: 48upx;
+			font-weight: bold;
+			color: #E95D20;
+			white-space: nowrap;
+
+			.mid-text {}
+
+			text {
+				position: relative;
+
+				&::after {
+					content: '';
+					position: absolute;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: -14upx;
+					width: 160upx;
+					height: 4upx;
+					border-radius: 10upx;
+					background-color: #E95D20;
+					transition: all 350ms ease-in;
+				}
+			}
+		}
+
+		.serverContent-list {
+			padding: 88upx 56upx 0upx 56upx;
+			gap: 20upx 0upx;
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+
+			.serverContent {
+				width: 200upx;
+				height: 140upx;
+				border-radius: 20upx;
+				background: #FFF6EF;
+				border: 2upx solid #E95D20;
+				font-size: 36upx;
+				font-weight: bold;
+				color: #E95D20;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+
 		.middle {
 			.mid-img {
 				// width: 754upx;
@@ -733,6 +849,8 @@ export default {
 		}
 
 		.case-show {
+			padding: 40upx 0;
+
 			.text {
 				width: 100%;
 				display: flex;
@@ -753,7 +871,7 @@ export default {
 			}
 
 			.show-img {
-				padding: 40upx 30upx 54upx 30upx;
+				padding: 40upx 0upx 54upx 0upx;
 
 				.img1 {
 					width: 100%;
