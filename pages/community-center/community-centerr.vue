@@ -99,7 +99,7 @@ export default {
 
     .person-wrapper {
       position: absolute;
-      top: 30upx;
+      top: 40upx;
       right: 8upx;
     }
 
