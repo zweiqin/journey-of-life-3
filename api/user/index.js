@@ -175,6 +175,36 @@ export const getBusinessResponsiblePersonListApi = (data) => RuanRequest(
 	'get'
 )
 
+/**
+ * 活动中心
+ */
+// 获取业务员列表
+export const getUserIncomeApi = (data) => RuanRequest(
+	'/income/userIncome',
+	data,
+	'get'
+)
+
+// 活动列表查询
+export const getUserCrmListApi = (data) => RuanRequest(
+	'/userCrm/list',
+	data,
+	'get'
+)
+
+// 粉丝查询
+export const getBindingUserApi = (data) => RuanRequest(
+	'/userBindingUser/bindingUser',
+	data,
+	'get'
+)
+
+// 生成活动二维码
+export const getActivityGetCodeApi = (data) => shopRequest('/activity/activityGetCode', data)
+
+// 活动码绑定
+export const changeActivityUserBindingApi = (data) => shopRequest('/activity/activityUserBinding', data)
+
 // 升级(超级)合伙人
 export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post', null, {
 	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)

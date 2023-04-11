@@ -766,6 +766,19 @@
 					}
 				},
 				{
+					"path": "sever/activityCenter/index",
+					"style": {
+						"navigationBarTitleText": "活动中心",
+						"onReachBottomDistance": 0
+					}
+				},
+				{
+					"path": "sever/activityCenter/activity-code",
+					"style": {
+						"navigationBarTitleText": "活动推广"
+					}
+				},
+				{
 					"path": "Collection/Goods-Collection",
 					"style": {
 						"navigationBarTitleText": "",

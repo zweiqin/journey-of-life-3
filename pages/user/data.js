@@ -97,6 +97,11 @@ export const myEquity = [
 		name: '智能画册',
 		icon: require('../../static/images/new-user/equity/smart-album.png'),
 		url: '/user/smartAlbum/index'
+	},
+	{
+		name: '活动中心',
+		icon: require('../../static/images/new-user/equity/sharing-activities.png'),
+		url: '/user/sever/activityCenter/index'
 	}
 ]
 
