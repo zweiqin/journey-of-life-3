@@ -65,6 +65,21 @@
 			</view>
 			<view class="start-price" v-if="!isArtificial">￥<text>{{ startPrice || '30' }}</text>/起</view>
 		</view>
+		<view class="add">
+			<view class="add-list" @click="handleToAddress">
+				<view class="left">
+					<image src="../static/images/con-center/map-pin.png" mode="" class="left-logo" />
+					<view class="left-address">{{ addressDetail || '请添加服务地址' }}</view>
+				</view>
+				<view class="right">
+					<image src="../static/images/con-center/jump.png" mode="" class="jump" />
+				</view>
+			</view>
+			<view class="kaitong">
+				<image src="../static/images/con-center/open.png" mode="" class="open" v-if="type == 1" />
+				<image src="../static/images/con-center/shut.png" mode="" class="close" v-if="type == 2" />
+			</view>
+		</view>
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
@@ -93,6 +108,8 @@
 				<view class="bg-image">
 					<image :src="serverUrl" mode="" class="bg-img" />
 				</view>
+				<image src="../static/images/con-center/girl.png" mode="" class="girl-img" />
+
 			</view>
 
 			<view class="mid-content">
@@ -176,6 +193,8 @@ import { getServiceDetailApi } from '../api/community-center'
 import { moreService } from '../pages/community-center/config'
 import { USER_TOKEN } from '../constant'
 import { getUserId } from '../utils'
+import { getAdressDetailByLngLat } from '../utils/DWHutils'
+import { getIsOpenServerAreaApi } from '../api/community-center'
 // #ifdef H5
 import share from '../utils/wxshare'
 // #endif
@@ -213,6 +232,9 @@ export default {
 			serverInfo: '',
 			chargeDetailsList: [],
 			serverContent: '',
+			addressDetail: '',
+			type: '',
+			addressInfo: '',
 		}
 	},
 	methods: {
@@ -227,6 +249,10 @@ export default {
 				url: `/community-center/service-sort?value=${this.value}`,
 			})
 		},
+		handleToAddress() {
+			uni.navigateTo({ url: '/community-center/add-address' })
+		},
+
 		handleToServiceOrderHome() {
 			//需要传 图片 价格 名称 单位
 			// uni.navigateTo({ url: "../community-center/community-order" });
@@ -324,6 +350,42 @@ export default {
 
 		},
 
+		async getIsOpenServerArea() {
+			const _this = this
+			uni.getLocation({
+				type: 'gcj02',
+				success: function (res) {
+					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+						if (res.status === '1') {
+							console.log('1111', res)
+							const result = res.regeocode
+							_this.address =
+								result.addressComponent.province +
+								result.addressComponent.city +
+								result.addressComponent.district
+							console.log('this.address', _this.address)
+							_this.a()
+							_this.addressDetail = result.formatted_address
+							console.log('addressDetail', _this.addressDetail)
+						}
+					})
+				},
+			})
+		},
+
+		async a() {
+			const res = await getIsOpenServerAreaApi({
+				address: this.address,
+
+			})
+			console.log('res', res)
+			this.tips = res.data
+			console.log('tips', this.tips)
+			this.type = this.tips ? 1 : 2
+			console.log('type', this.type)
+		},
+
+
 		//预览图
 		preview(index) {
 			console.log(index)
@@ -388,7 +450,18 @@ export default {
 		})
 		// #endif
 		this.getServiceDetail()
+		this.getIsOpenServerArea()
 	},
+	onShow() {
+		const info = uni.getStorageSync("guawyi8sa");
+		console.log('info', info);
+		this.addressInfo = info.address + info.addressDetail;
+		console.log('addressInfo', this.addressInfo);
+		this.addressDetail = this.addressInfo
+		this.address = info.address
+		console.log('address', this.address);
+		this.a()
+	}
 }
 </script>
 <style lang="less" scoped>
@@ -669,12 +742,70 @@ export default {
 		}
 	}
 
+	.add {
+		background: #ffffff;
+		// height: 104upx;
+		margin-top: 10upx;
+		display: flex;
+		flex-direction: column;
+		padding: 26upx 0upx 20upx 0upx;
+
+		.add-list {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			padding: 0upx 20upx 0upx 36upx;
+
+			.left {
+				display: flex;
+
+				.left-logo {
+					width: 48upx;
+					height: 48upx;
+				}
+
+				.left-address {
+					width: 450upx;
+					font-size: 28upx;
+					font-weight: 500;
+					color: #3D3D3D;
+					padding-left: 10upx;
+				}
+
+			}
+
+			.right {
+				.jump {
+					width: 32upx;
+					height: 32upx;
+				}
+			}
+		}
+
+		.kaitong {
+			text-align: right;
+			padding-top: 10upx;
+
+			.open {
+				width: 200upx;
+				height: 48upx;
+
+			}
+
+			.close {
+				width: 200upx;
+				height: 48upx;
+
+			}
+		}
+	}
+
 	.mid {
 		display: flex;
 		align-items: center;
 		height: 104upx;
-		margin-top: 16upx;
-		margin-bottom: 16upx;
+		margin-top: 10upx;
+		margin-bottom: 10upx;
 		background: #ffffff;
 
 		.text-list {
@@ -682,7 +813,7 @@ export default {
 			flex: 1;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0upx 18upx 0upx 36upx;
+			padding: 0upx 20upx 0upx 36upx;
 
 			.ensure {
 				font-size: 28upx;
@@ -696,8 +827,8 @@ export default {
 			}
 
 			.more {
-				width: 40upx;
-				height: 40upx;
+				width: 32upx;
+				height: 32upx;
 			}
 		}
 	}
@@ -760,17 +891,27 @@ export default {
 
 			.bg-image {
 				display: flex;
-				justify-content: center;
+				// justify-content: center;
 				position: absolute;
 				top: 400upx;
 				left: 0;
 				width: 100%;
 
 				.bg-img {
-					width: 436upx;
-					height: 178upx;
+					width: 516upx;
+					height: 258upx;
 				}
 			}
+
+
+			.girl-img {
+				width: 450upx;
+				height: 492upx;
+				position: absolute;
+				top: 358upx;
+				right: 0;
+			}
+
 		}
 
 		.mid-content {

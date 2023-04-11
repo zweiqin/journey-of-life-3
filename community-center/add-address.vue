@@ -1,119 +1,123 @@
 <template>
-  <view class="add-address">
-    <view class="title">添加地址</view>
-    <img
-      src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j53rp2zc53n5iz96444l.png"
-      alt=""
-      class="return"
-      @click="handleBack"
-    />
+	<view class="add-address">
+		<view class="title">添加服务地址</view>
+		<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+			class="return" @click="handleBack" />
 
-    <!-- {{form}} -->
-    <view class="main">
-      <view class="contacts">
-        <view class="human">联系人</view>
-        <input
-          v-model="form.name"
-          type="text"
-          placeholder="（请输入联系人姓名）"
-          class="input"
-        />
-      </view>
-      <view class="phone">
-        <view class="phone-name">手机号码</view>
-        <input
-          v-model="form.mobile"
-          type="text"
-          placeholder="（请输入联系人电话）"
-          class="input"
-        />
-      </view>
-      <view class="address">
-        <view class="address-name">所在地址</view>
-        <view class="address-detail">（请输入上门地址）</view>
-
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/okx3511yuuh9fsdl290h.png"
-          alt=""
-          class="jump"
-        />
-      </view>
-      <view class="detail">
-        <view class="detail-name">详细地址</view>
-        <!-- <view class="detail-address">（请输入详细地址）</view> -->
-        <input type="text" placeholder="（请输入详细地址）" class="input" />
-        <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
-
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/okx3511yuuh9fsdl290h.png"
-          alt=""
-          class="jump"
-        />
-        <!-- </view> -->
-      </view>
-      <view class="background">
-        <!-- <view class="text">
-          <view class="warn">粘贴地址信息、电话、姓名可自动识别</view>
-          <view class="content"
-            >如：代琪浪、13800138000、广东省佛山市顺德区 团蜂科技有限公司</view
-          >
-        </view> -->
-        <textarea
-          name=""
-          id=""
-          cols="30"
-          rows="10"
-          placeholder="粘贴地址信息、电话、姓名可自动识别"
-          class="input"
-        ></textarea>
-        <!-- <view class="list"> -->
-        <!-- <view class="white"></view> -->
-        <view class="shibie">识别</view>
-        <!-- </view> -->
-      </view>
-    </view>
-    <view class="foot">
-      <view class="save" @click="dianji">保存</view>
-    </view>
-  </view>
+		
+		<view class="main">
+			<!-- <view class="contacts">
+				<view class="human">联系人</view>
+				<input v-model="form.name" type="text" placeholder="（请输入联系人姓名）" class="input" />
+			</view>
+			<view class="phone">
+				<view class="phone-name">手机号码</view>
+				<input v-model="form.mobile" type="text" placeholder="（请输入联系人电话）" class="input" />
+			</view> -->
+			<view class="area" style="
+						          position: relative;
+						          display: flex;
+						          justify-content: space-between;
+						          margin-top: 30upx;
+						          border-bottom: 2upx solid #d8d8d8;
+						        ">
+				<view class="diqu" style="
+						            height: 90upx;
+						            display: flex;
+						            align-items: center;
+						            font-size: 32upx;
+						            color: #3662ec;
+						          ">所在地区</view>
+				<JCity @confirm="City($event.area)" :text="form.address" v-model="form.address" style="
+						            padding-top: 24upx;
+						            width: 78%;
+						            height: 90upx;
+						            border-radius: 20upx;
+						            padding-left: 20upx;
+						            box-sizing: border-box;
+						            font-size: 30upx;
+						          ">
+				</JCity>
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png" alt=""
+					class="location" style="
+						            width: 40upx;
+						            height: 40upx;
+						            position: absolute;
+						            top: 20upx;
+						            right: 20upx;
+						          " />
+			</view>
+			<view class="add-list">
+				<view class="detail-address">详细地址</view>
+				<view class="addDetail">
+					<textarea name="input" class="address" v-model="form.addressDetail" placeholder="(请输入详细地址)"
+						placeholder-class="input-placeholder" />
+				</view>
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png" alt=""
+					class="edit" style="
+					            width: 32upx;
+					            height: 32upx;
+					            position: absolute;
+					            right: 20upx;
+					            bottom: 30upx;
+					          " />
+			</view>
+			<!-- <view class="background">
+				<textarea name="" id="" cols="30" rows="10" placeholder="粘贴地址信息、电话、姓名可自动识别" class="input"></textarea>
+				<view class="shibie">识别</view>
+			</view> -->
+		</view>
+		<view class="foot">
+			<view class="save" @click="dianji">保存</view>
+		</view>
+	</view>
 </template>
 
 
 
-
-
-
-
-
 <script>
+import JCity from '../components/JCity/JCity.vue'
 export default {
-  name: "Add-address",
-  props: {},
-  data() {
-    return {
-      form: {
-        name: "",
-        mobile: "",
-      },
-    };
-  },
-  methods: {
-    handleBack() {
-      uni.navigateBack();
-    },
-    dianji() {
-      console.log(this.form);
+	name: "Add-address",
+	props: {},
+	components: { JCity },
+	data() {
+		return {
+			form: {
+				name: "",
+				mobile: "",
+				address: "",
+				addressDetail: "",
+			},
+			address: "",
+			addressDetail: "",
+		};
+	},
+	methods: {
+		handleBack() {
+			uni.navigateBack();
+		},
+		dianji() {
+			console.log('form',this.form);
 
-      uni.setStorageSync("guawyi8sa", this.form);
-      uni.navigateBack();
-    },
-  },
-  created() {},
-  onShow() {
-    const info = uni.getStorageSync("guawyi8sa");
-    this.form.name = info.name;
-    this.form.mobile = info.mobile;
-  },
+			uni.setStorageSync("guawyi8sa", this.form);
+			uni.navigateBack();
+		},
+		City(item) {
+			console.log(item)
+			this.form.address = item
+			// this.a()
+		},
+	},
+	created() { },
+	onShow() {
+		const info = uni.getStorageSync("guawyi8sa");
+		// this.form.name = info.name;
+		// this.form.mobile = info.mobile;
+		this.form.address = info.address;
+		this.form.addressDetail = info.addressDetail;
+		
+	},
 };
 </script>
 
@@ -125,156 +129,175 @@ export default {
 
 <style lang="less" scoped>
 .add-address {
-  padding: 60upx 30upx;
-  box-sizing: border-box;
+	padding: 60upx 30upx;
+	box-sizing: border-box;
 
-  .title {
-    text-align: center;
-    font-size: 32upx;
-    font-weight: 500;
-    color: #3d3d3d;
-  }
-  .return {
-    position: absolute;
-    top: 60upx;
-    left: 18upx;
-    width: 48upx;
-    height: 48upx;
-  }
+	.title {
+		text-align: center;
+		font-size: 32upx;
+		font-weight: bold;
+		color: #3d3d3d;
+	}
 
-  .main {
-    padding-top: 100upx;
-    .contacts {
-      display: flex;
+	.return {
+		position: absolute;
+		top: 60upx;
+		left: 18upx;
+		width: 48upx;
+		height: 48upx;
+	}
 
-      .human {
-        padding-right: 34upx;
-        font-size: 28upx;
-        letter-spacing: 0.5em;
-        color: #3d3d3d;
-      }
-      .input {
-        font-size: 28upx;
-        color: #999999;
-        flex: 1;
-      }
-    }
-    .phone {
-      display: flex;
-      padding-top: 80upx;
-      .phone-name {
-        padding-right: 46upx;
-        font-size: 28upx;
-        color: #3d3d3d;
-      }
-      .input {
-        font-size: 28upx;
-        color: #999999;
-        flex: 1;
-      }
-    }
-    .address {
-      display: flex;
-      padding-top: 80upx;
-      margin-right: 18upx;
+	.main {
+		padding-top: 100upx;
 
-      .address-name {
-        padding-right: 46upx;
-        font-size: 28upx;
-        color: #3d3d3d;
-      }
+		.contacts {
+			display: flex;
 
-      .address-detail {
-        font-size: 28upx;
-        color: #999999;
-        flex: 1;
-      }
+			.human {
+				padding-right: 34upx;
+				font-size: 28upx;
+				letter-spacing: 0.5em;
+				color: #3d3d3d;
+			}
 
-      .jump {
-        // position: absolute;
-        // left: 700upx;
-        width: 32upx;
-        height: 32upx;
-      }
-    }
-    .detail {
-      display: flex;
-      // white-space: nowrap;
-      padding-top: 80upx;
-      margin-right: 18upx;
+			.input {
+				font-size: 28upx;
+				color: #999999;
+				flex: 1;
+			}
+		}
 
-      .detail-name {
-        padding-right: 46upx;
-        font-size: 28upx;
-        color: #3d3d3d;
-      }
-      .input {
-        font-size: 28upx;
-        color: #999999;
-        flex: 1;
-      }
-      .jump {
-        width: 32upx;
-        height: 32upx;
-      }
-    }
-    .background {
-      // margin: 112upx 32upx 210upx 0upx;
-      margin-top: 110upx;
-      width: 100%;
-      height: 326upx;
-      border-radius: 10upx;
-      box-sizing: border-box;
-      border: 1upx solid #999999;
-      position: relative;
+		.phone {
+			display: flex;
+			padding-top: 80upx;
 
-      // padding-left: 40upx;
-      // padding-top: 22upx;
-      .input {
-        padding: 22upx 40upx;
-        width: 100%;
-        height: 100%;
-        font-size: 28upx;
-        font-weight: 350;
-        color: #999999;
-        box-sizing: border-box;
-      }
+			.phone-name {
+				padding-right: 46upx;
+				font-size: 28upx;
+				color: #3d3d3d;
+			}
 
-      .shibie {
-        position: absolute;
-        right: 20upx;
-        bottom: 24upx;
-        text-align: center;
-        width: 78upx;
-        height: 46upx;
-        border-radius: 4upx;
-        background: #cde1fd;
-        font-size: 28upx;
-        color: #3662ec;
-      }
-    }
-  }
-  .foot {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 118upx;
-    box-sizing: border-box;
-    padding-right: 68upx;
-    padding-left: 68upx;
-    padding-top: 26upx;
-    .save {
-      padding-top: 8upx;
-      text-align: center;
-      width: 100%;
-      height: 64upx;
-      border-radius: 60upx;
-      background: #07b9b9;
-      font-size: 36upx;
-      font-weight: 500;
-      color: #ffffff;
-    }
-  }
+			.input {
+				font-size: 28upx;
+				color: #999999;
+				flex: 1;
+			}
+		}
+
+
+		.area {
+			.location {
+				width: 40upx;
+				height: 40upx;
+			}
+		}
+
+		.add-list {
+			position: relative;
+			display: flex;
+			// justify-content: space-between;
+			width: 100%;
+			height: 140upx;
+			padding-top: 30upx;
+			border-bottom: 2upx solid #d8d8d8;
+
+			.detail-address {
+				height: 100%;
+				display: flex;
+				margin-top: 10upx;
+				font-size: 32upx;
+				// font-weight: bold;
+				color: #3662ec;
+			}
+
+			.addDetail {
+				margin-left: 0upx;
+				padding-top: 12upx;
+				width: 70%;
+				height: 100%;
+				// background: #f1f2f6;
+				border-radius: 20upx;
+
+				.address {
+					line-height: 40upx;
+					width: 100%;
+					height: 100%;
+					border-radius: 20upx;
+					// background: #f1f2f6;
+					margin-bottom: 0upx;
+					padding-left: 42upx;
+					box-sizing: border-box;
+					font-size: 30upx;
+				}
+
+				.input-placeholder {
+					// display: flex;
+					// align-items: center;
+					padding-left: 0upx;
+					box-sizing: border-box;
+				}
+			}
+		}
+
+		.background {
+			// margin: 112upx 32upx 210upx 0upx;
+			margin-top: 110upx;
+			width: 100%;
+			height: 326upx;
+			border-radius: 10upx;
+			box-sizing: border-box;
+			border: 1upx solid #999999;
+			position: relative;
+
+			// padding-left: 40upx;
+			// padding-top: 22upx;
+			.input {
+				padding: 22upx 40upx;
+				width: 100%;
+				height: 100%;
+				font-size: 28upx;
+				font-weight: 350;
+				color: #999999;
+				box-sizing: border-box;
+			}
+
+			.shibie {
+				position: absolute;
+				right: 20upx;
+				bottom: 24upx;
+				text-align: center;
+				width: 78upx;
+				height: 46upx;
+				border-radius: 4upx;
+				background: #cde1fd;
+				font-size: 28upx;
+				color: #3662ec;
+			}
+		}
+	}
+
+	.foot {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 118upx;
+		box-sizing: border-box;
+		padding-right: 68upx;
+		padding-left: 68upx;
+		padding-top: 26upx;
+
+		.save {
+			padding-top: 8upx;
+			text-align: center;
+			width: 100%;
+			height: 64upx;
+			border-radius: 60upx;
+			background: #07b9b9;
+			font-size: 36upx;
+			font-weight: 500;
+			color: #ffffff;
+		}
+	}
 }
 </style>

@@ -528,7 +528,7 @@ export default {
     async a() {
       const res = await getIsOpenServerAreaApi({
         address: this.address,
-        content,
+        
       })
 
       console.log('res', res)
