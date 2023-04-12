@@ -88,11 +88,17 @@
 					class="more" />
 			</view>
 		</view>
-		<view class="body">
+		<view class="body" id="norm">
 			<!-- <view class="top">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
 					class="top-img" />
 			</view> -->
+
+			<view class="top-list">
+				<view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
+				<view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
+				<view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
+			</view>
 			<charge :data="serviceDetail.chargeDetailsList"></charge>
 
 			<view class="explain">
@@ -121,26 +127,10 @@
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
 			</view>
 
-			<view class="case-show">
-				<!-- <view class="text">
-					<view class="text1">案例</view>
-					<view class="text2">展示</view>
-				</view> -->
-				<!-- <view class="show-img">
-					<img :src="
-						serverInfoUrl ||
-						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
-					" alt="" class="img1" @click="previewImage(serverInfoUrl)" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png" alt=""
-						class="img2" />
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png" alt=""
-						class="img3" />
-				</view> -->
-
+			<view class="case-show" id="detail">
 				<view class="show-img">
 					<u-parse v-if="serverInfo" :content="goodsInfoDetail"></u-parse>
 				</view>
-
 			</view>
 
 			<view class="middle">
@@ -175,7 +165,7 @@
 				</view>
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
-					<view class="order" @click="handleToServiceOrderHome">立即下单</view>
+					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
 				</view>
 			</view>
 		</view>
@@ -209,7 +199,7 @@ export default {
 	},
 	data() {
 		return {
-
+			currentMoveTab: 0,
 			moreService,
 			address: '',
 			serviceDetail: [],
@@ -278,6 +268,22 @@ export default {
 					console.log('sb kuaixuan')
 				}
 			}
+		},
+
+		toJump(index) {
+			this.currentMoveTab = index
+			if (this.currentMoveTab == 0) {
+				document.getElementById("norm").scrollIntoView({
+					behavior: "smooth",
+					block: "start"
+				});
+			} else if (this.currentMoveTab == 1) {
+				document.getElementById("detail").scrollIntoView({
+					behavior: "smooth",
+					block: "start"
+				});
+			}
+
 		},
 
 		switchTab(item1) {
@@ -760,8 +766,8 @@ export default {
 				display: flex;
 
 				.left-logo {
-					width: 48upx;
-					height: 48upx;
+					width: 32upx;
+					height: 32upx;
 				}
 
 				.left-address {
@@ -844,6 +850,42 @@ export default {
 			}
 		}
 
+		.top-list {
+			padding: 30upx 80upx 0 80upx;
+			display: flex;
+			justify-content: space-between;
+
+			.item {
+				font-size: 32upx;
+				color: #B3B2AD;
+				position: relative;
+
+
+				&.active {
+					font-size: 32upx;
+					font-weight: bold;
+					color: #E95D20;
+
+					&::after {
+						width: 56upx;
+					}
+				}
+
+				&::after {
+					content: '';
+					position: absolute;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: -12upx;
+					width: 0;
+					height: 4upx;
+					border-radius: 10upx;
+					background-color: #E95D20;
+					transition: all 350ms ease-in;
+				}
+			}
+		}
+
 		.explain {
 			padding: 0upx 30upx 40upx 30upx;
 
@@ -908,7 +950,7 @@ export default {
 				width: 450upx;
 				height: 492upx;
 				position: absolute;
-				top: 358upx;
+				top: 348upx;
 				right: 0;
 			}
 

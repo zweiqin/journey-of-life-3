@@ -1,28 +1,30 @@
 <template>
 	<view class="charge">
-		<view class="top-list">
+		<!-- <view class="top-list">
 			<view class="item" v-for="item in items" :key="item.id" :class="{ active: item.id === currentTab }"
 				@click="switchTab(item)">{{ item.name }}</view>
-		</view>
+		</view> -->
 		<view class="project">
 			<view class="repair" v-for="(project, index) in data" :key="index">
 				<view class="top">
 					<text>{{ project.parentName }}</text>
-					<view @click="a = a === project.parentName + index ? '' : project.parentName + index">
-						<image src="../../static/images/a1.png" mode="" v-if="!a" />
-						<image src="../../static/images/a2.png" mode="" v-if="a" />
+					<view @click="togglebox">
+						<image src="../../static/images/a1.png" mode="" v-if="isSpread" />
+						<image src="../../static/images/a2.png" mode="" v-if="!isSpread" />
 					</view>
 				</view>
-				<view class="main" :style="{ height: a === project.parentName + index ? 0 : '', margin: a === project.parentName + index ? '6upx' : '' }">
-					<view class="sub" v-for="sub in project.children" :key="sub.id">
-						<view class="first">
-							<text>{{ sub.projectName }}</text>
-							<view class="range">￥<text>{{ sub.lowestPrice }}</text>~<text>{{ sub.highestPrice }}</text>/{{ sub.unit }}
+				<transition>
+					<view class="main" v-show="boxshow">
+						<view class="sub" v-for="sub in project.children" :key="sub.id">
+							<view class="first">
+								<text>{{ sub.projectName }}</text>
+								<view class="range">￥<text>{{ sub.lowestPrice }}</text>~<text>{{ sub.highestPrice }}</text>/{{ sub.unit }}
+								</view>
 							</view>
+							<view class="second">{{ sub.contentDescription }}</view>
 						</view>
-						<view class="second">{{ sub.contentDescription }}</view>
 					</view>
-				</view>
+				</transition>
 			</view>
 		</view>
 	</view>
@@ -39,7 +41,9 @@ export default {
 		return {
 			items,
 			currentTab: 1,
-			a: ''
+			a: '',
+			isSpread: true,
+			boxshow: true,
 		}
 	},
 	methods: {
@@ -50,6 +54,10 @@ export default {
 		choice(index) {
 			this.current = index
 			console.log(this.current)
+		},
+		togglebox() {
+			this.boxshow = !this.boxshow
+			this.isSpread = !this.isSpread
 		},
 	},
 	created() { }
@@ -109,7 +117,7 @@ export default {
 			.top {
 				width: 100%;
 				// height: 96upx;
-				border-radius: 16upx 16upx 0upx 0upx;
+				border-radius: 16upx 16upx 16upx 16upx;
 				background: #FEF7F4;
 				display: flex;
 				justify-content: space-between;
