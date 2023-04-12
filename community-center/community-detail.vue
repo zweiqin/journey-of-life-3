@@ -165,7 +165,7 @@
 				</view>
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
-					<view class="order" @click="handleToServiceOrderHome">立即下单</view>
+					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
 				</view>
 			</view>
 		</view>
