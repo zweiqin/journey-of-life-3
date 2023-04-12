@@ -18,7 +18,7 @@
 
 			<Extension :data="extensionData"></Extension>
 
-			<view style="width: 100%;">
+			<view style="width: 100%;border-top-left-radius: 20upx;border-top-right-radius: 20upx;overflow: hidden;">
 				<tui-tabs :tabs="tabs" :current-tab="currentTab" item-width="50%" @change="(e) => currentTab = e.index"></tui-tabs>
 			</view>
 			<view v-if="currentTab === 0">
@@ -193,7 +193,7 @@ export default {
   background-color: #f9f9f9;
 
   .main {
-    padding: 72upx 22upx 0;
+    padding: 72upx 0 0;
     box-sizing: border-box;
     position: absolute;
     top: 0;
@@ -209,13 +209,14 @@ export default {
       content: '';
       display: block;
       width: 100%;
-      height: 386upx;
+      height: 500upx;
       top: 0;
       left: 0;
       position: absolute;
-      background-color: #e95d20;
-      border-bottom-left-radius: 400upx 40upx;
-      border-bottom-right-radius: 400upx 40upx;
+      background: url("../../../static/images/user/activity/activity-bg.png") no-repeat center/cover;
+      // background-color: #e95d20;
+      // border-bottom-left-radius: 400upx 40upx;
+      // border-bottom-right-radius: 400upx 40upx;
       z-index: -1;
     }
 
@@ -233,8 +234,13 @@ export default {
       align-items: center;
 
       .item {
-        width: 33%;
+        width: 25%;
+				padding: 40upx 20upx;
+				color: #FFFFFF;
         text-align: center;
+				border-radius: 24px;
+				background: rgba(255, 255, 255, 0.32);
+				border: 2px solid rgba(255, 255, 255, 0.16);
 
         .value {
           font-size: 40upx;

@@ -3,6 +3,7 @@ export default {
 	userInfo: (state) => state.auth.userInfo,
 	userToken: (state) => state.auth.userToken,
 	historyInfo: (state) => state.auth.historyInfo,
+	historyPopup: (state) => state.auth.historyPopup,
 
 	// 购物车
 	shopCarInfo: (state) => state.shopCar.shopCarInfo,
@@ -18,9 +19,9 @@ export default {
 	wsHandleInfo: (state) => state.customerService.wsHandleInfo,
 	wsHandle: (state) => state.customerService.wsHandle,
 
-  // 个人中心
-  shopCarNumber: state => state.user.shopCarNumber,
-  couponNumber: state => state.user.couponNumber,
-  communityOrderInfo: state => state.user.communityOrderInfo,
-  applyRegionAgentStatus: state => state.user.applyRegionAgentStatus
+	// 个人中心
+	shopCarNumber: (state) => state.user.shopCarNumber,
+	couponNumber: (state) => state.user.couponNumber,
+	communityOrderInfo: (state) => state.user.communityOrderInfo,
+	applyRegionAgentStatus: (state) => state.user.applyRegionAgentStatus
 }
