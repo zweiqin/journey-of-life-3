@@ -1,46 +1,30 @@
 <template>
-  <view class="service-sort">
-    <view class="head">
-      <view class="search-bar">
-        <view class="location">
-          <!-- #ifdef H5 -->
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-            alt=""
-            class="return"
-            @click="handleBack"
-          />
-          <!-- #endif -->
+	<view class="service-sort">
+		<view class="head">
+			<view class="search-bar">
+				<view class="location">
+					<!-- #ifdef H5 -->
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+						class="return" @click="handleBack" />
+					<!-- #endif -->
 
-          <TuanLocation>
-            <text class="locale">{{
-              $store.getters.currentCity || '龙江镇'
-            }}</text>
-          </TuanLocation>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
-            alt=""
-            class="show"
-            @click.stop="handleClick"
-          />
-        </view>
-        <view class="search-box" @click="goToSearch">
-          <view class="search">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
-              alt=""
-              class="img"
-            />
-          </view>
-          <input
-            confirm-type="search"
-            type="text"
-            class="content"
-            placeholder="搜索社区服务，一站式解决家居问题"
-          />
-        </view>
+					<TuanLocation>
+						<text class="locale">{{
+							$store.getters.currentCity || '龙江镇'
+						}}</text>
+					</TuanLocation>
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
+						class="show" @click.stop="handleClick" />
+				</view>
+				<view class="search-box" @click="goToSearch">
+					<view class="search">
+						<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
+							class="img" />
+					</view>
+					<input confirm-type="search" type="text" class="content" placeholder="搜索社区服务，一站式解决家居问题" />
+				</view>
 
-        <!-- <uni-card :is-shadow="false" is-full>
+				<!-- <uni-card :is-shadow="false" is-full>
           <text class="uni-h6"></text>
         </uni-card>
         <uni-section
@@ -59,36 +43,25 @@
             ></uni-combox>
           </view>
         </uni-section> -->
-      </view>
-    </view>
-    <view class="body" :style="{ height: scrollHeight + 'px' }">
-      <view class="navbar" ref="nav-barRef">
-        <view
-          class="item"
-          v-for="item in navbar"
-          :class="{ active: item.id === currentTab }"
-          :key="item.serverNameOne"
-          @click="switchTab(item.id)"
-          >{{ item.serverNameOne }}</view
-        >
-      </view>
+			</view>
+		</view>
+		<view class="body" :style="{ height: scrollHeight + 'px' }">
+			<view class="navbar" ref="nav-barRef">
+				<view class="item" v-for="item in navbar" :class="{ active: item.id === currentTab }" :key="item.serverNameOne"
+					@click="switchTab(item.id)">{{ item.serverNameOne }}</view>
+			</view>
 
-      <view class="main">
-        <view class="mid">
-          <sort
-            v-for="item1 in sort.children"
-            :key="item1.id"
-            :serverNameTwo="item1.serverNameTwo"
-            :id="item1.id"
-            :pid="item1.pid"
-            :detailList="item1.children"
-            :tips="tips"
-          >
-          </sort>
-        </view>
-      </view>
-    </view>
-  </view>
+			<view class="main">
+				<view class="mid">
+					<scroll-view scroll-y="true" @scroll="scroll" :style="{ height: scrollHeight + 'px' }">
+						<sort v-for="item1 in sort.children" :key="item1.id" :serverNameTwo="item1.serverNameTwo" :id="item1.id"
+							:pid="item1.pid" :detailList="item1.children" :tips="tips" :scrollTop="scrollTop">
+						</sort>
+					</scroll-view>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -98,274 +71,318 @@ import sort from '../community-center/componts'
 import { getAdressDetailByLngLat } from '../utils/DWHutils'
 import { getIsOpenServerAreaApi } from '../api/community-center'
 export default {
-  name: 'Service-sort',
-  components: {
-    sort,
-  },
-  // mounted() {
-  //   this.getLocation();
-  // },
-  props: {},
-  data() {
-    return {
-      navbar: [],
-      currentTab: '',
-      sort: [],
-      id: '',
-      serverNameOne: '',
-      address: '',
-      scrollHeight: 667,
-      tips: '',
-      addressDetail: '',
-      candidates: [],
-      city: '',
-      searchName: '',
-    }
-  },
-  methods: {
-    switchTab(index) {
-      this.currentTab = index
-      this.sort = this.data.find(item => item.id === index)
-    },
+	name: 'Service-sort',
+	components: {
+		sort,
+	},
+	// mounted() {
+	//   this.getLocation();
+	// },
+	props: {},
+	data() {
+		return {
+			navbar: [],
+			currentTab: '',
+			sort: [],
+			id: '',
+			serverNameOne: '',
+			address: '',
+			scrollHeight: 667,
+			tips: '',
+			addressDetail: '',
+			candidates: [],
+			city: '',
+			searchName: '',
+			scrollTop: 0,
+		}
+	},
+	methods: {
 
-    inoutWatcher(e) {
-      // this.searchName = e;
-      // this.getSearchData();
-    },
+		scroll(e) {
+			console.log(e);
+			this.scrollTop = e.detail.scrollTop;
+			console.log('滚动距离为：', this.scrollTop);
+		},
 
-    goToSearch() {
-      uni.navigateTo({ url: '/community-center/search' })
-    },
+		switchTab(index) {
+			this.currentTab = index
+			this.sort = this.data.find(item => item.id === index)
+		},
 
-    // handleBack() {
-    //   uni.navigateBack();
-    // },
+		inoutWatcher(e) {
+			// this.searchName = e;
+			// this.getSearchData();
+		},
 
-    handleBack() {
-      uni.switchTab({ url: '/pages/community-center/community-centerr' })
-    },
+		goToSearch() {
+			uni.navigateTo({ url: '/community-center/search' })
+		},
 
-    handleClick() {
-      const _this = this
-      if (
-        this.addressDetail === '定位失败' ||
-        this.addressDetail === '定位中...'
-      ) {
-        uni.showModal({
-          title: '提示',
-          confirmText: '我已打开定位',
-          content: '请确认您已开启了定位',
-          success: function (res) {
-            if (res.confirm) {
-              _this.getLocation()
-            }
-          },
-        })
-      }
-    },
+		// handleBack() {
+		//   uni.navigateBack();
+		// },
 
-    async a() {
-      const res = await getIsOpenServerAreaApi({
-        address: this.address,
-      })
+		handleBack() {
+			uni.switchTab({ url: '/pages/community-center/community-centerr' })
+		},
 
-      this.tips = res.data
-    },
+		handleClick() {
+			const _this = this
+			if (
+				this.addressDetail === '定位失败' ||
+				this.addressDetail === '定位中...'
+			) {
+				uni.showModal({
+					title: '提示',
+					confirmText: '我已打开定位',
+					content: '请确认您已开启了定位',
+					success: function (res) {
+						if (res.confirm) {
+							_this.getLocation()
+						}
+					},
+				})
+			}
+		},
 
-    //查询社区服务分类接口
-    async getServiceSort() {
-      const res = await getServiceSortApi({})
+		async a() {
+			const res = await getIsOpenServerAreaApi({
+				address: this.address,
+			})
 
-      this.navbar = res.data
-      console.log(res.data.flat(Infinity))
-      this.sort = res.data[0]
-      this.data = res.data
-      this.sort = this.data.find(item => item.id === this.currentTab)
-    },
+			this.tips = res.data
+		},
 
-    //搜索查询接口
-    async getSearchData() {
-      const res = await getSearchDataApi({
-        searchName: this.searchName,
-      })
+		//查询社区服务分类接口
+		async getServiceSort() {
+			const res = await getServiceSortApi({})
 
-      this.candidates = res.data.map(item => item.serverTypeName)
-    },
+			this.navbar = res.data
+			console.log(res.data.flat(Infinity))
+			this.sort = res.data[0]
+			this.data = res.data
+			this.sort = this.data.find(item => item.id === this.currentTab)
+		},
 
-    //根据用户地址判断该区域是否开通了站长
-    async getIsOpenServerArea() {
-      this.addressDetail = '定位中...'
-      const _this = this
-      uni.getLocation({
-        type: 'gcj02',
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
-            if (res.status === '1') {
-              const result = res.regeocode
-              _this.addressDetail = result.addressComponent.township
+		//搜索查询接口
+		async getSearchData() {
+			const res = await getSearchDataApi({
+				searchName: this.searchName,
+			})
 
-              _this.address =
-                result.addressComponent.province +
-                result.addressComponent.city +
-                result.addressComponent.district
+			this.candidates = res.data.map(item => item.serverTypeName)
+		},
 
-              _this.a()
-            }
-          })
-        },
-      })
-    },
-  },
-  mounted() {},
-  onLoad(options) {
-    this.currentTab = options.value * 1
+		//根据用户地址判断该区域是否开通了站长
+		async getIsOpenServerArea() {
+			this.addressDetail = '定位中...'
+			const _this = this
+			uni.getLocation({
+				type: 'gcj02',
+				success: function (res) {
+					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+						if (res.status === '1') {
+							const result = res.regeocode
+							_this.addressDetail = result.addressComponent.township
 
-    this.getServiceSort()
-    this.getIsOpenServerArea()
-    this.getSearchData()
-    const _this = this
-    uni.getSystemInfo({
-      success(res) {
-        _this.scrollHeight = res.safeArea.height - 60
-      },
-    })
+							_this.address =
+								result.addressComponent.province +
+								result.addressComponent.city +
+								result.addressComponent.district
 
-    // const _this = this;
-  },
+							_this.a()
+						}
+					})
+				},
+			})
+		},
+
+
+	},
+	mounted() { },
+	onShow() {
+		//滚动条
+		uni.getStorage({
+			key: "listTop",
+			success: (res) => {
+				if (!isNaN(res.data)) {
+					var lefts = uni.pageScrollTo({
+						scrollTop: res.data,
+						duration: 0
+					})
+				}
+			}
+		})
+	},
+	onUnload() {
+		uni.setStorage({
+			key: "listTop",
+			data: 0
+		})
+	},
+	onLoad(options) {
+		this.currentTab = options.value * 1
+
+		this.getServiceSort()
+		this.getIsOpenServerArea()
+		this.getSearchData()
+		const _this = this
+		uni.getSystemInfo({
+			success(res) {
+				_this.scrollHeight = res.safeArea.height - 60
+			},
+		})
+
+		// const _this = this;
+	},
 }
 </script>
 
 <style lang="less" scoped>
 uni-page-body {
-  overflow: hidden;
-  height: auto;
+	overflow: hidden;
+	height: auto;
 }
+
 .service-sort {
-  .head {
-    width: 100%;
-    height: 120upx;
-    line-height: 120upx;
-    background: #ffffff;
-    padding-left: 16upx;
-    padding-right: 26upx;
-    box-sizing: border-box;
-    // position: fixed;
-    .search-bar {
-      width: 100%;
-      // left: 3%;
-      // top: 80upx;
-      display: flex;
-      align-items: center;
-      .location {
-        display: flex;
-        align-items: center;
-        // margin: 0 20upx;
-        margin-right: 5px;
-        .return {
-          width: 48upx;
-          height: 48upx;
-        }
-        .text {
-          font-size: 32upx;
-          font-weight: bold;
-          color: #3d3d3d;
-        }
-        .show {
-          width: 32upx;
-          height: 32upx;
-        }
-      }
-      .search-box {
-        padding: 0upx 16upx;
-        display: flex;
-        flex: 1;
-        align-items: center;
-        width: 540upx;
-        height: 74upx;
-        border-radius: 100upx;
-        background: #f1f2f6;
-        .search {
-          width: 48upx;
-          height: 74upx;
-          line-height: 74upx;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+	.head {
+		width: 100%;
+		height: 120upx;
+		line-height: 120upx;
+		background: #ffffff;
+		padding-left: 16upx;
+		padding-right: 26upx;
+		box-sizing: border-box;
 
-          .img {
-            width: 30upx;
-            height: 30upx;
-          }
-        }
-        .content {
-          padding-left: 14upx;
-          flex: 1;
-          font-size: 24upx;
-          font-weight: 400;
-          color: #3d3d3d;
-          border-left: 2upx solid #d8d8d8;
-        }
-      }
-      .example-body {
-        background: #f1f2f6;
-        border-radius: 100upx;
-      }
-    }
-  }
+		// position: fixed;
+		.search-bar {
+			width: 100%;
+			// left: 3%;
+			// top: 80upx;
+			display: flex;
+			align-items: center;
 
-  .body {
-    display: flex;
-    overflow: scroll;
-    overflow: scroll;
+			.location {
+				display: flex;
+				align-items: center;
+				// margin: 0 20upx;
+				margin-right: 5px;
 
-    .navbar {
-      // margin-top: 28upx;
-      width: 22%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: scroll;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+				.return {
+					width: 48upx;
+					height: 48upx;
+				}
 
-      .item {
-        width: 130upx;
-        height: 52upx;
-        border-radius: 10upx;
-        font-size: 28upx;
-        font-weight: 500;
-        color: #3d3d3d;
-        text-align: center;
-        line-height: 52upx;
-        margin-bottom: 62upx;
-        transition: all 100ms;
-        &.active {
-          background: linear-gradient(270deg, #e95d20 0%, #faae63 99%);
-          color: #ffffff;
-        }
-      }
-    }
+				.text {
+					font-size: 32upx;
+					font-weight: bold;
+					color: #3d3d3d;
+				}
 
-    display: flex;
-    .main {
-      width: 78%;
-      border-radius: 10upx 0upx 0upx 0upx;
-      background: #f1f2f6;
-      overflow: scroll;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+				.show {
+					width: 32upx;
+					height: 32upx;
+				}
+			}
 
-      // position: fixed;
-      // right: 0upx;
-      // top: 172upx;
-      .mid {
-        margin: 18upx 0upx 0upx 12upx;
-        border-radius: 10upx 0upx 0upx 0upx;
-        background: #ffffff;
-      }
-    }
-  }
+			.search-box {
+				padding: 0upx 16upx;
+				display: flex;
+				flex: 1;
+				align-items: center;
+				width: 540upx;
+				height: 74upx;
+				border-radius: 100upx;
+				background: #f1f2f6;
+
+				.search {
+					width: 48upx;
+					height: 74upx;
+					line-height: 74upx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+
+					.img {
+						width: 30upx;
+						height: 30upx;
+					}
+				}
+
+				.content {
+					padding-left: 14upx;
+					flex: 1;
+					font-size: 24upx;
+					font-weight: 400;
+					color: #3d3d3d;
+					border-left: 2upx solid #d8d8d8;
+				}
+			}
+
+			.example-body {
+				background: #f1f2f6;
+				border-radius: 100upx;
+			}
+		}
+	}
+
+	.body {
+		display: flex;
+		overflow: scroll;
+		overflow: scroll;
+
+		.navbar {
+			// margin-top: 28upx;
+			width: 22%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			overflow: scroll;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
+			.item {
+				width: 130upx;
+				height: 52upx;
+				border-radius: 10upx;
+				font-size: 28upx;
+				font-weight: 500;
+				color: #3d3d3d;
+				text-align: center;
+				line-height: 52upx;
+				margin-bottom: 62upx;
+				transition: all 100ms;
+
+				&.active {
+					background: linear-gradient(270deg, #e95d20 0%, #faae63 99%);
+					color: #ffffff;
+				}
+			}
+		}
+
+		display: flex;
+
+		.main {
+			width: 78%;
+			border-radius: 10upx 0upx 0upx 0upx;
+			background: #f1f2f6;
+			overflow: scroll;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
+			// position: fixed;
+			// right: 0upx;
+			// top: 172upx;
+			.mid {
+				margin: 18upx 0upx 0upx 12upx;
+				border-radius: 10upx 0upx 0upx 0upx;
+				background: #ffffff;
+			}
+		}
+	}
 }
 </style>

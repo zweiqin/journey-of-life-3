@@ -104,7 +104,7 @@
 			<view class="explain">
 				<view class="explain-title">收费说明:</view>
 				<view class="explain-text">{{ chargeDescription
-					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费，房屋业务除外；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
+					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
 			</view>
 
 			<view class="background">
@@ -123,13 +123,13 @@
 				<view class="mid-text">我们<text>全心全意</text>解决</view>
 			</view>
 
-			<view class="serverContent-list">
+			<view class="serverContent-list" v-if="serverContent">
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
 			</view>
 
-			<view class="case-show" id="detail">
+			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>'">
 				<view class="show-img">
-					<u-parse v-if="serverInfo" :content="goodsInfoDetail"></u-parse>
+					<u-parse :content="goodsInfoDetail"></u-parse>
 				</view>
 			</view>
 
@@ -138,8 +138,7 @@
 					class="mid-img" />
 			</view>
 			<view class="process">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/alfwfqtuvrwg4xjacanj.png" alt=""
-					class="process-img" />
+				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
 			</view>
 
 
@@ -1012,16 +1011,22 @@ export default {
 		}
 
 		.middle {
+			width: 100%;
+			height: 1928upx;
+
 			.mid-img {
-				// width: 754upx;
-				// height: 964px;
 				width: 100%;
+				height: 1928upx;
 			}
 		}
 
 		.process {
+			width: 100%;
+			height: 480upx;
+
 			.process-img {
 				width: 100%;
+				height: 480upx;
 			}
 		}
 
