@@ -2,15 +2,15 @@
 	<view style="position: absolute;top: 0;left: 0;z-index: 99999;">
 
 		<!-- <view style="width: 100vw;height: 100vh;"></view> -->
-		<view v-if="type === 'activity'" class="container">
+		<view v-if="type === 'activity'" class="container activity">
 			<tui-landscape
 				show :position="1" mask mask-closable
-				:icon-size="35" icon-color="#FFFFFF" icon-left="50rpx"
+				:icon-size="28" icon-color="#FFFFFF" icon-left="50rpx"
 				icon-right="50rpx" @close="close"
 			>
 				<view @click="type = '' || $emit('click')">
-					<image src="../../static/images/new-index/popup.png" mode="widthFix" style="width: 600rpx;max-height: 75vh;" />
-					<view style="position: absolute;top: 52%;left:52%;font-size: 38rpx;font-weight: 700;">羊驼坐凳</view>
+					<image src="../../static/images/new-index/popup.png" mode="widthFix" style="width: 500upx;max-height: 75vh;" />
+					<!-- <view style="position: absolute;top: 52%;left:52%;font-size: 38rpx;font-weight: 700;">羊驼坐凳</view> -->
 				</view>
 			</tui-landscape>
 		</view>
@@ -70,6 +70,12 @@ export default {
 .container {
 	image {
 		// flex-shrink: 0;
+	}
+}
+
+/deep/ .activity {
+	.tui-landscape__inner {
+		top: 40%;
 	}
 }
 </style>

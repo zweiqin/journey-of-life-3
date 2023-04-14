@@ -24,11 +24,17 @@
 			<view v-if="currentTab === 0">
 				<tui-list-view title="">
 					<tui-list-cell v-for="item in activityList" :key="item.id">
-						<view @click="go('/user/sever/activityCenter/activity-code')">
-							<view>{{ item.campaignsName }}</view>
-							<view style="display: flex;justify-content: space-between;padding-top: 5px;font-size: 10px;color: #605D52;">
-								<text>开始：{{ item.startDate }}</text>
-								<text>结束：{{ item.endDate }}</text>
+						<!-- <view style="display: flex;" @click="go('/user/sever/activityCenter/activity-code')"> -->
+						<view style="display: flex;" @click="go(`/user/sever/activityCenter/activity-prod?goodsId=${item.productId}&campaignsType=${item.campaignsType}&activityId=${item.id}`)">
+							<view>
+								<Avatar margin="0 24upx 0 0" :src="item.picUrl" :size="40"></Avatar>
+							</view>
+							<view>
+								<view>{{ item.campaignsName }}</view>
+								<view style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;">
+									<text>开始：{{ item.startDate }}</text>
+									<text>结束：{{ item.endDate }}</text>
+								</view>
 							</view>
 						</view>
 					</tui-list-cell>
@@ -37,16 +43,6 @@
 			</view>
 			<view v-if="currentTab === 1">
 				<view>
-					<!-- <block v-for="(item, index) in bindingUserList" :key="index">
-						<tui-collapse :index="index" :current="currentIndex" @click="changeCurrent">
-						<template #title>
-						<tui-list-cell>{{ item.avatar }}{{ item.username }}</tui-list-cell>
-						</template>
-						<template #content>
-						<view class="tui-content">{{ item.intro }}</view>
-						</template>
-						</tui-collapse>
-						</block> -->
 					<block>
 						<tui-collapse :index="0" :current="currentIndex" @click="changeCurrent">
 							<template #title>

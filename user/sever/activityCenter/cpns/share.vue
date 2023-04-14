@@ -10,7 +10,8 @@
 			<view class="label">{{ item.label }}</view>
 		</view>
 
-		<SaveImage v-model="showSaveImage" :code="code"></SaveImage>
+		<!-- 下面原先的code是base64文件码 -->
+		<!-- <SaveImage v-model="showSaveImage" :code="code"></SaveImage> -->
 
 		<TuanWxShare ref="tuanWxShareRef" style="position: absolute"></TuanWxShare>
 	</view>
@@ -22,7 +23,7 @@ import share from '../../../../utils/wxshare'
 // #endif
 
 import { USER_INFO, USER_TOKEN } from '../../../../constant'
-import SaveImage from './SaveImage.vue'
+// import SaveImage from './SaveImage.vue'
 import { getConfigApi } from '../../../../api/auth'
 const shareList = [
 	{
@@ -31,7 +32,7 @@ const shareList = [
 		key: 'wechat'
 	},
 	{
-		label: '保存图片',
+		label: '生成活动邀请码',
 		icon: require('../../../../static/images/user/code/save.png'),
 		key: 'image'
 	}
@@ -43,8 +44,9 @@ const shareList = [
 ]
 
 export default {
+	name: 'Share',
 	components: {
-		SaveImage
+		// SaveImage
 	},
 
 	props: {
@@ -63,8 +65,7 @@ export default {
 
 	methods: {
 		async handleClickShareItem(shareItem, isQuit) {
-			const userInfo = uni.getStorageSync(USER_INFO)
-			console.log(this.code)
+			// const userInfo = uni.getStorageSync(USER_INFO)
 			const _this = this
 			switch (shareItem) {
 				case 'wechat':
@@ -72,26 +73,22 @@ export default {
 						data: {
 							title: '加入团蜂',
 							desc: '扫一扫',
-							link:
-								'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
-								userInfo.invitationCode,
+							link: this.code,
 							imageUrl: _this.code
 						},
 						successCb: () => {},
 						failCb: () => {}
 					}
-
 					_this.$refs.tuanWxShareRef.share(data, isQuit)
 					break
 
 				case 'image':
-					this.showSaveImage = true
+					// this.showSaveImage = true
+					this.$emit('click', shareItem)
 					break
 				case 'link':
 					uni.setClipboardData({
-						data:
-							'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
-							userInfo.invitationCode,
+						data: this.code,
 						success: () => {
 							uni.showToast({
 								title: '链接复制成功',
