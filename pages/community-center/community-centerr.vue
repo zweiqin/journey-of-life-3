@@ -6,10 +6,8 @@
 		<!-- 主要menu区域 -->
 		<view class="main-menu">
 			<!-- 团蜂家具社区服务中心 -->
-			<TuanImage
-				radius="0" :height="36" :width="257" style="margin-left: 28upx"
-				:src="require('../../static/images/con-center/new-home/top-banner.png')"
-			></TuanImage>
+			<TuanImage radius="0" :height="36" :width="257" style="margin-left: 28upx"
+				:src="require('../../static/images/con-center/new-home/top-banner.png')"></TuanImage>
 
 			<!-- 五个介绍 -->
 			<view class="icons-wrapper">
@@ -30,15 +28,11 @@
 
 			<!-- vip -->
 			<view class="vip-container">
-				<image
-					class="vip-39" src="../../static/images/con-center/new-home/39.9.png"
-					mode="" @click="go('/community-center/vip-center/vip-detail?type=1')"
-				/>
+				<image class="vip-39" src="../../static/images/con-center/new-home/39.9.png" mode=""
+					@click="go('/community-center/vip-center/vip-detail?type=1')" />
 				<view class="right">
-					<image
-						src="../../static/images/con-center/new-home/299.png"
-						mode="" @click="go('/community-center/vip-center/vip-detail?type=2')"
-					/>
+					<image src="../../static/images/con-center/new-home/299.png" mode=""
+						@click="go('/community-center/vip-center/vip-detail?type=2')" />
 					<image src="../../static/images/con-center/new-home/1399.png" mode="" @click="empty('套餐升级中')" />
 				</view>
 			</view>
@@ -53,7 +47,12 @@
 		<!-- 组件支持 -->
 		<tui-toast ref="toast"></tui-toast>
 
-		<PopupInformation popup-type="activity" @click="go('/community-center/vip-center/vip-detail?type=2')"></PopupInformation>
+		<PopupInformation popup-type="activity" @click="go('/community-center/vip-center/vip-detail?type=2')">
+		</PopupInformation>
+
+		<!-- #ifdef APP -->
+		<CheckedVersion ref="checkedVersion"></CheckedVersion>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -71,7 +70,12 @@ export default {
 		return {
 			bannerListIcon: Object.freeze(bannerListIcon)
 		}
-	}
+	},
+	mounted() {
+		// #ifdef APP
+		this.$refs.checkedVersion.checkedVersion(true)
+		// #endif
+	},
 }
 </script>
 
