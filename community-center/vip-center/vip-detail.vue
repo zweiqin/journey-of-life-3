@@ -1,69 +1,46 @@
 <template>
-  <view class="vip-detail-conatiner">
+  <view class="vip-detail-conatiner" :style="{ background: type == 2 ? '#ee7d53' : '' }">
     <view class="header">
-      <img
-        style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png"
-        alt=""
-      />
+      <img v-if="type != 2" style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
+        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png" alt="" />
       <!-- <JIcon @click="handleClickBack" class="back" type="red-back"></JIcon> -->
-      <img
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png"
-        alt=""
-        class="back"
-        @click="handleClickBack"
-      />
+      <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png" alt=""
+        class="back" @click="handleClickBack" />
 
-      <view class="main">
-        <PackagePane
-          v-if="type == 1"
-          @pay="handlePayTH"
-          :key="vipList[0].name"
-          :data="vipList[0]"
-        >
+      <view class="main" :style="{ padding: type == 2 ? '0px !important' : '' }">
+        <PackagePane v-if="type == 1" @pay="handlePayTH" :key="vipList[0].name" :data="vipList[0]">
           <view class="list">
-            <li
-              class="indulgence-item"
-              @click="handleChooseIndulgence(item)"
-              v-for="(item, index) in indulgenceData"
-              :key="index"
-            >
-              <tui-icon
-                :color="
-                  currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
-                "
-                :size="25"
-                :name="
-                  currentIndulgence === item.serverContent
-                    ? 'circle-fill'
-                    : 'circle'
-                "
-              ></tui-icon>
+            <li class="indulgence-item" @click="handleChooseIndulgence(item)" v-for="(item, index) in indulgenceData"
+              :key="index">
+              <tui-icon :color="
+                currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
+              " :size="25" :name="
+  currentIndulgence === item.serverContent
+    ? 'circle-fill'
+    : 'circle'
+"></tui-icon>
               <text>{{ item.serverContent }}</text>
             </li>
           </view>
         </PackagePane>
 
-        <PackagePane
-          v-if="type == 2"
-          @pay="handlePayBS"
-          :key="vipList[1].name"
-          :data="vipList[1]"
-        >
+        <!-- <PackagePane v-if="type == 2" @pay="handlePayBS" :key="vipList[1].name" :data="vipList[1]">
           <view class="list">
-            <li
-              class="indulgence-item"
-              v-for="(item, index) in beeSteward"
-              :key="index"
-            >
+            <li class="indulgence-item" v-for="(item, index) in beeSteward" :key="index">
               <text>({{ index + 1 }}) {{ item }}</text>
             </li>
           </view>
-        </PackagePane>
+        </PackagePane> -->
+
+        <image v-if="type == 2" class="vip-299" mode="widthFix" src="../../static/images/con-center/vip.png"></image>
       </view>
     </view>
 
     <JCity @confirm="handleChooseCity" ref="jCityRef"></JCity>
+
+    <view class="vip-299-pay-btn-wrapper" v-if="type == 2">
+      <button @click="handlePayBS" class="uni-btn"> 299元立即抢购 </button>
+    </view>
   </view>
 </template>
 
@@ -214,18 +191,27 @@ export default {
 
   .header {
     position: relative;
+
     .back {
-      position: absolute;
+      position: fixed;
       top: 40upx;
       left: 30upx;
       width: 60upx;
       height: 60upx;
+      z-index: 1000;
+      background-color: #ff9137;
+      border-radius: 50%;
     }
   }
 
   .main {
     padding: 22upx;
     box-sizing: border-box;
+
+    .vip-299 {
+      width: 100%;
+      padding-bottom: 140upx;
+    }
   }
 
   .indulgence-item {
@@ -245,5 +231,29 @@ export default {
 li {
   display: flex;
   align-items: center;
+}
+
+.vip-299-pay-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140upx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .uni-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 610upx;
+    height: 104upx;
+    border-radius: 999px;
+    font-size: 36upx;
+    color: #fff;
+    background: linear-gradient(180deg, #FF715B 0%, #FA5151 100%);
+  }
 }
 </style>

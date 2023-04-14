@@ -2,7 +2,7 @@
   <view class="delivey-info">
     <Header
       redirect="/community-center/vip-center/vip-detail"
-      bgc="#f90"
+      bgc="#e95d20"
       title="完善服务信息"
     ></Header>
     <!-- redirect="/pages/community-center/community-center" -->

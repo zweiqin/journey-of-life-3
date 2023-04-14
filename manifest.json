@@ -2,8 +2,8 @@
     "name" : "团蜂家居",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.7",
-    "versionCode" : 107,
+    "versionName" : "1.0.8",
+    "versionCode" : 108,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -115,9 +115,9 @@
                 "androidStyle" : "default",
                 "useOriginalMsgbox" : true,
                 "android" : {
-                    "hdpi" : "D:/fee-zlt/fee/iPhone 117.png",
-                    "xhdpi" : "D:/fee-zlt/fee/iPhone 117.png",
-                    "xxhdpi" : "D:/fee-zlt/fee/iPhone 117.png"
+                    "hdpi" : "E:/front_end-project/icon/iPhone 117.png",
+                    "xhdpi" : "E:/front_end-project/icon/iPhone 117.png",
+                    "xxhdpi" : "E:/front_end-project/icon/iPhone 117.png"
                 }
             }
         }

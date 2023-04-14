@@ -2,7 +2,7 @@
   <view class="confirm-btn">
     <button
       :style="{
-        background: type === 'error' ? '#f90' : bgc ? bgc : '',
+        background: type === 'error' ? '#e95d20' : bgc ? bgc : '',
         'border-color': type === 'error' ? '#f90' : bgc ? bgc : '',
       }"
       @click="$emit('click')"

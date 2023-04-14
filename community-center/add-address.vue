@@ -15,37 +15,37 @@
 				<input v-model="form.mobile" type="text" placeholder="（请输入联系人电话）" class="input" />
 			</view> -->
 			<view class="area" style="
-							          position: relative;
-							          display: flex;
-							          justify-content: space-between;
-							          margin-top: 30upx;
-							          border-bottom: 2upx solid #d8d8d8;
-							        ">
+								          position: relative;
+								          display: flex;
+								          justify-content: space-between;
+								          margin-top: 30upx;
+								          border-bottom: 2upx solid #d8d8d8;
+								        ">
 				<view class="diqu" style="
-							            height: 90upx;
-							            display: flex;
-							            align-items: center;
-							            font-size: 32upx;
-							            color: #3662ec;
-							          ">所在地区</view>
+								            height: 90upx;
+								            display: flex;
+								            align-items: center;
+								            font-size: 32upx;
+								            color: #3662ec;
+								          ">所在地区</view>
 				<JCity @confirm="City($event.area)" :text="form.address" v-model="form.address" style="
-							            padding-top: 24upx;
-							            width: 78%;
-							            height: 90upx;
-							            border-radius: 20upx;
-							            padding-left: 20upx;
-							            box-sizing: border-box;
-							            font-size: 30upx;
-							          ">
+								            padding-top: 24upx;
+								            width: 78%;
+								            height: 90upx;
+								            border-radius: 20upx;
+								            padding-left: 20upx;
+								            box-sizing: border-box;
+								            font-size: 30upx;
+								          ">
 				</JCity>
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png" alt=""
 					class="location" style="
-							            width: 40upx;
-							            height: 40upx;
-							            position: absolute;
-							            top: 20upx;
-							            right: 20upx;
-							          " />
+								            width: 40upx;
+								            height: 40upx;
+								            position: absolute;
+								            top: 20upx;
+								            right: 20upx;
+								          " />
 			</view>
 			<view class="add-list">
 				<view class="detail-address">详细地址</view>
@@ -55,12 +55,12 @@
 				</view>
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png" alt=""
 					class="edit" style="
-						            width: 32upx;
-						            height: 32upx;
-						            position: absolute;
-						            right: 20upx;
-						            bottom: 30upx;
-						          " />
+							            width: 32upx;
+							            height: 32upx;
+							            position: absolute;
+							            right: 20upx;
+							            bottom: 30upx;
+							          " />
 			</view>
 			<!-- <view class="background">
 				<textarea name="" id="" cols="30" rows="10" placeholder="粘贴地址信息、电话、姓名可自动识别" class="input"></textarea>
