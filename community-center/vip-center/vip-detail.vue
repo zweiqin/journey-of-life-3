@@ -41,6 +41,9 @@
     <view class="vip-299-pay-btn-wrapper" v-if="type == 2">
       <button @click="handlePayBS" class="uni-btn"> 299元立即抢购 </button>
     </view>
+
+    <TuanWxShare ref="tuanWxShareRef"> </TuanWxShare>
+    <!-- <button @click="handleShareServe">分享</button> -->
   </view>
 </template>
 
@@ -104,6 +107,8 @@ export default {
           .find(item => item.serverType === 1)
           .serverContent.split(',')
         this.indulgenceData = res.data.filter(item => item.serverType === 2)
+        this.currentIndulgence = this.indulgenceData[0].serverContent
+        this.handleShareServe(true)
       }
     },
 
@@ -133,6 +138,8 @@ export default {
         })
         return
       }
+
+      console.log(this.currentIndulgence);
       if (!this.currentIndulgence) {
         uni.showToast({
           title: '请选择服务项',
@@ -179,6 +186,24 @@ export default {
           '&repair=true',
       })
     },
+
+    // 分享会员
+    handleShareServe(isQuit) {
+      const _this = this
+      const data = {
+        data: {
+          title: _this.type == 2 ? '金管家会员' : '清洁套餐',
+          desc: '售后质保·服务专业·极速退款·意外承包',
+          link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${_this.type}`,
+          imageUrl: _this.type == 2 ? '../../static/images/con-center/Snipaste_2023-04-15_09-23-27.png' : '',
+        },
+        successCb: () => { },
+        failCb: () => { },
+      }
+
+      this.$refs.tuanWxShareRef.share(data, isQuit)
+    }
+
   },
 }
 </script>
