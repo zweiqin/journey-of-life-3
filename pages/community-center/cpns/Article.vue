@@ -1,8 +1,8 @@
 <template>
   <view class="article-list">
     <view class="tabs">
-      <view class="item" @click="handleSwitch('experience')" :class="{ active: currentTab === 'experience' }">居家经验</view>
-      <view class="item" @click="handleSwitch('share')" :class="{ active: currentTab === 'share' }">家居分享</view>
+      <view class="item" @click="handleSwitch('experience')" :class="{ active: currentTab === 'experience' }">服务项目</view>
+      <view class="item" @click="handleSwitch('share')" :class="{ active: currentTab === 'share' }">居家分享</view>
     </view>
     <view class="article-list">
       <view class="top">

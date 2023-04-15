@@ -105,6 +105,7 @@ export default {
 		//新建社区订单
 		async getServiceOrder() {
 			const res = await getServiceOrderApi({
+				isVipSetmeal: 0,
 				userId: getUserId(),
 				orderType: this.orderType,
 				pricingType: this.pricingType,

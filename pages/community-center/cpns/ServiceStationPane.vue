@@ -1,6 +1,6 @@
 <template>
   <view class="service-station-pane-container">
-    <view class="store-name">团蜂家居社区服务中心</view>
+    <view class="store-name"><text>团蜂社区</text><text>家居大店</text></view>
     <button class="uni-btn">进店</button>
     <view class="info">
       <view class="tag"> 官方直营 </view>
@@ -71,6 +71,8 @@ export default {}
   margin: 50upx 0 30upx 0;
 
   .store-name {
+		display: flex;
+		gap: 0upx 60upx;
     color: #141000;
     font-size: 32upx;
     font-weight: bold;
