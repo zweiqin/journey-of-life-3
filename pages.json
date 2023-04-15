@@ -773,6 +773,12 @@
 					}
 				},
 				{
+					"path": "sever/activityCenter/activity-prod",
+					"style": {
+						"navigationBarTitleText": "商品详情"
+					}
+				},
+				{
 					"path": "sever/activityCenter/activity-code",
 					"style": {
 						"navigationBarTitleText": "活动推广"

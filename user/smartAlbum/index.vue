@@ -45,7 +45,7 @@ export default {
 			status: 'none'
 		}
 	},
-	onLoad() {
+	onShow() {
 		this.getUserCrmSlbumList()
 		// const userInfo = uni.getStorageSync(USER_INFO) || {}
 		// this.userLevel = userInfo.userLevel || 5
@@ -63,6 +63,7 @@ export default {
 	},
 	methods: {
 		async getUserCrmSlbumList(isLoadmore) {
+			if (!isLoadmore) this.queryInfo = { page: 1, size: 6 }
 			const res = await getUserCrmSlbumList(this.queryInfo)
 			if (res.errno === 0) {
 				this.totalPages = res.data.totalPages

@@ -178,9 +178,9 @@ export const getBusinessResponsiblePersonListApi = (data) => RuanRequest(
 /**
  * 活动中心
  */
-// 获取业务员列表
+// 获取活动中心佣金收益
 export const getUserIncomeApi = (data) => RuanRequest(
-	'/income/userIncome',
+	'/dtsUserActivityCommissionRecord/commissionRevenues',
 	data,
 	'get'
 )
@@ -199,11 +199,29 @@ export const getBindingUserApi = (data) => RuanRequest(
 	'get'
 )
 
-// 生成活动二维码
-export const getActivityGetCodeApi = (data) => shopRequest('/activity/activityGetCode', data)
+// 分享按钮判断用户是否购买299会员成为金管家
+export const getPurchaseRecordApi = (data) => RuanRequest(
+	'/userCrm/purchaseRecord',
+	data,
+	'get'
+)
+
+// 分享按钮判断用户是否购买爆款商品
+export const getIsPurchaseApi = (data) => RuanRequest(
+	'/userCrm/isPurchase',
+	data,
+	'get'
+)
+
+// 生成并返回用户的活动邀请码
+export const getCreateCodeApi = (data) => RuanRequest(
+	'/infoCode/createCode',
+	data,
+	'get'
+)
 
 // 活动码绑定
-export const changeActivityUserBindingApi = (data) => shopRequest('/activity/activityUserBinding', data)
+export const changeActivityUserBindingApi = (data) => shopRequest('/userBindingUser/userBindingUser', data)
 
 // 升级(超级)合伙人
 export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post', null, {

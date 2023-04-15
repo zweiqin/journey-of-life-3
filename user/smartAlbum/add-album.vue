@@ -192,7 +192,7 @@ export default {
 				userId: this.userInfo.userId,
 				userName: this.userInfo.nickName,
 				atlasName: this.form.atlasName,
-				imageUrl: this.images,
+				imageUrl: `[${this.images.map((item) => `'${item}'`).join(',')}]`,
 				atlasType: this.form.atlasType,
 				bookFace: this.imagesFace[0],
 				bookEnd: this.imagesEnd[0]

@@ -9,7 +9,7 @@
 
 				<view class="copy-code">
 					<view class="code-wrapper">
-						{{ tuanCode || '邀请码获取失败' }}
+						{{ tuanCode || '获取我的活动邀请码失败' }}
 					</view>
 					<button v-if="tuanCode" class="uni-btn" @click="handleCopyCode">
 						复制活动邀请码
@@ -18,14 +18,22 @@
 			</view>
 
 			<view class="qr-code-wrapper">
-				<image v-if="qrcode" class="qr-code-img" :src="qrcode" mode="" />
-				<view class="tip"> 面对面扫码邀请，或分享扫码邀请 </view>
-
 				<button class="uni-btn" @click="handleFillCode">填写活动邀请码</button>
 			</view>
 		</view>
 
-		<Share :code="qrcode" class="share-pane"></Share>
+		<!-- 分享活动邀请码 -->
+		<PosterPopup ref="posterPopupRef"></PosterPopup>
+		<!-- 生成二维码 -->
+		<view v-if="tuanCode">
+			<uqrcode
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + tuanCode"
+				@complete="handleCompleteCode"
+			></uqrcode>
+		</view>
+		<view v-if="tuanCode">
+			<Share :code="qrcodeUrl + tuanCode" class="share-pane" @click="handleItemClick"></Share>
+		</view>
 		<FillCode v-model="fillCodeVisible"></FillCode>
 	</view>
 </template>
@@ -33,27 +41,57 @@
 <script>
 import Share from './cpns/share.vue'
 import FillCode from './cpns/FillCode.vue'
-import { USER_INFO } from '../../../constant'
-import { getActivityGetCodeApi } from '../../../api/user'
+// import { USER_INFO } from '../../../constant'
 import { getUserId } from '../../../utils'
+import {
+	getPurchaseRecordApi,
+	getIsPurchaseApi,
+	getCreateCodeApi
+} from '../../../api/user'
+import PosterPopup from './cpns/PosterPopup.vue'
+
 export default {
 	name: 'ActivityCode',
 	components: {
 		Share,
-		FillCode
+		FillCode,
+		PosterPopup
 	},
 
 	data() {
 		return {
-			userInfo: uni.getStorageSync(USER_INFO) || {},
-			qrcode: '',
+			campaignsType: '',
+			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=',
+			// userInfo: uni.getStorageSync(USER_INFO) || {},
+			shareCode: '',
 			fillCodeVisible: false,
-			tuanCode: (uni.getStorageSync(USER_INFO) || {}).invitationCode
+			tuanCode: ''
 		}
 	},
 
-	onLoad() {
-		this.getCode()
+	async onLoad(options) {
+		this.campaignsType = options.campaignsType * 1
+		if (this.campaignsType === 0) {
+			const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+			if (res.data) {
+				this.getCode()
+			} else {
+				uni.showToast({
+					title: '未满足分享条件！',
+					icon: 'none'
+				})
+			}
+		} else if (this.campaignsType === 1) {
+			const res = await getIsPurchaseApi({ userId: getUserId() })
+			if (res.data) {
+				this.getCode()
+			} else {
+				uni.showToast({
+					title: '未满足分享条件！',
+					icon: 'none'
+				})
+			}
+		}
 	},
 
 	methods: {
@@ -64,10 +102,10 @@ export default {
 		// 点击复制邀请码
 		handleCopyCode() {
 			uni.setClipboardData({
-				data: this.userInfo.invitationCode,
+				data: this.tuanCode,
 				success: () => {
 					uni.showToast({
-						title: '邀请码复制成功',
+						title: '活动邀请码复制成功',
 						duration: 2000
 					})
 				}
@@ -76,44 +114,51 @@ export default {
 
 		// 获取活动码
 		getCode() {
-			const _this = this
-			console.log(this.userInfo.invitationCode)
-			if (!this.userInfo.invitationCode) {
-				getActivityGetCodeApi({
-					url:
-						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
-						this.userInfo.invitationCode,
-					userId: getUserId()
-				}).then((res) => {
-					_this.qrcode = 'data:image/jpeg;base64,' + res.data.url
-					_this.tuanCode = res.data.code
+			getCreateCodeApi({
+				userId: getUserId()
+			}).then((res) => {
+				this.tuanCode = res.data
+			})
+		},
 
-					getActivityGetCodeApi({
-						url:
-							'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
-							res.data.code,
-						userId: getUserId()
-					}).then((res2) => {
-						_this.qrcode = 'data:image/jpeg;base64,' + res2.data.url
-						_this.tuanCode = res2.data.code
+		handleFillCode() {
+			this.fillCodeVisible = true
+		},
+		// 点击分享
+		handleShare() {
+			uni.showLoading({
+				title: '活动邀请码生成中...'
+			})
+			const _this = this
+			this.$refs.uqrcode.make({
+				success: () => {
+					uni.hideLoading()
+					_this.$refs.posterPopupRef.show({
+						shareCode: this.shareCode,
+						logo: '../../../static/images/user/code/header.png',
+						desc: `活动邀请码分享`
 					})
-				})
-			} else {
-				getActivityGetCodeApi({
-					url:
-						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=' +
-						this.userInfo.invitationCode,
-					userId: getUserId()
-				}).then((res) => {
-					_this.qrcode = 'data:image/jpeg;base64,' + res.data.url
-					_this.tuanCode = res.data.code
+				}
+			})
+		},
+		// 完成
+		handleCompleteCode(e) {
+			const _this = this
+			if (e.success) {
+				this.$refs.uqrcode.toTempFilePath({
+					success: (res) => {
+						if (!_this.shareCode) {
+							_this.shareCode = res.tempFilePath
+						}
+					}
 				})
 			}
 		},
-
-		//
-		handleFillCode() {
-			this.fillCodeVisible = true
+		// 点击图标
+		handleItemClick(e) {
+			if (e === 'image') {
+				this.handleShare()
+			}
 		}
 	}
 }
@@ -166,7 +211,7 @@ export default {
 		justify-content: space-between;
 		flex-direction: column;
 		width: 622upx;
-		height: 1160upx;
+		// height: 1160upx;
 		margin: 0 auto;
 		// background: url('../../../static/images/user/code/mian-bg.png') no-repeat;
 		// background-size: cover;
@@ -174,19 +219,19 @@ export default {
 		background-color: #fff;
 		border-radius: 30upx;
 
-		&::after {
-			top: 430upx;
-			position: absolute;
-			content: '';
-			width: 574upx;
-			height: 1px;
-			background-image: linear-gradient(to right,
-					#ccc 0%,
-					#ccc 50%,
-					transparent 50%);
-			background-size: 8px 1px;
-			background-repeat: repeat-x;
-		}
+		// &::after {
+		// 	top: 430upx;
+		// 	position: absolute;
+		// 	content: '';
+		// 	width: 574upx;
+		// 	height: 1px;
+		// 	background-image: linear-gradient(to right,
+		// 			#ccc 0%,
+		// 			#ccc 50%,
+		// 			transparent 50%);
+		// 	background-size: 8px 1px;
+		// 	background-repeat: repeat-x;
+		// }
 
 		.text-code {
 			display: flex;
@@ -229,20 +274,20 @@ export default {
 			flex-direction: column;
 			padding-bottom: 80upx;
 
-			.qr-code-img {
-				width: 320upx;
-				height: 320upx;
-				padding: 14upx;
-				border: 2upx solid #f1f1f0;
-				border-radius: 24upx;
-			}
+			// .qr-code-img {
+			// 	width: 320upx;
+			// 	height: 320upx;
+			// 	padding: 14upx;
+			// 	border: 2upx solid #f1f1f0;
+			// 	border-radius: 24upx;
+			// }
 
-			.tip {
-				font-size: 26upx;
-				color: #9e9e9e;
-				object-fit: cover;
-				margin-top: 32upx;
-			}
+			// .tip {
+			// 	font-size: 26upx;
+			// 	color: #9e9e9e;
+			// 	object-fit: cover;
+			// 	margin-top: 32upx;
+			// }
 
 			.uni-btn {
 				width: 462upx;
@@ -265,6 +310,11 @@ export default {
 
 	.share-pane {
 		margin-bottom: 80upx;
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000upx;
 	}
 }
 </style>
