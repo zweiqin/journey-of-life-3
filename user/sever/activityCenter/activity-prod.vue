@@ -17,8 +17,6 @@
 				</view>
 
 				<view style="display: flex;">
-					<image style="margin-right: 20upx" src="../../../static/images/detail/brand.png" mode="" @click="empty()" />
-
 					<TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
 						<!-- <image src="../../../static/images/detail/share.png" mode="" /> -->
 					</TuanWxShare>
@@ -178,7 +176,7 @@ export default {
 	onLoad(options) {
 		if (options.campaignsType * 1 === 0) {
 			return uni.redirectTo({
-				url: '/community-center/vip-center/vip-detail?type=2'
+				url: `/community-center/vip-center/vip-detail?type=2&campaignsType=${options.campaignsType}`
 			})
 		}
 		this.isShowBrand = !!options.showBrand
@@ -417,7 +415,6 @@ export default {
 
 		// 确定选择规格
 		async handleChooseSp() {
-			console.log(1)
 			const sps = await this.getSpacification()
 			// this.showSpecification = false
 			// debugger
@@ -503,7 +500,7 @@ export default {
 
 		// 分享活动邀请码
 		async handleShareActivity() {
-			if (this.campaignsType === 0) {
+			if (this.campaignsType === 0) { // 不可能，因为这个页面只显示爆品商品
 				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 				if (res.data) {
 					uni.navigateTo({

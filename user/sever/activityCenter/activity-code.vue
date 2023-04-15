@@ -9,9 +9,9 @@
 
 				<view class="copy-code">
 					<view class="code-wrapper">
-						{{ tuanCode || '获取我的活动邀请码失败' }}
+						{{ activityCode || tempActivityCode }}
 					</view>
-					<button v-if="tuanCode" class="uni-btn" @click="handleCopyCode">
+					<button v-if="activityCode" class="uni-btn" @click="handleCopyCode">
 						复制活动邀请码
 					</button>
 				</view>
@@ -25,14 +25,14 @@
 		<!-- 分享活动邀请码 -->
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
 		<!-- 生成二维码 -->
-		<view v-if="tuanCode">
+		<view v-if="activityCode">
 			<uqrcode
-				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + tuanCode"
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
 				@complete="handleCompleteCode"
 			></uqrcode>
 		</view>
-		<view v-if="tuanCode">
-			<Share :code="qrcodeUrl + tuanCode" class="share-pane" @click="handleItemClick"></Share>
+		<view v-if="activityCode">
+			<Share :code="qrcodeUrl + activityCode" class="share-pane" @click="handleItemClick"></Share>
 		</view>
 		<FillCode v-model="fillCodeVisible"></FillCode>
 	</view>
@@ -61,11 +61,12 @@ export default {
 	data() {
 		return {
 			campaignsType: '',
-			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/user/user?code=',
+			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=',
 			// userInfo: uni.getStorageSync(USER_INFO) || {},
 			shareCode: '',
 			fillCodeVisible: false,
-			tuanCode: ''
+			activityCode: '',
+			tempActivityCode: '--'
 		}
 	},
 
@@ -76,20 +77,18 @@ export default {
 			if (res.data) {
 				this.getCode()
 			} else {
-				uni.showToast({
-					title: '未满足分享条件！',
-					icon: 'none'
-				})
+				this.tempActivityCode = '获取我的活动邀请码失败'
 			}
 		} else if (this.campaignsType === 1) {
 			const res = await getIsPurchaseApi({ userId: getUserId() })
 			if (res.data) {
 				this.getCode()
 			} else {
-				uni.showToast({
-					title: '未满足分享条件！',
-					icon: 'none'
-				})
+				// uni.showToast({
+				// 	title: '未满足分享条件！',
+				// 	icon: 'none'
+				// })
+				this.tempActivityCode = '获取我的活动邀请码失败'
 			}
 		}
 	},
@@ -102,7 +101,7 @@ export default {
 		// 点击复制邀请码
 		handleCopyCode() {
 			uni.setClipboardData({
-				data: this.tuanCode,
+				data: this.activityCode,
 				success: () => {
 					uni.showToast({
 						title: '活动邀请码复制成功',
@@ -117,7 +116,7 @@ export default {
 			getCreateCodeApi({
 				userId: getUserId()
 			}).then((res) => {
-				this.tuanCode = res.data
+				this.activityCode = res.data
 			})
 		},
 
@@ -135,7 +134,7 @@ export default {
 					uni.hideLoading()
 					_this.$refs.posterPopupRef.show({
 						shareCode: this.shareCode,
-						logo: '../../../static/images/user/code/header.png',
+						logo: require('../../../static/images/user/code/header.png'),
 						desc: `活动邀请码分享`
 					})
 				}
@@ -297,7 +296,7 @@ export default {
 				line-height: 88upx;
 				font-size: 28upx;
 				font-weight: bold;
-				margin-top: 80upx;
+				margin-top: 108upx;
 			}
 		}
 	}

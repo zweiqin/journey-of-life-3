@@ -1,7 +1,7 @@
 <template>
   <view class="delivey-info">
+		<!-- redirect="/community-center/vip-center/vip-detail" -->
     <Header
-      redirect="/community-center/vip-center/vip-detail"
       bgc="#e95d20"
       title="完善服务信息"
     ></Header>
@@ -149,13 +149,10 @@ export default {
       })
 
       setTimeout(() => {
-        uni.redirectTo(
-          {
+        uni.redirectTo({
             url: '/community-center/vip-center/vip-detail',
-          },
-          2000
-        )
-      })
+          })
+      },2000)
     }
 
     if (option.repair) {
