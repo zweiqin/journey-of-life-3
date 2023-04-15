@@ -1,6 +1,6 @@
 <template>
   <view class="service-station-pane-container">
-    <view class="store-name">团蜂家居社区服务中心</view>
+    <view class="store-name">团蜂社区 家居大店</view>
     <button class="uni-btn">进店</button>
     <view class="info">
       <view class="tag"> 官方直营 </view>

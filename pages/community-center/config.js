@@ -110,28 +110,28 @@ export const navs = [
 export const list = [
   {
     value: 1,
-    label: "家具服务",
+    label: "墙面地面",
     icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png",
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 2,
-    label: "家电服务",
+    label: "管道疏通",
     icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png",
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 3,
-    label: "水电灯具",
+    label: "除四害",
     icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png",
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 4,
-    label: "清洗保洁",
+    label: "防水补漏",
     icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png",
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
