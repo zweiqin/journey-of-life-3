@@ -226,14 +226,14 @@ export default {
 						title: '团蜂社区金管家会员',
 						desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
 						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=2`,
-						imageUrl: require('../../static/images/con-center/alpaca-forward.png')
+						imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
 					},
 					successCb: () => { },
 					failCb: () => { }
 				}
 				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 				if (res.data) {
-					getCreateCodeApi({
+					await getCreateCodeApi({
 						userId: getUserId()
 					}).then((res) => {
 						this.activityCode = res.data
@@ -242,7 +242,7 @@ export default {
 								title: '团蜂社区金管家会员',
 								desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
 								link: `${this.qrcodeUrl}${res.data}`,
-								imageUrl: require('../../static/images/con-center/alpaca-forward.png')
+								imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
 							},
 							successCb: () => { },
 							failCb: () => { }
@@ -271,7 +271,7 @@ export default {
 						// desc: `售后质保·服务专业·极速退款·意外承包`,
 						desc: _this.type == 2 ? `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！` : `${this.indulgenceData.map((item) => item.serverContent).join('；')}`,
 						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${_this.type}`,
-						imageUrl: _this.type == 2 ? require('../../static/images/con-center/alpaca-forward.png') : ''
+						imageUrl: _this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''
 					},
 					successCb: () => { },
 					failCb: () => { }
