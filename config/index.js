@@ -16,6 +16,7 @@ export const XZL_URL = 'http://192.168.0.79:8080'
 export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api'
 
 // 线上助力通
+// export const SheQu1_URL = 'http://192.168.0.105'
 export const SheQu1_URL = 'https://www.zhult.com'
 
 // 本地

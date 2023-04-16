@@ -13,8 +13,18 @@
 
 			<view v-if="campaignsType === 0">
 				<view style="display: flex;position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;">
-					<view style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;" @click="handleShareActivity">生成邀请码</view>
-					<view style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;" @click="handleShareServe(false, 'shareBtn')">活动分享</view>
+					<view
+						style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+						@click="handleShareActivity"
+					>
+						生成邀请码
+					</view>
+					<view
+						style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+						@click="handleShareServe(false, 'shareBtn')"
+					>
+						活动分享
+					</view>
 				</view>
 			</view>
 
@@ -77,7 +87,7 @@ import PackagePane from './components/package-pane.vue'
 import Tabbar from './components/tabbar.vue'
 import { vipList } from './config'
 import { getServeListApi } from '../../api/community-center'
-import { USER_ID } from '../../constant'
+import { USER_ID, COMMUNITY_ORDER_NO } from '../../constant'
 import {
 	getPurchaseRecordApi,
 	getCreateCodeApi
@@ -124,6 +134,8 @@ export default {
 		if (!this.type) {
 			this.type = uni.getStorageSync('SERVE_TYPE')
 		}
+
+		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 	},
 
 	methods: {
@@ -377,6 +389,7 @@ export default {
 			color: #3d3d3d;
 		}
 	}
+
 	.generate-code-container {
 		position: absolute;
 		top: -10000upx;

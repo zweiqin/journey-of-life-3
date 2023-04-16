@@ -112,7 +112,7 @@
 
 <script>
 import { air } from "./config";
-import { USER_TOKEN } from "../constant";
+import { USER_TOKEN, COMMUNITY_ORDER_NO } from "../constant";
 import { getUserId } from "../utils";
 export default {
 	name: "Community-order",
@@ -217,7 +217,7 @@ export default {
 	},
 	created() { },
 	onLoad(options) {
-		console.log(options);
+		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 		this.name = options.name;
 		this.price = options.serverPrice;
 		this.unit = options.serverUnit;

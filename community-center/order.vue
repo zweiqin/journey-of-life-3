@@ -2,40 +2,26 @@
   <view class="order-page">
     <Header tabbar="/pages/user/user" title="社区订单" style="background: #FFFFFF;"></Header>
     <!-- 搜索 -->
-    <SearchBar
-      @input="search"
-      :radius="100"
-      placeholder="请输入订单号"
-      class="top-search"
-      style="background: #FFFFFF;"
-    ></SearchBar>
+    <SearchBar @input="search" :radius="100" placeholder="请输入订单号" class="top-search" style="background: #FFFFFF;">
+    </SearchBar>
 
     <!-- nav-bar -->
     <view class="navbar">
-      <view
-        class="item"
-        @click="handleChangeStatus(item.value)"
-        v-for="item in orders"
-        :key="item.label"
-        :style="{
-          color: query.status === item.value ? '#E95D20' : '',
-        }"
-      >
+      <view class="item" @click="handleChangeStatus(item.value)" v-for="item in orders" :key="item.label" :style="{
+        color: query.status === item.value ? '#E95D20' : '',
+      }">
         {{ item.label }}
       </view>
     </view>
 
     <!-- 列表页 -->
     <main v-if="orderList.length !== 0">
-      <OrderPanel
-        v-for="item in orderList"
-        :key="item.id"
-        :data="item"
-        @success="handleCancelSuccess"
-      ></OrderPanel>
+      <OrderPanel v-for="item in orderList" :key="item.id" :data="item" @success="handleCancelSuccess"></OrderPanel>
     </main>
 
     <view v-else class="no-data">暂无数据~</view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -55,7 +41,7 @@ export default {
   },
   data() {
     return {
-      search: () => {},
+      search: () => { },
       orders: orderStatusList(),
       query: {
         pageNo: 1,
@@ -146,10 +132,7 @@ export default {
      */
     handleCancelSuccess() {
       this.getOrderList();
-      uni.showToast({
-            title: "取消成功",
-            icon: "none",
-          });
+      this.ttoast('取消成功')
     },
   },
 
@@ -170,6 +153,7 @@ export default {
 <style lang="less" scoped>
 .order-page {
   background: #F1F2F6;
+
   .navbar {
     display: flex;
     align-items: center;
