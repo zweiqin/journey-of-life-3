@@ -111,31 +111,59 @@ export const list = [
   {
     value: 1,
     label: "家具服务",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lrvrci3gyy66tej890o9.png",
+    icon: require("../../static/images/con-center/lgone.png"),
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 2,
     label: "家电服务",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/o6irnsfyi7f10ovghtuv.png",
+		icon: require("../../static/images/con-center/lgtwo.png"),
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 3,
     label: "水电灯具",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/deqz5xyrtqgwn4l0qk38.png",
+		icon: require("../../static/images/con-center/lgthree.png"),
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
     value: 4,
     label: "清洗保洁",
-    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/j8jhv2ojm02xr1tc4owk.png",
+		icon: require("../../static/images/con-center/lgfour.png"),
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
+	{
+		value: 13,
+		label: "墙面地面",
+		icon: require("../../static/images/con-center/lgfive.png"),
+		shadow:
+			"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+	},
+	{
+		value: 10,
+		label: "管道疏通",
+		icon: require("../../static/images/con-center/lgsix.png"),
+		shadow:
+			"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+	},
+	{
+		value: 279,
+		label: "除四害",
+		icon: require("../../static/images/con-center/lgseven.png"),
+		shadow:
+			"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+	},
+	{
+		value: 9,
+		label: "防水补贴",
+		icon: require("../../static/images/con-center/lgeight.png"),
+		shadow:
+			"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
+	},
 ];
 
 export const moreService = [
