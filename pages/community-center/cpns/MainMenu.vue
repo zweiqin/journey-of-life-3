@@ -29,9 +29,9 @@
 				">
 					<view class="image-wrapper">
 						<TuanImage radius="0" :size="40" :src="item.icon"></TuanImage>
-						<TuanImage class="shadow" :width="30" :height="7"
+						<!-- <TuanImage class="shadow" :width="30" :height="7"
 							src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png">
-						</TuanImage>
+						</TuanImage> -->
 					</view>
 					<text class="name">{{ item.label }}</text>
 				</view>
@@ -148,14 +148,15 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
 	margin-top: 36upx;
-
+	gap: 24upx 0upx;
 	.serve-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
+		width: 130upx;
 		.image-wrapper {
 			display: flex;
 			justify-content: center;
@@ -166,6 +167,7 @@ export default {
 		.name {
 			font-weight: 500;
 			font-size: 28upx;
+			padding-top: 4upx;
 		}
 	}
 }

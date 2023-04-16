@@ -1,185 +1,192 @@
 <template>
-  <view class="service-station-pane-container">
-    <view class="store-name"><text>团蜂社区</text><text>家居大店</text></view>
-    <button class="uni-btn">进店</button>
-    <view class="info">
-      <view class="tag"> 官方直营 </view>
-      <view class="year-wrapper">
-        <view class="icon">店</view>
-        <view>1年</view>
-      </view>
-      <view class="rate">
-        <tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
-        <tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
-        <tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
-        <tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
-        <tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
-        <text style="color: #ffc117; margin-left: 2px">5.0星</text>
-      </view>
-    </view>
-    <view class="info2">
-      <view class="left">
-        <text>5.3k人访问</text>
-        <text>1.8k人关注</text>
-      </view>
-      <view class="right">
-        <view>
-          <image
-            src="../../../static/images/con-center/new-home/mobile.png"
-          ></image>
-          <text>电话</text>
-        </view>
+	<view class="service-station-pane-container">
+		<view class="store-name">
+			<view class="item" @click="handleClick(1)" :class="{ active: currentTab === 1 }">团蜂社区</view>
+			<view class="item" @click="handleClick(2)" :class="{ active: currentTab === 2 }">家居大店</view>
+		</view>
+		<button class="uni-btn">进店</button>
+		<view class="info">
+			<view class="tag"> 官方直营 </view>
+			<view class="year-wrapper">
+				<view class="icon">店</view>
+				<view>1年</view>
+			</view>
+			<view class="rate">
+				<tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
+				<tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
+				<tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
+				<tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
+				<tui-icon name="star-fill" :size="14" color="#FFC117"></tui-icon>
+				<text style="color: #ffc117; margin-left: 2px">5.0星</text>
+			</view>
+		</view>
+		<view class="info2">
+			<view class="left">
+				<text>5.3k人访问</text>
+				<text>1.8k人关注</text>
+			</view>
+			<view class="right">
+				<view>
+					<image src="../../../static/images/con-center/new-home/mobile.png"></image>
+					<text>电话</text>
+				</view>
 
-        <view>
-          <image
-            src="../../../static/images/con-center/new-home/location.png"
-          ></image>
-          <text> 定位 </text>
-        </view>
-      </view>
-    </view>
-    <view class="main-serve"> 主营：维修、清洁、保养 </view>
-    <scroll-view scroll-x="true">
-      <view class="images">
-        <image
-          src="../../../static/images/con-center/brand-img/1f18076a681ddb8aabfee22b9e1714b.jpg"
-          mode=""
-        />
-        <image
-          src="../../../static/images/con-center/brand-img/237769c6dccf6e85ca264aa383a377c.jpg"
-          mode=""
-        />
-        <image
-          src="../../../static/images/con-center/brand-img/4bbccdb1cff4b17e3acdf9ddcb5ec09.jpg"
-          mode=""
-        />
-      </view>
-    </scroll-view>
-  </view>
+				<view>
+					<image src="../../../static/images/con-center/new-home/location.png"></image>
+					<text> 定位 </text>
+				</view>
+			</view>
+		</view>
+		<view class="main-serve"> 主营：维修、清洁、保养 </view>
+		<scroll-view scroll-x="true">
+			<view class="images">
+				<image src="../../../static/images/con-center/brand-img/1f18076a681ddb8aabfee22b9e1714b.jpg" mode="" />
+				<image src="../../../static/images/con-center/brand-img/237769c6dccf6e85ca264aa383a377c.jpg" mode="" />
+				<image src="../../../static/images/con-center/brand-img/4bbccdb1cff4b17e3acdf9ddcb5ec09.jpg" mode="" />
+			</view>
+		</scroll-view>
+	</view>
 </template>
 
 <script>
-export default {}
+export default {
+	data() {
+		return {
+			currentTab: 1
+		}
+	},
+	methods: {
+		handleClick(index) {
+			this.currentTab = index
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
 .service-station-pane-container {
-  position: relative;
-  padding: 20upx;
-  background-color: #fff;
-  border-radius: 20upx;
-  margin: 50upx 0 30upx 0;
+	position: relative;
+	padding: 20upx;
+	background-color: #fff;
+	border-radius: 20upx;
+	margin: 50upx 0 30upx 0;
 
-  .store-name {
+	.store-name {
 		display: flex;
 		gap: 0upx 60upx;
-    color: #141000;
-    font-size: 32upx;
-    font-weight: bold;
-  }
 
-  .uni-btn {
-    position: absolute;
-    top: 20upx;
-    right: 20upx;
-    width: 136upx;
-    height: 64upx;
-    border-radius: 12upx;
-    color: #fff;
-    background-color: #e95d20;
-    font-size: 28upx;
-    line-height: 64upx;
-  }
+		.item {
+			color: #000000;
+			font-size: 36upx;
+			&.active{
+				font-weight: bold;
+			}
+		}
+	}
 
-  .info {
-    display: flex;
-    align-items: center;
-    font-size: 24upx;
-    margin: 12upx 0 16upx 0;
+	.uni-btn {
+		position: absolute;
+		top: 20upx;
+		right: 20upx;
+		width: 136upx;
+		height: 64upx;
+		border-radius: 12upx;
+		color: #fff;
+		background-color: #e95d20;
+		font-size: 28upx;
+		line-height: 64upx;
+	}
 
-    .tag {
-      color: #e95d20;
-      padding: 2upx 12upx;
-      background-color: #fef7f4;
-      border-radius: 6upx;
-    }
+	.info {
+		display: flex;
+		align-items: center;
+		font-size: 24upx;
+		margin: 12upx 0 16upx 0;
 
-    .year-wrapper {
-      display: flex;
-      align-items: center;
-      color: #8f8d85;
-      margin: 0 16upx 0 16upx;
-      .icon {
-        font-size: 20upx;
-        width: 32upx;
-        height: 32upx;
-        text-align: center;
-        line-height: 32upx;
-        background-color: #e95d20;
-        border-radius: 50%;
-        color: #fff;
-        margin-right: 8upx;
-      }
-    }
-  }
+		.tag {
+			color: #e95d20;
+			padding: 2upx 12upx;
+			background-color: #fef7f4;
+			border-radius: 6upx;
+		}
 
-  .info2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+		.year-wrapper {
+			display: flex;
+			align-items: center;
+			color: #8f8d85;
+			margin: 0 16upx 0 16upx;
 
-    text {
-      color: #8f8d85;
-      font-size: 24upx;
-    }
+			.icon {
+				font-size: 20upx;
+				width: 32upx;
+				height: 32upx;
+				text-align: center;
+				line-height: 32upx;
+				background-color: #e95d20;
+				border-radius: 50%;
+				color: #fff;
+				margin-right: 8upx;
+			}
+		}
+	}
 
-    .left {
-      text {
-        &:nth-child(1) {
-          padding-right: 16upx;
-          margin-right: 16upx;
-          border-right: 1upx solid #b3b2ad;
-        }
-      }
-    }
+	.info2 {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-    .right {
-      display: flex;
-      align-items: center;
+		text {
+			color: #8f8d85;
+			font-size: 24upx;
+		}
 
-      view {
-        display: flex;
-        align-items: center;
+		.left {
+			text {
+				&:nth-child(1) {
+					padding-right: 16upx;
+					margin-right: 16upx;
+					border-right: 1upx solid #b3b2ad;
+				}
+			}
+		}
 
-        image {
-          width: 32upx;
-          height: 32upx;
-          flex-shrink: 0;
-          margin-right: 6upx;
-        }
+		.right {
+			display: flex;
+			align-items: center;
 
-        &:nth-child(1) {
-          margin-right: 32upx;
-        }
-      }
-    }
-  }
+			view {
+				display: flex;
+				align-items: center;
 
-  .main-serve {
-    color: #141000;
-    margin: 16upx 0 30upx 0;
-    font-size: 24upx;
-  }
+				image {
+					width: 32upx;
+					height: 32upx;
+					flex-shrink: 0;
+					margin-right: 6upx;
+				}
 
-  .images {
-    white-space: nowrap;
+				&:nth-child(1) {
+					margin-right: 32upx;
+				}
+			}
+		}
+	}
 
-    image {
-      width: 560upx;
-      height: 360upx;
-      margin-right: 30upx;
-      border-radius: 24upx;
-    }
-  }
+	.main-serve {
+		color: #141000;
+		margin: 16upx 0 30upx 0;
+		font-size: 24upx;
+	}
+
+	.images {
+		white-space: nowrap;
+
+		image {
+			width: 560upx;
+			height: 360upx;
+			margin-right: 30upx;
+			border-radius: 24upx;
+		}
+	}
 }
 </style>
