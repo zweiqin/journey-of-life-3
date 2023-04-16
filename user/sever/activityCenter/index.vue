@@ -139,13 +139,16 @@ export default {
 			//   await this.checkBind({ userId: userId })
 			// } catch (error) {
 			this.binding(getUserId(), () => { })
-			// }
+		// }
 		} else if (getUserId() && options.code) { // 请求路径上面直接有活动id参数
 			this.bindActivityId = options.code
 			this.binding(getUserId(), () => { })
 		}
 
 		getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+	},
+
+	onShow() {
 		getUserIncomeApi({
 			userId: getUserId()
 		}).then(({ data }) => {
@@ -154,13 +157,6 @@ export default {
 				withdrawal: data.withdrawal,
 				before: data.before
 			}
-			// this.fansData = {
-			// 	superPartner: data.superPartner,
-			// 	partner: data.partner,
-			// 	ordinaryMember: data.ordinaryMember
-			// }
-			// this.genData = data.orderVoList
-			// this.analysisData = data.orderVoList
 		})
 		this.getUserCrmList()
 		this.getBindingUser()
