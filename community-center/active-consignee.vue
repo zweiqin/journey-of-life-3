@@ -1,33 +1,17 @@
 <template>
 	<view class="delivey-info">
 		<!-- redirect="/community-center/vip-center/vip-detail" -->
-		<Header
-			bgc="#e95d20"
-			title="完善服务信息"
-		></Header>
+		<Header bgc="#e95d20" title="完善服务信息"></Header>
 		<!-- redirect="/pages/community-center/community-center" -->
 		<view class="info">
 			<view class="title">客户信息</view>
 			<!-- {{ consigneeForm }} -->
 			<view class="main-wrapper">
-				<Field
-					v-for="item in userInfo"
-					:key="item.label"
-					v-model="consigneeForm[item.field]"
-					:data="item"
-					class="field"
-				>
+				<Field v-for="item in userInfo" :key="item.label" v-model="consigneeForm[item.field]" :data="item" class="field">
 					<template v-if="item.select && item.field === 'consigneeAddress'">
 						<PickRegions visible-muti @getRegion="handleGetRegionEnd">
-							<input
-								v-model="consigneeForm.consigneeAddress"
-								type="text"
-								class="uni-input"
-								disabled
-								placeholder="请选择目的地"
-								adjust-position
-								cursor-spacing="180"
-							/>
+							<input v-model="consigneeForm.consigneeAddress" type="text" class="uni-input" disabled placeholder="请选择目的地"
+								adjust-position cursor-spacing="180" />
 						</PickRegions>
 					</template>
 
@@ -58,12 +42,12 @@
 			</view>
 		</view>
 
-		<Remarks
-			style="margin-top: 20px" :is-distinguish="true" :distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'"
-			@distinguish="handleDistinguish"
-		></Remarks>
+		<Remarks style="margin-top: 20px" :is-distinguish="true"
+			:distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'" @distinguish="handleDistinguish"></Remarks>
 
 		<Button type="error" @click="confirm">确定</Button>
+
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
@@ -73,13 +57,15 @@ import PickRegions from '../components/pick-regions/pick-regions.vue'
 import Button from './components/button.vue'
 import Remarks from './components/remarks.vue'
 import Header from './components/header.vue'
-import { consigneeVipInfo, mapBackRoute } from './config'
-import { getUserId } from '../utils'
+import { consigneeVipInfo } from './config'
+import { getUserId, throttle } from '../utils'
 import {
 	createRepairOrderApi,
 	payOrderForBeeStewadApi,
 	getIsOpenServerAreaApi
 } from '../api/community-center'
+import { COMMUNITY_ORDER_NO } from '../constant'
+
 export default {
 	components: {
 		Field,
@@ -102,12 +88,23 @@ export default {
 			userInfo: [],
 			columns: ['有', '无'],
 			cacheName: 'CONSIGNEE_',
-			showTip: false
+			showTip: false,
+			loading: false,
+			confirm: () => {}
 		}
 	},
 
 	onShow() {
+		this.confirm = throttle(this.handleCreateOrder, 1000)
 		const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`)
+		const orderNo = uni.getStorageSync(COMMUNITY_ORDER_NO) || '';
+		if (orderNo) {
+			uni.redirectTo({
+				url: '/community-center/order',
+			});
+
+			return
+		}
 
 		if (consigneeInfo) {
 			this.consigneeForm.consigneeName = consigneeInfo.consigneeName
@@ -120,6 +117,7 @@ export default {
 		}
 	},
 	onLoad(option) {
+		alert(1)
 		this.serveData = option.data
 		if (this.serveData) {
 			this.serveData = JSON.parse(option.data)
@@ -145,8 +143,20 @@ export default {
 	},
 	methods: {
 		// 点击确定
-		async confirm() {
+		async handleCreateOrder() {
+			if (this.loading) {
+				this.ttoast({
+					title: '操作太快了',
+					type: 'info'
+				})
+
+				return
+			}
 			const _this = this
+			this.loading = true
+			uni.showLoading({
+				title: '下单中...',
+			});
 
 			if (
 				!this.consigneeForm.consigneeName ||
@@ -193,11 +203,15 @@ export default {
 			}
 
 			const createOrderRes = await createRepairOrderApi(data)
+			uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data)
 			if (createOrderRes.statusCode == 20000) {
 				const payResult = await payOrderForBeeStewadApi({
 					userId: getUserId(),
 					orderNo: createOrderRes.data
 				})
+
+				uni.hideLoading();
+				_this.loading = false
 
 				if (payResult.statusCode === 20000) {
 					_this.address = ''

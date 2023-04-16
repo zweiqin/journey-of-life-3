@@ -63,6 +63,7 @@ import { bannerListIcon } from './config'
 import ServiceStationPane from './cpns/ServiceStationPane.vue'
 import ArticleList from './cpns/Article.vue'
 import PopupInformation from '../../components/popup-information/popup-information'
+import { COMMUNITY_ORDER_NO } from '../../constant'
 
 export default {
 	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation },
@@ -70,6 +71,9 @@ export default {
 		return {
 			bannerListIcon: Object.freeze(bannerListIcon)
 		}
+	},
+	onShow() {
+		uni.removeStorageSync(COMMUNITY_ORDER_NO);
 	},
 	mounted() {
 		// #ifdef APP

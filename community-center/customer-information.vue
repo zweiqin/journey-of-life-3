@@ -436,7 +436,7 @@ export default {
           icon: 'none',
         })
       } else {
-        uni.navigateTo({
+        uni.redirectTo({
           url: `/community-center/confirm-order?name1=${this.name1}&oughtPrice=${this.oughtPrice}&content=${this.content}
         &consigneeName=${this.addname}&consigneeMobile=${this.phoneNumber}&consigneeAddress=${this.address}&consigneeAddressDetail=${this.addressDetail}
         &installDate=${this.datetimerange}&pricingType=${this.pricingType}&images=${JSON.stringify(this.images)}`,

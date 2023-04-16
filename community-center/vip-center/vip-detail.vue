@@ -1,36 +1,30 @@
 <template>
 	<view class="vip-detail-conatiner" :style="{ background: type == 2 ? '#ee7d53' : '' }">
 		<view class="header">
-			<img
-				v-if="type != 2" style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png" alt=""
-			/>
+			<img v-if="type != 2" style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
+				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png" alt="" />
 			<!-- <JIcon @click="handleClickBack" class="back" type="red-back"></JIcon> -->
-			<img
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png" alt=""
-				class="back" @click="handleClickBack"
-			/>
+			<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png" alt=""
+				class="back" @click="handleClickBack" />
 
 			<view v-if="campaignsType === 0">
-				<view style="position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;" @click="handleShareActivity">活动分享</view>
+				<view
+					style="position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+					@click="handleShareActivity">活动分享</view>
 			</view>
 
 			<view class="main" :style="{ padding: type == 2 ? '0px !important' : '' }">
 				<PackagePane v-if="type == 1" :key="vipList[0].name" :data="vipList[0]" @pay="handlePayTH">
 					<view class="list">
-						<li
-							v-for="(item, index) in indulgenceData" :key="index" class="indulgence-item"
-							@click="handleChooseIndulgence(item)"
-						>
-							<tui-icon
-								:color="
-									currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
-								" :size="25" :name="
-									currentIndulgence === item.serverContent
-										? 'circle-fill'
-										: 'circle'
-								"
-							></tui-icon>
+						<li v-for="(item, index) in indulgenceData" :key="index" class="indulgence-item"
+							@click="handleChooseIndulgence(item)">
+							<tui-icon :color="
+								currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
+							" :size="25" :name="
+	currentIndulgence === item.serverContent
+		? 'circle-fill'
+		: 'circle'
+"></tui-icon>
 							<text>{{ item.serverContent }}</text>
 						</li>
 					</view>
@@ -58,10 +52,8 @@
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
 		<!-- 生成二维码 -->
 		<view v-if="activityCode">
-			<uqrcode
-				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
-				@complete="handleCompleteCode"
-			></uqrcode>
+			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
+				@complete="handleCompleteCode"></uqrcode>
 		</view>
 
 		<TuanWxShare ref="tuanWxShareRef"> </TuanWxShare>
@@ -74,7 +66,7 @@ import PackagePane from './components/package-pane.vue'
 import Tabbar from './components/tabbar.vue'
 import { vipList } from './config'
 import { getServeListApi } from '../../api/community-center'
-import { USER_ID } from '../../constant'
+import { USER_ID, COMMUNITY_ORDER_NO } from '../../constant'
 import {
 	getPurchaseRecordApi,
 	getCreateCodeApi
@@ -120,6 +112,8 @@ export default {
 		if (!this.type) {
 			this.type = uni.getStorageSync('SERVE_TYPE')
 		}
+
+		uni.removeStorageSync(COMMUNITY_ORDER_NO);
 	},
 
 	methods: {

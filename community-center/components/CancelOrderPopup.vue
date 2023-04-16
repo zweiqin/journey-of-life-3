@@ -4,38 +4,25 @@
       <view class="cancel-title">取消订单</view>
       <radio-group @change="cancelRadioChange">
         <label class="radio-list" v-for="item in cancelList" :key="item">
-          <view><radio :value="item" :checked="item === cancelRadio" /></view>
+          <view>
+            <radio :value="item" :checked="item === cancelRadio" />
+          </view>
           <view>{{ item }}</view>
         </label>
       </radio-group>
-      <textarea
-        v-model="cancelInput"
-        placeholder="其它"
-        class="remark-input"
-        v-if="cancelRadio === '其它'"
-      />
+      <textarea v-model="cancelInput" placeholder="其它" class="remark-input" v-if="cancelRadio === '其它'" />
       <view class="cancel-btn">
-        <view
-          ><button
-            type="primary"
-            style="margin-bottom: 5px; margin-top: 5px; background: #d2691e"
-            size="mini"
-            @click="closeCancel"
-          >
+        <view><button type="primary" style="margin-bottom: 5px; margin-top: 5px; background: #d2691e" size="mini"
+            @click="closeCancel">
             取消
-          </button></view
-        >
-        <view
-          ><button
-            type="primary"
-            style="margin-bottom: 5px; margin-top: 5px; background: #015cb7"
-            size="mini"
-            @click.stop="fixCancel"
-          >
+          </button></view>
+        <view><button type="primary" style="margin-bottom: 5px; margin-top: 5px; background: #015cb7" size="mini"
+            @click.stop="fixCancel">
             确定
-          </button></view
-        >
+          </button></view>
       </view>
+
+      <tui-toast ref="toast"></tui-toast>
     </view>
   </uni-popup>
 </template>
@@ -80,8 +67,8 @@ export default {
       };
       if (this.cancelRadio !== "其它") {
         params.cancelRemarks = this.cancelRadio;
-        
-        
+
+
       } else {
         if (!this.cancelInput) {
           uni.showToast({
@@ -93,9 +80,21 @@ export default {
         params.cancelRemarks = this.cancelInput;
       }
 
-      cancelOrderApi({ ...params, userId: getUserId() }).then(() => {
-        this.$refs.cancelRef.close();
-        this.onSuccess();
+      cancelOrderApi({ ...params, userId: getUserId() }).then((res) => {
+        if (res.statusCode === 20000) {
+          this.onSuccess();
+        } else {
+          this.ttoast({
+            type: 'fail',
+            title: res.statusMsg
+          })
+        }
+
+
+        setTimeout(() => {
+          this.$refs.cancelRef.close();
+
+        }, 1000)
       });
       // request.laoa_huozhu_post(
       //   "/api/md/order/cancelOrder",
@@ -105,12 +104,6 @@ export default {
       //   },
       //   () => {}
       // );
-
-      uni.showToast({
-          title: "已取消",
-          duration: 2000,
-          icon: "none",
-        });
 
     },
   },

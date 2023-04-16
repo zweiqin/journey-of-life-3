@@ -247,3 +247,16 @@ export const getOrderNumberApi = data => {
     }
   )
 }
+
+// 获取订单唯一id
+export const getOrderIdApi = data => {
+  return SheQuRequest1(
+    '/laoa-huozhu/api/hz/order/third/getSubmitToken',
+    data,
+    'get',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}
