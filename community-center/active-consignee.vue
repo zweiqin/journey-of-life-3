@@ -117,7 +117,6 @@ export default {
 		}
 	},
 	onLoad(option) {
-		alert(1)
 		this.serveData = option.data
 		if (this.serveData) {
 			this.serveData = JSON.parse(option.data)
