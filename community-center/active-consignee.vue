@@ -1,28 +1,44 @@
 <template>
 	<view class="delivey-info">
-		<Header redirect="/community-center/vip-center/vip-detail" bgc="#e95d20" title="完善服务信息"></Header>
+		<!-- redirect="/community-center/vip-center/vip-detail" -->
+		<Header
+			bgc="#e95d20"
+			title="完善服务信息"
+		></Header>
 		<!-- redirect="/pages/community-center/community-center" -->
 		<view class="info">
 			<view class="title">客户信息</view>
 			<!-- {{ consigneeForm }} -->
 			<view class="main-wrapper">
-				<Field v-model="consigneeForm[item['field']]" v-for="item in userInfo" :key="item.label" :data="item"
-					class="field">
+				<Field
+					v-for="item in userInfo"
+					:key="item.label"
+					v-model="consigneeForm[item.field]"
+					:data="item"
+					class="field"
+				>
 					<template v-if="item.select && item.field === 'consigneeAddress'">
-						<pick-regions visibleMuti @getRegion="handleGetRegionEnd">
-							<input type="text" class="uni-input" disabled v-model="consigneeForm.consigneeAddress" placeholder="请选择目的地"
-								adjust-position cursor-spacing="180" />
-						</pick-regions>
+						<PickRegions visible-muti @getRegion="handleGetRegionEnd">
+							<input
+								v-model="consigneeForm.consigneeAddress"
+								type="text"
+								class="uni-input"
+								disabled
+								placeholder="请选择目的地"
+								adjust-position
+								cursor-spacing="180"
+							/>
+						</PickRegions>
 					</template>
 
 					<template v-if="item.select && item.field === 'isElevator'">
-						<picker @change="handleChooseElevator" :range="columns" style="width: 100%; height: 100%">
+						<picker :range="columns" style="width: 100%; height: 100%" @change="handleChooseElevator">
 							<view class="elevator">{{ consigneeForm.isElevator }}</view>
 						</picker>
 					</template>
 				</Field>
 
-				<view class="tip-wrapper" v-show="showTip">
+				<view v-show="showTip" class="tip-wrapper">
 					<tui-alerts type="info" title="注意：你选择的区域不在接单范围内,只可享受网络服务"></tui-alerts>
 				</view>
 
@@ -36,14 +52,16 @@
 			<view class="title">已选服务</view>
 
 			<view class="serve-name">
-				<view class="serve-item-name" v-for="(item, index) in serveData.serverContent.split(',')" :key="index">
+				<view v-for="(item, index) in serveData.serverContent.split(',')" :key="index" class="serve-item-name">
 					<tui-icon margin="0 10rpx 0 0" color="rgb(255, 153, 0)" name="label-fill" :size="20"></tui-icon> {{ item }}
 				</view>
 			</view>
 		</view>
 
-		<Remarks style="margin-top: 20px" @distinguish="handleDistinguish" :isDistinguish="true"
-			:distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'"></Remarks>
+		<Remarks
+			style="margin-top: 20px" :is-distinguish="true" :distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'"
+			@distinguish="handleDistinguish"
+		></Remarks>
 
 		<Button type="error" @click="confirm">确定</Button>
 	</view>
@@ -60,7 +78,7 @@ import { getUserId } from '../utils'
 import {
 	createRepairOrderApi,
 	payOrderForBeeStewadApi,
-	getIsOpenServerAreaApi,
+	getIsOpenServerAreaApi
 } from '../api/community-center'
 export default {
 	components: {
@@ -68,7 +86,7 @@ export default {
 		PickRegions,
 		Button,
 		Remarks,
-		Header,
+		Header
 	},
 	data() {
 		return {
@@ -79,12 +97,12 @@ export default {
 				consigneeAddressDetail: '',
 				isElevator: '有',
 				floor: '',
-				remarks: '',
+				remarks: ''
 			},
 			userInfo: [],
 			columns: ['有', '无'],
 			cacheName: 'CONSIGNEE_',
-			showTip: false,
+			showTip: false
 		}
 	},
 
@@ -109,17 +127,14 @@ export default {
 			uni.showToast({
 				title: '未选择服务，请选择服务',
 				duration: 2000,
-				icon: 'none',
+				icon: 'none'
 			})
 
 			setTimeout(() => {
-				uni.redirectTo(
-					{
-						url: '/community-center/vip-center/vip-detail',
-					},
-					2000
-				)
-			})
+				uni.redirectTo({
+					url: '/community-center/vip-center/vip-detail'
+				})
+			}, 2000)
 		}
 
 		if (option.repair) {
@@ -141,7 +156,7 @@ export default {
 			) {
 				uni.showToast({
 					title: '请填写完提货信息',
-					icon: 'none',
+					icon: 'none'
 				})
 
 				return
@@ -150,7 +165,7 @@ export default {
 			if (this.consigneeForm.consigneeMobile.length !== 11) {
 				uni.showToast({
 					title: '手机号不合法',
-					icon: 'none',
+					icon: 'none'
 				})
 
 				return
@@ -174,14 +189,14 @@ export default {
 				consigneeAddressDetail: this.consigneeForm.consigneeAddressDetail,
 				remarks: this.consigneeForm.remarks,
 				consigneeName: this.consigneeForm.consigneeName,
-				consigneeMobile: this.consigneeForm.consigneeMobile,
+				consigneeMobile: this.consigneeForm.consigneeMobile
 			}
 
 			const createOrderRes = await createRepairOrderApi(data)
 			if (createOrderRes.statusCode == 20000) {
 				const payResult = await payOrderForBeeStewadApi({
 					userId: getUserId(),
-					orderNo: createOrderRes.data,
+					orderNo: createOrderRes.data
 				})
 
 				if (payResult.statusCode === 20000) {
@@ -208,25 +223,25 @@ export default {
 					uni.showToast({
 						title: '支付失败',
 						duration: 2000,
-						icon: 'none',
+						icon: 'none'
 					})
 				}
 			} else {
 				uni.showToast({
 					title: createOrderRes.statusMsg,
 					duration: 2000,
-					icon: 'none',
+					icon: 'none'
 				})
 			}
 		},
 		// 选择省市区
 		async handleGetRegionEnd(region) {
 			this.consigneeForm.consigneeAddress = region
-				.map(item => item.name)
+				.map((item) => item.name)
 				.join('')
 
 			const res = await getIsOpenServerAreaApi({
-				address: this.consigneeForm.consigneeAddress,
+				address: this.consigneeForm.consigneeAddress
 			})
 
 			this.showTip = !res.data
@@ -250,14 +265,14 @@ export default {
 		filterDate() {
 			let data = consigneeVipInfo
 			if (this.cacheName === 'REPAIR_') {
-				data = data.filter(item => {
+				data = data.filter((item) => {
 					console.log(item.field !== 'isElevator')
 					return item.field !== 'isElevator' && item.field !== 'floor'
 				})
 			}
 			this.userInfo = data
-		},
-	},
+		}
+	}
 }
 </script>
 
@@ -295,7 +310,6 @@ export default {
 		color: #3d3d3d;
 		font-size: 32upx;
 		line-height: 2;
-
 
 	}
 

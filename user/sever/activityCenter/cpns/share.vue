@@ -71,10 +71,10 @@ export default {
 				case 'wechat':
 					const data = {
 						data: {
-							title: '加入团蜂',
+							title: '参与优惠活动',
 							desc: '扫一扫',
 							link: this.code,
-							imageUrl: _this.code
+							imageUrl: require('../../../../static/images/con-center/hongbao.png')
 						},
 						successCb: () => {},
 						failCb: () => {}

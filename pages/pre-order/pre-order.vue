@@ -240,7 +240,7 @@ export default {
 				payOrderGoodsApi({
 					orderNo: data.orderSn,
 					userId: getUserId(),
-					payType: 1,
+					payType: this.activityId ? 6 : 1,
 					activityId: this.activityId // 跟活动（爆品）相关的商品
 				}).then((res) => {
 					const payData = JSON.parse(res.data.h5PayUrl)

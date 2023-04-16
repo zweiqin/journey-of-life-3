@@ -46,8 +46,7 @@ import Equity from './cpns/Equity.vue'
 import MyFunction from './cpns/MyFunction.vue'
 import Serve from './cpns/Serve.vue'
 import showModalMixin from '../../mixin/showModal'
-import { NEW_BIND_ACTIVITY_ID, USER_ID, USER_INFO } from '../../constant'
-import { changeActivityUserBindingApi } from '../../api/user'
+import { USER_ID } from '../../constant'
 
 export default {
 	name: 'User',
@@ -59,46 +58,11 @@ export default {
 		Serve
 	},
 	mixins: [ showModalMixin() ],
-	async onLoad(options) {
+	onLoad() {
 		// #ifdef H5
 		this.init()
 		this.calcDis = throttle(this.handleTouchMove, 50)
 		// #endif
-
-		this.bindActivityId = options.code
-		if (this.bindActivityId) {
-			uni.setStorageSync(NEW_BIND_ACTIVITY_ID, this.bindActivityId)
-		}
-		const userId = uni.getStorageSync(USER_ID)
-		const userInfo = uni.getStorageSync(USER_INFO)
-		// #ifdef H5
-		if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID) && userId && !this.bindActivityId) {
-			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID)
-			// try {
-			//   await this.checkBind({ userId: userId })
-			// } catch (error) {
-			await this.binding(userId, () => {
-				uni.switchTab({
-					url: '/pages/user/user'
-				})
-			})
-			// }
-		}
-		// #endif
-		// return
-		if (userId && userInfo.userId) {
-			if (this.bindActivityId) {
-				await this.binding(userId, () => {
-					uni.switchTab({
-						url: '/pages/user/user'
-					})
-				})
-			} else {
-				uni.switchTab({
-					url: '/pages/user/user'
-				})
-			}
-		}
 	},
 	onShow() {
 		this.init()
@@ -110,7 +74,6 @@ export default {
 			moveDis: 0,
 			touchStartDis: 0,
 			calcDis: null,
-			bindActivityId: null,
 			userId: null
 		}
 	},
@@ -124,29 +87,6 @@ export default {
 			}
 
 			this.$forceUpdate()
-		},
-		// 绑定
-		binding(userId, cb) {
-			const _this = this
-			return new Promise((resolve, reject) => {
-				changeActivityUserBindingApi({
-					userId,
-					userCode: this.bindActivityId
-				})
-					.then((res) => {
-						_this.timer = setTimeout(() => {
-							cb && typeof cb === 'function' && cb()
-						}, 1000)
-						resolve()
-					})
-					.catch((err) => {
-						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
-						_this.timer = setTimeout(() => {
-							cb && typeof cb === 'function' && cb()
-						}, 1000)
-						reject()
-					})
-			})
 		},
 		handleNavigate(item, cb) {
 			if (this.isLogin()) {
