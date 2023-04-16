@@ -277,7 +277,7 @@ export default {
 							link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
-						successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false }
+						successCb: () => { }
 					})
 					this.showPointVisible = true
 				} else {
@@ -287,7 +287,7 @@ export default {
 					})
 				}
 				// #endif
-				// #ifdef APP-PLUS
+				// #ifdef APP
 				await share({
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
@@ -309,7 +309,7 @@ export default {
 							link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
-						successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false }
+						successCb: () => { }
 					})
 					this.showPointVisible = true
 				} else {
@@ -319,7 +319,7 @@ export default {
 					})
 				}
 				// #endif
-				// #ifdef APP-PLUS
+				// #ifdef APP
 				await share({
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
