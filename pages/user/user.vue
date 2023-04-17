@@ -15,26 +15,14 @@
 		<view class="main-area">
 			<OrderPane @handleNavigate="handleNavigate"></OrderPane>
 			<Equity @handleNavigate="handleNavigate"></Equity>
-			<MyFunction
-				ref="myFunctionRef"
-				@handleNavigate="handleNavigate"
-			></MyFunction>
+			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
 			<Serve @handleNavigate="handleNavigate"></Serve>
 		</view>
 
-		<tui-modal
-			:show="$data._isShowTuiModel"
-			title="提示"
-			content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-		></tui-modal>
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"></tui-modal>
 
-		<tui-modal
-			:show="isShow"
-			title="提示"
-			content="您的会员等级不够，是否前去升级？"
-			@click="handleVipUp"
-		></tui-modal>
+		<tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleVipUp"></tui-modal>
 	</view>
 </template>
 
@@ -57,7 +45,7 @@ export default {
 		MyFunction,
 		Serve
 	},
-	mixins: [ showModalMixin() ],
+	mixins: [showModalMixin()],
 	onLoad() {
 		// #ifdef H5
 		this.init()
@@ -89,6 +77,11 @@ export default {
 			this.$forceUpdate()
 		},
 		handleNavigate(item, cb) {
+			console.log(item);
+			if (item.type === 'external') {
+				this.go('/user/view?target=' + item.url)
+				return
+			}
 			if (this.isLogin()) {
 				if (
 					item.role &&
@@ -154,69 +147,69 @@ export default {
 <style lang="less" scoped>
 view,
 text {
-  line-height: 1.5 !important;
+	line-height: 1.5 !important;
 }
 
 .user-page-container {
-  widows: 100vw;
-  min-height: 100vh;
-  background-color: #f6f6f5;
-  padding-bottom: 120upx;
+	widows: 100vw;
+	min-height: 100vh;
+	background-color: #f6f6f5;
+	padding-bottom: 120upx;
 
-  .main-area {
-    width: 100%;
-    padding: 0 32upx 32upx;
-    box-sizing: border-box;
+	.main-area {
+		width: 100%;
+		padding: 0 32upx 32upx;
+		box-sizing: border-box;
 
-    /deep/ .menu-title {
-      font-size: 24upx;
-      color: #3a3629;
-    }
+		/deep/ .menu-title {
+			font-size: 24upx;
+			color: #3a3629;
+		}
 
-    /deep/ .menu-icon {
-      width: 64upx;
-      height: 64upx;
-    }
+		/deep/ .menu-icon {
+			width: 64upx;
+			height: 64upx;
+		}
 
-    /deep/ .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
+		/deep/ .menu-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
 
-    /deep/ .order-pane {
-      margin-top: 20upx;
-    }
-  }
+		/deep/ .order-pane {
+			margin-top: 20upx;
+		}
+	}
 }
 
 .loading-pane {
-  overflow: hidden;
-  transition: all 100ms;
-  background: linear-gradient(360deg, #f6e6d8, #eff5f0);
+	overflow: hidden;
+	transition: all 100ms;
+	background: linear-gradient(360deg, #f6e6d8, #eff5f0);
 }
 
 /deep/ .tui-loading-init {
-  position: inherit;
-  transform: translate(0, 0);
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  min-width: 100vw;
-  max-width: 100vw;
-  flex-direction: row;
-  // padding-top: 30upx;
+	position: inherit;
+	transform: translate(0, 0);
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	min-width: 100vw;
+	max-width: 100vw;
+	flex-direction: row;
+	// padding-top: 30upx;
 }
 
 /deep/ .tui-loadmore-tips {
-  color: #ff7a4e;
-  margin-bottom: 40upx;
+	color: #ff7a4e;
+	margin-bottom: 40upx;
 }
 
 /deep/ .tui-loading-center {
-  border-color: #ff7a4e;
+	border-color: #ff7a4e;
 }
 </style>
