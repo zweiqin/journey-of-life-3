@@ -1,30 +1,49 @@
 <template>
 	<view class="vip-detail-conatiner" :style="{ background: type == 2 ? '#ee7d53' : '' }">
 		<view class="header">
-			<img v-if="type != 2" style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png" alt="" />
+			<img
+				v-if="type != 2" style="width: 100%; padding-top: 80upx; padding-bottom: 30upx"
+				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hz3cjdj9eogy1xpezqkm.png" alt=""
+			/>
 			<!-- <JIcon @click="handleClickBack" class="back" type="red-back"></JIcon> -->
-			<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png" alt=""
-				class="back" @click="handleClickBack" />
+			<img
+				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/56zmrnjpobwxiwy3tie6.png" alt=""
+				class="back" @click="handleClickBack"
+			/>
 
 			<view v-if="campaignsType === 0">
-				<view
-					style="position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
-					@click="handleShareActivity">活动分享</view>
+				<view style="display: flex;position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;">
+					<view
+						style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+						@click="handleShareActivity"
+					>
+						生成邀请码
+					</view>
+					<view
+						style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+						@click="handleShareServe(false, 'shareBtn')"
+					>
+						活动分享
+					</view>
+				</view>
 			</view>
 
 			<view class="main" :style="{ padding: type == 2 ? '0px !important' : '' }">
 				<PackagePane v-if="type == 1" :key="vipList[0].name" :data="vipList[0]" @pay="handlePayTH">
 					<view class="list">
-						<li v-for="(item, index) in indulgenceData" :key="index" class="indulgence-item"
-							@click="handleChooseIndulgence(item)">
-							<tui-icon :color="
-								currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
-							" :size="25" :name="
-	currentIndulgence === item.serverContent
-		? 'circle-fill'
-		: 'circle'
-"></tui-icon>
+						<li
+							v-for="(item, index) in indulgenceData" :key="index" class="indulgence-item"
+							@click="handleChooseIndulgence(item)"
+						>
+							<tui-icon
+								:color="
+									currentIndulgence === item.serverContent ? '#fa5151' : '#ccc'
+								" :size="25" :name="
+									currentIndulgence === item.serverContent
+										? 'circle-fill'
+										: 'circle'
+								"
+							></tui-icon>
 							<text>{{ item.serverContent }}</text>
 						</li>
 					</view>
@@ -52,8 +71,10 @@
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
 		<!-- 生成二维码 -->
 		<view v-if="activityCode">
-			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
-				@complete="handleCompleteCode"></uqrcode>
+			<uqrcode
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
+				@complete="handleCompleteCode"
+			></uqrcode>
 		</view>
 
 		<TuanWxShare ref="tuanWxShareRef"> </TuanWxShare>
@@ -92,6 +113,7 @@ export default {
 			address: '',
 			userId: null,
 			type: null,
+			showPointVisible: false,
 			shareCode: '',
 			activityCode: '',
 			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code='
@@ -113,7 +135,7 @@ export default {
 			this.type = uni.getStorageSync('SERVE_TYPE')
 		}
 
-		uni.removeStorageSync(COMMUNITY_ORDER_NO);
+		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 	},
 
 	methods: {
@@ -211,7 +233,7 @@ export default {
 		},
 
 		// 分享会员
-		async handleShareServe(isQuit) {
+		async handleShareServe(isQuit, meaning) {
 			const _this = this
 			let data
 			if (this.campaignsType === 0) { // 肯定是type也为2
@@ -244,7 +266,7 @@ export default {
 					})
 						.catch((err) => {
 							data = failObj
-							uni.showToast({
+							meaning !== 'shareBtn' && uni.showToast({
 								title: '获取活动邀请码失败',
 								duration: 5000,
 								icon: 'none'
@@ -252,7 +274,7 @@ export default {
 						})
 				} else {
 					data = failObj
-					uni.showToast({
+					meaning !== 'shareBtn' && uni.showToast({
 						title: '您还未购买金管家会员，购买后才可进行活动分享！',
 						duration: 5000,
 						icon: 'none'
@@ -262,7 +284,6 @@ export default {
 				data = {
 					data: {
 						title: _this.type == 2 ? '团蜂社区金管家会员' : '限时钜惠',
-						// desc: `售后质保·服务专业·极速退款·意外承包`,
 						desc: _this.type == 2 ? `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！` : `${this.indulgenceData.map((item) => item.serverContent).join('；')}`,
 						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${_this.type}`,
 						imageUrl: _this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''
@@ -367,6 +388,11 @@ export default {
 			margin-left: 20upx;
 			color: #3d3d3d;
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000upx;
 	}
 }
 

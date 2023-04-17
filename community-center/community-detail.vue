@@ -460,9 +460,14 @@ export default {
 	onShow() {
 		const info = uni.getStorageSync("guawyi8sa");
 		console.log('info', info);
-		this.addressInfo = info.address + info.addressDetail;
-		console.log('addressInfo', this.addressInfo);
+		if (info.address && info.addressDetail) {
+			this.addressInfo = info.address + info.addressDetail;
+			console.log('addressInfo', this.addressInfo);
+		}
+
+
 		this.addressDetail = this.addressInfo
+		console.log('addressDetail', this.addressDetail);
 		this.address = info.address
 		console.log('address', this.address);
 		this.a()

@@ -116,14 +116,14 @@ export const list = [
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
-    value: 2,
+    value: 5,
     label: "家电服务",
 		icon: require("../../static/images/con-center/lgtwo.png"),
     shadow:
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",
   },
   {
-    value: 3,
+    value: 7,
     label: "水电灯具",
 		icon: require("../../static/images/con-center/lgthree.png"),
     shadow:
@@ -182,7 +182,7 @@ export const serviceType = [
       "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/597ywg7uu1zf41obem1o.png",
   },
   {
-    value: 2,
+    value: 3,
     label: "安装",
     a: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qc6esnbg4xjwfzmoe0d7.png",
     round:
