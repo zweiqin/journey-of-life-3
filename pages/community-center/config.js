@@ -159,7 +159,7 @@ export const list = [
 	},
 	{
 		value: 9,
-		label: "防水补贴",
+		label: "防水补漏",
 		icon: require("../../static/images/con-center/lgeight.png"),
 		shadow:
 			"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/1zouc764aorxikm72g6u.png",

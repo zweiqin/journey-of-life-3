@@ -13,7 +13,7 @@
 			</view>
 			<view class="order-list">
 				<view class="text">订单编号</view>
-				<view class="name">{{ data }}</view>
+				<view class="name">{{ this.orderNo }}</view>
 			</view>
 			<view class="install-list">
 				<view class="text">安装费用</view>
@@ -98,41 +98,41 @@ export default {
 
 		handleToOrderStatus() {
 			uni.navigateTo({
-				url: `/community-center/order-status?orderNo=${this.data}`,
+				url: `/community-center/order-status?orderNo=${this.orderNo}`,
 			});
 		},
 
 		//新建社区订单
-		async getServiceOrder() {
-			const res = await getServiceOrderApi({
-				isVipSetmeal: 0,
-				userId: getUserId(),
-				orderType: this.orderType,
-				pricingType: this.pricingType,
-				paymentMethod: this.paymentMethod,
-				deliveryType: this.deliveryType,
-				price: this.oughtPrice,
-				actualPrice: this.oughtPrice,
-				consigneeName: this.consigneeName,
-				consigneeMobile: this.consigneeMobile,
-				consigneeAddress: this.consigneeAddress,
-				consigneeAddressDetail: this.consigneeAddressDetail,
-				remarks: this.content,
-				installDate: this.installDate,
-				dictName: this.name1,
-				orderGoodsList: this.imgList
-					
+		// async getServiceOrder() {
+		// 	const res = await getServiceOrderApi({
+		// 		isVipSetmeal: 0,
+		// 		userId: getUserId(),
+		// 		orderType: this.orderType,
+		// 		pricingType: this.pricingType,
+		// 		paymentMethod: this.paymentMethod,
+		// 		deliveryType: this.deliveryType,
+		// 		price: this.oughtPrice,
+		// 		actualPrice: this.oughtPrice,
+		// 		consigneeName: this.consigneeName,
+		// 		consigneeMobile: this.consigneeMobile,
+		// 		consigneeAddress: this.consigneeAddress,
+		// 		consigneeAddressDetail: this.consigneeAddressDetail,
+		// 		remarks: this.content,
+		// 		installDate: this.installDate,
+		// 		dictName: this.name1,
+		// 		orderGoodsList: this.imgList
 
 
-			});
-			this.data = res.data;
-			console.log("订单号", this.data);
-		},
+
+		// 	});
+		// 	this.data = res.data;
+		// 	console.log("订单号", this.data);
+		// },
 
 		//订单支付
 		async getServiceOrderPay() {
 			let res = await getServiceOrderPayApi({
-				orderNo: this.data,
+				orderNo: this.orderNo,
 				userId: getUserId(),
 			});
 
@@ -169,13 +169,15 @@ export default {
 		this.installDate = options.installDate;
 		this.pricingType = options.pricingType;
 		console.log("报价类型", this.pricingType);
-		this.images = JSON.parse(options.images)
-		console.log('images', this.images);
-		
-		const imgList = this.images.map(item => { return { goodsType: '团蜂', goodsUrl: item } })
-		console.log('imgList', imgList);
-		this.imgList = imgList
-		this.getServiceOrder();
+		this.orderNo = options.data;
+		console.log('订单号',this.orderNo);
+		// this.images = JSON.parse(options.images)
+		// console.log('images', this.images);
+		// const imgList = this.images.map(item => { return { goodsType: '团蜂', goodsUrl: item } })
+		// console.log('imgList', imgList);
+		// this.imgList = imgList
+
+		// this.getServiceOrder();
 	},
 };
 </script>
