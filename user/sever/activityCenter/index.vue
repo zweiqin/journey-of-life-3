@@ -51,7 +51,7 @@
 								<tui-list-cell>
 									<view style="display: flex;justify-content: start;align-items: center;">
 										<Avatar margin="0 24upx 0 0" :src="item.avatar" :size="40"></Avatar>
-										<text style="padding-left: 28upx;">{{ item.username || '--' }}</text>
+										<text style="padding-left: 28upx;">{{ item.nickname || '--' }}</text>
 										<text style="padding-left: 40upx;color: red;">佣金：{{ item.userDto.amount || '0' }}</text>
 									</view>
 								</tui-list-cell>
@@ -63,7 +63,7 @@
 											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;">
 												<view style="display: flex;align-items: center;">
 													<Avatar margin="0 24upx 0 0" :src="section.avatar" :size="40"></Avatar>
-													<text style="padding-left: 40upx;">{{ section.username || '--' }}</text>
+													<text style="padding-left: 40upx;">{{ section.nickname || '--' }}</text>
 												</view>
 												<text>佣金：{{ section.userDto.amount || '0' }}</text>
 											</view>
@@ -202,21 +202,22 @@ export default {
 			})
 		},
 		async getUserCrmList(isLoadmore) {
+			if (!isLoadmore) this.queryInfo = { page: 1, size: 6 }
 			const res = await getUserCrmListApi(this.queryInfo)
 			if (res.errno === 0) {
 				this.totalPages = res.data.totalPages
 				if (isLoadmore) {
 					// this.activityList.push(...res.data.smartList.map((item) => ({
-					this.activityList.push(...res.data)
+					this.activityList.push(...res.data.crmList)
 				} else {
-					this.activityList = [ ...res.data ]
+					this.activityList = [ ...res.data.crmList ]
 				}
 			}
 			this.status = 'none'
 		},
 
 		async getBindingUser() {
-			const res = await getBindingUserApi({ userId: 206 }) // getUserId()
+			const res = await getBindingUserApi({ userId: getUserId() }) // getUserId()
 			// this.bindingUserList = res.data.userDtoList||[]
 			this.bindingUserList = res.data
 		},
