@@ -83,7 +83,11 @@
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
-				<view class="poster">售后质保·服务专业·极速退款·意外承包</view>
+				<view class="poster">
+					<text>保修90天</text>
+					<text>快速响应</text>
+					<text>计价器报价</text>
+				</view>
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
 					class="more" />
 			</view>
@@ -822,8 +826,8 @@ export default {
 			display: flex;
 			flex: 1;
 			align-items: center;
-			justify-content: space-between;
-			padding: 0upx 20upx 0upx 36upx;
+			// justify-content: space-between;
+			padding: 0upx 20upx 0upx 30upx;
 
 			.ensure {
 				font-size: 28upx;
@@ -834,6 +838,10 @@ export default {
 			.poster {
 				font-size: 24upx;
 				color: #3d3d3d;
+				flex: 1;
+				padding-left: 30upx;
+				display: flex;
+				gap: 0upx 40upx;
 			}
 
 			.more {

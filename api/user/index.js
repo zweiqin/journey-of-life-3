@@ -14,7 +14,8 @@ import {
 	RuanRequest,
 	XZLRequest,
 	shopRequest,
-	huangRequest
+	huangRequest,
+	SheQuRequest1,
 } from '../../utils'
 
 // 业务管理升级
@@ -279,3 +280,15 @@ export const receiveCouponApi = (data) => shopRequest('/coupon/receive', data)
 
 // 查看自己持有
 export const getCouponListApi = (data) => shopRequest('/coupon/mylist', data, 'get')
+
+//查询用户是否购买过金管家套餐
+export const userIsPurchaseApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/userIsPurchase',data)
+
+//获取金管家套餐列表
+export const getSetMealListApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/getSetMealList', data)
+
+//获取会员套餐列表
+export const getServerProjectListApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/getServerProjectList', data, 'get')
+
+//预约服务
+export const reservationServiceApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/reservationService', data)

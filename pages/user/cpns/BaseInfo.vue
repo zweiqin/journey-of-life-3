@@ -51,6 +51,13 @@
 				<view class="account-title">余额</view>
 			</view>
 
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
+				<view class="account-number">
+					{{ 1 }}
+				</view>
+				<view class="account-title">金管家</view>
+			</view>
+
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
 				<view class="account-number">
 					{{ $store.getters.couponNumber || 0 }}
@@ -58,19 +65,73 @@
 				<view class="account-title">优惠劵</view>
 			</view>
 		</view>
+		<!--金管家会员-->
+		<view class="goldman">
+			<image src="../../../static/images/center/logo.png" mode="" />
+			<view class="text-list">
+				<view class="first">金管家会员</view>
+				<view class="second">享受四大权益</view>
+			</view>
+			<view class="open" @click="handleToOpen">立即开通</view>
+		</view>
 	</view>
 </template>
 
 <script>
+import { getUserId } from 'utils';
+import { userIsPurchaseApi } from '../../../api/user'
 export default {
 	data() {
-		return {}
+		return {
+
+		}
 	},
 	methods: {
 		// go() {
 		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
 		// }
-	}
+		handleToOpen() {
+			if (this.status == 2) {
+				uni.showModal({
+					title: "提示",
+					content: "你已购买金管家会员",
+					showCancel: true,
+					success: function (res) {
+						if (res.confirm) {
+							console.log("确定");
+						} else if (res.confirm) {
+							console.log("取消");
+						}
+					},
+				});
+			} else {
+				uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
+			}
+
+		},
+
+		//查询用户是否购买过金管家套餐
+		async userIsPurchase() {
+			const res = await userIsPurchaseApi({
+				userId: getUserId(),
+				// userId: 565,
+				price: 299,
+			})
+			this.data = res.data
+			console.log("查询", this.data);
+			if (this.data === null) {
+				this.status = 1
+				console.log("未开通", this.status);
+			}
+			else {
+				this.status = 2
+				console.log('已开通', this.status);
+			}
+		},
+	},
+	mounted() {
+		this.userIsPurchase()
+	},
 }
 </script>
 
@@ -82,10 +143,10 @@ text {
 
 .base-info-container {
 	position: relative;
-	height: 400upx;
+	// height: 400upx;
 	background: url('../../../static/images/new-user/info-bg.png') no-repeat;
 	background-size: cover;
-	padding: 80upx 32upx 8upx;
+	padding: 80upx 32upx 0upx;
 	box-sizing: border-box;
 
 	.user-info {
@@ -175,6 +236,54 @@ text {
 				font-size: 24upx;
 				line-height: 36upx;
 			}
+		}
+	}
+
+	.goldman {
+		padding: 0 22upx;
+		box-sizing: border-box;
+		margin-top: 20upx;
+		width: 100%;
+		height: 144upx;
+		border-radius: 24upx;
+		background: linear-gradient(262deg, #FCD188 -4%, #ECB14C -4%, #ECB24D -4%, #FCD188 56%);
+		display: flex;
+		align-items: center;
+
+		image {
+			width: 56upx;
+			height: 56upx;
+		}
+
+		.text-list {
+			flex: 1;
+			padding-left: 22upx;
+
+			.first {
+				font-size: 36upx;
+				font-weight: 500;
+				line-height: 54upx;
+				color: #333333;
+			}
+
+			.second {
+				font-size: 24upx;
+				line-height: 32upx;
+				color: #333333;
+			}
+		}
+
+		.open {
+			width: 152upx;
+			height: 64upx;
+			border-radius: 50upx;
+			background: #402D0D;
+			font-size: 24upx;
+			font-weight: 500;
+			color: #FFFFFF;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 
