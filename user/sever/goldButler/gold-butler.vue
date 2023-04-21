@@ -321,8 +321,8 @@ export default {
 			const allServeListData = res.data.filter(item => item.serverId)
 			this.recordList = (res.data.filter(item => item.recordList.length).map(item => item.recordList)).flat(Infinity)
 			console.log('已使用', this.recordList);
-			this.updateTime = this.recordList[0].updateTime
-			console.log('时间',this.updateTime);
+			// this.updateTime = this.recordList[0].updateTime
+			// console.log('时间',this.updateTime);
 			const serverList = {}
 			for (const server of allServeListData) {
 				if (!serverList[server.serverName]) {
