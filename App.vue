@@ -3,9 +3,12 @@
 var http = require('./utils/http.js')
 var util = require('./utils/util.js')
 // import { getUserId } from "./utils";
+import { whoami } from './api/auth'
+import { USER_ID, USER_TOKEN } from './constant'
 
 export default {
-  onLaunach: function () {},
+  onLaunach: function () {
+  },
   onShow: function () {
     // 判断浏览器环境
     // var ua = navigator.userAgent.toLowerCase();
@@ -21,7 +24,7 @@ export default {
     // 		history.replaceState({}, '', path)
     // 	}
     http.getCartCount()
-		
+
     // }
 
     // getUserId();
@@ -34,12 +37,24 @@ export default {
     // 购物车商品数量
     totalCartCount: 0,
   },
-  methods: {},
+  methods: {
+    // 更新token
+    async updateToken() {
+      const userId = uni.getStorageSync(USER_ID);
+      // debugger
+      if (userId) {
+        const { data } = await whoami(userId)
+        uni.setStorageSync(USER_TOKEN, data.token);
+      }
+    }
+  },
 
   mounted() {
     // #ifdef H5
     this.$store.dispatch('location/getCurrentLocation')
     // #endif
+
+    this.updateToken()
   },
 }
 </script>
