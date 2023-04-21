@@ -303,10 +303,10 @@ export default {
 		},
 		//获取套餐列表
 		async getSetMealList() {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			})
+			// uni.showLoading({
+			// 	title: '加载中...',
+			// 	mask: true
+			// })
 			const res = await getSetMealListApi({
 				userId: getUserId(),
 				// userId: 565,
