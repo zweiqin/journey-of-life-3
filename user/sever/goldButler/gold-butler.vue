@@ -15,8 +15,9 @@
 			</view>
 		</view>
 		<!-- 中间区域 -->
-		<view class="main" v-show="currentTab === 1">
-			<view class="notyet">暂未开通权益</view>
+		<!--已开通-->
+		<view class="main" v-show="currentTab === 1" v-if="this.status == 2">
+			<!-- <view class="notyet" v-if="status == 1">暂未开通权益</view> -->
 			<view class="rect">
 				<view class="left-yellow"></view>
 				<view class="content">
@@ -24,12 +25,13 @@
 					<view class="c-service">享受4大服务</view>
 					<view class="c-time">2023-02-18 至 2024-02-28</view>
 				</view>
-				<view class="open1" v-if="status == 2">已开通</view>
-				<view class="open2" v-if="status == 1" @click="handleToOpen">
+				<view class="open1">已开通</view>
+				<!-- <view class="open2" v-if="status == 1" @click="handleToOpen">
 					<view class="money">￥299</view>
 					<view class="go">立即开通</view>
-				</view>
+				</view> -->
 			</view>
+
 			<view class="main-service" v-for="(value, key) in myServerList" :key="key">
 				<view class="main-service-top">
 					<view class="logo-list">
@@ -49,28 +51,93 @@
 				</view>
 				<!-- <view class="main-service-care">注:(以上服务不含更换配件费用，水电检修服务不含水电改造)</view> -->
 
-				{{ item }}
+				<!-- {{ item }} -->
 			</view>
+
 			<view class="explain">
 				<view class="explain-name">
 					平台一切权益解释权归团蜂科技<text>《权益说明》</text>
 				</view>
 			</view>
 		</view>
-		<!--已使用和未使用-->
+		<!--未开通-->
+		<view class="main" v-show="currentTab === 1" v-if="this.status == 1">
+			<view class="notyet">暂未开通权益</view>
+			<view class="rect">
+				<view class="left-yellow"></view>
+				<view class="content">
+					<view class="c-name">金管家会员</view>
+					<view class="c-service">享受4大服务</view>
+					<view class="c-time">2023-02-18 至 2024-02-28</view>
+				</view>
+				<!-- <view class="open1" v-if="status == 2">已开通</view> -->
+				<view class="open2" @click="handleToOpen">
+					<view class="money">￥299</view>
+					<view class="go">立即开通</view>
+				</view>
+			</view>
+
+			<view class="main-service">
+				<view class="main-service-top">
+					<view class="logo-list">
+						<image src="../../../static/images/center/logo.png" mode="" />
+						<text>{{ '金管家会员' }}</text>
+					</view>
+				</view>
+				<view class="main-service-text">
+					<view class="name">
+						享受<text>4</text>大服务
+					</view>
+				</view>
+				<view class="main-service-item" v-for="item in service" :key="item.value">
+					<image src="../../../static/images/user/vip.png" mode="" />
+					<view class="text">{{ item.name }}</view>
+					<!-- <view class="order" :style="getOrderBtnStyle(value, item)" @click="handleToBook(value, item)">预约</view> -->
+				</view>
+				<!-- <view class="main-service-care">注:(以上服务不含更换配件费用，水电检修服务不含水电改造)</view> -->
+
+				<!-- {{ item }} -->
+			</view>
+
+			<view class="explain">
+				<view class="explain-name">
+					平台一切权益解释权归团蜂科技<text>《权益说明》</text>
+				</view>
+			</view>
+		</view>
+
+		<!--已使用-->
 		<view v-show="currentTab === 2">
-			<view class="rect1" v-for="item in recordList" :key="item">
+			<view class="rect1" v-for="item in recordList" :key="item.id">
 				<view class="left-yellow"></view>
 				<view class="content">
 					<view class="c-name">{{ item.serverContent }}</view>
 					<view class="c-service">{{ item.serverName }}</view>
-					<view class="c-time">使用时间: <view>{{ item.updateTime }}</view>
+					<view class="c-time">使用时间: <view>{{ formatTime(new Date(item.updateTime)) }}</view>
 					</view>
 				</view>
 				<view class="open">
 					<image src="../../../static/images/center/already.png" mode="scaleToFill" />
 				</view>
 			</view>
+		</view>
+		<!--未使用-->
+		<view v-show="currentTab === 3">
+			<block v-for="(value, key, index) in notUseServeList" :key="index">
+				<view class="rect2" v-for="serve in value" :key="serve.serverContent">
+					<view class="left-yellow"></view>
+					<view class="content">
+						<view class="c-name">{{ serve.serverContent }}</view>
+						<view class="c-service">{{ key }}</view>
+						<!-- <view class="c-time">使用时间: <view>{{ item.updateTime }}</view>
+					</view> -->
+					</view>
+					<view class="open">
+						<image src="../../../static/images/center/nouse.png" mode="scaleToFill" />
+					</view>
+				</view>
+			</block>
+
 		</view>
 		<!-- 底部区域 -->
 		<view class="foot" v-if="status == 1">
@@ -83,6 +150,7 @@
 </template>
 
 <script>
+import { formatTime } from '../../../utils'
 import { navs, navs1, service, contents, calcUseNumber } from './data'
 import { userIsPurchaseApi, getSetMealListApi, getServerProjectListApi } from '../../../api/user'
 import { getUserId } from 'utils'
@@ -103,21 +171,55 @@ export default {
 			serverContent: "",
 			notUseList: [],
 			recordList: [],
-
+			item: '',
 			// my
 			myServerList: {},
 			vip2Numbers: {},
-			vip2ServeList: []
+			vip2ServeList: [],
+			allUsed: '',
+			notUseServeList: []
 		}
 	},
+
+	
+
 	methods: {
+		formatTime,
 		handleClick(item) {
 			this.currentTab = item.value
 			console.log(item);
 			if (item.value === 3) {
+				const notUseServeList = {}
+				for (const serverName in this.myServerList) { // TODO: 下一位有缘人,优化一下
+					const curentServeItems = this.myServerList[serverName].children
 
-				const allUsed = this.recordList.map(item => item.serverContent)
-				console.log(allUsed);
+					if (this.myServerList[serverName].type === 1) {
+						curentServeItems.forEach(serve => {
+							if (this.vip2Numbers[serve.serverContent] || serve.serverContent.includes('全年')) {
+								if (notUseServeList[serverName]) {
+									notUseServeList[serverName].push(serve)
+								} else {
+									notUseServeList[serverName] = [serve]
+								}
+							}
+						})
+					} else if (this.myServerList[serverName].type === 2) {
+						curentServeItems.forEach(serve => {
+							if (!serve.recordList.length) {
+								if (notUseServeList[serverName]) {
+									notUseServeList[serverName].push(serve)
+								} else {
+									notUseServeList[serverName] = [serve]
+								}
+							}
+						})
+					}
+				}
+				this.notUseServeList = notUseServeList
+
+				console.log('未使用', this.notUseServeList);
+
+
 			}
 		},
 		handleBack() {
@@ -129,16 +231,18 @@ export default {
 			uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
 		},
 		handleToBook(value, item) {
-			uni.showLoading({
-				title: '预约中...',
-				mask: true
-			})
+
+
+			// uni.showLoading({
+			// 	title: '预约中...',
+			// 	mask: true
+			// })
 			let currentServe = null;
 			console.log(value, item);
 			if (value.type === 1) {
 				console.log(this.vip2ServeList);
 
-				if (!this.vip2Numbers[item.serverContent]) {
+				if (!this.vip2Numbers[item.serverContent] && !item.serverContent.includes('全年')) {
 					this.ttoast({
 						type: 'fail',
 						title: '服务次数不足'
@@ -147,30 +251,25 @@ export default {
 				}
 
 				currentServe = this.vip2ServeList.find(serve => {
-					const usedServeList = serve.recordList.map(item => item.serverContent)
-					return !usedServeList.includes(item.serverContent)
+					const usedServeList = serve.recordList.map(item1 => item1.serverContent)
+					return !usedServeList.includes(item.serverContent) || item.serverContent.includes('全年')
 				})
-
-
-
-
 				uni.hideLoading()
 
-				if (!currentServe) {
+				if (!currentServe && !item.serverContent.includes('全年')) {
 					this.ttoast({
 						type: 'fail',
 						title: '服务次数不足'
 					})
 					return
 				}
-
 				currentServe.serverContent = item.serverContent // TODO: 金管家下单选择的是单个还是全部的?
 			} else {
 				currentServe = value.children.find(serve => serve.serverContent === item.serverContent)
 
 				uni.hideLoading()
 
-				if (currentServe.number - currentServe.usedNumber <= 0) {
+				if (currentServe.number - currentServe.usedNumber <= 0 && !item.serverContent.includes('全年')) {
 					this.ttoast({
 						type: 'fail',
 						title: '服务次数不足'
@@ -187,9 +286,9 @@ export default {
 		//查询用户是否购买过金管家套餐
 		async userIsPurchase() {
 			const res = await userIsPurchaseApi({
-				// userId: getUserId(),
-				userId: 565,
-				price: 254,
+				userId: getUserId(),
+				// userId: 565,
+				price: 299,
 			})
 			this.data = res.data
 			console.log("查询", this.data);
@@ -210,6 +309,7 @@ export default {
 			})
 			const res = await getSetMealListApi({
 				userId: getUserId(),
+				// userId: 565,
 			})
 			// this.getdata = res.data
 
@@ -219,7 +319,10 @@ export default {
 			// this.serverContent = this.getdata[0].serverContent.split(',')
 			// console.log("金管家服务列表", this.serverContent);
 			const allServeListData = res.data.filter(item => item.serverId)
-
+			this.recordList = (res.data.filter(item => item.recordList.length).map(item => item.recordList)).flat(Infinity)
+			console.log('已使用', this.recordList);
+			this.updateTime = this.recordList[0].updateTime
+			console.log('时间',this.updateTime);
 			const serverList = {}
 			for (const server of allServeListData) {
 				if (!serverList[server.serverName]) {
@@ -258,7 +361,7 @@ export default {
 				}
 			}
 
-			console.log(findServerList);
+			console.log(this.vip2Numbers);
 
 			this.myServerList = findServerList
 
@@ -266,18 +369,18 @@ export default {
 
 		},
 		//获取会员套餐列表
-		async getServerProjectList() {
-			const res = await getServerProjectListApi({
+		// async getServerProjectList() {
+		// 	const res = await getServerProjectListApi({
 
-			})
-			this.data = res.data
-			console.log("会员套餐列表", this.data);
+		// 	})
+		// 	this.data = res.data
+		// 	console.log("会员套餐列表", this.data);
 
-		},
+		// },
 
 		// 获取
 		getOrderBtnStyle(value, item) {
-			if (value.type === 1 && !this.vip2Numbers[item.serverContent]) {
+			if (value.type === 1 && !this.vip2Numbers[item.serverContent] && !item.serverContent.includes('全年')) {
 				return {
 					backgroundColor: '#ccc'
 				}
@@ -293,6 +396,7 @@ export default {
 	created() { },
 	onLoad(options) {
 		console.log(options);
+
 	},
 }
 </script>
@@ -689,6 +793,94 @@ export default {
 
 			.c-name {
 				padding-top: 26upx;
+				font-size: 32upx;
+				font-weight: 500;
+				line-height: 54upx;
+				color: #141000;
+			}
+
+			.c-service {
+				font-size: 26upx;
+				color: #605D52;
+				line-height: 40upx;
+			}
+
+			.c-time {
+				padding-top: 8upx;
+				font-size: 24upx;
+				color: #B3B2AD;
+				line-height: 36upx;
+			}
+		}
+
+		.open {
+			width: 218upx;
+			font-size: 42upx;
+			font-weight: bold;
+			line-height: 46upx;
+			color: #FFC117;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-left: 1upx dashed #D8D8D8;
+
+			image {
+				width: 208upx;
+				height: 208upx;
+			}
+		}
+
+	}
+
+	.rect2 {
+		position: relative;
+		display: flex;
+		margin: 20upx 20upx 50upx 20upx;
+		// width: 100%;
+		height: 220upx;
+		border-radius: 24upx;
+		background: rgba(255, 255, 255, 0.98);
+
+		&::after {
+			content: '';
+			display: block;
+			position: absolute;
+			top: -12upx;
+			right: 206upx;
+			width: 24upx;
+			height: 24upx;
+			background-color: #f6f6f5;
+			border-radius: 50%;
+		}
+
+		&::before {
+			content: '';
+			display: block;
+			position: absolute;
+			bottom: -12upx;
+			right: 206upx;
+			width: 24upx;
+			height: 24upx;
+			background-color: #f6f6f5;
+			border-radius: 50%;
+		}
+
+		.left-yellow {
+			width: 24upx;
+			height: 220upx;
+			border-radius: 12upx 0px 0px 12upx;
+			background: #FFC117;
+		}
+
+		.content {
+			padding-left: 24upx;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			flex: 1;
+
+			.c-name {
+				// padding-top: 26upx;
 				font-size: 32upx;
 				font-weight: 500;
 				line-height: 54upx;

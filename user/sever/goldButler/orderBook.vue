@@ -85,9 +85,20 @@ export default {
 		handleBack() {
 			uni.navigateBack()
 		},
+		//提交预约
 		handleToOrder() {
-			this.reservationService()
-			uni.navigateTo({ url: '/community-center/order' })
+
+			if (!this.datetimerange || !this.images) {
+				uni.showToast({
+					title: '请完善服务信息',
+					icon: 'none',
+					duration: 2000,
+				})
+			}else{
+				this.reservationService()
+			}
+
+			
 		},
 		//图片上传
 		chooseImg() {
@@ -202,6 +213,14 @@ export default {
 			uni.hideLoading()
 
 			this.orderNoData = res.data
+
+			this.ttoast('预约成功')
+			setTimeout(() => {
+				uni.navigateTo({ url: '/community-center/order' })
+			}, 1000);
+
+
+
 		},
 	},
 	created() { },
