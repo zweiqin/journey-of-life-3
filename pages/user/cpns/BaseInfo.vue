@@ -1,11 +1,10 @@
 <template>
 	<view class="base-info-container">
 		<view class="user-info">
-			<Avatar @click="$emit('handleNavigate', { url: '/user/info/detail' })" margin="0 24upx 0 0" :src="
-				$store.getters.userId
-					? $store.getters.userInfo.avatarUrl
-					: require('../../../static/images/new-user/default-user-avatar.png')
-			"></Avatar>
+			<Avatar @click="$emit('handleNavigate', { url: '/user/info/detail' })" margin="0 24upx 0 0" :src="$store.getters.userId
+				? $store.getters.userInfo.avatarUrl
+				: require('../../../static/images/new-user/default-user-avatar.png')
+				"></Avatar>
 
 			<view class="right-wrapper">
 				<view v-if="!$store.getters.userId">
@@ -74,63 +73,64 @@
 			</view>
 			<view class="open" @click="handleToOpen">立即开通</view>
 		</view>
+
+
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"></tui-modal>
+
+		<tui-modal :show="isShow" title="提示" content="您已开通金管家会员" @click="handleToVip"></tui-modal>
 	</view>
 </template>
 
 <script>
-import { getUserId } from 'utils';
 import { userIsPurchaseApi } from '../../../api/user'
+import { USER_ID } from 'constant';
+import showModalMixin from 'mixin/showModal';
 export default {
 	data() {
 		return {
-
+			isShow: false,
 		}
 	},
+	mixins: [showModalMixin()],
 	methods: {
 		// go() {
 		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
 		// }
-		handleToOpen() {
-			if (this.status == 2) {
-				uni.showModal({
-					title: "提示",
-					content: "你已购买金管家会员",
-					showCancel: true,
-					success: function (res) {
-						if (res.confirm) {
-							console.log("确定");
-						} else if (res.confirm) {
-							console.log("取消");
-						}
-					},
-				});
-			} else {
-				uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
+		handleToVip(e) {
+			if (e.index) {
+				uni.navigateTo({ url: '/user/sever/goldButler/gold-butler' })
 			}
+			this.isShow = false
+		},
+		//立即开通
+		handleToOpen() {
+
+			this.userIsPurchase()
 
 		},
 
 		//查询用户是否购买过金管家套餐
 		async userIsPurchase() {
+			const userId = uni.getStorageSync(USER_ID)
 			const res = await userIsPurchaseApi({
-				userId: getUserId(),
+				userId: userId,
 				// userId: 565,
 				price: 299,
 			})
-			this.data = res.data
-			console.log("查询", this.data);
-			if (this.data === null) {
-				this.status = 1
-				console.log("未开通", this.status);
-			}
-			else {
-				this.status = 2
-				console.log('已开通', this.status);
+			this.statusCode = res.statusCode
+			console.log("statusCode ", this.statusCode);
+			if (!userId) {
+				this.$data._isShowTuiModel = true
+			} else if (this.statusCode === 20000) {
+				this.isShow = true
+			} else {
+				uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
 			}
 		},
 	},
 	mounted() {
-		this.userIsPurchase()
+		// this.userIsPurchase()
 	},
 }
 </script>
