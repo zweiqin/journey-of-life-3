@@ -39,10 +39,12 @@ export default {
 			UserCrmSlbumList: [],
 			queryInfo: {
 				page: 1,
-				size: 6
+				size: 6,
+				userId: this.userInfo.userId
 			},
 			totalPages: 0,
-			status: 'none'
+			status: 'none',
+			userInfo: uni.getStorageSync(USER_INFO)
 		}
 	},
 	onShow() {
@@ -63,7 +65,7 @@ export default {
 	},
 	methods: {
 		async getUserCrmSlbumList(isLoadmore) {
-			if (!isLoadmore) this.queryInfo = { page: 1, size: 6 }
+			if (!isLoadmore) this.queryInfo = { page: 1, size: 6, userId: this.userInfo.userId }
 			const res = await getUserCrmSlbumList(this.queryInfo)
 			if (res.errno === 0) {
 				this.totalPages = res.data.totalPages

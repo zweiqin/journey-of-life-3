@@ -31,12 +31,12 @@ export const service = [
 	},
 	{
 		value: 3,
-		name: '水管清洗1次 （一厨两卫）',
+		name: '通马桶服务一次',
 		icon: require('../../../static/images/center/qx.png'),
 	},
 	{
 		value: 4,
-		name: '通马桶服务1次',
+		name: '水管清洗一次 （一厨两卫）',
 		icon: require('../../../static/images/center/mt.png'),
 	}
 ]
