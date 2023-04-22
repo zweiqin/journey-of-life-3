@@ -78,13 +78,13 @@ export default {
 	data() {
 		return {
 			consigneeForm: {
-				consigneeName: '111',
-				consigneeMobile: '18766554433',
-				consigneeAddress: '广东省佛山顺德区',
-				consigneeAddressDetail: 'aaaaaa',
+				consigneeName: '',
+				consigneeMobile: '',
+				consigneeAddress: '',
+				consigneeAddressDetail: '',
 				isElevator: '有',
 				floor: '1',
-				remarks: '1111'
+				remarks: ''
 			},
 			userInfo: [],
 			columns: ['有', '无'],

@@ -7,10 +7,10 @@
 
 		<view class="navs">
 			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack">
-			<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
-				:key="item.value" @click="handleSwitchStatus(item.value)">
-				{{ item.label }}
-			</view>
+				<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
+					:key="item.value" @click="handleSwitchStatus(item.value)">
+					{{ item.label }}
+				</view>
 		</view>
 
 		<view class="order-list-wrapper" v-if="orderList && orderList.length">
@@ -28,7 +28,7 @@
 							<view class="name">{{ goods.goodsName }}</view>
 
 							<view class="good-sp-pr">
-								<view class="sp">{{goods.specifications.join(',') }}</view>
+								<view class="sp">{{ goods.specifications.join(',') }}</view>
 								<view class="pr">￥{{ goods.price }}</view>
 							</view>
 						</view>
@@ -53,8 +53,8 @@
 					<view class="btns">
 						<view v-for="btn in orderOpButtons" :key="btn.label">
 							<button :style="{
-								background: btn.color,
-							}" @click="handleOpOrder(item, btn.key)" class="uni-btn"
+									background: btn.color,
+								}" @click="handleOpOrder(item, btn.key)" class="uni-btn"
 								v-if="item.handleOption[btn.key] && btn.label !== '去评论'">
 								{{ btn.label }}
 							</button>
@@ -78,7 +78,7 @@ import {
 	orderDeleteApi,
 	receiveGoodsApi,
 } from '../../api/order'
-import { payOrderGoodsApi } from '../../api/goods'
+import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods'
 import { getUserId } from '../../utils'
 import { TUAN_ORDER_SN, PAY_SHORT_ORDER_NO } from '../../constant'
 export default {
@@ -143,7 +143,7 @@ export default {
 		},
 
 		// 点击操作按钮
-		handleOpOrder(goods, key, currentGoods) {
+		async handleOpOrder(goods, key, currentGoods) {
 			if (key === 'comment') {
 				this.handleToViewOrderDetail(goods, currentGoods)
 				return
@@ -187,11 +187,12 @@ export default {
 				})
 			} else {
 				if (key === 'pay') {
+					// #ifdef H5
 					payOrderGoodsApi({
 						orderNo: goods.orderSn,
 						userId: getUserId(),
 						payType: 1,
-					}).then(res => {
+					}).then((res) => {
 						const payData = JSON.parse(res.data.h5PayUrl)
 						const form = document.createElement('form')
 						form.setAttribute('action', payData.url)
@@ -208,7 +209,45 @@ export default {
 						document.body.appendChild(form)
 						form.submit()
 						document.body.removeChild(form)
+
 					})
+					// #endif
+
+					// #ifdef APP
+					const payAppesult = await payOrderGoodsAPPApi({
+						userId: getUserId(),
+						orderNo: goods.orderSn
+					})
+
+					if (payAppesult.errno === 0) {
+
+						let query = ''
+						for (const key in payAppesult.data) {
+							query += key + '=' + payAppesult.data[key] + '&'
+						}
+
+						plus.share.getServices(
+							function (res) {
+								let sweixin = null;
+								for (let i in res) {
+									if (res[i].id == 'weixin') {
+										sweixin = res[i];
+									}
+								}
+								console.log(sweixin);
+								if (sweixin) {
+									sweixin.launchMiniProgram({
+										id: 'gh_e64a1a89a0ad',
+										type: 0,
+										path: 'pages/orderDetail/orderDetail?' + query
+									});
+								}
+							}, function (e) {
+								console.log('获取分享服务列表失败：' + e.message);
+							}
+						);
+					}
+					// #endif
 				}
 			}
 		},
@@ -444,4 +483,5 @@ export default {
 			margin-top: 20upx;
 		}
 	}
-}</style>
+}
+</style>

@@ -90,7 +90,7 @@
 
 <script>
 import { getAddressListApi } from '../../api/address'
-import { firstAddCar, submitOrderApi, payOrderGoodsApi } from '../../api/goods'
+import { firstAddCar, submitOrderApi, payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods'
 import { getUserId } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
 import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from '../../constant'
@@ -232,8 +232,10 @@ export default {
 				brandId: _this.orderInfo.brandId,
 				..._this.opForm
 			}
-			submitOrderApi(submitData).then(({ data: lastData }) => {
+			submitOrderApi(submitData).then(async ({ data: lastData }) => {
 				uni.setStorageSync(TUAN_ORDER_SN, lastData.orderSn)
+
+				// #ifdef H5
 				payOrderGoodsApi({
 					orderNo: lastData.orderSn,
 					userId: getUserId(),
@@ -242,18 +244,6 @@ export default {
 				}).then((res) => {
 					const payData = JSON.parse(res.data.h5PayUrl)
 					const data = JSON.parse(payData.data)
-
-					// let query = ''
-					// for (const key in data) {
-					// 	query += key + '=' + data[key] + '&'
-					// }
-
-
-					// console.log(query)
-
-					// return
-
-					// #ifdef H5
 					const form = document.createElement('form')
 					form.setAttribute('action', payData.url)
 					form.setAttribute('method', 'POST')
@@ -268,16 +258,22 @@ export default {
 					document.body.appendChild(form)
 					form.submit()
 					document.body.removeChild(form)
-					// #endif
 
-					// #ifdef APP
-					// let query = ''
-					// for (const key in data) {
-					// 	query += key + '=' + data[key] + '&'
-					// }
-					// console.log('pages/orderDetail/orderDetail?' + query + '&reqsn=' + lastData.orderSn)
+				})
+				// #endif
 
-					return
+				// #ifdef APP
+				const payAppesult = await payOrderGoodsAPPApi({
+					userId: getUserId(),
+					orderNo: lastData.orderSn
+				})
+
+				if (payAppesult.errno === 0) {
+
+					let query = ''
+					for (const key in payAppesult.data) {
+						query += key + '=' + payAppesult.data[key] + '&'
+					}
 
 					plus.share.getServices(
 						function (res) {
@@ -288,22 +284,20 @@ export default {
 								}
 							}
 							console.log(sweixin);
-							//唤醒微信小程序
 							if (sweixin) {
 								sweixin.launchMiniProgram({
-									// 微信小程序的ID
-									id: 'wxef277996acc166c3', //原始ID
-									type: 2, //微信小程序版本
-									path: 'pages/orderDetail/orderDetail?' + query + '&reqsn=' + lastData.orderSn //跳转的小程序页面位置
+									id: 'gh_e64a1a89a0ad',
+									type: 0,
+									path: 'pages/orderDetail/orderDetail?' + query
 								});
 							}
 						}, function (e) {
 							console.log('获取分享服务列表失败：' + e.message);
 						}
 					);
-					// #endif
+				}
+				// #endif
 
-				})
 			})
 		},
 
