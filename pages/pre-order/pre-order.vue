@@ -38,11 +38,8 @@
 
 				<view class="words">
 					<view class="title">留言</view>
-					<textarea
-						id="" v-model.trim="opForm.message" placeholder="可在此给留言给商家" cols="2"
-						maxlength="20"
-						placeholder-class="input-text"
-					></textarea>
+					<textarea id="" v-model.trim="opForm.message" placeholder="可在此给留言给商家" cols="2" maxlength="20"
+						placeholder-class="input-text"></textarea>
 				</view>
 			</view>
 			<view class="line-list">
@@ -235,19 +232,31 @@ export default {
 				brandId: _this.orderInfo.brandId,
 				..._this.opForm
 			}
-			submitOrderApi(submitData).then(({ data }) => {
-				uni.setStorageSync(TUAN_ORDER_SN, data.orderSn)
+			submitOrderApi(submitData).then(({ data: lastData }) => {
+				uni.setStorageSync(TUAN_ORDER_SN, lastData.orderSn)
 				payOrderGoodsApi({
-					orderNo: data.orderSn,
+					orderNo: lastData.orderSn,
 					userId: getUserId(),
 					payType: this.activityId ? 6 : 1,
 					activityId: this.activityId // 跟活动（爆品）相关的商品
 				}).then((res) => {
 					const payData = JSON.parse(res.data.h5PayUrl)
+					const data = JSON.parse(payData.data)
+
+					// let query = ''
+					// for (const key in data) {
+					// 	query += key + '=' + data[key] + '&'
+					// }
+
+
+					// console.log(query)
+
+					// return
+
+					// #ifdef H5
 					const form = document.createElement('form')
 					form.setAttribute('action', payData.url)
 					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
 					let input
 					for (const key in data) {
 						input = document.createElement('input')
@@ -259,6 +268,41 @@ export default {
 					document.body.appendChild(form)
 					form.submit()
 					document.body.removeChild(form)
+					// #endif
+
+					// #ifdef APP
+					// let query = ''
+					// for (const key in data) {
+					// 	query += key + '=' + data[key] + '&'
+					// }
+					// console.log('pages/orderDetail/orderDetail?' + query + '&reqsn=' + lastData.orderSn)
+
+					return
+
+					plus.share.getServices(
+						function (res) {
+							let sweixin = null;
+							for (let i in res) {
+								if (res[i].id == 'weixin') {
+									sweixin = res[i];
+								}
+							}
+							console.log(sweixin);
+							//唤醒微信小程序
+							if (sweixin) {
+								sweixin.launchMiniProgram({
+									// 微信小程序的ID
+									id: 'wxef277996acc166c3', //原始ID
+									type: 2, //微信小程序版本
+									path: 'pages/orderDetail/orderDetail?' + query + '&reqsn=' + lastData.orderSn //跳转的小程序页面位置
+								});
+							}
+						}, function (e) {
+							console.log('获取分享服务列表失败：' + e.message);
+						}
+					);
+					// #endif
+
 				})
 			})
 		},

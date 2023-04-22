@@ -8,12 +8,12 @@
 			<!-- {{ consigneeForm }} -->
 			<view class="main-wrapper">
 				<Field v-for="item in userInfo" :key="item.label" v-model="consigneeForm[item.field]" :data="item" class="field">
-					<template v-if="item.select && item.field === 'consigneeAddress'">
+					<!-- <template v-if="item.select && item.field === 'consigneeAddress'">
 						<PickRegions visible-muti @getRegion="handleGetRegionEnd">
 							<input v-model="consigneeForm.consigneeAddress" type="text" class="uni-input" disabled placeholder="请选择目的地"
 								adjust-position cursor-spacing="180" />
 						</PickRegions>
-					</template>
+					</template> -->
 
 					<template v-if="item.select && item.field === 'isElevator'">
 						<picker :range="columns" style="width: 100%; height: 100%" @change="handleChooseElevator">
@@ -36,7 +36,7 @@
 			<view class="title">已选服务</view>
 
 			<view class="serve-name">
-				<view v-for="(item, index) in serveData.serverContent.split(',')" :key="index" class="serve-item-name">
+				<view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index" class="serve-item-name">
 					<tui-icon margin="0 10rpx 0 0" color="rgb(255, 153, 0)" name="label-fill" :size="20"></tui-icon> {{ item }}
 				</view>
 			</view>
@@ -62,7 +62,8 @@ import { getUserId, throttle } from '../utils'
 import {
 	createRepairOrderApi,
 	payOrderForBeeStewadApi,
-	getIsOpenServerAreaApi
+	getIsOpenServerAreaApi,
+	payOrderForBeeStewadAPPApi
 } from '../api/community-center'
 import { COMMUNITY_ORDER_NO } from '../constant'
 
@@ -77,20 +78,20 @@ export default {
 	data() {
 		return {
 			consigneeForm: {
-				consigneeName: '',
-				consigneeMobile: '',
-				consigneeAddress: '',
-				consigneeAddressDetail: '',
+				consigneeName: '111',
+				consigneeMobile: '18766554433',
+				consigneeAddress: '广东省佛山顺德区',
+				consigneeAddressDetail: 'aaaaaa',
 				isElevator: '有',
-				floor: '',
-				remarks: ''
+				floor: '1',
+				remarks: '1111'
 			},
 			userInfo: [],
 			columns: ['有', '无'],
 			cacheName: 'CONSIGNEE_',
 			showTip: false,
 			loading: false,
-			confirm: () => {}
+			confirm: () => { }
 		}
 	},
 
@@ -167,6 +168,7 @@ export default {
 					title: '请填写完提货信息',
 					icon: 'none'
 				})
+				this.loading = false
 
 				return
 			}
@@ -176,6 +178,8 @@ export default {
 					title: '手机号不合法',
 					icon: 'none'
 				})
+				this.loading = false
+
 
 				return
 			}
@@ -183,6 +187,7 @@ export default {
 			const data = {
 				isVipSetmeal: 1,
 				userId: getUserId(),
+				// userId: 263,
 				orderType: 1,
 				pricingType: 1,
 				paymentMethod: 1,
@@ -204,6 +209,7 @@ export default {
 			const createOrderRes = await createRepairOrderApi(data)
 			uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data)
 			if (createOrderRes.statusCode == 20000) {
+				// #ifdef H5
 				const payResult = await payOrderForBeeStewadApi({
 					userId: getUserId(),
 					orderNo: createOrderRes.data
@@ -239,12 +245,50 @@ export default {
 						icon: 'none'
 					})
 				}
+				// #endif
+
+				// #ifdef APP
+				const payAppesult = await payOrderForBeeStewadAPPApi({
+					userId: getUserId(),
+					orderNo: createOrderRes.data
+				})
+
+				if (payAppesult.statusCode === 20000) {
+					let query = ''
+					for (const key in payAppesult.data) {
+						query += key + '=' + payAppesult.data[key] + '&'
+					}
+
+					plus.share.getServices(
+						function (res) {
+							let sweixin = null;
+							for (let i in res) {
+								if (res[i].id == 'weixin') {
+									sweixin = res[i];
+								}
+							}
+							console.log(sweixin);
+							if (sweixin) {
+								sweixin.launchMiniProgram({
+									id: 'gh_e64a1a89a0ad',
+									type: 0,
+									path: 'pages/orderDetail/orderDetail?' + query
+								});
+							}
+						}, function (e) {
+							console.log('获取分享服务列表失败：' + e.message);
+						}
+					);
+				}
+				// #endif
+
 			} else {
 				uni.showToast({
 					title: createOrderRes.statusMsg,
 					duration: 2000,
 					icon: 'none'
 				})
+				this.loading = false
 			}
 		},
 		// 选择省市区
@@ -279,7 +323,6 @@ export default {
 			let data = consigneeVipInfo
 			if (this.cacheName === 'REPAIR_') {
 				data = data.filter((item) => {
-					console.log(item.field !== 'isElevator')
 					return item.field !== 'isElevator' && item.field !== 'floor'
 				})
 			}

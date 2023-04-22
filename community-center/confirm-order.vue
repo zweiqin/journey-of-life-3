@@ -56,14 +56,12 @@
 </template>
 
 
-
-
-
 <script>
 import { getServiceOrderApi } from "../api/community-center";
-import { getServiceOrderPayApi } from "../api/community-center";
+import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from "../api/community-center";
 import { payOrderGoodsApi } from "../api/goods";
 import { getUserId } from "../utils";
+
 export default {
 	name: "Confirm-order",
 	props: {},
@@ -131,6 +129,8 @@ export default {
 
 		//订单支付
 		async getServiceOrderPay() {
+
+			// #ifdef H5
 			let res = await getServiceOrderPayApi({
 				orderNo: this.orderNo,
 				userId: getUserId(),
@@ -154,9 +154,45 @@ export default {
 			document.body.appendChild(form);
 			form.submit();
 			document.body.removeChild(form);
+			// #endif
+
+			// #ifdef APP
+			const payAppesult = await payOrderForBeeStewadAPPApi({
+				userId: getUserId(),
+				orderNo: this.orderNo
+			})
+
+			if (payAppesult.statusCode === 20000) {
+				let query = ''
+				for (const key in payAppesult.data) {
+					query += key + '=' + payAppesult.data[key] + '&'
+				}
+
+				plus.share.getServices(
+					function (res) {
+						let sweixin = null;
+						for (let i in res) {
+							if (res[i].id == 'weixin') {
+								sweixin = res[i];
+							}
+						}
+						console.log(sweixin);
+						if (sweixin) {
+							sweixin.launchMiniProgram({
+								id: 'gh_e64a1a89a0ad',
+								type: 0,
+								path: 'pages/orderDetail/orderDetail?' + query
+							});
+						}
+					}, function (e) {
+						console.log('获取分享服务列表失败：' + e.message);
+					}
+				);
+			}
+			// #endif
+
 		},
 	},
-	created() { },
 	onLoad(options) {
 		console.log(options);
 		this.name1 = options.name1;
@@ -170,7 +206,7 @@ export default {
 		this.pricingType = options.pricingType;
 		console.log("报价类型", this.pricingType);
 		this.orderNo = options.data;
-		console.log('订单号',this.orderNo);
+		console.log('订单号', this.orderNo);
 		// this.images = JSON.parse(options.images)
 		// console.log('images', this.images);
 		// const imgList = this.images.map(item => { return { goodsType: '团蜂', goodsUrl: item } })
