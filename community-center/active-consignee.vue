@@ -8,12 +8,12 @@
 			<!-- {{ consigneeForm }} -->
 			<view class="main-wrapper">
 				<Field v-for="item in userInfo" :key="item.label" v-model="consigneeForm[item.field]" :data="item" class="field">
-					<!-- <template v-if="item.select && item.field === 'consigneeAddress'">
+					<template v-if="item.select && item.field === 'consigneeAddress'">
 						<PickRegions visible-muti @getRegion="handleGetRegionEnd">
 							<input v-model="consigneeForm.consigneeAddress" type="text" class="uni-input" disabled placeholder="请选择目的地"
 								adjust-position cursor-spacing="180" />
 						</PickRegions>
-					</template> -->
+					</template>
 
 					<template v-if="item.select && item.field === 'isElevator'">
 						<picker :range="columns" style="width: 100%; height: 100%" @change="handleChooseElevator">
@@ -36,7 +36,8 @@
 			<view class="title">已选服务</view>
 
 			<view class="serve-name">
-				<view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index" class="serve-item-name">
+				<view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index"
+					class="serve-item-name">
 					<tui-icon margin="0 10rpx 0 0" color="rgb(255, 153, 0)" name="label-fill" :size="20"></tui-icon> {{ item }}
 				</view>
 			</view>
