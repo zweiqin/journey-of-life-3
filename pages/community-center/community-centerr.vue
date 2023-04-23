@@ -25,8 +25,6 @@
 
 			<!-- 主要的menu区域 -->
 			<MainMenu></MainMenu>
-
-
 		</view>
 
 		<!-- vip -->
@@ -85,7 +83,7 @@ export default {
 		// #ifdef H5
 		if (window.location.href.includes('?code')) {
 			window.location.href =
-				window.location.origin + window.location.pathname + window.location.hash
+				window.location.origin + window.location.pathname
 		}
 		// #endif
 	},
