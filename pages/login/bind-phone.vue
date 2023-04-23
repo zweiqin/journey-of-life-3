@@ -28,6 +28,11 @@
 			<button class="bind-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }" @click="onBind">
 				确定
 			</button>
+
+			<view class="skip" @click="handleSkip">
+				<text>暂时跳过</text>
+				<tui-icon :size="24" name="toright"></tui-icon>
+			</view>
 		</view>
 		<tui-toast ref="toast"></tui-toast>
 	</view>
@@ -42,7 +47,7 @@ import { bindLastUserApi } from '../../api/user'
 import {
 	throttle
 } from '../../utils'
-import { NEW_BIND_ID } from '../../constant'
+import { NEW_BIND_ID, USER_INFO } from '../../constant'
 
 export default {
 	data() {
@@ -140,6 +145,14 @@ export default {
 			await bindMobileForWXApi(this.bindForm)
 			this.ttoast('绑定成功')
 
+			this.handleSkip()
+		},
+
+		handleBack() {
+			uni.navigateBack();
+		},
+
+		handleSkip() {
 			const bindId = uni.getStorageSync(NEW_BIND_ID)
 			if (bindId) {
 				bindLastUserApi({
@@ -155,11 +168,6 @@ export default {
 					url: '/'
 				})
 			}, 1000)
-
-		},
-
-		handleBack() {
-			uni.navigateBack();
 		}
 	},
 
@@ -287,5 +295,13 @@ text {
 			color: #605d52;
 		}
 	}
+}
+
+.skip {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	font-size: 24upx;
+	color: rgb(153, 153, 153);
 }
 </style>

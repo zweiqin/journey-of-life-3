@@ -13,8 +13,8 @@
 
       <tui-list-cell arrow>
         <view class="user-info-item" @click="changeNicknamePopupVisible = true
-                                    isFocus = true
-                                  ">
+                                                    isFocus = true
+                                                  ">
           <view class="title">用户昵称</view>
           <view class="value">{{ userInfo.nickName }}</view>
         </view>
@@ -46,7 +46,7 @@
       </tui-list-cell>
 
       <tui-list-cell>
-        <view class="user-info-item">
+        <view class="user-info-item" @click=" handleBindMobile ">
           <view class="title">手机号</view>
           <view class="value">{{ userInfo.phone || '未绑定' }}</view>
         </view>
@@ -372,6 +372,13 @@ export default {
         title: '请联系客服注销',
       })
     },
+
+    // 绑定手机号
+    handleBindMobile() {
+      if (this.userInfo.weixinOpenid) {
+        uni.navigateTo('/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid)
+      }
+    }
   },
 
   onShow() { },
