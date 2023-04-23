@@ -110,10 +110,12 @@ export default {
       });
     },
 
-    logout({ commit }) {
-      uni.showToast({
-        title: "退出成功",
-      });
+    logout({ commit }, isQuiet) {
+      if (!isQuiet) {
+        uni.showToast({
+          title: "退出成功",
+        });
+      }
       uni.removeStorageSync(USER_ID);
       uni.removeStorageSync(USER_INFO);
       uni.removeStorageSync(USER_TOKEN);
