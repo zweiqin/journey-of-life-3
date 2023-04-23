@@ -1,40 +1,18 @@
 <template>
   <view class="login-container">
-    <image
-      @click="handleBack"
-      class="back-icon"
-      src="../../static/images/new-auth/back.png"
-      mode=""
-    />
+    <image @click="handleBack" class="back-icon" src="../../static/images/new-auth/back.png" mode="" />
 
     <view class="login-main-area">
       <h1>登录</h1>
 
       <tui-form ref="form">
-        <tui-input
-          label="手机号码"
-          padidng="0 0 28rpx 0"
-          borderTop
-          placeholder="请输入手机号码"
-          color="#141000"
-          v-model="loginForm.phone"
-          :focus="focusMap[0]"
-          @confirm="handleClickConfirmType(0)"
-          :confirm-type="keybordEnterText"
-        ></tui-input>
+        <tui-input label="手机号码" padidng="0 0 28rpx 0" borderTop placeholder="请输入手机号码" color="#141000"
+          v-model="loginForm.phone" :focus="focusMap[0]" @confirm="handleClickConfirmType(0)"
+          :confirm-type="keybordEnterText"></tui-input>
 
-        <tui-input
-          class="reset-wrapper"
-          label="验证码"
-          padidng="0 0 28rpx 0"
-          borderTop
-          placeholder="请输入验证码"
-          color="#141000"
-          :focus="focusMap[1]"
-          @confirm="handleClickConfirmType(1)"
-          :confirm-type="keybordEnterText"
-          v-model="loginForm.code"
-        >
+        <tui-input class="reset-wrapper" label="验证码" padidng="0 0 28rpx 0" borderTop placeholder="请输入验证码" color="#141000"
+          :focus="focusMap[1]" @confirm="handleClickConfirmType(1)" :confirm-type="keybordEnterText"
+          v-model="loginForm.code">
           <block slot="right">
             <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">
               获取验证码
@@ -48,34 +26,22 @@
         </tui-input>
       </tui-form>
 
-      <view
-        style="
+      <view style="
           display: flex;
           justify-content: space-between;
           align-items: center;
-        "
-      >
+        ">
         <view class="service-agreement-wrapper">
-          <tui-icon
-            @click="agreementStatus = !agreementStatus"
-            :name="agreementStatus ? 'square-selected' : 'square'"
-            :color="agreementStatus ? '#FFC117' : ''"
-            :size="18"
-          ></tui-icon>
-          <text @click="agreementStatus = !agreementStatus"
-            >我已阅读并同意</text
-          >
+          <tui-icon @click="agreementStatus = !agreementStatus" :name="agreementStatus ? 'square-selected' : 'square'"
+            :color="agreementStatus ? '#FFC117' : ''" :size="18"></tui-icon>
+          <text @click="agreementStatus = !agreementStatus">我已阅读并同意</text>
           <TuanServe @op="agreementStatus = $event">
             <text style="color: #ffc117">《团蜂用户协议》</text>
           </TuanServe>
         </view>
       </view>
 
-      <button
-        @click="onlogin"
-        class="login-btn uni-btn"
-        :style="{ background: btnStatus ? '#FFC117' : '' }"
-      >
+      <button @click="onlogin" class="login-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }">
         登录
       </button>
 
@@ -292,7 +258,7 @@ export default {
           }
           // #endif
         })
-        .catch(errors => {})
+        .catch(errors => { })
     },
 
     // 回退
@@ -356,13 +322,22 @@ export default {
 
     // 微信登陆后续
     async handleWXLoginAfter(res) {
-      // #ifdef H5
-      window.location.href =
-        window.location.origin + window.location.pathname + window.location.hash
-      // #endif
+      // // #ifdef H5
+      // window.location.href =
+      //   window.location.origin + window.location.pathname + window.location.hash
+      // // #endif
       const _this = this
 
       // #ifdef H5
+      // 判断是否已经绑定了手机号
+      if (res.userInfo.phone === '') {
+        uni.navigateTo({
+          url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid + '&userId=' + res.userInfo.userId
+        })
+
+        return
+      }
+
       if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
         try {
           await _this.checkBind({ userId: res.userInfo.userId })
@@ -427,6 +402,7 @@ view,
 text {
   line-height: 1.5;
 }
+
 .login-container {
   width: 100vw;
   min-height: 100vh;

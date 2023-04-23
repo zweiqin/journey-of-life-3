@@ -2,32 +2,19 @@
   <view class="user-detain-info-container">
     <!-- <NewHeader @back="handleBack" title="" position="left" top="61%" padding="40upx 60upx 20upx 0"
 			tabbar="/pages/user/user"></NewHeader> -->
-    <image
-      src="../../static/images/user/back.png"
-      mode="scaleToFill"
-      class="return"
-      @click="handleBack"
-    />
+    <image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
     <view class="section">
       <view class="avatar">
         <view class="image-wrapper">
-          <image
-            :src="userInfo.avatarUrl"
-            mode=""
-            style="width: 100%; height: 100%"
-          />
+          <image :src="userInfo.avatarUrl" mode="" style="width: 100%; height: 100%" />
         </view>
         <text @click="handleChooseImage">更换头像</text>
       </view>
 
       <tui-list-cell arrow>
-        <view
-          class="user-info-item"
-          @click="
-            changeNicknamePopupVisible = true
-            isFocus = true
-          "
-        >
+        <view class="user-info-item" @click="changeNicknamePopupVisible = true
+                    isFocus = true
+                  ">
           <view class="title">用户昵称</view>
           <view class="value">{{ userInfo.nickName }}</view>
         </view>
@@ -38,16 +25,16 @@
           <view class="title">团蜂ID</view>
           <view class="value" style="color: #b0b0af">{{
             userInfo.userId
-          }}</view>
+            }}</view>
         </view>
       </tui-list-cell>
 
-      <tui-list-cell v-if="userInfo.invitationCode">
+      <tui-list-cell v-if=" userInfo.invitationCode ">
         <view class="user-info-item">
           <view class="title">会员编号</view>
           <view class="value" style="color: #b0b0af">{{
             userInfo.invitationCode
-          }}</view>
+            }}</view>
         </view>
       </tui-list-cell>
 
@@ -58,15 +45,15 @@
         </view>
       </tui-list-cell>
 
-      <tui-list-cell arrow>
+      <tui-list-cell arrow @click=" go('/pages/login/bind-phone') ">
         <view class="user-info-item">
           <view class="title">手机号</view>
-          <view class="value">{{ userInfo.phone }}</view>
+          <view class="value">{{ userInfo.phone || '未绑定' }}</view>
         </view>
       </tui-list-cell>
 
       <!-- #ifdef APP -->
-      <tui-list-cell arrow @click="go('/user/info/privacy')">
+      <tui-list-cell arrow @click=" go('/user/info/privacy') ">
         <view class="user-info-item">
           <view class="title">我的隐私</view>
         </view>
@@ -74,7 +61,7 @@
       <!-- #endif -->
 
       <!-- #ifdef H5 -->
-      <tui-list-cell arrow @click="handleBindWxChat">
+      <tui-list-cell arrow @click=" handleBindWxChat ">
         <view class="user-info-item">
           <view class="title">微信账号</view>
           <view class="value">{{ bindPhone || '未绑定' }}</view>
@@ -83,7 +70,7 @@
       <!-- #endif -->
 
       <!-- #ifdef APP -->
-      <tui-list-cell arrow @click="handleCheckedVersion">
+      <tui-list-cell arrow @click=" handleCheckedVersion ">
         <view class="user-info-item">
           <view class="title">检查更新</view>
           <view class="value">当前版本：{{ currentVersion }}</view>
@@ -93,18 +80,14 @@
     </view>
 
     <!-- #ifdef APP -->
-    <view
-      @click="handleDestoryAccount"
-      class="section"
-      style="padding-bottom: 0"
-    >
+    <view @click=" handleDestoryAccount " class="section" style="padding-bottom: 0">
       <button class="uni-btn destory">注销账户</button>
     </view>
     <!-- #endif -->
 
     <view class="logout section">
       <tui-list-cell style="background: rgba(0, 0, 0, 0)">
-        <view @click="isShowModal = true" style="color: #605d52">
+        <view @click=" isShowModal = true " style="color: #605d52">
           退出登录
         </view>
       </tui-list-cell>
@@ -114,35 +97,20 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal
-      @click="handleClickModal"
-      :show="isShowModal"
-      title="提示"
-      content="确定退出登录吗？"
-    ></tui-modal>
+    <tui-modal @click=" handleClickModal " :show=" isShowModal " title="提示" content="确定退出登录吗？"></tui-modal>
 
-    <tui-bottom-popup
-      backgroundColor="transparent"
-      :height="300"
-      :show="changeNicknamePopupVisible"
-      @close="
-        changeNicknamePopupVisible = false
-        isFocus = false
-        newNickname = ''
-      "
-    >
+    <tui-bottom-popup backgroundColor="transparent" :height=" 300 " :show=" changeNicknamePopupVisible " @close="
+      changeNicknamePopupVisible = false
+      isFocus = false
+      newNickname = ''
+    ">
       <view class="nickname">
         <view class="pane">
           <text>修改昵称：</text>
-          <input
-            :focus="isFocus"
-            type="text"
-            v-model.trim="newNickname"
-            :placeholder="userInfo.nickName"
-          />
+          <input :focus=" isFocus " type="text" v-model.trim=" newNickname " :placeholder=" userInfo.nickName " />
         </view>
 
-        <button class="uni-btn" @click="handleCHnageNickName">确认</button>
+        <button class="uni-btn" @click=" handleCHnageNickName ">确认</button>
       </view>
     </tui-bottom-popup>
 
@@ -406,7 +374,7 @@ export default {
     },
   },
 
-  onShow() {},
+  onShow() { },
 
   onLoad() {
     this.queryBindInfo()
@@ -439,12 +407,15 @@ export default {
   // align-items: center;
   // flex-direction: column;
 }
+
 /deep/.header-container {
   padding: 36upx 0 56upx 40upx !important;
 }
+
 /deep/ ::after {
   border-bottom: 0 solid #eaeef1 !important;
 }
+
 .return {
   width: 24upx;
   height: 48upx;
@@ -501,10 +472,12 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding-right: 40upx;
+
   // margin: 20upx 0;
   .title {
     color: #605d52;
   }
+
   .value {
     color: #141000;
   }

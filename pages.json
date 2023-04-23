@@ -213,6 +213,12 @@
       }
     },
     {
+      "path": "pages/login/bind-phone",
+      "style": {
+        "navigationBarTitleText": "绑定手机号"
+      }
+    },
+    {
       "path": "pages/reset-password/reset-password",
       "style": {
         "navigationBarTitleText": "重置密码"
@@ -834,20 +840,20 @@
             "usingComponents": {}
           }
         },
-				{
-					"path":"sever/goldButler/gold-butler",
-					"style": {
-						"navigationBarTitleText": "金管家",
-						"usingComponents": {}
-					}
-				},
-				{
-					"path":"sever/goldButler/orderBook",
-					"style": {
-						"navigationBarTitleText": "预约",
-						"usingComponents": {}
-					}
-				},
+        {
+          "path": "sever/goldButler/gold-butler",
+          "style": {
+            "navigationBarTitleText": "金管家",
+            "usingComponents": {}
+          }
+        },
+        {
+          "path": "sever/goldButler/orderBook",
+          "style": {
+            "navigationBarTitleText": "预约",
+            "usingComponents": {}
+          }
+        },
         {
           "path": "digital-store/information-sentry",
           "style": {

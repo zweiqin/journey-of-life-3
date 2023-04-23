@@ -6,42 +6,29 @@
 			<h1>登录</h1>
 
 			<tui-form ref="form">
-				<tui-input
-					v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top
-					placeholder="请输入手机号码"
+				<tui-input v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top placeholder="请输入手机号码"
 					color="#141000" :focus="focusMap[0]" :confirm-type="keybordEnterText"
-					@confirm="handleClickConfirmType(0)"
-				></tui-input>
-				<tui-input
-					v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码"
-					:focus="focusMap[1]"
+					@confirm="handleClickConfirmType(0)"></tui-input>
+				<tui-input v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码" :focus="focusMap[1]"
 					:confirm-type="keybordEnterText" class="reset-wrapper" :line-left="false"
-					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)"
-				>
+					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)">
 					<block slot="right">
-						<image
-							class="password-status" :src="
-								isShowPassword
-									? '../../static/images/common/view-password .png'
-									: '../../static/images/common/close-password.png'
-							" mode="" @click="isShowPassword = !isShowPassword"
-						/>
+						<image class="password-status" :src="isShowPassword
+								? '../../static/images/common/view-password .png'
+								: '../../static/images/common/close-password.png'
+							" mode="" @click="isShowPassword = !isShowPassword" />
 					</block>
 				</tui-input>
 			</tui-form>
 
-			<view
-				style="
+			<view style="
 	          display: flex;
 	          justify-content: space-between;
 	          align-items: center;
-	        "
-			>
+	        ">
 				<view class="service-agreement-wrapper">
-					<tui-icon
-						:name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
-						:size="18" @click="agreementStatus = !agreementStatus"
-					></tui-icon>
+					<tui-icon :name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
+						:size="18" @click="agreementStatus = !agreementStatus"></tui-icon>
 					<text @click="agreementStatus = !agreementStatus">
 						我已阅读并同意
 					</text>
@@ -83,9 +70,19 @@
 
 <script>
 import loginRule from './rules'
-import { throttle } from '../../utils'
-import { NEW_BIND_ID, USER_ID, USER_INFO, NEW_BIND_ACTIVITY_ID } from '../../constant'
-import { bindLastUserApi, checkBindApi } from '../../api/user'
+import {
+	throttle
+} from '../../utils'
+import {
+	NEW_BIND_ID,
+	USER_ID,
+	USER_INFO,
+	NEW_BIND_ACTIVITY_ID
+} from '../../constant'
+import {
+	bindLastUserApi,
+	checkBindApi
+} from '../../api/user'
 
 const tabbarList = [
 	'/pages/user/user',
@@ -140,7 +137,9 @@ export default {
 			this.bindId = uni.getStorageSync(NEW_BIND_ID)
 
 			try {
-				await this.checkBind({ userId })
+				await this.checkBind({
+					userId
+				})
 			} catch (error) {
 				await this.binding(userId, () => {
 					uni.switchTab({
@@ -177,9 +176,9 @@ export default {
 		keybordEnterText() {
 			return this.agreementStatus &&
 				this.loginForm.password &&
-				this.loginForm.phone
-				? 'done'
-				: 'next'
+				this.loginForm.phone ?
+				'done' :
+				'next'
 		}
 	},
 	methods: {
@@ -204,7 +203,9 @@ export default {
 					// #ifdef H5
 					if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
 						try {
-							await _this.checkBind({ userId: res.userInfo.userId })
+							await _this.checkBind({
+								userId: res.userInfo.userId
+							})
 						} catch (error) {
 							_this.bindId = uni.getStorageSync(NEW_BIND_ID)
 							await _this.binding(res.userInfo.userId, () => {
@@ -314,16 +315,23 @@ export default {
 
 		// 微信登陆后续
 		async handleWXLoginAfter(res) {
-			// #ifdef H5
-			window.location.href =
-				window.location.origin + window.location.pathname + window.location.hash
-			// #endif
 			const _this = this
 
 			// #ifdef H5
+			// 判断是否已经绑定了手机号
+			if (res.userInfo.phone === '') {
+				uni.navigateTo({
+					url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
+				})
+
+				return
+			}
+
 			if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
 				try {
-					await _this.checkBind({ userId: res.userInfo.userId })
+					await _this.checkBind({
+						userId: res.userInfo.userId
+					})
 				} catch (error) {
 					_this.bindId = uni.getStorageSync(NEW_BIND_ID)
 					await _this.binding(res.userInfo.userId, () => {
@@ -333,9 +341,6 @@ export default {
 					})
 				}
 			}
-			// #endif
-
-			// #ifdef H5
 			if (_this.bindId) {
 				await _this.binding(res.userInfo.userId, () => {
 					uni.switchTab({
@@ -343,7 +348,6 @@ export default {
 					})
 				})
 			} else {
-				// #endif
 				if (this.redirect) {
 					// console.log('进来了', this.redirect)
 					if (tabbarList.includes(_this.redirect)) {
@@ -360,7 +364,6 @@ export default {
 						url: '/pages/community-center/community-centerr'
 					})
 				}
-				// #ifdef H5
 			}
 			// #endif
 		}

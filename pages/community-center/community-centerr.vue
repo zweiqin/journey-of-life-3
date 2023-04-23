@@ -81,6 +81,13 @@ export default {
 		// #ifdef APP
 		this.$refs.checkedVersion.checkedVersion(true)
 		// #endif
+
+		// #ifdef H5
+		if (window.location.href.includes('?code')) {
+			window.location.href =
+				window.location.origin + window.location.pathname + window.location.hash
+		}
+		// #endif
 	},
 }
 </script>
