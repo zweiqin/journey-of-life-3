@@ -13,8 +13,8 @@
 
       <tui-list-cell arrow>
         <view class="user-info-item" @click="changeNicknamePopupVisible = true
-                    isFocus = true
-                  ">
+                                    isFocus = true
+                                  ">
           <view class="title">用户昵称</view>
           <view class="value">{{ userInfo.nickName }}</view>
         </view>
@@ -38,14 +38,14 @@
         </view>
       </tui-list-cell>
 
-      <tui-list-cell arrow>
+      <tui-list-cell>
         <view class="user-info-item">
           <view class="title">性别</view>
-          <view class="value">{{ userInfo.gender ? '女' : '男' }}</view>
+          <view class="value" style="color: #b0b0af">{{ userInfo.gender ? '女' : '男' }}</view>
         </view>
       </tui-list-cell>
 
-      <tui-list-cell arrow @click=" go('/pages/login/bind-phone') ">
+      <tui-list-cell>
         <view class="user-info-item">
           <view class="title">手机号</view>
           <view class="value">{{ userInfo.phone || '未绑定' }}</view>

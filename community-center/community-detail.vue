@@ -18,10 +18,9 @@
 				</view>
 			</view>
 			<view class="goods">
-				<image :src="
-					serverUrl ||
-					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-				" alt="" class="img" @click="preview(serverUrl)" />
+				<image :src="serverUrl ||
+						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
+						" alt="" class="img" @click="preview(serverUrl)" />
 				<image src="../static/images/con-center/imgbg.png" mode="" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
@@ -88,8 +87,12 @@
 					<text>快速响应</text>
 					<text>计价器报价</text>
 				</view>
+
+				<!-- #ifdef H5 -->
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
 					class="more" />
+				<!-- #endif -->
+
 			</view>
 		</view>
 		<view class="body" id="norm">
@@ -162,10 +165,14 @@
 		<view class="foot">
 			<view class="list">
 				<view class="online">
+					<!-- #ifdef H5 -->
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
 						class="seek" />
 					<view class="name">在线咨询</view>
+					<!-- #endif -->
 				</view>
+
+
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
 					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>

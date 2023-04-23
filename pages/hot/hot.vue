@@ -1,25 +1,12 @@
 <template>
   <view class="hot-container">
     <view class="header">
-      <image
-        @click="handleBack"
-        class="icon"
-        src="../../static/images/common/back.png"
-        mode=""
-      />
+      <image @click="handleBack" class="icon" src="../../static/images/common/back.png" mode="" />
       <TLocale :icon="false"></TLocale>
-      <view class="search-wrapper">
-        <image
-          class="search-icon"
-          src="../../static/images/index/search.png"
-          mode=""
-        />
+      <view class="search-wrapper" @click="go('/pages/search-page/search-page')">
+        <image class="search-icon" src="../../static/images/index/search.png" mode="" />
         <text class="text">输入你想搜索的产品</text>
-        <image
-          class="camera"
-          src="../../static/images/index/camera.png"
-          mode=""
-        />
+        <image class="camera" src="../../static/images/index/camera.png" mode="" />
       </view>
     </view>
 
@@ -126,6 +113,7 @@ export default {
     .local-wrapper {
       position: relative;
       margin-right: 20upx;
+
       &::after {
         content: '';
         border: 4px solid #ffffff;
@@ -136,6 +124,7 @@ export default {
         top: 50%;
         right: -10px;
       }
+
       /deep/ .locale {
         color: rgb(255, 255, 255);
         font-size: 32upx;

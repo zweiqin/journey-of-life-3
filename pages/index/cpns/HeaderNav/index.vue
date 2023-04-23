@@ -7,44 +7,25 @@
             $store.getters.currentCity || '龙江镇'
           }}</text>
         </TuanLocation>
-        <image
-          class="locale-icon"
-          src="../../../../static/images/new-brand/index/down-arrow.png"
-          mode=""
-        />
+        <image class="locale-icon" src="../../../../static/images/new-brand/index/down-arrow.png" mode="" />
       </view>
 
       <view class="search-wrapper">
-        <image
-          class="search-icon"
-          src="../../../../static/images/new-brand/index/search-icon.png"
-          mode=""
-        />
-        <input
-          @click="go('/pages/search-page/search-page')"
-          type="text"
-          placeholder="请输入你想要的家具"
-        />
+        <image class="search-icon" src="../../../../static/images/new-brand/index/search-icon.png" mode="" />
+        <input @click="go('/pages/search-page/search-page')" type="text" placeholder="请输入你想要的家具" />
       </view>
 
-      <image
-        @click="go('/user/sever/customer-service/customer-service')"
-        class="message-icon"
-        src="../../../../static/images/new-index/message.png"
-        mode=""
-      />
+      <image @click="go('/user/sever/customer-service/customer-service')" class="message-icon"
+        src="../../../../static/images/new-index/message.png" mode="" />
     </view>
 
+
+    <!-- #ifdef H5 -->
     <view class="navs">
-      <view
-        class="item"
-        v-for="(item, index) in menus"
-        :class="{ active: index === current }"
-        :key="index"
-        @click="$emit('change', item.value)"
-        >{{ item.label }}</view
-      >
+      <view class="item" v-for="(item, index) in menus" :class="{ active: index === current }" :key="index"
+        @click="$emit('change', item.value)">{{ item.label }}</view>
     </view>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -82,7 +63,9 @@ export default {
   background-color: #fff;
   padding: 20upx;
   box-sizing: border-box;
+  // #ifdef H5
   height: 206upx;
+  // #endif
 
   &.fixed {
     position: fixed;
@@ -100,10 +83,12 @@ export default {
     .locale-wrapper {
       display: flex;
       align-items: center;
+
       .locale {
         font-size: 32upx;
         line-height: 48upx;
       }
+
       .locale-icon {
         width: 40upx;
         height: 40upx;

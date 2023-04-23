@@ -41,8 +41,11 @@
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
 
+		<!-- #ifdef H5 -->
 		<!-- 经验分享 -->
 		<ArticleList></ArticleList>
+		<!-- #endif -->
+
 
 		<!-- 组件支持 -->
 		<tui-toast ref="toast"></tui-toast>

@@ -1,13 +1,22 @@
 <template>
 	<view class="service-station-pane-container">
+
+		<!-- #ifdef H5 -->
 		<view class="store-name">
 			<view class="item" @click="handleClick(1)" :class="{ active: currentTab === 1 }">团蜂社区</view>
 			<view class="item" @click="handleClick(2)" :class="{ active: currentTab === 2 }">家居大店</view>
 		</view>
+		<!-- #endif -->
+
+
 		<view class="service-station-pane">
 			<view class="top-title">
 				<view class="title">团蜂家居社区服务中心</view>
+
+				<!-- #ifdef H5 -->
 				<button class="uni-btn">进店</button>
+				<!-- #endif -->
+
 			</view>
 			<view class="info">
 				<view class="tag"> 官方直营 </view>
@@ -76,6 +85,9 @@ export default {
 		gap: 0upx 60upx;
 		padding-left: 54upx;
 		padding-top: 36upx;
+		// #ifdef APP
+		padding-bottom: 100upx;
+		// #endif
 
 		&::before {
 			content: '';

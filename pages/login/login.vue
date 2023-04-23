@@ -51,12 +51,14 @@
 			</view>
 
 			<view class="more-login">
+				<!-- #ifdef H5 -->
 				<TuanWXLogin @login="handleWXLoginAfter">
 					<view class="item">
 						<image src="../../static/images/new-auth/wx.png" mode="" />
 						<text>微信登录</text>
 					</view>
 				</TuanWXLogin>
+				<!-- #endif -->
 
 				<view class="item" @click="go('/pages/login/login-message')">
 					<image src="../../static/images/new-auth/message.png" mode="" />
