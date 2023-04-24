@@ -38,11 +38,8 @@
 
 				<view class="words">
 					<view class="title">留言</view>
-					<textarea
-						id="" v-model.trim="opForm.message" placeholder="可在此给留言给商家" cols="2"
-						maxlength="20"
-						placeholder-class="input-text"
-					></textarea>
+					<textarea id="" v-model.trim="opForm.message" placeholder="可在此给留言给商家" cols="2" maxlength="20"
+						placeholder-class="input-text"></textarea>
 				</view>
 			</view>
 			<view class="line-list">
@@ -93,7 +90,7 @@
 
 <script>
 import { getAddressListApi } from '../../api/address'
-import { firstAddCar, submitOrderApi, payOrderGoodsApi } from '../../api/goods'
+import { firstAddCar, submitOrderApi, payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods'
 import { getUserId } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
 import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from '../../constant'
@@ -235,19 +232,21 @@ export default {
 				brandId: _this.orderInfo.brandId,
 				..._this.opForm
 			}
-			submitOrderApi(submitData).then(({ data }) => {
-				uni.setStorageSync(TUAN_ORDER_SN, data.orderSn)
+			submitOrderApi(submitData).then(async ({ data: lastData }) => {
+				uni.setStorageSync(TUAN_ORDER_SN, lastData.orderSn)
+
+				// #ifdef H5
 				payOrderGoodsApi({
-					orderNo: data.orderSn,
+					orderNo: lastData.orderSn,
 					userId: getUserId(),
 					payType: this.activityId ? 6 : 1,
 					activityId: this.activityId // 跟活动（爆品）相关的商品
 				}).then((res) => {
 					const payData = JSON.parse(res.data.h5PayUrl)
+					const data = JSON.parse(payData.data)
 					const form = document.createElement('form')
 					form.setAttribute('action', payData.url)
 					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
 					let input
 					for (const key in data) {
 						input = document.createElement('input')
@@ -259,7 +258,46 @@ export default {
 					document.body.appendChild(form)
 					form.submit()
 					document.body.removeChild(form)
+
 				})
+				// #endif
+
+				// #ifdef APP
+				const payAppesult = await payOrderGoodsAPPApi({
+					userId: getUserId(),
+					orderNo: lastData.orderSn
+				})
+
+				if (payAppesult.errno === 0) {
+
+					let query = ''
+					for (const key in payAppesult.data) {
+						query += key + '=' + payAppesult.data[key] + '&'
+					}
+
+					plus.share.getServices(
+						function (res) {
+							let sweixin = null;
+							for (let i in res) {
+								if (res[i].id == 'weixin') {
+									sweixin = res[i];
+								}
+							}
+							console.log(sweixin);
+							if (sweixin) {
+								sweixin.launchMiniProgram({
+									id: 'gh_e64a1a89a0ad',
+									type: 0,
+									path: 'pages/orderDetail/orderDetail?' + query
+								});
+							}
+						}, function (e) {
+							console.log('获取分享服务列表失败：' + e.message);
+						}
+					);
+				}
+				// #endif
+
 			})
 		},
 

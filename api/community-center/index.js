@@ -215,6 +215,21 @@ export const payOrderForBeeStewadApi = data => {
   )
 }
 
+/**
+ * 订单支付APP
+ */
+export const payOrderForBeeStewadAPPApi = data => {
+  return SheQuRequest1(
+    '/laoa-huozhu/api/hz/order/third/getSybPaySign',
+    data,
+    'post',
+    null,
+    {
+      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
+    }
+  )
+}
+
 // 热门搜索
 export const getHotSearchKeyApi = data => {
   return SheQuRequest(

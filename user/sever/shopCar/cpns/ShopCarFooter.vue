@@ -1,5 +1,5 @@
 <template>
-	<view class="shop-car-header" v-if="shopCarInfo">
+	<view class="shop-car-header" v-if="shopCarInfo && shopCarInfo.cartTotal">
 		<view class="all-check">
 			<tui-icon @click="handleChangeAllGoodsStatus" v-show="currentMode === ON_EDIT" :color="isAllCheck ? '#FFC117' : ''"
 				:size="25" :name="isAllCheck ? 'circle-fill' : 'circle'"></tui-icon>

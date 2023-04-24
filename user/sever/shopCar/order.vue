@@ -2,33 +2,23 @@
   <view order-wrapper>
     <view class="order-container">
       <view class="title-wrapper">
-        <tui-icon
-          @click="handleBack"
-          color="#000"
-          :size="28"
-          name="arrowleft"
-        ></tui-icon>
+        <tui-icon @click="handleBack" color="#000" :size="28" name="arrowleft"></tui-icon>
         <text>确认订单</text>
       </view>
 
       <view class="address-container">
         <view class="bas-info">
           <view class="info" v-if="defaultAddress">
-            收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view
-          >
+            收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
           <view class="" v-else> 请选择收货地址 </view>
-          <view
-            class="right"
-            @click="go('/user/site/site-manage?appoint=true')"
-          >
+          <view class="right" @click="go('/user/site/site-manage?appoint=true')">
             <text>{{ defaultAddress ? '更换' : '去选择' }}</text>
             <tui-icon :size="20" name="arrowright"></tui-icon>
           </view>
         </view>
 
         <view class="address" v-if="defaultAddress">
-          地址： {{ defaultAddress.detailedAddress }}</view
-        >
+          地址： {{ defaultAddress.detailedAddress }}</view>
       </view>
 
       <view class="coupon-container" @click="couponPopupVisible = true">
@@ -40,27 +30,17 @@
       </view>
 
       <view class="goods-container">
-        <view
-          class="goods-info"
-          v-for="(item, index) in goodsInfo"
-          :key="index"
-        >
+        <view class="goods-info" v-for="(item, index) in goodsInfo" :key="index">
           <view class="brand-title">
             <tui-icon :size="20" color="#f87040" name="shop-fill"></tui-icon>
             <text class="brand-name">{{ item.brandName }}</text>
           </view>
 
-          <view
-            class="goods-item"
-            v-for="(goods, index) in item.cartList"
-            :key="index"
-          >
+          <view class="goods-item" v-for="(goods, index) in item.cartList" :key="index">
             <image class="goods-icon" :src="goods.picUrl" mode="" />
             <view class="wrapper">
               <view class="goods-name">{{ goods.goodsName }}</view>
-              <view class="selected-str"
-                >已选：{{ goods.specifications.join(',') }}</view
-              >
+              <view class="selected-str">已选：{{ goods.specifications.join(',') }}</view>
               <view>
                 <text class="goods-price">￥{{ goods.price }}</text> x
                 {{ goods.number }}
@@ -70,24 +50,15 @@
         </view>
       </view>
 
-      <RecommendGoods
-        v-if="goodsInfo && goodsInfo.length"
-        :id="goodsInfo[0].id"
-      ></RecommendGoods>
+      <RecommendGoods v-if="goodsInfo && goodsInfo.length" :id="goodsInfo[0].id"></RecommendGoods>
     </view>
 
     <view class="footer">
-      <view class="tip"
-        >待支付：<text>￥{{ actualPrice }}</text></view
-      >
+      <view class="tip">待支付：<text>￥{{ actualPrice }}</text></view>
       <button class="uni-btn" @click="handleToPay">去支付</button>
     </view>
 
-    <CouponPopup
-      @confirm="handleChooseCoupon"
-      v-model="couponPopupVisible"
-      :cartId="0"
-    ></CouponPopup>
+    <CouponPopup @confirm="handleChooseCoupon" v-model="couponPopupVisible" :cartId="0"></CouponPopup>
   </view>
 </template>
 
@@ -95,7 +66,7 @@
 import { mapGetters } from 'vuex'
 import { getAddressListApi } from '../../../api/address'
 import { getCartCheckoutApi } from '../../../api/cart'
-import { submitOrderApi } from '../../../api/goods'
+import { submitOrderApi, payOrderGoodsAPPApi } from '../../../api/goods'
 import { getSybOrderPayH5 } from '../../../api/order'
 import { SELECT_ADDRESS } from '../../../constant'
 import { getUserId, payFn } from '../../../utils'
@@ -142,7 +113,6 @@ export default {
         couponId: this.couponId,
         useVoucher: 0,
       }).then(({ data }) => {
-        console.log(data)
         this.goodsInfo = data.brandCartgoods
         this.actualPrice = data.actualPrice
         this.couponPrice = data.couponPrice
@@ -185,13 +155,53 @@ export default {
         grouponLinkId: '',
       }
 
-      submitOrderApi(data).then(({ data }) => {
+      submitOrderApi(data).then(async ({ data }) => {
         uni.setStorageSync(PAY_SHORT_ORDER_NO, data.orderSn)
+
+        // #ifdef H5
         getSybOrderPayH5({
           orderNo: data.orderSn,
           userId: getUserId(),
           payType: 1,
-        }).then(res => payFn(res.data))
+        }).then(res => {
+          payFn(res.data)
+        })
+        // #endif
+
+        // #ifdef APP
+        const payAppesult = await payOrderGoodsAPPApi({
+          userId: getUserId(),
+          orderNo: data.orderSn
+        })
+
+        if (payAppesult.errno === 0) {
+
+          let query = ''
+          for (const key in payAppesult.data) {
+            query += key + '=' + payAppesult.data[key] + '&'
+          }
+
+          plus.share.getServices(
+            function (res) {
+              let sweixin = null;
+              for (let i in res) {
+                if (res[i].id == 'weixin') {
+                  sweixin = res[i];
+                }
+              }
+              if (sweixin) {
+                sweixin.launchMiniProgram({
+                  id: 'gh_e64a1a89a0ad',
+                  type: 0,
+                  path: 'pages/orderDetail/orderDetail?' + query
+                });
+              }
+            }, function (e) {
+              console.log('获取分享服务列表失败：' + e.message);
+            }
+          );
+        }
+        // #endif
       })
     },
 
@@ -225,9 +235,11 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../style/mixin.less';
+
 /deep/ .recommend-goods-container {
   padding: 0 !important;
 }
+
 .order-container {
   // .h-flex();
   font-size: 28upx;
@@ -253,6 +265,7 @@ export default {
 
   .address-container {
     margin: 30upx;
+
     .bas-info {
       padding-bottom: 20upx;
       margin-bottom: 20upx;

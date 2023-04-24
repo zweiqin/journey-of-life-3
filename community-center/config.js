@@ -160,7 +160,7 @@ export const consigneeVipInfo = [
   {
     label: "上门地址",
     field: "consigneeAddress",
-    placeholder: "请输入收货地址",
+    placeholder: "请输入上门地址",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png",
     require: true,
     width: 8,
@@ -168,6 +168,7 @@ export const consigneeVipInfo = [
     select: true,
   },
   {
+    label: "详细地址",
     field: "consigneeAddressDetail",
     placeholder: "请输入详细地址",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png",
@@ -369,20 +370,23 @@ export const air = [
     value: 1,
     label: "1匹",
     money: 0,
-  }, {
+  },
+  {
     value: 2,
     label: "2匹",
     money: 100,
-  }, {
+  },
+  {
     value: 3,
     label: "3匹",
     money: 200,
-  }, {
+  },
+  {
     value: 4,
     label: "4匹",
     money: 300,
   },
-]
+];
 
 //评价
 export const navList = [
@@ -402,21 +406,20 @@ export const navList = [
     value: 4,
     label: "追评",
   },
-]
+];
 
 //详情图片
 export const imglist = [
   {
-    value:1,
-    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png",
+    value: 1,
+    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png",
   },
   {
-    value:2,
-    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png",
+    value: 2,
+    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png",
   },
   {
-    value:3,
-    icon:"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png",
+    value: 3,
+    icon: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png",
   },
-]
-
+];

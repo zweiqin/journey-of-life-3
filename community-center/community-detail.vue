@@ -88,8 +88,12 @@
 					<text>快速响应</text>
 					<text>计价器报价</text>
 				</view>
+
+				<!-- #ifdef H5 -->
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
 					class="more" />
+				<!-- #endif -->
+
 			</view>
 		</view>
 		<view class="body" id="norm">
@@ -162,10 +166,14 @@
 		<view class="foot">
 			<view class="list">
 				<view class="online">
+					<!-- #ifdef H5 -->
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
 						class="seek" />
 					<view class="name">在线咨询</view>
+					<!-- #endif -->
 				</view>
+
+
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
 					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>

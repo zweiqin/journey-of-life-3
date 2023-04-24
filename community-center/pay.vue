@@ -1,6 +1,6 @@
 <template>
   <view class="pay-page">
-    <Header title="订单支付"></Header>
+    <Header bgc="#e95d20" title="订单支付"></Header>
     <view class="item">
       <span class="label">需支付:</span>
       <span class="value money">￥{{ payMoney }}</span>
@@ -10,13 +10,13 @@
       <span class="value" @click="copyOrderNo">{{ orderNo }}</span>
     </view>
 
-    <Button @click="handlePay">支付</Button>
+    <Button type="error" @click="handlePay">支付</Button>
   </view>
 </template>
 
 <script>
 import Button from "./components/button.vue";
-import { payOrderForEndApi } from "../api/community-center";
+import { payOrderForEndApi, payOrderForBeeStewadAPPApi } from "../api/community-center";
 import { getUserId, useCopy } from "../utils";
 import Header from './components/header.vue'
 
@@ -31,7 +31,8 @@ export default {
   },
 
   methods: {
-    handlePay() {
+    async handlePay() {
+      // #ifdef H5
       payOrderForEndApi({
         orderNo: this.orderNo,
         userId: getUserId(),
@@ -54,6 +55,43 @@ export default {
         form.submit();
         document.body.removeChild(form);
       });
+      // #endif
+
+
+      // #ifdef APP
+      const payAppesult = await payOrderForBeeStewadAPPApi({
+        userId: getUserId(),
+        orderNo: this.orderNo
+      })
+
+      if (payAppesult.statusCode === 20000) {
+        let query = ''
+        for (const key in payAppesult.data) {
+          query += key + '=' + payAppesult.data[key] + '&'
+        }
+
+        plus.share.getServices(
+          function (res) {
+            let sweixin = null;
+            for (let i in res) {
+              if (res[i].id == 'weixin') {
+                sweixin = res[i];
+              }
+            }
+            console.log(sweixin);
+            if (sweixin) {
+              sweixin.launchMiniProgram({
+                id: 'gh_e64a1a89a0ad',
+                type: 0,
+                path: 'pages/orderDetail/orderDetail?' + query
+              });
+            }
+          }, function (e) {
+            console.log('获取分享服务列表失败：' + e.message);
+          }
+        );
+      }
+      // #endif
     },
 
     // 拷贝
@@ -72,6 +110,7 @@ export default {
 <style lang="less" scoped>
 .pay-page {
   overflow: hidden;
+
   .item {
     display: flex;
     justify-content: space-between;

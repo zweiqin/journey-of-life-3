@@ -25,8 +25,6 @@
 
 			<!-- 主要的menu区域 -->
 			<MainMenu></MainMenu>
-
-
 		</view>
 
 		<!-- vip -->
@@ -57,8 +55,11 @@
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
 
+		<!-- #ifdef H5 -->
 		<!-- 经验分享 -->
 		<ArticleList></ArticleList>
+		<!-- #endif -->
+
 
 		<!-- 组件支持 -->
 		<tui-toast ref="toast"></tui-toast>
@@ -153,6 +154,13 @@ export default {
 	mounted() {
 		// #ifdef APP
 		this.$refs.checkedVersion.checkedVersion(true)
+		// #endif
+
+		// #ifdef H5
+		if (window.location.href.includes('?code')) {
+			window.location.href =
+				window.location.origin + window.location.pathname
+		}
 		// #endif
 	},
 	onLoad(options) {
