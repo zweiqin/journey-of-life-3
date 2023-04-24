@@ -171,7 +171,8 @@ export default {
         // #ifdef APP
         const payAppesult = await payOrderGoodsAPPApi({
           userId: getUserId(),
-          orderNo: data.orderSn
+          orderNo: data.orderSn,
+          payType: 1
         })
 
         if (payAppesult.errno === 0) {

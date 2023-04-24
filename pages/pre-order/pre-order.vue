@@ -265,7 +265,9 @@ export default {
 				// #ifdef APP
 				const payAppesult = await payOrderGoodsAPPApi({
 					userId: getUserId(),
-					orderNo: lastData.orderSn
+					orderNo: lastData.orderSn,
+					payType: this.activityId ? 6 : 1,
+					activityId: this.activityId // 跟活动（爆品）相关的商品
 				})
 
 				if (payAppesult.errno === 0) {
