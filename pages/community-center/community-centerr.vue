@@ -320,7 +320,7 @@ export default {
 					top: 22upx;
 					left: 140upx;
 					animation-iteration-count: infinite;
-					animation-duration: 500ms;
+					animation-duration: 1000ms;
 				}
 			}
 
