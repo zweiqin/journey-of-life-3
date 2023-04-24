@@ -22,7 +22,7 @@
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" />
-				<image src="../static/images/con-center/imgbg.png" mode="" />
+				<image src="../static/images/con-center/imagebg.png" mode="" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view class="goods-price" v-if="!isArtificial">
@@ -531,7 +531,7 @@ export default {
 		.goods {
 			// margin: 0upx 82upx;
 			width: 100%;
-			height: 476upx;
+			height: 640upx;
 			display: flex;
 			justify-content: center;
 			align-items: center;

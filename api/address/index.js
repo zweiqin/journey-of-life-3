@@ -8,7 +8,8 @@
  */
 
 import {
-	RuanRequest
+	RuanRequest,
+	SheQuRequest1,
 } from "../../utils";
 /**
  *
@@ -40,3 +41,6 @@ export const getAddressDetailApi = (data) => {
 export const deleteAddressApi = (data) => {
 	return RuanRequest("/address/delete", data);
 };
+
+//根据地址动态查询对应的数据
+export const queryDynamicDataApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/queryDynamicData', data, 'get')

@@ -26,7 +26,7 @@
 			<!-- 四个服务项 -->
 			<view class="serve-list">
 				<view class="serve-item" @click="handleToServiceListType(item)" v-for="(item, index) in serveList" :key="index
-				">
+					">
 					<view class="image-wrapper">
 						<TuanImage radius="0" :size="40" :src="item.icon"></TuanImage>
 						<!-- <TuanImage class="shadow" :width="30" :height="7"
@@ -34,6 +34,10 @@
 						</TuanImage> -->
 					</view>
 					<text class="name">{{ item.label }}</text>
+					<image :src="item.logo" mode="" class="animate__animated animate__heartBeat" />
+					<image :src="item.flash" mode="" class="animate__animated animate__flash" />
+					<image :src="item.water2" mode="" class="water-down"
+						style="width: 16upx;height: 22upx;top: 18upx;right: 40upx;" />
 				</view>
 			</view>
 
@@ -77,6 +81,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// #abc {
+// 	animation-duration: 10000ms;
+// }
+
 .main-wrapper {
 	position: relative;
 }
@@ -151,12 +159,15 @@ export default {
 	flex-wrap: wrap;
 	margin-top: 36upx;
 	gap: 24upx 0upx;
+
 	.serve-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		width: 130upx;
+		position: relative;
+
 		.image-wrapper {
 			display: flex;
 			justify-content: center;
@@ -169,6 +180,32 @@ export default {
 			font-size: 28upx;
 			padding-top: 4upx;
 		}
+
+		.animate__animated.animate__heartBeat {
+			width: 32upx;
+			height: 32upx;
+			position: absolute;
+			top: -14upx;
+			right: 14upx;
+			animation-iteration-count: infinite;
+		}
+
+		.animate__animated.animate__flash {
+			animation-iteration-count: infinite;
+			width: 60upx;
+			height: 30upx;
+			position: absolute;
+			top: 52upx;
+			left: 51%;
+			transform: translateX(-50%);
+			animation-duration: 2s;
+		}
+
+		.animate__animated.animate__slideInDown {
+			position: absolute;
+			animation-iteration-count: infinite;
+		}
+
 	}
 }
 
@@ -204,4 +241,21 @@ export default {
 		}
 	}
 }
-</style>
+
+.water-down {
+	position: absolute;
+	transition: all 350ms;
+	animation: water-down-ani 1.2s ease-in infinite ;
+}
+
+@keyframes water-down-ani {
+	0% {
+		transform: translateY(0) scale(0.4);
+		opacity: 1;
+	}
+
+	100% {
+		transform: translateY(40upx) scale(1);
+		opacity: 0;
+	}
+}</style>

@@ -31,12 +31,26 @@
 
 		<!-- vip -->
 		<view class="vip-container">
-			<image class="vip-39" src="../../static/images/con-center/new-home/39.9.png" mode=""
-				@click="go('/community-center/vip-center/vip-detail?type=1')" />
+			<view class="left" @click="go('/community-center/vip-center/vip-detail?type=1')">
+				<image class="vip-39" src="../../static/images/con-center/39.png" mode="" />
+				<!-- <image src="../../static/images/con-center/p.png" mode="" class="p" /> -->
+				<!-- <image src="../../static/images/con-center/hezi.png" mode="" class="hezi" /> -->
+				<view class="money">￥39.9</view>
+				<view class="name">清洁套餐</view>
+				<image src="../../static/images/con-center/arrow.png" mode="" class="arrow" />
+			</view>
 			<view class="right">
-				<image src="../../static/images/con-center/new-home/299.png" mode=""
-					@click="go('/community-center/vip-center/vip-detail?type=2')" />
-				<image src="../../static/images/con-center/new-home/1399.png" mode="" @click="empty('套餐升级中')" />
+				<view class="vip-299" @click="go('/community-center/vip-center/vip-detail?type=2')">
+					<image src="../../static/images/con-center/299.png" mode="" />
+					<view class="money">￥299</view>
+					<view class="name">全年金管家套餐</view>
+					<image src="../../static/images/con-center/starflash.png" mode="" class="animate__animated animate__fadeIn" />
+				</view>
+				<view class="vip-1399" mode="" @click="empty('套餐升级中')">
+					<image src="../../static/images/con-center/1399.png" />
+					<view class="money">￥1399</view>
+					<view class="name">全年清洁套餐</view>
+				</view>
 			</view>
 		</view>
 
@@ -49,7 +63,9 @@
 		<!-- 组件支持 -->
 		<tui-toast ref="toast"></tui-toast>
 
-		<PopupInformation popup-type="activity" @click="go('/community-center/vip-center/vip-detail?type=2')">
+
+		<PopupInformation popup-type="activity" :imgUrl="url" v-if="isShowPic"
+			@click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation>
 
 		<!-- #ifdef APP -->
@@ -59,6 +75,8 @@
 </template>
 
 <script>
+import { getAdressDetailByLngLat } from '../../utils/DWHutils'
+import { queryDynamicDataApi } from '../../api/address'
 import TopHead from './cpns/TopHead.vue'
 import MainMenu from './cpns/MainMenu.vue'
 import { bannerListIcon } from './config'
@@ -71,17 +89,80 @@ export default {
 	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation },
 	data() {
 		return {
-			bannerListIcon: Object.freeze(bannerListIcon)
+			bannerListIcon: Object.freeze(bannerListIcon),
+			data: [],
+			url: '',
+			isShowPic: false
+		}
+	},
+	methods: {
+
+		//获取当前定位
+		async getIsOpenServerArea() {
+			const _this = this
+			uni.getLocation({
+				type: 'gcj02',
+				success: function (res) {
+					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+						if (res.status === '1') {
+							const result = res.regeocode
+							// _this.addressDetail = result.addressComponent.township
+
+							_this.address =
+								result.addressComponent.province +
+								result.addressComponent.city +
+								result.addressComponent.district +
+								result.addressComponent.township
+							console.log('address', _this.address);
+
+							if (_this.address) {
+								_this.queryDynamicData()
+							}
+						}
+					})
+				},
+			})
+		},
+
+
+		//根据地址动态查询对应的数据
+		async queryDynamicData() {
+			const res = await queryDynamicDataApi({
+				address: this.address,
+				correspondType: 4
+			})
+			console.log('res', res);
+
+			this.data = res.data
+			console.log('首页弹窗', this.data);
+
+			this.url = this.data[0].url
+			console.log('弹窗图片', this.url);
+
+			if (res.statusCode === 20000) {
+				console.log('statusCode', this.statusCode);
+				this.isShowPic = true
+			}
+
 		}
 	},
 	onShow() {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO);
+
 	},
 	mounted() {
 		// #ifdef APP
 		this.$refs.checkedVersion.checkedVersion(true)
 		// #endif
 	},
+	onLoad(options) {
+
+		this.getIsOpenServerArea()
+
+
+
+	}
+
 }
 </script>
 
@@ -134,10 +215,58 @@ export default {
 			flex-shrink: 0;
 		}
 
-		.vip-39 {
-			width: 340upx;
-			height: 320upx;
-			margin-right: 20upx;
+		.left {
+			position: relative;
+
+			.vip-39 {
+				width: 340upx;
+				height: 320upx;
+				margin-right: 20upx;
+			}
+
+			.p {
+				width: 204upx;
+				height: 158upx;
+				position: absolute;
+				top: 132upx;
+				left: 114upx;
+			}
+
+			.hezi {
+				width: 350upx;
+				height: 320upx;
+				position: absolute;
+				top: 0upx;
+				left: -10upx;
+			}
+
+
+			.money {
+				font-size: 48upx;
+				font-weight: 900;
+				line-height: 72upx;
+				color: #FFFFFF;
+				position: absolute;
+				top: 40upx;
+				left: 24upx;
+			}
+
+			.name {
+				font-size: 32upx;
+				color: #FFFFFF;
+				position: absolute;
+				top: 116upx;
+				left: 30upx;
+			}
+
+			.arrow {
+				width: 48upx;
+				height: 48upx;
+				position: absolute;
+				bottom: 40upx;
+				left: 30upx;
+			}
+
 		}
 
 		.right {
@@ -147,10 +276,77 @@ export default {
 			justify-content: space-between;
 			flex-direction: column;
 
-			image {
+			.vip-299 {
+				position: relative;
 				width: 320upx;
 				height: 150upx;
+
+				image {
+					width: 320upx;
+					height: 150upx;
+				}
+
+				.money {
+					font-size: 36upx;
+					font-weight: bold;
+					line-height: 54upx;
+					color: #FD4D00;
+					position: absolute;
+					top: 26upx;
+					left: 30upx;
+				}
+
+				.name {
+					font-size: 28upx;
+					line-height: 42upx;
+					color: #000000;
+					position: absolute;
+					bottom: 26upx;
+					left: 30upx;
+				}
+
+				.animate__animated.animate__fadeIn {
+					width: 50upx;
+					height: 52upx;
+					position: absolute;
+					top: 22upx;
+					left: 140upx;
+					animation-iteration-count: infinite;
+					animation-duration: 500ms;
+				}
 			}
+
+			.vip-1399 {
+				position: relative;
+				width: 320upx;
+				height: 150upx;
+
+				image {
+					width: 320upx;
+					height: 150upx;
+				}
+
+				.money {
+					font-size: 36upx;
+					font-weight: bold;
+					line-height: 54upx;
+					color: #2DBDE5;
+					position: absolute;
+					top: 26upx;
+					left: 30upx;
+				}
+
+				.name {
+					font-size: 28upx;
+					line-height: 42upx;
+					color: #000000;
+					position: absolute;
+					bottom: 26upx;
+					left: 30upx;
+				}
+			}
+
+
 		}
 	}
 }
