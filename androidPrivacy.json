@@ -9,7 +9,7 @@
     "backToExit" : "false",
     "second" : {
         "title" : "确认提示",
-        "message" : "　　进入应用前，你需先同意<a href='https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/service-agreement/service-agreement'>《服务协议》</a>和<a href='https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/service-agreement//privacy-policy'>《隐私政策》</a>，否则将退出应用。",
+        "message" : "　　进入应用前，你需先同意<a href='https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/service-agreement/service-agreement'>《服务协议》</a>和<a href='https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/service-agreement/privacy-policy'>《隐私政策》</a>，否则将退出应用。",
         "buttonAccept" : "同意并继续",
         "buttonRefuse" : "退出应用"
     },

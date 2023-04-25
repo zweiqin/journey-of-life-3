@@ -70,7 +70,7 @@ export default {
       }
     } else if (this.sts == 1) {
       uni.setNavigationBarTitle({
-        title: '新品推荐'
+        title: '新品发布'
       });
     } else if (this.sts == 2) {
       uni.setNavigationBarTitle({

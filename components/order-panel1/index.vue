@@ -81,7 +81,7 @@
 
     <!-- 猜你喜欢 -->
     <view class="guess">
-      <view class="title">猜你喜欢</view>
+      <view class="title">大家在看</view>
       <view class="guess-goods">
         <RecommendGoods
           :showTitle="false"

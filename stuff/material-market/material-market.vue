@@ -15,7 +15,7 @@
       {{ currentCompany }}
     </view>
 
-    <view class="goods-title" v-if="!(!$data._list.length && $data._status !== 'loading')"> · 商户推荐 · </view>
+    <view class="goods-title" v-if="!(!$data._list.length && $data._status !== 'loading')"> · 优质商户 · </view>
 
     <view class="goods-list">
       <!-- <StuffGoods v-for="item in goodsList" :key="item.id" :data="item"></StuffGoods> -->

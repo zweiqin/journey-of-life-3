@@ -30,7 +30,7 @@
           class="item"
           :style="{ color: !query.sort ? '#ffc117' : '' }"
           @click="handleSearchNormal"
-          >综合推荐</view
+          >综合</view
         >
 
         <view

@@ -66,7 +66,7 @@
           class="item"
           @click="handleSwitchTab(0)"
           :class="{ active: currentTab === 0 }"
-          >推荐</view
+          >好物</view
         >
         <view
           class="item"

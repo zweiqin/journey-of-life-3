@@ -100,7 +100,7 @@
       </view>
 
       <view class="goods-wrapper">
-        <view class="title"> 好物推荐 </view>
+        <view class="title"> 大家都在看 </view>
         <view class="goods-conainer">
           <Goods></Goods>
           <Goods></Goods>

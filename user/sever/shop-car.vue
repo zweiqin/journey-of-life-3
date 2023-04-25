@@ -12,57 +12,26 @@
     <view class="title">
       <view class="left-view">
         <view>
-          <img
-            class="back"
-            @click="handleBack"
-            src="../../static/images/store/chevron-states.png"
-          />
+          <img class="back" @click="handleBack" src="../../static/images/store/chevron-states.png" />
         </view>
         <view class="shop-car-text">购物车</view>
       </view>
       <block>
-        <view class="right-view" @click="collect" v-if="collectstatus == 1"
-          >编辑</view
-        >
-        <view class="right-view" @click="collect" v-if="collectstatus == 2"
-          >完成</view
-        >
+        <view class="right-view" @click="collect" v-if="collectstatus == 1">编辑</view>
+        <view class="right-view" @click="collect" v-if="collectstatus == 2">完成</view>
       </block>
     </view>
-    <view class="nogoods" v-if="listLength == 0"
-      >购物车没有商品，快去选择吧！</view
-    >
+    <view class="nogoods" v-if="listLength == 0">购物车没有商品，快去选择吧！</view>
     <view v-for="(item, id) in cartList" :key="id">
-      <view
-        class="shop-car-goodsDetail"
-        v-for="(item1, id1) in item.cartList"
-        :data-list="item1"
-        :key="id1"
-        @click="window"
-      >
+      <view class="shop-car-goodsDetail" v-for="(item1, id1) in item.cartList" :data-list="item1" :key="id1"
+        @click="window">
         <view v-if="collectstatus == 1">
-          <img
-            v-if="item1.checked"
-            class="shop-car-chose"
-            src="../../static/images/lqb/site/site-defaule.png"
-            alt=""
-            :data-list="item1"
-            @click="chosechecked(item1)"
-          />
-          <img
-            v-else
-            class="shop-car-chose"
-            src="../../static/images/lqb/site/site-nodefaule.png"
-            alt=""
-            :data-list="item1"
-            @click="chosechecked(item1)"
-          />
+          <img v-if="item1.checked" class="shop-car-chose" src="../../static/images/lqb/site/site-defaule.png" alt=""
+            :data-list="item1" @click="chosechecked(item1)" />
+          <img v-else class="shop-car-chose" src="../../static/images/lqb/site/site-nodefaule.png" alt=""
+            :data-list="item1" @click="chosechecked(item1)" />
         </view>
-        <view
-          class="shop-car-chose"
-          v-if="collectstatus == 2"
-          @click="goodsgetout(item1)"
-        >
+        <view class="shop-car-chose" v-if="collectstatus == 2" @click="goodsgetout(item1)">
           x
         </view>
         <img class="shop-car-img" :src="item1.picUrl" />
@@ -74,9 +43,7 @@
             <view class="shop-car-goodsSpec">{{ item1.goodsSn }}</view>
           </view>
           <view style="display: flex; justify-content: space-between">
-            <view class="shop-car-money"
-              >￥<text>{{ item1.price }}</text></view
-            >
+            <view class="shop-car-money">￥<text>{{ item1.price }}</text></view>
             <view class="shop-car-goods-add">
               <view class="reduce" @click="goodsdelete">- </view>
               <view class="shop-car-goodsNumber" style="font-size: 12px">{{
@@ -343,17 +310,17 @@ export default {
       this.goodsAll = res.data;
       this.goodsDetail = res.data.brandCartgoods;
       uni.setStorageSync('CAR_GOODS_DETAIL', this.goodsDetail)
-      uni.setStorageSync('CAR_GOODS_DETAIL_ALL',this.goodsAll)
+      uni.setStorageSync('CAR_GOODS_DETAIL_ALL', this.goodsAll)
 
       cb && typeof cb === "function" && cb();
     },
     //购物车勾选商品价格
-    shopAllMoney(){
+    shopAllMoney() {
       let cartList = this.cartList
       for (let i = 0; i < cartList.length; i++) {
         const a = cartList[i];
-        
-        
+
+
       }
     },
   },
@@ -381,31 +348,38 @@ export default {
     justify-content: space-between;
     margin-top: 74upx;
   }
+
   .left-view {
     display: flex;
   }
+
   .back {
     width: 48upx;
     height: 48upx;
     margin-left: 32upx;
     margin-right: 32upx;
   }
+
   .shop-car-text {
     font-size: 32upx;
   }
+
   .right-view {
     font-size: 32upx;
     margin-right: 46upx;
   }
+
   .shop-car-img {
     width: 120upx;
     height: 120upx;
   }
+
   .shop-car-goodsDetail {
     margin-top: 56upx;
     display: flex;
     margin-left: 40upx;
   }
+
   .shop-car-goodsName {
     height: 34upx;
     width: 400upx;
@@ -417,18 +391,22 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
   .shop-car-view-right-top {
     display: flex;
   }
+
   .shop-car-view-right {
     margin-left: 50upx;
   }
+
   .shop-car-money {
     font-size: 28upx;
     color: #fa5151;
     margin-top: 8upx;
     font-weight: 350;
   }
+
   .shop-car-goodsSpec {
     font-size: 20upx;
     width: 400upx;
@@ -439,11 +417,13 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
   .shop-car-goodsColor {
     font-size: 20upx;
     color: #3d3d3d;
     font-weight: 350;
   }
+
   .shop-car-goods-add {
     display: flex;
     width: 168upx;
@@ -454,18 +434,22 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+
   .reduce {
     margin-left: 20upx;
   }
+
   .add {
     margin-right: 20upx;
   }
+
   .shop-car-chose {
     margin-top: 40upx;
     margin-right: 28upx;
     height: 34upx;
     width: 34upx;
   }
+
   .shop-car-love-title {
     display: flex;
     justify-content: center;
@@ -473,13 +457,16 @@ export default {
     margin-top: 54upx;
     margin-bottom: 24upx;
   }
+
   .shop-car-love-name {
     margin: 0 12upx;
   }
+
   .guessloveleft {
     width: 46upx;
     height: 2upx;
   }
+
   .guessloveright {
     width: 46upx;
     height: 2upx;
@@ -491,6 +478,7 @@ export default {
     flex-wrap: wrap;
     padding-bottom: 112upx;
   }
+
   .shop-car-paymoney {
     background-color: white;
     width: 100%;
@@ -502,31 +490,38 @@ export default {
     bottom: 0;
     z-index: 999;
   }
+
   .shop-car-givemoney {
     font-size: 18px;
     font-weight: 500;
     color: white;
   }
+
   .shop-car-choseall {
     margin-left: 44upx;
     margin-right: 38upx;
   }
+
   .bottom-left {
     display: flex;
   }
+
   .bottom-middle {
     display: flex;
   }
+
   .bottom-right {
     border-radius: 50px;
     background-color: #fa5151;
     padding: 10upx 64upx;
     margin-right: 40upx;
   }
+
   .shop-car-allmoney {
     color: #fa5151;
     font-size: 28upx;
   }
+
   .addcollect {
     display: flex;
     font-size: 28upx;
@@ -541,6 +536,7 @@ export default {
     align-items: center;
     justify-content: center;
   }
+
   .delete {
     display: flex;
     width: 180upx;
@@ -558,6 +554,7 @@ export default {
     justify-content: center;
   }
 }
+
 .shop-car-collect {
   background-color: white;
   width: 100%;
@@ -569,6 +566,7 @@ export default {
   bottom: 0;
   z-index: 999;
 }
+
 .nogoods {
   height: 100upx;
   text-align: center;

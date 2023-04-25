@@ -231,7 +231,7 @@
 
     <!-- 为你推荐 -->
     <view class="recommd-container">
-      <view class="goods-detail"><text>为你推荐</text></view>
+      <view class="goods-detail"><text>更多好物</text></view>
     </view>
 
     <RecommendGoods :showTitle="false" :id="goodsId"></RecommendGoods>
