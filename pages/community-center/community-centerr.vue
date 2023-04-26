@@ -65,7 +65,7 @@
 		<tui-toast ref="toast"></tui-toast>
 
 
-		<PopupInformation popup-type="activity" :imgUrl="url" v-if="isShowPic"
+		<PopupInformation popup-type="activity" :imgUrl="url"
 			@click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation>
 
@@ -117,7 +117,6 @@ export default {
 								result.addressComponent.city +
 								result.addressComponent.district +
 								result.addressComponent.township
-							console.log('address', _this.address);
 
 							if (_this.address) {
 								_this.queryDynamicData()
@@ -188,10 +187,7 @@ export default {
 	},
 	onLoad(options) {
 
-		this.getIsOpenServerArea()
-
-
-
+		// this.getIsOpenServerArea()
 	}
 
 }
@@ -343,7 +339,7 @@ export default {
 					top: 22upx;
 					left: 140upx;
 					animation-iteration-count: infinite;
-					animation-duration: 500ms;
+					animation-duration: 1000ms;
 				}
 			}
 
