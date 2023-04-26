@@ -4,17 +4,15 @@
 		<view class="title">{{ serverNameTwo }}</view>
 		<view class="form">
 			<view class="sub" v-for="item in detailList" :key="item.serverNameThree" @click="handleToServiceDetail(item)">
-				<img :src="
-					item.serverImageUrl ||
+				<img :src="item.serverImageUrl.split(',').find(item => item) ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png'
-				" alt="" class="goods" />
+					" alt="" class="goods" />
 
 				<view class="name">{{ item.serverNameThree }}</view>
 			</view>
 		</view>
 	</view>
 </template>
-
 
 
 
@@ -64,18 +62,6 @@ export default {
 				data: this.scrollTop
 			})
 
-			// const a = this.tips;
-			// console.log("a的信息", a);
-			// if (a === "true") {
-			//   this.type = 1;
-			// } else {
-			//   this.type = 2;
-			// }
-			// uni.navigateTo({
-			//   url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
-
-			// });
-
 			if (!this.userId) {
 				console.log("userId", this.userId);
 				uni.showModal({
@@ -88,24 +74,6 @@ export default {
 							console.log("确定");
 							uni.navigateTo({
 								url: `/pages/login/login`,
-							});
-						} else if (res.confirm) {
-							console.log("取消");
-						}
-					},
-				});
-			} else if (this.type == 2) {
-				console.log("区域判断", this.type);
-				uni.showModal({
-					title: "提示",
-					content: "你所在区域不在接单范围内",
-					showCancel: true,
-					// success: ({ confirm, cancel }) => {}
-					success: function (res) {
-						if (res.confirm) {
-							console.log("确定");
-							uni.navigateTo({
-								url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
 							});
 						} else if (res.confirm) {
 							console.log("取消");

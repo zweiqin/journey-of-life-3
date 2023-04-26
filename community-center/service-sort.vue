@@ -1,13 +1,14 @@
 <template>
 	<view class="service-sort">
+		<!--顶部-->
 		<view class="head">
 			<view class="search-bar">
+				<!--定位-->
 				<view class="location">
 					<!-- #ifdef H5 -->
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
 						class="return" @click="handleBack" />
 					<!-- #endif -->
-
 					<TuanLocation>
 						<text class="locale">{{
 							$store.getters.currentCity || '龙江镇'
@@ -16,6 +17,7 @@
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
 						class="show" @click.stop="handleClick" />
 				</view>
+				<!--搜索栏-->
 				<view class="search-box" @click="goToSearch">
 					<view class="search">
 						<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
@@ -23,29 +25,11 @@
 					</view>
 					<input confirm-type="search" type="text" class="content" placeholder="搜索社区服务，一站式解决家居问题" />
 				</view>
-
-				<!-- <uni-card :is-shadow="false" is-full>
-          <text class="uni-h6"></text>
-        </uni-card>
-        <uni-section
-          title="无边框"
-          subTitle="使用 border = false 取消边框"
-          type="line"
-        >
-          <view class="example-body">
-            <uni-combox
-              :border="false"
-              labelKey="serverTypeName"
-              :candidates="candidates"
-              placeholder="请选择"
-              @input="inoutWatcher"
-              @confirm="jump"
-            ></uni-combox>
-          </view>
-        </uni-section> -->
 			</view>
 		</view>
+		<!--中间区域-->
 		<view class="body" :style="{ height: scrollHeight + 'px' }">
+			<!---->
 			<view class="navbar" ref="nav-barRef">
 				<view class="item" v-for="item in navbar" :class="{ active: item.id === currentTab }" :key="item.serverNameOne"
 					@click="switchTab(item.id)">{{ item.serverNameOne }}</view>

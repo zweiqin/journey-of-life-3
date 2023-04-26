@@ -18,11 +18,17 @@
 				</view>
 			</view>
 			<view class="goods">
-				<image :src="
+
+				<!-- <image :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-				" alt="" class="img" @click="preview(serverUrl)" />
-				<image src="../static/images/con-center/imagebg.png" mode="" />
+				" alt="" class="img" @click="preview(serverUrl)" /> -->
+
+				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0" :height="270" :top="-40">
+				</Carousel>
+
+
+				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view class="goods-price" v-if="!isArtificial">
@@ -59,7 +65,7 @@
 					<view class="price-list" ref="price-list">
 						<item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
 							@choose="switchTab(item)" :serverInfoName="item.serverInfoName" :serverPrice="item.serverPrice"
-							:serverUnit="item.serverUnit" :isArtificialArtificial="item.isArtificialArtificial"></item>
+							:serverUnit="item.serverUnit" :isArtificial="item.isArtificial"></item>
 					</view>
 				</scroll-view>
 			</view>
@@ -184,6 +190,7 @@
 </template>
 
 <script>
+import Carousel from '../components/carousel'
 import uParse from '../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { splitProject } from './componts/utile'
@@ -207,6 +214,7 @@ export default {
 		item,
 		charge,
 		uParse,
+		Carousel,
 	},
 	data() {
 		return {
@@ -226,6 +234,7 @@ export default {
 			currentTab: '',
 			length: '',
 			serverUrl: '',
+			serverUrls: [],
 			index: '',
 			priceType: '',
 			startPrice: '',
@@ -344,8 +353,11 @@ export default {
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
 			console.log('介绍', this.serverIntroduction)
 
-			this.serverUrl = this.serviceDetail[0].serverImageUrl
+			this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find(item => item)
 			console.log('图片', this.serverUrl)
+
+			this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1)
+			console.log('轮播图', this.serverUrls)
 
 			this.startPrice = this.serviceDetail[0].startPrice
 			console.log('起步价', this.startPrice);
@@ -546,12 +558,17 @@ export default {
 			position: relative;
 
 			.img {
-				width: 588upx;
-				height: 340upx;
+				width: 100%;
+				// height: 340upx;
 				position: absolute;
+				z-index: 0;
+
+				/deep/.tui-lazyload__box {
+					background-color: #ffffff !important;
+				}
 			}
 
-			image {
+			.imagebg {
 				width: 100%;
 				height: 100%;
 
