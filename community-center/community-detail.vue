@@ -90,7 +90,7 @@
 			<view class="text-list">
 				<view class="ensure">保障</view>
 				<view class="poster">
-					<text>保修90天</text>
+					<text>保修60天</text>
 					<text>快速响应</text>
 					<text>计价器报价</text>
 				</view>
