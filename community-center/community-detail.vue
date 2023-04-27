@@ -24,7 +24,8 @@
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" /> -->
 
-				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0" :height="270" :top="-40">
+				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
+					:height="270" :top="-40">
 				</Carousel>
 
 
@@ -115,13 +116,13 @@
 			</view>
 			<charge :data="serviceDetail.chargeDetailsList"></charge>
 
-			<view class="explain">
+			<view class="explain" v-if="chargeDescription">
 				<view class="explain-title">收费说明:</view>
 				<view class="explain-text">{{ chargeDescription
 					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
 			</view>
 
-			<view class="background">
+			<!-- <view class="background">
 				<image src="../static/images/con-center/tfbg.png" mode="" class="bg" />
 				<image src="../static/images/con-center/bg-logo.png" mode="" class="bg-logo" />
 				<view class="bg-text"><text>{{ title }}</text><text>就找团蜂社区</text></view>
@@ -129,37 +130,35 @@
 					<image :src="serverUrl" mode="" class="bg-img" />
 				</view>
 				<image src="../static/images/con-center/girl.png" mode="" class="girl-img" />
+			</view> -->
 
-			</view>
-
-			<view class="mid-content">
+			<!-- <view class="mid-content">
 				<view class="mid-text">您的{{ title }}</view>
 				<view class="mid-text">我们<text>全心全意</text>解决</view>
-			</view>
+			</view> -->
 
-			<view class="serverContent-list" v-if="serverContent">
+			<!-- <view class="serverContent-list" v-if="serverContent.length && serverContent.length > 1">
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
-			</view>
+			</view> -->
 
-			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>'">
+			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'">
 				<view class="show-img">
 					<u-parse :content="goodsInfoDetail"></u-parse>
 				</view>
 			</view>
 
-			<view class="middle">
+			<!-- <view class="middle">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
 					class="mid-img" />
 			</view>
 			<view class="process">
 				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
 			</view>
-
-
 			<view class="tips">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
 					class="img-tips" />
-			</view>
+			</view> -->
+
 		</view>
 		<view class="other">
 			<view class="other-service" v-for="item in moreService" :key="item.value"
@@ -336,7 +335,7 @@ export default {
 			console.log('666', this.serviceDetail)
 
 			this.serverInfo = this.serviceDetail[0].serverInfo
-			console.log('serverInfo', this.serverInfo);
+			console.log('服务详情内容', this.serverInfo);
 
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
@@ -934,7 +933,7 @@ export default {
 			.explain-text {
 				font-size: 28upx;
 				color: #8F8D85;
-				padding-top: 20upx;
+				padding-top: 10upx;
 			}
 		}
 
@@ -1075,7 +1074,7 @@ export default {
 		}
 
 		.case-show {
-			padding: 40upx 0;
+			// padding: 40upx 0;
 
 			.text {
 				width: 100%;
@@ -1097,7 +1096,7 @@ export default {
 			}
 
 			.show-img {
-				padding: 40upx 0upx 54upx 0upx;
+				// padding: 40upx 0upx 54upx 0upx;
 
 				.img1 {
 					width: 100%;
