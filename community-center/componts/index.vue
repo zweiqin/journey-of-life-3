@@ -7,7 +7,6 @@
 				<img :src="item.serverImageUrl.split(',').find(item => item) ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png'
 					" alt="" class="goods" />
-
 				<view class="name">{{ item.serverNameThree }}</view>
 			</view>
 		</view>

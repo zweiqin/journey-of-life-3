@@ -29,12 +29,12 @@
 		</view>
 		<!--中间区域-->
 		<view class="body" :style="{ height: scrollHeight + 'px' }">
-			<!---->
+			<!--左边导航栏一级分类-->
 			<view class="navbar" ref="nav-barRef">
 				<view class="item" v-for="item in navbar" :class="{ active: item.id === currentTab }" :key="item.serverNameOne"
 					@click="switchTab(item.id)">{{ item.serverNameOne }}</view>
 			</view>
-
+			<!--二三级分类-->
 			<view class="main">
 				<view class="mid">
 					<scroll-view scroll-y="true" @scroll="scroll" :style="{ height: scrollHeight + 'px' }">

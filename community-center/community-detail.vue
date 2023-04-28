@@ -1,6 +1,7 @@
 <template>
 	<view class="community-detail">
 		<view class="head">
+			<!--顶部区域-->
 			<view class="title-list">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
 					class="return" @click="handleBack" />
@@ -17,18 +18,16 @@
 					</TuanLocation>
 				</view>
 			</view>
-			<view class="goods">
 
+			<!--轮播图-->
+			<view class="goods">
 				<!-- <image :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 				" alt="" class="img" @click="preview(serverUrl)" /> -->
-
 				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
 					:height="270" :top="-40">
 				</Carousel>
-
-
 				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
@@ -39,7 +38,8 @@
 					<view class="logo">￥<text>{{ serverPrice }}</text></view>
 				</view>
 			</view>
-			<!-- <view class="range" v-if="!isArtificial">￥98~128</view> -->
+
+			<!--服务名称和介绍-->
 			<view class="name-list">
 				<view class="name-detail">
 					<view class="name">{{ title }}</view>
@@ -58,9 +58,11 @@
 				</view>
 			</view>
 
-
+			<!--报价形式-->
 			<view class="type" v-if="isArtificial">一口价</view>
 			<view class="type" v-if="!isArtificial">人工报价</view>
+
+			<!--服务4级分类的一口价-->
 			<view v-if="isArtificial">
 				<scroll-view scroll-x="true">
 					<view class="price-list" ref="price-list">
@@ -70,8 +72,12 @@
 					</view>
 				</scroll-view>
 			</view>
+
+			<!--服务4级分类的人工报价-->
 			<view class="start-price" v-if="!isArtificial">￥<text>{{ startPrice || '30' }}</text>/起</view>
 		</view>
+
+		<!--服务地址自动定位和选择-->
 		<view class="add">
 			<view class="add-list" @click="handleToAddress">
 				<view class="left">
@@ -87,6 +93,8 @@
 				<image src="../static/images/con-center/shut.png" mode="" class="close" v-if="type == 2" />
 			</view>
 		</view>
+
+		<!--保障-->
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
@@ -103,19 +111,23 @@
 
 			</view>
 		</view>
+
 		<view class="body" id="norm">
 			<!-- <view class="top">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
 					class="top-img" />
 			</view> -->
-
+			<!--收费标准,服务内容,用户评价-->
 			<view class="top-list">
 				<view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
 				<view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
 				<view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
 			</view>
+
+			<!--收费标准-->
 			<charge :data="serviceDetail.chargeDetailsList"></charge>
 
+			<!--收费说明-->
 			<view class="explain" v-if="chargeDescription">
 				<view class="explain-title">收费说明:</view>
 				<view class="explain-text">{{ chargeDescription
@@ -141,6 +153,7 @@
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
 			</view> -->
 
+			<!--服务详情内容-->
 			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'">
 				<view class="show-img">
 					<u-parse :content="goodsInfoDetail"></u-parse>
@@ -160,6 +173,7 @@
 			</view> -->
 
 		</view>
+		<!--其他服务-->
 		<view class="other">
 			<view class="other-service" v-for="item in moreService" :key="item.value"
 				@click="handleToServiceListHome(item.value)">
@@ -168,6 +182,8 @@
 					class="show" />
 			</view>
 		</view>
+
+		<!--底部在线咨询和立即下单和预约-->
 		<view class="foot">
 			<view class="list">
 				<view class="online">
@@ -177,14 +193,13 @@
 					<view class="name">在线咨询</view>
 					<!-- #endif -->
 				</view>
-
-
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
 					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
 				</view>
 			</view>
 		</view>
+
 	</view>
 </template>
 

@@ -1,5 +1,6 @@
 <template>
 	<view class="community-order">
+		<!--顶部完善服务信息-->
 		<view class="title-list">
 			<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
 				class="return" @click="handleBack" />
@@ -7,13 +8,15 @@
 		</view>
 
 		<view class="top" v-if="price">
+			<!--图片-->
 			<view class="goods">
-				<img :src="
-					serverImgUrl ||
+				<img :src="serverImgUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-				" alt="" class="shop" />
+					" alt="" class="shop" />
 			</view>
+			<!--服务名称-->
 			<view class="title-name">{{ name }}</view>
+			<!--价格-->
 			<view class="price-list">
 				<view class="logo">￥</view>
 				<view class="number">{{ price }}</view>
@@ -21,10 +24,10 @@
 				<view class="slash">/</view>
 				<view class="unit">{{ unit }}</view>
 			</view>
+			<!--选择的服务类型-->
 			<view class="choice-list">
 				<view class="choice">已选</view>
 				<view class="type">{{ type }}</view>
-
 				<!-- <view class="logo">￥</view>
         <view class="number">{{ price }}</view> -->
 			</view>
@@ -46,6 +49,7 @@
 			</view>
 		</template>
 		<view class="body">
+			<!--人工报价显示服务类型-->
 			<template v-if="!price">
 				<view class="top-list">
 					<view class="item-type">
@@ -55,11 +59,11 @@
 					<view class="text-type">{{ name }}</view>
 				</view>
 			</template>
+			<!--上传图片-->
 			<view class="item-image">
 				<view class="tag">*</view>
 				<view class="name">物品图片</view>
 			</view>
-
 			<view class="upload-list">
 				<view class="upload-pane">
 					<view style="display: flex; flex-wrap: wrap">
@@ -81,7 +85,7 @@
 					<image v-else-if="imgUrl" class="iamge-background" :src="imgUrl" mode="" />
 				</view>
 			</view>
-
+			<!--需求说明-->
 			<view class="explain">
 				<view class="text1">需求说明</view>
 				<view class="text2">(选填)</view>
@@ -98,6 +102,7 @@
 					</view>
 				</view>
 			</view>
+			<!--底部按钮-->
 			<view class="foot">
 				<view class="on" @click="handleToServiceInformation">确认</view>
 			</view>
@@ -145,7 +150,7 @@ export default {
 			//   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
 			// });
 
-		
+
 
 			uni.showToast({
 				title: "请上传物品图片",

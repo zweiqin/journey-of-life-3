@@ -1,11 +1,13 @@
 <template>
 	<view class="customer-information">
+		<!--顶部完善服务信息-->
 		<view class="title-list">
 			<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
 				class="return" @click="handleBack" />
 			<view class="title">完善服务信息</view>
 		</view>
 		<view class="top">
+			<!--联系电话-->
 			<view class="iphone-list">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png" alt=""
 					class="iphone" />
@@ -25,51 +27,22 @@
 					<input class="phone" v-model="phoneNumber" placeholder="请输入手机号" placeholder-class="input-placeholder" />
 				</view>
 			</view>
+			<!--填写上门地址-->
 			<view class="address-list">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ihtpa3x378wrofqdiqrj.png" alt=""
 					class="location" />
 				<view class="text">填写上门地址</view>
 			</view>
 
-			<view class="area" style="
-																						          position: relative;
-																						          display: flex;
-																						          justify-content: space-between;
-																						          margin-top: 30upx;
-																						          border-bottom: 2upx solid #d8d8d8;
-																						        ">
-				<view class="diqu" style="
-																						            height: 90upx;
-																						            display: flex;
-																						            align-items: center;
-																						            font-size: 32upx;
-																						            color: #3662ec;
-																						          ">所在地区</view>
-				<JCity @confirm="City($event.area)" :text="address" style="
-																						            padding-top: 24upx;
-																						            width: 78%;
-																						            height: 90upx;
-																						            border-radius: 20upx;
-																						            padding-left: 20upx;
-																						            box-sizing: border-box;
-																						            font-size: 30upx;
-																						          ">
+			<view class="area"
+				style="position: relative;display: flex;justify-content: space-between;margin-top: 30upx; border-bottom: 2upx solid #d8d8d8;  ">
+				<view class="diqu" style="height: 90upx;display: flex;align-items: center;font-size: 32upx;color: #3662ec;">所在地区
+				</view>
+				<JCity @confirm="City($event.area)" :text="address"
+					style="padding-top: 24upx; width: 78%; height: 90upx; border-radius: 20upx; padding-left: 20upx; box-sizing: border-box; font-size: 30upx; ">
 				</JCity>
-
-				<!-- <JIcon
-          type="locale"
-          width="34"
-          height="40"
-          style="position: absolute; top: 20upx; right: 20upx"
-        ></JIcon> -->
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png" alt=""
-					class="location" style="
-																						            width: 40upx;
-																						            height: 40upx;
-																						            position: absolute;
-																						            top: 20upx;
-																						            right: 20upx;
-																						          " />
+					class="location" style="width: 40upx; height: 40upx; position: absolute; top: 20upx; right: 20upx; " />
 			</view>
 
 			<view class="add-list">
@@ -79,15 +52,9 @@
 						placeholder-class="input-placeholder" />
 				</view>
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png" alt=""
-					class="edit" style="
-																						            width: 32upx;
-																						            height: 32upx;
-																						            position: absolute;
-																						            right: 20upx;
-																						            bottom: 30upx;
-																						          " />
+					class="edit" style=" width: 32upx; height: 32upx; position: absolute; right: 20upx; bottom: 30upx; " />
 			</view>
-
+			<!--期望上门时间-->
 			<view class="time-list">
 				<view class="left">
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png" alt=""
@@ -96,23 +63,9 @@
 				</view>
 
 				<view class="right">
-					<!-- <uni-section
-            :title="'日期时间范围用法：' + '[' + datetimerange + ']'"
-            type="line"
-          ></uni-section>
-          <view class="example-body">
-            <uni-datetime-picker
-              v-model="datetimerange"
-              type="datetimerange"
-              rangeSeparator="至"
-            />
-          </view> -->
-
 					<template>
 						<view class="tiem-list">
 							<chooseTime @choose="handleChoose" v-model="show"></chooseTime>
-							<!-- <button class="btn-show-btn" @click="show = true"></button> -->
-
 							<view class="choice-time" @click="show = true">
 								<view class="input">{{ datetimerange || '选择时间' }}</view>
 								<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
@@ -123,14 +76,13 @@
 				</view>
 			</view>
 		</view>
-
+		<!--服务数量加减-->
 		<view class="middle">
 			<view class="middle1">
 				<view class="detail">
-					<img :src="
-						imgUrl ||
+					<img :src="imgUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-					" alt="" class="goods" />
+						" alt="" class="goods" />
 					<view class="item">
 						<view class="text">{{ name1 }}</view>
 						<template v-if="pricingType == 1">
@@ -155,10 +107,9 @@
 			</view>
 			<view v-if="id2 == 97" class="middle2">
 				<view class="detail">
-					<img :src="
-						imgUrl ||
+					<img :src="imgUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-					" alt="" class="goods" />
+						" alt="" class="goods" />
 					<view class="item">
 						<view class="text">匹数</view>
 						<!-- <view class="price-list">
@@ -206,9 +157,10 @@
 				</view>
 			</template>
 		</view>
+		<!--底部按钮-->
 		<view class="foot1" :style="{
-			transform: show ? 'translateY(168upx)' : 'translateY(0)',
-		}" v-if="pricingType == 1">
+				transform: show ? 'translateY(168upx)' : 'translateY(0)',
+			}" v-if="pricingType == 1">
 			<view class="price-list">
 				<view class="logo">￥</view>
 				<view class="number">{{ oughtPrice }}</view>
@@ -218,8 +170,8 @@
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
 		<view class="foot2" :style="{
-			transform: show ? 'translateY(168upx)' : 'translateY(0)',
-		}" v-if="pricingType == 2">
+				transform: show ? 'translateY(168upx)' : 'translateY(0)',
+			}" v-if="pricingType == 2">
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
 	</view>
