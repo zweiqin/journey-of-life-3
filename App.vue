@@ -24,7 +24,7 @@ export default {
     // 		history.replaceState({}, '', path)
     // 	}
     http.getCartCount()
-
+		
     // }
 
     // getUserId();

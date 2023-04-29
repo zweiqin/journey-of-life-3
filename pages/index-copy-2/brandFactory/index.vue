@@ -2,7 +2,7 @@
   <view class="brandFactory-container">
     <view class="filter-type fix-top" :style="{ top: height + 'px' }">
       <view class="main-pane">
-        <view class="item">推荐</view>
+        <view class="item">热销</view>
         <view class="item">新中式</view>
         <view class="item">北欧</view>
         <view class="item">极简</view>

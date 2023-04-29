@@ -15,7 +15,7 @@
     </view>
 
     <view class="text">
-      装修非常棒，是我喜欢的风格，强烈推荐这个设计公司。
+      装修非常棒，是我喜欢的风格
     </view>
 
     <ImgPriview

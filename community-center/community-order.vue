@@ -8,10 +8,9 @@
 
 		<view class="top" v-if="price">
 			<view class="goods">
-				<img :src="
-					serverImgUrl ||
+				<img :src="serverImgUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-				" alt="" class="shop" />
+					" alt="" class="shop" />
 			</view>
 			<view class="title-name">{{ name }}</view>
 			<view class="price-list">
@@ -145,7 +144,7 @@ export default {
 			//   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
 			// });
 
-		
+
 
 			uni.showToast({
 				title: "请上传物品图片",

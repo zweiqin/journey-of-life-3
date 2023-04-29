@@ -1,7 +1,7 @@
 export const brandClassify = [
     {
         value: 0,
-        label: "推荐",
+        label: "热销",
         keyWord:"团蜂"
     }, {
         value: 1,

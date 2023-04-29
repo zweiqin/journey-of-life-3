@@ -127,10 +127,9 @@
 		<view class="middle">
 			<view class="middle1">
 				<view class="detail">
-					<img :src="
-						imgUrl ||
+					<img :src="imgUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-					" alt="" class="goods" />
+						" alt="" class="goods" />
 					<view class="item">
 						<view class="text">{{ name1 }}</view>
 						<template v-if="pricingType == 1">
@@ -155,10 +154,9 @@
 			</view>
 			<view v-if="id2 == 97" class="middle2">
 				<view class="detail">
-					<img :src="
-						imgUrl ||
+					<img :src="imgUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-					" alt="" class="goods" />
+						" alt="" class="goods" />
 					<view class="item">
 						<view class="text">匹数</view>
 						<!-- <view class="price-list">
@@ -207,8 +205,8 @@
 			</template>
 		</view>
 		<view class="foot1" :style="{
-			transform: show ? 'translateY(168upx)' : 'translateY(0)',
-		}" v-if="pricingType == 1">
+				transform: show ? 'translateY(168upx)' : 'translateY(0)',
+			}" v-if="pricingType == 1">
 			<view class="price-list">
 				<view class="logo">￥</view>
 				<view class="number">{{ oughtPrice }}</view>
@@ -218,8 +216,8 @@
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
 		<view class="foot2" :style="{
-			transform: show ? 'translateY(168upx)' : 'translateY(0)',
-		}" v-if="pricingType == 2">
+				transform: show ? 'translateY(168upx)' : 'translateY(0)',
+			}" v-if="pricingType == 2">
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
 	</view>
@@ -505,6 +503,7 @@ export default {
 		//根据用户地址判断该区域是否开通了站长
 		async getIsOpenServerArea() {
 			const _this = this
+			// #ifdef H5
 			uni.getLocation({
 				type: 'gcj02',
 				success: function (res) {
@@ -529,6 +528,14 @@ export default {
 					})
 				},
 			})
+			// #endif
+
+			// #ifdef APP
+			const locationInfo = this.$store.state.location
+			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
+			this.a()
+			this.addressDetail = locationInfo.detailAddress.slice(_this.address.length)
+			// #endif
 		},
 	},
 	created() { },
@@ -561,24 +568,6 @@ export default {
 		this.getServicePrice()
 		this.getUserInfoById()
 		this.getIsOpenServerArea()
-
-		// const _this = this;
-		// uni.getLocation({
-		//   type: "gcj02",
-		//   success: function (res) {
-		//     getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-		//       if (res.status === 0) {
-		//         const result = res.result;
-		//         _this.address =
-		//           result.address_component.province +
-		//           result.address_component.city +
-		//           result.address_component.district;
-
-		//         _this.addressDetail = result.address_component.street_number;
-		//       }
-		//     });
-		//   },
-		// });
 	},
 }
 </script>

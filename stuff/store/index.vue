@@ -278,7 +278,7 @@ export default {
       });
       this.catalogList = res.data.catalogList;
       console.log(this.catalogList);
-      const a = this.catalogList.unshift({ id: 0, name: "推荐" });
+      const a = this.catalogList.unshift({ id: 0, name: "全部" });
     },
 
     //商品分类接口

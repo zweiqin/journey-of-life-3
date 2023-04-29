@@ -59,12 +59,7 @@
 
     <!-- nav -->
     <view class="nav">
-      <view
-        class="item"
-        v-for="item in navs"
-        :key="item.label"
-        @click="navTouch(item.url)"
-      >
+      <view class="item" v-for="item in navs" :key="item.label" @click="navTouch(item.url)">
         <img class="img" :src="item.icon" alt="" />
         <span>{{ item.label }}</span>
       </view>
@@ -72,21 +67,10 @@
 
     <!-- main -->
     <view class="main">
-      <StrictSelection
-        :channel="channel"
-        :discount="discount"
-        :explosion="explosion"
-        :brandList="brandList"
-        :guessLike="guessLike"
-        :goodlist1="goodlist1"
-        :goodlist2="goodlist2"
-        :goodlist3="goodlist3"
-        v-show="currentNav === 1"
-      ></StrictSelection>
-      <BrandFactory
-        :BrandFactory="BrandFactory"
-        v-show="currentNav === 2"
-      ></BrandFactory>
+      <StrictSelection :channel="channel" :discount="discount" :explosion="explosion" :brandList="brandList"
+        :guessLike="guessLike" :goodlist1="goodlist1" :goodlist2="goodlist2" :goodlist3="goodlist3"
+        v-show="currentNav === 1"></StrictSelection>
+      <BrandFactory :BrandFactory="BrandFactory" v-show="currentNav === 2"></BrandFactory>
       <!-- <Design v-show="currentNav === 3"></Design>
       <view v-show="currentNav === 4">
         <Carousel></Carousel>
@@ -109,10 +93,7 @@
         <img :src="require('../../static/images/index/shop-car.png')" alt="" />
       </view>
       <view class="item" @click="backToTop">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5eyamrkxkolwe4ebzf4p.png"
-          alt=""
-        />
+        <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5eyamrkxkolwe4ebzf4p.png" alt="" />
       </view>
     </view>
   </view>
@@ -338,6 +319,7 @@ export default {
       }
     },
     getLocation() {
+      // #ifdef H5
       this.address = "定位中...";
       const _this = this;
       uni.getLocation({
@@ -358,6 +340,12 @@ export default {
             });
         },
       });
+      // #endif
+
+      // #ifdef APP
+			const locationInfo = this.$store.state.location
+			this.address = locationInfo.locationInfo.township
+			// #endif
     },
 
     handleClick() {
@@ -416,13 +404,16 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 20upx;
+
   .brief {
     display: flex;
+
     .brief-img {
       width: 32upx;
       height: 32upx;
       margin-right: 6upx;
     }
+
     .brief-text {
       color: #999;
       font-family: auto;
@@ -430,30 +421,36 @@ export default {
     }
   }
 }
+
 .affiche {
   display: flex;
   align-items: center;
   padding: 0 26upx;
+
   .bell {
     width: 40upx;
     height: 40upx;
   }
+
   .title {
     color: #fa5151;
     font-family: auto;
     font-size: 28upx;
     margin-left: 22upx;
   }
+
   .text-swiper {
     flex: 1;
 
     height: 45upx;
+
     .swiper-text {
       height: 40upx;
       font-family: auto;
       display: flex;
       align-items: center;
       margin-left: 22upx;
+
       view {
         overflow: hidden;
         color: rgba(0, 0, 0, 0.85);

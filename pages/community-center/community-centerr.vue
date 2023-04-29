@@ -65,8 +65,7 @@
 		<tui-toast ref="toast"></tui-toast>
 
 
-		<PopupInformation popup-type="activity" :imgUrl="url"
-			@click="go('/community-center/vip-center/vip-detail?type=2')">
+		<PopupInformation popup-type="activity" :imgUrl="url" @click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation>
 
 		<!-- #ifdef APP -->
@@ -101,6 +100,7 @@ export default {
 		//获取当前定位
 		async getIsOpenServerArea() {
 			const _this = this
+			// #ifdef H5
 			uni.getLocation({
 				type: 'gcj02',
 				success: function (res) {
@@ -122,6 +122,17 @@ export default {
 					})
 				},
 			})
+			// #endif
+
+			// #ifdef APP
+			const locationInfo = this.$store.state.location
+			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district + locationInfo.locationInfo.township
+			this.addressDetail = locationInfo.detailAddress
+
+			if (this.address) {
+				_this.queryDynamicData()
+			}
+			// #endif
 		},
 
 

@@ -160,7 +160,7 @@
 				></Carousel>
 			</Pane>
 
-			<Pane title="店铺推荐">
+			<Pane title="店铺">
 				<view class="wrapper"><StuffStore v-for="item in brandList" :key="item.id" :name="item.name" :picUrl="item.picUrl" :desc="item.desc" :id="item.id"></StuffStore></view>
 			</Pane>
 

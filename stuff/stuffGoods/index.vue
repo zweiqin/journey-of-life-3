@@ -105,6 +105,7 @@ export default {
     getLocation() {
       this.addressDetail = '定位中...'
       const _this = this
+      // #ifdef H5
       uni.getLocation({
         type: 'gcj02',
         success: function (res) {
@@ -121,6 +122,12 @@ export default {
             })
         },
       })
+      // #endif
+
+      // #ifdef APP
+      const locationInfo = this.$store.state.location
+      this.addressDetail = locationInfo.locationInfo.township
+      // #endif
     },
 
     //获取商品列表接口

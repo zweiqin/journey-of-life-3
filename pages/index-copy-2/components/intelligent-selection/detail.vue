@@ -43,14 +43,14 @@
     <line-title title="套餐详情"></line-title>
     <u-parse :content="goodsInfoDetail"></u-parse>
 
-    <line-title title="更多套餐推荐"></line-title>
+    <line-title title="更多套餐"></line-title>
     <view class="item" @click="handleViewDetail" v-for="item in 20" :key="item">
       <image
         src="https://img2.baidu.com/it/u=4126568663,2462169725&fm=253&fmt=auto&app=120&f=JPEG?w=420&h=640"
         mode=""
       />
       <view class="info">
-        <view class="name">全无套餐</view>
+        <view class="name">全屋套餐</view>
         <view class="price-text">15-20万</view>
         <view class="desc">
           <text>1室1房一厅 | </text>
@@ -58,7 +58,7 @@
           <text>80平</text>
         </view>
         <view class="tags">
-          <view class="tag">精品推荐</view>
+          <view class="tag">精品热销</view>
           <view class="tag">百搭优选</view>
         </view>
       </view>

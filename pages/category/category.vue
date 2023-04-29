@@ -81,7 +81,7 @@ export default {
       categoryList: [
         {
           categoryId: 0,
-          categoryName: "推荐",
+          categoryName: "全部",
         },
         {
           categoryId: 1,

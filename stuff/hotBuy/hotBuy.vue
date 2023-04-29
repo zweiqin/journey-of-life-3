@@ -103,7 +103,7 @@ export default {
       this.stuffCategoryList = res.data.filterCategoryList;
       this.stuffCategoryList.unshift({
         value: 0,
-        label: "推荐",
+        label: "全部",
       });
       this.stuffGoodsList = res.data.goodsList;
       this.stuffGoodsList1 = res.data.goodsList;

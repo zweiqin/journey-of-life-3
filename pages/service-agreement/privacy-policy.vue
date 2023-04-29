@@ -287,8 +287,7 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">信息说明：我们会根据具体的场景请求您提供对应的信息并会严格依法保护您 的个人信息，例如下单需要您提供联系人信息、联系方式、收货地址信息，撰
 					写带图评价时需要提供昵称、头像、相关评价图片</span><span style="font-family:Calibri; font-size:10.5pt">/</span><span
-					style="font-family:宋体; font-size:10.5pt">视频等发布内容。此外，如 果您愿意额外补充您的其他个人资料，将有助于我们为您提供更加个性化的服
-					务，但如果您不提供该等信息，不会影响您使用我们产品</span><span style="font-family:Calibri; font-size:10.5pt">/</span><span
+					style="font-family:宋体; font-size:10.5pt">视频等发布内容。</span><span style="font-family:Calibri; font-size:10.5pt">/</span><span
 					style="font-family:宋体; font-size:10.5pt">服务的基本功能。 除法律另有规定外，我们仅会在实现目的所必需的最短时间内留存您的相关个
 					人信息。如您希望详细了解我们所收集的具体各项个人信息及对应的场景，请 查阅概要后的隐私政策正文。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span

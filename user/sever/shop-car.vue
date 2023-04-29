@@ -56,19 +56,6 @@
       </view>
     </view>
     <view class="shop-car-love">
-      <!-- <view class="shop-car-love-title">
-        <img
-          src="../../static/images/common/guesslove-left.png"
-          alt=""
-          class="guessloveleft"
-        />
-        <view class="shop-car-love-name">猜你喜欢</view>
-        <img
-          src="../../static/images/common/guesslove-right.png"
-          alt=""
-          class="guessloveright"
-        />
-      </view> -->
       <view class="shop-car-love-goods">
         <RecommendGoods></RecommendGoods>
       </view>

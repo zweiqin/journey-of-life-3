@@ -188,7 +188,7 @@ export default {
         this.filterCategoryList = res.data.filterCategoryList;
         this.filterCategoryList.unshift({
           value: 0,
-          label: "推荐",
+          label: "热销",
         });
       } else {
         uni.showToast({
@@ -244,7 +244,7 @@ export default {
     if (this.currentTab == 1) {
       uni.showModal({
         title: "提示",
-        content: "推荐商品加载完毕，是否查看更多商品？",
+        content: "热销商品加载完毕，是否查看更多商品？",
         showCancel: true,
         success: ({ confirm, cancel }) => {
           if (confirm) {

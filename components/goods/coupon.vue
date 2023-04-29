@@ -8,7 +8,7 @@
 -->
 <template>
   <view class="background">
-    <view class="top-title">热销推荐</view>
+    <view class="top-title">热销产品</view>
     <img
       class="middle-img"
       :src="

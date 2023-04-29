@@ -1,6 +1,6 @@
 export const choseType = [
     {
-        label: "推荐",
+        label: "热销",
         value: 1,
     },
     {

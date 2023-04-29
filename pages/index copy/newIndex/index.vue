@@ -6,19 +6,13 @@
           <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
           <view class="text">{{ address }}</view>
           <image src="./image/arrow-down.png" class="down" mode="scaleToFill" />
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png"
-            alt=""
-            class="show"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9ujhwq408rlpm9vsxn8w.png" alt=""
+            class="show" />
         </view>
         <view class="search-box">
           <view class="search">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png"
-              alt=""
-              class="img"
-            />
+            <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
+              class="img" />
           </view>
           <input type="text" class="content" placeholder="输入你想搜索的产品" />
           <image src="./image/camera.png" class="carmera" mode="scaleToFill" />
@@ -28,26 +22,18 @@
     </view>
     <view class="head">
       <view class="headDetail" v-for="item in indexHead" :key="item.value">
-        <view
-          class="bottomName"
-          :class="{ choseName: item.value == headIndex }"
-          @click="headTouch(item.value)"
-          >{{ item.label }}</view
-        >
+        <view class="bottomName" :class="{ choseName: item.value == headIndex }" @click="headTouch(item.value)">{{
+          item.label }}</view>
       </view>
     </view>
     <view class="furniture-background">
       <view class="furniture">
-        <view
-          class="furnitureDetail"
-          v-for="item in furniture"
-          :key="item.value"
-        >
+        <view class="furnitureDetail" v-for="item in furniture" :key="item.value">
           <view class="navgetTo">
             <image :src="item.url" class="topImg" mode="scaleToFill" />
-            <view class="furnitureText"> {{ item.label }}</view></view
-          ></view
-        >
+            <view class="furnitureText"> {{ item.label }}</view>
+          </view>
+        </view>
       </view>
     </view>
     <view class="active-area">
@@ -88,6 +74,7 @@ export default {
       this.headIndex = e;
     },
     getLocation() {
+      // #ifdef H5
       this.address = "定位中...";
       const _this = this;
       uni.getLocation({
@@ -108,6 +95,13 @@ export default {
             });
         },
       });
+      // #endif
+
+
+      // #ifdef APP
+      const locationInfo = this.$store.state.location
+      this.address = locationInfo.locationInfo.township
+      // #endif
     },
     handleClick() {
       const _this = this;
@@ -131,15 +125,15 @@ export default {
     this.getLocation();
   },
   // 组件周期函数--监听组件数据更新之前
-  beforeUpdate() {},
+  beforeUpdate() { },
   // 组件周期函数--监听组件数据更新之后
-  updated() {},
+  updated() { },
   // 组件周期函数--监听组件激活(显示)
-  activated() {},
+  activated() { },
   // 组件周期函数--监听组件停用(隐藏)
-  deactivated() {},
+  deactivated() { },
   // 组件周期函数--监听组件销毁之前
-  beforeDestroy() {},
+  beforeDestroy() { },
 };
 </script>
 <style lang="less" scoped>
@@ -147,10 +141,12 @@ export default {
   .search1 {
     width: 100%;
     height: 70upx;
+
     .search-bar {
       width: 100%;
       display: flex;
       align-items: center;
+
       .location {
         display: flex;
         align-items: center;
@@ -160,15 +156,18 @@ export default {
           font-weight: 500;
           font-family: auto;
         }
+
         .down {
           width: 32upx;
           height: 32upx;
         }
+
         .show {
           width: 32upx;
           height: 32upx;
         }
       }
+
       .search-box {
         padding: 0upx 20upx;
         display: flex;
@@ -179,10 +178,12 @@ export default {
         height: 74upx;
         border-radius: 100upx;
         background: #ffffff;
+
         .search {
           width: 48upx;
           // height: 32upx;
           border-right: 2upx solid #d8d8d8;
+
           .img {
             width: 32upx;
             height: 32upx;
@@ -205,11 +206,13 @@ export default {
       }
     }
   }
+
   .head {
     display: flex;
     justify-content: space-between;
     font-size: 28upx;
     margin: 40upx 30upx 30upx 30upx;
+
     .bottomName {
       &.choseName {
         color: #e95d20;
@@ -219,25 +222,31 @@ export default {
     }
   }
 }
+
 .furniture-background {
   background: #efefef;
   padding: 10upx 0 20upx 0;
+
   .furniture {
     display: flex;
     flex-wrap: wrap;
     background: white;
     padding: 20upx 0 20upx 0;
+
     .furnitureDetail {
       width: 25%;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+
       .navgetTo {
         margin: 10upx 0;
+
         .topImg {
           width: 110upx;
           height: 80upx;
         }
+
         .furnitureText {
           text-align: center;
           font-size: 28upx;
@@ -246,18 +255,22 @@ export default {
     }
   }
 }
+
 .active-area {
   height: 120upx;
   display: flex;
+
   .areaFor {
     align-items: center;
     display: flex;
     width: 50%;
     border-right: 2px solid #d8d8d8;
     margin: 15upx 0;
+
     &:last-child {
       border: none;
     }
+
     .activeImg {
       width: 120upx;
       height: 120upx;
@@ -266,6 +279,7 @@ export default {
     .rightText {
       .activeTitle {
         display: flex;
+
         .textTop {
           font-size: 32upx;
           font-weight: 600;
@@ -282,5 +296,4 @@ export default {
 .carmera {
   width: 40upx;
   height: 40upx;
-}
-</style>
+}</style>

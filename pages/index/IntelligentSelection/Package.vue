@@ -12,7 +12,7 @@
       </view>
 
       <view class="tags">
-        <view class="tag">精品推荐</view>
+        <view class="tag">精品热销</view>
         <view class="tag">百搭优选</view>
       </view>
 

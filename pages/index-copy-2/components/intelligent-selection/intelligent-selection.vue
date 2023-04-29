@@ -29,7 +29,7 @@
             <text>80平</text>
           </view>
           <view class="tags">
-            <view class="tag">精品推荐</view>
+            <view class="tag">热销精品</view>
             <view class="tag">百搭优选</view>
           </view>
         </view>

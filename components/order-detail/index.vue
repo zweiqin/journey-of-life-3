@@ -72,7 +72,7 @@
 
     <!-- 猜你喜欢 -->
     <view class="guess">
-      <view class="title">猜你喜欢</view>
+      <view class="title">更多商品</view>
       <view class="guess-goods">
         <RecommendGoods
           :showTitle="false"

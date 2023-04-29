@@ -18,10 +18,9 @@
 				</view>
 			</view>
 			<view class="goods">
-				<image :src="
-					serverUrl ||
-					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-				" alt="" class="img" @click="preview(serverUrl)" />
+				<image :src="serverUrl ||
+						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
+						" alt="" class="img" @click="preview(serverUrl)" />
 				<image src="../static/images/con-center/imagebg.png" mode="" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
@@ -244,7 +243,7 @@ export default {
 			uni.navigateBack()
 		},
 		handleToServiceListHome(item) {
-			console.log('更多服务分类列表', item)
+			// console.log('更多服务分类列表', item)
 			this.value = item
 			uni.navigateTo({
 				url: `/community-center/service-sort?value=${this.value}`,
@@ -266,7 +265,6 @@ export default {
 			})
 
 			if (!this.isArtificial) {
-				console.log('abc')
 				uni.navigateTo({
 					url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`,
 				})
@@ -298,7 +296,7 @@ export default {
 		},
 
 		switchTab(item1) {
-			console.log('12345', item1)
+			// console.log('12345', item1)
 			this.currentTab = item1.id
 			this.serverTypeId = item1.serverTypeId
 			this.serverPrice = item1.serverPrice
@@ -306,7 +304,7 @@ export default {
 			this.serverUnit = item1.serverUnit
 			this.serverIntroduction = item1.serverIntroduction
 			this.detailId = item1.id
-			console.log('详情id', this.detailId)
+			// console.log('详情id', this.detailId)
 		},
 
 		//社区服务详情
@@ -320,19 +318,19 @@ export default {
 			this.serviceDetail = res.data
 
 			this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList)
-			console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
+			// console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
 
 			this.currentTab = res.data[0].id
 			this.switchTab(this.serviceDetail[0])
-			console.log('666', this.serviceDetail)
+			// console.log('666', this.serviceDetail)
 
 			this.serverInfo = this.serviceDetail[0].serverInfo
-			console.log('serverInfo', this.serverInfo);
+			// console.log('serverInfo', this.serverInfo);
 
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
 			this.length = this.serviceDetail.length
-			console.log('是否一口价', this.isArtificial)
+			// console.log('是否一口价', this.isArtificial)
 			// const type = this.isArtificial
 			// console.log('type', type)
 			// if (type === 'true') {
@@ -342,19 +340,19 @@ export default {
 			// }
 
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
-			console.log('介绍', this.serverIntroduction)
+			// console.log('介绍', this.serverIntroduction)
 
 			this.serverUrl = this.serviceDetail[0].serverImageUrl
-			console.log('图片', this.serverUrl)
+			// console.log('图片', this.serverUrl)
 
 			this.startPrice = this.serviceDetail[0].startPrice
-			console.log('起步价', this.startPrice);
+			// console.log('起步价', this.startPrice);
 
 			this.chargeDescription = this.serviceDetail[0].chargeDescription
-			console.log('收费说明', this.chargeDescription);
+			// console.log('收费说明', this.chargeDescription);
 
 			this.serverContent = this.serviceDetail[0].serverContent.split('，')
-			console.log('服务具体内容', this.serverContent);
+			// console.log('服务具体内容', this.serverContent);
 
 
 			// this.serverInfo = this.serviceDetail[0].serverInfo
@@ -368,13 +366,14 @@ export default {
 		},
 
 		async getIsOpenServerArea() {
+			// #ifdef H5
 			const _this = this
 			uni.getLocation({
 				type: 'gcj02',
 				success: function (res) {
 					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
 						if (res.status === '1') {
-							console.log('1111', res)
+							// console.log('1111', res)
 							const result = res.regeocode
 							_this.address =
 								result.addressComponent.province +
@@ -388,24 +387,31 @@ export default {
 					})
 				},
 			})
+			// #endif
+
+			// #ifdef APP
+			const locationInfo = this.$store.state.location
+			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
+			this.a()
+			this.addressDetail = locationInfo.detailAddress
+			// #endif
 		},
 
 		async a() {
 			const res = await getIsOpenServerAreaApi({
 				address: this.address,
-
 			})
-			console.log('res', res)
+			// console.log('res', res)
 			this.tips = res.data
-			console.log('tips', this.tips)
+			// console.log('tips', this.tips)
 			this.type = this.tips ? 1 : 2
-			console.log('type', this.type)
+			// console.log('type', this.type)
 		},
 
 
 		//预览图
 		preview(index) {
-			console.log(index)
+			// console.log(index)
 			let imgsArray = []
 			imgsArray[0] = index
 
@@ -416,7 +422,7 @@ export default {
 		},
 
 		previewImage(index) {
-			console.log(index)
+			// console.log(index)
 			let imgsArray = []
 			imgsArray[0] = index
 
@@ -471,17 +477,17 @@ export default {
 	},
 	onShow() {
 		const info = uni.getStorageSync("guawyi8sa");
-		console.log('info', info);
+		// console.log('info', info);
 		if (info.address && info.addressDetail) {
 			this.addressInfo = info.address + info.addressDetail;
-			console.log('addressInfo', this.addressInfo);
+			// console.log('addressInfo', this.addressInfo);
 		}
 
 
 		this.addressDetail = this.addressInfo
-		console.log('addressDetail', this.addressDetail);
+		// console.log('addressDetail', this.addressDetail);
 		this.address = info.address
-		console.log('address', this.address);
+		// console.log('address', this.address);
 		this.a()
 	}
 }

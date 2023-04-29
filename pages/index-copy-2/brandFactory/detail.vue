@@ -73,7 +73,7 @@
           class="item"
           @click="currentNav = 0"
           :class="{ active: currentNav === 0 }"
-          >推荐</view
+          >热销产品</view
         >
         <view
           class="item"

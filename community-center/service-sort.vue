@@ -177,6 +177,7 @@ export default {
 		async getIsOpenServerArea() {
 			this.addressDetail = '定位中...'
 			const _this = this
+			// #ifdef H5
 			uni.getLocation({
 				type: 'gcj02',
 				success: function (res) {
@@ -195,6 +196,14 @@ export default {
 					})
 				},
 			})
+			// #endif
+
+			// #ifdef APP
+			const locationInfo = this.$store.state.location
+			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
+			this.addressDetail = locationInfo.locationInfo.township
+			this.a()
+			// #endif
 		},
 
 

@@ -16,7 +16,7 @@ export const panels = [
   // },
   {
     label: "爆款专区",
-    title: "推荐商品",
+    title: "爆款商品",
     routeText: "更多爆款",
     route: "",
     value: 1,
@@ -33,7 +33,7 @@ export const panels = [
     type: false,
     english: "PREFERENTOAL AREA"
   }, {
-    label: "猜你喜欢",
+    label: "更多商品",
     route: "",
     title: "",
     value: 3,

@@ -128,17 +128,6 @@
       </view>
     </view> -->
 
-    <!-- 猜你喜欢 -->
-    <!-- <view class="guess">
-      <view class="title">猜你喜欢</view>
-      <view class="guess-goods">
-        <RecommendGoods
-          :showTitle="false"
-          :padding="0"
-          :id="14"
-        ></RecommendGoods>
-      </view>
-    </view> -->
 
     <!-- 底部两个按钮 -->
     <view class="footer">

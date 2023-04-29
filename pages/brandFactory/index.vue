@@ -152,7 +152,7 @@ export default {
       const a = [
         {
           id: 0,
-          name: "推荐",
+          name: "全部",
         },
         ...res.data.items,
       ];

@@ -1,6 +1,6 @@
 export const stylesList = [
   {
-    label: '推荐',
+    label: '热销',
     value: 0,
   },
   {
