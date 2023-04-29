@@ -30,24 +30,24 @@
 		<!-- vip -->
 		<view class="vip-container">
 			<view class="left" @click="go('/community-center/vip-center/vip-detail?type=1')">
-				<image class="vip-39" src="../../static/images/con-center/39.png" mode="" />
+				<!-- <image class="vip-39" src="../../static/images/con-center/new-home/couponbg.png" mode="" /> -->
 				<!-- <image src="../../static/images/con-center/p.png" mode="" class="p" /> -->
-				<!-- <image src="../../static/images/con-center/hezi.png" mode="" class="hezi" /> -->
-				<view class="money">￥39.9</view>
-				<view class="name">清洁套餐</view>
+				<image src="../../static/images/con-center/39.png" mode="" class="hezi" />
+				<view class="money">￥{{ serverType == 2 ? serverPrice : 39.9 }}</view>
+				<view class="name">{{ serverType == 2 ? serverName : '清洁套餐' }}</view>
 				<image src="../../static/images/con-center/arrow.png" mode="" class="arrow" />
 			</view>
 			<view class="right">
 				<view class="vip-299" @click="go('/community-center/vip-center/vip-detail?type=2')">
 					<image src="../../static/images/con-center/299.png" mode="" />
-					<view class="money">￥299</view>
-					<view class="name">全年金管家套餐</view>
+					<view class="money">￥{{ serverType == 1 ? serverPrice : 299 }}</view>
+					<view class="name">{{ serverType == 1 ? serverName : '全年金管家套餐' }}</view>
 					<image src="../../static/images/con-center/starflash.png" mode="" class="animate__animated animate__fadeIn" />
 				</view>
 				<view class="vip-1399" mode="" @click="empty('套餐升级中')">
 					<image src="../../static/images/con-center/1399.png" />
-					<view class="money">￥1399</view>
-					<view class="name">全年清洁套餐</view>
+					<view class="money">￥{{ 1399 }}</view>
+					<view class="name">{{ '全年清洁套餐' }}</view>
 				</view>
 			</view>
 		</view>
@@ -65,7 +65,11 @@
 		<tui-toast ref="toast"></tui-toast>
 
 
-		<PopupInformation popup-type="activity" :imgUrl="url" @click="go('/community-center/vip-center/vip-detail?type=2')">
+		<!-- <PopupInformation popup-type="activity" :imgUrl="url"
+			@click="go('/community-center/vip-center/vip-detail?type=2')">
+		</PopupInformation> -->
+		<PopupInformation popup-type="activity" :imgUrl="url"
+			@click="go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')">
 		</PopupInformation>
 
 		<!-- #ifdef APP -->
@@ -92,7 +96,10 @@ export default {
 			bannerListIcon: Object.freeze(bannerListIcon),
 			data: [],
 			url: '',
-			isShowPic: false
+			isShowPic: false,
+			serverPrice: '',
+			serverName: '',
+			serverType: '',
 		}
 	},
 	methods: {
@@ -117,6 +124,7 @@ export default {
 
 							if (_this.address) {
 								_this.queryDynamicData()
+								_this.queryDynamicMemberData()
 							}
 						}
 					})
@@ -136,7 +144,7 @@ export default {
 		},
 
 
-		//根据地址动态查询对应的数据
+		//根据地址动态查询首页海报弹窗套餐
 		async queryDynamicData() {
 			const res = await queryDynamicDataApi({
 				address: this.address,
@@ -145,17 +153,36 @@ export default {
 			console.log('res', res);
 
 			this.data = res.data
-			console.log('首页弹窗', this.data);
+			console.log('弹窗套餐', this.data);
 
 			this.url = this.data[0].url
 			console.log('弹窗图片', this.url);
 
 			if (res.statusCode === 20000) {
-				console.log('statusCode', this.statusCode);
+				console.log('statusCode', res.statusCode);
 				this.isShowPic = true
 			}
 
-		}
+		},
+
+		//根据地址动态查询会员套餐
+		async queryDynamicMemberData() {
+			const res = await queryDynamicDataApi({
+				address: this.address,
+				correspondType: 2
+			})
+			this.memberData = res.data
+			console.log('会员套餐', this.memberData);
+
+			this.serverType = this.memberData[0].serverType
+			console.log('serverType', this.serverType);
+
+			this.serverPrice = this.memberData[0].serverPrice
+			this.serverName = this.memberData[0].serverName
+
+
+		},
+
 	},
 	onShow() {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO);
@@ -232,11 +259,13 @@ export default {
 
 		.left {
 			position: relative;
+			margin-right: 20upx;
 
 			.vip-39 {
-				width: 340upx;
+				width: 350upx;
 				height: 320upx;
-				margin-right: 20upx;
+				border-radius: 20upx;
+				// background: linear-gradient(209deg, #FFD856 2%, #FF5858 81%);
 			}
 
 			.p {
@@ -250,11 +279,11 @@ export default {
 			.hezi {
 				width: 350upx;
 				height: 320upx;
-				position: absolute;
-				top: 0upx;
-				left: -10upx;
+				// position: absolute;
+				// top: 0upx;
+				// left: 0upx;
+				// z-index: 1;
 			}
-
 
 			.money {
 				font-size: 48upx;
@@ -271,7 +300,7 @@ export default {
 				color: #FFFFFF;
 				position: absolute;
 				top: 116upx;
-				left: 30upx;
+				left: 32upx;
 			}
 
 			.arrow {

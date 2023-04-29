@@ -1,6 +1,7 @@
 <template>
 	<view class="community-detail">
 		<view class="head">
+			<!--顶部区域-->
 			<view class="title-list">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
 					class="return" @click="handleBack" />
@@ -17,11 +18,24 @@
 					</TuanLocation>
 				</view>
 			</view>
+
+			<!--轮播图-->
 			<view class="goods">
+<<<<<<< HEAD
 				<image :src="serverUrl ||
 						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 						" alt="" class="img" @click="preview(serverUrl)" />
 				<image src="../static/images/con-center/imagebg.png" mode="" />
+=======
+				<!-- <image :src="
+					serverUrl ||
+					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
+				" alt="" class="img" @click="preview(serverUrl)" /> -->
+				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
+					:height="270" :top="-40">
+				</Carousel>
+				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
+>>>>>>> f73bf5950a2230ae95ca17b27cbbcfda6f8577e9
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view class="goods-price" v-if="!isArtificial">
@@ -31,7 +45,8 @@
 					<view class="logo">￥<text>{{ serverPrice }}</text></view>
 				</view>
 			</view>
-			<!-- <view class="range" v-if="!isArtificial">￥98~128</view> -->
+
+			<!--服务名称和介绍-->
 			<view class="name-list">
 				<view class="name-detail">
 					<view class="name">{{ title }}</view>
@@ -50,20 +65,26 @@
 				</view>
 			</view>
 
-
+			<!--报价形式-->
 			<view class="type" v-if="isArtificial">一口价</view>
 			<view class="type" v-if="!isArtificial">人工报价</view>
+
+			<!--服务4级分类的一口价-->
 			<view v-if="isArtificial">
 				<scroll-view scroll-x="true">
 					<view class="price-list" ref="price-list">
 						<item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
 							@choose="switchTab(item)" :serverInfoName="item.serverInfoName" :serverPrice="item.serverPrice"
-							:serverUnit="item.serverUnit" :isArtificialArtificial="item.isArtificialArtificial"></item>
+							:serverUnit="item.serverUnit" :isArtificial="item.isArtificial"></item>
 					</view>
 				</scroll-view>
 			</view>
+
+			<!--服务4级分类的人工报价-->
 			<view class="start-price" v-if="!isArtificial">￥<text>{{ startPrice || '30' }}</text>/起</view>
 		</view>
+
+		<!--服务地址自动定位和选择-->
 		<view class="add">
 			<view class="add-list" @click="handleToAddress">
 				<view class="left">
@@ -79,11 +100,13 @@
 				<image src="../static/images/con-center/shut.png" mode="" class="close" v-if="type == 2" />
 			</view>
 		</view>
+
+		<!--保障-->
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
 				<view class="poster">
-					<text>保修90天</text>
+					<text>保修60天</text>
 					<text>快速响应</text>
 					<text>计价器报价</text>
 				</view>
@@ -95,26 +118,30 @@
 
 			</view>
 		</view>
+
 		<view class="body" id="norm">
 			<!-- <view class="top">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
 					class="top-img" />
 			</view> -->
-
+			<!--收费标准,服务内容,用户评价-->
 			<view class="top-list">
 				<view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
 				<view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
 				<view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
 			</view>
+
+			<!--收费标准-->
 			<charge :data="serviceDetail.chargeDetailsList"></charge>
 
-			<view class="explain">
+			<!--收费说明-->
+			<view class="explain" v-if="chargeDescription">
 				<view class="explain-title">收费说明:</view>
 				<view class="explain-text">{{ chargeDescription
 					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
 			</view>
 
-			<view class="background">
+			<!-- <view class="background">
 				<image src="../static/images/con-center/tfbg.png" mode="" class="bg" />
 				<image src="../static/images/con-center/bg-logo.png" mode="" class="bg-logo" />
 				<view class="bg-text"><text>{{ title }}</text><text>就找团蜂社区</text></view>
@@ -122,38 +149,38 @@
 					<image :src="serverUrl" mode="" class="bg-img" />
 				</view>
 				<image src="../static/images/con-center/girl.png" mode="" class="girl-img" />
+			</view> -->
 
-			</view>
-
-			<view class="mid-content">
+			<!-- <view class="mid-content">
 				<view class="mid-text">您的{{ title }}</view>
 				<view class="mid-text">我们<text>全心全意</text>解决</view>
-			</view>
+			</view> -->
 
-			<view class="serverContent-list" v-if="serverContent">
+			<!-- <view class="serverContent-list" v-if="serverContent.length && serverContent.length > 1">
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
-			</view>
+			</view> -->
 
-			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>'">
+			<!--服务详情内容-->
+			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'">
 				<view class="show-img">
 					<u-parse :content="goodsInfoDetail"></u-parse>
 				</view>
 			</view>
 
-			<view class="middle">
+			<!-- <view class="middle">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
 					class="mid-img" />
 			</view>
 			<view class="process">
 				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
 			</view>
-
-
 			<view class="tips">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
 					class="img-tips" />
-			</view>
+			</view> -->
+
 		</view>
+		<!--其他服务-->
 		<view class="other">
 			<view class="other-service" v-for="item in moreService" :key="item.value"
 				@click="handleToServiceListHome(item.value)">
@@ -162,6 +189,8 @@
 					class="show" />
 			</view>
 		</view>
+
+		<!--底部在线咨询和立即下单和预约-->
 		<view class="foot">
 			<view class="list">
 				<view class="online">
@@ -171,18 +200,18 @@
 					<view class="name">在线咨询</view>
 					<!-- #endif -->
 				</view>
-
-
 				<view class="order-list">
 					<!-- <view class="join">加入需求清单</view> -->
 					<view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
 				</view>
 			</view>
 		</view>
+
 	</view>
 </template>
 
 <script>
+import Carousel from '../components/carousel'
 import uParse from '../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { splitProject } from './componts/utile'
@@ -206,6 +235,7 @@ export default {
 		item,
 		charge,
 		uParse,
+		Carousel,
 	},
 	data() {
 		return {
@@ -225,6 +255,7 @@ export default {
 			currentTab: '',
 			length: '',
 			serverUrl: '',
+			serverUrls: [],
 			index: '',
 			priceType: '',
 			startPrice: '',
@@ -325,7 +356,7 @@ export default {
 			// console.log('666', this.serviceDetail)
 
 			this.serverInfo = this.serviceDetail[0].serverInfo
-			// console.log('serverInfo', this.serverInfo);
+			console.log('服务详情内容', this.serverInfo);
 
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
@@ -342,8 +373,11 @@ export default {
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
 			// console.log('介绍', this.serverIntroduction)
 
-			this.serverUrl = this.serviceDetail[0].serverImageUrl
-			// console.log('图片', this.serverUrl)
+			this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find(item => item)
+			console.log('图片', this.serverUrl)
+
+			this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1)
+			console.log('轮播图', this.serverUrls)
 
 			this.startPrice = this.serviceDetail[0].startPrice
 			// console.log('起步价', this.startPrice);
@@ -552,12 +586,17 @@ export default {
 			position: relative;
 
 			.img {
-				width: 588upx;
-				height: 340upx;
+				width: 100%;
+				// height: 340upx;
 				position: absolute;
+				z-index: 0;
+
+				/deep/.tui-lazyload__box {
+					background-color: #ffffff !important;
+				}
 			}
 
-			image {
+			.imagebg {
 				width: 100%;
 				height: 100%;
 
@@ -923,7 +962,7 @@ export default {
 			.explain-text {
 				font-size: 28upx;
 				color: #8F8D85;
-				padding-top: 20upx;
+				padding-top: 10upx;
 			}
 		}
 
@@ -1064,7 +1103,7 @@ export default {
 		}
 
 		.case-show {
-			padding: 40upx 0;
+			// padding: 40upx 0;
 
 			.text {
 				width: 100%;
@@ -1086,7 +1125,7 @@ export default {
 			}
 
 			.show-img {
-				padding: 40upx 0upx 54upx 0upx;
+				// padding: 40upx 0upx 54upx 0upx;
 
 				.img1 {
 					width: 100%;
