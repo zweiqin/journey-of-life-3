@@ -21,12 +21,6 @@
 
 			<!--轮播图-->
 			<view class="goods">
-<<<<<<< HEAD
-				<image :src="serverUrl ||
-						'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-						" alt="" class="img" @click="preview(serverUrl)" />
-				<image src="../static/images/con-center/imagebg.png" mode="" />
-=======
 				<!-- <image :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
@@ -35,7 +29,6 @@
 					:height="270" :top="-40">
 				</Carousel>
 				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
->>>>>>> f73bf5950a2230ae95ca17b27cbbcfda6f8577e9
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view class="goods-price" v-if="!isArtificial">
