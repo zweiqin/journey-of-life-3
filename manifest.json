@@ -2,8 +2,8 @@
     "name" : "团蜂家居",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.10",
-    "versionCode" : 110,
+    "versionName" : "1.0.11",
+    "versionCode" : 111,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
