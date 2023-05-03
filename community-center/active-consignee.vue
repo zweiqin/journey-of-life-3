@@ -122,6 +122,7 @@ export default {
 		this.serveData = option.data
 		if (this.serveData) {
 			this.serveData = JSON.parse(option.data)
+
 		} else {
 			uni.showToast({
 				title: '未选择服务，请选择服务',

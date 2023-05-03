@@ -28,29 +28,38 @@
 		</view>
 
 		<!-- vip -->
-		<view class="vip-container">
-			<view class="left" @click="go('/community-center/vip-center/vip-detail?type=1')">
-				<!-- <image class="vip-39" src="../../static/images/con-center/new-home/couponbg.png" mode="" /> -->
-				<!-- <image src="../../static/images/con-center/p.png" mode="" class="p" /> -->
-				<image src="../../static/images/con-center/39.png" mode="" class="hezi" />
-				<view class="money">￥{{ serverType == 2 ? serverPrice : 39.9 }}</view>
-				<view class="name">{{ serverType == 2 ? serverName : '清洁套餐' }}</view>
-				<image src="../../static/images/con-center/arrow.png" mode="" class="arrow" />
+
+		<view>
+			<view class="store-name">
+				<view class="item active">热销套餐</view>
 			</view>
-			<view class="right">
-				<view class="vip-299" @click="go('/community-center/vip-center/vip-detail?type=2')">
-					<image src="../../static/images/con-center/299.png" mode="" />
-					<view class="money">￥{{ serverType == 1 ? serverPrice : 299 }}</view>
-					<view class="name">{{ serverType == 1 ? serverName : '全年金管家套餐' }}</view>
-					<image src="../../static/images/con-center/starflash.png" mode="" class="animate__animated animate__fadeIn" />
+			<view class="vip-container">
+
+				<view class="left" @click="go('/community-center/vip-center/vip-detail?type=1')">
+					<!-- <image class="vip-39" src="../../static/images/con-center/new-home/couponbg.png" mode="" /> -->
+					<!-- <image src="../../static/images/con-center/p.png" mode="" class="p" /> -->
+					<image src="../../static/images/con-center/39.png" mode="" class="hezi" />
+					<view class="money">￥{{ serverType == 2 ? serverPrice : 39.9 }}</view>
+					<view class="name">{{ serverType == 2 ? serverName : '清洁套餐' }}</view>
+					<image src="../../static/images/con-center/arrow.png" mode="" class="arrow" />
 				</view>
-				<view class="vip-1399" mode="" @click="empty('套餐升级中')">
-					<image src="../../static/images/con-center/1399.png" />
-					<view class="money">￥{{ 1399 }}</view>
-					<view class="name">{{ '全年清洁套餐' }}</view>
+				<view class="right">
+					<view class="vip-299" @click="go('/community-center/vip-center/vip-detail?type=2')">
+						<image src="../../static/images/con-center/299.png" mode="" />
+						<view class="money">￥{{ serverType == 1 ? serverPrice : 299 }}</view>
+						<view class="name">{{ serverType == 1 ? serverName : '全年金管家套餐' }}</view>
+						<image src="../../static/images/con-center/starflash.png" mode="" class="animate__animated animate__fadeIn" />
+					</view>
+					<view class="vip-1399" mode="" @click="empty('套餐升级中')">
+						<image src="../../static/images/con-center/1399.png" />
+						<view class="money">￥{{ 1399 }}</view>
+						<view class="name">{{ '全年清洁套餐' }}</view>
+					</view>
 				</view>
 			</view>
 		</view>
+
+
 
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
@@ -161,11 +170,40 @@ export default {
 
 	}
 
+	.store-name {
+		margin-top: 246upx;
+		position: relative;
+		display: flex;
+		gap: 0upx 60upx;
+		padding-left: 54upx;
+		padding-top: 36upx;
+		margin-bottom: 10px;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 42upx;
+			left: 30upx;
+			width: 8upx;
+			height: 40upx;
+			border-radius: 4upx;
+			background: linear-gradient(180deg, #FFD556 0%, #E95D20 100%);
+		}
+
+		.item {
+			color: #000000;
+			font-size: 36upx;
+
+			&.active {
+				font-weight: bold;
+			}
+		}
+	}
+
 	.vip-container {
 		display: flex;
 		justify-content: center;
 		height: 320upx;
-		margin-top: 300upx;
 
 		image {
 			flex-shrink: 0;

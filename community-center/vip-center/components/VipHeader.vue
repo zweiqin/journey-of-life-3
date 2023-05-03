@@ -4,7 +4,7 @@
       <TuanBack>
         <tui-icon :size="30" name="arrowleft"></tui-icon>
       </TuanBack>
-      <image class="share-icon" src="../../../static/images/con-center/vip/share.png"></image>
+      <!-- <image @click="$emit('share')" class="share-icon" v-if="campaignsType != 0" src="../../../static/images/con-center/vip/share.png"></image> -->
     </view>
 
     <view class="title">
@@ -13,15 +13,15 @@
     </view>
 
     <view v-if="campaignsType === 0">
-      <view style="display: flex;position: fixed;z-index: 1;top: 40upx;right: 30upx;height: 64upx;">
+      <view style="display: flex;position: fixed;z-index: 1;top: 26upx;right: 30upx;height: 64upx;">
         <view
-          style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
+          style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;margin-right: 10upx;"
           @click="$emit('share-activity')">
           生成邀请码
         </view>
         <view
           style="padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: rgba(255, 255, 255, .68);border-radius: 32upx;"
-          @click="handleShareServe(false, 'shareBtn')">
+          @click="$emit('share-active', false, 'shareBtn')">
           活动分享
         </view>
       </view>
