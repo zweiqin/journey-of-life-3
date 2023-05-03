@@ -333,8 +333,8 @@ export default {
 				remarks: this.content,
 				installDate: this.datetimerange,
 				dictName: this.name1,
-				orderGoodsList: this.imgList
-
+				orderGoodsList: this.imgList,
+				pullIn: this.name1 === '空调清洗服务' ? 2 : 1
 			}
 			const getServiceOrder = await getServiceOrderApi(data)
 			this.data = getServiceOrder.data

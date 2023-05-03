@@ -59,8 +59,6 @@
 			</view>
 		</view>
 
-
-
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
 
