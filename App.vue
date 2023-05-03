@@ -24,7 +24,7 @@ export default {
     // 		history.replaceState({}, '', path)
     // 	}
     http.getCartCount()
-		
+
     // }
 
     // getUserId();
@@ -51,10 +51,17 @@ export default {
 
   mounted() {
     // #ifdef H5
-    this.$store.dispatch('location/getCurrentLocation')
+    this.$store.dispatch('location/getCurrentLocation', (res) => {
+      this.$store.dispatch('community/getHomePopupImage', res)
+    })
     // #endif
 
     this.updateToken()
+
+    // #ifdef APP
+    this.$store.dispatch('community/getHomePopupImage')
+    // #endif
+
   },
 }
 </script>

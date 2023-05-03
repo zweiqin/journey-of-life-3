@@ -6,6 +6,7 @@ import shopCar from './modules/shopCar'
 import customerService from './modules/customerService'
 import location from './modules/location'
 import user from './modules/user'
+import community from './modules/community'
 
 Vue.use(VueX)
 
@@ -17,6 +18,7 @@ export default new VueX.Store({
     shopCar,
 		customerService,
     location,
-    user
+    user,
+    community
   }
 })

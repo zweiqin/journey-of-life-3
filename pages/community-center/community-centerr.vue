@@ -68,7 +68,7 @@
 		<!-- <PopupInformation popup-type="activity" :imgUrl="url"
 			@click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation> -->
-		<PopupInformation popup-type="activity" :imgUrl="url"
+		<PopupInformation v-if="$store.getters.popupImage" popup-type="activity" :imgUrl="$store.getters.popupImage"
 			@click="go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')">
 		</PopupInformation>
 
@@ -102,88 +102,6 @@ export default {
 			serverType: '',
 		}
 	},
-	methods: {
-
-		//获取当前定位
-		async getIsOpenServerArea() {
-			const _this = this
-			// #ifdef H5
-			uni.getLocation({
-				type: 'gcj02',
-				success: function (res) {
-					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
-						if (res.status === '1') {
-							const result = res.regeocode
-							// _this.addressDetail = result.addressComponent.township
-
-							_this.address =
-								result.addressComponent.province +
-								result.addressComponent.city +
-								result.addressComponent.district +
-								result.addressComponent.township
-
-							if (_this.address) {
-								_this.queryDynamicData()
-								_this.queryDynamicMemberData()
-							}
-						}
-					})
-				},
-			})
-			// #endif
-
-			// #ifdef APP
-			const locationInfo = this.$store.state.location
-			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district + locationInfo.locationInfo.township
-			this.addressDetail = locationInfo.detailAddress
-
-			if (this.address) {
-				_this.queryDynamicData()
-			}
-			// #endif
-		},
-
-
-		//根据地址动态查询首页海报弹窗套餐
-		async queryDynamicData() {
-			const res = await queryDynamicDataApi({
-				address: this.address,
-				correspondType: 4
-			})
-			console.log('res', res);
-
-			this.data = res.data
-			console.log('弹窗套餐', this.data);
-
-			this.url = this.data[0].url
-			console.log('弹窗图片', this.url);
-
-			if (res.statusCode === 20000) {
-				console.log('statusCode', res.statusCode);
-				this.isShowPic = true
-			}
-
-		},
-
-		//根据地址动态查询会员套餐
-		async queryDynamicMemberData() {
-			const res = await queryDynamicDataApi({
-				address: this.address,
-				correspondType: 2
-			})
-			this.memberData = res.data
-			console.log('会员套餐', this.memberData);
-
-			this.serverType = this.memberData[0].serverType
-			console.log('serverType', this.serverType);
-
-			this.serverPrice = this.memberData[0].serverPrice
-			this.serverName = this.memberData[0].serverName
-
-
-		},
-
-	},
 	onShow() {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO);
 
@@ -200,10 +118,6 @@ export default {
 		}
 		// #endif
 	},
-	onLoad(options) {
-
-		// this.getIsOpenServerArea()
-	}
 
 }
 </script>

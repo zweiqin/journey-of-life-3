@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      // TODO: 默认值改掉
       locationInfo: {
         city: "佛山市",
         province: "广东省",
@@ -46,7 +47,7 @@ export default {
   },
 
   actions: {
-    async getCurrentLocation({ commit }) {
+    async getCurrentLocation({ commit }, onSuccess) {
       // #ifdef APP
       uni.getLocation({
         type: "gcj02",
@@ -72,6 +73,15 @@ export default {
             .then((res) => {
               if (res.status === "1") {
                 commit(CHANGE_LOCATION_INFO, res.regeocode);
+                const addressDetail = res.regeocode;
+                onSuccess &&
+                  typeof onSuccess === "function" &&
+                  onSuccess(
+                    addressDetail.addressComponent.province +
+                      addressDetail.addressComponent.city +
+                      addressDetail.addressComponent.district +
+                      addressDetail.addressComponent.township
+                  );
               }
             })
             .catch(() => {
