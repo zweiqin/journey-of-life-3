@@ -75,13 +75,16 @@
 		<!-- <PopupInformation popup-type="activity" :imgUrl="url"
 			@click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation> -->
-		<PopupInformation v-if="$store.getters.popupImage" popup-type="activity" :imgUrl="$store.getters.popupImage"
-			@click="go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')">
+		<PopupInformation ref="popupInformationRef" v-if="$store.getters.popupImage" popup-type="activity"
+			:imgUrl="$store.getters.popupImage" @click="handleToActiveDetail">
 		</PopupInformation>
 
 		<!-- #ifdef APP -->
 		<CheckedVersion ref="checkedVersion"></CheckedVersion>
 		<!-- #endif -->
+
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 	</view>
 </template>
 
@@ -95,9 +98,11 @@ import ServiceStationPane from './cpns/ServiceStationPane.vue'
 import ArticleList from './cpns/Article.vue'
 import PopupInformation from '../../components/popup-information/popup-information'
 import { COMMUNITY_ORDER_NO } from '../../constant'
+import showModal from 'mixin/showModal'
 
 export default {
 	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation },
+	mixins: [showModal()],
 	data() {
 		return {
 			bannerListIcon: Object.freeze(bannerListIcon),
@@ -107,11 +112,16 @@ export default {
 			serverPrice: '',
 			serverName: '',
 			serverType: '',
+			className: ''
 		}
 	},
 	onShow() {
-		uni.removeStorageSync(COMMUNITY_ORDER_NO);
+		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 
+
+		setTimeout(() => {
+			this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
+		}, 500);
 	},
 	mounted() {
 		// #ifdef APP
@@ -124,6 +134,17 @@ export default {
 				window.location.origin + window.location.pathname
 		}
 		// #endif
+
+	},
+
+	methods: {
+		handleToActiveDetail() {
+			if (this.isLogin()) {
+				this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
+			} else {
+				this.$data._isShowTuiModel = true
+			}
+		}
 	},
 
 }

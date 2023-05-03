@@ -19,6 +19,7 @@ export default {
     // 获取自定义首屏弹窗图片
     async getHomePopupImage({ commit }, currentAddress) {
       const res = await queryDynamicDataApi({
+        // address: "广东省佛山市顺德区龙江镇",
         address: currentAddress || "广东省佛山市顺德区龙江镇",
         correspondType: 4,
       });
