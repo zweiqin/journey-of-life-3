@@ -1045,18 +1045,6 @@
           "path": "store/index"
         },
         {
-          "path": "hotBuy/hotBuy",
-          "style": {
-            "navigationBarTitleText": "热销"
-          }
-        },
-        {
-          "path": "stock/stock",
-          "style": {
-            "navigationBarTitleText": "库存"
-          }
-        },
-        {
           "path": "gongqiu/gongqiu",
           "style": {
             "navigationBarTitleText": "供求指数"

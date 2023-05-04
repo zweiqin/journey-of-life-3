@@ -4,7 +4,7 @@ import {
   CHANGE_LOACTION_DETAIL_INFO,
 } from "./type";
 import { CURRENT_ADDRESS } from "../../constant";
-import { getAdressDetailByLngLat, getLngLatByAddress } from "@/utils";
+import { getAdressDetailByLngLat, getLngLatByAddress } from "../../utils";
 import store from "store";
 
 export default {
@@ -120,10 +120,13 @@ export default {
     },
 
     async getDetailAddress({ commit, dispatch }, data) {
+      console.log("来了");
       const res = await getLngLatByAddress(
         data.city + data.distinguish + data.town
       );
+      console.log("草拟吗", res);
       if (res.status == "1") {
+        console.log("执行了妈的");
         const detailInfo = res.geocodes[0];
         commit(CHANGE_LOACTION_DETAIL_INFO, {
           detailInfo,

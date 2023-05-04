@@ -126,6 +126,8 @@ export default {
 			}, 500);
 		}
 
+		console.log(this.$store.state);
+
 	},
 	mounted() {
 		// #ifdef APP
