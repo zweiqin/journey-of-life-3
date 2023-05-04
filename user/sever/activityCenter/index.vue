@@ -24,7 +24,7 @@
 					<tui-list-cell v-for="item in activityList" :key="item.id">
 						<view
 							style="display: flex;"
-							@click="go(`/user/sever/activityCenter/activity-prod?goodsId=${item.productId}&campaignsType=${item.campaignsType}&activityId=${item.id}`)"
+							@click="handleClickActivity(item)"
 						>
 							<view>
 								<Avatar margin="0 24upx 0 0" :src="item.picUrl" :size="40"></Avatar>
@@ -44,40 +44,101 @@
 				<LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
 			</view>
 			<view v-if="currentTab === 1">
-				<view v-if="bindingUserList.userDtoList">
-					<block v-for="(item, index) in bindingUserList.userDtoList" :key="index">
-						<tui-collapse :index="index" :current="currentIndex" @click="changeCurrent">
+
+				<view v-if="activityList && activityList.length">
+					<view v-for="(item, index) in activityList" :key="index" style="margin-bottom: 20upx;">
+						<tui-collapse :index="index" :current="currentIndexActivity" hd-bg-color="#ffffff" @click="changeCurrentActivity">
 							<template #title>
-								<tui-list-cell>
-									<view style="display: flex;justify-content: start;align-items: center;">
-										<Avatar margin="0 24upx 0 0" :src="item.avatar" :size="40"></Avatar>
-										<text style="padding-left: 28upx;">{{ item.nickname || '--' }}</text>
-										<text style="padding-left: 40upx;color: red;">佣金：{{ item.userDto.amount || '0' }}</text>
+								<tui-list-cell background-color="transparent">
+									<view style="display: flex;align-items: center;">
+										<view>
+											<Avatar margin="0 24upx 0 0" :src="item.picUrl" :size="40"></Avatar>
+										</view>
+										<view>
+											<view>{{ item.campaignsName }}</view>
+											<view
+												v-if="item.campaignsType === 2" style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;"
+											>
+												<text style="padding-right: 24upx;">分享数：{{ serviceSharingLogs.shareCount || '0' }}</text>
+												<text style="padding-right: 24upx;">购买数：{{ serviceSharingLogs.purchaseCount || '0' }}</text>
+												<text>总购买数：{{ serviceSharingLogs.totalCount || '0' }}</text>
+											</view>
+										</view>
 									</view>
 								</tui-list-cell>
 							</template>
 							<template #content>
-								<view v-if="item.userDtoList && item.userDtoList.length">
-									<tui-list-view title="">
-										<tui-list-cell v-for="section in item.userDtoList" :key="section.id">
-											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;">
-												<view style="display: flex;align-items: center;">
-													<Avatar margin="0 24upx 0 0" :src="section.avatar" :size="40"></Avatar>
-													<text style="padding-left: 40upx;">{{ section.nickname || '--' }}</text>
-												</view>
-												<text>佣金：{{ section.userDto.amount || '0' }}</text>
-											</view>
-										</tui-list-cell>
-									</tui-list-view>
+
+								<view style="margin: 0 24upx;background-color: #ebebea;">
+									<view v-if="item.campaignsType === 0">
+										<view v-if="bindingUserList.userDtoList && bindingUserList.userDtoList.length">
+											<block v-for="(part, count) in bindingUserList.userDtoList" :key="count">
+												<tui-collapse :index="count" :current="currentIndex" hd-bg-color="transparent" @click="changeCurrent">
+													<template #title>
+														<tui-list-cell background-color="transparent">
+															<view style="display: flex;justify-content: start;align-items: center;">
+																<Avatar margin="0 24upx 0 0" :src="part.avatar" :size="40"></Avatar>
+																<text style="padding-left: 28upx;">{{ part.nickname || '--' }}</text>
+																<text style="padding-left: 40upx;color: red;">佣金：{{ part.userDto.amount || '0' }}</text>
+															</view>
+														</tui-list-cell>
+													</template>
+													<template #content>
+														<view style="margin: 0 16upx;background-color: #e1e2e0;">
+															<view v-if="part.userDtoList && part.userDtoList.length">
+																<tui-list-view title="">
+																	<tui-list-cell v-for="section in part.userDtoList" :key="section.id" background-color="transparent">
+																		<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;">
+																			<view style="display: flex;align-items: center;">
+																				<Avatar margin="0 24upx 0 0" :src="section.avatar" :size="40"></Avatar>
+																				<text style="padding-left: 40upx;">{{ section.nickname || '--' }}</text>
+																			</view>
+																			<text>佣金：{{ section.userDto.amount || '0' }}</text>
+																		</view>
+																	</tui-list-cell>
+																</tui-list-view>
+															</view>
+															<view v-else style="padding: 16upx 0;text-align: center;">该粉丝之下暂无数据</view>
+														</view>
+													</template>
+												</tui-collapse>
+											</block>
+										</view>
+										<view v-else style="padding: 28upx 0;text-align: center;">
+											您暂未拥有活动粉丝哟~
+										</view>
+									</view>
+									<view v-else-if="item.campaignsType === 1">1</view>
+									<view v-else-if="item.campaignsType === 2">
+										<view v-if="serviceSharingLogs.userDtos && serviceSharingLogs.userDtos.length">
+											<tui-list-view title="">
+												<tui-list-cell v-for="part in serviceSharingLogs.userDtos" :key="part.userId" background-color="transparent">
+													<view style="display: flex;align-items: center;padding-left: 16upx;">
+														<Avatar margin="0 24upx 0 0" :src="part.avatar" :size="40"></Avatar>
+														<view style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;">
+															<text style="width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ part.userName || '--' }}</text>
+															<!-- <text>分享数：{{ part.shareCount || '0' }}</text> -->
+															<text style="color: red;">购买数：{{ part.purchaseCount || '0' }}</text>
+														</view>
+													</view>
+												</tui-list-cell>
+											</tui-list-view>
+										</view>
+										<view v-else style="padding: 28upx 0;text-align: center;">
+											社区服务粉丝空空如也~
+										</view>
+									</view>
+									<view v-else>无此统计！</view>
 								</view>
-								<view v-else style="padding-top: 28upx;;text-align: center;">该粉丝之下暂无数据</view>
+
 							</template>
 						</tui-collapse>
-					</block>
+					</view>
 				</view>
-				<view v-else style="padding-top: 48upx;;text-align: center;">
-					您暂未拥有活动粉丝哟~
+				<view v-else style="padding-top: 48upx;text-align: center;">
+					暂无活动！
 				</view>
+
 			</view>
 		</view>
 	</view>
@@ -85,7 +146,7 @@
 
 <script>
 import Extension from './cpns/extension.vue'
-import { getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getIsPurchaseApi } from '../../../api/user'
+import { getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getIsPurchaseApi, getServiceSharingLogsApi } from '../../../api/user'
 import { NEW_BIND_ACTIVITY_ID } from '../../../constant'
 import { getUserId } from '../../../utils'
 
@@ -114,9 +175,13 @@ export default {
 			totalPages: 0,
 			status: 'none',
 
-			bindingUserList: [],
-			index: 0,
+			currentIndexActivity: 0,
+
+			bindingUserList: {},
 			currentIndex: -1,
+
+			serviceSharingLogs: {},
+			currentIndexService: -1,
 
 			bindActivityId: null
 
@@ -134,18 +199,18 @@ export default {
 		// }
 		if (options.code) uni.setStorageSync(NEW_BIND_ACTIVITY_ID, options.code) // 有活动id就进行存储，以防下面没登录跳到登录页
 		if (getUserId() && !options.code && uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) { // 如果原先有活动id，例如注册/重新登陆了然后跳回来（options没携带活动id），则是存储里的活动id
-			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID)
+			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID) * 1
 			// try {
 			//   await this.checkBind({ userId: userId })
 			// } catch (error) {
 			this.binding(getUserId(), () => { })
 		// }
 		} else if (getUserId() && options.code) { // 请求路径上面直接有活动id参数
-			this.bindActivityId = options.code
+			this.bindActivityId = options.code * 1
 			this.binding(getUserId(), () => { })
 		}
 
-		getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+		if (getUserId())getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 	},
 
 	onShow() {
@@ -159,7 +224,10 @@ export default {
 			}
 		})
 		this.getUserCrmList()
-		this.getBindingUser()
+		if (getUserId()) {
+			this.getBindingUser()
+			this.getServiceSharingLogs()
+		}
 	},
 	// 触底加载
 	onReachBottom() {
@@ -194,6 +262,7 @@ export default {
 						resolve()
 					})
 					.catch((err) => {
+						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
 						_this.timer = setTimeout(() => {
 							cb && typeof cb === 'function' && cb()
 						}, 1000)
@@ -218,13 +287,35 @@ export default {
 
 		async getBindingUser() {
 			const res = await getBindingUserApi({ userId: getUserId() }) // getUserId()
-			// this.bindingUserList = res.data.userDtoList||[]
-			this.bindingUserList = res.data
+			// this.bindingUserList = res.data.userDtoList||{}
+			this.bindingUserList = res.data || {}
+		},
+
+		async getServiceSharingLogs() {
+			const res = await getServiceSharingLogsApi({ userId: getUserId() })
+			this.serviceSharingLogs = res.data || {}
+		},
+
+		handleClickActivity(item) {
+			if (item.campaignsType === 0) {
+				this.go(`/community-center/vip-center/vip-detail?type=2&campaignsType=${item.campaignsType}`)
+			} else if (item.campaignsType === 1) {
+				this.go(`/user/sever/activityCenter/activity-prod?goodsId=${item.productId}&campaignsType=${item.campaignsType}&activityId=${item.id}`)
+			} else if (item.campaignsType === 2) {
+				if (item.productId === 313) {
+					this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
+				}
+			}
 		},
 
 		changeCurrent(e) {
 			// 可关闭自身
 			this.currentIndex = this.currentIndex == e.index ? -1 : e.index
+		},
+
+		changeCurrentActivity(e) {
+			// 可关闭自身
+			this.currentIndexActivity = this.currentIndexActivity == e.index ? -1 : e.index
 		},
 
 		handleBack() {

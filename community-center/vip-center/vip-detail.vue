@@ -1,43 +1,51 @@
 <template>
 	<view class="vip-page">
 		<!-- header -->
-		<VipHeader @share-activity="handleShareActivity" @share-active="handleShareServe" :campaignsType="campaignsType"
-			:name="type == 2 ? `${myAttributeVipJInData.serverName || '金管家会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`">
+		<VipHeader
+			:campaigns-type="campaignsType" :name="type == 2 ? `${myAttributeVipJInData.serverName || '金管家会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`" @share-activity="handleShareActivity"
+			@share-active="handleShareServe"
+		>
 		</VipHeader>
 
 		<!-- 金管家的header -->
-		<view class="pane" v-if="type == 2">
+		<view v-if="type == 2" class="pane">
 			<view class="desc-pane">
 				<view class="text">
 					<view class="text1">开通{{ myAttributeVipJInData.serverName || '金管家会员' }}</view>
 					<view class="text2">享受{{ beeSteward.length }}大福利</view>
 				</view>
 			</view>
-			<PayBar :price="type == 2 ? (myAttributeVipJInData.serverPrice || 299) : currentJUHUIdata.serverPrice"
-				@pay="handlePayVip"></PayBar>
+			<PayBar
+				:price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice"
+				@pay="handlePayVip"
+			></PayBar>
 		</view>
 
 		<!-- 服务内容 -->
-		<VipServePane :type="type * 1"
-			:subTitle="type == 2 ? '金管家会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`"
-			:desc="type == 2 ? `享受${beeSteward.length}大权益` : '任选一项清洗服务'" v-model="currentIndulgence"
-			:data="type == 2 ? beeSteward : indulgenceData" :radius="type == 2 ? '42upx' : '42rpx 42rpx 0 0'" class="vip-list">
+		<VipServePane
+			v-model="currentIndulgence"
+			:type="type * 1"
+			:sub-title="type == 2 ? '金管家会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`" :desc="type == 2 ? `享受${beeSteward.length}大权益` : '任选一项清洗服务'"
+			:data="type == 2 ? beeSteward : indulgenceData" :radius="type == 2 ? '42upx' : '42rpx 42rpx 0 0'" class="vip-list"
+		>
 		</VipServePane>
 
 		<!-- 抢购 -->
-		<PayBar v-if="type == 1"
-			:price="type == 2 ? (myAttributeVipJInData.serverPrice || 299) : currentJUHUIdata.serverPrice" @pay="handlePayVip">
+		<PayBar
+			v-if="type == 1"
+			:price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice" @pay="handlePayVip"
+		>
 		</PayBar>
 
 		<!-- 赠品 -->
-		<view class="gift" v-if="type == 2">
+		<view v-if="type == 2" class="gift">
 			<image class="gift-icon" src="../../static/images/con-center/vip/gift.png"></image>
 			<text>购买本套餐赠送羊驼一只</text>
 			<image class="gift-detail" src="../../static/images/con-center/vip/gift-detail.png"></image>
 		</view>
 
 		<!-- 赠品 -->
-		<view class="desc" v-if="type == 2">
+		<view v-if="type == 2" class="desc">
 			<view class="title">权益说明：</view>
 			<view class="detail">
 				此会员为服务100平方左右的商品房客户， 别墅或自建房需另行购买。
@@ -54,14 +62,18 @@
 		<!-- 底部操作栏 -->
 		<VipFooter v-if="userId"></VipFooter>
 
-		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/community-center/vip-center/vip-detail')"></tui-modal>
+		<tui-modal
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/community-center/vip-center/vip-detail')"
+		></tui-modal>
 
 		<!-- 生成二维码 -->
-		<view v-if="activityCode">
-			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
-				@complete="handleCompleteCode"></uqrcode>
-		</view>
+		<!-- <view v-if="activityCode"> -->
+		<uqrcode
+			ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
+			@complete="handleCompleteCode"
+		></uqrcode>
+		<!-- </view> -->
 
 		<!-- 分享活动邀请码 -->
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
@@ -73,7 +85,7 @@
 
 <script>
 import VipHeader from './components/VipHeader.vue'
-import VipServePane from './components/VipServePane.vue';
+import VipServePane from './components/VipServePane.vue'
 import PayBar from './components/PayBar.vue'
 import VipFooter from './components/VipFooter.vue'
 import PosterPopup from './components/PosterPopup.vue'
@@ -88,6 +100,7 @@ import { queryDynamicDataApi } from '../../api/address'
 import { getUserId } from '../../utils'
 
 export default {
+	name: 'VipDetail',
 	components: { VipHeader, VipServePane, PayBar, VipFooter, PosterPopup },
 	data() {
 		return {
@@ -98,6 +111,7 @@ export default {
 			beeSteward: [],
 			indulgenceData: [],
 			currentIndulgence: '',
+			shareCode: '',
 			activityCode: '',
 			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=',
 			myAttributeVipJInData: {}, // 自定义对的金管家
@@ -105,7 +119,7 @@ export default {
 		}
 	},
 
-	mixins: [showModal()],
+	mixins: [ showModal() ],
 
 	onLoad(option) {
 		this.type = option.type
@@ -136,7 +150,6 @@ export default {
 			if (res.statusCode === 20000) {
 				this.addData(res, true)
 			}
-
 		},
 		// 获取服务列表
 		async getServeList() {
@@ -149,7 +162,6 @@ export default {
 				this.addData(res)
 			}
 		},
-
 
 		// 渲染数据
 		addData(res, isCustom) {
@@ -178,24 +190,26 @@ export default {
 
 				if (isCustom && this.indulgenceData.length) {
 					const serveContentList = this.indulgenceData[0].serverContent.split(',')
-					this.indulgenceData = serveContentList.map(item => {
+					this.indulgenceData = serveContentList.map((item) => {
 						const temp = JSON.parse(JSON.stringify(this.indulgenceData[0]))
 						temp.serverContent = item
 						return temp
 					})
 				} else if (!isCustom && this.indulgenceData.length) {
-					console.log(this.indulgenceData);
+					console.log(this.indulgenceData)
 					this.currentIndulgence = this.indulgenceData[0].serverContent
 					this.currentJUHUIdata = this.indulgenceData[0]
-					console.log(this.currentJUHUIdata);
+					console.log(this.currentJUHUIdata)
 				} else {
 					this.getServeList()
 				}
-
 			}
-			this.handleShareServe(true)
+			// #ifdef H5
+			this.$nextTick(() => {
+				this.handleShareServe(true)
+			})
+			// #endif
 		},
-
 
 		// 点击购买会员
 		handlePayVip() {
@@ -259,7 +273,7 @@ export default {
 				title: '活动邀请码生成中...'
 			})
 			const _this = this
-			console.log("草了", this.$refs);
+			console.log('草了', this.$refs)
 			this.$refs.uqrcode.make({
 				success: () => {
 					uni.hideLoading()
@@ -270,6 +284,20 @@ export default {
 					})
 				}
 			})
+		},
+
+		// 完成
+		handleCompleteCode(e) {
+			const _this = this
+			if (e.success) {
+				this.$refs.uqrcode.toTempFilePath({
+					success: (res) => {
+						if (!_this.shareCode) {
+							_this.shareCode = res.tempFilePath
+						}
+					}
+				})
+			}
 		},
 
 		// 分享会员
@@ -333,42 +361,8 @@ export default {
 				}
 			}
 			this.$refs.tuanWxShareRef.share(data, isQuit)
-		},
-
-		// 完成
-		handleCompleteCode(e) {
-			const _this = this
-			if (e.success) {
-				this.$refs.uqrcode.toTempFilePath({
-					success: (res) => {
-						if (!_this.shareCode) {
-							_this.shareCode = res.tempFilePath
-						}
-					}
-				})
-			}
-		},
-		// 分享活动邀请码
-		async handleShareActivity() {
-			if (this.campaignsType === 0) {
-				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-				if (res.data) {
-					getCreateCodeApi({
-						userId: getUserId()
-					}).then((res) => {
-						this.activityCode = res.data
-						this.handleShare()
-					})
-				} else {
-					uni.showToast({
-						title: '请您购买金管家会员后，即可进行分享',
-						duration: 5000,
-						icon: 'none'
-					})
-				}
-			}
 		}
-	},
+	}
 }
 </script>
 
@@ -386,7 +380,6 @@ export default {
 
 	.vip-list {
 		position: relative;
-
 
 	}
 
@@ -409,7 +402,6 @@ export default {
 			top: 50%;
 			left: 260upx;
 			transform: translateY(-50%);
-
 
 			.text1 {
 				font-size: 32upx;
@@ -436,7 +428,6 @@ export default {
 			border-radius: 36upx;
 		}
 	}
-
 
 	.gift {
 		display: flex;
