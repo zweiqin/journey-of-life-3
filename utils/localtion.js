@@ -75,5 +75,22 @@ export const getLngLatByAddress = address => {
         reject(err)
       })
     // #endif
+
+    // #ifdef APP
+    uni.request({
+      url: 'https://restapi.amap.com/v3/geocode/geo',
+      data: {
+        key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+        address
+      },
+      header: {},
+      success: res => {
+        resolve(res.data)
+      },
+      fail() {
+        reject()
+      },
+    })
+    // #endif
   })
 }

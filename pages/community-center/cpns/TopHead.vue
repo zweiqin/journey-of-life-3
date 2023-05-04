@@ -1,6 +1,6 @@
 <template>
   <view class="search-bar">
-    <view class="location" @click.stop="handleClick">
+    <view class="location">
       <!-- <JIcon type="locale" width="34" height="40"></JIcon> -->
       <TuanLocation>
         <view class="text">{{ $store.getters.currentCity || '龙江镇' }}</view>

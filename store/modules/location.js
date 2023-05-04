@@ -1,6 +1,6 @@
-import { CHANGE_CURRENT_CITY, CHANGE_LOCATION_INFO } from './type'
+import { CHANGE_CURRENT_CITY, CHANGE_LOCATION_INFO, CHANGE_LOACTION_DETAIL_INFO } from './type'
 import { CURRENT_ADDRESS } from '../../constant'
-import { getAdressDetailByLngLat } from '@/utils'
+import { getAdressDetailByLngLat, getLngLatByAddress } from '@/utils'
 
 export default {
 	namespaced: true,
@@ -44,6 +44,30 @@ export default {
 		[CHANGE_CURRENT_CITY](state, chooseCity) {
 			uni.setStorageSync(CURRENT_ADDRESS, chooseCity)
 			state.currentCity = chooseCity
+		},
+		[CHANGE_LOACTION_DETAIL_INFO](state, { detailInfo, currentCity }) {
+			state.detailAddress = detailInfo.formatted_address
+			state.currentCity = currentCity
+			state.locationInfo = {
+				city: detailInfo.city,
+				province: detailInfo.province,
+				adcode: '',
+				district: detailInfo.district,
+				towncode: '',
+				streetNumber: {
+					number: '',
+					location: detailInfo.location,
+					direction: '',
+					distance: '',
+					street: ''
+				},
+				country: '中国',
+				township: detailInfo.currentCity,
+				businessAreas: [ [] ],
+				building: { name: [], type: [] },
+				neighborhood: { name: [], type: [] },
+				citycode: ''
+			}
 		}
 	},
 
@@ -89,10 +113,32 @@ export default {
 							}
 						})
 						.catch(() => {
+							// _this.address = '定位失败'
 						})
 				}
 			})
 			// #endif
+		},
+
+		async getDetailAddress({ commit, dispatch }, data) {
+			console.log('来了')
+			const res = await getLngLatByAddress(data.city + data.distinguish + data.town)
+			console.log('草拟吗', res)
+			if (res.status == '1') {
+				console.log('执行了妈的')
+				const detailInfo = res.geocodes[0]
+				commit(CHANGE_LOACTION_DETAIL_INFO, {
+					detailInfo,
+					currentCity: data.town
+				})
+
+				dispatch(
+					'community/getHomePopupImage',
+					detailInfo.province + data.city + data.distinguish + data.town,
+					// null,
+					{ root: true }
+				)
+			}
 		}
 	}
 }

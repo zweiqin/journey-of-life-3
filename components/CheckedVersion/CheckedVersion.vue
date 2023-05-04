@@ -1,27 +1,15 @@
 <template>
   <div>
     <slot></slot>
-    <tui-popup
-      :duration="500"
-      :modeClass="['fade']"
-      :styles="styles"
-      :show="logVisible"
-    >
+    <tui-popup :duration="500" :modeClass="['fade']" :styles="styles" :show="logVisible">
       <view class="logs-list-container">
         <view class="logs-container">
           <view class="title">有新版本啦！</view>
           <ul>
-            <li
-              v-for="(item, index) in logs &&
+            <li v-for="(item, index) in logs &&
               logs.logDesc &&
-              logs.logDesc.split(',')"
-              :key="index"
-            >
-              <tui-icon
-                name="check"
-                :size="20"
-                color="rgb(233, 93, 32)"
-              ></tui-icon>
+              logs.logDesc.split(',')" :key="index">
+              <tui-icon name="check" :size="20" color="rgb(233, 93, 32)"></tui-icon>
               {{ item }}
             </li>
           </ul>
@@ -37,27 +25,17 @@
       </view>
     </tui-popup>
 
-    <tui-popup
-      :duration="500"
-      :modeClass="['fade']"
-      :styles="styles"
-      :show="progressVisible"
-    >
+    <tui-popup :duration="500" :modeClass="['fade']" :styles="styles" :show="progressVisible">
       <view class="progress-wrapper">
-        <tui-circular-progress
-          :diam="80"
-          activeMode="forwards"
-          percentText="更新中..."
-          fontColor="#fc6640"
-          progressColor="#fc6640"
-          :percentage="progress"
-        ></tui-circular-progress>
+        <tui-circular-progress :diam="80" activeMode="forwards" percentText="更新中..." fontColor="#fc6640"
+          progressColor="#fc6640" :percentage="progress"></tui-circular-progress>
       </view>
     </tui-popup>
   </div>
 </template>
 
 <script>
+import { log } from 'unpackage/dist/dev/app-plus/app-service'
 import { checkedVersionApi } from '../../api/app'
 export default {
   data() {
@@ -81,10 +59,12 @@ export default {
   },
   methods: {
     async checkedVersion(tag) {
+      console.log("干嘛啦1", tag);
       const _this = this
       uni.getSystemInfo({
         success: async function (res) {
           const { data } = await checkedVersionApi({ version: res.appVersion })
+          console.log("干嘛啦2", data);
 
           if (!data.isNew) {
             _this.logVisible = true

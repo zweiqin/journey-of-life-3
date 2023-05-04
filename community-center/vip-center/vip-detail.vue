@@ -68,12 +68,12 @@
 		></tui-modal>
 
 		<!-- 生成二维码 -->
-		<!-- <view v-if="activityCode"> -->
-		<uqrcode
-			ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
-			@complete="handleCompleteCode"
-		></uqrcode>
-		<!-- </view> -->
+		<view v-if="activityCode">
+			<uqrcode
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
+				@complete="handleCompleteCode"
+			></uqrcode>
+		</view>
 
 		<!-- 分享活动邀请码 -->
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
@@ -111,7 +111,6 @@ export default {
 			beeSteward: [],
 			indulgenceData: [],
 			currentIndulgence: '',
-			shareCode: '',
 			activityCode: '',
 			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=',
 			myAttributeVipJInData: {}, // 自定义对的金管家
@@ -250,6 +249,27 @@ export default {
 		async handleShareActivity() {
 			if (this.campaignsType === 0) {
 				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 }) // TODO: 为啥是299
+				if (res.data) {
+					getCreateCodeApi({
+						userId: getUserId()
+					}).then((res) => {
+						this.activityCode = res.data
+						this.handleShare()
+					})
+				} else {
+					uni.showToast({
+						title: '请您购买金管家会员后，即可进行分享',
+						duration: 5000,
+						icon: 'none'
+					})
+				}
+			}
+		},
+
+		// 分享活动邀请码
+		async handleShareActivity() {
+			if (this.campaignsType === 0) {
+				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 				if (res.data) {
 					getCreateCodeApi({
 						userId: getUserId()
