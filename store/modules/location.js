@@ -132,8 +132,8 @@ export default {
 
         dispatch(
           "community/getHomePopupImage",
-          // detailInfo.province + data.city + data.distinguish + data.town,
-          null,
+          detailInfo.province + data.city + data.distinguish + data.town,
+          // null,
           { root: true }
         );
       }
