@@ -81,7 +81,7 @@ export default {
   mixins: [showModalMixin()],
 
   methods: {
-    share(data, quiet, backUrl) {
+    async share(data, quiet, backUrl) {
       this.shareData = data
       this.backUrl = backUrl
 
@@ -94,12 +94,12 @@ export default {
 
       // #ifdef H5
       if (quiet) {
-        share(data)
+        await share(data)
         return
       }
       if (isInWx()) {
         this.showPointVisible = true
-        share(data)
+        await share(data)
         return
       } else {
         this.ttoast({
