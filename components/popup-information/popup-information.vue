@@ -9,6 +9,8 @@
 					<image :src="imgUrl" mode="widthFix" style="width: 500upx;max-height: 75vh;" />
 					<!-- <view style="position: absolute;top: 52%;left:52%;font-size: 38rpx;font-weight: 700;">羊驼坐凳</view> -->
 				</view>
+
+				<button class="uni-btn" @click="handleNoShow">不再显示</button>
 			</tui-landscape>
 		</view>
 
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+const app = getApp();
 export default {
 	name: 'PopupInformation',
 	props: {
@@ -47,7 +50,7 @@ export default {
 		}
 	},
 	created() {
-		// console.log(222)
+		console.log(app)
 	},
 	// onLoad() {
 	// 	// console.log(222)
@@ -59,10 +62,16 @@ export default {
 	methods: {
 		close() {
 			this.type = ''
+
 		},
 
 		show() {
 			this.type = 'activity'
+		},
+
+		handleNoShow(){
+			app.globalData.isShowCommunityPopup = true
+			this.close()
 		}
 	}
 }
@@ -79,5 +88,11 @@ export default {
 	.tui-landscape__inner {
 		top: 40%;
 	}
+}
+
+.uni-btn {
+	font-size: 28upx;
+	color: #fff;
+	margin-top: 10upx;
 }
 </style>

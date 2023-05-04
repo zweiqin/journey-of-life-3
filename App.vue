@@ -36,6 +36,8 @@ export default {
     isLanding: false,
     // 购物车商品数量
     totalCartCount: 0,
+    // 是否一直显示 弹窗
+    isShowCommunityPopup: false
   },
   methods: {
     // 更新token

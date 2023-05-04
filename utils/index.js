@@ -17,7 +17,7 @@ export {
   SheQuRequest1,
   shopRequest,
   huangRequest,
-} from './DWHRequest'
+} from "./DWHRequest";
 export {
   fomartNumber,
   removeCache,
@@ -29,14 +29,14 @@ export {
   randomRGB,
   timestampToTime,
   throttle,
-  isInWx
-} from './DWHutils'
-export { formatTime } from './util'
-export { tradeOrderNo, payFn } from './pay'
-export { saveImg } from './upload'
-export { getAdressDetailByLngLat } from './localtion'
-export { QRCode as generateCode } from './generateQrcode'
-export { request2 } from './request'
+  isInWx,
+} from "./DWHutils";
+export { formatTime } from "./util";
+export { tradeOrderNo, payFn } from "./pay";
+export { saveImg } from "./upload";
+export { getAdressDetailByLngLat, getLngLatByAddress } from "./localtion";
+export { QRCode as generateCode } from "./generateQrcode";
+export { request2 } from "./request";
 // #ifdef H5
-export { getUrlCode } from './DWHutils'
+export { getUrlCode } from "./DWHutils";
 // #endif

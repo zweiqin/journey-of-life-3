@@ -100,6 +100,8 @@ import PopupInformation from '../../components/popup-information/popup-informati
 import { COMMUNITY_ORDER_NO } from '../../constant'
 import showModal from 'mixin/showModal'
 
+const app = getApp();
+
 export default {
 	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation },
 	mixins: [showModal()],
@@ -118,10 +120,12 @@ export default {
 	onShow() {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 
+		if (!app.globalData.isShowCommunityPopup) {
+			setTimeout(() => {
+				this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
+			}, 500);
+		}
 
-		setTimeout(() => {
-			this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
-		}, 500);
 	},
 	mounted() {
 		// #ifdef APP
@@ -134,7 +138,6 @@ export default {
 				window.location.origin + window.location.pathname
 		}
 		// #endif
-
 	},
 
 	methods: {
