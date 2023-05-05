@@ -1,6 +1,6 @@
 {
     "name" : "团蜂家居",
-    "appid" : "__UNI__35F1B4B",
+    "appid" : "__UNI__9A4ADF0",
     "description" : "",
     "versionName" : "1.0.11",
     "versionCode" : 111,
@@ -117,9 +117,9 @@
                 "androidStyle" : "default",
                 "useOriginalMsgbox" : true,
                 "android" : {
-                    "hdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/app项目/app图标图片/6956752698dddc8d555af5c5e30269b.png",
-                    "xhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/app项目/app图标图片/6956752698dddc8d555af5c5e30269b.png",
-                    "xxhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/app项目/app图标图片/6956752698dddc8d555af5c5e30269b.png"
+                    "hdpi" : "E:/front_end-project/icon/iPhone 117.png",
+                    "xhdpi" : "E:/front_end-project/icon/iPhone 117.png",
+                    "xxhdpi" : "E:/front_end-project/icon/iPhone 117.png"
                 }
             }
         }
