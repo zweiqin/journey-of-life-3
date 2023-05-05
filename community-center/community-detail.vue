@@ -279,6 +279,7 @@ export default {
 			isArtificial: '',
 			serverPrice: '',
 			title: '',
+			serverImageUrl: '',
 			serverUnit: '',
 			currentTab: '',
 			length: '',
@@ -322,18 +323,19 @@ export default {
 		}
 
 		this.serverTypeId = options.id * 1
+		this.serverImageUrl = options.serverImageUrl
 		this.title = options.serverNameThree
 		uni.setNavigationBarTitle({
 			title: this.title
 		})
 		// this.serverUrl = options.serverImageUrl
+		this.getServiceDetail()
+		this.getIsOpenServerArea()
 		// #ifdef H5
 		this.$nextTick(() => {
 			this.handleShareServe(true)
 		})
 		// #endif
-		this.getServiceDetail()
-		this.getIsOpenServerArea()
 	},
 	onShow() {
 		const info = uni.getStorageSync('guawyi8sa')
@@ -616,7 +618,7 @@ export default {
 					uni.hideLoading()
 					_this.$refs.communityDetailPosterRef.show({
 						shareCode: this.shareCode,
-						logo: this.serverUrl,
+						logo: this.serverUrl || this.serverImageUrl,
 						headerTitle: `${this.title}`,
 						topDesc,
 						downDesc

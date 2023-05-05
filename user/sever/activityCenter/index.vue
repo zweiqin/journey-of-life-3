@@ -20,7 +20,7 @@
 				></tui-tabs>
 			</view>
 			<view v-if="currentTab === 0">
-				<tui-list-view title="">
+				<tui-list-view v-if="activityList && activityList.length" title="">
 					<tui-list-cell v-for="item in activityList" :key="item.id">
 						<view
 							style="display: flex;"
@@ -41,7 +41,10 @@
 						</view>
 					</tui-list-cell>
 				</tui-list-view>
-				<LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
+				<tui-list-view v-else margin-top="20px" title="">
+					<view style="text-align: center;">该地区暂无活动哟~</view>
+				</tui-list-view>
+				<!-- <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore> -->
 			</view>
 			<view v-if="currentTab === 1">
 
@@ -168,11 +171,11 @@ export default {
 			}],
 
 			activityList: [],
-			queryInfo: {
-				page: 1,
-				size: 10
-			},
-			totalPages: 0,
+			// queryInfo: {
+			// page: 1,
+			// size: 10
+			// },
+			// totalPages: 0,
 			status: 'none',
 
 			currentIndexActivity: 0,
@@ -229,17 +232,17 @@ export default {
 			this.getServiceSharingLogs()
 		}
 	},
-	// 触底加载
-	onReachBottom() {
-		if (this.totalPages <= this.queryInfo.page) {
-			return 'no-more'
-		}
-		if (this.activityList.length < this.queryInfo.size) {
-			return 'lack'
-		}
-		this.queryInfo.page++
-		this.getUserCrmList(true)
-	},
+	// // 触底加载
+	// onReachBottom() {
+	// 	if (this.totalPages <= this.queryInfo.page) {
+	// 		return this.status = 'no-more'
+	// 	}
+	// 	if (this.activityList.length < this.queryInfo.size) {
+	// 		return this.status = 'none'
+	// 	}
+	// 	this.queryInfo.page++
+	// 	this.getUserCrmList(true)
+	// },
 
 	methods: {
 		// 绑定
@@ -270,19 +273,28 @@ export default {
 					})
 			})
 		},
+
 		async getUserCrmList(isLoadmore) {
-			if (!isLoadmore) this.queryInfo = { page: 1, size: 6 }
-			const res = await getUserCrmListApi(this.queryInfo)
+			// this.status = 'loading'
+			// if (!isLoadmore) this.queryInfo = { page: 1, size: 6 }
+			// const res = await getUserCrmListApi(this.queryInfo)
+			// if (res.errno === 0) {
+			// this.totalPages = res.data.totalPages
+			// if (isLoadmore) {
+			// 	// this.activityList.push(...res.data.smartList.map((item) => ({
+			// 	this.activityList.push(...res.data.crmList)
+			// } else {
+			// this.activityList = [ ...res.data.crmList ]
+			// }
+			// }
+			// this.status = 'none'
+			const res = await getUserCrmListApi({
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			})
 			if (res.errno === 0) {
-				this.totalPages = res.data.totalPages
-				if (isLoadmore) {
-					// this.activityList.push(...res.data.smartList.map((item) => ({
-					this.activityList.push(...res.data.crmList)
-				} else {
-					this.activityList = [ ...res.data.crmList ]
-				}
+				this.activityList = [ ...res.data ]
 			}
-			this.status = 'none'
 		},
 
 		async getBindingUser() {
