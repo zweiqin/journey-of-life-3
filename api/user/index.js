@@ -15,7 +15,7 @@ import {
 	XZLRequest,
 	shopRequest,
 	huangRequest,
-	SheQuRequest1,
+	SheQuRequest1
 } from '../../utils'
 
 // 业务管理升级
@@ -224,6 +224,21 @@ export const getCreateCodeApi = (data) => RuanRequest(
 // 活动码绑定
 export const changeActivityUserBindingApi = (data) => shopRequest('/userBindingUser/userBindingUser', data)
 
+// 服务记录邀请绑定接口
+// export const changeServiceUserBindingApi = (data) => shopRequest('/dtsUserSharingLogs/saveLog', data)
+export const changeServiceUserBindingApi = (data) => shopRequest(
+	'/dtsUserSharingLogs/saveLog',
+	data,
+	'get'
+)
+
+// 查询我的(服务记录)分享数购买数接口
+export const getServiceSharingLogsApi = (data) => RuanRequest(
+	'/dtsUserSharingLogs/selectId',
+	data,
+	'get'
+)
+
 // 升级(超级)合伙人
 export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post', null, {
 	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
@@ -281,14 +296,14 @@ export const receiveCouponApi = (data) => shopRequest('/coupon/receive', data)
 // 查看自己持有
 export const getCouponListApi = (data) => shopRequest('/coupon/mylist', data, 'get')
 
-//查询用户是否购买过金管家套餐
-export const userIsPurchaseApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/userIsPurchase',data)
+// 查询用户是否购买过金管家套餐
+export const userIsPurchaseApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/userIsPurchase', data)
 
-//获取金管家套餐列表
+// 获取金管家套餐列表
 export const getSetMealListApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/getSetMealList', data)
 
-//获取会员套餐列表
+// 获取会员套餐列表
 export const getServerProjectListApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/getServerProjectList', data, 'get')
 
-//预约服务
+// 预约服务
 export const reservationServiceApi = (data) => SheQuRequest1('/laoa-huozhu/api/hz/order/third/reservationService', data)

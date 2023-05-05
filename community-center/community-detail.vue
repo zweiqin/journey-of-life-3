@@ -1,45 +1,53 @@
 <template>
 	<view class="community-detail">
 		<view class="head">
-			<!--顶部区域-->
+			<!-- 顶部区域 -->
 			<view class="title-list">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-					class="return" @click="handleBack" />
+				<img
+					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+					class="return" @click="handleBack"
+				/>
 				<view class="title" @click="handleBack">
 					<text class="page-title">{{ title }}</text>
 				</view>
 				<view class="location">
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt=""
-						class="icon" />
+					<img
+						src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt=""
+						class="icon"
+					/>
 					<TuanLocation>
-						<text class="locale">{{
-							$store.getters.currentCity || '龙江镇'
-						}}</text>
+						<text class="locale">
+							{{
+								$store.getters.currentCity || '龙江镇'
+							}}
+						</text>
 					</TuanLocation>
 				</view>
 			</view>
 
-			<!--轮播图-->
+			<!-- 轮播图 -->
 			<view class="goods">
 				<!-- <image :src="
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-				" alt="" class="img" @click="preview(serverUrl)" /> -->
-				<Carousel :isLazyLoad="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
-					:height="270" :top="-40">
+					" alt="" class="img" @click="preview(serverUrl)" /> -->
+				<Carousel
+					:is-lazy-load="false" :list="serverUrls.length == 0 ? [ serverUrl ] : serverUrls" class="img"
+					:radius="0" :height="270" :top="-40"
+				>
 				</Carousel>
 				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
-				<view class="goods-price" v-if="!isArtificial">
+				<view v-if="!isArtificial" class="goods-price">
 					<view class="logo">￥<text>{{ startPrice || '30' }}</text></view>/起
 				</view>
-				<view class="goods-price" v-if="isArtificial">
+				<view v-if="isArtificial" class="goods-price">
 					<view class="logo">￥<text>{{ serverPrice }}</text></view>
 				</view>
 			</view>
 
-			<!--服务名称和介绍-->
+			<!-- 服务名称和介绍 -->
 			<view class="name-list">
 				<view class="name-detail">
 					<view class="name">{{ title }}</view>
@@ -48,36 +56,40 @@
 
 				</view>
 				<view class="a">
-					<TuanWxShare ref="tuanWxShareRef" @click="handleShareServe">
+					<TuanWxShare ref="tuanWxShareRef" @click="handleClickShare">
 						<view class="share">
-							<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
-								alt="" class="image" />
+							<img
+								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
+								alt="" class="image"
+							/>
 							<view class="text">分享</view>
 						</view>
 					</TuanWxShare>
 				</view>
 			</view>
 
-			<!--报价形式-->
-			<view class="type" v-if="isArtificial">一口价</view>
-			<view class="type" v-if="!isArtificial">人工报价</view>
+			<!-- 报价形式 -->
+			<view v-if="isArtificial" class="type">一口价</view>
+			<view v-if="!isArtificial" class="type">人工报价</view>
 
-			<!--服务4级分类的一口价-->
+			<!-- 服务4级分类的一口价 -->
 			<view v-if="isArtificial">
 				<scroll-view scroll-x="true">
-					<view class="price-list" ref="price-list">
-						<item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
-							@choose="switchTab(item)" :serverInfoName="item.serverInfoName" :serverPrice="item.serverPrice"
-							:serverUnit="item.serverUnit" :isArtificial="item.isArtificial"></item>
+					<view ref="price-list" class="price-list">
+						<Item
+							v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
+							:server-info-name="item.serverInfoName" :server-price="item.serverPrice" :server-unit="item.serverUnit"
+							:is-artificial="item.isArtificial" @choose="switchTab(item)"
+						></Item>
 					</view>
 				</scroll-view>
 			</view>
 
-			<!--服务4级分类的人工报价-->
-			<view class="start-price" v-if="!isArtificial">￥<text>{{ startPrice || '30' }}</text>/起</view>
+			<!-- 服务4级分类的人工报价 -->
+			<view v-if="!isArtificial" class="start-price">￥<text>{{ startPrice || '30' }}</text>/起</view>
 		</view>
 
-		<!--服务地址自动定位和选择-->
+		<!-- 服务地址自动定位和选择 -->
 		<view class="add">
 			<view class="add-list" @click="handleToAddress">
 				<view class="left">
@@ -89,12 +101,12 @@
 				</view>
 			</view>
 			<view class="kaitong">
-				<image src="../static/images/con-center/open.png" mode="" class="open" v-if="type == 1" />
-				<image src="../static/images/con-center/shut.png" mode="" class="close" v-if="type == 2" />
+				<image v-if="type == 1" src="../static/images/con-center/open.png" mode="" class="open" />
+				<image v-if="type == 2" src="../static/images/con-center/shut.png" mode="" class="close" />
 			</view>
 		</view>
 
-		<!--保障-->
+		<!-- 保障 -->
 		<view class="mid">
 			<view class="text-list">
 				<view class="ensure">保障</view>
@@ -105,33 +117,37 @@
 				</view>
 
 				<!-- #ifdef H5 -->
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
-					class="more" />
+				<img
+					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
+					class="more"
+				/>
 				<!-- #endif -->
 
 			</view>
 		</view>
 
-		<view class="body" id="norm">
+		<view id="norm" class="body">
 			<!-- <view class="top">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
-					class="top-img" />
-			</view> -->
-			<!--收费标准,服务内容,用户评价-->
+				class="top-img" />
+				</view> -->
+			<!-- 收费标准,服务内容,用户评价 -->
 			<view class="top-list">
 				<view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
 				<view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
 				<view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
 			</view>
 
-			<!--收费标准-->
-			<charge :data="serviceDetail.chargeDetailsList"></charge>
+			<!-- 收费标准 -->
+			<Charge :data="serviceDetail.chargeDetailsList"></Charge>
 
-			<!--收费说明-->
-			<view class="explain" v-if="chargeDescription">
+			<!-- 收费说明 -->
+			<view v-if="chargeDescription" class="explain">
 				<view class="explain-title">收费说明:</view>
-				<view class="explain-text">{{ chargeDescription
-					|| '工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}</view>
+				<view class="explain-text">
+					{{ chargeDescription ||
+						'工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}
+				</view>
 			</view>
 
 			<!-- <view class="background">
@@ -139,57 +155,63 @@
 				<image src="../static/images/con-center/bg-logo.png" mode="" class="bg-logo" />
 				<view class="bg-text"><text>{{ title }}</text><text>就找团蜂社区</text></view>
 				<view class="bg-image">
-					<image :src="serverUrl" mode="" class="bg-img" />
+				<image :src="serverUrl" mode="" class="bg-img" />
 				</view>
 				<image src="../static/images/con-center/girl.png" mode="" class="girl-img" />
-			</view> -->
+				</view> -->
 
 			<!-- <view class="mid-content">
 				<view class="mid-text">您的{{ title }}</view>
 				<view class="mid-text">我们<text>全心全意</text>解决</view>
-			</view> -->
+				</view> -->
 
 			<!-- <view class="serverContent-list" v-if="serverContent.length && serverContent.length > 1">
 				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
-			</view> -->
+				</view> -->
 
-			<!--服务详情内容-->
-			<view class="case-show" id="detail" v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'">
+			<!-- 服务详情内容 -->
+			<view v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'" id="detail" class="case-show">
 				<view class="show-img">
-					<u-parse :content="goodsInfoDetail"></u-parse>
+					<UParse :content="goodsInfoDetail"></UParse>
 				</view>
 			</view>
 
 			<!-- <view class="middle">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
-					class="mid-img" />
-			</view>
-			<view class="process">
+				class="mid-img" />
+				</view>
+				<view class="process">
 				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
-			</view>
-			<view class="tips">
+				</view>
+				<view class="tips">
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
-					class="img-tips" />
-			</view> -->
+				class="img-tips" />
+				</view> -->
 
 		</view>
-		<!--其他服务-->
+		<!-- 其他服务 -->
 		<view class="other">
-			<view class="other-service" v-for="item in moreService" :key="item.value"
-				@click="handleToServiceListHome(item.value)">
+			<view
+				v-for="item in moreService" :key="item.value" class="other-service"
+				@click="handleToServiceListHome(item.value)"
+			>
 				<view class="text">其他服务</view>
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt=""
-					class="show" />
+				<img
+					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt=""
+					class="show"
+				/>
 			</view>
 		</view>
 
-		<!--底部在线咨询和立即下单和预约-->
+		<!-- 底部在线咨询和立即下单和预约 -->
 		<view class="foot">
 			<view class="list">
 				<view class="online">
 					<!-- #ifdef H5 -->
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
-						class="seek" />
+					<img
+						src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
+						class="seek"
+					/>
 					<view class="name">在线咨询</view>
 					<!-- #endif -->
 				</view>
@@ -200,20 +222,32 @@
 			</view>
 		</view>
 
+		<!-- 生成二维码 -->
+		<uqrcode
+			ref="uqrcode" class="generate-code-container" canvas-id="qrcode"
+			:value="`https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
+			@complete="handleCompleteCode"
+		></uqrcode>
+
+		<!-- 分享活动邀请码 -->
+		<CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
+
 	</view>
 </template>
 
 <script>
 import Carousel from '../components/carousel'
 import uParse from '../components/u-parse/u-parse.vue'
+import CommunityDetailPoster from './components/CommunityDetailPoster.vue'
 import { marked } from 'marked'
 import { splitProject } from './componts/utile'
 import { getConfigApi } from '../api/auth'
 import item from '../community-center/componts/item'
 import charge from '../community-center/componts/charge'
 import { getServiceDetailApi } from '../api/community-center'
+import { changeServiceUserBindingApi } from '../api/user'
 import { moreService } from '../pages/community-center/config'
-import { USER_TOKEN } from '../constant'
+import { USER_TOKEN, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant'
 import { getUserId } from '../utils'
 import { getAdressDetailByLngLat } from '../utils/DWHutils'
 import { getIsOpenServerAreaApi } from '../api/community-center'
@@ -222,14 +256,15 @@ import share from '../utils/wxshare'
 // #endif
 
 export default {
-	name: 'Community-detail',
-	props: {},
+	name: 'CommunityDetail',
 	components: {
-		item,
-		charge,
-		uParse,
+		Item: item,
+		Charge: charge,
+		UParse: uParse,
 		Carousel,
+		CommunityDetailPoster
 	},
+	props: {},
 	data() {
 		return {
 			currentMoveTab: 0,
@@ -259,10 +294,93 @@ export default {
 			addressDetail: '',
 			type: '',
 			addressInfo: '',
+
+			bindServiceId: null,
+			userId: '',
+			shareCode: ''
 		}
+	},
+
+	computed: {
+		goodsInfoDetail() {
+			return this.serverInfo
+				? marked(this.serverInfo)
+				: ''
+		}
+	},
+
+	created() { },
+	onLoad(options) {
+		if (options.code) uni.setStorageSync(NEW_BIND_SERVICE_ID, options.code) || uni.setStorageSync(NEW_BIND_SERVICE_URL, this.$route.fullPath) // 有服务邀请绑定id就进行存储，以防下面没登录跳到登录页
+		this.userId = getUserId() || ''
+		if (this.userId && !options.code && uni.getStorageSync(NEW_BIND_SERVICE_ID)) { // 如果原先有服务邀请绑定id，例如注册/重新登陆了然后跳回来（options没携带服务邀请绑定id），则是存储里的服务邀请绑定id
+			this.bindServiceId = uni.getStorageSync(NEW_BIND_SERVICE_ID) * 1
+			this.binding(this.userId, () => { })
+		} else if (this.userId && options.code) { // 请求路径上面直接有服务邀请绑定id参数
+			this.bindServiceId = options.code * 1
+			this.binding(this.userId, () => { })
+		}
+
+		this.serverTypeId = options.id * 1
+		this.title = options.serverNameThree
+		uni.setNavigationBarTitle({
+			title: this.title
+		})
+		// this.serverUrl = options.serverImageUrl
+		// #ifdef H5
+		this.$nextTick(() => {
+			this.handleShareServe(true)
+		})
+		// #endif
+		this.getServiceDetail()
+		this.getIsOpenServerArea()
+	},
+	onShow() {
+		const info = uni.getStorageSync('guawyi8sa')
+		// console.log('info', info);
+		if (info.address && info.addressDetail) {
+			this.addressInfo = info.address + info.addressDetail
+			// console.log('addressInfo', this.addressInfo);
+		}
+
+		this.addressDetail = this.addressInfo
+		// console.log('addressDetail', this.addressDetail);
+		this.address = info.address
+		// console.log('address', this.address);
+		this.a()
 	},
 	methods: {
 		splitProject,
+		// 绑定
+		binding(userId, cb) {
+			const _this = this
+			return new Promise((resolve, reject) => {
+				changeServiceUserBindingApi({
+					bindingUserId: userId,
+					shareUserId: this.bindServiceId
+				})
+					.then((res) => {
+						uni.removeStorageSync(NEW_BIND_SERVICE_ID)
+						uni.removeStorageSync(NEW_BIND_SERVICE_URL)
+						uni.showToast({
+							title: '成功参与服务分享！',
+							duration: 1000
+						})
+						_this.timer = setTimeout(() => {
+							cb && typeof cb === 'function' && cb()
+						}, 1000)
+						resolve()
+					})
+					.catch((err) => {
+						uni.removeStorageSync(NEW_BIND_SERVICE_ID)
+						uni.removeStorageSync(NEW_BIND_SERVICE_URL)
+						_this.timer = setTimeout(() => {
+							cb && typeof cb === 'function' && cb()
+						}, 1000)
+						reject()
+					})
+			})
+		},
 		handleBack() {
 			uni.navigateBack()
 		},
@@ -270,7 +388,7 @@ export default {
 			// console.log('更多服务分类列表', item)
 			this.value = item
 			uni.navigateTo({
-				url: `/community-center/service-sort?value=${this.value}`,
+				url: `/community-center/service-sort?value=${this.value}`
 			})
 		},
 		handleToAddress() {
@@ -278,45 +396,42 @@ export default {
 		},
 
 		handleToServiceOrderHome() {
-			//需要传 图片 价格 名称 单位
+			// 需要传 图片 价格 名称 单位
 			// uni.navigateTo({ url: "../community-center/community-order" });
 			// const let var
 
 			uni.showToast({
 				title: '请选择服务类型',
 				icon: 'none',
-				duration: 2000,
+				duration: 2000
 			})
 
 			if (!this.isArtificial) {
 				uni.navigateTo({
-					url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`,
+					url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`
+				})
+			} else if (!this.serverPrice == 0) {
+				uni.navigateTo({
+					url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}`
 				})
 			} else {
-				if (!this.serverPrice == 0) {
-					uni.navigateTo({
-						url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}`,
-					})
-				} else {
-					console.log('sb kuaixuan')
-				}
+				console.log('sb kuaixuan')
 			}
 		},
 
 		toJump(index) {
 			this.currentMoveTab = index
 			if (this.currentMoveTab == 0) {
-				document.getElementById("norm").scrollIntoView({
-					behavior: "smooth",
-					block: "start"
-				});
+				document.getElementById('norm').scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				})
 			} else if (this.currentMoveTab == 1) {
-				document.getElementById("detail").scrollIntoView({
-					behavior: "smooth",
-					block: "start"
-				});
+				document.getElementById('detail').scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				})
 			}
-
 		},
 
 		switchTab(item1) {
@@ -331,12 +446,12 @@ export default {
 			// console.log('详情id', this.detailId)
 		},
 
-		//社区服务详情
+		// 社区服务详情
 		async getServiceDetail() {
 			// this.serverTypeId=this.serviceDetail.serverTypeId;
 			const res = await getServiceDetailApi({
 				// serverTypeId: 109,
-				serverTypeId: this.serverTypeId,
+				serverTypeId: this.serverTypeId
 			})
 
 			this.serviceDetail = res.data
@@ -349,8 +464,7 @@ export default {
 			// console.log('666', this.serviceDetail)
 
 			this.serverInfo = this.serviceDetail[0].serverInfo
-			console.log('服务详情内容', this.serverInfo);
-
+			console.log('服务详情内容', this.serverInfo)
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
 			this.length = this.serviceDetail.length
@@ -366,7 +480,7 @@ export default {
 			this.serverIntroduction = this.serviceDetail[0].serverIntroduction
 			// console.log('介绍', this.serverIntroduction)
 
-			this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find(item => item)
+			this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find((item) => item)
 			console.log('图片', this.serverUrl)
 
 			this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1)
@@ -381,15 +495,11 @@ export default {
 			this.serverContent = this.serviceDetail[0].serverContent.split('，')
 			// console.log('服务具体内容', this.serverContent);
 
-
 			// this.serverInfo = this.serviceDetail[0].serverInfo
 			// console.log('服务详情', this.serverInfo);
 
 			// this.chargeDetailsList = this.serviceDetail[0].chargeDetailsList
 			// console.log('项目数据', this.chargeDetailsList);
-
-
-
 		},
 
 		async getIsOpenServerArea() {
@@ -397,8 +507,8 @@ export default {
 			const _this = this
 			uni.getLocation({
 				type: 'gcj02',
-				success: function (res) {
-					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+				success(res) {
+					getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
 						if (res.status === '1') {
 							// console.log('1111', res)
 							const result = res.regeocode
@@ -412,7 +522,7 @@ export default {
 							console.log('addressDetail', _this.addressDetail)
 						}
 					})
-				},
+				}
 			})
 			// #endif
 
@@ -426,7 +536,7 @@ export default {
 
 		async a() {
 			const res = await getIsOpenServerAreaApi({
-				address: this.address,
+				address: this.address
 			})
 			// console.log('res', res)
 			this.tips = res.data
@@ -435,90 +545,103 @@ export default {
 			// console.log('type', this.type)
 		},
 
-
-		//预览图
+		// 预览图
 		preview(index) {
 			// console.log(index)
-			let imgsArray = []
+			const imgsArray = []
 			imgsArray[0] = index
 
 			uni.previewImage({
 				urls: imgsArray,
-				current: 0,
+				current: 0
 			})
 		},
 
 		previewImage(index) {
 			// console.log(index)
-			let imgsArray = []
+			const imgsArray = []
 			imgsArray[0] = index
 
 			uni.previewImage({
 				urls: imgsArray,
-				current: 0,
+				current: 0
 			})
 		},
 
-		// 微信分享
 		// 点击分享
-		handleShareServe(isQuit) {
+		async handleClickShare() {
+			await this.handleShareServe()
+			this.handleShare()
+		},
+
+		// 微信分享
+		async handleShareServe(isQuit) {
 			const _this = this
+			let desc
+			if (_this.serverTypeId === 313) {
+				desc = '想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。'
+			} else {
+				desc = '售后质保·服务专业·极速退款·意外承包'
+			}
 			const data = {
 				data: {
 					title: _this.title,
-					desc: '售后质保·服务专业·极速退款·意外承包',
-					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}`,
-					imageUrl: _this.serverImageUrl,
+					desc,
+					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}&code=${_this.userId}`,
+					imageUrl: _this.serverUrl
 				},
 				successCb: () => { },
-				failCb: () => { },
+				failCb: () => { }
 			}
-
-			this.$refs.tuanWxShareRef.share(data, isQuit)
+			await this.$refs.tuanWxShareRef.share(data, isQuit)
 		},
-	},
 
-	computed: {
-		goodsInfoDetail() {
-			return this.serverInfo
-				? marked(this.serverInfo)
-				: ''
+		// 点击分享
+		handleShare() {
+			uni.showLoading({
+				title: '活动邀请码生成中...'
+			})
+			const _this = this
+			let topDesc
+			let downDesc
+			if (_this.serverTypeId === 313) {
+				topDesc = `想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。`
+				downDesc = `把优惠推荐给亲朋好友，下单清洗空调每满3台，免费赠送价值336元床垫清洗除螨一张或沙发清洗一个位的兑换券一张，可直接下单兑换。`
+			} else {
+				topDesc = '售后质保·服务专业·极速退款·意外承包'
+				downDesc = `-----------`
+			}
+			this.$refs.uqrcode.make({
+				success: () => {
+					uni.hideLoading()
+					_this.$refs.communityDetailPosterRef.show({
+						shareCode: this.shareCode,
+						logo: this.serverUrl,
+						headerTitle: `${this.title}`,
+						topDesc,
+						downDesc
+					})
+				}
+			})
 		},
-	},
 
-	created() { },
-	onLoad(options) {
-		this.serverTypeId = options.id
-		this.title = options.serverNameThree
-		uni.setNavigationBarTitle({
-			title: this.title,
-		})
-		// this.serverUrl = options.serverImageUrl
-		// #ifdef H5
-		this.$nextTick(() => {
-			this.handleShareServe(true)
-		})
-		// #endif
-		this.getServiceDetail()
-		this.getIsOpenServerArea()
-	},
-	onShow() {
-		const info = uni.getStorageSync("guawyi8sa");
-		// console.log('info', info);
-		if (info.address && info.addressDetail) {
-			this.addressInfo = info.address + info.addressDetail;
-			// console.log('addressInfo', this.addressInfo);
+		// 完成
+		handleCompleteCode(e) {
+			const _this = this
+			if (e.success) {
+				this.$refs.uqrcode.toTempFilePath({
+					success: (res) => {
+						if (!_this.shareCode) {
+							_this.shareCode = res.tempFilePath
+						}
+					}
+				})
+			}
 		}
-
-
-		this.addressDetail = this.addressInfo
-		// console.log('addressDetail', this.addressDetail);
-		this.address = info.address
-		// console.log('address', this.address);
-		this.a()
 	}
 }
 </script>
+
 <style lang="less" scoped>
 .community-detail {
 	background: #f7f8fa;
@@ -706,8 +829,6 @@ export default {
 				}
 			}
 		}
-
-
 
 		.type {
 			margin-left: 30upx;
@@ -918,7 +1039,6 @@ export default {
 				color: #B3B2AD;
 				position: relative;
 
-
 				&.active {
 					font-size: 32upx;
 					font-weight: bold;
@@ -1002,7 +1122,6 @@ export default {
 					height: 258upx;
 				}
 			}
-
 
 			.girl-img {
 				width: 450upx;
@@ -1230,6 +1349,11 @@ export default {
 				}
 			}
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000upx;
 	}
 }
 </style>

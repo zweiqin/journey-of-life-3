@@ -174,11 +174,6 @@ export default {
 		}
 	},
 	onLoad(options) {
-		if (options.campaignsType * 1 === 0) {
-			return uni.redirectTo({
-				url: `/community-center/vip-center/vip-detail?type=2&campaignsType=${options.campaignsType}`
-			})
-		}
 		this.isShowBrand = !!options.showBrand
 		uni.pageScrollTo({
 			scrollTop: 0,
@@ -500,19 +495,7 @@ export default {
 
 		// 分享活动邀请码
 		async handleShareActivity() {
-			if (this.campaignsType === 0) { // 不可能，因为这个页面只显示爆品商品
-				const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-				if (res.data) {
-					uni.navigateTo({
-						url: `/user/sever/activityCenter/activity-code?campaignsType=${this.campaignsType}`
-					})
-				} else {
-					uni.showToast({
-						title: '购买金管家会员后即可分享',
-						icon: 'none'
-					})
-				}
-			} else if (this.campaignsType === 1) {
+			if (this.campaignsType === 1) {
 				const res = await getIsPurchaseApi({ userId: getUserId() })
 				if (res.data) {
 					uni.navigateTo({

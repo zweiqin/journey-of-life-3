@@ -6,29 +6,41 @@
 			<h1>登录</h1>
 
 			<tui-form ref="form">
-				<tui-input v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top placeholder="请输入手机号码"
+				<tui-input
+					v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top
+					placeholder="请输入手机号码"
 					color="#141000" :focus="focusMap[0]" :confirm-type="keybordEnterText"
-					@confirm="handleClickConfirmType(0)"></tui-input>
-				<tui-input v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码" :focus="focusMap[1]"
+					@confirm="handleClickConfirmType(0)"
+				></tui-input>
+				<tui-input
+					v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码"
+					:focus="focusMap[1]"
 					:confirm-type="keybordEnterText" class="reset-wrapper" :line-left="false"
-					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)">
+					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)"
+				>
 					<block slot="right">
-						<image class="password-status" :src="isShowPassword
+						<image
+							class="password-status" :src="isShowPassword
 								? '../../static/images/common/view-password .png'
 								: '../../static/images/common/close-password.png'
-							" mode="" @click="isShowPassword = !isShowPassword" />
+							" mode="" @click="isShowPassword = !isShowPassword"
+						/>
 					</block>
 				</tui-input>
 			</tui-form>
 
-			<view style="
+			<view
+				style="
 	          display: flex;
 	          justify-content: space-between;
 	          align-items: center;
-	        ">
+	        "
+			>
 				<view class="service-agreement-wrapper">
-					<tui-icon :name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
-						:size="18" @click="agreementStatus = !agreementStatus"></tui-icon>
+					<tui-icon
+						:name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
+						:size="18" @click="agreementStatus = !agreementStatus"
+					></tui-icon>
 					<text @click="agreementStatus = !agreementStatus">
 						我已阅读并同意
 					</text>
@@ -79,7 +91,9 @@ import {
 	NEW_BIND_ID,
 	USER_ID,
 	USER_INFO,
-	NEW_BIND_ACTIVITY_ID
+	NEW_BIND_ACTIVITY_ID,
+	NEW_BIND_SERVICE_ID,
+	NEW_BIND_SERVICE_URL
 } from '../../constant'
 import {
 	bindLastUserApi,
@@ -178,9 +192,9 @@ export default {
 		keybordEnterText() {
 			return this.agreementStatus &&
 				this.loginForm.password &&
-				this.loginForm.phone ?
-				'done' :
-				'next'
+				this.loginForm.phone
+				? 'done'
+				: 'next'
 		}
 	},
 	methods: {
@@ -242,6 +256,10 @@ export default {
 						} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
 							uni.redirectTo({
 								url: '/user/sever/activityCenter/index'
+							})
+						} else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
+							uni.redirectTo({
+								url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
 							})
 						} else {
 							uni.switchTab({
@@ -349,23 +367,21 @@ export default {
 						url: '/'
 					})
 				})
-			} else {
-				if (this.redirect) {
-					// console.log('进来了', this.redirect)
-					if (tabbarList.includes(_this.redirect)) {
-						uni.switchTab({
-							url: _this.redirect
-						})
-					} else {
-						uni.redirectTo({
-							url: _this.redirect
-						})
-					}
-				} else {
+			} else if (this.redirect) {
+				// console.log('进来了', this.redirect)
+				if (tabbarList.includes(_this.redirect)) {
 					uni.switchTab({
-						url: '/pages/community-center/community-centerr'
+						url: _this.redirect
+					})
+				} else {
+					uni.redirectTo({
+						url: _this.redirect
 					})
 				}
+			} else {
+				uni.switchTab({
+					url: '/pages/community-center/community-centerr'
+				})
 			}
 			// #endif
 		}
