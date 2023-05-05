@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { log } from 'unpackage/dist/dev/app-plus/app-service'
 import { checkedVersionApi } from '../../api/app'
 export default {
   data() {

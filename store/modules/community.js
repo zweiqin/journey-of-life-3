@@ -25,7 +25,7 @@ export default {
       });
 
       if (res.statusCode == 20000 && res.data !== "该区域暂无自定义属性") {
-        commit(CHANGE_HOME_PAGE_IMAGE, res.data[0].url);
+        commit(CHANGE_HOME_PAGE_IMAGE, res.data[0].url || null);
       }
     },
   },
