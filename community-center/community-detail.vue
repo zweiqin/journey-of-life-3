@@ -224,7 +224,8 @@
 
 		<!-- 生成二维码 -->
 		<uqrcode
-			ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="`https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
+			ref="uqrcode" class="generate-code-container" canvas-id="qrcode"
+			:value="`https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
 			@complete="handleCompleteCode"
 		></uqrcode>
 
@@ -578,7 +579,7 @@ export default {
 			const _this = this
 			let desc
 			if (_this.serverTypeId === 313) {
-				desc = '团蜂社区服务空调清洗优惠价：挂机58元/台，柜机88元/台，内机。一户清洗3台以上，赠送价值336元床垫清洗除螨一张哦。欢迎大家咨询下单😄😄😄'
+				desc = '想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。'
 			} else {
 				desc = '售后质保·服务专业·极速退款·意外承包'
 			}
@@ -1348,6 +1349,11 @@ export default {
 				}
 			}
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000upx;
 	}
 }
 </style>
