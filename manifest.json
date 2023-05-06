@@ -51,7 +51,14 @@
             },
             "ios" : {
                 "dSYMs" : false,
-                "urlschemewhitelist" : "alipays,alipay,safepay,weixin,wechat"
+                "urlschemewhitelist" : "alipays,alipay,safepay,weixin,wechat",
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [
+                            "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com"
+                        ]
+                    }
+                }
             },
             "sdkConfigs" : {
                 "ad" : {},
@@ -64,20 +71,20 @@
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "",
+                        "appkey_ios" : "d0c27ffa68237776243fa5858c3fe5c5",
                         "appkey_android" : "4f316ac58524f5d7b978dc8b0a702c0c"
                     }
                 },
                 "oauth" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : ""
+                        "UniversalLinks" : "https://static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com/uni-universallinks/__UNI__9A4ADF0/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : ""
+                        "UniversalLinks" : "https://static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com/uni-universallinks/__UNI__9A4ADF0/"
                     }
                 }
             },
@@ -165,5 +172,6 @@
                 }
             }
         }
-    }
+    },
+    "_spaceID" : "mp-29b88e72-555b-4891-9a2e-f797e1a8bd08"
 }
