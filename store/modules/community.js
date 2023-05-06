@@ -23,10 +23,13 @@ export default {
         address: currentAddress || "广东省佛山市顺德区龙江镇",
         correspondType: 4,
       });
-
-      if (res.statusCode == 20000 && res.data !== "该区域暂无自定义属性") {
-        commit(CHANGE_HOME_PAGE_IMAGE, res.data[0].url || null);
-      }
+      
+      commit(
+        CHANGE_HOME_PAGE_IMAGE,
+        res.statusCode == 20000 && res.data !== "该区域暂无自定义属性"
+          ? res.data[0].url
+          : ""
+      );
     },
   },
 };
