@@ -186,9 +186,16 @@ export const getUserIncomeApi = (data) => RuanRequest(
 	'get'
 )
 
-// 活动列表查询
-export const getUserCrmListApi = (data) => RuanRequest(
-	'/userCrm/list',
+// // 活动列表查询
+// export const getUserCrmListApi = (data) => RuanRequest(
+// 	'/userCrm/list',
+// 	data,
+// 	'get'
+// )
+
+// 用户经纬度查询是否在区域在的话返回该活动
+export const getUserCrmListApi = (data) => shopRequest(
+	'/userCrm/region',
 	data,
 	'get'
 )
