@@ -5,8 +5,10 @@
       <tui-icon @click="handleBack" name="arrowleft" :size="25" color="#00"></tui-icon>
       <view class="search-wrapper">
         <tui-icon class="search-icon" name="search" :size="20"></tui-icon>
-        <input type="text" placeholder="省/市/区/县" />
+        <input v-model="searchCity" type="text" placeholder="请输入所在城市" />
+        <tui-icon v-if="searchCity" name="close" :size="20" @click="handleClearSearch"></tui-icon>
       </view>
+      <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">搜索</button>
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
       <text class="current-address-text">
@@ -25,8 +27,8 @@
       @change="handleChangeTab"></tui-tabs>
 
     <!-- 标签页 -->
-    <view class="wrapper-container">
-      <swiper @change="handleChangeSwiper" :current="currentTab" class="swiper">
+    <view class="wrapper-container" v-if="cityList.length">
+      <swiper disable-touch @change="handleChangeSwiper" :current="currentTab" class="swiper">
         <swiper-item class="" item-id="">
           <view class="address-list-wrapper">
             <tui-index-list activeKeyColor="#e95d20" activeColor="#e95d20" activeKeyBackground="#fff"
@@ -73,6 +75,11 @@
     </view>
 
 
+    <view class="no-data" v-else>
+      暂无数据~
+    </view>
+
+
 
     <tui-popup :duration="500" :modeClass="['fade-in']" :styles="styles" :show="showAuthPopupVisible"
       @click="showAuthPopupVisible = false">
@@ -88,7 +95,6 @@
 
 <script>
 export default {
-
   data() {
     return {
       currentTab: 0,
@@ -122,7 +128,9 @@ export default {
       mainHeight: 0,
       currentTab: 0,
       currentDistinguishData: null,
-      currentTownData: null
+      currentTownData: null,
+      searchCity: '',
+      allCityData: {}
     }
   },
   methods: {
@@ -133,6 +141,7 @@ export default {
         for (const key in res) {
           _this.cityList.push(res[key])
         }
+        _this.allCityData = Object.freeze(_this.cityList)
         _this.isShowLoading = false
         uni.hideLoading();
       })
@@ -142,12 +151,26 @@ export default {
       this.currentTab = e.index
     },
 
-    searchCity(e) {
-      const value = e.value
+    handleSearchCity() {
+      this.currentTab = 0
+      this.currentDistinguishData = null
+      this.currentTownData = null
+      let data = JSON.parse(JSON.stringify(this.allCityData))
+
+      data = data.filter(item => {
+        item.data = item.data && item.data.filter(cities => cities.name.includes(this.searchCity))
+        return item.data && item.data.length
+      })
+
+      this.cityList = data
     },
 
     handleBack() {
       uni.navigateBack()
+    },
+
+    handleClearSearch() {
+      this.searchCity = ''
     },
 
     handleChooseCity(chooseAddressInfo) {
@@ -165,7 +188,12 @@ export default {
 
     // 滑动swiper
     handleChangeSwiper(e) {
-      this.currentTab = e.detail.current
+      const nextIndex = e.detail.current
+      if (nextIndex === 1 && !this.currentDistinguishData) {
+        this.currentTab = nextIndex - 1
+        return
+      }
+      this.currentTab = nextIndex
     },
 
     // 开始定位
@@ -232,13 +260,23 @@ export default {
         this.handleBack()
       }, 1000);
 
-    }
+    },
   },
-
 
   mounted() {
     this.getData()
   },
+
+  watch: {
+    searchCity(val) {
+      if (!val) {
+        this.currentTab = 0
+        this.currentDistinguishData = null
+        this.currentTownData = null
+        this.cityList = this.allCityData
+      }
+    }
+  }
 }
 </script>
 
@@ -371,6 +409,20 @@ export default {
   /deep/ .tui-icon {
     margin-right: 10upx !important;
   }
+}
+
+.uni-btn {
+  font-size: 28upx;
+  margin-left: 10upx;
+  color: rgb(233, 93, 32);
+}
+
+.no-data {
+  height: 300upx;
+  text-align: center;
+  line-height: 400upx;
+  color: #ccc;
+  font-size: 28upx;
 }
 
 .wrapper-container {

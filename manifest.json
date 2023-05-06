@@ -17,10 +17,10 @@
             "delay" : 0
         },
         "modules" : {
-            "Geolocation" : {},
+            "Camera" : {},
             "OAuth" : {},
             "Share" : {},
-            "Camera" : {}
+            "Maps" : {}
         },
         "distribute" : {
             "android" : {
