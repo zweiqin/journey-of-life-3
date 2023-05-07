@@ -12,9 +12,9 @@ const routerMethods = [
 
 for (const method of routerMethods) {
   uni.addInterceptor(method, {
-    invoke() {
-      window.parent.postMessage(window.location.href, "*");
-      return true;
-    },
+		returnValue(){
+			window.parent.postMessage(window.location.href, "*");
+			return true;
+		}
   });
 }
