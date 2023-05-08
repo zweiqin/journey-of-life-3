@@ -1,6 +1,6 @@
 {
     "name" : "团蜂家居",
-    "appid" : "__UNI__9A4ADF0",
+    "appid" : "__UNI__B07FE0F",
     "description" : "",
     "versionName" : "1.0.11",
     "versionCode" : 111,
@@ -55,7 +55,8 @@
                 "capabilities" : {
                     "entitlements" : {
                         "com.apple.developer.associated-domains" : [
-                            "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com"
+                            "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com",
+                            "applinks:www.tuanfengkeji.cn"
                         ]
                     }
                 }
@@ -78,13 +79,13 @@
                 "oauth" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com/uni-universallinks/__UNI__9A4ADF0/"
+                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__9A4ADF0/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com/uni-universallinks/__UNI__9A4ADF0/"
+                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__9A4ADF0/"
                     }
                 }
             },
@@ -173,5 +174,5 @@
             }
         }
     },
-    "_spaceID" : "mp-29b88e72-555b-4891-9a2e-f797e1a8bd08"
+    "_spaceID" : "mp-c6deae67-6f09-4de0-9c44-38badae267b7"
 }

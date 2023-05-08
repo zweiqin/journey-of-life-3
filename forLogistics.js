@@ -7,7 +7,6 @@ const routerMethods = [
   "reLaunch",
   "switchTab",
   "navigateBack",
-  "",
 ];
 
 for (const method of routerMethods) {
