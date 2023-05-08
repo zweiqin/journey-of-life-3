@@ -22,6 +22,18 @@
       </view>
     </view>
 
+    <!-- 热门城市 -->
+    <view class="hot-city">
+      <view class="title">热门城市</view>
+      <tui-grid unlined>
+        <block v-for="(item, index) in hotCities" :key="index">
+          <tui-grid-item :cell="3" @click="confirmChooseAddress(item, true)">
+            <text class="tui-grid-label">{{ item.town }}</text>
+          </tui-grid-item>
+        </block>
+      </tui-grid>
+    </view>
+
     <!-- tabs 标签页 -->
     <tui-tabs :tabs="tabs" selectedColor="#e95d20" sliderBgColor="#e95d20" itemWidth="30%" :currentTab="currentTab"
       @change="handleChangeTab"></tui-tabs>
@@ -94,6 +106,7 @@
 </template>
 
 <script>
+import { hotCities } from './data'
 export default {
   data() {
     return {
@@ -130,7 +143,8 @@ export default {
       currentDistinguishData: null,
       currentTownData: null,
       searchCity: '',
-      allCityData: {}
+      allCityData: {},
+      hotCities: Object.freeze(hotCities)
     }
   },
   methods: {
@@ -244,13 +258,18 @@ export default {
     },
 
     // 选择定位
-    confirmChooseAddress(data) {
+    confirmChooseAddress(data, isHot) {
       uni.showLoading();
-      this.$store.dispatch('location/getDetailAddress', {
-        city: this.tabs[0].select,
-        distinguish: this.tabs[1].select,
-        town: data.name
-      })
+      if (isHot) {
+        this.$store.dispatch('location/getDetailAddress', data)
+      } else {
+        this.$store.dispatch('location/getDetailAddress', {
+          city: this.tabs[0].select,
+          distinguish: this.tabs[1].select,
+          town: data.name
+        })
+      }
+
 
       uni.hideLoading();
 
@@ -350,6 +369,7 @@ export default {
 
   .hot-city {
     background-color: #fff;
+    margin-bottom: 30upx;
 
     .title {
       width: 100%;
