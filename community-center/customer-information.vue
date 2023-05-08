@@ -38,9 +38,13 @@
 				style="position: relative;display: flex;justify-content: space-between;margin-top: 30upx; border-bottom: 2upx solid #d8d8d8;  ">
 				<view class="diqu" style="height: 90upx;display: flex;align-items: center;font-size: 32upx;color: #3662ec;">所在地区
 				</view>
-				<JCity @confirm="City($event.area)" :text="address"
+				<!-- <JCity @confirm="City($event.area)" :text="address"
 					style="padding-top: 24upx; width: 78%; height: 90upx; border-radius: 20upx; padding-left: 20upx; box-sizing: border-box; font-size: 30upx; ">
-				</JCity>
+				</JCity> -->
+				<view @click="handleChooseAddress"
+					style="padding-top: 24upx; width: 78%; height: 90upx; border-radius: 20upx; padding-left: 20upx; box-sizing: border-box; font-size: 30upx;">
+					<text v-if="!address" style="color: #808080">请选择服务地址</text> <text v-else>{{ address }}</text>
+				</view>
 				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png" alt=""
 					class="location" style="width: 40upx; height: 40upx; position: absolute; top: 20upx; right: 20upx; " />
 			</view>
@@ -159,8 +163,8 @@
 		</view>
 		<!--底部按钮-->
 		<view class="foot1" :style="{
-				transform: show ? 'translateY(168upx)' : 'translateY(0)',
-			}" v-if="pricingType == 1">
+			transform: show ? 'translateY(168upx)' : 'translateY(0)',
+		}" v-if="pricingType == 1">
 			<view class="price-list">
 				<view class="logo">￥</view>
 				<view class="number">{{ oughtPrice }}</view>
@@ -170,10 +174,14 @@
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
 		<view class="foot2" :style="{
-				transform: show ? 'translateY(168upx)' : 'translateY(0)',
-			}" v-if="pricingType == 2">
+			transform: show ? 'translateY(168upx)' : 'translateY(0)',
+		}" v-if="pricingType == 2">
 			<view class="to-pay" @click="handleToServiceConfirmOrder">确认下单</view>
 		</view>
+
+
+		<!-- 选择地址 -->
+		<TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
 	</view>
 </template>
 
@@ -383,6 +391,7 @@ export default {
 					serverInfoId: this.detailId2 * 1,
 					quantity: this.number,
 					horsepower: this.specsId * 1,
+					price: this.price1
 					// userId: 127,
 					// serverInfoId: 42,
 					// quantity: 1,
@@ -397,6 +406,7 @@ export default {
 					userId: getUserId(),
 					serverInfoId: this.detailId2,
 					quantity: this.number,
+					price: this.price1
 
 					// userId: 127,
 					// serverInfoId: 42,
@@ -491,6 +501,17 @@ export default {
 			this.addressDetail = locationInfo.detailAddress.slice(_this.address.length)
 			// #endif
 		},
+
+		// 点击选择地址
+		handleChooseAddress() {
+			this.$refs.TuanCityRef.show()
+		},
+
+		// 确定选择地址
+		handleConfirmAddress(selectInfo){
+			this.address = selectInfo.formatAddress4
+			this.a()
+		}
 	},
 	created() { },
 	onLoad(options) {

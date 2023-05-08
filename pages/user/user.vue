@@ -11,17 +11,14 @@
 			<tui-loading type="row" text="正在刷新中..."></tui-loading>
 		</view>
 		<BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
-
 		<view class="main-area">
 			<OrderPane @handleNavigate="handleNavigate"></OrderPane>
 			<Equity @handleNavigate="handleNavigate"></Equity>
 			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
 			<Serve @handleNavigate="handleNavigate"></Serve>
 		</view>
-
 		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
 			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"></tui-modal>
-
 		<tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleVipUp"></tui-modal>
 	</view>
 </template>
@@ -140,7 +137,7 @@ export default {
 				this.moveDis = 150
 			}
 		}
-	}
+	},
 }
 </script>
 

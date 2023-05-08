@@ -3,18 +3,14 @@
 		<view class="head">
 			<!-- 顶部区域 -->
 			<view class="title-list">
-				<img
-					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-					class="return" @click="handleBack"
-				/>
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+					class="return" @click="handleBack" />
 				<view class="title" @click="handleBack">
 					<text class="page-title">{{ title }}</text>
 				</view>
 				<view class="location">
-					<img
-						src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt=""
-						class="icon"
-					/>
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt=""
+						class="icon" />
 					<TuanLocation>
 						<text class="locale">
 							{{
@@ -31,10 +27,8 @@
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 					" alt="" class="img" @click="preview(serverUrl)" /> -->
-				<Carousel
-					:is-lazy-load="false" :list="serverUrls.length == 0 ? [ serverUrl ] : serverUrls" class="img"
-					:radius="0" :height="270" :top="-40"
-				>
+				<Carousel :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
+					:height="270" :top="-40">
 				</Carousel>
 				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
 				<view class="goods-name">{{ title }}</view>
@@ -58,10 +52,8 @@
 				<view class="a">
 					<TuanWxShare ref="tuanWxShareRef" @click="handleClickShare">
 						<view class="share">
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
-								alt="" class="image"
-							/>
+							<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
+								alt="" class="image" />
 							<view class="text">分享</view>
 						</view>
 					</TuanWxShare>
@@ -76,11 +68,9 @@
 			<view v-if="isArtificial">
 				<scroll-view scroll-x="true">
 					<view ref="price-list" class="price-list">
-						<Item
-							v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
+						<Item v-for="item in serviceDetail" :key="item.id" :class="{ active: item.id == currentTab }"
 							:server-info-name="item.serverInfoName" :server-price="item.serverPrice" :server-unit="item.serverUnit"
-							:is-artificial="item.isArtificial" @choose="switchTab(item)"
-						></Item>
+							:is-artificial="item.isArtificial" @choose="switchTab(item)"></Item>
 					</view>
 				</scroll-view>
 			</view>
@@ -117,10 +107,8 @@
 				</view>
 
 				<!-- #ifdef H5 -->
-				<img
-					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
-					class="more"
-				/>
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt=""
+					class="more" />
 				<!-- #endif -->
 
 			</view>
@@ -191,15 +179,11 @@
 		</view>
 		<!-- 其他服务 -->
 		<view class="other">
-			<view
-				v-for="item in moreService" :key="item.value" class="other-service"
-				@click="handleToServiceListHome(item.value)"
-			>
+			<view v-for="item in moreService" :key="item.value" class="other-service"
+				@click="handleToServiceListHome(item.value)">
 				<view class="text">其他服务</view>
-				<img
-					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt=""
-					class="show"
-				/>
+				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt=""
+					class="show" />
 			</view>
 		</view>
 
@@ -208,10 +192,8 @@
 			<view class="list">
 				<view class="online">
 					<!-- #ifdef H5 -->
-					<img
-						src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
-						class="seek"
-					/>
+					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt=""
+						class="seek" />
 					<view class="name">在线咨询</view>
 					<!-- #endif -->
 				</view>
@@ -223,11 +205,9 @@
 		</view>
 
 		<!-- 生成二维码 -->
-		<uqrcode
-			ref="uqrcode" class="generate-code-container" canvas-id="qrcode"
+		<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode"
 			:value="`https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
-			@complete="handleCompleteCode"
-		></uqrcode>
+			@complete="handleCompleteCode"></uqrcode>
 
 		<!-- 分享活动邀请码 -->
 		<CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
@@ -329,7 +309,6 @@ export default {
 			title: this.title
 		})
 		// this.serverUrl = options.serverImageUrl
-		this.getServiceDetail()
 		this.getIsOpenServerArea()
 		// #ifdef H5
 		this.$nextTick(() => {
@@ -338,6 +317,7 @@ export default {
 		// #endif
 	},
 	onShow() {
+		this.getServiceDetail()
 		const info = uni.getStorageSync('guawyi8sa')
 		// console.log('info', info);
 		if (info.address && info.addressDetail) {
@@ -456,17 +436,31 @@ export default {
 				serverTypeId: this.serverTypeId
 			})
 
+			console.log(this.$store.getters);
+			const dzAttribute = await this.$store.dispatch('community/getMyAttribute', this.$store.getters.detailAddress)
+			if (dzAttribute && Array.isArray(dzAttribute) && dzAttribute.length) {
+				res.data.forEach(origin => {
+					dzAttribute.forEach(attr => {
+						if (attr.correspondServerInfoId === origin.id) {
+							origin.serverInfoName = attr.serverInfoName
+							origin.serverPrice = attr.serverPrice
+							origin.serverUnit = attr.serverUnit
+						}
+					})
+				})
+			}
 			this.serviceDetail = res.data
-
 			this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList)
 			// console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
+
+
 
 			this.currentTab = res.data[0].id
 			this.switchTab(this.serviceDetail[0])
 			// console.log('666', this.serviceDetail)
 
 			this.serverInfo = this.serviceDetail[0].serverInfo
-			console.log('服务详情内容', this.serverInfo)
+			// console.log('服务详情内容', this.serverInfo)
 
 			this.isArtificial = this.serviceDetail[0].isArtificial
 			this.length = this.serviceDetail.length
@@ -483,10 +477,10 @@ export default {
 			// console.log('介绍', this.serverIntroduction)
 
 			this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find((item) => item)
-			console.log('图片', this.serverUrl)
+			// console.log('图片', this.serverUrl)
 
 			this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1)
-			console.log('轮播图', this.serverUrls)
+			// console.log('轮播图', this.serverUrls)
 
 			this.startPrice = this.serviceDetail[0].startPrice
 			// console.log('起步价', this.startPrice);
@@ -518,10 +512,10 @@ export default {
 								result.addressComponent.province +
 								result.addressComponent.city +
 								result.addressComponent.district
-							console.log('this.address', _this.address)
+							// console.log('this.address', _this.address)
 							_this.a()
 							_this.addressDetail = result.formatted_address
-							console.log('addressDetail', _this.addressDetail)
+							// console.log('addressDetail', _this.addressDetail)
 						}
 					})
 				}
