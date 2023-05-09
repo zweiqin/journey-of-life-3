@@ -65,15 +65,6 @@
       }
     },
     {
-      "path": "pages/basket/basket",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "购物车",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
       "path": "pages/search-page/search-page",
       "style": {
         "backgroundTextStyle": "light",
@@ -86,15 +77,6 @@
       "path": "pages/search-page/search-result",
       "style": {
         "navigationBarTitleText": "搜索商品"
-      }
-    },
-    {
-      "path": "pages/delivery-address/delivery-address",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "收货地址",
-        "navigationBarTextStyle": "black"
       }
     },
     {
@@ -151,15 +133,6 @@
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "提交订单",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/binding-phone/binding-phone",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "绑定手机号码",
         "navigationBarTextStyle": "black"
       }
     },
@@ -228,15 +201,6 @@
       "path": "pages/prod-classify/prod-classify",
       "style": {
         "onReachBottomDistance": 0
-      }
-    },
-    {
-      "path": "pages/recent-news/recent-news",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarTitleText": "最新公告",
-        "navigationBarTextStyle": "black",
-        "navigationBarBackgroundColor": "#fafafa"
       }
     },
     {

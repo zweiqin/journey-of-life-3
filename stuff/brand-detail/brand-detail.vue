@@ -10,7 +10,7 @@
       <image
         class="advan-img"
         :src="
-          brandDetail.logoUrl || '/static/bda77ab102ee8a0283c84462386a674.png'
+          brandDetail.logoUrl
         "
         mode="widthfix"
       />
