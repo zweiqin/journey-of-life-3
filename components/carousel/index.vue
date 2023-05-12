@@ -1,5 +1,5 @@
 <template>
-	<view class="banner" :style="{
+	<view class="banner" @click="handlePrev" :style="{
 		height: height + 'px',
 		'border-radius': radius + 'px',
 		'margin-top': top + 'px',
@@ -51,10 +51,25 @@ export default {
 		}
 	},
 
+	data() {
+		return {
+			currentIndex: 0
+		}
+	},
+
 	methods: {
 		handleChange(e) {
+			this.currentIndex = e.detail.current
 			this.$emit('change', e.detail.current)
 		},
+
+		// 点击预览
+		prev(){
+			uni.previewImage({
+				current: this.currentIndex,
+				urls: this.list
+			})
+		}
 	},
 }
 </script>

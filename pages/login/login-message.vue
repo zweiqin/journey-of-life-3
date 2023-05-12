@@ -50,12 +50,16 @@
       </view>
 
       <view class="more-login">
+        <!-- #ifdef H5 -->
         <TuanWXLogin @login="handleWXLoginAfter">
           <view class="item">
             <image src="../../static/images/new-auth/wx.png" mode="" />
             <text>微信登录</text>
           </view>
         </TuanWXLogin>
+        <!-- #endif -->
+
+
 
         <view class="item" @click="go('/pages/login/login')">
           <image src="../../static/images/new-auth/password.png" mode="" />
@@ -68,9 +72,10 @@
 </template>
 
 <script>
+import { sf } from '../../config'
 import { verificationCodeRule } from './rules'
 import { throttle } from '../../utils'
-import { NEW_BIND_ID, USER_ID, USER_INFO } from '../../constant'
+import { NEW_BIND_ID, USER_ID, USER_INFO, SF_INVITE_CODE } from '../../constant'
 import { bindLastUserApi, checkBindApi } from '../../api/user'
 import { getCodeApi } from '../../api/auth'
 
@@ -103,7 +108,11 @@ export default {
       isBind: false,
       bindId: null,
       userId: null,
+      partnerCode: null
     }
+  },
+  onShow() {
+    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
   },
   async onLoad(options) {
     this.onlogin = throttle(this.handlelogin, 1000)
@@ -146,6 +155,11 @@ export default {
           uni.switchTab({
             url: '/',
           })
+        })
+      } else if (this.partnerCode) {
+        await this.handlePartnerBind(userId)
+        uni.switchTab({
+          url: '/'
         })
       } else {
         uni.switchTab({
@@ -212,6 +226,16 @@ export default {
             phone: _this.loginForm.phone,
             code: _this.loginForm.code,
           })
+
+
+          // 是否是师傅邀请码
+          if (_this.partnerCode) {
+            await _this.handlePartnerBind(res.userInfo.userId)
+            uni.switchTab({
+              url: '/'
+            })
+            return
+          }
 
           // #ifdef H5
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
@@ -317,6 +341,29 @@ export default {
           .catch(() => {
             reject(false)
           })
+      })
+    },
+
+    // 师傅绑定用户
+    async handlePartnerBind(userId) {
+      const _this = this
+      uni.request({
+        url: sf + '/api/third/partner/memberBindingSf',
+        method: 'post',
+        data: {
+          userId: userId,
+          partnerCode: this.partnerCode
+        },
+        success: (res) => {
+          if (!res.data.ok) {
+            _this.ttoast({
+              type: 'fail',
+              title: res.data.msg || '扫码失败'
+            })
+          }
+        },
+        fail: () => { },
+        complete: () => { }
       })
     },
 

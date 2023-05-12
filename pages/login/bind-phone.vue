@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { sf } from '../../config'
 import {
 	getCodeApi,
 	bindMobileForWXApi
@@ -47,7 +48,7 @@ import { bindLastUserApi } from '../../api/user'
 import {
 	throttle
 } from '../../utils'
-import { NEW_BIND_ID, USER_INFO } from '../../constant'
+import { NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 
 export default {
 	data() {
@@ -61,7 +62,8 @@ export default {
 			onBind: '',
 			timer: null,
 			awaitSecond: 60,
-			userId: null
+			userId: null,
+			partnerCode: null
 		}
 	},
 
@@ -70,6 +72,7 @@ export default {
 		this.onBind = throttle(this.handleBindMobile, 1000)
 		this.bindForm.openId = options.openId
 		this.userId = options.userId
+		this.partnerCode = uni.getStorageSync(SF_INVITE_CODE)
 	},
 
 	methods: {
@@ -152,23 +155,51 @@ export default {
 			uni.navigateBack();
 		},
 
-		handleSkip() {
-			const bindId = uni.getStorageSync(NEW_BIND_ID)
-			if (bindId) {
-				bindLastUserApi({
-					userId: this.userId,
-					bindId: bindId
-				}).then(() => {
-					uni.removeStorageSync(NEW_BIND_ID)
-				})
+		async handleSkip() {
+			try {
+				if (this.partnerCode) {
+					await this.handlePartnerBind(this.userId)
+				}
+				const bindId = uni.getStorageSync(NEW_BIND_ID)
+				if (bindId) {
+					bindLastUserApi({
+						userId: this.userId,
+						bindId: bindId
+					}).then(() => {
+						uni.removeStorageSync(NEW_BIND_ID)
+					})
+				}
+			} catch (error) {
+				setTimeout(() => {
+					uni.switchTab({
+						url: '/'
+					})
+				}, 1000)
 			}
+		},
 
-			setTimeout(() => {
-				uni.switchTab({
-					url: '/'
-				})
-			}, 1000)
-		}
+		// 师傅绑定用户
+		async handlePartnerBind(userId) {
+			const _this = this
+			uni.request({
+				url: sf + '/api/third/partner/memberBindingSf',
+				method: 'post',
+				data: {
+					userId: userId,
+					partnerCode: this.partnerCode
+				},
+				success: (res) => {
+					if (!res.data.ok) {
+						_this.ttoast({
+							type: 'fail',
+							title: res.data.msg || '扫码失败'
+						})
+					}
+				},
+				fail: () => { },
+				complete: () => { }
+			})
+		},
 	},
 
 	computed: {

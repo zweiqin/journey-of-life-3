@@ -58,13 +58,11 @@ export default {
   },
   methods: {
     async checkedVersion(tag) {
-      console.log("干嘛啦1", tag);
       const _this = this
       uni.getSystemInfo({
         success: async function (res) {
           const { data } = await checkedVersionApi({ version: res.appVersion })
-          console.log("干嘛啦2", data);
-
+          console.log('lailelaodi', data);
           if (!data.isNew) {
             _this.logVisible = true
             _this.logs = data.data

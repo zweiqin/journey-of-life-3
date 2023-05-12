@@ -188,6 +188,7 @@
 <script>
 import JCity from '../components/JCity/JCity.vue'
 import chooseTime from './componts/choose-time.vue'
+import { SF_INVITE_CODE } from '../constant'
 import { getServicePriceApi } from '../api/community-center'
 import { getUserId } from '../utils'
 import { getAdressDetailByLngLat } from '../utils/DWHutils'
@@ -325,7 +326,9 @@ export default {
 
 		//新建社区订单
 		async getServiceOrder(abc) {
+			const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
 			const data = {
+				spotOrder: 0,
 				isVipSetmeal: 0,
 				userId: getUserId(),
 				orderType: 1,
@@ -344,7 +347,13 @@ export default {
 				orderGoodsList: this.imgList,
 				pullIn: this.name1 === '空调清洗服务' ? 2 : 1
 			}
+
+			if (partnerCode) {
+				data.partnerCode = partnerCode
+				data.spotOrder = 1
+			}
 			const getServiceOrder = await getServiceOrderApi(data)
+			uni.removeStorageSync(SF_INVITE_CODE);
 			this.data = getServiceOrder.data
 			abc && typeof abc === 'function' && abc(getServiceOrder.data)
 			console.log('订单号', this.data);
@@ -508,7 +517,7 @@ export default {
 		},
 
 		// 确定选择地址
-		handleConfirmAddress(selectInfo){
+		handleConfirmAddress(selectInfo) {
 			this.address = selectInfo.formatAddress4
 			this.a()
 		}

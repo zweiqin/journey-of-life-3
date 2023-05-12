@@ -6,41 +6,29 @@
 			<h1>登录</h1>
 
 			<tui-form ref="form">
-				<tui-input
-					v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top
-					placeholder="请输入手机号码"
+				<tui-input v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top placeholder="请输入手机号码"
 					color="#141000" :focus="focusMap[0]" :confirm-type="keybordEnterText"
-					@confirm="handleClickConfirmType(0)"
-				></tui-input>
-				<tui-input
-					v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码"
-					:focus="focusMap[1]"
+					@confirm="handleClickConfirmType(0)"></tui-input>
+				<tui-input v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码" :focus="focusMap[1]"
 					:confirm-type="keybordEnterText" class="reset-wrapper" :line-left="false"
-					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)"
-				>
+					:type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码" @confirm="handleClickConfirmType(1)">
 					<block slot="right">
-						<image
-							class="password-status" :src="isShowPassword
-								? '../../static/images/common/view-password .png'
-								: '../../static/images/common/close-password.png'
-							" mode="" @click="isShowPassword = !isShowPassword"
-						/>
+						<image class="password-status" :src="isShowPassword
+							? '../../static/images/common/view-password .png'
+							: '../../static/images/common/close-password.png'
+							" mode="" @click="isShowPassword = !isShowPassword" />
 					</block>
 				</tui-input>
 			</tui-form>
 
-			<view
-				style="
+			<view style="
 	          display: flex;
 	          justify-content: space-between;
 	          align-items: center;
-	        "
-			>
+	        ">
 				<view class="service-agreement-wrapper">
-					<tui-icon
-						:name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
-						:size="18" @click="agreementStatus = !agreementStatus"
-					></tui-icon>
+					<tui-icon :name="agreementStatus ? 'square-selected' : 'square'" :color="agreementStatus ? '#FFC117' : ''"
+						:size="18" @click="agreementStatus = !agreementStatus"></tui-icon>
 					<text @click="agreementStatus = !agreementStatus">
 						我已阅读并同意
 					</text>
@@ -83,6 +71,7 @@
 </template>
 
 <script>
+import { sf } from '../../config'
 import loginRule from './rules'
 import {
 	throttle
@@ -93,7 +82,8 @@ import {
 	USER_INFO,
 	NEW_BIND_ACTIVITY_ID,
 	NEW_BIND_SERVICE_ID,
-	NEW_BIND_SERVICE_URL
+	NEW_BIND_SERVICE_URL,
+	SF_INVITE_CODE
 } from '../../constant'
 import {
 	bindLastUserApi,
@@ -128,7 +118,8 @@ export default {
 			redirect: '',
 			isBind: false,
 			bindId: null,
-			userId: null
+			userId: null,
+			partnerCode: ''
 		}
 	},
 	async onLoad(options) {
@@ -137,6 +128,9 @@ export default {
 		this.redirect = options.to
 
 		this.bindId = options.code
+		this.partnerCode = options.partnerCode
+
+		uni.setStorageSync(SF_INVITE_CODE, options.partnerCode)
 
 		if (this.redirect && this.redirect.indexOf('?') > -1) {
 			this.bindId = this.redirect
@@ -167,6 +161,7 @@ export default {
 		// #endif
 
 		// return
+
 		if (userId && userInfo.userId) {
 			if (this.bindId) {
 				await this.binding(userId, () => {
@@ -174,12 +169,21 @@ export default {
 						url: '/'
 					})
 				})
+			} else if (this.partnerCode) {
+				await this.handlePartnerBind(userId)
+				uni.switchTab({
+					url: '/'
+				})
 			} else {
 				uni.switchTab({
 					url: '/'
 				})
 			}
 		}
+	},
+
+	onShow() {
+		this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
 	},
 
 	computed: {
@@ -216,6 +220,15 @@ export default {
 						password: _this.loginForm.password
 					})
 
+					// 是否是师傅邀请码
+					if (_this.partnerCode) {
+						await _this.handlePartnerBind(res.userInfo.userId)
+						uni.switchTab({
+							url: '/'
+						})
+						return
+					}
+
 					// #ifdef H5
 					if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
 						try {
@@ -232,6 +245,8 @@ export default {
 						}
 					}
 					// #endif
+
+
 
 					// #ifdef H5
 					if (_this.bindId) {
@@ -333,9 +348,34 @@ export default {
 			})
 		},
 
+		// 师傅绑定用户
+		async handlePartnerBind(userId) {
+			const _this = this
+			uni.request({
+				url: sf + '/api/third/partner/memberBindingSf',
+				method: 'post',
+				data: {
+					userId: userId,
+					partnerCode: this.partnerCode
+				},
+				success: (res) => {
+					if (!res.data.ok) {
+						_this.ttoast({
+							type: 'fail',
+							title: res.data.msg || '扫码失败'
+						})
+					}
+				},
+				fail: () => { },
+				complete: () => { }
+			})
+		},
+
 		// 微信登陆后续
 		async handleWXLoginAfter(res) {
 			const _this = this
+
+
 
 			// #ifdef H5
 			// 判断是否已经绑定了手机号
@@ -344,6 +384,15 @@ export default {
 					url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
 				})
 
+				return
+			}
+
+			// 是否是师傅邀请码
+			if (_this.partnerCode) {
+				await _this.handlePartnerBind(res.userInfo.userId)
+				uni.switchTab({
+					url: '/'
+				})
 				return
 			}
 

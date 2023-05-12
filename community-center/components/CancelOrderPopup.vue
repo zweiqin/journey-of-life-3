@@ -37,8 +37,6 @@ export default {
       cancelList: [
         "订单下错了",
         "订单取消了",
-        "货物未生产",
-        "仓库无现货",
         "其它",
       ],
       cancelRadio: "订单下错了",

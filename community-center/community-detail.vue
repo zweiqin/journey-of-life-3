@@ -27,10 +27,10 @@
 					serverUrl ||
 					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
 					" alt="" class="img" @click="preview(serverUrl)" /> -->
-				<Carousel :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
+				<Carousel ref="carouselRef" :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0"
 					:height="270" :top="-40">
 				</Carousel>
-				<image src="../static/images/con-center/imagebg.png" mode="" class="imagebg" />
+				<image src="../static/images/con-center/imagebg.png" @click="handlePrev" mode="" class="imagebg" />
 				<view class="goods-name">{{ title }}</view>
 				<view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
 				<view v-if="!isArtificial" class="goods-price">
@@ -542,15 +542,8 @@ export default {
 		},
 
 		// 预览图
-		preview(index) {
-			// console.log(index)
-			const imgsArray = []
-			imgsArray[0] = index
-
-			uni.previewImage({
-				urls: imgsArray,
-				current: 0
-			})
+		handlePrev() {
+			this.$refs.carouselRef.prev()
 		},
 
 		previewImage(index) {

@@ -66,7 +66,7 @@ import {
 	getIsOpenServerAreaApi,
 	payOrderForBeeStewadAPPApi
 } from '../api/community-center'
-import { COMMUNITY_ORDER_NO } from '../constant'
+import { COMMUNITY_ORDER_NO, SF_INVITE_CODE } from '../constant'
 
 export default {
 	components: {
@@ -186,6 +186,7 @@ export default {
 				return
 			}
 
+			const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
 			const data = {
 				isVipSetmeal: 1,
 				userId: getUserId(),
@@ -208,6 +209,11 @@ export default {
 				consigneeMobile: this.consigneeForm.consigneeMobile
 			}
 
+			if (partnerCode) {
+				data.partnerCode = partnerCode
+				data.spotOrder = 1
+			}
+
 			const createOrderRes = await createRepairOrderApi(data)
 			uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data)
 			if (createOrderRes.statusCode == 20000) {
@@ -219,6 +225,7 @@ export default {
 
 				uni.hideLoading();
 				_this.loading = false
+				uni.removeStorageSync(SF_INVITE_CODE);
 
 				if (payResult.statusCode === 20000) {
 					_this.address = ''

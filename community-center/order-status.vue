@@ -24,6 +24,7 @@
                 <view class="number-name">订单编号</view>
                 <view class="type-name">服务类型</view>
                 <view class="time-name">下单时间</view>
+                <view class="type-name" style="margin-top: 30upx;">服务码</view>
               </view>
               <view class="right-info">
                 <view class="number-list">
@@ -32,6 +33,7 @@
                 </view>
                 <view class="service-name">{{ this.dictName }}</view>
                 <view class="time">{{ this.createTime }}</view>
+                <view  style="margin-top: 30upx;" class="time">{{ this.serverCode || '无' }}</view>
               </view>
             </view>
           </view>
