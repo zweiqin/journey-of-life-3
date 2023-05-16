@@ -622,6 +622,18 @@
           }
         },
         {
+          "path": "account/logoff",
+          "style": {
+            "navigationBarTitleText": "注销账号"
+          }
+        },
+        {
+          "path": "account/ver",
+          "style": {
+            "navigationBarTitleText": "验证码"
+          }
+        },
+        {
           "path": "info/detail",
           "style": {
             "navigationBarTitleText": "信息设置",

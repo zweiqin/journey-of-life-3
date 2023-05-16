@@ -13,8 +13,8 @@
 
       <tui-list-cell arrow>
         <view class="user-info-item" @click="changeNicknamePopupVisible = true
-                                                    isFocus = true
-                                                  ">
+        isFocus = true
+          ">
           <view class="title">用户昵称</view>
           <view class="value">{{ userInfo.nickName }}</view>
         </view>
@@ -25,16 +25,16 @@
           <view class="title">团蜂ID</view>
           <view class="value" style="color: #b0b0af">{{
             userInfo.userId
-            }}</view>
+          }}</view>
         </view>
       </tui-list-cell>
 
-      <tui-list-cell v-if=" userInfo.invitationCode ">
+      <tui-list-cell v-if="userInfo.invitationCode">
         <view class="user-info-item">
           <view class="title">会员编号</view>
           <view class="value" style="color: #b0b0af">{{
             userInfo.invitationCode
-            }}</view>
+          }}</view>
         </view>
       </tui-list-cell>
 
@@ -46,14 +46,14 @@
       </tui-list-cell>
 
       <tui-list-cell>
-        <view class="user-info-item" @click=" handleBindMobile ">
+        <view class="user-info-item" @click="handleBindMobile">
           <view class="title">手机号</view>
           <view class="value">{{ userInfo.phone || '未绑定' }}</view>
         </view>
       </tui-list-cell>
 
       <!-- #ifdef APP -->
-      <tui-list-cell arrow @click=" go('/user/info/privacy') ">
+      <tui-list-cell arrow @click=" go('/user/info/privacy')">
         <view class="user-info-item">
           <view class="title">我的隐私</view>
         </view>
@@ -61,7 +61,7 @@
       <!-- #endif -->
 
       <!-- #ifdef H5 -->
-      <tui-list-cell arrow @click=" handleBindWxChat ">
+      <tui-list-cell arrow @click="handleBindWxChat">
         <view class="user-info-item">
           <view class="title">微信账号</view>
           <view class="value">{{ bindPhone || '未绑定' }}</view>
@@ -70,7 +70,7 @@
       <!-- #endif -->
 
       <!-- #ifdef APP -->
-      <tui-list-cell arrow @click=" handleCheckedVersion ">
+      <tui-list-cell arrow @click="handleCheckedVersion">
         <view class="user-info-item">
           <view class="title">检查更新</view>
           <view class="value">当前版本：{{ currentVersion }}</view>
@@ -80,14 +80,14 @@
     </view>
 
     <!-- #ifdef APP -->
-    <view @click=" handleDestoryAccount " class="section" style="padding-bottom: 0">
+    <view @click="handleDestoryAccount" class="section" style="padding-bottom: 0">
       <button class="uni-btn destory">注销账户</button>
     </view>
     <!-- #endif -->
 
     <view class="logout section">
       <tui-list-cell style="background: rgba(0, 0, 0, 0)">
-        <view @click=" isShowModal = true " style="color: #605d52">
+        <view @click=" isShowModal = true" style="color: #605d52">
           退出登录
         </view>
       </tui-list-cell>
@@ -97,20 +97,20 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal @click=" handleClickModal " :show=" isShowModal " title="提示" content="确定退出登录吗？"></tui-modal>
+    <tui-modal @click="handleClickModal" :show="isShowModal" title="提示" content="确定退出登录吗？"></tui-modal>
 
-    <tui-bottom-popup backgroundColor="transparent" :height=" 300 " :show=" changeNicknamePopupVisible " @close="
+    <tui-bottom-popup backgroundColor="transparent" :height="300" :show="changeNicknamePopupVisible" @close="
       changeNicknamePopupVisible = false
-      isFocus = false
-      newNickname = ''
-    ">
+    isFocus = false
+    newNickname = ''
+      ">
       <view class="nickname">
         <view class="pane">
           <text>修改昵称：</text>
-          <input :focus=" isFocus " type="text" v-model.trim=" newNickname " :placeholder=" userInfo.nickName " />
+          <input :focus="isFocus" type="text" v-model.trim="newNickname" :placeholder="userInfo.nickName" />
         </view>
 
-        <button class="uni-btn" @click=" handleCHnageNickName ">确认</button>
+        <button class="uni-btn" @click="handleCHnageNickName">确认</button>
       </view>
     </tui-bottom-popup>
 
@@ -367,9 +367,8 @@ export default {
 
     // 点击注销
     handleDestoryAccount() {
-      this.ttoast({
-        type: 'info',
-        title: '请联系客服注销',
+      uni.navigateTo({
+        url: '/user/account/logoff'
       })
     },
 

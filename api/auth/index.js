@@ -104,3 +104,11 @@ export const bindMobileForWXApi = data => {
 		data
 	})
 }
+
+// 注销账户
+export const destoryAccountApi = data => {
+	return request2({
+		url: '/auth/cancellationAccount',
+		data
+	})
+}

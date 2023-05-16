@@ -38,9 +38,11 @@
 			<view class="main">
 				<view class="mid">
 					<scroll-view scroll-y="true" @scroll="scroll" :style="{ height: scrollHeight + 'px' }">
-						<sort v-for="item1 in sort.children" :key="item1.id" :serverNameTwo="item1.serverNameTwo" :id="item1.id"
-							:pid="item1.pid" :detailList="item1.children" :tips="tips" :scrollTop="scrollTop">
-						</sort>
+						<block v-if="sort && sort.children">
+							<sort v-for="item1 in sort.children" :key="item1.id" :serverNameTwo="item1.serverNameTwo" :id="item1.id"
+								:pid="item1.pid" :detailList="item1.children" :tips="tips" :scrollTop="scrollTop">
+							</sort>
+						</block>
 					</scroll-view>
 				</view>
 			</view>
@@ -218,7 +220,7 @@ export default {
 
 		this.getServiceSort()
 		this.getIsOpenServerArea()
-		this.getSearchData()
+		// this.getSearchData()
 		const _this = this
 		uni.getSystemInfo({
 			success(res) {

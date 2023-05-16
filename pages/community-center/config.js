@@ -109,7 +109,7 @@ export const navs = [
 //首页分类查询
 export const list = [
 	{
-		value: 1,
+		value: 2,
 		label: "家具服务",
 		icon: require("../../static/images/con-center/lgone.png"),
 		shadow:
@@ -180,7 +180,7 @@ export const moreService = [
 
 export const serviceType = [
 	{
-		value: 1,
+		value: 2,
 		label: "维修",
 		a: "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0mhljyhmui9piidsmx0e.png",
 		round:
