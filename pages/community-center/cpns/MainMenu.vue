@@ -42,7 +42,7 @@
 			</view>
 
 			<!-- 更多服务 -->
-			<view class="more-serve" @click="handleToServiceListType({ value: 1 })">
+			<view class="more-serve" @click="handleToServiceListType({ value: 2 })">
 				<text class="more">更多服务</text>
 				<TuanIcon :size="20"
 					src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/nsez71tgcrlgpeu93h2s.png"></TuanIcon>

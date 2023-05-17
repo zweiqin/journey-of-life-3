@@ -4,7 +4,7 @@
 		<!-- #ifdef H5 -->
 		<view class="store-name">
 			<view class="item" @click="handleClick(1)" :class="{ active: currentTab === 1 }">团蜂社区</view>
-			<view class="item" @click="handleClick(2)" :class="{ active: currentTab === 2 }">家居大店</view>
+			<!-- <view class="item" @click="handleClick(2)" :class="{ active: currentTab === 2 }">家居大店</view> -->
 		</view>
 		<!-- #endif -->
 

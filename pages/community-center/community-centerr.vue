@@ -34,33 +34,25 @@
 				<view class="item active">热销套餐</view>
 			</view>
 			<view class="vip-container">
+				<swiper indicator-dots autoplay indicator-color="#fff" indicator-active-color="#fdb96c"
+					style="height: 320upx; width: 100%;">
+					<swiper-item @click="handleToVipDetail(item.url)" v-for="(item, index) in vipBarConfig" :key="index">
+						<image class="vip-banner" :src="item.img">
+						</image>
+					</swiper-item>
+				</swiper>
 
-				<view class="left" @click="go('/community-center/vip-center/vip-detail?type=1')">
-					<!-- <image class="vip-39" src="../../static/images/con-center/new-home/couponbg.png" mode="" /> -->
-					<!-- <image src="../../static/images/con-center/p.png" mode="" class="p" /> -->
-					<image src="../../static/images/con-center/39.png" mode="" class="hezi" />
-					<view class="money">￥{{ serverType == 2 ? serverPrice : 39.9 }}</view>
-					<view class="name">{{ serverType == 2 ? serverName : '清洁套餐' }}</view>
-					<image src="../../static/images/con-center/arrow.png" mode="" class="arrow" />
-				</view>
-				<view class="right">
-					<view class="vip-299" @click="go('/community-center/vip-center/vip-detail?type=2')">
-						<image src="../../static/images/con-center/299.png" mode="" />
-						<view class="money">￥{{ serverType == 1 ? serverPrice : 299 }}</view>
-						<view class="name">{{ serverType == 1 ? serverName : '全年金管家套餐' }}</view>
-						<image src="../../static/images/con-center/starflash.png" mode="" class="animate__animated animate__fadeIn" />
-					</view>
-					<view class="vip-1399" mode="" @click="empty('套餐升级中')">
-						<image src="../../static/images/con-center/1399.png" />
-						<view class="money">￥{{ 1399 }}</view>
-						<view class="name">{{ '全年清洁套餐' }}</view>
-					</view>
-				</view>
 			</view>
 		</view>
 
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
+
+
+		<!-- 服务项目 -->
+		<ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title"
+			:list="item.children">
+		</ServerPane>
 
 		<!-- #ifdef H5 -->
 		<!-- 经验分享 -->
@@ -89,21 +81,21 @@
 </template>
 
 <script>
-import { getAdressDetailByLngLat } from '../../utils/DWHutils'
-import { queryDynamicDataApi } from '../../api/address'
 import TopHead from './cpns/TopHead.vue'
 import MainMenu from './cpns/MainMenu.vue'
-import { bannerListIcon } from './config'
+import { bannerListIcon, vipBarConfig } from './config'
 import ServiceStationPane from './cpns/ServiceStationPane.vue'
+import ServerPane from './cpns/ServerPane.vue'
 import ArticleList from './cpns/Article.vue'
 import PopupInformation from '../../components/popup-information/popup-information'
 import { COMMUNITY_ORDER_NO } from '../../constant'
+import { getServiceSortApi } from '../../api/community-center'
 import showModal from 'mixin/showModal'
 
 const app = getApp();
 
 export default {
-	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation },
+	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation, ServerPane },
 	mixins: [showModal()],
 	data() {
 		return {
@@ -114,7 +106,9 @@ export default {
 			serverPrice: '',
 			serverName: '',
 			serverType: '',
-			className: ''
+			className: '',
+			vipBarConfig: Object.freeze(vipBarConfig),
+			servePaneList: []
 		}
 	},
 	onShow() {
@@ -122,12 +116,9 @@ export default {
 
 		if (!app.globalData.isShowCommunityPopup) {
 			setTimeout(() => {
-				this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
+				// this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
 			}, 500);
 		}
-
-		console.log(this.$store.state);
-
 	},
 	mounted() {
 		// #ifdef APP
@@ -140,6 +131,8 @@ export default {
 				window.location.origin + window.location.pathname
 		}
 		// #endif
+
+		this.getServiceOrder()
 	},
 
 	methods: {
@@ -148,6 +141,40 @@ export default {
 				this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
 			} else {
 				this.$data._isShowTuiModel = true
+			}
+		},
+
+		handleToVipDetail(url) {
+			if (url) {
+				this.go(url)
+			} else {
+				this.empty('套餐升级中')
+			}
+		},
+
+		// 获取服务分类
+		async getServiceOrder() {
+			const res = await getServiceSortApi({})
+			if (res.statusCode === 20000) {
+
+				for (const item of res.data) {
+					if (this.servePaneList.length > 4) {
+						break
+					}
+					if (item.serverNameOne === '家电清洗') {
+						this.servePaneList.unshift({
+							id: item.id,
+							title: item.serverNameOne,
+							children: item.children[0].children
+						})
+					} else {
+						this.servePaneList.push({
+							id: item.id,
+							title: item.serverNameOne,
+							children: item.children[0].children
+						})
+					}
+				}
 			}
 		}
 	},
@@ -224,150 +251,159 @@ export default {
 		}
 	}
 
+
+
 	.vip-container {
 		display: flex;
 		justify-content: center;
 		height: 320upx;
+		padding: 20upx;
+		box-sizing: border-box;
 
-		image {
-			flex-shrink: 0;
+		.vip-banner {
+			height: 100%;
+			width: 100%;
 		}
 
-		.left {
-			position: relative;
-			margin-right: 20upx;
+		// 	image {
+		// 		flex-shrink: 0;
+		// 	}
 
-			.vip-39 {
-				width: 350upx;
-				height: 320upx;
-				border-radius: 20upx;
-				// background: linear-gradient(209deg, #FFD856 2%, #FF5858 81%);
-			}
+		// 	.left {
+		// 		position: relative;
+		// 		margin-right: 20upx;
 
-			.p {
-				width: 204upx;
-				height: 158upx;
-				position: absolute;
-				top: 132upx;
-				left: 114upx;
-			}
+		// 		.vip-39 {
+		// 			width: 350upx;
+		// 			height: 320upx;
+		// 			border-radius: 20upx;
+		// 			// background: linear-gradient(209deg, #FFD856 2%, #FF5858 81%);
+		// 		}
 
-			.hezi {
-				width: 350upx;
-				height: 320upx;
-				// position: absolute;
-				// top: 0upx;
-				// left: 0upx;
-				// z-index: 1;
-			}
+		// 		.p {
+		// 			width: 204upx;
+		// 			height: 158upx;
+		// 			position: absolute;
+		// 			top: 132upx;
+		// 			left: 114upx;
+		// 		}
 
-			.money {
-				font-size: 48upx;
-				font-weight: 900;
-				line-height: 72upx;
-				color: #FFFFFF;
-				position: absolute;
-				top: 40upx;
-				left: 24upx;
-			}
+		// 		.hezi {
+		// 			width: 350upx;
+		// 			height: 320upx;
+		// 			// position: absolute;
+		// 			// top: 0upx;
+		// 			// left: 0upx;
+		// 			// z-index: 1;
+		// 		}
 
-			.name {
-				font-size: 32upx;
-				color: #FFFFFF;
-				position: absolute;
-				top: 116upx;
-				left: 32upx;
-			}
+		// 		.money {
+		// 			font-size: 48upx;
+		// 			font-weight: 900;
+		// 			line-height: 72upx;
+		// 			color: #FFFFFF;
+		// 			position: absolute;
+		// 			top: 40upx;
+		// 			left: 24upx;
+		// 		}
 
-			.arrow {
-				width: 48upx;
-				height: 48upx;
-				position: absolute;
-				bottom: 40upx;
-				left: 30upx;
-			}
+		// 		.name {
+		// 			font-size: 32upx;
+		// 			color: #FFFFFF;
+		// 			position: absolute;
+		// 			top: 116upx;
+		// 			left: 32upx;
+		// 		}
 
-		}
+		// 		.arrow {
+		// 			width: 48upx;
+		// 			height: 48upx;
+		// 			position: absolute;
+		// 			bottom: 40upx;
+		// 			left: 30upx;
+		// 		}
 
-		.right {
-			height: 320upx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			flex-direction: column;
+		// 	}
 
-			.vip-299 {
-				position: relative;
-				width: 320upx;
-				height: 150upx;
+		// 	.right {
+		// 		height: 320upx;
+		// 		display: flex;
+		// 		align-items: center;
+		// 		justify-content: space-between;
+		// 		flex-direction: column;
 
-				image {
-					width: 320upx;
-					height: 150upx;
-				}
+		// 		.vip-299 {
+		// 			position: relative;
+		// 			width: 320upx;
+		// 			height: 150upx;
 
-				.money {
-					font-size: 36upx;
-					font-weight: bold;
-					line-height: 54upx;
-					color: #FD4D00;
-					position: absolute;
-					top: 26upx;
-					left: 30upx;
-				}
+		// 			image {
+		// 				width: 320upx;
+		// 				height: 150upx;
+		// 			}
 
-				.name {
-					font-size: 28upx;
-					line-height: 42upx;
-					color: #000000;
-					position: absolute;
-					bottom: 26upx;
-					left: 30upx;
-				}
+		// 			.money {
+		// 				font-size: 36upx;
+		// 				font-weight: bold;
+		// 				line-height: 54upx;
+		// 				color: #FD4D00;
+		// 				position: absolute;
+		// 				top: 26upx;
+		// 				left: 30upx;
+		// 			}
 
-				.animate__animated.animate__fadeIn {
-					width: 50upx;
-					height: 52upx;
-					position: absolute;
-					top: 22upx;
-					left: 140upx;
-					animation-iteration-count: infinite;
-					animation-duration: 1000ms;
-				}
-			}
+		// 			.name {
+		// 				font-size: 28upx;
+		// 				line-height: 42upx;
+		// 				color: #000000;
+		// 				position: absolute;
+		// 				bottom: 26upx;
+		// 				left: 30upx;
+		// 			}
 
-			.vip-1399 {
-				position: relative;
-				width: 320upx;
-				height: 150upx;
+		// 			.animate__animated.animate__fadeIn {
+		// 				width: 50upx;
+		// 				height: 52upx;
+		// 				position: absolute;
+		// 				top: 22upx;
+		// 				left: 140upx;
+		// 				animation-iteration-count: infinite;
+		// 				animation-duration: 1000ms;
+		// 			}
+		// 		}
 
-				image {
-					width: 320upx;
-					height: 150upx;
-				}
+		// 		.vip-1399 {
+		// 			position: relative;
+		// 			width: 320upx;
+		// 			height: 150upx;
 
-				.money {
-					font-size: 36upx;
-					font-weight: bold;
-					line-height: 54upx;
-					color: #2DBDE5;
-					position: absolute;
-					top: 26upx;
-					left: 30upx;
-				}
+		// 			image {
+		// 				width: 320upx;
+		// 				height: 150upx;
+		// 			}
 
-				.name {
-					font-size: 28upx;
-					line-height: 42upx;
-					color: #000000;
-					position: absolute;
-					bottom: 26upx;
-					left: 30upx;
-				}
-			}
+		// 			.money {
+		// 				font-size: 36upx;
+		// 				font-weight: bold;
+		// 				line-height: 54upx;
+		// 				color: #2DBDE5;
+		// 				position: absolute;
+		// 				top: 26upx;
+		// 				left: 30upx;
+		// 			}
+
+		// 			.name {
+		// 				font-size: 28upx;
+		// 				line-height: 42upx;
+		// 				color: #000000;
+		// 				position: absolute;
+		// 				bottom: 26upx;
+		// 				left: 30upx;
+		// 			}
+		// 		}
 
 
-		}
+		// 	}
 	}
 }
 </style>

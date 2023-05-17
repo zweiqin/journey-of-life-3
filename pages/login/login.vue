@@ -130,7 +130,9 @@ export default {
 		this.bindId = options.code
 		this.partnerCode = options.partnerCode
 
-		uni.setStorageSync(SF_INVITE_CODE, options.partnerCode)
+		if (this.partnerCode) {
+			uni.setStorageSync(SF_INVITE_CODE, options.partnerCode)
+		}
 
 		if (this.redirect && this.redirect.indexOf('?') > -1) {
 			this.bindId = this.redirect

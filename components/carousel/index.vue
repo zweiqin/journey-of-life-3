@@ -64,7 +64,7 @@ export default {
 		},
 
 		// 点击预览
-		prev(){
+		prev() {
 			uni.previewImage({
 				current: this.currentIndex,
 				urls: this.list
