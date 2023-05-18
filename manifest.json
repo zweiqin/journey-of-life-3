@@ -133,9 +133,9 @@
                 "androidStyle" : "default",
                 "useOriginalMsgbox" : true,
                 "android" : {
-                    "hdpi" : "E:/front_end-project/icon/iPhone 117.png",
-                    "xhdpi" : "E:/front_end-project/icon/iPhone 117.png",
-                    "xxhdpi" : "E:/front_end-project/icon/iPhone 117.png"
+                    "hdpi" : "E:/front_end-project/icon/new.png",
+                    "xhdpi" : "E:/front_end-project/icon/new.png",
+                    "xxhdpi" : "E:/front_end-project/icon/new.png"
                 }
             }
         }
