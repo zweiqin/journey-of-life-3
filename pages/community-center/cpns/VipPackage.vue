@@ -6,12 +6,35 @@
     <view class="vip-container">
       <swiper indicator-dots autoplay indicator-color="#fff" indicator-active-color="#fdb96c"
         style="height: 320upx; width: 100%;">
-        <swiper-item @click="handleToVipDetail(item.url)" v-for="(item, index) in vipBarConfig" :key="index">
-          <image class="vip-banner" :src="item.img">
-          </image>
+        <swiper-item>
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[1].url)">
+            <image class="vip-banner" :src="finalVipBarPackage[1].img"></image>
+            <view class="text">
+              <view class="price-text">{{ finalVipBarPackage[1].price }}</view>
+              <view class="title-text">{{ finalVipBarPackage[1].name }}</view>
+            </view>
+          </view>
+        </swiper-item>
+
+        <swiper-item>
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[0].url)">
+            <image class="vip-banner" :src="finalVipBarPackage[0].img"></image>
+            <view class="text">
+              <view class="price-text">￥{{ finalVipBarPackage[0].price }}</view>
+              <view class="title-text">{{ finalVipBarPackage[0].name }}</view>
+            </view>
+          </view>
+        </swiper-item>
+
+        <swiper-item>
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[2].url)">
+            <image class="vip-banner" :src="finalVipBarPackage[2].img"></image>
+          </view>
         </swiper-item>
       </swiper>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -20,8 +43,12 @@ import { vipBarConfig } from '../config'
 export default {
   data() {
     return {
-      vipBarConfig: Object.freeze(vipBarConfig)
+      vipBarConfig: []
     }
+  },
+
+  mounted() {
+    this.getDZPersonalizationConfig()
   },
 
   methods: {
@@ -32,7 +59,35 @@ export default {
         this.empty('套餐升级中')
       }
     },
+
+    // 获取自定义属性
+    async getDZPersonalizationConfig() {
+      const currentDetail = this.$store.getters.detailAddress
+      await this.$store.dispatch('community/getVipPackageList', currentDetail)
+      const vipPackageList = this.$store.getters.dzVipList
+      if (vipPackageList.length) {
+        for (const item of vipPackageList) {
+          vipBarConfig[item.serverType - 1].name = item.serverName
+          vipBarConfig[item.serverType - 1].price = item.serverPrice
+        }
+      }
+
+      this.vipBarConfig = vipBarConfig
+    }
   },
+
+  computed: {
+    finalVipBarPackage() {
+      if (this.$store.getters.dzVipList.length) {
+        for (const item of this.$store.getters.dzVipList) {
+          vipBarConfig[item.serverType - 1].name = item.serverName
+          vipBarConfig[item.serverType - 1].price = item.serverPrice
+        }
+      }
+
+      return vipBarConfig
+    }
+  }
 }
 </script>
 
@@ -57,8 +112,6 @@ export default {
     background: linear-gradient(180deg, #FFD556 0%, #E95D20 100%);
   }
 
-
-
   .item {
     color: #000000;
     font-size: 36upx;
@@ -69,7 +122,6 @@ export default {
   }
 }
 
-
 .vip-container {
   padding: 0 17px 0;
   box-sizing: border-box;
@@ -78,6 +130,27 @@ export default {
   .vip-banner {
     height: 100%;
     width: 100%;
+  }
+}
+
+.vip-wrapper {
+  width: 100%;
+  height: 320upx;
+}
+
+
+.vip-wrapper {
+  position: relative;
+
+  .text {
+    position: absolute;
+    top: 50upx;
+    left: 58upx;
+    font-size: 48upx;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

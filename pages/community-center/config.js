@@ -218,16 +218,16 @@ export const countList = [
 
 export const vipBarConfig = [
   {
-    img: require("../../static/images/con-center/cao-1.png"),
-    url: "/community-center/vip-center/vip-detail?type=1",
-    name: "限时钜惠",
-    price: "39.9",
-  },
-  {
     img: require("../../static/images/con-center/cao-2.png"),
     url: "/community-center/vip-center/vip-detail?type=2",
     name: "全年金管家套餐",
     price: "299",
+  },
+	{
+    img: require("../../static/images/con-center/cao-1.png"),
+    url: "/community-center/vip-center/vip-detail?type=1",
+    name: "限时钜惠",
+    price: "39.9",
   },
   {
     img: require("../../static/images/con-center/cao-3.png"),

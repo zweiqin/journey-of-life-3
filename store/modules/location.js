@@ -201,6 +201,13 @@ export default {
         );
 
         commit("community/CHANGE_HOME_STORE", data.town, { root: true });
+        dispatch(
+          "community/getVipPackageList",
+          detailInfo.province + data.city + data.distinguish + data.town,
+          {
+            root: true,
+          }
+        );
       }
     },
   },

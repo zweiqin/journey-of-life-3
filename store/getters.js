@@ -30,4 +30,5 @@ export default {
   popupImage: (state) => state.community.popupImage,
   homeCommunityStore: (state) => state.community.homeCommunityStore,
   popupImagePath: (state) => state.community.popupImagePath,
+  dzVipList: (state) => state.community.dzVipList,
 };

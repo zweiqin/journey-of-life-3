@@ -3,6 +3,7 @@ import {
   CHANGE_HOME_PAGE_IMAGE,
   CHANGE_HOME_STORE,
   CHANGE_HOME_PAGE_IMAGE_PATH,
+  CHANGE_DZ_VIP_PACKAGE,
 } from "./type";
 import communityShopList from "data/communityShopList";
 
@@ -13,6 +14,7 @@ export default {
       popupImage: null,
       popupImagePath: null,
       homeCommunityStore: {},
+      dzVipList: [],
     };
   },
 
@@ -37,6 +39,10 @@ export default {
       state.homeCommunityStore = findCurrentStore
         ? findCurrentStore
         : communityShopList[0];
+    },
+
+    [CHANGE_DZ_VIP_PACKAGE](state, vipList) {
+      state.dzVipList = vipList;
     },
   },
 
@@ -82,6 +88,21 @@ export default {
           }
         });
       });
+    },
+
+    // 获取会员套餐自定义属性
+    async getVipPackageList({ commit }, currentAddress) {
+      const res = await queryDynamicDataApi({
+        address:
+          currentAddress && JSON.stringify(currentAddress) != "[]"
+            ? currentAddress
+            : "广东省佛山市顺德区龙江镇",
+        correspondType: 2,
+      });
+
+      if (res.statusCode === 20000 && res.data !== "该区域暂无自定义属性") {
+        commit(CHANGE_DZ_VIP_PACKAGE, res.data);
+      }
     },
   },
 };
