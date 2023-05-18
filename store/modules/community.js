@@ -1,17 +1,34 @@
 import { queryDynamicDataApi } from "../../api/address";
-import { CHANGE_HOME_PAGE_IMAGE } from "./type";
+import { CHANGE_HOME_PAGE_IMAGE, CHANGE_HOME_STORE } from "./type";
+import communityShopList from "data/communityShopList";
 
 export default {
   namespaced: true,
   state() {
     return {
       popupImage: null,
+      homeCommunityStore: {},
     };
   },
 
   mutations: {
     [CHANGE_HOME_PAGE_IMAGE](state, imageUrl) {
       state.popupImage = imageUrl;
+    },
+
+    [CHANGE_HOME_STORE](state, currentAddress) {
+      if (!currentAddress) {
+        state.homeCommunityStore = communityShopList[0];
+        return;
+      }
+      const findCurrentStore = communityShopList.find((item) =>
+        item.town.includes(currentAddress)
+      );
+
+      state.homeCommunityStore = findCurrentStore
+        ? findCurrentStore
+        : communityShopList[0];
+
     },
   },
 

@@ -1,6 +1,8 @@
 <template>
-  <view class="server-pane">
-    <view class="header">
+  <view class="server-pane" :style="{
+    margin: margin
+  }">
+    <view class="header" :style="{ background: titleBg }">
       <view class="title">{{ title }}</view>
       <view class="tags">
         <view class="tag">就近上门</view>
@@ -21,8 +23,6 @@
     </view>
 
     <view class="more" @click="viewMore">查看更多{{ title }}服务 <tui-icon :size="20" name="arrowright"></tui-icon></view>
-
-
   </view>
 </template>
 
@@ -42,6 +42,16 @@ export default {
 
     id: {
       type: Number
+    },
+
+    margin: {
+      type: String,
+      default: '0 20upx 40upx'
+    },
+
+    titleBg: {
+      type: String,
+      default: 'linear-gradient(180deg, #FFC0A5 0%, #FFEBE3 100%)'
     }
   },
 
@@ -93,17 +103,15 @@ export default {
 
 <style lang="less" scoped>
 .server-pane {
-  margin: 0 20upx;
-  margin-bottom: 40upx;
   padding-bottom: 20upx;
-  border-radius: 0 0 20upx 20upx;
+  border-radius: 20upx;
   background-color: #fff;
+  overflow: hidden;
 
   .header {
     padding: 20upx;
     box-sizing: border-box;
     border-radius: 20upx 20upx 0 0;
-    background: linear-gradient(180deg, #FFC0A5 0%, #FFEBE3 100%);
 
     .title {
       color: #141000;

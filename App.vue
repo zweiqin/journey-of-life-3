@@ -8,6 +8,7 @@ import { USER_ID, USER_TOKEN } from './constant'
 
 export default {
   onLaunach: function () {
+
   },
   onShow: function () {
     // 判断浏览器环境
@@ -39,6 +40,11 @@ export default {
     // 是否一直显示 弹窗
     isShowCommunityPopup: false
   },
+  data() {
+    return {
+      scene: ''
+    }
+  },
   methods: {
     // 更新token
     async updateToken() {
@@ -54,15 +60,19 @@ export default {
   mounted() {
     // #ifdef H5
     this.$store.dispatch('location/getCurrentLocation', (res) => {
-      this.$store.dispatch('community/getHomePopupImage', res)
+      this.$store.dispatch('community/getHomePopupImage', res.detail)
+      this.$store.commit('community/CHANGE_HOME_STORE', res.town)
     })
     // #endif
-
     this.updateToken()
 
     // #ifdef APP
     this.$store.dispatch('community/getHomePopupImage')
     // #endif
+
+    const launchOptions = uni.getLaunchOptionsSync()
+    // console.log('a', launchOptions.scene);
+    this.scene = launchOptions.scene
 
   },
 }

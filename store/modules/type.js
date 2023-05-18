@@ -29,3 +29,4 @@ export const CHANGE_REGIONAGENT_STATUS = "CHANGE_REGIONAGENT_STATUS";
 
 // 社区
 export const CHANGE_HOME_PAGE_IMAGE = "change_home_page_image";
+export const CHANGE_HOME_STORE = "CHANGE_HOME_STORE";

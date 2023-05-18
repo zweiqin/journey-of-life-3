@@ -41,7 +41,6 @@
 						</image>
 					</swiper-item>
 				</swiper>
-
 			</view>
 		</view>
 
@@ -113,7 +112,6 @@ export default {
 	},
 	onShow() {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO)
-
 		if (!app.globalData.isShowCommunityPopup) {
 			setTimeout(() => {
 				// this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
@@ -161,17 +159,15 @@ export default {
 					if (this.servePaneList.length > 4) {
 						break
 					}
-					if (item.serverNameOne === '家电清洗') {
-						this.servePaneList.unshift({
-							id: item.id,
-							title: item.serverNameOne,
-							children: item.children[0].children
-						})
-					} else {
+					let list = item.children[0].children
+					if (list.length < 6 && item.children[1] && item.children[1].children.length >= 6) {
+						list = item.children[1].children
+					}
+					if (list.length % 3 === 0) {
 						this.servePaneList.push({
 							id: item.id,
 							title: item.serverNameOne,
-							children: item.children[0].children
+							children: list
 						})
 					}
 				}

@@ -375,6 +375,12 @@
       "root": "community-center",
       "pages": [
         {
+          "path": "shop-detail/shop-detail",
+          "style": {
+            "navigationBarTitleText": "社区店"
+          }
+        },
+        {
           "path": "install",
           "style": {
             "navigationBarTitleText": "上门安装"

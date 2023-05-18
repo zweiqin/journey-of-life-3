@@ -152,7 +152,7 @@ export default {
 		},
 
 		handleBack() {
-			uni.navigateBack();
+			uni.switchTab({ url: '/' })
 		},
 
 		async handleSkip() {
@@ -175,6 +175,10 @@ export default {
 						url: '/'
 					})
 				}, 1000)
+			} finally {
+				uni.switchTab({
+					url: '/'
+				});
 			}
 		},
 

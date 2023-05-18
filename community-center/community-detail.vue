@@ -436,7 +436,7 @@ export default {
 				serverTypeId: this.serverTypeId
 			})
 
-			console.log(this.$store.getters);
+			// console.log(this.$store.getters);
 			const dzAttribute = await this.$store.dispatch('community/getMyAttribute', this.$store.getters.detailAddress)
 			if (dzAttribute && Array.isArray(dzAttribute) && dzAttribute.length) {
 				res.data.forEach(origin => {

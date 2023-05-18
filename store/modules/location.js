@@ -46,8 +46,6 @@ export default {
       state.detailAddress = location.formatted_address;
       state.currentCity = location.addressComponent.township;
       uni.setStorageSync(CURRENT_ADDRESS, location.addressComponent.township);
-
-      console.log("第一步", state);
     },
     [CHANGE_CURRENT_CITY](state, chooseCity) {
       uni.setStorageSync(CURRENT_ADDRESS, chooseCity);
@@ -103,8 +101,57 @@ export default {
       // #endif
 
       // #ifdef H5
-      MapLoader(
-        (res) => {
+      // MapLoader(
+      //   (res) => {
+      //     getAdressDetailByLngLat(res.latitude, res.longitude)
+      //       .then((res) => {
+      //         if (res.status === "1") {
+      //           commit(CHANGE_LOCATION_INFO, res.regeocode);
+      //           const addressDetail = res.regeocode;
+      //           onSuccess &&
+      //             typeof onSuccess === "function" &&
+      //             onSuccess(
+      //               addressDetail.addressComponent.province +
+      //                 addressDetail.addressComponent.city +
+      //                 addressDetail.addressComponent.district +
+      //                 addressDetail.addressComponent.township
+      //             );
+      //         }
+      //       })
+      //       .catch(() => {
+      //         // _this.address = '定位失败'
+      //       });
+      //   },
+      //   () => {
+      //     uni.getLocation({
+      //       type: "gcj02",
+      //       success(res) {
+      //         getAdressDetailByLngLat(res.latitude, res.longitude)
+      //           .then((res) => {
+      //             if (res.status === "1") {
+      //               commit(CHANGE_LOCATION_INFO, res.regeocode);
+      //               const addressDetail = res.regeocode;
+      //               onSuccess &&
+      //                 typeof onSuccess === "function" &&
+      //                 onSuccess(
+      //                   addressDetail.addressComponent.province +
+      //                     addressDetail.addressComponent.city +
+      //                     addressDetail.addressComponent.district +
+      //                     addressDetail.addressComponent.township
+      //                 );
+      //             }
+      //           })
+      //           .catch(() => {
+      //             // _this.address = '定位失败'
+      //           });
+      //       },
+      //     });
+      //   }
+      // );
+
+      uni.getLocation({
+        type: "gcj02",
+        success(res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
               if (res.status === "1") {
@@ -112,45 +159,21 @@ export default {
                 const addressDetail = res.regeocode;
                 onSuccess &&
                   typeof onSuccess === "function" &&
-                  onSuccess(
-                    addressDetail.addressComponent.province +
+                  onSuccess({
+                    detail:
+                      addressDetail.addressComponent.province +
                       addressDetail.addressComponent.city +
                       addressDetail.addressComponent.district +
-                      addressDetail.addressComponent.township
-                  );
+                      addressDetail.addressComponent.township,
+                    town: addressDetail.addressComponent.township,
+                  });
               }
             })
             .catch(() => {
               // _this.address = '定位失败'
             });
         },
-        () => {
-          uni.getLocation({
-            type: "gcj02",
-            success(res) {
-              getAdressDetailByLngLat(res.latitude, res.longitude)
-                .then((res) => {
-                  if (res.status === "1") {
-                    commit(CHANGE_LOCATION_INFO, res.regeocode);
-                    const addressDetail = res.regeocode;
-                    onSuccess &&
-                      typeof onSuccess === "function" &&
-                      onSuccess(
-                        addressDetail.addressComponent.province +
-                          addressDetail.addressComponent.city +
-                          addressDetail.addressComponent.district +
-                          addressDetail.addressComponent.township
-                      );
-                  }
-                })
-                .catch(() => {
-                  // _this.address = '定位失败'
-                });
-            },
-          });
-        }
-      );
-
+      });
       // #endif
     },
 
@@ -162,7 +185,12 @@ export default {
         const detailInfo = res.geocodes[0];
         commit(CHANGE_LOACTION_DETAIL_INFO, {
           detailInfo,
-          currentCity: data.level === 4 ? data.town : data.level === 3 ? data.distinguish : data.city,
+          currentCity:
+            data.level === 4
+              ? data.town
+              : data.level === 3
+              ? data.distinguish
+              : data.city,
         });
 
         dispatch(
@@ -171,6 +199,8 @@ export default {
           // null,
           { root: true }
         );
+
+        commit("community/CHANGE_HOME_STORE", data.town, { root: true });
       }
     },
   },

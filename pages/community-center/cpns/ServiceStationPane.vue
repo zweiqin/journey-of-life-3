@@ -14,7 +14,7 @@
 				<view class="title">团蜂家居社区服务中心</view>
 
 				<!-- #ifdef H5 -->
-				<button class="uni-btn">进店</button>
+				<button class="uni-btn" @click="go('/community-center/shop-detail/shop-detail')">进店</button>
 				<!-- #endif -->
 
 			</view>
@@ -70,9 +70,10 @@ export default {
 		}
 	},
 	methods: {
+		// 点击menu
 		handleClick(index) {
 			this.currentTab = index
-		}
+		},
 	}
 }
 </script>

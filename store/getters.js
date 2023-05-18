@@ -27,5 +27,6 @@ export default {
 	applyRegionAgentStatus: (state) => state.user.applyRegionAgentStatus,
 
 	// 社区
-	popupImage: (state) => state.community.popupImage
+	popupImage: (state) => state.community.popupImage,
+	homeCommunityStore: state => state.community.homeCommunityStore
 }
