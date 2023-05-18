@@ -90,6 +90,8 @@ import PopupInformation from '../../components/popup-information/popup-informati
 import { COMMUNITY_ORDER_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
 import showModal from 'mixin/showModal'
+import { MINI_PROGRAM_TAG } from '../../constant'
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 
 const app = getApp();
 
@@ -173,6 +175,15 @@ export default {
 				}
 			}
 		}
+	},
+
+	onLoad(options) {
+		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
+
+		setTimeout(() => {
+			alert('发了')
+			wx.miniProgram.postMessage({ data: 'foo' })
+		}, 3000)
 	},
 
 }

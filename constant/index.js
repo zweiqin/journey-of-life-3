@@ -50,3 +50,5 @@ export const COMMUNITY_ORDER_ITEM_NO = 'COMMUNITY_ORDER_ITEM_NO'
 
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
+
+export const MINI_PROGRAM_TAG = 'MINI_PROGRAM_TAG'
