@@ -15,7 +15,7 @@
               <tui-radio color="#FE0000" :checked="item.serverContent === value" :value="item.serverContent"
                 borderColor="#999">
               </tui-radio>
-              <text class="tui-text">{{ item.serverContent }}</text>
+              <text class="tui-text">{{ item.serverContent.replaceAll('\n', '') }}</text>
             </view>
           </tui-list-cell>
         </tui-label>

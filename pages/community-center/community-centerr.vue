@@ -29,7 +29,7 @@
 
 		<!-- vip -->
 
-		<view>
+		<!-- <view>
 			<view class="store-name">
 				<view class="item active">热销套餐</view>
 			</view>
@@ -42,7 +42,9 @@
 					</swiper-item>
 				</swiper>
 			</view>
-		</view>
+		</view> -->
+
+		<VipPackage></VipPackage>
 
 		<!-- 社区店 -->
 		<ServiceStationPane></ServiceStationPane>
@@ -86,6 +88,7 @@ import { bannerListIcon, vipBarConfig } from './config'
 import ServiceStationPane from './cpns/ServiceStationPane.vue'
 import ServerPane from './cpns/ServerPane.vue'
 import ArticleList from './cpns/Article.vue'
+import VipPackage from './cpns/VipPackage.vue'
 import PopupInformation from '../../components/popup-information/popup-information'
 import { COMMUNITY_ORDER_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
@@ -96,7 +99,7 @@ import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 const app = getApp();
 
 export default {
-	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation, ServerPane },
+	components: { TopHead, MainMenu, ServiceStationPane, ArticleList, PopupInformation, ServerPane, VipPackage },
 	mixins: [showModal()],
 	data() {
 		return {
@@ -116,7 +119,7 @@ export default {
 		uni.removeStorageSync(COMMUNITY_ORDER_NO)
 		if (!app.globalData.isShowCommunityPopup) {
 			setTimeout(() => {
-				// this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
+				this.$store.getters.popupImage && this.$refs.popupInformationRef.show()
 			}, 500);
 		}
 	},
@@ -138,17 +141,9 @@ export default {
 	methods: {
 		handleToActiveDetail() {
 			if (this.isLogin()) {
-				this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
+				this.go(this.$store.getters.popupImagePath || '/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
 			} else {
 				this.$data._isShowTuiModel = true
-			}
-		},
-
-		handleToVipDetail(url) {
-			if (url) {
-				this.go(url)
-			} else {
-				this.empty('套餐升级中')
 			}
 		},
 
@@ -179,11 +174,6 @@ export default {
 
 	onLoad(options) {
 		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
-
-		setTimeout(() => {
-			alert('发了')
-			wx.miniProgram.postMessage({ data: 'foo' })
-		}, 3000)
 	},
 
 }

@@ -1,5 +1,9 @@
 import { queryDynamicDataApi } from "../../api/address";
-import { CHANGE_HOME_PAGE_IMAGE, CHANGE_HOME_STORE } from "./type";
+import {
+  CHANGE_HOME_PAGE_IMAGE,
+  CHANGE_HOME_STORE,
+  CHANGE_HOME_PAGE_IMAGE_PATH,
+} from "./type";
 import communityShopList from "data/communityShopList";
 
 export default {
@@ -7,6 +11,7 @@ export default {
   state() {
     return {
       popupImage: null,
+      popupImagePath: null,
       homeCommunityStore: {},
     };
   },
@@ -14,6 +19,10 @@ export default {
   mutations: {
     [CHANGE_HOME_PAGE_IMAGE](state, imageUrl) {
       state.popupImage = imageUrl;
+    },
+
+    [CHANGE_HOME_PAGE_IMAGE_PATH](state, url) {
+      state.popupImagePath = url;
     },
 
     [CHANGE_HOME_STORE](state, currentAddress) {
@@ -28,7 +37,6 @@ export default {
       state.homeCommunityStore = findCurrentStore
         ? findCurrentStore
         : communityShopList[0];
-
     },
   },
 
@@ -45,6 +53,16 @@ export default {
         CHANGE_HOME_PAGE_IMAGE,
         res.statusCode == 20000 && res.data !== "该区域暂无自定义属性"
           ? res.data[0].url
+          : ""
+      );
+
+      commit(
+        CHANGE_HOME_PAGE_IMAGE_PATH,
+        res.statusCode == 20000 && res.data !== "该区域暂无自定义属性"
+          ? res.data[0].path.replace(
+              "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#",
+              ""
+            )
           : ""
       );
     },

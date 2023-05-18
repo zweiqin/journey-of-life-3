@@ -1,10 +1,9 @@
 <template>
 	<view class="vip-page">
 		<!-- header -->
-		<VipHeader
-			:campaigns-type="campaignsType" :name="type == 2 ? `${myAttributeVipJInData.serverName || '金管家会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`" @share-activity="handleShareActivity"
-			@share-active="handleShareServe"
-		>
+		<VipHeader :campaigns-type="campaignsType"
+			:name="type == 2 ? `${myAttributeVipJInData.serverName || '金管家会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`"
+			@share-activity="handleShareActivity" @share-active="handleShareServe">
 		</VipHeader>
 
 		<!-- 金管家的header -->
@@ -15,26 +14,20 @@
 					<view class="text2">享受{{ beeSteward.length }}大福利</view>
 				</view>
 			</view>
-			<PayBar
-				:price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice"
-				@pay="handlePayVip"
-			></PayBar>
+			<PayBar :price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice"
+				@pay="handlePayVip"></PayBar>
 		</view>
 
 		<!-- 服务内容 -->
-		<VipServePane
-			v-model="currentIndulgence"
-			:type="type * 1"
-			:sub-title="type == 2 ? '金管家会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`" :desc="type == 2 ? `享受${beeSteward.length}大权益` : '任选一项清洗服务'"
-			:data="type == 2 ? beeSteward : indulgenceData" :radius="type == 2 ? '42upx' : '42rpx 42rpx 0 0'" class="vip-list"
-		>
+		<VipServePane v-model="currentIndulgence" :type="type * 1"
+			:sub-title="type == 2 ? '金管家会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`"
+			:desc="type == 2 ? `享受${beeSteward.length}大权益` : '任选一项清洗服务'" :data="type == 2 ? beeSteward : indulgenceData"
+			:radius="type == 2 ? '42upx' : '42rpx 42rpx 0 0'" class="vip-list">
 		</VipServePane>
 
 		<!-- 抢购 -->
-		<PayBar
-			v-if="type == 1"
-			:price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice" @pay="handlePayVip"
-		>
+		<PayBar v-if="type == 1" :price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice"
+			@pay="handlePayVip">
 		</PayBar>
 
 		<!-- 赠品 -->
@@ -62,17 +55,13 @@
 		<!-- 底部操作栏 -->
 		<VipFooter v-if="userId"></VipFooter>
 
-		<tui-modal
-			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/community-center/vip-center/vip-detail')"
-		></tui-modal>
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/community-center/vip-center/vip-detail')"></tui-modal>
 
 		<!-- 生成二维码 -->
 		<view v-if="activityCode">
-			<uqrcode
-				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
-				@complete="handleCompleteCode"
-			></uqrcode>
+			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + activityCode"
+				@complete="handleCompleteCode"></uqrcode>
 		</view>
 
 		<!-- 分享活动邀请码 -->
@@ -118,7 +107,7 @@ export default {
 		}
 	},
 
-	mixins: [ showModal() ],
+	mixins: [showModal()],
 
 	onLoad(option) {
 		this.type = option.type
@@ -141,8 +130,9 @@ export default {
 	methods: {
 		// 获取自定义服务内容
 		async queryDynamicData() {
+			const currentDetail = this.$store.getters.detailAddress
 			const res = await queryDynamicDataApi({
-				address: '广东省佛山市顺德区龙江镇',
+				address: (currentDetail && JSON.stringify(currentDetail) != '[]') ? currentDetail : '广东省佛山市顺德区龙江镇',
 				correspondType: 2
 			})
 
@@ -185,8 +175,6 @@ export default {
 			} else {
 				this.indulgenceData = res.data.filter((item) => item.serverType === 2)
 
-				// debugger
-
 				if (isCustom && this.indulgenceData.length) {
 					const serveContentList = this.indulgenceData[0].serverContent.split(',')
 					this.indulgenceData = serveContentList.map((item) => {
@@ -194,11 +182,11 @@ export default {
 						temp.serverContent = item
 						return temp
 					})
+					this.currentJUHUIdata = this.indulgenceData[0]
+					this.currentIndulgence = this.indulgenceData[0].serverContent
 				} else if (!isCustom && this.indulgenceData.length) {
-					console.log(this.indulgenceData)
 					this.currentIndulgence = this.indulgenceData[0].serverContent
 					this.currentJUHUIdata = this.indulgenceData[0]
-					console.log(this.currentJUHUIdata)
 				} else {
 					this.getServeList()
 				}
