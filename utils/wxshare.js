@@ -19,6 +19,7 @@ const wxShare = {
         'onMenuShareAppMessage',
         'onMenuShareTimeline',
       ], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      openTagList: ['wx-open-launch-weapp']
     })
 
     wx.ready(function () {

@@ -6,7 +6,7 @@
     <view class="vip-container">
       <swiper indicator-dots autoplay indicator-color="#fff" indicator-active-color="#fdb96c"
         style="height: 320upx; width: 100%;">
-        <swiper-item>
+        <!-- <swiper-item>
           <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[1].url)">
             <image class="vip-banner" :src="finalVipBarPackage[1].img"></image>
             <view class="text">
@@ -14,7 +14,7 @@
               <view class="title-text">{{ finalVipBarPackage[1].name }}</view>
             </view>
           </view>
-        </swiper-item>
+        </swiper-item> -->
 
         <swiper-item>
           <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[0].url)">
@@ -27,8 +27,8 @@
         </swiper-item>
 
         <swiper-item>
-          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[2].url)">
-            <image class="vip-banner" :src="finalVipBarPackage[2].img"></image>
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[1].url)">
+            <image class="vip-banner" :src="finalVipBarPackage[1].img"></image>
           </view>
         </swiper-item>
       </swiper>
@@ -67,8 +67,10 @@ export default {
       const vipPackageList = this.$store.getters.dzVipList
       if (vipPackageList.length) {
         for (const item of vipPackageList) {
-          vipBarConfig[item.serverType - 1].name = item.serverName
-          vipBarConfig[item.serverType - 1].price = item.serverPrice
+          if (item.serverType === 1) {
+            vipBarConfig[item.serverType - 1].name = item.serverName
+            vipBarConfig[item.serverType - 1].price = item.serverPrice
+          }
         }
       }
 
