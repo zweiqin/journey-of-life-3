@@ -88,6 +88,8 @@ Vue.mixin({
 
 Vue.use(globalMixin);
 
+Vue.config.ignoredElements.push('wx-open-launch-weapp')
+
 App.mpType = "app";
 
 const app = new Vue({

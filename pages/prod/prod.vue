@@ -3,32 +3,18 @@
     <tui-toast ref="toast"></tui-toast>
     <!-- 轮播图 -->
     <view class="carousel-wrapper">
-      <Carousel
-        :list="
-          goodsDetail.info.gallery.length
-            ? goodsDetail.info.gallery
-            : [goodsDetail.info.picUrl]
-        "
-        :height="390"
-        :top="0"
-        :radius="0"
-      ></Carousel>
+      <Carousel :list="goodsDetail.info.gallery.length
+        ? goodsDetail.info.gallery
+        : [goodsDetail.info.picUrl]
+        " :height="390" :top="0" :radius="0"></Carousel>
 
       <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
-        <view
-          ><image
-            @click="handleBack"
-            src="../../static/images/detail/back.png"
-            mode=""
-        /></view>
+        <view>
+          <image @click="handleBack" src="../../static/images/detail/back.png" mode="" />
+        </view>
 
         <view style="display: flex">
-          <image
-            style="margin-right: 20upx"
-            @click="empty()"
-            src="../../static/images/detail/brand.png"
-            mode=""
-          />
+          <image style="margin-right: 20upx" @click="empty()" src="../../static/images/detail/brand.png" mode="" />
 
           <TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
             <!-- <image
@@ -41,46 +27,25 @@
         </view>
       </view>
 
-      <view
-        class="scroll-top-nav"
-        :style="{
-          opacity: showTopNav && isShowTop ? 1 : 0,
-          'z-index': showTopNav ? 100 : -1,
-        }"
-      >
+      <view class="scroll-top-nav" :style="{
+        opacity: showTopNav && isShowTop ? 1 : 0,
+        'z-index': showTopNav ? 100 : -1,
+      }">
         <!-- #ifdef H5 -->
-        <image
-          @click="handleBack"
-          src="../../static/images/detail/top-back.png"
-          mode=""
-        />
+        <image @click="handleBack" src="../../static/images/detail/top-back.png" mode="" />
         <!-- #endif -->
 
         <view class="center">
-          <view
-            class="item"
-            :class="{ active: currentMoveTag == 0 }"
-            @click="moveToDetail(0)"
-            >商品</view
-          >
+          <view class="item" :class="{ active: currentMoveTag == 0 }" @click="moveToDetail(0)">商品</view>
 
-          <view
-            :class="{
-              active: currentMoveTag == 1,
-            }"
-            class="item"
-            @click="moveToDetail(1)"
-          >
+          <view :class="{
+            active: currentMoveTag == 1,
+          }" class="item" @click="moveToDetail(1)">
             评价
           </view>
-          <view
-            class="item"
-            :class="{
-              active: currentMoveTag == 2,
-            }"
-            @click="moveToDetail(2)"
-            v-if="goodsDetail.info.detail"
-          >
+          <view class="item" :class="{
+            active: currentMoveTag == 2,
+          }" @click="moveToDetail(2)" v-if="goodsDetail.info.detail">
             详情
           </view>
         </view>
@@ -90,18 +55,15 @@
     <view class="pane goods-info">
       <view class="detail-price">
         ￥
-        <text class="price-text"
-          ><text :class="{ normalPrice: vipPrice }">{{
-            goodsDetail.info.counterPrice
-          }}</text>
+        <text class="price-text"><text :class="{ normalPrice: vipPrice }">{{
+          goodsDetail.info.counterPrice
+        }}</text>
           <text v-show="vipPrice">{{ vipPrice }}</text>
         </text>
 
         起
 
-        <text class="watch-vip-price" @click="handleWatchVipPrice"
-          >{{ vipPrice ? '隐藏' : '查看' }}会员价</text
-        >
+        <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text>
       </view>
 
       <view class="goods-name">{{ goodsDetail.info.name }}</view>
@@ -124,12 +86,7 @@
       </view>
 
       <view class="buy-info">
-        <view
-          class="item"
-          v-for="(item, index) in goodsInfoConfig"
-          :key="index"
-          @click="handleClickMenu(item)"
-        >
+        <view class="item" v-for="(item, index) in goodsInfoConfig" :key="index" @click="handleClickMenu(item)">
           <image :src="item.icon" mode="" />
           <view>
             <view class="label">{{
@@ -146,17 +103,9 @@
       </view>
 
       <!-- 店铺信息 -->
-      <view
-        class="brand-wrapper"
-        v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand"
-      >
+      <view class="brand-wrapper" v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand">
         <view class="top">
-          <image
-            class="image"
-            :src="goodsDetail.brand.picUrl"
-            mode=""
-            v-if="goodsDetail.brand.picUrl"
-          />
+          <image class="image" :src="goodsDetail.brand.picUrl" mode="" v-if="goodsDetail.brand.picUrl" />
           <view v-else class="image image-avatar">{{
             goodsDetail.brand.name
           }}</view>
@@ -218,14 +167,9 @@
     </view>
 
     <!-- 宝贝详情 -->
-    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"
-      ><text>宝贝详情</text></view
-    >
+    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"><text>宝贝详情</text></view>
 
-    <u-parse
-      v-if="goodsDetail.info.detail"
-      :content="goodsInfoDetail"
-    ></u-parse>
+    <u-parse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></u-parse>
 
     <!-- 详情 -->
 
@@ -244,24 +188,16 @@
           <view class="number" v-if="shopCarNumber">{{ shopCarNumber }}</view>
         </view>
 
-        <view
-          class="item"
-          @click="go('/user/sever/customer-service/customer-service')"
-        >
+        <view class="item" @click="go('/user/sever/customer-service/customer-service')">
           <image src="../../static/images/detail/kefu.png" mode="" />
           <text>客服</text>
         </view>
 
         <view class="item">
-          <image
-            @click="handleCollect"
-            :src="
-              isCollect
-                ? '../../static/images/detail/collection-active .png'
-                : '../../static/images/detail/collection.png'
-            "
-            mode=""
-          />
+          <image @click="handleCollect" :src="isCollect
+            ? '../../static/images/detail/collection-active .png'
+            : '../../static/images/detail/collection.png'
+            " mode="" />
           <text>收藏</text>
         </view>
       </view>
@@ -274,14 +210,8 @@
       </view>
     </view>
 
-    <TSpecification
-      :btn-text="btnStatus"
-      @confirm="handleChooseSp"
-      :data="goodsDetail"
-      ref="specificationRef"
-      :bottom="0"
-      v-model="showSpecification"
-    ></TSpecification>
+    <TSpecification :btn-text="btnStatus" @confirm="handleChooseSp" :data="goodsDetail" ref="specificationRef" :bottom="0"
+      v-model="showSpecification"></TSpecification>
   </view>
 </template>
 
@@ -691,8 +621,8 @@ export default {
           imageUrl:
             _this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl,
         },
-        successCb: () => {},
-        failCb: () => {},
+        successCb: () => { },
+        failCb: () => { },
       }
 
       this.$refs.tuanWxShareRef.share(
@@ -977,6 +907,7 @@ export default {
         margin-bottom: 0;
       }
     }
+
     image {
       width: 48upx;
       height: 48upx;
@@ -1087,10 +1018,12 @@ export default {
 
   .brand-recommend {
     margin-top: 24upx;
+
     // background-color: #f9f9f9;
     .sub-title {
       padding: 0;
     }
+
     .wrapper {
       display: flex;
       justify-content: space-between;
@@ -1216,6 +1149,7 @@ export default {
         right: -16upx;
       }
     }
+
     image {
       width: 40upx;
       height: 40upx;

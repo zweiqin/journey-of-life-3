@@ -4,11 +4,10 @@ var http = require('./utils/http.js')
 var util = require('./utils/util.js')
 // import { getUserId } from "./utils";
 import { whoami } from './api/auth'
-import { USER_ID, USER_TOKEN } from './constant'
+import { USER_ID, USER_TOKEN, TUAN_ORDER_SN } from './constant'
 
 export default {
   onLaunach: function () {
-
   },
   onShow: function () {
     // 判断浏览器环境
@@ -38,7 +37,8 @@ export default {
     // 购物车商品数量
     totalCartCount: 0,
     // 是否一直显示 弹窗
-    isShowCommunityPopup: false
+    isShowCommunityPopup: false,
+    isInMiniprogram: false
   },
   data() {
     return {
@@ -73,7 +73,7 @@ export default {
     const launchOptions = uni.getLaunchOptionsSync()
     // console.log('a', launchOptions.scene);
     this.scene = launchOptions.scene
-
+    uni.removeStorageSync(TUAN_ORDER_SN);
   },
 }
 </script>

@@ -296,8 +296,6 @@ export default {
           code: this.code,
         })
 
-        alert(res)
-
         this.openId = res.openId
         this.mobile = res.mobile
 

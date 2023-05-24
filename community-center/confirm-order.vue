@@ -46,7 +46,7 @@
 				<view class="number">{{ this.oughtPrice }}</view>
 				<view class="point"></view>
 			</view>
-			<view class="on-pay" @click="getServiceOrderPay">确定支付</view>
+			<view class="on-pay" @click="payThrottleFn">确定支付</view>
 		</view>
 
 		<view class="foot2" v-if="pricingType == 2">
@@ -59,8 +59,8 @@
 <script>
 import { getServiceOrderApi } from "../api/community-center";
 import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from "../api/community-center";
-import { payOrderGoodsApi } from "../api/goods";
-import { getUserId } from "../utils";
+import { payOrderGoodsApi, payOrderGoodsAPPApi } from "../api/goods";
+import { getUserId, throttle } from "../utils";
 
 export default {
 	name: "Confirm-order",
@@ -81,6 +81,7 @@ export default {
 			dataUrl: "",
 			pricingType: "",
 			imgList: [],
+			payThrottleFn: () => { }
 		};
 	},
 	methods: {
@@ -129,72 +130,99 @@ export default {
 
 		//订单支付
 		async getServiceOrderPay() {
+			if ((this.$store.state.app.isInMiniProgram)) {
+				try {
+					const payAppesult = await payOrderForBeeStewadAPPApi({
+						userId: getUserId(),
+						orderNo: this.orderNo
+					})
 
-			// #ifdef H5
-			let res = await getServiceOrderPayApi({
-				orderNo: this.orderNo,
-				userId: getUserId(),
-			});
+					if (payAppesult.statusCode === 20000) {
+						let query = ''
+						for (const key in payAppesult.data) {
+							query += key + '=' + payAppesult.data[key] + '&'
+						}
 
-			res = JSON.parse(res.data);
+						// console.log(payAppesult);
 
-			const form = document.createElement("form");
-			form.setAttribute("action", res.url);
-			form.setAttribute("method", "POST");
+						wx.miniProgram.navigateTo({
+							url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(), fail: () => {
+								uni.redirectTo({
+									url: `/community-center/order`,
+								});
+							}
+						})
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			} else {
+				// #ifdef H5
+				let res = await getServiceOrderPayApi({
+					orderNo: this.orderNo,
+					userId: getUserId(),
+				});
 
-			const data1 = JSON.parse(res.data);
-			let input;
-			for (const key in data1) {
-				input = document.createElement("input");
-				input.name = key;
-				input.value = data1[key];
-				form.appendChild(input);
-			}
+				res = JSON.parse(res.data);
 
-			document.body.appendChild(form);
-			form.submit();
-			document.body.removeChild(form);
-			// #endif
+				const form = document.createElement("form");
+				form.setAttribute("action", res.url);
+				form.setAttribute("method", "POST");
 
-			// #ifdef APP
-			const payAppesult = await payOrderForBeeStewadAPPApi({
-				userId: getUserId(),
-				orderNo: this.orderNo
-			})
-
-			if (payAppesult.statusCode === 20000) {
-				let query = ''
-				for (const key in payAppesult.data) {
-					query += key + '=' + payAppesult.data[key] + '&'
+				const data1 = JSON.parse(res.data);
+				let input;
+				for (const key in data1) {
+					input = document.createElement("input");
+					input.name = key;
+					input.value = data1[key];
+					form.appendChild(input);
 				}
 
-				plus.share.getServices(
-					function (res) {
-						let sweixin = null;
-						for (let i in res) {
-							if (res[i].id == 'weixin') {
-								sweixin = res[i];
-							}
-						}
-						console.log(sweixin);
-						if (sweixin) {
-							sweixin.launchMiniProgram({
-								id: 'gh_e64a1a89a0ad',
-								type: 0,
-								path: 'pages/orderDetail/orderDetail?' + query
-							});
-						}
-					}, function (e) {
-						console.log('获取分享服务列表失败：' + e.message);
-					}
-				);
-			}
-			// #endif
+				document.body.appendChild(form);
+				form.submit();
+				document.body.removeChild(form);
+				// #endif
 
+				// #ifdef APP
+				const payAppesult = await payOrderForBeeStewadAPPApi({
+					userId: getUserId(),
+					orderNo: this.orderNo
+				})
+
+				if (payAppesult.statusCode === 20000) {
+					let query = ''
+					for (const key in payAppesult.data) {
+						query += key + '=' + payAppesult.data[key] + '&'
+					}
+
+					plus.share.getServices(
+						function (res) {
+							let sweixin = null;
+							for (let i in res) {
+								if (res[i].id == 'weixin') {
+									sweixin = res[i];
+								}
+							}
+							console.log(sweixin);
+							if (sweixin) {
+								sweixin.launchMiniProgram({
+									id: 'gh_e64a1a89a0ad',
+									type: 0,
+									path: 'pages/orderDetail/orderDetail?' + query
+								});
+							}
+						}, function (e) {
+							console.log('获取分享服务列表失败：' + e.message);
+						}
+					);
+				}
+				// #endif
+			}
 		},
 	},
 	onLoad(options) {
 		console.log(options);
+		this.payThrottleFn = throttle(this.getServiceOrderPay, 1000)
 		this.name1 = options.name1;
 		this.oughtPrice = options.oughtPrice;
 		this.content = options.content;

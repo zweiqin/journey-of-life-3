@@ -63,11 +63,14 @@ export default {
 			timer: null,
 			awaitSecond: 60,
 			userId: null,
-			partnerCode: null
+			partnerCode: null,
 		}
 	},
 
 	onLoad(options) {
+		if (options.miniProgram) {
+			getApp().globalData.isInMiniprogram = true
+		}
 		this.onGetCode = throttle(this.handleGetCode, 1000)
 		this.onBind = throttle(this.handleBindMobile, 1000)
 		this.bindForm.openId = options.openId

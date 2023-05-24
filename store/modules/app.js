@@ -11,8 +11,10 @@ export default {
 
   mutations: {
     [CHANGE_IS_IN_MINIPROGRAM](state, tag) {
-      uni.setStorageSync(MINI_PROGRAM_TAG, tag);
-      state.isInMiniProgram = tag;
+      if (tag) {
+        uni.setStorageSync(MINI_PROGRAM_TAG, tag);
+        state.isInMiniProgram = tag;
+      }
     },
   },
 };

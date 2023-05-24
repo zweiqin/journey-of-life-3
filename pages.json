@@ -146,15 +146,6 @@
       }
     },
     {
-      "path": "pages/pay-result/pay-result",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "支付结果",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
       "path": "pages/search-prod-show/search-prod-show",
       "style": {
         "backgroundTextStyle": "light",

@@ -157,52 +157,74 @@ export default {
 
       submitOrderApi(data).then(async ({ data }) => {
         uni.setStorageSync(PAY_SHORT_ORDER_NO, data.orderSn)
+        if ((this.$store.state.app.isInMiniProgram)) {
 
-        // #ifdef H5
-        getSybOrderPayH5({
-          orderNo: data.orderSn,
-          userId: getUserId(),
-          payType: 1,
-        }).then(res => {
-          payFn(res.data)
-        })
-        // #endif
+          const payAppesult = await payOrderGoodsAPPApi({
+            userId: getUserId(),
+            orderNo: data.orderSn,
+            payType: 1
+          })
 
-        // #ifdef APP
-        const payAppesult = await payOrderGoodsAPPApi({
-          userId: getUserId(),
-          orderNo: data.orderSn,
-          payType: 1
-        })
-
-        if (payAppesult.errno === 0) {
-
-          let query = ''
-          for (const key in payAppesult.data) {
-            query += key + '=' + payAppesult.data[key] + '&'
-          }
-
-          plus.share.getServices(
-            function (res) {
-              let sweixin = null;
-              for (let i in res) {
-                if (res[i].id == 'weixin') {
-                  sweixin = res[i];
-                }
-              }
-              if (sweixin) {
-                sweixin.launchMiniProgram({
-                  id: 'gh_e64a1a89a0ad',
-                  type: 0,
-                  path: 'pages/orderDetail/orderDetail?' + query
-                });
-              }
-            }, function (e) {
-              console.log('获取分享服务列表失败：' + e.message);
+          if (payAppesult.errno === 0) {
+            let query = ''
+            for (const key in payAppesult.data) {
+              query += key + '=' + payAppesult.data[key] + '&'
             }
-          );
+
+            wx.miniProgram.navigateTo({
+              url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(), fail: () => {
+                uni.redirectTo({ url: '/user/orderForm/order-form?type=1' })
+              }
+            })
+          }
+        } else {
+          // #ifdef H5
+          getSybOrderPayH5({
+            orderNo: data.orderSn,
+            userId: getUserId(),
+            payType: 1,
+          }).then(res => {
+            payFn(res.data)
+          })
+          // #endif
+
+          // #ifdef APP
+          const payAppesult = await payOrderGoodsAPPApi({
+            userId: getUserId(),
+            orderNo: data.orderSn,
+            payType: 1
+          })
+
+          if (payAppesult.errno === 0) {
+
+            let query = ''
+            for (const key in payAppesult.data) {
+              query += key + '=' + payAppesult.data[key] + '&'
+            }
+
+            plus.share.getServices(
+              function (res) {
+                let sweixin = null;
+                for (let i in res) {
+                  if (res[i].id == 'weixin') {
+                    sweixin = res[i];
+                  }
+                }
+                if (sweixin) {
+                  sweixin.launchMiniProgram({
+                    id: 'gh_e64a1a89a0ad',
+                    type: 0,
+                    path: 'pages/orderDetail/orderDetail?' + query
+                  });
+                }
+              }, function (e) {
+                console.log('获取分享服务列表失败：' + e.message);
+              }
+            );
+          }
+          // #endif
         }
-        // #endif
+
       })
     },
 

@@ -15,7 +15,7 @@ export default {
       // #ifdef H5
       const _this = this
       const appid = 'wxb19ccb829623be12'
-      const local =
+      const local = this.$store.state.app.isInMiniProgram ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?miniProgram=1' :
         'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
       const code = getUrlCode().code
 

@@ -89,6 +89,7 @@ import {
 	bindLastUserApi,
 	checkBindApi
 } from '../../api/user'
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 
 const tabbarList = [
 	'/pages/user/user',
@@ -119,12 +120,15 @@ export default {
 			isBind: false,
 			bindId: null,
 			userId: null,
-			partnerCode: ''
+			partnerCode: '',
 		}
 	},
 	async onLoad(options) {
+		if (options.miniProgram) {
+			getApp().globalData.isInMiniprogram = true
+		}
+		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		this.onlogin = throttle(this.handlelogin, 1000)
-
 		this.redirect = options.to
 
 		this.bindId = options.code
@@ -376,7 +380,6 @@ export default {
 		// 微信登陆后续
 		async handleWXLoginAfter(res) {
 			const _this = this
-
 
 
 			// #ifdef H5

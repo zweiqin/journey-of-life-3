@@ -78,6 +78,8 @@
 
 		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
 			@click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+
+		<TuanWxShare ref="tuanWxShareRef" @click="handleInitShare"></TuanWxShare>
 	</view>
 </template>
 
@@ -130,8 +132,11 @@ export default {
 
 		// #ifdef H5
 		if (window.location.href.includes('?code')) {
-			window.location.href =
-				window.location.origin + window.location.pathname
+			let clearWXCodeUrl = window.location.origin + window.location.pathname
+			if (getApp().globalData.isInMiniprogram) {
+				clearWXCodeUrl += '/?miniProgram=1'
+			}
+			window.location.href = clearWXCodeUrl
 		}
 		// #endif
 
@@ -169,11 +174,39 @@ export default {
 					}
 				}
 			}
-		}
+		},
+
+		// 初始化分享
+		async handleInitShare() {
+			await this.handleShareServe(true)
+		},
+
+		// 微信分享
+		async handleShareServe(isQuit) {
+			const data = {
+				data: {
+					title: "团蜂家居社区服务中心",
+					desc: "一切和家居有关的问题，我们都能解决",
+					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/`,
+					imageUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			await this.$refs.tuanWxShareRef.share(data, isQuit)
+		},
 	},
 
 	onLoad(options) {
 		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
+		// if (!!options.miniProgram || getApp().globalData.isInMiniprogram) {
+			const script = document.createElement('script');
+			script.src = "https://res.wx.qq.com/open/js/jweixin-1.4.0.js";
+			document.body.appendChild(script)
+			setTimeout(() => {
+				this.handleInitShare()
+			}, 500);
+		// }
 	},
 
 }

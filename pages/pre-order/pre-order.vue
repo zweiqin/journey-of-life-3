@@ -85,6 +85,8 @@
 		</view>
 
 		<CouponPopup v-model="couponPopupVisible" :cart-id="cartId" @confirm="handleConfirmChooseCoupon"></CouponPopup>
+
+		<TuanMiniprogromPay ref="tuanMiniprogromPayRef"></TuanMiniprogromPay>
 	</view>
 </template>
 
@@ -101,6 +103,19 @@ export default {
 		this.getAddressList()
 		this.getOrderInfo()
 	},
+
+	// mounted() {
+	// 	setTimeout(() => {
+	// 		this.$refs.tuanMiniprogromPayRef.showPopup({
+	// 			payPrice: 1000,
+	// 			userId: getUserId(),
+	// 			orderNo: 'bu78828893987882345',
+	// 			payType: 1,
+	// 			activityId: 0,
+	// 			type: 'shop'
+	// 		})
+	// 	}, 1000);
+	// },
 
 	onShow() {
 		this.getAddressList()
@@ -234,7 +249,7 @@ export default {
 			}
 			submitOrderApi(submitData).then(async ({ data: lastData }) => {
 				uni.setStorageSync(TUAN_ORDER_SN, lastData.orderSn)
-				if ((this.$store.state.app.isInMiniProgram)) {
+				if ((this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram)) {
 					const payAppesult = await payOrderGoodsAPPApi({
 						userId: getUserId(),
 						orderNo: lastData.orderSn,
@@ -248,25 +263,13 @@ export default {
 							query += key + '=' + payAppesult.data[key] + '&'
 						}
 
-						plus.share.getServices(
-							function (res) {
-								let sweixin = null;
-								for (let i in res) {
-									if (res[i].id == 'weixin') {
-										sweixin = res[i];
-									}
-								}
-								if (sweixin) {
-									sweixin.launchMiniProgram({
-										id: 'gh_e64a1a89a0ad',
-										type: 0,
-										path: 'pages/orderDetail/orderDetail?' + query
-									});
-								}
-							}, function (e) {
-								console.log('获取分享服务列表失败：' + e.message);
+						wx.miniProgram.navigateTo({
+							url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(), fail: () => {
+								uni.redirectTo({
+									url: '/user/orderForm/order-form?type=1'
+								})
 							}
-						);
+						})
 					}
 				} else {
 					// #ifdef H5

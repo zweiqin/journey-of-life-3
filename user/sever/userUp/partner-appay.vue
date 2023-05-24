@@ -149,45 +149,57 @@ export default {
 						return
 					}
 
+					if ((this.$store.state.app.isInMiniProgram)) {
+						const payAppesult = await payOrderGoodsAPPApi(data)
 
-					// #ifdef H5
-					payFn(res.data)
-					// #endif
-
-					// #ifdef APP
-					console.log("超级合伙人提交", res.data.orderNo);
-					const payAppesult = await payOrderGoodsAPPApi(data)
-
-					if (payAppesult.errno === 0) {
-
-						let query = ''
-						for (const key in payAppesult.data) {
-							query += key + '=' + payAppesult.data[key] + '&'
-						}
-
-						plus.share.getServices(
-							function (res) {
-								let sweixin = null;
-								for (let i in res) {
-									if (res[i].id == 'weixin') {
-										sweixin = res[i];
-									}
-								}
-								console.log(sweixin);
-								if (sweixin) {
-									sweixin.launchMiniProgram({
-										id: 'gh_e64a1a89a0ad',
-										type: 0,
-										path: 'pages/orderDetail/orderDetail?' + query
-									});
-								}
-							},
-							function (e) {
-								console.log('获取分享服务列表失败：' + e.message);
+						if (payAppesult.errno === 0) {
+							let query = ''
+							for (const key in payAppesult.data) {
+								query += key + '=' + payAppesult.data[key] + '&'
 							}
-						);
+
+							wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId() })
+						}
+					} else {
+						// #ifdef H5
+						payFn(res.data)
+						// #endif
+
+						// #ifdef APP
+						console.log("超级合伙人提交", res.data.orderNo);
+						const payAppesult = await payOrderGoodsAPPApi(data)
+
+						if (payAppesult.errno === 0) {
+
+							let query = ''
+							for (const key in payAppesult.data) {
+								query += key + '=' + payAppesult.data[key] + '&'
+							}
+
+							plus.share.getServices(
+								function (res) {
+									let sweixin = null;
+									for (let i in res) {
+										if (res[i].id == 'weixin') {
+											sweixin = res[i];
+										}
+									}
+									console.log(sweixin);
+									if (sweixin) {
+										sweixin.launchMiniProgram({
+											id: 'gh_e64a1a89a0ad',
+											type: 0,
+											path: 'pages/orderDetail/orderDetail?' + query
+										});
+									}
+								},
+								function (e) {
+									console.log('获取分享服务列表失败：' + e.message);
+								}
+							);
+						}
+						// #endif
 					}
-					// #endif
 				})
 
 

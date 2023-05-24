@@ -2,12 +2,9 @@
   <view class="order-detail" v-if="data">
     <JHeader width="50" height="50" title="订单详情"></JHeader>
 
-    <view
-      class="view-order-status"
-      :style="{
-        'background-image': bg,
-      }"
-    >
+    <view class="view-order-status" :style="{
+      'background-image': bg,
+    }">
       <JIcon width="44" height="44" type="active"></JIcon>
       {{ data.orderInfo.orderStatusText }}
     </view>
@@ -30,15 +27,9 @@
       <view class="goods-info">
         <view class="title">商品信息</view>
 
-        <view
-          style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx"
-          v-for="item in data.orderGoods"
-          :key="item.id"
-        >
-          <view
-            class="goods-item"
-            v-if="commentGoodsId ? item.id == commentGoodsId : true"
-          >
+        <view style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx" v-for="item in data.orderGoods"
+          :key="item.id">
+          <view class="goods-item" v-if="commentGoodsId ? item.id == commentGoodsId : true">
             <image :src="item.picUrl" class="goods-img" mode="" />
             <view class="goods-info-content">
               <view class="goods-name">{{ item.goodsName }}</view>
@@ -49,10 +40,7 @@
           </view>
 
           <!-- 评论 -->
-          <view
-            class="evaluate-info pane"
-            v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId"
-          >
+          <view class="evaluate-info pane" v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId">
             <view class="line">
               <view class="title">满意</view>
               <uni-rate v-model="evForm.star"></uni-rate>
@@ -60,12 +48,8 @@
 
             <view class="line">
               <view class="title">评论</view>
-              <textarea
-                placeholder="请输入商品评论"
-                class="evaluate-textarea"
-                maxlength="200"
-                v-model="evForm.content"
-              ></textarea>
+              <textarea placeholder="请输入商品评论" class="evaluate-textarea" maxlength="200"
+                v-model="evForm.content"></textarea>
             </view>
 
             <view class="line">
@@ -98,16 +82,12 @@
 
     <view class="order-detail-footer" v-if="data">
       <view v-for="item in orderOpButtons" :key="item.label">
-        <button
-          :style="{
-            background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
-            color: item.label === '去评论' ? '#fff' : '',
-            border: item.label === '去评论' ? 'none' : '',
-          }"
-          @click="handleOpOrder(data.orderInfo, item.key)"
-          v-if="data.orderInfo.handleOption[item.key]"
-          class="uni-btn"
-        >
+        <button :style="{
+          background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
+          color: item.label === '去评论' ? '#fff' : '',
+          border: item.label === '去评论' ? 'none' : '',
+        }" @click="handleOpOrder(data.orderInfo, item.key)" v-if="data.orderInfo.handleOption[item.key]"
+          class="uni-btn">
           {{ item.label === "去评论" ? "发布评论" : item.label }}
         </button>
       </view>
@@ -124,7 +104,7 @@ import {
 } from "../../api/order";
 import { getUserId } from "../../utils";
 import { orderOpButtons } from "./config";
-import { payOrderGoodsApi } from "../../api/goods";
+import { payOrderGoodsApi, payOrderGoodsAPPApi } from "../../api/goods";
 
 export default {
   data() {
@@ -181,7 +161,7 @@ export default {
     },
 
     // 点击操作按钮
-    handleOpOrder(goods, key) {
+    async handleOpOrder(goods, key) {
       const _this = this;
       const mapMethods = {
         cancel: {
@@ -227,28 +207,90 @@ export default {
         });
       } else {
         if (key === "pay") {
-          payOrderGoodsApi({
-            orderNo: goods.orderSn,
-            userId: getUserId(),
-            payType: 1,
-          }).then((res) => {
-            const payData = JSON.parse(res.data.h5PayUrl);
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
+          if ((this.$store.state.app.isInMiniProgram)) {
+            try {
+              const payAppesult = await payOrderGoodsAPPApi({
+                orderNo: goods.orderSn,
+                userId: getUserId(),
+                payType: 1,
+              })
+              if (payAppesult.errno === 0) {
+                let query = ''
+                for (const key in payAppesult.data) {
+                  query += key + '=' + payAppesult.data[key] + '&'
+                }
+                wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() })
+              }
+            } catch (error) {
+              uni.showToast({
+                title: JSON.stringify(error)
+              });
             }
+          } else {
+            // #ifdef H5
+            payOrderGoodsApi({
+              orderNo: goods.orderSn,
+              userId: getUserId(),
+              payType: 1,
+            }).then((res) => {
+              const payData = JSON.parse(res.data.h5PayUrl);
+              const form = document.createElement("form");
+              form.setAttribute("action", payData.url);
+              form.setAttribute("method", "POST");
+              const data = JSON.parse(payData.data);
+              let input;
+              for (const key in data) {
+                input = document.createElement("input");
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
+              }
 
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          });
+              document.body.appendChild(form);
+              form.submit();
+              document.body.removeChild(form);
+            });
+            // #endif
+
+            // #ifdef APP
+            const payAppesult = await payOrderGoodsAPPApi({
+              userId: getUserId(),
+              orderNo: goods.orderSn,
+              payType: 1
+            })
+
+            if (payAppesult.errno === 0) {
+
+              let query = ''
+              for (const key in payAppesult.data) {
+                query += key + '=' + payAppesult.data[key] + '&'
+              }
+
+              plus.share.getServices(
+                function (res) {
+                  let sweixin = null;
+                  for (let i in res) {
+                    if (res[i].id == 'weixin') {
+                      sweixin = res[i];
+                    }
+                  }
+                  console.log(sweixin);
+                  if (sweixin) {
+                    sweixin.launchMiniProgram({
+                      id: 'gh_e64a1a89a0ad',
+                      type: 0,
+                      path: 'pages/orderDetail/orderDetail?' + query
+                    });
+                  }
+                }, function (e) {
+                  console.log('获取分享服务列表失败：' + e.message);
+                }
+              );
+            }
+            // #endif
+
+          }
+
         } else if (key === "comment") {
           uni.showModal({
             title: "提示",
@@ -366,6 +408,7 @@ export default {
           flex-shrink: 0;
         }
       }
+
       padding-bottom: 20upx;
       border-bottom: 1upx solid #dadada;
     }
@@ -401,6 +444,7 @@ export default {
             text-overflow: ellipsis;
             white-space: nowrap;
           }
+
           .sp {
             margin: 20upx 0 10upx;
           }

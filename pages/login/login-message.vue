@@ -78,6 +78,7 @@ import { throttle } from '../../utils'
 import { NEW_BIND_ID, USER_ID, USER_INFO, SF_INVITE_CODE } from '../../constant'
 import { bindLastUserApi, checkBindApi } from '../../api/user'
 import { getCodeApi } from '../../api/auth'
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 
 const tabbarList = [
   '/pages/user/user',
@@ -108,13 +109,17 @@ export default {
       isBind: false,
       bindId: null,
       userId: null,
-      partnerCode: null
+      partnerCode: null,
     }
   },
   onShow() {
     this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
   },
   async onLoad(options) {
+    if (options.miniProgram) {
+			getApp().globalData.isInMiniprogram = true
+    }
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     this.onlogin = throttle(this.handlelogin, 1000)
     this.onGetCode = throttle(this.handleGetCode, 1000)
 

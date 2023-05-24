@@ -6,11 +6,12 @@
     </view> -->
 
 		<view class="navs">
-			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack">
-				<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
-					:key="item.value" @click="handleSwitchStatus(item.value)">
-					{{ item.label }}
-				</view>
+
+			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
+			<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
+				:key="item.value" @click="handleSwitchStatus(item.value)">
+				{{ item.label }}
+			</view>
 		</view>
 
 		<view class="order-list-wrapper" v-if="orderList && orderList.length">
@@ -53,8 +54,8 @@
 					<view class="btns">
 						<view v-for="btn in orderOpButtons" :key="btn.label">
 							<button :style="{
-									background: btn.color,
-								}" @click="handleOpOrder(item, btn.key)" class="uni-btn"
+								background: btn.color,
+							}" @click="handleOpOrder(item, btn.key)" class="uni-btn"
 								v-if="item.handleOption[btn.key] && btn.label !== '去评论'">
 								{{ btn.label }}
 							</button>
@@ -187,68 +188,86 @@ export default {
 				})
 			} else {
 				if (key === 'pay') {
-					// #ifdef H5
-					payOrderGoodsApi({
-						orderNo: goods.orderSn,
-						userId: getUserId(),
-						payType: 1,
-					}).then((res) => {
-						const payData = JSON.parse(res.data.h5PayUrl)
-						const form = document.createElement('form')
-						form.setAttribute('action', payData.url)
-						form.setAttribute('method', 'POST')
-						const data = JSON.parse(payData.data)
-						let input
-						for (const key in data) {
-							input = document.createElement('input')
-							input.name = key
-							input.value = data[key]
-							form.appendChild(input)
-						}
-
-						document.body.appendChild(form)
-						form.submit()
-						document.body.removeChild(form)
-
-					})
-					// #endif
-
-					// #ifdef APP
-					const payAppesult = await payOrderGoodsAPPApi({
-						userId: getUserId(),
-						orderNo: goods.orderSn,
-						payType: 1
-					})
-
-					if (payAppesult.errno === 0) {
-
-						let query = ''
-						for (const key in payAppesult.data) {
-							query += key + '=' + payAppesult.data[key] + '&'
-						}
-
-						plus.share.getServices(
-							function (res) {
-								let sweixin = null;
-								for (let i in res) {
-									if (res[i].id == 'weixin') {
-										sweixin = res[i];
-									}
-								}
-								console.log(sweixin);
-								if (sweixin) {
-									sweixin.launchMiniProgram({
-										id: 'gh_e64a1a89a0ad',
-										type: 0,
-										path: 'pages/orderDetail/orderDetail?' + query
-									});
-								}
-							}, function (e) {
-								console.log('获取分享服务列表失败：' + e.message);
+					if ((this.$store.state.app.isInMiniProgram)) {
+						const payAppesult = await payOrderGoodsAPPApi({
+							userId: getUserId(),
+							orderNo: goods.orderSn,
+							payType: 1
+						})
+						if (payAppesult.errno === 0) {
+							let query = ''
+							for (const key in payAppesult.data) {
+								query += key + '=' + payAppesult.data[key] + '&'
 							}
-						);
+							wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() })
+						}
+					} else {
+						// #ifdef H5
+						payOrderGoodsApi({
+							orderNo: goods.orderSn,
+							userId: getUserId(),
+							payType: 1,
+						}).then((res) => {
+							const payData = JSON.parse(res.data.h5PayUrl)
+							const form = document.createElement('form')
+							form.setAttribute('action', payData.url)
+							form.setAttribute('method', 'POST')
+							const data = JSON.parse(payData.data)
+							let input
+							for (const key in data) {
+								input = document.createElement('input')
+								input.name = key
+								input.value = data[key]
+								form.appendChild(input)
+							}
+
+							document.body.appendChild(form)
+							form.submit()
+							document.body.removeChild(form)
+
+						})
+						// #endif
+
+						// #ifdef APP
+						const payAppesult = await payOrderGoodsAPPApi({
+							userId: getUserId(),
+							orderNo: goods.orderSn,
+							payType: 1
+						})
+
+						if (payAppesult.errno === 0) {
+
+							let query = ''
+							for (const key in payAppesult.data) {
+								query += key + '=' + payAppesult.data[key] + '&'
+							}
+
+							plus.share.getServices(
+								function (res) {
+									let sweixin = null;
+									for (let i in res) {
+										if (res[i].id == 'weixin') {
+											sweixin = res[i];
+										}
+									}
+									console.log(sweixin);
+									if (sweixin) {
+										sweixin.launchMiniProgram({
+											id: 'gh_e64a1a89a0ad',
+											type: 0,
+											path: 'pages/orderDetail/orderDetail?' + query
+										});
+									}
+								}, function (e) {
+									console.log('获取分享服务列表失败：' + e.message);
+								}
+							);
+						}
+						// #endif
 					}
-					// #endif
+
+
+
 				}
 			}
 		},

@@ -1,4 +1,4 @@
-const wx = require('weixin-js-sdk')
+const wx = require("weixin-js-sdk");
 
 const wxShare = {
   /**
@@ -14,13 +14,15 @@ const wxShare = {
       nonceStr: data.nonceStr, // 必填，生成签名的随机串
       signature: data.signature, // 必填，签名，见附录1
       jsApiList: [
-        'updateAppMessageShareData',
-        'updateTimelineShareData',
-        'onMenuShareAppMessage',
-        'onMenuShareTimeline',
+        "updateAppMessageShareData",
+        "updateTimelineShareData",
+        "onMenuShareAppMessage",
+        "onMenuShareTimeline",
       ], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      openTagList: ['wx-open-launch-weapp']
-    })
+      openTagList: ["wx-open-launch-weapp"],
+    });
+
+    // wxef277996acc166c3
 
     wx.ready(function () {
       wx.updateAppMessageShareData({
@@ -29,20 +31,20 @@ const wxShare = {
         link: option.link, // 分享链接
         imgUrl: option.imgUrl, // 分享图标
         success() {
-          successCb && typeof successCb == 'function' && successCb()
+          successCb && typeof successCb == "function" && successCb();
         },
         cancel() {
           // 用户取消分享后执行的回调函数
           // option.error()
-          console.log('cancel')
+          console.log("cancel");
         },
-      })
-    })
+      });
+    });
 
     wx.error(function (res) {
       // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
       //alert('error:'+JSON.stringify(res));
-    })
+    });
   },
-}
-export default wxShare
+};
+export default wxShare;
