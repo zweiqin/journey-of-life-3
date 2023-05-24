@@ -4,28 +4,15 @@
       <view class="title-item">我的权益</view>
     </view>
 
-    <view class="menus-container">
+    <view class="menus-container" :style="{height: menu.length > 8 ? '340upx' : ''}">
       <view class="swiper-item">
-        <view
-          class="menu-item"
-          @click="$emit('handleNavigate', item)"
-          v-for="item in myEquity"
-          :key="item.name"
-        >
+        <view class="menu-item" :style="{ marginTop: menu.length > 8 ? '10upx' : 0 }"
+          @click="$emit('handleNavigate', item)" v-for="item in menu" :key="item.name">
           <image class="menu-icon" :src="item.icon" mode="" />
           <text class="menu-title">{{ item.name }}</text>
-          <tui-badge
-            v-if="
-              item.name === '区域代理' && $store.getters.applyRegionAgentStatus
-            "
-            type="danger"
-            absolute
-            :scaleRatio="0.8"
-            translateX="40%"
-            top="6rpx"
-            right="44rpx"
-            >{{ $store.getters.applyRegionAgentStatus }}</tui-badge
-          >
+          <tui-badge v-if="item.name === '区域代理' && $store.getters.applyRegionAgentStatus
+            " type="danger" absolute :scaleRatio="0.8" translateX="40%" top="6rpx" right="44rpx">{{
+    $store.getters.applyRegionAgentStatus }}</tui-badge>
         </view>
       </view>
     </view>
@@ -33,14 +20,15 @@
 </template>
 
 <script>
-import { myEquity } from '../data'
-
 export default {
-  data() {
-    return {
-      myEquity: Object.freeze(myEquity),
+  props: {
+    menu: {
+      type: Array,
+      required: true
     }
-  },
+  }
+
+
 }
 </script>
 
@@ -49,6 +37,7 @@ view,
 text {
   line-height: 1.5 !important;
 }
+
 .order-pane {
   padding: 32upx 24upx;
   background-color: #fff;
@@ -68,7 +57,10 @@ text {
   }
 
   .menus-container {
-    // height: 260upx;
+    // overflow: hidden;
+    // min-height: 260upx;
+    height: auto;
+
     .swiper-item {
       position: relative;
       // padding: 28upx 20upx 32upx 20upx;
@@ -77,16 +69,17 @@ text {
       align-items: center;
       flex-wrap: wrap;
       height: 280upx;
+
       // justify-content: space-between;
       .menu-item {
         // flex: 3;
         // margin-right: 0upx;
         width: 25%;
         height: 104upx;
-        .menu-icon {
-        }
-        .menu-title {
-        }
+
+        .menu-icon {}
+
+        .menu-title {}
       }
     }
   }

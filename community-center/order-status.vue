@@ -185,6 +185,7 @@ export default {
       serverMasterName: "",
       serverMasterTel: "",
       orderNo: "",
+      serverCode: ''
     };
   },
   methods: {
@@ -281,6 +282,8 @@ export default {
       this.status = this.info[0].status;
       console.log("status", this.status);
 
+      this.serverCode = this.info[0].serverCode
+
       this.serverMasterName = this.info[0].serverMasterName;
       console.log("师傅名字", this.serverMasterName);
 
@@ -306,7 +309,7 @@ export default {
         this.statusName = "已分配";
         console.log("订单状态", this.statusName);
       } else if (this.a == 5) {
-        this.statusName = "配送中";
+        this.statusName = "服务中";
         console.log("订单状态", this.statusName);
       } else if (this.a == 6) {
         this.statusName = "已完成";

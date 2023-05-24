@@ -13,7 +13,7 @@
 		<BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
 			<OrderPane @handleNavigate="handleNavigate"></OrderPane>
-			<Equity @handleNavigate="handleNavigate"></Equity>
+			<Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
 			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
 			<Serve @handleNavigate="handleNavigate"></Serve>
 		</view>
@@ -31,7 +31,8 @@ import Equity from './cpns/Equity.vue'
 import MyFunction from './cpns/MyFunction.vue'
 import Serve from './cpns/Serve.vue'
 import showModalMixin from '../../mixin/showModal'
-import { USER_ID } from '../../constant'
+import { USER_ID, USER_INFO } from '../../constant'
+import { myEquity } from './data'
 
 export default {
 	name: 'User',
@@ -51,6 +52,7 @@ export default {
 	},
 	onShow() {
 		this.init()
+		this.setShareHolder()
 	},
 	data() {
 		return {
@@ -59,7 +61,8 @@ export default {
 			moveDis: 0,
 			touchStartDis: 0,
 			calcDis: null,
-			userId: null
+			userId: null,
+			myEquity1: []
 		}
 	},
 	methods: {
@@ -136,6 +139,27 @@ export default {
 			if (this.moveDis > 100) {
 				this.moveDis = 150
 			}
+		},
+
+		// 设置股东看板
+		setShareHolder() {
+			const userInfo = this.$store.getters.userInfo;
+			console.log(userInfo);
+			if (userInfo && userInfo.shareholderType === 1) {
+				this.myEquity1 = [...myEquity, {
+					name: '股东看板',
+					icon: require('../../static/images/new-user/equity/gudong.png'),
+					url: '/user/shareholder/shareholder'
+				}]
+			} else {
+				const index = this.myEquity1.findIndex(item => item.name === '股东看板')
+				if (index != -1) {
+					this.myEquity1.splice(index, 1)
+				}
+
+				this.myEquity1 = [...myEquity]
+			}
+			this.$forceUpdate()
 		}
 	},
 }

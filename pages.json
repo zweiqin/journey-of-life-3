@@ -993,6 +993,12 @@
           "style": {
             "navigationBarTitleText": "我的隐私"
           }
+        },
+        {
+          "path": "shareholder/shareholder",
+          "style": {
+            "navigationBarTitleText": ""
+          }
         }
       ]
     },
