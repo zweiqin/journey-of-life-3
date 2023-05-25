@@ -64,8 +64,7 @@ export default {
      * @description 搜索框搜索
      */
     searchOrder(e) {
-      const value = e.value;
-      this.query.orderNo = value.trim();
+      this.query.orderNo = e.trim();
       this.getOrderList();
     },
 

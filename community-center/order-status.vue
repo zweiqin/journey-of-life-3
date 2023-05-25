@@ -3,12 +3,8 @@
   <view class="order-status">
     <view class="top">
       <view class="title-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-          alt=""
-          class="return"
-          @click="handleToOrderList"
-        />
+        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+          class="return" @click="handleToOrderList" />
         <view class="title">订单状态</view>
       </view>
       <view class="mid">
@@ -33,7 +29,7 @@
                 </view>
                 <view class="service-name">{{ this.dictName }}</view>
                 <view class="time">{{ this.createTime }}</view>
-                <view  style="margin-top: 30upx;" class="time">{{ this.serverCode || '无' }}</view>
+                <view style="margin-top: 30upx;" class="time">{{ this.serverCode || '无' }}</view>
               </view>
             </view>
           </view>
@@ -43,10 +39,8 @@
     <view class="main">
       <view class="main-mid">
         <view class="to-do">服务待完成</view>
-        <view class="explain"
-          >本订单由商家在团蜂社区平台下单，由团蜂社区平台的师傅为您
-          提供服务</view
-        >
+        <view class="explain">本订单由商家在团蜂社区平台下单，由团蜂社区平台的师傅为您
+          提供服务</view>
         <view class="line"></view>
         <view class="service-info">
           <view class="info-left">
@@ -63,12 +57,7 @@
             <view class="service-name">{{ this.dictName }}</view>
             <view class="worker-list">
               <view class="worker-name">{{ this.serverMasterName }}</view>
-              <view
-                class="contact"
-                @click="contact(serverMasterTel)"
-                v-if="this.a >= 4"
-                >联系师傅</view
-              >
+              <view class="contact" @click="contact(serverMasterTel)" v-if="this.a >= 4">联系师傅</view>
             </view>
             <!-- <view class="yet">{{ this.updateTime }}</view> -->
           </view>
@@ -88,68 +77,38 @@
           <!-- <star></star> -->
         </view>
         <view class="comment">评论:</view>
-        <textarea
-          class="content"
-          v-model="evaluate"
-          placeholder="(请输入评价)"
-          placeholder-class="textarea-placeholder"
-        />
+        <textarea class="content" v-model="evaluate" placeholder="(请输入评价)" placeholder-class="textarea-placeholder" />
 
         <view class="name-list">晒图</view>
         <view class="upload-pane">
           <view style="display: flex; flex-wrap: wrap">
-            <view
-              v-for="img in images"
-              :key="img"
-              style="
+            <view v-for="img in images" :key="img" style="
                 position: relative;
                 width: 160upx;
                 height: 160upx;
                 margin-right: 20upx;
                 margin-bottom: 20upx;
-              "
-            >
+              ">
               <img :src="img" alt="" class="img1" />
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-                alt=""
-                class="img2"
-                @click="removeBackground(img)"
-              />
+              <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
+                alt="" class="img2" @click="removeBackground(img)" />
             </view>
           </view>
-          <view
-            @click="chooseImg"
-            class="upload"
-            v-if="!imgUrl"
-            style="margin-right: 6upx"
-            >+</view
-          >
-          <image
-            v-else-if="imgUrl"
-            class="iamge-background"
-            :src="imgUrl"
-            mode=""
-          />
+          <view @click="chooseImg" class="upload" v-if="!imgUrl" style="margin-right: 6upx">+</view>
+          <image v-else-if="imgUrl" class="iamge-background" :src="imgUrl" mode="" />
         </view>
         <view class="stow-list">
           <view class="stow">收起</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/95a2o8c81mnryjijqnib.png"
-            alt=""
-            class="img"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/95a2o8c81mnryjijqnib.png" alt=""
+            class="img" />
         </view>
       </view>
     </view>
     <view class="foot" v-if="this.a == 6">
       <view class="foot-list">
         <view class="ask">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/exm117nexx3g3c0v2du5.png"
-            alt=""
-            class="img"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/exm117nexx3g3c0v2du5.png" alt=""
+            class="img" />
           <view class="name">在线咨询</view>
         </view>
         <view class="next-order">再下一单</view>
@@ -309,8 +268,10 @@ export default {
         this.statusName = "已分配";
         console.log("订单状态", this.statusName);
       } else if (this.a == 5) {
-        this.statusName = "服务中";
+        this.statusName = "待到场";
         console.log("订单状态", this.statusName);
+      } else if (this.a == 31) {
+        this.statusName = "服务中";
       } else if (this.a == 6) {
         this.statusName = "已完成";
         console.log("订单状态", this.statusName);
@@ -330,7 +291,7 @@ export default {
       console.log("updateTime", this.updateTime);
     },
   },
-  created() {},
+  created() { },
   onLoad(options) {
     console.log(options);
     this.orderNo = options.orderNo;
@@ -345,11 +306,10 @@ export default {
 .order-status {
   padding-bottom: 172upx;
   width: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(245, 190, 134, 0.42) 2%,
-    rgba(246, 190, 134, 0) 103%
-  );
+  background: linear-gradient(180deg,
+      rgba(245, 190, 134, 0.42) 2%,
+      rgba(246, 190, 134, 0) 103%);
+
   .top {
     .title-list {
       padding: 40upx 34upx 20upx 26upx;
@@ -359,6 +319,7 @@ export default {
         width: 48upx;
         height: 48upx;
       }
+
       .title {
         flex: 1;
         text-align: center;
@@ -367,11 +328,14 @@ export default {
         color: #3d3d3d;
       }
     }
+
     .mid {
       padding: 50upx 30upx 34upx 30upx;
+
       .mid-main {
         border-radius: 20upx;
         background: #ffffff;
+
         .first {
           padding-top: 30upx;
           text-align: center;
@@ -379,129 +343,157 @@ export default {
           font-weight: bold;
           color: #3d3d3d;
         }
+
         .second {
           padding-top: 24upx;
           font-size: 28upx;
           display: flex;
           justify-content: center;
+
           .distance {
             color: #3d3d3d;
           }
+
           .countdown {
             padding-left: 12upx;
             color: #e95d20;
           }
         }
+
         .third {
           padding: 40upx 28upx 64upx 28upx;
+
           .third-main {
             padding: 32upx 60upx 30upx 32upx;
             border-radius: 20upx;
             background: #fef8f1;
             display: flex;
             justify-content: space-between;
+
             .left-type {
               font-size: 28upx;
               font-weight: 500;
               color: #3d3d3d;
+
               .number-name {
                 padding-bottom: 32upx;
               }
+
               .type-name {
                 padding-bottom: 32upx;
               }
-              .time-name {
-              }
+
+              .time-name {}
             }
+
             .right-info {
               width: 58%;
               font-size: 28upx;
               font-weight: 500;
               color: #3d3d3d;
+
               .number-list {
                 display: flex;
                 justify-content: space-between;
                 padding-bottom: 32upx;
-                .number {
-                }
+
+                .number {}
+
                 .copy {
                   color: #e95d20;
                 }
               }
+
               .service-name {
                 padding-bottom: 32upx;
               }
-              .time {
-              }
+
+              .time {}
             }
           }
         }
       }
     }
   }
+
   .main {
     padding: 34upx 34upx 34upx 34upx;
     background: #ffffff;
+
     .main-mid {
       .to-do {
         font-size: 28upx;
         font-weight: 500;
         color: #3d3d3d;
       }
+
       .explain {
         padding-top: 22upx;
         padding-bottom: 22upx;
         font-size: 24upx;
         color: #777777;
       }
+
       .line {
         border-bottom: 2upx solid #d8d8d8;
       }
+
       .service-info {
         display: flex;
         justify-content: space-between;
         font-size: 28upx;
         font-weight: 500;
         color: #3d3d3d;
+
         .info-left {
           .order-name {
             padding-top: 36upx;
           }
+
           .service-content {
             padding-top: 20upx;
           }
+
           .worker {
             padding-top: 20upx;
           }
+
           .check {
             padding-top: 20upx;
           }
         }
+
         .info-right {
           width: 66%;
+
           .number-list {
             padding-top: 36upx;
             display: flex;
             justify-content: space-between;
-            .number {
-            }
+
+            .number {}
+
             .copy {
               color: #e95d20;
             }
           }
+
           .service-name {
             padding-top: 20upx;
           }
+
           .worker-list {
             padding-top: 20upx;
             display: flex;
             justify-content: space-between;
-            .worker-name {
-            }
+
+            .worker-name {}
+
             .contact {
               color: #e95d20;
             }
           }
+
           .yet {
             padding-top: 20upx;
           }
@@ -509,37 +501,44 @@ export default {
       }
     }
   }
+
   .bottom {
     padding: 24upx 32upx 16upx 32upx;
     margin-top: 50upx;
     margin-bottom: 120upx;
     background: #ffffff;
+
     .bot {
       .first-list {
         padding-left: 2upx;
         display: flex;
         justify-content: space-between;
+
         .eva {
           font-size: 28upx;
           font-weight: 500;
           color: #3d3d3d;
         }
+
         .publish {
           font-size: 28upx;
           font-weight: 500;
           color: #e95d20;
         }
       }
+
       .second-list {
         padding-top: 34upx;
         padding-left: 2upx;
         display: flex;
+
         .satisfied {
           padding-right: 68upx;
           font-size: 28upx;
           color: #3d3d3d;
         }
       }
+
       .comment {
         padding-top: 34upx;
         padding-left: 2upx;
@@ -547,6 +546,7 @@ export default {
         font-weight: 500;
         color: #3d3d3d;
       }
+
       .content {
         padding-top: 10upx;
         padding-left: 2upx;
@@ -555,30 +555,36 @@ export default {
         font-size: 28upx;
         font-weight: 500;
         color: #3d3d3d;
+
         .textarea-placeholder {
           font-size: 28upx;
           color: #777777;
         }
       }
+
       .name-list {
         padding-bottom: 34upx;
         padding-left: 2upx;
         font-size: 28upx;
         color: #3d3d3d;
       }
+
       .upload-pane {
         border-radius: 20upx;
         display: flex;
         flex-wrap: wrap;
+
         .delete-icon {
           width: 32upx;
           height: 36upx;
         }
+
         .img1 {
           width: 160upx;
           height: 160upx;
           border-radius: 20upx;
         }
+
         .img2 {
           width: 40upx;
           height: 40upx;
@@ -588,6 +594,7 @@ export default {
           background: white;
           border-radius: 50%;
         }
+
         .upload {
           margin: 0;
           width: 160upx;
@@ -599,21 +606,25 @@ export default {
           line-height: 160upx;
           font-size: 60upx;
         }
+
         .iamge-background {
           width: 160upx;
           height: 160upx;
           object-fit: cover;
         }
       }
+
       .stow-list {
         padding-top: 44upx;
         display: flex;
         align-items: center;
         justify-content: center;
+
         .stow {
           font-size: 28upx;
           color: #777777;
         }
+
         .img {
           width: 28upx;
           height: 28upx;
@@ -621,6 +632,7 @@ export default {
       }
     }
   }
+
   .foot {
     width: 100%;
     position: fixed;
@@ -633,19 +645,23 @@ export default {
     .foot-list {
       display: flex;
       justify-content: space-between;
+
       .ask {
         display: flex;
         flex-direction: column;
         align-items: center;
+
         .img {
           width: 48upx;
           height: 48upx;
         }
+
         .name {
           font-size: 24upx;
           color: #3d3d3d;
         }
       }
+
       .next-order {
         width: 246upx;
         height: 80upx;
@@ -658,6 +674,7 @@ export default {
         justify-content: center;
         align-items: center;
       }
+
       .finish {
         width: 246upx;
         height: 80upx;
@@ -672,5 +689,4 @@ export default {
       }
     }
   }
-}
-</style>
+}</style>

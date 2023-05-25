@@ -42,7 +42,7 @@
       <!-- <img class="icon" :src="receiveBase64Source" alt="" /> -->
     </view>
 
-    <view class="bts" v-if="data.status <= 6">
+    <view class="bts" v-if="data.status <= 6 || data.status === 31">
       <view>
         <button
           type="primary"

@@ -314,8 +314,12 @@ export const orderStatusList = () => {
       value: 4,
     },
     {
-      label: "配送中",
+      label: "待到场",
       value: 5,
+    },
+    {
+      label: "服务中",
+      value: 31
     },
     {
       label: "已完成",
