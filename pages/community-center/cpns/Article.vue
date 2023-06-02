@@ -1,19 +1,46 @@
 <template>
 	<view class="article-list-container">
 		<view class="tabs">
-			<view class="item" @click="handleSwitch('experience')" :class="{ active: currentTab === 'experience' }">服务项目</view>
-			<view class="item" @click="handleSwitch('share')" :class="{ active: currentTab === 'share' }">居家分享</view>
+			<view class="item" @click="handleSwitch('1')" :class="{ active: currentTab === '1' }">服务项目</view>
+			<view class="item" @click="handleSwitch('2')" :class="{ active: currentTab === '2' }">居家分享</view>
 		</view>
-		<view class="article-list">
-			<view class="top">
+		<view class="article-list" v-show="currentTab === '1'">
+			<!-- <view class="top">
 				<TuanImage :width="345" :height="130" radius="20rpx 20rpx 0 0"
 					:src="require('../../../static/images/con-center/new-home/f03ebfae94d6e6c55b283abb2e41118.png')"></TuanImage>
-			</view>
-			<view style="display: flex;justify-content: center;">
+			</view> -->
+			<view @click="handleToArticleDeatil(item.id, 1)" style="display: flex;justify-content: center;"
+				v-for="item in articleList[1]" :key="item.id">
 				<view class="article-item">
-					<view class="article-title">洗衣机细菌超标高达 81.3%。教你一招，不必请...</view>
-					<TuanImage :width="100" radius="0" :height="60"
-						:src="require('../../../static/images/con-center/new-home/zu.png')">
+					<view class="article-info">
+						<view class="article-title">{{ item.title }}</view>
+						<view class="author">
+							<view class="auth">{{ item.author }}</view>
+							<view class="auth">{{ item.publishDate.split(' ')[0] }}</view>
+						</view>
+					</view>
+					<TuanImage :width="100" radius="0" :height="70" :src="item.cover">
+					</TuanImage>
+				</view>
+			</view>
+		</view>
+
+		<view class="article-list" v-show="currentTab === '2'">
+			<!-- <view class="top">
+				<TuanImage :width="345" :height="130" radius="20rpx 20rpx 0 0"
+					:src="require('../../../static/images/con-center/new-home/f03ebfae94d6e6c55b283abb2e41118.png')"></TuanImage>
+			</view> -->
+			<view @click="handleToArticleDeatil(item.id, 2)" style="display: flex;justify-content: center;"
+				v-for="item in articleList[2]" :key="item.id">
+				<view class="article-item">
+					<view class="article-info">
+						<view class="article-title">{{ item.title }}</view>
+						<view class="author">
+							<view class="auth">{{ item.author }}</view>
+							<view class="auth">{{ item.publishDate.split(' ')[0] }}</view>
+						</view>
+					</view>
+					<TuanImage :width="100" radius="0" :height="70" :src="item.cover">
 					</TuanImage>
 				</view>
 			</view>
@@ -22,18 +49,46 @@
 </template>
 
 <script>
+import { getArticleListApi } from '../../../api/community-center'
 export default {
 	data() {
 		return {
-			currentTab: 'experience'
+			currentTab: '1',
+			articleList: {
+				1: [],
+				2: []
+			}
 		}
+	},
+
+	mounted() {
+		this.getArticleList()
 	},
 
 	methods: {
 		handleSwitch(tab) {
 			this.currentTab = tab
+			this.getArticleList()
+		},
+
+		async getArticleList() {
+			if (this.articleList[this.currentTab].length) return
+			const { data } = await getArticleListApi({
+				type: this.currentTab * 1
+			})
+
+			this.articleList[this.currentTab] = data
+		},
+
+		// 点击跳转详情
+		handleToArticleDeatil(id, type) {
+			uni.navigateTo({
+				url: '/community-center/article-detial?id=' + id + '&type=' + type,
+			});
 		}
 	},
+
+
 }
 </script>
 
@@ -102,14 +157,34 @@ export default {
 			box-sizing: border-box;
 			// border-bottom: 1upx solid #D8D8D8;
 			background-color: #fff;
-			&::after{
+			transition: all 350ms;
+
+			&:active {
+				background-color: #e4e4e4;
+			}
+
+			&::after {
 				content: '';
-        position: absolute;
+				position: absolute;
 				width: 636upx;
 				height: 2upx;
 				background-color: #D8D8D8;
 				left: 30upx;
 				bottom: 0upx;
+			}
+
+			.article-info {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				height: 140upx;
+
+				.author {
+					display: flex;
+					justify-content: space-between;
+					color: #ccc;
+					font-size: 28upx;
+				}
 			}
 
 			.article-title {

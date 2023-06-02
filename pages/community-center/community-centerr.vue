@@ -57,7 +57,7 @@
 
 		<!-- #ifdef H5 -->
 		<!-- 经验分享 -->
-		<ArticleList></ArticleList>
+		<!-- <ArticleList></ArticleList> -->
 		<!-- #endif -->
 
 
@@ -200,12 +200,12 @@ export default {
 	onLoad(options) {
 		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		// if (!!options.miniProgram || getApp().globalData.isInMiniprogram) {
-			const script = document.createElement('script');
-			script.src = "https://res.wx.qq.com/open/js/jweixin-1.4.0.js";
-			document.body.appendChild(script)
-			setTimeout(() => {
-				this.handleInitShare()
-			}, 500);
+		const script = document.createElement('script');
+		script.src = "https://res.wx.qq.com/open/js/jweixin-1.4.0.js";
+		document.body.appendChild(script)
+		setTimeout(() => {
+			this.handleInitShare()
+		}, 500);
 		// }
 	},
 

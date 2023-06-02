@@ -502,6 +502,12 @@
           "style": {
             "navigationBarTitleText": "完善服务信息"
           }
+        },
+        {
+          "path": "article-detial",
+          "style": {
+            "navigationBarTitleText": "文章详情"
+          }
         }
       ]
     },
