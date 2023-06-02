@@ -79,7 +79,6 @@ export default {
     finalChooseDate(item) {
       const year = new Date().getFullYear();
       let str = this.leftData[this.current].date + " " + item;
-      console.log("草泥吗", str, typeof str);
       str = str.replace("今天", "").replace("明天", "").replace("后天", "").replace("下月", "").replace("周一", "").replace("周二", "").replace("周三", "").replace("周四", "").replace("周五", "").replace("周六", "").replace("周日", "");
 
       if (str.includes("明年")) {
@@ -88,7 +87,7 @@ export default {
         return
       }
 
-      this.$emit("choose", year + " " + str.trim());
+      this.$emit("choose", year + "-" + str.trim());
       this.close()
 
     },

@@ -9,7 +9,7 @@
       >
         {{ data.label }}
       </view>
-      <view style="flex: 1">
+      <view style="flex: 1; margin-right: 10upx;">
         <slot>
           <input
             v-if="!data.select"

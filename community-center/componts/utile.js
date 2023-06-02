@@ -1,4 +1,4 @@
-const days = ['周日-', '周一-', '周二-', '周三-', '周四-', '周五-', '周六-']
+const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
 
 function _getDays(month) {
@@ -32,7 +32,6 @@ function _getDate() {
 
 function _getWeek(date, op) {
   if (date.day + op < days.length) {
-    console.log(1);
     return days[date.day * 1 + op]
   } else {
     return days[date.day * 1 + op * 1 - days.length]
@@ -51,7 +50,6 @@ function _fomatDate(date, op, desc) {
     if (date.date + op <= currentMonthDays) {
       return `${desc || _getWeek(date, op)} ${date.month}-${date.date + op}`
     } else {
-      console.log(1);
       return `下月 ${date.month + 1}-${date.date * 1 + op * 1 - currentMonthDays} ${_getWeek(date, op)}`
     }
   }
@@ -63,13 +61,13 @@ export const getDayList = () => {
   return [
     {
       value: 0,
-      date: '今天-' + data.month + '-' + data.date
+      date: '今天 ' + data.month + '-' + data.date
     }, {
       value: 1,
-      date: _fomatDate(data, 1, '明天-')
+      date: _fomatDate(data, 1, '明天 ')
     }, {
       value: 2,
-      date: _fomatDate(data, 2, '后天-')
+      date: _fomatDate(data, 2, '后天 ')
     }, {
       value: 3,
       date: _fomatDate(data, 3,)

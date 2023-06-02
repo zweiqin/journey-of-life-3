@@ -295,3 +295,29 @@ export const getArticleListApi = (data) => {
     method: "GET",
   });
 };
+
+// 获取二次报价的订单列表
+export const getTwicePayOrderListApi = (data) => {
+  return SheQuRequest1(
+    "/laoa-huozhu/api/hz/order/third/getUserOrderExtraList",
+    data,
+    "get",
+    null,
+    {
+      "X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN),
+    }
+  );
+};
+
+// 追加金额订单支付
+export const payAdditionalOrderApi = (data) => {
+  return SheQuRequest1(
+    "/laoa-huozhu/api/hz/order/third/orderPayH5PabExtra",
+    data,
+    "POST",
+    null,
+    {
+      "X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN),
+    }
+  );
+};

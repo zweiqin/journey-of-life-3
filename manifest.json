@@ -2,8 +2,8 @@
     "name" : "团蜂家居",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.12",
-    "versionCode" : 112,
+    "versionName" : "1.0.13",
+    "versionCode" : 113,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -87,13 +87,13 @@
                 "oauth" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__9A4ADF0/"
+                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__9A4ADF0/"
+                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
                     }
                 }
             },

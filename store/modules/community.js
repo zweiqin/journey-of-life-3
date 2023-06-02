@@ -58,7 +58,7 @@ export default {
       commit(
         CHANGE_HOME_PAGE_IMAGE,
         res.statusCode == 20000 && res.data !== "该区域暂无自定义属性"
-          ? res.data[0].url
+          ? res.data[res.data.length-1].url
           : ""
       );
 

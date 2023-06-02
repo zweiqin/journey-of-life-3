@@ -1,22 +1,43 @@
 <template>
   <view class="order-page">
-    <Header tabbar="/pages/user/user" title="社区订单" style="background: #FFFFFF;"></Header>
+    <Header
+      tabbar="/pages/user/user"
+      title="社区订单"
+      style="background: #ffffff"
+    ></Header>
     <!-- 搜索 -->
-    <SearchBar @input="search" :radius="100" placeholder="请输入订单号" class="top-search" style="background: #FFFFFF;">
+    <SearchBar
+      @input="search"
+      :radius="100"
+      placeholder="请输入订单号"
+      class="top-search"
+      style="background: #ffffff"
+    >
     </SearchBar>
 
     <!-- nav-bar -->
     <view class="navbar">
-      <view class="item" @click="handleChangeStatus(item.value)" v-for="item in orders" :key="item.label" :style="{
-        color: query.status === item.value ? '#E95D20' : '',
-      }">
+      <view
+        class="item"
+        @click="handleChangeStatus(item.value)"
+        v-for="item in orders"
+        :key="item.label"
+        :style="{
+          color: query.status === item.value ? '#E95D20' : '',
+        }"
+      >
         {{ item.label }}
       </view>
     </view>
 
     <!-- 列表页 -->
     <main v-if="orderList.length !== 0">
-      <OrderPanel v-for="item in orderList" :key="item.id" :data="item" @success="handleCancelSuccess"></OrderPanel>
+      <OrderPanel
+        v-for="item in orderList"
+        :key="item.id"
+        :data="item"
+        @success="handleCancelSuccess"
+      ></OrderPanel>
     </main>
 
     <view v-else class="no-data">暂无数据~</view>
@@ -41,7 +62,7 @@ export default {
   },
   data() {
     return {
-      search: () => { },
+      search: () => {},
       orders: orderStatusList(),
       query: {
         pageNo: 1,
@@ -131,7 +152,7 @@ export default {
      */
     handleCancelSuccess() {
       this.getOrderList();
-      this.ttoast('取消成功')
+      this.ttoast("取消成功");
     },
   },
 
@@ -146,12 +167,21 @@ export default {
     this.query.pageNo += 1;
     this.getOrderList(true);
   },
+
+  onPullDownRefresh() {
+    this.orderList = [];
+    this.pages = 0;
+    this.query.pageNo = 1;
+    this.query.pageSize = 20;
+    this.getOrderList();
+    uni.stopPullDownRefresh();
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .order-page {
-  background: #F1F2F6;
+  background: #f1f2f6;
 
   .navbar {
     display: flex;

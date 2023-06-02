@@ -14,7 +14,7 @@
           class="field"
         >
           <template v-if="item.select && item.field === 'consigneeAddress'">
-            <pick-regions visibleMuti @getRegion="handleGetRegionEnd">
+            <!-- <pick-regions visibleMuti @getRegion="handleGetRegionEnd">
               <input
                 type="text"
                 class="uni-input"
@@ -24,7 +24,11 @@
                 adjust-position
                 cursor-spacing="180"
               />
-            </pick-regions>
+            </pick-regions> -->
+
+            <view @click="handleChooseAddress">{{
+              consigneeForm.consigneeAddress || "请选择上门地址"
+            }}</view>
           </template>
 
           <template v-if="item.select && item.field === 'isElevator'">
@@ -38,6 +42,8 @@
           </template>
         </Field>
       </view>
+
+      <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
     </view>
 
     <!-- <Remarks
@@ -83,7 +89,6 @@ export default {
 
   onShow() {
     const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`);
-
     if (consigneeInfo) {
       this.consigneeForm.consigneeName = consigneeInfo.consigneeName;
       this.consigneeForm.consigneeMobile = consigneeInfo.consigneeMobile;
@@ -141,7 +146,7 @@ export default {
         return;
       }
 
-      wx.setStorageSync(`${this.cacheName}INFO`, this.consigneeForm);
+      uni.setStorageSync(`${this.cacheName}INFO`, this.consigneeForm);
 
       uni.redirectTo({
         url: mapBackRoute(_this.cacheName),
@@ -178,6 +183,15 @@ export default {
         });
       }
       this.userInfo = data;
+    },
+
+    // 点击选择地址
+    handleConfirmAddress(selectInfo) {
+      this.consigneeForm.consigneeAddress = selectInfo.formatAddress4;
+    },
+
+    handleChooseAddress() {
+      this.$refs.TuanCityRef.show();
     },
   },
 };

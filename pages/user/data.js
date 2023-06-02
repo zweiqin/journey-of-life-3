@@ -62,6 +62,32 @@ export const shequOrderMenus = [
   },
 ];
 
+export const shequTwiceOrder = [
+  {
+    name: "待支付",
+    icon: require("../../static/images/user/await-pay.png"),
+    url: "/community-center/twice-order?type=0",
+    numberKey: "",
+    value: 0
+  },
+  {
+    name: "已付款",
+    icon: require("../../static/images/user/payed.png"),
+    url: "/community-center/twice-order?type=1",
+    numberKey: "",
+    value: 1
+  },
+  {
+    name: "拒绝",
+    icon: require("../../static/images/user/refused.png"),
+    url: "/community-center/twice-order?type=2",
+    numberKey: "",
+    value: 2
+  },
+  {
+  },
+];
+
 export const myEquity = [
   {
     name: "小账本",

@@ -73,6 +73,7 @@
 		</PopupInformation>
 
 		<!-- #ifdef APP -->
+		<!-- 检查更新 -->
 		<CheckedVersion ref="checkedVersion"></CheckedVersion>
 		<!-- #endif -->
 

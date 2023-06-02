@@ -1,3 +1,4 @@
+import { clearAllCache } from "constant";
 import {
   BASE_URL,
   RUAN_URL,
@@ -18,6 +19,7 @@ const request = (base_url) => {
         url: base_url + url,
         data,
         method,
+        header,
         success: (res) => {
           resolve(res.data);
         },
@@ -59,7 +61,7 @@ const service = (base_url, hideLoading) => {
               icon: "none",
               mask: true,
             });
-            uni.clearStorageSync();
+            clearAllCache();
             store.dispatch("auth/logout", true);
 
             setTimeout(() => {

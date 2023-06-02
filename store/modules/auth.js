@@ -1,4 +1,4 @@
-import { USER_INFO, USER_ID, USER_TOKEN } from "../../constant";
+import { USER_INFO, USER_ID, USER_TOKEN, clearAllCache } from "../../constant";
 import {
   CHNAGE_USER_ID,
   CHNAGE_USER_INFO,
@@ -123,8 +123,7 @@ export default {
       commit(CHNAGE_USER_INFO, {});
       commit(CHNAGE_USER_TOKEN, "");
       setTimeout(() => {
-        uni.clearStorageSync();
-
+        clearAllCache();
         uni.switchTab({
           url: "/pages/community-center/community-centerr",
         });

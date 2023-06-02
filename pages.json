@@ -392,7 +392,15 @@
         {
           "path": "order",
           "style": {
-            "navigationBarTitleText": ""
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "twice-order",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": true
           }
         },
         {
