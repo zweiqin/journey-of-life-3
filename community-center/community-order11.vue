@@ -38,6 +38,14 @@
       ></image>
     </view>
 
+    <view
+      v-if="!isExistCommunityStore"
+      class="alert-wrapper section"
+      style="padding: 0"
+    >
+      <tui-alerts type="warn" title="您所在区域不在接单范围内"></tui-alerts>
+    </view>
+
     <!-- 服务项目 -->
     <view class="serve-info section">
       <view class="title-wrapper">
@@ -84,8 +92,16 @@
     <view class="serve-user-goods-info section">
       <view class="section-title">维修物品图片</view>
       <view class="image-list">
+        <view
+          class="add-img-icon item"
+          v-for="item in orderForm.orderGoodsList"
+          :key="item"
+        >
+          <image class="add-icon" :src="item"></image>
+        </view>
         <view class="add-img-icon item">
           <image
+            @click="handleUploadImg"
             class="add-icon"
             src="../static/images/con-center/add-icon.png"
           ></image>
@@ -106,8 +122,35 @@
       ></tui-textarea>
     </view>
 
+    <!-- 订单费用 -->
+    <view class="section order-price" v-if="isByItNow && calcServePrice">
+      <view class="section-title">订单费用</view>
+
+      <view class="cost-order-list">
+        <view class="cost-item">
+          <view class="cost-title">订单总额</view>
+          <view class="cost-value">￥{{ calcServePrice.sumPrice }}</view>
+        </view>
+
+        <view class="cost-item">
+          <view class="cost-title">优惠劵</view>
+          <view class="cost-value none">暂无</view>
+        </view>
+
+        <view class="cost-item">
+          <view class="cost-title">应付</view>
+          <view class="cost-value" style="color: #e95d20"
+            >￥{{ calcServePrice.oughtPrice }}</view
+          >
+        </view>
+      </view>
+    </view>
+
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
+      <view class="pay-price" v-if="isByItNow && calcServePrice">
+        ￥{{ calcServePrice.oughtPrice }}</view
+      >
       <button class="uni-btn">确认</button>
     </view>
 
@@ -120,9 +163,13 @@
 import { getUserId } from "utils";
 import { debounce } from "lodash-es";
 import { getAddressListApi } from "../api/address";
-import { SELECT_ADDRESS } from "../constant";
+import { SELECT_ADDRESS, USER_TOKEN } from "../constant";
 import ChooseTime from "./componts/choose-time.vue";
-import { getServicePriceApi } from "../api/community-center";
+import {
+  getServicePriceApi,
+  getIsOpenServerAreaApi,
+} from "../api/community-center";
+
 export default {
   components: { ChooseTime },
   data() {
@@ -135,15 +182,19 @@ export default {
       orderForm: {
         datetimerange: "", // 期望上门时间
         quantity: 1, // 数量
+        orderGoodsList: [], // 图片
       },
       chooseTimeVisible: false,
       changeNumberFn: () => {},
+      calcServePrice: null,
+      isExistCommunityStore: true,
     };
   },
 
   onLoad(options) {
     this.currentServeInfo = options;
-    console.log(options);
+    this.isByItNow = options.priceType === "true";
+    this.handleGetOrderPrice();
   },
 
   onShow() {
@@ -156,6 +207,7 @@ export default {
       const choosedAddress = uni.getStorageSync(SELECT_ADDRESS);
       if (choosedAddress) {
         this.defualtAddress = choosedAddress;
+        this.checkAreaExistCommunitStore();
         return;
       }
       const { data } = await getAddressListApi({
@@ -168,7 +220,9 @@ export default {
         this.defualtAddress = data[0];
       }
 
-      console.log(this.defualtAddress);
+      if (this.defualtAddress) {
+        this.checkAreaExistCommunitStore();
+      }
     },
 
     // 获取选择的上门时间
@@ -190,6 +244,9 @@ export default {
 
     // 获取订单报价
     async handleGetOrderPrice() {
+      if (!this.isByItNow) {
+        return;
+      }
       const res = await getServicePriceApi({
         userId: getUserId(),
         serverInfoId: this.currentServeInfo.detailId,
@@ -197,7 +254,58 @@ export default {
         price: this.currentServeInfo.price,
       });
 
-      console.log(res);
+      if (res.statusCode === 20000) {
+        this.calcServePrice = res.data;
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "报价失败",
+        });
+      }
+    },
+
+    // 判断该区域是否开通了店长
+    async checkAreaExistCommunitStore() {
+      const res = await getIsOpenServerAreaApi({
+        address:
+          this.defualtAddress.detailedAddress &&
+          this.defualtAddress.detailedAddress.replace(" ", ""),
+      });
+      if (res.statusCode === 20000) {
+        this.isExistCommunityStore = res.data;
+      }
+    },
+
+    // 点击上传图片
+    handleUploadImg() {
+      const _this = this;
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          for (const imgFile of chooseImageRes.tempFiles) {
+            uni.showLoading();
+            uni.uploadFile({
+              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              filePath: imgFile.path,
+              name: "file",
+              formData: {
+                token: USER_TOKEN,
+                userId: getUserId(),
+              },
+              success: (uploadFileRes) => {
+                uni.hideLoading();
+                _this.orderForm.orderGoodsList.push(
+                  JSON.parse(uploadFileRes.data).data.url
+                );
+              },
+            });
+          }
+
+          return;
+        },
+        fail: (fail) => {
+          console.log(fail);
+        },
+      });
     },
   },
 
@@ -250,7 +358,8 @@ export default {
 
     &-title {
       color: #605d52;
-      font-size: 28upx;
+      font-size: 32upx;
+      font-weight: 500;
     }
   }
 
@@ -415,6 +524,34 @@ export default {
       }
     }
   }
+
+  .order-price {
+    .cost-order-list {
+      margin-top: 30upx;
+      .cost-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20upx;
+        font-size: 28upx;
+
+        .cost-title {
+          font-size: 30upx;
+          font-weight: 500;
+        }
+
+        .cost-value {
+          font-size: 32upx;
+          font-weight: bold;
+        }
+
+        .none {
+          color: #ccc;
+          font-size: 28upx;
+        }
+      }
+    }
+  }
 }
 
 /deep/ .tui-textarea__wrap {
@@ -432,6 +569,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .pay-price {
+    font-size: 48upx;
+    color: #e95d20;
+    font-weight: bold;
+    margin-right: 40upx;
+  }
 
   .uni-btn {
     width: 552upx;
