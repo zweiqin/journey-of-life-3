@@ -1,14 +1,13 @@
 <script>
 //app.js
-var http = require('./utils/http.js')
-var util = require('./utils/util.js')
+var http = require("./utils/http.js");
+var util = require("./utils/util.js");
 // import { getUserId } from "./utils";
-import { whoami } from './api/auth'
-import { USER_ID, USER_TOKEN, TUAN_ORDER_SN } from './constant'
+import { whoami } from "./api/auth";
+import { USER_ID, USER_TOKEN, TUAN_ORDER_SN } from "./constant";
 
 export default {
-  onLaunach: function () {
-  },
+  onLaunach: function () {},
   onShow: function () {
     // 判断浏览器环境
     // var ua = navigator.userAgent.toLowerCase();
@@ -23,7 +22,7 @@ export default {
     // 		path = path.substring(0, path.indexOf('code=') - 1)
     // 		history.replaceState({}, '', path)
     // 	}
-    http.getCartCount()
+    http.getCartCount();
 
     // }
 
@@ -38,12 +37,15 @@ export default {
     totalCartCount: 0,
     // 是否一直显示 弹窗
     isShowCommunityPopup: false,
-    isInMiniprogram: false
+    // 是否处于小程序环境
+    isInMiniprogram: false,
+    // 是否已经打开过绑定手机号弹窗
+    isShowedBindMobilePopu: false,
   },
   data() {
     return {
-      scene: ''
-    }
+      scene: "",
+    };
   },
   methods: {
     // 更新token
@@ -51,35 +53,35 @@ export default {
       const userId = uni.getStorageSync(USER_ID);
       // debugger
       if (userId) {
-        const { data } = await whoami(userId)
+        const { data } = await whoami(userId);
         uni.setStorageSync(USER_TOKEN, data.token);
       }
-    }
+    },
   },
 
   mounted() {
     // #ifdef H5
-    this.$store.dispatch('location/getCurrentLocation', (res) => {
-      this.$store.dispatch('community/getHomePopupImage', res.detail)
-      this.$store.commit('community/CHANGE_HOME_STORE', res.town)
-    })
+    this.$store.dispatch("location/getCurrentLocation", (res) => {
+      this.$store.dispatch("community/getHomePopupImage", res.detail);
+      this.$store.commit("community/CHANGE_HOME_STORE", res.town);
+    });
     // #endif
-    this.updateToken()
+    this.updateToken();
 
     // #ifdef APP
-    this.$store.dispatch('community/getHomePopupImage')
+    this.$store.dispatch("community/getHomePopupImage");
     // #endif
 
-    const launchOptions = uni.getLaunchOptionsSync()
+    const launchOptions = uni.getLaunchOptionsSync();
     // console.log('a', launchOptions.scene);
-    this.scene = launchOptions.scene
+    this.scene = launchOptions.scene;
     uni.removeStorageSync(TUAN_ORDER_SN);
   },
-}
+};
 </script>
 <style>
-@import './app.css';
-@import '';
+@import "./app.css";
+@import "";
 
 /* 隐藏头部 */
 uni-page-head {

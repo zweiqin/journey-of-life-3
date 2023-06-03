@@ -151,6 +151,9 @@ export default {
 
       uni.getLocation({
         type: "gcj02",
+        fail(e){
+          console.log("定位失败", e);
+        },
         success(res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
@@ -169,8 +172,9 @@ export default {
                   });
               }
             })
-            .catch(() => {
+            .catch((e) => {
               // _this.address = '定位失败'
+
             });
         },
       });
