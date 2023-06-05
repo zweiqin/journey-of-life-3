@@ -68,10 +68,7 @@ export default {
     // 设置用户定位
     async setUserLocation() {
       // #ifdef APP
-      const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS);
-      if (lastAddress) {
-        this.$store.dispatch("location/getDetailAddress", lastAddress.data);
-      }
+      this.useStorageLocation();
       // #endif
 
       // #ifdef H5
@@ -86,10 +83,24 @@ export default {
         const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS);
         if (lastAddress) {
           this.$store.dispatch("location/getDetailAddress", lastAddress.data);
-        }else {
+        } else {
           // 后端兜底
         }
-        // #endif
+      }
+
+      setTimeout(() => {
+        if (this.$store.getters.currentCity === "定位失败") {
+          this.useStorageLocation();
+        }
+      }, 3000);
+      // #endif
+    },
+
+    // 使用本地数据
+    useStorageLocation() {
+      const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS);
+      if (lastAddress) {
+        this.$store.dispatch("location/getDetailAddress", lastAddress.data);
       }
     },
   },

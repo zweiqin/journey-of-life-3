@@ -48,12 +48,12 @@ function trimHtml(html) {
 
 function getScreenInfo() {
   const screen = {};
-  wx.getSystemInfo({
-    success: (res) => {
-      screen.width = res.windowWidth;
-      screen.height = res.windowHeight;
-    },
-  });
+  // wx.getSystemInfo({
+  //   success: (res) => {
+  //     screen.width = res.windowWidth;
+  //     screen.height = res.windowHeight;
+  //   },
+  // });
   return screen;
 }
 
