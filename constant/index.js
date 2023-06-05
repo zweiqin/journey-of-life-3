@@ -52,6 +52,7 @@ export const COMMUNITY_ORDER_ITEM_NO = "COMMUNITY_ORDER_ITEM_NO";
 export const SF_INVITE_CODE = "SF_INVITE_CODE";
 
 export const MINI_PROGRAM_TAG = "MINI_PROGRAM_TAG";
+export const USER_SELECT_ADDRESS = "USER_SELECT_ADDRESS";
 
 export const clearAllCache = () => {
   [
@@ -91,7 +92,8 @@ export const clearAllCache = () => {
     COMMUNITY_ORDER_NO,
     COMMUNITY_ORDER_ITEM_NO,
     SF_INVITE_CODE,
-    MINI_PROGRAM_TAG
+    MINI_PROGRAM_TAG,
+    USER_SELECT_ADDRESS,
   ].forEach((item) => {
     uni.removeStorageSync(item);
   });

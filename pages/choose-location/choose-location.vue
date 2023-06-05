@@ -2,22 +2,36 @@
   <view class="my-address">
     <!-- 定位区 -->
     <view class="search-box">
-      <tui-icon @click="handleBack" name="arrowleft" :size="25" color="#00"></tui-icon>
+      <tui-icon
+        @click="handleBack"
+        name="arrowleft"
+        :size="25"
+        color="#00"
+      ></tui-icon>
       <view class="search-wrapper">
         <tui-icon class="search-icon" name="search" :size="20"></tui-icon>
         <input v-model="searchCity" type="text" placeholder="请输入所在城市" />
-        <tui-icon v-if="searchCity" name="close" :size="20" @click="handleClearSearch"></tui-icon>
+        <tui-icon
+          v-if="searchCity"
+          name="close"
+          :size="20"
+          @click="handleClearSearch"
+        ></tui-icon>
       </view>
-      <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">搜索</button>
+      <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">
+        搜索
+      </button>
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
       <text class="current-address-text">
         当前：{{
           $store.getters.currentCity
-          ? $store.getters.currentCity
-          : '定位失败，重新定位'
-        }}</text>
-      <view><tui-icon :size="16" color="#000" name="location"></tui-icon>
+            ? $store.getters.currentCity
+            : "定位失败，重新定位"
+        }}</text
+      >
+      <view
+        ><tui-icon :size="16" color="#000" name="location"></tui-icon>
         <text>重新定位</text>
       </view>
     </view>
@@ -28,25 +42,50 @@
       <tui-grid unlined>
         <block v-for="(item, index) in hotCities" :key="index">
           <tui-grid-item :cell="3" @click="confirmChooseAddress(item, true)">
-            <text class="tui-grid-label">{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city }}</text>
+            <text class="tui-grid-label">{{
+              item.level === 4
+                ? item.town
+                : item.level === 3
+                ? item.distinguish
+                : item.city
+            }}</text>
           </tui-grid-item>
         </block>
       </tui-grid>
     </view>
 
     <!-- tabs 标签页 -->
-    <tui-tabs :tabs="tabs" selectedColor="#e95d20" sliderBgColor="#e95d20" itemWidth="30%" :currentTab="currentTab"
-      @change="handleChangeTab"></tui-tabs>
+    <tui-tabs
+      :tabs="tabs"
+      selectedColor="#e95d20"
+      sliderBgColor="#e95d20"
+      itemWidth="30%"
+      :currentTab="currentTab"
+      @change="handleChangeTab"
+    ></tui-tabs>
 
     <!-- 标签页 -->
     <view class="wrapper-container" v-if="cityList.length">
-      <swiper disable-touch @change="handleChangeSwiper" :current="currentTab" class="swiper">
+      <swiper
+        disable-touch
+        @change="handleChangeSwiper"
+        :current="currentTab"
+        class="swiper"
+      >
         <swiper-item class="" item-id="">
           <view class="address-list-wrapper">
-            <tui-index-list activeKeyColor="#e95d20" activeColor="#e95d20" activeKeyBackground="#fff"
-              :list-data="cityList">
+            <tui-index-list
+              activeKeyColor="#e95d20"
+              activeColor="#e95d20"
+              activeKeyBackground="#fff"
+              :list-data="cityList"
+            >
               <template v-slot:item="{ entity }">
-                <tui-list-cell padding="16rpx 30rpx" v-for="(item, index) in entity" :key="index">
+                <tui-list-cell
+                  padding="16rpx 30rpx"
+                  v-for="(item, index) in entity"
+                  :key="index"
+                >
                   <view class="tui-list__item" @click="handleChooseCity(item)">
                     <view :id="'item' + item.name" class="tui-name">{{
                       item.name
@@ -61,14 +100,22 @@
         <swiper-item>
           <view class="choose-cities">
             <tui-grid unlined>
-              <block v-for="(item, index) in currentDistinguishData" :key="index">
-                <tui-grid-item class="grid-item" :class="{ active: tabs[1].name === item.name.slice(0, 3) + '...' }"
-                  :cell="3" @click="handleChooseTown(item)">
+              <block
+                v-for="(item, index) in currentDistinguishData"
+                :key="index"
+              >
+                <tui-grid-item
+                  class="grid-item"
+                  :class="{
+                    active: tabs[1].name === item.name.slice(0, 3) + '...',
+                  }"
+                  :cell="3"
+                  @click="handleChooseTown(item)"
+                >
                   <text class="tui-grid-label">{{ item.name }}</text>
                 </tui-grid-item>
               </block>
             </tui-grid>
-
           </view>
         </swiper-item>
 
@@ -86,15 +133,15 @@
       </swiper>
     </view>
 
+    <view class="no-data" v-else> 暂无数据~ </view>
 
-    <view class="no-data" v-else>
-      暂无数据~
-    </view>
-
-
-
-    <tui-popup :duration="500" :modeClass="['fade-in']" :styles="styles" :show="showAuthPopupVisible"
-      @click="showAuthPopupVisible = false">
+    <tui-popup
+      :duration="500"
+      :modeClass="['fade-in']"
+      :styles="styles"
+      :show="showAuthPopupVisible"
+      @click="showAuthPopupVisible = false"
+    >
       <view class="address-text">
         <tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
         "团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
@@ -106,95 +153,96 @@
 </template>
 
 <script>
-import { hotCities } from './data'
+import { USER_SELECT_ADDRESS } from "constant";
+import { hotCities } from "./data";
 export default {
   data() {
     return {
       currentTab: 0,
       cityList: [],
-      searchValue: '',
+      searchValue: "",
       isShowLoading: true,
       showAuthPopupVisible: false,
       styles: {
-        position: 'fixed',
+        position: "fixed",
         bottom: 0,
         top: 0,
         left: 0,
         right: 0,
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'flex-start',
-        'background-color': 'rgba(0, 0, 0, 0.5)',
-        padding: '50rpx 0 0 0',
+        display: "flex",
+        "justify-content": "center",
+        "align-items": "flex-start",
+        "background-color": "rgba(0, 0, 0, 0.5)",
+        padding: "50rpx 0 0 0",
       },
       tabs: [
         {
-          name: "所在城市"
+          name: "所在城市",
         },
         {
-          name: "区/县"
+          name: "区/县",
         },
         {
-          name: "镇/街道"
-        }
+          name: "镇/街道",
+        },
       ],
       mainHeight: 0,
       currentTab: 0,
       currentDistinguishData: null,
       currentTownData: null,
-      searchCity: '',
+      searchCity: "",
       allCityData: {},
-      hotCities: Object.freeze(hotCities)
-    }
+      hotCities: Object.freeze(hotCities),
+    };
   },
   methods: {
     getData() {
       uni.showLoading();
-      const _this = this
-      import('./cities.json').then(res => {
+      const _this = this;
+      import("./cities.json").then((res) => {
         for (const key in res) {
-          _this.cityList.push(res[key])
+          _this.cityList.push(res[key]);
         }
-        _this.allCityData = Object.freeze(_this.cityList)
-        _this.isShowLoading = false
+        _this.allCityData = Object.freeze(_this.cityList);
+        _this.isShowLoading = false;
         uni.hideLoading();
-      })
+      });
     },
 
     changeTab(e) {
-      this.currentTab = e.index
+      this.currentTab = e.index;
     },
 
     handleSearchCity() {
-      this.currentTab = 0
-      this.currentDistinguishData = null
-      this.currentTownData = null
-      let data = JSON.parse(JSON.stringify(this.allCityData))
+      this.currentTab = 0;
+      this.currentDistinguishData = null;
+      this.currentTownData = null;
+      let data = JSON.parse(JSON.stringify(this.allCityData));
 
-      data = data.filter(item => {
-        item.data = item.data && item.data.filter(cities => cities.name.includes(this.searchCity))
-        return item.data && item.data.length
-      })
+      data = data.filter((item) => {
+        item.data =
+          item.data &&
+          item.data.filter((cities) => cities.name.includes(this.searchCity));
+        return item.data && item.data.length;
+      });
 
-      this.cityList = data
+      this.cityList = data;
     },
 
     handleBack() {
-      uni.navigateBack()
+      uni.navigateBack();
     },
 
     handleClearSearch() {
-      this.searchCity = ''
+      this.searchCity = "";
     },
 
     handleChooseCity(chooseAddressInfo) {
-      this.currentDistinguishData = chooseAddressInfo.children
-      this.currentTownData = null
-      this.currentTab = 1
-      this.tabs[0].name = chooseAddressInfo.name.slice(0, 3) + '...'
-      this.tabs[0].select = chooseAddressInfo.name
-
-
+      this.currentDistinguishData = chooseAddressInfo.children;
+      this.currentTownData = null;
+      this.currentTab = 1;
+      this.tabs[0].name = chooseAddressInfo.name.slice(0, 3) + "...";
+      this.tabs[0].select = chooseAddressInfo.name;
 
       // this.$store.commit('location/CHANGE_CURRENT_CITY', cityName)
       // this.handleBack()
@@ -202,28 +250,28 @@ export default {
 
     // 滑动swiper
     handleChangeSwiper(e) {
-      const nextIndex = e.detail.current
+      const nextIndex = e.detail.current;
       if (nextIndex === 1 && !this.currentDistinguishData) {
-        this.currentTab = nextIndex - 1
-        return
+        this.currentTab = nextIndex - 1;
+        return;
       }
-      this.currentTab = nextIndex
+      this.currentTab = nextIndex;
     },
 
     // 开始定位
     handleGetCurrentAddress() {
       // #ifdef APP
-      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-      if (appAuthorizeSetting.locationAuthorized !== 'authorized') {
-        this.showAuthPopupVisible = true
-        this.$store.dispatch('location/getCurrentLocation')
+      const appAuthorizeSetting = uni.getAppAuthorizeSetting();
+      if (appAuthorizeSetting.locationAuthorized !== "authorized") {
+        this.showAuthPopupVisible = true;
+        this.$store.dispatch("location/getCurrentLocation");
       } else {
-        this.$store.dispatch('location/getCurrentLocation')
+        this.$store.dispatch("location/getCurrentLocation");
       }
       // #endif
 
       // #ifdef H5
-      this.$store.dispatch('location/getCurrentLocation')
+      this.$store.dispatch("location/getCurrentLocation");
       // #endif
     },
 
@@ -231,73 +279,82 @@ export default {
     handleChangeTab(info) {
       if (info.index === 1 && !this.currentDistinguishData) {
         this.ttoast({
-          type: 'fail',
-          title: '请选择所在城市'
-        })
-        return
+          type: "fail",
+          title: "请选择所在城市",
+        });
+        return;
       }
 
       if (info.index === 2 && !this.currentTownData) {
         this.ttoast({
-          type: 'fail',
-          title: '请选择所在区县'
-        })
-        return
+          type: "fail",
+          title: "请选择所在区县",
+        });
+        return;
       }
 
-      this.currentTab = info.index
-
+      this.currentTab = info.index;
     },
 
     // 选择区县
     handleChooseTown(data) {
-      this.currentTownData = data.children
-      this.currentTab = 2
-      this.tabs[1].name = data.name.slice(0, 3) + '...'
-      this.tabs[1].select = data.name
+      this.currentTownData = data.children;
+      this.currentTab = 2;
+      this.tabs[1].name = data.name.slice(0, 3) + "...";
+      this.tabs[1].select = data.name;
     },
 
     // 选择定位
     confirmChooseAddress(data, isHot) {
       uni.showLoading();
       if (isHot) {
-        console.log(data);
-        this.$store.dispatch('location/getDetailAddress', data)
+        this.$store.dispatch("location/getDetailAddress", data);
+        uni.setStorageSync(USER_SELECT_ADDRESS, {
+          type: "hot",
+          data: data,
+        });
       } else {
-        this.$store.dispatch('location/getDetailAddress', {
+        this.$store.dispatch("location/getDetailAddress", {
           city: this.tabs[0].select,
           distinguish: this.tabs[1].select,
-          town: data.name
-        })
-      }
+          town: data.name,
+        });
 
+        uni.setStorageSync(USER_SELECT_ADDRESS, {
+          type: "detail",
+          data: {
+            city: this.tabs[0].select,
+            distinguish: this.tabs[1].select,
+            town: data.name,
+          },
+        });
+      }
 
       uni.hideLoading();
 
-      this.ttoast("修改成功")
+      this.ttoast("修改成功");
 
       setTimeout(() => {
-        this.handleBack()
+        this.handleBack();
       }, 1000);
-
     },
   },
 
   mounted() {
-    this.getData()
+    this.getData();
   },
 
   watch: {
     searchCity(val) {
       if (!val) {
-        this.currentTab = 0
-        this.currentDistinguishData = null
-        this.currentTownData = null
-        this.cityList = this.allCityData
+        this.currentTab = 0;
+        this.currentDistinguishData = null;
+        this.currentTownData = null;
+        this.cityList = this.allCityData;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

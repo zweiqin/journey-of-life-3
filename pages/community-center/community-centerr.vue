@@ -129,6 +129,9 @@ import { CHANGE_IS_IN_MINIPROGRAM } from "../../store/modules/type";
 const app = getApp();
 
 export default {
+  onReady() {
+    console.log(app);
+  },
   components: {
     TopHead,
     MainMenu,

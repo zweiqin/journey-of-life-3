@@ -18,12 +18,23 @@
 
     <view class="item-footer">
       <view class="price-text"> 追加金额: ￥{{ orderData.extraPrice }} </view>
-      <button class="uni-btn" @click="handlePayOrder" v-if="!orderData.status">
-        去支付
-      </button>
+
+      <view style="display: flex; align-items: center" v-if="!orderData.status">
+        <button class="uni-btn" @click="$data._isShowTuiModel = true">
+          拒绝
+        </button>
+        <button class="uni-btn" @click="handlePayOrder">去支付</button>
+      </view>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
+
+    <tui-modal
+      :show="$data._isShowTuiModel"
+      title="提示"
+      content="确认拒绝支付吗？"
+      @click="_handleClickTuiModel($event, handleRefuseAdditional)"
+    ></tui-modal>
   </view>
 </template>
 
@@ -32,7 +43,9 @@ import { getUserId } from "utils";
 import {
   payAdditionalOrderApi,
   payOrderForBeeStewadAPPApi,
+  refuseAdditionalPriceApi,
 } from "../../api/community-center";
+import showModal from "mixin/showModal";
 export default {
   props: {
     orderData: {
@@ -40,6 +53,8 @@ export default {
       required: true,
     },
   },
+
+  mixins: [showModal()],
 
   filters: {
     filterOrderStatus(value) {
@@ -139,7 +154,7 @@ export default {
                   sweixin = res[i];
                 }
               }
-              
+
               if (sweixin) {
                 sweixin.launchMiniProgram({
                   id: "gh_e64a1a89a0ad",
@@ -154,6 +169,25 @@ export default {
           );
         }
         // #endif
+      }
+    },
+
+    // 拒绝追加
+    async handleRefuseAdditional() {
+      const res = await refuseAdditionalPriceApi({
+        orderNo: this.orderData.extraNo,
+      });
+
+      if (res.statusCode === 20000) {
+        this.ttoast("操作成功");
+        setTimeout(() => {
+          this.$emit("refresh");
+        }, 500);
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "操作失败，请联系管理员",
+        });
       }
     },
   },
@@ -198,7 +232,6 @@ export default {
       width: 160upx;
       height: 64upx;
       border-radius: 100px;
-      background-color: #ffc117;
       color: #fff;
       font-weight: 500;
       display: flex;
@@ -206,9 +239,19 @@ export default {
       justify-content: center;
       font-size: 28upx;
       transition: all 350ms;
+      background-color: #949494;
 
       &:active {
-        background-color: #ffe18e;
+        background-color: #f0f0f0;
+      }
+
+      &:nth-of-type(2) {
+        margin-left: 10upx;
+        background-color: #ffc117;
+
+        &:active {
+          background-color: #ffe18e;
+        }
       }
     }
   }

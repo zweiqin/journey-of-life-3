@@ -321,3 +321,16 @@ export const payAdditionalOrderApi = (data) => {
     }
   );
 };
+
+// 拒绝追加金额
+export const refuseAdditionalPriceApi = (data) => {
+  return SheQuRequest1(
+    "/laoa-huozhu/api/hz/order/third/refuseExtra",
+    data,
+    "POST",
+    null,
+    {
+      "X-Dts-Admin-Token": uni.getStorageSync(USER_TOKEN),
+    }
+  );
+};

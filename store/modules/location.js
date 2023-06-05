@@ -9,6 +9,7 @@ import {
   getLngLatByAddress,
   MapLoader,
 } from "@/utils";
+import { isUserEmpowerLocationPermission } from "utils";
 
 export default {
   namespaced: true,
@@ -16,27 +17,27 @@ export default {
     return {
       // TODO: 默认值改掉
       locationInfo: {
-        city: "佛山市",
-        province: "广东省",
-        adcode: "440606",
-        district: "顺德区",
-        towncode: "440606004000",
+        city: "",
+        province: "",
+        adcode: "",
+        district: "",
+        towncode: "",
         streetNumber: {
-          number: "1号",
-          location: "113.300463,22.801715",
-          direction: "东北",
-          distance: "165.82",
-          street: "碧水路",
+          number: "",
+          location: "",
+          direction: "",
+          distance: "",
+          street: "",
         },
-        country: "中国",
-        township: "大良街道",
+        country: "",
+        township: "",
         businessAreas: [[]],
         building: { name: [], type: [] },
         neighborhood: { name: [], type: [] },
         citycode: "0757",
       },
-      detailAddress: "广东省佛山市顺德区大良街道碧水路顺德市民活动中心",
-      currentCity: uni.getStorageSync(CURRENT_ADDRESS) || "大良街道",
+      detailAddress: "",
+      currentCity: uni.getStorageSync(CURRENT_ADDRESS) || "定位失败",
     };
   },
 
@@ -78,7 +79,7 @@ export default {
   },
 
   actions: {
-    getCurrentLocation({ commit }, onSuccess) {
+    async getCurrentLocation({ commit }, onSuccess) {
       // #ifdef APP
       uni.getLocation({
         type: "gcj02",
@@ -149,35 +150,51 @@ export default {
       //   }
       // );
 
-      uni.getLocation({
-        type: "gcj02",
-        fail(e){
-          console.log("定位失败", e);
-        },
-        success(res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === "1") {
-                commit(CHANGE_LOCATION_INFO, res.regeocode);
-                const addressDetail = res.regeocode;
-                onSuccess &&
-                  typeof onSuccess === "function" &&
-                  onSuccess({
-                    detail:
-                      addressDetail.addressComponent.province +
-                      addressDetail.addressComponent.city +
-                      addressDetail.addressComponent.district +
-                      addressDetail.addressComponent.township,
-                    town: addressDetail.addressComponent.township,
-                  });
-              }
-            })
-            .catch((e) => {
-              // _this.address = '定位失败'
+      return new Promise(async (resolve, reject) => {
+        try {
+          await isUserEmpowerLocationPermission();
+          uni.getLocation({
+            type: "gcj02",
+            fail(e) {
+              console.log("定位失败", e);
+            },
+            success(res) {
+              getAdressDetailByLngLat(res.latitude, res.longitude)
+                .then((res) => {
+                  if (res.status === "1") {
+                    commit(CHANGE_LOCATION_INFO, res.regeocode);
+                    const addressDetail = res.regeocode;
+                    onSuccess &&
+                      typeof onSuccess === "function" &&
+                      onSuccess({
+                        detail:
+                          addressDetail.addressComponent.province +
+                          addressDetail.addressComponent.city +
+                          addressDetail.addressComponent.district +
+                          addressDetail.addressComponent.township,
+                        town: addressDetail.addressComponent.township,
+                      });
+                  }
 
+                  resolve(true);
+                })
+                .catch((e) => {
+                  console.log("你啊", e);
+                });
+            },
+          });
+        } catch (error) {
+          if (error === "prompt") {
+            uni.showToast({
+              title: "为了精准为您服务，请授权访问您的位置",
+              icon: "none",
             });
-        },
+          }
+
+          reject(false);
+        }
       });
+
       // #endif
     },
 

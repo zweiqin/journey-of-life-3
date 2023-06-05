@@ -4,7 +4,12 @@ var http = require("./utils/http.js");
 var util = require("./utils/util.js");
 // import { getUserId } from "./utils";
 import { whoami } from "./api/auth";
-import { USER_ID, USER_TOKEN, TUAN_ORDER_SN } from "./constant";
+import {
+  USER_ID,
+  USER_TOKEN,
+  TUAN_ORDER_SN,
+  USER_SELECT_ADDRESS,
+} from "./constant";
 
 export default {
   onLaunach: function () {},
@@ -41,6 +46,8 @@ export default {
     isInMiniprogram: false,
     // 是否已经打开过绑定手机号弹窗
     isShowedBindMobilePopu: false,
+    // 用户是否授权获取当前位置
+    isHasLocationPermission: true,
   },
   data() {
     return {
@@ -57,15 +64,38 @@ export default {
         uni.setStorageSync(USER_TOKEN, data.token);
       }
     },
+
+    // 设置用户定位
+    async setUserLocation() {
+      // #ifdef APP
+      const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS);
+      if (lastAddress) {
+        this.$store.dispatch("location/getDetailAddress", lastAddress.data);
+      }
+      // #endif
+
+      // #ifdef H5
+      try {
+        this.globalData.isHasLocationPermission = true;
+        await this.$store.dispatch("location/getCurrentLocation", (res) => {
+          this.$store.dispatch("community/getHomePopupImage", res.detail);
+          this.$store.commit("community/CHANGE_HOME_STORE", res.town);
+        });
+      } catch (error) {
+        this.globalData.isHasLocationPermission = false;
+        const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS);
+        if (lastAddress) {
+          this.$store.dispatch("location/getDetailAddress", lastAddress.data);
+        }else {
+          // 后端兜底
+        }
+        // #endif
+      }
+    },
   },
 
   mounted() {
-    // #ifdef H5
-    this.$store.dispatch("location/getCurrentLocation", (res) => {
-      this.$store.dispatch("community/getHomePopupImage", res.detail);
-      this.$store.commit("community/CHANGE_HOME_STORE", res.town);
-    });
-    // #endif
+    this.setUserLocation();
     this.updateToken();
 
     // #ifdef APP
@@ -73,7 +103,6 @@ export default {
     // #endif
 
     const launchOptions = uni.getLaunchOptionsSync();
-    // console.log('a', launchOptions.scene);
     this.scene = launchOptions.scene;
     uni.removeStorageSync(TUAN_ORDER_SN);
   },

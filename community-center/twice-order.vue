@@ -26,6 +26,7 @@
 
     <view class="order-list">
       <AdditionalAmountOrder
+        @refresh="getData"
         v-for="order in listData"
         :key="order.id"
         :orderData="order"
@@ -69,6 +70,10 @@ export default {
     },
 
     async getData() {
+      this.awaitPayOrderList = [];
+      this.payedOrderList = [];
+      this.refusedOrderList = [];
+      this.orderList = [];
       this.loadingStatus = "loading";
       try {
         const res = await getTwicePayOrderListApi({
@@ -77,15 +82,17 @@ export default {
 
         if (res.statusCode === 20000) {
           this.orderList = res.data;
-          for (const order of this.orderList) {
-            if (order.status === 0) {
-              this.awaitPayOrderList.push(order);
-            }
-            if (order.status === 1) {
-              this.payedOrderList.push(order);
-            }
-            if (order.status === 2) {
-              this.refusedOrderList.push(order);
+          if (res.data && res.data.length) {
+            for (const order of this.orderList) {
+              if (order.status === 0) {
+                this.awaitPayOrderList.push(order);
+              }
+              if (order.status === 1) {
+                this.payedOrderList.push(order);
+              }
+              if (order.status === 2) {
+                this.refusedOrderList.push(order);
+              }
             }
           }
         }

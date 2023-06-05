@@ -134,3 +134,26 @@ export function MapLoader(onSuccess, onFail) {
     });
   });
 }
+
+// 判断用户是否给了定位权限
+export const isUserEmpowerLocationPermission = () => {
+  return new Promise(async (resolve, reject) => {
+    if (!navigator.permissions && !navigator.permissions.query) {
+      reject(false);
+    }
+    const permissionStatus = await navigator.permissions.query({
+      name: "geolocation",
+    });
+
+    const state = permissionStatus.state;
+    if (state === "granted") {
+      resolve(true);
+    } else if (state === "denied") {
+      reject(false);
+    }
+
+    setTimeout(() => {
+      reject("prompt");
+    }, 3000);
+  });
+};
