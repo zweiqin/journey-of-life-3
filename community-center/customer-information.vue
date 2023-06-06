@@ -88,7 +88,7 @@
             padding-left: 20upx;
             box-sizing: border-box;
             font-size: 30upx;
-						padding-right: 70rpx;
+            padding-right: 70rpx;
           "
         >
           <text v-if="!address" style="color: #808080">请选择服务地址</text>
@@ -609,7 +609,8 @@ export default {
               _this.address =
                 result.addressComponent.province +
                 result.addressComponent.city +
-                result.addressComponent.district + result.addressComponent.township;
+                result.addressComponent.district +
+                result.addressComponent.township;
               // console.log('this.address', _this.address)
 
               _this.a();

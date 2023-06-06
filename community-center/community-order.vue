@@ -1,637 +1,753 @@
 <template>
-	<view class="community-order">
-		<!--顶部完善服务信息-->
-		<view class="title-list">
-			<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-				class="return" @click="handleBack" />
-			<view class="title">完善服务信息</view>
-		</view>
+  <view class="community-order-container">
+    <!-- 返回键 -->
+    <view class="head">
+      <image
+        @click="handleBack"
+        class="back-icon"
+        src="../static/images/con-center/order-back.png"
+      ></image>
+    </view>
 
-		<view class="top" v-if="price">
-			<!--图片-->
-			<view class="goods">
-				<img :src="serverImgUrl ||
-					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
-					" alt="" class="shop" />
-			</view>
-			<!--服务名称-->
-			<view class="title-name">{{ name }}</view>
-			<!--价格-->
-			<view class="price-list">
-				<view class="logo">￥</view>
-				<view class="number">{{ price }}</view>
-				<view class="point"></view>
-				<view class="slash">/</view>
-				<view class="unit">{{ unit }}</view>
-			</view>
-			<!--选择的服务类型-->
-			<view class="choice-list">
-				<view class="choice">已选</view>
-				<view class="type">{{ type }}</view>
-				<!-- <view class="logo">￥</view>
-        <view class="number">{{ price }}</view> -->
-			</view>
-		</view>
-		<template v-if="id == 97">
-			<view class="specs-list">
-				<view class="name">规格</view>
-				<view class="w-list">
-					<view class="w" v-for="item in air" :class="{ active: item.value == currentTab }" :key="item.value"
-						@click="switchTab(item.value)">
-						<view class="specs">{{ item.label }}</view>
-						<view class="logo">+</view>
-						<view class="money">{{ item.money }}</view>
+    <!-- 上门地址 -->
+    <view
+      class="choose-address-wrapper section animate"
+      @click="go('/user/site/site-manage?appoint=true')"
+    >
+      <view class="address-container" v-if="defualtAddress">
+        <view class="address-1">{{
+          defualtAddress.detailedAddress.split(" ")[0]
+        }}</view>
+        <view class="address-2">{{
+          defualtAddress.detailedAddress.split(" ")[1]
+        }}</view>
+        <view class="user-info">
+          <text class="user-name">{{ defualtAddress.name }}</text>
+          <text class="user-mobile">{{
+            defualtAddress.mobile.slice(0, 3) +
+            "****" +
+            defualtAddress.mobile.slice(7)
+          }}</text>
+        </view>
+      </view>
 
-						<view class="unit">元</view>
-						<view class="qi"></view>
-					</view>
-				</view>
-			</view>
-		</template>
-		<view class="body">
-			<!--人工报价显示服务类型-->
-			<template v-if="!price">
-				<view class="top-list">
-					<view class="item-type">
-						<view class="tag">*</view>
-						<view class="type">服务类型</view>
-					</view>
-					<view class="text-type">{{ name }}</view>
-				</view>
-			</template>
-			<!--上传图片-->
-			<view class="item-image">
-				<view class="tag">*</view>
-				<view class="name">物品图片</view>
-			</view>
-			<view class="upload-list">
-				<view class="upload-pane">
-					<view style="display: flex; flex-wrap: wrap">
-						<view v-for="img in images" :key="img" style="
-		                position: relative;
-		                width: 160upx;
-		                height: 160upx;
-		                margin-right: 20upx;
-		                margin-bottom: 20upx;
-		              ">
-							<img :src="img" alt="" class="img1" />
-							<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt="" class="img2" @click="removeBackground(img)" />
-						</view>
-					</view>
+      <view v-else class="section-title">请添加上门地址</view>
 
-					<view @click="chooseImg" class="upload" v-if="!imgUrl" style="margin-right: 6upx">+</view>
+      <image
+        class="address-icon"
+        src="../static/images/con-center/address-icon.png"
+      ></image>
+    </view>
 
-					<image v-else-if="imgUrl" class="iamge-background" :src="imgUrl" mode="" />
-				</view>
-			</view>
-			<!--需求说明-->
-			<view class="explain">
-				<view class="text1">需求说明</view>
-				<view class="text2">(选填)</view>
-			</view>
-			<view class="jx">
-				<view class="content">
-					<!-- <input type="text" class="show" placeholder="说明内容实例" /> -->
-					<textarea name="" id="" cols="30" rows="10" class="show"
-						placeholder="请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)" v-model="text"></textarea>
+    <view
+      v-if="!isExistCommunityStore"
+      class="alert-wrapper section"
+      style="padding: 0"
+    >
+      <tui-alerts type="warn" title="您所在区域不在接单范围内"></tui-alerts>
+    </view>
 
-					<view class="list">
-						<view class="number">{{ text.length }}/140</view>
-						<view class="example">示例</view>
-					</view>
-				</view>
-			</view>
-			<!--底部按钮-->
-			<view class="foot">
-				<view class="on" @click="handleToServiceInformation">确认</view>
-			</view>
-		</view>
-	</view>
+    <!-- 服务项目 -->
+    <view class="serve-info section">
+      <view class="title-wrapper">
+        <view class="section-title">服务类型</view>
+        <view class="serve-name"
+          >{{ currentServeInfo.name }}
+          <text class="serve-price" v-if="currentServeInfo.serverPrice"
+            ><text class="price-text">￥{{ currentServeInfo.serverPrice }}</text
+            >/{{ currentServeInfo.serverUnit }}</text
+          ></view
+        >
+      </view>
+
+      <view class="car-info">
+        <image class="serve-img" :src="currentServeInfo.imgUrl"></image>
+        <view class="number-control">
+          <view
+            @click="handleChangeServeNumber(-1)"
+            class="item mult"
+            :class="{ disabled: orderForm.quantity == 1 }"
+            >-</view
+          >
+          <view class="number item">{{ orderForm.quantity }}</view>
+
+          <view @click="handleChangeServeNumber(1)" class="item add">+</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 期望上门时间 -->
+    <view class="serve-time section animate" @click="chooseTimeVisible = true">
+      <view class="header-wrapper">
+        <view class="section-title">请选择期望上门时间</view>
+        <image
+          class="address-icon"
+          src="../static/images/con-center/order-time.png"
+        ></image>
+      </view>
+
+      <view class="choose-time">{{ orderForm.datetimerange }}</view>
+    </view>
+
+    <!-- 维修商品 -->
+    <view class="serve-user-goods-info section">
+      <view class="section-title">维修物品图片</view>
+      <view class="image-list">
+        <view
+          class="add-img-icon item"
+          v-for="item in orderForm.orderGoodsList"
+          :key="item"
+        >
+          <tui-icon
+            @click="handleDeleteImg(item)"
+            name="close-fill"
+            color="#FC4023"
+            :size="17"
+            class="close-icon"
+          ></tui-icon>
+          <image class="goods-img" mode="aspectFit" :src="item"></image>
+        </view>
+
+        <view class="add-img-icon item" @click="handleUploadImg">
+          <image
+            class="add-icon"
+            src="../static/images/con-center/add-icon.png"
+          ></image>
+        </view>
+      </view>
+
+      <view class="section-title">需求说明（选填）</view>
+
+      <tui-textarea
+        isCounter
+        padding="20rpx"
+        :size="28"
+        radius="20"
+        :borderTop="false"
+        :borderBottom="false"
+        backgroundColor="#F1F1F0"
+        v-model.trim="orderForm.remarks"
+        minHeight="247rpx"
+        placeholder="请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)"
+      ></tui-textarea>
+    </view>
+
+    <!-- 订单费用 -->
+    <view class="section order-price" v-if="isByItNow && calcServePrice">
+      <view class="section-title">订单费用</view>
+
+      <view class="cost-order-list">
+        <view class="cost-item">
+          <view class="cost-title">订单总额</view>
+          <view class="cost-value">￥{{ calcServePrice.sumPrice }}</view>
+        </view>
+
+        <view class="cost-item">
+          <view class="cost-title">优惠劵</view>
+          <view class="cost-value none">暂无</view>
+        </view>
+
+        <view class="cost-item">
+          <view class="cost-title">应付</view>
+          <view class="cost-value" style="color: #e95d20"
+            >￥{{ calcServePrice.oughtPrice }}</view
+          >
+        </view>
+      </view>
+    </view>
+
+    <!-- 确认按钮 -->
+    <view class="btn-wrapper">
+      <view class="pay-price" v-if="isByItNow && calcServePrice">
+        ￥{{ calcServePrice.oughtPrice }}</view
+      >
+      <button class="uni-btn" @click="handleConfirmOrder">确认</button>
+    </view>
+
+    <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
+    <tui-toast ref="toast"></tui-toast>
+  </view>
 </template>
 
-
-
-
-
-
 <script>
-import { air } from "./config";
-import { USER_TOKEN, COMMUNITY_ORDER_NO } from "../constant";
-import { getUserId } from "../utils";
+import { getUserId } from "utils";
+import { debounce } from "lodash-es";
+import { getAddressListApi } from "../api/address";
+import { SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from "../constant";
+import ChooseTime from "./componts/choose-time.vue";
+import {
+  getServicePriceApi,
+  getServiceOrderApi,
+  getIsOpenServerAreaApi,
+} from "../api/community-center";
+
 export default {
-	name: "Community-order",
-	props: {
-		imgUrl: String,
-	},
-	data() {
-		return {
-			air,
-			img: "",
-			currentTab: 0,
-			name: "",
-			price: "",
-			unit: "",
-			id: "",
-			text: "",
-			images: [],
-			priceType: "",
-			serverImgUrl: "",
-			length: "",
-			// isArtificialArtificial:true
-		};
-	},
-	methods: {
-		handleBack() {
-			uni.navigateBack();
-		},
-		handleToServiceInformation() {
-			// uni.navigateTo({
-			//   url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}`,
-			// });
+  components: { ChooseTime },
+  data() {
+    return {
+      // 收货地址
+      defualtAddress: null,
+      // 当前选中的服务信息
+      currentServeInfo: {},
+      // 表单信息
+      orderForm: {
+        datetimerange: "", // 期望上门时间
+        quantity: 1, // 数量
+        orderGoodsList: [], // 图片
+        remarks: "", // 备注信息
+      },
+      chooseTimeVisible: false,
+      changeNumberFn: () => {},
+      calcServePrice: null,
+      isExistCommunityStore: true,
+      isSubmitOrder: false,
+    };
+  },
 
+  onLoad(options) {
+    console.log(options);
+    this.currentServeInfo = options;
+    this.isByItNow = options.priceType === "true";
+    this.handleGetOrderPrice();
+  },
 
+  onShow() {
+    this.getAddressList();
+  },
 
-			uni.showToast({
-				title: "请上传物品图片",
-				icon: "none",
-				duration: 2000,
-			});
-			if (this.id != 97 && this.images.length) {
-				console.log("id", this.id);
-				uni.navigateTo({
-					url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}&imgUrl=${this.serverImgUrl}&images=${JSON.stringify(this.images)}`,
-				});
-			} else if (this.id == 97 && this.specsId && this.images.length) {
-				console.log("id", this.id && this.images);
-				uni.navigateTo({
-					url: `/community-center/customer-information?id1=${this.id}&specsId=${this.specsId}&price=${this.price}&priceType1=${this.priceType}&name=${this.name}&unit=${this.unit}&detailId1=${this.detailId1}&text=${this.text}&imgUrl=${this.serverImgUrl}&images=${JSON.stringify(this.images)}`,
-				});
-			} else {
-				console.log("no", this.id);
-			}
+  methods: {
+    // 返回
+    handleBack() {
+      uni.navigateBack();
+    },
+    // 获取收货地址
+    async getAddressList() {
+      const choosedAddress = uni.getStorageSync(SELECT_ADDRESS);
+      if (choosedAddress) {
+        this.defualtAddress = choosedAddress;
+        this.checkAreaExistCommunitStore();
+        return;
+      }
+      const { data } = await getAddressListApi({
+        userId: getUserId(),
+      });
 
+      if (data.length) {
+        this.defualtAddress = data.find((item) => item.isDefault);
+      } else {
+        this.defualtAddress = data[0];
+      }
 
+      if (this.defualtAddress) {
+        this.checkAreaExistCommunitStore();
+      }
+    },
 
-		},
+    // 获取选择的上门时间
+    onChooseTime(time) {
+      this.orderForm.datetimerange = time;
+    },
 
-		switchTab(item1) {
-			console.log("规格", item1);
-			this.currentTab = item1;
-			this.specsId = item1;
-		},
+    // 修改服务数量
+    handleChangeServeNumber(number) {
+      if (number < 0 && this.orderForm.quantity == 1) {
+        this.ttoast({
+          type: "fail",
+          title: "最小服务单位是1",
+        });
+        return;
+      }
+      this.orderForm.quantity += number;
+    },
 
-		chooseImg() {
-			const _this = this;
-			uni.chooseImage({
-				success: (chooseImageRes) => {
-					for (const imgFile of chooseImageRes.tempFiles) {
-						uni.showLoading();
-						uni.uploadFile({
-							url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
-							filePath: imgFile.path,
-							name: "file",
-							formData: {
-								token: USER_TOKEN,
-								userId: getUserId(),
-							},
-							success: (uploadFileRes) => {
-								uni.hideLoading();
-								_this.images.push(JSON.parse(uploadFileRes.data).data.url);
-							},
-						});
-					}
-					return;
-				},
-			});
-		},
+    // 获取订单报价
+    async handleGetOrderPrice() {
+      if (!this.isByItNow) {
+        return;
+      }
+      const res = await getServicePriceApi({
+        userId: getUserId(),
+        serverInfoId: this.currentServeInfo.detailId,
+        quantity: this.orderForm.quantity,
+        price: this.currentServeInfo.price,
+      });
 
-		removeBackground(img) {
-			const _this = this;
-			uni.showModal({
-				title: "提示",
-				content: "确定删除当前图片吗？",
-				success: function (res) {
-					if (res.confirm) {
-						const index = _this.images.findIndex((item) => item === img);
-						_this.images.splice(index, 1);
-					}
-				},
-			});
-		},
-	},
-	created() { },
-	onLoad(options) {
-		uni.removeStorageSync(COMMUNITY_ORDER_NO)
-		this.name = options.name;
-		this.price = options.serverPrice;
-		this.unit = options.serverUnit;
-		this.type = options.serverInfoName;
-		this.id = options.id;
-		this.serverImgUrl = options.imgUrl;
+      if (res.statusCode === 20000) {
+        this.calcServePrice = res.data;
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "报价失败",
+        });
+      }
+    },
 
-		this.detailId1 = options.detailId;
-		this.priceType = options.priceType;
-		console.log("是否一口价", this.priceType);
-		// if (a === "true") {
-		//   this.priceType = 1;
-		// } else {
-		//   this.priceType = 2;
-		// }
-	},
+    // 判断该区域是否开通了店长
+    async checkAreaExistCommunitStore() {
+      const res = await getIsOpenServerAreaApi({
+        address:
+          this.defualtAddress.detailedAddress &&
+          this.defualtAddress.detailedAddress.replace(" ", ""),
+      });
+      if (res.statusCode === 20000) {
+        this.isExistCommunityStore = res.data;
+      }
+    },
+
+    // 点击上传图片
+    handleUploadImg() {
+      const _this = this;
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          for (const imgFile of chooseImageRes.tempFiles) {
+            uni.showLoading();
+            uni.uploadFile({
+              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              filePath: imgFile.path,
+              name: "file",
+              formData: {
+                token: USER_TOKEN,
+                userId: getUserId(),
+              },
+              success: (uploadFileRes) => {
+                uni.hideLoading();
+                _this.orderForm.orderGoodsList.push(
+                  JSON.parse(uploadFileRes.data).data.url
+                );
+              },
+            });
+          }
+
+          return;
+        },
+        fail: (fail) => {
+          console.log(fail);
+        },
+      });
+    },
+
+    // 点击删除图片
+    handleDeleteImg(img) {
+      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter(
+        (item) => item !== img
+      );
+    },
+
+    // 确认提交订单
+    async handleConfirmOrder() {
+      if (this.isSubmitOrder) {
+        this.ttoast({
+          type: "info",
+          title: "请稍后...",
+          content: "订单创建中",
+        });
+
+        return;
+      }
+
+      if (!this.defualtAddress || !this.defualtAddress.name) {
+        this.ttoast({
+          type: "fail",
+          title: "请选择上门地址",
+        });
+        return;
+      }
+
+      if (!this.orderForm.datetimerange) {
+        this.ttoast({
+          type: "info",
+          title: "请选择期望上门时间",
+        });
+
+        this.chooseTimeVisible = true;
+        return;
+      }
+
+      if (!this.orderForm.orderGoodsList.length) {
+        this.ttoast({
+          type: "info",
+          title: "请上传服务物品图片",
+        });
+
+        return;
+      }
+      this.isSubmitOrder = true;
+
+      try {
+        const { remarks, orderGoodsList, datetimerange } = this.orderForm;
+        const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
+        const payOrderPrice =
+          (this.calcServePrice && this.calcServePrice.oughtPrice) || "";
+        const subOrderData = {
+          userId: getUserId(),
+          remarks: remarks || "",
+          orderGoodsList: orderGoodsList.map((item) => ({
+            goodsType: "团蜂",
+            goodsUrl: item,
+          })),
+          dictName: this.currentServeInfo.name,
+          installDate: datetimerange,
+          consigneeName: this.defualtAddress.name,
+          consigneeMobile: this.defualtAddress.mobile,
+          consigneeAddress: this.defualtAddress.detailedAddress.split(" ")[0],
+          consigneeAddressDetail:
+            this.defualtAddress.detailedAddress.split(" ")[1],
+          spotOrder: 0,
+          pullIn: this.currentServeInfo.name === "空调清洗服务" ? 2 : 1,
+          pricingType: this.isByItNow ? 1 : 2,
+          price: payOrderPrice,
+          paymentMethod: 1,
+          orderType: 1,
+          isVipSetmral: 0,
+          deliveryType: 4,
+          actualPrice: payOrderPrice,
+        };
+
+        // 判断是否是师傅现场下单
+        if (partnerCode) {
+          subOrderData.partnerCode = partnerCode;
+          subOrderData.spotOrder = 1;
+        }
+
+        const res = await getServiceOrderApi(subOrderData);
+        if (res.statusCode === 20000) {
+          this.ttoast("订单创建成功");
+          setTimeout(() => {
+            uni.redirectTo({
+              url: `/community-center/confirm-order?name1=${
+                this.currentServeInfo.name
+              }&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}
+        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${
+                this.defualtAddress.mobile
+              }&consigneeAddress=${
+                this.defualtAddress.detailedAddress.split(" ")[0]
+              }&consigneeAddressDetail=${
+                this.defualtAddress.detailedAddress.split(" ")[1]
+              }
+        &installDate=${this.orderForm.datetimerange}&pricingType=${
+                this.isByItNow ? 1 : 2
+              }&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${
+                res.data
+              }`,
+            });
+          }, 500);
+        }
+      } catch (error) {
+        this.ttoast({
+          type: "fail",
+          title: "订单创建失败",
+          content: "请联系管理员",
+        });
+      } finally {
+        this.isSubmitOrder = false;
+      }
+    },
+  },
+
+  watch: {
+    "orderForm.quantity": {
+      handler: debounce(function () {
+        this.handleGetOrderPrice();
+      }, 500),
+    },
+  },
 };
 </script>
 
-
-
-
-
-
 <style lang="less" scoped>
-.community-order {
-	padding-bottom: 180upx;
+.community-order-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding-bottom: 160upx;
 
-	.title-list {
-		padding: 40upx 54upx 36upx 16upx;
-		display: flex;
+  .head {
+    height: 120upx;
+    padding: 13upx 42upx;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 0 0 24upx 24upx;
+    display: flex;
+    align-items: center;
 
-		.return {
-			width: 48upx;
-			height: 48upx;
-		}
+    .back-icon {
+      width: 18upx;
+      height: 34upx;
+    }
+  }
 
-		.title {
-			flex: 1;
-			text-align: center;
-			font-size: 36upx;
-			font-weight: bold;
-			color: #3d3d3d;
-		}
-	}
+  .section {
+    padding: 40upx 30upx;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 24upx;
+    margin-top: 20upx;
+    margin: 20upx 20upx 0;
+    transition: all 350ms;
 
-	.top {
-		.goods {
-			width: 100%;
-			height: 340upx;
-			display: flex;
-			justify-content: center;
+    &.animate {
+      &:active {
+        background-color: #d3d3d3;
+      }
+    }
 
-			.shop {
-				width: 588upx;
-				height: 340upx;
-			}
-		}
+    &-title {
+      color: #605d52;
+      font-size: 32upx;
+      font-weight: 500;
+    }
+  }
 
-		.title-name {
-			padding-left: 30upx;
-			padding-top: 30upx;
-			padding-bottom: 36upx;
-			font-size: 36upx;
-			font-weight: bold;
-			color: #3d3d3d;
-		}
+  .serve-time {
+    .header-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      .section-title {
+        flex: 1;
+      }
+    }
+    .choose-time {
+      color: #e95d20;
+      font-size: 32upx;
+    }
+    .address-icon {
+      width: 64upx;
+      height: 64upx;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-left: 10upx;
+    }
+  }
 
-		.price-list {
-			display: flex;
-			align-items: center;
-			padding-left: 30upx;
-			padding-bottom: 36upx;
+  .choose-address-wrapper {
+    display: flex;
+    align-items: center;
 
-			.logo {
-				font-size: 28upx;
-				font-weight: 400;
-				color: #fa5151;
-			}
+    .address-icon {
+      width: 64upx;
+      height: 64upx;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-left: 10upx;
+    }
 
-			.number {
-				font-size: 36upx;
-				font-weight: bold;
-				color: #fa5151;
-			}
+    .section-title {
+      flex: 1;
+    }
 
-			.point {
-				font-size: 36upx;
-				font-weight: bold;
-				color: #fa5151;
-			}
+    .address-container {
+      flex: 1;
 
-			.slash {
-				font-size: 28upx;
-				font-weight: 400;
-				color: #000000;
-			}
+      .address-1 {
+        color: #605d52;
+        font-size: 28upx;
+      }
 
-			.unit {
-				font-size: 28upx;
-				font-weight: 400;
-				color: #000000;
-			}
-		}
+      .address-2 {
+        color: #141000;
+        font-weight: 500;
+        margin: 4upx 0 24upx 0;
+      }
+    }
+  }
 
-		.choice-list {
-			padding-left: 30upx;
-			padding-bottom: 36upx;
-			display: flex;
-			align-items: center;
+  .serve-info {
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-			.choice {
-				font-size: 28upx;
-				font-weight: 350;
-				color: #3d3d3d;
-			}
+      .serve-name {
+        color: #000;
+        font-size: 28upx;
+      }
 
-			.type {
-				padding-left: 18upx;
-				font-size: 32upx;
-				color: #3d3d3d;
-			}
+      .serve-price {
+        margin-left: 10upx;
 
-			.logo {
-				font-size: 32upx;
-				color: #3d3d3d;
-			}
+        .price-text {
+          font-weight: bold;
+          font-size: 32upx;
+          color: #ff5917;
+        }
+      }
+    }
 
-			.number {
-				font-size: 32upx;
-				color: #3d3d3d;
-			}
-		}
-	}
+    .car-info {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 30upx;
 
-	.specs-list {
-		padding-left: 30upx;
+      .serve-img {
+        width: 150upx;
+        height: 120upx;
+        border-radius: 12upx;
+      }
 
-		.name {
-			padding-bottom: 18upx;
-			font-size: 32upx;
-			font-weight: 500;
-			color: #3d3d3d;
-		}
+      .number-control {
+        display: flex;
+        align-items: center;
+        width: 200upx;
+        border: 2upx solid #f1f1f0;
+        border-radius: 100px;
+        overflow: hidden;
 
-		.w-list {
-			width: 100%;
-			display: flex;
-			flex-wrap: wrap;
+        .item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24upx;
+          color: #141000;
 
-			.w {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				width: 260upx;
-				height: 80upx;
-				margin: 10upx 94upx 10upx 0upx;
-				border-radius: 10upx;
-				box-sizing: border-box;
-				border: 2upx solid #999999;
-				color: #999999;
+          &.disabled {
+            background-color: #f0f0f0;
+          }
 
-				&.active {
-					// border: 2upx solid #007aff;
-					color: white;
-					background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
-				}
+          &:nth-of-type(1) {
+            border-right: 1upx solid #f1f1f0;
+          }
 
-				.specs {
-					font-size: 28upx;
-					font-weight: 400;
-				}
+          &:nth-of-type(3) {
+            border-left: 1upx solid #f1f1f0;
+          }
+        }
 
-				.logo {
-					font-size: 36upx;
-					font-weight: 400;
-					// color: #999999;
-				}
+        .number {
+          flex: 1;
+        }
 
-				.money {
-					font-size: 36upx;
-					font-weight: 400;
-					// color: #999999;
-				}
+        .add,
+        .mult {
+          width: 56upx;
+          height: 48upx;
+        }
+      }
+    }
+  }
 
-				.slash {
-					font-size: 28upx;
-					font-weight: 400;
-					// color: #000000;
-				}
+  .serve-user-goods-info {
+    .image-list {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 30upx 0;
 
-				.unit {
-					font-size: 28upx;
-					font-weight: 400;
-					// color: #999999;
-				}
+      .item {
+        position: relative;
 
-				.qi {
-					font-size: 28upx;
-					font-weight: 400;
-					// color: #3d3d3d;
-				}
-			}
-		}
-	}
+        width: 180upx;
+        height: 180upx;
+        border-radius: 12upx;
+        background-color: #f1f1f0;
+        margin-right: 54upx;
+        margin-bottom: 30upx;
+        flex-shrink: 0;
 
-	.body {
-		padding: 36upx 30upx 0upx 30upx;
+        .close-icon {
+          position: absolute;
+          top: -10upx;
+          right: -10upx;
+          width: 34upx;
+          height: 34upx;
+          z-index: 10;
+        }
 
-		.top-list {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+        &:nth-of-type(3n) {
+          margin-right: 0;
+        }
 
-			.item-type {
-				display: flex;
-				align-items: center;
+        .goods-img {
+          width: 100%;
+          height: 100%;
+          border: 1upx solid #f0f0f0;
+          border-radius: 20upx;
+          background-color: #f1f1f0;
+        }
 
-				.tag {
-					font-weight: 600;
-					color: #fa5151;
-				}
+        &.add-img-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-				.type {
-					font-size: 32upx;
-					font-weight: 500;
-					color: #3d3d3d;
-				}
-			}
+          &:active {
+            .add-icon {
+              transform: scale(1.3);
+            }
+          }
+        }
 
-			// .please {
-			//   display: flex;
-			//   justify-content: space-between;
-			//   align-items: center;
-			//   width: 156upx;
-			//   .choice {
-			//     font-size: 28upx;
-			//     font-weight: 500;
-			//     color: #3d3d3d;
-			//   }
-			//   .more {
-			//     width: 40upx;
-			//     height: 40upx;
-			//   }
-			// }
-		}
+        .add-icon {
+          width: 64upx;
+          height: 64upx;
+          transition: all 350ms;
+        }
+      }
+    }
+  }
 
-		.text-type {
-			// padding-top: 20upx;
-			font-size: 32upx;
-			color: #3d3d3d;
-		}
+  .order-price {
+    .cost-order-list {
+      margin-top: 30upx;
+      .cost-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20upx;
+        font-size: 28upx;
 
-		.item-image {
-			display: flex;
-			align-items: center;
-			padding-top: 36upx;
-			padding-bottom: 28upx;
+        .cost-title {
+          font-size: 30upx;
+          font-weight: 500;
+        }
 
-			.tag {
-				font-weight: 600;
-				color: #fa5151;
-			}
+        .cost-value {
+          font-size: 32upx;
+          font-weight: bold;
+        }
 
-			.name {
-				font-size: 32upx;
-				font-weight: 500;
-				color: #3d3d3d;
-			}
-		}
+        .none {
+          color: #ccc;
+          font-size: 28upx;
+        }
+      }
+    }
+  }
+}
 
-		.upload-pane {
-			border-radius: 20upx;
-			display: flex;
-			flex-wrap: wrap;
+/deep/ .tui-textarea__wrap {
+  border-radius: 10upx;
+  margin-top: 20upx;
+}
 
-			.delete-icon {
-				width: 32upx;
-				height: 36upx;
-			}
+.btn-wrapper {
+  height: 120upx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-			.img1 {
-				width: 160upx;
-				height: 160upx;
-				border-radius: 20upx;
-			}
+  .pay-price {
+    font-size: 48upx;
+    color: #e95d20;
+    font-weight: bold;
+    margin-right: 40upx;
+  }
 
-			.img2 {
-				width: 40upx;
-				height: 40upx;
-				position: absolute;
-				right: -15upx;
-				top: -15upx;
-				background: white;
-				border-radius: 50%;
-			}
-
-			.left {
-				display: flex;
-				align-items: center;
-			}
-
-			.upload {
-				margin: 0;
-				width: 160upx;
-				height: 160upx;
-				background-color: #ececec;
-				border-radius: 20upx;
-				color: #767676;
-				text-align: center;
-				line-height: 160upx;
-				font-size: 60upx;
-			}
-
-			.iamge-background {
-				width: 160upx;
-				height: 160upx;
-				object-fit: cover;
-			}
-		}
-
-		.explain {
-			margin-top: 84upx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			width: 220upx;
-			height: 44upx;
-
-			.text1 {
-				font-size: 32upx;
-				font-weight: 500;
-				color: #3d3d3d;
-			}
-
-			.text2 {
-				font-size: 28upx;
-				font-weight: 500;
-				color: #999999;
-			}
-		}
-
-		.jx {
-			margin-top: 56upx;
-			// width: 690upx;
-			width: 100%;
-			// height: 800upx;
-			border-radius: 10upx;
-
-			.content {
-				padding: 32upx 16upx;
-				height: 380upx;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				background: #f1f2f6;
-
-				.show {
-					font-size: 28upx;
-					font-weight: 400;
-					color: #3d3d3d;
-					width: 100%;
-					height: 80%;
-				}
-
-				.list {
-					height: 34upx;
-					display: flex;
-					justify-content: flex-start;
-
-					.number {
-						font-size: 24upx;
-						color: #999999;
-						padding-right: 20upx;
-					}
-
-					.example {
-						font-size: 24upx;
-						color: #007aff;
-					}
-				}
-			}
-		}
-
-		.foot {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 30upx 30upx 30upx 30upx;
-			width: 100%;
-			box-sizing: border-box;
-			position: fixed;
-			left: 0;
-			bottom: 0;
-			background: #ffffff;
-			border-top: 8upx solid #f7f8fa;
-
-			.on {
-				font-size: 32upx;
-				font-weight: bold;
-				color: #ffffff;
-				width: 408upx;
-				height: 80upx;
-				border-radius: 100upx;
-				background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
-				text-align: center;
-				line-height: 80upx;
-			}
-		}
-	}
+  .uni-btn {
+    width: 552upx;
+    height: 88upx;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #ff8c2e 3%, #ff5917 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>
