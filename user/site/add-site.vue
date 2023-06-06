@@ -9,14 +9,14 @@
 		<view class="add-site-content">
 			<view class="item-wrapper">
 				<view class="add-site-title">收货人</view>
-				<view class="add-site-value"><input v-model="form.name" type="text" class="common-text" placeholder="请填写收货人姓名" style="padding-bottom: 32upx"/>
+				<view class="add-site-value"><input v-model="form.name" type="text" class="common-text" placeholder="请填写姓名" style="padding-bottom: 32upx"/>
 				</view>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">手机号码</view>
 				<view class="add-site-value"><input v-model="form.mobile" type="text" class="common-text"
-						placeholder="请填写收货人电话" style="padding-bottom: 32upx"/></view>
+						placeholder="请填写电话" style="padding-bottom: 32upx"/></view>
 			</view>
 
 			<view class="item-wrapper">
@@ -33,7 +33,7 @@
 			<view class="item-wrapper">
 				<view class="add-site-title">详细地址</view>
 				<view class="add-site-value" style="display: flex;justify-content: space-between;"><textarea v-model="form.address" class="common-text"
-						placeholder="请填写收货人详细地址" style="padding-right: 40upx;"/>
+						placeholder="请填写详细地址" style="padding-right: 40upx;"/>
 					<JIcon type="locale" width="32" height="32"></JIcon>
 				</view>
 
@@ -41,7 +41,7 @@
 			</view>
 
 			<view class="item-wrapper" style="align-items: center">
-				<view class="add-site-title add-site-title-checked">设为默认收货地址</view>
+				<view class="add-site-title add-site-title-checked">设为默认地址</view>
 
 				<switch style="transform: scale(0.5) translateX(50%)" :checked="!!form.isDefault"
 					@change="handleChangeIsDefaultAddress" />
@@ -99,22 +99,22 @@ export default {
 		// 点击提交
 		handleAddSite() {
 			if (!this.form.name) {
-				this.$showToast('请填写收货人姓名');
+				this.$showToast('请填写姓名');
 				return;
 			}
 
 			if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.form.mobile)) {
-				this.$showToast('收货人电话格式错误');
+				this.$showToast('电话格式错误');
 				return;
 			}
 
 			if (!this.area) {
-				this.$showToast('请选择收获地区');
+				this.$showToast('请选择地区');
 				return;
 			}
 
 			if (!this.form.address) {
-				this.$showToast('请填写收获详细地址');
+				this.$showToast('请填写详细地址');
 				return;
 			}
 

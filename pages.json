@@ -87,7 +87,7 @@
       "style": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "编辑收货地址",
+        "navigationBarTitleText": "编辑地址",
         "navigationBarTextStyle": "black"
       }
     },
@@ -728,7 +728,7 @@
         {
           "path": "site/add-site",
           "style": {
-            "navigationBarTitleText": "添加收货地址",
+            "navigationBarTitleText": "添加地址",
             "usingComponents": {}
           }
         },

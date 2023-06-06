@@ -10,7 +10,7 @@
           <view class="plus-sign-img">
             <image src="/static/images/icon/plus-sign.png"></image>
           </view>
-          <text>新增收货地址</text>
+          <text>新增地址</text>
         </view>
         <view class="arrow empty"></view>
       </view>
