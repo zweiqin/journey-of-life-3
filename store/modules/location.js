@@ -151,8 +151,9 @@ export default {
       // );
 
       return new Promise(async (resolve, reject) => {
+        // debugger
         try {
-          await isUserEmpowerLocationPermission();
+          // await isUserEmpowerLocationPermission();
           uni.getLocation({
             type: "gcj02",
             fail(e) {
@@ -206,12 +207,13 @@ export default {
         const detailInfo = res.geocodes[0];
         commit(CHANGE_LOACTION_DETAIL_INFO, {
           detailInfo,
-          currentCity:
-            data.level === 4
+          currentCity: data.level
+            ? data.level === 4
               ? data.town
               : data.level === 3
               ? data.distinguish
-              : data.city,
+              : data.city
+            : data.town,
         });
 
         dispatch(

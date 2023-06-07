@@ -77,6 +77,7 @@ export default {
         await this.$store.dispatch("location/getCurrentLocation", (res) => {
           this.$store.dispatch("community/getHomePopupImage", res.detail);
           this.$store.commit("community/CHANGE_HOME_STORE", res.town);
+          this.$store.dispatch("community/getVipPackageList", res.detail);
         });
       } catch (error) {
         this.globalData.isHasLocationPermission = false;
@@ -92,7 +93,7 @@ export default {
         if (this.$store.getters.currentCity === "定位失败") {
           this.useStorageLocation();
         }
-      }, 3000);
+      }, 2000);
       // #endif
     },
 

@@ -51,14 +51,14 @@ export default {
     async getHomePopupImage({ commit }, currentAddress) {
       const res = await queryDynamicDataApi({
         // address: "广东省佛山市顺德区龙江镇",
-        address: currentAddress || "广东省佛山市顺德区龙江镇",
+        address: currentAddress,
         correspondType: 4,
       });
 
       commit(
         CHANGE_HOME_PAGE_IMAGE,
         res.statusCode == 20000 && res.data !== "该区域暂无自定义属性"
-          ? res.data[res.data.length-1].url
+          ? res.data[res.data.length - 1].url
           : ""
       );
 
@@ -78,7 +78,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryDynamicDataApi({
           // address: "广东省佛山市顺德区龙江镇",
-          address: currentAddress || "广东省佛山市顺德区大良镇",
+          address: currentAddress,
           correspondType: 1,
         }).then((res) => {
           if (res.data.includes("该区域暂无自定义属性")) {
@@ -96,7 +96,7 @@ export default {
         address:
           currentAddress && JSON.stringify(currentAddress) != "[]"
             ? currentAddress
-            : "广东省佛山市顺德区龙江镇",
+            : "",
         correspondType: 2,
       });
 

@@ -62,8 +62,8 @@ export default {
 
     // 获取自定义属性
     async getDZPersonalizationConfig() {
-      const currentDetail = this.$store.getters.detailAddress
-      await this.$store.dispatch('community/getVipPackageList', currentDetail)
+      // const currentDetail = this.$store.getters.detailAddress
+      // await this.$store.dispatch('community/getVipPackageList', currentDetail)
       const vipPackageList = this.$store.getters.dzVipList
       if (vipPackageList.length) {
         for (const item of vipPackageList) {

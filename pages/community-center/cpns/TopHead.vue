@@ -13,7 +13,7 @@
         <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
           class="img" />
       </view>
-      <input type="text" class="content" :placeholder="'搜索社区服务，一站式解决家居问题' + scene" />
+      <input type="text" class="content" :placeholder="'搜索社区服务，一站式解决家居问题'" />
     </view>
   </view>
 </template>

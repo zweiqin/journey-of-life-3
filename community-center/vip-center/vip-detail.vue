@@ -132,7 +132,7 @@ export default {
 		async queryDynamicData() {
 			const currentDetail = this.$store.getters.detailAddress
 			const res = await queryDynamicDataApi({
-				address: (currentDetail && JSON.stringify(currentDetail) != '[]') ? currentDetail : '广东省佛山市顺德区龙江镇',
+				address: (currentDetail && JSON.stringify(currentDetail) != '[]') ? currentDetail : '',
 				correspondType: 2
 			})
 

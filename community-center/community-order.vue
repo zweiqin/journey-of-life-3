@@ -265,11 +265,12 @@ export default {
       if (!this.isByItNow) {
         return;
       }
+
       const res = await getServicePriceApi({
         userId: getUserId(),
         serverInfoId: this.currentServeInfo.detailId,
         quantity: this.orderForm.quantity,
-        price: this.currentServeInfo.price,
+        price: this.currentServeInfo.serverPrice,
       });
 
       if (res.statusCode === 20000) {
