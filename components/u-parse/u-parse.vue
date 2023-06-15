@@ -91,6 +91,7 @@ export default {
         end: endHandler,
         chars: charsHandler,
       };
+      
       const results = HtmlToJson(parseData, customHandler, imageProp, this);
       this.imageUrls = results.imageUrls;
       console.log(results)

@@ -12,25 +12,29 @@
  * detail : http://weappdev.com/t/wxparse-alpha0-1-html-markdown/184
  */
 
-import wxDiscode from './wxDiscode';
-import HTMLParser from './htmlparser';
+import wxDiscode from "./wxDiscode";
+import HTMLParser from "./htmlparser";
 
 function makeMap(str) {
   const obj = {};
-  const items = str.split(',');
+  const items = str.split(",");
   for (let i = 0; i < items.length; i += 1) obj[items[i]] = true;
   return obj;
 }
 
 // Block Elements - HTML 5
-const block = makeMap('br,code,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
+const block = makeMap(
+  "br,code,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video"
+);
 
 // Inline Elements - HTML 5
-const inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,button,cite,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
+const inline = makeMap(
+  "a,abbr,acronym,applet,b,basefont,bdo,big,button,cite,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"
+);
 
 // Elements that you can, intentionally, leave open
 // (and which close themselves)
-const closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
+const closeSelf = makeMap("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr");
 
 function removeDOCTYPE(html) {
   const isDocument = /<body.*>([^]*)<\/body>/.test(html);
@@ -39,21 +43,21 @@ function removeDOCTYPE(html) {
 
 function trimHtml(html) {
   return html
-    .replace(/<!--.*?-->/gi, '')
-    .replace(/\/\*.*?\*\//gi, '')
-    .replace(/[ ]+</gi, '<')
-    .replace(/<script[^]*<\/script>/gi, '')
-    .replace(/<style[^]*<\/style>/gi, '');
+    .replace(/<!--.*?-->/gi, "")
+    .replace(/\/\*.*?\*\//gi, "")
+    .replace(/[ ]+</gi, "<")
+    .replace(/<script[^]*<\/script>/gi, "")
+    .replace(/<style[^]*<\/style>/gi, "");
 }
 
 function getScreenInfo() {
   const screen = {};
-  // wx.getSystemInfo({
-  //   success: (res) => {
-  //     screen.width = res.windowWidth;
-  //     screen.height = res.windowHeight;
-  //   },
-  // });
+  uni.getSystemInfo({
+    success: (res) => {
+      screen.width = res.windowWidth;
+      screen.height = res.windowHeight;
+    },
+  });
   return screen;
 }
 
@@ -69,12 +73,12 @@ function html2json(html, customHandler, imageProp, host) {
     imageUrls: [],
   };
 
-	const screen = getScreenInfo();
+  const screen = getScreenInfo();
   function Node(tag) {
-    this.node = 'element';
+    this.node = "element";
     this.tag = tag;
-		
-		this.$screen = screen;
+
+    this.$screen = screen;
   }
 
   HTMLParser(html, {
@@ -90,26 +94,26 @@ function html2json(html, customHandler, imageProp, host) {
       }
 
       if (block[tag]) {
-        node.tagType = 'block';
+        node.tagType = "block";
       } else if (inline[tag]) {
-        node.tagType = 'inline';
+        node.tagType = "inline";
       } else if (closeSelf[tag]) {
-        node.tagType = 'closeSelf';
+        node.tagType = "closeSelf";
       }
 
       node.attr = attrs.reduce((pre, attr) => {
         const { name } = attr;
         let { value } = attr;
-        if (name === 'class') {
+        if (name === "class") {
           node.classStr = value;
         }
         // has multi attibutes
         // make it array of attribute
-        if (name === 'style') {
+        if (name === "style") {
           node.styleStr = value;
         }
         if (value.match(/ /)) {
-          value = value.split(' ');
+          value = value.split(" ");
         }
 
         // if attr already exists
@@ -136,16 +140,16 @@ function html2json(html, customHandler, imageProp, host) {
       } else {
         node.classStr = node.tag;
       }
-      if (node.tagType === 'inline') {
-        node.classStr += ' inline';
+      if (node.tagType === "inline") {
+        node.classStr += " inline";
       }
 
       // 对img添加额外数据
-      if (node.tag === 'img') {
+      if (node.tag === "img") {
         let imgUrl = node.attr.src;
         imgUrl = wxDiscode.urlToHttpUrl(imgUrl, imageProp.domain);
         Object.assign(node.attr, imageProp, {
-          src: imgUrl || '',
+          src: imgUrl || "",
         });
         if (imgUrl) {
           results.imageUrls.push(imgUrl);
@@ -153,37 +157,38 @@ function html2json(html, customHandler, imageProp, host) {
       }
 
       // 处理a标签属性
-      if (node.tag === 'a') {
-        node.attr.href = node.attr.href || '';
+      if (node.tag === "a") {
+        node.attr.href = node.attr.href || "";
       }
 
       // 处理font标签样式属性
-      if (node.tag === 'font') {
+      if (node.tag === "font") {
         const fontSize = [
-          'x-small',
-          'small',
-          'medium',
-          'large',
-          'x-large',
-          'xx-large',
-          '-webkit-xxx-large',
+          "x-small",
+          "small",
+          "medium",
+          "large",
+          "x-large",
+          "xx-large",
+          "-webkit-xxx-large",
         ];
         const styleAttrs = {
-          color: 'color',
-          face: 'font-family',
-          size: 'font-size',
+          color: "color",
+          face: "font-family",
+          size: "font-size",
         };
-        if (!node.styleStr) node.styleStr = '';
+        if (!node.styleStr) node.styleStr = "";
         Object.keys(styleAttrs).forEach((key) => {
           if (node.attr[key]) {
-            const value = key === 'size' ? fontSize[node.attr[key] - 1] : node.attr[key];
+            const value =
+              key === "size" ? fontSize[node.attr[key] - 1] : node.attr[key];
             node.styleStr += `${styleAttrs[key]}: ${value};`;
           }
         });
       }
 
       // 临时记录source资源
-      if (node.tag === 'source') {
+      if (node.tag === "source") {
         results.source = node.attr.src;
       }
 
@@ -208,11 +213,11 @@ function html2json(html, customHandler, imageProp, host) {
       // merge into parent tag
       const node = bufArray.shift();
       if (node.tag !== tag) {
-        console.error('invalid state: mismatch end tag');
+        console.error("invalid state: mismatch end tag");
       }
 
       // 当有缓存source资源时于于video补上src资源
-      if (node.tag === 'video' && results.source) {
+      if (node.tag === "video" && results.source) {
         node.attr.src = results.source;
         delete results.source;
       }
@@ -235,7 +240,7 @@ function html2json(html, customHandler, imageProp, host) {
       if (!text.trim()) return;
 
       const node = {
-        node: 'text',
+        node: "text",
         text,
       };
 

@@ -128,7 +128,6 @@ export default {
         success: function (res) {
           if (res.confirm) {
             deleteAddressApi({
-              userId: getUserId(),
               id: item.id,
             }).then((res) => {
               _this.$showToast("删除成功", "success");
@@ -178,7 +177,7 @@ export default {
         success: function (res) {
           if (res.confirm) {
             uni.navigateTo({
-              url: `/user/site/add-site?editId=${item.id}`,
+              url: `/user/site/add-site?addressInfo=${JSON.stringify(item)}`,
             });
           }
         },

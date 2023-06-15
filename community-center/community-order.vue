@@ -413,6 +413,8 @@ export default {
         const res = await getServiceOrderApi(subOrderData);
         if (res.statusCode === 20000) {
           this.ttoast("订单创建成功");
+          uni.removeStorageSync(SF_INVITE_CODE);
+          uni.setStorageSync("communityOrder", res.data);
           setTimeout(() => {
             uni.redirectTo({
               url: `/community-center/confirm-order?name1=${

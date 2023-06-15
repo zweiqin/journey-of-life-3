@@ -247,7 +247,7 @@
         class="case-show"
       >
         <view class="show-img">
-          <UParse :content="goodsInfoDetail"></UParse>
+          <UParse v-if="serverInfo" :content="goodsInfoDetail"></UParse>
         </view>
       </view>
 
