@@ -15,8 +15,11 @@
         <input @click="go('/pages/search-page/search-page')" type="text" placeholder="请输入你想要的家具" />
       </view>
 
-      <image @click="go('/user/sever/customer-service/customer-service')" class="message-icon"
+      <image @click="handleChat" class="message-icon"
         src="../../../../static/images/new-index/message.png" mode="" />
+
+        <!-- <image @click="go('/user/sever/customer-service/customer-service')" class="message-icon"
+        src="../../../../static/images/new-index/message.png" mode="" /> -->
     </view>
 
 
@@ -26,6 +29,9 @@
         @click="$emit('change', item.value)">{{ item.label }}</view>
     </view>
     <!-- #endif -->
+
+    <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
+
   </view>
 </template>
 
@@ -51,6 +57,12 @@ export default {
         { label: '全屋定制', value: 2 },
         { label: '智能选配', value: 3 },
       ],
+    }
+  },
+
+  methods: {
+    handleChat(){
+      this.$refs.tuanChatKFRef.show()
     }
   },
 }

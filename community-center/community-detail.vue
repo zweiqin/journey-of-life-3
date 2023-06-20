@@ -283,7 +283,7 @@
     <!-- 底部在线咨询和立即下单和预约 -->
     <view class="foot">
       <view class="list">
-        <view class="online">
+        <view class="online" @click="handleChat">
           <!-- #ifdef H5 -->
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png"
@@ -315,6 +315,8 @@
     <CommunityDetailPoster
       ref="communityDetailPosterRef"
     ></CommunityDetailPoster>
+
+    <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
   </view>
 </template>
 
@@ -750,6 +752,11 @@ export default {
           },
         });
       }
+    },
+
+    // 聊天
+    handleChat() {
+      this.$refs.tuanChatKFRef.show();
     },
   },
 };
