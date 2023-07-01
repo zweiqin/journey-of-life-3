@@ -241,9 +241,7 @@ export default {
       orderForm: {
         datetimerange: "", // 期望上门时间
         quantity: 1, // 数量
-        orderGoodsList: [
-          "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vbvu2i9qgqgb21hkw70j.png",
-        ], // 图片
+        orderGoodsList: [], // 图片
         remarks: "", // 备注信息
       },
       chooseTimeVisible: false,

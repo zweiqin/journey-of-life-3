@@ -1,4 +1,4 @@
- <template>
+<template>
   <view class="d-field">
     <view class="main">
       <view
@@ -9,7 +9,7 @@
       >
         {{ data.label }}
       </view>
-      <view style="flex: 1; margin-right: 10upx;">
+      <view style="flex: 1; margin-right: 10upx">
         <slot>
           <input
             v-if="!data.select"
@@ -29,6 +29,7 @@
         </slot>
       </view>
       <img
+        @click="$emit('iconClick', data.label)"
         class="img"
         :style="{
           width: data.width + 'px',

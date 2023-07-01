@@ -4,10 +4,22 @@
     <Header bgc="#e95d20" title="完善服务信息"></Header>
     <!-- redirect="/pages/community-center/community-center" -->
     <view class="info">
-      <view class="title">客户信息</view>
+      <view class="title">
+        <text>客户信息</text>
+        <button
+          class="uni-btn"
+          @click="go('/user/site/site-manage?appoint=true')"
+        >
+          <tui-icon :size="20" name="addressbook"></tui-icon>
+          <text class="select-wrapper"
+            >已有地址?<text class="select">去选择 -></text>
+          </text>
+        </button>
+      </view>
       <!-- {{ consigneeForm }} -->
       <view class="main-wrapper">
         <Field
+          @iconClick="handleOpenMapToChooseAddress"
           v-for="item in userInfo"
           :key="item.label"
           v-model="consigneeForm[item.field]"
@@ -104,14 +116,20 @@ import Button from "./components/button.vue";
 import Remarks from "./components/remarks.vue";
 import Header from "./components/header.vue";
 import { consigneeVipInfo } from "./config";
-import { getUserId, throttle } from "../utils";
+import { getUserId, throttle, getAdressDetailByLngLat } from "../utils";
 import {
   createRepairOrderApi,
   payOrderForBeeStewadApi,
   getIsOpenServerAreaApi,
   payOrderForBeeStewadAPPApi,
 } from "../api/community-center";
-import { COMMUNITY_ORDER_NO, SF_INVITE_CODE } from "../constant";
+import { getAddressListApi } from "../api/address";
+
+import {
+  COMMUNITY_ORDER_NO,
+  SELECT_ADDRESS,
+  SF_INVITE_CODE,
+} from "../constant";
 
 export default {
   components: {
@@ -142,6 +160,7 @@ export default {
   },
 
   onShow() {
+    this.getAddressList();
     this.confirm = throttle(this.handleCreateOrder, 1000);
     const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`);
     const orderNo = uni.getStorageSync(COMMUNITY_ORDER_NO) || "";
@@ -165,20 +184,33 @@ export default {
   },
   onLoad(option) {
     this.serveData = option.data;
-    if (this.serveData) {
-      this.serveData = JSON.parse(option.data);
-    } else {
-      uni.showToast({
-        title: "未选择服务，请选择服务",
-        duration: 2000,
-        icon: "none",
+    try {
+      if (this.serveData) {
+        this.serveData = JSON.parse(option.data);
+      } else {
+        uni.showToast({
+          title: "未选择服务，请选择服务",
+          duration: 2000,
+          icon: "none",
+        });
+
+        setTimeout(() => {
+          uni.redirectTo({
+            url: "/community-center/vip-center/vip-detail",
+          });
+        }, 2000);
+      }
+    } catch (error) {
+      this.ttoast({
+        title: "活动不存在",
+        type: "fail",
       });
 
       setTimeout(() => {
-        uni.redirectTo({
-          url: "/community-center/vip-center/vip-detail",
-        });
-      }, 2000);
+        uni.switchTab({
+          url: '/'
+        })
+      }, 1000);
     }
 
     if (option.repair) {
@@ -394,6 +426,73 @@ export default {
     handleChooseAddress() {
       this.$refs.TuanCityRef.show();
     },
+
+    // 获取地址
+    async getAddressList() {
+      const choosedAddress = uni.getStorageSync(SELECT_ADDRESS);
+      if (choosedAddress) {
+        this.setConsigneeInfo(choosedAddress);
+        return;
+      }
+      const { data } = await getAddressListApi({
+        userId: getUserId(),
+      });
+
+      if (data.length) {
+        const defaultAddress = data.find((item) => item.isDefault);
+        if (defaultAddress) {
+          this.setConsigneeInfo(defaultAddress);
+        } else {
+          this.setConsigneeInfo(data[0]);
+        }
+      }
+
+      if (this.defualtAddress) {
+        // this.checkAreaExistCommunitStore();
+      }
+    },
+
+    setConsigneeInfo(choosedAddress) {
+      choosedAddress.name &&
+        (this.consigneeForm.consigneeName = choosedAddress.name || "");
+      choosedAddress.mobile &&
+        (this.consigneeForm.consigneeMobile = choosedAddress.mobile || "");
+      this.consigneeForm.consigneeAddress =
+        choosedAddress.detailedAddress.split(" ")[0];
+      this.consigneeForm.consigneeAddressDetail =
+        choosedAddress.detailedAddress.split(" ")[1];
+    },
+
+    handleOpenMapToChooseAddress() {
+      const _this = this;
+      uni.chooseLocation({
+        success(res) {
+          try {
+            getAdressDetailByLngLat(res.latitude, res.longitude).then(
+              (parseRes) => {
+                const { city, province, district, township } =
+                  parseRes.regeocode.addressComponent;
+                const data1 = province + city + district;
+
+                const level1 = data1 + township;
+                let splitLen = data1.length;
+                if (
+                  res.address.includes("街道") ||
+                  res.address.includes("镇")
+                ) {
+                  splitLen += district.length;
+                }
+                const level2 = res.address.slice(splitLen) + res.name;
+
+                _this.setConsigneeInfo({
+                  detailedAddress: level1 + " " + level2,
+                });
+              }
+            );
+          } catch (error) {}
+        },
+      });
+    },
   },
 };
 </script>
@@ -405,8 +504,26 @@ export default {
   .info {
     .title {
       color: #888;
-      margin: 47upx auto 12upx 30upx;
+      margin: 47upx 30upx 12upx 30upx;
       font-size: 26upx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .uni-btn {
+        font-size: 28upx;
+        display: flex;
+        align-items: center;
+
+        .select-wrapper {
+          margin-left: 10upx;
+          color: #3b3b3b;
+
+          .select {
+            color: rgb(233, 93, 32);
+          }
+        }
+      }
     }
 
     .main-wrapper {
