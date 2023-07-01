@@ -47,7 +47,7 @@
       }
     },
     {
-      "path": "pages/index-copy-2/brandFactory/detail",
+      "path": "pages/index/BrandFactory/detail",
       "style": {
         "navigationBarTitleText": "详情"
       }
@@ -81,15 +81,6 @@
     },
     {
       "path": "pages/otherUrl/otherUrl"
-    },
-    {
-      "path": "pages/editAddress/editAddress",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "编辑地址",
-        "navigationBarTextStyle": "black"
-      }
     },
     {
       "path": "pages/orderList/orderList",
@@ -133,15 +124,6 @@
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "提交订单",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/express-delivery/express-delivery",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "物流查询",
         "navigationBarTextStyle": "black"
       }
     },
@@ -216,12 +198,6 @@
       }
     },
     {
-      "path": "pages/login/enroll",
-      "style": {
-        "navigationBarTitleText": "立即报名"
-      }
-    },
-    {
       "path": "pages/register/register",
       "style": {
         "navigationBarTitleText": "注册"
@@ -246,18 +222,6 @@
       "path": "pages/payAccomplish/index",
       "style": {
         "navigationBarTitleText": "payAccomplish"
-      }
-    },
-    {
-      "path": "pages/brandFactory/index",
-      "style": {
-        "navigationBarTitleText": "品牌工厂"
-      }
-    },
-    {
-      "path": "pages/brandFactory/myBrand",
-      "style": {
-        "navigationBarTitleText": "品牌工厂"
       }
     },
     {

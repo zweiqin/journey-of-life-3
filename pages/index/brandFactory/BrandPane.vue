@@ -6,9 +6,7 @@
     <Carousel :height="150" :list="data.brand.picUrls"></Carousel>
     <view
       class="brand-info"
-      @click="
-        go(`/pages/index-copy-2/brandFactory/detail?brandId=${data.brand.id}`)
-      "
+      @click="go(`/pages/index/BrandFactory/detail?brandId=${data.brand.id}`)"
     >
       <image
         v-if="data.brand.picUrl"
@@ -64,8 +62,8 @@
 </template>
 
 <script>
-import Carousel from '../../../components/carousel/index'
-import { randomRGB } from '../../../utils'
+import Carousel from "../../../components/carousel/index";
+import { randomRGB } from "../../../utils";
 export default {
   components: {
     Carousel,
@@ -78,7 +76,7 @@ export default {
   },
 
   methods: { randomRGB },
-}
+};
 </script>
 
 <style lang="less" scoped>
