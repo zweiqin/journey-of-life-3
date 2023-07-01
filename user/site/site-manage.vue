@@ -19,7 +19,7 @@
         />
         <!-- <view class="site-mine">我的地址</view> -->
       </view>
-      <view class="title-right-view" v-if="!isSelect">
+      <view class="title-right-view">
         <view class="manage" @click="manage" v-if="manageok == 1"> 管理 </view>
         <view class="manage" @click="manage" v-if="manageok == 2"> 完成 </view>
       </view>
@@ -82,6 +82,14 @@
                     src="../../static/images/lqb/site/delete.png"
                     alt=""
                     @click="addressDelete(item)"
+                  />
+
+                  <image
+                    v-if="isSelect"
+                    class="compile"
+                    style="width: 32upx; margin-left: 40upx;"
+                    src="../../static/images/lqb/site/compile.png"
+                    @click="editAddress(item)"
                   />
                 </view>
               </view>

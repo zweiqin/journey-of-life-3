@@ -53,6 +53,7 @@ import { orderStatusList } from "./config";
 import { getUserId, handleDebounce } from "../utils";
 import SearchBar from "../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 import Header from "../components/header";
+import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO } from "constant";
 
 export default {
   components: {
@@ -76,6 +77,8 @@ export default {
   },
 
   mounted() {
+    uni.removeStorageSync(COMMUNITY_ORDER_NO);
+    uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.search = handleDebounce(this.searchOrder, 500);
     this.getOrderList();
   },

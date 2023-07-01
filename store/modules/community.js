@@ -102,6 +102,8 @@ export default {
 
       if (res.statusCode === 20000 && res.data !== "该区域暂无自定义属性") {
         commit(CHANGE_DZ_VIP_PACKAGE, res.data);
+      } else {
+        commit(CHANGE_DZ_VIP_PACKAGE, []);
       }
     },
   },

@@ -53,9 +53,30 @@
         <view class="section-title">服务类型</view>
         <view class="serve-name"
           >{{ currentServeInfo.name }}
-          <text class="serve-price" v-if="currentServeInfo.serverPrice"
-            ><text class="price-text">￥{{ currentServeInfo.serverPrice }}</text
-            >/{{ currentServeInfo.serverUnit }}</text
+          <text class="serve-price" v-if="currentServeInfo.serverPrice">
+            <text
+              :class="{
+                del: !!calcServePrice && calcServePrice.newPrice,
+              }"
+              class="price-text"
+              >￥{{
+                (calcServePrice && calcServePrice.oldPrice) ||
+                currentServeInfo.serverPrice
+              }}</text
+            >
+
+            <text
+              v-if="
+                calcServePrice &&
+                calcServePrice.newPrice &&
+                calcServePrice.newPrice != 0
+              "
+              class="price-text"
+              >￥{{
+                (calcServePrice && calcServePrice.newPrice) || preferentialPrice
+              }}</text
+            >
+            /{{ currentServeInfo.serverUnit }}</text
           ></view
         >
       </view>
@@ -99,6 +120,7 @@
           :key="item"
         >
           <tui-icon
+            v-show="!chooseTimeVisible"
             @click="handleDeleteImg(item)"
             name="close-fill"
             color="#FC4023"
@@ -142,9 +164,33 @@
           <view class="cost-value">￥{{ calcServePrice.sumPrice }}</view>
         </view>
 
+        <!-- <view class="cost-item">
+          <view class="cost-title">服务基本原价</view>
+          <view class="cost-value">￥{{ calcServePrice.oldPrice }}</view>
+        </view>
+
+        <view class="cost-item">
+          <view class="cost-title">服务基本优惠价</view>
+          <view class="cost-value">￥{{ calcServePrice.newPrice }}</view>
+        </view> -->
+
         <view class="cost-item">
           <view class="cost-title">优惠劵</view>
           <view class="cost-value none">暂无</view>
+        </view>
+
+        <!-- <view class="cost-item">
+          <view class="cost-title">优惠金额</view>
+          <view class="cost-value none">{{
+            calcServePrice.discountsPrice
+          }}</view>
+        </view> -->
+
+        <view class="cost-item">
+          <view class="cost-title">优惠价</view>
+          <view class="cost-value none">{{
+            calcServePrice.preferentialPrice
+          }}</view>
         </view>
 
         <view class="cost-item">
@@ -161,7 +207,9 @@
       <view class="pay-price" v-if="isByItNow && calcServePrice">
         ￥{{ calcServePrice.oughtPrice }}</view
       >
-      <button class="uni-btn" @click="handleConfirmOrder">确认</button>
+      <button class="uni-btn" @click="handleConfirmOrder">
+        {{ isOffer ? "获取价格中..." : "确认" }}
+      </button>
     </view>
 
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
@@ -193,7 +241,9 @@ export default {
       orderForm: {
         datetimerange: "", // 期望上门时间
         quantity: 1, // 数量
-        orderGoodsList: [], // 图片
+        orderGoodsList: [
+          "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vbvu2i9qgqgb21hkw70j.png",
+        ], // 图片
         remarks: "", // 备注信息
       },
       chooseTimeVisible: false,
@@ -201,14 +251,18 @@ export default {
       calcServePrice: null,
       isExistCommunityStore: true,
       isSubmitOrder: false,
+      preferentialPrice: 0, // "优惠价",
+      isOffer: false,
     };
   },
 
   onLoad(options) {
-    console.log(options);
     this.currentServeInfo = options;
     this.isByItNow = options.priceType === "true";
-    this.handleGetOrderPrice();
+    this.preferentialPrice =
+      options.preferentialPrice === "null"
+        ? null
+        : options.preferentialPrice * 1;
   },
 
   onShow() {
@@ -226,16 +280,27 @@ export default {
       if (choosedAddress) {
         this.defualtAddress = choosedAddress;
         this.checkAreaExistCommunitStore();
+        this.handleGetOrderPrice();
         return;
       }
       const { data } = await getAddressListApi({
         userId: getUserId(),
       });
 
+      // if (data.length) {
+      //   this.defualtAddress = data.find((item) => item.isDefault);
+      // } else {
+      //   this.defualtAddress = data[0];
+      // }
+
       if (data.length) {
-        this.defualtAddress = data.find((item) => item.isDefault);
-      } else {
-        this.defualtAddress = data[0];
+        const defaultAddress = data.find((item) => item.isDefault);
+        if (defaultAddress) {
+          this.defualtAddress = defaultAddress;
+        } else {
+          this.defualtAddress = data[0];
+        }
+        this.handleGetOrderPrice();
       }
 
       if (this.defualtAddress) {
@@ -262,24 +327,31 @@ export default {
 
     // 获取订单报价
     async handleGetOrderPrice() {
-      if (!this.isByItNow) {
+      if (!this.isByItNow || !this.defualtAddress) {
         return;
       }
 
-      const res = await getServicePriceApi({
-        userId: getUserId(),
-        serverInfoId: this.currentServeInfo.detailId,
-        quantity: this.orderForm.quantity,
-        price: this.currentServeInfo.serverPrice,
-      });
-
-      if (res.statusCode === 20000) {
-        this.calcServePrice = res.data;
-      } else {
-        this.ttoast({
-          type: "fail",
-          title: "报价失败",
+      try {
+        this.isOffer = true;
+        const res = await getServicePriceApi({
+          userId: getUserId(),
+          serverInfoId: this.currentServeInfo.detailId,
+          quantity: this.orderForm.quantity,
+          address: this.defualtAddress.detailedAddress,
+          // price: this.preferentialPrice || this.currentServeInfo.serverPrice,
+          // // actualPrice: this.preferentialPrice,
         });
+
+        if (res.statusCode === 20000) {
+          this.calcServePrice = res.data;
+        } else {
+          this.ttoast({
+            type: "fail",
+            title: "报价失败",
+          });
+        }
+      } finally {
+        this.isOffer = false;
       }
     },
 
@@ -336,6 +408,14 @@ export default {
 
     // 确认提交订单
     async handleConfirmOrder() {
+      if (this.isOffer) {
+        this.ttoast({
+          type: "info",
+          title: "获取订单价格中...",
+        });
+        return;
+      }
+
       if (this.isSubmitOrder) {
         this.ttoast({
           type: "info",
@@ -396,12 +476,13 @@ export default {
           spotOrder: 0,
           pullIn: this.currentServeInfo.name === "空调清洗服务" ? 2 : 1,
           pricingType: this.isByItNow ? 1 : 2,
-          price: payOrderPrice,
           paymentMethod: 1,
           orderType: 1,
           isVipSetmral: 0,
           deliveryType: 4,
-          actualPrice: payOrderPrice,
+          price: (this.calcServePrice && this.calcServePrice.sumPrice) || "",
+          actualPrice:
+            (this.calcServePrice && this.calcServePrice.oughtPrice) || "",
         };
 
         // 判断是否是师傅现场下单
@@ -573,6 +654,12 @@ export default {
           font-weight: bold;
           font-size: 32upx;
           color: #ff5917;
+
+          &.del {
+            font-size: 24upx;
+            color: #3d3d3d;
+            text-decoration: line-through;
+          }
         }
       }
     }

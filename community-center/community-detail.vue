@@ -57,7 +57,7 @@
         </view>
         <view v-if="isArtificial" class="goods-price">
           <view class="logo"
-            >￥<text>{{ serverPrice }}</text></view
+            >￥<text>{{ preferentialPrice || serverPrice }}</text></view
           >
         </view>
       </view>
@@ -99,6 +99,7 @@
               :server-price="item.serverPrice"
               :server-unit="item.serverUnit"
               :is-artificial="item.isArtificial"
+              :preferential-price="item.preferentialPrice"
               @choose="switchTab(item)"
             ></Item>
           </view>
@@ -388,6 +389,7 @@ export default {
       bindServiceId: null,
       userId: "",
       shareCode: "",
+      preferentialPrice: 0,
     };
   },
 
@@ -509,7 +511,7 @@ export default {
         });
       } else if (!this.serverPrice == 0) {
         uni.navigateTo({
-          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}`,
+          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}`,
         });
       } else {
         console.log("sb kuaixuan");
@@ -540,6 +542,7 @@ export default {
       this.serverUnit = item1.serverUnit;
       this.serverIntroduction = item1.serverIntroduction;
       this.detailId = item1.id;
+      this.preferentialPrice = item1.preferentialPrice;
       // console.log('详情id', this.detailId)
     },
 
@@ -563,6 +566,7 @@ export default {
               origin.serverInfoName = attr.serverInfoName;
               origin.serverPrice = attr.serverPrice;
               origin.serverUnit = attr.serverUnit;
+              origin.preferentialPrice = attr.preferentialPrice;
             }
           });
         });

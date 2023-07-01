@@ -125,7 +125,7 @@ export default {
   border-radius: 40upx 40upx 0 0;
   transform: translateY(100%);
   transition: all 350ms;
-  z-index: 100000;
+  z-index: 100;
 
   .main {
     flex: 1;

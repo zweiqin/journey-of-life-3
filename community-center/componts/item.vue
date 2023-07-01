@@ -4,7 +4,12 @@
       <view class="name">{{ serverInfoName }}</view>
       <view class="row">
         <view class="logo">￥</view>
-        <view class="number">{{ serverPrice }}</view>
+        <view :class="{ del: !!preferentialPrice }" class="number">{{
+          serverPrice
+        }}</view>
+        <view v-if="preferentialPrice" style="font-size: 40upx">{{
+          preferentialPrice
+        }}</view>
         <view class="slash">/</view>
         <view class="unit">{{ serverUnit }}</view>
         <view class="qi"></view>
@@ -14,30 +19,31 @@
 </template>
 
 <script>
-import { number } from 'echarts'
+import { number } from "echarts";
 export default {
-  name: 'Item',
+  name: "Item",
   props: {
     id: Number,
     serverInfoName: String,
     serverPrice: Number,
     serverUnit: String,
+    preferentialPrice: String,
   },
   data() {
-    return {}
+    return {};
   },
   methods: {
     handleClickItem() {
-      this.$emit('choose', {
+      this.$emit("choose", {
         id: this.id,
         serverInfoName: this.serverInfoName,
         serverPrice: this.serverPrice,
         serverUnit: this.serverUnit,
-      })
+      });
     },
   },
   created() {},
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -45,14 +51,13 @@ export default {
   margin-right: 20upx;
   // margin-bottom: 40upx;
   border-radius: 12upx;
-  color: #605D52;
-  border: 2upx solid #F1F1F0;
+  color: #605d52;
+  border: 2upx solid #f1f1f0;
   &.active {
-    border: 2upx solid #FC4023;
+    border: 2upx solid #fc4023;
     color: #fa5151;
-    background: #FFF8F6;
-		font-weight: bold;
-		
+    background: #fff8f6;
+    font-weight: bold;
   }
 
   .m {
@@ -61,7 +66,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-		
+
     .name {
       font-size: 28upx;
       // font-weight: 500;
@@ -77,14 +82,17 @@ export default {
       .logo {
         font-size: 30upx;
         font-weight: bold;
-				line-height: 46upx;
-
+        line-height: 46upx;
       }
       .number {
         font-size: 30upx;
         font-weight: bold;
-				line-height: 46upx;
+        line-height: 46upx;
 
+        &.del {
+          color: #1f1f1f;
+          text-decoration: line-through;
+        }
       }
       .slash {
         font-size: 22upx;
@@ -92,7 +100,7 @@ export default {
       }
       .unit {
         font-size: 22upx;
-       line-height: 34upx;
+        line-height: 34upx;
       }
       .qi {
         font-size: 28upx;

@@ -53,7 +53,7 @@
 			</view>
 		</view> -->
 
-    <VipPackage></VipPackage>
+    <VipPackage ref="vipPackageRef"></VipPackage>
 
     <!-- 社区店 -->
     <ServiceStationPane></ServiceStationPane>
@@ -120,7 +120,12 @@ import ServerPane from "./cpns/ServerPane.vue";
 import ArticleList from "./cpns/Article.vue";
 import VipPackage from "./cpns/VipPackage.vue";
 import PopupInformation from "../../components/popup-information/popup-information";
-import { COMMUNITY_ORDER_NO, USER_INFO, USER_TOKEN } from "../../constant";
+import {
+  COMMUNITY_ORDER_ITEM_NO,
+  COMMUNITY_ORDER_NO,
+  USER_INFO,
+  USER_TOKEN,
+} from "../../constant";
 import { getServiceSortApi } from "../../api/community-center";
 import showModal from "mixin/showModal";
 import { MINI_PROGRAM_TAG } from "../../constant";
@@ -158,11 +163,17 @@ export default {
   },
   onShow() {
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
+    uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
+
     if (!app.globalData.isShowCommunityPopup) {
       setTimeout(() => {
         this.$store.getters.popupImage && this.$refs.popupInformationRef.show();
       }, 500);
     }
+
+    this.$nextTick(() => {
+      this.$refs.vipPackageRef.getDZPersonalizationConfig();
+    });
   },
   mounted() {
     // #ifdef APP

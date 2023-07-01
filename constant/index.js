@@ -56,6 +56,8 @@ export const USER_SELECT_ADDRESS = "USER_SELECT_ADDRESS";
 
 export const clearAllCache = () => {
   [
+    COMMUNITY_ORDER_NO,
+    COMMUNITY_ORDER_ITEM_NO,
     jiSenderInfo,
     jiconsigneeInfo,
     jiRemarks,
@@ -89,8 +91,6 @@ export const clearAllCache = () => {
     NEW_BIND_SERVICE_URL,
     IN_TIMES,
     CURRENT_ADDRESS,
-    COMMUNITY_ORDER_NO,
-    COMMUNITY_ORDER_ITEM_NO,
     SF_INVITE_CODE,
     MINI_PROGRAM_TAG,
     USER_SELECT_ADDRESS,

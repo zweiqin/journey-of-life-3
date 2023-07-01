@@ -1,7 +1,10 @@
 <template>
   <view class="vip-serves-pane" :style="{ 'border-radius': radius }">
     <view class="title">
-      <image class="vip-icon" src="../../../static/images/con-center/vip/VIP 2.png"></image>
+      <image
+        class="vip-icon"
+        src="../../../static/images/con-center/vip/VIP 2.png"
+      ></image>
       <view class="vip-title">{{ subTitle }}</view>
     </view>
 
@@ -12,10 +15,16 @@
         <tui-label v-for="(item, index) in data" :key="index">
           <tui-list-cell unlined backgroundColor="#FFFBF4">
             <view class="thorui-align__center">
-              <tui-radio color="#FE0000" :checked="item.serverContent === value" :value="item.serverContent"
-                borderColor="#999">
+              <tui-radio
+                color="#FE0000"
+                :checked="item.serverContent === value"
+                :value="item.serverContent"
+                borderColor="#999"
+              >
               </tui-radio>
-              <text class="tui-text">{{ item.serverContent.replaceAll('\n', '') }}</text>
+              <text class="tui-text">{{
+                item.serverContent.replaceAll("\n", "")
+              }}</text>
             </view>
           </tui-list-cell>
         </tui-label>
@@ -33,7 +42,6 @@
         </tui-list-cell>
       </tui-label>
     </view>
-
   </view>
 </template>
 
@@ -42,61 +50,61 @@ export default {
   props: {
     type: {
       type: Number,
-      default: 1
+      default: 1,
     },
     radius: {
       type: String,
-      default: '42rpx'
+      default: "42rpx",
     },
 
     data: {
       type: Array,
-      required: true
+      required: true,
     },
 
     value: {
       type: String,
-      required: true
+      required: true,
     },
 
     desc: {
       type: String,
-      default: '任意一项清洗服务'
+      default: "任意一项清洗服务",
     },
 
     subTitle: {
       type: String,
-      default: '金管家会员'
-    }
+      default: "金管家会员",
+    },
   },
   data() {
     return {
-      chooseServeContent: ''
-    }
+      chooseServeContent: "",
+    };
   },
 
   watch: {
     chooseServeContent: {
       handler(value) {
-        this.$emit('input', value)
-      }
+        this.$emit("input", value);
+      },
     },
 
     value: {
       handler(value) {
-        this.serverContent = value
+        this.serverContent = value;
       },
 
-      immediate: true
-    }
-  }
-}
+      immediate: true,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .vip-serves-pane {
   box-sizing: border-box;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   padding: 30upx 37upx;
 
   .title {
@@ -121,7 +129,7 @@ export default {
   /deep/ .tui-text {
     margin-left: 34upx;
     font-size: 32upx;
-    color: #3D3D3D;
+    color: #3d3d3d;
   }
 }
 </style>
