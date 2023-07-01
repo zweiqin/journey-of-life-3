@@ -211,7 +211,7 @@ export default {
 
     const _this = this;
     // uni.request({
-    //   url: "http://192.168.0.27:8781/laoa-huozhu/api/hz/order/third/productTypeListNew", //仅为示例，并非真实接口地址。
+    //   url: "http://192.168.0.27:8781laoa-huozhu/api/hz/order/third/productTypeListNew", //仅为示例，并非真实接口地址。
     //   method: "POST",
     //   success: (res) => {
     //     _this.commoditySelect = res.data.data;

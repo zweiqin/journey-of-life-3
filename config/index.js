@@ -1,4 +1,7 @@
-export const BASE_URL = "https://www.zhult.com/test-";
+// export const BASE_URL = "https://www.zhult.com/test-";
+export const BASE_URL = "https://www.zhult.com/";
+
+
 export const RUAN_URL = "https://www.tuanfengkeji.cn:9527/dts-app-api/wx"; // 生产
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:8098/dts-app-api/wx' // 测试
 // export const RUAN_URL = 'http://192.168.0.91:8080/demo/wx' // 本地
@@ -17,7 +20,9 @@ export const SheQu_URL = "https://www.tuanfengkeji.cn:9527/dts-app-api";
 // export const SheQu_URL = "http://192.168.0.52:8080/demo/";
 
 // 线上助力通
-export const SheQu1_URL = "https://www.zhult.com/test-";
+// export const SheQu1_URL = "https://www.zhult.com/test-";
+export const SheQu1_URL = "https://www.zhult.com/";
+
 
 // 本地
 // export const SheQu1_URL ="http://192.168.0.108:8781";

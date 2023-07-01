@@ -46,7 +46,7 @@ export const deleteAddressApi = (data) => {
 //根据地址动态查询对应的数据
 export const queryDynamicDataApi = (data) =>
   SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/queryDynamicData",
+    "laoa-huozhu/api/hz/order/third/queryDynamicData",
     data,
     "get"
   );

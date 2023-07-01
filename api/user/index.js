@@ -132,7 +132,7 @@ export const getLevelPaySalesmanPrepayBySybApi = (data) =>
   RuanRequest("/levelPay/SalesmanPrepayBySyb", data);
 // 会员支付h5
 export const paySybForEndApi = (data) =>
-  request("/laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
+  request("laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
 
 // 更新用户信息
 export const updateUserInfoApi = (data) => RuanRequest("/user/update", data);
@@ -323,23 +323,23 @@ export const getCouponListApi = (data) =>
 
 // 查询用户是否购买过金管家套餐
 export const userIsPurchaseApi = (data) =>
-  SheQuRequest1("/laoa-huozhu/api/hz/order/third/userIsPurchase", data);
+  SheQuRequest1("laoa-huozhu/api/hz/order/third/userIsPurchase", data);
 
 // 获取金管家套餐列表
 export const getSetMealListApi = (data) =>
-  SheQuRequest1("/laoa-huozhu/api/hz/order/third/getSetMealList", data);
+  SheQuRequest1("laoa-huozhu/api/hz/order/third/getSetMealList", data);
 
 // 获取会员套餐列表
 export const getServerProjectListApi = (data) =>
   SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getServerProjectList",
+    "laoa-huozhu/api/hz/order/third/getServerProjectList",
     data,
     "get"
   );
 
 // 预约服务
 export const reservationServiceApi = (data) =>
-  SheQuRequest1("/laoa-huozhu/api/hz/order/third/reservationService", data);
+  SheQuRequest1("laoa-huozhu/api/hz/order/third/reservationService", data);
 
 // 获取股东统计数据
 export const getShareHolderDataApi = (data) => {

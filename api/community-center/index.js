@@ -13,23 +13,23 @@ import { USER_TOKEN } from "constant";
  * @returns
  */
 export const getOrderOfferApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/getOrderOffer", data);
+  return request("laoa-huozhu/api/hz/order/third/getOrderOffer", data);
 };
 
 // 计算超距费
 export const getDistancePriceApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/getDistancePrice", data);
+  return request("laoa-huozhu/api/hz/order/third/getDistancePrice", data);
 };
 
 // 创建配送安装订单
 export const createOrderPabApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/createOrderPab", data);
+  return request("laoa-huozhu/api/hz/order/third/createOrderPab", data);
 };
 
 // 获取订单详情
 export const getOrderDetailApi = (no) => {
   return request(
-    "/laoa-huozhu/api/hz/order/third/detailsMd",
+    "laoa-huozhu/api/hz/order/third/detailsMd",
     { orderNo: no },
     "get"
   );
@@ -37,22 +37,22 @@ export const getOrderDetailApi = (no) => {
 
 // 取消订单
 export const cancelOrderApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/cancelOrder", data);
+  return request("laoa-huozhu/api/hz/order/third/cancelOrder", data);
 };
 
 // 获取商品配置
 export const getGoodsConfigApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/getOrderClaimSetting", data);
+  return request("laoa-huozhu/api/hz/order/third/getOrderClaimSetting", data);
 };
 
 // 创建维修订单
 export const createRepairOrderApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/createOrderPabWx", data);
+  return request("laoa-huozhu/api/hz/order/third/createOrderPabWx", data);
 };
 
 // 获取服务需求
 export const getDictListApi = () => {
-  return request("/laoa-huozhu/api/hz/order/third/getDictList", null, "get");
+  return request("laoa-huozhu/api/hz/order/third/getDictList", null, "get");
 };
 
 /**
@@ -64,14 +64,14 @@ export const getDictListApi = () => {
  * @returns
  */
 export const payOrderForEndApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
+  return request("laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
 };
 
 /**
  * @description 获取末端订单列表
  */
 export const getEndOrderListApi = (data) => {
-  return request("/laoa-huozhu/api/hz/order/third/orderPagelist", data);
+  return request("laoa-huozhu/api/hz/order/third/orderPagelist", data);
 };
 
 //线上
@@ -96,20 +96,20 @@ export const getServicePriceApi = (data) => {
 //新建社区订单
 export const getServiceOrderApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/createOrderPabWx",
+    "laoa-huozhu/api/hz/order/third/createOrderPabWx",
     data
   );
 };
 
 //订单支付
 export const getServiceOrderPayApi = (data) => {
-  return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
+  return SheQuRequest1("laoa-huozhu/api/hz/order/third/orderPayH5Pab", data);
 };
 
 //根据用户地址判断该区域是否开通了站长
 export const getIsOpenServerAreaApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getIsOpenServerArea",
+    "laoa-huozhu/api/hz/order/third/getIsOpenServerArea",
     data,
     "get"
   );
@@ -118,7 +118,7 @@ export const getIsOpenServerAreaApi = (data) => {
 //查询用户过往信息
 export const getUserInfoByIdApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getUserInfoById",
+    "laoa-huozhu/api/hz/order/third/getUserInfoById",
     data,
     "get"
   );
@@ -127,14 +127,14 @@ export const getUserInfoByIdApi = (data) => {
 //线上订单详情
 export const detailsMdApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/detailsMd",
+    "laoa-huozhu/api/hz/order/third/detailsMd",
     data,
     "get"
   );
 };
 //本地订单详情
 // export const detailsMdApi = (data) => {
-//   return XZLRequest("/laoa-huozhu/api/hz/order/third/detailsMd", data, "get");
+//   return XZLRequest("laoa-huozhu/api/hz/order/third/detailsMd", data, "get");
 // };
 
 //搜索查询
@@ -163,22 +163,22 @@ export const getSearchDataApi = (data) => {
 
 // //新建社区订单
 // export const getServiceOrderApi = (data) =>{
-//   return SheQuRequest1("/laoa-huozhu/api/hz/order/third/createOrderPabWx",data);
+//   return SheQuRequest1("laoa-huozhu/api/hz/order/third/createOrderPabWx",data);
 // };
 
 // //订单支付
 // export const getServiceOrderPayApi = (data) =>{
-//   return SheQuRequest1("/laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
+//   return SheQuRequest1("laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
 // };
 
 //根据用户地址判断该区域是否开通了站长
 // export const getIsOpenServerAreaApi = (data) => {
-//   return XZLRequest("/laoa-huozhu/api/hz/order/third/getIsOpenServerArea", data, "get");
+//   return XZLRequest("laoa-huozhu/api/hz/order/third/getIsOpenServerArea", data, "get");
 // };
 
 // //查询用户过往信息
 // export const getUserInfoByIdApi = (data) => {
-//   return XZLRequest("/laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
+//   return XZLRequest("laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
 // };
 
 /**
@@ -186,7 +186,7 @@ export const getSearchDataApi = (data) => {
  */
 export const getServeListApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getServerProjectList",
+    "laoa-huozhu/api/hz/order/third/getServerProjectList",
     data,
     "get",
     null,
@@ -201,7 +201,7 @@ export const getServeListApi = (data) => {
  */
 export const createBeeStewardOrderApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/createOrderSq",
+    "laoa-huozhu/api/hz/order/third/createOrderSq",
     data,
     "post",
     null,
@@ -216,7 +216,7 @@ export const createBeeStewardOrderApi = (data) => {
  */
 export const payOrderForBeeStewadApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/orderPayH5Pab",
+    "laoa-huozhu/api/hz/order/third/orderPayH5Pab",
     data,
     "post",
     null,
@@ -231,7 +231,7 @@ export const payOrderForBeeStewadApi = (data) => {
  */
 export const payOrderForBeeStewadAPPApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getSybPaySign",
+    "laoa-huozhu/api/hz/order/third/getSybPaySign",
     data,
     "post",
     null,
@@ -264,7 +264,7 @@ export const searchServeApi = (data) => {
 // 获取订单数量红点
 export const getOrderNumberApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getOrderReminder",
+    "laoa-huozhu/api/hz/order/third/getOrderReminder",
     data,
     "get",
     null,
@@ -277,7 +277,7 @@ export const getOrderNumberApi = (data) => {
 // 获取订单唯一id
 export const getOrderIdApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getSubmitToken",
+    "laoa-huozhu/api/hz/order/third/getSubmitToken",
     data,
     "get",
     null,
@@ -299,7 +299,7 @@ export const getArticleListApi = (data) => {
 // 获取二次报价的订单列表
 export const getTwicePayOrderListApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/getUserOrderExtraList",
+    "laoa-huozhu/api/hz/order/third/getUserOrderExtraList",
     data,
     "get",
     null,
@@ -312,7 +312,7 @@ export const getTwicePayOrderListApi = (data) => {
 // 追加金额订单支付
 export const payAdditionalOrderApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/orderPayH5PabExtra",
+    "laoa-huozhu/api/hz/order/third/orderPayH5PabExtra",
     data,
     "POST",
     null,
@@ -325,7 +325,7 @@ export const payAdditionalOrderApi = (data) => {
 // 拒绝追加金额
 export const refuseAdditionalPriceApi = (data) => {
   return SheQuRequest1(
-    "/laoa-huozhu/api/hz/order/third/refuseExtra",
+    "laoa-huozhu/api/hz/order/third/refuseExtra",
     data,
     "POST",
     null,
