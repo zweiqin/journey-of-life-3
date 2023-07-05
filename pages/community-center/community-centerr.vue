@@ -108,6 +108,11 @@
       @close="handleResetGlobal"
       ref="tuanWXLoginBindMobileRef"
     ></TuanWXLoginBindMobile>
+
+    <!-- 弹出关注公众号 -->
+    <TuanFollowOfficialAccount
+      ref="tuanFollowOfficialAccountRef"
+    ></TuanFollowOfficialAccount>
   </view>
 </template>
 
@@ -195,6 +200,10 @@ export default {
     setTimeout(() => {
       this.checkedWXBindMobile();
     }, 1000);
+
+    if (getApp().globalData.isShowFollowOfficialAccount) {
+      this.$refs.tuanFollowOfficialAccountRef.show();
+    }
   },
 
   methods: {

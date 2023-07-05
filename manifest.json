@@ -2,8 +2,8 @@
     "name" : "团蜂家居",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.14",
-    "versionCode" : 114,
+    "versionName" : "1.0.15",
+    "versionCode" : 115,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -142,7 +142,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wx6fa71e69231a4fa4",
+        "appid" : "1234",
         "setting" : {
             "urlCheck" : false
         },
@@ -183,6 +183,7 @@
             "mode" : "hash",
             "base" : "/TFShop_Uni_H5/"
         },
+        // "base" : "/test_TFShop_Uni_H5/"
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {

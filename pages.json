@@ -35,12 +35,6 @@
       }
     },
     {
-      "path": "pages/logs/logs",
-      "style": {
-        "navigationBarTitleText": "查看启动日志"
-      }
-    },
-    {
       "path": "pages/index/WholehouseCustomization/detail/detail",
       "style": {
         "navigationBarTitleText": "详情"
@@ -83,33 +77,6 @@
       "path": "pages/otherUrl/otherUrl"
     },
     {
-      "path": "pages/orderList/orderList",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarTitleText": "订单列表",
-        "navigationBarTextStyle": "black",
-        "navigationBarBackgroundColor": "#fafafa"
-      }
-    },
-    {
-      "path": "pages/order-detail/order-detail",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "订单详情",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/submit-order/submit-order",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "提交订单",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
       "path": "pages/choose-location/choose-location",
       "style": {
         "backgroundTextStyle": "light",
@@ -124,15 +91,6 @@
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "提交订单",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/search-prod-show/search-prod-show",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "搜索结果",
         "navigationBarTextStyle": "black"
       }
     },
@@ -153,12 +111,6 @@
       }
     },
     {
-      "path": "pages/login-wx/login",
-      "style": {
-        "navigationBarTitleText": "微信授权登录"
-      }
-    },
-    {
       "path": "pages/login/bind-phone",
       "style": {
         "navigationBarTitleText": "绑定手机号"
@@ -168,21 +120,6 @@
       "path": "pages/reset-password/reset-password",
       "style": {
         "navigationBarTitleText": "重置密码"
-      }
-    },
-    {
-      "path": "pages/prod-classify/prod-classify",
-      "style": {
-        "onReachBottomDistance": 0
-      }
-    },
-    {
-      "path": "pages/news-detail/news-detail",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarTitleText": "最新公告",
-        "navigationBarTextStyle": "black",
-        "navigationBarBackgroundColor": "#fafafa"
       }
     },
     {
@@ -210,18 +147,9 @@
       }
     },
     {
-      "path": "pages/store/store"
-    },
-    {
       "path": "stuff/stuffGoods/index",
       "style": {
         "navigationBarTitleText": "商品选购"
-      }
-    },
-    {
-      "path": "pages/payAccomplish/index",
-      "style": {
-        "navigationBarTitleText": "payAccomplish"
       }
     },
     {
@@ -768,13 +696,6 @@
             "usingComponents": {
               "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
             }
-          }
-        },
-        {
-          "path": "sever/userUp/index",
-          "style": {
-            "navigationBarTitleText": "会员升级",
-            "usingComponents": {}
           }
         },
         {

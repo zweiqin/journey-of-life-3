@@ -27,7 +27,7 @@
         :price="
           type == 2
             ? myAttributeVipJInData.serverPrice || 299
-            : currentJUHUIdata.serverPrice
+            : currentJUHUIdata.serverPrice || 39.9
         "
         @pay="handlePayVip"
       ></PayBar>
@@ -57,7 +57,7 @@
       :price="
         type == 2
           ? myAttributeVipJInData.serverPrice || 299
-          : currentJUHUIdata.serverPrice
+          : currentJUHUIdata.serverPrice || 39.9
       "
       @pay="handlePayVip"
     >
@@ -280,7 +280,8 @@ export default {
         });
       } else {
         const currentServe = this.indulgenceData.find(
-          (item) => item.serverContent === this.currentIndulgence
+          (item) =>
+            item.serverContent && item.serverContent === this.currentIndulgence
         );
         uni.navigateTo({
           url:

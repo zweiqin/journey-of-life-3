@@ -48,6 +48,8 @@ export default {
     isShowedBindMobilePopu: false,
     // 用户是否授权获取当前位置
     isHasLocationPermission: true,
+    // 是否显示关注公众号
+    isShowFollowOfficialAccount: false,
   },
   data() {
     return {
@@ -67,11 +69,10 @@ export default {
 
     // 设置用户定位
     async setUserLocation() {
-      // #ifdef APP
-      this.useStorageLocation();
-      // #endif
+      // // #ifdef APP
+      // this.useStorageLocation();
+      // // #endif
 
-      // #ifdef H5
       try {
         this.globalData.isHasLocationPermission = true;
         await this.$store.dispatch("location/getCurrentLocation", (res) => {
@@ -94,7 +95,6 @@ export default {
           this.useStorageLocation();
         }
       }, 2000);
-      // #endif
     },
 
     // 使用本地数据

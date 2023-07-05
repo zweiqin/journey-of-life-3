@@ -23,7 +23,9 @@
               >
               </tui-radio>
               <text class="tui-text">{{
-                item.serverContent.replaceAll("\n", "")
+                item.serverContent.replaceAll
+                  ? item.serverContent.replaceAll("\n", "")
+                  : item.serverContent
               }}</text>
             </view>
           </tui-list-cell>
