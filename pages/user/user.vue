@@ -10,6 +10,7 @@
     <view :style="{ height: moveDis / 2 + 'px' }" class="loading-pane">
       <tui-loading type="row" text="正在刷新中..."></tui-loading>
     </view>
+    <TuanAppShim bg="#f6eadf"></TuanAppShim>
     <BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
     <view class="main-area">
       <OrderPane @handleNavigate="handleNavigate"></OrderPane>

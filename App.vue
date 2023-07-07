@@ -74,7 +74,9 @@ export default {
       // // #endif
 
       try {
+        //  #ifdef H5
         this.globalData.isHasLocationPermission = true;
+        // #endif
         await this.$store.dispatch("location/getCurrentLocation", (res) => {
           this.$store.dispatch("community/getHomePopupImage", res.detail);
           this.$store.commit("community/CHANGE_HOME_STORE", res.town);
@@ -86,7 +88,7 @@ export default {
         if (lastAddress) {
           this.$store.dispatch("location/getDetailAddress", lastAddress.data);
         } else {
-          // 后端兜底
+          // 后端兜底1
         }
       }
 
@@ -110,9 +112,11 @@ export default {
     this.setUserLocation();
     this.updateToken();
 
-    // #ifdef APP
-    this.$store.dispatch("community/getHomePopupImage");
-    // #endif
+    this.$store.dispatch("app/getUserSystermInfo");
+
+    // // #ifdef APP
+    // this.$store.dispatch("community/getHomePopupImage");
+    // // #endif
 
     const launchOptions = uni.getLaunchOptionsSync();
     this.scene = launchOptions.scene;

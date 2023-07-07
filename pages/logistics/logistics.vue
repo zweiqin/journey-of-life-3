@@ -1,5 +1,6 @@
 <template>
   <view class="logistics-page">
+    <TuanAppShim bg="#fff"></TuanAppShim>
     <Search @focus="handleSearch"></Search>
     <Carousel
       :list="[

@@ -3,7 +3,8 @@
     {
       "path": "pages/community-center/community-centerr",
       "style": {
-        "navigationBarTitleText": "社区服务中心"
+        "navigationBarTitleText": "社区服务中心",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -12,7 +13,8 @@
         "navigationBarTitleText": "全屋严选",
         "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#fff",
-        "navigationBarTextStyle": "black"
+        "navigationBarTextStyle": "black",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -31,7 +33,8 @@
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "家具材料",
-        "navigationBarTextStyle": "black"
+        "navigationBarTextStyle": "black",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -49,13 +52,15 @@
     {
       "path": "pages/user/user",
       "style": {
-        "navigationBarTitleText": "个人中心"
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/logistics/logistics",
       "style": {
-        "navigationBarTitleText": "物流"
+        "navigationBarTitleText": "物流",
+        "navigationStyle": "custom"
       }
     },
     {

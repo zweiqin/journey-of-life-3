@@ -1,5 +1,6 @@
 <template>
   <view class="stuff-container">
+    <TuanAppShim bg="#ffbc16"></TuanAppShim>
     <HeaderTop></HeaderTop>
 
     <view class="main">

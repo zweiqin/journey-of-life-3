@@ -27,18 +27,18 @@
 </template>
 
 <script>
-import HeaderNav from './cpns/HeaderNav'
-import SearchFurniture from './SearchFurniture'
-import BrandFactory from './BrandFactory'
-import WholehouseCustomization from './WholehouseCustomization'
-import IntelligentSelection from './IntelligentSelection'
+import HeaderNav from "./cpns/HeaderNav";
+import SearchFurniture from "./SearchFurniture";
+import BrandFactory from "./BrandFactory";
+import WholehouseCustomization from "./WholehouseCustomization";
+import IntelligentSelection from "./IntelligentSelection";
 
 const mapRefs = {
-  0: 'searchFurnitureRef',
-  1: 'brandFactoryRef',
-  2: 'wholehouseCustomizationRef',
-  3: 'intelligentSelectionRef',
-}
+  0: "searchFurnitureRef",
+  1: "brandFactoryRef",
+  2: "wholehouseCustomizationRef",
+  3: "intelligentSelectionRef",
+};
 export default {
   components: {
     HeaderNav,
@@ -52,24 +52,24 @@ export default {
     return {
       current: 0,
       scrollTop: 0,
-    }
+    };
   },
 
   methods: {
     handleSwitchTab(value) {
-      this.current = value
+      this.current = value;
     },
   },
 
   onReachBottom() {
-    const reachBottomFn = this.$refs[mapRefs[this.current]].reachBottom
-    reachBottomFn && reachBottomFn()
+    const reachBottomFn = this.$refs[mapRefs[this.current]].reachBottom;
+    reachBottomFn && reachBottomFn();
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop
+    this.scrollTop = e.scrollTop;
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

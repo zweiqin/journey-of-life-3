@@ -1,5 +1,5 @@
 <template>
-	<view class="banner" @click="handlePrev" :style="{
+	<view class="banner" :style="{
 		height: height + 'px',
 		'border-radius': radius + 'px',
 		'margin-top': top + 'px',

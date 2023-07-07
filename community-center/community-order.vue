@@ -2,48 +2,26 @@
   <view class="community-order-container">
     <!-- 返回键 -->
     <view class="head">
-      <image
-        @click="handleBack"
-        class="back-icon"
-        src="../static/images/con-center/order-back.png"
-      ></image>
+      <image @click="handleBack" class="back-icon" src="../static/images/con-center/order-back.png"></image>
     </view>
 
     <!-- 上门地址 -->
-    <view
-      class="choose-address-wrapper section animate"
-      @click="go('/user/site/site-manage?appoint=true')"
-    >
+    <view class="choose-address-wrapper section animate" @click="go('/user/site/site-manage?appoint=true')">
       <view class="address-container" v-if="defualtAddress">
-        <view class="address-1">{{
-          defualtAddress.detailedAddress.split(" ")[0]
-        }}</view>
-        <view class="address-2">{{
-          defualtAddress.detailedAddress.split(" ")[1]
-        }}</view>
+        <view class="address-1">{{ defualtAddress.detailedAddress.split(' ')[0] }}</view>
+        <view class="address-2">{{ defualtAddress.detailedAddress.split(' ')[1] }}</view>
         <view class="user-info">
           <text class="user-name">{{ defualtAddress.name }}</text>
-          <text class="user-mobile">{{
-            defualtAddress.mobile.slice(0, 3) +
-            "****" +
-            defualtAddress.mobile.slice(7)
-          }}</text>
+          <text class="user-mobile">{{ defualtAddress.mobile.slice(0, 3) + '****' + defualtAddress.mobile.slice(7) }}</text>
         </view>
       </view>
 
       <view v-else class="section-title">请添加上门地址</view>
 
-      <image
-        class="address-icon"
-        src="../static/images/con-center/address-icon.png"
-      ></image>
+      <image class="address-icon" src="../static/images/con-center/address-icon.png"></image>
     </view>
 
-    <view
-      v-if="!isExistCommunityStore"
-      class="alert-wrapper section"
-      style="padding: 0"
-    >
+    <view v-if="!isExistCommunityStore" class="alert-wrapper section" style="padding: 0">
       <tui-alerts type="warn" title="您所在区域不在接单范围内"></tui-alerts>
     </view>
 
@@ -56,25 +34,14 @@
           <text class="serve-price" v-if="currentServeInfo.serverPrice">
             <text
               :class="{
-                del: !!calcServePrice && calcServePrice.newPrice,
+                del: !!calcServePrice && calcServePrice.newPrice
               }"
               class="price-text"
-              >￥{{
-                (calcServePrice && calcServePrice.oldPrice) ||
-                currentServeInfo.serverPrice
-              }}</text
+              >￥{{ (calcServePrice && calcServePrice.oldPrice) || currentServeInfo.serverPrice }}</text
             >
 
-            <text
-              v-if="
-                calcServePrice &&
-                calcServePrice.newPrice &&
-                calcServePrice.newPrice != 0
-              "
-              class="price-text"
-              >￥{{
-                (calcServePrice && calcServePrice.newPrice) || preferentialPrice
-              }}</text
+            <text v-if="calcServePrice && calcServePrice.newPrice && calcServePrice.newPrice != 0" class="price-text"
+              >￥{{ (calcServePrice && calcServePrice.newPrice) || preferentialPrice }}</text
             >
             /{{ currentServeInfo.serverUnit }}</text
           ></view
@@ -84,12 +51,7 @@
       <view class="car-info">
         <image class="serve-img" :src="currentServeInfo.imgUrl"></image>
         <view class="number-control">
-          <view
-            @click="handleChangeServeNumber(-1)"
-            class="item mult"
-            :class="{ disabled: orderForm.quantity == 1 }"
-            >-</view
-          >
+          <view @click="handleChangeServeNumber(-1)" class="item mult" :class="{ disabled: orderForm.quantity == 1 }">-</view>
           <view class="number item">{{ orderForm.quantity }}</view>
 
           <view @click="handleChangeServeNumber(1)" class="item add">+</view>
@@ -101,10 +63,7 @@
     <view class="serve-time section animate" @click="chooseTimeVisible = true">
       <view class="header-wrapper">
         <view class="section-title">请选择期望上门时间</view>
-        <image
-          class="address-icon"
-          src="../static/images/con-center/order-time.png"
-        ></image>
+        <image class="address-icon" src="../static/images/con-center/order-time.png"></image>
       </view>
 
       <view class="choose-time">{{ orderForm.datetimerange }}</view>
@@ -114,27 +73,13 @@
     <view class="serve-user-goods-info section">
       <view class="section-title">维修物品图片</view>
       <view class="image-list">
-        <view
-          class="add-img-icon item"
-          v-for="item in orderForm.orderGoodsList"
-          :key="item"
-        >
-          <tui-icon
-            v-show="!chooseTimeVisible"
-            @click="handleDeleteImg(item)"
-            name="close-fill"
-            color="#FC4023"
-            :size="17"
-            class="close-icon"
-          ></tui-icon>
+        <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
+          <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
           <image class="goods-img" mode="aspectFit" :src="item"></image>
         </view>
 
         <view class="add-img-icon item" @click="handleUploadImg">
-          <image
-            class="add-icon"
-            src="../static/images/con-center/add-icon.png"
-          ></image>
+          <image class="add-icon" src="../static/images/con-center/add-icon.png"></image>
         </view>
       </view>
 
@@ -188,27 +133,21 @@
 
         <view class="cost-item">
           <view class="cost-title">优惠价</view>
-          <view class="cost-value none">{{
-            calcServePrice.preferentialPrice
-          }}</view>
+          <view class="cost-value none">{{ calcServePrice.preferentialPrice }}</view>
         </view>
 
         <view class="cost-item">
           <view class="cost-title">应付</view>
-          <view class="cost-value" style="color: #e95d20"
-            >￥{{ calcServePrice.oughtPrice }}</view
-          >
+          <view class="cost-value" style="color: #e95d20">￥{{ calcServePrice.oughtPrice }}</view>
         </view>
       </view>
     </view>
 
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
-      <view class="pay-price" v-if="isByItNow && calcServePrice">
-        ￥{{ calcServePrice.oughtPrice }}</view
-      >
+      <view class="pay-price" v-if="isByItNow && calcServePrice"> ￥{{ calcServePrice.oughtPrice }}</view>
       <button class="uni-btn" @click="handleConfirmOrder">
-        {{ isOffer ? "获取价格中..." : "确认" }}
+        {{ isOffer ? '获取价格中...' : '确认' }}
       </button>
     </view>
 
@@ -218,16 +157,12 @@
 </template>
 
 <script>
-import { getUserId } from "utils";
-import { debounce } from "lodash-es";
-import { getAddressListApi } from "../api/address";
-import { SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from "../constant";
-import ChooseTime from "./componts/choose-time.vue";
-import {
-  getServicePriceApi,
-  getServiceOrderApi,
-  getIsOpenServerAreaApi,
-} from "../api/community-center";
+import { getUserId } from 'utils';
+import { debounce } from 'lodash-es';
+import { getAddressListApi } from '../api/address';
+import { SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from '../constant';
+import ChooseTime from './componts/choose-time.vue';
+import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center';
 
 export default {
   components: { ChooseTime },
@@ -239,10 +174,10 @@ export default {
       currentServeInfo: {},
       // 表单信息
       orderForm: {
-        datetimerange: "", // 期望上门时间
+        datetimerange: '', // 期望上门时间
         quantity: 1, // 数量
         orderGoodsList: [], // 图片
-        remarks: "", // 备注信息
+        remarks: '' // 备注信息
       },
       chooseTimeVisible: false,
       changeNumberFn: () => {},
@@ -250,17 +185,14 @@ export default {
       isExistCommunityStore: true,
       isSubmitOrder: false,
       preferentialPrice: 0, // "优惠价",
-      isOffer: false,
+      isOffer: false
     };
   },
 
   onLoad(options) {
     this.currentServeInfo = options;
-    this.isByItNow = options.priceType === "true";
-    this.preferentialPrice =
-      options.preferentialPrice === "null"
-        ? null
-        : options.preferentialPrice * 1;
+    this.isByItNow = options.priceType === 'true';
+    this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1;
   },
 
   onShow() {
@@ -282,7 +214,7 @@ export default {
         return;
       }
       const { data } = await getAddressListApi({
-        userId: getUserId(),
+        userId: getUserId()
       });
 
       // if (data.length) {
@@ -315,8 +247,8 @@ export default {
     handleChangeServeNumber(number) {
       if (number < 0 && this.orderForm.quantity == 1) {
         this.ttoast({
-          type: "fail",
-          title: "最小服务单位是1",
+          type: 'fail',
+          title: '最小服务单位是1'
         });
         return;
       }
@@ -335,7 +267,7 @@ export default {
           userId: getUserId(),
           serverInfoId: this.currentServeInfo.detailId,
           quantity: this.orderForm.quantity,
-          address: this.defualtAddress.detailedAddress,
+          address: this.defualtAddress.detailedAddress
           // price: this.preferentialPrice || this.currentServeInfo.serverPrice,
           // // actualPrice: this.preferentialPrice,
         });
@@ -344,8 +276,8 @@ export default {
           this.calcServePrice = res.data;
         } else {
           this.ttoast({
-            type: "fail",
-            title: "报价失败",
+            type: 'fail',
+            title: '报价失败'
           });
         }
       } finally {
@@ -356,9 +288,7 @@ export default {
     // 判断该区域是否开通了店长
     async checkAreaExistCommunitStore() {
       const res = await getIsOpenServerAreaApi({
-        address:
-          this.defualtAddress.detailedAddress &&
-          this.defualtAddress.detailedAddress.replace(" ", ""),
+        address: this.defualtAddress.detailedAddress && this.defualtAddress.detailedAddress.replace(' ', '')
       });
       if (res.statusCode === 20000) {
         this.isExistCommunityStore = res.data;
@@ -373,19 +303,17 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
               filePath: imgFile.path,
-              name: "file",
+              name: 'file',
               formData: {
                 token: USER_TOKEN,
-                userId: getUserId(),
+                userId: getUserId()
               },
               success: (uploadFileRes) => {
                 uni.hideLoading();
-                _this.orderForm.orderGoodsList.push(
-                  JSON.parse(uploadFileRes.data).data.url
-                );
-              },
+                _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url);
+              }
             });
           }
 
@@ -393,32 +321,30 @@ export default {
         },
         fail: (fail) => {
           console.log(fail);
-        },
+        }
       });
     },
 
     // 点击删除图片
     handleDeleteImg(img) {
-      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter(
-        (item) => item !== img
-      );
+      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img);
     },
 
     // 确认提交订单
     async handleConfirmOrder() {
       if (this.isOffer) {
         this.ttoast({
-          type: "info",
-          title: "获取订单价格中...",
+          type: 'info',
+          title: '获取订单价格中...'
         });
         return;
       }
 
       if (this.isSubmitOrder) {
         this.ttoast({
-          type: "info",
-          title: "请稍后...",
-          content: "订单创建中",
+          type: 'info',
+          title: '请稍后...',
+          content: '订单创建中'
         });
 
         return;
@@ -426,16 +352,16 @@ export default {
 
       if (!this.defualtAddress || !this.defualtAddress.name) {
         this.ttoast({
-          type: "fail",
-          title: "请选择上门地址",
+          type: 'fail',
+          title: '请选择上门地址'
         });
         return;
       }
 
       if (!this.orderForm.datetimerange) {
         this.ttoast({
-          type: "info",
-          title: "请选择期望上门时间",
+          type: 'info',
+          title: '请选择期望上门时间'
         });
 
         this.chooseTimeVisible = true;
@@ -443,44 +369,44 @@ export default {
       }
 
       if (!this.orderForm.orderGoodsList.length) {
-        this.ttoast({
-          type: "info",
-          title: "请上传服务物品图片",
-        });
+        const name = this.currentServeInfo.name;
+        if (!name.includes('维修') && !name.includes('修') && !name.includes('保') && !name.includes('补')) {
+          this.ttoast({
+            type: 'info',
+            title: '请上传服务物品图片'
+          });
 
-        return;
+          return;
+        }
       }
       this.isSubmitOrder = true;
 
       try {
         const { remarks, orderGoodsList, datetimerange } = this.orderForm;
         const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
-        const payOrderPrice =
-          (this.calcServePrice && this.calcServePrice.oughtPrice) || "";
+        const payOrderPrice = (this.calcServePrice && this.calcServePrice.oughtPrice) || '';
         const subOrderData = {
           userId: getUserId(),
-          remarks: remarks || "",
+          remarks: remarks || '',
           orderGoodsList: orderGoodsList.map((item) => ({
-            goodsType: "团蜂",
-            goodsUrl: item,
+            goodsType: '团蜂',
+            goodsUrl: item
           })),
           dictName: this.currentServeInfo.name,
           installDate: datetimerange,
           consigneeName: this.defualtAddress.name,
           consigneeMobile: this.defualtAddress.mobile,
-          consigneeAddress: this.defualtAddress.detailedAddress.split(" ")[0],
-          consigneeAddressDetail:
-            this.defualtAddress.detailedAddress.split(" ")[1],
+          consigneeAddress: this.defualtAddress.detailedAddress.split(' ')[0],
+          consigneeAddressDetail: this.defualtAddress.detailedAddress.split(' ')[1],
           spotOrder: 0,
-          pullIn: this.currentServeInfo.name === "空调清洗服务" ? 2 : 1,
+          pullIn: this.currentServeInfo.name === '空调清洗服务' ? 2 : 1,
           pricingType: this.isByItNow ? 1 : 2,
           paymentMethod: 1,
           orderType: 1,
           isVipSetmral: 0,
           deliveryType: 4,
-          price: (this.calcServePrice && this.calcServePrice.sumPrice) || "",
-          actualPrice:
-            (this.calcServePrice && this.calcServePrice.oughtPrice) || "",
+          price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
+          actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
         };
 
         // 判断是否是师傅现场下单
@@ -491,48 +417,40 @@ export default {
 
         const res = await getServiceOrderApi(subOrderData);
         if (res.statusCode === 20000) {
-          this.ttoast("订单创建成功");
+          this.ttoast('订单创建成功');
           uni.removeStorageSync(SF_INVITE_CODE);
-          uni.setStorageSync("communityOrder", res.data);
+          uni.setStorageSync('communityOrder', res.data);
           setTimeout(() => {
             uni.redirectTo({
-              url: `/community-center/confirm-order?name1=${
-                this.currentServeInfo.name
-              }&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}
-        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${
-                this.defualtAddress.mobile
-              }&consigneeAddress=${
-                this.defualtAddress.detailedAddress.split(" ")[0]
-              }&consigneeAddressDetail=${
-                this.defualtAddress.detailedAddress.split(" ")[1]
-              }
-        &installDate=${this.orderForm.datetimerange}&pricingType=${
-                this.isByItNow ? 1 : 2
-              }&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${
+              url: `/community-center/confirm-order?name1=${this.currentServeInfo.name}&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}
+        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${this.defualtAddress.mobile}&consigneeAddress=${
+                this.defualtAddress.detailedAddress.split(' ')[0]
+              }&consigneeAddressDetail=${this.defualtAddress.detailedAddress.split(' ')[1]}
+        &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow ? 1 : 2}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${
                 res.data
-              }`,
+              }`
             });
           }, 500);
         }
       } catch (error) {
         this.ttoast({
-          type: "fail",
-          title: "订单创建失败",
-          content: "请联系管理员",
+          type: 'fail',
+          title: '订单创建失败',
+          content: '请联系管理员'
         });
       } finally {
         this.isSubmitOrder = false;
       }
-    },
+    }
   },
 
   watch: {
-    "orderForm.quantity": {
+    'orderForm.quantity': {
       handler: debounce(function () {
         this.handleGetOrderPrice();
-      }, 500),
-    },
-  },
+      }, 500)
+    }
+  }
 };
 </script>
 

@@ -1,5 +1,7 @@
 <template>
   <view class="community-center-container">
+    <TuanAppShim bg="#e95d20"></TuanAppShim>
+
     <!-- 顶部搜索 -->
     <TopHead></TopHead>
 
@@ -296,12 +298,17 @@ export default {
       !!options.miniProgram
     );
     // if (!!options.miniProgram || getApp().globalData.isInMiniprogram) {
+
+    // #ifdef H5
     const script = document.createElement("script");
     script.src = "https://res.wx.qq.com/open/js/jweixin-1.4.0.js";
     document.body.appendChild(script);
+    // #endif
+
     setTimeout(() => {
       this.handleInitShare();
     }, 500);
+
     // }
   },
 };

@@ -80,77 +80,9 @@ export default {
 
   actions: {
     async getCurrentLocation({ commit }, onSuccess) {
-      // #ifdef APP
-      uni.getLocation({
-        type: "gcj02",
-        altitude: true,
-        geocode: false,
-        timeout: 5,
-        cacheTimeout: 4000,
-        accuracy: "high",
-        isHighAccuracy: true,
-        success(res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === "1") {
-                commit(CHANGE_LOCATION_INFO, res.regeocode);
-              }
-            })
-            .catch(() => {});
-        },
-      });
-      // #endif
-
-      // #ifdef H5
-      // MapLoader(
-      //   (res) => {
-      //     getAdressDetailByLngLat(res.latitude, res.longitude)
-      //       .then((res) => {
-      //         if (res.status === "1") {
-      //           commit(CHANGE_LOCATION_INFO, res.regeocode);
-      //           const addressDetail = res.regeocode;
-      //           onSuccess &&
-      //             typeof onSuccess === "function" &&
-      //             onSuccess(
-      //               addressDetail.addressComponent.province +
-      //                 addressDetail.addressComponent.city +
-      //                 addressDetail.addressComponent.district +
-      //                 addressDetail.addressComponent.township
-      //             );
-      //         }
-      //       })
-      //       .catch(() => {
-      //         // _this.address = '定位失败'
-      //       });
-      //   },
-      //   () => {
-      //     uni.getLocation({
-      //       type: "gcj02",
-      //       success(res) {
-      //         getAdressDetailByLngLat(res.latitude, res.longitude)
-      //           .then((res) => {
-      //             if (res.status === "1") {
-      //               commit(CHANGE_LOCATION_INFO, res.regeocode);
-      //               const addressDetail = res.regeocode;
-      //               onSuccess &&
-      //                 typeof onSuccess === "function" &&
-      //                 onSuccess(
-      //                   addressDetail.addressComponent.province +
-      //                     addressDetail.addressComponent.city +
-      //                     addressDetail.addressComponent.district +
-      //                     addressDetail.addressComponent.township
-      //                 );
-      //             }
-      //           })
-      //           .catch(() => {
-      //             // _this.address = '定位失败'
-      //           });
-      //       },
-      //     });
-      //   }
-      // );
 
       return new Promise(async (resolve, reject) => {
+        console.log("我叼你妈");
         // debugger
         try {
           // await isUserEmpowerLocationPermission();
@@ -195,8 +127,6 @@ export default {
           reject(false);
         }
       });
-
-      // #endif
     },
 
     async getDetailAddress({ commit, dispatch }, data) {

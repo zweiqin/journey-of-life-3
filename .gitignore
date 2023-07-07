@@ -7,3 +7,5 @@ wxcomponents
 text.html
 test1.html
 auxiliary/
+leetcode.ts
+.prettierrc

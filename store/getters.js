@@ -31,4 +31,7 @@ export default {
   homeCommunityStore: (state) => state.community.homeCommunityStore,
   popupImagePath: (state) => state.community.popupImagePath,
   dzVipList: (state) => state.community.dzVipList,
+
+  // app
+  statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
 };
