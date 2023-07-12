@@ -26,12 +26,7 @@
 
       <!-- 右边的小人 -->
       <view class="person-wrapper">
-        <TuanImage
-          :width="104"
-          :height="149"
-          :src="require('../../static/images/con-center/new-home/person.png')"
-        >
-        </TuanImage>
+        <TuanImage :width="104" :height="149" :src="require('../../static/images/con-center/new-home/person.png')"> </TuanImage>
       </view>
 
       <!-- 主要的menu区域 -->
@@ -61,14 +56,7 @@
     <ServiceStationPane></ServiceStationPane>
 
     <!-- 服务项目 -->
-    <ServerPane
-      :id="item.id"
-      v-for="(item, index) in servePaneList"
-      :key="index"
-      :title="item.title"
-      :list="item.children"
-    >
-    </ServerPane>
+    <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
 
     <!-- #ifdef H5 -->
     <!-- 经验分享 -->
@@ -96,47 +84,32 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '')"
-    ></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
     <TuanWxShare ref="tuanWxShareRef" @click="handleInitShare"></TuanWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile
-      @close="handleResetGlobal"
-      ref="tuanWXLoginBindMobileRef"
-    ></TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile @close="handleResetGlobal" ref="tuanWXLoginBindMobileRef"></TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
-    <TuanFollowOfficialAccount
-      ref="tuanFollowOfficialAccountRef"
-    ></TuanFollowOfficialAccount>
+    <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
   </view>
 </template>
 
 <script>
-import TopHead from "./cpns/TopHead.vue";
-import MainMenu from "./cpns/MainMenu.vue";
-import { bannerListIcon, vipBarConfig } from "./config";
-import ServiceStationPane from "./cpns/ServiceStationPane.vue";
-import ServerPane from "./cpns/ServerPane.vue";
-import ArticleList from "./cpns/Article.vue";
-import VipPackage from "./cpns/VipPackage.vue";
-import PopupInformation from "../../components/popup-information/popup-information";
-import {
-  COMMUNITY_ORDER_ITEM_NO,
-  COMMUNITY_ORDER_NO,
-  USER_INFO,
-  USER_TOKEN,
-} from "../../constant";
-import { getServiceSortApi } from "../../api/community-center";
-import showModal from "mixin/showModal";
-import { MINI_PROGRAM_TAG } from "../../constant";
-import { CHANGE_IS_IN_MINIPROGRAM } from "../../store/modules/type";
+import TopHead from './cpns/TopHead.vue';
+import MainMenu from './cpns/MainMenu.vue';
+import { bannerListIcon, vipBarConfig } from './config';
+import ServiceStationPane from './cpns/ServiceStationPane.vue';
+import ServerPane from './cpns/ServerPane.vue';
+import ArticleList from './cpns/Article.vue';
+import VipPackage from './cpns/VipPackage.vue';
+import PopupInformation from '../../components/popup-information/popup-information';
+import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO, USER_TOKEN } from '../../constant';
+import { getServiceSortApi } from '../../api/community-center';
+import showModal from 'mixin/showModal';
+import { MINI_PROGRAM_TAG } from '../../constant';
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 
 const app = getApp();
 
@@ -151,21 +124,21 @@ export default {
     ArticleList,
     PopupInformation,
     ServerPane,
-    VipPackage,
+    VipPackage
   },
   mixins: [showModal()],
   data() {
     return {
       bannerListIcon: Object.freeze(bannerListIcon),
       data: [],
-      url: "",
+      url: '',
       isShowPic: false,
-      serverPrice: "",
-      serverName: "",
-      serverType: "",
-      className: "",
+      serverPrice: '',
+      serverName: '',
+      serverType: '',
+      className: '',
       vipBarConfig: Object.freeze(vipBarConfig),
-      servePaneList: [],
+      servePaneList: []
     };
   },
   onShow() {
@@ -188,10 +161,10 @@ export default {
     // #endif
 
     // #ifdef H5
-    if (window.location.href.includes("?code")) {
+    if (window.location.href.includes('?code')) {
       let clearWXCodeUrl = window.location.origin + window.location.pathname;
       if (getApp().globalData.isInMiniprogram) {
-        clearWXCodeUrl += "/?miniProgram=1";
+        clearWXCodeUrl += '/?miniProgram=1';
       }
       window.location.href = clearWXCodeUrl;
     }
@@ -214,7 +187,7 @@ export default {
       if (this.isLogin()) {
         this.go(
           this.$store.getters.popupImagePath ||
-            "/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png"
+            '/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png'
         );
       } else {
         this.$data._isShowTuiModel = true;
@@ -230,18 +203,14 @@ export default {
             break;
           }
           let list = item.children[0].children;
-          if (
-            list.length < 6 &&
-            item.children[1] &&
-            item.children[1].children.length >= 6
-          ) {
+          if (list.length < 6 && item.children[1] && item.children[1].children.length >= 6) {
             list = item.children[1].children;
           }
           if (list.length % 3 === 0) {
             this.servePaneList.push({
               id: item.id,
               title: item.serverNameOne,
-              children: list,
+              children: list
             });
           }
         }
@@ -257,14 +226,13 @@ export default {
     async handleShareServe(isQuit) {
       const data = {
         data: {
-          title: "团蜂家居社区服务中心",
-          desc: "一切和家居有关的问题，我们都能解决",
+          title: '团蜂家居社区服务中心',
+          desc: '一切和家居有关的问题，我们都能解决',
           link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/`,
-          imageUrl:
-            "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png",
+          imageUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
         },
         successCb: () => {},
-        failCb: () => {},
+        failCb: () => {}
       };
       await this.$refs.tuanWxShareRef.share(data, isQuit);
     },
@@ -289,28 +257,25 @@ export default {
 
     handleResetGlobal() {
       app.globalData.isShowedBindMobilePopu = true;
-    },
+    }
   },
 
   onLoad(options) {
-    this.$store.commit(
-      `app/${CHANGE_IS_IN_MINIPROGRAM}`,
-      !!options.miniProgram
-    );
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
     // if (!!options.miniProgram || getApp().globalData.isInMiniprogram) {
 
     // #ifdef H5
-    const script = document.createElement("script");
-    script.src = "https://res.wx.qq.com/open/js/jweixin-1.4.0.js";
+    const script = document.createElement('script');
+    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js';
     document.body.appendChild(script);
-    // #endif
 
     setTimeout(() => {
       this.handleInitShare();
     }, 500);
+    // #endif
 
     // }
-  },
+  }
 };
 </script>
 
@@ -360,7 +325,7 @@ export default {
     margin-bottom: 10px;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 42upx;
       left: 30upx;

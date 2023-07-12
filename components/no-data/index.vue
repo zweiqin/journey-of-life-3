@@ -2,7 +2,7 @@
   <view class="empty-container">
     <img
       class="empty-img"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ncs28ma9a3ac5ufebzsw.png"
+      src="../../static/images/user/site/ncs28ma9a3ac5ufebzsw.png"
       alt=""
     />
 

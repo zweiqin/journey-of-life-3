@@ -9,7 +9,7 @@ export const checkedVersionApi = data => {
 // 根据 code 获取 openId
 export const getOpenIdApi = data => {
   return SheQuRequest1(
-    '/samrtWorker/api/wechat/message/getOpenIdByCode',
+    'samrtWorker/api/wechat/message/getOpenIdByCode',
     data,
     'get',
     null,
@@ -22,7 +22,7 @@ export const getOpenIdApi = data => {
 // 绑定openId
 export const handleBindOpenIdApi = data => {
   return SheQuRequest1(
-    '/samrtWorker/api/wechat/message/bindingOpenId',
+    'samrtWorker/api/wechat/message/bindingOpenId',
     data,
     'post',
     null,
@@ -35,7 +35,7 @@ export const handleBindOpenIdApi = data => {
 // 查询是否绑定了电话
 export const queryIsBindPhoneApi = data => {
   return SheQuRequest1(
-    '/samrtWorker/api/wechat/message/getUserInfoByUserId',
+    'samrtWorker/api/wechat/message/getUserInfoByUserId',
     data,
     'get',
     null,

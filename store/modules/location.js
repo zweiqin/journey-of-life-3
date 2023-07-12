@@ -82,7 +82,6 @@ export default {
     async getCurrentLocation({ commit }, onSuccess) {
 
       return new Promise(async (resolve, reject) => {
-        console.log("我叼你妈");
         // debugger
         try {
           // await isUserEmpowerLocationPermission();
