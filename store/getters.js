@@ -25,6 +25,7 @@ export default {
   couponNumber: (state) => state.user.couponNumber,
   communityOrderInfo: (state) => state.user.communityOrderInfo,
   applyRegionAgentStatus: (state) => state.user.applyRegionAgentStatus,
+  regimentalCommanderStatus: state => state.user.regimentalCommanderStatus,
 
   // 社区
   popupImage: (state) => state.community.popupImage,

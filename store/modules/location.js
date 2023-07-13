@@ -15,7 +15,6 @@ export default {
   namespaced: true,
   state() {
     return {
-      // TODO: 默认值改掉
       locationInfo: {
         city: "",
         province: "",

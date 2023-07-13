@@ -218,3 +218,7 @@ text {
   box-shadow: 0px 0 1upx #ed3f14;
   border: 4upx solid #fff;
 }
+
+.tui-toast-text{
+  line-height: 1.5;
+}

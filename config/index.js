@@ -22,6 +22,7 @@ export const SheQu_URL = "https://www.tuanfengkeji.cn:9527/dts-app-api";
 // 线上助力通
 // export const SheQu1_URL = "https://www.zhult.com/test-";
 export const SheQu1_URL = "https://www.zhult.com/";
+// export const SheQu1_URL = "http://192.168.0.59:8080/demo/";
 
 
 // 本地
@@ -39,7 +40,9 @@ export const BASE_WS_API =
  * 师傅的
  */
 // 线上
-export const sf = "https://www.zhult.com/samrtWorker";
+// export const sf = "https://www.zhult.com/samrtWorker";
+// 测试
+// export const sf = "https://www.zhult.com/test-samrtWorker";
 // 本地
-// export const sf = "/sf";
+export const sf = "/sf";
 

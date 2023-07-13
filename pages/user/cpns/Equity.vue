@@ -3,16 +3,38 @@
     <view class="title-wrapper">
       <view class="title-item">我的权益</view>
     </view>
-
-    <view class="menus-container" :style="{height: menu.length > 8 ? '340upx' : ''}">
+    <view class="menus-container" :style="{ height: menu.length > 8 ? '340upx' : '' }">
       <view class="swiper-item">
-        <view class="menu-item" :style="{ marginTop: menu.length > 8 ? '10upx' : 0 }"
-          @click="$emit('handleNavigate', item)" v-for="item in menu" :key="item.name">
+        <view
+          class="menu-item"
+          :style="{ marginTop: menu.length > 8 ? '10upx' : 0 }"
+          @click="$emit('handleNavigate', item)"
+          v-for="item in menu"
+          :key="item.name"
+        >
           <image class="menu-icon" :src="item.icon" mode="" />
           <text class="menu-title">{{ item.name }}</text>
-          <tui-badge v-if="item.name === '区域代理' && $store.getters.applyRegionAgentStatus
-            " type="danger" absolute :scaleRatio="0.8" translateX="40%" top="6rpx" right="44rpx">{{
-    $store.getters.applyRegionAgentStatus }}</tui-badge>
+          <tui-badge
+            v-if="item.name === '区域代理' && $store.getters.applyRegionAgentStatus"
+            type="danger"
+            absolute
+            :scaleRatio="0.8"
+            translateX="40%"
+            top="6rpx"
+            right="44rpx"
+            >{{ $store.getters.applyRegionAgentStatus }}</tui-badge
+          >
+
+          <tui-badge
+            v-if="item.name === '申请团长' && $store.getters.regimentalCommanderStatus"
+            type="danger"
+            absolute
+            :scaleRatio="0.8"
+            translateX="40%"
+            top="6rpx"
+            right="218rpx"
+            >{{ $store.getters.regimentalCommanderStatus | mapStatus }}</tui-badge
+          >
         </view>
       </view>
     </view>
@@ -20,16 +42,21 @@
 </template>
 
 <script>
+import { mapGroupStatus } from '../data';
 export default {
   props: {
     menu: {
       type: Array,
       required: true
     }
+  },
+
+  filters: {
+    mapStatus(status) {
+      return mapGroupStatus(status)
+    }
   }
-
-
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -77,9 +104,11 @@ text {
         width: 25%;
         height: 104upx;
 
-        .menu-icon {}
+        .menu-icon {
+        }
 
-        .menu-title {}
+        .menu-title {
+        }
       }
     }
   }

@@ -163,10 +163,31 @@
         "navigationBarTitleText": ""
       }
     },
+    // {
+    //   "path": "user/account-book/index",
+    //   "style": {
+    //     "navigationBarTitleText": "小账本"
+    //   }
+    // },
     {
-      "path": "user/account-book/index",
+      "path": "user/commission-statistics/commission-statistics",
       "style": {
-        "navigationBarTitleText": "小账本"
+        "navigationBarTitleText": "佣金统计",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "user/commission-statistics/commission-detail",
+      "style": {
+        "navigationBarTitleText": "佣金详情",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "user/commission-statistics/vip-user",
+      "style": {
+        "navigationBarTitleText": "会员列表",
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -703,10 +724,17 @@
             }
           }
         },
+        // {
+        //   "path": "sever/userUp/partner-appay",
+        //   "style": {
+        //     "navigationBarTitleText": "会员升级",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
-          "path": "sever/userUp/partner-appay",
+          "path": "sever/regimental-commander/regimental-commander",
           "style": {
-            "navigationBarTitleText": "会员升级",
+            "navigationBarTitleText": "申请团长",
             "usingComponents": {}
           }
         },
@@ -829,8 +857,14 @@
             "navigationBarTitleText": "商品"
           }
         },
+        // {
+        //   "path": "sever/code/code",
+        //   "style": {
+        //     "navigationBarTitleText": "我的推广"
+        //   }
+        // },
         {
-          "path": "sever/code/code",
+          "path": "sever/group-code/group-code",
           "style": {
             "navigationBarTitleText": "我的推广"
           }

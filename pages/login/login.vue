@@ -1,11 +1,6 @@
 <template>
   <view class="login-container">
-    <image
-      class="back-icon"
-      src="../../static/images/new-auth/back.png"
-      mode=""
-      @click="handleBack"
-    />
+    <image class="back-icon" src="../../static/images/new-auth/back.png" mode="" @click="handleBack" />
 
     <view class="login-main-area">
       <h1>登录</h1>
@@ -38,11 +33,7 @@
           <block slot="right">
             <image
               class="password-status"
-              :src="
-                isShowPassword
-                  ? '../../static/images/common/view-password .png'
-                  : '../../static/images/common/close-password.png'
-              "
+              :src="isShowPassword ? '../../static/images/common/view-password .png' : '../../static/images/common/close-password.png'"
               mode=""
               @click="isShowPassword = !isShowPassword"
             />
@@ -50,13 +41,7 @@
         </tui-input>
       </tui-form>
 
-      <view
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
+      <view style="display: flex; justify-content: space-between; align-items: center">
         <view class="service-agreement-wrapper">
           <tui-icon
             :name="agreementStatus ? 'square-selected' : 'square'"
@@ -64,34 +49,18 @@
             :size="18"
             @click="agreementStatus = !agreementStatus"
           ></tui-icon>
-          <text @click="agreementStatus = !agreementStatus">
-            我已阅读并同意
-          </text>
+          <text @click="agreementStatus = !agreementStatus"> 我已阅读并同意 </text>
           <TuanServe @op="agreementStatus = $event">
             <text style="color: #ffc117">《团蜂用户协议》</text>
           </TuanServe>
         </view>
 
-        <navigator
-          class="forget-assword"
-          url="/pages/reset-password/reset-password"
-          hover-class="none"
-        >
-          忘记密码
-        </navigator>
+        <navigator class="forget-assword" url="/pages/reset-password/reset-password" hover-class="none"> 忘记密码 </navigator>
       </view>
 
-      <button
-        class="login-btn uni-btn"
-        :style="{ background: btnStatus ? '#FFC117' : '' }"
-        @click="onlogin"
-      >
-        登录
-      </button>
+      <button class="login-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }" @click="onlogin">登录</button>
 
-      <view class="to-login" @click="handleRedirect">
-        您还未有帐号？<text>立即注册</text>
-      </view>
+      <view class="to-login" @click="handleRedirect"> 您还未有帐号？<text>立即注册</text> </view>
 
       <view class="more-login">
         <!-- #ifdef H5 -->
@@ -110,15 +79,13 @@
       </view>
     </view>
     <tui-toast ref="toast"></tui-toast>
-
-   
   </view>
 </template>
 
 <script>
-import { sf } from "../../config";
-import loginRule from "./rules";
-import { throttle } from "../../utils";
+import { sf } from '../../config';
+import loginRule from './rules';
+import { throttle } from '../../utils';
 import {
   NEW_BIND_ID,
   USER_ID,
@@ -127,65 +94,64 @@ import {
   NEW_BIND_SERVICE_ID,
   NEW_BIND_SERVICE_URL,
   SF_INVITE_CODE,
-} from "../../constant";
-import { bindLastUserApi, checkBindApi } from "../../api/user";
-import { CHANGE_IS_IN_MINIPROGRAM } from "../../store/modules/type";
+  GROUP_INVITE_CODE
+} from '../../constant';
+import { bindLastUserApi, checkBindApi } from '../../api/user';
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 
-const tabbarList = [
-  "/pages/user/user",
-  "/pages/community-center/community-center",
-  "/pages/index/index",
-  "/pages/stuff/stuff",
-];
+const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index', '/pages/stuff/stuff'];
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       timer: null,
       agreementStatus: false,
       loginForm: {
-        phone: "",
-        password: "",
+        phone: '',
+        password: ''
       },
       to: null,
       onlogin: null,
       isShowPassword: false,
       focusMap: {
         0: false,
-        1: false,
+        1: false
       },
 
-      redirect: "",
+      redirect: '',
       isBind: false,
       bindId: null,
       userId: null,
-      partnerCode: "",
+      partnerCode: '',
+      partnerCode2: ''
     };
   },
   async onLoad(options) {
     if (options.miniProgram) {
       getApp().globalData.isInMiniprogram = true;
     }
-    this.$store.commit(
-      `app/${CHANGE_IS_IN_MINIPROGRAM}`,
-      !!options.miniProgram
-    );
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
     this.onlogin = throttle(this.handlelogin, 1000);
     this.redirect = options.to;
 
     this.bindId = options.code;
     this.partnerCode = options.partnerCode;
+    this.partnerCode2 = options.partnerCode2;
     if (this.partnerCode) {
       getApp().globalData.isShowFollowOfficialAccount = true;
-			console.log("你没得");
+      // console.log('你没得');
     }
 
     if (this.partnerCode) {
       uni.setStorageSync(SF_INVITE_CODE, options.partnerCode);
     }
 
-    if (this.redirect && this.redirect.indexOf("?") > -1) {
+    if (this.partnerCode2) {
+      uni.setStorageSync(GROUP_INVITE_CODE, options.partnerCode2);
+    }
+
+    if (this.redirect && this.redirect.indexOf('?') > -1) {
       this.bindId = this.redirect;
     }
     if (this.bindId) {
@@ -201,12 +167,12 @@ export default {
 
       try {
         await this.checkBind({
-          userId,
+          userId
         });
       } catch (error) {
         await this.binding(userId, () => {
           uni.switchTab({
-            url: "/",
+            url: '/'
           });
         });
       }
@@ -219,17 +185,22 @@ export default {
       if (this.bindId) {
         await this.binding(userId, () => {
           uni.switchTab({
-            url: "/",
+            url: '/'
           });
         });
       } else if (this.partnerCode) {
         await this.handlePartnerBind(userId);
         uni.switchTab({
-          url: "/",
+          url: '/'
+        });
+      } else if (this.partnerCode2) {
+        await this.handleGroupBind(userId);
+        uni.switchTab({
+          url: '/'
         });
       } else {
         uni.switchTab({
-          url: "/",
+          url: '/'
         });
       }
     }
@@ -237,30 +208,25 @@ export default {
 
   onShow() {
     this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
+    this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null;
   },
 
   computed: {
     btnStatus() {
-      return (
-        this.agreementStatus && this.loginForm.password && this.loginForm.phone
-      );
+      return this.agreementStatus && this.loginForm.password && this.loginForm.phone;
     },
 
     keybordEnterText() {
-      return this.agreementStatus &&
-        this.loginForm.password &&
-        this.loginForm.phone
-        ? "done"
-        : "next";
-    },
+      return this.agreementStatus && this.loginForm.password && this.loginForm.phone ? 'done' : 'next';
+    }
   },
   methods: {
     // 登录
     async handlelogin() {
       if (!this.agreementStatus) {
         this.ttoast({
-          type: "info",
-          title: "请勾选服务协议",
+          type: 'info',
+          title: '请勾选服务协议'
         });
         return;
       }
@@ -268,16 +234,25 @@ export default {
       this.$refs.form
         .validate(this.loginForm, loginRule)
         .then(async () => {
-          const res = await this.$store.dispatch("auth/loginAction", {
+          const res = await this.$store.dispatch('auth/loginAction', {
             username: _this.loginForm.phone,
-            password: _this.loginForm.password,
+            password: _this.loginForm.password
           });
 
           // 是否是师傅邀请码
           if (_this.partnerCode) {
             await _this.handlePartnerBind(res.userInfo.userId);
             uni.switchTab({
-              url: "/",
+              url: '/'
+            });
+            return;
+          }
+
+          // 是否存在团长推广码
+          if (_this.partnerCode2) {
+            await _this.handleGroupBind(res.userInfo.userId);
+            uni.switchTab({
+              url: '/'
             });
             return;
           }
@@ -286,13 +261,13 @@ export default {
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
             try {
               await _this.checkBind({
-                userId: res.userInfo.userId,
+                userId: res.userInfo.userId
               });
             } catch (error) {
               _this.bindId = uni.getStorageSync(NEW_BIND_ID);
               await _this.binding(res.userInfo.userId, () => {
                 uni.switchTab({
-                  url: "/",
+                  url: '/'
                 });
               });
             }
@@ -303,7 +278,7 @@ export default {
           if (_this.bindId) {
             await _this.binding(res.userInfo.userId, () => {
               uni.switchTab({
-                url: "/",
+                url: '/'
               });
             });
           } else {
@@ -312,24 +287,24 @@ export default {
               // console.log('进来了', this.redirect)
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
-                  url: _this.redirect,
+                  url: _this.redirect
                 });
               } else {
                 uni.redirectTo({
-                  url: _this.redirect,
+                  url: _this.redirect
                 });
               }
             } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
               uni.redirectTo({
-                url: "/user/sever/activityCenter/index",
+                url: '/user/sever/activityCenter/index'
               });
             } else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
               uni.redirectTo({
-                url: uni.getStorageSync(NEW_BIND_SERVICE_URL),
+                url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
               });
             } else {
               uni.switchTab({
-                url: "/pages/community-center/community-centerr",
+                url: '/pages/community-center/community-centerr'
               });
             }
 
@@ -346,17 +321,17 @@ export default {
     },
     handleRedirect() {
       uni.navigateTo({
-        url: "/pages/register/register",
+        url: '/pages/register/register'
       });
     },
 
     // 优化操作
     handleClickConfirmType(tag) {
-      this.focusMap[tag + ""] = false;
-      if (this.keybordEnterText === "done") {
+      this.focusMap[tag + ''] = false;
+      if (this.keybordEnterText === 'done') {
         this.handlelogin();
       } else {
-        tag = tag + 1 === 2 ? "0" : tag + 1 + "";
+        tag = tag + 1 === 2 ? '0' : tag + 1 + '';
         // console.log(tag, typeof tag)
         this.focusMap[tag] = true;
       }
@@ -368,18 +343,18 @@ export default {
       return new Promise((resolve, reject) => {
         bindLastUserApi({
           userId,
-          userCode: this.bindId,
+          userCode: this.bindId
         })
           .then((res) => {
             _this.timer = setTimeout(() => {
-              cb && typeof cb === "function" && cb();
+              cb && typeof cb === 'function' && cb();
             }, 1000);
             resolve();
           })
           .catch((err) => {
             uni.removeStorageSync(NEW_BIND_ID);
             _this.timer = setTimeout(() => {
-              cb && typeof cb === "function" && cb();
+              cb && typeof cb === 'function' && cb();
             }, 1000);
             reject();
           });
@@ -403,22 +378,61 @@ export default {
     async handlePartnerBind(userId) {
       const _this = this;
       uni.request({
-        url: sf + "/api/third/partner/memberBindingSf",
-        method: "post",
+        url: sf + '/api/third/partner/memberBindingSf',
+        method: 'post',
         data: {
           userId: userId,
-          partnerCode: this.partnerCode,
+          partnerCode: this.partnerCode
         },
         success: (res) => {
           if (!res.data.ok) {
             _this.ttoast({
-              type: "fail",
-              title: res.data.msg || "扫码失败",
+              type: 'fail',
+              title: res.data.msg || '扫码失败'
             });
           }
         },
         fail: () => {},
-        complete: () => {},
+        complete: () => {}
+      });
+    },
+
+    // 团长绑定用户
+    handleGroupBind(userId) {
+      const _this = this;
+      return new Promise((resolve, reject) => {
+        uni.request({
+          url: sf + '/api/third/tz/memberBindingSf',
+          method: 'post',
+          data: {
+            userId: userId,
+            partnerCode: _this.partnerCode2
+          },
+          success: (res) => {
+            const data = res.data;
+            if (data.ok) {
+              _this.ttoast('操作成功');
+            } else {
+              _this.ttoast({
+                type: 'fail',
+                title: data.msg || '操作失败,请重试'
+              });
+            }
+
+            uni.removeStorageSync(GROUP_INVITE_CODE);
+          },
+          fail: (fail) => {
+            _this.ttoast({
+              type: 'fail',
+              title: '操作失败,请重试'
+            });
+          },
+          complete: (complete) => {
+            setTimeout(() => {
+              resolve();
+            }, 1000);
+          }
+        });
       });
     },
 
@@ -428,9 +442,9 @@ export default {
 
       // #ifdef H5
       // 判断是否已经绑定了手机号
-      if (res.userInfo.phone === "") {
+      if (res.userInfo.phone === '') {
         uni.navigateTo({
-          url: "/pages/login/bind-phone?openId=" + res.userInfo.weixinOpenid,
+          url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
         });
 
         return;
@@ -440,7 +454,16 @@ export default {
       if (_this.partnerCode) {
         await _this.handlePartnerBind(res.userInfo.userId);
         uni.switchTab({
-          url: "/",
+          url: '/'
+        });
+        return;
+      }
+
+      // 是否存在团长推广码
+      if (_this.partnerCode2) {
+        await _this.handleGroupBind(res.userInfo.userId);
+        uni.switchTab({
+          url: '/'
         });
         return;
       }
@@ -448,13 +471,13 @@ export default {
       if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
         try {
           await _this.checkBind({
-            userId: res.userInfo.userId,
+            userId: res.userInfo.userId
           });
         } catch (error) {
           _this.bindId = uni.getStorageSync(NEW_BIND_ID);
           await _this.binding(res.userInfo.userId, () => {
             uni.switchTab({
-              url: "/",
+              url: '/'
             });
           });
         }
@@ -462,28 +485,28 @@ export default {
       if (_this.bindId) {
         await _this.binding(res.userInfo.userId, () => {
           uni.switchTab({
-            url: "/",
+            url: '/'
           });
         });
       } else if (this.redirect) {
         // console.log('进来了', this.redirect)
         if (tabbarList.includes(_this.redirect)) {
           uni.switchTab({
-            url: _this.redirect,
+            url: _this.redirect
           });
         } else {
           uni.redirectTo({
-            url: _this.redirect,
+            url: _this.redirect
           });
         }
       } else {
         uni.switchTab({
-          url: "/pages/community-center/community-centerr",
+          url: '/pages/community-center/community-centerr'
         });
       }
       // #endif
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -496,7 +519,7 @@ text {
 .login-container {
   width: 100vw;
   min-height: 100vh;
-  background: url("../../static/images/new-auth/bg.png") no-repeat;
+  background: url('../../static/images/new-auth/bg.png') no-repeat;
   background-size: cover;
 
   .back-icon {

@@ -6,17 +6,32 @@
       <h1>登录</h1>
 
       <tui-form ref="form">
-        <tui-input label="手机号码" padidng="0 0 28rpx 0" borderTop placeholder="请输入手机号码" color="#141000"
-          v-model="loginForm.phone" :focus="focusMap[0]" @confirm="handleClickConfirmType(0)"
-          :confirm-type="keybordEnterText"></tui-input>
+        <tui-input
+          label="手机号码"
+          padidng="0 0 28rpx 0"
+          borderTop
+          placeholder="请输入手机号码"
+          color="#141000"
+          v-model="loginForm.phone"
+          :focus="focusMap[0]"
+          @confirm="handleClickConfirmType(0)"
+          :confirm-type="keybordEnterText"
+        ></tui-input>
 
-        <tui-input class="reset-wrapper" label="验证码" padidng="0 0 28rpx 0" borderTop placeholder="请输入验证码" color="#141000"
-          :focus="focusMap[1]" @confirm="handleClickConfirmType(1)" :confirm-type="keybordEnterText"
-          v-model="loginForm.code">
+        <tui-input
+          class="reset-wrapper"
+          label="验证码"
+          padidng="0 0 28rpx 0"
+          borderTop
+          placeholder="请输入验证码"
+          color="#141000"
+          :focus="focusMap[1]"
+          @confirm="handleClickConfirmType(1)"
+          :confirm-type="keybordEnterText"
+          v-model="loginForm.code"
+        >
           <block slot="right">
-            <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">
-              获取验证码
-            </button>
+            <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">获取验证码</button>
 
             <view v-show="timer" class="awaiting">
               <text class="second-text">{{ awaitSecond }}s</text>
@@ -26,14 +41,14 @@
         </tui-input>
       </tui-form>
 
-      <view style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        ">
+      <view style="display: flex; justify-content: space-between; align-items: center">
         <view class="service-agreement-wrapper">
-          <tui-icon @click="agreementStatus = !agreementStatus" :name="agreementStatus ? 'square-selected' : 'square'"
-            :color="agreementStatus ? '#FFC117' : ''" :size="18"></tui-icon>
+          <tui-icon
+            @click="agreementStatus = !agreementStatus"
+            :name="agreementStatus ? 'square-selected' : 'square'"
+            :color="agreementStatus ? '#FFC117' : ''"
+            :size="18"
+          ></tui-icon>
           <text @click="agreementStatus = !agreementStatus">我已阅读并同意</text>
           <TuanServe @op="agreementStatus = $event">
             <text style="color: #ffc117">《团蜂用户协议》</text>
@@ -41,13 +56,9 @@
         </view>
       </view>
 
-      <button @click="onlogin" class="login-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }">
-        登录
-      </button>
+      <button @click="onlogin" class="login-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }">登录</button>
 
-      <view @click="handleRedirect" class="to-login">
-        您还未有帐号？<text>立即注册</text>
-      </view>
+      <view @click="handleRedirect" class="to-login"> 您还未有帐号？<text>立即注册</text> </view>
 
       <view class="more-login">
         <!-- #ifdef H5 -->
@@ -58,8 +69,6 @@
           </view>
         </TuanWXLogin>
         <!-- #endif -->
-
-
 
         <view class="item" @click="go('/pages/login/login')">
           <image src="../../static/images/new-auth/password.png" mode="" />
@@ -72,20 +81,15 @@
 </template>
 
 <script>
-import { sf } from '../../config'
-import { verificationCodeRule } from './rules'
-import { throttle } from '../../utils'
-import { NEW_BIND_ID, USER_ID, USER_INFO, SF_INVITE_CODE } from '../../constant'
-import { bindLastUserApi, checkBindApi } from '../../api/user'
-import { getCodeApi } from '../../api/auth'
-import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
+import { sf } from '../../config';
+import { verificationCodeRule } from './rules';
+import { throttle } from '../../utils';
+import { NEW_BIND_ID, USER_ID, USER_INFO, SF_INVITE_CODE, GROUP_INVITE_CODE } from '../../constant';
+import { bindLastUserApi, checkBindApi } from '../../api/user';
+import { getCodeApi } from '../../api/auth';
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 
-const tabbarList = [
-  '/pages/user/user',
-  '/pages/community-center/community-center',
-  '/pages/index/index',
-  '/pages/stuff/stuff',
-]
+const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index', '/pages/stuff/stuff'];
 
 export default {
   data() {
@@ -95,14 +99,14 @@ export default {
       agreementStatus: false,
       loginForm: {
         phone: '',
-        code: '',
+        code: ''
       },
       to: null,
       onlogin: null,
       onGetCode: null,
       focusMap: {
         0: false,
-        1: false,
+        1: false
       },
 
       redirect: '',
@@ -110,45 +114,47 @@ export default {
       bindId: null,
       userId: null,
       partnerCode: null,
-    }
+      partnerCode2: null
+    };
   },
   onShow() {
-    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
+    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
+    this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null;
   },
   async onLoad(options) {
     if (options.miniProgram) {
-			getApp().globalData.isInMiniprogram = true
+      getApp().globalData.isInMiniprogram = true;
     }
-    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
-    this.onlogin = throttle(this.handlelogin, 1000)
-    this.onGetCode = throttle(this.handleGetCode, 1000)
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
+    this.onlogin = throttle(this.handlelogin, 1000);
+    this.onGetCode = throttle(this.handleGetCode, 1000);
 
-    this.redirect = options.to
+    this.redirect = options.to;
 
-    this.bindId = options.code
+    this.bindId = options.code;
 
     if (this.redirect && this.redirect.indexOf('?') > -1) {
-      this.bindId = this.redirect
+      this.bindId = this.redirect;
     }
     if (this.bindId) {
-      uni.setStorageSync(NEW_BIND_ID, this.bindId)
+      uni.setStorageSync(NEW_BIND_ID, this.bindId);
     }
 
-    const userId = uni.getStorageSync(USER_ID)
-    const userInfo = uni.getStorageSync(USER_INFO)
+    const userId = uni.getStorageSync(USER_ID);
+    const userInfo = uni.getStorageSync(USER_INFO);
 
     // #ifdef H5
     if (uni.getStorageSync(NEW_BIND_ID) && userId && !this.bindId) {
-      this.bindId = uni.getStorageSync(NEW_BIND_ID)
+      this.bindId = uni.getStorageSync(NEW_BIND_ID);
 
       try {
-        await this.checkBind({ userId: userId })
+        await this.checkBind({ userId: userId });
       } catch (error) {
         await this.binding(userId, () => {
           uni.switchTab({
-            url: '/',
-          })
-        })
+            url: '/'
+          });
+        });
       }
     }
     // #endif
@@ -158,18 +164,24 @@ export default {
       if (this.bindId) {
         await this.binding(userId, () => {
           uni.switchTab({
-            url: '/',
-          })
-        })
+            url: '/'
+          });
+        });
       } else if (this.partnerCode) {
-        await this.handlePartnerBind(userId)
+        await this.handlePartnerBind(userId);
         uni.switchTab({
           url: '/'
-        })
+        });
+      } else if (this.partnerCode2) {
+        await this.handleGroupBind(userId);
+        uni.switchTab({
+          url: '/'
+        });
+        return;
       } else {
         uni.switchTab({
-          url: '/',
-        })
+          url: '/'
+        });
       }
     }
   },
@@ -179,39 +191,39 @@ export default {
       if (this.loginForm.phone.length !== 11) {
         this.ttoast({
           type: 'fail',
-          title: '请输入合法的手机号码',
-        })
-        return
+          title: '请输入合法的手机号码'
+        });
+        return;
       }
 
       uni.showLoading({
-        title: '加载中...',
-      })
+        title: '加载中...'
+      });
 
       try {
         await getCodeApi({
           phone: this.loginForm.phone,
-          flag: 2,
-        })
+          flag: 2
+        });
 
         this.timer = setInterval(() => {
-          this.awaitSecond--
+          this.awaitSecond--;
 
           if (this.awaitSecond === 0) {
-            this.awaitSecond = 60
-            clearInterval(this.timer)
-            this.timer = null
+            this.awaitSecond = 60;
+            clearInterval(this.timer);
+            this.timer = null;
           }
-        }, 1000)
+        }, 1000);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         this.ttoast({
           type: 'fail',
           title: '验证码发送失败',
-          content: '请稍后重试',
-        })
+          content: '请稍后重试'
+        });
       } finally {
-        uni.hideLoading()
+        uni.hideLoading();
       }
     },
     // 点击登录
@@ -219,40 +231,48 @@ export default {
       if (!this.agreementStatus) {
         this.ttoast({
           type: 'info',
-          title: '请勾选服务协议',
-        })
-        return
+          title: '请勾选服务协议'
+        });
+        return;
       }
-      const _this = this
+      const _this = this;
       this.$refs.form
         .validate(this.loginForm, verificationCodeRule)
         .then(async () => {
           const res = await this.$store.dispatch('auth/codeLoginAction', {
             phone: _this.loginForm.phone,
-            code: _this.loginForm.code,
-          })
-
+            code: _this.loginForm.code
+          });
 
           // 是否是师傅邀请码
           if (_this.partnerCode) {
-            await _this.handlePartnerBind(res.userInfo.userId)
+            await _this.handlePartnerBind(res.userInfo.userId);
             uni.switchTab({
               url: '/'
-            })
-            return
+            });
+            return;
+          }
+
+          //  是否存在团长推广码
+          if (_this.partnerCode2) {
+            await _this.handleGroupBind(res.userInfo.userId);
+            uni.switchTab({
+              url: '/'
+            });
+            return;
           }
 
           // #ifdef H5
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
             try {
-              await _this.checkBind({ userId: res.userInfo.userId })
+              await _this.checkBind({ userId: res.userInfo.userId });
             } catch (error) {
-              _this.bindId = uni.getStorageSync(NEW_BIND_ID)
+              _this.bindId = uni.getStorageSync(NEW_BIND_ID);
               await _this.binding(res.userInfo.userId, () => {
                 uni.switchTab({
-                  url: '/',
-                })
-              })
+                  url: '/'
+                });
+              });
             }
           }
           // #endif
@@ -261,79 +281,79 @@ export default {
           if (_this.bindId) {
             await _this.binding(res.userInfo.userId, () => {
               uni.switchTab({
-                url: '/',
-              })
-            })
-            return
+                url: '/'
+              });
+            });
+            return;
           } else {
             // #endif
             if (this.redirect) {
               // console.log('进来了', this.redirect)
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
-                  url: _this.redirect,
-                })
+                  url: _this.redirect
+                });
               } else {
                 uni.redirectTo({
-                  url: _this.redirect,
-                })
+                  url: _this.redirect
+                });
               }
             } else {
               uni.switchTab({
-                url: '/pages/community-center/community-centerr',
-              })
+                url: '/pages/community-center/community-centerr'
+              });
             }
             // #ifdef H5
           }
           // #endif
         })
-        .catch(errors => { })
+        .catch((errors) => {});
     },
 
     // 回退
     handleBack() {
-      uni.navigateBack()
+      uni.navigateBack();
     },
     handleRedirect() {
       uni.navigateTo({
-        url: '/pages/register/register',
-      })
+        url: '/pages/register/register'
+      });
     },
 
     // 优化操作
     handleClickConfirmType(tag) {
-      this.focusMap[tag + ''] = false
+      this.focusMap[tag + ''] = false;
       if (this.keybordEnterText === 'done') {
-        this.handlelogin()
+        this.handlelogin();
       } else {
-        tag = tag + 1 === 2 ? '0' : tag + 1 + ''
+        tag = tag + 1 === 2 ? '0' : tag + 1 + '';
         // console.log(tag, typeof tag)
-        this.focusMap[tag] = true
+        this.focusMap[tag] = true;
       }
     },
 
     // 绑定
     binding(userId, cb) {
-      const _this = this
+      const _this = this;
       return new Promise((resolve, reject) => {
         bindLastUserApi({
           userId,
-          userCode: this.bindId,
+          userCode: this.bindId
         })
-          .then(res => {
+          .then((res) => {
             _this.timer = setTimeout(() => {
-              cb && typeof cb === 'function' && cb()
-            }, 1000)
-            resolve()
+              cb && typeof cb === 'function' && cb();
+            }, 1000);
+            resolve();
           })
-          .catch(err => {
-            uni.removeStorageSync(NEW_BIND_ID)
+          .catch((err) => {
+            uni.removeStorageSync(NEW_BIND_ID);
             _this.timer = setTimeout(() => {
-              cb && typeof cb === 'function' && cb()
-            }, 1000)
-            reject()
-          })
-      })
+              cb && typeof cb === 'function' && cb();
+            }, 1000);
+            reject();
+          });
+      });
     },
 
     // 校验绑定
@@ -341,17 +361,17 @@ export default {
       return new Promise((reslove, reject) => {
         checkBindApi(data)
           .then(() => {
-            reslove(true)
+            reslove(true);
           })
           .catch(() => {
-            reject(false)
-          })
-      })
+            reject(false);
+          });
+      });
     },
 
     // 师傅绑定用户
     async handlePartnerBind(userId) {
-      const _this = this
+      const _this = this;
       uni.request({
         url: sf + '/api/third/partner/memberBindingSf',
         method: 'post',
@@ -364,12 +384,51 @@ export default {
             _this.ttoast({
               type: 'fail',
               title: res.data.msg || '扫码失败'
-            })
+            });
           }
         },
-        fail: () => { },
-        complete: () => { }
-      })
+        fail: () => {},
+        complete: () => {}
+      });
+    },
+
+    // 团长绑定用户
+    handleGroupBind(userId) {
+      const _this = this;
+      return new Promise((resolve, reject) => {
+        uni.request({
+          url: sf + '/api/third/tz/memberBindingSf',
+          method: 'post',
+          data: {
+            userId: userId,
+            partnerCode: _this.partnerCode2
+          },
+          success: (res) => {
+            const data = res.data;
+            if (data.ok) {
+              _this.ttoast('操作成功');
+            } else {
+              _this.ttoast({
+                type: 'fail',
+                title: data.msg || '操作失败,请重试'
+              });
+            }
+
+            uni.removeStorageSync(GROUP_INVITE_CODE);
+          },
+          fail: (fail) => {
+            _this.ttoast({
+              type: 'fail',
+              title: '操作失败,请重试'
+            });
+          },
+          complete: (complete) => {
+            setTimeout(() => {
+              resolve();
+            }, 1000);
+          }
+        });
+      });
     },
 
     // 微信登陆后续
@@ -378,28 +437,46 @@ export default {
       // window.location.href =
       //   window.location.origin + window.location.pathname + window.location.hash
       // // #endif
-      const _this = this
+      const _this = this;
 
       // #ifdef H5
       // 判断是否已经绑定了手机号
       if (res.userInfo.phone === '') {
         uni.navigateTo({
           url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid + '&userId=' + res.userInfo.userId
-        })
+        });
 
-        return
+        return;
+      }
+
+      // 是否是师傅邀请码
+      if (_this.partnerCode) {
+        await _this.handlePartnerBind(res.userInfo.userId);
+        uni.switchTab({
+          url: '/'
+        });
+        return;
+      }
+
+      // 是否存在团长推广码
+      if (_this.partnerCode2) {
+        await _this.handleGroupBind(res.userInfo.userId);
+        uni.switchTab({
+          url: '/'
+        });
+        return;
       }
 
       if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
         try {
-          await _this.checkBind({ userId: res.userInfo.userId })
+          await _this.checkBind({ userId: res.userInfo.userId });
         } catch (error) {
-          _this.bindId = uni.getStorageSync(NEW_BIND_ID)
+          _this.bindId = uni.getStorageSync(NEW_BIND_ID);
           await _this.binding(res.userInfo.userId, () => {
             uni.switchTab({
-              url: '/',
-            })
-          })
+              url: '/'
+            });
+          });
         }
       }
       // #endif
@@ -408,10 +485,10 @@ export default {
       if (_this.bindId) {
         await _this.binding(res.userInfo.userId, () => {
           uni.switchTab({
-            url: '/',
-          })
-        })
-        return
+            url: '/'
+          });
+        });
+        return;
       } else {
         // #endif
 
@@ -419,34 +496,34 @@ export default {
           // console.log('进来了', this.redirect)
           if (tabbarList.includes(_this.redirect)) {
             uni.switchTab({
-              url: _this.redirect,
-            })
+              url: _this.redirect
+            });
           } else {
             uni.redirectTo({
-              url: _this.redirect,
-            })
+              url: _this.redirect
+            });
           }
         } else {
           uni.switchTab({
-            url: '/pages/community-center/community-centerr',
-          })
+            url: '/pages/community-center/community-centerr'
+          });
         }
         // #ifdef H5
       }
       // #endif
-    },
+    }
   },
 
   computed: {
     btnStatus() {
-      return this.agreementStatus && this.loginForm.code && this.loginForm.phone
+      return this.agreementStatus && this.loginForm.code && this.loginForm.phone;
     },
 
     keybordEnterText() {
-      return this.agreementStatus && this.loginForm.phone ? 'done' : 'next'
-    },
-  },
-}
+      return this.agreementStatus && this.loginForm.phone ? 'done' : 'next';
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

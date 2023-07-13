@@ -15,10 +15,7 @@
     <view class="main-area">
       <OrderPane @handleNavigate="handleNavigate"></OrderPane>
       <Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
-      <MyFunction
-        ref="myFunctionRef"
-        @handleNavigate="handleNavigate"
-      ></MyFunction>
+      <MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
       <Serve @handleNavigate="handleNavigate"></Serve>
     </view>
     <tui-modal
@@ -27,36 +24,32 @@
       content="您还未登录，是否先去登录？"
       @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
     ></tui-modal>
-    <tui-modal
-      :show="isShow"
-      title="提示"
-      content="您的会员等级不够，是否前去升级？"
-      @click="handleVipUp"
-    ></tui-modal>
+    <tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleVipUp"></tui-modal>
 
     <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import { throttle } from "../../utils";
-import BaseInfo from "./cpns/BaseInfo";
-import OrderPane from "./cpns/OrderPane.vue";
-import Equity from "./cpns/Equity.vue";
-import MyFunction from "./cpns/MyFunction.vue";
-import Serve from "./cpns/Serve.vue";
-import showModalMixin from "../../mixin/showModal";
-import { USER_ID, USER_INFO } from "../../constant";
-import { myEquity } from "./data";
+import { throttle } from '../../utils';
+import BaseInfo from './cpns/BaseInfo';
+import OrderPane from './cpns/OrderPane.vue';
+import Equity from './cpns/Equity.vue';
+import MyFunction from './cpns/MyFunction.vue';
+import Serve from './cpns/Serve.vue';
+import showModalMixin from '../../mixin/showModal';
+import { USER_ID, USER_INFO } from '../../constant';
+import { myEquity } from './data';
 
 export default {
-  name: "User",
+  name: 'User',
   components: {
     BaseInfo,
     OrderPane,
     Equity,
     MyFunction,
-    Serve,
+    Serve
   },
   mixins: [showModalMixin()],
   onLoad() {
@@ -78,42 +71,46 @@ export default {
       calcDis: null,
       userId: null,
       myEquity1: [],
+      userInfo: null
     };
   },
   methods: {
     init() {
       this.userId = uni.getStorageSync(USER_ID);
+      this.userInfo = uni.getStorageSync(USER_INFO);
 
-      if (this.userId) {
-        this.$store.dispatch("auth/refrshUserInfo");
-        this.$store.dispatch("user/count", this.userId);
+      if (this.userInfo) {
+        this.$store.dispatch('auth/refrshUserInfo');
+        this.$store.dispatch('user/count', this.userInfo);
       }
 
       this.$forceUpdate();
     },
     handleNavigate(item, cb) {
-      if (
-        [
-          "/user/sever/customer-service/customer-service",
-          "/user/chat/chat",
-        ].includes(item.url)
-      ) {
+      if (['/user/sever/customer-service/customer-service', '/user/chat/chat'].includes(item.url)) {
         this.$refs.tuanChatKFRef.show();
         return;
       }
-      if (item.type === "external") {
-        this.go("/user/view?target=" + item.url);
+      if (item.type === 'external') {
+        this.go('/user/view?target=' + item.url);
         return;
       }
       if (this.isLogin()) {
-        if (
-          item.role &&
-          item.role.length &&
-          !item.role.includes(this.$store.getters.userInfo.userLevel) &&
-          !this.$store.getters.userInfo.isRegionAgent
-        ) {
+        if (item.role && item.role.length && !item.role.includes(this.$store.getters.userInfo.userLevel) && !this.$store.getters.userInfo.isRegionAgent) {
           this.isShow = true;
           return;
+        }
+
+        if (item.permission) {
+          const res = item.permission();
+          console.log(res);
+          if (res) {
+            this.ttoast({
+              type: 'info',
+              title: res
+            });
+            return;
+          }
         }
 
         if (!item.url) {
@@ -121,13 +118,13 @@ export default {
           return;
         }
 
-        if (cb && typeof cb === "function" && cb()) {
+        if (cb && typeof cb === 'function' && cb()) {
           uni.navigateTo({
-            url: item.url,
+            url: item.url
           });
         } else {
           uni.navigateTo({
-            url: item.url,
+            url: item.url
           });
         }
       } else {
@@ -138,7 +135,7 @@ export default {
     handleVipUp(e) {
       if (e.index) {
         uni.navigateTo({
-          url: "/user/sever/userUp/partner-appay",
+          url: '/user/sever/userUp/partner-appay'
         });
       }
 
@@ -172,15 +169,13 @@ export default {
         this.myEquity1 = [
           ...myEquity,
           {
-            name: "股东看板",
-            icon: require("../../static/images/new-user/equity/gudong.png"),
-            url: "/user/shareholder/shareholder",
-          },
+            name: '股东看板',
+            icon: require('../../static/images/new-user/equity/gudong.png'),
+            url: '/user/shareholder/shareholder'
+          }
         ];
       } else {
-        const index = this.myEquity1.findIndex(
-          (item) => item.name === "股东看板"
-        );
+        const index = this.myEquity1.findIndex((item) => item.name === '股东看板');
         if (index != -1) {
           this.myEquity1.splice(index, 1);
         }
@@ -188,8 +183,8 @@ export default {
         this.myEquity1 = [...myEquity];
       }
       this.$forceUpdate();
-    },
-  },
+    }
+  }
 };
 </script>
 

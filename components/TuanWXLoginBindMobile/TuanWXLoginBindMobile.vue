@@ -1,10 +1,5 @@
 <template>
-  <tui-bottom-popup
-    :zIndex="1002"
-    :maskZIndex="1001"
-    :show="showPopupVisible"
-    @close="handleClosePopop"
-  >
+  <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="showPopupVisible" @close="handleClosePopop">
     <view class="popup-container">
       <view class="close-wrapper">
         <tui-icon name="close" @click="handleClosePopop" :size="20"></tui-icon>
@@ -13,39 +8,21 @@
       <view class="form-wrapper">
         <view class="form-title">绑定手机号码</view>
 
-        <view class="tip">
-          绑定手机号的作用：为了给您一个好的体验，强烈建议您绑定手机号，以便于您可以实时了解您的订单状态以及其他服务
-        </view>
+        <view class="tip"> 为了给您一个好的体验，强烈建议您绑定手机号，以便于您可以实时了解您的订单状态以及其他服务 </view>
 
         <view class="form-item">
           <view class="form-label">手机号码</view>
-          <input
-            v-model="bindForm.phone"
-            type="text"
-            class="value"
-            placeholder="请输入手机号码"
-          />
+          <input v-model="bindForm.phone" type="text" class="value" placeholder="请输入手机号码" />
         </view>
 
         <view class="form-item">
           <view class="form-label">验证码</view>
-          <input
-            v-model="bindForm.code"
-            type="text"
-            class="value"
-            placeholder="请输入验证码"
-          />
-          <view class="code" @click="handleGetCode">{{
-            !awaitSecond ? "获取验证码" : awaitSecond + "s后重新发送"
-          }}</view>
+          <input v-model="bindForm.code" type="text" class="value" placeholder="请输入验证码" />
+          <view class="code" @click="handleGetCode">{{ !awaitSecond ? '获取验证码' : awaitSecond + 's后重新发送' }}</view>
         </view>
 
-        <button
-          class="bind-btn uni-btn"
-          :loading="bindLoading"
-          @click="handleBindMobile"
-        >
-          {{ bindLoading ? "加载中..." : "确定" }}
+        <button class="bind-btn uni-btn" :loading="bindLoading" @click="handleBindMobile">
+          {{ bindLoading ? '加载中...' : '确定' }}
         </button>
       </view>
 
@@ -55,20 +32,20 @@
 </template>
 
 <script>
-import { USER_INFO } from "constant";
-import { getCodeApi, bindMobileForWXApi } from "../../api/auth";
+import { USER_INFO } from 'constant';
+import { getCodeApi, bindMobileForWXApi } from '../../api/auth';
 export default {
   data() {
     return {
       showPopupVisible: false,
       bindForm: {
-        openId: "",
-        phone: "",
-        code: "",
+        openId: '',
+        phone: '',
+        code: ''
       },
       awaitSecond: 0,
       timer: null,
-      bindLoading: false,
+      bindLoading: false
     };
   },
 
@@ -88,7 +65,7 @@ export default {
       this.showPopupVisible = true;
     },
     handleClosePopop() {
-      this.$emit("close");
+      this.$emit('close');
       this.showPopupVisible = false;
     },
     // 获取验证码
@@ -96,27 +73,27 @@ export default {
     async handleGetCode() {
       if (this.awaitSecond !== 0) {
         this.ttoast({
-          type: "fail",
-          title: "验证码已发送，请勿重新获取",
+          type: 'fail',
+          title: '验证码已发送，请勿重新获取'
         });
         return;
       }
       if (this.bindForm.phone.length !== 11) {
         this.ttoast({
-          type: "fail",
-          title: "请输入合法的手机号码",
+          type: 'fail',
+          title: '请输入合法的手机号码'
         });
         return;
       }
 
       uni.showLoading({
-        title: "加载中...",
+        title: '加载中...'
       });
 
       try {
         await getCodeApi({
           phone: this.bindForm.phone,
-          flag: 2,
+          flag: 2
         });
 
         this.awaitSecond = 60;
@@ -132,9 +109,9 @@ export default {
         }, 1000);
       } catch (error) {
         this.ttoast({
-          type: "fail",
-          title: "验证码发送失败",
-          content: "请稍后重试",
+          type: 'fail',
+          title: '验证码发送失败',
+          content: '请稍后重试'
         });
       } finally {
         uni.hideLoading();
@@ -144,8 +121,8 @@ export default {
     async handleBindMobile() {
       if (!this.bindForm.code) {
         this.ttoast({
-          type: "fail",
-          title: "请输入验证码",
+          type: 'fail',
+          title: '请输入验证码'
         });
 
         return;
@@ -153,8 +130,8 @@ export default {
 
       if (!this.bindForm.phone) {
         this.ttoast({
-          type: "fail",
-          title: "请输入绑定的手机号",
+          type: 'fail',
+          title: '请输入绑定的手机号'
         });
 
         return;
@@ -162,20 +139,21 @@ export default {
 
       if (this.bindForm.phone.length !== 11) {
         this.ttoast({
-          type: "fail",
-          title: "请输入合法的手机号码",
+          type: 'fail',
+          title: '请输入合法的手机号码'
         });
         return;
       }
 
       try {
         await bindMobileForWXApi(this.bindForm);
-        this.ttoast("绑定成功");
+        this.ttoast('绑定成功');
+        this.$emit('success')
       } catch (error) {
         this.ttoast({
-          type: "fail",
-          title: "绑定失败",
-          content: "请稍后重试",
+          type: 'fail',
+          title: '绑定失败',
+          content: '请稍后重试'
         });
       } finally {
         this.bindLoading = false;
@@ -184,8 +162,8 @@ export default {
           this.handleClosePopop();
         }, 2000);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
