@@ -93,7 +93,6 @@ export const myEquity = [
   {
     name: '小账本',
     icon: require('../../static/images/new-user/equity/account-book.png'),
-    role: [1, 6, 7],
     // url: '/user/account-book/index' // 老的
     url: '/user/commission-statistics/commission-statistics',
     permission: () => {
@@ -162,7 +161,6 @@ export const myEquity = [
     name: '我的推广',
     icon: require('../../static/images/new-user/equity/popularize.png'),
     url: '/user/sever/group-code/group-code',
-    role: [1, 6, 7],
     permission: () => {
       const status = store.getters.regimentalCommanderStatus;
       if (!status) return '你的等级不够，请先申请成为团长';
