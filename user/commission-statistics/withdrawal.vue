@@ -15,7 +15,7 @@
         <tui-icon name="arrowright" :size="20"></tui-icon>
       </view>
 
-      <view class="bank-card" @click="go('/user/commission-statistics/bank-list')"
+      <view class="bank-card" v-else @click="go('/user/commission-statistics/bank-item?type=1')"
         >您还没有绑定银行卡，请先去绑定银行卡 <tui-icon :size="20" name="toright"></tui-icon>
       </view>
     </view>
@@ -45,13 +45,16 @@ export default {
 
       selectBank: null,
       chooseBankVisible: false,
-      timer: null,
+      timer: null
     };
   },
 
   onLoad(params) {
-    this.userInfo = uni.getStorageSync(USER_INFO);
     this.form.money = params.account;
+  },
+
+  onShow() {
+    this.userInfo = uni.getStorageSync(USER_INFO);
     if (this.userInfo) {
       this.form.mobile = this.userInfo.phone;
       this.getCommanderBankCardList();
@@ -60,7 +63,9 @@ export default {
 
   methods: {
     handleBack() {
-      uni.navigateBack();
+      uni.redirectTo({
+        url: '/user/commission-statistics/commission-statistics'
+      });
     },
     async getCommanderBankCardList() {
       try {

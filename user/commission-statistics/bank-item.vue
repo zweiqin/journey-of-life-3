@@ -62,6 +62,8 @@ export default {
       this.form.id = params.id;
     }
 
+    this.isBack = params.type;
+
     this.userInfo = uni.getStorageSync(USER_INFO);
     if (!this.userInfo.phone) {
       this.ttoast({
@@ -88,13 +90,18 @@ export default {
       isLoading: false,
       userInfo: null,
       timer: null,
-      isEdit: false
+      isEdit: false,
+      isBack: false
     };
   },
 
   methods: {
     handleBack() {
       this.clearTimer();
+      if (this.isBack) {
+        uni.navigateBack();
+        return;
+      }
       uni.redirectTo({
         url: '/user/commission-statistics/bank-list'
       });
