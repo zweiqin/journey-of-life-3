@@ -1,7 +1,12 @@
 <template>
   <view class="commision-page">
-    <view class="back" @click="handleBack">
-      <tui-icon name="arrowleft" color="#000" :size="30"></tui-icon>
+    <view class="back">
+      <tui-icon name="arrowleft" color="#000" @click="handleBack" :size="30"></tui-icon>
+
+      <button class="uni-btn" @click="handleToBankList">
+        <image class="img" src="../../static/images/new-user/group/849a12e594b7b12ef97bfc363ef95a8.png"></image>
+        <text class="btn-text">我的银行卡</text>
+      </button>
     </view>
 
     <!-- 上面三个统计 -->
@@ -54,7 +59,13 @@
 
       <view class="button-wrapper">
         <view class="tip">可提现 ￥{{ commissionData.commissionWithdrawable || 0 }}</view>
-        <button :disabled="!commissionData.commissionWithdrawable" class="uni-btn">佣金提现</button>
+        <button
+          @click="handleWithdrawal(commissionData.commissionWithdrawable)"
+          :class="{ disabled: !commissionData.commissionWithdrawable || commissionData.commissionWithdrawable == 0 }"
+          class="uni-btn"
+        >
+          佣金提现
+        </button>
       </view>
     </view>
 
@@ -102,6 +113,26 @@ export default {
       } finally {
         uni.stopPullDownRefresh();
       }
+    },
+
+    // 去管理银行卡
+    handleToBankList() {
+      uni.navigateTo({ url: '/user/commission-statistics/bank-list' });
+    },
+
+    // 点击提现
+    handleWithdrawal(account) {
+      if (!account) {
+        this.ttoast({
+          type: 'fail',
+          title: '暂无佣金可提现'
+        });
+        return;
+      }
+
+      uni.navigateTo({
+        url: '/user/commission-statistics/withdrawal?account=' + account
+      });
     }
   },
 
@@ -125,6 +156,22 @@ export default {
     position: absolute;
     top: 40upx;
     left: 40upx;
+    right: 40upx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .uni-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 28upx;
+      .img {
+        width: 50upx;
+        height: 50upx;
+        margin-right: 8upx;
+      }
+    }
   }
 
   .top-pane {
@@ -202,6 +249,10 @@ export default {
         align-items: center;
         justify-content: center;
         transition: all 350ms;
+
+        &.disabled {
+          opacity: 0.7;
+        }
 
         &:active {
           background-color: #ff8f44;

@@ -42,7 +42,8 @@ export default {
     return {
       commissionDataList: [],
       loading: 'loading',
-      scrollTop: 0
+      scrollTop: 0,
+      userInfo: null
     };
   },
   onLoad(params) {

@@ -5,7 +5,8 @@
     :style="{
       height: height + 'rpx',
       background: bacokground,
-      padding: padding
+      padding: padding,
+      color: scrollTop > fiexdHeight ? fixedColor : color
     }"
   >
     <view class="left">
@@ -62,8 +63,11 @@ export default {
     fiexdHeight: {
       type: Number,
       default: 300
-    }
-  },
+    },
+
+    color: String,
+    fixedColor: String
+  }
 };
 </script>
 

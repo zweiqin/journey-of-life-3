@@ -299,13 +299,49 @@ export const getGroupCodeApi = (data) => {
 };
 
 // 获取会员列表
-export const getCommanderVipUserListApi = data => {
+export const getCommanderVipUserListApi = (data) => {
   return endRequest({
     url: '/api/third/tz/getByMenmberIdList',
     method: 'GET',
     data
-  })
-}
+  });
+};
+
+// 获取团长银行卡列表
+export const getCommanderBankCardListApi = (data) => {
+  return endRequest({
+    url: '/api/third/tz/getBankCardList',
+    data,
+    method: 'GET'
+  });
+};
+
+// 新增团长银行卡
+export const addCommannderBankCardApi = (data) => {
+  return endRequest({
+    url: '/api/third/tz/saveBankCard',
+    data,
+    method: 'POST'
+  });
+};
+
+// 修改银行卡信息
+export const editCommanderBnakCardApi = (data) => {
+  return endRequest({
+    url: '/api/third/tz/updateBankCard',
+    data,
+    method: 'POST'
+  });
+};
+
+// 团长点击提现
+export const commanderWithdrawApi = (data) => {
+  return endRequest({
+    url: '/api/third/tz/applyExtraCommission',
+    data,
+    method: 'POST'
+  });
+};
 
 // 查询区域代理状态
 export const getApplyRegionagentStatusApi = (data) => shopRequest('/regionagent/queryIsApproved', data, 'get');

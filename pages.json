@@ -183,6 +183,7 @@
         "enablePullDownRefresh": true
       }
     },
+
     {
       "path": "user/commission-statistics/vip-user",
       "style": {
@@ -936,6 +937,24 @@
           "path": "shareholder/shareholder",
           "style": {
             "navigationBarTitleText": ""
+          }
+        },
+        {
+          "path": "commission-statistics/bank-list",
+          "style": {
+            "navigationBarTitleText": "我的银行卡"
+          }
+        },
+        {
+          "path": "commission-statistics/bank-item",
+          "style": {
+            "navigationBarTitleText": "添加银行卡"
+          }
+        },
+        {
+          "path": "commission-statistics/withdrawal",
+          "style": {
+            "navigationBarTitleText": "佣金提现"
           }
         }
       ]
