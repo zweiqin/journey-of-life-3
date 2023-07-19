@@ -89,7 +89,8 @@ export default {
 
   methods: {
     handleBack() {
-      uni.navigateBack();
+      // uni.navigateBack();
+      uni.redirectTo({ url: '/user/commission-statistics/commission-statistics' });
     },
     async getCommanderBankCardList() {
       console.log(1);
@@ -143,7 +144,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 120upx);
-    justify-content: space-between;
+    // justify-content: space-between;
     padding: 40upx;
     overflow: scroll;
     box-sizing: border-box;
@@ -240,7 +241,6 @@ export default {
           background: url('../../static/images/new-user/group/bank-bg-4.png') no-repeat;
           background-size: cover;
         }
-
 
         background: linear-gradient(45deg, #02cafd 2%, #83f8a6 97%);
 

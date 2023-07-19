@@ -83,7 +83,7 @@ export default {
       commissionData: {}
     };
   },
-  onLoad() {
+  onShow() {
     this.userInfo = uni.getStorageSync(user_INFO);
     if (this.userInfo) {
       this.getCommissionData();

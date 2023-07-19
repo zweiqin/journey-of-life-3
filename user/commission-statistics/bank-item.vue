@@ -1,6 +1,6 @@
 <template>
   <view class="bank-item-container">
-    <TuanPageHead title="添加银行卡" padding="10upx">
+    <TuanPageHead :title="isEdit ? '修改银行卡' : '添加银行卡'" padding="10upx">
       <tui-icon @click="handleBack" slot="left" name="arrowleft" color="#3d3d3d"></tui-icon>
     </TuanPageHead>
 
@@ -19,7 +19,7 @@
       <tui-input :labelSize="28" :size="28" label="支行名称" :lineLeft="false" placeholder="请输入您的支行名称" v-model="form.bankName"></tui-input>
       <tui-input :labelSize="28" :size="28" label="银行卡号" :lineLeft="false" placeholder="请输入您的银行卡号" v-model="form.cardNo"></tui-input>
 
-      <button @click="handleAddBandCard" :loading="isLoading" class="uni-btn">确认添加</button>
+      <button @click="handleAddBandCard" :loading="isLoading" class="uni-btn">{{ isEdit ? '确认修改' : '确认添加' }}</button>
     </tui-form>
 
     <ChooseOpenBank ref="chooseOpenBnakRef"></ChooseOpenBank>
@@ -60,6 +60,7 @@ export default {
       this.form.bankName = params.bankName;
       this.form.cardNo = params.cardNo;
       this.form.id = params.id;
+      uni.setNavigationBarTitle({ title: '修改银行卡信息' });
     }
 
     this.isBack = params.type;

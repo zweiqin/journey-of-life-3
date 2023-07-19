@@ -40,9 +40,9 @@ export const BASE_WS_API =
  * 师傅的
  */
 // 线上
-// export const sf = "https://www.zhult.com/samrtWorker";
+export const sf = "https://www.zhult.com/samrtWorker";
 // 测试
 // export const sf = "https://www.zhult.com/test-samrtWorker";
 // 本地
-export const sf = "/sf";
+// export const sf = "/sf";
 

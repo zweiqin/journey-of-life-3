@@ -180,8 +180,7 @@ export default {
     async getData(currentDetail, fn) {
       try {
         const res = await queryDynamicDataApi({
-          // address: currentDetail && JSON.stringify(currentDetail) != '[]' ? currentDetail : '',
-          address: '宁夏',
+          address: currentDetail && JSON.stringify(currentDetail) != '[]' ? currentDetail : '',
           correspondType: 2
         });
 
