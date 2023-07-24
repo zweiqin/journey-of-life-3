@@ -160,7 +160,6 @@ export default {
         }, 1000);
 
         await this.$store.dispatch('location/getCurrentLocation', (data) => {
-          console.log('caonimaimage', data);
           _this.getData(data.detail, () => {
             uni.hideLoading();
             clearInterval(timer);
@@ -184,10 +183,8 @@ export default {
           correspondType: 2
         });
 
-        console.log('你妈的啊', res);
-
         if (res.statusCode === 20000) {
-          if (!Array.isArray(res.data)) {
+          if (!Array.isArray(res.data) && this.type == 1) {
             this.ttoast({
               type: 'info',
               title: '您当前位置没有该活动，去看看其他服务吧'
@@ -223,7 +220,7 @@ export default {
     addData(res, isCustom) {
       // debugger
       if (!Array.isArray(res.data)) {
-        // this.getServeList();
+        this.getServeList();
         return;
       }
 
@@ -236,7 +233,7 @@ export default {
           this.myAttributeVipJInData = jinData;
           this.beeSteward = jinData.serverContent.split(',');
         } else {
-          // this.getServeList();
+          this.getServeList();
         }
       } else {
         // debugger
@@ -256,7 +253,7 @@ export default {
           this.currentIndulgence = this.indulgenceData[0].serverContent;
           this.currentJUHUIdata = this.indulgenceData[0];
         } else {
-          // this.getServeList();
+          this.getServeList();
         }
       }
       // #ifdef H5
