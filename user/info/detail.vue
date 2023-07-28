@@ -12,9 +12,13 @@
       </view>
 
       <tui-list-cell arrow>
-        <view class="user-info-item" @click="changeNicknamePopupVisible = true
-        isFocus = true
-          ">
+        <view
+          class="user-info-item"
+          @click="
+            changeNicknamePopupVisible = true;
+            isFocus = true;
+          "
+        >
           <view class="title">用户昵称</view>
           <view class="value">{{ userInfo.nickName }}</view>
         </view>
@@ -23,18 +27,14 @@
       <tui-list-cell>
         <view class="user-info-item">
           <view class="title">团蜂ID</view>
-          <view class="value" style="color: #b0b0af">{{
-            userInfo.userId
-          }}</view>
+          <view class="value" style="color: #b0b0af">{{ userInfo.userId }}</view>
         </view>
       </tui-list-cell>
 
       <tui-list-cell v-if="userInfo.invitationCode">
         <view class="user-info-item">
           <view class="title">会员编号</view>
-          <view class="value" style="color: #b0b0af">{{
-            userInfo.invitationCode
-          }}</view>
+          <view class="value" style="color: #b0b0af">{{ userInfo.invitationCode }}</view>
         </view>
       </tui-list-cell>
 
@@ -53,7 +53,7 @@
       </tui-list-cell>
 
       <!-- #ifdef APP -->
-      <tui-list-cell arrow @click=" go('/user/info/privacy')">
+      <tui-list-cell arrow @click="go('/user/info/privacy')">
         <view class="user-info-item">
           <view class="title">我的隐私</view>
         </view>
@@ -87,9 +87,7 @@
 
     <view class="logout section">
       <tui-list-cell style="background: rgba(0, 0, 0, 0)">
-        <view @click=" isShowModal = true" style="color: #605d52">
-          退出登录
-        </view>
+        <view @click="isShowModal = true" style="color: #605d52"> 退出登录 </view>
       </tui-list-cell>
     </view>
 
@@ -99,11 +97,16 @@
 
     <tui-modal @click="handleClickModal" :show="isShowModal" title="提示" content="确定退出登录吗？"></tui-modal>
 
-    <tui-bottom-popup backgroundColor="transparent" :height="300" :show="changeNicknamePopupVisible" @close="
-      changeNicknamePopupVisible = false
-    isFocus = false
-    newNickname = ''
-      ">
+    <tui-bottom-popup
+      backgroundColor="transparent"
+      :height="300"
+      :show="changeNicknamePopupVisible"
+      @close="
+        changeNicknamePopupVisible = false;
+        isFocus = false;
+        newNickname = '';
+      "
+    >
       <view class="nickname">
         <view class="pane">
           <text>修改昵称：</text>
@@ -119,13 +122,9 @@
 </template>
 
 <script>
-import { USER_INFO } from '../../constant'
-import {
-  getOpenIdApi,
-  handleBindOpenIdApi,
-  queryIsBindPhoneApi,
-} from '../../api/app'
-import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
+import { USER_INFO } from '../../constant';
+import { getOpenIdApi, handleBindOpenIdApi, queryIsBindPhoneApi } from '../../api/app';
+import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user';
 export default {
   data() {
     return {
@@ -135,158 +134,135 @@ export default {
       isFocus: false,
       userInfo: {},
       currentVersion: '',
-      bindPhone: null,
-    }
+      bindPhone: null
+    };
   },
   methods: {
     // 上传图片
     handleChooseImage() {
-      const _this = this
+      const _this = this;
       uni.chooseImage({
         count: 1,
-        success: res => {
-          // _this.newAvatarUrl = res.tempFilePaths[0]
-          // uni.showLoading({
-          //   title: "图片上传中...",
-          // });
-          // uni.uploadFile({
-          //   url: UPLOAD_IMG_URL,
-          //   filePath: res.tempFilePaths[0],
-          //   name: "file",
-          //   success: (uploadFileRes) => {
-          //     const avatarUrl = JSON.parse(uploadFileRes.data).data.url;
-          //     console.log(avatarUrl);
-          //     _this.updateUserInfo({
-          //       key: "avatar",
-          //       value: avatarUrl,
-          //     });
-          //   },
-          //   complete: () => {
-          //     uni.hideLoading();
-          //   },
-          // });
-
+        success: (res) => {
           uni.navigateTo({
-            url: '/user/info/cropper?imgUrl=' + res.tempFilePaths[0],
-          })
+            url: '/user/info/cropper?imgUrl=' + res.tempFilePaths[0]
+          });
         },
         fail: () => {
-          _this.ttoast('图片上传失败')
-        },
-      })
+          _this.ttoast('图片上传失败');
+        }
+      });
     },
 
     // 裁切图片并上传
     cropper(e) {
-      console.log(e)
+      console.log(e);
     },
 
     handleBack() {
       uni.switchTab({
-        url: '/pages/user/user',
-      })
+        url: '/pages/user/user'
+      });
     },
 
     // 修改用户信息
     async updateUserInfo(data, cb) {
-      await this.updateUserInfo(data, cb)
-      console.log(111111)
+      await this.updateUserInfo(data, cb);
       uni.showToast({
-        title: '信息修改成功',
-      })
-      typeof cb === 'function' && cb()
+        title: '信息修改成功'
+      });
+      typeof cb === 'function' && cb();
     },
 
     updateUserInfo(updateData, cb) {
-      const _this = this
+      const _this = this;
       const originData = {
         nickname: _this.userInfo.nickName,
         avatar: _this.userInfo.avatarUrl,
         password: _this.userInfo.password,
-        id: _this.userInfo.userId,
-      }
+        id: _this.userInfo.userId
+      };
 
-      originData[updateData['key']] = updateData['value']
+      originData[updateData['key']] = updateData['value'];
 
       return new Promise((resolve, reject) => {
         uni.showLoading({
-          title: '修改中',
-        })
+          title: '修改中'
+        });
         updateUserInfoApi(originData)
           .then(() => {
-            uni.hideLoading()
+            uni.hideLoading();
             uni.showToast({
-              title: '信息修改成功',
-            })
-            this.refrshUserInfo()
-            cb && typeof cb === 'function' && cb()
-            resolve()
+              title: '信息修改成功'
+            });
+            this.refrshUserInfo();
+            cb && typeof cb === 'function' && cb();
+            resolve();
           })
-          .catch(err => {
-            uni.hideLoading()
-            reject(err)
-          })
-      })
+          .catch((err) => {
+            uni.hideLoading();
+            reject(err);
+          });
+      });
     },
 
     handleCHnageNickName() {
       if (!this.newNickname) {
         uni.showToast({
-          title: '请填写昵称',
-        })
-        return
+          title: '请填写昵称'
+        });
+        return;
       }
 
       this.updateUserInfo(
         {
           key: 'nickname',
-          value: this.newNickname,
+          value: this.newNickname
         },
         () => {
-          this.userInfo.newNickname = ''
-          this.isFocus = false
-          this.changeNicknamePopupVisible = false
-          uni.hideKeyboard()
+          this.userInfo.newNickname = '';
+          this.isFocus = false;
+          this.changeNicknamePopupVisible = false;
+          uni.hideKeyboard();
         }
-      )
+      );
     },
 
     handleClickModal(e) {
-      const { index } = e
+      const { index } = e;
       if (index) {
-        this.$store.dispatch('auth/logout')
+        this.$store.dispatch('auth/logout');
       }
-      this.isShowModal = false
+      this.isShowModal = false;
     },
 
     // 刷新用户信息
     refrshUserInfo(cb) {
       refrshUserInfoApi({
-        userId: this.userInfo.userId,
+        userId: this.userInfo.userId
       }).then(({ data }) => {
-        uni.setStorageSync(USER_INFO, data)
-        this.userInfo = data
-        this.$forceUpdate()
-      })
+        uni.setStorageSync(USER_INFO, data);
+        this.userInfo = data;
+        this.$forceUpdate();
+      });
     },
 
     // 检查版本更新
     handleCheckedVersion() {
-      this.$refs.checkedVersion.checkedVersion()
+      this.$refs.checkedVersion.checkedVersion();
     },
 
     // 绑定微信号
     async handleBindWxChat() {
       if (this.bindPhone) {
-        return
+        return;
       }
-      const _this = this
-      const appid = 'wxb19ccb829623be12'
-      const local =
-        'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/info/detail'
-      const code = this.getUrlCode().code
+      const _this = this;
+      const appid = 'wxb19ccb829623be12';
+      const local = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/info/detail';
+      const code = this.getUrlCode().code;
 
-      console.log('获取code', code)
+      // console.log('获取code', code);
       // alert('获取code', code)
 
       if (code == null || code === '') {
@@ -295,110 +271,122 @@ export default {
           appid +
           '&redirect_uri=' +
           encodeURIComponent(local) +
-          '&response_type=code&scope=snsapi_base#wechat_redirect'
+          '&response_type=code&scope=snsapi_base#wechat_redirect';
       } else {
         try {
           const res = await getOpenIdApi({
-            code: code,
-          })
+            code: code
+          });
 
-          _this.openId = res.data.openId
-          _this.mobile = res.data.mobile
+          _this.openId = res.data.openId;
+          _this.mobile = res.data.mobile;
 
           try {
-            await handleBindOpenIdApi({
-              userId: _this.$store.getters.userId,
+            const res = await handleBindOpenIdApi({
+              userId: _this.userInfo.userId,
               phone: _this.$store.getters.userInfo.phone,
-              openId: res.data.openId,
-            })
+              openId: _this.openId
+            });
+
+            if (res.code === '50008') {
+              this.ttoast({
+                type: 'info',
+                title: res.msg
+              });
+              return;
+            }
 
             uni.showToast({
               title: '微信绑定成功',
-              duration: 2000,
-            })
+              duration: 2000
+            });
 
-            // #ifdef H5
-            window.location.href =
-              window.location.origin +
-              window.location.pathname +
-              window.location.hash
-            // #endif
+            this.queryBindInfo();
           } catch (error) {
             uni.showToast({
               title: '微信绑定失败',
               duration: 2000,
-              icon: 'none',
-            })
+              icon: 'none'
+            });
+          } finally {
+            // #ifdef H5
+            setTimeout(() => {
+              window.location.href = window.location.origin + window.location.pathname + window.location.hash;
+            }, 2000);
+            // #endif
           }
         } catch (error) {
           uni.showLoading({
             title: '获取您的信息失败',
             icon: 'none',
-            duration: 2000,
-          })
+            duration: 2000
+          });
         }
       }
     },
 
     // 获取url code
     getUrlCode() {
-      var url = location.search
-      var theRequest = new Object()
+      var url = location.search;
+      var theRequest = new Object();
       if (url.indexOf('?') != -1) {
-        var str = url.substr(1)
-        var strs = str.split('&')
+        var str = url.substr(1);
+        var strs = str.split('&');
         for (var i = 0; i < strs.length; i++) {
-          theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
+          theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1];
         }
       }
-
-      console.log('code结果', theRequest)
-      return theRequest
+      return theRequest;
     },
 
     // 查询微信是否绑定
     async queryBindInfo() {
       const res = await queryIsBindPhoneApi({
-        userId: this.$store.getters.userId,
-      })
+        userId: this.$store.getters.userId
+      });
 
-      this.bindPhone = res.data ? res.data.phone : null
+      if (res.code === '0') {
+        this.bindPhone = res.data ? res.data.phone : null;
+      } else {
+        uni.showToast({
+          title: res.msg,
+          duration: 2000,
+          icon: 'none'
+        });
+      }
     },
 
     // 点击注销
     handleDestoryAccount() {
       uni.navigateTo({
         url: '/user/account/logoff'
-      })
+      });
     },
 
     // 绑定手机号
     handleBindMobile() {
       if (this.userInfo.weixinOpenid) {
-        uni.navigateTo('/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid)
+        uni.navigateTo('/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid);
       }
     }
   },
 
-  onShow() { },
-
   onLoad() {
-    this.queryBindInfo()
-    const _this = this
+    this.queryBindInfo();
+    const _this = this;
     uni.getSystemInfo({
       success: function (res) {
-        _this.currentVersion = res.appVersion
-      },
-    })
+        _this.currentVersion = res.appVersion;
+      }
+    });
 
-    this.userInfo = uni.getStorageSync(USER_INFO)
-    console.log('当前路径', location)
-    const code = this.getUrlCode().code
+    this.userInfo = uni.getStorageSync(USER_INFO);
+    const code = this.getUrlCode().code;
     if (code) {
-      this.handleBindWxChat()
+      this.handleBindWxChat();
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>

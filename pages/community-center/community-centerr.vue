@@ -89,7 +89,11 @@
     <TuanWxShare ref="tuanWxShareRef" @click="handleInitShare"></TuanWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile @close="handleResetGlobal" ref="tuanWXLoginBindMobileRef"></TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile
+      @close="handleResetGlobal"
+      @success="this.$store.dispatch('auth/refrshUserInfo')"
+      ref="tuanWXLoginBindMobileRef"
+    ></TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>

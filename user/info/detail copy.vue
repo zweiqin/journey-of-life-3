@@ -300,11 +300,13 @@ export default {
         this.mobile = res.mobile
 
         try {
-          await handleBindOpenIdApi({
+         const res1 = await handleBindOpenIdApi({
             userId: this.$store.getters.userId,
             phone: res.mobile,
             openId: res.openId,
           })
+
+          console.log(res1);
 
           uni.showToast({
             title: '微信绑定成功',

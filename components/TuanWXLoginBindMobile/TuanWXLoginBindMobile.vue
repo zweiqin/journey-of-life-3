@@ -148,7 +148,7 @@ export default {
       try {
         await bindMobileForWXApi(this.bindForm);
         this.ttoast('绑定成功');
-        this.$emit('success')
+        this.$emit('success');
       } catch (error) {
         this.ttoast({
           type: 'fail',

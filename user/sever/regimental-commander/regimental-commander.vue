@@ -5,9 +5,9 @@
     </view>
     <view class="main-area">
       <view class="title">团长申请</view>
-      <view class="item">
+      <view class="item" @click="handleChooseCity">
         <view class="item-title">区域</view>
-        <view class="field-wrapper" @click="handleChooseCity">
+        <view class="field-wrapper">
           <input disabled readonly type="text" :value="applyGroupForm.region" placeholder="请选择您的区域" />
           <tui-icon name="arrowdown" :size="24"></tui-icon>
         </view>
@@ -103,8 +103,11 @@ export default {
 
     // 绑定手机号成功
     async handleBindMobileSuccess() {
-      await this.$store.dispatch('auth/refrshUserInfo');
-      this.setUserInfo();
+      await this.$store.dispatch('auth/refrshUserInfo', (userInfo) => {
+        this.applyGroupForm.userId = userInfo.userId;
+        this.applyGroupForm.mobile = userInfo.phone;
+      });
+      // this.setUserInfo();
     },
 
     // 关闭

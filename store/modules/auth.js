@@ -148,13 +148,14 @@ export default {
       });
     },
 
-    refrshUserInfo({ state, commit }) {
+    refrshUserInfo({ state, commit }, cb) {
       if (!state.userId) {
         return;
       }
       refrshUserInfoApi({
         userId: state.userId,
       }).then(({ data }) => {
+        cb && typeof cb === 'function' && cb(data)
         commit(CHNAGE_USER_INFO, data);
         commit(CHNAGE_USER_ID, data.userId);
       });
