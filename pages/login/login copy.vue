@@ -118,8 +118,7 @@ import { bindLastUserApi, checkBindApi } from '../../api/user'
 const tabbarList = [
   '/pages/user/user',
   '/pages/community-center/community-center',
-  '/pages/index/index',
-  '/pages/stuff/stuff',
+  '/pages/index/index'
 ]
 
 export default {

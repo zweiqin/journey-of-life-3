@@ -20,7 +20,7 @@ export const btnList = [
     //字体颜色
     color: '#fff',
     cb: () => {
-      uni.switchTab({
+      uni.navigateTo({
         url: '/pages/stuff/stuff',
       })
     },

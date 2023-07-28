@@ -230,7 +230,7 @@ export default {
     },
     backHome() {
       console.log("回到首页");
-      uni.switchTab({ url: "/pages/stuff/stuff" });
+      uni.navigateTo({ url: "/pages/stuff/stuff" });
     },
 
     service() {

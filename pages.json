@@ -237,24 +237,24 @@
         "iconPath": "/static/images/tabbar/furniture.png",
         "selectedIconPath": "/static/images/tabbar/furniture-active.png"
       },
-      {
-        "pagePath": "pages/stuff/stuff",
-        "text": "材料",
-        "iconPath": "/static/images/tabbar/stuff.png",
-        "selectedIconPath": "/static/images/tabbar/stuff-active.png"
-      },
+      // {
+      //   "pagePath": "pages/stuff/stuff",
+      //   "text": "材料",
+      //   "iconPath": "/static/images/tabbar/stuff.png",
+      //   "selectedIconPath": "/static/images/tabbar/stuff-active.png"
+      // },
       {
         "pagePath": "pages/community-center/community-centerr",
         "text": "社区中心",
         "iconPath": "/static/images/tabbar/community.png",
         "selectedIconPath": "/static/images/tabbar/community-active.png"
       },
-      {
-        "pagePath": "pages/logistics/logistics",
-        "text": "物流",
-        "iconPath": "/static/images/tabbar/logistics.png",
-        "selectedIconPath": "/static/images/tabbar/logistics-active.png"
-      },
+      // {
+      //   "pagePath": "pages/logistics/logistics",
+      //   "text": "物流",
+      //   "iconPath": "/static/images/tabbar/logistics.png",
+      //   "selectedIconPath": "/static/images/tabbar/logistics-active.png"
+      // },
       {
         "pagePath": "pages/user/user",
         "text": "我的",

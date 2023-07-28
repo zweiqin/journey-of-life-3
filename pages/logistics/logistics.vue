@@ -1,23 +1,20 @@
 <template>
   <view class="logistics-page">
     <TuanAppShim bg="#fff"></TuanAppShim>
-    <Search @focus="handleSearch"></Search>
+    <Search @focus="handleSearch">
+      <tui-icon @click="handleBack" name="arrowleft" class="back" color="#000"></tui-icon>
+    </Search>
     <Carousel
       :list="[
         'https://img0.baidu.com/it/u=1781395553,1101009469&fm=253&fmt=auto&app=138&f=JPEG?w=540&h=300',
         'https://img0.baidu.com/it/u=3581503522,3128729929&fm=253&fmt=auto&app=138&f=JPEG?w=903&h=500',
-        'https://img2.baidu.com/it/u=483246757,1868984082&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=210',
+        'https://img2.baidu.com/it/u=483246757,1868984082&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=210'
       ]"
       :height="152"
     ></Carousel>
 
     <view class="tools">
-      <image
-        class="left"
-        @click="handleToPage('/logistics/mail')"
-        src="../../static/images/wuliu/jikuaidi.png"
-        alt=""
-      />
+      <image class="left" @click="handleToPage('/logistics/mail')" src="../../static/images/wuliu/jikuaidi.png" alt="" />
       <view class="right">
         <image
           style="width: 100%; height: 236upx; flex: none"
@@ -27,31 +24,18 @@
           alt=""
         />
 
-        <image
-          class="img"
-          @click="handleToPage('/logistics/find-logistics')"
-          src="../../static/images/wuliu/quanguo.png"
-          alt=""
-        />
+        <image class="img" @click="handleToPage('/logistics/find-logistics')" src="../../static/images/wuliu/quanguo.png" alt="" />
       </view>
     </view>
 
     <Menus :top="15" :menus="menus"></Menus>
 
     <view class="navs">
-      <view
-        @click="switchTab(1)"
-        :class="{ active: currentTab === 1 }"
-        class="item"
+      <view @click="switchTab(1)" :class="{ active: currentTab === 1 }" class="item"
         >寄件 <text class="number">{{ mySendsTotal }}</text></view
       >
 
-      <view
-        @click="switchTab(0)"
-        :class="{ active: currentTab === 0 }"
-        class="item"
-        >收件 <text class="number">0</text>
-      </view>
+      <view @click="switchTab(0)" :class="{ active: currentTab === 0 }" class="item">收件 <text class="number">0</text> </view>
     </view>
 
     <!-- <view class="views" v-show="currentTab === 0">
@@ -64,29 +48,16 @@
       <image class="banner" src="../../static/images/wuliu/banner.png" alt="" />
       <view class="main">
         <view v-if="mySends.length">
-          <view
-            class="order-item"
-            @click="handleViewDetail(orderInfo.orderNo)"
-            v-for="orderInfo in mySends"
-            :key="orderInfo.id"
-          >
+          <view class="order-item" @click="handleViewDetail(orderInfo.orderNo)" v-for="orderInfo in mySends" :key="orderInfo.id">
             <view class="info">
               <view class="text"
                 >运单号：{{ orderInfo.orderNo }}
-                <text style="color: rgb(255, 143, 31); margin-left: 5px"
-                  >({{ orderInfo.status | filterOrderStaus }})</text
-                >
+                <text style="color: rgb(255, 143, 31); margin-left: 5px">({{ orderInfo.status | filterOrderStaus }})</text>
               </view>
               <view class="text"
-                >{{ orderInfo.consigneeName }}
-                <text class="call-phone">{{
-                  orderInfo.consigneeMobile
-                }}</text></view
+                >{{ orderInfo.consigneeName }} <text class="call-phone">{{ orderInfo.consigneeMobile }}</text></view
               >
-              <view
-                >{{ orderInfo.consigneeAddress
-                }}{{ orderInfo.consigneeAddressDetail }}</view
-              >
+              <view>{{ orderInfo.consigneeAddress }}{{ orderInfo.consigneeAddressDetail }}</view>
               <view class="text">下单时间：{{ orderInfo.createTime }}</view>
             </view>
           </view>
@@ -130,24 +101,16 @@
 </template>
 
 <script>
-import { expressInquiryApi } from '../../api/logistics'
-import Search from '../../components/search'
-import Carousel from '../../components/carousel'
-import Menus from '../../components/Menus'
-import { menus } from './config'
-import Panel from '../../components/panel'
-import {
-  jiSenderInfo,
-  jiRemarks,
-  jiconsigneeInfo,
-  jiOrderGoodsList,
-  VALUE_ADDED_SERVICES,
-  JI_EDIT_ORDER_ID,
-  APPONIT_WULIU_QIYE_ID,
-} from '../../constant'
-import { getUserId, removeCache, checkWhoami } from '../../utils/DWHutils'
-import { collectPages } from '../../logistics/config'
-import NoData from '../../components/no-data'
+import { expressInquiryApi } from '../../api/logistics';
+import Search from '../../components/search';
+import Carousel from '../../components/carousel';
+import Menus from '../../components/Menus';
+import { menus } from './config';
+import Panel from '../../components/panel';
+import { jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, VALUE_ADDED_SERVICES, JI_EDIT_ORDER_ID, APPONIT_WULIU_QIYE_ID } from '../../constant';
+import { getUserId, removeCache, checkWhoami } from '../../utils/DWHutils';
+import { collectPages } from '../../logistics/config';
+import NoData from '../../components/no-data';
 
 export default {
   components: {
@@ -155,35 +118,40 @@ export default {
     Carousel,
     Menus,
     Panel,
-    NoData,
+    NoData
   },
   data() {
-    return { menus, currentTab: 1, mySends: [], mySendsTotal: 0 }
+    return { menus, currentTab: 1, mySends: [], mySendsTotal: 0 };
   },
   created() {
-    this.getData()
+    this.getData();
     // checkWhoami();
   },
   methods: {
+    handleBack() {
+      uni.switchTab({
+        url: '/pages/user/user'
+      });
+    },
     /**
      * @description 切换nav
      */
     switchTab(tab) {
-      this.currentTab = tab
+      this.currentTab = tab;
       if (this.currentTab === 0) {
-        this.mySends = []
+        this.mySends = [];
       } else {
-        this.getData()
+        this.getData();
       }
     },
     handleToPage(route) {
       if (!route) {
-        return
+        return;
       }
 
       uni.navigateTo({
-        url: route,
-      })
+        url: route
+      });
     },
 
     // 获取寄件列表
@@ -191,11 +159,11 @@ export default {
       const res = await expressInquiryApi({
         pageNo: 1,
         pageSize: 5,
-        userId: getUserId(),
-      })
+        userId: getUserId()
+      });
 
-      this.mySends = res.data
-      this.mySendsTotal = res.total
+      this.mySends = res.data;
+      this.mySendsTotal = res.total;
     },
 
     // 点击查看详情
@@ -204,54 +172,46 @@ export default {
         uni.showToast({
           title: '订单异常',
           duration: 2000,
-          icon: 'none',
-        })
-        return
+          icon: 'none'
+        });
+        return;
       }
 
       uni.navigateTo({
-        url: '/logistics/collect-package-detail?orderNo=' + orderNo,
-      })
+        url: '/logistics/collect-package-detail?orderNo=' + orderNo
+      });
     },
 
     // 点击查看全部
     viewAllOrders() {
       uni.navigateTo({
-        url: '/logistics/collect-package',
-      })
+        url: '/logistics/collect-package'
+      });
     },
 
     // 点击搜索去搜索物流
     handleSearch() {
       uni.navigateTo({
-        url: '/logistics/find-logistics',
-      })
-    },
+        url: '/logistics/find-logistics'
+      });
+    }
   },
 
   filters: {
     filterOrderStaus(status) {
-      const item = collectPages.find(item => item.value === status)
+      const item = collectPages.find((item) => item.value === status);
       if (item && item.value) {
-        return item.label
+        return item.label;
       } else {
-        return '运输中'
+        return '运输中';
       }
-    },
+    }
   },
 
   onShow() {
-    removeCache([
-      jiSenderInfo,
-      jiRemarks,
-      jiconsigneeInfo,
-      jiOrderGoodsList,
-      JI_EDIT_ORDER_ID,
-      VALUE_ADDED_SERVICES,
-      APPONIT_WULIU_QIYE_ID,
-    ])
-  },
-}
+    removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, JI_EDIT_ORDER_ID, VALUE_ADDED_SERVICES, APPONIT_WULIU_QIYE_ID]);
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -370,11 +330,7 @@ export default {
     .main {
       width: 95%;
       margin: 0 auto;
-      background-color: linear-gradient(
-        133deg,
-        #2748b4 0%,
-        rgba(39, 72, 180, 0) 100%
-      );
+      background-color: linear-gradient(133deg, #2748b4 0%, rgba(39, 72, 180, 0) 100%);
       padding: 24upx 0 24upx 0;
 
       .order-item {

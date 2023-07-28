@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const tabbarList = ['/pages/index/index', '/pages/stuff/stuff', '/pages/community-center/community-centerr', '/pages/user/user']
+const tabbarList = ['/pages/index/index', '/pages/community-center/community-centerr', '/pages/user/user']
 
 export default {
   props: {

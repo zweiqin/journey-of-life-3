@@ -17,6 +17,7 @@
       <Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
       <MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
       <Serve @handleNavigate="handleNavigate"></Serve>
+      <AdditionalFunction></AdditionalFunction>
     </view>
     <tui-modal
       :show="$data._isShowTuiModel"
@@ -37,6 +38,7 @@ import BaseInfo from './cpns/BaseInfo';
 import OrderPane from './cpns/OrderPane.vue';
 import Equity from './cpns/Equity.vue';
 import MyFunction from './cpns/MyFunction.vue';
+import AdditionalFunction from './cpns/AdditionalFunction.vue';
 import Serve from './cpns/Serve.vue';
 import showModalMixin from '../../mixin/showModal';
 import { USER_ID, USER_INFO } from '../../constant';
@@ -49,7 +51,8 @@ export default {
     OrderPane,
     Equity,
     MyFunction,
-    Serve
+    Serve,
+    AdditionalFunction
   },
   mixins: [showModalMixin()],
   onLoad() {

@@ -282,7 +282,7 @@ export default {
      * @description 返回上一页
      */
     back() {
-      uni.switchTab({
+      uni.navigateTo({
         url: "/pages/logistics/logistics",
       });
     },
@@ -294,7 +294,7 @@ export default {
       if (!route) {
         return;
       }
-      wx.navigateTo({
+      uni.navigateTo({
         url: route,
       });
     },

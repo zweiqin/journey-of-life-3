@@ -5,8 +5,7 @@
       <view class="search-container">
         <image class="search-icon" src="../../../static/images/new-brand/index/search-icon.png" mode="" />
 
-        <input v-model="serachValue" @confirm="$emit('search', serachValue)" confirm-type="search" type="text"
-          :placeholder="placeholder" />
+        <input v-model="serachValue" @confirm="$emit('search', serachValue)" confirm-type="search" type="text" :placeholder="placeholder" />
 
         <button @click="$emit('search', serachValue)" :class="{ show: serachValue }" class="uni-btn">搜索</button>
       </view>
@@ -14,9 +13,9 @@
 
     <scroll-view v-if="!isCustorm" scroll-x="true">
       <view class="menus">
-        <view @click="$emit('change', item.id)" class="item" :class="{ active: current == item.id }" v-for="item in menus"
-          :key="item.id">
-          {{ item.styleName }}</view>
+        <view @click="$emit('change', item.id)" class="item" :class="{ active: current == item.id }" v-for="item in menus" :key="item.id">
+          {{ item.styleName }}</view
+        >
       </view>
     </scroll-view>
 
@@ -27,75 +26,75 @@
 </template>
 
 <script>
-import { getMaterialBrandStyleListApi } from '../../../api/brand'
+import { getMaterialBrandStyleListApi } from '../../../api/brand';
 export default {
   props: {
     placeholder: {
       type: String,
-      default: '请输入搜索内容',
+      default: '请输入搜索内容'
     },
 
     current: {
       type: [Number, String],
-      required: true,
+      required: true
     },
 
     scrollTop: {
       type: Number,
-      default: 0,
+      default: 0
     },
     isCustorm: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
 
   data() {
     return {
       menus: [],
-      serachValue: '',
-    }
+      serachValue: ''
+    };
   },
 
   mounted() {
-    this.getMenus()
+    this.getMenus();
   },
 
   watch: {
     serachValue(value) {
       if (!value) {
-        this.$emit('search', '')
+        this.$emit('search', '');
       }
-    },
+    }
   },
 
   methods: {
     async getMenus() {
       const { data } = await getMaterialBrandStyleListApi({
         page: 1,
-        limit: 100,
-      })
+        limit: 100
+      });
 
-      console.log(data)
+      console.log(data);
       this.menus = [
         {
           createTime: '2023-03-17 08:18:12',
           id: -100,
           isDelete: false,
           styleName: '综合',
-          updateTime: '2023-03-17 08:18:12',
+          updateTime: '2023-03-17 08:18:12'
         },
-        ...data.items,
-      ]
+        ...data.items
+      ];
     },
 
     handleBack() {
-      uni.switchTab({
-        url: '/pages/stuff/stuff',
-      })
-    },
-  },
-}
+      uni.navigateTo({
+        url: '/pages/stuff/stuff'
+      });
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

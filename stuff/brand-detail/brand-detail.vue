@@ -1,76 +1,33 @@
 <template>
   <view class="brand-detail-container" v-if="brandDetail">
-    <BrandHeader
-      @search="handleSearch"
-      :scrollTop="scrollTop"
-      :brand="brandDetail"
-    ></BrandHeader>
+    <BrandHeader @search="handleSearch" :scrollTop="scrollTop" :brand="brandDetail"></BrandHeader>
 
     <view class="iamge-wrapper" v-if="brandDetail">
-      <image
-        class="advan-img"
-        :src="
-          brandDetail.logoUrl
-        "
-        mode="widthfix"
-      />
+      <image class="advan-img" :src="brandDetail.logoUrl" mode="widthfix" />
     </view>
 
     <view class="main">
       <view class="menus">
         <view class="goods-menu">
-          <view
-            class="item"
-            :class="{ active: currentMenu === 1 }"
-            @click="handleSwitchTab(1)"
-            >简介</view
-          >
-          <view
-            class="item"
-            :class="{ active: currentMenu === 0 }"
-            @click="handleSwitchTab(0)"
-            >全部商品</view
-          >
+          <view class="item" :class="{ active: currentMenu === 1 }" @click="handleSwitchTab(1)">简介</view>
+          <view class="item" :class="{ active: currentMenu === 0 }" @click="handleSwitchTab(0)">全部商品</view>
         </view>
 
-        <view
-          class="filter-btn"
-          v-show="currentMenu === 0"
-          @click="handleFilter"
-        >
+        <view class="filter-btn" v-show="currentMenu === 0" @click="handleFilter">
           <text>筛选</text>
-          <image
-            class="filter-icon"
-            src="../../static/images/new-brand/detail/filter.png"
-            mode=""
-          />
+          <image class="filter-icon" src="../../static/images/new-brand/detail/filter.png" mode="" />
         </view>
 
-        <view
-          class="filter-btn"
-          v-show="currentMenu === 1"
-          @click="handleShare"
-        >
+        <view class="filter-btn" v-show="currentMenu === 1" @click="handleShare">
           <text>分享海报</text>
-          <image
-            class="filter-icon"
-            src="../../static/images/new-brand/detail/share.png"
-            mode=""
-          />
+          <image class="filter-icon" src="../../static/images/new-brand/detail/share.png" mode="" />
         </view>
       </view>
 
       <view v-show="currentMenu === 0">
         <view class="goods-list">
-          <BrandGoods
-            v-for="goods in goodsList"
-            :data="goods"
-            :key="goods.id"
-          ></BrandGoods>
-          <LoadingMore
-            v-show="status !== 'none'"
-            :status="status"
-          ></LoadingMore>
+          <BrandGoods v-for="goods in goodsList" :data="goods" :key="goods.id"></BrandGoods>
+          <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore>
         </view>
 
         <view class="no-data" v-if="!goodsList.length && status === 'none'">
@@ -80,54 +37,32 @@
       </view>
 
       <view class="desc" v-show="currentMenu === 1">
-        <image
-          class="left"
-          src="../../static/images/new-brand/detail/left.png"
-          mode=""
-        />
+        <image class="left" src="../../static/images/new-brand/detail/left.png" mode="" />
         <text>{{ brandDetail.desc }}</text>
-        <image
-          class="right"
-          src="../../static/images/new-brand/detail/right.png"
-          mode=""
-        />
+        <image class="right" src="../../static/images/new-brand/detail/right.png" mode="" />
       </view>
     </view>
 
     <BrandOpBar @navigate="handleNavigate" @call="handleContact"></BrandOpBar>
-    <FilterPane
-      @change="handleConfirm"
-      :catalogList="catalogList"
-      v-model="filterVisible"
-    ></FilterPane>
+    <FilterPane @change="handleConfirm" :catalogList="catalogList" v-model="filterVisible"></FilterPane>
 
     <!-- 分享海报 -->
-    <PosterPopup
-      :logo="brandDetail.picUrl"
-      :desc="brandDetail.desc"
-      ref="posterPopupRef"
-    ></PosterPopup>
+    <PosterPopup :logo="brandDetail.picUrl" :desc="brandDetail.desc" ref="posterPopupRef"></PosterPopup>
 
     <!-- 生成二维码 -->
-    <uqrcode
-      class="generate-code-container"
-      @complete="handleCompleteCode"
-      ref="uqrcode"
-      canvas-id="qrcode"
-      :value="qrcodeUrl + brandDetail.id"
-    ></uqrcode>
+    <uqrcode class="generate-code-container" @complete="handleCompleteCode" ref="uqrcode" canvas-id="qrcode" :value="qrcodeUrl + brandDetail.id"></uqrcode>
   </view>
 </template>
 
 <script>
-import { getBrandDetailApi, getCatalogIdByBrandApi } from '../../api/brand'
-import { goodsListApi } from '../../api/goods'
-import BrandHeader from './cpns/BrandHeader.vue'
-import BrandGoods from './cpns/BrandGoods.vue'
-import BrandOpBar from './cpns/BrandOpBar.vue'
-import FilterPane from './cpns/FilterPane.vue'
-import PosterPopup from './cpns/PosterPopup.vue'
-import { getLngLatByAddress, navigationAddress } from '../../utils/localtion'
+import { getBrandDetailApi, getCatalogIdByBrandApi } from '../../api/brand';
+import { goodsListApi } from '../../api/goods';
+import BrandHeader from './cpns/BrandHeader.vue';
+import BrandGoods from './cpns/BrandGoods.vue';
+import BrandOpBar from './cpns/BrandOpBar.vue';
+import FilterPane from './cpns/FilterPane.vue';
+import PosterPopup from './cpns/PosterPopup.vue';
+import { getLngLatByAddress, navigationAddress } from '../../utils/localtion';
 
 export default {
   components: {
@@ -135,7 +70,7 @@ export default {
     BrandGoods,
     BrandOpBar,
     FilterPane,
-    PosterPopup,
+    PosterPopup
   },
 
   data() {
@@ -147,7 +82,7 @@ export default {
       query: {
         page: 1,
         size: 20,
-        keyword: '',
+        keyword: ''
       },
       totalPages: 0,
       status: 'none',
@@ -156,59 +91,58 @@ export default {
       filterVisible: false,
       catalogList: [],
       posterPopupVisible: false,
-      qrcodeUrl:
-        'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/stuff/brand-detail/brand-detail?brandId=',
-      shareCode: '',
-    }
+      qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/stuff/brand-detail/brand-detail?brandId=',
+      shareCode: ''
+    };
   },
 
   onLoad(params) {
-    this.getBrandDetail(params.brandId)
-    this.brandId = params.brandId
-    this.getGoodsList()
-    this.getCategoryList()
+    this.getBrandDetail(params.brandId);
+    this.brandId = params.brandId;
+    this.getGoodsList();
+    this.getCategoryList();
   },
 
   methods: {
     // 切换tab
     handleSwitchTab(tag) {
-      this.currentMenu = tag
+      this.currentMenu = tag;
     },
 
     // 获取门店详情
     async getBrandDetail(id) {
       try {
-        const { data } = await getBrandDetailApi({ id })
-        this.brandDetail = data.brand
+        const { data } = await getBrandDetailApi({ id });
+        this.brandDetail = data.brand;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         uni.showToast({
           title: '该店铺不存在',
           duration: 2000,
-          icon: 'none',
-        })
+          icon: 'none'
+        });
 
         this.timer = setTimeout(() => {
-          uni.switchTab({ url: '/pages/stuff/stuff' })
-        }, 1000)
+          uni.redirectTo({ url: '/pages/stuff/stuff' });
+        }, 1000);
       }
     },
 
     // 获取门店商品
     async getGoodsList(isLoadMore) {
-      this.status = 'loading'
+      this.status = 'loading';
       const { data } = await goodsListApi({
         ...this.query,
-        brandId: this.brandId,
-      })
+        brandId: this.brandId
+      });
 
-      this.status = 'none'
+      this.status = 'none';
 
-      this.totalPages = data.totalPages
+      this.totalPages = data.totalPages;
       if (isLoadMore) {
-        this.goodsList.push(...data.goodsList)
+        this.goodsList.push(...data.goodsList);
       } else {
-        this.goodsList = data.goodsList
+        this.goodsList = data.goodsList;
       }
     },
 
@@ -218,13 +152,13 @@ export default {
         uni.showToast({
           title: '商家没有留下联系方式',
           duration: 2000,
-          icon: 'none',
-        })
-        return
+          icon: 'none'
+        });
+        return;
       }
       uni.makePhoneCall({
-        phoneNumber: this.brandDetail.phone,
-      })
+        phoneNumber: this.brandDetail.phone
+      });
     },
 
     // 开始导航
@@ -232,101 +166,101 @@ export default {
       if (!this.brandDetail.address) {
         uni.showToast({
           title: '商家地址有误，导航失败',
-          icon: 'none',
-        })
-        return
+          icon: 'none'
+        });
+        return;
       }
       getLngLatByAddress(this.brandDetail.address)
-        .then(res => {
-          navigationAddress(res.geocodes[0].location)
+        .then((res) => {
+          navigationAddress(res.geocodes[0].location);
         })
-        .catch(err => {
-          console.log(err)
+        .catch((err) => {
+          console.log(err);
           uni.showToast({
             title: '导航失败',
-            icon: 'none',
-          })
-        })
+            icon: 'none'
+          });
+        });
     },
 
     handleSearch(searchKey) {
-      this.query.keyword = searchKey
-      this.currentMenu = 0
-      this.getGoodsList()
+      this.query.keyword = searchKey;
+      this.currentMenu = 0;
+      this.getGoodsList();
     },
 
     // 点击筛选
     handleFilter() {
-      this.filterVisible = true
+      this.filterVisible = true;
     },
 
     // 获取门店分类
     async getCategoryList() {
       const { data } = await getCatalogIdByBrandApi({
-        brandId: this.brandId,
-      })
+        brandId: this.brandId
+      });
 
-      this.catalogList = data.catalogList
+      this.catalogList = data.catalogList;
     },
 
     // 开始筛选
     handleConfirm(query) {
-      this.query = { ...this.query, ...query }
-      this.getGoodsList()
+      this.query = { ...this.query, ...query };
+      this.getGoodsList();
     },
 
     // 点击分享海报
     handleShare() {
       uni.showLoading({
-        title: '海报生成中...',
-      })
-      const _this = this
+        title: '海报生成中...'
+      });
+      const _this = this;
       this.$refs.uqrcode.make({
         success: () => {
-          uni.hideLoading()
+          uni.hideLoading();
           _this.$refs.posterPopupRef.show({
             shareCode: this.shareCode,
             logo: this.brandDetail.picUrl,
-            desc: this.brandDetail.desc,
-          })
-        },
-      })
+            desc: this.brandDetail.desc
+          });
+        }
+      });
     },
 
     // 完成
     handleCompleteCode(e) {
-      const _this = this
+      const _this = this;
       if (e.success) {
         this.$refs.uqrcode.toTempFilePath({
-          success: res => {
+          success: (res) => {
             if (!_this.shareCode) {
-              _this.shareCode = res.tempFilePath
+              _this.shareCode = res.tempFilePath;
             }
-          },
-        })
+          }
+        });
       }
-    },
+    }
   },
 
   onReachBottom() {
     if (this.query.size > this.goodsList.length) {
-      this.status = 'none'
-      return
+      this.status = 'none';
+      return;
     }
 
     if (this.query.page >= this.totalPages) {
-      this.status = 'no-more'
-      return
+      this.status = 'no-more';
+      return;
     }
 
-    this.query.page++
-    this.getGoodsList(true)
+    this.query.page++;
+    this.getGoodsList(true);
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop
-  },
-}
+    this.scrollTop = e.scrollTop;
+  }
+};
 </script>
 
 <style lang="less" scoped>

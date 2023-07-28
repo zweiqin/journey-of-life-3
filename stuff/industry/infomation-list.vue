@@ -15,72 +15,72 @@
 </template>
 
 <script>
-import Article from '../../pages/stuff/cpns/article.vue'
-import { getIndustryInformationListApi } from '../../api/stuff'
+import Article from '../../pages/stuff/cpns/article.vue';
+import { getIndustryInformationListApi } from '../../api/stuff';
 export default {
   components: {
-    Article,
+    Article
   },
 
   data() {
     return {
       query: {
         page: 1,
-        limit: 20,
+        limit: 20
       },
 
       total: 0,
       articleList: [],
       status: 'none',
-      scrollTop: 0,
-    }
+      scrollTop: 0
+    };
   },
 
   methods: {
     handleBack() {
-      uni.switchTab({
-        url: '/pages/stuff/stuff',
-      })
+      uni.navigateTo({
+        url: '/pages/stuff/stuff'
+      });
     },
 
     async getArticleList(isLoadmore) {
-      this.status = 'loading'
-      const { data } = await getIndustryInformationListApi(this.query)
-      this.total = data.total
+      this.status = 'loading';
+      const { data } = await getIndustryInformationListApi(this.query);
+      this.total = data.total;
       if (isLoadmore) {
-        this.articleList.push(...data.items)
+        this.articleList.push(...data.items);
       } else {
-        this.articleList = data.items
+        this.articleList = data.items;
       }
 
-      this.status = 'none'
-      console.log(data)
-    },
+      this.status = 'none';
+      console.log(data);
+    }
   },
 
   onLoad() {
-    this.getArticleList()
+    this.getArticleList();
   },
 
   onReachBottom() {
     if (this.query.limit > this.articleList.length) {
-      this.status = 'none'
-      return
+      this.status = 'none';
+      return;
     }
 
     if (this.articleList.length >= this.total) {
-      this.status = 'no-more'
-      return
+      this.status = 'no-more';
+      return;
     }
 
-    this.query.page++
-    this.getArticleList(true)
+    this.query.page++;
+    this.getArticleList(true);
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop
-  },
-}
+    this.scrollTop = e.scrollTop;
+  }
+};
 </script>
 
 <style lang="less" scoped>

@@ -3,6 +3,8 @@
     <h1>中国·龙江</h1>
     <h2>全球最大的家具材料产业集群</h2>
 
+    <tui-icon @click="handleBack" name="arrowleft" class="back" color="#fff"></tui-icon>
+
     <view class="search-container">
       <TuanLocation>
         <view class="locale">
@@ -13,9 +15,13 @@
 
       <view class="search-wrapper">
         <image class="search-icon" src="../../../../static/images/new-brand/index/search-icon.png" mode="" />
-        <input v-model="searchValue" confirm-type="search" type="text" @confirm="
-          go('/pages/search-page/search-result?keywords=' + searchValue)
-        " placeholder="科技布" />
+        <input
+          v-model="searchValue"
+          confirm-type="search"
+          type="text"
+          @confirm="go('/pages/search-page/search-result?keywords=' + searchValue)"
+          placeholder="科技布"
+        />
       </view>
 
       <button class="uni-btn distribute" @click="go('/stuff/purchase/purchase')">
@@ -26,27 +32,35 @@
 
     <scroll-view scroll-x="true" :show-scrollbar="false">
       <view class="top-menus">
-        <view class="item" @click="go(item.url)" v-for="item in topMenu" :key="item.label">{{ item.label }}
-        </view>
+        <view class="item" @click="go(item.url)" v-for="item in topMenu" :key="item.label">{{ item.label }} </view>
       </view>
     </scroll-view>
   </view>
 </template>
 
 <script>
-import { topMenu } from '../../config'
+import { topMenu } from '../../config';
 export default {
   data() {
     return {
       topMenu: Object.freeze(topMenu),
-      searchValue: '',
+      searchValue: ''
+    };
+  },
+
+  methods: {
+    handleBack(){
+      uni.switchTab({
+        url: '/pages/user/user'
+      })
     }
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
 .top-header-container {
+  position: relative;
   padding: 40upx 20upx 0;
   box-sizing: border-box;
   height: 560upx;
@@ -54,6 +68,11 @@ export default {
   background: url('../../../../static/images/new-brand/index/top-bg.png') no-repeat;
   background-size: cover;
 
+  .back {
+    position: absolute;
+    top: 40upx;
+    left: 10upx;
+  }
 
   h1 {
     line-height: 60upx;

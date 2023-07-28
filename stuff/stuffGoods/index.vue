@@ -4,20 +4,20 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-            class="return" @click="handleBack" />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
           <TuanLocation>
-            <text class="locale">{{
-              $store.getters.currentCity || '龙江镇'
-            }}</text>
+            <text class="locale">{{ $store.getters.currentCity || '龙江镇' }}</text>
           </TuanLocation>
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
-            class="show" @click.stop="handleClick" />
+          <img
+            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
+            alt=""
+            class="show"
+            @click.stop="handleClick"
+          />
         </view>
         <view class="search-box">
           <view class="search">
-            <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
-              class="img" />
+            <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt="" class="img" />
           </view>
           <input type="text" class="content" placeholder="输入你想搜索的品类/单品/品牌" @click="goToSearch" />
         </view>
@@ -45,14 +45,12 @@
     </view>
     <view class="body" :style="{ height: scrollHeight + 'px' }">
       <view class="navbar" ref="nav-barRef">
-        <view class="item" v-for="item in navbar" :class="{ active: item.id == currentTab }" :key="item.id"
-          @click="switchTab(item.id)">{{ item.name }}</view>
+        <view class="item" v-for="item in navbar" :class="{ active: item.id == currentTab }" :key="item.id" @click="switchTab(item.id)">{{ item.name }}</view>
       </view>
 
       <view class="main">
         <view class="mid">
-          <sort v-for="item1 in sub" :key="item1.id" :name="item1.name" :id="item1.id" :picUrl="item1.picUrl">
-          </sort>
+          <sort v-for="item1 in sub" :key="item1.id" :name="item1.name" :id="item1.id" :picUrl="item1.picUrl"> </sort>
         </view>
       </view>
     </view>
@@ -60,13 +58,13 @@
 </template>
 
 <script>
-import { getGoodsTypesApi } from '../../api/home'
-import { goodsListApi } from '../../api/goods'
-import sort from '../components/sub.vue'
-import { getAdressDetailByLngLat } from '../../utils/DWHutils'
+import { getGoodsTypesApi } from '../../api/home';
+import { goodsListApi } from '../../api/goods';
+import sort from '../components/sub.vue';
+import { getAdressDetailByLngLat } from '../../utils/DWHutils';
 export default {
   components: {
-    sort,
+    sort
   },
   data() {
     return {
@@ -74,69 +72,66 @@ export default {
       sub: [],
       currentTab: '',
       scrollHeight: 667,
-      picUrl: '',
-    }
+      picUrl: ''
+    };
   },
   computed: {},
   methods: {
     handleBack() {
-      uni.switchTab({ url: '/pages/stuff/stuff' })
+      uni.navigateTo({ url: '/pages/stuff/stuff' });
     },
 
     handleClick() {
-      const _this = this
-      if (
-        this.addressDetail === '定位失败' ||
-        this.addressDetail === '定位中...'
-      ) {
+      const _this = this;
+      if (this.addressDetail === '定位失败' || this.addressDetail === '定位中...') {
         uni.showModal({
           title: '提示',
           confirmText: '我已打开定位',
           content: '请确认您已开启了定位',
           success: function (res) {
             if (res.confirm) {
-              _this.getLocation()
+              _this.getLocation();
             }
-          },
-        })
+          }
+        });
       }
     },
 
     getLocation() {
-      this.addressDetail = '定位中...'
-      const _this = this
+      this.addressDetail = '定位中...';
+      const _this = this;
       // #ifdef H5
       uni.getLocation({
         type: 'gcj02',
         success: function (res) {
           getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then(res => {
+            .then((res) => {
               if (res.status === '1') {
-                const result = res.regeocode
-                _this.addressDetail = result.addressComponent.township
-                console.log('addressDetail', _this.addressDetail)
+                const result = res.regeocode;
+                _this.addressDetail = result.addressComponent.township;
+                console.log('addressDetail', _this.addressDetail);
               }
             })
             .catch(() => {
-              _this.addressDetail = '定位失败'
-            })
-        },
-      })
+              _this.addressDetail = '定位失败';
+            });
+        }
+      });
       // #endif
 
       // #ifdef APP
-      const locationInfo = this.$store.state.location
-      this.addressDetail = locationInfo.locationInfo.township
+      const locationInfo = this.$store.state.location;
+      this.addressDetail = locationInfo.locationInfo.township;
       // #endif
     },
 
     //获取商品列表接口
     async stuffGoodsList() {
       const res = await getGoodsTypesApi({
-        goodsType: 2,
-      })
-      console.log('材料商品列表', res)
-      this.navbar = res.data.categoryList
+        goodsType: 2
+      });
+      console.log('材料商品列表', res);
+      this.navbar = res.data.categoryList;
     },
 
     //获取商品分类接口
@@ -145,44 +140,44 @@ export default {
         goodsType: 2,
         categoryId: this.id,
         page: 1,
-        size: 100,
-      })
-      console.log('草咯额', res)
-      this.sub = res.data.goodsList
-      console.log('sub', this.sub)
+        size: 100
+      });
+      console.log('草咯额', res);
+      this.sub = res.data.goodsList;
+      console.log('sub', this.sub);
     },
 
     goToSearch() {
-      uni.navigateTo({ url: '/pages/search-page/search-page' })
+      uni.navigateTo({ url: '/pages/search-page/search-page' });
     },
 
     switchTab(index) {
-      this.currentTab = index * 1
-      this.id = index
+      this.currentTab = index * 1;
+      this.id = index;
 
-      this.stuffGoodsSort()
+      this.stuffGoodsSort();
 
       // this.sub = this.data.find((item) => item.value === index);
-    },
+    }
   },
   watch: {},
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.id = options.id
-    this.currentTab = options.id * 1
-    const _this = this
+    this.id = options.id;
+    this.currentTab = options.id * 1;
+    const _this = this;
     uni.getSystemInfo({
       success(res) {
-        _this.scrollHeight = res.safeArea.height - 60
-      },
-    })
-    this.stuffGoodsList()
-    this.stuffGoodsSort()
-    this.getLocation()
+        _this.scrollHeight = res.safeArea.height - 60;
+      }
+    });
+    this.stuffGoodsList();
+    this.stuffGoodsSort();
+    this.getLocation();
     // this.stuffGoods();
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>

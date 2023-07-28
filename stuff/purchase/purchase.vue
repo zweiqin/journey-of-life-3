@@ -19,13 +19,7 @@
           <tui-icon name="arrowdown" :size="20"></tui-icon>
         </view>
 
-        <tui-select
-          maskClosable
-          :list="typeList"
-          :show="typeSelectVisible"
-          @confirm="handleChooseType"
-          @close="typeSelectVisible = false"
-        ></tui-select>
+        <tui-select maskClosable :list="typeList" :show="typeSelectVisible" @confirm="handleChooseType" @close="typeSelectVisible = false"></tui-select>
       </view>
 
       <view class="item">
@@ -38,19 +32,8 @@
       <view class="item">
         <view class="item-title">数量</view>
         <view class="item-value">
-          <view
-            class="subtract op"
-            :style="{ background: form.number > 1 ? '#ffc117' : '' }"
-            @click="opNumber(-1)"
-            >-</view
-          >
-          <input
-            type="text"
-            readonly
-            disabled
-            class="number-input"
-            v-model="form.number"
-          />
+          <view class="subtract op" :style="{ background: form.number > 1 ? '#ffc117' : '' }" @click="opNumber(-1)">-</view>
+          <input type="text" readonly disabled class="number-input" v-model="form.number" />
           <view class="add op" @click="opNumber(1)">+</view>
         </view>
       </view>
@@ -79,13 +62,7 @@
       <view class="item">
         <view class="item-title">日期</view>
         <view class="item-value select" @click="handleChooseDate">
-          <input
-            type="text"
-            readonly
-            disabled
-            v-model="form.date"
-            placeholder="请选择采购日期"
-          />
+          <input type="text" readonly disabled v-model="form.date" placeholder="请选择采购日期" />
           <tui-icon name="arrowdown" :size="20"></tui-icon>
         </view>
 
@@ -103,11 +80,7 @@
       <view class="item">
         <view class="item-title">备注</view>
         <view class="item-value">
-          <input
-            type="text"
-            v-model="form.remark"
-            placeholder="请填写您要备注的信息 (选填)"
-          />
+          <input type="text" v-model="form.remark" placeholder="请填写您要备注的信息 (选填)" />
         </view>
       </view>
 
@@ -165,60 +138,52 @@ export default {
         color: '',
         date: '',
         remark: '',
-        username: '',
+        username: ''
       },
 
       scrollTop: 0,
 
       typeSelectVisible: false,
-      typeList: [
-        '求购材料',
-        '同城急送',
-        '紧急求购',
-        '材料定制',
-        '最新需求',
-        '紧急需求',
-        '长期需求',
-      ],
-    }
+      typeList: ['求购材料', '同城急送', '紧急求购', '材料定制', '最新需求', '紧急需求', '长期需求']
+    };
   },
 
   methods: {
     // 选择类型
     handleChooseType(e) {
-      this.form.type = e.options
-      this.typeSelectVisible = false
+      this.form.type = e.options;
+      this.typeSelectVisible = false;
     },
 
     // 加减数量
     opNumber(temp) {
       if (this.form.number === 1 && temp === -1) {
-        return
+        return;
       }
 
-      this.form.number += temp
+      this.form.number += temp;
     },
 
     // 选择日期
     handleChooseDate() {
-      this.$refs.calendar.show()
+      this.$refs.calendar.show();
     },
 
     // 确定选择
     handleConfirmDate(e) {
-      this.form.date = e.startDate + '-' + e.endDate
+      this.form.date = e.startDate + '-' + e.endDate;
     },
     handleBack() {
-      uni.switchTab({
-        url: '/pages/stuff/stuff',
-      })
-    },
+      uni.navigateTo({
+        url: '/pages/stuff/stuff'
+      });
+    }
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop
-  },
-}
+    this.scrollTop = e.scrollTop;
+  }
+};
 </script>
 
 <style lang="less" scoped>

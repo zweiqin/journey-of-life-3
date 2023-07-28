@@ -87,7 +87,7 @@ export default {
 		},
 
 		handleToIndex() {
-			uni.switchTab({
+			uni.navigateTo({
 				url: '/pages/stuff/stuff',
 			})
 		},

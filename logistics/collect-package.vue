@@ -1,35 +1,19 @@
 <template>
   <view class="collect-package">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/common/back.png"
-        alt=""
-      />
+      <img class="back" @click="back" src="../static/images/common/back.png" alt="" />
       <view class="title">查件</view>
     </view>
 
     <view class="main">
       <view class="search">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="发货人姓名/订单号/收货人姓名/收货人手机号"
-          @input="search"
-        />
+        <input class="search-input" type="text" placeholder="发货人姓名/订单号/收货人姓名/收货人手机号" @input="search" />
         <img class="img" src="../static/images/store/search.png" alt="" />
       </view>
 
       <view class="order-list">
         <view class="navs">
-          <view
-            v-for="item in collectPages"
-            :key="item.label"
-            @click="switchTab(item.value)"
-            :class="{ active: query.status === item.value }"
-            class="nav-item"
-          >
+          <view v-for="item in collectPages" :key="item.label" @click="switchTab(item.value)" :class="{ active: query.status === item.value }" class="nav-item">
             {{ item.label }}
           </view>
         </view>
@@ -45,15 +29,9 @@
               <view class="info hidden">
                 <view class="text">运单号：{{ item.orderNo }}</view>
                 <view class="text"
-                  >{{ item.consigneeName }}
-                  <text class="call-phone">{{
-                    item.consigneeMobile
-                  }}</text></view
+                  >{{ item.consigneeName }} <text class="call-phone">{{ item.consigneeMobile }}</text></view
                 >
-                <view
-                  >{{ item.consigneeAddress
-                  }}{{ item.consigneeAddressDetail }}</view
-                >
+                <view>{{ item.consigneeAddress }}{{ item.consigneeAddressDetail }}</view>
                 <view class="text">下单时间：{{ item.createTime }}</view>
               </view>
             </view>
@@ -62,14 +40,10 @@
               <view class="btns" v-if="item.status <= 10">
                 <button class="btn">支付</button>
                 <button class="btn" @click="editOrder(item)">编辑</button>
-                <button class="btn" @click="handleCancelOrder(item)">
-                  取消
-                </button>
+                <button class="btn" @click="handleCancelOrder(item)">取消</button>
               </view>
               <view>
-                状态：<text class="status-text">{{
-                  item.status | filterOrderStaus
-                }}</text>
+                状态：<text class="status-text">{{ item.status | filterOrderStaus }}</text>
               </view>
             </view>
           </view>
@@ -79,43 +53,23 @@
       </view>
     </view>
 
-    <CancelPopup
-      :cancelList="cancelList"
-      v-model="cancelPopupVisiable"
-      @confirm="handleConfirmOrderCancel"
-    ></CancelPopup>
+    <CancelPopup :cancelList="cancelList" v-model="cancelPopupVisiable" @confirm="handleConfirmOrderCancel"></CancelPopup>
   </view>
 </template>
 
 <script>
-const { debounce } = require("../utils/util");
-import {
-  collectPages,
-  mapDeliveryType,
-  cancelList,
-  mapCategoryControlType,
-} from "./config";
-import {
-  expressInquiryApi,
-  cancelOrderApi,
-  getOrderDetailApi,
-} from "../api/logistics";
-import NoData from "../components/no-data";
-import CancelPopup from "../components/cancel-popup";
-import { getUserId } from "../utils";
-import {
-  jiSenderInfo,
-  jiconsigneeInfo,
-  VALUE_ADDED_SERVICES,
-  jiOrderGoodsList,
-  jiRemarks,
-  JI_EDIT_ORDER_ID,
-} from "../constant";
+const { debounce } = require('../utils/util');
+import { collectPages, mapDeliveryType, cancelList, mapCategoryControlType } from './config';
+import { expressInquiryApi, cancelOrderApi, getOrderDetailApi } from '../api/logistics';
+import NoData from '../components/no-data';
+import CancelPopup from '../components/cancel-popup';
+import { getUserId } from '../utils';
+import { jiSenderInfo, jiconsigneeInfo, VALUE_ADDED_SERVICES, jiOrderGoodsList, jiRemarks, JI_EDIT_ORDER_ID } from '../constant';
 
 export default {
   components: {
     NoData,
-    CancelPopup,
+    CancelPopup
   },
   data() {
     return {
@@ -131,17 +85,17 @@ export default {
         pageSize: 10,
         userId: getUserId(),
         keyword: undefined,
-        status: undefined,
+        status: undefined
       },
 
       list: [],
       cancelPopupVisiable: false,
-      cancelOrderId: null,
+      cancelOrderId: null
     };
   },
 
-  onShow(){
-    this.getOrders()
+  onShow() {
+    this.getOrders();
   },
 
   mounted() {
@@ -155,15 +109,15 @@ export default {
       if (item && item.value) {
         return item.label;
       } else {
-        return "运输中";
+        return '运输中';
       }
-    },
+    }
   },
 
   methods: {
     back() {
-      uni.switchTab({
-        url: "/pages/logistics/logistics",
+      uni.navigateTo({
+        url: '/pages/logistics/logistics'
       });
     },
 
@@ -192,7 +146,7 @@ export default {
      */
     toDetail(orderNo) {
       uni.navigateTo({
-        url: "/logistics/collect-package-detail?orderNo=" + orderNo,
+        url: '/logistics/collect-package-detail?orderNo=' + orderNo
       });
     },
 
@@ -207,14 +161,14 @@ export default {
           uni.showToast({
             title: res.statusMsg,
             duration: 2000,
-            icon: "none",
+            icon: 'none'
           });
         }
       } catch (error) {
         uni.showToast({
-          title: "订单获取失败",
+          title: '订单获取失败',
           duration: 2000,
-          icon: "none",
+          icon: 'none'
         });
       } finally {
         uni.hideLoading();
@@ -231,18 +185,18 @@ export default {
     async handleConfirmOrderCancel(cancelRemarks) {
       try {
         uni.showLoading({
-          title: "订单取消中",
+          title: '订单取消中'
         });
         const res = await cancelOrderApi({
           orderId: this.cancelOrderId,
           cancelRemarks,
-          userId: getUserId(),
+          userId: getUserId()
         });
 
         if (res.statusCode === 20000) {
           uni.showToast({
-            title: "订单取消成功",
-            duration: 2000,
+            title: '订单取消成功',
+            duration: 2000
           });
           this.query.pageNo = 1;
           this.query.keyword = undefined;
@@ -251,14 +205,14 @@ export default {
           uni.showToast({
             title: res.statusMsg,
             duration: 2000,
-            icon: "none",
+            icon: 'none'
           });
         }
       } catch (error) {
         uni.showToast({
-          title: "订单取消失败",
+          title: '订单取消失败',
           duration: 2000,
-          icon: "none",
+          icon: 'none'
         });
       } finally {
         uni.hideLoading();
@@ -272,9 +226,9 @@ export default {
       uni.setStorageSync(jiSenderInfo, {
         senderName: res.data.senderName,
         senderMobile: res.data.senderMobile,
-        senderAddress: "广东省佛山市顺德区",
+        senderAddress: '广东省佛山市顺德区',
         senderAddressDetail: res.data.senderAddressDetail,
-        microInsuranceAmount: res.data.microInsuranceAmount,
+        microInsuranceAmount: res.data.microInsuranceAmount
       });
 
       uni.setStorageSync(jiconsigneeInfo, {
@@ -283,15 +237,15 @@ export default {
         consigneeAddress: res.data.consigneeAddress,
         consigneeAddressDetail: res.data.consigneeAddressDetail,
         isHasElevator: 1,
-        consigneeFloor: res.data.consigneeFloor,
+        consigneeFloor: res.data.consigneeFloor
       });
 
       uni.setStorageSync(VALUE_ADDED_SERVICES, {
         controlGoods: mapCategoryControlType(res.data.cargoControlType),
         delivery: mapDeliveryType(res.data.deliveryType),
-        take: res.data.isPickUp ? "上门提货" : "不提货",
-        valuation: res.data.pricingType === 1 ? "系统计价" : "物流报价",
-        payType: res.data.paymentMethod === 1 ? "现付" : "到付",
+        take: res.data.isPickUp ? '上门提货' : '不提货',
+        valuation: res.data.pricingType === 1 ? '系统计价' : '物流报价',
+        payType: res.data.paymentMethod === 1 ? '现付' : '到付'
       });
 
       uni.setStorageSync(jiOrderGoodsList, res.data.orderGoodsList);
@@ -299,9 +253,9 @@ export default {
       uni.setStorageSync(JI_EDIT_ORDER_ID, orderInfo.id);
 
       uni.navigateTo({
-        url: "/logistics/mail?type=edit",
+        url: '/logistics/mail?type=edit'
       });
-    },
+    }
   },
 
   onReachBottom() {
@@ -309,7 +263,7 @@ export default {
       this.query.pageNo++;
       this.getOrders(true);
       uni.showLoading({
-        title: "加载更多",
+        title: '加载更多'
       });
       return;
     }
@@ -318,10 +272,10 @@ export default {
       return;
     }
     uni.showToast({
-      title: "没有更多了",
-      duration: 2000,
+      title: '没有更多了',
+      duration: 2000
     });
-  },
+  }
 };
 </script>
 

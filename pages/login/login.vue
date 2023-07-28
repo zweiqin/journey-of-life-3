@@ -99,7 +99,7 @@ import {
 import { bindLastUserApi, checkBindApi } from '../../api/user';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 
-const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index', '/pages/stuff/stuff'];
+const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
 
 export default {
   name: 'Login',

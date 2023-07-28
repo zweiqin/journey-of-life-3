@@ -90,7 +90,7 @@ export default {
   methods: {
     // 返回
     back() {
-      uni.switchTab({
+      uni.navigateTo({
         url: "/pages/logistics/logistics",
       });
     },
