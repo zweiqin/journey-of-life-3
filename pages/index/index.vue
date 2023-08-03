@@ -1,43 +1,29 @@
 <template>
   <view class="index-container">
-    <HeaderNav
-      :scrollTop="scrollTop"
-      :current="current"
-      @change="handleSwitchTab"
-    ></HeaderNav>
+    <HeaderNav :scrollTop="scrollTop" :current="current" @change="handleSwitchTab"></HeaderNav>
 
     <view class="main-area">
-      <SearchFurniture
-        ref="searchFurnitureRef"
-        v-show="current === 0"
-      ></SearchFurniture>
+      <SearchFurniture ref="searchFurnitureRef" v-show="current === 0"></SearchFurniture>
 
       <BrandFactory ref="brandFactoryRef" v-show="current === 1"></BrandFactory>
-      <WholehouseCustomization
-        :scrollTop="scrollTop"
-        ref="wholehouseCustomizationRef"
-        v-show="current === 2"
-      ></WholehouseCustomization>
-      <IntelligentSelection
-        ref="intelligentSelectionRef"
-        v-show="current === 3"
-      ></IntelligentSelection>
+      <WholehouseCustomization :scrollTop="scrollTop" ref="wholehouseCustomizationRef" v-show="current === 2"></WholehouseCustomization>
+      <IntelligentSelection ref="intelligentSelectionRef" v-show="current === 3"></IntelligentSelection>
     </view>
   </view>
 </template>
 
 <script>
-import HeaderNav from "./cpns/HeaderNav";
-import SearchFurniture from "./SearchFurniture";
-import BrandFactory from "./BrandFactory";
-import WholehouseCustomization from "./WholehouseCustomization";
-import IntelligentSelection from "./IntelligentSelection";
+import HeaderNav from './cpns/HeaderNav';
+import SearchFurniture from './SearchFurniture';
+import BrandFactory from './BrandFactory';
+import WholehouseCustomization from './WholehouseCustomization';
+import IntelligentSelection from './IntelligentSelection';
 
 const mapRefs = {
-  0: "searchFurnitureRef",
-  1: "brandFactoryRef",
-  2: "wholehouseCustomizationRef",
-  3: "intelligentSelectionRef",
+  0: 'searchFurnitureRef',
+  1: 'brandFactoryRef',
+  2: 'wholehouseCustomizationRef',
+  3: 'intelligentSelectionRef'
 };
 export default {
   components: {
@@ -45,20 +31,20 @@ export default {
     SearchFurniture,
     BrandFactory,
     WholehouseCustomization,
-    IntelligentSelection,
+    IntelligentSelection
   },
 
   data() {
     return {
       current: 0,
-      scrollTop: 0,
+      scrollTop: 0
     };
   },
 
   methods: {
     handleSwitchTab(value) {
       this.current = value;
-    },
+    }
   },
 
   onReachBottom() {
@@ -68,7 +54,7 @@ export default {
 
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;
-  },
+  }
 };
 </script>
 
