@@ -376,3 +376,28 @@ export const getShareHolderDataApi = (data) => {
     loading: true
   });
 };
+
+/**
+ * 客服分类和建议
+ */
+
+// 查询客服问题分类
+export const getCustomerCategoryApi = (data) => RuanRequest('/dtsCustomerCategory/customerCategory', data, 'get')
+
+// 根据分类ID查询问题答案
+export const getCustomerSelectAnswerApi = (data) => RuanRequest('/dtsCustomerAnswer/selectAnswerOne', data, 'get')
+
+// 根据分类ID查询问题答案以及相关问题
+export const getCustomerAnswerSelectApi = (data) => RuanRequest('/dtsCustomerAnswer/selectAnswer', data, 'get')
+
+// 有用无用次数统计
+export const getCustomerAnswerStatisticsApi = (data) => RuanRequest('/dtsCustomerAnswer/statistics', data, 'get')
+
+// 用户建议类型
+export const getCustomerSelectReasonApi = (data) => RuanRequest('/dtsOrderRefundsReason/selectReason', data, 'get')
+
+// 查询客服热门问题分类
+export const getCustomerPopularApi = (data) => RuanRequest('/dtsCustomerCategory/customerPopular', data, 'get')
+
+// 用户发送消息的客服接口
+export const getcustomerSendingApi = (data) => RuanRequest('/dtsCustomerCategory/customerSending', data, 'get')

@@ -33,7 +33,7 @@
 				</view>
 
 				<view class="op-container">
-					<view class="wrapper" @click="$emit('handleNavigate', { url: '/user/chat/chat' })">
+					<view class="wrapper" @click="$emit('handleNavigate', { url: '/user/sever/chat/chat' })">
 						<image src="../../../static/images/new-user/user-chat.png" mode="" />
 					</view>
 					<view class="wrapper" @click="$emit('handleNavigate', { url: '/user/info/detail' })">

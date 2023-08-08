@@ -24,9 +24,6 @@ export default {
 	methods: {
 		handleBack() {
 			uni.navigateBack()
-			// uni.switchTab({
-			// 	url: '/pages/user/user'
-			// })
 		}
 	}
 }

@@ -3,28 +3,21 @@
 
 import { RuanRequest } from '../../utils'
 
-// /**
-//  * 购物车添加
-//  * @returns
-//  */
-// export const getCartAddApi = (data) => {
-//     return RuanRequest("/cart/add", data)
-// };
 /**
  *
  * @param {查客服列表} data
  * @returns
  */
 
-export const queryCustomer = (data) => RuanRequest('/ws/queryCustomer', data, 'get')
+export const queryCustomer = (data) => RuanRequest('/messageList/customerList', data, 'get')
 
-/**
- *
- * @param {创建聊天} data
- * @returns
- */
+// /**
+//  *
+//  * @param {创建聊天} data
+//  * @returns
+//  */
 
-export const createChat = (data) => RuanRequest('/ws/createChat', data, 'get')
+// export const createChat = (data) => RuanRequest('/ws/createChat', data, 'get')
 
 /**
  *
@@ -32,7 +25,7 @@ export const createChat = (data) => RuanRequest('/ws/createChat', data, 'get')
  * @returns
  */
 
-export const queryChatList = (data) => RuanRequest('/ws/queryChatList', data, 'get')
+export const queryChatList = (data) => RuanRequest('/messageList/getMessageList', data, 'get')
 
 /**
  *
@@ -40,5 +33,13 @@ export const queryChatList = (data) => RuanRequest('/ws/queryChatList', data, 'g
  * @returns
  */
 
-export const queryChatMessage = (data) => RuanRequest('/ws/queryChatMessage', data, 'get')
-export const queryChatMessageBack = (data) => RuanRequest('/ws/queryChatMessage2', data, 'get')
+export const queryChatMessage = (data) => RuanRequest('/messageList/getMessageDetailsList', data, 'get')
+// export const queryChatMessageBack = (data) => RuanRequest('/ws/queryChatMessage2', data, 'get')
+
+/**
+ *
+ * @param {新增聊天对象} data
+ * @returns
+ */
+
+export const addChatMessage = (data) => RuanRequest('/messageList/addMessage', data, 'post')

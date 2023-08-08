@@ -26,6 +26,16 @@ Vue.filter("replacestar", function (value) {
 });
 
 Vue.mixin({
+	data() {
+		return {
+			common: {
+				seamingImgUrl(url) {
+					if (!url) return ''
+					return url
+				},
+			}
+		}
+	},
   methods: {
     setData: function (obj) {
       let that = this;
