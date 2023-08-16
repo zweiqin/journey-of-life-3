@@ -1,52 +1,44 @@
 <template>
   <view
     class="recommend-goods-container"
-    :style="
-       {
-        padding: padding + 'px'
-      }
-    "
+    :style="{
+      padding: padding + 'px'
+    }"
   >
     <view class="title" v-if="showTitle"></view>
     <ul>
       <li v-for="item in list" :key="item.id">
-        <Goods
-          :id="item.id"
-          :name="item.name"
-          :sname="item.brief"
-          :url="item.picUrl"
-          :price="item.retailPrice"
-        ></Goods>
+        <Goods :id="item.id" :name="item.name" :sname="item.brief" :url="item.picUrl" :price="item.retailPrice"></Goods>
       </li>
     </ul>
   </view>
 </template>
 
 <script>
-import Goods from "../goods";
-import { everyLookApi } from "../../api/goods";
+import Goods from '../goods';
+import { everyLookApi } from '../../api/goods';
 export default {
   props: {
     id: {
       type: [Number, String],
-      default: 185,
+      default: 185
     },
 
     showTitle: {
       type: Boolean,
-      default: true,
+      default: true
     },
 
     padding: [Number, String]
   },
 
   components: {
-    Goods,
+    Goods
   },
 
   data() {
     return {
-      list: [],
+      list: []
     };
   },
 
@@ -60,14 +52,14 @@ export default {
       if (res.errno === 0) {
         this.list = res.data.goodsList;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
-@import "../../style/var.less";
-@import "../../style/mixin.less";
+@import '../../style/var.less';
+@import '../../style/mixin.less';
 
 .recommend-goods-container {
   padding: 15px;
@@ -84,7 +76,7 @@ export default {
 
   &::before {
     position: absolute;
-    content: "大家都在看";
+    content: '大家都在看';
     display: block;
     background-color: @cw;
     padding: 0 20px;

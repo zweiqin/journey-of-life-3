@@ -1,11 +1,11 @@
-import { RuanRequest, XZLRequest } from "../../utils";
+import { RuanRequest, XZLRequest } from '../../utils';
 /**
  *
  * @param {订单列表查询} data
  * @returns
  */
 export const getOrderListApi = (data) => {
-  return RuanRequest("/order/list", data, "get");
+  return RuanRequest('/order/list', data, 'get');
 };
 /**
  *
@@ -13,7 +13,7 @@ export const getOrderListApi = (data) => {
  * @returns
  */
 export const orderCancelApi = (data) => {
-  return RuanRequest("/order/cancel", data);
+  return RuanRequest('/order/cancel', data);
 };
 /**
  *
@@ -21,7 +21,7 @@ export const orderCancelApi = (data) => {
  * @returns
  */
 export const getOrderConfirmApi = (data) => {
-  return RuanRequest("/order/confirm", data);
+  return RuanRequest('/order/confirm', data);
 };
 /**
  *
@@ -29,7 +29,7 @@ export const getOrderConfirmApi = (data) => {
  * @returns
  */
 export const orderDeleteApi = (data) => {
-  return RuanRequest("/order/delete", data);
+  return RuanRequest('/order/delete', data);
 };
 /**
  *
@@ -37,41 +37,61 @@ export const orderDeleteApi = (data) => {
  * @returns
  */
 export const getOrderRefundApi = (data) => {
-  return RuanRequest("/order/refund", data);
+  return RuanRequest('/order/refund', data);
 };
 
 export const getOrderDetailApi = (data) => {
-  return RuanRequest("/order/detail", data, "get");
+  return RuanRequest('/order/detail', data, 'get');
 };
-
 
 /**
  * 确认收货
  */
 export const receiveGoodsApi = (data) => {
-  return RuanRequest("/order/confirm", data)
-}
+  return RuanRequest('/order/confirm', data);
+};
 
 /**
  * 评论
  */
-export const sendCommentApi = data => {
-  return RuanRequest("/order/comment", data)
-}
+export const sendCommentApi = (data) => {
+  return RuanRequest('/order/comment', data);
+};
 /**
  * 预支付接口
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 
-export const getSybOrderPayH5 = data => {
-  return RuanRequest("/api/syb/orderPayH5", data)
-}
+export const getSybOrderPayH5 = (data) => {
+  return RuanRequest('/api/syb/orderPayH5', data);
+};
 /**
  * 查询是否支付成功
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
-export const getSybGetIsPaySucceedApi = data =>{
-  return RuanRequest("/api/syb/getIsPaySucceed",data,'get')
-}
+export const getSybGetIsPaySucceedApi = (data) => {
+  return RuanRequest('/api/syb/getIsPaySucceed', data, 'get');
+};
+
+/**
+ * 发布评论
+ */
+export const postCommentApi = (data) => {
+  return RuanRequest('/dtsCommentOrder/save', data);
+};
+
+/**
+ * 获取我的评价
+ */
+export const getMyCommentListApi = (data) => {
+  return RuanRequest('/dtsCommentGoods/myEvaluation', data, 'GET');
+};
+
+/**
+ * 输入评论
+ */
+export const sendCommentAgainApi = (data) => {
+  return RuanRequest('/dtsCommentOrder/appendSave', data);
+};

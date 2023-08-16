@@ -1,507 +1,593 @@
 <template>
-	<view class="orders-container">
-		<!-- <view class="header">
+  <view class="orders-container">
+    <!-- <view class="header">
       <JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
       <h2>我的订单</h2>
     </view> -->
 
-		<view class="navs">
+    <view class="navs">
+      <image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
+      <scroll-view scroll-x="true">
+        <view class="navs-list">
+          <view
+            class="nav-item"
+            :class="{ 'nav-item-active': currentStatus === item.value }"
+            v-for="item in orderTypes"
+            :key="item.value"
+            @click="handleSwitchStatus(item.value)"
+          >
+            {{ item.label }}
+          </view>
+        </view>
+      </scroll-view>
+    </view>
 
-			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
-			<view class="nav-item" :class="{ 'nav-item-active': currentStatus === item.value }" v-for="item in orderTypes"
-				:key="item.value" @click="handleSwitchStatus(item.value)">
-				{{ item.label }}
-			</view>
-		</view>
+    <view class="order-list-wrapper" v-if="orderList && orderList.length && currentStatus !== 5">
+      <view class="goods-pane" v-for="item in orderList" :key="item.id">
+        <view class="order-no-status" @click="handleToViewOrderDetail(item)">
+          <view class="order-no">订单号:{{ item.orderSn }}</view>
+          <view class="order-status">{{ item.orderStatusText }}</view>
+        </view>
 
-		<view class="order-list-wrapper" v-if="orderList && orderList.length">
-			<view class="goods-pane" v-for="item in orderList" :key="item.id">
-				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
-					<view class="order-no">订单号:{{ item.orderSn }}</view>
-					<view class="order-status">{{ item.orderStatusText }}</view>
-				</view>
+        <view class="goods-list" @click="handleToViewOrderDetail(item)">
+          <view class="goods-item" v-for="goods in item.goodsList" :key="goods.id">
+            <image class="goods-img" :src="goods.picUrl" mode="" />
 
-				<view class="goods-list" @click="handleToViewOrderDetail(item)">
-					<view class="goods-item" v-for="goods in item.goodsList" :key="goods.id">
-						<image class="goods-img" :src="goods.picUrl" mode="" />
+            <view class="info">
+              <view class="name">{{ goods.goodsName }}</view>
 
-						<view class="info">
-							<view class="name">{{ goods.goodsName }}</view>
+              <view class="good-sp-pr">
+                <view class="sp">{{ goods.specifications.join(',') }}</view>
+                <view class="pr">￥{{ goods.price }}</view>
+              </view>
+            </view>
 
-							<view class="good-sp-pr">
-								<view class="sp">{{ goods.specifications.join(',') }}</view>
-								<view class="pr">￥{{ goods.price }}</view>
-							</view>
-						</view>
+            <view>
+              <view class="number" style="text-align: right; font-size: 28upx; color: #3a3629"> x {{ goods.number }} </view>
+            </view>
+          </view>
+        </view>
 
-						<view>
-							<view class="number" style="text-align: right;font-size: 28upx;color: #3A3629;">
-								x {{ goods.number }}
-							</view>
-							<button v-if="item.handleOption.comment" class="ev-btn uni-btn"
-								@click.stop="handleOpOrder(item, 'comment', goods)">
-								去评论
-							</button>
-						</view>
-					</view>
-				</view>
+        <view class="goods-ops">
+          <view class="actual-price">
+            共计：<text class="number">￥{{ item.actualPrice }}</text>
+          </view>
 
-				<view class="goods-ops">
-					<view class="actual-price">
-						共计：<text class="number">￥{{ item.actualPrice }}</text>
-					</view>
+          <view class="btns">
+            <view v-for="btn in orderOpButtons" :key="btn.label">
+              <button
+                :style="{
+                  background: btn.color
+                }"
+                @click="handleOpOrder(item, btn.key)"
+                class="uni-btn"
+                v-if="item.handleOption[btn.key]"
+              >
+                {{ btn.label }}
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
 
-					<view class="btns">
-						<view v-for="btn in orderOpButtons" :key="btn.label">
-							<button :style="{
-								background: btn.color,
-							}" @click="handleOpOrder(item, btn.key)" class="uni-btn"
-								v-if="item.handleOption[btn.key] && btn.label !== '去评论'">
-								{{ btn.label }}
-							</button>
-						</view>
-					</view>
-				</view>
-			</view>
+      <uni-load-more style="background: #fff" v-if="loadingStatus !== 'hidden'" :status="loadingStatus"></uni-load-more>
+    </view>
 
-			<uni-load-more style="background: #fff" v-if="loadingStatus !== 'hidden'" :status="loadingStatus"></uni-load-more>
-		</view>
+    <view class="order-list-wrapper" v-else>
+      <view class="goods-pane" v-for="item in commentList" :key="item.id">
+        <view class="order-no-status comment-wrapper">
+          <view class="comment">
+            <text class="comment-title">我的评论：</text>
+            {{ item.content }}
+          </view>
+          <view class="comment" v-if="item.commentGoods1">
+            <text class="comment-title">我的追评：</text>
+            {{ item.commentGoods1 && item.commentGoods1.content }}</view
+          >
+          <view class="comment" v-if="item.commentGoods2">
+            <text class="comment-title">商家回复：</text>
+            {{ item.commentGoods2.content }}</view
+          >
+        </view>
 
-		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
-	</view>
+        <view class="goods-list" @click="handleToViewOrderDetail(item)">
+          <view class="goods-item" style="margin-bottom: 0">
+            <image class="goods-img" :src="item.dtsTfGoods.picUrl" mode="" />
+
+            <view class="info">
+              <view class="name">{{ item.dtsTfGoods.name }}</view>
+
+              <view class="good-sp-pr">
+                <view class="pr"
+                  >￥{{ item.dtsTfGoods.counterPrice }} <text v-if="item.dtsTfGoods.unit">/ {{ item.dtsTfGoods.unit }}</text></view
+                >
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="goods-ops" style="justify-content: flex-end">
+          <view class="btns">
+            <button v-if="!item.commentGoods1" @click="handleCommentAgain(item)" class="uni-btn">追加评价</button>
+            <button v-else class="uni-btn" style="background-color: transparent; color: #3d3d3d">已追评</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
+  </view>
 </template>
 
 <script>
-import { orderTypes, orderOpButtons } from './config'
-import {
-	getOrderListApi,
-	orderCancelApi,
-	orderDeleteApi,
-	receiveGoodsApi,
-} from '../../api/order'
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods'
-import { getUserId } from '../../utils'
-import { TUAN_ORDER_SN, PAY_SHORT_ORDER_NO } from '../../constant'
+import { orderTypes, orderOpButtons } from './config';
+import { getOrderListApi, orderCancelApi, orderDeleteApi, receiveGoodsApi, getMyCommentListApi } from '../../api/order';
+import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods';
+import { getUserId } from '../../utils';
+import { TUAN_ORDER_SN, PAY_SHORT_ORDER_NO } from '../../constant';
 export default {
-	data() {
-		return {
-			orderTypes,
-			currentStatus: 0,
-			query: {
-				page: 1,
-				size: 10,
-			},
-			orderOpButtons,
-			totalPages: 0,
-			orderList: [],
-			loadingStatus: 'loading',
-		}
-	},
+  data() {
+    return {
+      orderTypes,
+      currentStatus: 0,
+      query: {
+        page: 1,
+        size: 10
+      },
+      orderOpButtons,
+      totalPages: 0,
+      orderList: [],
+      loadingStatus: 'loading',
+      commentList: []
+    };
+  },
 
-	onLoad(options) {
-		this.currentStatus = options.type[0] * 1 || 0
-		this.getOrderList()
-	},
+  onLoad(options) {
+    this.currentStatus = options.type[0] * 1 || 0;
+    this.getOrderList();
+  },
 
-	onShow() {
-		uni.removeStorageSync(PAY_SHORT_ORDER_NO)
-		uni.removeStorageSync(TUAN_ORDER_SN)
-	},
+  onShow() {
+    uni.removeStorageSync(PAY_SHORT_ORDER_NO);
+    uni.removeStorageSync(TUAN_ORDER_SN);
+  },
 
-	methods: {
-		handleBack() {
-			uni.switchTab({ url: "/pages/user/user" })
-		},
+  methods: {
+    handleBack() {
+      uni.switchTab({ url: '/pages/user/user' });
+    },
 
-		// 获取订单信息
-		getOrderList(loadMore) {
-			uni.showLoading()
-			this.loadingStatus = 'loading'
-			getOrderListApi({
-				userId: getUserId(),
-				showType: this.currentStatus,
-				...this.query,
-			}).then(({ data }) => {
-				if (loadMore) {
-					this.orderList.push(...data.data)
-				} else {
-					this.orderList = data.data
-				}
-				this.totalPages = data.totalPages
-				this.loadingStatus = 'hidden'
-				uni.hideLoading()
+    // 获取订单信息
+    getOrderList(loadMore) {
+      if (this.currentStatus == 5) {
+        this.getCommentList();
+        return;
+      }
+      uni.showLoading();
+      this.loadingStatus = 'loading';
+      getOrderListApi({
+        userId: getUserId(),
+        showType: this.currentStatus,
+        ...this.query
+      }).then(({ data }) => {
+        if (loadMore) {
+          this.orderList.push(...data.data);
+        } else {
+          this.orderList = data.data;
+        }
+        this.totalPages = data.totalPages;
+        this.loadingStatus = 'hidden';
+        uni.hideLoading();
+      });
+    },
 
-				console.log(data)
-			})
-		},
+    // 切换状态
+    handleSwitchStatus(status) {
+      this.currentStatus = status;
+      if (status === 5) {
+        this.getCommentList();
+      } else {
+        this.query.page = 1;
+        this.query.size = 20;
+        this.getOrderList();
+      }
+    },
 
-		// 切换状态
-		handleSwitchStatus(status) {
-			this.currentStatus = status
-			this.query.page = 1
-			this.query.size = 20
-			this.getOrderList()
-		},
+    async getCommentList() {
+      const res = await getMyCommentListApi({
+        userId: getUserId()
+      });
 
-		// 点击操作按钮
-		async handleOpOrder(goods, key, currentGoods) {
-			if (key === 'comment') {
-				this.handleToViewOrderDetail(goods, currentGoods)
-				return
-			}
-			const mapMethods = {
-				cancel: {
-					text: '确定要取消当前订单吗?',
-					api: orderCancelApi,
-				},
-				delete: {
-					text: '确定要删除当前订单吗?',
-					api: orderDeleteApi,
-				},
-				confirm: {
-					text: '确定要收货吗',
-					api: receiveGoodsApi,
-				},
-			}
+      if (res.errno === 0) {
+        this.commentList = res.data;
+      }
+    },
 
-			const _this = this
-			if (
-				goods.handleOption[key] &&
-				['cancel', 'delete', 'confirm'].includes(key)
-			) {
-				uni.showModal({
-					title: '提示',
-					content: mapMethods[key].text,
-					success: function (res) {
-						if (res.confirm) {
-							mapMethods[key]
-								.api({
-									userId: getUserId(),
-									orderId: goods.id,
-								})
-								.then(() => {
-									_this.query.page = 1
-									_this.getOrderList()
-								})
-						}
-					},
-				})
-			} else {
-				if (key === 'pay') {
-					if ((this.$store.state.app.isInMiniProgram)) {
-						const payAppesult = await payOrderGoodsAPPApi({
-							userId: getUserId(),
-							orderNo: goods.orderSn,
-							payType: 1
-						})
-						if (payAppesult.errno === 0) {
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
-							wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() })
-						}
-					} else {
-						// #ifdef H5
-						payOrderGoodsApi({
-							orderNo: goods.orderSn,
-							userId: getUserId(),
-							payType: 1,
-						}).then((res) => {
-							const payData = JSON.parse(res.data.h5PayUrl)
-							const form = document.createElement('form')
-							form.setAttribute('action', payData.url)
-							form.setAttribute('method', 'POST')
-							const data = JSON.parse(payData.data)
-							let input
-							for (const key in data) {
-								input = document.createElement('input')
-								input.name = key
-								input.value = data[key]
-								form.appendChild(input)
-							}
+    // 点击操作按钮
+    async handleOpOrder(goods, key, currentGoods) {
+      const mapMethods = {
+        cancel: {
+          text: '确定要取消当前订单吗?',
+          api: orderCancelApi
+        },
+        delete: {
+          text: '确定要删除当前订单吗?',
+          api: orderDeleteApi
+        },
+        confirm: {
+          text: '确定要收货吗',
+          api: receiveGoodsApi
+        }
+      };
 
-							document.body.appendChild(form)
-							form.submit()
-							document.body.removeChild(form)
+      const _this = this;
+      if (goods.handleOption[key] && ['cancel', 'delete', 'confirm'].includes(key)) {
+        uni.showModal({
+          title: '提示',
+          content: mapMethods[key].text,
+          success: function (res) {
+            if (res.confirm) {
+              mapMethods[key]
+                .api({
+                  userId: getUserId(),
+                  orderId: goods.id
+                })
+                .then(() => {
+                  _this.query.page = 1;
+                  _this.getOrderList();
+                });
+            }
+          }
+        });
+      } else {
+        if (key === 'pay') {
+          if (this.$store.state.app.isInMiniProgram) {
+            const payAppesult = await payOrderGoodsAPPApi({
+              userId: getUserId(),
+              orderNo: goods.orderSn,
+              payType: 1
+            });
+            if (payAppesult.errno === 0) {
+              let query = '';
+              for (const key in payAppesult.data) {
+                query += key + '=' + payAppesult.data[key] + '&';
+              }
+              wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() });
+            }
+          } else {
+            // #ifdef H5
+            payOrderGoodsApi({
+              orderNo: goods.orderSn,
+              userId: getUserId(),
+              payType: 1
+            }).then((res) => {
+              const payData = JSON.parse(res.data.h5PayUrl);
+              const form = document.createElement('form');
+              form.setAttribute('action', payData.url);
+              form.setAttribute('method', 'POST');
+              const data = JSON.parse(payData.data);
+              let input;
+              for (const key in data) {
+                input = document.createElement('input');
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
+              }
 
-						})
-						// #endif
+              document.body.appendChild(form);
+              form.submit();
+              document.body.removeChild(form);
+            });
+            // #endif
 
-						// #ifdef APP
-						const payAppesult = await payOrderGoodsAPPApi({
-							userId: getUserId(),
-							orderNo: goods.orderSn,
-							payType: 1
-						})
+            // #ifdef APP
+            const payAppesult = await payOrderGoodsAPPApi({
+              userId: getUserId(),
+              orderNo: goods.orderSn,
+              payType: 1
+            });
 
-						if (payAppesult.errno === 0) {
+            if (payAppesult.errno === 0) {
+              let query = '';
+              for (const key in payAppesult.data) {
+                query += key + '=' + payAppesult.data[key] + '&';
+              }
 
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
+              plus.share.getServices(
+                function (res) {
+                  let sweixin = null;
+                  for (let i in res) {
+                    if (res[i].id == 'weixin') {
+                      sweixin = res[i];
+                    }
+                  }
+                  console.log(sweixin);
+                  if (sweixin) {
+                    sweixin.launchMiniProgram({
+                      id: 'gh_e64a1a89a0ad',
+                      type: 0,
+                      path: 'pages/orderDetail/orderDetail?' + query
+                    });
+                  }
+                },
+                function (e) {
+                  console.log('获取分享服务列表失败：' + e.message);
+                }
+              );
+            }
+            // #endif
+          }
+        } else if (key === 'comment') {
+          uni.navigateTo({
+            url: '/user/orderForm/rate?id=' + goods.id + (currentGoods ? '&goodsId=' + currentGoods.id : '')
+          });
+        }
+      }
+    },
 
-							plus.share.getServices(
-								function (res) {
-									let sweixin = null;
-									for (let i in res) {
-										if (res[i].id == 'weixin') {
-											sweixin = res[i];
-										}
-									}
-									console.log(sweixin);
-									if (sweixin) {
-										sweixin.launchMiniProgram({
-											id: 'gh_e64a1a89a0ad',
-											type: 0,
-											path: 'pages/orderDetail/orderDetail?' + query
-										});
-									}
-								}, function (e) {
-									console.log('获取分享服务列表失败：' + e.message);
-								}
-							);
-						}
-						// #endif
-					}
+    // 查看详情
+    handleToViewOrderDetail(goods) {
+      uni.navigateTo({
+        url: '/user/orderForm/order-form-detail?id=' + goods.id
+      });
+    },
 
+    // 去追评
+    handleCommentAgain(goodsInfo) {
+      uni.navigateTo({
+        url: `/user/orderForm/additional-evaluation?goodsName=${goodsInfo.dtsTfGoods.name}&picUrl=${goodsInfo.dtsTfGoods.picUrl}&price=${goodsInfo.dtsTfGoods.counterPrice}&unit=${goodsInfo.dtsTfGoods.unit}&commentId=${goodsInfo.id}&goodsId=${goodsInfo.gid}&oid=${goodsInfo.oid}&ocid=${goodsInfo.ocid}`
+      });
+    }
+  },
 
+  onReachBottom() {
+    if (this.orderList.length < this.query.size) {
+      this.loadingStatus = 'noMore';
+      return;
+    }
 
-				}
-			}
-		},
+    if (this.query.page >= this.totalPages) {
+      this.loadingStatus = 'noMore';
+      return;
+    }
 
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/orderForm/order-form-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : ''),
-			})
-		},
-	},
-
-	onReachBottom() {
-		if (this.orderList.length < this.query.size) {
-			this.loadingStatus = 'noMore'
-			return
-		}
-
-		if (this.query.page >= this.totalPages) {
-			this.loadingStatus = 'noMore'
-			return
-		}
-
-		this.query.page++
-		this.getOrderList(true)
-	},
-}
+    this.query.page++;
+    this.getOrderList(true);
+  }
+};
 </script>
 
 <style lang="less" scoped>
 .orders-container {
-	font-size: 28upx;
-	color: #3d3d3d;
-	// padding: 60upx 0;
+  font-size: 28upx;
+  color: #3d3d3d;
+  // padding: 60upx 0;
 
-	.header {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		color: #000;
-		padding: 0 32upx;
-		box-sizing: border-box;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #000;
+    padding: 0 32upx;
+    box-sizing: border-box;
 
-		h2 {
-			font-weight: normal;
-			font-size: 32upx;
-			margin-top: -8upx;
-		}
-	}
+    h2 {
+      font-weight: normal;
+      font-size: 32upx;
+      margin-top: -8upx;
+    }
+  }
 
-	.navs {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 34upx 0;
-		padding-bottom: 20upx;
-		padding: 0 32upx;
-		box-sizing: border-box;
+  .navs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 34upx 0;
+    padding-bottom: 20upx;
+    padding: 0 32upx;
+    box-sizing: border-box;
 
-		.back {
-			width: 24upx;
-			height: 48upx;
-		}
+    .navs-list {
+      display: flex;
+      flex: 1;
+      width: 642upx;
+      margin-left: 20upx;
+    }
 
-		.nav-item {
-			padding-top: 14upx;
-			display: flex;
-			justify-content: center;
-			position: relative;
-			width: 96upx;
-			height: 56upx;
-			transition: all 350ms;
-			font-size: 32upx;
-			color: #8F8D85;
+    .back {
+      width: 24upx;
+      height: 48upx;
+    }
 
-			&::after {
-				content: '';
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-				bottom: 0;
-				width: 0;
-				height: 8upx;
-				border-radius: 10upx;
-				background-color: #FFC117;
-				transition: all 350ms ease-in;
-			}
+    .nav-item {
+      padding-top: 14upx;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      width: 120upx;
+      height: 56upx;
+      transition: all 350ms;
+      font-size: 32upx;
+      color: #8f8d85;
+      margin-right: 40upx;
+      white-space: nowrap;
 
-			&.nav-item-active {
-				color: #141000;
-				font-weight: 500;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 0;
+        height: 8upx;
+        border-radius: 10upx;
+        background-color: #ffc117;
+        transition: all 350ms ease-in;
+      }
 
-				// color: #ff8f1f;
-				&::after {
-					width: 40upx;
-				}
-			}
-		}
-	}
+      &.nav-item-active {
+        color: #141000;
+        font-weight: 500;
 
-	.order-list-wrapper {
-		background-color: #f6f6f6;
-		padding-top: 10px;
-		font-size: 24upx;
+        // color: #ff8f1f;
+        &::after {
+          width: 40upx;
+        }
+      }
+    }
+  }
 
-		.goods-pane {
-			padding: 32upx;
-			box-sizing: border-box;
-			background-color: #fff;
-			margin-bottom: 20upx;
-			border-radius: 24upx;
-			margin-left: 20upx;
-			margin-right: 20upx;
+  .order-list-wrapper {
+    background-color: #f6f6f6;
+    padding-top: 10px;
+    font-size: 24upx;
 
-			&:nth-of-type(:last-child) {
-				margin-bottom: 0;
-			}
+    .goods-pane {
+      padding: 32upx;
+      box-sizing: border-box;
+      background-color: #fff;
+      margin-bottom: 20upx;
+      border-radius: 24upx;
+      margin-left: 20upx;
+      margin-right: 20upx;
 
-			.order-no-status {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding-bottom: 16upx;
-				// border-bottom: 1upx solid #dbdbdb;
+      &:nth-of-type(:last-child) {
+        margin-bottom: 0;
+      }
 
-				.order-no {
-					font-size: 28upx;
-					color: #605D52;
-				}
+      .order-no-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16upx;
+        // border-bottom: 1upx solid #dbdbdb;
 
-				.order-status {
-					color: #FFC117;
-					font-size: 28upx;
-				}
-			}
+        &.comment-wrapper {
+          border-bottom: 1upx solid #e9e9e9;
+          display: block;
 
-			.goods-list {
-				padding: 20upx 0;
+          .comment {
+            color: #141000;
+            font-size: 28upx;
+            font-weight: 500;
+            margin-top: 20upx;
 
-				.goods-item {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					margin-bottom: 30upx;
+            .comment-title {
+              color: #f40;
+            }
+          }
+        }
 
-					.info {
-						flex: 1;
-						height: 100%;
-						display: flex;
-						justify-content: space-between;
-						flex-direction: column;
+        .order-no {
+          font-size: 28upx;
+          color: #605d52;
+        }
 
-						.name {
-							font-size: 28upx;
-							font-weight: 500;
-							width: 300upx;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-						}
+        .order-status {
+          color: #ffc117;
+          font-size: 28upx;
+        }
+      }
 
-						.good-sp-pr {
-							margin-top: 12upx;
+      .goods-list {
+        padding: 20upx 0;
 
-							.sp {
-								line-height: 1.5;
-								color: #8F8D85;
-								font-size: 24upx;
-								margin-bottom: 20upx;
-							}
+        .goods-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30upx;
 
-							.pr {
-								font-size: 28upx;
-							}
-						}
-					}
+          .info {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
 
-					.goods-img {
-						width: 140upx;
-						height: 140upx;
-						object-fit: cover;
-						margin-right: 20upx;
-					}
-				}
-			}
+            .name {
+              font-size: 28upx;
+              font-weight: 500;
+              width: 300upx;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
 
-			.goods-ops {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding-top: 20upx;
-				border-top: 1upx solid #F1F1F0;
+            .good-sp-pr {
+              margin-top: 12upx;
 
-				.actual-price {
-					font-size: 28upx;
-					font-weight: 500;
-					color: #141000;
+              .sp {
+                line-height: 1.5;
+                color: #8f8d85;
+                font-size: 24upx;
+                margin-bottom: 20upx;
+              }
 
-					.number {
-						color: #141000;
-					}
-				}
+              .pr {
+                font-size: 28upx;
+              }
+            }
+          }
 
-				.btns {
-					display: flex;
-					align-items: center;
+          .goods-img {
+            width: 140upx;
+            height: 140upx;
+            object-fit: cover;
+            margin-right: 20upx;
+          }
+        }
+      }
 
-					.uni-btn {
-						font-size: 24upx;
-						color: #fff;
-						line-height: 2.5;
-						padding: 0 28upx;
-						background-color: #f40;
-						white-space: nowrap;
-						margin-left: 20upx;
-						border-radius: 32upx;
-					}
-				}
-			}
-		}
+      .goods-ops {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20upx;
+        border-top: 1upx solid #f1f1f0;
 
-		.ev-btn {
-			font-size: 24upx;
-			color: #fff;
-			padding: 18upx 28upx;
-			background-color: rgb(132, 195, 65);
-			white-space: nowrap;
-			margin-left: 20upx;
-			border-radius: 4upx;
-			margin-top: 20upx;
-		}
-	}
+        .actual-price {
+          font-size: 28upx;
+          font-weight: 500;
+          color: #141000;
+
+          .number {
+            color: #141000;
+          }
+        }
+
+        .btns {
+          display: flex;
+          align-items: center;
+
+          .uni-btn {
+            font-size: 24upx;
+            color: #fff;
+            line-height: 2.5;
+            padding: 0 28upx;
+            background-color: #f40;
+            white-space: nowrap;
+            margin-left: 20upx;
+            border-radius: 32upx;
+          }
+        }
+      }
+    }
+
+    .ev-btn {
+      font-size: 24upx;
+      color: #fff;
+      padding: 18upx 28upx;
+      background-color: rgb(132, 195, 65);
+      white-space: nowrap;
+      margin-left: 20upx;
+      border-radius: 4upx;
+      margin-top: 20upx;
+    }
+  }
+}
+
+/deep/ .uni-scroll-view ::-webkit-scrollbar {
+  display: none;
 }
 </style>

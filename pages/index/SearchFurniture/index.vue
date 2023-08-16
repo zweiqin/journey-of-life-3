@@ -12,7 +12,7 @@
     <view class="banner-wrapper">
       <swiper class="swiper" circular autoplay>
         <swiper-item>
-          <image @click="go('/pages/hot/hot')" class="hot-banner" src="../../../static/images/new-index/hot-banner.png" mode="" />
+          <image @click="go('/pages/hot/hot')" class="hot-banner" src="../../../static/images/index/8de790a876e867824bb8d44436a7ec1.png" mode="" />
         </swiper-item>
         <swiper-item v-for="item in fullHousePackages" :key="item.id">
           <image @click="go('/pages/prod/prod?goodsId=' + item.id)" class="hot-banner" :src="item.picUrl" mode="" />
@@ -157,7 +157,7 @@ export default {
 }
 
 .banner-wrapper {
-  padding: 0 20upx 20upx 0;
+  padding: 0 20upx 0 20upx ;
   box-sizing: border-box;
   .swiper{
     border-radius: 10upx;

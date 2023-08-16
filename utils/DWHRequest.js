@@ -1,5 +1,5 @@
 import { clearAllCache } from 'constant';
-import { BASE_URL, RUAN_URL, LANG_FEE_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, sf, TEST_URL, HUANG_URL } from '../config';
+import { BASE_URL, RUAN_URL, LANG_FEE_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, sf, TEST_URL, HUANG_URL, shopUrl } from '../config';
 import store from '../store';
 
 const request = (base_url) => {
@@ -140,6 +140,7 @@ export const SheQuRequest1 = request(SheQu1_URL);
 
 export const RuanRequest = request(RUAN_URL);
 export const shopRequest = service(RUAN_URL);
+export const shopRequest1 = service(shopUrl);
 // export const textLang = service(TEST_URL)
 export const huangRequest = service(RUAN_URL);
 

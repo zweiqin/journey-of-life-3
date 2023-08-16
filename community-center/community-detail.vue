@@ -3,24 +3,15 @@
     <view class="head">
       <!-- 顶部区域 -->
       <view class="title-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-          alt=""
-          class="return"
-          @click="handleBack"
-        />
+        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
         <view class="title" @click="handleBack">
           <text class="page-title">{{ title }}</text>
         </view>
         <view class="location">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png"
-            alt=""
-            class="icon"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt="" class="icon" />
           <TuanLocation>
             <text class="locale">
-              {{ $store.getters.currentCity || "龙江镇" }}
+              {{ $store.getters.currentCity || '龙江镇' }}
             </text>
           </TuanLocation>
         </view>
@@ -42,17 +33,12 @@
           :top="-40"
         >
         </Carousel>
-        <image
-          src="../static/images/con-center/imagebg.png"
-          @click="handlePrev"
-          mode=""
-          class="imagebg"
-        />
+        <image src="../static/images/con-center/imagebg.png" @click="handlePrev" mode="" class="imagebg" />
         <view class="goods-name">{{ title }}</view>
-        <view class="price-name">{{ isArtificial ? "优惠价" : "起步价" }}</view>
+        <view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
         <view v-if="!isArtificial" class="goods-price">
           <view class="logo"
-            >￥<text>{{ startPrice || "30" }}</text></view
+            >￥<text>{{ startPrice || '30' }}</text></view
           >/起
         </view>
         <view v-if="isArtificial" class="goods-price">
@@ -72,11 +58,7 @@
         <view class="a">
           <TuanWxShare ref="tuanWxShareRef" @click="handleClickShare">
             <view class="share">
-              <img
-                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png"
-                alt=""
-                class="image"
-              />
+              <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png" alt="" class="image" />
               <view class="text">分享</view>
             </view>
           </TuanWxShare>
@@ -108,7 +90,7 @@
 
       <!-- 服务4级分类的人工报价 -->
       <view v-if="!isArtificial" class="start-price"
-        >￥<text>{{ startPrice || "30" }}</text
+        >￥<text>{{ startPrice || '30' }}</text
         >/起</view
       >
     </view>
@@ -125,36 +107,16 @@
     <view class="add">
       <view class="add-list" @click="handleToAddress">
         <view class="left">
-          <image
-            src="../static/images/con-center/map-pin.png"
-            mode=""
-            class="left-logo"
-          />
-          <view class="left-address">{{
-            addressDetail || "请添加服务地址"
-          }}</view>
+          <image src="../static/images/con-center/map-pin.png" mode="" class="left-logo" />
+          <view class="left-address">{{ addressDetail || '请添加服务地址' }}</view>
         </view>
         <view class="right">
-          <image
-            src="../static/images/con-center/jump.png"
-            mode=""
-            class="jump"
-          />
+          <image src="../static/images/con-center/jump.png" mode="" class="jump" />
         </view>
       </view>
       <view class="kaitong">
-        <image
-          v-if="type == 1"
-          src="../static/images/con-center/open.png"
-          mode=""
-          class="open"
-        />
-        <image
-          v-if="type == 2"
-          src="../static/images/con-center/shut.png"
-          mode=""
-          class="close"
-        />
+        <image v-if="type == 1" src="../static/images/con-center/open.png" mode="" class="open" />
+        <image v-if="type == 2" src="../static/images/con-center/shut.png" mode="" class="close" />
       </view>
     </view>
 
@@ -169,11 +131,7 @@
         </view>
 
         <!-- #ifdef H5 -->
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png"
-          alt=""
-          class="more"
-        />
+        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt="" class="more" />
         <!-- #endif -->
       </view>
     </view>
@@ -185,24 +143,9 @@
 				</view> -->
       <!-- 收费标准,服务内容,用户评价 -->
       <view class="top-list">
-        <view
-          class="item"
-          :class="{ active: currentMoveTab === 0 }"
-          @click="toJump(0)"
-          >收费标准</view
-        >
-        <view
-          class="item"
-          :class="{ active: currentMoveTab === 1 }"
-          @click="toJump(1)"
-          >服务内容</view
-        >
-        <view
-          class="item"
-          :class="{ active: currentMoveTab === 2 }"
-          @click="toJump(2)"
-          >用户评价</view
-        >
+        <view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
+        <view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
+        <view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
       </view>
 
       <!-- 收费标准 -->
@@ -212,10 +155,7 @@
       <view v-if="chargeDescription" class="explain">
         <view class="explain-title">收费说明:</view>
         <view class="explain-text">
-          {{
-            chargeDescription ||
-            "工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。"
-          }}
+          {{ chargeDescription || '工程师上门后，因用户个人原因取消订单，需支付30元上门费；价格信息仅供参考，具体收费以工程师上门检测和用户沟通后报价为准。' }}
         </view>
       </view>
 
@@ -239,14 +179,7 @@
 				</view> -->
 
       <!-- 服务详情内容 -->
-      <view
-        v-if="
-          serverInfo !== '<p><br></p>' &&
-          serverInfo !== '<p><br></p><p><br></p>'
-        "
-        id="detail"
-        class="case-show"
-      >
+      <view v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'" id="detail" class="case-show">
         <view class="show-img">
           <UParse v-if="serverInfo" :content="goodsInfoDetail"></UParse>
         </view>
@@ -266,18 +199,9 @@
     </view>
     <!-- 其他服务 -->
     <view class="other">
-      <view
-        v-for="item in moreService"
-        :key="item.value"
-        class="other-service"
-        @click="handleToServiceListHome(item.value)"
-      >
+      <view v-for="item in moreService" :key="item.value" class="other-service" @click="handleToServiceListHome(item.value)">
         <view class="text">其他服务</view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png"
-          alt=""
-          class="show"
-        />
+        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt="" class="show" />
       </view>
     </view>
 
@@ -286,19 +210,13 @@
       <view class="list">
         <view class="online" @click="handleChat">
           <!-- #ifdef H5 -->
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png"
-            alt=""
-            class="seek"
-          />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt="" class="seek" />
           <view class="name">在线咨询</view>
           <!-- #endif -->
         </view>
         <view class="order-list">
           <!-- <view class="join">加入需求清单</view> -->
-          <view class="order" @click="handleToServiceOrderHome">{{
-            isArtificial ? "立即下单" : "立即预约"
-          }}</view>
+          <view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
         </view>
       </view>
     </view>
@@ -313,103 +231,91 @@
     ></uqrcode>
 
     <!-- 分享活动邀请码 -->
-    <CommunityDetailPoster
-      ref="communityDetailPosterRef"
-    ></CommunityDetailPoster>
+    <CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
 
     <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
   </view>
 </template>
 
 <script>
-import Carousel from "../components/carousel";
-import uParse from "../components/u-parse/u-parse.vue";
-import CommunityDetailPoster from "./components/CommunityDetailPoster.vue";
-import { marked } from "marked";
-import { splitProject } from "./componts/utile";
-import { getConfigApi } from "../api/auth";
-import item from "../community-center/componts/item";
-import charge from "../community-center/componts/charge";
-import { getServiceDetailApi } from "../api/community-center";
-import { changeServiceUserBindingApi } from "../api/user";
-import { moreService } from "../pages/community-center/config";
-import {
-  USER_TOKEN,
-  NEW_BIND_SERVICE_ID,
-  NEW_BIND_SERVICE_URL,
-} from "../constant";
-import { getUserId } from "../utils";
-import { getAdressDetailByLngLat } from "../utils/DWHutils";
-import { getIsOpenServerAreaApi } from "../api/community-center";
+import Carousel from '../components/carousel';
+import uParse from '../components/u-parse/u-parse.vue';
+import CommunityDetailPoster from './components/CommunityDetailPoster.vue';
+import { marked } from 'marked';
+import { splitProject } from './componts/utile';
+import { getConfigApi } from '../api/auth';
+import item from '../community-center/componts/item';
+import charge from '../community-center/componts/charge';
+import { getServiceDetailApi } from '../api/community-center';
+import { changeServiceUserBindingApi } from '../api/user';
+import { moreService } from '../pages/community-center/config';
+import { USER_TOKEN, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
+import { getUserId } from '../utils';
+import { getAdressDetailByLngLat } from '../utils/DWHutils';
+import { getIsOpenServerAreaApi } from '../api/community-center';
 // #ifdef H5
-import share from "../utils/wxshare";
+import share from '../utils/wxshare';
 // #endif
 
 export default {
-  name: "CommunityDetail",
+  name: 'CommunityDetail',
   components: {
     Item: item,
     Charge: charge,
     UParse: uParse,
     Carousel,
-    CommunityDetailPoster,
+    CommunityDetailPoster
   },
   props: {},
   data() {
     return {
       currentMoveTab: 0,
       moreService,
-      address: "",
+      address: '',
       serviceDetail: [],
-      id: "",
-      serverTypeId: "",
-      serverInfoName: "",
-      serverInfoUrl: "",
-      serverIntroduction: "",
-      isArtificial: "",
-      serverPrice: "",
-      title: "",
-      serverImageUrl: "",
-      serverUnit: "",
-      currentTab: "",
-      length: "",
-      serverUrl: "",
+      id: '',
+      serverTypeId: '',
+      serverInfoName: '',
+      serverInfoUrl: '',
+      serverIntroduction: '',
+      isArtificial: '',
+      serverPrice: '',
+      title: '',
+      serverImageUrl: '',
+      serverUnit: '',
+      currentTab: '',
+      length: '',
+      serverUrl: '',
       serverUrls: [],
-      index: "",
-      priceType: "",
-      startPrice: "",
-      chargeDescription: "",
-      serverInfo: "",
+      index: '',
+      priceType: '',
+      startPrice: '',
+      chargeDescription: '',
+      serverInfo: '',
       chargeDetailsList: [],
-      serverContent: "",
-      addressDetail: "",
-      type: "",
-      addressInfo: "",
+      serverContent: '',
+      addressDetail: '',
+      type: '',
+      addressInfo: '',
 
       bindServiceId: null,
-      userId: "",
-      shareCode: "",
-      preferentialPrice: 0,
+      userId: '',
+      shareCode: '',
+      preferentialPrice: 0
     };
   },
 
   computed: {
     goodsInfoDetail() {
-      return this.serverInfo ? marked(this.serverInfo) : "";
-    },
+      return this.serverInfo ? marked(this.serverInfo) : '';
+    }
   },
 
   created() {},
   onLoad(options) {
-    if (options.code)
-      uni.setStorageSync(NEW_BIND_SERVICE_ID, options.code) ||
-        uni.setStorageSync(NEW_BIND_SERVICE_URL, this.$route.fullPath); // 有服务邀请绑定id就进行存储，以防下面没登录跳到登录页
-    this.userId = getUserId() || "";
-    if (
-      this.userId &&
-      !options.code &&
-      uni.getStorageSync(NEW_BIND_SERVICE_ID)
-    ) {
+    if (options.code) uni.setStorageSync(NEW_BIND_SERVICE_ID, options.code) || uni.setStorageSync(NEW_BIND_SERVICE_URL, this.$route.fullPath); // 有服务邀请绑定id就进行存储，以防下面没登录跳到登录页
+    this.userId = getUserId() || '';
+    if (this.userId && !options.code && uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
       // 如果原先有服务邀请绑定id，例如注册/重新登陆了然后跳回来（options没携带服务邀请绑定id），则是存储里的服务邀请绑定id
       this.bindServiceId = uni.getStorageSync(NEW_BIND_SERVICE_ID) * 1;
       this.binding(this.userId, () => {});
@@ -423,7 +329,7 @@ export default {
     this.serverImageUrl = options.serverImageUrl;
     this.title = options.serverNameThree;
     uni.setNavigationBarTitle({
-      title: this.title,
+      title: this.title
     });
     // this.serverUrl = options.serverImageUrl
     this.getIsOpenServerArea();
@@ -435,7 +341,7 @@ export default {
   },
   onShow() {
     this.getServiceDetail();
-    const info = uni.getStorageSync("guawyi8sa");
+    const info = uni.getStorageSync('guawyi8sa');
     // console.log('info', info);
     if (info.address && info.addressDetail) {
       this.addressInfo = info.address + info.addressDetail;
@@ -456,17 +362,17 @@ export default {
       return new Promise((resolve, reject) => {
         changeServiceUserBindingApi({
           bindingUserId: userId,
-          shareUserId: this.bindServiceId,
+          shareUserId: this.bindServiceId
         })
           .then((res) => {
             uni.removeStorageSync(NEW_BIND_SERVICE_ID);
             uni.removeStorageSync(NEW_BIND_SERVICE_URL);
             uni.showToast({
-              title: "成功参与服务分享！",
-              duration: 1000,
+              title: '成功参与服务分享！',
+              duration: 1000
             });
             _this.timer = setTimeout(() => {
-              cb && typeof cb === "function" && cb();
+              cb && typeof cb === 'function' && cb();
             }, 1000);
             resolve();
           })
@@ -474,7 +380,7 @@ export default {
             uni.removeStorageSync(NEW_BIND_SERVICE_ID);
             uni.removeStorageSync(NEW_BIND_SERVICE_URL);
             _this.timer = setTimeout(() => {
-              cb && typeof cb === "function" && cb();
+              cb && typeof cb === 'function' && cb();
             }, 1000);
             reject();
           });
@@ -487,11 +393,11 @@ export default {
       // console.log('更多服务分类列表', item)
       this.value = item;
       uni.navigateTo({
-        url: `/community-center/service-sort?value=${this.value}`,
+        url: `/community-center/service-sort?value=${this.value}`
       });
     },
     handleToAddress() {
-      uni.navigateTo({ url: "/community-center/add-address" });
+      uni.navigateTo({ url: '/community-center/add-address' });
     },
 
     handleToServiceOrderHome() {
@@ -500,35 +406,35 @@ export default {
       // const let var
 
       uni.showToast({
-        title: "请选择服务类型",
-        icon: "none",
-        duration: 2000,
+        title: '请选择服务类型',
+        icon: 'none',
+        duration: 2000
       });
 
       if (!this.isArtificial) {
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`,
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`
         });
       } else if (!this.serverPrice == 0) {
         uni.navigateTo({
-          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}`,
+          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}`
         });
       } else {
-        console.log("sb kuaixuan");
+        console.log('sb kuaixuan');
       }
     },
 
     toJump(index) {
       this.currentMoveTab = index;
       if (this.currentMoveTab == 0) {
-        document.getElementById("norm").scrollIntoView({
-          behavior: "smooth",
-          block: "start",
+        document.getElementById('norm').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       } else if (this.currentMoveTab == 1) {
-        document.getElementById("detail").scrollIntoView({
-          behavior: "smooth",
-          block: "start",
+        document.getElementById('detail').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       }
     },
@@ -551,14 +457,11 @@ export default {
       // this.serverTypeId=this.serviceDetail.serverTypeId;
       const res = await getServiceDetailApi({
         // serverTypeId: 109,
-        serverTypeId: this.serverTypeId,
+        serverTypeId: this.serverTypeId
       });
 
       // console.log(this.$store.getters);
-      const dzAttribute = await this.$store.dispatch(
-        "community/getMyAttribute",
-        this.$store.getters.detailAddress
-      );
+      const dzAttribute = await this.$store.dispatch('community/getMyAttribute', this.$store.getters.detailAddress);
       if (dzAttribute && Array.isArray(dzAttribute) && dzAttribute.length) {
         res.data.forEach((origin) => {
           dzAttribute.forEach((attr) => {
@@ -572,9 +475,7 @@ export default {
         });
       }
       this.serviceDetail = res.data;
-      this.serviceDetail.chargeDetailsList = splitProject(
-        res.data[0].chargeDetailsList
-      );
+      this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList);
       // console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
 
       this.currentTab = res.data[0].id;
@@ -598,14 +499,10 @@ export default {
       this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
       // console.log('介绍', this.serverIntroduction)
 
-      this.serverUrl = this.serviceDetail[0].serverImageUrl
-        .split(",")
-        .find((item) => item);
+      this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find((item) => item);
       // console.log('图片', this.serverUrl)
 
-      this.serverUrls = this.serviceDetail[0].serverImageUrl
-        .split(",")
-        .slice(1);
+      this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1);
       // console.log('轮播图', this.serverUrls)
 
       this.startPrice = this.serviceDetail[0].startPrice;
@@ -614,7 +511,7 @@ export default {
       this.chargeDescription = this.serviceDetail[0].chargeDescription;
       // console.log('收费说明', this.chargeDescription);
 
-      this.serverContent = this.serviceDetail[0].serverContent.split("，");
+      this.serverContent = this.serviceDetail[0].serverContent.split('，');
       // console.log('服务具体内容', this.serverContent);
 
       // this.serverInfo = this.serviceDetail[0].serverInfo
@@ -628,32 +525,26 @@ export default {
       // #ifdef H5
       const _this = this;
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success(res) {
           getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === "1") {
+            if (res.status === '1') {
               // console.log('1111', res)
               const result = res.regeocode;
-              _this.address =
-                result.addressComponent.province +
-                result.addressComponent.city +
-                result.addressComponent.district;
+              _this.address = result.addressComponent.province + result.addressComponent.city + result.addressComponent.district;
               // console.log('this.address', _this.address)
               _this.a();
               _this.addressDetail = result.formatted_address;
               // console.log('addressDetail', _this.addressDetail)
             }
           });
-        },
+        }
       });
       // #endif
 
       // #ifdef APP
       const locationInfo = this.$store.state.location;
-      this.address =
-        locationInfo.locationInfo.province +
-        locationInfo.locationInfo.city +
-        locationInfo.locationInfo.district;
+      this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district;
       this.a();
       this.addressDetail = locationInfo.detailAddress;
       // #endif
@@ -661,7 +552,7 @@ export default {
 
     async a() {
       const res = await getIsOpenServerAreaApi({
-        address: this.address,
+        address: this.address
       });
       // console.log('res', res)
       this.tips = res.data;
@@ -682,7 +573,7 @@ export default {
 
       uni.previewImage({
         urls: imgsArray,
-        current: 0,
+        current: 0
       });
     },
 
@@ -697,20 +588,19 @@ export default {
       const _this = this;
       let desc;
       if (_this.serverTypeId === 313) {
-        desc =
-          "想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。";
+        desc = '想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。';
       } else {
-        desc = "售后质保·服务专业·极速退款·意外承包";
+        desc = '售后质保·服务专业·极速退款·意外承包';
       }
       const data = {
         data: {
           title: _this.title,
           desc,
           link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}&code=${_this.userId}`,
-          imageUrl: _this.serverUrl,
+          imageUrl: _this.serverUrl
         },
         successCb: () => {},
-        failCb: () => {},
+        failCb: () => {}
       };
       await this.$refs.tuanWxShareRef.share(data, isQuit);
     },
@@ -718,7 +608,7 @@ export default {
     // 点击分享
     handleShare() {
       uni.showLoading({
-        title: "活动邀请码生成中...",
+        title: '活动邀请码生成中...'
       });
       const _this = this;
       let topDesc;
@@ -727,7 +617,7 @@ export default {
         topDesc = `想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。`;
         downDesc = `把优惠推荐给亲朋好友，下单清洗空调每满3台，免费赠送价值336元床垫清洗除螨一张或沙发清洗一个位的兑换券一张，可直接下单兑换。`;
       } else {
-        topDesc = "售后质保·服务专业·极速退款·意外承包";
+        topDesc = '售后质保·服务专业·极速退款·意外承包';
         downDesc = `-----------`;
       }
       this.$refs.uqrcode.make({
@@ -738,9 +628,9 @@ export default {
             logo: this.serverUrl || this.serverImageUrl,
             headerTitle: `${this.title}`,
             topDesc,
-            downDesc,
+            downDesc
           });
-        },
+        }
       });
     },
 
@@ -753,7 +643,7 @@ export default {
             if (!_this.shareCode) {
               _this.shareCode = res.tempFilePath;
             }
-          },
+          }
         });
       }
     },
@@ -761,8 +651,8 @@ export default {
     // 聊天
     handleChat() {
       this.$refs.tuanChatKFRef.show();
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -1169,7 +1059,7 @@ export default {
         }
 
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
@@ -1271,7 +1161,7 @@ export default {
         position: relative;
 
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 50%;
           transform: translateX(-50%);

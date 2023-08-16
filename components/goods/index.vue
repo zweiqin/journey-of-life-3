@@ -1,21 +1,20 @@
 <template>
   <div class="goods" @click="handeViewDetail">
-    <img
-      class="img"
-      :src="
-        url ||
-        'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'
-      "
-      alt=""
-    />
+    <!-- <img class="img" :src="url || 'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'" alt="" /> -->
+
+    <tui-lazyload-img
+      width="334rpx"
+      height="300rpx"
+      style="{width: 334upx !important, height: 300upx !important}"
+      :src="url || 'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'"
+    ></tui-lazyload-img>
 
     <view class="body">
-      <view class="name">{{ name || "GLOSTAD" }} </view>
+      <view class="name">{{ name || 'GLOSTAD' }} </view>
       <!-- <view class="sname">{{ sname || "二人沙发" }} </view> -->
       <view class="info">
         <view class="left">
-          <text class="icon">￥</text
-          ><text class="price">{{ price || "500" }}</text>
+          <text class="icon">￥</text><text class="price">{{ price || '500' }}</text>
         </view>
 
         <view class="right">
@@ -46,19 +45,24 @@ export default {
       if (!this.id) {
         return;
       }
-      let url = `/pages/prod/prod?goodsId=${this.id}`
-      if(this.isShowBrand){
-        url += '&showBrand=true'
+      let url = `/pages/prod/prod?goodsId=${this.id}`;
+      if (this.isShowBrand) {
+        url += '&showBrand=true';
       }
       uni.navigateTo({
-        url,
+        url
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
+/deep/ .tui-lazyload__img{
+  width: 340upx !important;
+  height: 300upx !important;
+}
+
 .goods {
   border-radius: 20upx 20upx 0 0;
   overflow: hidden;

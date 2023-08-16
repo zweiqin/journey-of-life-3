@@ -6,15 +6,15 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\home\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { request, shopRequest } from "../../utils";
-import { getUserId, RuanRequest } from "../../utils";
+import { request, shopRequest, shopRequest1 } from '../../utils';
+import { getUserId, RuanRequest } from '../../utils';
 
 /**
  * 获取首页商品列表
  * @returns
  */
 export const getIndexDataApi = () => {
-  return RuanRequest("/home/index", null, "get");
+  return RuanRequest('/home/index', null, 'get');
 };
 
 /**
@@ -26,14 +26,14 @@ export const getIndexDataApi = () => {
  * @returns
  */
 export const getGoodsTypesApi = (data) => {
-  return RuanRequest("/catalog/index", data, "get");
+  return RuanRequest('/catalog/index', data, 'get');
 };
 
 /**
  * @description 获取当前分类下的二级类目
  */
 export const getTypeDetailList = (data) => {
-  return RuanRequest("/catalog/current", data, "get");
+  return RuanRequest('/catalog/current', data, 'get');
 };
 
 /**
@@ -42,25 +42,39 @@ export const getTypeDetailList = (data) => {
  * @returns
  */
 export const getGoodsByIdApi = (data) => {
-  return RuanRequest("/goods/list", data, "get");
+  return RuanRequest('/goods/list', data, 'get');
 };
 
-
 export const getUserCouponApi = (data) => {
-  return RuanRequest('/coupon/getUserCoupon', data, 'get')
-}
+  return RuanRequest('/coupon/getUserCoupon', data, 'get');
+};
 
-export const getHomeGoodsListApi = data => {
-  return RuanRequest("/goods/homeList", data, 'get')
-}
+export const getHomeGoodsListApi = (data) => {
+  return RuanRequest('/goods/homeList', data, 'get');
+};
 
 // 获取首页轮播图套餐
-export const getFullHoursePackageApi = data => {
-  return shopRequest( '/goods/queryHomeSkuList', data, 'get')
-}
-
+export const getFullHoursePackageApi = (data) => {
+  return shopRequest('/goods/queryHomeSkuList', data, 'get');
+};
 
 /* -------------------------------------------------------------  全屋严选 ----------------------------------------------------------------------------- */
+// 获取全屋套餐列表数据
 export const getDesignCompanyListApi = (data) => {
-return shopRequest('')
-}
+  return shopRequest1('/wx/dtsDesignCom', data, 'get');
+};
+
+// 获取全屋套餐字典数据
+export const getSysDictApi = (data) => {
+  return shopRequest1('/sysDict', data, 'get');
+};
+
+// 获取公司详情
+export const getDeginCompDetailApi = (brandId) => {
+  return shopRequest1('/wx/dtsDesignCom/' + brandId, {}, 'get');
+};
+
+// 获取设计案例
+export const getDesginCaseApi = (data) => {
+  return shopRequest1('/wx/dtsDesignCase', data, 'get');
+};

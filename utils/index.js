@@ -17,7 +17,8 @@ export {
   SheQuRequest1,
   shopRequest,
   huangRequest,
-  endRequest
+  endRequest,
+  shopRequest1
 } from "./DWHRequest";
 export {
   fomartNumber,

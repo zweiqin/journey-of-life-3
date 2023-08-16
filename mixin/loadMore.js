@@ -47,6 +47,8 @@ export default (options) => {
             : res.data[mapKey.list];
         }
 
+        console.log("list数据", this.$data._list);
+
         !isLoadmore && afterFn && typeof afterFn === "function" && afterFn();
         isLoadmore && cb && typeof cb === "function" && cb();
         this.$data._status = "none";

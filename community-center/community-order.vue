@@ -313,6 +313,14 @@ export default {
               success: (uploadFileRes) => {
                 uni.hideLoading();
                 _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url);
+              },
+              fail: (error) => {
+                uni.hideLoading();
+                _this.ttoast({
+                  type: 'fail',
+                  title: '图片上传失败',
+                  content: error
+                });
               }
             });
           }

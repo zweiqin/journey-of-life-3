@@ -3,33 +3,15 @@
     <tui-toast ref="toast"></tui-toast>
     <!-- 轮播图 -->
     <view class="carousel-wrapper">
-      <Carousel
-        :list="
-          goodsDetail.info.gallery.length
-            ? goodsDetail.info.gallery
-            : [goodsDetail.info.picUrl]
-        "
-        :height="390"
-        :top="0"
-        :radius="0"
-      ></Carousel>
+      <Carousel :list="goodsDetail.info.gallery.length ? goodsDetail.info.gallery : [goodsDetail.info.picUrl]" :height="390" :top="0" :radius="0"></Carousel>
 
       <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
         <view>
-          <image
-            @click="handleBack"
-            src="../../static/images/detail/back.png"
-            mode=""
-          />
+          <image @click="handleBack" src="../../static/images/detail/back.png" mode="" />
         </view>
 
         <view style="display: flex">
-          <image
-            style="margin-right: 20upx"
-            @click="empty()"
-            src="../../static/images/detail/brand.png"
-            mode=""
-          />
+          <image style="margin-right: 20upx" @click="empty()" src="../../static/images/detail/brand.png" mode="" />
 
           <TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
             <!-- <image
@@ -46,28 +28,19 @@
         class="scroll-top-nav"
         :style="{
           opacity: showTopNav && isShowTop ? 1 : 0,
-          'z-index': showTopNav ? 100 : -1,
+          'z-index': showTopNav ? 100 : -1
         }"
       >
         <!-- #ifdef H5 -->
-        <image
-          @click="handleBack"
-          src="../../static/images/detail/top-back.png"
-          mode=""
-        />
+        <image @click="handleBack" src="../../static/images/detail/top-back.png" mode="" />
         <!-- #endif -->
 
         <view class="center">
-          <view
-            class="item"
-            :class="{ active: currentMoveTag == 0 }"
-            @click="moveToDetail(0)"
-            >商品</view
-          >
+          <view class="item" :class="{ active: currentMoveTag == 0 }" @click="moveToDetail(0)">商品</view>
 
           <view
             :class="{
-              active: currentMoveTag == 1,
+              active: currentMoveTag == 1
             }"
             class="item"
             @click="moveToDetail(1)"
@@ -77,7 +50,7 @@
           <view
             class="item"
             :class="{
-              active: currentMoveTag == 2,
+              active: currentMoveTag == 2
             }"
             @click="moveToDetail(2)"
             v-if="goodsDetail.info.detail"
@@ -92,17 +65,13 @@
       <view class="detail-price">
         ￥
         <text class="price-text"
-          ><text :class="{ normalPrice: vipPrice }">{{
-            goodsDetail.info.counterPrice
-          }}</text>
+          ><text :class="{ normalPrice: vipPrice }">{{ goodsDetail.info.counterPrice }}</text>
           <text v-show="vipPrice">{{ vipPrice }}</text>
         </text>
 
         起
 
-        <text class="watch-vip-price" @click="handleWatchVipPrice"
-          >{{ vipPrice ? "隐藏" : "查看" }}会员价</text
-        >
+        <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text>
       </view>
 
       <view class="goods-name">{{ goodsDetail.info.name }}</view>
@@ -125,42 +94,56 @@
       </view>
 
       <view class="buy-info">
-        <view
-          class="item"
-          v-for="(item, index) in goodsInfoConfig"
-          :key="index"
-          @click="handleClickMenu(item)"
-        >
+        <view class="item" v-for="(item, index) in goodsInfoConfig" :key="index" @click="handleClickMenu(item)">
           <image :src="item.icon" mode="" />
           <view>
-            <view class="label">{{
-              selectForm[item.model] || item.label
-            }}</view>
+            <view class="label">{{ selectForm[item.model] || item.label }}</view>
             <view class="desc" v-if="item.desc">{{ item.desc }}</view>
           </view>
         </view>
       </view>
 
-      <view class="eval">
-        <text>评价(0)</text>
-        <image src="../../static/images/detail/right-arrow.png" mode="" />
+      <view class="eval-wrapper">
+        <view class="eval">
+          <text>评价({{ commentInfo.count || 0 }})</text>
+          <text v-if="commentInfo.data.length > 1">
+            <text @click="handleViewAllEval(commentInfo.data)">查看全部</text>
+            <image style="margin-bottom: -4upx" src="../../static/images/detail/right-arrow.png" mode="" />
+          </text>
+          <text v-else-if="!commentInfo.data.length">暂无评价</text>
+        </view>
+
+        <view class="one-eval-container" v-if="commentInfo.data.length">
+          <view class="user-info">
+            <image class="avatar" :src="commentInfo.data[0].avatar || require('../../static/images/user/weidian/no-goods.png')"></image>
+            <view class="info">
+              <view class="nickname">{{ commentInfo.data[0].nickname || '匿名用户' }} </view>
+              <view class="eval-time">{{ commentInfo.data[0].addTime }}</view>
+            </view>
+          </view>
+          <view class="comment-detail">
+            <view class="content">
+              {{ commentInfo.data[0].content }}
+            </view>
+
+            <view class="pic-list" v-if="commentInfo.data[0].picList">
+              <image
+                @click="handlePreviewImg(index, commentInfo.data[0].picList.split(','))"
+                class="img"
+                v-for="(img, index) in commentInfo.data[0].picList.split(',')"
+                :key="index"
+                :src="img"
+              ></image>
+            </view>
+          </view>
+        </view>
       </view>
 
       <!-- 店铺信息 -->
-      <view
-        class="brand-wrapper"
-        v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand"
-      >
+      <view class="brand-wrapper" v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand">
         <view class="top">
-          <image
-            class="image"
-            :src="goodsDetail.brand.picUrl"
-            mode=""
-            v-if="goodsDetail.brand.picUrl"
-          />
-          <view v-else class="image image-avatar">{{
-            goodsDetail.brand.name
-          }}</view>
+          <image class="image" :src="goodsDetail.brand.picUrl" mode="" v-if="goodsDetail.brand.picUrl" />
+          <view v-else class="image image-avatar">{{ goodsDetail.brand.name }}</view>
 
           <view class="brand-info">
             <view class="brand-name">{{ goodsDetail.brand.name }}</view>
@@ -219,14 +202,9 @@
     </view>
 
     <!-- 宝贝详情 -->
-    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"
-      ><text>宝贝详情</text></view
-    >
+    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"><text>宝贝详情</text></view>
 
-    <u-parse
-      v-if="goodsDetail.info.detail"
-      :content="goodsInfoDetail"
-    ></u-parse>
+    <u-parse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></u-parse>
 
     <!-- 详情 -->
 
@@ -257,11 +235,7 @@
         <view class="item">
           <image
             @click="handleCollect"
-            :src="
-              isCollect
-                ? '../../static/images/detail/collection-active .png'
-                : '../../static/images/detail/collection.png'
-            "
+            :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'"
             mode=""
           />
           <text>收藏</text>
@@ -269,9 +243,7 @@
       </view>
 
       <view class="buttons">
-        <button class="uni-btn" @click="addShopCar(selectInfo)">
-          加入购物车
-        </button>
+        <button class="uni-btn" @click="addShopCar(selectInfo)">加入购物车</button>
         <button class="uni-btn" @click="fastBuy(selectInfo)">立即购买</button>
       </view>
     </view>
@@ -286,16 +258,19 @@
     ></TSpecification>
 
     <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
+
+    <CommentListDrawer ref="commentListDrawerRef"></CommentListDrawer>
   </view>
 </template>
 
 <script>
-import Carousel from "../../components/carousel";
-import { subInfoConfig, goodsInfoConfig } from "./config";
-import uParse from "../../components/u-parse/u-parse.vue";
-import { marked } from "marked";
-import { PAY_GOODS, USER_ID, USER_INFO } from "../../constant";
-import RecommendGoods from "../../components/recommend-goods";
+import Carousel from '../../components/carousel';
+import { subInfoConfig, goodsInfoConfig } from './config';
+import uParse from '../../components/u-parse/u-parse.vue';
+import { marked } from 'marked';
+import { PAY_GOODS, USER_ID, USER_INFO } from '../../constant';
+import RecommendGoods from '../../components/recommend-goods';
+import CommentListDrawer from './components/CommentListDrawer.vue';
 
 import {
   getGoodsDetailApi,
@@ -305,14 +280,16 @@ import {
   getCarShopNumberApi,
   goodsListApi,
   watchVipPriceApi,
-} from "../../api/goods";
-import { getUserId } from "../../utils";
+  getGoodsCommentListApi
+} from '../../api/goods';
+import { getUserId } from '../../utils';
 
 export default {
   components: {
     Carousel,
     uParse,
     RecommendGoods,
+    CommentListDrawer
   },
   data() {
     return {
@@ -329,22 +306,26 @@ export default {
       detailPosition: 0,
       scrollTop: 0,
       currentMoveTag: 0,
-      redirect: "/pages/prod/prod?goodsId=",
+      redirect: '/pages/prod/prod?goodsId=',
       isShowTop: false,
-      btnStatus: "确定",
+      btnStatus: '确定',
       selectInfo: null,
       selectForm: {
-        spsStr: "",
+        spsStr: ''
       },
       isShowBrand: false,
       vipPrice: null,
+      commentInfo: {
+        count: 0,
+        data: []
+      }
     };
   },
   onLoad(options) {
     this.isShowBrand = !!options.showBrand;
     uni.pageScrollTo({
       scrollTop: 0,
-      duration: 0,
+      duration: 0
     });
     this.goodsId = options.goodsId * 1;
     this.redirect += this.goodsId;
@@ -373,12 +354,13 @@ export default {
         });
         // #endif
         this.isCollect = !!res.data.userHasCollect;
-        this.getBrandOtherGoods(res.data.brand.id);
+        res.data.brand && this.getBrandOtherGoods(res.data.brand.id);
+        this.getOrderComment();
       } else {
         uni.showToast({
-          title: "商品不存在",
+          title: '商品不存在',
           duration: 2000,
-          icon: "none",
+          icon: 'none'
         });
 
         setTimeout(() => {
@@ -387,9 +369,21 @@ export default {
       }
     },
 
+    // 获取商品评价
+    async getOrderComment() {
+      const res = await getGoodsCommentListApi({
+        gid: this.goodsId
+      });
+
+      if (res.errno === 0) {
+        this.commentInfo = res.data;
+      }
+    },
+
     // 加入购物车
     async addShopCar(selectInfo) {
-      this.btnStatus = "确定加入购物车";
+      this.checkCommentStatus();
+      this.btnStatus = '确定加入购物车';
       let goodsInfo = null;
       if (!selectInfo || !this.selectInfo) {
         goodsInfo = await this.getSpacification();
@@ -401,27 +395,28 @@ export default {
         userId: getUserId(),
         goodsId: this.goodsDetail.info.id,
         number: goodsInfo.number,
-        productId: goodsInfo.product.id,
+        productId: goodsInfo.product.id
       };
 
       const res = await addShopCarApi(data);
       if (res.errno === 0) {
         uni.showToast({
-          title: "添加成功",
-          icon: "none",
+          title: '添加成功',
+          icon: 'none'
         });
         this.showSpecification = false;
         this.getCarShopNumber();
       } else {
         uni.showToast({
-          title: "购物车添加失败",
-          icon: "none",
+          title: '购物车添加失败',
+          icon: 'none'
         });
       }
     },
     // 立即购买
     async fastBuy(selectInfo) {
-      this.btnStatus = "立即购买";
+      this.checkCommentStatus();
+      this.btnStatus = '立即购买';
       let goodsInfo = null;
       if (!selectInfo || !this.selectInfo) {
         goodsInfo = await this.getSpacification();
@@ -436,11 +431,11 @@ export default {
         status: 0,
         ...this.goodsDetail,
         selectedProduct: goodsInfo,
-        brandId: this.goodsDetail.brand.id,
+        brandId: this.goodsDetail.brand && this.goodsDetail.brand.id
       });
 
       uni.navigateTo({
-        url: "/pages/pre-order/pre-order",
+        url: '/pages/pre-order/pre-order'
       });
     },
 
@@ -448,15 +443,15 @@ export default {
     getSpacification() {
       if (!this.userId) {
         uni.showModal({
-          title: "提示",
-          content: "您还未登录，请先登录",
+          title: '提示',
+          content: '您还未登录，请先登录',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login?to=" + this.redirect,
+                url: '/pages/login/login?to=' + this.redirect
               });
             }
-          },
+          }
         });
 
         return;
@@ -465,7 +460,7 @@ export default {
         if (this.showSpecification) {
           const goodsInfo = this.$refs.specificationRef.getVal();
           if (goodsInfo.number > goodsInfo.product.number) {
-            this.$showToast("该货品库存为" + goodsInfo.product.number);
+            this.$showToast('该货品库存为' + goodsInfo.product.number);
             reject();
           }
           resolve(goodsInfo);
@@ -489,7 +484,7 @@ export default {
       const res = await goodsListApi({
         page: 1,
         size: 6,
-        brandId: id,
+        brandId: id
       });
 
       if (res.errno === 0) {
@@ -498,7 +493,7 @@ export default {
       } else {
         uni.showLoading({
           title: res.errmsg,
-          icon: "none",
+          icon: 'none'
         });
       }
     },
@@ -507,15 +502,15 @@ export default {
     async handleCollect() {
       if (!this.userId) {
         uni.showModal({
-          title: "提示",
-          content: "您还未登录，请先登录",
+          title: '提示',
+          content: '您还未登录，请先登录',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login",
+                url: '/pages/login/login'
               });
             }
-          },
+          }
         });
 
         return;
@@ -526,31 +521,31 @@ export default {
       const res = await collectionApi({
         userId: getUserId(),
         type: 0,
-        valueId: this.goodsId,
+        valueId: this.goodsId
       });
 
       uni.hideLoading();
 
       if (res.errno === 0) {
         uni.showToast({
-          title: res.data.type === "add" ? "收藏成功" : "取消收藏成功",
-          duration: 2000,
+          title: res.data.type === 'add' ? '收藏成功' : '取消收藏成功',
+          duration: 2000
         });
 
         this.isCollect = !this.isCollect;
       } else {
         uni.showLoading({
-          title: "操作失败",
-          icon: "none",
+          title: '操作失败',
+          icon: 'none'
         });
       }
     },
 
     handleKefu() {
       uni.showLoading({
-        title: "暂未开放",
-        icon: "none",
-        duration: 1000,
+        title: '暂未开放',
+        icon: 'none',
+        duration: 1000
       });
     },
 
@@ -559,14 +554,14 @@ export default {
       const _this = this;
       const query = uni.createSelectorQuery().in(this);
       query
-        .select(".eval")
+        .select('.eval')
         .boundingClientRect((data) => {
           _this.evalPosition = data.top;
         })
         .exec();
 
       query
-        .select("#goods-detail")
+        .select('#goods-detail')
         .boundingClientRect((data) => {
           _this.detailPosition = data.top;
         })
@@ -583,20 +578,20 @@ export default {
         case 0:
           uni.pageScrollTo({
             scrollTop: 0,
-            duration: 200,
+            duration: 200
           });
           break;
         case 1:
           uni.pageScrollTo({
             scrollTop: _this.evalPosition,
-            duration: 200,
+            duration: 200
           });
           break;
 
         case 2:
           uni.pageScrollTo({
             scrollTop: _this.detailPosition,
-            duration: 200,
+            duration: 200
           });
           break;
       }
@@ -604,8 +599,8 @@ export default {
 
     // 点击
     handleClickMenu(item) {
-      if (item.key == "sp") {
-        this.btnStatus = "确定";
+      if (item.key == 'sp') {
+        this.btnStatus = '确定';
         this.showSpecification = true;
       }
     },
@@ -616,13 +611,13 @@ export default {
       const sps = await this.getSpacification();
       // this.showSpecification = false
       // debugger
-      if (this.btnStatus === "确定加入购物车") {
+      if (this.btnStatus === '确定加入购物车') {
         this.addShopCar(sps);
-      } else if (this.btnStatus === "立即购买") {
+      } else if (this.btnStatus === '立即购买') {
         this.fastBuy(sps);
       } else {
         this.selectInfo = sps;
-        this.selectForm.spsStr = "已选" + sps.spStr;
+        this.selectForm.spsStr = '已选' + sps.spStr;
         this.showSpecification = false;
       }
     },
@@ -635,30 +630,30 @@ export default {
 
       if (!userInfo || !this.userId) {
         uni.showModal({
-          title: "提示",
-          content: "登录后方可查看",
+          title: '提示',
+          content: '登录后方可查看',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/pages/login/login",
+                url: '/pages/login/login'
               });
             }
-          },
+          }
         });
         return;
       }
 
       if (userInfo.userLevel == 5 && !userInfo.isRegionAgent) {
         uni.showModal({
-          title: "提示",
-          content: "你还不是会员，是否去升级？",
+          title: '提示',
+          content: '你还不是会员，是否去升级？',
           success: ({ confirm }) => {
             if (confirm) {
               uni.navigateTo({
-                url: "/user/sever/userUp/partner-appay",
+                url: '/user/sever/userUp/partner-appay'
               });
             }
-          },
+          }
         });
 
         return;
@@ -670,7 +665,7 @@ export default {
         this.vipPrice = null;
       } else {
         watchVipPriceApi({
-          id: this.goodsId,
+          id: this.goodsId
         }).then(({ data }) => {
           _this.vipPrice = data;
         });
@@ -685,31 +680,47 @@ export default {
           title: _this.goodsDetail.info.name,
           desc: _this.goodsDetail.productList
             .map((item) => {
-              return item.specifications.join(",");
+              return item.specifications.join(',');
             })
-            .join(","),
+            .join(','),
 
-          link:
-            "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=" +
-            _this.goodsId,
-          imageUrl:
-            _this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl,
+          link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + _this.goodsId,
+          imageUrl: _this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl
         },
         successCb: () => {},
-        failCb: () => {},
+        failCb: () => {}
       };
 
-      this.$refs.tuanWxShareRef.share(
-        data,
-        isQuit,
-        "/pages/prod/prod?goodsId" + this.goodsId
-      );
+      this.$refs.tuanWxShareRef.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId);
     },
 
     // 打开客服
     handleChat() {
       this.$refs.tuanChatKFRef.show();
     },
+
+    // 预览图片
+    handlePreviewImg(index, imgList) {
+      uni.previewImage({
+        current: index,
+        urls: imgList,
+        indicator: 'count'
+      });
+    },
+
+    // handle
+    handleViewAllEval(data) {
+      if (data && Array.isArray(data)) {
+        this.$refs.commentListDrawerRef.show(JSON.parse(JSON.stringify(data)));
+      }
+    },
+
+    // 检查评论框状态
+    checkCommentStatus() {
+      if (this.$refs.commentListDrawerRef.commentListDrawerVisible) {
+        this.$refs.commentListDrawerRef.handleClose();
+      }
+    }
   },
 
   watch: {
@@ -723,7 +734,7 @@ export default {
       },
 
       immediate: true,
-      deep: true,
+      deep: true
     },
 
     brandOtherGoods: {
@@ -736,16 +747,14 @@ export default {
       },
 
       immediate: true,
-      deep: true,
-    },
+      deep: true
+    }
   },
 
   computed: {
     goodsInfoDetail() {
-      return this.goodsDetail.info.detail
-        ? marked(this.goodsDetail.info.detail)
-        : "";
-    },
+      return this.goodsDetail.info.detail ? marked(this.goodsDetail.info.detail) : '';
+    }
   },
 
   onPullDownRefresh() {
@@ -762,10 +771,7 @@ export default {
     if (this.detailPosition) {
       if (e.scrollTop < this.evalPosition - 60) {
         this.currentMoveTag = 0;
-      } else if (
-        e.scrollTop >= this.evalPosition - 60 &&
-        e.scrollTop < this.detailPosition - 60
-      ) {
+      } else if (e.scrollTop >= this.evalPosition - 60 && e.scrollTop < this.detailPosition - 60) {
         this.currentMoveTag = 1;
       } else if (e.scrollTop > this.detailPosition - 60) {
         this.currentMoveTag = 2;
@@ -777,7 +783,7 @@ export default {
         this.currentMoveTag = 1;
       }
     }
-  },
+  }
 };
 </script>
 
@@ -995,19 +1001,67 @@ export default {
     }
   }
 
-  .eval {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 26upx;
-    box-sizing: border-box;
+  .eval-wrapper {
     background-color: #f9f9f9;
-    margin-top: 24upx;
+    .eval {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26upx;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      margin-top: 24upx;
 
-    image {
-      width: 32upx;
-      height: 32upx;
-      object-fit: cover;
+      image {
+        width: 32upx;
+        height: 32upx;
+        object-fit: cover;
+      }
+    }
+
+    .one-eval-container {
+      padding: 26upx 26upx;
+      .user-info {
+        display: flex;
+        align-items: flex-start;
+
+        .avatar {
+          width: 70upx;
+          height: 70upx;
+          border-radius: 50%;
+          margin-right: 20upx;
+          flex-shrink: 0;
+        }
+
+        .info {
+          .nickname {
+            font-size: 28upx;
+            font-weight: 500;
+            color: #000;
+          }
+
+          .eval-time {
+            color: #ccc;
+            font-size: 24upx;
+          }
+        }
+      }
+
+      .comment-detail {
+        margin: 20upx 0;
+        color: #3e3e3e;
+
+        .pic-list {
+          margin-top: 20upx;
+
+          .img {
+            width: 160upx;
+            height: 160upx;
+            margin-right: 30upx;
+            border-radius: 10upx;
+          }
+        }
+      }
     }
   }
 
@@ -1163,7 +1217,7 @@ export default {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     width: 400upx;
     height: 1upx;

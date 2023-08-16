@@ -1,11 +1,11 @@
-import { getUserId, RuanRequest, shopRequest } from "../../utils";
+import { getUserId, RuanRequest, shopRequest } from '../../utils';
 
 /**
  * @description 查询商品详情
  * @param {*} id 商品id
  */
 export const getGoodsDetailApi = (id, userId) => {
-  return RuanRequest("/goods/detail", { id: id, userId: userId }, "get");
+  return RuanRequest('/goods/detail', { id: id, userId: userId }, 'get');
 };
 
 /**
@@ -17,7 +17,7 @@ export const getGoodsDetailApi = (id, userId) => {
  * } data
  */
 export const collectionApi = (data) => {
-  return RuanRequest("/collect/addordelete", data);
+  return RuanRequest('/collect/addordelete', data);
 };
 
 /**
@@ -26,7 +26,7 @@ export const collectionApi = (data) => {
  * @returns
  */
 export const everyLookApi = (categoryId) => {
-  return RuanRequest("/goods/related", { id: categoryId }, "get");
+  return RuanRequest('/goods/related', { id: categoryId }, 'get');
 };
 
 /**
@@ -35,11 +35,11 @@ export const everyLookApi = (categoryId) => {
  */
 export const getShopCarApi = () => {
   return RuanRequest(
-    "/cart/index",
+    '/cart/index',
     {
-      userId: getUserId(),
+      userId: getUserId()
     },
-    "get"
+    'get'
   );
 };
 
@@ -54,7 +54,7 @@ export const getShopCarApi = () => {
  * @returns
  */
 export const addShopCarApi = (data) => {
-  return RuanRequest("/cart/add", data);
+  return RuanRequest('/cart/add', data);
 };
 
 /**
@@ -62,27 +62,27 @@ export const addShopCarApi = (data) => {
  * @returns
  */
 export const getCarShopNumberApi = () => {
-  return RuanRequest("/cart/goodscount", { userId: getUserId() }, "get");
+  return RuanRequest('/cart/goodscount', { userId: getUserId() }, 'get');
 };
 
 // 提交订单
 export const submitOrderApi = (data) => {
-  return RuanRequest("/order/submit", data);
+  return RuanRequest('/order/submit', data);
 };
 
 // 快速添加购物车
 export const firstAddCar = (data) => {
-  return RuanRequest("/cart/fastadd", data);
+  return RuanRequest('/cart/fastadd', data);
 };
 
 // H5支付
 export const payOrderGoodsApi = (data) => {
-  return shopRequest("/api/syb/orderPayH5", data);
+  return shopRequest('/api/syb/orderPayH5', data);
 };
 
 // APP支付
 export const payOrderGoodsAPPApi = (data) => {
-  return shopRequest("/api/syb/getSybPaySign", data);
+  return shopRequest('/api/syb/getSybPaySign', data);
 };
 
 // export const payOrderGoodsApi = (data) => {
@@ -91,44 +91,49 @@ export const payOrderGoodsAPPApi = (data) => {
 
 //获取门店下各类目的商品销量排行榜
 export const goodsMaxSaleGoodsApi = (data) => {
-  return RuanRequest("/goods/maxSaleGoods", data, "get");
+  return RuanRequest('/goods/maxSaleGoods', data, 'get');
 };
 // 获取当前门店的商品
 export const goodsListApi = (data) => {
-  return shopRequest("/goods/list", data, "get");
+  return shopRequest('/goods/list', data, 'get');
 };
 
 // 查询材质列表
 export const getGoodsTextureListApi = (data) => {
-  return shopRequest("/goods/goodsTextureList", data, "get");
+  return shopRequest('/goods/goodsTextureList', data, 'get');
 };
 
 // 查询风格列表
 export const getStyleListApi = (data) => {
-  return shopRequest("/goods/goodsStyleList", data, "get");
+  return shopRequest('/goods/goodsStyleList', data, 'get');
 };
 
 // 查询产地列表
 export const getProductPlaceList = (data) => {
-  return shopRequest("/goods/productPlaceList", data, "get");
+  return shopRequest('/goods/productPlaceList', data, 'get');
 };
 
 // 获取搜索历史
 export const getUserSearchHistoryApi = (data) => {
-  return shopRequest("/search/index", data, "get");
+  return shopRequest('/search/index', data, 'get');
 };
 
 // 清除
 export const clearSearchSearchHistoryApi = (data) => {
-  return shopRequest("/search/clearhistory", data);
+  return shopRequest('/search/clearhistory', data);
 };
 
 // 查看会员价
 export const watchVipPriceApi = (data) => {
-  return shopRequest("/goods/getGoodsVipPrice", data, "get");
+  return shopRequest('/goods/getGoodsVipPrice', data, 'get');
 };
 
 // 查询当前可用优惠劵
 export const getCanUseCouponListApi = (data) => {
-  return shopRequest("/coupon/selectlist", data, "get");
+  return shopRequest('/coupon/selectlist', data, 'get');
+};
+
+// 查询商品的评价
+export const getGoodsCommentListApi = (data) => {
+  return shopRequest('/dtsCommentGoods/selectGoodsPj', data, 'get');
 };

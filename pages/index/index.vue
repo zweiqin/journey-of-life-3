@@ -4,7 +4,6 @@
 
     <view class="main-area">
       <SearchFurniture ref="searchFurnitureRef" v-show="current === 0"></SearchFurniture>
-
       <BrandFactory ref="brandFactoryRef" v-show="current === 1"></BrandFactory>
       <WholehouseCustomization :scrollTop="scrollTop" ref="wholehouseCustomizationRef" v-show="current === 2"></WholehouseCustomization>
       <IntelligentSelection ref="intelligentSelectionRef" v-show="current === 3"></IntelligentSelection>

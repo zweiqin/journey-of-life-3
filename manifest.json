@@ -181,9 +181,9 @@
         },
         "router" : {
             "mode" : "hash",
-            "base" : "/TFShop_Uni_H5/"
+            "base" : "/test_TFShop_Uni_H5/"
         },
-        // "base" : "/test_TFShop_Uni_H5/"
+        // "base" : "/TFShop_Uni_H5/"
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {

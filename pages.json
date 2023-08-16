@@ -717,6 +717,20 @@
           }
         },
         {
+          "path": "orderForm/rate",
+          "style": {
+            "navigationBarTitleText": "订单评价",
+            "usingComponents": {}
+          }
+        },
+        {
+          "path": "orderForm/additional-evaluation",
+          "style": {
+            "navigationBarTitleText": "追加评价",
+            "usingComponents": {}
+          }
+        },
+        {
           "path": "subscription/subscription",
           "style": {
             "navigationBarTitleText": "",
