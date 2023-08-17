@@ -90,10 +90,10 @@ export default {
       this.$forceUpdate();
     },
     handleNavigate(item, cb) {
-      if (['/user/sever/customer-service/customer-service', '/user/chat/chat'].includes(item.url)) {
-        this.$refs.tuanChatKFRef.show();
-        return;
-      }
+      // if (['/user/sever/customer-service/customer-service', '/user/sever/chat/chat'].includes(item.url)) {
+      //   this.$refs.tuanChatKFRef.show();
+      //   return;
+      // }
       if (item.type === 'external') {
         this.go('/user/view?target=' + item.url);
         return;

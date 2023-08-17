@@ -1,6 +1,28 @@
 <template>
 	<view class="orders-container">
 
+		<view class="navs">
+			<view style="font-weight: bold;">商城：</view>
+			<view
+				v-for="item in orderTypesMall" :key="item.value" class="nav-item"
+				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 0 }"
+				@click="handleSwitchStatus(item.value, 0)"
+			>
+				{{ item.label }}
+			</view>
+		</view>
+
+		<view class="navs">
+			<view style="font-weight: bold;">本地生活：</view>
+			<view
+				v-for="item in orderTypesStore" :key="item.value" class="nav-item"
+				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 1 }"
+				@click="handleSwitchStatus(item.value, 1)"
+			>
+				{{ item.label }}
+			</view>
+		</view>
+
 		<view v-if="orderList && orderList.length" class="order-list-wrapper">
 			<view v-for="item in orderList" :key="item.id" class="goods-pane">
 				<view class="order-no-status">
@@ -10,7 +32,7 @@
 
 				<view class="goods-list">
 					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
-						<image class="goods-img" :src="goods.picUrl" mode="" />
+						<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
 
 						<view class="info">
 							<view class="name">{{ goods.goodsName }}</view>
@@ -39,8 +61,7 @@
 							<button
 								:style="{
 									background: '#FFC117'
-								}" class="uni-btn"
-								@click="handleOpOrder(item)"
+								}" class="uni-btn" @click="handleOpOrder(item)"
 							>
 								发送
 							</button>
@@ -59,13 +80,13 @@
 <script>
 import {
 	getOrderListApi
-} from '../../../api/order'
-import { getUserId } from '../../../utils'
+} from '../../../../api/order'
+import { getUserId } from '../../../../utils'
 export default {
 	name: 'OrderList',
 	data() {
 		return {
-			orderTypes: [
+			orderTypesMall: [
 				{
 					label: '全部',
 					value: 0,
@@ -92,7 +113,30 @@ export default {
 					key: 'awaitEvaluate'
 				}
 			],
+			orderTypesStore: [
+				{
+					label: '待付款',
+					value: 8
+				},
+				{
+					label: '已付款',
+					value: 5
+				},
+				{
+					label: '已核销',
+					value: 6
+				},
+				{
+					label: '已过期',
+					value: 7
+				},
+				{
+					label: '已取消',
+					value: 9
+				}
+			],
 			currentStatus: 0,
+			currentType: 0,
 			query: {
 				page: 1,
 				size: 10
@@ -116,6 +160,7 @@ export default {
 			getOrderListApi({
 				userId: getUserId(),
 				showType: this.currentStatus,
+				orderType: this.currentType,
 				...this.query
 			}).then(({ data }) => {
 				if (loadMore) {
@@ -126,9 +171,17 @@ export default {
 				this.totalPages = data.totalPages
 				this.loadingStatus = 'hidden'
 				uni.hideLoading()
-
 				console.log(data)
 			})
+		},
+
+		// 切换状态
+		handleSwitchStatus(status, type) {
+			this.currentStatus = status
+			this.currentType = type
+			this.query.page = 1
+			this.query.size = 20
+			this.getOrderList()
 		},
 
 		// 点击操作按钮
@@ -160,18 +213,20 @@ export default {
 	color: #3d3d3d;
 	// padding: 60upx 0;
 
-	.header {
+	.navs {
 		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		color: #000;
+		justify-content: space-between;
+		margin: 34upx 0;
+		padding-bottom: 20upx;
 		padding: 0 32upx;
 		box-sizing: border-box;
 
-		h2 {
-			font-weight: normal;
-			font-size: 32upx;
-			margin-top: -8upx;
+		.nav-item {
+			transition: all 350ms;
+
+			&.nav-item-active {
+				color: #ff8f1f;
+			}
 		}
 	}
 
@@ -285,14 +340,14 @@ export default {
 			}
 		}
 
-    .uni-btn {
-      border: 1upx solid #3d3d3d;
-      padding: 0 28upx;
-      color: #3d3d3d;
-      line-height: 2.5;
-      font-size: 28upx;
-      margin-left: 30upx;
-    }
+		.uni-btn {
+			border: 1upx solid #3d3d3d;
+			padding: 0 28upx;
+			color: #3d3d3d;
+			line-height: 2.5;
+			font-size: 28upx;
+			margin-left: 30upx;
+		}
 	}
 }
 </style>

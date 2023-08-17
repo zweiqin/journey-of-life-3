@@ -29,15 +29,15 @@
         />
       </view>
 
-      <image
+      <!-- <image
         @click="handleChat"
         class="message-icon"
         src="../../../../static/images/new-index/message.png"
         mode=""
-      />
+      /> -->
 
-      <!-- <image @click="go('/user/sever/customer-service/customer-service')" class="message-icon"
-        src="../../../../static/images/new-index/message.png" mode="" /> -->
+      <image @click="go('/user/sever/customer-service/customer-service')" class="message-icon"
+        src="../../../../static/images/new-index/message.png" mode="" />
     </view>
 
     <!-- #ifdef H5 -->

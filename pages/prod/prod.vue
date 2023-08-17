@@ -223,11 +223,8 @@
           <view class="number" v-if="shopCarNumber">{{ shopCarNumber }}</view>
         </view>
 
-        <!-- <view
-          class="item"
-          @click="go('/user/sever/customer-service/customer-service')"
-        > -->
-        <view class="item" @click="handleChat">
+        <!-- <view class="item" @click="handleChat"> -->
+        <view class="item" @click="go('/user/sever/customer-service/customer-service')">
           <image src="../../static/images/detail/kefu.png" mode="" />
           <text>客服</text>
         </view>

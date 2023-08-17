@@ -884,6 +884,12 @@
             "navigationBarTitleText": "我的推广"
           }
         },
+				{
+					"path": "sever/service-center/service-center",
+					"style": {
+						"navigationBarTitleText": "客服中心"
+					}
+				},
         {
           "path": "sever/customer-service/customer-service",
           "style": {
@@ -903,13 +909,13 @@
           }
         },
         {
-          "path": "chat/chat",
+          "path": "sever/chat/chat",
           "style": {
             "navigationBarTitleText": "消息"
           }
         },
         {
-          "path": "chat/chat-detail"
+          "path": "sever/chat/chat-detail"
         },
         {
           "path": "sever/microstore/m-microstore",

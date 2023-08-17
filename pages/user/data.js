@@ -209,7 +209,7 @@ export const myServe = [
   {
     name: '联系客服',
     icon: require('../../static/images/new-user/serve/chat.png'),
-    url: '/user/sever/customer-service/customer-service'
+    url: '/user/sever/service-center/service-center'
   },
   {
     name: '师傅端',
