@@ -28,7 +28,6 @@ import {
 } from 'vuex'
 export default {
 	name: 'PersonList',
-	components: {},
 	data() {
 		return {}
 	},

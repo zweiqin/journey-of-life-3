@@ -52,7 +52,7 @@
 				style="max-height: 100%;padding: 94upx 38upx 142upx;overflow-y: auto;box-sizing: border-box;"
 			>
 				<view style="font-size: 38upx;">{{ questionSelect.name }}</view>
-				<view style="margin-top: 50upx;color: #aaaeae;">{{ answer.describe }}</view>
+				<view style="margin-top: 50upx;color: #aaaeae;">{{ answer.describe || '暂无描述~' }}</view>
 				<view v-if="answer.picUrl" style="margin-top: 50upx;text-align: center;">
 					<Avatar :width="192" :height="192" radius="10upx" :src="common.seamingImgUrl(answer.picUrl)"></Avatar>
 				</view>
@@ -126,7 +126,7 @@ export default {
 			getCustomerSelectAnswerApi({ categoryId: this.questionSelect.id })
 				.then((res) => {
 					uni.hideLoading()
-					this.answer = res.data
+					this.answer = res.data || {}
 					this.isShowAnswerPopup = true
 				})
 				.catch((e) => {
@@ -139,13 +139,11 @@ export default {
 					this.statisticsSelect = type
 					getCustomerSelectAnswerApi({ categoryId: this.questionSelect.id })
 						.then((res) => {
-							this.answer = res.data
+							this.answer = res.data || {}
 						})
 				})
 		}
-	},
-
-	onReachBottom() { }
+	}
 }
 </script>
 

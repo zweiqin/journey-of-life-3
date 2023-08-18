@@ -5,7 +5,7 @@
 			<view class="kefu-conatiner">
 				<image class="back-icon" src="../../../static/images/store/chevron-states.png" mode="" @click="handleBack" />
 				<!-- <image class="avatar" src="/static/logo.png" mode="" /> -->
-				<image class="avatar" :src="avatar" mode="" />
+				<image class="avatar" :src="common.seamingImgUrl(avatar)" mode="" />
 				<text class="kefu-name">{{ name }}</text>
 			</view>
 		</view>
