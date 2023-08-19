@@ -69,7 +69,7 @@
     <!-- <PopupInformation popup-type="activity" :imgUrl="url"
 			@click="go('/community-center/vip-center/vip-detail?type=2')">
 		</PopupInformation> -->
-    <PopupInformation
+    <!-- <PopupInformation
       @close="handleShowBindMobilePopup"
       ref="popupInformationRef"
       v-if="$store.getters.popupImage"
@@ -77,7 +77,7 @@
       :imgUrl="$store.getters.popupImage"
       @click="handleToActiveDetail"
     >
-    </PopupInformation>
+    </PopupInformation> -->
 
     <!-- #ifdef APP -->
     <!-- 检查更新 -->
@@ -149,11 +149,11 @@ export default {
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
 
-    if (!app.globalData.isShowCommunityPopup) {
-      setTimeout(() => {
-        this.$store.getters.popupImage && this.$refs.popupInformationRef.show();
-      }, 500);
-    }
+    // if (!app.globalData.isShowCommunityPopup) {
+    //   setTimeout(() => {
+    //     this.$store.getters.popupImage && this.$refs.popupInformationRef.show();
+    //   }, 500);
+    // }
 
     this.$nextTick(() => {
       this.$refs.vipPackageRef.getDZPersonalizationConfig();
