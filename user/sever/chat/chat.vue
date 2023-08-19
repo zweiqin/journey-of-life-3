@@ -40,8 +40,6 @@ export default {
 	computed: {
 		...mapGetters([ 'chatListData' ])
 	},
-	onLoad() {
-	},
 	onShow() {
 		this.$store.getters.wsHandle.onMessage(this.onMessage)
 		this.$store.dispatch('customerService/joinCustomerServiceChat', {

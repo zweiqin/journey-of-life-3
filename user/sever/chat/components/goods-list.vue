@@ -60,14 +60,12 @@ import {
 } from '../../../../api/cart'
 import { getUserId } from '../../../../utils'
 export default {
-	components: {},
 	data() {
 		return {
 			shopCarInfo: { brandCartgoods: [] },
 			currentTab: 0
 		}
 	},
-	computed: {},
 	created() {
 		this.getShopList()
 	},
