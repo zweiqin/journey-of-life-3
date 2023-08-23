@@ -41,23 +41,29 @@ export const shequOrderMenus = [
     numberKey: 'WAIT_PAY'
   },
   {
-    name: '待接单',
-    icon: require('../../static/images/new-user/orders/await-jie.png'),
-    url: '/community-center/order',
-    numberKey: 'WAIT_ACCEPT'
-  },
-  {
-    name: '已分配',
-    icon: require('../../static/images/new-user/orders/await-fen.png'),
-    url: '/community-center/order',
-    numberKey: 'ALREADY_DISTRIBUTION'
-  },
-  {
-    name: '配送中',
+    name: '服务中',
     icon: require('../../static/images/new-user/orders/await-fa.png'),
     url: '/community-center/order',
     numberKey: 'DISTRIBUTION'
   },
+  {
+    name: '已完成',
+    icon: require('../../static/images/new-user/orders/await-jie.png'),
+    url: '/community-center/order',
+    numberKey: ''
+  },
+  {
+    name: '待评价',
+    icon: require('../../static/images/new-user/orders/await-fen.png'),
+    url: '/community-center/order',
+    numberKey: '',
+    navigate() {
+      uni.navigateTo({
+        url: '/community-center/comment-order/comment-order'
+      });
+    }
+  },
+
   {
     name: '所有订单',
     icon: require('../../static/images/new-user/orders/all.png'),

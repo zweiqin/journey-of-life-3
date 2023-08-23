@@ -3,8 +3,12 @@
   <view class="order-status">
     <view class="top">
       <view class="title-list">
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-          class="return" @click="handleToOrderList" />
+        <img
+          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+          alt=""
+          class="return"
+          @click="handleToOrderList"
+        />
         <view class="title">订单状态</view>
       </view>
       <view class="mid">
@@ -20,7 +24,7 @@
                 <view class="number-name">订单编号</view>
                 <view class="type-name">服务类型</view>
                 <view class="time-name">下单时间</view>
-                <view class="type-name" style="margin-top: 30upx;">服务码</view>
+                <view class="type-name" style="margin-top: 30upx">服务码</view>
               </view>
               <view class="right-info">
                 <view class="number-list">
@@ -29,7 +33,7 @@
                 </view>
                 <view class="service-name">{{ this.dictName }}</view>
                 <view class="time">{{ this.createTime }}</view>
-                <view style="margin-top: 30upx;" class="time">{{ this.serverCode || '无' }}</view>
+                <view style="margin-top: 30upx" class="time">{{ this.serverCode || '无' }}</view>
               </view>
             </view>
           </view>
@@ -39,8 +43,7 @@
     <view class="main">
       <view class="main-mid">
         <view class="to-do">服务待完成</view>
-        <view class="explain">本订单由商家在团蜂社区平台下单，由团蜂社区平台的师傅为您
-          提供服务</view>
+        <view class="explain">本订单由商家在团蜂社区平台下单，由团蜂社区平台的师傅为您 提供服务</view>
         <view class="line"></view>
         <view class="service-info">
           <view class="info-left">
@@ -82,16 +85,14 @@
         <view class="name-list">晒图</view>
         <view class="upload-pane">
           <view style="display: flex; flex-wrap: wrap">
-            <view v-for="img in images" :key="img" style="
-                position: relative;
-                width: 160upx;
-                height: 160upx;
-                margin-right: 20upx;
-                margin-bottom: 20upx;
-              ">
+            <view v-for="img in images" :key="img" style="position: relative; width: 160upx; height: 160upx; margin-right: 20upx; margin-bottom: 20upx">
               <img :src="img" alt="" class="img1" />
-              <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-                alt="" class="img2" @click="removeBackground(img)" />
+              <img
+                src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
+                alt=""
+                class="img2"
+                @click="removeBackground(img)"
+              />
             </view>
           </view>
           <view @click="chooseImg" class="upload" v-if="!imgUrl" style="margin-right: 6upx">+</view>
@@ -99,16 +100,14 @@
         </view>
         <view class="stow-list">
           <view class="stow">收起</view>
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/95a2o8c81mnryjijqnib.png" alt=""
-            class="img" />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/95a2o8c81mnryjijqnib.png" alt="" class="img" />
         </view>
       </view>
     </view>
     <view class="foot" v-if="this.a == 6">
       <view class="foot-list">
         <view class="ask">
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/exm117nexx3g3c0v2du5.png" alt=""
-            class="img" />
+          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/exm117nexx3g3c0v2du5.png" alt="" class="img" />
           <view class="name">在线咨询</view>
         </view>
         <view class="next-order">再下一单</view>
@@ -119,31 +118,31 @@
 </template>
 
 <script>
-import star from "../components/rate";
-import { getUserId } from "../utils";
-import { USER_TOKEN } from "../constant";
-import { detailsMdApi } from "../api/community-center";
+import star from '../components/rate';
+import { getUserId } from '../utils';
+import { USER_TOKEN } from '../constant';
+import { detailsMdApi } from '../api/community-center';
 export default {
-  name: "Order-status",
+  name: 'Order-status',
   props: {
-    imgUrl: String,
+    imgUrl: String
   },
   components: { star },
   data() {
     return {
-      evaluate: "",
+      evaluate: '',
       images: [],
       info: [],
-      status: "",
-      dictName: "",
+      status: '',
+      dictName: '',
       abc: 3,
-      statusName: "",
-      createTime: "",
-      updateTime: "",
-      a: "",
-      serverMasterName: "",
-      serverMasterTel: "",
-      orderNo: "",
+      statusName: '',
+      createTime: '',
+      updateTime: '',
+      a: '',
+      serverMasterName: '',
+      serverMasterTel: '',
+      orderNo: '',
       serverCode: ''
     };
   },
@@ -159,41 +158,45 @@ export default {
       uni.setClipboardData({
         data: value,
         success: function () {
-          console.log("success", value);
-        },
+          console.log('success', value);
+        }
       });
     },
 
     publish() {
-      uni.navigateTo({ url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}&evaluate=${this.evaluate}&dictName=${this.dictName}` });
+      uni.navigateTo({
+        url: `/community-center/eva?star=${this.abc}&images=${encodeURIComponent(JSON.stringify(this.images))}&evaluate=${this.evaluate}&dictName=${
+          this.dictName
+        }`
+      });
     },
 
     contact(phone) {
-      console.log("传入的电话", phone);
+      console.log('传入的电话', phone);
       const res = uni.getSystemInfoSync();
       //ios
-      if (res.platform == "ios") {
+      if (res.platform == 'ios') {
         uni.makePhoneCall({
           phoneNumber: phone,
           success() {
-            console.log("拨打成功");
+            console.log('拨打成功');
           },
           fail() {
-            console.log("拨打失败");
-          },
+            console.log('拨打失败');
+          }
         });
       } else {
         //安卓
         uni.showActionSheet({
-          itemList: [phone, "呼叫"],
+          itemList: [phone, '呼叫'],
           success: function (res) {
             console.log(res);
             if (res.tapIndex == 1) {
               uni.makePhoneCall({
-                phoneNumber: phone,
+                phoneNumber: phone
               });
             }
-          },
+          }
         });
       }
     },
@@ -203,102 +206,110 @@ export default {
       uni.chooseImage({
         success: (chooseImageRes) => {
           uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
             filePath: chooseImageRes.tempFiles[0].path,
-            name: "file",
+            name: 'file',
             formData: {
               token: USER_TOKEN,
-              userId: getUserId(),
+              userId: getUserId()
             },
             success: (uploadFileRes) => {
               _this.images.push(JSON.parse(uploadFileRes.data).data.url);
-            },
+            }
           });
-        },
+        }
       });
     },
     removeBackground(img) {
       const _this = this;
       uni.showModal({
-        title: "提示",
-        content: "确定删除当前图片吗？",
+        title: '提示',
+        content: '确定删除当前图片吗？',
         success: function (res) {
           if (res.confirm) {
             const index = _this.images.findIndex((item) => item === img);
             _this.images.splice(index, 1);
           }
-        },
+        }
       });
     },
     //订单详情
     async detailsMd() {
-      const res = await detailsMdApi({
-        orderNo: this.orderNo,
-      });
-      this.info = res.data;
-      console.log("info", this.info);
+      try {
+        const res = await detailsMdApi({
+          orderNo: this.orderNo
+        });
+        this.info = res.data;
+        console.log('info', this.info);
 
-      this.status = this.info[0].status;
-      console.log("status", this.status);
+        this.status = this.info[0].status;
+        console.log('status', this.status);
 
-      this.serverCode = this.info[0].serverCode
+        this.serverCode = this.info[0].serverCode;
 
-      this.serverMasterName = this.info[0].serverMasterName;
-      console.log("师傅名字", this.serverMasterName);
+        this.serverMasterName = this.info[0].serverMasterName;
+        console.log('师傅名字', this.serverMasterName);
 
-      this.serverMasterTel = this.info[0].serverMasterTel;
-      console.log("电话", this.serverMasterTel);
-      // this.serverMasterTel = "123456789";
+        this.serverMasterTel = this.info[0].serverMasterTel;
+        console.log('电话', this.serverMasterTel);
+        // this.serverMasterTel = "123456789";
 
-      this.a = this.status;
-      console.log("a", this.a);
-      if (this.a == 0) {
-        this.statusName = "待支付";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 1) {
-        this.statusName = "待接单";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 2) {
-        this.statusName = "待报价";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 3) {
-        this.statusName = "待分配";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 4) {
-        this.statusName = "已分配";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 5) {
-        this.statusName = "待到场";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 31) {
-        this.statusName = "服务中";
-      } else if (this.a == 6) {
-        this.statusName = "已完成";
-        console.log("订单状态", this.statusName);
-      } else if (this.a == 7) {
-        this.statusName = "已取消";
-        console.log("订单状态", this.statusName);
-      } else {
-        this.statusName = "异常";
-        console.log("订单状态", this.statusName);
+        this.a = this.status;
+        console.log('a', this.a);
+        if (this.a == 0) {
+          this.statusName = '待支付';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 1) {
+          this.statusName = '待接单';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 2) {
+          this.statusName = '待报价';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 3) {
+          this.statusName = '待分配';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 4) {
+          this.statusName = '已分配';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 5) {
+          this.statusName = '待到场';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 31) {
+          this.statusName = '服务中';
+        } else if (this.a == 6) {
+          this.statusName = '已完成';
+          console.log('订单状态', this.statusName);
+        } else if (this.a == 7) {
+          this.statusName = '已取消';
+          console.log('订单状态', this.statusName);
+        } else {
+          this.statusName = '异常';
+          console.log('订单状态', this.statusName);
+        }
+
+        this.dictName = this.info[0].dictName;
+        console.log('dictName', this.dictName);
+        this.createTime = this.info[0].createTime;
+        console.log('createTime', this.createTime);
+        this.updateTime = this.info[0].updateTime;
+        console.log('updateTime', this.updateTime);
+      } catch (error) {
+      } finally {
+        uni.stopPullDownRefresh();
       }
-
-      this.dictName = this.info[0].dictName;
-      console.log("dictName", this.dictName);
-      this.createTime = this.info[0].createTime;
-      console.log("createTime", this.createTime);
-      this.updateTime = this.info[0].updateTime;
-      console.log("updateTime", this.updateTime);
-    },
+    }
   },
-  created() { },
+  created() {},
   onLoad(options) {
     console.log(options);
     this.orderNo = options.orderNo;
 
-    console.log("orderNo", this.orderNo);
+    console.log('orderNo', this.orderNo);
     this.detailsMd();
   },
+  onPullDownRefresh() {
+    this.detailsMd();
+  }
 };
 </script>
 
@@ -306,9 +317,7 @@ export default {
 .order-status {
   padding-bottom: 172upx;
   width: 100%;
-  background: linear-gradient(180deg,
-      rgba(245, 190, 134, 0.42) 2%,
-      rgba(246, 190, 134, 0) 103%);
+  background: linear-gradient(180deg, rgba(245, 190, 134, 0.42) 2%, rgba(246, 190, 134, 0) 103%);
 
   .top {
     .title-list {
@@ -383,7 +392,8 @@ export default {
                 padding-bottom: 32upx;
               }
 
-              .time-name {}
+              .time-name {
+              }
             }
 
             .right-info {
@@ -397,7 +407,8 @@ export default {
                 justify-content: space-between;
                 padding-bottom: 32upx;
 
-                .number {}
+                .number {
+                }
 
                 .copy {
                   color: #e95d20;
@@ -408,7 +419,8 @@ export default {
                 padding-bottom: 32upx;
               }
 
-              .time {}
+              .time {
+              }
             }
           }
         }
@@ -471,7 +483,8 @@ export default {
             display: flex;
             justify-content: space-between;
 
-            .number {}
+            .number {
+            }
 
             .copy {
               color: #e95d20;
@@ -487,7 +500,8 @@ export default {
             display: flex;
             justify-content: space-between;
 
-            .worker-name {}
+            .worker-name {
+            }
 
             .contact {
               color: #e95d20;
@@ -689,4 +703,5 @@ export default {
       }
     }
   }
-}</style>
+}
+</style>

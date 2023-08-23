@@ -32,6 +32,7 @@ export {
   timestampToTime,
   throttle,
   isInWx,
+  isVideoSource
 } from "./DWHutils";
 export { formatTime } from "./util";
 export { tradeOrderNo, payFn } from "./pay";

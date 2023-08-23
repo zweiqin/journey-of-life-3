@@ -409,7 +409,14 @@
         {
           "path": "order-status",
           "style": {
-            "navigationBarTitleText": "订单状态"
+            "navigationBarTitleText": "订单状态",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "comment-list",
+          "style": {
+            "navigationBarTitleText": "全部评论"
           }
         },
         {
@@ -434,6 +441,25 @@
           "path": "article-detial",
           "style": {
             "navigationBarTitleText": "文章详情"
+          }
+        },
+        {
+          "path": "comment-order/comment-order",
+          "style": {
+            "navigationBarTitleText": "订单评论",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "comment-order/rate",
+          "style": {
+            "navigationBarTitleText": "订单评论"
+          }
+        },
+        {
+          "path": "comment-order/append-comment",
+          "style": {
+            "navigationBarTitleText": "追加评论"
           }
         }
       ]
@@ -884,12 +910,12 @@
             "navigationBarTitleText": "我的推广"
           }
         },
-				{
-					"path": "sever/service-center/service-center",
-					"style": {
-						"navigationBarTitleText": "客服中心"
-					}
-				},
+        {
+          "path": "sever/service-center/service-center",
+          "style": {
+            "navigationBarTitleText": "客服中心"
+          }
+        },
         {
           "path": "sever/customer-service/customer-service",
           "style": {

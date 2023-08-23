@@ -101,8 +101,8 @@ const service = (base_url, hideLoading) => {
 
 const endService = (base_url) => {
   return function (config) {
-    const { url, data = {}, method = 'post', cb, header } = config;
-    uni.showLoading();
+    const { url, data = {}, method = 'post', cb, header, loading } = config;
+    loading && uni.showLoading();
     return new Promise((resolve, reject) => [
       uni.request({
         url: base_url + url,
@@ -116,10 +116,10 @@ const endService = (base_url) => {
           } else {
             reject(data.msg);
           }
-          uni.hideLoading();
+          loading && uni.hideLoading();
         },
         fail: (error) => {
-          uni.hideLoading();
+          loading && uni.hideLoading();
           reject(error);
         },
 
