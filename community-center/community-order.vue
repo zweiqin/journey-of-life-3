@@ -414,7 +414,8 @@ export default {
           isVipSetmral: 0,
           deliveryType: 4,
           price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
-          actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
+          actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || '',
+          serverTypeId: this.currentServeInfo.id
         };
 
         // 判断是否是师傅现场下单

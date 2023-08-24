@@ -4,7 +4,7 @@
     :class="{ fixed: fixed && scrollTop > fiexdHeight }"
     :style="{
       height: height + 'rpx',
-      background: bacokground,
+      background: background,
       padding: padding,
       color: scrollTop > fiexdHeight ? fixedColor : color
     }"
@@ -33,7 +33,7 @@ export default {
       type: Number,
       default: 100
     },
-    bacokground: {
+    background: {
       type: String
     },
     padding: {
@@ -43,7 +43,7 @@ export default {
 
     title: {
       type: String,
-      required: true
+      default: ''
     },
 
     titleColor: {
@@ -103,6 +103,7 @@ export default {
   .right {
     width: 120upx;
     height: 100%;
+    flex-shrink: 0;
   }
 
   .left {

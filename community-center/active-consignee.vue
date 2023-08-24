@@ -289,6 +289,10 @@ export default {
         data.spotOrder = 1;
       }
 
+      if(data.dictName === '空调清洗'){
+        data.serverTypeId = 313
+      }
+
       const createOrderRes = await createRepairOrderApi(data);
       uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
       if (createOrderRes.statusCode == 20000) {

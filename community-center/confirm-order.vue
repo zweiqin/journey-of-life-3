@@ -57,9 +57,7 @@
 
 
 <script>
-import { getServiceOrderApi } from "../api/community-center";
 import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from "../api/community-center";
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from "../api/goods";
 import { getUserId, throttle } from "../utils";
 
 export default {
@@ -91,42 +89,11 @@ export default {
 			});
 		},
 
-		// handleBack() {
-		//   uni.switchTab({ url: "/community-center/customer-information" });
-		// },
-
 		handleToOrderStatus() {
 			uni.navigateTo({
 				url: `/community-center/order-status?orderNo=${this.orderNo}`,
 			});
 		},
-
-		//新建社区订单
-		// async getServiceOrder() {
-		// 	const res = await getServiceOrderApi({
-		// 		isVipSetmeal: 0,
-		// 		userId: getUserId(),
-		// 		orderType: this.orderType,
-		// 		pricingType: this.pricingType,
-		// 		paymentMethod: this.paymentMethod,
-		// 		deliveryType: this.deliveryType,
-		// 		price: this.oughtPrice,
-		// 		actualPrice: this.oughtPrice,
-		// 		consigneeName: this.consigneeName,
-		// 		consigneeMobile: this.consigneeMobile,
-		// 		consigneeAddress: this.consigneeAddress,
-		// 		consigneeAddressDetail: this.consigneeAddressDetail,
-		// 		remarks: this.content,
-		// 		installDate: this.installDate,
-		// 		dictName: this.name1,
-		// 		orderGoodsList: this.imgList
-
-
-
-		// 	});
-		// 	this.data = res.data;
-		// 	console.log("订单号", this.data);
-		// },
 
 		//订单支付
 		async getServiceOrderPay() {

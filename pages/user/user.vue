@@ -94,6 +94,11 @@ export default {
       //   this.$refs.tuanChatKFRef.show();
       //   return;
       // }
+      if (item.navigate) {
+        item.navigate();
+        return;
+      }
+
       if (item.type === 'external') {
         this.go('/user/view?target=' + item.url);
         return;

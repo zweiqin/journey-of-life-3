@@ -4,12 +4,8 @@
       <view class="name">{{ serverInfoName }}</view>
       <view class="row">
         <view class="logo">￥</view>
-        <view :class="{ del: !!preferentialPrice }" class="number">{{
-          serverPrice
-        }}</view>
-        <view v-if="preferentialPrice" style="font-size: 40upx">{{
-          preferentialPrice
-        }}</view>
+        <view :class="{ del: !!preferentialPrice && preferentialPrice !== 'null' && preferentialPrice !== '0' }" class="number">{{ serverPrice }}</view>
+        <view v-if="preferentialPrice && preferentialPrice !== 'null' && preferentialPrice !== '0'" style="font-size: 40upx">{{ preferentialPrice }}</view>
         <view class="slash">/</view>
         <view class="unit">{{ serverUnit }}</view>
         <view class="qi"></view>
@@ -19,30 +15,30 @@
 </template>
 
 <script>
-import { number } from "echarts";
+import { number } from 'echarts';
 export default {
-  name: "Item",
+  name: 'Item',
   props: {
     id: Number,
     serverInfoName: String,
     serverPrice: Number,
     serverUnit: String,
-    preferentialPrice: String,
+    preferentialPrice: String
   },
   data() {
     return {};
   },
   methods: {
     handleClickItem() {
-      this.$emit("choose", {
+      this.$emit('choose', {
         id: this.id,
         serverInfoName: this.serverInfoName,
         serverPrice: this.serverPrice,
-        serverUnit: this.serverUnit,
+        serverUnit: this.serverUnit
       });
-    },
+    }
   },
-  created() {},
+  created() {}
 };
 </script>
 

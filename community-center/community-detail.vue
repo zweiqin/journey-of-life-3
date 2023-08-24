@@ -81,7 +81,7 @@
               :server-price="item.serverPrice"
               :server-unit="item.serverUnit"
               :is-artificial="item.isArtificial"
-              :preferential-price="item.preferentialPrice"
+              :preferential-price="item.preferentialPrice + ''"
               @choose="switchTab(item)"
             ></Item>
           </view>
@@ -144,8 +144,8 @@
       <!-- 收费标准,服务内容,用户评价 -->
       <view class="top-list">
         <view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
-        <view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
         <view class="item" :class="{ active: currentMoveTab === 2 }" @click="toJump(2)">用户评价</view>
+        <view class="item" :class="{ active: currentMoveTab === 1 }" @click="toJump(1)">服务内容</view>
       </view>
 
       <!-- 收费标准 -->
@@ -159,24 +159,10 @@
         </view>
       </view>
 
-      <!-- <view class="background">
-				<image src="../static/images/con-center/tfbg.png" mode="" class="bg" />
-				<image src="../static/images/con-center/bg-logo.png" mode="" class="bg-logo" />
-				<view class="bg-text"><text>{{ title }}</text><text>就找团蜂社区</text></view>
-				<view class="bg-image">
-				<image :src="serverUrl" mode="" class="bg-img" />
-				</view>
-				<image src="../static/images/con-center/girl.png" mode="" class="girl-img" />
-				</view> -->
-
-      <!-- <view class="mid-content">
-				<view class="mid-text">您的{{ title }}</view>
-				<view class="mid-text">我们<text>全心全意</text>解决</view>
-				</view> -->
-
-      <!-- <view class="serverContent-list" v-if="serverContent.length && serverContent.length > 1">
-				<view class="serverContent" v-for="item in serverContent" :key="item">{{ item }}</view>
-				</view> -->
+      <!-- 用户评价 -->
+      <view class="comment-list">
+        <CommentList :id="serverTypeId" :comments="commentList"></CommentList>
+      </view>
 
       <!-- 服务详情内容 -->
       <view v-if="serverInfo !== '<p><br></p>' && serverInfo !== '<p><br></p><p><br></p>'" id="detail" class="case-show">
@@ -246,16 +232,22 @@ import { splitProject } from './componts/utile';
 import { getConfigApi } from '../api/auth';
 import item from '../community-center/componts/item';
 import charge from '../community-center/componts/charge';
-import { getServiceDetailApi } from '../api/community-center';
+import { getServiceDetailApi, getServeCommentListApi } from '../api/community-center';
 import { changeServiceUserBindingApi } from '../api/user';
 import { moreService } from '../pages/community-center/config';
 import { USER_TOKEN, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
 import { getUserId } from '../utils';
 import { getAdressDetailByLngLat } from '../utils/DWHutils';
 import { getIsOpenServerAreaApi } from '../api/community-center';
+import CommentList from './components/CommentList.vue';
 // #ifdef H5
 import share from '../utils/wxshare';
 // #endif
+
+/**
+ * 这个页面我tm，好恶心
+ * 心累啊，艹
+ */
 
 export default {
   name: 'CommunityDetail',
@@ -264,7 +256,8 @@ export default {
     Charge: charge,
     UParse: uParse,
     Carousel,
-    CommunityDetailPoster
+    CommunityDetailPoster,
+    CommentList
   },
   props: {},
   data() {
@@ -301,7 +294,8 @@ export default {
       bindServiceId: null,
       userId: '',
       shareCode: '',
-      preferentialPrice: 0
+      preferentialPrice: 0,
+      commentList: []
     };
   },
 
@@ -328,6 +322,7 @@ export default {
     this.serverTypeId = options.id * 1;
     this.serverImageUrl = options.serverImageUrl;
     this.title = options.serverNameThree;
+    this.getCommentList();
     uni.setNavigationBarTitle({
       title: this.title
     });
@@ -356,6 +351,15 @@ export default {
   },
   methods: {
     splitProject,
+    // 获取评论列表
+    async getCommentList() {
+      try {
+        const commentList = await getServeCommentListApi({ serverTypeId: this.serverTypeId });
+        this.commentList = commentList;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     // 绑定
     binding(userId, cb) {
       const _this = this;
@@ -1303,6 +1307,7 @@ export default {
     width: 100%;
     box-sizing: border-box;
     border-top: 8upx solid #f7f8fa;
+    z-index: 100;
 
     .list {
       display: flex;

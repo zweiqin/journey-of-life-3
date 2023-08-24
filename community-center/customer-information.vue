@@ -468,6 +468,7 @@ export default {
         dictName: this.name1,
         orderGoodsList: this.imgList,
         pullIn: this.name1 === "空调清洗服务" ? 2 : 1,
+        
       };
 
       if (partnerCode) {

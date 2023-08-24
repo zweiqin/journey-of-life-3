@@ -56,6 +56,7 @@ export const MINI_PROGRAM_TAG = 'MINI_PROGRAM_TAG';
 export const USER_SELECT_ADDRESS = 'USER_SELECT_ADDRESS';
 
 export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload';
+export const VIDEO_TYPE = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'];
 
 export const clearAllCache = () => {
   [
