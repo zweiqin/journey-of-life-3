@@ -428,18 +428,18 @@ export default {
 				const tempData = {
 					event: '',
 					message: {
-						id: data.sendTime,
+						id: data.data.sendTime,
 						status: 'succeed',
-						type: data.msgType,
-						sendTime: data.sendTime,
-						content: data.contentText,
-						toContactId: Number(data.toUserId),
+						type: data.data.msgType,
+						sendTime: data.data.sendTime,
+						content: data.data.contentText,
+						toContactId: Number(data.data.toUserId),
 						fileSize: 0,
 						fileName: '',
 						fromUser: {
-							id: Number(data.fromUserId),
-							displayName: data.fromUserName,
-							avatar: data.fromAvatarImage
+							id: Number(data.data.fromUserId),
+							displayName: data.data.fromUserName,
+							avatar: data.data.fromAvatarImage
 						},
 						isGroup: false
 					}
