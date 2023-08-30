@@ -114,6 +114,11 @@ export const getSearchDataApi = (data) => {
   return XZLRequest('/demo/api/community/serverInfo/getSearchData', data, 'get');
 };
 
+// 新的订单详情
+export const getCommOrderDeatilApi = data => {
+  return SheQuRequest1('laoa-huozhu/api/hz/order/third/getMdOrderInfoByNo', data, 'get')
+}
+
 // 本地
 // 查询社区服务分类
 // export const getServiceSortApi = (data) => {

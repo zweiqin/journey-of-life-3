@@ -62,7 +62,7 @@
       </view>
       <view>
         <button
-          v-if="data.status <= 5"
+          v-if="data.status <= 2"
           type="primary"
           style="
             margin-right: 5px;
