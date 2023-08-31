@@ -9,7 +9,10 @@ const request = (base_url) => {
         url: base_url + url,
         data,
         method,
-        header,
+        header: {
+          ...header,
+          token: uni.getStorageSync('USER_TOKEN')
+        },
         success: (res) => {
           resolve(res.data);
         },
