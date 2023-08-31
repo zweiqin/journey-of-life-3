@@ -87,9 +87,9 @@
 					>
 					</TuiInput>
 					<TuiInput
-						v-model="FormData.cargo" label-color="grey" size="38" label="给快递员留言"
-						background-color="none"
-						placeholder="选填" clearable
+						v-model="FormData.cargo" label-color="grey" size="38" label="物品信息"
+						background-color="none" require
+						placeholder="描述物品信息" clearable
 					>
 					</TuiInput>
 				</TuiForm>
@@ -149,7 +149,7 @@ export default {
 				callBackUrl: 'https://h5.jfcmei.com/api/wx/kuaidi100/cloud/corderCb',
 				pollCallBackUrl: 'https://h5.jfcmei.com/api/wx/kuaidi100/cloud/corderTrackCb',
 				kuaidicom: '', // 选择快递公司的key
-				cargo: ' ',   // 留言
+				cargo: '',   // 留言
 				weight: ''  // 重量
 			},
 			rules,
@@ -172,7 +172,7 @@ export default {
 		},
 		getAddres(standing) {
 			uni.navigateTo({
-				url: `/pages/index/convenient-services/kuai-di/kuaiDiForm?standing=${standing}`
+				url: `/pages/user/kuai-di/kuaiDiForm?standing=${standing}`
 			})
 		},
 		getGoodsType() {
