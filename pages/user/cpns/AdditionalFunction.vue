@@ -16,15 +16,38 @@
           <text class="menu-title">找物流</text>
         </view>
 
-        <view class="menu-item"></view>
-        <view class="menu-item"></view>
+        <view class="menu-item" @click="go('/pages/user/kuai-di/index')">
+			    <image class="menu-icon" src="../../../static/images/tabbar/kuaidi.png" mode="" />
+          <text class="menu-title">寄快递</text>
+		    </view>
+        <view class="menu-item" @click="go('/pages/serviceoil/serviceoil')">
+          <image class="menu-icon" src="../../../static/images/tabbar/jiayouqi.png" mode="" />
+          <text class="menu-title">团油</text>
+        </view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-export default {};
+import { RuanRequest, shopRequest } from "@/utils";
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+    gotoTuanYou() {
+      RuanRequest('/tuanyou/getjumpurl', null, 'post').then(({ data }) => {
+					console.log(data)
+					// uni.navigateTo({
+					// 	url: '/pages/index/convenient-services/tuanyouh5?url=' + data
+					// })
+				})
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

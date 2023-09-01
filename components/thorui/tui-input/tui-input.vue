@@ -190,7 +190,7 @@
 			},
 			//输入框字体大小 rpx
 			size: {
-				type: Number,
+				type: [Number,String],
 				default: 32
 			},
 			//输入框字体颜色

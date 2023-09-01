@@ -44,7 +44,7 @@
       }
     },
     {
-      "path": "pages/index/BrandFactory/detail",
+      "path": "pages/index/brandFactory/detail",
       "style": {
         "navigationBarTitleText": "详情"
       }
@@ -211,6 +211,62 @@
     },
     {
       "path": "pages/hot/hot",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/serviceoil/serviceoil",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/serviceoil/refuel",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+	  {
+	  "path": "pages/user/kuai-di/index",
+	  "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+	    }
+	  },
+    {
+      "path": "pages/user/kuai-di/LogisticsDetails",
+      "style": {
+        "navigationBarTitleText": "物流详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/user/kuai-di/kuaiDiForm",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/user/kuai-di/DeliveryExpress",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/user/kuai-di/MyExpress",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/user/kuai-di/ExpressDelivery",
       "style": {
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false

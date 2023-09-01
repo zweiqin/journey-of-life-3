@@ -168,7 +168,7 @@
 				default: 'rgba(0,0,0,.6)'
 			},
 			maskClosable: {
-				type: Boolean,
+				type: [Boolean,String],
 				default: false
 			},
 			zIndex: {
