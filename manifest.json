@@ -171,7 +171,7 @@
             "port" : 8989,
             "proxy" : {
                 "/sf" : {
-                    "target" : "http://192.168.0.45:8790/samrtWorker",
+                    "target" : "http://192.168.0.64:8790/samrtWorker",
                     "changeOrigin" : true,
                     "pathRewrite" : {
                         "^/sf" : ""
@@ -181,9 +181,9 @@
         },
         "router" : {
             "mode" : "hash",
-            // "base" : "/test_TFShop_Uni_H5/"
             "base" : "/TFShop_Uni_H5/"
         },
+        // "base" : "/test_TFShop_Uni_H5/"
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {

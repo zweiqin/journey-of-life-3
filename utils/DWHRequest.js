@@ -131,8 +131,8 @@ const endService = (base_url) => {
   };
 };
 
-export const GyRequest = request(BASE_URL);
 export const XZLRequest = request(XZL_URL);
+export const GyRequest = request(BASE_URL);
 export const LTRequest = request(LANG_FEE_URL);
 export const DEYIRequest = request(DEYI_URL);
 export const SheQuRequest = request(SheQu_URL);

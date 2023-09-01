@@ -1,83 +1,41 @@
 <template>
   <view class="community-center-container">
     <TuanAppShim bg="#e95d20"></TuanAppShim>
-
-    <!-- 顶部搜索 -->
-    <TopHead></TopHead>
-
-    <!-- 主要menu区域 -->
-    <view class="main-menu">
-      <!-- 团蜂家具社区服务中心 -->
-      <TuanImage
-        radius="0"
-        :height="36"
-        :width="257"
-        style="margin-left: 28upx"
-        :src="require('../../static/images/con-center/new-home/top-banner.png')"
-      ></TuanImage>
-
-      <!-- 五个介绍 -->
-      <view class="icons-wrapper">
-        <view v-for="item in bannerListIcon" :key="item.name" class="item">
-          <TuanIcon :size="30" :src="item.icon"></TuanIcon>
-          <text class="name">{{ item.name }}</text>
+    <PageBar :class="{ fix: scrollTop > 300 }"></PageBar>
+    <view class="search-bar" v-show="scrollTop > 300" :class="{ fix: scrollTop > 300 }">
+      <view class="location">
+        <TuanLocation>
+          <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
+        </TuanLocation>
+        <image class="angle" src="../../static/images/new-community/home/angle.png"></image>
+      </view>
+      <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
+      <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
+    </view>
+    <view class="page-header" :style="{ background: isStart ? 'linear-gradient(180deg, #ef530e 8%, #fac894 23%, #f6f6f8 33%, #ffffff 123%)' : '#f6f6f8' }">
+      <view class="search-bar" v-show="scrollTop <= 300">
+        <view class="location">
+          <TuanLocation>
+            <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
+          </TuanLocation>
+          <image class="angle" src="../../static/images/new-community/home/angle.png"></image>
         </view>
+        <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
+        <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
       </view>
 
-      <!-- 右边的小人 -->
-      <view class="person-wrapper">
-        <TuanImage :width="104" :height="149" :src="require('../../static/images/con-center/new-home/person.png')"> </TuanImage>
-      </view>
+      <ServeMenus></ServeMenus>
 
-      <!-- 主要的menu区域 -->
-      <MainMenu></MainMenu>
+      <VipPackage :scrollTop="scrollTop"></VipPackage>
     </view>
 
-    <!-- vip -->
+    <ServeShop></ServeShop>
+    <FourSeasonsZone></FourSeasonsZone>
 
-    <!-- <view>
-			<view class="store-name">
-				<view class="item active">热销套餐</view>
-			</view>
-			<view class="vip-container">
-				<swiper indicator-dots autoplay indicator-color="#fff" indicator-active-color="#fdb96c"
-					style="height: 320upx; width: 100%;">
-					<swiper-item @click="handleToVipDetail(item.url)" v-for="(item, index) in vipBarConfig" :key="index">
-						<image class="vip-banner" :src="item.img">
-						</image>
-					</swiper-item>
-				</swiper>
-			</view>
-		</view> -->
-
-    <VipPackage ref="vipPackageRef"></VipPackage>
-
-    <!-- 社区店 -->
-    <ServiceStationPane></ServiceStationPane>
-
-    <!-- 服务项目 -->
     <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
-
-    <!-- #ifdef H5 -->
-    <!-- 经验分享 -->
-    <!-- <ArticleList></ArticleList> -->
-    <!-- #endif -->
 
     <!-- 组件支持 -->
     <tui-toast ref="toast"></tui-toast>
-
-    <!-- <PopupInformation popup-type="activity" :imgUrl="url"
-			@click="go('/community-center/vip-center/vip-detail?type=2')">
-		</PopupInformation> -->
-    <!-- <PopupInformation
-      @close="handleShowBindMobilePopup"
-      ref="popupInformationRef"
-      v-if="$store.getters.popupImage"
-      popup-type="activity"
-      :imgUrl="$store.getters.popupImage"
-      @click="handleToActiveDetail"
-    >
-    </PopupInformation> -->
 
     <!-- #ifdef APP -->
     <!-- 检查更新 -->
@@ -101,19 +59,17 @@
 </template>
 
 <script>
-import TopHead from './cpns/TopHead.vue';
-import MainMenu from './cpns/MainMenu.vue';
 import { bannerListIcon, vipBarConfig } from './config';
-import ServiceStationPane from './cpns/ServiceStationPane.vue';
-import ServerPane from './cpns/ServerPane.vue';
-import ArticleList from './cpns/Article.vue';
-import VipPackage from './cpns/VipPackage.vue';
-import PopupInformation from '../../components/popup-information/popup-information';
-import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO, USER_TOKEN } from '../../constant';
+import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
 import showModal from 'mixin/showModal';
-import { MINI_PROGRAM_TAG } from '../../constant';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
+import PageBar from './cpns/PageBar.vue';
+import ServeMenus from './cpns/ServeMenus.vue';
+import VipPackage from './cpns/VipPackage.vue';
+import ServeShop from './cpns/ServeShop.vue';
+import ServerPane from './cpns/ServerPane.vue'
+import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 
 const app = getApp();
 
@@ -122,13 +78,12 @@ export default {
     console.log(app);
   },
   components: {
-    TopHead,
-    MainMenu,
-    ServiceStationPane,
-    ArticleList,
-    PopupInformation,
-    ServerPane,
-    VipPackage
+    PageBar,
+    ServeMenus,
+    VipPackage,
+    ServeShop,
+    FourSeasonsZone,
+    ServerPane
   },
   mixins: [showModal()],
   data() {
@@ -142,21 +97,16 @@ export default {
       serverType: '',
       className: '',
       vipBarConfig: Object.freeze(vipBarConfig),
-      servePaneList: []
+      servePaneList: [],
+      scrollTop: 0,
+      isStart: false
     };
   },
   onShow() {
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
-
-    // if (!app.globalData.isShowCommunityPopup) {
-    //   setTimeout(() => {
-    //     this.$store.getters.popupImage && this.$refs.popupInformationRef.show();
-    //   }, 500);
-    // }
-
     this.$nextTick(() => {
-      this.$refs.vipPackageRef.getDZPersonalizationConfig();
+      // this.$refs.vipPackageRef.getDZPersonalizationConfig();
     });
   },
   mounted() {
@@ -186,18 +136,6 @@ export default {
   },
 
   methods: {
-    // 点击去弹窗详情
-    handleToActiveDetail() {
-      if (this.isLogin()) {
-        this.go(
-          this.$store.getters.popupImagePath ||
-            '/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png'
-        );
-      } else {
-        this.$data._isShowTuiModel = true;
-      }
-    },
-
     // 获取服务分类
     async getServiceOrder() {
       const res = await getServiceSortApi({});
@@ -265,9 +203,11 @@ export default {
   },
 
   onLoad(options) {
-    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
-    // if (!!options.miniProgram || getApp().globalData.isInMiniprogram) {
+    setTimeout(() => {
+      this.isStart = true;
+    }, 1000);
 
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
     // #ifdef H5
     const script = document.createElement('script');
     script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js';
@@ -277,228 +217,127 @@ export default {
       this.handleInitShare();
     }, 500);
     // #endif
-
     // }
+  },
+
+  onPageScroll(e) {
+    this.scrollTop = e.scrollTop;
   }
 };
 </script>
 
 <style lang="less" scoped>
+.fix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 120upx;
+  transition: height 350ms ease-out;
+  overflow: hidden;
+  background-color: #fff !important;
+  box-shadow: 0 0 10px 2px #f5f5f7;
+}
+
+@keyframes search-bar {
+  0 {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(0.9);
+  }
+}
+
 .community-center-container {
   min-height: 100vh;
-  background-color: #f8f8f8;
+  background-color: #f5f5f7;
+  padding-bottom: 100upx;
+  overflow: hidden;
+  transition: all 350ms ease-in;
 
-  .main-menu {
+  .page-header {
     position: relative;
-    width: 100%;
-    height: 938upx;
-    background: linear-gradient(180deg, #e95d20 0%, #ff8f1f 56%, #f8f8f8);
-    padding: 68upx 34upx 0;
+    z-index: 100;
+    padding: 0 30upx 30upx;
     box-sizing: border-box;
+    background: linear-gradient(180deg, #ef530e 8%, #fac894 23%, #f6f6f8 33%, #ffffff 123%);
+  }
 
-    .icons-wrapper {
-      margin-left: 34upx;
+  .search-bar {
+    width: 100%;
+    border-radius: 100upx;
+    height: 72upx;
+    background-color: #fff;
+    padding: 8upx 15upx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    &.fix {
+      position: fixed;
+      top: 24upx;
+      left: 0;
+      right: 0;
+      z-index: 1100;
+      width: 690upx;
+      margin: 0 auto;
+      // padding: 0 30upx;
+      box-sizing: border-box;
+      animation: search-bar 500ms ease-out;
+      box-shadow: none;
+      background-color: #fff;
+      border: 1upx solid #ef530e;
+    }
+
+    .placeholder {
+      position: relative;
+
+      color: #c0bec1;
+      font-size: 28upx;
+      flex: 1;
+      padding-left: 12upx;
+
+      &::after {
+        content: '';
+        height: 26upx;
+        width: 1upx;
+        background-color: #c0bec1;
+        position: absolute;
+        left: 0upx;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .location {
       display: flex;
       align-items: center;
-      margin-top: 32upx;
+      .address-text {
+        color: #222229;
+        font-size: 28upx;
+      }
 
-      .item {
-        margin-right: 40upx;
-
-        text {
-          font-size: 28upx;
-          color: #fff;
-        }
+      .angle {
+        width: 25upx;
+        height: 14upx;
+        margin-left: 6upx;
+        margin-right: 10upx;
       }
     }
 
-    .person-wrapper {
-      position: absolute;
-      top: 40upx;
-      right: 8upx;
+    .uni-btn {
+      width: 112upx;
+      height: 56upx;
+      border-radius: 100upx;
+      background: linear-gradient(270deg, #ef530e 0%, #ee6c33 100%);
+      font-size: 24upx;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-  }
-
-  .store-name {
-    margin-top: 246upx;
-    position: relative;
-    display: flex;
-    gap: 0upx 60upx;
-    padding-left: 54upx;
-    padding-top: 36upx;
-    margin-bottom: 10px;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 42upx;
-      left: 30upx;
-      width: 8upx;
-      height: 40upx;
-      border-radius: 4upx;
-      background: linear-gradient(180deg, #ffd556 0%, #e95d20 100%);
-    }
-
-    .item {
-      color: #000000;
-      font-size: 36upx;
-
-      &.active {
-        font-weight: bold;
-      }
-    }
-  }
-
-  .vip-container {
-    display: flex;
-    justify-content: center;
-    height: 320upx;
-    padding: 20upx;
-    box-sizing: border-box;
-
-    .vip-banner {
-      height: 100%;
-      width: 100%;
-    }
-
-    // 	image {
-    // 		flex-shrink: 0;
-    // 	}
-
-    // 	.left {
-    // 		position: relative;
-    // 		margin-right: 20upx;
-
-    // 		.vip-39 {
-    // 			width: 350upx;
-    // 			height: 320upx;
-    // 			border-radius: 20upx;
-    // 			// background: linear-gradient(209deg, #FFD856 2%, #FF5858 81%);
-    // 		}
-
-    // 		.p {
-    // 			width: 204upx;
-    // 			height: 158upx;
-    // 			position: absolute;
-    // 			top: 132upx;
-    // 			left: 114upx;
-    // 		}
-
-    // 		.hezi {
-    // 			width: 350upx;
-    // 			height: 320upx;
-    // 			// position: absolute;
-    // 			// top: 0upx;
-    // 			// left: 0upx;
-    // 			// z-index: 1;
-    // 		}
-
-    // 		.money {
-    // 			font-size: 48upx;
-    // 			font-weight: 900;
-    // 			line-height: 72upx;
-    // 			color: #FFFFFF;
-    // 			position: absolute;
-    // 			top: 40upx;
-    // 			left: 24upx;
-    // 		}
-
-    // 		.name {
-    // 			font-size: 32upx;
-    // 			color: #FFFFFF;
-    // 			position: absolute;
-    // 			top: 116upx;
-    // 			left: 32upx;
-    // 		}
-
-    // 		.arrow {
-    // 			width: 48upx;
-    // 			height: 48upx;
-    // 			position: absolute;
-    // 			bottom: 40upx;
-    // 			left: 30upx;
-    // 		}
-
-    // 	}
-
-    // 	.right {
-    // 		height: 320upx;
-    // 		display: flex;
-    // 		align-items: center;
-    // 		justify-content: space-between;
-    // 		flex-direction: column;
-
-    // 		.vip-299 {
-    // 			position: relative;
-    // 			width: 320upx;
-    // 			height: 150upx;
-
-    // 			image {
-    // 				width: 320upx;
-    // 				height: 150upx;
-    // 			}
-
-    // 			.money {
-    // 				font-size: 36upx;
-    // 				font-weight: bold;
-    // 				line-height: 54upx;
-    // 				color: #FD4D00;
-    // 				position: absolute;
-    // 				top: 26upx;
-    // 				left: 30upx;
-    // 			}
-
-    // 			.name {
-    // 				font-size: 28upx;
-    // 				line-height: 42upx;
-    // 				color: #000000;
-    // 				position: absolute;
-    // 				bottom: 26upx;
-    // 				left: 30upx;
-    // 			}
-
-    // 			.animate__animated.animate__fadeIn {
-    // 				width: 50upx;
-    // 				height: 52upx;
-    // 				position: absolute;
-    // 				top: 22upx;
-    // 				left: 140upx;
-    // 				animation-iteration-count: infinite;
-    // 				animation-duration: 1000ms;
-    // 			}
-    // 		}
-
-    // 		.vip-1399 {
-    // 			position: relative;
-    // 			width: 320upx;
-    // 			height: 150upx;
-
-    // 			image {
-    // 				width: 320upx;
-    // 				height: 150upx;
-    // 			}
-
-    // 			.money {
-    // 				font-size: 36upx;
-    // 				font-weight: bold;
-    // 				line-height: 54upx;
-    // 				color: #2DBDE5;
-    // 				position: absolute;
-    // 				top: 26upx;
-    // 				left: 30upx;
-    // 			}
-
-    // 			.name {
-    // 				font-size: 28upx;
-    // 				line-height: 42upx;
-    // 				color: #000000;
-    // 				position: absolute;
-    // 				bottom: 26upx;
-    // 				left: 30upx;
-    // 			}
-    // 		}
-
-    // 	}
   }
 }
 </style>

@@ -1,10 +1,7 @@
 <template>
-  <view
-    class="server-pane"
-    :style="{
-      margin: margin
-    }"
-  >
+  <view class="server-pane" :style="{
+    margin: margin
+  }">
     <view class="header" :style="{ background: titleBg }">
       <view class="title">{{ title }}</view>
       <view class="tags">
@@ -61,8 +58,8 @@ export default {
   methods: {
     viewMore() {
       uni.navigateTo({
-        url: `/community-center/service-sort?value=${this.id}`
-      });
+        url: `/community-center/service-sort?value=${this.id}`,
+      })
     },
 
     // 查看详情
@@ -72,36 +69,36 @@ export default {
       this.userId = getUserId();
 
       uni.setStorage({
-        key: 'listTop',
+        key: "listTop",
         data: this.scrollTop
-      });
+      })
 
       if (!this.userId) {
-        console.log('userId', this.userId);
+        console.log("userId", this.userId);
         uni.showModal({
-          title: '提示',
-          content: '你还没登录,请登录',
+          title: "提示",
+          content: "你还没登录,请登录",
           showCancel: true,
           // success: ({ confirm, cancel }) => {}
           success: function (res) {
             if (res.confirm) {
-              console.log('确定');
+              console.log("确定");
               uni.navigateTo({
-                url: `/pages/login/login`
+                url: `/pages/login/login`,
               });
             } else if (res.confirm) {
-              console.log('取消');
+              console.log("取消");
             }
-          }
+          },
         });
       } else {
         uni.navigateTo({
-          url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`
+          url: `/community-center/community-detail?id=${id}&serverNameThree=${name}&serverImageUrl=${item.serverImageUrl}`,
         });
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -123,7 +120,7 @@ export default {
     }
 
     .tags {
-      color: #605d52;
+      color: #605D52;
       font-size: 24upx;
       display: flex;
       align-items: center;
@@ -132,7 +129,7 @@ export default {
       .tag {
         margin-right: 12upx;
         padding-right: 12upx;
-        border-right: 1upx solid #605d52;
+        border-right: 1upx solid #605D52;
 
         &:nth-of-type(3) {
           border-right: none;
@@ -159,6 +156,7 @@ export default {
       flex-direction: column;
       margin-top: 30upx;
 
+
       .image-wrapper {
         width: 200upx;
         height: 200upx;
@@ -182,7 +180,7 @@ export default {
 
       .price-text {
         font-size: 28upx;
-        color: #fc4023;
+        color: #FC4023;
         font-weight: bold;
       }
     }
