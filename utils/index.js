@@ -9,10 +9,10 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export {
-	GyRequest as request,
 	RuanRequest,
 	XZLRequest,
-	SheQuRequest1,
+	SheQuRequest,
+	SheQu1Request,
 	shopRequest,
 	huangRequest,
 	endRequest,

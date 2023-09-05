@@ -1,11 +1,9 @@
-// export const BASE_URL = "https://www.zhult.com/test-";
-export const BASE_URL = 'https://www.zhult.com/'
-// export const BASE_URL = '//http://192.168.0.49:8781/';
-
 // 线上助力通
 // export const SheQu1_URL = "https://www.zhult.com/test-";
 export const SheQu1_URL = 'https://www.zhult.com/'
 // export const SheQu1_URL = "http://192.168.0.49:8781/";
+// 线上团蜂
+export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api'
 
 export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 生产
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:8098/dts-app-api/wx' // 测试
@@ -16,6 +14,9 @@ export const DEYI_URL = 'https://bus.deyisoft.cn:11112/dts-wx-api/wx'
 
 // 本地
 export const XZL_URL = 'http://192.168.0.79:8080'
+
+// 本地
+// export const SheQu1_URL ="http://192.168.0.108:8781";
 
 export const TEST_URL = 'http://192.168.0.52:8080/demo/wx/api/syb/orderPayH5'
 

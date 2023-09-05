@@ -8,7 +8,7 @@
  */
 
 import { USER_TOKEN } from '../../constant'
-import { getUserId, RuanRequest, shopRequest, huangRequest, SheQuRequest1, request2, endRequest } from '../../utils'
+import { getUserId, RuanRequest, shopRequest, huangRequest, SheQu1Request, request2, endRequest } from '../../utils'
 
 // 业务管理升级
 export const upbussinessApi = (data) => RuanRequest('/api/business/setMsgSentryStatus', data)
@@ -105,7 +105,7 @@ export const getUserUpInfoListApi = (data) => RuanRequest('/userUpInfo/list', da
 // 升级支付（门店）
 export const getLevelPaySalesmanPrepayBySybApi = (data) => RuanRequest('/levelPay/SalesmanPrepayBySyb', data)
 // 会员支付h5
-export const paySybForEndApi = (data) => request('laoa-huozhu/api/hz/order/third/orderPayH5Pab', data)
+export const paySybForEndApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/orderPayH5Pab', data)
 
 // 更新用户信息
 export const updateUserInfoApi = (data) => RuanRequest('/user/update', data)
@@ -334,16 +334,16 @@ export const receiveCouponApi = (data) => shopRequest('/coupon/receive', data)
 export const getCouponListApi = (data) => shopRequest('/coupon/mylist', data, 'get')
 
 // 查询用户是否购买过金管家套餐
-export const userIsPurchaseApi = (data) => SheQuRequest1('laoa-huozhu/api/hz/order/third/userIsPurchase', data)
+export const userIsPurchaseApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/userIsPurchase', data)
 
 // 获取金管家套餐列表
-export const getSetMealListApi = (data) => SheQuRequest1('laoa-huozhu/api/hz/order/third/getSetMealList', data)
+export const getSetMealListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/getSetMealList', data)
 
 // 获取会员套餐列表
-export const getServerProjectListApi = (data) => SheQuRequest1('laoa-huozhu/api/hz/order/third/getServerProjectList', data, 'get')
+export const getServerProjectListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/getServerProjectList', data, 'get')
 
 // 预约服务
-export const reservationServiceApi = (data) => SheQuRequest1('laoa-huozhu/api/hz/order/third/reservationService', data)
+export const reservationServiceApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/reservationService', data)
 
 // 获取股东统计数据
 export const getShareHolderDataApi = (data) => request2({

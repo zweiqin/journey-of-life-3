@@ -1,5 +1,5 @@
 import { clearAllCache } from 'constant'
-import { BASE_URL, RUAN_URL, DEYI_URL, XZL_URL, SheQu1_URL, sf, shopUrl } from '../config'
+import { RUAN_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, sf, shopUrl } from '../config'
 import store from '../store'
 
 const request = (base_url) => function (url, data = {}, method = 'post', cb, header) {
@@ -128,10 +128,10 @@ const endService = (base_url) => function (config) {
 	])
 }
 
-export const GyRequest = request(BASE_URL)
 export const XZLRequest = request(XZL_URL)
 export const DEYIRequest = request(DEYI_URL)
-export const SheQuRequest1 = request(SheQu1_URL)
+export const SheQuRequest = request(SheQu_URL)
+export const SheQu1Request = request(SheQu1_URL)
 
 export const RuanRequest = request(RUAN_URL)
 export const shopRequest = service(RUAN_URL)

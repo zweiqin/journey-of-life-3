@@ -1,110 +1,110 @@
 <template>
-  <view class="d-remarks">
-    <view class="title" v-if="!isDistinguish">{{ title }}</view>
-    <view class="remarks">
-      <view class="content">
-        <textarea
-          v-if="!desc"
-          v-model="info"
-          :placeholder="isDistinguish ? distinguish : remark"
-        ></textarea>
-        <textarea v-else v-model="info" :placeholder="desc"></textarea>
-        <button
-          class="distinguishBtn"
-          v-if="isDistinguish"
-          @click="handleDistinguish"
-        >
-          识别
-        </button>
-      </view>
-    </view>
-  </view>
+	<view class="d-remarks">
+		<view v-if="!isDistinguish" class="title">{{ title }}</view>
+		<view class="remarks">
+			<view class="content">
+				<textarea
+					v-if="!desc"
+					v-model="info"
+					:placeholder="isDistinguish ? distinguish : remark"
+				></textarea>
+				<textarea v-else v-model="info" :placeholder="desc"></textarea>
+				<button
+					v-if="isDistinguish"
+					class="distinguishBtn"
+					@click="handleDistinguish"
+				>
+					识别
+				</button>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 import { addressIntelligentRecogApi } from '../../api/logistics'
 
 export default {
-  props: {
-    value: String,
-    // 是否是智能识别
-    isDistinguish: {
-      type: Boolean,
-      default: false,
-    },
-    desc: {
-      type: String,
-    },
-    title: {
-      type: String,
-      default: '特殊要求',
-    },
-    remark: {
-      type: String,
-      default:
-        '填写特别注意事项 \n1.此处可以填写安装或图片内容的详细解释 \n2.不能填写需要师傅额外付出时间、劳动成本等内容，如增加数量和型号，否则师傅可以增加费用',
-    },
-    distinguish: {
-      type: String,
-      default: '粘贴地址信息，自动拆分物流公司、电话和地址\n例如：马*明，135467****，广东省佛山市顺德区xxxxx'
-    }
-  },
-  data() {
-    return {
-      info: '',
-    }
-  },
+	props: {
+		value: String,
+		// 是否是智能识别
+		isDistinguish: {
+			type: Boolean,
+			default: false
+		},
+		desc: {
+			type: String
+		},
+		title: {
+			type: String,
+			default: '特殊要求'
+		},
+		remark: {
+			type: String,
+			default:
+				'填写特别注意事项 \n1.此处可以填写安装或图片内容的详细解释 \n2.不能填写需要师傅额外付出时间、劳动成本等内容，如增加数量和型号，否则师傅可以增加费用'
+		},
+		distinguish: {
+			type: String,
+			default: '粘贴地址信息，自动拆分物流公司、电话和地址\n例如：马*明，135467****，广东省佛山市顺德区xxxxx'
+		}
+	},
+	data() {
+		return {
+			info: ''
+		}
+	},
 
-  methods: {
-    async handleDistinguish() {
-      // if (!this.info) {
-      //   uni.showToast({
-      //     title: "请输入地址相关信息",
-      //     icon: "none",
-      //   });
+	watch: {
+		info(val) {
+			this.$emit('input', val)
+		},
 
-      //   return;
-      // }
-      try {
-        // const res = await request.laoa_huozhu_post_promise(
-        //   "/api/common/addressAnalyze",
-        //   {
-        //     address: this.info,
-        //   }
-        // );
+		value: {
+			handler(val) {
+				this.info = val
+			},
 
-        const res = await addressIntelligentRecogApi(this.info)
-        if (res.statusCode == 20000) {
-          this.$emit('distinguish', res.data)
-        } else {
-          uni.showToast({
-            title: res.statusMsg,
-            duration: 2000,
-            icon: 'none',
-          })
-        }
-      } catch (error) {
-        uni.showToast({
-          title: '识别失败',
-          icon: 'none',
-        })
-      }
-    },
-  },
+			immediate: true
+		}
+	},
 
-  watch: {
-    info(val) {
-      this.$emit('input', val)
-    },
+	methods: {
+		async handleDistinguish() {
+			// if (!this.info) {
+			//   uni.showToast({
+			//     title: "请输入地址相关信息",
+			//     icon: "none",
+			//   });
 
-    value: {
-      handler(val) {
-        this.info = val
-      },
+			//   return;
+			// }
+			try {
+				// const res = await SheQu1Request.laoa_huozhu_post_promise(
+				//   "/api/common/addressAnalyze",
+				//   {
+				//     address: this.info,
+				//   }
+				// );
 
-      immediate: true,
-    },
-  },
+				const res = await addressIntelligentRecogApi(this.info)
+				if (res.statusCode == 20000) {
+					this.$emit('distinguish', res.data)
+				} else {
+					uni.showToast({
+						title: res.statusMsg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			} catch (error) {
+				uni.showToast({
+					title: '识别失败',
+					icon: 'none'
+				})
+			}
+		}
+	}
 }
 </script>
 

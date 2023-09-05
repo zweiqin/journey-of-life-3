@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { getUserId, request } from "../../utils";
+import { getUserId } from "../../utils";
 const { formatTime } = require("../../utils/util");
 import {
   addperformanceApi,
