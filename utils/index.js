@@ -9,37 +9,35 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export {
-  GyRequest as request,
-  RuanRequest,
-  LTRequest,
-  XZLRequest,
-  SheQuRequest,
-  SheQuRequest1,
-  shopRequest,
-  huangRequest,
-  endRequest,
-  shopRequest1
-} from "./DWHRequest";
+	GyRequest as request,
+	RuanRequest,
+	XZLRequest,
+	SheQuRequest1,
+	shopRequest,
+	huangRequest,
+	endRequest,
+	shopRequest1
+} from './DWHRequest'
 export {
-  fomartNumber,
-  removeCache,
-  getUserId,
-  checkWhoami,
-  useCopy,
-  handleDebounce,
-  getRandom,
-  randomRGB,
-  timestampToTime,
-  throttle,
-  isInWx,
-  isVideoSource
-} from "./DWHutils";
-export { formatTime } from "./util";
-export { tradeOrderNo, payFn } from "./pay";
-export { saveImg } from "./upload";
-export { getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLocationPermission } from "./localtion";
-export { QRCode as generateCode } from "./generateQrcode";
-export { request2 } from "./request";
+	fomartNumber,
+	removeCache,
+	getUserId,
+	checkWhoami,
+	useCopy,
+	handleDebounce,
+	getRandom,
+	randomRGB,
+	timestampToTime,
+	throttle,
+	isInWx,
+	isVideoSource
+} from './DWHutils'
+export { formatTime } from './util'
+export { tradeOrderNo, payFn } from './pay'
+export { saveImg } from './upload'
+export { getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLocationPermission } from './localtion'
+export { QRCode as generateCode } from './generateQrcode'
+export { request2 } from './request'
 // #ifdef H5
-export { getUrlCode } from "./DWHutils";
+export { getUrlCode } from './DWHutils'
 // #endif

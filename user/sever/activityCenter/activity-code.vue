@@ -31,7 +31,7 @@
 				@complete="handleCompleteCode"
 			></uqrcode>
 		</view>
-		<view v-if="activityCode">
+		<view v-if="qrcodeUrl && activityCode">
 			<Share :code="qrcodeUrl + activityCode" class="share-pane" @click="handleItemClick"></Share>
 		</view>
 		<FillCode v-model="fillCodeVisible"></FillCode>
@@ -45,6 +45,7 @@ import FillCode from './cpns/FillCode.vue'
 import { getUserId } from '../../../utils'
 import {
 	getPurchaseRecordApi,
+	getPurchaseRecord2Api,
 	getIsPurchaseApi,
 	getCreateCodeApi
 } from '../../../api/user'
@@ -71,24 +72,38 @@ export default {
 	},
 
 	async onLoad(options) {
-		this.campaignsType = options.campaignsType * 1
-		if (this.campaignsType === 0) {
-			const res = await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-			if (res.data) {
-				this.getCode()
-			} else {
-				this.tempActivityCode = '获取我的活动邀请码失败'
-			}
-		} else if (this.campaignsType === 1) {
-			const res = await getIsPurchaseApi({ userId: getUserId() })
-			if (res.data) {
-				this.getCode()
-			} else {
-				// uni.showToast({
-				// 	title: '未满足分享条件！',
-				// 	icon: 'none'
-				// })
-				this.tempActivityCode = '获取我的活动邀请码失败'
+		if (options.campaignsType) {
+			this.campaignsType = options.campaignsType * 1
+			this.qrcodeUrl = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?campaignsType=${this.campaignsType}code=`
+			if (this.campaignsType === 0 || this.campaignsType === 3) {
+				let res
+				if (this.campaignsType === 0) {
+					res = await getPurchaseRecordApi({
+						userId: getUserId(),
+						price: 299
+					})
+				} else if (this.campaignsType === 3) {
+					res = await getPurchaseRecord2Api({
+						userId: getUserId(),
+						price: 399
+					})
+				}
+				if (res.data) {
+					this.getCode()
+				} else {
+					this.tempActivityCode = '获取我的活动邀请码失败'
+				}
+			} else if (this.campaignsType === 1) {
+				const res = await getIsPurchaseApi({ userId: getUserId() })
+				if (res.data) {
+					this.getCode()
+				} else {
+					// uni.showToast({
+					// 	title: '未满足分享条件！',
+					// 	icon: 'none'
+					// })
+					this.tempActivityCode = '获取我的活动邀请码失败'
+				}
 			}
 		}
 	},

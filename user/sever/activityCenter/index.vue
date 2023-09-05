@@ -22,10 +22,7 @@
 			<view v-if="currentTab === 0">
 				<tui-list-view v-if="activityList && activityList.length" title="">
 					<tui-list-cell v-for="item in activityList" :key="item.id">
-						<view
-							style="display: flex;"
-							@click="handleClickActivity(item)"
-						>
+						<view style="display: flex;" @click="handleClickActivity(item)">
 							<view>
 								<Avatar margin="0 24upx 0 0" :src="item.picUrl" :size="40"></Avatar>
 							</view>
@@ -50,7 +47,10 @@
 
 				<view v-if="activityList && activityList.length">
 					<view v-for="(item, index) in activityList" :key="index" style="margin-bottom: 20upx;">
-						<tui-collapse :index="index" :current="currentIndexActivity" hd-bg-color="#ffffff" @click="changeCurrentActivity">
+						<tui-collapse
+							:index="index" :current="currentIndexActivity" hd-bg-color="#ffffff"
+							@click="changeCurrentActivity"
+						>
 							<template #title>
 								<tui-list-cell background-color="transparent">
 									<view style="display: flex;align-items: center;">
@@ -60,7 +60,8 @@
 										<view>
 											<view>{{ item.campaignsName }}</view>
 											<view
-												v-if="item.campaignsType === 2" style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;"
+												v-if="item.campaignsType === 2"
+												style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;"
 											>
 												<text style="padding-right: 24upx;">分享数：{{ serviceSharingLogs.shareCount || '0' }}</text>
 												<text style="padding-right: 24upx;">购买数：{{ serviceSharingLogs.purchaseCount || '0' }}</text>
@@ -73,10 +74,13 @@
 							<template #content>
 
 								<view style="margin: 0 24upx;background-color: #ebebea;">
-									<view v-if="item.campaignsType === 0">
-										<view v-if="bindingUserList.userDtoList && bindingUserList.userDtoList.length">
-											<block v-for="(part, count) in bindingUserList.userDtoList" :key="count">
-												<tui-collapse :index="count" :current="currentIndex" hd-bg-color="transparent" @click="changeCurrent">
+									<view v-if="item.campaignsType === 0 || item.campaignsType === 3">
+										<view v-if="bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList && bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList.length">
+											<block v-for="(part, count) in bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList" :key="count">
+												<tui-collapse
+													:index="count" :current="currentIndex" hd-bg-color="transparent"
+													@click="changeCurrent"
+												>
 													<template #title>
 														<tui-list-cell background-color="transparent">
 															<view style="display: flex;justify-content: start;align-items: center;">
@@ -90,8 +94,13 @@
 														<view style="margin: 0 16upx;background-color: #e1e2e0;">
 															<view v-if="part.userDtoList && part.userDtoList.length">
 																<tui-list-view title="">
-																	<tui-list-cell v-for="section in part.userDtoList" :key="section.id" background-color="transparent">
-																		<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;">
+																	<tui-list-cell
+																		v-for="section in part.userDtoList" :key="section.id"
+																		background-color="transparent"
+																	>
+																		<view
+																			style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;"
+																		>
 																			<view style="display: flex;align-items: center;">
 																				<Avatar margin="0 24upx 0 0" :src="section.avatar" :size="40"></Avatar>
 																				<text style="padding-left: 40upx;">{{ section.nickname || '--' }}</text>
@@ -115,11 +124,19 @@
 									<view v-else-if="item.campaignsType === 2">
 										<view v-if="serviceSharingLogs.userDtos && serviceSharingLogs.userDtos.length">
 											<tui-list-view title="">
-												<tui-list-cell v-for="part in serviceSharingLogs.userDtos" :key="part.userId" background-color="transparent">
+												<tui-list-cell
+													v-for="part in serviceSharingLogs.userDtos" :key="part.userId"
+													background-color="transparent"
+												>
 													<view style="display: flex;align-items: center;padding-left: 16upx;">
 														<Avatar margin="0 24upx 0 0" :src="part.avatar" :size="40"></Avatar>
-														<view style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;">
-															<text style="width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ part.userName || '--' }}</text>
+														<view
+															style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;"
+														>
+															<text style="width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+																{{
+																	part.userName || '--' }}
+															</text>
 															<!-- <text>分享数：{{ part.shareCount || '0' }}</text> -->
 															<text style="color: red;">购买数：{{ part.purchaseCount || '0' }}</text>
 														</view>
@@ -131,7 +148,7 @@
 											社区服务粉丝空空如也~
 										</view>
 									</view>
-									<view v-else>无此统计！</view>
+									<view v-else style="padding: 28upx 0;text-align: center;">无此统计！</view>
 								</view>
 
 							</template>
@@ -149,7 +166,7 @@
 
 <script>
 import Extension from './cpns/extension.vue'
-import { getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getIsPurchaseApi, getServiceSharingLogsApi } from '../../../api/user'
+import { getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
 import { NEW_BIND_ACTIVITY_ID } from '../../../constant'
 import { getUserId } from '../../../utils'
 
@@ -180,13 +197,17 @@ export default {
 
 			currentIndexActivity: 0,
 
-			bindingUserList: {},
+			bindingUserObj: {
+				bindingUserList0: {},
+				bindingUserList3: {}
+			},
 			currentIndex: -1,
 
 			serviceSharingLogs: {},
 			currentIndexService: -1,
 
-			bindActivityId: null
+			bindActivityId: null,
+			campaignsType: ''
 
 		}
 	},
@@ -202,18 +223,21 @@ export default {
 		// }
 		if (options.code) uni.setStorageSync(NEW_BIND_ACTIVITY_ID, options.code) // 有活动id就进行存储，以防下面没登录跳到登录页
 		if (getUserId() && !options.code && uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) { // 如果原先有活动id，例如注册/重新登陆了然后跳回来（options没携带活动id），则是存储里的活动id
-			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID) * 1
+			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[1] * 1
+			this.campaignsType = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[0] * 1
 			// try {
 			//   await this.checkBind({ userId: userId })
 			// } catch (error) {
 			this.binding(getUserId(), () => { })
-		// }
+			// }
 		} else if (getUserId() && options.code) { // 请求路径上面直接有活动id参数
-			this.bindActivityId = options.code * 1
+			this.bindActivityId = options.code.split('-')[1] * 1
+			this.campaignsType = options.code.split('-')[0] * 1
 			this.binding(getUserId(), () => { })
 		}
 
-		if (getUserId())getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+		if (getUserId()) getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+		if (getUserId()) getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
 	},
 
 	onShow() {
@@ -251,7 +275,8 @@ export default {
 			return new Promise((resolve, reject) => {
 				changeActivityUserBindingApi({
 					userId,
-					userCode: this.bindActivityId
+					userCode: this.bindActivityId,
+					type: this.campaignsType
 				})
 					.then((res) => {
 						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
@@ -298,9 +323,10 @@ export default {
 		},
 
 		async getBindingUser() {
-			const res = await getBindingUserApi({ userId: getUserId() }) // getUserId()
-			// this.bindingUserList = res.data.userDtoList||{}
-			this.bindingUserList = res.data || {}
+			const res0 = await getBindingUserApi({ userId: getUserId(), type: 0 })
+			this.bindingUserObj.bindingUserList0 = res0.data || {}
+			const res3 = await getBindingUserApi({ userId: getUserId(), type: 3 })
+			this.bindingUserObj.bindingUserList3 = res3.data || {}
 		},
 
 		async getServiceSharingLogs() {
@@ -317,6 +343,8 @@ export default {
 				if (item.productId === 313) {
 					this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
 				}
+			} else if (item.campaignsType === 3) {
+				this.go(`/community-center/vip-center/vip-detail?type=2&campaignsType=${item.campaignsType}`)
 			}
 		},
 
