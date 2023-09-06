@@ -223,7 +223,7 @@ export default {
 		// }
 		if (options.code) uni.setStorageSync(NEW_BIND_ACTIVITY_ID, options.code) // 有活动id就进行存储，以防下面没登录跳到登录页
 		if (getUserId() && !options.code && uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) { // 如果原先有活动id，例如注册/重新登陆了然后跳回来（options没携带活动id），则是存储里的活动id
-			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[1] * 1
+			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[1]
 			this.campaignsType = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[0] * 1
 			// try {
 			//   await this.checkBind({ userId: userId })
@@ -231,7 +231,7 @@ export default {
 			this.binding(getUserId(), () => { })
 			// }
 		} else if (getUserId() && options.code) { // 请求路径上面直接有活动id参数
-			this.bindActivityId = options.code.split('-')[1] * 1
+			this.bindActivityId = options.code.split('-')[1]
 			this.campaignsType = options.code.split('-')[0] * 1
 			this.binding(getUserId(), () => { })
 		}
@@ -267,6 +267,11 @@ export default {
 	// 	this.queryInfo.page++
 	// 	this.getUserCrmList(true)
 	// },
+	watch: {
+		'$store.state.location.locationInfo.streetNumber.location'(val, oldVal) {
+			this.getUserCrmList()
+		}
+	},
 
 	methods: {
 		// 绑定
@@ -313,6 +318,7 @@ export default {
 			// }
 			// }
 			// this.status = 'none'
+			if (!this.$store.state.location.locationInfo.streetNumber.location) return this.$showToast('无法获取定位，请稍后重试')
 			const res = await getUserCrmListApi({
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]

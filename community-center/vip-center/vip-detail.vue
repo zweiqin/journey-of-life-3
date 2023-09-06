@@ -159,19 +159,15 @@ export default {
 							title: '获取您的位置失败',
 							content: '请您先去选择自己的位置'
 						})
-
 						clearInterval(timer)
-						//
 						timer = setTimeout(() => {
 							uni.redirectTo({
 								url: '/pages/choose-location/choose-location?backUrl=|community-center|vip-center|vip-detail_type=1'
 							})
 						}, 2000)
 					}
-
 					count--
 				}, 1000)
-
 				await this.$store.dispatch('location/getCurrentLocation', (data) => {
 					_this.getData(data.detail, () => {
 						uni.hideLoading()
@@ -195,7 +191,6 @@ export default {
 					address: currentDetail && JSON.stringify(currentDetail) != '[]' ? currentDetail : '',
 					correspondType: 2
 				})
-
 				if (res.statusCode === 20000) {
 					if (!Array.isArray(res.data) && this.type == 1) {
 						this.ttoast({
@@ -372,7 +367,7 @@ export default {
 
 		// 分享会员
 		async handleShareServe(isQuit, meaning) {
-			const _this = this
+			uni.showLoading()
 			let data
 			if (this.campaignsType === 0 || this.campaignsType === 3) {
 				// 肯定是type也为2
@@ -436,19 +431,20 @@ export default {
 			} else {
 				data = {
 					data: {
-						title: _this.type == 2 ? '团蜂社区金管家会员' : '限时钜惠',
+						title: this.type == 2 ? '团蜂社区金管家会员' : '限时钜惠',
 						desc:
-							_this.type == 2
+							this.type == 2
 								? `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`
 								: `${this.indulgenceData.map((item) => item.serverContent).join('；')}`,
-						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${_this.type}`,
-						imageUrl: _this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''
+						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${this.type}`,
+						imageUrl: this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''
 					},
 					successCb: () => { },
 					failCb: () => { }
 				}
 			}
-			this.$refs.tuanWxShareRef.share(data, isQuit)
+			await this.$refs.tuanWxShareRef.share(data, isQuit)
+			uni.hideLoading()
 		}
 	}
 }
