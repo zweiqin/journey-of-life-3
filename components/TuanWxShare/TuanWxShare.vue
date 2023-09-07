@@ -81,7 +81,7 @@ export default {
         await share(data);
         return;
       }
-      
+
       if (isInWx()) {
         this.showPointVisible = true;
         await share(data);

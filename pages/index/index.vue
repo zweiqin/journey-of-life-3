@@ -14,7 +14,7 @@
 <script>
 import HeaderNav from './cpns/HeaderNav';
 import SearchFurniture from './SearchFurniture';
-import BrandFactory from './brandFactory';
+import BrandFactory from './BrandFactory';
 import WholehouseCustomization from './WholehouseCustomization';
 import IntelligentSelection from './IntelligentSelection';
 

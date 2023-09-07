@@ -14,11 +14,7 @@
 
     <scroll-view scroll-x="true" v-if="shopImageList.length">
       <view class="image-list">
-        <image
-          class="shop-img"
-          :style="{ width: shopImageList.length === 1 ? '100%' : '' }"
-          src="https://img1.baidu.com/it/u=698757615,4099908372&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
-        ></image>
+        <image v-for="img in shopImageList" :key="img" class="shop-img" :style="{ width: shopImageList.length === 1 ? '100%' : '' }" :src="img"></image>
       </view>
     </scroll-view>
   </div>
@@ -34,8 +30,8 @@ export default {
 
   computed: {
     shopImageList() {
-      if (this.shopInfo && this.shopInfo.elegantDemeanour) {
-        return this.shopInfo.elegantDemeanour.split(',');
+      if (this.shopInfo && this.shopInfo.rotationChart) {
+        return this.shopInfo.rotationChart.split(',');
       } else {
         return [];
       }

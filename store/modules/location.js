@@ -1,42 +1,34 @@
-import {
-  CHANGE_CURRENT_CITY,
-  CHANGE_LOCATION_INFO,
-  CHANGE_LOACTION_DETAIL_INFO,
-} from "./type";
-import { CURRENT_ADDRESS } from "../../constant";
-import {
-  getAdressDetailByLngLat,
-  getLngLatByAddress,
-  MapLoader,
-} from "@/utils";
-import { isUserEmpowerLocationPermission } from "utils";
+import { CHANGE_CURRENT_CITY, CHANGE_LOCATION_INFO, CHANGE_LOACTION_DETAIL_INFO } from './type';
+import { CURRENT_ADDRESS } from '../../constant';
+import { getAdressDetailByLngLat, getLngLatByAddress, MapLoader } from '@/utils';
+import { isUserEmpowerLocationPermission } from 'utils';
 
 export default {
   namespaced: true,
   state() {
     return {
       locationInfo: {
-        city: "",
-        province: "",
-        adcode: "",
-        district: "",
-        towncode: "",
+        city: '',
+        province: '',
+        adcode: '',
+        district: '',
+        towncode: '',
         streetNumber: {
-          number: "",
-          location: "",
-          direction: "",
-          distance: "",
-          street: "",
+          number: '',
+          location: '',
+          direction: '',
+          distance: '',
+          street: ''
         },
-        country: "",
-        township: "",
+        country: '',
+        township: '',
         businessAreas: [[]],
         building: { name: [], type: [] },
         neighborhood: { name: [], type: [] },
-        citycode: "0757",
+        citycode: '0757'
       },
-      detailAddress: "",
-      currentCity: uni.getStorageSync(CURRENT_ADDRESS) || "定位失败",
+      detailAddress: '',
+      currentCity: uni.getStorageSync(CURRENT_ADDRESS) || '定位失败'
     };
   },
 
@@ -57,68 +49,67 @@ export default {
       state.locationInfo = {
         city: detailInfo.city,
         province: detailInfo.province,
-        adcode: "",
+        adcode: '',
         district: detailInfo.district,
-        towncode: "",
+        towncode: '',
         streetNumber: {
-          number: "",
+          number: '',
           location: detailInfo.location,
-          direction: "",
-          distance: "",
-          street: "",
+          direction: '',
+          distance: '',
+          street: ''
         },
-        country: "中国",
+        country: '中国',
         township: detailInfo.currentCity,
         businessAreas: [[]],
         building: { name: [], type: [] },
         neighborhood: { name: [], type: [] },
-        citycode: "",
+        citycode: ''
       };
-    },
+    }
   },
 
   actions: {
     async getCurrentLocation({ commit }, onSuccess) {
-
       return new Promise(async (resolve, reject) => {
         // debugger
         try {
           // await isUserEmpowerLocationPermission();
           uni.getLocation({
-            type: "gcj02",
+            type: 'gcj02',
             fail(e) {
-              console.log("定位失败", e);
+              console.log('定位失败', e);
             },
             success(res) {
               getAdressDetailByLngLat(res.latitude, res.longitude)
                 .then((res) => {
-                  if (res.status === "1") {
+                  if (res.status === '1') {
                     commit(CHANGE_LOCATION_INFO, res.regeocode);
                     const addressDetail = res.regeocode;
                     onSuccess &&
-                      typeof onSuccess === "function" &&
+                      typeof onSuccess === 'function' &&
                       onSuccess({
                         detail:
                           addressDetail.addressComponent.province +
                           addressDetail.addressComponent.city +
                           addressDetail.addressComponent.district +
                           addressDetail.addressComponent.township,
-                        town: addressDetail.addressComponent.township,
+                        town: addressDetail.addressComponent.township
                       });
                   }
 
                   resolve(true);
                 })
                 .catch((e) => {
-                  console.log("你啊", e);
+                  console.log('你啊', e);
                 });
-            },
+            }
           });
         } catch (error) {
-          if (error === "prompt") {
+          if (error === 'prompt') {
             uni.showToast({
-              title: "为了精准为您服务，请授权访问您的位置",
-              icon: "none",
+              title: '为了精准为您服务，请授权访问您的位置',
+              icon: 'none'
             });
           }
 
@@ -128,38 +119,26 @@ export default {
     },
 
     async getDetailAddress({ commit, dispatch }, data) {
-      const res = await getLngLatByAddress(
-        data.city + data.distinguish + data.town
-      );
-      if (res.status == "1") {
+      const res = await getLngLatByAddress(data.city + data.distinguish + data.town);
+      if (res.status == '1') {
         const detailInfo = res.geocodes[0];
         commit(CHANGE_LOACTION_DETAIL_INFO, {
           detailInfo,
-          currentCity: data.level
-            ? data.level === 4
-              ? data.town
-              : data.level === 3
-              ? data.distinguish
-              : data.city
-            : data.town,
+          currentCity: data.level ? (data.level === 4 ? data.town : data.level === 3 ? data.distinguish : data.city) : data.town
         });
 
         dispatch(
-          "community/getHomePopupImage",
+          'community/getHomePopupImage',
           detailInfo.province + data.city + data.distinguish + data.town,
           // null,
           { root: true }
         );
 
-        commit("community/CHANGE_HOME_STORE", data.town, { root: true });
-        dispatch(
-          "community/getVipPackageList",
-          detailInfo.province + data.city + data.distinguish + data.town,
-          {
-            root: true,
-          }
-        );
+        commit('community/CHANGE_HOME_STORE', data.town, { root: true });
+        dispatch('community/getVipPackageList', detailInfo.province + data.city + data.distinguish + data.town, {
+          root: true
+        });
       }
-    },
-  },
+    }
+  }
 };

@@ -1,14 +1,14 @@
 <template>
   <view class="serve-shop-container">
-    <view class="bar">
+    <view class="bar" @click="go('/community-center/shop/shop')">
       <image class="bar-img" src="../../../static/images/new-community/home/ad-bar-1.png"></image>
     </view>
 
     <view class="shop-list">
       <view class="content">
         <DirectSaleStore :shopInfo="shopList[0]"></DirectSaleStore>
-        <CommonShop v-for="shopData in shopList.slice(1)" :shopInfo="shopData" :key="index"></CommonShop>
-        <view class="more">
+        <CommonShop v-for="(shopData, index) in shopList.slice(1)" :shopInfo="shopData" :key="index"></CommonShop>
+        <view class="more" @click="go('/community-center/shop/shop')">
           <button class="uni-btn">
             查看更多
             <tui-icon :size="18" name="arrowright"></tui-icon>
@@ -16,6 +16,8 @@
         </view>
       </view>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -23,6 +25,7 @@
 import DirectSaleStore from './DirectSaleStore.vue';
 import CommonShop from './CommonShop.vue';
 import { getNearByShopListApi } from '../../../api/community-center';
+import { getCurrentLocation } from '../../../utils';
 
 export default {
   components: { DirectSaleStore, CommonShop },
@@ -38,21 +41,27 @@ export default {
 
   methods: {
     async getNearByShopList() {
-      const res = await getNearByShopListApi({
-        pageNo: 1,
-        pageSize: 5,
-        address: '广东省佛山市顺德区龙江镇亚洲国际材料城中央馆五栋三楼'
-      });
+      try {
+        const currentAddress = await getCurrentLocation();
+        const res = await getNearByShopListApi({
+          pageNo: 1,
+          pageSize: 5,
+          address: currentAddress.toString()
+        });
 
-      if (res.statusCode === 20000) {
-        this.shopList = res.data.data;
-
-        console.log(this.shopList);
-      } else {
+        if (res.statusCode === 20000) {
+          this.shopList = res.data.data;
+        } else {
+          this.ttoast({
+            type: 'fail',
+            title: '附近商家获取失败',
+            content: res.statusMsg
+          });
+        }
+      } catch (error) {
         this.ttoast({
           type: 'fail',
-          title: '附近商家获取失败',
-          content: res.statusMsg
+          title: error || '未知错误'
         });
       }
     }

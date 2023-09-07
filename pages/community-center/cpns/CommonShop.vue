@@ -1,5 +1,5 @@
 <template>
-  <div class="common-shop-container" v-if="shopInfo">
+  <view class="common-shop-container" v-if="shopInfo" @click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shopId)">
     <image class="shop-logo" :src="shopInfo.shopLogo || require('../../../static/images/new-user/fee.icon.png')"></image>
 
     <view class="shop-info">
@@ -38,7 +38,7 @@
         </view>
       </view>
     </view>
-  </div>
+  </view>
 </template>
 
 <script>

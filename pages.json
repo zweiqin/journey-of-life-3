@@ -4,7 +4,8 @@
       "path": "pages/community-center/community-centerr",
       "style": {
         "navigationBarTitleText": "社区服务中心",
-        "navigationStyle": "custom"
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -44,7 +45,7 @@
       }
     },
     {
-      "path": "pages/index/brandFactory/detail",
+      "path": "pages/index/BrandFactory/detail",
       "style": {
         "navigationBarTitleText": "详情"
       }
@@ -230,13 +231,13 @@
         "enablePullDownRefresh": false
       }
     },
-	  {
-	  "path": "pages/user/kuai-di/index",
-	  "style": {
+    {
+      "path": "pages/user/kuai-di/index",
+      "style": {
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
-	    }
-	  },
+      }
+    },
     {
       "path": "pages/user/kuai-di/LogisticsDetails",
       "style": {
@@ -341,9 +342,39 @@
       "root": "community-center",
       "pages": [
         {
-          "path": "shop-detail/shop-detail",
+          "path": "shop/shop",
           "style": {
-            "navigationBarTitleText": "社区店"
+            "navigationBarTitleText": "附近商家"
+          }
+        },
+        {
+          "path": "shop/serve-detail",
+          "style": {
+            "navigationBarTitleText": "服务详情"
+          }
+        },
+        {
+          "path": "shop/goods-detail",
+          "style": {
+            "navigationBarTitleText": "商品详情"
+          }
+        },
+        {
+          "path": "shop/shop-order",
+          "style": {
+            "navigationBarTitleText": "确认预约"
+          }
+        },
+        {
+          "path": "shop/goods-order",
+          "style": {
+            "navigationBarTitleText": "确认订单"
+          }
+        },
+        {
+          "path": "shop/shop-detail",
+          "style": {
+            "navigationBarTitleText": "商家详情"
           }
         },
         {

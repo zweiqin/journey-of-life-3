@@ -29,8 +29,11 @@
       <VipPackage :scrollTop="scrollTop"></VipPackage>
     </view>
 
-    <ServeShop></ServeShop>
-    <FourSeasonsZone></FourSeasonsZone>
+    <!-- 家具维修养护一条街 -->
+    <ServeShop ref="serveShopRef"></ServeShop>
+
+    <!-- 四季专区 -->
+    <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
     <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
 
@@ -68,7 +71,7 @@ import PageBar from './cpns/PageBar.vue';
 import ServeMenus from './cpns/ServeMenus.vue';
 import VipPackage from './cpns/VipPackage.vue';
 import ServeShop from './cpns/ServeShop.vue';
-import ServerPane from './cpns/ServerPane.vue'
+import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 
 const app = getApp();
@@ -199,6 +202,23 @@ export default {
 
     handleResetGlobal() {
       app.globalData.isShowedBindMobilePopu = true;
+    },
+
+    onRefresh() {
+      const currentAddress = this.$store.getters.currentCity;
+
+      try {
+        if (currentAddress) {
+          this.$store.dispatch('community/getVipPackageList', currentAddress);
+          this.$refs.serveShopRef.getNearByShopList();
+        }
+      } catch (error) {
+        console.log('社区首页刷新报错', error);
+      } finally {
+        setTimeout(() => {
+          uni.stopPullDownRefresh();
+        }, 2000);
+      }
     }
   },
 
@@ -222,6 +242,10 @@ export default {
 
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;
+  },
+
+  onPullDownRefresh() {
+    this.onRefresh();
   }
 };
 </script>
