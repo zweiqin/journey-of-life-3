@@ -3,13 +3,27 @@
 		<view class="main">
 			<NewHeader
 				title="活动中心" position="left" top="37%" :left="-10"
-				color="#fff" padding="0 0 20upx 0upx"
+				color="#fff" padding="0 0 50upx 0upx"
 				tabbar="/pages/user/user" @back="handleBack"
 			>
-				<!-- <block slot="right">
-					<tui-icon name="share" color="#fff"></tui-icon>
-					</block> -->
+				<block slot="right">
+					<text
+						style="margin-right: 38upx;color: #ffffff;"
+						@click="go('/user/sever/activityCenter/activity-withdrawal-record')"
+					>
+						提现记录
+					</text>
+				</block>
 			</NewHeader>
+			<view style="text-align: right;">
+				<tui-button
+					width="160rpx" height="52rpx" margin="0 20upx 0" :size="28"
+					type="warning" shape="circle"
+					style="display: inline-block;" @click="isShowWithdrawalDialog = true"
+				>
+					提现
+				</tui-button>
+			</view>
 
 			<Extension :data="extensionData"></Extension>
 
@@ -75,8 +89,13 @@
 
 								<view style="margin: 0 24upx;background-color: #ebebea;">
 									<view v-if="item.campaignsType === 0 || item.campaignsType === 3">
-										<view v-if="bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList && bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList.length">
-											<block v-for="(part, count) in bindingUserObj[ `bindingUserList${item.campaignsType}` ].userDtoList" :key="count">
+										<view
+											v-if="bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList && bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList.length"
+										>
+											<block
+												v-for="(part, count) in bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList"
+												:key="count"
+											>
 												<tui-collapse
 													:index="count" :current="currentIndex" hd-bg-color="transparent"
 													@click="changeCurrent"
@@ -160,13 +179,27 @@
 				</view>
 
 			</view>
+
+			<!-- 提现dialog -->
+			<tui-dialog
+				:buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]" :show="isShowWithdrawalDialog"
+				title="提现到余额" @click="handleClickWithdrawalDialog"
+			>
+				<template #content>
+					<tui-input v-model="withdrawalAmount" label="提现金额" type="number" placeholder="请输入提现金额">
+						<template #right>
+							<text>元</text>
+						</template>
+					</tui-input>
+				</template>
+			</tui-dialog>
 		</view>
 	</view>
 </template>
 
 <script>
 import Extension from './cpns/extension.vue'
-import { getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
+import { updateWithdrawalApi, getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
 import { NEW_BIND_ACTIVITY_ID } from '../../../constant'
 import { getUserId } from '../../../utils'
 
@@ -207,7 +240,10 @@ export default {
 			currentIndexService: -1,
 
 			bindActivityId: null,
-			campaignsType: ''
+			campaignsType: '',
+
+			isShowWithdrawalDialog: false,
+			withdrawalAmount: ''
 
 		}
 	},
@@ -241,15 +277,7 @@ export default {
 	},
 
 	onShow() {
-		getUserIncomeApi({
-			userId: getUserId()
-		}).then(({ data }) => {
-			this.extensionData = {
-				accumulated: data.accumulated,
-				withdrawal: data.withdrawal,
-				before: data.before
-			}
-		})
+		this.getUserIncome()
 		this.getUserCrmList()
 		if (getUserId()) {
 			this.getBindingUser()
@@ -274,6 +302,35 @@ export default {
 	},
 
 	methods: {
+		getUserIncome(e) {
+			getUserIncomeApi({
+				userId: getUserId()
+			}).then(({ data }) => {
+				this.extensionData = {
+					accumulated: data.accumulated,
+					withdrawal: data.withdrawal,
+					before: data.before
+				}
+			})
+		},
+
+		handleClickWithdrawalDialog(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!getUserId()) return
+				if (!this.withdrawalAmount) return this.$showToast('提现金额不能为空')
+				updateWithdrawalApi({
+					amount: this.withdrawalAmount,
+					userId: getUserId(),
+					type: 0
+				}).then(({ data }) => {
+					this.$showToast('成功提现到余额')
+					this.getUserIncome()
+				})
+			}
+			this.withdrawalAmount = ''
+			this.isShowWithdrawalDialog = false
+		},
+
 		// 绑定
 		binding(userId, cb) {
 			const _this = this

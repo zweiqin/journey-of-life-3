@@ -321,6 +321,50 @@ export const commanderWithdrawApi = (data) => endRequest({
 	method: 'POST'
 })
 
+// 查询用户的银行卡列表
+export const getBankCardListUserApi = (data) => endRequest({
+	url: '/api/third/tz/getBankCardListUser',
+	data,
+	method: 'GET'
+})
+
+// 银行卡信息新增
+export const saveBankCardUserApi = (data) => endRequest({
+	url: '/api/third/tz/saveBankCardUser',
+	data,
+	method: 'POST'
+})
+
+// 银行卡信息修改
+export const updateBankCardUserApi = (data) => endRequest({
+	url: '/api/third/tz/updateBankCardUser',
+	data,
+	method: 'POST'
+})
+
+// 银行卡信息详情
+export const getBankCardDetailUserApi = (data) => endRequest({
+	url: '/api/third/tz/getBankCardDetailUser',
+	data,
+	method: 'GET'
+})
+
+// 查询提现记录
+export const getWithdrawRecordListUserApi = (data) => endRequest({
+	url: '/api/third/tz/getWithdrawRecordListUser',
+	data,
+	method: 'POST'
+})
+
+// 团蜂用户提现余额
+export const withdrawalBalanceApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalBalance', data)
+
+// 活动中心提现到余额
+export const updateWithdrawalApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawal', data)
+
+// 提现记录
+export const getWithdrawalLogsApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalLogs', data, 'get')
+
 // 查询区域代理状态
 export const getApplyRegionagentStatusApi = (data) => shopRequest('/regionagent/queryIsApproved', data, 'get')
 

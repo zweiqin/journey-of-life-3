@@ -1,10 +1,12 @@
 <template>
 	<view class="base-info-container">
 		<view class="user-info">
-			<Avatar @click="$emit('handleNavigate', { url: '/user/info/detail' })" margin="0 24upx 0 0" :src="$store.getters.userId
-				? $store.getters.userInfo.avatarUrl
-				: require('../../../static/images/new-user/default-user-avatar.png')
-				"></Avatar>
+			<Avatar
+				margin="0 24upx 0 0" :src="$store.getters.userId
+					? $store.getters.userInfo.avatarUrl
+					: require('../../../static/images/new-user/default-user-avatar.png')
+				" @click="$emit('handleNavigate', { url: '/user/info/detail' })"
+			></Avatar>
 
 			<view class="right-wrapper">
 				<view v-if="!$store.getters.userId">
@@ -12,21 +14,25 @@
 					<view class="logout-tip">您目前暂未登录，请<text @click="go('/pages/login/login')">前往登录</text></view>
 				</view>
 
-				<view class="user-info-detail" v-else>
-					<view class="user-nack-name">{{
-						$store.getters.userInfo.nickName
-					}}</view>
+				<view v-else class="user-info-detail">
+					<view class="user-nack-name">
+						{{
+							$store.getters.userInfo.nickName
+						}}
+					</view>
 					<view class="tags">
 						<view class="tag">
-							<view class="vip-level">{{
-								$store.getters.userInfo.userLevelDesc || '会员'
-							}}</view>
+							<view class="vip-level">
+								{{
+									$store.getters.userInfo.userLevelDesc || '会员'
+								}}
+							</view>
 						</view>
 
 						<view class="tag">
 							{{
 								$store.getters.userInfo.invitationCode ||
-								'No.' + $store.getters.userInfo.userId
+									'No.' + $store.getters.userInfo.userId
 							}}
 						</view>
 					</view>
@@ -44,10 +50,10 @@
 		</view>
 
 		<view class="account-container">
-			<view class="account-item" @click="go">
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/withdrawal/index' })">
 				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
-				<view class="account-number"> 0 </view>
-				<view class="account-title">余额</view>
+				<view class="account-number"> {{ data.account || 0 }} </view>
+				<view class="account-title">余额 ></view>
 			</view>
 
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
@@ -64,7 +70,7 @@
 				<view class="account-title">优惠劵</view>
 			</view>
 		</view>
-		<!--金管家会员-->
+		<!-- 金管家会员 -->
 		<view class="goldman">
 			<image src="../../../static/images/center/logo.png" mode="" />
 			<view class="text-list">
@@ -74,9 +80,10 @@
 			<view class="open" @click="handleToOpen">立即开通</view>
 		</view>
 
-
-		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"></tui-modal>
+		<tui-modal
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
+		></tui-modal>
 
 		<tui-modal :show="isShow" title="提示" content="您已开通金管家会员" @click="handleToVip"></tui-modal>
 	</view>
@@ -84,15 +91,24 @@
 
 <script>
 import { userIsPurchaseApi } from '../../../api/user'
-import { USER_ID } from 'constant';
-import showModalMixin from 'mixin/showModal';
+import { USER_ID } from 'constant'
+import showModalMixin from 'mixin/showModal'
 export default {
-	data() {
-		return {
-			isShow: false,
+	props: {
+		data: {
+			type: Object,
+			required: true
 		}
 	},
-	mixins: [showModalMixin()],
+	data() {
+		return {
+			isShow: false
+		}
+	},
+	mixins: [ showModalMixin() ],
+	mounted() {
+		// this.userIsPurchase()
+	},
 	methods: {
 		// go() {
 		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
@@ -103,23 +119,21 @@ export default {
 			}
 			this.isShow = false
 		},
-		//立即开通
+		// 立即开通
 		handleToOpen() {
-
 			this.userIsPurchase()
-
 		},
 
-		//查询用户是否购买过金管家套餐
+		// 查询用户是否购买过金管家套餐
 		async userIsPurchase() {
 			const userId = uni.getStorageSync(USER_ID)
 			const res = await userIsPurchaseApi({
-				userId: userId,
+				userId,
 				// userId: 565,
-				price: 299,
+				price: 299
 			})
 			this.statusCode = res.statusCode
-			console.log("statusCode ", this.statusCode);
+			console.log('statusCode ', this.statusCode)
 			if (!userId) {
 				this.$data._isShowTuiModel = true
 			} else if (this.statusCode === 20000) {
@@ -127,11 +141,8 @@ export default {
 			} else {
 				uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
 			}
-		},
-	},
-	mounted() {
-		// this.userIsPurchase()
-	},
+		}
+	}
 }
 </script>
 

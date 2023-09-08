@@ -208,6 +208,11 @@ export const myEquity = [
 
 export const myServe = [
   {
+    name: '银行卡',
+    icon: require('../../static/images/new-user/serve/address.png'),
+    url: '/user/sever/bank-card/index'
+  },
+  {
     name: '地址管理',
     icon: require('../../static/images/new-user/serve/address.png'),
     url: '/user/site/site-manage'

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-// import { CountUp } from 'countup.js'
 export default {
 	props: {
 		data: {
@@ -33,11 +32,6 @@ export default {
 			required: true
 		}
 	}
-	// mounted() {},
-
-	// watch: {
-	// },
-
 	// methods: {
 	// },
 }
@@ -47,7 +41,7 @@ export default {
 .pane-container {
   width: 100%;
   color: #000;
-  padding: 34upx 24upx 44upx;
+  padding: 4upx 24upx 44upx;
   box-sizing: border-box;
   margin-top: 2upx; // 72upx+32px+20upx
   margin-bottom: 20upx;

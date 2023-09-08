@@ -11,7 +11,7 @@
       <tui-loading type="row" text="正在刷新中..."></tui-loading>
     </view>
     <TuanAppShim bg="#f6eadf"></TuanAppShim>
-    <BaseInfo @handleNavigate="handleNavigate"></BaseInfo>
+    <BaseInfo :data=userInfo @handleNavigate="handleNavigate"></BaseInfo>
     <view class="main-area">
       <OrderPane @handleNavigate="handleNavigate"></OrderPane>
       <Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
@@ -74,19 +74,17 @@ export default {
       calcDis: null,
       userId: null,
       myEquity1: [],
-      userInfo: null
+      userInfo: {}
     };
   },
   methods: {
     init() {
       this.userId = uni.getStorageSync(USER_ID);
       this.userInfo = uni.getStorageSync(USER_INFO);
-
       if (this.userInfo) {
-        this.$store.dispatch('auth/refrshUserInfo');
+        this.$store.dispatch('auth/refrshUserInfo', (userInfo) => (this.userInfo = userInfo));
         this.$store.dispatch('user/count', this.userInfo);
       }
-
       this.$forceUpdate();
     },
     handleNavigate(item, cb) {
