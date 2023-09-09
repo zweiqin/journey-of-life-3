@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import { J_USER_TOKEN } from "../../constant";
 import { uploadFle } from "../../api/user";
 import { getUserId } from "../../utils";
 import { getBusinessInfoByUserIdApi, sendRedEnvelopeApi } from "../../api/user";

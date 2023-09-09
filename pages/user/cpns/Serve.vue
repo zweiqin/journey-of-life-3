@@ -55,15 +55,18 @@ text {
   }
 
   .menus-container {
-    height: 120upx;
+    // height: 290upx;
     .swiper-item {
-      padding: 28upx 0 32upx 0;
+      height: 280upx;
+      // padding: 28upx 0 32upx 0;
       box-sizing: border-box;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
 
       .menu-item {
-        flex: 0.25;
+        // flex: 0.25;
+        width: 25%;
         display: flex;
         align-items: center;
         justify-content: center;

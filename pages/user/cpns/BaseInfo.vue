@@ -38,97 +38,101 @@
       </view>
     </view>
 
-    <view class="account-container">
-      <view class="account-item" @click="go">
-        <!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
-        <view class="account-number"> 0 </view>
-        <view class="account-title">余额</view>
-      </view>
+		<view class="account-container">
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/withdrawal/index' })">
+				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
+				<view class="account-number"> {{ data.account || 0 }} </view>
+				<view class="account-title">余额 ></view>
+			</view>
 
-      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
-        <view class="account-number">
-          {{ 1 }}
-        </view>
-        <view class="account-title">金管家</view>
-      </view>
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
+				<view class="account-number">
+					{{ 1 }}
+				</view>
+				<view class="account-title">团蜂家庭小卫士</view>
+			</view>
 
-      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
-        <view class="account-number">
-          {{ $store.getters.couponNumber || 0 }}
-        </view>
-        <view class="account-title">优惠劵</view>
-      </view>
-    </view>
-    <!--金管家会员-->
-    <view class="goldman">
-      <image src="../../../static/images/center/logo.png" mode="" />
-      <view class="text-list">
-        <view class="first">金管家会员</view>
-        <view class="second">享受四大权益</view>
-      </view>
-      <view class="open" @click="handleToOpen">立即开通</view>
-    </view>
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
+				<view class="account-number">
+					{{ $store.getters.couponNumber || 0 }}
+				</view>
+				<view class="account-title">优惠劵</view>
+			</view>
+		</view>
+		<!-- 团蜂家庭小卫士会员 -->
+		<view class="goldman">
+			<image src="../../../static/images/center/logo.png" mode="" />
+			<view class="text-list">
+				<view class="first">团蜂家庭小卫士会员</view>
+				<view class="second">享受四大权益</view>
+			</view>
+			<view class="open" @click="handleToOpen">立即开通</view>
+		</view>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-    ></tui-modal>
+		<tui-modal
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
+		></tui-modal>
 
-    <tui-modal :show="isShow" title="提示" content="您已开通金管家会员" @click="handleToVip"></tui-modal>
-  </view>
+		<tui-modal :show="isShow" title="提示" content="您已开通团蜂家庭小卫士会员" @click="handleToVip"></tui-modal>
+	</view>
 </template>
 
 <script>
-import { userIsPurchaseApi } from '../../../api/user';
-import { USER_ID } from 'constant';
-import showModalMixin from 'mixin/showModal';
+import { userIsPurchaseApi } from '../../../api/user'
+import { USER_ID } from 'constant'
+import showModalMixin from 'mixin/showModal'
 export default {
-  data() {
-    return {
-      isShow: false
-    };
-  },
-  mixins: [showModalMixin()],
-  methods: {
-    // go() {
-    // 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
-    // }
-    handleToVip(e) {
-      if (e.index) {
-        uni.navigateTo({ url: '/user/sever/goldButler/gold-butler' });
-      }
-      this.isShow = false;
-    },
-    //立即开通
-    handleToOpen() {
-      this.userIsPurchase();
-    },
+	props: {
+		data: {
+			type: Object,
+			required: true
+		}
+	},
+	data() {
+		return {
+			isShow: false
+		}
+	},
+	mixins: [ showModalMixin() ],
+	mounted() {
+		// this.userIsPurchase()
+	},
+	methods: {
+		// go() {
+		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
+		// }
+		handleToVip(e) {
+			if (e.index) {
+				uni.navigateTo({ url: '/user/sever/goldButler/gold-butler' })
+			}
+			this.isShow = false
+		},
+		// 立即开通
+		handleToOpen() {
+			this.userIsPurchase()
+		},
 
-    //查询用户是否购买过金管家套餐
-    async userIsPurchase() {
-      const userId = uni.getStorageSync(USER_ID);
-      const res = await userIsPurchaseApi({
-        userId: userId,
-        // userId: 565,
-        price: 299
-      });
-      this.statusCode = res.statusCode;
-      console.log('statusCode ', this.statusCode);
-      if (!userId) {
-        this.$data._isShowTuiModel = true;
-      } else if (this.statusCode === 20000) {
-        this.isShow = true;
-      } else {
-        uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' });
-      }
-    }
-  },
-  mounted() {
-    // this.userIsPurchase()
-  }
-};
+		// 查询用户是否购买过团蜂家庭小卫士套餐
+		async userIsPurchase() {
+			const userId = uni.getStorageSync(USER_ID)
+			const res = await userIsPurchaseApi({
+				userId,
+				// userId: 565,
+				price: 399
+			})
+			this.statusCode = res.statusCode
+			console.log('statusCode ', this.statusCode)
+			if (!userId) {
+				this.$data._isShowTuiModel = true
+			} else if (this.statusCode === 20000) {
+				this.isShow = true
+			} else {
+				uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' })
+			}
+		}
+	}
+}
 </script>
 
 <style lang="scss" scoped>

@@ -118,7 +118,7 @@ export default {
       //   url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/qrCode/getSignature",
       //   data: {
       //     url: "xxxxxx",
-      //     token: uni.getStorageSync(J_USER_TOKEN),
+      //     token: uni.getStorageSync(USER_TOKEN),
       //   },
       //   methods: "GET",
       //   success: (res) => {

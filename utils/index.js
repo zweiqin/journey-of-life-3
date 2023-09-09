@@ -9,17 +9,15 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export {
-  GyRequest as request,
-  RuanRequest,
-  LTRequest,
-  XZLRequest,
-  SheQuRequest,
-  SheQuRequest1,
-  shopRequest,
-  huangRequest,
-  endRequest,
-  shopRequest1
-} from "./DWHRequest";
+	RuanRequest,
+	XZLRequest,
+	SheQuRequest,
+	SheQu1Request,
+	shopRequest,
+	huangRequest,
+	endRequest,
+	shopRequest1
+} from './DWHRequest'
 export {
   fomartNumber,
   removeCache,
@@ -41,5 +39,5 @@ export { getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLo
 export { QRCode as generateCode } from "./generateQrcode";
 export { request2 } from "./request";
 // #ifdef H5
-export { getUrlCode } from "./DWHutils";
+export { getUrlCode } from './DWHutils'
 // #endif

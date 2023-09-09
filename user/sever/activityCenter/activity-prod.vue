@@ -137,7 +137,6 @@ import {
 	watchVipPriceApi
 } from '../../../api/goods'
 import {
-	getPurchaseRecordApi,
 	getIsPurchaseApi
 } from '../../../api/user'
 import { getUserId } from '../../../utils'

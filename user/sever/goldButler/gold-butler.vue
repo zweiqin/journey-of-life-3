@@ -21,7 +21,7 @@
 			<view class="rect">
 				<view class="left-yellow"></view>
 				<view class="content">
-					<view class="c-name">金管家会员</view>
+					<view class="c-name">团蜂家庭小卫士会员</view>
 					<view class="c-service">享受4大服务</view>
 					<view class="c-time">2023-02-18 至 2024-02-28</view>
 				</view>
@@ -66,7 +66,7 @@
 			<view class="rect">
 				<view class="left-yellow"></view>
 				<view class="content">
-					<view class="c-name">金管家会员</view>
+					<view class="c-name">团蜂家庭小卫士会员</view>
 					<view class="c-service">享受4大服务</view>
 					<view class="c-time">2023-02-18 至 2024-02-28</view>
 				</view>
@@ -81,7 +81,7 @@
 				<view class="main-service-top">
 					<view class="logo-list">
 						<image src="../../../static/images/center/logo.png" mode="" />
-						<text>{{ '金管家会员' }}</text>
+						<text>{{ '团蜂家庭小卫士会员' }}</text>
 					</view>
 				</view>
 				<view class="main-service-text">
@@ -263,7 +263,7 @@ export default {
 					})
 					return
 				}
-				currentServe.serverContent = item.serverContent // TODO: 金管家下单选择的是单个还是全部的?
+				currentServe.serverContent = item.serverContent // TODO: 团蜂家庭小卫士下单选择的是单个还是全部的?
 			} else {
 				currentServe = value.children.find(serve => serve.serverContent === item.serverContent)
 
@@ -283,7 +283,7 @@ export default {
 
 			uni.navigateTo({ url: `/user/sever/goldButler/orderBook?orderInfo=${JSON.stringify(currentServe)}` })
 		},
-		//查询用户是否购买过金管家套餐
+		//查询用户是否购买过团蜂家庭小卫士套餐
 		async userIsPurchase() {
 			const res = await userIsPurchaseApi({
 				userId: getUserId(),
@@ -317,7 +317,7 @@ export default {
 			// this.recordList = this.getdata[0].recordList
 			// console.log('已使用', this.recordList);
 			// this.serverContent = this.getdata[0].serverContent.split(',')
-			// console.log("金管家服务列表", this.serverContent);
+			// console.log("团蜂家庭小卫士服务列表", this.serverContent);
 			const allServeListData = res.data.filter(item => item.serverId)
 			this.recordList = (res.data.filter(item => item.recordList.length).map(item => item.recordList)).flat(Infinity)
 			console.log('已使用', this.recordList);

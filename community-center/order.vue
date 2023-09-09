@@ -1,185 +1,189 @@
 <template>
-  <view class="order-page">
-    <Header
-      tabbar="/pages/user/user"
-      title="社区订单"
-      style="background: #ffffff"
-    ></Header>
-    <!-- 搜索 -->
-    <SearchBar
-      @input="search"
-      :radius="100"
-      placeholder="请输入订单号"
-      class="top-search"
-      style="background: #ffffff"
-    >
-    </SearchBar>
+	<view class="order-page">
+		<Header
+			tabbar="/pages/user/user"
+			title="社区订单"
+			style="background: #ffffff"
+		></Header>
+		<!-- 搜索 -->
+		<SearchBar
+			:radius="100"
+			placeholder="请输入订单号"
+			class="top-search"
+			style="background: #ffffff"
+			@input="search"
+		>
+		</SearchBar>
 
-    <!-- nav-bar -->
-    <view class="navbar">
-      <view
-        class="item"
-        @click="handleChangeStatus(item.value)"
-        v-for="item in orders"
-        :key="item.label"
-        :style="{
-          color: query.status === item.value ? '#E95D20' : '',
-        }"
-      >
-        {{ item.label }}
-      </view>
-    </view>
+		<!-- nav-bar -->
+		<view class="navbar">
+			<view
+				v-for="item in orders"
+				:key="item.label"
+				class="item"
+				:style="{
+					color: query.status === item.value ? '#E95D20' : ''
+				}"
+				@click="handleChangeStatus(item.value)"
+			>
+				{{ item.label }}
+			</view>
+		</view>
 
-    <!-- 列表页 -->
-    <main v-if="orderList.length !== 0">
-      <OrderPanel
-        v-for="item in orderList"
-        :key="item.id"
-        :data="item"
-        @success="handleCancelSuccess"
-      ></OrderPanel>
-    </main>
+		<!-- 列表页 -->
+		<main v-if="orderList.length !== 0">
+			<OrderPanel
+				v-for="item in orderList"
+				:key="item.id"
+				:data="item"
+				@success="handleCancelSuccess"
+			></OrderPanel>
+		</main>
 
-    <view v-else class="no-data">暂无数据~</view>
+		<view v-else class="no-data">暂无数据~</view>
 
-    <tui-toast ref="toast"></tui-toast>
-  </view>
+		<tui-toast ref="toast"></tui-toast>
+	</view>
 </template>
 
 <script>
-import { getEndOrderListApi } from "../api/community-center";
-import OrderPanel from "./components/order-panel.vue";
-import { orderStatusList } from "./config";
-import { getUserId, handleDebounce } from "../utils";
-import SearchBar from "../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
-import Header from "../components/header";
-import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO } from "constant";
+import { getEndOrderListApi } from '../api/community-center'
+import OrderPanel from './components/order-panel.vue'
+import { orderStatusList } from './config'
+import { getUserId, handleDebounce } from '../utils'
+import SearchBar from '../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue'
+import Header from '../components/header'
+import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO } from 'constant'
 
 export default {
-  components: {
-    OrderPanel,
-    SearchBar,
-    Header,
-  },
-  data() {
-    return {
-      search: () => {},
-      orders: orderStatusList(),
-      query: {
-        pageNo: 1,
-        pageSize: 20,
-        orderNo: "",
-        status: undefined,
-      },
-      orderList: [],
-      pages: 0,
-    };
-  },
+	components: {
+		OrderPanel,
+		SearchBar,
+		Header
+	},
+	data() {
+		return {
+			search: () => {},
+			orders: orderStatusList(),
+			query: {
+				pageNo: 1,
+				pageSize: 20,
+				orderNo: '',
+				status: undefined
+			},
+			orderList: [],
+			pages: 0
+		}
+	},
 
-  mounted() {
-    uni.removeStorageSync(COMMUNITY_ORDER_NO);
-    uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
-    this.search = handleDebounce(this.searchOrder, 500);
-    this.getOrderList();
-  },
+	mounted() {
+		uni.removeStorageSync(COMMUNITY_ORDER_NO)
+		uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO)
+		this.search = handleDebounce(this.searchOrder, 500)
+		this.getOrderList()
+	},
 
-  methods: {
-    /**
+	methods: {
+		/**
      * @description 搜索框搜索
      */
-    searchOrder(e) {
-      this.query.orderNo = e.trim();
-      this.getOrderList();
-    },
 
-    /**
+		searchOrder(e) {
+			this.query.orderNo = e.trim()
+			this.getOrderList()
+		},
+
+		/**
      * @description 切换navbar
      */
-    handleChangeStatus(status) {
-      this.query.status = status;
-      this.getOrderList();
-    },
 
-    /**
+		handleChangeStatus(status) {
+			this.query.status = status
+			this.getOrderList()
+		},
+
+		/**
      * @description 获取列表
      */
-    async getOrderList(reachBottom) {
-      const _this = this;
-      uni.showLoading({
-        title: "加载中",
-      });
 
-      try {
-        // request.laoa_huozhu_post(
-        //   "/api/md/order/orderPagelist",
-        //   {
-        //     ...this.query,
-        //   },
-        //   function (res) {
-        //     _this.pages = res.data.pages;
-        //     if (reachBottom) {
-        //       _this.orderList.push(...res.data.data);
-        //     } else {
-        //       _this.orderList = res.data.data;
-        //     }
-        //   },
-        //   function () {}
-        // );
+		async getOrderList(reachBottom) {
+			const _this = this
+			uni.showLoading({
+				title: '加载中'
+			})
 
-        const res = await getEndOrderListApi({
-          ...this.query,
-          userId: getUserId(),
-        });
+			try {
+				// SheQu1Request.laoa_huozhu_post(
+				//   "/api/md/order/orderPagelist",
+				//   {
+				//     ...this.query,
+				//   },
+				//   function (res) {
+				//     _this.pages = res.data.pages;
+				//     if (reachBottom) {
+				//       _this.orderList.push(...res.data.data);
+				//     } else {
+				//       _this.orderList = res.data.data;
+				//     }
+				//   },
+				//   function () {}
+				// );
 
-        if (res.statusCode === 20000) {
-          console.log(res);
-          _this.pages = res.pages;
-          if (reachBottom) {
-            _this.orderList.push(...res.data);
-          } else {
-            _this.orderList = res.data;
-          }
-        } else {
-          uni.showToast({
-            title: res.statusMsg,
-            duration: 2000,
-          });
-        }
-      } finally {
-        uni.hideLoading();
-      }
-    },
+				const res = await getEndOrderListApi({
+					...this.query,
+					userId: getUserId()
+				})
 
-    /**
+				if (res.statusCode === 20000) {
+					console.log(res)
+					_this.pages = res.pages
+					if (reachBottom) {
+						_this.orderList.push(...res.data)
+					} else {
+						_this.orderList = res.data
+					}
+				} else {
+					uni.showToast({
+						title: res.statusMsg,
+						duration: 2000
+					})
+				}
+			} finally {
+				uni.hideLoading()
+			}
+		},
+
+		/**
      * @description 取消成功
      */
-    handleCancelSuccess() {
-      this.getOrderList();
-      this.ttoast("取消成功");
-    },
-  },
 
-  onReachBottom() {
-    if (this.pages === this.query.pageNo) {
-      uni.showToast({
-        title: "没有单啦",
-        icon: "fail",
-      });
-      return;
-    }
-    this.query.pageNo += 1;
-    this.getOrderList(true);
-  },
+		handleCancelSuccess() {
+			this.getOrderList()
+			this.ttoast('取消成功')
+		}
+	},
 
-  onPullDownRefresh() {
-    this.orderList = [];
-    this.pages = 0;
-    this.query.pageNo = 1;
-    this.query.pageSize = 20;
-    this.getOrderList();
-    uni.stopPullDownRefresh();
-  },
-};
+	onReachBottom() {
+		if (this.pages === this.query.pageNo) {
+			uni.showToast({
+				title: '没有单啦',
+				icon: 'fail'
+			})
+			return
+		}
+		this.query.pageNo += 1
+		this.getOrderList(true)
+	},
+
+	onPullDownRefresh() {
+		this.orderList = []
+		this.pages = 0
+		this.query.pageNo = 1
+		this.query.pageSize = 20
+		this.getOrderList()
+		uni.stopPullDownRefresh()
+	}
+}
 </script>
 
 <style lang="less" scoped>
