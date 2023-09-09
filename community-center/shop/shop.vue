@@ -5,13 +5,13 @@
       <view class="location" :style="{ width: isSearch ? '0' : '', color: isSearch ? '#ef530e' : '' }"> {{ queryInfo.address }} </view>
       <view class="search-container">
         <input v-model="queryInfo.search" :style="{ flex: isSearch ? 1 : 0 }" class="input" type="text" placeholder="请输入要搜索的门店" />
-        <tui-icon :size="20" :color="isSearch ? '#f40' : ''" @click="handleSearchShop" name="search"></tui-icon>
+        <tui-icon :size="26" :color="isSearch ? '#f40' : ''" @click="handleSearchShop" name="search"></tui-icon>
       </view>
     </view>
 
     <view class="content">
       <view class="shop-list-wrapper">
-        <CommonShop v-for="shopData in shopList" :shopInfo="shopData" :key="index"></CommonShop>
+        <CommonShop v-for="(shopData, index) in shopList" :shopInfo="shopData" :key="index"></CommonShop>
       </view>
       <LoadingMore v-show="isLoading" :status="loadingStatus"></LoadingMore>
     </view>
@@ -47,6 +47,14 @@ export default {
     };
   },
 
+  watch: {
+    'queryInfo.search'(value) {
+      if (!value) {
+        this.getShopDataList(true, true);
+      }
+    }
+  },
+
   mounted() {
     this.getShopDataList(true);
   },
@@ -57,7 +65,7 @@ export default {
     // 点击搜索
     handleSearchShop() {
       if (this.isSearch) {
-        this.getShopDataList(true);
+        this.getShopDataList(true, true);
       } else {
         this.isSearch = true;
       }
@@ -70,10 +78,10 @@ export default {
     },
 
     //  请求数据
-    async getShopDataList(isClear) {
+    async getShopDataList(isClear, isSearch) {
       try {
         this.isLoading = true;
-        this.queryInfo.address = (await getCurrentLocation()) + '';
+        this.queryInfo.address = (await getCurrentLocation(true, false, !!isSearch)) + '';
         if (isClear) {
           this.totalCount = 0;
           this.totalPages = 0;
@@ -82,10 +90,12 @@ export default {
         this.loadingStatus = 'loading';
         const res = await getNearByShopListApi(this.queryInfo);
         if (res.statusCode === 20000) {
-          const data = res.data;
-          this.totalCount = data.total;
-          this.totalPages = data.pages;
-          this.shopList = [...this.shopList, ...data.data];
+          if (res.data) {
+            const data = res.data;
+            this.totalCount = data.total;
+            this.totalPages = data.pages;
+            this.shopList = [...this.shopList, ...data.data];
+          }
         } else {
           this.ttoast({
             type: 'fail',
@@ -93,6 +103,7 @@ export default {
           });
         }
       } catch (error) {
+        console.log('你干啥', error);
         this.ttoast({
           type: 'fail',
           title: '附近商家获取失败',

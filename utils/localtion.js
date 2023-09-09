@@ -157,12 +157,16 @@ export const isUserEmpowerLocationPermission = () => {
 };
 
 // 防止用户通过连接进入页面导致未获取到定位信息就直接发送需要携带当前定位信息的接口
-export const getCurrentLocation = (error = true, isRedirectImmediately) => {
+export const getCurrentLocation = (error = true, isRedirectImmediately, isAwait) => {
   let count = 2;
   let timer = null;
   return new Promise(async (resolve, reject) => {
     let currentAddress = store.getters.detailAddress;
     if (currentAddress) {
+      resolve(currentAddress);
+    }
+
+    if (isAwait) {
       resolve(currentAddress);
     }
 

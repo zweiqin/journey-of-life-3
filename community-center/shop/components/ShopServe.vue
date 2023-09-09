@@ -4,9 +4,9 @@
     <scroll-view scroll-x="true" v-if="category && category.length">
       <view class="serve-list">
         <button
-          @click="$emit('change', item.typeCategory, 1)"
+          @click="$emit('change', item.id, 1)"
           class="uni-btn"
-          :class="{ active: item.typeCategory === current }"
+          :class="{ active: item.id === current }"
           v-for="item in category"
           :key="item.goodsTypeName"
         >
@@ -23,7 +23,7 @@
         <view class="serve-info">
           <view class="serve-name">{{ item.goodsName }}</view>
           <view class="serve-count">服务{{ item.serviceVolume || 0 }}次</view>
-          <view class="price-text"> ￥<text class="price-num">500</text> </view>
+          <view class="price-text"> ￥<text class="price-num">{{ item.preferentialPrice && item.preferentialPrice < item.goodsPrice ? item.preferentialPrice : item.goodsPrice }}</text> </view>
         </view>
         <button class="uni-btn">预约</button>
       </view>

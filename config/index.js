@@ -1,11 +1,11 @@
 // export const BASE_URL = "https://www.zhult.com/test-";
 // export const BASE_URL = 'https://www.zhult.com/';
-export const BASE_URL = 'http://192.168.0.72:8781/';
+export const BASE_URL = 'http://192.168.0.66:8781/';
 
 // 线上助力通
 // export const SheQu1_URL = "https://www.zhult.com/test-";
 // export const SheQu1_URL = 'https://www.zhult.com/';
-export const SheQu1_URL = "http://192.168.0.72:8781/";
+export const SheQu1_URL = "http://192.168.0.66:8781/";
 
 export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx'; // 生产
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:8098/dts-app-api/wx' // 测试

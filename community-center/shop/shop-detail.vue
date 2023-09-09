@@ -2,7 +2,7 @@
   <view class="shop-detail-container">
     <view class="shop-background-img" v-if="shopDetailInfo">
       <image class="bg" src="https://img0.baidu.com/it/u=3509590395,993537027&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500"></image>
-      <image @click="handleBack" class="back-icon" src="../../static/images/new-community/shop/order-detail-back.png"></image>
+      <image @click="handleBack" class="back-icon" src="../../static/images/detail/back.png"></image>
 
       <view class="shop-base-info">
         <view class="top">

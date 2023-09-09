@@ -32,7 +32,7 @@
           <text class="num">{{ shopInfo.accessNum || 0 }}</text>
         </view>
 
-        <view class="item">
+        <view class="item" v-if="shopInfo.distance">
           <image class="icon" src="../../../static/images/new-community/home/location.png"></image>
           <text class="num">{{ shopInfo.distance || 0 }}km</text>
         </view>

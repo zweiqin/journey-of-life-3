@@ -4,9 +4,9 @@
     <scroll-view scroll-x="true" v-if="category && category.length">
       <view class="serve-list">
         <button
-          @click="$emit('change', item.typeCategory, 2)"
+          @click="$emit('change', item.id, 2)"
           class="uni-btn"
-          :class="{ active: item.typeCategory === current }"
+          :class="{ active: item.id === current }"
           v-for="item in category"
           :key="item.goodsTypeName"
         >
@@ -17,7 +17,7 @@
     <!-- 服务分类 end -->
 
     <view class="shop-goods">
-      <view class="goods-pane"  @click="go('/community-center/shop/goods-detail?id=' + item.id + '&shopId=' + item.shopId)" v-for="item in cdata" :key="item.id">
+      <view class="goods-pane" @click="go('/community-center/shop/goods-detail?id=' + item.id + '&shopId=' + item.shopId)" v-for="item in cdata" :key="item.id">
         <view class="goods-img">
           <tui-lazyload-img :src="item.goodsLogo"></tui-lazyload-img>
         </view>
@@ -25,7 +25,8 @@
         <view class="goods-info">
           <view class="goods-name">{{ item.goodsName }}</view>
           <view class="price-wrapper">
-            ￥ <text class="price-num"> {{ item.goodsPrice }}</text>
+            ￥
+            <text class="price-num"> {{ item.preferentialPrice && item.preferentialPrice < item.goodsPrice ? item.preferentialPrice : item.goodsPrice }}</text>
           </view>
         </view>
       </view>

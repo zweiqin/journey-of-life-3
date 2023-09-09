@@ -43,7 +43,12 @@
 
         <swiper style="height: 90upx" :duration="100" disable-touch :current="currentMode">
           <swiper-item>
-            <view class="price-info"> ￥ <text class="price-value">350</text> </view>
+            <view class="price-info">
+              ￥
+              <text class="price-value">{{
+                serveDeatil.preferentialPrice && serveDeatil.preferentialPrice < serveDeatil.goodsPrice ? serveDeatil.preferentialPrice : serveDeatil.goodsPrice
+              }}</text>
+            </view>
           </swiper-item>
           <swiper-item>
             <view class="tip"> 请点击预约之后，点击下单，等待店长为您报价，之后请在个人中心社区订单处点击支付 </view>
@@ -63,12 +68,7 @@
       <uParse :content="serveDetail"></uParse>
     </view>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '/pages/community-center/community-centerr')"
-    ></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login')"></tui-modal>
 
     <tui-toast ref="toast"></tui-toast>
   </view>

@@ -1,5 +1,5 @@
 <template>
-  <div class="direct-sale-store-container" v-if="shopInfo">
+  <div class="direct-sale-store-container" @click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shopId)" v-if="shopInfo">
     <view class="item-1">
       <view class="shop-name">{{ shopInfo.shopName }}</view>
       <button class="uni-btn">进店</button>
