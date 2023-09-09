@@ -220,7 +220,7 @@ export const vipBarConfig = [
   {
     img: require("../../static/images/con-center/cao-2.png"),
     url: "/community-center/vip-center/vip-detail?type=2",
-    name: "全年金管家套餐",
+    name: "家庭小卫士",
     price: "299",
   },
 	{

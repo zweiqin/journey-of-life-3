@@ -76,7 +76,7 @@ export default {
 
     subTitle: {
       type: String,
-      default: "团蜂家庭小卫士会员",
+      default: "家庭小卫士",
     },
   },
   data() {

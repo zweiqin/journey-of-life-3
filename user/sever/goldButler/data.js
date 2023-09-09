@@ -44,19 +44,19 @@ export const contents = [
 	{
 		value: 1,
 		serviceName: '水管清洗1次',
-		name: '团蜂家庭小卫士会员',
+		name: '家庭小卫士',
 		time: '2023-02-18'
 	},
 	{
 		value: 2,
 		serviceName: '电路检修',
-		name: '团蜂家庭小卫士会员',
+		name: '家庭小卫士',
 		time: '2023-02-18'
 	},
 	{
 		value: 3,
 		serviceName: '水管检修',
-		name: '团蜂家庭小卫士会员',
+		name: '家庭小卫士',
 		time: '2023-02-18'
 	}
 ]

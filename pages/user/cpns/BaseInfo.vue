@@ -47,9 +47,9 @@
 
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
 				<view class="account-number">
-					{{ 1 }}
+					{{ 399 }}
 				</view>
-				<view class="account-title">团蜂家庭小卫士</view>
+				<view class="account-title">家庭小卫士</view>
 			</view>
 
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
@@ -59,11 +59,11 @@
 				<view class="account-title">优惠劵</view>
 			</view>
 		</view>
-		<!-- 团蜂家庭小卫士会员 -->
+		<!-- 家庭小卫士 -->
 		<view class="goldman">
 			<image src="../../../static/images/center/logo.png" mode="" />
 			<view class="text-list">
-				<view class="first">团蜂家庭小卫士会员</view>
+				<view class="first">家庭小卫士</view>
 				<view class="second">享受四大权益</view>
 			</view>
 			<view class="open" @click="handleToOpen">立即开通</view>
@@ -74,7 +74,7 @@
 			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
 		></tui-modal>
 
-		<tui-modal :show="isShow" title="提示" content="您已开通团蜂家庭小卫士会员" @click="handleToVip"></tui-modal>
+		<tui-modal :show="isShow" title="提示" content="您已开通家庭小卫士" @click="handleToVip"></tui-modal>
 	</view>
 </template>
 
@@ -113,7 +113,7 @@ export default {
 			this.userIsPurchase()
 		},
 
-		// 查询用户是否购买过团蜂家庭小卫士套餐
+		// 查询用户是否购买过家庭小卫士套餐
 		async userIsPurchase() {
 			const userId = uni.getStorageSync(USER_ID)
 			const res = await userIsPurchaseApi({

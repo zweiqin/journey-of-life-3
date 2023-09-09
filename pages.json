@@ -909,7 +909,7 @@
         {
           "path": "sever/goldButler/gold-butler",
           "style": {
-            "navigationBarTitleText": "团蜂家庭小卫士",
+            "navigationBarTitleText": "家庭小卫士",
             "usingComponents": {}
           }
         },

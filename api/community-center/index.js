@@ -80,7 +80,7 @@ export const getSearchDataApi = (data) => XZLRequest('/demo/api/community/server
 
 // 新的订单详情
 export const getCommOrderDeatilApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/getMdOrderInfoByNo', data, 'get');
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/getMdOrderInfoByNo', data, 'get');
 };
 
 // 本地
@@ -127,7 +127,7 @@ export const getServeListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order
 })
 
 /**
- * 创建社区团蜂家庭小卫士订单
+ * 创建社区家庭小卫士订单
  */
 
 export const createBeeStewardOrderApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/createOrderSq', data, 'post', null, {
@@ -247,30 +247,30 @@ export const getServeCommentListApi = (data) => {
 
 // 获取首页附近商家列表
 export const getNearByShopListApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/queryModuanShopList', data);
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/queryModuanShopList', data);
 };
 
 // 获取门店详情
 export const getShopDetailApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/queryModuanShopInfoById', data, 'GET');
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/queryModuanShopInfoById', data, 'GET');
 };
 
 // 收藏、取消门店
 export const followShopApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/followOrCancelShop', data);
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/followOrCancelShop', data);
 };
 
 // 获取商品分类
 export const getShopGoodsCategoryListApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/findShopGoodsTypeList', data, 'GET');
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/findShopGoodsTypeList', data, 'GET');
 };
 
 // 获取门店商品列表
 export const getShopGoodsListApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/findShopGoodsList', data);
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/findShopGoodsList', data);
 };
 
 // 获取1附近商家门店商品详情
 export const getShopGoodsDetailApi = (data) => {
-  return SheQuRequest1('laoa-huozhu/api/hz/order/third/findShopGoodsInfo', data, 'GET');
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/findShopGoodsInfo', data, 'GET');
 };
