@@ -187,6 +187,7 @@ export default {
           const rotationChart = this.shopDetailInfo.rotationChart;
           this.shopDetailInfo.businessLicense = businessLicense && typeof businessLicense === 'string' ? businessLicense.split(',') : [];
           this.shopDetailInfo.rotationChart = rotationChart && typeof rotationChart === 'string' ? rotationChart.split(',') : [];
+
           this.getShopGoodsCategoryList();
         } else {
           this.ttoast({

@@ -32,6 +32,8 @@ export default {
     shopImageList() {
       if (this.shopInfo && this.shopInfo.rotationChart) {
         return this.shopInfo.rotationChart.split(',');
+      } else if (this.shopInfo && this.shopInfo.businessLicense) {
+        return this.shopInfo.businessLicense.split(',');
       } else {
         return [];
       }

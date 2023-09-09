@@ -8,9 +8,8 @@
         </view>
       </view>
     </view>
-
-    <view class="pane company-info" v-if="shopInfo.businessLicense.length && shopInfo.rotationChart.length">
-      <view class="pane-title">公司信息</view>
+    <view class="pane company-info">
+      <!-- <view class="pane-title">公司信息</view> -->
       <view class="pane-content" v-if="shopInfo.businessLicense.length">
         <view class="section">
           <view class="section-title"> 资质证件</view>
@@ -18,34 +17,36 @@
             <scroll-view scroll-x="true">
               <view class="img-list">
                 <tui-lazyload-img
-                  :class="{ one: shopInfo.rotationChart.length === 1 }"
+                  :class="{ one: shopInfo.businessLicense.length === 1 }"
                   v-for="img in shopInfo.businessLicense"
                   :key="img"
                   :src="img"
+                  mode="aspectFit"
                 ></tui-lazyload-img>
               </view>
             </scroll-view>
           </view>
         </view>
+      </view>
 
-        <view class="section company-style" v-if="shopInfo.rotationChart.length">
-          <view class="section-title"> 公司风采</view>
-          <view class="image-list">
-            <scroll-view scroll-x="true">
-              <view class="img-list">
-                <tui-lazyload-img
-                  :class="{ one: shopInfo.rotationChart.length === 1 }"
-                  v-for="img in shopInfo.rotationChart"
-                  :key="img"
-                  :src="img"
-                ></tui-lazyload-img>
-              </view>
-            </scroll-view>
-          </view>
+      <view class="section company-style" v-if="shopInfo.rotationChart.length">
+        <view class="section-title"> 公司风采</view>
+        <view class="image-list">
+          <scroll-view scroll-x="true">
+            <view class="img-list">
+              <tui-lazyload-img
+                :class="{ one: shopInfo.rotationChart.length === 1 }"
+                v-for="img in shopInfo.rotationChart"
+                :key="img"
+                :src="img"
+                mode="aspectFit"
+              ></tui-lazyload-img>
+            </view>
+          </scroll-view>
+        </view>
 
-          <view class="description">
-            {{ shopInfo.elegantDemeanour }}
-          </view>
+        <view class="description">
+          {{ shopInfo.elegantDemeanour }}
         </view>
       </view>
     </view>
@@ -103,7 +104,7 @@ export default {
       background-color: #f9f9f9 !important;
       margin-right: 20upx;
       overflow: hidden;
-      border-radius: 8upx;
+      border-radius: 8upx !important;
 
       &.one {
         width: 100% !important;

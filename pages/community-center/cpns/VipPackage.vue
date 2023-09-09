@@ -22,7 +22,7 @@
     <view class="other-package">
       <view class="package whole-package" @click="go('/community-center/vip-center/vip-detail?type=2')">
         <view class="package-title"> 家庭小卫士 </view>
-        <view class="title"><text class="vip-price">299</text>全年套餐</view>
+        <view class="title"><text class="vip-price">399</text>全年套餐</view>
         <button class="uni-btn">立省1500</button>
 
         <image class="li" src="../../../static/images/new-community/home/li.png"></image>

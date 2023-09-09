@@ -1,7 +1,8 @@
 export const communityServeMenu = [
   {
     label: '便民服务',
-    icon: require('../../static/images/new-community/home/bianmin.png')
+    icon: require('../../static/images/new-community/home/bianmin.png'),
+    url: '/pages/user/kuai-di/index'
   },
   {
     label: '家具服务',
@@ -35,7 +36,8 @@ export const communityServeMenu = [
   },
   {
     label: '房屋翻新',
-    icon: require('../../static/images/new-community/home/fangwu.png')
+    icon: require('../../static/images/new-community/home/fangwu.png'),
+    url: '/community-center/service-sort?value=13'
   },
   {
     label: '四害消杀',
