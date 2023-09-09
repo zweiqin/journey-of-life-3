@@ -15,8 +15,8 @@
 					<template #body>
 						<view style="padding: 16upx 24upx 26upx;font-size: 28upx;">
 							<!-- style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" -->
+							<view>银行名称：{{ item.bankName || '--' }}</view>
 							<view>开卡银行名称：{{ item.openCardBank || '--' }}</view>
-							<view>卡号：{{ item.cardNo || '--' }}</view>
 							<view>卡号：{{ item.cardNo || '--' }}</view>
 							<view>关联手机号：{{ item.mobile || '--' }}</view>
 						</view>

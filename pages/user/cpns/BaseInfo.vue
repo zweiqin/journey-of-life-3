@@ -60,7 +60,7 @@
 				<view class="account-number">
 					{{ 1 }}
 				</view>
-				<view class="account-title">金管家</view>
+				<view class="account-title">团蜂家庭小卫士</view>
 			</view>
 
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
@@ -70,11 +70,11 @@
 				<view class="account-title">优惠劵</view>
 			</view>
 		</view>
-		<!-- 金管家会员 -->
+		<!-- 团蜂家庭小卫士会员 -->
 		<view class="goldman">
 			<image src="../../../static/images/center/logo.png" mode="" />
 			<view class="text-list">
-				<view class="first">金管家会员</view>
+				<view class="first">团蜂家庭小卫士会员</view>
 				<view class="second">享受四大权益</view>
 			</view>
 			<view class="open" @click="handleToOpen">立即开通</view>
@@ -85,7 +85,7 @@
 			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
 		></tui-modal>
 
-		<tui-modal :show="isShow" title="提示" content="您已开通金管家会员" @click="handleToVip"></tui-modal>
+		<tui-modal :show="isShow" title="提示" content="您已开通团蜂家庭小卫士会员" @click="handleToVip"></tui-modal>
 	</view>
 </template>
 
@@ -124,13 +124,13 @@ export default {
 			this.userIsPurchase()
 		},
 
-		// 查询用户是否购买过金管家套餐
+		// 查询用户是否购买过团蜂家庭小卫士套餐
 		async userIsPurchase() {
 			const userId = uni.getStorageSync(USER_ID)
 			const res = await userIsPurchaseApi({
 				userId,
 				// userId: 565,
-				price: 299
+				price: 399
 			})
 			this.statusCode = res.statusCode
 			console.log('statusCode ', this.statusCode)

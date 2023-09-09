@@ -122,7 +122,7 @@ export const getServeListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order
 })
 
 /**
- * 创建社区金管家订单
+ * 创建社区团蜂家庭小卫士订单
  */
 
 export const createBeeStewardOrderApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/createOrderSq', data, 'post', null, {

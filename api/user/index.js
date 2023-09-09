@@ -179,10 +179,10 @@ export const getUserCrmListApi = (data) => shopRequest('/userCrm/region', data, 
 // 粉丝查询
 export const getBindingUserApi = (data) => RuanRequest('/userBindingUser/bindingUser', data, 'get')
 
-// 分享按钮判断用户是否购买299会员成为金管家
+// 分享按钮判断用户是否购买299会员成为团蜂家庭小卫士
 export const getPurchaseRecordApi = (data) => RuanRequest('/userCrm/purchaseRecord', data, 'get')
 
-// 分享按钮判断用户是否购买399会员成为金管家2
+// 分享按钮判断用户是否购买399会员成为团蜂家庭小卫士2
 export const getPurchaseRecord2Api = (data) => RuanRequest('/userCrm/purchaseRecord2', data, 'get')
 
 // 分享按钮判断用户是否购买爆款商品
@@ -357,7 +357,7 @@ export const getWithdrawRecordListUserApi = (data) => endRequest({
 })
 
 // 团蜂用户提现余额
-export const withdrawalBalanceApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalBalance', data)
+export const withdrawalBalanceApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalBalance', data, 'get')
 
 // 活动中心提现到余额
 export const updateWithdrawalApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawal', data)
@@ -377,10 +377,10 @@ export const receiveCouponApi = (data) => shopRequest('/coupon/receive', data)
 // 查看自己持有
 export const getCouponListApi = (data) => shopRequest('/coupon/mylist', data, 'get')
 
-// 查询用户是否购买过金管家套餐
+// 查询用户是否购买过团蜂家庭小卫士套餐
 export const userIsPurchaseApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/userIsPurchase', data)
 
-// 获取金管家套餐列表
+// 获取团蜂家庭小卫士套餐列表
 export const getSetMealListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/getSetMealList', data)
 
 // 获取会员套餐列表

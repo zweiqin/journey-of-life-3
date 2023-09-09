@@ -10,7 +10,7 @@ export const vipList = [
     price: "39.9",
   },
   {
-    name: "金管家",
+    name: "团蜂家庭小卫士",
     // subTitle: "开通即可享受一年 (299元/年)",
     desc: [
       "(1)水管应急检修1次 ",

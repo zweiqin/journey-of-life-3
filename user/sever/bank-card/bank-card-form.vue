@@ -46,10 +46,10 @@ export default {
 					placeholder: '请填写银行卡卡号'
 				},
 				{
-					label: '手机号：',
+					label: '关联手机号：',
 					field: 'mobile',
 					type: 'input',
-					placeholder: '请填写手机号'
+					placeholder: '请填写关联手机号'
 				}
 			],
 			form: {

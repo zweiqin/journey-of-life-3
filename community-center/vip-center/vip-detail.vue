@@ -3,16 +3,16 @@
 		<!-- header -->
 		<VipHeader
 			:campaigns-type="campaignsType"
-			:name="type == 2 ? `${myAttributeVipJInData.serverName || '金管家会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`"
+			:name="type == 2 ? `${myAttributeVipJInData.serverName || '团蜂家庭小卫士会员'}` : `(${currentJUHUIdata.serverName || '限时钜惠'})`"
 			@share-activity="handleShareActivity" @share-active="handleShareServe"
 		>
 		</VipHeader>
 
-		<!-- 金管家的header -->
+		<!-- 团蜂家庭小卫士的header -->
 		<view v-if="type == 2" class="pane">
 			<view class="desc-pane">
 				<view class="text">
-					<view class="text1">开通{{ myAttributeVipJInData.serverName || '金管家会员' }}</view>
+					<view class="text1">开通{{ myAttributeVipJInData.serverName || '团蜂家庭小卫士会员' }}</view>
 					<view class="text2">享受{{ beeSteward.length }}大福利</view>
 				</view>
 			</view>
@@ -25,7 +25,7 @@
 		<!-- 服务内容 -->
 		<VipServePane
 			v-model="currentIndulgence" :type="type * 1"
-			:sub-title="type == 2 ? '金管家会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`"
+			:sub-title="type == 2 ? '团蜂家庭小卫士会员权益' : `${currentJUHUIdata.serverPrice}元${currentJUHUIdata.serverName || '限时钜惠'}`"
 			:desc="type == 2 ? `享受${beeSteward.length}大权益` : '任选一项清洗服务'" :data="type == 2 ? beeSteward : indulgenceData"
 			:radius="type == 2 ? '42upx' : '42rpx 42rpx 0 0'" class="vip-list"
 		>
@@ -112,7 +112,7 @@ export default {
 			currentIndulgence: '',
 			activityCode: '',
 			qrcodeUrl: '',
-			myAttributeVipJInData: {}, // 自定义对的金管家
+			myAttributeVipJInData: {}, // 自定义对的团蜂家庭小卫士
 			currentJUHUIdata: {} // 自定义的
 		}
 	},
@@ -324,7 +324,7 @@ export default {
 					})
 				} else {
 					uni.showToast({
-						title: '请您购买金管家会员后，即可进行分享',
+						title: '请您购买团蜂家庭小卫士会员后，即可进行分享',
 						duration: 5000,
 						icon: 'none'
 					})
@@ -373,7 +373,7 @@ export default {
 				// 肯定是type也为2
 				const failObj = {
 					data: {
-						title: '团蜂社区金管家会员',
+						title: '团蜂社区团蜂家庭小卫士会员',
 						desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
 						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=2`,
 						imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
@@ -401,7 +401,7 @@ export default {
 							this.activityCode = res.data
 							data = {
 								data: {
-									title: '团蜂社区金管家会员',
+									title: '团蜂社区团蜂家庭小卫士会员',
 									desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
 									link: `${this.qrcodeUrl}${res.data}`,
 									imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
@@ -423,7 +423,7 @@ export default {
 					data = failObj
 					meaning !== 'shareBtn' &&
 						uni.showToast({
-							title: '您还未购买金管家会员，购买后才可进行活动分享！',
+							title: '您还未购买团蜂家庭小卫士会员，购买后才可进行活动分享！',
 							duration: 5000,
 							icon: 'none'
 						})
@@ -431,7 +431,7 @@ export default {
 			} else {
 				data = {
 					data: {
-						title: this.type == 2 ? '团蜂社区金管家会员' : '限时钜惠',
+						title: this.type == 2 ? '团蜂社区团蜂家庭小卫士会员' : '限时钜惠',
 						desc:
 							this.type == 2
 								? `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`
