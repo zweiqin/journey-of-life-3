@@ -17,7 +17,7 @@
           <view class="text2">享受{{ beeSteward.length }}大福利</view>
         </view>
       </view>
-      <PayBar :price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice || 39.9" @pay="handlePayVip"></PayBar>
+      <PayBar :price="type == 2 ? myAttributeVipJInData.serverPrice || 399 : currentJUHUIdata.serverPrice || 39.9" @pay="handlePayVip"></PayBar>
     </view>
 
     <!-- 服务内容 -->
@@ -33,12 +33,12 @@
     </VipServePane>
 
     <!-- 抢购 -->
-    <PayBar v-if="type == 1" :price="type == 2 ? myAttributeVipJInData.serverPrice || 299 : currentJUHUIdata.serverPrice || 39.9" @pay="handlePayVip"> </PayBar>
+    <PayBar v-if="type == 1" :price="type == 2 ? myAttributeVipJInData.serverPrice || 399 : currentJUHUIdata.serverPrice || 39.9" @pay="handlePayVip"> </PayBar>
 
     <!-- 赠品 -->
     <view v-if="type == 2" class="gift">
       <image class="gift-icon" src="../../static/images/con-center/vip/gift.png"></image>
-      <text>送价值950元品牌超值大礼包</text>
+      <text>送价值980元品牌超值大礼包</text>
       <image class="gift-detail" src="../../static/images/new-community/home/vip.png"></image>
     </view>
 
@@ -297,7 +297,7 @@ export default {
         if (this.campaignsType === 0) {
           res = await getPurchaseRecordApi({
             userId: getUserId(),
-            price: 299
+            price: 399
           });
         } else if (this.campaignsType === 3) {
           res = await getPurchaseRecord2Api({
@@ -328,13 +328,12 @@ export default {
         title: '活动邀请码生成中...'
       });
       const _this = this;
-      console.log('草了', this.$refs);
       this.$refs.uqrcode.make({
         success: () => {
           uni.hideLoading();
           _this.$refs.posterPopupRef.show({
             shareCode: this.shareCode,
-            logo: require('../../static/images/con-center/alpaca-forward.png'),
+            logo: require('../../static/images/new-community/home/activity.png'),
             desc: `活动邀请码分享`
           });
         }
@@ -364,7 +363,7 @@ export default {
         const failObj = {
           data: {
             title: '团蜂社区家庭小卫士',
-            desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
+            desc: `送价值980元品牌超值大礼包`,
             link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=2`,
             imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
           },
@@ -375,7 +374,7 @@ export default {
         if (this.campaignsType === 0) {
           res = await getPurchaseRecordApi({
             userId: getUserId(),
-            price: 299
+            price: 399
           });
         } else if (this.campaignsType === 3) {
           res = await getPurchaseRecord2Api({
@@ -392,7 +391,7 @@ export default {
               data = {
                 data: {
                   title: '团蜂社区家庭小卫士',
-                  desc: `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`,
+                  desc: `送价值980元品牌超值大礼包`,
                   link: `${this.qrcodeUrl}${res.data}`,
                   imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
                 },
@@ -424,7 +423,7 @@ export default {
             title: this.type == 2 ? '团蜂社区家庭小卫士' : '限时钜惠',
             desc:
               this.type == 2
-                ? `团蜂千万大补贴，全年水电管道检测修服务，活动期间免费赠送价值300元的羊驼公仔一个！`
+                ? `送价值980元品牌超值大礼包`
                 : `${this.indulgenceData.map((item) => item.serverContent).join('；')}`,
             link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${this.type}`,
             imageUrl: this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''

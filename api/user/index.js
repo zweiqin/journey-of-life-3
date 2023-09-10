@@ -179,7 +179,7 @@ export const getUserCrmListApi = (data) => shopRequest('/userCrm/region', data, 
 // 粉丝查询
 export const getBindingUserApi = (data) => RuanRequest('/userBindingUser/bindingUser', data, 'get')
 
-// 分享按钮判断用户是否购买299会员成为家庭小卫士
+// 分享按钮判断用户是否购买399会员成为家庭小卫士
 export const getPurchaseRecordApi = (data) => RuanRequest('/userCrm/purchaseRecord', data, 'get')
 
 // 分享按钮判断用户是否购买399会员成为家庭小卫士2

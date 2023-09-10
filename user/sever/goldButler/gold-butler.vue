@@ -27,7 +27,7 @@
         </view>
         <view class="open1">已开通</view>
         <!-- <view class="open2" v-if="status == 1" @click="handleToOpen">
-					<view class="money">￥299</view>
+					<view class="money">￥399</view>
 					<view class="go">立即开通</view>
 				</view> -->
       </view>
@@ -66,11 +66,11 @@
         <view class="content">
           <view class="c-name">家庭小卫士</view>
           <view class="c-service">享受4大服务</view>
-          <view class="c-time">2023-02-18 至 2024-02-28</view>
+          <view class="c-time">2023-09-15 至 2023-10-15</view>
         </view>
         <!-- <view class="open1" v-if="status == 2">已开通</view> -->
         <view class="open2" @click="handleToOpen">
-          <view class="money">￥299</view>
+          <view class="money">￥399</view>
           <view class="go">立即开通</view>
         </view>
       </view>
@@ -85,9 +85,9 @@
         <view class="main-service-text">
           <view class="name"> 享受<text>4</text>大服务 </view>
         </view>
-        <view class="main-service-item" v-for="item in service" :key="item.value">
+        <view class="main-service-item" v-for="item in vipContent" :key="item">
           <image src="../../../static/images/user/vip.png" mode="" />
-          <view class="text">{{ item.name }}</view>
+          <view class="text">{{ item }}</view>
           <!-- <view class="order" :style="getOrderBtnStyle(value, item)" @click="handleToBook(value, item)">预约</view> -->
         </view>
         <!-- <view class="main-service-care">注:(以上服务不含更换配件费用，水电检修服务不含水电改造)</view> -->
@@ -140,10 +140,12 @@
     <!-- 底部区域 -->
     <view class="foot" v-if="status == 1">
       <view class="f-left"
-        >仅需: <text>￥{{ 299 }}</text></view
+        >仅需: <text>￥{{ 399 }}</text></view
       >
       <view class="f-right" @click="handleToOpen">立即开通</view>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
 
     <tui-toast ref="toast"></tui-toast>
   </view>
@@ -153,8 +155,9 @@
 import { formatTime } from '../../../utils';
 import { navs, navs1, service, contents, calcUseNumber } from './data';
 import { userIsPurchaseApi, getSetMealListApi, getServerProjectListApi } from '../../../api/user';
+import { getServeListApi } from '../../../api/community-center';
+import { queryDynamicDataApi } from '../../../api/address';
 import { getUserId } from 'utils';
-import { serveList } from 'logistics/config';
 export default {
   name: 'Gold-butler',
   props: {},
@@ -175,15 +178,29 @@ export default {
       vip2Numbers: {},
       vip2ServeList: [],
       allUsed: '',
-      notUseServeList: []
+      notUseServeList: [],
+      vipContent: []
     };
   },
 
   methods: {
     formatTime,
+    // 获取数据
+    async getData() {
+      try {
+        const res = await getServeListApi();
+        if (res.statusCode === 20000) {
+          const jinNIMADE = res.data.find(item => item.serverType === 1)
+          if(jinNIMADE){
+            this.vipContent = jinNIMADE.serverContent.split(',')
+          }
+        }
+      } catch(e){
+
+      }
+    },
     handleClick(item) {
       this.currentTab = item.value;
-      console.log('什么鬼', this.myServerList);
       if (item.value === 3) {
         const notUseServeList = {};
         for (const serverName in this.myServerList) {
@@ -388,6 +405,7 @@ export default {
   mounted() {
     this.userIsPurchase();
     this.getSetMealList();
+    this.getData()
     // this.getServerProjectList()
   },
   created() {},

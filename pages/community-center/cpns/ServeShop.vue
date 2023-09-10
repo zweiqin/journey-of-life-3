@@ -6,8 +6,8 @@
 
     <view class="shop-list">
       <view class="content">
-        <DirectSaleStore :shopInfo="shopList[0]"></DirectSaleStore>
-        <CommonShop v-for="(shopData, index) in shopList.slice(1)" :shopInfo="shopData" :key="index"></CommonShop>
+        <!-- <DirectSaleStore :shopInfo="shopList[0]"></DirectSaleStore> -->
+        <CommonShop v-for="(shopData, index) in shopList" :shopInfo="shopData" :key="index"></CommonShop>
         <view class="more" @click="go('/community-center/shop/shop')">
           <button class="uni-btn">
             查看更多

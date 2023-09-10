@@ -25,13 +25,26 @@
       <tui-alerts type="warn" title="您所在区域不在接单范围内"></tui-alerts>
     </view>
 
+    <!-- 计价类型 -->
+    <view class="serve-info section" v-if="isShowPriceMode === 1">
+      <view class="title-wrapper">
+        <view class="section-title">计价类型</view>
+        <view class="radio-group">
+          <view class="radio-item" @click="handleSwitchPricingType(item)" v-for="(item, index) in radioItems" :key="index">
+            <tui-icon :size="18" :color="isByItNow == item.value ? '#ff7d27' : '#ccc'" :name="isByItNow == item.value ? 'circle-fill' : 'circle'"></tui-icon>
+            <view class="label">{{ item.name }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 服务项目 -->
     <view class="serve-info section">
       <view class="title-wrapper">
         <view class="section-title">服务类型</view>
         <view class="serve-name"
           >{{ currentServeInfo.name }}
-          <text class="serve-price" v-if="currentServeInfo.serverPrice">
+          <text class="serve-price" v-if="currentServeInfo.serverPrice && isByItNow === 1">
             <text
               :class="{
                 del: !!calcServePrice && calcServePrice.newPrice
@@ -100,7 +113,7 @@
     </view>
 
     <!-- 订单费用 -->
-    <view class="section order-price" v-if="isByItNow && calcServePrice">
+    <view class="section order-price" v-if="isByItNow === 1 && calcServePrice">
       <view class="section-title">订单费用</view>
 
       <view class="cost-order-list">
@@ -145,7 +158,7 @@
 
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
-      <view class="pay-price" v-if="isByItNow && calcServePrice"> ￥{{ calcServePrice.oughtPrice }}</view>
+      <view class="pay-price" v-if="isByItNow === 1 && calcServePrice"> ￥{{ calcServePrice.oughtPrice }}</view>
       <button class="uni-btn" @click="handleConfirmOrder">
         {{ isOffer ? '获取价格中...' : '确认' }}
       </button>
@@ -185,13 +198,25 @@ export default {
       isExistCommunityStore: true,
       isSubmitOrder: false,
       preferentialPrice: 0, // "优惠价",
-      isOffer: false
+      isOffer: false,
+      radioItems: [
+        {
+          name: '一口价',
+          value: 1
+        },
+        {
+          name: '店长报价',
+          value: 2
+        }
+      ],
+      isShowPriceMode: 1
     };
   },
 
   onLoad(options) {
     this.currentServeInfo = options;
-    this.isByItNow = options.priceType === 'true';
+    this.isByItNow = options.priceType === 'true' ? 1 : 2;
+    this.isShowPriceMode = this.isByItNow;
     this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1;
   },
 
@@ -257,7 +282,7 @@ export default {
 
     // 获取订单报价
     async handleGetOrderPrice() {
-      if (!this.isByItNow || !this.defualtAddress) {
+      if (this.isByItNow === 2 || !this.defualtAddress) {
         return;
       }
 
@@ -408,7 +433,7 @@ export default {
           consigneeAddressDetail: this.defualtAddress.detailedAddress.split(' ')[1],
           spotOrder: 0,
           pullIn: this.currentServeInfo.name === '空调清洗服务' ? 2 : 1,
-          pricingType: this.isByItNow ? 1 : 2,
+          pricingType: this.isByItNow,
           paymentMethod: 1,
           orderType: 1,
           isVipSetmral: 0,
@@ -435,9 +460,7 @@ export default {
         &consigneeName=${this.defualtAddress.name}&consigneeMobile=${this.defualtAddress.mobile}&consigneeAddress=${
                 this.defualtAddress.detailedAddress.split(' ')[0]
               }&consigneeAddressDetail=${this.defualtAddress.detailedAddress.split(' ')[1]}
-        &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow ? 1 : 2}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${
-                res.data
-              }`
+        &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${res.data}`
             });
           }, 500);
         }
@@ -450,6 +473,13 @@ export default {
       } finally {
         this.isSubmitOrder = false;
       }
+    },
+
+    // 修改报价模式
+    handleSwitchPricingType(itemInfo) {
+      this.isByItNow = itemInfo.value;
+      this.handleGetOrderPrice();
+      this.$forceUpdate();
     }
   },
 
@@ -763,6 +793,23 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    margin-left: 30upx;
+
+    .label {
+      font-size: 28upx;
+      color: #3d3d3d;
+      margin-left: 6upx;
+    }
   }
 }
 </style>

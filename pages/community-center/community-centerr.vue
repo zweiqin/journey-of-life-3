@@ -2,6 +2,7 @@
   <view class="community-center-container">
     <TuanAppShim bg="#e95d20"></TuanAppShim>
     <PageBar :class="{ fix: scrollTop > 300 }"></PageBar>
+    <!-- #ifdef H5 -->
     <view class="search-bar" v-show="scrollTop > 300" :class="{ fix: scrollTop > 300 }">
       <view class="location">
         <TuanLocation>
@@ -12,6 +13,7 @@
       <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
       <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
     </view>
+    <!-- #endif -->
     <view class="page-header" :style="{ background: isStart ? 'linear-gradient(180deg, #ef530e 8%, #fac894 23%, #f6f6f8 33%, #ffffff 123%)' : '#f6f6f8' }">
       <view class="search-bar" v-show="scrollTop <= 300">
         <view class="location">
@@ -58,6 +60,15 @@
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
+
+    <PopupInformation
+      @close="handleShowBindMobilePopup"
+      ref="popupInformationRef"
+      popup-type="activity"
+      :imgUrl="require('../../static/images/new-community/home/ad.png')"
+      @click="handleToActiveDetail"
+    >
+    </PopupInformation>
   </view>
 </template>
 
@@ -65,6 +76,7 @@
 import { bannerListIcon, vipBarConfig } from './config';
 import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
+import PopupInformation from '../../components/popup-information/popup-information';
 import showModal from 'mixin/showModal';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 import PageBar from './cpns/PageBar.vue';
@@ -86,7 +98,8 @@ export default {
     VipPackage,
     ServeShop,
     FourSeasonsZone,
-    ServerPane
+    ServerPane,
+    PopupInformation
   },
   mixins: [showModal()],
   data() {
@@ -102,7 +115,8 @@ export default {
       vipBarConfig: Object.freeze(vipBarConfig),
       servePaneList: [],
       scrollTop: 0,
-      isStart: false
+      isStart: false,
+      timer: null
     };
   },
   onShow() {
@@ -111,6 +125,19 @@ export default {
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
     });
+
+    if (!app.globalData.isShowCommunityPopup) {
+      this.timer = setTimeout(() => {
+        if (app.globalData.communityPopupCount < 4) {
+          app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1;
+          this.$refs.popupInformationRef && this.$refs.popupInformationRef.show();
+        } else {
+          clearTimeout(this.timer);
+          this.timer = null;
+          app.globalData.isShowCommunityPopup = false;
+        }
+      }, 500);
+    }
   },
   mounted() {
     // #ifdef APP
@@ -139,6 +166,14 @@ export default {
   },
 
   methods: {
+    // 点击去弹窗详情
+    handleToActiveDetail() {
+      if (this.isLogin()) {
+        this.go('/community-center/vip-center/vip-detail?type=2');
+      } else {
+        this.$data._isShowTuiModel = true;
+      }
+    },
     // 获取服务分类
     async getServiceOrder() {
       const res = await getServiceSortApi({});
@@ -246,6 +281,12 @@ export default {
 
   onPullDownRefresh() {
     this.onRefresh();
+  },
+
+  onHide() {
+    console.log('quxiao11');
+    clearTimeout(this.timer);
+    this.timer = null;
   }
 };
 </script>
@@ -265,7 +306,7 @@ export default {
 }
 
 @keyframes search-bar {
-  0 {
+  0% {
     transform: scale(0);
   }
 

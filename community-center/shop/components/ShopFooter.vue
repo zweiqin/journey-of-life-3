@@ -29,7 +29,7 @@
     <view class="right">
       <button @click="handleMakePhone(shopInfo.contactsTel)" class="uni-btn" :style="{ background: shopInfo.contactsTel ? '' : '#ccc' }">
         <image class="call-icon" src="../../../static/images/new-community/shop/call.png"></image>
-        {{ shopInfo.contactsTel ? '拨打电话' : '商家失联了' }}
+        {{ shopInfo.contactsTel ? '拨打电话' : '商家未提供' }}
       </button>
     </view>
 

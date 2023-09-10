@@ -239,7 +239,7 @@ export const vipBarConfig = [
     img: require('../../static/images/con-center/cao-2.png'),
     url: '/community-center/vip-center/vip-detail?type=2',
     name: '全年家庭小卫士套餐',
-    price: '299'
+    price: '399'
   },
   {
     img: require('../../static/images/con-center/cao-1.png'),

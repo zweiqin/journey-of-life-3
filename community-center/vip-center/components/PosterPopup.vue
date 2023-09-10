@@ -25,7 +25,8 @@
 						background: logoBg,
 						objectFit: 'contain',
 						width: '622rpx',
-						height: '622rpx'
+						height: '622rpx',
+						background: '#ef3715'
 					}"
 				/>
 
