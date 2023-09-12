@@ -436,20 +436,9 @@ export default {
 					failCb: () => { }
 				}
 			}
-			this.activityCode = 'jhfhfdyjd'
-			data = {
-				data: {
-					title: '团蜂社区家庭小卫士',
-					desc: `送价值980元品牌超值大礼包`,
-					link: `${this.qrcodeUrl}${'jhfhfdyjd'}`,
-					imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
-				},
-				successCb: () => { },
-				failCb: () => { }
-			}
 			await this.$refs.tuanWxShareRef.share(data, isQuit)
-			uni.showLoading({ mask: true })
-			if (!isQuit) uni.hideLoading()
+			uni.hideLoading()
+			if (isQuit && this.activityCode) uni.showLoading({ mask: true })
 		}
 	}
 }

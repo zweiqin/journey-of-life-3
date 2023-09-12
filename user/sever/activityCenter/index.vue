@@ -211,6 +211,7 @@ export default {
 
 	data() {
 		return {
+			hasGetPurchaseRecord: false,
 			extensionData: {},
 			fansData: {},
 			currentTab: 0,
@@ -271,12 +272,14 @@ export default {
 			this.campaignsType = options.code.split('-')[0] * 1
 			this.binding(getUserId(), () => { })
 		}
-
-		if (getUserId()) getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-		if (getUserId()) getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
 	},
 
-	onShow() {
+	async onShow() {
+		if (!this.hasGetPurchaseRecord) {
+			if (getUserId()) await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+			if (getUserId()) await getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
+			this.hasGetPurchaseRecord = true
+		}
 		this.getUserIncome()
 		this.getUserCrmList()
 		if (getUserId()) {

@@ -499,6 +499,10 @@ export default {
             url: _this.redirect
           });
         }
+      } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
+        uni.redirectTo({
+          url: '/user/sever/activityCenter/index'
+        })
       } else {
         uni.switchTab({
           url: '/pages/community-center/community-centerr'
