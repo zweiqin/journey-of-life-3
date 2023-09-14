@@ -6,14 +6,9 @@
     <view class="info">
       <view class="title">
         <text>客户信息</text>
-        <button
-          class="uni-btn"
-          @click="go('/user/site/site-manage?appoint=true')"
-        >
+        <button class="uni-btn" @click="go('/user/site/site-manage?appoint=true')">
           <tui-icon :size="20" name="addressbook"></tui-icon>
-          <text class="select-wrapper"
-            >已有地址?<text class="select">去选择 -></text>
-          </text>
+          <text class="select-wrapper">已有地址?<text class="select">去选择 -></text> </text>
         </button>
       </view>
       <!-- {{ consigneeForm }} -->
@@ -39,36 +34,22 @@
               />
             </PickRegions> -->
 
-            <view class="uni-input" @click="handleChooseAddress">{{
-              consigneeForm.consigneeAddress || "请选择上门地址"
-            }}</view>
+            <view class="uni-input" @click="handleChooseAddress">{{ consigneeForm.consigneeAddress || '请选择上门地址' }}</view>
           </template>
 
           <template v-if="item.select && item.field === 'isElevator'">
-            <picker
-              :range="columns"
-              style="width: 100%; height: 100%"
-              @change="handleChooseElevator"
-            >
+            <picker :range="columns" style="width: 100%; height: 100%" @change="handleChooseElevator">
               <view class="elevator">{{ consigneeForm.isElevator }}</view>
             </picker>
           </template>
         </Field>
 
         <view v-show="showTip" class="tip-wrapper">
-          <tui-alerts
-            type="info"
-            title="注意：你选择的区域不在接单范围内,只可享受网络服务"
-          ></tui-alerts>
+          <tui-alerts type="info" title="注意：你选择的区域不在接单范围内,只可享受网络服务"></tui-alerts>
         </view>
 
         <view class="remarks-container">
-          <textarea
-            v-model="consigneeForm.remarks"
-            cols="30"
-            rows="10"
-            placeholder="请输入订单备注"
-          ></textarea>
+          <textarea v-model="consigneeForm.remarks" cols="30" rows="10" placeholder="请输入订单备注"></textarea>
         </view>
       </view>
     </view>
@@ -77,18 +58,8 @@
       <view class="title">已选服务</view>
 
       <view class="serve-name">
-        <view
-          v-for="(item, index) in serveData &&
-          serveData.serverContent.split(',')"
-          :key="index"
-          class="serve-item-name"
-        >
-          <tui-icon
-            margin="0 10rpx 0 0"
-            color="rgb(255, 153, 0)"
-            name="label-fill"
-            :size="20"
-          ></tui-icon>
+        <view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index" class="serve-item-name">
+          <tui-icon margin="0 10rpx 0 0" color="rgb(255, 153, 0)" name="label-fill" :size="20"></tui-icon>
           {{ item }}
         </view>
       </view>
@@ -110,26 +81,17 @@
 </template>
 
 <script>
-import Field from "./components/field.vue";
-import PickRegions from "../components/pick-regions/pick-regions.vue";
-import Button from "./components/button.vue";
-import Remarks from "./components/remarks.vue";
-import Header from "./components/header.vue";
-import { consigneeVipInfo } from "./config";
-import { getUserId, throttle, getAdressDetailByLngLat } from "../utils";
-import {
-  createRepairOrderApi,
-  payOrderForBeeStewadApi,
-  getIsOpenServerAreaApi,
-  payOrderForBeeStewadAPPApi,
-} from "../api/community-center";
-import { getAddressListApi } from "../api/address";
+import Field from './components/field.vue';
+import PickRegions from '../components/pick-regions/pick-regions.vue';
+import Button from './components/button.vue';
+import Remarks from './components/remarks.vue';
+import Header from './components/header.vue';
+import { consigneeVipInfo } from './config';
+import { getUserId, throttle, getAdressDetailByLngLat } from '../utils';
+import { createRepairOrderApi, payOrderForBeeStewadApi, getIsOpenServerAreaApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
+import { getAddressListApi } from '../api/address';
 
-import {
-  COMMUNITY_ORDER_NO,
-  SELECT_ADDRESS,
-  SF_INVITE_CODE,
-} from "../constant";
+import { COMMUNITY_ORDER_NO, SELECT_ADDRESS, SF_INVITE_CODE } from '../constant';
 
 export default {
   components: {
@@ -137,25 +99,25 @@ export default {
     PickRegions,
     Button,
     Remarks,
-    Header,
+    Header
   },
   data() {
     return {
       consigneeForm: {
-        consigneeName: "",
-        consigneeMobile: "",
-        consigneeAddress: "",
-        consigneeAddressDetail: "",
-        isElevator: "有",
-        floor: "1",
-        remarks: "",
+        consigneeName: '',
+        consigneeMobile: '',
+        consigneeAddress: '',
+        consigneeAddressDetail: '',
+        isElevator: '有',
+        floor: '1',
+        remarks: ''
       },
       userInfo: [],
-      columns: ["有", "无"],
-      cacheName: "CONSIGNEE_",
+      columns: ['有', '无'],
+      cacheName: 'CONSIGNEE_',
       showTip: false,
       loading: false,
-      confirm: () => {},
+      confirm: () => {}
     };
   },
 
@@ -163,10 +125,14 @@ export default {
     this.getAddressList();
     this.confirm = throttle(this.handleCreateOrder, 1000);
     const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`);
-    const orderNo = uni.getStorageSync(COMMUNITY_ORDER_NO) || "";
+    const orderNo = uni.getStorageSync(COMMUNITY_ORDER_NO) || '';
     if (orderNo) {
-      uni.redirectTo({
-        url: "/community-center/order",
+      // uni.redirectTo({
+      //   url: "/community-center/order",
+      // });
+
+      uni.switchTab({
+        url: '/pages/order/order'
       });
 
       return;
@@ -176,10 +142,9 @@ export default {
       this.consigneeForm.consigneeName = consigneeInfo.consigneeName;
       this.consigneeForm.consigneeMobile = consigneeInfo.consigneeMobile;
       this.consigneeForm.consigneeAddress = consigneeInfo.consigneeAddress;
-      this.consigneeForm.consigneeAddressDetail =
-        consigneeInfo.consigneeAddressDetail;
-      this.consigneeForm.floor = consigneeInfo.floor + "";
-      this.consigneeForm.isElevator = consigneeInfo.isElevator ? "有" : "无";
+      this.consigneeForm.consigneeAddressDetail = consigneeInfo.consigneeAddressDetail;
+      this.consigneeForm.floor = consigneeInfo.floor + '';
+      this.consigneeForm.isElevator = consigneeInfo.isElevator ? '有' : '无';
     }
   },
   onLoad(option) {
@@ -189,32 +154,32 @@ export default {
         this.serveData = JSON.parse(option.data);
       } else {
         uni.showToast({
-          title: "未选择服务，请选择服务",
+          title: '未选择服务，请选择服务',
           duration: 2000,
-          icon: "none",
+          icon: 'none'
         });
 
         setTimeout(() => {
           uni.redirectTo({
-            url: "/community-center/vip-center/vip-detail",
+            url: '/community-center/vip-center/vip-detail'
           });
         }, 2000);
       }
     } catch (error) {
       this.ttoast({
-        title: "活动不存在",
-        type: "fail",
+        title: '活动不存在',
+        type: 'fail'
       });
 
       setTimeout(() => {
         uni.switchTab({
           url: '/'
-        })
+        });
       }, 1000);
     }
 
     if (option.repair) {
-      this.cacheName = "REPAIR_";
+      this.cacheName = 'REPAIR_';
     }
 
     this.filterDate();
@@ -224,8 +189,8 @@ export default {
     async handleCreateOrder() {
       if (this.loading) {
         this.ttoast({
-          title: "操作太快了",
-          type: "info",
+          title: '操作太快了',
+          type: 'info'
         });
 
         return;
@@ -233,7 +198,7 @@ export default {
       const _this = this;
       this.loading = true;
       uni.showLoading({
-        title: "下单中...",
+        title: '下单中...'
       });
 
       if (
@@ -243,8 +208,8 @@ export default {
         !this.consigneeForm.consigneeAddressDetail
       ) {
         uni.showToast({
-          title: "请填写完提货信息",
-          icon: "none",
+          title: '请填写完提货信息',
+          icon: 'none'
         });
         this.loading = false;
 
@@ -253,8 +218,8 @@ export default {
 
       if (this.consigneeForm.consigneeMobile.length !== 11) {
         uni.showToast({
-          title: "手机号不合法",
-          icon: "none",
+          title: '手机号不合法',
+          icon: 'none'
         });
         this.loading = false;
 
@@ -272,16 +237,13 @@ export default {
         deliveryType: 4,
         price: this.serveData.serverPrice,
         actualPrice: this.serveData.serverPrice,
-        dictName:
-          this.serveData.serverType === 1
-            ? this.serveData.serverName
-            : this.serveData.serverContent,
+        dictName: this.serveData.serverType === 1 ? this.serveData.serverName : this.serveData.serverContent,
         serverId: this.serveData.id,
         consigneeAddress: this.consigneeForm.consigneeAddress,
         consigneeAddressDetail: this.consigneeForm.consigneeAddressDetail,
         remarks: this.consigneeForm.remarks,
         consigneeName: this.consigneeForm.consigneeName,
-        consigneeMobile: this.consigneeForm.consigneeMobile,
+        consigneeMobile: this.consigneeForm.consigneeMobile
       };
 
       if (partnerCode) {
@@ -289,104 +251,129 @@ export default {
         data.spotOrder = 1;
       }
 
-      if(data.dictName === '空调清洗'){
-        data.serverTypeId = 313
+      if (data.dictName === '空调清洗') {
+        data.serverTypeId = 313;
       }
 
       const createOrderRes = await createRepairOrderApi(data);
       uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
       if (createOrderRes.statusCode == 20000) {
-        // #ifdef H5
-        const payResult = await payOrderForBeeStewadApi({
-          userId: getUserId(),
-          orderNo: createOrderRes.data,
-        });
-
-        uni.hideLoading();
-        _this.loading = false;
-        uni.removeStorageSync(SF_INVITE_CODE);
-
-        if (payResult.statusCode === 20000) {
-          _this.address = "";
-          uni.removeStorageSync(`${this.cacheName}INFO`);
-          const res = JSON.parse(payResult.data);
-          const form = document.createElement("form");
-          form.setAttribute("action", res.url);
-          form.setAttribute("method", "POST");
-
-          const data = JSON.parse(res.data);
-          let input;
-          for (const key in data) {
-            input = document.createElement("input");
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-        } else {
-          uni.showToast({
-            title: "支付失败",
-            duration: 2000,
-            icon: "none",
+        if (this.$store.state.app.isInMiniProgram) {
+          const payAppesult = await payOrderForBeeStewadAPPApi({
+            userId: getUserId(),
+            orderNo: createOrderRes.data
           });
-        }
-        // #endif
 
-        // #ifdef APP
-        const payAppesult = await payOrderForBeeStewadAPPApi({
-          userId: getUserId(),
-          orderNo: createOrderRes.data,
-        });
+          if (payAppesult.statusCode === 20000) {
+            let query = '';
+            for (const key in payAppesult.data) {
+              query += key + '=' + payAppesult.data[key] + '&';
+            }
 
-        if (payAppesult.statusCode === 20000) {
-          let query = "";
-          for (const key in payAppesult.data) {
-            query += key + "=" + payAppesult.data[key] + "&";
-          }
+            wx.miniProgram.navigateTo({
+              url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId(),
+              fail: () => {
+                // uni.redirectTo({
+                //   url: `/community-center/order`,
+                // });
 
-          plus.share.getServices(
-            function (res) {
-              let sweixin = null;
-              for (let i in res) {
-                if (res[i].id == "weixin") {
-                  sweixin = res[i];
-                }
-              }
-              console.log(sweixin);
-              if (sweixin) {
-                sweixin.launchMiniProgram({
-                  id: "gh_e64a1a89a0ad",
-                  type: 0,
-                  path: "pages/orderDetail/orderDetail?" + query,
+                uni.switchTab({
+                  url: '/pages/order/order'
                 });
               }
-            },
-            function (e) {
-              console.log("获取分享服务列表失败：" + e.message);
+            });
+          }
+        } else {
+          // #ifdef H5
+          const payResult = await payOrderForBeeStewadApi({
+            userId: getUserId(),
+            orderNo: createOrderRes.data
+          });
+
+          uni.hideLoading();
+          _this.loading = false;
+          uni.removeStorageSync(SF_INVITE_CODE);
+
+          if (payResult.statusCode === 20000) {
+            _this.address = '';
+            uni.removeStorageSync(`${this.cacheName}INFO`);
+            const res = JSON.parse(payResult.data);
+            const form = document.createElement('form');
+            form.setAttribute('action', res.url);
+            form.setAttribute('method', 'POST');
+
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement('input');
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
             }
-          );
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          } else {
+            uni.showToast({
+              title: '支付失败',
+              duration: 2000,
+              icon: 'none'
+            });
+          }
+          // #endif
+
+          // #ifdef APP
+          const payAppesult = await payOrderForBeeStewadAPPApi({
+            userId: getUserId(),
+            orderNo: createOrderRes.data
+          });
+
+          if (payAppesult.statusCode === 20000) {
+            let query = '';
+            for (const key in payAppesult.data) {
+              query += key + '=' + payAppesult.data[key] + '&';
+            }
+
+            plus.share.getServices(
+              function (res) {
+                let sweixin = null;
+                for (let i in res) {
+                  if (res[i].id == 'weixin') {
+                    sweixin = res[i];
+                  }
+                }
+                console.log(sweixin);
+                if (sweixin) {
+                  sweixin.launchMiniProgram({
+                    id: 'gh_e64a1a89a0ad',
+                    type: 0,
+                    path: 'pages/orderDetail/orderDetail?' + query
+                  });
+                }
+              },
+              function (e) {
+                console.log('获取分享服务列表失败：' + e.message);
+              }
+            );
+          }
+          // #endif
         }
-        // #endif
       } else {
         uni.showToast({
           title: createOrderRes.statusMsg,
           duration: 2000,
-          icon: "none",
+          icon: 'none'
         });
         this.loading = false;
       }
     },
     // 选择省市区
     async handleGetRegionEnd(region) {
-      this.consigneeForm.consigneeAddress = region
-        .map((item) => item.name)
-        .join("");
+      this.consigneeForm.consigneeAddress = region.map((item) => item.name).join('');
 
       const res = await getIsOpenServerAreaApi({
-        address: this.consigneeForm.consigneeAddress,
+        address: this.consigneeForm.consigneeAddress
       });
 
       this.showTip = !res.data;
@@ -395,23 +382,22 @@ export default {
     handleDistinguish(result) {
       this.consigneeForm.consigneeName = result.person;
       this.consigneeForm.consigneeMobile = result.phonenum;
-      this.consigneeForm.consigneeAddress =
-        result.province + result.city + result.county;
+      this.consigneeForm.consigneeAddress = result.province + result.city + result.county;
       this.consigneeForm.consigneeAddressDetail = result.detail;
     },
 
     // 点击选择有无电梯
     handleChooseElevator(e) {
-      this.consigneeForm.isElevator = e.detail.value + "" == 1 ? "无" : "有";
+      this.consigneeForm.isElevator = e.detail.value + '' == 1 ? '无' : '有';
       console.log(e.detail.value, this.consigneeForm);
     },
 
     // 过滤列表
     filterDate() {
       let data = consigneeVipInfo;
-      if (this.cacheName === "REPAIR_") {
+      if (this.cacheName === 'REPAIR_') {
         data = data.filter((item) => {
-          return item.field !== "isElevator" && item.field !== "floor";
+          return item.field !== 'isElevator' && item.field !== 'floor';
         });
       }
       this.userInfo = data;
@@ -421,7 +407,7 @@ export default {
     async handleConfirmAddress(selectInfo) {
       this.consigneeForm.consigneeAddress = selectInfo.formatAddress4;
       const res = await getIsOpenServerAreaApi({
-        address: this.consigneeForm.consigneeAddress,
+        address: this.consigneeForm.consigneeAddress
       });
 
       this.showTip = !res.data;
@@ -439,7 +425,7 @@ export default {
         return;
       }
       const { data } = await getAddressListApi({
-        userId: getUserId(),
+        userId: getUserId()
       });
 
       if (data.length) {
@@ -457,14 +443,10 @@ export default {
     },
 
     setConsigneeInfo(choosedAddress) {
-      choosedAddress.name &&
-        (this.consigneeForm.consigneeName = choosedAddress.name || "");
-      choosedAddress.mobile &&
-        (this.consigneeForm.consigneeMobile = choosedAddress.mobile || "");
-      this.consigneeForm.consigneeAddress =
-        choosedAddress.detailedAddress.split(" ")[0];
-      this.consigneeForm.consigneeAddressDetail =
-        choosedAddress.detailedAddress.split(" ")[1];
+      choosedAddress.name && (this.consigneeForm.consigneeName = choosedAddress.name || '');
+      choosedAddress.mobile && (this.consigneeForm.consigneeMobile = choosedAddress.mobile || '');
+      this.consigneeForm.consigneeAddress = choosedAddress.detailedAddress.split(' ')[0];
+      this.consigneeForm.consigneeAddressDetail = choosedAddress.detailedAddress.split(' ')[1];
     },
 
     handleOpenMapToChooseAddress() {
@@ -472,32 +454,26 @@ export default {
       uni.chooseLocation({
         success(res) {
           try {
-            getAdressDetailByLngLat(res.latitude, res.longitude).then(
-              (parseRes) => {
-                const { city, province, district, township } =
-                  parseRes.regeocode.addressComponent;
-                const data1 = province + city + district;
+            getAdressDetailByLngLat(res.latitude, res.longitude).then((parseRes) => {
+              const { city, province, district, township } = parseRes.regeocode.addressComponent;
+              const data1 = province + city + district;
 
-                const level1 = data1 + township;
-                let splitLen = data1.length;
-                if (
-                  res.address.includes("街道") ||
-                  res.address.includes("镇")
-                ) {
-                  splitLen += district.length;
-                }
-                const level2 = res.address.slice(splitLen) + res.name;
-
-                _this.setConsigneeInfo({
-                  detailedAddress: level1 + " " + level2,
-                });
+              const level1 = data1 + township;
+              let splitLen = data1.length;
+              if (res.address.includes('街道') || res.address.includes('镇')) {
+                splitLen += district.length;
               }
-            );
+              const level2 = res.address.slice(splitLen) + res.name;
+
+              _this.setConsigneeInfo({
+                detailedAddress: level1 + ' ' + level2
+              });
+            });
           } catch (error) {}
-        },
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

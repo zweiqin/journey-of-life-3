@@ -68,7 +68,7 @@ export default {
 		onMessage(evt) {
 			// console.log('onMessage收到消息', evt)
 			const data = JSON.parse(evt.data)
-			console.log(data)
+			// console.log(data)
 			// {
 			// 	"data": {
 			// 			"fromUserName": "dmag9",

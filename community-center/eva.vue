@@ -1,12 +1,7 @@
 <template>
   <view class="eva">
     <view class="title-list">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-        alt=""
-        class="return"
-        @click="handleToOrderList"
-      />
+      <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleToOrderList" />
       <view class="title">评价</view>
     </view>
     <view class="navbar">
@@ -16,7 +11,7 @@
         v-for="item in navList"
         :key="item.label"
         :style="{
-          color: currenTab === item.value ? '#FF8F1F' : '',
+          color: currenTab === item.value ? '#FF8F1F' : ''
         }"
       >
         {{ item.label }}
@@ -26,11 +21,7 @@
       <view class="first">
         <view class="left">
           <view class="head-list">
-            <image
-              src="../static/images/con-center/head.png"
-              mode="scaleToFill"
-              class="headImg"
-            />
+            <image src="../static/images/con-center/head.png" mode="scaleToFill" class="headImg" />
             <text>123</text>
           </view>
           <star :rate="abc" @change="bright" style="white-space: nowrap"></star>
@@ -39,7 +30,7 @@
           <view class="time">2022-12-1</view>
         </view>
       </view>
-      <view class="second">{{this.evaluate}}</view>
+      <view class="second">{{ this.evaluate }}</view>
 
       <view class="third">
         <view v-for="img in images" :key="img">
@@ -48,66 +39,62 @@
       </view>
       <view class="info-list">
         <view class="info">服务信息:</view>
-        <view class="name">{{this.dictName}}</view>
+        <view class="name">{{ this.dictName }}</view>
       </view>
       <view class="reply">
         <view class="content">
           <view class="l">[店家回复]</view>
           <view class="r">感谢您的认可，好开心您能满意， 祝您生活愉快!!</view>
-          
         </view>
       </view>
     </view>
   </view>
 </template>
 
-
-
-
-
-
-
 <script>
-import { navList } from "./config";
-import star from "../components/rate";
+import { navList } from './config';
+import star from '../components/rate';
 export default {
-  name: "Eva",
+  name: 'Eva',
   props: {},
   components: { star },
   data() {
     return {
       navList,
       currenTab: 1,
-      abc: "",
-      evaluate:"",
+      abc: '',
+      evaluate: ''
     };
   },
   methods: {
     handleToOrderList() {
-      uni.navigateTo({ url: `../community-center/order` });
+      // uni.navigateTo({ url: `../community-center/order` });
+      uni.switchTab({
+        url: '/pages/order/order'
+      });
     },
     change(index) {
       this.currenTab = index;
-    },
+    }
   },
   created() {},
   onLoad(options) {
     console.log(options);
     this.abc = options.star * 1;
-    console.log("abc", this.abc);
+    console.log('abc', this.abc);
 
     this.images = JSON.parse(decodeURIComponent(options.images));
-    console.log("images", this.images);
+    console.log('images', this.images);
     this.evaluate = options.evaluate;
     this.dictName = options.dictName;
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .eva {
   width: 100%;
-  border-bottom: 12upx solid #EFEFEF;
+  border-bottom: 12upx solid #efefef;
   .title-list {
     padding: 40upx 34upx 20upx 26upx;
     display: flex;

@@ -15,58 +15,63 @@
 </template>
 
 <script>
-import Button from "./components/button.vue";
-import { payOrderForEndApi, payOrderForBeeStewadAPPApi } from "../api/community-center";
-import { getUserId, useCopy } from "../utils";
-import Header from './components/header.vue'
+import Button from './components/button.vue';
+import { payOrderForEndApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
+import { getUserId, useCopy } from '../utils';
+import Header from './components/header.vue';
 
 export default {
   components: { Button, Header },
   data() {
     return {
-      orderNo: "",
-      payMoney: "",
-      status: false,
+      orderNo: '',
+      payMoney: '',
+      status: false
     };
   },
 
   methods: {
     async handlePay() {
-      if ((this.$store.state.app.isInMiniProgram)) {
+      if (this.$store.state.app.isInMiniProgram) {
         const payAppesult = await payOrderForBeeStewadAPPApi({
           userId: getUserId(),
           orderNo: this.orderNo
-        })
+        });
 
         if (payAppesult.statusCode === 20000) {
-          let query = ''
+          let query = '';
           for (const key in payAppesult.data) {
-            query += key + '=' + payAppesult.data[key] + '&'
+            query += key + '=' + payAppesult.data[key] + '&';
           }
 
           wx.miniProgram.navigateTo({
-            url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(), fail: () => {
-              uni.redirectTo({
-                url: `/community-center/order`,
+            url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
+            fail: () => {
+              // uni.redirectTo({
+              //   url: `/community-center/order`,
+              // });
+
+              uni.switchTab({
+                url: '/pages/order/order'
               });
             }
-          })
+          });
         }
       } else {
         // #ifdef H5
         payOrderForEndApi({
           orderNo: this.orderNo,
-          userId: getUserId(),
+          userId: getUserId()
         }).then((res) => {
           res = JSON.parse(res.data);
-          const form = document.createElement("form");
-          form.setAttribute("action", res.url);
-          form.setAttribute("method", "POST");
+          const form = document.createElement('form');
+          form.setAttribute('action', res.url);
+          form.setAttribute('method', 'POST');
 
           const data = JSON.parse(res.data);
           let input;
           for (const key in data) {
-            input = document.createElement("input");
+            input = document.createElement('input');
             input.name = key;
             input.value = data[key];
             form.appendChild(input);
@@ -78,17 +83,16 @@ export default {
         });
         // #endif
 
-
         // #ifdef APP
         const payAppesult = await payOrderForBeeStewadAPPApi({
           userId: getUserId(),
           orderNo: this.orderNo
-        })
+        });
 
         if (payAppesult.statusCode === 20000) {
-          let query = ''
+          let query = '';
           for (const key in payAppesult.data) {
-            query += key + '=' + payAppesult.data[key] + '&'
+            query += key + '=' + payAppesult.data[key] + '&';
           }
 
           plus.share.getServices(
@@ -107,27 +111,26 @@ export default {
                   path: 'pages/orderDetail/orderDetail?' + query
                 });
               }
-            }, function (e) {
+            },
+            function (e) {
               console.log('获取分享服务列表失败：' + e.message);
             }
           );
         }
         // #endif
       }
-
-
     },
 
     // 拷贝
     copyOrderNo() {
       useCopy(this.orderNo);
-    },
+    }
   },
 
   onLoad(option) {
     this.orderNo = option.orderNo;
     this.payMoney = option.price;
-  },
+  }
 };
 </script>
 

@@ -120,8 +120,12 @@ export default {
   onShow() {
     this.getAddressList();
     if (uni.getStorageSync(TUAN_ORDER_SN)) {
-      uni.redirectTo({
-        url: '/user/orderForm/order-form?type=1'
+      // uni.redirectTo({
+      //   url: '/user/orderForm/order-form?type=1'
+      // });
+
+      uni.switchTab({
+        url: '/pages/order/order?type=shop&status=1'
       });
     }
   },
@@ -270,8 +274,12 @@ export default {
             wx.miniProgram.navigateTo({
               url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(),
               fail: () => {
-                uni.redirectTo({
-                  url: '/user/orderForm/order-form?type=1'
+                // uni.redirectTo({
+                //   url: '/user/orderForm/order-form?type=1'
+                // });
+
+                uni.switchTab({
+                  url: '/pages/order/order?type=shop&status=1'
                 });
               }
             });

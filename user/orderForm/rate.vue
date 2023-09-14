@@ -271,8 +271,12 @@ export default {
           this.ttoast('订单评价成功');
 
           setTimeout(() => {
-            uni.redirectTo({
-              url: '/user/orderForm/order-form?type=4'
+            // uni.redirectTo({
+            //   url: '/user/orderForm/order-form?type=4'
+            // });
+
+            uni.switchTab({
+              url: '/pages/order/order?type=shop&status=4'
             });
           }, 1000);
         } else {

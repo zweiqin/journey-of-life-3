@@ -61,7 +61,7 @@ export default {
         size: 10,
         status: 0
       }).then(({ data }) => {
-        commit(CHANGE_COUPON_NUMBER, data.count);
+        commit(CHANGE_COUPON_NUMBER, data ? data.count : 0);
       });
 
       getOrderNumberApi({

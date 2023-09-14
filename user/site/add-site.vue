@@ -147,7 +147,7 @@ export default {
       }
 
       const _this = this;
-      console.log(_this.form);
+      // console.log(_this.form);
 
       const data = JSON.parse(JSON.stringify(this.form));
       data.detailedAddress += ' ' + this.address;
@@ -155,18 +155,25 @@ export default {
       const api = data.id ? updateAddressApi : getAddressSaveApi;
 
       api(data).then((res) => {
-        _this.$showToast(_this.form.id ? '修改成功' : '添加成功', 'success');
-        this.form = {
-          name: '',
-          mobile: '',
-          isDefault: 0,
-          id: '',
-          detailedAddress: ''
-        };
-        this.address = '';
-        _this.timer = setTimeout(() => {
-          uni.navigateBack();
-        }, 1000);
+        if (res.errno == '0') {
+          _this.$showToast(_this.form.id ? '修改成功' : '添加成功', 'success');
+          this.form = {
+            name: '',
+            mobile: '',
+            isDefault: 0,
+            id: '',
+            detailedAddress: ''
+          };
+          this.address = '';
+          _this.timer = setTimeout(() => {
+            uni.navigateBack();
+          }, 1000);
+        } else {
+          this.ttoast({
+            type: 'fail',
+            title: res.errmsg || '操作失败'
+          });
+        }
       });
     },
 

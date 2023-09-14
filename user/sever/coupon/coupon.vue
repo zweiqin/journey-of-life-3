@@ -5,7 +5,7 @@
       <view
         class="item"
         :class="{
-          active: currentStatus === item.value,
+          active: currentStatus === item.value
         }"
         @click="handleSwitchTab(item)"
         v-for="item in couponStatusList"
@@ -14,14 +14,8 @@
       >
     </view>
 
-
     <view class="coupon-list" v-show="currentStatus === 3">
-      <CouponItem
-        @receive="handleReceiveCoupon"
-        v-for="item in availableCouponList"
-        :key="item.id"
-        :data="item"
-      ></CouponItem>
+      <CouponItem @receive="handleReceiveCoupon" v-for="item in availableCouponList" :key="item.id" :data="item"></CouponItem>
 
       <view class="no-data" v-show="!availableCouponList.length">
         <tui-icon color="#ffc117" :size="40" name="coupon"></tui-icon>
@@ -30,12 +24,7 @@
     </view>
 
     <view class="coupon-list" v-show="currentStatus !== 3">
-      <CouponItem
-        @receive="handleReceiveCoupon"
-        v-for="item in holdCouponList"
-        :key="item.id"
-        :data="item"
-      ></CouponItem>
+      <CouponItem @receive="handleReceiveCoupon" v-for="item in holdCouponList" :key="item.id" :data="item"></CouponItem>
       <view class="no-data" v-show="!holdCouponList.length">
         <tui-icon color="#ffc117" :size="40" name="coupon"></tui-icon>
         <text>暂无优惠劵~</text>
@@ -45,19 +34,15 @@
 </template>
 
 <script>
-import CouponItem from './cpns/coupon-item.vue'
-import { couponStatusList } from './data'
-import {
-  getAvailableCouponListApi,
-  receiveCouponApi,
-  getCouponListApi,
-} from '../../../api/user'
-import { getUserId } from '../../../utils'
+import CouponItem from './cpns/coupon-item.vue';
+import { couponStatusList } from './data';
+import { getAvailableCouponListApi, receiveCouponApi, getCouponListApi } from '../../../api/user';
+import { getUserId } from '../../../utils';
 
 export default {
   components: { CouponItem },
   mounted() {
-    this.getAvailableCouponList()
+    this.getAvailableCouponList();
   },
   data() {
     return {
@@ -67,7 +52,7 @@ export default {
       availableCouponQuery: {
         page: 1,
         size: 10,
-        userId: getUserId(),
+        userId: getUserId()
       },
       availableCouponTotal: 0,
       availableCouponList: [],
@@ -77,62 +62,58 @@ export default {
         page: 1,
         size: 10,
         status: 0,
-        userId: getUserId(),
+        userId: getUserId()
       },
       holdCouponTotal: 0,
-      holdCouponList: [],
-    }
+      holdCouponList: []
+    };
   },
 
   methods: {
     handleSwitchTab(item) {
-      this.currentStatus = item.value
+      this.currentStatus = item.value;
       if (item.value !== 3) {
-        this.holdCouponQuery.status = item.value
-        this.getCouponList()
+        this.holdCouponQuery.status = item.value;
+        this.getCouponList();
       } else {
-        this.getAvailableCouponList()
+        this.getAvailableCouponList();
       }
     },
 
     async getAvailableCouponList() {
-      const { data } = await getAvailableCouponListApi(
-        this.availableCouponQuery
-      )
-      this.availableCouponList = data.couponList
+      const { data } = await getAvailableCouponListApi(this.availableCouponQuery);
+      this.availableCouponList = data.couponList;
     },
 
     // 领取优惠劵
     async handleReceiveCoupon(currentCoupon) {
       await receiveCouponApi({
         userId: getUserId(),
-        couponId: currentCoupon.id,
-      })
+        couponId: currentCoupon.id
+      });
 
       uni.showToast({
         title: '领取成功',
-        duration: 2000,
-      })
+        duration: 2000
+      });
 
-      this.getAvailableCouponList()
+      this.getAvailableCouponList();
     },
 
     //
     async getCouponList() {
-      const { data } = await getCouponListApi(this.holdCouponQuery)
-      console.log(data)
-
-      this.holdCouponTotal = data.count
-      this.holdCouponList = data.data
+      const { data } = await getCouponListApi(this.holdCouponQuery);
+      this.holdCouponTotal = data ? data.count : 0;
+      this.holdCouponList = data ? data.data : [];
     },
 
     handleBack() {
       uni.switchTab({
-        url: '/pages/user/user',
-      })
-    },
-  },
-}
+        url: '/pages/user/user'
+      });
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

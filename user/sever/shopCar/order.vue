@@ -8,8 +8,7 @@
 
       <view class="address-container">
         <view class="bas-info">
-          <view class="info" v-if="defaultAddress">
-            收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
+          <view class="info" v-if="defaultAddress"> 收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
           <view class="" v-else> 请选择收货地址 </view>
           <view class="right" @click="go('/user/site/site-manage?appoint=true')">
             <text>{{ defaultAddress ? '更换' : '去选择' }}</text>
@@ -17,8 +16,7 @@
           </view>
         </view>
 
-        <view class="address" v-if="defaultAddress">
-          地址： {{ defaultAddress.detailedAddress }}</view>
+        <view class="address" v-if="defaultAddress"> 地址： {{ defaultAddress.detailedAddress }}</view>
       </view>
 
       <view class="coupon-container" @click="couponPopupVisible = true">
@@ -54,7 +52,9 @@
     </view>
 
     <view class="footer">
-      <view class="tip">待支付：<text>￥{{ actualPrice }}</text></view>
+      <view class="tip"
+        >待支付：<text>￥{{ actualPrice }}</text></view
+      >
       <button class="uni-btn" @click="handleToPay">去支付</button>
     </view>
 
@@ -63,19 +63,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { getAddressListApi } from '../../../api/address'
-import { getCartCheckoutApi } from '../../../api/cart'
-import { submitOrderApi, payOrderGoodsAPPApi } from '../../../api/goods'
-import { getSybOrderPayH5 } from '../../../api/order'
-import { SELECT_ADDRESS } from '../../../constant'
-import { getUserId, payFn } from '../../../utils'
-const PAY_SHORT_ORDER_NO = 'PAY_SHORT_ORDER_NO'
-import RecommendGoods from '../../../components/recommend-goods/index.vue'
+import { mapGetters } from 'vuex';
+import { getAddressListApi } from '../../../api/address';
+import { getCartCheckoutApi } from '../../../api/cart';
+import { submitOrderApi, payOrderGoodsAPPApi } from '../../../api/goods';
+import { getSybOrderPayH5 } from '../../../api/order';
+import { SELECT_ADDRESS } from '../../../constant';
+import { getUserId, payFn } from '../../../utils';
+const PAY_SHORT_ORDER_NO = 'PAY_SHORT_ORDER_NO';
+import RecommendGoods from '../../../components/recommend-goods/index.vue';
 
 export default {
   components: {
-    RecommendGoods,
+    RecommendGoods
   },
   data() {
     return {
@@ -84,24 +84,27 @@ export default {
       actualPrice: 0,
       couponPopupVisible: false,
       couponId: -1,
-      couponPrice: 0,
-    }
+      couponPrice: 0
+    };
   },
   onShow() {
-    const apponitAddress = uni.getStorageSync(SELECT_ADDRESS)
+    const apponitAddress = uni.getStorageSync(SELECT_ADDRESS);
     if (apponitAddress) {
-      this.defaultAddress = apponitAddress
-      this.getData()
+      this.defaultAddress = apponitAddress;
+      this.getData();
     }
 
     if (uni.getStorageSync(PAY_SHORT_ORDER_NO)) {
-      uni.redirectTo({ url: '/user/orderForm/order-form?type=1' })
+      // uni.redirectTo({ url: '/user/orderForm/order-form?type=1' })
+      uni.switchTab({
+        url: '/pages/order/order?type=shop&status=1'
+      });
     }
   },
   methods: {
     // 点击回退
     handleBack() {
-      uni.navigateBack()
+      uni.navigateBack();
     },
 
     // 获取购物车数据
@@ -111,27 +114,27 @@ export default {
         cartId: 0,
         addressId: this.defaultAddress && this.defaultAddress.id,
         couponId: this.couponId,
-        useVoucher: 0,
+        useVoucher: 0
       }).then(({ data }) => {
-        this.goodsInfo = data.brandCartgoods
-        this.actualPrice = data.actualPrice
-        this.couponPrice = data.couponPrice
-      })
+        this.goodsInfo = data.brandCartgoods;
+        this.actualPrice = data.actualPrice;
+        this.couponPrice = data.couponPrice;
+      });
     },
 
     // 获取地址
     getAddrees() {
       getAddressListApi({
-        userId: getUserId(),
+        userId: getUserId()
       }).then(({ data }) => {
-        const defaultAddress = data.find(item => item.isDefault)
+        const defaultAddress = data.find((item) => item.isDefault);
         if (defaultAddress) {
-          this.defaultAddress = defaultAddress
+          this.defaultAddress = defaultAddress;
         } else {
-          this.defaultAddress = data[0]
+          this.defaultAddress = data[0];
         }
-        this.getData()
-      })
+        this.getData();
+      });
     },
 
     // 点击去支付
@@ -141,8 +144,8 @@ export default {
           title: '请选择收货地址',
           duration: 2000,
           icon: 'none'
-        })
-        return
+        });
+        return;
       }
       const data = {
         userId: getUserId(),
@@ -152,40 +155,43 @@ export default {
         couponId: this.couponId,
         useVoucher: false,
         grouponRulesId: '',
-        grouponLinkId: '',
-      }
+        grouponLinkId: ''
+      };
 
       submitOrderApi(data).then(async ({ data }) => {
-        uni.setStorageSync(PAY_SHORT_ORDER_NO, data.orderSn)
-        if ((this.$store.state.app.isInMiniProgram)) {
-
+        uni.setStorageSync(PAY_SHORT_ORDER_NO, data.orderSn);
+        if (this.$store.state.app.isInMiniProgram) {
           const payAppesult = await payOrderGoodsAPPApi({
             userId: getUserId(),
             orderNo: data.orderSn,
             payType: 1
-          })
+          });
 
           if (payAppesult.errno === 0) {
-            let query = ''
+            let query = '';
             for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&'
+              query += key + '=' + payAppesult.data[key] + '&';
             }
 
             wx.miniProgram.navigateTo({
-              url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(), fail: () => {
-                uni.redirectTo({ url: '/user/orderForm/order-form?type=1' })
+              url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(),
+              fail: () => {
+                // uni.redirectTo({ url: '/user/orderForm/order-form?type=1' });
+                uni.switchTab({
+                  url: '/pages/order/order?type=shop&status=1'
+                });
               }
-            })
+            });
           }
         } else {
           // #ifdef H5
           getSybOrderPayH5({
             orderNo: data.orderSn,
             userId: getUserId(),
-            payType: 1,
-          }).then(res => {
-            payFn(res.data)
-          })
+            payType: 1
+          }).then((res) => {
+            payFn(res.data);
+          });
           // #endif
 
           // #ifdef APP
@@ -193,13 +199,12 @@ export default {
             userId: getUserId(),
             orderNo: data.orderSn,
             payType: 1
-          })
+          });
 
           if (payAppesult.errno === 0) {
-
-            let query = ''
+            let query = '';
             for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&'
+              query += key + '=' + payAppesult.data[key] + '&';
             }
 
             plus.share.getServices(
@@ -217,26 +222,26 @@ export default {
                     path: 'pages/orderDetail/orderDetail?' + query
                   });
                 }
-              }, function (e) {
+              },
+              function (e) {
                 console.log('获取分享服务列表失败：' + e.message);
               }
             );
           }
           // #endif
         }
-
-      })
+      });
     },
 
     handleChooseCoupon(couponInfo) {
-      this.couponId = couponInfo.id
-      this.getData()
-    },
+      this.couponId = couponInfo.id;
+      this.getData();
+    }
   },
 
   onLoad() {
-    this.$store.dispatch('shopCar/getShopCarList')
-    this.getAddrees()
+    this.$store.dispatch('shopCar/getShopCarList');
+    this.getAddrees();
     // this.getData()
   },
 
@@ -244,16 +249,16 @@ export default {
     ...mapGetters(['shopCarInfo']),
     goodsList() {
       if (!this.shopCarInfo || !this.shopCarInfo.brandCartgoods) {
-        return []
+        return [];
       } else {
-        this.shopCarInfo.brandCartgoods.forEach(item => {
-          item.cartList.filter(item => item.checked)
-        })
-        return this.shopCarInfo
+        this.shopCarInfo.brandCartgoods.forEach((item) => {
+          item.cartList.filter((item) => item.checked);
+        });
+        return this.shopCarInfo;
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

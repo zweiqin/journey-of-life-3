@@ -113,9 +113,7 @@ export default {
     isVideoSource,
     // 返回
     handleBack() {
-      uni.navigateTo({
-        url: '/community-center/comment-order/comment-order'
-      });
+      uni.navigateBack();
     },
     // 设置初始化数据
     setCommentInfo(params) {
@@ -216,9 +214,7 @@ export default {
         this.ttoast('评论发布成功');
         this.resetData();
         this.timer = setTimeout(() => {
-          uni.redirectTo({
-            url: '/community-center/comment-order/comment-order'
-          });
+          uni.navigateBack();
         }, 2000);
       } catch (error) {
         this.ttoast({

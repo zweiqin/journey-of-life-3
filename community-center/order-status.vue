@@ -255,7 +255,10 @@ export default {
     },
 
     handleToOrderList() {
-      uni.navigateTo({ url: `../community-center/order` });
+      // uni.navigateTo({ url: `../community-center/order` });
+      uni.switchTab({
+        url: '/pages/order/order'
+      });
     },
     handleChooseCancelReason(reason) {
       if (reason !== '其他') {

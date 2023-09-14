@@ -13,7 +13,7 @@
     <TuanAppShim bg="#f6eadf"></TuanAppShim>
     <BaseInfo ref="baseInfoRef" :data="userInfo" @handleNavigate="handleNavigate"></BaseInfo>
     <view class="main-area">
-      <OrderPane @handleNavigate="handleNavigate"></OrderPane>
+      <!-- <OrderPane @handleNavigate="handleNavigate"></OrderPane> -->
       <Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
       <MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
       <Serve @handleNavigate="handleNavigate"></Serve>

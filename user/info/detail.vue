@@ -317,7 +317,7 @@ export default {
           }
         } catch (error) {
           uni.showLoading({
-            title: '获取您的信息失败',
+            title: error || '获取您的信息失败',
             icon: 'none',
             duration: 2000
           });
@@ -346,7 +346,11 @@ export default {
       });
 
       if (res.code === '0') {
-        this.bindPhone = res.data ? res.data.phone : null;
+        if (res.data.openId && res.data.phone) {
+          this.bindPhone = res.data.phone;
+        } else {
+          this.bindPhone = null;
+        }
       } else {
         uni.showToast({
           title: res.msg,
@@ -366,7 +370,7 @@ export default {
     // 绑定手机号
     handleBindMobile() {
       if (this.userInfo.weixinOpenid) {
-        uni.navigateTo('/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid);
+        uni.navigateTo({ url: '/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid });
       }
     }
   },

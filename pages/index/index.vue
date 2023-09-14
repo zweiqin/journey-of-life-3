@@ -17,6 +17,7 @@ import SearchFurniture from './SearchFurniture';
 import BrandFactory from './BrandFactory';
 import WholehouseCustomization from './WholehouseCustomization';
 import IntelligentSelection from './IntelligentSelection';
+import { TUAN_ORDER_SN } from '../../constant';
 
 const mapRefs = {
   0: 'searchFurnitureRef',
@@ -31,6 +32,10 @@ export default {
     BrandFactory,
     WholehouseCustomization,
     IntelligentSelection
+  },
+
+  onLoad() {
+    uni.removeStorageSync(TUAN_ORDER_SN);
   },
 
   data() {

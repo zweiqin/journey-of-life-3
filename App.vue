@@ -69,7 +69,6 @@ export default {
 
     const launchOptions = uni.getLaunchOptionsSync();
     this.scene = launchOptions.scene;
-    uni.removeStorageSync(TUAN_ORDER_SN);
   },
   methods: {
     connectSocket() {
@@ -84,10 +83,10 @@ export default {
       }
     },
     onOpen() {
-      console.log('onOpen连接成功');
+      // console.log('onOpen连接成功');
     },
     onMessage(evt) {
-      console.log('onMessage收到消息', evt);
+      // console.log('onMessage收到消息', evt);
       // const data = JSON.parse(evt.data)
       // console.log(data)
       // if (data.status == 10400) {
@@ -100,7 +99,7 @@ export default {
       // }
     },
     onError(errMsg) {
-      console.log('onError出错了');
+      // console.log('onError出错了');
       // uni.showLoading({
       // 	title: '断线了，正在重新连接......',
       // 	mask: true
@@ -112,7 +111,7 @@ export default {
       // })
     },
     onClose() {
-      console.log('onClose关闭了');
+      // console.log('onClose关闭了');
       this.timer && clearTimeout(this.timer);
       if (this.isLogin()) {
         this.timer = setTimeout(() => {
@@ -187,6 +186,10 @@ export default {
 /* 隐藏头部 */
 uni-page-head {
   display: none;
+}
+
+.uni-page-refresh--pulling, .uni-page-refresh--reached {
+  z-index: 1019000;
 }
 
 /* uni-page-body {

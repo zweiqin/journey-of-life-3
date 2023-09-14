@@ -92,8 +92,8 @@ export default {
     isVideoSource,
     // 返回
     handleBack() {
-      uni.navigateTo({
-        url: '/community-center/comment-order/comment-order'
+      uni.switchTab({
+        url: '/pages/order/order'
       });
     },
     // 设置初始化数据
@@ -180,6 +180,10 @@ export default {
           uni.redirectTo({
             url: '/community-center/comment-order/comment-order'
           });
+
+          // uni.switchTab({
+          //   url: '/pages/order/order?type=shop&status=5'
+          // });
         }, 2000);
       } catch (error) {
         this.ttoast({

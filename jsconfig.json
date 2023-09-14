@@ -7,7 +7,11 @@
   "exclude": [
     "node_modules",
     "dist",
-    "build"
+    "build",
+    "uni_modules",
+    "wxcomponents",
+    "unpackage",
+    "uniCloud-aliyun"
   ],
   "vueCompilerOptions": {
     "target": 2.7

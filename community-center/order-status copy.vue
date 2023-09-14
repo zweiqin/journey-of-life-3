@@ -148,7 +148,10 @@ export default {
   },
   methods: {
     handleToOrderList() {
-      uni.navigateTo({ url: `../community-center/order` });
+      // uni.navigateTo({ url: `../community-center/order` });
+      uni.switchTab({
+        url: '/pages/order/order'
+      });
     },
     bright(e) {
       this.abc = e * 1;

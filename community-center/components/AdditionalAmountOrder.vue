@@ -88,9 +88,13 @@ export default {
                 "&userId=" +
                 getUserId(),
               fail: () => {
-                uni.redirectTo({
-                  url: `/community-center/order`,
-                });
+                // uni.redirectTo({
+                //   url: `/community-center/order`,
+                // });
+
+                uni.switchTab({
+        url: '/pages/order/order'
+      });
               },
             });
           }
@@ -200,8 +204,8 @@ export default {
   background-color: #fff;
   padding: 30upx;
   border-radius: 24upx;
-  margin: 20upx 20upx 0;
   font-size: 28upx;
+  margin-bottom: 30upx;
 
   .item-1 {
     display: flex;
@@ -247,10 +251,10 @@ export default {
 
       &:nth-of-type(2) {
         margin-left: 10upx;
-        background-color: #ffc117;
+        background-color: #0fab6b;
 
         &:active {
-          background-color: #ffe18e;
+          background-color: #0dff9a;
         }
       }
     }

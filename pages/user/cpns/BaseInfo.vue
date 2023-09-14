@@ -134,10 +134,10 @@ export default {
           }
         } else {
           this.isBuy = false;
-          console.log('查询是否开通金管家', res);
+          // console.log('查询是否开通金管家', res);
         }
       } catch (error) {
-        console.log('查询是否开通金管家', error);
+        // console.log('查询是否开通金管家', error);
         this.isBuy = false;
       }
     }

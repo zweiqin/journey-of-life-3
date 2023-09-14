@@ -87,7 +87,10 @@ export default {
     },
     handleToOrder() {
       console.log(123);
-      uni.navigateTo({ url: "../community-center/order" });
+      // uni.navigateTo({ url: "../community-center/order" });
+      uni.switchTab({
+        url: '/pages/order/order'
+      });
     },
   },
   created() {},

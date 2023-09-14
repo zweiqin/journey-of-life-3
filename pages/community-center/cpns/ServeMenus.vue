@@ -47,7 +47,7 @@ export default {
   flex-wrap: wrap;
 
   .item {
-    margin-right: 34upx;
+    margin-right: 30upx;
     margin-bottom: 20upx;
 
     &:nth-child(5n) {

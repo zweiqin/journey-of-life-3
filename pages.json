@@ -19,6 +19,14 @@
       }
     },
     {
+      "path": "pages/order/order",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path": "pages/pre-order/pre-order",
       "style": {
         "usingComponents": {
@@ -300,11 +308,18 @@
       //   "iconPath": "/static/images/tabbar/stuff.png",
       //   "selectedIconPath": "/static/images/tabbar/stuff-active.png"
       // },
+
       {
         "pagePath": "pages/community-center/community-centerr",
         "text": "社区中心",
         "iconPath": "/static/images/tabbar/community.png",
         "selectedIconPath": "/static/images/tabbar/community-active.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "/static/images/tabbar/order.png",
+        "selectedIconPath": "/static/images/tabbar/order-active.png"
       },
       // {
       //   "pagePath": "pages/logistics/logistics",
@@ -796,13 +811,13 @@
             "onReachBottomDistance": 0
           }
         },
-				{
-					"path": "sever/activityCenter/activity-withdrawal-record",
-					"style": {
-						"navigationBarTitleText": "活动中心提现记录",
-						"onReachBottomDistance": 0
-					}
-				},
+        {
+          "path": "sever/activityCenter/activity-withdrawal-record",
+          "style": {
+            "navigationBarTitleText": "活动中心提现记录",
+            "onReachBottomDistance": 0
+          }
+        },
         {
           "path": "sever/activityCenter/activity-prod",
           "style": {
@@ -880,32 +895,32 @@
             "usingComponents": {}
           }
         },
-				{
-					"path": "sever/bank-card/index",
-					"style": {
-						"navigationBarTitleText": "银行卡"
-					}
-				},
-				{
-					"path": "sever/bank-card/bank-card-form",
-					"style": {
-						"navigationBarTitleText": "银行卡表单"
-					}
-				},
-				{
-					"path": "sever/withdrawal/index",
-					"style": {
-						"navigationBarTitleText": "提现",
-						"usingComponents": {}
-					}
-				},
-				{
-					"path": "sever/withdrawal/withdrawal-record",
-					"style": {
-						"navigationBarTitleText": "提现记录",
-						"usingComponents": {}
-					}
-				},
+        {
+          "path": "sever/bank-card/index",
+          "style": {
+            "navigationBarTitleText": "银行卡"
+          }
+        },
+        {
+          "path": "sever/bank-card/bank-card-form",
+          "style": {
+            "navigationBarTitleText": "银行卡表单"
+          }
+        },
+        {
+          "path": "sever/withdrawal/index",
+          "style": {
+            "navigationBarTitleText": "提现",
+            "usingComponents": {}
+          }
+        },
+        {
+          "path": "sever/withdrawal/withdrawal-record",
+          "style": {
+            "navigationBarTitleText": "提现记录",
+            "usingComponents": {}
+          }
+        },
         {
           "path": "sever/goldButler/gold-butler",
           "style": {

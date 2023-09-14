@@ -91,8 +91,12 @@ export default {
     },
 
     back() {
-      uni.navigateTo({
-        url: '/user/orderForm/order-form?type=5'
+      // uni.navigateTo({
+      //   url: '/user/orderForm/order-form?type=5'
+      // });
+
+      uni.switchTab({
+        url: '/pages/order/order?type=shop&status=5'
       });
     },
 
