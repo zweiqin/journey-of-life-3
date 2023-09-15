@@ -4,18 +4,9 @@
       <view class="item active">热销套餐</view>
     </view>
     <view class="vip-container">
-      <swiper
-        indicator-dots
-        autoplay
-        indicator-color="#fff"
-        indicator-active-color="#fdb96c"
-        style="height: 320upx; width: 100%"
-      >
+      <swiper indicator-dots autoplay indicator-color="#fff" indicator-active-color="#fdb96c" style="height: 320upx; width: 100%">
         <swiper-item v-if="showxinshi">
-          <view
-            class="vip-wrapper vip-type-1"
-            @click="handleToVipDetail(finalVipBarPackage[1].url)"
-          >
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[1].url)">
             <image class="vip-banner" :src="finalVipBarPackage[1].img"></image>
             <view class="text">
               <view class="price-text">{{ finalVipBarPackage[1].price }}</view>
@@ -25,31 +16,18 @@
         </swiper-item>
 
         <swiper-item>
-          <view
-            class="vip-wrapper vip-type-1"
-            @click="handleToVipDetail(finalVipBarPackage[0].url)"
-          >
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[0].url)">
             <image class="vip-banner" :src="finalVipBarPackage[0].img"></image>
             <view class="text">
-              <view class="price-text"
-                >￥{{ finalVipBarPackage[0].price }}</view
-              >
+              <view class="price-text">￥{{ finalVipBarPackage[0].price }}</view>
               <view class="title-text">{{ finalVipBarPackage[0].name }}</view>
             </view>
           </view>
         </swiper-item>
 
         <swiper-item>
-          <view
-            class="vip-wrapper vip-type-1"
-            @click="
-              handleToVipDetail(finalVipBarPackage[showxinshi ? 2 : 1].url)
-            "
-          >
-            <image
-              class="vip-banner"
-              :src="finalVipBarPackage[showxinshi ? 2 : 1].img"
-            ></image>
+          <view class="vip-wrapper vip-type-1" @click="handleToVipDetail(finalVipBarPackage[showxinshi ? 2 : 1].url)">
+            <image class="vip-banner" :src="finalVipBarPackage[showxinshi ? 2 : 1].img"></image>
           </view>
         </swiper-item>
       </swiper>
@@ -60,12 +38,12 @@
 </template>
 
 <script>
-import { vipBarConfig } from "../config";
+import { vipBarConfig } from '../config';
 export default {
   data() {
     return {
       vipBarConfig: [],
-      showxinshi: true,
+      showxinshi: true
     };
   },
 
@@ -78,7 +56,7 @@ export default {
       if (url) {
         this.go(url);
       } else {
-        this.empty("套餐升级中");
+        this.empty('套餐升级中');
       }
     },
 
@@ -99,13 +77,11 @@ export default {
       }
 
       this.vipBarConfig = vipBarConfig;
-    },
+    }
   },
 
   computed: {
     finalVipBarPackage() {
-      console.log("草了", this.$store.getters.dzVipList);
-
       let isHas299 = false;
       if (this.$store.getters.dzVipList.length) {
         for (const item of this.$store.getters.dzVipList) {
@@ -123,8 +99,8 @@ export default {
       } else {
         return vipBarConfig;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -139,7 +115,7 @@ export default {
   margin-bottom: 10px;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 42upx;
     left: 30upx;

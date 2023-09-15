@@ -296,12 +296,19 @@ export default {
               return;
             }
 
-            uni.showToast({
-              title: '微信绑定成功',
-              duration: 2000
-            });
+            if (res.code == '0') {
+              uni.showToast({
+                title: '微信绑定成功',
+                duration: 2000
+              });
 
-            this.queryBindInfo();
+              this.queryBindInfo();
+            }else{
+              this.ttoast({
+                type: 'fail',
+                title: res.msg || '绑定失败，请重试'
+              })
+            }
           } catch (error) {
             uni.showToast({
               title: '微信绑定失败',
@@ -346,7 +353,7 @@ export default {
       });
 
       if (res.code === '0') {
-        if (res.data.openId && res.data.phone) {
+        if (res.data.openId && res.data.phone && res.data.phone !== '18888888888') {
           this.bindPhone = res.data.phone;
         } else {
           this.bindPhone = null;
@@ -369,8 +376,13 @@ export default {
 
     // 绑定手机号
     handleBindMobile() {
-      if (this.userInfo.weixinOpenid) {
+      if (this.userInfo.weixinOpenid && !this.userInfo.phone) {
         uni.navigateTo({ url: '/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid });
+      } else {
+        this.ttoast({
+          type: 'info',
+          title: '您已绑定手机号'
+        });
       }
     }
   },

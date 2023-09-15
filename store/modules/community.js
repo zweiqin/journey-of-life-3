@@ -83,8 +83,6 @@ export default {
       } else {
         commit(CHANGE_DZ_VIP_PACKAGE, []);
       }
-
-      console.log('叼了');
     }
   }
 };

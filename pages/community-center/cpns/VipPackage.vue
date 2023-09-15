@@ -1,16 +1,43 @@
 <template>
   <view class="vip-package-container" :class="{ active: isStart }">
     <!-- 限时钜惠 -->
-    <view class="package package-1" @click="go('/community-center/vip-center/vip-detail?type=1')">
-      <view class="package-title"> 限时钜惠 </view>
+    <view v-if="XIAN && XIAN.name" class="package package-1" @click="go('/community-center/vip-center/vip-detail?type=1')">
+      <view class="package-title"> {{ XIAN.name }} </view>
 
       <view class="content">
-        <view class="title-1">清凉套餐仅需<text class="vip-price">39.9</text></view>
+        <view class="title-1"
+          >清凉套餐仅需<text class="vip-price">{{ XIAN.price }}</text></view
+        >
         <view class="title-2">多项套餐选择</view>
       </view>
 
       <button class="uni-btn">立省300</button>
 
+      <image class="gift" src="../../../static/images/new-community/home/gift.png"></image>
+      <image class="left-package" src="../../../static/images/new-community/home/left-package.png"></image>
+      <image class="right-top" src="../../../static/images/new-community/home/right-top.png"></image>
+      <image class="money" src="../../../static/images/new-community/home/money.png"></image>
+      <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
+      <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
+    </view>
+
+    <view
+      v-else
+      class="package package-1"
+      @click="
+        go(
+          '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F0ambqkerlcm244oyheu9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fqe5otzuj908ndz5mo0iw.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fush1q9ne9d4ob28dt0b9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Frg4tzjcv9clnokxa7wew.pngg'
+        )
+      "
+    >
+      <view class="package-title"> 限时钜惠 </view>
+
+      <view class="content">
+        <view class="title-1">洗衣机清洗服务</view>
+        <view class="title-1"><text class="vip-price">￥98/台起</text></view>
+      </view>
+
+      <button class="uni-btn">立即抢购</button>
       <image class="gift" src="../../../static/images/new-community/home/gift.png"></image>
       <image class="left-package" src="../../../static/images/new-community/home/left-package.png"></image>
       <image class="right-top" src="../../../static/images/new-community/home/right-top.png"></image>
@@ -74,14 +101,28 @@ export default {
     setTimeout(() => {
       this.startAnimation();
     }, 500);
-
-    const vipPackageList = this.$store.getters.dzVipList;
-    console.log(vipPackageList);
   },
 
   methods: {
     startAnimation() {
       this.isStart = true;
+    }
+  },
+
+  computed: {
+    XIAN() {
+      const data = this.$store.getters.dzVipList;
+      if (data && Array.isArray(data) && data.length) {
+        const target = data.find((item) => item.serverType === 2);
+        console.log('找到了', target);
+
+        return {
+          name: target.serverName,
+          price: target.serverPrice
+        };
+      } else {
+        return false;
+      }
     }
   }
 };

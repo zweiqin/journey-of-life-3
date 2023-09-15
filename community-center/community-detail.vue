@@ -161,7 +161,7 @@
 
       <!-- 用户评价 -->
       <view class="comment-list">
-        <CommentList :id="serverTypeId" :comments="commentList"></CommentList>
+        <CommentList :id="serverTypeId" :comments="commentList || []"></CommentList>
       </view>
 
       <!-- 服务详情内容 -->
