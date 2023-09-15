@@ -22,7 +22,7 @@
 		    </view>
         <view class="menu-item" @click="go('/pages/serviceoil/serviceoil')">
           <image class="menu-icon" src="../../../static/images/tabbar/jiayouqi.png" mode="" />
-          <text class="menu-title">团油</text>
+          <text class="menu-title">加油站</text>
         </view>
       </view>
     </view>
