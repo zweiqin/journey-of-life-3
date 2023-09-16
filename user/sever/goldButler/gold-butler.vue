@@ -23,7 +23,7 @@
         <view class="content">
           <view class="c-name">家庭小卫士</view>
           <view class="c-service">享受4大服务</view>
-          <view class="c-time">2023-02-18 至 2024-02-28</view>
+          <view class="c-time" v-if="timeLine">{{ timeLine.startTime }} 至 {{ timeLine.endTime }}</view>
         </view>
         <view class="open1">已开通</view>
         <!-- <view class="open2" v-if="status == 1" @click="handleToOpen">
@@ -153,11 +153,14 @@
 
 <script>
 import { formatTime } from '../../../utils';
+import dayjs from 'dayjs';
 import { navs, navs1, service, contents, calcUseNumber } from './data';
 import { userIsPurchaseApi, getSetMealListApi, getServerProjectListApi } from '../../../api/user';
 import { getServeListApi } from '../../../api/community-center';
 import { queryDynamicDataApi } from '../../../api/address';
+
 import { getUserId } from 'utils';
+import { time } from 'echarts';
 export default {
   name: 'Gold-butler',
   props: {},
@@ -179,7 +182,8 @@ export default {
       vip2ServeList: [],
       allUsed: '',
       notUseServeList: [],
-      vipContent: []
+      vipContent: [],
+      timeLine: null
     };
   },
 
@@ -190,14 +194,12 @@ export default {
       try {
         const res = await getServeListApi();
         if (res.statusCode === 20000) {
-          const jinNIMADE = res.data.find(item => item.serverType === 1)
-          if(jinNIMADE){
-            this.vipContent = jinNIMADE.serverContent.split(',')
+          const jinNIMADE = res.data.find((item) => item.serverType === 1);
+          if (jinNIMADE) {
+            this.vipContent = jinNIMADE.serverContent.split(',');
           }
         }
-      } catch(e){
-
-      }
+      } catch (e) {}
     },
     handleClick(item) {
       this.currentTab = item.value;
@@ -301,13 +303,23 @@ export default {
         price: 399
       });
       this.data = res.data;
-      console.log('查询', this.data);
+      // console.log('查询', this.data);
       if (this.data === null) {
         this.status = 1;
-        console.log('未开通', this.status);
+        // console.log('未开通', this.status);
       } else {
         this.status = 2;
-        console.log('已开通', this.status);
+        if (Array.isArray(res.data) && res.data.length) {
+          const JTXWS = res.data.find((item) => item.dictName === '金管家会员');
+          if (JTXWS) {
+            const startTime = JTXWS.createTime.split(' ')[0];
+            this.timeLine = {
+              startTime,
+              endTime: dayjs(startTime).add(1, 'year').format('YYYY-MM-DD')
+            };
+          }
+        }
+        // console.log('已开通', this.status);
       }
     },
     //获取套餐列表
@@ -405,7 +417,7 @@ export default {
   mounted() {
     this.userIsPurchase();
     this.getSetMealList();
-    this.getData()
+    this.getData();
     // this.getServerProjectList()
   },
   created() {},
