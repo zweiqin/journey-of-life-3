@@ -1,5 +1,6 @@
 <template>
   <view>
+    <TuanAppShim bg="#fff"></TuanAppShim>
     <view class="my-order-container" v-if="userId">
       <OrderHeader
         @change-status="handleChangeStatus"

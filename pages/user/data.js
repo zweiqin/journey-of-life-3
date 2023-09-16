@@ -237,5 +237,5 @@ export const myServe = [
 ];
 
 export const mapGroupStatus = (status) => {
-  return { 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '打款中', 5: '打款成功', 6: '审核不通过', 7: '打款失败' }[status];
+  return { 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '审核不通过', 5: '冻结', 6: '审核不通过', 7: '打款失败' }[status];
 };
