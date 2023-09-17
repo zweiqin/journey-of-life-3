@@ -436,9 +436,13 @@ export default {
 					failCb: () => { }
 				}
 			}
-			await this.$refs.tuanWxShareRef.share(data, isQuit)
-			uni.hideLoading()
-			if (isQuit && this.activityCode) uni.showLoading({ mask: true })
+		  try {
+		  	await this.$refs.tuanWxShareRef.share(data, isQuit)
+		  	uni.hideLoading()
+		  	if (isQuit && this.activityCode) uni.showLoading({ mask: true })
+		  } catch (error) {
+		  	uni.hideLoading()
+		  }
 		}
 	}
 }
