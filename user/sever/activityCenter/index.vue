@@ -276,8 +276,8 @@ export default {
 
 	async onShow() {
 		if (!this.hasGetPurchaseRecord) {
-			if (getUserId()) await getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-			if (getUserId()) await getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
+			try { if (getUserId()) await getPurchaseRecordApi({ userId: getUserId(), price: 299 }) } catch (e) { console.log(e) }
+			try { if (getUserId()) await getPurchaseRecord2Api({ userId: getUserId(), price: 399 }) } catch (e) { console.log(e) }
 			this.hasGetPurchaseRecord = true
 		}
 		this.getUserIncome()
