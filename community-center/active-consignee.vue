@@ -257,6 +257,13 @@ export default {
 
       const createOrderRes = await createRepairOrderApi(data);
       uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
+      if (createOrderRes.statusMsg.includes('购买一次')) {
+        setTimeout(() => {
+          uni.switchTab({
+            url: '/pages/order/order'
+          });
+        }, 1000);
+      }
       if (createOrderRes.statusCode == 20000) {
         if (this.$store.state.app.isInMiniProgram) {
           const payAppesult = await payOrderForBeeStewadAPPApi({

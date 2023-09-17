@@ -673,6 +673,12 @@
     {
       "root": "user",
       "pages": [
+        // {
+        //   "path": "voucher/voucher",
+        //   "style": {
+        //     "navigationBarTitleText": "我的代金券"
+        //   }
+        // },
         {
           "path": "view",
           "style": {
