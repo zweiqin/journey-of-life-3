@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { throttle,getUserId } from '../../utils';
+import { throttle } from '../../utils';
 import BaseInfo from './cpns/BaseInfo';
 import OrderPane from './cpns/OrderPane.vue';
 import Equity from './cpns/Equity.vue';
@@ -43,7 +43,6 @@ import Serve from './cpns/Serve.vue';
 import showModalMixin from '../../mixin/showModal';
 import { USER_ID, USER_INFO } from '../../constant';
 import { myEquity } from './data';
-import { getPurchaseRecordApi, getPurchaseRecord2Api } from '../../api/user'
 
 export default {
   name: 'User',
@@ -57,8 +56,6 @@ export default {
   },
   mixins: [showModalMixin()],
   onLoad() {
-    getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-    getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
     // #ifdef H5
     this.init();
     this.calcDis = throttle(this.handleTouchMove, 50);

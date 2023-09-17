@@ -6,10 +6,13 @@ import { getUserId } from './utils';
 import { BASE_WS_API } from './config';
 import { whoami } from './api/auth';
 import { USER_ID, USER_TOKEN, TUAN_ORDER_SN, USER_SELECT_ADDRESS } from './constant';
+import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 
 export default {
   onLaunch() {
     this.connectSocket();
+    getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+    getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
   },
   onShow() {
     // 判断浏览器环境
