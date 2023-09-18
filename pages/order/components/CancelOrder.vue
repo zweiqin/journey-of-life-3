@@ -87,7 +87,6 @@ export default {
     // 取消订单
     async handleCancelOrder() {
       try {
-        this.isLoading = true;
         const query = {
           userId: getUserId(),
           id: this.orderInfo.id
@@ -107,6 +106,8 @@ export default {
         } else {
           query.cancelRemarks = this.currentReason;
         }
+
+        this.isLoading = true;
 
         const res = await cancelOrderApi({ ...query });
         if (res.statusCode === 20000) {
@@ -129,7 +130,7 @@ export default {
           title: error || '订单取消失败'
         });
       } finally {
-        this.isLoading = true;
+        this.isLoading = false;
       }
     },
 

@@ -187,191 +187,217 @@ export default {
   methods: {
     // 点击确定
     async handleCreateOrder() {
-      if (this.loading) {
-        this.ttoast({
-          title: '操作太快了',
-          type: 'info'
-        });
-
-        return;
-      }
-      const _this = this;
-      this.loading = true;
-      uni.showLoading({
-        title: '下单中...'
-      });
-
-      if (
-        !this.consigneeForm.consigneeName ||
-        !this.consigneeForm.consigneeMobile ||
-        !this.consigneeForm.consigneeAddress ||
-        !this.consigneeForm.consigneeAddressDetail
-      ) {
-        uni.showToast({
-          title: '请填写完提货信息',
-          icon: 'none'
-        });
-        this.loading = false;
-
-        return;
-      }
-
-      if (this.consigneeForm.consigneeMobile.length !== 11) {
-        uni.showToast({
-          title: '手机号不合法',
-          icon: 'none'
-        });
-        this.loading = false;
-
-        return;
-      }
-
-      const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
-      const data = {
-        isVipSetmeal: 1,
-        userId: getUserId(),
-        // userId: 263,
-        orderType: 1,
-        pricingType: 1,
-        paymentMethod: 1,
-        deliveryType: 4,
-        price: this.serveData.serverPrice,
-        actualPrice: this.serveData.serverPrice,
-        dictName: this.serveData.serverType === 1 ? this.serveData.serverName : this.serveData.serverContent,
-        serverId: this.serveData.id,
-        consigneeAddress: this.consigneeForm.consigneeAddress,
-        consigneeAddressDetail: this.consigneeForm.consigneeAddressDetail,
-        remarks: this.consigneeForm.remarks,
-        consigneeName: this.consigneeForm.consigneeName,
-        consigneeMobile: this.consigneeForm.consigneeMobile
-      };
-
-      if (partnerCode) {
-        data.partnerCode = partnerCode;
-        data.spotOrder = 1;
-      }
-
-      if (data.dictName === '空调清洗') {
-        data.serverTypeId = 313;
-      }
-
-      const createOrderRes = await createRepairOrderApi(data);
-      uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
-      if (createOrderRes.statusMsg.includes('购买一次')) {
-        setTimeout(() => {
-          uni.switchTab({
-            url: '/pages/order/order'
-          });
-        }, 1000);
-      }
-      if (createOrderRes.statusCode == 20000) {
-        if (this.$store.state.app.isInMiniProgram) {
-          const payAppesult = await payOrderForBeeStewadAPPApi({
-            userId: getUserId(),
-            orderNo: createOrderRes.data
+      try {
+        if (this.loading) {
+          this.ttoast({
+            title: '操作太快了',
+            type: 'info'
           });
 
-          if (payAppesult.statusCode === 20000) {
-            let query = '';
-            for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
-            }
+          return;
+        }
+        const _this = this;
+        this.loading = true;
+        uni.showLoading({
+          title: '下单中...'
+        });
 
-            wx.miniProgram.navigateTo({
-              url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId(),
-              fail: () => {
-                // uni.redirectTo({
-                //   url: `/community-center/order`,
-                // });
-
-                uni.switchTab({
-                  url: '/pages/order/order'
-                });
-              }
-            });
-          }
-        } else {
-          // #ifdef H5
-          const payResult = await payOrderForBeeStewadApi({
-            userId: getUserId(),
-            orderNo: createOrderRes.data
+        if (
+          !this.consigneeForm.consigneeName ||
+          !this.consigneeForm.consigneeMobile ||
+          !this.consigneeForm.consigneeAddress ||
+          !this.consigneeForm.consigneeAddressDetail
+        ) {
+          uni.showToast({
+            title: '请填写完提货信息',
+            icon: 'none'
           });
+          this.loading = false;
 
+          return;
+        }
+
+        if (this.consigneeForm.consigneeMobile.length !== 11) {
+          uni.showToast({
+            title: '手机号不合法',
+            icon: 'none'
+          });
+          this.loading = false;
+
+          return;
+        }
+
+        const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
+        const data = {
+          isVipSetmeal: 1,
+          userId: getUserId(),
+          // userId: 263,
+          orderType: 1,
+          pricingType: 1,
+          paymentMethod: 1,
+          deliveryType: 4,
+          price: this.serveData.serverPrice,
+          actualPrice: this.serveData.serverPrice,
+          dictName: this.serveData.serverType === 1 ? this.serveData.serverName : this.serveData.serverContent,
+          serverId: this.serveData.id,
+          consigneeAddress: this.consigneeForm.consigneeAddress,
+          consigneeAddressDetail: this.consigneeForm.consigneeAddressDetail,
+          remarks: this.consigneeForm.remarks,
+          consigneeName: this.consigneeForm.consigneeName,
+          consigneeMobile: this.consigneeForm.consigneeMobile
+        };
+
+        if (partnerCode) {
+          data.partnerCode = partnerCode;
+          data.spotOrder = 1;
+        }
+
+        if (data.dictName === '空调清洗') {
+          data.serverTypeId = 313;
+        }
+
+        const createOrderRes = await createRepairOrderApi(data);
+        uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
+        if (createOrderRes.statusMsg.includes('购买一次')) {
+          this.ttoast({
+            type: 'fail',
+            title: '购买失败',
+            content: createOrderRes.statusMsg
+          });
           uni.hideLoading();
-          _this.loading = false;
-          uni.removeStorageSync(SF_INVITE_CODE);
-
-          if (payResult.statusCode === 20000) {
-            _this.address = '';
-            uni.removeStorageSync(`${this.cacheName}INFO`);
-            const res = JSON.parse(payResult.data);
-            const form = document.createElement('form');
-            form.setAttribute('action', res.url);
-            form.setAttribute('method', 'POST');
-
-            const data = JSON.parse(res.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement('input');
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          } else {
-            uni.showToast({
-              title: '支付失败',
-              duration: 2000,
-              icon: 'none'
+          this.loading = false;
+          setTimeout(() => {
+            uni.switchTab({
+              url: '/pages/order/order'
             });
-          }
-          // #endif
+          }, 2000);
 
-          // #ifdef APP
-          const payAppesult = await payOrderForBeeStewadAPPApi({
-            userId: getUserId(),
-            orderNo: createOrderRes.data
-          });
+          return;
+        }
+        if (createOrderRes.statusCode == 20000) {
+          if (this.$store.state.app.isInMiniProgram) {
+            const payAppesult = await payOrderForBeeStewadAPPApi({
+              userId: getUserId(),
+              orderNo: createOrderRes.data
+            });
 
-          if (payAppesult.statusCode === 20000) {
-            let query = '';
-            for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
-            }
+            uni.hideLoading();
+            _this.loading = false;
 
-            plus.share.getServices(
-              function (res) {
-                let sweixin = null;
-                for (let i in res) {
-                  if (res[i].id == 'weixin') {
-                    sweixin = res[i];
-                  }
-                }
-                console.log(sweixin);
-                if (sweixin) {
-                  sweixin.launchMiniProgram({
-                    id: 'gh_e64a1a89a0ad',
-                    type: 0,
-                    path: 'pages/orderDetail/orderDetail?' + query
+            if (payAppesult.statusCode === 20000) {
+              let query = '';
+              for (const key in payAppesult.data) {
+                query += key + '=' + payAppesult.data[key] + '&';
+              }
+
+              wx.miniProgram.navigateTo({
+                url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId(),
+                fail: () => {
+                  // uni.redirectTo({
+                  //   url: `/community-center/order`,
+                  // });
+
+                  uni.switchTab({
+                    url: '/pages/order/order'
                   });
                 }
-              },
-              function (e) {
-                console.log('获取分享服务列表失败：' + e.message);
+              });
+            }
+          } else {
+            // #ifdef H5
+            const payResult = await payOrderForBeeStewadApi({
+              userId: getUserId(),
+              orderNo: createOrderRes.data
+            });
+
+            uni.hideLoading();
+            _this.loading = false;
+            uni.removeStorageSync(SF_INVITE_CODE);
+
+            if (payResult.statusCode === 20000) {
+              _this.address = '';
+              uni.removeStorageSync(`${this.cacheName}INFO`);
+              const res = JSON.parse(payResult.data);
+              const form = document.createElement('form');
+              form.setAttribute('action', res.url);
+              form.setAttribute('method', 'POST');
+
+              const data = JSON.parse(res.data);
+              let input;
+              for (const key in data) {
+                input = document.createElement('input');
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
               }
-            );
+
+              document.body.appendChild(form);
+              form.submit();
+              document.body.removeChild(form);
+            } else {
+              uni.showToast({
+                title: '支付失败',
+                duration: 2000,
+                icon: 'none'
+              });
+            }
+            // #endif
+
+            // #ifdef APP
+            const payAppesult = await payOrderForBeeStewadAPPApi({
+              userId: getUserId(),
+              orderNo: createOrderRes.data
+            });
+
+            uni.hideLoading();
+            _this.loading = false;
+
+            if (payAppesult.statusCode === 20000) {
+              let query = '';
+              for (const key in payAppesult.data) {
+                query += key + '=' + payAppesult.data[key] + '&';
+              }
+
+              plus.share.getServices(
+                function (res) {
+                  let sweixin = null;
+                  for (let i in res) {
+                    if (res[i].id == 'weixin') {
+                      sweixin = res[i];
+                    }
+                  }
+                  console.log(sweixin);
+                  if (sweixin) {
+                    sweixin.launchMiniProgram({
+                      id: 'gh_e64a1a89a0ad',
+                      type: 0,
+                      path: 'pages/orderDetail/orderDetail?' + query
+                    });
+                  }
+                },
+                function (e) {
+                  console.log('获取分享服务列表失败：' + e.message);
+                }
+              );
+            }
+            // #endif
           }
-          // #endif
+        } else {
+          uni.showToast({
+            title: createOrderRes.statusMsg,
+            duration: 2000,
+            icon: 'none'
+          });
+          this.loading = false;
+          uni.hideLoading();
         }
-      } else {
-        uni.showToast({
-          title: createOrderRes.statusMsg,
-          duration: 2000,
-          icon: 'none'
+      } catch (error) {
+        this.ttoast({
+          type: 'fail',
+          title: '下单失败',
+          content: error
         });
+        uni.hideLoading();
         this.loading = false;
       }
     },
