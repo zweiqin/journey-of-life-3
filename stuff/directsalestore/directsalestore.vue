@@ -129,7 +129,7 @@
           :id="item.id"
           :name="item.name"
           :sname="item.brief"
-          :price="item.retailPrice"
+          :price="item.counterPrice"
           :url="item.picUrl"
         ></Goods>
       </view>

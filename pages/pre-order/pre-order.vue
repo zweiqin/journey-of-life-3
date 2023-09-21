@@ -56,6 +56,20 @@
           </text>
         </view>
 
+        <view class="line">
+          <view class="title">是否使用代金券</view>
+          <text class="coupon-wrapper">
+            <text style="margin-right: 10upx;">持有： {{ currentHoldVoucher }}</text>
+            <tui-switch
+              v-if="supportVoucher && currentHoldVoucher"
+              :scaleRatio="0.6"
+              color="#ffcb05"
+              :checked="opForm.useVoucher"
+              @change="handleChangeUseVoucher"
+            ></tui-switch>
+          </text>
+        </view>
+
         <view class="line-end">
           <view class="title">合计：</view>
           <view class="value">￥{{ calcOrderMsg.actualPrice }}</view>
@@ -91,6 +105,8 @@ import { firstAddCar, submitOrderApi, payOrderGoodsApi, payOrderGoodsAPPApi } fr
 import { getUserId } from '../../utils';
 import { payShopCarApi } from '../../api/cart';
 import { PAY_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from '../../constant';
+import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user';
+
 export default {
   name: 'PreOrder',
   onLoad(options) {
@@ -115,12 +131,6 @@ export default {
   onShow() {
     this.getAddressList();
     if (uni.getStorageSync(TUAN_ORDER_SN)) {
-      // uni.redirectTo({
-      // 	url: '/user/orderForm/order-form?type=1'
-      // })
-
-      console.log("莱克老弟莱克老弟莱克老弟莱克老弟莱克老弟莱克老弟");
-
       uni.switchTab({
         url: '/pages/order/order'
       });
@@ -141,7 +151,9 @@ export default {
       couponPopupVisible: false,
       couponId: -1, // 优惠劵id
       couponPrice: null,
-      couponPrice: 0
+      couponPrice: 0,
+      currentHoldVoucher: null,
+      supportVoucher: true
     };
   },
 
@@ -161,7 +173,6 @@ export default {
     // 获取地址
     getAddressList() {
       const address = uni.getStorageSync(SELECT_ADDRESS);
-      console.log('有', address);
       if (address) {
         this.defaultAddress = address;
         return;
@@ -185,7 +196,9 @@ export default {
     // 获取订单信息
     getOrderInfo() {
       this.orderInfo = uni.getStorageSync(PAY_GOODS);
+      this.supportVoucher = this.orderInfo.supportVoucher;
       this.getCardId();
+      this.getUserHoldVoucher();
     },
 
     // 计算订单费用
@@ -227,6 +240,31 @@ export default {
         _this.calcOrderMsg = data;
         uni.hideLoading();
       });
+    },
+
+    // 获取代金券持有
+    async getUserHoldVoucher() {
+      try {
+        const res = await refrshUserInfoApi({
+          userId: getUserId()
+        });
+
+        if (res.errno == '0') {
+          this.currentHoldVoucher = res.data.voucherNumber;
+        } else {
+          this.ttoast({
+            type: 'info',
+            title: res.errmsg
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    handleChangeUseVoucher(e) {
+      this.opForm.useVoucher = e.detail.value;
+      this.calcOrderCost();
     },
 
     // 提交订单支付

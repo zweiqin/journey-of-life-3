@@ -673,12 +673,25 @@
     {
       "root": "user",
       "pages": [
-        // {
-        //   "path": "voucher/voucher",
-        //   "style": {
-        //     "navigationBarTitleText": "我的代金券"
-        //   }
-        // },
+        {
+          "path": "voucher/voucher",
+          "style": {
+            "navigationBarTitleText": "我的代金券",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "voucher/recharge-history",
+          "style": {
+            "navigationBarTitleText": "充值记录"
+          }
+        },
+        {
+          "path": "voucher/transfer-history",
+          "style": {
+            "navigationBarTitleText": "代金券流水"
+          }
+        },
         {
           "path": "view",
           "style": {

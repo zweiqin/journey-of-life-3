@@ -33,7 +33,7 @@ export default (options) => {
           res = await api(this.$data._query);
         }
 
-        console.log(res);
+        // console.log(res);
 
         this.$data._totalPages = res.data[mapKey.totalPages];
         if (isLoadmore) {
@@ -47,7 +47,7 @@ export default (options) => {
             : res.data[mapKey.list];
         }
 
-        console.log("list数据", this.$data._list);
+        // console.log("list数据", this.$data._list);
 
         !isLoadmore && afterFn && typeof afterFn === "function" && afterFn();
         isLoadmore && cb && typeof cb === "function" && cb();

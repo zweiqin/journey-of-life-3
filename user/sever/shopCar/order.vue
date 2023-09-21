@@ -27,6 +27,14 @@
         </view>
       </view>
 
+      <view class="coupon-container">
+        <text class="title">代金券</text>
+        <view class="choose-coupon">
+          <text style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
+          <tui-switch :scaleRatio="0.6" color="rgb(248, 112, 64)" :checked="useVoucher" @change="handleChangeUseVoucher"></tui-switch>
+        </view>
+      </view>
+
       <view class="goods-container">
         <view class="goods-info" v-for="(item, index) in goodsInfo" :key="index">
           <view class="brand-title">
@@ -65,6 +73,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { getAddressListApi } from '../../../api/address';
+import { refrshUserInfoApi } from '../../../api/user';
 import { getCartCheckoutApi } from '../../../api/cart';
 import { submitOrderApi, payOrderGoodsAPPApi } from '../../../api/goods';
 import { getSybOrderPayH5 } from '../../../api/order';
@@ -84,7 +93,9 @@ export default {
       actualPrice: 0,
       couponPopupVisible: false,
       couponId: -1,
-      couponPrice: 0
+      couponPrice: 0,
+      currentHoldVoucher: 0,
+      useVoucher: false
     };
   },
   onShow() {
@@ -114,7 +125,7 @@ export default {
         cartId: 0,
         addressId: this.defaultAddress && this.defaultAddress.id,
         couponId: this.couponId,
-        useVoucher: 0
+        useVoucher: this.useVoucher
       }).then(({ data }) => {
         this.goodsInfo = data.brandCartgoods;
         this.actualPrice = data.actualPrice;
@@ -137,6 +148,13 @@ export default {
       });
     },
 
+    handleChangeUseVoucher(e) {
+      if (this.currentHoldVoucher) {
+        this.useVoucher = e.detail.value;
+        this.getData();
+      }
+    },
+
     // 点击去支付
     handleToPay() {
       if (!this.defaultAddress) {
@@ -153,7 +171,7 @@ export default {
         cartId: 0,
         addressId: this.defaultAddress.id,
         couponId: this.couponId,
-        useVoucher: false,
+        useVoucher: this.useVoucher,
         grouponRulesId: '',
         grouponLinkId: ''
       };
@@ -236,12 +254,32 @@ export default {
     handleChooseCoupon(couponInfo) {
       this.couponId = couponInfo.id;
       this.getData();
+    },
+    // 获取代金券持有
+    async getUserHoldVoucher() {
+      try {
+        const res = await refrshUserInfoApi({
+          userId: getUserId()
+        });
+
+        if (res.errno == '0') {
+          this.currentHoldVoucher = res.data.voucherNumber;
+        } else {
+          this.ttoast({
+            type: 'info',
+            title: res.errmsg
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 
   onLoad() {
     this.$store.dispatch('shopCar/getShopCarList');
     this.getAddrees();
+    this.getUserHoldVoucher();
     // this.getData()
   },
 

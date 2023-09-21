@@ -58,6 +58,13 @@
         </view>
         <view class="account-title">优惠劵</view>
       </view>
+
+      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/voucher/voucher' })">
+        <view class="account-number">
+          {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }}
+        </view>
+        <view class="account-title">代金劵</view>
+      </view>
     </view>
     <!-- 家庭小卫士 -->
     <view class="goldman" @click="handleToOpen">
@@ -84,6 +91,7 @@
 import { userIsPurchaseApi } from '../../../api/user';
 import { USER_ID } from 'constant';
 import showModalMixin from 'mixin/showModal';
+import {convertToDecimal} from '../../../utils'
 export default {
   props: {
     data: {
@@ -102,6 +110,7 @@ export default {
     this.userIsPurchase();
   },
   methods: {
+    convertToDecimal,
     // go() {
     // 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
     // }

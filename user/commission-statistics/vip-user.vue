@@ -9,7 +9,10 @@
 
       <view class="list-container" v-if="list.length">
         <view class="item" v-for="item in list" :key="item.id">
-          <image class="avatar" :src="item.avatar"></image>
+          <view class="avatar-wrapper">
+            <image class="avatar" :src="item.avatar"></image>
+            <view class="mask">{{ item.userType === 1 ? '会员' : '团长' }}</view>
+          </view>
           <view class="info">
             <view class="name"
               >{{ item.nickname }}
@@ -131,11 +134,32 @@ export default {
         display: flex;
         align-items: center;
 
+        .avatar-wrapper {
+          position: relative;
+          border-radius: 10upx;
+          overflow: hidden;
+
+          .mask {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 40upx;
+            background-color: rgba(0, 0, 0, 0.5);
+            font-size: 24upx;
+            color: #fff;
+            text-align: center;
+            line-height: 40upx;
+          }
+        }
+
         .avatar {
           flex-shrink: 0;
           width: 100upx;
           height: 100upx;
           border-radius: 10upx;
+          display: block;
         }
 
         .info {

@@ -18,7 +18,7 @@
 			<view class="foot-print-wrapper">
 				<view @click="handleToViewDetail(goods.goodsId)" class="goods-item" v-for="goods in item" :key="goods.id">
 					<image class="goods-item-img" :src="goods.picUrl" mode="" />
-					<view class="goods-item-price">￥<text class="number">{{ goods.retailPrice }}</text></view>
+					<view class="goods-item-price">￥<text class="number">{{ goods.counterPrice }}</text></view>
 				</view>
 			</view>
 		</view>

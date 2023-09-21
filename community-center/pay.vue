@@ -1,6 +1,6 @@
 <template>
   <view class="pay-page">
-    <Header bgc="#e95d20" title="订单支付"></Header>
+    <Header bgc="#e95d20" title="订单支付" tabbar="/pages/order/order"></Header>
     <view class="item">
       <span class="label">需支付:</span>
       <span class="value money">￥{{ payMoney }}</span>

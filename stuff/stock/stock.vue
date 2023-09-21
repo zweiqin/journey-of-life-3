@@ -37,7 +37,7 @@
             <hotGoods
               :name="item.name"
               :originalPrice="item.counterPrice"
-              :currentPrice="item.retailPrice"
+              :currentPrice="item.counterPrice"
               :goodsId="item.id"
               :picUrl="item.picUrl"
               :sales="item.sales"

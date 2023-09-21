@@ -8,7 +8,7 @@
     <view class="title" v-if="showTitle"></view>
     <ul>
       <li v-for="item in list" :key="item.id">
-        <Goods :id="item.id" :name="item.name" :sname="item.brief" :url="item.picUrl" :price="item.retailPrice"></Goods>
+        <Goods :id="item.id" :name="item.name" :sname="item.brief" :url="item.picUrl" :price="item.counterPrice"></Goods>
       </li>
     </ul>
   </view>

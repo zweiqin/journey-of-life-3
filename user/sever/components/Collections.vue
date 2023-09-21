@@ -9,7 +9,7 @@
           >{{ getRandom(1000, 10000) }} 人收藏</view
         >
         <view class="collection-footer">
-          <view class="collection-price">￥{{ item.retailPrice }}</view>
+          <view class="collection-price">￥{{ item.counterPrice }}</view>
           <button class="uni-btn view-btn" @click="handleToView(item.valueId)">
             查看详情
           </button>

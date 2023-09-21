@@ -1,12 +1,7 @@
-import { USER_INFO, USER_ID, USER_TOKEN, clearAllCache } from "../../constant";
-import {
-  CHNAGE_USER_ID,
-  CHNAGE_USER_INFO,
-  CHNAGE_USER_TOKEN,
-  CHNAGE_HISTORY_POPUP,
-} from "./type";
-import { loginApi, verificationCodeApi, wxLoginApi } from "../../api/auth";
-import { refrshUserInfoApi, updateUserInfoApi } from "../../api/user";
+import { USER_INFO, USER_ID, USER_TOKEN, clearAllCache } from '../../constant';
+import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP } from './type';
+import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth';
+import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user';
 
 export default {
   namespaced: true,
@@ -18,9 +13,9 @@ export default {
       historyInfo: {
         collection: 0,
         footPrint: 0,
-        follow: 0,
+        follow: 0
       },
-      historyPopup: [],
+      historyPopup: []
     };
   },
 
@@ -45,7 +40,7 @@ export default {
 
     [CHNAGE_HISTORY_POPUP](state, type) {
       state.historyPopup.push(type);
-    },
+    }
   },
 
   actions: {
@@ -60,7 +55,7 @@ export default {
             commit(CHNAGE_USER_INFO, data.userInfo);
             commit(CHNAGE_USER_TOKEN, data.token);
             uni.showToast({
-              title: "登录成功",
+              title: '登录成功'
             });
             console.log(data);
             resolve(data);
@@ -80,7 +75,7 @@ export default {
             commit(CHNAGE_USER_INFO, data.userInfo);
             commit(CHNAGE_USER_TOKEN, data.token);
             uni.showToast({
-              title: "登录成功",
+              title: '登录成功'
             });
             console.log(data);
             resolve(data);
@@ -100,7 +95,7 @@ export default {
             commit(CHNAGE_USER_INFO, data.userInfo);
             commit(CHNAGE_USER_TOKEN, data.token);
             uni.showToast({
-              title: "登录成功",
+              title: '登录成功'
             });
             resolve(data);
           })
@@ -113,19 +108,19 @@ export default {
     logout({ commit }, isQuiet) {
       if (!isQuiet) {
         uni.showToast({
-          title: "退出成功",
+          title: '退出成功'
         });
       }
       uni.removeStorageSync(USER_ID);
       uni.removeStorageSync(USER_INFO);
       uni.removeStorageSync(USER_TOKEN);
-      commit(CHNAGE_USER_ID, "");
+      commit(CHNAGE_USER_ID, '');
       commit(CHNAGE_USER_INFO, {});
-      commit(CHNAGE_USER_TOKEN, "");
+      commit(CHNAGE_USER_TOKEN, '');
       setTimeout(() => {
         clearAllCache();
         uni.switchTab({
-          url: "/pages/community-center/community-centerr",
+          url: '/pages/community-center/community-centerr'
         });
       }, 2000);
     },
@@ -135,16 +130,16 @@ export default {
         nickname: state.userInfo.nickName,
         avatar: state.userInfo.avatarUrl,
         password: state.userInfo.password,
-        id: state.userId,
+        id: state.userId
       };
 
       originData[updateData.key] = updateData.value;
       updateUserInfoApi(originData).then(() => {
         uni.showToast({
-          title: "修改成功",
+          title: '修改成功'
         });
 
-        dispatch("refrshUserInfo");
+        dispatch('refrshUserInfo');
       });
     },
 
@@ -153,9 +148,9 @@ export default {
         return;
       }
       refrshUserInfoApi({
-        userId: state.userId,
+        userId: state.userId
       }).then(({ data }) => {
-        cb && typeof cb === 'function' && cb(data)
+        cb && typeof cb === 'function' && cb(data);
         commit(CHNAGE_USER_INFO, data);
         commit(CHNAGE_USER_ID, data.userId);
       });
@@ -164,6 +159,6 @@ export default {
     updateHistoryPopup({ state, commit }, type) {
       if (state.historyPopup.includes(type)) return;
       commit(CHNAGE_HISTORY_POPUP, type);
-    },
-  },
+    }
+  }
 };

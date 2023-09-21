@@ -78,7 +78,7 @@
         </view>
         <view style="display: flex; justify-content: space-between">
           <view class="shop-car-money">
-            ￥<text>{{ item.retailPrice }}</text>
+            ￥<text>{{ item.counterPrice }}</text>
           </view>
           <view
             ><img

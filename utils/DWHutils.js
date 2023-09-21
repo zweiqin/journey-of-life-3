@@ -1,6 +1,7 @@
 import { whoami } from '../api/auth';
 import { USER_ID, VIDEO_TYPE } from '../constant';
 import { jsonp } from 'vue-jsonp';
+import { isNull } from 'lodash-es';
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -217,3 +218,19 @@ export const isInWx = () => {
 export const isVideoSource = (src) => {
   return VIDEO_TYPE.some((item) => src.indexOf(item) !== -1);
 };
+
+/**
+ * 大数转小数 12345.123 = 1.23万
+ */
+export const convertToDecimal = (number) => {
+  if(!number || isNull(number)) return 0
+  if (number < 10000) {
+    return number.toString();
+  } else if (number < 100000000) {
+    const decimalNumber = (number / 10000).toFixed(2);
+    return decimalNumber + '万';
+  } else {
+    const decimalNumber = (number / 100000000).toFixed(2);
+    return decimalNumber + '亿';
+  }
+}

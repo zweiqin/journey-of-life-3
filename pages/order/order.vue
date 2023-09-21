@@ -78,7 +78,7 @@
 import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, shopOrderType } from './config';
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center';
 import { getOrderListApi, getMyCommentListApi } from '../../api/order';
-import { USER_ID } from '../../constant';
+import { USER_ID, PAY_SHORT_ORDER_NO, TUAN_ORDER_SN, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO } from '../../constant';
 import CommunityOrderPane from './components/CommunityOrderPane.vue';
 import CancelOrder from './components/CancelOrder.vue';
 import Loading from './components/Loading.vue';
@@ -164,6 +164,10 @@ export default {
   },
 
   onShow() {
+    uni.removeStorageSync(PAY_SHORT_ORDER_NO);
+    uni.removeStorageSync(TUAN_ORDER_SN);
+    uni.removeStorageSync(COMMUNITY_ORDER_NO);
+    uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.$nextTick(() => {
       this.getOrderList(true);
     });

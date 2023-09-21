@@ -37,7 +37,7 @@ export default {
 
   watch: {
     status(value) {
-      console.log(value)
+      // console.log(value)
     },
   },
 }

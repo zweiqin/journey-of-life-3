@@ -2,9 +2,9 @@
   <view class="shop-detail tui-skeleton">
     <view class="page-title" :class="{ fix: scrollTop >= 300 }">
       <image @click="handleBack" class="back-icon" src="../../static/images/new-community/shop/order-detail-back.png"></image>
-      <view class="location" :style="{ width: isSearch ? '0' : '', color: isSearch ? '#ef530e' : '' }"> {{ queryInfo.address }} </view>
+      <view class="location" :style="{ color: isSearch ? '#ef530e' : '' }"> {{ queryInfo.address }} </view>
       <view class="search-container">
-        <input v-model="queryInfo.search" :style="{ flex: isSearch ? 1 : 0 }" class="input" type="text" placeholder="请输入要搜索的门店" />
+        <input v-model="queryInfo.search" class="input" type="text" placeholder="门店名称/门店类型/服务类型" />
         <tui-icon :size="26" :color="isSearch ? '#f40' : ''" @click="handleSearchShop" name="search"></tui-icon>
       </view>
     </view>
@@ -185,7 +185,7 @@ export default {
     }
 
     .location {
-      width: 500upx;
+      width: 100upx;
       font-size: 32upx;
       font-weight: 500;
       white-space: nowrap;

@@ -428,7 +428,8 @@ export default {
         status: 0,
         ...this.goodsDetail,
         selectedProduct: goodsInfo,
-        brandId: this.goodsDetail.brand && this.goodsDetail.brand.id
+        brandId: this.goodsDetail.brand && this.goodsDetail.brand.id,
+        supportVoucher: this.goodsDetail.info.supportVoucher
       });
 
       uni.navigateTo({
