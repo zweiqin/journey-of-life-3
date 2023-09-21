@@ -53,7 +53,9 @@ export default {
         return;
       }
       if (isNaN(count)) {
-        this.payVoucherForm.payGrade = '';
+        this.payVoucherForm.payGrade = 1;
+        this.currentVoucherRecharge = voucherType;
+        this.payVoucherForm.voucherId = voucherType.id;
       } else {
         this.payVoucherForm.payGrade = Number(count);
         this.currentVoucherRecharge = voucherType;

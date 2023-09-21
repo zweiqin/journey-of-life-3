@@ -31,7 +31,7 @@
         <text class="title">代金券</text>
         <view class="choose-coupon">
           <text style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
-          <tui-switch :scaleRatio="0.6" color="rgb(248, 112, 64)" :checked="useVoucher" @change="handleChangeUseVoucher"></tui-switch>
+          <tui-switch v-if="!!currentHoldVoucher" :scaleRatio="0.6" color="rgb(248, 112, 64)" :checked="useVoucher" @change="handleChangeUseVoucher"></tui-switch>
         </view>
       </view>
 

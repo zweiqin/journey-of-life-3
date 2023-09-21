@@ -59,14 +59,15 @@
         <view class="line">
           <view class="title">是否使用代金券</view>
           <text class="coupon-wrapper">
-            <text style="margin-right: 10upx;">持有： {{ currentHoldVoucher }}</text>
+            <text v-if="supportVoucher && currentHoldVoucher" style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
             <tui-switch
-              v-if="supportVoucher && currentHoldVoucher"
+              v-if="supportVoucher && !!currentHoldVoucher"
               :scaleRatio="0.6"
               color="#ffcb05"
               :checked="opForm.useVoucher"
               @change="handleChangeUseVoucher"
             ></tui-switch>
+            <text style="color: #ccc;" v-else>该商品暂不支持代金券</text>
           </text>
         </view>
 
