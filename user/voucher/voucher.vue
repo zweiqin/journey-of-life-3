@@ -23,7 +23,7 @@
       <view class="btn-content">
         <view class="price-wrapper" @click="handlePay(item)" v-for="(item, index) in rechargeList" :key="index">
           <view class="count">{{ item }}</view>
-          <view v-if="typeof item === 'number'" class="desc">售价{{ item }}元</view>
+          <view v-if="typeof item === 'number'" class="desc">售价{{ typeof item === 'number' ? item / 2 : item }}元</view>
         </view>
       </view>
     </view>
