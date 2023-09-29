@@ -9,6 +9,15 @@
       }
     },
     {
+      "path": "pages/business-district/business-district",
+      "style": {
+        "navigationBarTitleText": "社区商圈",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true,
+        "onReachBottomDistance": 100
+      }
+    },
+    {
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "全屋严选",
@@ -314,6 +323,12 @@
         "text": "社区中心",
         "iconPath": "/static/images/tabbar/community.png",
         "selectedIconPath": "/static/images/tabbar/community-active.png"
+      },
+      {
+        "pagePath": "pages/business-district/business-district",
+        "text": "社区商圈",
+        "iconPath": "/static/images/tabbar/business.png",
+        "selectedIconPath": "/static/images/tabbar/business-active.png"
       },
       {
         "pagePath": "pages/order/order",

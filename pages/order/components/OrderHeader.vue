@@ -3,38 +3,29 @@
     <TuanAppShim bg="#fff"></TuanAppShim>
     <view class="top-wrapper">
       <view class="switch-btn">
-        <button class="uni-btn" @click="$emit('change-mode', 'community')" :class="{ active: currentMode === 'community' }">社区</button>
-        <button class="uni-btn" @click="$emit('change-mode', 'shop')" :class="{ active: currentMode === 'shop' }">商城</button>
-        <view class="active-scroll-bar" :class="{ 'scroll-right': currentMode === 'shop' }"></view>
+        <button class="uni-btn" @click="$emit('change-mode', 'community')"
+          :class="{ active: currentMode === 'community' }">社区</button>
+        <button class="uni-btn" @click="$emit('change-mode', 'shop')"
+          :class="{ active: currentMode === 'shop' }">商城</button>
+        <button class="uni-btn" @click="$emit('change-mode', 'business')"
+          :class="{ active: currentMode === 'business' }">商圈</button>
+        <view class="active-scroll-bar"
+          :class="{ 'scroll-right': currentMode === 'business', 'scroll-center': currentMode === 'shop', }"></view>
       </view>
-      <view class="search-wrapper" :style="{ 'border-color': !!searchValue ? '#ef5613' : '' }" v-show="currentMode === 'community'">
-        <input
-          class="search-input"
-          v-model="searchValue"
-          type="text"
-          :placeholder="currentMode === 'community' ? '请输入订单号/上门地址/师傅姓名/店长姓名' : '搜索订单'"
-        />
+      <view class="search-wrapper" :style="{ 'border-color': !!searchValue ? '#ef5613' : '' }"
+        v-show="currentMode === 'community'">
+        <input class="search-input" v-model="searchValue" type="text"
+          :placeholder="currentMode === 'community' ? '请输入订单号/上门地址/师傅姓名/店长姓名' : '搜索订单'" />
         <tui-icon :size="20" name="search" :color="!!searchValue ? '#ef5613' : ''" @click="handleSearchOrder"></tui-icon>
       </view>
     </view>
 
-    <scroll-view
-      :scroll-into-view="currentActiveId"
-      scroll-with-animation
-      class="menus-wrapper"
-      scroll-x="true"
-      v-if="menus && menus.length"
-    >
+    <scroll-view :scroll-into-view="currentActiveId" scroll-with-animation class="menus-wrapper" scroll-x="true"
+      v-if="menus && menus.length">
       <view class="menu-list">
-        <view
-          class="menu-item"
-          :id="'item_' + menu.value"
-          @click="$emit('change-status', menu)"
-          :class="{ active: currentStatus * 1 === menu.value }"
-          v-for="menu in menus"
-          :key="menu.value"
-          >{{ menu.label }}</view
-        >
+        <view class="menu-item" :id="'item_' + menu.value" @click="$emit('change-status', menu)"
+          :class="{ active: currentStatus * 1 === menu.value }" v-for="menu in menus" :key="menu.value">{{ menu.label }}
+        </view>
       </view>
     </scroll-view>
 
@@ -120,7 +111,7 @@ export default {
     justify-content: space-between;
 
     .switch-btn {
-      width: 270upx;
+      width: 405upx;
       position: relative;
       display: flex;
       align-items: center;
@@ -156,8 +147,13 @@ export default {
         transition: all 350ms;
 
         &.scroll-right {
-          left: 120upx;
+          left: 260upx;
           border-radius: 0 0 0px 54upx;
+        }
+
+        &.scroll-center {
+          left: 126upx;
+          border-radius: 0;
         }
       }
     }

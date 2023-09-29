@@ -2,61 +2,55 @@
   <view>
     <TuanAppShim bg="#fff"></TuanAppShim>
     <view class="my-order-container" v-if="userId">
-      <OrderHeader
-        @change-status="handleChangeStatus"
-        :currentStatus="currentStatus"
-        :menus="currentOrderMode === 'community' ? navMenus : shopOrderType"
-        @change-mode="handleChangeOrderMode"
-        @search="handleSearchCommunityOrderList"
-        :currentMode="currentOrderMode"
-        ref="orderHeaderRef"
-      ></OrderHeader>
+      <OrderHeader @change-status="handleChangeStatus" :currentStatus="currentStatus"
+        :menus="['shop', 'business'].includes(currentOrderMode) ? shopOrderType : navMenus"
+        @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList" :currentMode="currentOrderMode"
+        ref="orderHeaderRef"></OrderHeader>
 
       <view class="order-list" :class="{ ani: !isLoading }">
-        <SubNavs
-          v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)"
-          @change-sub="handleChangeSubNavs"
-          :activeValue="currentSubValue"
-          :navs="subNavs"
-        ></SubNavs>
+        <SubNavs v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)" @change-sub="handleChangeSubNavs"
+          :activeValue="currentSubValue" :navs="subNavs"></SubNavs>
 
         <view v-show="currentOrderMode === 'community'">
           <!-- 社区普通订单 -->
           <view class="community-common-order-list" v-show="!isShowSubNav">
-            <CommunityOrderPane @cancel="handleCancellOrder" :orderInfo="item" v-for="item in communityOrderList" :key="item.id"></CommunityOrderPane>
+            <CommunityOrderPane @cancel="handleCancellOrder" :orderInfo="item" v-for="item in communityOrderList"
+              :key="item.id"></CommunityOrderPane>
           </view>
 
           <!-- 社区二次追加订单 -->
           <view class="community-append-order-list" v-show="isShowSubNav && ['append'].includes(isShowSubNav)">
-            <AdditionalAmountOrder @refresh="getAppendOrder" v-for="order in appendOrderList" :key="order.id" :orderData="order"></AdditionalAmountOrder>
+            <AdditionalAmountOrder @refresh="getAppendOrder" v-for="order in appendOrderList" :key="order.id"
+              :orderData="order"></AdditionalAmountOrder>
           </view>
 
           <!-- 社区评论订单 -->
           <view class="community-comment-order-list" v-show="isShowSubNav && ['comment'].includes(isShowSubNav)">
             <block v-if="[0, 1].includes(currentSubValue)">
-              <CommentTypeV1
-                :isAppend="currentSubValue === 1"
-                @comment="handleComment"
+              <CommentTypeV1 :isAppend="currentSubValue === 1" @comment="handleComment"
                 v-for="order in currentSubValue === 0 ? commentOrder.commentOrderList : commentOrder.commentedOrderList"
-                :key="order.orderNo"
-                :itemData="order"
-              ></CommentTypeV1>
+                :key="order.orderNo" :itemData="order"></CommentTypeV1>
             </block>
 
             <block v-if="currentSubValue === 2">
-              <CommentTypeV2 v-for="order in commentOrder.commentAppendOrderList" :key="order.orderNo" :itemData="order"></CommentTypeV2> </block
-          ></view>
+              <CommentTypeV2 v-for="order in commentOrder.commentAppendOrderList" :key="order.orderNo" :itemData="order">
+              </CommentTypeV2>
+            </block>
+          </view>
         </view>
 
         <view v-show="currentOrderMode === 'shop'">
           <!-- 商城普通订单 -->
           <view class="shop-common-order-list" v-if="shopOrderList && shopOrderList.length && currentStatus !== 5">
-            <ShopOrder @refresh="getOrderList(true)" v-for="item in shopOrderList" :orderDeatil="item" :key="item.id"></ShopOrder>
+            <ShopOrder @refresh="getOrderList(true)" v-for="item in shopOrderList" :orderDeatil="item" :key="item.id">
+            </ShopOrder>
           </view>
 
           <!-- 商城评论订单 -->
-          <view class="shop-comment-order-list" v-if="shopCommentOrderList && shopCommentOrderList.length && currentStatus === 5">
-            <ShopCommentedOrder v-for="item in shopCommentOrderList" :orderDetail="item" :key="item.id"></ShopCommentedOrder>
+          <view class="shop-comment-order-list"
+            v-if="shopCommentOrderList && shopCommentOrderList.length && currentStatus === 5">
+            <ShopCommentedOrder v-for="item in shopCommentOrderList" :orderDetail="item" :key="item.id">
+            </ShopCommentedOrder>
           </view>
         </view>
 
@@ -157,7 +151,7 @@ export default {
     };
   },
 
-  onLoad() {},
+  onLoad() { },
 
   mounted() {
     // this.getOrderList();
@@ -602,6 +596,8 @@ export default {
         } else {
           return !!!this.shopOrderList.length;
         }
+      }else{
+        return true
       }
     }
   },
