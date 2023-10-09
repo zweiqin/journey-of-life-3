@@ -12,7 +12,8 @@
         <view class="address-2">{{ defualtAddress.detailedAddress.split(' ')[1] }}</view>
         <view class="user-info">
           <text class="user-name">{{ defualtAddress.name }}</text>
-          <text class="user-mobile">{{ defualtAddress.mobile.slice(0, 3) + '****' + defualtAddress.mobile.slice(7) }}</text>
+          <text class="user-mobile">{{ defualtAddress.mobile.slice(0, 3) + '****' + defualtAddress.mobile.slice(7)
+          }}</text>
         </view>
       </view>
 
@@ -29,31 +30,25 @@
     <view class="serve-info section">
       <view class="title-wrapper">
         <view class="section-title">服务类型</view>
-        <view class="serve-name"
-          >{{ currentServeInfo.name }}
+        <view class="serve-name">{{ currentServeInfo.name }}
           <text class="serve-price" v-if="currentServeInfo.serverPrice">
-            <text
-              :class="{
-                del: !!calcServePrice && calcServePrice.newPrice
-              }"
-              class="price-text"
-              >￥{{ (calcServePrice && calcServePrice.oldPrice) || currentServeInfo.serverPrice }}</text
-            >
+            <text :class="{
+              del: !!calcServePrice && calcServePrice.newPrice
+            }" class="price-text">￥{{ (calcServePrice && calcServePrice.oldPrice) || currentServeInfo.serverPrice
+}}</text>
 
-            <text v-if="calcServePrice && calcServePrice.newPrice && calcServePrice.newPrice != 0" class="price-text"
-              >￥{{ (calcServePrice && calcServePrice.newPrice) || preferentialPrice }}</text
-            >
-            /{{ currentServeInfo.serverUnit }}</text
-          ></view
-        >
+            <text v-if="calcServePrice && calcServePrice.newPrice && calcServePrice.newPrice != 0" class="price-text">￥{{
+              (calcServePrice && calcServePrice.newPrice) || preferentialPrice }}</text>
+            /{{ currentServeInfo.serverUnit }}</text>
+        </view>
       </view>
 
       <view class="car-info">
         <image class="serve-img" :src="currentServeInfo.imgUrl"></image>
         <view class="number-control">
-          <view @click="handleChangeServeNumber(-1)" class="item mult" :class="{ disabled: orderForm.quantity == 1 }">-</view>
+          <view @click="handleChangeServeNumber(-1)" class="item mult" :class="{ disabled: orderForm.quantity == 1 }">-
+          </view>
           <view class="number item">{{ orderForm.quantity }}</view>
-
           <view @click="handleChangeServeNumber(1)" class="item add">+</view>
         </view>
       </view>
@@ -64,14 +59,21 @@
       <view class="title-wrapper">
         <view class="section-title">计价类型</view>
         <view class="radio-group">
-          <view class="radio-item" @click="handleSwitchPricingType(item)" v-for="(item, index) in radioItems" :key="index">
-            <tui-icon
-              :size="18"
-              :color="orderForm.pricingType === item.value ? '#ff7d27' : '#ccc'"
-              :name="orderForm.pricingType === item.value ? 'circle-fill' : 'circle'"
-            ></tui-icon>
+          <view class="radio-item" @click="handleSwitchPricingType(item)" v-for="(item, index) in radioItems"
+            :key="index">
+            <tui-icon :size="18" :color="orderForm.pricingType === item.value ? '#ff7d27' : '#ccc'"
+              :name="orderForm.pricingType === item.value ? 'circle-fill' : 'circle'"></tui-icon>
             <view class="label">{{ item.name }}</view>
           </view>
+        </view>
+      </view>
+
+      <view class="title-wrapper" style="margin-top: 30upx;">
+        <view class="section-title">是否使用代金券</view>
+        <view class="voucher-hold" style="display: flex; align-items: center;">
+          持有：<text style="color: #ef5613">{{ currentHoldVoucher }}</text>
+          <tui-switch @change="handleChangeSwitchVoucherStatus" color="#ef5613" style="margin-left: 20upx;"
+            :scaleRatio="0.7" :checked="isUseVoucher"></tui-switch>
         </view>
       </view>
     </view>
@@ -91,7 +93,8 @@
       <view class="section-title">维修物品图片</view>
       <view class="image-list">
         <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
-          <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+          <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023"
+            :size="17" class="close-icon"></tui-icon>
           <image class="goods-img" mode="aspectFit" :src="item"></image>
         </view>
 
@@ -102,28 +105,19 @@
 
       <view class="section-title">需求说明（选填）</view>
 
-      <tui-textarea
-        isCounter
-        padding="20rpx"
-        :size="28"
-        radius="20"
-        :borderTop="false"
-        :borderBottom="false"
-        backgroundColor="#F1F1F0"
-        v-model.trim="orderForm.remarks"
-        minHeight="247rpx"
-        placeholder="请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)"
-      ></tui-textarea>
+      <tui-textarea isCounter padding="20rpx" :size="28" radius="20" :borderTop="false" :borderBottom="false"
+        backgroundColor="#F1F1F0" v-model.trim="orderForm.remarks" minHeight="247rpx"
+        placeholder="请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)"></tui-textarea>
     </view>
 
     <!-- 订单费用 -->
-    <view class="section order-price" v-if="isByItNow && calcServePrice">
+    <view class="section order-price" v-if="calcServePrice">
       <view class="section-title">订单费用</view>
 
       <view class="cost-order-list">
         <view class="cost-item">
           <view class="cost-title">订单总额</view>
-          <view class="cost-value">￥{{ calcServePrice.sumPrice }}</view>
+          <view class="cost-value">￥{{ calcServePrice.totalAmount }}</view>
         </view>
 
         <!-- <view class="cost-item">
@@ -149,20 +143,20 @@
         </view> -->
 
         <view class="cost-item">
-          <view class="cost-title">优惠价</view>
-          <view class="cost-value none">{{ calcServePrice.preferentialPrice }}</view>
+          <view class="cost-title">代金券</view>
+          <view class="cost-value none">{{ calcServePrice.deductionAmount }}</view>
         </view>
 
         <view class="cost-item">
           <view class="cost-title">应付</view>
-          <view class="cost-value" style="color: #e95d20">￥{{ calcServePrice.oughtPrice }}</view>
+          <view class="cost-value" style="color: #e95d20">￥{{ calcServePrice.actualAmount }}</view>
         </view>
       </view>
     </view>
 
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
-      <view class="pay-price" v-if="orderPrice"> ￥{{ orderPrice }}</view>
+      <view class="pay-price" v-if="calcServePrice"> ￥{{ calcServePrice.actualAmount }}</view>
       <button class="uni-btn" @click="handleConfirmOrder">
         {{ isOffer ? '获取价格中...' : '确认' }}
       </button>
@@ -174,12 +168,13 @@
 </template>
 
 <script>
-import { getUserId } from 'utils';
+import { getUserId, payOrderUtil } from 'utils';
 import { debounce } from 'lodash-es';
 import { getAddressListApi } from '../../api/address';
-import { SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from '../../constant';
+import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from '../../constant';
 import ChooseTime from '../componts/choose-time.vue';
-import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../../api/community-center';
+import { getQuotationApi, getIsOpenServerAreaApi, payGoodsApi, payBOrderH5, payApiConfig } from '../../api/community-center';
+import { refrshUserInfoApi } from '../../api/user';
 
 export default {
   components: { ChooseTime },
@@ -193,6 +188,7 @@ export default {
       currentServeInfo: {},
       // 表单信息
       orderForm: {
+        price: '', // 代金券数量
         datetimerange: '', // 期望上门时间
         quantity: 1, // 数量
         orderGoodsList: [], // 图片
@@ -200,7 +196,7 @@ export default {
         pricingType: 1 // 计价模式
       },
       chooseTimeVisible: false,
-      changeNumberFn: () => {},
+      changeNumberFn: () => { },
       calcServePrice: null,
       isExistCommunityStore: true,
       isSubmitOrder: false,
@@ -219,7 +215,9 @@ export default {
       priceInfo: {
         originPrice: null,
         preferentialPrice: null
-      }
+      },
+      currentHoldVoucher: 0,
+      isUseVoucher: false
     };
   },
 
@@ -230,10 +228,15 @@ export default {
     this.priceInfo.originPrice = options.price;
     this.priceInfo.preferentialPrice = options.pprice;
     this.shopId = options.shopId;
+    this.handleGetOrderPrice()
+    this.getUserHoldVoucher()
   },
 
   onShow() {
     this.getAddressList();
+    if (uni.getStorageSync(B_SERVE_ORDER_NO)) {
+      uni.switchTab({ url: '/pages/order/order' })
+    }
   },
 
   methods: {
@@ -290,32 +293,35 @@ export default {
         return;
       }
       this.orderForm.quantity += number;
+      this.handleGetOrderPrice()
     },
 
     // 获取订单报价
     async handleGetOrderPrice() {
-      if (!this.isByItNow || !this.defualtAddress) {
+      if (this.orderForm.pricingType !== 1 || this.isByItNow) {
         return;
       }
 
       try {
         this.isOffer = true;
-        const res = await getServicePriceApi({
+        const res = await getQuotationApi({
           userId: getUserId(),
-          serverInfoId: this.currentServeInfo.detailId,
-          quantity: this.orderForm.quantity,
-          address: this.defualtAddress.detailedAddress
-          // price: this.preferentialPrice || this.currentServeInfo.serverPrice,
-          // // actualPrice: this.preferentialPrice,
+          shopId: this.currentServeInfo.shopId * 1,
+          shopGoodsId: this.currentServeInfo.id * 1,
+          number: this.orderForm.quantity,
+          price: this.orderForm.price || 0
         });
 
-        if (res.statusCode === 20000) {
-          this.calcServePrice = res.data;
-        } else {
-          this.ttoast({
-            type: 'fail',
-            title: '报价失败'
-          });
+        this.calcServePrice = res
+      } catch (error) {
+        this.ttoast({
+          type: "fail",
+          title: '报价失败',
+          content: error
+        })
+
+        if (error === '代金券只能使用整数！') {
+          this.isUseVoucher = false
         }
       } finally {
         this.isOffer = false;
@@ -375,6 +381,32 @@ export default {
       this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img);
     },
 
+    // 获取代金券持有
+    async getUserHoldVoucher() {
+      try {
+        const res = await refrshUserInfoApi({
+          userId: getUserId()
+        });
+
+        if (res.errno == '0') {
+          this.currentHoldVoucher = res.data.voucherNumber;
+        } else {
+          this.ttoast({
+            type: 'info',
+            title: res.errmsg
+          });
+        }
+      } catch (error) {
+        this.currentHoldVoucher = 0
+      }
+    },
+
+    handleChangeSwitchVoucherStatus(e) {
+      this.isUseVoucher = e.detail.value
+      this.orderForm.price = this.currentHoldVoucher
+      this.handleGetOrderPrice()
+    },
+
     // 切换计价类型
     handleSwitchPricingType(itemInfo) {
       this.orderForm.pricingType = itemInfo.value;
@@ -432,56 +464,38 @@ export default {
       this.isSubmitOrder = true;
 
       try {
-        const { remarks, orderGoodsList, datetimerange, pricingType } = this.orderForm;
-        const subOrderData = {
-          shopId: this.shopId,
-          userId: getUserId(),
-          remarks: remarks || '',
-          orderGoodsList: orderGoodsList.map((item) => ({
-            goodsType: '团蜂',
-            goodsUrl: item
-          })),
-          dictName: this.currentServeInfo.name,
-          installDate: datetimerange,
-          consigneeName: this.defualtAddress.name,
-          consigneeMobile: this.defualtAddress.mobile,
-          consigneeAddress: this.defualtAddress.detailedAddress.split(' ')[0],
-          consigneeAddressDetail: this.defualtAddress.detailedAddress.split(' ')[1],
+        const pricingType = this.orderForm.pricingType
+        const orderForm = {
+          orderNo: this.calcServePrice.orderNo,
+          shopId: this.currentServeInfo.shopId * 1,
+          goodsId: this.currentServeInfo.id * 1,
+          number: this.orderForm.quantity,
+          goodsUrl: this.orderForm.orderGoodsList.join(','),
+          createUserId: getUserId(),
           pricingType,
-          paymentMethod: 1,
-          orderType: 1,
-          deliveryType: 4
-          // price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
-          // actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
-        };
-
-        if (pricingType === 1) {
-          subOrderData.price = this.orderPrice;
-          subOrderData.actualPrice = this.orderPrice;
+          totalAmount: pricingType === 2 ? '' : this.calcServePrice.totalAmount,
+          actualAmount: pricingType === 2 ? '' : this.calcServePrice.actualAmount,
+          deductionAmount: pricingType === 2 ? '' : this.calcServePrice.deductionAmount,
+          customerName: this.defualtAddress.name,
+          customerMobile: this.defualtAddress.mobile,
+          customerAddress: this.defualtAddress.detailedAddress.split(' ')[0],
+          customerAddressDetail: this.defualtAddress.detailedAddress.split(' ')[1],
+          desireHomeTime: this.orderForm.datetimerange,
+          remarks: this.orderForm.remarks
         }
 
-        const res = await getServiceOrderApi(subOrderData);
-        if (res.statusCode === 20000) {
-          this.ttoast('订单创建成功');
-          uni.removeStorageSync(SF_INVITE_CODE);
-          uni.setStorageSync('communityOrder', res.data);
-          setTimeout(() => {
-            uni.redirectTo({
-              url: `/community-center/confirm-order?name1=${this.currentServeInfo.name}&oughtPrice=${this.orderPrice}&content=${this.orderForm.remarks}
-        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${this.defualtAddress.mobile}&consigneeAddress=${
-                this.defualtAddress.detailedAddress.split(' ')[0]
-              }&consigneeAddressDetail=${this.defualtAddress.detailedAddress.split(' ')[1]}
-        &installDate=${this.orderForm.datetimerange}&pricingType=${pricingType}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${
-                res.data
-              }`
-            });
-          }, 500);
-        }
+        const orderNo = await payGoodsApi(orderForm)
+        uni.setStorageSync(B_SERVE_ORDER_NO, orderNo)
+        await payOrderUtil({
+          orderNo,
+          userId: getUserId()
+        }, payApiConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram)
       } catch (error) {
+        console.log("报错了", error);
         this.ttoast({
           type: 'fail',
           title: '订单创建失败',
-          content: '请联系管理员'
+          content: error
         });
       } finally {
         this.isSubmitOrder = false;
@@ -496,17 +510,6 @@ export default {
       }, 500)
     }
   },
-
-  computed: {
-    orderPrice() {
-      const pricingType = this.orderForm.pricingType;
-      const price = this.priceInfo.preferentialPrice ? this.priceInfo.preferentialPrice : this.priceInfo.originPrice;
-      if (pricingType === 1) {
-        return (price * this.orderForm.quantity).toFixed(2);
-      }
-      return 0;
-    }
-  }
 };
 </script>
 
@@ -559,14 +562,17 @@ export default {
       width: 100%;
       display: flex;
       align-items: center;
+
       .section-title {
         flex: 1;
       }
     }
+
     .choose-time {
       color: #e95d20;
       font-size: 32upx;
     }
+
     .address-icon {
       width: 64upx;
       height: 64upx;
@@ -752,6 +758,7 @@ export default {
   .order-price {
     .cost-order-list {
       margin-top: 30upx;
+
       .cost-item {
         display: flex;
         align-items: center;

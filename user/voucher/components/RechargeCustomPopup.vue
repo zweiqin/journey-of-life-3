@@ -25,7 +25,7 @@
 
 <script>
 import { getUserId, payOrderUtil } from '../../../utils';
-import { payVoucherPreApi } from '../../../api/goods';
+import { payVoucherPreApi, commonPayConfig } from '../../../api/goods';
 
 export default {
   data() {
@@ -86,10 +86,14 @@ export default {
             userId: getUserId(),
             orderNo: data.payOrderID,
             payType: 2
-          });
+          }, commonPayConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram);
         }
       } catch (error) {
-        // this.hiden
+        this.ttoast({
+          type: 'fail',
+          title: '支付失败',
+          content: error
+        });
       } finally {
         this.isLoading = false;
       }
@@ -122,6 +126,7 @@ export default {
     padding: 20upx;
     background-color: #f6f6f6;
     margin-top: 40upx;
+
     .input {
       font-size: 30upx;
     }

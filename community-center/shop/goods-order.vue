@@ -59,30 +59,35 @@
             placeholder-class="input-text"></textarea>
         </view>
       </view>
-      <!-- <view class="line-list">
+      <view class="line-list" v-if="calcOrderMsg">
         <view class="line">
           <view class="title">商品金额</view>
-          <view class="value">￥{{ calcOrderMsg.goodsTotalPrice }}</view>
+          <view class="value">￥{{ calcOrderMsg.totalAmount }}</view>
+        </view>
+
+        <view class="line">
+          <view class="title">代金券抵扣</view>
+          <view class="value">￥{{ calcOrderMsg.deductionAmount || 0 }}</view>
         </view>
 
         <view class="line">
           <view class="title">运费</view>
-          <view class="value">￥{{ calcOrderMsg.freightPrice }}</view>
+          <view class="value">￥{{ calcOrderMsg.freightPrice || 0 }}</view>
         </view>
 
-        <view class="line" @click="handleChooseCoupon">
+        <!-- <view class="line" @click="handleChooseCoupon">
           <view class="title">优惠劵</view>
           <text class="coupon-wrapper">
             <text v-if="couponPrice">-{{ couponPrice }}</text>
             <tui-icon name="arrowright" :size="20"></tui-icon>
           </text>
-        </view>
+        </view> -->
 
-        <view class="line-end">
+        <!-- <view class="line-end">
           <view class="title">合计：</view>
           <view class="value">￥{{ calcOrderMsg.actualPrice }}</view>
-        </view>
-      </view> -->
+        </view> -->
+      </view>
     </view>
     <!-- <view class="prder-cost container" v-if="calcOrderMsg">
 			<view class="line">
@@ -97,8 +102,8 @@
 			</view> -->
 
     <view class="footer">
-      <!-- <text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text> -->
-      <button class="uni-btn" @click="handleToPay">提交订单</button>
+      <text v-if="calcOrderMsg" class="footer-text">￥{{ calcOrderMsg.actualAmount }}</text>
+      <button class="uni-btn" @click="handleToPay">{{ isGetPrice ? "报价中..." : "提交订单" }}</button>
     </view>
 
 
@@ -108,10 +113,10 @@
 
 <script>
 import { getAddressListApi } from '../../api/address';
-import { getUserId } from '../../utils';
+import { getUserId, payOrderUtil } from '../../utils';
 import { refrshUserInfoApi } from '../../api/user';
-import { PAY_SHOP_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN } from '../../constant';
-import { getQuotationApi } from '../../api/community-center'
+import { PAY_SHOP_GOODS, SELECT_ADDRESS, TUAN_ORDER_SN, B_SHOP_ORDER_NO } from '../../constant';
+import { getQuotationApi, payGoodsApi, payBOrderH5, payApiConfig } from '../../api/community-center'
 
 export default {
   name: 'PreOrder',
@@ -124,7 +129,7 @@ export default {
 
   onShow() {
     this.getAddressList();
-    if (uni.getStorageSync(TUAN_ORDER_SN)) {
+    if (uni.getStorageSync(B_SHOP_ORDER_NO)) {
       uni.switchTab({
         url: '/pages/order/order?type=shop&status=1'
       });
@@ -149,6 +154,7 @@ export default {
       // 最新的
       currentHoldVoucher: 0,
       isUseVoucher: false, // 是否使用代金券
+      isGetPrice: false,
       calcOrderCostQuery: {
         userId: getUserId(),
         shopId: undefined,
@@ -232,36 +238,80 @@ export default {
     // 获取订单信息
     async getOrderInfo() {
       this.orderInfo = uni.getStorageSync(PAY_SHOP_GOODS);
-      // console.log("本地的信息", this.orderInfo);
 
       this.calcOrderCostQuery.shopId = this.orderInfo.brand.brandId * 1
       this.calcOrderCostQuery.shopGoodsId = this.orderInfo.goodsId
       this.calcOrderCostQuery.number = this.orderInfo.number
-
       this.payGoodsForm.shopId = this.orderInfo.brand.brandId * 1
       this.payGoodsForm.goodsId = this.orderInfo.goodsId
       this.payGoodsForm.number = this.orderInfo.number
-
       this.getQuotation()
     },
 
     // 计算订单报价
     async getQuotation() {
-      return
       try {
+        this.isGetPrice = true
         const res = await getQuotationApi(this.calcOrderCostQuery)
+        this.calcOrderMsg = res
+        this.payGoodsForm.actualAmount = res.actualAmount
+        this.payGoodsForm.deductionAmount = res.deductionAmount
+        this.payGoodsForm.totalAmount = res.totalAmount
+        this.payGoodsForm.orderNo = res.orderNo
       } catch (error) {
-        console.log(error);
+        this.ttoast({
+          type: 'fail',
+          title: '获取报价失败',
+          message: error
+        })
+
+        if (error === '代金券只能使用整数！') {
+          this.isUseVoucher = false
+        }
+      } finally {
+        this.isGetPrice = false
       }
     },
 
     // 提交订单支付
-    handleToPay() {
-      this.empty()
-      return
+    async handleToPay() {
+      if (this.isGetPrice) {
+        this.ttoast({
+          title: '报价中',
+          type: "info",
+          content: '请稍后'
+        })
+
+        return
+      }
       if (!this.defaultAddress || !this.defaultAddress.id) {
         this.$showToast('请选择地址');
         return;
+      }
+
+      if (!this.payGoodsForm.actualAmount) {
+        this.ttoast({
+          title: '请先获取报价',
+          type: "fail",
+          content: '支付失败'
+        })
+        return
+      }
+
+      try {
+        const orderNo = await payGoodsApi(this.payGoodsForm)
+        uni.setStorageSync(B_SHOP_ORDER_NO, orderNo)
+        payOrderUtil({
+          orderNo,
+          userId: getUserId()
+        }, payApiConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram)
+      } catch (error) {
+        console.log("创建订单", error);
+        this.ttoast({
+          type: 'fail',
+          title: '订单创建失败',
+          content: error
+        })
       }
     },
 
@@ -269,8 +319,8 @@ export default {
     handleChangeNumber(e) {
       const { value } = e;
       this.calcOrderCostQuery.number = value;
+      this.payGoodsForm.number = value
       this.getQuotation()
-
     },
 
     // 获取代金券持有
@@ -281,9 +331,7 @@ export default {
         });
 
         if (res.errno == '0') {
-          // TODO:
-          // this.currentHoldVoucher = res.data.voucherNumber;
-          this.currentHoldVoucher = 123;
+          this.currentHoldVoucher = res.data.voucherNumber;
         } else {
           this.ttoast({
             type: 'info',
@@ -299,9 +347,8 @@ export default {
       const status = e.detail.value
       this.isUseVoucher = status
       this.calcOrderCostQuery.price = status ? this.currentHoldVoucher : 0
-
-      console.log(this.isUseVoucher);
-    }
+      this.getQuotation()
+    },
   }
 };
 </script>
@@ -315,6 +362,8 @@ export default {
   font-size: 28upx;
   color: #000;
   margin-bottom: 50px;
+
+  padding-bottom: 140upx;
 
   .container {
     padding: 32upx 32upx;
@@ -558,8 +607,8 @@ export default {
     background-color: #fff;
     height: 120upx;
     display: flex;
-    justify-content: flex-end;
-    // justify-content: space-between;
+    // justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     font-size: 30upx;
     border-radius: 24upx 24upx 0upx 0upx;

@@ -1,6 +1,6 @@
 import { PAY_ORDER } from '../constant';
 import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../api/goods';
-import store from '../store';
+import { getUserId } from './index';
 
 export const payFn = (res, type, order) => {
   uni.removeStorageSync(PAY_ORDER);
@@ -43,33 +43,45 @@ export const tradeOrderNo = function () {
   return yyyyMMddHHmmss + Math.random().toString(36).substr(2, 9);
 };
 
-export const payOrderUtil = (orderInfo) => {
+export const payOrderUtil = (orderInfo, { h5Api, otherPlatformApi } = {}, isInMiniProgram) => {
   return new Promise(async (resolve, reject) => {
-    // if store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram) {
-    if (false) {
-      const payAppesult = await payOrderGoodsAPPApi(orderInfo);
-      if (payAppesult.errno === 0) {
-        let query = '';
-        for (const key in payAppesult.data) {
-          query += key + '=' + payAppesult.data[key] + '&';
+    if (isInMiniProgram) {
+      try {
+        const payAppesult = await (otherPlatformApi || payOrderGoodsAPPApi)(orderInfo);
+        let payConfigData = null;
+        if (payAppesult.appid) {
+          payConfigData = payAppesult;
+        } else if (payAppesult.errno === 0) {
+          payConfigData = payAppesult.data;
         }
+        let query = '';
+
+        for (const key in payConfigData) {
+          query += key + '=' + payConfigData[key] + '&';
+        }
+
         wx.miniProgram.navigateTo({
-          url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(),
+          url: '/pages/loading/loading?' + query + 'orderNo=' + orderInfo.orderNo + '&userId=' + getUserId(),
           fail: () => {
-            // uni.redirectTo({
-            //   url: '/user/orderForm/order-form?type=1'
-            // });
             uni.switchTab({
               url: '/pages/order/order?type=shop&status=1'
             });
           }
         });
+      } catch (error) {
+        alert(error);
       }
     } else {
       // #ifdef H5
-      payOrderGoodsApi(orderInfo)
+      (h5Api || payOrderGoodsApi)(orderInfo)
         .then((res) => {
-          const payData = JSON.parse(res.data.h5PayUrl);
+          let h5PayUrl = '';
+          if (typeof res === 'string') {
+            h5PayUrl = res;
+          } else {
+            h5PayUrl = res.data.h5PayUrl;
+          }
+          const payData = JSON.parse(h5PayUrl);
           const data = JSON.parse(payData.data);
           const form = document.createElement('form');
           form.setAttribute('action', payData.url);

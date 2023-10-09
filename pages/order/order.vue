@@ -3,7 +3,7 @@
     <TuanAppShim bg="#fff"></TuanAppShim>
     <view class="my-order-container" v-if="userId">
       <OrderHeader @change-status="handleChangeStatus" :currentStatus="currentStatus"
-        :menus="['shop', 'business'].includes(currentOrderMode) ? shopOrderType : navMenus"
+        :menus="['shop', 'business-serve', 'business-shop'].includes(currentOrderMode) ? shopOrderType : navMenus"
         @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList" :currentMode="currentOrderMode"
         ref="orderHeaderRef"></OrderHeader>
 
@@ -54,6 +54,19 @@
           </view>
         </view>
 
+        <view class="business-order-list" v-show="currentOrderMode === 'business'">
+          <!-- 商城订单 -->
+          <view class="shop-order-list" v-show="currentStatus === 2">
+            <BShopOrder @op-order="handleOpBOrder" v-for="item in bShopOrderList" :orderDeatil="item" :key="item.id">
+            </BShopOrder>
+          </view>
+          <!-- 服务订单 -->
+          <view class="shop-serve-list">
+            <BServeOrder @op-order="handleOpBOrder" v-for="item in bServeList" :orderDeatil="item" :key="item.id">
+            </BServeOrder>
+          </view>
+        </view>
+
         <NoData @clear="clearSearch()" :isSeach="!!communityQueryInfo.orderNo" v-show="noDataVisible"></NoData>
         <Loading v-show="isLoading"></Loading>
         <LoadingMore style="margin-top: 20upx" v-show="loadingStatus !== 'more'" :status="loadingStatus"></LoadingMore>
@@ -61,18 +74,28 @@
 
       <!-- 取消社区订单 -->
       <CancelOrder @success="getOrderList(true)" ref="cancelOrderRef"></CancelOrder>
+
+      <!-- 取消商圈订单 -->
+      <CancelOrderPopup @success="getOrderList(true)" ref="cancelOrderPopupRef"></CancelOrderPopup>
     </view>
 
     <!-- 未登录时 -->
     <TuanUnLoginPage v-else></TuanUnLoginPage>
+
+    <!-- 提示弹框 -->
+    <tui-modal :show="modalVisible" @click="handleDeleteOrderModal" @cancel="currentBOrder = null; modalVisible = false;"
+      title="提示" content="确定要删除当前订单吗？"></tui-modal>
+
+    <!-- toast -->
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, shopOrderType } from './config';
-import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center';
+import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, shopOrderType, businessSubNavs } from './config';
+import { getEndOrderListApi, getTwicePayOrderListApi, getBusinessOrderListApi, deleteBOrderApi, payBOrderH5, payApiConfig } from '../../api/community-center';
 import { getOrderListApi, getMyCommentListApi } from '../../api/order';
-import { USER_ID, PAY_SHORT_ORDER_NO, TUAN_ORDER_SN, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO } from '../../constant';
+import { USER_ID, PAY_SHORT_ORDER_NO, TUAN_ORDER_SN, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO, B_SERVE_ORDER_NO, B_SHOP_ORDER_NO } from '../../constant';
 import CommunityOrderPane from './components/CommunityOrderPane.vue';
 import CancelOrder from './components/CancelOrder.vue';
 import Loading from './components/Loading.vue';
@@ -83,7 +106,12 @@ import AdditionalAmountOrder from '../../community-center/components/AdditionalA
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue';
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue';
 import ShopOrder from './components/ShopOrder.vue';
+import CancelOrderPopup from './components/CancelOrderPopup.vue'
 import ShopCommentedOrder from './components/CommentedOrder.vue';
+import BShopOrder from './components/BShopOrder.vue'
+import BServeOrder from './components/BServeOrder.vue';
+import { getUserId, payOrderUtil } from 'utils';
+import store from 'store';
 
 export default {
   components: {
@@ -97,11 +125,16 @@ export default {
     CommentTypeV1,
     CommentTypeV2,
     ShopOrder,
-    ShopCommentedOrder
+    ShopCommentedOrder,
+    BShopOrder,
+    CancelOrderPopup,
+    BServeOrder
   },
 
   data() {
     return {
+      modalVisible: false,
+      currentBOrder: null,
       currentOrderMode: 'community',
       currentStatus: -1,
       currentSubValue: 0,
@@ -110,6 +143,7 @@ export default {
       userId: null,
       loadingTimer: null,
       shopOrderType: Object.freeze(shopOrderType),
+      businessSubNavs: Object.freeze(businessSubNavs),
       communityAppendOrderNavs: Object.freeze(communityAppendOrderNavs),
       communityCommentOrder: Object.freeze(communityCommentOrder),
       isLoading: false, // 是否加载中
@@ -147,7 +181,26 @@ export default {
       currentNavInfo: {
         label: '全部',
         value: -1
-      }
+      },
+
+      // 商圈服务订单
+      bServeQueryInfo: {
+        pageNo: 1,
+        pageSize: 20,
+        orderServerType: 2,
+        search: ''
+      },
+      totalBServePage: 0,
+      bServeList: [],
+      // 商圈商品订单
+      bShopQueryInfo: {
+        pageNo: 1,
+        pageSize: 20,
+        orderServerType: 1,
+        search: ''
+      },
+      totalBShopPage: 0,
+      bShopOrderList: []
     };
   },
 
@@ -162,6 +215,8 @@ export default {
     uni.removeStorageSync(TUAN_ORDER_SN);
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
+    uni.removeStorageSync(B_SERVE_ORDER_NO)
+    uni.removeStorageSync(B_SHOP_ORDER_NO)
     this.$nextTick(() => {
       this.getOrderList(true);
     });
@@ -186,6 +241,8 @@ export default {
         this.shopQueryInfo.showType = 0;
       } else if (mode === 'community') {
         this.communityQueryInfo.status = undefined;
+      } else if (mode === 'business') {
+        this.currentStatus = 1;
       }
       this.currentNavInfo = {
         label: '全部',
@@ -247,7 +304,7 @@ export default {
         } else {
           this.communityQueryInfo.status = newStatus;
         }
-      } else {
+      } else if (this.currentOrderMode === 'shop') {
         if (navInfo.value === -1) {
           this.shopQueryInfo.showType = 0;
         } else if (navInfo.value === 5) {
@@ -256,6 +313,8 @@ export default {
         } else {
           this.shopQueryInfo.showType = newStatus;
         }
+      } else {
+
       }
 
       this.getOrderList(true);
@@ -278,12 +337,53 @@ export default {
           this.communityQueryInfo.pageNo = 1;
         }
         this.getCommunityOrderList();
-      } else {
+      } else if (this.currentOrderMode === 'shop') {
         if (isClearQuery) {
           this.shopQueryInfo.page = 1;
           this.shopOrderList = [];
         }
         this.getShopOrderList();
+      } else {
+        if (isClearQuery) {
+          this.bServeQueryInfo.pageNo = 1
+          this.bServeList = []
+          this.bShopQueryInfo.pageNo = 1
+          this.bShopOrderList = []
+        }
+
+        this.getBusinessOrderList()
+      }
+    },
+
+    /**
+     * 获取商圈列表数据
+     */
+    async getBusinessOrderList() {
+      try {
+        if (this.loadType === 'page') {
+          this.isLoading = true;
+        } else {
+          this.loadingStatus = 'loading';
+        }
+        const queryInfo = this.currentStatus === 1 ? this.bServeQueryInfo : this.bShopQueryInfo
+        const res = await getBusinessOrderListApi({ ...queryInfo, userId: getUserId() })
+        if (this.currentStatus === 1) {
+          this.bServeList.push(...res.records)
+          this.totalBServePage = res.pages
+        } else {
+          this.bShopOrderList.push(...res.records)
+          this.totalBShopPage = res.pages
+        }
+
+      } catch (error) {
+
+      } finally {
+        if (this.loadingTimer) {
+          this.clearTimer();
+        }
+        this.isLoading = false;
+        uni.stopPullDownRefresh();
+        this.loadingStatus = 'more';
       }
     },
 
@@ -295,8 +395,6 @@ export default {
         } else {
           this.loadingStatus = 'loading';
         }
-
-        console.log('query参数', this.communityQueryInfo);
 
         const res = await getEndOrderListApi({
           ...this.communityQueryInfo,
@@ -493,6 +591,37 @@ export default {
         return [-3, -2].includes(this.currentStatus);
       } else if (this.currentOrderMode === 'shop') {
         return this.currentStatus === 5;
+      } else {
+        return true
+      }
+    },
+
+    // 商圈订单下拉加载
+    loadMoreBusinessOrder() {
+      if (this.currentStatus === 1) {
+        if (this.bServeList.length < this.bServeQueryInfo.pageSize) {
+          return
+        }
+
+        if (this.bServeQueryInfo.pageNo >= this.totalBServePage) {
+          this.loadingStatus = 'no-more';
+          return;
+        }
+
+        this.bServeQueryInfo.pageNo++
+        this.getOrderList()
+      } else {
+        if (this.bShopOrderList.length < this.bShopQueryInfo.pageSize) {
+          return
+        }
+
+        if (this.bShopQueryInfo.pageNo >= this.totalBShopPage) {
+          this.loadingStatus = 'no-more';
+          return;
+        }
+
+        this.bShopQueryInfo.pageNo++
+        this.getOrderList()
       }
     },
 
@@ -523,6 +652,58 @@ export default {
 
       this.shopQueryInfo.page++;
       this.getOrderList();
+    },
+
+    // 操作商圈订单
+    async handleOpBOrder({ orderDeatil, key }) {
+      switch (key) {
+        case 'cancel':
+          this.$refs.cancelOrderPopupRef.show(orderDeatil)
+          break;
+        case 'delete':
+          this.modalVisible = true
+          this.currentBOrder = orderDeatil
+          break
+        case 'pay':
+          try {
+            await payOrderUtil({
+              orderNo: orderDeatil.orderNo,
+              userId: getUserId()
+            }, payApiConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram)
+          } catch (error) {
+            this.ttoast({
+              type: 'fail',
+              title: '支付失败',
+              content: error
+            })
+          }
+          break
+        default:
+          break;
+      }
+    },
+
+    // 点击删除订单madel
+    async handleDeleteOrderModal({ index }) {
+      if (index) {
+        try {
+          await deleteBOrderApi(this.currentBOrder.id)
+          this.ttoast("订单删除成功")
+          this.getOrderList(true)
+        } catch (error) {
+          this.ttoast({
+            type: "fail",
+            title: '订单删除失败',
+            content: error
+          })
+        } finally {
+          this.currentBOrder = null
+          this.modalVisible = false
+        }
+      } else {
+        this.modalVisible = false
+        this.currentBOrder = null
+      }
     }
   },
 
@@ -539,13 +720,12 @@ export default {
     this.commentOrder.commentAppendOrderList = [];
     this.commentOrder.commentedOrderList = [];
     this.shopCommentOrderList = [];
-
     this.handleChangeStatus(this.currentNavInfo);
   },
 
   computed: {
     navMenus() {
-      return this.currentOrderMode === 'community' ? this.communityMenus : [];
+      return this.currentOrderMode === 'community' ? this.communityMenus : this.currentOrderMode === 'shop' ? this.shopOrderType : businessSubNavs;
     },
 
     subNavs() {
@@ -596,7 +776,13 @@ export default {
         } else {
           return !!!this.shopOrderList.length;
         }
-      }else{
+      } else if (this.currentOrderMode === 'business') {
+        if (this.currentStatus === 1) {
+          return !!!this.bServeList.length
+        } else {
+          return !!!this.bShopOrderList.length
+        }
+      } else {
         return true
       }
     }
@@ -607,8 +793,10 @@ export default {
       this.loadType = 'more';
       if (this.currentOrderMode === 'community') {
         this.loadMoreCommunityOrder();
-      } else {
+      } else if (this.currentOrderMode === 'shop') {
         this.loadMoreShopOrder();
+      } else if (this.currentOrderMode === 'business') {
+        this.loadMoreBusinessOrder()
       }
     }
   }

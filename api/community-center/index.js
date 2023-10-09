@@ -309,3 +309,62 @@ export const payGoodsApi = (data) => {
     data
   });
 };
+
+// 获取商圈订单
+export const getBusinessOrderListApi = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/getOrderList',
+    method: 'POST',
+    data
+  });
+};
+
+// 取消商圈订单
+export const cancelBOrderApi = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/cancelOrder',
+    data,
+    method: 'POST'
+  });
+};
+
+// 删除商圈订单
+export const deleteBOrderApi = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/deleteOrder?orderId=' + data,
+    method: 'DELETE',
+    loading: true
+  });
+};
+
+// 获取订单详情
+export const getBOrderInfoApi = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/getOrderDetail',
+    data,
+    method: 'GET'
+  });
+};
+
+// 商圈订单支付
+export const payBOrderH5 = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/payOrder',
+    data,
+    method: 'POST'
+  });
+};
+
+// app / 小程序支付
+export const payOtherPlatformApi = (data) => {
+  return endRequest({
+    url: '/api/third/shopOrder/getSybPaySign',
+    data,
+    method: 'POST'
+  });
+};
+
+export const payApiConfig = {
+  otherPlatformApi: payOtherPlatformApi,
+  h5Api: payBOrderH5
+};

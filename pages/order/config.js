@@ -164,3 +164,68 @@ export const orderOpButtons = [
     color: '#FFC117'
   }
 ];
+
+export const businessSubNavs = [
+  {
+    label: '服务',
+    value: 1
+  },
+  {
+    label: '商品',
+    value: 2
+  }
+];
+
+export const mapBusinessOrderStatus = [
+  {
+    label: '待支付',
+    value: 0
+  },
+  {
+    label: '待接单',
+    value: 1
+  },
+  {
+    label: '已接单',
+    value: 2
+  },
+  {
+    label: '已收货',
+    value: 3
+  },
+  {
+    label: '已完成',
+    value: 4
+  },
+  {
+    label: '已取消',
+    value: 7
+  }
+];
+
+export const businessOrderOPButtons = [
+  {
+    label: '支付',
+    key: 'pay',
+    color: '#FFC117',
+    show(orderInfo) {
+      return orderInfo.orderStatus === 0;
+    }
+  },
+  {
+    label: '取消订单',
+    key: 'cancel',
+    color: '#ccc',
+    show(orderInfo, type = 'shop') {
+      return type === 'shop' ? [0, 1].includes(orderInfo.orderStatus) : [0, 1, 2].includes(orderInfo.orderStatus);
+    }
+  },
+  {
+    label: '删除订单',
+    key: 'delete',
+    color: '#FFC117',
+    show(orderInfo) {
+      return orderInfo.orderStatus === 7;
+    }
+  }
+];

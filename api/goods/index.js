@@ -72,6 +72,11 @@ export const payOrderGoodsApi = (data) => shopRequest('/api/syb/orderPayH5', dat
 // APP支付
 export const payOrderGoodsAPPApi = (data) => shopRequest('/api/syb/getSybPaySign', data);
 
+export const commonPayConfig = {
+  h5Api: payOrderGoodsApi,
+  otherPlatformApi: payOrderGoodsAPPApi
+};
+
 // 获取门店下各类目的商品销量排行榜
 export const goodsMaxSaleGoodsApi = (data) => RuanRequest('/goods/maxSaleGoods', data, 'get');
 // 获取当前门店的商品

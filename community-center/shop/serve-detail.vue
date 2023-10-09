@@ -9,7 +9,7 @@
       <swiper class="swiper-container" autoplay>
         <swiper-item class="swiper-item">
           <view class="image-wtapper">
-            <image class="swiper-img" src="https://img1.baidu.com/it/u=749926179,730497842&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800"></image>
+            <image class="swiper-img" :src="serveDeatil.goodsLogo"></image>
           </view>
         </swiper-item>
       </swiper>
@@ -133,7 +133,7 @@ export default {
         return;
       }
       uni.navigateTo({
-        url: `/community-center/shop/shop-order?name=${this.serveDeatil.goodsName}&id=99&priceType=false&imgUrl=${this.serveDeatil.goodsLogo}&price=${this.serveDeatil.goodsPrice}&pprice=${this.serveDeatil.preferentialPrice}&shopId=${this.serveDeatil.shopId}`
+        url: `/community-center/shop/shop-order?name=${this.serveDeatil.goodsName}&id=${this.serveDeatil.id}&priceType=false&imgUrl=${this.serveDeatil.goodsLogo}&price=${this.serveDeatil.goodsPrice}&pprice=${this.serveDeatil.preferentialPrice}&shopId=${this.serveDeatil.shopId}`
       });
     },
     // 点击返回

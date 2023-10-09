@@ -87,6 +87,7 @@ export default {
       height: 310upx !important;
       align-items: center;
       background-color: #f9f9f9 !important;
+      overflow: hidden;
     }
 
     .goods-info {

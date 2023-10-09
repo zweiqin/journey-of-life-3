@@ -20,7 +20,7 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "全屋严选",
+        "navigationBarTitleText": "商城",
         "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTextStyle": "black",
@@ -307,7 +307,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "全屋严选",
+        "text": "商城",
         "iconPath": "/static/images/tabbar/furniture.png",
         "selectedIconPath": "/static/images/tabbar/furniture-active.png"
       },
@@ -320,7 +320,7 @@
 
       {
         "pagePath": "pages/community-center/community-centerr",
-        "text": "社区中心",
+        "text": "社区服务",
         "iconPath": "/static/images/tabbar/community.png",
         "selectedIconPath": "/static/images/tabbar/community-active.png"
       },
@@ -1272,6 +1272,17 @@
           "path": "brand-detail/brand-detail",
           "style": {
             "navigationBarTitleText": "门店详情"
+          }
+        }
+      ]
+    },
+    {
+      "root": "order",
+      "pages": [
+        {
+          "path": "b-order-form/b-order-form",
+          "style": {
+            "navigationBarTitleText": "订单详情"
           }
         }
       ]

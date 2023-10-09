@@ -123,6 +123,7 @@ const endService = (base_url) => function (config) {
 
 			complete: () => {
 				cb && typeof cb === 'function' && cb()
+				loading && uni.hideLoading()
 			}
 		})
 	])
