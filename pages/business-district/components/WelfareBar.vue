@@ -45,7 +45,6 @@ export default {
   },
 
   mounted() {
-    console.log("妈的");
     this.startAnimation1 = true
     this.startAnimation2 = true
   }

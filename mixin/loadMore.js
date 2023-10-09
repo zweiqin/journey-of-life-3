@@ -33,17 +33,16 @@ export default (options) => {
           res = await api(this.$data._query);
         }
 
-        // console.log(res);
 
         this.$data._totalPages = res.data[mapKey.totalPages];
         if (isLoadmore) {
           this.$data._list = [
             ...this.$data._list,
-            ...(dataFn ? dataFn(res.data[mapKey.list]) : res.data[mapKey.list]),
+            ...(dataFn ? dataFn.bind(this)(res.data[mapKey.list]) : res.data[mapKey.list]),
           ];
         } else {
           this.$data._list = dataFn
-            ? dataFn(res.data[mapKey.list])
+            ? dataFn.bind(this)(res.data[mapKey.list])
             : res.data[mapKey.list];
         }
 

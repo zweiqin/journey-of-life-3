@@ -55,18 +55,18 @@
         "navigationStyle": "custom"
       }
     },
-    {
-      "path": "pages/index/WholehouseCustomization/detail/detail",
-      "style": {
-        "navigationBarTitleText": "详情"
-      }
-    },
-    {
-      "path": "pages/index/BrandFactory/detail",
-      "style": {
-        "navigationBarTitleText": "详情"
-      }
-    },
+    // {
+    //   "path": "pages/index/WholehouseCustomization/detail/detail",
+    //   "style": {
+    //     "navigationBarTitleText": "详情"
+    //   }
+    // },
+    // {
+    //   "path": "pages/index/BrandFactory/detail",
+    //   "style": {
+    //     "navigationBarTitleText": "详情"
+    //   }
+    // },
     {
       "path": "pages/user/user",
       "style": {
