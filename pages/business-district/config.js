@@ -25,7 +25,7 @@ export const navbarOne = [
   {
     name: '美食',
     icon: require('../../static/images/new-business/home/meishi.png'),
-    url: '/community-center/shop/shop?type=4',
+    url: '/community-center/shop/delicacy/delicacy',
     value: 4
   },
   {
