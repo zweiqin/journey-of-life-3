@@ -48,6 +48,7 @@ export default {
     height: 72upx;
     border-radius: 100px;
     margin-right: 15upx;
+    background-color: #fff;
 
 
     .address-wrapper {

@@ -9,7 +9,7 @@
     </view>
 
     <view class="goods-info">
-      <view class="goods-name">建设工程打扫干净大家科技</view>
+      <view class="goods-name">{{ goods.name }}</view>
       <view class="wrapper">
         <view class="price-wrapper">
           ￥<text class="price-text">{{ goods.counterPrice }}</text>
@@ -34,7 +34,7 @@ export default {
 
 <style lang="less" scoped>
 .new-goods-pane-container {
-  height: 440upx;
+  height: 520upx;
   width: 333upx;
   background-color: #fff;
   margin-bottom: 23upx;
@@ -44,7 +44,7 @@ export default {
   .goods-logo {
     position: relative;
     width: 333upx;
-    height: 295upx;
+    height: 374upx;
     overflow: hidden;
 
 
@@ -91,7 +91,7 @@ export default {
   /deep/ .tui-lazyload__box {
     position: relative;
     width: 333upx !important;
-    height: 284upx !important;
+    height: 358upx !important;
     border-radius: 20upx !important;
     overflow: hidden;
     z-index: 10;

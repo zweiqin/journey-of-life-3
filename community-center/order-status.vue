@@ -58,7 +58,7 @@
                 <view class="tag tag2">{{ masterInfo.workerLevel }}</view>
               </view>
 
-              <view class="master-skills">
+              <view class="master-skills" v-if="masterInfo.skillExpertise">
                 <text>{{ allSkillVisible ? masterInfo.skillExpertise.join('/') : masterInfo.skillExpertise.slice(0, 3).join(' / ') }}</text>
                 <button class="uni-btn" v-if="masterInfo.skillExpertise.length > 3" @click="allSkillVisible = !allSkillVisible">
                   {{ allSkillVisible ? '收起' : '更多' }}

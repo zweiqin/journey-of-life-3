@@ -1,5 +1,5 @@
 <template>
-  <view class="voucher-wrapper" :class="{ active: start }" @click="empty()">
+  <view class="voucher-wrapper" :class="{ active: start }" @click="go('/pages/index/voucher-zone')">
     <view class="voucher-item first-el"></view>
     <view class="voucher-item next-el"></view>
     <view class="voucher-item top-el">
