@@ -20,7 +20,7 @@ export const homeTopNavs = [
     url: '/pages/furniture/furniture?id=null'
   },
   {
-    label: '家居用品',
+    label: '日用百货',
     icon: require('../../static/images/new-index/index-1/jiajuyongpin.png'),
     url: ''
   },

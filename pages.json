@@ -325,16 +325,16 @@
       // },
 
       {
-        "pagePath": "pages/community-center/community-centerr",
-        "text": "社区服务",
-        "iconPath": "/static/images/tabbar/community.png",
-        "selectedIconPath": "/static/images/tabbar/community-active.png"
-      },
-      {
         "pagePath": "pages/business-district/business-district",
         "text": "社区商圈",
         "iconPath": "/static/images/tabbar/business.png",
         "selectedIconPath": "/static/images/tabbar/business-active.png"
+      },
+      {
+        "pagePath": "pages/community-center/community-centerr",
+        "text": "社区服务",
+        "iconPath": "/static/images/tabbar/community.png",
+        "selectedIconPath": "/static/images/tabbar/community-active.png"
       },
       {
         "pagePath": "pages/order/order",
