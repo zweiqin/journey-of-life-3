@@ -11,8 +11,9 @@
     <view class="main-arae">
       <!-- nav -->
       <view class="navs">
-        <view class="nav-item" v-for="item in voucherNavs" :key="item.label
-          ">
+        <view @click="go('/pages/index/voucher-filter?categoryId=' + item.value)" class="nav-item"
+          v-for="item in voucherNavs" :key="item.label
+            ">
           <image :src="item.icon" class="nav-icon"></image>
           <view class="nav-name">{{ item.label }}</view>
         </view>
@@ -69,8 +70,6 @@
         </view>
       </view>
     </view>
-
-
   </view>
 </template>
 

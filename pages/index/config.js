@@ -49,7 +49,7 @@ export const voucherNavs = [
   },
   {
     label: '家居用品',
-    icon: require('../../static/images/new-index/index-1/jiajuyongpin.png'),
+    icon: require('../../static/images/new-index/index-1/jiajuriyong.png'),
     value: 100101727
   },
   {

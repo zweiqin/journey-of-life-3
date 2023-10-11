@@ -61,6 +61,12 @@
         "navigationBarTitleText": "代金券专区"
       }
     },
+    {
+      "path": "pages/index/voucher-filter",
+      "style": {
+        "navigationBarTitleText": "全部商品"
+      }
+    },
     // {
     //   "path": "pages/index/WholehouseCustomization/detail/detail",
     //   "style": {
