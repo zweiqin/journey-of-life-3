@@ -2,9 +2,9 @@
 	<view class="IndexView">
 		<view class="selectExpress">
 			<view class="selectInput">
-				<image src="../image/sousuo.png" mode=""></image>
-				<input v-model="expressId" type="text" placeholder="请输入订单编号">
-				<image src="../image/saoma.png" mode=""></image>
+				<image class="selectIcon" src="../image/sousuo.png" mode=""></image>
+				<input class="seltInput" v-model="expressId" type="text" placeholder="请输入订单编号">
+				<image class="seltImgIcon" src="../image/saoma.png" mode=""></image>
 			</view>
 			<view class="ExpressOptions">
 				<view class="optItem" @click="runToExpress('/pages/user/kuai-di/DeliveryExpress')">
@@ -254,26 +254,30 @@ export default {
 	align-items: center;
 
 	.selectInput {
+		position: relative;
 		margin-top: 38rpx;
 		width: 711rpx;
 		height: 92rpx;
 		background-color: white;
 		border-radius: 15rpx;
 		display: flex;
-		justify-content: space-around;
+		// justify-content: space-around;
 		align-items: center;
-
-		>image {
+		
+		.selectIcon {
 			width: 38rpx;
 			height: 38rpx;
+			margin-left: 20rpx;
 		}
 
-		>input {
-			margin-left: -60rpx;
+		.seltInput {
+			margin-left: 15rpx;
 			font-size: 38rpx;
 		}
 
-		>image:nth-of-type(2) {
+		.seltImgIcon {
+			position: absolute;
+			right: 30rpx;
 			width: 48rpx;
 			height: 48rpx;
 		}

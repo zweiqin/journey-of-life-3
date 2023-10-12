@@ -27,6 +27,9 @@
                 <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '合伙人'" src="@/static/images/user/hehuoren.png"></image>
                 <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '股东'" src="@/static/images/user/gudong.png"></image>
               </view>
+              <view class="medalOfHonor">
+
+              </view>
           </view>
         </view>
 

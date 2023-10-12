@@ -2,7 +2,7 @@
  * @Author: aliyun0758874076 2300202994@qq.com
  * @Date: 2023-10-12 09:11:06
  * @LastEditors: aliyun0758874076 2300202994@qq.com
- * @LastEditTime: 2023-10-12 10:51:54
+ * @LastEditTime: 2023-10-12 11:52:08
  * @FilePath: \tuan\pages\login\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -89,17 +89,17 @@
         </view>
       </view>
     </view>
-    <view class="agreementBox">
+    <!-- <view class="agreementBox">
       <checkbox :checked='agreementStatus' @click="fuckYouZWQ" />
       <text style="margin-left: 2rpx; width: 370rpx" class="colorText">
           <view class="Agreements">
-            我已阅读并同意<!-- <text class="redText">《用户服务协议》</text> -->
+            我已阅读并同意
             <TuanServe @op="agreementStatus = $event">
               <text style="color: #FFF;">《团蜂用户协议》</text>
             </TuanServe>
           </view>
         </text>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -155,13 +155,13 @@ export default {
     },
     // 登录
     async handlelogin() {
-      if (!this.agreementStatus) {
-        this.ttoast({
-          type: 'info',
-          title: '请勾选服务协议'
-        });
-        return;
-      }
+      // if (!this.agreementStatus) {
+      //   this.ttoast({
+      //     type: 'info',
+      //     title: '请勾选服务协议'
+      //   });
+      //   return;
+      // }
       const _this = this;
       this.$refs.form
         .validate(this.loginForm, loginRule)
