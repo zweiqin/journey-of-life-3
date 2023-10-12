@@ -2,7 +2,7 @@
  * @Author: aliyun0758874076 2300202994@qq.com
  * @Date: 2023-10-12 09:11:06
  * @LastEditors: aliyun0758874076 2300202994@qq.com
- * @LastEditTime: 2023-10-12 09:40:33
+ * @LastEditTime: 2023-10-12 10:51:54
  * @FilePath: \tuan\pages\login\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -61,20 +61,6 @@
         </view> -->
         <view
           style="display: flex; flex-direction: column; align-items: center"
-		  @click="go('/pages/login/login-message')"
-        >
-          <view class="DiaoNiMaZhongWeiQing">
-            <image
-              class="iconImg"
-              src="../../static/images/icon/duanxindenglu.png"
-            ></image>
-          </view>
-          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
-            >短信登录</view
-          >
-        </view>
-        <view
-          style="display: flex; flex-direction: column; align-items: center"
 		  @click="go('/pages/login/pwdLogin')"
         >
           <view class="DiaoNiMaZhongWeiQing">
@@ -87,13 +73,32 @@
             >密码登录</view
           >
         </view>
+        <view
+          style="display: flex; flex-direction: column; align-items: center"
+		  @click="go('/pages/login/login-message')"
+        >
+          <view class="DiaoNiMaZhongWeiQing">
+            <image
+              class="iconImg"
+              src="../../static/images/icon/duanxindenglu.png"
+            ></image>
+          </view>
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
+            >短信登录</view
+          >
+        </view>
       </view>
     </view>
-    <view class="agreement">
-      <checkbox @click="fuckYouZWQ" />
-      <text style="margin-left: 2rpx; width: 370rpx" class="colorText"
-        >我已阅读并同意《用户服务协议》</text
-      >
+    <view class="agreementBox">
+      <checkbox :checked='agreementStatus' @click="fuckYouZWQ" />
+      <text style="margin-left: 2rpx; width: 370rpx" class="colorText">
+          <view class="Agreements">
+            我已阅读并同意<!-- <text class="redText">《用户服务协议》</text> -->
+            <TuanServe @op="agreementStatus = $event">
+              <text style="color: #FFF;">《团蜂用户协议》</text>
+            </TuanServe>
+          </view>
+        </text>
     </view>
   </view>
 </template>
@@ -484,7 +489,10 @@ export default {
   display: flex;
 }
 .otherLoginButton {
-  margin-top: 555rpx;
+  // margin-top: 555rpx;
+  position: fixed;
+  bottom: 120rpx;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -497,14 +505,14 @@ export default {
     }
   }
 }
-.agreement {
-  margin-top: 36rpx;
-  // width: 410rpx;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.agreementBox {
+  width: 100vw;
+  position: fixed;
+  // transform: translateX(-50%);
+  bottom: 46rpx;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .iconImg {
   width: 40rpx;
@@ -515,5 +523,8 @@ export default {
 }
 /deep/ .uni-checkbox-input-checked::before {
   color: #0648fe !important;
+}
+.Agreements {
+  display: flex;
 }
 </style>
