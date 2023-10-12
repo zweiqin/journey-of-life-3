@@ -1,18 +1,190 @@
 <template>
-  <view class="authenticationPage">
+  <view class="container">
       <view class="PageGHeader">
-        
+        <image @click="goBack" class="backBtn" src="@/static/images/entryOfMerchants/back.png"></image>
+        <text class="PageText">{{ formIndex == 0?'身份认证':'信息认证' }}</text>
       </view>
-      1
+      <view class="FormSteps">
+        <view class="FormStepsItem" v-for="(item, index) in StepsStatic" :key="index" @click="nextSteps(item)">
+          <view class="StateBox isActive" v-if="item.active && !item.isOver">
+            <view class="isActiveBox">
+            </view>
+          </view>
+          <view class="StateBox isOver" v-else-if="item.isOver">
+            <image class="overImg" src="@/static/images/entryOfMerchants/great.png"></image>
+          </view>
+          <view class="StateBox" v-else>
+            {{ index }}
+          </view>
+          <image class="StepStateImg" v-if="index < StepsStatic.length-1" :src="returnStateImg(item,index)"></image>
+          <text class="ItemName">{{ item.name }}</text>
+        </view>
+      </view>
+      <keep-alive>
+        <component
+          :is="currentTabComponent"
+          class="tab"
+        ></component>
+      </keep-alive>
   </view>
 </template>
 
 <script>
+  import PersonalImg from '../componrnts/PersonalImg.vue'
   export default {
-    name: 'Personal'
+    name: 'Personal',
+    components: {
+      PersonalImg
+    },
+    data() {
+      return {
+        formIndex: 0,
+        currentTabComponent: 'PersonalImg',
+        StepsStatic: [{
+          name: '身份认证',
+          active: true,
+          isOver: false,
+          statImg: require('@/static/images/entryOfMerchants/change.png')
+        },{
+          name: '认证资料',
+          active: false,
+          isOver: false,
+          statImg: require('@/static/images/entryOfMerchants/noOver.png')
+        },{
+          name: '经营信息',
+          active: false,
+          isOver: false,
+          statImg: require('@/static/images/entryOfMerchants/noOver.png')
+        },{
+          name: '完成',
+          active: false,
+          isOver: false,
+          statImg: require('@/static/images/entryOfMerchants/noOver.png')
+        }]
+      }
+    },
+    created() {
+      
+    },
+    methods: {
+      goBack() {
+        uni.navigateBack();
+      },
+      nextSteps() {
+        
+      },
+      returnStateImg(item,index) { // 玩nm，直接堆屎山
+        let arr = [require('@/static/images/entryOfMerchants/noOver.png'),
+            require('@/static/images/entryOfMerchants/change.png'),
+            require('@/static/images/entryOfMerchants/over.png')]
+        if(item.active && !item.isOver) {
+          return arr[1]
+        }else if(item.isOver) {
+          if (this.StepsStatic[index+1].isOver) {
+            return arr[0]
+          }else {
+            return arr[2]
+          }
+        }else {
+          return arr[0]
+        }
+      }
+    },
+    computed: {
+      
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-
+.container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100vw;
+  min-height: 100vh;
+  padding-top: 88rpx;
+  background: linear-gradient(180deg, #F8FCFF 0%, #EDF3FF 60%, #E6E7FB 100%);
+  overflow-y: auto;
+  .PageGHeader {
+    z-index: 99999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 88rpx;
+    background-color: #fff;
+    .backBtn {
+      margin-left: 40rpx;
+      width: 20rpx;
+      height: 32rpx;
+    }
+    .PageText {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 32rpx;
+      font-weight: 600;
+      letter-spacing: 0.32rpx;
+      color: #222229;
+    }
+  }
+  .FormSteps {
+    width: 100vw;
+    height: 180rpx;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    .FormStepsItem {
+      position: relative;
+      width: 100rpx;
+      height: 100rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .StateBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56rpx;
+        height: 56rpx;
+        border-radius: 50%;
+        color: #E2E7EC;
+        background: #526787;
+      }
+      .isActive {
+        background: #BED8FF;
+        .isActiveBox {
+          width: 37rpx;
+          height: 37rpx;
+          border-radius: 50%;
+          background: #3982F1;
+        }
+      }
+      .isOver {
+        background: #08377F;
+        .overImg {
+          width: 32rpx;
+          height: 22rpx;
+        }
+      }
+      .ItemName {
+        margin-top: 10rpx;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 32rpx;
+        color: #08377F;
+      }
+      .StepStateImg {
+        width: 50rpx;
+        height: 5rpx;
+        position: absolute;
+        right: -55rpx;
+        top: 20rpx;
+      }
+    }
+  }
+}
 </style>
