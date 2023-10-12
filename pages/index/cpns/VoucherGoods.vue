@@ -1,5 +1,5 @@
 <template>
-  <view class="voucher-goods-container" v-if="goodsData"  @click="go('/pages/prod/prod?goodsId=' + goodsData.id)">
+  <view class="voucher-goods-container" v-if="goodsData" @click="go('/pages/prod/prod?goodsId=' + goodsData.id)">
     <view class="goods-wrapper">
       <image class="goods-img" :src="goodsData.picUrl"></image>
     </view>
@@ -7,7 +7,7 @@
     <view class="goods-info">
       <view class="goods-name">{{ goodsData.name }}</view>
       <view class="price-wrapper">
-        券后￥<text class="price-text">{{ goodsData.counterPrice }}</text>
+        券后￥<text class="price-text">{{ goodsData.counterPrice - (goodsData.voucherAmount || 0) }}</text>
       </view>
     </view>
   </view>

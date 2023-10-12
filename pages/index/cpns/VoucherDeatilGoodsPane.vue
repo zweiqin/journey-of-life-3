@@ -118,5 +118,10 @@ export default {
   overflow: hidden;
   z-index: 10;
   margin-right: 19upx;
+
+  .tui-lazyload__img {
+    width: 219upx !important;
+    height: 220upx !important;
+  }
 }
 </style>

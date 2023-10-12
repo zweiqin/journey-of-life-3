@@ -44,8 +44,8 @@
       <!-- 推荐 -->
       <view class="recommend-container">
         <view class="type-container">
-          <view class="recommend-title" :class="{ active: currentType == 100101738 }"
-            @click="handleSwitchType(100101738)">
+          <view class="recommend-title" :class="{ active: currentType == 100101725 }"
+            @click="handleSwitchType(100101725)">
             <view class="title">精品推荐</view>
             <view class="tag">为您推荐</view>
           </view>
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       voucherNavs: Object.freeze(voucherNavs),
-      currentType: 100101738,
+      currentType: 100101725,
       ad: {
         hot: [],
         good: []
