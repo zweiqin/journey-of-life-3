@@ -1,91 +1,107 @@
+<!--
+ * @Author: aliyun0758874076 2300202994@qq.com
+ * @Date: 2023-10-12 09:11:06
+ * @LastEditors: aliyun0758874076 2300202994@qq.com
+ * @LastEditTime: 2023-10-12 09:40:33
+ * @FilePath: \tuan\pages\login\login.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
-  <view class="login-container">
-    <image class="back-icon" src="../../static/images/new-auth/back.png" mode="" @click="handleBack" />
-
-    <view class="login-main-area">
-      <h1>登录</h1>
-
-      <tui-form ref="form">
-        <tui-input
-          v-model="loginForm.phone"
-          label="手机号码"
-          padidng="0 0 28rpx 0"
-          border-top
-          placeholder="请输入手机号码"
-          color="#141000"
-          :focus="focusMap[0]"
-          :confirm-type="keybordEnterText"
-          @confirm="handleClickConfirmType(0)"
-        ></tui-input>
-        <tui-input
-          v-model="loginForm.password"
-          color="#141000"
-          padidng="0 0 28rpx 0"
-          label="密码"
-          :focus="focusMap[1]"
-          :confirm-type="keybordEnterText"
-          class="reset-wrapper"
-          :line-left="false"
-          :type="isShowPassword ? 'text' : 'password'"
-          placeholder="请输入密码"
-          @confirm="handleClickConfirmType(1)"
-        >
-          <block slot="right">
-            <image
-              class="password-status"
-              :src="isShowPassword ? '../../static/images/common/view-password .png' : '../../static/images/common/close-password.png'"
-              mode=""
-              @click="isShowPassword = !isShowPassword"
-            />
-          </block>
-        </tui-input>
-      </tui-form>
-
-      <view style="display: flex; justify-content: space-between; align-items: center">
-        <view class="service-agreement-wrapper">
-          <tui-icon
-            :name="agreementStatus ? 'square-selected' : 'square'"
-            :color="agreementStatus ? '#FFC117' : ''"
-            :size="18"
-            @click="agreementStatus = !agreementStatus"
-          ></tui-icon>
-          <text @click="agreementStatus = !agreementStatus"> 我已阅读并同意 </text>
-          <TuanServe @op="agreementStatus = $event">
-            <text style="color: #ffc117">《团蜂用户协议》</text>
-          </TuanServe>
-        </view>
-
-        <navigator class="forget-assword" url="/pages/reset-password/reset-password" hover-class="none"> 忘记密码 </navigator>
+  <view class="container">
+    <view style="padding: 68upx 0 0 56upx; color: #ffffff">
+      <view style="font-weight: bold; font-style: oblique">
+        <view style="font-size: 58upx">欢迎来到</view>
+        <view style="font-size: 62upx">团蜂社区</view>
       </view>
-
-      <button class="login-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }" @click="onlogin">登录</button>
-
-      <view class="to-login" @click="handleRedirect"> 您还未有帐号？<text>立即注册</text> </view>
-
-      <view class="more-login">
-        <!-- #ifdef H5 -->
-        <TuanWXLogin @login="handleWXLoginAfter">
-          <view class="item">
+      <view style="margin-top: 12upx; font-size: 30upx">
+        <text class="shabizhongweiqing">数字化营销的领跑者</text>
+      </view>
+    </view>
+    <view
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 80upx;
+      "
+    >
+      <view style="text-align: center">
+        <image
+          style="width: 118upx; height: 98upx; margin-top: 140rpx"
+          src="../../static/images/icon/we-chat.png"
+          mode=""
+        />
+        <TuanWXLogin :agreementStatus="agreementStatus" @login="handleWXLoginAfter">
+          <view class="CaoNiMaZhongWeiQing">
+            微信一键登录
+          </view>
+          <!-- <view class="item">
             <image src="../../static/images/new-auth/wx.png" mode="" />
             <text>微信登录</text>
-          </view>
+          </view> -->
         </TuanWXLogin>
-        <!-- #endif -->
 
-        <view class="item" @click="go('/pages/login/login-message')">
-          <image src="../../static/images/new-auth/message.png" mode="" />
-          <text>短信登录</text>
+      </view>
+    </view>
+    <view class="otherLoginButton">
+      <view class="orderButtonItem">
+        <!-- <view
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <view class="DiaoNiMaZhongWeiQing">
+            <image
+              class="iconImg"
+              src="../../static/images/icon/zhuce.png"
+            ></image>
+          </view>
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
+            >注册</view
+          >
+        </view> -->
+        <view
+          style="display: flex; flex-direction: column; align-items: center"
+		  @click="go('/pages/login/login-message')"
+        >
+          <view class="DiaoNiMaZhongWeiQing">
+            <image
+              class="iconImg"
+              src="../../static/images/icon/duanxindenglu.png"
+            ></image>
+          </view>
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
+            >短信登录</view
+          >
+        </view>
+        <view
+          style="display: flex; flex-direction: column; align-items: center"
+		  @click="go('/pages/login/pwdLogin')"
+        >
+          <view class="DiaoNiMaZhongWeiQing">
+            <image
+              class="iconImg"
+              src="../../static/images/icon/mima.png"
+            ></image>
+          </view>
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
+            >密码登录</view
+          >
         </view>
       </view>
     </view>
-    <tui-toast ref="toast"></tui-toast>
+    <view class="agreement">
+      <checkbox @click="fuckYouZWQ" />
+      <text style="margin-left: 2rpx; width: 370rpx" class="colorText"
+        >我已阅读并同意《用户服务协议》</text
+      >
+    </view>
   </view>
 </template>
 
 <script>
-import { sf } from '../../config';
-import loginRule from './rules';
-import { throttle } from '../../utils';
+import { sf } from "../../config";
+import loginRule from "./rules";
+import { throttle } from "../../utils";
 import {
   NEW_BIND_ID,
   USER_ID,
@@ -94,133 +110,44 @@ import {
   NEW_BIND_SERVICE_ID,
   NEW_BIND_SERVICE_URL,
   SF_INVITE_CODE,
-  GROUP_INVITE_CODE
-} from '../../constant';
-import { bindLastUserApi, checkBindApi } from '../../api/user';
-import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
-
-const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
+  GROUP_INVITE_CODE,
+} from "../../constant";
+import { bindLastUserApi, checkBindApi } from "../../api/user";
+import { CHANGE_IS_IN_MINIPROGRAM } from "../../store/modules/type";
+const tabbarList = [
+  "/pages/user/user",
+  "/pages/community-center/community-center",
+  "/pages/index/index",
+];
 
 export default {
-  name: 'Login',
   data() {
     return {
       timer: null,
-      agreementStatus: false,
+      agreementStatus: false, // 智障uniapp 设计的这么傻逼，竟然不能用布尔值控制是否选中
       loginForm: {
-        phone: '',
-        password: ''
+        phone: "",
+        password: "",
       },
       to: null,
       onlogin: null,
       isShowPassword: false,
       focusMap: {
         0: false,
-        1: false
+        1: false,
       },
-
-      redirect: '',
+      redirect: "",
       isBind: false,
       bindId: null,
       userId: null,
-      partnerCode: '',
-      partnerCode2: ''
+      partnerCode: "",
+      partnerCode2: "",
     };
   },
-  async onLoad(options) {
-    if (options.miniProgram) {
-      getApp().globalData.isInMiniprogram = true;
-    }
-    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
-    this.onlogin = throttle(this.handlelogin, 1000);
-    this.redirect = options.to;
-
-    this.bindId = options.code;
-    this.partnerCode = options.partnerCode;
-    this.partnerCode2 = options.partnerCode2;
-    if (this.partnerCode) {
-      getApp().globalData.isShowFollowOfficialAccount = true;
-      // console.log('你没得');
-    }
-
-    if (this.partnerCode) {
-      uni.setStorageSync(SF_INVITE_CODE, options.partnerCode);
-    }
-
-    if (this.partnerCode2) {
-      uni.setStorageSync(GROUP_INVITE_CODE, options.partnerCode2);
-    }
-
-    if (this.redirect && this.redirect.indexOf('?') > -1) {
-      this.bindId = this.redirect;
-    }
-    if (this.bindId) {
-      uni.setStorageSync(NEW_BIND_ID, this.bindId);
-    }
-
-    const userId = uni.getStorageSync(USER_ID);
-    const userInfo = uni.getStorageSync(USER_INFO);
-
-    // #ifdef H5
-    if (uni.getStorageSync(NEW_BIND_ID) && userId && !this.bindId) {
-      this.bindId = uni.getStorageSync(NEW_BIND_ID);
-
-      try {
-        await this.checkBind({
-          userId
-        });
-      } catch (error) {
-        await this.binding(userId, () => {
-          uni.switchTab({
-            url: '/'
-          });
-        });
-      }
-    }
-    // #endif
-
-    // return
-
-    if (userId && userInfo.userId) {
-      if (this.bindId) {
-        await this.binding(userId, () => {
-          uni.switchTab({
-            url: '/'
-          });
-        });
-      } else if (this.partnerCode) {
-        await this.handlePartnerBind(userId);
-        uni.switchTab({
-          url: '/'
-        });
-      } else if (this.partnerCode2) {
-        await this.handleGroupBind(userId);
-        uni.switchTab({
-          url: '/'
-        });
-      } else {
-        uni.switchTab({
-          url: '/'
-        });
-      }
-    }
-  },
-
-  onShow() {
-    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
-    this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null;
-  },
-
-  computed: {
-    btnStatus() {
-      return this.agreementStatus && this.loginForm.password && this.loginForm.phone;
-    },
-
-    keybordEnterText() {
-      return this.agreementStatus && this.loginForm.password && this.loginForm.phone ? 'done' : 'next';
-    }
-  },
   methods: {
+	fuckYouZWQ(value) {
+      this.agreementStatus = !this.agreementStatus;
+    },
     // 登录
     async handlelogin() {
       if (!this.agreementStatus) {
@@ -238,7 +165,6 @@ export default {
             username: _this.loginForm.phone,
             password: _this.loginForm.password
           });
-
           // 是否是师傅邀请码
           if (_this.partnerCode) {
             await _this.handlePartnerBind(res.userInfo.userId);
@@ -284,7 +210,6 @@ export default {
           } else {
             // #endif
             if (this.redirect) {
-              // console.log('进来了', this.redirect)
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
                   url: _this.redirect
@@ -439,14 +364,12 @@ export default {
     // 微信登陆后续
     async handleWXLoginAfter(res) {
       const _this = this;
-
       // #ifdef H5
       // 判断是否已经绑定了手机号
       if (res.userInfo.phone === '') {
         uni.navigateTo({
           url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
         });
-
         return;
       }
 
@@ -458,7 +381,6 @@ export default {
         });
         return;
       }
-
       // 是否存在团长推广码
       if (_this.partnerCode2) {
         await _this.handleGroupBind(res.userInfo.userId);
@@ -515,152 +437,83 @@ export default {
 </script>
 
 <style lang="less" scoped>
-view,
-text {
-  line-height: 1.5;
+.colorText {
+  margin-top: 2rpx;
+  font-size: 24rpx;
+  font-weight: 50;
+  line-height: 36rpx;
+  text-align: center;
+  color: #fff;
 }
-
-.login-container {
-  width: 100vw;
+.container {
+  background-color: #ea5b1d;
   min-height: 100vh;
-  background: url('../../static/images/new-auth/bg.png') no-repeat;
-  background-size: cover;
-
-  .back-icon {
-    position: relative;
-    top: 30upx;
-    left: 20upx;
-    width: 80upx;
-    height: 80upx;
-    z-index: 1000;
-  }
-
-  .login-main-area {
-    padding: 90upx 80upx 0;
-
-    h1 {
-      color: #141000;
-      font-size: 64upx;
-      font-weight: 400;
-      margin-bottom: 120upx;
-    }
-
-    /deep/ .tui-input__wrap {
-      padding: 0 0 28upx 0 !important;
-      flex-direction: column;
-      align-items: flex-start;
-      background: transparent !important;
-      margin-bottom: 72upx !important;
-
-      &::before {
-        display: none;
-      }
-    }
-
-    /deep/ .tui-input__label {
-      text {
-        margin-bottom: 12upx;
-        font-size: 24upx !important;
-        color: #b3b2ad !important;
-      }
-    }
-
-    /deep/ .uni-input-wrapper {
-      margin-top: 12upx;
-
-      input {
-        padding-bottom: 28upx !important;
-      }
-    }
-
-    /deep/ .tui-line__left::after {
-      left: 0 !important;
-    }
-
-    .reset-wrapper {
-      /deep/ .tui-input__wrap {
-        flex-wrap: wrap !important;
-        flex-direction: row !important;
-        margin-bottom: 10upx !important;
-
-        .tui-input__label {
-          flex: 0 0 100%;
-        }
-      }
-    }
-
-    .password-status {
-      width: 48upx;
-      height: 48upx;
-      flex-shrink: 0;
-      margin-top: 12upx;
-    }
-  }
-
-  .service-agreement-wrapper {
-    display: flex;
-    align-items: center;
-    font-size: 24upx;
-    color: #605d52;
-
-    text {
-      margin-top: 1upx;
-      margin-left: 6upx;
-    }
-  }
-
-  .forget-assword {
-    font-size: 24upx;
-    color: #8f8d85;
-  }
-
-  .login-btn {
-    width: 606upx;
-    height: 96upx;
-    border-radius: 100px;
-    margin: 80upx 0 40upx 0;
-    background-color: #ffe6a2;
-    color: #fff;
-    line-height: 96upx;
-    font-size: 32upx;
-    font-weight: 500;
-    transition: all 100ms;
-  }
-
-  .to-login {
-    text-align: center;
-    font-size: 28upx;
-
-    text {
-      color: #fc4023;
-    }
-  }
 }
-
-.more-login {
+.ShaBiZhongWeiQing {
+  font-size: 32rpx;
+  font-weight: normal;
+  line-height: 42rpx;
+  color: #ffffff;
+}
+.CaoNiMaZhongWeiQing {
+  margin-top: 40rpx;
+  width: 600rpx;
+  height: 80rpx;
+  background-color: #fff;
+  border-radius: 50rpx;
+  font-size: 38rpx;
+  font-weight: 600;
+  line-height: 80rpx;
+  font-feature-settings: "kern" on;
+  color: #ea5b1d !important;
+}
+.DiaoNiMaZhongWeiQing {
+  box-sizing: border-box;
+  padding: 10rpx;
+  width: 60rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 160upx;
-
-  .item {
+  border-radius: 50%;
+  background-color: #fff;
+}
+.DaShaBiZhongWeiQing {
+  width: 34rpx;
+  height: 34rpx;
+  background-color: #fff;
+  display: flex;
+}
+.otherLoginButton {
+  margin-top: 555rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .orderButtonItem {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-left: 36upx;
-    margin-right: 36upx;
-
-    image {
-      width: 88upx;
-      height: 88upx;
-      border-radius: 50%;
-    }
-
-    text {
-      font-size: 24upx;
-      color: #605d52;
+    justify-content: space-around;
+    white-space: nowrap;
+    & > view:not(:first-child) {
+      padding-left: 48upx;
     }
   }
+}
+.agreement {
+  margin-top: 36rpx;
+  // width: 410rpx;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+}
+.iconImg {
+  width: 40rpx;
+  height: 40rpx;
+}
+/deep/ .uni-checkbox-input-checked {
+  background-color: #ffffff !important;
+}
+/deep/ .uni-checkbox-input-checked::before {
+  color: #0648fe !important;
 }
 </style>

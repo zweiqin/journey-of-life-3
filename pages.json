@@ -146,6 +146,12 @@
       }
     },
     {
+      "path": "pages/login/pwdLogin",
+      "style": {
+        "navigationBarTitleText": "密码登录"
+      }
+    },
+    {
       "path": "pages/login/bind-phone",
       "style": {
         "navigationBarTitleText": "绑定手机号"

@@ -1,26 +1,21 @@
 <template>
-	<!-- 登录 -->
-	<!-- flex-items-plus 去除了这个类名 相当于flex的两个居中操作 alignItems justifyContent -->
-	<view class="container flex-column">
-		<view style="padding: 30upx 20upx 0;color: #000000;">
-			<image @click="goBack" src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;"></image>
-		</view>
-		<view class="PhoneAuthentication">
-			<text class="textRL">绑定手机号</text>
-			<text class="textTips">给您带来更方便快捷的服务</text>
-		</view>
-		<view class="LoginForm">
+	<view class="login-container">
+		<image class="back-icon" src="../../static/images/new-auth/back.png" mode="" @click="handleBack" />
+
+		<view class="login-main-area">
+			<h1>绑定手机号</h1>
+
 			<tui-form ref="form">
 				<tui-input label="手机号码" padidng="0 0 28rpx 0" borderTop placeholder="请输入手机号码" color="#141000"
 					v-model="bindForm.phone"></tui-input>
-			
+
 				<tui-input class="reset-wrapper" label="验证码" padidng="0 0 28rpx 0" borderTop placeholder="请输入验证码" color="#141000"
 					v-model="bindForm.code">
 					<block slot="right">
 						<button v-show="!timer" @click="onGetCode" class="uni-btn get-code">
 							获取验证码
 						</button>
-			
+
 						<view v-show="timer" class="awaiting">
 							<text class="second-text">{{ awaitSecond }}s</text>
 							<text>后重新获取</text>
@@ -28,23 +23,17 @@
 					</block>
 				</tui-input>
 			</tui-form>
-			<view class="ReadingAgreement">
-				<view class="Agreement">
-					<view class="skip" @click="handleSkip">
-						<text>暂时跳过</text>
-						<tui-icon :size="24" name="toright"></tui-icon>
-					</view>
-				</view>
+
+
+			<button class="bind-btn uni-btn" :style="{ background: btnStatus ? '#FFC117' : '' }" @click="onBind">
+				确定
+			</button>
+
+			<view class="skip" @click="handleSkip">
+				<text>暂时跳过</text>
+				<tui-icon :size="24" name="toright"></tui-icon>
 			</view>
 		</view>
-		<tui-button
-			type="danger" width="650rpx" margin="0 auto"
-			height="82rpx"
-			style="margin-top: 60rpx;"
-			@click="onBind"
-		>
-			立即绑定
-		</tui-button>
 		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
@@ -228,120 +217,124 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-	box-sizing: border-box;
-	background-color: #FFFFFF;
-	.redText {
-		color: #CE2601;
-	}
+<style lang="less" scoped>
+view,
+text {
+	line-height: 1.5;
+}
 
-	.register {
-		margin-top: 30rpx;
+.login-container {
+	width: 100vw;
+	min-height: 100vh;
+	background: url('../../static/images/new-auth/bg.png') no-repeat;
+	background-size: cover;
+
+	.back-icon {
 		position: relative;
-		text-align: right;
-		padding-right: 40rpx;
+		top: 30upx;
+		left: 20upx;
+		width: 80upx;
+		height: 80upx;
+		z-index: 1000;
 	}
 
-	.PhoneAuthentication {
-		margin-top: 45rpx;
-		font-family: Source Han Sans CN;
-		width: 466rpx;
-		height: 100rpx;
-		display: flex;
-		flex-direction: column;
-		padding: 0px 30rpx;
-		gap: 8rpx;
+	.login-main-area {
+		padding: 90upx 80upx 0;
 
-		.textRL {
-			font-size: 44rpx;
-			font-weight: 600;
-			line-height: 60rpx;
-			color: #222229;
+		h1 {
+			color: #141000;
+			font-size: 64upx;
+			font-weight: 400;
+			margin-bottom: 120upx;
 		}
 
-		.textTips {
-			font-size: 24rpx;
-			font-weight: 350;
-			line-height: 32rpx;
-			color: #888889;
-		}
-	}
+		/deep/ .tui-input__wrap {
+			padding: 0 0 28upx 0 !important;
+			flex-direction: column;
+			align-items: flex-start;
+			background: transparent !important;
+			margin-bottom: 72upx !important;
 
-	.LoginForm {
-		margin-top: 50rpx;
-		width: 750rpx;
-
-		.iphoneNum-box {
-			/* 自动布局 */
-			margin: 0 auto;
-			height: 114rpx;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			gap: 32rpx;
-			// border-bottom: 2rpx solid #E6E6E8;
-			width: 690rpx;
-			color: #222229;
-
-			.labels {
-				font-size: 32rpx;
-				font-weight: normal;
-				line-height: 48rpx;
+			&::before {
+				display: none;
 			}
 		}
 
-		.ReadingAgreement {
-			width: 710rpx;
-			// margin: 0 auto;
-			margin-top: 33rpx;
-			margin-left: 60rpx;
-			gap: 32rpx;
-			display: flex;
-			align-items: center;
-			justify-content: flex-end;
-			font-size: 24rpx;
-
-			.Agreement {
-				display: flex;
-				align-items: center;
-				margin-right: 40rpx;
+		/deep/ .tui-input__label {
+			text {
+				margin-bottom: 12upx;
+				font-size: 24upx !important;
+				color: #b3b2ad !important;
 			}
+		}
+
+		/deep/ .uni-input-wrapper {
+			margin-top: 12upx;
+
+			input {
+				padding-bottom: 28upx !important;
+			}
+		}
+
+		/deep/ .tui-line__left::after {
+			left: 0 !important;
+		}
+
+		.reset-wrapper {
+			/deep/ .tui-input__wrap {
+				flex-wrap: wrap !important;
+				flex-direction: row !important;
+				margin-bottom: 10upx !important;
+
+				.tui-input__label {
+					flex: 0 0 100%;
+				}
+			}
+		}
+
+		.password-status {
+			width: 48upx;
+			height: 48upx;
+			flex-shrink: 0;
+			margin-top: 12upx;
 		}
 	}
 
-	.problem {
-		margin: 0 auto;
-		margin-top: 30rpx;
-		width: 654rpx;
-		display: flex;
-		justify-content: space-between;
-		font-size: 24rpx;
-		font-weight: 350;
-		line-height: 32rpx;
-		color: #878788;
+	.bind-btn {
+		width: 606upx;
+		height: 96upx;
+		border-radius: 100px;
+		margin: 80upx 0 40upx 0;
+		background-color: #ffe6a2;
+		color: #fff;
+		line-height: 96upx;
+		font-size: 32upx;
+		font-weight: 500;
+		transition: all 100ms;
+		opacity: 1;
+
+		&:active {
+			opacity: 0.3;
+		}
 	}
 
-	.getcode {
-		position: absolute;
-		right: 30rpx;
-		font-size: 32rpx;
-		font-weight: normal;
-		line-height: 48rpx;
-		text-align: right;
-		color: #CE2601;
+	.get-code {
+		color: #ffc117;
+		font-size: 28upx;
+		margin-top: 24upx;
 	}
 
-	.awaitCode {
-		position: absolute;
-		right: 30rpx;
-		font-size: 32rpx;
-		font-weight: normal;
-		line-height: 48rpx;
-		text-align: right;
-		color: #888889;
+	.awaiting {
+		font-size: 28upx;
+		color: #b3b2ad;
+		margin-top: 12upx;
+
+		.second-text {
+			color: #605d52;
+		}
 	}
 }
+
 .skip {
 	display: flex;
 	justify-content: flex-end;

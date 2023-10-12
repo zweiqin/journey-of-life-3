@@ -10,8 +10,21 @@
 import { getUrlCode } from '../../utils'
 // #endif
 export default {
+  props: {
+    agreementStatus: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     async handleWXLogin() {
+      if (!this.agreementStatus) {
+        this.ttoast({
+          type: 'info',
+          title: '请勾选服务协议'
+        });
+        return;
+      }
       // #ifdef H5
       const _this = this
       const appid = 'wxb19ccb829623be12'
