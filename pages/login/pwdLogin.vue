@@ -1,80 +1,60 @@
 <template>
-	<!-- 登录 -->
-	<!-- flex-items-plus 去除了这个类名 相当于flex的两个居中操作 alignItems justifyContent -->
-	<view class="container flex-column">
-		<view style="padding: 30upx 30upx 0;color: #000000;">
+  <!-- 登录 -->
+  <!-- flex-items-plus 去除了这个类名 相当于flex的两个居中操作 alignItems justifyContent -->
+  <view class="container flex-column">
+    <view style="padding: 30upx 30upx 0;color: #000000;">
       <image @click="goBack" src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;"></image>
-			<!-- <view class="cnmZWQ" @click="goBack">
+      <!-- <view class="cnmZWQ" @click="goBack">
 				<JHeader width="60" height="60" title=""></JHeader>
 			</view> -->
-		</view>
-<!-- 		<view class="register">
+    </view>
+    <!-- 		<view class="register">
 			注册
 		</view> -->
-		<view class="PhoneAuthentication">
-			<text class="textRL">账号密码登录</text>
-			<text class="textTips">请先注册账号再登录</text>
-		</view>
-		<view class="LoginForm">
-			<tui-form ref="form">
-				<view class="iphoneNum-box">
-					<!-- <text class="labels">手机号</text> -->
-					<tui-input
-					  v-model="loginForm.phone"
-					  label="手机号码"
-					  padidng="0 0 28rpx 0"
-					  border-top
-					  placeholder="请输入手机号码"
-					  color="#141000"
-					  :focus="focusMap[0]"
-					  :confirm-type="keybordEnterText"
-					  @confirm="handleClickConfirmType(0)"
-					></tui-input>
-					<!-- <input v-model="loginForm.phone" type="texts" placeholder="请输入手机号"> -->
-				</view>
-				<view class="iphoneNum-box">
-					<!-- <text class="labels">密码</text> -->
-					<tui-input
-					  v-model="loginForm.password"
-					  color="#141000"
-					  padidng="0 0 28rpx 0"
-					  label="密码"
-					  :focus="focusMap[1]"
-					  :confirm-type="keybordEnterText"
-					  class="reset-wrapper"
-					  :line-left="false"
-					  :type="isShowPassword ? 'text' : 'password'"
-					  placeholder="请输入密码"
-					  @confirm="handleClickConfirmType(1)"
-					></tui-input>
-					<!-- <input v-model="loginForm.password" type="texts" placeholder="请输入密码"> -->
-				</view>
-			</tui-form>
-			<view class="ReadingAgreement">
-				<radio
-					style="transform:scale(0.8)" color="#CE2601" :checked="agreementStatus"
-					@click="agreementStatus = !agreementStatus"
-				/>
-				<view class="Agreement">
-					我已阅读并同意<!-- <text class="redText">《用户服务协议》</text> -->
-					<TuanServe @op="agreementStatus = $event">
-					  <text style="color: #CE2601;">《团蜂用户协议》</text>
-					</TuanServe>
-				</view>
-			</view>
-		</view>
-		<tui-button
-			:disabled="!agreementStatus" type="danger" width="650rpx" margin="0 auto"
-			height="82rpx"
-			style="margin-top: 60rpx;" @click="onlogin"
-		>
-			立即登录
-		</tui-button>
-		<view class="problem">
-			<text>没有账号？<text class="redText" @click="go('/pages/login/login')">微信登录一键注册！！！</text></text>
-			<text>登录错误？</text>
-		</view>
-	</view>
+    <view class="PhoneAuthentication">
+      <text class="textRL">账号密码登录</text>
+      <text class="textTips">请先注册账号再登录</text>
+    </view>
+    <view class="LoginForm">
+      <tui-form ref="form" :showMessage="false">
+        <view class="iphoneNum-box">
+          <!-- <text class="labels">手机号</text> -->
+          <tui-input v-model="loginForm.phone" label="手机号码" padidng="0 0 28rpx 0" border-top placeholder="请输入手机号码"
+            color="#141000" :focus="focusMap[0]" :confirm-type="keybordEnterText"
+            @confirm="handleClickConfirmType(0)"></tui-input>
+          <!-- <input v-model="loginForm.phone" type="texts" placeholder="请输入手机号"> -->
+        </view>
+        <view class="iphoneNum-box">
+          <!-- <text class="labels">密码</text> -->
+          <tui-input v-model="loginForm.password" color="#141000" padidng="0 0 28rpx 0" label="密码" :focus="focusMap[1]"
+            :confirm-type="keybordEnterText" class="reset-wrapper" :line-left="false"
+            :type="isShowPassword ? 'text' : 'password'" placeholder="请输入密码"
+            @confirm="handleClickConfirmType(1)"></tui-input>
+          <!-- <input v-model="loginForm.password" type="texts" placeholder="请输入密码"> -->
+        </view>
+      </tui-form>
+      <view class="ReadingAgreement">
+        <radio style="transform:scale(0.8)" color="#CE2601" :checked="agreementStatus"
+          @click="agreementStatus = !agreementStatus" />
+        <view class="Agreement">
+          我已阅读并同意<!-- <text class="redText">《用户服务协议》</text> -->
+          <TuanServe @op="agreementStatus = $event">
+            <text style="color: #CE2601;">《团蜂用户协议》</text>
+          </TuanServe>
+        </view>
+      </view>
+    </view>
+    <tui-button :disabled="!agreementStatus" type="danger" width="650rpx" margin="0 auto" height="82rpx"
+      style="margin-top: 60rpx;" @click="onlogin">
+      立即登录
+    </tui-button>
+    <view class="problem">
+      <text>没有账号？<text class="redText" @click="go('/pages/login/login')">微信登录一键注册！！！</text></text>
+      <text>登录错误？</text>
+    </view>
+
+    <tui-toast ref="toast"></tui-toast>
+  </view>
 </template>
 
 <script>
@@ -122,16 +102,16 @@ export default {
     };
   },
   async onLoad(options) {
-	// 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
-	// #ifdef H5
-		// console.log('new OldTuanFeng',params)
-		// console.log(this.$store.state.app.isFromNewSystem)
-		if(options.from && options.from == 'NewSystem') {
-			// 如果来自于新系统则将全局的新系统判断改为true
-			this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
-		}
-	// #endif
-	// this.$store.state.app.isFromNewSystem
+    // 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
+    // #ifdef H5
+    // console.log('new OldTuanFeng',params)
+    // console.log(this.$store.state.app.isFromNewSystem)
+    if (options.from && options.from == 'NewSystem') {
+      // 如果来自于新系统则将全局的新系统判断改为true
+      this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
+    }
+    // #endif
+    // this.$store.state.app.isFromNewSystem
     if (options.miniProgram) {
       getApp().globalData.isInMiniprogram = true;
     }
@@ -203,13 +183,13 @@ export default {
           url: '/'
         });
       } else {
-		if(this.$store.state.app.isFromNewSystem) {
-			// 啥也不干，给爷干等着登录
-		}else {
-			uni.switchTab({
-			  url: '/'
-			});
-		}
+        if (this.$store.state.app.isFromNewSystem) {
+          // 啥也不干，给爷干等着登录
+        } else {
+          uni.switchTab({
+            url: '/'
+          });
+        }
       }
     }
   },
@@ -229,9 +209,9 @@ export default {
     }
   },
   methods: {
-	goBack() {
-		uni.navigateBack()
-	},
+    goBack() {
+      uni.navigateBack()
+    },
     // 登录
     async handlelogin() {
       if (!this.agreementStatus) {
@@ -321,7 +301,13 @@ export default {
           }
           // #endif
         })
-        .catch((errors) => {});
+        .catch((errors) => {
+          _this.ttoast({
+            type: 'fail',
+            title: errors.errorMsg,
+            content: '登录失败'
+          })
+        });
     },
 
     // 回退
@@ -401,8 +387,8 @@ export default {
             });
           }
         },
-        fail: () => {},
-        complete: () => {}
+        fail: () => { },
+        complete: () => { }
       });
     },
 
@@ -524,114 +510,115 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-	box-sizing: border-box;
-	background-color: #FFFFFF;
-	.redText {
-		color: #CE2601;
-	}
+  box-sizing: border-box;
+  background-color: #FFFFFF;
 
-	.register {
-		margin-top: 30rpx;
-		position: relative;
-		text-align: right;
-		padding-right: 40rpx;
-	}
+  .redText {
+    color: #CE2601;
+  }
 
-	.PhoneAuthentication {
-		margin-top: 45rpx;
-		font-family: Source Han Sans CN;
-		width: 466rpx;
-		height: 100rpx;
-		display: flex;
-		flex-direction: column;
-		padding: 0px 30rpx;
-		gap: 8rpx;
+  .register {
+    margin-top: 30rpx;
+    position: relative;
+    text-align: right;
+    padding-right: 40rpx;
+  }
 
-		.textRL {
-			font-size: 44rpx;
-			font-weight: 600;
-			line-height: 60rpx;
-			color: #222229;
-		}
+  .PhoneAuthentication {
+    margin-top: 45rpx;
+    font-family: Source Han Sans CN;
+    width: 466rpx;
+    height: 100rpx;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 30rpx;
+    gap: 8rpx;
 
-		.textTips {
-			font-size: 24rpx;
-			font-weight: 350;
-			line-height: 32rpx;
-			color: #888889;
-		}
-	}
+    .textRL {
+      font-size: 44rpx;
+      font-weight: 600;
+      line-height: 60rpx;
+      color: #222229;
+    }
 
-	.LoginForm {
-		margin-top: 50rpx;
-		width: 750rpx;
+    .textTips {
+      font-size: 24rpx;
+      font-weight: 350;
+      line-height: 32rpx;
+      color: #888889;
+    }
+  }
 
-		.iphoneNum-box {
-			/* 自动布局 */
-			margin: 0 auto;
-			height: 114rpx;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			gap: 32rpx;
-			// border-bottom: 2rpx solid #E6E6E8;
-			width: 690rpx;
-			color: #222229;
+  .LoginForm {
+    margin-top: 50rpx;
+    width: 750rpx;
 
-			.labels {
-				font-size: 32rpx;
-				font-weight: normal;
-				line-height: 48rpx;
-			}
-		}
+    .iphoneNum-box {
+      /* 自动布局 */
+      margin: 0 auto;
+      height: 114rpx;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 32rpx;
+      // border-bottom: 2rpx solid #E6E6E8;
+      width: 690rpx;
+      color: #222229;
 
-		.ReadingAgreement {
-			width: 710rpx;
-			// margin: 0 auto;
-			margin-top: 33rpx;
-			margin-left: 60rpx;
-			gap: 32rpx;
-			display: flex;
-			align-items: center;
-			font-size: 24rpx;
+      .labels {
+        font-size: 32rpx;
+        font-weight: normal;
+        line-height: 48rpx;
+      }
+    }
 
-			.Agreement {
-				display: flex;
-				margin-left: -25rpx;
-			}
-		}
-	}
+    .ReadingAgreement {
+      width: 710rpx;
+      // margin: 0 auto;
+      margin-top: 33rpx;
+      margin-left: 60rpx;
+      gap: 32rpx;
+      display: flex;
+      align-items: center;
+      font-size: 24rpx;
 
-	.problem {
-		margin: 0 auto;
-		margin-top: 30rpx;
-		width: 654rpx;
-		display: flex;
-		justify-content: space-between;
-		font-size: 24rpx;
-		font-weight: 350;
-		line-height: 32rpx;
-		color: #878788;
-	}
+      .Agreement {
+        display: flex;
+        margin-left: -25rpx;
+      }
+    }
+  }
 
-	.getcode {
-		position: absolute;
-		right: 30rpx;
-		font-size: 32rpx;
-		font-weight: normal;
-		line-height: 48rpx;
-		text-align: right;
-		color: #CE2601;
-	}
+  .problem {
+    margin: 0 auto;
+    margin-top: 30rpx;
+    width: 654rpx;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24rpx;
+    font-weight: 350;
+    line-height: 32rpx;
+    color: #878788;
+  }
 
-	.awaitCode {
-		position: absolute;
-		right: 30rpx;
-		font-size: 32rpx;
-		font-weight: normal;
-		line-height: 48rpx;
-		text-align: right;
-		color: #888889;
-	}
+  .getcode {
+    position: absolute;
+    right: 30rpx;
+    font-size: 32rpx;
+    font-weight: normal;
+    line-height: 48rpx;
+    text-align: right;
+    color: #CE2601;
+  }
+
+  .awaitCode {
+    position: absolute;
+    right: 30rpx;
+    font-size: 32rpx;
+    font-weight: normal;
+    line-height: 48rpx;
+    text-align: right;
+    color: #888889;
+  }
 }
 </style>
