@@ -599,6 +599,12 @@
         },
         {
           "path": "shop/delicacy/delicacy"
+        },
+        {
+          "path": "/merchant-settlement/authentication/index",
+          "style": {
+            "navigationBarTitleText": "个人信息验证"
+          }
         }
       ]
     },
