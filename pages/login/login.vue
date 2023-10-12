@@ -17,31 +17,16 @@
         <text class="shabizhongweiqing">数字化营销的领跑者</text>
       </view>
     </view>
-    <view
-      style="
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-top: 80upx;
-      "
-    >
+    <view style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 80upx">
       <view style="text-align: center">
-        <image
-          style="width: 118upx; height: 98upx; margin-top: 140rpx"
-          src="../../static/images/icon/we-chat.png"
-          mode=""
-        />
+        <image style="width: 118upx; height: 98upx; margin-top: 140rpx" src="../../static/images/icon/we-chat.png" mode="" />
         <TuanWXLogin @login="handleWXLoginAfter">
-          <view class="CaoNiMaZhongWeiQing">
-            微信一键登录
-          </view>
+          <view class="CaoNiMaZhongWeiQing"> 微信一键登录 </view>
           <!-- <view class="item">
             <image src="../../static/images/new-auth/wx.png" mode="" />
             <text>微信登录</text>
           </view> -->
         </TuanWXLogin>
-
       </view>
     </view>
     <view class="otherLoginButton">
@@ -59,33 +44,17 @@
             >注册</view
           >
         </view> -->
-        <view
-          style="display: flex; flex-direction: column; align-items: center"
-		  @click="go('/pages/login/pwdLogin')"
-        >
+        <view style="display: flex; flex-direction: column; align-items: center" @click="go('/pages/login/pwdLogin')">
           <view class="DiaoNiMaZhongWeiQing">
-            <image
-              class="iconImg"
-              src="../../static/images/icon/mima.png"
-            ></image>
+            <image class="iconImg" src="../../static/images/icon/mima.png"></image>
           </view>
-          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
-            >密码登录</view
-          >
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff">密码登录</view>
         </view>
-        <view
-          style="display: flex; flex-direction: column; align-items: center"
-		  @click="go('/pages/login/login-message')"
-        >
+        <view style="display: flex; flex-direction: column; align-items: center" @click="go('/pages/login/login-message')">
           <view class="DiaoNiMaZhongWeiQing">
-            <image
-              class="iconImg"
-              src="../../static/images/icon/duanxindenglu.png"
-            ></image>
+            <image class="iconImg" src="../../static/images/icon/duanxindenglu.png"></image>
           </view>
-          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff"
-            >短信登录</view
-          >
+          <view style="margin-top: 12upx; font-size: 26upx; color: #ffffff">短信登录</view>
         </view>
       </view>
     </view>
@@ -104,26 +73,13 @@
 </template>
 
 <script>
-import { sf } from "../../config";
-import loginRule from "./rules";
-import { throttle } from "../../utils";
-import {
-  NEW_BIND_ID,
-  USER_ID,
-  USER_INFO,
-  NEW_BIND_ACTIVITY_ID,
-  NEW_BIND_SERVICE_ID,
-  NEW_BIND_SERVICE_URL,
-  SF_INVITE_CODE,
-  GROUP_INVITE_CODE,
-} from "../../constant";
-import { bindLastUserApi, checkBindApi } from "../../api/user";
-import { CHANGE_IS_IN_MINIPROGRAM } from "../../store/modules/type";
-const tabbarList = [
-  "/pages/user/user",
-  "/pages/community-center/community-center",
-  "/pages/index/index",
-];
+import { sf } from '../../config';
+import loginRule from './rules';
+import { throttle } from '../../utils';
+import { NEW_BIND_ID, USER_ID, USER_INFO, NEW_BIND_ACTIVITY_ID, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL, SF_INVITE_CODE, GROUP_INVITE_CODE } from '../../constant';
+import { bindLastUserApi, checkBindApi } from '../../api/user';
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
+const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
 
 export default {
   data() {
@@ -131,26 +87,26 @@ export default {
       timer: null,
       agreementStatus: false, // 智障uniapp 设计的这么傻逼，竟然不能用布尔值控制是否选中
       loginForm: {
-        phone: "",
-        password: "",
+        phone: '',
+        password: ''
       },
       to: null,
       onlogin: null,
       isShowPassword: false,
       focusMap: {
         0: false,
-        1: false,
+        1: false
       },
-      redirect: "",
+      redirect: '',
       isBind: false,
       bindId: null,
       userId: null,
-      partnerCode: "",
-      partnerCode2: "",
+      partnerCode: '',
+      partnerCode2: ''
     };
   },
   methods: {
-	fuckYouZWQ(value) {
+    fuckYouZWQ(value) {
       this.agreementStatus = !this.agreementStatus;
     },
     // 登录
@@ -429,7 +385,7 @@ export default {
       } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
         uni.redirectTo({
           url: '/user/sever/activityCenter/index'
-        })
+        });
       } else {
         uni.switchTab({
           url: '/pages/community-center/community-centerr'
@@ -469,7 +425,7 @@ export default {
   font-size: 38rpx;
   font-weight: 600;
   line-height: 80rpx;
-  font-feature-settings: "kern" on;
+  font-feature-settings: 'kern' on;
   color: #ea5b1d !important;
 }
 .DiaoNiMaZhongWeiQing {

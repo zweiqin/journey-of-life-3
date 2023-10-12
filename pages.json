@@ -390,6 +390,12 @@
       "root": "community-center",
       "pages": [
         {
+          "path": "merchant-settlement/login/login",
+          "style": {
+            "navigationBarTitleText": "商家入驻"
+          }
+        },
+        {
           "path": "shop/shop",
           "style": {
             "navigationBarTitleText": "附近商家"
