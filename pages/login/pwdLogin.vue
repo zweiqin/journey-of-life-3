@@ -2,14 +2,17 @@
 	<!-- 登录 -->
 	<!-- flex-items-plus 去除了这个类名 相当于flex的两个居中操作 alignItems justifyContent -->
 	<view class="container flex-column">
-		<view style="padding: 30upx 20upx 0;color: #000000;">
-			<image @click="goBack" src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;"></image>
+		<view style="padding: 30upx 30upx 0;color: #000000;">
+      <image @click="goBack" src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;"></image>
+			<!-- <view class="cnmZWQ" @click="goBack">
+				<JHeader width="60" height="60" title=""></JHeader>
+			</view> -->
 		</view>
 <!-- 		<view class="register">
 			注册
 		</view> -->
 		<view class="PhoneAuthentication">
-			<text class="textRL">手机验证码登录</text>
+			<text class="textRL">账号密码登录</text>
 			<text class="textTips">请先注册账号再登录</text>
 		</view>
 		<view class="LoginForm">
@@ -30,26 +33,21 @@
 					<!-- <input v-model="loginForm.phone" type="texts" placeholder="请输入手机号"> -->
 				</view>
 				<view class="iphoneNum-box">
+					<!-- <text class="labels">密码</text> -->
 					<tui-input
-					  class="reset-wrapper"
-					  label="验证码"
-					  padidng="0 0 28rpx 0"
-					  borderTop
-					  placeholder="请输入验证码"
+					  v-model="loginForm.password"
 					  color="#141000"
+					  padidng="0 0 28rpx 0"
+					  label="密码"
 					  :focus="focusMap[1]"
-					  @confirm="handleClickConfirmType(1)"
 					  :confirm-type="keybordEnterText"
-					  v-model="loginForm.code"
-					>
-					  <block slot="right">
-					    <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">获取验证码</button>
-					    <view v-show="timer" class="awaiting">
-					      <text class="second-text">{{ awaitSecond }}s</text>
-					      <text>后重新获取</text>
-					    </view>
-					  </block>
-					</tui-input>
+					  class="reset-wrapper"
+					  :line-left="false"
+					  :type="isShowPassword ? 'text' : 'password'"
+					  placeholder="请输入密码"
+					  @confirm="handleClickConfirmType(1)"
+					></tui-input>
+					<!-- <input v-model="loginForm.password" type="texts" placeholder="请输入密码"> -->
 				</view>
 			</tui-form>
 			<view class="ReadingAgreement">
@@ -76,13 +74,12 @@
 			<text>没有账号？<text class="redText" @click="go('/pages/login/login')">微信登录一键注册！！！</text></text>
 			<text>登录错误？</text>
 		</view>
-		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
 <script>
 import { sf } from '../../config';
-import { verificationCodeRule } from './rules';
+import loginRule from './rules';
 import { throttle } from '../../utils';
 import {
   NEW_BIND_ID,
@@ -95,24 +92,23 @@ import {
   GROUP_INVITE_CODE
 } from '../../constant';
 import { bindLastUserApi, checkBindApi } from '../../api/user';
-import { getCodeApi } from '../../api/auth';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
-
+import { redireToNewShop } from '@/utils/tool'
 const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
 
 export default {
+  name: 'Login',
   data() {
     return {
       timer: null,
-      awaitSecond: 60,
       agreementStatus: false,
       loginForm: {
         phone: '',
-        code: ''
+        password: ''
       },
       to: null,
       onlogin: null,
-      onGetCode: null,
+      isShowPassword: false,
       focusMap: {
         0: false,
         1: false
@@ -122,25 +118,43 @@ export default {
       isBind: false,
       bindId: null,
       userId: null,
-      partnerCode: null,
-      partnerCode2: null
+      partnerCode: '',
+      partnerCode2: ''
     };
   },
-  onShow() {
-    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
-    this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null;
-  },
   async onLoad(options) {
+	// 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
+	// #ifdef H5
+		// console.log('new OldTuanFeng',params)
+		// console.log(this.$store.state.app.isFromNewSystem)
+		if(options.from && options.from == 'NewSystem') {
+			// 如果来自于新系统则将全局的新系统判断改为true
+			this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
+		}
+	// #endif
+	// this.$store.state.app.isFromNewSystem
     if (options.miniProgram) {
       getApp().globalData.isInMiniprogram = true;
     }
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
     this.onlogin = throttle(this.handlelogin, 1000);
-    this.onGetCode = throttle(this.handleGetCode, 1000);
-
     this.redirect = options.to;
 
     this.bindId = options.code;
+    this.partnerCode = options.partnerCode;
+    this.partnerCode2 = options.partnerCode2;
+    if (this.partnerCode) {
+      getApp().globalData.isShowFollowOfficialAccount = true;
+      // console.log('你没得');
+    }
+
+    if (this.partnerCode) {
+      uni.setStorageSync(SF_INVITE_CODE, options.partnerCode);
+    }
+
+    if (this.partnerCode2) {
+      uni.setStorageSync(GROUP_INVITE_CODE, options.partnerCode2);
+    }
 
     if (this.redirect && this.redirect.indexOf('?') > -1) {
       this.bindId = this.redirect;
@@ -157,7 +171,9 @@ export default {
       this.bindId = uni.getStorageSync(NEW_BIND_ID);
 
       try {
-        await this.checkBind({ userId: userId });
+        await this.checkBind({
+          userId
+        });
       } catch (error) {
         await this.binding(userId, () => {
           uni.switchTab({
@@ -169,6 +185,7 @@ export default {
     // #endif
 
     // return
+
     if (userId && userInfo.userId) {
       if (this.bindId) {
         await this.binding(userId, () => {
@@ -186,59 +203,37 @@ export default {
         uni.switchTab({
           url: '/'
         });
-        return;
       } else {
-        uni.switchTab({
-          url: '/'
-        });
+		if(this.$store.state.app.isFromNewSystem) {
+			// 啥也不干，给爷干等着登录
+		}else {
+			uni.switchTab({
+			  url: '/'
+			});
+		}
       }
     }
   },
+
+  onShow() {
+    this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
+    this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null;
+  },
+
+  computed: {
+    btnStatus() {
+      return this.agreementStatus && this.loginForm.password && this.loginForm.phone;
+    },
+
+    keybordEnterText() {
+      return this.agreementStatus && this.loginForm.password && this.loginForm.phone ? 'done' : 'next';
+    }
+  },
   methods: {
-    goBack() {
-      uni.navigateBack()
-    },
-    // 获取验证码
-    async handleGetCode() {
-      if (this.loginForm.phone.length !== 11) {
-        this.ttoast({
-          type: 'fail',
-          title: '请输入合法的手机号码'
-        });
-        return;
-      }
-
-      uni.showLoading({
-        title: '加载中...'
-      });
-
-      try {
-        await getCodeApi({
-          phone: this.loginForm.phone,
-          flag: 2
-        });
-
-        this.timer = setInterval(() => {
-          this.awaitSecond--;
-
-          if (this.awaitSecond === 0) {
-            this.awaitSecond = 60;
-            clearInterval(this.timer);
-            this.timer = null;
-          }
-        }, 1000);
-      } catch (error) {
-        console.log(error);
-        this.ttoast({
-          type: 'fail',
-          title: '验证码发送失败',
-          content: '请稍后重试'
-        });
-      } finally {
-        uni.hideLoading();
-      }
-    },
-    // 点击登录
+	goBack() {
+		uni.navigateBack()
+	},
+    // 登录
     async handlelogin() {
       if (!this.agreementStatus) {
         this.ttoast({
@@ -249,18 +244,21 @@ export default {
       }
       const _this = this;
       this.$refs.form
-        .validate(this.loginForm, verificationCodeRule)
+        .validate(this.loginForm, loginRule)
         .then(async () => {
-          const res = await this.$store.dispatch('auth/codeLoginAction', {
-            phone: _this.loginForm.phone,
-            code: _this.loginForm.code
+          const res = await this.$store.dispatch('auth/loginAction', {
+            username: _this.loginForm.phone,
+            password: _this.loginForm.password
           });
-		  debugger
-		  console.log(res)
-		  console.log(_this)
+		  // #ifdef H5
+		  if(this.$store.state.app.isFromNewSystem && res) {
+			  redireToNewShop(`pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`)
+		  		// window.location.href = `https://www.tuanfengkeji.cn/test_tfshop_app_web/#/pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`
+		  // window.location.href = `http://localhost:8080/test_tfshop_app_web/#/pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`
+		  }
+		  // #endif
           // 是否是师傅邀请码
           if (_this.partnerCode) {
-			   console.log('是否是师傅邀请码')
             await _this.handlePartnerBind(res.userInfo.userId);
             uni.switchTab({
               url: '/'
@@ -268,9 +266,8 @@ export default {
             return;
           }
 
-          //  是否存在团长推广码
+          // 是否存在团长推广码
           if (_this.partnerCode2) {
-			    console.log('是否存在团长推广码')
             await _this.handleGroupBind(res.userInfo.userId);
             uni.switchTab({
               url: '/'
@@ -281,10 +278,10 @@ export default {
           // #ifdef H5
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
             try {
-				console.log('error, not rediret0')
-              await _this.checkBind({ userId: res.userInfo.userId });
+              await _this.checkBind({
+                userId: res.userInfo.userId
+              });
             } catch (error) {
-				console.log('error, not rediret1')
               _this.bindId = uni.getStorageSync(NEW_BIND_ID);
               await _this.binding(res.userInfo.userId, () => {
                 uni.switchTab({
@@ -302,13 +299,9 @@ export default {
                 url: '/'
               });
             });
-			console.log('error, not rediret2')
-            return;
           } else {
             // #endif
             if (this.redirect) {
-              console.log('进来了', this.redirect)
-			  console.log('error, not rediret3')
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
                   url: _this.redirect
@@ -319,23 +312,24 @@ export default {
                 });
               }
             } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-				console.log('error, not rediret4')
               uni.redirectTo({
                 url: '/user/sever/activityCenter/index'
               });
+            } else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
+              uni.redirectTo({
+                url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
+              });
             } else {
-				console.log('error, not rediret5')
               uni.switchTab({
                 url: '/pages/community-center/community-centerr'
               });
             }
+
             // #ifdef H5
           }
           // #endif
         })
-        .catch((errors) => {
-			console.log(errors)
-		});
+        .catch((errors) => {});
     },
 
     // 回退
@@ -461,16 +455,12 @@ export default {
 
     // 微信登陆后续
     async handleWXLoginAfter(res) {
-      // // #ifdef H5
-      // window.location.href =
-      //   window.location.origin + window.location.pathname + window.location.hash
-      // // #endif
       const _this = this;
       // #ifdef H5
       // 判断是否已经绑定了手机号
       if (res.userInfo.phone === '') {
         uni.navigateTo({
-          url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid + '&userId=' + res.userInfo.userId
+          url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
         });
 
         return;
@@ -496,7 +486,9 @@ export default {
 
       if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
         try {
-          await _this.checkBind({ userId: res.userInfo.userId });
+          await _this.checkBind({
+            userId: res.userInfo.userId
+          });
         } catch (error) {
           _this.bindId = uni.getStorageSync(NEW_BIND_ID);
           await _this.binding(res.userInfo.userId, () => {
@@ -506,51 +498,33 @@ export default {
           });
         }
       }
-      // #endif
-
-      // #ifdef H5
       if (_this.bindId) {
         await _this.binding(res.userInfo.userId, () => {
           uni.switchTab({
             url: '/'
           });
         });
-        return;
-      } else {
-        // #endif
-
-        if (this.redirect) {
-          // console.log('进来了', this.redirect)
-          if (tabbarList.includes(_this.redirect)) {
-            uni.switchTab({
-              url: _this.redirect
-            });
-          } else {
-            uni.redirectTo({
-              url: _this.redirect
-            });
-          }
-        } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-          uni.redirectTo({
-            url: '/user/sever/activityCenter/index'
-          })
-        } else {
+      } else if (this.redirect) {
+        // console.log('进来了', this.redirect)
+        if (tabbarList.includes(_this.redirect)) {
           uni.switchTab({
-            url: '/pages/community-center/community-centerr'
+            url: _this.redirect
+          });
+        } else {
+          uni.redirectTo({
+            url: _this.redirect
           });
         }
-        // #ifdef H5
+      } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
+        uni.redirectTo({
+          url: '/user/sever/activityCenter/index'
+        })
+      } else {
+        uni.switchTab({
+          url: '/pages/community-center/community-centerr'
+        });
       }
       // #endif
-    }
-  },
-  computed: {
-    btnStatus() {
-      return this.agreementStatus && this.loginForm.code && this.loginForm.phone;
-    },
-
-    keybordEnterText() {
-      return this.agreementStatus && this.loginForm.phone ? 'done' : 'next';
     }
   }
 };

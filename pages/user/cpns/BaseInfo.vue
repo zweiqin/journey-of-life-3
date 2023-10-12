@@ -16,14 +16,17 @@
         <view class="user-info-detail" v-else>
           <view class="user-nack-name">{{ $store.getters.userInfo.nickName }}</view>
           <view class="tags">
-            <view class="tag">
-              <view class="vip-level">{{ $store.getters.userInfo.userLevelDesc || '会员' }}</view>
-            </view>
-
             <view class="tag" v-if="$store.getters.userInfo.userId == 987"> TF001 </view>
-            <view class="tag" v-else>
-              {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
+            <view class="tag BuLinBuLinDe" v-else>
+              <image style="width: 24rpx;height: 24rpx;margin: 0 5rpx;" src="@/static/images/user/hrr.png"></image>
+                {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
             </view>
+              <view class="vip-level">
+                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '会员'" src="@/static/images/user/huiyuan.png"></image>
+                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '团长'" src="@/static/images/user/tuanzhang.png"></image>
+                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '合伙人'" src="@/static/images/user/hehuoren.png"></image>
+                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '股东'" src="@/static/images/user/gudong.png"></image>
+              </view>
           </view>
         </view>
 
@@ -58,13 +61,6 @@
         </view>
         <view class="account-title">优惠劵</view>
       </view>
-
-      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/voucher/voucher' })">
-        <view class="account-number">
-          {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }}
-        </view>
-        <view class="account-title">代金劵</view>
-      </view>
     </view>
     <!-- 家庭小卫士 -->
     <view class="goldman" @click="handleToOpen">
@@ -91,7 +87,6 @@
 import { userIsPurchaseApi } from '../../../api/user';
 import { USER_ID } from 'constant';
 import showModalMixin from 'mixin/showModal';
-import {convertToDecimal} from '../../../utils'
 export default {
   props: {
     data: {
@@ -110,7 +105,6 @@ export default {
     this.userIsPurchase();
   },
   methods: {
-    convertToDecimal,
     // go() {
     // 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
     // }
@@ -316,30 +310,37 @@ text {
     .tags {
       display: flex;
       align-items: center;
-      padding-left: 24upx;
+      /* padding-left: 24upx; */
       box-sizing: border-box;
       margin-top: 12upx;
       flex-wrap: wrap;
 
       .tag {
+        box-sizing: border-box;
+        padding: 4rpx 6rpx;
         display: flex;
         align-items: center;
         font-size: 24upx;
         color: #c4542f;
         height: 36upx;
         background: #f7d1c2;
+        margin-right: 15rpx;
 
         &:nth-child(1) {
-          white-space: nowrap;
+          border-radius: 8rpx;
+          opacity: 1;
+          background: linear-gradient(90deg, #FFFFFF 0%, #F9D090 100%);
+          border: 1px solid #B4560A;
+          /* white-space: nowrap;
           position: relative;
           padding-left: 22upx;
           padding-right: 20upx;
           box-sizing: border-box;
           border: 4upx solid #ff7a4e;
           border-radius: 0px 12upx 12upx 0px;
-          margin-right: 16upx;
+          margin-right: 16upx; */
 
-          &::after {
+          /* &::after {
             content: '';
             width: 40upx;
             height: 40upx;
@@ -348,7 +349,7 @@ text {
             background: url('../../../static/images/new-user/star.png') no-repeat;
             background-size: cover;
             left: -24upx;
-          }
+          } */
         }
 
         &:nth-child(2) {
