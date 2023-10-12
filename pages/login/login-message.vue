@@ -255,12 +255,12 @@ export default {
             phone: _this.loginForm.phone,
             code: _this.loginForm.code
           });
-		  debugger
-		  console.log(res)
-		  console.log(_this)
+		  // debugger
+		  // console.log(res)
+		  // console.log(_this)
           // 是否是师傅邀请码
           if (_this.partnerCode) {
-			   console.log('是否是师傅邀请码')
+			  //  console.log('是否是师傅邀请码')
             await _this.handlePartnerBind(res.userInfo.userId);
             uni.switchTab({
               url: '/'
@@ -270,7 +270,6 @@ export default {
 
           //  是否存在团长推广码
           if (_this.partnerCode2) {
-			    console.log('是否存在团长推广码')
             await _this.handleGroupBind(res.userInfo.userId);
             uni.switchTab({
               url: '/'
@@ -281,10 +280,8 @@ export default {
           // #ifdef H5
           if (uni.getStorageSync(NEW_BIND_ID) && !_this.bindId) {
             try {
-				console.log('error, not rediret0')
               await _this.checkBind({ userId: res.userInfo.userId });
             } catch (error) {
-				console.log('error, not rediret1')
               _this.bindId = uni.getStorageSync(NEW_BIND_ID);
               await _this.binding(res.userInfo.userId, () => {
                 uni.switchTab({
@@ -302,13 +299,10 @@ export default {
                 url: '/'
               });
             });
-			console.log('error, not rediret2')
             return;
           } else {
             // #endif
             if (this.redirect) {
-              console.log('进来了', this.redirect)
-			  console.log('error, not rediret3')
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
                   url: _this.redirect
@@ -319,12 +313,10 @@ export default {
                 });
               }
             } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-				console.log('error, not rediret4')
               uni.redirectTo({
                 url: '/user/sever/activityCenter/index'
               });
             } else {
-				console.log('error, not rediret5')
               uni.switchTab({
                 url: '/pages/community-center/community-centerr'
               });

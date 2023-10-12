@@ -1,3 +1,11 @@
+<!--
+ * @Author: aliyun0758874076 2300202994@qq.com
+ * @Date: 2023-10-12 09:11:06
+ * @LastEditors: aliyun0758874076 2300202994@qq.com
+ * @LastEditTime: 2023-10-12 09:40:33
+ * @FilePath: \tuan\pages\login\login.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <view class="container">
     <view style="padding: 68upx 0 0 56upx; color: #ffffff">
