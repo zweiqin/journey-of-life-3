@@ -93,7 +93,6 @@ import {
 } from '../../constant';
 import { bindLastUserApi, checkBindApi } from '../../api/user';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
-import { redireToNewShop } from '@/utils/tool'
 const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
 
 export default {
@@ -250,13 +249,6 @@ export default {
             username: _this.loginForm.phone,
             password: _this.loginForm.password
           });
-		  // #ifdef H5
-		  if(this.$store.state.app.isFromNewSystem && res) {
-			  redireToNewShop(`pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`)
-		  		// window.location.href = `https://www.tuanfengkeji.cn/test_tfshop_app_web/#/pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`
-		  // window.location.href = `http://localhost:8080/test_tfshop_app_web/#/pages_category_page2/userModule/accountLogin?form=${JSON.stringify(res)}`
-		  }
-		  // #endif
           // 是否是师傅邀请码
           if (_this.partnerCode) {
             await _this.handlePartnerBind(res.userInfo.userId);
