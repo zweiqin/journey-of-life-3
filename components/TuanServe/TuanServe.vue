@@ -3044,7 +3044,6 @@ export default {
     handleShowServe() {
       this.servePopupVisible = true
     },
-
     handleClickServe(tag) {
       this.servePopupVisible = false
       this.$emit('op', tag)
