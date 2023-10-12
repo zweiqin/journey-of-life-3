@@ -7,8 +7,8 @@
       <view class="navs">
         <view class="nav-wrapper">
           <view class="nav-item" @click="handleViewDetail(item)" v-for="item in homeTopNavs" :key="item.label">
-            <image class="category-icon" :src="item.icon"></image>
-            <view class="category-name">{{ item.label }}</view>
+            <image class="category-icon" :src="item.iconUrl"></image>
+            <view class="category-name">{{ item.name }}</view>
           </view>
         </view>
       </view>
@@ -22,7 +22,7 @@
             <HotPane :goodsData="ad.hot" subTitle="网红爆款">
               <block slot="title">
                 <view class="hot">
-                  <text class=" text color-text">热销</text>
+                  <text class="text color-text">热销</text>
                   <text class="text">爆款</text>
                 </view>
               </block>
@@ -44,8 +44,7 @@
         </view>
 
         <view class="goods-list">
-          <NewGoodsPane v-for="item in $data._list.slice(4)" :goods="item" :key="item.id">
-          </NewGoodsPane>
+          <NewGoodsPane v-for="item in $data._list.slice(4)" :goods="item" :key="item.id"> </NewGoodsPane>
           <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
         </view>
       </view>
@@ -56,15 +55,16 @@
 </template>
 
 <script>
-import PageHeader from './cpns/PageHeader.vue'
-import VoucherPane from './cpns/VoucherPane.vue'
-import HotPane from './cpns/HotPane.vue'
-import NewGoodsPane from './cpns/NewGoodsPane.vue'
+import PageHeader from './cpns/PageHeader.vue';
+import VoucherPane from './cpns/VoucherPane.vue';
+import HotPane from './cpns/HotPane.vue';
+import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
-import loadMore from '../../mixin/loadMore'
+import loadMore from '../../mixin/loadMore';
 import { goodsListApi } from '../../api/goods';
+import { getGoodsTypesApi } from '../../api/home';
 
-import { homeTopNavs } from './config'
+import { homeTopNavs } from './config';
 export default {
   components: {
     PageHeader,
@@ -73,48 +73,77 @@ export default {
     NewGoodsPane
   },
 
-  mixins: [loadMore({
-    api: goodsListApi,
-    mapKey: { totalPages: "totalPages", list: "goodsList", size: "size" },
-    dataFn(goodsArr) {
-      if (!this.ad.hot.length) {
-        this.ad.hot.push(...goodsArr.slice(0, 2))
-        this.ad.good.push(...goodsArr.slice(2, 4))
+  mixins: [
+    loadMore({
+      api: goodsListApi,
+      mapKey: { totalPages: 'totalPages', list: 'goodsList', size: 'size' },
+      dataFn(goodsArr) {
+        if (!this.ad.hot.length) {
+          this.ad.hot.push(...goodsArr.slice(0, 2));
+          this.ad.good.push(...goodsArr.slice(2, 4));
+        }
+        return goodsArr;
       }
-      return goodsArr
-    }
-  })],
+    })
+  ],
 
   data() {
     return {
-      homeTopNavs: Object.freeze(homeTopNavs),
+      homeTopNavs: homeTopNavs,
       ad: {
         hot: [],
         good: []
-      }
-    }
+      },
+      categories: []
+    };
   },
 
   onLoad() {
-    this._loadData()
+    this._loadData();
+    this.getCategoryList();
   },
 
   methods: {
     handleViewDetail(navInfo) {
       if (navInfo.url) {
-        uni.navigateTo({ url: navInfo.url })
+        uni.navigateTo({ url: navInfo.url });
+      } else if (navInfo.id) {
+        this.$data._query.categoryId = navInfo.id;
+        this.$data._list = [];
+        this.ad.hot = [];
+        this.ad.good = [];
+        this._loadData();
       } else {
-        this.empty()
+        this.empty();
+      }
+    },
+
+    async getCategoryList() {
+      const res = await getGoodsTypesApi({
+        goodsType: 1
+      });
+
+      if (res.errno === 0) {
+        const categories = res.data.categoryList.filter((item) => item.desc === '搜家具').slice(0, 7);
+        this.categories = categories;
+        this.categories.push({
+          iconUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png',
+          id: null,
+          url: '/pages/furniture/furniture?id=null',
+          name: '更多'
+        });
+
+        this.homeTopNavs.length < 8 && this.homeTopNavs.push(...this.categories);
       }
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>
 .shop-page-conatiner {
   min-height: 100vh;
-  background: linear-gradient(95deg, #EBEBF5 47%, #F9E9F3 96%);
+  background: linear-gradient(95deg, #ebebf5 47%, #f9e9f3 96%);
 
   .main-area {
     width: 100vw;
@@ -125,8 +154,10 @@ export default {
 
     .navs {
       border-radius: 30upx 30upx 0 0;
-      background: linear-gradient(180deg, #FFFFFF 0%, #EFF3F6 100%);
-      height: 396upx;
+      // background: linear-gradient(180deg, #ffffff 0%, #eff3f6 100%);
+      background-color: #fff;
+      // height: 396upx;
+      padding-bottom: 30upx;
 
       .nav-wrapper {
         padding: 13upx 30upx 0;
@@ -135,7 +166,6 @@ export default {
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-
 
         .nav-item {
           width: 114upx;
@@ -161,15 +191,13 @@ export default {
           }
         }
       }
-
-
     }
 
     .rest-area {
       padding: 0 28upx;
       box-sizing: border-box;
-      background-color: #EFF3F6;
-
+      // background-color: #eff3f6;
+      background-color: #fff;
 
       .package-wrapper {
         height: 514upx;
@@ -192,9 +220,8 @@ export default {
             font-weight: 500;
 
             .color-text {
-              color: #EF530E;
+              color: #ef530e;
             }
-
           }
         }
       }
@@ -211,7 +238,6 @@ export default {
           font-size: 32upx;
           font-weight: 700;
           margin-right: 6upx;
-
         }
       }
 
@@ -221,11 +247,9 @@ export default {
         justify-content: space-between;
         flex-wrap: wrap;
         padding-bottom: 140upx;
-        background-color: #EFF3F6;
+        background-color: #eff3f6;
       }
     }
-
-
   }
 }
 </style>
