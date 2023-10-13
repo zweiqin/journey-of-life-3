@@ -53,7 +53,7 @@
 
       <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
         <view class="account-number">
-          {{ 399 }}
+          {{ isBuy ? 1 : 0 }}
         </view>
         <view class="account-title">家庭小卫士</view>
       </view>

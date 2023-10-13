@@ -52,11 +52,7 @@
     <TuanWxShare ref="tuanWxShareRef" @click="handleInitShare"></TuanWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile
-      @close="handleResetGlobal"
-      @success="this.$store.dispatch('auth/refrshUserInfo')"
-      ref="tuanWXLoginBindMobileRef"
-    ></TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile @close="handleResetGlobal" @success="handleBindPhoneSuccess" ref="tuanWXLoginBindMobileRef"></TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
@@ -254,6 +250,10 @@ export default {
           uni.stopPullDownRefresh();
         }, 2000);
       }
+    },
+
+    handleBindPhoneSuccess() {
+      this.$store.dispatch('auth/refrshUserInfo');
     }
   },
 

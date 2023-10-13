@@ -28,14 +28,14 @@
 					</block>
 				</tui-input>
 			</tui-form>
-			<view class="ReadingAgreement">
+			<!-- <view class="ReadingAgreement">
 				<view class="Agreement">
 					<view class="skip" @click="handleSkip">
 						<text>暂时跳过</text>
 						<tui-icon :size="24" name="toright"></tui-icon>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<tui-button
 			type="danger" width="650rpx" margin="0 auto"

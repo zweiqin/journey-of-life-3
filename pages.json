@@ -611,6 +611,12 @@
           "style": {
             "navigationBarTitleText": "个人信息验证"
           }
+        },
+        {
+          "path": "merchant-settlement/login/choose-type",
+          "style": {
+            "navigationBarTitleText": "选择门店标签"
+          }
         }
       ]
     },
