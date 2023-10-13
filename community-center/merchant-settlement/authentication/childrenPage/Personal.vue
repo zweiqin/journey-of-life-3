@@ -31,15 +31,19 @@
 
 <script>
   import PersonalImg from '../componrnts/PersonalImg.vue'
+  import BasicInformation from '../componrnts/BasicInformation.vue'
+  import BusinessInformation from '../componrnts/BusinessInformation.vue'
   export default {
     name: 'Personal',
     components: {
-      PersonalImg
+      PersonalImg,
+      BasicInformation,
+      BusinessInformation
     },
     data() {
       return {
         formIndex: 0,
-        currentTabComponent: 'PersonalImg',
+        currentTabComponent: 'BusinessInformation',
         StepsStatic: [{
           name: '身份认证',
           active: true,
@@ -103,11 +107,11 @@
   box-sizing: border-box;
   width: 100vw;
   min-height: 100vh;
-  padding-top: 88rpx;
+  padding-top: 268rpx;
   background: linear-gradient(180deg, #F8FCFF 0%, #EDF3FF 60%, #E6E7FB 100%);
   overflow-y: auto;
   .PageGHeader {
-    z-index: 99999;
+    z-index: 1;
     position: fixed;
     top: 0;
     left: 0;
@@ -132,11 +136,16 @@
     }
   }
   .FormSteps {
+    z-index: 1;
+    position: fixed;
+    top: 88rpx;
+    left: 0;
     width: 100vw;
     height: 180rpx;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background-color: #F8FCFF;
     .FormStepsItem {
       position: relative;
       width: 100rpx;

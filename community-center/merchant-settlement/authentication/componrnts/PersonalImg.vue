@@ -19,7 +19,7 @@
       <view style="color: #888889;font-size: 24rpx;">
         拍摄要求
       </view>
-      <view class="cnmbZHF">
+      <view class="wdnmd">
         
       </view>
   </view>
@@ -92,7 +92,7 @@ export default {
     width: 690rpx;
     height: 88rpx;
   }
-  .cnmbZHF {
+  .wdnmd {
     width: 690rpx;
     height: 216rpx;
     padding-bottom: 40rpx;

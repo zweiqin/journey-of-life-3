@@ -1,6 +1,6 @@
 <template>
   <view class="authenticationPage">
-      <swiper class="swiper" :current="0" :indicator-dots="false" :autoplay="false" :disable-touch="true">
+      <swiper class="swiper" :current="current" :indicator-dots="false" :autoplay="false" :disable-touch="true">
         <swiper-item>
           <Personal></Personal>
         </swiper-item>
@@ -19,6 +19,11 @@ export default {
   components: {
     Personal,
     Service
+  },
+  data() {
+    return {
+      current: 0,
+    }
   }
 }
 </script>

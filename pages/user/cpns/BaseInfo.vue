@@ -22,10 +22,29 @@
                 {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
             </view>
               <view class="vip-level">
-                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '会员'" src="@/static/images/user/huiyuan.png"></image>
-                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '团长'" src="@/static/images/user/tuanzhang.png"></image>
-                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '合伙人'" src="@/static/images/user/hehuoren.png"></image>
-                <image style="width: 54rpx;height: 54rpx;margin: 0 5rpx;" v-if="$store.getters.userInfo.userLevelDesc == '股东'" src="@/static/images/user/gudong.png"></image>
+                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHy" src="@/static/images/user/huiyuan.png"></image>
+                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isTz" src="@/static/images/user/tuanzhang.png"></image>
+                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHhr" src="@/static/images/user/hehuoren.png"></image>
+                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isGd" src="@/static/images/user/gudong.png"></image>
+              </view>
+              <view class="tui-modal-mask" :class="[isDisplayBadges ? 'tui-mask-show' : '']" @click.prevent="isDisplayBadges = false">
+                  <view class="DisplayBadges">
+                    <image class="DisplayBadgesTop" :src="displayBadgesImg.topUrl" mode="" />
+                    <view class="Icon DisplayBadgesCenter">
+                      <view class="IconF">
+                          <view class="IconS">
+                              <view class="IconT">
+                                  <image class="BadgesImg" :src="$store.getters.userId ? $store.getters.userInfo.avatarUrl : require('../../../static/images/new-user/default-user-avatar.png')">
+                                  </image>
+                              </view>
+                          </view>
+                      </view>
+                    </view>
+                    <image class="DisplayBadgesBottom" :src="displayBadgesImg.bottomUrl" mode="" />
+                  </view>
+                  <view class="DisplayBadgesText">
+                      恭喜你成为{{displayBadgesImg.name}}
+                  </view>
               </view>
               <!-- <view class="medalOfHonor">
                   标记，写完商家入驻后补写一个勋章展示的效果
@@ -100,11 +119,50 @@ export default {
   data() {
     return {
       isShow: false,
-      isBuy: false
+      isBuy: false,
+      isDisplayBadges: true,
+      displayBadgesImg: {
+          topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
+          name: '会员',
+          key: 'isHy',
+          isShow: false,
+          bottomUrl: require('@/static/images/user/displayBadges/huiyuanBottom.png')
+      },
+      displayBadgesData: [
+        {
+          topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
+          name: '会员',
+          key: 'isHy',
+          isShow: false,
+          bottomUrl: require('@/static/images/user/displayBadges/huiyuanBottom.png')
+        },
+        {
+          topUrl: require('@/static/images/user/displayBadges/tuantop.png'),
+          name: '团长',
+          key: 'isTz',
+          isShow: false,
+          bottomUrl: require('@/static/images/user/displayBadges/tuanbottom.png')
+        },
+        {
+          topUrl: require('@/static/images/user/displayBadges/hhrtop.png'),
+          name: '合伙人',
+          key: 'isHhr',
+          isShow: false,
+          bottomUrl: require('@/static/images/user/displayBadges/hhrbottom.png')
+        },
+        {
+          topUrl: require('@/static/images/user/displayBadges/gudongtop.png'),
+          name: '股东',
+          key: 'isGd',
+          isShow: false,
+          bottomUrl: require('@/static/images/user/displayBadges/gudongbottom.png')
+        }
+      ]
     };
   },
   mixins: [showModalMixin()],
   mounted() {
+      console.log(this.$store.getters.userInfo)
     this.userIsPurchase();
   },
   methods: {
@@ -374,5 +432,105 @@ text {
     background-color: #fff;
     box-sizing: border-box;
   }
+}
+.tui-modal-mask {
+  z-index: 99999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+	transition: all 0.3s ease-in-out;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.tui-mask-show {
+	visibility: visible;
+	opacity: 1;
+}
+.Icon{
+    float: left;
+    width: 50%;
+}
+.Icon .IconCon{
+    display: block;
+    height: 20px;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+    color: #1385EB;
+    cursor: pointer;
+}
+.IconF,.IconS,.IconT{
+  border-radius: 15rpx;
+    width: 196rpx;
+    height: 220rpx;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.IconF{            
+    transform: rotate(120deg);
+    -ms-transform: rotate(120deg);
+    -moz-transform: rotate(120deg);
+    -webkit-transform: rotate(120deg);
+}
+.IconS{
+    transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+}
+.IconT{
+    transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    background-color: rgba(0,0,0,0.6);
+}
+.BadgesImg {
+  width: 186rpx;
+    height: 210rpx;
+}
+.DisplayBadgesTop {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 576rpx;
+  height: 576rpx;
+}
+.DisplayBadgesCenter {
+  margin-top: 5rpx;
+  position: fixed;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.DisplayBadgesBottom{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 363.48rpx;
+  height: 142.37rpx;
+}
+.DisplayBadgesText {
+  position: fixed;
+  top: 58%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 304rpx;
+  height: 74rpx;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  background: url('@/static/images/user/displayBadges/textBackground.png') no-repeat center;
+  background-size: 304rpx 74rpx;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
