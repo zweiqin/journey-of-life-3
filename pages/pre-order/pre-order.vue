@@ -28,7 +28,9 @@
           <view class="info">
             <view class="goods-name">{{ orderInfo.info.name }}</view>
             <view class="spa">{{ orderInfo.currentSpecification }}</view>
-            <view class="dan-price">￥{{ orderInfo.currentPrice }}</view>
+            <view class="dan-price"
+              >￥{{ orderInfo.currentPrice }} <text v-if="supportVoucher" style="margin-left: 20upx; color: #ef5452">代金券可抵扣{{ voucherAmount }}</text></view
+            >
           </view>
         </view>
 
@@ -59,15 +61,9 @@
         <view class="line">
           <view class="title">是否使用代金券</view>
           <text class="coupon-wrapper">
-            <text v-if="supportVoucher && currentHoldVoucher" style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
-            <tui-switch
-              v-if="supportVoucher && !!currentHoldVoucher"
-              :scaleRatio="0.6"
-              color="#ffcb05"
-              :checked="opForm.useVoucher"
-              @change="handleChangeUseVoucher"
-            ></tui-switch>
-            <text style="color: #ccc;" v-else>该商品暂不支持代金券</text>
+            <text v-if="supportVoucher" style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
+            <tui-switch v-if="supportVoucher" :disabled="!currentHoldVoucher" :scaleRatio="0.6" color="#ffcb05" :checked="opForm.useVoucher" @change="handleChangeUseVoucher"></tui-switch>
+            <text style="color: #ccc" v-else>该商品暂不支持代金券</text>
           </text>
         </view>
 
@@ -154,7 +150,8 @@ export default {
       couponPrice: null,
       couponPrice: 0,
       currentHoldVoucher: null,
-      supportVoucher: true
+      supportVoucher: true,
+      voucherAmount: 0
     };
   },
 
@@ -198,6 +195,7 @@ export default {
     getOrderInfo() {
       this.orderInfo = uni.getStorageSync(PAY_GOODS);
       this.supportVoucher = this.orderInfo.supportVoucher;
+      this.voucherAmount = this.orderInfo.voucherAmount;
       this.getCardId();
       this.getUserHoldVoucher();
     },

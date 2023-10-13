@@ -32,10 +32,10 @@ export default {
       if (res.errno === 0) {
         this.data = res.data.currentSubCategory
         this.data.unshift({ id: -1, name: '全部' })
-        const isExtire = this.data.every(item => this.currentId !== item.id)
-        isExtire
-          ? this.$emit('change', -1)
-          : this.$emit('change', this.currentId)
+        // const isExtire = this.data.every(item => this.currentId !== item.id)
+        // isExtire
+        //   ? this.$emit('change', -1)
+        //   : this.$emit('change', this.currentId)
       }
     },
   },

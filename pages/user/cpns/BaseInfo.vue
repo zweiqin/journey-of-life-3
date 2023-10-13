@@ -18,8 +18,8 @@
           <view class="tags">
             <view class="tag" v-if="$store.getters.userInfo.userId == 987"> TF001 </view>
             <view class="tag BuLinBuLinDe" v-else>
-              <image style="width: 24rpx;height: 24rpx;margin: 0 5rpx;" src="@/static/images/user/hrr.png"></image>
-                {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
+              <image style="width: 24rpx; height: 24rpx; margin: 0 5rpx" src="@/static/images/user/hrr.png"></image>
+              {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
             </view>
               <view class="vip-level">
                 <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHy" src="@/static/images/user/huiyuan.png"></image>
@@ -83,6 +83,12 @@
         </view>
         <view class="account-title">优惠劵</view>
       </view>
+      <view class="account-item" @click="$emit('handleNavigate', { url: '/user/voucher/voucher' })">
+        <view class="account-number">
+          {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }}
+        </view>
+        <view class="account-title">代金劵</view>
+      </view>
     </view>
     <!-- 家庭小卫士 -->
     <view class="goldman" @click="handleToOpen">
@@ -94,12 +100,7 @@
       <view class="open">{{ isBuy ? '立即进入' : '立即开通' }}</view>
     </view>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-    ></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"></tui-modal>
 
     <tui-modal :show="isShow" title="提示" content="您已开通家庭小卫士" @click="handleToVip"></tui-modal>
   </view>
@@ -109,6 +110,8 @@
 import { userIsPurchaseApi } from '../../../api/user';
 import { USER_ID } from 'constant';
 import showModalMixin from 'mixin/showModal';
+import { convertToDecimal } from '../../../utils';
+
 export default {
   props: {
     data: {
@@ -169,6 +172,7 @@ export default {
     // go() {
     // 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
     // }
+    convertToDecimal,
     handleToVip(e) {
       if (e.index) {
         uni.navigateTo({ url: '/user/sever/goldButler/gold-butler' });
@@ -390,8 +394,8 @@ text {
         &:nth-child(1) {
           border-radius: 8rpx;
           opacity: 1;
-          background: linear-gradient(90deg, #FFFFFF 0%, #F9D090 100%);
-          border: 1px solid #B4560A;
+          background: linear-gradient(90deg, #ffffff 0%, #f9d090 100%);
+          border: 1px solid #b4560a;
           /* white-space: nowrap;
           position: relative;
           padding-left: 22upx;
