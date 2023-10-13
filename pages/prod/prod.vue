@@ -71,7 +71,9 @@
 
         起
 
-        <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text>
+        <!-- <text>可用代金券</text> -->
+
+        <!-- <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text> -->
       </view>
 
       <view class="goods-name">{{ goodsDetail.info.name }}</view>
@@ -230,11 +232,7 @@
         </view>
 
         <view class="item">
-          <image
-            @click="handleCollect"
-            :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'"
-            mode=""
-          />
+          <image @click="handleCollect" :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'" mode="" />
           <text>收藏</text>
         </view>
       </view>
@@ -245,14 +243,7 @@
       </view>
     </view>
 
-    <TSpecification
-      :btn-text="btnStatus"
-      @confirm="handleChooseSp"
-      :data="goodsDetail"
-      ref="specificationRef"
-      :bottom="0"
-      v-model="showSpecification"
-    ></TSpecification>
+    <TSpecification :btn-text="btnStatus" @confirm="handleChooseSp" :data="goodsDetail" ref="specificationRef" :bottom="0" v-model="showSpecification"></TSpecification>
 
     <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
 
@@ -429,7 +420,8 @@ export default {
         ...this.goodsDetail,
         selectedProduct: goodsInfo,
         brandId: this.goodsDetail.brand && this.goodsDetail.brand.id,
-        supportVoucher: this.goodsDetail.info.supportVoucher
+        supportVoucher: this.goodsDetail.info.supportVoucher,
+        supportVoucherCount: this.goodsDetail.voucherAmount || 0
       });
 
       uni.navigateTo({

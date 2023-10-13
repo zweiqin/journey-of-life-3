@@ -43,6 +43,12 @@
           <view class="sub-title"> 有价值的实用好物 新生活新零售</view>
         </view>
 
+        <scroll-view scroll-x>
+          <view class="sub-list-container">
+            <view class="sub-item" @click="handleFilterSubCategory(item)" :class="{ active: subCategoryId === item.id }" v-for="item in subCategoryList" :key="item.id">{{ item.name }}</view>
+          </view>
+        </scroll-view>
+
         <view class="goods-list">
           <NewGoodsPane v-for="item in $data._list.slice(4)" :goods="item" :key="item.id"> </NewGoodsPane>
           <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
@@ -62,7 +68,7 @@ import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
 import loadMore from '../../mixin/loadMore';
 import { goodsListApi } from '../../api/goods';
-import { getGoodsTypesApi } from '../../api/home';
+import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
 
 import { homeTopNavs } from './config';
 export default {
@@ -94,11 +100,15 @@ export default {
         hot: [],
         good: []
       },
-      categories: []
+      categories: [],
+      subCategoryList: [],
+      subCategoryId: -1
     };
   },
 
   onLoad() {
+    this.$data._query.sort = 'voucher_amount';
+    this.$data._query.order = 'desc';
     this._loadData();
     this.getCategoryList();
   },
@@ -109,10 +119,12 @@ export default {
         uni.navigateTo({ url: navInfo.url });
       } else if (navInfo.id) {
         this.$data._query.categoryId = navInfo.id;
+        this.$data._query.page = 1;
         this.$data._list = [];
         this.ad.hot = [];
         this.ad.good = [];
         this._loadData();
+        this.getSubMenus(navInfo.id);
       } else {
         this.empty();
       }
@@ -135,6 +147,24 @@ export default {
 
         this.homeTopNavs.length < 8 && this.homeTopNavs.push(...this.categories);
       }
+    },
+
+    async getSubMenus(id) {
+      const res = await getTypeDetailList({ id });
+      if (res.errno === 0) {
+        this.subCategoryList = res.data.currentSubCategory;
+        this.subCategoryList.unshift({ id: -1, name: '全部', pid: res.data.currentSubCategory[0].pid });
+      }
+    },
+
+    handleFilterSubCategory(info) {
+      this.$data._list = [];
+      this.ad.hot = [];
+      this.ad.good = [];
+      this.$data._query.page = 1;
+      this.$data._query.categoryId = info.id === -1 ? info.pid : info.id;
+      this.subCategoryId = info.id;
+      this._loadData();
     }
   }
 };
@@ -248,6 +278,27 @@ export default {
         flex-wrap: wrap;
         padding-bottom: 140upx;
         background-color: #eff3f6;
+      }
+
+      .sub-list-container {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        margin-bottom: 20upx;
+
+        .sub-item {
+          font-size: 24upx;
+          padding: 2upx 12upx;
+          border: 1upx solid #777;
+          border-radius: 6upx;
+          margin-right: 20upx;
+          color: #777;
+
+          &.active {
+            border-color: #ef530e;
+            color: #ef530e;
+          }
+        }
       }
     }
   }
