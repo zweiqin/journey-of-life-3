@@ -2,7 +2,7 @@
  * @Author: aliyun0758874076 2300202994@qq.com
  * @Date: 2023-10-12 14:29:04
  * @LastEditors: aliyun0758874076 2300202994@qq.com
- * @LastEditTime: 2023-10-14 15:03:03
+ * @LastEditTime: 2023-10-14 18:22:27
  * @FilePath: \tuan\community-center\merchant-settlement\authentication\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,8 +28,8 @@ export default {
     Personal,
     Service
   },
-  onload() {
-    this.indexForm.userId = this.$store.getters.userInfo.userId
+  onLoad() {
+    this.personalInformation.basicInformationForm.userId = this.$store.getters.userInfo.userId
   },
   data() {
     return {
@@ -43,8 +43,8 @@ export default {
           account: '', // 账号
           password: '', // 密码
           confirmPwd: '',
-          contacts: '', //联系人
-          contactsTel: '', // 联系人电话
+          contactName: '', //联系人
+          contactTel: '', // 联系人电话
           ident: '', // 身份证号
           contactAddress: '', // 联系地址
           cardNo: '', // 银行卡号
@@ -58,13 +58,13 @@ export default {
           addresText: '', // !详细地址
         },
         businessInformationForm: {
+          accountId: '', // 	账户ID
           shopName: '', // 店铺名称
           shopAddress: '', // 店铺地址
-          businessType: '',
           region: '', // 地址选择   将两者拆开合并 最终请求时将两者拼接 使用 shopAddress 发送请求
           addresText: '', // 详细地址
           businessLicense: '', // 营业执照 
-          headStoreDoor : '', // 门店门头
+          rotationChart : '', // 门店门头
           shopLogo: '', // 门店LOGO
         },
         serviceInformation: {
