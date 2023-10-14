@@ -1,17 +1,44 @@
 <template>
   <view class="formBox">
+    <tui-form ref="form">
     <view class="FormContainer">
-      <view class="formHeader">基本信息</view>
-      <tui-form ref="form">
+      <view class="formHeader">账号信息</view>
+      <!-- <tui-form ref="form"> -->
         <view class="inputBox">
-          <tui-input labelColor="#526787" :borderBottom="false" label="联系人名" placeholder="请输入姓名" clearable v-model="fromData.contacts"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="联系电话" placeholder="请输入联系电话" clearable v-model="fromData.contactsTel"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="身份证号" placeholder="请输入身份证号" clearable v-model="fromData.ident"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="银行卡号" placeholder="请输入银行卡号" clearable v-model="fromData.contacts"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="银行名称" placeholder="请输入银行名称" clearable v-model="fromData.contacts"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="账号" placeholder="请输入账号名" clearable v-model="basicInformationForm.account"></tui-input>
+          <tui-input labelColor="#526787" type="password" :borderBottom="false" label="密码" placeholder="请输入密码" clearable v-model="basicInformationForm.password"></tui-input>
+          <tui-input labelColor="#526787" type="password" :borderBottom="false" label="确认密码" placeholder="请再次确认密码" clearable v-model="basicInformationForm.confirmPwd"></tui-input>
         </view>
-      </tui-form>
+      <!-- </tui-form> -->
     </view>
+    <view class="FormContainer" style="margin-top: 20rpx;">
+      <view class="formHeader">基本信息</view>
+      <!-- <tui-form ref="form"> -->
+        <view class="inputBox">
+          <tui-input labelColor="#526787" :borderBottom="false" label="联系人名" placeholder="请输入姓名" clearable v-model="basicInformationForm.contacts"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="联系电话" placeholder="请输入联系电话" clearable v-model="basicInformationForm.contactsTel"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="身份证号" placeholder="请输入身份证号" clearable v-model="basicInformationForm.ident"></tui-input>
+          <view class="moreSlectItem">
+                <tui-input
+                    label-color="#526787" label="门店地址"
+                    background-color="none" :borderBottom="false"
+                    placeholder="请选择门店地址" disabled
+                    v-model="basicInformationForm.region"
+                >
+                    <template #right>
+                        <image @click="handleChooseAddress" style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
+                    </template>
+                </tui-input>
+                <!-- 团蜂地址选择 -->
+                <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
+          </view>
+          <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" @input="spliAddres" clearable v-model="basicInformationForm.addresText"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="银行卡号" placeholder="请输入银行卡号" clearable v-model="basicInformationForm.cardNo"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="银行名称" placeholder="请输入银行名称" clearable v-model="basicInformationForm.bankName"></tui-input>
+        </view>
+      <!-- </tui-form> -->
+    </view>
+    </tui-form>
     <view class="FormContainer imgFilesUpload">
       <view style="margin: 0rpx" class="formHeader">个人实名认证</view>
       <view class="upload_Item">
@@ -23,12 +50,12 @@
             <tui-gallery :urls="urls" :show="imgShow" @hide="imgShow = false"></tui-gallery>
           </view>
           <!-- 上传完成，有图片则显示这个 -->
-          <view class="ExampleImg" v-if="fromData.avatarUrl">
-            <tui-icon @click="fromData.avatarUrl = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="avatarImg" :src="fromData.avatarUrl"></image>
+          <view class="ExampleImg" v-if="basicInformationForm.userUrl">
+            <tui-icon @click="basicInformationForm.userUrl = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="avatarImg" :src="basicInformationForm.userUrl"></image>
           </view>
           <!-- 上传图片时，显示这个 -->
-          <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('avatarUrl')">
+          <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('userUrl')">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
           </view>
         </view>
@@ -43,18 +70,18 @@
         </view>
         <view class="uploadBig">
           <!-- 上传图片时，显示这个 -->
-          <view class="add-img-icon" v-if="fromData.certImg1">
+          <view class="add-img-icon" v-if="basicInformationForm.certImg1">
             <tui-icon
-              @click="fromData.certImg1 = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+              @click="basicInformationForm.certImg1 = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
             <image
-              class="big-img-icon" :src="fromData.certImg1"></image>
+              class="big-img-icon" :src="basicInformationForm.certImg1"></image>
           </view>
           <view class="add-img-icon" v-else @click="handleUploadImg('certImg1')">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
           </view>
-          <view class="add-img-icon" v-if="fromData.certImg2">
-          <tui-icon @click="fromData.certImg2 = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="big-img-icon" :src="fromData.certImg2"></image>
+          <view class="add-img-icon" v-if="basicInformationForm.certImg2">
+          <tui-icon @click="basicInformationForm.certImg2 = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="big-img-icon" :src="basicInformationForm.certImg2"></image>
           </view>
           <view class="add-img-icon" v-else @click="handleUploadImg('certImg2')">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
@@ -71,30 +98,40 @@
         </view>
         <view class="uploadBig">
           <!-- 上传图片时，显示这个 -->
-          <view class="add-img-icon" style="width: 630rpx;height: 227rpx;" v-if="fromData.BankCard1">
+          <view class="add-img-icon" style="width: 630rpx;height: 227rpx;" v-if="basicInformationForm.bankCardFront">
             <tui-icon
-              @click="fromData.BankCard1 = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="big-img-icon2" :src="fromData.BankCard1"></image>
+              @click="basicInformationForm.bankCardFront = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="big-img-icon2" :src="basicInformationForm.bankCardFront"></image>
           </view>
-          <view class="add-img-icon" style="width: 630rpx;height: 227rpx;"  v-else @click="handleUploadImg('BankCard1')">
+          <view class="add-img-icon" style="width: 630rpx;height: 227rpx;"  v-else @click="handleUploadImg('bankCardFront')">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
           </view>
         </view>
       </view>
     </view>
     <view class="nextSteps">
-        <tui-button>下一步</tui-button>
+        <tui-button @click="nextSteps">下一步</tui-button>
     </view>
   </view>
 </template>
 
 <script>
+import { shopCreateAccount } from '@/api/community-center/merchantSettlement'
 import { getUserId, payOrderUtil } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
+import { BasicInformationRules } from '../toolData/rules'
+import form from "@/components/common/tui-validation/tui-validation.js"
 export default {
   name: "BasicInformation",
+  props: {
+    basicInformationForm: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
+      rules: BasicInformationRules,
       imgShow: false,
       imgKeyName: "",
       urls: [
@@ -110,16 +147,7 @@ export default {
         {
           src: require("@/static/images/entryOfMerchants/kard1.png"),
         },
-      ],
-      fromData: {
-        contacts: "", // 门店联系人
-        contactsTel: "", // 门店联系电话
-        ident: "", //身份证号
-        avatarUrl: "",
-        certImg1: "",
-        certImg2: "",
-        BankCard1: ''
-      },
+      ]
     };
   },
   methods: {
@@ -141,7 +169,7 @@ export default {
               },
               success: (uploadFileRes) => {
                 uni.hideLoading();
-                _this.fromData[_this.imgKeyName] = JSON.parse(
+                _this.basicInformationForm[_this.imgKeyName] = JSON.parse(
                   uploadFileRes.data
                 ).data.url;
               },
@@ -162,11 +190,34 @@ export default {
         },
       });
     },
+    handleChooseAddress() {  // 打开地址选择栏
+      this.$refs.TuanCityRef.show();
+    },
+    handleConfirmAddress(selectInfo) { // 地址选择后的数据
+      console.log(selectInfo)
+      this.basicInformationForm.region = selectInfo.formatAddress4;
+    },
+    spliAddres(value) {
+          this.basicInformationForm.contactAddress = this.basicInformationForm.region + value
+          console.log(this.basicInformationForm.contactAddress)
+    },
+    nextSteps() { // 触发下一步
+      this.$refs.form.validate(this.basicInformationForm,this.rules).then(res => {
+        console.log(this.basicInformationForm)
+        console.log('校验通过！')
+      }).catch(errors => {
+        console.log(errors)
+      })
+      // this.$emit('nextSteps',1) // 用于跳转到下一个表单页
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.moreSlectItem:active {
+	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+}
 .formBox {
   position: relative;
   box-sizing: border-box;
@@ -318,7 +369,7 @@ export default {
 }
 .inputBox {
   width: 100%;
-  height: 600rpx;
+  /* height: 600rpx; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;

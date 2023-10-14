@@ -65,9 +65,7 @@ export default {
     };
   },
   methods: {
-    aaa() {
-        console.log(1)
-    }
+    
   },
 };
 </script>
