@@ -5,8 +5,22 @@
       <tui-form ref="form">
         <view class="inputBox">
           <tui-input labelColor="#526787" :borderBottom="false" label="门店名称" placeholder="请输入门店名称" clearable v-model="fromData.shopName"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="门店地址" placeholder="请选择门店地址" clearable v-model="fromData.shopAddress"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" clearable v-model="fromData.region"></tui-input>
+          <view class="moreSlectItem">
+                <tui-input
+                    label-color="#526787" label="门店地址"
+                    background-color="none" :borderBottom="false"
+                    placeholder="请选择门店地址" disabled
+                    v-model="fromData.region"
+                >
+                    <template #right>
+                        <image @click="handleChooseAddress" style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
+                    </template>
+                </tui-input>
+                <!-- 团蜂地址选择 -->
+                <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
+          </view>
+          <!-- <tui-input labelColor="#526787" :borderBottom="false" label="门店地址" placeholder="请选择门店地址" clearable v-model="fromData.shopAddress"></tui-input> -->
+          <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" clearable v-model="fromData.shopAddress"></tui-input>
           <tui-input labelColor="#526787" :borderBottom="false" label="经营类别" placeholder="请选择经营类别" clearable v-model="fromData.businessType"></tui-input>
         </view>
       </tui-form>
@@ -146,11 +160,21 @@ export default {
         },
       });
     },
-  },
+    handleChooseAddress() {  // 打开地址选择栏
+      this.$refs.TuanCityRef.show();
+    },
+    handleConfirmAddress(selectInfo) { // 地址选择后的数据
+      console.log(selectInfo)
+      this.fromData.region = selectInfo.formatAddress4;
+    },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.moreSlectItem:active {
+	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+}
 .formBox {
   position: relative;
   box-sizing: border-box;
@@ -200,7 +224,7 @@ export default {
           align-items: center;
           justify-content: center;
           .cnmd {
-            width: 175rpx;
+            width: 100%;
             height: 226rpx;
           }
           .gallery {

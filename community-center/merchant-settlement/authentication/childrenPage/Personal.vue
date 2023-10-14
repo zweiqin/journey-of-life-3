@@ -33,17 +33,19 @@
   import PersonalImg from '../componrnts/PersonalImg.vue'
   import BasicInformation from '../componrnts/BasicInformation.vue'
   import BusinessInformation from '../componrnts/BusinessInformation.vue'
+  import StoreBusiness from '../componrnts/StoreBusiness.vue'
   export default {
     name: 'Personal',
     components: {
       PersonalImg,
       BasicInformation,
-      BusinessInformation
+      BusinessInformation,
+      StoreBusiness
     },
     data() {
       return {
         formIndex: 0,
-        currentTabComponent: 'BusinessInformation',
+        currentTabComponent: 'PersonalImg',
         StepsStatic: [{
           name: '身份认证',
           active: true,

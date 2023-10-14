@@ -5,8 +5,16 @@
       <view class="isHumer">
         <!-- emmm 懒得写样式，直接怼了一张图片在这里 -->
       </view>
-      <view class="TakeAPicture">
-        <image class="humImg" :src="humImgUrl"></image>
+      <view v-if="fromData.headUrl" class="TakeAPicture">
+        <view class="humImgBox">
+          <tui-icon @click="fromData.headUrl = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+          <image class="humImg" :src="fromData.headUrl"></image>
+        </view>
+      </view>
+      <view class="TakeAPicture" v-else>
+        <view class="humImgBox">
+          <image class="humImg" :src="humImgUrl"></image>
+        </view>
       </view>
       <view class="textarea">
         请按照提示进行脸部扫描识别,保证头像与真人认证为同一人
@@ -14,7 +22,7 @@
         真人认证通过后，后续智能更换本人头像
       </view>
       <view class="pictureButton">
-        <tui-button>马上认证</tui-button>
+        <tui-button @click="handleUploadImg('headUrl')">马上认证</tui-button>
       </view>
       <view style="color: #888889;font-size: 24rpx;">
         拍摄要求
@@ -26,12 +34,60 @@
 </template>
 
 <script>
+import { getUserId, payOrderUtil } from "@/utils";
+import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
 export default {
   name: 'PersonalImg',
   data() {
     return {
       humImgUrl: require('@/static/images/entryOfMerchants/rentouxiang.png'),
+      fromData: {
+        headUrl: ''
+      }
     };
+  },
+  methods: {
+    // 点击上传图片
+    handleUploadImg(Key) {
+      this.imgKeyName = Key; // 存一次键名 方便后面赋值
+      const _this = this;
+      uni.chooseImage({
+        sourceType: ['camera','album'],
+        success: (chooseImageRes) => {
+          for (const imgFile of chooseImageRes.tempFiles) {
+            uni.showLoading();
+            uni.uploadFile({
+              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              filePath: imgFile.path,
+              name: "file",
+              formData: {
+                token: USER_TOKEN,
+                userId: getUserId(),
+              },
+              success: (uploadFileRes) => {
+                uni.hideLoading();
+                _this.fromData[_this.imgKeyName] = JSON.parse(
+                  uploadFileRes.data
+                ).data.url;
+                // console.log(_this.fromData)
+              },
+              fail: (error) => {
+                uni.hideLoading();
+                _this.ttoast({
+                  type: "fail",
+                  title: "图片上传失败",
+                  content: error,
+                });
+              },
+            });
+          }
+          return;
+        },
+        fail: (fail) => {
+          console.log(fail);
+        },
+      });
+    }
   }
 }
 </script>
@@ -72,9 +128,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    .humImg {
-      width: 305rpx;
-      height: 370rpx;
+    .humImgBox {
+      position: relative;
+      .humImg {
+        position: relative;
+        width: 305rpx;
+        height: 370rpx;
+      }
     }
   }
   .textarea {
@@ -99,6 +159,13 @@ export default {
     background: url('@/static/images/entryOfMerchants/cnmb.png') no-repeat center;
     background-size: 690rpx 216rpx;
   }
+}.close-icon {
+  position: absolute;
+  top: -10upx;
+  right: -10upx;
+  width: 34upx;
+  height: 34upx;
+  z-index: 10;
 }
 </style>
 

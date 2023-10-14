@@ -123,7 +123,7 @@ export default {
     return {
       isShow: false,
       isBuy: false,
-      isDisplayBadges: true,
+      isDisplayBadges: false,
       displayBadgesImg: {
           topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
           name: '会员',
