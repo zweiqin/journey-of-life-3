@@ -2,10 +2,11 @@
   <view class="container">
       <view class="PageGHeader">
         <image @click="goBack" class="backBtn" src="@/static/images/entryOfMerchants/back.png"></image>
-        <text class="PageText">{{ formIndex == 0?'身份认证':'信息认证' }}</text>
+        <!-- <text class="PageText">{{ formIndex == 0?'身份认证':'信息认证' }}</text> -->
+        <text class="PageText">信息认证</text>
       </view>
       <view class="FormSteps">
-        <view class="FormStepsItem" v-for="(item, index) in StepsStatic" :key="index" @click="nextSteps(item)">
+        <view class="FormStepsItem" v-for="(item, index) in StepsStatic" :key="index">
           <view class="StateBox isActive" v-if="item.active && !item.isOver">
             <view class="isActiveBox">
             </view>
@@ -14,7 +15,7 @@
             <image class="overImg" src="@/static/images/entryOfMerchants/great.png"></image>
           </view>
           <view class="StateBox" v-else>
-            {{ index }}
+            {{ index+1 }}
           </view>
           <image class="StepStateImg" v-if="index < StepsStatic.length-1" :src="returnStateImg(item,index)"></image>
           <text class="ItemName">{{ item.name }}</text>
@@ -22,8 +23,12 @@
       </view>
       <keep-alive>
         <component
-          :is="currentTabComponent"
+          :is="currentTabComponent[formIndex]"
           class="tab"
+          :personalImg="personalInformation.personalImg"
+          :basicInformationForm="personalInformation.basicInformationForm"
+          :businessInformationForm="personalInformation.businessInformationForm"
+          @nextSteps="nextSteps"
         ></component>
       </keep-alive>
   </view>
@@ -34,8 +39,22 @@
   import BasicInformation from '../componrnts/BasicInformation.vue'
   import BusinessInformation from '../componrnts/BusinessInformation.vue'
   import StoreBusiness from '../componrnts/StoreBusiness.vue'
+
+// currentTabComponent: ['PersonalImg','BasicInformation','BusinessInformation','StoreBusiness'], // !人脸识别暂时不适用，隐藏
+// {
+//   name: '身份认证',
+//   active: true,
+//   isOver: false,
+//   statImg: require('@/static/images/entryOfMerchants/change.png')
+// },
   export default {
     name: 'Personal',
+    props: {
+      personalInformation: {
+        type: Object,
+        default: {}
+      }
+    },
     components: {
       PersonalImg,
       BasicInformation,
@@ -45,15 +64,10 @@
     data() {
       return {
         formIndex: 0,
-        currentTabComponent: 'StoreBusiness',
+        currentTabComponent: ['BasicInformation','BusinessInformation','StoreBusiness'],
         StepsStatic: [{
-          name: '身份认证',
-          active: true,
-          isOver: false,
-          statImg: require('@/static/images/entryOfMerchants/change.png')
-        },{
           name: '认证资料',
-          active: false,
+          active: true,
           isOver: false,
           statImg: require('@/static/images/entryOfMerchants/noOver.png')
         },{
@@ -76,8 +90,12 @@
       goBack() {
         uni.navigateBack();
       },
-      nextSteps() {
-        
+      nextSteps(Index) {
+        if (Index > 0) {
+          this.StepsStatic[Index - 1].isOver = true
+        }
+        this.StepsStatic[Index].active = true
+        this.formIndex = Index
       },
       returnStateImg(item,index) { // 玩nm，直接堆屎山
         let arr = [require('@/static/images/entryOfMerchants/noOver.png'),
@@ -113,7 +131,7 @@
   background: linear-gradient(180deg, #F8FCFF 0%, #EDF3FF 60%, #E6E7FB 100%);
   overflow-y: auto;
   .PageGHeader {
-    z-index: 1;
+    z-index: 12;
     position: fixed;
     top: 0;
     left: 0;
@@ -138,7 +156,7 @@
     }
   }
   .FormSteps {
-    z-index: 1;
+    z-index: 12;
     position: fixed;
     top: 88rpx;
     left: 0;

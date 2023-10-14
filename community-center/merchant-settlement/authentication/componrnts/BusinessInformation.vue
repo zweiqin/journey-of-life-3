@@ -84,7 +84,7 @@
       </view>
     </view>
     <view class="nextSteps">
-        <tui-button>下一步</tui-button>
+        <tui-button @click="nextSteps">下一步</tui-button>
     </view>
   </view>
 </template>
@@ -167,6 +167,9 @@ export default {
       console.log(selectInfo)
       this.fromData.region = selectInfo.formatAddress4;
     },
+    nextSteps() { // 触发下一步
+      this.$emit('nextSteps',2)
+    }
   }
 };
 </script>
