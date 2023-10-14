@@ -38,7 +38,7 @@
             "
           ></tui-icon>
           <view class="goods-info">
-            <image class="goods-image" :src="goods.picUrl"></image>
+            <image class="goods-image" :src="common.seamingImgUrl(goods.picUrl)"></image>
 
             <view class="goods-wrapper">
               <navigator :url="'/pages/prod/prod?goodsId=' + goods.id">

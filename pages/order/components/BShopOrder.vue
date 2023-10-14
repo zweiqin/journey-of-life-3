@@ -8,7 +8,7 @@
     <view class="goods-list" @click="handleToViewOrderDetail(orderDeatil)">
       <!-- <view class="goods-item" v-for="goods in orderDeatil.goodsList" :key="goods.id"> -->
       <view class="goods-item">
-        <image class="goods-img" :src="orderDeatil.goodsVo.goodsUrl" mode="" />
+        <image class="goods-img" :src="common.seamingImgUrl(orderDeatil.goodsVo.goodsUrl)" mode="" />
 
         <view class="info">
           <view class="name">{{ orderDeatil.goodsVo.goodsName }}</view>

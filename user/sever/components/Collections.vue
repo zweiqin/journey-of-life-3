@@ -1,7 +1,7 @@
 <template>
   <view class="collections">
     <view class="collection-item" v-for="item in data" :key="item.id">
-      <image class="collection-image" :src="item.picUrl" />
+      <image class="collection-image" :src="common.seamingImgUrl(item.picUrl)" />
 
       <view class="collection-detail-info">
         <view class="name">{{ item.name }}</view>
