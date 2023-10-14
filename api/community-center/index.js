@@ -267,6 +267,16 @@ export const getNearByShopListApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/queryModuanShopList', data);
 };
 
+// 获取一级标签
+export const getFirstLevelShopLabelListApi = (data) => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/getFirstLevelShopLabelList', data, 'GET');
+};
+
+// 根据一级找二级标签
+export const getSecondLevelShopLabelListApi = (data) => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/getSecondLevelShopLabelList', data, 'GET');
+};
+
 // 获取门店详情
 export const getShopDetailApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/queryModuanShopInfoById', data, 'GET');
@@ -367,4 +377,13 @@ export const payOtherPlatformApi = (data) => {
 export const payApiConfig = {
   otherPlatformApi: payOtherPlatformApi,
   h5Api: payBOrderH5
+};
+
+// 获取行业标签
+export const getShopStyleListApi = (data) => {
+  return endRequest({
+    url: '/api/third/shop/getFirstTag',
+    data,
+    method: 'GET'
+  });
 };

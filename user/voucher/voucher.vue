@@ -18,7 +18,7 @@
         <button class="uni-btn" @click="handleToViewVoucher">代金券充值记录 <tui-icon :size="20" color="#ccc" name="arrowright"></tui-icon></button>
       </view>
 
-      <tui-alerts v-if="$store.getters.userInfo.userLevel !== 1" type="warn" style="margin: 20upx 0" title="您还不是商家，暂无法充值代金券"></tui-alerts>
+      <!-- <tui-alerts v-if="$store.getters.userInfo.userLevel !== 1" type="warn" style="margin: 20upx 0" title="您还不是商家，暂无法充值代金券"></tui-alerts> -->
 
       <view class="btn-content">
         <view class="price-wrapper" @click="handlePay(item)" v-for="(item, index) in rechargeList" :key="index">
@@ -83,15 +83,26 @@ export default {
     },
     // 代金券购买
     handlePay(item) {
-      if (this.$store.getters.userInfo.userLevel !== 1) {
+      console.log(this.$store.getters.userInfo.userMap);
+      const userLevelMap = this.$store.getters.userInfo.userMap;
+      if (userLevelMap) {
+        const { isGd, isHhr, isMd, isTz } = userLevelMap;
+        if ((!isGd, !isHhr, !isMd, !isTz)) {
+          this.ttoast({
+            type: 'fail',
+            title: '您的等级不够',
+            content: '无法购买代金券'
+          });
+          return;
+        }
+        this.$refs.rechargeCustomPopupRef && this.$refs.rechargeCustomPopupRef.show(item, this.currentVoucherRecharge);
+      } else {
         this.ttoast({
           type: 'fail',
-          title: '您还不是商家',
+          title: '您的等级不够',
           content: '无法购买代金券'
         });
-        return;
       }
-      this.$refs.rechargeCustomPopupRef && this.$refs.rechargeCustomPopupRef.show(item, this.currentVoucherRecharge);
     },
 
     // 代金券转增

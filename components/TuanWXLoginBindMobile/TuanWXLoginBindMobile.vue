@@ -1,9 +1,9 @@
 <template>
-  <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="showPopupVisible" @close="handleClosePopop">
+  <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="showPopupVisible">
     <view class="popup-container">
-      <view class="close-wrapper">
+      <!-- <view class="close-wrapper">
         <tui-icon name="close" @click="handleClosePopop" :size="20"></tui-icon>
-      </view>
+      </view> -->
 
       <view class="form-wrapper">
         <view class="form-title">绑定手机号码</view>
