@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { shopAuth, getAccountInfo } from '@/api/community-center/merchantSettlement'
+import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement'
 import { BusinessInformationRules } from '../toolData/rules'
 import { getUserId, payOrderUtil } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
