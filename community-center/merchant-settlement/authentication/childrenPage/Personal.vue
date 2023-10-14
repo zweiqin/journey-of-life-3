@@ -28,6 +28,7 @@
           :personalImg="personalInformation.personalImg"
           :basicInformationForm="personalInformation.basicInformationForm"
           :businessInformationForm="personalInformation.businessInformationForm"
+          :personalInformation="personalInformation"
           @nextSteps="nextSteps"
         ></component>
       </keep-alive>
@@ -63,7 +64,7 @@
     },
     data() {
       return {
-        formIndex: 0,
+        formIndex: 2,
         currentTabComponent: ['BasicInformation','BusinessInformation','StoreBusiness'],
         StepsStatic: [{
           name: '认证资料',

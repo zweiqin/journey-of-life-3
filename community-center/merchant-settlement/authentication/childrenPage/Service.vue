@@ -59,6 +59,13 @@ export default {
     this.getSFSkillsList();
   },
 
+  props: {
+    personalInformation: {
+      type: Object,
+      required: true
+    }
+  },
+
   data() {
     return {
       servesList: [],
@@ -71,9 +78,9 @@ export default {
 
   methods: {
     goBack() {
-      uni.navigateBack();
+      this.personalInformation.current = 0;
     },
-    
+
     async getSFSkillsList() {
       try {
         const res = await getSFSkillsListApi();
@@ -142,8 +149,10 @@ export default {
           title: '请选择服务'
         });
 
-        this.$emit('choose', this.currentSelectServe);
+        return;
       }
+      this.personalInformation.serviceInformation.scopeBusiness = this.currentSelectServe;
+      this.goBack();
     }
   },
 
