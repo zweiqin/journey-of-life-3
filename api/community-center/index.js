@@ -368,3 +368,12 @@ export const payApiConfig = {
   otherPlatformApi: payOtherPlatformApi,
   h5Api: payBOrderH5
 };
+
+// 获取行业标签
+export const getShopStyleListApi = (data) => {
+  return endRequest({
+    url: '/api/third/shop/getFirstTag',
+    data,
+    method: 'GET'
+  });
+};

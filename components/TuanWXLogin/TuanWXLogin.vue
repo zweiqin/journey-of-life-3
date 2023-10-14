@@ -7,13 +7,17 @@
 
 <script>
 // #ifdef H5
-import { getUrlCode } from '../../utils'
+import { getUrlCode } from '../../utils';
 // #endif
 export default {
   props: {
     agreementStatus: {
       type: Boolean,
       default: false
+    },
+    callBackUrl: {
+      type: String,
+      default: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
     }
   },
   methods: {
@@ -26,39 +30,34 @@ export default {
       //   return;
       // }
       // #ifdef H5
-      const _this = this
-      const appid = 'wxb19ccb829623be12'
-      const local = this.$store.state.app.isInMiniProgram ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?miniProgram=1' :
-        'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
-      const code = getUrlCode().code
+      const _this = this;
+      const appid = 'wxb19ccb829623be12';
+      const local = this.$store.state.app.isInMiniProgram ? `${this.callBackUrl}?miniProgram=1` : `${this.callBackUrl}`;
+      const code = getUrlCode().code;
 
       // console.log('获取code', code)
       // alert('获取code', code)
 
       if (code == null || code === '') {
         window.location.href =
-          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
-          appid +
-          '&redirect_uri=' +
-          encodeURIComponent(local) +
-          '&response_type=code&scope=snsapi_userinfo#wechat_redirect'
+          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid + '&redirect_uri=' + encodeURIComponent(local) + '&response_type=code&scope=snsapi_userinfo#wechat_redirect';
       } else {
-        const data = await this.$store.dispatch('auth/wxLogin', code)
-        this.$emit('login', data)
+        const data = await this.$store.dispatch('auth/wxLogin', code);
+        this.$emit('login', data);
       }
       // #endif
-    },
+    }
   },
 
   mounted() {
     // #ifdef H5
-    const code = getUrlCode().code
+    const code = getUrlCode().code;
     if (code) {
-      this.handleWXLogin()
+      this.handleWXLogin();
     }
     // #endif
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped></style>

@@ -2,22 +2,29 @@
   <view class="loading-container">
     <view class="loader">
       <view class="loader-inner ball-grid-pulse">
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
-        <view></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
+        <view :style="{ 'background-color': color }"></view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    color: {
+      type: String,
+      default: '#f87f4b'
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -31,6 +38,7 @@ export default {};
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 90000;
 
   @keyframes ball-grid-pulse {
     0% {

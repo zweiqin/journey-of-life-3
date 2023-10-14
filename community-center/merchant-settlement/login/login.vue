@@ -12,7 +12,7 @@
     </view>
 
     <view class="login-btns">
-      <TuanWXLogin @login="handleWXLoginAfter">
+      <TuanWXLogin @login="handleLoginSuccessCB" callBackUrl="https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/merchant-settlement/login/login">
         <button class="uni-btn">
           <image class="login-type-icon" src="../../../static/images/new-community/shop/we-icon.png"></image>
           微信登录
@@ -36,6 +36,7 @@
 
 <script>
 import PWDLoginPopup from './components/PWDLoginPopup.vue';
+import { USER_INFO } from '../../../constant';
 
 export default {
   components: { PWDLoginPopup },
@@ -44,6 +45,13 @@ export default {
       isAgree: false,
       timer: null
     };
+  },
+
+  onLoad() {
+    const userInfo = uni.getStorageSync(USER_INFO);
+    if (userInfo) {
+      this.handleLoginSuccessCB(userInfo);
+    }
   },
 
   methods: {
@@ -58,6 +66,7 @@ export default {
     },
 
     handleWXLoginAfter() {
+      console.log('微信登录成功');
       const _this = this;
       uni.navigateTo({
         url: '/community-center/merchant-settlement/login/choose-type',
@@ -81,17 +90,9 @@ export default {
             return;
           }
           try {
-            await this.$store.dispatch('auth/codeLoginAction', loginForm);
+            const userInfo = await this.$store.dispatch('auth/codeLoginAction', loginForm);
             this.ttoast('登录成功');
-            this.timer = setTimeout(() => {
-              uni.navigateTo({
-                url: '/community-center/merchant-settlement/login/choose-type',
-                success: () => {
-                  clearTimeout(_this.timer);
-                  _this.timer = null;
-                }
-              });
-            }, 2000);
+            this.handleLoginSuccessCB(userInfo);
           } catch (error) {
             this.ttoast({
               type: 'fail',
@@ -104,6 +105,11 @@ export default {
         default:
           break;
       }
+    },
+
+    // 登录成功后续
+    handleLoginSuccessCB(userInfo) {
+      uni.navigateTo({ url: '/community-center/merchant-settlement/login/choose-type' });
     }
   }
 };
