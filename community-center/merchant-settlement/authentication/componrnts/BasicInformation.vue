@@ -157,10 +157,6 @@ export default {
     getAccountInfo({
       userId: getUserId()
     }).then(res => {
-      uni.setStorage({
-        key: 'Merchant_Info',
-        data: res
-      })
       for(let key in res){
         this.basicInformationForm[key] = res[key]
       }
@@ -221,17 +217,17 @@ export default {
           console.log(this.basicInformationForm.contactAddress)
     },
     nextSteps() { // 触发下一步
-      // this.$refs.form.validate(this.basicInformationForm,this.rules).then(res => {
-      //   // console.log(this.basicInformationForm)
-      //   shopCreateAccount(this.basicInformationForm).then(res => {
-      //     console.log(res)
-      //     this.$emit('nextSteps',1) // 用于跳转到下一个表单页
-      //   })
-      //   console.log('校验通过！')
-      // }).catch(errors => {
-      //   console.log(errors)
-      // })
-      this.$emit('nextSteps',1) // 用于跳转到下一个表单页
+      this.$refs.form.validate(this.basicInformationForm,this.rules).then(res => {
+        // console.log(this.basicInformationForm)
+        shopCreateAccount(this.basicInformationForm).then(res => {
+          console.log(res)
+          this.$emit('nextSteps',1) // 用于跳转到下一个表单页
+        })
+        console.log('校验通过！')
+      }).catch(errors => {
+        console.log(errors)
+      })
+      // this.$emit('nextSteps',1) // 用于跳转到下一个表单页
     }
   },
 };
