@@ -33,7 +33,7 @@
       </tui-form>
     </view>
     <view class="nextSteps">
-      <tui-button>下一步</tui-button>
+      <tui-button @click="saveForm">确认提交</tui-button>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getShopStyleListApi } from '../../../../api/community-center';
+import { getShopStyleListApi, saveStoreBusinessApi } from '../../../../api/community-center';
 import ChooseStylePopup from '../componrnts/ChooseStylePopup.vue';
 
 export default {
@@ -92,8 +92,8 @@ export default {
 
     // 映射
     initBusinessLabel(isClear) {
-      if(isClear){
-        this.selectBusinessLabels = []
+      if (isClear) {
+        this.selectBusinessLabels = [];
       }
       const labels = this.personalInformation.serviceInformation.businessLabel.split(',');
 
@@ -115,6 +115,10 @@ export default {
     handleConfirmChooseLabels(selectLabels) {
       this.personalInformation.serviceInformation.businessLabel = selectLabels.join(',');
       this.initBusinessLabel(true);
+    },
+
+    saveForm(){
+
     }
   },
   computed: {

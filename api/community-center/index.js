@@ -396,3 +396,12 @@ export const getSFSkillsListApi = (data) => {
     method: 'GET'
   });
 };
+
+//  操作门店业务
+export const saveStoreBusinessApi = (data) => {
+  return endRequest({
+    url: '/api/third/shop/operateShop',
+    data,
+    method: 'POST'
+  });
+};
