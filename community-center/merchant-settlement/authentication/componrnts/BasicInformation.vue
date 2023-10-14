@@ -15,8 +15,8 @@
       <view class="formHeader">基本信息</view>
       <!-- <tui-form ref="form"> -->
         <view class="inputBox">
-          <tui-input labelColor="#526787" :borderBottom="false" label="联系人名" placeholder="请输入姓名" clearable v-model="basicInformationForm.contacts"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="联系电话" placeholder="请输入联系电话" clearable v-model="basicInformationForm.contactsTel"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="联系人名" placeholder="请输入姓名" clearable v-model="basicInformationForm.contactName"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="联系电话" placeholder="请输入联系电话" clearable v-model="basicInformationForm.contactTel"></tui-input>
           <tui-input labelColor="#526787" :borderBottom="false" label="身份证号" placeholder="请输入身份证号" clearable v-model="basicInformationForm.ident"></tui-input>
           <view class="moreSlectItem">
                 <tui-input
@@ -116,11 +116,12 @@
 </template>
 
 <script>
-import { shopCreateAccount } from '@/api/community-center/merchantSettlement'
+import { shopCreateAccount, getAccountInfo } from '@/api/community-center/merchantSettlement'
 import { getUserId, payOrderUtil } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
 import { BasicInformationRules } from '../toolData/rules'
 import form from "@/components/common/tui-validation/tui-validation.js"
+import { forIn } from 'lodash-es';
 export default {
   name: "BasicInformation",
   props: {
@@ -149,6 +150,22 @@ export default {
         },
       ]
     };
+  },
+  created() {
+    getAccountInfo({
+      userId: getUserId()
+    }).then(res => {
+      uni.setStorage({
+        key: 'Merchant_Info',
+        data: res
+      })
+      for(let key in res){
+        this.basicInformationForm[key] = res[key]
+      }
+      let addres = res.contactAddress.split(' ')
+      this.basicInformationForm.region = addres[0]
+      this.basicInformationForm.addresText = addres[1]
+    })
   },
   methods: {
     // 点击上传图片
@@ -198,17 +215,20 @@ export default {
       this.basicInformationForm.region = selectInfo.formatAddress4;
     },
     spliAddres(value) {
-          this.basicInformationForm.contactAddress = this.basicInformationForm.region + value
+          this.basicInformationForm.contactAddress = this.basicInformationForm.region + ' ' + value
           console.log(this.basicInformationForm.contactAddress)
     },
     nextSteps() { // 触发下一步
       this.$refs.form.validate(this.basicInformationForm,this.rules).then(res => {
-        console.log(this.basicInformationForm)
+        // console.log(this.basicInformationForm)
+        shopCreateAccount(this.basicInformationForm).then(res => {
+          console.log(res)
+          this.$emit('nextSteps',1) // 用于跳转到下一个表单页
+        })
         console.log('校验通过！')
       }).catch(errors => {
         console.log(errors)
       })
-      // this.$emit('nextSteps',1) // 用于跳转到下一个表单页
     }
   },
 };

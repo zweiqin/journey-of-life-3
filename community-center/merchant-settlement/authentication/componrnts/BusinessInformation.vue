@@ -4,13 +4,13 @@
       <view class="formHeader">经营信息</view>
       <tui-form ref="form">
         <view class="inputBox">
-          <tui-input labelColor="#526787" :borderBottom="false" label="门店名称" placeholder="请输入门店名称" clearable v-model="fromData.shopName"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="门店名称" placeholder="请输入门店名称" clearable v-model="businessInformationForm.shopName"></tui-input>
           <view class="moreSlectItem">
                 <tui-input
                     label-color="#526787" label="门店地址"
                     background-color="none" :borderBottom="false"
                     placeholder="请选择门店地址" disabled
-                    v-model="fromData.region"
+                    v-model="businessInformationForm.region"
                 >
                     <template #right>
                         <image @click="handleChooseAddress" style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
@@ -20,8 +20,7 @@
                 <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
           </view>
           <!-- <tui-input labelColor="#526787" :borderBottom="false" label="门店地址" placeholder="请选择门店地址" clearable v-model="fromData.shopAddress"></tui-input> -->
-          <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" clearable v-model="fromData.shopAddress"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="经营类别" placeholder="请选择经营类别" clearable v-model="fromData.businessType"></tui-input>
+          <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" @input="spliAddres" clearable v-model="businessInformationForm.addresText"></tui-input>
         </view>
       </tui-form>
     </view>
@@ -36,9 +35,9 @@
             <tui-gallery :urls="urls" :show="imgShow" @hide="imgShow = false"></tui-gallery>
           </view>
           <!-- 上传完成，有图片则显示这个 -->
-          <view class="ExampleImg" v-if="fromData.businessLicense">
-            <tui-icon @click="fromData.businessLicense = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="avatarImg" :src="fromData.businessLicense"></image>
+          <view class="ExampleImg" v-if="businessInformationForm.businessLicense">
+            <tui-icon @click="businessInformationForm.businessLicense = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="avatarImg" :src="businessInformationForm.businessLicense"></image>
           </view>
           <!-- 上传图片时，显示这个 -->
           <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('businessLicense')">
@@ -54,12 +53,12 @@
             <tui-gallery :urls="urls" :show="imgShow" @hide="imgShow = false"></tui-gallery>
           </view>
           <!-- 上传完成，有图片则显示这个 -->
-          <view class="ExampleImg" v-if="fromData.doorHeader">
-            <tui-icon @click="fromData.doorHeader = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="avatarImg" :src="fromData.doorHeader"></image>
+          <view class="ExampleImg" v-if="businessInformationForm.rotationChart">
+            <tui-icon @click="businessInformationForm.rotationChart = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="avatarImg" :src="businessInformationForm.rotationChart"></image>
           </view>
           <!-- 上传图片时，显示这个 -->
-          <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('doorHeader')">
+          <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('rotationChart')">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
           </view>
         </view>
@@ -72,9 +71,9 @@
             <tui-gallery :urls="urls" :show="imgShow" @hide="imgShow = false"></tui-gallery>
           </view>
           <!-- 上传完成，有图片则显示这个 -->
-          <view class="ExampleImg" v-if="fromData.shopLogo">
-            <tui-icon @click="fromData.shopLogo = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-            <image class="avatarImg" :src="fromData.shopLogo"></image>
+          <view class="ExampleImg" v-if="businessInformationForm.shopLogo">
+            <tui-icon @click="businessInformationForm.shopLogo = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+            <image class="avatarImg" :src="businessInformationForm.shopLogo"></image>
           </view>
           <!-- 上传图片时，显示这个 -->
           <view class="add-img-icon ExampleImg" v-else @click="handleUploadImg('shopLogo')">
@@ -90,12 +89,21 @@
 </template>
 
 <script>
+import { shopAuth, getAccountInfo } from '@/api/community-center/merchantSettlement'
+import { BusinessInformationRules } from '../toolData/rules'
 import { getUserId, payOrderUtil } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
 export default {
   name: "BasicInformation",
+  props: {
+    businessInformationForm: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
+      rules: BusinessInformationRules,
       imgShow: false,
       imgKeyName: "",
       urls: [
@@ -120,6 +128,13 @@ export default {
       },
     };
   },
+  created() {
+    getAccountInfo({
+      userId: getUserId()
+    }).then(res => {
+      this.businessInformationForm.accountId = res.accountId
+    })
+  },
   methods: {
     // 点击上传图片
     handleUploadImg(Key) {
@@ -139,7 +154,7 @@ export default {
               },
               success: (uploadFileRes) => {
                 uni.hideLoading();
-                _this.fromData[_this.imgKeyName] = JSON.parse(
+                _this.businessInformationForm[_this.imgKeyName] = JSON.parse(
                   uploadFileRes.data
                 ).data.url;
               },
@@ -165,11 +180,24 @@ export default {
     },
     handleConfirmAddress(selectInfo) { // 地址选择后的数据
       console.log(selectInfo)
-      this.fromData.region = selectInfo.formatAddress4;
+      this.businessInformationForm.region = selectInfo.formatAddress4;
     },
     nextSteps() { // 触发下一步
-      this.$emit('nextSteps',2)
-    }
+      this.$refs.form.validate(this.businessInformationForm,this.rules).then(res => {
+        // console.log(this.basicInformationForm)
+        shopAuth(this.businessInformationForm).then(res => {
+          console.log(res)
+          this.$emit('nextSteps',2) // 用于跳转到下一个表单页
+        })
+        // console.log('校验通过！')
+      }).catch(errors => {
+        console.log(errors)
+      })
+    },
+    spliAddres(value) {
+          this.businessInformationForm.shopAddress = this.businessInformationForm.region + ' ' + value
+          console.log(this.businessInformationForm.shopAddress)
+    },
   }
 };
 </script>
@@ -329,7 +357,7 @@ export default {
 }
 .inputBox {
   width: 100%;
-  height: 460rpx;
+  /* height: 460rpx; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;

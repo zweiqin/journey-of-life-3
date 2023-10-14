@@ -37,12 +37,12 @@ export const BasicInformationRules = [
         msg: ["请输入确认密码", "两次输入的密码不一致"],
     },
     {
-        name: "contacts",
+        name: "contactName",
         rule: ["required",'isChinese'],
         msg: ["请输入账户名",'请输入正确的中文名字'],
     },
     {
-        name: "contactsTel",
+        name: "contactTel",
         rule: ["required", "isMobile"],
         msg: ["请输入手机号", "请输入正确的手机号"],
     },
@@ -96,3 +96,36 @@ export const BasicInformationRules = [
         msg: ["请上传银行卡正面图片"]
     }
 ];
+
+export const BusinessInformationRules = [
+    {
+        name: 'shopName',
+        rule: ["required"],
+        msg: ["请输入门店名称"]
+    },
+    {
+        name: "region",
+        rule: ["required"],
+        msg: ["请选择门店地址"],
+    },
+    {
+        name: "addresText",
+        rule: ["required"],
+        msg: ["请输入详细地址"],
+    },
+    {
+        name: "businessLicense",
+        rule: ["required"],
+        msg: ["请上传营业执照"],
+    },
+    {
+        name: "rotationChart",
+        rule: ["required"],
+        msg: ["请上传门店门头"],
+    },
+    {
+        name: "shopLogo",
+        rule: ["required"],
+        msg: ["请上传门店logo"],
+    },
+]
