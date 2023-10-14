@@ -45,7 +45,7 @@
     data() {
       return {
         formIndex: 0,
-        currentTabComponent: 'PersonalImg',
+        currentTabComponent: 'StoreBusiness',
         StepsStatic: [{
           name: '身份认证',
           active: true,

@@ -22,7 +22,8 @@ export {
   throttle,
   isInWx,
   isVideoSource,
-  convertToDecimal
+  convertToDecimal,
+  isSubarray
 } from './DWHutils';
 export { formatTime } from './util';
 export { tradeOrderNo, payFn, payOrderUtil } from './pay';

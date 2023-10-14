@@ -15,7 +15,7 @@
                     </template>
                 </tui-input>
            </view>
-            <view class="moreSlectItem">
+            <!-- <view class="moreSlectItem">
                 <tui-input
                     label-color="#526787" label="服务范围"
                     background-color="none" :borderBottom="false"
@@ -25,7 +25,7 @@
                         <image style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
                     </template>
                 </tui-input>
-            </view>
+            </view> -->
             <view class="moreSlectItem">
                 <tui-input
                     label-color="#526787" label="经营标签"
