@@ -64,8 +64,8 @@
           <view class="bigExample">
             <image class="expItem" src="@/static/images/entryOfMerchants/shenfenzheng.png"></image>
             <image class="expItem" src="@/static/images/entryOfMerchants/shenfenzheng2.png"></image>
-            <text class="gallery" @click="imgShow = true">示例图 点击浏览</text>
-            <tui-gallery :urls="urls2" :show="imgShow" @hide="imgShow = false"></tui-gallery>
+            <text class="gallery" @click="imgShow2 = true">示例图 点击浏览</text>
+            <tui-gallery :urls="urls2" :show="imgShow2" @hide="imgShow2 = false"></tui-gallery>
           </view>
         </view>
         <view class="uploadBig">
@@ -92,8 +92,8 @@
           <view class="bigExample">
             <image class="expItem" src="@/static/images/entryOfMerchants/kard1.png"></image>
             <!-- <image class="expItem" src="@/static/images/entryOfMerchants/shenfenzheng2.png"></image> -->
-            <text class="gallery" @click="imgShow = true">示例图 点击浏览</text>
-            <tui-gallery :urls="urls3" :show="imgShow" @hide="imgShow = false"></tui-gallery>
+            <text class="gallery" @click="imgShow3 = true">示例图 点击浏览</text>
+            <tui-gallery :urls="urls3" :show="imgShow3" @hide="imgShow3 = false"></tui-gallery>
           </view>
         </view>
         <view class="uploadBig">
@@ -134,6 +134,8 @@ export default {
     return {
       rules: BasicInformationRules,
       imgShow: false,
+      imgShow2: false,
+      imgShow3: false,
       imgKeyName: "",
       urls: [
         {
@@ -155,10 +157,6 @@ export default {
     getAccountInfo({
       userId: getUserId()
     }).then(res => {
-      uni.setStorage({
-        key: 'Merchant_Info',
-        data: res
-      })
       for(let key in res){
         this.basicInformationForm[key] = res[key]
       }
@@ -229,6 +227,7 @@ export default {
       }).catch(errors => {
         console.log(errors)
       })
+      // this.$emit('nextSteps',1) // 用于跳转到下一个表单页
     }
   },
 };

@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { shopAuth, getAccountInfo } from '@/api/community-center/merchantSettlement'
+import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement'
 import { BusinessInformationRules } from '../toolData/rules'
 import { getUserId, payOrderUtil } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
@@ -186,7 +186,11 @@ export default {
       this.$refs.form.validate(this.businessInformationForm,this.rules).then(res => {
         // console.log(this.basicInformationForm)
         shopAuth(this.businessInformationForm).then(res => {
-          console.log(res)
+          // console.log(res)
+          uni.setStorage({
+            key: 'accountId',
+            data: res
+          })
           this.$emit('nextSteps',2) // 用于跳转到下一个表单页
         })
         // console.log('校验通过！')
