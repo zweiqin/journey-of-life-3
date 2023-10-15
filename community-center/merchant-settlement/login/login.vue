@@ -50,7 +50,7 @@ export default {
   onLoad() {
     const userInfo = uni.getStorageSync(USER_INFO);
     if (userInfo) {
-      this.handleLoginSuccessCB(userInfo);
+      this.$store.dispatch('auth/refrshUserInfo', this.handleLoginSuccessCB);
     }
   },
 
@@ -109,7 +109,14 @@ export default {
 
     // 登录成功后续
     handleLoginSuccessCB(userInfo) {
-      uni.navigateTo({ url: '/community-center/merchant-settlement/login/choose-type' });
+      const { userMap } = userInfo;
+      if (userMap.isMd) {
+        uni.switchTab({
+          url: '/pages/user/user'
+        });
+      } else {
+        uni.navigateTo({ url: '/community-center/merchant-settlement/login/choose-type' });
+      }
     }
   }
 };

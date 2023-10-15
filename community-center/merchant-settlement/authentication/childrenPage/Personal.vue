@@ -64,7 +64,7 @@
     },
     data() {
       return {
-        formIndex: 2,
+        formIndex: 0,
         currentTabComponent: ['BasicInformation','BusinessInformation','StoreBusiness'],
         StepsStatic: [{
           name: '认证资料',

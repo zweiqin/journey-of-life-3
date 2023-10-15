@@ -6,18 +6,13 @@
         <view class="inputBox">
           <tui-input labelColor="#526787" :borderBottom="false" label="门店名称" placeholder="请输入门店名称" clearable v-model="businessInformationForm.shopName"></tui-input>
           <view class="moreSlectItem">
-                <tui-input
-                    label-color="#526787" label="门店地址"
-                    background-color="none" :borderBottom="false"
-                    placeholder="请选择门店地址" disabled
-                    v-model="businessInformationForm.region"
-                >
-                    <template #right>
-                        <image @click="handleChooseAddress" style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
-                    </template>
-                </tui-input>
-                <!-- 团蜂地址选择 -->
-                <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
+            <tui-input label-color="#526787" label="门店地址" background-color="none" :borderBottom="false" placeholder="请选择门店地址" disabled v-model="businessInformationForm.region">
+              <template #right>
+                <image @click="handleChooseAddress" style="width: 30rpx; height: 30rpx; margin-right: 20rpx" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
+              </template>
+            </tui-input>
+            <!-- 团蜂地址选择 -->
+            <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
           </view>
           <!-- <tui-input labelColor="#526787" :borderBottom="false" label="门店地址" placeholder="请选择门店地址" clearable v-model="fromData.shopAddress"></tui-input> -->
           <tui-input labelColor="#526787" :borderBottom="false" label="详细地址" placeholder="请输入详细地址" @input="spliAddres" clearable v-model="businessInformationForm.addresText"></tui-input>
@@ -83,18 +78,20 @@
       </view>
     </view>
     <view class="nextSteps">
-        <tui-button @click="nextSteps">下一步</tui-button>
+      <tui-button @click="nextSteps">下一步</tui-button>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement'
-import { BusinessInformationRules } from '../toolData/rules'
-import { getUserId, payOrderUtil } from "@/utils";
-import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
+import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement';
+import { BusinessInformationRules } from '../toolData/rules';
+import { getUserId, payOrderUtil } from '@/utils';
+import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from '@/constant';
 export default {
-  name: "BasicInformation",
+  name: 'BasicInformation',
   props: {
     businessInformationForm: {
       type: Object,
@@ -105,47 +102,47 @@ export default {
     return {
       rules: BusinessInformationRules,
       imgShow: false,
-      imgKeyName: "",
+      imgKeyName: '',
       urls: [
         {
-          src: require("@/static/images/entryOfMerchants/yingyezhizhao.png"),
+          src: require('@/static/images/entryOfMerchants/yingyezhizhao.png')
         },
         {
-          src: require("@/static/images/entryOfMerchants/mendian.png"),
+          src: require('@/static/images/entryOfMerchants/mendian.png')
         },
         {
-          src: require("@/static/images/entryOfMerchants/logo.png"),
-        },
+          src: require('@/static/images/entryOfMerchants/logo.png')
+        }
       ],
       fromData: {
-        shopName: "", // 门店名称
-        shopAddress: "", // 详细地址
-        region: "", //地址
+        shopName: '', // 门店名称
+        shopAddress: '', // 详细地址
+        region: '', //地址
         businessType: '', // 经营类别
         businessLicense: '', // 营业执照
         doorHeader: '', // 门店门头
-        shopLogo: '', // 门店logo
-      },
+        shopLogo: '' // 门店logo
+      }
     };
   },
   created() {
     getAccountInfo({
       userId: getUserId()
-    }).then(res => {
-      this.businessInformationForm.accountId = res.accountId
-    })
+    }).then((res) => {
+      this.businessInformationForm.accountId = res.accountId;
+    });
     getShopInfo({
       shopId: uni.getStorageSync('accountId')
-    }).then(res => {
-      for(let key in res){
-        this.businessInformationForm[key] = res[key]
+    }).then((res) => {
+      for (let key in res) {
+        this.businessInformationForm[key] = res[key];
       }
-      let addres = res.shopAddress.split(' ')
-      this.businessInformationForm.region = addres[0]
-      this.businessInformationForm.addresText = addres[1]
-      console.log(this.businessInformationForm)
+      let addres = res.shopAddress.split(' ');
+      this.businessInformationForm.region = addres[0];
+      this.businessInformationForm.addresText = addres[1];
+      console.log(this.businessInformationForm);
       // console.log(res)
-    })
+    });
   },
   methods: {
     // 点击上传图片
@@ -157,70 +154,87 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
               filePath: imgFile.path,
-              name: "file",
+              name: 'file',
               formData: {
                 token: USER_TOKEN,
-                userId: getUserId(),
+                userId: getUserId()
               },
               success: (uploadFileRes) => {
                 uni.hideLoading();
-                _this.businessInformationForm[_this.imgKeyName] = JSON.parse(
-                  uploadFileRes.data
-                ).data.url;
+                _this.businessInformationForm[_this.imgKeyName] = JSON.parse(uploadFileRes.data).data.url;
               },
               fail: (error) => {
                 uni.hideLoading();
                 _this.ttoast({
-                  type: "fail",
-                  title: "图片上传失败",
-                  content: error,
+                  type: 'fail',
+                  title: '图片上传失败',
+                  content: error
                 });
-              },
+              }
             });
           }
           return;
         },
         fail: (fail) => {
           console.log(fail);
-        },
+        }
       });
     },
-    handleChooseAddress() {  // 打开地址选择栏
+    handleChooseAddress() {
+      // 打开地址选择栏
       this.$refs.TuanCityRef.show();
     },
-    handleConfirmAddress(selectInfo) { // 地址选择后的数据
-      console.log(selectInfo)
+    handleConfirmAddress(selectInfo) {
+      // 地址选择后的数据
+      console.log(selectInfo);
       this.businessInformationForm.region = selectInfo.formatAddress4;
     },
-    nextSteps() { // 触发下一步
-      this.$refs.form.validate(this.businessInformationForm,this.rules).then(res => {
-        // console.log(this.basicInformationForm)
-        shopAuth(this.businessInformationForm).then(res => {
-          // console.log(res)
-          uni.setStorage({
-            key: 'MERCHANT-SETTLEMENT-INFO',
-            data: res
-          })
-          this.$emit('nextSteps',2) // 用于跳转到下一个表单页
+    nextSteps() {
+      // 触发下一步
+      this.$refs.form
+        .validate(this.businessInformationForm, this.rules)
+        .then((res) => {
+          // console.log(this.basicInformationForm)
+          shopAuth(this.businessInformationForm)
+            .then((res) => {
+              // console.log(res)
+              uni.setStorage({
+                key: 'MERCHANT-SETTLEMENT-INFO',
+                data: res
+              });
+              this.$emit('nextSteps', 2); // 用于跳转到下一个表单页
+            })
+            .catch((error) => {
+              this.ttoast({
+                type: 'info',
+                title: error,
+                content: '提交失败'
+              });
+            });
+          // console.log('校验通过！')
         })
-        // console.log('校验通过！')
-      }).catch(errors => {
-        console.log(errors)
-      })
+        .catch((errors) => {
+          console.log(errors);
+          this.ttoast({
+            type: 'info',
+            title: errors,
+            content: '提交失败'
+          });
+        });
     },
     spliAddres(value) {
-          this.businessInformationForm.shopAddress = this.businessInformationForm.region + ' ' + value
-          console.log(this.businessInformationForm.shopAddress)
-    },
+      this.businessInformationForm.shopAddress = this.businessInformationForm.region + ' ' + value;
+      console.log(this.businessInformationForm.shopAddress);
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .moreSlectItem:active {
-	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
 }
 .formBox {
   position: relative;

@@ -147,7 +147,7 @@ export default {
       });
 
       this.personalInformation.serviceInformation.businessLabel = res.shopLabel;
-      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise.split(',');
+      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise && typeof res.skillExpertise === 'string' ?  res.skillExpertise.split(',') : res.skillExpertise
     },
 
     async saveForm() {
