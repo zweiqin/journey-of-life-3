@@ -135,7 +135,8 @@ export default {
       this.businessInformationForm.accountId = res.accountId
     })
     getShopInfo({
-      shopId: uni.getStorageSync('accountId')
+      userId: getUserId()
+      // shopId: uni.getStorageSync('accountId')
     }).then(res => {
       for(let key in res){
         this.businessInformationForm[key] = res[key]
