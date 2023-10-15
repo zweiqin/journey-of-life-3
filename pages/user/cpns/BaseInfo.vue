@@ -28,6 +28,9 @@
                 <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isGd" src="@/static/images/user/gudong.png"></image>
               </view>
               <view class="tui-modal-mask" :class="[isDisplayBadges ? 'tui-mask-show' : '']" @click.prevent="isDisplayBadges = false">
+                  <view class="rotationBox">
+                    
+                  </view>
                   <view class="DisplayBadges">
                     <image class="DisplayBadgesTop" :src="displayBadgesImg.topUrl" mode="" />
                     <view class="Icon DisplayBadgesCenter">
@@ -444,10 +447,13 @@ text {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.7);
 	transition: all 0.3s ease-in-out;
 	opacity: 0;
 	visibility: hidden;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
 }
 
 .tui-mask-show {
@@ -504,6 +510,25 @@ text {
   transform: translate(-50%, -50%);
   width: 576rpx;
   height: 576rpx;
+}
+.rotationBox {
+  display: block;
+	/* content: ''; */
+  position: fixed;
+  top: -330rpx;
+  left: -83%;
+  right: 0;
+	width: 2000rpx;
+	height: 2000rpx;
+	opacity: 0.4;
+	/* background: repeating-conic-gradient(from 0deg, white 0deg 15deg, transparent 15deg 30deg); */
+	background: repeating-conic-gradient(from 0deg, white 0deg 19deg, transparent 15deg 53deg);
+	mask-image: radial-gradient(rgb(0, 0, 0), rgb(0, 0, 0) 50%);
+	/* -webkit-mask-image: radial-gradient(hsla(0 0% 0% / 1), hsla(0 0% 0% / 0) 50%); */
+	animation: rotate 20s linear infinite;
+}
+@keyframes rotate {
+	to { transform: rotate(1turn) }
 }
 .DisplayBadgesCenter {
   margin-top: 5rpx;
