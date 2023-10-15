@@ -3,7 +3,7 @@
     <tui-toast ref="toast"></tui-toast>
     <!-- 轮播图 -->
     <view class="carousel-wrapper">
-      <Carousel :list="goodsDetail.info.gallery.length ? goodsDetail.info.gallery : [goodsDetail.info.picUrl]" :height="390" :top="0" :radius="0"></Carousel>
+      <Carousel :list="goodsDetail.info.gallery.length ? goodsDetail.info.gallery.map((item) => common.seamingImgUrl(item)) : [common.seamingImgUrl(goodsDetail.info.picUrl)]" :height="390" :top="0" :radius="0"></Carousel>
 
       <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
         <view>
@@ -71,7 +71,12 @@
 
         起
 
-        <!-- <text>可用代金券</text> -->
+				<text
+					v-if="goodsDetail.info.supportVoucher"
+					style="height: 100%;padding: 6upx 12upx;margin-left: 20upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
+				>
+					可使用{{ Math.ceil(Number(goodsDetail.info.counterPrice)) }}代金券抵扣
+				</text>
 
         <!-- <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text> -->
       </view>
@@ -117,7 +122,7 @@
 
         <view class="one-eval-container" v-if="commentInfo.data.length">
           <view class="user-info">
-            <image class="avatar" :src="commentInfo.data[0].avatar || require('../../static/images/user/weidian/no-goods.png')"></image>
+            <image class="avatar" :src="commentInfo.data[0].avatar? common.seamingImgUrl(commentInfo.data[0].avatar) : require('../../static/images/user/weidian/no-goods.png')"></image>
             <view class="info">
               <view class="nickname">{{ commentInfo.data[0].nickname || '匿名用户' }} </view>
               <view class="eval-time">{{ commentInfo.data[0].addTime }}</view>
@@ -130,9 +135,9 @@
 
             <view class="pic-list" v-if="commentInfo.data[0].picList">
               <image
-                @click="handlePreviewImg(index, commentInfo.data[0].picList.split(','))"
+                @click="handlePreviewImg(index, commentInfo.data[0].picList.split(',').map((item) => common.seamingImgUrl(item)))"
                 class="img"
-                v-for="(img, index) in commentInfo.data[0].picList.split(',')"
+                v-for="(img, index) in commentInfo.data[0].picList.split(',').map((item) => common.seamingImgUrl(item))"
                 :key="index"
                 :src="img"
               ></image>
@@ -144,7 +149,7 @@
       <!-- 店铺信息 -->
       <view class="brand-wrapper" v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand">
         <view class="top">
-          <image class="image" :src="goodsDetail.brand.picUrl" mode="" v-if="goodsDetail.brand.picUrl" />
+          <image class="image" :src="common.seamingImgUrl(goodsDetail.brand.picUrl)" mode="" v-if="goodsDetail.brand.picUrl" />
           <view v-else class="image image-avatar">{{ goodsDetail.brand.name }}</view>
 
           <view class="brand-info">
@@ -190,7 +195,7 @@
             @click="go('/pages/prod/prod?goodsId=' + item.id)"
             :key="item.id"
           >
-            <image :src="item.picUrl" mode="" />
+            <image :src="common.seamingImgUrl(item.picUrl)" mode="" />
 
             <view class="recommend-goods-name">{{ item.name }}</view>
 
@@ -412,7 +417,7 @@ export default {
         goodsInfo = selectInfo;
       }
       uni.setStorageSync(PAY_GOODS, {
-        currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
+        currentGoodsImg: this.common.seamingImgUrl(goodsInfo.product.url) || this.goodsDetail.info.picUrl,
         currentSpecification: goodsInfo.spStr,
         currentPrice: goodsInfo.product.price,
         number: goodsInfo.number,
@@ -675,7 +680,7 @@ export default {
             .join(','),
 
           link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + _this.goodsId,
-          imageUrl: _this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl
+          imageUrl: this.common.seamingImgUrl(_this.goodsDetail.shareImage) || this.common.seamingImgUrl(_this.goodsDetail.info.picUrl)
         },
         successCb: () => {},
         failCb: () => {}

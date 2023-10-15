@@ -1,0 +1,11 @@
+node_modules/
+pages/index/
+pages/prod/
+pages/furniture/
+pages/pre-order/
+pages/order/
+main.js
+components/TSpecification/
+user/sever/shopCar/
+user/sever/components/
+user/sever/view-history.vue

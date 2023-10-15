@@ -4,8 +4,8 @@
       <view class="level-1  level"></view>
       <view class="level-2  level"></view>
       <view class="level-3 level"></view>
-      <tui-lazyload-img :style="{ background: `url(${goods.picUrl})`, filter: 'blur(10ox)' }" mode="aspectFit"
-        :src="goods.picUrl"></tui-lazyload-img>
+      <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(goods.picUrl)})`, filter: 'blur(10ox)' }" mode="aspectFit"
+        :src="common.seamingImgUrl(goods.picUrl)"></tui-lazyload-img>
     </view>
 
     <view class="goods-info">
@@ -14,8 +14,7 @@
         <view class="price-wrapper">
           ￥<text class="price-text">{{ goods.counterPrice }}</text>
         </view>
-        <view v-if="goods.supportVoucher" class="is-suppot-voucher">可用代金券</view>
-        <view v-else class="views">1288预览</view>
+        <view v-if="goods.supportVoucher" class="is-suppot-voucher">可使用{{ Math.ceil(Number(goods.counterPrice)) }}代金券抵扣</view>
       </view>
     </view>
   </view>
@@ -34,7 +33,7 @@ export default {
 
 <style lang="less" scoped>
 .new-goods-pane-container {
-  height: 520upx;
+  height: 540upx;
   width: 333upx;
   background-color: #fff;
   margin-bottom: 23upx;
@@ -114,6 +113,7 @@ export default {
     .wrapper {
       display: flex;
       align-items: center;
+			flex-wrap: wrap;
       margin-top: 8upx;
 
 
@@ -129,6 +129,7 @@ export default {
       }
 
       .is-suppot-voucher {
+				width: fit-content;
         border: 1upx solid #E24747;
         color: #E24747;
         font-size: 22upx;
@@ -136,12 +137,6 @@ export default {
         padding: 2upx 8upx;
       }
 
-      .views {
-        font-size: 24upx;
-        color: #9E9E9E;
-        flex: 1;
-        text-align: right;
-      }
     }
   }
 }

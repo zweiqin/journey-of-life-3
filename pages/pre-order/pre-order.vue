@@ -23,7 +23,7 @@
       <view v-if="orderInfo" class="order container">
         <view class="store-name"> <text class="title"></text>{{ orderInfo.brand.name }} </view>
         <view class="goods">
-          <image class="goods-img" :src="orderInfo.currentGoodsImg" mode="" />
+          <image class="goods-img" :src="common.seamingImgUrl(orderInfo.currentGoodsImg)" mode="" />
 
           <view class="info">
             <view class="goods-name">{{ orderInfo.info.name }}</view>
