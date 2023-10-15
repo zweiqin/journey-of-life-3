@@ -80,7 +80,7 @@ export default {
   watch: {
     'personalInformation.serviceInformation': {
       handler(value) {
-        if (value.scopeBusiness.length && !this.currentSelectServe.length) {
+        if (value.scopeBusiness && !this.currentSelectServe.length) {
           this.currentSelectServe = value.scopeBusiness
         }
       },

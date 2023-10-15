@@ -146,8 +146,8 @@ export default {
         accountId: this.personalInformation.serviceInformation.accountId
       });
 
-      this.personalInformation.serviceInformation.businessLabel = res.shopLabel;
-      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise && typeof res.skillExpertise === 'string' ?  res.skillExpertise.split(',') : res.skillExpertise
+      this.personalInformation.serviceInformation.businessLabel = res.shopLabel || '';
+      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise && typeof res.skillExpertise === 'string' ? res.skillExpertise.split(',') : res.skillExpertise || [];
     },
 
     async saveForm() {
@@ -195,9 +195,14 @@ export default {
   },
   computed: {
     storeBusinessForm() {
-      const scopeBusinessCount = this.personalInformation.serviceInformation.scopeBusiness.length;
+      // const scopeBusinessCount = this.personalInformation.serviceInformation.scopeBusiness.length;
+
+      let scopeBusiness = this.personalInformation.serviceInformation.scopeBusiness;
+      if (typeof scopeBusiness === 'string') {
+        scopeBusiness = scopeBusiness.split(',');
+      }
       return {
-        businessScope: scopeBusinessCount ? `已选${scopeBusinessCount}个` : '',
+        businessScope: scopeBusiness ? `已选${scopeBusiness.length}个` : '',
         businessLabel: this.selectBusinessLabels.length ? `已选${this.selectBusinessLabels.length}个` : ''
       };
     }
