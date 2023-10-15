@@ -132,7 +132,7 @@
 		</view>
 
 		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop v-for="shop in nearbyShopList" :key="shop.id" :shop-info="shop"></CommonShop>
+			<CommonShop v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop"></CommonShop>
 		</view>
 		<view v-show="!nearbyShopList.length && loadingStatus !== 'loading'" class="no-data"> 暂无门店~ </view>
 		<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
