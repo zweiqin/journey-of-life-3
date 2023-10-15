@@ -132,10 +132,11 @@ export default {
       this.businessInformationForm.accountId = res.accountId;
     });
     getShopInfo({
-      shopId: uni.getStorageSync('accountId')
-    }).then((res) => {
-      for (let key in res) {
-        this.businessInformationForm[key] = res[key];
+      userId: getUserId()
+      // shopId: uni.getStorageSync('accountId')
+    }).then(res => {
+      for(let key in res){
+        this.businessInformationForm[key] = res[key]
       }
       let addres = res.shopAddress.split(' ');
       this.businessInformationForm.region = addres[0];
