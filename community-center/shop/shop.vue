@@ -131,18 +131,16 @@
 			<view>超低一口价商品框</view>
 		</view>
 
-		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;background-color: aquamarine;">
+		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop v-for="shop in nearbyShopList" :key="shop.id" :shop-info="shop"></CommonShop>
 		</view>
-		<view v-show="!nearbyShopList.length && !isLoading" class="no-data"> 暂无门店~ </view>
-		<PageLoading v-show="isLoading"></PageLoading>
+		<view v-show="!nearbyShopList.length && loadingStatus !== 'loading'" class="no-data"> 暂无门店~ </view>
 		<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
 	</view>
 </template>
 
 <script>
 import CommonShop from '../../pages/community-center/cpns/CommonShop.vue'
-import PageLoading from '../../pages/order/components/Loading.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
 import { getNearByShopListApi } from '../../api/community-center'
@@ -150,7 +148,7 @@ import { getCurrentLocation } from '../../utils'
 
 export default {
 	name: 'Shop',
-	components: { CommonShop, PageLoading, StorePrimaryFilterBox, StoreSecondaryFilterBox },
+	components: { CommonShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
 	data() {
 		return {
 			transformation: {
@@ -186,7 +184,6 @@ export default {
 			nearbyShopList: [],
 			nearbyTotalPages: 0,
 			loadingStatus: 'more',
-			isLoading: false,
 			queryInfo: {
 				search: '',
 				pageNo: 1,
@@ -232,7 +229,8 @@ export default {
 		async getNearByShopList(isClear) {
 			if (isClear) {
 				this.queryInfo.pageNo = 1
-				// this.isLoading = true
+				uni.showLoading()
+				this.loadingStatus = 'loading'
 				this.nearbyShopList = []
 			} else {
 				this.loadingStatus = 'loading'
@@ -253,7 +251,7 @@ export default {
 			} catch (error) {
 				console.log(error)
 			} finally {
-				this.isLoading = false
+				uni.hideLoading()
 				this.loadingStatus = 'more'
 			}
 		}

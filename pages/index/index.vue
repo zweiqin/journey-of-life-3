@@ -102,11 +102,11 @@ export default {
       },
       categories: [],
       subCategoryList: [],
-      subCategoryId: -1
+      subCategoryId: -1,
     };
   },
 
-  onLoad() {
+  onLoad(options) {
     this.$data._query.sort = 'voucher_amount';
     this.$data._query.order = 'desc';
     this._loadData();
@@ -132,16 +132,18 @@ export default {
 
     async getCategoryList() {
       const res = await getGoodsTypesApi({
-        goodsType: 1
+        // goodsType: 1
+        goodsType: 100101741
       });
 
       if (res.errno === 0) {
-        const categories = res.data.categoryList.filter((item) => item.desc === '搜家具').slice(0, 7);
+        // const categories = res.data.categoryList.filter((item) => item.desc === '搜家具').slice(0, 7);
+        const categories = res.data.categoryList.slice(0, 7);
         this.categories = categories;
         this.categories.push({
           iconUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png',
           id: null,
-          url: '/pages/furniture/furniture?id=null',
+          url: '/pages/furniture/furniture?goodsType=100101741&id=null',
           name: '更多'
         });
 

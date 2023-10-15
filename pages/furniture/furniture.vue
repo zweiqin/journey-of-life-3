@@ -81,6 +81,7 @@ export default {
     return {
       navbar: [],
       sub: [],
+      goodsType: '',
       currentTab: null,
       scrollHeight: 667,
       picUrl: '',
@@ -95,13 +96,14 @@ export default {
     //获取商品列表接口
     async stuffGoodsList() {
       const res = await getGoodsTypesApi({
-        goodsType: 1,
+        goodsType: this.goodsType,
       })
 
       if (res.errno === 0) {
-        const categories = res.data.categoryList.filter(
-          item => item.desc === '搜家具'
-        )
+        // const categories = res.data.categoryList.filter(
+        //   item => item.desc === '搜家具'
+        // )
+				const categories = res.data.categoryList
         this.navbar = categories
         if (this.currentTab === 'null') {
           this.currentTab = this.navbar[0].id
@@ -147,6 +149,7 @@ export default {
   // 页面周期函数--监听页面加载
   onLoad(options) {
     this.currentTab = options.id
+    this.goodsType = options.goodsType || 1
     const _this = this
     uni.getSystemInfo({
       success(res) {

@@ -30,7 +30,7 @@ Vue.mixin({
 			common: {
 				seamingImgUrl(url) {
 					if (!url) return ''
-					return url
+					return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
 				},
 			}
 		}

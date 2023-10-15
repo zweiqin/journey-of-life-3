@@ -10,7 +10,7 @@
       <view class="goods-info" v-if="product">
         <image
           class="image"
-          :src="(product && product.url) || data.info.picUrl"
+          :src="(product && product.url) ? common.seamingImgUrl(product.url) : common.seamingImgUrl(data.info.picUrl)"
           mode=""
         />
         <view class="info">

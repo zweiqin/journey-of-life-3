@@ -94,7 +94,7 @@ export default {
       height: 100%;
       border-radius: 20upx;
       background-color: #fff;
-      padding: 38upx 26upx;
+      padding: 38upx 0;
       box-sizing: border-box;
       z-index: 10;
     }

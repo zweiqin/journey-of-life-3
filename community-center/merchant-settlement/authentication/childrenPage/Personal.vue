@@ -166,7 +166,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background-color: #F8FCFF;
+    background-color: #f8fcffe0;
     .FormStepsItem {
       position: relative;
       width: 100rpx;

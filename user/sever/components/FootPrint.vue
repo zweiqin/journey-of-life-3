@@ -17,7 +17,7 @@
 			<view class="foot-print-time">{{ index | fomartTime }}日</view>
 			<view class="foot-print-wrapper">
 				<view @click="handleToViewDetail(goods.goodsId)" class="goods-item" v-for="goods in item" :key="goods.id">
-					<image class="goods-item-img" :src="goods.picUrl" mode="" />
+					<image class="goods-item-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
 					<view class="goods-item-price">￥<text class="number">{{ goods.counterPrice }}</text></view>
 				</view>
 			</view>
