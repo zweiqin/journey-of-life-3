@@ -112,6 +112,8 @@
     <view class="nextSteps">
         <tui-button @click="nextSteps">下一步</tui-button>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -226,6 +228,11 @@ export default {
         console.log('校验通过！')
       }).catch(errors => {
         console.log(errors)
+        this.ttoast({
+          type: 'info',
+          title: errors,
+          content: '提交失败'
+        })
       })
       // this.$emit('nextSteps',1) // 用于跳转到下一个表单页
     }

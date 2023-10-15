@@ -33,7 +33,7 @@
       </tui-form>
     </view>
     <view class="nextSteps">
-      <tui-button @click="saveForm">确认提交</tui-button>
+      <tui-button :loading="isLoading" @click="saveForm">确认提交</tui-button>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
@@ -44,6 +44,8 @@
 <script>
 import { getShopStyleListApi, saveStoreBusinessApi } from '../../../../api/community-center';
 import ChooseStylePopup from '../componrnts/ChooseStylePopup.vue';
+import { getUserId } from '../../../../utils';
+import { getAccountInfo, getBusinessInformation } from '../../../../api/community-center/merchantSettlement';
 
 export default {
   name: 'StoreBusiness',
@@ -60,11 +62,13 @@ export default {
     return {
       originShopStyleList: [],
       shopStyleList: [],
-      selectBusinessLabels: []
+      selectBusinessLabels: [],
+      isLoading: false
     };
   },
-  mounted() {
+  created() {
     this.getShopStyleList();
+    this.getPrevPageInfo();
   },
   methods: {
     async getShopStyleList() {
@@ -117,8 +121,76 @@ export default {
       this.initBusinessLabel(true);
     },
 
-    saveForm(){
+    // 获取account id
+    async getPrevPageInfo() {
+      if (!this.personalInformation.serviceInformation.accountId) {
+        try {
+          const accountInfo = await getAccountInfo({
+            userId: getUserId()
+          });
 
+          this.personalInformation.serviceInformation.accountId = accountInfo.accountId;
+        } catch (error) {
+          this.ttoast({
+            type: 'fail',
+            title: '账户信息获取失败'
+          });
+        }
+      }
+
+      this.getBusinessInformation();
+    },
+
+    async getBusinessInformation() {
+      const res = await getBusinessInformation({
+        accountId: this.personalInformation.serviceInformation.accountId
+      });
+
+      this.personalInformation.serviceInformation.businessLabel = res.shopLabel;
+      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise.split(',');
+    },
+
+    async saveForm() {
+      if (this.isLoading) {
+        return;
+      }
+      if (!this.personalInformation.serviceInformation.scopeBusiness.length) {
+        this.ttoast({
+          type: 'info',
+          title: '请选择业务范围'
+        });
+        return;
+      }
+
+      if (!this.personalInformation.serviceInformation.businessLabel) {
+        this.ttoast({
+          type: 'info',
+          title: '请选择经营标签'
+        });
+        return;
+      }
+
+      try {
+        this.isLoading = true;
+        await saveStoreBusinessApi({
+          accountId: this.personalInformation.serviceInformation.accountId,
+          skillExpertise: this.personalInformation.serviceInformation.scopeBusiness.join(','),
+          shopLabel: this.personalInformation.serviceInformation.businessLabel
+        });
+
+        this.ttoast('提交成功，请等待管理员审核');
+        setTimeout(() => {
+          uni.switchTab({ url: '/pages/user/user' });
+        }, 2000);
+      } catch (error) {
+        this.ttoast({
+          type: 'fail',
+          title: error,
+          content: '提交失败'
+        });
+      } finally {
+        this.isLoading = false;
+      }
     }
   },
   computed: {

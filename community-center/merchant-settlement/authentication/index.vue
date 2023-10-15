@@ -22,6 +22,8 @@
 <script>
 import Personal from './childrenPage/Personal.vue';
 import Service from './childrenPage/Service.vue';
+import { getUserId } from '../../../utils';
+
 export default {
   name: 'SbXuRuiLi_And_ZhonWeiQing',
   components: {
@@ -40,7 +42,7 @@ export default {
           headUrl: ''
         },
         basicInformationForm: {
-          userId: '',
+          userId: getUserId(),
           account: '', // 账号
           password: '', // 密码
           confirmPwd: '',
@@ -64,11 +66,12 @@ export default {
           shopAddress: '', // 店铺地址
           region: '', // 地址选择   将两者拆开合并 最终请求时将两者拼接 使用 shopAddress 发送请求
           addresText: '', // 详细地址
-          businessLicense: '', // 营业执照 
-          rotationChart : '', // 门店门头
-          shopLogo: '', // 门店LOGO
+          businessLicense: '', // 营业执照
+          rotationChart: '', // 门店门头
+          shopLogo: '' // 门店LOGO
         },
         serviceInformation: {
+          accountId: '', // 账户id
           scopeBusiness: '', // 业务范围
           businessLabel: '' // 经营标签
         }

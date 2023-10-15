@@ -50,12 +50,13 @@
 <script>
 import { getSFSkillsListApi } from '../../../../api/community-center';
 import SelectServePane from '../componrnts/SelectServePane.vue';
+
 export default {
   name: 'Service',
   components: {
     SelectServePane
   },
-  mounted() {
+  created() {
     this.getSFSkillsList();
   },
 
@@ -74,6 +75,19 @@ export default {
       currentSelectServe: [],
       allSkillsList: []
     };
+  },
+
+  watch: {
+    'personalInformation.serviceInformation': {
+      handler(value) {
+        if (value.scopeBusiness.length && !this.currentSelectServe.length) {
+          this.currentSelectServe = value.scopeBusiness
+        }
+      },
+
+      immediate: true,
+      deep: true
+    }
   },
 
   methods: {
@@ -107,7 +121,7 @@ export default {
       switch (type) {
         case 'item':
           if (this.currentSelectServe.includes(data)) {
-            this.currentSelectServe = this.currentSelectServe.filter((serveName) => serveName !== data);
+            this.currentSelectServe = [...new Set(...this.currentSelectServe.filter((serveName) => serveName !== data))];
           } else {
             this.currentSelectServe = [...new Set([...this.currentSelectServe, data])];
           }

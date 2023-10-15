@@ -37,4 +37,11 @@ export const getShopInfo = (data) => {
   });
 };
 
-
+// /api/third/shop/getShopBusinessInfo 获取门店业务信息
+export const getBusinessInformation = (data) => {
+  return endRequest({
+    url: '/api/third/shop/getShopBusinessInfo',
+    data,
+    method: 'GET'
+  });
+};

@@ -188,7 +188,7 @@ export default {
         shopAuth(this.businessInformationForm).then(res => {
           // console.log(res)
           uni.setStorage({
-            key: 'accountId',
+            key: 'MERCHANT-SETTLEMENT-INFO',
             data: res
           })
           this.$emit('nextSteps',2) // 用于跳转到下一个表单页
