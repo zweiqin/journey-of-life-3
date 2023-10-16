@@ -15,13 +15,26 @@
 				<view class="name">{{ brandInfo.shopName || brandInfo.shopNameSimple }}</view>
 			</view>
 
-			<view class="rate-wrapper">
-				<tui-rate :size="12" active="#EF530E" :current="brandInfo.score || 5"></tui-rate>
-				<text class="rate-count">{{ brandInfo.score || 5 }}</text>
-				<text class="receive-order">接单率：{{ brandInfo.acceptanceRate * 100 }}%</text>
+			<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
+				<view
+					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #0d0e0d;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #0d0e0d;"
+				>
+					补贴代金券{{ brandInfo.voucherProportion ? Number(brandInfo.voucherProportion) * 100 : 0 }}%
+				</view>
+				<view
+					v-if="brandInfo.isVoucher"
+					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
+				>
+					支持代金券
+				</view>
 			</view>
 
-			<view class="brand-detail">
+			<view v-if="bottomType === 'detail'" class="brand-detail">
+				<view class="rate-wrapper">
+					<tui-rate :size="12" active="#EF530E" :current="brandInfo.score || 5"></tui-rate>
+					<text class="rate-count">{{ brandInfo.score || 5 }}</text>
+					<text class="receive-order">接单率：{{ brandInfo.acceptanceRate * 100 }}%</text>
+				</view>
 				<view class="detail-msg">
 					{{ brandInfo.elegantDemeanour || '--' }}
 				</view>
@@ -37,17 +50,19 @@
 				</view>
 			</view>
 
-			<view class="brand-brief" style="display: none;">
-				<!--  v-if="brandInfo.mainBusiness" -->
-				<view class="brief-line">
-					<!-- {{
+			<view v-else-if="bottomType === 'brief'" class="brand-brief">
+				<view v-if="brandInfo.mainBusiness" class="brief-line brief-top">
+					{{
 						brandInfo.mainBusiness && typeof brandInfo.mainBusiness === 'string'
-						? brandInfo.mainBusiness.replaceAll(',', ' | ') : null
-						}} -->
-					{{ 'brandInfo.mainBusiness,dsguvuu,hygvfs'.replaceAll(',', ' | ') }}
+							? brandInfo.mainBusiness.replaceAll(',', ' | ') : null
+					}}
 				</view>
-				<!-- v-if="brandInfo.shopTypeName" -->
-				<view v-if="brandInfo.shopTypeName" class="brief-line">
+				<view class="brief-line brief-top">
+					{{
+						'brandIn,fo.mainBus,iness && ty,peof brandInfo.mainBusiness'.replaceAll(',', ' | ')
+					}}
+				</view>
+				<view v-if="brandInfo.shopTypeName" class="brief-line brief-bottom">
 					<text v-for="(item, index) in brandInfo.shopTypeName.split(',')" :key="index" class="item">
 						{{ item }}
 					</text>
@@ -69,6 +84,10 @@ export default {
 		showLogo: {
 			type: Boolean,
 			default: true
+		},
+		bottomType: {
+			type: String,
+			default: 'detail'
 		}
 	}
 }
@@ -134,22 +153,21 @@ export default {
 			}
 		}
 
-		.rate-wrapper {
-			display: flex;
-			align-items: center;
-			font-size: 24upx;
-			color: #EF530E;
-			margin: 12upx 0;
-
-			.receive-order {
-				font-size: 24upx;
-				color: #888889;
-				margin-left: 16upx;
-				white-space: nowrap;
-			}
-		}
-
 		.brand-detail {
+			.rate-wrapper {
+				display: flex;
+				align-items: center;
+				font-size: 24upx;
+				color: #EF530E;
+				margin: 12upx 0;
+
+				.receive-order {
+					font-size: 24upx;
+					color: #888889;
+					margin-left: 16upx;
+					white-space: nowrap;
+				}
+			}
 
 			.detail-msg {
 				font-size: 24upx;
@@ -182,21 +200,33 @@ export default {
 		}
 
 		.brand-brief {
-			.brief-line{
+			.brief-line {
+				padding-top: 18upx;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
+			}
+
+			.brief-top {
+				font-size: 24upx;
+				color: #9E9E9E;
+			}
+
+			.brief-bottom {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+
 				.item {
 					color: #9E9E9E;
 					margin-right: 10upx;
 					padding: 4upx 18upx;
 					font-size: 24upx;
+					font-weight: bold;
 					background-color: #f7f7f7;
 				}
 			}
 		}
-
 	}
-
 }
 </style>

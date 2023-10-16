@@ -4,6 +4,7 @@ pages/prod/
 pages/furniture/
 pages/pre-order/
 pages/order/
+pages/goods-filter/
 main.js
 components/TSpecification/
 user/sever/shopCar/
