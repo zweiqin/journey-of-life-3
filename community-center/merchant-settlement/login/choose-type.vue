@@ -136,7 +136,7 @@ export default {
       if (e.index) {
         uni.switchTab({ url: '/pages/community-center/community-centerr' });
       } else {
-        this.skipModalVisible = true;
+        this.skipModalVisible = false;
       }
     }
   },

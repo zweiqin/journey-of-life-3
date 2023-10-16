@@ -28,6 +28,7 @@
           :personalImg="personalInformation.personalImg"
           :basicInformationForm="personalInformation.basicInformationForm"
           :businessInformationForm="personalInformation.businessInformationForm"
+          :personalInformation="personalInformation"
           @nextSteps="nextSteps"
         ></component>
       </keep-alive>

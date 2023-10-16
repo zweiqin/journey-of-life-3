@@ -3,11 +3,11 @@
 		v-if="shopInfo" class="common-shop-container" :style="{ padding, margin, borderRadius: radius }"
 		@click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shopId)"
 	>
-		<image v-if="showLogo" class="shop-logo" :src="shopInfo.shopLogo || require('../../../static/images/new-user/fee.icon.png')"></image>
+		<image class="shop-logo" :src="shopInfo.shopLogo || require('../../../static/images/new-user/fee.icon.png')"></image>
 
 		<view class="shop-info">
 			<view class="shop-name">
-				<image class="icon" src="../../../static/images/new-community/home/tag.png"></image>
+				<image v-if="showLogo" class="icon" src="../../../static/images/new-community/home/tag.png"></image>
 				<view class="name">{{ shopInfo.shopName || shopInfo.shopNameSimple || '附近商家' }}</view>
 			</view>
 
@@ -40,7 +40,7 @@
 			<view v-else-if="bottomType === 'brief'" class="bottom-brief">
 				<view class="brief-left">
 					<view v-if="shopInfo.mainBusiness" class="serve-list">
-						<text v-for="(item, index) in 'svhgsdvhsdnv,svhgvhdb,jvhbdfuhbv'.split(',')" :key="index" class="item">
+						<text v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index" class="item">
 							{{ item }}
 						</text>
 					</view>

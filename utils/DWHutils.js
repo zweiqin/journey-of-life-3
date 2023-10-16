@@ -223,7 +223,7 @@ export const isVideoSource = (src) => {
  * 大数转小数 12345.123 = 1.23万
  */
 export const convertToDecimal = (number) => {
-  if(!number || isNull(number)) return 0
+  if (!number || isNull(number)) return 0;
   if (number < 10000) {
     return number.toString();
   } else if (number < 100000000) {
@@ -233,4 +233,14 @@ export const convertToDecimal = (number) => {
     const decimalNumber = (number / 100000000).toFixed(2);
     return decimalNumber + '亿';
   }
-}
+};
+
+export const isSubarray = (arr, subarr) => {
+  const mainSet = new Set(arr);
+  for (const element of subarr) {
+    if (!mainSet.has(element)) {
+      return false;
+    }
+  }
+  return true;
+};

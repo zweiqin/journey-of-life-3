@@ -8,38 +8,41 @@
 -->
 <template>
   <view class="authenticationPage">
-      <swiper class="swiper" :current="personalInformation.current" :indicator-dots="false" :autoplay="false" :disable-touch="true">
-        <swiper-item>
-          <Personal :personalInformation="personalInformation"></Personal>
-        </swiper-item>
-        <swiper-item>
-          <Service :personalInformation="personalInformation"></Service>
-        </swiper-item>
-      </swiper>
+    <swiper class="swiper" :current="personalInformation.current" :indicator-dots="false" :autoplay="false" :disable-touch="true">
+      <swiper-item>
+        <Personal :personalInformation="personalInformation"></Personal>
+      </swiper-item>
+      <swiper-item>
+        <Service :personalInformation="personalInformation"></Service>
+      </swiper-item>
+    </swiper>
   </view>
 </template>
 
 <script>
-import Personal from "./childrenPage/Personal.vue"
-import Service from "./childrenPage/Service.vue"
+import Personal from './childrenPage/Personal.vue';
+import Service from './childrenPage/Service.vue';
+import { getUserId } from '../../../utils';
+
 export default {
   name: 'SbXuRuiLi_And_ZhonWeiQing',
   components: {
     Personal,
     Service
   },
-  onLoad() {
-    this.personalInformation.basicInformationForm.userId = this.$store.getters.userInfo.userId
+  onLoad(params) {
+    this.personalInformation.serviceInformation.businessLabel = params.labelIds;
+    this.indexForm.userId = this.$store.getters.userInfo.userId;
   },
   data() {
     return {
       personalInformation: {
         current: 0,
         personalImg: {
-          headUrl: '',
+          headUrl: ''
         },
         basicInformationForm: {
-          userId: '',
+          userId: getUserId(),
           account: '', // 账号
           password: '', // 密码
           confirmPwd: '',
@@ -51,11 +54,11 @@ export default {
           bankName: '', // 银行名称
           userUrl: '', // 个人实名头像
           certImg1: '', // 身份证正面照
-          certImg2: '',// 身份证反面照
+          certImg2: '', // 身份证反面照
           bankCardFront: '', // 银行卡正面照
           bankCardOpposite: '', // !银行卡反面照 非必填 已隐藏
           region: '', // !用于地址选择 和addresText连用  将两者拆开 最终请求时将两者拼接 使用 shopAddress 发送请求
-          addresText: '', // !详细地址
+          addresText: '' // !详细地址
         },
         businessInformationForm: {
           accountId: '', // 	账户ID
@@ -63,21 +66,20 @@ export default {
           shopAddress: '', // 店铺地址
           region: '', // 地址选择   将两者拆开合并 最终请求时将两者拼接 使用 shopAddress 发送请求
           addresText: '', // 详细地址
-          businessLicense: '', // 营业执照 
-          rotationChart : '', // 门店门头
-          shopLogo: '', // 门店LOGO
+          businessLicense: '', // 营业执照
+          rotationChart: '', // 门店门头
+          shopLogo: '' // 门店LOGO
         },
         serviceInformation: {
+          accountId: '', // 账户id
           scopeBusiness: '', // 业务范围
-          businessLabel: '', // 经营标签
-        },
-      },
-    }
+          businessLabel: '' // 经营标签
+        }
+      }
+    };
   },
-  methods: {
-    
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>

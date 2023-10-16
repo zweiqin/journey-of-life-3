@@ -475,7 +475,7 @@ export default {
       const _this = this;
       // #ifdef H5
       // 判断是否已经绑定了手机号
-      if (res.userInfo.phone === '') {
+      if (!res.userInfo.phone) {
         uni.navigateTo({
           url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
         });

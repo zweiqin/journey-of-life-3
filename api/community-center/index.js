@@ -387,3 +387,21 @@ export const getShopStyleListApi = (data) => {
     method: 'GET'
   });
 };
+
+// 获取师傅技能
+export const getSFSkillsListApi = (data) => {
+  return endRequest({
+    url: '/api/third/shop/getServerTypeList',
+    data,
+    method: 'GET'
+  });
+};
+
+//  操作门店业务
+export const saveStoreBusinessApi = (data) => {
+  return endRequest({
+    url: '/api/third/shop/operateShop',
+    data,
+    method: 'POST'
+  });
+};

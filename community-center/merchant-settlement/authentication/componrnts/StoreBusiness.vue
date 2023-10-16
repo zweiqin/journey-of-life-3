@@ -4,75 +4,215 @@
       <view class="formHeader">门店业务</view>
       <tui-form ref="form">
         <view class="inputBox">
-            <view class="moreSlectItem">
-                <tui-input
-                    label-color="#526787" label="业务范围"
-                    background-color="none" :borderBottom="false"
-                    placeholder="请输选择业务范围" disabled
-                >
-                    <template #right>
-                        <image style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
-                    </template>
-                </tui-input>
-           </view>
-            <view class="moreSlectItem">
-                <tui-input
-                    label-color="#526787" label="服务范围"
-                    background-color="none" :borderBottom="false"
-                    placeholder="请选择服务范围" disabled
-                >
-                    <template #right>
-                        <image style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
-                    </template>
-                </tui-input>
+          <view class="moreSlectItem" @click="personalInformation.current = 1">
+            <tui-input readonly label-color="#526787" label="业务范围" background-color="none" v-model="storeBusinessForm.businessScope" :borderBottom="false" placeholder="请输选择业务范围" disabled>
+              <template #right>
+                <image style="width: 30rpx; height: 30rpx; margin-right: 20rpx" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
+              </template>
+            </tui-input>
+          </view>
+          <view class="moreSlectItem" @click="handleChooseLabels">
+            <tui-input v-model="storeBusinessForm.businessLabel" readonly label-color="#526787" label="经营标签" background-color="none" :borderBottom="false" placeholder="请选择经营标签" disabled>
+              <template #right>
+                <image style="width: 30rpx; height: 30rpx; margin-right: 20rpx" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
+              </template>
+            </tui-input>
+
+            <view class="label-list" style="padding: 0 30upx 26upx; box-sizing: border-box; display: flex; align-items: center; flex-wrap: wrap; font-size: 24upx">
+              <view
+                class="item"
+                style="border-radius: 8upx; color: #526787; padding: 3upx 15upx; border: 1rpx solid #526787; margin-right: 22upx; margin-bottom: 20upx"
+                v-for="label in selectBusinessLabels"
+                :key="label.id"
+              >
+                {{ label.labelName }}</view
+              >
             </view>
-            <view class="moreSlectItem">
-                <tui-input
-                    label-color="#526787" label="经营标签"
-                    background-color="none" :borderBottom="false"
-                    placeholder="" disabled
-                >
-                    <template #right>
-                        <image style="width: 30rpx;height: 30rpx;margin-right:20rpx;" src="@/static/images/entryOfMerchants/youjiantou.png" mode=""></image>
-                    </template>
-                </tui-input>
-			      </view>
-          <!-- <tui-input labelColor="#526787" :borderBottom="false" label="服务范围" placeholder="请选择服务范围" clearable v-model="fromData.shopAddress"></tui-input>
-          <tui-input labelColor="#526787" :borderBottom="false" label="经营标签" placeholder="请选择经营标签" clearable v-model="fromData.region"></tui-input> -->
+          </view>
         </view>
       </tui-form>
     </view>
     <view class="nextSteps">
-        <tui-button>下一步</tui-button>
+      <tui-button :loading="isLoading" @click="saveForm">确认提交</tui-button>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
+    <ChooseStylePopup @confirm="handleConfirmChooseLabels" ref="chooseStylePopupRef"></ChooseStylePopup>
   </view>
 </template>
 
 <script>
+import { getShopStyleListApi, saveStoreBusinessApi } from '../../../../api/community-center';
+import ChooseStylePopup from '../componrnts/ChooseStylePopup.vue';
+import { getUserId } from '../../../../utils';
+import { getAccountInfo, getBusinessInformation } from '../../../../api/community-center/merchantSettlement';
+
 export default {
-  name: "StoreBusiness",
+  name: 'StoreBusiness',
+  components: {
+    ChooseStylePopup
+  },
+  props: {
+    personalInformation: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      fromData: {
-        shopName: "", // 门店名称
-        shopAddress: "", // 详细地址
-        region: "", //地址
-        businessType: '', // 经营类别
-        businessLicense: '', // 营业执照
-        doorHeader: '', // 门店门头
-        shopLogo: '', // 门店logo
-      },
+      originShopStyleList: [],
+      shopStyleList: [],
+      selectBusinessLabels: [],
+      isLoading: false
     };
   },
-  methods: {
-    
+  created() {
+    this.getShopStyleList();
+    this.getPrevPageInfo();
   },
+  methods: {
+    async getShopStyleList() {
+      try {
+        this.isLoading = true;
+        const res = await getShopStyleListApi();
+        this.originShopStyleList = JSON.parse(JSON.stringify(res));
+        this.shopStyleList = res;
+        const row = Math.ceil(res.length / 5);
+        const emptyObjCount = 5 * row - res.length;
+        for (let i = 0; i < emptyObjCount; i++) {
+          this.shopStyleList.push({});
+        }
+        this.initBusinessLabel();
+      } catch (error) {
+        this.ttoast({
+          type: 'fail',
+          title: error,
+          message: '行业标签获取失败'
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    // 映射
+    initBusinessLabel(isClear) {
+      if (isClear) {
+        this.selectBusinessLabels = [];
+      }
+      const labels = this.personalInformation.serviceInformation.businessLabel.split(',');
+
+      if (Array.isArray(labels)) {
+        labels.forEach((selectLabel) => {
+          this.originShopStyleList.forEach((item) => {
+            if (item.id == selectLabel) {
+              this.selectBusinessLabels.push(item);
+            }
+          }, this);
+        }, this);
+      }
+    },
+
+    handleChooseLabels() {
+      this.$refs.chooseStylePopupRef.show(this.personalInformation.serviceInformation.businessLabel.split(','), this.shopStyleList);
+    },
+
+    handleConfirmChooseLabels(selectLabels) {
+      this.personalInformation.serviceInformation.businessLabel = selectLabels.join(',');
+      this.initBusinessLabel(true);
+    },
+
+    // 获取account id
+    async getPrevPageInfo() {
+      if (!this.personalInformation.serviceInformation.accountId) {
+        try {
+          const accountInfo = await getAccountInfo({
+            userId: getUserId()
+          });
+
+          this.personalInformation.serviceInformation.accountId = accountInfo.accountId;
+        } catch (error) {
+          this.ttoast({
+            type: 'fail',
+            title: '账户信息获取失败'
+          });
+        }
+      }
+
+      this.getBusinessInformation();
+    },
+
+    async getBusinessInformation() {
+      const res = await getBusinessInformation({
+        accountId: this.personalInformation.serviceInformation.accountId
+      });
+
+      this.personalInformation.serviceInformation.businessLabel = res.shopLabel || '';
+      this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise && typeof res.skillExpertise === 'string' ? res.skillExpertise.split(',') : res.skillExpertise || [];
+    },
+
+    async saveForm() {
+      if (this.isLoading) {
+        return;
+      }
+      if (!this.personalInformation.serviceInformation.scopeBusiness.length) {
+        this.ttoast({
+          type: 'info',
+          title: '请选择业务范围'
+        });
+        return;
+      }
+
+      if (!this.personalInformation.serviceInformation.businessLabel) {
+        this.ttoast({
+          type: 'info',
+          title: '请选择经营标签'
+        });
+        return;
+      }
+
+      try {
+        this.isLoading = true;
+        await saveStoreBusinessApi({
+          accountId: this.personalInformation.serviceInformation.accountId,
+          skillExpertise: this.personalInformation.serviceInformation.scopeBusiness.join(','),
+          shopLabel: this.personalInformation.serviceInformation.businessLabel
+        });
+
+        this.ttoast('提交成功，请等待管理员审核');
+        setTimeout(() => {
+          uni.switchTab({ url: '/pages/user/user' });
+        }, 2000);
+      } catch (error) {
+        this.ttoast({
+          type: 'fail',
+          title: error,
+          content: '提交失败'
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  },
+  computed: {
+    storeBusinessForm() {
+      // const scopeBusinessCount = this.personalInformation.serviceInformation.scopeBusiness.length;
+
+      let scopeBusiness = this.personalInformation.serviceInformation.scopeBusiness;
+      if (typeof scopeBusiness === 'string') {
+        scopeBusiness = scopeBusiness.split(',');
+      }
+      return {
+        businessScope: scopeBusiness ? `已选${scopeBusiness.length}个` : '',
+        businessLabel: this.selectBusinessLabels.length ? `已选${this.selectBusinessLabels.length}个` : ''
+      };
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .moreSlectItem:active {
-	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
 }
 .formBox {
   position: relative;
