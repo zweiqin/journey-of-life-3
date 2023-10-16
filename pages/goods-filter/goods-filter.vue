@@ -98,6 +98,7 @@ export default {
     this.mainId = options.id * 1
     this.subId = options.sub * 1
     this.setData()
+	this.getGoodsList()
   },
 
   methods: {

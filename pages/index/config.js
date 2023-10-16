@@ -1,8 +1,8 @@
 export const homeTopNavs = [
   {
-    name: '全屋套餐',
-    iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
-    url: '/pages/furniture/furniture?id=null'
+	  name: '家具严选',
+	  iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
+	  url: '/pages/furniture/furniture?id=null'
   },
   {
     name: '全屋快装',
@@ -10,8 +10,8 @@ export const homeTopNavs = [
     url: '/pages/furniture/furniture?id=null'
   },
   {
-    name: '家具严选',
-    iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
+    name: '全屋套餐',
+    iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
     url: '/pages/furniture/furniture?id=null'
   },
   {
