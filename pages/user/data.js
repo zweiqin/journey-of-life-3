@@ -103,6 +103,7 @@ export const myEquity = [
     url: '/user/commission-statistics/commission-statistics',
     permission: () => {
       const status = store.getters.regimentalCommanderStatus;
+	  		// console.log(store.getters.regimentalCommanderStatus)
       if (!status) return '你的等级不够，请先申请成为团长';
       if (status === 3) {
         return null;
