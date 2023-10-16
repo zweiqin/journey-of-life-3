@@ -141,7 +141,7 @@ export default {
         const categories = res.data.categoryList.slice(0, 7);
         this.categories = categories;
         this.categories.push({
-          iconUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png',
+          iconUrl: require('@/static/images/index/moremore.png'),
           id: null,
           url: '/pages/furniture/furniture?goodsType=100101741&id=null',
           name: '更多'

@@ -67,6 +67,18 @@
         "navigationBarTitleText": "全部商品"
       }
     },
+	{
+	  "path": "pages/index/IntelligentSelection/index",
+	  "style": {
+	    "navigationBarTitleText": "智能选配"
+	  }
+	},
+	// {
+	// 	"path": "pages/index/CommodityTypePage/index",
+	// 	"style": {
+	// 	  "navigationBarTitleText": "商品类型"
+	// 	}
+	// },
     // {
     //   "path": "pages/index/WholehouseCustomization/detail/detail",
     //   "style": {
