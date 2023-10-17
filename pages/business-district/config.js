@@ -1,32 +1,29 @@
 export const navbarAll = [
 	{
-		labelName: '充话费',
-		iconUrl: require('../../static/images/new-business/home/chonghuafei.png'),
-		type: 0,
-		tag: 'phone-bill',
-		tagUrl: require('../../static/images/new-business/home/youhui.png')
+		labelName: '品牌家居',
+		iconUrl: require('../../static/images/new-business/home/pinpaijiaju.png'),
+		type: 1
 	},
 	{
-		labelName: '充电费',
-		iconUrl: require('../../static/images/new-business/home/chongdianfei.png'),
-		type: 0
+		labelName: '建材五金',
+		iconUrl: require('../../static/images/new-business/home/jiancaiwujin.png'),
+		type: 2
 	},
-	{
-		labelName: '加油站',
-		iconUrl: require('../../static/images/new-business/home/jiayouzhan.png'),
-		type: 0
-	},
-
 	{
 		labelName: '找师傅',
 		iconUrl: require('../../static/images/new-business/home/weixiu.png'),
-		type: 4,
+		type: 3,
 		tag: 'fix',
 		tagUrl: require('../../static/images/new-business/home/fix.png')
 	},
 	{
 		labelName: '找家政',
 		iconUrl: require('../../static/images/new-business/home/baomu.png'),
+		type: 4
+	},
+	{
+		labelName: '中介公司',
+		iconUrl: require('../../static/images/new-business/home/zhongjiegongsi.png'),
 		type: 5
 	},
 	{
@@ -49,11 +46,15 @@ export const navbarAll = [
 		iconUrl: require('../../static/images/new-business/home/yangche.png'),
 		type: 9
 	},
+
 	{
-		labelName: '宠物',
-		iconUrl: require('../../static/images/new-business/home/chongwu.png'),
-		type: 10
+		labelName: '便民服务',
+		iconUrl: require('../../static/images/new-business/home/bianminfuwu.png'),
+		type: 0,
+		tag: 'phone-bill',
+		tagUrl: require('../../static/images/new-business/home/youhui.png')
 	},
+
 	{
 		labelName: '酒店民宿',
 		iconUrl: require('../../static/images/new-business/home/jiudianminsu.png'),
@@ -72,13 +73,13 @@ export const navbarAll = [
 		type: 13
 	},
 	{
-		labelName: '儿童乐园',
-		iconUrl: require('../../static/images/new-business/home/ertongleyuan.png'),
+		labelName: '教育培训',
+		iconUrl: require('../../static/images/new-business/home/peixunshi.png'),
 		type: 14
 	},
 	{
-		labelName: '电影院',
-		iconUrl: require('../../static/images/new-business/home/dianying.png'),
+		labelName: '广告礼品',
+		iconUrl: require('../../static/images/new-business/home/guanggaolipin.png'),
 		type: 15
 	},
 	{
@@ -87,8 +88,8 @@ export const navbarAll = [
 		type: 16
 	},
 	{
-		labelName: '培训室',
-		iconUrl: require('../../static/images/new-business/home/peixunshi.png'),
+		labelName: '儿童乐园',
+		iconUrl: require('../../static/images/new-business/home/ertongleyuan.png'),
 		type: 17
 	},
 	{
@@ -102,13 +103,13 @@ export const navbarAll = [
 		type: 19
 	},
 	{
-		labelName: '中介公司',
-		iconUrl: require('../../static/images/new-business/home/zhongjiegongsi.png'),
+		labelName: '宠物',
+		iconUrl: require('../../static/images/new-business/home/chongwu.png'),
 		type: 20
 	},
 	{
-		labelName: '广告礼品',
-		iconUrl: require('../../static/images/new-business/home/guanggaolipin.png'),
+		labelName: '电影院',
+		iconUrl: require('../../static/images/new-business/home/dianying.png'),
 		type: 21
 	},
 	{
