@@ -13,7 +13,8 @@ export const homeTopNavs = [
   {
     name: '全屋套餐',
     iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
-    url: '/pages/furniture/furniture?id=null'
+    // url: '/pages/furniture/furniture?id=null'
+    url: '/pages/index/WholehouseCustomization/index'
   },
   {
     name: '智能选配',

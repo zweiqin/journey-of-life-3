@@ -33,12 +33,12 @@ export default {
 
 <style lang="less" scoped>
 .new-goods-pane-container {
-  height: 540upx;
+  // height: 540upx;
   width: 333upx;
   background-color: #fff;
   margin-bottom: 23upx;
   border-radius: 20upx;
-  overflow: hidden;
+  // overflow: hidden;
 
   .goods-logo {
     position: relative;
@@ -50,7 +50,7 @@ export default {
     .level-1 {
       width: 258upx;
       height: 100%;
-      background-color: #D0D0D0;
+      background-color: #d0d0d01a;
       border-radius: 20upx;
       position: absolute;
       left: 50%;
@@ -129,8 +129,12 @@ export default {
       }
 
       .is-suppot-voucher {
+        margin-top: 10rpx;
+        margin-bottom: 10rpx;
+        // margin: 20rpx;
 				width: fit-content;
-        border: 1upx solid #E24747;
+        // border: 1upx solid #e247478c;
+        box-shadow: 0px 0px 0px 0.5px #e247478c;
         color: #E24747;
         font-size: 22upx;
         border-radius: 8upx;
