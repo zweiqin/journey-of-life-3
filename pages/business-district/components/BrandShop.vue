@@ -15,29 +15,47 @@
 				<view class="name">{{ brandInfo.shopName || brandInfo.shopNameSimple }}</view>
 			</view>
 
+			<view v-if="bottomType === 'detail'" class="brand-detail">
+				<!-- <view class="detail-msg">{{ brandInfo.elegantDemeanour || '--' }}</view> -->
+				<view class="rate-wrapper">
+					<view>
+						<tui-rate :size="12" active="#EF530E" :current="brandInfo.score || 5"></tui-rate>
+						<text class="rate-count">{{ brandInfo.score || 5 }}</text>
+					</view>
+					<!-- <text class="receive-order">接单率：{{ brandInfo.acceptanceRate * 100 }}%</text> -->
+					<text v-if="brandInfo.attentionNum" class="receive-order">浏览量{{ brandInfo.attentionNum }}</text>
+				</view>
+			</view>
+
+			<view v-if="bottomType === 'brief'" class="brand-brief">
+				<view v-if="brandInfo.mainBusiness" class="brief-line brief-top">
+					{{
+						brandInfo.mainBusiness && typeof brandInfo.mainBusiness === 'string'
+							? brandInfo.mainBusiness.replaceAll(',', ' | ') : null
+					}}
+				</view>
+				<view v-if="brandInfo.shopTypeName" class="brief-line brief-bottom">
+					<text v-for="(item, index) in brandInfo.shopTypeName.split(',')" :key="index" class="item">
+						{{ item }}
+					</text>
+				</view>
+			</view>
+
 			<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
 				<view
-					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #0d0e0d;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #0d0e0d;"
+					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 2upx 6upx;border: 1upx solid #E24747;border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
 					补贴代金券{{ brandInfo.voucherProportion ? Number(brandInfo.voucherProportion) * 100 : 0 }}%
 				</view>
 				<view
 					v-if="brandInfo.isVoucher"
-					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
+					style="width: fit-content;margin-top: 8upx;padding: 2upx 6upx;border: 1upx solid #E24747;border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
 					支持代金券
 				</view>
 			</view>
 
 			<view v-if="bottomType === 'detail'" class="brand-detail">
-				<view class="rate-wrapper">
-					<tui-rate :size="12" active="#EF530E" :current="brandInfo.score || 5"></tui-rate>
-					<text class="rate-count">{{ brandInfo.score || 5 }}</text>
-					<text class="receive-order">接单率：{{ brandInfo.acceptanceRate * 100 }}%</text>
-				</view>
-				<view class="detail-msg">
-					{{ brandInfo.elegantDemeanour || '--' }}
-				</view>
 				<view class="other-info">
 					<view v-if="brandInfo.distance" class="item">
 						<image class="icon" src="../../../static/images/new-business/home/location.png"></image>
@@ -50,23 +68,15 @@
 				</view>
 			</view>
 
-			<view v-else-if="bottomType === 'brief'" class="brand-brief">
-				<view v-if="brandInfo.mainBusiness" class="brief-line brief-top">
-					{{
-						brandInfo.mainBusiness && typeof brandInfo.mainBusiness === 'string'
-							? brandInfo.mainBusiness.replaceAll(',', ' | ') : null
-					}}
-				</view>
-				<view class="brief-line brief-top">
-					{{
-						'brandIn,fo.mainBus,iness && ty,peof brandInfo.mainBusiness'.replaceAll(',', ' | ')
-					}}
-				</view>
-				<view v-if="brandInfo.shopTypeName" class="brief-line brief-bottom">
-					<text v-for="(item, index) in brandInfo.shopTypeName.split(',')" :key="index" class="item">
-						{{ item }}
-					</text>
-				</view>
+			<view v-if="showPrice" style="margin-top: 16upx;">
+				<text style="color: #E02208;">
+					<text style="font-size: 28upx;">￥</text>
+					<text style="font-size: 38upx;font-weight: bold;">99.99</text>
+				</text>
+				<text style="color: #979797;">
+					<text style="font-size: 26upx;">起</text>
+					<text style="margin-left: 10upx;;font-size: 24upx;text-decoration: line-through;">￥199.44</text>
+				</text>
 			</view>
 		</view>
 	</view>
@@ -88,6 +98,10 @@ export default {
 		bottomType: {
 			type: String,
 			default: 'detail'
+		},
+		showPrice: {
+			type: Boolean,
+			default: false
 		}
 	}
 }
@@ -96,7 +110,7 @@ export default {
 <style lang="less" scoped>
 /deep/ .tui-lazyload__box {
 	position: relative;
-	width: 333upx !important;
+	width: 100% !important;
 	height: auto !important;
 	border-radius: 20upx !important;
 	overflow: hidden;
@@ -104,7 +118,6 @@ export default {
 }
 
 .brand-shop-container {
-	width: 333upx;
 	background-color: #fff;
 	border-radius: 20upx;
 	margin-bottom: 20upx;
@@ -119,7 +132,6 @@ export default {
 			bottom: -20upx;
 			left: 50%;
 			transform: translateX(-50%);
-			width: 306upx;
 			height: 251upx;
 			background: url('../../../static/images/new-business/home/diu.png') no-repeat;
 			background-size: cover;
@@ -129,7 +141,7 @@ export default {
 
 	.brand-info {
 		width: 100%;
-		padding: 16upx 20upx 40upx;
+		padding: 16upx 14upx 18upx;
 		box-sizing: border-box;
 
 		.brand-title-wrapper {
@@ -156,10 +168,11 @@ export default {
 		.brand-detail {
 			.rate-wrapper {
 				display: flex;
+				justify-content: space-between;
 				align-items: center;
 				font-size: 24upx;
 				color: #EF530E;
-				margin: 12upx 0;
+				margin: 12upx 0 0;
 
 				.receive-order {
 					font-size: 24upx;
@@ -222,7 +235,6 @@ export default {
 					margin-right: 10upx;
 					padding: 4upx 18upx;
 					font-size: 24upx;
-					font-weight: bold;
 					background-color: #f7f7f7;
 				}
 			}

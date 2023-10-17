@@ -1,7 +1,7 @@
 <template>
 	<view class="store-filter-container">
 		<view
-			style="display: flex;justify-content: space-between;align-items: center;font-size: 30upx;"
+			style="display: flex;justify-content: space-between;align-items: center;font-size: 28upx;"
 			@click="dropdownShow = true"
 		>
 			<view
@@ -42,7 +42,7 @@
 			style="position: fixed;left: 0;z-index: 996;" @close="handleCloseDropdown()"
 		>
 			<view style="padding: 6upx 24upx 26upx;">
-				<view style="display: flex;justify-content: space-between;align-items: center;font-size: 30upx;">
+				<view style="display: flex;justify-content: space-between;align-items: center;font-size: 28upx;">
 					<view
 						:style="{ color: primaryFilterBoxObj.quanbumeishi || (dropdownType === 'classification') ? '#ff4b10' : '#000000' }"
 						@click="dropdownType === 'classification' ? handleCloseDropdown() : dropdownType = 'classification'"

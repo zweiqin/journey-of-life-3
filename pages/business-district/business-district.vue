@@ -21,12 +21,12 @@
 			<view style="margin-top: 20upx;">
 				<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
 					<template #left="{ entity }">
-						<view style="width: 340upx;">
+						<view style="width: 338upx;">
 							<BrandShop :brand-info="entity"></BrandShop>
 						</view>
 					</template>
 					<template #right="{ entity }">
-						<view style="width: 340upx;">
+						<view style="width: 338upx;">
 							<BrandShop :brand-info="entity"></BrandShop>
 						</view>
 					</template>
@@ -166,7 +166,7 @@ export default {
 .business-district-container {
 	min-height: 100vh;
 	background-color: #f6f6f6;
-	padding: 40upx 30upx 140upx;
+	padding: 40upx 26upx 140upx;
 	box-sizing: border-box;
 
 	.brand-shop-caontainer {

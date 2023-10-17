@@ -18,7 +18,7 @@
 				</view>
 				<view>
 					<view
-						v-for="(item) in sortList.slice(0, 2)" :key="item" style="display: inline-block;margin-left: 28upx;"
+						v-for="(item, index) in sortList.slice(0, 2)" :key="index" style="display: inline-block;margin-left: 28upx;"
 						:style="{
 							fontWeight: item.name === sortText ? 'bold' : 'normal',
 							color: item.name === sortText ? '#222229' : '#979797'
@@ -53,7 +53,7 @@
 					</view>
 					<view>
 						<view
-							v-for="(item) in sortList.slice(0, 2)" :key="item" style="display: inline-block;margin-left: 28upx;"
+							v-for="(item, index) in sortList.slice(0, 2)" :key="index" style="display: inline-block;margin-left: 28upx;"
 							:style="{
 								fontWeight: item.name === sortText ? 'bold' : 'normal',
 								color: item.name === sortText ? '#222229' : '#979797'
