@@ -83,7 +83,6 @@
 </template>
 
 <script>
-	//  做个保存，谨防哪一天上面那群脑瘫要我重新改
 import { sf } from '../../config';
 import loginRule from './rules';
 import { throttle } from '../../utils';
@@ -99,6 +98,7 @@ import {
 } from '../../constant';
 import { bindLastUserApi, checkBindApi } from '../../api/user';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
+
 const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index'];
 
 export default {
@@ -118,6 +118,7 @@ export default {
         0: false,
         1: false
       },
+
       redirect: '',
       isBind: false,
       bindId: null,
@@ -127,16 +128,6 @@ export default {
     };
   },
   async onLoad(options) {
-	// 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
-	// #ifdef H5
-		// console.log('new OldTuanFeng',params)
-		// console.log(this.$store.state.app.isFromNewSystem)
-		if(options.from && options.from == 'NewSystem') {
-			// 如果来自于新系统则将全局的新系统判断改为true
-			this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
-		}
-	// #endif
-	// this.$store.state.app.isFromNewSystem
     if (options.miniProgram) {
       getApp().globalData.isInMiniprogram = true;
     }
@@ -208,13 +199,9 @@ export default {
           url: '/'
         });
       } else {
-		if(this.$store.state.app.isFromNewSystem) {
-			// 啥也不干，给爷干等着登录
-		}else {
-			uni.switchTab({
-			  url: '/'
-			});
-		}
+        uni.switchTab({
+          url: '/'
+        });
       }
     }
   },
@@ -251,6 +238,7 @@ export default {
             username: _this.loginForm.phone,
             password: _this.loginForm.password
           });
+
           // 是否是师傅邀请码
           if (_this.partnerCode) {
             await _this.handlePartnerBind(res.userInfo.userId);
@@ -296,6 +284,7 @@ export default {
           } else {
             // #endif
             if (this.redirect) {
+              // console.log('进来了', this.redirect)
               if (tabbarList.includes(_this.redirect)) {
                 uni.switchTab({
                   url: _this.redirect
@@ -450,6 +439,7 @@ export default {
     // 微信登陆后续
     async handleWXLoginAfter(res) {
       const _this = this;
+
       // #ifdef H5
       // 判断是否已经绑定了手机号
       if (res.userInfo.phone === '') {
