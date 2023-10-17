@@ -84,7 +84,7 @@ export default {
   }
 
   .shop-list {
-    margin-top: -84upx;
+    margin-top: -114upx;
     padding: 38upx 30upx;
     box-sizing: border-box;
 
