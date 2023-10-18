@@ -2,7 +2,7 @@
     <view class="container">
         <swiper class="swiper" :current="current" :disable-touch="true" duration="200" :autoplay="false">
             <swiper-item>
-                <EditingPage :formData="formData"></EditingPage>
+                <EditingPage @checkoutCurrent="checkoutCurrent" :formData="formData"></EditingPage>
             </swiper-item>
             <swiper-item>
                 <RewardPage></RewardPage>
@@ -46,7 +46,9 @@ export default {
 
     },
     methods: {
-
+        checkoutCurrent(value) {
+            this.current = value
+        }
     }
 }
 </script>

@@ -3,3 +3,6 @@ import { USER_TOKEN } from 'constant';
 
 
 export const getRedStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redStatistics', data, 'get');
+
+// /dtsPostCategory/selectCategory
+export const selectCategory = (data) => RuanRequest('/dtsPostCategory/selectCategory', data);

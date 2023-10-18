@@ -1,7 +1,7 @@
 <template>
     <view class="MakeSmallFortuneBox">
         <view class="containerHeader">
-            <tui-icon color="#8a2a2a" name="arrowleft" unit="rpx" :size="88"></tui-icon>
+            <tui-icon color="#8a2a2a" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章中心</text>
             <form @submit="getPostList">
             <view class="SearchBox">
@@ -48,6 +48,7 @@ export default {
         changeTab(index) {
             this.currentTab = index
             if (index == 2) {
+                this.currentTab = 0
                 uni.navigateTo({
                      url: '/community-center/makeSmallFortune/release'
                 });
@@ -55,6 +56,9 @@ export default {
         },
         getPostList() {
             console.log(123)
+        },
+        goBack() {
+            uni.navigateBack();
         }
     }
 }
