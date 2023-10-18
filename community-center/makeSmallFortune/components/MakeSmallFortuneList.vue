@@ -6,7 +6,7 @@
 
 <script>
 import Articles from './Articles.vue'
-import { getRedStatistics } from '@/api/community-center/makeSmallFortune'
+import { getRedStatistics, getPostList } from '@/api/community-center/makeSmallFortune'
 import { getUserId } from '@/utils';
 export default {
   name: "MakeSmallFortuneList",
@@ -16,42 +16,34 @@ export default {
   props: {},
   data() {
     return {
-      renderData: [
-          {
-            title: '',
-            timer: '',
-            isOver: false,
-            readerAvata: [
-              require('@/static/images/new-community/home/avatar1.png'),
-              require('@/static/images/new-community/home/avatar2.png'),
-              require('@/static/images/new-community/home/avatar3.png')
-            ],
-            maxPrice: '99',
-            isReadNumber: '666',
-            coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
-          },
-          {
-            title: '',
-            timer: '',
-            isOver: true,
-            readerAvata: [
-              require('@/static/images/new-community/home/avatar1.png'),
-              require('@/static/images/new-community/home/avatar2.png'),
-              require('@/static/images/new-community/home/avatar3.png')
-            ],
-            maxPrice: '99',
-            isReadNumber: '666',
-            coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
-          }
-        ]
+      renderData: []
     }
   },
   created() {
-    getRedStatistics({
-      userId: getUserId()
-    }).then(res => {
-      console.log(res)
-    })
+      let region
+      try{
+        region = uni.getStorageSync('ADDRES_REGION')
+      }catch {
+        region = '顺德区'
+      }
+      getPostList({
+        userId: "",
+        page: "1",
+        size: "10",
+        examineType:"3",
+        region
+      }).then(res => {
+        // res.data.talentList
+        res.data.talentList.forEach((item, index) => {
+          item.readerAvata = [
+                require('@/static/images/new-community/home/avatar1.png'),
+                require('@/static/images/new-community/home/avatar2.png'),
+                require('@/static/images/new-community/home/avatar3.png')
+              ]
+          this.renderData.push(item)
+        })
+        console.log(this.renderData)
+      })
   },
   computed: {},
   methods: {

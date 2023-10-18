@@ -1,11 +1,14 @@
 <template>
   <view class="serve-shop-container">
-    <view class="bar" @click="go('/community-center/shop/shop')">
+    <view class="bar">
       <image class="bar-img" src="../../../static/images/new-community/home/wdnmdBanner.png"></image>
     </view>
 
     <view class="shop-list">
       <view class="content">
+        <view class="nomore" v-if="renderData.length <= 0">
+          暂时没有人发布文章~
+        </view>
         <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
         <button class="Release">
           发布
@@ -22,6 +25,21 @@
 </template>
 
 <script>
+// [ // 假数据 参考作用
+//           {
+//             title: '',
+//             timer: '',
+//             isOver: true,
+//             readerAvata: [
+//               require('@/static/images/new-community/home/avatar1.png'),
+//               require('@/static/images/new-community/home/avatar2.png'),
+//               require('@/static/images/new-community/home/avatar3.png')
+//             ],
+//             maxPrice: '99',
+//             isReadNumber: '666',
+//             coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
+//           }
+//         ]
 import { getPostList } from '@/api/community-center/makeSmallFortune'
 import Articles from './Articles.vue'
 import { getUserId } from '@/utils';
@@ -33,34 +51,7 @@ export default {
   props: {},
   data() {
     return {
-        renderData: [
-          {
-            title: '',
-            timer: '',
-            isOver: false,
-            readerAvata: [
-              require('@/static/images/new-community/home/avatar1.png'),
-              require('@/static/images/new-community/home/avatar2.png'),
-              require('@/static/images/new-community/home/avatar3.png')
-            ],
-            maxPrice: '99',
-            isReadNumber: '666',
-            coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
-          },
-          {
-            title: '',
-            timer: '',
-            isOver: true,
-            readerAvata: [
-              require('@/static/images/new-community/home/avatar1.png'),
-              require('@/static/images/new-community/home/avatar2.png'),
-              require('@/static/images/new-community/home/avatar3.png')
-            ],
-            maxPrice: '99',
-            isReadNumber: '666',
-            coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
-          }
-        ]
+        renderData: []
     }
   },
   created() {
@@ -73,11 +64,20 @@ export default {
     getPostList({
       userId: "",
       page: "1",
-      size: "10",
+      size: "7",
       examineType:"3",
       region
     }).then(res => {
-      console.log(res)
+      // res.data.talentList
+      res.data.talentList.forEach((item, index) => {
+        item.readerAvata = [
+              require('@/static/images/new-community/home/avatar1.png'),
+              require('@/static/images/new-community/home/avatar2.png'),
+              require('@/static/images/new-community/home/avatar3.png')
+            ]
+        this.renderData.push(item)
+      })
+      console.log(this.renderData)
     })
   },
   computed: {},
@@ -126,6 +126,12 @@ export default {
         padding: 38upx 0;
         box-sizing: border-box;
         z-index: 10;
+        .nomore {
+          font-size: 28upx;
+          color: #999;
+          text-align: center;
+          margin: 30upx 0rpx;
+        }
       }
       .Release {
         width: 646rpx;
