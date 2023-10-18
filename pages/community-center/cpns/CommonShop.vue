@@ -13,47 +13,19 @@
 					<view class="name">{{ shopInfo.shopName || shopInfo.shopNameSimple || '附近商家' }}</view>
 				</view>
 
-				<view class="shop-middle">
+				<view class="shop-middle" :style="{ marginTop: bottomType === 'detail' ? '10upx' : '0' }">
 					<view class="rate">
 						<tui-rate active="#EF530E" :current="shopInfo.score" :size="14" disabled></tui-rate>
 						<text class="rate-text">{{ shopInfo.score }}</text>
 					</view>
-					<view class="accept-precentage">接单率{{ shopInfo.acceptanceRate * 100 }}%</view>
-				</view>
-
-				<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
-					<view
-						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #0d0e0d;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #0d0e0d;"
-					>
-						补贴代金券{{ shopInfo.voucherProportion ? Number(shopInfo.voucherProportion) * 100 : 0 }}%
-					</view>
-					<view
-						v-if="shopInfo.isVoucher"
-						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
-					>
-						支持代金券
-					</view>
+					<view v-if="shopInfo.attentionNum" class="accept-precentage">浏览量{{ shopInfo.attentionNum }}</view>
 				</view>
 
 				<view v-if="bottomType === 'detail'" class="bottom-detail">
 					<view class="detail-msg">{{ shopInfo.elegantDemeanour || '--' }}</view>
-					<view class="op-info">
-						<view class="item">
-							<image class="icon" src="../../../static/images/new-community/home/follow.png"></image>
-							<text class="num">{{ shopInfo.attentionNum || 0 }}</text>
-						</view>
-						<view class="item">
-							<image class="icon" src="../../../static/images/new-community/home/views.png"></image>
-							<text class="num">{{ shopInfo.accessNum || 0 }}</text>
-						</view>
-						<view v-if="shopInfo.distance" class="item">
-							<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
-							<text class="num">{{ shopInfo.distance || 0 }}km</text>
-						</view>
-					</view>
 				</view>
 
-				<view v-else-if="bottomType === 'brief'" class="bottom-brief">
+				<view v-if="bottomType === 'brief'" class="bottom-brief">
 					<view class="brief-left">
 						<view v-if="shopInfo.mainBusiness" class="serve-list">
 							<text v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index" class="item">
@@ -69,6 +41,37 @@
 					<view v-if="shopInfo.distance" class="brief-right">
 						<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
 						<text>{{ shopInfo.distance || 0 }}km</text>
+					</view>
+				</view>
+
+				<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
+					<view
+						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 2upx 6upx;border: 1upx solid #E24747;border-radius: 12upx;font-size: 24upx;color: #E24747;"
+					>
+						补贴代金券{{ shopInfo.voucherProportion ? Number(shopInfo.voucherProportion) * 100 : 0 }}%
+					</view>
+					<view
+						v-if="shopInfo.isVoucher"
+						style="width: fit-content;margin-top: 8upx;padding: 2upx 6upx;border: 1upx solid #E24747;border-radius: 12upx;font-size: 24upx;color: #E24747;"
+					>
+						支持代金券
+					</view>
+				</view>
+
+				<view v-if="bottomType === 'detail'" class="bottom-detail">
+					<view class="op-info">
+						<view class="item">
+							<image class="icon" src="../../../static/images/new-community/home/follow.png"></image>
+							<text class="num">{{ shopInfo.attentionNum || 0 }}</text>
+						</view>
+						<view class="item">
+							<image class="icon" src="../../../static/images/new-community/home/views.png"></image>
+							<text class="num">{{ shopInfo.accessNum || 0 }}</text>
+						</view>
+						<view v-if="shopInfo.distance" class="item">
+							<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
+							<text class="num">{{ shopInfo.distance || 0 }}km</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -160,6 +163,7 @@ export default {
 
 			.rate {
 				line-height: 1;
+
 				.rate-text {
 					font-size: 24upx;
 					color: #ef530e;

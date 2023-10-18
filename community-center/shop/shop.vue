@@ -8,7 +8,7 @@
 				<tui-input
 					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" label="" placeholder="社区商圈"
 					clearable is-fillet padding="6upx 10upx 6upx 26upx"
-					style="flex: 1;margin-left: 16upx;;border: 2upx solid #EF5511;"
+					style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
 				>
 					<template #right>
 						<tui-button
@@ -92,7 +92,7 @@
 										<text style="font-weight: bold;">{{ part.price }}</text>
 									</text>
 									<text
-										style="padding: 4upx 14upx;margin-left: 10upx;;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 16upx;"
+										style="padding: 4upx 14upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 16upx;"
 									>
 										{{ part.discount }}折
 									</text>
@@ -108,8 +108,9 @@
 		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;">
 			<tui-tab
 				:tabs="selectionBoxArr" :current="selectionBoxNum" scroll background-color="transparent"
-				:size="36" bold
-				color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+				:size="32" bold
+				bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
+				slider-height="4px"
 				@change="(e) => selectionBoxNum = e.index"
 			></tui-tab>
 		</view>
@@ -124,11 +125,88 @@
 			<StoreSecondaryFilterBox @select="handleSelectSecondaryFilter"></StoreSecondaryFilterBox>
 		</view>
 
-		<!-- 特殊中间结构 -->
-		<view v-if="ownSpecialHotelBox.includes(currentType)" style="margin: 14upx 26upx 0;">
-			特殊酒店中间结构
-			<view>搜索筛选框</view>
-			<view>超低一口价商品框</view>
+		<!-- 酒店特殊中间结构 -->
+		<view v-if="ownSpecialHotelBox.includes(currentType)">
+			<view
+				style="padding: 200upx 26upx 0;background: url('~@/../static/images/new-business/list/hotel-img.png') no-repeat center top/contain;"
+			>
+				<view style="padding: 28upx 22upx;background-color: #ffffff;border-radius: 24upx;">
+					<view>国内</view>
+					<view>顺德</view>
+					<view>今日明日日期</view>
+					<view>input</view>
+					<view>查找酒店</view>
+				</view>
+			</view>
+			<view
+				style="margin: 14upx 26upx 0;padding: 22upx 22upx 36upx;background: linear-gradient(150deg, #FDF3F1 3%, #FEEAEC 6%, #FFFBEF 10%, #FFFFFF 45%);"
+			>
+				<view style="display: flex;align-items: center;">
+					<text style="font-size: 34upx;font-weight: bold;">超低一口价</text>
+					<view
+						style="display: flex;align-items: center;margin-left: 18upx;background-color: #fce5df;border-radius: 20upx;"
+					>
+						<view
+							style="width: 110upx;height: 36upx;padding: 6upx 12upx;font-size: 28upx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20upx 0 26upx 20upx;clip-path: polygon(0upx 0upx, 134upx 0, 124upx 8upx, 124upx 48upx, 0 48upx);"
+						>
+							<text style="margin-left: -10upx;">限时购</text>
+						</view>
+						<view style="font-size: 26upx;font-weight: bold;color: #f84715;padding: 0 14upx 0;">01:02:15</view>
+					</view>
+				</view>
+				<view style="margin-top: 20upx;">
+					<view
+						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18upx;"
+						@click="go(`/?id=${item.id}`)"
+					>
+						<view>
+							<TuanIcon
+								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
+								:src="item.url || require('../../static/images/index/explosion.webp')"
+							>
+							</TuanIcon>
+						</view>
+						<view style="flex: 1;width: 0;margin-left: 20upx;">
+							<view
+								style="font-size: 34upx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+							>
+								{{ item.name }}
+							</view>
+							<view
+								style="margin-top: 6upx;font-size: 26upx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+							>
+								{{ item.typeName }}
+							</view>
+							<view style="margin-top: 8upx;">
+								<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">已售100+</view>
+								<view style="display: flex;justify-content: flex-end;align-items: center;margin-top: 14upx;">
+									<view style="margin-right: 12upx;">
+										<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">1晚价</view>
+										<view style="display: flex;align-items: center;color: #ef530e;">
+											<view style="font-size: 24upx;color: #9e9e9e;text-decoration: line-through;">￥444.44</view>
+											<text>
+												<text style="font-size: 24upx;">￥</text>
+												<text style="font-size: 38upx;font-weight: bold;">{{ item.price }}</text>
+											</text>
+											<text
+												style="padding: 2upx 10upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 12upx;white-space: nowrap;"
+											>
+												{{ item.discount }}折
+											</text>
+										</view>
+									</view>
+									<tui-button
+										type="warning" width="140rpx" height="72rpx" shape="circle"
+										style="background: #ee6529!important;"
+									>
+										抢购
+									</tui-button>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
@@ -175,27 +253,63 @@
 					<scroll-view scroll-x="true">
 						<view style="display: flex;">
 							<view
-								v-for="item in [{ id: 1, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 2, price: 299.88, originPrice: 444.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: 'vsvfxdvdf' }, { id: 3, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 4, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 5, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 6, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }]"
-								:key="item.id" style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18upx;"
+								v-for="item in [{ id: 1, price: 4.44, originPrice: 7.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐shdgbvhjdxvbhdfvbhdbv不VS的就焗鸡30g/包' }, { id: 2, price: 299.88, originPrice: 444.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: 'vsvfxdvdf' }, { id: 3, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 4, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 5, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 6, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }]"
+								:key="item.id"
+								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18upx;"
 							>
 								<view style="width: 160upx;">
 									<tui-lazyload-img
-										width="100%" height="170upx" mode="scaleToFill" radius="20upx"
+										width="100%" height="168upx" mode="scaleToFill" radius="20upx"
 										:src="item.picUrl"
 									></tui-lazyload-img>
-									<view style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-										<text style="font-size: 28upx;color: #a2a2a2;">{{ item.name }}</text>
+									<view
+										style="line-height: 1;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+									>
+										<text style="font-size: 24upx;">{{ item.name }}</text>
 									</view>
 								</view>
-								<view>
-									<view style="color: #EF530E;">￥{{ item.price }}</view>
-									<view style="font-size: 28upx;color: #979797;">￥{{ item.originPrice }}</view>
+								<view style="margin-top: 14upx;display: flex;align-items: center;flex-wrap: wrap;">
+									<view style="font-size: 28upx;font-weight: bold;color: #E02208;margin-right: 10upx;">
+										<text style="font-size: 26upx;">￥</text>
+										{{ item.price }}
+									</view>
+									<view style="font-size: 24upx;color: #979797;text-decoration: line-through;">
+										￥{{ item.originPrice }}
+									</view>
 								</view>
 							</view>
 						</view>
 					</scroll-view>
 				</view>
 			</CommonShop>
+		</view>
+		<view v-if="ownBrandCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
+				<template #left="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
+					</view>
+				</template>
+				<template #right="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
+					</view>
+				</template>
+			</tui-waterfall>
+		</view>
+		<view v-if="ownBrandCardWithPriceBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
+				<template #left="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
+					</view>
+				</template>
+				<template #right="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
+					</view>
+				</template>
+			</tui-waterfall>
 		</view>
 		<view v-show="!nearbyShopList.length && loadingStatus !== 'loading'" class="no-data"> 暂无门店~ </view>
 		<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
@@ -204,6 +318,7 @@
 
 <script>
 import CommonShop from '../../pages/community-center/cpns/CommonShop.vue'
+import BrandShop from '../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
 import { getNearByShopListApi, getSecondLevelShopLabelListApi } from '../../api/community-center'
@@ -211,7 +326,7 @@ import { getCurrentLocation } from '../../utils'
 
 export default {
 	name: 'Shop',
-	components: { CommonShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
+	components: { CommonShop, BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
 	data() {
 		return {
 			transformation: {
@@ -242,8 +357,8 @@ export default {
 			parentId: '',
 
 			// 判断每个类板块是否拥有某个页面结构
-			ownSearchBar: ['1', '2', '3', '4', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
-			ownMenuBar: ['5', '6', '7', '8', '9', '13', '16'],
+			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			ownMenuBar: ['1', '2', '3', '5', '6', '7', '8', '9', '13', '16'],
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
@@ -262,7 +377,8 @@ export default {
 			},
 			ownSecondaryFilterBox: ['7', '8'],
 			ownSpecialHotelBox: [ '11' ],
-			ownShopCardBox: ['1', '2', '3', '4', '6', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			specialHotelGoodsArr: [],
+			ownShopCardBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
 			ownShopCardWithLineBox: [ '13' ],
 			ownShopCardWithGoodsBox: ['7', '8'],
 			ownBrandCardBox: [ '5' ],
@@ -292,8 +408,12 @@ export default {
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
-		} else if (this.ownSelectionBox.includes(this.currentType)) {
+		}
+		if (this.ownSelectionBox.includes(this.currentType)) {
 			this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐', '精选团购', '精选团购', '精选团购', '精选团购'] || ['加油站', '充电桩', '停车场', '代办点', '年检站']
+		}
+		if (this.ownSpecialHotelBox.includes(this.currentType)) {
+			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 		}
 		if (this.ownMenuBar.includes(this.currentType)) {
 			try {
