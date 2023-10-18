@@ -4,7 +4,7 @@
         <view class="ArticlesCoverSheetBox">
           <!-- @/static/images/new-community/home/CoverSheet.png -->
           <image class="ArticlesCoverSheet" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
-          <image class="ArticlesCoverSheet overPng" v-if="!datas.totalPacket > 0" src='@/static/images/new-community/home/isOver.png'></image>
+          <image class="ArticlesCoverSheet overPng" v-if="!(datas.redPacketInfo.totalPacket > 0)" src='@/static/images/new-community/home/isOver.png'></image>
         </view>
         <view class="LeftInformation">
           <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
@@ -51,7 +51,7 @@ export default {
   methods: {
     gotoArticleDetails() {
       uni.navigateTo({
-         url: `/community-center/makeSmallFortune/articleDetails?id=${datas.postId}`
+         url: `/community-center/makeSmallFortune/articleDetails?id=${this.datas.postId}`
       });
     }
   },

@@ -10,7 +10,7 @@
           暂时没有人发布文章~
         </view>
         <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
-        <button class="Release">
+        <button class="Release" @click="go('/community-center/makeSmallFortune/release')">
           发布
         </button>
         <view class="more" @click="go('/community-center/makeSmallFortune/index')">
@@ -55,33 +55,36 @@ export default {
     }
   },
   created() {
-    let region
-    try{
-      region = uni.getStorageSync('ADDRES_REGION')
-    }catch {
-      region = '顺德区'
-    }
-    getPostList({
-      userId: "",
-      page: "1",
-      size: "7",
-      examineType:"3",
-      region
-    }).then(res => {
-      // res.data.talentList
-      res.data.talentList.forEach((item, index) => {
-        item.readerAvata = [
-              require('@/static/images/new-community/home/avatar1.png'),
-              require('@/static/images/new-community/home/avatar2.png'),
-              require('@/static/images/new-community/home/avatar3.png')
-            ]
-        this.renderData.push(item)
-      })
-      console.log(this.renderData)
-    })
   },
   computed: {},
-  methods: {},
+  methods: {
+		getPostList() {
+			let region
+			try{
+				region = uni.getStorageSync('ADDRES_REGION')
+			}catch {
+				region = '顺德区'
+			}
+			getPostList({
+				userId: "",
+				page: "1",
+				size: "7",
+				examineType:"3",
+				region
+			}).then(res => {
+				// res.data.talentList
+				this.renderData = res.data.talentList.map((item, index) => {
+					item.readerAvata = [
+								require('@/static/images/new-community/home/avatar1.png'),
+								require('@/static/images/new-community/home/avatar2.png'),
+								require('@/static/images/new-community/home/avatar3.png')
+							]
+					return item
+				})
+				console.log(this.renderData)
+			})
+		}
+	},
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕

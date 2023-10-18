@@ -51,6 +51,27 @@
 					</tui-input>
 					<view style="font-size: 24upx;color: #888889;">最低1个</view>
 				</view>
+				<view style="display: flex;align-items: center;justify-content: space-between;padding: 40upx 18upx 0 0;">
+					<text>红包金额是否随机</text>
+					<tui-radio-group
+						v-model="redPacketInfo.isRandom"
+						style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
+						@change="(e) => {}"
+					>
+						<tui-label
+							v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]"
+							:key="index"
+						>
+							<tui-list-cell padding="16upx">
+								<view>
+									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+									</tui-radio>
+									<text>{{ part.name }}</text>
+								</view>
+							</tui-list-cell>
+						</tui-label>
+					</tui-radio-group>
+				</view>
 				<view>
 					<tui-input
 						v-model="redPacketInfo.link" label="广告链接" placeholder="输入广告链接" size="30"
@@ -98,6 +119,7 @@ export default {
 			redPacketInfo: {
 				totalAmount: '',
 				totalPacket: '',
+				isRandom: '',
 				link: ''
 			}
 		}
@@ -114,7 +136,7 @@ export default {
 			if (!this.formData.postCover) return this.$showToast('缺少文章封面')
 			if (!this.region) return this.$showToast('缺少文章归属地')
 			if (this.redPacketInfo.totalAmount < 1) return this.$showToast('投放金额最低为1元')
-			if (this.redPacketInfo.totalPacket < 1) return this.$showToast('投放数量最低为1个')
+			if (!this.redPacketInfo.isRandom) return this.$showToast('请选择是否随机')
 			addPublishArticleApi({ ...this.formData, region: this.region, redPacketInfo: this.redPacketInfo })
 				.then(async ({ data: lastData }) => {
 					if (this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram) {

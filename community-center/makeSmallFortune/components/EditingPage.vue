@@ -141,10 +141,10 @@ export default {
 .addType {
     box-sizing: border-box;
     padding: 30rpx;
-    width: 100vw;
+    width: 100%;
     height: auto;
     .addTypeIltem {
-         width: 100vw;
+         width: 100%;
          height: auto;
          margin-bottom: 10rpx;
          display: flex;
@@ -192,7 +192,7 @@ export default {
   z-index: 10;
 }
 .EditingPage {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     overflow-y: auto;
     .header {
@@ -233,8 +233,9 @@ export default {
         }
     }
     .articlesTitle {
+				box-sizing: border-box;
         position: relative;
-        width: 100vw;
+        width: 100%;
         height: 105rpx;
         padding: 10rpx 30rpx;
         display: flex;
@@ -251,7 +252,7 @@ export default {
             position: absolute;
             bottom: 0;
             left: 50%;
-            transform: translateX(-55%);
+            transform: translateX(-50%);
             content: '';
             width: 690rpx;
             height: 2rpx;
@@ -261,7 +262,7 @@ export default {
         box-sizing: border-box;
         padding: 30rpx;
         margin-top: 15rpx;
-        width: 100vw;
+        width: 100%;
         min-height: 600rpx;
         font-size: 30rpx;
         font-weight: normal;
@@ -271,7 +272,7 @@ export default {
     .uploadImg {
         box-sizing: border-box;
         padding: 30rpx;
-        width: 100vw;
+        width: 100%;
         /* height: 300rpx; */
         .texts {
             font-size: 28rpx;

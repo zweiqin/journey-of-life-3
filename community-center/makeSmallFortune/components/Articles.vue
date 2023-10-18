@@ -1,74 +1,74 @@
 <template>
-  <view class="ArticlesItem">
-      <view class="ArticlesItemTop">
-        <view class="ArticlesCoverSheetBox">
-          <!-- @/static/images/new-community/home/CoverSheet.png -->
-          <image class="ArticlesCoverSheet" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
-          <image class="ArticlesCoverSheet overPng" v-if="!datas.totalPacket > 0" src='@/static/images/new-community/home/isOver.png'></image>
-        </view>
-        <view class="LeftInformation">
-          <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
-          <view class="timer">发布者：团峰科技</view>
-          <view class="TheReader">
-            <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
-            <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
-            <!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
-          </view>
-        </view>
-      </view>
-      <view class="ArticlesItemTBottom">
-        <view class="maxPrice">
-          <view class="maxText">
-            最高奖励
-          </view>
-          <view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元</view>
-        </view>
-        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" @click="gotoArticleDetails">
-          查看详情
-        </view>
-        <view class="disableds" v-else>
-          已结束
-        </view>
-      </view>
-  </view>
+	<view class="ArticlesItem">
+		<view class="ArticlesItemTop">
+			<view class="ArticlesCoverSheetBox">
+				<!-- @/static/images/new-community/home/CoverSheet.png -->
+				<image class="ArticlesCoverSheet" :src="datas.postCover ? datas.postCover : require(&quot;@/static/images/new-community/home/CoverSheet.png&quot;)"></image>
+				<image v-if="!(datas.redPacketInfo.totalPacket > 0)" class="ArticlesCoverSheet overPng" src="@/static/images/new-community/home/isOver.png"></image>
+			</view>
+			<view class="LeftInformation">
+				<view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
+				<view class="timer">发布者：团峰科技</view>
+				<view class="TheReader">
+					<image v-for="(item, index) in datas.readerAvata" :key="index" :src="item" class="ReaderAvatar" :class="{ more: index > 0, moremore: index > 1 }"></image>
+					<text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket - datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
+					<!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
+				</view>
+			</view>
+		</view>
+		<view class="ArticlesItemTBottom">
+			<view class="maxPrice">
+				<view class="maxText">
+					最高奖励
+				</view>
+				<view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random() * 100 + 20) }}元</view>
+			</view>
+			<view v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" class="ClicTokDetails" @click="gotoArticleDetails">
+				查看详情
+			</view>
+			<view v-else class="disableds">
+				已结束
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  name: "Articles",
-  props: {
-    datas: {
-      type: Object,
-      default: {}
-    }
-  },
-  data() {
-    return {
-      
-    }
-  },
-  computed: {},
-  methods: {
-    gotoArticleDetails() {
-      uni.navigateTo({
-         url: `/community-center/makeSmallFortune/articleDetails?id=${datas.postId}`
-      });
-    }
-  },
-  watch: {},
+	name: 'Articles',
+	props: {
+		datas: {
+			type: Object,
+			default: {}
+		}
+	},
+	data() {
+		return {
 
-  // 组件周期函数--监听组件挂载完毕
-  mounted() {},
-  // 组件周期函数--监听组件数据更新之前
-  beforeUpdate() {},
-  // 组件周期函数--监听组件数据更新之后
-  updated() {},
-  // 组件周期函数--监听组件激活(显示)
-  activated() {},
-  // 组件周期函数--监听组件停用(隐藏)
-  deactivated() {},
-  // 组件周期函数--监听组件销毁之前
-  beforeDestroy() {},
+		}
+	},
+	computed: {},
+	watch: {},
+
+	// 组件周期函数--监听组件挂载完毕
+	mounted() {},
+	// 组件周期函数--监听组件数据更新之前
+	beforeUpdate() {},
+	// 组件周期函数--监听组件数据更新之后
+	updated() {},
+	// 组件周期函数--监听组件激活(显示)
+	activated() {},
+	// 组件周期函数--监听组件停用(隐藏)
+	deactivated() {},
+	// 组件周期函数--监听组件销毁之前
+	beforeDestroy() {},
+	methods: {
+		gotoArticleDetails() {
+			uni.navigateTo({
+				url: `/community-center/makeSmallFortune/articleDetails?id=${this.datas.postId}`
+			})
+		}
+	}
 }
 </script>
 
@@ -144,7 +144,7 @@ export default {
       }
     }
   }
-  
+
   .ArticlesItemTBottom {
     margin-top: 10rpx;
     width: 100%;
@@ -165,7 +165,7 @@ export default {
         font-weight: normal;
         color: #FFFFFF;
         z-index: 1;
-      } 
+      }
       .maxPriceNumber {
         box-sizing: border-box;
         z-index: 0;

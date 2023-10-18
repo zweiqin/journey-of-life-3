@@ -30,7 +30,7 @@
       <VipPackage :scrollTop="scrollTop"></VipPackage>
     </view>
     <view class="MakeSmallFortune">
-        <MakeSmallFortune></MakeSmallFortune>
+        <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
     </view>
     <!-- 家具维修养护一条街 -->
     <!-- <ServeShop ref="serveShopRef"></ServeShop> -->
@@ -124,6 +124,7 @@ export default {
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
+			this.$refs.refMakeSmallFortune&&this.$refs.refMakeSmallFortune.getPostList()
     });
 
     if (!app.globalData.isShowCommunityPopup) {
