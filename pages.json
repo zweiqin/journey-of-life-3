@@ -635,6 +635,18 @@
           "style": {
             "navigationBarTitleText": "选择门店标签"
           }
+        },
+        {
+          "path": "makeSmallFortune/index",
+          "style": {
+            "navigationBarTitleText": "赚小钱"
+          }
+        },
+        {
+          "path": "makeSmallFortune/release",
+          "style": {
+            "navigationBarTitleText": "发布订阅者模式"
+          }
         }
       ]
     },

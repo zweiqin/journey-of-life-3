@@ -8,7 +8,7 @@
       <view class="content">
         <!-- <DirectSaleStore :shopInfo="shopList[0]"></DirectSaleStore> -->
         <CommonShop v-for="(shopData, index) in shopList" :shopInfo="shopData" :key="index"></CommonShop>
-        <view class="more" @click="go('/community-center/shop/shop')">
+        <view class="more" @click="go('/community-center/makeSmallFortune/index')">
           <button class="uni-btn">
             查看更多
             <tui-icon :size="18" name="arrowright"></tui-icon>
