@@ -5,7 +5,7 @@
                 <EditingPage @checkoutCurrent="checkoutCurrent" :formData="formData"></EditingPage>
             </swiper-item>
             <swiper-item>
-                <RewardPage></RewardPage>
+                <RewardPage :formData="formData" @back="() => current = 0"></RewardPage>
             </swiper-item>
         </swiper>
     </view>

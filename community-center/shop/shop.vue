@@ -66,7 +66,7 @@
 						<view
 							v-for="(part, count) in item" :key="count"
 							style="display: flex;align-items: center;justify-content: space-between;width: 49%;height: 100%;overflow: hidden;"
-							@click="go(`/?id=${part.id}`)"
+							@click="go(`/pages/prod/prod?goodsId=${part.id}`)"
 						>
 							<view>
 								<TuanIcon
@@ -105,7 +105,7 @@
 		</view>
 
 		<!-- 类别选择框（额外的同‘一级分类’的分类） -->
-		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;">
+		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;" class="selection-box-tab">
 			<tui-tab
 				:tabs="selectionBoxArr" :current="selectionBoxNum" scroll background-color="transparent"
 				:size="32" bold
@@ -131,11 +131,98 @@
 				style="padding: 200upx 26upx 0;background: url('~@/../static/images/new-business/list/hotel-img.png') no-repeat center top/contain;"
 			>
 				<view style="padding: 28upx 22upx;background-color: #ffffff;border-radius: 24upx;">
-					<view>国内</view>
-					<view>顺德</view>
-					<view>今日明日日期</view>
-					<view>input</view>
-					<view>查找酒店</view>
+					<view class="special-hotel-tab">
+						<tui-tab
+							:tabs="['国内', '民宿公寓', '钟点房']" :current="specialHotelBoxObj.tabIndex" scroll
+							background-color="transparent" :size="32" bold bottom="6upx"
+							color="#222229" selected-color="#222229"
+							slider-bg-color="#ef530e" slider-height="3px"
+							@change="(e) => specialHotelBoxObj.tabIndex = e.index"
+						></tui-tab>
+					</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 18upx;">
+						<TuanLocation style="flex: 1;font-size: 38upx;font-weight: bold;">
+							{{ $store.getters.currentCity || '定位失败' }}
+						</TuanLocation>
+						<view style="display: flex;align-items: center;padding-left: 16upx;border-left: 1upx solid #CDCDCD;">
+							<TuanIcon
+								:size="16" name="gps" color="#EF5613"
+								style="padding: 2upx;border: 1upx solid #EF5613;border-radius: 50%;line-height: 1;"
+							></TuanIcon>
+							<text style="margin-left: 14upx;font-size: 30upx;color: #EF5613;">我的位置</text>
+						</view>
+					</view>
+					<view style="margin-top: 18upx;">
+						<view
+							style="display: flex;justify-content: space-between;align-items: center;"
+							@click="$refs.refSpecialHotelBoxCalendar && $refs.refSpecialHotelBoxCalendar.show()"
+						>
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view style="padding-right: 24upx;border-right: 1upx solid #D8D8D8;">
+									<view style="display: flex;align-items: center;font-size: 24upx;">
+										<TuanIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										{{ specialHotelBoxObj.startDate === new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')
+											? '今日' : '' }}入住
+									</view>
+									<view style="padding-top: 16upx;">
+										<text style="color: #ef5613;">
+											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月')
+											}}日
+										</text>
+										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8upx;font-size: 24upx;">
+											{{
+												specialHotelBoxObj.startWeek.replace('星期', '周') }}
+										</text>
+									</view>
+								</view>
+								<view style="padding-left: 24upx;">
+									<view style="display: flex;align-items: center;font-size: 24upx;">
+										<TuanIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										{{ specialHotelBoxObj.endDate === new Date(Date.now() + 24 * 60 * 60 *
+											1000).toLocaleString().substring(0, 10).replaceAll('/', '-') ? '明日' : '' }}离店
+									</view>
+									<view style="padding-top: 16upx;">
+										<text>{{ specialHotelBoxObj.endDate.substring(5, 10).replaceAll('-', '月') }}日</text>
+										<text v-if="specialHotelBoxObj.endWeek" style="padding-left: 8upx;font-size: 24upx;">
+											{{
+												specialHotelBoxObj.endWeek.replace('星期', '周') }}
+										</text>
+									</view>
+								</view>
+							</view>
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<text style="margin-right: 6upx;font-size: 28upx;color: #014BB8;">
+									共{{
+										(Date.parse(specialHotelBoxObj.endDate.replaceAll('-', '/')) -
+											Date.parse(specialHotelBoxObj.startDate.replaceAll('-', '/'))) / (24 * 60 * 60 * 1000) }}晚
+								</text>
+								<TuanIcon :size="20" name="arrowright" color="#3D3D3D" style="line-height: 1;"></TuanIcon>
+							</view>
+						</view>
+						<tui-calendar
+							ref="refSpecialHotelBoxCalendar" :type="2" is-fixed
+							:min-date="new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')"
+							:max-date="new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleString().substring(0, 10).replaceAll('/', '-')"
+							@change="handleSelectSpecialHotelBoxCalendar"
+						></tui-calendar>
+					</view>
+					<view>
+						<tui-input
+							v-model="queryInfo.search" label="" placeholder="搜索酒店/地名/关键词" clearable
+							padding="14upx 0upx"
+							margin-top="20"
+							style="border-top: 1upx solid rgba(216, 216, 216, 0.5);border-bottom: 1upx solid rgba(216, 216, 216, 0.5);"
+						>
+						</tui-input>
+					</view>
+					<view style="margin-top: 20upx;">
+						<tui-button
+							type="warning" width="100%" height="82rpx"
+							style="background: #ef5613!important;border-radius: 10upx;"
+						>
+							查找酒店
+						</tui-button>
+					</view>
 				</view>
 			</view>
 			<view
@@ -157,7 +244,7 @@
 				<view style="margin-top: 20upx;">
 					<view
 						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18upx;"
-						@click="go(`/?id=${item.id}`)"
+						@click="go(`/pages/prod/prod?goodsId==${item.id}`)"
 					>
 						<view>
 							<TuanIcon
@@ -197,7 +284,7 @@
 									</view>
 									<tui-button
 										type="warning" width="140rpx" height="72rpx" shape="circle"
-										style="background: #ee6529!important;"
+										style="background: #ee6529!important;" @click="go(`/pages/prod/prod?goodsId==${item.id}`)"
 									>
 										抢购
 									</tui-button>
@@ -330,6 +417,7 @@ export default {
 	data() {
 		return {
 			transformation: {
+				0: '全部商家',
 				1: '品牌家居',
 				2: '建材',
 				3: '找师傅',
@@ -378,7 +466,18 @@ export default {
 			ownSecondaryFilterBox: ['7', '8'],
 			ownSpecialHotelBox: [ '11' ],
 			specialHotelGoodsArr: [],
-			ownShopCardBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			specialHotelBoxObj: {
+				tabIndex: 0,
+				startDate: new Date().toLocaleString()
+					.substring(0, 10)
+					.replaceAll('/', '-'),
+				endDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString()
+					.substring(0, 10)
+					.replaceAll('/', '-'),
+				startWeek: '',
+				endWeek: ''
+			},
+			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
 			ownShopCardWithLineBox: [ '13' ],
 			ownShopCardWithGoodsBox: ['7', '8'],
 			ownBrandCardBox: [ '5' ],
@@ -397,14 +496,14 @@ export default {
 	},
 	watch: {
 		'queryInfo.search'(value) {
-			if (!value) {
+			if (value) {
 				this.getNearByShopList(true)
 			}
 		}
 	},
 	async onLoad(options) {
-		this.currentType = options.type
-		this.parentId = options.id
+		this.currentType = options.type || '0'
+		this.parentId = options.id || ''
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
@@ -414,6 +513,9 @@ export default {
 		}
 		if (this.ownSpecialHotelBox.includes(this.currentType)) {
 			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
+		}
+		if (this.ownShopCardBox.includes(this.currentType) || this.ownShopCardWithLineBox.includes(this.currentType) || this.ownShopCardWithGoodsBox.includes(this.currentType) || this.ownBrandCardBox.includes(this.currentType) || this.ownBrandCardWithPriceBox.includes(this.currentType)) {
+			this.getNearByShopList(true)
 		}
 		if (this.ownMenuBar.includes(this.currentType)) {
 			try {
@@ -431,7 +533,6 @@ export default {
 				this.$showToast(error || '未知错误')
 			}
 		}
-		this.getNearByShopList(true)
 	},
 	methods: {
 		back() {
@@ -445,6 +546,14 @@ export default {
 		handleSelectSecondaryFilter(e) {
 			console.log(e)
 		},
+		handleSelectSpecialHotelBoxCalendar(e) {
+			console.log(e)
+			if (e.startDate === e.endDate) return this.$showToast('不能选择同一天')
+			this.specialHotelBoxObj.startDate = e.startDate
+			this.specialHotelBoxObj.endDate = e.endDate
+			this.specialHotelBoxObj.startWeek = e.startWeek
+			this.specialHotelBoxObj.endWeek = e.endWeek
+		},
 		async getNearByShopList(isClear) {
 			if (isClear) {
 				this.queryInfo.pageNo = 1
@@ -457,7 +566,7 @@ export default {
 			try {
 				const currentAddress = await getCurrentLocation()
 				this.queryInfo.address = currentAddress + ''
-				const res = await getNearByShopListApi(this.queryInfo)
+				const res = await getNearByShopListApi({ ...this.queryInfo, shopLabel: this.parentId })
 				if (res.statusCode === 20000) {
 					if (res.data) {
 						this.nearbyShopList = [...this.nearbyShopList, ...res.data.data]
@@ -519,12 +628,26 @@ export default {
 		}
 	}
 
-	.tui-scroll__view {
-		/deep/ .tui-tabs__line {
-			margin-left: -26upx;
-			clip-path: inset(0% 30% 0% 30% round 4upx 4upx 4upx 4upx);
-			// background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ef530e 20%, #ef530e 80%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)!important;
-			// clip-path: polygon(20% 0, 80% 0, 80% 100%, 20% 100%);
+	.selection-box-tab {
+		.tui-scroll__view {
+			/deep/ .tui-tabs__line {
+				margin-left: -26upx;
+				clip-path: inset(0% 30% 0% 30% round 4upx 4upx 4upx 4upx);
+				// background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ef530e 20%, #ef530e 80%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)!important;
+				// clip-path: polygon(20% 0, 80% 0, 80% 100%, 20% 100%);
+			}
+		}
+	}
+
+	.special-hotel-tab {
+		.tui-scroll__view {
+			/deep/ .tui-tabs__item {
+				padding: 0 60upx 0 0;
+			}
+
+			/deep/ .tui-tabs__line {
+				margin-left: -48upx;
+			}
 		}
 	}
 

@@ -14,7 +14,7 @@
         <view class="price-wrapper">
           ￥<text class="price-text">{{ goods.counterPrice }}</text>
         </view>
-        <view v-if="goods.supportVoucher" class="is-suppot-voucher">可使用{{ Math.ceil(Number(goods.counterPrice)) }}代金券抵扣</view>
+        <view v-if="goods.supportVoucher && goods.voucherAmount" class="is-suppot-voucher">可使用{{ goods.voucherAmount }}代金券抵扣</view>
       </view>
     </view>
   </view>

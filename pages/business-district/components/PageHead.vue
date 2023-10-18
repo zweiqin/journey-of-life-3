@@ -1,29 +1,44 @@
 <template>
-  <view class="page-header-container">
-    <TuanAppShim bg="#fff"></TuanAppShim>
+	<view class="page-header-container">
+		<TuanAppShim bg="#fff"></TuanAppShim>
 
-    <view class="container">
-      <TuanLocation>
-        <view class="location-wrapper">
-          {{ $store.getters.currentCity || '定位失败' }}
-        </view>
-      </TuanLocation>
-      <view class="search-container">
-        <input class="input" placeholder="社区商圈" type="text">
-        <button class="uni-btn">搜索</button>
-      </view>
-      <view class="more">
-        <view class="bar-wrapper">
-          <view class="bar-item"></view>
-          <view class="bar-item"></view>
-          <view class="bar-item"></view>
-          <view class="bar-item"></view>
-        </view>
+		<view class="container">
+			<view style="flex: 1;display: flex;align-items: center;margin-right: 26upx;background-color: #ffffff;border: 2upx solid #EF5511;border-radius: 50upx;">
+				<TuanLocation style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;">
+					{{ $store.getters.currentCity || '定位失败' }}
+					<TuanIcon
+						:size="26" name="turningdown" color="#222229"
+					></TuanIcon>
+				</TuanLocation>
+				<tui-input
+					label="" placeholder="全屋严选" disabled
+					clearable padding="6upx 10upx 6upx 26upx" background-color="transparent"
+					style="flex: 1;margin-left: 16upx;"
+					@click="go('/community-center/search')"
+				>
+					<template #right>
+						<tui-button
+							type="warning" width="120rpx" height="50rpx" shape="circle"
+							style="background: #ee692f!important;"
+							@click="go('/community-center/search')"
+						>
+							搜索
+						</tui-button>
+					</template>
+				</tui-input>
+			</view>
+			<view class="more">
+				<view class="bar-wrapper">
+					<view class="bar-item"></view>
+					<view class="bar-item"></view>
+					<view class="bar-item"></view>
+					<view class="bar-item"></view>
+				</view>
 
-        <text class="more-text">更多</text>
-      </view>
-    </view>
-  </view>
+				<text class="more-text">更多</text>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -34,116 +49,63 @@ export default {
 
 <style lang="less" scoped>
 @keyframes rotate-bar {
-  0% {
-    transform: rotate(90deg) scale(1);
-    opacity: 0.8;
+	0% {
+		transform: rotate(90deg) scale(1);
+		opacity: 0.8;
 
-  }
+	}
 
-  50% {
-    opacity: 1;
-    transform: scale(0.9);
-  }
+	50% {
+		opacity: 1;
+		transform: scale(0.9);
+	}
 
-  100% {
-    transform: rotate(0deg) scale(1);
-    opacity: 0.8;
-  }
+	100% {
+		transform: rotate(0deg) scale(1);
+		opacity: 0.8;
+	}
 }
 
 .page-header-container {
-  .container {
-    display: flex;
-    align-items: center;
+	.container {
+		display: flex;
+		align-items: center;
 
-    .location-wrapper {
-      position: relative;
-      width: 150upx;
-      padding-right: 25upx;
-      box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+		.more {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding-top: 2upx;
 
+			.bar-wrapper {
+				width: 36upx;
+				height: 36upx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
 
-      &::after {
-        position: absolute;
-        top: 28%;
-        right: 0;
-        content: '';
-        display: block;
-        border: 16upx solid #3d3d3d;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        border-bottom-color: transparent;
-      }
+				.bar-item {
+					width: 16upx;
+					height: 16upx;
+					background-color: #000;
+					margin-bottom: 6upx;
+					border-radius: 4upx;
+					flex-shrink: 0;
 
-    }
+					&:nth-child(2) {
+						background-color: #EE6C33;
+						animation: rotate-bar 1s ease-in-out infinite reverse 4s;
+					}
+				}
+			}
 
-    .search-container {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      margin: 0 18upx;
-      height: 72upx;
-      border: 1upx solid #EF5511;
-      border-radius: 100upx;
-      padding: 9upx 11upx;
-      box-sizing: border-box;
-
-      .input {
-        flex: 1;
-        font-size: 28upx;
-      }
-
-      .uni-btn {
-        width: 112upx;
-        height: 100%;
-        background: linear-gradient(270deg, #EF530E 0%, #EE6C33 100%);
-        border-radius: 100px;
-        font-size: 24upx;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
-    .more {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding-top: 2upx;
-
-      .bar-wrapper {
-        width: 36upx;
-        height: 36upx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-
-        .bar-item {
-          width: 16upx;
-          height: 16upx;
-          background-color: #000;
-          margin-bottom: 6upx;
-          border-radius: 4upx;
-          flex-shrink: 0;
-
-          &:nth-child(2) {
-            background-color: #EE6C33;
-            animation: rotate-bar 1s ease-in-out infinite reverse 4s;
-          }
-        }
-      }
-
-      .more-text {
-        font-size: 24upx;
-        color: #222229;
-      }
-    }
-  }
+			.more-text {
+				font-size: 24upx;
+				color: #222229;
+			}
+		}
+	}
 }
 </style>

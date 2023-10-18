@@ -33,7 +33,7 @@
         <MakeSmallFortune></MakeSmallFortune>
     </view>
     <!-- 家具维修养护一条街 -->
-    <ServeShop ref="serveShopRef"></ServeShop>
+    <!-- <ServeShop ref="serveShopRef"></ServeShop> -->
 
     <!-- 四季专区 -->
     <!-- <FourSeasonsZone></FourSeasonsZone> -->
