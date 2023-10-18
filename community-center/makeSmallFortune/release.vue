@@ -22,12 +22,14 @@ export default {
         RewardPage
     },
     onLoad() {
+        this.region = uni.getStorageSync('ADDRES_REGION')
         this.formData.publishUserId = getUserId();
     },
     data() {
         return {
             current: 0,
             formData: {
+                region: '440606',
                 publishUserId: "", // 发布者id
                 postTitle: "", // 文章标题
                 postContent:"", // 文章内容

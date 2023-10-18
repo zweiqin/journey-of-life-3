@@ -201,6 +201,7 @@ export default {
     },
 
     handleConfirmAddress(selectInfo) {
+      // console.log(selectInfo)
       this.form.detailedAddress = selectInfo.formatAddress4;
     },
 

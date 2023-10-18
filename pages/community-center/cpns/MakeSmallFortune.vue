@@ -22,7 +22,9 @@
 </template>
 
 <script>
+import { getPostList } from '@/api/community-center/makeSmallFortune'
 import Articles from './Articles.vue'
+import { getUserId } from '@/utils';
 export default {
   name: "MakeSmallFortune",
   components: {
@@ -60,6 +62,23 @@ export default {
           }
         ]
     }
+  },
+  created() {
+    let region
+    try{
+      region = uni.getStorageSync('ADDRES_REGION')
+    }catch {
+      region = '顺德区'
+    }
+    getPostList({
+      userId: "",
+      page: "1",
+      size: "10",
+      examineType:"3",
+      region
+    }).then(res => {
+      console.log(res)
+    })
   },
   computed: {},
   methods: {},

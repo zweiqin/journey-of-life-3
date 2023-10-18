@@ -1,5 +1,5 @@
 <template>
-  <view class="MakeSmallFortuneList" @click="pushsss">
+  <view class="MakeSmallFortuneList">
     <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
   </view>
 </template>

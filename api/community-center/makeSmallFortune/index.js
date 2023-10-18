@@ -6,3 +6,6 @@ export const getRedStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/red
 
 // /dtsPostCategory/selectCategory
 export const selectCategory = (data) => RuanRequest('/dtsPostCategory/selectCategory', data);
+
+// /dtsPostBbs/postList
+export const getPostList = (data) => RuanRequest('/dtsPostBbs/postList', data);
