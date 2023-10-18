@@ -647,6 +647,12 @@
           "style": {
             "navigationBarTitleText": "发布订阅者模式"
           }
+        },
+        {
+          "path": "makeSmallFortune/articleDetails",
+          "style": {
+            "navigationBarTitleText": "阅读者模式"
+          }
         }
       ]
     },

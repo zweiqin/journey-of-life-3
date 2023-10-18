@@ -2,15 +2,17 @@
   <view class="ArticlesItem">
       <view class="ArticlesItemTop">
         <view class="ArticlesCoverSheetBox">
-          <image class="ArticlesCoverSheet" src='@/static/images/new-community/home/CoverSheet.png'></image>
-          <image class="ArticlesCoverSheet overPng" v-if="datas.isOver" src='@/static/images/new-community/home/isOver.png'></image>
+          <!-- @/static/images/new-community/home/CoverSheet.png -->
+          <image class="ArticlesCoverSheet" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
+          <image class="ArticlesCoverSheet overPng" v-if="!datas.totalPacket > 0" src='@/static/images/new-community/home/isOver.png'></image>
         </view>
         <view class="LeftInformation">
-          <view class="title">劲爆！0元可在附近就能开店快...</view>
-          <view class="timer">活动时间：05月17日-07月15日</view>
+          <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
+          <view class="timer">发布者：团峰科技</view>
           <view class="TheReader">
             <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
-            <text class="ReaderNumber">已有100+人领取</text>
+            <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
+            <!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
           </view>
         </view>
       </view>
@@ -19,9 +21,9 @@
           <view class="maxText">
             最高奖励
           </view>
-          <view class="maxPriceNumber">可获取99元</view>
+          <view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元</view>
         </view>
-        <view class="ClicTokDetails" v-if="!datas.isOver">
+        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" @click="gotoArticleDetails">
           查看详情
         </view>
         <view class="disableds" v-else>
@@ -46,7 +48,13 @@ export default {
     }
   },
   computed: {},
-  methods: {},
+  methods: {
+    gotoArticleDetails() {
+      uni.navigateTo({
+         url: `/community-center/makeSmallFortune/articleDetails?id=${datas.postId}`
+      });
+    }
+  },
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕

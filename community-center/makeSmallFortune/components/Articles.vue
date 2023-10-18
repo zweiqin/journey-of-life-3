@@ -2,15 +2,17 @@
   <view class="ArticlesItem">
       <view class="ArticlesItemTop">
         <view class="ArticlesCoverSheetBox">
-          <image class="ArticlesCoverSheet" src='@/static/images/new-community/home/CoverSheet.png'></image>
-          <image class="ArticlesCoverSheet overPng" v-if="datas.isOver" src='@/static/images/new-community/home/isOver.png'></image>
+          <!-- @/static/images/new-community/home/CoverSheet.png -->
+          <image class="ArticlesCoverSheet" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
+          <image class="ArticlesCoverSheet overPng" v-if="!datas.totalPacket > 0" src='@/static/images/new-community/home/isOver.png'></image>
         </view>
         <view class="LeftInformation">
-          <view class="title">劲爆！0元可在附近就能开店快...</view>
-          <view class="timer">发布者：团蜂科技</view>
+          <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
+          <view class="timer">发布者：团峰科技</view>
           <view class="TheReader">
             <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
-            <text class="ReaderNumber">已有100+人领取</text>
+            <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
+            <!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
           </view>
         </view>
       </view>
@@ -19,9 +21,9 @@
           <view class="maxText">
             最高奖励
           </view>
-          <view class="maxPriceNumber">可获取99元</view>
+          <view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元</view>
         </view>
-        <view class="ClicTokDetails" v-if="!datas.isOver">
+        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" @click="gotoArticleDetails">
           查看详情
         </view>
         <view class="disableds" v-else>
@@ -46,7 +48,13 @@ export default {
     }
   },
   computed: {},
-  methods: {},
+  methods: {
+    gotoArticleDetails() {
+      uni.navigateTo({
+         url: `/community-center/makeSmallFortune/articleDetails?id=${datas.postId}`
+      });
+    }
+  },
   watch: {},
 
   // 组件周期函数--监听组件挂载完毕
@@ -65,25 +73,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* @keyframes fade {
-  0% {
-    opacity: 0.4;
-    transform: translateX(-100vw);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-} */
 .ArticlesItem {
   min-width: 100%;
   box-sizing: border-box;
 	background-color: #ffffff;
   box-sizing: border-box;
   padding: 22rpx 26rpx;
-  /* -webkit-animation: fade 350ms cubic-bezier(0.76, 1.68, 1, 0.84);
-  animation: fade 350ms cubic-bezier(0.76, 1.68, 1, 0.84); */
   .ArticlesItemTop {
     width: 100%;
     height: 155rpx;
@@ -118,7 +113,7 @@ export default {
         color: #222229;
       }
       .timer {
-        font-size: 26rpx;
+        font-size: 24rpx;
         font-weight: normal;
         line-height: normal;
         color: #888889;

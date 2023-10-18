@@ -253,6 +253,7 @@ export default {
 
     // 选择定位
     confirmChooseAddress(data, isHot) {
+      uni.setStorageSync('ADDRES_REGION', data.distinguish)
       uni.showLoading();
       if (isHot) {
         this.$store.dispatch('location/getDetailAddress', data);

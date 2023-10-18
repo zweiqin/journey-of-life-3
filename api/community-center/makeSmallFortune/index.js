@@ -8,3 +8,12 @@ export const selectCategory = (data) => RuanRequest('/dtsPostCategory/selectCate
 
 // 发布文章
 export const addPublishArticleApi = (data) => RuanRequest('/dtsPostBbs/publishArticle', data)
+
+// /dtsPostBbs/postList
+export const getPostList = (data) => RuanRequest('/dtsPostBbs/postList', data)
+
+// /dtsPostBbs/postDetails
+export const getPostDetails = (data) => RuanRequest('/dtsPostBbs/postDetails', data)
+
+// /dtsPostRedPacketInfo/lookPostRed
+export const lookPostRed = (data) => RuanRequest('/dtsPostRedPacketInfo/lookPostRed', data)
