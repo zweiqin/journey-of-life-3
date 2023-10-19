@@ -1,28 +1,49 @@
 <template>
     <view class="articleDetailsBox">
         <view class="containerHeader">
-            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
+            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="68"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章详情</text>
         </view>
         <view class="Title">
             标题: {{ textData.postTitle }}
         </view>
-        <view class="content">
-            内容: {{ textData.postContent }}
+        <view class="PublisherInfo">
+            <view class="PublisherInfoBox">
+                <image :src="textData.header" class="PublisherInfoAvatar"></image>
+                <text class="PublisherName">{{ textData.username }}</text>
+            </view>
+            <!-- <view class="PublishAddress">
+                发表于广东
+            </view> -->
         </view>
         <view class="images">
             <image class="imageItem" :src="textData.postCover"></image>
+        </view>
+        <view class="content">
+            内容: {{ textData.postContent }}
+        </view>
+        <view class="guanggao">
+            <view class="gglink" @click="gotoGuangGao(textData.redPacketInfo.link)">广告链接</view>
+        </view>
+        <view class="lingquREDBook">
+            <button class="cnmd" @click="lingqu">领取奖励</button>
+        </view>
+                <view class="PublisherInfo">
+            <view class="PublisherInfoBox">
+                <image :src="textData.header" class="PublisherInfoAvatar"></image>
+                <text class="PublisherName">{{ textData.username }}</text>
+            </view>
+            <view class="ReleaseTime">
+                <view class="fenxiang" @click="shares">
+                    <image class="fenxiangimg" src="@/static/images/new-community/home/fenxaing.png"></image>
+                    <text class="fxtxt">分享</text>
+                </view>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
-// lookPostRed({
-//     redPacketId: this.formData.redPacketId,
-//     uid: this.formData.uid
-// }).then(res => {
-//     console.log(res)
-// })
 import { getUserId } from '@/utils';
 import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
 export default {
@@ -42,9 +63,11 @@ export default {
     data() {
         return {
             textData: {
-                postTitle: '1',
-                postContent: '2',
-                postCover: '3'
+                postTitle: '劲爆！0元可在附近就能开店快速落地！',
+                postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
+                postCover: require('@/static/images/new-community/home/bagayalu.png'),
+                header: require('@/static/images/new-community/home/avatar1.png'),
+                username: '蔡徐坤'
             },
             formData: {
                 redPacketId: "",
@@ -55,12 +78,81 @@ export default {
     methods: {
         goBack() {
             uni.navigateBack();
+        },
+        gotoGuangGao(url) {
+            window.open(url)
+        },
+        lingqu() {
+            lookPostRed({
+                redPacketId: this.formData.redPacketId,
+                uid: this.formData.uid
+            }).then(res => {
+                console.log(res)
+            })
+        },
+        shares() {
+            uni.showToast({
+                title: "点击右上角手动分享",
+                icon: 'none',
+                success: function (res) {
+                this.exeRet = "success:" + JSON.stringify(res) + new Date()
+                },
+                fail: function (res) {
+                this.exeRet = "fail:" + JSON.stringify(res)
+                },
+            })
+            // uni.share({
+            // provider: "weixin",
+            // scene: "WXSceneSession",
+            // type: 1,
+            // summary: "快来和我一起领红包!!!!",
+            // success: function (res) {
+            //     console.log("success:" + JSON.stringify(res));
+            // },
+            // fail: function (err) {
+            //     console.log("fail:" + JSON.stringify(err));
+            // }
+            // });
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.lingquREDBook {
+    margin-top: 30rpx;
+    width: 100vw;
+    height: 90rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .cnmd {
+        width: 642rpx;
+        height: 85rpx;
+        border-radius: 16px;
+        opacity: 1;
+        background: #FF380C;
+        line-height: 85rpx;
+        color: #Fff;
+    }
+}
+.guanggao {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .gglink {
+        font-family: Source Han Sans CN;
+        font-size: 28rpx;
+        font-weight: normal;
+        line-height: 32rpx;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0rpx;
+        font-feature-settings: "kern" on;
+        color: #5B79FB;
+    }
+}
 .containerHeader {
     box-sizing: border-box;
     padding-top: 10rpx;
@@ -80,12 +172,71 @@ export default {
         color: #222229;
     }
 }
+.PublisherInfo {
+    box-sizing: border-box;
+    width: 100vw;
+    padding: 30rpx 50rpx 30rpx 50rpx;
+    display: flex;
+    align-items: center;
+    .PublisherInfoBox {
+        display: flex;
+            .PublisherInfoAvatar {
+                width: 48rpx;
+                height: 48rpx;
+            }
+            .PublisherName {
+                margin-left: 20rpx;
+                font-size: 28rpx;
+                font-weight: normal;
+                line-height: 44rpx;
+                display: flex;
+                align-items: center;
+                color: #222229;
+            }
+    }
+    .ReleaseTime {
+        margin-left: 100rpx;
+        font-size: 28rpx;
+        font-weight: normal;
+        line-height: 44rpx;
+        display: flex;
+        align-items: center;
+        letter-spacing: 1.2rpx;
+        font-feature-settings: "kern" on;
+        color: #888889;
+        .fenxiang {
+            margin-left: 300rpx;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* width: 48rpx; */
+            height: 64rpx;
+            .fenxiangimg {
+                width: 25rpx;
+                height: 25rpx;
+            }
+            .fxtxt {
+                margin-top: 6rpx;
+                width: 60rpx;
+                font-size: 24rpx;
+                font-weight: 350;
+                line-height: 32rpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-feature-settings: "kern" on;
+                color: #08377F;
+            }
+        }
+    }
+}
 .Title {
     box-sizing: border-box;
     font-weight: 600;
     width: 100vw;
-    font-size: 50rpx;
-    padding: 30rpx;
+    font-size: 32rpx;
+    padding: 54rpx;
+    padding-top: 30rpx;
     padding-bottom: 10rpx;
 }
 .content {
@@ -93,21 +244,21 @@ export default {
     /* font-weight: 600; */
     width: 100vw;
     font-size: 40rpx;
-    padding: 30rpx;
+    padding: 54rpx;
     padding-top: 10rpx;
-    padding-bottom: 10rpx;
 }
 .images {
      box-sizing: border-box;
      padding: 30rpx;
-     padding-top: 10rpx;
      display: flex;
      flex-wrap: wrap;
-     justify-content: space-between;
+     justify-content: center;
      align-items: center;
      .imageItem {
-        width: 330rpx;
-        height: 330rpx;
+        min-width: 330rpx;
+        min-height: 330rpx;
+        max-width: 642px;
+        max-width: 341px;
      }
 }
 </style>

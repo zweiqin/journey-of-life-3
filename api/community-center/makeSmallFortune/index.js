@@ -17,3 +17,4 @@ export const getPostDetails = (data) => RuanRequest('/dtsPostBbs/postDetails', d
 
 // /dtsPostRedPacketInfo/lookPostRed
 export const lookPostRed = (data) => RuanRequest('/dtsPostRedPacketInfo/lookPostRed', data)
+

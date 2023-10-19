@@ -1,7 +1,7 @@
 <template>
 	<view class="RewardPage">
 		<JHeader width="50" height="50" title=""></JHeader>
-		<view style="display: flex;align-items: center;margin: 34upx 0 0;">
+		<view style="display: flex;align-items: center;margin: 34upx 0 0;padding: 0rpx 30rpx;">
 			<view
 				style="flex: 1;width: 0;margin-right: 8upx;font-size: 34upx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 			>
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 
-		<view style="display: flex;align-items: center;margin-top: 20upx;">
+		<view style="display: flex;align-items: center;margin-top: 20upx;padding: 0rpx 30rpx 20rpx 30rpx;">
 			<TuanIcon :size="28" style="width: fit-content;border-radius: 50%;overflow: hidden;" :src="userInfo.avatarUrl">
 			</TuanIcon>
 			<text style="padding-left: 12upx;;font-size: 26upx;">{{ userInfo.nickName }}</text>
@@ -23,11 +23,11 @@
 
 		<view style="background-color: #f6f6f8;padding: 26upx 0 0;">
 			<view style="background-color: #ffffff;">
-				<view style="display: flex;align-items: flex-start;padding: 40upx 0 0;">
+				<view style="display: flex;align-items: flex-start;padding: 40upx 30rpx 0rpx 30rpx;">
 					<text style="font-weight: bold;">文章归属地：</text>
 					<JCity :control="false" :text="cityText" @confirm="handleChooseCity"></JCity>
 				</view>
-				<view>
+				<view style="padding: 0rpx 30rpx;">
 					<tui-input
 						v-model="redPacketInfo.totalAmount" label="投放金额" type="number" placeholder="输入投放金额"
 						size="30"
@@ -37,9 +37,9 @@
 							<text style="font-size: 24upx;color: #888889;">元</text>
 						</template>
 					</tui-input>
-					<view style="font-size: 24upx;color: #888889;">最低1元</view>
+					<view style="font-size: 24upx;color: #888889;margin-top:6rpx;">最低1元</view>
 				</view>
-				<view>
+				<view style="padding: 0rpx 30rpx;">
 					<tui-input
 						v-model="redPacketInfo.totalPacket" label="投放数量" type="digit" placeholder="输入投放数量"
 						size="30"
@@ -49,9 +49,9 @@
 							<text style="font-size: 24upx;color: #888889;">个</text>
 						</template>
 					</tui-input>
-					<view style="font-size: 24upx;color: #888889;">最低1个</view>
+					<view style="font-size: 24upx;color: #888889;margin-top:6rpx;">最低1个</view>
 				</view>
-				<view style="display: flex;align-items: center;justify-content: space-between;padding: 40upx 18upx 0 0;">
+				<view style="display: flex;align-items: center;justify-content: space-between;padding: 40upx 18upx 0 0;padding: 0rpx 30rpx;margin-top:10rpx;">
 					<text>红包金额是否随机</text>
 					<tui-radio-group
 						v-model="redPacketInfo.isRandom"
@@ -66,16 +66,16 @@
 								<view>
 									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
 									</tui-radio>
-									<text>{{ part.name }}</text>
+									<text style="margin-left:10rpx;">{{ part.name }}</text>
 								</view>
 							</tui-list-cell>
 						</tui-label>
 					</tui-radio-group>
 				</view>
-				<view>
+				<view style="padding: 0rpx 30rpx;">
 					<tui-input
 						v-model="redPacketInfo.link" label="广告链接" placeholder="输入广告链接" size="30"
-						placeholder-style="font-size: 30upx;" padding="40upx 18upx 0 0" background-color="transparent"
+						placeholder-style="font-size: 30upx;" padding="30upx 18upx 0 0" background-color="transparent"
 					>
 					</tui-input>
 				</view>
@@ -228,8 +228,9 @@ export default {
 .RewardPage {
 	width: 100vw;
 	min-height: 100vh;
-	padding: 40upx 24upx 140upx;
+	// padding: 40upx 24upx 140upx;
 	overflow-y: auto;
 	box-sizing: border-box;
+	padding-top: 10rpx;
 }
 </style>
