@@ -11,32 +11,32 @@
             <view class="category-name">{{ item.name }}</view>
           </view>
         </view>
+	  <view class="package-wrapper">
+		  <view class="voucher-container">
+		    <VoucherPane></VoucherPane>
+		  </view>
+		  <view class="hot-container">
+		    <HotPane :goodsData="ad.hot" subTitle="网红爆款">
+		      <block slot="title">
+		        <view class="hot">
+		          <text class="text color-text">热销</text>
+		          <text class="text">爆款</text>
+		        </view>
+		      </block>
+		    </HotPane>
+		
+		    <HotPane :goodsData="ad.good" subTitle="抢新品">
+		      <block slot="title">
+		        <view class="hot">
+		          <text class="text">好物推荐</text>
+		        </view>
+		      </block>
+		    </HotPane>
+		  </view>
+		</view>
       </view>
 
       <view class="rest-area">
-        <view class="package-wrapper">
-          <view class="voucher-container">
-            <VoucherPane></VoucherPane>
-          </view>
-          <view class="hot-container">
-            <HotPane :goodsData="ad.hot" subTitle="网红爆款">
-              <block slot="title">
-                <view class="hot">
-                  <text class="text color-text">热销</text>
-                  <text class="text">爆款</text>
-                </view>
-              </block>
-            </HotPane>
-
-            <HotPane :goodsData="ad.good" subTitle="抢新品">
-              <block slot="title">
-                <view class="hot">
-                  <text class="text">好物推荐</text>
-                </view>
-              </block>
-            </HotPane>
-          </view>
-        </view>
 
         <view class="main-sub-title">
           <view class="title">为您推荐</view>
@@ -114,17 +114,35 @@ export default {
   },
 
   methods: {
+    // handleViewDetail(navInfo) {
+    //   if (navInfo.url) {
+    //     uni.navigateTo({ url: navInfo.url });
+    //   } else if (navInfo.id) {
+    //     this.$data._query.categoryId = navInfo.id;
+    //     this.$data._query.page = 1;
+    //     this.$data._list = [];
+    //     this.ad.hot = [];
+    //     this.ad.good = [];
+    //     this._loadData();
+    //     this.getSubMenus(navInfo.id);
+    //   } else {
+    //     this.empty();
+    //   }
+    // },
     handleViewDetail(navInfo) {
       if (navInfo.url) {
         uni.navigateTo({ url: navInfo.url });
       } else if (navInfo.id) {
-        this.$data._query.categoryId = navInfo.id;
-        this.$data._query.page = 1;
-        this.$data._list = [];
-        this.ad.hot = [];
-        this.ad.good = [];
-        this._loadData();
-        this.getSubMenus(navInfo.id);
+        uni.navigateTo({
+          url: `/pages/index/CommodityTypePage/index?id=${navInfo.id}`
+        })
+        // this.$data._query.categoryId = navInfo.id;
+        // this.$data._query.page = 1;
+        // this.$data._list = [];
+        // this.ad.hot = [];
+        // this.ad.good = [];
+        // this._loadData();
+        // this.getSubMenus(navInfo.id);
       } else {
         this.empty();
       }
@@ -141,7 +159,7 @@ export default {
         const categories = res.data.categoryList.slice(0, 7);
         this.categories = categories;
         this.categories.push({
-          iconUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/spxullhqon4up3jk6g03.png',
+          iconUrl: require('@/static/images/index/moremore.png'),
           id: null,
           url: '/pages/furniture/furniture?goodsType=100101741&id=null',
           name: '更多'
@@ -224,47 +242,78 @@ export default {
         }
       }
     }
-
+	.package-wrapper {
+    margin-top: 20rpx;
+	  box-sizing: border-box;
+	  padding: 0rpx 30rpx;
+	  height: 514upx;
+	  width: 100%;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	
+	  .hot-container {
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	    flex-direction: column;
+	
+	    .hot {
+	      font-size: 0;
+	      color: #222229;
+	      font-size: 32upx;
+	      font-weight: 500;
+	
+	      .color-text {
+	        color: #ef530e;
+	      }
+	    }
+	  }
+	}
     .rest-area {
-      padding: 0 28upx;
+      // margin-top: 10rpx;
       box-sizing: border-box;
-      // background-color: #eff3f6;
-      background-color: #fff;
+      padding: 0 28upx;
+      padding-top: 10rpx;
+      background-color: #eff3f6;
+      // background-color: #fff;
 
-      .package-wrapper {
-        height: 514upx;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+      // .package-wrapper {
+      //   height: 514upx;
+      //   width: 100%;
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: space-between;
 
-        .hot-container {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: column;
+      //   .hot-container {
+      //     height: 100%;
+      //     display: flex;
+      //     align-items: center;
+      //     justify-content: space-between;
+      //     flex-direction: column;
 
-          .hot {
-            font-size: 0;
-            color: #222229;
-            font-size: 32upx;
-            font-weight: 500;
+      //     .hot {
+      //       font-size: 0;
+      //       color: #222229;
+      //       font-size: 32upx;
+      //       font-weight: 500;
 
-            .color-text {
-              color: #ef530e;
-            }
-          }
-        }
-      }
+      //       .color-text {
+      //         color: #ef530e;
+      //       }
+      //     }
+      //   }
+      // }
 
       .main-sub-title {
+        margin-top: 20rpx;
         display: flex;
         align-items: flex-end;
         font-size: 24upx;
         color: #222229;
         vertical-align: bottom;
-        margin: 24upx 0;
+        // margin: 24upx 0;
 
         .title {
           font-size: 32upx;

@@ -98,14 +98,17 @@ export default {
     this.mainId = options.id * 1
     this.subId = options.sub * 1
     this.setData()
+    this.getGoodsList()
   },
 
   methods: {
     // 选中一级分类
     handleChooseItem(onceId) {
       this.mainId = onceId
+      this.subId = -1
       // this.resetQueryInfo()
       this.setData()
+      this.getGoodsList()
       uni.pageScrollTo({
         scrollTop: 0,
         duration: 0,

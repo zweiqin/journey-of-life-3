@@ -4,8 +4,12 @@ pages/prod/
 pages/furniture/
 pages/pre-order/
 pages/order/
+pages/goods-filter/
+pages/community-center
 main.js
 components/TSpecification/
 user/sever/shopCar/
 user/sever/components/
 user/sever/view-history.vue
+community-center/makeSmallFortune/release.vue
+community-center/makeSmallFortune/components/EditingPage.vue

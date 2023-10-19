@@ -99,7 +99,7 @@
 			<span>预计： <span class="money">xxx元</span></span>
 			<button type="primary" style="margin: 0" @click="placeOrder">立即下单</button>
 		</view>
-		<TuiSelect mask-closable="true" :list="list" :show="show" @confirm="confirm" @close="onClose"></TuiSelect>
+		<TuiSelect :multiple="true" mask-closable="true" :list="list" :show="show" @confirm="confirm" @close="onClose"></TuiSelect>
 	</view>
 </template>
 

@@ -8,7 +8,7 @@
 				<tui-input
 					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" label="" placeholder="社区商圈"
 					clearable is-fillet padding="6upx 10upx 6upx 26upx"
-					style="flex: 1;margin-left: 16upx;;border: 2upx solid #EF5511;"
+					style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
 				>
 					<template #right>
 						<tui-button
@@ -29,13 +29,13 @@
 			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14upx 26upx 0;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
 		>
 			<view
-				v-for="item in menuBarArr" :key="item.id" style="width: 25%;margin-bottom: 20upx;text-align: center;"
+				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
 				@click="go(`/community-center/shop/delicacy/delicacy?id=${item.id}`)"
 			>
 				<view>
-					<TuanIcon :size="34" :src="item.url || require('../../static/images/index/design.png')"></TuanIcon>
+					<TuanIcon :size="34" :src="item.labelUrl || require('../../static/images/index/design.png')"></TuanIcon>
 				</view>
-				<view style="margin-top: 6upx;font-size: 28upx;">{{ item.name }}</view>
+				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.labelName }}</view>
 			</view>
 		</view>
 
@@ -66,7 +66,7 @@
 						<view
 							v-for="(part, count) in item" :key="count"
 							style="display: flex;align-items: center;justify-content: space-between;width: 49%;height: 100%;overflow: hidden;"
-							@click="go(`/?id=${part.id}`)"
+							@click="go(`/pages/prod/prod?goodsId=${part.id}`)"
 						>
 							<view>
 								<TuanIcon
@@ -92,7 +92,7 @@
 										<text style="font-weight: bold;">{{ part.price }}</text>
 									</text>
 									<text
-										style="padding: 4upx 14upx;margin-left: 10upx;;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 16upx;"
+										style="padding: 4upx 14upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 16upx;"
 									>
 										{{ part.discount }}折
 									</text>
@@ -104,12 +104,13 @@
 			</view>
 		</view>
 
-		<!-- 类别选择框 -->
-		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;">
+		<!-- 类别选择框（额外的同‘一级分类’的分类） -->
+		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;" class="selection-box-tab">
 			<tui-tab
 				:tabs="selectionBoxArr" :current="selectionBoxNum" scroll background-color="transparent"
-				:size="36" bold
-				color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+				:size="32" bold
+				bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
+				slider-height="4px"
 				@change="(e) => selectionBoxNum = e.index"
 			></tui-tab>
 		</view>
@@ -124,15 +125,278 @@
 			<StoreSecondaryFilterBox @select="handleSelectSecondaryFilter"></StoreSecondaryFilterBox>
 		</view>
 
-		<!-- 特殊中间结构 -->
-		<view v-if="ownSpecialHotelBox.includes(currentType)" style="margin: 14upx 26upx 0;">
-			特殊酒店中间结构
-			<view>搜索筛选框</view>
-			<view>超低一口价商品框</view>
+		<!-- 酒店特殊中间结构 -->
+		<view v-if="ownSpecialHotelBox.includes(currentType)">
+			<view
+				style="padding: 200upx 26upx 0;background: url('~@/../static/images/new-business/list/hotel-img.png') no-repeat center top/contain;"
+			>
+				<view style="padding: 28upx 22upx;background-color: #ffffff;border-radius: 24upx;">
+					<view class="special-hotel-tab">
+						<tui-tab
+							:tabs="['国内', '民宿公寓', '钟点房']" :current="specialHotelBoxObj.tabIndex" scroll
+							background-color="transparent" :size="32" bold bottom="6upx"
+							color="#222229" selected-color="#222229"
+							slider-bg-color="#ef530e" slider-height="3px"
+							@change="(e) => specialHotelBoxObj.tabIndex = e.index"
+						></tui-tab>
+					</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 18upx;">
+						<TuanLocation style="flex: 1;font-size: 38upx;font-weight: bold;">
+							{{ $store.getters.currentCity || '定位失败' }}
+						</TuanLocation>
+						<view style="display: flex;align-items: center;padding-left: 16upx;border-left: 1upx solid #CDCDCD;">
+							<TuanIcon
+								:size="16" name="gps" color="#EF5613"
+								style="padding: 2upx;border: 1upx solid #EF5613;border-radius: 50%;line-height: 1;"
+							></TuanIcon>
+							<text style="margin-left: 14upx;font-size: 30upx;color: #EF5613;">我的位置</text>
+						</view>
+					</view>
+					<view style="margin-top: 18upx;">
+						<view
+							style="display: flex;justify-content: space-between;align-items: center;"
+							@click="$refs.refSpecialHotelBoxCalendar && $refs.refSpecialHotelBoxCalendar.show()"
+						>
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view style="padding-right: 24upx;border-right: 1upx solid #D8D8D8;">
+									<view style="display: flex;align-items: center;font-size: 24upx;">
+										<TuanIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										{{ specialHotelBoxObj.startDate === new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')
+											? '今日' : '' }}入住
+									</view>
+									<view style="padding-top: 16upx;">
+										<text style="color: #ef5613;">
+											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月')
+											}}日
+										</text>
+										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8upx;font-size: 24upx;">
+											{{
+												specialHotelBoxObj.startWeek.replace('星期', '周') }}
+										</text>
+									</view>
+								</view>
+								<view style="padding-left: 24upx;">
+									<view style="display: flex;align-items: center;font-size: 24upx;">
+										<TuanIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										{{ specialHotelBoxObj.endDate === new Date(Date.now() + 24 * 60 * 60 *
+											1000).toLocaleString().substring(0, 10).replaceAll('/', '-') ? '明日' : '' }}离店
+									</view>
+									<view style="padding-top: 16upx;">
+										<text>{{ specialHotelBoxObj.endDate.substring(5, 10).replaceAll('-', '月') }}日</text>
+										<text v-if="specialHotelBoxObj.endWeek" style="padding-left: 8upx;font-size: 24upx;">
+											{{
+												specialHotelBoxObj.endWeek.replace('星期', '周') }}
+										</text>
+									</view>
+								</view>
+							</view>
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<text style="margin-right: 6upx;font-size: 28upx;color: #014BB8;">
+									共{{
+										(Date.parse(specialHotelBoxObj.endDate.replaceAll('-', '/')) -
+											Date.parse(specialHotelBoxObj.startDate.replaceAll('-', '/'))) / (24 * 60 * 60 * 1000) }}晚
+								</text>
+								<TuanIcon :size="20" name="arrowright" color="#3D3D3D" style="line-height: 1;"></TuanIcon>
+							</view>
+						</view>
+						<tui-calendar
+							ref="refSpecialHotelBoxCalendar" :type="2" is-fixed
+							:min-date="new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')"
+							:max-date="new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleString().substring(0, 10).replaceAll('/', '-')"
+							@change="handleSelectSpecialHotelBoxCalendar"
+						></tui-calendar>
+					</view>
+					<view>
+						<tui-input
+							v-model="queryInfo.search" label="" placeholder="搜索酒店/地名/关键词" clearable
+							padding="14upx 0upx"
+							margin-top="20"
+							style="border-top: 1upx solid rgba(216, 216, 216, 0.5);border-bottom: 1upx solid rgba(216, 216, 216, 0.5);"
+						>
+						</tui-input>
+					</view>
+					<view style="margin-top: 20upx;">
+						<tui-button
+							type="warning" width="100%" height="82rpx"
+							style="background: #ef5613!important;border-radius: 10upx;"
+						>
+							查找酒店
+						</tui-button>
+					</view>
+				</view>
+			</view>
+			<view
+				style="margin: 14upx 26upx 0;padding: 22upx 22upx 36upx;background: linear-gradient(150deg, #FDF3F1 3%, #FEEAEC 6%, #FFFBEF 10%, #FFFFFF 45%);"
+			>
+				<view style="display: flex;align-items: center;">
+					<text style="font-size: 34upx;font-weight: bold;">超低一口价</text>
+					<view
+						style="display: flex;align-items: center;margin-left: 18upx;background-color: #fce5df;border-radius: 20upx;"
+					>
+						<view
+							style="width: 110upx;height: 36upx;padding: 6upx 12upx;font-size: 28upx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20upx 0 26upx 20upx;clip-path: polygon(0upx 0upx, 134upx 0, 124upx 8upx, 124upx 48upx, 0 48upx);"
+						>
+							<text style="margin-left: -10upx;">限时购</text>
+						</view>
+						<view style="font-size: 26upx;font-weight: bold;color: #f84715;padding: 0 14upx 0;">01:02:15</view>
+					</view>
+				</view>
+				<view style="margin-top: 20upx;">
+					<view
+						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18upx;"
+						@click="go(`/pages/prod/prod?goodsId==${item.id}`)"
+					>
+						<view>
+							<TuanIcon
+								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
+								:src="item.url || require('../../static/images/index/explosion.webp')"
+							>
+							</TuanIcon>
+						</view>
+						<view style="flex: 1;width: 0;margin-left: 20upx;">
+							<view
+								style="font-size: 34upx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+							>
+								{{ item.name }}
+							</view>
+							<view
+								style="margin-top: 6upx;font-size: 26upx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+							>
+								{{ item.typeName }}
+							</view>
+							<view style="margin-top: 8upx;">
+								<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">已售100+</view>
+								<view style="display: flex;justify-content: flex-end;align-items: center;margin-top: 14upx;">
+									<view style="margin-right: 12upx;">
+										<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">1晚价</view>
+										<view style="display: flex;align-items: center;color: #ef530e;">
+											<view style="font-size: 24upx;color: #9e9e9e;text-decoration: line-through;">￥444.44</view>
+											<text>
+												<text style="font-size: 24upx;">￥</text>
+												<text style="font-size: 38upx;font-weight: bold;">{{ item.price }}</text>
+											</text>
+											<text
+												style="padding: 2upx 10upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 12upx;white-space: nowrap;"
+											>
+												{{ item.discount }}折
+											</text>
+										</view>
+									</view>
+									<tui-button
+										type="warning" width="140rpx" height="72rpx" shape="circle"
+										style="background: #ee6529!important;" @click="go(`/pages/prod/prod?goodsId==${item.id}`)"
+									>
+										抢购
+									</tui-button>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
-		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop v-for="shop in nearbyShopList" :key="shop.id" :shop-info="shop"></CommonShop>
+		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<CommonShop
+				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
+				margin="22upx 0"
+				radius="20upx" :show-logo="false"
+			></CommonShop>
+		</view>
+		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<CommonShop
+				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
+				margin="22upx 0"
+				radius="20upx" :show-logo="false"
+			>
+				<view style="padding: 20upx 0">
+					<view
+						v-for="item in [{ id: 1, price: 288.88, originPrice: 444.44, name: '主题小包尊享休闲3小时gfgdfnbfngmhgmhgmghnh' }, { id: 2, price: 299.88, originPrice: 444.44, name: '主题小包尊享' }]"
+						:key="item.id" style="display: flex;padding-left: 26upx;padding-right: 26upx;" class="shop-card-line"
+					>
+						<view style="text-align: right;padding-right: 26upx;">
+							<view style="color: #EF530E;">￥{{ item.price }}</view>
+							<view style="font-size: 28upx;color: #979797;">门市价:￥{{ item.originPrice }}</view>
+						</view>
+						<view style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+							<text
+								style="padding: 2upx 6upx;margin-right: 16upx;font-size: 24upx;color: #ffffff;background-color: #ef5613;"
+							>
+								商
+							</text>
+							<text style="font-size: 28upx;color: #a2a2a2;">{{ item.name }}</text>
+						</view>
+					</view>
+				</view>
+			</CommonShop>
+		</view>
+		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<CommonShop
+				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
+				margin="22upx 0"
+				radius="20upx" :show-logo="false"
+			>
+				<view style="padding: 20upx 26upx">
+					<scroll-view scroll-x="true">
+						<view style="display: flex;">
+							<view
+								v-for="item in [{ id: 1, price: 4.44, originPrice: 7.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐shdgbvhjdxvbhdfvbhdbv不VS的就焗鸡30g/包' }, { id: 2, price: 299.88, originPrice: 444.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: 'vsvfxdvdf' }, { id: 3, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 4, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 5, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }, { id: 6, price: 66.44, originPrice: 144.44, picUrl: 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/a9cbbfdbf277431aba5be3a5f84d47d3.jpg', name: '无穷盐焗鸡30g/包' }]"
+								:key="item.id"
+								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18upx;"
+							>
+								<view style="width: 160upx;">
+									<tui-lazyload-img
+										width="100%" height="168upx" mode="scaleToFill" radius="20upx"
+										:src="item.picUrl"
+									></tui-lazyload-img>
+									<view
+										style="line-height: 1;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+									>
+										<text style="font-size: 24upx;">{{ item.name }}</text>
+									</view>
+								</view>
+								<view style="margin-top: 14upx;display: flex;align-items: center;flex-wrap: wrap;">
+									<view style="font-size: 28upx;font-weight: bold;color: #E02208;margin-right: 10upx;">
+										<text style="font-size: 26upx;">￥</text>
+										{{ item.price }}
+									</view>
+									<view style="font-size: 24upx;color: #979797;text-decoration: line-through;">
+										￥{{ item.originPrice }}
+									</view>
+								</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</CommonShop>
+		</view>
+		<view v-if="ownBrandCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
+				<template #left="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
+					</view>
+				</template>
+				<template #right="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
+					</view>
+				</template>
+			</tui-waterfall>
+		</view>
+		<view v-if="ownBrandCardWithPriceBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
+				<template #left="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
+					</view>
+				</template>
+				<template #right="{ entity }">
+					<view style="width: 338upx;">
+						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
+					</view>
+				</template>
+			</tui-waterfall>
 		</view>
 		<view v-show="!nearbyShopList.length && loadingStatus !== 'loading'" class="no-data"> 暂无门店~ </view>
 		<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
@@ -141,31 +405,52 @@
 
 <script>
 import CommonShop from '../../pages/community-center/cpns/CommonShop.vue'
+import BrandShop from '../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
-import { getNearByShopListApi } from '../../api/community-center'
+import { getNearByShopListApi, getSecondLevelShopLabelListApi } from '../../api/community-center'
 import { getCurrentLocation } from '../../utils'
 
 export default {
 	name: 'Shop',
-	components: { CommonShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
+	components: { CommonShop, BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
 	data() {
 		return {
 			transformation: {
+				0: '全部商家',
+				1: '品牌家居',
+				2: '建材',
+				3: '找师傅',
+				4: '找家政',
+				5: '中介公司',
 				6: '美食团购',
+				7: '蔬菜生鲜',
 				8: '超市便利',
 				9: '养车用车',
-				11: '酒店民宿'
+				// 10: '便民服务',
+				11: '酒店民宿',
+				12: '美容理发',
+				13: '休闲娱乐',
+				14: '培训室',
+				15: '广告礼品',
+				16: '母婴店',
+				17: '儿童乐园',
+				18: '摄影室',
+				19: '花店',
+				20: '宠物',
+				21: '电影院',
+				22: '创意策划'
 			},
 			currentType: '',
+			parentId: '',
 
 			// 判断每个类板块是否拥有某个页面结构
-			ownSearchBar: ['6', '8', '9'],
-			ownMenuBar: ['6', '8', '9'],
+			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			ownMenuBar: ['1', '2', '3', '5', '6', '7', '8', '9', '13', '16'],
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
-			ownSelectionBox: ['6', '9'],
+			ownSelectionBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
 			selectionBoxArr: [],
 			selectionBoxNum: 0,
 			ownPrimaryFilterBox: [ '6' ],
@@ -178,8 +463,25 @@ export default {
 					cantingfuwu: ''
 				}
 			},
-			ownSecondaryFilterBox: [ '8' ],
+			ownSecondaryFilterBox: ['7', '8'],
 			ownSpecialHotelBox: [ '11' ],
+			specialHotelGoodsArr: [],
+			specialHotelBoxObj: {
+				tabIndex: 0,
+				startDate: new Date().toLocaleString()
+					.substring(0, 10)
+					.replaceAll('/', '-'),
+				endDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString()
+					.substring(0, 10)
+					.replaceAll('/', '-'),
+				startWeek: '',
+				endWeek: ''
+			},
+			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			ownShopCardWithLineBox: [ '13' ],
+			ownShopCardWithGoodsBox: ['7', '8'],
+			ownBrandCardBox: [ '5' ],
+			ownBrandCardWithPriceBox: [ '11' ],
 
 			nearbyShopList: [],
 			nearbyTotalPages: 0,
@@ -187,32 +489,50 @@ export default {
 			queryInfo: {
 				search: '',
 				pageNo: 1,
-				pageSize: 20,
+				pageSize: 10,
 				address: ''
 			}
 		}
 	},
 	watch: {
 		'queryInfo.search'(value) {
-			if (!value) {
+			if (value) {
 				this.getNearByShopList(true)
 			}
 		}
 	},
-	onLoad(options) {
-		this.currentType = options.type
-		if (this.currentType === '6') {
-			this.menuBarArr = [{ id: 1, name: '火锅', url: '' }, { id: 2, name: '火锅', url: '' }, { id: 3, name: '火锅', url: '' }, { id: 4, name: '火锅', url: '' }, { id: 5, name: '火锅', url: '' }, { id: 6, name: '火锅', url: '' }, { id: 7, name: '火锅', url: '' }, { id: 8, name: '火锅', url: '' }, { id: 9, name: '火锅', url: '' }]
+	async onLoad(options) {
+		this.currentType = options.type || '0'
+		this.parentId = options.id || ''
+		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
-			this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐', '精选团购', '精选团购', '精选团购', '精选团购']
-		} else if (this.currentType === '8') {
-			this.menuBarArr = [{ id: 1, name: '超市卖场', url: '' }, { id: 2, name: '便利店', url: '' }, { id: 3, name: '生鲜/菜市场', url: '' }, { id: 4, name: '水果/果切', url: '' }, { id: 5, name: '鲜花绿植', url: '' }, { id: 6, name: '零食饮料', url: '' }, { id: 7, name: '买酒', url: '' }, { id: 8, name: '美妆/服饰', url: '' }, { id: 9, name: '宠物用品', url: '' }, { id: 9, name: '买药', url: '' }]
-		} else if (this.currentType === '9') {
-			this.menuBarArr = [{ id: 1, name: '洗车', url: '' }, { id: 2, name: '美容', url: '' }, { id: 3, name: '保养', url: '' }, { id: 4, name: '租车', url: '' }, { id: 5, name: '维修', url: '' }, { id: 6, name: '改装', url: '' }, { id: 7, name: '补胎', url: '' }, { id: 8, name: '喷漆', url: '' }, { id: 9, name: '四轮定位', url: '' }, { id: 9, name: '贴膜', url: '' }, { id: 9, name: '内饰清洁', url: '' }, { id: 9, name: '抛光', url: '' }, { id: 9, name: '打蜡', url: '' }, { id: 9, name: '镀晶', url: '' }]
-			this.selectionBoxArr = ['加油站', '充电桩', '停车场', '代办点', '年检站']
 		}
-		this.getNearByShopList(true)
+		if (this.ownSelectionBox.includes(this.currentType)) {
+			this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐', '精选团购', '精选团购', '精选团购', '精选团购'] || ['加油站', '充电桩', '停车场', '代办点', '年检站']
+		}
+		if (this.ownSpecialHotelBox.includes(this.currentType)) {
+			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
+		}
+		if (this.ownShopCardBox.includes(this.currentType) || this.ownShopCardWithLineBox.includes(this.currentType) || this.ownShopCardWithGoodsBox.includes(this.currentType) || this.ownBrandCardBox.includes(this.currentType) || this.ownBrandCardWithPriceBox.includes(this.currentType)) {
+			this.getNearByShopList(true)
+		}
+		if (this.ownMenuBar.includes(this.currentType)) {
+			try {
+				const res = await getSecondLevelShopLabelListApi({ parentId: this.parentId })
+				if (res.statusCode === 20000) {
+					if (res.data) {
+						this.menuBarArr = res.data
+					} else {
+						this.menuBarArr = []
+					}
+				} else {
+					res.statusMsg ? this.$showToast(res.statusMsg) : ''
+				}
+			} catch (error) {
+				this.$showToast(error || '未知错误')
+			}
+		}
 	},
 	methods: {
 		back() {
@@ -226,6 +546,14 @@ export default {
 		handleSelectSecondaryFilter(e) {
 			console.log(e)
 		},
+		handleSelectSpecialHotelBoxCalendar(e) {
+			console.log(e)
+			if (e.startDate === e.endDate) return this.$showToast('不能选择同一天')
+			this.specialHotelBoxObj.startDate = e.startDate
+			this.specialHotelBoxObj.endDate = e.endDate
+			this.specialHotelBoxObj.startWeek = e.startWeek
+			this.specialHotelBoxObj.endWeek = e.endWeek
+		},
 		async getNearByShopList(isClear) {
 			if (isClear) {
 				this.queryInfo.pageNo = 1
@@ -238,7 +566,7 @@ export default {
 			try {
 				const currentAddress = await getCurrentLocation()
 				this.queryInfo.address = currentAddress + ''
-				const res = await getNearByShopListApi(this.queryInfo)
+				const res = await getNearByShopListApi({ ...this.queryInfo, shopLabel: this.parentId })
 				if (res.statusCode === 20000) {
 					if (res.data) {
 						this.nearbyShopList = [...this.nearbyShopList, ...res.data.data]
@@ -300,13 +628,33 @@ export default {
 		}
 	}
 
-	.tui-scroll__view {
-		/deep/ .tui-tabs__line {
-			margin-left: -26upx;
-			clip-path: inset(0% 30% 0% 30% round 4upx 4upx 4upx 4upx);
-			// background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ef530e 20%, #ef530e 80%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)!important;
-			// clip-path: polygon(20% 0, 80% 0, 80% 100%, 20% 100%);
+	.selection-box-tab {
+		.tui-scroll__view {
+			/deep/ .tui-tabs__line {
+				margin-left: -26upx;
+				clip-path: inset(0% 30% 0% 30% round 4upx 4upx 4upx 4upx);
+				// background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ef530e 20%, #ef530e 80%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)!important;
+				// clip-path: polygon(20% 0, 80% 0, 80% 100%, 20% 100%);
+			}
 		}
+	}
+
+	.special-hotel-tab {
+		.tui-scroll__view {
+			/deep/ .tui-tabs__item {
+				padding: 0 60upx 0 0;
+			}
+
+			/deep/ .tui-tabs__line {
+				margin-left: -48upx;
+			}
+		}
+	}
+
+	.shop-card-line:not(:last-child) {
+		padding-bottom: 24upx;
+		margin-bottom: 24upx;
+		border-bottom: 1upx solid #D8D8D8;
 	}
 
 	.no-data {

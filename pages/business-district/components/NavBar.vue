@@ -4,51 +4,31 @@
 			<!-- <swiper @change="handleSwiperChange" indicator-dots style="height: 360upx;"> -->
 			<swiper-item class="nav-item">
 				<view class="item">
-					<view v-for="item in navbarOne" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-						<img v-if="item.tag && item.tag === 'phone-bill'" class="phone-bil" :src="item.tagUrl" alt="">
-						<img v-if="item.tag && item.tag === 'fix'" class="fix" :src="item.tagUrl" alt="">
-					</view>
+					<NavBarItem v-for="item in navbarOne" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
-
-				<view class="item item-next">
-					<view v-for="item in navbarTwo" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-					</view>
+				<view class="item">
+					<NavBarItem v-for="item in navbarTwo" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
-
-				<view class="item item-next">
-					<view v-for="item in navbarThree" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-						<img v-if="item.tag && item.tag === 'sheng'" class="sheng" :src="item.tagUrl" alt="">
-					</view>
+				<view class="item">
+					<NavBarItem v-for="item in navbarThree" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
 			</swiper-item>
+
 			<swiper-item class="nav-item">
 				<view class="item">
-					<view v-for="item in navbarOne" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-						<img v-if="item.tag && item.tag === 'phone-bill'" class="phone-bil" :src="item.tagUrl" alt="">
-						<img v-if="item.tag && item.tag === 'fix'" class="fix" :src="item.tagUrl" alt="">
-					</view>
+					<NavBarItem v-for="item in navbarOne" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
-
-				<view class="item item-next">
-					<view v-for="item in navbarFour" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-					</view>
+				<view class="item">
+					<NavBarItem v-for="item in navbarFour" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
-
-				<view class="item item-next">
-					<view v-for="item in navbarFive" :key="item.name" class="menu-item" @click="$emit('view', item)">
-						<image class="menu-icon" :src="item.icon"></image>
-						<text>{{ item.name }}</text>
-					</view>
+				<view class="item">
+					<NavBarItem v-for="item in navbarFive" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					</NavBarItem>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -56,18 +36,20 @@
 </template>
 
 <script>
+import NavBarItem from './NavBarItem.vue'
 import { getFirstLevelShopLabelListApi } from '../../../api/community-center'
-import { navbarOne, navbarTwo, navbarThree, navbarFour, navbarFive } from '../config'
+import { navbarAll } from '../config'
 export default {
 	name: 'NavBar',
+	components: { NavBarItem },
 	data() {
 		return {
 			classificationOneList: [],
-			navbarOne: Object.freeze(navbarOne),
-			navbarTwo: Object.freeze(navbarTwo),
-			navbarThree: Object.freeze(navbarThree),
-			navbarFour: Object.freeze(navbarFour),
-			navbarFive: Object.freeze(navbarFive),
+			navbarOne: navbarAll.slice(0, 5),
+			navbarTwo: navbarAll.slice(5, 10),
+			navbarThree: navbarAll.slice(10, 15),
+			navbarFour: navbarAll.slice(15, 20),
+			navbarFive: navbarAll.slice(20, 25),
 			swiperHeight: '512upx'
 		}
 	},
@@ -77,11 +59,36 @@ export default {
 			if (res.statusCode === 20000) {
 				if (res.data) {
 					this.classificationOneList = res.data
-					if (this.classificationOneList.length) this.navbarOne = this.classificationOneList.slice(0, 5)
-					if (this.classificationOneList.length > 5) this.navbarTwo = this.classificationOneList.slice(5, 10)
-					if (this.classificationOneList.length > 10) this.navbarThree = this.classificationOneList.slice(10, 15)
-					if (this.classificationOneList.length > 15) this.navbarFour = this.classificationOneList.slice(15, 20)
-					if (this.classificationOneList.length > 20) this.navbarFive = this.classificationOneList.slice(20, 25)
+					if (this.classificationOneList.length) {
+						this.navbarOne = this.classificationOneList.slice(0, 5).map((item) => {
+							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
+							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+						})
+					}
+					if (this.classificationOneList.length > 5) {
+						this.navbarTwo = this.classificationOneList.slice(5, 10).map((item) => {
+							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
+							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+						})
+					}
+					if (this.classificationOneList.length > 10) {
+						this.navbarThree = this.classificationOneList.slice(10, 15).map((item) => {
+							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
+							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+						})
+					}
+					if (this.classificationOneList.length > 15) {
+						this.navbarFour = this.classificationOneList.slice(15, 20).map((item) => {
+							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
+							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+						})
+					}
+					if (this.classificationOneList.length > 20) {
+						this.navbarFive = this.classificationOneList.slice(20, 25).map((item) => {
+							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
+							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+						})
+					}
 				} else {
 					this.classificationOneList = []
 				}
@@ -128,52 +135,10 @@ export default {
 		.item {
 			display: flex;
 			align-items: center;
-			// justify-content: space-between;
-
-			&.item-next {
-				margin-top: 20upx;
-			}
-
-			.menu-item {
-				position: relative;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-direction: column;
-				width: 20%;
-				font-size: 28upx;
-				color: #222229;
-
-				.menu-icon {
-					width: 80upx;
-					height: 80upx;
-					margin-bottom: 15upx;
-				}
-
-				.phone-bil {
-					position: absolute;
-					width: 80upx;
-					height: 28upx;
-					top: -4upx;
-					right: -26upx;
-				}
-
-				.fix {
-					position: absolute;
-					width: 38upx;
-					height: 38upx;
-					top: -14upx;
-					right: -14upx;
-				}
-
-				.sheng {
-					position: absolute;
-					width: 42upx;
-					height: 42upx;
-					top: -14upx;
-					right: -14upx;
-				}
-			}
+			padding-bottom: 20upx;
+		}
+		.item:last-child{
+			padding-bottom: 0;
 		}
 	}
 }

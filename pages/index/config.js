@@ -1,23 +1,26 @@
 export const homeTopNavs = [
   {
-    name: '全屋套餐',
-    iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
-    url: '/pages/furniture/furniture?id=null'
+	  name: '家具严选',
+	  iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
+	  // url: '/pages/furniture/furniture?id=null',
+	  url: '/pages/goods-filter/goods-filter?id=100101533&sub=100101561'
   },
   {
     name: '全屋快装',
     iconUrl: require('../../static/images/new-index/index-1/quanwukuaizhuang.png'),
-    url: '/pages/furniture/furniture?id=null'
+    // url: '/pages/furniture/furniture?id=null'
   },
   {
-    name: '家具严选',
-    iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
-    url: '/pages/furniture/furniture?id=null'
+    name: '全屋套餐',
+    iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
+    // url: '/pages/furniture/furniture?id=null'
+    url: '/pages/index/WholehouseCustomization/index'
   },
   {
     name: '智能选配',
     iconUrl: require('../../static/images/new-index/index-1/zhinengxuanpei.png'),
-    url: '/pages/furniture/furniture?id=null'
+    // url: '/pages/furniture/furniture?id=null'
+	url: '/pages/index/IntelligentSelection/index'
   },
   // {
   //   label: '日用百货',

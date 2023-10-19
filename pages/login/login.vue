@@ -1,11 +1,3 @@
-<!--
- * @Author: aliyun0758874076 2300202994@qq.com
- * @Date: 2023-10-12 09:11:06
- * @LastEditors: aliyun0758874076 2300202994@qq.com
- * @LastEditTime: 2023-10-12 18:28:25
- * @FilePath: \tuan\pages\login\login.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="container">
     <view style="padding: 68upx 0 0 56upx; color: #ffffff">
@@ -150,16 +142,6 @@ export default {
     };
   },
   async onLoad(options) {
-    // 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
-    // #ifdef H5
-    // console.log('new OldTuanFeng',params)
-    // console.log(this.$store.state.app.isFromNewSystem)
-    if (options.from && options.from == 'NewSystem') {
-      // 如果来自于新系统则将全局的新系统判断改为true
-      this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
-    }
-    // #endif
-    // this.$store.state.app.isFromNewSystem
     if (options.miniProgram) {
       getApp().globalData.isInMiniprogram = true;
     }
@@ -230,13 +212,9 @@ export default {
           url: '/'
         });
       } else {
-        if (this.$store.state.app.isFromNewSystem) {
-          // 啥也不干，给爷干等着登录
-        } else {
           uni.switchTab({
             url: '/'
           });
-        }
       }
     }
   },

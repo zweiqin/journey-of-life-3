@@ -25,14 +25,15 @@
         <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
         <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
       </view>
-
       <ServeMenus></ServeMenus>
 
       <VipPackage :scrollTop="scrollTop"></VipPackage>
     </view>
-
+    <view class="MakeSmallFortune">
+        <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
+    </view>
     <!-- 家具维修养护一条街 -->
-    <ServeShop ref="serveShopRef"></ServeShop>
+    <!-- <ServeShop ref="serveShopRef"></ServeShop> -->
 
     <!-- 四季专区 -->
     <!-- <FourSeasonsZone></FourSeasonsZone> -->
@@ -81,6 +82,8 @@ import VipPackage from './cpns/VipPackage.vue';
 import ServeShop from './cpns/ServeShop.vue';
 import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
+// 赚小钱
+import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 
 const app = getApp();
 
@@ -95,7 +98,8 @@ export default {
     ServeShop,
     FourSeasonsZone,
     ServerPane,
-    PopupInformation
+    PopupInformation,
+    MakeSmallFortune
   },
   mixins: [showModal()],
   data() {
@@ -120,6 +124,7 @@ export default {
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
+			this.$refs.refMakeSmallFortune&&this.$refs.refMakeSmallFortune.getPostList()
     });
 
     if (!app.globalData.isShowCommunityPopup) {
