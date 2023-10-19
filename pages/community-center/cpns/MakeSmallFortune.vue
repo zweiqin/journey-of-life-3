@@ -61,9 +61,11 @@ export default {
 		getPostList() {
 			let region
 			try{
-				region = uni.getStorageSync('ADDRES_REGION')
+				region = uni.getStorageSync('USER_SELECT_ADDRESS').data.distinguish
+        // console.log(region)
 			}catch {
 				region = '顺德区'
+        // console.log(region)
 			}
 			getPostList({
 				userId: "",
@@ -81,7 +83,7 @@ export default {
 							]
 					return item
 				})
-				console.log(this.renderData)
+				// console.log(this.renderData)
 			})
 		}
 	},

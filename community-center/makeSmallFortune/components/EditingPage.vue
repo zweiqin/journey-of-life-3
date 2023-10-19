@@ -1,10 +1,10 @@
 <template>
     <view class="EditingPage">
         <view class="header">
-            <text class="Cancel" @click="go('/community-center/makeSmallFortune/index')">取消</text>
-            <view class="text">草稿将自动保存</view>
+            <text class="Cancel" @click="goback">取消</text>
+            <view class="text">文章编辑</view>
             <view class="btnBox">
-                <view class="preview">预览</view>
+                <!-- <view class="preview"></view> -->
                 <view v-if="isOverForm">下一步</view>
                 <view class="NextSteps" v-else @click="nextSteps">下一步</view>
             </view>
@@ -83,6 +83,9 @@ export default {
         }
     },
     methods: {
+        goback() {
+            uni.navigateBack();
+        },
         nextSteps() {
             this.$emit('checkoutCurrent', 1)
         },
@@ -221,7 +224,7 @@ export default {
             color: #C0BEC1;
         }
         .btnBox {
-            width: 170rpx;
+            /* width: 170rpx; */
             height: 44rpx;
             display: flex;
             justify-content: space-between;
