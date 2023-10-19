@@ -9,6 +9,7 @@ const service = base_url => {
      * @param { boolean } loading 是否显示loading加载
      * @param { () => void } cb 额外的请求操作
      * @param { boolean } isZhult 是否是助力通接口
+     * @param {Boolean} showError 是否显示错误信息
      */
 
     const {
@@ -18,6 +19,7 @@ const service = base_url => {
       loading = false,
       cb,
       isZhult = false,
+      showError = true
     } = config
 
     loading && uni.showLoading()
@@ -31,7 +33,7 @@ const service = base_url => {
             if (res.statusCode === 200 || res.statusCode === 20000) {
               resolve(res.data)
             } else {
-              uni.showToast({
+              showError &&  uni.showToast({
                 title: res.errMsg,
                 icon: 'none',
                 mask: true,
@@ -50,7 +52,7 @@ const service = base_url => {
                 },
               })
             } else if (res.data.errno !== 0) {
-              uni.showToast({
+              showError && uni.showToast({
                 title: res.data.errmsg,
                 icon: 'none',
                 mask: true,
