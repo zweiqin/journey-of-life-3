@@ -1,7 +1,7 @@
 <template>
     <view class="articleDetailsBox">
         <view class="containerHeader">
-            <tui-icon color="#8a2a2a" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
+            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章详情</text>
         </view>
         <view class="Title">
@@ -17,6 +17,12 @@
 </template>
 
 <script>
+// lookPostRed({
+//     redPacketId: this.formData.redPacketId,
+//     uid: this.formData.uid
+// }).then(res => {
+//     console.log(res)
+// })
 import { getUserId } from '@/utils';
 import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
 export default {
@@ -29,12 +35,6 @@ export default {
         }).then(res => {
             this.textData = res.data
             this.formData.redPacketId = res.data.redPacketInfo.redPacketId
-            lookPostRed({
-                redPacketId: this.formData.redPacketId,
-                uid: this.formData.uid
-            }).then(res => {
-                console.log(res)
-            })
         }).catch(err => {
             console.log('err')
         })

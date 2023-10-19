@@ -1,7 +1,7 @@
 <template>
     <view class="MakeSmallFortuneBox">
         <view class="containerHeader">
-            <tui-icon color="#8a2a2a" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
+            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章中心</text>
             <form @submit="getPostList">
             <view class="SearchBox">
