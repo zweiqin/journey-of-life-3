@@ -9,9 +9,9 @@
         </view>
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
-                <image v-if="textData.header" :src="textData.header" class="PublisherInfoAvatar"></image>
+                <image v-if="textData.head" :src="textData.head" class="PublisherInfoAvatar"></image>
                 <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
-                <text class="PublisherName">{{ textData.username }}</text>
+                <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
             </view>
             <!-- <view class="PublishAddress">
                 发表于广东
@@ -22,7 +22,7 @@
                 {{ item.text }}
             </view>
             <view class="images" v-if="item.imgUrl">
-                <image class="imageItem" :src="item.imgUrl"></image>
+                <img class="imageItem" :src="item.imgUrl" />
                 <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
             </view>
         </view>
@@ -39,10 +39,10 @@
         <view class="lingquREDBook">
             <button class="cnmd" @click="lingqu">领取奖励</button>
         </view>
-                <view class="PublisherInfo">
+        <view class="PublisherInfo">
             <view class="PublisherInfoBox">
-                <image :src="textData.header" class="PublisherInfoAvatar"></image>
-                <text class="PublisherName">{{ textData.username }}</text>
+                <image :src="textData.head" class="PublisherInfoAvatar"></image>
+                <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
             </view>
             <view class="ReleaseTime">
                 <view class="fenxiang" @click="shares">
@@ -100,7 +100,12 @@ export default {
                 redPacketId: this.formData.redPacketId,
                 uid: this.formData.uid
             }).then(res => {
-                console.log(res)
+                uni.showToast({
+                    title: res.errmsg,
+                    icon: 'none',
+                })
+            }).catch(err => {
+                console.log(err)
             })
         },
         shares() {
@@ -197,6 +202,7 @@ export default {
     display: flex;
     align-items: center;
     .PublisherInfoBox {
+        min-width: 300rpx;
         display: flex;
             .PublisherInfoAvatar {
                 width: 48rpx;
@@ -223,7 +229,7 @@ export default {
         font-feature-settings: "kern" on;
         color: #888889;
         .fenxiang {
-            margin-left: 300rpx;
+            margin-left: 180rpx;
             display: flex;
             flex-direction: column;
             align-items: center;
