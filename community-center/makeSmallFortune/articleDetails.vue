@@ -9,7 +9,8 @@
         </view>
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
-                <image :src="textData.header" class="PublisherInfoAvatar"></image>
+                <image v-if="textData.header" :src="textData.header" class="PublisherInfoAvatar"></image>
+                <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
                 <text class="PublisherName">{{ textData.username }}</text>
             </view>
             <!-- <view class="PublishAddress">
@@ -17,7 +18,8 @@
             </view> -->
         </view>
         <view class="images">
-            <image class="imageItem" :src="textData.postCover"></image>
+            <image class="imageItem" v-if="textData.postCover" :src="textData.postCover"></image>
+            <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image>
         </view>
         <view class="content">
             内容: {{ textData.postContent }}

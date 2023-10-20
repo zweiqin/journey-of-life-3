@@ -24,7 +24,7 @@
              <image class="add-icon bigbig" :src="formData.postCover"></image>
           </view>
         </view>
-        <view class="addType">
+        <!-- <view class="addType">
             <view class="addTypeIltem">
                 <text class="typeText">标签类型:</text>
                 <view class="ZHFwcnm" v-if="postCategoryName">
@@ -34,7 +34,7 @@
             </view>
             <button class="addTpyeBtn" @click="show = true">添加标签</button>
             <TuiSelect type="select" mask-closable="true" :list="articlesType" :show="show" @confirm="confirm" @close="onClose"></TuiSelect>
-        </view>
+        </view> -->
     </view>
 </template>
 
