@@ -1,7 +1,7 @@
 <template>
     <view class="articleDetailsBox">
         <view class="containerHeader">
-            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="68"  @click="goBack"></tui-icon>
+            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="68"  @click="$emit('checkoutCurrent', 0, true)"></tui-icon>
             <text class="headerTitle">文章详情</text>
         </view>
         <view class="Title">
@@ -13,9 +13,6 @@
                 <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
                 <text class="PublisherName">{{ textData.username }}</text>
             </view>
-            <!-- <view class="PublishAddress">
-                发表于广东
-            </view> -->
         </view>
         <view class="PreviewItem" v-for="(item, index) in PreviewData" :key="index">
             <view v-if="item.text" class="content">
@@ -45,7 +42,7 @@
                 <text class="PublisherName">{{ textData.username }}</text>
             </view>
             <view class="ReleaseTime">
-                <view class="fenxiang" @click="shares">
+                <view class="fenxiang">
                     <image class="fenxiangimg" src="@/static/images/new-community/home/fenxaing.png"></image>
                     <text class="fxtxt">分享</text>
                 </view>
@@ -55,78 +52,33 @@
 </template>
 
 <script>
-import { getUserId } from '@/utils';
-import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
+// import { getUserId } from '@/utils';
+// import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'articleDetails',
-    onLoad(options) {
-        this.formData.uid = getUserId()
-        // this.formData.redPacketId = options.data.redPacketInfo.redPacketId
-        getPostDetails({
-            postId: options.id
-        }).then(res => {
-            this.textData = res.data
-            this.formData.redPacketId = res.data.redPacketInfo.redPacketId
-            this.PreviewData = JSON.parse(this.textData.postContent)
-        }).catch(err => {
-            console.log('err')
-        })
+    props: {
+        textData: {
+            type: Object,
+            default: {}
+        }
+    },
+    created(options) {
+        this.PreviewData = JSON.parse(this.textData.postContent)
     },
     data() {
         return {
             PreviewData: [],
-            textData: {
-                postTitle: '劲爆！0元可在附近就能开店快速落地！',
-                postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
-                postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: require('@/static/images/new-community/home/avatar1.png'),
-                username: '蔡徐坤'
-            },
-            formData: {
-                redPacketId: "",
-                uid: ""
-            }
+            // textData: {
+            //     postTitle: '劲爆！0元可在附近就能开店快速落地！',
+            //     postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
+            //     postCover: require('@/static/images/new-community/home/bagayalu.png'),
+            //     header: require('@/static/images/new-community/home/avatar1.png'),
+            //     username: '蔡徐坤'
+            // }
         }
     },
     methods: {
-        goBack() {
-            uni.navigateBack();
-        },
-        gotoGuangGao(url) {
-            window.open(url)
-        },
-        lingqu() {
-            lookPostRed({
-                redPacketId: this.formData.redPacketId,
-                uid: this.formData.uid
-            }).then(res => {
-                console.log(res)
-            })
-        },
-        shares() {
-            uni.showToast({
-                title: "点击右上角手动分享",
-                icon: 'none',
-                success: function (res) {
-                this.exeRet = "success:" + JSON.stringify(res) + new Date()
-                },
-                fail: function (res) {
-                this.exeRet = "fail:" + JSON.stringify(res)
-                },
-            })
-            // uni.share({
-            // provider: "weixin",
-            // scene: "WXSceneSession",
-            // type: 1,
-            // summary: "快来和我一起领红包!!!!",
-            // success: function (res) {
-            //     console.log("success:" + JSON.stringify(res));
-            // },
-            // fail: function (err) {
-            //     console.log("fail:" + JSON.stringify(err));
-            // }
-            // });
-        }
+        
     }
 }
 </script>
