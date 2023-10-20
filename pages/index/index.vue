@@ -128,6 +128,7 @@ export default {
     //   } else {
     //     this.empty();
     //   }
+    //   console.log(this.$data._list)
     // },
     handleViewDetail(navInfo) {
       if (navInfo.url) {
@@ -332,6 +333,7 @@ export default {
       }
 
       .sub-list-container {
+        margin-top: 10rpx;
         display: flex;
         align-items: center;
         white-space: nowrap;

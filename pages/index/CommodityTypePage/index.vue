@@ -55,6 +55,8 @@
 					good: []
 				},
 				categories: [],
+      			subCategoryList: [],
+				subCategoryId: -1,
 			};
 		},
 		onLoad(options) {
@@ -92,6 +94,7 @@
 
 <style lang="scss">
 	.goods-list {
+		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

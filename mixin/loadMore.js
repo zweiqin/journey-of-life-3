@@ -51,6 +51,7 @@ export default (options) => {
         !isLoadmore && afterFn && typeof afterFn === "function" && afterFn();
         isLoadmore && cb && typeof cb === "function" && cb();
         this.$data._status = "none";
+        // console.log(this.$data._list)
       },
     },
 
