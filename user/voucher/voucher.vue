@@ -30,7 +30,7 @@
 
     <view class="pane">
       <view class="pane-title-wrapper">
-        <view class="title"> <tui-icon :size="20" color="#000" name="applets"></tui-icon> 代金券转增</view>
+        <view class="title"> <tui-icon :size="20" color="#000" name="applets"></tui-icon> 代金券转赠</view>
       </view>
 
       <view class="btn-content">

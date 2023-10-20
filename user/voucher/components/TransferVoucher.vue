@@ -3,7 +3,7 @@
     <tui-top-dropdown :mask="false" :zIndex="1002" :maskZIndex="1001" :height="0" :show="popupVisible" @close="handleHiddenPopup">
       <view class="popup-container">
         <view class="pane-title-wrapper">
-          <view class="title">代金券转增</view>
+          <view class="title">代金券转赠</view>
           <tui-icon :size="24" @click="handleHiddenPopup" name="close"></tui-icon>
         </view>
 
@@ -34,7 +34,7 @@
 
           <view class="input-item" style="border-bottom: 0.5px #e9e9e9 solid">
             <view class="input-title">转赠</view>
-            <input class="input" v-model="transformForm.number" type="text" placeholder="请输入转增代金券数量" />
+            <input class="input" v-model="transformForm.number" type="text" placeholder="请输入转赠代金券数量" />
           </view>
 
           <view class="input-item">

@@ -157,6 +157,7 @@ export default {
 }
 .containerHeader {
     box-sizing: border-box;
+    padding-left: 30rpx;
     padding-top: 10rpx;
     padding-bottom: 10rpx;
     width: 750rpx;
