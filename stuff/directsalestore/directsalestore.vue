@@ -154,7 +154,6 @@ import Rate from "../../components/rate";
 import { navs2 } from "../../pages/stuff/config";
 import { navs1 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
-import Goods from "../../components/goods";
 import {
   getBrandDetailApi,
   getBrandListBySelectApi,
@@ -167,7 +166,6 @@ export default {
   components: {
     Rate,
     Carousel,
-    Goods,
     suspenButton,
   },
 

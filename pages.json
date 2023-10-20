@@ -414,53 +414,59 @@
           }
         },
         {
-          "path": "shop/shop",
+          "path": "shop/shop-enter",
           "style": {
-            "navigationBarTitleText": "附近商家"
+            "navigationBarTitleText": "商圈二级页面"
           }
         },
-        {
-          "path": "shop/serve-detail",
-          "style": {
-            "navigationBarTitleText": "服务详情"
-          }
-        },
-        {
-          "path": "shop/goods-detail",
-          "style": {
-            "navigationBarTitleText": "商品详情"
-          }
-        },
-        {
-          "path": "shop/shop-order",
-          "style": {
-            "navigationBarTitleText": "确认预约"
-          }
-        },
-        {
-          "path": "shop/goods-order",
-          "style": {
-            "navigationBarTitleText": "确认订单"
-          }
-        },
+        // {
+        //   "path": "shop/serve-detail",
+        //   "style": {
+        //     "navigationBarTitleText": "服务详情"
+        //   }
+        // },
+        // {
+        //   "path": "shop/goods-detail",
+        //   "style": {
+        //     "navigationBarTitleText": "商品详情"
+        //   }
+        // },
+        // {
+        //   "path": "shop/shop-order",
+        //   "style": {
+        //     "navigationBarTitleText": "确认预约"
+        //   }
+        // },
+        // {
+        //   "path": "shop/goods-order",
+        //   "style": {
+        //     "navigationBarTitleText": "确认订单"
+        //   }
+        // },
         {
           "path": "shop/shop-detail",
           "style": {
-            "navigationBarTitleText": "商家详情"
+            "navigationBarTitleText": "商圈商家详情"
           }
         },
         {
-          "path": "install",
+          "path": "shop/shop-deep",
           "style": {
-            "navigationBarTitleText": "上门安装"
+            "navigationBarTitleText": "商圈三级页面"
           }
         },
-        {
-          "path": "serve-detail",
-          "style": {
-            "navigationBarTitleText": ""
-          }
-        },
+        // {
+        //   "path": "install",
+        //   "style": {
+        //     "navigationBarTitleText": "上门安装"
+        //   }
+        // },
+        // {
+        //   "path": "serve-detail",
+        //   "style": {
+        //     "navigationBarTitleText": ""
+        //   }
+        // },
         {
           "path": "confirm-order",
           "style": {
@@ -480,15 +486,6 @@
             "navigationBarTitleText": "",
             "enablePullDownRefresh": true
           }
-        },
-        {
-          "path": "site/home"
-        },
-        {
-          "path": "site/more-site"
-        },
-        {
-          "path": "site/union"
         },
         {
           "path": "delivery-install"
@@ -622,9 +619,6 @@
           }
         },
         {
-          "path": "shop/delicacy/delicacy"
-        },
-        {
           "path": "/merchant-settlement/authentication/index",
           "style": {
             "navigationBarTitleText": "个人信息验证"
@@ -737,23 +731,6 @@
         },
         {
           "path": "consignee",
-          "style": {
-            "navigationBarTitleText": ""
-          }
-        }
-      ]
-    },
-    {
-      "root": "home",
-      "pages": [
-        {
-          "path": "design-detail",
-          "style": {
-            "navigationBarTitleText": ""
-          }
-        },
-        {
-          "path": "styles",
           "style": {
             "navigationBarTitleText": ""
           }
@@ -939,13 +916,13 @@
             "navigationBarTitleText": "活动推广"
           }
         },
-        {
-          "path": "Collection/Goods-Collection",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
+        // {
+        //   "path": "Collection/Goods-Collection",
+        //   "style": {
+        //     "navigationBarTitleText": "",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
           "path": "orderForm/order-form",
           "style": {
@@ -1102,13 +1079,13 @@
             "van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
           }
         },
-        {
-          "path": "sever/order-detail",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
+        // {
+        //   "path": "sever/order-detail",
+        //   "style": {
+        //     "navigationBarTitleText": "",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
           "path": "marketing-tool/shopApply/index",
           "usingComponents": {
@@ -1252,12 +1229,12 @@
     {
       "root": "stuff",
       "pages": [
-        {
-          "path": "detail",
-          "usingComponents": {
-            "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-          }
-        },
+        // {
+        //   "path": "detail",
+        //   "usingComponents": {
+        //     "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+        //   }
+        // },
         {
           "path": "industry/infomation-list",
           "style": {

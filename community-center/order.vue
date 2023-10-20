@@ -1,10 +1,10 @@
 <template>
 	<view class="order-page">
-		<Header
+		<JHeader
 			tabbar="/pages/user/user"
 			title="社区订单"
 			style="background: #ffffff"
-		></Header>
+		></JHeader>
 		<!-- 搜索 -->
 		<SearchBar
 			:radius="100"
@@ -52,14 +52,12 @@ import OrderPanel from './components/order-panel.vue'
 import { orderStatusList } from './config'
 import { getUserId, handleDebounce } from '../utils'
 import SearchBar from '../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue'
-import Header from '../components/header'
 import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO } from 'constant'
 
 export default {
 	components: {
 		OrderPanel,
-		SearchBar,
-		Header
+		SearchBar
 	},
 	data() {
 		return {

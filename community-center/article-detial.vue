@@ -1,7 +1,7 @@
 <template>
   <view class="infomation-detail-container">
     <!-- #ifdef H5 -->
-    <Header title="文章详情"></Header>
+    <JHeader title="文章详情"></JHeader>
     <!-- #endif -->
 
      <view class="main">
@@ -21,11 +21,7 @@
 
 <script>
 import { getArticleListApi } from '../api/community-center'
-import Header from '../components/header/index.vue'
 export default {
-  components: {
-    Header
-  },
   data() {
     return {
       id: '',

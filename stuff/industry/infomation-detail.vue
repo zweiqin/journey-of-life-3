@@ -1,7 +1,7 @@
 <template>
   <view class="infomation-detail-container">
     <!-- #ifdef H5 -->
-    <Header title=" "></Header>
+    <JHeader title=" "></JHeader>
     <!-- #endif -->
 
     <view class="main">
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import Header from '../../components/header'
 import Carousel from '../../components/carousel'
 import IndustryInformation from '../../pages/stuff/components/industry-information-pane.vue'
 import { getIndustryInformationDetalApi } from '../../api/stuff'
@@ -41,7 +40,6 @@ import { btnList } from './data'
 
 export default {
   components: {
-    Header,
     Carousel,
     IndustryInformation,
   },
