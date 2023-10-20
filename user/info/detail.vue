@@ -118,6 +118,7 @@
     </tui-bottom-popup>
 
     <tui-toast ref="toast"></tui-toast>
+    <EditMobile @success="handleRefresh" ref="editMobileRef"></EditMobile>
   </view>
 </template>
 
@@ -125,7 +126,10 @@
 import { USER_INFO } from '../../constant';
 import { getOpenIdApi, handleBindOpenIdApi, queryIsBindPhoneApi } from '../../api/app';
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user';
+import EditMobile from './components/EditMobile.vue';
+
 export default {
+  components: { EditMobile },
   data() {
     return {
       isShowModal: false,
@@ -247,6 +251,10 @@ export default {
       });
     },
 
+    handleRefresh(userInfo) {
+      this.userInfo = userInfo;
+    },
+
     // 检查版本更新
     handleCheckedVersion() {
       this.$refs.checkedVersion.checkedVersion();
@@ -267,11 +275,7 @@ export default {
 
       if (code == null || code === '') {
         window.location.href =
-          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
-          appid +
-          '&redirect_uri=' +
-          encodeURIComponent(local) +
-          '&response_type=code&scope=snsapi_base#wechat_redirect';
+          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid + '&redirect_uri=' + encodeURIComponent(local) + '&response_type=code&scope=snsapi_base#wechat_redirect';
       } else {
         try {
           const res = await getOpenIdApi({
@@ -303,11 +307,11 @@ export default {
               });
 
               this.queryBindInfo();
-            }else{
+            } else {
               this.ttoast({
                 type: 'fail',
                 title: res.msg || '绑定失败，请重试'
-              })
+              });
             }
           } catch (error) {
             uni.showToast({
@@ -379,10 +383,11 @@ export default {
       if (this.userInfo.weixinOpenid && !this.userInfo.phone) {
         uni.navigateTo({ url: '/pages/login/bind-phone?openId=' + this.userInfo.weixinOpenid });
       } else {
-        this.ttoast({
-          type: 'info',
-          title: '您已绑定手机号'
-        });
+        this.$refs.editMobileRef.show(this.userInfo.phone);
+        // this.ttoast({
+        //   type: 'info',
+        //   title: '您已绑定手机号'
+        // });
       }
     }
   },
