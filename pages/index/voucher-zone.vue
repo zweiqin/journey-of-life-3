@@ -107,7 +107,8 @@ export default {
     }
   })],
   mounted() {
-    this.$set(this.$data._query, 'categoryId', 100101725)
+    // this.$set(this.$data._query, 'categoryId', 100101725)
+    this.$set(this.$data._query, 'supportVoucher', 1)
     this._loadData()
   },
   methods: {

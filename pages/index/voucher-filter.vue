@@ -63,6 +63,7 @@ export default {
     getData() {
       this.$data._list = []
       this.$data._query.categoryId = this.currentCategoryId
+      this.$data._query.supportVoucher = 1
       this._loadData()
     }
   },

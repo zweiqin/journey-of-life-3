@@ -32,8 +32,6 @@
     <view class="MakeSmallFortune">
         <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
     </view>
-    <!-- 家具维修养护一条街 -->
-    <!-- <ServeShop ref="serveShopRef"></ServeShop> -->
 
     <!-- 四季专区 -->
     <!-- <FourSeasonsZone></FourSeasonsZone> -->
@@ -79,7 +77,6 @@ import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
 import PageBar from './cpns/PageBar.vue';
 import ServeMenus from './cpns/ServeMenus.vue';
 import VipPackage from './cpns/VipPackage.vue';
-import ServeShop from './cpns/ServeShop.vue';
 import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 // 赚小钱
@@ -95,7 +92,6 @@ export default {
     PageBar,
     ServeMenus,
     VipPackage,
-    ServeShop,
     FourSeasonsZone,
     ServerPane,
     PopupInformation,
@@ -246,7 +242,6 @@ export default {
       try {
         if (currentAddress) {
           this.$store.dispatch('community/getVipPackageList', currentAddress);
-          this.$refs.serveShopRef.getNearByShopList();
         }
       } catch (error) {
         console.log('社区首页刷新报错', error);

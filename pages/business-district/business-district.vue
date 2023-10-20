@@ -138,7 +138,7 @@ export default {
 		handleToDetail(item) {
 			const { type } = item
 			if (!type) return this.empty() // 特殊图标或图标名称对应不上就跳不了页面
-			uni.navigateTo({ url: `/community-center/shop/shop?type=${item.type}&id=${item.id}` })
+			uni.navigateTo({ url: `/community-center/shop/shop-enter?type=${item.type}&id=${item.id}` })
 		}
 	},
 	onPullDownRefresh() {

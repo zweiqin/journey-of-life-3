@@ -72,10 +72,10 @@
         起
 
 				<text
-					v-if="goodsDetail.info.supportVoucher && goodsDetail.info.voucherAmount"
+					v-if="goodsDetail.voucherAmount"
 					style="height: 100%;padding: 6upx 12upx;margin-left: 20upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
 				>
-					可使用{{ goodsDetail.info.voucherAmount }}代金券抵扣
+					可使用{{ goodsDetail.voucherAmount }}代金券抵扣
 				</text>
 
         <!-- <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text> -->
