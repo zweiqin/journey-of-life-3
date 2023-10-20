@@ -19,7 +19,7 @@
                 {{ item.text }}
             </view>
             <view class="images" v-if="item.imgUrl">
-                <image class="imageItem" :src="item.imgUrl"></image>
+                <img class="imageItem" :src="item.imgUrl" />
                 <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
             </view>
         </view>
@@ -52,8 +52,6 @@
 </template>
 
 <script>
-// import { getUserId } from '@/utils';
-// import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'articleDetails',
     props: {
@@ -68,13 +66,6 @@ export default {
     data() {
         return {
             PreviewData: [],
-            // textData: {
-            //     postTitle: '劲爆！0元可在附近就能开店快速落地！',
-            //     postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
-            //     postCover: require('@/static/images/new-community/home/bagayalu.png'),
-            //     header: require('@/static/images/new-community/home/avatar1.png'),
-            //     username: '蔡徐坤'
-            // }
         }
     },
     methods: {
@@ -229,6 +220,16 @@ export default {
         min-width: 330rpx;
         min-height: 330rpx;
         max-width: 642px;
+        /* height: 800rpx; */
+        /* max-height: 800rpx; */
      }
+     /deep/ uni-image {
+        width: auto;
+        min-width: 330rpx !important;
+        min-height: 330rpx !important;
+        max-width: 642rpx !important;
+        /* height: 800rpx; */
+        /* max-height: 800rpx !important; */
+    }
 }
 </style>
