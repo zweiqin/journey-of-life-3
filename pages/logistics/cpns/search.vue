@@ -2,15 +2,15 @@
   <!-- 头部 -->
   <view class="header">
     <slot></slot>
-    <image class="img" src="../../static/images/index/location.png" alt="定位" />
+    <image class="img" src="../../../static/images/index/location.png" alt="定位" />
     <TuanLocation>
       <text class="loaction">{{ $store.getters.currentCity || '龙江镇' }}</text>
     </TuanLocation>
     <view class="search">
-      <image class="search-icon" src="../../static/images/icon/search.png" alt="" />
+      <image class="search-icon" src="../../../static/images/icon/search.png" alt="" />
       <input type="text" @focus="$emit('focus')" />
     </view>
-    <image class="img" src="../../static/images/index/ling.png" alt="响铃" />
+    <image class="img" src="../../../static/images/index/ling.png" alt="响铃" />
   </view>
 </template>
 

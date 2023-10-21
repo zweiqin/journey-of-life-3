@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import Rate from "../../components/rate";
+import Rate from "../../pages/stuff/components/rate";
 import { navs2 } from "../../pages/stuff/config";
 import { navs1 } from "../../pages/stuff/config";
 import Carousel from "../../components/carousel";
@@ -160,7 +160,7 @@ import {
   getCatalogIdByBrandApi,
 } from "../../api/brand";
 import { goodsListApi } from "../../api/goods";
-import suspenButton from "../../components/px-suspen-button";
+import suspenButton from "../cpns/px-suspen-button";
 
 export default {
   components: {

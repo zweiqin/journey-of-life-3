@@ -25,11 +25,9 @@
       </view>
     </view>
 
-    <NoData
-      v-if="!siteList.length"
-      :img="false"
-      text="还没有地址，快去添加吧~"
-    ></NoData>
+		<view v-if="!siteList.length">
+			<tui-no-data :fixed="false" style="margin-top: 100upx;">还没有地址，快去添加吧~</tui-no-data>
+		</view>
     <view v-else class="site-detail" v-for="(item, id) in siteList" :key="id">
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
@@ -112,12 +110,8 @@ import {
 } from "../../api/address";
 import { getUserId } from "../../utils";
 import { SELECT_ADDRESS } from "../../constant";
-import NoData from "../../components/no-data";
 
 export default {
-  components: {
-    NoData,
-  },
   data() {
     return {
       manageok: 1,

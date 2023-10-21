@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import Rate from "../../../components/rate";
+import Rate from "../components/rate";
 export default {
   components: {
     Rate,

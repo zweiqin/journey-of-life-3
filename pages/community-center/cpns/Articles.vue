@@ -1,5 +1,5 @@
 <template>
-  <view class="ArticlesItem">
+  <view class="ArticlesItem" @click="gotoArticleDetails">
       <view class="ArticlesItemTop">
         <view class="ArticlesCoverSheetBox">
           <!-- @/static/images/new-community/home/CoverSheet.png -->
@@ -23,7 +23,7 @@
           </view>
           <view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元</view>
         </view>
-        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" @click="gotoArticleDetails">
+        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0">
           查看详情
         </view>
         <view class="disableds" v-else>

@@ -7,19 +7,6 @@
       @click="servePopupVisible = false">
       <view class="serve-text-container">
         <view class="container">
-          <!-- <tui-sticky stickyTop="0" :scrollTop="scrollTop" stickyHeight="0rpx">
-      <template v-slot:header>
-        <NewHeader
-          @back="handleBack"
-          title="团蜂服务平台协议"
-          top="61%"
-          position="left"
-          backgroundColor="#fff"
-          padding="30upx 80upx 20upx 10upx"
-        >
-        </NewHeader>
-      </template>
-    </tui-sticky> -->
 
           <h3 style="
         background-color: #ffffff;

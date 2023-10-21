@@ -6,10 +6,15 @@ pages/pre-order/
 pages/order/
 pages/goods-filter/
 pages/community-center
+pages/logistics
+logistics
+stuff
 main.js
 components/TSpecification/
 user/sever/shopCar/
 user/sever/components/
 user/sever/view-history.vue
-community-center/makeSmallFortune/release.vue
-community-center/makeSmallFortune/components/EditingPage.vue
+user/marketing-tools/contact-guide
+user/digital-store/
+user/site/
+community-center/makeSmallFortune/

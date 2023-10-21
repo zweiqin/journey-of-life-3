@@ -122,11 +122,15 @@
 </template>
 
 <script>
+import JPopup from "./mould/JPopup.vue";
 import { getRestColor } from "./config";
 import { getNameCardList, changeNameCardBgApi } from "../../../api/user";
 import { domToImage, getUserId } from "../../../utils";
 
 export default {
+	components: {
+		JPopup
+	},
   data() {
     return {
       backgroundChangeVisble: false,

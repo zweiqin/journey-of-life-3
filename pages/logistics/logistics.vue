@@ -59,7 +59,9 @@
           <view class="more" @click="viewAllOrders">查看全部？</view>
         </view>
 
-        <NoData v-else></NoData>
+				<view v-else>
+					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+				</view>
       </view>
     </view>
 
@@ -96,21 +98,19 @@
 
 <script>
 import { expressInquiryApi } from '../../api/logistics';
-import Search from '../../components/search';
+import Search from './cpns/search';
 import Carousel from '../../components/carousel';
-import Menus from '../../components/Menus';
+import Menus from './cpns/Menus';
 import { menus } from './config';
 import { jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, VALUE_ADDED_SERVICES, JI_EDIT_ORDER_ID, APPONIT_WULIU_QIYE_ID } from '../../constant';
 import { getUserId, removeCache, checkWhoami } from '../../utils/DWHutils';
 import { collectPages } from '../../logistics/config';
-import NoData from '../../components/no-data';
 
 export default {
   components: {
     Search,
     Carousel,
-    Menus,
-    NoData
+    Menus
   },
   data() {
     return { menus, currentTab: 1, mySends: [], mySendsTotal: 0 };

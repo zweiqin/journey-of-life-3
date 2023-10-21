@@ -82,7 +82,9 @@
       </view>
     </view>
 
-    <NoData v-show="!list.length"></NoData>
+		<view v-show="!list.length">
+			<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+		</view>
 
     <img
       class="add-icon"
@@ -109,7 +111,6 @@ import PursueSalePane from "./components/pursue-sale-pane.vue";
 import StanPane from "./components/stan-pane.vue";
 import { getMsgSentryListApi, getWordsApi } from "../../api/user";
 import { getUserId } from "../../utils";
-import NoData from "../../components/no-data";
 import { WORDS_LIST, SELECT_WORDS } from "../../constant";
 import AddPopup from "./components/add-popup.vue";
 const { debounce } = require("../../utils/util");
@@ -137,7 +138,6 @@ export default {
     ConversionPane,
     PursueSalePane,
     StanPane,
-    NoData,
     AddPopup,
   },
 

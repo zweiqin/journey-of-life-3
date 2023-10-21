@@ -1,7 +1,5 @@
 <template>
   <view class="user-detain-info-container">
-    <!-- <NewHeader @back="handleBack" title="" position="left" top="61%" padding="40upx 60upx 20upx 0"
-			tabbar="/pages/user/user"></NewHeader> -->
     <image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
     <view class="section">
       <view class="avatar">

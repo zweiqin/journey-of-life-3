@@ -118,14 +118,17 @@ export default {
             // this.isMaske = true
             lookPostRed({
                 redPacketId: this.formData.redPacketId,
-                uid: this.formData.uid
+                uid: this.formData.uid,
+    						isChkPick: 1
             }).then(res => {
                 if(res.errno == -1) {
+									// true为已领，false为未领
                     uni.showToast({
                         title: res.errmsg,
                         icon: 'none',
                     })
                 }else {
+										if (res.data === true) return this.$showToast('已领取过红包')
                     this.isMaske = true
                 }
             }).catch(err => {
