@@ -3,7 +3,7 @@
     <tui-top-dropdown :mask="false" :zIndex="1002" :maskZIndex="1001" :height="0" :show="popupVisible" @close="handleHiddenPopup">
       <view class="popup-container">
         <view class="pane-title-wrapper">
-          <view class="title">代金券转增</view>
+          <view class="title">代金券赠</view>
           <tui-icon :size="24" @click="handleHiddenPopup" name="close"></tui-icon>
         </view>
 
