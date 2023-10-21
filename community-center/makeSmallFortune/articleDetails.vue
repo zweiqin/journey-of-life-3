@@ -33,7 +33,7 @@
         <view class="content">
             内容: {{ textData.postContent }}
         </view> -->
-        <view class="guanggao">
+        <view class="guanggao" v-if="textData.redPacketInfo.link">
             <view class="gglink" @click="gotoGuangGao(textData.redPacketInfo.link)">广告链接</view>
         </view>
         <view class="lingquREDBook">
@@ -207,6 +207,7 @@ export default {
             .PublisherInfoAvatar {
                 width: 48rpx;
                 height: 48rpx;
+                border-radius: 50%;
             }
             .PublisherName {
                 margin-left: 20rpx;
@@ -271,6 +272,8 @@ export default {
     padding: 54rpx;
     padding-top: 10rpx;
     padding-bottom: 20rpx;
+    text-indent: 2em;
+    line-height: 1.5;
 }
 .images {
      box-sizing: border-box;
