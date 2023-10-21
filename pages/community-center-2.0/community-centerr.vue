@@ -1,45 +1,42 @@
 <template>
   <view class="community-center-container">
-    <TuanAppShim bg="#fedfcd"></TuanAppShim>
-    <view class="page-header">
-      <view style=" padding: 0 30upx">
-        <view class="top-title"></view>
-        <!-- 搜索 -->
-        <view class="search-bar" v-show="scrollTop <= 300">
-          <view class="location">
-            <TuanLocation>
-              <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
-            </TuanLocation>
-            <image class="angle" src="../../static/images/new-community/home/arrow-down.png"></image>
-          </view>
-          <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
-          <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
-        </view>
-
-        <view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
-        <view class="image-list">
-          <image @click="go('/community-center/service-sort?value=1')" src="../../static/images/new-community/home/p-1.png" class="p-img"></image>
-          <image @click="go('/community-center/service-sort?value=3')" src="../../static/images/new-community/home/p-2.png" class="p-img"></image>
-          <image @click="go('/community-center/service-sort?value=4')" src="../../static/images/new-community/home/p-3.png" class="p-img"></image>
-        </view>
+    <TuanAppShim bg="#e95d20"></TuanAppShim>
+    <PageBar :class="{ fix: scrollTop > 300 }"></PageBar>
+    <!-- #ifdef H5 -->
+    <view class="search-bar" v-show="scrollTop > 300" :class="{ fix: scrollTop > 300 }">
+      <view class="location">
+        <TuanLocation>
+          <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
+        </TuanLocation>
+        <image class="angle" src="../../static/images/new-community/home/angle.png"></image>
       </view>
+      <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
+      <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
     </view>
-
-    <view style="background: linear-gradient(180deg, #FFFFFF 0%, #f4f4f4); padding-bottom: 30upx;">
-      <view style="padding: 0 30upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
-        <ServeMenus></ServeMenus>
-        <VipPackage :scrollTop="scrollTop"></VipPackage>
+    <!-- #endif -->
+    <view class="page-header" :style="{ background: isStart ? 'linear-gradient(180deg, #ef530e 8%, #fac894 23%, #f6f6f8 33%, #ffffff 123%)' : '#f6f6f8' }">
+      <view class="search-bar" v-show="scrollTop <= 300">
+        <view class="location">
+          <TuanLocation>
+            <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
+          </TuanLocation>
+          <image class="angle" src="../../static/images/new-community/home/angle.png"></image>
+        </view>
+        <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
+        <button class="uni-btn" @click="go('/community-center/search')">搜索</button>
       </view>
+      <ServeMenus></ServeMenus>
 
-      <view class="MakeSmallFortune">
+      <VipPackage :scrollTop="scrollTop"></VipPackage>
+    </view>
+    <view class="MakeSmallFortune">
         <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
-      </view>
-
-      <!-- 四季专区 -->
-      <!-- <FourSeasonsZone></FourSeasonsZone> -->
-
-      <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
     </view>
+
+    <!-- 四季专区 -->
+    <!-- <FourSeasonsZone></FourSeasonsZone> -->
+
+    <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
 
     <!-- 组件支持 -->
     <tui-toast ref="toast"></tui-toast>
@@ -83,7 +80,7 @@ import VipPackage from './cpns/VipPackage.vue';
 import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 // 赚小钱
-import MakeSmallFortune from './cpns/MakeSmallFortune.vue';
+import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 
 const app = getApp();
 
@@ -114,6 +111,7 @@ export default {
       vipBarConfig: Object.freeze(vipBarConfig),
       servePaneList: [],
       scrollTop: 0,
+      isStart: false,
       timer: null
     };
   },
@@ -122,7 +120,7 @@ export default {
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
-      this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList();
+			this.$refs.refMakeSmallFortune&&this.$refs.refMakeSmallFortune.getPostList()
     });
 
     if (!app.globalData.isShowCommunityPopup) {
@@ -260,6 +258,10 @@ export default {
   },
 
   onLoad(options) {
+    setTimeout(() => {
+      this.isStart = true;
+    }, 1000);
+
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
     // #ifdef H5
     const script = document.createElement('script');
@@ -315,26 +317,17 @@ export default {
 
 .community-center-container {
   min-height: 100vh;
-  // background-color: #f5f5f7;
+  background-color: #f5f5f7;
   padding-bottom: 100upx;
   overflow: hidden;
-  // transition: all 350ms ease-in;
+  transition: all 350ms ease-in;
 
   .page-header {
     position: relative;
     z-index: 100;
-    background: linear-gradient(180deg, #ff9e73 -97%, #f9d0a6 -50%, rgba(255, 158, 115, 0) 42%);
-
-    .top-title {
-      position: relative;
-      height: 97upx;
-      width: 100%;
-      // background-color: #ef530e;
-      padding-top: 30upx;
-      box-sizing: border-box;
-      font-size: 32upx;
-      color: #fff;
-    }
+    padding: 0 30upx 30upx;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #ef530e 8%, #fac894 23%, #f6f6f8 33%, #ffffff 123%);
   }
 
   .search-bar {
@@ -342,11 +335,10 @@ export default {
     border-radius: 100upx;
     height: 72upx;
     background-color: #fff;
-    padding: 14upx 29upx;
+    padding: 8upx 15upx;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    border: 1upx solid #ef530e;
 
     &.fix {
       position: fixed;
@@ -366,16 +358,22 @@ export default {
 
     .placeholder {
       position: relative;
+
       color: #c0bec1;
       font-size: 28upx;
       flex: 1;
-      color: #ef530e;
-    }
+      padding-left: 12upx;
 
-    .search-icon {
-      width: 32upx;
-      height: 32upx;
-      flex-shrink: 0;
+      &::after {
+        content: '';
+        height: 26upx;
+        width: 1upx;
+        background-color: #c0bec1;
+        position: absolute;
+        left: 0upx;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
 
     .location {
@@ -387,9 +385,10 @@ export default {
       }
 
       .angle {
-        width: 36upx;
-        height: 36upx;
+        width: 25upx;
+        height: 14upx;
         margin-left: 6upx;
+        margin-right: 10upx;
       }
     }
 
@@ -403,51 +402,6 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-  }
-
-  .tip-blod-title {
-    font-size: 34upx;
-    color: #222229;
-    font-weight: bold;
-    margin: 34upx 0 14upx;
-    text-align: center;
-  }
-
-  .image-list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .p-img {
-      position: relative;
-      width: 176upx;
-      height: 242upx;
-      overflow: inherit !important;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 128upx;
-        height: 15upx;
-        opacity: 0.2;
-        background: #fc634f;
-        filter: blur(8px);
-      }
-
-      &:nth-child(2) {
-        &::after {
-          background: #1a76f2;
-        }
-      }
-
-      &:nth-child(3) {
-        &::after {
-          background: #3cd59c;
-        }
-      }
     }
   }
 }
