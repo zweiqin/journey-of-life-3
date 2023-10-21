@@ -67,30 +67,36 @@
         "navigationBarTitleText": "全部商品"
       }
     },
-	{
-	  "path": "pages/index/IntelligentSelection/index",
-	  "style": {
-	    "navigationBarTitleText": "智能选配"
-	  }
-	},
-	{
-		"path": "pages/index/CommodityTypePage/index",
-		"style": {
-		  "navigationBarTitleText": "商品类型"
-		}
-	},
-  {
-    "path": "pages/index/WholehouseCustomization/index",
-    "style": {
-      "navigationBarTitleText": "全屋套餐"
-    }
-  },
-  {
-    "path": "pages/index/WholehouseCustomization/detail/detail",
-    "style": {
-      "navigationBarTitleText": "详情"
-    }
-  },
+    {
+      "path": "pages/index/IntelligentSelection/index",
+      "style": {
+        "navigationBarTitleText": "智能选配"
+      }
+    },
+    {
+      "path": "pages/index/CommodityTypePage/index",
+      "style": {
+        "navigationBarTitleText": "商品类型"
+      }
+    },
+    {
+      "path": "pages/index/WholehouseCustomization/index",
+      "style": {
+        "navigationBarTitleText": "全屋套餐"
+      }
+    },
+    {
+      "path": "pages/index/WholehouseCustomization/detail/detail",
+      "style": {
+        "navigationBarTitleText": "详情"
+      }
+    },
+    {
+      "path": "pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation",
+      "style": {
+        "navigationBarTitleText": "全屋快装"
+      }
+    },
     // {
     //   "path": "pages/index/BrandFactory/detail",
     //   "style": {

@@ -47,7 +47,7 @@ export default {
       }
       // #endif
     }
-  },
+  },          
 
   mounted() {
     // #ifdef H5

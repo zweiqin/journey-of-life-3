@@ -36,9 +36,9 @@ export default {
 <style lang="less" scoped>
 .serve-menus-container {
   width: 100%;
-  padding: 15upx 7upx;
+  padding: 20upx 34upx 20upx;
   box-sizing: border-box;
-  // background-color: #fff;
+  background-color: #fff;
   margin-top: 24upx;
   border-radius: 20upx;
   display: flex;

@@ -16,13 +16,7 @@
     <view class="tools">
       <image class="left" @click="handleToPage('/logistics/mail')" src="../../static/images/wuliu/jikuaidi.png" alt="" />
       <view class="right">
-        <image
-          style="width: 100%; height: 236upx; flex: none"
-          class="img"
-          @click="handleToPage('/logistics/collect-package')"
-          src="../../static/images/wuliu/qukuaidi.png"
-          alt=""
-        />
+        <image style="width: 100%; height: 236upx; flex: none" class="img" @click="handleToPage('/logistics/collect-package')" src="../../static/images/wuliu/qukuaidi.png" alt="" />
 
         <image class="img" @click="handleToPage('/logistics/find-logistics')" src="../../static/images/wuliu/quanguo.png" alt="" />
       </view>
