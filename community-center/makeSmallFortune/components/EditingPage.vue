@@ -206,7 +206,7 @@ export default {
         },
         formDataAdd() {
             this.formData.postContent = JSON.stringify(this.paragraphData);
-            console.log(this.formData.postContent);
+            // console.log(this.formData.postContent);
         },
         deletedItem(index) {
             this.paragraphData.splice(index, 1);

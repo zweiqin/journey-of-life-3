@@ -5,7 +5,7 @@
             <text class="headerTitle">文章详情</text>
         </view>
         <view class="Title">
-            标题: {{ textData.postTitle }}
+            {{ textData.postTitle }}
         </view>
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
@@ -195,7 +195,7 @@ export default {
     box-sizing: border-box;
     font-weight: 600;
     width: 100vw;
-    font-size: 32rpx;
+    font-size: 42rpx;
     padding: 54rpx;
     padding-top: 30rpx;
     padding-bottom: 10rpx;
@@ -204,8 +204,10 @@ export default {
     box-sizing: border-box;
     /* font-weight: 600; */
     width: 100vw;
-    font-size: 40rpx;
+    font-size: 32rpx;
     padding: 54rpx;
+    letter-spacing: 4rpx;
+    line-height: 48rpx;
     padding-top: 10rpx;
     padding-bottom: 20rpx;
 }
