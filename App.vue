@@ -5,6 +5,7 @@ var util = require('./utils/util.js');
 import { getUserId } from './utils';
 import { BASE_WS_API } from './config';
 import { whoami } from './api/auth';
+import { getNewTFUserToken } from './api/newTFInterface';
 import { USER_ID, USER_TOKEN, TUAN_ORDER_SN, USER_SELECT_ADDRESS } from './constant';
 import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user';
 
@@ -138,6 +139,11 @@ export default {
       if (userId) {
         const { data } = await whoami(userId);
         uni.setStorageSync(USER_TOKEN, data.token);
+        // 因为要新商城的数据。。。 有些地方需要这个token 所以再存个新商城的token
+        getNewTFUserToken({phone: uni.getStorageSync('user_INFO').phone}).then(res => {
+          // console.log(res)
+          uni.setStorageSync('NEW_JF_USER_INFO', res.data);
+        })
       }
     },
 

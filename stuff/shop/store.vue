@@ -57,11 +57,6 @@
         <Store></Store>
         <Store></Store> -->
       </view>
-      <Thine
-        v-if="brandList.length == 0"
-        :picUrl="picUrl"
-        :text="text"
-      ></Thine>
     </view>
   </div>
 </template>

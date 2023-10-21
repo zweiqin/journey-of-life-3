@@ -4,7 +4,7 @@
             <text class="Cancel" @click="goback">取消</text>
             <view class="text">文章编辑</view>
             <view class="btnBox">
-                <!-- <view class="preview"></view> -->
+                <view class="preview" style="margin-right: 20rpx;color: #000;" @click="previewPage">预览</view>
                 <view v-if="isOverForm">下一步</view>
                 <view class="NextSteps" v-else @click="nextSteps">下一步</view>
             </view>
@@ -12,9 +12,7 @@
         <view class="articlesTitle">
             <input type="text" v-model="formData.postTitle" class="texts" placeholder="填写标题(2-30个字)">
         </view>
-        <textarea v-model="formData.postContent" class="textArea" :auto-height="true" :maxlength="-1" placeholder="请输入正文"></textarea>
         <view class="uploadImg">
-                      <!-- 上传图片时，显示这个 -->
           <view class="texts">上传文章封面</view>
           <view class="add-img-icon" v-if="!formData.postCover" @click="handleUploadImg()">
             <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
@@ -23,6 +21,26 @@
              <tui-icon @click="formData.postCover = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
              <image class="add-icon bigbig" :src="formData.postCover"></image>
           </view>
+        </view>
+        <view class="ParagraphBox" v-for="(item, index) in paragraphData" :key="index">
+            <view class="ParagraphBoxChild">
+              <tui-icon v-if="index > 0" @click="deletedItem(index)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+              <textarea @input="formDataAdd" v-model="item.text" class="textArea" :auto-height="true" :maxlength="-1" placeholder="请输入段落正文"></textarea>
+              <view class="uploadImg">
+                <view class="texts">上传段落配套图片(非必传)</view>
+                <view class="add-img-icon" v-if="!item.imgUrl" @click="handleUploadTextImg(item)">
+                    <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
+                </view>
+                <view class="add-img-icon" v-else>
+                    <tui-icon @click="item.imgUrl = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+                    <image class="add-icon bigbig" :src="item.imgUrl"></image>
+                </view>
+              </view>
+            </view>
+        </view> 
+        <view class="CreatedText">
+            <button class="CreatedTextBtn" @click="createdParagraph">添加段落组合</button>  
+            <text class="CreatedTeps">(如果一组段落中的图片不传则默认为不存在该图片)</text>
         </view>
         <!-- <view class="addType">
             <view class="addTypeIltem">
@@ -58,7 +76,11 @@ export default {
         return {
             show: false,
             articlesType: [],
-            postCategoryName: ''
+            postCategoryName: '',
+            paragraphData: [{
+                text: '',
+                imgUrl: ''
+            }]
         }
     },
     created() {
@@ -87,7 +109,10 @@ export default {
             uni.navigateBack();
         },
         nextSteps() {
-            this.$emit('checkoutCurrent', 1)
+            this.$emit('checkoutCurrent', 1, true)
+        },
+        previewPage() {
+            this.$emit('checkoutCurrent', 1, false)
         },
         confirm(e) {
             this.postCategoryName = e.options.text
@@ -100,47 +125,118 @@ export default {
 		},
         // 点击上传图片
         handleUploadImg(Key) {
-        this.imgKeyName = Key; // 存一次键名 方便后面赋值
-        const _this = this;
-        uni.chooseImage({
-            success: (chooseImageRes) => {
-                for (const imgFile of chooseImageRes.tempFiles) {
-                    uni.showLoading();
-                    uni.uploadFile({
-                    url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
-                    filePath: imgFile.path,
-                    name: 'file',
-                    formData: {
-                        token: USER_TOKEN,
-                        userId: getUserId()
-                    },
-                    success: (uploadFileRes) => {
-                        uni.hideLoading();
-                        this.formData.postCover = JSON.parse(uploadFileRes.data).data.url
-                        // console.log(this.formData.postCover)
-                    },
-                    fail: (error) => {
-                        uni.hideLoading();
-                        _this.ttoast({
-                        type: 'fail',
-                        title: '图片上传失败',
-                        content: error
+            // this.imgKeyName = Key; // 存一次键名 方便后面赋值
+            const _this = this;
+            uni.chooseImage({
+                success: (chooseImageRes) => {
+                    for (const imgFile of chooseImageRes.tempFiles) {
+                        uni.showLoading();
+                        uni.uploadFile({
+                        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+                        filePath: imgFile.path,
+                        name: 'file',
+                        formData: {
+                            token: USER_TOKEN,
+                            userId: getUserId()
+                        },
+                        success: (uploadFileRes) => {
+                            uni.hideLoading();
+                            this.formData.postCover = JSON.parse(uploadFileRes.data).data.url
+                            // console.log(this.formData.postCover)
+                        },
+                        fail: (error) => {
+                            uni.hideLoading();
+                            _this.ttoast({
+                            type: 'fail',
+                            title: '图片上传失败',
+                            content: error
+                            });
+                        }
                         });
                     }
-                    });
-                }
-                return;
-                },
-                fail: (fail) => {
-                    console.log(fail);
-                }
-            });
+                    return;
+                    },
+                    fail: (fail) => {
+                        console.log(fail);
+                    }
+                });
         },
+        handleUploadTextImg(item) { // 懒得封装了，傻逼玩意，直接开摆
+            const _this = this;
+            // let item = item;
+            uni.chooseImage({
+                success: (chooseImageRes) => {
+                    for (const imgFile of chooseImageRes.tempFiles) {
+                        uni.showLoading();
+                        uni.uploadFile({
+                        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+                        filePath: imgFile.path,
+                        name: 'file',
+                        formData: {
+                            token: USER_TOKEN,
+                            userId: getUserId()
+                        },
+                        success: (uploadFileRes) => {
+                            uni.hideLoading();
+                            item.imgUrl = JSON.parse(uploadFileRes.data).data.url
+                            this.formDataAdd()
+                        },
+                        fail: (error) => {
+                            uni.hideLoading();
+                            _this.ttoast({
+                            type: 'fail',
+                            title: '图片上传失败',
+                            content: error
+                            });
+                        }
+                        });
+                    }
+                    return;
+                    },
+                    fail: (fail) => {
+                        console.log(fail);
+                    }
+                });
+        },
+        createdParagraph() {
+            this.paragraphData.push({
+                text: '',
+                imgUrl: ''
+            })
+        },
+        formDataAdd() {
+            this.formData.postContent = JSON.stringify(this.paragraphData);
+            console.log(this.formData.postContent);
+        },
+        deletedItem(index) {
+            this.paragraphData.splice(index, 1);
+            this.formDataAdd()
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.CreatedText {
+    box-sizing: border-box;
+    width: 100vw;
+    /* height: 88rpx; */
+    padding: 30rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .CreatedTextBtn {
+        width: 650rpx;
+        color: #000000c7
+    }
+    .CreatedTeps {
+        margin-top: 6rpx;
+        width: 100vw;
+        text-align: center;
+        font-size: 28rpx;
+        color: #a50606bd;
+    }
+}
 .addType {
     box-sizing: border-box;
     padding: 30rpx;
@@ -218,6 +314,7 @@ export default {
             }
         }
         .text {
+            margin-left: 60rpx;
             font-size: 28rpx;
             font-weight: normal;
             line-height: 44rpx;
@@ -261,16 +358,31 @@ export default {
             height: 2rpx;
             background-color: #D8D8D8;
     }
-    .textArea {
+    .ParagraphBox {
         box-sizing: border-box;
+        width: 100vw;
+        height: auto;
         padding: 30rpx;
-        margin-top: 15rpx;
-        width: 100%;
-        min-height: 600rpx;
-        font-size: 30rpx;
-        font-weight: normal;
-        line-height: 44rpx;
-        color: #222229;
+        .ParagraphBoxChild {
+           position: relative;
+           box-sizing: border-box;
+           padding: 20rpx;
+           box-shadow: 0px 0px 0px 4rpx #1a00004f;
+           border-radius: 15rpx;
+           .textArea {
+                box-sizing: border-box;
+                margin-top: 15rpx;
+                width: 100%;
+                min-height: 200rpx;
+                font-size: 30rpx;
+                font-weight: normal;
+                line-height: 44rpx;
+                color: #222229;
+            }
+            .uploadImg {
+                padding: 0rpx;
+            }
+        }
     }
     .uploadImg {
         box-sizing: border-box;

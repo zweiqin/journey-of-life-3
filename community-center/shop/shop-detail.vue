@@ -1,626 +1,397 @@
 <template>
-  <view class="shop-detail-container">
-    <view class="shop-background-img" v-if="shopDetailInfo">
-      <image class="bg" src="https://img0.baidu.com/it/u=3509590395,993537027&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500"></image>
-      <image @click="handleBack" class="back-icon" src="../../static/images/detail/back.png"></image>
+	<view v-if="brandDetail" class="brand-detail-container">
+		<view
+			class="navgation_top" :style="{ backgroundColor: 'rgba(255, 255, 255, ' + navOpacity + ')' }"
+			:class="isNavGaFixed ? 'isFixed' : 'isAbsolute'"
+		>
+			<view class="imgbg">
+				<BeeBack :success-cb="successCb">
+					<BeeIcon name="arrowleft" :size="24" color="#fff"></BeeIcon>
+				</BeeBack>
+			</view>
+			<view class="fnButton">
+				<view class="imgbg" @click="handleFollowBrand">
+					<BeeIcon v-if="brandDetail.is" :size="26" :src="require('../../static/brand/detail/collection.png')">
+					</BeeIcon>
+					<BeeIcon v-else :size="18" :src="require('../../static/brand/detail/aixin.png')"></BeeIcon>
+				</view>
+				<view class="imgbg">
+					<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
+						<BeeIcon :src="require('../../static/brand/detail/share.png')" :size="22"></BeeIcon>
+					</BeeWxShare>
+				</view>
+				<view class="imgbg" @click="go(`/user/sever/shop-car?isBack=1&orderType=1`)">
+					<BeeIcon :src="require('../../static/brand/detail/spCar.png')" :size="18"></BeeIcon>
+				</view>
+			</view>
+		</view>
+		<!-- 轮播图 -->
+		<swiper
+			v-if="brandDetail.bgUrl && JSON.parse(brandDetail.bgUrl).length" class="swiper" :indicator-dots="true"
+			:autoplay="true" :interval="3000" :duration="1000"
+		>
+			<swiper-item v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index">
+				<tui-lazyload-img
+					mode="scaleToFill" width="100vw" height="400rpx" class="bannerItem"
+					:src="common.seamingImgUrl(img)"
+				></tui-lazyload-img>
+			</swiper-item>
+		</swiper>
+		<view class="main">
+			<!-- 商家信息栏 -->
+			<view style="margin-top: -26upx;border-radius: 30upx 30upx 0 0;overflow: hidden;">
+				<BrandInfo :brand-detail="brandDetail" @follow="handleFollowBrand" @navgation="handleNavigate"></BrandInfo>
+			</view>
+			<!-- 优惠卷栏 -->
+			<view style="background: #F6F6F6;">
+				<view class="favorable" @click="handleOpenCoupon">
+					<view class="navGationBar">
+						<view class="favorableItem"><span>优惠券</span><span>领</span></view>
+						<view>
+							<tui-icon name="arrowright" color="#151515" size="60" unit="upx"></tui-icon>
+						</view>
+					</view>
+				</view>
+				<tui-tabs
+					:class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000"
+					size="35" :is-fixed="isTabFixed"
+					slider-bg-color="#FB5D5D" bold
+					:tabs="[{ name: '商品' }, { name: '团购' }, { name: '预约' }, { name: '秒杀' }, { name: '抽奖' }]"
+					:current-tab="currentMenu" style="z-index: 1;" @change="handleChangeNavs"
+				></tui-tabs>
+			</view>
+		</view>
 
-      <view class="shop-base-info">
-        <view class="top">
-          <view class="wrapper">
-            <image class="avatar" :src="shopDetailInfo.shopLogo || require('../../static/images/new-user/fee.icon.png')"></image>
+		<view class="brand-pane" :style="{ marginTop: isTabFixed ? '80upx' : '0' }">
+			<view v-show="currentMenu === 0" class="goods-list" style="width: 100%">
+				<StoreGoodsList
+					:brand-detail="brandDetail" :overflow-y="paneOverflowY"
+					@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}`)"
+					@add-car="(e) => $refs.refJSpecificationScreen.open(e.id)"
+				></StoreGoodsList>
+				<!-- <view v-if="brandDetail.goodsVoList && brandDetail.goodsVoList.length">
+					<tui-waterfall :list-data="brandDetail.goodsVoList" :type="2">
+					<template #left="{ entity }">
+					<BrandGoods :goods-data="entity" @add=""></BrandGoods>
+					</template>
+					<template #right="{ entity }">
+					<BrandGoods :goods-data="entity" @add=""></BrandGoods>
+					</template>
+					</tui-waterfall>
+					</view> -->
+			</view>
 
-            <view class="detail-info">
-              <view class="name-wrapper">
-                <view class="shop-name">{{ shopDetailInfo.shopName || shopDetailInfo.shopNameSimple || '附近商家' }}</view>
-              </view>
+			<GrouponWrapper v-if="currentMenu === 1" :brand-detail="brandDetail"></GrouponWrapper>
 
-              <view class="tags">
-                <view class="tag tag-1">
-                  <image class="auth-icon" src="../../static/images/new-community/shop/icon.png"></image>
-                  已认证
-                </view>
-                <view class="tag tag-2"> 经营四年 </view>
-              </view>
+			<Reservation v-if="currentMenu === 2" :brand-detail="brandDetail" :is-overflow-y="paneOverflowY === 'auto' ? true : false"></Reservation>
 
-              <view class="rate-wrapper">
-                <tui-rate :size="16" :current="shopDetailInfo.score || 5"></tui-rate>
-                <text class="rate-text-1">{{ shopDetailInfo.score || 5.0 }}</text>
-                <text class="rate-text-2">好评率100%</text>
-              </view>
-            </view>
-          </view>
+			<Seckill v-if="currentMenu === 3" :brand-detail="brandDetail"></Seckill>
 
-          <view class="pubilc-message"> 公告：由本公司提供服务及承担一切法律责任 </view>
-        </view>
+			<Raffle v-if="currentMenu === 4" :brand-detail="brandDetail"></Raffle>
+		</view>
 
-        <view class="shop-operate-container">
-          <view class="item">
-            <image class="status-icon" src="../../static/images/new-community/shop/shop-status.png"></image>
-            <text>状态</text>
-            <text class="value">营业</text>
-          </view>
+		<AppraisePane></AppraisePane>
 
-          <view class="item" v-if="shopDetailInfo.distance">
-            <image class="status-icon" src="../../static/images/new-community/shop/shop-location.png"></image>
-            <text>距您</text>
-            <text class="value">{{ shopDetailInfo.distance }}km</text>
-          </view>
+		<tui-bottom-popup :show="isShowCouponListPopup" @close="isShowCouponListPopup = false">
+			<view style="padding: 20upx;">
+				<CouponList :brand-detail="brandDetail" :is-first-show-coupon="isFirstShowCoupon"></CouponList>
+			</view>
+		</tui-bottom-popup>
 
-          <view class="item" v-if="shopDetailInfo.accessNum">
-            <image class="status-icon" src="../../static/images/new-community/shop/shop-order.png"></image>
-            <text>接单</text>
-            <text class="value">{{ shopDetailInfo.accessNum }}</text>
-          </view>
-        </view>
-      </view>
-    </view>
+		<JSpecificationScreen
+			ref="refJSpecificationScreen" order-type="1"
+			@success="$refs.refStoreShopCart && $refs.refStoreShopCart.getShopList()"
+		></JSpecificationScreen>
 
-    <view class="main">
-      <!-- nav start -->
-      <view class="navs">
-        <view class="nav-item" @click="handleStichNav(item)" v-for="item in tabs" :class="{ active: item.value === currentTab }" :key="item.value">{{
-          item.name
-        }}</view>
-      </view>
-      <!-- nav end -->
+		<tui-toast ref="toast"></tui-toast>
 
-      <ShopServe
-        @change="handleFilter"
-        :current="serveQueryInfo.goodsTypeId"
-        :category="serveCategoryList"
-        v-show="currentTab === 1 && loadingStatus !== 'loading'"
-        :cdata="serveList"
-      ></ShopServe>
-
-      <ShopGoods
-        @change="handleFilter"
-        :category="goodsCategoryList"
-        :current="goodsQueryInfo.goodsTypeId"
-        :cdata="goodsList"
-        v-show="currentTab === 2 && loadingStatus !== 'loading'"
-      ></ShopGoods>
-      <ShopDetail :shopInfo="shopDetailInfo" v-show="currentTab === 3"></ShopDetail>
-
-      <LoadingMore style="margin-top: 20upx" v-show="loadingStatus !== 'more'" :status="loadingStatus"></LoadingMore>
-    </view>
-
-    <ShopFooter @follow="handleFollowShop" :shopInfo="shopDetailInfo"></ShopFooter>
-
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-    ></tui-modal>
-
-    <tui-toast ref="toast"></tui-toast>
-
-    <!-- <tui-skeleton v-if="skeletonShow"></tui-skeleton> -->
-  </view>
+		<view v-if="currentMenu === 0 && brandDetail.id && brandDetail.name">
+			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.id" :brand-name="brandDetail.name"></StoreShopCart>
+		</view>
+	</view>
 </template>
 
 <script>
-import { getShopDetailApi, followShopApi, getShopGoodsCategoryListApi, getShopGoodsListApi } from '../../api/community-center';
-import { USER_ID } from '../../constant';
-import ShopServe from './components/ShopServe.vue';
-import ShopGoods from './components/ShopGoods.vue';
-import ShopDetail from './components/ShopDetail.vue';
-import ShopFooter from './components/ShopFooter.vue';
-import showModalMixin from '../../mixin/showModal';
-import store from '../../store';
+import StoreShopCart from './components/StoreShopCart.vue'
+import BrandInfo from './components/BrandInfo'
+import { getBrandDetailApi } from '../../api/brand'
+import { collectionApi } from '../../api/goods'
+import AppraisePane from './components/AppraisePane.vue'
+import GrouponWrapper from './components/GrouponWrapper.vue'
+import CouponList from './components/CouponList.vue'
+import Reservation from './components/Reservation.vue'
+import Seckill from './components/Seckill.vue'
+import Raffle from './components/Raffle.vue'
+import { getUserId, navigationAddress } from '../../utils'
 
 export default {
-  components: { ShopServe, ShopGoods, ShopDetail, ShopFooter },
-  onLoad(params) {
-    this.shopId = params.shopId * 1;
-    this.userId = uni.getStorageSync(USER_ID);
-  },
+	name: 'Detail',
+	components: {
+		BrandInfo,
+		StoreShopCart,
+		AppraisePane,
+		GrouponWrapper,
+		CouponList,
+		Reservation,
+		Seckill,
+		Raffle
+	},
 
-  mixins: [showModalMixin()],
+	data() {
+		return {
+			successCb: () => {
+				const pages = getCurrentPages()
+				if (pages[pages.length - 2].route === 'pages/store/store') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
+			},
+			yuanH: uni.upx2px(816), // 用于tabNav判定初始位置的值。455-47
+			isNavGaFixed: false, // 是否定位顶部导航栏
+			isTabFixed: false, // tab切换栏是否固定定位
+			navOpacity: 0, // 控制导航栏透明度
+			isShowCouponListPopup: false,
 
-  mounted() {
-    this.getShopDetailInfo();
-  },
+			currentMenu: 0,
+			brandId: null,
+			brandDetail: {},
+			isFirstShowCoupon: false,
+			paneOverflowY: 'hidden'
+		}
+	},
 
-  data() {
-    return {
-      userId: null,
-      shopId: null,
-      shopDetailInfo: null,
-      loadingStatus: 'more',
-      scrollTop: 0,
-      tabs: Object.freeze([
-        {
-          name: '服务',
-          value: 1
-        },
-        {
-          name: '商品',
-          value: 2
-        },
-        {
-          name: '详情',
-          value: 3
-        }
-      ]),
-      currentTab: 1,
-      // 服务类别
-      serveCategoryList: [],
-      serveQueryInfo: {
-        pageNo: 1,
-        pageSize: 20,
-        shopId: null,
-        goodsType: 2,
-        goodsTypeId: -1
-      },
-      totalServeData: 0,
-      serveList: [],
+	onLoad(options) {
+		this.brandId = options.brandId
+		this.getBrandDetail()
+	},
 
-      // 商品
-      goodsCategoryList: [],
-      goodsQueryInfo: {
-        pageNo: 1,
-        pageSize: 20,
-        shopId: null,
-        goodsType: 1,
-        goodsTypeId: -1
-      },
-      totalGoodsData: 0,
-      goodsList: []
-    };
-  },
+	methods: {
+		async getBrandDetail() {
+			const { data } = await getBrandDetailApi({
+				id: this.brandId,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1],
+				userId: getUserId()
+			})
+			this.brandDetail = data || {}
+			// #ifdef H5
+			this.$nextTick(() => {
+				this.handleShareServe(true)
+			})
+			// #endif
+		},
 
-  methods: {
-    async getShopDetailInfo() {
-      try {
-        let currentAddress = store.getters.detailAddress;
+		// 打开优惠券
+		handleOpenCoupon() {
+			if (!this.isFirstShowCoupon) this.isFirstShowCoupon = true
+			this.isShowCouponListPopup = true
+		},
 
-        const res = await getShopDetailApi({
-          userId: this.userId,
-          address: currentAddress + '',
-          shopId: this.shopId
-        });
+		// 切换 nav
+		handleChangeNavs(e) {
+			this.currentMenu = e.index
+		},
 
-        if (res.statusCode === 20000) {
-          this.shopDetailInfo = res.data;
-          const businessLicense = this.shopDetailInfo.businessLicense;
-          const rotationChart = this.shopDetailInfo.rotationChart;
-          this.shopDetailInfo.businessLicense = businessLicense && typeof businessLicense === 'string' ? businessLicense.split(',') : [];
-          this.shopDetailInfo.rotationChart = rotationChart && typeof rotationChart === 'string' ? rotationChart.split(',') : [];
+		// 收藏商家
+		async handleFollowBrand() {
+			const { data } = await collectionApi({
+				userId: getUserId(),
+				// brandId: this.brandDetail.id,
+				// is: !this.brandDetail.is,
+				valueId: this.brandDetail.id,
+				type: 2
+			})
+			this.ttoast(`${this.brandDetail.is ? '取消收藏' : '收藏'}成功`)
+			this.brandDetail.is = !this.brandDetail.is
+			console.log(data)
+		},
 
-          this.getShopGoodsCategoryList();
-        } else {
-          this.ttoast({
-            type: 'fail',
-            title: res.statusMsg || '商家详情获取失败'
-          });
-        }
+		// 分享
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `巨蜂本地生活商圈 - ${this.brandDetail.name}`,
+					desc: this.brandDetail.desc,
+					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?brandId=${this.brandDetail.id}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.picUrl)
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
+		},
 
-        console.log(res);
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '商家详情获取失败',
-          content: error
-        });
-      }
-    },
-
-    // 切换nav、
-    handleStichNav(navInfo) {
-      const currentTab = navInfo.value;
-      this.currentTab = currentTab;
-      this.getShopGoodsCategoryList();
-      this.serveQueryInfo.pageNo = 1;
-      this.goodsQueryInfo.pageNo = 1;
-      this.goodsQueryInfo.goodsTypeId = -1;
-      this.serveQueryInfo.goodsTypeId = -1;
-    },
-
-    // 收藏、取消收藏门店
-    async handleFollowShop(status) {
-      if (!this.userId) {
-        this.$data._isShowTuiModel = true;
-        return;
-      }
-
-      try {
-        uni.showLoading({
-          title: '操作中...'
-        });
-
-        const res = await followShopApi({
-          userId: this.userId,
-          shopId: this.shopId
-        });
-
-        if (res.statusCode === 20000) {
-          this.ttoast('操作成功');
-          this.getShopDetailInfo();
-        } else {
-          this.ttoast({
-            type: 'fail',
-            title: res.statusMsg || '操作失败'
-          });
-        }
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '操作失败',
-          content: error
-        });
-      } finally {
-        uni.hideLoading();
-      }
-    },
-
-    // 获取门店商品类别
-    async getShopGoodsCategoryList() {
-      try {
-        const res = await getShopGoodsCategoryListApi({
-          shopId: this.shopId,
-          typeCategory: this.currentTab === 1 ? 2 : 1
-        });
-
-        if (res.statusCode === 20000) {
-          if (this.currentTab === 1) {
-            this.serveCategoryList = [
-              {
-                id: -1,
-                shopId: -1,
-                goodsTypeName: '全部',
-                goodsTypeUrl: '',
-                typeCategory: -1
-              },
-              ...res.data
-            ];
-          } else if (this.currentTab === 2) {
-            this.goodsCategoryList = [
-              {
-                id: -1,
-                shopId: -1,
-                goodsTypeName: '全部',
-                goodsTypeUrl: '',
-                typeCategory: -1
-              },
-              ...res.data
-            ];
-          }
-
-          this.getShopGoodsList(true);
-        } else {
-          this.ttoast({
-            type: 'fail',
-            title: res.statusMsg || '商品类别获取失败'
-          });
-        }
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '服务类别获取失败',
-          content: error
-        });
-      }
-    },
-
-    // 获取门店商品列表
-    async getShopGoodsList(isClear) {
-      const currentScrollTop = this.scrollTop;
-      if (isClear) {
-        this.serveList = [];
-        this.goodsList = [];
-      }
-      try {
-        this.loadingStatus = 'loading';
-        const baseQueryInfo = this.currentTab === 1 ? this.serveQueryInfo : this.goodsQueryInfo;
-        const goodsTypeId = baseQueryInfo.goodsTypeId === -1 ? undefined : baseQueryInfo.goodsTypeId;
-        const res = await getShopGoodsListApi({
-          ...baseQueryInfo,
-          shopId: this.shopId,
-          goodsTypeId
-        });
-
-        const nextData = res.data || [];
-        if (res.statusCode === 20000) {
-          if (this.currentTab === 1) {
-            this.serveList.push(...nextData);
-            this.totalServeData = res.total;
-          } else if (this.currentTab === 2) {
-            this.goodsList.push(...nextData);
-            this.totalGoodsData = res.total;
-          }
-
-          this.$nextTick(() => {
-            uni.pageScrollTo({
-              scrollTop: currentScrollTop,
-              duration: 300
-            });
-          });
-        } else {
-          this.ttoast({
-            type: 'fail',
-            title: res.statusMsg || '商品列表获取失败'
-          });
-        }
-
-        console.log(res);
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '商品列表获取失败',
-          content: error
-        });
-      } finally {
-        this.loadingStatus = 'more';
-      }
-    },
-
-    // 筛选
-    handleFilter(typeId, currentTab) {
-      if (currentTab === 1) {
-        this.serveQueryInfo.pageNo = 1;
-        this.serveQueryInfo.goodsTypeId = typeId;
-      } else if (currentTab === 2) {
-        this.goodsQueryInfo.pageNo = 1;
-        this.goodsQueryInfo.goodsTypeId = typeId;
-      }
-
-      this.getShopGoodsList(true);
-    },
-
-    handleBack() {
-      uni.navigateBack();
-    }
-  },
-
-  onReachBottom() {
-    if (this.currentTab === 1) {
-      if (this.serveList.length < this.serveQueryInfo.pageSize) {
-        return;
-      }
-
-      if (this.serveList.length >= this.totalServeData) {
-        this.loadingStatus = 'no-more';
-        return;
-      }
-
-      this.serveQueryInfo.pageNo++;
-      this.getShopGoodsList();
-    } else if (this.currentTab === 2) {
-      if (this.goodsList.length < this.goodsQueryInfo.pageSize) {
-        return;
-      }
-
-      if (this.goodsList.length >= this.totalGoodsData) {
-        this.loadingStatus = 'no-more';
-        return;
-      }
-
-      this.goodsQueryInfo.pageNo++;
-      this.getShopGoodsList();
-    }
-  },
-
-  onPageScroll(e) {
-    console.log(e);
-    this.scrollTop = e.scrollTop;
-  }
-};
+		// 导航
+		handleNavigate() {
+			if (!this.brandDetail.address) {
+				uni.showToast({
+					title: '商家地址有误，导航失败',
+					icon: 'none'
+				})
+				return
+			}
+			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
+		}
+	},
+	onPageScroll(e) {
+		if (e.scrollTop >= 34) {
+			this.navOpacity = e.scrollTop / 200
+			this.isNavGaFixed = true
+		} else {
+			this.navOpacity = 0
+			this.isNavGaFixed = false
+		}
+		if (e.scrollTop < this.yuanH) {
+			this.isTabFixed = false
+			this.paneOverflowY = 'hidden'
+		} else {
+			this.isTabFixed = true
+			this.paneOverflowY = 'auto'
+		}
+		// if (this.currentMenu === 0 || this.currentMenu === 2) {
+		// 	uni.createSelectorQuery().in(this)
+		// 		.select('.brand-pane')
+		// 		.boundingClientRect((data) => {
+		// 			console.log(data.top)
+		// 		})
+		// 		.exec()
+		// }
+	}
+}
 </script>
 
-<style lang="less" scoped>
-.shop-detail-container {
-  padding-bottom: 160upx;
+<style lang="scss" scoped>
+.brand-detail-container {
+	position: relative;
+	width: 100vw;
+	min-height: 100vh;
+	padding-bottom: 120upx;
+
+	.isFixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+
+	.isAbsolute {
+		position: absolute;
+		top: 70rpx;
+	}
+
+	.sticky-fixed {
+		// position: fixed;
+		top: 80rpx !important;
+	}
+
+	.navgation_top {
+		box-sizing: border-box;
+		// margin-top: 72rpx;
+		padding: 15rpx 40rpx;
+		width: 100vw;
+		z-index: 3;
+		display: flex;
+		justify-content: space-between;
+
+		image {
+			width: 38rpx;
+			height: 38rpx;
+		}
+
+		.imgbg {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 66rpx;
+			height: 66rpx;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.61);
+		}
+
+		.fnButton {
+			display: flex;
+
+			.imgbg {
+				margin-left: 10rpx;
+			}
+		}
+	}
+
+	.swiper {
+		z-index: 2;
+		width: 100vw;
+		height: 400rpx;
+
+		.bannerItem {
+			width: 100vw;
+			height: 400rpx;
+		}
+	}
+
+	.main {
+		clear: both;
+		position: relative;
+
+		.favorable {
+			box-sizing: border-box;
+			padding: 0rpx 18rpx;
+			margin-bottom: 25rpx;
+			width: 100vw;
+			background-color: white;
+			border-radius: 10rpx;
+
+			.navGationBar {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				box-sizing: border-box;
+				// background-color: white;
+				position: relative;
+				width: 100%;
+				min-height: 74rpx;
+				padding: 8rpx 36rpx 14rpx 24upx;
+			}
+
+			.favorableItem {
+				margin-right: 30rpx;
+				border-radius: 5rpx;
+				display: inline-block;
+				background-color: #FF5353;
+				font-size: 24rpx;
+				font-weight: normal;
+				color: #FFFFFF;
+
+				>span {
+					font-size: 28rpx;
+					box-sizing: border-box;
+				}
+
+				>span:nth-of-type(1) {
+					padding: 5rpx 10rpx;
+					border-right: 1px dashed white;
+				}
+
+				>span:nth-of-type(2) {
+					padding: 5rpx 8rpx;
+				}
+			}
+		}
+	}
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
+
+	.brand-pane {
+		background-color: #fff;
+		padding: 4upx 20upx 0 20upx;
+		box-sizing: border-box;
+
+		.goods-list {
+			margin-top: 20upx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+	}
 }
 
-.shop-background-img {
-  position: relative;
-  width: 100%;
-  height: 472upx;
-  .bg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .back-icon {
-    position: absolute;
-    left: 10upx;
-    top: 40upx;
-    width: 64upx;
-    height: 64upx;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-right: 20upx;
-  }
-
-  .shop-base-info {
-    position: absolute;
-    top: 120upx;
-    left: 28upx;
-    width: 694upx;
-    // height: 338upx;
-    background-color: #fff;
-    border-radius: 20upx;
-    // overflow: hidden;
-    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-
-    .top {
-      padding: 31upx 31upx 21upx;
-      box-sizing: border-box;
-
-      .wrapper {
-        display: flex;
-        align-items: flex-start;
-        .avatar {
-          width: 140upx;
-          height: 140upx;
-          border-radius: 20upx;
-          flex-shrink: 0;
-          margin-right: 21upx;
-        }
-
-        .detail-info {
-          flex: 1;
-
-          .name-wrapper {
-            .shop-name {
-              position: relative;
-              padding-left: 48upx;
-              font-size: 32upx;
-              font-weight: 500;
-              color: #222229;
-
-              &::after {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 44upx;
-                height: 44upx;
-                background: url('../../static/images/new-community/shop/tag.png') no-repeat;
-                background-size: cover;
-                left: 0;
-                top: 0;
-              }
-            }
-          }
-
-          .tags {
-            display: flex;
-            margin: 12upx 0;
-
-            .tag {
-              font-size: 24upx;
-              width: 130upx;
-              height: 44upx;
-              border-radius: 4upx;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              line-height: 1.5;
-
-              &.tag-1 {
-                color: #014bb8;
-                background-color: #e9f4ff;
-                .auth-icon {
-                  width: 32upx;
-                  height: 32upx;
-                  flex-shrink: 0;
-                  margin-right: 4upx;
-                }
-              }
-
-              &.tag-2 {
-                background-color: #fff5e5;
-                color: #ef530e;
-                margin-left: 27upx;
-              }
-            }
-          }
-
-          .rate-wrapper {
-            display: flex;
-            align-items: center;
-
-            .rate-text-1 {
-              font-size: 24upx;
-              color: #ef530e;
-            }
-
-            .rate-text-2 {
-              font-size: 24upx;
-              color: #888889;
-              margin-left: 15upx;
-            }
-          }
-        }
-      }
-
-      .pubilc-message {
-        height: 42upx;
-        background-color: #f5f5f7;
-        border-radius: 8upx;
-        margin: 30upx 0 20upx 0;
-        color: #888889;
-        font-size: 24upx;
-        line-height: 42upx;
-        padding: 0 32upx;
-      }
-    }
-
-    .shop-operate-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 74upx;
-      background-color: #f5f5f7;
-      border-radius: 0 0 20upx 20upx;
-      padding: 20upx 40upx;
-      box-sizing: border-box;
-
-      .item {
-        display: flex;
-        align-items: center;
-        font-size: 24upx;
-        color: #222229;
-        .status-icon {
-          width: 24upx;
-          height: 24upx;
-          flex-shrink: 0;
-          margin-right: 10upx;
-        }
-
-        .value {
-          margin-left: 12upx;
-          color: #ef530e;
-        }
-      }
-    }
-  }
-}
-
-.main {
-  position: relative;
-  padding: 250upx 34upx 20upx;
-  box-sizing: border-box;
-  margin-top: -200upx;
-  background-color: #fff;
-  border-radius: 20upx 20upx 0 0;
-  z-index: 10;
-
-  .navs {
-    display: flex;
-    align-items: center;
-    .nav-item {
-      position: relative;
-      margin-right: 53upx;
-      color: #222229;
-      font-size: 32upx;
-      font-weight: 500;
-      line-height: 1.5;
-      transition: color 150ms;
-
-      &::after {
-        content: '';
-        width: 0;
-        height: 4upx;
-        border-radius: 8upx;
-        position: absolute;
-        display: block;
-        bottom: -2upx;
-        left: 0;
-        background-color: #ef530e;
-        transition: all 150ms;
-      }
-
-      &.active {
-        color: #ef530e;
-
-        &::after {
-          width: 100%;
-        }
-      }
-    }
-  }
-}
 </style>

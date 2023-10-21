@@ -100,7 +100,6 @@ import Search from '../../components/search';
 import Carousel from '../../components/carousel';
 import Menus from '../../components/Menus';
 import { menus } from './config';
-import Panel from '../../components/panel';
 import { jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, VALUE_ADDED_SERVICES, JI_EDIT_ORDER_ID, APPONIT_WULIU_QIYE_ID } from '../../constant';
 import { getUserId, removeCache, checkWhoami } from '../../utils/DWHutils';
 import { collectPages } from '../../logistics/config';
@@ -111,7 +110,6 @@ export default {
     Search,
     Carousel,
     Menus,
-    Panel,
     NoData
   },
   data() {

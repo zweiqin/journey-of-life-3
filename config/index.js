@@ -31,6 +31,9 @@ export const sf = 'https://www.zhult.com/samrtWorker';
 // 本地
 // export const sf = "/sf";
 
+// 请求新巨蜂的数据 接口配置
+export const NEW_JFSHOP_INTERFACE = 'https://nsappapi.tuanfengkeji.cn';
+
 let shopUrl = '';
 if (process.env.NODE_ENV === 'development') {
   shopUrl = 'http://www.tuanfengkeji.cn:8098/dts-app-api';

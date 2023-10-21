@@ -1,7 +1,7 @@
 <template>
     <view class="articleDetailsBox">
         <view class="containerHeader">
-            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="68"  @click="goBack"></tui-icon>
+            <tui-icon color="#000" name="arrowleft" unit="rpx" :size="68"  @click="$emit('checkoutCurrent', 0, true)"></tui-icon>
             <text class="headerTitle">文章详情</text>
         </view>
         <view class="Title">
@@ -9,13 +9,10 @@
         </view>
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
-                <image v-if="textData.head" :src="textData.head" class="PublisherInfoAvatar"></image>
+                <image v-if="textData.header" :src="textData.header" class="PublisherInfoAvatar"></image>
                 <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
-                <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
+                <text class="PublisherName">{{ textData.username }}</text>
             </view>
-            <!-- <view class="PublishAddress">
-                发表于广东
-            </view> -->
         </view>
         <view class="PreviewItem" v-for="(item, index) in PreviewData" :key="index">
             <view v-if="item.text" class="content">
@@ -39,13 +36,13 @@
         <view class="lingquREDBook">
             <button class="cnmd" @click="lingqu">领取奖励</button>
         </view>
-        <view class="PublisherInfo">
+                <view class="PublisherInfo">
             <view class="PublisherInfoBox">
-                <image :src="textData.head" class="PublisherInfoAvatar"></image>
-                <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
+                <image :src="textData.header" class="PublisherInfoAvatar"></image>
+                <text class="PublisherName">{{ textData.username }}</text>
             </view>
             <view class="ReleaseTime">
-                <view class="fenxiang" @click="shares">
+                <view class="fenxiang">
                     <image class="fenxiangimg" src="@/static/images/new-community/home/fenxaing.png"></image>
                     <text class="fxtxt">分享</text>
                 </view>
@@ -55,83 +52,24 @@
 </template>
 
 <script>
-import { getUserId } from '@/utils';
-import { lookPostRed, getPostDetails } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'articleDetails',
-    onLoad(options) {
-        this.formData.uid = getUserId()
-        // this.formData.redPacketId = options.data.redPacketInfo.redPacketId
-        getPostDetails({
-            postId: options.id
-        }).then(res => {
-            this.textData = res.data
-            this.formData.redPacketId = res.data.redPacketInfo.redPacketId
-            this.PreviewData = JSON.parse(this.textData.postContent)
-        }).catch(err => {
-            console.log('err')
-        })
+    props: {
+        textData: {
+            type: Object,
+            default: {}
+        }
+    },
+    created(options) {
+        this.PreviewData = JSON.parse(this.textData.postContent)
     },
     data() {
         return {
             PreviewData: [],
-            textData: {
-                postTitle: '劲爆！0元可在附近就能开店快速落地！',
-                postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
-                postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: require('@/static/images/new-community/home/avatar1.png'),
-                username: '蔡徐坤'
-            },
-            formData: {
-                redPacketId: "",
-                uid: ""
-            }
         }
     },
     methods: {
-        goBack() {
-            uni.navigateBack();
-        },
-        gotoGuangGao(url) {
-            window.open(url)
-        },
-        lingqu() {
-            lookPostRed({
-                redPacketId: this.formData.redPacketId,
-                uid: this.formData.uid
-            }).then(res => {
-                uni.showToast({
-                    title: res.errmsg,
-                    icon: 'none',
-                })
-            }).catch(err => {
-                console.log(err)
-            })
-        },
-        shares() {
-            uni.showToast({
-                title: "点击右上角手动分享",
-                icon: 'none',
-                success: function (res) {
-                this.exeRet = "success:" + JSON.stringify(res) + new Date()
-                },
-                fail: function (res) {
-                this.exeRet = "fail:" + JSON.stringify(res)
-                },
-            })
-            // uni.share({
-            // provider: "weixin",
-            // scene: "WXSceneSession",
-            // type: 1,
-            // summary: "快来和我一起领红包!!!!",
-            // success: function (res) {
-            //     console.log("success:" + JSON.stringify(res));
-            // },
-            // fail: function (err) {
-            //     console.log("fail:" + JSON.stringify(err));
-            // }
-            // });
-        }
+        
     }
 }
 </script>
@@ -202,7 +140,6 @@ export default {
     display: flex;
     align-items: center;
     .PublisherInfoBox {
-        min-width: 300rpx;
         display: flex;
             .PublisherInfoAvatar {
                 width: 48rpx;
@@ -229,7 +166,7 @@ export default {
         font-feature-settings: "kern" on;
         color: #888889;
         .fenxiang {
-            margin-left: 180rpx;
+            margin-left: 300rpx;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -283,6 +220,16 @@ export default {
         min-width: 330rpx;
         min-height: 330rpx;
         max-width: 642px;
+        /* height: 800rpx; */
+        /* max-height: 800rpx; */
      }
+     /deep/ uni-image {
+        width: auto;
+        min-width: 330rpx !important;
+        min-height: 330rpx !important;
+        max-width: 642rpx !important;
+        /* height: 800rpx; */
+        /* max-height: 800rpx !important; */
+    }
 }
 </style>

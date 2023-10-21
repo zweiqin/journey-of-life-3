@@ -5,7 +5,8 @@
                 <EditingPage @checkoutCurrent="checkoutCurrent" :formData="formData"></EditingPage>
             </swiper-item>
             <swiper-item>
-                <RewardPage :formData="formData" @back="() => current = 0"></RewardPage>
+                <RewardPage v-if="isTesps" :formData="formData" @back="() => current = 0"></RewardPage>
+                <Preview :textData="formData" v-else @checkoutCurrent="checkoutCurrent"></Preview>
             </swiper-item>
         </swiper>
     </view>
@@ -14,12 +15,14 @@
 <script>
 import EditingPage from './components/EditingPage.vue'
 import RewardPage from './components/RewardPage.vue'
+import Preview from './components/Preview.vue'
 import { getUserId } from '@/utils';
 export default {
     name: 'release',
     components: {
         EditingPage,
-        RewardPage
+        RewardPage,
+        Preview
     },
     onLoad() {
         this.region = uni.getStorageSync('ADDRES_REGION')
@@ -28,7 +31,11 @@ export default {
     data() {
         return {
             current: 0,
+            isTesps: true,
             formData: {
+                postCover: require('@/static/images/new-community/home/bagayalu.png'),
+                header: require('@/static/images/new-community/home/avatar1.png'),
+                username: '蔡徐坤',
                 region: '440606',
                 publishUserId: "", // 发布者id
                 postTitle: "", // 文章标题
@@ -48,8 +55,9 @@ export default {
 
     },
     methods: {
-        checkoutCurrent(value) {
+        checkoutCurrent(value, fuck) {
             this.current = value
+            this.isTesps = fuck
         }
     }
 }
