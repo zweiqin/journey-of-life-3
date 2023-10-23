@@ -99,6 +99,7 @@ export default {
       if (isClear) {
         this.selectBusinessLabels = [];
       }
+
       const labels = this.personalInformation.serviceInformation.businessLabel.split(',');
 
       if (Array.isArray(labels)) {
@@ -146,7 +147,7 @@ export default {
         accountId: this.personalInformation.serviceInformation.accountId
       });
 
-      this.personalInformation.serviceInformation.businessLabel = res.shopLabel || '';
+      // this.personalInformation.serviceInformation.businessLabel = res.shopLabel || '';
       this.personalInformation.serviceInformation.scopeBusiness = res.skillExpertise && typeof res.skillExpertise === 'string' ? res.skillExpertise.split(',') : res.skillExpertise || [];
     },
 
@@ -197,7 +198,7 @@ export default {
     storeBusinessForm() {
       // const scopeBusinessCount = this.personalInformation.serviceInformation.scopeBusiness.length;
 
-      let scopeBusiness = this.personalInformation.serviceInformation.scopeBusiness;
+      let scopeBusiness = [...this.personalInformation.serviceInformation.scopeBusiness];
       if (typeof scopeBusiness === 'string') {
         scopeBusiness = scopeBusiness.split(',');
       }
@@ -222,16 +223,16 @@ export default {
   height: auto;
   flex: 1;
   .FormContainer {
-    overflow: hidden; // 清除浮动
+    padding-top: 40upx;
     width: 100%;
     /* height: 733rpx; */
     background-color: #fff;
     border-radius: 20rpx;
+    height: auto;
     .formHeader {
       font-weight: 600;
       font-size: 32rpx;
       margin-left: 30rpx;
-      margin-top: 39rpx;
       color: #08377f;
     }
   }
@@ -365,7 +366,7 @@ export default {
 }
 .inputBox {
   width: 100%;
-  height: 460rpx;
+  /* height: 460rpx; */
   display: flex;
   flex-direction: column;
 }
