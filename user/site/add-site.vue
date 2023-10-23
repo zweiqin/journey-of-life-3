@@ -30,9 +30,7 @@
             >{{ form.detailedAddress || '请选择区域' }}</view
           >
 
-          <!-- <JIcon style="margin-top: 18upx" type="fill-down-triangle" width="24" height="12"></JIcon> -->
-
-          <image style="margin-top: 18upx; width: 24upx; height: 12upx" src="../../static/images/user/site/5teywnd193jbmcvm6prp.png"></image>
+          <tui-icon name="turningdown" color="#151515" size="48" unit="upx"></tui-icon>
         </view>
       </view>
 
@@ -40,8 +38,7 @@
         <view class="add-site-title">详细地址</view>
         <view class="add-site-value" style="display: flex; justify-content: space-between">
           <textarea v-model="address" class="common-text" placeholder="请填写详细地址" style="padding-right: 40upx" />
-          <!-- <JIcon @click="handleOpenMapToChooseAddress" type="locale" width="32" height="32"></JIcon> -->
-          <image @click="handleOpenMapToChooseAddress" src="../../static/images/user/site/7s4uqrs9xyfodsurird6.png" style="width: 32upx; height: 32upx"></image>
+          <tui-icon name="gps" color="#a6a6a6" size="36" unit="upx" @click="handleOpenMapToChooseAddress"></tui-icon>
         </view>
       </view>
 

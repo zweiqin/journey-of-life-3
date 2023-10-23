@@ -6,7 +6,6 @@
     </view>
     <view class="main-area">
       <view class="address container" @click="go('/user/site/site-manage?appoint=true')">
-        <!-- <JIcon width="26" height="34" type="locale"></JIcon> -->
         <view v-if="!defaultAddress" class="address-text">请选择收货地址</view>
         <view v-else class="address-detail">
           <view class="detailedAddress">
@@ -91,8 +90,6 @@
     </view>
 
     <CouponPopup v-model="couponPopupVisible" :cart-id="cartId" @confirm="handleConfirmChooseCoupon"></CouponPopup>
-
-    <TuanMiniprogromPay ref="tuanMiniprogromPayRef"></TuanMiniprogromPay>
   </view>
 </template>
 
@@ -111,19 +108,6 @@ export default {
     this.getAddressList();
     this.getOrderInfo();
   },
-
-  // mounted() {
-  // 	setTimeout(() => {
-  // 		this.$refs.tuanMiniprogromPayRef.showPopup({
-  // 			payPrice: 1000,
-  // 			userId: getUserId(),
-  // 			orderNo: 'bu78828893987882345',
-  // 			payType: 1,
-  // 			activityId: 0,
-  // 			type: 'shop'
-  // 		})
-  // 	}, 1000);
-  // },
 
   onShow() {
     this.getAddressList();

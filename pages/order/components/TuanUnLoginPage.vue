@@ -1,6 +1,6 @@
 <template>
   <view class="un-login-page">
-    <image class="logo" src="../../static/images/new-user/fee.icon.png"></image>
+    <image class="logo" src="../../../static/images/new-user/fee.icon.png"></image>
     <view class="page-title">团蜂</view>
 
     <view class="tip">

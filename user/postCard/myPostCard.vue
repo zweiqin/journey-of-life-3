@@ -68,13 +68,15 @@
 </template>
   
   <script>
+import TPopup from "./components/TPopup";
 import postCardDetail from "./components/postCardDetail";
 import { color } from "./config";
 import { getBusinessListApi } from "../../api/businessCard";
 import { getUserId } from '../../utils';
 export default {
   components: {
-    postCardDetail,
+    TPopup,
+    postCardDetail
   },
   data() {
     return {

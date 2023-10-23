@@ -17,7 +17,6 @@
         <view class="text">五金配件</view>
         <view class="text">沙发材料</view>
         <view class="text">椅类配件</view>
-        <img src="../../static/images/stuff/menu.png" alt="" class="menu" />
       </view> -->
       <view class="navs2" ref="navs2Ref">
         <view

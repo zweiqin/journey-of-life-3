@@ -1,6 +1,6 @@
 <template>
   <view class="gongqiu">
-    <Ttitle :title="''" :search="search" v-model="inputDetail"></Ttitle>
+    <JHeader width="50" height="50" title=""></JHeader>
     <view class="choseType">
       <view
         class="information"

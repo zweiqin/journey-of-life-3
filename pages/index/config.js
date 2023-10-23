@@ -2,7 +2,6 @@ export const homeTopNavs = [
   {
     name: '家具严选',
     iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
-    // url: '/pages/furniture/furniture?id=null',
     url: '/pages/goods-filter/goods-filter?id=100101533&sub=100101561'
   },
   {
@@ -13,35 +12,13 @@ export const homeTopNavs = [
   {
     name: '全屋套餐',
     iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
-    // url: '/pages/furniture/furniture?id=null'
     url: '/pages/index/WholehouseCustomization/index'
   },
   {
     name: '智能选配',
     iconUrl: require('../../static/images/new-index/index-1/zhinengxuanpei.png'),
-    // url: '/pages/furniture/furniture?id=null'
     url: '/pages/index/IntelligentSelection/index'
   }
-  // {
-  //   label: '日用百货',
-  //   icon: require('../../static/images/new-index/index-1/jiajuyongpin.png'),
-  //   url: ''
-  // },
-  // {
-  //   label: '服装配饰',
-  //   icon: require('../../static/images/new-index/index-1/fuzhuangpeishi.png'),
-  //   url: ''
-  // },
-  // {
-  //   label: '名优特',
-  //   icon: require('../../static/images/new-index/index-1/mingyoute.png'),
-  //   url: ''
-  // },
-  // {
-  //   label: '更多',
-  //   icon: require('../../static/images/new-index/index-1/gengduo.png'),
-  //   url: '/pages/furniture/furniture?id=null'
-  // }
 ];
 
 export const voucherNavs = [

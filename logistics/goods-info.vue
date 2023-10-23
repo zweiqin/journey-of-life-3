@@ -12,7 +12,9 @@
         src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
         mode=""
       />
-      <TLocale :icon="false"></TLocale>
+			<TuanLocation>
+				<text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+			</TuanLocation>
       <view class="search-wrapper">
         <image
           class="search-icon"

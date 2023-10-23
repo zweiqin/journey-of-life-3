@@ -77,6 +77,7 @@ import { getServiceSortApi } from '../../api/community-center';
 import PopupInformation from '../../components/popup-information/popup-information';
 import showModal from 'mixin/showModal';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
+import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue';
 import PageBar from './cpns/PageBar.vue';
 import ServeMenus from './cpns/ServeMenus.vue';
 import VipPackage from './cpns/VipPackage.vue';
@@ -92,6 +93,7 @@ export default {
     console.log(app);
   },
   components: {
+    TuanFollowOfficialAccount,
     PageBar,
     ServeMenus,
     VipPackage,

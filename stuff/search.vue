@@ -21,7 +21,7 @@
         @click="gotoDetail(item.id)"
       >
         <view class="goods-name">{{ item.name }}</view>
-        <uni-icons type="arrowright" size="16"></uni-icons>
+        <tui-icon name="arrowright" color="#151515" :size="40" unit="upx"></tui-icon>
       </view>
     </view>
 

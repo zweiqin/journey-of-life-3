@@ -1,6 +1,5 @@
 <template>
   <view class="stuffGoods">
-    <!-- <Ttitle :title="''" style="padding-top: 20upx;padding-bottom: 20upx" /> -->
     <view class="head">
       <view class="search-bar">
         <view class="location">

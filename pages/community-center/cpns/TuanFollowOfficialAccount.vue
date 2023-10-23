@@ -9,7 +9,7 @@
       <view class="title-wrapper">
         <img
           class="logo-img"
-          src="../../static/images/new-user/logo.jpg"
+          src="../../../static/images/new-user/logo.jpg"
           alt=""
         />
         <div class="detail-wrapper">

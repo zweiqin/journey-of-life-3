@@ -18,13 +18,13 @@
           <view class="upload-desc">添加名片图像</view>
         </view>
 
-        <uni-img-cropper
+        <UniImgCropper
           ref="gmyImgCropper"
           :quality="1"
           cropperType="fixed"
           :imgSrc="imgSrc"
           @getImg="getImg"
-        ></uni-img-cropper>
+        ></UniImgCropper>
 
         <view
           class="field-wrapper"
@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import UniImgCropper from "./mould/uni-img-cropper.vue";
 import Collapse from "../components/collapse-name-card.vue";
 import MaskS from "../components/mask.vue";
 import {
@@ -133,6 +134,7 @@ import { getUserId } from "../../../utils";
 
 export default {
   components: {
+    UniImgCropper,
     Collapse,
     MaskS,
   },

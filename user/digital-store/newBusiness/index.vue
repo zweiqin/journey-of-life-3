@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="newBusiness">
-      <Ttitle :title="'业务管理'"></Ttitle>
+    	<JHeader width="50" height="50" title="业务管理"></JHeader>
       <view style="margin-top: 20upx"></view>
       <businessSearch></businessSearch>
       <view class="head">

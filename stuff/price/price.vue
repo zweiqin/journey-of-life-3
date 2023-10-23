@@ -1,6 +1,6 @@
 <template>
   <view class="price1">
-    <Ttitle :title="''" :search="search"></Ttitle>
+    <JHeader width="50" height="50" title=""></JHeader>
     <img
       style="width: 100%; padding-top: 20upx"
       src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gxawxw339ne2sb1isdw8.png "

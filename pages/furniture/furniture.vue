@@ -1,6 +1,5 @@
 <template>
   <view class="furniture">
-    <!-- <Ttitle :title="''" style="padding-top: 20upx;padding-bottom: 20upx" /> -->
     <view class="head">
       <view class="search-bar">
         <view class="location">
@@ -70,7 +69,7 @@
 </template>
 
 <script>
-import sort from '../../components/subs/subs.vue'
+import sort from './cpns/subs.vue'
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home'
 
 export default {

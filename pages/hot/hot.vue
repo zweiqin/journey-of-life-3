@@ -2,7 +2,9 @@
   <view class="hot-container">
     <view class="header">
       <image @click="handleBack" class="icon" src="../../static/images/common/back.png" mode="" />
-      <TLocale :icon="false"></TLocale>
+			<TuanLocation>
+				<text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+			</TuanLocation>
       <view class="search-wrapper" @click="go('/pages/search-page/search-page')">
         <image class="search-icon" src="../../static/images/index/search.png" mode="" />
         <text class="text">输入你想搜索的产品</text>

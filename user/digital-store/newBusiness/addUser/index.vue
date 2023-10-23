@@ -1,6 +1,6 @@
 <template>
   <view class="addUser">
-    <Ttitle :title="titleText"></Ttitle>
+    <JHeader width="50" height="50" :title="titleText"></JHeader>
     <view class="last" v-for="item in addDetail" :key="item.value">
       <view v-if="type == 0 ? item.status - 1 == value : item.status <= value">
         <!-- 文本输入框 -->

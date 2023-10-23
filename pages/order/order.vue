@@ -96,11 +96,12 @@ import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, sh
 import { getEndOrderListApi, getTwicePayOrderListApi, getBusinessOrderListApi, deleteBOrderApi, payBOrderH5, payApiConfig } from '../../api/community-center';
 import { getOrderListApi, getMyCommentListApi } from '../../api/order';
 import { USER_ID, PAY_SHORT_ORDER_NO, TUAN_ORDER_SN, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO, B_SERVE_ORDER_NO, B_SHOP_ORDER_NO } from '../../constant';
+import TuanUnLoginPage from './components/TuanUnLoginPage.vue';
+import OrderHeader from './components/OrderHeader.vue';
 import CommunityOrderPane from './components/CommunityOrderPane.vue';
 import CancelOrder from './components/CancelOrder.vue';
 import Loading from './components/Loading.vue';
 import NoData from './components/NoData.vue';
-import OrderHeader from './components/OrderHeader.vue';
 import SubNavs from './components/SubNavs.vue';
 import AdditionalAmountOrder from '../../community-center/components/AdditionalAmountOrder.vue';
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue';
@@ -115,6 +116,7 @@ import store from 'store';
 
 export default {
   components: {
+    TuanUnLoginPage,
     OrderHeader,
     CommunityOrderPane,
     NoData,

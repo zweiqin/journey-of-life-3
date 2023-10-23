@@ -843,20 +843,20 @@
             "navigationBarTitleText": "确认订单"
           }
         },
-        {
-          "path": "sever/shopUp",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "sever/applyHistory",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
+        // {
+        //   "path": "sever/shopUp",
+        //   "style": {
+        //     "navigationBarTitleText": "",
+        //     "usingComponents": {}
+        //   }
+        // },
+        // {
+        //   "path": "sever/applyHistory",
+        //   "style": {
+        //     "navigationBarTitleText": "",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
           "path": "site/site-manage",
           "style": {
@@ -1079,12 +1079,12 @@
             "usingComponents": {}
           }
         },
-        {
-          "path": "marketing-tool/store-application",
-          "usingComponents": {
-            "van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
-          }
-        },
+        // {
+        //   "path": "marketing-tool/store-application",
+        //   "usingComponents": {
+        //     "van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+        //   }
+        // },
         // {
         //   "path": "sever/order-detail",
         //   "style": {
@@ -1092,21 +1092,21 @@
         //     "usingComponents": {}
         //   }
         // },
-        {
-          "path": "marketing-tool/shopApply/index",
-          "usingComponents": {
-            "van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
-          }
-        },
-        {
-          "path": "marketing-tools/store-application"
-        },
+        // {
+        //   "path": "marketing-tool/shopApply/index",
+        //   "usingComponents": {
+        //     "van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
+        //   }
+        // },
+        // {
+        //   "path": "marketing-tools/store-application"
+        // },
         {
           "path": "marketing-tools/apply-vip-history"
         },
-        {
-          "path": "marketing-tools/marketing-planner"
-        },
+        // {
+        //   "path": "marketing-tools/marketing-planner"
+        // },
         {
           "path": "marketing-tools/red-envelope-distribution"
         },
