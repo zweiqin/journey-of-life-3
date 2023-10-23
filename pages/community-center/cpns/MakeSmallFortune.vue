@@ -76,11 +76,11 @@ export default {
 			}).then(res => {
 				// res.data.talentList
 				this.renderData = res.data.talentList.map((item, index) => {
-					item.readerAvata = [
-								require('@/static/images/new-community/home/avatar1.png'),
-								require('@/static/images/new-community/home/avatar2.png'),
-								require('@/static/images/new-community/home/avatar3.png')
-							]
+					// item.readerAvata = [
+					// 			require('@/static/images/new-community/home/avatar1.png'),
+					// 			require('@/static/images/new-community/home/avatar2.png'),
+					// 			require('@/static/images/new-community/home/avatar3.png')
+					// 		]
 					return item
 				})
 				// console.log(this.renderData)

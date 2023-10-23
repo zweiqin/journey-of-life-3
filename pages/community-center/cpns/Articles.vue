@@ -1,16 +1,16 @@
 <template>
-  <view class="ArticlesItem" @click="gotoArticleDetails">
+  <view class="ArticlesItem">
       <view class="ArticlesItemTop">
         <view class="ArticlesCoverSheetBox">
           <!-- @/static/images/new-community/home/CoverSheet.png -->
-          <image class="ArticlesCoverSheet" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
-          <image class="ArticlesCoverSheet overPng" v-if="!(datas.redPacketInfo.totalPacket > 0)" src='@/static/images/new-community/home/isOver.png'></image>
+          <image class="ArticlesCoverSheet"  @click="gotoArticleDetails" :src='datas.postCover?datas.postCover:require("@/static/images/new-community/home/CoverSheet.png")'></image>
+          <image class="ArticlesCoverSheet overPng" v-if="!(datas.remainingPacket > 0)" src='@/static/images/new-community/home/isOver.png'></image>
         </view>
         <view class="LeftInformation">
-          <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
+          <view class="title" @click="gotoArticleDetails">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
           <view class="timer">发布者：{{ datas.username || '团峰科技' }}</view>
           <view class="TheReader">
-            <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
+            <image :src="item.imgUrl" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.already.slice(0,3)" :key="index"></image>
             <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
             <!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
           </view>
@@ -25,10 +25,10 @@
                 可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
           </span>
         </view>
-        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0">
+        <view class="ClicTokDetails" v-if="datas.remainingPacket > 0" @click="gotoArticleDetails">
           查看详情
         </view>
-        <view class="disableds" v-else>
+        <view class="disableds" v-else  @click="gotoArticleDetails">
           已结束
         </view>
       </view>
@@ -127,8 +127,8 @@ export default {
         display: flex;
         align-items: center;
         .ReaderAvatar {
-          width: 34rpx;
-          height: 34rpx;
+          width: 42rpx;
+          height: 42rpx;
           border-radius: 50%;
         }
         .more {
@@ -176,12 +176,12 @@ export default {
         display: inline-block;
         min-width: 176rpx;
         padding-right: 20rpx;
-        padding-left: 46rpx;
+        padding-left: 50rpx;
         height: 48rpx;
         border-radius: 48rpx;
         background: #EEF1FF;
         font-size: 24rpx;
-        text-align: right;
+        /* text-align: right; */
         font-weight: normal;
         line-height: 48rpx;
         font-feature-settings: "kern" on;

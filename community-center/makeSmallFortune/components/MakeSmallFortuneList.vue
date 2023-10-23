@@ -1,7 +1,7 @@
 <template>
-  <view class="MakeSmallFortuneList">
-    <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
-  </view>
+    <view class="MakeSmallFortuneList">
+          <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
+    </view>
 </template>
 
 <script>
@@ -16,38 +16,63 @@ export default {
   props: {},
   data() {
     return {
-      renderData: []
+      renderData: [],
+      querList: {
+        page: 1,
+        size: 10,
+      },
+      region: '顺德区',
+      isGetMore: true
     }
   },
   created() {
-      let region
       try{
-        region = uni.getStorageSync('ADDRES_REGION')
+        this.region = uni.getStorageSync('ADDRES_REGION')
       }catch {
-        region = '顺德区'
+        this.region = '顺德区'
       }
-      getPostList({
-        userId: "",
-        page: "1",
-        size: "10",
-        examineType:"3",
-        region
-      }).then(res => {
-        // res.data.talentList
-        res.data.talentList.forEach((item, index) => {
-          item.readerAvata = [
-                require('@/static/images/new-community/home/avatar1.png'),
-                require('@/static/images/new-community/home/avatar2.png'),
-                require('@/static/images/new-community/home/avatar3.png')
-              ]
-          this.renderData.push(item)
-        })
-        console.log(this.renderData)
-      })
+      this.getPostList()
   },
   computed: {},
   methods: {
-    
+    getPostList() {
+        getPostList({
+          userId: "",
+          page: this.querList.page,
+          size: this.querList.size,
+          examineType:"3",
+          region: this.region
+        }).then(res => {
+          if (res.data.talentList.length == this.renderData.length) {
+              this.isGetMore = false
+              return uni.showToast({
+                title: '没有更多数据了',
+                icon: 'none'
+              });
+          }
+          // res.data.talentList
+          res.data.talentList.forEach((item, index) => {
+            item.readerAvata = [
+                  require('@/static/images/new-community/home/avatar1.png'),
+                  require('@/static/images/new-community/home/avatar2.png'),
+                  require('@/static/images/new-community/home/avatar3.png')
+                ]
+            this.renderData.push(item)
+          })
+          // console.log(this.renderData)
+        })
+    },
+    getMoewPostList() {
+      if (!this.isGetMore) {
+        return uni.showToast({
+          title: '没有更多数据了',
+          icon: 'none'
+        });
+      }else {
+        this.querList.size = this.querList.size + 10
+        this.getPostList()
+      }
+    }
   },
   watch: {},
 
@@ -79,7 +104,7 @@ export default {
   }
 }
 .MakeSmallFortuneList {
-  overflow-y: auto;
+  /* overflow-y: auto; */
   .ArticlesItem {
     -webkit-animation: fade 450ms cubic-bezier(0.76, 1.68, 1, 0.84);
     animation: fade 450ms cubic-bezier(0.76, 1.68, 1, 0.84);

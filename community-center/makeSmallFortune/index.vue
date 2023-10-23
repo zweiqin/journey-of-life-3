@@ -1,5 +1,6 @@
 <template>
-    <view class="MakeSmallFortuneBox">
+    <!-- <scroll-view :scroll-y="true" @scrolltolower="getMoreList"> -->
+      <view class="MakeSmallFortuneBox">
         <view class="containerHeader">
             <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章中心</text>
@@ -17,17 +18,20 @@
             </view>
         </view>
         <view class="TabsToggle">
-            <MakeSmallFortuneList v-if="currentTab == 0"></MakeSmallFortuneList>
+            <MakeSmallFortuneList ref="MakeSmallFortuneList" v-if="currentTab == 0"></MakeSmallFortuneList>
         </view>
-    </view>
+      </view>
+    <!-- </scroll-view> -->
 </template>
 
 <script>
 import MakeSmallFortuneList from './components/MakeSmallFortuneList.vue'
+import CoolLoding from './components/CoolLodingView.vue'
 export default {
     name: 'MakeSmallFortune',
     components: {
-        MakeSmallFortuneList
+        MakeSmallFortuneList,
+        CoolLoding
     },
     data() {
         return {
@@ -59,7 +63,13 @@ export default {
         },
         goBack() {
             uni.navigateBack();
+        },
+        getMoreList() {
+            console.log(123132)
         }
+    },
+    onReachBottom(value) {
+        this.$refs.MakeSmallFortuneList.getMoewPostList()
     }
 }
 </script>
@@ -139,6 +149,7 @@ export default {
         width: 100%;
         background-color: #fff;
         flex: 1;
+        overflow: hidden;
     }
 }
 .SearchBox {
