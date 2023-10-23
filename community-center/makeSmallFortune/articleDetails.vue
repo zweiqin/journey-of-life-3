@@ -26,18 +26,11 @@
                 <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
             </view>
         </view>
-        <!-- <view class="images">
-            <image class="imageItem" v-if="textData.postCover" :src="textData.postCover"></image>
-            <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image>
-        </view>
-        <view class="content">
-            内容: {{ textData.postContent }}
-        </view> -->
         <view class="guanggao" v-if="textData.redPacketInfo.link">
             <view class="gglink" @click="gotoGuangGao(textData.redPacketInfo.link)">广告链接</view>
         </view>
         <view class="lingquREDBook">
-            <button class="cnmd" :class="{isChkPick:isChkPick}" :disabled="isChkPick" @click="lingqu">{{ isChkPick?'已领取':'领取奖励' }}</button>
+            <button class="cnmd" :class="{isChkPick:isChkPick || (textData.remainingPacket > 0)}" :disabled="isChkPick || textData.remainingPacket > 0" @click="lingqu">{{ isChkPick?textData.redPacketInfo.remainingPacket > 0?'已领取':'已结束':'领取奖励' }}</button>
             <view class="tui-modal-mask" :class="[isMaske ? 'tui-mask-show' : '']" @click.prevent="isMaske = false">
                   <image class="starts sta1" src="@/static/images/new-community/redBookText/start1.png"></image>
                   <image class="starts sta2" src="@/static/images/new-community/redBookText/start2.png"></image>
@@ -137,7 +130,7 @@ export default {
                     })
                 }else {
                     this.isMaske = true
-                    this.isChkPick = false
+                    this.isChkPick = true
                 }
             }).catch(err => {
                 console.log(err)

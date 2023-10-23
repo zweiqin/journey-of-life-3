@@ -10,26 +10,28 @@
 				<view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
 				<view class="timer">发布者：团峰科技</view>
 				<view class="TheReader">
-					<image v-for="(item, index) in datas.readerAvata" :key="index" :src="item" class="ReaderAvatar" :class="{ more: index > 0, moremore: index > 1 }"></image>
+					<image v-for="(item, index) in datas.already.slice(0,3)" :key="index" :src="item.imgUrl" class="ReaderAvatar" :class="{ more: index > 0, moremore: index > 1 }"></image>
 					<text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket - datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
 					<!-- Math.ceil(Math.random()*100 + 20) 好哈哈好没有数据，极限作假 -->
 				</view>
 			</view>
 		</view>
 		<view class="ArticlesItemTBottom">
-			<view class="maxPrice">
-				<view class="maxText">
-					最高奖励
-				</view>
-				<view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random() * 100 + 20) }}元</view>
-			</view>
-			<view v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" class="ClicTokDetails" @click="gotoArticleDetails">
-				查看详情
-			</view>
-			<view v-else class="disableds">
-				已结束
-			</view>
-		</view>
+        <view class="maxPrice">
+          <view class="maxText">
+            最高奖励
+          </view>
+          <span class="maxPriceNumber">
+                可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
+          </span>
+        </view>
+        <view class="ClicTokDetails" v-if="datas.remainingPacket > 0" @click="gotoArticleDetails">
+          查看详情
+        </view>
+        <view class="disableds" v-else  @click="gotoArticleDetails">
+          已结束
+        </view>
+     </view>
 	</view>
 </template>
 
@@ -174,12 +176,12 @@ export default {
         display: inline-block;
         min-width: 176rpx;
         padding-right: 20rpx;
-        padding-left: 40rpx;
+        padding-left: 50rpx;
         height: 48rpx;
         border-radius: 48rpx;
         background: #EEF1FF;
         font-size: 24rpx;
-        text-align: right;
+        /* text-align: right; */
         font-weight: normal;
         line-height: 48rpx;
         font-feature-settings: "kern" on;
