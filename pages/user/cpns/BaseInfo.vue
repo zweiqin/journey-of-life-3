@@ -22,10 +22,10 @@
               {{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
             </view>
               <view class="vip-level">
-                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHy" src="@/static/images/user/huiyuan.png"></image>
-                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isTz" src="@/static/images/user/tuanzhang.png"></image>
-                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHhr" src="@/static/images/user/hehuoren.png"></image>
-                <image style="width: 84rpx;height: 84rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isGd" src="@/static/images/user/gudong.png"></image>
+                <image style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHy" src="@/static/images/user/huiyuan.png"></image>
+                <image style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isTz" src="@/static/images/user/tuanzhang.png"></image>
+                <image style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isHhr" src="@/static/images/user/hehuoren.png"></image>
+                <image style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" @click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges=true;" v-if="$store.getters.userInfo.userMap.isGd" src="@/static/images/user/gudong.png"></image>
               </view>
               <view class="tui-modal-mask" :class="[isDisplayBadges ? 'tui-mask-show' : '']" @click.prevent="isDisplayBadges = false">
                   <view class="rotationBox">

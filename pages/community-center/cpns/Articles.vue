@@ -8,7 +8,7 @@
         </view>
         <view class="LeftInformation">
           <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
-          <view class="timer">发布者：团峰科技</view>
+          <view class="timer">发布者：{{ datas.username || '团峰科技' }}</view>
           <view class="TheReader">
             <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
             <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
@@ -176,7 +176,7 @@ export default {
         display: inline-block;
         min-width: 176rpx;
         padding-right: 20rpx;
-        padding-left: 40rpx;
+        padding-left: 46rpx;
         height: 48rpx;
         border-radius: 48rpx;
         background: #EEF1FF;
