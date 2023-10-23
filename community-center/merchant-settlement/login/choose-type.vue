@@ -187,6 +187,7 @@ export default {
   }
 
   .style-list {
+    padding-bottom: 100upx;
     .style-header {
       display: flex;
       align-items: center;

@@ -110,7 +110,7 @@ export default {
     // 登录成功后续
     handleLoginSuccessCB(userInfo) {
       const { userMap } = userInfo;
-      if (userMap.isMd) {
+      if (userMap && userMap.isMd) {
         uni.switchTab({
           url: '/pages/user/user'
         });

@@ -35,6 +35,7 @@ export default {
 
   methods: {
     show(selectData, allLabels) {
+      console.log("来了"), selectData;
       this.chooseLabelsVisible = true;
       this.shopStyleList = allLabels;
       this.currentSelectLabels = selectData.map((item) => item * 1);
@@ -103,7 +104,8 @@ export default {
   box-sizing: border-box;
 
   .item {
-    margin-right: 36upx;
+    width: 80upx;
+    margin-right: 44upx;
     display: flex;
     align-items: center;
     justify-content: center;

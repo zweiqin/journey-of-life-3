@@ -1,6 +1,15 @@
 <template>
     <view class="MakeSmallFortuneList">
-          <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
+        <!-- <view class="ReleaseStatus">
+            <view class="subMenus">
+                <scroll-view scroll-x>
+                    <view class="sub-list-container">
+                        <view class="sub-item" :class="{ active: examineType === item.value }" v-for="item in subCategoryList" :key="item.value">{{ item.name }}</view>
+                    </view>
+                </scroll-view>
+            </view>
+        </view> -->
+          <Articles v-for="(item, index) in renderData" :key="index" :datas="item" :redirection="redirection"></Articles>
     </view>
 </template>
 
@@ -9,7 +18,7 @@ import Articles from './Articles.vue'
 import { getRedStatistics, getPostList } from '@/api/community-center/makeSmallFortune'
 import { getUserId } from '@/utils';
 export default {
-  name: "MakeSmallFortuneList",
+  name: "MyRelease",
   components: {
     Articles
   },
@@ -21,6 +30,13 @@ export default {
         page: 1,
         size: 10,
       },
+      subCategoryList: [
+       {name: '审核通过', value: 3},
+       {name: '待审核', value: 2},
+       {name: '未通过', value: 4},
+       {name: '已撤回', value: 5},
+      ],
+      examineType: 3,
       region: '顺德区',
       isGetMore: true
     }
@@ -37,10 +53,10 @@ export default {
   methods: {
     getPostList() {
         getPostList({
-          userId: "",
+          userId: getUserId(),
           page: this.querList.page,
           size: this.querList.size,
-          examineType:"3",
+          examineType: this.examineType,
           region: this.region
         }).then(res => {
           if (res.data.talentList.length == this.renderData.length) {
@@ -68,6 +84,11 @@ export default {
         this.querList.size = this.querList.size + 10
         this.getPostList()
       }
+    },
+    redirection(id) {
+        uni.navigateTo({
+             url: `/community-center/makeSmallFortune/editingArticles?id=${id}`
+        });
     }
   },
   watch: {},
@@ -133,5 +154,34 @@ export default {
     -webkit-animation: fade 650ms cubic-bezier(0.76, 1.68, 1, 0.84);
     animation: fade 650ms cubic-bezier(0.76, 1.68, 1, 0.84);
   }
+}
+.subMenus {
+	width: 100vw;
+	display: flex;
+}
+.sub-list-container {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	margin-bottom: 20upx;
+	padding: 0 30rpx;
+
+	.sub-item {
+		font-size: 32upx;
+		padding: 6upx 18upx;
+		/* border: 1upx solid #777; */
+		border-radius: 12upx;
+		margin-right: 20upx;
+		color: #ffffff;
+		background: rgba(121, 121, 121, 0.693);
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+
+		&.active {
+            border-color: #ef530e;
+            color: #0a58f4;
+		}
+	}
 }
 </style>

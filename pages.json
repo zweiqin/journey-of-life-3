@@ -653,6 +653,12 @@
           "style": {
             "navigationBarTitleText": "阅读者模式"
           }
+        },
+        {
+          "path": "makeSmallFortune/editingArticles",
+          "style": {
+            "navigationBarTitleText": "✍"
+          }
         }
       ]
     },

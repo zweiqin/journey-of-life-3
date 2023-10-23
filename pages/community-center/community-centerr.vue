@@ -2,7 +2,7 @@
   <view class="community-center-container">
     <TuanAppShim bg="#fedfcd"></TuanAppShim>
     <view class="page-header">
-      <view style=" padding: 0 30upx">
+      <view style="padding: 0 30upx">
         <view class="top-title"></view>
         <!-- 搜索 -->
         <view class="search-bar" v-show="scrollTop <= 300">
@@ -25,7 +25,7 @@
       </view>
     </view>
 
-    <view style="background: linear-gradient(180deg, #FFFFFF 0%, #f4f4f4); padding-bottom: 30upx;">
+    <view style="background: linear-gradient(180deg, #ffffff 0%, #f4f4f4); padding-bottom: 30upx">
       <view style="padding: 0 30upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
         <ServeMenus></ServeMenus>
         <VipPackage :scrollTop="scrollTop"></VipPackage>
@@ -72,8 +72,10 @@
 
 <script>
 import { bannerListIcon, vipBarConfig } from './config';
-import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO } from '../../constant';
+import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
+import { userIsPurchaseApi } from '../../api/user';
+
 import PopupInformation from '../../components/popup-information/popup-information';
 import showModal from 'mixin/showModal';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
@@ -85,6 +87,7 @@ import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 // 赚小钱
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue';
+import user from 'store/modules/user';
 
 const app = getApp();
 
@@ -127,18 +130,7 @@ export default {
       this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList();
     });
 
-    if (!app.globalData.isShowCommunityPopup) {
-      this.timer = setTimeout(() => {
-        if (app.globalData.communityPopupCount < 4) {
-          app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1;
-          this.$refs.popupInformationRef && this.$refs.popupInformationRef.show();
-        } else {
-          clearTimeout(this.timer);
-          this.timer = null;
-          app.globalData.isShowCommunityPopup = false;
-        }
-      }, 500);
-    }
+    this.showVipPostPopup();
   },
   mounted() {
     // #ifdef APP
@@ -258,6 +250,45 @@ export default {
 
     handleBindPhoneSuccess() {
       this.$store.dispatch('auth/refrshUserInfo');
+    },
+    // 是否显示金管家弹窗
+    async isShowVipPostPopup() {
+      try {
+        const userId = uni.getStorageSync(USER_ID);
+        if (!userId) {
+          return;
+        }
+        const res = await userIsPurchaseApi({
+          userId,
+          price: 399
+        });
+
+        if (res.statusCode === 20000) {
+          if (res.data && Array.isArray(res.data) && res.data.length) {
+            app.globalData.isShowCommunityPopup = true;
+          }
+        } else {
+          app.globalData.isShowCommunityPopup = false;
+        }
+      } catch (error) {
+        app.globalData.isShowCommunityPopup = false;
+      }
+    },
+
+    async showVipPostPopup() {
+      await this.isShowVipPostPopup();
+      if (!app.globalData.isShowCommunityPopup) {
+        this.timer = setTimeout(() => {
+          if (app.globalData.communityPopupCount < 4) {
+            app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1;
+            this.$refs.popupInformationRef && this.$refs.popupInformationRef.show();
+          } else {
+            clearTimeout(this.timer);
+            this.timer = null;
+            app.globalData.isShowCommunityPopup = false;
+          }
+        }, 500);
+      }
     }
   },
 

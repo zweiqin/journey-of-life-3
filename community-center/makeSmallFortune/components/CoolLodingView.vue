@@ -1,15 +1,17 @@
 <template>
-    <view class="loader">
-        <view> L </view>
-        <view> O </view>
-        <view> A </view>
-        <view> D </view>
-        <view> I </view>
-        <view> N </view>
-        <view> G </view>
-        <view> </view>
-        <view> </view>
-        <view> </view>
+    <view class="loaderBackground">
+        <view class="loader">
+            <view> L </view>
+            <view> O </view>
+            <view> A </view>
+            <view> D </view>
+            <view> I </view>
+            <view> N </view>
+            <view> G </view>
+            <view> </view>
+            <view> </view>
+            <view> </view>
+        </view>
     </view>
 </template>
 
@@ -20,12 +22,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.loaderBackground {
+    position: relative;
+    /* position: fixed;
+    bottom: 80rpx;
+    left: 0; */
+    width: 100%;
+    height: 80rpx;
+    z-index: 10;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+}
 .loader {
-    top: 76%;
-    left: 50%;
+    /* top: 60rpx;
+    left: 50%; */
     -webkit-transform: translate(-50%,-50%);
-    -mos-transform: translate(-50%,-50%);
+    /* -mos-transform: translate(-50%,-50%); */
     transform: translate(-50%,-50%);
+    transform: scale(0.6);
     text-align: center;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -57,38 +73,39 @@ export default {
             -o-transform: rotate(180deg);
             -moz-transform: rotate(180deg);
             -webkit-transform: rotate(180deg);
-            color: #fff;
+            color: #000000b8;
             font-size: 2em;
         }
 
             .loader view:nth-child(8):before {
-                background: #ffffff;
+                background: #949494;
             }
 
             .loader view:nth-child(8):before, .loader view:nth-child(9):before {
                 content: '';
                 position: absolute;
-                bottom: 0px;
-                left: 0;
+                bottom: -10px;
+                left: 10rpx;
                 width: 10px;
                 height: 10px;
                 border-radius: 100%;
             }
 
             .loader view:nth-child(9):before {
-                background: #f2f2f2;
+                background: #515151;
             }
 
             .loader view:nth-child(10):before {
-                bottom: -15px;
+                bottom: -10px;
+                left: 10rpx;
                 height: 10px;
-                background: #ffffff;
+                background: #000000;
             }
 
             .loader view:after, .loader view:nth-child(10):before {
                 content: '';
                 position: absolute;
-                left: 0;
+                left: 10rpx;
                 width: 10px;
                 border-radius: 100%;
             }
