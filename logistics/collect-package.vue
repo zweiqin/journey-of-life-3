@@ -49,7 +49,9 @@
           </view>
         </view>
 
-        <NoData v-else></NoData>
+				<view v-else>
+					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+				</view>
       </view>
     </view>
 
@@ -61,14 +63,12 @@
 const { debounce } = require('../utils/util');
 import { collectPages, mapDeliveryType, cancelList, mapCategoryControlType } from './config';
 import { expressInquiryApi, cancelOrderApi, getOrderDetailApi } from '../api/logistics';
-import NoData from '../components/no-data';
-import CancelPopup from '../components/cancel-popup';
+import CancelPopup from './component/cancel-popup.vue';
 import { getUserId } from '../utils';
 import { jiSenderInfo, jiconsigneeInfo, VALUE_ADDED_SERVICES, jiOrderGoodsList, jiRemarks, JI_EDIT_ORDER_ID } from '../constant';
 
 export default {
   components: {
-    NoData,
     CancelPopup
   },
   data() {

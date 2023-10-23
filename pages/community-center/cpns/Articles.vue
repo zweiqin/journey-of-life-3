@@ -1,5 +1,5 @@
 <template>
-  <view class="ArticlesItem">
+  <view class="ArticlesItem" @click="gotoArticleDetails">
       <view class="ArticlesItemTop">
         <view class="ArticlesCoverSheetBox">
           <!-- @/static/images/new-community/home/CoverSheet.png -->
@@ -8,7 +8,7 @@
         </view>
         <view class="LeftInformation">
           <view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
-          <view class="timer">发布者：团峰科技</view>
+          <view class="timer">发布者：{{ datas.username || '团峰科技' }}</view>
           <view class="TheReader">
             <image :src="item" class="ReaderAvatar" :class="{more:index > 0,moremore:index>1}" v-for="(item, index) in datas.readerAvata" :key="index"></image>
             <text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket-datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
@@ -21,9 +21,11 @@
           <view class="maxText">
             最高奖励
           </view>
-          <view class="maxPriceNumber">可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元</view>
+          <span class="maxPriceNumber">
+                可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
+          </span>
         </view>
-        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0" @click="gotoArticleDetails">
+        <view class="ClicTokDetails" v-if="datas.redPacketInfo.totalPacket && datas.redPacketInfo.totalPacket > 0">
           查看详情
         </view>
         <view class="disableds" v-else>
@@ -171,8 +173,10 @@ export default {
         z-index: 0;
         position: absolute;
         left: 95rpx;
-        min-width: 203rpx;
+        display: inline-block;
+        min-width: 176rpx;
         padding-right: 20rpx;
+        padding-left: 46rpx;
         height: 48rpx;
         border-radius: 48rpx;
         background: #EEF1FF;
@@ -181,6 +185,7 @@ export default {
         font-weight: normal;
         line-height: 48rpx;
         font-feature-settings: "kern" on;
+        white-space: nowrap;
         color: #5B79FB;
       }
     }

@@ -54,7 +54,9 @@
         />
       </view>
 
-      <NoData v-else></NoData>
+			<view v-else>
+				<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+			</view>
     </view>
   </view>
 </template>
@@ -64,12 +66,10 @@ import {
   findAdLogisticsSpaceByPageApi,
   increamentClickNumApi,
 } from "../api/logistics";
-import NoData from "../components/no-data";
 import PickRegions from "../components/pick-regions/pick-regions.vue";
 
 export default {
   components: {
-    NoData,
     PickRegions,
   },
   data() {

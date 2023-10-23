@@ -25,7 +25,9 @@
         <view class="words">{{ item.say }}</view>
       </view>
 
-      <NoData v-show="!list.length"></NoData>
+				<view  v-show="!list.length">
+					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+				</view>
     </view>
 
     <view class="set-my-words" @click="handleShowMyWords">我要自定义话术</view>
@@ -57,13 +59,9 @@
 
 <script>
 import { addMyWordsApi, getWordsApi } from "../../api/user";
-import NoData from "../../components/no-data";
 import { SELECT_WORDS } from "../../constant";
 
 export default {
-  components: {
-    NoData,
-  },
   data() {
     return {
       list: [],

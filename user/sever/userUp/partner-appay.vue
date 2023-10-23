@@ -1,14 +1,5 @@
 <template>
 	<view class="partner-apply-container">
-		<!-- <NewHeader
-      @back="handleBack"
-      title="合伙人申请"
-      top="61%"
-      position="left"
-      backgroundColor="#fff"
-      padding="30upx 80upx 20upx 30upx"
-    >
-    </NewHeader> -->
 
 		<image src="../../../static/images/user/bg1.png" mode="" class="background" v-if="currentApplyType === 'partner'" />
 		<image src="../../../static/images/user/bg2.png" mode="" class="background"

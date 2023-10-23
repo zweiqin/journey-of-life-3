@@ -581,12 +581,12 @@
             "navigationBarTitleText": "全部评论"
           }
         },
-        {
-          "path": "eva",
-          "style": {
-            "navigationBarTitleText": "评价"
-          }
-        },
+        // {
+        //   "path": "eva",
+        //   "style": {
+        //     "navigationBarTitleText": "评价"
+        //   }
+        // },
         {
           "path": "search",
           "style": {

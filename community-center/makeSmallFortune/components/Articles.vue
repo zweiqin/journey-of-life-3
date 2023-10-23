@@ -171,8 +171,10 @@ export default {
         z-index: 0;
         position: absolute;
         left: 95rpx;
-        min-width: 203rpx;
+        display: inline-block;
+        min-width: 176rpx;
         padding-right: 20rpx;
+        padding-left: 40rpx;
         height: 48rpx;
         border-radius: 48rpx;
         background: #EEF1FF;
@@ -181,6 +183,7 @@ export default {
         font-weight: normal;
         line-height: 48rpx;
         font-feature-settings: "kern" on;
+        white-space: nowrap;
         color: #5B79FB;
       }
     }
