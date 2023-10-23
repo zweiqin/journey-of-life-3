@@ -37,7 +37,7 @@
             <view class="gglink" @click="gotoGuangGao(textData.redPacketInfo.link)">广告链接</view>
         </view>
         <view class="lingquREDBook">
-            <button class="cnmd" @click="lingqu">领取奖励</button>
+            <button class="cnmd" :class="{isChkPick:isChkPick}" :disabled="isChkPick" @click="lingqu">{{ isChkPick?'已领取':'领取奖励' }}</button>
             <view class="tui-modal-mask" :class="[isMaske ? 'tui-mask-show' : '']" @click.prevent="isMaske = false">
                   <image class="starts sta1" src="@/static/images/new-community/redBookText/start1.png"></image>
                   <image class="starts sta2" src="@/static/images/new-community/redBookText/start2.png"></image>
@@ -86,6 +86,15 @@ export default {
             this.textData = res.data
             this.formData.redPacketId = res.data.redPacketInfo.redPacketId
             this.PreviewData = JSON.parse(this.textData.postContent)
+            lookPostRed({
+                redPacketId: this.formData.redPacketId,
+                uid: this.formData.uid,
+                isChkPick: 1
+            }).then(res => {
+                this.isChkPick = true
+            }).catch(err => {
+                console.log(err)
+            })
         }).catch(err => {
             console.log('err')
         })
@@ -94,6 +103,7 @@ export default {
         return {
             isMaske: false,
             PreviewData: [],
+            isChkPick: false,
             textData: {
                 postTitle: '劲爆！0元可在附近就能开店快速落地！',
                 postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
@@ -119,16 +129,13 @@ export default {
             lookPostRed({
                 redPacketId: this.formData.redPacketId,
                 uid: this.formData.uid,
-    						isChkPick: 1
             }).then(res => {
                 if(res.errno == -1) {
-									// true为已领，false为未领
                     uni.showToast({
                         title: res.errmsg,
                         icon: 'none',
                     })
                 }else {
-										if (res.data === true) return this.$showToast('已领取过红包')
                     this.isMaske = true
                 }
             }).catch(err => {
@@ -164,6 +171,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.isChkPick {
+    background-color: #888889 !important;
+}
 @keyframes rotateStar {
   0% {
     transform: rotate(0) scale(0);
