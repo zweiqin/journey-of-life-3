@@ -50,7 +50,7 @@
                   </view>
             </view>
         </view>
-        <view class="PublisherInfo">
+        <view class="PublisherInfo bottomInfo">
             <view class="PublisherInfoBox">
                 <image :src="textData.head" class="PublisherInfoAvatar"></image>
                 <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
@@ -285,11 +285,17 @@ export default {
     }
 }
 .articleDetailsBox {
+    box-sizing: border-box;
+    position: relative;
     height: 100vh;
     overflow-y: auto;
+    /* padding-bottom: 260rpx; */
 }
 .lingquREDBook {
-    margin-top: 30rpx;
+    background-color: #fff;
+    /* position: fixed;
+    bottom: 160rpx; */
+    /* margin-top: 30rpx; */
     width: 100vw;
     height: 90rpx;
     display: flex;
@@ -458,4 +464,10 @@ export default {
 	visibility: visible;
 	opacity: 1;
 }
+/* .bottomInfo {
+    background-color: #fff;
+    position: fixed;
+    bottom: 30rpx;
+    left: 0;
+} */
 </style>

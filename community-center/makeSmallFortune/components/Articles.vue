@@ -25,7 +25,10 @@
                 可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
           </span>
         </view>
-        <view class="ClicTokDetails" v-if="datas.remainingPacket > 0" @click="gotoArticleDetails">
+        <view class="ClicTokDetails" v-if="redirection" @click="redirection(datas.postId)">
+          编辑文章
+        </view>
+        <view class="ClicTokDetails" v-else-if="datas.remainingPacket > 0" @click="gotoArticleDetails">
           查看详情
         </view>
         <view class="disableds" v-else  @click="gotoArticleDetails">
@@ -42,7 +45,11 @@ export default {
 		datas: {
 			type: Object,
 			default: {}
-		}
+		},
+    redirection: {
+      type: Function,
+      default: null
+    }
 	},
 	data() {
 		return {

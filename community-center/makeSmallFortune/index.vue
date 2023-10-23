@@ -1,5 +1,4 @@
 <template>
-    <!-- <scroll-view :scroll-y="true" @scrolltolower="getMoreList"> -->
       <view class="MakeSmallFortuneBox">
         <view class="containerHeader">
             <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
@@ -18,30 +17,37 @@
             </view>
         </view>
         <view class="TabsToggle">
-            <MakeSmallFortuneList ref="MakeSmallFortuneList" v-if="currentTab == 0"></MakeSmallFortuneList>
+            <MakeSmallFortuneList @isLoading="isLoading" ref="MakeSmallFortuneList" v-if="currentTab == 0"></MakeSmallFortuneList>
+            <MyRelease @isLoading="isLoading" ref="MyRelease" v-if="currentTab == 2"></MyRelease>
         </view>
+        <CoolLoding v-show="isLoding"></CoolLoding>
       </view>
-    <!-- </scroll-view> -->
 </template>
 
 <script>
 import MakeSmallFortuneList from './components/MakeSmallFortuneList.vue'
 import CoolLoding from './components/CoolLodingView.vue'
+import MyRelease from './components/MyRelease.vue'
 export default {
     name: 'MakeSmallFortune',
     components: {
         MakeSmallFortuneList,
+        MyRelease,
         CoolLoding
     },
     data() {
         return {
             currentTab: 0,
+            isLoding: false,
             tabs: [{
                 name: '赚小钱',
                 imgUrl: require('@/static/images/new-community/home/book.png')
             },{
                 name: '邻里互动',
                 imgUrl: require('@/static/images/new-community/home/message.png')
+            },{
+                name: '发布记录',
+                imgUrl: require('@/static/images/new-community/home/wodefabu.png')
             },{
                 name: '去发布',
                 imgUrl: require('@/static/images/new-community/home/ding.png')
@@ -51,24 +57,23 @@ export default {
     methods: {
         changeTab(index) {
             this.currentTab = index
-            if (index == 2) {
+            if (index == 3) {
                 this.currentTab = 0
                 uni.navigateTo({
                      url: '/community-center/makeSmallFortune/release'
                 });
             }
         },
-        getPostList() {
-            console.log(123)
-        },
         goBack() {
             uni.navigateBack();
         },
-        getMoreList() {
-            console.log(123132)
+        isLoading(value) {
+            // console.log(value)
+            this.isLoding = value
         }
     },
     onReachBottom(value) {
+        this.isLoding = true
         this.$refs.MakeSmallFortuneList.getMoewPostList()
     }
 }
