@@ -91,7 +91,7 @@ export default {
                 uid: this.formData.uid,
                 isChkPick: 1
             }).then(res => {
-                this.isChkPick = true
+                this.isChkPick = res.data
             }).catch(err => {
                 console.log(err)
             })
@@ -137,6 +137,7 @@ export default {
                     })
                 }else {
                     this.isMaske = true
+                    this.isChkPick = false
                 }
             }).catch(err => {
                 console.log(err)

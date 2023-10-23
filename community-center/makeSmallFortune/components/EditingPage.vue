@@ -4,8 +4,8 @@
             <text class="Cancel" @click="goback">取消</text>
             <view class="text">文章编辑</view>
             <view class="btnBox">
-                <view class="preview" style="margin-right: 20rpx;color: #000;" @click="previewPage">预览</view>
-                <view v-if="isOverForm">下一步</view>
+                <view class="preview" style="margin-right: 32rpx;color: #000;" @click="previewPage">预览</view>
+                <view :class="{isOverForm:isOverForm}" v-if="isOverForm">下一步</view>
                 <view class="NextSteps" v-else @click="nextSteps">下一步</view>
             </view>
         </view>
@@ -217,6 +217,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.isOverForm {
+    font-family: 思源黑体;
+    font-size: 28rpx;
+    font-weight: bold;
+    line-height: 44rpx;
+    display: flex;
+    align-items: center;
+    color: #FF380C;
+}
+.preview {
+    font-size: 28rpx;
+    /* font-weight: bold; */
+    line-height: 46rpx;
+}
 .CreatedText {
     box-sizing: border-box;
     width: 100vw;
@@ -303,8 +317,9 @@ export default {
         align-items: center;
         justify-content: space-between;
         .Cancel {
-            font-size: 28rpx;
-            font-weight: normal;
+            font-size: 30rpx;
+            letter-spacing: 4rpx;
+            font-weight: bold;
             line-height: 44rpx;
             display: flex;
             align-items: center;
