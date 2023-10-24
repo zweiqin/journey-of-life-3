@@ -75,9 +75,6 @@
           "
           >所在地区
         </view>
-        <!-- <JCity @confirm="City($event.area)" :text="address"
-					style="padding-top: 24upx; width: 78%; height: 90upx; border-radius: 20upx; padding-left: 20upx; box-sizing: border-box; font-size: 30upx; ">
-				</JCity> -->
         <view
           @click="handleChooseAddress"
           style="

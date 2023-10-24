@@ -32,6 +32,13 @@
 						>
 							{{ areaInfo.county.text || "区县" }}
 						</view>
+						<view
+							class="item" :class="{
+								active: current === 'township'
+							}" @click="change('township')"
+						>
+							{{ areaInfo.township.text || "乡镇" }}
+						</view>
 					</view>
 					<button
 						class="confirm" :style="{
@@ -62,7 +69,7 @@
 import { getAreaRegionApi } from '../../api/user'
 
 export default {
-	name: 'JCity',
+	name: 'JArea',
 	props: {
 		text: String,
 		placeholder: String,
@@ -84,6 +91,11 @@ export default {
 					parentId: ''
 				},
 				county: {
+					text: '',
+					id: null,
+					parentId: ''
+				},
+				township: {
 					text: '',
 					id: null,
 					parentId: ''
@@ -113,6 +125,9 @@ export default {
 			if (field === 'county' && !this.areaInfo.city.id) {
 				return
 			}
+			if (field === 'township' && !this.areaInfo.county.id) {
+				return
+			}
 			if (field === 'province') {
 				this.getCity({
 					parentId: 0
@@ -125,6 +140,10 @@ export default {
 				this.getCity({
 					parentId: this.areaInfo.city.id
 				})
+			} else if (field === 'township') {
+				this.getCity({
+					parentId: this.areaInfo.county.id
+				})
 			}
 			this.current = field
 		},
@@ -132,6 +151,7 @@ export default {
 		// 获取地址信息
 		getCity(data) {
 			getAreaRegionApi(data).then((res) => {
+				// console.log(res)
 				this.data = res.data
 			})
 		},
@@ -141,7 +161,7 @@ export default {
 			this.areaInfo[this.current].text = cityInfo.name
 			this.areaInfo[this.current].id = cityInfo.id
 			this.areaInfo[this.current].parentId = cityInfo.id
-			if (this.current !== 'county') {
+			if (this.current !== 'township') {
 				this.getCity({
 					parentId: cityInfo.id
 				})
@@ -156,9 +176,23 @@ export default {
 					text: '',
 					id: ''
 				}
+				this.areaInfo.township = {
+					text: '',
+					id: ''
+				}
 			} else if (this.current === 'city') {
 				this.current = 'county'
 				this.areaInfo.county = {
+					text: '',
+					id: ''
+				}
+				this.areaInfo.township = {
+					text: '',
+					id: ''
+				}
+			} else if (this.current === 'county') {
+				this.current = 'township'
+				this.areaInfo.township = {
 					text: '',
 					id: ''
 				}
@@ -184,6 +218,10 @@ export default {
 					county: {
 						text: '',
 						id: null
+					},
+					township: {
+						text: '',
+						id: null
 					}
 				}
 			}
@@ -191,14 +229,14 @@ export default {
 
 		// 点击确定按钮
 		handleConfirmArea() {
-			if (!this.areaInfo.county.text) {
+			if (!this.areaInfo.township.text) {
 				return
 			}
 			this.areaString =
 				this.areaInfo.province.text +
 				this.areaInfo.city.text +
-				this.areaInfo.county.text
-			console.log({ ...this.areaInfo, area: this.areaString })
+				this.areaInfo.county.text +
+				this.areaInfo.township.text
 			this.$emit('confirm', { ...this.areaInfo, area: this.areaString })
 			this.$refs.popup.close()
 		}
@@ -234,7 +272,7 @@ export default {
 				color: #8b8b8b;
 
 				.item {
-					width: 120upx;
+					width: 100upx;
 					margin-right: 20px;
 					overflow: hidden;
 					text-overflow: ellipsis;

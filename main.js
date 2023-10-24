@@ -69,6 +69,28 @@ Vue.mixin({
         url
       });
     },
+
+		$copy(text, title = '复制成功') {
+			uni.setClipboardData({
+				data: text,
+				success: () => {
+					uni.showToast({
+						title
+					})
+				}
+			})
+		},
+
+		$redirectTo(url) {
+			if (!url) return
+			uni.redirectTo({ url })
+		},
+
+		$switchTab(url) {
+			if (!url) return
+			uni.switchTab({ url })
+		},
+		
     getSize(selecter) {
       const _this = this;
       return new Promise((resolve, reject) => {

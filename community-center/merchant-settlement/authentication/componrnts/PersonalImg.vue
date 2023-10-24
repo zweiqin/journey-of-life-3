@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getUserId, payOrderUtil } from "@/utils";
+import { getUserId } from "@/utils";
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from "@/constant";
 export default {
   name: 'PersonalImg',

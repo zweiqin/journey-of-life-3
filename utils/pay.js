@@ -1,146 +1,295 @@
-import { PAY_ORDER } from '../constant';
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../api/goods';
-import { getUserId } from './index';
+import { T_PAY_ORDER } from '../constant'
+// import { mapState, mapGetters } from 'vuex'
+import store from '../store'
+import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../api/goods'
+import { payBOrderH5, payOtherPlatformApi } from '../api/community-center'
+import { getUserId } from './index'
 
-export const payFn = (res, type, order) => {
-  uni.removeStorageSync(PAY_ORDER);
-  uni.setStorageSync(PAY_ORDER, {
-    type: type || 'DEFAULT',
-    TF_ORDER_NO: order,
-    TL_ORDER_NO: res.orderNo
-  });
-  const payData = JSON.parse(res.h5PayUrl);
-  const form = document.createElement('form');
-  form.setAttribute('action', payData.url);
-  form.setAttribute('method', 'POST');
-  const data = JSON.parse(payData.data);
-  let input;
-  for (const key in data) {
-    input = document.createElement('input');
-    input.name = key;
-    input.value = data[key];
-    form.appendChild(input);
-  }
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-};
+// export const payH5Method = (res, type) => {
+// 	uni.removeStorageSync(T_PAY_ORDER)
+// 	uni.setStorageSync(T_PAY_ORDER, {
+// 		type: type || 'DEFAULT',
+// 		TL_ORDER_NO: res.orderNo
+// 	})
+// 	if (res.errno === -1) {
+// 		uni.showToast({
+// 			title: res.errmsg,
+// 			duration: 2000,
+// 			icon: 'error'
+// 		})
+// 	}
+// 	if (res.data.isZeroOrder === '1') { // 零元支付情况
+// 		uni.redirectTo({
+// 			url: '/user/otherServe/payment-completed/index'
+// 		})
+// 	} else {
+// 		const payData = JSON.parse(res.data.h5PayUrl)
+// 		const form = document.createElement('form')
+// 		form.setAttribute('action', payData.url)
+// 		form.setAttribute('method', 'POST')
+// 		const data = JSON.parse(payData.data)
+// 		let input
+// 		for (const key in data) {
+// 			input = document.createElement('input')
+// 			input.name = key
+// 			input.value = data[key]
+// 			form.appendChild(input)
+// 		}
+// 		document.body.appendChild(form)
+// 		form.submit()
+// 		document.body.removeChild(form)
+// 	}
+// }
 
-export const tradeOrderNo = function () {
-  const now = new Date();
-  const year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  let day = now.getDate();
-  let hour = now.getHours();
-  let minutes = now.getMinutes();
-  let seconds = now.getSeconds();
-  String(month).length < 2 ? (month = Number('0' + month)) : month;
-  String(day).length < 2 ? (day = Number('0' + day)) : day;
-  String(hour).length < 2 ? (hour = Number('0' + hour)) : hour;
-  String(minutes).length < 2 ? (minutes = Number('0' + minutes)) : minutes;
-  String(seconds).length < 2 ? (seconds = Number('0' + seconds)) : seconds;
-  const yyyyMMddHHmmss = `${year}${month}${day}${hour}${minutes}${seconds}`;
-  return yyyyMMddHHmmss + Math.random().toString(36).substr(2, 9);
-};
+export const payFn = (data, payType, type = 'DEFAULT', otherArgs = {}) => {
+	// console.log({ ...mapState('app', [ 'isInMiniProgram' ]) })
+	// console.log(mapState('app', [ 'isInMiniProgram' ]).isInMiniProgram)
+	// console.log({ ...mapState({ 'isInMiniProgram': (state) => state.isInMiniProgram }) })
+	console.log(store.state.app.isInMiniProgram)
+	if (store.state.app.isInMiniProgram) {  // || getApp().globalData.isInMiniprogram
+		payOrderGoodsAPPApi({
+			userId: getUserId(),
+			orderNo: data.orderSn,
+			payType,
+			...otherArgs
+		}).then((res) => {
+			if (res.errno === 0) {
+				if (type) {
+					uni.removeStorageSync(T_PAY_ORDER)
+					uni.setStorageSync(T_PAY_ORDER, {
+						type,
+						TL_ORDER_NO: data.orderSn
+					})
+				}
+				if (res.data.isZeroOrder === '1') { // 零元支付情况
+					uni.redirectTo({
+						url: '/user/otherServe/payment-completed/index'
+					})
+				} else {
+					delete res.data.isZeroOrder
+					let query = ''
+					for (const key in res.data) {
+						query += key + '=' + res.data[key] + '&'
+					}
+					wx.miniProgram.navigateTo({
+						url: '/pages/loading/loading?' + query + 'orderNo=' + data.orderSn + '&userId=' + getUserId(),
+						fail: () => {
+							uni.switchTab({
+								url: '/pages/order/order?type=shop&status=1'
+							})
+						}
+					})
+				}
+			}
+		})
+	} else {
+		// #ifdef H5
+		payOrderGoodsApi({
+			orderNo: data.orderSn,
+			userId: getUserId(),
+			payType,
+			...otherArgs
+		}).then((res) => {
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderSn
+				})
+			}
+			if (res.data.isZeroOrder === '1') { // 零元支付情况
+				uni.redirectTo({
+					url: '/user/otherServe/payment-completed/index'
+				})
+			} else {
+				const payData = JSON.parse(res.data.h5PayUrl)
+				const form = document.createElement('form')
+				form.setAttribute('action', payData.url)
+				form.setAttribute('method', 'POST')
+				const data = JSON.parse(payData.data)
+				let input
+				for (const key in data) {
+					input = document.createElement('input')
+					input.name = key
+					input.value = data[key]
+					form.appendChild(input)
+				}
+				document.body.appendChild(form)
+				form.submit()
+				document.body.removeChild(form)
+			}
+		})
+		// #endif
+		// #ifdef APP
+		payOrderGoodsAPPApi({
+			userId: getUserId(),
+			orderNo: data.orderSn,
+			payType,
+			...otherArgs
+		}).then((res) => {
+			if (res.errno === 0) {
+				if (type) {
+					uni.removeStorageSync(T_PAY_ORDER)
+					uni.setStorageSync(T_PAY_ORDER, {
+						type,
+						TL_ORDER_NO: data.orderSn
+					})
+				}
+				if (res.data.isZeroOrder === '1') { // 零元支付情况
+					uni.redirectTo({
+						url: '/user/otherServe/payment-completed/index'
+					})
+				} else {
+					delete res.data.isZeroOrder
+					let query = ''
+					for (const key in res.data) {
+						query += key + '=' + res.data[key] + '&'
+					}
+					plus.share.getServices(function (result) {
+						let sweixin = null
+						for (const i in result) {
+							if (result[i].id == 'weixin') {
+								sweixin = result[i]
+							}
+						}
+						if (sweixin) {
+							sweixin.launchMiniProgram({
+								id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
+								type: 0,
+								path: 'pages/orderDetail/orderDetail?' + query
+							})
+						}
+					}, function (e) {
+						console.log('获取分享服务列表失败：' + e.message)
+					})
+				}
+			}
+		})
+		// #endif
+	}
+}
 
-export const payOrderUtil = (orderInfo, { h5Api, otherPlatformApi } = {}, isInMiniProgram) => {
-  return new Promise(async (resolve, reject) => {
-    if (isInMiniProgram) {
-      try {
-        const payAppesult = await (otherPlatformApi || payOrderGoodsAPPApi)(orderInfo);
-        let payConfigData = null;
-        if (payAppesult.appid) {
-          payConfigData = payAppesult;
-        } else if (payAppesult.errno === 0) {
-          payConfigData = payAppesult.data;
-        }
-        let query = '';
-
-        for (const key in payConfigData) {
-          query += key + '=' + payConfigData[key] + '&';
-        }
-
-        wx.miniProgram.navigateTo({
-          url: '/pages/loading/loading?' + query + 'orderNo=' + orderInfo.orderNo + '&userId=' + getUserId(),
-          fail: () => {
-            uni.switchTab({
-              url: '/pages/order/order?type=shop&status=1'
-            });
-          }
-        });
-      } catch (error) {
-        alert(error);
-      }
-    } else {
-      // #ifdef H5
-      (h5Api || payOrderGoodsApi)(orderInfo)
-        .then((res) => {
-          let h5PayUrl = '';
-          if (typeof res === 'string') {
-            h5PayUrl = res;
-          } else {
-            h5PayUrl = res.data.h5PayUrl;
-          }
-          const payData = JSON.parse(h5PayUrl);
-          const data = JSON.parse(payData.data);
-          const form = document.createElement('form');
-          form.setAttribute('action', payData.url);
-          form.setAttribute('method', 'POST');
-          let input;
-          for (const key in data) {
-            input = document.createElement('input');
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
-      // #endif
-
-      // #ifdef APP
-      //   const payAppesult = await payOrderGoodsAPPApi({
-      //     userId: getUserId(),
-      //     orderNo: lastData.orderSn,
-      //     payType: this.activityId ? 6 : 1,
-      //     activityId: this.activityId // 跟活动（爆品）相关的商品
-      //   });
-
-      //   if (payAppesult.errno === 0) {
-      //     let query = '';
-      //     for (const key in payAppesult.data) {
-      //       query += key + '=' + payAppesult.data[key] + '&';
-      //     }
-
-      //     plus.share.getServices(
-      //       function (res) {
-      //         let sweixin = null;
-      //         for (let i in res) {
-      //           if (res[i].id == 'weixin') {
-      //             sweixin = res[i];
-      //           }
-      //         }
-      //         console.log(sweixin);
-      //         if (sweixin) {
-      //           sweixin.launchMiniProgram({
-      //             id: 'gh_e64a1a89a0ad',
-      //             type: 0,
-      //             path: 'pages/orderDetail/orderDetail?' + query
-      //           });
-      //         }
-      //       },
-      //       function (e) {
-      //         console.log('获取分享服务列表失败：' + e.message);
-      //       }
-      //     );
-      //   }
-      // #endif
-    }
-  });
-};
+export const payShopFn = (data, payType, type = 'DEFAULT', otherArgs = {}) => {
+	console.log(store.state.app.isInMiniProgram)
+	if (store.state.app.isInMiniProgram) {
+		payOtherPlatformApi({
+			userId: getUserId(),
+			orderNo: data.orderNo,
+			payType,
+			...otherArgs
+		}).then((resStr) => {
+			const res = JSON.parse(resStr)
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderNo
+				})
+			}
+			if (res.isZeroOrder === '1') { // 零元支付情况
+				uni.redirectTo({
+					url: '/user/otherServe/payment-completed/index'
+				})
+			} else {
+				let query = ''
+				for (const key in res.data) {
+					query += key + '=' + res.data[key] + '&'
+				}
+				wx.miniProgram.navigateTo({
+					url: '/pages/loading/loading?' + query + 'orderNo=' + data.orderNo + '&userId=' + getUserId(),
+					fail: () => {
+						uni.switchTab({
+							url: '/pages/order/order?type=shop&status=1'
+						})
+					}
+				})
+			}
+		})
+	} else {
+		// #ifdef H5
+		payBOrderH5({
+			orderNo: data.orderNo,
+			userId: getUserId(),
+			payType,
+			...otherArgs
+		}).then((resStr) => {
+			const res = JSON.parse(resStr)
+			// console.log(resStr)
+			// console.log(res)
+			// console.log(JSON.parse(res.data))
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderNo
+				})
+			}
+			if (res.isZeroOrder === '1') { // 零元支付情况
+				uni.redirectTo({
+					url: '/user/otherServe/payment-completed/index'
+				})
+			} else {
+				const payData = res
+				const form = document.createElement('form')
+				form.setAttribute('action', payData.url)
+				form.setAttribute('method', 'POST')
+				const data = JSON.parse(payData.data)
+				let input
+				for (const key in data) {
+					input = document.createElement('input')
+					input.name = key
+					input.value = data[key]
+					form.appendChild(input)
+				}
+				document.body.appendChild(form)
+				form.submit()
+				document.body.removeChild(form)
+			}
+		})
+		// #endif
+		// #ifdef APP
+		payOtherPlatformApi({
+			userId: getUserId(),
+			orderNo: data.orderNo,
+			payType,
+			...otherArgs
+		}).then((resStr) => {
+			const res = JSON.parse(resStr)
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderNo
+				})
+			}
+			if (res.isZeroOrder === '1') { // 零元支付情况
+				uni.redirectTo({
+					url: '/user/otherServe/payment-completed/index'
+				})
+			} else {
+				let query = ''
+				for (const key in res.data) {
+					query += key + '=' + res.data[key] + '&'
+				}
+				plus.share.getServices(function (result) {
+					let sweixin = null
+					for (const i in result) {
+						if (result[i].id == 'weixin') {
+							sweixin = result[i]
+						}
+					}
+					if (sweixin) {
+						sweixin.launchMiniProgram({
+							id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
+							type: 0,
+							path: 'pages/orderDetail/orderDetail?' + query
+						})
+					}
+				}, function (e) {
+					console.log('获取分享服务列表失败：' + e.message)
+				})
+			}
+		})
+		// #endif
+	}
+}

@@ -1,302 +1,229 @@
 <template>
-  <view order-wrapper>
-    <view class="order-container">
-      <view class="title-wrapper">
-        <tui-icon @click="handleBack" color="#000" :size="28" name="arrowleft"></tui-icon>
-        <text>确认订单</text>
-      </view>
+	<view order-wrapper>
+		<view class="order-container">
+			<view class="title-wrapper">
+				<tui-icon color="#000" :size="28" name="arrowleft" @click="handleBack"></tui-icon>
+				<text>确认订单</text>
+			</view>
 
-      <view class="address-container">
-        <view class="bas-info">
-          <view class="info" v-if="defaultAddress"> 收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
-          <view class="" v-else> 请选择收货地址 </view>
-          <view class="right" @click="go('/user/site/site-manage?appoint=true')">
-            <text>{{ defaultAddress ? '更换' : '去选择' }}</text>
-            <tui-icon :size="20" name="arrowright"></tui-icon>
-          </view>
-        </view>
+			<view class="address-container">
+				<view class="bas-info">
+					<view v-if="defaultAddress" class="info"> 收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
+					<view v-else class=""> 请选择收货地址 </view>
+					<view class="right" @click="go('/user/site/site-manage?appoint=true')">
+						<text>{{ defaultAddress ? '更换' : '去选择' }}</text>
+						<tui-icon :size="20" name="arrowright"></tui-icon>
+					</view>
+				</view>
 
-        <view class="address" v-if="defaultAddress"> 地址： {{ defaultAddress.detailedAddress }}</view>
-      </view>
+				<view v-if="defaultAddress" class="address"> 地址： {{ defaultAddress.detailedAddress }}</view>
+			</view>
 
-      <view class="coupon-container" @click="couponPopupVisible = true">
-        <text class="title">优惠劵</text>
-        <view class="choose-coupon">
-          <text v-if="couponPrice">-{{ couponPrice }}</text>
-          <tui-icon name="arrowright" :size="20"></tui-icon>
-        </view>
-      </view>
+			<view class="coupon-container" @click="couponPopupVisible = true">
+				<text class="title">优惠劵</text>
+				<view class="choose-coupon">
+					<text v-if="couponPrice">-{{ couponPrice }}</text>
+					<tui-icon name="arrowright" :size="20"></tui-icon>
+				</view>
+			</view>
 
-      <view class="coupon-container">
-        <text class="title">代金券</text>
-        <view class="choose-coupon">
-          <text style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
-          <tui-switch v-if="!!currentHoldVoucher" :scaleRatio="0.6" color="rgb(248, 112, 64)" :checked="useVoucher" @change="handleChangeUseVoucher"></tui-switch>
-        </view>
-      </view>
+			<view class="coupon-container">
+				<text class="title">代金券</text>
+				<view class="choose-coupon">
+					<text style="margin-right: 10upx">持有： {{ currentHoldVoucher }}</text>
+					<tui-switch v-if="!!currentHoldVoucher" :scale-ratio="0.6" color="rgb(248, 112, 64)" :checked="useVoucher" @change="handleChangeUseVoucher"></tui-switch>
+				</view>
+			</view>
 
-      <view class="goods-container">
-        <view class="goods-info" v-for="(item, index) in goodsInfo" :key="index">
-          <view class="brand-title">
-            <tui-icon :size="20" color="#f87040" name="shop-fill"></tui-icon>
-            <text class="brand-name">{{ item.brandName }}</text>
-          </view>
+			<view class="goods-container">
+				<view v-for="(item, index) in goodsInfo" :key="index" class="goods-info">
+					<view class="brand-title">
+						<tui-icon :size="20" color="#f87040" name="shop-fill"></tui-icon>
+						<text class="brand-name">{{ item.brandName }}</text>
+					</view>
 
-          <view class="goods-item" v-for="(goods, index) in item.cartList" :key="index">
-            <image class="goods-icon" :src="goods.picUrl" mode="" />
-            <view class="wrapper">
-              <view class="goods-name">{{ goods.goodsName }}</view>
-              <view class="selected-str">已选：{{ goods.specifications.join(',') }}</view>
-              <view>
-                <text class="goods-price">￥{{ goods.price }}</text> x
-                {{ goods.number }}
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+					<view v-for="(goods, index) in item.cartList" :key="index" class="goods-item">
+						<image class="goods-icon" :src="goods.picUrl" mode="" />
+						<view class="wrapper">
+							<view class="goods-name">{{ goods.goodsName }}</view>
+							<view class="selected-str">已选：{{ goods.specifications.join(',') }}</view>
+							<view>
+								<text class="goods-price">￥{{ goods.price }}</text> x
+								{{ goods.number }}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 
-      <RecommendGoods v-if="goodsInfo && goodsInfo.length" :id="goodsInfo[0].id"></RecommendGoods>
-    </view>
+			<RecommendGoods v-if="goodsInfo && goodsInfo.length" :id="goodsInfo[0].id"></RecommendGoods>
+		</view>
 
-    <view class="footer">
-      <view class="tip"
-        >待支付：<text>￥{{ actualPrice }}</text></view
-      >
-      <button class="uni-btn" @click="handleToPay">去支付</button>
-    </view>
+		<view class="footer">
+			<view class="tip">
+				待支付：<text>￥{{ actualPrice }}</text>
+			</view>
+			<button class="uni-btn" @click="handleToPay">去支付</button>
+		</view>
 
-    <CouponPopup @confirm="handleChooseCoupon" v-model="couponPopupVisible" :cartId="0"></CouponPopup>
-  </view>
+		<CouponPopup v-model="couponPopupVisible" :cart-id="0" @confirm="handleChooseCoupon"></CouponPopup>
+	</view>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getAddressListApi } from '../../../api/address';
-import { refrshUserInfoApi } from '../../../api/user';
-import { getCartCheckoutApi } from '../../../api/cart';
-import { submitOrderApi, payOrderGoodsAPPApi } from '../../../api/goods';
-import { getSybOrderPayH5 } from '../../../api/order';
-import { SELECT_ADDRESS } from '../../../constant';
-import { getUserId, payFn } from '../../../utils';
-const PAY_SHORT_ORDER_NO = 'PAY_SHORT_ORDER_NO';
-import RecommendGoods from '../../../components/recommend-goods/index.vue';
+import { mapGetters } from 'vuex'
+import { getAddressListApi } from '../../../api/address'
+import { refrshUserInfoApi } from '../../../api/user'
+import { getCartCheckoutApi } from '../../../api/cart'
+import { submitOrderApi } from '../../../api/goods'
+import { SELECT_ADDRESS, T_PAY_ORDER } from '../../../constant'
+import { getUserId, payFn } from '../../../utils'
+import RecommendGoods from '../../../components/recommend-goods/index.vue'
 
 export default {
-  components: {
-    RecommendGoods
-  },
-  data() {
-    return {
-      defaultAddress: null,
-      goodsInfo: null,
-      actualPrice: 0,
-      couponPopupVisible: false,
-      couponId: -1,
-      couponPrice: 0,
-      currentHoldVoucher: 0,
-      useVoucher: false
-    };
-  },
-  onShow() {
-    const apponitAddress = uni.getStorageSync(SELECT_ADDRESS);
-    if (apponitAddress) {
-      this.defaultAddress = apponitAddress;
-      this.getData();
-    }
+	name: 'Order',
+	components: {
+		RecommendGoods
+	},
+	data() {
+		return {
+			defaultAddress: null,
+			goodsInfo: null,
+			actualPrice: 0,
+			couponPopupVisible: false,
+			couponId: -1,
+			couponPrice: 0,
+			currentHoldVoucher: 0,
+			useVoucher: false
+		}
+	},
+	onLoad() {
+		this.$store.dispatch('shopCar/getShopCarList')
+		this.getAddrees()
+		this.getUserHoldVoucher()
+		// this.getData()
+	},
+	onShow() {
+		if (uni.getStorageSync(T_PAY_ORDER)) {
+			uni.switchTab({
+				url: '/pages/order/order?type=shop&status=1'
+			})
+		} else {
+			const apponitAddress = uni.getStorageSync(SELECT_ADDRESS)
+			if (apponitAddress) {
+				this.defaultAddress = apponitAddress
+				this.getData()
+			}
+		}
+	},
 
-    if (uni.getStorageSync(PAY_SHORT_ORDER_NO)) {
-      // uni.redirectTo({ url: '/user/orderForm/order-form?type=1' })
-      uni.switchTab({
-        url: '/pages/order/order?type=shop&status=1'
-      });
-    }
-  },
-  methods: {
-    // 点击回退
-    handleBack() {
-      uni.navigateBack();
-    },
+	computed: {
+		...mapGetters([ 'shopCarInfo' ]),
+		goodsList() {
+			if (!this.shopCarInfo || !this.shopCarInfo.brandCartgoods) {
+				return []
+			}
+			this.shopCarInfo.brandCartgoods.forEach((item) => {
+				item.cartList.filter((item) => item.checked)
+			})
+			return this.shopCarInfo
+		}
+	},
 
-    // 获取购物车数据
-    getData() {
-      getCartCheckoutApi({
-        userId: getUserId(),
-        cartId: 0,
-        addressId: this.defaultAddress && this.defaultAddress.id,
-        couponId: this.couponId,
-        useVoucher: this.useVoucher
-      }).then(({ data }) => {
-        this.goodsInfo = data.brandCartgoods;
-        this.actualPrice = data.actualPrice;
-        this.couponPrice = data.couponPrice;
-      });
-    },
+	methods: {
+		// 点击回退
+		handleBack() {
+			uni.navigateBack()
+		},
 
-    // 获取地址
-    getAddrees() {
-      getAddressListApi({
-        userId: getUserId()
-      }).then(({ data }) => {
-        const defaultAddress = data.find((item) => item.isDefault);
-        if (defaultAddress) {
-          this.defaultAddress = defaultAddress;
-        } else {
-          this.defaultAddress = data[0];
-        }
-        this.getData();
-      });
-    },
+		// 获取购物车数据
+		getData() {
+			getCartCheckoutApi({
+				userId: getUserId(),
+				cartId: 0,
+				addressId: this.defaultAddress && this.defaultAddress.id,
+				couponId: this.couponId,
+				useVoucher: this.useVoucher
+			}).then(({ data }) => {
+				this.goodsInfo = data.brandCartgoods
+				this.actualPrice = data.actualPrice
+				this.couponPrice = data.couponPrice
+			})
+		},
 
-    handleChangeUseVoucher(e) {
-      if (this.currentHoldVoucher) {
-        this.useVoucher = e.detail.value;
-        this.getData();
-      }
-    },
+		// 获取地址
+		getAddrees() {
+			getAddressListApi({
+				userId: getUserId()
+			}).then(({ data }) => {
+				const defaultAddress = data.find((item) => item.isDefault)
+				if (defaultAddress) {
+					this.defaultAddress = defaultAddress
+				} else {
+					this.defaultAddress = data[0]
+				}
+				this.getData()
+			})
+		},
 
-    // 点击去支付
-    handleToPay() {
-      if (!this.defaultAddress) {
-        uni.showToast({
-          title: '请选择收货地址',
-          duration: 2000,
-          icon: 'none'
-        });
-        return;
-      }
-      const data = {
-        userId: getUserId(),
-        // cartId: this.cartId,
-        cartId: 0,
-        addressId: this.defaultAddress.id,
-        couponId: this.couponId,
-        useVoucher: this.useVoucher,
-        grouponRulesId: '',
-        grouponLinkId: ''
-      };
+		handleChangeUseVoucher(e) {
+			if (this.currentHoldVoucher) {
+				this.useVoucher = e.detail.value
+				this.getData()
+			}
+		},
 
-      submitOrderApi(data).then(async ({ data }) => {
-        uni.setStorageSync(PAY_SHORT_ORDER_NO, data.orderSn);
-        if (this.$store.state.app.isInMiniProgram) {
-          const payAppesult = await payOrderGoodsAPPApi({
-            userId: getUserId(),
-            orderNo: data.orderSn,
-            payType: 1
-          });
+		// 点击去支付
+		handleToPay() {
+			if (!this.defaultAddress) {
+				uni.showToast({
+					title: '请选择收货地址',
+					duration: 2000,
+					icon: 'none'
+				})
+				return
+			}
+			const tempData = {
+				userId: getUserId(),
+				// cartId: this.cartId,
+				cartId: 0,
+				addressId: this.defaultAddress.id,
+				couponId: this.couponId,
+				useVoucher: this.useVoucher,
+				grouponRulesId: '',
+				grouponLinkId: ''
+			}
 
-          if (payAppesult.errno === 0) {
-            let query = '';
-            for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
-            }
+			submitOrderApi(tempData).then(({ data }) => {
+				payFn(data, 1)
+			})
+		},
 
-            wx.miniProgram.navigateTo({
-              url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId(),
-              fail: () => {
-                // uni.redirectTo({ url: '/user/orderForm/order-form?type=1' });
-                uni.switchTab({
-                  url: '/pages/order/order?type=shop&status=1'
-                });
-              }
-            });
-          }
-        } else {
-          // #ifdef H5
-          getSybOrderPayH5({
-            orderNo: data.orderSn,
-            userId: getUserId(),
-            payType: 1
-          }).then((res) => {
-            payFn(res.data);
-          });
-          // #endif
+		handleChooseCoupon(couponInfo) {
+			this.couponId = couponInfo.id
+			this.getData()
+		},
+		// 获取代金券持有
+		async getUserHoldVoucher() {
+			try {
+				const res = await refrshUserInfoApi({
+					userId: getUserId()
+				})
 
-          // #ifdef APP
-          const payAppesult = await payOrderGoodsAPPApi({
-            userId: getUserId(),
-            orderNo: data.orderSn,
-            payType: 1
-          });
-
-          if (payAppesult.errno === 0) {
-            let query = '';
-            for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
-            }
-
-            plus.share.getServices(
-              function (res) {
-                let sweixin = null;
-                for (let i in res) {
-                  if (res[i].id == 'weixin') {
-                    sweixin = res[i];
-                  }
-                }
-                if (sweixin) {
-                  sweixin.launchMiniProgram({
-                    id: 'gh_e64a1a89a0ad',
-                    type: 0,
-                    path: 'pages/orderDetail/orderDetail?' + query
-                  });
-                }
-              },
-              function (e) {
-                console.log('获取分享服务列表失败：' + e.message);
-              }
-            );
-          }
-          // #endif
-        }
-      });
-    },
-
-    handleChooseCoupon(couponInfo) {
-      this.couponId = couponInfo.id;
-      this.getData();
-    },
-    // 获取代金券持有
-    async getUserHoldVoucher() {
-      try {
-        const res = await refrshUserInfoApi({
-          userId: getUserId()
-        });
-
-        if (res.errno == '0') {
-          this.currentHoldVoucher = res.data.voucherNumber;
-        } else {
-          this.ttoast({
-            type: 'info',
-            title: res.errmsg
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  },
-
-  onLoad() {
-    this.$store.dispatch('shopCar/getShopCarList');
-    this.getAddrees();
-    this.getUserHoldVoucher();
-    // this.getData()
-  },
-
-  computed: {
-    ...mapGetters(['shopCarInfo']),
-    goodsList() {
-      if (!this.shopCarInfo || !this.shopCarInfo.brandCartgoods) {
-        return [];
-      } else {
-        this.shopCarInfo.brandCartgoods.forEach((item) => {
-          item.cartList.filter((item) => item.checked);
-        });
-        return this.shopCarInfo;
-      }
-    }
-  }
-};
+				if (res.errno == '0') {
+					this.currentHoldVoucher = res.data.voucherNumber
+				} else {
+					this.ttoast({
+						type: 'info',
+						title: res.errmsg
+					})
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

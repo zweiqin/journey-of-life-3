@@ -2,7 +2,6 @@ node_modules/
 pages/index/
 pages/prod/
 pages/furniture/
-pages/pre-order/
 pages/order/
 pages/goods-filter/
 pages/community-center
@@ -11,11 +10,10 @@ logistics
 stuff
 main.js
 components/TSpecification/
-user/sever/shopCar/
 user/sever/components/
 user/sever/view-history.vue
 user/marketing-tools/contact-guide
 user/digital-store/
 user/site/
 user/postCard/
-community-center/makeSmallFortune/
+# community-center/makeSmallFortune/

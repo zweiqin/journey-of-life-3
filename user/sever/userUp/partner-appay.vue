@@ -1,15 +1,17 @@
 <template>
 	<view class="partner-apply-container">
 
-		<image src="../../../static/images/user/bg1.png" mode="" class="background" v-if="currentApplyType === 'partner'" />
-		<image src="../../../static/images/user/bg2.png" mode="" class="background"
-			v-if="currentApplyType === 'sup-partner'" />
+		<image v-if="currentApplyType === 'partner'" src="../../../static/images/user/bg1.png" mode="" class="background" />
+		<image
+			v-if="currentApplyType === 'sup-partner'" src="../../../static/images/user/bg2.png" mode=""
+			class="background"
+		/>
 		<img src="../../../static/images/icon/return-logo.png" alt="" class="return" @click="handleBack">
 
 		<view class="main-area">
 			<ApplyType v-model="currentApplyType"></ApplyType>
 
-			<ApplyForm @chooseCity="handlChooseCity" v-model="partnerForm" :type="currentApplyType"></ApplyForm>
+			<ApplyForm v-model="partnerForm" :type="currentApplyType" @chooseCity="handlChooseCity"></ApplyForm>
 
 			<!-- <EquityList></EquityList> -->
 			<view class="foot">
@@ -24,13 +26,13 @@
 
 		<!-- <FixedFooter :height="206">
 			<button class="uni-btn" @click="handlePay">
-				<text class="pay-text">立即支付</text>
-				<text class="cost-text">
-					￥<text>{{ currentApplyType === 'partner' ? 2000 : 5000 }}</text>/年
-				</text>
+			<text class="pay-text">立即支付</text>
+			<text class="cost-text">
+			￥<text>{{ currentApplyType === 'partner' ? 2000 : 5000 }}</text>/年
+			</text>
 			</button>
 			<view class="tip">放心开通，不会自动续费</view>
-		</FixedFooter> -->
+			</FixedFooter> -->
 	</view>
 </template>
 
@@ -38,23 +40,15 @@
 import ApplyType from './cpns/apply-type.vue'
 import ApplyForm from './cpns/apply-form.vue'
 import EquityList from './cpns/equity-list.vue'
-import {
-	partnerApplyApi
-} from '../../../api/user'
-import {
-	getUserId,
-	tradeOrderNo,
-	payFn
-} from '../../../utils'
-import {
-	payOrderGoodsAPPApi
-} from '../../../api/goods'
+import { partnerApplyApi } from '../../../api/user'
+import { getUserId, tradeOrderNo, payFn } from '../../../utils'
 
 export default {
+	name: 'PartnerAppay',
 	components: {
 		ApplyType,
 		ApplyForm,
-		EquityList,
+		EquityList
 	},
 	data() {
 		return {
@@ -62,10 +56,10 @@ export default {
 				area: '',
 				personLiable: '',
 				username: '',
-				password: '',
+				password: ''
 			},
 			currentApplyType: 'partner',
-			selectCode: null,
+			selectCode: null
 		}
 	},
 
@@ -74,20 +68,18 @@ export default {
 			if (!this.selectCode) {
 				uni.showToast({
 					title: '请选择区域',
-					icon: 'none',
+					icon: 'none'
 				})
 				return
 			}
-
 			if (!this.partnerForm.personLiable) {
 				uni.showToast({
 					title: '请选择业务责任人',
-					icon: 'none',
+					icon: 'none'
 				})
 				return
 			}
-
-			const data = {
+			const tempData = {
 				orderNo: tradeOrderNo(),
 				userId: getUserId(),
 				payType: 5,
@@ -97,127 +89,59 @@ export default {
 					applicationType: this.currentApplyType === 'partner' ? 6 : 7,
 					referrerName: this.partnerForm.personLiable,
 					// referrerName: '17633721125',
-					regionCode: this.selectCode * 1,
-				},
+					regionCode: this.selectCode * 1
+				}
 			}
-
 			if (this.currentApplyType === 'sup-partner') {
 				if (this.partnerForm.username.length < 6) {
 					uni.showToast({
 						title: '帐号不能少于6位',
-						icon: 'none',
+						icon: 'none'
 					})
-
 					return
 				}
-
 				if (this.partnerForm.password.length < 6) {
 					uni.showToast({
 						title: '密码不能少于6位',
-						icon: 'none',
+						icon: 'none'
 					})
-
 					return
 				}
-
-				data.partnerApplyInfo.username = this.partnerForm.username
-				data.partnerApplyInfo.password = this.partnerForm.password
+				tempData.partnerApplyInfo.username = this.partnerForm.username
+				tempData.partnerApplyInfo.password = this.partnerForm.password
 			}
-
 			uni.showLoading({
 				title: '加载中',
-				mask: false,
+				mask: false
 			})
-
 			try {
-				partnerApplyApi(data).then(async (res) => {
-					if (res.errno !== 0) {
-						uni.showToast({
-							title: res.errmsg,
-							icon: 'none',
-						})
-
-						return
-					}
-
-					if ((this.$store.state.app.isInMiniProgram)) {
-						const payAppesult = await payOrderGoodsAPPApi(data)
-
-						if (payAppesult.errno === 0) {
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
-
-							wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.orderSn + '&userId=' + getUserId() })
-						}
-					} else {
-						// #ifdef H5
-						payFn(res.data)
-						// #endif
-
-						// #ifdef APP
-						console.log("超级合伙人提交", res.data.orderNo);
-						const payAppesult = await payOrderGoodsAPPApi(data)
-
-						if (payAppesult.errno === 0) {
-
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
-
-							plus.share.getServices(
-								function (res) {
-									let sweixin = null;
-									for (let i in res) {
-										if (res[i].id == 'weixin') {
-											sweixin = res[i];
-										}
-									}
-									console.log(sweixin);
-									if (sweixin) {
-										sweixin.launchMiniProgram({
-											id: 'gh_e64a1a89a0ad',
-											type: 0,
-											path: 'pages/orderDetail/orderDetail?' + query
-										});
-									}
-								},
-								function (e) {
-									console.log('获取分享服务列表失败：' + e.message);
-								}
-							);
-						}
-						// #endif
-					}
+				partnerApplyApi(tempData).then((data) => {
+					payFn({ ...tempData, orderSn: tempData.orderNo }, tempData.payType, false, tempData)
 				})
-
-
 			} catch (error) {
 				console.log(error)
 				uni.hideLoading()
 				uni.showToast({
 					title: error,
-					icon: 'none',
+					icon: 'none'
 				})
 			}
 		},
 
 		handlChooseCity(cityData) {
-			this.selectCode = cityData['county'].code
+			this.selectCode = cityData.county.code
 		},
 
 		handleBack() {
 			uni.switchTab({
 				url: '/pages/user/user'
 			})
-		},
+		}
 	},
 
 	onLoad(params) {
 		this.currentApplyType = params.type || 'partner'
-	},
+	}
 }
 </script>
 
@@ -230,7 +154,6 @@ export default {
 	// padding-top: 440upx;
 	// padding-bottom: 206upx;
 	background: linear-gradient(180deg, #FF9E0E 0%, #FFC117 17%, rgba(255, 193, 23, 0.00) 100%);
-
 
 	.background {
 		position: absolute;
@@ -246,10 +169,6 @@ export default {
 		left: 40upx;
 		// padding: 36upx 0 0 40upx;
 	}
-
-
-
-
 
 	.main-area {
 		// width: 100%;

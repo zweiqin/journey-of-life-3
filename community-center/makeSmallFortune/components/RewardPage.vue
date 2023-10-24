@@ -25,7 +25,7 @@
 			<view style="background-color: #ffffff;">
 				<view style="display: flex;align-items: flex-start;padding: 40upx 30rpx 0rpx 30rpx;">
 					<text style="font-weight: bold;">文章归属地：</text>
-					<JCity :control="false" :text="cityText" @confirm="handleChooseCity"></JCity>
+					<JAnyArea :text="cityText" @confirm="handleChooseCity"></JAnyArea>
 				</view>
 				<view style="padding: 0rpx 30rpx;">
 					<tui-input
@@ -51,17 +51,15 @@
 					</tui-input>
 					<view style="font-size: 24upx;color: #888889;margin-top:6rpx;">最低1个</view>
 				</view>
-				<view style="display: flex;align-items: center;justify-content: space-between;padding: 40upx 18upx 0 0;padding: 0rpx 30rpx;margin-top:10rpx;">
+				<view
+					style="display: flex;align-items: center;justify-content: space-between;padding: 40upx 18upx 0 0;padding: 0rpx 30rpx;margin-top:10rpx;"
+				>
 					<text>红包金额是否随机</text>
 					<tui-radio-group
 						v-model="redPacketInfo.isRandom"
-						style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
-						@change="(e) => {}"
+						style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;" @change="(e) => { }"
 					>
-						<tui-label
-							v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]"
-							:key="index"
-						>
+						<tui-label v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]" :key="index">
 							<tui-list-cell padding="16upx">
 								<view>
 									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
@@ -99,8 +97,7 @@
 
 <script>
 import { addPublishArticleApi } from '../../../api/community-center/makeSmallFortune'
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../../api/goods'
-import { getUserId } from '../../../utils'
+import { payFn } from '../../../utils'
 import { USER_INFO } from '../../../constant'
 
 export default {
@@ -124,6 +121,15 @@ export default {
 			}
 		}
 	},
+	created() {
+		if (this.$store.state.location.locationInfo.towncode) {
+			this.cityText = this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district
+			this.region = this.$store.state.location.locationInfo.towncode
+		} else if (this.$store.state.location.locationInfo.adcode) {
+			this.cityText = this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district + this.$store.state.location.locationInfo.township
+			this.region = this.$store.state.location.locationInfo.adcode
+		}
+	},
 	methods: {
 		handleChooseCity(data) {
 			this.cityText = data.area
@@ -137,87 +143,14 @@ export default {
 			if (!this.region) return this.$showToast('缺少文章归属地')
 			if (this.redPacketInfo.totalAmount < 1) return this.$showToast('投放金额最低为1元')
 			if (!this.redPacketInfo.isRandom) return this.$showToast('请选择是否随机')
+			uni.showLoading()
 			addPublishArticleApi({ ...this.formData, region: this.region, redPacketInfo: this.redPacketInfo })
-				.then(async ({ data: lastData }) => {
-					if (this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram) {
-						const payAppesult = await payOrderGoodsAPPApi({
-							userId: getUserId(),
-							orderNo: lastData.redPacketId,
-							payType: 8
-						})
-						if (payAppesult.errno === 0) {
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
-							wx.miniProgram.navigateTo({
-								url: '/pages/loading/loading?' + query + 'orderNo=' + lastData.redPacketId + '&userId=' + getUserId(),
-								fail: () => {
-									uni.switchTab({
-										url: '/pages/order/order?type=shop&status=1'
-									})
-								}
-							})
-						}
-					} else {
-						// #ifdef H5
-						payOrderGoodsApi({
-							orderNo: lastData.redPacketId,
-							userId: getUserId(),
-							payType: 8
-						}).then((res) => {
-							const payData = JSON.parse(res.data.h5PayUrl)
-							const data = JSON.parse(payData.data)
-							const form = document.createElement('form')
-							form.setAttribute('action', payData.url)
-							form.setAttribute('method', 'POST')
-							let input
-							for (const key in data) {
-								input = document.createElement('input')
-								input.name = key
-								input.value = data[key]
-								form.appendChild(input)
-							}
-							document.body.appendChild(form)
-							form.submit()
-							document.body.removeChild(form)
-						})
-						// #endif
-						// #ifdef APP
-						const payAppesult = await payOrderGoodsAPPApi({
-							userId: getUserId(),
-							orderNo: lastData.redPacketId,
-							payType: 8
-						})
-						if (payAppesult.errno === 0) {
-							let query = ''
-							for (const key in payAppesult.data) {
-								query += key + '=' + payAppesult.data[key] + '&'
-							}
-							plus.share.getServices(
-								function (res) {
-									let sweixin = null
-									for (const i in res) {
-										if (res[i].id == 'weixin') {
-											sweixin = res[i]
-										}
-									}
-									console.log(sweixin)
-									if (sweixin) {
-										sweixin.launchMiniProgram({
-											id: 'gh_e64a1a89a0ad',
-											type: 0,
-											path: 'pages/orderDetail/orderDetail?' + query
-										})
-									}
-								},
-								function (e) {
-									console.log('获取分享服务列表失败：' + e.message)
-								}
-							)
-						}
-						// #endif
-					}
+				.then(({ data }) => {
+					uni.hideLoading()
+					payFn({ ...data, orderSn: data.redPacketId }, 8, false)
+				})
+				.catch((e) => {
+					uni.hideLoading()
 				})
 		}
 	}

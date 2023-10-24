@@ -774,7 +774,10 @@
         {
           "path": "view",
           "style": {
-            "navigationBarTitleText": ""
+            "navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						} //去掉
           }
         },
         {
@@ -1113,9 +1116,9 @@
         // {
         //   "path": "marketing-tools/marketing-planner"
         // },
-        {
-          "path": "marketing-tools/red-envelope-distribution"
-        },
+        // {
+        //   "path": "marketing-tools/red-envelope-distribution"
+        // },
         {
           "path": "postCard/index"
         },
@@ -1235,7 +1238,13 @@
           "style": {
             "navigationBarTitleText": "佣金提现"
           }
-        }
+        },
+				{
+					"path": "otherServe/payment-completed/index",
+					"style": {
+						"navigationBarTitleText": "支付完成"
+					}
+				}
       ]
     },
     {

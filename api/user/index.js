@@ -98,6 +98,8 @@ export const submitApplyStoreInfo = (type, data) => RuanRequest('/userUpInfo/sav
 
 // 获取省市区地址
 export const getCitiesApi = (data) => RuanRequest('/region/list', data, 'get')
+// 获取省市区地址
+export const getAreaRegionApi = (data) => RuanRequest('/dtsArea/region', data, 'get')
 // 会员查询保存的信息
 export const getUserUpInfoReadApi = (data) => RuanRequest('/userUpInfo/read', data, 'get')
 // 会员查询申请记录表

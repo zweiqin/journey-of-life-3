@@ -52,8 +52,7 @@
 <script>
 import { orderOpButtons } from '../config';
 import { orderCancelApi, orderDeleteApi, receiveGoodsApi } from '../../../api/order';
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../../api/goods';
-import { getUserId } from '../../../utils';
+import { getUserId, payFn } from '../../../utils';
 
 export default {
   props: {
@@ -124,82 +123,7 @@ export default {
         });
       } else {
         if (key === 'pay') {
-          if (this.$store.state.app.isInMiniProgram) {
-            const payAppesult = await payOrderGoodsAPPApi({
-              userId: getUserId(),
-              orderNo: goods.orderSn,
-              payType: 1
-            });
-            if (payAppesult.errno === 0) {
-              let query = '';
-              for (const key in payAppesult.data) {
-                query += key + '=' + payAppesult.data[key] + '&';
-              }
-              wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() });
-            }
-          } else {
-            // #ifdef H5
-            payOrderGoodsApi({
-              orderNo: goods.orderSn,
-              userId: getUserId(),
-              payType: 1
-            }).then((res) => {
-              const payData = JSON.parse(res.data.h5PayUrl);
-              const form = document.createElement('form');
-              form.setAttribute('action', payData.url);
-              form.setAttribute('method', 'POST');
-              const data = JSON.parse(payData.data);
-              let input;
-              for (const key in data) {
-                input = document.createElement('input');
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
-              }
-
-              document.body.appendChild(form);
-              form.submit();
-              document.body.removeChild(form);
-            });
-            // #endif
-
-            // #ifdef APP
-            const payAppesult = await payOrderGoodsAPPApi({
-              userId: getUserId(),
-              orderNo: goods.orderSn,
-              payType: 1
-            });
-
-            if (payAppesult.errno === 0) {
-              let query = '';
-              for (const key in payAppesult.data) {
-                query += key + '=' + payAppesult.data[key] + '&';
-              }
-
-              plus.share.getServices(
-                function (res) {
-                  let sweixin = null;
-                  for (let i in res) {
-                    if (res[i].id == 'weixin') {
-                      sweixin = res[i];
-                    }
-                  }
-                  console.log(sweixin);
-                  if (sweixin) {
-                    sweixin.launchMiniProgram({
-                      id: 'gh_e64a1a89a0ad',
-                      type: 0,
-                      path: 'pages/orderDetail/orderDetail?' + query
-                    });
-                  }
-                },
-                function (e) {
-                  console.log('获取分享服务列表失败：' + e.message);
-                }
-              );
-            }
-            // #endif
-          }
+					payFn(goods, 1, false)
         } else if (key === 'comment') {
           uni.navigateTo({
             url: '/user/orderForm/rate?id=' + goods.id + (currentGoods ? '&goodsId=' + currentGoods.id : '')

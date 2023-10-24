@@ -1,353 +1,275 @@
 <template>
-  <view class="order-detail" v-if="data">
-    <JHeader width="50" height="50" title="订单详情"></JHeader>
+	<view v-if="data" class="order-detail">
+		<JHeader width="50" height="50" title="订单详情"></JHeader>
 
-    <view class="view-order-status" :style="{
-      'background-image': bg,
-    }">
-      <JIcon width="44" height="44" type="active"></JIcon>
-      {{ data.orderInfo.orderStatusText }}
-    </view>
+		<view
+			class="view-order-status" :style="{
+				'background-image': bg
+			}"
+		>
+			<JIcon width="44" height="44" type="active"></JIcon>
+			{{ data.orderInfo.orderStatusText }}
+		</view>
 
-    <!-- 订单信息 -->
-    <view class="order-info pane">
-      <view class="co-info">
-        <view class="line">
-          <JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
-          <view class="sub-title">姓名</view>
-          <view>{{ `${data.orderInfo.consignee} ${data.orderInfo.mobile}` }}</view>
-        </view>
-        <view class="line">
-          <JIcon width="32" height="40" class="line-icon" type="local-black"></JIcon>
-          <view class="sub-title">地址</view>
-          <view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
-        </view>
-      </view>
+		<!-- 订单信息 -->
+		<view class="order-info pane">
+			<view class="co-info">
+				<view class="line">
+					<JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
+					<view class="sub-title">姓名</view>
+					<view>{{ `${data.orderInfo.consignee} ${data.orderInfo.mobile}` }}</view>
+				</view>
+				<view class="line">
+					<JIcon width="32" height="40" class="line-icon" type="local-black"></JIcon>
+					<view class="sub-title">地址</view>
+					<view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
+				</view>
+			</view>
 
-      <view class="goods-info">
-        <view class="title">商品信息</view>
+			<view class="goods-info">
+				<view class="title">商品信息</view>
 
-        <view style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx" v-for="item in data.orderGoods"
-          :key="item.id">
-          <view class="goods-item" v-if="commentGoodsId ? item.id == commentGoodsId : true">
-            <image :src="item.picUrl" class="goods-img" mode="" />
-            <view class="goods-info-content">
-              <view class="goods-name">{{ item.goodsName }}</view>
-              <view class="sp">{{ item.specifications | fomatSp }}</view>
-              <view class="goods-price"> ￥{{ item.price }}</view>
-            </view>
-            <view class="goods-number">x1</view>
-          </view>
+				<view
+					v-for="item in data.orderGoods" :key="item.id"
+					style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx"
+				>
+					<view v-if="commentGoodsId ? item.id == commentGoodsId : true" class="goods-item">
+						<image :src="item.picUrl" class="goods-img" mode="" />
+						<view class="goods-info-content">
+							<view class="goods-name">{{ item.goodsName }}</view>
+							<view class="sp">{{ item.specifications | fomatSp }}</view>
+							<view class="goods-price"> ￥{{ item.price }}</view>
+						</view>
+						<view class="goods-number">x1</view>
+					</view>
 
-          <!-- 评论 -->
-          <view class="evaluate-info pane" v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId">
-            <view class="line">
-              <view class="title">满意</view>
-              <uni-rate v-model="evForm.star"></uni-rate>
-            </view>
+					<!-- 评论 -->
+					<view v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId" class="evaluate-info pane">
+						<view class="line">
+							<view class="title">满意</view>
+							<uni-rate v-model="evForm.star"></uni-rate>
+						</view>
 
-            <view class="line">
-              <view class="title">评论</view>
-              <textarea placeholder="请输入商品评论" class="evaluate-textarea" maxlength="200"
-                v-model="evForm.content"></textarea>
-            </view>
+						<view class="line">
+							<view class="title">评论</view>
+							<textarea
+								v-model="evForm.content" placeholder="请输入商品评论" class="evaluate-textarea"
+								maxlength="200"
+							></textarea>
+						</view>
 
-            <view class="line">
-              <view class="title">晒图/视频</view>
-              <view class="images">
-                <view v-for="item in evForm.picUrls" :key="item">
-                  <image class="user-upload-img" :src="item" mode="" />
-                </view>
-                <view @click="handleUploadImg" class="upload-icon">+</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
+						<view class="line">
+							<view class="title">晒图/视频</view>
+							<view class="images">
+								<view v-for="item in evForm.picUrls" :key="item">
+									<image class="user-upload-img" :src="item" mode="" />
+								</view>
+								<view class="upload-icon" @click="handleUploadImg">+</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
 
-    <!-- 详细信息 -->
-    <view class="detail-info pane">
-      <view class="detail-info-title"> 详细信息 </view>
+		<!-- 详细信息 -->
+		<view class="detail-info pane">
+			<view class="detail-info-title"> 详细信息 </view>
 
-      <view class="line">
-        <view class="title">订单编号</view>
-        <view class="text">{{ data.orderInfo.orderSn }}</view>
-      </view>
-      <view class="line">
-        <view class="title">下单时间</view>
-        <view class="text">{{ data.orderInfo.addTime }}</view>
-      </view>
-    </view>
+			<view class="line">
+				<view class="title">订单编号</view>
+				<view class="text">{{ data.orderInfo.orderSn }}</view>
+			</view>
+			<view class="line">
+				<view class="title">下单时间</view>
+				<view class="text">{{ data.orderInfo.addTime }}</view>
+			</view>
+		</view>
 
-    <view class="order-detail-footer" v-if="data">
-      <view v-for="item in orderOpButtons" :key="item.label">
-        <button :style="{
-          background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
-          color: item.label === '去评论' ? '#fff' : '',
-          border: item.label === '去评论' ? 'none' : '',
-        }" @click="handleOpOrder(data.orderInfo, item.key)" v-if="data.orderInfo.handleOption[item.key]"
-          class="uni-btn">
-          {{ item.label === "去评论" ? "发布评论" : item.label }}
-        </button>
-      </view>
-    </view>
-  </view>
+		<view v-if="data" class="order-detail-footer">
+			<view v-for="item in orderOpButtons" :key="item.label">
+				<button
+					v-if="data.orderInfo.handleOption[item.key]" :style="{
+						background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
+						color: item.label === '去评论' ? '#fff' : '',
+						border: item.label === '去评论' ? 'none' : ''
+					}" class="uni-btn"
+					@click="handleOpOrder(data.orderInfo, item.key)"
+				>
+					{{ item.label === "去评论" ? "发布评论" : item.label }}
+				</button>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 import {
-  getOrderDetailApi,
-  orderCancelApi,
-  orderDeleteApi,
-  sendCommentApi,
-} from "../../api/order";
-import { getUserId } from "../../utils";
-import { orderOpButtons } from "./config";
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from "../../api/goods";
+	getOrderDetailApi,
+	orderCancelApi,
+	orderDeleteApi,
+	sendCommentApi
+} from '../../api/order'
+import { getUserId, payFn } from '../../utils'
+import { orderOpButtons } from './config'
 
 export default {
-  data() {
-    return {
-      orderId: null,
-      data: null,
-      orderOpButtons,
-      commentGoodsId: null,
-      evForm: {
-        userId: getUserId(),
-        star: 5,
-        content: "",
-        hasPicture: true,
-        picUrls: [],
-      },
-    };
-  },
+	name: 'OrderFormDetail',
+	filters: {
+		fomatSp(value) {
+			let str = ''
+			for (const item of value) {
+				str += item + ', '
+			}
 
-  onLoad(options) {
-    this.orderId = options.id;
-    this.commentGoodsId = options.goodsId;
-    this.getOrderDetail();
-  },
+			return str.substr(0, str.length - 2)
+		}
+	},
+	data() {
+		return {
+			orderId: null,
+			data: null,
+			orderOpButtons,
+			commentGoodsId: null,
+			evForm: {
+				userId: getUserId(),
+				star: 5,
+				content: '',
+				hasPicture: true,
+				picUrls: []
+			}
+		}
+	},
 
-  methods: {
-    // 获取订单详情
-    getOrderDetail() {
-      uni.showLoading();
-      getOrderDetailApi({
-        userId: getUserId(),
-        orderId: this.orderId,
-      }).then(({ data }) => {
-        this.data = data;
-        console.log(data);
-      });
-      uni.hideLoading();
-    },
+	onLoad(options) {
+		this.orderId = options.id
+		this.commentGoodsId = options.goodsId
+		this.getOrderDetail()
+	},
 
-    // 上传图片
-    handleUploadImg() {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
-          uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
-            filePath: chooseImageRes.tempFiles[0].path,
-            name: "file",
-            success: (uploadFileRes) => {
-              _this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url);
-            },
-          });
-        },
-      });
-    },
+	computed: {
+		bg() {
+			const data = {
+				已取消: 'linear-gradient(to right, #959595, #d3d3d3)',
+				未支付: 'linear-gradient(to right, #fa5151, #fddbdb)'
+			}
+			return data[this.data.orderInfo.orderStatusText]
+		}
+	},
 
-    // 点击操作按钮
-    async handleOpOrder(goods, key) {
-      const _this = this;
-      const mapMethods = {
-        cancel: {
-          text: "确定要取消当前订单吗?",
-          api: orderCancelApi,
-          success: "取消成功",
-        },
-        delete: {
-          text: "确定要删除当前订单吗?",
-          api: orderDeleteApi,
-          success: "删除成功",
-        },
-        // comment: {
-        //   text: "确定提交评价吗",
-        //   api: sendCommentApi,
-        //   success: "评论成功",
-        // },
-      };
+	methods: {
+		// 获取订单详情
+		getOrderDetail() {
+			uni.showLoading()
+			getOrderDetailApi({
+				userId: getUserId(),
+				orderId: this.orderId
+			}).then(({ data }) => {
+				this.data = data
+				console.log(data)
+			})
+			uni.hideLoading()
+		},
 
-      if (goods.handleOption[key] && ["cancel", "delete"].includes(key)) {
-        uni.showModal({
-          title: "提示",
-          content: mapMethods[key].text,
-          success: function (res) {
-            if (res.confirm) {
-              mapMethods[key]
-                .api({
-                  userId: getUserId(),
-                  orderId: goods.id,
-                })
-                .then(() => {
-                  _this.$showToast(mapMethods[key].success, "success");
-                  setTimeout(() => {
-                    if (["delete"].includes(key)) {
-                      uni.navigateBack();
-                    } else if (["cancel"].includes(key)) {
-                      _this.getOrderDetail();
-                    }
-                  }, 2000);
-                });
-            }
-          },
-        });
-      } else {
-        if (key === "pay") {
-          if ((this.$store.state.app.isInMiniProgram)) {
-            try {
-              const payAppesult = await payOrderGoodsAPPApi({
-                orderNo: goods.orderSn,
-                userId: getUserId(),
-                payType: 1,
-              })
-              if (payAppesult.errno === 0) {
-                let query = ''
-                for (const key in payAppesult.data) {
-                  query += key + '=' + payAppesult.data[key] + '&'
-                }
-                wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() })
-              }
-            } catch (error) {
-              uni.showToast({
-                title: JSON.stringify(error)
-              });
-            }
-          } else {
-            // #ifdef H5
-            payOrderGoodsApi({
-              orderNo: goods.orderSn,
-              userId: getUserId(),
-              payType: 1,
-            }).then((res) => {
-              const payData = JSON.parse(res.data.h5PayUrl);
-              const form = document.createElement("form");
-              form.setAttribute("action", payData.url);
-              form.setAttribute("method", "POST");
-              const data = JSON.parse(payData.data);
-              let input;
-              for (const key in data) {
-                input = document.createElement("input");
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
-              }
+		// 上传图片
+		handleUploadImg() {
+			const _this = this
+			uni.chooseImage({
+				success: (chooseImageRes) => {
+					uni.uploadFile({
+						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						filePath: chooseImageRes.tempFiles[0].path,
+						name: 'file',
+						success: (uploadFileRes) => {
+							_this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url)
+						}
+					})
+				}
+			})
+		},
 
-              document.body.appendChild(form);
-              form.submit();
-              document.body.removeChild(form);
-            });
-            // #endif
+		// 点击操作按钮
+		async handleOpOrder(goods, key) {
+			const _this = this
+			const mapMethods = {
+				cancel: {
+					text: '确定要取消当前订单吗?',
+					api: orderCancelApi,
+					success: '取消成功'
+				},
+				delete: {
+					text: '确定要删除当前订单吗?',
+					api: orderDeleteApi,
+					success: '删除成功'
+				}
+				// comment: {
+				//   text: "确定提交评价吗",
+				//   api: sendCommentApi,
+				//   success: "评论成功",
+				// },
+			}
 
-            // #ifdef APP
-            const payAppesult = await payOrderGoodsAPPApi({
-              userId: getUserId(),
-              orderNo: goods.orderSn,
-              payType: 1
-            })
+			if (goods.handleOption[key] && ['cancel', 'delete'].includes(key)) {
+				uni.showModal({
+					title: '提示',
+					content: mapMethods[key].text,
+					success(res) {
+						if (res.confirm) {
+							mapMethods[key]
+								.api({
+									userId: getUserId(),
+									orderId: goods.id
+								})
+								.then(() => {
+									_this.$showToast(mapMethods[key].success, 'success')
+									setTimeout(() => {
+										if ([ 'delete' ].includes(key)) {
+											uni.navigateBack()
+										} else if ([ 'cancel' ].includes(key)) {
+											_this.getOrderDetail()
+										}
+									}, 2000)
+								})
+						}
+					}
+				})
+			} else if (key === 'pay') {
+				payFn(goods, 1, false)
+			} else if (key === 'comment') {
+				uni.showModal({
+					title: '提示',
+					content: '确定提交评价吗',
+					success(res) {
+						if (res.confirm) {
+							if (!_this.evForm.star) {
+								_this.$showToast('请选择评分')
+								return
+							}
 
-            if (payAppesult.errno === 0) {
+							if (!_this.evForm.content) {
+								_this.$showToast('请填写评价')
+							}
 
-              let query = ''
-              for (const key in payAppesult.data) {
-                query += key + '=' + payAppesult.data[key] + '&'
-              }
+							_this.evForm.hasPicture = !!_this.evForm.picUrls.length
+							_this.evForm.picUrls = [ ..._this.evForm.picUrls ]
 
-              plus.share.getServices(
-                function (res) {
-                  let sweixin = null;
-                  for (let i in res) {
-                    if (res[i].id == 'weixin') {
-                      sweixin = res[i];
-                    }
-                  }
-                  console.log(sweixin);
-                  if (sweixin) {
-                    sweixin.launchMiniProgram({
-                      id: 'gh_e64a1a89a0ad',
-                      type: 0,
-                      path: 'pages/orderDetail/orderDetail?' + query
-                    });
-                  }
-                }, function (e) {
-                  console.log('获取分享服务列表失败：' + e.message);
-                }
-              );
-            }
-            // #endif
+							const data = { ..._this.evForm, orderGoodsId: _this.commentGoodsId * 1 }
 
-          }
+							sendCommentApi(data).then(() => {
+								uni.showToast({
+									title: '评论成功',
+									duration: 2000
+								})
+							})
 
-        } else if (key === "comment") {
-          uni.showModal({
-            title: "提示",
-            content: "确定提交评价吗",
-            success: function (res) {
-              if (res.confirm) {
-                if (!_this.evForm.star) {
-                  _this.$showToast("请选择评分");
-                  return;
-                }
-
-                if (!_this.evForm.content) {
-                  _this.$showToast("请填写评价");
-                }
-
-                _this.evForm.hasPicture = !!_this.evForm.picUrls.length;
-                _this.evForm.picUrls = [..._this.evForm.picUrls];
-
-                const data = { ..._this.evForm, orderGoodsId: _this.commentGoodsId * 1 };
-
-                sendCommentApi(data).then(() => {
-                  uni.showToast({
-                    title: "评论成功",
-                    duration: 2000,
-                  });
-                });
-
-                _this.getOrderDetail();
-              }
-            },
-          });
-        }
-      }
-    },
-  },
-
-  filters: {
-    fomatSp(value) {
-      let str = "";
-      for (const item of value) {
-        str += item + ", ";
-      }
-
-      return str.substr(0, str.length - 2);
-    },
-  },
-
-  computed: {
-    bg() {
-      const data = {
-        已取消: "linear-gradient(to right, #959595, #d3d3d3)",
-        未支付: "linear-gradient(to right, #fa5151, #fddbdb)",
-      };
-      return data[this.data.orderInfo.orderStatusText];
-    },
-  },
-};
+							_this.getOrderDetail()
+						}
+					}
+				})
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

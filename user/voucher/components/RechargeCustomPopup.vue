@@ -1,105 +1,100 @@
 <template>
-  <view>
-    <tui-top-dropdown :zIndex="1002" :maskZIndex="1001" :height="0" :show="popupVisible" @close="handleHiddenPopup">
-      <view class="popup-container">
-        <view class="pane-title-wrapper">
-          <view class="title">代金券充值</view>
-          <tui-icon :size="24" @click="handleHiddenPopup" name="close"></tui-icon>
-        </view>
+	<view>
+		<tui-top-dropdown :z-index="1002" :mask-z-index="1001" :height="0" :show="popupVisible" @close="handleHiddenPopup">
+			<view class="popup-container">
+				<view class="pane-title-wrapper">
+					<view class="title">代金券充值</view>
+					<tui-icon :size="24" name="close" @click="handleHiddenPopup"></tui-icon>
+				</view>
 
-        <view class="input-wrapper">
-          <input class="input" v-model="payVoucherForm.payGrade" type="number" placeholder="请输入要购买的代金券的金额" />
-        </view>
+				<view class="input-wrapper">
+					<input v-model="payVoucherForm.payGrade" class="input" type="number" placeholder="请输入要购买的代金券的金额" />
+				</view>
 
-        <view class="tip" v-if="currentVoucherRecharge && currentVoucherRecharge.ratio && payVoucherForm.payGrade"
-          >充值后可获得 {{ payVoucherForm.payGrade * currentVoucherRecharge.ratio }} 代金券</view
-        >
+				<view v-if="currentVoucherRecharge && currentVoucherRecharge.ratio && payVoucherForm.payGrade" class="tip">
+					充值后可获得 {{ payVoucherForm.payGrade * currentVoucherRecharge.ratio }} 代金券
+				</view>
 
-        <button :loading="isLoading" class="uni-btn" @click="handleRecharge">确认充值</button>
-      </view>
-    </tui-top-dropdown>
+				<button :loading="isLoading" class="uni-btn" @click="handleRecharge">确认充值</button>
+			</view>
+		</tui-top-dropdown>
 
-    <tui-toast ref="toast"></tui-toast>
-  </view>
+		<tui-toast ref="toast"></tui-toast>
+	</view>
 </template>
 
 <script>
-import { getUserId, payOrderUtil } from '../../../utils';
-import { payVoucherPreApi, commonPayConfig } from '../../../api/goods';
+import { getUserId, payFn } from '../../../utils'
+import { payVoucherPreApi } from '../../../api/goods'
 
 export default {
-  data() {
-    return {
-      popupVisible: false,
-      isLoading: false,
-      currentVoucherRecharge: null,
-      payVoucherForm: {
-        payGrade: '',
-        userId: getUserId(),
-        voucherId: '',
-        voucherNum: ''
-      }
-    };
-  },
-  methods: {
-    show(count, voucherType) {
-      if (!voucherType || voucherType.length) {
-        this.ttoast({
-          title: '没有代金券类型',
-          content: '代金券充值失败',
-          type: 'fail'
-        });
+	name: 'RechargeCustomPopup',
+	data() {
+		return {
+			popupVisible: false,
+			isLoading: false,
+			currentVoucherRecharge: null,
+			payVoucherForm: {
+				payGrade: '',
+				userId: getUserId(),
+				voucherId: '',
+				voucherNum: ''
+			}
+		}
+	},
+	methods: {
+		show(count, voucherType) {
+			if (!voucherType || voucherType.length) {
+				this.ttoast({
+					title: '没有代金券类型',
+					content: '代金券充值失败',
+					type: 'fail'
+				})
 
-        return;
-      }
-      if (isNaN(count)) {
-        this.payVoucherForm.payGrade = 1;
-        this.currentVoucherRecharge = voucherType;
-        this.payVoucherForm.voucherId = voucherType.id;
-      } else {
-        this.payVoucherForm.payGrade = Number(count);
-        this.currentVoucherRecharge = voucherType;
-        this.payVoucherForm.voucherId = voucherType.id;
-      }
-      this.popupVisible = true;
-    },
+				return
+			}
+			if (isNaN(count)) {
+				this.payVoucherForm.payGrade = 1
+				this.currentVoucherRecharge = voucherType
+				this.payVoucherForm.voucherId = voucherType.id
+			} else {
+				this.payVoucherForm.payGrade = Number(count)
+				this.currentVoucherRecharge = voucherType
+				this.payVoucherForm.voucherId = voucherType.id
+			}
+			this.popupVisible = true
+		},
 
-    handleHiddenPopup() {
-      this.popupVisible = false;
-    },
+		handleHiddenPopup() {
+			this.popupVisible = false
+		},
 
-    // 确认充值
-    async handleRecharge() {
-      try {
-        if (!this.payVoucherForm.payGrade || isNaN(this.payVoucherForm.payGrade)) {
-          this.ttoast({
-            type: 'info',
-            title: '请输入合法的金额数字'
-          });
-          return;
-        }
-        this.isLoading = true;
+		// 确认充值
+		async handleRecharge() {
+			try {
+				if (!this.payVoucherForm.payGrade || isNaN(this.payVoucherForm.payGrade)) {
+					this.ttoast({
+						type: 'info',
+						title: '请输入合法的金额数字'
+					})
+					return
+				}
+				this.isLoading = true
 
-        const { data } = await payVoucherPreApi({ ...this.payVoucherForm, voucherNum: this.payVoucherForm.payGrade * this.currentVoucherRecharge.ratio });
-        if (data && data.payOrderID) {
-          await payOrderUtil({
-            userId: getUserId(),
-            orderNo: data.payOrderID,
-            payType: 2
-          }, commonPayConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram);
-        }
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '支付失败',
-          content: error
-        });
-      } finally {
-        this.isLoading = false;
-      }
-    }
-  }
-};
+				const { data } = await payVoucherPreApi({ ...this.payVoucherForm, voucherNum: this.payVoucherForm.payGrade * this.currentVoucherRecharge.ratio })
+				if (data && data.payOrderID) payFn({ ...data, orderSn: data.payOrderID }, 2, false)
+			} catch (error) {
+				this.ttoast({
+					type: 'fail',
+					title: '支付失败',
+					content: error
+				})
+			} finally {
+				this.isLoading = false
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

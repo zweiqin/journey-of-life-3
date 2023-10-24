@@ -93,9 +93,9 @@
 
 <script>
 import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, shopOrderType, businessSubNavs } from './config';
-import { getEndOrderListApi, getTwicePayOrderListApi, getBusinessOrderListApi, deleteBOrderApi, payBOrderH5, payApiConfig } from '../../api/community-center';
+import { getEndOrderListApi, getTwicePayOrderListApi, getBusinessOrderListApi, deleteBOrderApi } from '../../api/community-center';
 import { getOrderListApi, getMyCommentListApi } from '../../api/order';
-import { USER_ID, PAY_SHORT_ORDER_NO, TUAN_ORDER_SN, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO, B_SERVE_ORDER_NO, B_SHOP_ORDER_NO } from '../../constant';
+import { USER_ID, T_PAY_ORDER, COMMUNITY_ORDER_NO, COMMUNITY_ORDER_ITEM_NO, B_SERVE_ORDER_NO, B_SHOP_ORDER_NO } from '../../constant';
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue';
 import OrderHeader from './components/OrderHeader.vue';
 import CommunityOrderPane from './components/CommunityOrderPane.vue';
@@ -111,8 +111,7 @@ import CancelOrderPopup from './components/CancelOrderPopup.vue'
 import ShopCommentedOrder from './components/CommentedOrder.vue';
 import BShopOrder from './components/BShopOrder.vue'
 import BServeOrder from './components/BServeOrder.vue';
-import { getUserId, payOrderUtil } from 'utils';
-import store from 'store';
+import { getUserId, payShopFn } from 'utils';
 
 export default {
   components: {
@@ -213,8 +212,7 @@ export default {
   },
 
   onShow() {
-    uni.removeStorageSync(PAY_SHORT_ORDER_NO);
-    uni.removeStorageSync(TUAN_ORDER_SN);
+    uni.removeStorageSync(T_PAY_ORDER);
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
     uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     uni.removeStorageSync(B_SERVE_ORDER_NO)
@@ -668,10 +666,7 @@ export default {
           break
         case 'pay':
           try {
-            await payOrderUtil({
-              orderNo: orderDeatil.orderNo,
-              userId: getUserId()
-            }, payApiConfig, this.$store.state.app.isInMiniProgram || getApp().globalData.isInMiniprogram)
+						payShopFn(orderDeatil, '', false)
           } catch (error) {
             this.ttoast({
               type: 'fail',

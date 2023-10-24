@@ -566,7 +566,8 @@ export default {
 			try {
 				const currentAddress = await getCurrentLocation()
 				this.queryInfo.address = currentAddress + ''
-				const res = await getNearByShopListApi({ ...this.queryInfo, shopLabel: this.parentId })
+				// const res = await getNearByShopListApi({ ...this.queryInfo, shopLabel: this.parentId })
+				const res = await getNearByShopListApi({ ...this.queryInfo })
 				if (res.statusCode === 20000) {
 					if (res.data) {
 						this.nearbyShopList = [...this.nearbyShopList, ...res.data.data]

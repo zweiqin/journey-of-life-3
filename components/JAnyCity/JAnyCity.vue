@@ -35,7 +35,7 @@
 					</view>
 					<button
 						class="confirm" :style="{
-							color: areaInfo.county.text ? '#fa5151' : '#8b8b8b'
+							color: areaInfo.province.text ? '#fa5151' : '#8b8b8b'
 						}" @click="handleConfirmArea"
 					>
 						确定
@@ -62,7 +62,7 @@
 import { getAreaRegionApi } from '../../api/user'
 
 export default {
-	name: 'JCity',
+	name: 'JAnyCity',
 	props: {
 		text: String,
 		placeholder: String,
@@ -142,12 +142,8 @@ export default {
 			this.areaInfo[this.current].id = cityInfo.id
 			this.areaInfo[this.current].parentId = cityInfo.id
 			if (this.current !== 'county') {
-				this.getCity({
-					parentId: cityInfo.id
-				})
 			}
 			if (this.current === 'province') {
-				this.current = 'city'
 				this.areaInfo.city = {
 					text: '',
 					id: ''
@@ -157,7 +153,6 @@ export default {
 					id: ''
 				}
 			} else if (this.current === 'city') {
-				this.current = 'county'
 				this.areaInfo.county = {
 					text: '',
 					id: ''
@@ -191,7 +186,7 @@ export default {
 
 		// 点击确定按钮
 		handleConfirmArea() {
-			if (!this.areaInfo.county.text) {
+			if (!this.areaInfo.province.text) {
 				return
 			}
 			this.areaString =

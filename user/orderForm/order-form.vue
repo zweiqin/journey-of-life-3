@@ -1,360 +1,280 @@
 <template>
-  <view class="orders-container">
-    <!-- <view class="header">
-      <JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
-      <h2>我的订单</h2>
-    </view> -->
+	<view class="orders-container">
+		<!-- <view class="header">
+			<JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
+			<h2>我的订单</h2>
+			</view> -->
 
-    <view class="navs">
-      <image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
-      <scroll-view scroll-x="true">
-        <view class="navs-list">
-          <view
-            class="nav-item"
-            :class="{ 'nav-item-active': currentStatus === item.value }"
-            v-for="item in orderTypes"
-            :key="item.value"
-            @click="handleSwitchStatus(item.value)"
-          >
-            {{ item.label }}
-          </view>
-        </view>
-      </scroll-view>
-    </view>
+		<view class="navs">
+			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
+			<scroll-view scroll-x="true">
+				<view class="navs-list">
+					<view
+						v-for="item in orderTypes"
+						:key="item.value"
+						class="nav-item"
+						:class="{ 'nav-item-active': currentStatus === item.value }"
+						@click="handleSwitchStatus(item.value)"
+					>
+						{{ item.label }}
+					</view>
+				</view>
+			</scroll-view>
+		</view>
 
-    <view class="order-list-wrapper" v-if="orderList && orderList.length && currentStatus !== 5">
-      <view class="goods-pane" v-for="item in orderList" :key="item.id">
-        <view class="order-no-status" @click="handleToViewOrderDetail(item)">
-          <view class="order-no">订单号:{{ item.orderSn }}</view>
-          <view class="order-status">{{ item.orderStatusText }}</view>
-        </view>
+		<view v-if="orderList && orderList.length && currentStatus !== 5" class="order-list-wrapper">
+			<view v-for="item in orderList" :key="item.id" class="goods-pane">
+				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
+					<view class="order-no">订单号:{{ item.orderSn }}</view>
+					<view class="order-status">{{ item.orderStatusText }}</view>
+				</view>
 
-        <view class="goods-list" @click="handleToViewOrderDetail(item)">
-          <view class="goods-item" v-for="goods in item.goodsList" :key="goods.id">
-            <image class="goods-img" :src="goods.picUrl" mode="" />
+				<view class="goods-list" @click="handleToViewOrderDetail(item)">
+					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
+						<image class="goods-img" :src="goods.picUrl" mode="" />
 
-            <view class="info">
-              <view class="name">{{ goods.goodsName }}</view>
+						<view class="info">
+							<view class="name">{{ goods.goodsName }}</view>
 
-              <view class="good-sp-pr">
-                <view class="sp">{{ goods.specifications.join(',') }}</view>
-                <view class="pr">￥{{ goods.price }}</view>
-              </view>
-            </view>
+							<view class="good-sp-pr">
+								<view class="sp">{{ goods.specifications.join(',') }}</view>
+								<view class="pr">￥{{ goods.price }}</view>
+							</view>
+						</view>
 
-            <view>
-              <view class="number" style="text-align: right; font-size: 28upx; color: #3a3629"> x {{ goods.number }} </view>
-            </view>
-          </view>
-        </view>
+						<view>
+							<view class="number" style="text-align: right; font-size: 28upx; color: #3a3629"> x {{ goods.number }} </view>
+						</view>
+					</view>
+				</view>
 
-        <view class="goods-ops">
-          <view class="actual-price">
-            共计：<text class="number">￥{{ item.actualPrice }}</text>
-          </view>
+				<view class="goods-ops">
+					<view class="actual-price">
+						共计：<text class="number">￥{{ item.actualPrice }}</text>
+					</view>
 
-          <view class="btns">
-            <view v-for="btn in orderOpButtons" :key="btn.label">
-              <button
-                :style="{
-                  background: btn.color
-                }"
-                @click="handleOpOrder(item, btn.key)"
-                class="uni-btn"
-                v-if="item.handleOption[btn.key]"
-              >
-                {{ btn.label }}
-              </button>
-            </view>
-          </view>
-        </view>
-      </view>
+					<view class="btns">
+						<view v-for="btn in orderOpButtons" :key="btn.label">
+							<button
+								v-if="item.handleOption[btn.key]"
+								:style="{
+									background: btn.color
+								}"
+								class="uni-btn"
+								@click="handleOpOrder(item, btn.key)"
+							>
+								{{ btn.label }}
+							</button>
+						</view>
+					</view>
+				</view>
+			</view>
 
-      <uni-load-more style="background: #fff" v-if="loadingStatus !== 'hidden'" :status="loadingStatus"></uni-load-more>
-    </view>
+			<uni-load-more v-if="loadingStatus !== 'hidden'" style="background: #fff" :status="loadingStatus"></uni-load-more>
+		</view>
 
-    <view class="order-list-wrapper" v-else>
-      <view class="goods-pane" v-for="item in commentList" :key="item.id">
-        <view class="order-no-status comment-wrapper">
-          <view class="comment">
-            <text class="comment-title">我的评论：</text>
-            {{ item.content }}
-          </view>
-          <view class="comment" v-if="item.commentGoods1">
-            <text class="comment-title">我的追评：</text>
-            {{ item.commentGoods1 && item.commentGoods1.content }}</view
-          >
-          <view class="comment" v-if="item.commentGoods2">
-            <text class="comment-title">商家回复：</text>
-            {{ item.commentGoods2.content }}</view
-          >
-        </view>
+		<view v-else class="order-list-wrapper">
+			<view v-for="item in commentList" :key="item.id" class="goods-pane">
+				<view class="order-no-status comment-wrapper">
+					<view class="comment">
+						<text class="comment-title">我的评论：</text>
+						{{ item.content }}
+					</view>
+					<view v-if="item.commentGoods1" class="comment">
+						<text class="comment-title">我的追评：</text>
+						{{ item.commentGoods1 && item.commentGoods1.content }}
+					</view>
+					<view v-if="item.commentGoods2" class="comment">
+						<text class="comment-title">商家回复：</text>
+						{{ item.commentGoods2.content }}
+					</view>
+				</view>
 
-        <view class="goods-list" @click="handleToViewOrderDetail(item)">
-          <view class="goods-item" style="margin-bottom: 0">
-            <image class="goods-img" :src="item.dtsTfGoods.picUrl" mode="" />
+				<view class="goods-list" @click="handleToViewOrderDetail(item)">
+					<view class="goods-item" style="margin-bottom: 0">
+						<image class="goods-img" :src="item.dtsTfGoods.picUrl" mode="" />
 
-            <view class="info">
-              <view class="name">{{ item.dtsTfGoods.name }}</view>
+						<view class="info">
+							<view class="name">{{ item.dtsTfGoods.name }}</view>
 
-              <view class="good-sp-pr">
-                <view class="pr"
-                  >￥{{ item.dtsTfGoods.counterPrice }} <text v-if="item.dtsTfGoods.unit">/ {{ item.dtsTfGoods.unit }}</text></view
-                >
-              </view>
-            </view>
-          </view>
-        </view>
+							<view class="good-sp-pr">
+								<view class="pr">
+									￥{{ item.dtsTfGoods.counterPrice }} <text v-if="item.dtsTfGoods.unit">/ {{ item.dtsTfGoods.unit }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
 
-        <view class="goods-ops" style="justify-content: flex-end">
-          <view class="btns">
-            <button v-if="!item.commentGoods1" @click="handleCommentAgain(item)" class="uni-btn">追加评价</button>
-            <button v-else class="uni-btn" style="background-color: transparent; color: #3d3d3d">已追评</button>
-          </view>
-        </view>
-      </view>
-    </view>
+				<view class="goods-ops" style="justify-content: flex-end">
+					<view class="btns">
+						<button v-if="!item.commentGoods1" class="uni-btn" @click="handleCommentAgain(item)">追加评价</button>
+						<button v-else class="uni-btn" style="background-color: transparent; color: #3d3d3d">已追评</button>
+					</view>
+				</view>
+			</view>
+		</view>
 
-    <JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
-  </view>
+		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
+	</view>
 </template>
 
 <script>
-import { orderTypes, orderOpButtons } from './config';
-import { getOrderListApi, orderCancelApi, orderDeleteApi, receiveGoodsApi, getMyCommentListApi } from '../../api/order';
-import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../../api/goods';
-import { getUserId } from '../../utils';
-import { TUAN_ORDER_SN, PAY_SHORT_ORDER_NO } from '../../constant';
+import { orderTypes, orderOpButtons } from './config'
+import { getOrderListApi, orderCancelApi, orderDeleteApi, receiveGoodsApi, getMyCommentListApi } from '../../api/order'
+import { getUserId, payFn } from '../../utils'
 export default {
-  data() {
-    return {
-      orderTypes,
-      currentStatus: 0,
-      query: {
-        page: 1,
-        size: 10
-      },
-      orderOpButtons,
-      totalPages: 0,
-      orderList: [],
-      loadingStatus: 'loading',
-      commentList: []
-    };
-  },
+	name: 'OrderForm',
+	data() {
+		return {
+			orderTypes,
+			currentStatus: 0,
+			query: {
+				page: 1,
+				size: 10
+			},
+			orderOpButtons,
+			totalPages: 0,
+			orderList: [],
+			loadingStatus: 'loading',
+			commentList: []
+		}
+	},
 
-  onLoad(options) {
-    this.currentStatus = options.type[0] * 1 || 0;
-    this.getOrderList();
-  },
+	onLoad(options) {
+		this.currentStatus = options.type[0] * 1 || 0
+		this.getOrderList()
+	},
 
-  onShow() {
-    uni.removeStorageSync(PAY_SHORT_ORDER_NO);
-    uni.removeStorageSync(TUAN_ORDER_SN);
-  },
+	onShow() {
+	},
 
-  methods: {
-    handleBack() {
-      uni.switchTab({ url: '/pages/user/user' });
-    },
+	methods: {
+		handleBack() {
+			uni.switchTab({ url: '/pages/user/user' })
+		},
 
-    // 获取订单信息
-    getOrderList(loadMore) {
-      if (this.currentStatus == 5) {
-        this.getCommentList();
-        return;
-      }
-      uni.showLoading();
-      this.loadingStatus = 'loading';
-      getOrderListApi({
-        userId: getUserId(),
-        showType: this.currentStatus,
-        ...this.query
-      }).then(({ data }) => {
-        if (loadMore) {
-          this.orderList.push(...data.data);
-        } else {
-          this.orderList = data.data;
-        }
-        this.totalPages = data.totalPages;
-        this.loadingStatus = 'hidden';
-        uni.hideLoading();
-      });
-    },
+		// 获取订单信息
+		getOrderList(loadMore) {
+			if (this.currentStatus == 5) {
+				this.getCommentList()
+				return
+			}
+			uni.showLoading()
+			this.loadingStatus = 'loading'
+			getOrderListApi({
+				userId: getUserId(),
+				showType: this.currentStatus,
+				...this.query
+			}).then(({ data }) => {
+				if (loadMore) {
+					this.orderList.push(...data.data)
+				} else {
+					this.orderList = data.data
+				}
+				this.totalPages = data.totalPages
+				this.loadingStatus = 'hidden'
+				uni.hideLoading()
+			})
+		},
 
-    // 切换状态
-    handleSwitchStatus(status) {
-      this.currentStatus = status;
-      if (status === 5) {
-        this.getCommentList();
-      } else {
-        this.query.page = 1;
-        this.query.size = 20;
-        this.getOrderList();
-      }
-    },
+		// 切换状态
+		handleSwitchStatus(status) {
+			this.currentStatus = status
+			if (status === 5) {
+				this.getCommentList()
+			} else {
+				this.query.page = 1
+				this.query.size = 20
+				this.getOrderList()
+			}
+		},
 
-    async getCommentList() {
-      const res = await getMyCommentListApi({
-        userId: getUserId()
-      });
+		async getCommentList() {
+			const res = await getMyCommentListApi({
+				userId: getUserId()
+			})
 
-      if (res.errno === 0) {
-        this.commentList = res.data;
-      }
-    },
+			if (res.errno === 0) {
+				this.commentList = res.data
+			}
+		},
 
-    // 点击操作按钮
-    async handleOpOrder(goods, key, currentGoods) {
-      const mapMethods = {
-        cancel: {
-          text: '确定要取消当前订单吗?',
-          api: orderCancelApi
-        },
-        delete: {
-          text: '确定要删除当前订单吗?',
-          api: orderDeleteApi
-        },
-        confirm: {
-          text: '确定要收货吗',
-          api: receiveGoodsApi
-        }
-      };
+		// 点击操作按钮
+		async handleOpOrder(goods, key, currentGoods) {
+			const mapMethods = {
+				cancel: {
+					text: '确定要取消当前订单吗?',
+					api: orderCancelApi
+				},
+				delete: {
+					text: '确定要删除当前订单吗?',
+					api: orderDeleteApi
+				},
+				confirm: {
+					text: '确定要收货吗',
+					api: receiveGoodsApi
+				}
+			}
 
-      const _this = this;
-      if (goods.handleOption[key] && ['cancel', 'delete', 'confirm'].includes(key)) {
-        uni.showModal({
-          title: '提示',
-          content: mapMethods[key].text,
-          success: function (res) {
-            if (res.confirm) {
-              mapMethods[key]
-                .api({
-                  userId: getUserId(),
-                  orderId: goods.id
-                })
-                .then(() => {
-                  _this.query.page = 1;
-                  _this.getOrderList();
-                });
-            }
-          }
-        });
-      } else {
-        if (key === 'pay') {
-          if (this.$store.state.app.isInMiniProgram) {
-            const payAppesult = await payOrderGoodsAPPApi({
-              userId: getUserId(),
-              orderNo: goods.orderSn,
-              payType: 1
-            });
-            if (payAppesult.errno === 0) {
-              let query = '';
-              for (const key in payAppesult.data) {
-                query += key + '=' + payAppesult.data[key] + '&';
-              }
-              wx.miniProgram.navigateTo({ url: '/pages/loading/loading?' + query + 'orderNo=' + goods.orderSn + '&userId=' + getUserId() });
-            }
-          } else {
-            // #ifdef H5
-            payOrderGoodsApi({
-              orderNo: goods.orderSn,
-              userId: getUserId(),
-              payType: 1
-            }).then((res) => {
-              const payData = JSON.parse(res.data.h5PayUrl);
-              const form = document.createElement('form');
-              form.setAttribute('action', payData.url);
-              form.setAttribute('method', 'POST');
-              const data = JSON.parse(payData.data);
-              let input;
-              for (const key in data) {
-                input = document.createElement('input');
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
-              }
+			const _this = this
+			if (goods.handleOption[key] && ['cancel', 'delete', 'confirm'].includes(key)) {
+				uni.showModal({
+					title: '提示',
+					content: mapMethods[key].text,
+					success(res) {
+						if (res.confirm) {
+							mapMethods[key]
+								.api({
+									userId: getUserId(),
+									orderId: goods.id
+								})
+								.then(() => {
+									_this.query.page = 1
+									_this.getOrderList()
+								})
+						}
+					}
+				})
+			} else if (key === 'pay') {
+				payFn(goods, 1, false)
+			} else if (key === 'comment') {
+				uni.navigateTo({
+					url: '/user/orderForm/rate?id=' + goods.id + (currentGoods ? '&goodsId=' + currentGoods.id : '')
+				})
+			}
+		},
 
-              document.body.appendChild(form);
-              form.submit();
-              document.body.removeChild(form);
-            });
-            // #endif
+		// 查看详情
+		handleToViewOrderDetail(goods) {
+			uni.navigateTo({
+				url: '/user/orderForm/order-form-detail?id=' + goods.id
+			})
+		},
 
-            // #ifdef APP
-            const payAppesult = await payOrderGoodsAPPApi({
-              userId: getUserId(),
-              orderNo: goods.orderSn,
-              payType: 1
-            });
+		// 去追评
+		handleCommentAgain(goodsInfo) {
+			uni.navigateTo({
+				url: `/user/orderForm/additional-evaluation?goodsName=${goodsInfo.dtsTfGoods.name}&picUrl=${goodsInfo.dtsTfGoods.picUrl}&price=${goodsInfo.dtsTfGoods.counterPrice}&unit=${goodsInfo.dtsTfGoods.unit}&commentId=${goodsInfo.id}&goodsId=${goodsInfo.gid}&oid=${goodsInfo.oid}&ocid=${goodsInfo.ocid}`
+			})
+		}
+	},
 
-            if (payAppesult.errno === 0) {
-              let query = '';
-              for (const key in payAppesult.data) {
-                query += key + '=' + payAppesult.data[key] + '&';
-              }
+	onReachBottom() {
+		if (this.orderList.length < this.query.size) {
+			this.loadingStatus = 'noMore'
+			return
+		}
 
-              plus.share.getServices(
-                function (res) {
-                  let sweixin = null;
-                  for (let i in res) {
-                    if (res[i].id == 'weixin') {
-                      sweixin = res[i];
-                    }
-                  }
-                  console.log(sweixin);
-                  if (sweixin) {
-                    sweixin.launchMiniProgram({
-                      id: 'gh_e64a1a89a0ad',
-                      type: 0,
-                      path: 'pages/orderDetail/orderDetail?' + query
-                    });
-                  }
-                },
-                function (e) {
-                  console.log('获取分享服务列表失败：' + e.message);
-                }
-              );
-            }
-            // #endif
-          }
-        } else if (key === 'comment') {
-          uni.navigateTo({
-            url: '/user/orderForm/rate?id=' + goods.id + (currentGoods ? '&goodsId=' + currentGoods.id : '')
-          });
-        }
-      }
-    },
+		if (this.query.page >= this.totalPages) {
+			this.loadingStatus = 'noMore'
+			return
+		}
 
-    // 查看详情
-    handleToViewOrderDetail(goods) {
-      uni.navigateTo({
-        url: '/user/orderForm/order-form-detail?id=' + goods.id
-      });
-    },
-
-    // 去追评
-    handleCommentAgain(goodsInfo) {
-      uni.navigateTo({
-        url: `/user/orderForm/additional-evaluation?goodsName=${goodsInfo.dtsTfGoods.name}&picUrl=${goodsInfo.dtsTfGoods.picUrl}&price=${goodsInfo.dtsTfGoods.counterPrice}&unit=${goodsInfo.dtsTfGoods.unit}&commentId=${goodsInfo.id}&goodsId=${goodsInfo.gid}&oid=${goodsInfo.oid}&ocid=${goodsInfo.ocid}`
-      });
-    }
-  },
-
-  onReachBottom() {
-    if (this.orderList.length < this.query.size) {
-      this.loadingStatus = 'noMore';
-      return;
-    }
-
-    if (this.query.page >= this.totalPages) {
-      this.loadingStatus = 'noMore';
-      return;
-    }
-
-    this.query.page++;
-    this.getOrderList(true);
-  }
-};
+		this.query.page++
+		this.getOrderList(true)
+	}
+}
 </script>
 
 <style lang="less" scoped>

@@ -58,7 +58,7 @@
 
 <script>
 import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from '@/constant';
-import { getUserId, payOrderUtil } from '@/utils';
+import { getUserId } from '@/utils';
 import { selectCategory } from '@/api/community-center/makeSmallFortune'
 import tuiSelect from '@/components/thorui/tui-select/tui-select.vue'
 export default {
