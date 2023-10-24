@@ -54,9 +54,17 @@ export default {
             }]
         }
     },
+    onShow() {
+        uni.setNavigationBarTitle({
+				title: '赚小钱'
+		})
+    },
     methods: {
         changeTab(index) {
             this.currentTab = index
+            uni.setNavigationBarTitle({
+				title: this.tabs[this.currentTab].name
+			})
             if (index == 3) {
                 this.currentTab = 0
                 uni.navigateTo({
@@ -132,7 +140,7 @@ export default {
                 letter-spacing: 0.32rpx;
                 color: #222229;
             }
-            &::before {
+            /* &::before {
                 position: absolute;
                 content: '';
                 width: 0;
@@ -142,12 +150,12 @@ export default {
                 transition: all 350ms;
                 transform: translateX(-50%);
                 background-color: #EF530E;
-            }
+            } */
         }
-        .active::before {
+        /* .active::before {
             width: 60%;
             transition: all 350ms;
-        }
+        } */
     }
     .TabsToggle {
         margin-top: 20rpx;

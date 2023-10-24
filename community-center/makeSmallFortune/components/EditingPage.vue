@@ -5,8 +5,8 @@
             <view class="text">文章编辑</view>
             <view class="btnBox">
                 <view class="preview" style="margin-right: 32rpx;color: #000;" @click="previewPage">预览</view>
-                <view :class="{isOverForm:isOverForm}" v-if="isOverForm">下一步</view>
-                <view class="NextSteps" v-else @click="nextSteps">下一步</view>
+                <view :class="{isOverForm:isOverForm}" v-if="isOverForm" @click="nextSteps">下一步</view>
+                <view class="NextSteps" v-else>下一步</view>
             </view>
         </view>
         <view class="articlesTitle">
@@ -97,9 +97,9 @@ export default {
         isOverForm: {
             get() {
                 if (this.formData.postTitle == '' && this.formData.postCategoryId == '' && this.formData.postContent == '') {
-                    return true  // 就这样吧，摆烂
+                    return false  // 就这样吧，摆烂
                 }else {
-                    return false
+                    return true
                 }
             }
         }

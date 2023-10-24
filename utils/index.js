@@ -1,6 +1,7 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export { RuanRequest, XZLRequest, SheQuRequest, SheQu1Request, shopRequest, huangRequest, endRequest, shopRequest1 } from './DWHRequest'
+export { AnotherTFRequest } from './AnotherTFRequest.js'
 export {
 	fomartNumber,
 	removeCache,

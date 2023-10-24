@@ -34,8 +34,8 @@ export default {
             isTesps: true,
             formData: {
                 postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: require('@/static/images/new-community/home/avatar1.png'),
-                username: '蔡徐坤',
+                header: uni.getStorageSync('user_INFO').avatarUrl,
+                username: uni.getStorageSync('user_INFO').nickName,
                 region: '440606',
                 publishUserId: "", // 发布者id
                 postTitle: "", // 文章标题

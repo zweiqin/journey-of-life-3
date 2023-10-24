@@ -1,13 +1,13 @@
 <template>
 	<view class="ArticlesItem">
 		<view class="ArticlesItemTop">
-			<view class="ArticlesCoverSheetBox">
+			<view class="ArticlesCoverSheetBox" @click="gotoArticleDetails">
 				<!-- @/static/images/new-community/home/CoverSheet.png -->
 				<image class="ArticlesCoverSheet" :src="datas.postCover ? datas.postCover : require(&quot;@/static/images/new-community/home/CoverSheet.png&quot;)"></image>
 				<image v-if="!(datas.redPacketInfo.totalPacket > 0)" class="ArticlesCoverSheet overPng" src="@/static/images/new-community/home/isOver.png"></image>
 			</view>
 			<view class="LeftInformation">
-				<view class="title">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
+				<view class="title"  @click="gotoArticleDetails">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
 				<view class="timer">发布者：团峰科技</view>
 				<view class="TheReader">
 					<image v-for="(item, index) in datas.already.slice(0,3)" :key="index" :src="item.imgUrl" class="ReaderAvatar" :class="{ more: index > 0, moremore: index > 1 }"></image>
@@ -31,7 +31,7 @@
         <view class="ClicTokDetails" v-else-if="datas.remainingPacket > 0" @click="gotoArticleDetails">
           查看详情
         </view>
-        <view class="disableds" v-else  @click="gotoArticleDetails">
+        <view class="disableds" v-else @click="gotoArticleDetails">
           已结束
         </view>
      </view>
