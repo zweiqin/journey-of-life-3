@@ -5,9 +5,10 @@ export const SheQu1_URL = 'https://www.zhult.com/';
 // 线上团蜂
 export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api';
 
-export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx'; // 生产
+// export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx'; // 生产
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:8098/dts-app-api/wx' // 测试
-// export const RUAN_URL = 'http://192.168.0.91:8089/demo/wx' // 本地
+export const RUAN_URL = 'http://192.168.0.91:8089/demo/wx' // 本地
+// export const RUAN_URL = 'http://192.168.0.91:9107/demo/wx' // 新团蜂本地
 // export const RUAN_URL = 'http://192.168.0.108:8080/demo/'
 
 export const DEYI_URL = 'https://bus.deyisoft.cn:11112/dts-wx-api/wx';

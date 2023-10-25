@@ -30,7 +30,33 @@
             <view class="gglink" @click="gotoGuangGao(textData.redPacketInfo.link)">广告链接</view>
         </view>
         <view class="lingquREDBook">
-            <button class="cnmd" :class="{isChkPick:isChkPick || (textData.remainingPacket > 0)}" :disabled="isChkPick || textData.remainingPacket > 0" @click="lingqu">{{ isChkPick?textData.redPacketInfo.remainingPacket > 0?'已领取':'已结束':'领取奖励' }}</button>
+            <view class="cnmd isChkPick" v-if="!(textData.redPacketInfo.remainingPacket > 0)">
+                已结束
+            </view>
+            <button class="cnmd isChkPick" v-else-if="isChkPick">
+                已领取
+            </button>
+            <button class="cnmd isChkPick" v-else-if="!isOverTimer">
+                {{  setTimeoutText +'秒后开启领取' }}
+            </button>
+            <button class="cnmd"
+                     v-else-if="isOverTimer"
+                    @click="lingqu">
+                {{ (isChkPick?'已领取':textData.redPacketInfo.remainingPacket > 0?'领取奖励':'已结束')}}
+            </button>
+            <!-- <button class="cnmd isChkPick" v-if="isChkPick">
+                已领取
+            </button>
+            <button class="cnmd isChkPick" v-else-if="!isOverTimer">
+                {{  setTimeoutText +'秒后开启领取' }}
+            </button>
+            <button class="cnmd"
+                     v-else-if="isOverTimer && !isChkPick"
+                    :class="{isChkPick:!(!isChkPick && (textData.redPacketInfo.remainingPacket > 0))}" 
+                    :disabled="!(!isChkPick && textData.redPacketInfo.remainingPacket > 0)" 
+                    @click="lingqu">
+                {{ (isChkPick?'已领取':textData.redPacketInfo.remainingPacket > 0?'领取奖励':'已结束')}}
+            </button> -->
             <view class="tui-modal-mask" :class="[isMaske ? 'tui-mask-show' : '']" @click.prevent="isMaske = false">
                   <image class="starts sta1" src="@/static/images/new-community/redBookText/start1.png"></image>
                   <image class="starts sta2" src="@/static/images/new-community/redBookText/start2.png"></image>
@@ -85,6 +111,15 @@ export default {
                 isChkPick: 1
             }).then(res => {
                 this.isChkPick = res.data
+                this.isOverTimer = res.data
+                if (!this.isOverTimer) {
+                        setInterval(()=> {
+                            this.setTimeoutText--
+                            if (this.setTimeoutText == 0) {
+                                this.isOverTimer = true
+                            }
+                        },1000)
+                    }
             }).catch(err => {
                 console.log(err)
             })
@@ -107,7 +142,9 @@ export default {
             formData: {
                 redPacketId: "",
                 uid: ""
-            }
+            },
+            isOverTimer: false,
+            setTimeoutText: 10,
         }
     },
     methods: {
@@ -295,7 +332,7 @@ export default {
     background-color: #fff;
     /* position: fixed;
     bottom: 160rpx; */
-    /* margin-top: 30rpx; */
+    margin-top: 30rpx;
     width: 100vw;
     height: 90rpx;
     display: flex;
@@ -309,6 +346,7 @@ export default {
         background: #FF380C;
         line-height: 85rpx;
         color: #Fff;
+        text-align: center;
     }
 }
 .guanggao {

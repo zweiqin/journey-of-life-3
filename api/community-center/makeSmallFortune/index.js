@@ -1,3 +1,28 @@
+/*
+ *                                                     __----~~~~~~~~~~~------___
+ *                                    .  .   ~~//====......          __--~ ~~
+ *                    -.            \_|//     |||\\  ~~~~~~::::... /~
+ *                 ___-==_       _-~o~  \/    |||  \\            _/~~-
+ *         __---~~~.==~||\=_    -_--~/_-~|-   |\\   \\        _/~
+ *     _-~~     .=~    |  \\-_    '-~7  /-   /  ||    \      /
+ *   .~       .~       |   \\ -_    /  /-   /   ||      \   /
+ *  /  ____  /         |     \\ ~-_/  /|- _/   .||       \ /
+ *  |~~    ~~|--~~~~--_ \     ~==-/   | \~--===~~        .\
+ *           '         ~-|      /|    |-~\~~       __--~~
+ *                       |-~~-_/ |    |   ~\_   _-~            /\
+ *                            /  \     \__   \/~                \__
+ *                        _--~ _/ | .-~~____--~-/                  ~~==.
+ *                       ((->/~   '.|||' -_|    ~~-/ ,              . _||
+ *                                  -_     ~\      ~~---l__i__i__i--~~_/
+ *                                  _-~-__   ~)  \--______________--~~
+ *                                //.-~~~-~_--~- |-------~~~~~~~~
+ *                                       //.-~~~--\
+ *                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 
+ *                               神兽保佑            永无BUG
+ */
+
+// 文章红包 / 赚小钱 接口
 import { endRequest, request2, XZLRequest, SheQuRequest, SheQu1Request, RuanRequest } from '@/utils'
 import { USER_TOKEN } from 'constant'
 
@@ -20,3 +45,9 @@ export const lookPostRed = (data) => RuanRequest('/dtsPostRedPacketInfo/lookPost
 
 // /dtsPostBbs/postDetailsEdit
 export const postDetailsEdit = (data) => RuanRequest('/dtsPostBbs/postDetailsEdit', data)
+
+// /dtsPostRedPacketRecord/dataStatistics 用户数据统计
+export const dataStatistics = (data) => RuanRequest('/dtsPostRedPacketRecord/dataStatistics', data, 'GET')
+
+// /dtsPostRedPacketInfo/redStatistics  我的红包数据转化统计
+export const redStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redStatistics', data, 'GET')

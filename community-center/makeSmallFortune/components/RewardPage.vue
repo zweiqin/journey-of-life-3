@@ -143,6 +143,7 @@ export default {
 			if (!this.region) return this.$showToast('缺少文章归属地')
 			if (this.redPacketInfo.totalAmount < 1) return this.$showToast('投放金额最低为1元')
 			if (!this.redPacketInfo.isRandom) return this.$showToast('请选择是否随机')
+			if (this.redPacketInfo.totalPacket < 1 || Number(this.redPacketInfo.totalAmount)/ Number(this.redPacketInfo.totalPacket) < 0.1) return this.$showToast('红包平均金额不得少于0.1')
 			uni.showLoading()
 			addPublishArticleApi({ ...this.formData, region: this.region, redPacketInfo: this.redPacketInfo })
 				.then(({ data }) => {
