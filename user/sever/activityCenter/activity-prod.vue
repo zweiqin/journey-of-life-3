@@ -17,9 +17,9 @@
 				</view>
 
 				<view style="display: flex;">
-					<TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
+					<BeeWxShare ref="beeWxShareRef" @click="handleShareGoods">
 						<!-- <image src="../../../static/images/detail/share.png" mode="" /> -->
-					</TuanWxShare>
+					</BeeWxShare>
 					<view style="height: 64upx;padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: #bdbbb9;border-radius: 32upx;" @click="handleShareActivity">活动分享</view>
 				</view>
 			</view>
@@ -485,7 +485,7 @@ export default {
 				successCb: () => { },
 				failCb: () => { }
 			}
-			this.$refs.tuanWxShareRef.share(
+			this.$refs.beeWxShareRef.share(
 				data,
 				isQuit,
 				'/pages/prod/prod?goodsId' + this.goodsId

@@ -107,7 +107,7 @@ import { getUserCrmSlbumSelectId } from '../../api/user'
 // import wxShare from '../../utils/wxshare'
 // // #endif
 import share from '../../utils/share'
-import PointShare from '../../components/TuanWxShare/point-share'
+import PointShare from '../../components/BeeWxShare/point-share'
 import PosterPopup from './cpns/PosterPopup.vue'
 import { isInWx } from '../../utils'
 

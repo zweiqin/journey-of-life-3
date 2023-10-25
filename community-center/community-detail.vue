@@ -56,12 +56,12 @@
           <view class="content">{{ serverIntroduction }}</view>
         </view>
         <view class="a">
-          <TuanWxShare ref="tuanWxShareRef" @click="handleClickShare">
+          <BeeWxShare ref="beeWxShareRef" @click="handleClickShare">
             <view class="share">
               <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png" alt="" class="image" />
               <view class="text">分享</view>
             </view>
-          </TuanWxShare>
+          </BeeWxShare>
         </view>
       </view>
 
@@ -606,7 +606,7 @@ export default {
         successCb: () => {},
         failCb: () => {}
       };
-      await this.$refs.tuanWxShareRef.share(data, isQuit);
+      await this.$refs.beeWxShareRef.share(data, isQuit);
     },
 
     // 点击分享

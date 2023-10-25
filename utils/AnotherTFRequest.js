@@ -1,4 +1,4 @@
-import { NEW_JFSHOP_INTERFACE } from '../config'
+import { ANOTHER_TF_INTERFACE } from '../config'
 import { T_STORAGE_KEY } from '../constant'
 
 const request = (base_url) => function (url, data = {}, method = 'post', cb, header) {
@@ -25,4 +25,4 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb, hea
 	])
 }
 
-export const AnotherTFRequest = request(NEW_JFSHOP_INTERFACE)
+export const AnotherTFRequest = request(ANOTHER_TF_INTERFACE)

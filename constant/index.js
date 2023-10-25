@@ -15,6 +15,11 @@ export const USER_INFO = 'user_INFO'
 export const LOGIN_FORM = 'LOGIN_FORM'
 export const T_STORAGE_KEY = 'T_STORAGE_KEY'
 
+// 绑定
+export const T_NEW_BIND_TYPE = 'T_NEW_BIND_TYPE'
+export const T_NEW_BIND_CODE = 'T_NEW_BIND_CODE'
+export const T_NEW_BIND_ID = 'T_NEW_BIND_ID'
+
 // home page
 export const STYLE_LIST = 'STYLE_LIST'
 

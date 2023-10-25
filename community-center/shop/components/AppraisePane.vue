@@ -9,48 +9,11 @@
 			<button class="bee-btn more">
 				查看全部
 				<BeeIcon
-					:src="require('../../../static/brand/detail/to.png')"
+					:src="require('../../../static/images/index/design.png')"
 					:size="14"
 				></BeeIcon>
 			</button>
 		</view>
-
-		<!-- <view class="appraise-item" v-for="item in 10" :key="item">
-			<view class="user-info">
-			<BeeAvatar :size="40"></BeeAvatar>
-			<view class="info">
-			<view class="name-time">
-			<text>吗哈哈</text>
-			<text>19小时前</text>
-			</view>
-			<view class="recommend-wrapper">
-			<BeeIcon
-			:src="require('../../../../static/brand/detail/zan.png')"
-			:size="13"
-			></BeeIcon>
-			<BeeAvatar
-			:radius="0"
-			:width="57"
-			:height="14"
-			:src="require('../../../../static/brand/detail/tag.png')"
-			></BeeAvatar>
-			</view>
-			</view>
-			</view>
-
-			<view class="appraise-desc">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-			necessitatibus quos facere dicta ducimus odio illo? Nulla quaerat,
-			dolorem porro quod ipsa laborum placeat voluptatem maxime possimus,
-			eveniet earum explicabo?
-			</view>
-
-			<scroll-view scroll-x="y">
-			<view class="appraise-images">
-			<BeeAvatar radius="10rpx" v-for="item in 10" :key="item"></BeeAvatar>
-			</view>
-			</scroll-view>
-			</view> -->
 
 		<view class="no-data"> 暂无评价 </view>
 	</view>

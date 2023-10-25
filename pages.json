@@ -28,6 +28,12 @@
         "navigationStyle": "custom"
       }
     },
+		{
+			"path": "pages/jump/jump",
+			"style": {
+				"navigationBarTitleText": "跳转"
+			}
+		},
     {
       "path": "pages/order/order",
       "style": {
@@ -219,40 +225,6 @@
       }
     },
     {
-      "path": "user/digital-store/newBusiness/index",
-      "style": {
-        "navigationBarTitleText": ""
-      }
-    },
-    // {
-    //   "path": "user/account-book/index",
-    //   "style": {
-    //     "navigationBarTitleText": "小账本"
-    //   }
-    // },
-    {
-      "path": "user/commission-statistics/commission-statistics",
-      "style": {
-        "navigationBarTitleText": "佣金统计",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "user/commission-statistics/commission-detail",
-      "style": {
-        "navigationBarTitleText": "佣金详情",
-        "enablePullDownRefresh": true
-      }
-    },
-
-    {
-      "path": "user/commission-statistics/vip-user",
-      "style": {
-        "navigationBarTitleText": "会员列表",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
       "path": "pages/furniture/furniture",
       "style": {
         "navigationBarTitleText": "商品分类"
@@ -262,12 +234,6 @@
       "path": "pages/goods-filter/goods-filter",
       "style": {
         "navigationBarTitleText": "商品筛选"
-      }
-    },
-    {
-      "path": "user/digital-store/newBusiness/addUser/index",
-      "style": {
-        "navigationBarTitleText": ""
       }
     },
     {
@@ -338,77 +304,6 @@
     "autoscan": true,
     "custom": {
       "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
-    }
-  },
-  "tabBar": {
-    "selectedColor": "#E95D20",
-    "backgroundColor": "#fff",
-    "color": "#3D3D3D",
-    "borderStyle": "white",
-    "iconWidth": "28px",
-    "height": "60px",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        // "pagePath": "pages/another-index/index",
-        "text": "商城",
-        "iconPath": "/static/images/tabbar/furniture.png",
-        "selectedIconPath": "/static/images/tabbar/furniture-active.png"
-      },
-      // {
-      //   "pagePath": "pages/stuff/stuff",
-      //   "text": "材料",
-      //   "iconPath": "/static/images/tabbar/stuff.png",
-      //   "selectedIconPath": "/static/images/tabbar/stuff-active.png"
-      // },
-
-      {
-        "pagePath": "pages/business-district/business-district",
-        "text": "社区商圈",
-        "iconPath": "/static/images/tabbar/business.png",
-        "selectedIconPath": "/static/images/tabbar/business-active.png"
-      },
-      {
-        "pagePath": "pages/community-center/community-centerr",
-        "text": "社区服务",
-        "iconPath": "/static/images/tabbar/community.png",
-        "selectedIconPath": "/static/images/tabbar/community-active.png"
-      },
-      {
-        "pagePath": "pages/order/order",
-        "text": "订单",
-        "iconPath": "/static/images/tabbar/order.png",
-        "selectedIconPath": "/static/images/tabbar/order-active.png"
-      },
-      // {
-      //   "pagePath": "pages/logistics/logistics",
-      //   "text": "物流",
-      //   "iconPath": "/static/images/tabbar/logistics.png",
-      //   "selectedIconPath": "/static/images/tabbar/logistics-active.png"
-      // },
-      {
-        "pagePath": "pages/user/user",
-        "text": "我的",
-        "iconPath": "/static/images/tabbar/mine.png",
-        "selectedIconPath": "/static/images/tabbar/mine-active.png"
-      }
-    ]
-  },
-  "sitemapLocation": "sitemap.json",
-  "globalStyle": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "团蜂家居",
-    "navigationBarTextStyle": "black",
-    "app-plus": {
-      "animationType": "slide-in-right",
-      "animationDuration": 300
-    }
-  },
-  "style": {
-    "app-plus": {
-      "animationType": "slide-in-right",
-      "animationDuration": 300
     }
   },
   "subPackages": [
@@ -754,6 +649,45 @@
     {
       "root": "user",
       "pages": [
+				{
+					"path": "digital-store/newBusiness/index",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "digital-store/newBusiness/addUser/index",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				// {
+				//   "path": "account-book/index",
+				//   "style": {
+				//     "navigationBarTitleText": "小账本"
+				//   }
+				// },
+				{
+					"path": "commission-statistics/commission-statistics",
+					"style": {
+						"navigationBarTitleText": "佣金统计",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "commission-statistics/commission-detail",
+					"style": {
+						"navigationBarTitleText": "佣金详情",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "commission-statistics/vip-user",
+					"style": {
+						"navigationBarTitleText": "会员列表",
+						"enablePullDownRefresh": true
+					}
+				},
         {
           "path": "voucher/voucher",
           "style": {
@@ -1374,5 +1308,76 @@
         }
       ]
     }
-  ]
+  ],
+  "tabBar": {
+    "selectedColor": "#E95D20",
+    "backgroundColor": "#fff",
+    "color": "#3D3D3D",
+    "borderStyle": "white",
+    "iconWidth": "28px",
+    "height": "60px",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        // "pagePath": "pages/another-index/index",
+        "text": "商城",
+        "iconPath": "/static/images/tabbar/furniture.png",
+        "selectedIconPath": "/static/images/tabbar/furniture-active.png"
+      },
+      // {
+      //   "pagePath": "pages/stuff/stuff",
+      //   "text": "材料",
+      //   "iconPath": "/static/images/tabbar/stuff.png",
+      //   "selectedIconPath": "/static/images/tabbar/stuff-active.png"
+      // },
+
+      {
+        "pagePath": "pages/business-district/business-district",
+        "text": "社区商圈",
+        "iconPath": "/static/images/tabbar/business.png",
+        "selectedIconPath": "/static/images/tabbar/business-active.png"
+      },
+      {
+        "pagePath": "pages/community-center/community-centerr",
+        "text": "社区服务",
+        "iconPath": "/static/images/tabbar/community.png",
+        "selectedIconPath": "/static/images/tabbar/community-active.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "/static/images/tabbar/order.png",
+        "selectedIconPath": "/static/images/tabbar/order-active.png"
+      },
+      // {
+      //   "pagePath": "pages/logistics/logistics",
+      //   "text": "物流",
+      //   "iconPath": "/static/images/tabbar/logistics.png",
+      //   "selectedIconPath": "/static/images/tabbar/logistics-active.png"
+      // },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "/static/images/tabbar/mine.png",
+        "selectedIconPath": "/static/images/tabbar/mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "globalStyle": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "团蜂家居",
+    "navigationBarTextStyle": "black",
+    "app-plus": {
+      "animationType": "slide-in-right",
+      "animationDuration": 300
+    }
+  },
+  "style": {
+    "app-plus": {
+      "animationType": "slide-in-right",
+      "animationDuration": 300
+    }
+  }
 }

@@ -33,7 +33,7 @@
 				@click="go(`/community-center/shop/shop-deep?id=${item.id}`)"
 			>
 				<view>
-					<TuanIcon :size="34" :src="item.labelUrl || require('../../static/images/index/design.png')"></TuanIcon>
+					<BeeIcon :size="34" :src="item.labelUrl || require('../../static/images/index/design.png')"></BeeIcon>
 				</view>
 				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.labelName }}</view>
 			</view>
@@ -69,11 +69,11 @@
 							@click="go(`/pages/prod/prod?goodsId=${part.id}`)"
 						>
 							<view>
-								<TuanIcon
+								<BeeIcon
 									width="180upx" height="150upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
 									:src="item.url || require('../../static/images/index/explosion.webp')"
 								>
-								</TuanIcon>
+								</BeeIcon>
 								<view style="height: 10upx;margin: 0 20upx;background-color: #c8c9b7;border-radius: 0 0 20upx 20upx;">
 								</view>
 							</view>
@@ -145,10 +145,10 @@
 							{{ $store.getters.currentCity || '定位失败' }}
 						</TuanLocation>
 						<view style="display: flex;align-items: center;padding-left: 16upx;border-left: 1upx solid #CDCDCD;">
-							<TuanIcon
+							<BeeIcon
 								:size="16" name="gps" color="#EF5613"
 								style="padding: 2upx;border: 1upx solid #EF5613;border-radius: 50%;line-height: 1;"
-							></TuanIcon>
+							></BeeIcon>
 							<text style="margin-left: 14upx;font-size: 30upx;color: #EF5613;">我的位置</text>
 						</view>
 					</view>
@@ -160,7 +160,7 @@
 							<view style="display: flex;justify-content: space-between;align-items: center;">
 								<view style="padding-right: 24upx;border-right: 1upx solid #D8D8D8;">
 									<view style="display: flex;align-items: center;font-size: 24upx;">
-										<TuanIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										<BeeIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6upx;"></BeeIcon>
 										{{ specialHotelBoxObj.startDate === new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')
 											? '今日' : '' }}入住
 									</view>
@@ -177,7 +177,7 @@
 								</view>
 								<view style="padding-left: 24upx;">
 									<view style="display: flex;align-items: center;font-size: 24upx;">
-										<TuanIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6upx;"></TuanIcon>
+										<BeeIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6upx;"></BeeIcon>
 										{{ specialHotelBoxObj.endDate === new Date(Date.now() + 24 * 60 * 60 *
 											1000).toLocaleString().substring(0, 10).replaceAll('/', '-') ? '明日' : '' }}离店
 									</view>
@@ -196,7 +196,7 @@
 										(Date.parse(specialHotelBoxObj.endDate.replaceAll('-', '/')) -
 											Date.parse(specialHotelBoxObj.startDate.replaceAll('-', '/'))) / (24 * 60 * 60 * 1000) }}晚
 								</text>
-								<TuanIcon :size="20" name="arrowright" color="#3D3D3D" style="line-height: 1;"></TuanIcon>
+								<BeeIcon :size="20" name="arrowright" color="#3D3D3D" style="line-height: 1;"></BeeIcon>
 							</view>
 						</view>
 						<tui-calendar
@@ -247,11 +247,11 @@
 						@click="go(`/pages/prod/prod?goodsId==${item.id}`)"
 					>
 						<view>
-							<TuanIcon
+							<BeeIcon
 								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
 								:src="item.url || require('../../static/images/index/explosion.webp')"
 							>
-							</TuanIcon>
+							</BeeIcon>
 						</view>
 						<view style="flex: 1;width: 0;margin-left: 20upx;">
 							<view

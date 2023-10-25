@@ -1,19 +1,62 @@
 <template>
-	<view v-if="brandDetail" class="brand-info-container">
+	<view class="brand-info-container" style="background-color: aquamarine;">
+		<view style="display: flex;justify-content: space-between;align-items: center;font-size: 36upx;font-weight: bold;">
+			<view>{{ brandDetail.shopName || '--' }}</view>
+			<view style="display: flex;align-items: center;">
+				<!-- star-fill -->
+				<BeeIcon name="star" :size="24" color="#222229"></BeeIcon>
+				<BeeIcon :src="require('../../../static/images/new-brand/detail/share.png')" :size="24"></BeeIcon>
+			</view>
+		</view>
+		<view>
+			<tui-rate :current="brandDetail.score"></tui-rate>
+		</view>
+
+		<view class="navgation_top">
+			<view class="imgbg">
+				<BeeBack>
+					<BeeIcon name="arrowleft" :size="24" color="#fff"></BeeIcon>
+				</BeeBack>
+			</view>
+			<view class="fnButton">
+				<view class="imgbg" @click="handleFollowBrand">
+					<BeeIcon v-if="brandDetail.is" :size="26" :src="require('../../../static/images/index/design.png')">
+					</BeeIcon>
+					<BeeIcon v-else :size="18" :src="require('../../../static/images/index/design.png')"></BeeIcon>
+				</view>
+				<view class="imgbg">
+					<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
+						<BeeIcon :src="require('../../../static/images/index/design.png')" :size="22"></BeeIcon>
+					</BeeWxShare>
+				</view>
+				<view class="imgbg" @click="go(`/user/sever/shop-car?isBack=1&orderType=1`)">
+					<BeeIcon :src="require('../../../static/images/index/design.png')" :size="18"></BeeIcon>
+				</view>
+			</view>
+		</view>
+		<!-- 轮播图 -->
+		<swiper
+			v-if="brandDetail.bgUrl && JSON.parse(brandDetail.bgUrl).length" class="swiper" :indicator-dots="true"
+			:autoplay="true" :interval="3000" :duration="1000"
+		>
+			<swiper-item v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index">
+				<tui-lazyload-img
+					mode="scaleToFill" width="100vw" height="400rpx" class="bannerItem"
+					:src="common.seamingImgUrl(img)"
+				></tui-lazyload-img>
+			</swiper-item>
+		</swiper>
 		<view style="display: flex;justify-content: space-between;align-items: center;">
 			<view>
 				<view style="font-weight: bold;color: #000;font-size: 32upx;">{{ brandDetail.name }}</view>
 				<view class="rate">
-					<BeeIcon :src="require('../../../static/brand/detail/star.png')" :size="14"></BeeIcon>
+					<BeeIcon :src="require('../../../static/images/index/design.png')" :size="14"></BeeIcon>
 					<text>{{ brandDetail.starTotal || 0 }}</text>
 					<text>月售 {{ brandDetail.salesVolume }}</text>
 					<text>人均{{ brandDetail.perCapita || '：--' }}</text>
 				</view>
 			</view>
-			<view
-				style="display: flex;flex-direction: column;align-items: center;"
-				@click="handleToConnectStore"
-			>
+			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleToConnectStore">
 				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
 				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
 			</view>
@@ -48,22 +91,18 @@
 				</view>
 			</view>
 			<view class="op-menus">
-				<BeeMakePhone :phone="brandDetail.phone">
+				<!-- <BeeMakePhone :phone="brandDetail.phone">
 					<view class="item">
-						<BeeIcon :size="26" :src="require('../../../static/brand/detail/phone.png')"></BeeIcon>
-						<text>电话</text>
+					<BeeIcon :size="26" :src="require('../../../static/images/index/design.png')"></BeeIcon>
+					<text>电话</text>
 					</view>
-				</BeeMakePhone>
+					</BeeMakePhone> -->
 
 				<view class="item" @click="$emit('navgation')">
-					<BeeIcon :size="26" :src="require('../../../static/brand/detail/location.png')"></BeeIcon>
+					<BeeIcon :size="26" :src="require('../../../static/images/index/design.png')"></BeeIcon>
 					<text>到这去</text>
 				</view>
 
-				<!-- <view class="item" @click="$emit('follow')">
-					<BeeIcon :size="26" :src="require('../../../../static/brand/detail/collection.png')"></BeeIcon>
-					<text>{{ brandDetail.is ? '取消收藏' : '收藏' }}</text>
-					</view> -->
 			</view>
 		</view>
 	</view>
@@ -82,6 +121,20 @@ export default {
 		handleToConnectStore() {
 			if (!this.brandDetail.userId || !this.brandDetail.name) return this.$showToast('缺少商家信息')
 			this.go(`/user/otherServe/chat/chat-detail?chat=${this.brandDetail.userId}&name=${this.brandDetail.name}&avatar=${this.brandDetail.picUrl}`)
+		},
+
+		// 收藏商家
+		async handleFollowBrand() {
+			const { data } = await collectionApi({
+				userId: getUserId(),
+				// brandId: this.brandDetail.id,
+				// is: !this.brandDetail.is,
+				valueId: this.brandDetail.id,
+				type: 2
+			})
+			this.ttoast(`${this.brandDetail.is ? '取消收藏' : '收藏'}成功`)
+			this.brandDetail.is = !this.brandDetail.is
+			console.log(data)
 		}
 	}
 }
@@ -89,10 +142,50 @@ export default {
 
 <style lang="less" scoped>
 .brand-info-container {
-	padding: 28upx 34upx;
+	// padding: 28upx 34upx;
 	box-sizing: border-box;
-	background-color: #fff;
-	border-radius: 40upx 40upx 0 0;
+
+	.navgation_top {
+		box-sizing: border-box;
+		width: 100vw;
+		z-index: 3;
+		display: flex;
+		justify-content: space-between;
+
+		image {
+			width: 38rpx;
+			height: 38rpx;
+		}
+
+		.imgbg {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 66rpx;
+			height: 66rpx;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.61);
+		}
+
+		.fnButton {
+			display: flex;
+
+			.imgbg {
+				margin-left: 10rpx;
+			}
+		}
+	}
+
+	.swiper {
+		z-index: 2;
+		width: 100vw;
+		height: 400rpx;
+
+		.bannerItem {
+			width: 100vw;
+			height: 400rpx;
+		}
+	}
 
 	.rate {
 		display: flex;

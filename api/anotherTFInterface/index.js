@@ -27,11 +27,17 @@ export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchPr
  */
 
 // 店铺首页查询，查询店铺详情
-export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
+export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data, 'GET')
 
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data, 'GET')
 
 // 查询店铺父级分类查询子级分类
 export const getShopCategorySonApi = (data) => AnotherTFRequest('/shopCategory/getShopCategorySon', data, 'GET')
+
+// 获取邀请码
+export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode', data, 'GET')
+
+// 用户扫码绑定
+export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platformInfoCode/saoMaBinding', data)
 

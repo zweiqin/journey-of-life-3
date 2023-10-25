@@ -61,7 +61,7 @@
 					</view>
 					<BeeAvatar
 						radius="0upx" :width="179" :height="156"
-						:src="require('../../../static/brand/detail/apponit.png')"
+						:src="require('../../../static/images/index/design.png')"
 					>
 					</BeeAvatar>
 				</view>

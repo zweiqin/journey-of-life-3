@@ -12,15 +12,11 @@
 
     <SaveImage :code="code" v-model="showSaveImage"></SaveImage>
 
-    <TuanWxShare style="position: absolute" ref="tuanWxShareRef"></TuanWxShare>
+    <BeeWxShare style="position: absolute" ref="beeWxShareRef"></BeeWxShare>
   </view>
 </template>
 
 <script>
-// #ifdef H5
-import share from '../../../../utils/wxshare'
-// #endif
-
 import { USER_INFO, USER_TOKEN } from '../../../../constant'
 import SaveImage from './SaveImage.vue'
 import { getConfigApi } from '../../../../api/auth'
@@ -81,7 +77,7 @@ export default {
             failCb: () => {},
           }
 
-          _this.$refs.tuanWxShareRef.share(data, isQuit)
+          _this.$refs.beeWxShareRef.share(data, isQuit)
           break
 
         case 'image':

@@ -18,7 +18,8 @@ export {
 	isVideoSource,
 	convertToDecimal,
 	isSubarray,
-	tradeOrderNo
+	tradeOrderNo,
+	jumpToOtherProject
 } from './DWHutils'
 export { formatTime } from './util'
 export { payFn, payShopFn } from './pay'

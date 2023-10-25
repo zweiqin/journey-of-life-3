@@ -1,74 +1,45 @@
 <template>
-	<view v-if="brandDetail" class="brand-detail-container">
-		<view
-			class="navgation_top" :style="{ backgroundColor: 'rgba(255, 255, 255, ' + navOpacity + ')' }"
-			:class="isNavGaFixed ? 'isFixed' : 'isAbsolute'"
-		>
-			<view class="imgbg">
-				<BeeBack :success-cb="successCb">
-					<BeeIcon name="arrowleft" :size="24" color="#fff"></BeeIcon>
-				</BeeBack>
-			</view>
-			<view class="fnButton">
-				<view class="imgbg" @click="handleFollowBrand">
-					<BeeIcon v-if="brandDetail.is" :size="26" :src="require('../../static/brand/detail/collection.png')">
+	<view class="brand-detail-container">
+
+		<view style="padding: 16upx 30upx 28upx;background-color: #ffffff;">
+			<BeeBack :success-cb="successCb">
+				<view style="display: flex;align-items: center;justify-content: space-between;">
+					<BeeIcon
+						name="arrowleft" :size="34" color="#222229"
+						style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
+					>
 					</BeeIcon>
-					<BeeIcon v-else :size="18" :src="require('../../static/brand/detail/aixin.png')"></BeeIcon>
+					<text style="flex: 1;margin-left: -40upx;;text-align: center;font-weight: bold;">门店详情</text>
 				</view>
-				<view class="imgbg">
-					<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
-						<BeeIcon :src="require('../../static/brand/detail/share.png')" :size="22"></BeeIcon>
-					</BeeWxShare>
-				</view>
-				<view class="imgbg" @click="go(`/user/sever/shop-car?isBack=1&orderType=1`)">
-					<BeeIcon :src="require('../../static/brand/detail/spCar.png')" :size="18"></BeeIcon>
-				</view>
-			</view>
+			</BeeBack>
+			<BrandInfo :brand-detail="brandDetail" @navgation="handleNavigate"></BrandInfo>
 		</view>
-		<!-- 轮播图 -->
-		<swiper
-			v-if="brandDetail.bgUrl && JSON.parse(brandDetail.bgUrl).length" class="swiper" :indicator-dots="true"
-			:autoplay="true" :interval="3000" :duration="1000"
-		>
-			<swiper-item v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index">
-				<tui-lazyload-img
-					mode="scaleToFill" width="100vw" height="400rpx" class="bannerItem"
-					:src="common.seamingImgUrl(img)"
-				></tui-lazyload-img>
-			</swiper-item>
-		</swiper>
-		<view class="main">
-			<!-- 商家信息栏 -->
-			<view style="margin-top: -26upx;border-radius: 30upx 30upx 0 0;overflow: hidden;">
-				<BrandInfo :brand-detail="brandDetail" @follow="handleFollowBrand" @navgation="handleNavigate"></BrandInfo>
-			</view>
-			<!-- 优惠卷栏 -->
-			<view style="background: #F6F6F6;">
-				<view class="favorable" @click="handleOpenCoupon">
-					<view class="navGationBar">
-						<view class="favorableItem"><span>优惠券</span><span>领</span></view>
-						<view>
-							<tui-icon name="arrowright" color="#151515" size="60" unit="upx"></tui-icon>
-						</view>
+
+		<!-- 优惠卷栏 -->
+		<view style="background: #F6F6F6;margin-top: 100upx;">
+			<view class="favorable" @click="handleOpenCoupon">
+				<view class="navGationBar">
+					<view class="favorableItem"><span>优惠券</span><span>领</span></view>
+					<view>
+						<tui-icon name="arrowright" color="#151515" :size="60" unit="upx"></tui-icon>
 					</view>
 				</view>
-				<tui-tabs
-					:class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000"
-					size="35" :is-fixed="isTabFixed"
-					slider-bg-color="#FB5D5D" bold
-					:tabs="[{ name: '商品' }, { name: '团购' }, { name: '预约' }, { name: '秒杀' }, { name: '抽奖' }]"
-					:current-tab="currentMenu" style="z-index: 1;" @change="handleChangeNavs"
-				></tui-tabs>
 			</view>
+			<tui-tabs
+				:class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000" :size="35"
+				:is-fixed="isTabFixed" slider-bg-color="#FB5D5D" bold
+				:tabs="[{ name: '商品' }, { name: '团购' }, { name: '预约' }, { name: '秒杀' }, { name: '抽奖' }]"
+				:current-tab="currentMenu" style="z-index: 1;" @change="handleChangeNavs"
+			></tui-tabs>
 		</view>
 
 		<view class="brand-pane" :style="{ marginTop: isTabFixed ? '80upx' : '0' }">
 			<view v-show="currentMenu === 0" class="goods-list" style="width: 100%">
-				<StoreGoodsList
+				<!-- <StoreGoodsList
 					:brand-detail="brandDetail" :overflow-y="paneOverflowY"
 					@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}`)"
 					@add-car="(e) => $refs.refJSpecificationScreen.open(e.id)"
-				></StoreGoodsList>
+					></StoreGoodsList> -->
 				<!-- <view v-if="brandDetail.goodsVoList && brandDetail.goodsVoList.length">
 					<tui-waterfall :list-data="brandDetail.goodsVoList" :type="2">
 					<template #left="{ entity }">
@@ -83,7 +54,10 @@
 
 			<GrouponWrapper v-if="currentMenu === 1" :brand-detail="brandDetail"></GrouponWrapper>
 
-			<Reservation v-if="currentMenu === 2" :brand-detail="brandDetail" :is-overflow-y="paneOverflowY === 'auto' ? true : false"></Reservation>
+			<Reservation
+				v-if="currentMenu === 2" :brand-detail="brandDetail"
+				:is-overflow-y="paneOverflowY === 'auto' ? true : false"
+			></Reservation>
 
 			<Seckill v-if="currentMenu === 3" :brand-detail="brandDetail"></Seckill>
 
@@ -94,14 +68,14 @@
 
 		<tui-bottom-popup :show="isShowCouponListPopup" @close="isShowCouponListPopup = false">
 			<view style="padding: 20upx;">
-				<CouponList :brand-detail="brandDetail" :is-first-show-coupon="isFirstShowCoupon"></CouponList>
+				<!-- <CouponList :brand-detail="brandDetail" :is-first-show-coupon="isFirstShowCoupon"></CouponList> -->
 			</view>
 		</tui-bottom-popup>
 
-		<JSpecificationScreen
+		<!-- <JSpecificationScreen
 			ref="refJSpecificationScreen" order-type="1"
 			@success="$refs.refStoreShopCart && $refs.refStoreShopCart.getShopList()"
-		></JSpecificationScreen>
+			></JSpecificationScreen> -->
 
 		<tui-toast ref="toast"></tui-toast>
 
@@ -114,15 +88,14 @@
 <script>
 import StoreShopCart from './components/StoreShopCart.vue'
 import BrandInfo from './components/BrandInfo'
-import { getBrandDetailApi } from '../../api/brand'
-import { collectionApi } from '../../api/goods'
+import { getIndexShopDetailApi } from '../../api/anotherTFInterface'
 import AppraisePane from './components/AppraisePane.vue'
 import GrouponWrapper from './components/GrouponWrapper.vue'
 import CouponList from './components/CouponList.vue'
 import Reservation from './components/Reservation.vue'
 import Seckill from './components/Seckill.vue'
 import Raffle from './components/Raffle.vue'
-import { getUserId, navigationAddress } from '../../utils'
+import { navigationAddress } from '../../utils'
 
 export default {
 	name: 'Detail',
@@ -150,7 +123,7 @@ export default {
 			isShowCouponListPopup: false,
 
 			currentMenu: 0,
-			brandId: null,
+			shopId: null,
 			brandDetail: {},
 			isFirstShowCoupon: false,
 			paneOverflowY: 'hidden'
@@ -158,24 +131,54 @@ export default {
 	},
 
 	onLoad(options) {
-		this.brandId = options.brandId
+		this.shopId = options.shopId
 		this.getBrandDetail()
 	},
 
 	methods: {
 		async getBrandDetail() {
-			const { data } = await getBrandDetailApi({
-				id: this.brandId,
+			const { data } = await getIndexShopDetailApi({
+				shopId: this.shopId,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1],
-				userId: getUserId()
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})
+			console.log(data)
 			this.brandDetail = data || {}
-			// #ifdef H5
-			this.$nextTick(() => {
-				this.handleShareServe(true)
-			})
-			// #endif
+			this.brandDetail = {
+				'shopId': 208,
+				'collectId': 0,
+				'ifCollect': 0,
+				'shopName': '大家足专业修脚',
+				'shopLogo': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1hkq40u379mr7igjiddc.jpg',
+				'shopAdress': '水藤大道56号大家足',
+				'coupons': [],
+				'shopSeckill': [],
+				'shopGroupWork': [],
+				'shopDiscount': [],
+				'classifyNumber': 1,
+				'number': 0,
+				'fansNumber': 1,
+				'shopType': 2,
+				'longitude': '113.0779380',
+				'latitude': '22.9170740',
+				'isVoucher': 0,
+				'classificationId': '96',
+				'voucherReturn': '60',
+				'areaId': '440606103',
+				'buyerUserId': 0,
+				'monthlySales': 0,
+				'perCapita': 0,
+				'startTime': '9:00',
+				'endTime': '20:00',
+				'advertisement': '',
+				'distance': 0,
+				'trade': '营业中'
+			}
+			// // #ifdef H5
+			// this.$nextTick(() => {
+			// 	this.handleShareServe(true)
+			// })
+			// // #endif
 		},
 
 		// 打开优惠券
@@ -189,20 +192,6 @@ export default {
 			this.currentMenu = e.index
 		},
 
-		// 收藏商家
-		async handleFollowBrand() {
-			const { data } = await collectionApi({
-				userId: getUserId(),
-				// brandId: this.brandDetail.id,
-				// is: !this.brandDetail.is,
-				valueId: this.brandDetail.id,
-				type: 2
-			})
-			this.ttoast(`${this.brandDetail.is ? '取消收藏' : '收藏'}成功`)
-			this.brandDetail.is = !this.brandDetail.is
-			console.log(data)
-		},
-
 		// 分享
 		handleShareServe(isQuit) {
 			if (!this.isLogin()) return
@@ -210,7 +199,7 @@ export default {
 				data: {
 					title: `巨蜂本地生活商圈 - ${this.brandDetail.name}`,
 					desc: this.brandDetail.desc,
-					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?brandId=${this.brandDetail.id}`,
+					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?shopId=${this.brandDetail.id}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.picUrl)
 				},
 				successCb: () => { },
@@ -232,28 +221,6 @@ export default {
 		}
 	},
 	onPageScroll(e) {
-		if (e.scrollTop >= 34) {
-			this.navOpacity = e.scrollTop / 200
-			this.isNavGaFixed = true
-		} else {
-			this.navOpacity = 0
-			this.isNavGaFixed = false
-		}
-		if (e.scrollTop < this.yuanH) {
-			this.isTabFixed = false
-			this.paneOverflowY = 'hidden'
-		} else {
-			this.isTabFixed = true
-			this.paneOverflowY = 'auto'
-		}
-		// if (this.currentMenu === 0 || this.currentMenu === 2) {
-		// 	uni.createSelectorQuery().in(this)
-		// 		.select('.brand-pane')
-		// 		.boundingClientRect((data) => {
-		// 			console.log(data.top)
-		// 		})
-		// 		.exec()
-		// }
 	}
 }
 </script>
@@ -261,118 +228,59 @@ export default {
 <style lang="scss" scoped>
 .brand-detail-container {
 	position: relative;
-	width: 100vw;
 	min-height: 100vh;
 	padding-bottom: 120upx;
+	background-color: #f5f4f6;
+	box-sizing: border-box;
 
-	.isFixed {
-		position: fixed;
-		top: 0;
-		left: 0;
-	}
+	.favorable {
+		box-sizing: border-box;
+		padding: 0rpx 18rpx;
+		margin-bottom: 25rpx;
+		width: 100vw;
+		background-color: white;
+		border-radius: 10rpx;
 
-	.isAbsolute {
-		position: absolute;
-		top: 70rpx;
+		.navGationBar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			box-sizing: border-box;
+			// background-color: white;
+			position: relative;
+			width: 100%;
+			min-height: 74rpx;
+			padding: 8rpx 36rpx 14rpx 24upx;
+		}
+
+		.favorableItem {
+			margin-right: 30rpx;
+			border-radius: 5rpx;
+			display: inline-block;
+			background-color: #FF5353;
+			font-size: 24rpx;
+			font-weight: normal;
+			color: #FFFFFF;
+
+			>span {
+				font-size: 28rpx;
+				box-sizing: border-box;
+			}
+
+			>span:nth-of-type(1) {
+				padding: 5rpx 10rpx;
+				border-right: 1px dashed white;
+			}
+
+			>span:nth-of-type(2) {
+				padding: 5rpx 8rpx;
+			}
+		}
 	}
 
 	.sticky-fixed {
 		// position: fixed;
 		top: 80rpx !important;
-	}
-
-	.navgation_top {
-		box-sizing: border-box;
-		// margin-top: 72rpx;
-		padding: 15rpx 40rpx;
-		width: 100vw;
-		z-index: 3;
-		display: flex;
-		justify-content: space-between;
-
-		image {
-			width: 38rpx;
-			height: 38rpx;
-		}
-
-		.imgbg {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 66rpx;
-			height: 66rpx;
-			border-radius: 50%;
-			background: rgba(0, 0, 0, 0.61);
-		}
-
-		.fnButton {
-			display: flex;
-
-			.imgbg {
-				margin-left: 10rpx;
-			}
-		}
-	}
-
-	.swiper {
-		z-index: 2;
-		width: 100vw;
-		height: 400rpx;
-
-		.bannerItem {
-			width: 100vw;
-			height: 400rpx;
-		}
-	}
-
-	.main {
-		clear: both;
-		position: relative;
-
-		.favorable {
-			box-sizing: border-box;
-			padding: 0rpx 18rpx;
-			margin-bottom: 25rpx;
-			width: 100vw;
-			background-color: white;
-			border-radius: 10rpx;
-
-			.navGationBar {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				box-sizing: border-box;
-				// background-color: white;
-				position: relative;
-				width: 100%;
-				min-height: 74rpx;
-				padding: 8rpx 36rpx 14rpx 24upx;
-			}
-
-			.favorableItem {
-				margin-right: 30rpx;
-				border-radius: 5rpx;
-				display: inline-block;
-				background-color: #FF5353;
-				font-size: 24rpx;
-				font-weight: normal;
-				color: #FFFFFF;
-
-				>span {
-					font-size: 28rpx;
-					box-sizing: border-box;
-				}
-
-				>span:nth-of-type(1) {
-					padding: 5rpx 10rpx;
-					border-right: 1px dashed white;
-				}
-
-				>span:nth-of-type(2) {
-					padding: 5rpx 8rpx;
-				}
-			}
-		}
 	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
@@ -393,5 +301,4 @@ export default {
 		}
 	}
 }
-
 </style>

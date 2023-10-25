@@ -141,6 +141,25 @@ export const getStorageKeyToken = () => {
 }
 
 /**
+ * 跳转到新团蜂入驻端项目
+ * @returns
+ */
+
+export const jumpToOtherProject = (url, cb = () => {}) => {
+	// #ifdef H5
+	window.location.href = url
+	// #endif
+	// #ifdef APP
+	plus.runtime.openURL(url, cb)
+	// #endif
+	// #ifdef MP
+	uni.redirectTo({
+		url: `/user/view?target=${url}`
+	})
+	// #endif
+}
+
+/**
  * 点击复制
  * @param {*} text
  */

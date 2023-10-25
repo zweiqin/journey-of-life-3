@@ -1,11 +1,21 @@
 <template>
   <view class="icon-container" @click="$emit('click')">
-    <image :src="src" :style="{
-      width: width ? width : size * 2 + 'rpx',
-      height: width ? height : size * 2 + 'rpx',
-    }" v-if="src" mode="" />
+    <image
+      :src="src"
+      :style="{
+        width: width ? width : size * 2 + 'rpx',
+        height: width ? height : size * 2 + 'rpx',
+      }"
+      v-if="src"
+      mode=""
+    />
 
-    <tui-icon v-if="name" :name="name" :color="color" :size="size"></tui-icon>
+    <tui-icon
+      v-if="name"
+      :name="name"
+      :color="color"
+      :size="size"
+    ></tui-icon>
   </view>
 </template>
 

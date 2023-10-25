@@ -13,14 +13,14 @@
         <view style="display: flex">
           <image style="margin-right: 20upx" @click="empty()" src="../../static/images/detail/brand.png" mode="" />
 
-          <TuanWxShare ref="tuanWxShareRef" @click="handleShareGoods">
+          <BeeWxShare ref="beeWxShareRef" @click="handleShareGoods">
             <!-- <image
               @click=""
               src="../../static/images/detail/share.png"
               mode=""
             /> -->
             <image src="../../static/images/detail/share.png" mode="" />
-          </TuanWxShare>
+          </BeeWxShare>
         </view>
       </view>
 
@@ -686,7 +686,7 @@ export default {
         failCb: () => {}
       };
 
-      this.$refs.tuanWxShareRef.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId);
+      this.$refs.beeWxShareRef.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId);
     },
 
     // 打开客服

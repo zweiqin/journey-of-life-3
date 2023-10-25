@@ -12,6 +12,7 @@
 		</view>
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
 		<BaseInfo ref="baseInfoRef" :data="userInfo" @handleNavigate="handleNavigate"></BaseInfo>
+		{{ bindingCode }}
 		<view class="main-area">
 			<Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
 			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { throttle } from '../../utils'
+import { throttle, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
 import Equity from './cpns/Equity.vue'
 import MyFunction from './cpns/MyFunction.vue'
@@ -41,8 +42,8 @@ import Serve from './cpns/Serve.vue'
 import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
 import { myEquity } from './data'
-import { getStorageKeyToken } from '../../utils/DWHutils'
 import { Encrypt } from '../../utils/secret'
+import { getUserInfoCodeApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'User',
@@ -63,6 +64,12 @@ export default {
 	onShow() {
 		this.init()
 		this.setShareHolder()
+		// if (this.$store.getters.userInfo.userMap.isTz || thiis.$store.getters.userInfo.userMap.isHhr) {
+		getUserInfoCodeApi({ type: 1 }).then((res) => {
+			console.log(res)
+			this.bindingCode = res.data.invitationCode
+		})
+		// }
 	},
 	data() {
 		return {
@@ -73,7 +80,8 @@ export default {
 			calcDis: null,
 			userId: null,
 			myEquity1: [],
-			userInfo: {}
+			userInfo: {},
+			bindingCode: ''
 		}
 	},
 	methods: {
@@ -87,6 +95,7 @@ export default {
 			}
 			this.$forceUpdate()
 		},
+		// eslint-disable-next-line complexity
 		handleNavigate(item, cb) {
 			// if (['/user/sever/customer-service/customer-service', '/user/sever/chat/chat'].includes(item.url)) {
 			//   this.$refs.tuanChatKFRef.show();
@@ -102,7 +111,9 @@ export default {
 			}
 			if (item.type === 'settle') {
 				const storageKeyToken = getStorageKeyToken()
-				if (storageKeyToken) this.go('/user/view?target=' + item.url + `/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+				if (storageKeyToken) {
+					jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+				}
 				return
 			}
 			if (this.isLogin()) {

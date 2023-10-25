@@ -19,7 +19,7 @@
 									style="display: flex;align-items: center;margin: 10upx;padding: 4upx 24upx;background-color: #fff5f4;border-radius: 28upx;"
 									@click="handleLevelTwoCategory(part)"
 								>
-									<TuanIcon :src="common.seamingImgUrl(part.picUrl)" :size="26"></TuanIcon>
+									<BeeIcon :src="common.seamingImgUrl(part.picUrl)" :size="26"></BeeIcon>
 									<view style="font-size: 28upx;">{{ part.name }}</view>
 								</view>
 							</view>

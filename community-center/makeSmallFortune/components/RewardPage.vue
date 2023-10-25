@@ -16,8 +16,8 @@
 		</view>
 
 		<view style="display: flex;align-items: center;margin-top: 20upx;padding: 0rpx 30rpx 20rpx 30rpx;">
-			<TuanIcon :size="28" style="width: fit-content;border-radius: 50%;overflow: hidden;" :src="userInfo.avatarUrl">
-			</TuanIcon>
+			<BeeIcon :size="28" style="width: fit-content;border-radius: 50%;overflow: hidden;" :src="userInfo.avatarUrl">
+			</BeeIcon>
 			<text style="padding-left: 12upx;;font-size: 26upx;">{{ userInfo.nickName }}</text>
 		</view>
 

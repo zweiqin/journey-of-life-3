@@ -51,7 +51,7 @@
 
     <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
-    <TuanWxShare ref="tuanWxShareRef" @click="handleInitShare"></TuanWxShare>
+    <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
     <!-- 判断微信绑定手机号 -->
     <TuanWXLoginBindMobile @close="handleResetGlobal" @success="handleBindPhoneSuccess" ref="tuanWXLoginBindMobileRef"></TuanWXLoginBindMobile>
@@ -207,7 +207,7 @@ export default {
         successCb: () => {},
         failCb: () => {}
       };
-      await this.$refs.tuanWxShareRef.share(data, isQuit);
+      await this.$refs.beeWxShareRef.share(data, isQuit);
     },
 
     // 检查当前是否绑定手机号

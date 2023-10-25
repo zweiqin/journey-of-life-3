@@ -6,9 +6,9 @@
 			<view style="flex: 1;display: flex;align-items: center;margin-right: 26upx;background-color: #ffffff;border: 2upx solid #EF5511;border-radius: 50upx;">
 				<TuanLocation style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;">
 					{{ $store.getters.currentCity || '定位失败' }}
-					<TuanIcon
+					<BeeIcon
 						:size="26" name="turningdown" color="#222229"
-					></TuanIcon>
+					></BeeIcon>
 				</TuanLocation>
 				<tui-input
 					label="" placeholder="全屋严选" disabled

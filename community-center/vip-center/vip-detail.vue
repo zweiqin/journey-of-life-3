@@ -79,7 +79,7 @@
 		<!-- 分享活动邀请码 -->
 		<PosterPopup ref="posterPopupRef"></PosterPopup>
 
-		<TuanWxShare ref="tuanWxShareRef"> </TuanWxShare>
+		<BeeWxShare ref="beeWxShareRef"> </BeeWxShare>
 		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
@@ -437,7 +437,7 @@ export default {
 				}
 			}
 		  try {
-		  	await this.$refs.tuanWxShareRef.share(data, isQuit)
+		  	await this.$refs.beeWxShareRef.share(data, isQuit)
 		  	uni.hideLoading()
 		  	if (isQuit && this.activityCode) uni.showLoading({ mask: true })
 		  } catch (error) {

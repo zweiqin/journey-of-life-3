@@ -10,21 +10,11 @@
 			<view class="label">{{ item.label }}</view>
 		</view>
 
-		<!-- 下面原先的code是base64文件码 -->
-		<!-- <SaveImage v-model="showSaveImage" :code="code"></SaveImage> -->
-
-		<TuanWxShare ref="tuanWxShareRef" style="position: absolute"></TuanWxShare>
+		<BeeWxShare ref="beeWxShareRef" style="position: absolute"></BeeWxShare>
 	</view>
 </template>
 
 <script>
-// #ifdef H5
-import share from '../../../../utils/wxshare'
-// #endif
-
-import { USER_INFO, USER_TOKEN } from '../../../../constant'
-// import SaveImage from './SaveImage.vue'
-import { getConfigApi } from '../../../../api/auth'
 const shareList = [
 	{
 		label: '微信朋友',
@@ -79,7 +69,7 @@ export default {
 						successCb: () => {},
 						failCb: () => {}
 					}
-					_this.$refs.tuanWxShareRef.share(data, isQuit)
+					_this.$refs.beeWxShareRef.share(data, isQuit)
 					break
 
 				case 'image':

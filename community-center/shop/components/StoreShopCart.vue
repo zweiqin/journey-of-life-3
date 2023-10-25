@@ -46,7 +46,7 @@
 				<view
 					style="position: absolute;left: 46upx;bottom: 26upx;padding: 28upx;background-color: #ff973f;border-radius: 50%;"
 				>
-					<BeeIcon :src="require('../../../static/brand/detail/spCar.png')" :size="28"></BeeIcon>
+					<BeeIcon :src="require('../../../static/images/index/design.png')" :size="28"></BeeIcon>
 				</view>
 				<text style="color: #949494;padding-right: 20upx;">共{{ carTotalInfo.goodsCount }}件</text>
 				<text>合计：</text>

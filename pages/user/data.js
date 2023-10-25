@@ -3,6 +3,8 @@ import { status } from './../../user/digital-store/newBusiness/config';
  * external: 跳转外部网页， 跳转路径：/user/view
  */
 
+import { ANOTHER_TF_SETTLE } from './../../config'
+
 import store from 'store'
 
 export const shopOrderMneus = [
@@ -209,7 +211,7 @@ export const myServe = [
 		name: '商家入驻',
 		icon: require('../../static/images/new-user/serve/zz.png'),
 		type: 'settle',
-		url: 'https://nsh51.tuanfengkeji.cn'
+		url: ANOTHER_TF_SETTLE
 	},
 	{
 		name: '银行卡',
