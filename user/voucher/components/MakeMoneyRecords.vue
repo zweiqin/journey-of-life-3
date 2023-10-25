@@ -30,9 +30,9 @@
                 </template>
                 <template v-slot:button>
                     <view class="UserMessage">
-                        <image class="userIcon" :src="item.imgUrl"></image>
+                        <image class="userIcon" :src="item.user.avatar"></image>
                         <view class="userNmae">
-                            {{ item.nickName }}
+                            {{ item.user.username }}
                         </view>
                     </view>
                 </template>
