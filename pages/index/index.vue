@@ -68,6 +68,7 @@ import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
 import loadMore from '../../mixin/loadMore';
 import { goodsListApi } from '../../api/goods';
+import { getClassifyProducts2, getCanvas, getFirstClassify, getShopDetailsById, getSearchProducts } from '@/api/newTFInterface';
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
 
 import { homeTopNavs } from './config';
@@ -111,6 +112,27 @@ export default {
     this.$data._query.order = 'desc';
     this._loadData();
     this.getCategoryList();
+    // getClassifyProducts2({
+    //   classifyId: '',
+    //   type: '1',
+    //   volume: '1',
+    //   productName: '',
+    //   page: 1,
+    //   pageSize: 20
+    // }).then(res => {
+    //   console.log(res)
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+    getCanvas({
+      terminal: 2,
+      type: 1
+    }).then(res => {
+      console.log(JSON.parse(res.data.json))
+    }).catch(err => {
+      console.log(err)
+    })
+    
   },
 
   methods: {
