@@ -2,7 +2,7 @@ import { USER_INFO, USER_ID, USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '..
 import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP } from './type'
 import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
-import { getAnotherTFToken } from '../../api/anotherTFInterface'
+import { getAnotherTFTokenApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
@@ -167,7 +167,7 @@ export default {
 		updateStorageKeyToken() {
 			const userInfo = uni.getStorageSync(USER_INFO)
 			if (userInfo && userInfo.phone) {
-				getAnotherTFToken({ phone: userInfo.phone })
+				getAnotherTFTokenApi({ phone: userInfo.phone })
 					.then((res) => {
 						uni.setStorageSync(T_STORAGE_KEY, res.data)
 					})

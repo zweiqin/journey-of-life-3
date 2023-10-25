@@ -19,6 +19,7 @@
     },
     {
       "path": "pages/index/index",
+      // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商城",
         "backgroundTextStyle": "dark",
@@ -349,6 +350,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
+        // "pagePath": "pages/another-index/index",
         "text": "商城",
         "iconPath": "/static/images/tabbar/furniture.png",
         "selectedIconPath": "/static/images/tabbar/furniture-active.png"
@@ -1356,6 +1358,18 @@
           "path": "b-order-form/b-order-form",
           "style": {
             "navigationBarTitleText": "订单详情"
+          }
+        }
+      ]
+    },
+    {
+      "root": "another-tf",
+      "pages": [
+        {
+          "path": "serve/shopCar/shopCar",
+          "style": {
+            "navigationBarTitleText": "购物车",
+            "usingComponents": {}
           }
         }
       ]

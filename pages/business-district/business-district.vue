@@ -54,6 +54,7 @@ import ActivityPackage from './components/ActivityPackage.vue'
 import BrandShop from './components/BrandShop.vue'
 
 import { getNearByShopListApi } from '../../api/community-center'
+import { getShopCategoryLevelApi } from '../../api/anotherTFInterface'
 import { getCurrentLocation } from '../../utils'
 
 export default {
