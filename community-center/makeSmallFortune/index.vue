@@ -1,6 +1,27 @@
 <template>
       <view class="MakeSmallFortuneBox">
-        <view class="containerHeader">
+        <view class="shop-header-container">
+			<image class="back-icon" src="@/static/images/new-business/category/back.png" @click="back"></image>
+			<view class="search-container">
+				<text style="font-weight: bold;font-size: 36upx;">文章中心</text>
+				<tui-input
+					v-model="queryInfo.search" label="" placeholder="社区商圈"
+					clearable is-fillet padding="6upx 10upx 6upx 26upx"
+					style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
+				>
+					<template #right>
+                        <!-- @click="queryInfo.search && getNearByShopList(true)" -->
+						<tui-button
+							type="warning" width="120rpx" height="50rpx" shape="circle"
+							style="background: #ee692f!important;"
+						>
+							搜索
+						</tui-button>
+					</template>
+				</tui-input>
+			</view>
+		</view>
+        <!-- <view class="containerHeader">
             <tui-icon color="#000" name="arrowleft" unit="rpx" :size="88"  @click="goBack"></tui-icon>
             <text class="headerTitle">文章中心</text>
             <form @submit="getPostList">
@@ -9,7 +30,7 @@
                 <button class="submitBtn" form-type="submit">搜索</button>
             </view>
             </form>
-        </view>
+        </view> -->
         <view class="TabMenus">
             <view class="tabItem" :class="{active:currentTab == index}" v-for="(item, index) in tabs" :key="index" @click="changeTab(index)">
                 <image class="tabsIocn" :src="item.imgUrl"></image>
@@ -39,6 +60,9 @@ export default {
         return {
             currentTab: 0,
             isLoding: false,
+            queryInfo: {
+                search: ''
+            },
             tabs: [{
                 name: '赚小钱',
                 imgUrl: require('@/static/images/new-community/home/book.png')
@@ -88,6 +112,32 @@ export default {
 </script>
 
 <style lang="scss">
+.shop-header-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 108upx;
+		width: 100vw;
+		background-color: #fff;
+		padding: 0 30upx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		z-index: 998;
+
+		.back-icon {
+			width: 48upx;
+			height: 48upx;
+			flex-shrink: 0;
+		}
+
+		.search-container {
+			flex: 1;
+			display: flex;
+			align-items: center;
+		}
+	}
 .MakeSmallFortuneBox {
     width: 100vw;
     min-height: 100vh;

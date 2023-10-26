@@ -1,4 +1,4 @@
-import { NEW_JFSHOP_INTERFACE } from '../config'
+import { ANOTHER_TF_INTERFACE } from '../config'
 
 const request = (base_url) => function (url, data = {}, method = 'post', cb, header) {
 	return new Promise((resolve, reject) => [
@@ -8,7 +8,7 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb, hea
 			method,
 			header: {
 				...header,
-				Authorization: uni.getStorageSync('NEW_JF_USER_INFO').token
+				Authorization: uni.getStorageSync('T_STORAGE_KEY').token
 			},
 			success: (res) => {
 				resolve(res.data)
@@ -24,4 +24,4 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb, hea
 	])
 }
 
-export const newTFrequest = request(NEW_JFSHOP_INTERFACE)
+export const newTFrequest = request(ANOTHER_TF_INTERFACE)

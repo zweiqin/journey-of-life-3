@@ -25,6 +25,9 @@
                 可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
           </span>
         </view>
+        <view class="ClicTokDetails deletes" v-if="redirection" @click="deleteRedText(datas.postId)">
+          删除文章
+        </view>
         <view class="ClicTokDetails" v-if="redirection" @click="redirection(datas.postId)">
           编辑文章
         </view>
@@ -49,11 +52,15 @@ export default {
     redirection: {
       type: Function,
       default: null
-    }
+    },
+    // myRelease: {
+    //   type: Boolean,
+    //   default: false
+    // }
 	},
 	data() {
 		return {
-
+      
 		}
 	},
 	computed: {},
@@ -76,12 +83,22 @@ export default {
 			uni.navigateTo({
 				url: `/community-center/makeSmallFortune/articleDetails?id=${this.datas.postId}`
 			})
-		}
+		},
+    deleteRedText(ID) {
+      this.$emit("deleteText", ID)
+    }
 	}
 }
 </script>
 
 <style lang="scss" scoped>
+.deletes {
+  position: absolute;
+  top: -60rpx;
+  right: 30rpx;
+  background-color: #ff0000 !important;
+  color: #fff !important;
+}
 .ArticlesItem {
   min-width: 100%;
   box-sizing: border-box;
@@ -155,6 +172,7 @@ export default {
   }
 
   .ArticlesItemTBottom {
+    position: relative;
     margin-top: 10rpx;
     width: 100%;
     height: 50rpx;

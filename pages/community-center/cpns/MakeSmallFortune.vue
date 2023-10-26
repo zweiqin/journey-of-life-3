@@ -75,15 +75,13 @@ export default {
 				region
 			}).then(res => {
 				// res.data.talentList
-				this.renderData = res.data.talentList.map((item, index) => {
-					// item.readerAvata = [
-					// 			require('@/static/images/new-community/home/avatar1.png'),
-					// 			require('@/static/images/new-community/home/avatar2.png'),
-					// 			require('@/static/images/new-community/home/avatar3.png')
-					// 		]
-					return item
-				})
-				// console.log(this.renderData)
+        // let data = res.data.talentList.filter(item => )
+				let data = res.data.talentList.filter((item, index) => {
+					return item.remainingPacket <= 0
+ 				})
+        this.renderData = [...res.data.talentList.filter((item, index) => {
+					return item.remainingPacket > 0
+ 				}), ...data]
 			})
 		}
 	},
