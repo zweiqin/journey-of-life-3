@@ -109,11 +109,20 @@ const endService = (base_url) => function (config) {
 			method,
 			success: (res) => {
 				const data = res.data
-				if (data.code == '20000' || data.code == '0') {
-					resolve(data.data)
+				if (data.statusCode) {
+					if (data.statusCode === 20000) {
+						resolve(data.data)
+					} else {
+						reject(data.statusMsg)
+					}
 				} else {
-					reject(data.msg)
+					if (data.code == '20000' || data.code == '0') {
+						resolve(data.data)
+					} else {
+						reject(data.msg)
+					}
 				}
+
 				loading && uni.hideLoading()
 			},
 			fail: (error) => {

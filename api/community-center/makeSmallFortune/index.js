@@ -51,3 +51,6 @@ export const dataStatistics = (data) => RuanRequest('/dtsPostRedPacketRecord/dat
 
 // /dtsPostRedPacketInfo/redStatistics  我的红包数据转化统计
 export const redStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redStatistics', data, 'GET')
+
+// /dtsPostBbs/postDetailsDelete 删除
+export const postDetailsDelete = (data) => RuanRequest('/dtsPostBbs/postDetailsDelete', data, 'GET')

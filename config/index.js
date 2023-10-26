@@ -1,7 +1,7 @@
 // 线上助力通
 // export const SheQu1_URL = 'https://www.zhult.com/test-'
 export const SheQu1_URL = 'https://www.zhult.com/'
-// export const SheQu1_URL = "http://192.168.0.49:8781/";
+// export const SheQu1_URL = "http://192.168.0.74:8781/";
 // 线上团蜂
 export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api'
 

@@ -2,11 +2,8 @@
 	<view class="recharge-page">
 		<JBack dark width="50" height="50"></JBack>
 		<view style="text-align: right;">
-			<tui-button
-				width="150rpx" height="54rpx" :size="28" type="black"
-				bold shape="circle" plain style="display: inline-block;"
-				@click="go('/user/sever/withdrawal/withdrawal-record')"
-			>
+			<tui-button width="150rpx" height="54rpx" :size="28" type="black" bold shape="circle" plain
+				style="display: inline-block;" @click="go('/user/sever/withdrawal/withdrawal-record')">
 				提现记录
 			</tui-button>
 		</view>
@@ -24,32 +21,28 @@
 				</view>
 				<!-- <view class="title">提现金额</view> -->
 				<view style="margin: 50upx 0 120upx;">
-					<tui-input
-						v-model="withdrawalForm.name" padding="26rpx 6rpx" label="收款人姓名：" placeholder="请输入收款人姓名"
-						clearable border-color="#cccccc" style="border-bottom: 2upx solid #cccccc;"
-					></tui-input>
+					<tui-input v-model="withdrawalForm.name" padding="26rpx 6rpx" label="收款人姓名：" placeholder="请输入收款人姓名" clearable
+						border-color="#cccccc" style="border-bottom: 2upx solid #cccccc;"></tui-input>
 				</view>
 
 				<view style="text-align: center;">
-					<tui-button
-						width="580rpx" height="96rpx" :size="38" type="green"
-						shape="circle" style="display: inline-block;"
-						@click="handleRecharge"
-					>
+					<tui-button width="580rpx" height="96rpx" :size="38" type="green" shape="circle" style="display: inline-block;"
+						@click="handleRecharge">
 						全部提现
 					</tui-button>
 				</view>
 			</view>
 		</view>
-		<tui-select
-			:list="bankCardList" reverse :show="isShowBankCardSelect" @confirm="handleSelectBankCard"
-			@close="isShowBankCardSelect = false"
-		></tui-select>
+		<tui-select :list="bankCardList" reverse :show="isShowBankCardSelect" @confirm="handleSelectBankCard"
+			@close="isShowBankCardSelect = false"></tui-select>
+
+		<tui-modal :show="showModal" title="提示" content="您还未实名认证，请先去认证" @click="handleOpmodal
+			"></tui-modal>
 	</view>
 </template>
 
 <script>
-import { getBankCardListUserApi, withdrawalBalanceApi, refrshUserInfoApi } from '../../../api/user'
+import { getBankCardListUserApi, withdrawalBalanceApi, refrshUserInfoApi, getIdentityAuthenticationInfoApi } from '../../../api/user'
 import { getUserId } from '../../../utils'
 import { USER_INFO } from '../../../constant'
 
@@ -69,7 +62,8 @@ export default {
 			},
 			tempwithdrawBankName: '请选择提现方式',
 			bankCardList: [],
-			isShowBankCardSelect: false
+			isShowBankCardSelect: false,
+			showModal: false
 		}
 	},
 
@@ -120,18 +114,38 @@ export default {
 			this.tempwithdrawBankName = e.options.text
 		},
 
+
+		handleOpmodal(e) {
+			if (e.index) {
+				uni.navigateTo({
+					url: '/user/commission-statistics/identity-authentication',
+				})
+			}
+
+			this.showModal = false
+		},
+
 		handleRecharge() {
 			if (!this.withdrawalForm.accountBankId) return this.$showToast('请选择提现方式')
 			if (!this.withdrawalForm.name) return this.$showToast('请输入收款人姓名')
-			withdrawalBalanceApi({
-				...this.withdrawalForm,
-				userId: getUserId()
-			}).then(({ data }) => {
-				this.$showToast('操作成功')
-				this.refrshUserInfo()
-				setTimeout(() => {
-					uni.navigateBack()
-				}, 2000)
+
+			getIdentityAuthenticationInfoApi({
+				mobile: this.userInfo.phone
+			}).then(res => {
+				if (!res) {
+					this.showModal = true
+				} else {
+					withdrawalBalanceApi({
+						...this.withdrawalForm,
+						userId: getUserId()
+					}).then(({ data }) => {
+						this.$showToast('操作成功')
+						this.refrshUserInfo()
+						setTimeout(() => {
+							uni.navigateBack()
+						}, 2000)
+					})
+				}
 			})
 		}
 	}
