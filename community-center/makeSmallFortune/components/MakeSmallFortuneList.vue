@@ -51,11 +51,18 @@ export default {
                 icon: 'none'
               });
           }
-          res.data.talentList.forEach((item, index) => {
-            this.renderData.push(item)
+
+          let data = res.data.talentList.filter((item, index) => {
+            if (item.remainingPacket > 0) {
+              this.renderData.push(item)
+            }
+					  return item.remainingPacket <= 0
           })
+          this.renderData = [...this.renderData, ...data]
+
           this.$emit('isLoading', false)
-        })
+
+          })
     },
     getMoewPostList() {
       if (!this.isGetMore) {

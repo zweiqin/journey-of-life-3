@@ -9,13 +9,14 @@
                 </scroll-view>
             </view>
         </view> -->
-          <Articles v-for="(item, index) in renderData" :key="index" :datas="item" :redirection="redirection"></Articles>
+          <Articles @deleteText="deleteText" v-for="(item, index) in renderData" :key="index" :datas="item" :redirection="redirection"></Articles>
+          <tui-modal :show="deleteModal" @click="handleClick" @cancel="deleteModal = false" title="提示" content="确定删除吗?"></tui-modal>
     </view>
 </template>
 
 <script>
 import Articles from './Articles.vue'
-import { getRedStatistics, getPostList } from '@/api/community-center/makeSmallFortune'
+import { getRedStatistics, getPostList, postDetailsDelete } from '@/api/community-center/makeSmallFortune'
 import { getUserId } from '@/utils';
 export default {
   name: "MyRelease",
@@ -25,6 +26,8 @@ export default {
   props: {},
   data() {
     return {
+      deleteModal: false,
+      myRelease: true,
       renderData: [],
       querList: {
         page: 1,
@@ -38,7 +41,8 @@ export default {
       ],
       examineType: 3,
       region: '顺德区',
-      isGetMore: true
+      isGetMore: true,
+      postId: ''
     }
   },
   created() {
@@ -67,9 +71,7 @@ export default {
                 icon: 'none'
               });
           }
-          res.data.talentList.forEach((item, index) => {
-            this.renderData.push(item)
-          })
+          this.renderData = res.data.talentList
           this.$emit('isLoading', false)
         })
     },
@@ -89,6 +91,31 @@ export default {
         uni.navigateTo({
              url: `/community-center/makeSmallFortune/editingArticles?id=${id}`
         });
+    },
+    deleteText(ID) {
+      this.deleteModal = true
+      this.postId = ID
+    },
+    handleClick(e) {
+      if (e.index == 1) {
+          postDetailsDelete({
+            postId:this.postId
+          }).then(res => {
+            uni.showToast({
+              title: '删除成功',
+              icon: 'none'
+            })
+            this.getPostList()
+          }).catch(err => {
+            console.log(err);
+          })
+      }else {
+        uni.showToast({
+              title: '已取消',
+              icon: 'none'
+          })
+      }
+      this.deleteModal = false
     }
   },
   watch: {},
