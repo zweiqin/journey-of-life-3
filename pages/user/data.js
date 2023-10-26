@@ -214,6 +214,11 @@ export const myServe = [
 		url: ANOTHER_TF_SETTLE
 	},
 	{
+		name: '商家码',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		type: 'shopInvitation'
+	},
+	{
 		name: '银行卡',
 		icon: require('../../static/images/new-user/serve/yinhangka.png'),
 		url: '/user/sever/bank-card/index'

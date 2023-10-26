@@ -299,15 +299,13 @@
 		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx" :show-logo="false"
+				margin="22upx 0" radius="20upx"
 			></CommonShop>
 		</view>
 		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx" :show-logo="false"
+				margin="22upx 0" radius="20upx"
 			>
 				<view style="padding: 20upx 0">
 					<view
@@ -333,8 +331,7 @@
 		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx" :show-logo="false"
+				margin="22upx 0" radius="20upx"
 			>
 				<view style="padding: 20upx 26upx">
 					<scroll-view scroll-x="true">
@@ -404,7 +401,7 @@
 </template>
 
 <script>
-import CommonShop from '../../pages/community-center/cpns/CommonShop.vue'
+import CommonShop from '../../pages/business-district/components/CommonShop.vue'
 import BrandShop from '../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
@@ -419,7 +416,7 @@ export default {
 			transformation: {
 				0: '全部商家',
 				1: '品牌家居',
-				2: '建材',
+				2: '建材五金',
 				3: '找师傅',
 				4: '找家政',
 				5: '中介公司',
@@ -439,18 +436,20 @@ export default {
 				19: '花店',
 				20: '宠物',
 				21: '电影院',
-				22: '创意策划'
+				22: '创意策划',
+				23: '酒庄',
+				24: '就医买药'
 			},
 			currentType: '',
 			parentId: '',
 
 			// 判断每个类板块是否拥有某个页面结构
-			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
-			ownMenuBar: ['1', '2', '3', '5', '6', '7', '8', '9', '13', '16'],
+			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			ownMenuBar: ['3', '5', '6', '7', '8', '9', '13', '16'], // '1', '2',
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
-			ownSelectionBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			ownSelectionBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 			selectionBoxArr: [],
 			selectionBoxNum: 0,
 			ownPrimaryFilterBox: [ '6' ],
@@ -477,7 +476,7 @@ export default {
 				startWeek: '',
 				endWeek: ''
 			},
-			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 			ownShopCardWithLineBox: [ '13' ],
 			ownShopCardWithGoodsBox: ['7', '8'],
 			ownBrandCardBox: [ '5' ],
@@ -501,6 +500,7 @@ export default {
 			}
 		}
 	},
+	// eslint-disable-next-line complexity
 	async onLoad(options) {
 		this.currentType = options.type || '0'
 		this.parentId = options.id || ''
@@ -509,7 +509,23 @@ export default {
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
 		}
 		if (this.ownSelectionBox.includes(this.currentType)) {
-			this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐', '精选团购', '精选团购', '精选团购', '精选团购'] || ['加油站', '充电桩', '停车场', '代办点', '年检站']
+			if (this.currentType === '1') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']
+			else if (this.currentType === '2') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']
+			else if (this.currentType === '3') this.selectionBoxArr = ['水电安装', '家具安装', '家电维修', '招牌安装']
+			else if (this.currentType === '4') this.selectionBoxArr = ['全部', '保姆', '月嫂', '保洁', '收纳']
+			else if (this.currentType === '6') this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐']
+			else if (this.currentType === '9') this.selectionBoxArr = ['加油站', '充电桩', '停车场', '代办点', '年检站']
+			else if (this.currentType === '12') this.selectionBoxArr = ['全部', '理发店', '美甲美睫', '美容SPA', '纹眉锈眉', '医学美容']
+			else if (this.currentType === '14') this.selectionBoxArr = ['全部', '商学院', '电商直播', '开店']
+			else if (this.currentType === '15') this.selectionBoxArr = ['全部', '广告设计', '广告策划', '营销策划', '营销推广']
+			else if (this.currentType === '16') this.selectionBoxArr = ['推荐', '月子中心', '备孕检查', '孕早期检查', '产检']
+			else if (this.currentType === '17') this.selectionBoxArr = ['儿童游乐', '益智优教']
+			else if (this.currentType === '18') this.selectionBoxArr = [ '还没有' ]
+			else if (this.currentType === '19') this.selectionBoxArr = ['全部', '外卖', '到店', '电商包邮']
+			else if (this.currentType === '20') this.selectionBoxArr = ['全部', '洗澡', '美容', '疫苗', '体检', '绝育', '驱虫']
+			else if (this.currentType === '21') this.selectionBoxArr = ['热映影片', '大剧场', '销量最高', '评分最高']
+			else if (this.currentType === '22') this.selectionBoxArr = ['全部', '商学院', '电商直播', '开店']
+			else if (this.currentType === '23') this.selectionBoxArr = ['推荐', '酒吧']
 		}
 		if (this.ownSpecialHotelBox.includes(this.currentType)) {
 			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]

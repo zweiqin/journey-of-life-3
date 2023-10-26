@@ -45,7 +45,7 @@ export default {
   ],
   data() {
     return {
-      tabs: [{ name: '转赠记录' }, { name: '收到记录' }, { name: '赚小钱流水' }],
+      tabs: [{ name: '转赠记录' }, { name: '收到记录' }, { name: '流水记录' }],
       currentTab: 0,
       currentType: 'out',
       myRenderList: null,

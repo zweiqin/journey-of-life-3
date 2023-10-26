@@ -9,20 +9,72 @@
 
 			<view class="shop-info">
 				<view class="shop-name">
-					<image v-if="showLogo" class="icon" src="../../../static/images/new-community/home/tag.png"></image>
-					<view class="name">{{ shopInfo.shopName || shopInfo.shopNameSimple || '附近商家' }}</view>
+					<view style="display: flex;align-items: center;">
+						<image
+							v-if="showLogo" style="width: 32upx;height: 32upx;margin-right: 6upx;"
+							src="../../../static/images/new-community/home/tag.png"
+						></image>
+						<view style="font-size: 32upx;font-weight: bold;color: #222229;margin-left: 5upx;">
+							{{ shopInfo.shopName || shopInfo.shopNameSimple || '附近商家' }}
+						</view>
+					</view>
+					<image
+						v-if="showSign && shopInfo.official" src="../../../static/images/new-community/home/gold-star.png"
+						style="width: 58upx;height: 58upx;"
+					></image>
 				</view>
 
-				<view class="shop-middle" :style="{ marginTop: bottomType === 'detail' ? '10upx' : '0' }">
+				<view class="shop-middle" :style="{ marginTop: bottomType !== 'brief' ? '10upx' : '0' }">
 					<view class="rate">
 						<tui-rate active="#EF530E" :current="shopInfo.score" :size="14" disabled></tui-rate>
 						<text class="rate-text">{{ shopInfo.score }}</text>
 					</view>
-					<view v-if="shopInfo.attentionNum" class="accept-precentage">浏览量{{ shopInfo.attentionNum }}</view>
+					<view
+						v-if="(bottomType === 'detail') && shopInfo.monthly_sales"
+						style="color: #888889;font-size: 24upx;margin-left: 15upx;"
+					>
+						月售{{ shopInfo.monthly_sales }}
+					</view>
 				</view>
 
-				<view v-if="bottomType === 'detail'" class="bottom-detail">
-					<view class="detail-msg">{{ shopInfo.elegantDemeanour || '--' }}</view>
+				<view v-if="bottomType === 'detail'">
+					<view style="display: flex;align-items: center;justify-content: space-between;padding-top: 6upx;">
+						<view
+							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 26upx;color: #888889;"
+						>
+							<template v-if="shopInfo.mainBusiness">
+								<text
+									v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index"
+									style="padding-right: 10upx;margin-left: 10upx;border-right: 1upx solid #D8D8D8;"
+								>
+									{{ item }}
+								</text>
+							</template>
+							<template v-else>
+								<text>--</text>
+							</template>
+						</view>
+						<view v-if="shopInfo.distance" style="margin-left: 6upx;">
+							<tui-icon name="gps" :size="14" color="#888889"></tui-icon>
+							<text style="margin-left: 4upx;color: #888889;font-size: 26upx;">{{ shopInfo.distance || 0 }}Km</text>
+						</view>
+					</view>
+					<view style="display: flex;align-items: center;justify-content: flex-end;padding-top: 6upx;">
+						<view
+							v-if="shopInfo.shopTypeName"
+							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+						>
+							<text
+								v-for="(item, index) in shopInfo.shopTypeName.split(',')" :key="index"
+								style="padding: 4upx 18upx;margin-right: 10upx;font-size: 24upx;color: #c8530a;background-color: #fff1d7;"
+							>
+								{{ item }}
+							</text>
+						</view>
+						<view v-if="shopInfo.accessNum" style="margin-left: 6upx;">
+							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.accessNum || 0 }}浏览量</text>
+						</view>
+					</view>
 				</view>
 
 				<view v-if="bottomType === 'brief'" class="bottom-brief">
@@ -40,8 +92,12 @@
 					</view>
 					<view v-if="shopInfo.distance" class="brief-right">
 						<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
-						<text>{{ shopInfo.distance || 0 }}km</text>
+						<text>{{ shopInfo.distance || 0 }}Km</text>
 					</view>
+				</view>
+
+				<view v-if="bottomType === 'display'">
+					<view class="detail-msg">{{ shopInfo.elegantDemeanour || '--' }}</view>
 				</view>
 
 				<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
@@ -58,7 +114,7 @@
 					</view>
 				</view>
 
-				<view v-if="bottomType === 'detail'" class="bottom-detail">
+				<view v-if="bottomType === 'display'" class="bottom-detail">
 					<view class="op-info">
 						<view class="item">
 							<image class="icon" src="../../../static/images/new-community/home/follow.png"></image>
@@ -70,7 +126,7 @@
 						</view>
 						<view v-if="shopInfo.distance" class="item">
 							<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
-							<text class="num">{{ shopInfo.distance || 0 }}km</text>
+							<text class="num">{{ shopInfo.distance || 0 }}Km</text>
 						</view>
 					</view>
 				</view>
@@ -105,7 +161,11 @@ export default {
 		},
 		showLogo: {
 			type: Boolean,
-			default: true
+			default: false
+		},
+		showSign: {
+			type: Boolean,
+			default: false
 		},
 		bottomType: {
 			type: String,
@@ -137,23 +197,8 @@ export default {
 
 			.shop-name {
 				display: flex;
+				justify-content: space-between;
 				align-items: center;
-
-				.icon {
-					position: relative;
-					top: 2upx;
-					width: 32upx;
-					height: 32upx;
-					margin-right: 6upx;
-					flex-shrink: 0;
-				}
-
-				.name {
-					font-size: 32upx;
-					font-weight: bold;
-					color: #222229;
-					margin-left: 5upx;
-				}
 			}
 		}
 
@@ -162,6 +207,8 @@ export default {
 			align-items: center;
 
 			.rate {
+				flex: 1;
+				width: 0;
 				line-height: 1;
 
 				.rate-text {
@@ -171,21 +218,17 @@ export default {
 				}
 			}
 
-			.accept-precentage {
-				color: #888889;
-				font-size: 24upx;
-				margin-left: 15upx;
-			}
+		}
+
+		.detail-msg {
+			font-size: 26upx;
+			color: #9E9E9E;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
 		}
 
 		.bottom-detail {
-			.detail-msg {
-				font-size: 26upx;
-				color: #9E9E9E;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
 
 			.op-info {
 				display: flex;

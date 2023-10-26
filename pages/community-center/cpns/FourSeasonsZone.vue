@@ -161,11 +161,8 @@
 </template>
 
 <script>
-import DirectSaleStore from './DirectSaleStore.vue';
-import CommonShop from './CommonShop.vue';
-
 export default {
-  components: { DirectSaleStore, CommonShop }
+  components: {}
 };
 </script>
 

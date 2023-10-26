@@ -147,7 +147,7 @@ export default {
 			this.brandDetail = {
 				'shopId': 208,
 				'collectId': 0,
-				'ifCollect': 0,
+				'ifCollect': 1,
 				'shopName': '大家足专业修脚',
 				'shopLogo': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1hkq40u379mr7igjiddc.jpg',
 				'shopAdress': '水藤大道56号大家足',

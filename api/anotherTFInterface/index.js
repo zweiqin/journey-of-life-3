@@ -41,3 +41,9 @@ export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode'
 // 用户扫码绑定
 export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platformInfoCode/saoMaBinding', data)
 
+// 取消收藏
+export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data)
+
+// 收藏商品、店铺
+export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data)
+

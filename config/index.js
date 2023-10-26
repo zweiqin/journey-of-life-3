@@ -28,6 +28,8 @@ export const sf = 'https://www.zhult.com/samrtWorker' // 线上
 // export const sf = "https://www.zhult.com/test-samrtWorker"; // 测试
 // export const sf = "/sf"; // 本地
 
+// 团蜂H5项目地址
+export const A_TF_MAIN = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5'
 // 新团蜂H5的接口路径
 export const ANOTHER_TF_INTERFACE = 'https://nsappapi.tuanfengkeji.cn'
 // 新团蜂入驻端项目地址

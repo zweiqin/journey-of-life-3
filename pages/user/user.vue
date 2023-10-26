@@ -12,7 +12,6 @@
 		</view>
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
 		<BaseInfo ref="baseInfoRef" :data="userInfo" @handleNavigate="handleNavigate"></BaseInfo>
-		{{ bindingCode }}
 		<view class="main-area">
 			<Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
 			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
@@ -29,6 +28,9 @@
 
 		<TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
 		<tui-toast ref="toast"></tui-toast>
+
+		<!-- 特殊code的 menu 操作 -->
+		<CodeCreatePopup ref="codeCreateRef"></CodeCreatePopup>
 	</view>
 </template>
 
@@ -43,7 +45,6 @@ import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
 import { myEquity } from './data'
 import { Encrypt } from '../../utils/secret'
-import { getUserInfoCodeApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'User',
@@ -64,12 +65,6 @@ export default {
 	onShow() {
 		this.init()
 		this.setShareHolder()
-		// if (this.$store.getters.userInfo.userMap.isTz || thiis.$store.getters.userInfo.userMap.isHhr) {
-		getUserInfoCodeApi({ type: 1 }).then((res) => {
-			console.log(res)
-			this.bindingCode = res.data.invitationCode
-		})
-		// }
 	},
 	data() {
 		return {
@@ -87,7 +82,7 @@ export default {
 	methods: {
 		init() {
 			this.userId = uni.getStorageSync(USER_ID)
-			this.userInfo = uni.getStorageSync(USER_INFO)
+			this.userInfo = uni.getStorageSync(USER_INFO) || {}
 			if (this.userInfo) {
 				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
 				this.$store.dispatch('auth/refrshUserInfo', (userInfo) => (this.userInfo = userInfo))
@@ -108,12 +103,14 @@ export default {
 			if (item.type === 'external') {
 				this.go('/user/view?target=' + item.url)
 				return
-			}
-			if (item.type === 'settle') {
+			} else if (item.type === 'settle') {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
 				}
+				return
+			} else if (item.type === 'shopInvitation') {
+				this.$refs.codeCreateRef.getCode('shopInvitation')
 				return
 			}
 			if (this.isLogin()) {
@@ -182,7 +179,6 @@ export default {
 		// 设置股东看板
 		setShareHolder() {
 			const userInfo = this.$store.getters.userInfo
-			console.log(userInfo)
 			if (userInfo && userInfo.shareholderType === 1) {
 				this.myEquity1 = [
 					...myEquity,

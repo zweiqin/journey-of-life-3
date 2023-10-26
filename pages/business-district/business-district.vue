@@ -15,30 +15,30 @@
 		<!-- package -->
 		<ActivityPackage :scroll-top="scrollTop"></ActivityPackage>
 
-		<!-- 商家详情 -->
-		<view class="brand-shop-caontainer">
-
-			<view style="margin-top: 20upx;">
+		<!-- 商家列表 -->
+		<view>
+			<!-- <view style="padding-top: 20upx;">
 				<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
-					<template #left="{ entity }">
-						<view style="width: 338upx;">
-							<BrandShop :brand-info="entity"></BrandShop>
-						</view>
-					</template>
-					<template #right="{ entity }">
-						<view style="width: 338upx;">
-							<BrandShop :brand-info="entity"></BrandShop>
-						</view>
-					</template>
+				<template #left="{ entity }">
+				<view style="width: 338upx;">
+				<BrandShop :brand-info="entity"></BrandShop>
+				</view>
+				</template>
+				<template #right="{ entity }">
+				<view style="width: 338upx;">
+				<BrandShop :brand-info="entity"></BrandShop>
+				</view>
+				</template>
 				</tui-waterfall>
+				</view> -->
+			<view>
+				<CommonShop
+					v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop"
+					margin="22upx 0" radius="20upx" show-sign
+				></CommonShop>
 			</view>
 
 			<LoadingMore v-show="loadingStatus !== 'more' && !isGetAddress" :status="loadingStatus"></LoadingMore>
-
-			<!-- <view class="no-adddres" v-show="loadingStatus !== 'more' && queryInfo.address">
-				<LoadingMore :status="loadingStatus"></LoadingMore>
-				<view>正在搜索您附近的商家...</view>
-				</view> -->
 		</view>
 
 		<tui-toast ref="toast"></tui-toast>
@@ -52,6 +52,7 @@ import WelfareBar from './components/WelfareBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
 import BrandShop from './components/BrandShop.vue'
+import CommonShop from './components/CommonShop.vue'
 
 import { getNearByShopListApi } from '../../api/community-center'
 import { getShopCategoryLevelApi } from '../../api/anotherTFInterface'
@@ -59,7 +60,7 @@ import { getCurrentLocation } from '../../utils'
 
 export default {
 	name: 'BusinessDistrict',
-	components: { PageHead, NavBar, WelfareBar, AdvertisementBar, ActivityPackage, BrandShop },
+	components: { PageHead, NavBar, WelfareBar, AdvertisementBar, ActivityPackage, BrandShop, CommonShop },
 	data() {
 		return {
 			isGetAddress: false,
@@ -75,15 +76,15 @@ export default {
 		}
 	},
 	async onShow() {
-		if (this.nearbyShopList.length && (this.nearbyShopList.length <= this.queryInfo.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
-			const currentAddress = await getCurrentLocation()
-			const res = await getNearByShopListApi({ pageNo: 1, pageSize: this.queryInfo.pageNo * this.queryInfo.pageSize, address: currentAddress + '' })
-			if (res.statusCode === 20000) {
-				if (res.data) {
-					this.nearbyShopList = res.data.data
-				}
-			}
-		}
+		// if (this.nearbyShopList.length && (this.nearbyShopList.length <= this.queryInfo.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
+		// 	const currentAddress = await getCurrentLocation()
+		// 	const res = await getNearByShopListApi({ pageNo: 1, pageSize: this.queryInfo.pageNo * this.queryInfo.pageSize, address: currentAddress + '' })
+		// 	if (res.statusCode === 20000) {
+		// 		if (res.data) {
+		// 			this.nearbyShopList = res.data.data
+		// 		}
+		// 	}
+		// }
 	},
 	onLoad() {
 		this.init()
@@ -170,21 +171,5 @@ export default {
 	padding: 40upx 26upx 140upx;
 	box-sizing: border-box;
 
-	.brand-shop-caontainer {
-		margin-top: 24upx;
-
-	}
-
-	.no-adddres {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		width: 100%;
-		height: 300upx;
-		background-color: #fff;
-		font-size: 28upx;
-		color: #ccc;
-	}
 }
 </style>

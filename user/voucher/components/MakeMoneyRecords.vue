@@ -107,7 +107,7 @@ export default {
     data() {
         return {
             currentIndex: 0,
-            tabNavs: [{name: '收益记录'},{name: '红包支出记录'}],
+            tabNavs: [{name: '收益记录'},{name: '支出记录'}],
             MakeMoneyRecordsTitle: ['收益','支出'],
             query: {
                 pageSize: 20

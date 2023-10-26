@@ -116,5 +116,15 @@ export const navbarAll = [
 		labelName: '创意策划',
 		iconUrl: require('../../static/images/new-business/home/chuangyicehua.png'),
 		type: 22
+	},
+	{
+		labelName: '酒庄',
+		iconUrl: require('../../static/images/new-business/home/jiuzhuang.png'),
+		type: 23
+	},
+	{
+		labelName: '看病买药',
+		iconUrl: require('../../static/images/new-business/home/kanbingmaiyao.png'),
+		type: 24
 	}
 ]

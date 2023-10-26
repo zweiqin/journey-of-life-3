@@ -168,14 +168,7 @@ export default {
 						jumpToOtherProject(`${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
 					}, 300)
 				}
-			} else if (this.type === 'bindingTeamMembers') {
-				const storageKeyToken = getStorageKeyToken()
-				if (storageKeyToken) {
-					setTimeout(() => {
-						jumpToOtherProject(`/user/view?target=${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
-					}, 300)
-				}
-			} else if (this.type === 'bindingShop') { // 这里指团长和合伙人，其它还有会员、股东
+			} else if (this.type === 'bindingShop') {
 				bindPlatformInfoCodeBindingApi({ phone: this.code, type: 1 })
 					.then((res) => {
 						this.$showToast('绑定成功', 'success')
@@ -183,6 +176,13 @@ export default {
 					.finally((e) => {
 						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 					})
+			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
+				const storageKeyToken = getStorageKeyToken()
+				if (storageKeyToken) {
+					setTimeout(() => {
+						jumpToOtherProject(`/user/view?target=${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
+					}, 300)
+				}
 			}
 		},
 		handleVerification() {
