@@ -423,3 +423,31 @@ export const getCustomerPopularApi = (data) => RuanRequest('/dtsCustomerCategory
 
 // 用户发送消息的客服接口
 export const getcustomerSendingApi = (data) => RuanRequest('/dtsCustomerCategory/customerSending', data, 'get')
+
+
+// 查询用户身份认证信息
+export const getIdentityAuthenticationInfoApi = data => {
+	return endRequest({
+		url: "/api/third/real/queryRealInfo",
+		data,
+		method: 'GET'
+	})
+}
+
+// 添加用户身份认证信息
+export const userIdentityAuthenticationInfoApi = data => {
+	return endRequest({
+		url: '/api/third/real/saveRealInfo',
+		data,
+		method: 'POST'
+	})
+}
+
+// 解析身份证图片
+export const IDCardAnalysisApi = data => {
+	return endRequest({
+		url: "/api/third/ocr/idOcr",
+		data,
+		method: 'POST'
+	})
+}

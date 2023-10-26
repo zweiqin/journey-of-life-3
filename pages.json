@@ -28,12 +28,12 @@
         "navigationStyle": "custom"
       }
     },
-		{
-			"path": "pages/jump/jump",
-			"style": {
-				"navigationBarTitleText": "跳转"
-			}
-		},
+    {
+      "path": "pages/jump/jump",
+      "style": {
+        "navigationBarTitleText": "跳转"
+      }
+    },
     {
       "path": "pages/order/order",
       "style": {
@@ -649,45 +649,45 @@
     {
       "root": "user",
       "pages": [
-				{
-					"path": "digital-store/newBusiness/index",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "digital-store/newBusiness/addUser/index",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				// {
-				//   "path": "account-book/index",
-				//   "style": {
-				//     "navigationBarTitleText": "小账本"
-				//   }
-				// },
-				{
-					"path": "commission-statistics/commission-statistics",
-					"style": {
-						"navigationBarTitleText": "佣金统计",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "commission-statistics/commission-detail",
-					"style": {
-						"navigationBarTitleText": "佣金详情",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "commission-statistics/vip-user",
-					"style": {
-						"navigationBarTitleText": "会员列表",
-						"enablePullDownRefresh": true
-					}
-				},
+        {
+          "path": "digital-store/newBusiness/index",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        {
+          "path": "digital-store/newBusiness/addUser/index",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        },
+        // {
+        //   "path": "account-book/index",
+        //   "style": {
+        //     "navigationBarTitleText": "小账本"
+        //   }
+        // },
+        {
+          "path": "commission-statistics/commission-statistics",
+          "style": {
+            "navigationBarTitleText": "佣金统计",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "commission-statistics/commission-detail",
+          "style": {
+            "navigationBarTitleText": "佣金详情",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "commission-statistics/vip-user",
+          "style": {
+            "navigationBarTitleText": "会员列表",
+            "enablePullDownRefresh": true
+          }
+        },
         {
           "path": "voucher/voucher",
           "style": {
@@ -711,9 +711,9 @@
           "path": "view",
           "style": {
             "navigationBarTitleText": "",
-						"app-plus": {
-							"titleNView": false
-						} //去掉
+            "app-plus": {
+              "titleNView": false
+            } //去掉
           }
         },
         {
@@ -1175,12 +1175,18 @@
             "navigationBarTitleText": "佣金提现"
           }
         },
-				{
-					"path": "otherServe/payment-completed/index",
-					"style": {
-						"navigationBarTitleText": "支付完成"
-					}
-				}
+        {
+          "path": "commission-statistics/identity-authentication",
+          "style": {
+            "navigationBarTitleText": "身份实名认证"
+          }
+        },
+        {
+          "path": "otherServe/payment-completed/index",
+          "style": {
+            "navigationBarTitleText": "支付完成"
+          }
+        }
       ]
     },
     {

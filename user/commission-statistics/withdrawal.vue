@@ -15,28 +15,31 @@
         <tui-icon name="arrowright" :size="20"></tui-icon>
       </view>
 
-      <view class="bank-card" v-else @click="go('/user/commission-statistics/bank-item?type=1')"
-        >您还没有绑定银行卡，请先去绑定银行卡 <tui-icon :size="20" name="toright"></tui-icon>
+      <view class="bank-card" v-else @click="go('/user/commission-statistics/bank-item?type=1')">您还没有绑定银行卡，请先去绑定银行卡
+        <tui-icon :size="20" name="toright"></tui-icon>
       </view>
     </view>
 
     <view class="btn-wrapper">
-      <button class="uni-btn" @click="handleWithdraw">确认提现</button>
+      <button class="uni-btn" :loading="isLoading" @click="handleWithdraw">确认提现</button>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
     <tui-select :list="bankList" reverse :show="chooseBankVisible" @confirm="handleSelect" @close="onClose2"></tui-select>
+    <tui-modal :show="showModal" title="提示" content="您还未实名认证，请先去认证" @click="handleOpmodal
+      "></tui-modal>
   </view>
 </template>
 
 <script>
 import { USER_INFO } from 'constant';
-import { getCommanderBankCardListApi, commanderWithdrawApi } from '../../api/user';
+import { getCommanderBankCardListApi, commanderWithdrawApi, getIdentityAuthenticationInfoApi } from '../../api/user';
 export default {
   data() {
     return {
       bankList: [],
       loading: false,
+      showModal: false,
       form: {
         money: '', // 提现金额
         mobile: '',
@@ -127,21 +130,42 @@ export default {
       }
 
       try {
-        await commanderWithdrawApi(this.form);
-        this.ttoast('提现审核提交成功！');
+        this.isLoading = true
+        const authInfo = await getIdentityAuthenticationInfoApi({
+          mobile: this.userInfo.phone
+        })
 
-        this.timer = setTimeout(() => {
-          clearTimeout(this.timer);
-          this.timer = null;
-          uni.navigateBack();
-        }, 2000);
+        if (authInfo) {
+          await commanderWithdrawApi(this.form);
+          this.ttoast('提现审核提交成功！');
+
+          this.timer = setTimeout(() => {
+            clearTimeout(this.timer);
+            this.timer = null;
+            uni.navigateBack();
+          }, 2000);
+        } else {
+          this.showModal = true
+        }
       } catch (error) {
         this.ttoast({
           type: 'fail',
           title: '提现失败',
           content: error
         });
+      } finally {
+        this.isLoading = false
       }
+    },
+
+    handleOpmodal(e) {
+      if (e.index) {
+        uni.navigateTo({
+          url: '/user/commission-statistics/identity-authentication',
+        })
+      }
+
+      this.showModal = false
     }
   },
 
@@ -164,6 +188,7 @@ export default {
   .main {
     margin-top: 43upx;
     margin-bottom: 64upx;
+
     .name {
       color: #b3b2ad;
       font-size: 32upx;
