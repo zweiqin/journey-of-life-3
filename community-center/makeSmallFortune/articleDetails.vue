@@ -64,14 +64,23 @@
                   <image class="starts sta4" src="@/static/images/new-community/redBookText/start4.png"></image>
                   <image class="starts sta5" src="@/static/images/new-community/redBookText/start5.png"></image>
                   <view class="RedEnvelope">
-                    <view class="redTop">
-                        恭喜获得红包
+                    <view class="redTop" v-if="redPacketInfo">
+                       {{ redPacketInfo.amount? ` 恭喜获得${numDelivery(redPacketInfo.amount)}元红包`:'没领到红包。。。' }}
+                    </view>
+                    <view class="redTop" v-else>
+                       红包已领完
                     </view>
                     <image v-if="isMaske" class="Content" src="@/static/images/new-community/redBookText/contant.png"></image>
                     <image class="TopLayer" src="@/static/images/new-community/redBookText/topimg.png"></image>
                     <image class="btn" src="@/static/images/new-community/redBookText/btn.png"></image>
-                    <view class="text">
+                    <view class="text" v-if="redPacketInfo">
                         开心收下
+                    </view>
+                    <view class="text" v-else>
+                        {{ '`(*>﹏<*)′' }}
+                    </view>
+                    <view class="text2">
+                        零钱将自动存入代金券
                     </view>
                   </view>
             </view>
@@ -145,6 +154,7 @@ export default {
             },
             isOverTimer: false,
             setTimeoutText: 10,
+            redPacketInfo: null,
         }
     },
     methods: {
@@ -166,6 +176,7 @@ export default {
                         icon: 'none',
                     })
                 }else {
+                    this.redPacketInfo = res.data
                     this.isMaske = true
                     this.isChkPick = true
                 }
@@ -196,7 +207,15 @@ export default {
             //     console.log("fail:" + JSON.stringify(err));
             // }
             // });
-        }
+        },
+        numDelivery(num) {
+            var result = parseFloat(num);
+            if (isNaN(result)) {
+                return 0;
+            }
+            result = Math.round(num * 100) / 100;
+            return result;
+        },
     }
 }
 </script>
@@ -309,6 +328,15 @@ export default {
         letter-spacing: 0px;
         font-feature-settings: "kern" on;
         color: #8D2104;
+    }
+    .text2 {
+        position: absolute;
+        bottom: 20rpx;
+        font-size: 24rpx;
+        font-weight: 350;
+        line-height: 44rpx;
+        letter-spacing: 1.2rpx;
+        color: #F8DBB0;
     }
 }
 @keyframes goToTop {

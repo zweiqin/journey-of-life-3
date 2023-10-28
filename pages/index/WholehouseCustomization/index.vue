@@ -1,123 +1,295 @@
 <template>
-  <view class="Wholehouse-customization-container">
-    <view class="filter">
-      <view
-        class="item"
-        v-for="item in filters"
-        @click="handleFilter(item)"
-        :key="item.value"
-      >
-        <text
-          :style="{
-            color: visible[item.key] ? '#FFC117' : '',
-          }"
-          >{{ item.label }}</text
-        >
+    <view class="WholehouseCustomization">
+        <view class="containerBanner">
+            <image class="textImg" src="@/static/images/new-index/taocan/bgText.png"></image>
+            <image class="bgImg" src="@/static/images/new-index/taocan/bgBottom.png"></image>
+            <image class="buttonImg" src="@/static/images/new-index/taocan/bgButton.png"></image>
+        </view>
+        <view class="main">
+            <view class="styles">
+                <view class="stylesItem">
+                    <image class="itemImage" src="@/static/images/new-index/taocan/styles1.png"></image>
+                    <text class="itemText">新中式</text>
+                </view>
+                <view class="stylesItem">
+                    <image class="itemImage" src="@/static/images/new-index/taocan/styles2.png"></image>
+                    <text class="itemText">意式极简</text>
+                </view>
+                <view class="stylesItem">
+                    <image class="itemImage" src="@/static/images/new-index/taocan/styles3.png"></image>
+                    <text class="itemText">现代轻奢</text>
+                </view>
+                <view class="stylesItem">
+                    <image class="itemImage" src="@/static/images/new-index/taocan/styles4.png"></image>
+                    <text class="itemText">现代美式</text>
+                </view>
+            </view>
+            <view class="screenTabs">
+                <view class="tabNavs">
+                    <text class="isActive">推荐</text>
+                    <text>本月热销</text>
+                    <text>新品套餐</text>
+                    <text>限时抢购</text>
+                </view>
+                <view class="selectButton">
+                 筛选 <image class="selectIcon" src="@/static/images/new-index/taocan/selectIocn.png"></image>
+                </view>
+            </view>
+            <view class="productList">
+                <view class="listItem" @click="gotoDetails">
+                    <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
+                    <view class="titleBox">
+                        <view class="title">
+                            <text>意式极简</text>
+                            <text>B1搭配效果(一房一厅)</text>
+                        </view>
+                        <view class="amount">
+                            <text class="amountL">
+                                <text class="daoler">￥</text>52220
+                            </text>
+                            <text class="amountR">￥62200</text>
+                        </view>
+                        <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
+                    </view>
+                </view>
+                <view class="listItem" @click="gotoDetails">
+                    <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
+                    <view class="titleBox">
+                        <view class="title">
+                            <text>意式极简</text>
+                            <text>B1搭配效果(一房一厅)</text>
+                        </view>
+                        <view class="amount">
+                            <text class="amountL">
+                                <text class="daoler">￥</text>52220
+                            </text>
+                            <text class="amountR">￥62200</text>
+                        </view>
+                        <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
+                    </view>
+                </view>
+                <view class="listItem" @click="gotoDetails">
+                    <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
+                    <view class="titleBox">
+                        <view class="title">
+                            <text>意式极简</text>
+                            <text>B1搭配效果(一房一厅)</text>
+                        </view>
+                        <view class="amount">
+                            <text class="amountL">
+                                <text class="daoler">￥</text>52220
+                            </text>
+                            <text class="amountR">￥62200</text>
+                        </view>
+                        <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
+                    </view>
+                </view>
+                <view class="listItem" @click="gotoDetails">
+                    <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
+                    <view class="titleBox">
+                        <view class="title">
+                            <text>意式极简</text>
+                            <text>B1搭配效果(一房一厅)</text>
+                        </view>
+                        <view class="amount">
+                            <text class="amountL">
+                                <text class="daoler">￥</text>52220
+                            </text>
+                            <text class="amountR">￥62200</text>
+                        </view>
+                        <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!-- <view class="footer">
 
-        <tui-icon
-          :class="{ rotate: item.isAnimate && visible[item.key] }"
-          :size="20"
-          :name="item.icon"
-        ></tui-icon>
-      </view>
+        </view> -->
     </view>
-
-    <view class="company-container">
-      <DesignCompany
-        v-for="item in tempData"
-        :key="item.name"
-        :data="item"
-      ></DesignCompany>
-      <LoadingMore status="no-more"></LoadingMore>
-    </view>
-
-    <PricePopup
-      :scrollTop="scrollTop"
-      v-model="visible.pricePopupVisible"
-    ></PricePopup>
-    <ServiceScopePopup
-      :scrollTop="scrollTop"
-      v-model="visible.servePopupVisible"
-    ></ServiceScopePopup>
-    <AllFilter
-      :scrollTop="scrollTop"
-      v-model="visible.allPopupVisible"
-    ></AllFilter>
-  </view>
 </template>
 
 <script>
-import { filters, tempData } from './data'
-import DesignCompany from './cpns/DesignCompany.vue'
-import PricePopup from './cpns/PricePopup.vue'
-import ServiceScopePopup from './cpns/ServiceScopePopup.vue'
-import AllFilter from './cpns/ALLFilter.vue'
 export default {
-  components: {
-    DesignCompany,
-    PricePopup,
-    ServiceScopePopup,
-    AllFilter,
-  },
-  props: {
-    scrollTop: {
-      type: Number,
-      default: 0,
+    name: 'Return false',
+    data() {
+        return {
+
+        }
     },
-  },
-  data() {
-    return {
-      filters: Object.freeze(filters),
-      tempData: Object.freeze(tempData),
-      visible: {
-        pricePopupVisible: false,
-        servePopupVisible: false,
-        allPopupVisible: false,
-      },
+    methods: {
+        gotoDetails() {
+            uni.navigateTo({
+                 url: '/pages/index/WholehouseCustomization/newDetail/index'
+            });
+        }
     }
-  },
-
-  methods: {
-    handleFilter(item) {
-      this.visible.pricePopupVisible = false
-      this.visible.servePopupVisible = false
-      this.visible.allPopupVisible = false
-
-      this.visible[item.key] = true
-    },
-  },
 }
 </script>
 
-<style lang="less" scoped>
-.Wholehouse-customization-container {
-  .filter {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    height: 70upx;
-    border-radius: 0 0 24upx 24upx;
-    position: relative;
-    z-index: 10000;
-
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 33%;
-      text-align: center;
-      color: #3a3629;
-      font-size: 28upx;
-
-      .rotate {
-        transform: rotate(180deg);
-      }
+<style lang="scss" scoped>
+.WholehouseCustomization {
+    width: 100vw;
+    min-height: 100vh;
+    background: #F6F6F8;
+    .containerBanner {
+        position: relative;
+        width: 100%;
+        height: 302rpx;
+        background: url('@/static/images/new-index/taocan/background.png') no-repeat center;
+        background-size: 100vw 302rpx;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .textImg {
+            width: 579rpx;
+            height: 130rpx;
+        }
+        .bgImg {
+            position: absolute;
+            bottom: 0;
+            width: 579rpx;
+            height: 82rpx;
+        }
+        .buttonImg {
+            position: absolute;
+            bottom: -40rpx;
+            width: 690rpx;
+            height: 72rpx;
+            border-radius: 20rpx;
+        }
     }
-  }
-
-  .company-container {
-    padding: 20upx;
-    box-sizing: border-box;
-  }
+    .main {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 50rpx 30rpx;
+        .styles {
+            box-sizing: border-box;
+            padding: 20rpx 18rpx;
+            width: 100%;
+            height: 253rpx;
+            border-radius: 20rpx;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            .stylesItem {
+                width: 150rpx;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .itemImage {
+                    width: 150rpx;
+                    height: 164rpx;
+                    border-radius: 10rpx;
+                }
+                .itemText {
+                    margin-top: 10rpx;
+                    font-size: 32rpx;
+                    font-weight: normal;
+                    line-height: 38rpx;
+                    text-align: center;
+                    letter-spacing: 0.32rpx;
+                    color: #000000;
+                }
+            }
+        }
+        .screenTabs {
+            width: 100%;
+            height: 46rpx;
+            display: flex;
+            align-items: center;
+            margin: 30rpx 0 20rpx 0;
+            .tabNavs {
+                width: 530rpx;
+                font-family: 思源黑体;
+                font-size: 28rpx;
+                font-weight: normal;
+                line-height: 36rpx;
+                color: #222229;
+                display: flex;
+                justify-content: space-between;
+                .isActive {
+                    font-size: 32rpx;
+                    font-weight: bold;
+                }
+            }
+            .selectButton {
+                box-sizing: border-box;
+                padding-left: 10rpx;
+                margin-left: 55rpx;
+                font-size: 28rpx;
+                font-weight: normal;
+                line-height: 36rpx;
+                border-left: 2rpx solid #454141;
+                .selectIcon {
+                    margin-left: 5rpx;
+                    width: 24rpx;
+                    height: 24rpx;
+                    border-radius: 50%;
+                }
+            }
+        }
+        .productList {
+            width: 100%;
+            height: auto;
+            .listItem {
+                margin: 24rpx 0;
+                width: 100%;
+                height: 538rpx;
+                background-color: #fff;
+                border-radius: 20rpx;
+                .productImg {
+                    width: 690rpx;
+                    height: 380rpx;
+                    border-radius: 20rpx;
+                    border-bottom: 2rpx solid #bcbcbc;
+                } 
+                .titleBox {
+                    position: relative;
+                    box-sizing: border-box;
+                    padding: 23rpx 25rpx 33rpx 25rpx;
+                    width: 100%;
+                    height: 158rpx;
+                    .title {  
+                        display: flex;
+                        gap: 40rpx;
+                        font-size: 32rpx;
+                        font-weight: 600;
+                        line-height: 36rpx;
+                        color: #222229;
+                    }
+                    .amount {
+                        margin-top: 24rpx;
+                        .amountL {
+                            font-size: 36rpx;
+                            font-weight: 500;
+                            line-height: 42rpx;
+                            color: #E02208;
+                            .daoler {
+                                font-size: 28rpx;
+                            }
+                        }
+                        .amountR {
+                            margin-left: 10rpx;
+                            font-size: 24rpx;
+                            font-weight: normal;
+                            line-height: 32rpx;
+                            text-decoration: line-through;
+                            color: #979797;
+                        }
+                    }
+                    .ShoppingCart {
+                        position: absolute;
+                        top: 65rpx;
+                        right: 35rpx;
+                        width: 60rpx;
+                        height: 60rpx;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>

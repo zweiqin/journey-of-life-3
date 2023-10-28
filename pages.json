@@ -93,7 +93,7 @@
       }
     },
     {
-      "path": "pages/index/WholehouseCustomization/detail/detail",
+      "path": "pages/index/WholehouseCustomization/newDetail/index",
       "style": {
         "navigationBarTitleText": "详情"
       }
