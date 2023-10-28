@@ -7,7 +7,7 @@ export const homeTopNavs = [
   {
     name: '全屋快装',
     iconUrl: require('../../static/images/new-index/index-1/quanwukuaizhuang.png'),
-    // url: '/pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation'
+    url: '/pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation'
   },
   {
     name: '全屋套餐',

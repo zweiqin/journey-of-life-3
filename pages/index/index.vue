@@ -68,7 +68,7 @@ import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
 import loadMore from '../../mixin/loadMore';
 import { goodsListApi } from '../../api/goods';
-import { getClassifyProducts2, getCanvas, getFirstClassify, getShopDetailsById, getSearchProducts } from '@/api/anotherTFInterface';
+import { getClassifyProducts2Api, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
 
 import { homeTopNavs } from './config';
@@ -124,15 +124,7 @@ export default {
     // }).catch(err => {
     //   console.log(err)
     // })
-    getCanvas({
-      terminal: 2,
-      type: 1
-    }).then(res => {
-      console.log(JSON.parse(res.data.json))
-    }).catch(err => {
-      console.log(err)
-    })
-    
+    // this.getIndexCanvas()
   },
 
   methods: {
@@ -155,22 +147,53 @@ export default {
     handleViewDetail(navInfo) {
       if (navInfo.url) {
         uni.navigateTo({ url: navInfo.url });
-      } else if (navInfo.id) {
+        } else if (navInfo.id) {
+      // } else if (navInfo.linkObj) {navInfo.id
         uni.navigateTo({
           url: `/pages/index/CommodityTypePage/index?id=${navInfo.id}`
+          // url: `/pages/index/CommodityTypePage/index?shopData=${JSON.stringify(navInfo.linkObj)}`
         })
-        // this.$data._query.categoryId = navInfo.id;
-        // this.$data._query.page = 1;
-        // this.$data._list = [];
-        // this.ad.hot = [];
-        // this.ad.good = [];
-        // this._loadData();
-        // this.getSubMenus(navInfo.id);
       } else {
         this.empty();
       }
     },
+    // async getCategoryList() {
+    //   getCanvasApi({
+    //     terminal: 2,
+    //     type: 1
+    //   }).then(res => {
+    //     if (res.code == '200') {
+    //       // ... 偷懒，懒得一步步走了。。。直接链式调用, 大佬勿喷！！！
+    //       const categories =  JSON.parse(res.data.json).filter((item, index) => item.title == '图文导航')
+    //       .map((item, index) => item.componentContent.imgTextData)
+    //       .flat()
+    //       .slice(0, 7)
+    //       .map(item => {
+    //         return {
+    //           ...item,
+    //           iconUrl:item.img,
+    //           name:item.title 
+    //         }
+    //       })
 
+    //     // console.log(res)
+    //     // console.log(JSON.parse(res.data.json))
+    //     console.log(categories);
+
+    //       this.categories = categories;
+    //       this.categories.push({
+    //         iconUrl: require('@/static/images/index/moremore.png'),
+    //         id: null,
+    //         url: '/pages/furniture/furniture?goodsType=100101741&id=null',
+    //         name: '更多'
+    //       });
+
+    //       this.homeTopNavs.length < 8 && this.homeTopNavs.push(...this.categories);
+    //     }
+    //   }).catch(err => {
+    //     console.log(err)
+    //   })
+    // },
     async getCategoryList() {
       const res = await getGoodsTypesApi({
         // goodsType: 1
