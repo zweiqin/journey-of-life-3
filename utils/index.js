@@ -24,7 +24,7 @@ export {
 export { formatTime } from './util'
 export { payFn, payShopFn } from './pay'
 export { saveImg } from './upload'
-export { getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLocationPermission, getCurrentLocation } from './localtion'
+export { navigationAddress, getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLocationPermission, getCurrentLocation } from './localtion'
 export { QRCode as generateCode } from './generateQrcode'
 export { request2 } from './request'
 // #ifdef H5

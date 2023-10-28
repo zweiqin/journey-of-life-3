@@ -1322,6 +1322,12 @@
           "style": {
             "navigationBarTitleText": "搜索"
           }
+        },
+        {
+          "path": "another-serve/distributionModule/recruit",
+          "style": {
+            "navigationBarTitleText": "分销员招募令"
+          }
         }
       ]
     }

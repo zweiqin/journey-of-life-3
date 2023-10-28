@@ -1,14 +1,16 @@
 @import url('./node_modules/animate.css/animate.min.css');
-::-webkit-scrollbar {
-  width: 0!important;
-  height: 0!important;
-}
 /**app.wxss**/
 .container {
   height: 100%;
   box-sizing: border-box;
   color: #333;
-  /* font-family: helvetica, 'Heiti SC', PingFangSC-Light, serif; */
+  /* font-family: helvetica, 'Heiti SC', PingFangSC-Light; */
+  /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+}
+
+::-webkit-scrollbar {
+  width: 0!important;
+  height: 0!important;
 }
 
 .uni-btn {
@@ -37,7 +39,6 @@ input :disabled {
   color: #eb2444;
   padding-bottom: 10rpx;
   padding-left: 10rpx;
-
 }
 
 li {
@@ -134,7 +135,6 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   -webkit-transform: translate(-50%, -50%) scale(1);
 }
 
-
 /* 底部按钮兼容 iPhone X以上 */
 @media screen and (width: 375px) and (height: 812px) {
   .container {
@@ -152,7 +152,6 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   background-color: #eb2444;
 }
 
-
 .flex-center {
   display: flex;
   align-items: center;
@@ -168,15 +167,36 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   font-size: 20upx;
 }
 
-.font-14 {
-  font-size: 28upx;
-}
-
 .font-12 {
   font-size: 24upx;
 }
+.font-14 {
+  font-size: 28upx;
+}
+.font-15 {
+  font-size: 30upx;
+}
+
+.font-16 {
+  font-size: 32upx;
+}
+
+.font-17 {
+  font-size: 34upx;
+}
+/* 字重 */
+.f-w-500 {
+  font-weight: 500;
+}
+
+.f-w-b {
+  font-weight: bold;
+}
 
 /* 文字颜色 */
+.f-c-ff {
+  color: #fff;
+}
 
 .f-c-9 {
   color: #999999;
@@ -186,6 +206,13 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   color: #3d3d3d;
 }
 
+.f-c-77 {
+  color: #777;
+}
+
+.f-c-00 {
+  color: #000;
+}
 /* 圆角 */
 
 .r-5 {
@@ -207,25 +234,71 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   padding: 0 20upx;
 }
 
-.hidden-sb {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.hidden-sb::-webkit-scrollbar {
-  display: none;
-}
-
-/* view,
+view,
 text {
-  line-height: 1.5;
-} */
-
-.tui-badge.tui-danger.tui-badge-scale{
-  box-shadow: 0px 0 1upx #ed3f14;
-  border: 4upx solid #fff;
+  /* line-height: 1.5; */
+  /* font-size: 28upx; */
 }
 
-.tui-toast-text{
+.l-34 {
+  line-height: 34upx;
+}
+
+.f-12 {
+  font-size: 24upx;
+}
+
+.page {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.bee-btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin: 0;
   line-height: 1.5;
+  border-radius: 0;
+  font-size: 28upx;
+  color: #000;
+  padding: 0;
+}
+
+.bee-btn::after {
+  border: none;
+}
+
+.hiden-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.p-color {
+  color: #fa5151;
+}
+
+.f-s-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.f-f-s {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.f-f-e {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.f-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

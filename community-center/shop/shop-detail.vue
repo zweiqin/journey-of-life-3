@@ -15,99 +15,108 @@
 			<BrandInfo :brand-detail="brandDetail" @navgation="handleNavigate"></BrandInfo>
 		</view>
 
-		<!-- 优惠卷栏 -->
-		<view style="background: #F6F6F6;margin-top: 100upx;">
-			<view class="favorable" @click="handleOpenCoupon">
-				<view class="navGationBar">
-					<view class="favorableItem"><span>优惠券</span><span>领</span></view>
-					<view>
-						<tui-icon name="arrowright" color="#151515" :size="60" unit="upx"></tui-icon>
-					</view>
-				</view>
+		<view
+			style="display: flex;justify-content: space-between;align-items: center;padding: 18upx 30upx;margin-top: 18upx;background-color: #ffffff;"
+			@click="handleApplyForRecruit"
+		>
+			<view style="display: flex;align-items: center;">
+				<tui-icon name="friendadd" color="#222229" :size="22"></tui-icon>
+				<text style="margin-left: 16upx;">成为分销员</text>
 			</view>
-			<tui-tabs
-				:class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000" :size="35"
-				:is-fixed="isTabFixed" slider-bg-color="#FB5D5D" bold
-				:tabs="[{ name: '商品' }, { name: '团购' }, { name: '预约' }, { name: '秒杀' }, { name: '抽奖' }]"
-				:current-tab="currentMenu" style="z-index: 1;" @change="handleChangeNavs"
-			></tui-tabs>
+			<tui-icon name="arrowright" color="#151515" :size="26"></tui-icon>
 		</view>
 
-		<view class="brand-pane" :style="{ marginTop: isTabFixed ? '80upx' : '0' }">
-			<view v-show="currentMenu === 0" class="goods-list" style="width: 100%">
+		<tui-tab
+			:tabs="allTabList.map(i => i.name)" :current="currentTab" scroll background-color="transparent"
+			:size="32"
+			bold bottom="6upx" color="#222229" selected-color="#222229"
+			slider-bg-color="#ef530e" slider-height="4px"
+			@change="handleTabChange"
+		></tui-tab>
+
+		<view class="brand-pane">
+			<view v-if="currentTab === 0">
+				<CanvasPage
+					v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
+					:type-id="3" :shop-id="Number(shopId)"
+				>
+				</CanvasPage>
+				<tui-no-data
+					v-else-if="componentsData && !componentsData.length" :fixed="false"
+					style="margin-top: 40upx;"
+				>
+					商家未装修首页
+				</tui-no-data>
+			</view>
+			<view v-else>
+				<view v-if="bannerInfoList && bannerInfoList.length > 0" style="background: #f7f7f7;padding: 20upx 30upx;">
+					<swiper indicator-dots="true">
+						<swiper-item v-for="(item, index) in bannerInfoList" :key="index" @click="handleApplyForRecruit()">
+							<image :src="item.bannerImage" style="width: 100%;height: 280upx;border-radius: 20upx;"></image>
+						</swiper-item>
+					</swiper>
+				</view>
+				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
+					<view :style="{ color: sortGoodsIndex == 1 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
+						<text>新品</text>
+					</view>
+					<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+						<text>价格</text>
+						<tui-icon
+							:name="shopGoodsInfo.query.type == 1 ? 'turningup' : shopGoodsInfo.query.type == 2 ? 'turningdown' : ''"
+							color="#666666" :size="16"
+						></tui-icon>
+					</view>
+					<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+						<text>销量</text>
+						<tui-icon
+							:name="shopGoodsInfo.query.volume == 1 ? 'turningup' : shopGoodsInfo.query.volume == 2 ? 'turningdown' : ''"
+							color="#666666" :size="16"
+						></tui-icon>
+					</view>
+				</view>
 				<!-- <StoreGoodsList
-					:brand-detail="brandDetail" :overflow-y="paneOverflowY"
+					:brand-detail="brandDetail" overflow-y="hidden"
 					@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}`)"
 					@add-car="(e) => $refs.refJSpecificationScreen.open(e.id)"
 					></StoreGoodsList> -->
-				<!-- <view v-if="brandDetail.goodsVoList && brandDetail.goodsVoList.length">
-					<tui-waterfall :list-data="brandDetail.goodsVoList" :type="2">
-					<template #left="{ entity }">
-					<BrandGoods :goods-data="entity" @add=""></BrandGoods>
-					</template>
-					<template #right="{ entity }">
-					<BrandGoods :goods-data="entity" @add=""></BrandGoods>
-					</template>
+				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
+					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
+						<template #left="{ entity }">
+							<ShopGoods :shop-id="shopId" :c-item="entity"></ShopGoods>
+						</template>
+						<template #right="{ entity }">
+							<ShopGoods :shop-id="shopId" :c-item="entity"></ShopGoods>
+						</template>
 					</tui-waterfall>
-					</view> -->
+				</view>
+				<view style="padding-bottom: 45upx;">
+					<LoadingMore
+						:status="!shopGoodsInfo.isEmpty && !shopGoodsInfo.data.length
+							? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''"
+					>
+					</LoadingMore>
+					<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				</view>
 			</view>
-
-			<GrouponWrapper v-if="currentMenu === 1" :brand-detail="brandDetail"></GrouponWrapper>
-
-			<Reservation
-				v-if="currentMenu === 2" :brand-detail="brandDetail"
-				:is-overflow-y="paneOverflowY === 'auto' ? true : false"
-			></Reservation>
-
-			<Seckill v-if="currentMenu === 3" :brand-detail="brandDetail"></Seckill>
-
-			<Raffle v-if="currentMenu === 4" :brand-detail="brandDetail"></Raffle>
 		</view>
 
-		<AppraisePane></AppraisePane>
-
-		<tui-bottom-popup :show="isShowCouponListPopup" @close="isShowCouponListPopup = false">
-			<view style="padding: 20upx;">
-				<!-- <CouponList :brand-detail="brandDetail" :is-first-show-coupon="isFirstShowCoupon"></CouponList> -->
-			</view>
-		</tui-bottom-popup>
-
-		<!-- <JSpecificationScreen
-			ref="refJSpecificationScreen" order-type="1"
-			@success="$refs.refStoreShopCart && $refs.refStoreShopCart.getShopList()"
-			></JSpecificationScreen> -->
-
-		<tui-toast ref="toast"></tui-toast>
-
-		<view v-if="currentMenu === 0 && brandDetail.id && brandDetail.name">
-			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.id" :brand-name="brandDetail.name"></StoreShopCart>
-		</view>
 	</view>
 </template>
 
 <script>
-import StoreShopCart from './components/StoreShopCart.vue'
 import BrandInfo from './components/BrandInfo'
-import { getIndexShopDetailApi } from '../../api/anotherTFInterface'
-import AppraisePane from './components/AppraisePane.vue'
-import GrouponWrapper from './components/GrouponWrapper.vue'
-import CouponList from './components/CouponList.vue'
-import Reservation from './components/Reservation.vue'
-import Seckill from './components/Seckill.vue'
-import Raffle from './components/Raffle.vue'
+import CanvasPage from '../../components/canvasShow/canvasShowPage.vue'
+import ShopGoods from './components/ShopGoods'
+import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../api/anotherTFInterface'
 import { navigationAddress } from '../../utils'
 
 export default {
-	name: 'Detail',
+	name: 'ShopDetail',
 	components: {
 		BrandInfo,
-		StoreShopCart,
-		AppraisePane,
-		GrouponWrapper,
-		CouponList,
-		Reservation,
-		Seckill,
-		Raffle
+		CanvasPage,
+		ShopGoods
 	},
 
 	data() {
@@ -116,111 +125,159 @@ export default {
 				const pages = getCurrentPages()
 				if (pages[pages.length - 2].route === 'pages/store/store') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
 			},
-			yuanH: uni.upx2px(816), // 用于tabNav判定初始位置的值。455-47
-			isNavGaFixed: false, // 是否定位顶部导航栏
-			isTabFixed: false, // tab切换栏是否固定定位
-			navOpacity: 0, // 控制导航栏透明度
-			isShowCouponListPopup: false,
-
-			currentMenu: 0,
 			shopId: null,
 			brandDetail: {},
-			isFirstShowCoupon: false,
-			paneOverflowY: 'hidden'
+			allTabList: [{ name: '首页', classifyId: 0 }, { name: '全部', classifyId: 0 }],
+			currentTab: 0,
+			// 首页
+			componentsData: null,
+			terminal: getApp().globalData.terminal,
+			// 全部等其它tab
+			classifyId: '',
+			bannerInfoList: [],
+			sortGoodsIndex: '',
+			shopGoodsInfo: {
+				query: {
+					ifNew: 1, // 是否新品
+					type: 1, // 价格排序条件
+					volume: 1, // 销量排序条件
+					page: 1, // 当前页
+					pageSize: 20 // 每页记录数
+				},
+				data: [],
+				listTotal: 0, // 列表数据总数
+				isEmpty: false // 列表是否为空
+			}
 		}
 	},
 
 	onLoad(options) {
 		this.shopId = options.shopId
 		this.getBrandDetail()
+		getShopClassifyApi({
+			shopId: this.shopId
+		}).then((res) => {
+			this.allTabList = this.allTabList.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+		})
+		getShopBannerApi({
+			shopId: this.shopId
+		}).then((res) => {
+			this.bannerInfoList = res.data
+		})
+		getCanvasApi({ terminal: this.terminal, type: 3, shopId: this.shopId }).then((res) => {
+			if (JSON.stringify(res.data) !== '{}') {
+				this.componentsData = JSON.parse(res.data.json)
+			} else {
+				this.componentsData = []
+			}
+		})
+		addShopBusinessBuyerUserApi({ shopId: this.shopId })
 	},
 
 	methods: {
 		async getBrandDetail() {
-			const { data } = await getIndexShopDetailApi({
-				shopId: this.shopId,
-				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
-			})
-			console.log(data)
-			this.brandDetail = data || {}
-			this.brandDetail = {
-				'shopId': 208,
-				'collectId': 0,
-				'ifCollect': 1,
-				'shopName': '大家足专业修脚',
-				'shopLogo': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1hkq40u379mr7igjiddc.jpg',
-				'shopAdress': '水藤大道56号大家足',
-				'coupons': [],
-				'shopSeckill': [],
-				'shopGroupWork': [],
-				'shopDiscount': [],
-				'classifyNumber': 1,
-				'number': 0,
-				'fansNumber': 1,
-				'shopType': 2,
-				'longitude': '113.0779380',
-				'latitude': '22.9170740',
-				'isVoucher': 0,
-				'classificationId': '96',
-				'voucherReturn': '60',
-				'areaId': '440606103',
-				'buyerUserId': 0,
-				'monthlySales': 0,
-				'perCapita': 0,
-				'startTime': '9:00',
-				'endTime': '20:00',
-				'advertisement': '',
-				'distance': 0,
-				'trade': '营业中'
+			try {
+				uni.showLoading()
+				const { data } = await getIndexShopDetailApi({
+					shopId: this.shopId,
+					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				})
+				console.log(data)
+				this.brandDetail = data || {}
+				uni.hideLoading()
+			} catch (error) {
+				console.log(error)
+				uni.hideLoading()
 			}
-			// // #ifdef H5
-			// this.$nextTick(() => {
-			// 	this.handleShareServe(true)
-			// })
-			// // #endif
 		},
-
-		// 打开优惠券
-		handleOpenCoupon() {
-			if (!this.isFirstShowCoupon) this.isFirstShowCoupon = true
-			this.isShowCouponListPopup = true
-		},
-
-		// 切换 nav
-		handleChangeNavs(e) {
-			this.currentMenu = e.index
-		},
-
-		// 分享
-		handleShareServe(isQuit) {
-			if (!this.isLogin()) return
-			const data = {
-				data: {
-					title: `巨蜂本地生活商圈 - ${this.brandDetail.name}`,
-					desc: this.brandDetail.desc,
-					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?shopId=${this.brandDetail.id}`,
-					imageUrl: this.common.seamingImgUrl(this.brandDetail.picUrl)
-				},
-				successCb: () => { },
-				failCb: () => { }
-			}
-			this.$refs.beeWxShareRef.share(data, isQuit)
-		},
-
 		// 导航
 		handleNavigate() {
-			if (!this.brandDetail.address) {
-				uni.showToast({
-					title: '商家地址有误，导航失败',
-					icon: 'none'
-				})
-				return
-			}
+			if (!this.brandDetail.shopAdress) return this.$showToast('商家地址有误，导航失败')
 			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
+		},
+		// 判断是否已申请成为该店铺的分销员
+		handleApplyForRecruit() {
+			uni.showLoading()
+			checkDistributorHasApplyApi({
+				shopId: this.shopId
+			}).then((res) => {
+				uni.hideLoading()
+				if (!res.data.distributorId) {
+					this.go('/another-tf/another-serve/distributionModule/recruit?shopId=' + this.shopId)
+				} else if (res.data.state === 1) {
+					this.$showToast('您已申请成为该店铺的分销员')
+				} else {
+					this.$showToast('您的申请正在审核中，请稍后查看')
+				}
+			})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		// 栏目切换
+		handleTabChange(e) {
+			this.currentTab = e.index
+			if (e.index !== 0) {
+				this.shopGoodsInfo.data = []
+				this.shopGoodsInfo.query.page = 1
+				if (e.index === 1) {
+					this.classifyId = ''
+				} else {
+					this.classifyId = this.allTabList[e.index].classifyId
+				}
+				this.getShopGoodsTemplate()
+			}
+		},
+		getShopGoodsTemplate(isLoadmore) {
+			uni.showLoading()
+			getShopProductsApi({
+				...this.shopGoodsInfo.query,
+				shopId: this.shopId,
+				groupId: this.classifyId
+			}).then((res) => {
+				this.shopGoodsInfo.listTotal = res.data.page.total
+				if (isLoadmore) {
+					this.shopGoodsInfo.data.push(...res.data.page.list)
+				} else {
+					this.shopGoodsInfo.data = res.data.page.list
+				}
+				if (this.shopGoodsInfo.data.length === 0) this.shopGoodsInfo.isEmpty = true
+				uni.hideLoading()
+			})
+				.catch((res) => {
+					uni.hideLoading()
+				})
+		},
+		handleGoodsSortTap(index) {
+			this.shopGoodsInfo.query.page = 1
+			this.shopGoodsInfo.data = []
+			if (index == 1) {
+				this.shopGoodsInfo.query.ifNew = this.shopGoodsInfo.query.ifNew != 0 ? 0 : 1,
+				this.shopGoodsInfo.query.type = 1,
+				this.shopGoodsInfo.query.volume = 1,
+				this.sortGoodsIndex = index
+			} else if (index == 2) {
+				this.shopGoodsInfo.query.ifNew = 0,
+				this.shopGoodsInfo.query.type = this.shopGoodsInfo.query.type != 1 ? 1 : 2,
+				this.shopGoodsInfo.query.volume = 1,
+				this.sortGoodsIndex = index
+			} else if (index == 3) {
+				this.shopGoodsInfo.query.ifNew = 0,
+				this.shopGoodsInfo.query.type = 1,
+				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume != 1 ? 1 : 2,
+				this.sortGoodsIndex = index
+			}
+			this.getShopGoodsTemplate()
 		}
 	},
-	onPageScroll(e) {
+	onReachBottom() {
+		if (this.currentTab !== 0) {
+			if (this.shopGoodsInfo.data.length < this.shopGoodsInfo.listTotal) {
+				++this.shopGoodsInfo.query.page
+				this.getShopGoodsTemplate(true)
+			}
+		}
 	}
 }
 </script>
@@ -233,72 +290,16 @@ export default {
 	background-color: #f5f4f6;
 	box-sizing: border-box;
 
-	.favorable {
-		box-sizing: border-box;
-		padding: 0rpx 18rpx;
-		margin-bottom: 25rpx;
-		width: 100vw;
-		background-color: white;
-		border-radius: 10rpx;
-
-		.navGationBar {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			box-sizing: border-box;
-			// background-color: white;
-			position: relative;
-			width: 100%;
-			min-height: 74rpx;
-			padding: 8rpx 36rpx 14rpx 24upx;
+	.tui-scroll__view {
+		/deep/ .tui-tabs__line {
+			clip-path: inset(0% 15% 0% 15% round 4upx 4upx 4upx 4upx);
 		}
-
-		.favorableItem {
-			margin-right: 30rpx;
-			border-radius: 5rpx;
-			display: inline-block;
-			background-color: #FF5353;
-			font-size: 24rpx;
-			font-weight: normal;
-			color: #FFFFFF;
-
-			>span {
-				font-size: 28rpx;
-				box-sizing: border-box;
-			}
-
-			>span:nth-of-type(1) {
-				padding: 5rpx 10rpx;
-				border-right: 1px dashed white;
-			}
-
-			>span:nth-of-type(2) {
-				padding: 5rpx 8rpx;
-			}
-		}
-	}
-
-	.sticky-fixed {
-		// position: fixed;
-		top: 80rpx !important;
-	}
-
-	/deep/ .tui-popup-class.tui-bottom-popup {
-		height: 85vh !important;
 	}
 
 	.brand-pane {
 		background-color: #fff;
 		padding: 4upx 20upx 0 20upx;
-		box-sizing: border-box;
-
-		.goods-list {
-			margin-top: 20upx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: wrap;
-		}
+		margin-top: 10upx;
 	}
 }
 </style>

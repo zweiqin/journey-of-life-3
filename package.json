@@ -18,6 +18,7 @@
     "uni-read-pages": "^1.0.5"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "animate.css": "^4.1.1",
     "caniuse-lite": "^1.0.30001547",
     "countup.js": "^2.4.2",
@@ -29,6 +30,8 @@
     "lodash-es": "^4.17.21",
     "marked": "^4.2.2",
     "moment": "^2.29.4",
+    "swiper": "^5.4.5",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-jsonp": "^2.0.0",
     "weixin-js-sdk": "^1.6.0"
   }
