@@ -135,7 +135,6 @@ export default {
   onLoad(options) {
     this.setSearchParams('voucher')
     this.getCategoryList();
-<<<<<<< HEAD
     // getClassifyProducts2({
     //   classifyId: '',
     //   type: '1',
@@ -149,17 +148,6 @@ export default {
     //   console.log(err)
     // })
     // this.getIndexCanvas()
-=======
-    getCanvas({
-      terminal: 2,
-      type: 1
-    }).then(res => {
-      console.log(JSON.parse(res.data.json))
-    }).catch(err => {
-      console.log(err)
-    })
-
->>>>>>> b263d675547b0c41c591fa9ca246dba7d9924ba9
   },
 
   methods: {
