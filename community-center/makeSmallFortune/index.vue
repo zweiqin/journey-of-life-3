@@ -1,7 +1,7 @@
 <template>
       <view class="MakeSmallFortuneBox">
         <view class="shop-header-container">
-			<image class="back-icon" src="@/static/images/new-business/category/back.png" @click="back"></image>
+			<image class="back-icon" src="@/static/images/new-business/category/back.png" @click="goBack"></image>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36upx;">文章中心</text>
 				<tui-input
@@ -163,6 +163,7 @@ export default {
         }
     }
     .TabMenus {
+        padding-top: 108rpx;
         background-color: #fff;
         width: 100vw;
         height: 187rpx;
