@@ -60,7 +60,6 @@
               <tui-icon color="#f40" class="top" :size="20" name="turningup"></tui-icon>
               <tui-icon color="#f40" class="bottom" :size="20" name="turningdown"></tui-icon>
             </view>
-
           </view> -->
           <view class="item" :class="{ active: isActiveSearchType === 'isNew' }" @click="setSearchParams('isNew')">新品
           </view>
@@ -164,7 +163,7 @@ export default {
         this.empty();
       }
     },
-    // async getCategoryList() {
+    // async getCategoryList() { // 新的分类 在首页数据更新完后再做合并
     //   getCanvasApi({
     //     terminal: 2,
     //     type: 1
