@@ -151,7 +151,7 @@ export default {
 			uni.showLoading()
 			if (this.brandDetail.ifCollect == 0) {
 				collectCancelApi({
-					shopId: parseInt(this.brandDetail.ifCollect)
+					shopId: parseInt(this.brandDetail.shopId)
 				})
 					.then(() => {
 						uni.hideLoading()
@@ -162,7 +162,7 @@ export default {
 					})
 			} else {
 				collectToCollectApi({
-					ids: [ this.brandDetail.ifCollect ]
+					ids: [ this.brandDetail.collectId ]
 				})
 					.then(() => {
 						uni.hideLoading()

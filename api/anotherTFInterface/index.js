@@ -75,3 +75,6 @@ export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/add
 // 小程序客服查询
 export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data, 'GET')
 
+// 领取优惠券
+export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data)
+
