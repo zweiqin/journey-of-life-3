@@ -13,12 +13,12 @@
 		<AdvertisementBar></AdvertisementBar>
 
 		<!-- package -->
-		<ActivityPackage :scroll-top="scrollTop"></ActivityPackage>
+		<ActivityPackage></ActivityPackage>
 
 		<!-- 商家列表 -->
 		<view>
 			<!-- <view style="padding-top: 20upx;">
-				<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
+				<tui-waterfall :list-data="$data._list" :type="2" :page-size="queryParam.pageSize">
 				<template #left="{ entity }">
 				<view style="width: 338upx;">
 				<BrandShop :brand-info="entity"></BrandShop>
@@ -33,12 +33,18 @@
 				</view> -->
 			<view>
 				<CommonShop
-					v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop"
+					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop"
 					margin="22upx 0" radius="20upx" show-sign
 				></CommonShop>
 			</view>
-
-			<LoadingMore v-show="loadingStatus !== 'more' && !isGetAddress" :status="loadingStatus"></LoadingMore>
+			<view style="padding-bottom: 45upx;">
+				<LoadingMore
+					:status="!$data._isEmpty && !$data._list.length
+						? 'loading' : !$data._isEmpty && $data._list.length && ($data._list.length >= $data._listTotal) ? 'no-more' : ''"
+				>
+				</LoadingMore>
+				<tui-no-data v-if="$data._isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			</view>
 		</view>
 
 		<tui-toast ref="toast"></tui-toast>
@@ -46,93 +52,155 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import loadData from '../../mixin/loadData'
+
 import PageHead from './components/PageHead.vue'
 import NavBar from './components/NavBar.vue'
 import WelfareBar from './components/WelfareBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
-import BrandShop from './components/BrandShop.vue'
+// import BrandShop from './components/BrandShop.vue'
 import CommonShop from './components/CommonShop.vue'
-
-import { getNearByShopListApi } from '../../api/community-center'
-import { getShopCategoryLevelApi } from '../../api/anotherTFInterface'
-import { getCurrentLocation } from '../../utils'
+import { getShopCategoryLevelApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
+import { getAdressDetailByLngLat } from '../../utils'
 
 export default {
 	name: 'BusinessDistrict',
-	components: { PageHead, NavBar, WelfareBar, AdvertisementBar, ActivityPackage, BrandShop, CommonShop },
+	components: {
+		PageHead,
+		NavBar,
+		WelfareBar,
+		AdvertisementBar,
+		ActivityPackage,
+		// BrandShop,
+		CommonShop
+	},
 	data() {
 		return {
-			isGetAddress: false,
-			loadingStatus: 'more',
-			nearbyTotalPages: 0,
-			nearbyShopList: [],
-			scrollTop: 0,
-			queryInfo: {
-				pageNo: 1,
-				pageSize: 10,
-				address: ''
+			isPositioning: true,
+			queryParam: {
+				search: '',
+				classifyId: ''
 			}
 		}
 	},
+	mixins: [
+		loadData({
+			api: getHomeBrandListApi,
+			mapKey: {
+				list: 'list',
+				listTotal: 'total',
+				pageSize: 'pageSize'
+			},
+			callingcb: true,
+			dataFn(data) {
+				const ignoreBrandList = [ 'xxx' ]
+				return data.filter((item) => !ignoreBrandList.includes(item.name))
+			}
+		})
+	],
 	async onShow() {
-		// if (this.nearbyShopList.length && (this.nearbyShopList.length <= this.queryInfo.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
+		// if (this.$data._list.length && (this.$data._list.length <= this.queryParam.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
 		// 	const currentAddress = await getCurrentLocation()
-		// 	const res = await getNearByShopListApi({ pageNo: 1, pageSize: this.queryInfo.pageNo * this.queryInfo.pageSize, address: currentAddress + '' })
+		// 	const res = await getHomeBrandListApi({ pageNo: 1, pageSize: this.queryParam.pageNo * this.queryParam.pageSize, address: currentAddress + '' })
 		// 	if (res.statusCode === 20000) {
 		// 		if (res.data) {
-		// 			this.nearbyShopList = res.data.data
+		// 			this.$data._list = res.data.data
 		// 		}
 		// 	}
 		// }
 	},
 	onLoad() {
-		this.init()
+		this.getBrandList()
+		uni.$on('sendStoreDetailMsg', (data) => {
+			if (data.data.meaning === 'refreshCurrentData') {
+				if (!this.isPositioning) {
+					// uni.showLoading()
+					getHomeBrandListApi({
+						page: 1,
+						pageSize: this.$data._query.page * this.$data._query.pageSize,
+						...this.queryParam,
+						areaId: this.$store.state.location.locationInfo.adcode,
+						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+					})
+						.then(({ data }) => {
+							console.log(data)
+							this.$data._list = data.list || []
+							// uni.hideLoading()
+						})
+						.catch(() => {
+							// uni.hideLoading()
+						})
+				}
+			}
+		})
+		uni.$on('sendChooseAddressSuccessMsg', (data) => {
+			this.getBrandList()
+		})
+	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'pages/business-district/business-district') this.getBrandList()
+		}
 	},
 	methods: {
-		init() {
-			uni.stopPullDownRefresh()
-			this.getNearByShopList(true)
-		},
-
-		async getNearByShopList(isClear) {
-			if (isClear) {
-				this.queryInfo.pageNo = 1
-				this.nearbyShopList = []
-			}
-			try {
-				this.loadingStatus = 'loading'
-				this.isGetAddress = true
-				const currentAddress = await getCurrentLocation()
-				this.isGetAddress = false
-				this.queryInfo.address = currentAddress + ''
-				const res = await getNearByShopListApi(this.queryInfo)
-				if (res.statusCode === 20000) {
-					if (res.data) {
-						if (isClear) {
-							this.nearbyShopList = res.data.data
-						} else {
-							this.nearbyShopList = [...this.nearbyShopList, ...res.data.data]
+		getBrandList() {
+			if (!this.$store.getters.obtainLocationCount) {
+				const tempTime = Date.now()
+				const queryLocation = { longitude: '', latitude: '' }
+				uni.getLocation({
+					type: 'gcj02',
+					highAccuracyExpireTime: 1000,
+					success: (result) => {
+						queryLocation.longitude = result.longitude
+						queryLocation.latitude = result.latitude
+						console.log(result)
+						getAdressDetailByLngLat(queryLocation.latitude, queryLocation.longitude)
+							.then((res) => {
+								if (res.status === '1') {
+									this.$data._query = { ...this.$data._query, ...this.queryParam, ...queryLocation, areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode }
+									if ((Date.now() - tempTime) >= 1000) {
+										this._loadData(null, () => this.isPositioning = true)
+									} else {
+										this._loadData(null, () => this.isPositioning = false)
+									}
+								} else {
+									this.$showToast('查询失败')
+								}
+							})
+							.catch(() => {
+								this.$showToast('查询失败')
+							})
+					},
+					fail: () => {
+						this.$data._query = {
+							...this.$data._query,
+							...this.queryParam,
+							areaId: this.$store.state.location.locationInfo.adcode,
+							longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+							latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 						}
-						this.nearbyTotalPages = res.data.pages
-					} else {
-						this.nearbyShopList = []
-						this.nearbyTotalPages = 0
+						this._loadData()
 					}
-				} else {
-					// this.ttoast({
-					//   type: 'fail',
-					//   title: '附近商家获取失败',
-					//   content: res.statusMsg
-					// });
+				})
+			} else {
+				this.$data._query = {
+					...this.$data._query,
+					...this.queryParam,
+					areaId: this.$store.state.location.locationInfo.adcode,
+					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				// areaId: 440606,
+				// longitude: 113.293719,
+				// latitude: 22.803751
 				}
-			} catch (error) {
-				// this.ttoast({
-				//   type: 'fail',
-				//   title: error || '未知错误'
-				// });
-			} finally {
-				this.loadingStatus = 'more'
+				this._loadData(null, () => this.isPositioning = false)
 			}
 		},
 
@@ -144,23 +212,14 @@ export default {
 		}
 	},
 	onPullDownRefresh() {
-		this.init()
-	},
-
-	onPageScroll(e) {
-		this.scrollTop = e.scrollTop
-	},
-
-	onReachBottom() {
-		if (this.nearbyShopList.length < this.queryInfo.pageSize) {
-			return
-		}
-		if (this.queryInfo.pageNo >= this.nearbyTotalPages) {
-			return this.loadingStatus = 'no-more'
-		}
-		this.queryInfo.pageNo++
-		this.getNearByShopList()
+		this.$data._query.page = 1
+		this.$data._list = []
+		this.$data._listTotal = 0
+		this.$data._isEmpty = false
+		this._loadData()
+		uni.stopPullDownRefresh()
 	}
+
 }
 </script>
 

@@ -109,7 +109,7 @@ export default {
 				// this.$refs.uqrcode.make({})
 			} else if (type === 'teamMembersInvitation') {
 				getUserInfoCodeApi({
-					type: 0
+					type: 1
 				}).then((res) => {
 					this.createCode = res.data.invitationCode || ''
 					this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingTeamMembers&code=`

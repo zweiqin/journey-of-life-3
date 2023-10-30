@@ -1,10 +1,10 @@
 <template>
 	<view
 		v-if="shopInfo" class="common-shop-container" :style="{ margin, borderRadius: radius }"
-		@click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shopId)"
+		@click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shop_id)"
 	>
 		<view class="shop-top" :style="{ padding }">
-			<image class="shop-logo" :src="shopInfo.shopLogo || require('../../../static/images/new-user/fee.icon.png')">
+			<image class="shop-logo" :src="shopInfo.shop_logo || require('../../../static/images/new-user/fee.icon.png')">
 			</image>
 
 			<view class="shop-info">
@@ -15,11 +15,11 @@
 							src="../../../static/images/new-community/home/tag.png"
 						></image>
 						<view style="font-size: 32upx;font-weight: bold;color: #222229;margin-left: 5upx;">
-							{{ shopInfo.shopName || shopInfo.shopNameSimple || '附近商家' }}
+							{{ shopInfo.shop_name || shopInfo.charge_person_name || '附近商家' }}
 						</view>
 					</view>
 					<image
-						v-if="showSign && shopInfo.official" src="../../../static/images/new-community/home/gold-star.png"
+						v-if="showSign && shopInfo.contract_state" src="../../../static/images/new-community/home/gold-star.png"
 						style="width: 58upx;height: 58upx;"
 					></image>
 				</view>
@@ -42,14 +42,15 @@
 						<view
 							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 26upx;color: #888889;"
 						>
-							<template v-if="shopInfo.mainBusiness">
+							<!-- <template v-if="shopInfo.mainBusiness">
 								<text
-									v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index"
-									style="padding-right: 10upx;margin-left: 10upx;border-right: 1upx solid #D8D8D8;"
+								v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index"
+								style="padding-right: 10upx;margin-left: 10upx;border-right: 1upx solid #D8D8D8;"
 								>
-									{{ item }}
+								{{ item }}
 								</text>
-							</template>
+								</template> -->
+							<text v-if="shopInfo.shop_brief">{{ shopInfo.shop_brief || '--' }}</text>
 							<template v-else>
 								<text>--</text>
 							</template>
@@ -60,33 +61,90 @@
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: flex-end;padding-top: 6upx;">
-						<view
+						<!-- <view
 							v-if="shopInfo.shopTypeName"
 							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+							>
+							<text
+							v-for="(item, index) in shopInfo.shopTypeName.split(',')" :key="index"
+							style="padding: 4upx 18upx;margin-right: 10upx;font-size: 24upx;color: #c8530a;background-color: #fff1d7;"
+							>
+							{{ item }}
+							</text>
+							</view> -->
+						<view
+							v-if="shopInfo.authen_type || shopInfo.check_state || shopInfo.authentication_state"
+							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 24upx;color: #c8530a;"
 						>
 							<text
-								v-for="(item, index) in shopInfo.shopTypeName.split(',')" :key="index"
-								style="padding: 4upx 18upx;margin-right: 10upx;font-size: 24upx;color: #c8530a;background-color: #fff1d7;"
+								v-if="shopInfo.authen_type"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
 							>
-								{{ item }}
+								<template v-if="shopInfo.authen_type === 1">个人</template>
+								<template v-else-if="shopInfo.authen_type === 2">个体工商户</template>
+								<template v-else-if="shopInfo.authen_type === 3">企业</template>
+								<template v-else-if="shopInfo.authen_type === 4">其它组织</template>
+								<template v-else>特殊角色</template>
+							</text>
+							<text
+								v-if="shopInfo.check_state"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+							>
+								已入驻
+							</text>
+							<text
+								v-if="shopInfo.authentication_state"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+							>
+								已签约
 							</text>
 						</view>
-						<view v-if="shopInfo.accessNum" style="margin-left: 6upx;">
+						<!-- <view v-if="shopInfo.accessNum" style="margin-left: 6upx;">
 							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.accessNum || 0 }}浏览量</text>
+							</view> -->
+						<view v-if="shopInfo.fans_number" style="margin-left: 6upx;">
+							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.fans_number || 0 }}粉丝</text>
 						</view>
 					</view>
 				</view>
 
 				<view v-if="bottomType === 'brief'" class="bottom-brief">
 					<view class="brief-left">
-						<view v-if="shopInfo.mainBusiness" class="serve-list">
+						<!-- <view v-if="shopInfo.mainBusiness" class="serve-list">
 							<text v-for="(item, index) in shopInfo.mainBusiness.split(',')" :key="index" class="item">
-								{{ item }}
+							{{ item }}
 							</text>
+							</view> -->
+						<view v-if="shopInfo.shop_brief" class="serve-list">
+							<text>{{ shopInfo.shop_brief || '--' }}</text>
 						</view>
-						<view v-if="shopInfo.shopTypeName" class="type-list">
+						<!-- <view v-if="shopInfo.shopTypeName" class="type-list">
 							<text v-for="(item, index) in shopInfo.shopTypeName.split(',')" :key="index" class="item">
-								{{ item }}
+							{{ item }}
+							</text>
+							</view> -->
+						<view v-if="shopInfo.authen_type || shopInfo.check_state || shopInfo.authentication_state" class="type-list">
+							<text
+								v-if="shopInfo.authen_type"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+							>
+								<template v-if="shopInfo.authen_type === 1">个人</template>
+								<template v-else-if="shopInfo.authen_type === 2">个体工商户</template>
+								<template v-else-if="shopInfo.authen_type === 3">企业</template>
+								<template v-else-if="shopInfo.authen_type === 4">其它组织</template>
+								<template v-else>特殊角色</template>
+							</text>
+							<text
+								v-if="shopInfo.check_state"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+							>
+								已入驻
+							</text>
+							<text
+								v-if="shopInfo.authentication_state"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+							>
+								已签约
 							</text>
 						</view>
 					</view>
@@ -97,17 +155,19 @@
 				</view>
 
 				<view v-if="bottomType === 'display'">
-					<view class="detail-msg">{{ shopInfo.elegantDemeanour || '--' }}</view>
+					<!-- <view class="detail-msg">{{ shopInfo.elegantDemeanour || '--' }}</view> -->
+					<view class="detail-msg">{{ shopInfo.shop_brief || '--' }}</view>
 				</view>
 
 				<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
 					<view
+						v-if="shopInfo.voucher_return"
 						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 2upx 6upx;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 					>
-						补贴代金券{{ shopInfo.voucherProportion ? Number(shopInfo.voucherProportion) * 100 : 0 }}%
+						补贴代金券{{ shopInfo.voucher_return || 0 }}%
 					</view>
 					<view
-						v-if="shopInfo.isVoucher"
+						v-if="shopInfo.is_voucher"
 						style="width: fit-content;margin-top: 8upx;padding: 2upx 6upx;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 					>
 						支持代金券
@@ -118,11 +178,11 @@
 					<view class="op-info">
 						<view class="item">
 							<image class="icon" src="../../../static/images/new-community/home/follow.png"></image>
-							<text class="num">{{ shopInfo.attentionNum || 0 }}</text>
+							<text class="num">{{ shopInfo.score || 0 }}</text>
 						</view>
 						<view class="item">
 							<image class="icon" src="../../../static/images/new-community/home/views.png"></image>
-							<text class="num">{{ shopInfo.accessNum || 0 }}</text>
+							<text class="num">{{ shopInfo.fans_number || 0 }}</text>
 						</view>
 						<view v-if="shopInfo.distance" class="item">
 							<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
