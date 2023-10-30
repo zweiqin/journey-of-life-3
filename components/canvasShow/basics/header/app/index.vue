@@ -48,7 +48,7 @@ export default {
 		},
 		searchPro(key, type) {
 			uni.navigateTo({
-				url: `/pages_category_page1/search/index/index`
+				url: `/another-tf/another-serve/search/index`
 			})
 		}
 	}

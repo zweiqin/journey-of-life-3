@@ -1,7 +1,6 @@
 import api from '../../config/api'
-import NET from '../../../../utils/request'
+import { updateTakeCouponReceiveApi } from '../../../../api/anotherTFInterface'
 import { funMixin } from '../../config/mixin'
-import { T_STORAGE_KEY } from '../../../../constant'
 
 export const commonMixin = {
 	name: 'textComponent',
@@ -72,40 +71,20 @@ export const commonMixin = {
 		},
 		// 领取优惠券
 		receiveCoupon(item) {
-			const res = uni.getStorageSync(T_STORAGE_KEY)
-			const token = res.token
-			if (token) {
-				var paramsData = {}
-				if (this.typeId === 1) {
-					paramsData.couponId = item.couponId
-				} else if (this.typeId === 3) {
-					paramsData.shopCouponId = item.shopCouponId
-					paramsData.shopId = this.shopId
-				}
-				NET.request(api.takeCoupon, paramsData, 'POST').then((res) => {
-					this.getData()
-					uni.showToast({
-						title: '领取成功',
-						icon: 'success'
-					})
-				})
-					.catch((res) => {
-						if (res.data.code !== '200') {
-							uni.showToast({
-								title: res.data.message,
-								icon: 'none'
-							})
-						}
-					})
-			} else {
-				uni.showToast({
-					title: '请先登录',
-					icon: 'none'
-				})
-				uni.navigateTo({
-					url: '/pages_category_page2/userModule/login'
-				})
+			var paramsData = {}
+			if (this.typeId === 1) {
+				paramsData.couponId = item.couponId
+			} else if (this.typeId === 3) {
+				paramsData.shopCouponId = item.shopCouponId
+				paramsData.shopId = this.shopId
 			}
+			updateTakeCouponReceiveApi(paramsData).then((res) => {
+				this.getData()
+				uni.showToast({
+					title: '领取成功',
+					icon: 'success'
+				})
+			})
 		}
 	}
 }
