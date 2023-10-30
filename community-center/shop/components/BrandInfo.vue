@@ -5,8 +5,7 @@
 			<view style="display: flex;align-items: center;">
 				<BeeIcon
 					:name="brandDetail.ifCollect ? 'star-fill' : 'star'" :size="22"
-					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'"
-					@click="handleShareServe"
+					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'" @click="handleCollectToggle"
 				></BeeIcon>
 				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
 					<BeeIcon
@@ -16,22 +15,35 @@
 				</BeeWxShare>
 			</view>
 		</view>
-		<view>
-			<tui-rate active="#e02208" :size="14" disabled :current="brandDetail.score || 0"></tui-rate>
-			<text style="margin-left: 8upx;color: #e02208;font-size: 26upx;">{{ brandDetail.score || 0 }}</text>
-			<text style="font-size: 24upx;color: #777777;margin-left: 18upx;">销量 {{ brandDetail.monthlySales }}</text>
-			<text style="font-size: 24upx;color: #000000;margin-left: 16upx;">人均{{ brandDetail.perCapita || '：--' }}</text>
+
+		<view style="display: flex;justify-content: space-between;align-items: center;">
+			<view style="flex: 1;width: 0;margin-right: 10upx;">
+				<view style="padding-top: 6upx;font-size: 24upx;">
+					<tui-rate active="#e02208" :size="14" disabled :current="brandDetail.score || 0"></tui-rate>
+					<text style="margin-left: 8upx;color: #e02208;font-size: 26upx;">{{ brandDetail.score || 0 }}</text>
+					<text style="color: #777777;margin-left: 18upx;">销量 {{ brandDetail.monthlySales }}</text>
+					<text style="color: #000000;margin-left: 16upx;">人均{{ brandDetail.perCapita || '：--' }}</text>
+					<text style="color: #777777;margin-left: 20upx;">粉丝数 {{ brandDetail.fansNumber }}</text>
+				</view>
+				<view v-if="brandDetail.voucherReturn || brandDetail.isVoucher" class="tags">
+					<view v-if="brandDetail.voucherReturn" class="tag">补贴代金券{{ brandDetail.voucherReturn || 0 }}%</view>
+					<view v-if="brandDetail.isVoucher" class="tag">支持代金券</view>
+				</view>
+			</view>
+			<!-- #ifdef MP-WEIXIN -->
+			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleFlyToService">
+				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
+				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
+			</view>
+			<!-- #endif -->
 		</view>
-		<view v-if="brandDetail.voucherReturn || brandDetail.isVoucher" class="tags">
-			<view v-if="brandDetail.voucherReturn" class="tag">补贴代金券{{ brandDetail.voucherReturn || 0 }}%</view>
-			<view v-if="brandDetail.isVoucher" class="tag">支持代金券</view>
-		</view>
+
 		<view style="display: flex;align-items: center;margin-top: 10upx;">
 			<BeeIcon name="clock" :size="18" color="#888889" style="width: fit-content;"></BeeIcon>
 			<view style="margin-left: 18upx;font-size: 28upx;color: #222229;">营业状态</view>
 			<view style="margin-left: 20upx;font-size: 28upx;color: #E02208;">{{ brandDetail.trade || '未知' }}</view>
 			<view style="margin-left: 18upx;padding: 2upx 18upx;font-size: 24upx;background-color: #f5f4f6;">
-				{{ brandDetail.startTime }}至{{ brandDetail.endTime }}
+				{{ brandDetail.startTime }} 至 {{ brandDetail.endTime }}
 			</view>
 		</view>
 
@@ -89,16 +101,11 @@
 			</view>
 		</view>
 
-		<!-- <view style="display: flex;justify-content: space-between;align-items: center;">
-			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleToConnectStore">
-			<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
-			<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
-			</view>
-			</view> -->
 	</view>
 </template>
 
 <script>
+import { collectCancelApi, collectToCollectApi, getCustomerServiceAppletKfApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BrandInfo',
 	props: {
@@ -107,24 +114,111 @@ export default {
 			required: true
 		}
 	},
+	data() {
+		return {
+			hasService: false,
+			serviceURL: false,
+			corpId: false
+		}
+	},
+
+	watch: {
+		brandDetail: {
+			handler(newV) {
+				if (newV.shopId) {
+					// #ifdef H5
+					this.$nextTick(() => {
+						this.handleShareServe(true)
+					})
+					// #endif
+					// #ifdef MP-WEIXIN
+					this.getServiceUrl(newV.shopId)
+					// #endif
+				}
+			},
+			immediate: true,
+			deep: true
+		}
+	},
 	methods: {
-		handleToConnectStore() {
-			if (!this.brandDetail.userId || !this.brandDetail.name) return this.$showToast('缺少商家信息')
-			this.go(`/user/otherServe/chat/chat-detail?chat=${this.brandDetail.userId}&name=${this.brandDetail.name}&avatar=${this.brandDetail.picUrl}`)
+		// handleToConnectStore() {
+		// 	if (!this.brandDetail.userId || !this.brandDetail.name) return this.$showToast('缺少商家信息')
+		// 	this.go(`/user/otherServe/chat/chat-detail?chat=${this.brandDetail.userId}&name=${this.brandDetail.name}&avatar=${this.brandDetail.picUrl}`)
+		// },
+
+		// 收藏店辅
+		handleCollectToggle() {
+			uni.showLoading()
+			if (this.brandDetail.ifCollect == 0) {
+				collectCancelApi({
+					shopId: parseInt(this.brandDetail.shopId)
+				})
+					.then(() => {
+						uni.hideLoading()
+						this.$showToast('收藏成功')
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			} else {
+				collectToCollectApi({
+					ids: [ this.brandDetail.collectId ]
+				})
+					.then(() => {
+						uni.hideLoading()
+						this.$showToast('取消收藏成功')
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			}
 		},
 
-		// 收藏商家
-		async handleFollowBrand() {
-			const { data } = await collectionApi({
-				userId: getUserId(),
-				// brandId: this.brandDetail.id,
-				// is: !this.brandDetail.is,
-				valueId: this.brandDetail.id,
-				type: 2
+		// 分享
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `团蜂社区商圈 - ${this.brandDetail.shopName}`,
+					desc: this.brandDetail.shopBrief,
+					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
+		},
+
+		// 获取客服url
+		getServiceUrl(id) {
+			if (!this.brandDetail.shopId) return this.$showToast('缺少商家信息')
+			getCustomerServiceAppletKfApi({ id }).then((res) => {
+				if (res.code === '' && res.data.corpId && res.data.url) {
+					this.corpId = res.data.corpId
+					this.serviceURL = res.data.url
+					if (this.serviceURL) {
+						this.hasService = true
+					}
+				}
 			})
-			this.ttoast(`${this.brandDetail.is ? '取消收藏' : '收藏'}成功`)
-			this.brandDetail.is = !this.brandDetail.is
-			console.log(data)
+		},
+
+		// 跳转客服
+		handleFlyToService() {
+			if (!this.serviceURL || !this.corpId) {
+				this.hasService = false
+				return
+			}
+			const extInfo = { // 客服信息
+				url: this.serviceURL // 客服链接
+			}
+			// #ifdef MP-WEIXIN
+			wx.openCustomerServiceChat({
+				extInfo,
+				corpId: this.corpId // 企业ID
+			})
+			// #endif
 		}
 	}
 }

@@ -25,12 +25,19 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 					if (res.data.code === '200' || res.data.code === '') {
 						resolve(res.data)
 					} else if (res.data.code === '20004' || res.data.code === '20005') {
+						uni.showToast({
+							title: '鉴权失败，请重新登陆',
+							icon: 'none',
+							mask: true
+						})
 						uni.removeStorageSync(T_STORAGE_KEY)
 						clearAllCache()
 						store.dispatch('auth/logout', true)
-						uni.navigateTo({
-							url: '/pages/login/login'
-						})
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/login/login'
+							})
+						}, 1000)
 						reject(res.data)
 					} else {
 						uni.showToast({

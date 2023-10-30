@@ -35,6 +35,9 @@ export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory
 // 查询店铺父级分类查询子级分类
 export const getShopCategorySonApi = (data) => AnotherTFRequest('/shopCategory/getShopCategorySon', data, 'GET')
 
+// 附近商家
+export const getHomeBrandListApi = (data) => AnotherTFRequest('/shop/getShopAll', data, 'POST')
+
 // 获取邀请码
 export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode', data, 'GET')
 
@@ -46,4 +49,32 @@ export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', da
 
 // 收藏商品、店铺
 export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data)
+
+// 验证当前客户是否为分销员
+export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data, 'GET')
+
+// 申请分销员
+export const addDistributorApplyApi = (data) => AnotherTFRequest('/distributor/addDistributor', data)
+
+// 查询店铺分类
+export const getShopClassifyApi = (data) => AnotherTFRequest('/shop/getShopClassify', data, 'GET')
+
+// 根据id查询店铺
+export const getShopProductsApi = (data) => AnotherTFRequest('/shop/getShopProducts', data, 'GET')
+
+// 查询店铺banner
+export const getShopBannerApi = (data) => AnotherTFRequest('/shop/getShopBanner', data, 'GET')
+
+// 查询直播间列表
+export const getCanvasSelectLiveListApi = (data) => AnotherTFRequest('/canvas/selectLiveList', data, 'GET')
+export const getsubscribeLiveApi = (data) => AnotherTFRequest('/live/subscribeLive', data)
+
+// 成为商家的客户
+export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/addBusinessBuyerUser', data)
+
+// 小程序客服查询
+export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data, 'GET')
+
+// 领取优惠券
+export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data)
 
