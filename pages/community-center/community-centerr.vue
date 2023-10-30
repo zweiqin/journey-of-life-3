@@ -86,8 +86,8 @@ import VipPackage from './cpns/VipPackage.vue';
 import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 // 赚小钱
+
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue';
-import user from 'store/modules/user';
 
 const app = getApp();
 
@@ -315,7 +315,6 @@ export default {
   },
 
   onHide() {
-    console.log('quxiao11');
     clearTimeout(this.timer);
     this.timer = null;
   }
