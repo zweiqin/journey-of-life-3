@@ -51,13 +51,10 @@ export const IN_TIMES = 'IN_TIMES'
 export const T_CURRENT_ADDRESS = 'T_CURRENT_ADDRESS'
 
 export const COMMUNITY_ORDER_NO = 'COMMUNITY_ORDER_NO'
-export const COMMUNITY_ORDER_ITEM_NO = 'COMMUNITY_ORDER_ITEM_NO'
 
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
 export const GROUP_INVITE_CODE = 'GROUP_INVITE_CODE'
-export const B_SERVE_ORDER_NO = 'B_SERVE_ORDER_NO'
-export const B_SHOP_ORDER_NO = 'B_SHOP_ORDER_NO'
 
 export const MINI_PROGRAM_TAG = 'MINI_PROGRAM_TAG'
 export const USER_SELECT_ADDRESS = 'USER_SELECT_ADDRESS'
@@ -68,7 +65,6 @@ export const VIDEO_TYPE = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram
 export const clearAllCache = () => {
 	[
 		COMMUNITY_ORDER_NO,
-		COMMUNITY_ORDER_ITEM_NO,
 		jiSenderInfo,
 		jiconsigneeInfo,
 		jiRemarks,

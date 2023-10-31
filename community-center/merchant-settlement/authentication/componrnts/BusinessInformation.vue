@@ -89,7 +89,7 @@
 import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement';
 import { BusinessInformationRules } from '../toolData/rules';
 import { getUserId } from '@/utils';
-import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from '@/constant';
+import { SELECT_ADDRESS, USER_TOKEN } from '@/constant';
 export default {
   name: 'BasicInformation',
   props: {

@@ -33,9 +33,13 @@
 				@click="go(`/community-center/shop/shop-deep?id=${item.id}`)"
 			>
 				<view>
-					<BeeIcon :size="34" :src="item.labelUrl || require('../../static/images/index/design.png')"></BeeIcon>
+					<BeeIcon
+						:size="34"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+					>
+					</BeeIcon>
 				</view>
-				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.labelName }}</view>
+				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
 			</view>
 		</view>
 
@@ -299,13 +303,15 @@
 		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0" radius="20upx"
+				margin="22upx 0"
+				radius="20upx"
 			></CommonShop>
 		</view>
 		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0" radius="20upx"
+				margin="22upx 0"
+				radius="20upx"
 			>
 				<view style="padding: 20upx 0">
 					<view
@@ -331,7 +337,8 @@
 		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0" radius="20upx"
+				margin="22upx 0"
+				radius="20upx"
 			>
 				<view style="padding: 20upx 26upx">
 					<scroll-view scroll-x="true">
@@ -395,8 +402,14 @@
 				</template>
 			</tui-waterfall>
 		</view>
-		<view v-show="!nearbyShopList.length && loadingStatus !== 'loading'" class="no-data"> 暂无门店~ </view>
-		<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
+		<view style="padding-bottom: 45upx;">
+			<LoadingMore
+				:status="!isEmpty && !nearbyShopList.length
+					? 'loading' : !isEmpty && nearbyShopList.length && (nearbyShopList.length >= nearbyTotal) ? 'no-more' : ''"
+			>
+			</LoadingMore>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+		</view>
 	</view>
 </template>
 
@@ -405,11 +418,10 @@ import CommonShop from '../../pages/business-district/components/CommonShop.vue'
 import BrandShop from '../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
-import { getNearByShopListApi, getSecondLevelShopLabelListApi } from '../../api/community-center'
-import { getCurrentLocation } from '../../utils'
+import { getShopCategorySonApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
 
 export default {
-	name: 'Shop',
+	name: 'ShopEnter',
 	components: { CommonShop, BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
 	data() {
 		return {
@@ -483,13 +495,13 @@ export default {
 			ownBrandCardWithPriceBox: [ '11' ],
 
 			nearbyShopList: [],
-			nearbyTotalPages: 0,
-			loadingStatus: 'more',
+			nearbyTotal: 0,
+			isEmpty: false,
 			queryInfo: {
-				search: '',
-				pageNo: 1,
+				page: 1,
 				pageSize: 10,
-				address: ''
+				search: '',
+				classifyId: ''
 			}
 		}
 	},
@@ -504,6 +516,7 @@ export default {
 	async onLoad(options) {
 		this.currentType = options.type || '0'
 		this.parentId = options.id || ''
+		this.queryInfo.classifyId = options.id || ''
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
@@ -534,20 +547,8 @@ export default {
 			this.getNearByShopList(true)
 		}
 		if (this.ownMenuBar.includes(this.currentType)) {
-			try {
-				const res = await getSecondLevelShopLabelListApi({ parentId: this.parentId })
-				if (res.statusCode === 20000) {
-					if (res.data) {
-						this.menuBarArr = res.data
-					} else {
-						this.menuBarArr = []
-					}
-				} else {
-					res.statusMsg ? this.$showToast(res.statusMsg) : ''
-				}
-			} catch (error) {
-				this.$showToast(error || '未知错误')
-			}
+			const res = await getShopCategorySonApi({ pid: this.parentId })
+			this.menuBarArr = res.data || []
 		}
 	},
 	methods: {
@@ -570,43 +571,35 @@ export default {
 			this.specialHotelBoxObj.startWeek = e.startWeek
 			this.specialHotelBoxObj.endWeek = e.endWeek
 		},
-		async getNearByShopList(isClear) {
-			if (isClear) {
-				this.queryInfo.pageNo = 1
-				uni.showLoading()
-				this.loadingStatus = 'loading'
-				this.nearbyShopList = []
-			} else {
-				this.loadingStatus = 'loading'
-			}
-			try {
-				const currentAddress = await getCurrentLocation()
-				this.queryInfo.address = currentAddress + ''
-				// const res = await getNearByShopListApi({ ...this.queryInfo, shopLabel: this.parentId })
-				const res = await getNearByShopListApi({ ...this.queryInfo })
-				if (res.statusCode === 20000) {
-					if (res.data) {
-						this.nearbyShopList = [...this.nearbyShopList, ...res.data.data]
-						this.nearbyTotalPages = res.data.pages
+		getNearByShopList(isLoadmore) {
+			uni.showLoading()
+			getHomeBrandListApi({
+				...this.queryInfo,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			})
+				.then((res) => {
+					this.nearbyTotal = res.data.total
+					if (isLoadmore) {
+						this.nearbyShopList.push(...res.data.list)
 					} else {
-						this.nearbyShopList = []
-						this.nearbyTotalPages = 0
+						this.nearbyShopList = res.data.list
 					}
-				}
-			} catch (error) {
-				console.log(error)
-			} finally {
-				uni.hideLoading()
-				this.loadingStatus = 'more'
-			}
+					if (this.nearbyShopList.length === 0) this.isEmpty = true
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
 		}
 	},
 
 	onReachBottom() {
-		if (this.nearbyShopList.length < this.queryInfo.pageSize) return
-		if (this.queryInfo.pageNo >= this.nearbyTotalPages) return this.loadingStatus = 'no-more'
-		this.queryInfo.pageNo++
 		this.getNearByShopList()
+		if (this.nearbyShopList.length < this.nearbyTotal) {
+			++this.queryInfo.page
+			this.getNearByShopList()
+		}
 	}
 }
 </script>
@@ -672,17 +665,6 @@ export default {
 		padding-bottom: 24upx;
 		margin-bottom: 24upx;
 		border-bottom: 1upx solid #D8D8D8;
-	}
-
-	.no-data {
-		width: 100%;
-		height: 500upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 24upx;
-		letter-spacing: 0.2em;
-		color: #ccc;
 	}
 }
 </style>

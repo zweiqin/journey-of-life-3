@@ -4,30 +4,30 @@
 			<!-- <swiper @change="handleSwiperChange" indicator-dots style="height: 360upx;"> -->
 			<swiper-item class="nav-item">
 				<view class="item">
-					<NavBarItem v-for="item in navbarOne" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarOne" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 				<view class="item">
-					<NavBarItem v-for="item in navbarTwo" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarTwo" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 				<view class="item">
-					<NavBarItem v-for="item in navbarThree" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarThree" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 			</swiper-item>
 
 			<swiper-item class="nav-item">
 				<view class="item">
-					<NavBarItem v-for="item in navbarOne" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarOne" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 				<view class="item">
-					<NavBarItem v-for="item in navbarFour" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarFour" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 				<view class="item">
-					<NavBarItem v-for="item in navbarFive" :key="item.labelName" :data="item" @click="$emit('view', item)">
+					<NavBarItem v-for="item in navbarFive" :key="item.storeName" :data="item" @click="$emit('view', item)">
 					</NavBarItem>
 				</view>
 			</swiper-item>
@@ -37,7 +37,7 @@
 
 <script>
 import NavBarItem from './NavBarItem.vue'
-import { getFirstLevelShopLabelListApi } from '../../../api/community-center'
+import { getShopCategoryLevelApi } from '../../../api/anotherTFInterface'
 import { navbarAll } from '../config'
 export default {
 	name: 'NavBar',
@@ -54,49 +54,37 @@ export default {
 		}
 	},
 	async created() {
-		try {
-			const res = await getFirstLevelShopLabelListApi({})
-			if (res.statusCode === 20000) {
-				if (res.data) {
-					this.classificationOneList = res.data
-					if (this.classificationOneList.length) {
-						this.navbarOne = this.classificationOneList.slice(0, 5).map((item) => {
-							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
-							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
-						})
-					}
-					if (this.classificationOneList.length > 5) {
-						this.navbarTwo = this.classificationOneList.slice(5, 10).map((item) => {
-							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
-							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
-						})
-					}
-					if (this.classificationOneList.length > 10) {
-						this.navbarThree = this.classificationOneList.slice(10, 15).map((item) => {
-							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
-							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
-						})
-					}
-					if (this.classificationOneList.length > 15) {
-						this.navbarFour = this.classificationOneList.slice(15, 20).map((item) => {
-							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
-							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
-						})
-					}
-					if (this.classificationOneList.length > 20) {
-						this.navbarFive = this.classificationOneList.slice(20, 25).map((item) => {
-							const tempIconObj = navbarAll.find((i) => i.labelName === item.labelName)
-							return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
-						})
-					}
-				} else {
-					this.classificationOneList = []
-				}
-			} else {
-				res.statusMsg ? this.$showToast(res.statusMsg) : ''
-			}
-		} catch (error) {
-			this.$showToast(error || '未知错误')
+		const res = await getShopCategoryLevelApi({ levelId: 1 })
+		this.classificationOneList = res.data || []
+		if (this.classificationOneList.length) {
+			this.navbarOne = this.classificationOneList.slice(0, 5).map((item) => {
+				const tempIconObj = navbarAll.find((i) => i.storeName === item.storeName)
+				return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+			})
+		}
+		if (this.classificationOneList.length > 5) {
+			this.navbarTwo = this.classificationOneList.slice(5, 10).map((item) => {
+				const tempIconObj = navbarAll.find((i) => i.storeName === item.storeName)
+				return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+			})
+		}
+		if (this.classificationOneList.length > 10) {
+			this.navbarThree = this.classificationOneList.slice(10, 15).map((item) => {
+				const tempIconObj = navbarAll.find((i) => i.storeName === item.storeName)
+				return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+			})
+		}
+		if (this.classificationOneList.length > 15) {
+			this.navbarFour = this.classificationOneList.slice(15, 20).map((item) => {
+				const tempIconObj = navbarAll.find((i) => i.storeName === item.storeName)
+				return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+			})
+		}
+		if (this.classificationOneList.length > 20) {
+			this.navbarFive = this.classificationOneList.slice(20, 25).map((item) => {
+				const tempIconObj = navbarAll.find((i) => i.storeName === item.storeName)
+				return tempIconObj ? { ...item, ...tempIconObj } : { ...item, iconUrl: '', type: 0 }
+			})
 		}
 	},
 
@@ -137,7 +125,8 @@ export default {
 			align-items: center;
 			padding-bottom: 20upx;
 		}
-		.item:last-child{
+
+		.item:last-child {
 			padding-bottom: 0;
 		}
 	}

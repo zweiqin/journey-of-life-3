@@ -34,7 +34,8 @@
 			<view>
 				<CommonShop
 					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop"
-					margin="22upx 0" radius="20upx" show-sign
+					margin="22upx 0" radius="20upx" pic-width="222upx" pic-height="222upx"
+					show-sign
 				></CommonShop>
 			</view>
 			<view style="padding-bottom: 45upx;">
@@ -62,7 +63,7 @@ import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
 // import BrandShop from './components/BrandShop.vue'
 import CommonShop from './components/CommonShop.vue'
-import { getShopCategoryLevelApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
+import { getHomeBrandListApi } from '../../api/anotherTFInterface'
 import { getAdressDetailByLngLat } from '../../utils'
 
 export default {
