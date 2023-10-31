@@ -74,10 +74,7 @@
                     <image class="TopLayer" src="@/static/images/new-community/redBookText/topimg.png"></image>
                     <image class="btn" src="@/static/images/new-community/redBookText/btn.png"></image>
                     <view class="text" v-if="redPacketInfo">
-                        开心收下
-                    </view>
-                    <view class="text" v-else>
-                        {{ '`(*>﹏<*)′' }}
+                        {{ redPacketInfo.amount? `开心收下`:'`(*>﹏<*)′' }}
                     </view>
                     <view class="text2">
                         零钱将自动存入代金券
