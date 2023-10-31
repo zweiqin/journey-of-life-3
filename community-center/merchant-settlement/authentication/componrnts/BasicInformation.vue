@@ -112,7 +112,7 @@
 <script>
 import { shopCreateAccount, getAccountInfo } from '@/api/community-center/merchantSettlement'
 import { getUserId } from '@/utils'
-import { SELECT_ADDRESS, USER_TOKEN, B_SERVE_ORDER_NO } from '@/constant'
+import { SELECT_ADDRESS, USER_TOKEN } from '@/constant'
 import { BasicInformationRules } from '../toolData/rules'
 import form from '@/components/common/tui-validation/tui-validation.js'
 import { forIn } from 'lodash-es'

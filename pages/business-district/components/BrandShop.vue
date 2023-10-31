@@ -12,7 +12,7 @@
 		<view class="brand-info">
 			<view class="brand-title-wrapper">
 				<image v-if="showLogo" class="icon" src="../../../static/images/new-community/home/tag.png"></image>
-				<view class="name">{{ brandInfo.shopName || brandInfo.shopNameSimple }}</view>
+				<view class="name">{{ brandInfo.shopName || brandInfo.chargePersonName }}</view>
 			</view>
 
 			<view v-if="bottomType === 'detail'" class="brand-detail">
@@ -23,20 +23,27 @@
 						<text class="rate-count">{{ brandInfo.score || 5 }}</text>
 					</view>
 					<!-- <text class="receive-order">接单率：{{ brandInfo.acceptanceRate * 100 }}%</text> -->
-					<text v-if="brandInfo.attentionNum" class="receive-order">浏览量{{ brandInfo.attentionNum }}</text>
+					<text v-if="brandInfo.monthlySales" class="receive-order">月售{{ brandInfo.monthlySales }}</text>
 				</view>
 			</view>
 
 			<view v-if="bottomType === 'brief'" class="brand-brief">
-				<view v-if="brandInfo.mainBusiness" class="brief-line brief-top">
-					{{
-						brandInfo.mainBusiness && typeof brandInfo.mainBusiness === 'string'
-							? brandInfo.mainBusiness.replaceAll(',', ' | ') : null
-					}}
+				<view v-if="brandInfo.shopBrief" class="brief-line brief-top">
+					{{ brandInfo.shopBrief }}
 				</view>
-				<view v-if="brandInfo.shopTypeName" class="brief-line brief-bottom">
-					<text v-for="(item, index) in brandInfo.shopTypeName.split(',')" :key="index" class="item">
-						{{ item }}
+				<view v-if="brandInfo.authenType || brandInfo.checkState || brandInfo.authenticationState" class="brief-line brief-bottom">
+					<text v-if="brandInfo.authenType" class="item">
+						<template v-if="brandInfo.authenType === 1">个人</template>
+						<template v-else-if="brandInfo.authenType === 2">个体工商户</template>
+						<template v-else-if="brandInfo.authenType === 3">企业</template>
+						<template v-else-if="brandInfo.authenType === 4">其它组织</template>
+						<template v-else>特殊角色</template>
+					</text>
+					<text v-if="brandInfo.checkState" class="item">
+						已入驻
+					</text>
+					<text v-if="brandInfo.authenticationState" class="item">
+						已签约
 					</text>
 				</view>
 			</view>
@@ -45,7 +52,7 @@
 				<view
 					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 2upx 6upx;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
-					补贴代金券{{ brandInfo.voucherProportion ? Number(brandInfo.voucherProportion) * 100 : 0 }}%
+					补贴代金券{{ brandInfo.voucherReturn ? brandInfo.voucherReturn : 0 }}%
 				</view>
 				<view
 					v-if="brandInfo.isVoucher"
@@ -63,7 +70,7 @@
 					</view>
 					<view class="item">
 						<image style="width: 44upx" class="icon" src="../../../static/images/new-business/home/views.png"></image>
-						<text style="color: #888889">{{ brandInfo.accessNum || 0 }}</text>
+						<text style="color: #888889">{{ brandInfo.fansNumber || 0 }}</text>
 					</view>
 				</view>
 			</view>
@@ -75,7 +82,7 @@
 				</text>
 				<text style="color: #979797;">
 					<text style="font-size: 26upx;">起</text>
-					<text style="margin-left: 10upx;;font-size: 24upx;text-decoration: line-through;">￥199.44</text>
+					<text style="margin-left: 10upx;font-size: 24upx;text-decoration: line-through;">￥199.44</text>
 				</text>
 			</view>
 		</view>
