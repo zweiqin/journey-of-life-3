@@ -1399,7 +1399,19 @@
           "style": {
             "navigationBarTitleText": "分销员招募令"
           }
-        }
+        },
+        {
+          "path": "another-serve/orderDetails/index",
+          "style": {
+            "navigationBarTitleText": "订单详情"
+          }
+        },
+				{
+					"path": "another-serve/evaluate/index",
+					"style": {
+						"navigationBarTitleText": "评价"
+					}
+				}
       ]
     }
   ],

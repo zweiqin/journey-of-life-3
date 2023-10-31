@@ -78,3 +78,6 @@ export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/get
 // 领取优惠券
 export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')
 
+// 订单相关接口，查询订单列表
+export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data)
+

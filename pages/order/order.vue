@@ -20,7 +20,7 @@
 					<view v-show="!isShowSubNav" class="community-common-order-list">
 						<CommunityOrderPane
 							v-for="item in communityOrderList" :key="item.id" :order-info="item"
-							@cancel="handleCancellOrder"
+							@cancel="(orderInfo) => $refs.cancelOrderRef.show(orderInfo)"
 						></CommunityOrderPane>
 					</view>
 					<!-- 社区二次追加订单 -->
@@ -50,13 +50,21 @@
 				</view>
 
 				<view v-show="currentOrderMode === 'businessDistrict'">
-					businessDistrict
+					<BusinessOrder v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"></BusinessOrder>
+					<view style="padding-bottom: 45upx;">
+						<LoadingMore
+							:status="!businessIsEmpty && !businessOrderList.length
+								? 'loading' : !businessIsEmpty && businessOrderList.length && (businessOrderList.length >= businessListTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+					</view>
 				</view>
 
 			</view>
 
 			<!-- 取消社区订单 -->
-			<CancelOrder ref="cancelOrderRef" @success="getOrderList(true)"></CancelOrder>
+			<CancelOrder ref="cancelOrderRef" @success="getOrderList()"></CancelOrder>
 		</view>
 
 		<!-- 未登录时 -->
@@ -68,13 +76,15 @@
 </template>
 
 <script>
-import { getOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs } from './config'
+import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
+import { getAllOrderListApi } from '../../api/anotherTFInterface'
 import { USER_ID, T_PAY_ORDER, COMMUNITY_ORDER_NO } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
 import CancelOrder from './components/CancelOrder.vue'
+import BusinessOrder from './components/BusinessOrder.vue'
 import Loading from './components/Loading.vue'
 import NoData from './components/NoData.vue'
 import SubNavs from './components/SubNavs.vue'
@@ -91,6 +101,7 @@ export default {
 		NoData,
 		Loading,
 		CancelOrder,
+		BusinessOrder,
 		SubNavs,
 		AdditionalAmountOrder,
 		CommentTypeV1,
@@ -102,17 +113,11 @@ export default {
 			currentOrderMode: 'community',
 			currentStatus: -1,
 			currentSubValue: 0,
-			communityMenus: getOrderStatusList(),
-			isNotLogin: true, // 是否登录
 			userId: null,
-			loadingTimer: null,
-			businessSubNavs: Object.freeze(businessSubNavs),
-			communityAppendOrderNavs: Object.freeze(communityAppendOrderNavs),
 			communityCommentOrder: Object.freeze(communityCommentOrder),
 			isLoading: false, // 是否加载中
 			loadingStatus: 'loading', // 加载状态
 			isShowSubNav: null,
-			loadType: 'page', // page: 页面级加载；more: 上啦加载
 			// 社区订单
 			communityQueryInfo: {
 				pageNo: 1,
@@ -135,22 +140,27 @@ export default {
 			currentNavInfo: {
 				label: '全部',
 				value: -1
-			}
+			},
+
+			// 商圈订单
+			businessQueryInfo: {
+				page: 1,
+				pageSize: 10
+			},
+			businessOrderList: [],
+			businessListTotal: 0,
+			businessIsEmpty: false
 		}
 	},
 
 	computed: {
 		navMenus() {
-			return this.currentOrderMode === 'community' ? this.communityMenus : this.currentOrderMode === 'businessDistrict' ? this.businessSubNavs : ''
+			return this.currentOrderMode === 'community' ? communityOrderStatusList : this.currentOrderMode === 'businessDistrict' ? businessSubNavs : ''
 		},
-
 		subNavs() {
-			if (this.isShowSubNav) {
-				return this.isShowSubNav === 'append' ? this.communityAppendOrderNavs : this.communityCommentOrder
-			}
+			if (this.isShowSubNav) return this.isShowSubNav === 'append' ? communityAppendOrderNavs : this.isShowSubNav === 'comment' ? this.communityCommentOrder : ''
 			return []
 		},
-
 		appendOrderList() {
 			if (!this.isShowSubNav) return []
 			if (this.isShowSubNav === 'append') {
@@ -164,7 +174,6 @@ export default {
 			}
 			return []
 		},
-
 		noDataVisible() {
 			if (this.isLoading) return false
 			if (this.currentOrderMode === 'community') {
@@ -189,39 +198,27 @@ export default {
 		}
 	},
 
-	mounted() {
-		// this.getOrderList();
-	},
-
 	onShow() {
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(COMMUNITY_ORDER_NO)
+		this.userId = uni.getStorageSync(USER_ID) || ''
 		this.$nextTick(() => {
-			this.getOrderList(true)
+			this.getOrderList()
 		})
-		const userId = uni.getStorageSync(USER_ID)
-		if (userId) {
-			this.userId = userId
-			this.isNotLogin = false
-		} else {
-			this.isNotLogin = true
-			this.userId = null
-		}
 	},
 
 	methods: {
 		handleChangeOrderMode(mode) {
 			if (mode === this.currentOrderMode) return
 			this.currentOrderMode = mode
-			this.currentStatus = -1
-			if (mode === 'community') {
+			if (this.currentOrderMode === 'community') {
+				this.currentStatus = -1
 				this.communityQueryInfo.status = undefined
-			} else if (mode === 'businessDistrict') {
-				this.currentStatus = 1
+			} else if (this.currentOrderMode === 'businessDistrict') {
+				this.currentStatus = 0
 			}
 			this.isShowSubNav = null
-			this.loadType = 'page'
-			this.getOrderList(true)
+			this.getOrderList()
 		},
 
 		// 清空搜索
@@ -229,17 +226,14 @@ export default {
 			this.communityQueryInfo.orderNo = ''
 			this.$refs.orderHeaderRef && this.$refs.orderHeaderRef.clearSearch()
 		},
-
 		// 点击搜索
 		handleSearchCommunityOrderList(searchValue) {
 			if (this.currentOrderMode === 'community') {
 				this.currentStatus = -1
 				this.communityQueryInfo.orderNo = searchValue || undefined
-				this.communityOrderList = []
 				this.isShowSubNav = null
-				this.communityQueryInfo.pageNo = 1
 				this.communityQueryInfo.status = undefined
-				this.getCommunityOrderList()
+				this.getOrderList()
 			} else {
 				this.ttoast({
 					type: 'fial',
@@ -251,29 +245,26 @@ export default {
 		// 切换状态
 		handleChangeStatus(navInfo) {
 			if (!navInfo) return
-			const newStatus = navInfo.value
 			this.currentNavInfo = navInfo
-			this.currentStatus = newStatus
-			this.loadType = 'page'
+			this.currentStatus = navInfo.value
 			if (this.currentOrderMode === 'community') {
-				if (newStatus === -1) {
+				if (navInfo.value === -1) {
 					this.communityQueryInfo.status = undefined
-				} else if (newStatus === -2) {
+				} else if (navInfo.value === -2) {
 					this.isShowSubNav = 'append'
 					this.getAppendOrder(true)
 					return
-				} else if (newStatus === -3) {
+				} else if (navInfo.value === -3) {
 					this.isShowSubNav = 'comment'
 					this.currentSubValue = 0
 					this.getCommentOrderList(this.communityCommentOrder[0])
 					return
 				} else {
-					this.communityQueryInfo.status = newStatus
+					this.communityQueryInfo.status = navInfo.value
 				}
 			} else if (this.currentOrderMode === 'businessDistrict') {
 			}
-			this.getOrderList(true)
-			this.isShowSubNav = null
+			this.getOrderList()
 		},
 
 		// 切换sub
@@ -285,51 +276,55 @@ export default {
 		},
 
 		// 发起请求获取列表数据
-		getOrderList(isClearQuery) {
+		async getOrderList(isLoadmore) {
 			if (this.currentOrderMode === 'community') {
-				if (isClearQuery) {
+				if (!isLoadmore) {
 					this.communityOrderList = []
 					this.communityQueryInfo.pageNo = 1
 				}
-				this.getCommunityOrderList()
-			} else if (this.currentOrderMode === 'businessDistrict') {
-			}
-		},
-
-		// 获取社区数据
-		async getCommunityOrderList() {
-			try {
-				if (this.loadType === 'page') {
+				try {
 					this.isLoading = true
-				} else {
 					this.loadingStatus = 'loading'
-				}
-				const res = await getEndOrderListApi({
-					...this.communityQueryInfo,
-					userId: this.userId
-				})
-				if (res.statusCode === 20000) {
-					this.communityOrderList.push(...res.data)
-					this.totalCommunityPages = res.pages
-				} else {
+					const res = await getEndOrderListApi({
+						...this.communityQueryInfo,
+						userId: this.userId
+					})
+					if (res.statusCode === 20000) {
+						this.communityOrderList.push(...res.data)
+						this.totalCommunityPages = res.pages
+					} else {
+						this.ttoast({
+							type: 'fail',
+							title: res.statusMsg || '订单列表获取失败'
+						})
+					}
+				} catch (error) {
 					this.ttoast({
 						type: 'fail',
-						title: res.statusMsg || '订单列表获取失败'
+						title: '订单列表获取失败',
+						content: error
 					})
+				} finally {
+					this.isLoading = false
+					uni.stopPullDownRefresh()
+					this.loadingStatus = 'more'
 				}
-			} catch (error) {
-				this.ttoast({
-					type: 'fail',
-					title: '订单列表获取失败',
-					content: error
-				})
-			} finally {
-				if (this.loadingTimer) {
-					this.clearTimer()
-				}
-				this.isLoading = false
-				uni.stopPullDownRefresh()
-				this.loadingStatus = 'more'
+			} else if (this.currentOrderMode === 'businessDistrict') {
+				uni.showLoading()
+				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus })
+					.then((res) => {
+						this.businessListTotal = res.data.total
+						if (isLoadmore) {
+							this.businessOrderList.push(...res.data.list)
+						} else {
+							this.businessOrderList = res.data.list
+						}
+						if (this.businessOrderList.length === 0) this.businessIsEmpty = true
+						uni.hideLoading()
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
 			}
 		},
 
@@ -340,15 +335,11 @@ export default {
 			this.refusedOrderList = []
 			const _this = this
 			try {
-				if (this.loadType === 'page') {
-					this.isLoading = true
-				} else {
-					this.loadingStatus = 'loading'
-				}
+				this.isLoading = true
+				this.loadingStatus = 'loading'
 				const res = await getTwicePayOrderListApi({
 					userId: this.userId
 				})
-
 				if (res.statusCode === 20000) {
 					const orderList = res.data
 					if (orderList && orderList.length) {
@@ -384,11 +375,8 @@ export default {
 		// 获取评论订单数据
 		async getCommentOrderList(queryInfo) {
 			try {
-				if (this.loadType === 'page') {
-					this.isLoading = true
-				} else {
-					this.loadingStatus = 'loading'
-				}
+				this.isLoading = true
+				this.loadingStatus = 'loading'
 				const { api, list } = queryInfo
 				if (api && list) {
 					const orderList = await api({
@@ -431,37 +419,13 @@ export default {
 			}
 		},
 
-		// 清空定时器
-		clearTimer() {
-			clearTimeout(this.loadingTimer)
-			this.loadingTimer = null
-		},
-
-		// 取消订单
-		handleCancellOrder(orderInfo) {
-			this.$refs.cancelOrderRef.show(orderInfo)
-		},
-
 		// 是否可以下拉加载
 		canReachBottomLoad() {
 			if (this.currentOrderMode === 'community') {
-				return [-3, -2].includes(this.currentStatus)
+				return ![-3, -2].includes(this.currentStatus)
 			} else if (this.currentOrderMode === 'businessDistrict') {
+				return true
 			}
-			return true
-		},
-
-		// 社区订单下拉加载
-		loadMoreCommunityOrder() {
-			if (this.communityOrderList.length < this.communityQueryInfo.pageSize) {
-				return
-			}
-			if (this.communityQueryInfo.pageNo >= this.totalCommunityPages) {
-				this.loadingStatus = 'no-more'
-				return
-			}
-			this.communityQueryInfo.pageNo++
-			this.getOrderList()
 		}
 	},
 
@@ -474,15 +438,26 @@ export default {
 		this.commentOrder.commentOrderList = []
 		this.commentOrder.commentAppendOrderList = []
 		this.commentOrder.commentedOrderList = []
-		this.handleChangeStatus(this.currentNavInfo)
+		this.getOrderList()
 	},
 
 	onReachBottom() {
 		if (this.canReachBottomLoad()) {
-			this.loadType = 'more'
 			if (this.currentOrderMode === 'community') {
-				this.loadMoreCommunityOrder()
+				if (this.communityOrderList.length < this.communityQueryInfo.pageSize) {
+					return
+				}
+				if (this.communityQueryInfo.pageNo >= this.totalCommunityPages) {
+					this.loadingStatus = 'no-more'
+					return
+				}
+				this.communityQueryInfo.pageNo++
+				this.getOrderList(true)
 			} else if (this.currentOrderMode === 'businessDistrict') {
+				if (this.businessOrderList.length < this.businessListTotal) {
+					++this.businessQueryInfo.page
+					this.getOrderList(true)
+				}
 			}
 		}
 	}

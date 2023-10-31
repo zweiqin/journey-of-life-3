@@ -1,7 +1,7 @@
 <template>
 	<view
 		v-if="shopInfo" class="common-shop-container" :style="{ margin, borderRadius: radius }"
-		@click="go('/community-center/shop/shop-detail?shopId=' + shopInfo.shopId)"
+		@click="go(`/community-center/shop/shop-detail?shopId=${shopInfo.shopId}`)"
 	>
 		<view class="shop-top" :style="{ padding }">
 			<image
@@ -23,7 +23,7 @@
 					</view>
 					<image
 						v-if="showSign && shopInfo.contractState" src="../../../static/images/new-community/home/gold-star.png"
-						style="width: 58upx;height: 58upx;"
+						style="width: 48upx;height: 48upx;"
 					></image>
 				</view>
 

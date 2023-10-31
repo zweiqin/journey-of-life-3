@@ -456,7 +456,7 @@ export default {
 			parentId: '',
 
 			// 判断每个类板块是否拥有某个页面结构
-			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
 			ownMenuBar: ['3', '5', '6', '7', '8', '9', '13', '16'], // '1', '2',
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
@@ -488,7 +488,7 @@ export default {
 				startWeek: '',
 				endWeek: ''
 			},
-			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
 			ownShopCardWithLineBox: [ '13' ],
 			ownShopCardWithGoodsBox: ['7', '8'],
 			ownBrandCardBox: [ '5' ],
@@ -575,6 +575,7 @@ export default {
 			uni.showLoading()
 			getHomeBrandListApi({
 				...this.queryInfo,
+				areaId: this.$store.state.location.locationInfo.adcode,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})
@@ -595,10 +596,9 @@ export default {
 	},
 
 	onReachBottom() {
-		this.getNearByShopList()
 		if (this.nearbyShopList.length < this.nearbyTotal) {
 			++this.queryInfo.page
-			this.getNearByShopList()
+			this.getNearByShopList(true)
 		}
 	}
 }
