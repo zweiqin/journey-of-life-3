@@ -72,7 +72,7 @@
 
 <script>
 import { bannerListIcon, vipBarConfig } from './config';
-import { COMMUNITY_ORDER_ITEM_NO, COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
+import { COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
 import { userIsPurchaseApi } from '../../api/user';
 
@@ -124,7 +124,6 @@ export default {
   },
   onShow() {
     uni.removeStorageSync(COMMUNITY_ORDER_NO);
-    uni.removeStorageSync(COMMUNITY_ORDER_ITEM_NO);
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
       this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList();

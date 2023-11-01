@@ -137,7 +137,8 @@ export default {
       searchCity: '',
       allCityData: {},
       hotCities: Object.freeze(hotCities),
-      backUrl: null
+      backUrl: null,
+      eventName: ''
     };
   },
   methods: {
@@ -172,12 +173,15 @@ export default {
       this.cityList = data;
     },
 
-    handleBack() {
+    handleBack(mean) {
       if (this.backUrl) {
         uni.switchTab({ url: '/' });
         return;
       }
-      uni.navigateBack();
+      uni.navigateBack({
+        delta: 1,
+        success: mean === 'success' && this.eventName ? uni.$emit(this.eventName) : () => { }
+      })
     },
 
     handleClearSearch() {
@@ -276,18 +280,15 @@ export default {
           }
         });
       }
-
       uni.hideLoading();
-
       this.ttoast('修改成功');
-
       setTimeout(() => {
         if (this.backUrl) {
           uni.redirectTo({
             url: this.backUrl
           });
         } else {
-          this.handleBack();
+          this.handleBack('success');
         }
       }, 1000);
     }
@@ -298,11 +299,11 @@ export default {
   },
 
   onLoad(params) {
+    this.eventName = params.eventName || ''
     const backUrl = params.backUrl;
     if (backUrl) {
       this.backUrl = backUrl.replaceAll('_', '?').replaceAll('|', '/');
     }
-
     console.log(backUrl);
   },
 

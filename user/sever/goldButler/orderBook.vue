@@ -68,7 +68,7 @@
 
 <script>
 import { getSetMealListApi, reservationServiceApi } from '../../../api/user';
-import { USER_TOKEN, COMMUNITY_ORDER_NO } from '../../../constant';
+import { USER_TOKEN} from '../../../constant';
 import { getUserId } from '../../../utils';
 import chooseTime from '../../../community-center/componts/choose-time.vue';
 export default {
@@ -235,7 +235,6 @@ export default {
     // console.log(options)
     // this.typeName = options.name
     // console.log('服务类型', this.typeName);
-    // uni.removeStorageSync(COMMUNITY_ORDER_NO)
     // this.getSetMealList()
     // // this.reservationService()
 

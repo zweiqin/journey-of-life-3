@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getOrderStatusList } from '../config';
+import { communityOrderStatusList } from '../config';
 export default {
   props: {
     orderInfo: {
@@ -37,7 +37,7 @@ export default {
   },
 
   mounted() {
-    this.orderStatusList = getOrderStatusList();
+    this.orderStatusList = communityOrderStatusList;
   },
 
   data() {

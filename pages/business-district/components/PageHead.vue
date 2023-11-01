@@ -4,7 +4,7 @@
 
 		<view class="container">
 			<view style="flex: 1;display: flex;align-items: center;margin-right: 26upx;background-color: #ffffff;border: 2upx solid #EF5511;border-radius: 50upx;">
-				<TuanLocation style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;">
+				<TuanLocation event-name="sendChooseAddressSuccessMsg" style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;">
 					{{ $store.getters.currentCity || '定位失败' }}
 					<BeeIcon
 						:size="26" name="turningdown" color="#222229"

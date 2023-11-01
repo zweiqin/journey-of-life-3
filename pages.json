@@ -29,6 +29,17 @@
       }
     },
     {
+      // "path": "pages/index/index",
+      "path": "pages/another-index/index",
+      "style": {
+        "navigationBarTitleText": "商城",
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/jump/jump",
       "style": {
         "navigationBarTitleText": "跳转"
@@ -1292,17 +1303,17 @@
         }
       ]
     },
-    {
-      "root": "order",
-      "pages": [
-        {
-          "path": "b-order-form/b-order-form",
-          "style": {
-            "navigationBarTitleText": "订单详情"
-          }
-        }
-      ]
-    },
+    // {
+    //   "root": "order",
+    //   "pages": [
+    //     {
+    //       "path": "b-order-form/b-order-form",
+    //       "style": {
+    //         "navigationBarTitleText": "订单详情"
+    //       }
+    //     }
+    //   ]
+    // },
     {
       "root": "another-tf",
       "pages": [
@@ -1389,7 +1400,19 @@
           "style": {
             "navigationBarTitleText": "分销员招募令"
           }
-        }
+        },
+        {
+          "path": "another-serve/orderDetails/index",
+          "style": {
+            "navigationBarTitleText": "订单详情"
+          }
+        },
+				{
+					"path": "another-serve/evaluate/index",
+					"style": {
+						"navigationBarTitleText": "评价"
+					}
+				}
       ]
     }
   ],

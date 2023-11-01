@@ -91,7 +91,6 @@ import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
 import loadMore from '../../mixin/loadMore';
 import { goodsListApi } from '../../api/goods';
-import { getClassifyProducts2Api, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
 
 import { homeTopNavs } from './config';

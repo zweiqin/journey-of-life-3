@@ -15,16 +15,16 @@
 			<BrandInfo :brand-detail="brandDetail" @navgation="handleNavigate"></BrandInfo>
 		</view>
 
-		<view
+		<!-- <view
 			style="display: flex;justify-content: space-between;align-items: center;padding: 18upx 30upx;margin-top: 18upx;background-color: #ffffff;"
 			@click="handleApplyForRecruit"
-		>
+			>
 			<view style="display: flex;align-items: center;">
-				<tui-icon name="friendadd" color="#222229" :size="22"></tui-icon>
-				<text style="margin-left: 16upx;">成为分销员</text>
+			<tui-icon name="friendadd" color="#222229" :size="22"></tui-icon>
+			<text style="margin-left: 16upx;">成为分销员</text>
 			</view>
 			<tui-icon name="arrowright" color="#151515" :size="26"></tui-icon>
-		</view>
+			</view> -->
 
 		<tui-tab
 			:tabs="allTabList.map(i => i.name)" :current="currentTab" scroll background-color="transparent"
