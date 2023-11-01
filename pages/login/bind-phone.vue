@@ -46,7 +46,7 @@ import { sf } from '../../config';
 import { getCodeApi, bindMobileForWXApi } from '../../api/auth';
 import { bindLastUserApi } from '../../api/user';
 import { throttle } from '../../utils';
-import { NEW_BIND_ID, SF_INVITE_CODE } from '../../constant';
+import { NEW_BIND_ID, SF_INVITE_CODE, NEW_BIND_ACTIVITY_ID } from '../../constant';
 
 export default {
   data() {
@@ -191,7 +191,6 @@ export default {
               });
             }
           } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-            console.log("走了绑定");
             uni.redirectTo({
               url: '/user/sever/activityCenter/index'
             });
@@ -207,7 +206,6 @@ export default {
           }
         }
       } catch (error) {
-        console.log("绑定报错", error);
         setTimeout(() => {
           uni.switchTab({
             url: '/'
