@@ -18,9 +18,12 @@
 
         <view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
         <view class="image-list">
-          <image @click="go('/community-center/service-sort?value=1')" src="../../static/images/new-community/home/p-1.png" class="p-img"></image>
-          <image @click="go('/community-center/service-sort?value=3')" src="../../static/images/new-community/home/p-2.png" class="p-img"></image>
-          <image @click="go('/community-center/service-sort?value=4')" src="../../static/images/new-community/home/p-3.png" class="p-img"></image>
+          <image @click="go('/community-center/service-sort?value=1')"
+            src="../../static/images/new-community/home/p-1.png" class="p-img"></image>
+          <image @click="go('/community-center/service-sort?value=3')"
+            src="../../static/images/new-community/home/p-2.png" class="p-img"></image>
+          <image @click="go('/community-center/service-sort?value=4')"
+            src="../../static/images/new-community/home/p-3.png" class="p-img"></image>
         </view>
       </view>
     </view>
@@ -38,7 +41,8 @@
       <!-- 四季专区 -->
       <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
-      <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title" :list="item.children"> </ServerPane>
+      <ServerPane :id="item.id" v-for="(item, index) in servePaneList" :key="index" :title="item.title"
+        :list="item.children"> </ServerPane>
     </view>
 
     <!-- 组件支持 -->
@@ -49,23 +53,20 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+      @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
     <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile @close="handleResetGlobal" @success="handleBindPhoneSuccess" ref="tuanWXLoginBindMobileRef"></TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile @close="handleResetGlobal" @success="handleBindPhoneSuccess" ref="tuanWXLoginBindMobileRef">
+    </TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-    <PopupInformation
-      @close="handleShowBindMobilePopup"
-      ref="popupInformationRef"
-      popup-type="activity"
-      :imgUrl="require('../../static/images/new-community/home/ad.png')"
-      @click="handleToActiveDetail"
-    >
+    <PopupInformation @close="handleShowBindMobilePopup" ref="popupInformationRef" popup-type="activity"
+      :imgUrl="require('../../static/images/new-community/home/ad.png')" @click="handleToActiveDetail">
     </PopupInformation>
   </view>
 </template>
@@ -75,7 +76,6 @@ import { bannerListIcon, vipBarConfig } from './config';
 import { COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
 import { userIsPurchaseApi } from '../../api/user';
-
 import PopupInformation from '../../components/popup-information/popup-information';
 import showModal from 'mixin/showModal';
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
@@ -86,7 +86,6 @@ import VipPackage from './cpns/VipPackage.vue';
 import ServerPane from './cpns/ServerPane.vue';
 import FourSeasonsZone from './cpns/FourSeasonsZone.vue';
 // 赚小钱
-
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue';
 
 const app = getApp();
@@ -203,8 +202,8 @@ export default {
           link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/`,
           imageUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
         },
-        successCb: () => {},
-        failCb: () => {}
+        successCb: () => { },
+        failCb: () => { }
       };
       await this.$refs.beeWxShareRef.share(data, isQuit);
     },
@@ -214,14 +213,15 @@ export default {
       if (this.$store.getters.popupImage) {
         return;
       }
-      this.handleShowBindMobilePopup();
+      this.$store.dispatch('auth/refrshUserInfo', this.handleShowBindMobilePopup);
     },
 
-    handleShowBindMobilePopup() {
+    // 开始绑定手机号
+    handleShowBindMobilePopup(refreshUserInfo) {
       if (app.globalData.isShowedBindMobilePopu) {
         return;
       }
-      const userInfo = uni.getStorageSync(USER_INFO);
+      const userInfo = refreshUserInfo ? refreshUserInfo : uni.getStorageSync(USER_INFO);
       if (userInfo && userInfo.weixinOpenid && !userInfo.phone) {
         this.$refs.tuanWXLoginBindMobileRef.show();
       }
@@ -412,6 +412,7 @@ export default {
     .location {
       display: flex;
       align-items: center;
+
       .address-text {
         color: #222229;
         font-size: 28upx;

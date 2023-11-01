@@ -11,9 +11,11 @@
     </view>
     <view class="LoginForm">
       <tui-form ref="form">
-        <tui-input label="手机号码" padidng="0 0 28rpx 0" borderTop placeholder="请输入手机号码" color="#141000" v-model="bindForm.phone"></tui-input>
+        <tui-input label="手机号码" padidng="0 0 28rpx 0" borderTop placeholder="请输入手机号码" color="#141000"
+          v-model="bindForm.phone"></tui-input>
 
-        <tui-input class="reset-wrapper" label="验证码" padidng="0 0 28rpx 0" borderTop placeholder="请输入验证码" color="#141000" v-model="bindForm.code">
+        <tui-input class="reset-wrapper" label="验证码" padidng="0 0 28rpx 0" borderTop placeholder="请输入验证码" color="#141000"
+          v-model="bindForm.code">
           <block slot="right">
             <button v-show="!timer" @click="onGetCode" class="uni-btn get-code">获取验证码</button>
 
@@ -33,7 +35,8 @@
 				</view>
 			</view> -->
     </view>
-    <tui-button type="danger" width="650rpx" margin="0 auto" height="82rpx" style="margin-top: 60rpx" @click="onBind"> 立即绑定 </tui-button>
+    <tui-button type="danger" width="650rpx" margin="0 auto" height="82rpx" style="margin-top: 60rpx" @click="onBind">
+      立即绑定 </tui-button>
     <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
@@ -163,6 +166,7 @@ export default {
     },
 
     async handleSkip() {
+      console.log("手机号绑定成功");
       try {
         if (this.partnerCode) {
           await this.handlePartnerBind(this.userId);
@@ -187,6 +191,7 @@ export default {
               });
             }
           } else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
+            console.log("走了绑定");
             uni.redirectTo({
               url: '/user/sever/activityCenter/index'
             });
@@ -195,21 +200,19 @@ export default {
               url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
             });
           } else {
+
             uni.switchTab({
               url: '/pages/community-center/community-centerr'
             });
           }
         }
       } catch (error) {
+        console.log("绑定报错", error);
         setTimeout(() => {
           uni.switchTab({
             url: '/'
           });
         }, 1000);
-      } finally {
-        uni.switchTab({
-          url: '/'
-        });
       }
     },
 
@@ -231,8 +234,8 @@ export default {
             });
           }
         },
-        fail: () => {},
-        complete: () => {}
+        fail: () => { },
+        complete: () => { }
       });
     }
   },
@@ -249,6 +252,7 @@ export default {
 .container {
   box-sizing: border-box;
   background-color: #ffffff;
+
   .redText {
     color: #ce2601;
   }
@@ -359,6 +363,7 @@ export default {
     color: #888889;
   }
 }
+
 .skip {
   display: flex;
   justify-content: flex-end;
