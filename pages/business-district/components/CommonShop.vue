@@ -53,7 +53,7 @@
 								{{ item }}
 								</text>
 								</template> -->
-							<text v-if="shopInfo.shop_brief">{{ shopInfo.shopBrief || '--' }}</text>
+							<text v-if="shopInfo.shopBrief">{{ shopInfo.shopBrief || '--' }}</text>
 							<template v-else>
 								<text>--</text>
 							</template>

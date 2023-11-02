@@ -4,7 +4,7 @@
 			<view class="top-l" @click.stop="go(`/community-center/shop/shop-detail?shopId=${data.shopId}`)">
 				<image :src="data.shopLogo" class="shop-img" />
 				<text class="shop-name">{{ data.shopName }}</text>
-				<tui-icon name="arrow-right" :size="25" color="#999999"></tui-icon>
+				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
 			</view>
 			<view class="order-status">
 				{{ data.returnType ? '退款中' : orderTypeEnum[data.state] || '--' }}
@@ -35,7 +35,7 @@
 							</view>
 							<view
 								v-if="skuItem.commentId !== 0 && data.state === 4 && data.skus[0].ifAdd !== 1" class="evaluate2"
-								@click.stop="goAdditionalEvaluation(orderIndex, skuItem.commentId)"
+								@click.stop="go(`/another-tf/another-serve/addEvaluate/index`, { addCommentVOList: data, commentId: skuItem.commentId, type: 1 })"
 							>
 								追加评价
 							</view>
@@ -73,6 +73,7 @@
 
 <script>
 import { orderTypeEnum } from '../config'
+import { deleteShopOrderApi, cancelShopOrderApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BusinessOrder',
 	props: {
@@ -91,8 +92,154 @@ export default {
 	},
 
 	methods: {
-		goOrderDesc(orderItem) {
-			this.go(`/another-tf/another-serve/orderDetails/index?detail=${encodeURIComponent(JSON.stringify(orderItem)?.replace(/%/g, '%25'))}`)
+		handleDeleteOrder(orderItem) {
+			uni.showModal({
+				title: '温馨提示',
+				content: '您确定要删除该订单吗？',
+				confirmText: '确定删除',
+				cancelText: '点错了',
+				success: async ({ confirm }) => {
+					if (confirm) {
+						uni.showLoading()
+						const { orderId } = orderItem
+						try {
+							await deleteShopOrderApi({ orderId })
+							uni.showToast({
+								icon: 'none',
+								title: '删除成功'
+							})
+							this.$emit('refresh')
+						} finally {
+							uni.hideLoading()
+						}
+					}
+				}
+			})
+		},
+		getOrderOptionButtonObj(orderItem) {
+			const { state, returnType, afterState, skus, collageId, paymentState } = orderItem
+			const orderNeedBtnList = [] // 订单应有的btn
+			// 取消订单
+			if ([1, 6].includes(state) || ((state === 8) && (paymentState === 0))) {
+				orderNeedBtnList.push({
+					name: '取消订单',
+					className: 'l',
+					functionName: 'handleCancelOrder',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 立即付款
+			if ((state === 1) || ((state === 8) && (paymentState === 0))) {
+				orderNeedBtnList.push({
+					name: '立即付款',
+					className: 'r',
+					functionName: 'handlePayOrder',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 申请售后
+			if (([2, 3, 4].includes(state) || ((state === 8) && (paymentState === 1))) && [0, 6].includes(Number(afterState)) && skus[0].ifAdd !== 1) {
+				orderNeedBtnList.push({
+					name: '申请售后',
+					className: 'l',
+					functionName: 'goAfterSalesService',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 查看物流
+			if ([3, 4].includes(state)) {
+				orderNeedBtnList.push({
+					name: '查看物流',
+					className: 'l',
+					functionName: 'goLogisticsInformation',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 确认收货
+			if ([ 3 ].includes(state)) {
+				orderNeedBtnList.push({
+					name: '确认收货',
+					className: 'r',
+					functionName: 'handleConfirmReceipt',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 退款详情
+			if ([ 1 ].includes(returnType)) {
+				orderNeedBtnList.push({
+					name: '退款详情',
+					className: 'l',
+					functionName: 'goRefundDetail',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 邀请拼单
+			if ([ 6 ].includes(state)) {
+				orderNeedBtnList.push({
+					name: '邀请拼单',
+					className: 'r',
+					functionName: 'goSpellGroup',
+					functionParams: [ orderItem ]
+				})
+			}
+			// 再次开团 | 再次购买
+			if ([ 5 ].includes(state)) {
+				orderNeedBtnList.push({
+					name: collageId !== 0 ? '再次开团' : '再次购买',
+					className: 'r',
+					functionName: 'handleBuyAgainEvent',
+					functionParams: [ orderItem ]
+				})
+			}
+			return orderNeedBtnList
+		},
+		handleOrderOptionButtonEvent(buttonItem) {
+			const { functionName, functionParams } = buttonItem
+			if (this[functionName]) {
+				this[functionName](...functionParams)
+			} else {
+				throw new Error(`${buttonItem.name}的function在本VM中不存在`)
+			}
+		},
+		handleCancelOrder(orderItem) {
+			const modalOptions = {
+				title: '温馨提示',
+				content: '您确定要取消该订单吗？',
+				confirmText: '确定取消',
+				cancelText: '点错了',
+				success: ({ confirm }) => {
+					confirm ? this.handleDoCancel(orderItem) : undefined
+				}
+			}
+			uni.showModal(modalOptions)
+		},
+		async handleDoCancel(orderItem) {
+			uni.showLoading()
+			try {
+				await cancelShopOrderApi({
+					orderId: orderItem.orderId
+				})
+				this.$emit('refresh')
+				uni.showToast({
+					icon: 'none',
+					title: '取消成功'
+				})
+			} finally {
+				uni.hideLoading()
+			}
+		},
+		handlePayOrder(orderItem) {
+			const { orderPrice, collageId, orderId } = orderItem
+			this.$emit('pay-order', {
+				showPayPopup: true,
+				totalPrice: orderPrice,
+				payInfo: {
+					collageId,
+					money: orderPrice,
+					orderId,
+					type: 2
+				}
+			})
 		}
 	}
 }
@@ -253,6 +400,16 @@ export default {
 					font-size: 26upx;
 					color: #333;
 					margin-left: 20upx;
+				}
+
+				.btn.l {
+					border: 2rpx solid #333333;
+					color: #333;
+				}
+
+				.btn.r {
+					border: 2rpx solid #C5AA7B;
+					color: #C5AA7B;
 				}
 			}
 		}

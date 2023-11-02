@@ -3,11 +3,10 @@
 		<TuanAppShim bg="#fff"></TuanAppShim>
 		<view v-if="userId" class="my-order-container">
 			<OrderHeader
-				ref="orderHeaderRef" :current-status="currentStatus"
-				:menus="navMenus"
-				:current-mode="currentOrderMode" @change-status="handleChangeStatus" @change-mode="handleChangeOrderMode"
-				@search="handleSearchCommunityOrderList"
-			></OrderHeader>
+				ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
+				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList"
+			>
+			</OrderHeader>
 
 			<view class="order-list" :class="{ ani: !isLoading }">
 				<SubNavs
@@ -50,7 +49,10 @@
 				</view>
 
 				<view v-show="currentOrderMode === 'businessDistrict'">
-					<BusinessOrder v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"></BusinessOrder>
+					<BusinessOrder
+						v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
+						@refresh="getOrderList()" @pay-order="(e) => payObj = e"
+					></BusinessOrder>
 					<view style="padding-bottom: 45upx;">
 						<LoadingMore
 							:status="!businessIsEmpty && !businessOrderList.length
@@ -69,6 +71,19 @@
 
 		<!-- 未登录时 -->
 		<TuanUnLoginPage v-else></TuanUnLoginPage>
+
+		<!-- 商圈支付 -->
+		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
+			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
+				<CashierList show @change="handleShopChangePayItem" />
+				<tui-button
+					type="warning" width="168upx" height="64upx"
+					margin="30upx auto 0" shape="circle" @click="handleShopGoPay"
+				>
+					确认支付
+				</tui-button>
+			</view>
+		</tui-bottom-popup>
 
 		<!-- toast -->
 		<tui-toast ref="toast"></tui-toast>
@@ -91,6 +106,7 @@ import SubNavs from './components/SubNavs.vue'
 import AdditionalAmountOrder from '../../community-center/components/AdditionalAmountOrder.vue'
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue'
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue'
+import { handleDoPay } from '../../utils/payUtil'
 
 export default {
 	name: 'Order',
@@ -149,7 +165,12 @@ export default {
 			},
 			businessOrderList: [],
 			businessListTotal: 0,
-			businessIsEmpty: false
+			businessIsEmpty: false,
+			payObj: {
+				showPayPopup: false,
+				totalPrice: 0,
+				payInfo: {}
+			}
 		}
 	},
 
@@ -425,6 +446,19 @@ export default {
 				return ![-3, -2].includes(this.currentStatus)
 			} else if (this.currentOrderMode === 'businessDistrict') {
 				return true
+			}
+		},
+
+		handleShopChangePayItem(params) {
+			this.payObj.payInfo.paymentMode = params.paymentMode
+			this.payObj.payInfo.huabeiPeriod = params.huabeiPeriod
+		},
+		async handleShopGoPay() {
+			await handleDoPay(this.payObj.payInfo, 1)
+			this.payObj = {
+				showPayPopup: false,
+				totalPrice: 0,
+				payInfo: {}
 			}
 		}
 	},

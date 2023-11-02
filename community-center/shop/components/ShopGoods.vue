@@ -40,17 +40,19 @@
 					v-if="cItem.activityType === 8" class="iconImg"
 					src="../../../static/images/new-business/shop/jierizhekou.png" alt="场景营销"
 				></image>
-				<text class="price-box fs40 font-color-C83732 mar-right-20">
-					<text class="fs32">￥</text>
-					{{ cItem.price }}
-				</text>
-				<text v-if="cItem.price !== cItem.originalPrice" class="price-through">￥{{ cItem.originalPrice }}</text>
+				<view style="flex: 1;display: flex;align-items: center;flex-wrap: wrap;">
+					<text class="price-box fs40 font-color-C83732 mar-right-20">
+						<text class="fs32">￥</text>
+						{{ cItem.price }}
+					</text>
+					<text v-if="cItem.price !== cItem.originalPrice" class="price-through">￥{{ cItem.originalPrice }}</text>
+				</view>
 			</view>
 			<view
-				v-if="cItem.price && cItem.stockNumber"
+				v-if="cItem.voucherId && cItem.voucherPrice"
 				style="width: fit-content;max-width: 100%;padding: 2upx 8upx;margin: 10upx 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 			>
-				可使用{{ cItem.stockNumber }}代金券抵扣
+				可使用{{ cItem.voucherPrice }}代金券抵扣
 			</view>
 		</view>
 	</view>
@@ -119,6 +121,7 @@ export default {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			flex-wrap: wrap;
 			margin-top: 18rpx;
 
 			.iconImg {
