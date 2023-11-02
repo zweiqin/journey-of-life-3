@@ -29,8 +29,8 @@
       }
     },
     {
-      // "path": "pages/index/index",
-      "path": "pages/another-index/index",
+      "path": "pages/index/index",
+      // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商城",
         "backgroundTextStyle": "dark",
@@ -314,7 +314,8 @@
   "easycom": {
     "autoscan": true,
     "custom": {
-      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
+      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
+      "global-loading": "@/components/diyLoading/index.vue"
     }
   },
   "subPackages": [

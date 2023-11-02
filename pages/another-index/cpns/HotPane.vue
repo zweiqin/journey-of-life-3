@@ -6,14 +6,15 @@
     </view>
 
     <view class="pane-content">
-      <!-- <view class="item" @click="go('/pages/prod/prod?goodsId=' + goods.id)" v-for="goods in goodsData" :key="goods.id">
-        <image :src="common.seamingImgUrl(goods.picUrl)" class="item-image"></image>
+      <!-- @click="go('/pages/prod/prod?goodsId=' + goods.productId)" -->
+      <view class="item" v-for="goods in goodsData" :key="goods.productId">
+        <image :src="common.seamingImgUrl(goods.image)" class="item-image"></image>
         <view class="price-wrapper">
           ￥<text class="price-text">
-            {{ goods.counterPrice }}
+            {{ goods.price }}
           </text>
         </view>
-      </view> -->
+      </view>
     </view>
   </view>
 </template>

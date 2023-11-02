@@ -1,26 +1,18 @@
 <template>
 	<view class="account-book-container">
 		<view class="main">
-			<NewHeader
-				title="活动中心" position="left" top="37%" :left="-10"
-				color="#fff" padding="0 0 50upx 0upx"
-				tabbar="/pages/user/user" @back="handleBack"
-			>
+			<NewHeader title="活动中心" position="left" top="37%" :left="-10" color="#fff" padding="0 0 50upx 0upx"
+				tabbar="/pages/user/user" @back="handleBack">
 				<block slot="right">
-					<text
-						style="margin-right: 38upx;color: #ffffff;"
-						@click="go('/user/sever/activityCenter/activity-withdrawal-record')"
-					>
+					<text style="margin-right: 38upx;color: #ffffff;"
+						@click="go('/user/sever/activityCenter/activity-withdrawal-record')">
 						提现记录
 					</text>
 				</block>
 			</NewHeader>
 			<view style="text-align: right;">
-				<tui-button
-					width="160rpx" height="52rpx" margin="0 20upx 0" :size="28"
-					type="warning" shape="circle"
-					style="display: inline-block;" @click="isShowWithdrawalDialog = true"
-				>
+				<tui-button width="160rpx" height="52rpx" margin="0 20upx 0" :size="28" type="warning" shape="circle"
+					style="display: inline-block;" @click="isShowWithdrawalDialog = true">
 					提现
 				</tui-button>
 			</view>
@@ -28,10 +20,8 @@
 			<Extension :data="extensionData"></Extension>
 
 			<view style="width: 100%;border-top-left-radius: 20upx;border-top-right-radius: 20upx;overflow: hidden;">
-				<tui-tabs
-					:tabs="tabs" :current-tab="currentTab" item-width="50%"
-					@change="(e) => currentTab = e.index"
-				></tui-tabs>
+				<tui-tabs :tabs="tabs" :current-tab="currentTab" item-width="50%"
+					@change="(e) => currentTab = e.index"></tui-tabs>
 			</view>
 			<view v-if="currentTab === 0">
 				<tui-list-view v-if="activityList && activityList.length" title="">
@@ -43,8 +33,7 @@
 							<view>
 								<view>{{ item.campaignsName }}</view>
 								<view
-									style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;"
-								>
+									style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;">
 									<text style="padding-right: 24upx;">开始：{{ item.startDate }}</text>
 									<text>结束：{{ item.endDate }}</text>
 								</view>
@@ -61,10 +50,8 @@
 
 				<view v-if="activityList && activityList.length">
 					<view v-for="(item, index) in activityList" :key="index" style="margin-bottom: 20upx;">
-						<tui-collapse
-							:index="index" :current="currentIndexActivity" hd-bg-color="#ffffff"
-							@click="changeCurrentActivity"
-						>
+						<tui-collapse :index="index" :current="currentIndexActivity" hd-bg-color="#ffffff"
+							@click="changeCurrentActivity">
 							<template #title>
 								<tui-list-cell background-color="transparent">
 									<view style="display: flex;align-items: center;">
@@ -73,10 +60,8 @@
 										</view>
 										<view>
 											<view>{{ item.campaignsName }}</view>
-											<view
-												v-if="item.campaignsType === 2"
-												style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;"
-											>
+											<view v-if="item.campaignsType === 2"
+												style="display: flex;justify-content: space-between;flex-wrap: wrap;padding-top: 5px;font-size: 10px;color: #605D52;">
 												<text style="padding-right: 24upx;">分享数：{{ serviceSharingLogs.shareCount || '0' }}</text>
 												<text style="padding-right: 24upx;">购买数：{{ serviceSharingLogs.purchaseCount || '0' }}</text>
 												<text>总购买数：{{ serviceSharingLogs.totalCount || '0' }}</text>
@@ -90,16 +75,11 @@
 								<view style="margin: 0 24upx;background-color: #ebebea;">
 									<view v-if="item.campaignsType === 0 || item.campaignsType === 3">
 										<view
-											v-if="bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList && bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList.length"
-										>
-											<block
-												v-for="(part, count) in bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList"
-												:key="count"
-											>
-												<tui-collapse
-													:index="count" :current="currentIndex" hd-bg-color="transparent"
-													@click="changeCurrent"
-												>
+											v-if="bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList && bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList.length">
+											<block v-for="(part, count) in bindingUserObj[`bindingUserList${item.campaignsType}`].userDtoList"
+												:key="count">
+												<tui-collapse :index="count" :current="currentIndex" hd-bg-color="transparent"
+													@click="changeCurrent">
 													<template #title>
 														<tui-list-cell background-color="transparent">
 															<view style="display: flex;justify-content: start;align-items: center;">
@@ -113,13 +93,10 @@
 														<view style="margin: 0 16upx;background-color: #e1e2e0;">
 															<view v-if="part.userDtoList && part.userDtoList.length">
 																<tui-list-view title="">
-																	<tui-list-cell
-																		v-for="section in part.userDtoList" :key="section.id"
-																		background-color="transparent"
-																	>
+																	<tui-list-cell v-for="section in part.userDtoList" :key="section.id"
+																		background-color="transparent">
 																		<view
-																			style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;"
-																		>
+																			style="display: flex;justify-content: space-between;align-items: center;padding-left: 30upx;">
 																			<view style="display: flex;align-items: center;">
 																				<Avatar margin="0 24upx 0 0" :src="section.avatar" :size="40"></Avatar>
 																				<text style="padding-left: 40upx;">{{ section.nickname || '--' }}</text>
@@ -143,15 +120,12 @@
 									<view v-else-if="item.campaignsType === 2">
 										<view v-if="serviceSharingLogs.userDtos && serviceSharingLogs.userDtos.length">
 											<tui-list-view title="">
-												<tui-list-cell
-													v-for="part in serviceSharingLogs.userDtos" :key="part.userId"
-													background-color="transparent"
-												>
+												<tui-list-cell v-for="part in serviceSharingLogs.userDtos" :key="part.userId"
+													background-color="transparent">
 													<view style="display: flex;align-items: center;padding-left: 16upx;">
 														<Avatar margin="0 24upx 0 0" :src="part.avatar" :size="40"></Avatar>
 														<view
-															style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;"
-														>
+															style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;">
 															<text style="width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
 																{{
 																	part.userName || '--' }}
@@ -181,10 +155,8 @@
 			</view>
 
 			<!-- 提现dialog -->
-			<tui-dialog
-				:buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]" :show="isShowWithdrawalDialog"
-				title="提现到余额" @click="handleClickWithdrawalDialog"
-			>
+			<tui-dialog :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]" :show="isShowWithdrawalDialog"
+				title="提现到余额" @click="handleClickWithdrawalDialog">
 				<template #content>
 					<tui-input v-model="withdrawalAmount" label="提现金额" type="number" placeholder="请输入提现金额">
 						<template #right>
@@ -336,6 +308,7 @@ export default {
 
 		// 绑定
 		binding(userId, cb) {
+			console.log("我来绑定了");
 			const _this = this
 			return new Promise((resolve, reject) => {
 				changeActivityUserBindingApi({
@@ -384,7 +357,7 @@ export default {
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})
 			if (res.errno === 0) {
-				this.activityList = [ ...res.data ]
+				this.activityList = [...res.data]
 			}
 		},
 

@@ -136,7 +136,9 @@ export default {
     getGoodsList() {
       getClassifyProducts2Api(this.queryList).then(res => {
         this.goodsList = res.data.list
-        console.log(res)
+        this.ad.good = this.goodsList.slice(0,2)
+        this.ad.hot = this.goodsList.slice(2,4)
+        // console.log(res)
       }).catch(err => {
         console.log(err)
       })
@@ -429,5 +431,6 @@ export default {
   background-color: #eff3f6;
   box-sizing: border-box;
   padding: 26rpx 28upx;
+  padding-bottom: 120rpx;
 }
 </style>

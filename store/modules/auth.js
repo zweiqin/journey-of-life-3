@@ -144,6 +144,7 @@ export default {
 			})
 		},
 
+		// 刷新用户信息
 		refrshUserInfo({ state, dispatch, commit }, cb) {
 			if (!state.userId) {
 				return

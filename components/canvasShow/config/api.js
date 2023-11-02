@@ -28,6 +28,6 @@ export const api = {
 	getPriceProducts: `${BASEURL}/canvas/getPriceProducts`, // 商家定价捆绑
 	getPrices: `${BASEURL}/canvas/getPrices`, // 商家定价捆绑
 	getMemberProducts: `${BASEURL}/canvas/getMemberProducts`, // 查询会员商品数据
-	getNotices: `${BASEURL}/canvas/getNotices` // 平台获取公告数据
+	getNotices: `${BASEURL}/canvas/getNotices`, // 平台获取公告数据
 }
 export default api
