@@ -15,9 +15,7 @@
             </view>
         </view>
         <view class="PreviewItem" v-for="(item, index) in PreviewData" :key="index">
-            <view v-if="item.text" class="content">
-                {{ item.text }}
-            </view>
+            <view v-if="item.text" class="content" v-html="item.text"></view>
             <view class="images" v-if="item.imgUrl">
                 <img class="imageItem" :src="item.imgUrl" />
                 <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
@@ -62,6 +60,11 @@ export default {
     },
     created(options) {
         this.PreviewData = JSON.parse(this.textData.postContent)
+        this.PreviewData.forEach((item, index) => {
+            item.text = item.text.replace(/\n|\r/g, "<br/>&nbsp;&nbsp;&nbsp;&nbsp;")
+        })
+        // console.log(this.PreviewData)
+        // console.log(this.PreviewData)
     },
     data() {
         return {
