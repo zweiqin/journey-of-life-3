@@ -5,13 +5,26 @@
 			</view> -->
 		<view style="display: flex;flex-direction: column;align-items: center;">
 			<view style="margin-top: 20vh;">
-				<BeeIcon name="circle-fill" :size="76" color="#95ec69"></BeeIcon>
+				<BeeIcon v-if="state === 'success'" name="circle-fill" :size="76" color="#95ec69"></BeeIcon>
+				<BeeIcon v-else-if="state === 'fail'" name="close-fill" :size="76" color="#eb0909"></BeeIcon>
 			</view>
-			<view style="margin-top: 5vh;font-size: 46upx;font-weight: bold;">支付成功</view>
+
+			<view style="margin-top: 5vh;font-size: 46upx;font-weight: bold;">
+				<text v-if="state === 'success'">支付成功</text>
+				<text v-else-if="state === 'fail'">支付失败</text>
+			</view>
+
 			<view style="margin-top: 25vh;">
 				<tui-button
-					type="gray-primary" width="280rpx" height="72rpx" style="color: #1ab113!important;border-radius: 4rpx;"
-					bold @click="handelClickBack"
+					v-if="state === 'success'" type="gray-primary" width="280rpx" height="72rpx"
+					style="color: #1ab113!important;border-radius: 4rpx;" bold @click="handelClickBack"
+				>
+					回到首页
+				</tui-button>
+				<tui-button
+					v-else-if="state === 'fail'" type="danger" width="280rpx" height="72rpx"
+					plain
+					style="border-radius: 4rpx;" bold @click="handelClickBack"
 				>
 					回到首页
 				</tui-button>
@@ -21,8 +34,6 @@
 </template>
 
 <script>
-// import { } from '../../../api/user'
-// import { getUserId, getBrandId } from '../../../utils'
 import { T_PAY_ORDER } from '../../../constant'
 
 export default {
@@ -30,11 +41,13 @@ export default {
 	components: {},
 	data() {
 		return {
-			currentButton: 0
+			state: ''
 		}
 	},
 	onLoad(options) {
 		uni.removeStorageSync(T_PAY_ORDER)
+		console.log(options.state)
+		this.state = options.state || 'success'
 	},
 	mounted() {
 	},
@@ -53,6 +66,5 @@ export default {
 	padding: 0 26upx;
 	background: #ffffff;
 	box-sizing: border-box;
-
 }
 </style>

@@ -83,7 +83,7 @@
 				<view class="address-text-wrapper">
 					<view class="address-text">{{ brandDetail.shopAdress }}</view>
 					<view style="font-weight: bold;color: #e02208;" class="address-text">
-						距你{{ brandDetail.distance || 0 }}Km
+						距您{{ brandDetail.distance || 0 }}Km
 					</view>
 				</view>
 			</view>
