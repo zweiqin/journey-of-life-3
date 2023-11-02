@@ -62,6 +62,8 @@ export const USER_SELECT_ADDRESS = 'USER_SELECT_ADDRESS'
 export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload'
 export const VIDEO_TYPE = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4']
 
+// 从新团蜂搬过来的
+
 export const clearAllCache = () => {
 	[
 		COMMUNITY_ORDER_NO,

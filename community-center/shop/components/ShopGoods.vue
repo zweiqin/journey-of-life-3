@@ -1,9 +1,12 @@
 <template>
-	<view class="item" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}`)">
-		<image :src="cItem.image" class="product-img default-img"></image>
+	<view
+		class="item"
+		@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}`)"
+	>
+		<image :src="cItem.image" class="product-img"></image>
 		<view class="product-bottom-box">
 			<view class="product-name">{{ cItem.productName }}</view>
-			<view class="product-num font-color-C5AA7B mar-top-10">
+			<view v-if="cItem.number" class="product-num font-color-C5AA7B mar-top-10">
 				已售{{ cItem.number }}件
 			</view>
 			<view class="product-price-box">
@@ -38,9 +41,16 @@
 					src="../../../static/images/new-business/shop/jierizhekou.png" alt="场景营销"
 				></image>
 				<text class="price-box fs40 font-color-C83732 mar-right-20">
-					￥{{ cItem.price }}
+					<text class="fs32">￥</text>
+					{{ cItem.price }}
 				</text>
-				<text class="price-through">￥{{ cItem.originalPrice }}</text>
+				<text v-if="cItem.price !== cItem.originalPrice" class="price-through">￥{{ cItem.originalPrice }}</text>
+			</view>
+			<view
+				v-if="cItem.price && cItem.stockNumber"
+				style="width: fit-content;max-width: 100%;padding: 2upx 8upx;margin: 10upx 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+			>
+				可使用{{ cItem.stockNumber }}代金券抵扣
 			</view>
 		</view>
 	</view>
@@ -73,10 +83,13 @@ export default {
 	border-radius: 10rpx;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 
 	.product-img {
 		width: 340rpx;
 		height: 340rpx;
+		border-radius: 20upx;
+		overflow: hidden;
 	}
 
 	.product-bottom-box {
@@ -106,7 +119,7 @@ export default {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			margin-top: 30rpx;
+			margin-top: 18rpx;
 
 			.iconImg {
 				width: 58rpx;
@@ -124,6 +137,7 @@ export default {
 			font-size: 24rpx;
 			color: #CCC;
 		}
+
 	}
 }
 

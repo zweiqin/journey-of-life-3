@@ -88,7 +88,7 @@
 				</view>
 			</view>
 			<view class="op-menus">
-				<BeeMakePhone :phone="brandDetail.phone">
+				<BeeMakePhone :phone="brandDetail.chargePersonPhone">
 					<view class="item">
 						<BeeIcon :size="20" color="#e02208" name="voipphone"></BeeIcon>
 						<text>电话</text>

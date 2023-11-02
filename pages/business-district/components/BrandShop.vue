@@ -1,7 +1,7 @@
 <template>
 	<view
 		v-if="brandInfo" class="brand-shop-container"
-		@click="go('/community-center/shop/shop-detail?shopId=' + brandInfo.shopId)"
+		@click="go(`/community-center/shop/shop-detail?shopId=${brandInfo.shopId}`)"
 	>
 		<view class="brand-logo-container">
 			<tui-lazyload-img

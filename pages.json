@@ -314,7 +314,8 @@
   "easycom": {
     "autoscan": true,
     "custom": {
-      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
+      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
+      "global-loading": "@/components/diyLoading/index.vue"
     }
   },
   "subPackages": [
@@ -1399,7 +1400,19 @@
           "style": {
             "navigationBarTitleText": "分销员招募令"
           }
-        }
+        },
+        {
+          "path": "another-serve/orderDetails/index",
+          "style": {
+            "navigationBarTitleText": "订单详情"
+          }
+        },
+				{
+					"path": "another-serve/evaluate/index",
+					"style": {
+						"navigationBarTitleText": "评价"
+					}
+				}
       ]
     }
   ],

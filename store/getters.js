@@ -36,5 +36,7 @@ export default {
 
   // app
   statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
-  systermInfo: state => state.app.systermInfo
+  systermInfo: state => state.app.systermInfo,
+  loadingFlag: (state) => state.app.globalLoading.showLoading,
+	loadingInfo: (state) => state.app.globalLoading.showInfo,
 };
