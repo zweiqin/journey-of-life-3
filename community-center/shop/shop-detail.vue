@@ -9,10 +9,10 @@
 						style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
 					>
 					</BeeIcon>
-					<text style="flex: 1;margin-left: -40upx;;text-align: center;font-weight: bold;">门店详情</text>
+					<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 				</view>
 			</BeeBack>
-			<BrandInfo :brand-detail="brandDetail" @navgation="handleNavigate"></BrandInfo>
+			<BrandInfo :brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate"></BrandInfo>
 		</view>
 
 		<!-- <view
@@ -27,7 +27,7 @@
 			</view> -->
 
 		<tui-tab
-			:tabs="allTabList.map(i => i.name)" :current="currentTab" scroll background-color="transparent"
+			:tabs="allTabList.map(i => i.classifyName)" :current="currentTab" scroll background-color="transparent"
 			:size="32"
 			bold bottom="6upx" color="#222229" selected-color="#222229"
 			slider-bg-color="#ef530e" slider-height="4px"
@@ -35,7 +35,8 @@
 		></tui-tab>
 
 		<view class="brand-pane">
-			<view v-if="currentTab === 0">
+			<!-- v-if="currentTab === 1" -->
+			<view v-if="currentTab === 999">
 				<CanvasPage
 					v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
 					:type-id="3" :shop-id="Number(shopId)"
@@ -127,7 +128,7 @@ export default {
 			},
 			shopId: null,
 			brandDetail: {},
-			allTabList: [{ name: '首页', classifyId: 0 }, { name: '全部', classifyId: 0 }],
+			allTabList: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			// 首页
 			componentsData: null,
@@ -172,6 +173,7 @@ export default {
 			}
 		})
 		addShopBusinessBuyerUserApi({ shopId: this.shopId })
+		this.getShopGoodsTemplate()
 	},
 
 	methods: {
@@ -218,16 +220,15 @@ export default {
 		// 栏目切换
 		handleTabChange(e) {
 			this.currentTab = e.index
-			if (e.index !== 0) {
-				this.shopGoodsInfo.data = []
-				this.shopGoodsInfo.query.page = 1
-				if (e.index === 1) {
-					this.classifyId = ''
-				} else {
-					this.classifyId = this.allTabList[e.index].classifyId
-				}
-				this.getShopGoodsTemplate()
+			// if (e.index === 1) return
+			this.shopGoodsInfo.data = []
+			this.shopGoodsInfo.query.page = 1
+			if (e.index === 0) {
+				this.classifyId = ''
+			} else {
+				this.classifyId = this.allTabList[e.index].classifyId
 			}
+			this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
 			uni.showLoading()

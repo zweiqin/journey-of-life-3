@@ -6,7 +6,7 @@ import store from '../store'
 const request = (base_url) => function (url, data = {}, method = 'GET', cb, header = {}) {
 	return new Promise((resolve, reject) => {
 		header['Content-Type'] = 'application/json'
-		const res = uni.getStorageSync(T_STORAGE_KEY)
+		const res = uni.getStorageSync(T_STORAGE_KEY) || {}
 		const token = res.token
 		if (token) {
 			header.Authorization = token
