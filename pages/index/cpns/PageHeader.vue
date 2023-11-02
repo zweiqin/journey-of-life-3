@@ -7,9 +7,11 @@
           <image class="arrow-icon" src="../../../static/images/new-index/arrow-1.png"></image>
         </view>
       </TuanLocation>
-      <view @click="go('/pages/search-page/search-page')" class="input-view">请输入您想搜索的商品</view>
+      <view @click="go('/pages/search-page/search-page')" class="input-view">{{ placeholder }}</view>
+      <button v-if="showSearchBtn" class="search-input-btn uni-btn">搜索</button>
     </view>
-    <button class="uni-btn" style="flex-shrink: 0;" @click="go('/user/sever/customer-service/customer-service')">
+    <button class="uni-btn page-header-right" style="flex-shrink: 0;"
+      @click="go('/user/sever/customer-service/customer-service')">
       <image class="message-icon" src="../../../static/images/new-index/message-1.png"></image>
     </button>
   </view>
@@ -17,6 +19,16 @@
 
 <script>
 export default {
+  props: {
+    showSearchBtn: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: "请输入您想搜索的商品"
+    }
+  },
   computed: {
     currentAddress() {
       const currentAddress = this.$store.getters.currentCity + ''
@@ -74,6 +86,19 @@ export default {
     .input-view {
       font-size: 28upx;
       color: #3d3d3d;
+      flex: 1;
+    }
+
+    .search-input-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 106upx;
+      height: 55upx;
+      background-color: #EF5511;
+      color: #fff;
+      font-size: 24upx;
+      border-radius: 100px;
     }
   }
 

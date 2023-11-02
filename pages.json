@@ -54,6 +54,12 @@
       }
     },
     {
+      "path": "pages/index/BrandFactory/BrandFactory",
+      "style": {
+        "navigationBarTitleText": "品牌工厂"
+      }
+    },
+    {
       "path": "pages/pre-order/pre-order",
       "style": {
         "usingComponents": {
