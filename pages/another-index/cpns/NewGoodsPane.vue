@@ -29,12 +29,12 @@ export default {
     }
   },
   created() {
-    console.log(this.voucherJudgment(this.goods))
+    // console.log(this.voucherJudgment(this.goods))
   },
   methods: {
     goGoodsDetsil(shopItem) {
       uni.navigateTo({
-         url: `/pages/prod/prod?shopId=${shopItem.skuId}`
+         url: `/pages/prod/prod?shopInfo=${JSON.stringify(this.goods)}&detailInfo=${JSON.stringify(this.voucherJudgment(this.goods))}`
       });
     },
     /*

@@ -1,9 +1,9 @@
 <template>
   <view class="goods-detail-container" v-if="goodsDetail">
     <tui-toast ref="toast"></tui-toast>
-    <!-- 轮播图 -->
+        <!-- 轮播图 -->
     <view class="carousel-wrapper">
-      <Carousel :list="goodsDetail.info.gallery.length ? goodsDetail.info.gallery.map((item) => common.seamingImgUrl(item)) : [common.seamingImgUrl(goodsDetail.info.picUrl)]" :height="390" :top="0" :radius="0"></Carousel>
+      <Carousel :list="goodsDetail.images.map(item => common.seamingImgUrl(item))" :height="390" :top="0" :radius="0"></Carousel>
 
       <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
         <view>
@@ -13,12 +13,7 @@
         <view style="display: flex">
           <image style="margin-right: 20upx" @click="empty()" src="../../static/images/detail/brand.png" mode="" />
 
-          <BeeWxShare ref="beeWxShareRef" @click="handleShareGoods">
-            <!-- <image
-              @click=""
-              src="../../static/images/detail/share.png"
-              mode=""
-            /> -->
+          <BeeWxShare @click="handleShareGoods" ref="beeWxShareRef">
             <image src="../../static/images/detail/share.png" mode="" />
           </BeeWxShare>
         </view>
@@ -53,35 +48,32 @@
               active: currentMoveTag == 2
             }"
             @click="moveToDetail(2)"
-            v-if="goodsDetail.info.detail"
+            v-if="goodsDetail"
           >
             详情
           </view>
         </view>
       </view>
     </view>
-
+    
     <view class="pane goods-info">
       <view class="detail-price">
         ￥
-        <text class="price-text"
-          ><text :class="{ normalPrice: vipPrice }">{{ goodsDetail.info.counterPrice }}</text>
-          <text v-show="vipPrice">{{ vipPrice }}</text>
+        <text class="price-text" style="letter-spacing: 2rpx;">
+          <text style="margin-right: 10rpx;" v-show="goodsDetail.price">{{ goodsDetail.price }}</text>
+          <text style="margin-right: 10rpx;" :class="{ normalPrice: goodsDetail.originalPrice }">{{ goodsDetail.originalPrice }}</text>
         </text>
-
         起
-
-				<text
-					v-if="goodsDetail.voucherAmount"
-					style="height: 100%;padding: 6upx 12upx;margin-left: 20upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
-				>
-					可使用{{ goodsDetail.voucherAmount }}代金券抵扣
-				</text>
-
+        <text
+            v-if="voucherJudgment(goodsDetail)"
+            style="height: 100%;padding: 6upx 12upx;margin-left: 20upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
+        >
+            可使用{{ voucherJudgment(goodsDetail).voucherPrice }}元代金券抵扣
+        </text>
         <!-- <text class="watch-vip-price" @click="handleWatchVipPrice">{{ vipPrice ? '隐藏' : '查看' }}会员价</text> -->
       </view>
 
-      <view class="goods-name">{{ goodsDetail.info.name }}</view>
+      <view class="goods-name">{{ goodsDetail.productName }}</view>
 
       <view class="salsed">
         <text>月销100+</text>
@@ -109,35 +101,35 @@
           </view>
         </view>
       </view>
-
+      
       <view class="eval-wrapper">
         <view class="eval">
-          <text>评价({{ commentInfo.count || 0 }})</text>
-          <text v-if="commentInfo.data.length > 1">
-            <text @click="handleViewAllEval(commentInfo.data)">查看全部</text>
+          <text>评价({{ goodsDetail.comments.length || 0 }})</text>
+          <text v-if="goodsDetail.comments.length > 1">
+            <text @click="handleViewAllEval(goodsDetail.comments)">查看全部</text>
             <image style="margin-bottom: -4upx" src="../../static/images/detail/right-arrow.png" mode="" />
           </text>
-          <text v-else-if="!commentInfo.data.length">暂无评价</text>
+          <text v-else-if="goodsDetail.comments.length <= 0">暂无评价</text>
         </view>
 
-        <view class="one-eval-container" v-if="commentInfo.data.length">
+        <view class="one-eval-container" v-if="goodsDetail.comments.length > 0">
           <view class="user-info">
-            <image class="avatar" :src="commentInfo.data[0].avatar? common.seamingImgUrl(commentInfo.data[0].avatar) : require('../../static/images/user/weidian/no-goods.png')"></image>
+            <image class="avatar" :src="goodsDetail.comments[0].avatar? common.seamingImgUrl(goodsDetail.comments[0].avatar) : require('../../static/images/user/weidian/no-goods.png')"></image>
             <view class="info">
-              <view class="nickname">{{ commentInfo.data[0].nickname || '匿名用户' }} </view>
-              <view class="eval-time">{{ commentInfo.data[0].addTime }}</view>
+              <view class="nickname">{{ goodsDetail.comments[0].nickname || '匿名用户' }} </view>
+              <view class="eval-time">{{ goodsDetail.comments[0].addTime }}</view>
             </view>
           </view>
           <view class="comment-detail">
             <view class="content">
-              {{ commentInfo.data[0].content }}
+              {{ goodsDetail.comments[0].content }}
             </view>
-
-            <view class="pic-list" v-if="commentInfo.data[0].picList">
+            
+            <view class="pic-list" v-if="goodsDetail.comments[0].picList">
               <image
-                @click="handlePreviewImg(index, commentInfo.data[0].picList.split(',').map((item) => common.seamingImgUrl(item)))"
+                @click="handlePreviewImg(index, goodsDetail.comments[0].picList.split(',').map((item) => common.seamingImgUrl(item)))"
                 class="img"
-                v-for="(img, index) in commentInfo.data[0].picList.split(',').map((item) => common.seamingImgUrl(item))"
+                v-for="(img, index) in goodsDetail.comments[0].picList.split(',').map((item) => common.seamingImgUrl(item))"
                 :key="index"
                 :src="img"
               ></image>
@@ -147,14 +139,14 @@
       </view>
 
       <!-- 店铺信息 -->
-      <view class="brand-wrapper" v-if="goodsDetail.brand && goodsDetail.brand.name && isShowBrand">
+      <view class="brand-wrapper" v-if="goodsDetail && goodsDetail.shopName && isShowBrand">
         <view class="top">
-          <image class="image" :src="common.seamingImgUrl(goodsDetail.brand.picUrl)" mode="" v-if="goodsDetail.brand.picUrl" />
-          <view v-else class="image image-avatar">{{ goodsDetail.brand.name }}</view>
+          <image class="image" :src="common.seamingImgUrl(goodsDetail.shopLogo)" mode="" v-if="goodsDetail.shopLogo" />
+          <view v-else class="image image-avatar">{{ goodsDetail.shopName }}</view>
 
           <view class="brand-info">
-            <view class="brand-name">{{ goodsDetail.brand.name }}</view>
-            <view class="brand-desc">{{ goodsDetail.brand.desc }}</view>
+            <view class="brand-name">{{ goodsDetail.shopName }}</view>
+            <!-- <view class="brand-desc"></view> -->
             <view class="serve">
               <text>
                 宝贝描述
@@ -178,10 +170,20 @@
         </view> -->
       </view>
 
-      <!-- 店铺推荐 -->
-      <!-- <view
+    </view>
+
+        <!-- 宝贝详情 -->
+    <view class="goods-detail" id="goods-detail" v-if="goodsDetail"><text>宝贝详情</text></view>
+
+    <u-parse v-if="goodsDetail.text" :content="goodsDetail.text"></u-parse>
+
+    <view class="recommd-container">
+      <view class="goods-detail"><text>更多好物</text></view>
+    </view>
+    <!-- 店铺推荐 -->
+    <view
         class="brand-recommend"
-        v-if="brandOtherGoods && brandOtherGoods.length"
+        v-if="goodsDetail.similarProducts && goodsDetail.similarProducts.length > 0"
       >
         <view class="sub-title">
           <text>店铺推荐</text>
@@ -191,37 +193,21 @@
         <view class="wrapper">
           <view
             class="item"
-            v-for="item in brandOtherGoods"
-            @click="go('/pages/prod/prod?goodsId=' + item.id)"
-            :key="item.id"
+            v-for="item in goodsDetail.similarProducts"
+            @click="go('/pages/prod/prod?shopInfo=' + JSON.stringify(item) + '&detailInfo=' + voucherJudgment(item))"
+            :key="item.shopId"
           >
-            <image :src="common.seamingImgUrl(item.picUrl)" mode="" />
+            <image :src="common.seamingImgUrl(item.image)" mode="" />
 
-            <view class="recommend-goods-name">{{ item.name }}</view>
+            <view class="recommend-goods-name">{{ item.productName }}</view>
 
             <text class="recommend-goods-price">
               ￥
-              <text>{{ item.counterPrice }}</text>
+              <text>{{ item.originalPrice }}</text>
             </text>
           </view>
         </view>
-      </view> -->
     </view>
-
-    <!-- 宝贝详情 -->
-    <view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail"><text>宝贝详情</text></view>
-
-    <u-parse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></u-parse>
-
-    <!-- 详情 -->
-
-    <!-- 为你推荐 -->
-    <view class="recommd-container">
-      <view class="goods-detail"><text>更多好物</text></view>
-    </view>
-
-    <RecommendGoods :showTitle="false" :id="goodsId"></RecommendGoods>
-
     <view class="footer">
       <view class="icon-wrapper">
         <view class="item" @click="go('/user/sever/shopCar/shopCar')">
@@ -237,7 +223,8 @@
         </view>
 
         <view class="item">
-          <image @click="handleCollect" :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'" mode="" />
+            <!-- @click="handleCollect" -->
+          <image :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'" mode="" />
           <text>收藏</text>
         </view>
       </view>
@@ -247,12 +234,12 @@
         <button class="uni-btn" @click="fastBuy(selectInfo)">立即购买</button>
       </view>
     </view>
-
     <TSpecification :btn-text="btnStatus" @confirm="handleChooseSp" :data="goodsDetail" ref="specificationRef" :bottom="0" v-model="showSpecification"></TSpecification>
 
     <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
 
     <CommentListDrawer ref="commentListDrawerRef"></CommentListDrawer>
+
   </view>
 </template>
 
@@ -264,6 +251,7 @@ import { marked } from 'marked';
 import { PAY_GOODS, USER_ID, USER_INFO } from '../../constant';
 import RecommendGoods from '../../components/recommend-goods';
 import CommentListDrawer from './components/CommentListDrawer.vue';
+import { getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 
 import {
   getGoodsDetailApi,
@@ -286,286 +274,73 @@ export default {
   },
   data() {
     return {
-      subInfoConfig,
-      goodsInfoConfig,
-      goodsDetail: null,
-      showSpecification: false,
-      shopCarNumber: 0,
-      isCollect: false,
-      userId: null,
-      brandOtherGoods: null,
-      showTopNav: false,
-      evalPosition: 0,
-      detailPosition: 0,
-      scrollTop: 0,
-      currentMoveTag: 0,
-      redirect: '/pages/prod/prod?goodsId=',
-      isShowTop: false,
-      btnStatus: '确定',
-      selectInfo: null,
-      selectForm: {
-        spsStr: ''
-      },
-      isShowBrand: false,
-      vipPrice: null,
-      commentInfo: {
-        count: 0,
-        data: []
-      }
+        shopCarNumber: 0, // 购物车数量
+        subInfoConfig,
+        goodsInfoConfig,
+        shopingInfo: null,
+        detailInfomation: null,
+        goodsDetail: null,
+        showTopNav: false, // !这一块都是用于判定样式的变量
+        isShowTop: false,
+        currentMoveTag: 0,
+        evalPosition: 0,
+        detailPosition: 0,
+        scrollTop: 0, // 到此结束
+        selectForm: {
+            spsStr: ''
+        },
+        isShowBrand: true,
     };
   },
   onLoad(options) {
-    this.isShowBrand = !!options.showBrand;
-    uni.pageScrollTo({
-      scrollTop: 0,
-      duration: 0
-    });
-    this.goodsId = options.goodsId * 1;
-    this.redirect += this.goodsId;
-    this.userId = uni.getStorageSync(USER_ID);
-    this.getGoodsDetail();
-    if (this.userId) {
-      this.getCarShopNumber();
-    }
+        this.detailInfomation = JSON.parse(options.shopInfo);
+        this.shopingInfo = JSON.parse(options.detailInfo);
+        console.log(this.shopingInfo);
+        getProductDetailsByIdApi({
+            shopId: this.detailInfomation.shopId,
+            productId: this.detailInfomation.productId,
+            skuId: this.detailInfomation.skuId,
+            terminal: '3'
+        }).then(res => {
+            this.goodsDetail = res.data
+            console.log(res);
+        })
+        this.getCarShopNumber()
+        // console.log(this.detailInfomation);
   },
 
   methods: {
-    // 回退
+    voucherJudgment(Item) {
+      if (!Item.map || Item.map.length <= 0) {
+        return false
+      }
+      let returnData = null
+      for(let Key in Item.map) {
+        if(Item.map[Key].skuId == Item.skuId) returnData = Item.map[Key]
+      }
+      return returnData
+    },
     handleBack() {
       uni.navigateBack();
     },
-    // 获取商品详情
-    async getGoodsDetail() {
-      uni.showLoading();
-      const res = await getGoodsDetailApi(this.goodsId, this.userId);
-      uni.hideLoading();
-      if (res.errno === 0) {
-        this.goodsDetail = res.data;
-        // #ifdef H5
-        this.$nextTick(() => {
-          this.handleShareGoods(true);
-        });
-        // #endif
-        this.isCollect = !!res.data.userHasCollect;
-        res.data.brand && this.getBrandOtherGoods(res.data.brand.id);
-        this.getOrderComment();
-      } else {
-        uni.showToast({
-          title: '商品不存在',
-          duration: 2000,
-          icon: 'none'
-        });
-
-        setTimeout(() => {
-          uni.navigateBack();
-        }, 500);
-      }
-    },
-
-    // 获取商品评价
-    async getOrderComment() {
-      const res = await getGoodsCommentListApi({
-        gid: this.goodsId
-      });
-
-      if (res.errno === 0) {
-        this.commentInfo = res.data;
-      }
-    },
-
-    // 加入购物车
-    async addShopCar(selectInfo) {
-      this.checkCommentStatus();
-      this.btnStatus = '确定加入购物车';
-      let goodsInfo = null;
-      if (!selectInfo || !this.selectInfo) {
-        goodsInfo = await this.getSpacification();
-      } else {
-        goodsInfo = selectInfo;
-      }
-
+    // 分享
+    handleShareGoods(isQuit) {
+      const _this = this;
       const data = {
-        userId: getUserId(),
-        goodsId: this.goodsDetail.info.id,
-        number: goodsInfo.number,
-        productId: goodsInfo.product.id
+        data: {
+          title: _this.goodsDetail.productName,
+          desc: 'xxxxx',
+
+          link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + JSON.stringify(_this.detailInfomation),
+          imageUrl: this.common.seamingImgUrl(_this.goodsDetail.images[0]) || this.common.seamingImgUrl(_this.goodsDetail.image)
+        },
+        successCb: () => {},
+        failCb: () => {}
       };
 
-      const res = await addShopCarApi(data);
-      if (res.errno === 0) {
-        uni.showToast({
-          title: '添加成功',
-          icon: 'none'
-        });
-        this.showSpecification = false;
-        this.getCarShopNumber();
-      } else {
-        uni.showToast({
-          title: '购物车添加失败',
-          icon: 'none'
-        });
-      }
+      this.$refs.beeWxShareRef.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId);
     },
-    // 立即购买
-    async fastBuy(selectInfo) {
-      this.checkCommentStatus();
-      this.btnStatus = '立即购买';
-      let goodsInfo = null;
-      if (!selectInfo || !this.selectInfo) {
-        goodsInfo = await this.getSpacification();
-      } else {
-        goodsInfo = selectInfo;
-      }
-      uni.setStorageSync(PAY_GOODS, {
-        currentGoodsImg: this.common.seamingImgUrl(goodsInfo.product.url) || this.goodsDetail.info.picUrl,
-        currentSpecification: goodsInfo.spStr,
-        currentPrice: goodsInfo.product.price,
-        number: goodsInfo.number,
-        status: 0,
-        ...this.goodsDetail,
-        selectedProduct: goodsInfo,
-        brandId: this.goodsDetail.brand && this.goodsDetail.brand.id,
-        supportVoucher: this.goodsDetail.info.supportVoucher,
-        supportVoucherCount: this.goodsDetail.voucherAmount || 0
-      });
-
-      uni.navigateTo({
-        url: '/pages/pre-order/pre-order'
-      });
-    },
-
-    // 获取商品规格参数
-    getSpacification() {
-      if (!this.userId) {
-        uni.showModal({
-          title: '提示',
-          content: '您还未登录，请先登录',
-          success: ({ confirm }) => {
-            if (confirm) {
-              uni.navigateTo({
-                url: '/pages/login/login?to=' + this.redirect
-              });
-            }
-          }
-        });
-
-        return;
-      }
-      return new Promise((resolve, reject) => {
-        if (this.showSpecification) {
-          const goodsInfo = this.$refs.specificationRef.getVal();
-          if (goodsInfo.number > goodsInfo.product.number) {
-            this.$showToast('该货品库存为' + goodsInfo.product.number);
-            reject();
-          }
-          resolve(goodsInfo);
-        } else {
-          this.showSpecification = true;
-        }
-      });
-    },
-
-    // 获取购物车数量
-    async getCarShopNumber() {
-      const res = await getCarShopNumberApi();
-      if (res.errno === 0) {
-        this.shopCarNumber = res.data;
-      }
-    },
-
-    // 获取品牌商的其他商品
-    async getBrandOtherGoods(id) {
-      if (!id) return;
-      const res = await goodsListApi({
-        page: 1,
-        size: 6,
-        brandId: id
-      });
-
-      if (res.errno === 0) {
-        this.brandOtherGoods = res.data.goodsList;
-        console.log(this.brandOtherGoods);
-      } else {
-        uni.showLoading({
-          title: res.errmsg,
-          icon: 'none'
-        });
-      }
-    },
-
-    // 添加收藏
-    async handleCollect() {
-      if (!this.userId) {
-        uni.showModal({
-          title: '提示',
-          content: '您还未登录，请先登录',
-          success: ({ confirm }) => {
-            if (confirm) {
-              uni.navigateTo({
-                url: '/pages/login/login'
-              });
-            }
-          }
-        });
-
-        return;
-      }
-
-      uni.showLoading();
-
-      const res = await collectionApi({
-        userId: getUserId(),
-        type: 0,
-        valueId: this.goodsId
-      });
-
-      uni.hideLoading();
-
-      if (res.errno === 0) {
-        uni.showToast({
-          title: res.data.type === 'add' ? '收藏成功' : '取消收藏成功',
-          duration: 2000
-        });
-
-        this.isCollect = !this.isCollect;
-      } else {
-        uni.showLoading({
-          title: '操作失败',
-          icon: 'none'
-        });
-      }
-    },
-
-    handleKefu() {
-      uni.showLoading({
-        title: '暂未开放',
-        icon: 'none',
-        duration: 1000
-      });
-    },
-
-    // 获取移动的位置
-    initMovePosition() {
-      const _this = this;
-      const query = uni.createSelectorQuery().in(this);
-      query
-        .select('.eval')
-        .boundingClientRect((data) => {
-          _this.evalPosition = data.top;
-        })
-        .exec();
-
-      query
-        .select('#goods-detail')
-        .boundingClientRect((data) => {
-          _this.detailPosition = data.top;
-        })
-        .exec();
-
-      this.isShowTop = true;
-    },
-
-    // 点击移动到对应的位置
+     // 点击移动到对应的位置
     moveToDetail(tag) {
       const _this = this;
       // this.currentMoveTag = tag;
@@ -591,177 +366,31 @@ export default {
           break;
       }
     },
-
-    // 点击
-    handleClickMenu(item) {
-      if (item.key == 'sp') {
-        this.btnStatus = '确定';
-        this.showSpecification = true;
+    /*
+     * @param {Object, Array} Item 商品对象
+     * @param {String} Item.skuId 商品id
+     * @return {Boolean} 是否可使用代金券
+     * 判断是否可使用代金券
+     */
+    voucherJudgment(Item) {
+      if (!Item.map || Item.map.length <= 0) {
+        return false
+      }
+      let returnData = null
+      for(let Key in Item.map) {
+        if(Item.map[Key].skuId == Item.skuId) returnData = Item.map[Key]
+      }
+      return returnData
+    },
+        // 获取购物车数量
+    async getCarShopNumber() {
+      const res = await getCarShopNumberApi();
+      if (res.errno === 0) {
+        this.shopCarNumber = res.data;
       }
     },
-
-    // 确定选择规格
-    async handleChooseSp() {
-      console.log(1);
-      const sps = await this.getSpacification();
-      // this.showSpecification = false
-      // debugger
-      if (this.btnStatus === '确定加入购物车') {
-        this.addShopCar(sps);
-      } else if (this.btnStatus === '立即购买') {
-        this.fastBuy(sps);
-      } else {
-        this.selectInfo = sps;
-        this.selectForm.spsStr = '已选' + sps.spStr;
-        this.showSpecification = false;
-      }
-    },
-
-    // 查看会员价
-    handleWatchVipPrice() {
-      const userInfo = uni.getStorageSync(USER_INFO);
-
-      console.log(userInfo.userLevel);
-
-      if (!userInfo || !this.userId) {
-        uni.showModal({
-          title: '提示',
-          content: '登录后方可查看',
-          success: ({ confirm }) => {
-            if (confirm) {
-              uni.navigateTo({
-                url: '/pages/login/login'
-              });
-            }
-          }
-        });
-        return;
-      }
-
-      if (userInfo.userLevel == 5 && !userInfo.isRegionAgent) {
-        uni.showModal({
-          title: '提示',
-          content: '你还不是会员，是否去升级？',
-          success: ({ confirm }) => {
-            if (confirm) {
-              uni.navigateTo({
-                url: '/user/sever/userUp/partner-appay'
-              });
-            }
-          }
-        });
-
-        return;
-      }
-
-      const _this = this;
-
-      if (this.vipPrice) {
-        this.vipPrice = null;
-      } else {
-        watchVipPriceApi({
-          id: this.goodsId
-        }).then(({ data }) => {
-          _this.vipPrice = data;
-        });
-      }
-    },
-
-    // 分享
-    handleShareGoods(isQuit) {
-      const _this = this;
-      // console.log(_this.goodsDetail.productList);
-      const data = {
-        data: {
-          title: _this.goodsDetail.info.name,
-          desc: _this.goodsDetail.productList
-            .map((item) => {
-              return item.specifications.join(',');
-            })
-            .join(','),
-
-          link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + _this.goodsId,
-          imageUrl: this.common.seamingImgUrl(_this.goodsDetail.shareImage) || this.common.seamingImgUrl(_this.goodsDetail.info.picUrl)
-        },
-        successCb: () => {},
-        failCb: () => {}
-      };
-
-      this.$refs.beeWxShareRef.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId);
-    },
-
-    // 打开客服
-    handleChat() {
-      this.$refs.tuanChatKFRef.show();
-    },
-
-    // 预览图片
-    handlePreviewImg(index, imgList) {
-      uni.previewImage({
-        current: index,
-        urls: imgList,
-        indicator: 'count'
-      });
-    },
-
-    // handle
-    handleViewAllEval(data) {
-      if (data && Array.isArray(data)) {
-        this.$refs.commentListDrawerRef.show(JSON.parse(JSON.stringify(data)));
-      }
-    },
-
-    // 检查评论框状态
-    checkCommentStatus() {
-      if (this.$refs.commentListDrawerRef.commentListDrawerVisible) {
-        this.$refs.commentListDrawerRef.handleClose();
-      }
-    }
   },
-
-  watch: {
-    goodsDetail: {
-      handler(value) {
-        if (value && this.brandOtherGoods) {
-          this.$nextTick(() => {
-            this.initMovePosition();
-          });
-        }
-      },
-
-      immediate: true,
-      deep: true
-    },
-
-    brandOtherGoods: {
-      handler(value) {
-        if (value && this.goodsDetail) {
-          this.$nextTick(() => {
-            this.initMovePosition();
-          });
-        }
-      },
-
-      immediate: true,
-      deep: true
-    }
-  },
-
-  computed: {
-    goodsInfoDetail() {
-      return this.goodsDetail.info.detail ? marked(this.goodsDetail.info.detail) : '';
-    }
-  },
-
-  onPullDownRefresh() {
-    this.getGoodsDetail();
-    if (this.userId) {
-      this.getCarShopNumber();
-    }
-    uni.stopPullDownRefresh();
-  },
-
-  onPageScroll(e) {
+    onPageScroll(e) {
     this.showTopNav = !!e.scrollTop;
     this.scrollTop = e.scrollTop;
     if (this.detailPosition) {
@@ -785,6 +414,7 @@ export default {
 
 <style lang="less" scoped>
 .goods-detail-container {
+  overflow-x: hidden;
   font-size: 28upx;
   padding-bottom: 100upx;
 }
@@ -900,7 +530,7 @@ export default {
   /* #endif */
 
   /* #ifdef H5 */
-  margin-top: -34upx;
+//   margin-top: -34upx;
   /* #endif */
 
   .detail-price {
@@ -1144,56 +774,62 @@ export default {
       }
     }
   }
+}
+.brand-recommend {
+box-sizing: border-box;
+padding: 0rpx 20rpx;
+margin-top: 24upx;
 
-  .brand-recommend {
-    margin-top: 24upx;
+// background-color: #f9f9f9;
+.sub-title {
+    font-size: 32rpx;
+    width: 100%;
+    height: 60rpx;
+    padding: 0;
+}
 
-    // background-color: #f9f9f9;
-    .sub-title {
-      padding: 0;
+.wrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-top: 12upx;
+
+    .item {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20upx;
+
+    image {
+        width: 324upx;
+        height: 324upx;
+        border-radius: 10upx;
     }
 
-    .wrapper {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      margin-top: 12upx;
-
-      .item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        margin-bottom: 20upx;
-
-        image {
-          width: 224upx;
-          height: 224upx;
-          border-radius: 10upx;
-        }
-
-        .recommend-goods-name {
-          width: 210upx;
-          font-size: 26upx;
-          margin: 4upx 0;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .recommend-goods-price {
-          font-size: 24upx;
-          color: #fa5151;
-
-          text {
-            font-weight: 500;
-            font-size: 36upx;
-          }
-        }
-      }
+    .recommend-goods-name {
+        width: 310upx;
+        font-size: 34upx;
+        margin: 4upx 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
-  }
+
+    .recommend-goods-price {
+        width: 100%;
+        font-size: 24upx;
+        color: #fa5151;
+
+        text {
+        font-weight: 500;
+        font-size: 36upx;
+        }
+    }
+    }
+}
 }
 
 .goods-detail {
