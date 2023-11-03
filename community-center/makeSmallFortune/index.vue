@@ -112,6 +112,12 @@ export default {
 </script>
 
 <style lang="scss">
+/deep/ .tui-dialog {
+    z-index: 11 !important;
+}
+/deep/ .tui-dialog__mask {
+    z-index: 10 !important;
+}
 .shop-header-container {
 		position: fixed;
 		top: 0;
@@ -124,7 +130,7 @@ export default {
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-		z-index: 998;
+		z-index: 9;
 
 		.back-icon {
 			width: 48upx;

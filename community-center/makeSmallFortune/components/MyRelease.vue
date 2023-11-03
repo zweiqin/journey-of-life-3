@@ -9,8 +9,15 @@
                 </scroll-view>
             </view>
         </view> -->
-          <Articles @deleteText="deleteText" v-for="(item, index) in renderData" :key="index" :datas="item" :redirection="redirection"></Articles>
+          <Articles @reissueText="reissueText" @deleteText="deleteText" v-for="(item, index) in renderData" :key="index" :datas="item" :redirection="redirection"></Articles>
           <tui-modal :show="deleteModal" @click="handleClick" @cancel="deleteModal = false" title="提示" content="确定删除吗?"></tui-modal>
+          <tui-dialog :buttons="buttons" :show="reissueShow" title="请确认再次投放" @close="reissueShow = false" @click="reissueTap">
+            <template v-slot:content>
+              重复的投放需要再次填入红包!!!
+              <tui-input v-model="reissueForm.redPacketInfo.totalAmount" label="红包金额" placeholder="请输入红包金额"></tui-input>
+              <tui-input v-model="reissueForm.redPacketInfo.totalPacket" label="红包数量" placeholder="请输入红包数量"></tui-input>
+            </template>
+          </tui-dialog>
     </view>
 </template>
 
@@ -18,6 +25,9 @@
 import Articles from './Articles.vue'
 import { getRedStatistics, getPostList, postDetailsDelete } from '@/api/community-center/makeSmallFortune'
 import { getUserId } from '@/utils';
+import { addPublishArticleApi } from '../../../api/community-center/makeSmallFortune'
+import { payFn } from '../../../utils'
+import { USER_INFO } from '../../../constant'
 export default {
   name: "MyRelease",
   components: {
@@ -28,10 +38,31 @@ export default {
     return {
       deleteModal: false,
       myRelease: true,
+      reissueShow: false,
+      buttons:[{
+        text: '取消'
+      }, {
+        text: '确定',
+        color: '#586c94'
+      }],
       renderData: [],
       querList: {
         page: 1,
         size: 10,
+      },
+      reissueForm: {
+          publishUserId: '1234',
+          postTitle: '文章标题',
+          postContent: "文章内容",
+          postCategoryId: "1",
+          postType: "1",
+          postCover: "23435576687.png",
+          region: "130100",
+          redPacketInfo: {
+                totalAmount: "",
+                totalPacket: "",
+                link: ""
+              }
       },
       subCategoryList: [
        {name: '审核通过', value: 3},
@@ -116,6 +147,38 @@ export default {
           })
       }
       this.deleteModal = false
+    },
+    reissueText(value) {
+      for(let Key in value) {
+        if (this.reissueForm[Key] && Key !== 'redPacketInfo') {
+            this.reissueForm[Key] = value[Key]
+        }
+      }
+      // console.log(this.reissueForm);
+      this.reissueShow = true
+    },
+    reissueTap(e) {
+      if (e.index == 0) {
+        this.reissueShow = false
+        return uni.showToast({
+              title: '已取消',
+              icon: 'none'
+          })
+      }else {
+        console.log(Number(this.reissueForm.redPacketInfo.totalAmount) < 1);
+        if (Number(this.reissueForm.redPacketInfo.totalAmount) < 1) return this.$showToast('投放金额最低为1元')
+        if (Number(this.reissueForm.redPacketInfo.totalPacket) < 1 || Number(this.reissueForm.redPacketInfo.totalAmount)/ Number(this.reissueForm.redPacketInfo.totalPacket) < 0.1) return this.$showToast('红包平均金额不得少于0.1')
+        uni.showLoading()
+        addPublishArticleApi({ ...this.reissueForm })
+          .then(({ data }) => {
+            uni.hideLoading()
+            payFn({ ...data, orderSn: data.redPacketId }, 8, false)
+          })
+          .catch((e) => {
+            uni.hideLoading()
+          })
+      }
+      console.log(e);
     }
   },
   watch: {},

@@ -1,5 +1,9 @@
 <template>
     <view class="WholehouseCustomization">
+        <view class="backHeader">
+            <image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+            <text class="pageTitle">全屋套餐</text>
+        </view>
         <view class="containerBanner">
             <image class="textImg" src="@/static/images/new-index/taocan/bgText.png"></image>
             <image class="bgImg" src="@/static/images/new-index/taocan/bgBottom.png"></image>
@@ -121,6 +125,9 @@ export default {
             uni.navigateTo({
                  url: '/pages/index/WholehouseCustomization/newDetail/index'
             });
+        },
+        goBack() {
+            uni.navigateBack();
         }
     }
 }
@@ -131,6 +138,29 @@ export default {
     width: 100vw;
     min-height: 100vh;
     background: #F6F6F8;
+    .backHeader {
+        position: relative;
+        width: 750rpx;
+        height: 88rpx;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        .backIcon {
+        width: 60rpx;
+        height: 60rpx;
+        }
+        .pageTitle {
+        font-family: 思源黑体;
+        font-size: 32rpx;
+        font-weight: 500;
+        line-height: 44rpx;
+        letter-spacing: 0.32rpx;
+        color: #222229;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        }
+    }
     .containerBanner {
         position: relative;
         width: 100%;

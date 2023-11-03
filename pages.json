@@ -314,8 +314,7 @@
   "easycom": {
     "autoscan": true,
     "custom": {
-      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
-      "global-loading": "@/components/diyLoading/index.vue"
+      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
     }
   },
   "subPackages": [

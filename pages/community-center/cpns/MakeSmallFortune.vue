@@ -128,6 +128,7 @@ export default {
         background-color: #fff;
         padding: 38upx 0;
         box-sizing: border-box;
+        box-shadow: 0rpx 4rpx 4rpx 0rpx #ccc;
         z-index: 10;
         .nomore {
           font-size: 28upx;
