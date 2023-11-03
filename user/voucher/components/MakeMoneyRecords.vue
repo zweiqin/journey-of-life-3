@@ -192,7 +192,7 @@ export default {
     background-color: #ffffff;
     border-top-left-radius: 20rpx;
     border-top-right-radius: 20rpx;
-    overflow: hidden;
+    overflow: hidden auto;
     padding: 30rpx;
     display: flex;
     flex-direction: column;
@@ -238,7 +238,7 @@ export default {
     }
     .MakeMoneyRecordsList {
         flex: 1;
-        overflow: hidden;
+        overflow: hidden auto;
         .listItem {
             margin-top: 50rpx;
             /* margin: 50rpx 0rpx; */
