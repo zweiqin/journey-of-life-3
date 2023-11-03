@@ -1430,6 +1430,12 @@
 					"style": {
 						"navigationBarTitleText": "购买宝贝"
 					}
+				},
+				{
+					"path": "another-serve/address/index",
+					"style": {
+						"navigationBarTitleText": "地址管理"
+					}
 				}
       ]
     }

@@ -17,7 +17,9 @@
 							v-if="showLogo" style="width: 32upx;height: 32upx;margin-right: 6upx;"
 							src="../../../static/images/new-community/home/tag.png"
 						></image>
-						<view style="flex: 1;margin-left: 5upx;font-size: 32upx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+						<view
+							style="flex: 1;margin-left: 5upx;font-size: 32upx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+						>
 							{{ shopInfo.shopName || shopInfo.chargePersonName || '附近商家' }}
 						</view>
 					</view>
@@ -32,11 +34,9 @@
 						<tui-rate active="#EF530E" :current="shopInfo.score" :size="14" disabled></tui-rate>
 						<text class="rate-text">{{ shopInfo.score }}</text>
 					</view>
-					<view
-						v-if="(bottomType === 'detail') && shopInfo.monthlySales"
-						style="color: #888889;font-size: 24upx;margin-left: 15upx;"
-					>
-						月售{{ shopInfo.monthlySales }}
+					<!-- && shopInfo.monthlySales -->
+					<view v-if="(bottomType === 'detail')" style="color: #888889;font-size: 24upx;margin-left: 15upx;">
+						月售{{ shopInfo.monthlySales || 1 }}
 					</view>
 				</view>
 
@@ -53,10 +53,7 @@
 								{{ item }}
 								</text>
 								</template> -->
-							<text v-if="shopInfo.shopBrief">{{ shopInfo.shopBrief || '--' }}</text>
-							<template v-else>
-								<text>--</text>
-							</template>
+							<text>{{ shopInfo.shopBrief || '--' }}</text>
 						</view>
 						<view v-if="shopInfo.distance" style="margin-left: 6upx;">
 							<tui-icon name="gps" :size="14" color="#888889"></tui-icon>
@@ -76,7 +73,7 @@
 							</text>
 							</view> -->
 						<view
-							v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState"
+							v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState || shopInfo.startTime"
 							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 24upx;color: #c8530a;"
 						>
 							<text v-if="shopInfo.authenType" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;">
@@ -95,12 +92,15 @@
 							>
 								已签约
 							</text>
+							<text v-if="shopInfo.startTime" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;">
+								{{ shopInfo.startTime }}营业
+							</text>
 						</view>
 						<!-- <view v-if="shopInfo.accessNum" style="margin-left: 6upx;">
 							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.accessNum || 0 }}浏览量</text>
 							</view> -->
-						<view v-if="shopInfo.fansNumber" style="margin-left: 6upx;">
-							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.fansNumber || 0 }}粉丝</text>
+						<view style="margin-left: 6upx;">
+							<text style="color: #888889;font-size: 26upx;">{{ shopInfo.fansNumber || '0 ' }}粉丝</text>
 						</view>
 					</view>
 				</view>
@@ -120,22 +120,25 @@
 							{{ item }}
 							</text>
 							</view> -->
-						<view v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState" class="type-list">
-							<text v-if="shopInfo.authenType" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;">
+						<view v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState || shopInfo.startTime" class="type-list">
+							<text v-if="shopInfo.authenType" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
 								<template v-if="shopInfo.authenType === 1">个人</template>
 								<template v-else-if="shopInfo.authenType === 2">个体工商户</template>
 								<template v-else-if="shopInfo.authenType === 3">企业</template>
 								<template v-else-if="shopInfo.authenType === 4">其它组织</template>
 								<template v-else>特殊角色</template>
 							</text>
-							<text v-if="shopInfo.checkState" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;">
+							<text v-if="shopInfo.checkState" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
 								已入驻
 							</text>
 							<text
 								v-if="shopInfo.authenticationState"
-								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #fff1d7;"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;"
 							>
 								已签约
+							</text>
+							<text v-if="shopInfo.startTime" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
+								{{ shopInfo.startTime }}营业
 							</text>
 						</view>
 					</view>
@@ -328,6 +331,8 @@ export default {
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					margin-bottom: 6upx;
+					font-size: 26upx;
+					color: #9E9E9E;
 
 					.item {
 						color: #9E9E9E;
@@ -346,6 +351,8 @@ export default {
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
+					font-size: 24upx;
+					color: #979797;
 
 					.item {
 						color: #9E9E9E;

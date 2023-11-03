@@ -37,7 +37,7 @@
 									src="../../../static/images/new-business/shopCar/selectEmpty.png" class="cart-select-img"
 									@click.stop="handleSelectShop(index, 1)"></image>
 								<view class="shop-name-box  tui-skeleton-fillet"
-									@click="$jump(`${jumpObj.store}?storeId=${item.shopId}`)">
+									@click="go(`${jumpObj.store}?storeId=${item.shopId}`)">
 									<image src="../../../static/images/new-business/shopCar/orderStoreIcon.png" class="shop-img"></image>
 									<text class="shop-name">{{ item.shopName }}</text>
 									<image src="../../../static/images/new-business/shopCar/arrowRight.png" class="arrow-right-img"></image>
@@ -51,7 +51,7 @@
 							</view>
 							<view v-for="(skuItem, cIndex) in dataList[index].skus" class="product-list-box ">
 								<view class="pro-item"
-									@click="$jump(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)">
+									@click="go(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)">
 									<image v-if="skuItem.selected == 1" mode="aspectFill  tui-skeleton-fillet"
 										src="../../../static/images/new-business/shopCar/selectActive.png" class="cart-select-img"
 										@click.stop="handleSelectSku(index, cIndex, 0)"></image>
@@ -128,7 +128,7 @@
 				<image class="emptyCart-img" src="../../../static/images/new-business/shopCar/cartEmpty.png"></image>
 				<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
 				<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
-				<view class="goToShopping" @click="$jumpToTabbar(jumpObj.shopping)">
+				<view class="goToShopping" @click="$switchTab(jumpObj.shopping)">
 					去购物
 				</view>
 			</view>
@@ -148,7 +148,7 @@
 // import HotTemplate from '../../../components/hoteRecommed/index.vue'
 import DeleteModal from './components/DeleteModal'
 import api from '../../../components/canvasShow/config/api'
-import { T_STORAGE_KEY } from '../../../constant'
+import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST } from '../../../constant'
 import { defaultCartList, getCartNumberBySelect, getPriceBySelect } from './cartUtils'
 import lodash from 'lodash'
 let cacheKey = ''
@@ -173,9 +173,9 @@ export default {
 			userInfo: {}, // 用户信息
 			// 跳转对象
 			jumpObj: {
-				store: '/pages_category_page1/store/index',
-				detail: '/pages_category_page1/goodsModule/goodsDetails',
-				shopping: '/pages/tabbar/index/index'
+				store: '/community-center/shop/shop-detail',
+				detail: '/another-tf/another-serve/goodsDetails/index',
+				shopping: '/pages/index/index'
 			},
 			// 底部结算条对象
 			settleAccountsObj: {
@@ -651,8 +651,8 @@ export default {
 
 		async settlementTap() {
 			const { shopList } = await getPriceBySelect(this.dataList)
-			uni.setStorageSync('skuItemDTOList', shopList)
-			this.$jump('/pages_category_page1/orderModule/orderConfirm?type=2')
+			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, shopList)
+			this.go('/another-tf/another-serve/orderConfirm/index?type=2')
 		}
 	}
 }
