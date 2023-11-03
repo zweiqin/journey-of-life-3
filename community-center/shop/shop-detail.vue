@@ -36,7 +36,7 @@
 
 		<view class="brand-pane">
 			<!-- v-if="currentTab === 1" -->
-			<view v-if="currentTab === 999">
+			<view v-if="currentTab === -1">
 				<CanvasPage
 					v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
 					:type-id="3" :shop-id="Number(shopId)"

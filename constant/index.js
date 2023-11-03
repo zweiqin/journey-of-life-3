@@ -1,3 +1,8 @@
+// 另一个团蜂
+export const T_RECEIVE_ITEM = 'T_RECEIVE_ITEM'
+export const T_SKU_ITEM_DTO_LIST = 'T_SKU_ITEM_DTO_LIST'
+export const T_SKU_ITEM_LIST = 'T_SKU_ITEM_LIST'
+
 // 寄件
 export const jiSenderInfo = 'JI_SENDER_INFO'
 export const jiconsigneeInfo = 'JI_CONSIGNEE_INFO'

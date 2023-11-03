@@ -90,7 +90,8 @@ export const cancelShopOrderApi = (data) => AnotherTFRequest('/order/cancel', da
 //  APP立即支付
 export const gotoOrderAppPayApi = (data) => AnotherTFRequest('/order/gotoAppPay', data, 'POST')
 
-// 商城订单-通联H5支付
+// 商城订单
+// 通联H5支付
 export const gotoOrderH5PayApi = (data) => AnotherTFRequest('/order/gotoH5Pay', data, 'POST')
 
 // 小程序支付
@@ -101,4 +102,17 @@ export const payOrderSuccessApi = (data) => AnotherTFRequest('/order/paySuccess'
 
 // 查询花呗手续费配置
 export const getOrderHuabeiConfigApi = (data) => AnotherTFRequest('/order/getHuabeiConfig', data)
+
+// 服务协议-查询分类层级
+export const getQueryDictByNameApi = (data) => AnotherTFRequest('/dict/getByName', data)
+
+// 结算查询
+export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettlement', data, 'POST')
+
+// 提交订单
+export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
+
+// 拼团专区
+// 拼团单结算查询
+export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST')
 
