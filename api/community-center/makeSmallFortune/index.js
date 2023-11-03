@@ -54,3 +54,6 @@ export const redStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redSta
 
 // /dtsPostBbs/postDetailsDelete 删除
 export const postDetailsDelete = (data) => RuanRequest('/dtsPostBbs/postDetailsDelete', data, 'GET')
+
+// /dtsPostBbs/isShop
+export const userIsShop = (data) => RuanRequest('/dtsPostBbs/isShop', data, 'GET')

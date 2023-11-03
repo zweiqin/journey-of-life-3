@@ -53,12 +53,12 @@ export default {
           }
 
           let data = res.data.talentList.filter((item, index) => {
-            if (item.remainingPacket > 0) {
-              this.renderData.push(item)
-            }
 					  return item.remainingPacket <= 0
           })
-          this.renderData = [...this.renderData, ...data]
+          let datas = res.data.talentList.filter((item, index) => {
+					  return item.remainingPacket > 0
+          })
+          this.renderData = [...datas, ...data]
 
           this.$emit('isLoading', false)
 
