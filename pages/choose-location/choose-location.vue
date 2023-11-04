@@ -12,7 +12,7 @@
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
       <text class="current-address-text"> 当前：{{ $store.getters.currentCity ? $store.getters.currentCity : '定位失败，重新定位'
-      }}</text>-1`./`
+      }}</text>
       <view><tui-icon :size="16" color="#000" name="location"></tui-icon>
         <text>重新定位</text>
       </view>
