@@ -14,6 +14,7 @@ export default {
   currentCity: (state) => state.location.currentCity,
   detailAddress: (state) => state.location.detailAddress,
 	obtainLocationCount: (state) => state.location.obtainLocationCount,
+  shopAndBusiness: (state) => state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressText,
 
   // 聊天
   customerServiceInfo: (state) => state.customerService.customerServiceInfo,
