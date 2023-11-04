@@ -2,7 +2,6 @@
 	<view class="content">
 		<!-- 骨架屏 -->
 		<tui-skeleton el-color="#efefef" bg-color="#fff" :loading="loading && isFirstComeIn" :animation="true"></tui-skeleton>
-		<global-loading />
 		<!-- 购物车 -->
 		<view class="tui-skeleton">
 			<view v-if="!isEmpty">
@@ -148,9 +147,9 @@
 // import HotTemplate from '../../../components/hoteRecommed/index.vue'
 import DeleteModal from './components/DeleteModal'
 import api from '../../../components/canvasShow/config/api'
-import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST } from '../../../constant'
+import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST, T_ALL_CART_NUM } from '../../../constant'
 import { defaultCartList, getCartNumberBySelect, getPriceBySelect } from './cartUtils'
-import lodash from 'lodash'
+import lodash from 'lodash-es'
 let cacheKey = ''
 const { request2 } = require('../../../utils/request')
 const API = require('./api')
@@ -215,7 +214,7 @@ export default {
 				this.settleAccountsObj.allNum = this.dataList.length
 				if (this.dataList.length === 0) {
 					this.isEmpty = true
-					uni.setStorageSync('allCartNum', 0)
+					uni.setStorageSync(T_ALL_CART_NUM, 0)
 					uni.removeTabBarBadge({
 						index: 3
 					})

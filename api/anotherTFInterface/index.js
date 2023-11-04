@@ -44,14 +44,31 @@ export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode'
 // 用户扫码绑定
 export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platformInfoCode/saoMaBinding', data, 'POST')
 
+// 我的收藏
 // 取消收藏
 export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data, 'POST')
+// 取消收藏
+export const collectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel', data, 'PUT')
 
 // 收藏商品、店铺
 export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST')
 
+// 购物车
+// 绑定关系
+export const addCartShoppingApi = (data) => AnotherTFRequest('/cart/addCart', data, 'POST')
+
+// 分销中心
 // 验证当前客户是否为分销员
 export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data)
+
+// 绑定关系
+export const bindDistributorSalesCustomerApi = (data) => AnotherTFRequest('/distributor/bind', data, 'POST')
+
+// 分享
+export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data)
+
+// 拼团滚动数据
+export const getBroadCastList = (data) => AnotherTFRequest('/', data)
 
 // 申请分销员
 export const addDistributorApplyApi = (data) => AnotherTFRequest('/distributor/addDistributor', data, 'POST')
@@ -75,8 +92,20 @@ export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/add
 // 小程序客服查询
 export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data)
 
+// 优惠券
 // 领取优惠券
 export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')
+
+// 领取优惠券
+export const updateCouponBuildParam4PlugApi = (data) => AnotherTFRequest('/coupon/buildParam4Plug', data, 'POST')
+
+// 首页广告
+// 成为商家的客户
+export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST')
+
+// 积分签到
+// 积分兑换优惠券
+export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
 
 // 订单相关接口，查询订单列表
 export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data)
@@ -112,7 +141,21 @@ export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettl
 // 提交订单
 export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
 
+// 秒杀专区
+// 提问
+export const addProblemseckillApi = (data) => AnotherTFRequest('/seckill/addProblem', data)
+
 // 拼团专区
 // 拼团单结算查询
 export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST')
+
+// 评价
+// 点赞或取消点赞某个评论
+export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')
+
+// 查询组合套餐
+export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/selectCompose', data)
+
+// 提交订单
+export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/trackReport', data, 'POST')
 

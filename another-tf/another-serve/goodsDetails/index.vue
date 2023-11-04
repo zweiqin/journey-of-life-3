@@ -1,6 +1,5 @@
 <template>
 	<view class="container u-skeleton" @scroll="handlePageScroll">
-		<global-loading />
 		<view class="">
 			<!--  拼团滚动 -->
 			<view class="news-box">
@@ -43,7 +42,10 @@
 			<!-- 发货 -->
 			<view class="express-box flex-items flex-row fs24 u-skeleton-fillet">
 				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
-				<tui-icon v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14" color="#c1c1c1"></tui-icon>
+				<tui-icon
+					v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
+					color="#c1c1c1"
+				></tui-icon>
 				<label v-if="productData.receive && productData.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
 					{{ productData.receive.receiveAdress }}
 				</label>
@@ -121,7 +123,7 @@
 				</view>
 				<view class="inStore-but" @click="handleJumpToStore">
 					<text>去逛逛</text>
-					<tui-icon :size="60" color="#ffebc4" name="arrowright"></tui-icon>
+					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
 				</view>
 			</view>
 			<!-- 详细信息 -->
@@ -143,20 +145,20 @@
 			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 				<view class="btns_container">
 					<view class="btns flex-column-plus" @click="handleJumpToStore">
-						<tui-icon :size="48" color="#333333" name="shop"></tui-icon>
+						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
 					<!-- #ifdef MP-WEIXIN || APP-PLUS || H5 -->
-					<view class="btns flex-column-plus mar-left-10" @click="flyToService">
-						<tui-icon :size="48" color="#333333" name="message"></tui-icon>
+					<view class="btns flex-column-plus mar-left-10" @click="handleFlyToService">
+						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 						<label class="fs22">客服</label>
 					</view>
 					<!-- #endif -->
-					<view class="btns flex-column-plus mar-left-10 flex-items Cart" @click="handleJumpToShopCart">
+					<view class="btns flex-column-plus mar-left-10 flex-items Cart" @click="go('/another-tf/another-serve/shopCar/shopCar')">
 						<view v-if="allCartNum > 0" class="cartAllNum">
 							{{ allCartNum }}
 						</view>
-						<tui-icon :size="48" color="#333333" name="cart"></tui-icon>
+						<tui-icon :size="24" color="#333333" name="cart"></tui-icon>
 						<label class="fs22">购物车</label>
 					</view>
 				</view>
@@ -189,7 +191,7 @@
 				class="returnTop-box flex-items-plus flex-column"
 				:style="{ 'display': returnTopFlag === true ? 'flex' : 'none' }" @click="handleReturnTop"
 			>
-				<tui-icon :size="58" color="#c5aa7b" name="top"></tui-icon>
+				<tui-icon :size="29" color="#c5aa7b" name="top"></tui-icon>
 			</view>
 		</view>
 		<!-- SKU选择器 -->
@@ -204,11 +206,7 @@
 			:current-active="currentActive"
 		></CouponPopup>
 		<!-- 拼单弹框 -->
-		<u-popup
-			v-model="showGroupBuyList" class="popupDiscount" mode="center" border-radius="14"
-			close-icon-pos="top-right"
-			close-icon-size="20"
-		>
+		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
@@ -224,7 +222,7 @@
 								</view>
 							</view>
 							<view v-if="aitem.time > 0" class="rightInfo">
-								<view class="groupBuyBtn" @click="handleGoGroupBooking(aitem.collageId)">
+								<view class="groupBuyBtn" @click.stop="handleGoGroupBooking(aitem.collageId)">
 									和Ta拼
 								</view>
 							</view>
@@ -232,35 +230,29 @@
 					</scroll-view>
 				</view>
 			</view>
-		</u-popup>
+		</tui-popup>
 		<!-- 骨架屏 -->
 		<Skeleton el-color="#efefef" bg-color="#fff" :loading="isFirstComeIn && loading" :animation="true"></Skeleton>
 	</view>
 </template>
 
 <script>
-// import Skeleton from '../../components/Skeleton'
-// import UButton from '../../uview-ui/components/u-button/u-button'
-// import CombinedSales from '@/components/activities/combinedSales'
-// import CouponPopup from '../../components/goodsDetalils/coupon-popup'
-// import { Services } from '../../utils/services'
-// import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
-// import GoodActivityDetail from './components/GoodActivityDetail'
-// import GoodSkuSelect from './components/GoodSkuSelect'
-// import { TimeFormatting } from '../../utils/timeUtil'
-// import USkeleton from '../../uview-ui/components/u-skeleton/u-skeleton'
+import Skeleton from '../../../components/Skeleton'
+import CombinedSales from './components/combinedSales'
+import CouponPopup from './components/coupon-popup'
+import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
+import GoodActivityDetail from './components/GoodActivityDetail'
+import GoodSkuSelect from './components/GoodSkuSelect'
+import { timeFormatting } from '../../../utils'
+import { getProductDetailsByIdApi, bindDistributorSalesCustomerApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
+import { T_ALL_CART_NUM } from '../../../constant'
 
-// import { J_STORAGE_KEY } from '../../config/constant'
-// const NET = require('../../utils/request')
-// const API = require('../../config/api')
 export default {
 	name: 'GoodsDetails',
 	components: {
-		USkeleton,
 		Skeleton,
 		CouponPopup,
 		CombinedSales,
-		UButton,
 		GoodEvaluateAndQuestion,
 		GoodActivityDetail,
 		GoodSkuSelect
@@ -364,7 +356,7 @@ export default {
 		this.handleGetProductDetail()
 		// 绑定分销关系
 		salesId && this.shopId ? this.bindSalesCustomer(salesId, this.shopId) : ''
-		this.allCartNum = uni.getStorageSync('allCartNum')
+		this.allCartNum = uni.getStorageSync(T_ALL_CART_NUM)
 	},
 	onUnload() {
 		// 判断是否要埋点
@@ -372,7 +364,7 @@ export default {
 		if (nowTime - this.pointOption.inTime >= 5000) {
 			// 埋点
 			this.pointOption.data.productIds = this.productId
-			this.$store.dispatch('app/doPointer', this.pointOption.data)
+			addUserTrackReportDoPointerApi(this.pointOption.data)
 		}
 		// 销毁平团倒计时计时器
 		if (this.shopGroupWorkTicker) {
@@ -433,7 +425,7 @@ export default {
 				productId: this.productId,
 				shopGroupWorkId: this.shopGroupWorkId ?? undefined
 			}
-			const res = await NET.request(API.GetBroadCastList, param, 'GET')
+			const res = await getBroadCastList(param)
 			this.broadCastList = res.data
 		},
 
@@ -488,16 +480,8 @@ export default {
 				this.shopGroupWorkTicker = null
 				this.handleGetProductDetail()
 			}
-			const timeFormatting = TimeFormatting(remainMillSecs / 1000)
-			return `${timeFormatting.hour}:${timeFormatting.min}:${timeFormatting.sec}`
-		},
-
-		/**
-		 * 跳转到购物车
-		 */
-
-		handleJumpToShopCart() {
-			this.$jumpToTabbar('../../pages/tabbar/cart/index')
+			const timeFormat = timeFormatting(remainMillSecs / 1000)
+			return `${timeFormat.hour}:${timeFormat.min}:${timeFormat.sec}`
 		},
 
 		/**
@@ -505,7 +489,7 @@ export default {
 		 */
 
 		handleJumpToStore() {
-			this.$jump(`../store/index?storeId=${this.shopId}`)
+			this.go(`/community-center/shop/shop-detail?shopId=${this.shopId}`)
 		},
 
 		/**
@@ -566,7 +550,7 @@ export default {
 					skuId: this.paramSkuId,
 					terminal: 1
 				}
-				const res = await NET.request(API.QueryProductDetail, postData, 'GET')
+				const res = await getProductDetailsByIdApi(postData)
 				this.isFirstComeIn = false
 				this.loading = false
 				this.productData = res.data
@@ -630,19 +614,7 @@ export default {
 
 		bindSalesCustomer(salesId, storeId) {
 			// 如果已登录，静默绑定客户关系，否则跳转到登录页面
-			if (!uni.getStorageSync(J_STORAGE_KEY)) {
-				uni.setStorageSync('salesId', salesId)
-				uni.setStorageSync('shopId', storeId)
-				uni.navigateTo({
-					url: '../../pages_category_page2/userModule/login'
-				})
-				return
-			}
-			NET.request(API.BindSalesCustomer, {
-				shopId: storeId,
-				distributorId: salesId
-			}, 'POST').then((res) => {
-			})
+			bindDistributorSalesCustomerApi({ shopId: storeId, distributorId: salesId })
 		},
 
 		/**
@@ -665,8 +637,57 @@ export default {
 		 * @return {Promise<void>}
 		 */
 
-		async flyToService() {
-			(await Services(this.shopId)).flyToService()
+		async handleFlyToService() {
+			let corpId = null
+			let serviceURL = null
+			uni.showLoading({
+				title: '加载中...'
+			})
+			try {
+				const res = await getCustomerServiceAppletKfApi({ id: this.shopId })
+				if (res.code === '' && res.data.corpId && res.data.url) {
+					corpId = res.data.corpId
+					serviceURL = res.data.url
+				}
+			} finally {
+				uni.hideLoading()
+			}
+			if (!serviceURL || !corpId) {
+				return uni.showToast({
+					icon: 'none',
+					title: '暂无客服~'
+				})
+			}
+			// #ifdef MP-WEIXIN
+			wx.openCustomerServiceChat({
+				extInfo: { url: serviceURL },
+				corpId
+			})
+			// #endif
+			// #ifdef APP
+			try {
+				let wechatServices = null
+				plus.share.getServices((res) => {
+					wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
+					if (wechatServices) {
+						wechatServices.openCustomerServiceChat({
+							corpid: corpId,
+							url: serviceURL
+						}, (success) => { }, (err) => { })
+					} else {
+						plus.nativeUI.alert('当前环境不支持微信操作!')
+					}
+				}, (err) => {
+					uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+				})
+			} catch (err) {
+				uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+			}
+			// #endif
+			// #ifdef H5
+			// window.open(serviceURL) safari浏览器不支持window.open
+			window.location.href = serviceURL
+			// #endif
 		}
 
 	}
@@ -679,10 +700,7 @@ export default {
 }
 </style>
 
-<style
-    scoped
-    lang="scss"
->
+<style lang="less" scoped>
 .page {
 	background-color: #F7F7F7;
 }
@@ -922,6 +940,7 @@ export default {
 		.inStore-but {
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			width: 140rpx;
 			height: 60rpx;
 			line-height: 60rpx;

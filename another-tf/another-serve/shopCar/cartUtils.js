@@ -1,6 +1,7 @@
 const NET = require('../../../utils/request')
 const API = require('./api')
 import { showLoading, hideLoading } from '@/utils/plugIn/globalLoading.js'
+import { T_ALL_CART_NUM } from '../../../constant'
 
 /**
  * 根据选中的购物车数据获取价格和过滤后的用于结算购物车的post数据
@@ -81,7 +82,7 @@ export async function getCartNumberBySelect(dataList) {
 		}
 	}
 	// 更新缓存
-	uni.setStorageSync('allCartNum', allNumber)
+	uni.setStorageSync(T_ALL_CART_NUM, allNumber)
 	// 设置导航条
 	if (allNumber > 0) {
 		uni.setTabBarBadge({

@@ -152,7 +152,13 @@
                 "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             }
         },
-        "plugins" : {}
+        "plugins" : {
+					// 卡券
+					"sendCoupon" : {
+							"version" : "latest",
+							"provider" : "wx987654321abcdefg"
+					}
+				}
     },
     "mp-alipay" : {
         "usingComponents" : true

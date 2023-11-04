@@ -2,6 +2,7 @@
 export const T_RECEIVE_ITEM = 'T_RECEIVE_ITEM'
 export const T_SKU_ITEM_DTO_LIST = 'T_SKU_ITEM_DTO_LIST'
 export const T_SKU_ITEM_LIST = 'T_SKU_ITEM_LIST'
+export const T_ALL_CART_NUM = 'T_ALL_CART_NUM'
 
 // 寄件
 export const jiSenderInfo = 'JI_SENDER_INFO'
