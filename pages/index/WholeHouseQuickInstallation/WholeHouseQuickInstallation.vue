@@ -1,5 +1,9 @@
 <template>
   <view class="whole-house-quick-installation-container">
+    <view class="backHeader">
+      <image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+      <text class="pageTitle">全屋快装</text>
+    </view>
     <view class="banner-wrapper">
       <image class="banner-img" src="@/static/images/new-index/kuaizhuang/kuaizhuang-banner.png"></image>
     </view>
@@ -199,6 +203,11 @@ export default {
       isOne: false
     }
   },
+  methods: {
+    goBack() {
+      uni.navigateBack();
+    }
+  },
   computed: {
 
   }
@@ -314,6 +323,29 @@ export default {
   background: linear-gradient(180deg, #f8fcff 0%, #edf3ff 20%, #f6f6f8 72%);
   box-sizing: border-box;
   padding-bottom: 40rpx;
+  .backHeader {
+    position: relative;
+    width: 750rpx;
+    height: 88rpx;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    .backIcon {
+      width: 60rpx;
+      height: 60rpx;
+    }
+    .pageTitle {
+      font-family: 思源黑体;
+      font-size: 32rpx;
+      font-weight: 500;
+      line-height: 44rpx;
+      letter-spacing: 0.32rpx;
+      color: #222229;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 
   .banner-wrapper {
     width: 100%;

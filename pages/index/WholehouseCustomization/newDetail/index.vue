@@ -1,5 +1,9 @@
 <template>
     <view class="detailsBox">
+        <view class="backHeader">
+            <image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+            <text class="pageTitle">全屋快装</text>
+        </view>
         <view class="detailBanner">
             <image class="BannerImg" src="@/static/images/new-index/taocan/bigBanner.png"></image>
         </view>
@@ -82,6 +86,11 @@ export default {
         return {
             amount: 0
         }
+    },
+    methods: {
+        goBack() {
+            uni.navigateBack();
+        }
     }
 }
 </script>
@@ -114,11 +123,34 @@ export default {
     background: linear-gradient(to right, #0e1e37, #fff);
   }
 }
-.detailsBox {
-    width: 100vw;
-    min-height: 100vh;
-    background: #F6F6F8;
-    padding-bottom: 165rpx;
+    .detailsBox {
+        width: 100vw;
+        min-height: 100vh;
+        background: #F6F6F8;
+        padding-bottom: 165rpx;
+        .backHeader {
+            position: relative;
+            width: 750rpx;
+            height: 88rpx;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+        .backIcon {
+            width: 60rpx;
+            height: 60rpx;
+        }
+        .pageTitle {
+            font-family: 思源黑体;
+            font-size: 32rpx;
+            font-weight: 500;
+            line-height: 44rpx;
+            letter-spacing: 0.32rpx;
+            color: #222229;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
     .detailBanner {
         width: 100%;
         height: 533rpx;

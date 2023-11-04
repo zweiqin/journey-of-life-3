@@ -56,12 +56,14 @@
 						:src="common.seamingImgUrl(brandDetail.shopLogo)"
 					></tui-lazyload-img>
 				</swiper-item>
-				<swiper-item v-if="brandDetail.advertisement">
-					<tui-lazyload-img
-						mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
-						:src="common.seamingImgUrl(brandDetail.advertisement)"
-					></tui-lazyload-img>
-				</swiper-item>
+				<template v-if="brandDetail.advertisement">
+					<swiper-item v-for="(item, index) in brandDetail.advertisement.split(',')" :key="index">
+						<tui-lazyload-img
+							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
+							:src="common.seamingImgUrl(item)"
+						></tui-lazyload-img>
+					</swiper-item>
+				</template>
 			</swiper>
 		</view>
 		<!-- <scroll-view v-if="brandDetail.bgUrl" scroll-x="true">

@@ -8,7 +8,7 @@
 			</view>
 			<view class="LeftInformation">
 				<view class="title"  @click="gotoArticleDetails">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
-				<view class="timer">发布者：团峰科技</view>
+				<view class="timer">发布者：{{ datas.username || '团峰科技' }}</view>
 				<view class="TheReader">
 					<image v-for="(item, index) in datas.already.slice(0,3)" :key="index" :src="item.imgUrl" class="ReaderAvatar" :class="{ more: index > 0, moremore: index > 1 }"></image>
 					<text class="ReaderNumber">已有{{ datas.redPacketInfo.totalPacket - datas.redPacketInfo.remainingPacket || 0 }}+人领取</text>
@@ -22,11 +22,14 @@
             最高奖励
           </view>
           <span class="maxPriceNumber">
-                可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
+            可获取{{ datas.redPacketInfo.totalAmount || Math.ceil(Math.random()*100 + 20) }}元
           </span>
         </view>
-        <view class="ClicTokDetails deletes" v-if="redirection" @click="deleteRedText(datas.postId)">
+        <!-- <view class="ClicTokDetails deletes" v-if="redirection" @click="deleteRedText(datas.postId)">
           删除文章
+        </view> -->
+        <view class="ClicTokDetails reissue" v-if="redirection" @click="reissue(datas)">
+          重新发布
         </view>
         <view class="ClicTokDetails" v-if="redirection" @click="redirection(datas.postId)">
           编辑文章
@@ -86,6 +89,19 @@ export default {
 		},
     deleteRedText(ID) {
       this.$emit("deleteText", ID)
+    },
+    reissue(value) {
+      // console.log(this.datas)
+      this.$emit('reissueText', this.datas)
+      // uni.showLoading()
+			// addPublishArticleApi({ ...this.formData, region: this.region, redPacketInfo: this.redPacketInfo })
+      // .then(({ data }) => {
+      //   uni.hideLoading()
+      //   payFn({ ...data, orderSn: data.redPacketId }, 8, false)
+      // })
+      // .catch((e) => {
+      //   uni.hideLoading()
+      // })
     }
 	}
 }
@@ -95,8 +111,15 @@ export default {
 .deletes {
   position: absolute;
   top: -60rpx;
-  right: 30rpx;
+  right: 10rpx;
   background-color: #ff0000 !important;
+  color: #fff !important;
+}
+.reissue {
+  position: absolute;
+  top: -60rpx;
+  right: 10rpx;
+  background-color: #0073ffd4  !important;
   color: #fff !important;
 }
 .ArticlesItem {
@@ -112,8 +135,8 @@ export default {
     .ArticlesCoverSheetBox {
       position: relative;
           .ArticlesCoverSheet {
-            width: 148rpx;
-            height: 155rpx;
+            width: 170rpx;
+            height: 172rpx;
             border-radius: 10rpx;
           }
           .overPng {
@@ -129,21 +152,21 @@ export default {
       margin-left: 20rpx;
       .title {
         min-width: 463rpx;
-        max-width: 463rpx;
+        max-width: 503rpx;
         white-space:nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 32rpx;
+        font-size: 34rpx;
         font-weight: 600;
         line-height: 52rpx;
         color: #222229;
       }
       .timer {
-        font-size: 24rpx;
+        font-size: 26rpx;
         font-weight: normal;
         line-height: normal;
         color: #888889;
-        margin-top: 5rpx;
+        margin-top: 10rpx;
         margin-bottom: 20rpx;
       }
       .TheReader {
@@ -151,8 +174,8 @@ export default {
         display: flex;
         align-items: center;
         .ReaderAvatar {
-          width: 34rpx;
-          height: 34rpx;
+          width: 36rpx;
+          height: 36rpx;
           border-radius: 50%;
         }
         .more {
@@ -173,14 +196,14 @@ export default {
 
   .ArticlesItemTBottom {
     position: relative;
-    margin-top: 10rpx;
+    margin-top: 20rpx;
     width: 100%;
     height: 50rpx;
     display: flex;
     .maxPrice {
       display: flex;
       position: relative;
-      margin-left: 158rpx;
+      margin-left: 178rpx;
       .maxText {
         width: 132rpx;
         height: 48rpx;

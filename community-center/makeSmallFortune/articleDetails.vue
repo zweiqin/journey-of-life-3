@@ -18,8 +18,8 @@
             </view> -->
         </view>
         <view class="PreviewItem" v-for="(item, index) in PreviewData" :key="index">
-            <view v-if="item.text" class="content">
-                {{ item.text }}
+            <view v-if="item.text" class="content" v-html="item.text">
+                <!-- {{ item.text }} -->
             </view>
             <view class="images" v-if="item.imgUrl">
                 <img class="imageItem" :src="item.imgUrl" />
@@ -111,6 +111,10 @@ export default {
             this.textData = res.data
             this.formData.redPacketId = res.data.redPacketInfo.redPacketId
             this.PreviewData = JSON.parse(this.textData.postContent)
+            this.PreviewData.forEach((item, index) => {
+                item.text = item.text.replace(/\n|\r/g, "<br/>&nbsp;&nbsp;&nbsp;&nbsp;")
+            })
+            // console.log(this.PreviewData);
             lookPostRed({
                 redPacketId: this.formData.redPacketId,
                 uid: this.formData.uid,

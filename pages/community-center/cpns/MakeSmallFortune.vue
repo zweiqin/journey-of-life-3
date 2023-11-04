@@ -10,9 +10,9 @@
           暂时没有人发布文章~
         </view>
         <Articles v-for="(item, index) in renderData" :key="index" :datas="item"></Articles>
-        <!-- <button class="Release" @click="go('/community-center/makeSmallFortune/release')">
+        <button class="Release" @click="go('/community-center/makeSmallFortune/release')">
           发布
-        </button> -->
+        </button>
         <view class="more" @click="go('/community-center/makeSmallFortune/index')">
           <button class="uni-btn">
             查看更多
@@ -128,6 +128,7 @@ export default {
         background-color: #fff;
         padding: 38upx 0;
         box-sizing: border-box;
+        box-shadow: 0rpx 4rpx 4rpx 0rpx #ccc;
         z-index: 10;
         .nomore {
           font-size: 28upx;

@@ -77,13 +77,21 @@
 					>
 					</tui-input>
 				</view>
+				<!-- <view class="selectGoods" style="padding: 0rpx 30rpx;">
+					<tui-input
+						v-model="redPacketInfo.link" label="商品广告选择" placeholder="请选择需要展示的商品" size="30"
+						placeholder-style="font-size: 30upx;" background-color="transparent"
+						disabled
+					>
+					</tui-input>
+				</view> -->
 			</view>
 		</view>
 
 		<view
 			style="position: fixed;bottom: 0;left: 0;z-index: 2;width: 100%;padding: 10upx 0 0;background-color: #f6f6f8;box-sizing: border-box;"
 		>
-			<view style="background-color: #ffffff;padding: 20upx 26upx 32upx;">
+			<view style="background-color: #ffffff;">
 				<tui-button
 					type="danger" width="100%" height="92rpx" style="background: #ff380c!important;border-radius: 16upx;"
 					@click="handleRelease"
@@ -106,6 +114,10 @@ export default {
 		formData: {
 			type: Object,
 			required: true
+		},
+		userShopInfo: {
+			type: Object,
+			default: null
 		}
 	},
 	data() {
@@ -159,6 +171,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.selectGoods:active {
+	box-sizing: border-box;
+	background-color: aqua;
+	display: flex;
+	align-items: center;
+	padding: 20upx 26upx 32upx;
+}
 .RewardPage {
 	width: 100vw;
 	min-height: 100vh;

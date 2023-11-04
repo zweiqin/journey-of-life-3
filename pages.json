@@ -320,8 +320,7 @@
   "easycom": {
     "autoscan": true,
     "custom": {
-      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
-      "global-loading": "@/components/diyLoading/index.vue"
+      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
     }
   },
   "subPackages": [
@@ -1414,30 +1413,36 @@
             "navigationBarTitleText": "订单详情"
           }
         },
-        {
-          "path": "another-serve/evaluate/index",
-          "style": {
-            "navigationBarTitleText": "评价"
-          }
-        },
-        {
-          "path": "another-serve/addEvaluate/index",
-          "style": {
-            "navigationBarTitleText": "追加评价"
-          }
-        },
-        {
-          "path": "another-serve/paySuccessful/index",
-          "style": {
-            "navigationBarTitleText": "支付成功"
-          }
-        },
-        {
-          "path": "another-serve/orderConfirm/index",
-          "style": {
-            "navigationBarTitleText": "购买宝贝"
-          }
-        }
+				{
+					"path": "another-serve/evaluate/index",
+					"style": {
+						"navigationBarTitleText": "评价"
+					}
+				},
+				{
+					"path": "another-serve/addEvaluate/index",
+					"style": {
+						"navigationBarTitleText": "追加评价"
+					}
+				},
+				{
+					"path": "another-serve/paySuccessful/index",
+					"style": {
+						"navigationBarTitleText": "支付成功"
+					}
+				},
+				{
+					"path": "another-serve/orderConfirm/index",
+					"style": {
+						"navigationBarTitleText": "购买宝贝"
+					}
+				},
+				{
+					"path": "another-serve/address/index",
+					"style": {
+						"navigationBarTitleText": "地址管理"
+					}
+				}
       ]
     }
   ],

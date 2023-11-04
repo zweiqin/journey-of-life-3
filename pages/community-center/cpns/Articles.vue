@@ -88,8 +88,8 @@ export default {
     .ArticlesCoverSheetBox {
       position: relative;
           .ArticlesCoverSheet {
-            width: 148rpx;
-            height: 155rpx;
+            width: 170rpx;
+            height: 172rpx;
             border-radius: 10rpx;
           }
           .overPng {
@@ -109,17 +109,17 @@ export default {
         white-space:nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 32rpx;
+        font-size: 34rpx;
         font-weight: 600;
         line-height: 52rpx;
         color: #222229;
       }
       .timer {
-        font-size: 24rpx;
+        font-size: 26rpx;
         font-weight: normal;
         line-height: normal;
         color: #888889;
-        margin-top: 5rpx;
+        margin-top: 10rpx;
         margin-bottom: 20rpx;
       }
       .TheReader {
@@ -127,8 +127,8 @@ export default {
         display: flex;
         align-items: center;
         .ReaderAvatar {
-          width: 42rpx;
-          height: 42rpx;
+          width: 36rpx;
+          height: 36rpx;
           border-radius: 50%;
         }
         .more {
@@ -146,16 +146,17 @@ export default {
       }
     }
   }
-  
+
   .ArticlesItemTBottom {
-    margin-top: 10rpx;
+    position: relative;
+    margin-top: 20rpx;
     width: 100%;
     height: 50rpx;
     display: flex;
     .maxPrice {
       display: flex;
       position: relative;
-      margin-left: 158rpx;
+      margin-left: 178rpx;
       .maxText {
         width: 132rpx;
         height: 48rpx;
@@ -167,7 +168,7 @@ export default {
         font-weight: normal;
         color: #FFFFFF;
         z-index: 1;
-      } 
+      }
       .maxPriceNumber {
         box-sizing: border-box;
         z-index: 0;

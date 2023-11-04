@@ -2,10 +2,13 @@
     <view class="container">
         <swiper class="swiper" :current="current" :disable-touch="true" duration="200" :autoplay="false">
             <swiper-item>
+                <!-- 发布页 -->
                 <EditingPage @checkoutCurrent="checkoutCurrent" :formData="formData"></EditingPage>
             </swiper-item>
             <swiper-item>
-                <RewardPage v-if="isTesps" :formData="formData" @back="() => current = 0"></RewardPage>
+                <!-- 选择红包页 -->
+                <RewardPage :userShopInfo="userShopInfo" v-if="isTesps" :formData="formData" @back="() => current = 0"></RewardPage>
+                <!-- 预览页 -->
                 <Preview :textData="formData" v-else @checkoutCurrent="checkoutCurrent"></Preview>
             </swiper-item>
         </swiper>
@@ -17,6 +20,7 @@ import EditingPage from './components/EditingPage.vue'
 import RewardPage from './components/RewardPage.vue'
 import Preview from './components/Preview.vue'
 import { getUserId } from '@/utils';
+import { userIsShop } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'release',
     components: {
@@ -27,9 +31,18 @@ export default {
     onLoad() {
         this.region = uni.getStorageSync('ADDRES_REGION')
         this.formData.publishUserId = getUserId();
+        // userIsShop({
+        //     phone: uni.getStorageSync('user_INFO').phone
+        // }).then(res => {
+        //     this.userShopInfo = res
+        //     // console.log(res);
+        // }).catch(err => {
+        //     console.log(err);
+        // })
     },
     data() {
         return {
+            userShopInfo: null,
             current: 0,
             isTesps: true,
             formData: {

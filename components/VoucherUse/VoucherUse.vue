@@ -1,0 +1,127 @@
+<template>
+	<view>
+		<view class="line-pane" @click="drawerVisible = true">
+			<view style="font-size: 28upx;" class="title">代金券</view>
+			<view style="display: flex;align-items: center;">
+				<view class="desc" style="color: #999999">{{ voucherName }}</view>
+				<tui-icon name="arrowright" size="22" color="#979797" style="padding: 2upx 0 2upx 8upx;"></tui-icon>
+			</view>
+		</view>
+		<tui-drawer mode="bottom" :visible="drawerVisible" @close="drawerVisible = false">
+			<view style="height: 55vh;padding: 20upx;overflow-y: auto;">
+				<view v-if="voucherList && voucherList.length">
+					<view style="text-align: right;">
+						<tui-radio-group :value="String(voucherSelected)" style="" @change="handleRadioChange">
+							<tui-label>
+								<tui-list-cell padding="16upx">
+									<view>
+										<text style="padding-right: 10upx;">不使用</text>
+										<tui-radio value="0" color="#e25531" border-color="#999"></tui-radio>
+									</view>
+								</tui-list-cell>
+							</tui-label>
+						</tui-radio-group>
+
+						<!-- <text>不使用</text>
+							<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+							</tui-radio> -->
+					</view>
+					<view>
+						<view v-for="item in voucherList" :key="item.id" class="item">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;margin: 20upx;border: 1upx solid #b1b0b0;border-radius: 12upx;">
+								<view style="flex: 1;">
+									<view style="display: flex;justify-content: space-between;">
+										<text>{{ item.voucherName }}</text>
+										<text style="padding-right: 50upx;color: #b1b0b0;">{{ item.ratio }} : 1</text>
+									</view>
+									<view>{{ item.desc }}</view>
+								</view>
+								<tui-button
+									type="warning" width="120rpx" height="50rpx" shape="circle"
+									:disabled="item.id === voucherSelected" @click="handleChooseVoucher(item)"
+								>
+									选择
+								</tui-button>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else>
+					<tui-no-data>暂无代金券</tui-no-data>
+				</view>
+			</view>
+		</tui-drawer>
+	</view>
+</template>
+
+<script>
+
+export default {
+	name: 'CouponUse',
+	props: {
+		voucherList: {
+			type: Array,
+			default: () => []
+		}
+	},
+	data() {
+		return {
+			drawerVisible: false,
+			voucherName: '暂无代金券可用',
+			voucherSelected: 0
+		}
+	},
+	watch: {
+		voucherList: {
+			handler(newVal) {
+				if (newVal && newVal.length && !this.voucherSelected) {
+					this.voucherName = '不使用'
+					this.voucherSelected = 0
+				} else if (!newVal.length) {
+					this.voucherName = '暂无代金券可用'
+					this.voucherSelected = 0
+				}
+			},
+			immediate: true,
+			deep: true
+		}
+	},
+	methods: {
+		handleReset() {
+			this.voucherName = '不使用'
+			this.voucherSelected = 0
+			this.drawerVisible = false
+		},
+		handleRadioChange(e) {
+			console.log(e)
+			this.voucherName = '不使用'
+			if (this.voucherSelected !== Number(e.detail.value)) {
+				this.voucherSelected = Number(e.detail.value)
+				this.$emit('choose', { id: this.voucherSelected })
+			}
+			this.drawerVisible = false
+		},
+		handleChooseVoucher(item) {
+			console.log(item)
+			this.voucherName = item.voucherName
+			this.voucherSelected = item.id
+			this.$emit('choose', { id: this.voucherSelected })
+			this.drawerVisible = false
+		}
+	}
+}
+</script>
+
+<style lang="scss" scoped>
+.line-pane {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 100upx;
+	margin: 20upx 0;
+	padding: 20upx 18upx;
+	background-color: #fff;
+
+}
+</style>
