@@ -11,9 +11,9 @@
       <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">搜索</button>
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
-      <text class="current-address-text"> 当前：{{ $store.getters.currentCity ? $store.getters.currentCity : '定位失败，重新定位' }}</text>
-      <view
-        ><tui-icon :size="16" color="#000" name="location"></tui-icon>
+      <text class="current-address-text"> 当前：{{ $store.getters.currentCity ? $store.getters.currentCity : '定位失败，重新定位'
+      }}</text>
+      <view><tui-icon :size="16" color="#000" name="location"></tui-icon>
         <text>重新定位</text>
       </view>
     </view>
@@ -24,25 +24,36 @@
       <tui-grid unlined>
         <block v-for="(item, index) in hotCities" :key="index">
           <tui-grid-item :cell="3" @click="confirmChooseAddress(item, true)">
-            <text class="tui-grid-label">{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city }}</text>
+            <text class="tui-grid-label">{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city
+            }}</text>
           </tui-grid-item>
         </block>
       </tui-grid>
     </view>
 
     <!-- tabs 标签页 -->
-    <tui-tabs :tabs="tabs" selectedColor="#e95d20" sliderBgColor="#e95d20" itemWidth="30%" :currentTab="currentTab" @change="handleChangeTab"></tui-tabs>
+    <tui-tabs :tabs="tabs" selectedColor="#e95d20" sliderBgColor="#e95d20" itemWidth="30%" :currentTab="currentTab"
+      @change="handleChangeTab"></tui-tabs>
 
     <!-- 标签页 -->
     <view class="wrapper-container" v-if="cityList.length">
       <swiper disable-touch @change="handleChangeSwiper" :current="currentTab" class="swiper">
         <swiper-item class="" item-id="">
           <view class="address-list-wrapper">
-            <tui-index-list activeKeyColor="#e95d20" activeColor="#e95d20" activeKeyBackground="#fff" :list-data="cityList">
+            <tui-index-list activeKeyColor="#e95d20" activeColor="#e95d20" activeKeyBackground="#fff"
+              :list-data="cityList">
               <template v-slot:item="{ entity }">
                 <tui-list-cell padding="16rpx 30rpx" v-for="(item, index) in entity" :key="index">
-                  <view class="tui-list__item" @click="handleChooseCity(item)">
+                  <view class="tui-list__item"
+                    style="display: flex; align-items: center; justify-content: space-between; padding-right: 40upx;"
+                    @click="handleChooseCity(item)">
                     <view :id="'item' + item.name" class="tui-name">{{ item.name }}</view>
+                    <view class="button-wrapper" style="display: flex;" v-if="isUnLimit">
+                      <button @click.stop="handleChooseCurrentAddress(item, 'city')" class="uni-btn"
+                        style="padding: 10upx 20upx; background-color: #f3f3f3; color: #3d3d3d;">确定</button>
+                      <button @click.stop="handleChooseCity(item)" class="uni-btn"
+                        style="padding: 10upx 20upx; background-color: #f3f3f3; color: #3d3d3d;">选择区/县</button>
+                    </view>
                   </view>
                 </tui-list-cell>
               </template>
@@ -52,20 +63,32 @@
 
         <swiper-item>
           <view class="choose-cities">
-            <tui-grid unlined>
+            <tui-grid unlined v-if="!isUnLimit">
               <block v-for="(item, index) in currentDistinguishData" :key="index">
-                <tui-grid-item
-                  class="grid-item"
-                  :class="{
-                    active: tabs[1].name === item.name.slice(0, 3) + '...'
-                  }"
-                  :cell="3"
-                  @click="handleChooseTown(item)"
-                >
+                <tui-grid-item class="grid-item" :class="{
+                  active: tabs[1].name === item.name.slice(0, 3) + '...'
+                }" :cell="3" @click="handleChooseTown(item)">
                   <text class="tui-grid-label">{{ item.name }}</text>
                 </tui-grid-item>
               </block>
             </tui-grid>
+
+            <view v-else>
+              <tui-list-cell padding="16rpx 30rpx" v-for="(item, index) in currentDistinguishData" :key="index">
+                <view class="tui-list__item"
+                  style="display: flex; align-items: center; justify-content: space-between; padding-right: 40upx;"
+                  @click="handleChooseTown(item)">
+                  <view style="width: 340upx; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                    :id="'item' + item.name" class="tui-name">{{ item.name }}</view>
+                  <view class="button-wrapper" style="display: flex;" v-if="isUnLimit">
+                    <button @click.stop="handleChooseCurrentAddress(item, 'distinguish')" class="uni-btn"
+                      style="padding: 10upx 20upx; background-color: #f3f3f3; color: #3d3d3d;">确定</button>
+                    <button @click.stop="handleChooseTown(item)" class="uni-btn"
+                      style="padding: 10upx 20upx; background-color: #f3f3f3; color: #3d3d3d;">选镇/街道</button>
+                  </view>
+                </view>
+              </tui-list-cell>
+            </view>
           </view>
         </swiper-item>
 
@@ -85,7 +108,8 @@
 
     <view class="no-data" v-else> 暂无数据~ </view>
 
-    <tui-popup :duration="500" :modeClass="['fade-in']" :styles="styles" :show="showAuthPopupVisible" @click="showAuthPopupVisible = false">
+    <tui-popup :duration="500" :modeClass="['fade-in']" :styles="styles" :show="showAuthPopupVisible"
+      @click="showAuthPopupVisible = false">
       <view class="address-text">
         <tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
         "团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
@@ -107,6 +131,7 @@ export default {
       searchValue: '',
       isShowLoading: true,
       showAuthPopupVisible: false,
+      isUnLimit: false, // 是否不限制选择层级
       styles: {
         position: 'fixed',
         bottom: 0,
@@ -138,7 +163,9 @@ export default {
       allCityData: {},
       hotCities: Object.freeze(hotCities),
       backUrl: null,
-      eventName: ''
+      eventName: '',
+      clickNum: 0,
+      isDoubleClickTimer: null
     };
   },
   methods: {
@@ -198,6 +225,53 @@ export default {
       // this.$store.commit('location/CHANGE_CURRENT_CITY', cityName)
       // this.handleBack()
     },
+
+
+    // 直接选择当前地址
+    async handleChooseCurrentAddress(chooseAddressInfo, type) {
+      const dispatchData = {
+        city: '',
+        distinguish: '',
+        town: '',
+        areaText: "",
+        currentShopAndBusinessLocation: ''
+      }
+      if (type === 'city') {
+        dispatchData.city = chooseAddressInfo.name
+        dispatchData.areaText = chooseAddressInfo.name
+        dispatchData.currentShopAndBusinessLocation = chooseAddressInfo.name
+      } else if (type === 'distinguish') {
+        dispatchData.city = this.tabs[0].select
+        dispatchData.distinguish = chooseAddressInfo.name
+        dispatchData.areaText = this.tabs[0].select + chooseAddressInfo.name
+        dispatchData.currentShopAndBusinessLocation = chooseAddressInfo.name
+      }
+
+      try {
+        uni.showLoading()
+        await this.$store.dispatch('location/getDetailAddressForShopAndBusiness', dispatchData)
+        this.ttoast('修改成功');
+        setTimeout(() => {
+          if (this.backUrl) {
+            uni.redirectTo({
+              url: this.backUrl
+            });
+          } else {
+            this.handleBack('success');
+          }
+        }, 1000);
+      } finally {
+        uni.hideLoading();
+      }
+    },
+
+    // 重置timer
+    resetTimer() {
+      clearTimeout(this.isDoubleClickTimer)
+      this.isDoubleClickTimer = null
+      this.clickNum = 0
+    },
+
 
     // 滑动swiper
     handleChangeSwiper(e) {
@@ -280,7 +354,7 @@ export default {
           }
         });
       }
-      uni.hideLoading();
+      uni.hideLoading(); 
       this.ttoast('修改成功');
       setTimeout(() => {
         if (this.backUrl) {
@@ -291,7 +365,7 @@ export default {
           this.handleBack('success');
         }
       }, 1000);
-    }
+    },
   },
 
   mounted() {
@@ -301,6 +375,7 @@ export default {
   onLoad(params) {
     this.eventName = params.eventName || ''
     const backUrl = params.backUrl;
+    this.isUnLimit = params.isUnLimit === 'true'
     if (backUrl) {
       this.backUrl = backUrl.replaceAll('_', '?').replaceAll('|', '/');
     }

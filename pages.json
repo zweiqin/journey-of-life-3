@@ -54,6 +54,12 @@
       }
     },
     {
+      "path": "pages/index/BrandFactory/BrandFactory",
+      "style": {
+        "navigationBarTitleText": "品牌工厂"
+      }
+    },
+    {
       "path": "pages/pre-order/pre-order",
       "style": {
         "usingComponents": {
@@ -250,7 +256,7 @@
     {
       "path": "pages/hot/hot",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "爆款专区",
         "enablePullDownRefresh": false
       }
     },
@@ -856,7 +862,8 @@
           "path": "sever/activityCenter/index",
           "style": {
             "navigationBarTitleText": "活动中心",
-            "onReachBottomDistance": 0
+            "onReachBottomDistance": 0,
+            "enablePullDownRefresh": true
           }
         },
         {
@@ -1322,18 +1329,18 @@
             "navigationBarTitleText": "购物车"
           }
         },
-				{
-					"path": "another-serve/goodsList/index",
-					"style": {
-						"navigationBarTitleText": "商品列表"
-					}
-				},
-				{
-					"path": "another-serve/canvasGoods/index",
-					"style": {
-						"navigationBarTitleText": "商品列表"
-					}
-				},
+        {
+          "path": "another-serve/goodsList/index",
+          "style": {
+            "navigationBarTitleText": "商品列表"
+          }
+        },
+        {
+          "path": "another-serve/canvasGoods/index",
+          "style": {
+            "navigationBarTitleText": "商品列表"
+          }
+        },
         {
           "path": "another-serve/goodsDetails/index",
           "style": {
@@ -1346,54 +1353,54 @@
             "navigationBarTitleText": "搜索"
           }
         },
-				{
-					"path": "another-serve/discount/spikeList",
-					"style": {
-						"navigationBarTitleText": "秒杀专区"
-					}
-				},
-				{
-					"path": "another-serve/discount/groupBuy",
-					"style": {
-						"navigationBarTitleText": "拼团专区"
-					}
-				},
-				{
-					"path": "another-serve/discount/discount",
-					"style": {
-						"navigationBarTitleText": "限时折扣专区"
-					}
-				},
-				{
-					"path": "another-serve/discount/platformDiscount",
-					"style": {
-						"navigationBarTitleText": "限时折扣专区"
-					}
-				},
-				{
-					"path": "another-serve/memberCenter/activityList",
-					"style": {
-						"navigationBarTitleText": "会员专区"
-					}
-				},
-				{
-					"path": "another-serve/combination/index",
-					"style": {
-						"navigationBarTitleText": "组合优惠"
-					}
-				},
-				{
-					"path": "another-serve/messageDetail/index",
-					"style": {
-						"navigationBarTitleText": "公告详情"
-					}
-				},
-				{
-					"path": "another-serve/livePage/index",
-					"style": {
-						"navigationBarTitleText": "直播推荐"
-					}
-				},
+        {
+          "path": "another-serve/discount/spikeList",
+          "style": {
+            "navigationBarTitleText": "秒杀专区"
+          }
+        },
+        {
+          "path": "another-serve/discount/groupBuy",
+          "style": {
+            "navigationBarTitleText": "拼团专区"
+          }
+        },
+        {
+          "path": "another-serve/discount/discount",
+          "style": {
+            "navigationBarTitleText": "限时折扣专区"
+          }
+        },
+        {
+          "path": "another-serve/discount/platformDiscount",
+          "style": {
+            "navigationBarTitleText": "限时折扣专区"
+          }
+        },
+        {
+          "path": "another-serve/memberCenter/activityList",
+          "style": {
+            "navigationBarTitleText": "会员专区"
+          }
+        },
+        {
+          "path": "another-serve/combination/index",
+          "style": {
+            "navigationBarTitleText": "组合优惠"
+          }
+        },
+        {
+          "path": "another-serve/messageDetail/index",
+          "style": {
+            "navigationBarTitleText": "公告详情"
+          }
+        },
+        {
+          "path": "another-serve/livePage/index",
+          "style": {
+            "navigationBarTitleText": "直播推荐"
+          }
+        },
         {
           "path": "another-serve/distributionModule/recruit",
           "style": {

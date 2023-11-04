@@ -1,7 +1,8 @@
 import {
 	CHANGE_CURRENT_CITY,
 	CHANGE_LOCATION_INFO,
-	CHANGE_LOACTION_DETAIL_INFO
+	CHANGE_LOACTION_DETAIL_INFO,
+	CHANGE_NEARBY_LOCATION
 } from './type'
 import { T_CURRENT_ADDRESS } from '../../constant'
 import {
@@ -29,14 +30,22 @@ export default {
 				},
 				country: '中国',
 				township: '大良街道',
-				businessAreas: [ [] ],
+				businessAreas: [[]],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: '0757'
 			},
 			detailAddress: '', // 广东省佛山市顺德区大良街道碧水路顺德市民活动中心
 			currentCity: uni.getStorageSync(T_CURRENT_ADDRESS) || '大良街道',
-			obtainLocationCount: 0
+			obtainLocationCount: 0,
+			shopAndbusinessLocation: {
+				shopAndbusinessDetailAddressText: '', // 用户选择的地址
+				shopAndbusinessDetailAddressObj: {
+					longitude: '',
+					latitude: '',
+					adcode: ''
+				}
+			}
 		}
 	},
 
@@ -71,17 +80,24 @@ export default {
 				},
 				country: '中国',
 				township: typeof detailInfo.township === 'object' ? '' : detailInfo.township,
-				businessAreas: [ [] ],
+				businessAreas: [[]],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: ''
 			}
 			state.obtainLocationCount = state.obtainLocationCount + 1
+		},
+		[CHANGE_NEARBY_LOCATION](state, locationData) {
+			const { currentLocation, detailLocation } = locationData
+			state.shopAndbusinessLocation.shopAndbusinessDetailAddressText = currentLocation
+			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode = detailLocation.adcode
+			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.longitude = detailLocation.location.split(',')[0]
+			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.latitude = detailLocation.location.split(',')[1]
 		}
 	},
 
 	actions: {
-		getCurrentLocation({ commit }, onSuccess) {
+		getCurrentLocation({ commit, dispatch }, onSuccess) {
 			return new Promise(async (resolve, reject) => {
 				try {
 					// MapLoader(
@@ -147,6 +163,10 @@ export default {
 								.then((res) => {
 									if (res.status === '1') {
 										commit(CHANGE_LOCATION_INFO, res.regeocode)
+										res.regeocode && res.regeocode.addressComponent && res.regeocode.addressComponent.city(dispatch('getDetailAddressForShopAndBusiness', {
+											currentShopAndBusinessLocation: res.regeocode.addressComponent.city,
+											areaText: res.regeocode.addressComponent.city
+										}))
 										const addressDetail = res.regeocode
 										onSuccess &&
 											typeof onSuccess === 'function' &&
@@ -187,14 +207,31 @@ export default {
 			const res = await getLngLatByAddress(data.city + data.distinguish + data.town)
 			if (res.status == '1') {
 				const detailInfo = res.geocodes[0]
+
 				commit(CHANGE_LOACTION_DETAIL_INFO, {
 					detailInfo,
 					currentCity: data.town || data.distinguish || data.city
 				})
 
+				commit(CHANGE_NEARBY_LOCATION, {
+					detailLocation: res.geocodes[0],
+					currentLocation: data.town
+				})
+
 				dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
 				commit('community/CHANGE_HOME_STORE', data.town, { root: true })
 				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
+			}
+		},
+
+		async getDetailAddressForShopAndBusiness({ commit }, areaObject) {
+			const { areaText, currentShopAndBusinessLocation } = areaObject
+			const res = await getLngLatByAddress(areaText)
+			if (res.status == '1') {
+				commit(CHANGE_NEARBY_LOCATION, {
+					detailLocation: res.geocodes[0],
+					currentLocation: currentShopAndBusinessLocation
+				})
 			}
 		}
 	}
