@@ -1,19 +1,27 @@
 {
   "compilerOptions": {
+    // "target": "es5",
+    // "module": "esnext",
     "baseUrl": ".",
     "experimentalDecorators": true,
     "jsx": "preserve",
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "uni_modules",
-    "wxcomponents",
-    "unpackage",
-    "uniCloud-aliyun"
-  ],
-  "vueCompilerOptions": {
-    "target": 2.7
-  }
+    // "moduleResolution": "node",
+    // "paths": {
+    //   "@/*": [
+    //     "src/*"
+    //   ]
+    // },
+    "exclude": [
+      "node_modules",
+      "dist",
+      "build",
+      "uni_modules",
+      "wxcomponents",
+      "unpackage",
+      "uniCloud-aliyun"
+    ],
+    "vueCompilerOptions": {
+      "target": 2.7
+    }
+}
 }

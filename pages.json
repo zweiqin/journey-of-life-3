@@ -115,6 +115,18 @@
         "navigationBarTitleText": "全屋快装"
       }
     },
+    {
+      "path": "pages/index/ExplosiveFurniture/index",
+      "style": {
+        "navigationBarTitleText": "爆品家具"
+      }
+    },
+    {
+      "path": "pages/index/BrandFurniture/index",
+      "style": {
+        "navigationBarTitleText": "品牌家居"
+      }
+    },
     // {
     //   "path": "pages/index/BrandFactory/detail",
     //   "style": {
