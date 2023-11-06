@@ -153,12 +153,12 @@
             }
         },
         "plugins" : {
-					// 卡券
-					"sendCoupon" : {
-							"version" : "latest",
-							"provider" : "wx987654321abcdefg"
-					}
-				}
+            // 卡券
+            "sendCoupon" : {
+                "version" : "latest",
+                "provider" : "wx987654321abcdefg"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

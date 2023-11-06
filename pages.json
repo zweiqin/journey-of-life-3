@@ -1444,6 +1444,12 @@
 					}
 				},
 				{
+					"path": "another-serve/addAddress/index",
+					"style": {
+						"navigationBarTitleText": "地址管理"
+					}
+				},
+				{
 					"path": "another-serve/exchangeDetail/index",
 					"style": {
 						"navigationBarTitleText": "积分兑换"
