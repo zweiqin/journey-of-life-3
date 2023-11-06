@@ -14,6 +14,7 @@ export default {
   currentCity: (state) => state.location.currentCity,
   detailAddress: (state) => state.location.detailAddress,
 	obtainLocationCount: (state) => state.location.obtainLocationCount,
+  shopAndBusiness: (state) => state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressText,
 
   // 聊天
   customerServiceInfo: (state) => state.customerService.customerServiceInfo,
@@ -36,7 +37,5 @@ export default {
 
   // app
   statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
-  systermInfo: state => state.app.systermInfo,
-  loadingFlag: (state) => state.app.globalLoading.showLoading,
-	loadingInfo: (state) => state.app.globalLoading.showInfo,
+  systermInfo: state => state.app.systermInfo
 };

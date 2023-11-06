@@ -402,6 +402,15 @@ export default {
 				url: '/pages/user/user'
 			})
 		}
+	},
+
+	onPullDownRefresh() {
+		this.getUserIncome()
+		this.getUserCrmList()
+		if (getUserId()) {
+			this.getServiceSharingLogs()
+		}
+		uni.stopPullDownRefresh()
 	}
 }
 </script>

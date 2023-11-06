@@ -246,6 +246,27 @@ export const timestampToTime = (timestamp) => {
 	// console.log(timestampToTime(1670145353)); //2022-12-04 17:15:53
 }
 
+/**
+ * 时间格式化
+ */
+
+export const timeFormatting = (timeDifference) => {
+	// 天数
+	const day = Math.floor(timeDifference / 3600 / 24)
+	// 小时
+	const hr = Math.floor(timeDifference / 3600 % 24)
+	// 分钟
+	const min = Math.floor(timeDifference / 60 % 60)
+	// 秒
+	const sec = Math.floor(timeDifference % 60)
+	return {
+		day: day < 10 ? '0' + day : day,
+		hour: hr < 10 ? '0' + hr : hr,
+		min: min < 10 ? '0' + min : min,
+		sec: sec < 10 ? '0' + sec : sec
+	}
+}
+
 export const throttle = (fn, interval) => {
 	let lastTime = 0
 	const _throttle = function (...args) {

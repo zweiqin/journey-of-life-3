@@ -1,4 +1,4 @@
-import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO, SET_SHOW_LOADING } from "./type";
+import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO } from "./type";
 import { MINI_PROGRAM_TAG } from "../../constant";
 
 export default {
@@ -6,11 +6,7 @@ export default {
   state() {
     return {
       isInMiniProgram: uni.getStorageSync(MINI_PROGRAM_TAG) || false,
-      systermInfo: {},
-      globalLoading: {
-        showLoading: false,
-        showInfo: ''
-      }
+      systermInfo: {}
     };
   },
 
@@ -25,11 +21,6 @@ export default {
     [CHANGE_SYSTERM_INFO](state, system) {
       state.systermInfo = system;
       console.log(system);
-    },
-
-    [SET_SHOW_LOADING](state, obj) {
-      state.globalLoading.showLoading = obj.flag
-      state.globalLoading.showInfo = obj.info
     }
   },
 

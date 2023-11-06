@@ -11,13 +11,21 @@ export default {
 		eventName: {
 			type: String,
 			default: ''
+		},
+		free: {
+			type: Boolean,
+			default: false
 		}
 	},
 	methods: {
 		// 点击获取定位
 		handleGetUserLocation() {
+			let url = `/pages/choose-location/choose-location?eventName=${this.eventName}`
+			if(this.free){
+				url += '&isUnLimit=true'
+			}
 			uni.navigateTo({
-				url: `/pages/choose-location/choose-location?eventName=${this.eventName}`
+				url
 			})
 		}
 	}

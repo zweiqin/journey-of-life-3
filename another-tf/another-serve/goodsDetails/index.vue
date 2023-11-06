@@ -1,7 +1,16 @@
 <template>
-	<view class="container u-skeleton" @scroll="handlePageScroll">
-		<global-loading />
-		<view class="">
+	<view class="goods-details-container" @scroll="handlePageScroll">
+		<BeeBack>
+			<view style="display: flex;align-items: center;justify-content: space-between;">
+				<BeeIcon
+					name="arrowleft" :size="34" color="#222229"
+					style="width: fit-content;"
+				>
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40upx;text-align: center;line-height: 2.5;">商品详情</text>
+			</view>
+		</BeeBack>
+		<view style="padding-bottom: 160upx;">
 			<!--  拼团滚动 -->
 			<view class="news-box">
 				<view class="news-bg">
@@ -41,9 +50,12 @@
 			/>
 
 			<!-- 发货 -->
-			<view class="express-box flex-items flex-row fs24 u-skeleton-fillet">
+			<view class="express-box flex-items flex-row fs24">
 				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
-				<tui-icon v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14" color="#c1c1c1"></tui-icon>
+				<tui-icon
+					v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
+					color="#c1c1c1"
+				></tui-icon>
 				<label v-if="productData.receive && productData.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
 					{{ productData.receive.receiveAdress }}
 				</label>
@@ -52,7 +64,7 @@
 
 			<!-- 选择SKU -->
 			<view class="fs24 chooseSize-box flex-start" @click=" handleShowGoodsSkuSelect(6)">
-				<view class="chooseSize-content flex-items flex-row flex-sp-between u-skeleton-fillet">
+				<view class="chooseSize-content flex-items flex-row flex-sp-between">
 					<view class="flex-row-plus ">
 						<label class="fs26   mar-left-30 font-color-999">选择</label>
 						<view class="valueBox mar-left-20 flex-items">
@@ -102,11 +114,11 @@
 			</view>
 			<!--  评价  -->
 			<GoodEvaluateAndQuestion
-				ref="goodEvaluateAndQuestion" class=" u-skeleton-fillet" :product-info="productData"
+				ref="goodEvaluateAndQuestion" :product-info="productData"
 				:comment-list="commentList"
 			/>
 			<!-- 店铺 -->
-			<view class="inStore-box flex-items flex-row flex-sp-between  u-skeleton-fillet">
+			<view class="inStore-box flex-items flex-row flex-sp-between">
 				<view class="flex-display flex-row">
 					<view>
 						<image class="inStore-logo default-img" :src="productData.shopLogo" @click="handleJumpToStore"></image>
@@ -121,11 +133,11 @@
 				</view>
 				<view class="inStore-but" @click="handleJumpToStore">
 					<text>去逛逛</text>
-					<tui-icon :size="60" color="#ffebc4" name="arrowright"></tui-icon>
+					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
 				</view>
 			</view>
 			<!-- 详细信息 -->
-			<view class="goodsDetails-box u-skeleton-fillet">
+			<view class="goodsDetails-box">
 				<view class="goodsDetails-title">
 					<view class="goodsDetails-Line"></view>
 					<label class="goodsDetails-text">宝贝详情</label>
@@ -142,21 +154,24 @@
 		<view class="buygoods-box">
 			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 				<view class="btns_container">
-					<view class="btns flex-column-plus" @click="handleJumpToStore">
-						<tui-icon :size="48" color="#333333" name="shop"></tui-icon>
+					<view class="btns flex-column-plus flex-items" @click="handleJumpToStore">
+						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
 					<!-- #ifdef MP-WEIXIN || APP-PLUS || H5 -->
-					<view class="btns flex-column-plus mar-left-10" @click="flyToService">
-						<tui-icon :size="48" color="#333333" name="message"></tui-icon>
+					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleFlyToService">
+						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 						<label class="fs22">客服</label>
 					</view>
 					<!-- #endif -->
-					<view class="btns flex-column-plus mar-left-10 flex-items Cart" @click="handleJumpToShopCart">
+					<view
+						class="btns flex-column-plus mar-left-10 flex-items Cart"
+						@click="go('/another-tf/another-serve/shopCar/shopCar')"
+					>
 						<view v-if="allCartNum > 0" class="cartAllNum">
 							{{ allCartNum }}
 						</view>
-						<tui-icon :size="48" color="#333333" name="cart"></tui-icon>
+						<tui-icon :size="24" color="#333333" name="cart"></tui-icon>
 						<label class="fs22">购物车</label>
 					</view>
 				</view>
@@ -189,7 +204,7 @@
 				class="returnTop-box flex-items-plus flex-column"
 				:style="{ 'display': returnTopFlag === true ? 'flex' : 'none' }" @click="handleReturnTop"
 			>
-				<tui-icon :size="58" color="#c5aa7b" name="top"></tui-icon>
+				<tui-icon :size="29" color="#c5aa7b" name="top"></tui-icon>
 			</view>
 		</view>
 		<!-- SKU选择器 -->
@@ -204,11 +219,7 @@
 			:current-active="currentActive"
 		></CouponPopup>
 		<!-- 拼单弹框 -->
-		<u-popup
-			v-model="showGroupBuyList" class="popupDiscount" mode="center" border-radius="14"
-			close-icon-pos="top-right"
-			close-icon-size="20"
-		>
+		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
@@ -224,7 +235,7 @@
 								</view>
 							</view>
 							<view v-if="aitem.time > 0" class="rightInfo">
-								<view class="groupBuyBtn" @click="handleGoGroupBooking(aitem.collageId)">
+								<view class="groupBuyBtn" @click.stop="handleGoGroupBooking(aitem.collageId)">
 									和Ta拼
 								</view>
 							</view>
@@ -232,43 +243,31 @@
 					</scroll-view>
 				</view>
 			</view>
-		</u-popup>
-		<!-- 骨架屏 -->
-		<Skeleton el-color="#efefef" bg-color="#fff" :loading="isFirstComeIn && loading" :animation="true"></Skeleton>
+		</tui-popup>
 	</view>
 </template>
 
 <script>
-// import Skeleton from '../../components/Skeleton'
-// import UButton from '../../uview-ui/components/u-button/u-button'
-// import CombinedSales from '@/components/activities/combinedSales'
-// import CouponPopup from '../../components/goodsDetalils/coupon-popup'
-// import { Services } from '../../utils/services'
-// import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
-// import GoodActivityDetail from './components/GoodActivityDetail'
-// import GoodSkuSelect from './components/GoodSkuSelect'
-// import { TimeFormatting } from '../../utils/timeUtil'
-// import USkeleton from '../../uview-ui/components/u-skeleton/u-skeleton'
+import CombinedSales from './components/combinedSales'
+import CouponPopup from './components/coupon-popup'
+import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
+import GoodActivityDetail from './components/GoodActivityDetail'
+import GoodSkuSelect from './components/GoodSkuSelect'
+import { timeFormatting } from '../../../utils'
+import { getProductDetailsByIdApi, bindDistributorSalesCustomerApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
+import { T_ALL_CART_NUM } from '../../../constant'
 
-// import { J_STORAGE_KEY } from '../../config/constant'
-// const NET = require('../../utils/request')
-// const API = require('../../config/api')
 export default {
 	name: 'GoodsDetails',
 	components: {
-		USkeleton,
-		Skeleton,
 		CouponPopup,
 		CombinedSales,
-		UButton,
 		GoodEvaluateAndQuestion,
 		GoodActivityDetail,
 		GoodSkuSelect
 	},
 	data() {
 		return {
-			isFirstComeIn: true,
-			loading: true,
 			isIphone: '',
 			returnTopFlag: false, // 回到顶部
 			productId: '', // 商品ID，有可能屎缓存数据
@@ -338,8 +337,6 @@ export default {
 		if (options.detail) {
 			options = this.$getJumpParam(options)
 		}
-		this.isFirstComeIn = true
-		this.loading = true
 		let salesId = null
 		this.pointOption.inTime = new Date().getTime()
 		this.isIphone = getApp().globalData.isIphone
@@ -364,7 +361,7 @@ export default {
 		this.handleGetProductDetail()
 		// 绑定分销关系
 		salesId && this.shopId ? this.bindSalesCustomer(salesId, this.shopId) : ''
-		this.allCartNum = uni.getStorageSync('allCartNum')
+		this.allCartNum = uni.getStorageSync(T_ALL_CART_NUM)
 	},
 	onUnload() {
 		// 判断是否要埋点
@@ -372,7 +369,7 @@ export default {
 		if (nowTime - this.pointOption.inTime >= 5000) {
 			// 埋点
 			this.pointOption.data.productIds = this.productId
-			this.$store.dispatch('app/doPointer', this.pointOption.data)
+			addUserTrackReportDoPointerApi(this.pointOption.data)
 		}
 		// 销毁平团倒计时计时器
 		if (this.shopGroupWorkTicker) {
@@ -433,7 +430,7 @@ export default {
 				productId: this.productId,
 				shopGroupWorkId: this.shopGroupWorkId ?? undefined
 			}
-			const res = await NET.request(API.GetBroadCastList, param, 'GET')
+			const res = await getBroadCastList(param)
 			this.broadCastList = res.data
 		},
 
@@ -488,16 +485,8 @@ export default {
 				this.shopGroupWorkTicker = null
 				this.handleGetProductDetail()
 			}
-			const timeFormatting = TimeFormatting(remainMillSecs / 1000)
-			return `${timeFormatting.hour}:${timeFormatting.min}:${timeFormatting.sec}`
-		},
-
-		/**
-		 * 跳转到购物车
-		 */
-
-		handleJumpToShopCart() {
-			this.$jumpToTabbar('../../pages/tabbar/cart/index')
+			const timeFormat = timeFormatting(remainMillSecs / 1000)
+			return `${timeFormat.hour}:${timeFormat.min}:${timeFormat.sec}`
 		},
 
 		/**
@@ -505,7 +494,7 @@ export default {
 		 */
 
 		handleJumpToStore() {
-			this.$jump(`../store/index?storeId=${this.shopId}`)
+			this.go(`/community-center/shop/shop-detail?shopId=${this.shopId}`)
 		},
 
 		/**
@@ -554,11 +543,10 @@ export default {
 		 */
 
 		async handleGetProductDetail() {
-			this.loading = true
-			// uni.showLoading({
-			//   title: '加载中...',
-			//   mask: true
-			// })
+			uni.showLoading({
+				title: '加载中...',
+				mask: true
+			})
 			try {
 				const postData = {
 					shopId: this.shopId,
@@ -566,9 +554,7 @@ export default {
 					skuId: this.paramSkuId,
 					terminal: 1
 				}
-				const res = await NET.request(API.QueryProductDetail, postData, 'GET')
-				this.isFirstComeIn = false
-				this.loading = false
+				const res = await getProductDetailsByIdApi(postData)
 				this.productData = res.data
 				this.markTools = res.data.markTools // 平台优惠券
 				this.shopMarkTools = res.data.shopMarkTools // 店铺优惠券
@@ -618,7 +604,6 @@ export default {
 				})
 			} finally {
 				uni.hideLoading()
-				// this.loading = false
 			}
 		},
 
@@ -630,19 +615,7 @@ export default {
 
 		bindSalesCustomer(salesId, storeId) {
 			// 如果已登录，静默绑定客户关系，否则跳转到登录页面
-			if (!uni.getStorageSync(J_STORAGE_KEY)) {
-				uni.setStorageSync('salesId', salesId)
-				uni.setStorageSync('shopId', storeId)
-				uni.navigateTo({
-					url: '../../pages_category_page2/userModule/login'
-				})
-				return
-			}
-			NET.request(API.BindSalesCustomer, {
-				shopId: storeId,
-				distributorId: salesId
-			}, 'POST').then((res) => {
-			})
+			bindDistributorSalesCustomerApi({ shopId: storeId, distributorId: salesId })
 		},
 
 		/**
@@ -665,144 +638,68 @@ export default {
 		 * @return {Promise<void>}
 		 */
 
-		async flyToService() {
-			(await Services(this.shopId)).flyToService()
+		async handleFlyToService() {
+			let corpId = null
+			let serviceURL = null
+			uni.showLoading({
+				title: '加载中...'
+			})
+			try {
+				const res = await getCustomerServiceAppletKfApi({ id: this.shopId })
+				if (res.code === '' && res.data.corpId && res.data.url) {
+					corpId = res.data.corpId
+					serviceURL = res.data.url
+				}
+			} finally {
+				uni.hideLoading()
+			}
+			if (!serviceURL || !corpId) {
+				return uni.showToast({
+					icon: 'none',
+					title: '暂无客服~'
+				})
+			}
+			// #ifdef MP-WEIXIN
+			wx.openCustomerServiceChat({
+				extInfo: { url: serviceURL },
+				corpId
+			})
+			// #endif
+			// #ifdef APP
+			try {
+				let wechatServices = null
+				plus.share.getServices((res) => {
+					wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
+					if (wechatServices) {
+						wechatServices.openCustomerServiceChat({
+							corpid: corpId,
+							url: serviceURL
+						}, (success) => { }, (err) => { })
+					} else {
+						plus.nativeUI.alert('当前环境不支持微信操作!')
+					}
+				}, (err) => {
+					uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+				})
+			} catch (err) {
+				uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+			}
+			// #endif
+			// #ifdef H5
+			// window.open(serviceURL) safari浏览器不支持window.open
+			window.location.href = serviceURL
+			// #endif
 		}
 
 	}
 }
 </script>
 
-<style>
-.page {
-	background-color: #F7F7F7;
-}
-</style>
+<style lang="less" scoped>
 
-<style
-    scoped
-    lang="scss"
->
-.page {
-	background-color: #F7F7F7;
-}
-
-.news-box {
-	position: fixed;
-	left: 20rpx;
-	top: 200rpx;
-	z-index: 9999;
-
-	.news-bg {
-		width: 450rpx;
-		height: 70rpx;
-		overflow: hidden;
-
-		.news-item {
-			background: rgba(0, 0, 0, 0.75);
-			border-radius: 16rpx;
-			height: 70rpx;
-			color: #FFFFFF;
-			font-size: 24rpx;
-			padding: 0 20rpx;
-			width: 450rpx;
-
-			.item-avatar {
-				width: 50rpx;
-				height: 50rpx;
-				border-radius: 50%;
-				margin-right: 20rpx;
-			}
-		}
-	}
-}
-
-.tabsbox {
-	width: 100%;
-	margin-top: 20rpx;
-	background-color: #FFFFFF;
-}
-
-.checkimg {
-	width: 40rpx;
-	height: 40rpx;
-	margin-right: 30rpx;
-}
-
-.container {
+.goods-details-container {
+	min-height: 100%;
 	padding-bottom: 180upx;
-
-	.goodgDes-box {
-		background-color: #FFFFFF;
-		width: 100%;
-		padding-bottom: 25rpx;
-
-		.priceBuyNum-box {
-			width: 677rpx;
-			margin-top: 30rpx;
-		}
-
-		.nameContainer {
-			display: flex;
-
-			.goodsName-box {
-				width: 677rpx;
-				height: 85rpx;
-
-				.img618-cion {
-					width: 70rpx;
-					height: 36rpx;
-				}
-			}
-
-			.collectBox {
-				width: 80rpx;
-				margin: 0 30rpx 0 15rpx;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-			}
-
-		}
-
-		.discounts-box {
-			margin-top: 20rpx;
-
-			.discounts-text {
-				margin-left: 10rpx;
-				color: #FF7800;
-				background-color: #FFE4CC;
-				padding: 6rpx 12rpx;
-				border-radius: 4rpx;
-			}
-		}
-
-		.activity-box {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: flex-end;
-			border-top: 1upx solid #EDEDED;
-
-			.activity-content {
-				width: 614rpx;
-				padding-top: 20rpx;
-
-				.activity-text {
-					color: #FF7700;
-					border: 1rpx solid #FF7700;
-					padding: 6rpx 23rpx;
-				}
-
-				.coupon-arrow {
-					width: 16rpx;
-					height: 24rpx;
-					margin-left: 15rpx;
-				}
-			}
-		}
-	}
 
 	.express-box {
 		height: 100rpx;
@@ -814,11 +711,6 @@ export default {
 		image {
 			width: 21rpx;
 			height: 27rpx;
-		}
-
-		.expressSite-icon {
-			width: 30rpx;
-			height: 30rpx;
 		}
 
 		.mapName {
@@ -862,53 +754,6 @@ export default {
 		}
 	}
 
-	.shopEvaList {
-		display: flex;
-		padding: 30rpx;
-		flex-wrap: wrap;
-		border-bottom: 20rpx solid #EEEEEE;
-
-		.shopEvaItem {
-			padding: 0 14rpx;
-			height: 60rpx;
-			background: #ffe4cc;
-			border-radius: 6rpx;
-			line-height: 60rpx;
-			text-align: center;
-			font-size: 28rpx;
-			color: #666666;
-			margin: 0 20rpx 20rpx 0;
-		}
-	}
-
-	.storeEvaluate-box {
-		background-color: #FFFFFF;
-		margin-top: 20rpx;
-
-		.storeEvaluate {
-			width: 690rpx;
-			padding: 20rpx 0;
-			border-bottom: 1rpx solid #EDEDED;
-		}
-
-		.storeEvaluateTag-box {
-			margin-top: 10rpx;
-			margin-left: 10rpx;
-			padding-bottom: 30rpx;
-			display: flex;
-			flex-wrap: wrap;
-
-			.storeEvaluateTag-text {
-				background-color: #FFE4CC;
-				border-radius: 6rpx;
-				padding: 16rpx 14rpx;
-				color: #656565;
-				margin-left: 20rpx;
-				margin-top: 20rpx;
-			}
-		}
-	}
-
 	.inStore-box {
 		background-color: #FFFFFF;
 		margin-top: 20rpx;
@@ -922,6 +767,7 @@ export default {
 		.inStore-but {
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			width: 140rpx;
 			height: 60rpx;
 			line-height: 60rpx;
@@ -953,87 +799,13 @@ export default {
 				padding: 0 22rpx;
 			}
 		}
-
-		.goodsDetailsimg-box {}
-	}
-
-	.priceExplain-box {
-		background-color: #FFFFFF;
-		margin-top: 20rpx;
-		padding: 20rpx 30rpx;
-
-		.priceExplain-title {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-
-			.priceExplain-Line {
-				width: 265rpx;
-				border-bottom: 1rpx solid #EDEDED;
-			}
-
-			.priceExplain-text {
-				padding: 0 22rpx;
-			}
-		}
-
-		.priceExplain-dot {
-			width: 9rpx;
-			height: 9rpx;
-			border: 1rpx solid #FF7700;
-			border-radius: 50%;
-			background-color: #FF7700;
-		}
 	}
 
 	.buygoods-box {
 		position: fixed;
 		bottom: 0rpx;
 		box-sizing: border-box;
-		z-index: 999;
-
-		.groupByInfo {
-			background: #fffbe9;
-			padding: 0 30rpx;
-			height: 80rpx;
-
-			.groupByInfoBox {
-				height: 80rpx;
-			}
-
-			.groupByLeft {
-				.groupByAvatar {
-					margin-right: 15rpx;
-				}
-
-				img {
-					width: 50rpx;
-					height: 50rpx;
-				}
-
-				.name {
-					font-size: 24rpx;
-				}
-
-				.groupByNum {
-					margin-right: 10rpx;
-				}
-
-				.groupByTime {
-					color: #333333;
-				}
-			}
-
-			.groupByBtn {
-				height: 60rpx;
-				background: #333333;
-				color: #FFEBC4;
-				font-size: 14rpx;
-				line-height: 60rpx;
-				text-align: center;
-				padding: 0 20rpx;
-			}
-		}
+		z-index: 1;
 
 		.buygoodsBut-box {
 			background-color: #FFFFFF;
@@ -1067,7 +839,7 @@ export default {
 					background: #C5AA7B;
 					border-radius: 50%;
 					opacity: 1;
-					z-index: 999;
+					z-index: 1;
 				}
 
 				// #ifdef APP
@@ -1135,10 +907,6 @@ export default {
 		bottom: 160rpx;
 		right: 30rpx;
 
-		.fs16 {
-			font-size: 16rpx;
-		}
-
 		.returnTop-box {
 			width: 88rpx;
 			height: 88rpx;
@@ -1148,199 +916,35 @@ export default {
 		}
 	}
 
-	.parameterShow-box {
-		.parameter-title {
-			width: 100%;
-			text-align: center;
-			padding-bottom: 36rpx;
-		}
+}
+.news-box {
+	position: fixed;
+	left: 20rpx;
+	top: 200rpx;
+	z-index: 1;
 
-		.parameter-modle {
-			width: 690rpx;
-			padding-bottom: 36rpx;
-			font-size: 26rpx;
-		}
+	.news-bg {
+		width: 450rpx;
+		height: 70rpx;
+		overflow: hidden;
 
-		.parameterTruebut-box {
-			background-color: #FFFFFF;
-			padding: 20rpx 0;
+		.news-item {
+			background: rgba(0, 0, 0, 0.75);
+			border-radius: 16rpx;
+			height: 70rpx;
+			color: #FFFFFF;
+			font-size: 24rpx;
+			padding: 0 20rpx;
+			width: 450rpx;
 
-			.parameterTruebut {
-				width: 690rpx;
-				height: 80rpx;
-				background-image: linear-gradient(135deg, #FFA100 10%, #FF7911 100%);
-				color: #FFFFFF;
-				border-radius: 40rpx;
-				line-height: 80rpx;
-				text-align: center;
-				font-size: 26rpx;
+			.item-avatar {
+				width: 50rpx;
+				height: 50rpx;
+				border-radius: 50%;
+				margin-right: 20rpx;
 			}
 		}
 	}
-
-	.couponShow-box {
-		.couponShow {
-			z-index: 333;
-			height: 1000rpx;
-
-			.couponTitle-box {
-				width: 100%;
-			}
-
-			.coupon-title-active {
-				color: #FF7700;
-				border-bottom: 2rpx solid #FF7700;
-				padding-bottom: 30rpx;
-			}
-
-			.usableCoupon-content {
-				padding: 30rpx 0;
-
-				.usableCoupon-box {
-					width: 690rpx;
-					height: 140rpx;
-					border-radius: 10rpx;
-					background-color: #FFE9D8;
-
-					.immediateUse-but {
-						color: #FF7800;
-						border-radius: 30rpx;
-						padding: 0 40rpx;
-						border-left: 3rpx solid #EBD7C7;
-						height: 140rpx;
-						border-radius: 60rpx;
-						line-height: 140rpx;
-						font-weight: bold;
-					}
-				}
-			}
-		}
-	}
-
-	.succeedShow-box {
-		position: absolute;
-		top: 220rpx;
-		left: 185rpx;
-
-		.succeedShow {
-			background-color: #7F7F7F;
-			width: 380rpx;
-			height: 280rpx;
-			border-radius: 10rpx;
-			opacity: 0.8;
-
-			.couponSucceedImg {
-				width: 200rpx;
-				height: 130rpx;
-			}
-		}
-	}
-
-}
-
-.activity-box {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: 100%;
-
-	.title-box {
-		width: 100%;
-		height: 100upx;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-		border-bottom: solid 1px #EEEEEE;
-	}
-}
-
-.activity-coupon-box {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	overflow: auto;
-	flex: 1;
-}
-
-.content-box {
-	width: 100%;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	padding: 30rpx;
-}
-
-.tag-box {
-	width: 100%;
-	box-sizing: border-box;
-	height: 80rpx;
-	line-height: 80rpx;
-	font-size: 28rpx;
-	font-weight: 500;
-	color: #FF7911;
-}
-
-.label-lingqu {
-	width: 100%;
-	font-weight: 500;
-	color: rgba(51, 51, 51, 1);
-}
-
-.coupon-item {
-	width: 690rpx;
-	height: 120rpx;
-	border-radius: 10rpx;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 20rpx;
-	flex-shrink: 0;
-	background-color: #FFE9D8;
-}
-
-.money-box {
-	width: 160rpx;
-	box-sizing: border-box;
-	padding-left: 30rpx;
-	font-weight: 500;
-	color: #FF7911;
-}
-
-.info-box {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	color: rgba(255, 121, 17, 1);
-}
-
-.receive-btn {
-	width: 200rpx;
-	height: 120rpx;
-	background: rgba(255, 233, 216, 1);
-	box-shadow: 0px 0px 5rpx 0px rgba(102, 102, 102, 0.35);
-	line-height: 120rpx;
-	text-align: center;
-	font-size: 28rpx;
-	font-weight: bold;
-	color: rgba(255, 121, 17, 1);
-	border-bottom-right-radius: 10rpx;
-	border-top-right-radius: 10rpx;
-	border-top-left-radius: 120rpx;
-	border-bottom-left-radius: 120rpx;
-}
-
-.received {
-	background: #f1f1f1;
-	color: #999;
-}
-
-.canvas-box {
-	display: block;
-	position: absolute;
-	top: 100rpx;
 }
 
 .goodsDiscount {
@@ -1483,50 +1087,6 @@ export default {
 					}
 				}
 			}
-		}
-	}
-}
-
-.combination {
-	padding: 0 20rpx;
-
-	.combinationList {
-		width: 100%;
-		height: 680rpx;
-		background: #333333;
-		box-shadow: 0 20rpx 30rpx rgba(0, 0, 0, 0.3);
-		border-radius: 20rpx;
-
-		.combinationTitle {
-			padding: 32rpx 20rpx 0 30rpx;
-
-			image {
-				width: 211rpx;
-				height: 33rpx;
-			}
-
-			.combinationPrice {
-				padding: 0 20px;
-				height: 50rpx;
-				background: linear-gradient(90deg, #C83732 0%, #E25C44 100%);
-				box-shadow: 0 6rpx 12rpx rgba(233, 0, 0, 0.3);
-				border-radius: 26rpx;
-				line-height: 50rpx;
-				text-align: center;
-				color: #FFFFFF;
-				opacity: 0.8;
-			}
-		}
-
-		.buyBtn {
-			width: 96%;
-			height: 84rpx;
-			line-height: 84rpx;
-			border: 2rpx solid rgba(0, 0, 0, 0);
-			background: linear-gradient(88deg, #C5AA7B 0%, #FFEBC4 100%);
-			text-align: center;
-			color: #333333;
-			margin: 0 auto;
 		}
 	}
 }

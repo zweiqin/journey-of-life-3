@@ -1,15 +1,27 @@
 <template>
 	<view class="content">
+		<BeeBack style="padding: 10upx 0;">
+			<view style="display: flex;align-items: center;justify-content: space-between;">
+				<BeeIcon
+					name="arrowleft" :size="34" color="#222229"
+					style="width: fit-content;"
+				>
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40upx;text-align: center;">购物车</text>
+			</view>
+		</BeeBack>
 		<!-- 骨架屏 -->
-		<tui-skeleton el-color="#efefef" bg-color="#fff" :loading="loading && isFirstComeIn" :animation="true"></tui-skeleton>
-		<global-loading />
+		<tui-skeleton
+			v-if="loading && isFirstComeIn" skeleton-bg-color="#efefef" background-color="#fff"
+			:is-loading="loading && isFirstComeIn" active
+		></tui-skeleton>
 		<!-- 购物车 -->
 		<view class="tui-skeleton">
 			<view v-if="!isEmpty">
 				<tui-sticky bg-color="#fff">
-					<view class="cart-bg  tui-skeleton-fillet">
+					<view class="cart-bg tui-skeleton-fillet">
 						<view class="cart-num-box">
-							<image class="  tui-skeleton-fillet" src="../../../static/images/new-user/fee.icon.png"></image>
+							<image class="tui-skeleton-fillet" src="../../../static/images/new-user/fee.icon.png"></image>
 							<text v-if="!showManage" class="btn-box " @click="showManage = !showManage">
 								管理
 							</text>
@@ -30,37 +42,47 @@
 					<view v-for="(item, index) in dataList" :key="item.shopId" class="itemBox">
 						<view v-if="item.skus.length > 0" class="item">
 							<view class="shop-box">
-								<image v-if="item.selected === 1" mode="aspectFill  tui-skeleton-fillet"
-									src="../../../static/images/new-business/shopCar/selectActive.png" class="cart-select-img"
-									@click.stop="handleSelectShop(index, 0)"></image>
-								<image v-else mode="aspectFill  tui-skeleton-fillet"
-									src="../../../static/images/new-business/shopCar/selectEmpty.png" class="cart-select-img"
-									@click.stop="handleSelectShop(index, 1)"></image>
-								<view class="shop-name-box  tui-skeleton-fillet"
-									@click="go(`${jumpObj.store}?storeId=${item.shopId}`)">
-									<image src="../../../static/images/new-business/shopCar/orderStoreIcon.png" class="shop-img"></image>
+								<tui-icon
+									v-if="item.selected === 1" name="circle-fill" :size="40" unit="upx"
+									color="#c5aa7b"
+									margin="40upx" @click="handleSelectShop(index, 0)"
+								></tui-icon>
+								<tui-icon
+									v-else name="circle" :size="40" unit="upx"
+									color="#cccccc" margin="40upx"
+									@click="handleSelectShop(index, 1)"
+								></tui-icon>
+								<view class="shop-name-box tui-skeleton-fillet" @click="go(`${jumpObj.store}?storeId=${item.shopId}`)">
+									<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 									<text class="shop-name">{{ item.shopName }}</text>
-									<image src="../../../static/images/new-business/shopCar/arrowRight.png" class="arrow-right-img"></image>
+									<tui-icon
+										name="arrowright" :size="30" unit="upx" color="#999999"
+										margin="0 0 0 30upx"
+										class="arrow-right-img"
+									></tui-icon>
 								</view>
 							</view>
 							<view v-if="item.currentRules && item.currentRules.number" class="rulesBox flex-items">
-								<image class="mar-right-20" src="../../../static/images/new-business/shopCar/zuheIcon.png"></image>
+								<image class="mar-right-20" src="../../../static/images/new-business/shop/zuheIcon.png"></image>
 								<view class="fs24 font-color-C83732">
 									已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
 								</view>
 							</view>
-							<view v-for="(skuItem, cIndex) in dataList[index].skus" class="product-list-box ">
-								<view class="pro-item"
-									@click="go(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)">
-									<image v-if="skuItem.selected == 1" mode="aspectFill  tui-skeleton-fillet"
-										src="../../../static/images/new-business/shopCar/selectActive.png" class="cart-select-img"
-										@click.stop="handleSelectSku(index, cIndex, 0)"></image>
-									<image v-else mode="aspectFill  tui-skeleton-fillet"
-										src="../../../static/images/new-business/shopCar/selectEmpty.png" class="cart-select-img"
-										@click.stop="handleSelectSku(index, cIndex, 1)"></image>
-									<view class="pro-r">
-										<image :src="skuItem.image" class="pro-img default-img  tui-skeleton-fillet"></image>
-										<view class="pro-r-r  tui-skeleton-fillet">
+							<view v-for="(skuItem, cIndex) in dataList[index].skus" :key="cIndex" class="product-list-box">
+								<view class="pro-item">
+									<tui-icon
+										v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="upx"
+										color="#c5aa7b"
+										margin="40upx" @click="handleSelectSku(index, cIndex, 0)"
+									></tui-icon>
+									<tui-icon
+										v-else name="circle" :size="40" unit="upx"
+										color="#cccccc" margin="40upx"
+										@click="handleSelectSku(index, cIndex, 1)"
+									></tui-icon>
+									<view class="pro-r" @click="go(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)">
+										<image :src="skuItem.image" class="pro-img default-img tui-skeleton-fillet"></image>
+										<view class="pro-r-r tui-skeleton-fillet">
 											<view class="pro-name">{{ skuItem.productName }}</view>
 											<view class="sku-box">
 												<text v-if="skuItem.value">{{ skuItem.value }}</text>
@@ -89,54 +111,51 @@
 						</view>
 					</view>
 				</view>
+				<!-- 购物车为空 -->
+				<view v-if="isEmpty" class="emptyCart-box flex-items-plus flex-column">
+					<image class="emptyCart-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
+					<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
+					<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
+					<view class="goToShopping" @click="$switchTab(jumpObj.shopping)">
+						去购物
+					</view>
+				</view>
 
-				<!-- #ifdef H5 -->
-				<view class="cart-bottom-box-h5">
-					<!-- #endif -->
-					<!-- #ifndef H5 -->
-					<view class="cart-bottom-box-app">
-						<!-- #endif -->
-						<view class="cart-bottom">
-							<view class="left">
-								<image v-if="settleAccountsObj.isAllCheck" mode="aspectFill"
-									src="../../../static/images/new-business/shopCar/selectActive.png" class="cart-select-img"
-									@click="handleSelectAll(0)"></image>
-								<image v-else mode="aspectFill" src="../../../static/images/new-business/shopCar/selectEmpty.png"
-									class="cart-select-img" @click="handleSelectAll(1)"></image>
-								<text>全选</text>
+				<view class="cart-bottom-box">
+					<view class="cart-bottom">
+						<view class="left">
+							<tui-icon
+								v-if="settleAccountsObj.isAllCheck" name="circle-fill" :size="40" unit="upx"
+								color="#c5aa7b"
+								margin="40upx" @click="handleSelectAll(0)"
+							></tui-icon>
+							<tui-icon
+								v-else name="circle" :size="40" unit="upx"
+								color="#cccccc" margin="40upx"
+								@click="handleSelectAll(1)"
+							></tui-icon>
+							<text>全选</text>
+						</view>
+						<view v-if="!showManage" class="right">
+							<view class="price-box">
+								<text>合计：</text>
+								<text class="price">¥{{ settleAccountsObj.checkMoney }}</text>
 							</view>
-							<view v-if="!showManage" class="right">
-								<view class="price-box">
-									<text>合计：</text>
-									<text class="price">¥{{ settleAccountsObj.checkMoney }}</text>
-								</view>
-								<view class="btn-confirm" @click="settlementTap">
-									结算（{{ settleAccountsObj.checkNum }}）
-								</view>
+							<view class="btn-confirm" @click="settlementTap">
+								结算（{{ settleAccountsObj.checkNum }}）
 							</view>
-							<view v-if="showManage" class="right">
-								<view class="btn-delete" @click="handleOpenDelete">
-									删除
-								</view>
+						</view>
+						<view v-if="showManage" class="right">
+							<view class="btn-delete" @click="handleOpenDelete">
+								删除
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<!-- 购物车为空 -->
-			<view v-if="isEmpty" class="emptyCart-box flex-items-plus flex-column">
-				<image class="emptyCart-img" src="../../../static/images/new-business/shopCar/cartEmpty.png"></image>
-				<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
-				<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
-				<view class="goToShopping" @click="$switchTab(jumpObj.shopping)">
-					去购物
-				</view>
-			</view>
 
 			<!-- 热门推荐 -->
-			<!-- <HotTemplate class="tui-skeleton-fillet" /> -->
-
-			<view style="width: 100%;height: 120rpx;background-color:#fff;"></view>
+			<ATFHoteRecommed class="tui-skeleton-fillet" />
 
 			<!-- 删除确认弹窗 -->
 			<DeleteModal :show-tip.sync="showDeleteModal" @confirm="handleDoDelete"></DeleteModal>
@@ -145,19 +164,133 @@
 </template>
 
 <script>
-// import HotTemplate from '../../../components/hoteRecommed/index.vue'
 import DeleteModal from './components/DeleteModal'
-import api from '../../../components/canvasShow/config/api'
-import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST } from '../../../constant'
-import { defaultCartList, getCartNumberBySelect, getPriceBySelect } from './cartUtils'
-import lodash from 'lodash'
+import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST, T_ALL_CART_NUM } from '../../../constant'
+import { getSettlementOrderApi, getCartListApi, updateNumberCartGoodsApi, deleteCartGoodsApi, getPricesCanvasApi } from '../../../api/anotherTFInterface'
+import lodash from 'lodash-es'
+// 根据选中的购物车数据获取价格和过滤后的用于结算购物车的post数据
+async function getPriceBySelect(dataList) {
+	uni.showLoading()
+	const addCart = []
+	// 遍历店铺，获取选中的sku组装数据
+	for (let i = 0; i < dataList.length; i++) {
+		const shopObj = {}
+		const theCurrentShop = dataList[i]
+		shopObj.shopId = theCurrentShop.shopId
+		shopObj.skus = []
+		for (let j = 0; j < theCurrentShop.skus.length; j++) {
+			const theCurrentSku = dataList[i].skus[j]
+			// 如果是选中的才往当前店铺塞
+			if (theCurrentSku.selected) {
+				const skusObj = {}
+				skusObj.ifLogistics = theCurrentSku.ifLogistics
+				skusObj.number = theCurrentSku.number
+				skusObj.selected = theCurrentSku.selected
+				skusObj.skuId = theCurrentSku.skuId
+				shopObj.skus.push(skusObj)
+			}
+		}
+		// 过滤掉sku为空的店铺
+		if (shopObj.skus.length > 0) {
+			addCart.push(shopObj)
+		}
+	}
+	try {
+		const postData = {
+			type: 2,
+			shops: addCart,
+			voucherTotalAll: 0,
+			isVoucher: false,
+			voucherId: 0
+		}
+		const res = await getSettlementOrderApi(postData)
+		const money = res.data.shops.reduce((previousValue, currentValue) => previousValue + currentValue.total, 0)
+		return {
+			money: money.toFixed(2),
+			shopList: addCart
+		}
+	} finally {
+		uni.hideLoading()
+	}
+}
+// 根据选中的购物车数据获取购物车数量
+function getCartNumberBySelect(dataList) {
+	let allNumber = 0; let checkNumber = 0; let
+		isAllCheck = true
+	// 遍历店铺
+	for (let i = 0; i < dataList.length; i++) {
+		// 当前店铺
+		const shopObj = dataList[i]
+		// 遍历店铺内部的商品
+		for (let j = 0; j < shopObj.skus.length; j++) {
+			const good = dataList[i].skus[j]
+			allNumber += good.number
+			if (good.selected === 1) {
+				checkNumber += +good.number
+			} else {
+				// 如果商品没有选中，但是又勾选了全选
+				if (isAllCheck) {
+					isAllCheck = false
+				}
+			}
+		}
+	}
+	// 更新缓存
+	uni.setStorageSync(T_ALL_CART_NUM, allNumber)
+	// 设置导航条
+	if (allNumber > 0) {
+		uni.setTabBarBadge({
+			index: 3,
+			text: allNumber.toString()
+		})
+	} else {
+		uni.removeTabBarBadge({
+			index: 3
+		})
+	}
+	return {
+		allNumber, checkNumber, isAllCheck
+	}
+}
+// 默认购物车，供骨架屏使用
+const defaultCartList = [
+	{
+		shopId: 1,
+		shopName: '12312312321312312',
+		selected: 0,
+		skus: [
+			{
+				productId: 1,
+				productName: '',
+				image: '',
+				price: 0,
+				number: 0,
+				selected: 0
+			},
+			{
+				productId: 2,
+				productName: '',
+				image: '',
+				price: 0,
+				number: 0,
+				selected: 0
+			},
+			{
+				productId: 3,
+				productName: '',
+				image: '',
+				price: 0,
+				number: 0,
+				selected: 0
+			}
+		]
+	}
+]
 let cacheKey = ''
-const { request2 } = require('../../../utils/request')
-const API = require('./api')
+
 export default {
-	name: 'Cart',
+	name: 'ShopCar',
 	components: {
-		// HotTemplate,
 		DeleteModal
 	},
 	data() {
@@ -204,18 +337,12 @@ export default {
 			this.isEmpty = false
 			this.loading = true
 			try {
-				// const res = await request2(API.ShoppingCart, {}, 'GET')
-
-				const res = await request2({
-					url: API.api.ShoppingCart,
-					data: {},
-					method: 'GET'
-				})
+				const res = await getCartListApi({})
 				this.dataList = res.data
 				this.settleAccountsObj.allNum = this.dataList.length
 				if (this.dataList.length === 0) {
 					this.isEmpty = true
-					uni.setStorageSync('allCartNum', 0)
+					uni.setStorageSync(T_ALL_CART_NUM, 0)
 					uni.removeTabBarBadge({
 						index: 3
 					})
@@ -275,12 +402,12 @@ export default {
 		getData(item) {
 			return new Promise((resolve, reject) => {
 				if (item.ids) {
-					request2(api.getPrices, {
+					getPricesCanvasApi({
 						shopId: item.shopId,
 						ids: item.ids,
 						page: 1,
 						pageSize: 10
-					}, 'GET').then((res) => {
+					}).then((res) => {
 						resolve(res)
 					})
 						.catch((e) => {
@@ -344,7 +471,7 @@ export default {
 		 */
 
 		async handleUpdateMoneyAndNum() {
-			const { allNumber, checkNumber, isAllCheck } = await getCartNumberBySelect(this.dataList)
+			const { allNumber, checkNumber, isAllCheck } = getCartNumberBySelect(this.dataList)
 			const { money } = await getPriceBySelect(this.dataList)
 			this.settleAccountsObj.checkMoney = money
 			this.settleAccountsObj.isAllCheck = isAllCheck
@@ -360,10 +487,10 @@ export default {
 
 		handleUpdateCart: lodash.debounce(async function (skuId, number) {
 			// 重新算钱和数量
-			await request2(API.UpdateNumberCart, {
+			await updateNumberCartGoodsApi({
 				skuId,
 				number
-			}, 'POST')
+			})
 		}, 500),
 
 		/**
@@ -374,10 +501,10 @@ export default {
 
 		handleSelectShop(shopIndex, type) {
 			const shopObj = this.dataList[shopIndex]
-			const shopCarts = [{
+			const shopCarts = [ {
 				shopId: shopObj.shopId,
 				skus: []
-			}]
+			} ]
 			shopObj.selected = type
 			// 设置当前店铺下的所有sku
 			shopObj.skus.forEach((skuObj) => {
@@ -402,13 +529,13 @@ export default {
 			const shopObj = this.dataList[shopIndex]
 			const skuObj = this.dataList[shopIndex].skus[skuIndex]
 			skuObj.selected = type
-			const shopCarts = [{
+			const shopCarts = [ {
 				shopId: shopObj.shopId,
-				skus: [{
+				skus: [ {
 					skuId: skuObj.skuId,
 					selected: skuObj.selected
-				}]
-			}]
+				} ]
+			} ]
 			if (type === 1) {
 				// 过滤店铺内未选择的sku
 				const noSelectSkuList = shopObj.skus.filter((sku) => sku.selected === 0)
@@ -639,7 +766,7 @@ export default {
 			for (const shopObj of this.dataList) {
 				ids = [...ids, ...shopObj.skus.filter((sku) => sku.selected === 1 || sku.selected === true).map((sku) => sku.skuId)]
 			}
-			await request2(API.DeleteCart, { ids }, 'POST')
+			await deleteCartGoodsApi({ ids })
 			this.showDeleteModal = false
 			await this.getDataList()
 		},
@@ -658,13 +785,10 @@ export default {
 }
 </script>
 
-<style
-    lang="scss"
-    scoped
->
+<style lang="scss" scoped>
 .content {
-	//overflow: hidden;
-	//opacity: 0;
+	box-sizing: border-box;
+	padding-bottom: 120upx;
 
 	.cart-bg {
 		width: 100%;
@@ -715,13 +839,6 @@ export default {
 					border-bottom: 1px solid #eee;
 					position: relative;
 
-					.cart-select-img {
-						width: 40rpx;
-						height: 40rpx;
-						margin: 30rpx;
-						box-sizing: border-box;
-					}
-
 					.shop-name-box {
 						display: flex;
 						flex-direction: row;
@@ -742,10 +859,6 @@ export default {
 						}
 
 						.arrow-right-img {
-							width: 30rpx;
-							height: 30rpx;
-							box-sizing: border-box;
-							margin-left: 30rpx;
 							position: absolute;
 							right: 30rpx;
 						}
@@ -770,13 +883,6 @@ export default {
 						display: flex;
 						flex-direction: row;
 						align-items: center;
-
-						.cart-select-img {
-							width: 40rpx;
-							height: 40rpx;
-							margin: 30rpx;
-							box-sizing: border-box;
-						}
 
 						.pro-r {
 							flex: 1;
@@ -924,14 +1030,7 @@ export default {
 		}
 	}
 
-	.cart-bottom-box-h5 {
-		position: fixed;
-		bottom: 80rpx;
-		width: 100%;
-		z-index: 99;
-	}
-
-	.cart-bottom-box-app {
+	.cart-bottom-box {
 		position: fixed;
 		bottom: 0rpx;
 		width: 100%;
@@ -954,13 +1053,6 @@ export default {
 		align-items: center;
 		font-size: 28rpx;
 		color: #666;
-
-		.cart-select-img {
-			width: 40rpx;
-			height: 40rpx;
-			margin: 30rpx;
-			box-sizing: border-box;
-		}
 	}
 
 	.right {

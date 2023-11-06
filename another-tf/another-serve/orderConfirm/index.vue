@@ -265,7 +265,7 @@
 
 <script>
 import { handleDoPay } from '../../../utils/payUtil'
-import { getQueryDictByNameApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi } from '../../../api/anotherTFInterface'
+import { getQueryDictByNameApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
 import { T_RECEIVE_ITEM, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
 
 export default {
@@ -1047,7 +1047,7 @@ export default {
 			try {
 				const res = await updatePlaceOrderSubmitApi(data)
 				// 下单成功处理埋点
-				this.$store.dispatch('app/doPointer', {
+				addUserTrackReportDoPointerApi({
 					eventType: 3,
 					productIds: this.pointProductIds
 				})

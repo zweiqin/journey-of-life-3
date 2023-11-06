@@ -33,9 +33,9 @@
 				</view> -->
 			<view>
 				<CommonShop
-					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop"
-					margin="22upx 0" radius="20upx" pic-width="222upx" pic-height="222upx"
-					show-sign
+					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop" margin="22upx 0"
+					radius="20upx"
+					pic-width="222upx" pic-height="222upx" show-sign
 				></CommonShop>
 			</view>
 			<view style="padding-bottom: 45upx;">

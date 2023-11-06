@@ -13,6 +13,7 @@ export {
 	getRandom,
 	randomRGB,
 	timestampToTime,
+	timeFormatting,
 	throttle,
 	isInWx,
 	isVideoSource,

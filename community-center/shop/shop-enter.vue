@@ -427,7 +427,7 @@ export default {
 		return {
 			transformation: {
 				0: '全部商家',
-				1: '品牌家居',
+				1: '同城家居',
 				2: '建材五金',
 				3: '找师傅',
 				4: '找家政',
@@ -575,7 +575,7 @@ export default {
 			uni.showLoading()
 			getHomeBrandListApi({
 				...this.queryInfo,
-				areaId: this.$store.state.location.locationInfo.adcode,
+				areaId: this.$store.state.location.locationInfo.adcode, // this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})

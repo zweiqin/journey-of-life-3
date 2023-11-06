@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="recruit-container">
 		<!-- 申请分销员 -->
 		<view class="topBackImg flex-items flex-column">
 			<view class="content mar-top-36">
@@ -180,7 +180,7 @@ export default {
 </script>
 
 <style lang="scss">
-	.container {
+	.recruit-container {
 		.topBackImg {
 			width: 100%;
 			height: 260upx;
