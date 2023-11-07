@@ -7,8 +7,11 @@ import { AnotherTFRequest } from '../../utils'
 // 登录拿 新团蜂的 token
 export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrRegByPhone', data)
 
-// /classify/getClassifyProducts2 分类商品查询
+// /classify/getClassifyProducts2 分类商品查询2
 export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
+
+// getClaasifyProducts 分类商品查询
+export const getClaasifyProducts = (data) => AnotherTFRequest('/classify/getClaasifyProducts', data)
 
 // /canvas/getCanvas  查询商品分类
 export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
