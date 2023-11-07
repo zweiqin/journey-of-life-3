@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { user_INFO } from '../../../constant';
+import { USER_INFO } from '../../../constant';
 import { getGroupCodeApi } from '../../../api/user';
 export default {
   data() {
@@ -40,7 +40,7 @@ export default {
   },
 
   onLoad() {
-    const userInfo = uni.getStorageSync(user_INFO);
+    const userInfo = uni.getStorageSync(USER_INFO);
     if (userInfo) {
       this.userInfo = userInfo;
       this.getCode();

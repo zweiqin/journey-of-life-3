@@ -1,11 +1,10 @@
 import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO } from "./type";
-import { MINI_PROGRAM_TAG } from "../../constant";
 
 export default {
   namespaced: true,
   state() {
     return {
-      isInMiniProgram: uni.getStorageSync(MINI_PROGRAM_TAG) || false,
+      isInMiniProgram: false,
       systermInfo: {}
     };
   },
@@ -13,7 +12,6 @@ export default {
   mutations: {
     [CHANGE_IS_IN_MINIPROGRAM](state, tag) {
       if (tag) {
-        uni.setStorageSync(MINI_PROGRAM_TAG, tag);
         state.isInMiniProgram = tag;
       }
     },

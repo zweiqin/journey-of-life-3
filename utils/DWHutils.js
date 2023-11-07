@@ -1,5 +1,5 @@
 import { whoami } from '../api/auth'
-import { USER_ID, VIDEO_TYPE, T_STORAGE_KEY, USER_INFO } from '../constant'
+import { USER_ID, T_STORAGE_KEY, USER_INFO } from '../constant'
 import { jsonp } from 'vue-jsonp'
 import { isNull } from 'lodash-es'
 
@@ -145,7 +145,7 @@ export const getStorageKeyToken = () => {
  * @returns
  */
 
-export const jumpToOtherProject = (url, cb = () => {}) => {
+export const jumpToOtherProject = (url, cb = () => { }) => {
 	// #ifdef H5
 	window.location.href = url
 	// #endif
@@ -310,7 +310,7 @@ export const isInWx = () => {
 	// #endif
 }
 
-export const isVideoSource = (src) => VIDEO_TYPE.some((item) => src.indexOf(item) !== -1)
+export const isVideoSource = (src) => ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'].some((item) => src.indexOf(item) !== -1)
 
 /**
  * 大数转小数 12345.123 = 1.23万

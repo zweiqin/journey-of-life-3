@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { IMG_UPLOAD_URL } from 'constant';
+import { IMG_UPLOAD_URL } from '../../config';
 import { getUserId } from '../../utils';
 import { publishCommentApi } from '../../api/community-center';
 import { isVideoSource } from '../../utils';
@@ -101,7 +101,6 @@ export default {
         serverScore: 5, // 服务评分
         skillSpeciality: 5 // 专业技能
       },
-      imageUploadUrl: IMG_UPLOAD_URL,
       isLoading: false
     };
   },

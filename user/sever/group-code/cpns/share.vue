@@ -17,9 +17,8 @@
 </template>
 
 <script>
-import { USER_INFO, USER_TOKEN } from '../../../../constant'
+import { USER_INFO } from '../../../../constant'
 import SaveImage from './SaveImage.vue'
-import { getConfigApi } from '../../../../api/auth'
 const shareList = [
   {
     label: '微信朋友',

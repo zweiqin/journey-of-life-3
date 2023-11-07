@@ -7,7 +7,6 @@
 <script>
 import Articles from './Articles.vue'
 import { getRedStatistics, getPostList } from '@/api/community-center/makeSmallFortune'
-import { getUserId } from '@/utils';
 export default {
   name: "MakeSmallFortuneList",
   components: {
@@ -26,11 +25,6 @@ export default {
     }
   },
   created() {
-      try{
-        this.region = uni.getStorageSync('ADDRES_REGION')
-      }catch {
-        this.region = '顺德区'
-      }
       this.getPostList()
   },
   computed: {},

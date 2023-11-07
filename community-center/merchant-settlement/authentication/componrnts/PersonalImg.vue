@@ -34,8 +34,9 @@
 </template>
 
 <script>
+import { IMG_UPLOAD_URL } from "../../../../config";
 import { getUserId } from "@/utils";
-import { SELECT_ADDRESS, USER_TOKEN } from "@/constant";
+import { USER_TOKEN } from "@/constant";
 export default {
   name: 'PersonalImg',
   data() {
@@ -57,7 +58,7 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+              url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
               name: "file",
               formData: {

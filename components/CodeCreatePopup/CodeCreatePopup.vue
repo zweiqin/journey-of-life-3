@@ -75,7 +75,6 @@
 import { A_TF_MAIN } from '../../config'
 import { USER_INFO } from '../../constant'
 import { getUserInfoCodeApi } from '../../api/anotherTFInterface'
-import { getUserId } from '../../utils'
 export default {
 	name: 'CodeCreatePopup',
 	props: {

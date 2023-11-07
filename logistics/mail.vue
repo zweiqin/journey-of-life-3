@@ -230,13 +230,13 @@ import {
   mapCategoryControlType,
 } from "./config";
 import {
-  jiSenderInfo,
-  jiRemarks,
-  jiconsigneeInfo,
-  jiOrderGoodsList,
+  JI_SENDER_INFO,
+  JI_REMARKS,
+  JI_CONSIGNEE_INFO,
+  JI_ORDER_GOODS_LIST,
   JI_EDIT_ORDER_ID,
-  VALUE_ADDED_SERVICES,
-  APPONIT_WULIU_QIYE_ID,
+  JI_VALUE_ADDED_SERVICES,
+  JI_APPONIT_WULIU_QIYE_ID,
 } from "../constant";
 import {
   getWarehouseListApi,
@@ -247,8 +247,6 @@ import {
 } from "../api/logistics";
 import { formatTime, getUserId, removeCache } from "../utils";
 import { payOrder } from "../api/logistics";
-import stanPaneVue from "../user/digital-store/components/stan-pane.vue";
-import { types } from '../components/JIcon/icons';
 
 export default {
   components: {},
@@ -304,7 +302,7 @@ export default {
      */
     handleDeleteGood(index) {
       this.orderForm.goodsList.splice(index, 1);
-      uni.setStorageSync("JI_ORDER_GOODS_LIST", [...this.orderForm.goodsList]);
+      uni.setStorageSync(JI_VALUE_ADDED_SERVICES, [...this.orderForm.goodsList]);
       this.getOrderQuote();
     },
 
@@ -344,7 +342,7 @@ export default {
      */
     confirmOrderRemarks(val) {
       this.orderForm.remarks = val;
-      uni.setStorageSync(jiRemarks, val);
+      uni.setStorageSync(JI_REMARKS, val);
     },
 
     // 获取仓库列表
@@ -566,13 +564,13 @@ export default {
             this.consigneeUserInfoString = "";
 
             removeCache([
-              jiSenderInfo,
-              jiRemarks,
-              jiconsigneeInfo,
-              jiOrderGoodsList,
+              JI_SENDER_INFO,
+              JI_REMARKS,
+              JI_CONSIGNEE_INFO,
+              JI_ORDER_GOODS_LIST,
               JI_EDIT_ORDER_ID,
-              VALUE_ADDED_SERVICES,
-              APPONIT_WULIU_QIYE_ID,
+              JI_VALUE_ADDED_SERVICES,
+              JI_APPONIT_WULIU_QIYE_ID,
             ]);
 
             setTimeout(() => {}, 1000);
@@ -611,7 +609,7 @@ export default {
       });
 
       if (!data) {
-        uni.removeStorageSync(APPONIT_WULIU_QIYE_ID);
+        uni.removeStorageSync(JI_APPONIT_WULIU_QIYE_ID);
         uni.showToast({
           title: "指定失败",
           duration: 2000,
@@ -636,7 +634,7 @@ export default {
      */
     cancelApponit() {
       this.appointWuliuQiyeID = null;
-      uni.removeStorageSync(APPONIT_WULIU_QIYE_ID);
+      uni.removeStorageSync(JI_APPONIT_WULIU_QIYE_ID);
       this.getWarehouseList();
       uni.showToast({
         title: "取消成功",
@@ -681,7 +679,7 @@ export default {
     /**
      * @description 获取增值服务缓存
      */
-    this.orderForm.serve = uni.getStorageSync("VALUE_ADDED_SERVICES") || {
+    this.orderForm.serve = uni.getStorageSync(JI_VALUE_ADDED_SERVICES) || {
       controlGoods: "不控货",
       delivery: "送货安装",
       take: "不提货",
@@ -692,7 +690,7 @@ export default {
     /**
      * @description 获取商品缓存
      */
-    const goodsList = uni.getStorageSync("JI_ORDER_GOODS_LIST");
+    const goodsList = uni.getStorageSync(JI_ORDER_GOODS_LIST);
     if (goodsList && goodsList.length > 0) {
       this.orderForm.goodsList = goodsList.map((item) => {
         if (item && !item.weight) {
@@ -801,7 +799,7 @@ export default {
     /**
      * @description 获取收货人信息
      */
-    const senderUserInfo = uni.getStorageSync(jiSenderInfo);
+    const senderUserInfo = uni.getStorageSync(JI_SENDER_INFO);
     if (senderUserInfo) {
       this.orderForm.senderInfo = senderUserInfo;
       let str = "";
@@ -813,7 +811,7 @@ export default {
         str === this.senderUserInfoString ? this.senderUserInfoString : str;
     }
 
-    const consigneeUserInfo = uni.getStorageSync(jiconsigneeInfo);
+    const consigneeUserInfo = uni.getStorageSync(JI_CONSIGNEE_INFO);
     if (consigneeUserInfo) {
       this.orderForm.consigneeInfo = consigneeUserInfo;
       let str = "";
@@ -830,7 +828,7 @@ export default {
     /**
      * @description 获取备注
      */
-    const remarks = uni.getStorageSync(jiRemarks);
+    const remarks = uni.getStorageSync(JI_REMARKS);
     if (remarks) {
       this.orderForm.remarks = remarks;
     }
@@ -843,7 +841,7 @@ export default {
     /**
      * 获取appoinit物流企业id，判断当前是否指定物流
      */
-    this.appointWuliuQiyeID = uni.getStorageSync(APPONIT_WULIU_QIYE_ID);
+    this.appointWuliuQiyeID = uni.getStorageSync(JI_APPONIT_WULIU_QIYE_ID);
     if (this.appointWuliuQiyeID) {
       this.getApponitWuliuList();
     } else {

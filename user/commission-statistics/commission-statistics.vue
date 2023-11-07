@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { user_INFO } from 'constant';
+import { USER_INFO } from 'constant';
 import { getCommissionDatatApi } from '../../api/user';
 export default {
   data() {
@@ -84,7 +84,7 @@ export default {
     };
   },
   onShow() {
-    this.userInfo = uni.getStorageSync(user_INFO);
+    this.userInfo = uni.getStorageSync(USER_INFO);
     if (this.userInfo) {
       this.getCommissionData();
     }

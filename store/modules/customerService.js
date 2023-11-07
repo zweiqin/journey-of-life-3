@@ -1,7 +1,6 @@
 import { queryCustomer, createChat, queryChatList, queryChatMessage, queryChatMessageBack, addChatMessage } from '../../api/customerService'
 import { CHANGE_CUSTOMER_SERVICE_INFO, CHANGE_WS_INFO, CHANGE_WSINFO_INFO, CHANGE_CHAT_LIST, CHANGE_ON_FN } from './type'
 import { getUserId } from '../../utils'
-// import { USER_INFO } from '../../../constant' // uni.getStorageSync(USER_INFO)
 
 export default {
 	namespaced: true,

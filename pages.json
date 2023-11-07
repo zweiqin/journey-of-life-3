@@ -22,27 +22,7 @@
       // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商城",
-        "backgroundTextStyle": "dark",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTextStyle": "black",
         "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/index/index",
-      // "path": "pages/another-index/index",
-      "style": {
-        "navigationBarTitleText": "商城",
-        "backgroundTextStyle": "dark",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTextStyle": "black",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/jump/jump",
-      "style": {
-        "navigationBarTitleText": "跳转"
       }
     },
     {
@@ -51,6 +31,32 @@
         "navigationBarTitleText": "我的订单",
         "navigationStyle": "custom",
         "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/user/user",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/logistics/logistics",
+      "style": {
+        "navigationBarTitleText": "物流",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/stuff/stuff",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/jump/jump",
+      "style": {
+        "navigationBarTitleText": "跳转"
       }
     },
     {
@@ -67,16 +73,6 @@
           "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
         },
         "navigationBarTitleText": "订单详情"
-      }
-    },
-    {
-      "path": "pages/stuff/stuff",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "家具材料",
-        "navigationBarTextStyle": "black",
-        "navigationStyle": "custom"
       }
     },
     {
@@ -139,20 +135,6 @@
     //     "navigationBarTitleText": "详情"
     //   }
     // },
-    {
-      "path": "pages/user/user",
-      "style": {
-        "navigationBarTitleText": "个人中心",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/logistics/logistics",
-      "style": {
-        "navigationBarTitleText": "物流",
-        "navigationStyle": "custom"
-      }
-    },
     {
       "path": "pages/search-page/search-page",
       "style": {
@@ -739,10 +721,7 @@
         {
           "path": "view",
           "style": {
-            "navigationBarTitleText": "",
-            "app-plus": {
-              "titleNView": false
-            } //去掉
+            "navigationBarTitleText": ""
           }
         },
         {
@@ -1566,6 +1545,7 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "团蜂家居",
     "navigationBarTextStyle": "black",
+		"titleNView": false,
     "app-plus": {
       "animationType": "slide-in-right",
       "animationDuration": 300

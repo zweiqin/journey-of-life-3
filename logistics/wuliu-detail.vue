@@ -83,7 +83,7 @@ import {
   followWuliuApi,
   unFollowWuliuApi,
 } from "../api/logistics";
-import { APPONIT_WULIU_QIYE_ID } from "../constant";
+import { JI_APPONIT_WULIU_QIYE_ID } from "../constant";
 
 export default {
   data() {
@@ -103,7 +103,7 @@ export default {
 
     // 下单
     toOrder() {
-      uni.setStorageSync(APPONIT_WULIU_QIYE_ID, this.qiyeId);
+      uni.setStorageSync(JI_APPONIT_WULIU_QIYE_ID, this.qiyeId);
       uni.navigateTo({
         url: "/logistics/mail",
       });

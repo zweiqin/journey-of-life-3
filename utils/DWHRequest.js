@@ -1,5 +1,6 @@
 import { clearAllCache } from 'constant'
 import { RUAN_URL, DEYI_URL, XZL_URL, SheQu_URL, SheQu1_URL, sf, shopUrl } from '../config'
+import { USER_TOKEN } from '../constant'
 import store from '../store'
 
 const request = (base_url) => function (url, data = {}, method = 'post', cb, header) {
@@ -10,7 +11,7 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb, hea
 			method,
 			header: {
 				...header,
-				token: uni.getStorageSync('USER_TOKEN')
+				token: uni.getStorageSync(USER_TOKEN)
 			},
 			success: (res) => {
 				resolve(res.data)
@@ -18,7 +19,6 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb, hea
 			fail: (error) => {
 				reject(error)
 			},
-
 			complete: () => {
 				cb && typeof cb === 'function' && cb()
 			}
@@ -115,12 +115,10 @@ const endService = (base_url) => function (config) {
 					} else {
 						reject(data.statusMsg)
 					}
+				} else if (data.code == '20000' || data.code == '0') {
+					resolve(data.data)
 				} else {
-					if (data.code == '20000' || data.code == '0') {
-						resolve(data.data)
-					} else {
-						reject(data.msg)
-					}
+					reject(data.msg)
 				}
 
 				loading && uni.hideLoading()

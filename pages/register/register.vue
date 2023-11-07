@@ -118,7 +118,6 @@ export default {
         password: '',
         code: '',
       },
-      to: null,
       onGetCode: null,
       onRegister: null,
       isShowPassword: false,
@@ -130,7 +129,6 @@ export default {
     }
   },
   onLoad(params) {
-    this.to = params.to == 'undefined' ? '' : params.to
     this.onGetCode = throttle(this.handleGetCode, 1000)
     this.onRegister = throttle(this.handleRegister, 1000)
   },
@@ -192,15 +190,9 @@ export default {
           this.ttoast('注册成功')
 
           setTimeout(() => {
-            if (_this.to) {
-              uni.redirectTo({
-                url: '/pages/login/login?code=' + _this.to,
-              })
-            } else {
               uni.redirectTo({
                 url: '/pages/login/login',
               })
-            }
           }, 1000)
         })
         .catch(errors => {})

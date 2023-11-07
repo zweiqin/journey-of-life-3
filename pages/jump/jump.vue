@@ -26,7 +26,7 @@
 <script>
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
-// import { bindUserSaoMaApi, bindSaoMaBrandApi } from '../../api/user'
+import { checkBindApi, bindLastUserApi } from '../../api/user'
 import { getOrderDetailApi } from '../../api/order'
 import { bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
@@ -147,7 +147,7 @@ export default {
 			uni.removeStorageSync(T_NEW_BIND_CODE)
 			uni.removeStorageSync(T_NEW_BIND_ID)
 			if (this.type === 'nothing') {
-				this.$switchTab('/pages/store/store')
+				this.$switchTab('/pages/user/user')
 			} else if (this.type === 'verification') {
 				this.orderId = this.code.split('-')[0]
 				this.code = this.code.split('-')[1]
@@ -170,12 +170,8 @@ export default {
 				}
 			} else if (this.type === 'bindingShop') {
 				bindPlatformInfoCodeBindingApi({ phone: this.code, type: 1 })
-					.then((res) => {
-						this.$showToast('绑定成功', 'success')
-					})
-					.finally((e) => {
-						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
-					})
+					.then((res) => { this.$showToast('绑定成功', 'success') })
+					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
@@ -183,16 +179,24 @@ export default {
 						jumpToOtherProject(`/user/view?target=${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
 					}, 300)
 				}
+			} else if (this.type === 'bindLastUser') {
+				checkBindApi({ userId: this.userId })
+					.then(() => {
+						this.$showToast('已存在上级绑定')
+						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
+					})
+					.catch(() => {
+						uni.hideToast()
+						bindLastUserApi({ userId: this.userId, userCode: this.code })
+							.then((res) => { this.$showToast('绑定成功', 'success') })
+							.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+					})
 			}
 		},
 		handleVerification() {
 			xxxxxApi({ code: this.code, userId: this.userId })
-				.then((res) => {
-					this.$showToast('核销成功', 'success')
-				})
-				.finally((e) => {
-					setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
-				})
+				.then((res) => { this.$showToast('核销成功', 'success') })
+				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 		}
 	}
 }

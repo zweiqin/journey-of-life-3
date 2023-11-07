@@ -46,16 +46,13 @@
 </template>
 
 <script>
-import { SELECT_ADDRESS, USER_TOKEN } from '@/constant';
+import { IMG_UPLOAD_URL } from '../../config';
+import { USER_TOKEN } from '@/constant';
 import { getUserId } from '@/utils';
-import { lookPostRed, getPostDetails, postDetailsEdit } from '@/api/community-center/makeSmallFortune'
+import { getPostDetails, postDetailsEdit } from '@/api/community-center/makeSmallFortune'
 import { selectCategory } from '@/api/community-center/makeSmallFortune'
-import tuiSelect from '@/components/thorui/tui-select/tui-select.vue'
 export default {
     name: 'EditingPage',
-    components: {
-        TuiSelect: tuiSelect
-    },
     onLoad(option) {
         // this.formData.postId = option.id;
         getPostDetails({
@@ -150,7 +147,7 @@ export default {
                     for (const imgFile of chooseImageRes.tempFiles) {
                         uni.showLoading();
                         uni.uploadFile({
-                        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+                        url: IMG_UPLOAD_URL,
                         filePath: imgFile.path,
                         name: 'file',
                         formData: {
@@ -187,7 +184,7 @@ export default {
                     for (const imgFile of chooseImageRes.tempFiles) {
                         uni.showLoading();
                         uni.uploadFile({
-                        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+                        url: IMG_UPLOAD_URL,
                         filePath: imgFile.path,
                         name: 'file',
                         formData: {

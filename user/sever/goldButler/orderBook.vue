@@ -70,6 +70,7 @@
 import { getSetMealListApi, reservationServiceApi } from '../../../api/user';
 import { USER_TOKEN} from '../../../constant';
 import { getUserId } from '../../../utils';
+import { IMG_UPLOAD_URL } from '../../../config';
 import chooseTime from '../../../community-center/componts/choose-time.vue';
 export default {
   components: { chooseTime },
@@ -114,7 +115,7 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+              url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
               name: 'file',
               formData: {

@@ -229,20 +229,15 @@ import uParse from '../components/u-parse/u-parse.vue';
 import CommunityDetailPoster from './components/CommunityDetailPoster.vue';
 import { marked } from 'marked';
 import { splitProject } from './componts/utile';
-import { getConfigApi } from '../api/auth';
 import item from '../community-center/componts/item';
 import charge from '../community-center/componts/charge';
-import { getServiceDetailApi, getServeCommentListApi } from '../api/community-center';
+import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center';
 import { changeServiceUserBindingApi } from '../api/user';
 import { moreService } from '../pages/community-center/config';
-import { USER_TOKEN, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
+import { NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
 import { getUserId } from '../utils';
 import { getAdressDetailByLngLat } from '../utils/DWHutils';
-import { getIsOpenServerAreaApi } from '../api/community-center';
 import CommentList from './components/CommentList.vue';
-// #ifdef H5
-import share from '../utils/wxshare';
-// #endif
 
 /**
  * 这个页面我tm，好恶心

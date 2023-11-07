@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { IMG_UPLOAD_URL } from 'constant';
+import { IMG_UPLOAD_URL } from '../../config';
 import { appendCommentApi } from '../../api/community-center';
 import { isVideoSource } from '../../utils';
 
@@ -80,7 +80,6 @@ export default {
         commentId: '',
         appendFileUrl: []
       },
-      imageUploadUrl: IMG_UPLOAD_URL,
       isLoading: false
     };
   },

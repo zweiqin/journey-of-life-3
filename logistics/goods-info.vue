@@ -160,9 +160,8 @@
 </template>
 
 <script>
-import { getMainType } from "./config";
 import ChoosePane from "./component/choose-pane.vue";
-import { jiOrderGoodsList } from "../constant";
+import { JI_ORDER_GOODS_LIST } from "../constant";
 import SearchPane from "./component/search-pane.vue";
 import Selected from "./component/selected.vue";
 import { getCategoryListApi } from "../api/logistics";
@@ -203,15 +202,13 @@ export default {
     uni.showLoading({
       mask: true,
     });
-    const localData = uni.getStorageSync(jiOrderGoodsList) || [];
+    const localData = uni.getStorageSync(JI_ORDER_GOODS_LIST) || [];
     for (const goodsInfo of localData) {
       this.selectData[goodsInfo.goodType] = goodsInfo;
       this.selectList.push(goodsInfo.goodType);
     }
     this.clacStatistics();
     uni.hideLoading();
-
-    const _this = this;
     // uni.request({
     //   url: "http://192.168.0.27:8781laoa-huozhu/api/hz/order/third/productTypeListNew", //仅为示例，并非真实接口地址。
     //   method: "POST",
@@ -219,7 +216,6 @@ export default {
     //     _this.commoditySelect = res.data.data;
     //   },
     // });
-
     getCategoryListApi().then(({ data }) => {
       this.commoditySelect = data;
     });
@@ -371,7 +367,7 @@ export default {
         return;
       }
       const data = Object.values(JSON.parse(JSON.stringify(this.selectData)));
-      uni.setStorageSync(jiOrderGoodsList, data);
+      uni.setStorageSync(JI_ORDER_GOODS_LIST, data);
       setTimeout(() => {
         uni.navigateBack();
       }, 500);

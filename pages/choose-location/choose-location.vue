@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { USER_SELECT_ADDRESS } from 'constant';
+import { T_SELECTED_ADDRESS } from 'constant';
 import { hotCities } from './data';
 export default {
   data() {
@@ -221,8 +221,6 @@ export default {
       this.currentTab = 1;
       this.tabs[0].name = chooseAddressInfo.name.slice(0, 3) + '...';
       this.tabs[0].select = chooseAddressInfo.name;
-
-      // this.$store.commit('location/CHANGE_CURRENT_CITY', cityName)
       // this.handleBack()
     },
 
@@ -334,7 +332,7 @@ export default {
       uni.showLoading();
       if (isHot) {
         this.$store.dispatch('location/getDetailAddress', data);
-        uni.setStorageSync(USER_SELECT_ADDRESS, {
+        uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
           data: data
         });
@@ -345,7 +343,7 @@ export default {
           town: data.name
         });
 
-        uni.setStorageSync(USER_SELECT_ADDRESS, {
+        uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'detail',
           data: {
             city: this.tabs[0].select,

@@ -247,23 +247,13 @@
 import Carousel from '../../components/carousel';
 import { subInfoConfig, goodsInfoConfig } from './config';
 import uParse from '../../components/u-parse/u-parse.vue';
-import { marked } from 'marked';
-import { PAY_GOODS, USER_ID, USER_INFO } from '../../constant';
 import RecommendGoods from '../../components/recommend-goods';
 import CommentListDrawer from './components/CommentListDrawer.vue';
 import { getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 
 import {
-  getGoodsDetailApi,
-  collectionApi,
-  // getShopCarApi,
-  addShopCarApi,
-  getCarShopNumberApi,
-  goodsListApi,
-  watchVipPriceApi,
-  getGoodsCommentListApi
+  getCarShopNumberApi
 } from '../../api/goods';
-import { getUserId } from '../../utils';
 
 export default {
   components: {

@@ -4,7 +4,7 @@ var http = require('./utils/http.js')
 import { getUserId } from './utils'
 import { BASE_WS_API } from './config'
 import { whoami } from './api/auth'
-import { USER_SELECT_ADDRESS } from './constant'
+import { T_SELECTED_ADDRESS } from './constant'
 import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 
 export default {
@@ -165,7 +165,7 @@ export default {
 				})
 			} catch (error) {
 				this.globalData.isHasLocationPermission = false
-				const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
+				const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
 				if (lastAddress) {
 					this.$store.dispatch('location/getDetailAddress', lastAddress.data)
 				} else {
@@ -182,7 +182,7 @@ export default {
 
 		// 使用本地数据
 		useStorageLocation() {
-			const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
 			if (lastAddress) {
 				this.$store.dispatch('location/getDetailAddress', lastAddress.data)
 			}

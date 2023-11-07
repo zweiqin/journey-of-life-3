@@ -261,7 +261,7 @@ import Carousel from '../../components/carousel';
 import { subInfoConfig, goodsInfoConfig } from './config';
 import uParse from '../../components/u-parse/u-parse.vue';
 import { marked } from 'marked';
-import { PAY_GOODS, USER_ID, USER_INFO } from '../../constant';
+import { T_PAY_GOODS, USER_ID, USER_INFO } from '../../constant';
 import RecommendGoods from '../../components/recommend-goods';
 import CommentListDrawer from './components/CommentListDrawer.vue';
 
@@ -416,7 +416,7 @@ export default {
       } else {
         goodsInfo = selectInfo;
       }
-      uni.setStorageSync(PAY_GOODS, {
+      uni.setStorageSync(T_PAY_GOODS, {
         currentGoodsImg: this.common.seamingImgUrl(goodsInfo.product.url) || this.goodsDetail.info.picUrl,
         currentSpecification: goodsInfo.spStr,
         currentPrice: goodsInfo.product.price,

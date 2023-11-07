@@ -173,7 +173,8 @@
 import { getUserId } from 'utils';
 import { debounce } from 'lodash-es';
 import { getAddressListApi } from '../api/address';
-import { SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from '../constant';
+import { T_SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from '../constant';
+import { IMG_UPLOAD_URL } from '../config';
 import ChooseTime from './componts/choose-time.vue';
 import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center';
 
@@ -231,7 +232,7 @@ export default {
     },
     // 获取收货地址
     async getAddressList() {
-      const choosedAddress = uni.getStorageSync(SELECT_ADDRESS);
+      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS);
       if (choosedAddress) {
         this.defualtAddress = choosedAddress;
         this.checkAreaExistCommunitStore();
@@ -328,7 +329,7 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+              url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
               name: 'file',
               formData: {

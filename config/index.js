@@ -11,6 +11,8 @@ export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 生
 // export const RUAN_URL = 'http://192.168.0.91:9107/demo/wx' // 新团蜂本地
 // export const RUAN_URL = 'http://192.168.0.108:8080/demo/'
 
+export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload'
+
 export const DEYI_URL = 'https://bus.deyisoft.cn:11112/dts-wx-api/wx'
 
 // 本地

@@ -5,20 +5,18 @@ export const T_SKU_ITEM_LIST = 'T_SKU_ITEM_LIST'
 export const T_ALL_CART_NUM = 'T_ALL_CART_NUM'
 
 // 寄件
-export const jiSenderInfo = 'JI_SENDER_INFO'
-export const jiconsigneeInfo = 'JI_CONSIGNEE_INFO'
-export const jiRemarks = 'JI_REMARKS'
-export const jiOrderGoodsList = 'JI_ORDER_GOODS_LIST'
-export const VALUE_ADDED_SERVICES = 'VALUE_ADDED_SERVICES'
+export const JI_SENDER_INFO = 'JI_SENDER_INFO'
+export const JI_CONSIGNEE_INFO = 'JI_CONSIGNEE_INFO'
+export const JI_REMARKS = 'JI_REMARKS'
+export const JI_ORDER_GOODS_LIST = 'JI_ORDER_GOODS_LIST'
+export const JI_VALUE_ADDED_SERVICES = 'JI_VALUE_ADDED_SERVICES'
 export const JI_EDIT_ORDER_ID = 'JI_EDIT_ORDER_ID'
-export const APPONIT_WULIU_QIYE_ID = 'APPONIT_WULIU_QIYE_ID'
+export const JI_APPONIT_WULIU_QIYE_ID = 'JI_APPONIT_WULIU_QIYE_ID'
 
 // auth
 export const USER_ID = 'USER_ID'
 export const USER_TOKEN = 'USER_TOKEN'
-export const user_INFO = 'user_INFO'
 export const USER_INFO = 'user_INFO'
-export const LOGIN_FORM = 'LOGIN_FORM'
 export const T_STORAGE_KEY = 'T_STORAGE_KEY'
 
 // 绑定
@@ -26,88 +24,52 @@ export const T_NEW_BIND_TYPE = 'T_NEW_BIND_TYPE'
 export const T_NEW_BIND_CODE = 'T_NEW_BIND_CODE'
 export const T_NEW_BIND_ID = 'T_NEW_BIND_ID'
 
-// home page
-export const STYLE_LIST = 'STYLE_LIST'
-
-// user center
-export const WORDS_LIST = 'WORDS_LIST'
-export const SELECT_WORDS = 'SELECT_WORDS'
+// 曾经定位过或选择过的地址
+export const T_SELECTED_ADDRESS = 'T_SELECTED_ADDRESS'
 
 // goods
-export const PAY_GOODS = 'PAY_GOODS'
-export const PAY_SHOP_GOODS = 'PAY_SHOP_GOODS'
-export const SELECT_ADDRESS = 'SELECT_ADDRESS'
-export const STORE_TYPES = 'STORE_TYPES'
-export const CAR_GOODS_DETAIL = 'CAR_GOODS_DETAIL'
-export const CAR_GOODS_DETAIL_ALL = 'CAR_GOODS_DETAIL_ALL'
+export const T_SELECT_ADDRESS = 'T_SELECT_ADDRESS'
+export const T_PAY_GOODS = 'T_PAY_GOODS'
 export const T_PAY_ORDER = 'T_PAY_ORDER'
-export const J_SELECT_ADDRESS = 'J_SELECT_ADDRESS'
+export const T_COMMUNITY_ORDER_NO = 'T_COMMUNITY_ORDER_NO'
 
-// Event Name
-export const CHANGE_GOODS_CHECKED_EVENT = 'CHANGE_GOODS_CHECKED_EVENT'
-export const ADD_DELETE_GOODS_EVENT = 'ADD_DELETE_GOODS_EVENT'
-export const CHANGE_DELETE_LIST_EVENT = 'CHANGE_DELETE_LIST_EVENT'
-
-export const NEW_BIND_ID = 'NEW_BIND_ID'
 export const NEW_BIND_ACTIVITY_ID = 'NEW_BIND_ACTIVITY_ID'
 export const NEW_BIND_SERVICE_ID = 'NEW_BIND_SERVICE_ID'
 export const NEW_BIND_SERVICE_URL = 'NEW_BIND_SERVICE_URL'
-export const IN_TIMES = 'IN_TIMES'
-
-export const T_CURRENT_ADDRESS = 'T_CURRENT_ADDRESS'
-
-export const COMMUNITY_ORDER_NO = 'COMMUNITY_ORDER_NO'
 
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
 export const GROUP_INVITE_CODE = 'GROUP_INVITE_CODE'
 
-export const MINI_PROGRAM_TAG = 'MINI_PROGRAM_TAG'
-export const USER_SELECT_ADDRESS = 'USER_SELECT_ADDRESS'
-export const USER_SELECT_BUSINESS_ADDRESS = 'USER_SELECT_BUSINESS_ADDRESS'
-
-export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload'
-export const VIDEO_TYPE = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4']
-
-// 从新团蜂搬过来的
-
 export const clearAllCache = () => {
 	[
-		COMMUNITY_ORDER_NO,
-		jiSenderInfo,
-		jiconsigneeInfo,
-		jiRemarks,
-		jiOrderGoodsList,
-		VALUE_ADDED_SERVICES,
+		T_RECEIVE_ITEM,
+		T_SKU_ITEM_DTO_LIST,
+		T_SKU_ITEM_LIST,
+		T_ALL_CART_NUM,
+		JI_SENDER_INFO,
+		JI_CONSIGNEE_INFO,
+		JI_REMARKS,
+		JI_ORDER_GOODS_LIST,
+		JI_VALUE_ADDED_SERVICES,
 		JI_EDIT_ORDER_ID,
-		APPONIT_WULIU_QIYE_ID,
+		JI_APPONIT_WULIU_QIYE_ID,
 		USER_ID,
 		USER_TOKEN,
-		user_INFO,
 		USER_INFO,
-		LOGIN_FORM,
 		T_STORAGE_KEY,
-		STYLE_LIST,
-		WORDS_LIST,
-		SELECT_WORDS,
-		PAY_GOODS,
-		SELECT_ADDRESS,
-		CAR_GOODS_DETAIL,
-		CAR_GOODS_DETAIL_ALL,
+		T_NEW_BIND_TYPE,
+		T_NEW_BIND_CODE,
+		T_NEW_BIND_ID,
+		T_SELECTED_ADDRESS,
+		T_SELECT_ADDRESS,
+		T_PAY_GOODS,
 		T_PAY_ORDER,
-		J_SELECT_ADDRESS,
-		CHANGE_GOODS_CHECKED_EVENT,
-		ADD_DELETE_GOODS_EVENT,
-		CHANGE_DELETE_LIST_EVENT,
-		NEW_BIND_ID,
+		T_COMMUNITY_ORDER_NO,
 		NEW_BIND_ACTIVITY_ID,
 		NEW_BIND_SERVICE_ID,
 		NEW_BIND_SERVICE_URL,
-		IN_TIMES,
-		T_CURRENT_ADDRESS,
 		SF_INVITE_CODE,
-		MINI_PROGRAM_TAG,
-		USER_SELECT_ADDRESS,
 		GROUP_INVITE_CODE
 	].forEach((item) => {
 		uni.removeStorageSync(item)

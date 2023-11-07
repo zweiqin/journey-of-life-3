@@ -55,7 +55,6 @@ export default {
 
 	methods: {
 		async handleClickShareItem(shareItem, isQuit) {
-			// const userInfo = uni.getStorageSync(USER_INFO)
 			const _this = this
 			switch (shareItem) {
 				case 'wechat':

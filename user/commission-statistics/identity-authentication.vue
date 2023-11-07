@@ -86,6 +86,7 @@
 import { getUserId } from '../../utils';
 import { getCodeApi } from '../../api/auth';
 import { userIdentityAuthenticationInfoApi, IDCardAnalysisApi } from '../../api/user'
+import { IMG_UPLOAD_URL } from '../../config'
 import { USER_INFO, USER_TOKEN } from '../../constant'
 
 export default {
@@ -114,7 +115,7 @@ export default {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading();
             uni.uploadFile({
-              url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+              url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
               name: 'file',
               formData: {

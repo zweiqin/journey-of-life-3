@@ -41,7 +41,6 @@
 <script>
 import Share from './cpns/share.vue'
 import FillCode from './cpns/FillCode.vue'
-// import { USER_INFO } from '../../../constant'
 import { getUserId } from '../../../utils'
 import {
 	getPurchaseRecordApi,
@@ -63,7 +62,6 @@ export default {
 		return {
 			campaignsType: '',
 			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=',
-			// userInfo: uni.getStorageSync(USER_INFO) || {},
 			shareCode: '',
 			fillCodeVisible: false,
 			activityCode: '',

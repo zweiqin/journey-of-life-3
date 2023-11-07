@@ -149,6 +149,7 @@
 import { buildUserCrmSlbumApi } from '../../api/user'
 import { USER_TOKEN, USER_INFO } from '../../constant'
 import { getUserId } from '../../utils'
+import { IMG_UPLOAD_URL } from '../../config'
 export default {
 	name: 'AddAlbum',
 	// props: {
@@ -221,7 +222,7 @@ export default {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+							url: IMG_UPLOAD_URL,
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {
@@ -257,7 +258,7 @@ export default {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+							url: IMG_UPLOAD_URL,
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {
@@ -294,7 +295,7 @@ export default {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+							url: IMG_UPLOAD_URL,
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {

@@ -131,6 +131,7 @@ import {
 } from "../../../api/user";
 import { baseInfoFields, connects } from "./config";
 import { getUserId } from "../../../utils";
+import { IMG_UPLOAD_URL } from "../../../config";
 
 export default {
   components: {
@@ -245,7 +246,7 @@ export default {
         title: "头像上传中",
       });
       uni.uploadFile({
-        url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+        url: IMG_UPLOAD_URL,
         filePath: e,
         name: "file",
         success: (uploadFileRes) => {
@@ -275,7 +276,7 @@ export default {
             title: "视频上传中",
           });
           uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+            url: IMG_UPLOAD_URL,
             filePath: res.tempFilePath,
             name: "file",
             success: (uploadFileRes) => {

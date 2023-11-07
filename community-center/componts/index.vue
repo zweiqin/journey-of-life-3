@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { number } from "echarts";
 import { getUserId } from "../../utils";
 import showModal from "mixin/showModal";
 export default {

@@ -63,7 +63,7 @@
 const { debounce } = require("../utils/util");
 import { getFollowListApi } from "../api/logistics";
 import { getUserId } from "../utils";
-import { APPONIT_WULIU_QIYE_ID } from "../constant";
+import { JI_APPONIT_WULIU_QIYE_ID } from "../constant";
 
 export default {
   data() {
@@ -158,7 +158,7 @@ export default {
 
     // 点击指定
     handleSelectApponitWuliu(item) {
-      uni.setStorageSync(APPONIT_WULIU_QIYE_ID, item.qiyeId);
+      uni.setStorageSync(JI_APPONIT_WULIU_QIYE_ID, item.qiyeId);
       uni.navigateTo({
         url: "/logistics/mail",
       });

@@ -99,13 +99,8 @@
 </template>
 
 <script>
-// var jweixin = require('jweixin-module')
 import { getUserCrmSlbumSelectId } from '../../api/user'
 // import { getConfigApi } from '../../api/auth'
-// import { USER_TOKEN } from '../../constant'
-// // #ifdef H5
-// import wxShare from '../../utils/wxshare'
-// // #endif
 import share from '../../utils/share'
 import PointShare from '../../components/BeeWxShare/point-share'
 import PosterPopup from './cpns/PosterPopup.vue'
@@ -212,9 +207,6 @@ export default {
 	onLoad(options) {
 		this.id = options.id
 		this.getUserCrmSlbumSelectId()
-		// // #ifdef H5
-		// this.setWxShareConfig()
-		// // #endif
 	},
 	methods: {
 		init() {
@@ -249,21 +241,6 @@ export default {
 			}
 			console.log(res.data, this.imgList)
 		},
-
-		// // 微信分享
-		// async setWxShareConfig() {
-		// 	const currentUrl = window.location.href.replace('#', 'ericToken')
-		// 	const { data } = await getConfigApi({
-		// 		url: currentUrl,
-		// 		token: uni.getStorageSync(USER_TOKEN)
-		// 	})
-		// 	wxShare.wxRegister(data, {
-		// 		title: `${this.imgInfo.userName}分享的图册`,
-		// 		imgUrl: this.imgInfo.bookFace,
-		// 		desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-		// 		link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`
-		// 	})
-		// },
 
 		async handlePopup(obj) {
 			console.log(obj)

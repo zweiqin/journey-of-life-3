@@ -112,7 +112,8 @@
 import { getUserId } from 'utils';
 import { getOrderDetailApi, postCommentApi } from '../../api/order';
 import { rateOrderWholeList } from './config';
-import { IMG_UPLOAD_URL, USER_TOKEN } from '../../constant';
+import { USER_TOKEN } from '../../constant';
+import { IMG_UPLOAD_URL } from '../../config';
 
 export default {
   onLoad(params) {

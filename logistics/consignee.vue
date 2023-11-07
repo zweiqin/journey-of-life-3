@@ -65,7 +65,7 @@
 import IntelligentRecognition from "./component/intelligent-recognition.vue";
 import PickRegions from "../components/pick-regions/pick-regions.vue";
 import { consigneeInfo } from "./config";
-import { jiconsigneeInfo } from "../constant";
+import { JI_CONSIGNEE_INFO } from "../constant";
 
 export default {
   components: {
@@ -111,7 +111,7 @@ export default {
           return;
         }
       }
-      uni.setStorageSync(jiconsigneeInfo, this.consigneeInfoForm);
+      uni.setStorageSync(JI_CONSIGNEE_INFO, this.consigneeInfoForm);
       uni.navigateBack();
     },
 
@@ -149,7 +149,7 @@ export default {
   },
 
   onLoad() {
-    const userInfo = uni.getStorageSync(jiconsigneeInfo);
+    const userInfo = uni.getStorageSync(JI_CONSIGNEE_INFO);
     if (userInfo) {
       this.consigneeInfoForm = userInfo;
     }

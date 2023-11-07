@@ -76,7 +76,7 @@ import { getAddressListApi } from '../../../api/address'
 import { refrshUserInfoApi } from '../../../api/user'
 import { getCartCheckoutApi } from '../../../api/cart'
 import { submitOrderApi } from '../../../api/goods'
-import { SELECT_ADDRESS, T_PAY_ORDER } from '../../../constant'
+import { T_SELECT_ADDRESS, T_PAY_ORDER } from '../../../constant'
 import { getUserId, payFn } from '../../../utils'
 import RecommendGoods from '../../../components/recommend-goods/index.vue'
 
@@ -109,7 +109,7 @@ export default {
 				url: '/pages/order/order?type=shop&status=1'
 			})
 		} else {
-			const apponitAddress = uni.getStorageSync(SELECT_ADDRESS)
+			const apponitAddress = uni.getStorageSync(T_SELECT_ADDRESS)
 			if (apponitAddress) {
 				this.defaultAddress = apponitAddress
 				this.getData()

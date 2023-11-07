@@ -102,8 +102,8 @@ import Search from './cpns/search';
 import Carousel from '../../components/carousel';
 import Menus from './cpns/Menus';
 import { menus } from './config';
-import { jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, VALUE_ADDED_SERVICES, JI_EDIT_ORDER_ID, APPONIT_WULIU_QIYE_ID } from '../../constant';
-import { getUserId, removeCache, checkWhoami } from '../../utils/DWHutils';
+import { JI_SENDER_INFO, JI_REMARKS, JI_CONSIGNEE_INFO, JI_ORDER_GOODS_LIST, JI_VALUE_ADDED_SERVICES, JI_EDIT_ORDER_ID, JI_APPONIT_WULIU_QIYE_ID } from '../../constant';
+import { getUserId, removeCache } from '../../utils/DWHutils';
 import { collectPages } from '../../logistics/config';
 
 export default {
@@ -117,7 +117,6 @@ export default {
   },
   created() {
     this.getData();
-    // checkWhoami();
   },
   methods: {
     handleBack() {
@@ -201,7 +200,7 @@ export default {
   },
 
   onShow() {
-    removeCache([jiSenderInfo, jiRemarks, jiconsigneeInfo, jiOrderGoodsList, JI_EDIT_ORDER_ID, VALUE_ADDED_SERVICES, APPONIT_WULIU_QIYE_ID]);
+    removeCache([JI_SENDER_INFO, JI_REMARKS, JI_CONSIGNEE_INFO, JI_ORDER_GOODS_LIST, JI_EDIT_ORDER_ID, JI_VALUE_ADDED_SERVICES, JI_APPONIT_WULIU_QIYE_ID]);
   }
 };
 </script>

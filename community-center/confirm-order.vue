@@ -57,7 +57,7 @@
 <script>
 import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
 import { getUserId, throttle } from '../utils';
-import { COMMUNITY_ORDER_NO } from '../constant';
+import { T_COMMUNITY_ORDER_NO } from '../constant';
 
 export default {
   name: 'Confirm-order',
@@ -82,7 +82,7 @@ export default {
     };
   },
   onShow() {
-    if (uni.getStorageSync(COMMUNITY_ORDER_NO)) {
+    if (uni.getStorageSync(T_COMMUNITY_ORDER_NO)) {
       this.handleBack();
     }
   },
@@ -104,7 +104,7 @@ export default {
 
     //订单支付
     async getServiceOrderPay() {
-      uni.setStorageSync(COMMUNITY_ORDER_NO, this.orderNo);
+      uni.setStorageSync(T_COMMUNITY_ORDER_NO, this.orderNo);
       if (this.$store.state.app.isInMiniProgram) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({

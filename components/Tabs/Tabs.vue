@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { USER_INFO } from '../../constant'
 export default {
   props: {
     data: {

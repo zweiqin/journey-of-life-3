@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { WORDS_LIST } from "../../../constant";
 import { changeUserStatusApi } from "../../../api/user";
 export default {
   props: {
@@ -82,7 +81,7 @@ export default {
     // },
 
     handleChooseWords() {
-      // const words = (uni.getStorageSync(WORDS_LIST) || []).map(
+      // const words = [].map(
       //   (item) => item.say
       // );
 

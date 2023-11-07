@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { IMG_UPLOAD_URL } from "../../config";
+
 export default {
   props: {
     title: String,
@@ -48,7 +50,7 @@ export default {
       uni.chooseImage({
         success: (chooseImageRes) => {
           uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload",
+            url: IMG_UPLOAD_URL,
             filePath: chooseImageRes.tempFiles[0].path,
             name: "file",
             success: (uploadFileRes) => {

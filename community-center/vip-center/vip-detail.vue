@@ -91,7 +91,7 @@ import PayBar from './components/PayBar.vue'
 import VipFooter from './components/VipFooter.vue'
 import PosterPopup from './components/PosterPopup.vue'
 import { getServeListApi } from '../../api/community-center'
-import { USER_ID, COMMUNITY_ORDER_NO } from '../../constant'
+import { USER_ID, T_COMMUNITY_ORDER_NO } from '../../constant'
 import showModal from '../../mixin/showModal'
 import { getPurchaseRecordApi, getPurchaseRecord2Api, getCreateCodeApi } from '../../api/user'
 import { queryDynamicDataApi } from '../../api/address'
@@ -136,7 +136,7 @@ export default {
 		if (!this.type) {
 			this.type = uni.getStorageSync('SERVE_TYPE')
 		}
-		uni.removeStorageSync(COMMUNITY_ORDER_NO)
+		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 	},
 
 	methods: {

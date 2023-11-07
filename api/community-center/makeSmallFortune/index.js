@@ -23,8 +23,7 @@
  */
 
 // 文章红包 / 赚小钱 接口
-import { endRequest, request2, XZLRequest, SheQuRequest, SheQu1Request, RuanRequest } from '@/utils'
-import { USER_TOKEN } from 'constant'
+import { RuanRequest } from '@/utils'
 
 export const getRedStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redStatistics', data, 'get')
 

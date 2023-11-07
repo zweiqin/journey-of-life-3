@@ -65,7 +65,7 @@ import { collectPages, mapDeliveryType, cancelList, mapCategoryControlType } fro
 import { expressInquiryApi, cancelOrderApi, getOrderDetailApi } from '../api/logistics';
 import CancelPopup from './component/cancel-popup.vue';
 import { getUserId } from '../utils';
-import { jiSenderInfo, jiconsigneeInfo, VALUE_ADDED_SERVICES, jiOrderGoodsList, jiRemarks, JI_EDIT_ORDER_ID } from '../constant';
+import { JI_SENDER_INFO, JI_CONSIGNEE_INFO, JI_VALUE_ADDED_SERVICES, JI_ORDER_GOODS_LIST, JI_REMARKS, JI_EDIT_ORDER_ID } from '../constant';
 
 export default {
   components: {
@@ -223,7 +223,7 @@ export default {
     async editOrder(orderInfo) {
       const res = await getOrderDetailApi(orderInfo.orderNo);
       console.log(res.data);
-      uni.setStorageSync(jiSenderInfo, {
+      uni.setStorageSync(JI_SENDER_INFO, {
         senderName: res.data.senderName,
         senderMobile: res.data.senderMobile,
         senderAddress: '广东省佛山市顺德区',
@@ -231,7 +231,7 @@ export default {
         microInsuranceAmount: res.data.microInsuranceAmount
       });
 
-      uni.setStorageSync(jiconsigneeInfo, {
+      uni.setStorageSync(JI_CONSIGNEE_INFO, {
         consigneeName: res.data.consigneeName,
         consigneeMobile: res.data.consigneeMobile,
         consigneeAddress: res.data.consigneeAddress,
@@ -240,7 +240,7 @@ export default {
         consigneeFloor: res.data.consigneeFloor
       });
 
-      uni.setStorageSync(VALUE_ADDED_SERVICES, {
+      uni.setStorageSync(JI_VALUE_ADDED_SERVICES, {
         controlGoods: mapCategoryControlType(res.data.cargoControlType),
         delivery: mapDeliveryType(res.data.deliveryType),
         take: res.data.isPickUp ? '上门提货' : '不提货',
@@ -248,8 +248,8 @@ export default {
         payType: res.data.paymentMethod === 1 ? '现付' : '到付'
       });
 
-      uni.setStorageSync(jiOrderGoodsList, res.data.orderGoodsList);
-      uni.setStorageSync(jiRemarks, res.data.remarks);
+      uni.setStorageSync(JI_ORDER_GOODS_LIST, res.data.orderGoodsList);
+      uni.setStorageSync(JI_REMARKS, res.data.remarks);
       uni.setStorageSync(JI_EDIT_ORDER_ID, orderInfo.id);
 
       uni.navigateTo({

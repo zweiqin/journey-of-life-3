@@ -36,6 +36,9 @@
 
 <script>
 import { serveList } from "./config";
+import {
+  JI_VALUE_ADDED_SERVICES
+} from "../constant";
 
 export default {
   data() {
@@ -55,7 +58,7 @@ export default {
     },
 
     confirm() {
-      uni.setStorageSync("VALUE_ADDED_SERVICES", this.serveForm);
+      uni.setStorageSync(JI_VALUE_ADDED_SERVICES, this.serveForm);
       uni.navigateBack()
     },
   },
@@ -63,7 +66,7 @@ export default {
   watch: {
     serveList: {
       handler(value) {
-        const serve = uni.getStorageSync("VALUE_ADDED_SERVICES") || {
+        const serve = uni.getStorageSync(JI_VALUE_ADDED_SERVICES) || {
           controlGoods: "不控货",
           delivery: "送货安装",
           take: "不提货",

@@ -1,10 +1,9 @@
 import {
-	CHANGE_CURRENT_CITY,
 	CHANGE_LOCATION_INFO,
 	CHANGE_LOACTION_DETAIL_INFO,
 	CHANGE_NEARBY_LOCATION
 } from './type'
-import { T_CURRENT_ADDRESS } from '../../constant'
+import { T_SELECTED_ADDRESS } from '../../constant'
 import {
 	getAdressDetailByLngLat,
 	getLngLatByAddress
@@ -30,13 +29,13 @@ export default {
 				},
 				country: '中国',
 				township: '大良街道',
-				businessAreas: [[]],
+				businessAreas: [ [] ],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: '0757'
 			},
 			detailAddress: '', // 广东省佛山市顺德区大良街道碧水路顺德市民活动中心
-			currentCity: uni.getStorageSync(T_CURRENT_ADDRESS) || '大良街道',
+			currentCity: uni.getStorageSync(T_SELECTED_ADDRESS)?.data?.town || '大良街道',
 			obtainLocationCount: 0,
 			shopAndbusinessLocation: {
 				shopAndbusinessDetailAddressText: '', // 用户选择的地址
@@ -52,15 +51,22 @@ export default {
 	mutations: {
 		[CHANGE_LOCATION_INFO](state, location) {
 			state.locationInfo = location.addressComponent
+			typeof state.locationInfo.province === 'object' ? state.locationInfo.province = '' : ''
+			typeof state.locationInfo.city === 'object' ? state.locationInfo.city = '' : ''
+			typeof state.locationInfo.district === 'object' ? state.locationInfo.district = '' : ''
+			typeof state.locationInfo.township === 'object' ? state.locationInfo.township = '' : ''
 			typeof state.locationInfo.adcode === 'object' ? state.locationInfo.adcode = '' : ''
 			state.detailAddress = typeof location.formatted_address === 'object' ? '' : location.formatted_address
 			state.currentCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township
 			state.obtainLocationCount = state.obtainLocationCount + 1
-			uni.setStorageSync(T_CURRENT_ADDRESS, state.currentCity)
-		},
-		[CHANGE_CURRENT_CITY](state, chooseCity) {
-			uni.setStorageSync(T_CURRENT_ADDRESS, chooseCity)
-			state.currentCity = chooseCity
+			uni.setStorageSync(T_SELECTED_ADDRESS, {
+				type: 'default',
+				data: {
+					city: state.locationInfo.city,
+					distinguish: state.locationInfo.district,
+					town: state.locationInfo.township
+				}
+			})
 		},
 		[CHANGE_LOACTION_DETAIL_INFO](state, { detailInfo, currentCity }) {
 			state.detailAddress = typeof detailInfo.formatted_address === 'object' ? '' : detailInfo.formatted_address
@@ -80,7 +86,7 @@ export default {
 				},
 				country: '中国',
 				township: typeof detailInfo.township === 'object' ? '' : detailInfo.township,
-				businessAreas: [[]],
+				businessAreas: [ [] ],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: ''

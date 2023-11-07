@@ -47,8 +47,6 @@
 </template>
 
 <script>
-import { number } from 'echarts';
-import loginVue from "../../../pages/login/login.vue";
 export default {
   props: {
     info: Object,

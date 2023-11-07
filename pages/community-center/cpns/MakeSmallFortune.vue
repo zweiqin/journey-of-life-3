@@ -42,7 +42,6 @@
 //         ]
 import { getPostList } from '@/api/community-center/makeSmallFortune'
 import Articles from './Articles.vue'
-import { getUserId } from '@/utils';
 export default {
   name: "MakeSmallFortune",
   components: {
@@ -61,7 +60,7 @@ export default {
 		getPostList() {
 			let region
 			try{
-				region = uni.getStorageSync('USER_SELECT_ADDRESS').data.distinguish
+				region = this.$store.state.location.locationInfo.district
         // console.log(region)
 			}catch {
 				region = '顺德区'

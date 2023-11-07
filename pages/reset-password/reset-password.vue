@@ -104,7 +104,6 @@ export default {
         confirmPassword: '',
         mobile: '',
       },
-      to: null,
       onResetPassword: null,
       isShowPassword: false,
       isShowConfirmPassword: false,
@@ -116,7 +115,6 @@ export default {
     }
   },
   onLoad(params) {
-    this.to = params.to == 'undefined' ? '' : params.to
     this.onResetPassword = throttle(this.handelResetPassword, 1000)
   },
   methods: {
@@ -178,15 +176,9 @@ export default {
           _this.ttoast('密码修改成功')
 
           _this.timer = setTimeout(() => {
-            if (this.to) {
-              uni.redirectTo({
-                url: '/pages/login/login?code=' + _this.to,
-              })
-            } else {
               uni.redirectTo({
                 url: '/pages/login/login',
               })
-            }
           }, 2000)
         })
         .catch(errors => {

@@ -111,7 +111,6 @@ import PursueSalePane from "./components/pursue-sale-pane.vue";
 import StanPane from "./components/stan-pane.vue";
 import { getMsgSentryListApi, getWordsApi } from "../../api/user";
 import { getUserId } from "../../utils";
-import { WORDS_LIST, SELECT_WORDS } from "../../constant";
 import AddPopup from "./components/add-popup.vue";
 const { debounce } = require("../../utils/util");
 
@@ -158,7 +157,6 @@ export default {
       this.getListData();
       this.getWordsList();
       this.$refs.addPopupRef.clear();
-      uni.setStorageSync(SELECT_WORDS, "");
     },
 
     // 回退
@@ -200,7 +198,6 @@ export default {
     // 获取话术列表
     async getWordsList() {
       const res = await getWordsApi(this.query.status);
-      uni.setStorageSync(WORDS_LIST, res);
     },
 
     handleToAdd() {
@@ -220,7 +217,7 @@ export default {
   },
 
   onShow() {
-    this.words = uni.getStorageSync(SELECT_WORDS);
+    this.words = '';
   },
 };
 </script>

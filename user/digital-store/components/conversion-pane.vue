@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { WORDS_LIST } from "../../../constant";
 import { changeUserStatusApi } from "../../../api/user";
 
 export default {
@@ -85,7 +84,7 @@ export default {
     // },
 
     handleChooseWords() {
-      // const words = (uni.getStorageSync(WORDS_LIST) || ["暂无话术"]).map(
+      // const words = ["暂无话术"].map(
       //   (item) => item.say
       // );
 

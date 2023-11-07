@@ -110,7 +110,7 @@ import { getAddressListApi } from '../../api/address'
 import { firstAddCar, submitOrderApi } from '../../api/goods'
 import { getUserId, payFn } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
-import { PAY_GOODS, SELECT_ADDRESS, T_PAY_ORDER } from '../../constant'
+import { T_PAY_GOODS, T_SELECT_ADDRESS, T_PAY_ORDER } from '../../constant'
 import { refrshUserInfoApi } from '../../api/user'
 
 export default {
@@ -167,7 +167,7 @@ export default {
 		},
 		// 获取地址
 		getAddressList() {
-			const address = uni.getStorageSync(SELECT_ADDRESS)
+			const address = uni.getStorageSync(T_SELECT_ADDRESS)
 			if (address) {
 				this.defaultAddress = address
 				return
@@ -190,7 +190,7 @@ export default {
 
 		// 获取订单信息
 		getOrderInfo() {
-			this.orderInfo = uni.getStorageSync(PAY_GOODS)
+			this.orderInfo = uni.getStorageSync(T_PAY_GOODS)
 			this.supportVoucher = this.orderInfo.supportVoucher
 			this.voucherAmount = this.orderInfo.voucherAmount
 			this.getCardId()

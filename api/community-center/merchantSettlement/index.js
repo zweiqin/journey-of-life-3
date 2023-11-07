@@ -1,5 +1,4 @@
-import { endRequest, request2, XZLRequest, SheQuRequest, SheQu1Request } from '@/utils';
-import { USER_TOKEN } from 'constant';
+import { endRequest } from '@/utils';
 
 // 商家入驻信息认证
 export const shopCreateAccount = (data) => {

@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import { USER_TOKEN } from '../../constant';
-import { getUserId } from '../../utils';
 export default {
   props: {
     imgUrl: String,

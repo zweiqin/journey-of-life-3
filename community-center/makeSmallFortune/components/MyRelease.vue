@@ -27,7 +27,6 @@ import { getRedStatistics, getPostList, postDetailsDelete } from '@/api/communit
 import { getUserId } from '@/utils';
 import { addPublishArticleApi } from '../../../api/community-center/makeSmallFortune'
 import { payFn } from '../../../utils'
-import { USER_INFO } from '../../../constant'
 export default {
   name: "MyRelease",
   components: {
@@ -77,11 +76,6 @@ export default {
     }
   },
   created() {
-      try{
-        this.region = uni.getStorageSync('ADDRES_REGION')
-      }catch {
-        this.region = '顺德区'
-      }
       this.getPostList()
   },
   computed: {},

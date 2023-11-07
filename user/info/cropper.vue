@@ -13,6 +13,7 @@
 
 <script>
 import { USER_INFO } from '../../constant'
+import { IMG_UPLOAD_URL } from '../../config'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
 export default {
   onLoad(params) {
@@ -39,7 +40,7 @@ export default {
         title: '图片上传中...',
       })
       uni.uploadFile({
-        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+        url: IMG_UPLOAD_URL,
         filePath: e.url,
         name: 'file',
         success: async uploadFileRes => {

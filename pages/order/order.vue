@@ -94,7 +94,7 @@
 import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
 import { getAllOrderListApi } from '../../api/anotherTFInterface'
-import { USER_ID, T_PAY_ORDER, COMMUNITY_ORDER_NO } from '../../constant'
+import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
@@ -221,7 +221,7 @@ export default {
 
 	onShow() {
 		uni.removeStorageSync(T_PAY_ORDER)
-		uni.removeStorageSync(COMMUNITY_ORDER_NO)
+		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		this.userId = uni.getStorageSync(USER_ID) || ''
 		this.$nextTick(() => {
 			this.getOrderList()

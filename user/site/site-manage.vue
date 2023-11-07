@@ -109,7 +109,7 @@ import {
   deleteAddressApi,
 } from "../../api/address";
 import { getUserId } from "../../utils";
-import { SELECT_ADDRESS } from "../../constant";
+import { T_SELECT_ADDRESS } from "../../constant";
 
 export default {
   data() {
@@ -187,7 +187,7 @@ export default {
     },
 
     handleChooseAddress(item) {
-      uni.setStorageSync(SELECT_ADDRESS, item);
+      uni.setStorageSync(T_SELECT_ADDRESS, item);
       uni.navigateBack();
     },
   },

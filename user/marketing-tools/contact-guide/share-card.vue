@@ -24,7 +24,6 @@ import { getNameCardDetailApi } from "../../../api/user";
 import { getConfigApi } from "../../../api/auth";
 import ayQrcode from "../../../components/ay-qrcode/ay-qrcode.vue";
 import { USER_TOKEN } from "../../../constant";
-import { domToImage } from "../../../utils";
 
 // #ifdef H5
 import share from "../../../utils/wxshare";

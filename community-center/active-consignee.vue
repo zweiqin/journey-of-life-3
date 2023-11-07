@@ -91,7 +91,7 @@ import { getUserId, throttle, getAdressDetailByLngLat } from '../utils';
 import { createRepairOrderApi, payOrderForBeeStewadApi, getIsOpenServerAreaApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
 import { getAddressListApi } from '../api/address';
 
-import { COMMUNITY_ORDER_NO, SELECT_ADDRESS, SF_INVITE_CODE } from '../constant';
+import { T_COMMUNITY_ORDER_NO, T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant';
 
 export default {
   components: {
@@ -125,12 +125,11 @@ export default {
     this.getAddressList();
     this.confirm = throttle(this.handleCreateOrder, 1000);
     const consigneeInfo = uni.getStorageSync(`${this.cacheName}INFO`);
-    const orderNo = uni.getStorageSync(COMMUNITY_ORDER_NO) || '';
+    const orderNo = uni.getStorageSync(T_COMMUNITY_ORDER_NO) || '';
     if (orderNo) {
       // uni.redirectTo({
       //   url: "/community-center/order",
       // });
-
       uni.switchTab({
         url: '/pages/order/order'
       });
@@ -257,7 +256,7 @@ export default {
         }
 
         const createOrderRes = await createRepairOrderApi(data);
-        uni.setStorageSync(COMMUNITY_ORDER_NO, createOrderRes.data);
+        uni.setStorageSync(T_COMMUNITY_ORDER_NO, createOrderRes.data);
         if (createOrderRes.statusMsg.includes('购买一次')) {
           this.ttoast({
             type: 'fail',
@@ -271,7 +270,6 @@ export default {
               url: '/pages/order/order'
             });
           }, 2000);
-
           return;
         }
         if (createOrderRes.statusCode == 20000) {
@@ -452,7 +450,7 @@ export default {
 
     // 获取地址
     async getAddressList() {
-      const choosedAddress = uni.getStorageSync(SELECT_ADDRESS);
+      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS);
       if (choosedAddress) {
         this.setConsigneeInfo(choosedAddress);
         return;

@@ -59,7 +59,6 @@
 
 <script>
 import { addMyWordsApi, getWordsApi } from "../../api/user";
-import { SELECT_WORDS } from "../../constant";
 
 export default {
   data() {
@@ -88,7 +87,7 @@ export default {
 
     chooseWords(item) {
       if (this.select === "true") {
-        uni.setStorageSync(SELECT_WORDS, item.say);
+				// this.$store.dispatch('xxx')
         uni.navigateBack();
       } else {
         uni.setClipboardData({

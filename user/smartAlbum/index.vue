@@ -31,7 +31,7 @@
 
 <script>
 import { getUserCrmSlbumList, userCrmSlbumDeleteApi } from '../../api/user'
-import { USER_ID, USER_INFO } from '../../constant'
+import { USER_INFO } from '../../constant'
 export default {
 	name: 'SmartAlbum',
 	data() {
@@ -50,7 +50,6 @@ export default {
 	onShow() {
 		this.getUserCrmSlbumList()
 		// const userInfo = uni.getStorageSync(USER_INFO) || {}
-		// this.userLevel = userInfo.userLevel || 5
 	},
 	// 触底加载
 	onReachBottom() {

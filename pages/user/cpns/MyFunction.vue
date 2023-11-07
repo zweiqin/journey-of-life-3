@@ -145,13 +145,9 @@
 </template>
 
 <script>
-import { USER_INFO } from 'constant'
-import { myEquity } from '../data'
-
 export default {
   data() {
     return {
-      myEquity: Object.freeze(myEquity),
     }
   },
 

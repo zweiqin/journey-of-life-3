@@ -110,12 +110,11 @@
 </template>
 
 <script>
+import { IMG_UPLOAD_URL } from '../../../../config'
 import { shopCreateAccount, getAccountInfo } from '@/api/community-center/merchantSettlement'
 import { getUserId } from '@/utils'
-import { SELECT_ADDRESS, USER_TOKEN } from '@/constant'
+import { USER_TOKEN } from '@/constant'
 import { BasicInformationRules } from '../toolData/rules'
-import form from '@/components/common/tui-validation/tui-validation.js'
-import { forIn } from 'lodash-es'
 export default {
 	name: 'BasicInformation',
 	props: {
@@ -166,7 +165,7 @@ export default {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
+							url: IMG_UPLOAD_URL,
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {

@@ -39,21 +39,9 @@ export default {
       }
 
       if (!getUserId()) {
-        const _this = this
-        uni.showModal({
-          title: '提示',
-          content: '你还未登录，是否去登录？',
-          success: function (res) {
-            if (res.confirm) {
-              uni.navigateTo({
-                url:
-                  '/pages/login/login?to=/user/sever/code/fille-code?code=' +
-                  _this.code,
-              })
-            }
-          },
+        uni.redirectTo({
+          url: `/pages/jump/jump?userId=&type=bindLastUser&code=${this.code}`
         })
-
         return
       }
 

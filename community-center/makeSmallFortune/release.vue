@@ -20,6 +20,7 @@ import EditingPage from './components/EditingPage.vue'
 import RewardPage from './components/RewardPage.vue'
 import Preview from './components/Preview.vue'
 import { getUserId } from '@/utils';
+import { USER_INFO } from '../../constant';
 import { userIsShop } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'release',
@@ -29,10 +30,9 @@ export default {
         Preview
     },
     onLoad() {
-        this.region = uni.getStorageSync('ADDRES_REGION')
         this.formData.publishUserId = getUserId();
         // userIsShop({
-        //     phone: uni.getStorageSync('user_INFO').phone
+        //     phone: uni.getStorageSync(USER_INFO).phone
         // }).then(res => {
         //     this.userShopInfo = res
         //     // console.log(res);
@@ -47,8 +47,8 @@ export default {
             isTesps: true,
             formData: {
                 postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: uni.getStorageSync('user_INFO').avatarUrl,
-                username: uni.getStorageSync('user_INFO').nickName,
+                header: uni.getStorageSync(USER_INFO).avatarUrl,
+                username: uni.getStorageSync(USER_INFO).nickName,
                 region: '440606',
                 publishUserId: "", // 发布者id
                 postTitle: "", // 文章标题
