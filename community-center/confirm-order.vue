@@ -1,7 +1,8 @@
 <template>
   <view class="confirm-order">
     <view class="title-list">
-      <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
+      <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+        class="return" @click="handleBack" />
       <view class="title">确认订单</view>
     </view>
 
@@ -51,12 +52,14 @@
     <view class="foot2" v-if="pricingType == 2">
       <view class="on-pay" @click="handleToOrderStatus">确认订单</view>
     </view>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
 import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
-import { getUserId, throttle } from '../utils';
+import { getUserId, throttle, isH5InWebview } from '../utils';
 import { COMMUNITY_ORDER_NO } from '../constant';
 
 export default {
@@ -78,7 +81,7 @@ export default {
       dataUrl: '',
       pricingType: '',
       imgList: [],
-      payThrottleFn: () => {}
+      payThrottleFn: () => { }
     };
   },
   onShow() {
@@ -104,6 +107,7 @@ export default {
 
     //订单支付
     async getServiceOrderPay() {
+      const _this = this
       uni.setStorageSync(COMMUNITY_ORDER_NO, this.orderNo);
       if (this.$store.state.app.isInMiniProgram) {
         try {
@@ -122,14 +126,42 @@ export default {
 
             wx.miniProgram.navigateTo({
               url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
-              fail: () => {
-                // uni.redirectTo({
-                //   url: `/community-center/order`
-                // });
+              fail: async () => {
+                if (!isH5InWebview()) {
+                  let res = await getServiceOrderPayApi({
+                    orderNo: this.orderNo,
+                    userId: getUserId()
+                  });
 
-                uni.switchTab({
-                  url: '/pages/order/order'
-                });
+                  res = JSON.parse(res.data);
+                  const form = document.createElement('form');
+                  form.setAttribute('action', res.url);
+                  form.setAttribute('method', 'POST');
+
+                  const data1 = JSON.parse(res.data);
+                  let input;
+                  for (const key in data1) {
+                    input = document.createElement('input');
+                    input.name = key;
+                    input.value = data1[key];
+                    form.appendChild(input);
+                  }
+
+                  document.body.appendChild(form);
+                  form.submit();
+                  document.body.removeChild(form);
+                } else {
+                  _this.ttoast({
+                    type: "fail",
+                    title: error,
+                  });
+
+                  setTimeout(() => {
+                    uni.switchTab({
+                      url: "/pages/order/order",
+                    });
+                  }, 3000);
+                }
               }
             });
           }
@@ -302,14 +334,11 @@ export default {
         font-size: 32upx;
         color: rgba(0, 0, 0, 0.85);
 
-        .logo {
-        }
+        .logo {}
 
-        .number {
-        }
+        .number {}
 
-        .point {
-        }
+        .point {}
       }
 
       .price-list2 {
@@ -379,14 +408,11 @@ export default {
       font-weight: 500;
       color: #fa5151;
 
-      .logo {
-      }
+      .logo {}
 
-      .number {
-      }
+      .number {}
 
-      .point {
-      }
+      .point {}
     }
 
     .on-pay {

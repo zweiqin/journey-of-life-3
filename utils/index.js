@@ -20,7 +20,8 @@ export {
 	convertToDecimal,
 	isSubarray,
 	tradeOrderNo,
-	jumpToOtherProject
+	jumpToOtherProject,
+	isH5InWebview
 } from './DWHutils'
 export { formatTime } from './util'
 export { payFn, payShopFn } from './pay'
