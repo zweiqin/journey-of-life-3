@@ -14,7 +14,7 @@
 				</view>
  			</tui-form> -->
 			<form class="selectInput">
-				<view class="inputView">
+				<view class="inputView" @click="go('/pages/search-page/search-page')">
 					<input type="text" placeholder="输入商品名" class="selects">
 					<button type="submit" class="submitBtn">搜索</button>
 				</view>
@@ -24,8 +24,8 @@
 		<view class="HotGoodsList">
 			<view style="width:100%;display:flex;align-items: center;position: relative;">
 				<view class="filterTab">
-					<view class="filterItem" @click="currentIndex = index" :class="{active:index == currentIndex}" v-for="(item, index) in sortData" :key="item">
-						{{item}}
+					<view class="filterItem" @click="checkoutTab(index,item)" :class="{active:index == currentIndex}" v-for="(item, index) in sortData" :key="item.classifyId">
+						{{item.classifyName}}
 					</view>
 				</view>
 				<view class="filterItem" style="position: absolute;right: 0rpx;">
@@ -33,12 +33,13 @@
 				</view>
 			</view>
 			<view class="GoodsListBox">
-				<view class="ListItem" v-for="item in 10" :key="item">
+				<view class="ListItem" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)" v-for="item in goodsList" :key="item.id">
 					<view class="GoodsIcon">
-						<image src="@/static/images/new-index/index-1/goodsIcon.png"></image>
+						<image v-if="!item.image" src="@/static/images/new-index/index-1/goodsIcon.png"></image>
+						<image v-else :src="item.image"></image>
 					</view>
 					<view class="GoodsDetils">
-						<text class="title">网红沙发网红沙发网红沙发无敌无敌无敌</text>
+						<text class="title">{{ item.productName || '小牛马' }}</text>
 						<view class="GoodsTag">
 							<text style="background: linear-gradient(90deg, #BA883F 0%, #9F5506 100%);">品牌正品</text>
 							<text style="background: #222229;">官方补贴</text>
@@ -50,14 +51,14 @@
 								<text class="txt1" style="color: #888889;">原价</text>
 								<view class="txt2">
 									<!-- <text class="RMB">￥</text> -->
-									<sup style="color:#888889;">￥</sup><text class="number Original" style="color:#888889;text-decoration: line-through;">8999</text>
+									<sup style="color:#888889;">￥</sup><text class="number Original" style="color:#888889;text-decoration: line-through;">{{ item.originalPrice }}</text>
 								</view>
 							</view>
 							<view class="Price Currents">
 								<text class="txt1" style="color: #FFFFFF;">直降价</text>
 								<view class="txt2">
 									<!-- <text class="RMB">￥</text> -->
-									<text class="number Current" style="color: #FFFFFF;"><sup>￥</sup>6999</text>
+									<text class="number Current" style="color: #FFFFFF;"><sup>￥</sup>{{ item.price }}</text>
 									<text style="color: #FFFFFF;margin-left:25rpx;">起</text>
 								</view>
 							</view>
@@ -70,22 +71,61 @@
 </template>
 
 <script>
-import view from 'user/view.vue';
-	export default {
-  components: { view },
-		data() {
-			return {
-				currentIndex: 0,
-				sortData: ['全部','客厅','餐厅','卧室','睡眠','其他'],
-				value: ''
-			};
+import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { unshift } from 'utils/picker.city';
+export default {
+	data() {
+		return {
+			currentIndex: 0,
+			querList: {
+				page: 1,
+				pageSize: 20,
+				type: 1,
+				volume: 1,
+			},
+			sortData: ['全部','客厅','餐厅','卧室','睡眠','其他'],
+			classifyId: '1124',
+			goodsList: [],
+			value: ''
+		};
+	},
+	onLoad(options){
+		getFirstClassifyApi({
+			classifyId: '1124'
+		}).then(res => {
+			console.log(res);
+			this.sortData = res.data
+			this.sortData.unshift({classifyName: '全部',classifyId: '1124'})
+		}).catch(err => console.log(err))
+		this.getList()
+	},
+	methods: {
+		getList() {
+			getClaasifyProducts({
+				classifyId: this.classifyId,
+				productName: '',
+				...this.querList
+			}).then(res => {
+				this.goodsList = res.data.list
+				// console.log(res);
+			}).catch(err => {
+				// console.log(err);
+			})
 		},
-		methods: {
-			goBack() {
-				uni.navigateBack();
-			}
+		checkoutTab(index,item) {
+			this.currentIndex = index
+			this.classifyId = item.classifyId
+			this.getList()
+		},
+		goBack() {
+			uni.navigateBack();
 		}
-	}
+	},
+	onReachBottom(value) {
+		this.querList.pageSize+= 10
+        this.getList()
+    }
+}
 </script>
 
 <style lang="scss">
@@ -182,12 +222,18 @@ import view from 'user/view.vue';
 		.filterTab {
 			position: relative;
 			width: 568rpx;
+			height: 50rpx;
+			/* height: 68rpx; */
 			display: flex;
 			justify-content: space-between;
 			font-size: 28rpx;
 			font-weight: 500;
-			line-height: 32rpx;
+			overflow: auto hidden;
 			.filterItem {
+				display: block;
+				white-space: nowrap;
+				margin-right: 26rpx;
+				line-height: 50rpx;
 				position: relative;
 			}
 			.active {
@@ -195,9 +241,9 @@ import view from 'user/view.vue';
 			}
 			.active::before {
 				position: absolute;
-				width: 56rpx;
+				width: 100%;
 				left: 0;
-				bottom: -10rpx;
+				bottom: 0rpx;
 				content: '';
 				height: 4rpx;
 				background-color: #E02208;
@@ -215,6 +261,7 @@ import view from 'user/view.vue';
 					height: 254rpx;
 					border-radius: 20rpx;
 					image {
+						border-radius: 20rpx;
 						width: 254rpx;
 						height: 254rpx;
 					}

@@ -355,3 +355,12 @@ export const tradeOrderNo = function () {
 	return yyyyMMddHHmmss + Math.random().toString(36)
 		.substr(2, 9)
 }
+
+
+/**
+ * 判断当前H5是否在webview中打开
+ */
+export const isH5InWebview = () => {
+	const ua = navigator.userAgent.toLowerCase();
+	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
+}

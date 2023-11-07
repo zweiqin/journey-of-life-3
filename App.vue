@@ -34,7 +34,6 @@ export default {
 	},
 	onShow() {
 		// 判断浏览器环境
-		// var ua = navigator.userAgent.toLowerCase();
 		// if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
 		// }
 		// const state = util.getUrlKey('state')
@@ -99,7 +98,7 @@ export default {
 					ref: this,
 					wsHandle: uni.connectSocket({
 						url: `${BASE_WS_API}/${getUserId()}`,
-						complete: () => {}
+						complete: () => { }
 					})
 				})
 			}
@@ -141,7 +140,7 @@ export default {
 						ref: '',
 						wsHandle: uni.connectSocket({
 							url: `${BASE_WS_API}/${getUserId()}`,
-							complete: () => {}
+							complete: () => { }
 						})
 					})
 				}, 2000)
@@ -194,12 +193,12 @@ export default {
 <style lang="less">
 @import './app.css';
 
-.tui-badge.tui-danger.tui-badge-scale{
+.tui-badge.tui-danger.tui-badge-scale {
   box-shadow: 0px 0 1upx #ed3f14;
   border: 4upx solid #fff;
 }
 
-.tui-toast-text{
+.tui-toast-text {
   line-height: 1.5;
 }
 
@@ -227,23 +226,25 @@ uni-swiper .uni-swiper-dots-horizontal {
 }
 
 // 自定义骨架屏
-.ske-loading{
-  .child-loading{
+.ske-loading {
+  .child-loading {
     animation: loading 2s linear 0s infinite alternate;
   }
 }
+
 uni-rich-text img {
   max-width: 100% !important;
 }
 
 // 图片占位图
-.pic-img{
-	width: 100%;
-	height: 100%;
+.pic-img {
+  width: 100%;
+  height: 100%;
 }
+
 .default-img {
-	background: url('./static/images/common/default.png') no-repeat center;
-	background-size: 100% 100%;
+  background: url('./static/images/common/default.png') no-repeat center;
+  background-size: 100% 100%;
 }
 
 .line1 {

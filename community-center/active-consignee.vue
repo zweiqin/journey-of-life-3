@@ -13,14 +13,8 @@
       </view>
       <!-- {{ consigneeForm }} -->
       <view class="main-wrapper">
-        <Field
-          @iconClick="handleOpenMapToChooseAddress"
-          v-for="item in userInfo"
-          :key="item.label"
-          v-model="consigneeForm[item.field]"
-          :data="item"
-          class="field"
-        >
+        <Field @iconClick="handleOpenMapToChooseAddress" v-for="item in userInfo" :key="item.label"
+          v-model="consigneeForm[item.field]" :data="item" class="field">
           <template v-if="item.select && item.field === 'consigneeAddress'">
             <!-- <PickRegions visible-muti @getRegion="handleGetRegionEnd">
               <input
@@ -58,19 +52,16 @@
       <view class="title">已选服务</view>
 
       <view class="serve-name">
-        <view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index" class="serve-item-name">
+        <view v-for="(item, index) in serveData && serveData.serverContent.split(',')" :key="index"
+          class="serve-item-name">
           <tui-icon margin="0 10rpx 0 0" color="rgb(255, 153, 0)" name="label-fill" :size="20"></tui-icon>
           {{ item }}
         </view>
       </view>
     </view>
 
-    <Remarks
-      style="margin-top: 20px"
-      :is-distinguish="true"
-      :distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'"
-      @distinguish="handleDistinguish"
-    ></Remarks>
+    <Remarks style="margin-top: 20px" :is-distinguish="true"
+      :distinguish="'输入姓名，电话，地址自动识别\n粘贴地址信息例如：马*明，135467****，广东省佛山市顺德区xxxxx'" @distinguish="handleDistinguish"></Remarks>
 
     <Button type="error" @click="confirm">确定</Button>
 
@@ -87,7 +78,7 @@ import Button from './components/button.vue';
 import Remarks from './components/remarks.vue';
 import Header from './components/header.vue';
 import { consigneeVipInfo } from './config';
-import { getUserId, throttle, getAdressDetailByLngLat } from '../utils';
+import { getUserId, throttle, getAdressDetailByLngLat, isH5InWebview } from '../utils';
 import { createRepairOrderApi, payOrderForBeeStewadApi, getIsOpenServerAreaApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
 import { getAddressListApi } from '../api/address';
 
@@ -117,7 +108,7 @@ export default {
       cacheName: 'CONSIGNEE_',
       showTip: false,
       loading: false,
-      confirm: () => {}
+      confirm: () => { }
     };
   },
 
@@ -290,14 +281,60 @@ export default {
 
               wx.miniProgram.navigateTo({
                 url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId(),
-                fail: () => {
+                fail: async () => {
                   // uni.redirectTo({
                   //   url: `/community-center/order`,
                   // });
 
-                  uni.switchTab({
-                    url: '/pages/order/order'
-                  });
+                  if (!isH5InWebview()) {
+                    const payResult = await payOrderForBeeStewadApi({
+                      userId: getUserId(),
+                      orderNo: createOrderRes.data
+                    });
+
+                    uni.hideLoading();
+                    _this.loading = false;
+                    uni.removeStorageSync(SF_INVITE_CODE);
+
+                    if (payResult.statusCode === 20000) {
+                      _this.address = '';
+                      uni.removeStorageSync(`${this.cacheName}INFO`);
+                      const res = JSON.parse(payResult.data);
+                      const form = document.createElement('form');
+                      form.setAttribute('action', res.url);
+                      form.setAttribute('method', 'POST');
+
+                      const data = JSON.parse(res.data);
+                      let input;
+                      for (const key in data) {
+                        input = document.createElement('input');
+                        input.name = key;
+                        input.value = data[key];
+                        form.appendChild(input);
+                      }
+
+                      document.body.appendChild(form);
+                      form.submit();
+                      document.body.removeChild(form);
+                    } else {
+                      uni.showToast({
+                        title: '支付失败',
+                        duration: 2000,
+                        icon: 'none'
+                      });
+                    }
+                  } else {
+                    _this.ttoast({
+                      type: "fail",
+                      title: error,
+                    });
+
+                    setTimeout(() => {
+                      uni.switchTab({
+                        url: "/pages/order/order",
+                      });
+                    }, 3000);
+                  }
                 }
               });
             }
@@ -500,7 +537,7 @@ export default {
                 detailedAddress: level1 + ' ' + level2
               });
             });
-          } catch (error) {}
+          } catch (error) { }
         }
       });
     }
