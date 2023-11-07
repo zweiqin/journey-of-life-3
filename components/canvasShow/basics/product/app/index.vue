@@ -103,7 +103,7 @@
 			</view>
 		</div>
 		<div v-else class="product-list">
-			<ProductSkeleton v-if="isFirst" style="" :loading="loading" :is-first="isFirst" />
+			<LoadingMore v-if="isFirst" :status="loading ? 'loading' : 'no-more'"></LoadingMore>
 			<div v-else class="product-list-box">
 				<div v-for="(item, index) in productData" :key="index" class="product-list-item-warp">
 					<div class="product-list-item" @click="jumpProductDetail(item)">
@@ -171,10 +171,8 @@
 
 <script>
 import { commonMixin } from '../mixin'
-import ProductSkeleton from '@/components/basics/components/ProductSkeleton'
 export default {
 	components: {
-		ProductSkeleton
 	},
 	mixins: [ commonMixin ],
 	data() {

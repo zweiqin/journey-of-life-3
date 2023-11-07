@@ -161,6 +161,7 @@ export default {
 							// console.log(res)
 							getAdressDetailByLngLat(res.latitude, res.longitude)
 								.then((res) => {
+									// console.log(res);
 									if (res.status === '1') {
 										commit(CHANGE_LOCATION_INFO, res.regeocode)
 										res.regeocode && res.regeocode.addressComponent && res.regeocode.addressComponent.city(dispatch('getDetailAddressForShopAndBusiness', {

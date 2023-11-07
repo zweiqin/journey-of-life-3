@@ -1,5 +1,5 @@
 <template>
-	<view class="item ske-loading u-skeleton-fillet">
+	<view class="item ske-loading">
 		<view class="order-list-top">
 			<view class="top-l" @click.stop="go(`/community-center/shop/shop-detail?shopId=${data.shopId}`)">
 				<image :src="data.shopLogo" class="shop-img" />

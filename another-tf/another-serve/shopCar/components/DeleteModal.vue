@@ -1,6 +1,6 @@
 <template>
-	<div class="content">
-		<TuiModal :show="isShow" :custom="true" :fadein="true">
+	<view style="box-sizing: border-box;">
+		<tui-modal :show="isShow" :custom="true" :fadein="true">
 			<view class="Put-box1">
 				<view class="text-align fs34 fs-bold">
 					温馨提示
@@ -17,15 +17,13 @@
 					</view>
 				</view>
 			</view>
-		</TuiModal>
-	</div>
+		</tui-modal>
+	</view>
 </template>
 
 <script>
-import TuiModal from '@/components/thorui/tui-modal/tui-modal.vue'
 export default {
 	name: 'DeleteModal',
-	components: { TuiModal },
 	props: {
 		showTip: {
 			type: Boolean
@@ -45,10 +43,7 @@ export default {
 }
 </script>
 
-<style
-    lang="scss"
-    scoped
->
+<style lang="scss" scoped>
 .Put-box1 {
 	.btn {
 		text-align: center;

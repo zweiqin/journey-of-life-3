@@ -32,13 +32,17 @@
 				</tui-waterfall>
 				</view> -->
 			<view>
-				<CommonShop v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop" margin="22upx 0" radius="20upx"
-					pic-width="222upx" pic-height="222upx" show-sign></CommonShop>
+				<CommonShop
+					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop" margin="22upx 0"
+					radius="20upx"
+					pic-width="222upx" pic-height="222upx" show-sign
+				></CommonShop>
 			</view>
 			<view style="padding-bottom: 45upx;">
 				<LoadingMore
 					:status="!$data._isEmpty && !$data._list.length
-						? 'loading' : !$data._isEmpty && $data._list.length && ($data._list.length >= $data._listTotal) ? 'no-more' : ''">
+						? 'loading' : !$data._isEmpty && $data._list.length && ($data._list.length >= $data._listTotal) ? 'no-more' : ''"
+				>
 				</LoadingMore>
 				<tui-no-data v-if="$data._isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 			</view>
@@ -92,7 +96,7 @@ export default {
 			},
 			callingcb: true,
 			dataFn(data) {
-				const ignoreBrandList = ['xxx']
+				const ignoreBrandList = [ 'xxx' ]
 				return data.filter((item) => !ignoreBrandList.includes(item.name))
 			}
 		})
@@ -118,9 +122,9 @@ export default {
 						page: 1,
 						pageSize: this.$data._query.page * this.$data._query.pageSize,
 						...this.queryParam,
-						areaId: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode || this.$store.state.location.locationInfo.adcode,
-						longitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.longitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-						latitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.latitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+						areaId: this.$store.state.location.locationInfo.adcode,
+						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 					})
 						.then(({ data }) => {
 							console.log(data)
@@ -138,7 +142,7 @@ export default {
 		})
 	},
 	computed: {
-		...mapGetters(['obtainLocationCount'])
+		...mapGetters([ 'obtainLocationCount' ])
 	},
 	watch: {
 		obtainLocationCount(val, oldVal) {
@@ -179,9 +183,9 @@ export default {
 						this.$data._query = {
 							...this.$data._query,
 							...this.queryParam,
-							areaId: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode || this.$store.state.location.locationInfo.adcode,
-							longitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.longitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-							latitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.latitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+							areaId: this.$store.state.location.locationInfo.adcode,
+							longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+							latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 						}
 						this._loadData()
 					}
@@ -190,12 +194,12 @@ export default {
 				this.$data._query = {
 					...this.$data._query,
 					...this.queryParam,
-					areaId: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode || this.$store.state.location.locationInfo.adcode,
-					longitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.longitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-					latitude: this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.latitude || this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
-					// areaId: 440606,
-					// longitude: 113.293719,
-					// latitude: 22.803751
+					areaId: this.$store.state.location.locationInfo.adcode,
+					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				// areaId: 440606,
+				// longitude: 113.293719,
+				// latitude: 22.803751
 				}
 				this._loadData(null, () => this.isPositioning = false)
 			}

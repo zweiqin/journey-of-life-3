@@ -4,7 +4,7 @@
 			<view class="ArticlesCoverSheetBox" @click="gotoArticleDetails">
 				<!-- @/static/images/new-community/home/CoverSheet.png -->
 				<image class="ArticlesCoverSheet" :src="datas.postCover ? datas.postCover : require(&quot;@/static/images/new-community/home/CoverSheet.png&quot;)"></image>
-				<image v-if="!(datas.redPacketInfo.totalPacket > 0)" class="ArticlesCoverSheet overPng" src="@/static/images/new-community/home/isOver.png"></image>
+				<image v-if="!(datas.remainingPacket > 0)" class="ArticlesCoverSheet overPng" src="@/static/images/new-community/home/isOver.png"></image>
 			</view>
 			<view class="LeftInformation">
 				<view class="title"  @click="gotoArticleDetails">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>

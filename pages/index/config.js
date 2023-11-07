@@ -1,25 +1,48 @@
 export const homeTopNavs = [
   {
-    name: '家具严选',
-    iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
-    url: '/pages/goods-filter/goods-filter?id=100101533&sub=100101561'
+    name: '爆品家具',
+    iconUrl: require('../../static/images/new-index/index-1/hot.png'),
+    // url: '/pages/hot/hot'
+    url: '/pages/index/ExplosiveFurniture/index'
   },
   {
-    name: '全屋快装',
-    iconUrl: require('../../static/images/new-index/index-1/quanwukuaizhuang.png'),
-    url: '/pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation'
+    name: '兑换专区',
+    iconUrl: require('../../static/images/new-index/index-1/duihuan.png'),
+    url: '/pages/index/voucher-zone'
   },
   {
-    name: '全屋套餐',
-    iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
-    url: '/pages/index/WholehouseCustomization/index'
+    name: '品牌家居',
+    iconUrl: require('../../static/images/new-index/index-1/pinpai.png'),
+    url: '/pages/index/BrandFactory/BrandFactory'
   },
   {
     name: '智能选配',
-    iconUrl: require('../../static/images/new-index/index-1/zhinengxuanpei.png'),
+    iconUrl: require('../../static/images/new-index/index-1/aixp.png'),
     url: '/pages/index/IntelligentSelection/index'
   }
 ];
+// export const homeTopNavs = [
+//   {
+//     name: '家具严选',
+//     iconUrl: require('../../static/images/new-index/index-1/jiajuyanxuan.png'),
+//     url: '/pages/goods-filter/goods-filter?id=100101533&sub=100101561'
+//   },
+//   {
+//     name: '全屋快装',
+//     iconUrl: require('../../static/images/new-index/index-1/quanwukuaizhuang.png'),
+//     url: '/pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation'
+//   },
+//   {
+//     name: '全屋套餐',
+//     iconUrl: require('../../static/images/new-index/index-1/quanwutaozhuang.png'),
+//     url: '/pages/index/WholehouseCustomization/index'
+//   },
+//   {
+//     name: '智能选配',
+//     iconUrl: require('../../static/images/new-index/index-1/zhinengxuanpei.png'),
+//     url: '/pages/index/IntelligentSelection/index'
+//   }
+// ];
 
 export const voucherNavs = [
   {

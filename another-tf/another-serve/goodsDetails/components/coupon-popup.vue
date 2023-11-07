@@ -6,8 +6,8 @@
 				<tui-tabs
 					style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="375" :padding="0"
 					item-width="375rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
-					:tabs="activeTypeList" :current-tab="activeTypeFlag"
-					@change="activeTypeActive"
+					:tabs="activeTypeList"
+					:current-tab="activeTypeFlag" @change="activeTypeActive"
 				></tui-tabs>
 			</view>
 			<view v-show="activeTypeFlag === 0">
@@ -230,11 +230,6 @@ export default {
 	}
 
 	.couponShow-box {
-		.couponShow {
-			height: 1000rpx;
-			z-index: 333;
-		}
-
 		width: 100%;
 		height: auto;
 		/*transform: translate3d(0px, 100%, 0px);*/
@@ -245,6 +240,11 @@ export default {
 		right: 0;
 		bottom: -100%;
 		z-index: 1002;
+
+		.couponShow {
+			height: 1000rpx;
+			z-index: 333;
+		}
 
 		.tabsbox {
 			padding: 0 20rpx;

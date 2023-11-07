@@ -95,7 +95,7 @@
 <script>
 import lodash from 'lodash-es'
 import QuestionsAndAnswersList from './QuestionsAndAnswersList'
-import { addProblemseckillApi, updateLikeOrUnLikeCommentApi } from '../../../../api/anotherTFInterface'
+import { getProblemsSeckillApi, updateLikeOrUnLikeCommentApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodEvaluateAndQuestion',
@@ -131,7 +131,7 @@ export default {
 			if (!this.productInfo.productId) {
 				return
 			}
-			const res = await addProblemseckillApi({
+			const res = await getProblemsSeckillApi({
 				productId: this.productInfo.productId,
 				page: 1,
 				pageSize: 2

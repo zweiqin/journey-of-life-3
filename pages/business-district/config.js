@@ -1,6 +1,6 @@
 export const navbarAll = [
 	{
-		storeName: '品牌家居',
+		storeName: '同城家居',
 		iconUrl: require('../../static/images/new-business/home/pinpaijiaju.png'),
 		type: 1
 	},

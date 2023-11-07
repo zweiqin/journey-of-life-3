@@ -243,11 +243,14 @@ export default {
             flex: 1;
 
             .tag {
-              width: 144upx;
+              margin-top: 6rpx;
+              // width: 144upx;
+              white-space: nowrap;
               border: 0.5px solid #E02208;
               padding: 2upx 8upx;
               box-sizing: border-box;
-              font-size: 22upx;
+              font-size: 24upx;
+              transform: scale(0.9);
               color: #E02208;
               border-radius: 8px;
             }

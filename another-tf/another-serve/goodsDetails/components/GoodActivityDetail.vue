@@ -3,7 +3,7 @@
 		<!-- 商品详情 -->
 		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
 			<swiper-item v-for="(imgItem, index) in productInfo.images" :key="index">
-				<image class="goodsImg default-img u-skeleton-fillet" :src="imgItem"></image>
+				<image class="goodsImg default-img" :src="imgItem"></image>
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->
@@ -14,7 +14,7 @@
 		<view class="goodgDes-box flex-start flex-column">
 			<view
 				v-if="skuSelect.activityType === 0"
-				class="priceBuyNum-box flex-items u-skeleton-fillet flex-sp-between mar-left-30"
+				class="priceBuyNum-box flex-items flex-sp-between mar-left-30"
 			>
 				<view class="flex-items">
 					<label class="fs36 font-color-C83732">¥</label>
@@ -25,7 +25,7 @@
 						>
 							可使用{{ Math.ceil(Number(skuSelect.originalPrice || 0)) }}代金券抵扣
 						</text>
-						<label class="fs24 font-color-999 discountsPriceLine mar-left-20">
+						<label v-if="skuSelect.price !== skuSelect.originalPrice" class="fs24 font-color-999 discountsPriceLine mar-left-20">
 							¥ {{ skuSelect.originalPrice || 0 }}
 						</label>
 					</view>
@@ -102,7 +102,7 @@
 				</view>
 			</view>
 			<view class="nameContainer">
-				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30 u-skeleton-fillet">
+				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30">
 					<label class="goodsName fs32 mar-left-20 ">{{ productInfo.productName }}</label>
 				</view>
 				<view class="collectBox " @click="handleCollect">
@@ -347,7 +347,7 @@ export default {
 	background-color: #FFFFFF;
 	border-radius: 30upx 0 0 30upx;
 	position: absolute;
-	top: 30upx;
+	top: 110upx;
 	right: 0;
 	z-index: 99;
 }

@@ -13,6 +13,9 @@ export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/get
 // /canvas/getCanvas  查询商品分类
 export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
 
+// /canvas/getPrices  商家定价捆绑
+export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
+
 // /classify/getFirstClassify  查询店铺分类
 export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirstClassify', data)
 
@@ -22,9 +25,37 @@ export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/get
 // /app/getSearchProducts  商品搜索查询
 export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)
 
+// 获取热门推荐
+export const getRandomSortProductApi = (data) => AnotherTFRequest('/product/getRandomSortProduct', data)
+
+// 查询用户所有收货地址
+export const getAllReceiveAddressApi = (data) => AnotherTFRequest('/receive/getAll', data)
+
+// 修改收货地址查询
+export const getReceiveAddressByIdApi = (data) => AnotherTFRequest('/receive/getById', data)
+
+// 更新收货地址
+export const updateReceiveAddressApi = (data) => AnotherTFRequest('/receive/update', data, 'POST')
+
+// 保存收货地址
+export const addReceiveAddressApi = (data) => AnotherTFRequest('/receive/save', data, 'POST')
+
+// 删除收货地址
+export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/delete', data, 'POST')
+
 /**
  * @description 社区商圈相关接口
  */
+
+// 购物车
+// 购物车列表
+export const getCartListApi = (data) => AnotherTFRequest('/cart/getCart', data)
+
+// 修改购物车商品数量
+export const updateNumberCartGoodsApi = (data) => AnotherTFRequest('/cart/updateNumber', data, 'POST')
+
+// 删除购物车商品
+export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', data, 'POST')
 
 // 店铺首页查询，查询店铺详情
 export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
@@ -142,8 +173,8 @@ export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettl
 export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
 
 // 秒杀专区
-// 提问
-export const addProblemseckillApi = (data) => AnotherTFRequest('/seckill/addProblem', data)
+// 商品问答数据查询
+export const getProblemsSeckillApi = (data) => AnotherTFRequest('/seckill/getProblems', data)
 
 // 拼团专区
 // 拼团单结算查询
