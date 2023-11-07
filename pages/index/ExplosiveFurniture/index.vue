@@ -2,7 +2,7 @@
 	<view class="HotBoxContainer">
 		<view class="backHeader">
 			<image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
-			<text class="pageTitle">全屋快装</text>
+			<text class="pageTitle">爆款专区</text>
 		</view>
 		<view class="header">
 			<image class="backgroundImg" src="@/static/images/new-index/topBgImg.png"></image>
