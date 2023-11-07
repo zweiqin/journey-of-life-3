@@ -29,17 +29,13 @@
 
     <tui-toast ref="toast"></tui-toast>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="确认拒绝支付吗？"
-      @click="_handleClickTuiModel($event, handleRefuseAdditional)"
-    ></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="确认拒绝支付吗？"
+      @click="_handleClickTuiModel($event, handleRefuseAdditional)"></tui-modal>
   </view>
 </template>
 
 <script>
-import { getUserId } from "utils";
+import { getUserId, isH5InWebview } from "utils";
 import {
   payAdditionalOrderApi,
   payOrderForBeeStewadAPPApi,
@@ -64,6 +60,7 @@ export default {
 
   methods: {
     async handlePayOrder() {
+      const _this = this
       if (this.$store.state.app.isInMiniProgram) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
@@ -87,14 +84,53 @@ export default {
                 this.orderData.extraNo +
                 "&userId=" +
                 getUserId(),
-              fail: () => {
-                // uni.redirectTo({
-                //   url: `/community-center/order`,
-                // });
+              fail: async () => {
+                if (!isH5InWebview()) {
+                  let res = await payAdditionalOrderApi({
+                    orderNo: this.orderData.extraNo,
+                    userId: getUserId(),
+                  });
 
-                uni.switchTab({
-        url: '/pages/order/order'
-      });
+                  console.log(res);
+
+                  if (res.statusCode === 20000) {
+                    res = JSON.parse(res.data);
+
+                    const form = document.createElement("form");
+                    form.setAttribute("action", res.url);
+                    form.setAttribute("method", "POST");
+
+                    const data1 = JSON.parse(res.data);
+                    let input;
+                    for (const key in data1) {
+                      input = document.createElement("input");
+                      input.name = key;
+                      input.value = data1[key];
+                      form.appendChild(input);
+                    }
+
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                  } else {
+                    this.ttoast({
+                      type: "fail",
+                      title: "支付失败",
+                      content: res.statusMsg,
+                    });
+                  }
+                } else {
+                  _this.ttoast({
+                    type: "fail",
+                    title: error,
+                  });
+
+                  setTimeout(() => {
+                    uni.switchTab({
+                      url: "/pages/order/order",
+                    });
+                  }, 3000);
+                }
               },
             });
           }

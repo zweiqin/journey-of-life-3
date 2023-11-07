@@ -145,7 +145,7 @@ export const getStorageKeyToken = () => {
  * @returns
  */
 
-export const jumpToOtherProject = (url, cb = () => {}) => {
+export const jumpToOtherProject = (url, cb = () => { }) => {
 	// #ifdef H5
 	window.location.href = url
 	// #endif
@@ -354,4 +354,13 @@ export const tradeOrderNo = function () {
 	const yyyyMMddHHmmss = `${year}${month}${day}${hour}${minutes}${seconds}`
 	return yyyyMMddHHmmss + Math.random().toString(36)
 		.substr(2, 9)
+}
+
+
+/**
+ * 判断当前H5是否在webview中打开
+ */
+export const isH5InWebview = () => {
+	const ua = navigator.userAgent.toLowerCase();
+	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
 }

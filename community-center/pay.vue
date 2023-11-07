@@ -22,7 +22,7 @@ import {
   payOrderForEndApi,
   payOrderForBeeStewadAPPApi,
 } from "../api/community-center";
-import { getUserId, useCopy } from "../utils";
+import { getUserId, useCopy, isH5InWebview } from "../utils";
 import Header from "./components/header.vue";
 
 export default {
@@ -60,20 +60,41 @@ export default {
                 "&userId=" +
                 getUserId(),
               fail: (error) => {
-                // uni.redirectTo({
-                //   url: `/community-center/order`,
-                // });
+                if (!isH5InWebview()) {
+                  payOrderForEndApi({
+                    orderNo: this.orderNo,
+                    userId: getUserId(),
+                  }).then((res) => {
+                    res = JSON.parse(res.data);
+                    const form = document.createElement("form");
+                    form.setAttribute("action", res.url);
+                    form.setAttribute("method", "POST");
 
-                _this.ttoast({
-                  type: "fail",
-                  title: error,
-                });
+                    const data = JSON.parse(res.data);
+                    let input;
+                    for (const key in data) {
+                      input = document.createElement("input");
+                      input.name = key;
+                      input.value = data[key];
+                      form.appendChild(input);
+                    }
 
-                setTimeout(() => {
-                  uni.switchTab({
-                    url: "/pages/order/order",
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
                   });
-                }, 3000);
+                } else {
+                  _this.ttoast({
+                    type: "fail",
+                    title: error,
+                  });
+
+                  setTimeout(() => {
+                    uni.switchTab({
+                      url: "/pages/order/order",
+                    });
+                  }, 3000);
+                }
               },
             });
           }

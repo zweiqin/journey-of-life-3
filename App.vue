@@ -8,198 +8,197 @@ import { USER_SELECT_ADDRESS } from './constant'
 import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 
 export default {
-	name: 'App',
-	onLaunch(options) {
-		this.connectSocket()
-		if (this.isLogin()) {
-			getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-			getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
-		}
-		uni.getSystemInfo({
-			success: (res) => {
-				if (res.safeArea.top > 20 && res.model.indexOf('iPhone') !== -1) {
-					this.globalData.isIphone = true
-				}
-			}
-		})
-		// #ifdef H5
-		this.globalData.terminal = 2
-		// #endif
-		// #ifdef APP || APP-NVUE
-		this.globalData.terminal = 3
-		// #endif
-		// #ifdef MP
-		this.globalData.terminal = 1
-		// #endif
-	},
-	onShow() {
-		// 判断浏览器环境
-		// var ua = navigator.userAgent.toLowerCase();
-		// if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
-		// }
-		// const state = util.getUrlKey('state')
-		// const code = util.getUrlKey('code')
-		// if ((state == 'needCode' || state == 'unNeedCode') && code) {
-		// 	let path = window.location.href
-		// 	if (path.indexOf('code=') > 0 && path.indexOf('&state=unNeedCode') > -1) {
-		// 		http.mpLogin(null, code)
-		// 		path = path.substring(0, path.indexOf('code=') - 1)
-		// 		history.replaceState({}, '', path)
-		// 	}
-		http.getCartCount()
-		// }
-		// getUserId();
-	},
-	globalData: {
-		// 定义全局请求队列
-		requestQueue: [],
-		// 是否正在进行登陆
-		isLanding: false,
-		// 购物车商品数量
-		totalCartCount: 0,
-		// 是否一直显示 弹窗
-		isShowCommunityPopup: false,
-		// 是否处于小程序环境
-		isInMiniprogram: false,
-		// 是否已经打开过绑定手机号弹窗
-		isShowedBindMobilePopu: false,
-		// 用户是否授权获取当前位置
-		isHasLocationPermission: true,
-		// 是否显示关注公众号
-		isShowFollowOfficialAccount: false,
-		// 压屏窗弹出次数
-		communityPopupCount: 0,
-		// 判断设备是否为 iPhone
-		isIphone: false,
-		// 画布设备 1 小程序，2 H5，3 App 4 电脑
-		terminal: ''
-	},
-	data() {
-		return {
-			scene: ''
-		}
-	},
+  name: 'App',
+  onLaunch(options) {
+    this.connectSocket()
+    if (this.isLogin()) {
+      getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+      getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
+    }
+    uni.getSystemInfo({
+      success: (res) => {
+        if (res.safeArea.top > 20 && res.model.indexOf('iPhone') !== -1) {
+          this.globalData.isIphone = true
+        }
+      }
+    })
+    // #ifdef H5
+    this.globalData.terminal = 2
+    // #endif
+    // #ifdef APP || APP-NVUE
+    this.globalData.terminal = 3
+    // #endif
+    // #ifdef MP
+    this.globalData.terminal = 1
+    // #endif
+  },
+  onShow() {
+    // 判断浏览器环境
+    // if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
+    // }
+    // const state = util.getUrlKey('state')
+    // const code = util.getUrlKey('code')
+    // if ((state == 'needCode' || state == 'unNeedCode') && code) {
+    // 	let path = window.location.href
+    // 	if (path.indexOf('code=') > 0 && path.indexOf('&state=unNeedCode') > -1) {
+    // 		http.mpLogin(null, code)
+    // 		path = path.substring(0, path.indexOf('code=') - 1)
+    // 		history.replaceState({}, '', path)
+    // 	}
+    http.getCartCount()
+    // }
+    // getUserId();
+  },
+  globalData: {
+    // 定义全局请求队列
+    requestQueue: [],
+    // 是否正在进行登陆
+    isLanding: false,
+    // 购物车商品数量
+    totalCartCount: 0,
+    // 是否一直显示 弹窗
+    isShowCommunityPopup: false,
+    // 是否处于小程序环境
+    isInMiniprogram: false,
+    // 是否已经打开过绑定手机号弹窗
+    isShowedBindMobilePopu: false,
+    // 用户是否授权获取当前位置
+    isHasLocationPermission: true,
+    // 是否显示关注公众号
+    isShowFollowOfficialAccount: false,
+    // 压屏窗弹出次数
+    communityPopupCount: 0,
+    // 判断设备是否为 iPhone
+    isIphone: false,
+    // 画布设备 1 小程序，2 H5，3 App 4 电脑
+    terminal: ''
+  },
+  data() {
+    return {
+      scene: ''
+    }
+  },
 
-	mounted() {
-		this.setUserLocation()
+  mounted() {
+    this.setUserLocation()
 
-		this.$store.dispatch('app/getUserSystermInfo')
+    this.$store.dispatch('app/getUserSystermInfo')
 
-		// // #ifdef APP
-		// this.$store.dispatch("community/getHomePopupImage");
-		// // #endif
+    // // #ifdef APP
+    // this.$store.dispatch("community/getHomePopupImage");
+    // // #endif
 
-		const launchOptions = uni.getLaunchOptionsSync()
-		this.scene = launchOptions.scene
-	},
-	methods: {
-		connectSocket() {
-			if (this.isLogin()) {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandle: uni.connectSocket({
-						url: `${BASE_WS_API}/${getUserId()}`,
-						complete: () => {}
-					})
-				})
-			}
-		},
-		onOpen() {
-			// console.log('onOpen连接成功');
-		},
-		onMessage(evt) {
-			// console.log('onMessage收到消息', evt);
-			// const data = JSON.parse(evt.data)
-			// console.log(data)
-			// if (data.status == 10400) {
-			// 	uni.showToast({
-			// 		title: '网络不给力，请检查网络连接',
-			// 		icon: 'none'
-			// 	}) // 弹出提示框
-			// } else if (data.status == 13140) {
-			// 	this.$store.dispatch('customerService/getChatList')
-			// }
-		},
-		onError(errMsg) {
-			// console.log('onError出错了');
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			// uni.showToast({
-			// 	title: 'Error出错了' + errMsg,
-			// 	icon: 'none',
-			// 	duration: 2000
-			// })
-		},
-		onClose() {
-			// console.log('onClose关闭了');
-			this.timer && clearTimeout(this.timer)
-			if (this.isLogin()) {
-				this.timer = setTimeout(() => {
-					this.$store.dispatch('customerService/joinCustomerServiceChat', {
-						ref: '',
-						wsHandle: uni.connectSocket({
-							url: `${BASE_WS_API}/${getUserId()}`,
-							complete: () => {}
-						})
-					})
-				}, 2000)
-			}
-		},
+    const launchOptions = uni.getLaunchOptionsSync()
+    this.scene = launchOptions.scene
+  },
+  methods: {
+    connectSocket() {
+      if (this.isLogin()) {
+        this.$store.dispatch('customerService/joinCustomerServiceChat', {
+          ref: this,
+          wsHandle: uni.connectSocket({
+            url: `${BASE_WS_API}/${getUserId()}`,
+            complete: () => { }
+          })
+        })
+      }
+    },
+    onOpen() {
+      // console.log('onOpen连接成功');
+    },
+    onMessage(evt) {
+      // console.log('onMessage收到消息', evt);
+      // const data = JSON.parse(evt.data)
+      // console.log(data)
+      // if (data.status == 10400) {
+      // 	uni.showToast({
+      // 		title: '网络不给力，请检查网络连接',
+      // 		icon: 'none'
+      // 	}) // 弹出提示框
+      // } else if (data.status == 13140) {
+      // 	this.$store.dispatch('customerService/getChatList')
+      // }
+    },
+    onError(errMsg) {
+      // console.log('onError出错了');
+      // uni.showLoading({
+      // 	title: '断线了，正在重新连接......',
+      // 	mask: true
+      // })
+      // uni.showToast({
+      // 	title: 'Error出错了' + errMsg,
+      // 	icon: 'none',
+      // 	duration: 2000
+      // })
+    },
+    onClose() {
+      // console.log('onClose关闭了');
+      this.timer && clearTimeout(this.timer)
+      if (this.isLogin()) {
+        this.timer = setTimeout(() => {
+          this.$store.dispatch('customerService/joinCustomerServiceChat', {
+            ref: '',
+            wsHandle: uni.connectSocket({
+              url: `${BASE_WS_API}/${getUserId()}`,
+              complete: () => { }
+            })
+          })
+        }, 2000)
+      }
+    },
 
-		// 设置用户定位
-		async setUserLocation() {
-			// // #ifdef APP
-			// this.useStorageLocation();
-			// // #endif
+    // 设置用户定位
+    async setUserLocation() {
+      // // #ifdef APP
+      // this.useStorageLocation();
+      // // #endif
 
-			try {
-				//  #ifdef H5
-				this.globalData.isHasLocationPermission = true
-				// #endif
-				await this.$store.dispatch('location/getCurrentLocation', (res) => {
-					this.$store.dispatch('community/getHomePopupImage', res.detail)
-					this.$store.commit('community/CHANGE_HOME_STORE', res.town)
-					this.$store.dispatch('community/getVipPackageList', res.detail)
-				})
-			} catch (error) {
-				this.globalData.isHasLocationPermission = false
-				const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
-				if (lastAddress) {
-					this.$store.dispatch('location/getDetailAddress', lastAddress.data)
-				} else {
-					// 后端兜底1
-				}
-			}
+      try {
+        //  #ifdef H5
+        this.globalData.isHasLocationPermission = true
+        // #endif
+        await this.$store.dispatch('location/getCurrentLocation', (res) => {
+          this.$store.dispatch('community/getHomePopupImage', res.detail)
+          this.$store.commit('community/CHANGE_HOME_STORE', res.town)
+          this.$store.dispatch('community/getVipPackageList', res.detail)
+        })
+      } catch (error) {
+        this.globalData.isHasLocationPermission = false
+        const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
+        if (lastAddress) {
+          this.$store.dispatch('location/getDetailAddress', lastAddress.data)
+        } else {
+          // 后端兜底1
+        }
+      }
 
-			setTimeout(() => {
-				if (this.$store.getters.currentCity === '定位失败') {
-					this.useStorageLocation()
-				}
-			}, 2000)
-		},
+      setTimeout(() => {
+        if (this.$store.getters.currentCity === '定位失败') {
+          this.useStorageLocation()
+        }
+      }, 2000)
+    },
 
-		// 使用本地数据
-		useStorageLocation() {
-			const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
-			if (lastAddress) {
-				this.$store.dispatch('location/getDetailAddress', lastAddress.data)
-			}
-		}
-	}
+    // 使用本地数据
+    useStorageLocation() {
+      const lastAddress = uni.getStorageSync(USER_SELECT_ADDRESS)
+      if (lastAddress) {
+        this.$store.dispatch('location/getDetailAddress', lastAddress.data)
+      }
+    }
+  }
 }
 </script>
 
 <style lang="less">
 @import './app.css';
 
-.tui-badge.tui-danger.tui-badge-scale{
+.tui-badge.tui-danger.tui-badge-scale {
   box-shadow: 0px 0 1upx #ed3f14;
   border: 4upx solid #fff;
 }
 
-.tui-toast-text{
+.tui-toast-text {
   line-height: 1.5;
 }
 
@@ -227,23 +226,25 @@ uni-swiper .uni-swiper-dots-horizontal {
 }
 
 // 自定义骨架屏
-.ske-loading{
-  .child-loading{
+.ske-loading {
+  .child-loading {
     animation: loading 2s linear 0s infinite alternate;
   }
 }
+
 uni-rich-text img {
   max-width: 100% !important;
 }
 
 // 图片占位图
-.pic-img{
-	width: 100%;
-	height: 100%;
+.pic-img {
+  width: 100%;
+  height: 100%;
 }
+
 .default-img {
-	background: url('./static/images/common/default.png') no-repeat center;
-	background-size: 100% 100%;
+  background: url('./static/images/common/default.png') no-repeat center;
+  background-size: 100% 100%;
 }
 
 .line1 {
