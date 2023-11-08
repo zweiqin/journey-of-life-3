@@ -72,7 +72,7 @@
 
 <script>
 import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
-import { unshift } from 'utils/picker.city';
+
 export default {
 	data() {
 		return {
@@ -106,7 +106,7 @@ export default {
 				productName: '',
 				...this.querList
 			}).then(res => {
-				this.goodsList = res.data.list
+				res.data.list.forEach(item => this.goodsList.push(item))
 				// console.log(res);
 			}).catch(err => {
 				// console.log(err);
@@ -122,7 +122,7 @@ export default {
 		}
 	},
 	onReachBottom(value) {
-		this.querList.pageSize+= 10
+		this.querList.page += 1
         this.getList()
     }
 }

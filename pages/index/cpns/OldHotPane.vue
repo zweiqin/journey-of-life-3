@@ -6,12 +6,11 @@
     </view>
 
     <view class="pane-content">
-      <!-- @click="go('/pages/prod/prod?goodsId=' + goods.productId)" -->
-      <view class="item" v-for="goods in goodsData" :key="goods.productId">
-        <image :src="common.seamingImgUrl(goods.image)" class="item-image"></image>
+      <view class="item" @click="go('/pages/prod/prod?goodsId=' + goods.id)" v-for="goods in goodsData" :key="goods.id">
+        <image :src="common.seamingImgUrl(goods.picUrl)" class="item-image"></image>
         <view class="price-wrapper">
           ￥<text class="price-text">
-            {{ goods.price }}
+            {{ goods.counterPrice }}
           </text>
         </view>
       </view>
@@ -51,7 +50,6 @@ export default {
     justify-content: space-between;
 
     .sub-title {
-      transform: scale(0.9);
       font-size: 22upx;
       color: #979797;
     }

@@ -130,9 +130,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.voucher-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .voucher-zone-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #F6F6F8;
 
   .page-haeder {

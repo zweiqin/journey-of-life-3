@@ -60,7 +60,7 @@
       }
     },
     {
-      "path": "pages/index/BrandFactory/BrandFactory",
+      "path": "pages/index/BrandFactory/index",
       "style": {
         "navigationBarTitleText": "品牌工厂"
       }
@@ -123,18 +123,30 @@
         "navigationBarTitleText": "爆品家具"
       }
     },
+    {
+      "path": "pages/index/Explosive/category",
+      "style": {
+        "navigationBarTitleText": "爆品家具"
+      }
+    },
+    {
+      "path": "pages/index/Explosive/goodsFilter",
+      "style": {
+        "navigationBarTitleText": "爆品家具"
+      }
+    },
     // {
     //   "path": "pages/index/BrandFurniture/index",
     //   "style": {
     //     "navigationBarTitleText": "品牌家居"
     //   }
     // },
-    // {
-    //   "path": "pages/index/BrandFactory/detail",
-    //   "style": {
-    //     "navigationBarTitleText": "详情"
-    //   }
-    // },
+    {
+      "path": "pages/index/BrandFactory/detail",
+      "style": {
+        "navigationBarTitleText": "详情"
+      }
+    },
     {
       "path": "pages/search-page/search-page",
       "style": {
@@ -1404,84 +1416,84 @@
             "navigationBarTitleText": "订单详情"
           }
         },
-				{
-					"path": "another-serve/evaluate/index",
-					"style": {
-						"navigationBarTitleText": "评价"
-					}
-				},
-				{
-					"path": "another-serve/addEvaluate/index",
-					"style": {
-						"navigationBarTitleText": "追加评价"
-					}
-				},
-				{
-					"path": "another-serve/paySuccessful/index",
-					"style": {
-						"navigationBarTitleText": "支付成功"
-					}
-				},
-				{
-					"path": "another-serve/orderConfirm/index",
-					"style": {
-						"navigationBarTitleText": "购买宝贝"
-					}
-				},
-				{
-					"path": "another-serve/address/index",
-					"style": {
-						"navigationBarTitleText": "地址管理"
-					}
-				},
-				{
-					"path": "another-serve/addAddress/index",
-					"style": {
-						"navigationBarTitleText": "地址管理"
-					}
-				},
-				{
-					"path": "another-serve/exchangeDetail/index",
-					"style": {
-						"navigationBarTitleText": "积分兑换"
-					}
-				},
-				{
-					"path": "another-serve/evaluateList/index",
-					"style": {
-						"navigationBarTitleText": "宝贝评价"
-					}
-				},
-				{
-					"path": "another-serve/putQuestions/index",
-					"style": {
-						"navigationBarTitleText": "提问"
-					}
-				},
-				{
-					"path": "another-serve/answerList/index",
-					"style": {
-						"navigationBarTitleText": "全部问答"
-					}
-				},
-				{
-					"path": "another-serve/qADetail/index",
-					"style": {
-						"navigationBarTitleText": "问答详情"
-					}
-				},
-				{
-					"path": "another-serve/inviteSpell/index",
-					"style": {
-						"navigationBarTitleText": "邀请好友拼单"
-					}
-				},
-				{
-					"path": "another-serve/shareProduct/index",
-					"style": {
-						"navigationBarTitleText": "分享"
-					}
-				}
+        {
+          "path": "another-serve/evaluate/index",
+          "style": {
+            "navigationBarTitleText": "评价"
+          }
+        },
+        {
+          "path": "another-serve/addEvaluate/index",
+          "style": {
+            "navigationBarTitleText": "追加评价"
+          }
+        },
+        {
+          "path": "another-serve/paySuccessful/index",
+          "style": {
+            "navigationBarTitleText": "支付成功"
+          }
+        },
+        {
+          "path": "another-serve/orderConfirm/index",
+          "style": {
+            "navigationBarTitleText": "购买宝贝"
+          }
+        },
+        {
+          "path": "another-serve/address/index",
+          "style": {
+            "navigationBarTitleText": "地址管理"
+          }
+        },
+        {
+          "path": "another-serve/addAddress/index",
+          "style": {
+            "navigationBarTitleText": "地址管理"
+          }
+        },
+        {
+          "path": "another-serve/exchangeDetail/index",
+          "style": {
+            "navigationBarTitleText": "积分兑换"
+          }
+        },
+        {
+          "path": "another-serve/evaluateList/index",
+          "style": {
+            "navigationBarTitleText": "宝贝评价"
+          }
+        },
+        {
+          "path": "another-serve/putQuestions/index",
+          "style": {
+            "navigationBarTitleText": "提问"
+          }
+        },
+        {
+          "path": "another-serve/answerList/index",
+          "style": {
+            "navigationBarTitleText": "全部问答"
+          }
+        },
+        {
+          "path": "another-serve/qADetail/index",
+          "style": {
+            "navigationBarTitleText": "问答详情"
+          }
+        },
+        {
+          "path": "another-serve/inviteSpell/index",
+          "style": {
+            "navigationBarTitleText": "邀请好友拼单"
+          }
+        },
+        {
+          "path": "another-serve/shareProduct/index",
+          "style": {
+            "navigationBarTitleText": "分享"
+          }
+        }
       ]
     }
   ],
@@ -1545,16 +1557,16 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "团蜂家居",
     "navigationBarTextStyle": "black",
-		"titleNView": false,
+    "titleNView": false,
     "app-plus": {
       "animationType": "slide-in-right",
       "animationDuration": 300
     },
-		"mp-weixin": {
-			"usingComponents": {
-				"send-coupon": "plugin://sendCoupon/send-coupon"
-			}
-		}
+    "mp-weixin": {
+      "usingComponents": {
+        "send-coupon": "plugin://sendCoupon/send-coupon"
+      }
+    }
   },
   "style": {
     "app-plus": {
