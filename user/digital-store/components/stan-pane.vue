@@ -4,7 +4,7 @@
       class="avatar"
       :src="
         info.userAvatar ||
-        'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp'
+        require('../../../static/images/new-user/default-user-avatar.png')
       "
       alt=""
     />
@@ -94,24 +94,6 @@ export default {
   .select {
     position: relative;
     padding-right: 20upx;
-
-    &::after {
-      content: "";
-      position: absolute;
-      display: block;
-      background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2gaw2khlvr5tm9to6aik.png")
-        no-repeat;
-      background-size: cover;
-      right: -2px;
-      top: 50%;
-      transform: translateY(-50%) rotate(90deg);
-      width: 20upx;
-      height: 10upx;
-    }
-
-    .select-value {
-      margin-right: 10upx;
-    }
   }
 
   .item {

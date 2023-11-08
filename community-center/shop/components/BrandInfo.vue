@@ -49,7 +49,7 @@
 
 		<view v-if="brandDetail.shopLogo" style="margin-top: 22upx;">
 			<!-- 轮播图 -->
-			<swiper autoplay :interval="3000" next-margin="80rpx" :duration="1000" style="height: 328upx;">
+			<swiper autoplay :interval="3000" circular next-margin="80rpx" :duration="1000" style="height: 328upx;">
 				<swiper-item>
 					<tui-lazyload-img
 						mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
@@ -61,6 +61,12 @@
 						<tui-lazyload-img
 							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
 							:src="common.seamingImgUrl(item)"
+						></tui-lazyload-img>
+					</swiper-item>
+					<swiper-item v-if="brandDetail.advertisement.split(',').length === 1">
+						<tui-lazyload-img
+							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
+							:src="common.seamingImgUrl(brandDetail.shopLogo)"
 						></tui-lazyload-img>
 					</swiper-item>
 				</template>

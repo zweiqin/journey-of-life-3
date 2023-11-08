@@ -19,7 +19,7 @@
           <view style="color: #f90"> {{ repairForm.dictName }} </view>
         </picker>
       </view>
-      <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png" alt="" />
+      <tui-icon name="arrowright" color="#b4b4b4" :size="26"></tui-icon>
     </view>
 
     <!-- <view class="item">
@@ -33,10 +33,7 @@
           </view>
         </DatetimePicker>
       </view>
-      <img
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
-        alt=""
-      />
+      <tui-icon name="arrowright" color="#b4b4b4" :size="26"></tui-icon>
     </view> -->
 
     <!-- <view class="item">
@@ -48,10 +45,7 @@
         </span>
         &nbsp;件
       </view>
-      <img
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
-        alt=""
-      />
+      <tui-icon name="arrowright" color="#b4b4b4" :size="26"></tui-icon>
     </view> -->
 
     <Remarks
@@ -366,11 +360,6 @@ export default {
       flex: 1;
       font-size: 34upx;
       color: #b2b2b2;
-    }
-
-    img {
-      width: 16upx;
-      height: 26upx;
     }
   }
 }

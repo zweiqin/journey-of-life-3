@@ -86,45 +86,6 @@ export default {
     shareNamecard() {
       console.log(this.data.position + '\n' + this.data.phone);
       // #ifdef H5
-      // const url = domToImage(this.$refs.namecardRef.$el);
-      // uni.uploadFile({
-      //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/uploadByBase64",
-      //   filePath: url,
-      //   formData: {
-      //     fileName: new Date().getTime(),
-      //   },
-      //   name: "base64",
-      //   success: (uploadFileRes) => {
-      //     console.log(uploadFileRes);
-      //   },
-      // });
-
-      // uni.request({
-      //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/uploadByBase64",
-      //   data: {
-      //     fileName: new Date().getTime(),
-      //     base64: url,
-      //   },
-      //   methods: "POST",
-      //   success(res) {
-      //     console.log(res);
-      //   },
-      // });
-
-      // return;
-
-      // uni.request({
-      //   url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/qrCode/getSignature",
-      //   data: {
-      //     url: "xxxxxx",
-      //     token: uni.getStorageSync(USER_TOKEN),
-      //   },
-      //   methods: "GET",
-      //   success: (res) => {
-      //     console.log(res.data);
-      //   },
-      // });
-
       const currentUrl = window.location.href.replace("#", "ericToken");
       const _this = this;
 
@@ -141,7 +102,6 @@ export default {
             _this.data.id,
         });
       });
-
       // #endif
 
       // #ifdef APP-PLUS

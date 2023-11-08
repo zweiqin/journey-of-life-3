@@ -1,12 +1,7 @@
 <template>
   <view class="sender-container">
     <view class="header">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
+      <tui-icon name="arrowleft" color="#767676" :size="48" unit="upx" @click="back"></tui-icon>
 
       <h2>收件地址</h2>
     </view>
@@ -176,10 +171,6 @@ export default {
       font-weight: bold;
       flex: 1;
       text-align: center;
-    }
-
-    .back {
-      .img(48upx);
     }
   }
 

@@ -4,7 +4,7 @@ export const orderDetail = () => {
   return [
     {
       label: '佛山',
-      icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png',
+			icon: require('../static/images/icon/location-logo.png'),
       value: 0
     },
     {
@@ -19,7 +19,7 @@ export const getConfirmConfig = () => {
   return [
     {
       label: '佛山',
-      icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png',
+			icon: require('../static/images/icon/location-logo.png'),
       id: 0
     },
     {
@@ -78,18 +78,18 @@ export const deliveryInfo = [
     label: '提货地址',
     field: 'deliveryAddress',
     placeholder: '请输入提货地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
+    icon: require('../static/images/con-center/right-arrow.png'),
     require: true,
-    width: 8,
+    width: 10,
     height: 13,
     select: true
   },
   {
     field: 'deliveryAddressDetaile',
     placeholder: '请输入详细地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png',
+    icon: require('../static/images/icon/location-logo.png'),
     require: true,
-    width: 14,
+    width: 17,
     height: 17
   }
 ];
@@ -111,26 +111,26 @@ export const consigneeInfo = [
     label: '上门地址',
     field: 'consigneeAddress',
     placeholder: '请输入收货地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
+    icon: require('../static/images/con-center/right-arrow.png'),
     require: true,
-    width: 8,
+    width: 10,
     height: 13,
     select: true
   },
   {
     field: 'consigneeAddressDetail',
     placeholder: '请输入详细地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png',
+    icon: require('../static/images/icon/location-logo.png'),
     require: true,
-    width: 14,
+    width: 17,
     height: 17
   },
   {
     field: 'isElevator',
     label: '有无电梯',
     placeholder: '有无电梯',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
-    width: 8,
+    icon: require('../static/images/con-center/right-arrow.png'),
+    width: 10,
     height: 13,
     select: true
   },
@@ -138,8 +138,8 @@ export const consigneeInfo = [
     field: 'floor',
     label: '居住楼层',
     placeholder: '请输入居住楼层',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
-    width: 8,
+    icon: require('../static/images/con-center/right-arrow.png'),
+    width: 10,
     height: 13
   }
 ];
@@ -161,9 +161,9 @@ export const consigneeVipInfo = [
     label: '上门地址',
     field: 'consigneeAddress',
     placeholder: '请输入上门地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
+    icon: require('../static/images/con-center/right-arrow.png'),
     require: true,
-    width: 8,
+    width: 10,
     height: 13,
     select: true
   },
@@ -171,17 +171,17 @@ export const consigneeVipInfo = [
     label: '详细地址',
     field: 'consigneeAddressDetail',
     placeholder: '请输入详细地址',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ejf2oiy8556quld6a0t6.png',
+    icon: require('../static/images/icon/location-logo.png'),
     require: true,
-    width: 14,
+    width: 17,
     height: 17
   },
   {
     field: 'isElevator',
     label: '有无电梯',
     placeholder: '有无电梯',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
-    width: 8,
+    icon: require('../static/images/con-center/right-arrow.png'),
+    width: 10,
     height: 13,
     select: true
   },
@@ -189,8 +189,8 @@ export const consigneeVipInfo = [
     field: 'floor',
     label: '居住楼层',
     placeholder: '请输入居住楼层',
-    icon: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4l5sqnpkoal0fts1fyay.png',
-    width: 8,
+    icon: require('../static/images/con-center/right-arrow.png'),
+    width: 10,
     height: 13
   }
 ];

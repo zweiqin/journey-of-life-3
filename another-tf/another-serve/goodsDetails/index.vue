@@ -50,7 +50,7 @@
 			/>
 
 			<!-- 发货 -->
-			<view class="express-box flex-items flex-row fs24">
+			<view v-if="productData.ifLogistics" class="express-box flex-items flex-row fs24">
 				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
 				<tui-icon
 					v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
@@ -66,7 +66,7 @@
 			<view class="fs24 chooseSize-box flex-start" @click=" handleShowGoodsSkuSelect(6)">
 				<view class="chooseSize-content flex-items flex-row flex-sp-between">
 					<view class="flex-row-plus ">
-						<label class="fs26   mar-left-30 font-color-999">选择</label>
+						<label class="fs26 mar-left-30 font-color-999">选择</label>
 						<view class="valueBox mar-left-20 flex-items">
 							<view v-for="(item, index) in currentSuk" :key="index" class="mar-right-10">
 								{{ item.skuText || '-' }}
@@ -706,7 +706,6 @@ export default {
 		background-color: #FFFFFF;
 		padding-left: 30rpx;
 		border-top: 12rpx solid #F8F8F8;
-		border-bottom: 12rpx solid #F8F8F8;
 
 		image {
 			width: 21rpx;
@@ -730,6 +729,7 @@ export default {
 	}
 
 	.chooseSize-box {
+		border-top: 12rpx solid #F8F8F8;
 		height: 90rpx;
 		background-color: #FFFFFF;
 		margin: 10rpx 0;

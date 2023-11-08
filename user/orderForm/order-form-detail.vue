@@ -112,6 +112,7 @@ import {
 } from '../../api/order'
 import { getUserId, payFn } from '../../utils'
 import { orderOpButtons } from './config'
+import { IMG_UPLOAD_URL } from '../../config'
 
 export default {
 	name: 'OrderFormDetail',
@@ -177,7 +178,7 @@ export default {
 			uni.chooseImage({
 				success: (chooseImageRes) => {
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						url: IMG_UPLOAD_URL,
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
 						success: (uploadFileRes) => {

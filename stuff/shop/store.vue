@@ -48,13 +48,6 @@
           :desc="item.desc"
           :id="item.id"
         ></Store>
-        <!-- <Store></Store>
-        <Store></Store>
-        <Store></Store>
-        <Store></Store>
-        <Store></Store>
-        <Store></Store>
-        <Store></Store> -->
       </view>
     </view>
   </div>
@@ -69,8 +62,6 @@
 
 
 <script>
-import { navs2 } from "../../pages/stuff/config";
-
 import Store from "../../pages/stuff/components/stuff-store.vue";
 import { getBrandListApi, getBrandTypeApi } from "../../api/brand";
 export default {
@@ -87,7 +78,6 @@ export default {
       currentTab: 0,
       brandgenreId: "",
       length: "",
-      picUrl:"https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mu11ydme6t73slzqkjgc.png",
       text:"暂无门店"
     };
   },

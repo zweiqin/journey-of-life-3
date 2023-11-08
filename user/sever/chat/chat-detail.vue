@@ -282,6 +282,7 @@ import {
 import {
 	USER_INFO
 } from '../../../constant'
+import { IMG_UPLOAD_URL } from '../../../config'
 import { getCustomerPopularApi, getCustomerAnswerSelectApi, getCustomerAnswerStatisticsApi, getcustomerSendingApi } from '../../../api/user'
 
 export default {
@@ -706,7 +707,7 @@ export default {
 					})
 					const tempFilePaths = chooseImageRes.tempFilePaths
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload', // 仅为示例，非真实的接口地址
+						url: IMG_UPLOAD_URL, // 仅为示例，非真实的接口地址
 						filePath: tempFilePaths[0],
 						name: 'file',
 						formData: {

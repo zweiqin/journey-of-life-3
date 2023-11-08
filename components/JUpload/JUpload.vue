@@ -1,59 +1,54 @@
 <template>
-  <view>
-    <view class="title" v-if="title">{{ title }}</view>
-    <view class="upload-pane">
-      <view class="left">
-        <view @click="chooseImg" class="upload" v-if="!imgUrl">+</view>
-        <image v-else-if="imgUrl" class="iamge-background" :src="imgUrl" mode="" />
-      </view>
-      <image
-        v-show="imgUrl"
-        @click="removeBackground"
-        class="delete-icon"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
-        mode=""
-      />
-    </view>
-  </view>
+	<view>
+		<view v-if="title" class="title">{{ title }}</view>
+		<view class="upload-pane">
+			<view class="left">
+				<view v-if="!imgUrl" class="upload" @click="chooseImg">+</view>
+				<image v-else-if="imgUrl" class="iamge-background" :src="imgUrl" mode="" />
+			</view>
+			<tui-icon v-show="imgUrl" name="delete" color="#767676" :size="18" @click="removeBackground"></tui-icon>
+		</view>
+	</view>
 </template>
 
 <script>
+import { IMG_UPLOAD_URL } from '../../config'
 export default {
-  props: {
-    imgUrl: String,
-    title: String,
-  },
-  methods: {
-    removeBackground() {
-      const _this = this;
-      uni.showModal({
-        title: "提示",
-        content: "确定删除当前图片吗？",
-        success: function (res) {
-          if (res.confirm) {
-            _this.$emit("delete");
-          }
-        },
-      });
-    },
+	props: {
+		imgUrl: String,
+		title: String
+	},
+	methods: {
+		removeBackground() {
+			const _this = this
+			uni.showModal({
+				title: '提示',
+				content: '确定删除当前图片吗？',
+				success(res) {
+					if (res.confirm) {
+						_this.$emit('delete')
+					}
+				}
+			})
+		},
 
-    chooseImg() {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
-          uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
-            filePath: chooseImageRes.tempFiles[0].path,
-            name: "file",
-            success: (uploadFileRes) => {
-              _this.$emit("upload", JSON.parse(uploadFileRes.data).data.url);
-            },
-          });
-        },
-      });
-    },
-  },
-};
+		chooseImg() {
+			const _this = this
+			uni.chooseImage({
+				success: (chooseImageRes) => {
+					uni.uploadFile({
+						url: IMG_UPLOAD_URL,
+						filePath: chooseImageRes.tempFiles[0].path,
+						name: 'file',
+						success: (uploadFileRes) => {
+							_this.$emit('upload', JSON.parse(uploadFileRes.data).data.url)
+						}
+					})
+				}
+			})
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

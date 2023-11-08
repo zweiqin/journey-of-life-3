@@ -2,7 +2,7 @@
   <view class="contact-guide-container">
     <image
       class="logo animate__animated animate__bounce"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ajpaibzunrpqxlu9uw4o.png"
+      src="../../../static/images/user/default-logo.png"
     ></image>
     <view class="desc animate__animated animate__rubberBand"
       >数字化营销的领跑者</view
