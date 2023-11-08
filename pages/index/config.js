@@ -14,7 +14,7 @@ export const homeTopNavs = [
   {
     name: '品牌家居',
     iconUrl: require('../../static/images/new-index/index-1/pinpai.png'),
-    url: '/pages/index/BrandFactory/BrandFactory'
+    url: '/pages/index/BrandFactory/index'
   },
   {
     name: '智能选配',
