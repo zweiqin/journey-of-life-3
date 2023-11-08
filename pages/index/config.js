@@ -3,7 +3,8 @@ export const homeTopNavs = [
     name: '爆品家具',
     iconUrl: require('../../static/images/new-index/index-1/hot.png'),
     // url: '/pages/hot/hot'
-    url: '/pages/index/ExplosiveFurniture/index'
+    // url: '/pages/index/ExplosiveFurniture/index'
+    url: '/pages/index/Explosive/category'
   },
   {
     name: '兑换专区',

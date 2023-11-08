@@ -1,6 +1,6 @@
 <template>
   <view class="voucher-detail-goods-pane" v-if="goodsInfo" @click="go('/pages/prod/prod?goodsId=' + goodsInfo.id)">
-    <tui-lazyload-img :style="{ background: `url(${goodsInfo.picUrl})` }" mode="aspectFit"
+    <tui-lazyload-img :style="{ background: `url(${goodsInfo.picUrl})`, margin: 0 }" mode="aspectFit"
       :src="goodsInfo.picUrl"></tui-lazyload-img>
 
     <view class="goods-info">
@@ -35,26 +35,28 @@ export default {
 <style lang="less" scoped>
 .voucher-detail-goods-pane {
   padding: 14upx 23upx 14upx 14upx;
-  width: 100%;
+  width: 47%;
   background-color: #fff;
   box-sizing: border-box;
   border-radius: 20upx;
   margin-bottom: 24upx;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items:  center;
+  justify-content: space-around;
 
   .goods-info {
     flex: 1;
 
     .goods-name {
+      margin-top: 4rpx;
       color: #222229;
       font-size: 28upx;
       display: -webkit-box;
       overflow: hidden;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      margin-bottom: 24upx;
+      margin-bottom: 4upx;
     }
 
     .preice-wrapper {

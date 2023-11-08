@@ -123,6 +123,18 @@
         "navigationBarTitleText": "爆品家具"
       }
     },
+    {
+      "path": "pages/index/Explosive/category",
+      "style": {
+        "navigationBarTitleText": "爆品家具"
+      }
+    },
+    {
+      "path": "pages/index/Explosive/goodsFilter",
+      "style": {
+        "navigationBarTitleText": "爆品家具"
+      }
+    },
     // {
     //   "path": "pages/index/BrandFurniture/index",
     //   "style": {

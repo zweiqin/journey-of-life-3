@@ -1,21 +1,20 @@
 <template>
-  <view class="new-goods-pane-container" v-if="goods" @click="goGoodsDetsil(goods)">
+  <view class="new-goods-pane-container" v-if="goods" @click="go('/pages/prod/prod?goodsId=' + goods.id)">
     <view class="goods-logo">
       <view class="level-1  level"></view>
       <view class="level-2  level"></view>
       <view class="level-3 level"></view>
-      <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(goods.image)})`, filter: 'blur(10ox)' }" mode="aspectFit"
-        :src="common.seamingImgUrl(goods.image)"></tui-lazyload-img>
+      <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(goods.picUrl)})`, filter: 'blur(10ox)' }" mode="aspectFit"
+        :src="common.seamingImgUrl(goods.picUrl)"></tui-lazyload-img>
     </view>
 
     <view class="goods-info">
-      <view class="goods-name">{{ goods.productName }}</view>
+      <view class="goods-name">{{ goods.name }}</view>
       <view class="wrapper">
         <view class="price-wrapper">
-          ￥<text class="price-text">{{ goods.price }}</text>
+          ￥<text class="price-text">{{ goods.counterPrice }}</text>
         </view>
-        <view v-if="goods.voucherId != 0" class="is-suppot-voucher">可使用{{ goods.voucherPrice }}代金券抵扣</view>
-        <view v-else class="is-suppot-voucher" style="color: #4757e2bf;box-shadow: 0px 0px 0px 1rpx #47dfe28c;">不支持使用代金卷</view>
+        <view v-if="goods.supportVoucher && goods.voucherAmount" class="is-suppot-voucher">可使用{{ goods.voucherAmount }}代金券抵扣</view>
       </view>
     </view>
   </view>
@@ -27,33 +26,6 @@ export default {
     goods: {
       type: Object,
       required: true
-    }
-  },
-  created() {
-    // console.log(this.voucherJudgment(this.goods))
-  },
-  methods: {
-    goGoodsDetsil(shopItem) {
-      uni.navigateTo({
-        //  url: `/pages/prod/prod?shopInfo=${JSON.stringify(this.goods)}&detailInfo=${JSON.stringify(this.voucherJudgment(this.goods))}`
-        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`
-      });
-    },
-    /* getClassifyProducts2Api这个接口需要这个方法来判断是否支持使用代金卷
-     * @param {Object, Array} Item 商品对象
-     * @param {String} Item.skuId 商品id
-     * @return {Boolean} 是否可使用代金券
-     * 判断是否可使用代金券
-     */
-    voucherJudgment(Item) {
-      if (!Item.map || Item.map.length <= 0) {
-        return false
-      }
-      let returnData = null
-      for(let Key in Item.map) {
-        if(Item.map[Key].skuId == Item.skuId) returnData = Item.map[Key]
-      }
-      return returnData
     }
   }
 }
@@ -140,9 +112,9 @@ export default {
 
     .wrapper {
       display: flex;
-      flex-wrap: wrap;
-      margin-top: 8rpx;
-      flex-direction: column;
+      align-items: center;
+			flex-wrap: wrap;
+      margin-top: 8upx;
 
 
       .price-wrapper {
