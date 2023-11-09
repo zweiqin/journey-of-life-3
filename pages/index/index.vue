@@ -90,7 +90,7 @@ export default {
     return {
       homeTopNavs: homeTopNavs,
       queryList: {
-        classifyId: '', // 分类ID
+        classifyId: '978', // 分类ID
         productName: '', // 商品名称
         search: '',
         type: 1, // 价格升降序

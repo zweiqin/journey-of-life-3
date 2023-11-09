@@ -169,5 +169,8 @@ export default {
 
 .goods-list {
   padding: 20upx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 </style>
