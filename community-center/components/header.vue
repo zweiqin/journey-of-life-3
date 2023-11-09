@@ -5,12 +5,7 @@
       background: bgc,
     }"
   >
-    <img
-      @click="back"
-      class="back"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eo1rayuh8vu1qtnbdj0l.png"
-      alt=""
-    />
+    <tui-icon name="arrowleft" color="#ffffff" :size="28" margin="0 0 0 0" @click="back" style="float: left;"></tui-icon>
     <view>{{ title }}</view>
   </view>
 </template>
@@ -61,11 +56,5 @@ export default {
   box-sizing: border-box;
   text-align: center;
   color: #fff;
-
-  .back {
-    width: 16upx;
-    float: left;
-    margin-top: 40upx;
-  }
 }
 </style>

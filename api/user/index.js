@@ -86,9 +86,6 @@ export const addCustomerApi = (data) => RuanRequest('/api/msgSentry/saveWxMsgSen
 
 export const addMyWordsApi = (data) => RuanRequest('/api/msgSentry/saveMsgSay', data)
 
-// 上传图片
-export const uploadFle = (data) => RuanRequest('/storage/upload', data)
-
 // 获取门店类型
 export const getStoreTypesApi = () => RuanRequest('/storeType/list', {}, 'get')
 
@@ -424,30 +421,23 @@ export const getCustomerPopularApi = (data) => RuanRequest('/dtsCustomerCategory
 // 用户发送消息的客服接口
 export const getcustomerSendingApi = (data) => RuanRequest('/dtsCustomerCategory/customerSending', data, 'get')
 
-
 // 查询用户身份认证信息
-export const getIdentityAuthenticationInfoApi = data => {
-	return endRequest({
-		url: "/api/third/real/queryRealInfo",
-		data,
-		method: 'GET'
-	})
-}
+export const getIdentityAuthenticationInfoApi = (data) => endRequest({
+	url: '/api/third/real/queryRealInfo',
+	data,
+	method: 'GET'
+})
 
 // 添加用户身份认证信息
-export const userIdentityAuthenticationInfoApi = data => {
-	return endRequest({
-		url: '/api/third/real/saveRealInfo',
-		data,
-		method: 'POST'
-	})
-}
+export const userIdentityAuthenticationInfoApi = (data) => endRequest({
+	url: '/api/third/real/saveRealInfo',
+	data,
+	method: 'POST'
+})
 
 // 解析身份证图片
-export const IDCardAnalysisApi = data => {
-	return endRequest({
-		url: "/api/third/ocr/idOcr",
-		data,
-		method: 'POST'
-	})
-}
+export const IDCardAnalysisApi = (data) => endRequest({
+	url: '/api/third/ocr/idOcr',
+	data,
+	method: 'POST'
+})

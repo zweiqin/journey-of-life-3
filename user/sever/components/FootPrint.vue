@@ -1,18 +1,5 @@
 <template>
 	<view class="foot-print">
-		<!-- <view class="timer">
-      <image
-        class="timer-icon"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/208t5z0ldi4odit8lbsn.png"
-        mode=""
-      />
-
-      <view class="timer-title">时间</view>
-      <JMonthPicker
-        :value="currentTime"
-        @confirm="handleChooseTime"
-      ></JMonthPicker>
-    </view> -->
 		<view class="foot-print-item" v-for="(item, index) in historyData.data" :key="index">
 			<view class="foot-print-time">{{ index | fomartTime }}日</view>
 			<view class="foot-print-wrapper">

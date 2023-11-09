@@ -4,7 +4,7 @@
       class="avatar"
       :src="
         info.userAvatar ||
-        'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp'
+        require('../../../static/images/new-user/default-user-avatar.png')
       "
       alt=""
     />
@@ -29,12 +29,6 @@
           >是否回访：<text class="select-value">未回访</text></view
         ></view
       >
-
-      <!-- <view class="item" @click="handleChooseWords">
-        <view class="text select" style="flex: 1">
-          话术选择：<text class="words">化验室的衣服尴尬属地积分</text>
-        </view>
-      </view> -->
     </view>
   </view>
 </template>
@@ -140,20 +134,6 @@ export default {
   .select {
     position: relative;
     padding-right: 20upx;
-
-    &::after {
-      content: "";
-      position: absolute;
-      display: block;
-      background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2gaw2khlvr5tm9to6aik.png")
-        no-repeat;
-      background-size: cover;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 20upx;
-      height: 10upx;
-    }
 
     .select-value {
       margin-right: 10upx;

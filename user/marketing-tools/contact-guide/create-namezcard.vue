@@ -123,7 +123,6 @@
 <script>
 import UniImgCropper from "./mould/uni-img-cropper.vue";
 import Collapse from "../components/collapse-name-card.vue";
-import MaskS from "../components/mask.vue";
 import {
   buildNewMyCardApi,
   getNameCardDetailApi,
@@ -137,7 +136,6 @@ export default {
   components: {
     UniImgCropper,
     Collapse,
-    MaskS,
   },
   data() {
     return {

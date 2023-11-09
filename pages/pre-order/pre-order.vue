@@ -16,7 +16,6 @@
 				<view class="location">
 					<image src="../../static/images/icon/location-logo.png" alt="" class="location-logo" />
 				</view>
-				<!-- <JIcon type="right-arrow" width="34" height="40"></JIcon> -->
 			</view>
 
 			<view v-if="orderInfo" class="order container">

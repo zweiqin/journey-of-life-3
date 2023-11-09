@@ -29,11 +29,7 @@
           <view class="end-city">{{ item.enddCities }}</view>
           <view class="op">
             <view class="views">
-              <img
-                class="icon"
-                src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6r9670baknyik5d6tyxk.png"
-                alt=""
-              />
+              <tui-icon name="eye" color="#d8d8d8" :size="24" unit="upx" margin="0 5upx 0 0"></tui-icon>
               {{ item.clickNum }}
             </view>
 
@@ -251,11 +247,6 @@ export default {
 
       .views {
         font-size: 10px;
-        .icon {
-          width: 24upx;
-          height: 18upx;
-          margin-right: 5px;
-        }
       }
 
       .op {

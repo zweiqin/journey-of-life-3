@@ -43,7 +43,7 @@
             </picker>
           </template>
         </view>
-        <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png" alt="" />
+        <tui-icon name="arrowright" color="#151515" :size="25"></tui-icon>
       </view>
     </view>
 
@@ -604,11 +604,6 @@ export default {
         flex: 1;
         color: #b2b2b2;
         font-size: 32upx;
-      }
-
-      img {
-        width: 16upx;
-        height: 25upx;
       }
     }
   }

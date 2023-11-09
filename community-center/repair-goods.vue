@@ -3,11 +3,16 @@
     <Header title="商品信息"></Header>
     <view class="title">
       <span>商品信息</span>
-      <img
-        @click="handleAddGoodItem"
-        class="add-icon"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/pv33hbmx6xvsucx0mb05.png"
-      />
+			<tui-button
+				width="130rpx" height="42rpx" :size="26" plain
+				type="blue" margin="0 20upx 0 0" shape="square"
+				style="float: right;" @click="handleAddGoodItem"
+			>
+				<view style="display: flex;align-items: center;">
+					<tui-icon name="add-fill" :size="18" color="#3fbef8"></tui-icon>
+					<text style="margin-left: 10upx;">新增</text>
+				</view>
+			</tui-button>
     </view>
     <RepairGoodsItem
       @preview="isSwitchPage = $event"
@@ -133,13 +138,6 @@ export default {
     color: #888;
     margin: 47upx auto 12upx 30upx;
     font-size: 30upx;
-
-    .add-icon {
-      width: 130upx;
-      height: 46upx;
-      margin-right: 20upx;
-      float: right;
-    }
   }
 }
 </style>

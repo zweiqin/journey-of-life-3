@@ -1,7 +1,7 @@
 <template>
   <view class="collect-pane-container">
     <img
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp"
+      src="../../../static/images/new-user/default-user-avatar.png"
       alt=""
       class="avatar"
     />

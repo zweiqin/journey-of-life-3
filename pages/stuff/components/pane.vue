@@ -1,45 +1,41 @@
 <template>
-  <view class="pane-container">
-    <view class="header">
-      <view class="title">{{ title }}</view>
-      <view class="more" v-show="showMore" @click="handleViewMore">
-        <text class="text">更多</text>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8jef23u4szet1cnjuec5.png"
-          class="icon"
-          alt=""
-        />
-      </view>
-    </view>
-    <view class="body" style="padding: 10px 0">
-      <slot></slot>
-    </view>
-  </view>
+	<view class="pane-container">
+		<view class="header">
+			<view class="title">{{ title }}</view>
+			<view v-show="showMore" class="more" @click="handleViewMore">
+				<text class="text">更多</text>
+				<tui-icon name="arrowleft" color="#b4b4b4" :size="12" unit="upx"></tui-icon>
+			</view>
+		</view>
+		<view class="body" style="padding: 10px 0">
+			<slot></slot>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    title: String,
-    route: String,
-    showMore: {
-      type: Boolean,
-      default: false
-    }
-  },
+	props: {
+		title: String,
+		route: String,
+		showMore: {
+			type: Boolean,
+			default: false
+		}
+	},
 
-  methods: {
-    handleViewMore() {
-      if (!this.route) {
-        return;
-      }
+	methods: {
+		handleViewMore() {
+			if (!this.route) {
+				return
+			}
 
-      uni.navigateTo({
-        url: this.route,
-      });
-    },
-  },
-};
+			uni.navigateTo({
+				url: this.route
+			})
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
@@ -64,9 +60,5 @@ export default {
   font-size: @f12;
   font-weight: normal;
   margin-right: 8upx;
-}
-
-.icon {
-  width: 12upx;
 }
 </style>

@@ -4,12 +4,9 @@
       <view class="count">商品 {{ index + 1 }}</view>
       <view style="display: flex; align-items: center">
         <view class="delete-btn" @click="handleDeleteItem">删除</view>
-        <img
-          :class="isCollapse ? '' : 'rotate'"
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/si4ybdp20q18bp7v6kn0.png"
-          alt=""
-          @click="isCollapse = !isCollapse"
-        />
+				<view style="width: fit-content;margin-left: 30upx;" :class="isCollapse ? '' : 'rotate'">
+          <tui-icon name="arrowdown" color="#000000" :size="26" @click="isCollapse = !isCollapse"></tui-icon>
+				</view>
       </view>
     </view>
     <view class="item" v-if="isCollapse">
@@ -183,10 +180,7 @@ export default {
       border-radius: 20upx;
     }
 
-    img {
-      width: 25upx;
-      height: 16upx;
-      margin-left: 30upx;
+    view {
       transition: all 350ms;
 
       &.rotate {

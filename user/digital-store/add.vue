@@ -1,12 +1,7 @@
 <template>
   <view class="add-container">
     <view class="header">
-      <img
-        class="back"
-        @click="handleBack"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png"
-        alt=""
-      />
+      <tui-icon name="arrowleft" color="#767676" :size="48" unit="upx" @click="handleBack"></tui-icon>
       <h2>添加</h2>
     </view>
 
@@ -152,10 +147,6 @@ export default {
 
   .header {
     .flex();
-
-    .back {
-      width: 48upx;
-    }
 
     h2 {
       flex: 1;
