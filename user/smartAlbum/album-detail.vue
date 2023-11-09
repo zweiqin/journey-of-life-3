@@ -99,8 +99,8 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import { getUserCrmSlbumSelectId } from '../../api/user'
-// import { getConfigApi } from '../../api/auth'
 import share from '../../utils/share'
 import PointShare from '../../components/BeeWxShare/point-share'
 import PosterPopup from './cpns/PosterPopup.vue'
@@ -114,11 +114,6 @@ export default {
 	},
 	data() {
 		return {
-			// list: [{
-			// 	url: 'https://cdn.zebraui.com/zebra-swiper/demos/travel-slider/usa.jpg',
-			// 	title: 'United States',
-			// 	subTitle: '8,295 properties'
-			// }],
 			showPointVisible: false,
 			options: {
 				speed: 600,
@@ -200,7 +195,7 @@ export default {
 				]
 			}],
 			imgInfo: {},
-			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=',
+			qrcodeUrl: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=`,
 			shareCode: ''
 		}
 	},
@@ -251,7 +246,7 @@ export default {
 						data: {
 							title: `${this.imgInfo.userName}分享的图册`,
 							desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-							link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
+							link: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
 						successCb: () => { }
@@ -269,7 +264,7 @@ export default {
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
 						desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
+						link: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=${this.id}`,
 						imageUrl: this.imgInfo.bookFace
 					},
 					successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false },
@@ -283,7 +278,7 @@ export default {
 						data: {
 							title: `${this.imgInfo.userName}分享的图册`,
 							desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-							link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
+							link: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
 						successCb: () => { }
@@ -301,7 +296,7 @@ export default {
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
 						desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
+						link: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=${this.id}`,
 						imageUrl: this.imgInfo.bookFace
 					},
 					successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false },
@@ -310,7 +305,7 @@ export default {
 				// #endif
 			} else if (obj.icon === 'link') {
 				uni.setClipboardData({
-					data: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/smartAlbum/album-detail?id=${this.id}`,
+					data: `${A_TF_MAIN}/#/user/smartAlbum/album-detail?id=${this.id}`,
 					success() {
 						uni.showToast({
 							title: '复制成功',

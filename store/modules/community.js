@@ -1,3 +1,4 @@
+import { A_TF_MAIN } from '../../config'
 import { queryDynamicDataApi } from '../../api/address';
 import { CHANGE_HOME_PAGE_IMAGE, CHANGE_HOME_STORE, CHANGE_HOME_PAGE_IMAGE_PATH, CHANGE_DZ_VIP_PACKAGE } from './type';
 import communityShopList from 'data/communityShopList';
@@ -50,7 +51,7 @@ export default {
 
       commit(
         CHANGE_HOME_PAGE_IMAGE_PATH,
-        res.statusCode == 20000 && res.data !== '该区域暂无自定义属性' ? res.data[0].path.replace('https://www.tuanfengkeji.cn/TFShop_Uni_H5/#', '') : ''
+        res.statusCode == 20000 && res.data !== '该区域暂无自定义属性' ? res.data[0].path.replace(`${A_TF_MAIN}/#`, '') : ''
       );
     },
 

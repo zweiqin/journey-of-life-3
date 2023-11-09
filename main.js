@@ -68,6 +68,10 @@ Vue.mixin({
 				url
 			})
 		},
+		$getJumpParam(loadParam) {
+			if (typeof loadParam === 'object' && loadParam?.detail) return JSON.parse(decodeURIComponent(loadParam.detail))
+			return {}
+		},
 
 		$copy(text, title = '复制成功') {
 			uni.setClipboardData({

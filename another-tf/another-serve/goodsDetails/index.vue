@@ -400,6 +400,7 @@ export default {
 		 */
 
 		handleSelectSku(skuObj) {
+			console.log(skuObj)
 			this.currentSuk = skuObj.currentSku
 			this.selectedSku = skuObj.skuItem
 			this.buyNum = skuObj.buyNum
@@ -555,6 +556,8 @@ export default {
 					terminal: 1
 				}
 				const res = await getProductDetailsByIdApi(postData)
+				// const sameSkuProduct = Object.values(res.data.map).find((item) => item.skuId === res.data.skuId) || {}
+				// this.productData = { ...res.data, voucherId: sameSkuProduct.voucherId || '', voucherPrice: sameSkuProduct.voucherPrice || '' }
 				this.productData = res.data
 				this.markTools = res.data.markTools // 平台优惠券
 				this.shopMarkTools = res.data.shopMarkTools // 店铺优惠券

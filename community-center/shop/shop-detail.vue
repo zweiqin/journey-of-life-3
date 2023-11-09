@@ -12,7 +12,7 @@
 					<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 				</view>
 			</BeeBack>
-			<BrandInfo :brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate"></BrandInfo>
+			<BrandInfo :brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate" @refresh="getBrandDetail"></BrandInfo>
 		</view>
 
 		<!-- <view

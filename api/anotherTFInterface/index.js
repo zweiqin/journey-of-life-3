@@ -144,13 +144,28 @@ export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit
 // 订单相关接口，查询订单列表
 export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data)
 
+// 订单详情查询
+export const getOrderDetailApi = (data) => AnotherTFRequest('/order/getById', data)
+
 // 删除订单
 export const deleteShopOrderApi = (data) => AnotherTFRequest('/order/delete', data, 'POST')
 
 // 取消订单
 export const cancelShopOrderApi = (data) => AnotherTFRequest('/order/cancel', data, 'POST')
 
-//  APP立即支付
+// 物流信息查询
+export const getOrderDileveryShippingTraceApi = (data) => AnotherTFRequest('/order/getDilevery', data)
+
+// 生成用户订单的核销码
+export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderVerificationCode/getHxCode', data)
+
+// 确认收货
+export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
+
+// 申请退款
+export const getOrderRefundApi = (data) => AnotherTFRequest('/order/refund', data)
+
+// APP立即支付
 export const gotoOrderAppPayApi = (data) => AnotherTFRequest('/order/gotoAppPay', data, 'POST')
 
 // 商城订单

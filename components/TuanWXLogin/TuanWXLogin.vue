@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 // #ifdef H5
 import { getUrlCode } from '../../utils';
 // #endif
@@ -17,7 +18,7 @@ export default {
     },
     callBackUrl: {
       type: String,
-      default: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login'
+      default: `${A_TF_MAIN}/#/pages/login/login`
     }
   },
   methods: {

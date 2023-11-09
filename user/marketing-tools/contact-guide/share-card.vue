@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import StyleOne from "./mould/style-one.vue";
 import { getNameCardDetailApi } from "../../../api/user";
 import { getConfigApi } from "../../../api/auth";
@@ -39,7 +40,7 @@ export default {
       data: {},
       qrcode: "",
       modal_qr: false,
-      url: "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=",
+      url: `${A_TF_MAIN}/#/user/marketing-tools/contact-guide/name-card-detail?id=`,
     };
   },
 
@@ -98,7 +99,7 @@ export default {
           desc: this.data.position + '\n' + this.data.phone,
           imgUrl: this.data.headPic,
           link:
-            "https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
+            `${A_TF_MAIN}/#/user/marketing-tools/contact-guide/name-card-detail?id=` +
             _this.data.id,
         });
       });
@@ -110,7 +111,7 @@ export default {
         scene: "WXSceneSession",
         type: 0,
         href:
-          "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
+          `${A_TF_MAIN}/#/user/marketing-tools/contact-guide/name-card-detail?id=` +
           this.data.id, // 分享跳转的链接
         title: this.data.name, // 分享标题
         summary: this.data.position + '\n' + this.data.phone, // 分享内容文字

@@ -244,6 +244,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import Carousel from '../../components/carousel';
 import { subInfoConfig, goodsInfoConfig } from './config';
 import uParse from '../../components/u-parse/u-parse.vue';
@@ -321,7 +322,7 @@ export default {
           title: _this.goodsDetail.productName,
           desc: 'xxxxx',
 
-          link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + JSON.stringify(_this.detailInfomation),
+          link: `${A_TF_MAIN}/#/pages/prod/prod?goodsId=` + JSON.stringify(_this.detailInfomation),
           imageUrl: this.common.seamingImgUrl(_this.goodsDetail.images[0]) || this.common.seamingImgUrl(_this.goodsDetail.image)
         },
         successCb: () => {},

@@ -212,7 +212,7 @@
       ref="uqrcode"
       class="generate-code-container"
       canvas-id="qrcode"
-      :value="`https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
+      :value="`${rootUrl}/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
       @complete="handleCompleteCode"
     ></uqrcode>
 
@@ -224,6 +224,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../config'
 import Carousel from '../components/carousel';
 import uParse from '../components/u-parse/u-parse.vue';
 import CommunityDetailPoster from './components/CommunityDetailPoster.vue';
@@ -257,6 +258,7 @@ export default {
   props: {},
   data() {
     return {
+			rootUrl: A_TF_MAIN,
       currentMoveTab: 0,
       moreService,
       address: '',
@@ -595,7 +597,7 @@ export default {
         data: {
           title: _this.title,
           desc,
-          link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}&code=${_this.userId}`,
+          link: `${A_TF_MAIN}/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}&code=${_this.userId}`,
           imageUrl: _this.serverUrl
         },
         successCb: () => {},

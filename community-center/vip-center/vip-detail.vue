@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import VipHeader from './components/VipHeader.vue'
 import VipServePane from './components/VipServePane.vue'
 import PayBar from './components/PayBar.vue'
@@ -122,7 +123,7 @@ export default {
 		this.type = option.type
 		if (option.campaignsType) {
 			this.campaignsType = option.campaignsType * 1
-			this.qrcodeUrl = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=${this.campaignsType}-`
+			this.qrcodeUrl = `${A_TF_MAIN}/#/user/sever/activityCenter/index?code=${this.campaignsType}-`
 		}
 		if (this.type === 2) {
 			uni.setStorageSync('SERVE_TYPE', option.type)
@@ -368,8 +369,8 @@ export default {
 					data: {
 						title: '团蜂社区家庭小卫士',
 						desc: `送价值980元品牌超值大礼包`,
-						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=2`,
-						imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
+						link: `${A_TF_MAIN}/#/community-center/vip-center/vip-detail?type=2`,
+						imageUrl:`${A_TF_MAIN}/static/images/con-center/alpaca-forward-300.png`
 					},
 					successCb: () => { },
 					failCb: () => { }
@@ -397,7 +398,7 @@ export default {
 									title: '团蜂社区家庭小卫士',
 									desc: `送价值980元品牌超值大礼包`,
 									link: `${this.qrcodeUrl}${res.data}`,
-									imageUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png'
+									imageUrl: `${A_TF_MAIN}/static/images/con-center/alpaca-forward-300.png`
 								},
 								successCb: () => { },
 								failCb: () => { }
@@ -429,8 +430,8 @@ export default {
 							this.type == 2
 								? `送价值980元品牌超值大礼包`
 								: `${this.indulgenceData.map((item) => item.serverContent).join('；')}`,
-						link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/vip-center/vip-detail?type=${this.type}`,
-						imageUrl: this.type == 2 ? 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/con-center/alpaca-forward-300.png' : ''
+						link: `${A_TF_MAIN}/#/community-center/vip-center/vip-detail?type=${this.type}`,
+						imageUrl: this.type == 2 ? `${A_TF_MAIN}/static/images/con-center/alpaca-forward-300.png` : ''
 					},
 					successCb: () => { },
 					failCb: () => { }
