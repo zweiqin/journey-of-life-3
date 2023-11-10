@@ -4,8 +4,8 @@ export const homeTopNavs = [
     iconUrl: require('../../static/images/new-index/index-1/hot.png'),
     // url: '/pages/hot/hot'
     // url: '/pages/index/ExplosiveFurniture/index'
-    // url: '/pages/index/Explosive/category'
-    url: '/pages/furniture/furniture?goodsType=100101741&id=null'
+    url: '/pages/index/Explosive/category'
+    // url: '/pages/furniture/furniture?goodsType=100101741&id=null'
   },
   {
     name: '兑换专区',

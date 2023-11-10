@@ -138,7 +138,7 @@ export default {
     getGoodsList() {
       getClaasifyProducts(this.queryList).then(res => {
         res.data.list.forEach(item => this.goodsList.push(item))
-        console.log(this.goodsList);
+        // console.log(this.goodsList);
         this.ad.good = this.goodsList.slice(0,2)
         this.ad.hot = this.goodsList.slice(2,4)
         // console.log(res)
@@ -205,6 +205,7 @@ export default {
       }else {
         this.queryList = {...this.queryList, type: this.filters[1].value, volume: this.filters[2].value }
       }
+      this.goodsList = []
       this.getGoodsList()
       // console.log(this.queryList)
     }
