@@ -215,11 +215,11 @@ export default {
 		},
 		picWidth: {
 			type: String,
-			default: '145upx'
+			default: '168upx'
 		},
 		picHeight: {
 			type: String,
-			default: '145upx'
+			default: '168upx'
 		},
 		showLogo: {
 			type: Boolean,

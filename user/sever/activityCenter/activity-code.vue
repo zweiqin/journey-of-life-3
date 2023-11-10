@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import Share from './cpns/share.vue'
 import FillCode from './cpns/FillCode.vue'
 import { getUserId } from '../../../utils'
@@ -61,7 +62,7 @@ export default {
 	data() {
 		return {
 			campaignsType: '',
-			qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?code=',
+			qrcodeUrl: `${A_TF_MAIN}/#/user/sever/activityCenter/index?code=`,
 			shareCode: '',
 			fillCodeVisible: false,
 			activityCode: '',
@@ -72,7 +73,7 @@ export default {
 	async onLoad(options) {
 		if (options.campaignsType) {
 			this.campaignsType = options.campaignsType * 1
-			this.qrcodeUrl = `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/activityCenter/index?campaignsType=${this.campaignsType}code=`
+			this.qrcodeUrl = `${A_TF_MAIN}/#/user/sever/activityCenter/index?campaignsType=${this.campaignsType}code=`
 			if (this.campaignsType === 0 || this.campaignsType === 3) {
 				let res
 				if (this.campaignsType === 0) {

@@ -21,9 +21,10 @@
 					<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
 					<view class="flex-column-plus mar-left-20">
 						<text
+							v-if="skuSelect.voucherId"
 							style="padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;vertical-align: middle;"
 						>
-							可使用{{ Math.ceil(Number(skuSelect.originalPrice || 0)) }}代金券抵扣
+							可使用{{ skuSelect.voucherPrice }}代金券抵扣
 						</text>
 						<label v-if="skuSelect.price !== skuSelect.originalPrice" class="fs24 font-color-999 discountsPriceLine mar-left-20">
 							¥ {{ skuSelect.originalPrice || 0 }}

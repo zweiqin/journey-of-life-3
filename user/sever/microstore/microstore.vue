@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import {
   downGoodsApi,
   enterSHopApi,
@@ -140,7 +141,7 @@ export default {
         imgUrl: userInfo.avatarUrl,
         desc: '快来我的微店逛逛吧',
         link:
-          'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/microstore/m-microstore?shopId=' +
+          `${A_TF_MAIN}/#/user/sever/microstore/m-microstore?shopId=` +
           this.brandInfo.id,
       })
       this.getGoodsList(data.id)
@@ -230,7 +231,7 @@ export default {
               title: goodsInfo.name,
               imgUrl: goodsInfo.picUrl,
               desc: '快来我的微店看看吧！',
-              link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=${goodsInfo.id}`,
+              link: `${A_TF_MAIN}/#/pages/prod/prod?goodsId=${goodsInfo.id}`,
             },
             () => {
               uni.showToast({

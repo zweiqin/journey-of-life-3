@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import { USER_INFO } from '../../../constant';
 import { getGroupCodeApi } from '../../../api/user';
 export default {
@@ -76,7 +77,7 @@ export default {
 
         this.qrcode = 'data:image/jpeg;base64,' + res.url;
         this.tuanCode = res.partnerCode;
-        this.codeUrl = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/login/login?partnerCode2=' + this.tuanCode;
+        this.codeUrl = `${A_TF_MAIN}/#/pages/login/login?partnerCode2=` + this.tuanCode;
       } catch (error) {
         this.ttoast({
           type: 'fail',

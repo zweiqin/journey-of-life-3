@@ -18,6 +18,7 @@
 
 <script>
 
+import { A_TF_MAIN } from '../../../../config'
 import { USER_INFO } from '../../../../constant'
 import SaveImage from './SaveImage.vue'
 const shareList = [
@@ -69,7 +70,7 @@ export default {
               title: '加入团蜂',
               desc: '扫一扫',
               link:
-                'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
+                `${A_TF_MAIN}/#/user/sever/code/fille-code?code=` +
                 userInfo.invitationCode,
               imageUrl: _this.code,
             },
@@ -86,7 +87,7 @@ export default {
         case 'link':
           uni.setClipboardData({
             data:
-              'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/sever/code/fille-code?code=' +
+              `${A_TF_MAIN}/#/user/sever/code/fille-code?code=` +
               userInfo.invitationCode,
             success: () => {
               uni.showToast({

@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import { bannerListIcon, vipBarConfig } from './config';
 import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
@@ -199,7 +200,7 @@ export default {
         data: {
           title: '团蜂家居社区服务中心',
           desc: '一切和家居有关的问题，我们都能解决',
-          link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/`,
+          link: `${A_TF_MAIN}/#/`,
           imageUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
         },
         successCb: () => { },

@@ -4,17 +4,31 @@
 
 		<view class="container">
 			<view
-				style="flex: 1;display: flex;align-items: center;margin-right: 26upx;background-color: #ffffff;border: 2upx solid #EF5511;border-radius: 50upx;">
-				<TuanLocation free event-name="sendChooseAddressSuccessMsg"
-					style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;">
-					{{ $store.getters.shopAndBusiness || $store.getters.currentCity || '定位失败' }}
+				style="flex: 1;display: flex;align-items: center;margin-right: 26upx;background-color: #ffffff;border: 2upx solid #EF5511;border-radius: 50upx;"
+			>
+				<TuanLocation
+					free event-name="sendChooseAddressSuccessMsg"
+					style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;"
+				>
+					<text
+						style="max-width: 130upx;font-size: 32upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+					>
+						{{
+							$store.getters.shopAndBusiness || $store.getters.currentCity || '定位失败' }}
+					</text>
 					<BeeIcon :size="26" name="turningdown" color="#222229"></BeeIcon>
 				</TuanLocation>
-				<tui-input label="" placeholder="全屋严选" disabled clearable padding="6upx 10upx 6upx 26upx"
-					background-color="transparent" style="flex: 1;margin-left: 16upx;" @click="go('/community-center/search')">
+				<tui-input
+					label="" placeholder="全屋严选" disabled clearable
+					padding="6upx 10upx 6upx 26upx"
+					background-color="transparent" style="flex: 1;margin-left: 16upx;" @click="go('/community-center/search')"
+				>
 					<template #right>
-						<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" style="background: #ee692f!important;"
-							@click="go('/community-center/search')">
+						<tui-button
+							type="warning" width="120rpx" height="50rpx" shape="circle"
+							style="background: #ee692f!important;"
+							@click="go('/community-center/search')"
+						>
 							搜索
 						</tui-button>
 					</template>

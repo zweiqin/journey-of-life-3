@@ -49,7 +49,7 @@
 
 		<view v-if="brandDetail.shopLogo" style="margin-top: 22upx;">
 			<!-- 轮播图 -->
-			<swiper autoplay :interval="3000" circular next-margin="80rpx" :duration="1000" style="height: 328upx;">
+			<swiper autoplay :interval="3000" circular :previous-margin="previousMargin" :next-margin="nextMargin" :duration="1000" style="height: 328upx;" @change="handleSwiperChange">
 				<swiper-item>
 					<tui-lazyload-img
 						mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
@@ -61,12 +61,6 @@
 						<tui-lazyload-img
 							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
 							:src="common.seamingImgUrl(item)"
-						></tui-lazyload-img>
-					</swiper-item>
-					<swiper-item v-if="brandDetail.advertisement.split(',').length === 1">
-						<tui-lazyload-img
-							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
-							:src="common.seamingImgUrl(brandDetail.shopLogo)"
 						></tui-lazyload-img>
 					</swiper-item>
 				</template>
@@ -113,6 +107,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import { collectCancelApi, collectToCollectApi, getCustomerServiceAppletKfApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BrandInfo',
@@ -124,6 +119,8 @@ export default {
 	},
 	data() {
 		return {
+			previousMargin: '0',
+			nextMargin: '80rpx',
 			hasService: false,
 			serviceURL: false,
 			corpId: false
@@ -158,23 +155,25 @@ export default {
 		handleCollectToggle() {
 			uni.showLoading()
 			if (this.brandDetail.ifCollect == 0) {
-				collectCancelApi({
-					shopId: parseInt(this.brandDetail.shopId)
-				})
-					.then(() => {
-						uni.hideLoading()
-						this.$showToast('收藏成功')
-					})
-					.catch(() => {
-						uni.hideLoading()
-					})
-			} else {
 				collectToCollectApi({
 					ids: [ this.brandDetail.collectId ]
 				})
 					.then(() => {
 						uni.hideLoading()
+						this.$showToast('收藏成功')
+						this.$emit('refresh')
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			} else {
+				collectCancelApi({
+					shopId: parseInt(this.brandDetail.shopId)
+				})
+					.then(() => {
+						uni.hideLoading()
 						this.$showToast('取消收藏成功')
+						this.$emit('refresh')
 					})
 					.catch(() => {
 						uni.hideLoading()
@@ -189,13 +188,26 @@ export default {
 				data: {
 					title: `团蜂社区商圈 - ${this.brandDetail.shopName}`,
 					desc: this.brandDetail.shopBrief,
-					link: `https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+					link: `${A_TF_MAIN}/#/community-center/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 				},
 				successCb: () => { },
 				failCb: () => { }
 			}
 			this.$refs.beeWxShareRef.share(data, isQuit)
+		},
+
+		handleSwiperChange(e) {
+			if (this.brandDetail.advertisement && this.brandDetail.advertisement.split(',').length === 1) {
+				console.log(e)
+				if (e.detail.current === 1) {
+					this.nextMargin = '0'
+					this.previousMargin = '80rpx'
+				} else {
+					this.nextMargin = '80rpx'
+					this.previousMargin = '0'
+				}
+			}
 		},
 
 		// 获取客服url

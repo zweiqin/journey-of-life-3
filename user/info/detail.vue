@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import { USER_INFO } from '../../constant';
 import { getOpenIdApi, handleBindOpenIdApi, queryIsBindPhoneApi } from '../../api/app';
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user';
@@ -265,7 +266,7 @@ export default {
       }
       const _this = this;
       const appid = 'wxb19ccb829623be12';
-      const local = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/user/info/detail';
+      const local = `${A_TF_MAIN}/#/user/info/detail`;
       const code = this.getUrlCode().code;
 
       // console.log('获取code', code);

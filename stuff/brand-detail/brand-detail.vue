@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import { getBrandDetailApi, getCatalogIdByBrandApi } from '../../api/brand';
 import { goodsListApi } from '../../api/goods';
 import BrandHeader from './cpns/BrandHeader.vue';
@@ -91,7 +92,7 @@ export default {
       filterVisible: false,
       catalogList: [],
       posterPopupVisible: false,
-      qrcodeUrl: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/stuff/brand-detail/brand-detail?brandId=',
+      qrcodeUrl: `${A_TF_MAIN}/#/stuff/brand-detail/brand-detail?brandId=`,
       shareCode: ''
     };
   },

@@ -122,6 +122,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import Carousel from '../../../components/carousel'
 import uParse from '../../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
@@ -477,7 +478,7 @@ export default {
 						.join(','),
 
 					link:
-						'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' +
+						`${A_TF_MAIN}/#/pages/prod/prod?goodsId=` +
 						_this.goodsId,
 					imageUrl:
 						_this.goodsDetail.shareImage || _this.goodsDetail.info.picUrl

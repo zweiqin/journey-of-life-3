@@ -12,7 +12,7 @@
     </view>
 
     <view class="login-btns">
-      <TuanWXLogin @login="handleLoginSuccessCB" callBackUrl="https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/community-center/merchant-settlement/login/login">
+      <TuanWXLogin @login="handleLoginSuccessCB" :callBackUrl="`${rootUrl}/#/community-center/merchant-settlement/login/login`">
         <button class="uni-btn">
           <image class="login-type-icon" src="../../../static/images/new-community/shop/we-icon.png"></image>
           微信登录
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import PWDLoginPopup from './components/PWDLoginPopup.vue';
 import { USER_INFO } from '../../../constant';
 
@@ -42,6 +43,7 @@ export default {
   components: { PWDLoginPopup },
   data() {
     return {
+			rootUrl: A_TF_MAIN,
       isAgree: false,
       timer: null
     };

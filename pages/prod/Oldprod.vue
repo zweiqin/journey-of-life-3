@@ -257,6 +257,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../config'
 import Carousel from '../../components/carousel';
 import { subInfoConfig, goodsInfoConfig } from './config';
 import uParse from '../../components/u-parse/u-parse.vue';
@@ -680,7 +681,7 @@ export default {
             })
             .join(','),
 
-          link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + _this.goodsId,
+          link: `${A_TF_MAIN}/#/pages/prod/prod?goodsId=` + _this.goodsId,
           imageUrl: this.common.seamingImgUrl(_this.goodsDetail.shareImage) || this.common.seamingImgUrl(_this.goodsDetail.info.picUrl)
         },
         successCb: () => {},

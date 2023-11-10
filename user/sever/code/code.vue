@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import Share from './cpns/share.vue'
 import FillCode from './cpns/FillCode.vue'
 import { USER_INFO } from '../../../constant'
@@ -86,7 +87,7 @@ export default {
       if (!this.userInfo.invitationCode) {
         getExtensionCodeApi({
           url:
-            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/jump/jump?userId=&type=bindLastUser&code=' +
+            `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindLastUser&code=` +
             this.userInfo.invitationCode,
           userId: getUserId(),
         }).then(res => {
@@ -95,7 +96,7 @@ export default {
 
           getExtensionCodeApi({
             url:
-              'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/jump/jump?userId=&type=bindLastUser&code=' +
+              `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindLastUser&code=` +
               res.data.code,
             userId: getUserId(),
           }).then(res2 => {
@@ -106,7 +107,7 @@ export default {
       } else {
         getExtensionCodeApi({
           url:
-            'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/jump/jump?userId=&type=bindLastUser&code=' +
+            `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindLastUser&code=` +
             this.userInfo.invitationCode,
           userId: getUserId(),
         }).then(res => {
