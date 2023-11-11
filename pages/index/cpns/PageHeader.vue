@@ -49,6 +49,9 @@ export default {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  background-color: #ebebf5;
+  position: relative;
+  z-index: 99999;
 
   .search-container {
     flex: 1;

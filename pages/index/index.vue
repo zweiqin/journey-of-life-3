@@ -42,20 +42,41 @@
           <!-- <view class="item" :class="{active: true}">
             默认
           </view> -->
-          <view class="item" @click="filterList(index)" :class="{active: index == filterActive}" v-for="(item, index) in filters" :key="index">
-            {{ item.name}}
-            <view class="sort" v-if="item.children">
-              <tui-icon
-               @click="item.value = item.children[0].value" 
-               :color="item.children[0].value === item.value ? '#f40' : '#ccc'"
-                class="top" :size="20" name="turningup"></tui-icon>
-              <tui-icon
-               @click="item.value = item.children[1].value"
-                :color="item.children[1].value === item.value ? '#f40' : '#ccc'"
-                class="bottom" :size="20" name="turningdown"></tui-icon>
+          <block  v-for="(item, index) in filters" :key="index">
+             <view v-if="index >= 1" class="item" @click="filterList(index);" :class="{active: index == filterActive}">
+              {{ item.name}}
+              <view class="sort" v-if="item.children">
+                <!--                @click="item.value = item.children[0].value"  -->
+                <!--                @click="item.value = item.children[1].value" -->
+                <tui-icon
+                :color="item.children[0].value === item.value ? '#f40' : '#ccc'"
+                  class="top" :size="20" name="turningup"></tui-icon>
+                <tui-icon
+                  :color="item.children[1].value === item.value ? '#f40' : '#ccc'"
+                  class="bottom" :size="20" name="turningdown"></tui-icon>
+              </view>
             </view>
+          </block>
+        </view>
+        <view class="fillterPanners" v-show="isShowPane">
+          <view @click="filtersFn(item)" class="filterItem" :class="{ isactives : filters[1].value === item.value}" v-for="(item, index) in filters[1].children" :key="index + 123">
+              <text>{{ item.name }}</text>
           </view>
         </view>
+        <!-- <tui-top-dropdown
+          :show="isShowPane"
+          style="left: 0"
+          :translatey="translatey"
+          @close="cloasePopup"
+          :maskZIndex="10"
+          :height="0"
+        >
+          <view class="filterPaners" style="background: #fff;">
+            <view v-for="(item, index) in filters[1].children" :key="index + 123">
+              <text>{{ item.name }}</text>
+            </view>
+          </view>
+        </tui-top-dropdown> -->
       </view>
         <view class="goods-list">
           <NewGoodsPane v-for="(item, index)  in  goodsList" :index="index" :goods="item" :key="item.productId"> </NewGoodsPane>
@@ -88,6 +109,8 @@ export default {
 
   data() {
     return {
+      scrollTop: 0,
+      isShowPane: false,
       homeTopNavs: homeTopNavs,
       queryList: {
         classifyId: '978', // 分类ID
@@ -101,8 +124,8 @@ export default {
       filterActive: 0,
       filters: [
         { name: '默认', value: 0 },
-        { name: '价格', children: [{name: '升序', value: 1},{name: '降序', value: 2}], value: 1 },
-        { name: '销量', children: [{name: '升序', value: 1},{name: '降序', value: 2}], value: 1 },
+        { name: '价格', children: [{name: '由低到高', value: 1},{name: '由高到低', value: 2}], value: 1 },
+        { name: '筛选', children: [{name: '升序', value: 1},{name: '降序', value: 2}], value: 1 },
       ],
       ad: {
         hot: [],
@@ -132,7 +155,13 @@ export default {
     // this.getIndexCanvas()
   },
   computed: {
-    
+    translatey() {
+      if (this.scrollTop > 440) {
+        return 100
+      } else {
+        return 991 - this.scrollTop * 2
+      }
+    },
   },
   methods: {
     getGoodsList() {
@@ -197,6 +226,15 @@ export default {
       })
     },
     filterList(index) {
+      if(index == 1) {
+         this.isShowPane = !this.isShowPane
+         return
+      }
+      if (index == 2) {
+        uni.navigateTo({
+          url: '/pages/index/Explosive/category'
+        })
+      }
       this.filterActive = index
       if (index == 0) {
         this.queryList = {...this.queryList, type: 1,volume: 0 }
@@ -208,17 +246,47 @@ export default {
       this.goodsList = []
       this.getGoodsList()
       // console.log(this.queryList)
+    },
+    cloasePopup() {
+      this.isShowPane = false
+    },
+    filtersFn(item) {
+      this.filters[1].value = item.value
+      this.queryList = {...this.queryList, type: this.filters[1].value, volume: this.filters[2].value }
+      this.goodsList = []
+       this.getGoodsList()
+      this.isShowPane = false
     }
   },
   onReachBottom(value) {
         // this.isLoding = true
         this.queryList.page += 1
         this.getGoodsList()
-  }
+  },
+  onPageScroll(e) {
+    this.scrollTop = e.scrollTop
+    // console.log(this.scrollTop);
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.fillterPanners {
+  border-top: 4rpx solid rgba(238, 238, 238, 0.668);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5rpx;
+  background-color: #fff;
+  .filterItem {
+    width: 100%;
+    text-align: center;
+    height: 45rpx;
+    line-height: 45rpx;
+  }
+  .isactives {
+    color: rgb(255, 68, 0);
+  }
+}
 .shop-page-conatiner {
   min-height: 100vh;
   background: linear-gradient(95deg, #ebebf5 47%, #f9e9f3 96%);
@@ -231,6 +299,8 @@ export default {
     border-radius: 30upx 30upx 0 0;
 
     .navs {
+      position: relative;
+      z-index: 99999;
       border-radius: 30upx 30upx 0 0;
       // background: linear-gradient(180deg, #ffffff 0%, #eff3f6 100%);
       background-color: #fff;
@@ -302,6 +372,8 @@ export default {
     }
 
     .rest-area {
+      z-index: 9999;
+      position: relative;
       // margin-top: 10rpx;
 
       padding-top: 10rpx;
@@ -336,6 +408,8 @@ export default {
       // }
 
       .goods-filter {
+        z-index: 999;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;

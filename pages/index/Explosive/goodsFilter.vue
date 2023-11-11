@@ -33,19 +33,14 @@
         </view>
 
         <!-- 头部menus -->
-        <MainMenus @choose="handleChooseItem" v-model="mainId"></MainMenus>
-        <view :class="{ 'stic-top': scrollDis > 200 }">
-            <!-- <FilterPane
-            ref="filterPaneRef"
-            :scrollTop="scrollDis"
-            @confirm="handleFilter"
-            ></FilterPane> -->
+        <MainMenus @choose="handleChooseItem" v-model="mainId" :subId="subId"></MainMenus>
+        <!-- <view :class="{ 'stic-top': scrollDis > 200 }">
             <SubMenus
             ref="subMenusRef"
             :currentId="subId"
             @change="handleClickSubMenus"
             ></SubMenus>
-        </view>
+        </view> -->
       </view>
       <view class="main">
         <Goods v-for="item in goodsList" :key="item.id" :data="item"></Goods>
@@ -92,7 +87,7 @@ export default {
   onLoad(options) {
     this.mainId = options.parentId
     this.subId = options.id
-    this.setData()
+    // this.setData()
     this.getList()
   },
 
@@ -118,9 +113,9 @@ export default {
     },
     handleChooseItem(onceId) {
       this.mainId = onceId
-      this.subId = -1
+      this.subId = onceId
       // this.resetQueryInfo()
-      this.setData()
+      // this.setData()
       this.getList()
       uni.pageScrollTo({
         scrollTop: 0,

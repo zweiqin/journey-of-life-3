@@ -8,14 +8,14 @@
             <view class="wrapper">
                 <view
                     class="item"
-                    :class="{ active: value == item.classifyId }"
+                    :class="{ active: subId == item.classifyId }"
                     @click="handleClickOnceMenuItem(item)"
                     v-for="item in onceMenus"
                     :key="item.classifyId"
                     :id="`item_${item.classifyId}`"
                 >
                 <image :src="item.classifyImage" mode="" />
-                <text>{{ item.classifyName }}</text>
+                <text class="classNameId">{{ item.classifyName }}</text>
                 </view>
             </view>
         </scroll-view>
@@ -30,6 +30,10 @@ export default {
       type: [Number,String],
       required: true,
     },
+    subId: {
+      type: [Number,String],
+      required: true,
+    }
   },
   mounted() {
     this.getGoodsTypes();
@@ -48,7 +52,8 @@ export default {
   methods: {
     async getGoodsTypes() {
         getFirstClassifyApi({
-          classifyId: '1160'
+          // classifyId: '1160'
+          classifyId: this.value
         })
         .then(res => {
             this.onceMenus = res.data
@@ -74,7 +79,8 @@ export default {
 
     getItemId() {
       setTimeout(() => {
-        this.scrollIntoViewId = "item_" + this.value;
+        // this.scrollIntoViewId = "item_" + this.value;
+        this.scrollIntoViewId = "item_" + this.subId;
       }, 500);
     },
   },
@@ -82,6 +88,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.classNameId {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /deep/ .uni-scroll-view::-webkit-scrollbar {
   display: none; /* Chrome Safari */
 }

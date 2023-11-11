@@ -79,7 +79,7 @@ export default {
             getFirstClassifyApi({
 			    classifyId: this.currentTab
             }).then(res => {
-                console.log(res);
+                // console.log(res);
                 this.sub = res.data
                 // this.sortData.unshift({classifyName: '全部',classifyId: '1124'})
             }).catch(err => console.log(err))
