@@ -3,21 +3,25 @@
     <view class="back">
       <tui-icon name="arrowleft" color="#000" @click="handleBack" :size="30"></tui-icon>
 
-      <button class="uni-btn" @click="handleToBankList">
+      <button class="uni-btn" @click="handleToBankList" v-if="isTz">
         <image class="img" src="../../static/images/new-user/group/849a12e594b7b12ef97bfc363ef95a8.png"></image>
         <text class="btn-text">我的银行卡</text>
+      </button>
+
+      <button class="uni-btn" @click="handleToBankList" v-else>
+        <text class="btn-text">申请成为团长</text>
       </button>
     </view>
 
     <!-- 上面三个统计 -->
     <view class="top-pane">
-      <view class="item" @click="go('/user/commission-statistics/commission-detail?date=now')">
+      <view class="item" @click="isTz && go('/user/commission-statistics/commission-detail?date=now')">
         <image class="img" src="../../static/images/new-user/group/today-price.png"></image>
         <view class="text">今日佣金</view>
         <view class="value">￥{{ commissionData.toDayCommissionSum || 0 }}</view>
       </view>
 
-      <view class="item" @click="go('/user/commission-statistics/commission-detail?')">
+      <view class="item" @click=" isTz && go('/user/commission-statistics/commission-detail?')">
         <image class="img" src="../../static/images/new-user/group/total-price.png"></image>
         <view class="text">累计佣金</view>
         <view class="value">￥{{ commissionData.commissionSum || 0 }}</view>
@@ -38,7 +42,7 @@
           <view class="value">{{ commissionData.memberSum || 0 }}</view>
         </view>
 
-        <view class="item" @click="go('/user/commission-statistics/vip-user?date=now')">
+        <view class="item" v-if="isTz" @click="go('/user/commission-statistics/vip-user?date=now')">
           <image class="img" src="../../static/images//new-user/group/today-vip-number.png"></image>
           <view class="text">今日会员(个)</view>
           <view class="value">{{ commissionData.toDayMemberSum || 0 }}</view>
@@ -59,11 +63,9 @@
 
       <view class="button-wrapper">
         <view class="tip">可提现 ￥{{ commissionData.commissionWithdrawable || 0 }}</view>
-        <button
-          @click="handleWithdrawal(commissionData.commissionWithdrawable)"
+        <button @click="handleWithdrawal(commissionData.commissionWithdrawable)"
           :class="{ disabled: !commissionData.commissionWithdrawable || commissionData.commissionWithdrawable == 0 }"
-          class="uni-btn"
-        >
+          class="uni-btn">
           佣金提现
         </button>
       </view>
@@ -75,18 +77,21 @@
 
 <script>
 import { USER_INFO } from 'constant';
-import { getCommissionDatatApi } from '../../api/user';
+import { getCommissionDatatApi, getVipCommissionStatistics } from '../../api/user';
 export default {
   data() {
     return {
       userInfo: null,
-      commissionData: {}
+      commissionData: {},
+      isTz: false
     };
   },
   onShow() {
     this.userInfo = uni.getStorageSync(USER_INFO);
     if (this.userInfo) {
-      this.getCommissionData();
+      const userMap = this.userInfo.userMap
+      this.isTz = userMap && userMap.isTz
+      this.getCommissionData(this.isTz)
     }
   },
   methods: {
@@ -96,14 +101,14 @@ export default {
       });
     },
 
-    async getCommissionData() {
+    async getCommissionData(isTz) {
       try {
-        const res = await getCommissionDatatApi({
+        const api = isTz ? getCommissionDatatApi : getVipCommissionStatistics
+        const res = await api({
           mobile: this.userInfo.phone,
           date: ''
         });
-
-        this.commissionData = res;
+        this.commissionData = isTz ? res : { memberSum: res }
       } catch (error) {
         this.ttoast({
           type: 'fail',
@@ -115,9 +120,17 @@ export default {
       }
     },
 
+    async getVipCommissionStatistics() {
+
+    },
+
     // 去管理银行卡
     handleToBankList() {
-      uni.navigateTo({ url: '/user/commission-statistics/bank-list' });
+      const tzApplyStatus = this.$store.getters.regimentalCommanderStatus
+      if (tzApplyStatus && tzApplyStatus === 3) {
+        return
+      }
+      uni.navigateTo({ url: this.isTz ? '/user/commission-statistics/bank-list' : '/user/sever/regimental-commander/regimental-commander' });
     },
 
     // 点击提现
@@ -166,6 +179,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       font-size: 28upx;
+
       .img {
         width: 50upx;
         height: 50upx;

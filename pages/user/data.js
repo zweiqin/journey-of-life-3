@@ -103,26 +103,6 @@ export const myEquity = [
 		icon: require('../../static/images/new-user/equity/account-book.png'),
 		// url: '/user/account-book/index' // 老的
 		url: '/user/commission-statistics/commission-statistics',
-		permission: () => {
-			const status = store.getters.regimentalCommanderStatus
-			// console.log(store.getters.regimentalCommanderStatus)
-			if (!status) return '你的等级不够，请先申请成为团长'
-			if (status === 3) {
-				return null
-			}
-			switch (status) {
-				case 0:
-					return '您的等级不够，请先去申请成为团长'
-				case 1:
-					return `您的申请正在审核中，请耐心等待`
-				case 2:
-					return `您的申请正在审核中，请耐心等待`
-				case 3:
-					return '您的申请被驳回了，请联系管理人员'
-				case 5:
-					return '您的团长身份已取消，请联系店长恢复'
-			}
-		}
 	},
 	{
 		name: '微店',

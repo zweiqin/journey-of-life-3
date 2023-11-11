@@ -271,6 +271,15 @@ export const getCommissionDatatApi = (data) => endRequest({
 	data
 })
 
+// 获取会员的佣金统计
+export const getVipCommissionStatistics = data => {
+	return endRequest({
+		url: '/api/third/account/getCommissionStatistics',
+		method: 'GET',
+		data
+	})
+}
+
 // 获取佣金详情
 export const getCommissionDeatilApi = (data) => endRequest({
 	url: '/api/third/tz/getCommissionList',

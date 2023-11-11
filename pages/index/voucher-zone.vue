@@ -11,11 +11,11 @@
     <view class="main-arae">
       <!-- nav -->
       <view class="navs">
-        <view @click="go('/pages/index/voucher-filter?categoryId=' + item.value)" class="nav-item"
-          v-for="item in voucherNavs" :key="item.label
+        <view @click="go('/pages/index/voucher-filter?categoryId=' + item.classifyId)" class="nav-item"
+          v-for="item in categoryList" :key="item.label
             ">
-          <image :src="item.icon" class="nav-icon"></image>
-          <view class="nav-name">{{ item.label }}</view>
+          <image :src="item.classifyImage" class="nav-icon"></image>
+          <view class="nav-name">{{ item.classifyName }}</view>
         </view>
       </view>
 
@@ -74,11 +74,12 @@
 </template>
 
 <script>
-import { voucherNavs } from './config'
+// import { voucherNavs } from './config'
 import VoucherGoods from './cpns/VoucherGoods.vue';
 import VoucherDeatilGoodsPane from './cpns/VoucherDeatilGoodsPane.vue';
 import loadMore from '../../mixin/loadMore'
 import { goodsListApi } from '../../api/goods';
+import { getFirstClassifyApi } from '@/api/anotherTFInterface';
 
 export default {
   components: {
@@ -87,12 +88,13 @@ export default {
   },
   data() {
     return {
-      voucherNavs: Object.freeze(voucherNavs),
+      // voucherNavs: Object.freeze(voucherNavs),
       currentType: 100101725,
       ad: {
         hot: [],
         good: []
-      }
+      },
+      categoryList: []
     }
   },
   mixins: [loadMore({
@@ -110,6 +112,7 @@ export default {
     // this.$set(this.$data._query, 'categoryId', 100101725)
     this.$set(this.$data._query, 'supportVoucher', 1)
     this._loadData()
+    this.getCtagory()
   },
   methods: {
     handleSwitchType(currentType) {
@@ -124,6 +127,15 @@ export default {
       uni.switchTab({
         url: '/pages/index/index'
       });
+    },
+
+    // 获取分类
+    async getCtagory() {
+      const res = await getFirstClassifyApi({
+        classifyId: '822'
+      })
+
+      this.categoryList = res.data
     }
   },
 }
@@ -135,6 +147,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .voucher-zone-container {
   width: 100vw;
   min-height: 100vh;
