@@ -14,8 +14,8 @@
         <view class="price-wrapper">
           ￥<text class="price-text">{{ goods.price }}</text>
         </view>
-        <view v-if="goods.voucherId != 0" class="is-suppot-voucher">可使用{{ goods.voucherPrice }}代金券抵扣</view>
-        <view v-else class="is-suppot-voucher" style="color: #4757e2bf;box-shadow: 0px 0px 0px 1rpx #47dfe28c;">不支持使用代金卷</view>
+        <view v-if="goods.voucherId != 0" class="is-suppot-voucher">可使用代金券抵扣{{ goods.voucherPrice }}元</view>
+        <view v-else class="is-suppot-voucher" style="color: #888889;box-shadow: 0px 0px 0px 1rpx #888889;">不支持使用代金卷</view>
       </view>
     </view>
   </view>

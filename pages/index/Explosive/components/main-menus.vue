@@ -48,7 +48,7 @@ export default {
   methods: {
     async getGoodsTypes() {
         getFirstClassifyApi({
-          classifyId: '1147'
+          classifyId: '1160'
         })
         .then(res => {
             this.onceMenus = res.data

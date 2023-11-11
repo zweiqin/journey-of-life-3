@@ -62,7 +62,7 @@ export default {
     },
     onLoad() {
         getFirstClassifyApi({
-			classifyId: '1147'
+			classifyId: '1160'
 		}).then(res => {
 			console.log(res);
 			this.navbar = res.data
