@@ -73,7 +73,8 @@
 
 <script>
 import { orderTypeEnum } from '../config'
-import { deleteShopOrderApi, cancelShopOrderApi } from '../../../api/anotherTFInterface'
+import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
 export default {
 	name: 'BusinessOrder',
 	props: {
@@ -207,26 +208,25 @@ export default {
 				content: '您确定要取消该订单吗？',
 				confirmText: '确定取消',
 				cancelText: '点错了',
-				success: ({ confirm }) => {
-					confirm ? this.handleDoCancel(orderItem) : undefined
+				success: async (res) => {
+					if (res.confirm) {
+						uni.showLoading()
+						try {
+							await cancelShopOrderApi({
+								orderId: orderItem.orderId
+							})
+							this.$emit('refresh')
+							uni.showToast({
+								icon: 'none',
+								title: '取消成功'
+							})
+						} finally {
+							uni.hideLoading()
+						}
+					}
 				}
 			}
 			uni.showModal(modalOptions)
-		},
-		async handleDoCancel(orderItem) {
-			uni.showLoading()
-			try {
-				await cancelShopOrderApi({
-					orderId: orderItem.orderId
-				})
-				this.$emit('refresh')
-				uni.showToast({
-					icon: 'none',
-					title: '取消成功'
-				})
-			} finally {
-				uni.hideLoading()
-			}
 		},
 		handlePayOrder(orderItem) {
 			const { orderPrice, collageId, orderId } = orderItem
@@ -240,6 +240,103 @@ export default {
 					type: 2
 				}
 			})
+		},
+		goAfterSalesService(orderItem) {
+			this.go(`/another-tf/another-serve/afterSaleApply/index?item=${JSON.stringify(orderItem)}`)
+		},
+		goLogisticsInformation(orderItem) {
+			this.go(`/another-tf/another-serve/logisticsInfo/index?express=${orderItem.express}&deliverFormid=${orderItem.deliverFormid}`)
+		},
+		handleConfirmReceipt(orderItem) {
+			uni.showModal({
+				title: '温馨提示',
+				content: '确定您已经收到货物，否则会造成财产损失',
+				confirmText: '确定收到',
+				cancelText: '点错了',
+				success: (res) => {
+					if (res.confirm) {
+						uni.showLoading({
+							title: '确认中...'
+						})
+						updateOrderConfirmApi({
+							orderId: orderItem.orderId
+						}).then((result) => {
+							uni.hideLoading()
+							uni.showToast({
+								title: '确认成功'
+							})
+							this.$emit('refresh')
+						})
+							.catch((e) => {
+								uni.hideLoading()
+							})
+					}
+				}
+			})
+		},
+		goRefundDetail(orderItem) {
+			this.go(`/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(orderItem)}`)
+		},
+		goSpellGroup(orderItem) {
+			this.go(`/another-tf/another-serve/inviteSpell/index?collageId=${orderItem.collageId}&orderId=${orderItem.orderId}&type=1&productId=${orderItem.skus[0].productId}&skuId=${orderItem.skus[0].skuId}&shopGroupWorkId=${orderItem.shopGroupWorkId}`)
+		},
+		handleBuyAgainEvent(orderItem) {
+			// 判断拼团ID是否为0
+			if (orderItem.collageId !== 0) {
+				// 拼团直接跳回商品详情
+				this.go(`/another-tf/another-serve/goodsDetails/index?shopId=${orderItem.shopId}&productId=${orderItem.skus[0].productId}&skuId=${orderItem.skus[0].skuId}`)
+			} else {
+				// 跳转详情
+				this.handleGoBuyAgain(orderItem)
+			}
+		},
+		async handleGoBuyAgain(orderItem) {
+			// 循环sku，获取商品详情，并且判断库存
+			const postAjax = []
+			orderItem.skus.forEach((skuItem) => {
+				postAjax.push(this.queryProductDetail(skuItem))
+			})
+			// 并发执行
+			const skuDetailList = await Promise.all(postAjax)
+			const canNotBuyNameList = []
+			// 判断库存
+			skuDetailList.forEach((skuDetail) => {
+				for (const skuDetailSkuMapKey in skuDetail.map) {
+					// 判断此SKU是否存在于传进来的item
+					const findSku = orderItem.skus.find((skuItem) => skuItem.skuId === skuDetail.map[skuDetailSkuMapKey].skuId)
+					if (findSku) {
+						if (findSku.number > skuDetail.map[skuDetailSkuMapKey].stockNumber) {
+							canNotBuyNameList.push(findSku.productName)
+						}
+					}
+				}
+			})
+			// 如果有库存不足
+			if (canNotBuyNameList.length > 0) return this.$showToast(canNotBuyNameList.join(',') + ' 库存不足')
+			// 制造数据
+			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
+				ifWork: orderItem.ifWork,
+				shopId: orderItem.shopId,
+				shopName: orderItem.shopName,
+				shopDiscountId: orderItem.shopDiscountId,
+				shopSeckillId: orderItem.shopSeckillId,
+				skus: orderItem.skus
+			} ])
+			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
+		},
+		async queryProductDetail(skuItem) {
+			uni.showLoading({
+				title: '加载中...',
+				mask: true
+			})
+			const res = await getProductDetailsByIdApi({
+				shopId: skuItem.shopId,
+				productId: skuItem.productId,
+				skuId: skuItem.skuId,
+				terminal: 1
+			})
+			uni.hideLoading()
+			return res.data
 		}
 	}
 }

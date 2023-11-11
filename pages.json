@@ -1489,6 +1489,36 @@
           }
         },
         {
+          "path": "another-serve/afterSaleApply/index",
+          "style": {
+            "navigationBarTitleText": "选择商品"
+          }
+        },
+        {
+          "path": "another-serve/logisticsInfo/index",
+          "style": {
+            "navigationBarTitleText": "物流信息"
+          }
+        },
+        {
+          "path": "another-serve/refundDetails/index",
+          "style": {
+            "navigationBarTitleText": "退款详情"
+          }
+        },
+        {
+          "path": "another-serve/returnDetails/index",
+          "style": {
+            "navigationBarTitleText": "退货详情"
+          }
+        },
+				{
+					"path": "another-serve/afterSaleApplyRefund/index",
+					"style": {
+						"navigationBarTitleText": "申请退款"
+					}
+				},
+        {
           "path": "another-serve/shareProduct/index",
           "style": {
             "navigationBarTitleText": "分享"
