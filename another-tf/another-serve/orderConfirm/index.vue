@@ -131,7 +131,7 @@
 			</view>
 			<VoucherUse
 				v-if="settlement.userVoucherDeductLimit" ref="refVoucherUse" :voucher-list="settlement.voucherList"
-				@choose="handleChooseCoupon"
+				@choose="handleChooseVoucher"
 			></VoucherUse>
 
 			<view class="cashier-box">
@@ -197,8 +197,8 @@
 										<view class="info-box">
 											<view class="date font-color-999" style="font-size:22upx;margin-top: 20upx;">
 												{{
-													getDate(usableItem.startTime.replace(/-/g, '.'))
-												}}-{{ getDate(usableItem.endTime.replace(/-/g, '.')) }}
+													getDate(usableItem.startTime.replace(/-/g, '.')).split(' ')[0]
+												}}-{{ getDate(usableItem.endTime.replace(/-/g, '.')).split(' ')[0] }}
 											</view>
 											<view class="info font-color-999">满{{ usableItem.fullMoney }}元可用</view>
 										</view>
@@ -239,8 +239,8 @@
 										</view>
 										<view v-else class="money-box">{{ sItem.reduceMoney }}折券</view>
 										<view class="date font-color-999" style="font-size:22upx;margin-top: 10upx;">
-											{{ getDate(sItem.startTime.replace(/-/g, '.')) }}-{{
-												getDate(sItem.endTime.replace(/-/g, '.'))
+											{{ getDate(sItem.startTime.replace(/-/g, '.')).split(' ')[0] }}-{{
+												getDate(sItem.endTime.replace(/-/g, '.')).split(' ')[0]
 											}}
 										</view>
 										<view class="info-box">
@@ -370,7 +370,6 @@ export default {
 			} else {
 				this.totalPrice = this.totalPrice + this.integralPrice
 			}
-			console.log(this.selectIntegral)
 		},
 		// 获取订单信息
 		getSettlement(isGroup) {
@@ -391,7 +390,6 @@ export default {
 					receiveId: this.receiveId,
 					...this.voucherObj
 				}
-				// composeId: 68
 			}
 			_url(_data).then((res) => {
 				uni.hideLoading()
@@ -471,10 +469,6 @@ export default {
 				.catch((res) => {
 					uni.hideLoading()
 				})
-		},
-		getDate(time) {
-			if (!time) return ''
-			return time.split(' ')[0]
 		},
 		// 平台优惠券选择
 		couponItemTap(index, coupon) {
@@ -738,59 +732,42 @@ export default {
 				this.totalPrice = this.totalPrice + (item.distribution.distributionPrice || 0)
 			})
 		},
+		// eslint-disable-next-line complexity
 		calcCredit() {
 			const shopsLen = this.settlement.shops.length
 			const skuRemainMap = this.calcSkuRemainMap()
 			const skuCreditMap = this.settlement.skuCreditMap
 			if (skuCreditMap && this.integralRatio > 0) {
-				let remainUserCredit = this.settlement.userTotalCredit
-				let remainTotalPrice = Math.round((this.totalPrice + Number.EPSILON) * 100) / 100
-				let remainDeductLimit = this.settlement.creditDeductLimit
 				// 只有订单金额达到阈值，并且用户还有剩余的积分，才能进行积分抵扣
-				if (this.totalPrice >= this.settlement.orderCreditThreshold && remainUserCredit > 0 && remainDeductLimit > 0) { // orderCreditThreshold: 0, // 满多少元可以抵扣
+				if (this.totalPrice >= this.settlement.orderCreditThreshold && this.settlement.userTotalCredit > 0 && this.settlement.creditDeductLimit > 0) { // orderCreditThreshold: 0, // 满多少元可以抵扣
 					for (let i = 0; i < shopsLen; i++) {
 						const curShop = this.settlement.shops[i]
 						const skuLen = curShop.skus.length
 						for (let j = 0; j < skuLen; j++) {
 							const curSku = curShop.skus[j]
 							const skuId = curSku.skuId
-							if (skuCreditMap[skuId] > 0 && skuRemainMap[skuId] > 0 && remainUserCredit > 0 &&
-								remainTotalPrice > 0) {
+							if (skuCreditMap[skuId] > 0 && skuRemainMap[skuId] > 0 && this.settlement.userTotalCredit > 0 && (Math.round((this.totalPrice + Number.EPSILON) * 100) / 100) > 0) {
 								// 抵扣之后，必须保证整个订单至少还有0.01元，可用于支付
-								if (remainTotalPrice - skuRemainMap[skuId] < 0.01) {
-									skuRemainMap[skuId] -= 0.01
-								}
+								if ((this.settlement.creditDeductLimit - skuRemainMap[skuId]) < 0.01) skuRemainMap[skuId] -= 0.01
 								// 按照比例换算成需要多少积分抵扣(取整)
 								let finalSkuCredit = parseInt((skuRemainMap[skuId] / this.integralRatio).toString())
 								// 优先以商家配置的商品可抵扣积分为准
-								if (skuCreditMap[skuId] < finalSkuCredit) {
-									finalSkuCredit = skuCreditMap[skuId]
-								}
+								if (skuCreditMap[skuId] < finalSkuCredit) finalSkuCredit = skuCreditMap[skuId]
 								// 不能超过用户剩余积分
-								if (remainUserCredit < finalSkuCredit) {
-									finalSkuCredit = remainUserCredit
-								}
+								if (finalSkuCredit > this.settlement.userTotalCredit) finalSkuCredit = this.settlement.userTotalCredit
 								// 不能超过整个订单可抵扣积分
-								if (remainDeductLimit < finalSkuCredit) {
-									finalSkuCredit = remainDeductLimit
-								}
+								if (finalSkuCredit > this.settlement.creditDeductLimit) finalSkuCredit = this.settlement.creditDeductLimit
 								curSku.cachedCredit = finalSkuCredit
 								this.integralNum += finalSkuCredit
-								remainUserCredit -= finalSkuCredit
-								remainDeductLimit -= finalSkuCredit
-								remainTotalPrice -= finalSkuCredit
 							}
 						}
 					}
 				}
 				// 计算抵扣价格
-				console.log(this.integralNum)
+				this.integralNum = parseInt(this.integralNum)
 				if (this.integralNum !== 0) {
-					this.integralNum = parseInt(this.integralNum)
+					this.integralShow = true
 					this.integralPrice = this.integralNum * this.integralRatio
-					if (this.integralNum !== 0) {
-						this.integralShow = true
-					}
 					if (this.selectIntegral) {
 						this.totalPrice = this.totalPrice - this.integralPrice
 					}
@@ -799,7 +776,6 @@ export default {
 				}
 			}
 		},
-
 		// 计算sku在整个运单价格中的剩余价值 1元的订单，打1折优惠之后，剩余价值就是0.1元
 		calcSkuRemainMap() {
 			const skuRemainMap = {}
@@ -848,6 +824,7 @@ export default {
 			}
 			return skuRemainMap
 		},
+
 		// 展示平台端优惠券
 		showDiscount() {
 			if (this.voucherObj.voucherId) return this.$showToast('已选择代金券，无法使用其它优惠')
@@ -881,7 +858,7 @@ export default {
 		},
 
 		// 选择代金券
-		handleChooseCoupon(e) {
+		handleChooseVoucher(e) {
 			console.log(e)
 			if (e.id) {
 				if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) {

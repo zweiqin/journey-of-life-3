@@ -1,6 +1,6 @@
 <template>
   <view
-    @click="go('/pages/prod/prod?goodsId=' + data.productId)"
+    @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${data.shopId}&productId=${data.productId}&skuId=${data.skuId}`)"
     class="goods-wrapper"
     v-if="data"
   >
