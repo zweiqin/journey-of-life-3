@@ -1,13 +1,14 @@
 <template>
   <view class="voucher-goods-container" v-if="goodsData" @click="go('/pages/prod/prod?goodsId=' + goodsData.id)">
     <view class="goods-wrapper">
-      <image class="goods-img" :src="goodsData.picUrl"></image>
+      <image class="goods-img" :src="goodsData.image"></image>
     </view>
 
+
     <view class="goods-info">
-      <view class="goods-name">{{ goodsData.name }}</view>
+      <view class="goods-name">{{ goodsData.productName }}</view>
       <view class="price-wrapper">
-        券后￥<text class="price-text">{{ goodsData.counterPrice - (goodsData.voucherAmount || 0) }}</text>
+        ￥<text class="price-text">{{ goodsData.price }}</text>
       </view>
     </view>
   </view>
@@ -28,6 +29,7 @@ export default {
 .voucher-goods-container {
 
   .goods-wrapper {
+    position: relative;
     width: 150upx;
     height: 158upx;
     background-color: #F5F5F5;

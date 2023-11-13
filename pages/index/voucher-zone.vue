@@ -43,7 +43,7 @@
 
       <!-- 推荐 -->
       <view class="recommend-container">
-        <view class="type-container">
+        <!--  <view class="type-container">
           <view class="recommend-title" :class="{ active: currentType == 100101725 }"
             @click="handleSwitchType(100101725)">
             <view class="title">精品推荐</view>
@@ -61,11 +61,25 @@
             <view class="title">爆款抢购</view>
             <view class="tag">好物严选</view>
           </view>
-        </view>
+        </view> -->
 
         <view class="voucher-list">
-          <VoucherDeatilGoodsPane v-for="voucherGoods in $data._list" :key="voucherGoods.id" :goodsInfo="voucherGoods">
-          </VoucherDeatilGoodsPane>
+          <view class="goods-wrapper">
+            <view class="goods-item"
+              @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)"
+              v-for=" item  in  $data._list.slice(4) " :key="item.id">
+              <tui-lazyload-img :style="{ background: `url(${item.image})`, margin: 0 }" mode="aspectFit"
+                :src="item.image"></tui-lazyload-img>
+              <view class="goods-info">
+                <view class="goods-name">{{ item.productName }}</view>
+                <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{
+                  item.originalPrice }}</text> </view>
+                <view class="voucher-num" v-if="item.voucherId">
+                  可使用{{ item.voucherPrice }}代金券抵扣
+                </view>
+              </view>
+            </view>
+          </view>
           <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
         </view>
       </view>
@@ -78,8 +92,8 @@
 import VoucherGoods from './cpns/VoucherGoods.vue';
 import VoucherDeatilGoodsPane from './cpns/VoucherDeatilGoodsPane.vue';
 import loadMore from '../../mixin/loadMore'
-import { goodsListApi } from '../../api/goods';
-import { getFirstClassifyApi } from '@/api/anotherTFInterface';
+import { getFirstClassifyApi, getClaasifyProducts } from '@/api/anotherTFInterface';
+
 
 export default {
   components: {
@@ -98,8 +112,8 @@ export default {
     }
   },
   mixins: [loadMore({
-    api: goodsListApi,
-    mapKey: { totalPages: "totalPages", list: "goodsList", size: "size" },
+    api: getClaasifyProducts,
+    mapKey: { totalPages: "total", list: "list", size: "pageSize" },
     dataFn(goodsArr) {
       if (!this.ad.hot.length) {
         this.ad.hot.push(...goodsArr.slice(0, 2))
@@ -109,8 +123,7 @@ export default {
     }
   })],
   mounted() {
-    // this.$set(this.$data._query, 'categoryId', 100101725)
-    this.$set(this.$data._query, 'supportVoucher', 1)
+    this.$data._query.classifyId = 822
     this._loadData()
     this.getCtagory()
   },
@@ -146,6 +159,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 20upx;
 }
 
 .voucher-zone-container {
@@ -269,12 +283,7 @@ export default {
           }
         }
 
-        .goods-wrapper {
-          width: 100%;
-          justify-content: space-between;
-          display: flex;
-          align-items: center;
-        }
+
 
         &.hot-left {
           border-right: 1upx solid #D8D8D8;
@@ -326,6 +335,85 @@ export default {
         }
       }
     }
+  }
+}
+
+.goods-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .goods-item {
+    font-size: 0;
+    border-radius: 0 0 20upx 20upx;
+    overflow: hidden;
+    margin-bottom: 30upx;
+    height: 582upx;
+    background-color: #fff;
+    border-radius: 20upx;
+    overflow: hidden;
+
+    .goods-info {
+      width: 340upx;
+      background-color: #fff;
+      padding: 20upx;
+      box-sizing: border-box;
+
+      .goods-name {
+        font-size: 28upx;
+        // font-weight: 500;
+        width: 300upx;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-height: 1.5;
+        margin-bottom: 20upx;
+      }
+
+      .price {
+        font-size: 32upx;
+        font-weight: 500;
+        color: #EF5511;
+
+        .origin-price {
+          font-size: 28upx;
+          color: #ccc;
+          text-decoration: line-through;
+          margin-left: 20upx;
+        }
+      }
+
+      .voucher-num {
+        padding: 4upx 10upx;
+        font-size: 24upx;
+        color: #EF5511;
+        // border: 1upx solid #EF5511;
+        background-color: #f3f3f3;
+        display: inline-flex;
+        border-radius: 0 100px 100px 0;
+        margin-top: 10upx;
+      }
+    }
+  }
+}
+
+/deep/ .tui-lazyload__box {
+  position: relative;
+  width: 340upx !important;
+  height: 340upx !important;
+  border-radius: 20upx 20upx 0 0 !important;
+  overflow: hidden;
+  z-index: 10;
+  margin-right: 19upx;
+
+  .tui-lazyload__img {
+    width: 340upx !important;
+    height: 340upx !important;
   }
 }
 </style>
