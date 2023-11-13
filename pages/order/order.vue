@@ -75,7 +75,7 @@
 		<!-- 商圈支付 -->
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
-				<CashierList show @change="handleShopChangePayItem" />
+				<CashierList :total-price="payObj.totalPrice" show @change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }" />
 				<tui-button
 					type="warning" width="168upx" height="64upx"
 					margin="30upx auto 0" shape="circle" @click="handleShopGoPay"
@@ -449,10 +449,6 @@ export default {
 			}
 		},
 
-		handleShopChangePayItem(params) {
-			this.payObj.payInfo.paymentMode = params.paymentMode
-			this.payObj.payInfo.huabeiPeriod = params.huabeiPeriod
-		},
 		async handleShopGoPay() {
 			await handleDoPay(this.payObj.payInfo, 1)
 			this.payObj = {

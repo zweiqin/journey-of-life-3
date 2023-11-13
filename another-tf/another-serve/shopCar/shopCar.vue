@@ -2,10 +2,7 @@
 	<view class="content">
 		<BeeBack style="padding: 10upx 0;">
 			<view style="display: flex;align-items: center;justify-content: space-between;">
-				<BeeIcon
-					name="arrowleft" :size="34" color="#222229"
-					style="width: fit-content;"
-				>
+				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
 				</BeeIcon>
 				<text style="flex: 1;margin-left: -40upx;text-align: center;">购物车</text>
 			</view>
@@ -18,17 +15,8 @@
 		<!-- 购物车 -->
 		<view class="tui-skeleton">
 			<view v-if="!isEmpty">
-				<tui-sticky bg-color="#fff">
-					<view class="cart-bg tui-skeleton-fillet">
-						<view class="cart-num-box">
-							<image class="tui-skeleton-fillet" src="../../../static/images/new-user/fee.icon.png"></image>
-							<text v-if="!showManage" class="btn-box " @click="showManage = !showManage">
-								管理
-							</text>
-							<text v-if="showManage" class="btn-box" @click="showManage = !showManage">
-								完成
-							</text>
-						</view>
+				<view class="cart-bg tui-skeleton-fillet">
+					<view class="cart-num-box">
 						<view>
 							<text class="num-box tui-skeleton-fillet">
 								共
@@ -36,8 +24,14 @@
 								件宝贝
 							</text>
 						</view>
+						<text v-if="!showManage" class="btn-box " @click="showManage = !showManage">
+							管理
+						</text>
+						<text v-if="showManage" class="btn-box" @click="showManage = !showManage">
+							完成
+						</text>
 					</view>
-				</tui-sticky>
+				</view>
 				<view class="cart-list-box">
 					<view v-for="(item, index) in dataList" :key="item.shopId" class="itemBox">
 						<view v-if="item.skus.length > 0" class="item">
@@ -80,7 +74,10 @@
 										color="#cccccc" margin="40upx"
 										@click="handleSelectSku(index, cIndex, 1)"
 									></tui-icon>
-									<view class="pro-r" @click="go(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)">
+									<view
+										class="pro-r"
+										@click="go(`${jumpObj.detail}?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
+									>
 										<image :src="skuItem.image" class="pro-img default-img tui-skeleton-fillet"></image>
 										<view class="pro-r-r tui-skeleton-fillet">
 											<view class="pro-name">{{ skuItem.productName }}</view>
@@ -111,16 +108,6 @@
 						</view>
 					</view>
 				</view>
-				<!-- 购物车为空 -->
-				<view v-if="isEmpty" class="emptyCart-box flex-items-plus flex-column">
-					<image class="emptyCart-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
-					<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
-					<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
-					<view class="goToShopping" @click="$switchTab(jumpObj.shopping)">
-						去购物
-					</view>
-				</view>
-
 				<view class="cart-bottom-box">
 					<view class="cart-bottom">
 						<view class="left">
@@ -151,6 +138,15 @@
 							</view>
 						</view>
 					</view>
+				</view>
+			</view>
+			<!-- 购物车为空 -->
+			<view v-if="isEmpty" class="emptyCart-box flex-items-plus flex-column">
+				<image class="emptyCart-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
+				<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
+				<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
+				<view class="goToShopping" @click="$switchTab(jumpObj.shopping)">
+					去购物
 				</view>
 			</view>
 
@@ -383,7 +379,6 @@ export default {
 					shopObj.skus.length === 0 ? emptySkuShopArray.push(shopObj) : undefined
 				})
 				this.isEmpty = emptySkuShopArray.length >= this.dataList.length
-				this.handleRenderCart()
 				// 数据回来就直接关闭骨架屏
 				this.loading = false
 				this.isFirstComeIn = false
@@ -455,7 +450,6 @@ export default {
 					icon: 'none'
 				})
 			}
-
 			if (selectSku.number < selectSku.stockNumber) {
 				++selectSku.number
 				await this.handleUpdateCart(selectSku.skuId, selectSku.number)
@@ -515,7 +509,7 @@ export default {
 				})
 			})
 			this.handleSetGroupGood(shopIndex)
-			this.handleUpdateSelected(shopCarts)
+			this.handleUpdateMoneyAndNum()
 		},
 
 		/**
@@ -539,17 +533,17 @@ export default {
 			if (type === 1) {
 				// 过滤店铺内未选择的sku
 				const noSelectSkuList = shopObj.skus.filter((sku) => sku.selected === 0)
-				if (noSelectSkuList.length >= 0) {
-					shopObj.selected = 0
-				} else {
+				if (noSelectSkuList.length === 0) {
 					shopObj.selected = 1
+				} else {
+					shopObj.selected = 0
 				}
 			} else {
 				shopObj.selected = type
 			}
 			// 渲染组合商品
 			this.handleSetGroupGood(shopIndex)
-			this.handleUpdateSelected(shopCarts)
+			this.handleUpdateMoneyAndNum()
 		},
 
 		/**
@@ -575,7 +569,7 @@ export default {
 					this.handleSetGroupGood(shopIndex)
 				}
 			})
-			this.handleUpdateSelected([])
+			this.handleUpdateMoneyAndNum()
 		},
 
 		/**
@@ -602,144 +596,6 @@ export default {
 					break
 				}
 			}
-		},
-
-		/**
-		 * 更新缓存sku勾选和价格、数量显示
-		 * @param shopCarts:{shopId:number,skus:{skuId:number,select:number}}[] 只有一个对象（店铺）全选传空数组
-		 */
-
-		handleUpdateSelected(shopCarts) {
-			this.handleSetCache(shopCarts)
-			this.handleUpdateMoneyAndNum()
-		},
-
-		/**
-		 * 设置购物车本地缓存（先存入本地缓存，再调用handleRenderCart根据本地缓存渲染）
-		 * @param shopCarts:{shopId:number,skus:{skuId:number,select:number}}[] 只有一个对象（店铺）全选传空数组
-		 */
-
-		handleSetCache(shopCarts) {
-			let cartInfo = uni.getStorageSync(cacheKey)
-			if (cartInfo === '') {
-				// 全选
-				if (shopCarts.length <= 0) {
-					// 全选直接缓存整个列表
-					uni.setStorageSync(cacheKey, JSON.stringify(this.dataList))
-					// 渲染视图
-					this.handleRenderCart()
-					return
-				}
-				// 无购物车信息
-				cartInfo = shopCarts
-				uni.setStorageSync(cacheKey, JSON.stringify(cartInfo))
-			} else {
-				cartInfo = JSON.parse(cartInfo)
-				// 全选
-				if (shopCarts.length <= 0) {
-					// 全选直接缓存整个列表
-					uni.setStorageSync(cacheKey, JSON.stringify(this.dataList))
-					// 渲染视图
-					this.handleRenderCart()
-					return
-				}
-				// 看了代码逻辑结构，一次只会传一个商铺过来，大胆取0
-				const shopItem = shopCarts[0]
-				const cacheHaveInfo = cartInfo.findIndex((item) => item.shopId === shopItem.shopId)
-				if (cacheHaveInfo < 0) {
-					// 如果缓存中不存在当前商店信息，写入缓存
-					cartInfo.push(shopItem)
-				} else {
-					// 获取到缓存项
-					const cacheShopItem = cartInfo[cacheHaveInfo]
-					// 判断传入的sku大小，sku length为1就是点单项，sku length>1就是点击了整个店铺
-					if (shopItem.skus.length > 1) {
-						// 点击整个店铺，直接赋值
-						cartInfo[cacheHaveInfo] = shopItem
-					} else {
-						// 点击单项sku，获取到sku // 数据结构只会传入一项
-						const shopItemSkuItem = shopItem.skus[0]
-						// 在缓存中寻找
-						const cacheShopItemSkuItemIndex = cacheShopItem.skus.findIndex((item) => item.skuId === shopItemSkuItem.skuId)
-						cacheShopItemSkuItemIndex >= 0 ? cacheShopItem.skus[cacheShopItemSkuItemIndex] = shopItemSkuItem : cacheShopItem.skus.push(shopItemSkuItem)
-					}
-				}
-				// 逻辑处理完毕更新缓存
-				uni.setStorageSync(cacheKey, JSON.stringify(cartInfo))
-				// 渲染视图
-				this.handleRenderCart()
-			}
-		},
-
-		/**
-		 * 根据本地缓存渲染购物车勾选
-		 * @constructor
-		 */
-
-		handleRenderCart() {
-			// 取消所有勾选
-			this.dataList.forEach((shop) => {
-				shop.selected = 0
-				shop.skus.forEach((sku) => {
-					sku.selected = 0
-				})
-			})
-			// 校验缓存中的数据是否存在于购物车中
-			this.handleCheckCacheAndUpdate()
-			// 缓存内购物车信息
-			let cartInfo = uni.getStorageSync(cacheKey)
-			if (cartInfo === '') return
-			cartInfo = JSON.parse(cartInfo)
-
-			// 遍历购物车信息，寻找缓存比对
-			this.dataList.forEach((nowCartShopItem) => {
-				let shopSelect = 1
-				const cacheCartShopItem = cartInfo.find((item) => item.shopId === nowCartShopItem.shopId)
-				if (cacheCartShopItem) {
-					// 如果缓存中有当前店铺，遍历当前购物车sku
-					nowCartShopItem.skus.forEach((nowCartSkuItem) => {
-						const cacheCartSkuItem = cacheCartShopItem.skus.find((item) => item.skuId === nowCartSkuItem.skuId)
-						if (cacheCartSkuItem) {
-							// 如果有一个未选中当前店铺就不能全选
-							!cacheCartSkuItem.selected ? shopSelect = 0 : ''
-							nowCartSkuItem.selected = cacheCartSkuItem.selected
-						} else {
-							shopSelect = 0
-						}
-					})
-				} else {
-					shopSelect = 0
-				}
-				nowCartShopItem.selected = shopSelect
-			})
-		},
-
-		/**
-		 * 比较缓存内数据和后端数据是否一致,并且更新缓存
-		 * @constructor
-		 */
-
-		handleCheckCacheAndUpdate() {
-			// 缓存内购物车信息
-			let cartInfo = uni.getStorageSync(cacheKey)
-			if (cartInfo === '') return
-			cartInfo = JSON.parse(cartInfo)
-			// 校验缓存中的数据是否存在于购物车中
-			cartInfo.forEach((cacheCartShopItem, cacheCartShopIndex) => {
-				const nowCartShopItem = this.dataList.find((item) => item.shopId === cacheCartShopItem.shopId)
-				if (!nowCartShopItem) {
-					cartInfo.splice(cacheCartShopIndex, 1)
-				} else {
-					// 存在就校验缓存中的sku在不在后端返回的列表内
-					cacheCartShopItem.skus.forEach((cacheCartSkuItem, cacheCartSkuIndex) => {
-						const nowCartSkuItem = nowCartShopItem.skus.find((item) => item.skuId === cacheCartSkuItem.skuId)
-						if (!nowCartSkuItem) {
-							cacheCartShopItem.skus.splice(cacheCartSkuIndex, 1)
-						}
-					})
-				}
-			})
-			uni.setStorageSync(cacheKey, JSON.stringify(cartInfo))
 		},
 
 		/**
@@ -792,7 +648,6 @@ export default {
 
 	.cart-bg {
 		width: 100%;
-		height: 180rpx;
 		background-color: #fff;
 
 		.cart-num-box {
@@ -800,6 +655,13 @@ export default {
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
+
+			.num-box {
+				padding: 30rpx 0 30rpx 30rpx;
+				box-sizing: border-box;
+				font-size: 30rpx;
+				color: #C5CACF;
+			}
 
 			image {
 				width: 286rpx;
@@ -815,12 +677,6 @@ export default {
 			}
 		}
 
-		.num-box {
-			padding: 30rpx 0 30rpx 30rpx;
-			box-sizing: border-box;
-			font-size: 30rpx;
-			color: #C5CACF;
-		}
 	}
 
 	.cart-list-box {

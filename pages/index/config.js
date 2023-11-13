@@ -23,6 +23,7 @@ export const homeTopNavs = [
     url: '/pages/index/IntelligentSelection/index'
   }
 ];
+
 // export const homeTopNavs = [
 //   {
 //     name: '家具严选',

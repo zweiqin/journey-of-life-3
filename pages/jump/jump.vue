@@ -27,8 +27,7 @@
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi } from '../../api/user'
-import { getOrderDetailApi } from '../../api/order'
-import { bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
+import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 
@@ -176,7 +175,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject(`/user/view?target=${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
+						jumpToOtherProject(`${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
 					}, 300)
 				}
 			} else if (this.type === 'bindLastUser') {
@@ -194,7 +193,7 @@ export default {
 			}
 		},
 		handleVerification() {
-			xxxxxApi({ code: this.code, userId: this.userId })
+			updateSetHxCodeApi({ code: this.code, userId: this.userId })
 				.then((res) => { this.$showToast('核销成功', 'success') })
 				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 		}
