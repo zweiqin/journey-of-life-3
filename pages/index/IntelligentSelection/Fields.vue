@@ -5,7 +5,7 @@
         <view class="tabItems isActive">
           全屋家具
         </view>
-        <view class="tabItems">
+        <view class="tabItems" @click="go('/pages/index/WholeHouseQuickInstallation/WholeHouseQuickInstallation')">
           全屋快装
         </view>
       </view>
