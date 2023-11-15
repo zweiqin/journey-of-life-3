@@ -17,7 +17,7 @@ export const getClaasifyProducts = (data) => AnotherTFRequest('/classify/getClaa
 export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
 
 // /canvas/getPrices  商家定价捆绑
-export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
+export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getPrices', data)
 
 // /classify/getFirstClassify  查询店铺分类
 export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirstClassify', data)
@@ -51,6 +51,9 @@ export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/dele
  */
 
 // 购物车
+// 商家购物车查询
+export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data)
+
 // 购物车列表
 export const getCartListApi = (data) => AnotherTFRequest('/cart/getCart', data)
 
@@ -158,6 +161,9 @@ export const getOrderDileveryShippingTraceApi = (data) => AnotherTFRequest('/ord
 
 // 生成用户订单的核销码
 export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderVerificationCode/getHxCode', data)
+
+// 核销订单
+export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST')
 
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')

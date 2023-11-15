@@ -141,14 +141,11 @@ export default {
 					this.wxShare('WXSceneSession')
 					break
 				case 'weixinpyq':
-
 					this.wxShare('WXSceneTimeline')
 					break
 				case 'qq':
-
 					break
 				case 'weibo':
-
 					break
 				case 'lianjie':
 					uni.setClipboardData({

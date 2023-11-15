@@ -1,9 +1,9 @@
 <template>
 	<view class="cashier-list-content">
 		<view v-if="show">
-			<tui-radio-group v-model="paymentMode">
+			<tui-radio-group v-model="paymentMode" @change="handleChangePaymentMode">
 				<view v-for="payment in paymentList" :key="payment.id" class="cashier">
-					<view class="cashier-item" @click="handleChangePaymentMode(payment.paymentMode, payment.disabled)">
+					<view class="cashier-item">
 						<view class="icon-text">
 							<image class="pay-type-img-inner" :src="payment.icon" mode="widthFix" />
 							{{ payment.label }}
@@ -21,9 +21,9 @@
 					</view>
 					<!-- 花呗分期 -->
 					<view v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)" class="ali-hb-content">
-						<tui-radio-group v-model="flowerObj.hbByStagesPeriods">
+						<tui-radio-group v-model="flowerObj.hbByStagesPeriods" @change="handleChangePeriods">
 							<view v-for="(flowerItem, index) in flowerObj.hbByStagesList" :key="index" class="cashier">
-								<view class="cashier-item" @click="handleChangePeriods(flowerItem.numberOfStages, flowerItem.disabled)">
+								<view class="cashier-item">
 									<view class="icon-text">
 										{{ flowerItem.numberOfStages }}期（￥{{ flowerItem.price }}/期）
 									</view>
@@ -53,7 +53,7 @@ export default {
 	props: {
 		totalPrice: {
 			type: Number,
-			default: () => 200
+			default: () => 0
 		},
 		// 是否显示，用于默认某一个支付
 		show: {
@@ -63,7 +63,7 @@ export default {
 	},
 	data() {
 		return {
-			paymentMode: '1', // 支付方式 1微信 2支付宝 3花呗分期
+			paymentMode: '', // 支付方式 1微信 2支付宝 3花呗分期
 			paymentList: [
 				{
 					id: 1,
@@ -125,8 +125,8 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		this.getTheFlowerConfig()
+	async mounted() {
+		await this.getTheFlowerConfig()
 		this.handleSetDisable()
 		this.handleNoticeFather()
 	},
@@ -165,12 +165,12 @@ export default {
 		 * @param disabled
 		 */
 
-		handleChangePaymentMode(paymentMode, disabled = false) {
-			console.log(paymentMode)
-			if (disabled) return
-			this.paymentMode = paymentMode
+		handleChangePaymentMode(e) {
+			console.log(e.detail.value)
+			if (this.paymentList.find((item) => item.paymentMode === e.detail.value).disabled) return
+			this.paymentMode = e.detail.value
 			const { flowerObj } = this
-			if (['1', '2'].includes(this.paymentMode)) {
+			if (['1', '2', '4'].includes(this.paymentMode)) {
 				// 支付宝支付，取消分期选择
 				flowerObj.hbByStagesPeriods = '-1'
 				// 3 6 12 全部禁止
@@ -207,10 +207,10 @@ export default {
 		 * @param disabled
 		 */
 
-		handleChangePeriods(periods, disable = false) {
-			if (disable) return
+		handleChangePeriods(e) {
+			if (this.flowerObj.hbByStagesList.find((item) => item.numberOfStages === e.detail.value).disabled) return
 			const { flowerObj } = this
-			flowerObj.hbByStagesPeriods = periods
+			flowerObj.hbByStagesPeriods = e.detail.value
 			this.handleHbStagesAndPrice()
 			this.handleNoticeFather()
 		},
@@ -223,6 +223,7 @@ export default {
 			// const { flowerObj, totalPrice } = this
 			const flowerObj = this.flowerObj
 			const totalPrice = this.totalPrice || 0
+			// console.log(this.flowerObj.hbByStagesList)
 			if (this.paymentMode !== '3') return
 			flowerObj.hbByStagesList.forEach((stages) => {
 				// 根据价格填充每一期价格和手续费信息

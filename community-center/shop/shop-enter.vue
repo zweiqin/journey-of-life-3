@@ -30,7 +30,7 @@
 		>
 			<view
 				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
-				@click="go(`/community-center/shop/shop-deep?id=${item.id}`)"
+				@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 			>
 				<view>
 					<BeeIcon
@@ -453,15 +453,14 @@ export default {
 				24: '就医买药'
 			},
 			currentType: '',
-			parentId: '',
 
 			// 判断每个类板块是否拥有某个页面结构
 			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
-			ownMenuBar: ['1', '3', '5', '6', '7', '8', '9', '13', '16'], // '1', '2',
+			ownMenuBar: ['1', '2', '3', '5', '6', '7', '8', '9', '13', '16'], // '1', '2',
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
-			ownSelectionBox: ['1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			ownSelectionBox: ['2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 			selectionBoxArr: [],
 			selectionBoxNum: 0,
 			ownPrimaryFilterBox: [ '6' ],
@@ -506,24 +505,22 @@ export default {
 		}
 	},
 	watch: {
-		'queryInfo.search'(value) {
-			if (value) {
-				this.getNearByShopList(true)
-			}
-		}
+		// 'queryInfo.search'(value) {
+		// 	if (value) {
+		// 		this.getNearByShopList(true)
+		// 	}
+		// }
 	},
 	// eslint-disable-next-line complexity
 	async onLoad(options) {
 		this.currentType = options.type || '0'
-		this.parentId = options.id || ''
 		this.queryInfo.classifyId = options.id || ''
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
 		}
 		if (this.ownSelectionBox.includes(this.currentType)) {
-			if (this.currentType === '1') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']
-			else if (this.currentType === '2') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']
+			if (this.currentType === '2') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']
 			else if (this.currentType === '3') this.selectionBoxArr = ['水电安装', '家具安装', '家电维修', '招牌安装']
 			else if (this.currentType === '4') this.selectionBoxArr = ['全部', '保姆', '月嫂', '保洁', '收纳']
 			else if (this.currentType === '6') this.selectionBoxArr = ['美食餐厅', '精选团购', '单人餐']
@@ -547,7 +544,7 @@ export default {
 			this.getNearByShopList(true)
 		}
 		if (this.ownMenuBar.includes(this.currentType)) {
-			const res = await getShopCategorySonApi({ pid: this.parentId })
+			const res = await getShopCategorySonApi({ pid: this.queryInfo.classifyId })
 			this.menuBarArr = res.data || []
 		}
 	},

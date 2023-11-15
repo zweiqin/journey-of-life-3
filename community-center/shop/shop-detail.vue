@@ -71,6 +71,7 @@
 					<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
 						<text>销量</text>
 						<tui-icon
+							v-if="[1, 2].includes(shopGoodsInfo.query.volume)"
 							:name="shopGoodsInfo.query.volume == 1 ? 'turningup' : shopGoodsInfo.query.volume == 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"
 						></tui-icon>
@@ -102,6 +103,9 @@
 			</view>
 		</view>
 
+		<view v-if="currentTab === 0 && brandDetail.shopId && brandDetail.shopName">
+			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId" :brand-name="brandDetail.shopName"></StoreShopCart>
+		</view>
 	</view>
 </template>
 
@@ -109,6 +113,7 @@
 import BrandInfo from './components/BrandInfo'
 import CanvasPage from '../../components/canvasShow/canvasShowPage.vue'
 import ShopGoods from './components/ShopGoods'
+import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../api/anotherTFInterface'
 import { navigationAddress } from '../../utils'
 
@@ -117,7 +122,8 @@ export default {
 	components: {
 		BrandInfo,
 		CanvasPage,
-		ShopGoods
+		ShopGoods,
+		StoreShopCart
 	},
 
 	data() {
@@ -141,7 +147,7 @@ export default {
 				query: {
 					ifNew: 1, // 是否新品
 					type: 1, // 价格排序条件
-					volume: 1, // 销量排序条件
+					volume: 0, // 销量排序条件
 					page: 1, // 当前页
 					pageSize: 20 // 每页记录数
 				},

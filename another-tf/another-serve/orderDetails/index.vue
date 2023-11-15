@@ -1,15 +1,14 @@
-<!-- 订单详情 -->
 <template>
-	<view>
+	<view class="order-details-container">
 		<JHeader title="订单详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view v-if="ifShow">
+		<view>
 			<view class="content" style="padding-bottom:200upx;">
 				<view class="order-details-status">
 					<!--  待付款 -->
 					<view v-if="dataList.state == 1" class="status-title-box">
 						<view class="l">
 							<text class="status">等待买家付款</text>
-							<view style="color: #FFFFFF; margin-top: 20rpx;">
+							<view style="display: flex;justify-content: center;align-items: center;color: #FFFFFF; margin-top: 20rpx;">
 								<text>剩</text>
 								<tui-countdown :size="24" :colon-size="24" colon-color="#ffffff" :time="remainingTime"></tui-countdown>
 								<text>自动关闭</text>
@@ -69,7 +68,7 @@
 					<view v-else-if="dataList.state == 6" class="status-title-box">
 						<view class="l">
 							<text class="status">待成团</text>
-							<view style="color: #FFFFFF; margin-top: 20rpx;">
+							<view style="display: flex;justify-content: center;align-items: center;color: #FFFFFF; margin-top: 20rpx;">
 								<text>剩余时间</text>
 								<tui-countdown :size="24" :colon-size="24" colon-color="#ffffff" :time="remainingTime"></tui-countdown>
 							</view>
@@ -114,7 +113,7 @@
 					<view class="order-list-box">
 						<view class="item">
 							<view class="order-list-top">
-								<view class="top-l" @click="goShop(dataList.shopId)">
+								<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${dataList.shopId}`)">
 									<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 10upx 0 0"></tui-icon>
 									<text class="shop-name">{{ dataList.shopName }}</text>
 									<tui-icon :size="24" color="#999999" name="arrowright" margin="0 0 0 15upx"></tui-icon>
@@ -135,7 +134,7 @@
 											<text class="product-name">{{ proItem.productName }}</text>
 											<view class="price-sku-box">
 												<view class="product-sku">
-													<view v-for="vItem in proItem.values" class="mar-left-20">
+													<view v-for="(vItem, vIndex) in proItem.values" :key="vIndex" class="mar-left-20">
 														<text>{{ vItem }}</text>
 													</view>
 												</view>
@@ -147,7 +146,6 @@
 												<!--				class="fuhao">￥</text>{{proItem.price}}</view> -->
 												<!--		&lt;!&ndash; <view class="product-price2">价格：<text class="fuhao">￥</text>{{proItem.price}}</view> &ndash;&gt; -->
 												<!--	</view> -->
-
 												<view
 													v-if="(dataList.state === 3 || dataList.state === 4) && proItem.afterState == 0 && !proItem.returnType"
 												>
@@ -180,7 +178,7 @@
 													</view>
 													<view
 														v-if="proItem.canApplyIntervention" class="item-applay-btn"
-														@click="applyPlatform(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
 													>
 														客服介入
 													</view>
@@ -212,7 +210,7 @@
 													</view>
 													<view
 														v-if="proItem.canApplyIntervention" class="item-applay-btn"
-														@click="applyPlatform(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
 													>
 														客服介入
 													</view>
@@ -303,12 +301,15 @@
 
 				<view v-if="dataList.state == 3 || dataList.state == 4">
 					<view class="order-details-information mt20">
-						<view class="order-title-box" @click="wuLiuTap">
+						<view class="order-title-box" @click="isShowWuLiu = !isShowWuLiu">
 							<view class="order-title padd-l">
 								<text class="line"></text>
 								<text>物流信息</text>
 							</view>
-							<tui-icon v-if="isShowWuLiu == true" :name="isShowWuLiu ? 'arrowup' : 'arrowdown'" :size="40" unit="upx" margin="30upx" color="#b7b7b7"></tui-icon>
+							<tui-icon
+								v-if="isShowWuLiu == true" :name="isShowWuLiu ? 'arrowup' : 'arrowdown'" :size="40" unit="upx"
+								margin="30upx" color="#b7b7b7"
+							></tui-icon>
 						</view>
 					</view>
 					<!-- 暂无物流 -->
@@ -337,7 +338,7 @@
 				</text>
 				<text
 					v-if="(dataList.state == 1) || ((dataList.state === 8) && (dataList.paymentState === 0))" class="btn btn-r"
-					@click="payOrder"
+					@click="showPayTypePopup = true"
 				>
 					立即付款
 				</text>
@@ -348,7 +349,7 @@
 					申请退款
 				</text>
 				<text v-if="dataList.state == 3" class="btn btn-r" @click="confirmReceiptTap">确认收货</text>
-				<text v-if="dataList.state == 4" class="btn" @click="applyTap">申请售后</text>
+				<text v-if="dataList.state == 4" class="btn" @click="handleApplyTap">申请售后</text>
 				<text
 					v-if="dataList.state == 6" class="btn btn-r"
 					@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
@@ -358,89 +359,29 @@
 				<text v-if="dataList.state == 5 && dataList.collageId == 0" class="btn-l" @click="delOrder">删除订单</text>
 				<text
 					v-if="dataList.state == 5 && dataList.collageId == 0" class="btn btn-r"
-					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, dataList)"
+					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 				>
 					再次购买
 				</text>
 				<text
 					v-if="dataList.state == 5 && dataList.collageId != 0" class="btn"
-					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, dataList)"
+					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
 				>
 					再次开团
 				</text>
 			</view>
-			<u-popup
-				v-model="showPayTypePopup" class="pay-type-popup" mode="bottom" border-radius="14"
-				close-icon-pos="top-right" close-icon-size="20"
-			>
-				<view class="pay-type-item">
-					<radio-group v-model="paymentMode" @change="payTypeChange">
-						<view class="pay-type-radio">
-							<view class="pay-type-img">
-								<img class="pay-type-img-inner" src="../../../static/images/user/pay/alipay.png" />
-							</view>
-							<label class="pay-type-label">支付宝支付</label>
-							<radio class="pay-type-radio-item" style="transform:scale(0.7)" :checked="paymentMode == 2" value="2" />
-						</view>
-						<view class="pay-type-radio">
-							<view class="pay-type-img">
-								<img class="pay-type-img-inner" src="../../../static/images/user/pay/huabei.png" />
-							</view>
-							<label class="pay-type-label">花呗分期</label>
-							<radio
-								class="pay-type-radio-item" style="transform:scale(0.7)" :disabled="totalPrice < 0.03"
-								:checked="paymentMode == 3" value="3"
-							/>
-						</view>
-					</radio-group>
-					<view class="huabei-detail">
-						<radio-group v-model="huabeiPeriod" @change="huabeiPeriodChange">
-							<view class="period-radio">
-								<view class="period-amount">
-									<label class="period-each">￥ {{ fenqiFeeList[0] | clip2Decimal }}x3期</label>
-									<label class="period-each-charge">手续费￥{{ chargeFeeList[0] | clip2Decimal }}/期</label>
-								</view>
-								<radio
-									class="period-type-radio-item" style="transform:scale(0.7)" :disabled="fenqiDisabledList[0]"
-									:checked="huabeiPeriod == 3" value="3"
-								/>
-							</view>
-							<view class="period-radio">
-								<view class="period-amount">
-									<label class="period-each">￥ {{ fenqiFeeList[1] | clip2Decimal }}x6期</label>
-									<label class="period-each-charge">手续费￥{{ chargeFeeList[1] | clip2Decimal }}/期</label>
-								</view>
-								<radio
-									class="period-type-radio-item" style="transform:scale(0.7)" :disabled="fenqiDisabledList[1]"
-									:checked="huabeiPeriod == 6" value="6"
-								/>
-							</view>
-							<view class="period-radio">
-								<view class="period-amount">
-									<label class="period-each">￥ {{ fenqiFeeList[2] | clip2Decimal }}x12期</label>
-									<label class="period-each-charge">手续费￥{{ chargeFeeList[2] | clip2Decimal }}/期</label>
-								</view>
-								<radio
-									class="period-type-radio-item" style="transform:scale(0.7)" :disabled="fenqiDisabledList[2]"
-									:checked="huabeiPeriod == 12" value="12"
-								/>
-							</view>
-						</radio-group>
-					</view>
+			<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
+				<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+					<CashierList :total-price="dataList.orderPrice" show @change="(e) => payInfo = { ...payInfo, ...e }" />
+					<tui-button
+						type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+						shape="circle"
+						@click="handleShopGoPay"
+					>
+						确认支付
+					</tui-button>
 				</view>
-				<view class="paytype-confirm">
-					<view v-if="totalPrice >= 0.03 && paymentMode == 3" class="fenqi-total-amount">
-						<label class="fenqi-all">分期总额 ￥{{ totalPrice | clip2Decimal }}</label>
-						<label class="charge-fee-all">手续费 ￥{{ chargeFee | clip2Decimal }}</label>
-					</view>
-					<view v-if="paymentMode == 2" class="fenqi-total-amount">
-						<label class="order-amount">订单总额 ￥{{ totalPrice | clip2Decimal }}</label>
-					</view>
-					<view class="fenqi-confirm">
-						<text class="btn active" @click="continuePay">确认</text>
-					</view>
-				</view>
-			</u-popup>
+			</tui-bottom-popup>
 		</view>
 	</view>
 </template>
@@ -449,7 +390,6 @@
 import { handleDoPay } from '../../../utils/payUtil'
 import {
 	getOrderDetailApi,
-	getOrderHuabeiConfigApi,
 	getOrderVerificationHxCodeApi,
 	getCustomerServiceAppletKfApi,
 	getProductDetailsByIdApi,
@@ -459,17 +399,11 @@ import {
 	getOrderRefundApi,
 	updateOrderConfirmApi
 } from '../../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
+import { A_TF_MAIN } from '../../../config'
 
 export default {
 	name: 'OrderDetails',
-	filters: {
-		clip2Decimal(value) {
-			if (value === undefined || value === null) {
-				return '0.00'
-			}
-			return (parseInt(value * 100) / 100).toFixed(2)
-		}
-	},
 	data() {
 		return {
 			canApplyIntervention: false,
@@ -484,81 +418,60 @@ export default {
 				discountPrice: 0
 			},
 			orderId: 0,
-			active: 0,
 			steps: [],
 			isShowWuLiu: false,
-			hou: '00',
-			min: '00',
-			sec: '00',
 			orderRefundList: [],
 			item: {},
 			isIphone: false,
 			noticeId: 0,
-			paymentMode: 2,
-			showPayTypePopup: false,
-			chargeFee: 0,
-			totalPrice: 0,
-			huabeiPeriod: -1,
-			fenqiFeeList: [0, 0, 0],
-			chargeFeeList: [0, 0, 0],
-			fenqiDisabledList: [true, true, true],
-			huabeiChargeType: 1,
-			huabeiFeeRateList: [0, 0, 0],
-			alipayInfo: {},
-			isAllSelect: 1, // 是否为拆单售后
 
 			// 客服
 			serviceURL: '',
 			corpId: '',
-			isLoading: false,
-			ifShow: false,
-			remainingTime: null // 倒计时剩余时间
+			remainingTime: null, // 倒计时剩余时间
+
+			// 支付
+			showPayTypePopup: false,
+			payInfo: {}
 		}
 	},
 	onLoad(options) {
 		this.isIphone = getApp().globalData.isIphone
-		if (options.detail) {
-			options = this.$getJumpParam(options)
-		}
+		if (options.detail) options = this.$getJumpParam(options)
 		this.orderId = parseInt(options.orderId)
 		this.item = options
 		if (options.noticeId) {
 			this.noticeId = options.noticeId
 		}
 		this.getDataList(this.orderId)
-		this.Orderrefund()
-		this.getHuabeiFeeRateList()
+		getOrderRefundApi({
+			orderId: this.orderId
+		}).then((res) => {
+			this.orderRefundList = res.data
+		})
 		getOrderVerificationHxCodeApi({
-			url: `https://nsh5.jfcmei.com/#/pages/jump/jump?orderId=${this.orderId}&type=verification&code=${this.orderId}-`
+			url: `${A_TF_MAIN}/#/pages/jump/jump?orderId=${this.orderId}&type=verification&code=${this.orderId}-`
 		}).then((res) => {
 			// if (res.errno === -1) return
 			this.verificationCode = res.data.code
 			this.verificationCodeUrl = res.data.hxCode
 			this.verificationStatus = res.data.status
 		})
-			.catch(() => {
-				uni.hideToast()
-			})
 	},
 	methods: {
 		// 去商品详情
 		againCollage(productId, shopId, skuId, isStartAGroup, item) {
 			if (isStartAGroup) {
-				uni.navigateTo({
-					url: '../goodsModule/goodsDetails?productId=' + productId + '&shopId=' + shopId +
-						'&skuId=' +
-						skuId
-				})
+				this.go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}`)
 			} else {
-				// 跳转详情
-				this.buyAgain(item)
+				this.handleGoBuyAgain(item) // 跳转详情
 			}
 		},
-		async buyAgain(item) {
+		async handleGoBuyAgain(item) {
 			// 循环sku，获取商品详情
 			const postAjax = []
-			item.skus.forEach((e) => {
-				postAjax.push(this.queryProductDetail(e))
+			item.skus.forEach((skuItem) => {
+				postAjax.push(this.queryProductDetail(skuItem))
 			})
 			// 并发执行
 			const skuDetailList = await Promise.all(postAjax)
@@ -567,116 +480,111 @@ export default {
 			skuDetailList.forEach((skuDetail) => {
 				for (const skuDetailSkuMapKey in skuDetail.map) {
 					// 判断此SKU是否存在于传进来的item
-					const findSku = item.skus.find((findItem) => findItem.skuId === skuDetail.map[
-						skuDetailSkuMapKey].skuId)
+					const findSku = item.skus.find((findItem) => findItem.skuId === skuDetail.map[skuDetailSkuMapKey].skuId)
 					if (findSku) {
-						const skuInfo = skuDetail.map[skuDetailSkuMapKey]
-						if (findSku.number > skuInfo.stockNumber) {
+						if (findSku.number > skuDetail.map[skuDetailSkuMapKey].stockNumber) {
 							canNotBuyNameList.push(findSku.productName)
 						}
 					}
 				}
 			})
 			// 如果有库存不足
-			if (canNotBuyNameList.length > 0) {
-				uni.showToast({
-					icon: 'none',
-					title: canNotBuyNameList.join(',') + ' 库存不足'
-				})
-				return
-			}
+			if (canNotBuyNameList.length > 0) return this.$showToast(canNotBuyNameList.join(',') + ' 库存不足')
 			// 制造数据
-			const buyInfo = [ {
+			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
 				ifWork: item.ifWork,
 				shopId: item.shopId,
 				shopName: item.shopName,
 				shopDiscountId: item.shopDiscountId,
 				shopSeckillId: item.shopSeckillId,
 				skus: item.skus
-			} ]
-			uni.setStorageSync('skuItemDTOList', buyInfo)
-			uni.navigateTo({
-				url: '../orderModule/orderConfirm?type=1'
-			})
+			} ])
+			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
 		},
-
 		// 获取商品详情
-		async queryProductDetail(item) {
+		async queryProductDetail(skuItem) {
 			uni.showLoading({
 				title: '加载中...',
 				mask: true
 			})
-			const postData = {
-				shopId: item.shopId,
-				productId: item.productId,
-				skuId: item.skuId,
+			const res = await getProductDetailsByIdApi({
+				shopId: skuItem.shopId,
+				productId: skuItem.productId,
+				skuId: skuItem.skuId,
 				terminal: 1
-			}
-			const res = await getProductDetailsByIdApi(postData)
+			})
 			uni.hideLoading()
 			return res.data
 		},
+
 		goInviteSpll(collageId, orderId, productId, skuId, shopGroupWorkId) {
 			uni.navigateTo({
-				url: '../goodsModule/inviteSpell?collageId=' + collageId + '&orderId=' + orderId + '&type=1' +
+				url: '/another-tf/another-serve/inviteSpell/index?collageId=' + collageId + '&orderId=' + orderId + '&type=1' +
 					'&productId=' + productId + '&skuId=' + skuId + '&shopGroupWorkId=' + shopGroupWorkId
 			})
 		},
 		// 商品详情
 		goodsItemTap(productId, skuId) {
 			uni.navigateTo({
-				url: '../goodsModule/goodsDetails?shopId=' + this.dataList.shopId + '&productId=' + productId +
-					'&skuId=' + skuId
+				url: '/another-tf/another-serve/goodsDetails/index?shopId=' + this.dataList.shopId + '&productId=' + productId + '&skuId=' + skuId
 			})
 		},
 		getDataList(orderId) {
-			// uni.showLoading({
-			//   title: '加载中...',
-			// })
 			getOrderDetailApi({
 				orderId,
 				noticeId: this.noticeId
 			}).then((res) => {
-				// uni.hideLoading()
 				const data = res.data
-				this.dateformat(res.data.time)
+				this.remainingTime = Math.floor(res.data.time / 1000)
 				this.dataList = data
 				this.dataList.receivePhone = this.dataList.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
-				this.ifShow = true
 				this.getShippingTrace(this.dataList.express, this.dataList.deliverFormid)
-				if (this.dataList.state == 1 || this.dataList.state == 6) {
-					this.countDown()
-				}
+				if (this.dataList.state == 1 || this.dataList.state == 6) { }
 			})
-				.catch((res) => {
-					// uni.hideLoading()
-				})
-		},
-		wuLiuTap() {
-			this.isShowWuLiu = !this.isShowWuLiu
-		},
-		// 时分秒换算
-		dateformat(micro_second) {
-			// 总秒数
-			const second = Math.floor(micro_second / 1000)
-			this.remainingTime = second
 		},
 		// 物流信息
 		getShippingTrace(express, deliverFormid) {
-			getOrderDileveryShippingTraceApi({
-				express,
-				deliverFormid
-			}).then((res) => {
-				const traces = res.data
-				const len = traces.length
-				for (let i = 0; i < len; i++) {
-					const item = traces[i]
-					this.steps.push({
-						title: item.reason,
-						desc: item.time
-					})
+			getOrderDileveryShippingTraceApi({ express, deliverFormid })
+				.then((res) => {
+					const traces = res.data
+					const len = traces.length
+					for (let i = 0; i < len; i++) {
+						const item = traces[i]
+						this.steps.push({
+							title: item.reason,
+							desc: item.time
+						})
+					}
+					this.steps = this.steps.reverse()
+				})
+		},
+		// 取消订单
+		cancelOrder() {
+			uni.showModal({
+				title: '温馨提示',
+				content: '您确定要取消该订单吗？',
+				confirmText: '确定取消',
+				cancelText: '点错了',
+				success: (res) => {
+					if (res.confirm) {
+						uni.showLoading({
+							mask: true,
+							title: '取消中...'
+						})
+						cancelShopOrderApi({
+							orderId: this.orderId
+						}).then((result) => {
+							uni.hideLoading()
+							uni.showToast({
+								title: '取消成功'
+							})
+							this.getDataList(this.orderId)
+						})
+							.catch((e) => {
+								uni.hideLoading()
+							})
+					}
 				}
-				this.steps = this.steps.reverse()
 			})
 		},
 		// 删除订单
@@ -688,139 +596,59 @@ export default {
 				cancelText: '点错了',
 				success: (res) => {
 					if (res.confirm) {
-						this.doDel()
+						uni.showLoading({
+							mask: true,
+							title: '删除中...'
+						})
+						deleteShopOrderApi({
+							orderId: this.orderId
+						}).then((result) => {
+							uni.hideLoading()
+							uni.showToast({
+								title: '删除成功'
+							})
+							setTimeout(() => {
+								uni.switchTab({
+									url: '/pages/order/order'
+								})
+							}, 1500)
+						})
+							.catch((e) => {
+								uni.hideLoading()
+							})
 					}
 				}
 			})
 		},
-		doDel() {
-			uni.showLoading({
-				mask: true,
-				title: '删除中...'
-			})
-			deleteShopOrderApi({
-				orderId: this.orderId
-			}).then((res) => {
-				uni.hideLoading()
-				uni.showToast({
-					title: '删除成功'
-				})
-				setTimeout(() => {
-					uni.navigateTo({
-						url: 'index?type=0'
-					})
-				}, 1500)
-			})
-				.catch((res) => {
-					uni.hideLoading()
-				})
-		},
-		// 去店铺首页
-		goShop(id) {
-			uni.navigateTo({
-				url: '../store/index?storeId=' + id
-			})
-		},
+
 		// 退款
 		applayItemTap(proItem) {
-			if (this.dataList.skus.length > 1) {
-				this.isAllSelect = 0
-			}
-			uni.setStorageSync('applyItem', proItem)
+			uni.setStorageSync(T_REFUND_APPLY_ITEM, proItem)
 			uni.navigateTo({
-				url: 'afterSaleApplyRefund?orderId=' + this.orderId + '&isAllSelect=' + this.isAllSelect
+				url: '/another-tf/another-serve/afterSaleApplyRefund/index?orderId=' + this.orderId + '&isAllSelect=' + (this.dataList.skus.length > 1) ? '0' : '1' // isAllSelect 是否为拆单售后
 			})
 		},
 		// 去退款详情
 		goApplyTap(code, type) {
 			if (type == 1) {
 				uni.navigateTo({
-					url: 'refundDetails?returnCode=' + code
+					url: '/another-tf/another-serve/refundDetails/index?returnCode=' + code
 				})
 			} else if (type == 2) {
 				uni.navigateTo({
-					url: 'returnDetails?returnCode=' + code
+					url: '/another-tf/another-serve/returnDetails/index?returnCode=' + code
 				})
 			}
 		},
-		applyPlatform(code, type) {
-			// uni.navigateTo({
-			//   url: `/pages/userCenter/afterSale/platformJoin/index?returnCode=${code}&returnType=${type}`,
-			// })
-		},
 
-		// 取消订单
-		cancelOrder() {
-			uni.showModal({
-				title: '温馨提示',
-				content: '您确定要取消该订单吗？',
-				confirmText: '确定取消',
-				cancelText: '点错了',
-				success: (res) => {
-					if (res.confirm) {
-						this.doCancel()
-					}
-				}
-			})
-		},
-		doCancel() {
-			uni.showLoading({
-				mask: true,
-				title: '取消中...'
-			})
-			cancelShopOrderApi({
-				orderId: this.orderId
-			}).then((res) => {
-				uni.hideLoading()
-				uni.showToast({
-					title: '取消成功'
-				})
-				this.getDataList(this.orderId)
-			})
-				.catch((res) => {
-					uni.hideLoading()
-				})
-		},
-		async payOrder() {
-			// #ifdef MP-ALIPAY
-			this.showPayTypePopup = true
-			this.totalPrice = this.dataList.price
-			// #endif
-			const submitResult = {
-				collageId: this.dataList.collageId,
-				money: this.dataList.orderPrice,
-				orderId: this.dataList.orderId,
-				type: 2
-			}
-			await handleDoPay.call(this, submitResult)
-		},
-
-		// 退款列表
-		Orderrefund() {
-			getOrderRefundApi({
-				orderId: this.orderId
-			}).then((res) => {
-				this.orderRefundList = res.data
-			})
-		},
 		// 申请退款
 		applyMoneyAllTap() {
-			this.dataList.skus.map((item) => {
-				if (item.afterState) {
-					this.isAllSelect = 0
-				}
-			})
-			if (this.orderRefundList.length === 0) {
-				uni.showToast({
-					title: '您所有商品已经申请退款，请勿重复申请',
-					icon: 'none'
-				})
-				return
-			}
-			uni.setStorageSync('afterSaleApplyRefund', this.orderRefundList)
+			let isAllSelect = 1
+			if (this.dataList.skus.some((item) => item.afterState)) isAllSelect = 0
+			if (this.orderRefundList.length === 0) return this.$showToast('您所有商品已经申请退款，请勿重复申请')
+			uni.setStorageSync(T_AFTER_SALE_APPLY_REFUND, this.orderRefundList)
 			uni.navigateTo({
-				url: `afterSaleApplyRefund?orderId=${this.orderId}&sellPriceitem=${this.dataList.price}
-					      &isAllSelect=${this.isAllSelect}`
+				url: `/another-tf/another-serve/afterSaleApplyRefund/index?orderId=${this.orderId}&sellPriceitem=${this.dataList.price}&isAllSelect=${isAllSelect}`
 			})
 		},
 		confirmReceiptTap() {
@@ -831,45 +659,30 @@ export default {
 				cancelText: '点错了',
 				success: (res) => {
 					if (res.confirm) {
-						this.confirmReceiveGooods()
+						uni.showLoading({
+							title: '确认中...'
+						})
+						updateOrderConfirmApi({
+							orderId: this.dataList.orderId
+						}).then((result) => {
+							uni.hideLoading()
+							uni.showToast({
+								title: '确认成功'
+							})
+							this.getDataList(this.orderId)
+						})
+							.catch((e) => {
+								uni.hideLoading()
+							})
 					}
 				}
 			})
 		},
-		// 确认收货
-		confirmReceiveGooods() {
-			uni.showLoading({
-				title: '确认中...'
-			})
-			updateOrderConfirmApi({
-				orderId: this.dataList.orderId
-			}).then((res) => {
-				uni.hideLoading()
-				uni.showToast({
-					title: '确认成功'
-				})
-				uni.navigateTo({
-					url: 'index?type=4'
-				})
-			})
-				.catch((res) => {
-					uni.hideLoading()
-					this.$hideLoading()
-				})
-		},
 		// 申请售后
-		applyTap() {
-			if (this.orderRefundList.length === 0) {
-				uni.showToast({
-					title: '您所有商品已经申请退款，请勿重复申请',
-					icon: 'none'
-				})
-				return
-			}
-			uni.setStorageSync('afterSaleApplyRefund', this.orderRefundList)
-			const productData = this.item
+		handleApplyTap() {
+			if (this.orderRefundList.length === 0) return this.$showToast('您所有商品已经申请退款，请勿重复申请')
 			let isAllSelect = 1
-			const newArr = JSON.parse(JSON.stringify(productData))
+			const newArr = JSON.parse(JSON.stringify(this.item))
 			newArr.skus.map((item, index) => {
 				if (item.afterState) {
 					newArr.skus.splice(index, 1)
@@ -877,62 +690,20 @@ export default {
 				}
 			})
 			uni.navigateTo({
-				url: 'afterSaleApply?item=' + JSON.stringify(newArr) + '&isAllSelect=' + isAllSelect
+				url: '/another-tf/another-serve/afterSaleApply/index?item=' + JSON.stringify(newArr) + '&isAllSelect=' + isAllSelect
 			})
 		},
-		// 支付类型变更
-		payTypeChange(event) {
-			this.paymentMode = event.target.value
-			if (this.paymentMode == 2) {
-				this.huabeiPeriod = -1
-				this.fenqiDisabledList = [true, true, true]
-			} else {
-				this.huabeiPeriod = 3
-			}
-			this.recalcHuabei()
+
+		async handleShopGoPay() {
+			await handleDoPay({
+				collageId: this.dataList.collageId,
+				money: this.dataList.orderPrice,
+				orderId: this.dataList.orderId,
+				type: 2,
+				...this.payInfo
+			}, 1)
 		},
-		// 重新计算花呗分期的手续费
-		recalcHuabei() {
-			if (this.paymentMode == 3) {
-				this.fenqiFeeList[0] = this.totalPrice * (1 + this.huabeiFeeRateList[0] / 100) / 3
-				this.fenqiFeeList[1] = this.totalPrice * (1 + this.huabeiFeeRateList[1] / 100) / 6
-				this.fenqiFeeList[2] = this.totalPrice * (1 + this.huabeiFeeRateList[2] / 100) / 12
-				this.chargeFeeList[0] = this.totalPrice * (this.huabeiFeeRateList[0] / 100) / 3
-				this.chargeFeeList[1] = this.totalPrice * (this.huabeiFeeRateList[1] / 100) / 6
-				this.chargeFeeList[2] = this.totalPrice * (this.huabeiFeeRateList[2] / 100) / 12
-				var index = 0
-				if (this.huabeiPeriod == 6) {
-					index = 1
-				} else if (this.huabeiPeriod == 12) {
-					index = 2
-				}
-				this.chargeFee = (this.totalPrice * (this.huabeiFeeRateList[index] / 100))
-					.toFixed(2)
-				if (this.totalPrice >= 0.03) {
-					this.fenqiDisabledList[0] = false
-				}
-				if (this.totalPrice >= 0.06) {
-					this.fenqiDisabledList[1] = false
-				}
-				if (this.totalPrice >= 0.12) {
-					this.fenqiDisabledList[2] = false
-				}
-			}
-		},
-		// 花呗分期数变更
-		huabeiPeriodChange(event) {
-			this.huabeiPeriod = event.target.value
-			this.recalcHuabei()
-		},
-		// 查询花呗分期配置
-		getHuabeiFeeRateList() {
-			getOrderHuabeiConfigApi({}).then((res) => {
-				this.huabeiChargeType = res.data.huabeiChargeType
-				if (this.huabeiChargeType == 2) {
-					this.huabeiFeeRateList = res.data.huabeiFeeRateList
-				}
-			})
-		},
+
 		async handleFlyToService() { // dataList.shopId
 			let corpId = null
 			let serviceURL = null
@@ -990,537 +761,421 @@ export default {
 </script>
 
 <style lang="less" scoped>
-page {
+.order-details-container {
+	min-height: 100vh;
 	background: #f7f7f7;
-}
 
-.logistics {
-	padding: 20upx 20upx;
-}
+	.content {
+		padding: 0 0 160upx 0;
 
-.content {
-	padding: 0 0 160upx 0;
-}
+		.order-details-status {
+			width: 750upx;
+			height: 250upx;
+			background: #333333;
 
-.order-details-status {
-	width: 750upx;
-	height: 250upx;
-	background: #333333;
-}
+			.status-title-box {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				padding: 40upx 30upx 0;
+				box-sizing: border-box;
+				text-align: center;
 
-.status-title-box {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding: 40upx 30upx 0;
-	box-sizing: border-box;
-	text-align: center;
-}
+				.l {
+					display: flex;
+					flex-direction: column;
+				}
+			}
 
-.status-title-box2 {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 40upx 30upx 0;
-	box-sizing: border-box;
-}
+			.status-title-box2 {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 40upx 30upx 0;
+				box-sizing: border-box;
+			}
 
-.status-title-box .l {
-	display: flex;
-	flex-direction: column;
-}
+			.status {
+				font-size: 30upx;
+				color: #fff;
+			}
 
-.status-title-box .l .status,
-.status-title-box2 .status {
-	font-size: 30upx;
-	color: #fff;
-}
+			.label {
+				font-size: 24upx;
+				color: #fff;
+				margin-top: 14upx;
+			}
 
-.status-title-box .l .label,
-.status-title-box2 .label {
-	font-size: 24upx;
-	color: #fff;
-	margin-top: 14upx;
-}
-
-.status-title-box .r {
-	width: 80upx;
-	height: 80upx;
-}
-
-.order-details-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-	margin-top: -80upx;
-}
-
-.address-box {
-	margin-top: 20upx;
-	background: #fff;
-	width: 100%;
-	padding: 30upx;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.address-box .address-r {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	font-size: 28upx;
-	color: #333;
-}
-
-.address-name-box {
-	font-size: 30upx;
-	color: #333;
-}
-
-.phone {
-	font-size: 24upx;
-	color: #999;
-	margin-left: 20upx;
-}
-
-.address-info {
-	font-size: 28upx;
-	color: #333;
-	margin-top: 15upx;
-}
-
-.order-list-box {
-	margin-top: 20upx;
-
-	.toService {
-		line-height: 40rpx;
-		padding: 0 8rpx;
-		border: 1rpx solid #FAF6ED;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-
-		text {
-			line-height: 40rpx;
 		}
-	}
-}
 
-.order-list-box .item {
-	margin-bottom: 20upx;
-	background: #fff;
-}
+		.order-details-info-box {
+			padding: 0 30upx;
+			box-sizing: border-box;
+			margin-top: -80upx;
 
-.order-list-top {
-	height: 96upx;
-	padding: 0 30upx;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	border-bottom: 1px solid #eee;
-}
+			.address-box {
+				margin-top: 20upx;
+				background: #fff;
+				width: 100%;
+				padding: 30upx;
+				box-sizing: border-box;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
 
-.top-l {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
+				.address-r {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					font-size: 28upx;
+					color: #333;
 
-.shop-name {
-	font-size: 30upx;
-	color: #333;
-	font-weight: bold;
-}
+					.address-name-box {
+						font-size: 30upx;
+						color: #333;
 
-.order-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-}
+						.phone {
+							font-size: 24upx;
+							color: #999;
+							margin-left: 20upx;
+						}
+					}
 
-.order-info {
-	border-bottom: 1px solid #eee;
-}
+					.address-info {
+						font-size: 28upx;
+						color: #333;
+						margin-top: 15upx;
+					}
+				}
+			}
 
-.order-info-item {
-	display: flex;
-	flex-direction: row;
-	padding: 20upx 0;
-}
+			.order-list-box {
+				margin-top: 20upx;
 
-.product-img {
-	width: 180upx;
-	height: 180upx;
-	border-radius: 10upx;
-	margin-right: 30upx;
-}
+				.item {
+					margin-bottom: 20upx;
+					background: #fff;
 
-.info-box {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
+					.order-list-top {
+						height: 96upx;
+						padding: 0 30upx;
+						box-sizing: border-box;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: space-between;
+						border-bottom: 1px solid #eee;
 
-.product-name {
-	font-size: 26upx;
-	color: #333;
-	height: 68upx;
-	line-height: 34upx;
-	display: -webkit-box;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	word-break: break-all;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
+						.top-l {
+							display: flex;
+							flex-direction: row;
+							align-items: center;
 
-.price-sku-box {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-}
+							.shop-name {
+								font-size: 30upx;
+								color: #333;
+								font-weight: bold;
+							}
+						}
 
-.product-sku {
-	font-size: 24upx;
-	color: #999;
-	display: inline-block;
-	margin-left: -20upx;
-	display: flex;
-	flex-direction: row;
-}
+						.toService {
+							line-height: 40rpx;
+							padding: 0 8rpx;
+							border: 1rpx solid #FAF6ED;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
 
-.price-box {
-	display: flex;
-	flex-direction: column;
-}
+							text {
+								line-height: 40rpx;
+							}
+						}
+					}
 
-.product-price1 {
-	font-size: 24upx;
-	color: #333;
-	font-weight: 400;
-}
+					.order-info-box {
+						padding: 0 30upx;
+						box-sizing: border-box;
 
-.product-price2 {
-	font-size: 24upx;
-	color: #999;
-	text-decoration: line-through;
-	font-weight: 400;
-}
+						.order-info {
+							border-bottom: 1px solid #eee;
 
-.product-price .fuhao {
-	font-size: 28upx;
-}
+							.order-info-item {
+								display: flex;
+								flex-direction: row;
+								padding: 20upx 0;
 
-.item-applay-btn {
-	height: 50upx;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding: 0 30upx;
-	background: rgba(255, 255, 255, 1);
-	border: 1px solid rgba(187, 187, 187, 1);
-	border-radius: 25upx;
-	font-size: 24upx;
-	font-weight: 400;
-	color: rgba(51, 51, 51, 1);
-}
+								.product-img {
+									width: 180upx;
+									height: 180upx;
+									border-radius: 10upx;
+									margin-right: 30upx;
+								}
 
-.product-num {
-	font-size: 28upx;
-	color: #999;
-	display: inline-block;
-}
+								.info-box {
+									flex: 1;
+									display: flex;
+									flex-direction: column;
+									justify-content: space-between;
 
-.delivery-way-box {
-	display: flex;
-	flex-direction: column;
-	margin: 30upx 0 10upx;
-}
+									.product-name {
+										font-size: 26upx;
+										color: #333;
+										height: 68upx;
+										line-height: 34upx;
+										display: -webkit-box;
+										overflow: hidden;
+										text-overflow: ellipsis;
+										word-break: break-all;
+										-webkit-box-orient: vertical;
+										-webkit-line-clamp: 2;
+									}
 
-.delivery-way-box .item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 26upx;
-	color: #333;
-}
+									.price-sku-box {
+										width: 100%;
+										display: flex;
+										flex-direction: row;
+										align-items: center;
+										justify-content: space-between;
 
-.delivery-way-box .item .way {
-	color: #999;
-}
+										.product-sku {
+											font-size: 24upx;
+											color: #999;
+											display: inline-block;
+											margin-left: -20upx;
+											display: flex;
+											flex-direction: row;
+										}
 
-.order-total-box {
-	padding: 30upx 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 26upx;
-	color: #333;
-}
+										.product-num {
+											font-size: 28upx;
+											color: #999;
+											display: inline-block;
+										}
 
-.order-total-box .way-color {
-	color: #333333;
-	font-size: 32rpx;
-}
+										.price-box {
+											display: flex;
+											flex-direction: column;
 
-.order-details-information {
-	background: #fff;
-}
+											.product-price1 {
+												font-size: 24upx;
+												color: #333;
+												font-weight: 400;
+											}
 
-.order-details-information.padd {
-	padding: 30upx;
-	box-sizing: border-box;
-}
+											.product-price2 {
+												font-size: 24upx;
+												color: #999;
+												text-decoration: line-through;
+												font-weight: 400;
+											}
 
-.order-details-information .order-title {
-	font-size: 30upx;
-	color: #333;
-	font-weight: 500;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
+											.fuhao {
+												font-size: 28upx;
+											}
+										}
 
-.order-details-information .info-box {
-	margin-top: 30upx;
-}
+										.item-applay-btn {
+											height: 50upx;
+											display: flex;
+											flex-direction: row;
+											align-items: center;
+											justify-content: center;
+											padding: 0 30upx;
+											background: rgba(255, 255, 255, 1);
+											border: 1px solid rgba(187, 187, 187, 1);
+											border-radius: 25upx;
+											font-size: 24upx;
+											font-weight: 400;
+											color: rgba(51, 51, 51, 1);
+										}
 
-.order-details-information .info-box .item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 24upx;
-	color: #666;
-	margin-bottom: 20upx;
-}
+										.evaluate {
+											height: 56upx;
+											border-radius: 28upx;
+											text-align: center;
+											line-height: 56upx;
+											font-size: 26upx;
+											padding: 0 30upx;
+											border: 1px solid #C5AA7B;
+											color: #C5AA7B;
+										}
 
-.order-details-information .info-box .item .copy-color {
-	font-size: 24upx;
-	color: #C5AA7B;
-}
+										.evaluate2 {
+											height: 56upx;
+											border-radius: 28upx;
+											text-align: center;
+											line-height: 56upx;
+											font-size: 26upx;
+											padding: 0 30upx;
+											border: 1px solid #BBBBBB;
+											color: #333;
+										}
 
-.order-details-btn {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	min-height: 160upx;
-	background: #fff;
-	box-shadow: 0px 0px 10px 0px rgba(51, 51, 51, 0.1);
-	box-sizing: border-box;
-	display: flex;
-	padding: 0 30upx;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	z-index: 10;
-}
+									}
+								}
+							}
 
-.order-details-btn .btn {
-	width: 100%;
-	height: 100upx;
-	background: #333333;
-	font-size: 28upx;
-	color: #FFEBC4;
-	text-align: center;
-	line-height: 100upx;
-	font-weight: 500upx;
-}
+							.delivery-way-box {
+								display: flex;
+								flex-direction: column;
+								margin: 30upx 0 10upx;
 
-.order-details-btn .btn-l {
-	width: 50%;
-	height: 100upx;
-	border: 2rpx solid #333333;
-	font-size: 28upx;
-	color: #333;
-	text-align: center;
-	line-height: 100upx;
-	box-sizing: border-box;
-	margin-right: 10rpx;
-}
+								.item {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+									justify-content: space-between;
+									font-size: 26upx;
+									color: #333;
 
-.order-details-btn .btn-r {
-	width: 50%;
-	margin-left: 10rpx;
-}
+									.way {
+										color: #999;
+									}
+								}
 
-.mt20 {
-	margin-top: 20upx;
-}
+							}
 
-.order-title-box {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-}
+						}
 
-.order-details-information .order-title-box .order-title.padd-l {
-	padding-left: 30upx;
-}
+						.order-total-box {
+							padding: 30upx 0;
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							justify-content: space-between;
+							font-size: 26upx;
+							color: #333;
 
-.evaluate {
-	height: 56upx;
-	border-radius: 28upx;
-	text-align: center;
-	line-height: 56upx;
-	font-size: 26upx;
-	padding: 0 30upx;
-	border: 1px solid #C5AA7B;
-	color: #C5AA7B;
-}
+							.way-color {
+								color: #333333;
+								font-size: 32rpx;
+							}
+						}
 
-.evaluate2 {
-	height: 56upx;
-	border-radius: 28upx;
-	text-align: center;
-	line-height: 56upx;
-	font-size: 26upx;
-	padding: 0 30upx;
-	border: 1px solid #BBBBBB;
-	color: #333;
-}
+					}
+				}
 
-.emptyOrder-box {
-	padding: 70upx 0;
+			}
 
-	.emptyOrder-img {
-		width: 200upx;
-		height: 200upx;
-	}
-}
+		}
 
-.pay-type-item {
-	.pay-type-radio {
-		background-color: white;
-		border-bottom: 1upx solid #EDEDED;
-		margin-bottom: 20upx;
-		padding: 24upx 20upx 24upx 20upx;
+		.order-details-information {
+			background: #fff;
 
-		.pay-type-img {
-			display: inline-block;
+			&.padd {
+				padding: 30upx;
+				box-sizing: border-box;
+			}
 
-			.pay-type-img-inner {
-				width: 50upx;
-				height: 50upx;
-				vertical-align: middle;
+			&.mt20 {
+				margin-top: 20upx;
+			}
+
+			.order-title {
+				font-size: 30upx;
+				color: #333;
+				font-weight: 500;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+
+			.info-box {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				margin-top: 30upx;
+
+				.item {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: space-between;
+					font-size: 24upx;
+					color: #666;
+					margin-bottom: 20upx;
+
+					.copy-color {
+						font-size: 24upx;
+						color: #C5AA7B;
+					}
+				}
+			}
+
+			.order-title-box {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+
+				.order-title {
+					&.padd-l {
+						padding-left: 30upx;
+					}
+				}
 			}
 		}
 
-		.pay-type-label {
-			vertical-align: middle;
-			margin-left: 30upx;
+		.logistics {
+			padding: 20upx 20upx;
 		}
 
-		.pay-type-radio-item {
-			float: right;
-			margin-right: 20upx;
-			width: 50upx;
-			height: 50upx;
+		.emptyOrder-box {
+			padding: 70upx 0;
+
+			.emptyOrder-img {
+				width: 200upx;
+				height: 200upx;
+			}
 		}
+
 	}
 
-	.huabei-detail {
-		margin-top: 20upx;
-
-		.fenqi-wenzi {
-			display: inline-block;
-			margin-left: 64upx;
-		}
-
-		.fenqi-amount {
-			display: block;
-			margin-left: 64upx;
-			margin-top: 14upx;
-			color: #BABBBC;
-		}
-
-		.fenqi-charge-fee {
-			float: right;
-			margin-right: 68upx;
-			color: #BABBBC;
-		}
-
-		.fenqi-modal {
-			width: 40upx;
-			height: 40upx;
-			margin-left: 20upx;
-			float: right;
-			position: relative;
-			top: -80upx;
-		}
-	}
-}
-
-.paytype-confirm {
-	height: 120upx;
-	padding: 0upx 108upx 0upx 32upx;
-
-	.fenqi-all {
-		display: inline-block;
+	.order-details-btn {
+		position: fixed;
+		bottom: 0;
+		left: 0;
 		width: 100%;
-	}
-
-	.fenqi-total-amount {
-		width: 65%;
-		float: left;
-	}
-
-	.fenqi-confirm {
-		float: right;
-		width: 160upx;
-		padding: 0upx 20upx;
+		min-height: 160upx;
+		background: #fff;
+		box-shadow: 0px 0px 10px 0px rgba(51, 51, 51, 0.1);
+		box-sizing: border-box;
+		display: flex;
+		padding: 0 30upx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		z-index: 10;
 
 		.btn {
-			width: 216upx;
-			height: 80upx;
-			line-height: 80upx;
-			border-radius: 40upx;
+			width: 100%;
+			height: 100upx;
+			background: #333333;
 			font-size: 28upx;
+			color: #FFEBC4;
 			text-align: center;
-			background: linear-gradient(90deg, rgba(255, 162, 0, 1), rgba(255, 121, 17, 1));
-			color: #fff;
-			display: inline-block;
-			margin-right: 66upx;
+			line-height: 100upx;
+			font-weight: 500upx;
 		}
-	}
-}
 
-.period-radio {
-	margin: 30upx;
-	padding-right: 100upx;
-	width: 95%;
-	border-bottom: 1px solid #EFEFEF;
-
-	.period-amount {
-		display: inline-block;
-
-		.period-each-charge {
-			display: inline-block;
-			margin-top: 12upx;
-			margin-left: 6upx;
-			font-size: 26upx;
-			color: #b7b7b7;
-			margin-bottom: 13upx;
+		.btn-l {
+			width: 50%;
+			height: 100upx;
+			border: 2rpx solid #333333;
+			font-size: 28upx;
+			color: #333;
+			text-align: center;
+			line-height: 100upx;
+			box-sizing: border-box;
+			margin-right: 10rpx;
 		}
-	}
 
-	.period-each {
-		display: block;
-	}
-
-	.period-type-radio-item {
-		float: right;
+		.btn-r {
+			width: 50%;
+			margin-left: 10rpx;
+		}
 	}
 }
 </style>

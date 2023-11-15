@@ -323,12 +323,15 @@ export default {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
 
     .goods-item {
       font-size: 0;
       border-radius: 0 0 20upx 20upx;
       overflow: hidden;
       margin-bottom: 30upx;
+      height: 582upx;
+      background-color: #fff;
 
       .goods-info {
         width: 340upx;
