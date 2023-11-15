@@ -9,6 +9,9 @@
 		</view>
 		<tui-drawer mode="bottom" :visible="drawerVisible" @close="drawerVisible = false">
 			<view style="height: 55vh;padding: 20upx;overflow-y: auto;">
+				<view style="padding: 0 16upx;font-size: 34upx;color: #1e1e1e;text-align: right;">
+					代金券余额：<text style="font-weight: bold;">{{ voucherNum }}</text>
+				</view>
 				<view v-if="voucherList && voucherList.length">
 					<view style="text-align: right;">
 						<tui-radio-group :value="String(voucherSelected)" style="" @change="handleRadioChange">
@@ -21,7 +24,6 @@
 								</tui-list-cell>
 							</tui-label>
 						</tui-radio-group>
-
 						<!-- <text>不使用</text>
 							<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
 							</tui-radio> -->
@@ -62,6 +64,10 @@ export default {
 		voucherList: {
 			type: Array,
 			default: () => []
+		},
+		voucherNum: {
+			type: Number,
+			default: 0
 		}
 	},
 	data() {

@@ -51,15 +51,12 @@ const service = (base_url, hideLoading) => function (url, data = {}, method = 'p
 						icon: 'none',
 						mask: true
 					})
-					clearAllCache()
-					store.dispatch('auth/logout', true)
-
+					store.dispatch('auth/logout')
 					setTimeout(() => {
 						uni.navigateTo({
 							url: '/pages/login/login'
 						})
 					}, 1000)
-
 					return
 				}
 

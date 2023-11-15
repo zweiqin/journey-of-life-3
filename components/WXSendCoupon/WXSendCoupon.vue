@@ -18,7 +18,7 @@
 		<!-- #endif -->
 
 		<!-- 优惠券领取 -->
-		<tui-modal :show="confirmVisible" :custom="true" :fadein="true">
+		<tui-modal :show="confirmVisible" :custom="true" :fade-in="true">
 			<view class="Put-box1">
 				<view class="text-align fs34 fs-bold">
 					是否领取此优惠券

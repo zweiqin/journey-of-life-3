@@ -115,10 +115,9 @@
 				</view>
 			</view>
 			<!--      积分支付 -->
-			<view class="integralPayBox">
-				<!-- <view v-if="integralShow" class="integralPayBox"> -->
+			<view v-if="integralNum" class="integralPayBox">
 				<view class="integralBg">
-					<view class="integralTit fs26">可用{{ integralNum }}积分抵扣{{ integralPrice.toFixed(2) }}元</view>
+					<view class="integralTit fs26">可用 {{ integralNum }} 积分抵扣 {{ integralPrice.toFixed(2) }} 元</view>
 					<view class="maxIntegral">
 						<checkbox-group style="width: 50rpx" @change="changeIntegral">
 							<checkbox
@@ -131,7 +130,7 @@
 			</view>
 			<VoucherUse
 				v-if="settlement.userVoucherDeductLimit" ref="refVoucherUse" :voucher-list="settlement.voucherList"
-				@choose="handleChooseVoucher"
+				:voucher-num="settlement.userVoucherDeductLimit" @choose="handleChooseVoucher"
 			></VoucherUse>
 
 			<view class="cashier-box">
@@ -313,7 +312,6 @@ export default {
 			integralNum: 0,
 			integralRatio: 0, // 积分兑换比例
 			integralPrice: 0, // 总积分可减多少元
-			integralShow: false, // 显示隐藏积分
 			checkedPlatformCoupon: undefined,
 			oneClickSubmit: true, // 只提交订单一次
 			isRegionalScope: false, // 是否在商家配置范围内地址
@@ -737,7 +735,7 @@ export default {
 			const shopsLen = this.settlement.shops.length
 			const skuRemainMap = this.calcSkuRemainMap()
 			const skuCreditMap = this.settlement.skuCreditMap
-			if (skuCreditMap && this.integralRatio > 0) {
+			if (skuCreditMap && Object.values(skuCreditMap).length && this.integralRatio > 0) {
 				// 只有订单金额达到阈值，并且用户还有剩余的积分，才能进行积分抵扣
 				if (this.totalPrice >= this.settlement.orderCreditThreshold && this.settlement.userTotalCredit > 0 && this.settlement.creditDeductLimit > 0) { // orderCreditThreshold: 0, // 满多少元可以抵扣
 					for (let i = 0; i < shopsLen; i++) {
@@ -765,16 +763,14 @@ export default {
 				}
 				// 计算抵扣价格
 				this.integralNum = parseInt(this.integralNum)
-				if (this.integralNum !== 0) {
-					this.integralShow = true
+				if (this.integralNum) { // 有积分抵扣
 					this.integralPrice = this.integralNum * this.integralRatio
 					if (this.selectIntegral) {
 						this.totalPrice = this.totalPrice - this.integralPrice
 					}
-				} else {
-					this.integralShow = false
 				}
 			}
+			if (!this.integralNum && this.selectIntegral) this.selectIntegral = false // 没积分抵扣
 		},
 		// 计算sku在整个运单价格中的剩余价值 1元的订单，打1折优惠之后，剩余价值就是0.1元
 		calcSkuRemainMap() {

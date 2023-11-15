@@ -14,7 +14,7 @@
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							style="background: #ee692f!important;"
-							@click="queryInfo.search && getNearByShopList(true)"
+							@click="queryInfo.search && getNearByShopList()"
 						>
 							搜索
 						</tui-button>
@@ -456,11 +456,12 @@ export default {
 
 			// 判断每个类板块是否拥有某个页面结构
 			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
-			ownMenuBar: ['1', '2', '3', '5', '6', '7', '8', '9', '13', '16'], // '1', '2',
+			ownMenuBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '13', '16'],
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
-			ownSelectionBox: ['2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			// ownSelectionBox: ['2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+			ownSelectionBox: [],
 			selectionBoxArr: [],
 			selectionBoxNum: 0,
 			ownPrimaryFilterBox: [ '6' ],

@@ -90,7 +90,7 @@ export default {
 		},
 
 		// 微信登陆
-		wxLogin({ commit }, code) {
+		wxLogin({ commit, dispatch }, code) {
 			return new Promise((resolve, reject) => {
 				wxLoginApi({ code })
 					.then(({ data }) => {
@@ -100,6 +100,7 @@ export default {
 						uni.showToast({
 							title: '登录成功'
 						})
+						dispatch('updateStorageKeyToken')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -109,23 +110,23 @@ export default {
 		},
 
 		logout({ commit }, isQuiet) {
-			if (!isQuiet) {
-				uni.showToast({
-					title: '退出成功'
-				})
-			}
 			uni.removeStorageSync(USER_ID)
 			uni.removeStorageSync(USER_INFO)
 			uni.removeStorageSync(USER_TOKEN)
 			commit(CHNAGE_USER_ID, '')
 			commit(CHNAGE_USER_INFO, {})
 			commit(CHNAGE_USER_TOKEN, '')
-			setTimeout(() => {
-				clearAllCache()
-				uni.switchTab({
-					url: '/pages/community-center/community-centerr'
+			clearAllCache()
+			if (isQuiet) {
+				uni.showToast({
+					title: '退出成功'
 				})
-			}, 2000)
+				setTimeout(() => {
+					uni.switchTab({
+						url: '/pages/community-center/community-centerr'
+					})
+				}, 2000)
+			}
 		},
 
 		updateUserInfo({ state, dispatch }, updateData) {
@@ -168,9 +169,14 @@ export default {
 		updateStorageKeyToken() {
 			const userInfo = uni.getStorageSync(USER_INFO)
 			if (userInfo && userInfo.phone) {
+				uni.showLoading({ mask: true })
 				getAnotherTFTokenApi({ phone: userInfo.phone })
 					.then((res) => {
 						uni.setStorageSync(T_STORAGE_KEY, res.data)
+						uni.hideLoading()
+					})
+					.catch((err) => {
+						uni.hideLoading()
 					})
 			} else {
 				uni.showToast({

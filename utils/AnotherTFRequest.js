@@ -1,4 +1,3 @@
-import { clearAllCache } from 'constant'
 import { ANOTHER_TF_INTERFACE } from '../config'
 import { T_STORAGE_KEY } from '../constant'
 import store from '../store'
@@ -25,19 +24,22 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 					if (res.data.code === '200' || res.data.code === '') {
 						resolve(res.data)
 					} else if (res.data.code === '20004' || res.data.code === '20005') {
-						uni.showToast({
-							title: '鉴权失败，请重新登陆',
-							icon: 'none',
-							mask: true
+						uni.showModal({
+							title: '提示',
+							content: '鉴权失败，请重新登陆！',
+							success(res) {
+								if (res.confirm) {
+									store.dispatch('auth/logout')
+									setTimeout(() => {
+										uni.navigateTo({
+											url: '/pages/login/login'
+										})
+									}, 1000)
+								} else if (res.cancel) {
+									// uni.navigateBack();
+								}
+							}
 						})
-						uni.removeStorageSync(T_STORAGE_KEY)
-						clearAllCache()
-						store.dispatch('auth/logout', true)
-						setTimeout(() => {
-							uni.navigateTo({
-								url: '/pages/login/login'
-							})
-						}, 1000)
 						reject(res.data)
 					} else {
 						uni.showToast({

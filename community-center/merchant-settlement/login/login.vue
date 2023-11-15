@@ -40,6 +40,7 @@ import PWDLoginPopup from './components/PWDLoginPopup.vue';
 import { USER_INFO } from '../../../constant';
 
 export default {
+	name: 'login',
   components: { PWDLoginPopup },
   data() {
     return {

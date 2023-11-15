@@ -103,8 +103,8 @@
 			</view>
 		</view>
 
-		<view v-if="currentTab === 0 && brandDetail.shopId && brandDetail.shopName">
-			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId" :brand-name="brandDetail.shopName"></StoreShopCart>
+		<view v-if="currentTab === 0 && brandDetail.shopId">
+			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId"></StoreShopCart>
 		</view>
 	</view>
 </template>
@@ -180,6 +180,11 @@ export default {
 		})
 		addShopBusinessBuyerUserApi({ shopId: this.shopId })
 		this.getShopGoodsTemplate()
+	},
+	onShow() {
+		if (this.currentTab === 0 && this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
+			this.$refs.refStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
+		}
 	},
 
 	methods: {

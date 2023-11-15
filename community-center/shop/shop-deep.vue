@@ -15,7 +15,7 @@
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
 								style="background: #ee692f!important;"
-								@click="queryInfo.search && getNearByShopList(true)"
+								@click="queryInfo.search && getNearByShopList()"
 							>
 								搜索
 							</tui-button>
