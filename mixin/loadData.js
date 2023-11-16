@@ -47,7 +47,7 @@ export default (options) => {
 							? dataFn(res.data[mapKey.list] || [])
 							: res.data[mapKey.list] || []
 					}
-					if (this.$data._list.length === 0) this.$data._isEmpty = true
+					this.$data._isEmpty = this.$data._list.length === 0
 
 					!isLoadmore && afterFn && typeof afterFn === 'function' && afterFn()
 					!isLoadmore && callingcb && cb && typeof cb === 'function' && cb()

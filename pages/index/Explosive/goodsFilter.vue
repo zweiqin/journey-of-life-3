@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface'
 import Goods from './cpns/goods.vue'
 import MainMenus from './components/main-menus.vue'
 import SubMenus from './components/sub-menus.vue'
@@ -96,7 +96,7 @@ export default {
         uni.navigateBack();
     },
     getList() {
-			getClaasifyProducts({
+			getClaasifyProductsApi({
 				classifyId: this.subId,
 				productName: '',
 				...this.querList

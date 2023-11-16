@@ -10,36 +10,7 @@
 				已售{{ cItem.number }}件
 			</view>
 			<view class="product-price-box">
-				<image
-					v-if="cItem.activityType === 1" class="iconImg"
-					src="../../../static/images/new-business/shop/groupBuyIcon.png" alt="拼团icon"
-				></image>
-				<image
-					v-if="cItem.activityType === 2" class="iconImg"
-					src="../../../static/images/new-business/shop/spikeIcon.png" alt="秒杀活动"
-				>
-				</image>
-				<image
-					v-if="cItem.activityType === 3" class="iconImg discountIcon"
-					src="../../../static/images/new-business/shop/xianshizhekou.png" alt="限时折扣活动"
-				></image>
-				<image
-					v-if="cItem.activityType === 4" class="iconImg"
-					src="../../../static/images/new-business/shop/spikeIcon.png" alt="平台秒杀"
-				>
-				</image>
-				<image
-					v-if="cItem.activityType === 5" class="iconImg"
-					src="../../../static/images/new-business/shop/discountListIcon.png" alt="平台折扣"
-				></image>
-				<image
-					v-if="cItem.activityType === 9" class="iconImg"
-					src="../../../static/images/new-business/shop/memberCenterIcon.png" alt="会员价"
-				></image>
-				<image
-					v-if="cItem.activityType === 8" class="iconImg"
-					src="../../../static/images/new-business/shop/jierizhekou.png" alt="场景营销"
-				></image>
+				<ATFActivityImage :type="cItem.activityType"></ATFActivityImage>
 				<view style="flex: 1;display: flex;align-items: center;flex-wrap: wrap;">
 					<text class="price-box fs40 font-color-C83732 mar-right-20">
 						<text class="fs32">￥</text>
@@ -123,16 +94,6 @@ export default {
 			align-items: center;
 			flex-wrap: wrap;
 			margin-top: 18rpx;
-
-			.iconImg {
-				width: 58rpx;
-				height: 36rpx;
-				margin-right: 10rpx;
-			}
-
-			.discountIcon {
-				width: 100rpx;
-			}
 		}
 
 		.product-price-box .price-through {

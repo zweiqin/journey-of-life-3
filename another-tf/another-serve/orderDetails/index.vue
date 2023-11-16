@@ -160,25 +160,25 @@
 												<view v-if="proItem.returnType == 1">
 													<view
 														v-if="proItem.returnStatus == 0 || proItem.returnStatus == 1 || proItem.returnStatus == 3 || proItem.returnStatus == 4"
-														class="item-applay-btn" @click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
 													>
 														退款中
 													</view>
 													<view
 														v-if="proItem.returnStatus == 4" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														已退款
 													</view>
 													<view
 														v-if="proItem.returnStatus == 5" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														退款失败
 													</view>
 													<view
 														v-if="proItem.canApplyIntervention" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														客服介入
 													</view>
@@ -186,31 +186,31 @@
 												<view v-if="proItem.returnType == 2">
 													<view
 														v-if="proItem.returnStatus == 0 || proItem.returnStatus == 1 || proItem.returnStatus == 3 || proItem.returnStatus == 4"
-														class="item-applay-btn" @click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
 													>
 														退货中
 													</view>
 													<view
 														v-if="proItem.returnStatus == 6" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														已退款
 													</view>
 													<view
 														v-if="proItem.returnStatus == 7" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														退款中
 													</view>
 													<view
 														v-if="proItem.returnStatus == 5 || proItem.returnStatus == 8" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														退款失败
 													</view>
 													<view
 														v-if="proItem.canApplyIntervention" class="item-applay-btn"
-														@click="goApplyTap(proItem.returnCode, proItem.returnType)"
+														@click="goApplyTap(proItem.returnType)"
 													>
 														客服介入
 													</view>
@@ -629,14 +629,14 @@ export default {
 			})
 		},
 		// 去退款详情
-		goApplyTap(code, type) {
+		goApplyTap(type) {
 			if (type == 1) {
 				uni.navigateTo({
-					url: '/another-tf/another-serve/refundDetails/index?returnCode=' + code
+					url: `/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(this.dataList)}`
 				})
 			} else if (type == 2) {
 				uni.navigateTo({
-					url: '/another-tf/another-serve/returnDetails/index?returnCode=' + code
+					url: `/another-tf/another-serve/returnDetails/index?item=${JSON.stringify(this.dataList)}`
 				})
 			}
 		},

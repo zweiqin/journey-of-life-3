@@ -17,7 +17,7 @@
 
 <script>
 // import { getTypeDetailList } from '../../../api/home'
-import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getFirstClassifyApi } from '@/api/anotherTFInterface'
 export default {
   props: {
     currentId: [Number,String],

@@ -208,7 +208,16 @@ export default {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
 			if (selectSku.number <= 1) {
 				if (this.isSubDelete) {
-
+					uni.showModal({
+						title: '提示',
+						content: '是否将该商品移出购物车？',
+						success: async (res) => {
+							if (res.confirm) {
+								await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
+								await this.getShopCartData(this.type)
+							}
+						}
+					})
 				} else {
 					return uni.$showToast('亲！至少一件哦！')
 				}

@@ -254,7 +254,7 @@ export default {
 				} else {
 					this.shopGoodsInfo.data = res.data.page.list
 				}
-				if (this.shopGoodsInfo.data.length === 0) this.shopGoodsInfo.isEmpty = true
+				this.shopGoodsInfo.isEmpty = this.shopGoodsInfo.data.length === 0
 				uni.hideLoading()
 			})
 				.catch((res) => {

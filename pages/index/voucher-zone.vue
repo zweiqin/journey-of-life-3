@@ -92,7 +92,7 @@
 import VoucherGoods from './cpns/VoucherGoods.vue';
 import VoucherDeatilGoodsPane from './cpns/VoucherDeatilGoodsPane.vue';
 import loadMore from '../../mixin/loadMore'
-import { getFirstClassifyApi, getClaasifyProducts } from '@/api/anotherTFInterface';
+import { getFirstClassifyApi, getClaasifyProductsApi } from '@/api/anotherTFInterface';
 
 
 export default {
@@ -112,7 +112,7 @@ export default {
     }
   },
   mixins: [loadMore({
-    api: getClaasifyProducts,
+    api: getClaasifyProductsApi,
     mapKey: { totalPages: "total", list: "list", size: "pageSize" },
     dataFn(goodsArr) {
       if (!this.ad.hot.length) {

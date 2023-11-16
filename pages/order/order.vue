@@ -44,7 +44,7 @@
 						</block>
 					</view>
 					<NoData v-show="noDataVisible" :is-seach="!!communityQueryInfo.orderNo" @clear="clearSearch()"></NoData>
-					<Loading v-show="isLoading"></Loading>
+					<Loading v-show="isLoading" style="z-index: 1;"></Loading>
 					<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
 				</view>
 
@@ -332,7 +332,7 @@ export default {
 				}
 			} else if (this.currentOrderMode === 'businessDistrict') {
 				uni.showLoading()
-				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus })
+				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus || '' })
 					.then((res) => {
 						this.businessListTotal = res.data.total
 						if (isLoadmore) {
@@ -340,7 +340,7 @@ export default {
 						} else {
 							this.businessOrderList = res.data.list
 						}
-						if (this.businessOrderList.length === 0) this.businessIsEmpty = true
+						this.businessIsEmpty = this.businessOrderList.length === 0
 						uni.hideLoading()
 					})
 					.catch(() => {

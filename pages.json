@@ -1524,6 +1524,12 @@
 						"navigationBarTitleText": "申请退款"
 					}
 				},
+				{
+					"path": "another-serve/Intervene/index",
+					"style": {
+						"navigationBarTitleText": "平台介入"
+					}
+				},
         {
           "path": "another-serve/shareProduct/index",
           "style": {

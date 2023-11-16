@@ -15,7 +15,7 @@
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
 								style="background: #ee692f!important;"
-								@click="queryInfo.search && getNearByShopList()"
+								@click="queryInfo.search && (queryInfo.page = 1) && getNearByShopList()"
 							>
 								搜索
 							</tui-button>
@@ -24,6 +24,26 @@
 				</view>
 			</view>
 		</BeeBack>
+
+		<!-- 菜单栏 -->
+		<view
+			v-if="menuBarArr && menuBarArr.length"
+			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14upx 26upx 0;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
+		>
+			<view
+				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
+				@click="getNearByShopList(false, item.id)"
+			>
+				<view>
+					<BeeIcon
+						:size="34"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+					>
+					</BeeIcon>
+				</view>
+				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+			</view>
+		</view>
 
 		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<CommonShop
@@ -46,7 +66,7 @@
 
 <script>
 import CommonShop from '../../pages/business-district/components/CommonShop.vue'
-import { getHomeBrandListApi } from '../../api/anotherTFInterface'
+import { getShopCategorySonApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
 export default {
 	name: 'ShopDeep',
 	components: { CommonShop },
@@ -61,22 +81,26 @@ export default {
 				pageSize: 10,
 				search: '',
 				classifyId: ''
-			}
+			},
+			menuBarArr: []
 		}
 	},
-	onLoad(options) {
+	async onLoad(options) {
 		this.title = options.name || ''
 		this.queryInfo.classifyId = options.id || ''
 		this.getNearByShopList(true)
+		const res = await getShopCategorySonApi({ pid: this.queryInfo.classifyId })
+		this.menuBarArr = res.data || []
 	},
 	methods: {
-		getNearByShopList(isLoadmore) {
+		getNearByShopList(isLoadmore, classifyId) {
 			uni.showLoading()
 			getHomeBrandListApi({
 				...this.queryInfo,
 				areaId: this.$store.state.location.locationInfo.adcode,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1],
+				classifyId: classifyId || this.queryInfo.classifyId
 			})
 				.then((res) => {
 					this.nearbyTotal = res.data.total
@@ -85,7 +109,7 @@ export default {
 					} else {
 						this.nearbyShopList = res.data.list
 					}
-					if (this.nearbyShopList.length === 0) this.isEmpty = true
+					this.isEmpty = this.nearbyShopList.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {

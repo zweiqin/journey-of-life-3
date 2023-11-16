@@ -14,7 +14,7 @@
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							style="background: #ee692f!important;"
-							@click="queryInfo.search && getNearByShopList()"
+							@click="queryInfo.search && (queryInfo.page = 1) && getNearByShopList()"
 						>
 							搜索
 						</tui-button>
@@ -512,7 +512,6 @@ export default {
 		// 	}
 		// }
 	},
-	// eslint-disable-next-line complexity
 	async onLoad(options) {
 		this.currentType = options.type || '0'
 		this.queryInfo.classifyId = options.id || ''
@@ -584,7 +583,7 @@ export default {
 					} else {
 						this.nearbyShopList = res.data.list
 					}
-					if (this.nearbyShopList.length === 0) this.isEmpty = true
+					this.isEmpty = this.nearbyShopList.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {

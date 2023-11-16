@@ -1,11 +1,14 @@
 <template>
 	<view>
-		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="搜索" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<!-- 搜索商品 -->
 		<view>
 			<view class="flex-items-plus flex-row mar-top-20">
 				<view class="searchImg-box flex-items-plus">
-					<!-- <image class="searchImg" src="../../../static/images/origin/searchImg.png"></image> -->
+					<tui-icon
+						style="position: absolute;left: 38upx;" name="search" :size="65" unit="upx"
+						color="#d1d1d1"
+					></tui-icon>
 					<input
 						v-model="keyWord" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
 						placeholder="请输入您想要的宝贝"
@@ -19,14 +22,16 @@
 		<view class="hotSearchBox tipsBox">
 			<view v-if="hotSearchList.length > 0" class="boxTitle mar-leftgetList-30">
 				<label class="fs30 font-color-999 fs-weight-300">热门搜索</label>
-				<!-- <image
-					v-if="isSee" class="seeIcon hotSearchListSee-icon" src="../../../static/images/origin/see.png"
+				<tui-icon
+					v-if="isSee" name="seen" color="#393939" :size="40"
+					unit="upx" style="position: absolute;right: 30upx;"
 					@click="changeHotSearchListIsSee"
-					></image>
-					<image
-					v-else class="seeIcon hotSearchListNotSee-icon" src="../../../static/images/origin/notSee.png"
+				></tui-icon>
+				<tui-icon
+					v-else name="unseen" color="#393939" :size="40"
+					unit="upx" style="position: absolute;right: 30upx;"
 					@click="changeHotSearchListIsSee"
-					></image> -->
+				></tui-icon>
 			</view>
 			<view>
 				<view v-if="isSee" class="flex-wrap-1 flex-row">
@@ -46,8 +51,7 @@
 		<view class="historyBox tipsBox">
 			<view v-if="historyList.length > 0" class="boxTitle mar-leftgetList-30">
 				<label class="fs30 font-color-999 fs-weight-300 ">历史搜索</label>
-				<!-- <image class="historyDel-icon" src="../../../static/images/origin/historyDel_icon.png" @click="historyDelAll">
-					</image> -->
+				<tui-icon name="delete" color="#333333" :size="30" unit="upx" style="position: absolute;right: 30upx;" @click="historyDelAll"></tui-icon>
 			</view>
 			<view class="historySear-box flex-wrap-1 flex-row">
 				<view
@@ -57,21 +61,20 @@
 					<view class="boxContent historyText line1" @click="historyKeyword(item.search)">{{ item.search }}</view>
 					<label class="font-color-DDD fs22 pad-topbot-10 text-align">|</label>
 					<view class="historyIconBox" @click="historyDelOne(item.searchId)">
-						<!-- <image class="historySearDel-icon text-align" src="../../../static/images/origin/historySearDel_icon.png">
-							</image> -->
+						<tui-icon name="shut" color="#9e9e9e" :size="16" unit="upx"></tui-icon>
 					</view>
 				</view>
 			</view>
 		</view>
 
 	</view>
-	</view>
 </template>
 
 <script>
-// const NET = require('../../../utils/request')
-// const API = require('../../../config/api')
+import { getSelectHotSearchApi, getSearchHistoryApi, deleteProductAllSearchApi, deleteSearchRecordApi } from '../../../api/anotherTFInterface'
+
 export default {
+	name: 'Search',
 	data() {
 		return {
 			keyWord: '',
@@ -80,9 +83,6 @@ export default {
 			list: [],
 			isSee: true
 		}
-	},
-	onLoad() {
-
 	},
 	onShow() {
 		this.findSearchHistory()
@@ -101,18 +101,18 @@ export default {
 				})
 			} else {
 				uni.navigateTo({
-					url: '../../goodsModule/goodsList?keyWord=' + this.keyWord
+					url: `/another-tf/another-serve/goodsList/index?keyWord=${this.keyWord}`
 				})
 			}
 		},
 		historyKeyword(keyWord) {
 			uni.navigateTo({
-				url: '../../goodsModule/goodsList?keyWord=' + keyWord
+				url: `/another-tf/another-serve/goodsList/index?keyWord=${keyWord}`
 			})
 		},
 		// 热门搜索
 		findHotSearch() {
-			NET.request(API.SelectHotSearch, {}, 'GET').then((res) => {
+			getSelectHotSearchApi({}).then((res) => {
 				this.hotSearchList = res.data
 			})
 		},
@@ -121,12 +121,9 @@ export default {
 		},
 		// 历史记录
 		findSearchHistory() {
-			NET.request(API.SearchHistory, {}, 'GET').then((res) => {
+			getSearchHistoryApi({}).then((res) => {
 				this.historyList = res.data
 			})
-				.catch((res) => {
-
-				})
 		},
 		historyDelAll() {
 			uni.showModal({
@@ -137,18 +134,14 @@ export default {
 				success: (res) => {
 					if (res.confirm) {
 						this.deleteAllSearch()
-					} else if (res.cancel) {
 					}
 				}
 			})
 		},
 		deleteAllSearch() {
-			NET.request(API.DeleteAllSearch, {}, 'POST').then((res) => {
+			deleteProductAllSearchApi({}).then((res) => {
 				this.historyList = res.data
 			})
-				.catch((res) => {
-
-				})
 		},
 		historyDelOne(searchId) {
 			uni.showModal({
@@ -158,13 +151,10 @@ export default {
 				cancelText: '点错了',
 				success: (res) => {
 					if (res.confirm) {
-						NET.request(API.DeleteSearch, {
-							searchId
-						}, 'POST').then((res) => {
-							this.findSearchHistory()
-						})
-							.catch((res) => { })
-					} else if (res.cancel) {
+						deleteSearchRecordApi({ searchId })
+							.then((res) => {
+								this.findSearchHistory()
+							})
 					}
 				}
 			})
@@ -173,18 +163,12 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 input {
 	padding-left: 80upx;
 }
 
 .searchImg-box {
-	.searchImg {
-		width: 36upx;
-		height: 36upx;
-		position: absolute;
-		left: 60upx;
-	}
 
 	.search-box {
 		background-color: #F1F1F1;
@@ -214,20 +198,6 @@ input {
 		flex: 1;
 	}
 
-	.hotSearchListSee-icon {
-		height: 24upx;
-	}
-
-	.hotSearchListNotSee-icon {
-		height: 36upx;
-	}
-
-	.seeIcon {
-		width: 40upx;
-		position: absolute;
-		right: 30upx;
-	}
-
 	.notSeeContent {
 		margin-top: 20upx;
 		text-align: center;
@@ -250,21 +220,8 @@ input {
 		width: 100%;
 	}
 
-	.historyDel-icon {
-		width: 30upx;
-		height: 30upx;
-		position: absolute;
-		right: 30upx;
-	}
-
 	.historyIconBox {
 		width: 50upx;
-
-		.historySearDel-icon {
-			position: relative;
-			width: 16upx;
-			height: 16upx;
-		}
 	}
 }
 

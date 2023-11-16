@@ -26,7 +26,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 					} else if (res.data.code === '20004' || res.data.code === '20005') {
 						uni.showModal({
 							title: '提示',
-							content: '鉴权失败，请重新登陆！',
+							content: '账号未登录，请重新登陆！',
 							success(res) {
 								if (res.confirm) {
 									store.dispatch('auth/logout')
