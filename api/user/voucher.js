@@ -11,3 +11,12 @@ export const getByUserVoucher = (data) => AnotherTFRequest('/voucherShopHold/get
 
 // /voucherShopHold/transfer 赠送代金卷
 export const giftVoucher = (data) => AnotherTFRequest('/voucherShopHold/transfer', data, 'POST')
+
+// /voucherOrder/getTotal 获取代金卷总数据
+export const getTotal = (data) => AnotherTFRequest('/voucherOrder/getTotal', data, 'POST')
+
+// /voucherShopHold/transferLogs 获取代金卷转增数据
+export const transferLogs = (data) => AnotherTFRequest('/voucherShopHold/transferLogs', data, 'POST')
+
+// /voucherOrder/getAll 获取代金卷充值数据
+export const getAll = (data) => AnotherTFRequest('/voucherOrder/getAll', data, 'POST')
