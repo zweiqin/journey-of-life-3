@@ -74,6 +74,12 @@ export default {
             this.queryList.page++;
             this.getListData();
         },
+    },
+    watch: {
+        condition(newVlaue, oldVlaue) {
+            this.dataList = []
+            this.getListData();
+        }
     }
 }
 </script>

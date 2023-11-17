@@ -28,6 +28,7 @@
 
 <script>
 import { getTotal, transferLogs, getAll } from '@/api/user/voucher'
+import { watch } from 'vue'
 export default {
     name: 'RechargeRecord',
     props: {
@@ -75,6 +76,12 @@ export default {
             this.queryList.page++;
             this.getListData();
         },
+    },
+    watch: {
+        condition(newVlaue, oldVlaue) {
+            this.dataList = []
+            this.getListData();
+        }
     }
 }
 </script>

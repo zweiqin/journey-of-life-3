@@ -14,9 +14,9 @@
         </view>
         <view class="listMain">
             <keep-alive>
-                <RecordsEvery ref="RecordsEvery" :condition="dateSelection[dateIndex].value" v-if="currentIndex == 0"></RecordsEvery>
-                <RechargeRecord ref="RechargeRecord" :condition="dateSelection[dateIndex].value" v-if="currentIndex == 1"></RechargeRecord>
-                <IncrementRecord ref="IncrementRecord" :condition="dateSelection[dateIndex].value" v-if="currentIndex == 2"></IncrementRecord>
+                <RecordsEvery ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 0"></RecordsEvery>
+                <RechargeRecord ref="RechargeRecord" :condition="dateValue" v-if="currentIndex == 1"></RechargeRecord>
+                <IncrementRecord ref="IncrementRecord" :condition="dateValue" v-if="currentIndex == 2"></IncrementRecord>
             </keep-alive>
         </view>
         <view class="footer">
@@ -48,6 +48,7 @@ export default {
             currentIndex: 0,
             dateSelection: [{name: '年', value: 5}, { name: '月', value: 4 }, { name: '日', value: 1 }],
             dateIndex: 0,
+            dateValue: 0,
         }
     },
     methods: {
@@ -55,13 +56,16 @@ export default {
             this.currentIndex = index
         },
         chekoutDateSelection(index) {
-            // if (index == this.dateIndex) {
-            //     this.dateIndex = -1
-            // }
-            this.dateIndex = index
-            let getListFn = [this.$refs.RecordsEvery, this.$refs.RechargeRecord, this.$refs.IncrementRecord]
-            getListFn[this.currentIndex].dataList = []
-            getListFn[this.currentIndex].getListData()
+            if (index == this.dateIndex) {
+                this.dateIndex = -1
+                this.dateValue = 0
+            }else {
+                this.dateIndex = index
+                this.dateValue = this.dateSelection[index].value
+            }
+            // let getListFn = [this.$refs.RecordsEvery, this.$refs.RechargeRecord, this.$refs.IncrementRecord]
+            // getListFn[this.currentIndex].dataList = []
+            // getListFn[this.currentIndex].getListData()
         },
     }
 }
