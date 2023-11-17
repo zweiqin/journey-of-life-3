@@ -3,7 +3,7 @@
         <image class="topBackgrpound" src="@/static/images/user/vcbgimg.png"></image>
         <!-- header区 -->
         <view class="userInfo">
-            <image class="avatar" :src="userInfo.avatarUrl"></image>
+            <image class="avatar" :src="avatar"></image>
             <text class="userPhone">{{ hiddenPhone(userInfo.phone) }}</text>
         </view>
         <view class="tabNavs">
@@ -12,7 +12,8 @@
             </view>
         </view>
         <view class="main">
-            <topUp :isGift="currIndex == 1" v-if="currIndex != 2"></topUp>
+            <topUp :userAcount="userAcount" :userInfo="userInfo" :isGift="currIndex == 1" v-if="currIndex != 2"></topUp>
+            <newRecords v-if="currIndex == 2"></newRecords>
         </view>
         <!-- <view class="footer">
 
@@ -22,20 +23,35 @@
 
 <script>
 import topUp from './components/topUp.vue'
+import { getVoucher } from '@/api/user/voucher'
+import { getByUserVoucher } from '@/api/user/voucher'
+import newRecords from './components/newRecords.vue'
 export default {
     name: 'voucher',
     components: {
-        topUp
+        topUp,
+        newRecords
     },
     data() {
         return {
+            avatar: '',
             userInfo: null,
-            tabNavsData: ['充值','转增','流水'],
+            tabNavsData: ['充值','转赠','流水'],
+            userAcount: {
+                number: '',
+            },
             currIndex: 0,
         }
     },
     onLoad() {
-        this.userInfo = uni.getStorageSync('user_INFO')
+        this.avatar = uni.getStorageSync('user_INFO').avatarUrl
+        this.userInfo = uni.getStorageSync('T_STORAGE_KEY')
+        getByUserVoucher().then(res => {
+            this.userAcount = res.data
+            // console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     },
     methods: {
         hiddenPhone(Phone) {
@@ -52,6 +68,9 @@ export default {
     min-height: 100vh;
     overflow: hidden;
     background: linear-gradient(180deg, #FF380C 0%, rgba(255, 56, 12, 0.88) 20%, #F4F3F8 27%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .topBackgrpound {
         width: 100vw;
         height: 418rpx;
@@ -112,6 +131,9 @@ export default {
         }
     }
     .main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
         position: relative;
         z-index: 2;
         margin-top: 25rpx;

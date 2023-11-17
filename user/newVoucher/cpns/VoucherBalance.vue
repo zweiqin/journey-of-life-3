@@ -2,7 +2,7 @@
     <view class="container">
         <p class="titles-one">代金卷余额</p>
         <view class="titles-two">
-            <text class="number">0.00</text>元
+            <text class="number">{{ userAcount.number || '0.00' }}</text>元
         </view>
         <button class="btns">可兑换</button>
     </view>
@@ -10,7 +10,13 @@
 
 <script>
 export default {
-    name: 'VoucherBalance'
+    name: 'VoucherBalance',
+    props: {
+        userAcount: {
+            type: Object,
+            default: {}
+        }
+    }
 }
 </script>
 
@@ -34,6 +40,7 @@ export default {
         font-weight: 400;
         font-size: 32rpx;
         .number {
+            margin-right: 8rpx;
             font-weight: 400;
             font-size: 68rpx;
         }

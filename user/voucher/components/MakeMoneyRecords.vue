@@ -4,6 +4,9 @@
             <view class="tabNavsItem" @click="chekoutCurrent(index)" :class="{active: currentIndex==index}" v-for="(item, index) in tabNavs" :key="item.name">
                 {{ item.name }}
             </view>
+            <view class="dateSelection">
+                
+            </view>
         </view>
         <view class="TotalRevenue">
             <view class="amountText">

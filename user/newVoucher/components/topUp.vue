@@ -1,20 +1,23 @@
 <template>
     <view class="topUpContainer">
-        <VoucherBalance></VoucherBalance>
+        <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的手机号">
-                    <button class="selectBtn" slot="right">查询</button>
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的手机号" v-model="findUserId">
+                    <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
-                <tui-input :borderBottom="false" label="转增金额" placeholder="请输入金额">
+                <view class="selectUserInfo" v-if="findUserInfo">
+                    <image class="userAvatar" :src="findUserInfo.oldTF.avatarUrl"></image> <text class="userName">{{ findUserInfo.oldTF.nickName }}</text>
+                </view>
+                <tui-input @input="getCustomValue(amountData.length-1)" @focus="customNumber" type="number" :borderBottom="false" label="转增金额" min="0" max="20000" placeholder="请输入金额" v-model="amountData[amountData.length-1].value">
                     <button class="selectBtn" slot="right">充值</button>
                 </tui-input>
             </tui-form>
             <view class="moneys">
-                可用金额：{{'123'}} 元
+                可用金额：{{ userAcount.number || '0.00' }} 元
             </view>
         </view>
-        <AmountSelection></AmountSelection>
+        <AmountSelection ref="AmountSelection" v-bind="$props" @getCustomValue="getCustomValue" :amountData="amountData"></AmountSelection>
         <view class="VoucherService">
             <p class="title">代金卷服务</p>
             <view class="VoucherServiceBox">
@@ -41,21 +44,34 @@
             </view>
         </view>
         <view class="footerButton">
-            <button class="fuckBtn" v-if="!isGift">￥{{ '50' }}&nbsp;立即充值</button>
-            <button class="fuckBtn" v-else>￥{{ '50' }}&nbsp;立即转增</button>
+            <button class="fuckBtn" @click="submitVouchers" v-if="!isGift">￥{{ amount }}&nbsp;立即充值</button>
+            <button class="fuckBtn" @click="giftVouchers" v-else>￥{{ amount }}&nbsp;立即转赠</button>
         </view>
     </view>
 </template>
 
 <script>
+import { submitVouche, giftVoucher } from '@/api/user/voucher'
 import VoucherBalance from '../cpns/VoucherBalance.vue'
 import AmountSelection from '../cpns/AmountSelection.vue'
+import { handleDoPay } from '@/utils/payUtil'
+import { refrshUserInfoApi } from '@/api/user' // userID
+import { getAnotherTFTokenApi } from '@/api/anotherTFInterface' // phone 电话号码
+
 export default {
     components: {
         VoucherBalance,
         AmountSelection
     },
     props: {
+        userAcount: {
+            type: Object,
+            default: {}
+        },
+        userInfo: {
+            type : Object,
+            default: {}
+        },
         isGift: {
             type: Boolean,
             default: false
@@ -63,13 +79,90 @@ export default {
     },
     data() {
         return {
-            
+            amountData: [{value: 50, price: 25}, 
+            {value: 100, price: 50}, 
+            {value: 200, price: 100}, 
+            {value: 2000, price: 1000}, 
+            {value: 4000, price: 2000}, 
+            {value: 0, price: 0}],
+            amount: 25,
+            findUserId: '',
+            findUserInfo: null
+        }
+    },
+    methods: {
+        getCustomValue(index) {
+            // console.log(1);
+            this.amountData[index].price = this.amountData[index].value/2
+            this.amount = this.amountData[index].price
+        },
+        submitVouchers() {
+            let {buyerUserId,token} = this.userInfo
+            submitVouche({
+                voucherId: '1',
+                number: this.amount * 2,
+                payGrade: this.amount,
+                // token,
+                // buyerUserId
+            }).then(res => {
+                handleDoPay({...res.data, paymentMode: 4, huabeiPeriod: -1}, 4)
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        getUserInfo() {
+            refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 await简化后面再说
+                userId: this.findUserId
+            }).then(res => {
+                let userData = res.data
+                getAnotherTFTokenApi({ // 
+                    phone: userData.phone
+                }).then(res => {
+                    this.findUserInfo = { oldTF: userData, newTF: res.data}
+                }).catch(err => {
+                    console.log(err);
+                })
+                // console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        customNumber() {
+            this.$refs.AmountSelection.active = this.amountData.length -1
+        },
+        giftVouchers() {
+            if (!this.findUserInfo) return this.$showToast('请选择赠送对象')
+            if (!this.amount || this.amount <= 0) return this.$showToast('赠送金额大于需大于0')
+            giftVoucher({
+                "buyerUserId": this.findUserInfo.newTF.buyerUserId,
+                "voucherNum":this.amount
+            }).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.selectUserInfo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20rpx;
+    .userAvatar {
+        width: 100rpx;
+        height: 100rpx;
+        border-radius: 50%;
+    }
+    .userName {
+        margin-left: 36rpx;
+        font-size: 42rpx;
+    }
+}
 .selectBtn {
     width: 92rpx;
     height: 47rpx;
@@ -126,9 +219,10 @@ export default {
     .selectAcount {
         box-sizing: border-box;
         padding-top: 6rpx;
+        padding-bottom: 30rpx;
         margin-top: 24rpx;
         width: 690rpx;
-        height: 322rpx;
+        /* height: 322rpx; */
         border-radius: 20rpx;
         background-color: #fff;
         overflow: hidden;

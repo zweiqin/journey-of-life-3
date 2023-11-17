@@ -81,6 +81,7 @@
 				</view>
 			</view>
 		</view>
+		<tui-toast ref="toast"></tui-toast>
 		<!-- <view class="agreementBox">
 			<checkbox :checked='agreementStatus' @click="fuckYouZWQ" />
 			<text style="margin-left: 2rpx; width: 370rpx" class="colorText">
