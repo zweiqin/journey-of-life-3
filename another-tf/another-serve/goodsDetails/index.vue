@@ -254,8 +254,7 @@ import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting } from '../../../utils'
-import { getProductDetailsByIdApi, bindDistributorSalesCustomerApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
-import { T_ALL_CART_NUM } from '../../../constant'
+import { getProductDetailsByIdApi, bindDistributorSalesCustomerApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -308,15 +307,6 @@ export default {
 		if (this.ticker) { // 这一段是防止进入页面出去后再进来计时器重复启动
 			clearInterval(this.ticker)
 		}
-		if (this.allCartNum > 99) {
-			this.allCartNum = '...'
-		}
-	},
-	beforeDestroy() {
-
-	},
-	onShow() {
-
 	},
 	onLoad(options) {
 		// 页面滚动条归0，不然骨架屏有问题
@@ -361,7 +351,10 @@ export default {
 		this.handleGetProductDetail()
 		// 绑定分销关系
 		salesId && this.shopId ? this.bindSalesCustomer(salesId, this.shopId) : ''
-		this.allCartNum = uni.getStorageSync(T_ALL_CART_NUM)
+		getCartListApi({}).then((res) => {
+			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
+		})
+		if (this.allCartNum > 99) this.allCartNum = '...'
 	},
 	onUnload() {
 		// 判断是否要埋点
@@ -376,9 +369,6 @@ export default {
 			clearInterval(this.shopGroupWorkTicker)
 			this.shopGroupWorkTicker = null
 		}
-	},
-	mounted() {
-
 	},
 	onPageScroll(e) {
 		this.returnTopFlag = e.scrollTop > 600
