@@ -118,7 +118,7 @@
 				</view>
 				<view class="account-title">优惠劵</view>
 			</view>
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/voucher/voucher' })">
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/newVoucher/voucher' })">
 				<view class="account-number">
 					{{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }}
 				</view>

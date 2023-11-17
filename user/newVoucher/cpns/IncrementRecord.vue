@@ -66,7 +66,7 @@ export default {
                     this.dataList.push(res.data.records[index])
                 }
                 // this.dataList = res.data.records;
-                console.log(res);
+                // console.log(res);
             }).catch(err => {
                 console.log(err);
             })
