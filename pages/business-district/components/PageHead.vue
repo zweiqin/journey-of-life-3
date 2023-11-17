@@ -21,13 +21,13 @@
 				<tui-input
 					label="" placeholder="全屋严选" disabled clearable
 					padding="6upx 10upx 6upx 26upx"
-					background-color="transparent" style="flex: 1;margin-left: 16upx;" @click="go('/community-center/search')"
+					background-color="transparent" style="flex: 1;margin-left: 16upx;" @click="go(`/another-tf/another-serve/search/index`)"
 				>
 					<template #right>
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							style="background: #ee692f!important;"
-							@click="go('/community-center/search')"
+							@click="go(`/another-tf/another-serve/search/index`)"
 						>
 							搜索
 						</tui-button>

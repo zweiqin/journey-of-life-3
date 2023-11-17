@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface'
 
 export default {
 	data() {
@@ -101,7 +101,7 @@ export default {
 	},
 	methods: {
 		getList() {
-			getClaasifyProducts({
+			getClaasifyProductsApi({
 				classifyId: this.classifyId,
 				productName: '',
 				...this.querList

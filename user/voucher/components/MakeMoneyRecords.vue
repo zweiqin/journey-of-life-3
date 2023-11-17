@@ -14,6 +14,7 @@
             </view>
         </view>
         <view class="MakeMoneyRecordsList" v-if="currentIndex == 0">
+            <scroll-view scroll-y="true" class="scrollY" @scrolltolower="pushList">
             <tui-swipe-action :operateWidth="140" v-for="(item, index) in myRenderList.recordList" :key="index">
                 <template v-slot:content>
                     <view class="listItem">
@@ -49,6 +50,7 @@
                     <text class="txt3">{{ item.createTime }}</text>
                 </view>
             </view> -->
+            </scroll-view>
         </view>
         <view class="MakeMoneyRecordsList" v-else>
             <scroll-view scroll-y="true" class="scrollY" @scrolltolower="pushList">
@@ -60,8 +62,8 @@
                         </view>
                         <text class="txt2">{{ item.amount }}</text>
                         <view class="itemDetails">
-                            <text class="txt1">代金卷收益</text>
-                            <text class="txt3">赚小钱文章收益</text>
+                            <text class="txt1">代金卷支出</text>
+                            <text class="txt3">赚小钱文章支出</text>
                             <text class="txt3">{{ item.createTime }}</text>
                         </view>
                     </view>

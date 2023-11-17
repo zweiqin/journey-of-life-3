@@ -234,7 +234,7 @@ export default {
     handleClickModal(e) {
       const { index } = e;
       if (index) {
-        this.$store.dispatch('auth/logout');
+        this.$store.dispatch('auth/logout', true);
       }
       this.isShowModal = false;
     },

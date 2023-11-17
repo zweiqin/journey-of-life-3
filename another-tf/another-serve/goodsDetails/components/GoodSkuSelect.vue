@@ -137,8 +137,8 @@
 </template>
 
 <script>
-import { addCartShoppingApi, addUserTrackReportDoPointerApi } from '../../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST, T_ALL_CART_NUM } from '../../../../constant'
+import { addCartShoppingApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../../constant'
 
 export default {
 	name: 'GoodSkuSelect',
@@ -314,9 +314,9 @@ export default {
 					productIds: this.productId
 				})
 				// 给购物车小图标赋值数量
-				const newAllCartNum = uni.getStorageSync(T_ALL_CART_NUM) + this.buyNum
-				uni.setStorageSync(T_ALL_CART_NUM, newAllCartNum)
-				this.$emit('changeCartNum', newAllCartNum)
+				getCartListApi({}).then((res) => {
+					this.$emit('changeCartNum', res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0))
+				})
 				uni.showToast({
 					title: '添加成功',
 					icon: 'none'

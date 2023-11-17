@@ -1,6 +1,6 @@
 <template>
 	<view style="box-sizing: border-box;">
-		<tui-modal :show="isShow" :custom="true" :fadein="true">
+		<tui-modal :show="isShow" :custom="true" :fade-in="true">
 			<view class="Put-box1">
 				<view class="text-align fs34 fs-bold">
 					温馨提示

@@ -95,7 +95,7 @@ import HotPane from './cpns/HotPane.vue';
 import NewGoodsPane from './cpns/NewGoodsPane.vue';
 
 import { goodsListApi } from '../../api/goods';
-import { getClaasifyProducts, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
+import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
 
 import { homeTopNavs } from './config';
@@ -113,7 +113,7 @@ export default {
       isShowPane: false,
       homeTopNavs: homeTopNavs,
       queryList: {
-        classifyId: '978', // 分类ID
+        classifyId: '978', // 分类ID 1160 备用ID
         productName: '', // 商品名称
         search: '',
         type: 1, // 价格升降序
@@ -165,7 +165,7 @@ export default {
   },
   methods: {
     getGoodsList() {
-      getClaasifyProducts(this.queryList).then(res => {
+      getClaasifyProductsApi(this.queryList).then(res => {
         res.data.list.forEach(item => this.goodsList.push(item))
         // console.log(this.goodsList);
         this.ad.good = this.goodsList.slice(0,2)

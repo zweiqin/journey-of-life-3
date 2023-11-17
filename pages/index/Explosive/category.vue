@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getFirstClassifyApi } from '@/api/anotherTFInterface'
 import { unshift } from 'utils/picker.city'; 
 import sort from './cpns/sort.vue';
 // 1147

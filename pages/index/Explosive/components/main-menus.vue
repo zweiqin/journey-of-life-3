@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getClaasifyProducts, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getFirstClassifyApi } from '@/api/anotherTFInterface'
 export default {
   props: {
     value: {

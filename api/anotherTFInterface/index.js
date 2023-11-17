@@ -11,7 +11,7 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
 
 // getClaasifyProducts 分类商品查询
-export const getClaasifyProducts = (data) => AnotherTFRequest('/classify/getClaasifyProducts', data)
+export const getClaasifyProductsApi = (data) => AnotherTFRequest('/classify/getClaasifyProducts', data)
 
 // /canvas/getCanvas  查询商品分类
 export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
@@ -27,6 +27,15 @@ export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/get
 
 // /app/getSearchProducts  商品搜索查询
 export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)
+
+// 查询最近的N条历史记录
+export const getSearchHistoryApi = (data) => AnotherTFRequest('/app/getHistory', data)
+
+// 清空历史搜索记录
+export const deleteProductAllSearchApi = (data) => AnotherTFRequest('/product/deleteAllSearch', data, 'POST')
+
+// 删除搜索记录
+export const deleteSearchRecordApi = (data) => AnotherTFRequest('/app/deleteSearch', data, 'POST')
 
 // 获取热门推荐
 export const getRandomSortProductApi = (data) => AnotherTFRequest('/product/getRandomSortProduct', data)
@@ -129,6 +138,13 @@ export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/add
 // 小程序客服查询
 export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data)
 
+// 售后
+// 售后详情查询
+export const getReturnDetailByIdApi = (data) => AnotherTFRequest('/after/getById', data)
+
+// 撤销退货
+export const updateCancelReturnGoodsApi = (data) => AnotherTFRequest('/after/returnGoods', data)
+
 // 优惠券
 // 领取优惠券
 export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')
@@ -225,3 +241,6 @@ export const getFactoryClassApi = data => AnotherTFRequest('/shopCategoryMall/ge
 
 // 获取品牌工厂下级分类
 export const getFactoryNextClassApi = data => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data)
+// 查询热搜词
+// 获取搜索栏的热门搜索
+export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)

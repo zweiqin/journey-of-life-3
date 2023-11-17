@@ -170,10 +170,10 @@ export default {
 									// console.log(res);
 									if (res.status === '1') {
 										commit(CHANGE_LOCATION_INFO, res.regeocode)
-										res.regeocode && res.regeocode.addressComponent && res.regeocode.addressComponent.city(dispatch('getDetailAddressForShopAndBusiness', {
+										res.regeocode && res.regeocode.addressComponent && dispatch('getDetailAddressForShopAndBusiness', {
 											currentShopAndBusinessLocation: res.regeocode.addressComponent.city,
 											areaText: res.regeocode.addressComponent.city
-										}))
+										})
 										const addressDetail = res.regeocode
 										onSuccess &&
 											typeof onSuccess === 'function' &&
@@ -189,10 +189,12 @@ export default {
 								})
 								.catch((e) => {
 									console.log('获取位置失败', e)
+									reject(false)
 								})
 						},
 						fail: (e) => {
 							console.log('定位失败', e)
+							reject(false)
 						}
 						// complete: (e) => {
 						// 	console.log('bbbb', e)

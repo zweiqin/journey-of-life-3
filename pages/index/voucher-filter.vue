@@ -71,7 +71,7 @@
 <script>
 import loadMore from '../../mixin/loadMore'
 import VoucherDeatilGoodsPane from './cpns/VoucherDeatilGoodsPane.vue'
-import { getFirstClassifyApi, getClaasifyProducts } from '@/api/anotherTFInterface';
+import { getFirstClassifyApi, getClaasifyProductsApi } from '@/api/anotherTFInterface';
 import PageLoading from '../order/components/Loading.vue'
 
 export default {
@@ -99,7 +99,7 @@ export default {
   },
 
   mixins: [loadMore({
-    api: getClaasifyProducts,
+    api: getClaasifyProductsApi,
     mapKey: { totalPages: "total", list: "list", size: "pageSize" }
   })],
 

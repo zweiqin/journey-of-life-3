@@ -106,7 +106,11 @@ export default {
     },
     onReachBottom(value) {
         this.isLoding = true
-        this.$refs.MakeSmallFortuneList.getMoewPostList()
+        if(this.currentTab == 0) {
+            this.$refs.MakeSmallFortuneList.getMoewPostList()
+        }else {
+            this.$refs.MyRelease.getMoewPostList()
+        }
     }
 }
 </script>
