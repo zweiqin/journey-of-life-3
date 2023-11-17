@@ -1,7 +1,7 @@
 <template>
-  <view class="page-header-wrapper">
-    <view class="search-container">
-      <TuanLocation>
+  <view class="page-header-wrapper" :style="pageHeaderStyle">
+    <view class="search-container" :style="{ padding: searchPaddding }">
+      <TuanLocation v-if="showLocation">
         <view class="address-wrapper">
           <text class="address-text">{{ currentAddress }}</text>
           <image class="arrow-icon" src="../../../static/images/new-index/arrow-1.png"></image>
@@ -10,7 +10,7 @@
       <view @click="go('/pages/search-page/search-page')" class="input-view">{{ placeholder }}</view>
       <button v-if="showSearchBtn" class="search-input-btn uni-btn">搜索</button>
     </view>
-    <button class="uni-btn page-header-right" style="flex-shrink: 0;"
+    <button v-if="showMessage" class="uni-btn page-header-right" style="flex-shrink: 0;"
       @click="go('/user/sever/customer-service/customer-service')">
       <image class="message-icon" src="../../../static/images/new-index/message-1.png"></image>
     </button>
@@ -27,6 +27,26 @@ export default {
     placeholder: {
       type: String,
       default: "请输入您想搜索的商品"
+    },
+    showMessage: {
+      type: Boolean,
+      default: true
+    },
+    showLocation: {
+      type: Boolean,
+      default: true
+    },
+    backgroundColor: {
+      type: String,
+      default: '#ebebf5'
+    },
+    padding: {
+      type: String,
+      default: '30upx'
+    },
+    searchPaddding: {
+      type: String,
+      default: '10upx 15upx'
     }
   },
   computed: {
@@ -36,6 +56,13 @@ export default {
         return '定位失败'
       } else {
         return currentAddress.length > 4 ? currentAddress.slice(0, 4) + '...' : currentAddress
+      }
+    },
+
+    pageHeaderStyle() {
+      return {
+        background: this.backgroundColor,
+        padding: this.padding
       }
     }
   }
@@ -58,7 +85,6 @@ export default {
     display: flex;
     align-items: center;
     border: 2upx solid #EF5511;
-    padding: 10upx 15upx;
     box-sizing: border-box;
     height: 72upx;
     border-radius: 100px;

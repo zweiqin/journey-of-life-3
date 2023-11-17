@@ -1512,12 +1512,12 @@
             "navigationBarTitleText": "退货详情"
           }
         },
-				{
-					"path": "another-serve/afterSaleApplyRefund/index",
-					"style": {
-						"navigationBarTitleText": "申请退款"
-					}
-				},
+        {
+          "path": "another-serve/afterSaleApplyRefund/index",
+          "style": {
+            "navigationBarTitleText": "申请退款"
+          }
+        },
         {
           "path": "another-serve/shareProduct/index",
           "style": {

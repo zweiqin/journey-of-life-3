@@ -9,21 +9,16 @@
 				<text class="shabizhongweiqing">数字化营销的领跑者</text>
 			</view>
 		</view>
-		<view
-			style="
+		<view style="
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         margin-top: 80upx;
-      "
-		>
+      ">
 			<view style="text-align: center">
-				<image
-					style="width: 118upx; height: 98upx; margin-top: 140rpx"
-					src="../../static/images/icon/we-chat.png"
-					mode=""
-				/>
+				<image style="width: 118upx; height: 98upx; margin-top: 140rpx" src="../../static/images/icon/we-chat.png"
+					mode="" />
 				<TuanWXLogin @login="handleWXLoginAfter">
 					<view class="CaoNiMaZhongWeiQing">
 						微信一键登录
@@ -51,29 +46,18 @@
 					>注册</view
 					>
 					</view> -->
-				<view
-					style="display: flex; flex-direction: column; align-items: center"
-					@click="go('/pages/login/pwdLogin')"
-				>
+				<view style="display: flex; flex-direction: column; align-items: center" @click="go('/pages/login/pwdLogin')">
 					<view class="DiaoNiMaZhongWeiQing">
-						<image
-							class="iconImg"
-							src="../../static/images/icon/mima.png"
-						></image>
+						<image class="iconImg" src="../../static/images/icon/mima.png"></image>
 					</view>
 					<view style="margin-top: 12upx; font-size: 26upx; color: #ffffff">
 						密码登录
 					</view>
 				</view>
-				<view
-					style="display: flex; flex-direction: column; align-items: center"
-					@click="go('/pages/login/login-message')"
-				>
+				<view style="display: flex; flex-direction: column; align-items: center"
+					@click="go('/pages/login/login-message')">
 					<view class="DiaoNiMaZhongWeiQing">
-						<image
-							class="iconImg"
-							src="../../static/images/icon/duanxindenglu.png"
-						></image>
+						<image class="iconImg" src="../../static/images/icon/duanxindenglu.png"></image>
 					</view>
 					<view style="margin-top: 12upx; font-size: 26upx; color: #ffffff">
 						短信登录
@@ -92,6 +76,8 @@
 			</view>
 			</text>
 			</view> -->
+
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
@@ -168,6 +154,7 @@ export default {
 
 		if (userId && userInfo.userId) {
 			if (this.partnerCode) {
+				console.log(111);
 				await this.handlePartnerBind(userId)
 				uni.switchTab({
 					url: '/'
@@ -306,8 +293,8 @@ export default {
 						})
 					}
 				},
-				fail: () => {},
-				complete: () => {}
+				fail: () => { },
+				complete: () => { }
 			})
 		},
 
@@ -327,6 +314,7 @@ export default {
 						if (data.ok) {
 							_this.ttoast('操作成功')
 						} else {
+							console.log("草拟吗");
 							_this.ttoast({
 								type: 'fail',
 								title: data.msg || '操作失败,请重试'
@@ -334,18 +322,19 @@ export default {
 						}
 
 						uni.removeStorageSync(GROUP_INVITE_CODE)
+						setTimeout(() => {
+							resolve()
+						}, 2000)
 					},
 					fail: (fail) => {
 						_this.ttoast({
 							type: 'fail',
 							title: '操作失败,请重试'
 						})
-					},
-					complete: (complete) => {
 						setTimeout(() => {
 							resolve()
-						}, 1000)
-					}
+						}, 2000)
+					},
 				})
 			})
 		},
@@ -411,88 +400,101 @@ export default {
 
 <style lang="less" scoped>
 .colorText {
-  margin-top: 2rpx;
-  font-size: 24rpx;
-  font-weight: 50;
-  line-height: 36rpx;
-  text-align: center;
-  color: #fff;
+	margin-top: 2rpx;
+	font-size: 24rpx;
+	font-weight: 50;
+	line-height: 36rpx;
+	text-align: center;
+	color: #fff;
 }
+
 .container {
-  background-color: #ea5b1d;
-  min-height: 100vh;
+	background-color: #ea5b1d;
+	min-height: 100vh;
 }
+
 .ShaBiZhongWeiQing {
-  font-size: 32rpx;
-  font-weight: normal;
-  line-height: 42rpx;
-  color: #ffffff;
+	font-size: 32rpx;
+	font-weight: normal;
+	line-height: 42rpx;
+	color: #ffffff;
 }
+
 .CaoNiMaZhongWeiQing {
-  margin-top: 40rpx;
-  width: 600rpx;
-  height: 80rpx;
-  background-color: #fff;
-  border-radius: 50rpx;
-  font-size: 38rpx;
-  font-weight: 600;
-  line-height: 80rpx;
-  font-feature-settings: "kern" on;
-  color: #ea5b1d !important;
+	margin-top: 40rpx;
+	width: 600rpx;
+	height: 80rpx;
+	background-color: #fff;
+	border-radius: 50rpx;
+	font-size: 38rpx;
+	font-weight: 600;
+	line-height: 80rpx;
+	font-feature-settings: "kern" on;
+	color: #ea5b1d !important;
 }
+
 .DiaoNiMaZhongWeiQing {
-  box-sizing: border-box;
-  padding: 10rpx;
-  width: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #fff;
+	box-sizing: border-box;
+	padding: 10rpx;
+	width: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background-color: #fff;
 }
+
 .DaShaBiZhongWeiQing {
-  width: 34rpx;
-  height: 34rpx;
-  background-color: #fff;
-  display: flex;
+	width: 34rpx;
+	height: 34rpx;
+	background-color: #fff;
+	display: flex;
 }
+
 .otherLoginButton {
-  // margin-top: 555rpx;
-  position: fixed;
-  bottom: 120rpx;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .orderButtonItem {
-    display: flex;
-    justify-content: space-around;
-    white-space: nowrap;
-    & > view:not(:first-child) {
-      padding-left: 48upx;
-    }
-  }
+	// margin-top: 555rpx;
+	position: fixed;
+	bottom: 120rpx;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.orderButtonItem {
+		display: flex;
+		justify-content: space-around;
+		white-space: nowrap;
+
+		&>view:not(:first-child) {
+			padding-left: 48upx;
+		}
+	}
 }
+
 .agreementBox {
-  width: 100vw;
-  position: fixed;
-  // transform: translateX(-50%);
-  bottom: 46rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	width: 100vw;
+	position: fixed;
+	// transform: translateX(-50%);
+	bottom: 46rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
 .iconImg {
-  width: 40rpx;
-  height: 40rpx;
+	width: 40rpx;
+	height: 40rpx;
 }
+
 /deep/ .uni-checkbox-input-checked {
-  background-color: #ffffff !important;
+	background-color: #ffffff !important;
 }
+
 /deep/ .uni-checkbox-input-checked::before {
-  color: #0648fe !important;
+	color: #0648fe !important;
 }
+
 .Agreements {
-  display: flex;
+	display: flex;
 }
 </style>

@@ -21,7 +21,8 @@ export {
 	isSubarray,
 	tradeOrderNo,
 	jumpToOtherProject,
-	isH5InWebview
+	isH5InWebview,
+	isVideo
 } from './DWHutils'
 export { formatTime } from './util'
 export { payFn, payShopFn } from './pay'
