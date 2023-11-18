@@ -1,7 +1,7 @@
 <template>
   <view class="shop-page-conatiner">
     <TuanAppShim bg="transparent"></TuanAppShim>
-    <PageHeader></PageHeader>
+    <PageHeader showSearchBtn></PageHeader>
 
     <view class="main-area">
       <view class="navs">

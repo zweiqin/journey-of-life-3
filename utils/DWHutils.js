@@ -364,3 +364,14 @@ export const isH5InWebview = () => {
 	const ua = navigator.userAgent.toLowerCase();
 	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
 }
+
+/**
+ * 判断当前资源是否是视频格式
+ * @param {string} url 
+ * @returns {boolean}
+ */
+export function isVideo(url) {
+  const videoExtensions = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'];
+  const lowercasedUrl = url.toLowerCase();
+  return videoExtensions.some(type => lowercasedUrl.includes(type));
+}

@@ -1,115 +1,170 @@
 <template>
   <view class="brand-factory-container">
-    <view class="backHeader">
-      <image @click="handleBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
-      <text class="pageTitle">品牌工厂</text>
+
+    <view class="search-header">
+      <image @click="handleBack" class="back-icon" src="../../../static/images/con-center/order-back.png"></image>
+      <view class="page-title">品牌工厂</view>
+      <PageHeader searchPaddding="10upx 15upx 10upx 28upx" placeholder="品牌工厂" :showLocation="false" padding="0"
+        background-color="transparent" :showMessage="false" showSearchBtn>
+      </PageHeader>
     </view>
 
-    <scroll-view class="category-scroll-view" scroll-x>
-      <view class="category-list-wrapper">
-        <view class="category-item" @click="currentCategory = category.value" v-for="category in categoryList"
-          :key="category.value">
-          <image :src="currentCategory === category.value ? category.active : category.default" class="category-img">
-          </image>
-        </view>
-      </view>
-    </scroll-view>
 
-    <view class="sub-menus-container">
-      <scroll-view class="scroll-view" scroll-x="true">
-        <view class="wrapper">
-          <view class="item" :class="{ active: currentSubMenu === item.value }" v-for="item in stylesList"
-            :key="item.value">{{ item.label }}</view>
+    <view class="filter-container tui-skeleto">
+      <scroll-view scroll-with-animation :scroll-into-view="currentBrandTypeId" scroll-x
+        style="background-color: #eff3f6;">
+        <view class="brand-filter-wrapper">
+          <view class="brand-item" :id="'item_' + category.id" @click="handleChangeSecondClass(category)"
+            v-for="category in categoryList" :key="category.id">
+            <image :src="currentBrandType === category.id ? category.active : category.picUrl" class="category-img">
+            </image>
+          </view>
         </view>
       </scroll-view>
 
-      <view class="screen">
-        <text>筛选</text>
-        <!-- <image
-          class="icon"
-          src="../../../static/images/new-index/screen.png"
-          mode=""
-        /> -->
-      </view>
+      <scroll-view scroll-x>
+        <view class="goods-filter-wrapper">
+          <view class="goods-filter-item" @click="handleChangeNextCategory(item.id)"
+            :class="{ active: currentNextCategoryId === item.id }" v-for="item in nextCategory" :key="item.id">{{
+              item.storeName }}</view>
+        </view>
+      </scroll-view>
     </view>
 
-    <view class="brand-list">
-      <BrandPane v-for="item in brandList" :key="item.brand.id" :data="item"></BrandPane>
+    <view class="brand-list-wrapper" v-if="$data._list.length">
+      <BrandPane class="tui-skeleton-fillet" v-for="factory in $data._list" :factory="factory" :key="factory.id">
+      </BrandPane>
+    </view>
+    <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
+    <PageLoading :style="{ 'z-index': isPageLoading === 'page' ? '10000 !important' : '10 !important' }"
+      v-if="isPageLoading"></PageLoading>
+
+    <view class="no-data" v-if="!$data._list.length && $data._status !== 'loading'"
+      style="width: 100%; height: 500upx; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 24upx; flex-direction: column">
+      <tui-icon name="shop-fill" :size="30" color="#ccc" margin="0 0 30upx 0"></tui-icon>
+      暂无商家~
     </view>
   </view>
 </template>
 
 <script>
-import { stylesList } from './data'
-import BrandPane from './BrandPane'
-import { getBrandListBySelectApi } from '../../../api/brand'
+import PageHeader from '../cpns/PageHeader.vue'
+import BrandPane from './components/BrandPane.vue'
 import { categoryList } from './config'
+import { getFactoryListApi, getFactoryClassApi, getFactoryNextClassApi } from '../../../api/anotherTFInterface'
+import loadMore from '../../../mixin/loadMore'
+import PageLoading from '../../order/components/Loading.vue'
 
 export default {
   components: {
+    PageHeader,
     BrandPane,
+    PageLoading
   },
-  mounted() {
-    this.getBrandList()
-  },
+
+  mixins: [loadMore({
+    api: getFactoryListApi,
+    mapKey: { totalPages: "total", list: "list", size: "pageSize" }
+  })],
   data() {
     return {
-      categoryList: Object.freeze(categoryList),
-      stylesList: Object.freeze(stylesList),
-      currentSubMenu: 0,
-      totalPages: 0,
-      currentCategory: '品牌家具',
-      brandList: [],
-      queryInfo: {
-        page: 1,
-        limt: 10,
-        labelId: 1
-      },
+      skeletonShow: true,
+      currentBrandType: '品牌家具',
+      currentNextCategoryId: '',
+      categoryList: [], // 二级分类
+      nextCategory: [], // 三级分类
     }
+  },
+
+  onLoad() {
+    this.isPageLoading = 'page'
+    this.getFactoryClassList()
   },
 
   methods: {
-    handleBack() {
-      uni.navigateBack()
-    },
-    async getBrandList(isLoadMore) {
-      uni.showLoading()
-      const res = await getBrandListBySelectApi({ ...this.queryInfo })
-
-      uni.hideLoading()
-      if (res.errno === 0) {
-        if (isLoadMore) {
-          this.brandList.push(...res.data.brandList)
-        } else {
-          this.brandList = res.data.brandList
-        }
-
-        console.log(this.brandList[4])
-        this.totalPages = res.data.totalPages
+    // 获取一级分类
+    async getFactoryClassList() {
+      const res = await getFactoryClassApi({
+        levelId: 1
+      })
+      const classList = res.data
+      if (classList && classList.length) {
+        const brandClass = classList.find(item => item.storeName === '品牌工厂')
+        this.getSecondClassList(brandClass ? brandClass.id : '0', true)
       } else {
-        uni.showToast({
-          title: '品牌工厂获取失败',
-          icon: 'none',
-        })
+        this.getSecondClassList('0', true)
       }
     },
+
+
+    // 获取二级分类
+    async getSecondClassList(pid, isSecondClass) {
+      try {
+        const res = await getFactoryNextClassApi({
+          pid
+        })
+
+        if (isSecondClass) {
+          this.mapLocalToNetData(res.data)
+        } else {
+          this.nextCategory = res.data
+          this.handleChangeNextCategory(res.data[0] ? res.data[0].id : null)
+        }
+      } finally {
+        this.isPageLoading = undefined
+      }
+    },
+
+    // 映射active数据
+    mapLocalToNetData(classList) {
+      if (this.categoryList.length) return
+      if (classList && classList.length) {
+        const localClassMap = new Map(categoryList.map(localClass => [localClass.storeName, localClass]));
+        for (const netClass of classList) {
+          const localClass = localClassMap.get(netClass.storeName);
+          if (localClass) {
+            netClass.active = localClass.active;
+          }
+        }
+        this.categoryList = classList
+      } else {
+        this.categoryList = categoryList;
+      }
+
+      // this.currentBrandType = this.categoryList[0].id
+      this.handleChangeSecondClass(this.categoryList[0])
+    },
+
+    // 切换二级分类
+    handleChangeSecondClass(category) {
+      if (this.currentBrandType === category.id) return
+      this.isPageLoading = 'block'
+      this.currentBrandType = category.id
+      this.getSecondClassList(category.id)
+    },
+
+    // 切换三级分类
+    handleChangeNextCategory(id) {
+      this.$data._list = []
+      if (!id) {
+        this.$data._query.classifyId = this.currentBrandType
+        this._loadData()
+      } else {
+        if (this.currentNextCategoryId === id) return
+        this.currentNextCategoryId = id
+        this.$data._query.classifyId = id
+        this._loadData()
+      }
+    },
+
+    handleBack() {
+      uni.navigateBack();
+    }
   },
 
-  onReachBottom() {
-    return
-    if (this.totalPages <= this.queryInfo.page) {
-      return 'no-more'
-    }
-
-    if (this.brandList.length < this.queryInfo.size) {
-      return 'lack'
-    }
-
-    this.queryInfo.page++
-    this.getBrandList(true)
-
-    if (this.totalPages <= this.queryInfo.page) {
-      return 'no-more'
+  computed: {
+    currentBrandTypeId() {
+      return 'item_' + this.currentBrandType
     }
   }
 }
@@ -117,110 +172,85 @@ export default {
 
 <style lang="less" scoped>
 .brand-factory-container {
-  .category-list-wrapper {
+  min-height: 100vh;
+  background-color: #fff;
+
+  .search-header {
+    position: relative;
     display: flex;
     align-items: center;
-    word-spacing: nowrap;
-    margin-bottom: 10upx;
+    padding: 0 30upx;
+    box-sizing: border-box;
+    height: 88upx;
+    z-index: 20;
 
-    .category-item {
-      margin-right: 10upx;
+    .back-icon {
+      width: 22.97upx;
+      height: 39.66upx;
+      flex-shrink: 0;
+    }
 
-      .category-img {
+    .page-title {
+      font-size: 42upx;
+      font-weight: 500;
+      color: #000;
+      white-space: nowrap;
+      margin: 0 24upx 0 16upx;
+    }
+
+  }
+
+  .filter-container {
+    .brand-filter-wrapper {
+      position: relative;
+      width: 100%;
+      height: 212upx;
+      display: flex;
+      white-space: nowrap;
+      align-items: flex-end;
+      padding: 0 19upx;
+      box-sizing: border-box;
+      z-index: 20;
+
+      .brand-item {
         width: 175upx;
         height: 200upx;
-        flex-shrink: 0;
-      }
-    }
-  }
 
-  .backHeader {
-    position: relative;
-    width: 750rpx;
-    height: 88rpx;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    margin-bottom: 40upx;
-
-    .backIcon {
-      width: 60rpx;
-      height: 60rpx;
-    }
-
-    .pageTitle {
-      font-family: 思源黑体;
-      font-size: 32rpx;
-      font-weight: 600;
-      line-height: 44rpx;
-      letter-spacing: 0.32rpx;
-      color: #222229;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .sub-menus-container {
-    display: flex;
-    align-items: flex-start;
-    width: 100vw;
-    background-color: #ffffff;
-    box-sizing: border-box;
-    // height: 80upx;
-    border-radius: 0 0 24upx 24upx;
-    margin-bottom: -10upx;
-
-    .scroll-view {
-      width: calc(100vw - 120upx);
-    }
-
-    .wrapper {
-      height: 48upx;
-      display: flex;
-
-      .item {
-        background-color: #f6f6f5;
-        line-height: 48upx;
-        padding: 0 32upx;
-        border-radius: 100px;
-        margin-right: 16upx;
-        white-space: nowrap;
-        font-size: 28upx;
-        color: #8f8d85;
-        transition: all 100ms;
-
-        &.active {
-          color: #f9ba0c;
-          background: #fff6dc;
+        .category-img {
+          width: 175upx;
+          height: 200upx;
         }
       }
     }
 
-    .screen {
-      position: relative;
+    .goods-filter-wrapper {
+      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 120upx;
-      // background-color: aqua;
-      flex-shrink: 0;
-      font-size: 28upx;
-      color: #3a3629;
-      border-left: 1upx solid #f6f6f5;
+      white-space: nowrap;
+      padding: 22upx 18upx 24upx;
+      box-sizing: border-box;
 
-      .icon {
-        width: 32upx;
-        height: 32upx;
+      .goods-filter-item {
+        color: #888889;
+        font-size: 24upx;
+        background-color: #EFF3F6;
+        padding: 6upx 8upx;
+        margin-right: 12upx;
+
+        &.active {
+          color: #000;
+        }
       }
     }
   }
 
-  .brand-list {
+  .brand-list-wrapper {
     width: 100%;
-    height: 100%;
-    padding: 12upx;
+    padding: 0 18upx 30upx;
     box-sizing: border-box;
   }
+
+
 }
 </style>

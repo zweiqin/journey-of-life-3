@@ -248,6 +248,17 @@ export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/s
 // 提交订单
 export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/trackReport', data, 'POST')
 
+// 获取品牌工厂列表
+export const getFactoryListApi = (data) => AnotherTFRequest('/shop/getShopAll2', data, 'post')
+
+// 获取工厂详情
+export const getFactoryDetailApi = data => AnotherTFRequest('/shop/getIndex2', data)
+
+// 获取品牌工厂的分类
+export const getFactoryClassApi = data => AnotherTFRequest('/shopCategoryMall/getShopCategoryLevel', data)
+
+// 获取品牌工厂下级分类
+export const getFactoryNextClassApi = data => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data)
 // 查询热搜词
 // 获取搜索栏的热门搜索
 export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)

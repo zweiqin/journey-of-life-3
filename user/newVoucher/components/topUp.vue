@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { submitVouche, giftVoucher } from '@/api/user/voucher'
+import { submitVoucher, giftVoucher } from '@/api/user/voucher'
 import VoucherBalance from '../cpns/VoucherBalance.vue'
 import AmountSelection from '../cpns/AmountSelection.vue'
 import { handleDoPay } from '@/utils/payUtil'
@@ -98,7 +98,7 @@ export default {
         },
         submitVouchers() {
             let {buyerUserId,token} = this.userInfo
-            submitVouche({
+            submitVoucher({
                 voucherId: '1',
                 number: this.amount * 2,
                 payGrade: this.amount,
