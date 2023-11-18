@@ -139,11 +139,29 @@ export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/add
 export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data)
 
 // 售后
+// 售后列表查询
+export const getAllFindReturnListApi = (data) => AnotherTFRequest('/after/getAll', data)
+
 // 售后详情查询
 export const getReturnDetailByIdApi = (data) => AnotherTFRequest('/after/getById', data)
 
+// 撤销退款
+export const updateCancelReturnRefundApi = (data) => AnotherTFRequest('/after/returnRefund', data, 'POST')
+
 // 撤销退货
-export const updateCancelReturnGoodsApi = (data) => AnotherTFRequest('/after/returnGoods', data)
+export const updateCancelReturnGoodsApi = (data) => AnotherTFRequest('/after/returnGoods', data, 'POST')
+
+// 申请平台介入
+export const applyAfterPlatformApi = (data) => AnotherTFRequest('/after/platform', data, 'POST')
+
+// 删除售后记录
+export const updateDeleteAfterRecordApi = (data) => AnotherTFRequest('/after/deleteAfter', data, 'POST')
+
+// 选择快递公司查询
+export const getExpressSelectShippingCompanyApi = (data) => AnotherTFRequest('/order/getExpressSelect', data)
+
+// 填写退货物流单
+export const updateSendGoodsReturnExpressApi = (data) => AnotherTFRequest('/order/returnExpress', data, 'POST')
 
 // 优惠券
 // 领取优惠券

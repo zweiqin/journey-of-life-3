@@ -12,7 +12,10 @@
 					<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 				</view>
 			</BeeBack>
-			<BrandInfo :brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate" @refresh="getBrandDetail"></BrandInfo>
+			<BrandInfo
+				:brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate"
+				@refresh="getBrandDetail"
+			></BrandInfo>
 		</view>
 
 		<!-- <view
@@ -26,26 +29,22 @@
 			<tui-icon name="arrowright" color="#151515" :size="26"></tui-icon>
 			</view> -->
 
+		<!-- ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食']allTabList.map(i => i.classifyName) -->
 		<tui-tab
-			:tabs="allTabList.map(i => i.classifyName)" :current="currentTab" scroll background-color="transparent"
-			:size="32"
-			bold bottom="6upx" color="#222229" selected-color="#222229"
-			slider-bg-color="#ef530e" slider-height="4px"
+			:tabs="allTabList" :current="currentTab" scroll background-color="transparent"
+			:size="32" bold bottom="6upx" color="#222229"
+			selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
 			@change="handleTabChange"
 		></tui-tab>
 
 		<view class="brand-pane">
-			<!-- v-if="currentTab === 1" -->
 			<view v-if="currentTab === -1">
 				<CanvasPage
 					v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
 					:type-id="3" :shop-id="Number(shopId)"
 				>
 				</CanvasPage>
-				<tui-no-data
-					v-else-if="componentsData && !componentsData.length" :fixed="false"
-					style="margin-top: 40upx;"
-				>
+				<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false" style="margin-top: 40upx;">
 					商家未装修首页
 				</tui-no-data>
 			</view>
@@ -77,11 +76,6 @@
 						></tui-icon>
 					</view>
 				</view>
-				<!-- <StoreGoodsList
-					:brand-detail="brandDetail" overflow-y="hidden"
-					@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}`)"
-					@add-car="(e) => $refs.refJSpecificationScreen.open(e.id)"
-					></StoreGoodsList> -->
 				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 						<template #left="{ entity }">
@@ -134,7 +128,9 @@ export default {
 			},
 			shopId: null,
 			brandDetail: {},
-			allTabList: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
+			allTabList: ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食'],
+			// allTabList: [{ classifyName: '商品', classifyId: 0 }, { classifyName: '四季鲜蔬', classifyId: 0 }, { classifyName: '火锅食材', classifyId: 0 }, { classifyName: '烧烤食材', classifyId: 0 }, { classifyName: '鲜果礼篮', classifyId: 0 }, { classifyName: '粮油副食', classifyId: 0 }],
+			// allTabList: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			// 首页
 			componentsData: null,
@@ -161,11 +157,11 @@ export default {
 	onLoad(options) {
 		this.shopId = options.shopId
 		this.getBrandDetail()
-		getShopClassifyApi({
-			shopId: this.shopId
-		}).then((res) => {
-			this.allTabList = this.allTabList.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
-		})
+		// getShopClassifyApi({
+		// 	shopId: this.shopId
+		// }).then((res) => {
+		// 	this.allTabList = this.allTabList.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+		// })
 		getShopBannerApi({
 			shopId: this.shopId
 		}).then((res) => {
@@ -231,15 +227,16 @@ export default {
 		// 栏目切换
 		handleTabChange(e) {
 			this.currentTab = e.index
-			// if (e.index === 1) return
-			this.shopGoodsInfo.data = []
-			this.shopGoodsInfo.query.page = 1
-			if (e.index === 0) {
-				this.classifyId = ''
-			} else {
-				this.classifyId = this.allTabList[e.index].classifyId
-			}
-			this.getShopGoodsTemplate()
+			console.log(this.currentTab)
+			// // if (e.index === 1) return
+			// this.shopGoodsInfo.data = []
+			// this.shopGoodsInfo.query.page = 1
+			// if (e.index === 0) {
+			// 	this.classifyId = ''
+			// } else {
+			// 	this.classifyId = this.allTabList[e.index].classifyId
+			// }
+			// this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
 			uni.showLoading()
@@ -257,7 +254,7 @@ export default {
 				this.shopGoodsInfo.isEmpty = this.shopGoodsInfo.data.length === 0
 				uni.hideLoading()
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		},
@@ -294,7 +291,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .brand-detail-container {
 	position: relative;
 	min-height: 100vh;
