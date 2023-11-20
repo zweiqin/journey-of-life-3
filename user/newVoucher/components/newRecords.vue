@@ -14,9 +14,9 @@
         </view>
         <view class="listMain">
             <keep-alive>
-                <RecordsEvery ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 0"></RecordsEvery>
-                <RechargeRecord ref="RechargeRecord" :condition="dateValue" v-if="currentIndex == 1"></RechargeRecord>
-                <IncrementRecord ref="IncrementRecord" :condition="dateValue" v-if="currentIndex == 2"></IncrementRecord>
+                <RecordsEvery :acountNumbers="acountNumbers" ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 0"></RecordsEvery>
+                <RechargeRecord :acountNumbers="acountNumbers" ref="RechargeRecord" :condition="dateValue" v-if="currentIndex == 1"></RechargeRecord>
+                <IncrementRecord :acountNumbers="acountNumbers" ref="IncrementRecord" :condition="dateValue" v-if="currentIndex == 2"></IncrementRecord>
             </keep-alive>
         </view>
         <view class="footer">
@@ -34,7 +34,7 @@
 import RecordsEvery from '../cpns/RecordsEvery.vue'
 import RechargeRecord from '../cpns/RechargeRecord.vue'
 import IncrementRecord from '../cpns/IncrementRecord.vue'
-
+import { getTotal } from '@/api/user/voucher'
 export default {
     name: 'Records',
     components: {
@@ -49,9 +49,24 @@ export default {
             dateSelection: [{name: '年', value: 5}, { name: '月', value: 4 }, { name: '日', value: 1 }],
             dateIndex: 0,
             dateValue: 0,
+            acountNumbers: null
         }
     },
+    created() {
+        this.getAcountNumber()
+    },
     methods: {
+        getAcountNumber() {
+            getTotal({
+                type: 3,
+                condition: this.dateValue
+            }).then(res => {
+                console.log(res);
+                this.acountNumbers = res.data
+            }).catch(err => {
+                console.log(err);
+            })
+        },
         chekoutCurrent(index) {
             this.currentIndex = index
         },
@@ -63,9 +78,7 @@ export default {
                 this.dateIndex = index
                 this.dateValue = this.dateSelection[index].value
             }
-            // let getListFn = [this.$refs.RecordsEvery, this.$refs.RechargeRecord, this.$refs.IncrementRecord]
-            // getListFn[this.currentIndex].dataList = []
-            // getListFn[this.currentIndex].getListData()
+            this.getAcountNumber()
         },
     }
 }

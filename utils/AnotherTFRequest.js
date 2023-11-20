@@ -9,6 +9,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 		const token = res.token
 		if (token) {
 			header.Authorization = token
+			header['satoken-user'] = res.ssoUserInfo.token
 		}
 		// showLoading()
 		uni.request({
