@@ -32,6 +32,8 @@
             <BrandPane v-for="factory in recommendBrandList" :factory="factory" :key="factory.id"></BrandPane>
           </view>
         </view>
+
+
       </swiper-item>
 
       <swiper-item class="swiper-item-container">
@@ -81,6 +83,24 @@
         </view>
       </swiper-item>
     </swiper>
+
+    <!-- 底部footer -->
+    <view class="footer-container"
+      :class="{ 'fade-in': factoryDetail && currentTabIndex === 0, 'fade-out': factoryDetail && currentTabIndex === 1 }">
+      <view class="left-detail">
+        <view class="logo">{{ factoryDetail.shopName.slice(0, 1) }}</view>
+        <view class="name-wrapper">
+          <view class="brand-name">{{ factoryDetail.shopName }}</view>
+          <view class="tag">已认证</view>
+        </view>
+      </view>
+
+      <button class="uni-btn call-btn" @click="handleCallBrand"
+        :style="{ opacity: factoryDetail.chargePersonPhone ? 1 : 0.6 }">
+        <image class="call-icon" src="../../../static/images/new-index/brandFactory/all-icon.png"></image>
+        电话咨询
+      </button>
+    </view>
 
     <tui-toast ref="toast"></tui-toast>
     <BeeWxShare ref="beeWxShareRef" @click="handleClickShare"></BeeWxShare>
@@ -292,6 +312,26 @@ export default {
       } catch (error) {
         console.log("分享报错了", error);
       }
+    },
+
+    // 点击打电话
+    handleCallBrand() {
+      if (this.factoryDetail.chargePersonPhone) {
+        uni.makePhoneCall({
+          phoneNumber: this.factoryDetail.chargePersonPhone,
+          fail: () => {
+            this.ttoast({
+              type: 'fail',
+              title: '操作失败'
+            });
+          }
+        });
+      } else {
+        this.ttoast({
+          type: 'fail',
+          title: "商家未留下联系方式"
+        })
+      }
     }
   },
 }
@@ -305,12 +345,11 @@ export default {
 
     .swiper-item-container {
       width: 100vw !important;
-      height: 100vh !important;
+      min-height: 100vh !important;
       overflow: auto;
       background: #EFF3F6;
 
       &.brand-detail-info {
-
         .brand-detail-info-main {
           padding: 40upx 25upx;
           box-sizing: border-box;
@@ -378,11 +417,11 @@ export default {
   }
 
   .brand-recommend-containter {
-    margin-top: 48upx;
-
     .brand-list {
       padding: 36upx 18upx;
       background-color: #fff;
+      margin-bottom: 170upx;
+
     }
   }
 
@@ -565,6 +604,100 @@ export default {
 
 
         }
+      }
+    }
+  }
+
+  .footer-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150upx;
+    background-color: rgb(255, 255, 255);
+    width: 100vw;
+    padding: 20upx 50upx 40upx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 150ms, translateY 1s;
+
+    &.fade-in {
+      opacity: 1;
+    }
+
+    &.fade-out {
+      display: none;
+      opacity: 0;
+    }
+
+    .left-detail {
+      display: flex;
+      align-items: center;
+
+      .logo {
+        width: 88upx;
+        height: 88upx;
+        flex-shrink: 0;
+        border-radius: 100px;
+        background-color: #EF530E;
+        color: #fff;
+        font-size: 42upx;
+        font-weight: block;
+        text-align: center;
+        line-height: 88upx;
+        margin-right: 14upx;
+      }
+
+      .name-wrapper {
+        font-size: 32upx;
+        font-weight: 500;
+        white-space: nowrap;
+        width: 222upx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .tag {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 12upx;
+          line-height: 1.5;
+          padding: 1upx 8upx;
+          background: linear-gradient(90deg, #F1E5C9 0%, #F8DBB0 100%);
+          font-size: 24upx;
+          color: #533406;
+          border-radius: 4upx;
+        }
+      }
+    }
+
+    .call-btn {
+      width: 284upx;
+      height: 88upx;
+      background-color: #EF530E;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32upx;
+      font-weight: 500;
+      color: #fff;
+      font-weight: 500;
+      transition: all 350ms;
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      .call-icon {
+        width: 48upx;
+        height: 48upx;
+        flex-shrink: 0;
+        margin-right: 12upx;
       }
     }
   }

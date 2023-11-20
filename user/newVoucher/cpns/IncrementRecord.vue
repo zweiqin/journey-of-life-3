@@ -2,11 +2,11 @@
     <view class="container">
         <view class="TotalRevenue">
             <view class="amountText">
-                转赠金额 &nbsp;(元) &nbsp;:&nbsp; {{ 123 }}
+                总支出 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总支出'] }}
             </view>
-            <!-- <view class="amountText" v-if="currentIndex == 1">
-                已被领取额度 &nbsp;(元) &nbsp;:&nbsp;
-            </view> -->
+            <view class="amountText">
+                总收入 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收入'] }}
+            </view>
         </view>
         <view class="MakeMoneyRecordsList">
             <scroll-view scroll-y="true" class="scrollY" @scrolltolower="getMore">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getTotal, transferLogs, getAll } from '@/api/user/voucher'
+import { transferLogs, getAll } from '@/api/user/voucher'
 import { watch } from 'vue'
 export default {
     name: 'RechargeRecord',
@@ -35,6 +35,13 @@ export default {
         condition: {
             type: [Number, String],
             default: 5
+        },
+        acountNumbers: {
+            type: Object,
+            default: {
+                ['总支出']: 0,
+                '总收入': 0
+            }
         }
     },
     data() {
