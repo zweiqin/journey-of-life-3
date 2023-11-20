@@ -51,7 +51,7 @@ export default {
 		loginAction({ commit, dispatch }, loginData) {
 			return new Promise((resolve, reject) => {
 				loginApi({ ...loginData })
-					.then(({ data }) => {
+					.then(async ({ data }) => {
 						commit(CHNAGE_USER_ID, data.userInfo.userId)
 						commit(CHNAGE_USER_INFO, data.userInfo)
 						commit(CHNAGE_USER_TOKEN, data.token)
@@ -59,7 +59,7 @@ export default {
 							title: '登录成功'
 						})
 						console.log(data)
-						dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKeyToken')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -72,7 +72,7 @@ export default {
 		codeLoginAction({ commit, dispatch }, loginData) {
 			return new Promise((resolve, reject) => {
 				verificationCodeApi({ ...loginData })
-					.then(({ data }) => {
+					.then(async ({ data }) => {
 						commit(CHNAGE_USER_ID, data.userInfo.userId)
 						commit(CHNAGE_USER_INFO, data.userInfo)
 						commit(CHNAGE_USER_TOKEN, data.token)
@@ -80,7 +80,7 @@ export default {
 							title: '登录成功'
 						})
 						console.log(data)
-						dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKeyToken')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -93,14 +93,14 @@ export default {
 		wxLogin({ commit, dispatch }, code) {
 			return new Promise((resolve, reject) => {
 				wxLoginApi({ code })
-					.then(({ data }) => {
+					.then(async ({ data }) => {
 						commit(CHNAGE_USER_ID, data.userInfo.userId)
 						commit(CHNAGE_USER_INFO, data.userInfo)
 						commit(CHNAGE_USER_TOKEN, data.token)
 						uni.showToast({
 							title: '登录成功'
 						})
-						dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKeyToken')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -167,22 +167,27 @@ export default {
 
 		// 获取新团蜂token
 		updateStorageKeyToken() {
-			const userInfo = uni.getStorageSync(USER_INFO)
-			if (userInfo && userInfo.phone) {
-				uni.showLoading({ mask: true })
-				getAnotherTFTokenApi({ phone: userInfo.phone })
-					.then((res) => {
-						uni.setStorageSync(T_STORAGE_KEY, res.data)
-						uni.hideLoading()
+			return new Promise((resolve, reject) => {
+				const userInfo = uni.getStorageSync(USER_INFO)
+				if (userInfo && userInfo.phone) {
+					uni.showLoading({ mask: true })
+					getAnotherTFTokenApi({ phone: userInfo.phone })
+						.then((res) => {
+							uni.setStorageSync(T_STORAGE_KEY, res.data)
+							uni.hideLoading()
+							resolve(res.data)
+						})
+						.catch((err) => {
+							uni.hideLoading()
+							resolve(err)
+						})
+				} else {
+					uni.showToast({
+						title: '缺少用户手机号码'
 					})
-					.catch((err) => {
-						uni.hideLoading()
-					})
-			} else {
-				uni.showToast({
-					title: '缺少用户手机号码'
-				})
-			}
+					resolve('缺少用户手机号码')
+				}
+			})
 		}
 	}
 }

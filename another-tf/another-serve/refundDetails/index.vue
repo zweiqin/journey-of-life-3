@@ -1,6 +1,7 @@
-<!-- 退货详情 -->
+<!-- 退款详情 -->
 <template>
 	<view>
+		<JHeader title="退款详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view v-if="ifShow">
 			<view>
 				<view class="order-details-status">
@@ -117,7 +118,7 @@
 					<view class="title">退款信息</view>
 					<view class="item">
 						<view class="order-info-box">
-							<view v-for="item in itemlist.skus" class="order-info">
+							<view v-for="(item, index) in itemlist.skus" :key="index" class="order-info">
 								<view class="order-info-item">
 									<image :src="item.image" class="product-img"></image>
 									<view class="info-box">
@@ -146,17 +147,19 @@
 				<view class="order-list-box negotiate">
 					<view class="title">协商历史</view>
 					<view class="orderLineBox">
-						<u-time-line>
-							<u-time-line-item v-for="item in itemlist.afterHistory" v-if="itemlist.afterHistory.length > 0">
-								<!-- 此处没有自定义左边的内容，会默认显示一个点 -->
+						<tui-time-axis>
+							<tui-timeaxis-item
+								v-for="(item, index) in itemlist.afterHistory" v-if="itemlist.afterHistory.length > 0"
+								:key="index" background-color="#ffffff"
+							>
 								<template #content>
 									<view>
 										<view class="order-desc">{{ item.title }}</view>
 										<view class="order-time">{{ item.time }}</view>
 									</view>
 								</template>
-							</u-time-line-item>
-						</u-time-line>
+							</tui-timeaxis-item>
+						</tui-time-axis>
 					</view>
 				</view>
 			</view>
@@ -173,7 +176,7 @@ export default {
 	name: 'RefundDetails',
 	data() {
 		return {
-			item: {},
+			orderMsg: {},
 			itemlist: {},
 			status: 0,
 			deliveryfalse: false,
@@ -185,14 +188,14 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.item = JSON.parse(options.item)
+		this.orderMsg = JSON.parse(options.item)
 		this.getReturnDetail()
 	},
 	methods: {
 		getReturnDetail() {
 			getReturnDetailByIdApi({
-				afterId: this.item.afterId,
-				orderId: this.item.orderId
+				afterId: this.orderMsg.afterId,
+				orderId: this.orderMsg.orderId
 			}).then((res) => {
 				this.status = res.data.afterState
 				this.itemlist = res.data
@@ -204,8 +207,8 @@ export default {
 				title: '正在撤销退货...'
 			})
 			updateCancelReturnGoodsApi({
-				afterId: this.item.afterId,
-				orderId: this.item.orderId
+				afterId: this.orderMsg.afterId,
+				orderId: this.orderMsg.orderId
 			}).then((res) => {
 				uni.hideLoading()
 				uni.showToast({

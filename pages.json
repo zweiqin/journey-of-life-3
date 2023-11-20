@@ -1518,6 +1518,24 @@
             "navigationBarTitleText": "退货详情"
           }
         },
+        {
+          "path": "another-serve/addLogistics/index",
+          "style": {
+            "navigationBarTitleText": "填写退货物流"
+          }
+        },
+				{
+					"path": "another-serve/platformJoin/index",
+					"style": {
+						"navigationBarTitleText": "平台介入"
+					}
+				},
+				{
+					"path": "another-serve/afterSale/index",
+					"style": {
+						"navigationBarTitleText": "我的售后"
+					}
+				},
 				{
 					"path": "another-serve/afterSaleApplyRefund/index",
 					"style": {
