@@ -8,7 +8,7 @@
     <view class="search-container">
       <TuanLocation>
         <view class="locale">
-          <text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+          <text>{{ $store.getters.currentCity || '定位失败' }}</text>
           <image class="locale-icon" src="../../../../static/images/new-brand/index/down-arrow.png"></image>
         </view>
       </TuanLocation>

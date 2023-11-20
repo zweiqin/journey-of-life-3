@@ -8,9 +8,9 @@
           src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
           mode=""
         />
-        <TuanLocation>
+        <TuanLocation free>
           <text class="locale">{{
-            $store.getters.currentCity || '龙江镇'
+            $store.getters.currentShopCity || '定位失败'
           }}</text>
         </TuanLocation>
         <view class="search-wrapper">

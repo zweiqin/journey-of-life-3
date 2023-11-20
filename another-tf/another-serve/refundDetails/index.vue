@@ -223,7 +223,7 @@ export default {
 		// 平台介入
 		platform(afterId, orderId) {
 			uni.navigateTo({
-				url: `/another-tf/another-serve/Intervene/index?afterId=${afterId}&orderId=${orderId}`
+				url: `/another-tf/another-serve/platformJoin/index?afterId=${afterId}&orderId=${orderId}`
 			})
 		}
 	}

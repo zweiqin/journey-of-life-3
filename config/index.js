@@ -13,11 +13,7 @@ export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 生
 
 export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload'
 
-export const DEYI_URL = 'https://bus.deyisoft.cn:11112/dts-wx-api/wx'
-
 // 本地
-export const XZL_URL = 'http://192.168.0.79:8080'
-
 export const TEST_URL = 'http://192.168.0.52:8080/demo/wx/api/syb/orderPayH5'
 
 export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-app-api/ws' // 生产

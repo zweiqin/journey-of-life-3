@@ -6,10 +6,8 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 	return new Promise((resolve, reject) => {
 		header['Content-Type'] = 'application/json'
 		const res = uni.getStorageSync(T_STORAGE_KEY) || {}
-		const token = res.token
-		if (token) {
-			header.Authorization = token
-		}
+		if (res.token) header.Authorization = res.token
+		if (res.ssoUserInfo && res.ssoUserInfo.token) header['satoken-user'] = res.ssoUserInfo.token
 		// showLoading()
 		uni.request({
 			url: base_url + url,

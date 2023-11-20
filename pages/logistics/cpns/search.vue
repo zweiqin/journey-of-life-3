@@ -4,7 +4,7 @@
     <slot></slot>
     <image class="img" src="../../../static/images/index/location.png" alt="定位" />
     <TuanLocation>
-      <text class="loaction">{{ $store.getters.currentCity || '龙江镇' }}</text>
+      <text class="loaction">{{ $store.getters.currentCity || '定位失败' }}</text>
     </TuanLocation>
     <view class="search">
       <image class="search-icon" src="../../../static/images/icon/search.png" alt="" />

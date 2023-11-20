@@ -1,6 +1,5 @@
 <script>
 // app.js
-var http = require('./utils/http.js')
 import { getUserId } from './utils'
 import { BASE_WS_API } from './config'
 import { whoami } from './api/auth'
@@ -45,7 +44,6 @@ export default {
 		// 		path = path.substring(0, path.indexOf('code=') - 1)
 		// 		history.replaceState({}, '', path)
 		// 	}
-		http.getCartCount()
 		// }
 		// getUserId();
 	},
@@ -173,7 +171,7 @@ export default {
 			}
 
 			setTimeout(() => {
-				if (this.$store.getters.currentCity === '定位失败') {
+				if (!this.$store.getters.currentCity) {
 					this.useStorageLocation()
 				}
 			}, 2000)

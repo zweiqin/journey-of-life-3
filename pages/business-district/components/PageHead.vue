@@ -13,8 +13,7 @@
 					<text
 						style="max-width: 130upx;font-size: 32upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 					>
-						{{
-							$store.getters.shopAndBusiness || $store.getters.currentCity || '定位失败' }}
+						{{ $store.getters.currentShopCity || '定位失败' }}
 					</text>
 					<BeeIcon :size="26" name="turningdown" color="#222229"></BeeIcon>
 				</TuanLocation>

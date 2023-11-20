@@ -1,7 +1,7 @@
 <template>
   <view class="page-header-wrapper">
     <view class="search-container">
-      <TuanLocation>
+      <TuanLocation free>
         <view class="address-wrapper">
           <text class="address-text">{{ currentAddress }}</text>
           <image class="arrow-icon" src="../../../static/images/new-index/arrow-1.png"></image>
@@ -19,7 +19,7 @@
 export default {
   computed: {
     currentAddress() {
-      const currentAddress = this.$store.getters.currentCity + ''
+      const currentAddress = this.$store.getters.currentShopCity + ''
       if (!currentAddress) {
         return '定位失败'
       } else {

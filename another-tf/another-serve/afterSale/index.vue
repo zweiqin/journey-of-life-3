@@ -5,9 +5,9 @@
 		<view class="content">
 			<view class="order-list-box">
 				<view>
-					<view v-for="item in FindReturnDatalist" class="item">
+					<view v-for="item in findReturnDatalist" class="item">
 						<view class="order-list-top">
-							<view class="top-l" @click="goShop(item.shopId)">
+							<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)">
 								<image :src="item.shopLogo" class="shop-img"></image>
 								<text class="shop-name">{{ item.shopName }}</text>
 								<tui-icon name="arrowright" :size="24" unit="upx" color="#999999" margin="0 0 0 15upx"></tui-icon>
@@ -18,7 +18,10 @@
 							</view>
 						</view>
 						<view v-for="(itemlist, index) in item.skus" :key="index" class="order-info-box">
-							<view class="order-info" @click="goodsDetails(item.shopId, itemlist.productId, itemlist.skuId)">
+							<view
+								class="order-info"
+								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
+							>
 								<view class="order-info-item">
 									<image :src="itemlist.image" class="product-img"></image>
 									<view class="info-box">
@@ -57,8 +60,7 @@
 								<text v-if="item.afterState == 10" class="total-price-l">审核通过</text>
 							</view>
 							<text v-if="item.afterState != 0 || item.afterState != 6" class="total-price-r mar-left-30">
-								退款金额 ¥ {{
-									item.price }}
+								退款金额 ¥ {{ item.price }}
 							</text>
 						</view>
 						<!-- 退款 -->
@@ -70,7 +72,13 @@
 							>
 								撤销退款
 							</text>
-							<text class="btn viewDetail l" @click="gotoDetails(item)">查看详情</text>
+							<!-- 退款查看详情 -->
+							<text
+								class="btn viewDetail l"
+								@click="go(`/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(item)}`)"
+							>
+								查看详情
+							</text>
 						</view>
 						<!-- 退货 -->
 						<view v-if="item.afterType == 2" class="order-btn-box">
@@ -81,13 +89,23 @@
 							>
 								撤销退货
 							</text>
-							<text class="btn viewDetail l" @click="gotoDetailshuo(item)">查看详情</text>
+							<!-- 退货查看详情 -->
+							<text
+								class="btn viewDetail l"
+								@click="go(`/another-tf/another-serve/returnDetails/index?item=${JSON.stringify(item)}`)"
+							>
+								查看详情
+							</text>
 						</view>
 					</view>
 				</view>
-				<view v-if="ifEmpty" class="emptyCart-box flex-items-plus flex-column">
-					<image class="emptyCart-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
-					<label class="font-color-999 fs26 mar-top-30">暂无售后记录~</label>
+				<view style="padding-bottom: 45upx;">
+					<LoadingMore
+						:status="!isEmpty && !findReturnDatalist.length
+							? 'loading' : !isEmpty && findReturnDatalist.length && (findReturnDatalist.length >= findReturnDatalistTotal) ? 'no-more' : ''"
+					>
+					</LoadingMore>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 				</view>
 			</view>
 		</view>
@@ -121,58 +139,37 @@ export default {
 				id: ''
 			},
 			sellPriceitem: '',
-			FindReturnDatalist: [],
+			findReturnDatalist: [],
 			page: 1, // 当前页
 			pageSize: 20, // 每页记录数
-			loadingType: 0,
+			findReturnDatalistTotal: 0,
+			isEmpty: false,
 			delRecord: false,
-			currentAfterId: '',
-			ifEmpty: false
+			currentAfterId: ''
 		}
 	},
 	onLoad() {
 		this.getFindReturn()
 	},
-	onReachBottom() {
-		if (this.loadingType == 1) {
-			uni.stopPullDownRefresh()
-		} else {
-			this.page = this.page + 1
-			this.getFindReturn()
-		}
-	},
 	methods: {
-		goodsDetails(shopId, productId, skuId) {
-			uni.navigateTo({
-				url: '../goodsModule/goodsDetails?shopId=' + shopId + '&productId=' + productId + '&skuId=' + skuId
-			})
-		},
-		goShop(shopId) {
-			uni.navigateTo({
-				url: '../store/index?storeId=' + shopId
-			})
-		},
 		// 获取售后列表数据
-		getFindReturn() {
-			uni.showLoading({
-				title: '加载中...'
-			})
+		getFindReturn(isLoadmore) {
+			uni.showLoading()
 			getAllFindReturnListApi({
 				page: this.page,
 				pageSize: this.pageSize
-			}).then((res) => {
-				uni.hideLoading()
-				if (res.data.list.length == 0) {
-					this.loadingType = 1
-					this.page = this.page
-				}
-				this.FindReturnDatalist = this.FindReturnDatalist.concat(res.data.list)
-				if (this.FindReturnDatalist.length === 0) {
-					this.ifEmpty = true
-				}
-				this.FindReturnData = res.data
 			})
-				.catch((res) => {
+				.then((res) => {
+					this.findReturnDatalistTotal = res.data.total
+					if (isLoadmore) {
+						this.findReturnDatalist.push(...res.data.list)
+					} else {
+						this.findReturnDatalist = res.data.list
+					}
+					this.isEmpty = this.findReturnDatalist.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
 					uni.hideLoading()
 				})
 		},
@@ -198,7 +195,7 @@ export default {
 				this.currentAfterId = ''
 				setTimeout(() => {
 					this.page = 1
-					this.FindReturnDatalist = []
+					this.findReturnDatalist = []
 					this.getFindReturn()
 				}, 2000)
 			})
@@ -227,7 +224,7 @@ export default {
 				})
 				setTimeout(() => {
 					this.page = 1
-					this.FindReturnDatalist = []
+					this.findReturnDatalist = []
 					this.getFindReturn()
 				}, 2500)
 			})
@@ -252,24 +249,18 @@ export default {
 				})
 				setTimeout(() => {
 					this.page = 1
-					this.FindReturnDatalist = []
+					this.findReturnDatalist = []
 					this.getFindReturn()
 				}, 2500)
 			})
-		},
-		// 退款查看详情
-		gotoDetails(item) {
-			uni.navigateTo({
-				url: 'refundDetails?item=' + JSON.stringify(item)
-			})
-		},
-		// 退货查看详情
-		gotoDetailshuo(item) {
-			uni.navigateTo({
-				url: 'returnDetails?item=' + JSON.stringify(item)
-			})
 		}
 
+	},
+	onReachBottom() {
+		if (this.findReturnDatalist.length < this.findReturnDatalistTotal) {
+			++this.page
+			this.getFindReturn(true)
+		}
 	}
 }
 </script>
@@ -294,16 +285,6 @@ page {
 		background-color: #333333;
 		color: #FFEBC4;
 		margin-left: 20rpx;
-	}
-}
-
-.emptyCart-box {
-	margin-top: 70upx;
-
-	.emptyCart-img {
-		margin-top: 45%;
-		width: 113upx;
-		height: 98upx;
 	}
 }
 
@@ -363,8 +344,6 @@ page {
 	box-sizing: border-box;
 }
 
-.order-info {}
-
 .order-info-item {
 	display: flex;
 	flex-direction: row;
@@ -419,11 +398,6 @@ page {
 	font-size: 32upx;
 	color: #C83732;
 	font-weight: bold;
-}
-
-.product-num {
-	font-size: 28upx;
-	color: #999;
 }
 
 .total-price-box {

@@ -1477,6 +1477,12 @@
           }
         },
         {
+          "path": "another-serve/questionList/index",
+          "style": {
+            "navigationBarTitleText": "我的问答"
+          }
+        },
+        {
           "path": "another-serve/answerList/index",
           "style": {
             "navigationBarTitleText": "全部问答"
@@ -1540,12 +1546,6 @@
 					"path": "another-serve/afterSaleApplyRefund/index",
 					"style": {
 						"navigationBarTitleText": "申请退款"
-					}
-				},
-				{
-					"path": "another-serve/Intervene/index",
-					"style": {
-						"navigationBarTitleText": "平台介入"
 					}
 				},
         {

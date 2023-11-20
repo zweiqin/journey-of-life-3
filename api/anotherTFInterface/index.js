@@ -234,6 +234,28 @@ export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/subm
 // 商品问答数据查询
 export const getProblemsSeckillApi = (data) => AnotherTFRequest('/seckill/getProblems', data)
 
+// 问答详情查询
+export const getProblemDetailApi = (data) => AnotherTFRequest('/seckill/getProblemDetail', data)
+
+// 回答
+export const addAnswerProblemApi = (data) => AnotherTFRequest('/seckill/addAnswer', data, 'POST')
+
+// 提问
+export const addProblemAnswerApi = (data) => AnotherTFRequest('/seckill/addProblem', data, 'POST')
+
+// 我的问答
+// 批量删除提问
+export const deleteProblemAnswerApi = (data) => AnotherTFRequest('/seckill/deleteProblem', data, 'POST')
+
+// 批量删除回答
+export const deleteAnswerProblemApi = (data) => AnotherTFRequest('/seckill/deleteAnswer', data, 'POST')
+
+// 我的提问
+export const getProblemSeckillApi = (data) => AnotherTFRequest('/seckill/getProblem', data)
+
+// 我的回答
+export const getAnswerSeckillApi = (data) => AnotherTFRequest('/seckill/getAnswer', data)
+
 // 拼团专区
 // 拼团单结算查询
 export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST')
@@ -252,13 +274,13 @@ export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/
 export const getFactoryListApi = (data) => AnotherTFRequest('/shop/getShopAll2', data, 'post')
 
 // 获取工厂详情
-export const getFactoryDetailApi = data => AnotherTFRequest('/shop/getIndex2', data)
+export const getFactoryDetailApi = (data) => AnotherTFRequest('/shop/getIndex2', data)
 
 // 获取品牌工厂的分类
-export const getFactoryClassApi = data => AnotherTFRequest('/shopCategoryMall/getShopCategoryLevel', data)
+export const getFactoryClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategoryLevel', data)
 
 // 获取品牌工厂下级分类
-export const getFactoryNextClassApi = data => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data)
+export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data)
 // 查询热搜词
 // 获取搜索栏的热门搜索
 export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)

@@ -25,7 +25,7 @@ export const T_NEW_BIND_TYPE = 'T_NEW_BIND_TYPE'
 export const T_NEW_BIND_CODE = 'T_NEW_BIND_CODE'
 export const T_NEW_BIND_ID = 'T_NEW_BIND_ID'
 
-// 曾经定位过或选择过的地址
+// 曾经选择过或定位过的地址
 export const T_SELECTED_ADDRESS = 'T_SELECTED_ADDRESS'
 
 // goods
