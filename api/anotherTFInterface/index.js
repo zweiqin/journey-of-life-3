@@ -55,6 +55,9 @@ export const addReceiveAddressApi = (data) => AnotherTFRequest('/receive/save', 
 // 删除收货地址
 export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/delete', data, 'POST')
 
+// 支付有礼
+export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPolite', data)
+
 /**
  * @description 社区商圈相关接口
  */
@@ -164,6 +167,9 @@ export const getExpressSelectShippingCompanyApi = (data) => AnotherTFRequest('/o
 export const updateSendGoodsReturnExpressApi = (data) => AnotherTFRequest('/order/returnExpress', data, 'POST')
 
 // 优惠券
+// 优惠券查询
+export const getCanvasCouponsApi = (data) => AnotherTFRequest('/canvas/getCoupons', data)
+
 // 领取优惠券
 export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')
 
@@ -177,6 +183,13 @@ export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBat
 // 积分签到
 // 积分兑换优惠券
 export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
+
+// 首页广告
+// 获取首页广告
+export const getSelectByConditionAdvertApi = (data) => AnotherTFRequest('/advert/selectByCondition', data, 'POST')
+
+// 关闭首页广告
+export const updateCloseAdvertApi = (data) => AnotherTFRequest('/advert/closeAdvert', data, 'POST')
 
 // 订单相关接口，查询订单列表
 export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data)

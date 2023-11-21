@@ -28,11 +28,11 @@
 									<view class="info-date">{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}</view>
 									<view class="info-condition mar-top-30">{{ item.content }}</view>
 									<!--                  <view class="info-condition" v-if="item.couponType == 2">{{item.reduceMoney}}折优惠</view> -->
-									<WXSendCoupon v-if="item.state === 3" :coupon-list="[ item ]" @success="success">
+									<ATFWXSendCoupon v-if="item.state === 3" :coupon-list="[ item ]" @success="success">
 										<view v-if="item.state === 3" class="use-btn mar-top-10">
 											立即领取
 										</view>
-									</WXSendCoupon>
+									</ATFWXSendCoupon>
 									<view v-if="item.state === 0" class="use-btn mar-top-10">已领取</view>
 									<view v-if="item.state === 1" class="use-btn mar-top-10">已使用</view>
 								</view>

@@ -40,7 +40,7 @@
 import { updateCouponBuildParam4PlugApi, updateCreditExchangeCouponApi, addTakeBatchCouponApi } from '../../api/anotherTFInterface'
 
 export default {
-	name: 'WXSendCoupon',
+	name: 'ATFWXSendCoupon',
 	props: {
 		couponList: {
 			type: Array,

@@ -1,19 +1,19 @@
 <template>
 	<view class="brand-detail-container">
 
-		<view style="padding: 16upx 30upx 28upx;background-color: #ffffff;">
-			<BeeBack :success-cb="successCb">
-				<view style="display: flex;align-items: center;justify-content: space-between;">
-					<BeeIcon
-						name="arrowleft" :size="34" color="#222229"
-						style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
-					>
-					</BeeIcon>
-					<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
-				</view>
-			</BeeBack>
+		<BeeBack :success-cb="successCb" style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;">
+			<view style="display: flex;align-items: center;justify-content: space-between;">
+				<BeeIcon
+					name="arrowleft" :size="34" color="#222229"
+					style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
+				>
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
+			</view>
+		</BeeBack>
+		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
 			<BrandInfo
-				:brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate"
+				:brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
 				@refresh="getBrandDetail"
 			></BrandInfo>
 		</view>

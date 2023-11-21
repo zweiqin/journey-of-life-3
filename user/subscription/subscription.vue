@@ -143,7 +143,6 @@ export default {
   data() {
     return {
       currentTab: 0,
-      shoptype: 0,
       lastsee: 0,
       shoplist: [
         {
