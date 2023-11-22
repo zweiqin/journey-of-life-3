@@ -119,10 +119,7 @@ export default {
 		itemTap(item) {
 			if (this.type == 1 || this.type == 2) {
 				uni.setStorageSync(T_RECEIVE_ITEM, item)
-				uni.navigateTo({
-					url: '/another-tf/another-serve/orderConfirm/index?receiveId=' + item
-						.receiveId + '&type=' + this.type
-				})
+				uni.navigateBack()
 			}
 		},
 		// 微信导入
@@ -144,8 +141,7 @@ export default {
 					setTimeout(() => {
 						uni.hideLoading()
 						uni.navigateTo({
-							url: '/another-tf/another-serve/addAddress/index?type=3&wxAddressData=' + JSON.stringify(self
-								.addData)
+							url: '/another-tf/another-serve/addAddress/index?type=3&wxAddressData=' + JSON.stringify(self.addData)
 						})
 					}, 500)
 				},

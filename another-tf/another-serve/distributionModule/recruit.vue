@@ -1,5 +1,6 @@
 <template>
 	<view class="recruit-container">
+		<JHeader title="分销员招募令" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<!-- 申请分销员 -->
 		<view class="topBackImg flex-items flex-column">
 			<view class="content mar-top-36">

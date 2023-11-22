@@ -1,19 +1,19 @@
 <template>
 	<view class="brand-detail-container">
 
-		<view style="padding: 16upx 30upx 28upx;background-color: #ffffff;">
-			<BeeBack :success-cb="successCb">
-				<view style="display: flex;align-items: center;justify-content: space-between;">
-					<BeeIcon
-						name="arrowleft" :size="34" color="#222229"
-						style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
-					>
-					</BeeIcon>
-					<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
-				</view>
-			</BeeBack>
+		<BeeBack :success-cb="successCb" style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;">
+			<view style="display: flex;align-items: center;justify-content: space-between;">
+				<BeeIcon
+					name="arrowleft" :size="34" color="#222229"
+					style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
+				>
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
+			</view>
+		</BeeBack>
+		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
 			<BrandInfo
-				:brand-detail="brandDetail" style="margin-top: 40upx;" @navgation="handleNavigate"
+				:brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
 				@refresh="getBrandDetail"
 			></BrandInfo>
 		</view>
@@ -128,9 +128,8 @@ export default {
 			},
 			shopId: null,
 			brandDetail: {},
-			allTabList: ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食'],
-			// allTabList: [{ classifyName: '商品', classifyId: 0 }, { classifyName: '四季鲜蔬', classifyId: 0 }, { classifyName: '火锅食材', classifyId: 0 }, { classifyName: '烧烤食材', classifyId: 0 }, { classifyName: '鲜果礼篮', classifyId: 0 }, { classifyName: '粮油副食', classifyId: 0 }],
-			// allTabList: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
+			allTabList: [ '商品' ],
+			allTabListData: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			// 首页
 			componentsData: null,
@@ -157,11 +156,12 @@ export default {
 	onLoad(options) {
 		this.shopId = options.shopId
 		this.getBrandDetail()
-		// getShopClassifyApi({
-		// 	shopId: this.shopId
-		// }).then((res) => {
-		// 	this.allTabList = this.allTabList.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
-		// })
+		getShopClassifyApi({
+			shopId: this.shopId
+		}).then((res) => {
+			this.allTabListData = this.allTabListData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+			this.allTabList = this.allTabListData.map((item) => item.classifyName)
+		})
 		getShopBannerApi({
 			shopId: this.shopId
 		}).then((res) => {
@@ -228,15 +228,15 @@ export default {
 		handleTabChange(e) {
 			this.currentTab = e.index
 			console.log(this.currentTab)
-			// // if (e.index === 1) return
-			// this.shopGoodsInfo.data = []
-			// this.shopGoodsInfo.query.page = 1
-			// if (e.index === 0) {
-			// 	this.classifyId = ''
-			// } else {
-			// 	this.classifyId = this.allTabList[e.index].classifyId
-			// }
-			// this.getShopGoodsTemplate()
+			// if (e.index === 1) return
+			this.shopGoodsInfo.data = []
+			this.shopGoodsInfo.query.page = 1
+			if (e.index === 0) {
+				this.classifyId = ''
+			} else {
+				this.classifyId = this.allTabListData[e.index].classifyId
+			}
+			this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
 			uni.showLoading()

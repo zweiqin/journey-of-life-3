@@ -11,7 +11,7 @@
           <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt="" class="icon" />
           <TuanLocation>
             <text class="locale">
-              {{ $store.getters.currentCity || '龙江镇' }}
+              {{ $store.getters.currentCity || '定位失败' }}
             </text>
           </TuanLocation>
         </view>
@@ -236,8 +236,7 @@ import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } f
 import { changeServiceUserBindingApi } from '../api/user';
 import { moreService } from '../pages/community-center/config';
 import { NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
-import { getUserId } from '../utils';
-import { getAdressDetailByLngLat } from '../utils/DWHutils';
+import { getUserId, getAdressDetailByLngLat } from '../utils';
 import CommentList from './components/CommentList.vue';
 
 /**

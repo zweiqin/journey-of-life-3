@@ -2,8 +2,8 @@
   <view class="hot-container">
     <view class="header">
       <image @click="handleBack" class="icon" src="../../static/images/common/back.png" mode="" />
-			<TuanLocation>
-				<text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+			<TuanLocation free>
+				<text>{{ $store.getters.currentShopCity || '定位失败' }}</text>
 			</TuanLocation>
       <view class="search-wrapper" @click="go('/pages/search-page/search-page')">
         <image class="search-icon" src="../../static/images/index/search.png" mode="" />

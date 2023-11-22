@@ -11,7 +11,7 @@
 					<!-- #endif -->
 					<TuanLocation>
 						<text class="locale">{{
-							$store.getters.currentCity || '龙江镇'
+							$store.getters.currentCity || '定位失败'
 						}}</text>
 					</TuanLocation>
 					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
@@ -54,7 +54,7 @@
 import { getServiceSortApi } from '../api/community-center'
 import { getSearchDataApi } from '../api/community-center'
 import sort from '../community-center/componts'
-import { getAdressDetailByLngLat } from '../utils/DWHutils'
+import { getAdressDetailByLngLat } from '../utils'
 import { getIsOpenServerAreaApi } from '../api/community-center'
 export default {
 	name: 'Service-sort',

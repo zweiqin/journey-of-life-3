@@ -145,8 +145,8 @@
 						></tui-tab>
 					</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 18upx;">
-						<TuanLocation style="flex: 1;font-size: 38upx;font-weight: bold;">
-							{{ $store.getters.currentCity || '定位失败' }}
+						<TuanLocation free style="flex: 1;font-size: 38upx;font-weight: bold;">
+							{{ $store.getters.currentShopCity || '定位失败' }}
 						</TuanLocation>
 						<view style="display: flex;align-items: center;padding-left: 16upx;border-left: 1upx solid #CDCDCD;">
 							<BeeIcon
@@ -572,7 +572,7 @@ export default {
 			uni.showLoading()
 			getHomeBrandListApi({
 				...this.queryInfo,
-				areaId: this.$store.state.location.locationInfo.adcode, // this.$store.state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode
+				areaId: this.$store.state.location.locationInfo.adcode,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})

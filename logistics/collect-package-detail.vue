@@ -35,7 +35,6 @@
       >
         <view class="status" :class="{ active: index === 0 }">
           <view class="status-text">{{ item.statusMsg }}</view>
-          <!-- <view class="time">龙江镇亚洲国际材料城团蜂科技</view> -->
         </view>
 
         <view>{{ item.createTime }}</view>

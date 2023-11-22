@@ -5,7 +5,7 @@
         <view class="location">
           <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
           <TuanLocation>
-            <text class="locale">{{ $store.getters.currentCity || '龙江镇' }}</text>
+            <text class="locale">{{ $store.getters.currentCity || '定位失败' }}</text>
           </TuanLocation>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
@@ -60,7 +60,7 @@
 import { getGoodsTypesApi } from '../../api/home';
 import { goodsListApi } from '../../api/goods';
 import sort from '../components/sub.vue';
-import { getAdressDetailByLngLat } from '../../utils/DWHutils';
+import { getAdressDetailByLngLat } from '../../utils';
 export default {
   components: {
     sort

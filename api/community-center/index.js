@@ -1,4 +1,4 @@
-import { endRequest, request2, XZLRequest, SheQuRequest, SheQu1Request } from '../../utils';
+import { endRequest, request2, SheQuRequest, SheQu1Request } from '../../utils';
 import { USER_TOKEN } from 'constant';
 
 /**
@@ -70,53 +70,14 @@ export const getUserInfoByIdApi = (data) => SheQu1Request('laoa-huozhu/api/hz/or
 
 // 线上订单详情
 export const detailsMdApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/detailsMd', data, 'get');
-// 本地订单详情
-// export const detailsMdApi = (data) => {
-//   return XZLRequest("laoa-huozhu/api/hz/order/third/detailsMd", data, "get");
-// };
 
 // 搜索查询
-export const getSearchDataApi = (data) => XZLRequest('/demo/api/community/serverInfo/getSearchData', data, 'get');
+export const getSearchDataApi = (data) => SheQu1Request('/demo/api/community/serverInfo/getSearchData', data, 'get');
 
 // 新的订单详情
 export const getCommOrderDeatilApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/getMdOrderInfoByNo', data, 'get');
 };
-
-// 本地
-// 查询社区服务分类
-// export const getServiceSortApi = (data) => {
-//   return XZLRequest("/community/serverInfo/getServerTypeList", data);
-// };
-
-// //查询社区服务详情
-// export const getServiceDetailApi = (data) => {
-//   return XZLRequest("/community/serverInfo/getServerInfoById", data, "get");
-// };
-// //获取订单报价
-// export const getServicePriceApi = (data) =>{
-//   return XZLRequest("/community/serverInfo/getOrderQuote",data);
-// };
-
-// //新建社区订单
-// export const getServiceOrderApi = (data) =>{
-//   return SheQu1Request("laoa-huozhu/api/hz/order/third/createOrderPabWx",data);
-// };
-
-// //订单支付
-// export const getServiceOrderPayApi = (data) =>{
-//   return SheQu1Request("laoa-huozhu/api/hz/order/third/orderPayH5Pab",data);
-// };
-
-// 根据用户地址判断该区域是否开通了站长
-// export const getIsOpenServerAreaApi = (data) => {
-//   return XZLRequest("laoa-huozhu/api/hz/order/third/getIsOpenServerArea", data, "get");
-// };
-
-// //查询用户过往信息
-// export const getUserInfoByIdApi = (data) => {
-//   return XZLRequest("laoa-huozhu/api/hz/order/third/getUserInfoById", data, "get");
-// };
 
 /**
  * 社区服务列表

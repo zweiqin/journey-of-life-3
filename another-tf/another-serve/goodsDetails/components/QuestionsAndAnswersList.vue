@@ -38,17 +38,6 @@
 					查看全部答复
 				</view>
 			</view>
-			<!--      <view
-				class="moreBox"
-				v-if="problemsList.length>0"
-				@click="handleJumpAllAnswer"
-				>
-				<label class="fs24">查看全部</label>
-				<image
-				class="evaluateAllArrow-icon mar-left-10"
-				src="../../../static/images/origin/arrow.png"
-				></image>
-				</view> -->
 		</view>
 	</div>
 </template>
@@ -70,16 +59,6 @@ export default {
 		return {}
 	},
 	methods: {
-		/**
-		 * 跳转到该商品下所有问答
-		 */
-
-		handleJumpAllAnswer() {
-			const paramObj = Object.assign({}, this.productInfo, {
-				images: this.productInfo.images[0]
-			})
-			this.go('/another-tf/another-serve/answerList/index', paramObj)
-		},
 
 		/**
 		 * 跳转到问题的所有回答
@@ -101,7 +80,6 @@ export default {
 <style lang="scss" scoped>
 .listBox {
 	padding: 0 30upx;
-	//border-bottom: 20upx solid #EEEEEE;
 
 	.itemBox {
 		padding-bottom: 30upx;

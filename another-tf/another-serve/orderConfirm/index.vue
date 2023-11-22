@@ -3,23 +3,25 @@
 	<view class="order-confirm-container">
 		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="content">
-			<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${type}`)">
-				<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
-				<!-- 有地址的 -->
-				<view v-if="userAddressInfo.receiveName" class="address-r">
-					<view class="address-name-box">
-						<text>{{ userAddressInfo.receiveName }}</text>
-						<text class="phone">{{ userAddressInfo.receivePhone }}</text>
+			<view v-if="settlement.shopType !== 2">
+				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
+					<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
+					<!-- 有地址的 -->
+					<view v-if="userAddressInfo.receiveId" class="address-r">
+						<view class="address-name-box">
+							<text>{{ userAddressInfo.receiveName }}</text>
+							<text class="phone">{{ userAddressInfo.receivePhone }}</text>
+						</view>
+						<view class="address-info">
+							<text>{{ userAddressInfo.receiveAdress }} {{ userAddressInfo.address }}</text>
+						</view>
 					</view>
-					<view class="address-info">
-						<text>{{ userAddressInfo.receiveAdress }} {{ userAddressInfo.address }}</text>
+					<!-- 没有地址的 -->
+					<view v-else class="address-r">
+						<text>你还没有收货地址哦，点击这里添加</text>
 					</view>
+					<tui-icon name="arrowright" :size="62" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
 				</view>
-				<!-- 没有地址的 -->
-				<view v-else class="address-r">
-					<text>你还没有收货地址哦，点击这里添加</text>
-				</view>
-				<tui-icon name="arrowright" :size="62" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
 			</view>
 			<view class="order-list-box">
 				<view v-for="(item, sIndex) in settlement.shops" :key="item.shopId" class="item">
@@ -105,12 +107,8 @@
 						<text v-if="promotionInfoDTO.couponType === 2">{{ promotionInfoDTO.reduceMoney }}折</text>
 						<text v-else> -￥{{ promotionInfoDTO.reduceMoney | clip2Decimal }}</text>
 					</view>
-					<view v-else-if="couponsList.length < 1" class="discount-label">
-						无
-					</view>
-					<view v-else class="discount-label">
-						不使用
-					</view>
+					<view v-else-if="!settlement.coupons || !settlement.coupons.length" class="discount-label">无</view>
+					<view v-else class="discount-label">不使用</view>
 					<tui-icon name="arrowright" :size="30" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
@@ -168,7 +166,7 @@
 			</button>
 			<button v-else class="btn active" @click="submitOrder">提交订单</button>
 		</view>
-		<!-- 活动弹框 -->
+		<!-- 活动弹框，平台优惠券 -->
 		<tui-bottom-popup class="activity-con" :show="isShowDiscount" @close="isShowDiscount = false">
 			<view class="activity-box" style="height: 1000rpx;">
 				<view class="title-box">
@@ -180,7 +178,7 @@
 				<view class="activity-coupon-box">
 					<scroll-view scroll-y="true" style="height: 900rpx;">
 						<view class="content-box">
-							<view v-if="usableListLength">
+							<view v-if="settlement.coupons && settlement.coupons.length">
 								<view class="label-lingqu">可用优惠券列表</view>
 								<view class="couponBox">
 									<view
@@ -279,49 +277,49 @@ export default {
 	},
 	data() {
 		return {
-			// 埋点ID
-			pointProductIds: '',
 			settlement: {
 				voucherList: []
 			},
-			type: 0,
+			fromType: 0,
 			skuItemDTOList: [],
-			userAddressInfo: {},
-			isShowDiscount: false,
-			isShopCoupons: false,
-			usableListLength: 0,
-			shopCouponsLength: 0,
-			shopCouponslist: [],
-			promotionInfoDTO: {
-				couponId: 0,
-				ifAdd: 1,
-				reduceMoney: 0
-			},
-			distributionPrice: 0, // 运费
 			totalPrice: 0, // 合计
-			receiveId: '',
 			totalCount: 0,
+			userAddressInfo: {},
+			isRegionalScope: false, // 是否在商家配置范围内地址
+			payObj: {}, // 支付相关
+			oneClickSubmit: true, // 只提交订单一次
+			// 拼团相关
 			skuItemList: {},
 			shopGroupWorkId: 0,
 			sumitType: '',
 			collageId: null,
-			couponsList: [],
-			shopIndex: 0,
+			// 店铺优惠券相关
+			isShopCoupons: false,
+			shopCouponsLength: 0,
+			shopCouponslist: [],
 			selectShopCoupon: [], // 已选择店铺优惠券
-			selectIntegral: true,
-			integralNum: 0,
-			integralRatio: 0, // 积分兑换比例
-			integralPrice: 0, // 总积分可减多少元
-			checkedPlatformCoupon: undefined,
-			oneClickSubmit: true, // 只提交订单一次
-			isRegionalScope: false, // 是否在商家配置范围内地址
-			payObj: {}, // 支付相关
 			// 代金券相关
 			voucherObj: {
 				voucherTotalAll: 0,
 				isVoucher: false,
 				voucherId: 0
-			}
+			},
+			// 平台优惠券相关
+			isShowDiscount: false,
+			promotionInfoDTO: {
+				couponId: 0,
+				ifAdd: 1,
+				reduceMoney: 0
+			},
+			shopIndex: 0, // 选中的店铺使用店铺优惠券
+			checkedPlatformCoupon: undefined,
+			// 积分相关
+			selectIntegral: true,
+			integralNum: 0,
+			integralRatio: 0, // 积分兑换比例
+			integralPrice: 0, // 总积分可减多少元
+			// 埋点ID
+			pointProductIds: ''
 		}
 	},
 	onLoad(options) {
@@ -329,15 +327,14 @@ export default {
 			.then((res) => {
 				this.integralRatio = parseFloat(res.data.dictDescribe)
 			})
-		this.type = options.type
-		if (options.receiveId) this.receiveId = options.receiveId
+		this.fromType = options.type
 	},
 	onShow() {
 		this.handleOnShow()
 	},
 	methods: {
 		handleOnShow() {
-			if (uni.getStorageSync(T_RECEIVE_ITEM)) this.receiveId = uni.getStorageSync(T_RECEIVE_ITEM).receiveId
+			if (uni.getStorageSync(T_RECEIVE_ITEM)) this.userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
 			if (uni.getStorageSync(T_SKU_ITEM_DTO_LIST)) {
 				this.skuItemDTOList = uni.getStorageSync(T_SKU_ITEM_DTO_LIST)
 				if (this.skuItemDTOList[0].shopDiscountId > 0) {
@@ -383,22 +380,15 @@ export default {
 			} else {
 				_url = getSettlementOrderApi
 				_data = {
-					type: this.type,
+					type: this.fromType,
 					shops: this.skuItemDTOList,
-					receiveId: this.receiveId,
+					receiveId: this.userAddressInfo.receiveId,
 					...this.voucherObj
 				}
 			}
 			_url(_data).then((res) => {
 				uni.hideLoading()
 				this.settlement = res.data
-				this.couponsList = res.data.coupons
-				// if (res.data.huabeiChargeType === 2) { // huabeiFeerateList: [],
-				// 	this.huabeiFeerateList = res.data.huabeiFeerateList
-				// } else {
-				// 	this.huabeiFeerateList = [0, 0, 0]
-				// }
-				const shopLen = this.settlement.shops.length
 				this.settlement.shops.forEach((value) => {
 					value.totalNum = value.total
 					value.pricing = 0
@@ -411,16 +401,14 @@ export default {
 					})
 				}
 				// 初始化平台券选中状态
-				if (this.settlement.coupons.length > 0) {
-					this.settlement.coupons.forEach((item) => {
-						item.checked = false
-					})
-				}
+				this.settlement.coupons && this.settlement.coupons.forEach((item) => {
+					item.checked = false
+				})
 				this.settlement.shops.forEach((item) => {
 					item.totalAfterDiscount = item.total
 				})
 				// 默认选中商家的第一张优惠券
-				for (let s = 0; s < shopLen; s++) {
+				for (let s = 0; s < this.settlement.shops.length; s++) {
 					this.shopIndex = s
 					const curShop = this.settlement.shops[s]
 					curShop.skus.forEach((item) => {
@@ -443,28 +431,28 @@ export default {
 					}
 				}
 				this.shopIndex = 0
-				if (uni.getStorageSync(T_RECEIVE_ITEM)) {
-					const receiveItem = uni.getStorageSync(T_RECEIVE_ITEM)
-					this.userAddressInfo = receiveItem
-					this.receiveId = receiveItem.receiveId
-					this.userAddressInfo.receivePhone = this.userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
-				} else if (res.data.receive) {
-					this.receiveId = res.data.receive.receiveId
-					this.userAddressInfo = res.data.receive
-					this.userAddressInfo.receivePhone = this.userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+				if (this.settlement.shopType !== 2) { // 1品牌商家，2商圈商家
+					if (uni.getStorageSync(T_RECEIVE_ITEM)) {
+						this.userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
+						this.userAddressInfo.receivePhone = this.userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+					} else if (res.data.receive) {
+						this.userAddressInfo = res.data.receive || {}
+						this.userAddressInfo.receivePhone = this.userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+					}
+				} else {
+					this.userAddressInfo = { receiveId: 485 }
 				}
 				uni.removeStorageSync(T_RECEIVE_ITEM)
-				this.usableListLength = res.data.coupons.length
 				this.settlement.shops.some((item) => { // 根据地址判断是否能下单
 					if (item.receiveNotMatch) {
 						this.isRegionalScope = item.receiveNotMatch
-						this.$howToast('当前地址不支持配送，请参与红色字提示')
+						this.$showToast('当前地址不支持配送，请参考红色字提示')
 					}
 					return item.receiveNotMatch
 				})
 				this.getTotal()
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		},
@@ -496,7 +484,7 @@ export default {
 				this.getTotal()
 			} else {
 				// 先把所有已选中的平台优惠券改为未选中
-				this.settlement.coupons.forEach((item) => {
+				this.settlement.coupons && this.settlement.coupons.forEach((item) => {
 					item.checked = false
 				})
 				let totalPrice = 0 // 订单总价
@@ -570,7 +558,7 @@ export default {
 				this.isShopCoupons = false
 				this.selectShopCoupon = []
 				this.getTotal()
-				return false
+				return
 			}
 			if (this.settlement.shops[this.shopIndex].total < coupon.fullMoney) {
 				this.$showToast('不满足优惠券使用条件！')
@@ -578,19 +566,10 @@ export default {
 				this.$showToast('不可使用大于商品金额的优惠劵！')
 			} else {
 				// 选择优惠券
-				if (this.promotionInfoDTO.couponId !== 0) {
-					this.$showToast('此券不可与平台券叠加！')
-					return false
-				}
-				if (coupon.couponType === 1) {
-					if (coupon.reduceMoney >= this.settlement.shops[this.shopIndex].total) {
-						this.$showToast('优惠券优惠金额不能大于等于合计金额！')
-						return false
-					}
-				}
+				if (this.promotionInfoDTO.couponId !== 0) return this.$showToast('此券不可与平台券叠加！')
+				if ((coupon.couponType === 1) && (coupon.reduceMoney >= this.settlement.shops[this.shopIndex].total)) return this.$showToast('优惠券优惠金额不能大于等于合计金额！')
 				this.isShopCoupons = false
-				const useCoupon = this.useShopCoupon(this.shopIndex, index)
-				if (useCoupon) {
+				if (this.useShopCoupon(this.shopIndex, index)) {
 					for (let i = 0; i < this.settlement.shops[this.shopIndex].shopCoupons.length; i++) {
 						this.settlement.shops[this.shopIndex].shopCoupons[i].checked = false
 					}
@@ -782,9 +761,7 @@ export default {
 				const skuLen = curShop.skus.length
 				let checkedShopCoupon
 				curShop.shopCoupons.forEach((item) => {
-					if (item.checked) {
-						checkedShopCoupon = item
-					}
+					if (item.checked) checkedShopCoupon = item
 				})
 				for (let j = 0; j < skuLen; j++) {
 					const curSku = curShop.skus[j]
@@ -828,7 +805,7 @@ export default {
 			// if(this.settlement.shops[this.shopIndex].shopCoupons.length>0){
 			// 	shopifAdd = this.settlement.shops[this.shopIndex].shopCoupons[this.shopCouIndex].ifAdd // shopCouIndex: 0, // 优惠券index
 			// }
-			if (this.settlement.coupons.length > 0) {
+			if (this.settlement.coupons && this.settlement.coupons.length > 0) {
 				for (let i = 0; i < this.selectShopCoupon.length; i++) {
 					if (this.selectShopCoupon[i].ifAdd == 0) {
 						this.$showToast('不可叠加已选择的店铺券')
@@ -868,7 +845,7 @@ export default {
 					}
 					this.selectShopCoupon = []
 					// 清除平台优惠券数据
-					this.settlement.coupons.forEach((item) => {
+					this.settlement.coupons && this.settlement.coupons.forEach((item) => {
 						item.checked = false
 					})
 					this.promotionInfoDTO = { couponId: 0, ifAdd: 1, reduceMoney: 0 }
@@ -909,7 +886,7 @@ export default {
 				collageId: this.collageId,
 				type: this.sumitType,
 				shopGroupWorkId: null,
-				receiveId: this.receiveId,
+				receiveId: this.userAddressInfo.receiveId,
 				couponId: couponIdinfo,
 				price: this.totalPrice,
 				remark: '',
@@ -967,10 +944,7 @@ export default {
 					data.shops[n].skus.push(skusobj)
 				}
 			}
-			// 去除最后一个,
-			if (this.pointProductIds.endsWith(',')) {
-				this.pointProductIds = this.pointProductIds.slice(0, -1)
-			}
+			if (this.pointProductIds.endsWith(',')) this.pointProductIds = this.pointProductIds.slice(0, -1) // 去除最后一个,
 			this.handleSetPayMode(data)
 			uni.hideLoading()
 			return data
@@ -998,18 +972,9 @@ export default {
 		// 提交订单@return {Promise<void>}
 		async submitOrder() {
 			// 检查提交表单
-			if (!this.payObj.paymentMode) {
-				this.$showToast('请选择支付方式')
-				return
-			}
-			if (!this.oneClickSubmit) {
-				this.$showToast('已提交，请勿重新操作！')
-				return
-			}
-			if (!this.userAddressInfo.receiveName) {
-				this.$showToast('请选择收货地址')
-				return
-			}
+			if (!this.payObj.paymentMode) return this.$showToast('请选择支付方式')
+			if (!this.oneClickSubmit) return this.$showToast('已提交，请勿重新操作！')
+			if (!this.userAddressInfo.receiveId) return this.$showToast('请选择收货地址')
 			this.oneClickSubmit = false
 			// 处理表单
 			const data = this.handlePackageData()
@@ -1024,7 +989,7 @@ export default {
 					eventType: 3,
 					productIds: this.pointProductIds
 				})
-				if (this.type == 2) {
+				if (this.fromType == 2) {
 					const carSkusData = data.shops
 					const skusArr = []
 					for (let i = 0; i < carSkusData.length; i++) {
@@ -1091,7 +1056,6 @@ export default {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			margin-bottom: 20rpx;
 
 			.address-r {
 				flex: 1;
@@ -1120,6 +1084,7 @@ export default {
 		}
 
 		.order-list-box {
+			margin-top: 20upx;
 			.item {
 				background: #fff;
 				border-radius: 10upx;

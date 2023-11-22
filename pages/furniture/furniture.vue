@@ -10,7 +10,7 @@
             @click="handleBack"
           />
           <view class="text">{{
-            $store.getters.currentCity || '定位中...'
+            $store.getters.currentShopCity || '定位失败'
           }}</view>
           <img
             src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"

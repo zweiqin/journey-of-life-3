@@ -11,8 +11,9 @@
       <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">搜索</button>
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
-      <text class="current-address-text"> 当前：{{ $store.getters.currentCity ? $store.getters.currentCity : '定位失败，重新定位'
-      }}</text>
+      <text class="current-address-text"> 
+				当前：{{ $store.getters.currentCity ? $store.getters.currentCity : $store.getters.currentShopCity ? $store.getters.currentShopCity : '定位失败，重新定位' }}
+			</text>
       <view><tui-icon :size="16" color="#000" name="location"></tui-icon>
         <text>重新定位</text>
       </view>
@@ -230,24 +231,17 @@ export default {
       const dispatchData = {
         city: '',
         distinguish: '',
-        town: '',
-        areaText: "",
-        currentShopAndBusinessLocation: ''
+        town: ''
       }
       if (type === 'city') {
         dispatchData.city = chooseAddressInfo.name
-        dispatchData.areaText = chooseAddressInfo.name
-        dispatchData.currentShopAndBusinessLocation = chooseAddressInfo.name
       } else if (type === 'distinguish') {
         dispatchData.city = this.tabs[0].select
         dispatchData.distinguish = chooseAddressInfo.name
-        dispatchData.areaText = this.tabs[0].select + chooseAddressInfo.name
-        dispatchData.currentShopAndBusinessLocation = chooseAddressInfo.name
       }
-
       try {
         uni.showLoading()
-        await this.$store.dispatch('location/getDetailAddressForShopAndBusiness', dispatchData)
+        await this.$store.dispatch('location/getDetailAddress', dispatchData)
         this.ttoast('修改成功');
         setTimeout(() => {
           if (this.backUrl) {
@@ -307,7 +301,6 @@ export default {
         });
         return;
       }
-
       if (info.index === 2 && !this.currentTownData) {
         this.ttoast({
           type: 'fail',
@@ -315,7 +308,6 @@ export default {
         });
         return;
       }
-
       this.currentTab = info.index;
     },
 
@@ -331,18 +323,17 @@ export default {
     confirmChooseAddress(data, isHot) {
       uni.showLoading();
       if (isHot) {
-        this.$store.dispatch('location/getDetailAddress', data);
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
           data: data
         });
+        this.$store.dispatch('location/getDetailAddress', data);
       } else {
         this.$store.dispatch('location/getDetailAddress', {
           city: this.tabs[0].select,
           distinguish: this.tabs[1].select,
           town: data.name
         });
-
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'detail',
           data: {

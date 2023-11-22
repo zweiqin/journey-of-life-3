@@ -1,11 +1,11 @@
 /**
 import { status } from './../../user/digital-store/newBusiness/config';
  * external: 跳转外部网页， 跳转路径：/user/view
+ * type: 用于区分不同逻辑
+ * name: 用于区分不同样式
  */
 
 import { ANOTHER_TF_SETTLE } from './../../config'
-
-import store from 'store'
 
 export const shopOrderMneus = [
 	{
@@ -97,12 +97,14 @@ export const shequTwiceOrder = [
 	}
 ]
 
+export const mapGroupStatus = (status) => ({ 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '审核不通过', 5: '冻结', 6: '审核不通过', 7: '打款失败' }[status])
+
 export const myEquity = [
 	{
 		name: '小账本',
 		icon: require('../../static/images/new-user/equity/account-book.png'),
 		// url: '/user/account-book/index' // 老的
-		url: '/user/commission-statistics/commission-statistics',
+		url: '/user/commission-statistics/commission-statistics'
 	},
 	{
 		name: '微店',
@@ -119,25 +121,7 @@ export const myEquity = [
 		name: '申请团长',
 		icon: require('../../static/images/new-user/equity/group.png'),
 		url: '/user/sever/regimental-commander/regimental-commander',
-		permission: () => {
-			const status = store.getters.regimentalCommanderStatus
-			if (!status) return null
-			if (status === 3) {
-				return '您已经是团长了'
-			}
-			switch (status) {
-				case 0:
-					return null
-				case 1:
-					return `您的申请正在审核中，请耐心等待`
-				case 2:
-					return `您的申请正在审核中，请耐心等待`
-				case 3:
-					return '您的申请被驳回了，请联系管理人员'
-				case 5:
-					return '您的团长身份已取消，请联系店长恢复'
-			}
-		}
+		type: 'regimentalCommander'
 	},
 	{
 		name: '区域代理',
@@ -164,6 +148,34 @@ export const myEquity = [
 		name: '活动中心',
 		icon: require('../../static/images/new-user/equity/sharing-activities.png'),
 		url: '/user/sever/activityCenter/index'
+	},
+	{
+		name: '股东看板',
+		icon: require('../../static/images/new-user/equity/gudong.png'),
+		url: '/user/shareholder/shareholder'
+	}
+]
+
+export const myFunction = [
+	{
+		name: '购物车',
+		icon: require('../../static/images/new-user/function/shop-car.png'),
+		url: '/user/sever/shopCar/shopCar'
+	},
+	{
+		name: '收藏',
+		icon: require('../../static/images/new-user/function/collection.png'),
+		url: '/user/sever/view-history?page=collection'
+	},
+	{
+		name: '足迹',
+		icon: require('../../static/images/new-user/function/foot-print.png'),
+		url: '/user/sever/view-history?page=history'
+	},
+	{
+		name: '订阅',
+		icon: require('../../static/images/new-user/function/follow.png'),
+		url: '/user/sever/view-history?page=follow'
 	}
 ]
 
@@ -173,11 +185,6 @@ export const myServe = [
 		icon: require('../../static/images/new-user/serve/zz.png'),
 		type: 'settle',
 		url: ANOTHER_TF_SETTLE
-	},
-	{
-		name: '商家码',
-		icon: require('../../static/images/new-user/serve/zz.png'),
-		type: 'shopInvitation'
 	},
 	{
 		name: '银行卡',
@@ -208,4 +215,43 @@ export const myServe = [
 	}
 ]
 
-export const mapGroupStatus = (status) => ({ 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '审核不通过', 5: '冻结', 6: '审核不通过', 7: '打款失败' }[status])
+export const shopServe = [
+	{
+		name: '商家码',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		type: 'shopInvitation'
+	},
+	{
+		name: '商家订单',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/shop-orders/index'
+	},
+	{
+		name: '商家统计',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/shop-statistics/index'
+	}
+]
+
+export const additionalFunction = [
+	{
+		name: '找材料',
+		icon: require('../../static/images/tabbar/stuff.png'),
+		url: '/pages/stuff/stuff'
+	},
+	{
+		name: '找物流',
+		icon: require('../../static/images/tabbar/logistics.png'),
+		url: '/pages/logistics/logistics'
+	},
+	{
+		name: '寄快递',
+		icon: require('../../static/images/tabbar/kuaidi.png'),
+		url: '/pages/user/kuai-di/index'
+	},
+	{
+		name: '加油站',
+		icon: require('../../static/images/tabbar/jiayouqi.png'),
+		url: '/pages/serviceoil/serviceoil'
+	}
+]

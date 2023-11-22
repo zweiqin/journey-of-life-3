@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view>平台介入页</view>
+		<view>组合优惠页</view>
 	</view>
 </template>
 

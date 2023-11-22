@@ -13,15 +13,15 @@
 					<text
 						style="max-width: 130upx;font-size: 32upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 					>
-						{{
-							$store.getters.shopAndBusiness || $store.getters.currentCity || '定位失败' }}
+						{{ $store.getters.currentShopCity || '定位失败' }}
 					</text>
 					<BeeIcon :size="26" name="turningdown" color="#222229"></BeeIcon>
 				</TuanLocation>
+				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
 				<tui-input
 					label="" placeholder="全屋严选" disabled clearable
-					padding="6upx 10upx 6upx 26upx"
-					background-color="transparent" style="flex: 1;margin-left: 16upx;" @click="go(`/another-tf/another-serve/search/index`)"
+					padding="6upx 10upx 6upx 2upx" :placeholder-style="{ color: '#292930' }"
+					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index`)"
 				>
 					<template #right>
 						<tui-button

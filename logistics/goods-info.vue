@@ -13,7 +13,7 @@
         mode=""
       />
 			<TuanLocation>
-				<text>{{ $store.getters.currentCity || '龙江镇' }}</text>
+				<text>{{ $store.getters.currentCity || '定位失败' }}</text>
 			</TuanLocation>
       <view class="search-wrapper">
         <image

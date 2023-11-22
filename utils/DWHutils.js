@@ -206,21 +206,6 @@ export function handleDebounce(func, wait, immediate) {
 	}
 }
 
-export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, reject) => {
-	// #ifdef H5
-	jsonp('https://restapi.amap.com/v3/geocode/regeo', {
-		key: '5773f02930998e41b0de1d4e1bdbcaa9',
-		location: `${lng},${lat}`
-	})
-		.then((res) => {
-			resolve(res)
-		})
-		.catch((err) => {
-			reject(err)
-		})
-	// #endif
-})
-
 export function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
@@ -356,22 +341,44 @@ export const tradeOrderNo = function () {
 		.substr(2, 9)
 }
 
-
 /**
  * 判断当前H5是否在webview中打开
  */
+
 export const isH5InWebview = () => {
-	const ua = navigator.userAgent.toLowerCase();
+	const ua = navigator.userAgent.toLowerCase()
 	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
 }
 
 /**
  * 判断当前资源是否是视频格式
- * @param {string} url 
+ * @param {string} url
  * @returns {boolean}
  */
+
 export function isVideo(url) {
-  const videoExtensions = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'];
-  const lowercasedUrl = url.toLowerCase();
-  return videoExtensions.some(type => lowercasedUrl.includes(type));
+	const videoExtensions = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4']
+	const lowercasedUrl = url.toLowerCase()
+	return videoExtensions.some(type => lowercasedUrl.includes(type))
+}
+
+export const saveImg = (url, cb) => {
+	// #ifdef H5
+	const uniappA = document.createElement('a')
+	uniappA.download = ''
+	uniappA.href = url
+	document.body.appendChild(uniappA)
+	uniappA.click()
+	uniappA.remove()
+	cb && typeof cb === 'function' && cb()
+	// #endif
+
+	// #ifdef APP
+	uni.saveImageToPhotosAlbum({
+		filePath: url,
+		success() {
+			cb && typeof cb === 'function' && cb()
+		}
+	})
+	// #endif
 }

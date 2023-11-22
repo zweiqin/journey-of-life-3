@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import cityData from '@/utils/picker.city.js'  // 地址选择组件的数据
+import cityData from './picker.city.js'  // 地址选择组件的数据
 import tuiPicker from '@/components/thorui/tui-picker/tui-picker.vue'
 import tuiForm from '@/components/thorui/tui-form/tui-form.vue'
 import tuiInput from '@/components/thorui/tui-input/tui-input.vue'

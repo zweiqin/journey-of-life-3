@@ -174,7 +174,7 @@
         "domain" : "",
         "devServer" : {
             "disableHostCheck" : true,
-            "port" : 8989,
+            "port" : 8988,
             "proxy" : {
                 "/sf" : {
                     "target" : "http://192.168.0.74:8790/samrtWorker",

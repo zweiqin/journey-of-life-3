@@ -5,15 +5,6 @@
         <view class="location">
           <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
           <text>爆品家具</text>
-          <!-- <TuanLocation>
-            <text class="locale">{{ $store.getters.currentCity || '龙江镇' }}</text>
-          </TuanLocation> -->
-          <!-- <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
-            alt=""
-            class="show"
-          /> -->
-          <!--  @click.stop="handleClick" -->
         </view>
         <view class="search-box">
           <view class="search">
@@ -43,7 +34,6 @@
 
 <script>
 import { getFirstClassifyApi } from '@/api/anotherTFInterface'
-import { unshift } from 'utils/picker.city'; 
 import sort from './cpns/sort.vue';
 // 1147
 export default {

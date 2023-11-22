@@ -23,22 +23,22 @@
 						</view>
 						<view class="vip-level">
 							<image
-								v-if="$store.getters.userInfo.userMap.isHy" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHy" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
 								src="@/static/images/user/huiyuan.png"
 								@click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo.userMap.isTz" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isTz" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
 								src="@/static/images/user/tuanzhang.png"
 								@click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo.userMap.isHhr" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHhr" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
 								src="@/static/images/user/hehuoren.png"
 								@click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo.userMap.isGd" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isGd" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
 								src="@/static/images/user/gudong.png"
 								@click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges = true;"
 							></image>

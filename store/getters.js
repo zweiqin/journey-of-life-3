@@ -12,9 +12,9 @@ export default {
 
   // 位置
   currentCity: (state) => state.location.currentCity,
+  currentShopCity: (state) => state.location.currentShopCity,
   detailAddress: (state) => state.location.detailAddress,
-	obtainLocationCount: (state) => state.location.obtainLocationCount,
-  shopAndBusiness: (state) => state.location.shopAndbusinessLocation.shopAndbusinessDetailAddressText,
+  obtainLocationCount: (state) => state.location.obtainLocationCount,
 
   // 聊天
   customerServiceInfo: (state) => state.customerService.customerServiceInfo,

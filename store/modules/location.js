@@ -1,7 +1,6 @@
 import {
 	CHANGE_LOCATION_INFO,
-	CHANGE_LOACTION_DETAIL_INFO,
-	CHANGE_NEARBY_LOCATION
+	CHANGE_LOACTION_DETAIL_INFO
 } from './type'
 import { T_SELECTED_ADDRESS } from '../../constant'
 import {
@@ -17,7 +16,7 @@ export default {
 			locationInfo: {
 				city: '佛山市',
 				province: '广东省',
-				adcode: '440606',
+				adcode: '440606', // 区，三级
 				district: '顺德区',
 				towncode: '440606004000',
 				streetNumber: {
@@ -35,16 +34,9 @@ export default {
 				citycode: '0757'
 			},
 			detailAddress: '', // 广东省佛山市顺德区大良街道碧水路顺德市民活动中心
-			currentCity: uni.getStorageSync(T_SELECTED_ADDRESS)?.data?.town || '大良街道',
-			obtainLocationCount: 0,
-			shopAndbusinessLocation: {
-				shopAndbusinessDetailAddressText: '', // 用户选择的地址
-				shopAndbusinessDetailAddressObj: {
-					longitude: '',
-					latitude: '',
-					adcode: ''
-				}
-			}
+			currentCity: uni.getStorageSync(T_SELECTED_ADDRESS)?.data?.town || '大良街道', // 社区项目地址，只显示四级，来自：定位，地址选择或请求返回
+			currentShopCity: uni.getStorageSync(T_SELECTED_ADDRESS)?.data?.town || '大良街道', // 商圈项目地址，可一二三四级，默认四级，来自：定位，地址选择
+			obtainLocationCount: 0
 		}
 	},
 
@@ -58,6 +50,7 @@ export default {
 			typeof state.locationInfo.adcode === 'object' ? state.locationInfo.adcode = '' : ''
 			state.detailAddress = typeof location.formatted_address === 'object' ? '' : location.formatted_address
 			state.currentCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township
+			state.currentShopCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township
 			state.obtainLocationCount = state.obtainLocationCount + 1
 			uni.setStorageSync(T_SELECTED_ADDRESS, {
 				type: 'default',
@@ -68,9 +61,7 @@ export default {
 				}
 			})
 		},
-		[CHANGE_LOACTION_DETAIL_INFO](state, { detailInfo, currentCity }) {
-			state.detailAddress = typeof detailInfo.formatted_address === 'object' ? '' : detailInfo.formatted_address
-			state.currentCity = currentCity
+		[CHANGE_LOACTION_DETAIL_INFO](state, { detailInfo, currentCity, currentShopCity }) { // 触发该方法来自：地址选择，上次选择或定位。
 			state.locationInfo = {
 				city: typeof detailInfo.city === 'object' ? '' : detailInfo.city,
 				province: typeof detailInfo.province === 'object' ? '' : detailInfo.province,
@@ -91,14 +82,10 @@ export default {
 				neighborhood: { name: [], type: [] },
 				citycode: ''
 			}
+			state.detailAddress = typeof detailInfo.formatted_address === 'object' ? '' : detailInfo.formatted_address
+			state.currentCity = currentCity || state.locationInfo.township
+			state.currentShopCity = currentShopCity
 			state.obtainLocationCount = state.obtainLocationCount + 1
-		},
-		[CHANGE_NEARBY_LOCATION](state, locationData) {
-			const { currentLocation, detailLocation } = locationData
-			state.shopAndbusinessLocation.shopAndbusinessDetailAddressText = currentLocation
-			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.adcode = detailLocation.adcode
-			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.longitude = detailLocation.location.split(',')[0]
-			state.shopAndbusinessLocation.shopAndbusinessDetailAddressObj.latitude = detailLocation.location.split(',')[1]
 		}
 	},
 
@@ -170,10 +157,6 @@ export default {
 									// console.log(res);
 									if (res.status === '1') {
 										commit(CHANGE_LOCATION_INFO, res.regeocode)
-										res.regeocode && res.regeocode.addressComponent && dispatch('getDetailAddressForShopAndBusiness', {
-											currentShopAndBusinessLocation: res.regeocode.addressComponent.city,
-											areaText: res.regeocode.addressComponent.city
-										})
 										const addressDetail = res.regeocode
 										onSuccess &&
 											typeof onSuccess === 'function' &&
@@ -216,31 +199,14 @@ export default {
 			const res = await getLngLatByAddress(data.city + data.distinguish + data.town)
 			if (res.status == '1') {
 				const detailInfo = res.geocodes[0]
-
 				commit(CHANGE_LOACTION_DETAIL_INFO, {
 					detailInfo,
-					currentCity: data.town || data.distinguish || data.city
+					currentCity: data.town || '',
+					currentShopCity: data.town || data.distinguish || data.city
 				})
-
-				commit(CHANGE_NEARBY_LOCATION, {
-					detailLocation: res.geocodes[0],
-					currentLocation: data.town
-				})
-
 				dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
 				commit('community/CHANGE_HOME_STORE', data.town, { root: true })
 				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
-			}
-		},
-
-		async getDetailAddressForShopAndBusiness({ commit }, areaObject) {
-			const { areaText, currentShopAndBusinessLocation } = areaObject
-			const res = await getLngLatByAddress(areaText)
-			if (res.status == '1') {
-				commit(CHANGE_NEARBY_LOCATION, {
-					detailLocation: res.geocodes[0],
-					currentLocation: currentShopAndBusinessLocation
-				})
 			}
 		}
 	}

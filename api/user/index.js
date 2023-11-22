@@ -8,7 +8,7 @@
  */
 
 import { USER_TOKEN } from '../../constant'
-import { getUserId, RuanRequest, shopRequest, huangRequest, SheQu1Request, request2, endRequest } from '../../utils'
+import { getUserId, RuanRequest, shopRequest, SheQu1Request, request2, endRequest } from '../../utils'
 
 // 业务管理升级
 export const upbussinessApi = (data) => RuanRequest('/api/business/setMsgSentryStatus', data)
@@ -231,16 +231,16 @@ export const userCrmSlbumDeleteApi = (data) => shopRequest('/userCrmSlbum/delete
 })
 
 // 进入微店
-export const enterSHopApi = (data) => huangRequest('/microshop/toShop', data, 'get')
+export const enterSHopApi = (data) => shopRequest('/microshop/toShop', data, 'get')
 
 // 获取微店数据列表
-export const getMyshopGoodsListApi = (data) => huangRequest('/microshop/queryUpList', data, 'get')
+export const getMyshopGoodsListApi = (data) => shopRequest('/microshop/queryUpList', data, 'get')
 
 // 上架商品
-export const upGoodsApi = (data) => huangRequest('/microshop/up', data, 'get')
+export const upGoodsApi = (data) => shopRequest('/microshop/up', data, 'get')
 
 // 下架商品
-export const downGoodsApi = (data) => huangRequest('/microshop/down', data, 'get')
+export const downGoodsApi = (data) => shopRequest('/microshop/down', data, 'get')
 
 // 申请区域代理
 export const applyRegionagentApi = (data) => shopRequest('/regionagent/saveRegionAgent', data)
@@ -272,13 +272,11 @@ export const getCommissionDatatApi = (data) => endRequest({
 })
 
 // 获取会员的佣金统计
-export const getVipCommissionStatistics = data => {
-	return endRequest({
-		url: '/api/third/account/getCommissionStatistics',
-		method: 'GET',
-		data
-	})
-}
+export const getVipCommissionStatistics = (data) => endRequest({
+	url: '/api/third/account/getCommissionStatistics',
+	method: 'GET',
+	data
+})
 
 // 获取佣金详情
 export const getCommissionDeatilApi = (data) => endRequest({
