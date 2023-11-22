@@ -1,13 +1,12 @@
 <template>
   <view class="vip-package-container" :class="{ active: isStart }">
     <!-- 限时钜惠 -->
-    <view v-if="XIAN && XIAN.name" class="package package-1" @click="go('/community-center/vip-center/vip-detail?type=1')">
+    <view v-if="XIAN && XIAN.name" class="package package-1"
+      @click="go('/community-center/vip-center/vip-detail?type=1')">
       <view class="package-title"> {{ XIAN.name }} </view>
 
       <view class="content">
-        <view class="title-1"
-          >清凉套餐仅需<text class="vip-price">{{ XIAN.price }}</text></view
-        >
+        <view class="title-1">清凉套餐仅需<text class="vip-price">{{ XIAN.price }}</text></view>
         <view class="title-2">多项套餐选择</view>
       </view>
 
@@ -21,15 +20,11 @@
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
     </view>
 
-    <view
-      v-else
-      class="package package-1"
-      @click="
-        go(
-          '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F0ambqkerlcm244oyheu9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fqe5otzuj908ndz5mo0iw.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fush1q9ne9d4ob28dt0b9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Frg4tzjcv9clnokxa7wew.pngg'
-        )
-      "
-    >
+    <view v-else class="package package-1" @click="
+      go(
+        '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F0ambqkerlcm244oyheu9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fqe5otzuj908ndz5mo0iw.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fush1q9ne9d4ob28dt0b9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Frg4tzjcv9clnokxa7wew.pngg'
+      )
+      ">
       <view class="package-title"> 限时钜惠 </view>
 
       <view class="content">
@@ -70,6 +65,24 @@
         <image class="car" src="../../../static/images/new-community/home/car.png"></image>
         <image class="car car-2" src="../../../static/images/new-community/home/car.png"></image>
       </view>
+
+      <!-- <view class="package ilo-package server" style="background: linear-gradient(270deg, #1F67FD 0%, #2E70FC 66%);"
+        @click="go('/community-center/enterprise-orders/home')">
+        <view class="package-title"
+          style="position: relative; z-index: 10; background: linear-gradient(270deg, #2E45DA 0%, #1548D4 97%);"> 企业服务
+        </view>
+        <view class="content" style="z-index: 10; color: #fff; margin-top: 10upx; margin-left: 24upx;">
+          <view>助力企业降本增效</view>
+        </view>
+        <button style="z-index: 10; background-color: #fff; color: #2E45DA; font-size: 22upx; border: none;"
+          class="uni-btn">立即申请</button>
+
+        <view class="additional-dom">
+          <view class="dot-1"></view>
+          <view class="dot-2"></view>
+          <view class="dot-3"></view>
+        </view>
+      </view> -->
     </view>
 
     <tui-toast ref="toast"></tui-toast>
@@ -260,6 +273,7 @@ export default {
         font-size: 32upx;
         color: #222229;
         line-height: 1.5;
+
         .vip-price {
           color: #eb2006;
           font-size: 36upx;
@@ -459,6 +473,57 @@ export default {
             height: 100%;
           }
         }
+      }
+    }
+  }
+
+  .server {
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 292upx;
+      height: 131upx;
+      background: url('../../../static/images/new-community/home/qiye.png') no-repeat;
+      background-size: cover;
+      right: -22upx;
+      bottom: 0;
+    }
+
+    .additional-dom {
+      .dot-1 {
+        position: absolute;
+        top: 74upx;
+        left: -80upx;
+        width: 130upx;
+        height: 130upx;
+        border-radius: 1000px;
+        background: linear-gradient(90deg, #397BFF 0%, #0856FB 99%);
+        z-index: 0;
+      }
+
+      .dot-2 {
+        position: absolute;
+        top: 2upx;
+        left: 6upx;
+        width: 50upx;
+        height: 50upx;
+        border-radius: 1000px;
+        background: linear-gradient(90deg, #397BFF 0%, #0856FB 99%);
+        z-index: 0;
+      }
+
+      .dot-3 {
+        position: absolute;
+        top: 85upx;
+        left: 52upx;
+        width: 287.8upx;
+        height: 91.30upx;
+        background: url('../../../static/images/new-community/home/path.png') no-repeat;
+        background-size: cover;
+        z-index: 0;
       }
     }
   }
