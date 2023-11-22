@@ -212,6 +212,12 @@ export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderV
 // 核销订单
 export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST')
 
+// 商家订单管理查询
+export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST')
+
+// 商家统计
+export const getShopStatisticsApi = (data) => AnotherTFRequest('/shop/getShopStatistics', data, 'POST')
+
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
 

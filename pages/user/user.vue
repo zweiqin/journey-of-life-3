@@ -1,22 +1,14 @@
 <template>
-	<!-- <view
-		class="user-page-container"
-		@touchstart="handleTouchStart"
-		@touchend="handleTouchEnd"
-		@touchmove="calcDis"
-		> -->
 
 	<view class="user-page-container">
-		<view :style="{ height: moveDis / 2 + 'px' }" class="loading-pane">
-			<tui-loading type="row" text="正在刷新中..."></tui-loading>
-		</view>
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
 		<BaseInfo ref="baseInfoRef" :data="userInfo" @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
-			<Equity :menu="myEquity1" @handleNavigate="handleNavigate"></Equity>
-			<MyFunction ref="myFunctionRef" @handleNavigate="handleNavigate"></MyFunction>
-			<Serve @handleNavigate="handleNavigate"></Serve>
-			<AdditionalFunction></AdditionalFunction>
+			<Pane title="我的权益" :menu-data="myEquity" @menu-click="handleNavigate"></Pane>
+			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
+			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
+			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
+			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
 		</view>
 		<tui-modal
 			:show="$data._isShowTuiModel"
@@ -35,46 +27,34 @@
 </template>
 
 <script>
-import { throttle, getStorageKeyToken, jumpToOtherProject } from '../../utils'
+import { getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
-import Equity from './cpns/Equity.vue'
-import MyFunction from './cpns/MyFunction.vue'
-import AdditionalFunction from './cpns/AdditionalFunction.vue'
-import Serve from './cpns/Serve.vue'
+import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
-import { myEquity } from './data'
+import { myEquity, myFunction, myServe, additionalFunction, shopServe } from './data'
 import { Encrypt } from '../../utils/secret'
 
 export default {
 	name: 'User',
 	components: {
 		BaseInfo,
-		Equity,
-		MyFunction,
-		Serve,
-		AdditionalFunction
+		Pane
 	},
 	mixins: [ showModalMixin() ],
-	onLoad() {
-		// #ifdef H5
-		this.init()
-		this.calcDis = throttle(this.handleTouchMove, 50)
-		// #endif
-	},
 	onShow() {
 		this.init()
-		this.setShareHolder()
 	},
 	data() {
 		return {
 			timer: null,
 			isShow: false,
-			moveDis: 0,
-			touchStartDis: 0,
-			calcDis: null,
 			userId: null,
-			myEquity1: [],
+			myEquity,
+			myFunction,
+			myServe,
+			shopServe,
+			additionalFunction,
 			userInfo: {},
 			bindingCode: ''
 		}
@@ -103,30 +83,46 @@ export default {
 			if (item.type === 'external') {
 				this.go('/user/view?target=' + item.url)
 				return
-			} else if (item.type === 'settle') {
-				const storageKeyToken = getStorageKeyToken()
-				if (storageKeyToken) {
-					jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
-				}
-				return
-			} else if (item.type === 'shopInvitation') {
-				this.$refs.codeCreateRef.getCode('shopInvitation')
-				return
 			}
 			if (this.isLogin()) {
 				if (item.role && item.role.length && !item.role.includes(this.$store.getters.userInfo.userLevel) && !this.$store.getters.userInfo.isRegionAgent) {
 					this.isShow = true
 					return
 				}
-				if (item.permission) {
-					const res = item.permission()
-					console.log(res)
-					if (res) {
-						this.ttoast({
+				if (item.type === 'settle') {
+					const storageKeyToken = getStorageKeyToken()
+					if (storageKeyToken) {
+						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+					}
+					return
+				} else if (item.type === 'shopInvitation') {
+					this.$refs.codeCreateRef.getCode('shopInvitation')
+					return
+				} else if (item.type === 'regimentalCommander') {
+					const status = this.$store.getters.regimentalCommanderStatus
+					let regimentalCommanderMsg
+					if (status) {
+						if (status === 3) regimentalCommanderMsg = '您已经是团长了'
+						switch (status) {
+							case 0:
+								regimentalCommanderMsg = null
+								break
+							case 1:
+								regimentalCommanderMsg = `您的申请正在审核中，请耐心等待`
+								break
+							case 2:
+								regimentalCommanderMsg = `您的申请正在审核中，请耐心等待`
+								break
+							case 3:
+								regimentalCommanderMsg = '您的申请被驳回了，请联系管理人员'
+								break
+							case 5:
+								regimentalCommanderMsg = '您的团长身份已取消，请联系店长恢复'
+						}
+						return this.ttoast({
 							type: 'info',
-							title: res
+							title: regimentalCommanderMsg
 						})
-						return
 					}
 				}
 				if (!item.url) {
@@ -153,50 +149,7 @@ export default {
 					url: '/user/sever/userUp/partner-appay'
 				})
 			}
-
 			this.isShow = false
-		},
-
-		// 点击触摸
-		handleTouchStart(e) {
-			this.touchStartDis = e.changedTouches[0].pageY
-		},
-
-		// 触摸结束
-		handleTouchEnd() {
-			this.init()
-			this.moveDis = 0
-		},
-
-		// 手指移动
-		handleTouchMove(e) {
-			this.moveDis = e.changedTouches[0].pageY - this.touchStartDis
-			if (this.moveDis > 100) {
-				this.moveDis = 150
-			}
-		},
-
-		// 设置股东看板
-		setShareHolder() {
-			const userInfo = this.$store.getters.userInfo
-			if (userInfo && userInfo.shareholderType === 1) {
-				this.myEquity1 = [
-					...myEquity,
-					{
-						name: '股东看板',
-						icon: require('../../static/images/new-user/equity/gudong.png'),
-						url: '/user/shareholder/shareholder'
-					}
-				]
-			} else {
-				const index = this.myEquity1.findIndex((item) => item.name === '股东看板')
-				if (index != -1) {
-					this.myEquity1.splice(index, 1)
-				}
-
-				this.myEquity1 = [ ...myEquity ]
-			}
-			this.$forceUpdate()
 		}
 	}
 }
@@ -240,12 +193,6 @@ text {
       margin-top: 20upx;
     }
   }
-}
-
-.loading-pane {
-  overflow: hidden;
-  transition: all 100ms;
-  background: linear-gradient(360deg, #f6e6d8, #eff5f0);
 }
 
 /deep/ .tui-loading-init {

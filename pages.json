@@ -1553,6 +1553,18 @@
           "style": {
             "navigationBarTitleText": "分享"
           }
+        },
+        {
+          "path": "another-user/shop-orders/index",
+          "style": {
+            "navigationBarTitleText": "商家订单"
+          }
+        },
+        {
+          "path": "another-user/shop-statistics/index",
+          "style": {
+            "navigationBarTitleText": "商家统计"
+          }
         }
       ]
     }
