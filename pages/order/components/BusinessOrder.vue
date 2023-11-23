@@ -27,17 +27,19 @@
 								</text>
 								<text class="product-num">x {{ skuItem.number && skuItem.number }}</text>
 							</view>
-							<view
-								v-if="skuItem.commentId === 0 && data.state === 4" class="evaluate"
-								@click.stop="go(`/another-tf/another-serve/evaluate/index`, { commentData: skuItem, orderId: data.orderId })"
-							>
-								立即评价
-							</view>
-							<view
-								v-if="skuItem.commentId !== 0 && data.state === 4 && data.skus[0].ifAdd !== 1" class="evaluate2"
-								@click.stop="go(`/another-tf/another-serve/addEvaluate/index`, { addCommentVOList: data, commentId: skuItem.commentId, type: 1 })"
-							>
-								追加评价
+							<view v-if="showOperate">
+								<view
+									v-if="skuItem.commentId === 0 && data.state === 4" class="evaluate"
+									@click.stop="go(`/another-tf/another-serve/evaluate/index`, { commentData: skuItem, orderId: data.orderId })"
+								>
+									立即评价
+								</view>
+								<view
+									v-if="skuItem.commentId !== 0 && data.state === 4 && data.skus[0].ifAdd !== 1" class="evaluate2"
+									@click.stop="go(`/another-tf/another-serve/addEvaluate/index`, { addCommentVOList: data, commentId: skuItem.commentId, type: 1 })"
+								>
+									追加评价
+								</view>
 							</view>
 						</view>
 					</view>
@@ -53,7 +55,7 @@
 					</template>
 				</view>
 			</view>
-			<view class="btnBox flex-items" :class="{ flexSpBetween: data.state === 5 || data.state === 9 }">
+			<view v-if="showOperate" class="btnBox flex-items" :class="{ flexSpBetween: data.state === 5 || data.state === 9 }">
 				<tui-icon
 					v-if="data.state === 5 || data.state === 9" name="delete" :size="14" color="#333333"
 					@click.stop="handleDeleteOrder(data)"
@@ -81,6 +83,10 @@ export default {
 		data: {
 			type: Object,
 			required: true
+		},
+		showOperate: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -459,6 +465,7 @@ export default {
 
 						.evaluate2 {
 							height: 56upx;
+							margin-top: 6upx;
 							text-align: center;
 							line-height: 56upx;
 							font-size: 26upx;

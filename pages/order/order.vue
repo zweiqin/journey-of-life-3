@@ -51,7 +51,7 @@
 				<view v-show="currentOrderMode === 'businessDistrict'">
 					<BusinessOrder
 						v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
-						@refresh="getOrderList()" @pay-order="(e) => payObj = e"
+						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"
 					></BusinessOrder>
 					<view style="padding-bottom: 45upx;">
 						<LoadingMore

@@ -56,16 +56,6 @@ export const communityOrderStatusList = [
 	}
 ]
 
-export const orderTypeEnum = {
-	1: '待付款',
-	2: '待发货',
-	8: '待核销',
-	3: '待收货',
-	4: '已完成',
-	5: '交易关闭',
-	6: '待成团'
-}
-
 export const communityAppendOrderNavs = [
 	{
 		label: '待支付',
@@ -162,3 +152,13 @@ export const businessSubNavs = [{
 	label: '待成团',
 	value: 6
 }]
+
+export const orderTypeEnum = {
+	1: '待付款',
+	2: '待发货',
+	8: '待核销',
+	3: '待收货',
+	4: '已完成',
+	5: '交易关闭',
+	6: '待成团'
+}
