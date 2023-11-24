@@ -1583,7 +1583,20 @@
           "style": {
             "navigationBarTitleText": "商家统计"
           }
+        },
+        {
+          "path": "another-user/shop-recharge/shop-recharge",
+          "style": {
+            "navigationBarTitleText": "商家充值"
+          }
+        },
+        {
+          "path": "another-user/shop-recharge/recharge-list",
+          "style": {
+            "navigationBarTitleText": "充值商家"
+          }
         }
+
       ]
     }
   ],

@@ -23,52 +23,56 @@
         <view class="menu-title">
           选择您需要的企业服务？
         </view>
-        <view class="menu-wrapper">
-          <view class="menu-item" :class="{ active: selectServes.includes('皮革维修') }" @click="handleChooseServe('皮革维修')">
-            皮革维修
-          </view>
-          <view class="menu-item" :class="{ active: selectServes.includes('实木维修') }" @click="handleChooseServe('实木维修')">
-            实木维修
-          </view>
-          <view class="menu-item" :class="{ active: selectServes.includes('石材维修') }" @click="handleChooseServe('石材维修')">
-            石材维修
-          </view>
-          <view class="menu-item" :class="{ active: selectServes.includes('金属维修') }" @click="handleChooseServe('金属维修')">
-            金属维修
-          </view>
-          <view class="menu-item" :class="{ active: selectServes.includes('贴膜') }" @click="handleChooseServe('贴膜')">贴膜
-          </view>
-          <view class="menu-item" :class="{ active: selectServes.includes('全屋翻新') }" @click="handleChooseServe('全屋翻新')">
-            全屋翻新
+        <view class="menu-wrapper" v-if="serveList.length">
+          <view class="menu-item" v-for="item in serveList" :key="item.id"
+            :style="{ visibility: item.serveName ? 'hidden' : '' }" :class="{ active: selectServes.includes(item.id) }"
+            @click="handleChooseServe(item.id)">
+            {{ item.serverName }}
           </view>
         </view>
+        <view v-else>
+          抱歉，您的区域暂时没有相关服务
+        </view>
         <button @click="handleSubmit" :style="{ opacity: selectServes.length ? 1 : 0.6 }" class="uni-btn order-btn">{{
-          selectServes.length ?
-          `已选${selectServes.length}个 立即下单` : '请选择服务项目'
+          isAuth ? selectServes.length ?
+          `已选${selectServes.length}个 立即下单` : '请选择服务项目' : '请先进行企业认证'
         }}</button>
-        <view class="tip">
+        <view class="tip" v-if="isAuth">
           企业未认证？<button class="uni-btn" @click="go('/community-center/enterprise-orders/authentication')">去认证</button>
         </view>
       </view>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
+    <tui-modal :show="isShowAuthModal" title="提示" content="请先完成企业认证" @click="handleAuth"></tui-modal>
+
   </view>
 </template>
 
 <script>
 import { advantageList } from './data'
+import { isAuthHuozhuApi, getBuServeListApi } from '../../api/community-center'
+import { USER_INFO } from '../../constant'
+
 export default {
   data() {
     return {
       advantageList: Object.freeze(advantageList),
       selectServes: [],
-      isAnimate: false
+      isAnimate: false,
+      isAuth: false,
+      isShowAuthModal: false,
+      serveList: []
     }
   },
 
   onLoad() {
     this.init()
+  },
+
+  onShow() {
+    this.getIsAuth()
+    this.getBuServeList()
   },
 
   methods: {
@@ -86,8 +90,32 @@ export default {
       }
     },
 
+    // 判断还用户是否已经企业认证了
+    async getIsAuth() {
+      const res = await isAuthHuozhuApi({
+        phone: uni.getStorageSync(USER_INFO).phone
+      })
+
+      if (res.statusCode === 20000) {
+        this.isAuth = res.data
+      }
+    },
+
+    handleAuth(e) {
+      if (e.index) {
+        this.go('/community-center/enterprise-orders/authentication')
+      }
+
+      this.isShowAuthModal = false
+    },
+
     // 提交进入下一步
     handleSubmit() {
+      if (!this.isAuth) {
+        this.isShowAuthModal = true
+        return
+      }
+
       if (!this.selectServes.length) {
         this.ttoast({
           type: "info",
@@ -100,6 +128,32 @@ export default {
       uni.navigateTo({
         url: '/community-center/enterprise-orders/confirm-order'
       });
+    },
+
+    // 获取服务列表
+    async getBuServeList() {
+      const res = await getBuServeListApi({
+        address: '广东省佛山市顺德区龙江镇'
+      })
+
+      if (res.statusCode === 20000) {
+        this.serveList = res.data
+        if (res.data && res.data.length) {
+          const fullRow = Math.floor(res.data.length / 3)
+          const buCount = 3 - res.data.length - 3 * fullRow
+          for (let i = 0; i < buCount; i++) {
+            this.serveList.push({
+              id: Math.random() + Date.now(),
+              serveName: "xxx"
+            })
+          }
+        }
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "获取服务列表失败"
+        })
+      }
     }
   },
 }
@@ -294,6 +348,11 @@ export default {
           box-sizing: border-box;
           transition: all 350ms;
           border: 1upx solid transparent;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 0 20upx;
+          box-sizing: border-box;
 
           &.active {
             box-shadow: 0px 8upx 30upx -8upx #BCD5F4;

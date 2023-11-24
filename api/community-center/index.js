@@ -263,6 +263,26 @@ export const getShopGoodsDetailApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/findShopGoodsInfo', data, 'GET');
 };
 
+// 判断用户是否企业认证
+export const isAuthHuozhuApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/isCertification', data, 'GET')
+}
+
+// 企业认证
+export const bAuthApi = (data) => {
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/enterpriseCertification', data, 'POST')
+}
+
+// 获取该地区的服务项目
+export const getBuServeListApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/getServersByAddr', data, 'GET')
+}
+
+// 获取企业信息
+export const getBAuthInfoApi = data => {
+return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/enterpriseInfo', data, 'GET')
+}
+
 // 获取商圈商品报价
 export const getQuotationApi = (data) => {
   return endRequest({

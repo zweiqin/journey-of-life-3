@@ -153,6 +153,8 @@ import AddServe from './components/AddServe.vue'
 import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
+import { getBAuthInfoApi } from '../../api/community-center'
+import { USER_INFO } from '../../constant'
 
 export default {
   components: {
@@ -168,6 +170,10 @@ export default {
     }
   },
 
+  onLoad() {
+    this.getBAuthInfo()
+  },
+
   methods: {
     handleAddServe() {
       this.$refs.addServeRef.show()
@@ -177,8 +183,17 @@ export default {
       this.$refs.chooseShopSiteRef.show()
     },
 
-    handleChoosePayMethod(){
+    handleChoosePayMethod() {
       this.$refs.payMethodRef.show()
+    },
+
+    // 获取企业认证信息
+    async getBAuthInfo() {
+      const res = await getBAuthInfoApi({
+        phone: uni.getStorageSync(USER_INFO).phone
+      })
+
+      console.log(res);
     }
   },
 }
