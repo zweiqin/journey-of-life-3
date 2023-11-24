@@ -34,6 +34,7 @@ import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
 import { myEquity, myFunction, myServe, additionalFunction, shopServe } from './data'
 import { Encrypt } from '../../utils/secret'
+import { getIsShopByUserApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'User',

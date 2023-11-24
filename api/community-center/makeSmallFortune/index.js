@@ -18,7 +18,7 @@
  *                                //.-~~~-~_--~- |-------~~~~~~~~
  *                                       //.-~~~--\
  *                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * 
+ *
  *                               神兽保佑            永无BUG
  */
 
@@ -55,4 +55,4 @@ export const redStatistics = (data) => RuanRequest('/dtsPostRedPacketInfo/redSta
 export const postDetailsDelete = (data) => RuanRequest('/dtsPostBbs/postDetailsDelete', data, 'GET')
 
 // /dtsPostBbs/isShop
-export const userIsShop = (data) => RuanRequest('/dtsPostBbs/isShop', data, 'GET')
+export const userIsShopAPI = (data) => RuanRequest('/dtsPostBbs/isShop', data, 'GET')

@@ -7,6 +7,9 @@ import { AnotherTFRequest } from '../../utils'
 // 登录拿 新团蜂的 token
 export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrRegByPhone', data)
 
+// 判断用户是否是商家
+export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
+
 // /classify/getClassifyProducts2 分类商品查询2
 export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
 

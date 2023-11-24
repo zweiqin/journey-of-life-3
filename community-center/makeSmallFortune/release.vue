@@ -21,7 +21,7 @@ import RewardPage from './components/RewardPage.vue'
 import Preview from './components/Preview.vue'
 import { getUserId } from '@/utils';
 import { USER_INFO } from '../../constant';
-import { userIsShop } from '@/api/community-center/makeSmallFortune'
+import { userIsShopAPI } from '@/api/community-center/makeSmallFortune'
 export default {
     name: 'release',
     components: {
@@ -31,7 +31,7 @@ export default {
     },
     onLoad() {
         this.formData.publishUserId = getUserId();
-        // userIsShop({
+        // userIsShopAPI({
         //     phone: uni.getStorageSync(USER_INFO).phone
         // }).then(res => {
         //     this.userShopInfo = res

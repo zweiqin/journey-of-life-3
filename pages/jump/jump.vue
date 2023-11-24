@@ -2,8 +2,8 @@
 	<view class="jump-container">
 		<view v-if="viewType === 'verification'">
 			<JHeader tabbar="/pages/user/user" width="50" height="50" title="订单核销"></JHeader>
-			<view v-if="orderInfo && orderInfo.orderInfo" style="margin-top: 40upx;">
-				<OrderInfo :data="orderInfo.orderInfo"></OrderInfo>
+			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40upx;">
+				<ATFOrderInfo :data="orderInfo"></ATFOrderInfo>
 			</view>
 			<view style="margin-top: 50upx;">
 				<tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input>
@@ -152,12 +152,12 @@ export default {
 				this.code = this.code.split('-')[1]
 				console.log(this.code)
 				await getOrderDetailApi({
-					userId: this.userId,
-					orderId: this.orderId
+					orderId: this.orderId,
+					noticeId: 0
 				}).then(({ data }) => {
 					this.orderInfo = data
 				})
-				return this.viewType = 'verification'
+				this.viewType = 'verification'
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'toAnotherTFSettle') {
@@ -193,7 +193,7 @@ export default {
 			}
 		},
 		handleVerification() {
-			updateSetHxCodeApi({ code: this.code, userId: this.userId })
+			updateSetHxCodeApi({ orderId: this.orderId, noticeId: 0 })
 				.then((res) => { this.$showToast('核销成功', 'success') })
 				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 		}
