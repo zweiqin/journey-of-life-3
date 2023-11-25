@@ -230,6 +230,11 @@ export const shopServe = [
 		name: '商家统计',
 		icon: require('../../static/images/new-user/serve/zz.png'),
 		url: '/another-tf/another-user/shop-statistics/index'
+	},
+	{
+		name: '商家充值',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/shop-recharge/shop-recharge'
 	}
 ]
 

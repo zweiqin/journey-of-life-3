@@ -1,23 +1,17 @@
 <template>
-  <view
-    class="page-head"
-    :class="{ fixed: fixed && scrollTop > fiexdHeight }"
-    :style="{
-      height: height + 'rpx',
-      background: background,
-      padding: padding,
-      color: scrollTop > fiexdHeight ? fixedColor : color
-    }"
-  >
+  <view class="page-head" :class="{ fixed: fixed && scrollTop > fiexdHeight }" :style="{
+    height: height + 'rpx',
+    background: background,
+    padding: padding,
+    color: scrollTop > fiexdHeight ? fixedColor : color
+  }">
     <view class="left">
       <slot name="left"></slot>
     </view>
-    <view
-      class="center"
-      :style="{
-        color: titleColor
-      }"
-    >
+    <view class="center" :style="{
+      color: titleColor,
+      'font-weight': weight
+    }">
       {{ title }}
     </view>
     <view class="right">
@@ -66,7 +60,8 @@ export default {
     },
 
     color: String,
-    fixedColor: String
+    fixedColor: String,
+    weight: String
   }
 };
 </script>

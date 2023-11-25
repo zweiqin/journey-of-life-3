@@ -1,202 +1,206 @@
 {
-    "name" : "团蜂家居",
-    "appid" : "__UNI__B07FE0F",
-    "description" : "",
-    "versionName" : "1.0.19",
-    "versionCode" : 119,
-    "transformPx" : false,
-    "app-plus" : {
-        "animationType" : "slide-in-left",
-        "usingComponents" : true,
-        "nvueCompiler" : "uni-app",
-        "compilerVersion" : 3,
-        "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
-            "waiting" : true,
-            "autoclose" : true,
-            "delay" : 0
+  "name": "团蜂家居",
+  "appid": "__UNI__B07FE0F",
+  "description": "",
+  "versionName": "1.0.19",
+  "versionCode": 119,
+  "transformPx": false,
+  "app-plus": {
+    "animationType": "slide-in-left",
+    "usingComponents": true,
+    "nvueCompiler": "uni-app",
+    "compilerVersion": 3,
+    "splashscreen": {
+      "alwaysShowBeforeRender": true,
+      "waiting": true,
+      "autoclose": true,
+      "delay": 0
+    },
+    "modules": {
+      "Camera": {},
+      "OAuth": {},
+      "Share": {},
+      "Maps": {}
+    },
+    "distribute": {
+      "android": {
+        "permissions": [
+          "<uses-feature android:name=\"android.hardware.camera\"/>",
+          "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+          "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+          "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+          "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+          "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+          "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+        ],
+        "abiFilters": ["armeabi-v7a", "arm64-v8a", "x86"]
+      },
+      "ios": {
+        "dSYMs": false,
+        "urlschemewhitelist": "alipays,alipay,safepay,weixin,wechat",
+        "capabilities": {
+          "entitlements": {
+            "com.apple.developer.associated-domains": ["applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com", "applinks:www.tuanfengkeji.cn"]
+          }
         },
-        "modules" : {
-            "Camera" : {},
-            "OAuth" : {},
-            "Share" : {},
-            "Maps" : {}
-        },
-        "distribute" : {
-            "android" : {
-                "permissions" : [
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
-                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
-                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ],
-                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
-            },
-            "ios" : {
-                "dSYMs" : false,
-                "urlschemewhitelist" : "alipays,alipay,safepay,weixin,wechat",
-                "capabilities" : {
-                    "entitlements" : {
-                        "com.apple.developer.associated-domains" : [
-                            "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com",
-                            "applinks:www.tuanfengkeji.cn"
-                        ]
-                    }
-                },
-                "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "需要同意访问您的相册才能选取图片用于上传展示图片和头像信息",
-                    "NSPhotoLibraryAddUsageDescription" : "需要同意访问您的相册才能保存图片",
-                    "NSCameraUsageDescription" : "需要同意访问您的摄像头才能拍摄照片用于上传展示图片和头像信息",
-                    "NSLocationWhenInUseUsageDescription" : "需要同意获取您的位置信息，用于增强您的体验和保存收货地址",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "需要同意获取您的位置信息，用于增强您的体验和保存收货地址",
-                    "NSLocationAlwaysUsageDescription" : "需要同意获取您的位置信息，用于增强您的体验和保存收货地址"
-                }
-            },
-            "sdkConfigs" : {
-                "ad" : {},
-                "geolocation" : {
-                    "amap" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "",
-                        "appkey_android" : "4f316ac58524f5d7b978dc8b0a702c0c"
-                    }
-                },
-                "maps" : {
-                    "amap" : {
-                        "appkey_ios" : "d0c27ffa68237776243fa5858c3fe5c5",
-                        "appkey_android" : "4f316ac58524f5d7b978dc8b0a702c0c"
-                    }
-                },
-                "oauth" : {
-                    "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
-                    }
-                },
-                "share" : {
-                    "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
-                        "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
-                    }
-                }
-            },
-            "icons" : {
-                "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
-                },
-                "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
-                    "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
-                    },
-                    "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
-                    }
-                }
-            },
-            "splashscreen" : {
-                "androidStyle" : "default",
-                "useOriginalMsgbox" : true,
-                "android" : {
-                    "hdpi" : "E:/front_end-project/icon/new.png",
-                    "xhdpi" : "E:/front_end-project/icon/new.png",
-                    "xxhdpi" : "E:/front_end-project/icon/new.png"
-                }
-            }
+        "privacyDescription": {
+          "NSPhotoLibraryUsageDescription": "需要同意访问您的相册才能选取图片用于上传展示图片和头像信息",
+          "NSPhotoLibraryAddUsageDescription": "需要同意访问您的相册才能保存图片",
+          "NSCameraUsageDescription": "需要同意访问您的摄像头才能拍摄照片用于上传展示图片和头像信息",
+          "NSLocationWhenInUseUsageDescription": "需要同意获取您的位置信息，用于增强您的体验和保存收货地址",
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "需要同意获取您的位置信息，用于增强您的体验和保存收货地址",
+          "NSLocationAlwaysUsageDescription": "需要同意获取您的位置信息，用于增强您的体验和保存收货地址"
         }
-    },
-    "quickapp" : {},
-    "mp-weixin" : {
-        "appid" : "1234",
-        "setting" : {
-            "urlCheck" : false
+      },
+      "sdkConfigs": {
+        "ad": {},
+        "geolocation": {
+          "amap": {
+            "__platform__": ["ios", "android"],
+            "appkey_ios": "",
+            "appkey_android": "4f316ac58524f5d7b978dc8b0a702c0c"
+          }
         },
-        "usingComponents" : true,
-        "permission" : {
-            "scope.userLocation" : {
-                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
-            }
+        "maps": {
+          "amap": {
+            "appkey_ios": "d0c27ffa68237776243fa5858c3fe5c5",
+            "appkey_android": "4f316ac58524f5d7b978dc8b0a702c0c"
+          }
         },
-        "plugins" : {
-            // 卡券
-            "sendCoupon" : {
-                "version" : "latest",
-                "provider" : "wx987654321abcdefg"
-            }
+        "oauth": {
+          "weixin": {
+            "appid": "wx984383bfd5405df1",
+            "UniversalLinks": "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
+          }
+        },
+        "share": {
+          "weixin": {
+            "appid": "wx984383bfd5405df1",
+            "UniversalLinks": "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
+          }
         }
-    },
-    "mp-alipay" : {
-        "usingComponents" : true
-    },
-    "mp-baidu" : {
-        "usingComponents" : true
-    },
-    "mp-toutiao" : {
-        "usingComponents" : true
-    },
-    "h5" : {
-        "title" : "团蜂家居",
-        "domain" : "",
-        "devServer" : {
-            "disableHostCheck" : true,
-            "port" : 8988,
-            "proxy" : {
-                "/sf" : {
-                    "target" : "http://192.168.0.74:8790/samrtWorker",
-                    "changeOrigin" : true,
-                    "pathRewrite" : {
-                        "^/sf" : ""
-                    }
-                }
-            }
+      },
+      "icons": {
+        "android": {
+          "hdpi": "unpackage/res/icons/72x72.png",
+          "xhdpi": "unpackage/res/icons/96x96.png",
+          "xxhdpi": "unpackage/res/icons/144x144.png",
+          "xxxhdpi": "unpackage/res/icons/192x192.png"
         },
-        "router" : {
-            "mode" : "hash",
-            "base" : "/TFShop_Uni_H5/"
-        },
-        // "base" : "/test_TFShop_Uni_H5/"
-        "sdkConfigs" : {
-            "maps" : {
-                "qqmap" : {
-                    "key" : "JMABZ-72LWU-R2UV5-GOYJ7-6QFZV-57BZW"
-                }
-            }
+        "ios": {
+          "appstore": "unpackage/res/icons/1024x1024.png",
+          "ipad": {
+            "app": "unpackage/res/icons/76x76.png",
+            "app@2x": "unpackage/res/icons/152x152.png",
+            "notification": "unpackage/res/icons/20x20.png",
+            "notification@2x": "unpackage/res/icons/40x40.png",
+            "proapp@2x": "unpackage/res/icons/167x167.png",
+            "settings": "unpackage/res/icons/29x29.png",
+            "settings@2x": "unpackage/res/icons/58x58.png",
+            "spotlight": "unpackage/res/icons/40x40.png",
+            "spotlight@2x": "unpackage/res/icons/80x80.png"
+          },
+          "iphone": {
+            "app@2x": "unpackage/res/icons/120x120.png",
+            "app@3x": "unpackage/res/icons/180x180.png",
+            "notification@2x": "unpackage/res/icons/40x40.png",
+            "notification@3x": "unpackage/res/icons/60x60.png",
+            "settings@2x": "unpackage/res/icons/58x58.png",
+            "settings@3x": "unpackage/res/icons/87x87.png",
+            "spotlight@2x": "unpackage/res/icons/80x80.png",
+            "spotlight@3x": "unpackage/res/icons/120x120.png"
+          }
         }
+      },
+      "splashscreen": {
+        "androidStyle": "default",
+        "useOriginalMsgbox": true,
+        "android": {
+          "hdpi": "E:/front_end-project/icon/new.png",
+          "xhdpi": "E:/front_end-project/icon/new.png",
+          "xxhdpi": "E:/front_end-project/icon/new.png"
+        }
+      }
+    }
+  },
+  "quickapp": {},
+  "mp-weixin": {
+    "appid": "1234",
+    "setting": {
+      "urlCheck": false
     },
-    "_spaceID" : "mp-c6deae67-6f09-4de0-9c44-38badae267b7"
+    "usingComponents": true,
+    "permission": {
+      "scope.userLocation": {
+        "desc": "你的位置信息将用于小程序位置接口的效果展示"
+      }
+    },
+    "plugins": {
+      // 卡券
+      "sendCoupon": {
+        "version": "latest",
+        "provider": "wx987654321abcdefg"
+      }
+    }
+  },
+  "mp-alipay": {
+    "usingComponents": true
+  },
+  "mp-baidu": {
+    "usingComponents": true
+  },
+  "mp-toutiao": {
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "团蜂家居",
+    "domain": "",
+    "devServer": {
+      "disableHostCheck": true,
+      "port": 8988,
+      "proxy": {
+        "/sf": {
+          "target": "http://192.168.0.74:8790/samrtWorker",
+          "changeOrigin": true,
+          "pathRewrite": {
+            "^/sf": ""
+          }
+        },
+        "/lao": {
+          "target": "http://192.168.0.82:8781/",
+          "changeOrigin": true,
+          "pathRewrite": {
+            "^/lao": ""
+          }
+        }
+      }
+    },
+    "router": {
+      "mode": "hash",
+      "base": "/TFShop_Uni_H5/"
+    },
+    // "base" : "/test_TFShop_Uni_H5/"
+    "sdkConfigs": {
+      "maps": {
+        "qqmap": {
+          "key": "JMABZ-72LWU-R2UV5-GOYJ7-6QFZV-57BZW"
+        }
+      }
+    }
+  },
+  "_spaceID": "mp-c6deae67-6f09-4de0-9c44-38badae267b7"
 }

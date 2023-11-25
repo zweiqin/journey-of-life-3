@@ -334,6 +334,24 @@
       "root": "community-center",
       "pages": [
         {
+          "path": "enterprise-orders/authentication",
+          "style": {
+            "navigationBarTitleText": "企业认证"
+          }
+        },
+        {
+          "path": "enterprise-orders/home",
+          "style": {
+            "navigationBarTitleText": "企业服务"
+          }
+        },
+        {
+          "path": "enterprise-orders/confirm-order",
+          "style": {
+            "navigationBarTitleText": "完善服务信息"
+          }
+        },
+        {
           "path": "merchant-settlement/login/login",
           "style": {
             "navigationBarTitleText": "商家入驻"
@@ -1570,6 +1588,18 @@
           "path": "another-user/shop-statistics/finance-statistics",
           "style": {
             "navigationBarTitleText": "商家财务统计"
+          }
+        },
+        {
+          "path": "another-user/shop-recharge/shop-recharge",
+          "style": {
+            "navigationBarTitleText": "商家充值"
+          }
+        },
+        {
+          "path": "another-user/shop-recharge/recharge-list",
+          "style": {
+            "navigationBarTitleText": "充值商家"
           }
         }
       ]
