@@ -1,7 +1,21 @@
 <template>
-	<view class="fan-statistics-container">
-		<view style="padding: 30upx 20upx;color: #000000;">
-			<JHeader width="50" height="50" title="粉丝统计"></JHeader>
+	<view class="shop-statistics-container">
+		<JHeader title="商家统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<view style="margin-bottom: 20upx;text-align: right;">
+			<tui-button
+				type="danger" width="220rpx" height="60rpx" margin="0 30upx 0 0"
+				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics')"
+			>
+				财务数据 →
+			</tui-button>
+		</view>
+		<view style="padding: 0 24upx;background-color: #ffffff;">
+			<tui-tabs
+				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="175.5" :padding="24"
+				item-width="175.5rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '今天' }, { name: '昨天' }, { name: '最近7天' }, { name: '最近30天' }]" :current-tab="currentTab"
+				@change="handleCurrentChange"
+			></tui-tabs>
 		</view>
 		<view
 			style="width: 100%;color: #000;padding: 34upx 24upx 44upx;box-sizing: border-box;margin-top: 2upx;margin-bottom: 20upx;background-color: #ffa637;border-radius: 20upx;font-size: 28upx;"
@@ -11,146 +25,168 @@
 					<view
 						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
 					>
-						<view>粉丝总数</view>
+						<view>店铺访问次数 (次)</view>
 						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof statistics.totalFans === 'number' ? statistics.totalFans : '--' }}
+							{{ typeof shopStatisticsData.total === 'number' ? shopStatisticsData.total : '--' }}
 						</view>
 					</view>
 					<view
 						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
 					>
-						<view>商家</view>
+						<view>待处理订单 (件)</view>
 						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof statistics.businessFans === 'number' ? statistics.businessFans : '--' }}
+							{{ typeof shopStatisticsData.stayOrders === 'number' ? shopStatisticsData.stayOrders : '--' }}
 						</view>
 					</view>
 					<view
 						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
 					>
-						<view>策划师数</view>
+						<view>售后订单 (件)</view>
 						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof statistics.plan === 'number' ? statistics.plan : '--' }}
+							{{ typeof shopStatisticsData.stayAfters === 'number' ? shopStatisticsData.stayAfters : '--' }}
 						</view>
 					</view>
 					<view
 						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
 					>
-						<view>普通会员</view>
+						<view>{{ shopStatisticsData.money < 10000 ? '成交金额 (元)' : '成交金额 (万元)' }}</view>
 						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof statistics.member === 'number' ? statistics.member : '--' }}
+							{{ typeof shopStatisticsData.money === 'number' ? shopStatisticsData.money : '--' }}
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<tui-tabs
-			selected-color="#000000" bold slider-bg-color="#ff0000"
-			:tabs="[{ name: '全部' }, { name: '商户' }, { name: '普通会员' }, { name: '营销策划师' }]" :current-tab="currentTab"
-			@change="handleCurrentChange"
-		></tui-tabs>
-		<view style="margin: 20upx 30upx;">
-
-			<view v-if="String(currentTab)">
-				<view v-if="fanList && fanList.length">
-					<view
-						v-for="item in fanList" :key="item.id"
-						style="display: flex;align-items: center;padding: 20upx 30upx;margin-bottom: 24upx;background-color: #fff;"
-					>
-						<JAvatar :src="common.seamingImgUrl(item.avatar)" size="92" radius="50%" border="5upx solid #ffffff">
-						</JAvatar>
-						<view style="padding-left: 40upx;">
-							<view>名称：{{ item.nickname || '--' }}</view>
-							<view>性别：{{ item.gender === 1 ? '男' : item.gender === 2 ? '女' : '--' }}</view>
-						</view>
-					</view>
-				</view>
-				<view v-else>
-					<tui-no-data>暂无数据</tui-no-data>
-				</view>
+		<view>
+			<view style="text-align: center;">
+				<view>用户访问趋势（单位：次数）</view>
+				<view style="font-size: 28upx;">用户访问数：{{ shopStatisticsData.count }} 次</view>
 			</view>
-
+			<view
+				v-if="shopStatisticsData.visitWeek.time && shopStatisticsData.visitWeek.time.length"
+				style="display: flex;justify-content: flex-end;"
+			>
+				<tui-charts-line
+					ref="refAccessTrends" tooltip scrollable :x-axis="shopStatisticsData.visitWeek.time"
+					:x-axis-line="{ color: '#e3e3e3', itemGap: 135 }" :y-axis-label="{ show: true, size: 24, color: '#333333' }"
+					:max="Math.max(...shopStatisticsData.visitWeek.total) || 1"
+					:split-number="(Math.max(...shopStatisticsData.visitWeek.total) / 8) || 1"
+				></tui-charts-line>
+			</view>
+			<!-- <view
+				v-if="shopStatisticsData.visitWeek.time && shopStatisticsData.visitWeek.time.length && Math.max(...shopStatisticsData.visitWeek.total)"
+				style="width: 100%;overflow-x: auto;"
+				>
+				<tui-charts-line
+				ref="refAccessTrends" tooltip scrollable :x-axis="shopStatisticsData.visitWeek.time"
+				:x-axis-line="{ color: '#e3e3e3', itemGap: 135 }" :y-axis-label="{ show: true, size: 24, color: '#333333' }"
+				:max="Math.max(...shopStatisticsData.visitWeek.total) || 1"
+				:split-number="(Math.max(...shopStatisticsData.visitWeek.total) / 8) || 1"
+				></tui-charts-line>
+				</view> -->
+		</view>
+		<view style="padding: 20upx;">
+			<view style="text-align: center;">
+				<view>订单转换漏斗</view>
+				<view style="font-size: 28upx;">总转化率：{{ shopStatisticsData.rate }}%</view>
+			</view>
+			<view v-if="shopStatisticsData.conversion.names.length">
+				<tui-table>
+					<tui-tr>
+						<tui-td bold :span="8"></tui-td>
+						<tui-td v-for="(item, index) in shopStatisticsData.conversion.names" :key="index" bold :span="8">
+							{{ item }}
+						</tui-td>
+					</tui-tr>
+					<tui-tr>
+						<tui-td bold :span="8">转化率（%）</tui-td>
+						<tui-td v-for="(item, idx) in shopStatisticsData.conversion.rates" :key="idx" :span="8">{{ item }}</tui-td>
+					</tui-tr>
+				</tui-table>
+			</view>
+		</view>
+		<view style="padding: 20upx;">
+			<tui-list-view v-if="shopStatisticsData.hotSellProducts && shopStatisticsData.hotSellProducts.length" title="">
+				<tui-list-cell v-for="(item, index) in shopStatisticsData.hotSellProducts" :key="item.id">
+					<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+						<view>{{ index + 1 }}：{{ item.productName }}</view>
+						<view style="flex: 1;text-align: right;white-space: nowrap;">{{ `已售 ${item.number} 件` }}</view>
+					</view>
+				</tui-list-cell>
+			</tui-list-view>
 		</view>
 	</view>
 </template>
 
 <script>
-// import { getMyFansListApi, getMyFansStatisticsApi } from '../../api/user'
-// import { getUserId, getBrandId } from '../../utils'
+import { getShopStatisticsApi } from '../../../api/anotherTFInterface'
 
 export default {
-	name: 'FanStatistics',
+	name: 'ShopStatistics',
 	components: {},
 	data() {
 		return {
-			statistics: {
-				totalFans: '',
-				businessFans: '',
-				plan: '',
-				member: ''
+			currentTab: 3,
+			shopStatisticsData: {
+				total: '',
+				stayOrders: '',
+				stayAfters: '',
+				money: '',
+				visitWeek: { time: [], total: [] },
+				count: '',
+				conversion: {
+					names: [],
+					rates: []
+				},
+				rate: '',
+				hotSellProducts: []
 			},
-			currentTab: 0,
-			fanList: []
+			queryInfo: {
+				condition: 4
+			}
 		}
 	},
 	onLoad() {
-		this.getMyFansStatistics()
-		this.getFanList(3)
-	},
-	mounted() {
+		this.getShopStatistics()
 	},
 	methods: {
-		getMyFansStatistics() {
-			uni.showLoading({
-				title: '加载中'
-			})
-			if (!getUserId()) return
-			getMyFansStatisticsApi({ userId: getUserId() })
-				.then(({ data }) => {
-					this.statistics.totalFans = data.totalFans
-					this.statistics.businessFans = data.businessFans
-					this.statistics.plan = data.plan
-					this.statistics.member = data.member
-					uni.hideLoading()
-				})
-				.catch(() => {
-					uni.hideLoading()
-				})
-		},
-		getFanList(type) {
-			uni.showLoading({
-				title: '加载中'
-			})
-			if (!getUserId()) return
-			getMyFansListApi({ userId: getUserId(), type })
-				.then(({ data }) => {
-					this.fanList = data || []
-					uni.hideLoading()
-				})
-				.catch(() => {
-					this.fanList = []
-					uni.hideLoading()
-				})
-		},
 		handleCurrentChange(e) {
 			this.currentTab = e.index
-			if (this.currentTab === 0) {
-				this.getFanList(3)
-			} else if (this.currentTab === 1) {
-				this.getFanList(0)
-			} else if (this.currentTab === 2) {
-				this.getFanList(1)
-			} else if (this.currentTab === 3) {
-				this.getFanList(2)
-			}
+			this.queryInfo.condition = this.currentTab + 1
+			this.getShopStatistics()
+		},
+		getShopStatistics() {
+			uni.showLoading({
+				title: '加载中'
+			})
+			getShopStatisticsApi({
+				shopId: this.$store.state.auth.IdentityInfo.info.shopId,
+				...this.queryInfo
+			})
+				.then((res) => {
+					this.shopStatisticsData = res.data
+					uni.hideLoading()
+					this.$nextTick(() => {
+						this.$refs.refAccessTrends && this.$refs.refAccessTrends.draw([ { name: '次数', color: '#5677fc', source: this.shopStatisticsData.visitWeek.total } ])
+					})
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-.fan-statistics-container {
+.shop-statistics-container {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;
+	.tui-tabs-view{
+		/deep/ .tui-tabs-slider{
+		margin-left: -24upx;
+		}
+	}
 }
 </style>

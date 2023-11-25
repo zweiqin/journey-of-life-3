@@ -22,6 +22,9 @@ export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data
 // /canvas/getPrices  商家定价捆绑
 export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getPrices', data)
 
+// 查询会员商品数据
+export const getMemberProductsCanvasApi = (data) => AnotherTFRequest('/canvas/getMemberProducts', data)
+
 // /classify/getFirstClassify  查询店铺分类
 export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirstClassify', data)
 
@@ -104,6 +107,13 @@ export const collectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel',
 
 // 收藏商品、店铺
 export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST')
+
+// 消息
+// 消息详情
+export const getByIdNoticeMessageDateilsApi = (data) => AnotherTFRequest('/notice/getById', data)
+
+// 消息已读
+export const updateReadNoticeApi = (data) => AnotherTFRequest('/notice/readNotice', data, 'POST')
 
 // 购物车
 // 绑定关系
@@ -220,6 +230,9 @@ export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrder
 
 // 商家统计
 export const getShopStatisticsApi = (data) => AnotherTFRequest('/shop/getShopStatistics', data, 'POST')
+
+// 商家财务统计
+export const getShopFinanceCountApi = (data) => AnotherTFRequest('/shop/getFinanceCount', data, 'POST')
 
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')

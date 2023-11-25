@@ -43,6 +43,45 @@
 			</view>
 		</view>
 
+		<!-- 特殊显示菜单栏 -->
+		<view v-if="ownSpecialLineMenuBar.includes(currentType)" style="margin: 14upx 26upx 0;">
+			<view
+				v-if="menuBarArr.slice(0, -5).length"
+				style="display: flex;align-items: center;flex-wrap: wrap;margin-bottom: 14upx;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
+			>
+				<view
+					v-for="item in menuBarArr.slice(0, -5)" :key="item.id"
+					style="width: 20%;margin-bottom: 20upx;text-align: center;"
+					@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
+				>
+					<view>
+						<BeeIcon
+							:size="34"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+						>
+						</BeeIcon>
+					</view>
+					<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+				</view>
+			</view>
+			<view v-if="menuBarArr.length" style="display: flex;overflow-x: auto;">
+				<view
+					v-for="item in menuBarArr.slice(-5)" :key="item.id"
+					style="display: flex;align-items: center;margin-right: 24upx;padding: 12upx 20upx;background-color: #ffffff;"
+					@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
+				>
+					<view>
+						<BeeIcon
+							:size="18" style="line-height: 1;"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+						>
+						</BeeIcon>
+					</view>
+					<view style="margin-left: 12upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+				</view>
+			</view>
+		</view>
+
 		<!-- 限时秒杀 -->
 		<view
 			v-if="ownLimitedTimeSeckill.includes(currentType)"
@@ -170,8 +209,7 @@
 									</view>
 									<view style="padding-top: 16upx;">
 										<text style="color: #ef5613;">
-											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月')
-											}}日
+											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月') }}日
 										</text>
 										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8upx;font-size: 24upx;">
 											{{
@@ -456,7 +494,8 @@ export default {
 
 			// 判断每个类板块是否拥有某个页面结构
 			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
-			ownMenuBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '13', '16'],
+			ownMenuBar: ['1', '2', '3', '4', '5', '6', '7', '8', '13', '16'],
+			ownSpecialLineMenuBar: [ '9' ],
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
@@ -543,7 +582,7 @@ export default {
 		if (this.ownShopCardBox.includes(this.currentType) || this.ownShopCardWithLineBox.includes(this.currentType) || this.ownShopCardWithGoodsBox.includes(this.currentType) || this.ownBrandCardBox.includes(this.currentType) || this.ownBrandCardWithPriceBox.includes(this.currentType)) {
 			this.getNearByShopList(true)
 		}
-		if (this.ownMenuBar.includes(this.currentType)) {
+		if (this.ownMenuBar.includes(this.currentType) || this.ownSpecialLineMenuBar.includes(this.currentType)) {
 			const res = await getShopCategorySonApi({ pid: this.queryInfo.classifyId })
 			this.menuBarArr = res.data || []
 		}

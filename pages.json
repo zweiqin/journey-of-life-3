@@ -1565,6 +1565,12 @@
           "style": {
             "navigationBarTitleText": "商家统计"
           }
+        },
+        {
+          "path": "another-user/shop-statistics/finance-statistics",
+          "style": {
+            "navigationBarTitleText": "商家财务统计"
+          }
         }
       ]
     }
