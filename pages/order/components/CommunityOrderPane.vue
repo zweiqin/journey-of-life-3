@@ -21,7 +21,7 @@
       <button class="uni-btn detail">详情</button>
       <button class="uni-btn pay" v-if="orderInfo.status === 0" @click.stop="handleToPayOrder">去付款</button>
       <button class="uni-btn cancel" v-if="orderInfo.status <= 2" @click.stop="$emit('cancel', orderInfo)">取消</button>
-      <button class="uni-btn edit" v-if="orderInfo.status <= 2" @click.stop="handleEditOrder">修改</button>
+      <button class="uni-btn edit" v-if="orderInfo.status <= 2 && extraInfo != 1" @click.stop="handleEditOrder">修改</button>
     </view>
   </view>
 </template>
@@ -69,7 +69,7 @@ export default {
     // 支付订单、
     handleToPayOrder() {
       uni.navigateTo({
-        url: '/community-center/pay?price=' + this.orderInfo.actualPrice + '&orderNo=' + this.orderInfo.orderNo
+        url: '/community-center/pay?price=' + this.orderInfo.actualPrice + '&orderNo=' + this.orderInfo.orderNo + '&payType=' + this.extraInfo
       });
     },
 
@@ -80,7 +80,22 @@ export default {
         url: url + '?orderNo=' + this.orderInfo.orderNo
       });
     }
+  },
+
+  computed: {
+    extraInfo() {
+      let extraInfo = this.orderInfo.extraInfo
+      if (extraInfo) {
+        try {
+          extraInfo = JSON.parse(extraInfo)
+          return extraInfo.payType
+        } catch (error) {
+          return undefined
+        }
+      }
+    }
   }
+
 };
 </script>
 

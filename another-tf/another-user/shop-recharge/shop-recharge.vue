@@ -1,46 +1,53 @@
 <template>
   <view class="shop-recharge-container">
     <view class="total-pane">
+      <view class="itemHeader">
+        <image :src="shopInfo.shopLogo" mode="" class="avatar"></image>
+        <text class="topTitle">{{ shopInfo.shopName }}</text>
+        <!-- <view class="openMerchanDetail" @click="gotoMerchan">
+            <text class="gotoUse">立即使用</text><image class="useMoney" src="@/static/images/entryOfMerchants/youjiantou.png"></image>
+        </view> -->
+      </view>
       <view class="pane-1">
-        <view>当前余额</view>
-        <view class="account"> **** <image class="eye-icon"
+        <!-- <view>当前余额</view> -->
+        <view class="account"> {{ shopInfo.balance }} <image class="eye-icon"
             src="../../../static/images/new-user/shop-serve/eye-close.png"></image>
         </view>
-        <view class="total-account">当前总余额： ****元</view>
+        <!-- <view class="total-account">当前赠送余额： {{ shopInfo.giveBalance }}元</view> -->
       </view>
       <view class="pane-2">
-        <view class="item" @click="go('/another-tf/another-user/shop-recharge/recharge-list')">
-          <view class="item-title">充值商家(家)</view>
+        <view class="item">
+          <view class="item-title">剩余代金卷</view>
           <view class="item-value">
-            ***
+            {{shopInfo.giveBalance}}
           </view>
         </view>
-        <view class="item">
+        <view class="item" @click="go('/another-tf/another-user/shop-recharge/historyRecord')">
           <view class="item-title">充值记录(元)</view>
           <view class="item-value">
-            ***
+            {{ shopInfo.balance }}
           </view>
         </view>
         <view class="item">
           <view class="item-title">支出记录(元)</view>
           <view class="item-value">
-            ***
+            0.00
           </view>
         </view>
       </view>
     </view>
 
     <view class="tab-wrapper">
-      <tui-tabs backgroundColor="#fff" sliderBgColor="#EF530E" sliderRadius="0" unlined color="#222229"
-        selectedColor="#222229" :tabs="tabs" itemWidth="50%" :currentTab="currentTab" @change="handleChnage"></tui-tabs>
+      <!-- <tui-tabs backgroundColor="#fff" sliderBgColor="#EF530E" sliderRadius="0" unlined color="#222229"
+        selectedColor="#222229" :tabs="tabs" itemWidth="50%" :currentTab="currentTab" @change="handleChnage"></tui-tabs> -->
     </view>
 
     <view class="recharge-pane">
-      <view class="title-wrapper" v-show="currentTab == 1">
+      <!-- <view class="title-wrapper">
         <view class="sub-title">请选择充值商家</view>
-      </view>
+      </view> -->
 
-      <view class="search-shop" v-show="currentTab == 1">
+      <view class="search-shop" v-if="!shopId">
         <input type="text" class="input" placeholder="请选择充值商家">
         <button class="uni-btn search-shop-btn" @click="handleSearchSop">查找</button>
       </view>
@@ -50,15 +57,20 @@
         <view class="tip">充值送代金券</view>
       </view>
 
-      <view class="price-list">
-        <view @click="handleChangePrice(item.value)" class="item" :class="{ active: currentRechargeType === item.value }"
-          v-for="item in rechargePriceList" :key="item.value">
-          <view class="price-text">{{ item.label }}</view>
-          <view class="voucher">{{ item.tip || '自定义金额' }}</view>
+      <view class="price-list" v-if="rechargePriceList && rechargePriceList.length > 0">
+        <view @click="handleChangePrice(item.rechargeAmount, index)" class="item" :class="{ active: currentRechargeType === index }"
+          v-for="(item, index) in rechargePriceList" :key="item.updateTime">
+          <view class="price-text">{{ item.rechargeAmount }}</view>
+          <view class="voucher">{{ '代金卷' + item.bonusAmount + '元' || '自定义金额' }}</view>
+        </view>
+      </view>
+      <view class="price-list" v-else>
+        <view class="tipsTitle">
+            商户暂未开通充值
         </view>
       </view>
 
-      <button class="recharge-button uni-btn" :style="{ opacity: currentRechargeCount ? 1 : 0.6 }"
+      <button v-if="rechargePriceList && rechargePriceList.length > 0" class="recharge-button uni-btn" :style="{ opacity: currentRechargeCount ? 1 : 0.6 }"
         @click="handleRecharge"> {{ currentRechargeCount ? `${currentRechargeCount} 立即充值` : '请输入充值金额' }} </button>
     </view>
 
@@ -67,51 +79,92 @@
 </template>
 
 <script>
-import { rechargePriceList } from './config'
+import { getRechargeSubmit, rechargeSubmit, getRechargeTotal, getByShopAll, getByRecharge } from '@/api/anotherTFInterface/merchantUp'
+import { getIndexShopDetailApi } from '@/api/anotherTFInterface'
+import { handleDoPay } from '@/utils/payUtil'
 
 export default {
   data() {
     return {
+      shopId: '',
       currentTab: 0,
-      tabs: [{
-        name: "平台充值"
-      }, {
-        name: "商家充值"
-      }],
-      rechargePriceList: Object.freeze(rechargePriceList),
-      currentRechargeType: 50,
+      shopInfo: {},
+      // tabs: [{
+      //   name: "平台充值"
+      // }, {
+      //   name: "商家充值"
+      // }],
+      rechargePriceList: [],
+      currentRechargeType: 0,
       currentRechargeCount: 50,
-      searchShopValue: ""
+      searchShopValue: "",
     }
   },
+  onLoad(options) {
+    this.shopInfo = JSON.parse(options.shopInfo)
+    this.shopId = this.shopInfo.shopId
+    // getByShopAll().then(res => {
+    //   this.historyMerchantNumber = res.data.records.length
+    // })
+    // getIndexShopDetailApi({
+    //   shopId: this.shopId
+    // }).then(res => {
+    //   this.shopInfo = res.data
+    // })
 
+    // getByRecharge({
+    //    "page":"1",
+    //    "pageSize":"10"
+    // }).then(res => {
+    //   console.log(res);
+    // })
+    
+    getRechargeSubmit({
+      shopId: this.shopId
+    }).then(res => {
+      this.rechargePriceList = Object.freeze(res.data)
+      this.currentRechargeCount = this.rechargePriceList[0].rechargeAmount
+      // console.log(res);
+    })
+
+    getRechargeTotal({  // 空数据，先不作处理
+      shopId: this.shopId
+    }).then(res => {
+      console.log(res);
+    })
+  },
   methods: {
     handleChnage({ index }) {
       this.currentTab = index
     },
 
-    handleChangePrice(price) {
-      this.currentRechargeType = price
-      if (price != -1) {
-        this.currentRechargeCount = price
-      } else {
-        this.currentRechargeCount = 0
-      }
+    handleChangePrice(price, index) {
+      this.currentRechargeType = index
+      this.currentRechargeCount = price
     },
 
     handleRecharge() {
       if (!this.currentRechargeCount) {
         this.ttoast({
           type: "fail",
-          title: '请输入要充值的金额'
+          title: '请选择要充值的金额'
         })
-
         return
       }
 
-      console.log("来了老弟");
+      rechargeSubmit({
+        shopId: this.shopId,
+        amountId: this.rechargePriceList[this.currentRechargeType].amountId,
+        rechargeBalance: this.currentRechargeCount,
+        remark: 'normal'
+      }).then(res => {
+        handleDoPay({ ...res.data, type: 1, paymentMode: 4, huabeiPeriod: -1 }, 7)
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
 
-
+      console.log("八嘎雅鹿，你滴良心，大大滴坏。");
     },
 
     handleSearchSop() {
@@ -128,11 +181,54 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    .itemHeader {
+        box-sizing: border-box;
+        padding: 32rpx;
+        padding-bottom: 0rpx;
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        // margin-bottom: 20rpx;
+        /* justify-content: space-between; */
+        .avatar {
+            width: 80rpx;
+            height: 80rpx;
+            border-radius: 50%;
+        }
+        .topTitle {
+            margin-left: 20rpx;
+            justify-self: flex-start;
+            width: 353rpx;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 42rpx;
+            font-weight: 600;
+            line-height: 40rpx;
+            color: #f5f5f5;
+        }
+        .openMerchanDetail {
+            position: absolute;
+            right: 0;
+            .gotoUse {
+                font-size: 38rpx;
+                font-weight: normal;
+                line-height: 32rpx;
+                color: #ffffff;
+                margin-right: 10rpx;
+            }
+            .useMoney {
+                width: 18rpx;
+                height: 24rpx;
+            }
+        }
+    }
 .shop-recharge-container {
   .total-pane {
     position: relative;
     width: 100%;
-    height: 413upx;
+    // height: 413upx;
     background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);
     display: flex;
     align-items: center;
@@ -172,12 +268,15 @@ export default {
         align-items: center;
         font-size: 64upx;
         font-weight: 500;
-        margin: 20upx 0;
+        margin-bottom: 10rpx;
+        // margin: 20upx 0;
       }
 
       .total-account {
         font-size: 28upx;
         color: #f6a07a;
+        // margin-top: 10rpx;
+        margin-bottom: 26rpx;
       }
     }
 
@@ -294,9 +393,16 @@ export default {
     .price-list {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 24rpx;
+      // justify-content: space-between;
       flex-wrap: wrap;
-
+      .tipsTitle {
+        margin-top: 40rpx;
+        width: 100%;
+        text-align: center;
+        font-size: 40rpx;
+        color: #888889;
+      }
       .item {
         width: 200upx;
         height: 200upx;

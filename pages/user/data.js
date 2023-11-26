@@ -234,7 +234,8 @@ export const shopServe = [
 	{
 		name: '商家充值',
 		icon: require('../../static/images/new-user/serve/zz.png'),
-		url: '/another-tf/another-user/shop-recharge/shop-recharge'
+		// url: '/another-tf/another-user/shop-recharge/shop-recharge'
+		url: '/another-tf/another-user/shop-recharge/selectMerchant'
 	}
 ]
 

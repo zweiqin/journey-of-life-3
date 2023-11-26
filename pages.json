@@ -1597,9 +1597,21 @@
           }
         },
         {
+          "path": "another-user/shop-recharge/selectMerchant",
+          "style": {
+            "navigationBarTitleText": "商家列表"
+          }
+        },
+        {
           "path": "another-user/shop-recharge/recharge-list",
           "style": {
             "navigationBarTitleText": "充值商家"
+          }
+        },
+        {
+          "path": "another-user/shop-recharge/historyRecord",
+          "style": {
+            "navigationBarTitleText": "充值历史记录"
           }
         }
       ]

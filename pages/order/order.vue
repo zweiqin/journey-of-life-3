@@ -2,40 +2,31 @@
 	<view>
 		<TuanAppShim bg="#fff"></TuanAppShim>
 		<view v-if="userId" class="my-order-container">
-			<OrderHeader
-				ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
-				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList"
-			>
+			<OrderHeader ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
+				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList">
 			</OrderHeader>
 
 			<view class="order-list" :class="{ ani: !isLoading }">
-				<SubNavs
-					v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)" :active-value="currentSubValue"
-					:navs="subNavs" @change-sub="handleChangeSubNavs"
-				></SubNavs>
+				<SubNavs v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)" :active-value="currentSubValue"
+					:navs="subNavs" @change-sub="handleChangeSubNavs"></SubNavs>
 
 				<view v-show="currentOrderMode === 'community'">
 					<!-- 社区普通订单 -->
 					<view v-show="!isShowSubNav" class="community-common-order-list">
-						<CommunityOrderPane
-							v-for="item in communityOrderList" :key="item.id" :order-info="item"
-							@cancel="(orderInfo) => $refs.cancelOrderRef.show(orderInfo)"
-						></CommunityOrderPane>
+						<CommunityOrderPane v-for="item in communityOrderList" :key="item.id" :order-info="item"
+							@cancel="(orderInfo) => $refs.cancelOrderRef.show(orderInfo)"></CommunityOrderPane>
 					</view>
 					<!-- 社区二次追加订单 -->
-					<view v-show="isShowSubNav && [ 'append' ].includes(isShowSubNav)" class="community-append-order-list">
-						<AdditionalAmountOrder
-							v-for="order in appendOrderList" :key="order.id" :order-data="order"
-							@refresh="getAppendOrder"
-						></AdditionalAmountOrder>
+					<view v-show="isShowSubNav && ['append'].includes(isShowSubNav)" class="community-append-order-list">
+						<AdditionalAmountOrder v-for="order in appendOrderList" :key="order.id" :order-data="order"
+							@refresh="getAppendOrder"></AdditionalAmountOrder>
 					</view>
 					<!-- 社区评论订单 -->
-					<view v-show="isShowSubNav && [ 'comment' ].includes(isShowSubNav)" class="community-comment-order-list">
+					<view v-show="isShowSubNav && ['comment'].includes(isShowSubNav)" class="community-comment-order-list">
 						<block v-if="[0, 1].includes(currentSubValue)">
 							<CommentTypeV1
 								v-for="order in currentSubValue === 0 ? commentOrder.commentOrderList : commentOrder.commentedOrderList"
-								:key="order.orderNo" :is-append="currentSubValue === 1" :item-data="order" @comment="handleComment"
-							>
+								:key="order.orderNo" :is-append="currentSubValue === 1" :item-data="order" @comment="handleComment">
 							</CommentTypeV1>
 						</block>
 						<block v-if="currentSubValue === 2">
@@ -49,15 +40,12 @@
 				</view>
 
 				<view v-show="currentOrderMode === 'businessDistrict'">
-					<BusinessOrder
-						v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
-						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"
-					></BusinessOrder>
+					<BusinessOrder v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
+						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"></BusinessOrder>
 					<view style="padding-bottom: 45upx;">
 						<LoadingMore
 							:status="!businessIsEmpty && !businessOrderList.length
-								? 'loading' : !businessIsEmpty && businessOrderList.length && (businessOrderList.length >= businessListTotal) ? 'no-more' : ''"
-						>
+								? 'loading' : !businessIsEmpty && businessOrderList.length && (businessOrderList.length >= businessListTotal) ? 'no-more' : ''">
 						</LoadingMore>
 						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 					</view>
@@ -75,11 +63,10 @@
 		<!-- 商圈支付 -->
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
-				<CashierList :total-price="payObj.totalPrice" show @change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }" />
-				<tui-button
-					type="warning" width="168upx" height="64upx"
-					margin="30upx auto 0" shape="circle" @click="handleShopGoPay"
-				>
+				<CashierList :total-price="payObj.totalPrice" show
+					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }" />
+				<tui-button type="warning" width="168upx" height="64upx" margin="30upx auto 0" shape="circle"
+					@click="handleShopGoPay">
 					确认支付
 				</tui-button>
 			</view>
@@ -94,7 +81,7 @@
 import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
 import { getAllOrderListApi } from '../../api/anotherTFInterface'
-import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO } from '../../constant'
+import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
@@ -222,6 +209,7 @@ export default {
 	onShow() {
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
+		uni.removeStorageSync(ENTERPRISE_ORDERS_NO);
 		this.userId = uni.getStorageSync(USER_ID) || ''
 		this.$nextTick(() => {
 			this.getOrderList()

@@ -7,13 +7,16 @@
 
       <view class="serve-list-wrapper">
         <view class="serve-wrapper">
-          <view class="serve-item" v-for="item in 12" :key="item">
-            <view class="serve-name">家具维修</view>
-            <tui-icon :size="20" color="#DCDDDD" name="circle-fill"></tui-icon>
+          <view @click="handleChooseServe(item.id)" :class="{ active: selectServe.includes(item.id) }"
+            :style="{ visibility: item.serveName ? 'hidden' : '' }" class="serve-item" v-for="item in serveList"
+            :key="item.id">
+            <view class="serve-name">{{ item.serverName }}</view>
+            <tui-icon :size="20" :color="selectServe.includes(item.id) ? '#4972FE' : '#DCDDDD'"
+              name="circle-fill"></tui-icon>
           </view>
         </view>
         <view class="total">
-          已选服务: <text class="serve-count">2项</text>
+          已选服务: <text class="serve-count">{{ selectServe.length }}项</text>
         </view>
       </view>
     </view>
@@ -40,6 +43,16 @@ export default {
       this.addServeVisible = true
       this.serveList = serveList
       this.selectServe = selectServe
+
+      console.log("来了妈的", this.serveList);
+    },
+
+    handleChooseServe(id) {
+      if (this.selectServe.includes(id)) {
+        this.selectServe = this.selectServe.filter(item => item !== id)
+      } else {
+        this.selectServe.push(id)
+      }
     },
 
     handleCloseAddServe() {
@@ -48,7 +61,7 @@ export default {
 
     // 确认选择服务
     handleChosseServe() {
-      console.log("选择了");
+      this.$emit('confirm', this.selectServe)
       this.handleCloseAddServe()
     }
   },
@@ -58,6 +71,7 @@ export default {
 <style lang="less" scoped>
 .add-serve-main {
   background-color: #fff;
+  padding-bottom: 30upx;
 
   .popup-title {
     color: #222229;
@@ -85,6 +99,12 @@ export default {
         justify-content: center;
         border-radius: 18upx;
         margin-bottom: 32upx;
+
+        &.active {
+          box-shadow: 0px 4px 15px -4px #BCD5F4;
+          border-color: #4972FE;
+          color: #4972FE;
+        }
 
         .serve-name {
           width: 130upx;

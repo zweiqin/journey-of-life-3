@@ -280,7 +280,22 @@ export const getBuServeListApi = data => {
 
 // 获取企业信息
 export const getBAuthInfoApi = data => {
-return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/enterpriseInfo', data, 'GET')
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/enterpriseInfo', data, 'GET')
+}
+
+// 获取企业下单订单报价
+export const getOrderQuotationApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/calcPrice', data, 'POST')
+}
+
+// 获取网点地址列表
+export const getShopSiteListApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/getShopsByAddr', data, 'GET')
+}
+
+// 余额支付
+export const orderPayH5PabUseBlanceApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/orderPayH5PabUseBlance', data, 'POST')
 }
 
 // 获取商圈商品报价

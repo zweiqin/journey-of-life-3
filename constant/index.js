@@ -41,6 +41,7 @@ export const NEW_BIND_SERVICE_URL = 'NEW_BIND_SERVICE_URL'
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
 export const GROUP_INVITE_CODE = 'GROUP_INVITE_CODE'
+export const ENTERPRISE_ORDERS_NO = "ENTERPRISE_ORDERS_NO"
 
 export const clearAllCache = () => {
 	[
