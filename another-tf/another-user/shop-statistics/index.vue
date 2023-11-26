@@ -3,10 +3,16 @@
 		<JHeader title="商家统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view style="margin-bottom: 20upx;text-align: right;">
 			<tui-button
-				type="danger" width="220rpx" height="60rpx" margin="0 30upx 0 0"
-				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics')"
+				type="primary" width="268rpx" height="60rpx" margin="0 20upx 0 0"
+				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=recharge')"
 			>
-				财务数据 →
+				充值财务数据 →
+			</tui-button>
+			<tui-button
+				type="primary" width="268rpx" height="60rpx" margin="0 20upx 0 0"
+				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=order')"
+			>
+				订单财务数据 →
 			</tui-button>
 		</view>
 		<view style="padding: 0 24upx;background-color: #ffffff;">

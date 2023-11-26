@@ -151,6 +151,12 @@ export const businessSubNavs = [{
 }, {
 	label: '待成团',
 	value: 6
+}, {
+	label: '待售后',
+	value: 7
+}, {
+	label: '已关闭',
+	value: 5
 }]
 
 export const orderTypeEnum = {
@@ -160,5 +166,6 @@ export const orderTypeEnum = {
 	3: '待收货',
 	4: '已完成',
 	5: '交易关闭',
-	6: '待成团'
+	6: '待成团',
+	7: '待售后'
 }
