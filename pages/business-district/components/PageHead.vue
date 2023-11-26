@@ -11,7 +11,7 @@
 					style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;"
 				>
 					<text
-						style="max-width: 130upx;font-size: 32upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+						style="max-width: 130upx;font-size:28upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 					>
 						{{ $store.getters.currentShopCity || '定位失败' }}
 					</text>
@@ -20,7 +20,7 @@
 				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
 				<tui-input
 					label="" placeholder="全屋严选" disabled clearable
-					padding="6upx 10upx 6upx 2upx" :placeholder-style="{ color: '#292930' }"
+					padding="6upx 10upx 6upx 2upx" :placeholder-style="{ color: '#292930', fontSize: '28upx' }"
 					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index`)"
 				>
 					<template #right>

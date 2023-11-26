@@ -13,6 +13,7 @@ export default {
 		if (this.isLogin()) {
 			getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 			getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
+			this.$store.dispatch('auth/updateIdentityInfo')
 		}
 		uni.getSystemInfo({
 			success: (res) => {

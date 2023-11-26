@@ -7,7 +7,7 @@
 			<Pane title="我的权益" :menu-data="myEquity" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
-			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
+			<Pane v-if="$store.state.auth.IdentityInfo.type === 1" title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
 		</view>
 		<tui-modal
@@ -34,7 +34,6 @@ import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
 import { myEquity, myFunction, myServe, additionalFunction, shopServe } from './data'
 import { Encrypt } from '../../utils/secret'
-import { getIsShopByUserApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'User',
