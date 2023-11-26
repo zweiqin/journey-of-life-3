@@ -64,10 +64,10 @@
           {{ currentChooseShopInfo.shopAddress }}
         </view>
 
-        <view class="distance">
+        <!-- <view class="distance">
           <image class="tag" src="../../static/images/new-community/enterprise-orders/location.png"></image>
           <view class="distance-text">123km</view>
-        </view>
+        </view> -->
       </view>
     </view>
 
@@ -125,15 +125,10 @@
     </view>
 
 
+    
+
+
     <view class="pane">
-      <view class="title">内容备注</view>
-      <tui-textarea v-model="orderForm.remarks" :maxlength="80" :marginTop="26" padding="0" trim isCounter :size="26"
-        :borderTop="false" autoHeight :borderBottom="false" height="50rpx" min-height="50rpx"
-        placeholder="请输入订单备注"></tui-textarea>
-    </view>
-
-
-    <view class="pane" style="margin-bottom: 280upx;">
       <view class="bar" @click="chooseTimeVisible = true">
         <view class="title justify flex">期望上门时间 <view class="required">必填</view>
         </view>
@@ -151,6 +146,13 @@
             src="../../static/images/new-community/enterprise-orders/right-arrow.png"></image>
         </view>
       </view>
+    </view>
+
+    <view class="pane"  style="margin-bottom: 280upx;"> 
+      <view class="title">备注</view>
+      <tui-textarea v-model="orderForm.remarks" :maxlength="80" :marginTop="26" padding="0" trim isCounter :size="26"
+        :borderTop="false" autoHeight :borderBottom="false" height="50rpx" min-height="50rpx"
+        placeholder="请输入订单备注"></tui-textarea>
     </view>
 
     <view class="footer">
@@ -329,7 +331,7 @@ export default {
         this.serveList = res.data
         if (res.data && res.data.length) {
           const fullRow = Math.floor(res.data.length / 3)
-          const buCount = 3 - res.data.length - 3 * fullRow
+          const buCount = 3 - (res.data.length - 3 * fullRow)
           for (let i = 0; i < buCount; i++) {
             this.serveList.push({
               id: Math.random() + Date.now(),
@@ -511,7 +513,6 @@ export default {
 
     // 获取网点信息
     async getShopSiteList() {
-
       const address = this.$store.getters.detailAddress
       if (!address) {
         uni.navigateTo({ url: "/pages/choose-location/choose-location" })
@@ -580,7 +581,7 @@ export default {
 
         if (res.statusCode === 20000) {
           const orderNo = res.data
-          // uni.setStorageSync(ENTERPRISE_ORDERS_NO, orderNo)
+          uni.setStorageSync(ENTERPRISE_ORDERS_NO, orderNo)
 
           if (this.orderForm.extraInfo.payType === 1) {
             const res = await orderPayH5PabUseBlanceApi({
@@ -588,7 +589,19 @@ export default {
               userId: getUserId()
             })
 
-            console.log("余额支付", res);
+            if (res.statusCode === 20000) {
+              this.ttoast('支付成功')
+              setTimeout(() => {
+                uni.switchTab({
+                  url: '/pages/order/order'
+                })
+              }, 2000);
+            } else {
+              this.ttoast({
+                type: "fail",
+                title: res.statusMsg
+              })
+            }
           } else {
             if (this.$store.state.app.isInMiniProgram) {
               try {
@@ -724,17 +737,14 @@ export default {
               type: 'fail',
               title: res.statusMsg
             })
-            // setTimeout(() => {
-            //   if (this.orderForm.extraInfo.payType === 1) {
-            //     uni.switchTab({
-            //       url: "/pages/order/order"
-            //     })
-            //   }
-            // }, 2000);
+            setTimeout(() => {
+              if (this.orderForm.extraInfo.payType === 1) {
+                uni.switchTab({
+                  url: "/pages/order/order"
+                })
+              }
+            }, 2000);
           }
-
-
-
         }
       } catch (error) {
         console.log("企业下单报错", error);
@@ -757,16 +767,19 @@ export default {
     },
 
     // 余额充值模态框
-    handleOpRechargeModal({ index }) {
-      if (index) {
-        this.ttoast("跳转平台支付")
-      } else {
-        uni.switchTab({
-          url: "/pages/order/order"
-        })
-      }
+    handleOpRechargeModal() {
+      // if (index) {
+      //   this.ttoast("跳转平台支付")
+      // } else {
+      //   uni.switchTab({
+      //     url: "/pages/order/order"
+      //   })
+      // }
 
       this.isShowRechargeModal = false
+      uni.switchTab({
+        url: "/pages/order/order"
+      })
     }
   },
 }

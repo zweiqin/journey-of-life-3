@@ -140,7 +140,7 @@ export default {
         this.serveList = res.data
         if (res.data && res.data.length) {
           const fullRow = Math.floor(res.data.length / 3)
-          const buCount = 3 - res.data.length - 3 * fullRow
+          const buCount = 3 - (res.data.length - 3 * fullRow)
           for (let i = 0; i < buCount; i++) {
             this.serveList.push({
               id: Math.random() + Date.now(),

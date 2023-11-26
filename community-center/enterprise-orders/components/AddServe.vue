@@ -43,8 +43,6 @@ export default {
       this.addServeVisible = true
       this.serveList = serveList
       this.selectServe = selectServe
-
-      console.log("来了妈的", this.serveList);
     },
 
     handleChooseServe(id) {

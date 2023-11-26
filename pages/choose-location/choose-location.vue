@@ -11,9 +11,10 @@
       <button class="uni-btn" v-if="searchCity" @click="handleSearchCity">搜索</button>
     </view>
     <view @click="handleGetCurrentAddress" class="current-address">
-      <text class="current-address-text"> 
-				当前：{{ $store.getters.currentCity ? $store.getters.currentCity : $store.getters.currentShopCity ? $store.getters.currentShopCity : '定位失败，重新定位' }}
-			</text>
+      <text class="current-address-text">
+        当前：{{ $store.getters.currentCity ? $store.getters.currentCity : $store.getters.currentShopCity ?
+          $store.getters.currentShopCity : '定位失败，重新定位' }}
+      </text>
       <view><tui-icon :size="16" color="#000" name="location"></tui-icon>
         <text>重新定位</text>
       </view>
@@ -207,7 +208,7 @@ export default {
         return;
       }
       uni.navigateBack({
-        delta: 1,
+        delta: 2,
         success: mean === 'success' && this.eventName ? uni.$emit(this.eventName) : () => { }
       })
     },
@@ -320,16 +321,16 @@ export default {
     },
 
     // 选择定位
-    confirmChooseAddress(data, isHot) {
+    async confirmChooseAddress(data, isHot) {
       uni.showLoading();
       if (isHot) {
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
           data: data
         });
-        this.$store.dispatch('location/getDetailAddress', data);
+        await this.$store.dispatch('location/getDetailAddress', data);
       } else {
-        this.$store.dispatch('location/getDetailAddress', {
+        await this.$store.dispatch('location/getDetailAddress', {
           city: this.tabs[0].select,
           distinguish: this.tabs[1].select,
           town: data.name
@@ -343,7 +344,7 @@ export default {
           }
         });
       }
-      uni.hideLoading(); 
+      uni.hideLoading();
       this.ttoast('修改成功');
       setTimeout(() => {
         if (this.backUrl) {
