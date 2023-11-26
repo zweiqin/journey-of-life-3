@@ -141,6 +141,7 @@ export default {
     handleChangePrice(price, index) {
       this.currentRechargeType = index
       this.currentRechargeCount = price
+      console.log(this.currentRechargeType,this.currentRechargeCount);
     },
 
     handleRecharge() {
@@ -226,6 +227,7 @@ export default {
     }
 .shop-recharge-container {
   .total-pane {
+    z-index: 1;
     position: relative;
     width: 100%;
     // height: 413upx;
@@ -342,6 +344,8 @@ export default {
   }
 
   .recharge-pane {
+    position: relative;
+    z-index: 2;
     padding: 30upx 50upx 84upx;
     box-sizing: border-box;
 
