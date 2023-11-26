@@ -16,7 +16,6 @@
         </view>
       </view>
 
-
       <view class="form-item">
         <view class="form-label">公司简称</view>
         <view class="form-value">
@@ -47,14 +46,22 @@
         </view>
       </view>
 
-      <view class="form-item">
+      <view class="form-item" @click="handleChooseAddress">
         <view class="form-label">公司地址</view>
         <view class="form-value">
-          <input class="inp" type="text" placeholder="请选择公司地址"
+          <input readonly disabled class="inp" type="text" placeholder="请选择公司地址"
             v-model="authForm.createOrUpdateCompanyParam.companyAddress">
         </view>
       </view>
 
+      <view class="form-item" style="display: block">
+        <view class="form-label">公司详细地址</view>
+        <view>
+          <tui-textarea style="border-radius: 10upx; overflow: hidden;" padding="20upx" v-model="addressDetail"
+            :maxlength="80" :marginTop="20" trim isCounter :size="26" backgroundColor="#f3f3f3" :borderTop="false"
+            :borderBottom="false" height="132rpx" min-height="132rpx" placeholder="请输入公司详细地址"></tui-textarea>
+        </view>
+      </view>
     </view>
 
     <view class="pane">
@@ -100,24 +107,26 @@
 
     <button class="uni-btn submit" @click="handleSubmit">提交认证</button>
     <tui-toast ref="toast"></tui-toast>
+    <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
   </view>
 </template>
 
 <script>
 import { bAuthApi } from '../../api/community-center'
 import { IMG_UPLOAD_URL } from '../../config';
-import USER_TOKEN, { USER_INFO } from '../../constant'
+import { USER_INFO, USER_TOKEN } from '../../constant'
 import { getUserId } from '../../utils'
 
 export default {
   data() {
     return {
+      addressDetail: "",
       authForm: {
         "createOrUpdateCompanyParam": {
           "simpleName": "",
-          "companyLogo": "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/fx6jj5h5428tnzgi7lny.png",
+          "companyLogo": "",
           "companyAddress": "",
-          "businessLicense": "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/fx6jj5h5428tnzgi7lny.png",
+          "businessLicense": "",
           "delegatePhoneNumber": "",
           "companyDelegate": "",
           "companyName": "",
@@ -128,6 +137,12 @@ export default {
     }
   },
   methods: {
+    handleChooseAddress() {
+      this.$refs.TuanCityRef.show()
+    },
+    handleConfirmAddress(selectAddressInfo) {
+      this.authForm.createOrUpdateCompanyParam.companyAddress = selectAddressInfo.formatAddress4
+    },
     handleBack() {
       uni.navigateBack();
     },
@@ -206,7 +221,15 @@ export default {
       if (!this.authForm.createOrUpdateCompanyParam.companyAddress) {
         this.ttoast({
           type: 'fail',
-          title: '请填写公司地址'
+          title: '请选择公司地址'
+        })
+        return
+      }
+
+      if (!this.addressDetail) {
+        this.ttoast({
+          type: 'fail',
+          title: '请填写公司详细地址'
         })
         return
       }
@@ -236,7 +259,9 @@ export default {
       }
 
       try {
-        const res = await bAuthApi(this.authForm)
+        const postData = JSON.parse(JSON.stringify(this.authForm))
+        postData.createOrUpdateCompanyParam.companyAddress = postData.createOrUpdateCompanyParam.companyAddress + " " + this.addressDetail
+        const res = await bAuthApi(postData)
         if (res.statusCode === 20000) {
           this.authForm.createOrUpdateCompanyParam = {
             simpleName: "",

@@ -11,9 +11,9 @@
       </view>
     </view>
 
-    <view class="current-server-shop">
+    <!-- <view class="current-server-shop">
       龙江镇 文华社区店 <image class="icon" src="../../static/images/new-community/enterprise-orders/down-arrow.png"></image>
-    </view>
+    </view> -->
 
     <view class="main-area" :class="{ animate: isAnimate }">
       <image class="img-1" src="../../static/images/new-community/enterprise-orders/lou-1.png"></image>
@@ -37,7 +37,7 @@
           isAuth ? selectServes.length ?
           `已选${selectServes.length}个 立即下单` : '请选择服务项目' : '请先进行企业认证'
         }}</button>
-        <view class="tip" v-if="isAuth">
+        <view class="tip" v-if="!isAuth">
           企业未认证？<button class="uni-btn" @click="go('/community-center/enterprise-orders/authentication')">去认证</button>
         </view>
       </view>
@@ -82,11 +82,11 @@ export default {
     },
 
     // 选择服务项
-    handleChooseServe(serveName) {
-      if (this.selectServes.includes(serveName)) {
-        this.selectServes = this.selectServes.filter(item => item !== serveName)
+    handleChooseServe(id) {
+      if (this.selectServes.includes(id)) {
+        this.selectServes = this.selectServes.filter(item => item !== id)
       } else {
-        this.selectServes.push(serveName)
+        this.selectServes.push(id)
       }
     },
 
@@ -126,7 +126,7 @@ export default {
       }
 
       uni.navigateTo({
-        url: '/community-center/enterprise-orders/confirm-order'
+        url: '/community-center/enterprise-orders/confirm-order?serverIds=' + this.selectServes.join(',')
       });
     },
 

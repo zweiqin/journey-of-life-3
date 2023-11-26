@@ -3,51 +3,65 @@
     <TuanPageHead title="订单详情" padding="0" weight="500">
       <block slot="left">
         <image style="width: 64upx; height: 64upx;" src="../../static/images/con-center/order-detail-back.png"
-          @click="handleToOrderList" class="back-icon">
+          @click="handleBack" class="back-icon">
         </image>
       </block>
     </TuanPageHead>
-    <view class="pane">
+    <view class="pane" v-if="bDetailInfo">
       <view class="bar">
         <view class="title justify">公司名称</view>
-        <view class="value title flex">广东团蜂科有限公司 <view class="tag">已认证</view>
+        <view class="value title flex">{{ bDetailInfo.companyName }} <view class="tag">已认证</view>
         </view>
       </view>
 
       <view class="bar">
         <view class="title justify">联系人</view>
-        <view class="value title">蔡志</view>
+        <input class="input value title" v-model="orderForm.consigneeName" />
       </view>
 
       <view class="bar">
         <view class="title justify">联系电话</view>
-        <view class="value">18745698521</view>
+        <input class="input value" v-model="orderForm.consigneeMobile" />
       </view>
 
-      <view class="bar">
+      <view class="bar" @click="$refs.TuanCityRef && $refs.TuanCityRef.show()">
         <view class="title justify">公司地址</view>
-        <view class="value title">
-          <view style="display: inline;">湖北省宜城市红旗桥湖滨大道506</view>
-          <image class="address-icon" src="../../static/images/new-community/enterprise-orders/address-icon.png"></image>
+        <input disabled readonly class="input value" v-model="orderForm.consigneeAddress" />
+      </view>
+
+      <view class="bar" style="display: block;">
+        <view class="input title justify">公司详细地址</view>
+        <view>
+          <tui-textarea v-model="orderForm.consigneeAddressDetail" :maxlength="80" :marginTop="26" padding="20rpx" trim
+            isCounter :size="26" backgroundColor="#F5F4F5" :borderTop="false" :borderBottom="false" height="50upx"
+            min-height="50upx" autoHeight placeholder="请输入公司详细地址"></tui-textarea>
         </view>
       </view>
 
-      <view class="bar">
+      <!-- <view class="bar">
         <view class="title justify">详细地址</view>
         <view class="value title">guangdong</view>
-      </view>
+      </view> -->
 
 
       <view class="shop-choose">
-        <view class="shop-name">文化社区店 <view class="tag">默认</view>
+        <view class="shop-name" v-if="shopSiteList.length">
+          <view class="shop-name-text">{{ currentChooseShopInfo ? currentChooseShopInfo.shopNameSimple : '请选择服务网点' }}
+          </view>
+          <view class="tag">默认</view>
         </view>
-        <button class="uni-btn" @click="handleChooseSite">网点更换</button>
+
+        <view class="shop-name" v-else>
+          暂无网点
+        </view>
+        <button class="uni-btn" @click="handleChooseSite"
+          :style="{ opacity: shopSiteList.length ? '1' : '0.6' }">网点更换</button>
       </view>
 
-      <view class="shop-address">
+      <view class="shop-address" v-if="currentChooseShopInfo">
         <view class="shop-address-text">
           <view class="tag">最近</view>
-          话UI回家数据科技话费卡网卡尽快i喝咖啡很顺利绗缝机是覅很贵的皇女u几哈21hdjciHFJCfiKHFjvsbj1
+          {{ currentChooseShopInfo.shopAddress }}
         </view>
 
         <view class="distance">
@@ -59,7 +73,7 @@
 
     <view class="pane">
       <view class="bar">
-        <view class="title justify flex">已选服务：<text>2项</text>
+        <view class="title justify flex">已选服务：<text>{{ selectServerList.length }}项</text>
         </view>
         <view class="value title flex" @click="handleAddServe">
           添加服务
@@ -68,11 +82,11 @@
         </view>
       </view>
 
-      <view class="serve-pane">
+      <view class="serve-pane" v-for="(item) in orderForm.extraInfo.serverInfo" :key="item.id">
         <view class="pane-header">
           <view class="left-title">
             <tui-icon margin="0 10upx 0 0" :size="20" name="circle-fill"></tui-icon>
-            <view class="title">皮革</view>
+            <view class="title">{{ item.serverName }}</view>
           </view>
           <view class="right-title">填写数量和上传图片</view>
         </view>
@@ -81,23 +95,31 @@
           <view class="item">
             <view class="item-title">数量</view>
             <view class="count-wrapper">
-              <image class="dis" src="../../static/images/new-community/enterprise-orders/dis.png"></image>
-              <view class="count">10件</view>
-              <image class="add" src="../../static/images/new-community/enterprise-orders/add.png"></image>
+              <image class="dis" @click="handleChangeNumber(-1, item)"
+                src="../../static/images/new-community/enterprise-orders/dis.png"></image>
+              <view class="count">{{ item.number }} {{ item.unit }}</view>
+              <image @click="handleChangeNumber(1, item)" class="add"
+                src="../../static/images/new-community/enterprise-orders/add.png"></image>
             </view>
           </view>
           <view class="item">
             <view class="item-title">金额</view>
-            <view class="item-price">￥20</view>
+            <view class="item-price">￥{{ item.serverPrice }}</view>
           </view>
         </view>
 
         <view class="img-list">
-          <view class="uploader">
+          <view class="uploader" @click="handleUploadImg(item)" v-show="item.images.length < 4">
             <tui-icon :size="20" marign="0 0 8upx 0" name="camera"></tui-icon>
             上传图片
           </view>
-          <view class="tip">最多上传4张</view>
+          <view class="img-wrapper" v-for="img in item.images" :key="img">
+            <image class="img" :src="img"></image>
+            <view class="delete-icon">
+              <tui-icon @click="handleDeleteImg(img, item)" name="shut" :size="10" color="#fff"></tui-icon>
+            </view>
+          </view>
+          <view v-show="item.images.length < 4" class="tip">最多上传4张</view>
         </view>
       </view>
     </view>
@@ -105,8 +127,9 @@
 
     <view class="pane">
       <view class="title">内容备注</view>
-      <tui-textarea :maxlength="80" :marginTop="26" padding="0" trim isCounter :size="26" :borderTop="false"
-        :borderBottom="false" height="132rpx" min-height="132rpx" placeholder="请输入订单备注"></tui-textarea>
+      <tui-textarea v-model="orderForm.remarks" :maxlength="80" :marginTop="26" padding="0" trim isCounter :size="26"
+        :borderTop="false" autoHeight :borderBottom="false" height="50rpx" min-height="50rpx"
+        placeholder="请输入订单备注"></tui-textarea>
     </view>
 
 
@@ -114,7 +137,8 @@
       <view class="bar" @click="chooseTimeVisible = true">
         <view class="title justify flex">期望上门时间 <view class="required">必填</view>
         </view>
-        <view class="value title flex">蔡志 <image style="width: 21upx; height: 21upx; flex-shrink: 0; margin-left: 13upx;"
+        <view class="value title flex">{{ orderForm.installDate || "请选择上门时间" }} <image
+            style="width: 21upx; height: 21upx; flex-shrink: 0; margin-left: 13upx;"
             src="../../static/images/new-community/enterprise-orders/right-arrow.png"></image>
         </view>
       </view>
@@ -122,7 +146,7 @@
       <view class="bar" @click="handleChoosePayMethod">
         <view class="title justify">付款方式
         </view>
-        <view class="value title flex">微信支付 <image
+        <view class="value title flex">{{ orderForm.extraInfo.payType === 1 ? '余额支付' : '微信支付' }} <image
             style="width: 21upx; height: 21upx; flex-shrink: 0; margin-left: 13upx;"
             src="../../static/images/new-community/enterprise-orders/right-arrow.png"></image>
         </view>
@@ -131,20 +155,28 @@
 
     <view class="footer">
       <view class="serve-detail">
-        <view class="total-price">总计金额 <text class="price-text">￥299</text></view>
-        <view class="serve-count">共计服务项目：2项</view>
+        <view class="total-price">总计金额 <text class="price-text">￥{{ orderForm.actualPrice }}</text></view>
+        <view class="serve-count">共计服务项目 {{ selectServerList.length }}项</view>
       </view>
-      <button class="uni-btn">提交订单</button>
+      <button class="uni-btn" :loading="isCreateOrder" @click="handleSubmitOrder">提交订单</button>
     </view>
 
     <!-- 添加服务 -->
-    <AddServe ref="addServeRef"></AddServe>
+    <AddServe @confirm="handleConfirmChoose" ref="addServeRef"></AddServe>
     <!-- 选择网点 -->
-    <ChooseShopSite ref="chooseShopSiteRef"></ChooseShopSite>
+    <ChooseShopSite @confirm="handleConfirmChooseSite" ref="chooseShopSiteRef"></ChooseShopSite>
     <!-- 选择期望上门时间 -->
-    <ChooseTime v-model="chooseTimeVisible"></ChooseTime>
+    <ChooseTime @choose="handleChooseInstallTime" v-model="chooseTimeVisible"></ChooseTime>
     <!-- 选择支付方式 -->
-    <PayMethods ref="payMethodRef"></PayMethods>
+    <PayMethods ref="payMethodRef" @confirm="handleChangePayType"></PayMethods>
+    <!-- tip -->
+    <tui-modal :show="isShowDeleteServeModal" title="提示" content="您要删除当前服务吗" @click="handleChangeServe"></tui-modal>
+    <!-- toast -->
+    <tui-toast ref="toast"></tui-toast>
+    <!-- 选择地址 -->
+    <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
+    <!-- 企业充值 -->
+    <tui-modal :show="isShowRechargeModal" title="提示" content="您当前余额不足，是否去充值？" @click="handleOpRechargeModal"></tui-modal>
   </view>
 </template>
 
@@ -153,8 +185,12 @@ import AddServe from './components/AddServe.vue'
 import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
-import { getBAuthInfoApi } from '../../api/community-center'
-import { USER_INFO } from '../../constant'
+import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
+import { USER_INFO, USER_TOKEN, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { getBuServeListApi } from '../../api/community-center'
+import { getUserId } from '../../utils'
+import { IMG_UPLOAD_URL } from '../../config';
+import { validateOrderForm } from './data'
 
 export default {
   components: {
@@ -166,25 +202,93 @@ export default {
 
   data() {
     return {
-      chooseTimeVisible: false
+      chooseTimeVisible: false,
+      bDetailInfo: null,
+      selectServerList: [],
+      serveList: [],
+      isShowDeleteServeModal: false,
+      isShowRechargeModal: false,
+      shopSiteList: [],
+      currentChooseShopInfo: null,
+      isQuotation: false,
+      isCreateOrder: false,
+      orderForm: {
+        orderGoodsList: [],
+        dictName: "企业订单",
+        consigneeName: '',
+        consigneeMobile: '',
+        consigneeAddress: '',
+        consigneeAddressDetail: '',
+        userId: getUserId(),
+        spotOrder: 0,
+        pullIn: 1,
+        pricingType: 1,
+        paymentMethod: 1,
+        orderType: 1,
+        isVipSetmral: 0,
+        deliveryType: 4,
+        price: "",
+        actualPrice: "",
+        serverTypeId: null,
+        remarks: '',
+        shopId: '',
+        installDate: '', // 安装时间
+        bizType: 3,
+        extraInfo: {
+          companyId: '',
+          payType: 2, // 1余额，2通联
+          serverInfo: []
+        }
+      }
     }
   },
 
-  onLoad() {
+  onShow() {
+    this.getShopSiteList()
+    this.getBuServeList()
+    const preOrderNo = uni.getStorageSync(ENTERPRISE_ORDERS_NO)
+    if (preOrderNo) {
+      uni.switchTab({
+        url: '/pages/order/order'
+      });
+    }
+  },
+
+  onLoad(params) {
+    const serverIds = params.serverIds
+    if (serverIds) {
+      this.selectServerList = serverIds.split(',').map(item => item * 1)
+    }
     this.getBAuthInfo()
+    this.$store.dispatch('auth/updateStorageKeyToken')
   },
 
   methods: {
+    handleBack() {
+      uni.navigateBack()
+    },
+
     handleAddServe() {
-      this.$refs.addServeRef.show()
+      this.$refs.addServeRef.show(this.selectServerList, this.serveList)
+    },
+
+    handleConfirmAddress(selectAddressInfo) {
+      this.orderForm.consigneeAddress = selectAddressInfo.formatAddress4
     },
 
     handleChooseSite() {
-      this.$refs.chooseShopSiteRef.show()
+      if (this.shopSiteList.length) {
+        this.$refs.chooseShopSiteRef.show(this.shopSiteList, this.orderForm.shopId)
+      } else {
+        this.ttoast({
+          type: 'info',
+          title: "您所在的区域暂无服务网点~"
+        })
+      }
     },
 
     handleChoosePayMethod() {
-      this.$refs.payMethodRef.show()
+      this.$refs.payMethodRef.show(this.orderForm.extraInfo.payType)
     },
 
     // 获取企业认证信息
@@ -193,7 +297,476 @@ export default {
         phone: uni.getStorageSync(USER_INFO).phone
       })
 
-      console.log(res);
+      if (res.statusCode === 20000) {
+        this.bDetailInfo = res.data.company
+        const companyAddressInfo = this.bDetailInfo.companyAddress.split(' ')
+        this.orderForm.consigneeName = this.bDetailInfo.companyDelegate
+        this.orderForm.consigneeMobile = this.bDetailInfo.delegatePhoneNumber
+        this.orderForm.consigneeAddress = companyAddressInfo[0]
+        this.orderForm.consigneeAddressDetail = companyAddressInfo[1]
+        this.orderForm.extraInfo.companyId = this.bDetailInfo.id
+
+      } else {
+        this.ttoast({
+          type: 'fail',
+          title: '企业信息获取失败'
+        })
+      }
+    },
+
+    async getBuServeList() {
+      const address = this.$store.getters.detailAddress
+      if (!address) {
+        uni.navigateTo({ url: "/pages/choose-location/choose-location" })
+        return
+      }
+
+      const res = await getBuServeListApi({
+        address: address
+      })
+
+      if (res.statusCode === 20000) {
+        this.serveList = res.data
+        if (res.data && res.data.length) {
+          const fullRow = Math.floor(res.data.length / 3)
+          const buCount = 3 - res.data.length - 3 * fullRow
+          for (let i = 0; i < buCount; i++) {
+            this.serveList.push({
+              id: Math.random() + Date.now(),
+              serveName: "xxx"
+            })
+          }
+
+          this.initServeForm(this.selectServerList)
+        }
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "获取服务列表失败"
+        })
+      }
+    },
+
+    initServeForm(currentSelect) {
+      for (let i = 0; i < currentSelect.length; i++) {
+        const currentId = currentSelect[i]
+        const existingServerInfo = this.orderForm.extraInfo.serverInfo.find(item => item.id === currentId)
+        const currentServeInfo = this.serveList.find(item => item.id === currentId)
+        if (!existingServerInfo && currentServeInfo) {
+          const { serverName, serverPrice, id, unit } = currentServeInfo;
+          this.orderForm.extraInfo.serverInfo.push({
+            id,
+            serverName,
+            serverPrice,
+            images: [],
+            number: 1,
+            unit
+          })
+        }
+      }
+      this.handleGetOrderQuotation()
+    },
+
+    handleConfirmChoose(selectIds) {
+      this.orderForm.extraInfo.serverInfo = this.orderForm.extraInfo.serverInfo.filter(item => selectIds.includes(item.id))
+      const currentSelectServerIds = this.orderForm.extraInfo.serverInfo.map(item => item.id)
+      selectIds.forEach(id => {
+        if (!currentSelectServerIds.includes(id)) {
+          const currentServeInfo = this.serveList.find(item => item.id === id)
+          if (currentServeInfo) {
+            const { serverName, serverPrice, id, unit } = currentServeInfo;
+            this.orderForm.extraInfo.serverInfo.push({
+              id,
+              serverName,
+              serverPrice,
+              images: [],
+              number: 1,
+              unit
+            })
+          }
+        }
+      });
+      this.selectServerList = selectIds
+      this.handleGetOrderQuotation()
+    },
+
+    // 修改服务数量
+    handleChangeNumber(changeNum, target) {
+      if (changeNum > 0) {
+        target.number += changeNum
+        this.handleGetOrderQuotation()
+      } else if (changeNum < 0 && target.number > 1) {
+        target.number += changeNum
+        this.handleGetOrderQuotation()
+      } else {
+        this.opTarget = target
+        this.isShowDeleteServeModal = true
+      }
+    },
+
+    handleChangeServe({ index }) {
+      if (index) {
+        this.orderForm.extraInfo.serverInfo = this.orderForm.extraInfo.serverInfo.filter(item => item.id != this.opTarget.id)
+        this.selectServerList = this.orderForm.extraInfo.serverInfo.map(item => item.id)
+        this.handleGetOrderQuotation()
+      }
+
+      this.isShowDeleteServeModal = false
+      this.opTarget = null
+    },
+
+    // 点击上传图片
+    handleUploadImg(target) {
+      const _this = this;
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          for (const imgFile of chooseImageRes.tempFiles) {
+            uni.showLoading();
+            uni.uploadFile({
+              url: IMG_UPLOAD_URL,
+              filePath: imgFile.path,
+              name: 'file',
+              formData: {
+                token: USER_TOKEN,
+                userId: getUserId()
+              },
+              success: (uploadFileRes) => {
+                uni.hideLoading();
+                target.images.push(JSON.parse(uploadFileRes.data).data.url)
+                _this.ttoast('上传成功')
+              },
+              fail: (error) => {
+                uni.hideLoading();
+                _this.ttoast({
+                  type: 'fail',
+                  title: '图片上传失败',
+                  content: error
+                });
+              }
+            });
+          }
+
+          return;
+        },
+        fail: (fail) => {
+          console.log(fail);
+        }
+      });
+    },
+
+    // 删除图片
+    handleDeleteImg(img, target) {
+      target.images = target.images.filter(originImg => originImg !== img)
+    },
+
+    // 获取订单报价
+    async handleGetOrderQuotation() {
+      if (!this.orderForm.extraInfo.serverInfo.length) {
+        return
+      }
+
+      try {
+        uni.showLoading({
+          title: '报价中'
+        });
+        this.isQuotation = true
+        const serverInfo = this.orderForm.extraInfo.serverInfo.map(item => ({
+          number: item.number,
+          id: item.id
+        }))
+        const res = await getOrderQuotationApi({ serverInfo })
+        if (res.statusCode === 20000) {
+          const cost = res.data
+          this.orderForm.price = cost
+          this.orderForm.actualPrice = cost
+        } else {
+          this.ttoast({
+            type: "fail",
+            title: "报价失败"
+          })
+        }
+      } catch (error) {
+        this.ttoast({
+          type: "fail",
+          title: "报价失败",
+          content: error
+        })
+      } finally {
+        uni.hideLoading();
+        this.isQuotation = false
+      }
+    },
+
+    // 选择上门时间
+    handleChooseInstallTime(time) {
+      this.orderForm.installDate = time
+    },
+
+    // 选择支付方式
+    handleChangePayType(newPayType) {
+      if (this.orderForm.extraInfo.payType !== newPayType) {
+        this.orderForm.extraInfo.payType = newPayType
+      }
+    },
+
+    // 获取网点信息
+    async getShopSiteList() {
+
+      const address = this.$store.getters.detailAddress
+      if (!address) {
+        uni.navigateTo({ url: "/pages/choose-location/choose-location" })
+        return
+      }
+
+      const res = await getShopSiteListApi({
+        address: address
+      })
+
+      if (res.statusCode === 20000) {
+        this.shopSiteList = res.data
+        if (this.shopSiteList.length) {
+          this.chooseSite(this.shopSiteList[0])
+        }
+      } else {
+        this.ttoast({
+          type: "fail",
+          title: "获取门店列表失败"
+        })
+      }
+    },
+
+    // 选择网点
+    chooseSite(siteInfo) {
+      if (this.orderForm.shopId === siteInfo.id) {
+        return
+      }
+      this.currentChooseShopInfo = siteInfo
+      this.orderForm.shopId = siteInfo.id
+    },
+
+    // 提交订单
+    async handleSubmitOrder() {
+      if (this.isQuotation) {
+        this.ttoast({
+          type: 'info',
+          title: "订单报价中...",
+          content: "请稍后操作"
+        })
+        return
+      }
+
+      if (this.isCreateOrder) {
+        this.ttoast({
+          type: 'info',
+          title: "订单提交中...",
+          content: "请勿重复提交"
+        })
+        return
+      }
+
+      const validMsg = validateOrderForm(this.orderForm)
+      if (validMsg) {
+        this.ttoast({
+          type: "fail",
+          title: validMsg
+        })
+        return
+      }
+
+      try {
+        this.isCreateOrder = true
+        const extraInfo = JSON.stringify(this.orderForm.extraInfo)
+        const res = await createRepairOrderApi({ ...this.orderForm, extraInfo })
+
+        if (res.statusCode === 20000) {
+          const orderNo = res.data
+          // uni.setStorageSync(ENTERPRISE_ORDERS_NO, orderNo)
+
+          if (this.orderForm.extraInfo.payType === 1) {
+            const res = await orderPayH5PabUseBlanceApi({
+              orderNo: orderNo,
+              userId: getUserId()
+            })
+
+            console.log("余额支付", res);
+          } else {
+            if (this.$store.state.app.isInMiniProgram) {
+              try {
+                const payAppesult = await payOrderForBeeStewadAPPApi({
+                  userId: getUserId(),
+                  orderNo: orderNo
+                });
+
+                if (payAppesult.statusCode === 20000) {
+                  let query = '';
+                  for (const key in payAppesult.data) {
+                    query += key + '=' + payAppesult.data[key] + '&';
+                  }
+
+                  // console.log(payAppesult);
+
+                  wx.miniProgram.navigateTo({
+                    url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
+                    fail: async () => {
+                      if (!isH5InWebview()) {
+                        let res = await getServiceOrderPayApi({
+                          orderNo: orderNo,
+                          userId: getUserId()
+                        });
+
+                        res = JSON.parse(res.data);
+                        const form = document.createElement('form');
+                        form.setAttribute('action', res.url);
+                        form.setAttribute('method', 'POST');
+
+                        const data1 = JSON.parse(res.data);
+                        let input;
+                        for (const key in data1) {
+                          input = document.createElement('input');
+                          input.name = key;
+                          input.value = data1[key];
+                          form.appendChild(input);
+                        }
+
+                        document.body.appendChild(form);
+                        form.submit();
+                        document.body.removeChild(form);
+                      } else {
+                        _this.ttoast({
+                          type: "fail",
+                          title: error,
+                        });
+
+                        setTimeout(() => {
+                          uni.switchTab({
+                            url: "/pages/order/order",
+                          });
+                        }, 3000);
+                      }
+                    }
+                  });
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              // #ifdef H5
+              let res = await getServiceOrderPayApi({
+                orderNo: orderNo,
+                userId: getUserId()
+              });
+
+
+
+              res = JSON.parse(res.data);
+
+              const form = document.createElement('form');
+              form.setAttribute('action', res.url);
+              form.setAttribute('method', 'POST');
+
+              const data1 = JSON.parse(res.data);
+              let input;
+              for (const key in data1) {
+                input = document.createElement('input');
+                input.name = key;
+                input.value = data1[key];
+                form.appendChild(input);
+              }
+
+              document.body.appendChild(form);
+              form.submit();
+              document.body.removeChild(form);
+              // #endif
+
+              // #ifdef APP
+              const payAppesult = await payOrderForBeeStewadAPPApi({
+                userId: getUserId(),
+                orderNo: orderNo
+              });
+
+              if (payAppesult.statusCode === 20000) {
+                let query = '';
+                for (const key in payAppesult.data) {
+                  query += key + '=' + payAppesult.data[key] + '&';
+                }
+
+                plus.share.getServices(
+                  function (res) {
+                    let sweixin = null;
+                    for (let i in res) {
+                      if (res[i].id == 'weixin') {
+                        sweixin = res[i];
+                      }
+                    }
+                    console.log(sweixin);
+                    if (sweixin) {
+                      sweixin.launchMiniProgram({
+                        id: 'gh_e64a1a89a0ad',
+                        type: 0,
+                        path: 'pages/orderDetail/orderDetail?' + query
+                      });
+                    }
+                  },
+                  function (e) {
+                    console.log('获取分享服务列表失败：' + e.message);
+                  }
+                );
+              }
+              // #endif
+            }
+          }
+        } else {
+
+          if (res.statusMsg.includes('余额不足')) {
+            this.isShowRechargeModal = true
+          } else {
+            this.ttoast({
+              type: 'fail',
+              title: res.statusMsg
+            })
+            // setTimeout(() => {
+            //   if (this.orderForm.extraInfo.payType === 1) {
+            //     uni.switchTab({
+            //       url: "/pages/order/order"
+            //     })
+            //   }
+            // }, 2000);
+          }
+
+
+
+        }
+      } catch (error) {
+        console.log("企业下单报错", error);
+      } finally {
+        this.isCreateOrder = false
+      }
+    },
+
+    // 选择网点
+    handleConfirmChooseSite(id) {
+      if (!id) {
+        this.currentChooseShopInfo = null
+        this.orderForm.shopId = ''
+      } else {
+        const currentSiteInfo = this.shopSiteList.find(itme => itme.id === id)
+        if (currentSiteInfo) {
+          this.chooseSite(currentSiteInfo)
+        }
+      }
+    },
+
+    // 余额充值模态框
+    handleOpRechargeModal({ index }) {
+      if (index) {
+        this.ttoast("跳转平台支付")
+      } else {
+        uni.switchTab({
+          url: "/pages/order/order"
+        })
+      }
+
+      this.isShowRechargeModal = false
     }
   },
 }
@@ -256,6 +829,40 @@ export default {
             opacity: 0.7;
           }
         }
+
+        .img-wrapper {
+          position: relative;
+          width: 105upx;
+          height: 118upx;
+          margin-right: 10upx;
+          border-radius: 10upx;
+          background: #f3f3f3;
+          overflow: hidden;
+
+          .delete-icon {
+            position: absolute;
+            width: 40upx;
+            height: 40upx;
+            top: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 0 0 60upx;
+            box-sizing: border-box;
+            padding: 6upx 6upx 0 0;
+            justify-content: flex-end;
+            align-items: flex-start;
+          }
+
+          .img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+
 
         .tip {
           color: #D1D1D1;
@@ -384,6 +991,11 @@ export default {
       align-items: center;
       justify-content: space-between;
       min-height: 104upx;
+
+      .input {
+        flex: 1;
+        text-align: end;
+      }
     }
 
     .shop-choose {
@@ -398,6 +1010,13 @@ export default {
       .shop-name {
         display: flex;
         align-items: center;
+
+        &-text {
+          max-width: 244upx;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
 
         .tag {
           text-align: center;

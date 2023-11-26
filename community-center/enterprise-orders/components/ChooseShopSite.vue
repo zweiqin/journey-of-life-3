@@ -7,9 +7,11 @@
 
       <view class="shop-site-list">
         <scroll-view scroll-y class="scroll-view">
-          <view class="site-item" v-for="item in 10" :key="item">
-            文化社区店
-            <tui-icon class="check" :size="20" name="circle-fill" color="#DCDDDD"> </tui-icon>
+          <view class="site-item" v-for="item in allShopSite" :key="item.id" @click="handleChooseSite(item.id)">
+            <view CLASS="site-name" :style="{ color: item.id === selectId ? '#EF530E' : '#DCDDDD' }">{{ item.shopName }}
+            </view>
+            <tui-icon class="check" :size="20" name="circle-fill" :color="selectId === item.id ? '#EF530E' : '#DCDDDD'">
+            </tui-icon>
           </view>
         </scroll-view>
       </view>
@@ -26,22 +28,30 @@ export default {
 
   data() {
     return {
-      chooseShopSiteVisite: false
+      chooseShopSiteVisite: false,
+      allShopSite: [],
+      selectId: ''
     }
   },
 
   methods: {
-    show() {
+    show(allShopSite, selectId) {
       this.chooseShopSiteVisite = true
+      this.allShopSite = allShopSite
+      this.selectId = selectId
     },
 
     handleCloseChooseSitePopup() {
       this.chooseShopSiteVisite = false
     },
 
+    handleChooseSite(siteId) {
+      this.selectId = siteId === this.selectId ? '' : siteId
+    },
+
     // 确认选择服务
     handleConfirm() {
-      console.log("选择了");
+      this.$emit('confirm', this.selectId)
       this.handleCloseChooseSitePopup()
     }
   },
@@ -72,10 +82,18 @@ export default {
         align-items: center;
         justify-content: center;
         color: #DCDDDD;
-
         transition: all 350ms;
 
-        &:active{
+        .site-name {
+          width: 600upx;
+          text-align: center;
+          margin-right: 10upx;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        &:active {
           background-color: #f3f3f3;
         }
 

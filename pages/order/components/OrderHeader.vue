@@ -118,7 +118,7 @@ export default {
 	box-sizing: border-box;
 	background-color: #fff;
 	border-radius: 0 0 50upx 50upx;
-	z-index: 1;
+	z-index: 10;
 
 	.top-wrapper {
 		display: flex;

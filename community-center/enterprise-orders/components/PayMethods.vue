@@ -7,14 +7,18 @@
 
       <view class="shop-site-list">
         <scroll-view scroll-y class="scroll-view">
-          <view class="site-item">
+          <view class="site-item" :style="{ color: currentPayType == 2 ? '#EF530E' : '#DCDDDD' }"
+            @click="handleChoose(2)">
             微信支付
-            <tui-icon class="check" :size="20" name="circle-fill" color="#DCDDDD"> </tui-icon>
+            <tui-icon class="check" :size="20" name="circle-fill" :color="currentPayType == 2 ? '#EF530E' : '#DCDDDD'">
+            </tui-icon>
           </view>
 
-          <view class="site-item">
+          <view class="site-item" @click="handleChoose(1)"
+            :style="{ color: currentPayType == 1 ? '#EF530E' : '#DCDDDD' }">
             余额
-            <tui-icon class="check" :size="20" name="circle-fill" color="#DCDDDD"> </tui-icon>
+            <tui-icon class="check" :size="20" name="circle-fill" :color="currentPayType == 1 ? '#EF530E' : '#DCDDDD'">
+            </tui-icon>
           </view>
         </scroll-view>
       </view>
@@ -31,12 +35,14 @@ export default {
 
   data() {
     return {
-      payMethodVisible: false
+      payMethodVisible: false,
+      currentPayType: ''
     }
   },
 
   methods: {
-    show() {
+    show(payType) {
+      this.currentPayType = payType
       this.payMethodVisible = true
     },
 
@@ -46,8 +52,13 @@ export default {
 
     // 确认选择服务
     handleChoosePayMethod() {
-      console.log("选择了");
+      this.$emit('confirm', this.currentPayType)
       this.handleClosePayMethod()
+    },
+
+    // 选择支付方式
+    handleChoose(payType) {
+      this.currentPayType = payType
     }
   },
 }
