@@ -74,7 +74,7 @@
 <script>
 import { A_TF_MAIN } from '../../config'
 import { bannerListIcon, vipBarConfig } from './config';
-import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID } from '../../constant';
+import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant';
 import { getServiceSortApi } from '../../api/community-center';
 import { userIsPurchaseApi } from '../../api/user';
 import PopupInformation from '../../components/popup-information/popup-information';
@@ -124,6 +124,7 @@ export default {
   },
   onShow() {
     uni.removeStorageSync(T_COMMUNITY_ORDER_NO);
+    uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
       this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList();

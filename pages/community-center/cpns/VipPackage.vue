@@ -51,7 +51,7 @@
         <image class="king" src="../../../static/images/new-community/home/king.png"></image>
       </view>
 
-      <view class="package ilo-package" @click="empty()">
+      <!-- <view class="package ilo-package" @click="empty()">
         <view class="package-title"> 加油劵 </view>
         <view class="content">
           <view>加油</view>
@@ -64,10 +64,10 @@
 
         <image class="car" src="../../../static/images/new-community/home/car.png"></image>
         <image class="car car-2" src="../../../static/images/new-community/home/car.png"></image>
-      </view>
+      </view> -->
 
-      <!-- <view class="package ilo-package server" style="background: linear-gradient(270deg, #1F67FD 0%, #2E70FC 66%);"
-        @click="go('/community-center/enterprise-orders/home')">
+      <view class="package ilo-package server" style="background: linear-gradient(270deg, #1F67FD 0%, #2E70FC 66%);"
+        @click="handleToOrder">
         <view class="package-title"
           style="position: relative; z-index: 10; background: linear-gradient(270deg, #2E45DA 0%, #1548D4 97%);"> 企业服务
         </view>
@@ -82,14 +82,18 @@
           <view class="dot-2"></view>
           <view class="dot-3"></view>
         </view>
-      </view> -->
+      </view>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+      @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
   </view>
 </template>
 
 <script>
+import showModal from "../../../mixin/showModal.js";
+
 export default {
   props: {
     scrollTop: {
@@ -97,6 +101,8 @@ export default {
       default: 0
     }
   },
+
+  mixins: [showModal()],
 
   data() {
     return {
@@ -119,6 +125,15 @@ export default {
   methods: {
     startAnimation() {
       this.isStart = true;
+    },
+
+    handleToOrder() {
+      if (this.isLogin()) {
+        this.go('/community-center/enterprise-orders/home')
+      } else {
+      console.log(1);
+        this.$data._isShowTuiModel = true;
+      }
     }
   },
 

@@ -1585,6 +1585,12 @@
           }
         },
         {
+          "path": "another-user/shop-statistics/finance-statistics",
+          "style": {
+            "navigationBarTitleText": "商家财务统计"
+          }
+        },
+        {
           "path": "another-user/shop-recharge/shop-recharge",
           "style": {
             "navigationBarTitleText": "商家充值"

@@ -1,8 +1,8 @@
 import { USER_INFO, USER_ID, USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
-import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP } from './type'
+import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP, CHNAGE_USER_IDENTITY } from './type'
 import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
-import { getAnotherTFTokenApi } from '../../api/anotherTFInterface'
+import { getAnotherTFTokenApi, getIsShopByUserApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
@@ -15,6 +15,10 @@ export default {
 				collection: 0,
 				footPrint: 0,
 				follow: 0
+			},
+			IdentityInfo: {
+				type: 0,
+				info: {}
 			},
 			historyPopup: []
 		}
@@ -37,6 +41,10 @@ export default {
 		[CHNAGE_USER_TOKEN](state, token) {
 			state.userToken = token
 			uni.setStorageSync(USER_TOKEN, token)
+		},
+
+		[CHNAGE_USER_IDENTITY](state, data) {
+			state.IdentityInfo = data
 		},
 
 		[CHNAGE_HISTORY_POPUP](state, type) {
@@ -160,13 +168,8 @@ export default {
 			})
 		},
 
-		updateHistoryPopup({ state, commit }, type) {
-			if (state.historyPopup.includes(type)) return
-			commit(CHNAGE_HISTORY_POPUP, type)
-		},
-
 		// 获取新团蜂token
-		updateStorageKeyToken() {
+		updateStorageKeyToken({ state, dispatch, commit }) {
 			return new Promise((resolve, reject) => {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (userInfo && userInfo.phone) {
@@ -181,6 +184,7 @@ export default {
 							uni.hideLoading()
 							resolve(err)
 						})
+					dispatch('updateIdentityInfo')
 				} else {
 					uni.showToast({
 						title: '缺少用户手机号码'
@@ -188,6 +192,29 @@ export default {
 					resolve('缺少用户手机号码')
 				}
 			})
+		},
+
+		// 获取身份（是否商家）
+		updateIdentityInfo({ state, dispatch, commit }) {
+			return new Promise((resolve, reject) => {
+				const userInfo = uni.getStorageSync(USER_INFO)
+				if (userInfo && userInfo.phone) {
+					getIsShopByUserApi({ mobile: userInfo.phone })
+						.then((res) => {
+							if (res.data) commit(CHNAGE_USER_IDENTITY, { type: 1, info: res.data || {} })
+							resolve(res.data)
+						})
+						.catch((err) => {
+							uni.hideToast()
+							resolve(err)
+						})
+				}
+			})
+		},
+
+		updateHistoryPopup({ state, commit }, type) {
+			if (state.historyPopup.includes(type)) return
+			commit(CHNAGE_HISTORY_POPUP, type)
 		}
 	}
 }

@@ -1,7 +1,10 @@
 <template>
   <view class="order-info-wrapper">
     <TuanPageHead title="订单详情" fixed :scrollTop="scrollTop">
-      <block slot="left"> <image src="../static/images/con-center/order-detail-back.png" @click="handleToOrderList" class="back-icon"></image> </block>
+      <block slot="left">
+        <image src="../static/images/con-center/order-detail-back.png" @click="handleToOrderList" class="back-icon">
+        </image>
+      </block>
     </TuanPageHead>
     <view class="c-order-detail" v-if="orderDetail" :style="{ marginTop: scrollTop > 300 ? '100upx' : '' }">
       <view class="item order-info">
@@ -12,20 +15,39 @@
             <view class="order-detail-item" v-if="!!orderDetail[item.field]">
               <view class="title">{{ item.label }}</view>
               <view class="content">{{ item.format ? item.format(orderDetail) : orderDetail[item.field] }}</view>
-              <view class="op" v-if="item.op" @click="item.op.handler(orderDetail, copySuccess)">{{ item.op.label }}</view>
+              <view class="op" v-if="item.op" @click="item.op.handler(orderDetail, copySuccess)">{{ item.op.label }}
+              </view>
             </view>
           </block>
         </view>
       </view>
 
+      <view class="item en-order-pane" v-if="extraInfo">
+        <view class="item-title" style="font-size: 28upx; color: #3d3d3d; font-weight: 500;">订单详情</view>
+
+        <view class="wrapper">
+          <view class="order-pane" v-for="item in  extraInfo.serverInfo " :key="item.id">
+            <view class="serve-base-info">
+              <view class="serve-name">{{ item.serverName }}</view>
+              <view class="serve-count"> <text class="price-text">￥{{ item.serverPrice }}</text> x {{ item.number }}
+                <text v-if="item.unit">/{{ item.unit
+                }}</text>
+              </view>
+            </view>
+
+            <view class="img-list" v-if="item.images.length">
+              <image class="serve-img" :src="img" v-for="(img, index) in item.images" :key="index"></image>
+            </view>
+          </view>
+        </view>
+
+
+      </view>
+
       <view class="item serve-time-line" v-if="orderStatusLogList && orderStatusLogList.length">
         <tui-time-axis>
-          <tui-timeaxis-item
-            :style="{ marginBottom: index === orderStatusLogList.length - 1 ? '0' : '' }"
-            backgroundColor="transparent"
-            v-for="(item, index) in orderStatusLogList"
-            :key="item.id"
-          >
+          <tui-timeaxis-item :style="{ marginBottom: index === orderStatusLogList.length - 1 ? '0' : '' }"
+            backgroundColor="transparent" v-for="( item, index ) in  orderStatusLogList " :key="item.id">
             <template v-slot:node>
               <view class="tui-node">
                 <tui-icon name="check" color="#fff" :size="7" bold></tui-icon>
@@ -59,8 +81,10 @@
               </view>
 
               <view class="master-skills" v-if="masterInfo.skillExpertise">
-                <text>{{ allSkillVisible ? masterInfo.skillExpertise.join('/') : masterInfo.skillExpertise.slice(0, 3).join(' / ') }}</text>
-                <button class="uni-btn" v-if="masterInfo.skillExpertise.length > 3" @click="allSkillVisible = !allSkillVisible">
+                <text>{{ allSkillVisible ? masterInfo.skillExpertise.join('/') : masterInfo.skillExpertise.slice(0,
+                  3).join(' / ') }}</text>
+                <button class="uni-btn" v-if="masterInfo.skillExpertise.length > 3"
+                  @click="allSkillVisible = !allSkillVisible">
                   {{ allSkillVisible ? '收起' : '更多' }}
                 </button>
               </view>
@@ -92,9 +116,10 @@
           </view>
 
           <view class="comment-source-list">
-            <block v-for="(item, index) in orderComment.commentFile" :key="index">
+            <block v-for="( item, index ) in  orderComment.commentFile " :key="index">
               <view class="item img" v-if="!isVideoSource(item)">
-                <image @click="handlePreviewSource(index, orderComment.commentFile, true)" class="img" :src="item"></image>
+                <image @click="handlePreviewSource(index, orderComment.commentFile, true)" class="img" :src="item">
+                </image>
               </view>
               <view class="item video" @click="handlePreviewSource(index, orderComment.commentFile, false)" v-else>
                 <video class="video-source" :src="item"></video>
@@ -107,47 +132,35 @@
       <view class="tip"> </view>
     </view>
 
-    <view
-      class="footer"
-      :class="{ fix: scrollTop === 0 }"
-      :style="{ backgroundColor: scrollTop > 100 ? '#fff' : '' }"
-      v-if="orderDetail && [0, 1, 2].includes(orderDetail.status)"
-    >
+    <view class="footer" :class="{ fix: scrollTop === 0 }" :style="{ backgroundColor: scrollTop > 100 ? '#fff' : '' }"
+      v-if="orderDetail && [0, 1, 2].includes(orderDetail.status)">
       <!-- <view class="footer" > -->
       <button class="uni-btn" @click="$data._isShowTuiModel = true">取消订单</button>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="确定要取消订单吗？"
-      @click="
-        isShowChooseReason = true;
-        $data._isShowTuiModel = false;
-      "
-    ></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="确定要取消订单吗？" @click="
+      isShowChooseReason = true;
+    $data._isShowTuiModel = false;
+    "></tui-modal>
 
-    <tui-bottom-popup
-      :zIndex="1002"
-      :maskZIndex="1001"
-      :show="isShowChooseReason"
-      @close="
-        isShowChooseReason = false;
-        cancelRemarks = '订单下错了';
-        isOther = false;
-      "
-    >
+    <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="isShowChooseReason" @close="
+      isShowChooseReason = false;
+    cancelRemarks = '订单下错了';
+    isOther = false;
+    ">
       <view class="choose-reason-container">
         <view class="title"> 取消订单 </view>
 
         <view class="list">
-          <view class="list-item" v-for="item in reasonList" :key="item" @click="handleChooseCancelReason(item)">
+          <view class="list-item" v-for=" item  in  reasonList " :key="item" @click="handleChooseCancelReason(item)">
             <view class="text">{{ item }}</view>
-            <tui-icon :size="20" v-if="(cancelRemarks === item && !isOther) || (item === '其他' && isOther)" name="check" color="#ef530e"></tui-icon>
+            <tui-icon :size="20" v-if="(cancelRemarks === item && !isOther) || (item === '其他' && isOther)" name="check"
+              color="#ef530e"></tui-icon>
           </view>
 
-          <tui-textarea :borderBottom="false" isCounter v-if="isOther" :size="28" placeholder="请输入订单取消原因" padding="20upx 0 0 0"></tui-textarea>
+          <tui-textarea :borderBottom="false" isCounter v-if="isOther" :size="28" placeholder="请输入订单取消原因"
+            padding="20upx 0 0 0"></tui-textarea>
         </view>
 
         <view class="buttin-wrapper">
@@ -182,7 +195,8 @@ export default {
       reasonList: ['订单下错了', '订单取消了', '其他'],
       cancelRemarks: '订单下错了',
       isOther: false,
-      isCanceling: false
+      isCanceling: false,
+      extraInfo: null
     };
   },
   mixins: [showModalMixin()],
@@ -206,6 +220,10 @@ export default {
           this.orderDetail = res.data;
           this.orderStatusLogList = res.data.orderStatusLogList || [];
           this.masterInfo = res.data.orderWorkerInfoVo || null;
+          this.extraInfo = res.data.extraInfo
+          if (this.extraInfo) {
+            this.initExtraInfo(this.extraInfo)
+          }
           if (this.masterInfo && this.masterInfo.skillExpertise) {
             this.masterInfo.skillExpertise = this.masterInfo.skillExpertise.split(',');
           }
@@ -252,6 +270,16 @@ export default {
           });
         }
       });
+    },
+
+    // 初始化额外信息
+    initExtraInfo(extraInfo) {
+      try {
+        this.extraInfo = JSON.parse(extraInfo)
+        console.log("来了", this.extraInfo);
+      } catch (error) {
+        console.log("额外信息解析失败");
+      }
     },
 
     handleToOrderList() {
@@ -380,6 +408,7 @@ view {
     white-space: nowrap;
   }
 }
+
 .c-order-detail {
   padding: 27upx 30upx;
   box-sizing: border-box;
@@ -530,6 +559,7 @@ view {
 
           .rate {
             margin: 0 20upx;
+
             .rate-star {
               width: 24upx;
               height: 24upx;
@@ -737,6 +767,66 @@ view {
       &:active {
         opacity: 0.7;
       }
+    }
+  }
+}
+
+.en-order-pane {
+  .wrapper {
+    .order-pane {
+      margin-bottom: 20upx;
+
+      .serve-base-info {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding-left: 30upx;
+
+        &::after{
+          content: "";
+          display: block;
+          width: 20upx;
+          height: 20upx;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 4upx;
+          border-radius: 100px;
+          background-color: #ff814b;
+        }
+
+        .serve-name {
+          font-size: 32upx;
+          font-weight: 500;
+        }
+
+        .serve-count {
+          font-size: 28upx;
+
+          .price-text {
+            font-size: 28upx;
+            color: #f40;
+          }
+        }
+
+
+      }
+
+      .img-list {
+        display: flex;
+        align-items: center;
+        margin-top: 20upx;
+
+        .serve-img {
+          width: 100upx;
+          height: 100upx;
+          border-radius: 10upx;
+          margin-right: 20upx;
+        }
+      }
+
     }
   }
 }
