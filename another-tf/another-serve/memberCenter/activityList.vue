@@ -197,7 +197,7 @@ export default {
 		// },
 		gogoodsDetails(shopId, productId, skuId) {
 			uni.navigateTo({
-				url: '../goodsModule/goodsDetails?shopId=' + shopId + '&productId=' + productId + '&skuId=' + skuId
+				url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}`
 			})
 		},
 		getMemberList(isLoadmore) {

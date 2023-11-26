@@ -257,6 +257,7 @@ export default {
 			this.currentNavInfo = navInfo
 			this.currentStatus = navInfo.value
 			if (this.currentOrderMode === 'community') {
+				this.isShowSubNav = null
 				if (navInfo.value === -1) {
 					this.communityQueryInfo.status = undefined
 				} else if (navInfo.value === -2) {

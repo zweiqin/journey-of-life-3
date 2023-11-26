@@ -153,8 +153,7 @@
 															style="display: flex;flex: 1;flex-direction: column;align-items: start;width: 0;padding-left: 20upx;"
 														>
 															<text style="width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-																{{
-																	part.userName || '--' }}
+																{{ part.userName || '--' }}
 															</text>
 															<!-- <text>分享数：{{ part.shareCount || '0' }}</text> -->
 															<text style="color: red;">购买数：{{ part.purchaseCount || '0' }}</text>

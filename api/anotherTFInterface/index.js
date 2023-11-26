@@ -231,8 +231,26 @@ export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrder
 // 商家统计
 export const getShopStatisticsApi = (data) => AnotherTFRequest('/shop/getShopStatistics', data, 'POST')
 
+// 查询绑定银行卡
+export const getShopBankApi = (data) => AnotherTFRequest('/shop/getBank', data, 'POST')
+
 // 商家财务统计
 export const getShopFinanceCountApi = (data) => AnotherTFRequest('/shop/getFinanceCount', data, 'POST')
+
+// 提现申请
+export const addShopWithdrawalApi = (data) => AnotherTFRequest('/shop/withdrawal', data, 'POST')
+
+// 提现明细查询
+export const getShopWithdrawalDetailsApi = (data) => AnotherTFRequest('/shop/getWithdrawalDetails', data, 'POST')
+
+// 商家充值财务统计
+export const getShopRechargeCountApi = (data) => AnotherTFRequest('/shop/getRechargeCount', data, 'POST')
+
+// 充值提现申请
+export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/withdrawalRecharge', data, 'POST')
+
+// 商家的客户充值列表
+export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST')
 
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
