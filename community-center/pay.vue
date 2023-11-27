@@ -10,9 +10,19 @@
       <span class="value" @click="copyOrderNo">{{ orderNo }}</span>
     </view>
 
+    <view class="item" @click="$refs.choosePayMehtodRef && $refs.choosePayMehtodRef.show(payType)">
+      <span class="label">支付方式:</span>
+      <span class="value" style="display: flex; align-items: center;">{{ payType == 1 ?
+        '余额支付' : "微信支付" }} <tui-icon name="arrowright"></tui-icon></span>
+    </view>
+
     <Button type="error" @click="handlePay" :loading="isLoading">支付</Button>
 
     <tui-toast ref="toast"></tui-toast>
+
+
+    <!-- 修改支付方式 -->
+    <ChoosePayType @confirm="handleChangePayMethod" ref="choosePayMehtodRef"></ChoosePayType>
   </view>
 </template>
 
@@ -25,9 +35,10 @@ import {
 } from "../api/community-center";
 import { getUserId, useCopy, isH5InWebview } from "../utils";
 import Header from "./components/header.vue";
+import ChoosePayType from './enterprise-orders/components/PayMethods.vue'
 
 export default {
-  components: { Button, Header },
+  components: { Button, Header, ChoosePayType },
   data() {
     return {
       orderNo: "",
@@ -208,6 +219,10 @@ export default {
     copyOrderNo() {
       useCopy(this.orderNo);
     },
+
+    handleChangePayMethod(payMethod){
+      this.payType = payMethod
+    }
   },
 
   onLoad(option) {
