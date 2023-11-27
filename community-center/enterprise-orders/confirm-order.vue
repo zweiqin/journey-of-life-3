@@ -361,7 +361,7 @@ export default {
             serverName,
             serverPrice,
             images: [],
-            number: 1,
+            number: 2,
             unit
           })
         }
@@ -382,7 +382,7 @@ export default {
               serverName,
               serverPrice,
               images: [],
-              number: 1,
+              number: 2,
               unit
             })
           }
@@ -397,12 +397,13 @@ export default {
       if (changeNum > 0) {
         target.number += changeNum
         this.handleGetOrderQuotation()
-      } else if (changeNum < 0 && target.number > 1) {
+      } else if (changeNum < 0 && target.number > 2) {
         target.number += changeNum
         this.handleGetOrderQuotation()
       } else {
-        this.opTarget = target
-        this.isShowDeleteServeModal = true
+        // this.opTarget = target
+        // this.isShowDeleteServeModal = true
+        // return 
       }
     },
 
