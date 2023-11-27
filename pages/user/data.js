@@ -227,6 +227,11 @@ export const shopServe = [
 		url: '/another-tf/another-user/shop-orders/index'
 	},
 	{
+		name: '收款账户',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/receiving-account/index'
+	},
+	{
 		name: '商家统计',
 		icon: require('../../static/images/new-user/serve/zz.png'),
 		url: '/another-tf/another-user/shop-statistics/index'

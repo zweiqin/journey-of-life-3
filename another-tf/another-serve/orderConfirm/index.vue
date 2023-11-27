@@ -132,7 +132,7 @@
 			></VoucherUse>
 
 			<view class="cashier-box">
-				<CashierList :total-price="totalPrice" @change="(e) => payObj = e" />
+				<CashierList :total-price="totalPrice" @change="(e) => payInfo = e" />
 			</view>
 			<view class="order-flow-box">
 				<view class="flow-word">交易流程：</view>
@@ -286,7 +286,7 @@ export default {
 			totalCount: 0,
 			userAddressInfo: {},
 			isRegionalScope: false, // 是否在商家配置范围内地址
-			payObj: {}, // 支付相关
+			payInfo: {}, // 支付相关
 			oneClickSubmit: true, // 只提交订单一次
 			// 拼团相关
 			skuItemList: {},
@@ -954,7 +954,7 @@ export default {
 		handleSetPayMode(data) {
 			// subPaymentMode 1-小程序支付 2-app支付 3-H5支付
 			// paymentMode 1-微信 2-支付宝
-			data.paymentMode = this.payObj.paymentMode
+			data.paymentMode = this.payInfo.paymentMode
 			// #ifdef H5
 			data.subPaymentMode = 3
 			// #endif
@@ -972,7 +972,7 @@ export default {
 		// 提交订单@return {Promise<void>}
 		async submitOrder() {
 			// 检查提交表单
-			if (!this.payObj.paymentMode) return this.$showToast('请选择支付方式')
+			if (!this.payInfo.paymentMode) return this.$showToast('请选择支付方式')
 			if (!this.oneClickSubmit) return this.$showToast('已提交，请勿重新操作！')
 			if (!this.userAddressInfo.receiveId) return this.$showToast('请选择收货地址')
 			this.oneClickSubmit = false
@@ -1001,8 +1001,8 @@ export default {
 				const submitResult = res.data
 				submitResult.type = 1
 				submitResult.paymentMode = data.paymentMode
-				if (this.payObj.paymentMode && this.payObj.huabeiPeriod) {
-					submitResult.huabeiPeriod = this.payObj.huabeiPeriod
+				if (this.payInfo.paymentMode && this.payInfo.huabeiPeriod) {
+					submitResult.huabeiPeriod = this.payInfo.huabeiPeriod
 				}
 				await handleDoPay.call(this, submitResult, 1)
 			} catch (e) {
