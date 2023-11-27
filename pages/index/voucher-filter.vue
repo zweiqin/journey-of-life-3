@@ -122,6 +122,7 @@ export default {
       }
       this.searchValue = ''
       this.$data._query.productName = ''
+      this.$data._query.page = 1
       this.getData()
     },
     getData() {
