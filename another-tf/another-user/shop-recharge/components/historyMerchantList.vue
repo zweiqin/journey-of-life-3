@@ -28,7 +28,7 @@ export default {
     methods: {
         getList() {
             getByShopAll().then(res => {
-                res.data.records.forEach(item => {
+                res.data.forEach(item => {
                     this.dataList.push(item)
                 })
                 console.log(this.dataList);
