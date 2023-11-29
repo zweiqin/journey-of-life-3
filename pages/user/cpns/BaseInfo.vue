@@ -120,7 +120,8 @@
 			</view>
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/newVoucher/voucher' })">
 				<view class="account-number">
-					{{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }}
+					{{ voucherData.number || 0 }}
+					<!-- {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }} -->
 				</view>
 				<view class="account-title">代金劵</view>
 			</view>
@@ -151,6 +152,7 @@ import { userIsPurchaseApi } from '../../../api/user'
 import { USER_ID } from 'constant'
 import showModalMixin from 'mixin/showModal'
 import { convertToDecimal } from '../../../utils'
+import { getByUserVoucher } from '@/api/user/voucher'
 
 export default {
 	props: {
@@ -164,6 +166,7 @@ export default {
 			isShow: false,
 			isBuy: false,
 			isDisplayBadges: false,
+			voucherData: {},
 			displayBadgesImg: {
 				topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
 				name: '会员',
@@ -204,6 +207,11 @@ export default {
 		}
 	},
 	mixins: [ showModalMixin() ],
+	created() {
+		getByUserVoucher().then(res => {
+			this.voucherData = res.data
+		})
+	},
 	mounted() {
 		console.log(this.$store.getters.userInfo)
 		this.userIsPurchase()
