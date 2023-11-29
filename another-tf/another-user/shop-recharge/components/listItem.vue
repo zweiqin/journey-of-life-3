@@ -9,10 +9,10 @@
         </view>
         <view class="numberTitle">
             <text class="titlesItem">
-                余额: {{ datas.balance }} 元
+                余额: {{ datas.balance }}元
             </text>
             <text class="titlesItem">
-                赠送金额: {{ datas.giveBalance }} 元
+                赠送金额: {{ datas.giveBalance }}元
             </text>
         </view>
         <view class="newTimer">
@@ -69,9 +69,12 @@ export default {
     display: flex;
     align-items: center;
     height: 60rpx;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding-right: 60rpx;
     .titlesItem {
-        letter-spacing: 3rpx;
-        margin-right: 90rpx;
+        letter-spacing: 2rpx;
+        /* margin-right: 90rpx; */
         font-family: Source Han Sans;
         font-size: 32rpx;
         font-weight: normal;
