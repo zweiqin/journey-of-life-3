@@ -255,6 +255,25 @@ export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/wi
 // 商家的客户充值列表
 export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST')
 
+// 收款账户。商家银行卡
+// 绑定账户
+export const addBankSaveApi = (data) => AnotherTFRequest('/bank/save', data, 'POST')
+
+// 更换账户
+export const updateBankUpdateApi = (data) => AnotherTFRequest('/bank/update', data, 'POST')
+
+// 解绑账户
+export const deleteBankDeleteApi = (data) => AnotherTFRequest('/bank/delete', data, 'POST')
+
+// 收款账户信息查询
+export const getByIdBankApi = (data) => AnotherTFRequest('/bank/getById', data, 'POST')
+
+// 字典下拉数据查询
+export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST')
+
+// 获取短信验证码
+export const getCodeBusinessApi = (data) => AnotherTFRequest('/business/getCode', data, 'POST')
+
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
 

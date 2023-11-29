@@ -1585,6 +1585,12 @@
           }
         },
         {
+          "path": "another-user/receiving-account/receiving-account-form",
+          "style": {
+            "navigationBarTitleText": "收款账户表单"
+          }
+        },
+        {
           "path": "another-user/shop-statistics/index",
           "style": {
             "navigationBarTitleText": "商家统计"
