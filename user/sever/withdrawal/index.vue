@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getBankCardListUserApi, withdrawalBalanceApi, refrshUserInfoApi, getIdentityAuthenticationInfoApi } from '../../../api/user'
+import { getBankCardListUserApi, withdrawalBalanceApi, refrshUserInfoApi, getIdentityAuthenticationInfoApi, getByAllBuyerUserRechargeLogApi } from '../../../api/user'
 import { addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
 import { getUserId } from '../../../utils'
 import { USER_INFO } from '../../../constant'

@@ -42,8 +42,7 @@ export default {
 				{
 					label: '银行：',
 					field: 'bank',
-					type: 'select',
-					placeholder: '请选择所属银行'
+					type: 'select'
 				},
 				{
 					label: '注册手机号：',

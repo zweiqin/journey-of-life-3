@@ -3,7 +3,9 @@
 		<!-- 商品详情 -->
 		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
 			<swiper-item v-for="(imgItem, index) in productInfo.images" :key="index">
-				<image class="goodsImg default-img" :src="imgItem"></image>
+				<image v-if="!isVideoSource(imgItem)" class="goodsImg default-img" :src="imgItem"></image>
+				<video v-else style="width: 750upx; height: 750upx;" :src="imgItem"></video>
+				<!-- http://localhost:8988/TFShop_Uni_H5/#/another-tf/another-serve/goodsDetails/index?shopId=418&productId=9012&skuId=158267 -->
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->
@@ -145,7 +147,7 @@
 </template>
 
 <script>
-import { timeFormatting } from '../../../../utils'
+import { timeFormatting, isVideoSource } from '../../../../utils'
 import { getProductSharePicApi, collectCancelPUTApi, collectToCollectApi } from '../../../../api/anotherTFInterface'
 
 export default {
@@ -199,6 +201,8 @@ export default {
 		}
 	},
 	methods: {
+		isVideoSource,
+
 		/**
 		 * 初始化活动倒计时
 		 * @param endTimestamp
