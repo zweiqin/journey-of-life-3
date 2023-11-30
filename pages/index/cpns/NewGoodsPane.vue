@@ -15,7 +15,11 @@
           ￥<text class="price-text">{{ goods.price }}</text>
         </view>
         <view v-if="goods.voucherId != 0" class="is-suppot-voucher">可使用代金券抵扣{{ goods.voucherPrice }}元</view>
-        <view v-else class="is-suppot-voucher" style="color: #888889;box-shadow: 0px 0px 0px 1rpx #888889;">不支持使用代金卷</view>
+        <view v-else class="tags">
+          <view class="tag">旗舰店</view>
+          <view class="tag">官方正品</view>
+        </view>
+        <!-- <view v-else class="is-suppot-voucher" style="color: #888889;box-shadow: 0px 0px 0px 1rpx #888889;">不支持使用代金卷</view> -->
       </view>
     </view>
   </view>
@@ -157,16 +161,40 @@ export default {
       }
 
       .is-suppot-voucher {
+        overflow: hidden;
+        // white-space: nowrap;
+        text-overflow: ellipsis;
         margin-top: 10rpx;
         margin-bottom: 10rpx;
+        width: fit-content;
         // margin: 20rpx;
-				width: fit-content;
+				max-width: 94%;
+        max-height: 64rpx;
         // border: 1upx solid #e247478c;
         box-shadow: 0px 0px 0px 0.5px #e247478c;
         color: #E24747;
         font-size: 22upx;
         border-radius: 8upx;
         padding: 2upx 8upx;
+      }
+
+      .tags {
+        display: flex;
+        align-items: center;
+
+        .tag {
+          font-size: 20upx;
+          color: #fa5151;
+          line-height: 1.5;
+          padding: 0 18upx;
+          border: 1upx solid #fa5151;
+          margin: 22upx 0 12upx 0;
+          border-radius: 4upx;
+
+          &:nth-child(1) {
+            margin-right: 16upx;
+          }
+        }
       }
 
     }

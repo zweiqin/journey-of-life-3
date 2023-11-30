@@ -1351,6 +1351,12 @@
       "root": "another-tf",
       "pages": [
         {
+          "path": "another-user/platform-recharge/index",
+          "style": {
+            "navigationBarTitleText": "平台充值"
+          }
+        },
+        {
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"
@@ -1582,6 +1588,12 @@
           "path": "another-user/receiving-account/index",
           "style": {
             "navigationBarTitleText": "收款账户"
+          }
+        },
+        {
+          "path": "another-user/receiving-account/receiving-account-form",
+          "style": {
+            "navigationBarTitleText": "收款账户表单"
           }
         },
         {

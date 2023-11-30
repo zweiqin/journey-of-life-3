@@ -20,7 +20,8 @@
             "Camera" : {},
             "OAuth" : {},
             "Share" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "VideoPlayer" : {}
         },
         "distribute" : {
             "android" : {
@@ -181,13 +182,6 @@
                     "changeOrigin" : true,
                     "pathRewrite" : {
                         "^/sf" : ""
-                    }
-                },
-                "/lao" : {
-                    "target" : "http://192.168.0.82:8781/",
-                    "changeOrigin" : true,
-                    "pathRewrite" : {
-                        "^/lao" : ""
                     }
                 }
             }

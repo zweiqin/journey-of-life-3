@@ -295,8 +295,6 @@ export const isInWx = () => {
 	// #endif
 }
 
-export const isVideoSource = (src) => ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'].some((item) => src.indexOf(item) !== -1)
-
 /**
  * 大数转小数 12345.123 = 1.23万
  */
@@ -356,10 +354,15 @@ export const isH5InWebview = () => {
  * @returns {boolean}
  */
 
-export function isVideo(url) {
-	const videoExtensions = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4']
-	const lowercasedUrl = url.toLowerCase()
-	return videoExtensions.some(type => lowercasedUrl.includes(type))
+// export function isVideo(url) {
+// 	// ['png', 'jpg', 'jpeg', 'bmp', 'gif','webp'] ['mp4', 'm2v', 'mkv', 'webm', 'ogg', 'flv']
+// 	const videoExtensions = ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4']
+// 	const lowercasedUrl = url.toLowerCase()
+// 	return videoExtensions.some(type => lowercasedUrl.includes(type))
+// }
+export function isVideoSource(src) {
+	// return ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'].some((item) => src.indexOf(item) !== -1)
+	return ['.avi', '.wmv', '.mpg', '.mpeg', '.mov', '.rm', '.ram', '.swf', '.flv', '.mp4'].includes(src.substring(src.lastIndexOf('.')))
 }
 
 export const saveImg = (url, cb) => {

@@ -2,7 +2,7 @@
   <view class="brand-gallery-container">
     <swiper class="scource-list-swipper" autoplay circular :current="currentItem">
       <swiper-item class="scource-list-swipper-item" v-for="item in (currentMode === 'img' ? imageList : videoList)">
-        <image v-if="!isVideo(item)" style="width: 100%; height: 100%; border-radius: 20upx;" :src="item">
+        <image v-if="!isVideoSource(item)" style="width: 100%; height: 100%; border-radius: 20upx;" :src="item">
         </image>
         <video style="width: 100%; height: 100%; border-radius: 20upx;" v-else :src="item"></video>
       </swiper-item>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { isVideo } from '../../../../utils'
+import { isVideoSource } from '../../../../utils'
 
 export default {
   props: {
@@ -45,14 +45,14 @@ export default {
   },
 
   methods: {
-    isVideo,
+    isVideoSource,
     initGallery(galleryStr) {
       if (galleryStr) {
         this.imageList = []
         this.videoList = []
         const scourseList = galleryStr.split(',')
         for (const scourse of scourseList) {
-          if (isVideo(scourse)) {
+          if (isVideoSource(scourse)) {
             this.videoList.push(scourse)
           } else {
             this.imageList.push(scourse)

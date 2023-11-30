@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view>会员专区页</view>
+		<view>直播推荐页</view>
 	</view>
 </template>
 
