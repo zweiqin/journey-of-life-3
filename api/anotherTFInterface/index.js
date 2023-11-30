@@ -67,6 +67,9 @@ export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPoli
 // 平台余额充值提交订单
 export const addOrderSubmitUserRechargeApi = (data) => AnotherTFRequest('/order/submitUserRecharge', data, 'POST')
 
+// 用户平台充值流水记录
+export const getByAllBuyerUserRechargeLogApi = (data) => AnotherTFRequest('/buyerUserRechargeLog/getByAll', data, 'POST')
+
 /**
  * @description 社区商圈相关接口
  */
@@ -257,22 +260,22 @@ export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/busi
 
 // 收款账户。商家银行卡
 // 绑定账户
-export const addBankSaveApi = (data) => AnotherTFRequest('/bank/save', data, 'POST')
+export const addBankSaveApi = (data) => AnotherTFRequest('/shopBank/save', data, 'POST')
 
 // 更换账户
-export const updateBankUpdateApi = (data) => AnotherTFRequest('/bank/update', data, 'POST')
+export const updateBankUpdateApi = (data) => AnotherTFRequest('/shopBank/update', data, 'POST')
 
 // 解绑账户
-export const deleteBankDeleteApi = (data) => AnotherTFRequest('/bank/delete', data, 'POST')
+export const deleteBankDeleteApi = (data) => AnotherTFRequest('/shopBank/delete', data, 'POST')
 
 // 收款账户信息查询
-export const getByIdBankApi = (data) => AnotherTFRequest('/bank/getById', data, 'POST')
+export const getByIdBankApi = (data) => AnotherTFRequest('/shopBank/getById', data, 'POST')
 
 // 字典下拉数据查询
 export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST')
 
 // 获取短信验证码
-export const getCodeBusinessApi = (data) => AnotherTFRequest('/business/getCode', data, 'POST')
+export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST')
 
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')

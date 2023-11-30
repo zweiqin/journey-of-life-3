@@ -12,11 +12,13 @@
 						}"
 					>
 						<view class="sub-title">{{ item.label }}</view>
-						<input
-							v-if="item.type === 'select'" :value="form[item.field]" class="input" :disabled="true"
-							type="text"
-							:placeholder="item.placeholder" @click="isShowBankListSelect = true"
-						/>
+						<view
+							v-if="item.type === 'select' && item.field === 'bank'" style="flex: 1" :style="{
+								color: form.bank ? '' : '#999'
+							}" @click="isShowBankListSelect = true"
+						>
+							{{ bankName || (form.bank ? `已选 ID：${form.bank}` : "请选择所属银行") }}
+						</view>
 					</view>
 				</view>
 			</view>
@@ -93,7 +95,8 @@ export default {
 				bankLog: '',
 				cardName: '',
 				abbreviation: ''
-			}
+			},
+			bankName: ''
 		}
 	},
 
@@ -144,6 +147,7 @@ export default {
 		},
 		handleSelectBankList(e) {
 			this.isShowBankListSelect = false
+			this.bankName = e.options.text
 			this.form.bank = e.options.dictId
 		},
 		handleInput(field, e) {

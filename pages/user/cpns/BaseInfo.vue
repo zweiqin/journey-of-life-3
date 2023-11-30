@@ -99,7 +99,7 @@
 		</view>
 
 		<view class="account-container">
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/withdrawal/index' })">
+			<view class="account-item" @click="$emit('handleNavigate', { url: '/another-tf/another-user/platform-recharge/index' })">
 				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
 				<view class="account-number"> {{ data.account || 0 }} </view>
 				<view class="account-title">余额 ></view>
