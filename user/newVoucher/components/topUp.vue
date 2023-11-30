@@ -18,7 +18,7 @@
             </view>
         </view>
         <AmountSelection ref="AmountSelection" v-bind="$props" @getCustomValue="getCustomValue" :amountData="amountData"></AmountSelection>
-        <view class="VoucherService">
+        <view class="VoucherService" style="display: none;">
             <p class="title">代金卷服务</p>
             <view class="VoucherServiceBox">
                 <view class="VoucherServiceItem">
@@ -87,7 +87,8 @@ export default {
             {value: 0, price: 0}],
             amount: 25,
             findUserId: '',
-            findUserInfo: null
+            findUserInfo: null,
+            isShowKeyboard: false
         }
     },
     methods: {
@@ -285,6 +286,9 @@ export default {
         }
     }
     .footerButton {
+        /* position: fixed;
+        bottom: 0;
+        left: 0; */
         width: 100%;
         height: 120rpx;
         display: flex;

@@ -166,7 +166,7 @@ export default {
         text-overflow: ellipsis;
         margin-top: 10rpx;
         margin-bottom: 10rpx;
-        // width: 90%;
+        width: fit-content;
         // margin: 20rpx;
 				max-width: 94%;
         max-height: 64rpx;
