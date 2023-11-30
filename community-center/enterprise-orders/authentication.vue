@@ -9,10 +9,17 @@
     </TuanPageHead>
 
     <view class="pane">
+      <tui-alerts type="info" :title="`共找到${authedCompanyList.length}家企业`">
+        <block slot="right">
+          <button class="uni-btn company-btn" @click="companyListPickerVisible = true">点击选择</button>
+        </block>
+      </tui-alerts>
+
       <view class="form-item">
         <view class="form-label">公司名称</view>
         <view class="form-value">
-          <input class="inp" type="text" v-model="authForm.createOrUpdateCompanyParam.companyName" placeholder="请输入公司名称">
+          <input class="inp" @blur="handleCompanyInputBlur" type="text"
+            v-model="authForm.createOrUpdateCompanyParam.companyName" placeholder="请输入公司名称">
         </view>
       </view>
 
@@ -24,18 +31,18 @@
       </view>
 
       <view class="form-item">
-        <view class="form-label">法定代表人</view>
+        <view class="form-label">联系人</view>
         <view class="form-value">
           <input class="inp" type="text" v-model="authForm.createOrUpdateCompanyParam.companyDelegate"
-            placeholder="请输入公司法定代表人">
+            placeholder="请输入公司联系人">
         </view>
       </view>
 
       <view class="form-item">
-        <view class="form-label">法人手机号</view>
+        <view class="form-label">手机号码</view>
         <view class="form-value">
           <input class="inp" type="text" v-model="authForm.createOrUpdateCompanyParam.delegatePhoneNumber"
-            placeholder="请输入法人手机号码">
+            placeholder="请输入联系人手机号码码">
         </view>
       </view>
 
@@ -68,20 +75,20 @@
       <view class="load-img-container">
         <view class="title"> 上传营业执照</view>
         <view class="tip">请确保证件完整，编号、印章、文字、照片清楚可见</view>
-        <view class="img-wrapper">
+        <view class="img-wrapper" style=" margin-bottom: 24upx;">
           <view class="example uploader">
-            <image style="width: 88upx; height: 128upx; margin-bottom: 24upx;"
+            <image style="width: 88upx; height: 128upx;"
               src="../../static/images/new-community/enterprise-orders/temp.png"></image>
           </view>
           <view v-if="!authForm.createOrUpdateCompanyParam.businessLicense" class="uploader"
             @click="handleUploadImg('businessLicense')">
-            <image style="width: 39upx; height: 39upx; margin-bottom: 24upx;"
+            <image style="width: 39upx; height: 39upx;"
               src="../../static/images/new-community/enterprise-orders/image.png"></image>
             点击上传图片
           </view>
 
-          <image @click="handleUploadImg('businessLicense')" v-else
-            style="width: 128upx; height: 128upx; margin-bottom: 24upx; border-radius: 10upx; border: 1upx solid #f3f3f3;"
+          <image :class="{ mask: isMask }" @click="handleUploadImg('businessLicense')" v-else
+            style="width: 128upx; height: 128upx; border-radius: 10upx; border: 1upx solid #f3f3f3;"
             :src="authForm.createOrUpdateCompanyParam.businessLicense"></image>
         </view>
 
@@ -108,11 +115,15 @@
     <button class="uni-btn submit" @click="handleSubmit">提交认证</button>
     <tui-toast ref="toast"></tui-toast>
     <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
+
+    <!-- 选择企业 -->
+    <tui-select :list="authedCompanyList" :show="companyListPickerVisible" @confirm="handleChooseCompany"
+      @close="companyListPickerVisible = false"></tui-select>
   </view>
 </template>
 
 <script>
-import { bAuthApi } from '../../api/community-center'
+import { bAuthApi, getAuthedCompanyListApi } from '../../api/community-center'
 import { IMG_UPLOAD_URL } from '../../config';
 import { USER_INFO, USER_TOKEN } from '../../constant'
 import { getUserId } from '../../utils'
@@ -121,6 +132,9 @@ export default {
   data() {
     return {
       addressDetail: "",
+      companyListPickerVisible: false,
+      authedCompanyList: [],
+      isMask: false,
       authForm: {
         "createOrUpdateCompanyParam": {
           "simpleName": "",
@@ -161,6 +175,9 @@ export default {
                 userId: getUserId()
               },
               success: (uploadFileRes) => {
+                if (type === 'businessLicense') {
+                  this.isMask = false
+                }
                 uni.hideLoading();
                 _this.authForm.createOrUpdateCompanyParam[type] = JSON.parse(uploadFileRes.data).data.url
                 _this.ttoast('上传成功')
@@ -182,6 +199,41 @@ export default {
           console.log(fail);
         }
       });
+    },
+
+    // 获取已认证公司联系人
+    async handleCompanyInputBlur() {
+      try {
+        uni.showLoading({
+          title: '加载中...',
+          mask: true
+        });
+        const res = await getAuthedCompanyListApi({
+          comName: this.authForm.createOrUpdateCompanyParam.companyName
+        })
+        this.authedCompanyList = res.statusCode === 20000 ? (res.data || []).map(item => {
+          item.text = item.companyName
+          item.id = item.id
+          return item
+        }) : []
+      } finally {
+        uni.hideLoading();
+      }
+    },
+
+    // 确认选择公司信息
+    handleChooseCompany({ options }) {
+      if (options) {
+        this.authForm.createOrUpdateCompanyParam.simpleName = options.simpleName
+        this.authForm.createOrUpdateCompanyParam.companyLogo = options.companyLogo
+        this.authForm.createOrUpdateCompanyParam.businessLicense = options.businessLicense
+        this.authForm.createOrUpdateCompanyParam.delegatePhoneNumber = options.delegatePhoneNumber
+        this.authForm.createOrUpdateCompanyParam.companyDelegate = options.companyDelegate
+        this.authForm.createOrUpdateCompanyParam.companyName = options.companyName
+        this.authForm.createOrUpdateCompanyParam.companyCode = options.companyCode
+        this.isMask = true
+      }
+      this.companyListPickerVisible = false
     },
 
     async handleSubmit() {
@@ -307,6 +359,18 @@ export default {
     margin-top: 24upx;
     background-color: #fff;
 
+    .company-btn {
+      padding: 5upx 10upx;
+      border-radius: 10upx;
+      font-size: 28upx;
+      color: #fff;
+      transition: all 350ms;
+
+      &:active {
+        opacity: 0.6;
+      }
+    }
+
     .form-item {
       padding: 38upx 60upx;
       box-sizing: border-box;
@@ -353,6 +417,24 @@ export default {
         display: flex;
         align-items: center;
 
+        .mask {
+          position: relative;
+
+          &::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            content: '保密中';
+            width: 128upx;
+            height: 128upx;
+            background: rgba(0, 0, 0, 0.295);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+          }
+        }
+
         .uploader {
           display: flex;
           align-items: center;
@@ -363,6 +445,8 @@ export default {
           background-color: #F7FBFF;
           font-size: 16upx;
           color: #969699;
+
+
 
           &.example {
             position: relative;

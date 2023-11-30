@@ -273,6 +273,12 @@ export const bAuthApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/enterpriseCertification', data, 'POST')
 }
 
+// 获取已认证公司列表
+
+export const getAuthedCompanyListApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/common/third/getComListByComName', data, 'GET')
+}
+
 // 获取该地区的服务项目
 export const getBuServeListApi = data => {
   return SheQu1Request('laoa-huozhu/api/hz/companyOrder/third/getServersByAddr', data, 'GET')

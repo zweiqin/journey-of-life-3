@@ -29,6 +29,7 @@ export default {
 		this.globalData.terminal = 3
 		// #endif
 		// #ifdef MP
+		
 		this.globalData.terminal = 1
 		// #endif
 	},

@@ -30,7 +30,7 @@
             {{ item.serverName }}
           </view>
         </view>
-        <view v-else>
+        <view v-else style="margin-bottom: 20upx;">
           抱歉，您的区域暂时没有相关服务
         </view>
         <button @click="handleSubmit" :style="{ opacity: selectServes.length ? 1 : 0.6 }" class="uni-btn order-btn">{{
@@ -132,8 +132,13 @@ export default {
 
     // 获取服务列表
     async getBuServeList() {
+      const address = this.$store.getters.detailAddress
+      if (!address) {
+        uni.navigateTo({ url: "/pages/choose-location/choose-location" })
+        return
+      }
       const res = await getBuServeListApi({
-        address: '广东省佛山市顺德区龙江镇'
+        address
       })
 
       if (res.statusCode === 20000) {

@@ -52,7 +52,7 @@
       title="需求说明"
       :desc="'请填写尺寸、体积、重量等信息,方便师傅带齐工具,并为您准确提供准确的报价(您上传的照片非常重要哦~)'"
       v-model.trim="repairForm.remarks"
-      style="'margin-top':10px "
+      style="'margin-top':10px"
     ></Remarks>
 
     <Button type="error" @click="handleCreateOrder">提交</Button>
@@ -91,7 +91,8 @@ export default {
         dictName: '家具维修'
       },
       serveTypeList: [],
-      typeSelectIndex: 0
+      typeSelectIndex: 0,
+      isBOrder: false
     };
   },
   methods: {
