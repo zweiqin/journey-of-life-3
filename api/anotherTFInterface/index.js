@@ -64,6 +64,9 @@ export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/dele
 // 支付有礼
 export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPolite', data)
 
+// 账户信息查询
+export const getPricePlatformAllApi = (data) => AnotherTFRequest('/distributor/getDistributor', data)
+
 // 平台余额充值提交订单
 export const addOrderSubmitUserRechargeApi = (data) => AnotherTFRequest('/order/submitUserRecharge', data, 'POST')
 

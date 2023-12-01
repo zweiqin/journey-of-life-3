@@ -1357,6 +1357,12 @@
           }
         },
         {
+          "path": "another-user/platform-recharge/recharge-record",
+          "style": {
+            "navigationBarTitleText": "平台充值流水记录"
+          }
+        },
+        {
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"

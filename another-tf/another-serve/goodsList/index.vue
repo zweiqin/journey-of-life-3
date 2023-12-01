@@ -176,7 +176,7 @@ export default {
 				this.isEmpty = this.goodsList.length === 0
 				uni.hideLoading()
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		}

@@ -154,6 +154,12 @@
             }
         },
         "plugins" : {
+            // 直播
+            "live-player-plugin" : {
+                // "version": "1.3.2", // 注意该直播组件最新版本号，微信开发者工具调试时可获取最新版本号
+                "version" : "latest",
+                "provider" : "wx123456789abcdefg"
+            },
             // 卡券
             "sendCoupon" : {
                 "version" : "latest",

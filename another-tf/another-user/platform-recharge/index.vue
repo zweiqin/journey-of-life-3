@@ -1,52 +1,145 @@
 <template>
 	<view class="platform-recharge">
-		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-
-		<view style="margin: 20upx 0 0;padding: 0 48upx;border-top: 4upx dotted #767676">
-			<view style="padding: 120upx 32upx 60upx">
-				<tui-input
-					v-model="rechargeForm.amounts" padding="26rpx 6rpx" label="充值金额：" placeholder="请输入充值金额"
-					clearable type="number"
-					border-color="#cccccc" style="border-bottom: 2upx solid #cccccc;"
-				></tui-input>
+		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;"></JHeader>
+		<view
+			style="position: relative;padding: 8upx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
+		>
+			<view>
+				<view
+					style="position: absolute;top: -30%;left: -40%;width: 600upx;height: 620upx;background-color: #f16527;border-radius: 50%;"
+				>
+				</view>
+				<view
+					style="position: absolute;top: -30%;left: -40%;width: 508upx;height: 538upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.1;"
+				>
+				</view>
 			</view>
+			<view style="position: relative;">
+				<view style="text-align: right;">
+					<tui-button
+						type="warning" width="220rpx" height="60rpx" margin="0 10upx -20upx 0"
+						style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
+					>
+						充值流水 →
+					</tui-button>
+				</view>
+				<view style="font-size: 28upx;">
+					<view>当前总余额(元)</view>
+					<view style="margin-top: 24upx;font-size: 64upx;">{{ pricePlatformInfo.totalPrice || 0 }}</view>
+					<view style="margin-top: 22upx;color: #f6a07a;">可提现金额：{{ pricePlatformInfo.price || 0 }}元</view>
+				</view>
+				<view
+					style="display: flex;justify-content: space-evenly;margin-top: 76upx;padding: 20upx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
+				>
+					<view>
+						<view style="color: #f7a783;">充值余额</view>
+						<view style="margin-top: 10upx;">{{ pricePlatformInfo.rechargePrice || 0 }}</view>
+					</view>
+					<view style="width: 2upx;background-color: #f37d49;"></view>
+					<view>
+						<view style="color: #f7a783;">代金券余额</view>
+						<view style="margin-top: 10upx;">{{ pricePlatformInfo.voucherPrice || 0 }}</view>
+					</view>
+					<view style="width: 2upx;background-color: #f37d49;"></view>
+					<view>
+						<view style="color: #f7a783;">分销金额</view>
+						<view style="margin-top: 10upx;">{{ pricePlatformInfo.distributorPrice || 0 }}</view>
+					</view>
+				</view>
+			</view>
+		</view>
 
-			<view style="text-align: center;">
+		<view style="margin-top: 48upx;">
+			<view style="padding: 0 36upx;">
+				<view style="display: flex;justify-content: space-between;align-items: center;">
+					<text style="color: #222229;">余额充值</text>
+					<text style="font-size: 26upx;color: #888889;">充值送代金券</text>
+				</view>
+				<view
+					style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 12upx 0 0;text-align: center;"
+				>
+					<view
+						v-for="(item, index) in rechargeAmountsList" :key="index"
+						style="position: relative;width: 31%;margin: 16upx 0 0;padding: 48upx 0;background-color: #f4f4f4;border-radius: 20upx;"
+						:style="{ border: currentRechargeIndex === index ? '2upx solid #ef520e' : '2upx solid #f4f4f4' }"
+						@click="handleClickCurrentRecharge(item, index)"
+					>
+						<view v-if="item.type === 'custom'">
+							<view style="font-size: 42upx;font-weight: bold;color: #222229;">{{ item.amounts || '输入' }}</view>
+							<view style="margin-top: 20upx;font-size: 28upx;color: #888889;">{{ item.voucherNum || '自定义金额' }}</view>
+						</view>
+						<view v-else>
+							<view style="font-size: 42upx;font-weight: bold;color: #222229;">{{ item.amounts }}</view>
+							<view style="margin-top: 20upx;font-size: 28upx;color: #888889;">代金券{{ item.voucherNum || '' }}</view>
+						</view>
+						<view
+							v-if="currentRechargeIndex === index"
+							style="position: absolute;right: 0;bottom: 0;padding: 2upx;border-radius: 60% 0 0;background-color: #ef520e;"
+						>
+							<tui-icon name="check" color="#FFFFFF" size="34" unit="upx"></tui-icon>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view style="padding: 120upx 0 38upx;text-align: center;">
 				<tui-button
-					width="580rpx" height="96rpx" :size="38" type="green"
-					shape="circle" style="display: inline-block;"
+					type="warning" width="680rpx" height="84upx" margin="0 20upx 0"
+					style="display: inline-block;border-radius: 40upx;background: linear-gradient(287deg, #EF530E 31%, #F77A42 104%)!important;border-radius: 16upx;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
 					@click="handleRecharge"
 				>
-					充值
+					￥{{ rechargeForm.amounts || '--' }} 立即充值
 				</tui-button>
 			</view>
 		</view>
+
+		<!-- 输入充值金额dialog -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowRechargeCustomDialog" title="自定义充值金额" @click="handleClickRechargeCustomDialog"
+		>
+			<template #content>
+				<tui-input v-model="rechargeAmountsList[5].amounts" label="充值金额" type="number" placeholder="请输入充值金额">
+					<template #right>
+						<text>元</text>
+					</template>
+				</tui-input>
+			</template>
+		</tui-dialog>
 
 		<CashierList :total-price="rechargeForm.amounts" @change="(e) => payInfo = e" />
 	</view>
 </template>
 
 <script>
-import { addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
 import { handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'PlatformRecharge',
 	onLoad() {
-		this.refrshUserInfo()
+		this.handleClickCurrentRecharge(this.rechargeAmountsList[0], 0)
+		this.getPricePlatformAll()
 	},
 
 	data() {
 		return {
-			userInfo: {},
-			withdrawalForm: {
-				accountBankId: '',
-				name: ''
+			pricePlatformInfo: {
+				totalPrice: '', // 账户总余额
+				price: '', // 账户可提现金额
+				rechargePrice: '', // 账户充值余额
+				voucherPrice: '', // 代金券余额
+				distributorPrice: '' // 账户分销金额
 			},
-			tempwithdrawBankName: '请选择提现方式',
-			bankCardList: [],
-			isShowBankCardSelect: false,
-			showModal: false,
+			rechargeAmountsList: [
+				{ amounts: 1000, voucherNum: 1000 },
+				{ amounts: 1500, voucherNum: 1500 },
+				{ amounts: 2000, voucherNum: 2000 },
+				{ amounts: 3000, voucherNum: 3000 },
+				{ amounts: 5000, voucherNum: 5000 },
+				{ amounts: '', voucherNum: 0, type: 'custom' }
+			],
+			currentRechargeIndex: '',
+			isShowRechargeCustomDialog: false,
 			// 充值
 			rechargeForm: {
 				amounts: ''
@@ -57,47 +150,36 @@ export default {
 
 	methods: {
 		// 刷新用户信息
-		refrshUserInfo(cb) {
-			refrshUserInfoApi({
-				userId: this.userInfo.userId
-			}).then(({ data }) => {
-				uni.setStorageSync(USER_INFO, data)
-				this.userInfo = data
-				this.$forceUpdate()
-			})
+		getPricePlatformAll() {
+			getPricePlatformAllApi({})
+				.then((res) => {
+					this.pricePlatformInfo = res.data
+				})
+		},
+		handleClickCurrentRecharge(item, index) {
+			if (item.type === 'custom') {
+				this.isShowRechargeCustomDialog = true
+			} else {
+				this.currentRechargeIndex = index
+				this.rechargeForm.amounts = item.amounts
+			}
 		},
 
-		handleSelectBankCard(e) {
-			this.isShowBankCardSelect = false
-			this.withdrawalForm.accountBankId = e.options.value
-			this.tempwithdrawBankName = e.options.text
-		},
-
-		handleWithdrawal() {
-			if (!this.withdrawalForm.accountBankId) return this.$showToast('请选择提现方式')
-			if (!this.withdrawalForm.name) return this.$showToast('请输入收款人姓名')
-			getIdentityAuthenticationInfoApi({
-				mobile: this.userInfo.phone
-			}).then((res) => {
-				if (!res) {
-					this.showModal = true
-				} else {
-					withdrawalBalanceApi({
-						...this.withdrawalForm,
-						userId: getUserId()
-					}).then(({ data }) => {
-						this.$showToast('操作成功')
-						this.refrshUserInfo()
-						setTimeout(() => {
-							uni.navigateBack()
-						}, 2000)
-					})
-				}
-			})
+		handleClickRechargeCustomDialog(e) {
+			if (e.index === 0) {
+				this.rechargeAmountsList[5].amounts = ''
+			} else if (e.index === 1) {
+				if (!this.rechargeAmountsList[5].amounts) return this.$showToast('充值金额不能为空')
+				if (this.rechargeAmountsList[5].amounts > 100000) return this.$showToast('单次充值金额不能大于10万')
+				this.rechargeForm.amounts = this.rechargeAmountsList[5].amounts
+				this.rechargeAmountsList[5].voucherNum = `代金券${this.rechargeAmountsList[5].amounts}`
+				this.currentRechargeIndex = 5
+			}
+			this.isShowRechargeCustomDialog = false
 		},
 
 		handleRecharge() {
-			if (!this.rechargeForm.amounts) return this.$showToast('请输入充值金额')
+			if (!this.rechargeForm.amounts) return this.$showToast('缺少金额')
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
 				.then(async (res) => {
