@@ -36,7 +36,7 @@
 
       <view class="goods-price">
         <view class="text"
-          ><text class="text-price">￥{{ data.originalPrice }}</text></view
+          ><text class="text-price">￥{{ data.price }}</text></view
         >
         <view class="salsed">{{ data.trafficVolume || 0 }}人浏览</view>
       </view>

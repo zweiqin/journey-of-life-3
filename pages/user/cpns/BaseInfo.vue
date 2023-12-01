@@ -555,8 +555,9 @@ text {
 }
 
 .BadgesImg {
-	width: 186rpx;
+	width: 196rpx;
 	height: 210rpx;
+	// margin-left: 5rpx;
 }
 
 .DisplayBadgesTop {
