@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .xxxxxx {
   width: 100%;
   min-height: 100vh;

@@ -5,7 +5,6 @@
 			<swiper-item v-for="(imgItem, index) in productInfo.images" :key="index">
 				<image v-if="!isVideoSource(imgItem)" class="goodsImg default-img" :src="imgItem"></image>
 				<video v-else style="width: 750upx; height: 750upx;" :src="imgItem"></video>
-				<!-- http://localhost:8988/TFShop_Uni_H5/#/another-tf/another-serve/goodsDetails/index?shopId=418&productId=9012&skuId=158267 -->
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->
