@@ -1,7 +1,7 @@
 <template>
   <view class="vip-package-container" :class="{ active: isStart }">
     <!-- 限时钜惠 -->
-    <view v-if="XIAN && XIAN.name" class="package package-1"
+    <!-- <view v-if="XIAN && XIAN.name" class="package package-1"
       @click="go('/community-center/vip-center/vip-detail?type=1')">
       <view class="package-title"> {{ XIAN.name }} </view>
 
@@ -18,9 +18,18 @@
       <image class="money" src="../../../static/images/new-community/home/money.png"></image>
       <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
+    </view> -->
+
+    <view class="package package-1" @click="go('/community-center/enterprise-orders/home')">
+      <view style="background: linear-gradient(270deg, #1648D5 -3%, #2B45D9 112%);" class="package-title"> 企业服务 </view>
+      <view class="content">
+        <view class="title-1">家具工厂<text class="vip-price">{{ XIAN.price }}</text></view>
+        <view class="title-2">维修专项入口</view>
+      </view>
+      <button class="uni-btn">立即申请</button>
     </view>
 
-    <view v-else class="package package-1" @click="
+    <!-- <view v-else class="package package-1" @click="
       go(
         '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F0ambqkerlcm244oyheu9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fqe5otzuj908ndz5mo0iw.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fush1q9ne9d4ob28dt0b9.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Frg4tzjcv9clnokxa7wew.pngg'
       )
@@ -39,7 +48,7 @@
       <image class="money" src="../../../static/images/new-community/home/money.png"></image>
       <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
-    </view>
+    </view> -->
 
     <view class="other-package">
       <view class="package whole-package" @click="go('/community-center/vip-center/vip-detail?type=2')">
@@ -66,22 +75,18 @@
         <image class="car car-2" src="../../../static/images/new-community/home/car.png"></image>
       </view> -->
 
-      <view class="package ilo-package server" style="background: linear-gradient(270deg, #1F67FD 0%, #2E70FC 66%);"
-        @click="handleToOrder">
+      <view class="package ilo-package server"
+        @click="go('/community-center/community-detail?id=313&serverNameThree=空调清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fcbcl11hwac3imq3pm9bc.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fk2y9voxtnik637lqk059.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F9clf6yvvfnwf9ltbh0p6.png')">
         <view class="package-title"
-          style="position: relative; z-index: 10; background: linear-gradient(270deg, #2E45DA 0%, #1548D4 97%);"> 企业服务
+          style="position: relative; z-index: 10; background: linear-gradient(270deg, #178AF8 0%, #1175FC 97%);"> 限时钜惠
         </view>
-        <view class="content" style="z-index: 10; color: #fff; margin-top: 10upx; margin-left: 24upx;">
-          <view>助力企业降本增效</view>
-        </view>
-        <button style="z-index: 10; background-color: #fff; color: #2E45DA; font-size: 22upx; border: none;"
-          class="uni-btn">立即申请</button>
 
-        <view class="additional-dom">
-          <view class="dot-1"></view>
-          <view class="dot-2"></view>
-          <view class="dot-3"></view>
-        </view>
+        <view class="title" style="color: #222229; font-size: 24upx; margin-left: 20upx; margin-top: 7upx;">空调清洗仅需<text
+            style="font-size: 32upx; font-weight: 500; color: #E02208;">58</text></view>
+
+        <button
+          style="z-index: 10; background-color: #fff; color: #1175FC; font-size:22upx; border: none; border:1upx solid #1175FC;"
+          class="uni-btn">立即下单</button>
       </view>
     </view>
 
@@ -131,7 +136,7 @@ export default {
       if (this.isLogin()) {
         this.go('/community-center/enterprise-orders/home')
       } else {
-      console.log(1);
+        console.log(1);
         this.$data._isShowTuiModel = true;
       }
     }
@@ -142,8 +147,6 @@ export default {
       const data = this.$store.getters.dzVipList;
       if (data && Array.isArray(data) && data.length) {
         const target = data.find((item) => item.serverType === 2);
-        console.log('找到了', target);
-
         return {
           name: target.serverName,
           price: target.serverPrice
@@ -271,35 +274,33 @@ export default {
   }
 
   .package-1 {
+    position: relative;
     width: 326upx;
     height: 342upx;
-    background: url('../../../static/images/new-community/home/vip-1.png') no-repeat;
+    background: url('../../../static/images/new-community/home/bg-v.png') no-repeat;
     background-size: cover;
+
 
     .package-title {
       background: linear-gradient(270deg, #1172fd 0%, #188ef7 97%);
     }
 
     .content {
-      margin-top: 114upx;
-      margin-left: 18upx;
+      position: relative;
+      z-index: 11;
+      margin-top: 83upx;
+      margin-left: 16upx;
 
       .title-1 {
-        font-size: 32upx;
-        color: #222229;
+        font-size: 48upx;
+        color: #fff;
         line-height: 1.5;
-
-        .vip-price {
-          color: #eb2006;
-          font-size: 36upx;
-          font-weight: bold;
-          vertical-align: text-top;
-        }
+        font-weight: bold;
       }
 
       .title-2 {
-        font-size: 24upx;
-        color: #0d79ff;
+        font-size: 32upx;
+        color: #fff;
       }
     }
 
@@ -363,12 +364,12 @@ export default {
     .uni-btn {
       position: absolute;
       padding: 14upx 20upx;
-      color: #eb2006;
-      border: 1upx solid #eb2006;
+      color: #1748D5;
+      border: 1upx solid #1748D5;
       font-size: 28upx;
       border-radius: 100upx;
-      bottom: 30upx;
-      right: 23upx;
+      bottom: 60upx;
+      left: 16upx;
       padding-right: 60upx;
       background-color: #fff;
       z-index: 100;
@@ -452,6 +453,12 @@ export default {
       height: 158upx;
       background: linear-gradient(270deg, #fff0d9 0%, #fefaef 98%);
 
+      &.server {
+        background: url('../../../static/images/new-community/home/bg-v1.png') no-repeat;
+        background-size: cover;
+        position: relative;
+      }
+
       .package-title {
         background: linear-gradient(270deg, #ff9554 0%, #fdbc75 97%);
       }
@@ -488,57 +495,6 @@ export default {
             height: 100%;
           }
         }
-      }
-    }
-  }
-
-  .server {
-    position: relative;
-
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      width: 292upx;
-      height: 131upx;
-      background: url('../../../static/images/new-community/home/qiye.png') no-repeat;
-      background-size: cover;
-      right: -22upx;
-      bottom: 0;
-    }
-
-    .additional-dom {
-      .dot-1 {
-        position: absolute;
-        top: 74upx;
-        left: -80upx;
-        width: 130upx;
-        height: 130upx;
-        border-radius: 1000px;
-        background: linear-gradient(90deg, #397BFF 0%, #0856FB 99%);
-        z-index: 0;
-      }
-
-      .dot-2 {
-        position: absolute;
-        top: 2upx;
-        left: 6upx;
-        width: 50upx;
-        height: 50upx;
-        border-radius: 1000px;
-        background: linear-gradient(90deg, #397BFF 0%, #0856FB 99%);
-        z-index: 0;
-      }
-
-      .dot-3 {
-        position: absolute;
-        top: 85upx;
-        left: 52upx;
-        width: 287.8upx;
-        height: 91.30upx;
-        background: url('../../../static/images/new-community/home/path.png') no-repeat;
-        background-size: cover;
-        z-index: 0;
       }
     }
   }
