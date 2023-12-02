@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <p>{{ '代金卷' + title[Number(isGift)] }}</p>
+        <p>{{ '代金券' + title[Number(isGift)] }}</p>
         <view class="AmountSelection">
             <view class="selectionItem" @click="active = index;$emit('getCustomValue', index)" v-for="(item, index) in amountData" :key="index">
                 <image class="selectIcon" v-show="active == index" src="@/static/images/user/xuanzhong.png"></image>
@@ -12,7 +12,7 @@
                 <!-- <input class="numbers" type="number" v-model="amountData[index]"> -->
                 <tui-input type="number" min="0" max="20000" class="numbers" @input="$emit('getCustomValue', index)" v-if="index == amountData.length-1" v-model="amountData[index].value"></tui-input>
                 <p v-else class="numbers">{{ item.value  }}</p>
-                <p class="title">{{index != amountData.length-1?'售价'+ item.price:'自定义金额'}}</p>
+                <p v-if="!isGift" class="title">{{index != amountData.length-1?"价值" + item.price:'自定义金额'}}</p>
             </view>
         </view>
     </view>
@@ -35,6 +35,7 @@ export default {
         return {
             active: 0,
             title: ['充值','转赠'],
+            title2: ['售价', '价值']
         }
     },
     methods: {

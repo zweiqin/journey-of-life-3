@@ -12,7 +12,7 @@
             </view>
         </view>
         <view class="main">
-            <topUp :userAcount="userAcount" :userInfo="userInfo" :isGift="currIndex == 1" v-if="currIndex != 2"></topUp>
+            <topUp @getVouvher="getUserVoucher" :userAcount="userAcount" :userInfo="userInfo" :isGift="currIndex == 1" v-if="currIndex != 2"></topUp>
             <newRecords v-if="currIndex == 2"></newRecords>
         </view>
         <!-- <view class="footer">
@@ -46,16 +46,19 @@ export default {
     onLoad() {
         this.avatar = uni.getStorageSync('user_INFO').avatarUrl
         this.userInfo = uni.getStorageSync('T_STORAGE_KEY')
-        getByUserVoucher().then(res => {
-            this.userAcount = res.data
-            // console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
+        this.getUserVoucher()
     },
     methods: {
         hiddenPhone(Phone) {
             return Phone.substr(0, 3) + '****' + Phone.substr(7, 11)
+        },
+        getUserVoucher() {
+            getByUserVoucher().then(res => {
+                this.userAcount = res.data
+                // console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
         }
     }
 }
