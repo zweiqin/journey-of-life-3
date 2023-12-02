@@ -31,13 +31,13 @@
       </view>
     </view>
 
-    <view class="item">
+    <!-- <view class="item">
       <image class="brand-address" src="../../../../static/images/new-index/brandFactory/brand-address.png"></image>
       <view class="address-text">{{ address }}</view>
       <view class="arrow-wrapper">
         <image class="arrow" src="../../../../static/images/new-index/brandFactory/right-arrow.png"></image>
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 

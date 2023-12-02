@@ -118,7 +118,7 @@
 				:comment-list="commentList"
 			/>
 			<!-- 店铺 -->
-			<view class="inStore-box flex-items flex-row flex-sp-between">
+			<view class="inStore-box flex-items flex-row flex-sp-between" v-if="!isHotGoods">
 				<view class="flex-display flex-row">
 					<view>
 						<image class="inStore-logo default-img" :src="productData.shopLogo" @click="handleJumpToStore"></image>
@@ -300,7 +300,8 @@ export default {
 					eventType: 1,
 					productIds: ''
 				}
-			}
+			},
+			isHotGoods: false
 		}
 	},
 	created() {
@@ -309,6 +310,7 @@ export default {
 		}
 	},
 	onLoad(options) {
+		this.isHotGoods = options.hot === 'true'
 		// 页面滚动条归0，不然骨架屏有问题
 		uni.pageScrollTo({
 			scrollTop: 0,
@@ -782,6 +784,7 @@ export default {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			margin-bottom: 10upx;
 
 			.goodsDetails-Line {
 				width: 265rpx;
@@ -790,6 +793,7 @@ export default {
 
 			.goodsDetails-text {
 				padding: 0 22rpx;
+				white-space: nowrap;
 			}
 		}
 	}
