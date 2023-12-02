@@ -25,7 +25,7 @@
 
       <view class="main">
         <view class="mid">
-          <sort :parentId="currentTab" v-for="item1 in sub" :key="item1.classifyId" :name="item1.classifyName" :id="item1.classifyId" :picUrl="item1.classifyImage"> </sort>
+          <sort isHot :parentId="currentTab" v-for="item1 in sub" :key="item1.classifyId" :name="item1.classifyName" :id="item1.classifyId" :picUrl="item1.classifyImage"> </sort>
         </view>
       </view>
     </view>

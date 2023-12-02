@@ -2,14 +2,9 @@
   <!-- <view class="title">{{}}</view> -->
   <view class="form" @click="handeViewDetail">
     <view class="sub">
-      <img
-        :src="
-          picUrl ||
-          'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png'
-        "
-        alt=""
-        class="goods"
-      />
+      <img :src="picUrl ||
+        'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png'
+        " alt="" class="goods" />
 
       <view class="name">{{ name }}</view>
     </view>
@@ -25,6 +20,7 @@ export default {
     picUrl: String,
     id: [Number, String],
     parentId: [Number, String],
+    isHot: Boolean
   },
   data() {
     return {};
@@ -34,12 +30,18 @@ export default {
       if (!this.id) {
         return;
       }
+
+      let url = `/pages/index/Explosive/goodsFilter?id=${this.id}&parentId=${this.parentId}`
+      if (this.isHot) {
+        url += '&hot=true'
+      }
+
       uni.navigateTo({
-        url: `/pages/index/Explosive/goodsFilter?id=${this.id}&parentId=${this.parentId}`,
+        url
       });
     },
   },
-  created() {},
+  created() { },
 };
 </script>
 
@@ -57,15 +59,18 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding-bottom: 6upx;
+
   .sub {
     width: 160upx;
     // margin-bottom: 70upx;
     margin-right: 16upx;
+
     .goods {
       width: 160upx;
       height: 160upx;
       border-radius: 20upx;
     }
+
     .name {
       font-size: 28upx;
       color: #3d3d3d;

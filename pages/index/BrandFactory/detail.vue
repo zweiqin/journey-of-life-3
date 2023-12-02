@@ -95,8 +95,7 @@
         </view>
       </view>
 
-      <button class="uni-btn call-btn" @click="handleCallBrand"
-        :style="{ opacity: factoryDetail.chargePersonPhone ? 1 : 0.6 }">
+      <button class="uni-btn call-btn" @click="handleCallBrand">
         <image class="call-icon" src="../../../static/images/new-index/brandFactory/all-icon.png"></image>
         电话咨询
       </button>
@@ -316,22 +315,15 @@ export default {
 
     // 点击打电话
     handleCallBrand() {
-      if (this.factoryDetail.chargePersonPhone) {
-        uni.makePhoneCall({
-          phoneNumber: this.factoryDetail.chargePersonPhone,
-          fail: () => {
-            this.ttoast({
-              type: 'fail',
-              title: '操作失败'
-            });
-          }
-        });
-      } else {
-        this.ttoast({
-          type: 'fail',
-          title: "商家未留下联系方式"
-        })
-      }
+      uni.makePhoneCall({
+        phoneNumber: '18027679114',
+        fail: () => {
+          this.ttoast({
+            type: 'fail',
+            title: '操作失败'
+          });
+        }
+      });
     }
   },
 }
