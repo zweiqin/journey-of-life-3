@@ -86,7 +86,7 @@ export default {
             {value: 4000, price: 2000}, 
             {value: 0, price: 0}],
             amount: 25,
-            giveAmount: 25,
+            giveAmount: 50,
             findUserId: '',
             findUserInfo: null,
             isShowKeyboard: false,
