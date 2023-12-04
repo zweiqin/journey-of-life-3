@@ -19,7 +19,8 @@
 				</TuanLocation>
 				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
 				<tui-input
-					label="" placeholder="全屋严选" disabled clearable
+					label="" placeholder="社区商圈" disabled clearable
+					:border-bottom="false"
 					padding="6upx 10upx 6upx 2upx" :placeholder-style="{ color: '#292930', fontSize: '28upx' }"
 					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index`)"
 				>

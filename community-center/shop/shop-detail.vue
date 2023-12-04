@@ -5,10 +5,10 @@
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon
 					name="arrowleft" :size="34" color="#222229"
-					style="width: fit-content;padding: 1upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
+					style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
 				>
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
+				<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">

@@ -153,9 +153,6 @@ export const updateNameCardApi = (data) => RuanRequest('/businessCard/update', d
 // 小账本
 export const getAccountBookApi = (data) => RuanRequest('/smallledger/getSmallLedger', data, 'get')
 
-/**
- * 会员升级
- */
 // 获取业务员列表
 export const getBusinessResponsiblePersonListApi = (data) => RuanRequest('/partnerApply/getBusinessResponsiblePersonList', data, 'get')
 
@@ -242,7 +239,7 @@ export const upGoodsApi = (data) => shopRequest('/microshop/up', data, 'get')
 // 下架商品
 export const downGoodsApi = (data) => shopRequest('/microshop/down', data, 'get')
 
-// 申请区域代理
+// 申请区代理
 export const applyRegionagentApi = (data) => shopRequest('/regionagent/saveRegionAgent', data)
 
 // 申请团长
@@ -371,7 +368,7 @@ export const updateWithdrawalApi = (data) => shopRequest('/dtsWithdrawalLogs/wit
 // 提现记录
 export const getWithdrawalLogsApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalLogs', data, 'get')
 
-// 查询区域代理状态
+// 查询区代理状态
 export const getApplyRegionagentStatusApi = (data) => shopRequest('/regionagent/queryIsApproved', data, 'get')
 
 // 查询所有可领取的优惠劵

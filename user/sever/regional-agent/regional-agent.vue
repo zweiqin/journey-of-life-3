@@ -4,7 +4,7 @@
       <tui-icon @click="handleBack" name="arrowleft" color="#fff"></tui-icon>
     </view>
     <view class="main-area">
-      <view class="title">区域代理申请</view>
+      <view class="title">区代理申请</view>
       <view class="item">
         <view class="item-title">区域</view>
         <view class="field-wrapper">
