@@ -2,10 +2,7 @@
     <view class="container">
         <view class="TotalRevenue">
             <view class="amountText">
-                总支出 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总支出'] }}
-            </view>
-            <view class="amountText">
-                总收入 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收入'] }}
+                总充值 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总充值'] }}
             </view>
         </view>
         <view class="MakeMoneyRecordsList">
@@ -14,7 +11,8 @@
                     <view class="itemIcon" style="background: #FF380C;">
                         <image class="Iconimg" src="@/static/images/user/zhichu.png"></image>
                     </view>
-                    <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text>
+                    <text class="txt2">{{ item.number }}</text>
+                    <!-- <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text> -->
                     <view class="itemDetails">
                         <text class="txt1">代金卷{{ item.typeStrName }}</text>
                         <text class="txt3">{{ item.typeStrName }}  ID : {{ item.id }}</text>
@@ -49,6 +47,7 @@ export default {
             queryList: {
                 page: 1,
                 pageSize: 20,
+                type: 1,
                 status: ''
             },
             statusData: ['未付款','取消','已付款','未发放','已发放','支付失败'], //状态(0未付款,1取消2已付款3代金券未发放4代金券已发放，5支付失败)
@@ -60,7 +59,7 @@ export default {
     },
     methods: {
         getListData() {
-            getAll({
+            transferLogs({
                 ...this.queryList,
                 condition: this.condition
             }).then(res => {
@@ -78,6 +77,24 @@ export default {
             }).catch(err => {
                 console.log(err);
             })
+            // getAll({
+            //     ...this.queryList,
+            //     condition: this.condition
+            // }).then(res => {
+            //     if (res.data.records.length <= 0) {
+            //         uni.showToast({
+            //             title: '没有更多了',
+            //             icon: 'none'
+            //         });
+            //     }
+            //     for (let index = 0; index < res.data.records.length; index++) {
+            //         this.dataList.push(res.data.records[index])
+            //     }
+            //     // this.dataList = res.data.records;
+            //     // console.log(res);
+            // }).catch(err => {
+            //     console.log(err);
+            // })
         },
         getMore() {
             this.queryList.page++;

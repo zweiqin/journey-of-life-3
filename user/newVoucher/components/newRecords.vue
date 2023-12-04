@@ -44,7 +44,7 @@ export default {
     },
     data() {
         return {
-            tabNavs: [{name: '收益记录'},{name: '转增记录'},{name: '充值记录'}],
+            tabNavs: [{name: '收益记录'},{name: '支出记录'},{name: '充值记录'}],
             currentIndex: 0,
             dateSelection: [{name: '年', value: 5}, { name: '月', value: 4 }, { name: '日', value: 1 }],
             dateIndex: 0,
@@ -58,7 +58,7 @@ export default {
     methods: {
         getAcountNumber() {
             getTotal({
-                type: 3,
+                type: 3 - this.currentIndex,
                 condition: this.dateValue
             }).then(res => {
                 console.log(res);
@@ -69,6 +69,7 @@ export default {
         },
         chekoutCurrent(index) {
             this.currentIndex = index
+            this.getAcountNumber()
         },
         chekoutDateSelection(index) {
             if (index == this.dateIndex) {

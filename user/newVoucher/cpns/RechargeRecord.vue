@@ -4,9 +4,6 @@
             <view class="amountText">
                 总支出 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总支出'] }}
             </view>
-            <view class="amountText">
-                总收入 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收入'] }}
-            </view>
         </view>
         <view class="MakeMoneyRecordsList">
             <scroll-view scroll-y="true" class="scrollY" @scrolltolower="getMore">

@@ -2,10 +2,7 @@
     <view class="container">
         <view class="TotalRevenue">
             <view class="amountText">
-                总支出 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总支出'] }}
-            </view>
-            <view class="amountText">
-                总收入 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收入'] }}
+                总收益 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收益'] }}
             </view>
         </view>
         <view class="MakeMoneyRecordsList">

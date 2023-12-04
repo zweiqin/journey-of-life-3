@@ -27,7 +27,7 @@
                 </view>
                 <view class="VoucherServiceItem">
                     <image class="icons" src="@/static/images/user/zhuanzheng.png"></image>
-                    <text class="texts">转增记录</text>
+                    <text class="texts">支出记录</text>
                 </view>
                 <view class="VoucherServiceItem">
                     <image class="icons" src="@/static/images/user/shouyi.png"></image>
