@@ -33,7 +33,7 @@ const list = {
     color: '#0098FA',
   },
   9: {
-    name: '区域代理',
+    name: '区代理',
     color: '#FE8C00',
   },
 }

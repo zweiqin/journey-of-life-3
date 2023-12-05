@@ -124,7 +124,7 @@ export const myEquity = [
 		type: 'regimentalCommander'
 	},
 	{
-		name: '区域代理',
+		name: '区代理',
 		icon: require('../../static/images/new-user/equity/regional-agent.png'),
 		url: '/user/sever/regional-agent/regional-agent'
 	},
@@ -180,6 +180,16 @@ export const myFunction = [
 ]
 
 export const myServe = [
+	{
+		name: '会员升级',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
+	},
+	{
+		name: '邀请码',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		type: 'userInvitation'
+	},
 	{
 		name: '商家入驻',
 		icon: require('../../static/images/new-user/serve/zz.png'),

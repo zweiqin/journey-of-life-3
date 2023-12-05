@@ -89,16 +89,7 @@ export default {
 					this.isShow = true
 					return
 				}
-				if (item.type === 'settle') {
-					const storageKeyToken = getStorageKeyToken()
-					if (storageKeyToken) {
-						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
-					}
-					return
-				} else if (item.type === 'shopInvitation') {
-					this.$refs.codeCreateRef.getCode('shopInvitation')
-					return
-				} else if (item.type === 'regimentalCommander') {
+				if (item.type === 'regimentalCommander') {
 					const status = this.$store.getters.regimentalCommanderStatus
 					let regimentalCommanderMsg
 					if (status) {
@@ -124,6 +115,18 @@ export default {
 							title: regimentalCommanderMsg
 						})
 					}
+				} else if (item.type === 'userInvitation') {
+					this.$refs.codeCreateRef.getCode('userInvitation')
+					return
+				} else if (item.type === 'settle') {
+					const storageKeyToken = getStorageKeyToken()
+					if (storageKeyToken) {
+						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+					}
+					return
+				} else if (item.type === 'shopInvitation') {
+					this.$refs.codeCreateRef.getCode('shopInvitation')
+					return
 				}
 				if (!item.url) {
 					this.empty()

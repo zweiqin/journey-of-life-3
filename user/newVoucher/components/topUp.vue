@@ -3,19 +3,19 @@
         <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的手机号" v-model="findUserId">
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的ID" v-model="findUserId">
                     <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
                 <view class="selectUserInfo" v-if="findUserInfo">
                     <image class="userAvatar" :src="findUserInfo.oldTF.avatarUrl"></image> <text class="userName">{{ findUserInfo.oldTF.nickName }}</text>
                 </view>
-                <tui-input @input="getCustomValue(amountData.length-1)" @focus="customNumber" type="number" :borderBottom="false" label="转增金额" min="0" max="20000" placeholder="请输入金额" v-model="amountData[amountData.length-1].value">
+                <!-- <tui-input @input="getCustomValue(amountData.length-1)" @focus="customNumber" type="number" :borderBottom="false" label="转增金额" min="0" max="20000" placeholder="请输入金额" v-model="amountData[amountData.length-1].value">
                     <button class="selectBtn" slot="right">充值</button>
-                </tui-input>
+                </tui-input> -->
             </tui-form>
-            <view class="moneys">
+            <!-- <view class="moneys">
                 可用金额：{{ userAcount.number || '0.00' }} 元
-            </view>
+            </view> -->
         </view>
         <AmountSelection ref="AmountSelection" v-bind="$props" @getCustomValue="getCustomValue" :amountData="amountData"></AmountSelection>
         <view class="VoucherService" style="display: none;">
@@ -27,7 +27,7 @@
                 </view>
                 <view class="VoucherServiceItem">
                     <image class="icons" src="@/static/images/user/zhuanzheng.png"></image>
-                    <text class="texts">转增记录</text>
+                    <text class="texts">支出记录</text>
                 </view>
                 <view class="VoucherServiceItem">
                     <image class="icons" src="@/static/images/user/shouyi.png"></image>
@@ -45,7 +45,7 @@
         </view>
         <view class="footerButton">
             <button class="fuckBtn" @click="submitVouchers" v-if="!isGift">￥{{ amount }}&nbsp;立即充值</button>
-            <button class="fuckBtn" @click="giftVouchers" v-else>￥{{ amount }}&nbsp;立即转赠</button>
+            <button class="fuckBtn" :loading="isLoding" :disabled="isLoding" @click="giftVouchers" v-else>&nbsp;立即转赠</button>
         </view>
     </view>
 </template>
@@ -86,9 +86,11 @@ export default {
             {value: 4000, price: 2000}, 
             {value: 0, price: 0}],
             amount: 25,
+            giveAmount: 50,
             findUserId: '',
             findUserInfo: null,
-            isShowKeyboard: false
+            isShowKeyboard: false,
+            isLoding: false
         }
     },
     methods: {
@@ -96,6 +98,7 @@ export default {
             // console.log(1);
             this.amountData[index].price = this.amountData[index].value/2
             this.amount = this.amountData[index].price
+            this.giveAmount = this.amountData[index].value
         },
         submitVouchers() {
             let {buyerUserId,token} = this.userInfo
@@ -116,15 +119,27 @@ export default {
                 userId: this.findUserId
             }).then(res => {
                 let userData = res.data
-                getAnotherTFTokenApi({ // 
-                    phone: userData.phone
-                }).then(res => {
-                    this.findUserInfo = { oldTF: userData, newTF: res.data}
-                }).catch(err => {
-                    console.log(err);
-                })
+                if (userData.phone) {
+                    getAnotherTFTokenApi({ // 
+                        phone: userData.phone
+                    }).then(res => {
+                        this.findUserInfo = { oldTF: userData, newTF: res.data}
+                    }).catch(err => {
+                        this.showToast({
+                            title: '该用户不存在',
+                            icon: 'none'
+                        })
+                        this.findUserInfo = null
+                        console.log(err);
+                    })
+                }
                 // console.log(res);
             }).catch(err => {
+                uni.showToast({
+                    title: '该用户不存在',
+                    icon: 'none'
+                })
+                this.findUserInfo = null
                 console.log(err);
             })
         },
@@ -134,10 +149,17 @@ export default {
         giftVouchers() {
             if (!this.findUserInfo) return this.$showToast('请选择赠送对象')
             if (!this.amount || this.amount <= 0) return this.$showToast('赠送金额大于需大于0')
+            this.isLoding = true
             giftVoucher({
                 "buyerUserId": this.findUserInfo.newTF.buyerUserId,
-                "voucherNum":this.amount
+                "voucherNum":this.giveAmount
             }).then(res => {
+                this.isLoding = false
+                uni.showToast({
+                    title: '转增成功',
+                    icon: 'none'
+                })
+                this.$emit('getVouvher')
                 console.log(res);
             }).catch(err => {
                 console.log(err);
@@ -155,8 +177,8 @@ export default {
     box-sizing: border-box;
     padding: 20rpx;
     .userAvatar {
-        width: 100rpx;
-        height: 100rpx;
+        width: 80rpx;
+        height: 80rpx;
         border-radius: 50%;
     }
     .userName {

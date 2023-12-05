@@ -1163,7 +1163,7 @@
         {
           "path": "sever/regional-agent/regional-agent",
           "style": {
-            "navigationBarTitleText": "区域代理"
+            "navigationBarTitleText": "区代理"
           }
         },
         {
@@ -1363,6 +1363,12 @@
           }
         },
         {
+          "path": "another-user/user-upgrade/user-upgrade-application",
+          "style": {
+            "navigationBarTitleText": "会员升级"
+          }
+        },
+        {
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"
@@ -1528,6 +1534,12 @@
           "path": "another-serve/inviteSpell/index",
           "style": {
             "navigationBarTitleText": "邀请好友拼单"
+          }
+        },
+        {
+          "path": "another-serve/invitePoster/index",
+          "style": {
+            "navigationBarTitleText": "生成邀请海报"
           }
         },
         {

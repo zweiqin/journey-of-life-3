@@ -32,7 +32,7 @@
 				<view>
 					<tui-button
 						type="danger" width="180rpx" height="58rpx" style="border-radius: 50rpx;"
-						@click="handleSettlementTap()"
+						:size="28" @click="handleSettlementTap()"
 					>
 						立即结算
 					</tui-button>

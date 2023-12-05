@@ -24,7 +24,7 @@
 					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
 					<tui-badge
-						v-if="menu.name === '区域代理' && $store.getters.applyRegionAgentStatus" type="danger" absolute
+						v-if="menu.name === '区代理' && $store.getters.applyRegionAgentStatus" type="danger" absolute
 						:scale-ratio="0.8" translate-x="40%" top="-8rpx" right="44rpx"
 					>
 						{{ $store.getters.applyRegionAgentStatus }}
