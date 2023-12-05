@@ -15,11 +15,12 @@
 				<view style="display: flex;justify-content: center;align-items: center;">
 					<image class="header-icon" src="../../static/images/new-user/default-user-avatar.png" mode="" />
 					<text>
-						<text v-if="type === 'shopInvitation'">我的商家码：</text>
+						<text v-if="type === 'userInvitation'">我的邀请码：</text>
+						<text v-else-if="type === 'shopInvitation'">我的商家码：</text>
 						<text v-else-if="type === 'teamMembersInvitation'">我的社区邀请码：</text>
 					</text>
 					<text>
-						<text v-if="type === 'shopInvitation' || type === 'teamMembersInvitation'">
+						<text v-if="type === 'userInvitation' || type === 'shopInvitation' || type === 'teamMembersInvitation'">
 							<text>{{ createCode }}</text>
 							<text style="margin-left: 12upx;font-size: 26upx;color: #0061C8;" @click="$copy(createCode)">复制</text>
 						</text>
@@ -42,6 +43,12 @@
 				</view>
 				<view style="text-align: center;">
 					<image class="code" :src="codePicUrl" alt="" />
+					<view
+						v-if="type === 'bindingUser'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingUser&code=${createCode}`)"
+					>
+						复制链接
+					</view>
 					<view
 						v-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
 						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingShop&code=${createCode}`)"
@@ -102,7 +109,14 @@ export default {
 			uni.showLoading({
 				title: '生成中...'
 			})
-			if (type === 'shopInvitation') {
+			if (type === 'userInvitation') {
+				getUserInfoCodeApi({})
+					.then((res) => {
+						console.log(res)
+						this.createCode = res.data || ''
+						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingUser&code=`
+					})
+			} else if (type === 'shopInvitation') {
 				this.createCode = this.userInfo.phone || ''
 				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingShop&code=`
 				// this.$refs.uqrcode.make({})

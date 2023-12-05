@@ -101,6 +101,7 @@ export default {
 		if (options.shareType) {
 			this.shareType = options.shareType
 		}
+		console.log(options.shareImg)
 		this.erweima = options.shareImg
 		// #ifndef MP
 		this.noMp = true

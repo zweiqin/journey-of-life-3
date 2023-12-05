@@ -31,6 +31,9 @@ export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirs
 // /product/getById  商品详情查询
 export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/getById', data)
 
+// 查询商品sku详情
+export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProducts', data)
+
 // /app/getSearchProducts  商品搜索查询
 export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)
 
@@ -76,6 +79,22 @@ export const getByAllBuyerUserRechargeLogApi = (data) => AnotherTFRequest('/buye
 /**
  * @description 社区商圈相关接口
  */
+
+// 关系链接口
+// 各个等级申请
+export const addPlatformRelationshipApplyApi = (data) => AnotherTFRequest('/platformRelationshipApply/apply', data, 'POST')
+
+// 查询用户Code邀请二维码
+export const getPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/getCode', data)
+
+// 用户绑定
+export const bindPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/bingCode', data)
+
+// 查询平台关系等级管理
+export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/platformRelationshipLevel/getAll', data)
+
+// 每个等级统计
+export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
 
 // 购物车
 // 商家购物车查询
@@ -340,6 +359,9 @@ export const getAnswerSeckillApi = (data) => AnotherTFRequest('/seckill/getAnswe
 // 拼团专区
 // 拼团单结算查询
 export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST')
+
+// 邀请好友拼单查询
+export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', data, 'POST')
 
 // 评价
 // 点赞或取消点赞某个评论
