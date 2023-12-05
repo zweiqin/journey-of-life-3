@@ -207,9 +207,6 @@ export default {
 		this.userIsPurchase()
 	},
 	methods: {
-		// go() {
-		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
-		// }
 		convertToDecimal,
 		handleToVip(e) {
 			if (e.index) {

@@ -44,6 +44,7 @@ export default {
 	mixins: [ showModalMixin() ],
 	onShow() {
 		this.init()
+		this.$refs.baseInfoRef.getVoucher()
 	},
 	data() {
 		return {

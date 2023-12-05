@@ -11,7 +11,7 @@
                     <view class="itemIcon" style="background: #FF380C;">
                         <image class="Iconimg" src="@/static/images/user/zhichu.png"></image>
                     </view>
-                    <text class="txt2">{{ item.number }}</text>
+                    <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text>
                     <!-- <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text> -->
                     <view class="itemDetails">
                         <text class="txt1">代金卷{{ item.typeStrName }}</text>
@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         getListData() {
-            transferLogs({
+            getAll({
                 ...this.queryList,
                 condition: this.condition
             }).then(res => {
@@ -114,6 +114,8 @@ export default {
 .cnmb {
     margin-left: 10rpx;
     font-size: 28rpx;
+    letter-spacing: 2rpx;
+    color: #878899c9;
 }
 .TotalRevenue {
     width: 100%;
