@@ -3,7 +3,7 @@
         <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的手机号" v-model="findUserId">
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的ID" v-model="findUserId">
                     <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
                 <view class="selectUserInfo" v-if="findUserInfo">
