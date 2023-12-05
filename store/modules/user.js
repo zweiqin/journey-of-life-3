@@ -1,96 +1,109 @@
 import {
-  CHNAGE_SHOP_CAR_NUMBER,
-  CHANGE_COUPON_NUMBER,
-  CHANGE_COMMUNITY_ORDER_INFO,
-  CHANGE_REGIONAGENT_STATUS,
-  CHANGE_REGIMENTAL_COMMANDER_STATUS
-} from './type';
+	CHNAGE_PRICE_PLATFORM_INFO,
+	CHNAGE_SHOP_CAR_NUMBER,
+	CHANGE_COUPON_NUMBER,
+	CHANGE_COMMUNITY_ORDER_INFO,
+	CHANGE_REGIONAGENT_STATUS,
+	CHANGE_REGIMENTAL_COMMANDER_STATUS
+} from './type'
 
-import { getCarShopNumberApi } from '../../api/goods';
-import { getApplyRegionagentStatusApi, getCouponListApi, queryApplyRegimentalCommanderStatusApi } from '../../api/user';
-import { getOrderNumberApi } from '../../api/community-center';
+import { getPricePlatformAllApi } from '../../api/anotherTFInterface'
+import { getCarShopNumberApi } from '../../api/goods'
+import { getApplyRegionagentStatusApi, getCouponListApi, queryApplyRegimentalCommanderStatusApi } from '../../api/user'
+import { getOrderNumberApi } from '../../api/community-center'
 
 export default {
-  namespaced: true,
-  state() {
-    return {
-      shopCarNumber: 0,
-      couponNumber: 0,
-      communityOrderInfo: {},
-      applyRegionAgentStatus: '',
-      regimentalCommanderStatus: ''
-    };
-  },
+	namespaced: true,
+	state() {
+		return {
+			pricePlatformInfo: {},
+			shopCarNumber: 0,
+			couponNumber: 0,
+			communityOrderInfo: {},
+			applyRegionAgentStatus: '',
+			regimentalCommanderStatus: ''
+		}
+	},
 
-  mutations: {
-    [CHNAGE_SHOP_CAR_NUMBER](state, shopCarNumber) {
-      state.shopCarNumber = shopCarNumber;
-    },
+	mutations: {
+		[CHNAGE_PRICE_PLATFORM_INFO](state, pricePlatformInfo) {
+			state.pricePlatformInfo = pricePlatformInfo
+		},
 
-    [CHANGE_COMMUNITY_ORDER_INFO](state, communityOrderInfo) {
-      state.communityOrderInfo = communityOrderInfo;
-    },
+		[CHNAGE_SHOP_CAR_NUMBER](state, shopCarNumber) {
+			state.shopCarNumber = shopCarNumber
+		},
 
-    [CHANGE_COUPON_NUMBER](state, couponNumber) {
-      state.couponNumber = couponNumber;
-    },
+		[CHANGE_COMMUNITY_ORDER_INFO](state, communityOrderInfo) {
+			state.communityOrderInfo = communityOrderInfo
+		},
 
-    [CHANGE_REGIONAGENT_STATUS](state, status) {
-      state.applyRegionAgentStatus = status;
-    },
+		[CHANGE_COUPON_NUMBER](state, couponNumber) {
+			state.couponNumber = couponNumber
+		},
 
-    [CHANGE_REGIMENTAL_COMMANDER_STATUS](state, status) {
-      state.regimentalCommanderStatus = status;
-    }
-  },
+		[CHANGE_REGIONAGENT_STATUS](state, status) {
+			state.applyRegionAgentStatus = status
+		},
 
-  actions: {
-    count({ commit }, { userId, phone }) {
-      if (!userId) {
-        return;
-      }
-      getCarShopNumberApi({
-        userId
-      }).then(({ data }) => {
-        commit(CHNAGE_SHOP_CAR_NUMBER, data);
-      });
+		[CHANGE_REGIMENTAL_COMMANDER_STATUS](state, status) {
+			state.regimentalCommanderStatus = status
+		}
+	},
 
-      getCouponListApi({
-        userId,
-        page: 1,
-        size: 10,
-        status: 0
-      }).then(({ data }) => {
-        commit(CHANGE_COUPON_NUMBER, data ? data.count : 0);
-      });
+	actions: {
+		count({ commit }, { userId, phone }) {
+			if (!userId) {
+				return
+			}
+			getPricePlatformAllApi({
+				userId
+			}).then(({ data }) => {
+				commit(CHNAGE_SHOP_CAR_NUMBER, data)
+			})
+			getPricePlatformAllApi({})
+				.then((res) => {
+					commit(CHNAGE_PRICE_PLATFORM_INFO, res.data)
+				})
 
-      getOrderNumberApi({
-        userId
-      }).then((res) => {
-        if (res.statusCode === 20000) {
-          commit(CHANGE_COMMUNITY_ORDER_INFO, res.data || {});
-        }
-      });
+			getCarShopNumberApi({
+				userId
+			}).then(({ data }) => {
+				commit(CHNAGE_SHOP_CAR_NUMBER, data)
+			})
 
-      // const res = await getApplyRegionagentStatusApi({
-      //   userId: this.userId,
-      // })
+			getCouponListApi({
+				userId,
+				page: 1,
+				size: 10,
+				status: 0
+			}).then(({ data }) => {
+				commit(CHANGE_COUPON_NUMBER, data ? data.count : 0)
+			})
 
-      getApplyRegionagentStatusApi({
-        userId
-      }).then((res) => {
-        commit(CHANGE_REGIONAGENT_STATUS, res.data === '你还未申请过' ? '' : res.data);
-      });
+			getOrderNumberApi({
+				userId
+			}).then((res) => {
+				if (res.statusCode === 20000) {
+					commit(CHANGE_COMMUNITY_ORDER_INFO, res.data || {})
+				}
+			})
 
-      queryApplyRegimentalCommanderStatusApi({
-        mobile: phone
-      })
-        .then((res) => {
-          commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, res);
-        })
-        .catch((err) => {
-          commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, '');
-        });
-    }
-  }
-};
+			getApplyRegionagentStatusApi({
+				userId
+			}).then((res) => {
+				commit(CHANGE_REGIONAGENT_STATUS, res.data === '你还未申请过' ? '' : res.data)
+			})
+
+			queryApplyRegimentalCommanderStatusApi({
+				mobile: phone
+			})
+				.then((res) => {
+					commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, res)
+				})
+				.catch((err) => {
+					commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, '')
+				})
+		}
+	}
+}

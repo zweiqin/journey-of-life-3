@@ -126,5 +126,10 @@ export const navbarAll = [
 		storeName: '看病买药',
 		iconUrl: require('../../static/images/new-business/home/kanbingmaiyao.png'),
 		type: 24
+	},
+	{
+		storeName: '金融财务',
+		iconUrl: require('../../static/images/new-business/home/jinrongcaiwu.png'),
+		type: 25
 	}
 ]

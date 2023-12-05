@@ -2,7 +2,7 @@
 
 	<view class="user-page-container">
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
-		<BaseInfo ref="baseInfoRef" :data="userInfo" @handleNavigate="handleNavigate"></BaseInfo>
+		<BaseInfo ref="baseInfoRef" @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的权益" :menu-data="myEquity" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
@@ -70,7 +70,6 @@ export default {
 			}
 			this.$forceUpdate()
 		},
-		// eslint-disable-next-line complexity
 		handleNavigate(item, cb) {
 			// if (['/user/sever/customer-service/customer-service', '/user/sever/chat/chat'].includes(item.url)) {
 			//   this.$refs.tuanChatKFRef.show();
