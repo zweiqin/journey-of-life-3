@@ -3,11 +3,13 @@
         <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户的ID" v-model="findUserId">
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户 ID / 手机号" v-model="findUserId">
                     <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
                 <view class="selectUserInfo" v-if="findUserInfo">
-                    <image class="userAvatar" :src="findUserInfo.oldTF.avatarUrl"></image> <text class="userName">{{ findUserInfo.oldTF.nickName }}</text>
+                    <image class="userAvatar" v-if="findUserInfo.oldTF.avatarUrl" :src="findUserInfo.oldTF.avatarUrl"></image>
+                    <image class="userAvatar" v-else src="@/static/images/new-user/default-user-avatar.png"></image>
+                    <text class="userName">{{ findUserInfo.oldTF.nickName }}</text>
                 </view>
                 <!-- <tui-input @input="getCustomValue(amountData.length-1)" @focus="customNumber" type="number" :borderBottom="false" label="转增金额" min="0" max="20000" placeholder="请输入金额" v-model="amountData[amountData.length-1].value">
                     <button class="selectBtn" slot="right">充值</button>
@@ -115,33 +117,52 @@ export default {
             })
         },
         getUserInfo() {
-            refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 await简化后面再说
-                userId: this.findUserId
-            }).then(res => {
-                let userData = res.data
-                if (userData.phone) {
-                    getAnotherTFTokenApi({ // 
-                        phone: userData.phone
-                    }).then(res => {
-                        this.findUserInfo = { oldTF: userData, newTF: res.data}
-                    }).catch(err => {
-                        this.showToast({
-                            title: '该用户不存在',
-                            icon: 'none'
-                        })
-                        this.findUserInfo = null
-                        console.log(err);
+            let regExp  = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/
+            if (regExp.exec(this.findUserId)) { // 通过
+                getAnotherTFTokenApi({ // 
+                    phone: this.findUserId
+                }).then(res => {
+                    this.findUserInfo = { oldTF: {
+                        avatarUrl: res.data.headImage,
+                        nickName: res.data.phone,
+                    }, newTF: res.data}
+                }).catch(err => {
+                    this.showToast({
+                        title: '该用户不存在',
+                        icon: 'none'
                     })
-                }
-                // console.log(res);
-            }).catch(err => {
-                uni.showToast({
-                    title: '该用户不存在',
-                    icon: 'none'
+                    this.findUserInfo = null
+                    console.log(err);
+                    })
+            }else {
+                refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 await简化后面再说
+                    userId: this.findUserId
+                }).then(res => {
+                    let userData = res.data
+                    if (userData.phone) {
+                        getAnotherTFTokenApi({ // 
+                            phone: userData.phone
+                        }).then(res => {
+                            this.findUserInfo = { oldTF: userData, newTF: res.data}
+                        }).catch(err => {
+                            this.showToast({
+                                title: '该用户不存在',
+                                icon: 'none'
+                            })
+                            this.findUserInfo = null
+                            console.log(err);
+                        })
+                    }
+                    // console.log(res);
+                }).catch(err => {
+                    uni.showToast({
+                        title: '该用户不存在',
+                        icon: 'none'
+                    })
+                    this.findUserInfo = null
+                    console.log(err);
                 })
-                this.findUserInfo = null
-                console.log(err);
-            })
+            }
         },
         customNumber() {
             this.$refs.AmountSelection.active = this.amountData.length -1

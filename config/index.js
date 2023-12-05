@@ -1,3 +1,11 @@
+/*
+ * @Author: aliyun0758874076 2300202994@qq.com
+ * @Date: 2023-08-28 10:29:53
+ * @LastEditors: aliyun0758874076 2300202994@qq.com
+ * @LastEditTime: 2023-12-05 16:33:03
+ * @FilePath: \tuan\config\index.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // 线上助力通
 // export const SheQu1_URL = 'https://www.zhult.com/test-'
 export const SheQu1_URL = 'https://www.zhult.com/'
@@ -29,8 +37,8 @@ export const sf = 'https://www.zhult.com/samrtWorker' // 线上
 // 团蜂H5项目地址
 export const A_TF_MAIN = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5'
 // 新团蜂H5的接口路径
-// export const ANOTHER_TF_INTERFACE = 'https://nsappapi.tuanfengkeji.cn'
-export const ANOTHER_TF_INTERFACE = 'http://192.168.0.91:9107' // 本地
+export const ANOTHER_TF_INTERFACE = 'https://nsappapi.tuanfengkeji.cn'
+// export const ANOTHER_TF_INTERFACE = 'http://192.168.0.91:9107' // 本地
 export const ANOTHER_TF_UPLOAD = 'https://nsappapi.tuanfengkeji.cn/file/upload'
 // 新团蜂入驻端项目地址
 export const ANOTHER_TF_SETTLE = 'https://nsh51.tuanfengkeji.cn'

@@ -208,15 +208,18 @@ export default {
 	},
 	mixins: [ showModalMixin() ],
 	created() {
-		getByUserVoucher().then(res => {
-			this.voucherData = res.data
-		})
+		this.getVoucher()
 	},
 	mounted() {
 		console.log(this.$store.getters.userInfo)
 		this.userIsPurchase()
 	},
 	methods: {
+		getVoucher() {
+			getByUserVoucher().then(res => {
+				this.voucherData = res.data
+			})
+		},
 		// go() {
 		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
 		// }
