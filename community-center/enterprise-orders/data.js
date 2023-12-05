@@ -41,7 +41,7 @@ export const validateOrderForm = orderForm => {
 
   const serverInfo = orderForm.extraInfo.serverInfo
 
-  if (!serverInfo) {
+  if (!serverInfo || (Array.isArray(serverInfo) && !serverInfo.length)) {
     return '请选择服务分类'
   }
 
