@@ -125,7 +125,7 @@
     </view>
 
 
-    
+
 
 
     <view class="pane">
@@ -148,7 +148,7 @@
       </view>
     </view>
 
-    <view class="pane"  style="margin-bottom: 280upx;"> 
+    <view class="pane" style="margin-bottom: 280upx;">
       <view class="title">备注</view>
       <tui-textarea v-model="orderForm.remarks" :maxlength="80" :marginTop="26" padding="0" trim isCounter :size="26"
         :borderTop="false" autoHeight :borderBottom="false" height="50rpx" min-height="50rpx"
@@ -465,6 +465,8 @@ export default {
     // 获取订单报价
     async handleGetOrderQuotation() {
       if (!this.orderForm.extraInfo.serverInfo.length) {
+        this.orderForm.price = 0
+        this.orderForm.actualPrice = 0
         return
       }
 
