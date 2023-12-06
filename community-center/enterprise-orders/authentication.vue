@@ -9,7 +9,31 @@
     </TuanPageHead>
 
     <view class="pane">
-      <tui-alerts type="info" :title="`共找到${authedCompanyList.length}家企业`">
+
+      <view class="load-img-container">
+        <view class="title"> 上传营业执照</view>
+        <view class="tip">请确保证件完整，编号、印章、文字、照片清楚可见</view>
+        <view class="img-wrapper" style=" margin-bottom: 24upx;">
+          <view class="example uploader">
+            <image style="width: 88upx; height: 128upx;"
+              src="../../static/images/new-community/enterprise-orders/temp.png"></image>
+          </view>
+          <view v-if="!authForm.createOrUpdateCompanyParam.businessLicense" class="uploader"
+            @click="handleUploadImg('businessLicense')">
+            <image style="width: 39upx; height: 39upx;"
+              src="../../static/images/new-community/enterprise-orders/image.png"></image>
+            点击上传图片
+          </view>
+
+          <image :class="{ mask: isMask }" @click="handleUploadImg('businessLicense')" v-else
+            style="width: 128upx; height: 128upx; border-radius: 10upx; border: 1upx solid #f3f3f3;"
+            :src="authForm.createOrUpdateCompanyParam.businessLicense"></image>
+        </view>
+
+
+      </view>
+
+      <tui-alerts v-show="authedCompanyList.length" type="info" :title="`共找到${authedCompanyList.length}家企业`">
         <block slot="right">
           <button class="uni-btn company-btn" @click="companyListPickerVisible = true">点击选择</button>
         </block>
@@ -24,7 +48,7 @@
       </view>
 
       <view class="form-item">
-        <view class="form-label">公司简称</view>
+        <view class="form-label">公司简称(选填)</view>
         <view class="form-value">
           <input class="inp" v-model="authForm.createOrUpdateCompanyParam.simpleName" type="text" placeholder="请输入公司简称">
         </view>
@@ -42,7 +66,7 @@
         <view class="form-label">手机号码</view>
         <view class="form-value">
           <input class="inp" type="text" v-model="authForm.createOrUpdateCompanyParam.delegatePhoneNumber"
-            placeholder="请输入联系人手机号码码">
+            placeholder="请输入联系人手机号码">
         </view>
       </view>
 
@@ -72,31 +96,10 @@
     </view>
 
     <view class="pane">
-      <view class="load-img-container">
-        <view class="title"> 上传营业执照</view>
-        <view class="tip">请确保证件完整，编号、印章、文字、照片清楚可见</view>
-        <view class="img-wrapper" style=" margin-bottom: 24upx;">
-          <view class="example uploader">
-            <image style="width: 88upx; height: 128upx;"
-              src="../../static/images/new-community/enterprise-orders/temp.png"></image>
-          </view>
-          <view v-if="!authForm.createOrUpdateCompanyParam.businessLicense" class="uploader"
-            @click="handleUploadImg('businessLicense')">
-            <image style="width: 39upx; height: 39upx;"
-              src="../../static/images/new-community/enterprise-orders/image.png"></image>
-            点击上传图片
-          </view>
 
-          <image :class="{ mask: isMask }" @click="handleUploadImg('businessLicense')" v-else
-            style="width: 128upx; height: 128upx; border-radius: 10upx; border: 1upx solid #f3f3f3;"
-            :src="authForm.createOrUpdateCompanyParam.businessLicense"></image>
-        </view>
-
-
-      </view>
 
       <view class="load-img-container">
-        <view class="title"> 上传公司logo</view>
+        <view class="title"> 上传公司logo(选填)</view>
         <view class="img-wrapper" v-if="!authForm.createOrUpdateCompanyParam.companyLogo"
           @click="handleUploadImg('companyLogo')">
           <view class="uploader">
@@ -123,7 +126,7 @@
 </template>
 
 <script>
-import { bAuthApi, getAuthedCompanyListApi } from '../../api/community-center'
+import { bAuthApi, getAuthedCompanyListApi, OCRRecognitionApi } from '../../api/community-center'
 import { IMG_UPLOAD_URL } from '../../config';
 import { USER_INFO, USER_TOKEN } from '../../constant'
 import { getUserId } from '../../utils'
@@ -180,6 +183,9 @@ export default {
                 }
                 uni.hideLoading();
                 _this.authForm.createOrUpdateCompanyParam[type] = JSON.parse(uploadFileRes.data).data.url
+                if (type === 'businessLicense') {
+                  _this.handlerecognition(JSON.parse(uploadFileRes.data).data.url)
+                }
                 _this.ttoast('上传成功')
               },
               fail: (error) => {
@@ -221,6 +227,41 @@ export default {
       }
     },
 
+    async handlerecognition(fileUrl) {
+      try {
+        uni.showLoading({
+          title: '识别中...'
+        });
+        const res = await OCRRecognitionApi({
+          fileUrl
+        })
+
+        const data = res.words_result
+        if (data) {
+          this.authForm.createOrUpdateCompanyParam.companyName = data['单位名称'] && data['单位名称'].words
+          this.authForm.createOrUpdateCompanyParam.companyDelegate = data['法人'] && data['法人'].words
+          this.authForm.createOrUpdateCompanyParam.companyCode = data['社会信用代码'] && data['社会信用代码'].words
+          const address = data['地址'].words
+          const parseAddress = !address ? '' : address.match(/.+?(省|市|自治区|自治州|县|盟|区|旗|镇|乡|$)/g);
+          if (parseAddress.length) {
+            const index = parseAddress.findIndex(item => item.includes('镇'))
+            if (index !== -1) {
+              this.authForm.createOrUpdateCompanyParam.companyAddress = parseAddress.slice(0, index + 1).join('')
+              this.addressDetail = parseAddress.slice(index)
+            } else {
+              if (parseAddress[0].includes('省')) {
+                this.authForm.createOrUpdateCompanyParam.companyAddress = parseAddress.slice(0, 5).join('')
+                this.addressDetail = parseAddress.slice(5)
+              }
+            }
+          }
+        }
+
+      } finally {
+        uni.hideLoading()
+      }
+    },
+
     // 确认选择公司信息
     handleChooseCompany({ options }) {
       if (options) {
@@ -245,13 +286,13 @@ export default {
         return
       }
 
-      if (!this.authForm.createOrUpdateCompanyParam.simpleName) {
-        this.ttoast({
-          type: 'fail',
-          title: '请填写公司简称'
-        })
-        return
-      }
+      // if (!this.authForm.createOrUpdateCompanyParam.simpleName) {
+      //   this.ttoast({
+      //     type: 'fail',
+      //     title: '请填写公司简称'
+      //   })
+      //   return
+      // }
 
 
       if (!this.authForm.createOrUpdateCompanyParam.companyDelegate) {
@@ -286,13 +327,13 @@ export default {
         return
       }
 
-      if (!this.authForm.createOrUpdateCompanyParam.companyCode) {
-        this.ttoast({
-          type: 'fail',
-          title: '请填写公司统一信用代码'
-        })
-        return
-      }
+      // if (!this.authForm.createOrUpdateCompanyParam.companyCode) {
+      //   this.ttoast({
+      //     type: 'fail',
+      //     title: '请填写公司统一信用代码'
+      //   })
+      //   return
+      // }
 
       if (!this.authForm.createOrUpdateCompanyParam.businessLicense) {
         this.ttoast({
@@ -302,13 +343,13 @@ export default {
         return
       }
 
-      if (!this.authForm.createOrUpdateCompanyParam.companyLogo) {
-        this.ttoast({
-          type: 'fail',
-          title: '请上传公司logo'
-        })
-        return
-      }
+      // if (!this.authForm.createOrUpdateCompanyParam.companyLogo) {
+      //   this.ttoast({
+      //     type: 'fail',
+      //     title: '请上传公司logo'
+      //   })
+      //   return
+      // }
 
       try {
         const postData = JSON.parse(JSON.stringify(this.authForm))

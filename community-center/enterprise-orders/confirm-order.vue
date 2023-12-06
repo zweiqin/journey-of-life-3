@@ -124,10 +124,6 @@
       </view>
     </view>
 
-
-
-
-
     <view class="pane">
       <view class="bar" @click="chooseTimeVisible = true">
         <view class="title justify flex">期望上门时间 <view class="required">必填</view>
@@ -187,7 +183,7 @@ import AddServe from './components/AddServe.vue'
 import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
-import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
+import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi, OCRRecognitionApi } from '../../api/community-center'
 import { USER_INFO, USER_TOKEN, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
 import { getUserId } from '../../utils'

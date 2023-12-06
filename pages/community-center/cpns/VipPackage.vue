@@ -20,7 +20,7 @@
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
     </view> -->
 
-    <view class="package package-1" @click="go('/community-center/enterprise-orders/home')">
+    <view class="package package-1" @click="handleToOrder">
       <view style="background: linear-gradient(270deg, #1648D5 -3%, #2B45D9 112%);" class="package-title"> 企业服务 </view>
       <view class="content">
         <view class="title-1">家具工厂<text class="vip-price">{{ XIAN.price }}</text></view>
@@ -98,6 +98,7 @@
 
 <script>
 import showModal from "../../../mixin/showModal.js";
+import { USER_ID } from '../../../constant'
 
 export default {
   props: {

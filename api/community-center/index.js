@@ -407,3 +407,12 @@ export const saveStoreBusinessApi = (data) => {
     method: 'POST'
   });
 };
+
+// ocr识别图片上传
+export const OCRRecognitionApi = data => {
+  return endRequest({
+    url: '/api/third/ocr/baiduBusinessLicense',
+    data,
+    method: 'POST'
+  })
+}
