@@ -129,7 +129,7 @@ export default {
 		},
 
 		handlChooseCity(cityData) {
-			this.selectCode = cityData.county.code
+			this.selectCode = cityData.county.id
 		},
 
 		handleBack() {

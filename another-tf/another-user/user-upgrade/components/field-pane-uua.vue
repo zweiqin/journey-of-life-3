@@ -3,6 +3,22 @@
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="item.field === 'id'"></view>
+			<view v-else-if="item.field === 'manageArea'" class="item">
+				<view
+					class="input-wrapper" :style="{
+						'flex-direction': item.type === 'textarea' ? 'column' : '',
+						'align-items': item.type === 'textarea' ? 'flex-start' : ''
+					}"
+				>
+					<view class="sub-title">{{ item.label }}</view>
+					<view v-if="item.type === 'area'" style="flex: 1">
+						<JCity
+							v-if="item.type === 'area' && item.field === 'manageArea'" style="flex: 1"
+							:text="manageAreaName" :placeholder="item.placeholder" @confirm="handleSelectManageAreaCity"
+						></JCity>
+					</view>
+				</view>
+			</view>
 			<view v-else-if="item.field === 'levelType'">
 				<view class="item">
 					<view
@@ -12,12 +28,17 @@
 						}"
 					>
 						<view class="sub-title">{{ item.label }}</view>
-						<view
-							v-if="item.type === 'select' && item.field === 'levelType'" style="flex: 1" :style="{
-								color: form.levelType ? '' : '#999'
-							}" @click="isShowLevelTypeSelect = true"
-						>
-							{{ levelTypeName || (form.levelType ? `已选 ID：${form.levelType}` : "请选择会员类型") }}
+						<view v-if="item.type === 'select'" style="flex: 1">
+							<view v-if="form.manageArea">
+								<view
+									v-if="item.type === 'select' && item.field === 'levelType'" :style="{
+										color: form.levelType ? '' : '#999'
+									}" @click="isShowLevelTypeSelect = true"
+								>
+									{{ levelTypeName || (form.levelType ? `已选 ID：${form.levelType}` : item.placeholder) }}
+								</view>
+							</view>
+							<view v-else style="color: #999999;" @click="$showToast('请先选择会员类型所属区域')">{{ item.placeholder }}</view>
 						</view>
 					</view>
 				</view>
@@ -62,7 +83,7 @@
 						<view class="sub-title">{{ item.label }}</view>
 						<input
 							v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-							:type="item.field === 'cardNumber' || item.field === 'code' ? 'number' : 'text'"
+							:type="item.field === 'phone' ? 'number' : 'text'"
 							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 						/>
 						<textarea
@@ -103,6 +124,7 @@ export default {
 	data() {
 		return {
 			form: {},
+			manageAreaName: '',
 			levelTypeList: [],
 			isShowLevelTypeSelect: false,
 			levelTypeName: '',
@@ -117,7 +139,7 @@ export default {
 					const form = {}
 					for (const item of value) {
 						form[item.field] = this.value[item.field]
-						if (item.type === 'select' && item.field === 'levelType') this.getPlatformRelationshipLevelList()
+						// if (item.type === 'select' && item.field === 'levelType') this.getPlatformRelationshipLevelList()
 					}
 					this.form = form
 				}
@@ -142,14 +164,30 @@ export default {
 	},
 
 	methods: {
-		getPlatformRelationshipLevelList() {
-			getPlatformRelationshipLevelApi({})
+		handleSelectManageAreaCity(e) {
+			this.manageAreaName = e.area
+			this.form.manageArea = e.county.id || ''
+			this.levelTypeName = ''
+			this.form.levelType = ''
+			this.regionName = ''
+			this.form.region = ''
+			this.getPlatformRelationshipLevelList(this.form.manageArea)
+		},
+		getPlatformRelationshipLevelList(manageArea) {
+			uni.showLoading({
+				title: '加载中'
+			})
+			getPlatformRelationshipLevelApi({ manageArea })
 				.then((res) => {
 					this.levelTypeList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
 						...item,
 						value: item.levelNum,
 						text: item.levelName
 					}))
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					uni.hideLoading()
 				})
 		},
 		handleSelectLevelTypeList(e) {
@@ -162,11 +200,11 @@ export default {
 		},
 		handleSelectRegionCity(e) {
 			this.regionName = e.area
-			this.form.region = (e.county.code || e.city.code || e.province.code) + ''
+			this.form.region = (e.county.id || e.city.id || e.province.id) + ''
 		},
 		handleSelectRegionArea(e) {
 			this.regionName = e.area
-			this.form.region = e.county.code || e.city.code || e.province.code
+			this.form.region = e.county.id || e.city.id || e.province.id
 		},
 		handleInput(field, e) {
 			console.log(field, e)

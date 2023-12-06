@@ -25,9 +25,16 @@ export default {
 		return {
 			applyUserUpgradeOne: [
 				{
+					label: '会员类型所属区域：',
+					field: 'manageArea', // 查询会员类型接口所需参数
+					type: 'area',
+					placeholder: '请选择会员类型所属区域'
+				},
+				{
 					label: '会员类型：',
 					field: 'levelType', // 5-区代理 4-加盟商 3-合伙人 2-团长 1-会员
-					type: 'select'
+					type: 'select',
+					placeholder: '请选择会员类型'
 				},
 				{
 					label: '所在区域：',

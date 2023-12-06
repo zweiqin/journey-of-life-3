@@ -1,26 +1,26 @@
 <template>
-  <view class="voucher-goods-container" v-if="goodsData" @click="go('/pages/prod/prod?goodsId=' + goodsData.id)">
-    <view class="goods-wrapper">
-      <image class="goods-img" :src="goodsData.picUrl"></image>
-    </view>
+	<view v-if="goodsData" class="voucher-goods-container" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goodsData.shopId}6&productId=${goodsData.productId}&skuId=${goodsData.skuId}`)">
+		<view class="goods-wrapper">
+			<image class="goods-img" :src="goodsData.picUrl"></image>
+		</view>
 
-    <view class="goods-info">
-      <view class="goods-name">{{ goodsData.name }}</view>
-      <view class="price-wrapper">
-        券后￥<text class="price-text">{{ goodsData.counterPrice - (goodsData.voucherAmount || 0) }}</text>
-      </view>
-    </view>
-  </view>
+		<view class="goods-info">
+			<view class="goods-name">{{ goodsData.name }}</view>
+			<view class="price-wrapper">
+				券后￥<text class="price-text">{{ goodsData.counterPrice - (goodsData.voucherAmount || 0) }}</text>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    goodsData: {
-      type: Object,
-      required: true
-    }
-  }
+	props: {
+		goodsData: {
+			type: Object,
+			required: true
+		}
+	}
 }
 </script>
 
@@ -67,7 +67,6 @@ export default {
       }
     }
   }
-
 
 }
 </style>

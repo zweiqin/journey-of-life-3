@@ -1,6 +1,15 @@
 <template>
 	<view class="platform-recharge">
-		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;"></JHeader>
+		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;">
+			<template #ftFn>
+				<tui-button
+					type="warning" width="180rpx" height="60rpx" margin="0"
+					style="border-radius: 30rpx;" @click="go('/user/sever/withdrawal/index')"
+				>
+					切换旧版
+				</tui-button>
+			</template>
+		</JHeader>
 		<view
 			style="position: relative;padding: 8upx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
@@ -15,14 +24,6 @@
 				</view>
 			</view>
 			<view style="position: relative;">
-				<view style="text-align: right;">
-					<tui-button
-						type="warning" width="220rpx" height="60rpx" margin="0 10upx -20upx 0"
-						style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
-					>
-						充值流水 →
-					</tui-button>
-				</view>
 				<view style="font-size: 28upx;">
 					<view>当前总余额(元)</view>
 					<view style="margin-top: 24upx;font-size: 64upx;">{{ pricePlatformInfo.totalPrice || 0 }}</view>
@@ -49,7 +50,15 @@
 			</view>
 		</view>
 
-		<view style="margin-top: 48upx;">
+		<view style="margin-top: 28upx;">
+			<view style="text-align: right;">
+				<tui-button
+					type="warning" width="220rpx" height="60rpx" margin="0 10upx 18upx 0"
+					style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
+				>
+					充值流水 →
+				</tui-button>
+			</view>
 			<view style="padding: 0 36upx;">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<text style="color: #222229;">余额充值</text>

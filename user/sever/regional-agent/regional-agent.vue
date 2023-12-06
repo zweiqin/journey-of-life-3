@@ -92,7 +92,7 @@ export default {
   methods: {
     handleChooseCity(data) {
       this.cityText = data.area
-      this.form.agentCode = (data.county.code || data.city.code || data.province.code) + ''
+      this.form.agentCode = (data.county.id || data.city.id || data.province.id) + ''
     },
 
     // 提交申请

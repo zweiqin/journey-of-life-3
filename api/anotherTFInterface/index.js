@@ -10,6 +10,12 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
+// 查询地址一级分类
+export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
+
+// 查询地址一级分类
+export const getCityManageAreaTreeOneApi = (data) => AnotherTFRequest('/cityManageArea/getTreeOne', data)
+
 // /classify/getClassifyProducts2 分类商品查询2
 export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
 
