@@ -191,6 +191,11 @@ export const myServe = [
 		type: 'userInvitation'
 	},
 	{
+		name: '粉丝统计',
+		icon: require('../../static/images/new-user/serve/zz.png'),
+		url: '/another-tf/another-user/fan-statistics/index'
+	},
+	{
 		name: '商家入驻',
 		icon: require('../../static/images/new-user/serve/zz.png'),
 		type: 'settle',

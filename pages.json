@@ -1369,6 +1369,12 @@
           }
         },
         {
+          "path": "another-user/fan-statistics/index",
+          "style": {
+            "navigationBarTitleText": "粉丝统计"
+          }
+        },
+        {
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"
@@ -1492,6 +1498,12 @@
           "path": "another-serve/addAddress/index",
           "style": {
             "navigationBarTitleText": "地址管理"
+          }
+        },
+        {
+          "path": "another-serve/integral/index",
+          "style": {
+            "navigationBarTitleText": "我的积分"
           }
         },
         {

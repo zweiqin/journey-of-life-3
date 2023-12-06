@@ -12,7 +12,7 @@
                 <!-- <input class="numbers" type="number" v-model="amountData[index]"> -->
                 <tui-input type="number" min="0" max="20000" class="numbers" @input="$emit('getCustomValue', index)" v-if="index == amountData.length-1" v-model="amountData[index].value"></tui-input>
                 <p v-else class="numbers">{{ item.value  }}</p>
-                <p v-if="!isGift" class="title">{{index != amountData.length-1?"价值" + item.price:'自定义金额'}}</p>
+                <p class="title">{{index != amountData.length-1?title2[Number(isGift)] + item.price:'自定义金额'}}</p>
             </view>
         </view>
     </view>

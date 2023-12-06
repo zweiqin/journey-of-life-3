@@ -23,6 +23,7 @@ export default {
   wsHandle: (state) => state.customerService.wsHandle,
 
   // 个人中心
+  pricePlatformInfo: (state) => state.user.pricePlatformInfo,
   shopCarNumber: (state) => state.user.shopCarNumber,
   couponNumber: (state) => state.user.couponNumber,
   communityOrderInfo: (state) => state.user.communityOrderInfo,

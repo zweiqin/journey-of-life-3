@@ -81,7 +81,7 @@
 // import jsQR from 'jsqr'
 import { A_TF_MAIN } from '../../config'
 import { USER_INFO } from '../../constant'
-import { getUserInfoCodeApi } from '../../api/anotherTFInterface'
+import { getUserInfoCodeApi, getPlatformRelationshipCodeApi } from '../../api/anotherTFInterface'
 export default {
 	name: 'CodeCreatePopup',
 	props: {
@@ -110,10 +110,10 @@ export default {
 				title: '生成中...'
 			})
 			if (type === 'userInvitation') {
-				getUserInfoCodeApi({})
+				getPlatformRelationshipCodeApi({})
 					.then((res) => {
 						console.log(res)
-						this.createCode = res.data || ''
+						this.createCode = res.data.invitationCode || ''
 						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingUser&code=`
 					})
 			} else if (type === 'shopInvitation') {

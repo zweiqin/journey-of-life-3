@@ -23,23 +23,23 @@
 						</view>
 						<view class="vip-level">
 							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHy" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="@/static/images/user/huiyuan.png"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHy"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/huiyuan.png"
 								@click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isTz" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="@/static/images/user/tuanzhang.png"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isTz"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/tuanzhang.png"
 								@click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHhr" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="@/static/images/user/hehuoren.png"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHhr"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/hehuoren.png"
 								@click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges = true;"
 							></image>
 							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isGd" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="@/static/images/user/gudong.png"
+								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isGd"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/gudong.png"
 								@click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges = true;"
 							></image>
 						</view>
@@ -99,9 +99,12 @@
 		</view>
 
 		<view class="account-container">
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/another-tf/another-user/platform-recharge/index' })">
+			<view
+				class="account-item"
+				@click="$emit('handleNavigate', { url: '/another-tf/another-user/platform-recharge/index' })"
+			>
 				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
-				<view class="account-number"> {{ data.account || 0 }} </view>
+				<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
 				<view class="account-title">余额 ></view>
 			</view>
 
@@ -120,7 +123,7 @@
 			</view>
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/newVoucher/voucher' })">
 				<view class="account-number">
-					{{ voucherData.number || 0 }}
+					{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
 					<!-- {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }} -->
 				</view>
 				<view class="account-title">代金劵</view>
@@ -152,21 +155,13 @@ import { userIsPurchaseApi } from '../../../api/user'
 import { USER_ID } from 'constant'
 import showModalMixin from 'mixin/showModal'
 import { convertToDecimal } from '../../../utils'
-import { getByUserVoucher } from '@/api/user/voucher'
 
 export default {
-	props: {
-		data: {
-			type: Object,
-			required: true
-		}
-	},
 	data() {
 		return {
 			isShow: false,
 			isBuy: false,
 			isDisplayBadges: false,
-			voucherData: {},
 			displayBadgesImg: {
 				topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
 				name: '会员',
@@ -207,19 +202,11 @@ export default {
 		}
 	},
 	mixins: [ showModalMixin() ],
-	created() {
-		getByUserVoucher().then(res => {
-			this.voucherData = res.data
-		})
-	},
 	mounted() {
 		console.log(this.$store.getters.userInfo)
 		this.userIsPurchase()
 	},
 	methods: {
-		// go() {
-		// 	uni.navigateTo({ url: '/user/sever/surplus/surplus' })
-		// }
 		convertToDecimal,
 		handleToVip(e) {
 			if (e.index) {

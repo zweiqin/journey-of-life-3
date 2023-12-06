@@ -34,6 +34,9 @@ export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/get
 // 查询商品sku详情
 export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProducts', data)
 
+// 优惠券商品列表查询
+export const getCouponProductsApi = (data) => AnotherTFRequest('/coupon/getCouponProducts', data)
+
 // /app/getSearchProducts  商品搜索查询
 export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)
 
@@ -156,6 +159,9 @@ export const bindDistributorSalesCustomerApi = (data) => AnotherTFRequest('/dist
 
 // 分享
 export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data)
+
+// 获取二维码和小程序码
+export const getShareWorkApi = (data) => AnotherTFRequest('/work/getShare', data)
 
 // 拼团滚动数据
 export const getBroadCastList = (data) => AnotherTFRequest('/', data)
