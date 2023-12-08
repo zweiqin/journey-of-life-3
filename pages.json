@@ -354,7 +354,7 @@
         {
           "path": "merchant-settlement/login/login",
           "style": {
-            "navigationBarTitleText": "商家入驻"
+            "navigationBarTitleText": "商家认证"
           }
         },
         {

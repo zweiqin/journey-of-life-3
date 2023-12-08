@@ -72,7 +72,7 @@
 							</view>
 						</view>
 						<!-- <view class="medalOfHonor">
-							标记，写完商家入驻后补写一个勋章展示的效果
+							标记，写完商家认证后补写一个勋章展示的效果
 							</view> -->
 					</view>
 				</view>
@@ -87,15 +87,15 @@
 				</view>
 			</view>
 
-			<view
+			<!-- <view
 				v-if="$store.getters.userId && ($store.getters.userInfo.userMap.isTz || $store.getters.userInfo.userMap.isHhr)"
 				style="text-align: center;" @click="$refs.codeCreateRef.getCode('teamMembersInvitation')"
-			>
+				>
 				<tui-icon name="qrcode" :size="24" color="#222229"></tui-icon>
 				<view style="font-size: 24upx;color: #8f8d85;">
-					<text>入驻码</text>
+				<text>入驻码</text>
 				</view>
-			</view>
+				</view> -->
 		</view>
 
 		<view class="account-container">
@@ -105,7 +105,7 @@
 			>
 				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
 				<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
-				<view class="account-title">余额 ></view>
+				<view class="account-title">钱包</view>
 			</view>
 
 			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">

@@ -145,7 +145,6 @@ export default {
 			// this.$refs.vipPackageRef.getDZPersonalizationConfig();
 			this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
 		})
-
 		this.showVipPostPopup()
 	},
 	mounted() {
@@ -271,34 +270,34 @@ export default {
 		},
 		// 是否显示金管家或会员升级弹窗
 		async isShowVipPostPopup() {
-			try {
-				const userId = uni.getStorageSync(USER_ID)
-				if (!userId) return
-				// const res = await userIsPurchaseApi({
-				// 	userId,
-				// 	price: 399
-				// })
-				// if (res.statusCode === 20000) {
-				// 	if (res.data && Array.isArray(res.data) && res.data.length) {
-				// 		app.globalData.isShowCommunityPopup = true
-				// 	}
-				// } else {
-				// 	app.globalData.isShowCommunityPopup = false
-				// }
-				const res = await getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
-				if (res.data) { // 满足申请条件
-					app.globalData.isShowCommunityPopup = true
-				} else {
-					app.globalData.isShowCommunityPopup = false
-				}
-			} catch (error) {
-				app.globalData.isShowCommunityPopup = false
+			const userId = uni.getStorageSync(USER_ID)
+			if (!userId) return
+			// await userIsPurchaseApi({ userId, price: 399 })
+			// 	.then((res) => {
+			// 		if (res.statusCode === 20000) {
+			// 			if (res.data && Array.isArray(res.data) && res.data.length) {
+			// 				app.globalData.isShowCommunityPopup = false
+			// 			}
+			// 		}
+			// 	})
+			// 	.catch((e) => {
+			// 		app.globalData.isShowCommunityPopup = true
+			// 	})
+			if (app.globalData.isShowCommunityPopup) {
+				await getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
+					.then((res) => {
+						app.globalData.isShowCommunityPopup = false // 满足申请条件（已购买关系链产品或已经是团长）
+					})
+					.catch((e) => {
+						uni.hideToast()
+						app.globalData.isShowCommunityPopup = true // 没购买产品
+					})
 			}
 		},
 
 		async showVipPostPopup() {
 			await this.isShowVipPostPopup()
-			if (!app.globalData.isShowCommunityPopup) {
+			if (app.globalData.isShowCommunityPopup) {
 				this.timer = setTimeout(() => {
 					if (app.globalData.communityPopupCount < 4) {
 						app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1

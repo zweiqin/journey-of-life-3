@@ -16,7 +16,7 @@ export default {
 				footPrint: 0,
 				follow: 0
 			},
-			IdentityInfo: {
+			identityInfo: {
 				type: 0,
 				info: {}
 			},
@@ -44,7 +44,7 @@ export default {
 		},
 
 		[CHNAGE_USER_IDENTITY](state, data) {
-			state.IdentityInfo = data
+			state.identityInfo = data
 		},
 
 		[CHNAGE_HISTORY_POPUP](state, type) {

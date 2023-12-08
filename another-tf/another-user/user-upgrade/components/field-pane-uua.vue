@@ -2,7 +2,7 @@
 	<view class="field-pane-container">
 		<view style="position: relative;">
 			<JHeader
-				:title="hasType ? typeMap[form.levelType] : title" width="50" height="50" :dark="false"
+				:title="hasType ? typeMap[form.relationshipLevelId] : title" width="50" height="50" :dark="false"
 				style="position: absolute;top: 0;left: 0;z-index: 1;width: 100%;padding: 24upx 0 0;color: #ffffff;"
 			>
 				<template #ftFn>
@@ -15,7 +15,7 @@
 			>
 			</image>
 			<view style="position: absolute;top: 260upx;left: 64upx;">
-				<view v-if="form.levelType === 2">
+				<view v-if="form.relationshipLevelId === 2">
 					<view style="font-size: 48upx;color: #ffffff;">升级团长</view>
 					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">购买指定商品</view>
 				</view>
@@ -33,8 +33,8 @@
 						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
-						<text v-if="canUpgrade === true">可进行{{ typeMap[form.levelType] }}</text>
-						<text v-else-if="canUpgrade === false">不可进行{{ typeMap[form.levelType] }}</text>
+						<text v-if="canUpgrade === true">{{ typeMap[form.relationshipLevelId] }}</text>
+						<text v-else-if="canUpgrade === false">不可进行{{ typeMap[form.relationshipLevelId] }}</text>
 						<text v-else>获取信息失败</text>
 					</view>
 				</view>
@@ -66,7 +66,7 @@
 							</view>
 						</view>
 					</view>
-					<view v-else-if="item.field === 'levelType'">
+					<view v-else-if="item.field === 'relationshipLevelId'">
 						<view v-if="!hasType" class="item">
 							<view
 								class="input-wrapper" :style="{
@@ -75,17 +75,17 @@
 								}"
 							>
 								<view class="sub-title">{{ item.label }}</view>
-								<view v-if="item.type === 'select'" style="flex: 1;">
+								<view v-if="item.type === 'select'" style="flex: 1;text-align: right;">
 									<view v-if="form.manageArea">
 										<view
-											v-if="item.type === 'select' && item.field === 'levelType'" :style="{
-												color: form.levelType ? '' : '#999'
-											}" @click="isShowLevelTypeSelect = true"
+											v-if="item.type === 'select' && item.field === 'relationshipLevelId'" :style="{
+												color: form.relationshipLevelId ? '' : '#999'
+											}" @click="isShowRelationshipLevelSelect = true"
 										>
-											{{ levelTypeName || (form.levelType ? `已选 ID：${form.levelType}` : item.placeholder) }}
+											{{ relationshipLevelName || (form.relationshipLevelId ? `已选 ID：${form.relationshipLevelId}` : item.placeholder) }}
 										</view>
 									</view>
-									<view v-else style="color: #999999;text-align: right;" @click="$showToast('请先选择会员类型所属区域')">{{ item.placeholder }}</view>
+									<view v-else style="color: #999999;" @click="$showToast('请先选择会员类型所属区域')">{{ item.placeholder }}</view>
 								</view>
 							</view>
 						</view>
@@ -99,16 +99,16 @@
 						>
 							<view class="sub-title">{{ item.label }}</view>
 							<view v-if="item.type === 'area'" style="flex: 1;">
-								<view v-if="form.levelType" class="region-select">
+								<view v-if="form.relationshipLevelId" class="region-select">
 									<!-- 区代理：三级任何。团长：四级最后。其它：四级任何 -->
 									<!-- 5区代理，4加盟商，3合伙人，2团长，1会员 -->
 									<JAnyCity
-										v-if="item.type === 'area' && item.field === 'region' && form.levelType === 5"
+										v-if="item.type === 'area' && item.field === 'region' && form.relationshipLevelId === 5"
 										style="flex: 1;" :text="regionName" :placeholder="item.placeholder" @confirm="handleSelectRegionCity"
 									>
 									</JAnyCity>
 									<JArea
-										v-else-if="item.type === 'area' && item.field === 'region' && form.levelType === 2"
+										v-else-if="item.type === 'area' && item.field === 'region' && form.relationshipLevelId === 2"
 										style="flex: 1;" :text="regionName" :placeholder="item.placeholder" @confirm="handleSelectRegionArea"
 									>
 									</JArea>
@@ -147,15 +147,14 @@
 		</view>
 		<!-- 会员类型 -->
 		<tui-select
-			:list="levelTypeList" reverse :show="isShowLevelTypeSelect" @confirm="handleSelectLevelTypeList"
-			@close="isShowLevelTypeSelect = false"
+			:list="relationshipLevelList" reverse :show="isShowRelationshipLevelSelect" @confirm="handleSelectRelationshipLevelList"
+			@close="isShowRelationshipLevelSelect = false"
 		></tui-select>
 
 	</view>
 </template>
 
 <script>
-import { T_STORAGE_KEY } from '../../../../constant'
 import { getPlatformRelationshipLevelApi, getSelectLevelPlatformRelationApi } from '../../../../api/anotherTFInterface'
 
 export default {
@@ -173,25 +172,28 @@ export default {
 		hasType: {
 			type: Boolean,
 			default: true
+		},
+		userInfo: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 
 	data() {
 		return {
-			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {},
 			typeMap: {
 				1: '会员升级',
 				2: '团长升级',
-				3: '合伙人升级',
-				4: '加盟商升级',
+				3: '合伙人升级', // 必须是先团长再合伙人
+				4: '加盟商升级', // 没有升级为加盟商和区代理
 				5: '区代理升级'
 			},
 			canUpgrade: '',
 			form: {},
 			manageAreaName: '',
-			levelTypeList: [],
-			isShowLevelTypeSelect: false,
-			levelTypeName: '',
+			relationshipLevelList: [],
+			isShowRelationshipLevelSelect: false,
+			relationshipLevelName: '',
 			regionName: ''
 		}
 	},
@@ -203,7 +205,7 @@ export default {
 					const form = {}
 					for (const item of value) {
 						form[item.field] = this.value[item.field]
-						// if (item.type === 'select' && item.field === 'levelType') this.getPlatformRelationshipLevelList()
+						// if (item.type === 'select' && item.field === 'relationshipLevelId') this.getPlatformRelationshipLevelList()
 					}
 					this.form = form
 				}
@@ -215,17 +217,13 @@ export default {
 		form: {
 			handler(value) {
 				this.$emit('input', value)
-				if (value.levelType) {
-					getSelectLevelPlatformRelationApi({ relationshipLevelId: value.levelType })
+				if (value.relationshipLevelId) {
+					getSelectLevelPlatformRelationApi({ relationshipLevelId: value.relationshipLevelId })
 						.then((res) => {
-							if (res.data) {
-								this.canUpgrade = true
-							} else {
-								this.canUpgrade = false
-							}
+							this.canUpgrade = true
 						})
 						.catch((e) => {
-							this.canUpgrade = ''
+							this.canUpgrade = false
 						})
 				}
 			},
@@ -244,16 +242,16 @@ export default {
 		resetTypeField(e) {
 			this.manageAreaName = ''
 			this.form.manageArea = ''
-			this.levelTypeName = ''
-			this.form.levelType = ''
+			this.relationshipLevelName = ''
+			this.form.relationshipLevelId = ''
 			this.regionName = ''
 			this.form.region = ''
 		},
 		handleSelectManageAreaCity(e) {
 			this.manageAreaName = e.area
 			this.form.manageArea = e.county.id || ''
-			this.levelTypeName = ''
-			this.form.levelType = ''
+			this.relationshipLevelName = ''
+			this.form.relationshipLevelId = ''
 			this.regionName = ''
 			this.form.region = ''
 			this.getPlatformRelationshipLevelList(this.form.manageArea)
@@ -264,7 +262,7 @@ export default {
 			})
 			getPlatformRelationshipLevelApi({ manageArea })
 				.then((res) => {
-					this.levelTypeList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
+					this.relationshipLevelList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
 						...item,
 						value: item.levelNum,
 						text: item.levelName
@@ -275,11 +273,11 @@ export default {
 					uni.hideLoading()
 				})
 		},
-		handleSelectLevelTypeList(e) {
+		handleSelectRelationshipLevelList(e) {
 			console.log(e)
-			this.isShowLevelTypeSelect = false
-			this.levelTypeName = e.options.text
-			this.form.levelType = e.options.value
+			this.isShowRelationshipLevelSelect = false
+			this.relationshipLevelName = e.options.text
+			this.form.relationshipLevelId = e.options.value
 			this.regionName = ''
 			this.form.region = ''
 		},

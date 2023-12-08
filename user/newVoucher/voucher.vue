@@ -2,12 +2,7 @@
     <view class="voucherContainer">
 		<JHeader title="我的代金券" width="50" height="50" style="padding: 24upx 0 10upx;z-index: 2;">
 			<template #ftFn>
-				<tui-button
-					type="warning" width="120rpx" height="60rpx" margin="0 20upx 0 0"
-					style="border-radius: 30rpx;" @click="go('/user/voucher/voucher')"
-				>
-					提现
-				</tui-button>
+				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="go('/user/voucher/voucher')">提现</text>
 			</template>
 		</JHeader>
         <image class="topBackgrpound" src="@/static/images/user/vcbgimg.png"></image>

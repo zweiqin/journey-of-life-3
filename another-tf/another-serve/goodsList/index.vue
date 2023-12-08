@@ -117,7 +117,7 @@ export default {
 				page: 1,
 				pageSize: 20,
 				keyWord: '',
-				category3Id: '',
+				classifyId: '',
 				type: 0, // 价格排序条件
 				volume: 0 // 销量排序条件
 			}
@@ -127,8 +127,8 @@ export default {
 		if (option.keyWord) {
 			this.queryInfo.keyWord = option.keyWord
 		}
-		if (option.category3Id) {
-			this.queryInfo.category3Id = option.category3Id
+		if (option.classifyId) {
+			this.queryInfo.classifyId = option.classifyId
 		}
 		this.getGoodsSearchList()
 	},
@@ -160,7 +160,7 @@ export default {
 		},
 		getGoodsSearchList(isLoadmore) {
 			let api
-			if (this.queryInfo.category3Id) {
+			if (this.queryInfo.classifyId) {
 				api = getClaasifyProductsApi
 			} else {
 				api = getSearchProductsApi

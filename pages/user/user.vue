@@ -4,11 +4,11 @@
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
 		<BaseInfo ref="baseInfoRef" @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
-			<Pane title="我的权益" :menu-data="myEquity" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
-			<Pane v-if="$store.state.auth.IdentityInfo.type === 1" title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
+			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
+			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
 		</view>
 		<tui-modal
 			:show="$data._isShowTuiModel"
@@ -32,7 +32,7 @@ import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
 import { USER_ID, USER_INFO } from '../../constant'
-import { myEquity, myFunction, myServe, additionalFunction, shopServe } from './data'
+import { myFunction, myServe, additionalFunction, shopServe, myPreferential } from './data'
 import { Encrypt } from '../../utils/secret'
 
 export default {
@@ -51,11 +51,11 @@ export default {
 			timer: null,
 			isShow: false,
 			userId: null,
-			myEquity,
 			myFunction,
 			myServe,
 			shopServe,
 			additionalFunction,
+			myPreferential,
 			userInfo: {},
 			bindingCode: ''
 		}

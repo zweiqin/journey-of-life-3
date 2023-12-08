@@ -128,14 +128,11 @@ export default {
 	onLoad(options) {
 		getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
 			.then((res) => {
-				if (res.data) {
-					this.isShowUpgrade = true
-				} else {
-					this.isShowUpgrade = false
-					this.getGoodsList()
-				}
+				this.isShowUpgrade = true
 			})
 			.catch((e) => {
+				uni.hideToast()
+				this.isShowUpgrade = false
 				this.getGoodsList()
 			})
 	},
@@ -151,7 +148,7 @@ export default {
 				page: 1,
 				pageSize: 20,
 				keyWord: '',
-				category3Id: 1439,
+				classifyId: 1439,
 				type: 0, // 价格排序条件
 				volume: 0 // 销量排序条件
 			}

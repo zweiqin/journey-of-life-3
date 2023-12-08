@@ -2,12 +2,7 @@
 	<view class="platform-recharge">
 		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;">
 			<template #ftFn>
-				<tui-button
-					type="warning" width="120rpx" height="60rpx" margin="0 20upx 0 0"
-					style="border-radius: 30rpx;" @click="go('/user/sever/withdrawal/index')"
-				>
-					提现
-				</tui-button>
+				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="go('/user/sever/withdrawal/index')">提现</text>
 			</template>
 		</JHeader>
 		<view
@@ -51,18 +46,15 @@
 		</view>
 
 		<view style="margin-top: 28upx;">
-			<view style="text-align: right;">
-				<tui-button
-					type="warning" width="220rpx" height="60rpx" margin="0 10upx 18upx 0"
-					style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
-				>
-					充值流水 →
-				</tui-button>
-			</view>
 			<view style="padding: 0 36upx;">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<text style="color: #222229;">余额充值</text>
-					<text style="font-size: 26upx;color: #888889;">充值送代金券</text>
+					<tui-button
+						type="warning" width="220rpx" height="60rpx" margin="0"
+						style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
+					>
+						充值流水 →
+					</tui-button>
 				</view>
 				<view
 					style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 12upx 0 0;text-align: center;"

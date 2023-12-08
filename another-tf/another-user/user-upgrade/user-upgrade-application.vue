@@ -9,7 +9,7 @@
 				plain
 				style="font-weight: bold;border-radius: 10upx;" @click="handleBack"
 			>
-				点击选择
+				点击取消
 			</tui-button>
 			<tui-button
 				type="warning" width="330upx" height="104upx" margin="20upx 0"
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { T_STORAGE_KEY } from '../../../constant'
 import FieldPaneUUA from './components/field-pane-uua.vue'
 import { addPlatformRelationshipApplyApi, getSelectApplyPlatformRelationApi } from '../../../api/anotherTFInterface'
 
@@ -42,13 +43,16 @@ export default {
 				}
 			})
 		if (Number(options.type)) {
-			this.form.basicInfo.levelType = Number(options.type)
+			this.form.basicInfo.relationshipLevelId = Number(options.type)
 			this.hasType = true
 		}
+		this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
+		this.form.basicInfo.phone = this.userInfo.phone || ''
 	},
 	data() {
 		return {
 			hasType: false,
+			userInfo: {},
 			applyUserUpgradeOne: [
 				{
 					label: '会员类型所属区域：',
@@ -58,7 +62,7 @@ export default {
 				},
 				{
 					label: '会员类型：',
-					field: 'levelType', // 5-区代理 4-加盟商 3-合伙人 2-团长 1-会员
+					field: 'relationshipLevelId', // 5-区代理 4-加盟商 3-合伙人 2-团长 1-会员
 					type: 'select',
 					placeholder: '请选择会员类型'
 				},
@@ -90,8 +94,9 @@ export default {
 			form: {
 				basicInfo: {
 					manageArea: '',
-					levelType: '',
-					region: ''
+					relationshipLevelId: '',
+					region: '',
+					phone: ''
 				}
 			}
 		}
@@ -103,7 +108,7 @@ export default {
 			const data = {
 				...this.form.basicInfo
 			}
-			if (!data.levelType) {
+			if (!data.relationshipLevelId) {
 				this.$showToast('请选择会员类型')
 				return
 			}
@@ -115,14 +120,14 @@ export default {
 				this.$showToast('请填写详细地址')
 				return
 			}
+			if (!data.name) {
+				this.$showToast('请填写姓名')
+				return
+			}
 			if (
 				!/^1[3456789]\d{9}$/.test(data.phone)
 			) {
 				this.$showToast('手机号码格式错误')
-				return
-			}
-			if (!data.name) {
-				this.$showToast('请填写姓名')
 				return
 			}
 			uni.showModal({

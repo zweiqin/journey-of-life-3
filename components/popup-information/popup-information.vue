@@ -65,7 +65,7 @@ export default {
 		},
 
 		handleNoShow() {
-			app.globalData.isShowCommunityPopup = true
+			app.globalData.isShowCommunityPopup = false
 			this.close()
 		}
 	}
