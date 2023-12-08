@@ -180,12 +180,6 @@ export default {
 		&:last-child {
 			background-color: #fa5151;
 		}
-
-		&.withdraw {
-			width: 100%;
-			background: #999;
-			letter-spacing: 10upx;
-		}
 	}
 }
 </style>

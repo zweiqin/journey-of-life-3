@@ -191,11 +191,6 @@ export default {
 		font-weight: bold;
 	}
 
-	.chooseGender {
-		flex: 1;
-		text-align: left;
-	}
-
 	.item {
 		padding: 20upx 0;
 		border-bottom: 1upx solid #d8d8d8;

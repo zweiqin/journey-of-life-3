@@ -105,6 +105,12 @@ export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/plat
 // 每个等级统计
 export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
 
+// 查询用户是否存在申请
+export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectApply', data)
+
+// 查询是否满足升级条件
+export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
+
 // 购物车
 // 商家购物车查询
 export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data)

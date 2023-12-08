@@ -1,18 +1,30 @@
 <template>
 	<view class="user-upgrade-application-container">
-		<JHeader width="50" height="50" title="申请表单"></JHeader>
-		<FieldPaneUUA v-model="form.basicInfo" :fields="applyUserUpgradeOne" title="申请信息"></FieldPaneUUA>
-		<view class="buts">
-			<button class="btn" @click="submit()">
-				提交
-			</button>
+		<FieldPaneUUA v-model="form.basicInfo" :fields="applyUserUpgradeOne" :has-type="hasType" title="申请表单" @change-form="handleChangeForm"></FieldPaneUUA>
+		<view
+			style="position: fixed;bottom: 0;z-index: 1;display: flex;justify-content: space-between;width: 100%;padding: 18upx;background-color: #ffffff;box-sizing: border-box;"
+		>
+			<tui-button
+				type="black" width="330upx" height="104upx" margin="20upx 0"
+				plain
+				style="font-weight: bold;border-radius: 10upx;" @click="handleBack"
+			>
+				点击选择
+			</tui-button>
+			<tui-button
+				type="warning" width="330upx" height="104upx" margin="20upx 0"
+				style="font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;"
+				@click="submit"
+			>
+				确认升级
+			</tui-button>
 		</view>
 	</view>
 </template>
 
 <script>
 import FieldPaneUUA from './components/field-pane-uua.vue'
-import { addPlatformRelationshipApplyApi } from '../../../api/anotherTFInterface'
+import { addPlatformRelationshipApplyApi, getSelectApplyPlatformRelationApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'UserUpgradeApplication',
@@ -20,9 +32,23 @@ export default {
 		FieldPaneUUA
 	},
 	onLoad(options) {
+		getSelectApplyPlatformRelationApi({})
+			.then((res) => {
+				if (res.data && res.data.applyId) {
+					this.$showToast('已存在申请，请等待审核')
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 2000)
+				}
+			})
+		if (Number(options.type)) {
+			this.form.basicInfo.levelType = Number(options.type)
+			this.hasType = true
+		}
 	},
 	data() {
 		return {
+			hasType: false,
 			applyUserUpgradeOne: [
 				{
 					label: '会员类型所属区域：',
@@ -37,10 +63,10 @@ export default {
 					placeholder: '请选择会员类型'
 				},
 				{
-					label: '所在区域：',
+					label: '区域',
 					field: 'region',
 					type: 'area',
-					placeholder: '请选择所在区域'
+					placeholder: '选择您的区域 ＞'
 				},
 				{
 					label: '详细地址（门牌号）',
@@ -49,20 +75,23 @@ export default {
 					placeholder: '请填写详细地址'
 				},
 				{
-					label: '联系电话：',
-					type: 'input',
-					field: 'phone',
-					placeholder: '请填写手机号码'
-				},
-				{
-					label: '姓名：',
+					label: '姓名',
 					field: 'name',
 					type: 'input',
-					placeholder: '请填写姓名'
+					placeholder: '填写您的姓名'
+				},
+				{
+					label: '手机号',
+					type: 'input',
+					field: 'phone',
+					placeholder: '请填写您的手机号'
 				}
 			],
 			form: {
 				basicInfo: {
+					manageArea: '',
+					levelType: '',
+					region: ''
 				}
 			}
 		}
@@ -111,6 +140,12 @@ export default {
 					}
 				}
 			})
+		},
+		handleBack() {
+			uni.navigateBack()
+		},
+		handleChangeForm() {
+			this.hasType = false
 		}
 	}
 }
@@ -118,7 +153,11 @@ export default {
 
 <style lang="less" scoped>
 .user-upgrade-application-container {
-	padding: 40upx 40upx 140upx 40upx;
+	width: 100%;
+	min-height: 100vh;
+	// padding: 40upx 40upx 140upx 40upx;
+	padding-bottom: 184upx;
+	background-color: #f5f4f9;
 	box-sizing: border-box;
 
 	.buts {
@@ -150,12 +189,6 @@ export default {
 
 		&:last-child {
 			background-color: #fa5151;
-		}
-
-		&.withdraw {
-			width: 100%;
-			background: #999;
-			letter-spacing: 10upx;
 		}
 	}
 }

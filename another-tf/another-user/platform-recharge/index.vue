@@ -3,10 +3,10 @@
 		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;">
 			<template #ftFn>
 				<tui-button
-					type="warning" width="180rpx" height="60rpx" margin="0"
+					type="warning" width="120rpx" height="60rpx" margin="0 20upx 0 0"
 					style="border-radius: 30rpx;" @click="go('/user/sever/withdrawal/index')"
 				>
-					切换旧版
+					提现
 				</tui-button>
 			</template>
 		</JHeader>
@@ -43,7 +43,7 @@
 					</view>
 					<view style="width: 2upx;background-color: #f37d49;"></view>
 					<view>
-						<view style="color: #f7a783;">分销金额</view>
+						<view style="color: #f7a783;">商家分佣</view>
 						<view style="margin-top: 10upx;">{{ pricePlatformInfo.distributorPrice || 0 }}</view>
 					</view>
 				</view>

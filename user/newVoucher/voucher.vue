@@ -3,10 +3,10 @@
 		<JHeader title="我的代金券" width="50" height="50" style="padding: 24upx 0 10upx;z-index: 2;">
 			<template #ftFn>
 				<tui-button
-					type="warning" width="180rpx" height="60rpx" margin="0"
+					type="warning" width="120rpx" height="60rpx" margin="0 20upx 0 0"
 					style="border-radius: 30rpx;" @click="go('/user/voucher/voucher')"
 				>
-					切换旧版
+					提现
 				</tui-button>
 			</template>
 		</JHeader>
