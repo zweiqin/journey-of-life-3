@@ -17,6 +17,10 @@
 			</view>
 			<view style="padding: 0 28upx;">
 				<view style="font-size: 36upx;font-weight: bold;">超值权益多选一</view>
+				<view style="display: flex;align-items: center;margin-top: 20upx;">
+					<view style="font-size: 34upx;font-weight: bold;">所在区域：</view>
+					<JArea :text="manageAreaName" style="flex: 1;" @confirm="handleSelectArea"></JArea>
+				</view>
 				<!-- 商品列表 -->
 				<view
 					v-if="goodsList && goodsList.length"
@@ -69,13 +73,8 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
-					<LoadingMore
-						:status="!isEmpty && !goodsList.length
-							? 'loading' : !isEmpty && goodsList.length && (goodsList.length >= goodsTotal) ? 'no-more' : ''"
-					>
-					</LoadingMore>
-					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				<view v-else>
+					<tui-no-data :fixed="false" style="margin-top: 100upx;">{{ queryInfo.manageArea ? '暂无商品' : '暂无数据，请先选择区域' }}</tui-no-data>
 				</view>
 			</view>
 
@@ -113,7 +112,7 @@
 				:icon-size="28" icon-color="#FFFFFF"
 				@close="handleCloseLandscape"
 			>
-				<view @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application?type=2')">
+				<view @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')">
 					<image src="../../../static/images/user/activity/upgrade-regimental-commander.png" mode="widthFix" style="width: 500upx; max-height: 75vh" />
 				</view>
 			</tui-landscape>
@@ -122,63 +121,58 @@
 </template>
 
 <script>
-import { getClaasifyProductsApi, getSelectLevelPlatformRelationApi } from '../../../api/anotherTFInterface'
+import { getSelectProductPlatformRelationApi, getSelectLevelPlatformRelationApi, getSelectApplyPlatformRelationApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'PurchaseChainProducts',
 	onLoad(options) {
-		getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
+		getSelectLevelPlatformRelationApi({})
 			.then((res) => {
-				this.isShowUpgrade = true
+				if (res.data && res.data.levelType === 1) {
+					this.isShowUpgrade = false
+					this.getGoodsList()
+				} else if (res.data && res.data.levelType === 2) {
+					this.isShowUpgrade = true
+				} else if (res.data && (res.data.levelType === 3 || res.data.levelType === 4)) {
+					this.isShowUpgrade = false
+					this.getGoodsList()
+					this.$showToast('您已成为团长')
+				}
 			})
-			.catch((e) => {
-				uni.hideToast()
-				this.isShowUpgrade = false
-				this.getGoodsList()
-			})
+	},
+	onShow() {
 	},
 
 	data() {
 		return {
 			isShowUpgrade: false,
 			selectGoods: {},
-			isEmpty: false,
 			goodsList: [],
-			goodsTotal: 0,
+			manageAreaName: '广东省佛山市顺德区',
 			queryInfo: {
-				page: 1,
-				pageSize: 20,
-				keyWord: '',
-				classifyId: 1439,
-				type: 0, // 价格排序条件
-				volume: 0 // 销量排序条件
+				manageArea: '440606' // 顺德区
 			}
 		}
 	},
 	methods: {
-		getGoodsList(isLoadmore) {
+		getGoodsList() {
+			if (!this.queryInfo.manageArea) this.$showToast('请先选择区域')
 			uni.showLoading()
-			getClaasifyProductsApi(this.queryInfo).then((res) => {
-				this.goodsTotal = res.data.total
-				if (isLoadmore) {
-					this.goodsList.push(...res.data.list)
-				} else {
-					this.goodsList = res.data.list
-				}
-				this.isEmpty = this.goodsList.length === 0
-				uni.hideLoading()
-			})
+			getSelectProductPlatformRelationApi(this.queryInfo)
+				.then((res) => {
+					this.goodsList = res.data
+					uni.hideLoading()
+				})
 				.catch((e) => {
 					uni.hideLoading()
 				})
 		},
+		handleSelectArea(e) {
+			this.manageAreaName = e.area
+			this.queryInfo.manageArea = e.county.id || e.city.id || e.province.id
+			this.getGoodsList()
+		},
 		handleCloseLandscape() {
 			uni.navigateBack()
-		}
-	},
-	onReachBottom() {
-		if (this.goodsList.length < this.goodsTotal) {
-			++this.queryInfo.page
-			this.getGoodsList(true)
 		}
 	}
 }

@@ -77,9 +77,8 @@
 		<TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
 		<PopupInformation
-			ref="popupInformationRef" popup-type="upgrade"
-			:img-url="require('../../static/images/new-community/home/ad1.png')" @close="handleShowBindMobilePopup"
-			@click="handleToActiveDetail"
+			ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl"
+			@close="handleShowBindMobilePopup" @click="handleToActiveDetail"
 		>
 		</PopupInformation>
 	</view>
@@ -87,7 +86,7 @@
 
 <script>
 import { A_TF_MAIN } from '../../config'
-import { bannerListIcon, vipBarConfig } from './config'
+import { bannerListIcon } from './config'
 import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
 import { userIsPurchaseApi } from '../../api/user'
@@ -96,11 +95,11 @@ import PopupInformation from '../../components/popup-information/popup-informati
 import showModal from 'mixin/showModal'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue'
-import PageBar from './cpns/PageBar.vue'
+// import PageBar from './cpns/PageBar.vue'
 import ServeMenus from './cpns/ServeMenus.vue'
 import VipPackage from './cpns/VipPackage.vue'
 import ServerPane from './cpns/ServerPane.vue'
-import FourSeasonsZone from './cpns/FourSeasonsZone.vue'
+// import FourSeasonsZone from './cpns/FourSeasonsZone.vue'
 // 赚小钱
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 
@@ -113,10 +112,10 @@ export default {
 	},
 	components: {
 		TuanFollowOfficialAccount,
-		PageBar,
+		// PageBar,
 		ServeMenus,
 		VipPackage,
-		FourSeasonsZone,
+		// FourSeasonsZone,
 		ServerPane,
 		PopupInformation,
 		MakeSmallFortune
@@ -126,13 +125,8 @@ export default {
 		return {
 			bannerListIcon: Object.freeze(bannerListIcon),
 			data: [],
-			url: '',
-			isShowPic: false,
-			serverPrice: '',
-			serverName: '',
-			serverType: '',
-			className: '',
-			vipBarConfig: Object.freeze(vipBarConfig),
+			pupupLevelType: '',
+			popupImageUrl: '',
 			servePaneList: [],
 			scrollTop: 0,
 			timer: null
@@ -178,7 +172,9 @@ export default {
 		handleToActiveDetail() {
 			if (this.isLogin()) {
 				// this.go('/community-center/vip-center/vip-detail?type=2')
-				this.go('/another-tf/another-user/user-upgrade/purchase-chain-products')
+				if (this.pupupLevelType === 1) this.go('/another-tf/another-user/user-upgrade/purchase-chain-products')
+				else if (this.pupupLevelType === 2) this.go('/another-tf/another-user/user-upgrade/user-upgrade-application')
+				else if (this.pupupLevelType === 4) this.go('/another-tf/another-user/user-upgrade/user-upgrade-application')
 			} else {
 				this.$data._isShowTuiModel = true
 			}
@@ -283,14 +279,29 @@ export default {
 			// 	.catch((e) => {
 			// 		app.globalData.isShowCommunityPopup = true
 			// 	})
+
+			// if (app.globalData.isShowCommunityPopup) {
+			// 	await getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
+			// 		.then((res) => {
+			// 			app.globalData.isShowCommunityPopup = false // 满足申请条件（已购买关系链产品或已经是团长）
+			// 		})
+			// 		.catch((e) => {
+			// 			uni.hideToast()
+			// 			app.globalData.isShowCommunityPopup = true // 没购买产品
+			// 		})
+			// }
 			if (app.globalData.isShowCommunityPopup) {
-				await getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
+				await getSelectLevelPlatformRelationApi({})
 					.then((res) => {
-						app.globalData.isShowCommunityPopup = false // 满足申请条件（已购买关系链产品或已经是团长）
+						this.pupupLevelType = res.data ? res.data.levelType : ''
+						if (res.data && res.data.levelType === 0) app.globalData.isShowCommunityPopup = false // 其它情况
+						else if (res.data && res.data.levelType === 1) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/new-community/home/ad1.png')) // 没购买产品
+						else if (res.data && res.data.levelType === 2) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-commander.png')) // 已购买产品，且不是团长
+						else if (res.data && res.data.levelType === 3) app.globalData.isShowCommunityPopup = false // 已是团长，但不满足合伙人升合伙人条件
+						else if (res.data && res.data.levelType === 4) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-partner.png')) // 已是团长，且满足合伙人升合伙人条件
 					})
 					.catch((e) => {
-						uni.hideToast()
-						app.globalData.isShowCommunityPopup = true // 没购买产品
+						app.globalData.isShowCommunityPopup = false // 报错情况
 					})
 			}
 		},

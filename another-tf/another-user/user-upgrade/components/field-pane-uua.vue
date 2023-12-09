@@ -2,12 +2,9 @@
 	<view class="field-pane-container">
 		<view style="position: relative;">
 			<JHeader
-				:title="hasType ? typeMap[form.relationshipLevelId] : title" width="50" height="50" :dark="false"
+				:title="relationLevelName ? `${relationLevelName}升级` : title" width="50" height="50" :dark="false"
 				style="position: absolute;top: 0;left: 0;z-index: 1;width: 100%;padding: 24upx 0 0;color: #ffffff;"
 			>
-				<template #ftFn>
-					<text v-if="hasType" style="padding-right: 18upx;" @click="$emit('change-form') || resetTypeField()">切换</text>
-				</template>
 			</JHeader>
 			<image
 				src="../../../../static/images/user/activity/upgrade-pic.png"
@@ -15,9 +12,13 @@
 			>
 			</image>
 			<view style="position: absolute;top: 260upx;left: 64upx;">
-				<view v-if="form.relationshipLevelId === 2">
-					<view style="font-size: 48upx;color: #ffffff;">升级团长</view>
-					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">购买指定商品</view>
+				<view v-if="relationshipLevelName">
+					<view style="font-size: 48upx;color: #ffffff;">升级{{ relationshipLevelName }}</view>
+					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">
+						<text v-if="relationshipLevelName === '团长'">购买指定商品</text>
+						<text v-else-if="relationshipLevelName === '合伙人'">邀请团长</text>
+						<text v-else>填写表单</text>
+					</view>
 				</view>
 				<view v-else>
 					<view style="font-size: 48upx;color: #ffffff;">升级</view>
@@ -33,23 +34,33 @@
 						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
-						<text v-if="canUpgrade === true">{{ typeMap[form.relationshipLevelId] }}</text>
-						<text v-else-if="canUpgrade === false">不可进行{{ typeMap[form.relationshipLevelId] }}</text>
-						<text v-else>获取信息失败</text>
+						<text v-if="relationshipLevelName">{{ relationshipLevelName }}升级</text>
+						<text v-else>不可升级</text>
 					</view>
 				</view>
 				<view style="margin-top: 20upx;font-size: 24upx;color: #9E9E9E;">
-					<text v-if="canUpgrade === true">已满足申请条件</text>
-					<text v-else-if="canUpgrade === false">未满足申请条件</text>
+					<text v-if="relationLevelName">已满足申请条件</text>
+					<text v-else-if="relationLevelName === ''">不满足角色的升级条件</text>
 					<text v-else>无法获取信息，请重试！</text>
 				</view>
 			</view>
-			<view style="font-weight: bold;margin-top: 36upx;">填写申请信息</view>
-			<view style="padding: 0 10upx;">
-				<view v-for="item in fields" :key="item.label">
-					<view v-if="item.field === 'id'"></view>
-					<view v-else-if="item.field === 'manageArea'">
-						<view v-if="!hasType" class="item">
+			<view v-if="isShowLock" style="margin-top: 76upx;">
+				<view v-if="upgradeLevelType" style="text-align: center;">
+					<tui-button
+						type="warning" width="680upx" height="104upx" margin="20upx 0"
+						style="display: inline-block;font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;"
+						@click="handleClickUnlock"
+					>
+						{{ relationLevelName ? '立即升级' : '立即解锁' }}
+					</tui-button>
+				</view>
+			</view>
+			<view v-else>
+				<view style="font-weight: bold;margin-top: 36upx;">填写申请信息</view>
+				<view style="padding: 0 10upx;">
+					<view v-for="item in fields" :key="item.label">
+						<view v-if="item.field === 'id'"></view>
+						<view v-else-if="item.field === 'region'" class="item">
 							<view
 								class="input-wrapper" :style="{
 									'flex-direction': item.type === 'textarea' ? 'column' : '',
@@ -57,17 +68,19 @@
 								}"
 							>
 								<view class="sub-title">{{ item.label }}</view>
-								<view v-if="item.type === 'area'" style="flex: 1;" class="region-select">
-									<JCity
-										v-if="item.type === 'area' && item.field === 'manageArea'" style="flex: 1;"
-										:text="manageAreaName" :placeholder="item.placeholder" @confirm="handleSelectManageAreaCity"
-									></JCity>
+								<view class="region-select" style="flex: 1;">
+									<!-- 区代理：三级任何。团长：四级最后。其它：四级任何 -->
+									<!-- 5区代理，4加盟商，3合伙人，2团长，1会员 -->
+									<JArea
+										v-if="item.type === 'area' && item.field === 'region'" style="flex: 1;"
+										:text="regionName || (form.region ? `已选 ID：${form.region}` : '')" :placeholder="item.placeholder"
+										@confirm="handleSelectRegionArea"
+									>
+									</JArea>
 								</view>
 							</view>
 						</view>
-					</view>
-					<view v-else-if="item.field === 'relationshipLevelId'">
-						<view v-if="!hasType" class="item">
+						<view v-else-if="item.field === 'relationshipLevelId'" class="item">
 							<view
 								class="input-wrapper" :style="{
 									'flex-direction': item.type === 'textarea' ? 'column' : '',
@@ -76,86 +89,58 @@
 							>
 								<view class="sub-title">{{ item.label }}</view>
 								<view v-if="item.type === 'select'" style="flex: 1;text-align: right;">
-									<view v-if="form.manageArea">
+									<view v-if="form.region">
 										<view
 											v-if="item.type === 'select' && item.field === 'relationshipLevelId'" :style="{
 												color: form.relationshipLevelId ? '' : '#999'
 											}" @click="isShowRelationshipLevelSelect = true"
 										>
-											{{ relationshipLevelName || (form.relationshipLevelId ? `已选 ID：${form.relationshipLevelId}` : item.placeholder) }}
+											{{ relationshipLevelName || (form.relationshipLevelId ? `已选 ID：${form.relationshipLevelId}`
+												: item.placeholder) }}
 										</view>
 									</view>
-									<view v-else style="color: #999999;" @click="$showToast('请先选择会员类型所属区域')">{{ item.placeholder }}</view>
+									<view v-else :style="{ color: relationshipLevelName ? '' : '#999' }" @click="$showToast('请先选择所在区域')">
+										{{ relationshipLevelName || item.placeholder }}
+									</view>
 								</view>
 							</view>
 						</view>
-					</view>
-					<view v-else-if="item.field === 'region'" class="item">
-						<view
-							class="input-wrapper" :style="{
-								'flex-direction': item.type === 'textarea' ? 'column' : '',
-								'align-items': item.type === 'textarea' ? 'flex-start' : ''
-							}"
-						>
-							<view class="sub-title">{{ item.label }}</view>
-							<view v-if="item.type === 'area'" style="flex: 1;">
-								<view v-if="form.relationshipLevelId" class="region-select">
-									<!-- 区代理：三级任何。团长：四级最后。其它：四级任何 -->
-									<!-- 5区代理，4加盟商，3合伙人，2团长，1会员 -->
-									<JAnyCity
-										v-if="item.type === 'area' && item.field === 'region' && form.relationshipLevelId === 5"
-										style="flex: 1;" :text="regionName" :placeholder="item.placeholder" @confirm="handleSelectRegionCity"
-									>
-									</JAnyCity>
-									<JArea
-										v-else-if="item.type === 'area' && item.field === 'region' && form.relationshipLevelId === 2"
-										style="flex: 1;" :text="regionName" :placeholder="item.placeholder" @confirm="handleSelectRegionArea"
-									>
-									</JArea>
-									<JAnyArea
-										v-else-if="item.type === 'area' && item.field === 'region'" style="flex: 1;"
-										:text="regionName" :placeholder="item.placeholder" @confirm="handleSelectRegionArea"
-									></JAnyArea>
+						<view v-else class="item">
+							<template>
+								<view
+									class="input-wrapper" :style="{
+										'flex-direction': item.type === 'textarea' ? 'column' : '',
+										'align-items': item.type === 'textarea' ? 'flex-start' : ''
+									}"
+								>
+									<view class="sub-title">{{ item.label }}</view>
+									<input
+										v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
+										:type="item.field === 'phone' ? 'number' : 'text'" :placeholder="item.placeholder"
+										placeholder-style="text-align: right;" @input="handleInput(item.field, $event)"
+									/>
+									<textarea
+										v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
+										:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+									></textarea>
 								</view>
-								<view v-else style="color: #999999;text-align: right;" @click="$showToast('请先选择会员类型')">{{ item.placeholder }}</view>
-							</view>
+							</template>
 						</view>
-					</view>
-					<view v-else class="item">
-						<template>
-							<view
-								class="input-wrapper" :style="{
-									'flex-direction': item.type === 'textarea' ? 'column' : '',
-									'align-items': item.type === 'textarea' ? 'flex-start' : ''
-								}"
-							>
-								<view class="sub-title">{{ item.label }}</view>
-								<input
-									v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-									:type="item.field === 'phone' ? 'number' : 'text'" :placeholder="item.placeholder"
-									placeholder-style="text-align: right;" @input="handleInput(item.field, $event)"
-								/>
-								<textarea
-									v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
-									:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-								></textarea>
-							</view>
-						</template>
 					</view>
 				</view>
 			</view>
 		</view>
 		<!-- 会员类型 -->
 		<tui-select
-			:list="relationshipLevelList" reverse :show="isShowRelationshipLevelSelect" @confirm="handleSelectRelationshipLevelList"
-			@close="isShowRelationshipLevelSelect = false"
+			:list="relationshipLevelList" reverse :show="isShowRelationshipLevelSelect"
+			@confirm="handleSelectRelationshipLevelList" @close="isShowRelationshipLevelSelect = false"
 		></tui-select>
 
 	</view>
 </template>
 
 <script>
-import { getPlatformRelationshipLevelApi, getSelectLevelPlatformRelationApi } from '../../../../api/anotherTFInterface'
+import { getPlatformRelationshipLevelApi, getSelectLevelPlatformRelationApi, getSelectApplyPlatformRelationApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'FieldPaneUUA',
@@ -169,10 +154,6 @@ export default {
 			required: true
 		},
 		title: String,
-		hasType: {
-			type: Boolean,
-			default: true
-		},
 		userInfo: {
 			type: Object,
 			default: () => ({})
@@ -181,19 +162,13 @@ export default {
 
 	data() {
 		return {
-			typeMap: {
-				1: '会员升级',
-				2: '团长升级',
-				3: '合伙人升级', // 必须是先团长再合伙人
-				4: '加盟商升级', // 没有升级为加盟商和区代理
-				5: '区代理升级'
-			},
-			canUpgrade: '',
 			form: {},
-			manageAreaName: '',
+			upgradeLevelType: '',
+			relationLevelName: '', // 如果有值则一定满足条件，空字符串则不满足任何条件（默认），null则为请求失败
+			isShowLock: true,
 			relationshipLevelList: [],
 			isShowRelationshipLevelSelect: false,
-			relationshipLevelName: '',
+			relationshipLevelName: '', // 如果有值，但不一定满足条件
 			regionName: ''
 		}
 	},
@@ -205,7 +180,6 @@ export default {
 					const form = {}
 					for (const item of value) {
 						form[item.field] = this.value[item.field]
-						// if (item.type === 'select' && item.field === 'relationshipLevelId') this.getPlatformRelationshipLevelList()
 					}
 					this.form = form
 				}
@@ -217,49 +191,83 @@ export default {
 		form: {
 			handler(value) {
 				this.$emit('input', value)
-				if (value.relationshipLevelId) {
-					getSelectLevelPlatformRelationApi({ relationshipLevelId: value.relationshipLevelId })
-						.then((res) => {
-							this.canUpgrade = true
-						})
-						.catch((e) => {
-							this.canUpgrade = false
-						})
-				}
 			},
 			immediate: true,
 			deep: true
 		}
 	},
 	created() {
-	},
-
-	mounted() {
-		// console.log(this.$refs)
+		uni.showLoading()
+		getSelectLevelPlatformRelationApi({})
+			.then((res) => {
+				this.upgradeLevelType = res.data ? res.data.levelType : ''
+				if (res.data && res.data.levelType === 0) {
+					this.relationLevelName = ''
+				} else if (res.data && res.data.levelType === 1) {
+					this.relationshipLevelName = '团长'
+				} else if (res.data && res.data.levelType === 2) {
+					this.relationLevelName = '团长'
+					this.relationshipLevelName = '团长'
+				} else if (res.data && res.data.levelType === 3) {
+					this.relationshipLevelName = '合伙人'
+				} else if (res.data && res.data.levelType === 4) {
+					this.relationLevelName = '合伙人'
+					this.relationshipLevelName = '合伙人'
+				}
+				uni.hideLoading()
+			})
+			.catch((e) => {
+				this.relationLevelName = null
+				uni.hideLoading()
+			})
 	},
 
 	methods: {
-		resetTypeField(e) {
-			this.manageAreaName = ''
-			this.form.manageArea = ''
-			this.relationshipLevelName = ''
-			this.form.relationshipLevelId = ''
-			this.regionName = ''
-			this.form.region = ''
+		handleClickUnlock() {
+			if (this.relationLevelName) {
+				this.$emit('Unlock')
+				this.isShowLock = false
+				if (this.upgradeLevelType === 2) {
+					// if (this.$store.state.location.locationInfo.towncode) {
+					// 	this.form.address = this.$store.state.location.detailAddress || ''
+					// 	this.form.region = this.$store.state.location.locationInfo.towncode || ''
+					// 	this.form.regionName = (this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district + this.$store.state.location.locationInfo.township) || ''
+					// }
+				} else if (this.upgradeLevelType === 4) {
+					getSelectApplyPlatformRelationApi({})
+						.then((res) => {
+							if (res.data && res.data.applyId) {
+								// this.$showToast('已存在申请')
+								this.form.region = res.data.region
+								this.form.address = res.data.address
+								this.form.name = res.data.name
+								this.form.phone = res.data.phone
+								this.getPlatformRelationshipLevelList(this.form.region)
+							}
+						})
+				}
+			} else if (this.upgradeLevelType === 1) {
+				this.go('/another-tf/another-user/user-upgrade/purchase-chain-products')
+			} else if (this.upgradeLevelType === 3) {
+				uni.showModal({
+					title: '您当前合伙人条件未达到！',
+					content: '仅需名下有3名团长，\n即可升级合伙人！',
+					showCancel: false,
+					confirmText: '确定',
+					success: (res) => {
+					}
+				})
+			} else {
+				// this.$showToast('其它情况')
+			}
 		},
-		handleSelectManageAreaCity(e) {
-			this.manageAreaName = e.area
-			this.form.manageArea = e.county.id || ''
-			this.relationshipLevelName = ''
-			this.form.relationshipLevelId = ''
-			this.regionName = ''
-			this.form.region = ''
-			this.getPlatformRelationshipLevelList(this.form.manageArea)
+		handleSelectRegionArea(e) {
+			this.regionName = e.area
+			this.form.region = e.county.id || e.city.id || e.province.id
+			this.getPlatformRelationshipLevelList(this.form.region)
 		},
 		getPlatformRelationshipLevelList(manageArea) {
-			uni.showLoading({
-				title: '加载中'
-			})
+			uni.showLoading()
 			getPlatformRelationshipLevelApi({ manageArea })
 				.then((res) => {
 					this.relationshipLevelList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
@@ -267,6 +275,14 @@ export default {
 						value: item.levelNum,
 						text: item.levelName
 					}))
+					if (!this.relationshipLevelList.length) {
+						this.relationLevelName = ''
+						this.relationshipLevelName = ''
+						this.form.relationshipLevelId = ''
+					} else {
+						this.relationshipLevelName = this.relationshipLevelList[0].levelName
+						this.form.relationshipLevelId = this.relationshipLevelList[0].relationshipLevelId
+					}
 					uni.hideLoading()
 				})
 				.catch((e) => {
@@ -278,16 +294,6 @@ export default {
 			this.isShowRelationshipLevelSelect = false
 			this.relationshipLevelName = e.options.text
 			this.form.relationshipLevelId = e.options.value
-			this.regionName = ''
-			this.form.region = ''
-		},
-		handleSelectRegionCity(e) {
-			this.regionName = e.area
-			this.form.region = (e.county.id || e.city.id || e.province.id) + ''
-		},
-		handleSelectRegionArea(e) {
-			this.regionName = e.area
-			this.form.region = e.county.id || e.city.id || e.province.id
 		},
 		handleInput(field, e) {
 			console.log(field, e)
@@ -347,7 +353,7 @@ export default {
 			.textarea {
 				margin-top: 20upx;
 				width: 100%;
-				height: 60px;
+				height: 40px;
 				font-size: 24upx;
 			}
 		}
