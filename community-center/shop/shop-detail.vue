@@ -36,6 +36,16 @@
 			selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
 			@change="handleTabChange"
 		></tui-tab>
+		
+		<view class="childsSelect" v-if="allTabListData[currentTab].classify && allTabListData[currentTab].classify.length > 0">
+			<view class="childsItem"
+			 :class="{active: index == childsCurrent}"
+			 v-for="(item,index) in allTabListData[currentTab].classify"
+			 @click="checkChildsClassIfyIds(item, index)"
+			  >
+				{{ item.classifyName }}
+			</view>
+		</view>
 
 		<view class="brand-pane">
 			<view v-if="currentTab === -1">
@@ -131,6 +141,7 @@ export default {
 			allTabList: [ '商品' ],
 			allTabListData: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
+			childsCurrent: -1,
 			// 首页
 			componentsData: null,
 			terminal: getApp().globalData.terminal,
@@ -226,6 +237,7 @@ export default {
 		},
 		// 栏目切换
 		handleTabChange(e) {
+			this.childsCurrent = -1
 			this.currentTab = e.index
 			console.log(this.currentTab)
 			// if (e.index === 1) return
@@ -278,6 +290,11 @@ export default {
 				this.sortGoodsIndex = index
 			}
 			this.getShopGoodsTemplate()
+		},
+		checkChildsClassIfyIds(item, index) {
+			this.childsCurrent = index
+			this.classifyId = item.classifyId
+			this.getShopGoodsTemplate()
 		}
 	},
 	onReachBottom() {
@@ -292,6 +309,37 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.childsSelect {
+	margin-top: 4rpx;
+	box-sizing: border-box;
+	padding: 0rpx 20rpx;
+	width: 100vw;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	.childsItem {
+		border-radius: 8rpx;
+		box-sizing: border-box;
+		padding: 10rpx 10rpx;
+		display: flex;
+		align-items: center;
+		// line-height: 48rpx;
+		// width: 70rpx;
+		height: 60rpx;
+		color: #8c8b8d;
+		font-size: 30rpx;
+		background-color: #fffffff2;
+		display: inline-block;
+	}
+	.active {
+		color: #fff;
+		background-color: #ff8000;
+	}
+}
 .brand-detail-container {
 	position: relative;
 	min-height: 100vh;
