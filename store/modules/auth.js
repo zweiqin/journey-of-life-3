@@ -169,12 +169,12 @@ export default {
 		},
 
 		// 获取新团蜂token
-		updateStorageKeyToken({ state, dispatch, commit }) {
+		updateStorageKeyToken({ state, dispatch, commit }, phone) {
 			return new Promise((resolve, reject) => {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (userInfo && userInfo.phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone: userInfo.phone })
+					getAnotherTFTokenApi({ phone: phone ? phone : userInfo.phone })
 						.then((res) => {
 							uni.setStorageSync(T_STORAGE_KEY, res.data)
 							uni.hideLoading()
