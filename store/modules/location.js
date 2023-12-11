@@ -46,8 +46,9 @@ export default {
 			typeof state.locationInfo.province === 'object' ? state.locationInfo.province = '' : ''
 			typeof state.locationInfo.city === 'object' ? state.locationInfo.city = '' : ''
 			typeof state.locationInfo.district === 'object' ? state.locationInfo.district = '' : ''
-			typeof state.locationInfo.township === 'object' ? state.locationInfo.township = '' : ''
 			typeof state.locationInfo.adcode === 'object' ? state.locationInfo.adcode = '' : ''
+			typeof state.locationInfo.township === 'object' ? state.locationInfo.township = '' : ''
+			typeof state.locationInfo.towncode === 'object' ? state.locationInfo.towncode = '' : ''
 			state.detailAddress = typeof location.formatted_address === 'object' ? '' : location.formatted_address
 			state.currentCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township
 			state.currentShopCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township

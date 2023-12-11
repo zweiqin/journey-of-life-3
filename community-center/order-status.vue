@@ -36,12 +36,10 @@
             </view>
 
             <view class="img-list" v-if="item.images.length">
-              <image class="serve-img" :src="img" v-for="(img, index) in item.images" :key="index"></image>
+              <image class="serve-img" :src="img" v-for="(img, index) in [...item.images, ...item.images, ...item.images, ...item.images, ...item.images, ...item.images, ...item.images, ...item.images, ...item.images, ]" :key="index"></image>
             </view>
           </view>
         </view>
-
-
       </view>
 
       <view class="item serve-time-line" v-if="orderStatusLogList && orderStatusLogList.length">

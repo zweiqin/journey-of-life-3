@@ -116,8 +116,9 @@ export const myFunction = [
 	{
 		name: '小账本',
 		icon: require('../../static/images/new-user/menu-icon/xiaozhangben.png'),
-		// url: '/user/account-book/index' // 老的
-		url: '/user/commission-statistics/commission-statistics'
+		// url: '/user/account-book/index', // 老的
+		// url: '/user/commission-statistics/commission-statistics',
+		url: '/another-tf/another-user/small-ledger/index'
 	},
 	{
 		name: '活动中心',
@@ -139,19 +140,19 @@ export const myFunction = [
 		url: '/user/sever/view-history?page=collection'
 	},
 	{
-		name: '足迹',
-		icon: require('../../static/images/new-user/menu-icon/zuji.png'),
-		url: '/user/sever/view-history?page=history'
+		name: '粉丝统计',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/fan-statistics/index'
 	}
+	// {
+	// 	name: '足迹',
+	// 	icon: require('../../static/images/new-user/menu-icon/zuji.png'),
+	// 	url: '/user/sever/view-history?page=history'
+	// },
 	// {
 	// 	name: '我的推广',
 	// 	icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
 	// 	url: '/user/sever/group-code/group-code'
-	// },
-	// {
-	// 	name: '粉丝统计',
-	// 	icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-	// 	url: '/another-tf/another-user/fan-statistics/index'
 	// },
 	// {
 	// 	name: '订阅',

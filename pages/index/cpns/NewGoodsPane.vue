@@ -40,7 +40,7 @@ export default {
     goGoodsDetsil(shopItem) {
       uni.navigateTo({
         //  url: `/pages/prod/prod?shopInfo=${JSON.stringify(this.goods)}&detailInfo=${JSON.stringify(this.voucherJudgment(this.goods))}`
-        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}&hot=true`
+        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`
       });
     },
     /* getClassifyProducts2Api这个接口需要这个方法来判断是否支持使用代金卷

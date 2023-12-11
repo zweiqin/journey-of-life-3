@@ -183,7 +183,7 @@ import AddServe from './components/AddServe.vue'
 import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
-import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi, OCRRecognitionApi } from '../../api/community-center'
+import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
 import { USER_INFO, USER_TOKEN, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
 import { getUserId } from '../../utils'
@@ -258,7 +258,6 @@ export default {
       this.selectServerList = serverIds.split(',').map(item => item * 1)
     }
     this.getBAuthInfo()
-    this.$store.dispatch('auth/updateStorageKeyToken')
   },
 
   methods: {
@@ -303,7 +302,7 @@ export default {
         this.orderForm.consigneeAddress = companyAddressInfo[0]
         this.orderForm.consigneeAddressDetail = companyAddressInfo[1]
         this.orderForm.extraInfo.companyId = this.bDetailInfo.id
-
+        this.$store.dispatch('auth/updateStorageKeyToken', this.bDetailInfo.delegatePhoneNumber)
       } else {
         this.ttoast({
           type: 'fail',
@@ -365,6 +364,7 @@ export default {
       this.handleGetOrderQuotation()
     },
 
+    // 服务发生变化
     handleConfirmChoose(selectIds) {
       this.orderForm.extraInfo.serverInfo = this.orderForm.extraInfo.serverInfo.filter(item => selectIds.includes(item.id))
       const currentSelectServerIds = this.orderForm.extraInfo.serverInfo.map(item => item.id)
@@ -384,6 +384,12 @@ export default {
           }
         }
       });
+
+      // 如果只剩下一个服务，并且这个服务的number小于等于1，那就要把它变成2，保证总的服务个数是2
+      if (this.orderForm.extraInfo.serverInfo.length === 1 && this.orderForm.extraInfo.serverInfo[0].number <= 1) {
+        this.orderForm.extraInfo.serverInfo[0].number = 2
+      }
+
       this.selectServerList = selectIds
       this.handleGetOrderQuotation()
     },
@@ -396,10 +402,11 @@ export default {
       } else if (changeNum < 0 && target.number > 2) {
         target.number += changeNum
         this.handleGetOrderQuotation()
-      } else {
-        // this.opTarget = target
-        // this.isShowDeleteServeModal = true
-        // return 
+      } else if (changeNum < 0 && target.number === 2) {
+        if (this.orderForm.extraInfo.serverInfo && this.orderForm.extraInfo.serverInfo.length >= 2) {
+          target.number += changeNum
+          this.handleGetOrderQuotation()
+        }
       }
     },
 
@@ -564,6 +571,14 @@ export default {
         return
       }
 
+      if (!this.isAllServerNumerEqualToTwo()) {
+        this.ttoast({
+          type: "info",
+          title: "总服务数应大于等于2"
+        })
+        return
+      }
+
       const validMsg = validateOrderForm(this.orderForm)
       if (validMsg) {
         this.ttoast({
@@ -572,7 +587,6 @@ export default {
         })
         return
       }
-
       try {
         this.isCreateOrder = true
         const extraInfo = JSON.stringify(this.orderForm.extraInfo)
@@ -779,6 +793,18 @@ export default {
       uni.switchTab({
         url: "/pages/order/order"
       })
+    },
+
+    // 总服务数是否是2
+    isAllServerNumerEqualToTwo() {
+      if (!this.orderForm.extraInfo.serverInfo.length) {
+        return false
+      }
+      let number = 0
+      this.orderForm.extraInfo.serverInfo.forEach(serveInfo => {
+        number += serveInfo.number
+      })
+      return number >= 2
     }
   },
 }

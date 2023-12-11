@@ -10,6 +10,9 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
+// 个人系信息查询
+export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
+
 // 查询地址一级分类
 export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
 
@@ -105,11 +108,24 @@ export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/plat
 // 每个等级统计
 export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
 
+// 查询升级产品
+export const getSelectProductPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectProduct', data, 'POST')
+
 // 查询用户是否存在申请
 export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectApply', data)
 
 // 查询是否满足升级条件
 export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
+
+// 佣金金额统计
+export const getStatisticsAmountRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+
+// 佣金金额记录
+export const getStatisticsRecordRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+
+// 会员中心
+// 会员图标
+export const getMemberByMemberLevelIdApi = (data) => AnotherTFRequest(`/member/getMemberByMemberLevelId/${data.memberLevelId}`, data)
 
 // 购物车
 // 商家购物车查询
@@ -242,6 +258,12 @@ export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBat
 // 积分签到
 // 积分兑换优惠券
 export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
+
+// 查询可以积分兑换的优惠券
+export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
+
+// 查询积分记录
+export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
 
 // 首页广告
 // 获取首页广告

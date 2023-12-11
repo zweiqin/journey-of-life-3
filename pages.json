@@ -1375,6 +1375,12 @@
           }
         },
         {
+          "path": "another-user/small-ledger/index",
+          "style": {
+            "navigationBarTitleText": "小账本"
+          }
+        },
+        {
           "path": "another-user/fan-statistics/index",
           "style": {
             "navigationBarTitleText": "粉丝统计"
@@ -1510,6 +1516,12 @@
           "path": "another-serve/integral/index",
           "style": {
             "navigationBarTitleText": "我的积分"
+          }
+        },
+        {
+          "path": "another-serve/integral/sign",
+          "style": {
+            "navigationBarTitleText": "签到领积分"
           }
         },
         {

@@ -160,21 +160,21 @@ export default {
 			}
 			refrshUserInfoApi({
 				userId: state.userId
-			}).then(({ data }) => {
+			}).then(async ({ data }) => {
 				commit(CHNAGE_USER_INFO, data)
 				commit(CHNAGE_USER_ID, data.userId)
+				await dispatch('updateStorageKeyToken')
 				cb && typeof cb === 'function' && cb(data)
-				dispatch('updateStorageKeyToken')
 			})
 		},
 
 		// 获取新团蜂token
-		updateStorageKeyToken({ state, dispatch, commit }) {
+		updateStorageKeyToken({ state, dispatch, commit }, phone) {
 			return new Promise((resolve, reject) => {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (userInfo && userInfo.phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone: userInfo.phone })
+					getAnotherTFTokenApi({ phone: phone ? phone : userInfo.phone })
 						.then((res) => {
 							uni.setStorageSync(T_STORAGE_KEY, res.data)
 							uni.hideLoading()

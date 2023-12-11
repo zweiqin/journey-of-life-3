@@ -11,8 +11,11 @@
 			<!--  拼团滚动 -->
 			<view class="news-box">
 				<view class="news-bg">
-					<swiper class="goodsImgswiper-box" :vertical="true" :circular="true" interval="8000" duration="2000"
-						:autoplay="true">
+					<swiper
+						class="goodsImgswiper-box" :vertical="true" :circular="true" interval="8000"
+						duration="2000"
+						:autoplay="true"
+					>
 						<swiper-item v-for="(item, index) in broadCastList" :key="index">
 							<view class="news-item flex-items">
 								<image class="item-avatar" :src="item.headImage"></image>
@@ -37,15 +40,19 @@
 			</view>
 
 			<!-- 轮播图+分享+价格名称+活动倒计时+优惠券 -->
-			<GoodActivityDetail ref="goodActivityDetail" :sku-select="selectedSku" :product-info="productData"
+			<GoodActivityDetail
+				ref="goodActivityDetail" :sku-select="selectedSku" :product-info="productData"
 				:time-active-type="timeActiveType" :mark-tools="markTools" :shop-mark-tools="shopMarkTools"
-				@activityEnd="handleActivityEnd" @couponClick="handleShowCoupon" />
+				@activityEnd="handleActivityEnd" @couponClick="handleShowCoupon"
+			/>
 
 			<!-- 发货 -->
 			<view v-if="productData.ifLogistics" class="express-box flex-items flex-row fs24">
 				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
-				<tui-icon v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
-					color="#c1c1c1"></tui-icon>
+				<tui-icon
+					v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
+					color="#c1c1c1"
+				></tui-icon>
 				<label v-if="productData.receive && productData.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
 					{{ productData.receive.receiveAdress }}
 				</label>
@@ -105,7 +112,7 @@
 			<!--  评价  -->
 			<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :product-info="productData" :comment-list="commentList" />
 			<!-- 店铺 -->
-			<view class="inStore-box flex-items flex-row flex-sp-between" v-if="!isHotGoods">
+			<view v-if="!(productData.shopName === '团蜂自营')" class="inStore-box flex-items flex-row flex-sp-between">
 				<view class="flex-display flex-row">
 					<view>
 						<image class="inStore-logo default-img" :src="productData.shopLogo" @click="handleJumpToStore"></image>
@@ -141,7 +148,7 @@
 		<view class="buygoods-box">
 			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 				<view class="btns_container">
-					<view class="btns flex-column-plus flex-items" @click="handleJumpToStore" v-if="!isHotGoods">
+					<view v-if="!(productData.shopName === '团蜂自营')" class="btns flex-column-plus flex-items" @click="handleJumpToStore">
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
@@ -151,8 +158,10 @@
 						<label class="fs22">客服</label>
 					</view>
 					<!-- #endif -->
-					<view class="btns flex-column-plus mar-left-10 flex-items Cart"
-						@click="go('/another-tf/another-serve/shopCar/shopCar')">
+					<view
+						class="btns flex-column-plus mar-left-10 flex-items Cart"
+						@click="go('/another-tf/another-serve/shopCar/shopCar')"
+					>
 						<view v-if="allCartNum > 0" class="cartAllNum">
 							{{ allCartNum }}
 						</view>
@@ -185,20 +194,26 @@
 		</view>
 		<!-- 回到顶部 -->
 		<view class="returnTopService-box">
-			<view class="returnTop-box flex-items-plus flex-column"
-				:style="{ 'display': returnTopFlag === true ? 'flex' : 'none' }" @click="handleReturnTop">
+			<view
+				class="returnTop-box flex-items-plus flex-column"
+				:style="{ 'display': returnTopFlag === true ? 'flex' : 'none' }" @click="handleReturnTop"
+			>
 				<tui-icon :size="29" color="#c5aa7b" name="top"></tui-icon>
 			</view>
 		</view>
 		<!-- SKU选择器 -->
-		<GoodSkuSelect ref="skuSelect" :product-data="productData" :selected-sku="selectedSku" :collage-id="collageId"
+		<GoodSkuSelect
+			ref="skuSelect" :product-data="productData" :selected-sku="selectedSku" :collage-id="collageId"
 			@postSelectSku="selectSkuPostProcessor" @getCurrentSku="handleSelectSku"
-			@changeCartNum="(num) => allCartNum = num" />
+			@changeCartNum="(num) => allCartNum = num"
+		/>
 		<!-- 优惠券选择器 -->
-		<CouponPopup ref="couponPopup" :mark-tools="markTools" :shop-mark-tools="shopMarkTools" :set-top="topLeft"
-			:current-active="currentActive"></CouponPopup>
+		<CouponPopup
+			ref="couponPopup" :mark-tools="markTools" :shop-mark-tools="shopMarkTools" :set-top="topLeft"
+			:current-active="currentActive"
+		></CouponPopup>
 		<!-- 拼单弹框 -->
-		<tui-popup :show="showGroupBuyList" :mode-class="['fade']" class="popupDiscount" @click="showGroupBuyList = false">
+		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
@@ -279,8 +294,7 @@ export default {
 					eventType: 1,
 					productIds: ''
 				}
-			},
-			isHotGoods: false
+			}
 		}
 	},
 	created() {
@@ -289,7 +303,6 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.isHotGoods = options.hot === 'true'
 		// 页面滚动条归0，不然骨架屏有问题
 		uni.pageScrollTo({
 			scrollTop: 0,
