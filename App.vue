@@ -29,7 +29,7 @@ export default {
 		this.globalData.terminal = 3
 		// #endif
 		// #ifdef MP
-		
+
 		this.globalData.terminal = 1
 		// #endif
 	},
@@ -57,7 +57,7 @@ export default {
 		// 购物车商品数量
 		totalCartCount: 0,
 		// 是否一直显示 弹窗
-		isShowCommunityPopup: false,
+		isShowCommunityPopup: true,
 		// 是否处于小程序环境
 		isInMiniprogram: false,
 		// 是否已经打开过绑定手机号弹窗

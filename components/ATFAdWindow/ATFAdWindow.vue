@@ -155,7 +155,7 @@ export default {
 					break
 				case 2:
 					uni.navigateTo({
-						url: `/another-tf/another-serve/goodsList/index?category3Id=${this.jumpContent.id[this.jumpContent.id.length - 1]}`
+						url: `/another-tf/another-serve/goodsList/index?classifyId=${this.jumpContent.id[this.jumpContent.id.length - 1]}`
 					})
 					break
 				case 4:

@@ -10,6 +10,12 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
+// 查询地址一级分类
+export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
+
+// 查询地址一级分类
+export const getCityManageAreaTreeOneApi = (data) => AnotherTFRequest('/cityManageArea/getTreeOne', data)
+
 // /classify/getClassifyProducts2 分类商品查询2
 export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
 
@@ -98,6 +104,15 @@ export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/plat
 
 // 每个等级统计
 export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
+
+// 查询升级产品
+export const getSelectProductPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectProduct', data, 'POST')
+
+// 查询用户是否存在申请
+export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectApply', data)
+
+// 查询是否满足升级条件
+export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
 
 // 购物车
 // 商家购物车查询

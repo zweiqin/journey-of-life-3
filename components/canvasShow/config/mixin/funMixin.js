@@ -56,7 +56,7 @@ export const tool = {
 		// 跳转到类别主页
 		jumpCategory(item) {
 			uni.navigateTo({
-				url: `/another-tf/another-serve/goodsList/index?category3Id=${item.id}`
+				url: `/another-tf/another-serve/goodsList/index?classifyId=${item.id}`
 			})
 		},
 		// 跳转到产品列表

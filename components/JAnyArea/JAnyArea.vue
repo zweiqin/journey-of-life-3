@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { getAreaRegionApi } from '../../api/user'
+import { getCityManageAreaTreeOneApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'JArea',
@@ -150,7 +150,7 @@ export default {
 
 		// 获取地址信息
 		getCity(data) {
-			getAreaRegionApi(data).then((res) => {
+			getCityManageAreaTreeOneApi(data).then((res) => {
 				// console.log(res)
 				this.data = res.data
 			})

@@ -1,6 +1,6 @@
 import { endRequest } from '@/utils';
 
-// 商家入驻信息认证
+// 商家认证信息认证
 export const shopCreateAccount = (data) => {
   return endRequest({
     url: '/api/third/shop/createAccount',

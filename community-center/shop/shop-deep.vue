@@ -58,7 +58,7 @@
 					? 'loading' : !isEmpty && nearbyShopList.length && (nearbyShopList.length >= nearbyTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">{{ `${title} 类目暂无商家入驻` }}</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">{{ `${title} 类目暂无商家认证` }}</tui-no-data>
 		</view>
 
 	</view>

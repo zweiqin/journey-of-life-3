@@ -1,5 +1,10 @@
 <template>
     <view class="voucherContainer">
+		<JHeader title="我的代金券" width="50" height="50" style="padding: 24upx 0 10upx;z-index: 2;">
+			<template #ftFn>
+				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="go('/user/voucher/voucher')">提现</text>
+			</template>
+		</JHeader>
         <image class="topBackgrpound" src="@/static/images/user/vcbgimg.png"></image>
         <!-- header区 -->
         <view class="userInfo">
@@ -71,9 +76,6 @@ export default {
     min-height: 100vh;
     overflow: hidden;
     background: linear-gradient(180deg, #FF380C 0%, rgba(255, 56, 12, 0.88) 20%, #F4F3F8 27%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     .topBackgrpound {
         width: 100vw;
         height: 418rpx;

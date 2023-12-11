@@ -19,7 +19,7 @@
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
 					<BeeIcon
-						v-if="menu.iconUrl || menu.icon" :size="32"
+						v-if="menu.iconUrl || menu.icon" :size="28"
 						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
 					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
@@ -62,7 +62,7 @@
 				</view>
 				<view v-for="menu in specialPane.filter(item => item.name === '股东看板')" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
 					<BeeIcon
-						v-if="menu.iconUrl || menu.icon" :size="32"
+						v-if="menu.iconUrl || menu.icon" :size="28"
 						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
 					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
@@ -79,12 +79,11 @@
 </template>
 
 <script>
-import { mapGroupStatus } from '../data'
 export default {
 	name: 'Pane',
 	filters: {
 		mapStatus(status) {
-			return mapGroupStatus(status)
+			return { 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '审核不通过', 5: '冻结', 6: '审核不通过', 7: '打款失败' }[status]
 		}
 	},
 	props: {
@@ -116,6 +115,8 @@ export default {
 				newVal.forEach((item) => {
 					if (item.name === '股东看板') {
 						if (this.$store.getters.userInfo && this.$store.getters.userInfo.shareholderType === 1) this.specialPane.push(item)
+					} else if (item.showRole) {
+						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type === 1) this.renderMenu.push(item)
 					} else {
 						this.renderMenu.push(item)
 					}
@@ -185,9 +186,10 @@ export default {
 			}
 
 			.menu-name {
+				margin-top: 10upx;
 				font-size: 28rpx;
 				line-height: 51rpx;
-				color: #3D3D3D;
+				color: #2A2B23;
 			}
 		}
 	}

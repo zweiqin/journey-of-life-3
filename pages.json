@@ -354,7 +354,7 @@
         {
           "path": "merchant-settlement/login/login",
           "style": {
-            "navigationBarTitleText": "商家入驻"
+            "navigationBarTitleText": "商家认证"
           }
         },
         {
@@ -1366,6 +1366,12 @@
           "path": "another-user/user-upgrade/user-upgrade-application",
           "style": {
             "navigationBarTitleText": "会员升级"
+          }
+        },
+        {
+          "path": "another-user/user-upgrade/purchase-chain-products",
+          "style": {
+            "navigationBarTitleText": "购买关系链相关产品"
           }
         },
         {

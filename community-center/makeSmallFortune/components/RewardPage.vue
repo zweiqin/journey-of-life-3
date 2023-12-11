@@ -145,7 +145,7 @@ export default {
 	methods: {
 		handleChooseCity(data) {
 			this.cityText = data.area
-			this.region = (data.county.code || data.city.code || data.province.code) + ''
+			this.region = (data.county.id || data.city.id || data.province.id) + ''
 		},
 		handleRelease() {
 			if (!this.formData.publishUserId) return this.$showToast('缺少发布者信息')
