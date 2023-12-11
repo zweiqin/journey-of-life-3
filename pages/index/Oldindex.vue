@@ -1,11 +1,3 @@
-<!--
- * @Author: aliyun0758874076 2300202994@qq.com
- * @Date: 2023-10-25 09:19:10
- * @LastEditors: aliyun0758874076 2300202994@qq.com
- * @LastEditTime: 2023-11-04 10:48:06
- * @FilePath: \tuan\pages\index\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="shop-page-conatiner">
     <TuanAppShim bg="transparent"></TuanAppShim>
