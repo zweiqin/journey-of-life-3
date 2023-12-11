@@ -20,7 +20,6 @@ export default {
     picUrl: String,
     id: [Number, String],
     parentId: [Number, String],
-    isHot: Boolean
   },
   data() {
     return {};
@@ -32,9 +31,6 @@ export default {
       }
 
       let url = `/pages/index/Explosive/goodsFilter?id=${this.id}&parentId=${this.parentId}`
-      if (this.isHot) {
-        url += '&hot=true'
-      }
 
       uni.navigateTo({
         url

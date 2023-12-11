@@ -261,7 +261,7 @@ export default {
 		//
 		//     if (netxHou == 0 && netxMin == 0 && netxSec == -1) {
 		//       clearTimeout(timeOut)
-		//       this.$switchTab('/pages/tabbar/index/index')
+		//       this.$switchTab('/pages/index/index')
 		//       uni.showToast({
 		//         title:"活动结束",
 		//         duration:2000,

@@ -182,17 +182,7 @@ export default {
 				if (this.partnerCode) {
 					await this.handlePartnerBind(this.userId)
 				}
-				if (this.redirect) {
-					if (tabbarList.includes(_this.redirect)) {
-						uni.switchTab({
-							url: _this.redirect
-						})
-					} else {
-						uni.redirectTo({
-							url: _this.redirect
-						})
-					}
-				} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
+				if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
 					uni.redirectTo({
 						url: '/user/sever/activityCenter/index'
 					})

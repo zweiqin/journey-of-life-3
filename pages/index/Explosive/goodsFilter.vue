@@ -43,7 +43,7 @@
         </view> -->
       </view>
       <view class="main">
-        <Goods :hot-goods="isHot" v-for="item in goodsList" :key="item.id" :data="item"></Goods>
+        <Goods v-for="item in goodsList" :key="item.id" :data="item"></Goods>
         <load-after v-if="isShowLoading"></load-after>
       </view>
 
@@ -81,14 +81,12 @@ export default {
         subId: 0,
         goodsList: [],
         isShowLoading: false,
-        isHot: false
     }
   },
 
   onLoad(options) {
     this.mainId = options.parentId
     this.subId = options.id
-    this.isHot = options.hot === 'true'
     // this.setData()
     this.getList()
   },

@@ -56,11 +56,6 @@ export default {
 			if (!userId) {
 				return
 			}
-			getPricePlatformAllApi({
-				userId
-			}).then(({ data }) => {
-				commit(CHNAGE_SHOP_CAR_NUMBER, data)
-			})
 			getPricePlatformAllApi({})
 				.then((res) => {
 					commit(CHNAGE_PRICE_PLATFORM_INFO, res.data)

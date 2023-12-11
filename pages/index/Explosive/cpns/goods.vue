@@ -1,6 +1,6 @@
 <template>
   <view
-    @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${data.shopId}&productId=${data.productId}&skuId=${data.skuId}&hot=${hotGoods}`)"
+    @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${data.shopId}&productId=${data.productId}&skuId=${data.skuId}`)"
     class="goods-wrapper"
     v-if="data"
   >
@@ -51,7 +51,6 @@ export default {
       type: Object,
       required: true,
     },
-    hotGoods: Boolean
   },
 }
 </script>

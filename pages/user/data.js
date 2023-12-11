@@ -116,8 +116,9 @@ export const myFunction = [
 	{
 		name: '小账本',
 		icon: require('../../static/images/new-user/menu-icon/xiaozhangben.png'),
-		// url: '/user/account-book/index' // 老的
-		url: '/user/commission-statistics/commission-statistics'
+		// url: '/user/account-book/index', // 老的
+		// url: '/user/commission-statistics/commission-statistics',
+		url: '/another-tf/another-user/small-ledger/index'
 	},
 	{
 		name: '活动中心',

@@ -160,11 +160,11 @@ export default {
 			}
 			refrshUserInfoApi({
 				userId: state.userId
-			}).then(({ data }) => {
+			}).then(async ({ data }) => {
 				commit(CHNAGE_USER_INFO, data)
 				commit(CHNAGE_USER_ID, data.userId)
+				await dispatch('updateStorageKeyToken')
 				cb && typeof cb === 'function' && cb(data)
-				dispatch('updateStorageKeyToken')
 			})
 		},
 
