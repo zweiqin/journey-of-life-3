@@ -10,19 +10,19 @@
       <view class="list-container" v-if="list.length">
         <view class="item" v-for="item in list" :key="item.id">
           <view class="avatar-wrapper">
-            <image class="avatar" :src="item.avatar"></image>
-            <view class="mask">{{ item.userType === 1 ? '会员' : '团长' }}</view>
+            <image class="avatar" :src="item.headImage"></image>
+            <!-- <view class="mask">{{ item.userType === 1 ? '会员' : '团长' }}</view> -->
           </view>
           <view class="info">
-            <view class="name"
-              >{{ item.nickname }}
+            <view class="name">{{ item.phone }}
               <!-- <tui-icon margin="0 0 0 10upx" :color="item.gender === 0 ? '#10aeff' : '#f37e7d'" name="friendadd-fill" :size="18"></tui-icon> -->
-              <view class="add-time">绑定时间:{{ item.addTime }}</view>
+              <!-- <view class="add-time">绑定时间:{{ item.addTime }}</view> -->
             </view>
 
             <view class="phone">
-              <view class="phone-number">{{ item.mobile ? item.mobile.slice(0, 3) + '****' + item.mobile.slice(7) : '-' }}</view>
-              <button class="uni-btn" @click="handleCallPhone(item.mobile)">
+              <view class="phone-number">{{ item.phone ? item.phone.slice(0, 3) + '****' + item.phone.slice(7) : '-' }}
+              </view>
+              <button class="uni-btn" @click="handleCallPhone(item.phone)">
                 <tui-icon class="icon" color="#fd792f" :size="16" name="voipphone"></tui-icon>
                 拨打
               </button>
@@ -40,6 +40,8 @@
 import moment from 'moment';
 import { USER_INFO } from 'constant';
 import { getCommanderVipUserListApi } from '../../api/user';
+
+import { getFansListApi } from '../../api/anotherTFInterface'
 export default {
   data() {
     return {
@@ -65,20 +67,10 @@ export default {
     async getCommanderVipUserList(isToday) {
       try {
         this.loading = 'loading';
-        const res = await getCommanderVipUserListApi({
-          mobile: this.userInfo.phone
+        const res = await getFansListApi({
+          today: isToday ? 1 : 0
         });
-
-        if (res && Array.isArray(res)) {
-          if (isToday) {
-            const currentDate = moment().format('YYYY-MM-DD');
-            this.list = res.filter((item) => {
-              return currentDate == item.addTime.split(' ')[0];
-            });
-          } else {
-            this.list = res;
-          }
-        }
+        this.list = res.data.paramLists
       } catch (error) {
         this.ttoast({
           type: 'fail',
@@ -165,6 +157,7 @@ export default {
         .info {
           flex: 1;
           margin-left: 20upx;
+
           .name {
             display: flex;
             align-items: center;
