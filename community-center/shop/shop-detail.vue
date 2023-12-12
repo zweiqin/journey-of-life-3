@@ -237,12 +237,17 @@ export default {
 		},
 		// 栏目切换
 		handleTabChange(e) {
-			this.childsCurrent = -1
+			this.childsCurrent = 0
 			this.currentTab = e.index
 			console.log(this.currentTab)
 			// if (e.index === 1) return
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
+			if (this.allTabListData[e.index].classify && this.allTabListData[e.index].classify.length > 0) {
+				this.classifyId = this.allTabListData[e.index].classify[0].classifyId
+				this.getShopGoodsTemplate()
+				return
+			}
 			if (e.index === 0) {
 				this.classifyId = ''
 			} else {
@@ -324,12 +329,12 @@ export default {
 	.childsItem {
 		border-radius: 8rpx;
 		box-sizing: border-box;
-		padding: 10rpx 10rpx;
-		display: flex;
-		align-items: center;
+		padding: 12rpx 10rpx;
+		// display: flex;
+		// align-items: center;
 		// line-height: 48rpx;
 		// width: 70rpx;
-		height: 60rpx;
+		height: 58rpx;
 		color: #8c8b8d;
 		font-size: 30rpx;
 		background-color: #fffffff2;
