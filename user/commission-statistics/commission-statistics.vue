@@ -42,8 +42,9 @@
           <view class="value">{{ commissionData.fans || 0 }}</view>
         </view>
 
-        <view class="item">
-          <image class="img" src="../../static/images//new-user/group/today-vip-number.png"></image>
+        <view class="item" @click="go('/user/commission-statistics/vip-user?date=now')">
+          <image class="img"
+            src="../../static/images//new-user/group/today-vip-number.png"></image>
           <view class="text">今日会员(个)</view>
           <view class="value">{{ commissionData.todayFans || 0 }}</view>
         </view>
@@ -88,7 +89,7 @@ export default {
   onShow() {
     this.getCommissionData()
   },
-  
+
   methods: {
     handleBack() {
       uni.switchTab({
