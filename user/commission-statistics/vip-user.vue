@@ -6,47 +6,41 @@
 
     <view class="list">
       <LoadingMore v-show="loading !== 'none'" :status="loading"></LoadingMore>
-
       <view class="list-container" v-if="list.length">
-        <view class="item" v-for="item in list" :key="item.id">
-          <view class="avatar-wrapper">
-            <image class="avatar" :src="item.avatar"></image>
-            <view class="mask">{{ item.userType === 1 ? '会员' : '团长' }}</view>
-          </view>
-          <view class="info">
-            <view class="name"
-              >{{ item.nickname }}
-              <!-- <tui-icon margin="0 0 0 10upx" :color="item.gender === 0 ? '#10aeff' : '#f37e7d'" name="friendadd-fill" :size="18"></tui-icon> -->
-              <view class="add-time">绑定时间:{{ item.addTime }}</view>
-            </view>
-
-            <view class="phone">
-              <view class="phone-number">{{ item.mobile ? item.mobile.slice(0, 3) + '****' + item.mobile.slice(7) : '-' }}</view>
-              <button class="uni-btn" @click="handleCallPhone(item.mobile)">
-                <tui-icon class="icon" color="#fd792f" :size="16" name="voipphone"></tui-icon>
-                拨打
-              </button>
-            </view>
-          </view>
-        </view>
+        <FansPane @view="handleViewFans" v-for="item in list" :fansInfo="item" :key="item.id"></FansPane>
       </view>
-
       <view class="no-data" v-if="!list.length && loading != 'loading'"> 暂无数据... </view>
     </view>
+
+    <!-- 查看会员列表 -->
+    <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="subFansListVisible" @close="handleClosePopup">
+      <view class="fans-list">
+        <view class="fans-header">
+          <view class="fans-title"><text class="user-name">{{ subFansInfo.phone }}</text> 的粉丝列表</view>
+          <tui-icon class="close-icon" @click="handleClosePopup" :size="20" name="close" color="#ccc"></tui-icon>
+        </view>
+        <FansPane v-for="item in subFansInfo.paramLists" :fansInfo="item" :key="item.id"></FansPane>
+      </view>
+    </tui-bottom-popup>
   </view>
 </template>
 
 <script>
-import moment from 'moment';
 import { USER_INFO } from 'constant';
-import { getCommanderVipUserListApi } from '../../api/user';
+import { getFansListApi } from '../../api/anotherTFInterface'
+import FansPane from './components/FansPane.vue'
 export default {
+  components: {
+    FansPane
+  },
   data() {
     return {
       scrollTop: 0,
       userInfo: null,
       list: [],
-      loading: ''
+      loading: '',
+      subFansListVisible: false,
+      subFansInfo: {}
     };
   },
   onLoad(params) {
@@ -65,20 +59,10 @@ export default {
     async getCommanderVipUserList(isToday) {
       try {
         this.loading = 'loading';
-        const res = await getCommanderVipUserListApi({
-          mobile: this.userInfo.phone
+        const res = await getFansListApi({
+          today: isToday ? 1 : 0
         });
-
-        if (res && Array.isArray(res)) {
-          if (isToday) {
-            const currentDate = moment().format('YYYY-MM-DD');
-            this.list = res.filter((item) => {
-              return currentDate == item.addTime.split(' ')[0];
-            });
-          } else {
-            this.list = res;
-          }
-        }
+        this.list = res.data.paramLists
       } catch (error) {
         this.ttoast({
           type: 'fail',
@@ -93,12 +77,21 @@ export default {
       }
     },
 
-    handleCallPhone(phone) {
-      console.log(phone);
-      if (!phone) return;
-      uni.makePhoneCall({
-        phoneNumber: phone
-      });
+    // 查看粉丝列表
+    handleViewFans(currentFansInfo) {
+      const { paramLists } = currentFansInfo
+      if (paramLists && paramLists.length) {
+        // this.subFansList = paramLists
+
+        this.subFansInfo = currentFansInfo
+        this.subFansListVisible = true
+      }
+    },
+
+    // 关闭弹窗
+    handleClosePopup() {
+      this.subFansList = {}
+      this.subFansListVisible = false
     }
   },
 
@@ -132,7 +125,7 @@ export default {
         background-color: #fff;
         border-radius: 10upx;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
 
         .avatar-wrapper {
           position: relative;
@@ -165,6 +158,7 @@ export default {
         .info {
           flex: 1;
           margin-left: 20upx;
+
           .name {
             display: flex;
             align-items: center;
@@ -188,7 +182,7 @@ export default {
             .uni-btn {
               display: flex;
               align-items: center;
-              color: #fd792f;
+              color: #ccc;
               font-size: 24upx;
 
               .icon {
@@ -210,5 +204,35 @@ export default {
   color: #929292;
   font-size: 28upx;
   letter-spacing: 1em;
+}
+
+.fans-list {
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 800upx;
+  overflow: auto;
+
+  .fans-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    height: 90upx;
+    margin-bottom: -20upx;
+
+    .user-name {
+      color: orange;
+    }
+
+    .close-icon {
+      position: absolute;
+      right: 40upx;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 }
 </style>

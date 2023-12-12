@@ -702,12 +702,12 @@
             "navigationBarTitleText": ""
           }
         },
-        // {
-        //   "path": "account-book/index",
-        //   "style": {
-        //     "navigationBarTitleText": "小账本"
-        //   }
-        // },
+        {
+          "path": "account-book/index",
+          "style": {
+            "navigationBarTitleText": "小账本"
+          }
+        },
         {
           "path": "commission-statistics/commission-statistics",
           "style": {

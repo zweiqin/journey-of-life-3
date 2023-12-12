@@ -427,3 +427,9 @@ export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryM
 // 查询热搜词
 // 获取搜索栏的热门搜索
 export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)
+
+// 小账本
+export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+
+// 今日会员，累计会员
+export const getFansListApi = data => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')

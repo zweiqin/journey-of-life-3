@@ -3,33 +3,33 @@
     <view class="back">
       <tui-icon name="arrowleft" color="#000" @click="handleBack" :size="30"></tui-icon>
 
-      <button class="uni-btn" @click="handleToBankList" v-if="isTz">
+      <!-- <button class="uni-btn" @click="handleToBankList" v-if="isTz">
         <image class="img" src="../../static/images/new-user/group/849a12e594b7b12ef97bfc363ef95a8.png"></image>
         <text class="btn-text">我的银行卡</text>
       </button>
 
       <button class="uni-btn" @click="handleToBankList" v-else>
         <text class="btn-text">申请成为团长</text>
-      </button>
+      </button> -->
     </view>
 
     <!-- 上面三个统计 -->
     <view class="top-pane">
-      <view class="item" @click="isTz && go('/user/commission-statistics/commission-detail?date=now')">
+      <view class="item">
         <image class="img" src="../../static/images/new-user/group/today-price.png"></image>
         <view class="text">今日佣金</view>
-        <view class="value">￥{{ commissionData.toDayCommissionSum || 0 }}</view>
+        <view class="value">￥{{ commissionData.todaySum || 0 }}</view>
       </view>
 
-      <view class="item" @click=" isTz && go('/user/commission-statistics/commission-detail?')">
+      <view class="item">
         <image class="img" src="../../static/images/new-user/group/total-price.png"></image>
         <view class="text">累计佣金</view>
-        <view class="value">￥{{ commissionData.commissionSum || 0 }}</view>
+        <view class="value">￥{{ commissionData.remainAmount || 0 }}</view>
       </view>
       <view class="item">
         <image class="img" src="../../static/images/new-user/group/lu-price.png"></image>
         <view class="text">途中佣金</view>
-        <view class="value">￥{{ commissionData.commissionOnTheWay || 0 }}</view>
+        <view class="value">￥{{ commissionData.inTheAccount || 0 }}</view>
       </view>
     </view>
 
@@ -39,33 +39,33 @@
         <view class="item" @click="go('/user/commission-statistics/vip-user')">
           <image class="img" src="../../static/images//new-user/group/total-vip-number.png"></image>
           <view class="text">累计会员(个)</view>
-          <view class="value">{{ commissionData.memberSum || 0 }}</view>
+          <view class="value">{{ commissionData.fans || 0 }}</view>
         </view>
 
-        <view class="item" v-if="isTz" @click="go('/user/commission-statistics/vip-user?date=now')">
-          <image class="img" src="../../static/images//new-user/group/today-vip-number.png"></image>
+        <view class="item" @click="go('/user/commission-statistics/vip-user?date=now')">
+          <image class="img"
+            src="../../static/images//new-user/group/today-vip-number.png"></image>
           <view class="text">今日会员(个)</view>
-          <view class="value">{{ commissionData.toDayMemberSum || 0 }}</view>
+          <view class="value">{{ commissionData.todayFans || 0 }}</view>
         </view>
 
         <view class="item">
           <image class="img" src="../../static/images//new-user/group/can-whith.png"></image>
           <view class="text">可提现(元)</view>
-          <view class="value">{{ commissionData.commissionWithdrawable || 0 }}</view>
+          <view class="value">{{ commissionData.totalAmount || 0 }}</view>
         </view>
 
         <view class="item">
           <image class="img" src="../../static/images//new-user/group/has-whitdh.png"></image>
           <view class="text">已提现(元)</view>
-          <view class="value">{{ commissionData.commissionWithdrawn || 0 }}</view>
+          <view class="value">{{ commissionData.withdrawAmount || 0 }}</view>
         </view>
       </view>
 
       <view class="button-wrapper">
-        <view class="tip">可提现 ￥{{ commissionData.commissionWithdrawable || 0 }}</view>
-        <button @click="handleWithdrawal(commissionData.commissionWithdrawable)"
-          :class="{ disabled: !commissionData.commissionWithdrawable || commissionData.commissionWithdrawable == 0 }"
-          class="uni-btn">
+        <view class="tip">可提现 ￥{{ commissionData.totalAmount || 0 }}</view>
+        <button @click="handleWithdrawal(commissionData.totalAmount)"
+          :class="{ disabled: !commissionData.totalAmount || commissionData.totalAmount == 0 }" class="uni-btn">
           佣金提现
         </button>
       </view>
@@ -76,24 +76,20 @@
 </template>
 
 <script>
-import { USER_INFO } from 'constant';
-import { getCommissionDatatApi, getVipCommissionStatistics } from '../../api/user';
+import { getSmallAccountBookStatisticsApi } from '../../api/anotherTFInterface'
+
 export default {
   data() {
     return {
       userInfo: null,
       commissionData: {},
-      isTz: false
     };
   },
+
   onShow() {
-    this.userInfo = uni.getStorageSync(USER_INFO);
-    if (this.userInfo) {
-      const userMap = this.userInfo.userMap
-      this.isTz = userMap && userMap.isTz
-      this.getCommissionData(this.isTz)
-    }
+    this.getCommissionData()
   },
+
   methods: {
     handleBack() {
       uni.switchTab({
@@ -101,14 +97,10 @@ export default {
       });
     },
 
-    async getCommissionData(isTz) {
+    async getCommissionData() {
       try {
-        const api = isTz ? getCommissionDatatApi : getVipCommissionStatistics
-        const res = await api({
-          mobile: this.userInfo.phone,
-          date: ''
-        });
-        this.commissionData = isTz ? res : { memberSum: res }
+        const res = await getSmallAccountBookStatisticsApi();
+        this.commissionData = res.data
       } catch (error) {
         this.ttoast({
           type: 'fail',
@@ -142,6 +134,13 @@ export default {
         });
         return;
       }
+
+      this.ttoast({
+        title: '暂未开放',
+        type: 'info'
+      })
+
+      return
 
       uni.navigateTo({
         url: '/user/commission-statistics/withdrawal?account=' + account
