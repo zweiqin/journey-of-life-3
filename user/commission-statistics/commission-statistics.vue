@@ -15,18 +15,18 @@
 
     <!-- 上面三个统计 -->
     <view class="top-pane">
-      <view class="item">
+      <view class="item" @click="go('/user/commission-statistics/commission-detail?tag=1')">
         <image class="img" src="../../static/images/new-user/group/today-price.png"></image>
         <view class="text">今日佣金</view>
         <view class="value">￥{{ commissionData.todaySum || 0 }}</view>
       </view>
 
-      <view class="item">
+      <view class="item" @click="go('/user/commission-statistics/commission-detail?tag=2')">
         <image class="img" src="../../static/images/new-user/group/total-price.png"></image>
         <view class="text">累计佣金</view>
         <view class="value">￥{{ commissionData.remainAmount || 0 }}</view>
       </view>
-      <view class="item">
+      <view class="item" @click="go('/user/commission-statistics/commission-detail?tag=3')">
         <image class="img" src="../../static/images/new-user/group/lu-price.png"></image>
         <view class="text">途中佣金</view>
         <view class="value">￥{{ commissionData.inTheAccount || 0 }}</view>
@@ -43,8 +43,7 @@
         </view>
 
         <view class="item" @click="go('/user/commission-statistics/vip-user?date=now')">
-          <image class="img"
-            src="../../static/images//new-user/group/today-vip-number.png"></image>
+          <image class="img" src="../../static/images//new-user/group/today-vip-number.png"></image>
           <view class="text">今日会员(个)</view>
           <view class="value">{{ commissionData.todayFans || 0 }}</view>
         </view>

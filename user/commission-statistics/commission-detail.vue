@@ -1,57 +1,60 @@
 <template>
   <view class="commisions-list">
-    <TuanPageHead :scrollTop="scrollTop" fixed title="佣金详情" bacokground="#fff">
+    <TuanPageHead :scrollTop="$data._scrollTop" fixed title="佣金详情" bacokground="#fff">
       <tui-icon @click="handleBack" slot="left" name="arrowleft" color="#3d3d3d"></tui-icon>
     </TuanPageHead>
 
     <view class="container">
-      <LoadingMore v-show="loading !== 'none'" :status="loading"></LoadingMore>
-
-      <view class="list" v-if="commissionDataList.length && loading !== 'loading'">
-        <view class="item" v-for="item in commissionDataList" :key="item.id">
+      <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
+      <view class="list" v-if="$data._list.length && $data._status !== 'loading'">
+        <view class="item" v-for="item in $data._list" :key="item.id">
           <view class="item-bar">
-            <view class="left">订单总额：￥{{ item.sumPrice }}</view>
-            <view class="right"
-              >分佣金额：￥{{ item.sfPrice }} <text style="color: #fe751a; margin-left: 10upx">({{ item.sfProportion * 100 }}%)</text></view
-            >
+            <view class="left">订单总额：￥{{ item.totalAmount }}</view>
+            <view class="right">分佣金额：￥{{ item.amount }}
+              <!-- <text style="color: #fe751a; margin-left: 10upx">({{
+              item.proportion * 100 }}%)</text> -->
+            </view>
           </view>
 
           <view class="item-bar gray">
-            <view class="left">订单号：{{ item.orderNo }}</view>
-            <view class="right" :style="{ color: item.status === 1 ? 'red' : 'green' }">{{ item.status === 1 ? '订单未完成' : '订单已完成' }}</view>
+            <view class="left">订单号：{{ item.orderSn }}</view>
+            <view class="right" :style="{ color: !item.isTo ? 'red' : 'green' }">{{ !item.isTo ? '订单未完成' :
+              '订单已完成' }}</view>
           </view>
 
           <view class="item-bar gray">
             <view class="left">创建时间：{{ item.createTime }}</view>
+            <view style="padding: 4upx 12upx; background-color: #ff8700; border-radius: 6upx; color: #fff;">{{ item.type |
+              filterType }}
+            </view>
           </view>
         </view>
       </view>
-      <view class="no-data" v-if="!commissionDataList.length && loading != 'loading'"> 暂无数据... </view>
+      <view class="no-data" v-if="$data._status !== 'loading' && !$data._list.length"> 暂无数据... </view>
     </view>
-
     <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import moment from 'moment';
-import { USER_INFO } from 'constant';
-import { getCommissionDeatilApi } from '../../api/user';
+import { getCommissionDeatilListApi } from '../../api/anotherTFInterface';
+import loadDataMixin from '../../mixin/loadMore'
+
 export default {
+  mixins: [
+    loadDataMixin({
+      api: getCommissionDeatilListApi,
+      mapKey: { totalPages: "total", list: "records", size: "pageSize" }
+    })
+  ],
   data() {
     return {
-      commissionDataList: [],
-      loading: 'loading',
-      scrollTop: 0,
-      userInfo: null
-    };
+      type: 1
+    }
   },
   onLoad(params) {
-    this.userInfo = uni.getStorageSync(USER_INFO);
-    // console.log(dayjs.);
-    if (this.userInfo) {
-      this.getCommissionDeatil(params.date === 'now');
-    }
+    this.type = params.tag || 1
+    this.loadData()
   },
   methods: {
     handleBack() {
@@ -60,42 +63,26 @@ export default {
       });
     },
 
-    async getCommissionDeatil(isToday) {
+    async loadData() {
       try {
-        this.loading = 'loading';
-        const res = await getCommissionDeatilApi({ mobile: this.userInfo.phone });
-        if (res) {
-          if (isToday) {
-            const currentDate = moment().format('YYYY-MM-DD');
-            this.commissionDataList = res.filter((item) => {
-              return currentDate == item.createTime.split(' ')[0];
-            });
-          } else {
-            this.commissionDataList = res;
-          }
-        }
-      } catch (error) {
-        this.ttoast({
-          type: 'fail',
-          title: '佣金详情获取失败',
-          content: error
-        });
-
-        this.commissionDataList = [];
+        this.$data._query.today = this.type || 1
+        await this._loadData()
       } finally {
-        this.loading = 'more';
-        uni.stopPullDownRefresh();
+        uni.stopPullDownRefresh()
       }
     }
   },
 
-  onPullDownRefresh() {
-    this.getCommissionDeatil();
+  filters: {
+    filterType(type) {
+      return { 1: '关系链', 2: '商城', 3: '本地', 4: '服务' }[type]
+    }
   },
 
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
-  }
+  onPullDownRefresh() {
+    this.$data._query.page = 1
+    this.loadData()
+  },
 };
 </script>
 

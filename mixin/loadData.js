@@ -19,8 +19,7 @@ export default (options) => {
 				},
 				_listTotal: 0,
 				_list: [],
-				_isEmpty: false,
-				_scrollTop: 0
+				_isEmpty: false
 			}
 		},
 
