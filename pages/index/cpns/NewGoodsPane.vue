@@ -4,7 +4,8 @@
       <view class="level-1  level"></view>
       <view class="level-2  level"></view>
       <view class="level-3 level"></view>
-      <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(goods.image)})`, filter: 'blur(10ox)' }" mode="aspectFit"
+      <!-- background: `url(${common.seamingImgUrl(goods.image)})`, -->
+      <tui-lazyload-img :style="{ filter: 'blur(10ox)' }" mode="aspectFit"
         :src="common.seamingImgUrl(goods.image)"></tui-lazyload-img>
     </view>
 
