@@ -476,3 +476,6 @@ export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest(
 
 // 今日会员，累计会员
 export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
+
+// 获取佣金列表
+export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')

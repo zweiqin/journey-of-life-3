@@ -95,13 +95,26 @@ export default {
     handleBack() {
         uni.navigateBack();
     },
-    getList() {
+    getList(isAdd) {
 			getClaasifyProductsApi({
 				classifyId: this.subId,
 				productName: '',
 				...this.querList
 			}).then(res => {
-                this.goodsList = res.data.list
+        if (this.goodsList.length === res.data.total) {
+            return uni.showToast({
+              title: '没有更多了',
+              icon: 'none'
+            });
+        }
+        if (isAdd) {
+          res.data.list.forEach(item => {
+            this.goodsList.push(item)
+          })
+            // this.goodsList = [...this.goodsList, ...res.data.list]
+        }else {
+            this.goodsList = res.data.list
+        }
 				// res.data.list.forEach(item => .push(item))
 				// console.log(res);
 			}).catch(err => {
@@ -114,6 +127,7 @@ export default {
     handleChooseItem(onceId) {
       this.mainId = onceId
       this.subId = onceId
+      this.querList.page = 1
       // this.resetQueryInfo()
       // this.setData()
       this.getList()
@@ -137,7 +151,8 @@ export default {
   },
 
   onReachBottom() {
-    
+    this.querList.page++
+    this.getList(true)
   },
 
   onPageScroll(e) {
