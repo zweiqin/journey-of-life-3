@@ -237,8 +237,7 @@
 										<view v-else class="money-box">{{ sItem.reduceMoney }}折券</view>
 										<view class="date font-color-999" style="font-size:22upx;margin-top: 10upx;">
 											{{ getDate(sItem.startTime.replace(/-/g, '.')).split(' ')[0] }}-{{
-												getDate(sItem.endTime.replace(/-/g, '.')).split(' ')[0]
-											}}
+												getDate(sItem.endTime.replace(/-/g, '.')).split(' ')[0] }}
 										</view>
 										<view class="info-box">
 											<view class="info font-color-999">满{{ sItem.fullMoney }}元可用</view>

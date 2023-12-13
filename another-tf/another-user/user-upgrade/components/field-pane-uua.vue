@@ -214,6 +214,9 @@ export default {
 					this.relationLevelName = '合伙人'
 					this.relationshipLevelName = '合伙人'
 				}
+				// this.upgradeLevelType = 0
+				// this.relationLevelName = ''
+				// this.relationshipLevelName = ''
 				uni.hideLoading()
 			})
 			.catch((e) => {

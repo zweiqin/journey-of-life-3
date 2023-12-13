@@ -88,6 +88,9 @@ export const addOrderSubmitUserRechargeApi = (data) => AnotherTFRequest('/order/
 // 用户平台充值流水记录
 export const getByAllBuyerUserRechargeLogApi = (data) => AnotherTFRequest('/buyerUserRechargeLog/getByAll', data, 'POST')
 
+// 提现申请
+export const updateSaveDistributorWithdrawApi = (data) => AnotherTFRequest('/distributor/save', data, 'POST')
+
 /**
  * @description 社区商圈相关接口
  */
@@ -124,8 +127,23 @@ export const getStatisticsAmountRelationshipApi = (data) => AnotherTFRequest('/p
 export const getStatisticsRecordRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
 
 // 会员中心
+// 会员权益查询
+export const getMemberShipListApi = (data) => AnotherTFRequest('/member/getMemberShipList', data)
+
+// 查询会员所有等级
+export const getAllMemberLevelInfoApi = (data) => AnotherTFRequest('/member/getAllMemberLevelInfo', data)
+
 // 会员图标
 export const getMemberByMemberLevelIdApi = (data) => AnotherTFRequest(`/member/getMemberByMemberLevelId/${data.memberLevelId}`, data)
+
+// 查询签到列表
+export const getSelectSigninRecordListApi = (data) => AnotherTFRequest('/member/selectSigninRecordList', data)
+
+// 查询签到明细
+export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/selectSigninHistory', data)
+
+// 签到
+export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST')
 
 // 购物车
 // 商家购物车查询
@@ -259,6 +277,12 @@ export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBat
 // 积分兑换优惠券
 export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
 
+// 积分签到
+export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
+
+// 根据月份查询签到记录
+export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
+
 // 查询可以积分兑换的优惠券
 export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
 
@@ -319,6 +343,22 @@ export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/wi
 
 // 商家的客户充值列表
 export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST')
+
+// 用户银行卡相关接口
+// 查询用户所有银行卡
+export const getAllBankcardListApi = (data) => AnotherTFRequest('/bank/getAll', data)
+
+// 删除用户银行卡
+export const deleteUserBankcardApi = (data) => AnotherTFRequest('/bank/delete', data, 'POST')
+
+// 修改银行卡
+export const updateUserBankcardApi = (data) => AnotherTFRequest('/bank/update', data, 'POST')
+
+// 添加银行卡
+export const addUserBankcardApi = (data) => AnotherTFRequest('/bank/save', data, 'POST')
+
+// 修改银行卡
+export const getByIdUserBankcardApi = (data) => AnotherTFRequest('/bank/getById', data)
 
 // 收款账户。商家银行卡
 // 绑定账户
@@ -407,6 +447,9 @@ export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', da
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')
 
+// 评价
+export const addCommentOrderApi = (data) => AnotherTFRequest('/order/addComment', data, 'POST')
+
 // 查询组合套餐
 export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/selectCompose', data)
 
@@ -432,4 +475,4 @@ export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotS
 export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
 
 // 今日会员，累计会员
-export const getFansListApi = data => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
+export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')

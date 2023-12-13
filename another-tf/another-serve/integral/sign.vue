@@ -2,6 +2,7 @@
 	<view v-if="ifShow" class="signBox">
 		<JHeader title="签到领积分" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="signBg">
+			<view style="font-size: 44upx;font-weight: bold;text-align: center;">每日签到送积分</view>
 			<view v-if="continuousNum" class="signDayNumBox flex-center">
 				<view class="signDayNum fs28">
 					当前周期已连续签到
@@ -23,9 +24,9 @@
 				<view class="calendarBg">
 					<view class="calendar-box">
 						<view class="month">
-							<view class="u-arrow u-arrow-left" @click="lastMonth"></view>
+							<tui-icon name="arrowleft" :size="48" unit="upx" color="#C5AA7B" @click="lastMonth"></tui-icon>
 							<view>{{ year }}年{{ month }}月</view>
-							<view class="u-arrow u-arrow-right" @click="nextMonth"></view>
+							<tui-icon name="arrowright" :size="48" unit="upx" color="#C5AA7B" @click="nextMonth"></tui-icon>
 							<picker v-if="checkDate" class="picker" mode="date" fields="month" @change="changeDate" />
 						</view>
 						<view class="week">
@@ -49,13 +50,13 @@
 					</view>
 				</view>
 			</view>
-		</view>
-		<view class="redEnvelope mar-top-20">
-			<view class="redEnvelopeBg flex-items flex-end">
-				<view>
-					<view class="fs32 font-color-333">积分兑换红包优惠券</view>
-					<view class="fs24 font-color-999 mar-top-10">各种大额红包等你兑换哦</view>
-					<view class="fs24 font-color-FFF exchangeBtn mar-top-20" @click="goToexchange">马上兑换</view>
+			<view class="redEnvelope mar-top-20">
+				<view class="redEnvelopeBg flex-items flex-center">
+					<view>
+						<view class="fs32 font-color-333">积分兑换红包优惠券</view>
+						<view class="fs24 font-color-999 mar-top-10">各种大额红包等你兑换哦</view>
+						<view class="fs24 font-color-FFF exchangeBtn mar-top-20" @click="goToexchange">马上兑换</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -82,9 +83,7 @@
 </template>
 
 <script>
-// import dateUtil from '@/utils/dateUtil'
-// const NET = require('../../utils/request')
-// const API = require('../../config/api')
+import { updateCreditSignInApi, updateCreditSelectByMonthApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Sign',
 	data() {
@@ -93,8 +92,12 @@ export default {
 			year: new Date().getFullYear(), // 当前年
 			month: new Date().getMonth() + 1, // 当前月
 			continuousNum: '', // 连续签到天数
-			currentDay: dateUtil.formatDate(),
-			currentMonth: dateUtil.formatMonth(),
+			currentDay: new Date(Date.now()).toLocaleString()
+				.substring(0, 10)
+				.replaceAll('/', '-'),
+			currentMonth: new Date(Date.now()).toLocaleString()
+				.substring(0, 7)
+				.replaceAll('/', '-'),
 			lastDay: '',
 			weeked: '', // 今天周几
 			dayArr: [], // 当前月每日
@@ -119,27 +122,18 @@ export default {
 			// })
 			const selectMonth = this.year + '-' + this.formatNum(this.month)
 			const that = this
-			NET.request(
-				API.selectByMonth,
-				{
-					month: `${this.year}-${this.formatNum(this.month)}`
-				},
-				'POST'
-			)
+			updateCreditSelectByMonthApi({ month: `${this.year}-${this.formatNum(this.month)}` })
 				.then((res) => {
 					// uni.hideLoading()
 					that.ifShow = true
 					that.signList = res.data
-
 					// 初始日期
 					that.initDate()
-
 					// 今天日期
 					if (that.currentMonth === selectMonth) {
 						that.continuousNum = that.signList[that.signList.length - 1].continueDay || 0
 						that.lastDay = that.signList[that.signList.length - 1].createTime.substring(0, 10)
 					}
-
 					// 今天周几
 					that.weeked = that.weekArr[new Date().getDay()]
 					// 签到功能
@@ -148,11 +142,9 @@ export default {
 							that.$set(this.dayArr[i], 'flag', false)
 						}
 					}
-
 					that.signList.forEach((item) => {
 						item.day = parseInt(item.createTime.slice(8, 10))
 					})
-
 					for (let i = 0; i < that.signList.length; i++) {
 						for (let j = 0; j < that.dayArr.length; j++) {
 							if (that.signList[i].day === that.dayArr[j].day && that.dayArr[j].date !== '') {
@@ -161,7 +153,6 @@ export default {
 						}
 					}
 				})
-				.catch((res) => { })
 		},
 		// 签到
 		signInFn() {
@@ -169,12 +160,11 @@ export default {
 			//   mask: true,
 			//   title: '请稍等...',
 			// })
-			NET.request(API.creditSignIn, {}, 'POST').then((res) => {
+			updateCreditSignInApi({}).then((res) => {
 				// uni.hideLoading()
 				this.getSignData()
 				this.signTips = true
 			})
-				.catch((res) => { })
 		},
 		// 格式化日期位数
 		formatNum(num) {
@@ -270,9 +260,8 @@ export default {
 	padding-bottom: 50rpx;
 
 	.signBg {
-		// background: url("../../static/images/origin/signBg.png") no-repeat left top;
 		background-size: contain;
-		min-height: 702rpx;
+		min-height: 100vh;
 		padding-top: 160rpx;
 
 		.signDayNumBox {
@@ -292,7 +281,7 @@ export default {
 			.signStateBg {
 				width: 300rpx;
 				height: 300rpx;
-				// background: url("../../static/images/origin/signState.png") no-repeat left top;
+				background-color: #fddd99;
 				background-size: contain;
 
 				text {
@@ -301,7 +290,7 @@ export default {
 			}
 
 			.noSign {
-				// background: url("../../static/images/origin/signState1.png") no-repeat left top;
+				background-color: #cccccc;
 				background-size: contain;
 
 				text {
@@ -328,7 +317,7 @@ export default {
 
 		.redEnvelopeBg {
 			height: 230rpx;
-			// background: url("../../static/images/origin/redEnvelopeBg.png") no-repeat left top;
+			background-color: #fff9f6;
 			background-size: contain;
 			padding-right: 50rpx;
 
@@ -370,11 +359,6 @@ export default {
 	padding: 0 50rpx;
 	position: relative;
 	background: #FAF6ED;
-
-	.u-arrow {
-		border-top: 4rpx solid #666;
-		border-right: 4rpx solid #666;
-	}
 }
 
 .picker {
