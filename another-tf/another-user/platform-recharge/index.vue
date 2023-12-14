@@ -2,7 +2,7 @@
 	<view class="platform-recharge">
 		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;">
 			<template #ftFn>
-				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="go('/user/sever/withdrawal/index')">提现</text>
+				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="handleMemberAccountWithdraw">提现</text>
 			</template>
 		</JHeader>
 		<view
@@ -119,6 +119,8 @@ export default {
 	name: 'PlatformRecharge',
 	onLoad() {
 		this.handleClickCurrentRecharge(this.rechargeAmountsList[0], 0)
+	},
+	onShow() {
 		this.getPricePlatformAll()
 	},
 
@@ -189,6 +191,14 @@ export default {
 				.catch(() => {
 					uni.hideLoading()
 				})
+		},
+
+		handleMemberAccountWithdraw() {
+			if (this.pricePlatformInfo.price <= 0) {
+				this.$showToast('您暂时没有余额，不能提现')
+			} else {
+				this.go('/another-tf/another-serve/withdraw/index')
+			}
 		}
 	}
 }

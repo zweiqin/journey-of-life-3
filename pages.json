@@ -1357,6 +1357,24 @@
           }
         },
         {
+          "path": "another-serve/withdraw/index",
+          "style": {
+            "navigationBarTitleText": "提现"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/index",
+          "style": {
+            "navigationBarTitleText": "银行卡"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/addBankcard",
+          "style": {
+            "navigationBarTitleText": "添加银行卡"
+          }
+        },
+        {
           "path": "another-user/platform-recharge/recharge-record",
           "style": {
             "navigationBarTitleText": "平台充值流水记录"
@@ -1447,6 +1465,12 @@
           }
         },
         {
+          "path": "another-serve/memberCenter/index",
+          "style": {
+            "navigationBarTitleText": "会员中心"
+          }
+        },
+        {
           "path": "another-serve/combination/index",
           "style": {
             "navigationBarTitleText": "组合优惠"
@@ -1480,6 +1504,12 @@
           "path": "another-serve/evaluate/index",
           "style": {
             "navigationBarTitleText": "评价"
+          }
+        },
+        {
+          "path": "another-serve/evaSuccessful/index",
+          "style": {
+            "navigationBarTitleText": "评价成功"
           }
         },
         {

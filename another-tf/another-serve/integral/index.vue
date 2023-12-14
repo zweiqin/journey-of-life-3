@@ -43,7 +43,7 @@
 				<tui-icon name="member-fill" :size="96" unit="upx" color="#fdbc3d" margin="0 20upx 0 0"></tui-icon>
 				<view class="signText fs28 font-color-C5AA7B">积分签到</view>
 			</view>
-			<view class="u-arrow u-arrow-right"></view>
+			<tui-icon name="arrowright" :size="48" unit="upx" color="#C5AA7B"></tui-icon>
 		</view>
 		<view class="signTabs mar-top-30 flex-items">
 			<view :class="{ active: currentTab === 0 }" class="tabItem flex-items flex-center" @click="handleChangeTab(0)">
@@ -380,13 +380,6 @@ export default {
 		height: 96rpx;
 		border-radius: 24rpx;
 		padding: 0 20rpx;
-
-		.u-arrow {
-			width: 24rpx;
-			height: 24rpx;
-			border-top: 3rpx solid #C5AA7B;
-			border-right: 3rpx solid #C5AA7B;
-		}
 	}
 
 	.signTabs {

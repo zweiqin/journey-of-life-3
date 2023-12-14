@@ -129,20 +129,13 @@ export default {
       if (!account) {
         this.ttoast({
           type: 'fail',
-          title: '暂无佣金可提现'
+          title: '佣金正在审批中'
         });
         return;
       }
 
-      this.ttoast({
-        title: '暂未开放',
-        type: 'info'
-      })
-
-      return
-
       uni.navigateTo({
-        url: '/user/commission-statistics/withdrawal?account=' + account
+        url: '/another-tf/another-user/platform-recharge/index'
       });
     }
   },

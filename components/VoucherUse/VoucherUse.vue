@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="line-pane" @click="drawerVisible = true">
-			<view style="font-size: 28upx;" class="title">代金券</view>
+			<view style="font-size: 28upx;" class="title">代金券（余额：{{ voucherNum }}）</view>
 			<view style="display: flex;align-items: center;">
 				<view class="desc" style="color: #999999">{{ voucherName }}</view>
 				<tui-icon name="arrowright" size="22" color="#979797" style="padding: 2upx 0 2upx 8upx;"></tui-icon>
@@ -19,7 +19,7 @@
 								<tui-list-cell padding="16upx">
 									<view>
 										<text style="padding-right: 10upx;">不使用</text>
-										<tui-radio value="0" color="#e25531" border-color="#999"></tui-radio>
+										<tui-radio value="0" color="#e98166" border-color="#999"></tui-radio>
 									</view>
 								</tui-list-cell>
 							</tui-label>
@@ -30,7 +30,9 @@
 					</view>
 					<view>
 						<view v-for="item in voucherList" :key="item.id" class="item">
-							<view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;margin: 20upx;border: 1upx solid #b1b0b0;border-radius: 12upx;">
+							<view
+								style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;margin: 20upx;border: 1upx solid #b1b0b0;border-radius: 12upx;"
+							>
 								<view style="flex: 1;">
 									<view style="display: flex;justify-content: space-between;">
 										<text>{{ item.voucherName }}</text>
@@ -81,7 +83,7 @@ export default {
 		voucherList: {
 			handler(newVal) {
 				if (newVal && newVal.length && !this.voucherSelected) {
-					this.voucherName = '不使用'
+					this.voucherName = '点击使用'
 					this.voucherSelected = 0
 				} else if (!newVal.length) {
 					this.voucherName = '暂无代金券可用'
@@ -94,7 +96,7 @@ export default {
 	},
 	methods: {
 		handleReset() {
-			this.voucherName = '不使用'
+			this.voucherName = '点击使用'
 			this.voucherSelected = 0
 			this.drawerVisible = false
 		},

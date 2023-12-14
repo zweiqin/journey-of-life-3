@@ -2,7 +2,7 @@
   <view class="item" v-if="fansInfo" @click="$emit('view', fansInfo)">
     <view class="avatar-wrapper">
       <image class="avatar" :src="fansInfo.headImage"></image>
-      <!-- <view class="mask">{{ fansInfo.userType === 1 ? '会员' : '团长' }}</view> -->
+      <view class="mask">{{ fansInfo.role | filterRole }}</view>
     </view>
     <view class="info">
       <view class="name">{{ fansInfo.phone }}
@@ -46,9 +46,14 @@ export default {
     }
   },
 
+  filters: {
+    filterRole(role) {
+      return { 5: '区代理', 4: '加盟商', 3: '合伙人', 2: '团长', 1: '会员',0: '未知' }[role]
+    }
+  },
+
   methods: {
     handleCallPhone(phone) {
-      console.log(phone);
       if (!phone) return;
       uni.makePhoneCall({
         phoneNumber: phone
@@ -73,6 +78,7 @@ export default {
     position: relative;
     border-radius: 10upx;
     overflow: hidden;
+    border: 1upx solid #f3f3f3;
 
     .mask {
       position: absolute;
