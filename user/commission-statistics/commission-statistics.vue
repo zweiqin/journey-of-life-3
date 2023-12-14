@@ -134,15 +134,8 @@ export default {
         return;
       }
 
-      this.ttoast({
-        title: '暂未开放',
-        type: 'info'
-      })
-
-      return
-
       uni.navigateTo({
-        url: '/user/commission-statistics/withdrawal?account=' + account
+        url: '/another-tf/another-user/platform-recharge/index'
       });
     }
   },
