@@ -25,7 +25,7 @@
 
       <view class="main">
         <view class="mid">
-          <sort :parentId="currentTab" v-for="item1 in sub" :key="item1.classifyId" :name="item1.classifyName" :id="item1.classifyId" :picUrl="item1.classifyImage"> </sort>
+          <sort :parentId="currentTab" v-for="item1 in renderListData" :key="item1.classifyId" :name="item1.classifyName" :id="item1.classifyId" :picUrl="item1.classifyImage"> </sort>
         </view>
       </view>
     </view>
@@ -34,6 +34,7 @@
 
 <script>
 import { getFirstClassifyApi } from '@/api/anotherTFInterface'
+import  { hiddenSort } from "./hiddenSort"
 import sort from './cpns/sort.vue';
 // 1147
 export default {
@@ -50,6 +51,22 @@ export default {
             picUrl: ''
         }
     },
+	computed: {
+		renderListData: {
+			get() {
+				let arr = []
+				this.sub.forEach(item => {
+					if(!hiddenSort.includes(`${item.classifyId}`)) {
+						arr.push(item)
+					}
+				})
+				return arr
+			},
+			set(value) {
+				console.error(value + 'renderListData is Not change')
+			}
+		}
+	},
     onLoad() {
         getFirstClassifyApi({
 			classifyId: '1160'
