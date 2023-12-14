@@ -38,7 +38,7 @@ import  { hiddenSort } from "./hiddenSort"
 import sort from './cpns/sort.vue';
 // 1147
 export default {
-    name: 'Fuck',
+    name: 'blank',
     components: {
         sort
     },

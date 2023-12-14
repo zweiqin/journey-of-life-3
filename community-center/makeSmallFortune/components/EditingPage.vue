@@ -42,17 +42,6 @@
             <button class="CreatedTextBtn" @click="createdParagraph">添加段落组合</button>  
             <text class="CreatedTeps">(如果一组段落中的图片不传则默认为不存在该图片)</text>
         </view>
-        <!-- <view class="addType">
-            <view class="addTypeIltem">
-                <text class="typeText">标签类型:</text>
-                <view class="ZHFwcnm" v-if="postCategoryName">
-                    <tui-icon @click="formData.postCategoryId = '';postCategoryName = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
-                    {{ postCategoryName }}
-                </view>
-            </view>
-            <button class="addTpyeBtn" @click="show = true">添加标签</button>
-            <TuiSelect type="select" mask-closable="true" :list="articlesType" :show="show" @confirm="confirm" @close="onClose"></TuiSelect>
-        </view> -->
     </view>
 </template>
 

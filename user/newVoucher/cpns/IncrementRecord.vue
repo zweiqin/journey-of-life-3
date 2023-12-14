@@ -11,8 +11,8 @@
                     <view class="itemIcon" style="background: #FF380C;">
                         <image class="Iconimg" src="@/static/images/user/zhichu.png"></image>
                     </view>
-                    <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text>
-                    <!-- <text class="txt2">{{ item.number }}<text class="cnmb">({{ statusData[item.status] }})</text></text> -->
+                    <text class="txt2">{{ item.number }}<text class="texts">({{ statusData[item.status] }})</text></text>
+                    <!-- <text class="txt2">{{ item.number }}<text class="">({{ statusData[item.status] }})</text></text> -->
                     <view class="itemDetails">
                         <text class="txt1">代金卷{{ item.typeStrName }}</text>
                         <text class="txt3">{{ item.typeStrName }}  ID : {{ item.id }}</text>
@@ -111,7 +111,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cnmb {
+.texts {
     margin-left: 10rpx;
     font-size: 28rpx;
     letter-spacing: 2rpx;
