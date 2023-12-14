@@ -129,7 +129,7 @@ export default {
       if (!account) {
         this.ttoast({
           type: 'fail',
-          title: '暂无佣金可提现'
+          title: '佣金正在审批中'
         });
         return;
       }
