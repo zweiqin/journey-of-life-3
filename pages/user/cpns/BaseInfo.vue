@@ -16,7 +16,7 @@
 				<view v-else class="user-info-detail" @click="go('/another-tf/another-serve/memberCenter/index')">
 					<view style="display: flex;align-items: center;">
 						<view style="padding: 6upx 8upx;margin-right: 12upx;;font-size: 34upx;background-color: #e7e3e0;">{{ $store.getters.userInfo.memberLevelName }}</view>
-						<view class="user-nack-name">{{ $store.getters.userInfo.name || '--' }}</view>
+						<view class="user-nack-name">{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}</view>
 					</view>
 					<view class="tags">
 						<view>成长值</view>
