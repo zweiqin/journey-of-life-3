@@ -67,7 +67,7 @@
 		</view>
 		<tui-toast ref="toast"></tui-toast>
 		<!-- <view class="agreementBox">
-			<checkbox :checked='agreementStatus' @click="fuckYouZWQ" />
+			<checkbox :checked='agreementStatus' @click="" />
 			<text style="margin-left: 2rpx; width: 370rpx" class="colorText">
 			<view class="Agreements">
 			我已阅读并同意
@@ -186,9 +186,6 @@ export default {
 		}
 	},
 	methods: {
-		fuckYouZWQ(value) {
-			this.agreementStatus = !this.agreementStatus
-		},
 		// 登录
 		async handlelogin() {
 			// if (!this.agreementStatus) {

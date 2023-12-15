@@ -4,9 +4,6 @@
 	<view class="container flex-column">
 		<view style="padding: 30upx 30upx 0;color: #000000;">
 			<image src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;" @click="goBack"></image>
-			<!-- <view class="cnmZWQ" @click="goBack">
-				<JHeader width="60" height="60" title=""></JHeader>
-				</view> -->
 		</view>
 		<!-- 		<view class="register">
 			注册

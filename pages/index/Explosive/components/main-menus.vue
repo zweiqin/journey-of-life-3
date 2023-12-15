@@ -10,7 +10,7 @@
                     class="item"
                     :class="{ active: subId == item.classifyId }"
                     @click="handleClickOnceMenuItem(item)"
-                    v-for="item in onceMenus"
+                    v-for="item in renderListData"
                     :key="item.classifyId"
                     :id="`item_${item.classifyId}`"
                 >
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { hiddenSort } from "../hiddenSort"
 import { getFirstClassifyApi } from '@/api/anotherTFInterface'
 export default {
   props: {
@@ -48,7 +49,22 @@ export default {
       scrollIntoViewId: "item1",
     };
   },
-
+  computed: {
+  	renderListData: {
+  		get() {
+  			let arr = []
+  			this.onceMenus.forEach(item => {
+  				if(!hiddenSort.includes(`${item.classifyId}`)) {
+  					arr.push(item)
+  				}
+  			})
+  			return arr
+  		},
+  		set(value) {
+  			console.error(value + 'renderListData is Not change')
+  		}
+  	}
+  },
   methods: {
     async getGoodsTypes() {
         getFirstClassifyApi({
