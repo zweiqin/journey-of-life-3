@@ -127,7 +127,7 @@
 				</view>
 			</view>
 			<VoucherUse
-				v-if="settlement.userVoucherDeductLimit" ref="refVoucherUse" :voucher-list="settlement.voucherList"
+				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse" :voucher-list="settlement.voucherList"
 				:voucher-num="settlement.userVoucherDeductLimit" @choose="handleChooseVoucher"
 			></VoucherUse>
 
@@ -833,33 +833,39 @@ export default {
 		handleChooseVoucher(e) {
 			console.log(e)
 			if (e.id) {
-				if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) {
-					// 清除店铺优惠券数据
-					for (let index = 0; index < this.settlement.shops.length; index++) {
-						for (let i = 0; i < this.settlement.shops[index].shopCoupons.length; i++) {
-							this.settlement.shops[index].shopCoupons[i].checked = false
+				if (this.settlement.voucherTotalAll) {
+					if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) {
+						// 清除店铺优惠券数据
+						for (let index = 0; index < this.settlement.shops.length; index++) {
+							for (let i = 0; i < this.settlement.shops[index].shopCoupons.length; i++) {
+								this.settlement.shops[index].shopCoupons[i].checked = false
+							}
+							this.settlement.shops[index].currentCoupon = {}
+							this.settlement.shops[index].totalAfterDiscount = this.settlement.shops[index].total
 						}
-						this.settlement.shops[index].currentCoupon = {}
-						this.settlement.shops[index].totalAfterDiscount = this.settlement.shops[index].total
+						this.selectShopCoupon = []
+						// 清除平台优惠券数据
+						this.settlement.coupons && this.settlement.coupons.forEach((item) => {
+							item.checked = false
+						})
+						this.promotionInfoDTO = { couponId: 0, ifAdd: 1, reduceMoney: 0 }
+						this.checkedPlatformCoupon = undefined
+						this.settlement.shops.forEach((shopItem) => {
+							if (shopItem.skus) {
+								shopItem.skus.forEach((skuItem) => {
+									skuItem.buyerCouponId = null
+								})
+							}
+						})
+						// 取消选择积分
+						this.selectIntegral = false
+					} else {
+						this.$showToast('代金券数量不足！')
+						this.$refs.refVoucherUse.handleReset()
+						return
 					}
-					this.selectShopCoupon = []
-					// 清除平台优惠券数据
-					this.settlement.coupons && this.settlement.coupons.forEach((item) => {
-						item.checked = false
-					})
-					this.promotionInfoDTO = { couponId: 0, ifAdd: 1, reduceMoney: 0 }
-					this.checkedPlatformCoupon = undefined
-					this.settlement.shops.forEach((shopItem) => {
-						if (shopItem.skus) {
-							shopItem.skus.forEach((skuItem) => {
-								skuItem.buyerCouponId = null
-							})
-						}
-					})
-					// 取消选择积分
-					this.selectIntegral = false
 				} else {
-					this.$showToast('代金券数量不足！')
+					this.$showToast('商品不支持代金券！')
 					this.$refs.refVoucherUse.handleReset()
 					return
 				}

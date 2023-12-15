@@ -132,7 +132,7 @@ export const myFunction = [
 	{
 		name: '购物车',
 		icon: require('../../static/images/new-user/menu-icon/gouwuche.png'),
-		url: '/user/sever/shopCar/shopCar'
+		url: '/another-tf/another-serve/shopCar/shopCar'
 	},
 	{
 		name: '收藏',
@@ -160,24 +160,24 @@ export const myFunction = [
 	// 	url: '/user/sever/view-history?page=follow'
 	// },
 	// {
-	// 	name: '微店',
+	// 	name: '微店', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/weidian.png'),
 	// 	role: [1, 6, 7],
 	// 	url: '/user/sever/microstore/microstore'
 	// },
 	// {
-	// 	name: '申请团长',
+	// 	name: '申请团长', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png'),
 	// 	url: '/user/sever/regimental-commander/regimental-commander',
 	// 	type: 'regimentalCommander'
 	// },
 	// {
-	// 	name: '区代理',
+	// 	name: '区代理', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/qudaili.png'),
 	// 	url: '/user/sever/regional-agent/regional-agent'
 	// },
 	// {
-	// 	name: '申请开店',
+	// 	name: '申请开店', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 	// 	url: '/user/sever/applyStore/index',
 	// 	role: [1, 6, 7]
@@ -188,7 +188,7 @@ export const myFunction = [
 	// 	url: '/user/smartAlbum/index'
 	// },
 	// {
-	// 	name: '股东看板',
+	// 	name: '股东看板', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/gudongkanban.png'),
 	// 	url: '/user/shareholder/shareholder'
 	// }

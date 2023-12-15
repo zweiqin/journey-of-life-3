@@ -41,6 +41,11 @@
 						<view style="color: #f7a783;">商家分佣</view>
 						<view style="margin-top: 10upx;">{{ pricePlatformInfo.distributorPrice || 0 }}</view>
 					</view>
+					<view style="width: 2upx;background-color: #f37d49;"></view>
+					<view>
+						<view style="color: #f7a783;">关系链分佣</view>
+						<view style="margin-top: 10upx;">{{ pricePlatformInfo.commissionPrice || 0 }}</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -131,7 +136,8 @@ export default {
 				price: '', // 账户可提现金额
 				rechargePrice: '', // 账户充值余额
 				voucherPrice: '', // 代金券余额
-				distributorPrice: '' // 账户分销金额
+				distributorPrice: '', // 账户分销金额
+				commissionPrice: '' // 关系链分佣
 			},
 			rechargeAmountsList: [
 				{ amounts: 1000, voucherNum: 1000 },

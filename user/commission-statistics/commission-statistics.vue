@@ -80,7 +80,6 @@ import { getSmallAccountBookStatisticsApi } from '../../api/anotherTFInterface'
 export default {
   data() {
     return {
-      userInfo: null,
       commissionData: {},
     };
   },
@@ -117,10 +116,6 @@ export default {
 
     // 去管理银行卡
     handleToBankList() {
-      const tzApplyStatus = this.$store.getters.regimentalCommanderStatus
-      if (tzApplyStatus && tzApplyStatus === 3) {
-        return
-      }
       uni.navigateTo({ url: this.isTz ? '/user/commission-statistics/bank-list' : '/user/sever/regimental-commander/regimental-commander' });
     },
 

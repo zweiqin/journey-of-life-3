@@ -8,7 +8,7 @@
         <view class="icon-item end">终</view>
       </view>
       <view class="main-info">
-        <view v-for="user in userInfo" :key="user.label" class="info-item" @click="handleCollect(user)">
+        <view v-for="user in userInputMsg" :key="user.label" class="info-item" @click="handleCollect(user)">
           <view class="left">
             <view class="main-title">{{ user.label }}</view>
             <view class="desc">
@@ -95,7 +95,7 @@ export default {
         serveTime: '',
         deliveryType: 2
       },
-      userInfo: [
+      userInputMsg: [
         {
           label: '提货信息',
           desc: '点击填写提货信息',

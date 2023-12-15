@@ -9,16 +9,20 @@
 				<text class="shabizhongweiqing">数字化营销的领跑者</text>
 			</view>
 		</view>
-		<view style="
+		<view
+			style="
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         margin-top: 80upx;
-      ">
+      "
+		>
 			<view style="text-align: center">
-				<image style="width: 118upx; height: 98upx; margin-top: 140rpx" src="../../static/images/icon/we-chat.png"
-					mode="" />
+				<image
+					style="width: 118upx; height: 98upx; margin-top: 140rpx" src="../../static/images/icon/we-chat.png"
+					mode=""
+				/>
 				<TuanWXLogin @login="handleWXLoginAfter">
 					<view class="CaoNiMaZhongWeiQing">
 						微信一键登录
@@ -54,8 +58,10 @@
 						密码登录
 					</view>
 				</view>
-				<view style="display: flex; flex-direction: column; align-items: center"
-					@click="go('/pages/login/login-message')">
+				<view
+					style="display: flex; flex-direction: column; align-items: center"
+					@click="go('/pages/login/login-message')"
+				>
 					<view class="DiaoNiMaZhongWeiQing">
 						<image class="iconImg" src="../../static/images/icon/duanxindenglu.png"></image>
 					</view>
@@ -67,7 +73,7 @@
 		</view>
 		<tui-toast ref="toast"></tui-toast>
 		<!-- <view class="agreementBox">
-			<checkbox :checked='agreementStatus' @click="fuckYouZWQ" />
+			<checkbox :checked='agreementStatus' @click="handleAgree" />
 			<text style="margin-left: 2rpx; width: 370rpx" class="colorText">
 			<view class="Agreements">
 			我已阅读并同意
@@ -83,13 +89,13 @@
 </template>
 
 <script>
-import { sf } from '../../config'
+import { sf, A_TF_MAIN } from '../../config'
 import loginRule from './rules'
 import { throttle } from '../../utils'
 import {
 	T_NEW_BIND_TYPE,
 	USER_ID,
-	USER_INFO,
+	T_STORAGE_KEY,
 	NEW_BIND_ACTIVITY_ID,
 	NEW_BIND_SERVICE_ID,
 	NEW_BIND_SERVICE_URL,
@@ -151,11 +157,11 @@ export default {
 		}
 
 		const userId = uni.getStorageSync(USER_ID)
-		const userInfo = uni.getStorageSync(USER_INFO)
+		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 
-		if (userId && userInfo.userId) {
+		if (userId && userInfo.token) {
 			if (this.partnerCode) {
-				console.log(111);
+				console.log(111)
 				await this.handlePartnerBind(userId)
 				uni.switchTab({
 					url: '/'
@@ -186,7 +192,7 @@ export default {
 		}
 	},
 	methods: {
-		fuckYouZWQ(value) {
+		handleAgree(value) {
 			this.agreementStatus = !this.agreementStatus
 		},
 		// 登录
@@ -315,7 +321,7 @@ export default {
 						if (data.ok) {
 							_this.ttoast('操作成功')
 						} else {
-							console.log("草拟吗");
+							console.log('草拟吗')
 							_this.ttoast({
 								type: 'fail',
 								title: data.msg || '操作失败,请重试'
@@ -335,7 +341,7 @@ export default {
 						setTimeout(() => {
 							resolve()
 						}, 2000)
-					},
+					}
 				})
 			})
 		},
@@ -346,52 +352,29 @@ export default {
 			// #ifdef H5
 			// 判断是否已经绑定了手机号
 			if (!res.userInfo.phone) {
-				uni.navigateTo({
-					url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
-				})
+				window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${res.userInfo.weixinOpenid}`)
 				return
 			}
-
 			// 是否是师傅邀请码
 			if (_this.partnerCode) {
 				await _this.handlePartnerBind(res.userInfo.userId)
-				uni.switchTab({
-					url: '/'
-				})
+				window.location.replace(`${A_TF_MAIN}/#/`)
 				return
 			}
 			// 是否存在团长推广码
 			if (_this.partnerCode2) {
 				await _this.handleGroupBind(res.userInfo.userId)
-				uni.switchTab({
-					url: '/'
-				})
+				window.location.replace(`${A_TF_MAIN}/#/`)
 				return
 			}
-
 			if (this.redirect) {
-				// console.log('进来了', this.redirect)
-				if (tabbarList.includes(_this.redirect)) {
-					uni.switchTab({
-						url: _this.redirect
-					})
-				} else {
-					uni.redirectTo({
-						url: _this.redirect
-					})
-				}
+				window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
 			} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-				uni.redirectTo({
-					url: '/user/sever/activityCenter/index'
-				})
+				window.location.replace(`${A_TF_MAIN}/#/user/sever/activityCenter/index`)
 			} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-				uni.redirectTo({
-					url: '/pages/jump/jump'
-				})
+				window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
 			} else {
-				uni.switchTab({
-					url: '/pages/community-center/community-centerr'
-				})
+				window.location.replace(`${A_TF_MAIN}/#/`)
 			}
 			// #endif
 		}

@@ -8,7 +8,7 @@
       <view class="main-wrapper">
         <Field
           v-model="consigneeForm[item['field']]"
-          v-for="item in userInfo"
+          v-for="item in userInputMsg"
           :key="item.label"
           :data="item"
           class="field"
@@ -81,7 +81,7 @@ export default {
         isElevator: "有",
         floor: "",
       },
-      userInfo: [],
+      userInputMsg: [],
       columns: ["有", "无"],
       cacheName: "CONSIGNEE_",
     };
@@ -182,7 +182,7 @@ export default {
           return item.field !== "isElevator" && item.field !== "floor";
         });
       }
-      this.userInfo = data;
+      this.userInputMsg = data;
     },
 
     // 点击选择地址

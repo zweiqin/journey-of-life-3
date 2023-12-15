@@ -4,13 +4,7 @@
 	<view class="container flex-column">
 		<view style="padding: 30upx 30upx 0;color: #000000;">
 			<image src="@/static/images/detail/top-back.png" style="width:34rpx;height:50rpx;" @click="goBack"></image>
-			<!-- <view class="cnmZWQ" @click="goBack">
-				<JHeader width="60" height="60" title=""></JHeader>
-				</view> -->
 		</view>
-		<!-- 		<view class="register">
-			注册
-			</view> -->
 		<view class="PhoneAuthentication">
 			<text class="textRL">账号密码登录</text>
 			<text class="textTips">请先注册账号再登录</text>
@@ -75,7 +69,7 @@ import { throttle } from '../../utils'
 import {
 	T_NEW_BIND_TYPE,
 	USER_ID,
-	USER_INFO,
+	T_STORAGE_KEY,
 	NEW_BIND_ACTIVITY_ID,
 	NEW_BIND_SERVICE_ID,
 	NEW_BIND_SERVICE_URL,
@@ -143,9 +137,9 @@ export default {
 		}
 
 		const userId = uni.getStorageSync(USER_ID)
-		const userInfo = uni.getStorageSync(USER_INFO)
+		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 
-		if (userId && userInfo.userId) {
+		if (userId && userInfo.token) {
 			if (this.partnerCode) {
 				await this.handlePartnerBind(userId)
 				uni.switchTab({

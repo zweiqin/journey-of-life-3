@@ -1,9 +1,6 @@
 <template>
     <view class="voucherContainer">
 		<JHeader title="我的代金券" width="50" height="50" style="padding: 24upx 0 10upx;z-index: 2;">
-			<template #ftFn>
-				<text style="margin-right: 40upx;font-size: 26upx;color: #000000;" @click="go('/user/voucher/voucher')">充值和转赠</text>
-			</template>
 		</JHeader>
         <image class="topBackgrpound" src="@/static/images/user/vcbgimg.png"></image>
         <!-- header区 -->

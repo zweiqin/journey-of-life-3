@@ -302,7 +302,7 @@ export default {
         this.orderForm.consigneeAddress = companyAddressInfo[0]
         this.orderForm.consigneeAddressDetail = companyAddressInfo[1]
         this.orderForm.extraInfo.companyId = this.bDetailInfo.id
-        this.$store.dispatch('auth/updateStorageKeyToken', this.bDetailInfo.delegatePhoneNumber)
+        this.$store.dispatch('auth/updateStorageKey', this.bDetailInfo.delegatePhoneNumber)
       } else {
         this.ttoast({
           type: 'fail',

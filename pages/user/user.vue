@@ -16,7 +16,6 @@
 			content="您还未登录，是否先去登录？"
 			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
 		></tui-modal>
-		<tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleVipUp"></tui-modal>
 
 		<TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
 		<tui-toast ref="toast"></tui-toast>
@@ -49,7 +48,6 @@ export default {
 	data() {
 		return {
 			timer: null,
-			isShow: false,
 			userId: null,
 			myFunction,
 			myServe,
@@ -85,37 +83,7 @@ export default {
 				return
 			}
 			if (this.isLogin()) {
-				if (item.role && item.role.length && !item.role.includes(this.$store.getters.userInfo.userLevel) && !this.$store.getters.userInfo.isRegionAgent) {
-					this.isShow = true
-					return
-				}
-				if (item.type === 'regimentalCommander') {
-					const status = this.$store.getters.regimentalCommanderStatus
-					let regimentalCommanderMsg
-					if (status) {
-						if (status === 3) regimentalCommanderMsg = '您已经是团长了'
-						switch (status) {
-							case 0:
-								regimentalCommanderMsg = null
-								break
-							case 1:
-								regimentalCommanderMsg = `您的申请正在审核中，请耐心等待`
-								break
-							case 2:
-								regimentalCommanderMsg = `您的申请正在审核中，请耐心等待`
-								break
-							case 3:
-								regimentalCommanderMsg = '您的申请被驳回了，请联系管理人员'
-								break
-							case 5:
-								regimentalCommanderMsg = '您的团长身份已取消，请联系店长恢复'
-						}
-						return this.ttoast({
-							type: 'info',
-							title: regimentalCommanderMsg
-						})
-					}
-				} else if (item.type === 'userInvitation') {
+				if (item.type === 'userInvitation') {
 					this.$refs.codeCreateRef.getCode('userInvitation')
 					return
 				} else if (item.type === 'settle') {
@@ -144,15 +112,6 @@ export default {
 			} else {
 				this.$data._isShowTuiModel = true
 			}
-		},
-
-		handleVipUp(e) {
-			if (e.index) {
-				uni.navigateTo({
-					url: '/user/sever/userUp/partner-appay'
-				})
-			}
-			this.isShow = false
 		}
 	}
 }

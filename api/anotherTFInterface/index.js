@@ -443,6 +443,10 @@ export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSe
 // 邀请好友拼单查询
 export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', data, 'POST')
 
+// 限时折扣
+// 专区首页数据查询
+export const getIndexDiscountListApi = (data) => AnotherTFRequest('/discount/getIndex', data)
+
 // 评价
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')

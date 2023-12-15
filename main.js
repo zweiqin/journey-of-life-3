@@ -115,7 +115,7 @@ Vue.mixin({
 		},
 
 		isLogin() {
-			return !!this.$store.getters.userId
+			return !!this.$store.getters.userToken
 		}
 	}
 })

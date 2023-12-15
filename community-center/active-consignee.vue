@@ -13,7 +13,7 @@
       </view>
       <!-- {{ consigneeForm }} -->
       <view class="main-wrapper">
-        <Field @iconClick="handleOpenMapToChooseAddress" v-for="item in userInfo" :key="item.label"
+        <Field @iconClick="handleOpenMapToChooseAddress" v-for="item in userInputMsg" :key="item.label"
           v-model="consigneeForm[item.field]" :data="item" class="field">
           <template v-if="item.select && item.field === 'consigneeAddress'">
             <!-- <PickRegions visible-muti @getRegion="handleGetRegionEnd">
@@ -103,7 +103,7 @@ export default {
         floor: '1',
         remarks: ''
       },
-      userInfo: [],
+      userInputMsg: [],
       columns: ['有', '无'],
       cacheName: 'CONSIGNEE_',
       showTip: false,
@@ -468,7 +468,7 @@ export default {
           return item.field !== 'isElevator' && item.field !== 'floor';
         });
       }
-      this.userInfo = data;
+      this.userInputMsg = data;
     },
 
     // 点击选择地址

@@ -36,7 +36,7 @@
 								<view style="flex: 1;">
 									<view style="display: flex;justify-content: space-between;">
 										<text>{{ item.voucherName }}</text>
-										<text style="padding-right: 50upx;color: #b1b0b0;">{{ item.ratio }} : 1</text>
+										<!-- <text style="padding-right: 50upx;color: #b1b0b0;">{{ item.ratio }} : 1</text> -->
 									</view>
 									<view>{{ item.desc }}</view>
 								</view>

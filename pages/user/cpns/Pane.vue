@@ -24,18 +24,6 @@
 					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
 					<tui-badge
-						v-if="menu.name === '区代理' && $store.getters.applyRegionAgentStatus" type="danger" absolute
-						:scale-ratio="0.8" translate-x="40%" top="-8rpx" right="44rpx"
-					>
-						{{ $store.getters.applyRegionAgentStatus }}
-					</tui-badge>
-					<tui-badge
-						v-if="menu.name === '申请团长' && $store.getters.regimentalCommanderStatus" type="danger" absolute
-						:scale-ratio="0.8" translate-x="40%" top="-8rpx" right="24rpx"
-					>
-						{{ $store.getters.regimentalCommanderStatus | mapStatus }}
-					</tui-badge>
-					<tui-badge
 						v-show="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="50rpx" absolute
 						:scale-ratio="0.8" translate-x="40%" top="-8rpx"
 					>
@@ -81,11 +69,6 @@
 <script>
 export default {
 	name: 'Pane',
-	filters: {
-		mapStatus(status) {
-			return { 1: '待审核', 2: '开始审核', 3: '审核通过', 4: '审核不通过', 5: '冻结', 6: '审核不通过', 7: '打款失败' }[status]
-		}
-	},
 	props: {
 		title: {
 			type: String,
@@ -113,9 +96,7 @@ export default {
 		menuData: {
 			handler(newVal) {
 				newVal.forEach((item) => {
-					if (item.name === '股东看板') {
-						if (this.$store.getters.userInfo && this.$store.getters.userInfo.shareholderType === 1) this.specialPane.push(item)
-					} else if (item.showRole) {
+					if (item.showRole) {
 						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type === 1) this.renderMenu.push(item)
 					} else {
 						this.renderMenu.push(item)

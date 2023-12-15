@@ -136,6 +136,13 @@ export default {
 					this.isShowUpgrade = false
 					this.getGoodsList()
 					this.$showToast('您已成为团长')
+				} else if (res.data && res.data.levelType === 0) {
+					this.isShowUpgrade = false
+					this.getGoodsList()
+					this.$showToast('您已成为合伙人')
+				} else {
+					this.isShowUpgrade = false
+					this.getGoodsList()
 				}
 			})
 	},

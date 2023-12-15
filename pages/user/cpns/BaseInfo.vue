@@ -3,92 +3,42 @@
 		<view class="user-info">
 			<Avatar
 				margin="0 24upx 0 0"
-				:src="$store.getters.userId ? $store.getters.userInfo.avatarUrl : require('../../../static/images/new-user/default-user-avatar.png')"
-				@click="$emit('handleNavigate', { url: '/user/info/detail' })"
+				:src="$store.getters.userInfo.token ? $store.getters.userInfo.headImage : require('../../../static/images/new-user/default-user-avatar.png')"
+				@click="$store.getters.userInfo.token && go('/another-tf/another-serve/personalDetails/index')"
 			></Avatar>
 
 			<view class="right-wrapper">
-				<view v-if="!$store.getters.userId">
+				<view v-if="!$store.getters.userInfo.token">
 					<view class="logout-title">您好!</view>
 					<view class="logout-tip">您目前暂未登录，请<text @click="go('/pages/login/login')">前往登录</text></view>
 				</view>
 
-				<view v-else class="user-info-detail">
-					<view class="user-nack-name">{{ $store.getters.userInfo.nickName }}</view>
+				<view v-else class="user-info-detail" @click="go('/another-tf/another-serve/memberCenter/index')">
+					<view style="display: flex;align-items: center;">
+						<view style="padding: 6upx 8upx;margin-right: 12upx;;font-size: 34upx;background-color: #e7e3e0;">{{ $store.getters.userInfo.memberLevelName }}</view>
+						<view class="user-nack-name">{{ $store.getters.userInfo.name || '--' }}</view>
+					</view>
 					<view class="tags">
-						<view v-if="$store.getters.userInfo.userId == 987" class="tag"> TF001 </view>
-						<view v-else class="tag BuLinBuLinDe">
-							<image style="width: 24rpx; height: 24rpx; margin: 0 5rpx" src="@/static/images/user/hrr.png"></image>
-							{{ $store.getters.userInfo.invitationCode || 'No.' + $store.getters.userInfo.userId }}
+						<view>成长值</view>
+						<view class="tag">
+							{{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }}
 						</view>
-						<view class="vip-level">
-							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHy"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/huiyuan.png"
-								@click="displayBadgesImg = displayBadgesData[0]; isDisplayBadges = true;"
-							></image>
-							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isTz"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/tuanzhang.png"
-								@click="displayBadgesImg = displayBadgesData[1]; isDisplayBadges = true;"
-							></image>
-							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isHhr"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/hehuoren.png"
-								@click="displayBadgesImg = displayBadgesData[2]; isDisplayBadges = true;"
-							></image>
-							<image
-								v-if="$store.getters.userInfo && $store.getters.userInfo.userMap.isGd"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="@/static/images/user/gudong.png"
-								@click="displayBadgesImg = displayBadgesData[3]; isDisplayBadges = true;"
-							></image>
-						</view>
-						<view
-							class="tui-modal-mask" :class="[ isDisplayBadges ? 'tui-mask-show' : '' ]"
-							@click.prevent="isDisplayBadges = false"
-						>
-							<view class="rotationBox">
-
-							</view>
-							<view class="DisplayBadges">
-								<image class="DisplayBadgesTop" :src="displayBadgesImg.topUrl" mode="" />
-								<view class="Icon DisplayBadgesCenter">
-									<view class="IconF">
-										<view class="IconS">
-											<view class="IconT">
-												<image
-													class="BadgesImg"
-													:src="$store.getters.userId ? $store.getters.userInfo.avatarUrl : require('../../../static/images/new-user/default-user-avatar.png')"
-												>
-												</image>
-											</view>
-										</view>
-									</view>
-								</view>
-								<image class="DisplayBadgesBottom" :src="displayBadgesImg.bottomUrl" mode="" />
-							</view>
-							<view class="DisplayBadgesText">
-								恭喜你成为{{ displayBadgesImg.name }}
-							</view>
-						</view>
-						<!-- <view class="medalOfHonor">
-							标记，写完商家认证后补写一个勋章展示的效果
-							</view> -->
 					</view>
 				</view>
 
 				<view class="op-container">
-					<view class="wrapper" @click="$emit('handleNavigate', { url: '/user/sever/chat/chat' })">
+					<view class="wrapper" @click="go('/user/sever/chat/chat')">
 						<image src="../../../static/images/new-user/user-chat.png" mode="" />
 					</view>
-					<view class="wrapper" @click="$emit('handleNavigate', { url: '/user/info/detail' })">
+					<view class="wrapper" @click="go('/another-tf/another-serve/personalDetails/index')">
 						<image src="../../../static/images/new-user/user-setting.png" mode="" />
 					</view>
 				</view>
 			</view>
 
+			<!-- 团长或合伙人才有 -->
 			<!-- <view
-				v-if="$store.getters.userId && ($store.getters.userInfo.userMap.isTz || $store.getters.userInfo.userMap.isHhr)"
+				v-if="$store.getters.userInfo.token"
 				style="text-align: center;" @click="$refs.codeCreateRef.getCode('teamMembersInvitation')"
 				>
 				<tui-icon name="qrcode" :size="24" color="#222229"></tui-icon>
@@ -99,32 +49,28 @@
 		</view>
 
 		<view class="account-container">
-			<view
-				class="account-item"
-				@click="$emit('handleNavigate', { url: '/another-tf/another-user/platform-recharge/index' })"
-			>
-				<!-- <view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/surplus/surplus' })"> -->
+			<view class="account-item" @click="go('/another-tf/another-user/platform-recharge/index')">
 				<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
 				<view class="account-title">钱包</view>
 			</view>
 
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/goldButler/gold-butler' })">
+			<view class="account-item" @click="go('/user/sever/goldButler/gold-butler')">
 				<view class="account-number">
 					{{ isBuy ? 1 : 0 }}
 				</view>
 				<view class="account-title">家庭小卫士</view>
 			</view>
 
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/sever/coupon/coupon' })">
+			<view class="account-item" @click="go('/another-tf/another-serve/integral/index')">
 				<view class="account-number">
-					{{ $store.getters.couponNumber || 0 }}
+					{{ $store.getters.userInfo.credit || 0 }}
 				</view>
-				<view class="account-title">优惠劵</view>
+				<view class="account-title">积分</view>
 			</view>
-			<view class="account-item" @click="$emit('handleNavigate', { url: '/user/newVoucher/voucher' })">
+
+			<view class="account-item" @click="go('/user/newVoucher/voucher')">
 				<view class="account-number">
 					{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
-					<!-- {{ convertToDecimal($store.getters.userInfo.voucherNumber) || 0 }} -->
 				</view>
 				<view class="account-title">代金劵</view>
 			</view>
@@ -157,48 +103,12 @@ import showModalMixin from 'mixin/showModal'
 import { convertToDecimal } from '../../../utils'
 
 export default {
+	name: 'BaseInfo',
 	data() {
 		return {
 			isShow: false,
 			isBuy: false,
-			isDisplayBadges: false,
-			displayBadgesImg: {
-				topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
-				name: '会员',
-				key: 'isHy',
-				isShow: false,
-				bottomUrl: require('@/static/images/user/displayBadges/huiyuanBottom.png')
-			},
-			displayBadgesData: [
-				{
-					topUrl: require('@/static/images/user/displayBadges/huiyuantop.png'),
-					name: '会员',
-					key: 'isHy',
-					isShow: false,
-					bottomUrl: require('@/static/images/user/displayBadges/huiyuanBottom.png')
-				},
-				{
-					topUrl: require('@/static/images/user/displayBadges/tuantop.png'),
-					name: '团长',
-					key: 'isTz',
-					isShow: false,
-					bottomUrl: require('@/static/images/user/displayBadges/tuanbottom.png')
-				},
-				{
-					topUrl: require('@/static/images/user/displayBadges/hhrtop.png'),
-					name: '合伙人',
-					key: 'isHhr',
-					isShow: false,
-					bottomUrl: require('@/static/images/user/displayBadges/hhrbottom.png')
-				},
-				{
-					topUrl: require('@/static/images/user/displayBadges/gudongtop.png'),
-					name: '股东',
-					key: 'isGd',
-					isShow: false,
-					bottomUrl: require('@/static/images/user/displayBadges/gudongbottom.png')
-				}
-			]
+			isDisplayBadges: false
 		}
 	},
 	mixins: [ showModalMixin() ],
@@ -230,17 +140,14 @@ export default {
 					userId,
 					price: 399
 				})
-
 				if (res.statusCode === 20000) {
 					if (res.data && Array.isArray(res.data) && res.data.length) {
 						this.isBuy = true
 					}
 				} else {
 					this.isBuy = false
-					// console.log('查询是否开通金管家', res);
 				}
 			} catch (error) {
-				// console.log('查询是否开通金管家', error);
 				this.isBuy = false
 			}
 		}
@@ -416,6 +323,7 @@ text {
 			flex-wrap: wrap;
 
 			.tag {
+				margin-left: 12upx;
 				box-sizing: border-box;
 				padding: 4rpx 6rpx;
 				display: flex;
@@ -425,41 +333,10 @@ text {
 				height: 36upx;
 				background: #f7d1c2;
 				margin-right: 15rpx;
-
-				&:nth-child(1) {
-					border-radius: 8rpx;
-					opacity: 1;
-					background: linear-gradient(90deg, #ffffff 0%, #f9d090 100%);
-					border: 1px solid #b4560a;
-					/* white-space: nowrap;
-          position: relative;
-          padding-left: 22upx;
-          padding-right: 20upx;
-          box-sizing: border-box;
-          border: 4upx solid #ff7a4e;
-          border-radius: 0px 12upx 12upx 0px;
-          margin-right: 16upx; */
-
-					/* &::after {
-            content: '';
-            width: 40upx;
-            height: 40upx;
-            display: block;
-            position: absolute;
-            background: url('../../../static/images/new-user/star.png') no-repeat;
-            background-size: cover;
-            left: -24upx;
-          } */
-				}
-
-				&:nth-child(2) {
-					padding: 0 16upx;
-					color: #3a3629;
-					border: 4upx solid #3a3629;
-					font-weight: 500;
-					border-radius: 12upx;
-					background-color: #fff;
-				}
+				border-radius: 8rpx;
+				opacity: 1;
+				background: linear-gradient(90deg, #ffffff 0%, #f9d090 100%);
+				border: 1px solid #b4560a;
 			}
 		}
 	}
@@ -471,146 +348,5 @@ text {
 		background-color: #fff;
 		box-sizing: border-box;
 	}
-}
-
-.tui-modal-mask {
-	z-index: 99999;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.7);
-	transition: all 0.3s ease-in-out;
-	opacity: 0;
-	visibility: hidden;
-	/* display: flex;
-  align-items: center;
-  justify-content: center; */
-}
-
-.tui-mask-show {
-	visibility: visible;
-	opacity: 1;
-}
-
-.Icon {
-	float: left;
-	width: 50%;
-}
-
-.Icon .IconCon {
-	display: block;
-	height: 20px;
-	width: 100%;
-	text-align: center;
-	line-height: 20px;
-	color: #1385EB;
-	cursor: pointer;
-}
-
-.IconF,
-.IconS,
-.IconT {
-	border-radius: 15rpx;
-	width: 196rpx;
-	height: 220rpx;
-	overflow: hidden;
-	margin: 0 auto;
-}
-
-.IconF {
-	transform: rotate(120deg);
-	-ms-transform: rotate(120deg);
-	-moz-transform: rotate(120deg);
-	-webkit-transform: rotate(120deg);
-}
-
-.IconS {
-	transform: rotate(-60deg);
-	-ms-transform: rotate(-60deg);
-	-moz-transform: rotate(-60deg);
-	-webkit-transform: rotate(-60deg);
-}
-
-.IconT {
-	transform: rotate(-60deg);
-	-ms-transform: rotate(-60deg);
-	-moz-transform: rotate(-60deg);
-	-webkit-transform: rotate(-60deg);
-	background-color: rgba(0, 0, 0, 0.6);
-}
-
-.BadgesImg {
-	width: 196rpx;
-	height: 210rpx;
-	// margin-left: 5rpx;
-}
-
-.DisplayBadgesTop {
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 576rpx;
-	height: 576rpx;
-}
-
-.rotationBox {
-	display: block;
-	/* content: ''; */
-	position: fixed;
-	top: -330rpx;
-	left: -83%;
-	right: 0;
-	width: 2000rpx;
-	height: 2000rpx;
-	opacity: 0.4;
-	/* background: repeating-conic-gradient(from 0deg, white 0deg 15deg, transparent 15deg 30deg); */
-	background: repeating-conic-gradient(from 0deg, white 0deg 19deg, transparent 15deg 53deg);
-	mask-image: radial-gradient(rgb(0, 0, 0), rgb(0, 0, 0) 50%);
-	/* -webkit-mask-image: radial-gradient(hsla(0 0% 0% / 1), hsla(0 0% 0% / 0) 50%); */
-	animation: rotate 20s linear infinite;
-}
-
-@keyframes rotate {
-	to {
-		transform: rotate(1turn)
-	}
-}
-
-.DisplayBadgesCenter {
-	margin-top: 5rpx;
-	position: fixed;
-	top: 42%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.DisplayBadgesBottom {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 363.48rpx;
-	height: 142.37rpx;
-}
-
-.DisplayBadgesText {
-	position: fixed;
-	top: 58%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 304rpx;
-	height: 74rpx;
-	color: #fff;
-	font-size: 32rpx;
-	font-weight: 600;
-	background: url('@/static/images/user/displayBadges/textBackground.png') no-repeat center;
-	background-size: 304rpx 74rpx;
-	border-radius: 50rpx;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 </style>

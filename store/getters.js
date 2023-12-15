@@ -1,5 +1,4 @@
 export default {
-  userId: (state) => state.auth.userId,
   userInfo: (state) => state.auth.userInfo,
   userToken: (state) => state.auth.userToken,
   historyInfo: (state) => state.auth.historyInfo,
@@ -25,10 +24,6 @@ export default {
   // 个人中心
   pricePlatformInfo: (state) => state.user.pricePlatformInfo,
   shopCarNumber: (state) => state.user.shopCarNumber,
-  couponNumber: (state) => state.user.couponNumber,
-  communityOrderInfo: (state) => state.user.communityOrderInfo,
-  applyRegionAgentStatus: (state) => state.user.applyRegionAgentStatus,
-  regimentalCommanderStatus: state => state.user.regimentalCommanderStatus,
 
   // 社区
   popupImage: (state) => state.community.popupImage,

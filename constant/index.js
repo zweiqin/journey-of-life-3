@@ -19,6 +19,7 @@ export const USER_ID = 'USER_ID'
 export const USER_TOKEN = 'USER_TOKEN'
 export const USER_INFO = 'user_INFO'
 export const T_STORAGE_KEY = 'T_STORAGE_KEY'
+export const T_USER_TOKEN = 'T_USER_TOKEN'
 
 // 绑定
 export const T_NEW_BIND_TYPE = 'T_NEW_BIND_TYPE'
@@ -41,7 +42,7 @@ export const NEW_BIND_SERVICE_URL = 'NEW_BIND_SERVICE_URL'
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
 export const GROUP_INVITE_CODE = 'GROUP_INVITE_CODE'
-export const ENTERPRISE_ORDERS_NO = "ENTERPRISE_ORDERS_NO"
+export const ENTERPRISE_ORDERS_NO = 'ENTERPRISE_ORDERS_NO'
 
 export const clearAllCache = () => {
 	[

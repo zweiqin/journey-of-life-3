@@ -1,27 +1,16 @@
 import {
 	CHNAGE_PRICE_PLATFORM_INFO,
-	CHNAGE_SHOP_CAR_NUMBER,
-	CHANGE_COUPON_NUMBER,
-	CHANGE_COMMUNITY_ORDER_INFO,
-	CHANGE_REGIONAGENT_STATUS,
-	CHANGE_REGIMENTAL_COMMANDER_STATUS
+	CHNAGE_SHOP_CAR_NUMBER
 } from './type'
-
-import { getPricePlatformAllApi } from '../../api/anotherTFInterface'
-import { getCarShopNumberApi } from '../../api/goods'
-import { getApplyRegionagentStatusApi, getCouponListApi, queryApplyRegimentalCommanderStatusApi } from '../../api/user'
-import { getOrderNumberApi } from '../../api/community-center'
+import { getStorageKeyToken } from '../../utils'
+import { getPricePlatformAllApi, getCartListApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
 	state() {
 		return {
 			pricePlatformInfo: {},
-			shopCarNumber: 0,
-			couponNumber: 0,
-			communityOrderInfo: {},
-			applyRegionAgentStatus: '',
-			regimentalCommanderStatus: ''
+			shopCarNumber: 0
 		}
 	},
 
@@ -32,73 +21,19 @@ export default {
 
 		[CHNAGE_SHOP_CAR_NUMBER](state, shopCarNumber) {
 			state.shopCarNumber = shopCarNumber
-		},
-
-		[CHANGE_COMMUNITY_ORDER_INFO](state, communityOrderInfo) {
-			state.communityOrderInfo = communityOrderInfo
-		},
-
-		[CHANGE_COUPON_NUMBER](state, couponNumber) {
-			state.couponNumber = couponNumber
-		},
-
-		[CHANGE_REGIONAGENT_STATUS](state, status) {
-			state.applyRegionAgentStatus = status
-		},
-
-		[CHANGE_REGIMENTAL_COMMANDER_STATUS](state, status) {
-			state.regimentalCommanderStatus = status
 		}
 	},
 
 	actions: {
-		count({ commit }, { userId, phone }) {
-			if (!userId) {
-				return
-			}
+		count({ commit }) {
+			if (!getStorageKeyToken()) return
 			getPricePlatformAllApi({})
 				.then((res) => {
 					commit(CHNAGE_PRICE_PLATFORM_INFO, res.data)
 				})
-
-			getCarShopNumberApi({
-				userId
-			}).then(({ data }) => {
-				commit(CHNAGE_SHOP_CAR_NUMBER, data)
+			getCartListApi({}).then((res) => {
+				this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
 			})
-
-			getCouponListApi({
-				userId,
-				page: 1,
-				size: 10,
-				status: 0
-			}).then(({ data }) => {
-				commit(CHANGE_COUPON_NUMBER, data ? data.count : 0)
-			})
-
-			getOrderNumberApi({
-				userId
-			}).then((res) => {
-				if (res.statusCode === 20000) {
-					commit(CHANGE_COMMUNITY_ORDER_INFO, res.data || {})
-				}
-			})
-
-			getApplyRegionagentStatusApi({
-				userId
-			}).then((res) => {
-				commit(CHANGE_REGIONAGENT_STATUS, res.data === '你还未申请过' ? '' : res.data)
-			})
-
-			queryApplyRegimentalCommanderStatusApi({
-				mobile: phone
-			})
-				.then((res) => {
-					commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, res)
-				})
-				.catch((err) => {
-					commit(CHANGE_REGIMENTAL_COMMANDER_STATUS, '')
-				})
 		}
 	}
 }

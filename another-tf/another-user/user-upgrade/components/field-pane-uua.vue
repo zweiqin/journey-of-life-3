@@ -12,13 +12,17 @@
 			>
 			</image>
 			<view style="position: absolute;top: 260upx;left: 64upx;">
-				<view v-if="relationshipLevelName">
+				<view v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
 					<view style="font-size: 48upx;color: #ffffff;">升级{{ relationshipLevelName }}</view>
 					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">
 						<text v-if="relationshipLevelName === '团长'">购买指定商品</text>
 						<text v-else-if="relationshipLevelName === '合伙人'">邀请团长</text>
 						<text v-else>填写表单</text>
 					</view>
+				</view>
+				<view v-else-if="[ 0 ].includes(upgradeLevelType)">
+					<!-- 已经是合伙人 -->
+					<view style="font-size: 48upx;color: #ffffff;">合伙人</view>
 				</view>
 				<view v-else>
 					<view style="font-size: 48upx;color: #ffffff;">升级</view>
@@ -34,18 +38,22 @@
 						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
-						<text v-if="relationshipLevelName">{{ relationshipLevelName }}升级</text>
+						<text v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
+							{{ relationshipLevelName }}升级
+						</text>
+						<view v-else-if="[ 0 ].includes(upgradeLevelType)">-</view><!-- 已经是合伙人 -->
 						<text v-else>不可升级</text>
 					</view>
 				</view>
 				<view style="margin-top: 20upx;font-size: 24upx;color: #9E9E9E;">
-					<text v-if="relationLevelName">已满足申请条件</text>
-					<text v-else-if="relationLevelName === ''">不满足角色的升级条件</text>
+					<text v-if="[2, 4].includes(upgradeLevelType)">已满足申请条件</text>
+					<text v-else-if="[ 0 ].includes(upgradeLevelType)">恭喜您已经是合伙人</text><!-- 已经是合伙人 -->
+					<text v-else-if="[0, 1, 3].includes(upgradeLevelType)">不满足角色的升级条件</text>
 					<text v-else>无法获取信息，请重试！</text>
 				</view>
 			</view>
 			<view v-if="isShowLock" style="margin-top: 76upx;">
-				<view v-if="upgradeLevelType" style="text-align: center;">
+				<view v-if="[1, 2, 3, 4].includes(upgradeLevelType)" style="text-align: center;">
 					<tui-button
 						type="warning" width="680upx" height="104upx" margin="20upx 0"
 						style="display: inline-block;font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;"
@@ -201,9 +209,7 @@ export default {
 		getSelectLevelPlatformRelationApi({})
 			.then((res) => {
 				this.upgradeLevelType = res.data ? res.data.levelType : ''
-				if (res.data && res.data.levelType === 0) {
-					this.relationLevelName = ''
-				} else if (res.data && res.data.levelType === 1) {
+				if (res.data && res.data.levelType === 1) {
 					this.relationshipLevelName = '团长'
 				} else if (res.data && res.data.levelType === 2) {
 					this.relationLevelName = '团长'
@@ -213,6 +219,10 @@ export default {
 				} else if (res.data && res.data.levelType === 4) {
 					this.relationLevelName = '合伙人'
 					this.relationshipLevelName = '合伙人'
+				} else if (res.data && res.data.levelType === 0) { // 已经是合伙人
+					this.relationLevelName = ''
+				} else if (res.data && res.data.levelType === 0) {
+					this.relationLevelName = ''
 				}
 				// this.upgradeLevelType = 0
 				// this.relationLevelName = ''

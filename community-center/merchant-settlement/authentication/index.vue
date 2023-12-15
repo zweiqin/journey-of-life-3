@@ -32,7 +32,6 @@ export default {
   },
   onLoad(params) {
     this.personalInformation.serviceInformation.businessLabel = params.labelIds;
-    this.indexForm.userId = this.$store.getters.userInfo.userId;
   },
   data() {
     return {

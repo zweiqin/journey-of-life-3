@@ -1,5 +1,5 @@
-import { USER_INFO, USER_ID, USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
-import { CHNAGE_USER_ID, CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP, CHNAGE_USER_IDENTITY } from './type'
+import { USER_INFO, USER_ID, USER_TOKEN, T_USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
+import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP, CHNAGE_USER_IDENTITY } from './type'
 import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
 import { getAnotherTFTokenApi, getIsShopByUserApi } from '../../api/anotherTFInterface'
@@ -8,9 +8,8 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			userId: uni.getStorageSync(USER_ID),
-			userInfo: uni.getStorageSync(USER_INFO),
-			userToken: uni.getStorageSync(USER_TOKEN),
+			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
+			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
 			historyInfo: {
 				collection: 0,
 				footPrint: 0,
@@ -25,22 +24,14 @@ export default {
 	},
 
 	mutations: {
-		[CHNAGE_USER_ID](state, userId) {
-			state.userId = userId
-			uni.setStorageSync(USER_ID, userId)
-		},
-
 		[CHNAGE_USER_INFO](state, userInfo) {
 			state.userInfo = userInfo
-			state.historyInfo.collection = userInfo.collectCount || 0
-			state.historyInfo.footprintCount = userInfo.footprintCount || 0
-			state.historyInfo.follow = userInfo.rssCount || 0
-			uni.setStorageSync(USER_INFO, userInfo)
+			uni.setStorageSync(T_STORAGE_KEY, userInfo)
 		},
 
 		[CHNAGE_USER_TOKEN](state, token) {
 			state.userToken = token
-			uni.setStorageSync(USER_TOKEN, token)
+			uni.setStorageSync(T_USER_TOKEN, token)
 		},
 
 		[CHNAGE_USER_IDENTITY](state, data) {
@@ -60,14 +51,14 @@ export default {
 			return new Promise((resolve, reject) => {
 				loginApi({ ...loginData })
 					.then(async ({ data }) => {
-						commit(CHNAGE_USER_ID, data.userInfo.userId)
-						commit(CHNAGE_USER_INFO, data.userInfo)
-						commit(CHNAGE_USER_TOKEN, data.token)
+						uni.setStorageSync(USER_ID, data.userInfo.userId)
+						uni.setStorageSync(USER_TOKEN, data.token)
+						uni.setStorageSync(USER_INFO, data.userInfo)
 						uni.showToast({
 							title: '登录成功'
 						})
 						console.log(data)
-						await dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKey')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -81,14 +72,14 @@ export default {
 			return new Promise((resolve, reject) => {
 				verificationCodeApi({ ...loginData })
 					.then(async ({ data }) => {
-						commit(CHNAGE_USER_ID, data.userInfo.userId)
-						commit(CHNAGE_USER_INFO, data.userInfo)
-						commit(CHNAGE_USER_TOKEN, data.token)
+						uni.setStorageSync(USER_ID, data.userInfo.userId)
+						uni.setStorageSync(USER_TOKEN, data.token)
+						uni.setStorageSync(USER_INFO, data.userInfo)
 						uni.showToast({
 							title: '登录成功'
 						})
 						console.log(data)
-						await dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKey')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -102,13 +93,13 @@ export default {
 			return new Promise((resolve, reject) => {
 				wxLoginApi({ code })
 					.then(async ({ data }) => {
-						commit(CHNAGE_USER_ID, data.userInfo.userId)
-						commit(CHNAGE_USER_INFO, data.userInfo)
-						commit(CHNAGE_USER_TOKEN, data.token)
+						uni.setStorageSync(USER_ID, data.userInfo.userId)
+						uni.setStorageSync(USER_TOKEN, data.token)
+						uni.setStorageSync(USER_INFO, data.userInfo)
 						uni.showToast({
 							title: '登录成功'
 						})
-						await dispatch('updateStorageKeyToken')
+						await dispatch('updateStorageKey')
 						resolve(data)
 					})
 					.catch((err) => {
@@ -121,7 +112,7 @@ export default {
 			uni.removeStorageSync(USER_ID)
 			uni.removeStorageSync(USER_INFO)
 			uni.removeStorageSync(USER_TOKEN)
-			commit(CHNAGE_USER_ID, '')
+			uni.removeStorageSync(T_USER_TOKEN)
 			commit(CHNAGE_USER_INFO, {})
 			commit(CHNAGE_USER_TOKEN, '')
 			clearAllCache()
@@ -161,22 +152,23 @@ export default {
 			refrshUserInfoApi({
 				userId: state.userId
 			}).then(async ({ data }) => {
-				commit(CHNAGE_USER_INFO, data)
-				commit(CHNAGE_USER_ID, data.userId)
-				await dispatch('updateStorageKeyToken')
+				uni.setStorageSync(USER_ID, data.userId)
+				uni.setStorageSync(USER_INFO, data)
+				await dispatch('updateStorageKey')
 				cb && typeof cb === 'function' && cb(data)
 			})
 		},
 
-		// 获取新团蜂token
-		updateStorageKeyToken({ state, dispatch, commit }, phone) {
+		// 获取新团蜂userInfo和token
+		updateStorageKey({ state, dispatch, commit }, phone) {
 			return new Promise((resolve, reject) => {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (userInfo && userInfo.phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone: phone ? phone : userInfo.phone })
+					getAnotherTFTokenApi({ phone: phone || userInfo.phone })
 						.then((res) => {
-							uni.setStorageSync(T_STORAGE_KEY, res.data)
+							commit(CHNAGE_USER_TOKEN, res.data.token)
+							commit(CHNAGE_USER_INFO, res.data)
 							uni.hideLoading()
 							resolve(res.data)
 						})

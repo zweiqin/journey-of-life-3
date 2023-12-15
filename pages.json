@@ -1351,6 +1351,12 @@
       "root": "another-tf",
       "pages": [
         {
+          "path": "another-serve/personalDetails/index",
+          "style": {
+            "navigationBarTitleText": "个人信息"
+          }
+        },
+        {
           "path": "another-user/platform-recharge/index",
           "style": {
             "navigationBarTitleText": "平台充值"

@@ -77,7 +77,7 @@ import { throttle } from '../../utils'
 import {
 	T_NEW_BIND_TYPE,
 	USER_ID,
-	USER_INFO,
+	T_STORAGE_KEY,
 	NEW_BIND_ACTIVITY_ID,
 	NEW_BIND_SERVICE_ID,
 	NEW_BIND_SERVICE_URL,
@@ -130,10 +130,9 @@ export default {
 		this.redirect = options.to
 
 		const userId = uni.getStorageSync(USER_ID)
-		const userInfo = uni.getStorageSync(USER_INFO)
+		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 
-		// return
-		if (userId && userInfo.userId) {
+		if (userId && userInfo.token) {
 			if (this.partnerCode) {
 				await this.handlePartnerBind(userId)
 				uni.switchTab({

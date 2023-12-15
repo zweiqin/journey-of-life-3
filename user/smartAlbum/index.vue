@@ -49,7 +49,6 @@ export default {
 	},
 	onShow() {
 		this.getUserCrmSlbumList()
-		// const userInfo = uni.getStorageSync(USER_INFO) || {}
 	},
 	// 触底加载
 	onReachBottom() {

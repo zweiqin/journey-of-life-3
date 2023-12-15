@@ -92,7 +92,7 @@ export const getUserId = () => {
 export const getStorageKeyToken = () => {
 	const userInfo = uni.getStorageSync(USER_INFO)
 	if (!userInfo || !userInfo.userId) {
-		return uni.showModal({
+		uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',
 			success(res) {
@@ -101,13 +101,14 @@ export const getStorageKeyToken = () => {
 						url: '/pages/login/login'
 					})
 				} else if (res.cancel) {
-					// uni.navigateBack();
+					// uni.navigateBack();
 				}
 			}
 		})
+		return
 	}
 	if (!userInfo || !userInfo.phone) {
-		return uni.showModal({
+		uni.showModal({
 			title: '提示',
 			content: '未绑定手机号码，是否去绑定？',
 			success(res) {
@@ -116,14 +117,15 @@ export const getStorageKeyToken = () => {
 						url: '/'
 					})
 				} else if (res.cancel) {
-					// uni.navigateBack();
+					// uni.navigateBack();
 				}
 			}
 		})
+		return
 	}
 	const storageKey = uni.getStorageSync(T_STORAGE_KEY)
 	if (!storageKey || !storageKey.token) {
-		return uni.showModal({
+		uni.showModal({
 			title: '提示',
 			content: '系统出错，请重新登陆',
 			success(res) {
@@ -132,10 +134,11 @@ export const getStorageKeyToken = () => {
 						url: '/pages/login/login'
 					})
 				} else if (res.cancel) {
-					// uni.navigateBack();
+					// uni.navigateBack();
 				}
 			}
 		})
+		return
 	}
 	return storageKey.token
 }

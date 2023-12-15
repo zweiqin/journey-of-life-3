@@ -18,8 +18,6 @@
         <button class="uni-btn" @click="handleToViewVoucher">代金券充值记录 <tui-icon :size="20" color="#ccc" name="arrowright"></tui-icon></button>
       </view>
 
-      <!-- <tui-alerts v-if="$store.getters.userInfo.userLevel !== 1" type="warn" style="margin: 20upx 0" title="您还不是商家，暂无法充值代金券"></tui-alerts> -->
-
       <view class="btn-content">
         <view class="price-wrapper" @click="handlePay(item)" v-for="(item, index) in rechargeList" :key="index">
           <view class="count">{{ item }}</view>

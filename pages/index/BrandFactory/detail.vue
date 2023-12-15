@@ -152,13 +152,11 @@ export default {
       recommendBrandList: [],
       isLoading: false,
       topGoods: [],
-      bottomGoods: [],
-      userInfo: {}
+      bottomGoods: []
     }
   },
 
   onLoad(params) {
-    this.userInfo = uni.getStorageSync(USER_INFO)
     this.queryGoods.shopId = params.id
     this.getFactoryDetail()
     this.getCategoryList()
