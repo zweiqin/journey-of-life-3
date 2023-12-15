@@ -24,8 +24,17 @@
 
           <view class="item-bar gray">
             <view class="left">创建时间：{{ item.createTime }}</view>
-            <view style="padding: 4upx 12upx; background-color: #ff8700; border-radius: 6upx; color: #fff;">{{ item.type |
-              filterType }}
+
+          </view>
+
+          <view style="background-color: #f3f2f2; padding: 20upx; box-sizing: border-box;display: flex; border-radius: 10upx;">
+            <image style="width: 100upx; height: 100upx; border-radius: 50%; margin-right: 10upx;" :src="item.imgOne"></image>
+            <view>
+              <view style="font-size: 26upx; margin-top: 10upx;">{{ item.userNameOne }}</view>
+              <view style="padding: 4upx 12upx; background-color: #ff8700; border-radius: 6upx; color: #fff; display: inline-flex; font-size: 24upx; margin-top: 8upx;">{{ item.type
+                |
+                filterType }}
+              </view>
             </view>
           </view>
         </view>

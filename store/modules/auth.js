@@ -174,7 +174,7 @@ export default {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (userInfo && userInfo.phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone: phone ? phone : userInfo.phone })
+					getAnotherTFTokenApi({ phone: phone ? phone : userInfo.phone, wechatName: userInfo.nickName, headImage: userInfo.avatarUrl })
 						.then((res) => {
 							uni.setStorageSync(T_STORAGE_KEY, res.data)
 							uni.hideLoading()

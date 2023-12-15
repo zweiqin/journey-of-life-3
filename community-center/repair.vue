@@ -153,6 +153,8 @@ export default {
       //   return;
       // }
 
+
+
       const postData = JSON.parse(JSON.stringify({ ...this.repairForm, ...this.consigneeMsg }));
 
       postData.userId = getUserId();
@@ -227,9 +229,12 @@ export default {
             return;
           }
 
+          console.log("来了老弟", info);
+
           _this.repairForm.remarks = info.remarks;
           _this.repairForm.id = info.id;
           _this.repairForm.dictName = info.dictName;
+          _this.repairForm.pricingType = info.pricingType
 
           const consigneeCacheData = {
             consigneeName: info.consigneeName,

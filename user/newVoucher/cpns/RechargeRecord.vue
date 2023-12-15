@@ -14,11 +14,16 @@
                     <text class="txt2">{{ item.number }}</text>
                     <view class="itemDetails">
                         <text class="txt1">代金卷{{ item.typeStrName }}</text>
-                        <text class="txt3">{{ item.typeStrName }}  ID : {{ item.id }}</text>
+                        <text class="txt3">{{ item.typeStrName }} ID : {{ item.id }}</text>
                         <text class="txt3">{{ item.createTime }}</text>
                     </view>
+                    <view style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;">
+                        <image style="width: 80upx; height: 80upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
+                            :src="item.userLogs"></image>
+                        <text style="font-size: 24upx; color: rgb(26, 26, 26);">{{ item.username }}</text>
+                    </view>
                 </view>
-             </scroll-view>
+            </scroll-view>
         </view>
     </view>
 </template>
@@ -93,6 +98,7 @@ export default {
     width: 100%;
     box-sizing: border-box;
     padding-bottom: 10rpx;
+
     /* height: 38rpx; */
     .amountText {
         /* display: flex;
@@ -106,65 +112,74 @@ export default {
         color: #222229;
     }
 }
+
 .scrollY {
     height: 100%;
 }
+
 .container {
     box-sizing: border-box;
     padding-bottom: 216rpx;
 }
-    .MakeMoneyRecordsList {
-        height: 59vh;
-        overflow: hidden auto;
-        .listItem {
-            margin-top: 50rpx;
-            /* margin: 50rpx 0rpx; */
-            width: 100%;
-            height: 120rpx;
+
+.MakeMoneyRecordsList {
+    height: 59vh;
+    overflow: hidden auto;
+
+    .listItem {
+        margin-top: 50rpx;
+        /* margin: 50rpx 0rpx; */
+        width: 100%;
+        height: 120rpx;
+        display: flex;
+        font-family: 思源黑体;
+        position: relative;
+
+        .itemIcon {
             display: flex;
-            font-family: 思源黑体;
-            position: relative;
-            .itemIcon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 68rpx;
-                height: 68rpx;
-                border-radius: 8rpx;
-                background: #49CE8B;
-                .Iconimg {
-                    width: 50rpx;
-                    height: 50rpx;
-                }
+            align-items: center;
+            justify-content: center;
+            width: 68rpx;
+            height: 68rpx;
+            border-radius: 8rpx;
+            background: #49CE8B;
+
+            .Iconimg {
+                width: 50rpx;
+                height: 50rpx;
             }
-            .txt2 {
-                position: absolute;
-                right: 20rpx;
-                top: 30rpx;
-                font-family: 思源黑体;
-                font-size: 42rpx;
-                line-height: 5rpx;
+        }
+
+        .txt2 {
+            position: absolute;
+            right: 20rpx;
+            top: 30rpx;
+            font-family: 思源黑体;
+            font-size: 42rpx;
+            line-height: 5rpx;
+            color: #222229;
+        }
+
+        .itemDetails {
+            margin-left: 20rpx;
+            display: flex;
+            flex-direction: column;
+            font-size: 24rpx;
+
+            .txt1 {
+                font-size: 28rpx;
+                font-weight: normal;
+                line-height: 32rpx;
                 color: #222229;
             }
-            .itemDetails {
-                margin-left: 20rpx;
-                display: flex;
-                flex-direction: column;
+
+            .txt3 {
+                margin-top: 10rpx;
                 font-size: 24rpx;
-                .txt1 {
-                    font-size: 28rpx;
-                    font-weight: normal;
-                    line-height: 32rpx;
-                    color: #222229;
-                }
-                .txt3 {
-                    margin-top: 10rpx;
-                    font-size: 24rpx;
-                    font-weight: normal;
-                    line-height: 32rpx;
-                    color: #888889;
-                }
+                font-weight: normal;
+                line-height: 32rpx;
+                color: #888889;
             }
         }
     }
-</style>
+}</style>

@@ -1,19 +1,16 @@
 <template>
-	<view
-		class="code-mask" :style="{
-			'opacity': codePicUrl && userInfo && userInfo.nickName ? '1' : '0',
-			'z-index':
-				codePicUrl && userInfo && userInfo.nickName ? '99' : '-1'
-		}"
-	>
-		<view
-			class="code-wrapper" :style="{
-				transform: codePicUrl ? 'scale(1)' : 'scale(0)'
-			}"
-		>
+	<view class="code-mask" :style="{
+		'opacity': codePicUrl && userInfo && userInfo.nickName ? '1' : '0',
+		'z-index':
+			codePicUrl && userInfo && userInfo.nickName ? '99' : '-1'
+	}">
+		<view class="code-wrapper" :style="{
+			transform: codePicUrl ? 'scale(1)' : 'scale(0)'
+		}">
 			<view class="header">
 				<view style="display: flex;justify-content: center;align-items: center;">
-					<image class="header-icon" src="../../static/images/new-user/default-user-avatar.png" mode="" />
+					<image class="header-icon"
+						:src="userInfo.avatarUrl || require('../../static/images/new-user/default-user-avatar.png')" mode="" />
 					<text>
 						<text v-if="type === 'userInvitation'">我的邀请码：</text>
 						<text v-else-if="type === 'shopInvitation'">我的商家码：</text>
@@ -43,36 +40,29 @@
 				</view>
 				<view style="text-align: center;">
 					<image class="code" :src="codePicUrl" alt="" />
-					<view
-						v-if="type === 'bindingUser'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingUser&code=${createCode}`)"
-					>
+					<view v-if="type === 'bindingUser'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingUser&code=${createCode}`)">
 						复制链接
 					</view>
-					<view
-						v-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingShop&code=${createCode}`)"
-					>
+					<view v-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingShop&code=${createCode}`)">
 						复制链接
 					</view>
-					<view
-						v-else-if="type === 'teamMembersInvitation'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingTeamMembers&code=${userInfo.phone}`)"
-					>
+					<view v-else-if="type === 'teamMembersInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingTeamMembers&code=${userInfo.phone}`)">
 						复制链接
 					</view>
 				</view>
 			</view>
 
-			<button class="uni-btn" @click="(type = '') || (createCode = '') || (qrcodeUrl = '') || (codePicUrl = '')">取消</button>
+			<button class="uni-btn"
+				@click="(type = '') || (createCode = '') || (qrcodeUrl = '') || (codePicUrl = '')">取消</button>
 		</view>
 
 		<!-- 生成二维码 -->
 		<view v-if="qrcodeUrl && createCode">
-			<uqrcode
-				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + createCode"
-				@complete="handleCompleteCode"
-			></uqrcode>
+			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + createCode"
+				@complete="handleCompleteCode"></uqrcode>
 		</view>
 	</view>
 </template>
@@ -149,6 +139,7 @@ export default {
 	position: absolute;
 	top: -10000upx;
 }
+
 .code-mask {
 	position: fixed;
 	top: 0;
@@ -207,6 +198,7 @@ export default {
 				width: 60upx;
 				height: 60upx;
 				margin-right: 10px;
+				border-radius: 50%;
 			}
 		}
 
