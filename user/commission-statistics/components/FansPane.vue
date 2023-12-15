@@ -5,7 +5,7 @@
       <view class="mask">{{ fansInfo.role | filterRole }}</view>
     </view>
     <view class="info">
-      <view class="name">{{ fansInfo.phone }}
+      <view class="name">{{ fansInfo.userName }}
         <!-- <tui-icon margin="0 0 0 10upx" :color="fansInfo.gender === 0 ? '#10aeff' : '#f37e7d'" name="friendadd-fill" :size="18"></tui-icon> -->
         <!-- <view class="add-time">绑定时间:{{ fansInfo.addTime }}</view> -->
 

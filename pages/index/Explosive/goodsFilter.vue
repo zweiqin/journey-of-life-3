@@ -128,6 +128,7 @@ export default {
       this.mainId = onceId
       this.subId = onceId
       this.querList.page = 1
+	  this.goodsList = []
       // this.resetQueryInfo()
       // this.setData()
       this.getList()
