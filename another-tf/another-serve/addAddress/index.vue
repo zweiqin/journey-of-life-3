@@ -436,14 +436,3 @@ export default {
 	margin-top: 20upx;
 }
 </style>
-
-<style scoped>
-.addressBack-box /deep/ .u-tab-item {
-	color: #C5AA7B !important;
-	font-weight: 400 !important;
-}
-
-.addressBack-box /deep/ .u-tab-bar {
-	background-color: #C5AA7B !important;
-}
-</style>

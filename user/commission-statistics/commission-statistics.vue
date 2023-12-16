@@ -48,7 +48,7 @@
           <view class="value">{{ commissionData.todayFans || 0 }}</view>
         </view>
 
-        <view class="item">
+        <!-- <view class="item">
           <image class="img" src="../../static/images//new-user/group/can-whith.png"></image>
           <view class="text">可提现(元)</view>
           <view class="value">{{ commissionData.totalAmount || 0 }}</view>
@@ -58,7 +58,7 @@
           <image class="img" src="../../static/images//new-user/group/has-whitdh.png"></image>
           <view class="text">已提现(元)</view>
           <view class="value">{{ commissionData.withdrawAmount || 0 }}</view>
-        </view>
+        </view> -->
       </view>
 
       <view class="button-wrapper">
@@ -121,16 +121,16 @@ export default {
 
     // 点击提现
     handleWithdrawal(account) {
-      if (!account) {
-        this.ttoast({
-          type: 'fail',
-          title: '佣金正在审批中'
-        });
-        return;
-      }
+      // if (!account) {
+      //   this.ttoast({
+      //     type: 'fail',
+      //     title: '佣金正在审批中'
+      //   });
+      //   return;
+      // }
 
       uni.navigateTo({
-        url: '/another-tf/another-user/platform-recharge/index'
+        url: '/another-tf/another-serve/withdraw/index'
       });
     }
   },

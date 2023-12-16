@@ -128,7 +128,7 @@
 <script>
 import { bAuthApi, getAuthedCompanyListApi, OCRRecognitionApi } from '../../api/community-center'
 import { IMG_UPLOAD_URL } from '../../config';
-import { USER_INFO, USER_TOKEN } from '../../constant'
+import { USER_INFO } from '../../constant'
 import { getUserId } from '../../utils'
 
 export default {
@@ -174,7 +174,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

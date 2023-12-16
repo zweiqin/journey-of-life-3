@@ -69,7 +69,7 @@
               @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)"
               v-for=" item  in  $data._list.slice(4) " :key="item.id">
               <tui-lazyload-img :style="{ background: `url(${item.image})`, margin: 0 }" mode="aspectFit"
-                :src="item.image"></tui-lazyload-img>
+                :src="common.seamingImgUrl(item.image)"></tui-lazyload-img>
               <view class="goods-info">
                 <view class="goods-name">{{ item.productName }}</view>
                 <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{

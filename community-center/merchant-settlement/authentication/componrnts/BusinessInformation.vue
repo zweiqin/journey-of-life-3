@@ -90,7 +90,6 @@ import { IMG_UPLOAD_URL } from '../../../../config';
 import { shopAuth, getAccountInfo, getShopInfo } from '@/api/community-center/merchantSettlement';
 import { BusinessInformationRules } from '../toolData/rules';
 import { getUserId } from '@/utils';
-import { USER_TOKEN } from '@/constant';
 export default {
   name: 'BasicInformation',
   props: {
@@ -160,7 +159,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

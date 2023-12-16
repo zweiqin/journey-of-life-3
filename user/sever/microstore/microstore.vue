@@ -67,7 +67,7 @@ import {
 } from '../../../api/user'
 import { getConfigApi } from '../../../api/auth'
 import { getUserId } from '../../../utils'
-import { USER_INFO, USER_TOKEN } from '../../../constant'
+import { USER_INFO } from '../../../constant'
 import ShopGoodsList from './cpns/ShopGoodsList'
 import { getGoodsByIdApi } from '../../../api/home'
 // #ifdef H5
@@ -274,8 +274,7 @@ export default {
     async setWexinShare(shareData, cb) {
       const currentUrl = window.location.href.replace('#', 'ericToken')
       const { data } = await getConfigApi({
-        url: currentUrl,
-        token: uni.getStorageSync(USER_TOKEN),
+        url: currentUrl
       })
 
       share.wxRegister(data, shareData)

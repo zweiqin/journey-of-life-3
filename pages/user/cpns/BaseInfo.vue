@@ -13,15 +13,38 @@
 					<view class="logout-tip">您目前暂未登录，请<text @click="go('/pages/login/login')">前往登录</text></view>
 				</view>
 
-				<view v-else class="user-info-detail" @click="go('/another-tf/another-serve/memberCenter/index')">
+				<view v-else class="user-info-detail" @click="go('/another-tf/another-serve/personalDetails/index')">
 					<view style="display: flex;align-items: center;">
-						<view style="padding: 6upx 8upx;margin-right: 12upx;;font-size: 34upx;background-color: #e7e3e0;">{{ $store.getters.userInfo.memberLevelName }}</view>
-						<view class="user-nack-name">{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}</view>
+						<!-- <view style="padding: 6upx 8upx;margin-right: 12upx;font-size: 34upx;background-color: #e7e3e0;">
+							{{ $store.getters.userInfo.memberLevelName }}
+							</view> -->
+						<view class="user-nack-name">
+							{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}
+						</view>
 					</view>
 					<view class="tags">
-						<view>成长值</view>
+						<!-- <view>成长值</view> -->
 						<view class="tag">
-							{{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }}
+							<tui-icon name="star-fill" :size="22" unit="upx" color="#eaa349" margin="0 4upx 0 0"></tui-icon>
+							No.{{ userId }}
+							<!-- {{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }} -->
+						</view>
+						<view>
+							<image
+								v-if="[1, 2].includes($store.getters.levelType)"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/huiyuan.png"
+								@click="go()"
+							></image>
+							<image
+								v-if="[3, 4].includes($store.getters.levelType)"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/tuanzhang.png"
+								@click="go()"
+							></image>
+							<image
+								v-if="[ 5 ].includes($store.getters.levelType)"
+								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/hehuoren.png"
+								@click="go()"
+							></image>
 						</view>
 					</view>
 				</view>
@@ -104,6 +127,12 @@ import { convertToDecimal } from '../../../utils'
 
 export default {
 	name: 'BaseInfo',
+	props: {
+		userId: {
+			type: Number,
+			default: 0
+		}
+	},
 	data() {
 		return {
 			isShow: false,

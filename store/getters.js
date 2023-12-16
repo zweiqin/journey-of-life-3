@@ -1,7 +1,6 @@
 export default {
   userInfo: (state) => state.auth.userInfo,
   userToken: (state) => state.auth.userToken,
-  historyInfo: (state) => state.auth.historyInfo,
   historyPopup: (state) => state.auth.historyPopup,
 
   // 购物车
@@ -24,6 +23,7 @@ export default {
   // 个人中心
   pricePlatformInfo: (state) => state.user.pricePlatformInfo,
   shopCarNumber: (state) => state.user.shopCarNumber,
+  levelType: (state) => state.user.levelType,
 
   // 社区
   popupImage: (state) => state.community.popupImage,

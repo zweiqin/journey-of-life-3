@@ -173,7 +173,7 @@
 import { getUserId } from 'utils';
 import { debounce } from 'lodash-es';
 import { getAddressListApi } from '../api/address';
-import { T_SELECT_ADDRESS, SF_INVITE_CODE, USER_TOKEN } from '../constant';
+import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant';
 import { IMG_UPLOAD_URL } from '../config';
 import ChooseTime from './componts/choose-time.vue';
 import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center';
@@ -333,7 +333,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

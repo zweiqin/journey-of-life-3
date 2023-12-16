@@ -47,7 +47,7 @@
 import share from 'utils/share'
 import PointShare from './point-share'
 import { isInWx } from '../../utils'
-import { USER_TOKEN } from '../../constant'
+import { T_STORAGE_KEY } from '../../constant'
 import showModalMixin from '../../mixin/showModal'
 
 export default {
@@ -70,7 +70,7 @@ export default {
 		async share(data, quiet, backUrl) {
 			this.shareData = data
 			this.backUrl = backUrl
-			if (!uni.getStorageSync(USER_TOKEN)) {
+			if (!uni.getStorageSync(T_STORAGE_KEY) || !(uni.getStorageSync(T_STORAGE_KEY) && !uni.getStorageSync(T_STORAGE_KEY).token)) {
 				if (!quiet) {
 					this.$data._isShowTuiModel = true
 				}

@@ -24,6 +24,7 @@ export const CHANGE_ON_FN = 'CHANGE_ON_FN'
 // 个人中心
 export const CHNAGE_PRICE_PLATFORM_INFO = 'CHNAGE_PRICE_PLATFORM_INFO'
 export const CHNAGE_SHOP_CAR_NUMBER = 'CHNAGE_SHOP_CAR_NUMBER'
+export const CHNAGE_LEVEL_TYPE = 'CHNAGE_LEVEL_TYPE'
 
 // 社区
 export const CHANGE_HOME_PAGE_IMAGE = 'change_home_page_image'

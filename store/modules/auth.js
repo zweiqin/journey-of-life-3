@@ -10,11 +10,6 @@ export default {
 		return {
 			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
 			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
-			historyInfo: {
-				collection: 0,
-				footPrint: 0,
-				follow: 0
-			},
 			identityInfo: {
 				type: 0,
 				info: {}
@@ -133,7 +128,7 @@ export default {
 				nickname: state.userInfo.nickName,
 				avatar: state.userInfo.avatarUrl,
 				password: state.userInfo.password,
-				id: state.userId
+				id: uni.getStorageSync(USER_ID)
 			}
 			originData[updateData.key] = updateData.value
 			updateUserInfoApi(originData).then(() => {
@@ -146,11 +141,9 @@ export default {
 
 		// 刷新用户信息
 		refrshUserInfo({ state, dispatch, commit }, cb) {
-			if (!state.userId) {
-				return
-			}
+			if (!uni.getStorageSync(USER_ID)) return
 			refrshUserInfoApi({
-				userId: state.userId
+				userId: uni.getStorageSync(USER_ID)
 			}).then(async ({ data }) => {
 				uni.setStorageSync(USER_ID, data.userId)
 				uni.setStorageSync(USER_INFO, data)

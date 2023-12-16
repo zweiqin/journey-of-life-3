@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { getSelectProductPlatformRelationApi, getSelectLevelPlatformRelationApi, getSelectApplyPlatformRelationApi } from '../../../api/anotherTFInterface'
+import { getSelectProductPlatformRelationApi, getSelectLevelPlatformRelationApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'PurchaseChainProducts',
 	onLoad(options) {
@@ -136,7 +136,7 @@ export default {
 					this.isShowUpgrade = false
 					this.getGoodsList()
 					this.$showToast('您已成为团长')
-				} else if (res.data && res.data.levelType === 0) {
+				} else if (res.data && res.data.levelType === 5) {
 					this.isShowUpgrade = false
 					this.getGoodsList()
 					this.$showToast('您已成为合伙人')

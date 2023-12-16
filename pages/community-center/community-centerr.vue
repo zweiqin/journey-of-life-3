@@ -296,9 +296,9 @@ export default {
 						this.pupupLevelType = res.data ? res.data.levelType : ''
 						if (res.data && res.data.levelType === 1) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/new-community/home/ad1.png')) // 没购买产品
 						else if (res.data && res.data.levelType === 2) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-commander.png')) // 已购买产品，且不是团长
-						else if (res.data && res.data.levelType === 3) app.globalData.isShowCommunityPopup = false // 已是团长，但不满足合伙人升合伙人条件
-						else if (res.data && res.data.levelType === 4) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-partner.png')) // 已是团长，且满足合伙人升合伙人条件
-						else if (res.data && res.data.levelType === 0) app.globalData.isShowCommunityPopup = false // 已经是合伙人
+						else if (res.data && res.data.levelType === 3) app.globalData.isShowCommunityPopup = false // 已是团长，但不满足团长升合伙人条件
+						else if (res.data && res.data.levelType === 4) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-partner.png')) // 已是团长，且满足团长升合伙人条件
+						else if (res.data && res.data.levelType === 5) app.globalData.isShowCommunityPopup = false // 已经是合伙人
 						else if (res.data && res.data.levelType === 0) app.globalData.isShowCommunityPopup = false // 其它情况
 					})
 					.catch((e) => {

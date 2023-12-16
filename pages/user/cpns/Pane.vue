@@ -29,24 +29,6 @@
 					>
 						{{ $store.getters.shopCarNumber || 0 }}
 					</tui-badge>
-					<tui-badge
-						v-show="menu.name === '收藏' && $store.getters.historyInfo.collection" type="danger" absolute :scale-ratio="0.8"
-						translate-x="40%" top="-8rpx" right="50rpx"
-					>
-						{{ $store.getters.historyInfo.collection || 0 }}
-					</tui-badge>
-					<tui-badge
-						v-show="menu.name === '足迹' && $store.getters.historyInfo.footPrint" type="danger" absolute :scale-ratio="0.8"
-						translate-x="40%" top="-8rpx" right="50rpx"
-					>
-						{{ $store.getters.historyInfo.footPrint || 0 }}
-					</tui-badge>
-					<tui-badge
-						v-show="menu.name === '订阅' && $store.getters.historyInfo.follow" type="danger" absolute :scale-ratio="0.8"
-						translate-x="40%" top="-8rpx" right="50rpx"
-					>
-						{{ $store.getters.historyInfo.follow || 0 }}
-					</tui-badge>
 				</view>
 				<view v-for="menu in specialPane.filter(item => item.name === '股东看板')" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
 					<BeeIcon

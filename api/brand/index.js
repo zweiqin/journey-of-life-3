@@ -1,4 +1,3 @@
-import { USER_TOKEN } from 'constant'
 import { RuanRequest } from '../../utils'
 
 /**
@@ -60,11 +59,7 @@ export const getStuffBrandListApi = data => {
   return RuanRequest(
     '/newaterialcity/getNewMaterialCityList',
     data,
-    'post',
-    null,
-    {
-      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
-    }
+    'post'
   )
 }
 
@@ -75,10 +70,6 @@ export const getMaterialBrandStyleListApi = data => {
   return RuanRequest(
     '/materialBrandStyle/getMaterialBrandStyleList',
     data,
-    'post',
-    null,
-    {
-      'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN),
-    }
+    'post'
   )
 }

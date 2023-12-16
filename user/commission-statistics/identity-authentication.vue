@@ -87,7 +87,7 @@ import { getUserId } from '../../utils';
 import { getCodeApi } from '../../api/auth';
 import { userIdentityAuthenticationInfoApi, IDCardAnalysisApi } from '../../api/user'
 import { IMG_UPLOAD_URL } from '../../config'
-import { USER_INFO, USER_TOKEN } from '../../constant'
+import { USER_INFO } from '../../constant'
 
 export default {
   data() {
@@ -119,7 +119,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

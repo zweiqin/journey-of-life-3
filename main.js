@@ -30,7 +30,15 @@ Vue.mixin({
 			common: {
 				seamingImgUrl(url) {
 					if (!url) return ''
-					return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
+					// return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
+					if (url.startsWith('http://')) {
+						return url.replace('http://', 'https://')
+					} else if (url.startsWith('https://')) {
+						return url
+					}
+					// https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/
+					// https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/
+					return 'https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/' + url
 				}
 			}
 		}

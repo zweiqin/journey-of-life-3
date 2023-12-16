@@ -47,7 +47,6 @@
 
 <script>
 import { IMG_UPLOAD_URL } from '../../config';
-import { USER_TOKEN } from '@/constant';
 import { getUserId } from '@/utils';
 import { getPostDetails, postDetailsEdit } from '@/api/community-center/makeSmallFortune'
 import { selectCategory } from '@/api/community-center/makeSmallFortune'
@@ -151,7 +150,6 @@ export default {
                         filePath: imgFile.path,
                         name: 'file',
                         formData: {
-                            token: USER_TOKEN,
                             userId: getUserId()
                         },
                         success: (uploadFileRes) => {
@@ -188,7 +186,6 @@ export default {
                         filePath: imgFile.path,
                         name: 'file',
                         formData: {
-                            token: USER_TOKEN,
                             userId: getUserId()
                         },
                         success: (uploadFileRes) => {

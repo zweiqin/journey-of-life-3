@@ -20,8 +20,7 @@
 						<text v-else>填写表单</text>
 					</view>
 				</view>
-				<view v-else-if="[ 0 ].includes(upgradeLevelType)">
-					<!-- 已经是合伙人 -->
+				<view v-else-if="[ 5 ].includes(upgradeLevelType)">
 					<view style="font-size: 48upx;color: #ffffff;">合伙人</view>
 				</view>
 				<view v-else>
@@ -41,13 +40,13 @@
 						<text v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
 							{{ relationshipLevelName }}升级
 						</text>
-						<view v-else-if="[ 0 ].includes(upgradeLevelType)">-</view><!-- 已经是合伙人 -->
+						<view v-else-if="[ 5 ].includes(upgradeLevelType)">-</view>
 						<text v-else>不可升级</text>
 					</view>
 				</view>
 				<view style="margin-top: 20upx;font-size: 24upx;color: #9E9E9E;">
 					<text v-if="[2, 4].includes(upgradeLevelType)">已满足申请条件</text>
-					<text v-else-if="[ 0 ].includes(upgradeLevelType)">恭喜您已经是合伙人</text><!-- 已经是合伙人 -->
+					<text v-else-if="[ 5 ].includes(upgradeLevelType)">恭喜您已经是合伙人</text>
 					<text v-else-if="[0, 1, 3].includes(upgradeLevelType)">不满足角色的升级条件</text>
 					<text v-else>无法获取信息，请重试！</text>
 				</view>
@@ -219,7 +218,7 @@ export default {
 				} else if (res.data && res.data.levelType === 4) {
 					this.relationLevelName = '合伙人'
 					this.relationshipLevelName = '合伙人'
-				} else if (res.data && res.data.levelType === 0) { // 已经是合伙人
+				} else if (res.data && res.data.levelType === 5) { // 已经是合伙人
 					this.relationLevelName = ''
 				} else if (res.data && res.data.levelType === 0) {
 					this.relationLevelName = ''

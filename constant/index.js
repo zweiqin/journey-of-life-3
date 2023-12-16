@@ -61,6 +61,7 @@ export const clearAllCache = () => {
 		USER_ID,
 		USER_TOKEN,
 		USER_INFO,
+		T_USER_TOKEN,
 		T_STORAGE_KEY,
 		T_NEW_BIND_TYPE,
 		T_NEW_BIND_CODE,

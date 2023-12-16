@@ -147,7 +147,7 @@
 
 <script>
 import { buildUserCrmSlbumApi } from '../../api/user'
-import { USER_TOKEN, USER_INFO } from '../../constant'
+import { USER_INFO } from '../../constant'
 import { getUserId } from '../../utils'
 import { IMG_UPLOAD_URL } from '../../config'
 export default {
@@ -226,7 +226,6 @@ export default {
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {
-								token: USER_TOKEN,
 								userId: getUserId()
 							},
 							success: (uploadFileRes) => {
@@ -262,7 +261,6 @@ export default {
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {
-								token: USER_TOKEN,
 								userId: getUserId()
 							},
 							success: (uploadFileRes) => {
@@ -299,7 +297,6 @@ export default {
 							filePath: imgFile.path,
 							name: 'file',
 							formData: {
-								token: USER_TOKEN,
 								userId: getUserId()
 							},
 							success: (uploadFileRes) => {

@@ -2,7 +2,7 @@
 
 	<view class="user-page-container">
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
-		<BaseInfo ref="baseInfoRef" @handleNavigate="handleNavigate"></BaseInfo>
+		<BaseInfo ref="baseInfoRef" :user-id="userId" @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
@@ -30,7 +30,7 @@ import { getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
-import { USER_ID, USER_INFO } from '../../constant'
+import { USER_ID, T_STORAGE_KEY } from '../../constant'
 import { myFunction, myServe, additionalFunction, shopServe, myPreferential } from './data'
 import { Encrypt } from '../../utils/secret'
 
@@ -61,11 +61,11 @@ export default {
 	methods: {
 		init() {
 			this.userId = uni.getStorageSync(USER_ID)
-			this.userInfo = uni.getStorageSync(USER_INFO) || {}
-			if (this.userInfo) {
+			this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
+			if (this.isLogin()) {
 				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
-				this.$store.dispatch('auth/refrshUserInfo', (userInfo) => (this.userInfo = userInfo))
-				this.$store.dispatch('user/count', this.userInfo)
+				this.$store.dispatch('auth/refrshUserInfo')
+				this.$store.dispatch('user/count')
 			}
 			this.$forceUpdate()
 		},
@@ -89,7 +89,7 @@ export default {
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
 					if (storageKeyToken) {
-						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`)
 					}
 					return
 				} else if (item.type === 'shopInvitation') {

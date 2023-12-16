@@ -18,8 +18,9 @@
                         <text class="txt3">{{ item.createTime }}</text>
                     </view>
                     <view style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;">
-                        <image style="width: 80upx; height: 80upx; border-radius: 50%; border: 1upx solid #f3f3f3;"  :src="item.imgOne"></image>
+                        <image style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"  :src="item.imgOne"></image>
                         <text style="font-size: 24upx;">{{ item.userNameOne }}</text>
+                        <text style="font-size: 24upx;">（ID：{{ item.userId }}）</text>
                     </view>
                 </view>
              </scroll-view>

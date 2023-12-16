@@ -7,11 +7,20 @@ import { AnotherTFRequest } from '../../utils'
 // 登录拿 新团蜂的 token
 export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrRegByPhone', data)
 
+// 获取支付宝小程序手机号绑定
+export const updateAliPhoneAppApi = (data) => AnotherTFRequest('/app/updateAliPhone', data, 'POST')
+
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
+// 账户注销
+export const deleteUserInfoApi = (data) => AnotherTFRequest(`/user/delUser/${data.code}`, data, 'DELETE')
+
 // 个人系信息查询
 export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
+
+// 个人系信息修改
+export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST')
 
 // 查询地址一级分类
 export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)

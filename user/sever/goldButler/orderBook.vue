@@ -68,7 +68,6 @@
 
 <script>
 import { getSetMealListApi, reservationServiceApi } from '../../../api/user';
-import { USER_TOKEN} from '../../../constant';
 import { getUserId } from '../../../utils';
 import { IMG_UPLOAD_URL } from '../../../config';
 import chooseTime from '../../../community-center/componts/choose-time.vue';
@@ -119,7 +118,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

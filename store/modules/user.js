@@ -1,16 +1,18 @@
 import {
 	CHNAGE_PRICE_PLATFORM_INFO,
-	CHNAGE_SHOP_CAR_NUMBER
+	CHNAGE_SHOP_CAR_NUMBER,
+	CHNAGE_LEVEL_TYPE
 } from './type'
 import { getStorageKeyToken } from '../../utils'
-import { getPricePlatformAllApi, getCartListApi } from '../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getCartListApi, getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
 	state() {
 		return {
 			pricePlatformInfo: {},
-			shopCarNumber: 0
+			shopCarNumber: 0,
+			levelType: 0
 		}
 	},
 
@@ -21,6 +23,10 @@ export default {
 
 		[CHNAGE_SHOP_CAR_NUMBER](state, shopCarNumber) {
 			state.shopCarNumber = shopCarNumber
+		},
+
+		[CHNAGE_LEVEL_TYPE](state, levelType) {
+			state.levelType = levelType
 		}
 	},
 
@@ -34,6 +40,10 @@ export default {
 			getCartListApi({}).then((res) => {
 				this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
 			})
+			getSelectLevelPlatformRelationApi({})
+				.then((res) => {
+					commit(CHNAGE_LEVEL_TYPE, res.data.levelType)
+				})
 		}
 	}
 }

@@ -24,7 +24,6 @@ import StyleOne from "./mould/style-one.vue";
 import { getNameCardDetailApi } from "../../../api/user";
 import { getConfigApi } from "../../../api/auth";
 import ayQrcode from "../../../components/ay-qrcode/ay-qrcode.vue";
-import { USER_TOKEN } from "../../../constant";
 
 // #ifdef H5
 import share from "../../../utils/wxshare";
@@ -91,8 +90,7 @@ export default {
       const _this = this;
 
       getConfigApi({
-        url: currentUrl,
-        token: uni.getStorageSync(USER_TOKEN),
+        url: currentUrl
       }).then(({ data }) => {
         share.wxRegister(data, {
           title: this.data.name,

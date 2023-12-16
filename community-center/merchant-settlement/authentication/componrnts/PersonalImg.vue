@@ -36,7 +36,6 @@
 <script>
 import { IMG_UPLOAD_URL } from "../../../../config";
 import { getUserId } from "@/utils";
-import { USER_TOKEN } from "@/constant";
 export default {
   name: 'PersonalImg',
   data() {
@@ -62,7 +61,6 @@ export default {
               filePath: imgFile.path,
               name: "file",
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId(),
               },
               success: (uploadFileRes) => {

@@ -1357,6 +1357,24 @@
           }
         },
         {
+          "path": "another-serve/unsubscribe/index",
+          "style": {
+            "navigationBarTitleText": "账户注销"
+          }
+        },
+        {
+          "path": "another-serve/unsubscribeCode/index",
+          "style": {
+            "navigationBarTitleText": "注销账户手机认证"
+          }
+        },
+        {
+          "path": "another-serve/protocol/index",
+          "style": {
+            "navigationBarTitleText": "《团蜂》商城用户协议"
+          }
+        },
+        {
           "path": "another-user/platform-recharge/index",
           "style": {
             "navigationBarTitleText": "平台充值"

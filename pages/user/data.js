@@ -103,6 +103,11 @@ export const myFunction = [
 		icon: require('../../static/images/new-user/menu-icon/yaoqingma.png'),
 		type: 'userInvitation'
 	},
+	// {
+	// 	name: '会员中心',
+	// 	icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
+	// 	url: '/another-tf/another-serve/memberCenter/index'
+	// },
 	{
 		name: '会员升级',
 		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),

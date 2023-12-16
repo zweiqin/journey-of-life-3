@@ -184,7 +184,7 @@ import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
 import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
-import { USER_INFO, USER_TOKEN, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { USER_INFO, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
 import { getUserId } from '../../utils'
 import { IMG_UPLOAD_URL } from '../../config';
@@ -433,7 +433,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {

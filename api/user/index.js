@@ -198,34 +198,22 @@ export const changeServiceUserBindingApi = (data) => shopRequest('/dtsUserSharin
 export const getServiceSharingLogsApi = (data) => RuanRequest('/dtsUserSharingLogs/selectId', data, 'get')
 
 // 升级(超级)合伙人
-export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const partnerApplyApi = (data) => shopRequest('/api/syb/orderPayH5', data, 'post')
 
 // 升级为门店
-export const applyStoreApi = (data) => shopRequest('/partnerApply/saveAndSignin', data, 'post', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const applyStoreApi = (data) => shopRequest('/partnerApply/saveAndSignin', data, 'post', null)
 
 // 查询图册
-export const getUserCrmSlbumList = (data) => shopRequest('/userCrmSlbum/list', data, 'get', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const getUserCrmSlbumList = (data) => shopRequest('/userCrmSlbum/list', data, 'get')
 
 // id查询智能图册
-export const getUserCrmSlbumSelectId = (data) => shopRequest('/userCrmSlbum/selectId', data, 'get', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const getUserCrmSlbumSelectId = (data) => shopRequest('/userCrmSlbum/selectId', data, 'get')
 
 // 新建智能图册
-export const buildUserCrmSlbumApi = (data) => shopRequest('/userCrmSlbum/create', data, 'post', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const buildUserCrmSlbumApi = (data) => shopRequest('/userCrmSlbum/create', data, 'post')
 
 // 删除图册
-export const userCrmSlbumDeleteApi = (data) => shopRequest('/userCrmSlbum/delete', data, 'get', null, {
-	'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
-})
+export const userCrmSlbumDeleteApi = (data) => shopRequest('/userCrmSlbum/delete', data, 'get')
 
 // 进入微店
 export const enterSHopApi = (data) => shopRequest('/microshop/toShop', data, 'get')

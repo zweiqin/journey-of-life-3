@@ -112,7 +112,6 @@
 import { getUserId } from 'utils';
 import { getOrderDetailApi, postCommentApi } from '../../api/order';
 import { rateOrderWholeList } from './config';
-import { USER_TOKEN } from '../../constant';
 import { IMG_UPLOAD_URL } from '../../config';
 
 export default {
@@ -218,7 +217,6 @@ export default {
               filePath: imgFile.path,
               name: 'file',
               formData: {
-                token: USER_TOKEN,
                 userId: getUserId()
               },
               success: (uploadFileRes) => {
