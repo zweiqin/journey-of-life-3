@@ -416,3 +416,13 @@ export const OCRRecognitionApi = data => {
     method: 'POST'
   })
 }
+
+
+// 银行卡识别
+export const bankCardAnalysisApi = data => {
+  return endRequest({
+    url: "/api/third/ocr/bankCardOcr",
+    data,
+    method: "POST"
+  })
+}
