@@ -2,7 +2,12 @@
 	<view class="platform-recharge">
 		<JHeader title="平台充值" width="50" height="50" style="padding: 24upx 0 10upx;background-color: #f5f5f5;">
 			<template #ftFn>
-				<text style="margin-right: 40upx;font-size: 30upx;font-weight: bold;color: #000000;" @click="handleMemberAccountWithdraw">提现</text>
+				<text
+					style="margin-right: 40upx;font-size: 30upx;font-weight: bold;color: #000000;"
+					@click="handleMemberAccountWithdraw"
+				>
+					提现
+				</text>
 			</template>
 		</JHeader>
 		<view
@@ -43,7 +48,7 @@
 					</view>
 					<view style="width: 2upx;background-color: #f37d49;"></view>
 					<view>
-						<view style="color: #f7a783;">关系链分佣</view>
+						<view style="color: #f7a783;">推广收益</view>
 						<view style="margin-top: 10upx;">{{ pricePlatformInfo.commissionPrice || 0 }}</view>
 					</view>
 				</view>
@@ -56,7 +61,8 @@
 					<text style="color: #222229;">余额充值</text>
 					<tui-button
 						type="warning" width="220rpx" height="60rpx" margin="0"
-						style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/platform-recharge/recharge-record')"
+						style="display: inline-block;border-radius: 30rpx;"
+						@click="go('/another-tf/another-user/platform-recharge/recharge-record')"
 					>
 						充值流水 →
 					</tui-button>
@@ -90,8 +96,8 @@
 			<view style="padding: 120upx 0 38upx;text-align: center;">
 				<tui-button
 					type="warning" width="680rpx" height="84upx" margin="0 20upx 0"
-					style="display: inline-block;border-radius: 40upx;background: linear-gradient(287deg, #EF530E 31%, #F77A42 104%)!important;border-radius: 16upx;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
-					@click="handleRecharge"
+					style="display: inline-block;background: linear-gradient(287deg, #EF530E 31%, #F77A42 104%)!important;border-radius: 16upx;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
+					@click="rechargeForm.amounts && (isShowModalRecharge = true)"
 				>
 					￥{{ rechargeForm.amounts || '--' }} 立即充值
 				</tui-button>
@@ -111,6 +117,29 @@
 				</tui-input>
 			</template>
 		</tui-dialog>
+
+		<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" @cancel="isShowModalRecharge = false">
+			<view style="padding: 28upx 0;text-align: center;">
+				<view>
+					<image style="width: 435upx;height: 337upx;" src="../../../static/images/common/modal-show.png"></image>
+				</view>
+				<view style="margin-top: 24upx;font-size: 40upx;color: #333333;">
+					<text>确定要充值 {{ rechargeAmountsList[currentRechargeIndex].amounts }} 代金券吗？</text>
+				</view>
+				<view style="margin-top: 22upx;font-size: 36upx;color: #687383;">
+					<text>附赠 {{ rechargeAmountsList[currentRechargeIndex].voucherNum }} 代金券</text>
+				</view>
+				<view>
+					<tui-button
+						type="warning" width="238rpx" height="108rpx" margin="32upx 0 0"
+						:size="40" shape="circle"
+						style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;" @click="handleRecharge"
+					>
+						确定
+					</tui-button>
+				</view>
+			</view>
+		</tui-modal>
 
 		<CashierList :total-price="rechargeForm.amounts" @change="(e) => payInfo = e" />
 	</view>
@@ -137,7 +166,7 @@ export default {
 				rechargePrice: '', // 账户充值余额
 				voucherPrice: '', // 代金券余额
 				distributorPrice: '', // 账户分销金额
-				commissionPrice: '' // 关系链分佣
+				commissionPrice: '' // 推广收益,关系链分佣
 			},
 			rechargeAmountsList: [
 				{ amounts: 1000, voucherNum: 1000 },
@@ -153,7 +182,8 @@ export default {
 			rechargeForm: {
 				amounts: ''
 			},
-			payInfo: {}
+			payInfo: {},
+			isShowModalRecharge: false
 		}
 	},
 
@@ -179,6 +209,7 @@ export default {
 				this.rechargeAmountsList[5].amounts = ''
 			} else if (e.index === 1) {
 				if (!this.rechargeAmountsList[5].amounts) return this.$showToast('充值金额不能为空')
+				if (this.rechargeAmountsList[5].amounts < 1000) return this.$showToast('充值金额不能少于1000')
 				if (this.rechargeAmountsList[5].amounts > 100000) return this.$showToast('单次充值金额不能大于10万')
 				this.rechargeForm.amounts = this.rechargeAmountsList[5].amounts
 				this.rechargeAmountsList[5].voucherNum = `代金券${this.rechargeAmountsList[5].amounts}`

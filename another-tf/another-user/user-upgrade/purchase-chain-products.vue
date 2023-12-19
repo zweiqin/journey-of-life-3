@@ -50,7 +50,7 @@
 									</view>
 								</view>
 								<view style="margin-top: 20upx;;text-align: center;">
-									<image :src="item.image" style="width: 276upx;height: 168upx;border-radius: 20upx;"></image>
+									<image :src="common.seamingImgUrl(item.image)" style="width: 276upx;height: 168upx;border-radius: 20upx;"></image>
 								</view>
 							</view>
 						</view>

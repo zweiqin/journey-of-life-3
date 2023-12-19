@@ -129,7 +129,7 @@
 										v-for="proItem in dataList.skus" :key="proItem.productId" class="order-info-item"
 										@click="goodsItemTap(proItem.productId, proItem.skuId)"
 									>
-										<image :src="proItem.image" class="product-img default-img"></image>
+										<image :src="common.seamingImgUrl(proItem.image)" class="product-img default-img"></image>
 										<view class="info-box">
 											<text class="product-name">{{ proItem.productName }}</text>
 											<view class="price-sku-box">

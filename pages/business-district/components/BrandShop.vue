@@ -5,7 +5,7 @@
 	>
 		<view class="brand-logo-container">
 			<tui-lazyload-img
-				:src="brandInfo.shopLogo || 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/4cf6ad189ac84546a55f5dcb73c88e87.jpg'"
+				:src="common.seamingImgUrl(brandInfo.shopLogo) || 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/4cf6ad189ac84546a55f5dcb73c88e87.jpg'"
 			></tui-lazyload-img>
 		</view>
 

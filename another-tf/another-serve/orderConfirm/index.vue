@@ -34,7 +34,7 @@
 					<view class="order-info-box">
 						<view class="order-info">
 							<view v-for="(cItem, index) in item.skus" :key="cItem.productId" class="order-info-item">
-								<image :src="cItem.image" class="product-img"></image>
+								<image :src="common.seamingImgUrl(cItem.image)" class="product-img"></image>
 								<view class="info-box">
 									<text class="product-name">{{ cItem.productName }}</text>
 									<view class="product-sku">

@@ -432,6 +432,9 @@ export const addAnswerProblemApi = (data) => AnotherTFRequest('/seckill/addAnswe
 // 提问
 export const addProblemAnswerApi = (data) => AnotherTFRequest('/seckill/addProblem', data, 'POST')
 
+// 查询店铺秒杀
+export const getShopSeckillIndexApi = (data) => AnotherTFRequest('/seckill/getIndex', data)
+
 // 我的问答
 // 批量删除提问
 export const deleteProblemAnswerApi = (data) => AnotherTFRequest('/seckill/deleteProblem', data, 'POST')
@@ -452,9 +455,31 @@ export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSe
 // 邀请好友拼单查询
 export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', data, 'POST')
 
+// 拼团专区首页数据查询
+export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data)
+
 // 限时折扣
 // 专区首页数据查询
 export const getIndexDiscountListApi = (data) => AnotherTFRequest('/discount/getIndex', data)
+
+// 平台折扣
+// 平台折扣查询
+export const getQueryPlatformDiscountApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscount', data)
+
+// 平台折扣商品查询
+export const getPlatformDiscountProductListApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscountProductList', data, 'POST')
+
+// 根据场次时间查询商品列表
+export const getQueryProductListBySessionApi = (data) => AnotherTFRequest('/platform-seckill/queryProductListBySession', data, 'POST')
+
+// 平台秒杀列表
+export const getQueryPlatformSeckillListApi = (data) => AnotherTFRequest('/platform-seckill/queryPlatformSeckillList', data)
+
+// 根据seckillId查询对应的秒杀商品列表
+export const getPlatformSeckillsCanvasApi = (data) => AnotherTFRequest('/canvas/getPlatformSeckills', data)
+
+// 平台秒杀查询今日场次
+export const getPlatformSeckillsQuerySessionApi = (data) => AnotherTFRequest('/platform-seckill/querySession', data)
 
 // 评价
 // 点赞或取消点赞某个评论

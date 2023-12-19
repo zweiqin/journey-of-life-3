@@ -37,7 +37,7 @@
 							<view class="pro-item-inner">
 								<view class="pro-item">
 									<view class="pro-item-img">
-										<image class="img" :src="itemJ.productImage"></image>
+										<image class="img" :src="common.seamingImgUrl(itemJ.productImage)"></image>
 									</view>
 									<view class="pro-item-info">
 										<h3 class="name">
@@ -66,7 +66,7 @@
 		<tui-bottom-popup class="activity-con" :show="goodsDetailShowFlag" @close="goodsDetailShowFlag = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
-					<image class="detailImg" :src="selectedSku.image"></image>
+					<image class="detailImg" :src="common.seamingImgUrl(selectedSku.image)"></image>
 					<view class="flex-column-plus mar-left-40">
 						<view class="font-color-C5AA7B">
 							<label class="fs24">¥</label>

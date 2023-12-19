@@ -3,7 +3,7 @@
         <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户 ID / 手机号" v-model="findUserId">
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入旧用户ID / 手机号" v-model="findUserId">
                     <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
                 <view class="selectUserInfo" v-if="findUserInfo">
@@ -46,9 +46,39 @@
             </view>
         </view>
         <view class="footerButton">
-            <button class="fuckBtn" @click="submitVouchers" v-if="!isGift">￥{{ amount }}&nbsp;立即充值</button>
-            <button class="fuckBtn" :loading="isLoding" :disabled="isLoding" @click="giftVouchers" v-else>&nbsp;立即转赠</button>
+            <button class="fuckBtn" @click="amount && (isShowModalRecharge = true)" v-if="!isGift">￥{{ amount }}&nbsp;立即充值</button>
+            <button class="fuckBtn" :loading="isLoding" :disabled="isLoding" @click="giveAmount && (isShowModalRecharge = true)" v-else>&nbsp;立即转赠</button>
         </view>
+
+				<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" @cancel="isShowModalRecharge = false">
+					<view style="padding: 28upx 0;text-align: center;">
+						<view>
+							<image style="width: 435upx;height: 337upx;" src="../../../static/images/common/modal-show.png"></image>
+						</view>
+						<view style="margin-top: 24upx;font-size: 40upx;color: #333333;">
+							<text v-if="isGift">确定要转赠 {{ giveAmount }} 代金券吗？</text>
+							<text v-else>确定要充值 {{ amount * 2 }} 代金券吗？</text>
+						</view>
+						<view style="margin-top: 22upx;font-size: 36upx;color: #687383;">
+							<text v-if="isGift">价值 {{ amount }} 元</text>
+							<text v-else>共需支付 {{ amount }} 元</text>
+						</view>
+						<view>
+							<tui-button
+								v-if="isGift" type="warning" width="238rpx" height="108rpx" margin="32upx 0 0" :size="40" shape="circle"
+								style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;" @click="giftVouchers"
+							>
+								确定
+							</tui-button>
+							<tui-button
+								v-else type="warning" width="238rpx" height="108rpx" margin="32upx 0 0" :size="40" shape="circle"
+								style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;" @click="submitVouchers"
+							>
+								确定
+							</tui-button>
+						</view>
+					</view>
+				</tui-modal>
     </view>
 </template>
 
@@ -92,7 +122,8 @@ export default {
             findUserId: '',
             findUserInfo: null,
             isShowKeyboard: false,
-            isLoding: false
+            isLoding: false,
+            isShowModalRecharge: false,
         }
     },
     methods: {
@@ -152,8 +183,12 @@ export default {
                             this.findUserInfo = null
                             console.log(err);
                         })
-                    }
-                    // console.log(res);
+                    } else {
+                      uni.showToast({
+                          title: '用户未绑定手机号',
+                          icon: 'none'
+                      })
+										}
                 }).catch(err => {
                     uni.showToast({
                         title: '该用户不存在',

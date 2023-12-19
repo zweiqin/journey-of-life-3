@@ -5,12 +5,16 @@
 		<view class="headBox">
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>头像</label>
-				<image v-if="userInfo.headImage" class="user-headImg" :src="userInfo.headImage"></image>
+				<image v-if="userInfo.headImage" class="user-headImg" :src="common.seamingImgUrl(userInfo.headImage)"></image>
 				<image v-else class="user-headImg" src="../../../static/images/new-user/default-user-avatar.png">
 				</image>
 			</view>
 		</view>
 		<view class="personalBack-box flex-items-plus flex-column">
+			<view class="personalHead-box flex-sp-between flex-display flex-items">
+				<label>旧系统ID</label>
+				<view>{{ userId }}</view>
+			</view>
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>昵称</label>
 				<input v-model="name" class="nameInput" type="text" placeholder="请输入内容" @blur="changeName" />
@@ -72,6 +76,7 @@
 
 <script>
 import { updateAliPhoneAppApi, getUserInfoApi, updateUserInfoApi } from '../../../api/anotherTFInterface'
+import { USER_ID } from '../../../constant'
 
 export default {
 	name: 'PersonalDetails',
@@ -85,6 +90,7 @@ export default {
 	},
 	data() {
 		return {
+			userId: '',
 			screenHeight: 0,
 			birthday: '',
 			sexShow: false,
@@ -100,6 +106,9 @@ export default {
 	},
 	onLoad() {
 		this.getUserInfoData()
+	},
+	onShow() {
+		this.userId = uni.getStorageSync(USER_ID)
 	},
 	mounted() {
 		// 获取手机的屏幕高度
@@ -227,7 +236,7 @@ export default {
 						'phone': encryptedData
 					}).then((res) => {
 						// uni.setStorageSync(T_STORAGE_KEY, res.data)
-						this.$store.dispatch('auth/updateStorageKey')
+						this.$store.dispatch('auth/updateStorageKey', res.data.phone)
 						this.phone = res.data.phone
 						uni.hideLoading()
 					})

@@ -4,7 +4,7 @@
 		<view v-if="ifShow" class="qaBox">
 			<view class="qaTopInfo">
 				<view class="qaTopInfoBox" @click="goGoodsDetails">
-					<image :src="detailList.image"></image>
+					<image :src="common.seamingImgUrl(detailList.image)"></image>
 					<view class="qaInfoText">
 						<h3>{{ detailList.productName }}</h3>
 						<span>共{{ detailList.count }}个问题</span>
@@ -16,7 +16,7 @@
 						<h3>{{ detailList.problem }}</h3>
 					</view>
 					<view class="qaTitTime">
-						<img :src="detailList.headImage" />
+						<img :src="common.seamingImgUrl(detailList.headImage)" />
 						<span class="qaName">{{ detailList.name }}</span>
 						<span class="qaTimeInfo">{{ detailList.createTime }}</span>
 					</view>
@@ -28,7 +28,7 @@
 					<view class="answerItem">
 						<view class="itemTit">
 							<view class="itemAvatarBox">
-								<img :src="item.headImage" alt="">
+								<img :src="common.seamingImgUrl(item.headImage)" alt="">
 								<span class="answerName">{{ item.name }}</span>
 							</view>
 							<view class="answerTime">{{ item.createTime }}</view>

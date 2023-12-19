@@ -5,7 +5,7 @@
 		<view class="addEvaluate-box flex-items-plus flex-column-plus">
 			<view class="addEvaluate flex-column-plus">
 				<view class="addEvaluateTitle-box flex-row-plus mar-top-20 mar-left-20">
-					<image class="title-img" :src="commentData.image"></image>
+					<image class="title-img" :src="common.seamingImgUrl(commentData.image)"></image>
 					<view class="title-textbox overflow">
 						<label class="fs24 title-text">{{ commentData.productName }}</label>
 						<view class="font-color-999 fs22 mar-top-10">

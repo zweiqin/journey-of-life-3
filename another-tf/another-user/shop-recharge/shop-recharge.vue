@@ -2,7 +2,7 @@
   <view class="shop-recharge-container">
     <view class="total-pane">
       <view class="itemHeader">
-        <image :src="shopInfo.shopLogo" mode="" class="avatar"></image>
+        <image :src="common.seamingImgUrl(shopInfo.shopLogo)" mode="" class="avatar"></image>
         <text class="topTitle">{{ shopInfo.shopName }}</text>
         <!-- <view class="openMerchanDetail" @click="gotoMerchan">
             <text class="gotoUse">立即使用</text><image class="useMoney" src="@/static/images/entryOfMerchants/youjiantou.png"></image>

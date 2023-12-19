@@ -3,8 +3,8 @@
 		<!-- 商品详情 -->
 		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
 			<swiper-item v-for="(imgItem, index) in productInfo.images" :key="index">
-				<image v-if="!isVideoSource(imgItem)" class="goodsImg default-img" :src="imgItem"></image>
-				<video v-else style="width: 750upx; height: 750upx;" :src="imgItem"></video>
+				<image v-if="!isVideoSource(imgItem)" class="goodsImg default-img" :src="common.seamingImgUrl(imgItem)"></image>
+				<video v-else style="width: 750upx; height: 750upx;" :src="common.seamingImgUrl(imgItem)"></video>
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->

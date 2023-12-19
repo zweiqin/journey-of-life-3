@@ -35,7 +35,7 @@
 							<view style="border-radius: 15rpx;width: 196rpx;height: 220rpx;overflow: hidden;margin: 0 auto;transform: rotate(-60deg);">
 								<image
 									style="width: 196rpx;height: 210rpx;"
-									:src="userInfo.headImage || require('../../../static/images/new-user/default-user-avatar.png')"
+									:src="common.seamingImgUrl(userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
 								>
 								</image>
 							</view>

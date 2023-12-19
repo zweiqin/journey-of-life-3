@@ -6,7 +6,7 @@
 			<view v-if="messageDateils.createTime" class="detailTime">时间：{{ messageDateils.createTime }}</view>
 			<view class="detailInfo">
 				<rich-text :nodes="htmlData"></rich-text>
-				<img :src="messageDateils.image" alt="">
+				<img :src="common.seamingImgUrl(messageDateils.image)" alt="">
 			</view>
 		</view>
 	</view>

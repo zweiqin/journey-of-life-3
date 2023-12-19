@@ -3,12 +3,12 @@
 		<JHeader title="会员签到" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="avatarTop">
 			<view class="avatarBox">
-				<image :src="memberData.headImage"></image>
+				<image :src="common.seamingImgUrl(memberData.headImage)"></image>
 			</view>
 			<view class="nameBox">
 				<view class="name fs36">{{ memberData.name }}</view>
 				<view class="level">
-					<image :src="levelInfo.memberLevelIcon"></image>
+					<image :src="common.seamingImgUrl(levelInfo.memberLevelIcon)"></image>
 				</view>
 			</view>
 		</view>

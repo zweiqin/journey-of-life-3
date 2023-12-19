@@ -120,7 +120,7 @@
 						<view class="order-info-box">
 							<view v-for="(item, index) in itemlist.skus" :key="index" class="order-info">
 								<view class="order-info-item">
-									<image :src="item.image" class="product-img"></image>
+									<image :src="common.seamingImgUrl(item.image)" class="product-img"></image>
 									<view class="info-box">
 										<text class="product-name">{{ item.productName }}</text>
 										<view class="product-sku mt20">{{ item.value }}</view>

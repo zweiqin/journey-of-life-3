@@ -14,7 +14,7 @@
           <view class="item" :class="{ active: currentFilterCategoryId == item.classifyId }"
             @click="handleClickOnceMenuItem(item)" v-for="item in categoryList" :key="item.classifyId"
             :id="`item_${item.classifyId}`">
-            <image :src="item.classifyImage" mode="" />
+            <image :src="common.seamingImgUrl(item.classifyImage)" mode="" />
             <text>{{ item.classifyName }}</text>
           </view>
         </view>
@@ -41,8 +41,8 @@
         <view class="goods-item"
           @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)"
           v-for=" item  in  $data._list " :key="item.id">
-          <tui-lazyload-img :style="{ background: `url(${item.image})`, margin: 0 }" mode="aspectFit"
-            :src="item.image"></tui-lazyload-img>
+          <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(item.image)})`, margin: 0 }" mode="aspectFit"
+            :src="common.seamingImgUrl(item.image)"></tui-lazyload-img>
           <view class="goods-info">
             <view class="goods-name">{{ item.productName }}</view>
             <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{

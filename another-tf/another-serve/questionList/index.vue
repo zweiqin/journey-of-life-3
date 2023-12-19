@@ -38,7 +38,6 @@
 											@click="problemItemSel(index, 1)"
 										></tui-icon>
 									</view>
-									<!--								<image class="product-img" mode="aspectFill" :src="item.image" /> -->
 									<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 									<view class="title-wrap replynum-box" @click="goQuestionDetails(item.productId, item.problemId)">
 										<view class="flex-items">
@@ -113,7 +112,6 @@
 												@click="answerItemSel(index, 1)"
 											></tui-icon>
 										</view>
-										<!--									<image class="product-img" mode="aspectFill" :src="item.image" /> -->
 										<view class="title-wrap replynum-box wid" @click="goQuestionDetails(item.productId, item.problemId)">
 											<view class="flex-items">
 												<label>问</label>

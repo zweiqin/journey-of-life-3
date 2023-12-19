@@ -4,16 +4,16 @@
 		<view class="memberBox">
 			<view class="posBox">
 				<view class="memberBoxTop">
-					<view class="memberTopPos" :style="{ backgroundImage: 'url(' + levelInfo.memberLevelBackground + ')' }">
+					<view class="memberTopPos" :style="{ backgroundImage: 'url(' + common.seamingImgUrl(levelInfo.memberLevelBackground) + ')' }">
 						<view class="memberTopBg">
 							<view class="flex-items">
 								<view class="avatarBox">
-									<image :src="memberData.headImage"></image>
+									<image :src="common.seamingImgUrl(memberData.headImage)"></image>
 								</view>
 								<view class="nameBox">
 									<view class="name fs36">{{ memberData.name }}</view>
 									<view class="level">
-										<image :src="levelInfo.memberLevelIcon"></image>
+										<image :src="common.seamingImgUrl(levelInfo.memberLevelIcon)"></image>
 									</view>
 								</view>
 							</view>

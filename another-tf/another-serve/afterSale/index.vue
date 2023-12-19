@@ -8,7 +8,7 @@
 					<view v-for="item in findReturnDatalist" class="item">
 						<view class="order-list-top">
 							<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)">
-								<image :src="item.shopLogo" class="shop-img"></image>
+								<image :src="common.seamingImgUrl(item.shopLogo)" class="shop-img"></image>
 								<text class="shop-name">{{ item.shopName }}</text>
 								<tui-icon name="arrowright" :size="24" unit="upx" color="#999999" margin="0 0 0 15upx"></tui-icon>
 							</view>
@@ -23,7 +23,7 @@
 								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 							>
 								<view class="order-info-item">
-									<image :src="itemlist.image" class="product-img"></image>
+									<image :src="common.seamingImgUrl(itemlist.image)" class="product-img"></image>
 									<view class="info-box">
 										<text class="product-name">{{ itemlist.productName }}</text>
 										<view class="product-sku">{{ itemlist.value }}</view>

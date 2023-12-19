@@ -4,7 +4,7 @@
 		<view style="padding: 0 28upx;">
 			<view v-if="statistics.userName" style="display: flex;align-items: center;font-size: 36upx;">
 				<view>
-					<JAvatar :src="statistics.headImage" :size="60" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+					<JAvatar :src="common.seamingImgUrl(statistics.headImage)" :size="60" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
 				</view>
 				<view style="margin-right: 16upx;">{{ statistics.userName }}</view>
 				<view>【{{ statistics.phone }}】</view>
@@ -18,7 +18,7 @@
 								<tui-list-cell background-color="transparent">
 									<view style="display: flex;align-items: center;">
 										<view>
-											<JAvatar :src="item.headImage" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+											<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
 										</view>
 										<view style="margin-right: 16upx;">{{ item.userName }}</view>
 										<view>【{{ item.phone }}】</view>
@@ -33,7 +33,7 @@
 										style="display: flex;align-items: center;padding: 18upx 0 18upx 38upx;margin-bottom: 4upx;background-color: #ebebea;"
 									>
 										<view>
-											<JAvatar :src="part.headImage" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+											<JAvatar :src="common.seamingImgUrl(part.headImage)" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
 										</view>
 										<view style="margin-right: 16upx;">{{ part.userName }}</view>
 										<view>【{{ part.phone }}】</view>

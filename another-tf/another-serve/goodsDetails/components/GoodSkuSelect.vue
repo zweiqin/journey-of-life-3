@@ -3,7 +3,7 @@
 		<tui-bottom-popup :show="goodsDetailShowFlag" @close="goodsDetailShowFlag = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
-					<image class="detailImg" :src="selectedSku.image"></image>
+					<image class="detailImg" :src="common.seamingImgUrl(selectedSku.image)"></image>
 					<view class="flex-column-plus mar-left-40">
 						<view class="font-color-C5AA7B">
 							<label class="fs24">¥</label>

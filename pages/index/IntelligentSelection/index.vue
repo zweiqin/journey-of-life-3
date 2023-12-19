@@ -154,20 +154,6 @@
               </view>
           </view>
       </view>
-      <!-- <view class="headerTabBox">
-        <view class="typeClass">
-          <image class="items" src="@/static/images/new-index/zhinengxuanpei/computes.png"></image>
-          <text>智能AI</text>
-        </view>
-        <view class="typeClass">
-          <image class="items" src="@/static/images/new-index/zhinengxuanpei/homes.png"></image>
-          <text>全屋家具</text>
-        </view>
-        <view class="typeClass">
-          <image class="items" src="@/static/images/new-index/zhinengxuanpei/texts.png"></image>
-          <text>全屋快装</text>
-        </view>
-      </view> -->
   </view>
 </template>
 

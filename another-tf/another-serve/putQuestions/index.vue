@@ -3,7 +3,7 @@
 		<JHeader title="提问" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="qaTopInfo">
 			<view class="qaTopInfoBox">
-				<image :src="qudata.images"></image>
+				<image :src="common.seamingImgUrl(qudata.images)"></image>
 				<view class="qaInfoText">
 					<h3>{{ qudata.productName }}</h3>
 					<span>共{{ qudata.questionNumber }}个问题</span>

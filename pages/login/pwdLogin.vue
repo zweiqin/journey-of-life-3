@@ -328,64 +328,6 @@ export default {
 					}
 				})
 			})
-		},
-
-		// 微信登陆后续
-		async handleWXLoginAfter(res) {
-			const _this = this
-			// #ifdef H5
-			// 判断是否已经绑定了手机号
-			if (res.userInfo.phone === '') {
-				uni.navigateTo({
-					url: '/pages/login/bind-phone?openId=' + res.userInfo.weixinOpenid
-				})
-
-				return
-			}
-
-			// 是否是师傅邀请码
-			if (_this.partnerCode) {
-				await _this.handlePartnerBind(res.userInfo.userId)
-				uni.switchTab({
-					url: '/'
-				})
-				return
-			}
-
-			// 是否存在团长推广码
-			if (_this.partnerCode2) {
-				await _this.handleGroupBind(res.userInfo.userId)
-				uni.switchTab({
-					url: '/'
-				})
-				return
-			}
-
-			if (this.redirect) {
-				// console.log('进来了', this.redirect)
-				if (tabbarList.includes(_this.redirect)) {
-					uni.switchTab({
-						url: _this.redirect
-					})
-				} else {
-					uni.redirectTo({
-						url: _this.redirect
-					})
-				}
-			} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-				uni.redirectTo({
-					url: '/user/sever/activityCenter/index'
-				})
-			} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-				uni.redirectTo({
-					url: '/pages/jump/jump'
-				})
-			} else {
-				uni.switchTab({
-					url: '/pages/community-center/community-centerr'
-				})
-			}
-			// #endif
 		}
 	}
 }

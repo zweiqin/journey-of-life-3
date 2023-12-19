@@ -3,7 +3,7 @@
 		<view class="user-info">
 			<Avatar
 				margin="0 24upx 0 0"
-				:src="$store.getters.userInfo.token ? $store.getters.userInfo.headImage : require('../../../static/images/new-user/default-user-avatar.png')"
+				:src="$store.getters.userInfo.token ? common.seamingImgUrl($store.getters.userInfo.headImage) : require('../../../static/images/new-user/default-user-avatar.png')"
 				@click="$store.getters.userInfo.token && go('/another-tf/another-serve/personalDetails/index')"
 			></Avatar>
 
@@ -26,7 +26,7 @@
 						<!-- <view>成长值</view> -->
 						<view class="tag">
 							<tui-icon name="star-fill" :size="22" unit="upx" color="#eaa349" margin="0 4upx 0 0"></tui-icon>
-							No.{{ userId }}
+							No.{{ $store.getters.userInfo.buyerUserId }}
 							<!-- {{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }} -->
 						</view>
 						<view>
@@ -127,12 +127,6 @@ import { convertToDecimal } from '../../../utils'
 
 export default {
 	name: 'BaseInfo',
-	props: {
-		userId: {
-			type: Number,
-			default: 0
-		}
-	},
 	data() {
 		return {
 			isShow: false,

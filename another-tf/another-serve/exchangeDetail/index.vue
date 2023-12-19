@@ -62,7 +62,7 @@
 						@click="goodsDateils(item.shopId, item.productId, item.skuId)"
 					>
 						<view class="productImg">
-							<image :src="item.image"></image>
+							<image :src="common.seamingImgUrl(item.image)"></image>
 						</view>
 						<view class="productTit mar-top-10 fs28 font-color-333">{{ item.productName }}</view>
 						<view class="productPrice font-color-C83732 fs40">￥{{ item.price }}</view>

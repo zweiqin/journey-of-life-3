@@ -100,7 +100,7 @@
 						<view v-if="item.products && item.products.length">
 							<view v-for="prod in item.products" :key="prod.skuId" style="display: flex;margin-top: 10upx;">
 								<view>
-									<image :src="prod.image" style="width: 180upx;height: 180upx;" />
+									<image :src="common.seamingImgUrl(prod.image)" style="width: 180upx;height: 180upx;" />
 								</view>
 								<view style="display: flex;flex-direction: column;justify-content: space-evenly;margin-left: 18upx;">
 									<view>{{ prod.productName }}</view>

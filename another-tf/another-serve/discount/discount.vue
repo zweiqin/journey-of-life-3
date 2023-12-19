@@ -34,7 +34,7 @@
 			<view v-if="discountList && discountList.length">
 				<view v-for="(item, index) in discountList" :key="index" class="listItem">
 					<view class="itemBox">
-						<img :src="item.image">
+						<img :src="common.seamingImgUrl(item.image)">
 					</view>
 					<view class="itemInfo">
 						<p>{{ item.productName }}</p>

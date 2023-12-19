@@ -2,7 +2,7 @@
   <view class="voucher-zone-container">
     <view class="page-haeder">
       <image @click="handleBack" src="../../static/images/new-business/category/back.png" class="back-icon"></image>
-      <view class="search-container" @click="go('/pages/search-page/search-page')">
+      <view class="search-container" @click="go(`/another-tf/another-serve/search/index`)">
         <input type="text" class="input" placeholder="请输入您想搜索的商品">
         <button class="uni-btn">搜索</button>
       </view>
@@ -14,7 +14,7 @@
         <view @click="go('/pages/index/voucher-filter?categoryId=' + item.classifyId)" class="nav-item"
           v-for="item in categoryList" :key="item.label
             ">
-          <image :src="item.classifyImage" class="nav-icon"></image>
+          <image :src="common.seamingImgUrl(item.classifyImage)" class="nav-icon"></image>
           <view class="nav-name">{{ item.classifyName }}</view>
         </view>
       </view>
@@ -68,7 +68,7 @@
             <view class="goods-item"
               @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)"
               v-for=" item  in  $data._list.slice(4) " :key="item.id">
-              <tui-lazyload-img :style="{ background: `url(${item.image})`, margin: 0 }" mode="aspectFit"
+              <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(item.image)})`, margin: 0 }" mode="aspectFit"
                 :src="common.seamingImgUrl(item.image)"></tui-lazyload-img>
               <view class="goods-info">
                 <view class="goods-name">{{ item.productName }}</view>

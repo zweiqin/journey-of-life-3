@@ -16,7 +16,7 @@
         <view class="brand-filter-wrapper">
           <view class="brand-item" :id="'item_' + category.id" @click="handleChangeSecondClass(category)"
             v-for="category in categoryList" :key="category.id">
-            <image :src="currentBrandType === category.id ? category.active : category.picUrl" class="category-img">
+            <image :src="currentBrandType === category.id ? category.active : common.seamingImgUrl(category.picUrl)" class="category-img">
             </image>
           </view>
         </view>

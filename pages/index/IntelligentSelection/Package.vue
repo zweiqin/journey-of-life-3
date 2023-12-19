@@ -1,6 +1,6 @@
 <template>
   <view class="package-container" v-if="data">
-    <image :src="data.picUrl" class="package-img" mode="" />
+    <image :src="common.seamingImgUrl(data.picUrl)" class="package-img" mode="" />
 
     <view class="package-detail-info">
       <view class="name">{{ data.name }}</view>

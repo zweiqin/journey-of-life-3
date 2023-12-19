@@ -7,7 +7,7 @@
           <image class="arrow-icon" src="../../../static/images/new-index/arrow-1.png"></image>
         </view>
       </TuanLocation>
-      <view @click="go('/pages/search-page/search-page')" class="input-view">{{ placeholder }}</view>
+      <view @click="go(`/another-tf/another-serve/search/index`)" class="input-view">{{ placeholder }}</view>
       <button v-if="showSearchBtn" class="search-input-btn uni-btn">搜索</button>
     </view>
     <button v-if="showMessage" class="uni-btn page-header-right" style="flex-shrink: 0;"

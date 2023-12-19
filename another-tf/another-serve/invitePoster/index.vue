@@ -2,9 +2,9 @@
 	<view class="invitePoster-box">
 		<JHeader title="生成邀请海报" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="poster-box flex-items-plus flex-column">
-			<image class="header-img mar-top-10" :src="data.headImage"></image>
+			<image class="header-img mar-top-10" :src="common.seamingImgUrl(data.headImage)"></image>
 			<label class="mar-top-30">发现一件好物，快来和我一起拼</label>
-			<image class="poster-img mar-top-50" :src="data.image"></image>
+			<image class="poster-img mar-top-50" :src="common.seamingImgUrl(data.image)"></image>
 			<view class="flex-row-plus flex-sp-between mar-top-40">
 				<view class="flex-column-plus">
 					<label class="title-lab fs28">{{ data.productName }}</label>

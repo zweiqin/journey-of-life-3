@@ -47,7 +47,7 @@
 								class="pro-r"
 								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
 							>
-								<image :src="skuItem.image" class="pro-img default-img"></image>
+								<image :src="common.seamingImgUrl(skuItem.image)" class="pro-img default-img"></image>
 								<view class="pro-r-r">
 									<view class="pro-name">{{ skuItem.productName }}</view>
 									<view class="sku-box">

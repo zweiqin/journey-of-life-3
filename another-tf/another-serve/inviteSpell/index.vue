@@ -7,7 +7,7 @@
 		</view>
 		<view class="topBox">
 			<view class="title-box flex-row-plus">
-				<image class="pro-img" :src="inviteSpell.image"></image>
+				<image class="pro-img" :src="common.seamingImgUrl(inviteSpell.image)"></image>
 				<view class="flex-column-plus mar-left-30">
 					<view class="title-lab fs28">{{ inviteSpell.productName }}</view>
 					<view class="flex-row-plus flex-sp-between">
@@ -32,8 +32,8 @@
 						v-for="(item, index) in inviteSpell.personList" :key="index"
 						class="flex-column flex-items-plus mar-left-20"
 					>
-						<image v-if="index == 0" class="head-icon border-FF7 z-index-0" :src="item.headImage"></image>
-						<image v-else class="head-icon " :src="item.headImage"></image>
+						<image v-if="index == 0" class="head-icon border-FF7 z-index-0" :src="common.seamingImgUrl(item.headImage)"></image>
+						<image v-else class="head-icon " :src="common.seamingImgUrl(item.headImage)"></image>
 						<view v-if="index == 0" class="fs18 colonel-box">团长</view>
 					</view>
 					<view v-for="ritem in remainPerson">
@@ -80,7 +80,7 @@
 		<tui-bottom-popup v-model="goosDetailshowFlag" class="goosDetailshow-box" radius @close="goosDetailshowFlag = false">
 			<view>
 				<view class="detailImg-box flex-row-plus">
-					<image class="detailImg" :src="skuImg"></image>
+					<image class="detailImg" :src="common.seamingImgUrl(skuImg)"></image>
 					<view class="flex-column-plus mar-left-40">
 						<view class="font-color-C5AA7B">
 							<label class="fs24">¥</label>

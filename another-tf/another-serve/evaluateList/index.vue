@@ -11,7 +11,7 @@
 			<view v-for="(item, index) in commentList" :key="index" class="evaluate-contentbox mar-top-20">
 				<view class="evaluate-content flex-items flex-row flex-sp-between">
 					<view class="flex-items">
-						<image class="user-headSmallImg" :src="item.headImage"></image>
+						<image class="user-headSmallImg" :src="common.seamingImgUrl(item.headImage)"></image>
 						<view class="">
 							<text class="fs28 mar-left-20">{{ item.name }}</text>
 							<view class="mar-left-20 fs22 font-color-999 mar-top-10">
@@ -23,7 +23,7 @@
 				<view class="fs26 pad-topbot-20 font-color-333">{{ item.comment }}</view>
 				<view class="evaluateImg-box">
 					<view v-for="(commentItemImg, cindex) in item.images" :key="cindex">
-						<image class="img-item" :src="commentItemImg" @click="previewImg(commentItemImg)"></image>
+						<image class="img-item" :src="common.seamingImgUrl(commentItemImg)" @click="previewImg(common.seamingImgUrl(commentItemImg))"></image>
 					</view>
 				</view>
 				<view v-if="item.addComment !== ''" class="addEvaluate">
@@ -31,7 +31,7 @@
 					<view class="addEvaluateText">{{ item.addComment }}</view>
 					<view v-if="item.addImages" class="item-image-box">
 						<view v-for="(itemAddImg, imgIndex) in item.addImages" :key="imgIndex">
-							<image class="img-item" :src="itemAddImg" @click="previewImg(itemAddImg)"></image>
+							<image class="img-item" :src="common.seamingImgUrl(itemAddImg)" @click="previewImg(common.seamingImgUrl(itemAddImg))"></image>
 						</view>
 					</view>
 				</view>

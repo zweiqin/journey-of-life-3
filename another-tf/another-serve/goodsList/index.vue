@@ -54,7 +54,7 @@
 				<view class="spikeList goodsDetails ">
 					<view class="listItem">
 						<view class="itemBox">
-							<img :src="item.image" class="pic-img default-img">
+							<img :src="common.seamingImgUrl(item.image)" class="pic-img default-img">
 						</view>
 						<view class="itemInfo">
 							<p>{{ item.productName }}</p>

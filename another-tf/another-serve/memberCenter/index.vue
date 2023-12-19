@@ -28,11 +28,11 @@
 												<view class="nameBox">
 													<view class="name fs36">{{ memberData.name }}</view>
 													<view class="level">
-														<image :src="item.memberLevelIcon"></image>
+														<image :src="common.seamingImgUrl(item.memberLevelIcon)"></image>
 													</view>
 												</view>
 												<view class="avatarBox">
-													<image :src="memberData.headImage"></image>
+													<image :src="common.seamingImgUrl(memberData.headImage)"></image>
 												</view>
 											</view>
 											<view class="growing">
@@ -77,7 +77,7 @@
 					<view class="equityTit">我的权益</view>
 					<view class="equityList">
 						<view v-for="item in equityList" :key="item.memberId" class="equityItem">
-							<image :src="item.memberIcon"></image>
+							<image :src="common.seamingImgUrl(item.memberIcon)"></image>
 							<view class="fs26">{{ item.memberName }}</view>
 						</view>
 					</view>

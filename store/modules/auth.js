@@ -1,4 +1,5 @@
 import { USER_INFO, USER_ID, USER_TOKEN, T_USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
+import { A_TF_MAIN } from '../../config'
 import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_HISTORY_POPUP, CHNAGE_USER_IDENTITY } from './type'
 import { loginApi, verificationCodeApi, wxLoginApi } from '../../api/auth'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
@@ -46,15 +47,26 @@ export default {
 			return new Promise((resolve, reject) => {
 				loginApi({ ...loginData })
 					.then(async ({ data }) => {
-						uni.setStorageSync(USER_ID, data.userInfo.userId)
-						uni.setStorageSync(USER_TOKEN, data.token)
-						uni.setStorageSync(USER_INFO, data.userInfo)
-						uni.showToast({
-							title: '登录成功'
-						})
 						console.log(data)
-						await dispatch('updateStorageKey')
-						resolve(data)
+						if (data.userInfo.phone) {
+							try {
+								await dispatch('updateStorageKey', data.userInfo.phone)
+								uni.setStorageSync(USER_ID, data.userInfo.userId)
+								uni.setStorageSync(USER_TOKEN, data.token)
+								uni.setStorageSync(USER_INFO, data.userInfo)
+								uni.showToast({
+									title: '登录成功'
+								})
+								resolve(data)
+							} catch (err) {
+								return reject(err)
+							}
+						} else {
+							uni.navigateTo({
+								url: '/pages/login/bind-phone?openId=' + data.userInfo.weixinOpenid
+							})
+							reject()
+						}
 					})
 					.catch((err) => {
 						reject(err)
@@ -67,15 +79,26 @@ export default {
 			return new Promise((resolve, reject) => {
 				verificationCodeApi({ ...loginData })
 					.then(async ({ data }) => {
-						uni.setStorageSync(USER_ID, data.userInfo.userId)
-						uni.setStorageSync(USER_TOKEN, data.token)
-						uni.setStorageSync(USER_INFO, data.userInfo)
-						uni.showToast({
-							title: '登录成功'
-						})
 						console.log(data)
-						await dispatch('updateStorageKey')
-						resolve(data)
+						if (data.userInfo.phone) {
+							try {
+								await dispatch('updateStorageKey', data.userInfo.phone)
+								uni.setStorageSync(USER_ID, data.userInfo.userId)
+								uni.setStorageSync(USER_TOKEN, data.token)
+								uni.setStorageSync(USER_INFO, data.userInfo)
+								uni.showToast({
+									title: '登录成功'
+								})
+								resolve(data)
+							} catch (err) {
+								return reject(err)
+							}
+						} else {
+							uni.navigateTo({
+								url: '/pages/login/bind-phone?openId=' + data.userInfo.weixinOpenid
+							})
+							reject()
+						}
 					})
 					.catch((err) => {
 						reject(err)
@@ -88,14 +111,23 @@ export default {
 			return new Promise((resolve, reject) => {
 				wxLoginApi({ code })
 					.then(async ({ data }) => {
-						uni.setStorageSync(USER_ID, data.userInfo.userId)
-						uni.setStorageSync(USER_TOKEN, data.token)
-						uni.setStorageSync(USER_INFO, data.userInfo)
-						uni.showToast({
-							title: '登录成功'
-						})
-						await dispatch('updateStorageKey')
-						resolve(data)
+						if (data.userInfo.phone) {
+							try {
+								await dispatch('updateStorageKey', data.userInfo.phone)
+								uni.setStorageSync(USER_ID, data.userInfo.userId)
+								uni.setStorageSync(USER_TOKEN, data.token)
+								uni.setStorageSync(USER_INFO, data.userInfo)
+								uni.showToast({
+									title: '登录成功'
+								})
+								resolve(data)
+							} catch (err) {
+								return reject(err)
+							}
+						} else {
+							window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${data.userInfo.weixinOpenid}`)
+							reject()
+						}
 					})
 					.catch((err) => {
 						reject(err)
@@ -147,7 +179,7 @@ export default {
 			}).then(async ({ data }) => {
 				uni.setStorageSync(USER_ID, data.userId)
 				uni.setStorageSync(USER_INFO, data)
-				await dispatch('updateStorageKey')
+				await dispatch('updateStorageKey', data.phone)
 				cb && typeof cb === 'function' && cb(data)
 			})
 		},
@@ -156,9 +188,9 @@ export default {
 		updateStorageKey({ state, dispatch, commit }, phone) {
 			return new Promise((resolve, reject) => {
 				const userInfo = uni.getStorageSync(USER_INFO)
-				if (userInfo && userInfo.phone) {
+				if (phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone: phone || userInfo.phone, wechatName: userInfo.nickName, headImage: userInfo.avatarUrl })
+					getAnotherTFTokenApi({ phone, wechatName: userInfo.nickName, headImage: userInfo.avatarUrl })
 						.then((res) => {
 							commit(CHNAGE_USER_TOKEN, res.data.token)
 							commit(CHNAGE_USER_INFO, res.data)
@@ -167,14 +199,14 @@ export default {
 						})
 						.catch((err) => {
 							uni.hideLoading()
-							resolve(err)
+							reject(err)
 						})
 					dispatch('updateIdentityInfo')
 				} else {
 					uni.showToast({
-						title: '缺少用户手机号码'
+						title: '缺少手机号码'
 					})
-					resolve('缺少用户手机号码')
+					reject('缺少手机号码')
 				}
 			})
 		},

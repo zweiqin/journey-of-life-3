@@ -6,7 +6,7 @@
 		<view class="shop-top" :style="{ padding }">
 			<image
 				class="shop-logo" :style="{ width: picWidth, height: picHeight }"
-				:src="shopInfo.shopLogo || require('../../../static/images/new-user/fee.icon.png')"
+				:src="common.seamingImgUrl(shopInfo.shopLogo) || require('../../../static/images/new-user/fee.icon.png')"
 			>
 			</image>
 

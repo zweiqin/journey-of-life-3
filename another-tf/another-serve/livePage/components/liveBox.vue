@@ -1,7 +1,7 @@
 <template>
 	<view class="live-box">
 		<view v-if="liveData.liveStatus === 101" class="live-ongoing" @click="toLive">
-			<image class="cover-img" :src="liveData.feedsImg" />
+			<image class="cover-img" :src="common.seamingImgUrl(liveData.feedsImg)" />
 			<view class="status">
 				<view class="status-state">
 					<tui-icon name="people-fill" :size="20" unit="upx" color="#ffffff" margin="0 6upx 0 0"></tui-icon>直播中
@@ -10,7 +10,7 @@
 			</view>
 			<view class="user">
 				<view class="user-pic">
-					<image class="img" :src="liveData.anchorHeadImg" />
+					<image class="img" :src="common.seamingImgUrl(liveData.anchorHeadImg)" />
 				</view>
 				<view class="user-name">{{ liveData.anchorNickName }}</view>
 			</view>
@@ -39,14 +39,14 @@
 			</view>
 		</view>
 		<view v-else class="live-other" @click="toLive">
-			<image class="cover-img" :src="liveData.feedsImg" />
+			<image class="cover-img" :src="common.seamingImgUrl(liveData.feedsImg)" />
 			<div class="filter-box-warp">
 				<div class="filter-box">
-					<image class="cover-img" :src="liveData.feedsImg" />
+					<image class="cover-img" :src="common.seamingImgUrl(liveData.feedsImg)" />
 				</div>
 			</div>
 			<view class="user">
-				<view class="user-pic"><image class="img" :src="liveData.anchorHeadImg" /></view>
+				<view class="user-pic"><image class="img" :src="common.seamingImgUrl(liveData.anchorHeadImg)" /></view>
 				<view class="user-name">{{ liveData.anchorNickName }}</view>
 			</view>
 			<view v-if="liveStatus === 102" class="count-down">

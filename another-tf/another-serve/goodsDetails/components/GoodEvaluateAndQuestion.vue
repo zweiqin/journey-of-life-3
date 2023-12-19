@@ -22,7 +22,7 @@
 			>
 				<view class="evaluate-content flex-items flex-row flex-sp-between">
 					<view class="flex-items">
-						<image class="user-headSmallImg" :src="commentItem.headImage"></image>
+						<image class="user-headSmallImg" :src="common.seamingImgUrl(commentItem.headImage)"></image>
 						<label class="fs28 mar-left-20">{{ commentItem.name }}</label>
 					</view>
 					<label class="font-color-999 fs22">{{ commentItem.createTime }}</label>
@@ -33,7 +33,7 @@
 				<view v-if="commentItem.image" class="item-image-box">
 					<view v-for="(imgItem, imgIndex) in (commentItem.image.split(',') || [])" :key="imgIndex">
 						<image
-							class="img-item" :src="imgItem"
+							class="img-item" :src="common.seamingImgUrl(imgItem)"
 							@click="handlePreviewImage(commentList[commentIndex].images, imgIndex)"
 						>
 						</image>
@@ -46,7 +46,7 @@
 						<view v-if="commentItem.addImages" class="item-image-box">
 							<view v-for="(itemAddImg, imgIndex) in commentItem.addImages" :key="imgIndex">
 								<image
-									class="img-item" :src="itemAddImg"
+									class="img-item" :src="common.seamingImgUrl(itemAddImg)"
 									@click="handlePreviewImage(commentList[commentIndex].addImages, imgIndex)"
 								>
 								</image>

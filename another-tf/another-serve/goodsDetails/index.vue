@@ -18,7 +18,7 @@
 					>
 						<swiper-item v-for="(item, index) in broadCastList" :key="index">
 							<view class="news-item flex-items">
-								<image class="item-avatar" :src="item.headImage"></image>
+								<image class="item-avatar" :src="common.seamingImgUrl(item.headImage)"></image>
 								<view class="news-item-user">{{ item.name }}</view>
 								<view class="news-item-info">{{ item.timeStr }}</view>
 								<view v-if="item.type === 1" class="news-item-info">
@@ -93,7 +93,7 @@
 					<view v-if="Gitem.time > 0" class="groupBuyList">
 						<view class="groupBuyItem">
 							<view class="leftAvatar">
-								<img :src="Gitem.headImage" alt="">
+								<img :src="common.seamingImgUrl(Gitem.headImage)" alt="">
 								<span>{{ Gitem.name }}</span>
 							</view>
 							<view class="rightInfo">
@@ -115,7 +115,7 @@
 			<view v-if="!(productData.shopName === '团蜂自营')" class="inStore-box flex-items flex-row flex-sp-between">
 				<view class="flex-display flex-row">
 					<view>
-						<image class="inStore-logo default-img" :src="productData.shopLogo" @click="handleJumpToStore"></image>
+						<image class="inStore-logo default-img" :src="common.seamingImgUrl(productData.shopLogo)" @click="handleJumpToStore"></image>
 					</view>
 					<view class="flex-display flex-column mar-left-20">
 						<label @click="handleJumpToStore">{{ productData.shopName }}</label>
@@ -220,7 +220,7 @@
 					<scroll-view style="height: 480upx;" scroll-y>
 						<view v-for="(aitem, index) in selectedSku.collageOrders" :key="index" class="groupBuyItem1">
 							<view v-if="aitem.time > 0" class="leftAvatar">
-								<img :src="aitem.headImage" alt="">
+								<img :src="common.seamingImgUrl(aitem.headImage)" alt="">
 								<view class="groupBuyTime">
 									<view class="needPeople">
 										<span>{{ aitem.name }}</span>还差<b>{{ aitem.person }}人</b>

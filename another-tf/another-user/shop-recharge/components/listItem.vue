@@ -1,7 +1,7 @@
 <template>
     <view class="merchantItem">
         <view class="itemHeader">
-            <image :src="datas.shopLogo" mode="" class="avatar"></image>
+            <image :src="common.seamingImgUrl(datas.shopLogo)" mode="" class="avatar"></image>
             <text class="topTitle">{{ datas.shopName }}</text>
             <view class="openMerchanDetail" @click="gotoMerchan">
                 <text class="gotoUse">立即使用</text><image class="useMoney" src="@/static/images/entryOfMerchants/youjiantou.png"></image>

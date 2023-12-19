@@ -351,10 +351,10 @@ export default {
 			const _this = this
 			// #ifdef H5
 			// 判断是否已经绑定了手机号
-			if (!res.userInfo.phone) {
-				window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${res.userInfo.weixinOpenid}`)
-				return
-			}
+			// if (!res.userInfo.phone) {
+			// 	window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${res.userInfo.weixinOpenid}`)
+			// 	return
+			// }
 			// 是否是师傅邀请码
 			if (_this.partnerCode) {
 				await _this.handlePartnerBind(res.userInfo.userId)

@@ -33,7 +33,7 @@
 			<view style="padding: 20upx 18upx;background-color: #f5f4fb;">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view style="display: flex;align-items: center;">
-						<BeeIcon :size="30" :src="userInfo.headImage"></BeeIcon>
+						<BeeIcon :size="30" :src="common.seamingImgUrl(userInfo.headImage)"></BeeIcon>
 						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
