@@ -1,26 +1,27 @@
 <template>
 	<view class="container">
 		<JHeader title="添加银行卡" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<view class="upload-bank-card">
+			<view class="image-wrapper">
+				<view class="uploader" @click="handleUploadImg">{{ uploadBandCard ? '重新上传' : '上传照片' }}</view>
+				<image v-if="uploadBandCard" class="bank-img" :src="uploadBandCard"></image>
+				<view v-else class="tip">上传图片银行卡图片自动识别~</view>
+			</view>
+		</view>
 		<view class="addressBack-box">
 			<view class="consignee-box bor-line-F7F7F7">
 				<input v-model="username" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="姓名" />
 			</view>
 			<view class="iphoneNum-box bor-line-F7F7F7">
-				<input
-					v-model="phone" type="number" maxlength="11" class="fs28"
-					placeholder-class="iphoneNum"
-					placeholder="手机号码"
-				/>
+				<input v-model="phone" type="number" maxlength="11" class="fs28" placeholder-class="iphoneNum"
+					placeholder="手机号码" />
 			</view>
 			<view class="consignee-box bor-line-F7F7F7">
 				<input v-model="bankName" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="银行名称" />
 			</view>
 			<view class="cardnum">
-				<input
-					v-model="cardNum" type="number" class="fs28" maxlength="20"
-					placeholder-class="detailAddress"
-					placeholder="卡号"
-				/>
+				<input v-model="cardNum" type="number" class="fs28" maxlength="20" placeholder-class="detailAddress"
+					placeholder="卡号" />
 			</view>
 		</view>
 		<view v-if="type == 2" class="deleteBankcard-box">
@@ -31,11 +32,17 @@
 			<view v-else class="saveAddress" @click="saveBankcardClick">保存</view>
 		</view>
 
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
 <script>
 import { getByIdUserBankcardApi, addUserBankcardApi, updateUserBankcardApi, deleteUserBankcardApi } from '../../../api/anotherTFInterface'
+import { bankCardAnalysisApi } from '../../../api/community-center'
+import { getUserId } from '../../../utils'
+import { USER_INFO } from '../../../constant'
+import { IMG_UPLOAD_URL } from '../../../config';
+
 
 export default {
 	name: 'AddBankcard',
@@ -49,10 +56,15 @@ export default {
 			bankName: '',
 			username: '',
 			phone: '',
-			id: ''
+			id: '',
+			uploadBandCard: null
 		}
 	},
 	onLoad(options) {
+		const userInfo = uni.getStorageSync(USER_INFO);
+		if (userInfo) {
+			this.phone = userInfo.phone
+		}
 		if (options.type) {
 			this.type = options.type
 		}
@@ -164,6 +176,82 @@ export default {
 					}
 				}
 			})
+
+		},
+
+		handleUploadImg() {
+			const _this = this
+			uni.chooseImage({
+				success: (chooseImageRes) => {
+					const imgPath = chooseImageRes.tempFiles[0].path
+					if (!imgPath) return
+					uni.showLoading({
+						title: '上传中...'
+					});
+					uni.uploadFile({
+						url: IMG_UPLOAD_URL,
+						filePath: imgPath,
+						name: 'file',
+						formData: {
+							userId: getUserId()
+						},
+						success: (uploadFileRes) => {
+							uni.hideLoading();
+							const imgUrl = JSON.parse(uploadFileRes.data).data.url
+							_this.uploadBandCard = imgUrl
+							_this.bankCardAnalysis(imgUrl)
+						},
+						fail: (error) => {
+							uni.hideLoading();
+							_this.ttoast({
+								type: 'fail',
+								title: '图片上传失败',
+								content: error
+							});
+						}
+					});
+
+					return;
+				},
+				fail: (fail) => {
+					console.log(fail);
+				}
+			});
+
+
+		},
+
+		async bankCardAnalysis(imageUrl) {
+			if (!imageUrl) {
+				this.ttoast({
+					type: 'fail',
+					title: "银行卡解析失败",
+					content: "请填写银行卡信息"
+				})
+
+				return
+			}
+
+			try {
+				uni.showLoading({
+					title: '银行卡解析中...'
+				});
+				const data = await bankCardAnalysisApi({
+					imageUrl
+				})
+
+				this.bankName = (data.cardName + '').replaceAll(' ', '')
+				this.cardNum = (data.cardNum + '').replaceAll(' ', '')
+			} catch (err) {
+				this.ttoast({
+					type: 'fail',
+					title: "银行卡解析失败",
+					content: "请填写银行卡信息"
+				})
+				this.uploadBandCard = ''
+			} finally {
+				uni.hideLoading();
+			}
 		}
 	}
 }
@@ -217,6 +305,57 @@ export default {
 			text-align: center;
 			line-height: 100upx;
 			background: #333333;
+		}
+	}
+
+	.upload-bank-card {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 670upx;
+		height: 408upx;
+		background-color: #F7FBFF;
+		margin: 30upx auto;
+
+		.image-wrapper {
+			width: 585upx;
+			height: 375upx;
+			background-color: #fff;
+			position: relative;
+
+			.bank-img {
+				width: 100%;
+				height: 100%;
+			}
+
+			.uploader {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 143upx;
+				height: 143upx;
+				border-radius: 100px;
+				background: rgba(4, 3, 33, 0.6);
+				transform: translate(-50%, -50%);
+				color: #fff;
+				font-size: 28upx;
+				line-height: 143upx;
+				text-align: center;
+				transition: all 350ms;
+				z-index: 10;
+
+				&:active {
+					opacity: 0.8;
+				}
+			}
+
+			.tip {
+				font-size: 24upx;
+				letter-spacing: 0.4em;
+				margin-top: 300upx;
+				text-align: center;
+				color: #ccc;
+			}
 		}
 	}
 }
