@@ -1231,6 +1231,12 @@
           "style": {
             "navigationBarTitleText": "代金卷"
           }
+        },
+        {
+          "path": "newVoucher/orderStatus",
+          "style": {
+            "navigationBarTitleText": "代金卷订单完成状态"
+          }
         }
       ]
     },

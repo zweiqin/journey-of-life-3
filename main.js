@@ -35,6 +35,8 @@ Vue.mixin({
 						return url.replace('http://', 'https://')
 					} else if (url.startsWith('https://')) {
 						return url
+					} else if(url.startsWith('//')) {
+						return 'https:' + url
 					}
 					// https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/
 					// https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/

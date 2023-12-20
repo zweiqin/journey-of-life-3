@@ -104,6 +104,8 @@ export default {
     watch: {
         condition(newVlaue, oldVlaue) {
             this.dataList = []
+            this.queryList.page = 1;
+            this.queryList.pageSize = 20;
             this.getListData();
         }
     }

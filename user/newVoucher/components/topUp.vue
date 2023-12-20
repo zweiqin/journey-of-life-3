@@ -166,7 +166,7 @@ export default {
                     console.log(err);
                     })
             }else {
-                refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 await简化后面再说
+                refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 简化后面再说
                     userId: this.findUserId
                 }).then(res => {
                     let userData = res.data
@@ -216,6 +216,9 @@ export default {
                     icon: 'none'
                 })
                 this.$emit('getVouvher')
+                uni.navigateTo({
+                    url: `/user/newVoucher/orderStatus?istopUp=${0}&orderStatus=${1}&count=${0 - this.giveAmount}`
+                });
                 console.log(res);
             }).catch(err => {
                 console.log(err);
