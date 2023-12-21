@@ -36,7 +36,7 @@
       </BrandPane>
     </view>
     <LoadingMore v-show="$data._status !== 'none'" :status="$data._status"></LoadingMore>
-    <PageLoading :style="{ 'z-index': isPageLoading === 'page' ? '10000 !important' : '10 !important' }"
+    <PageLoading :style="{ 'z-index': isPageLoading === 'page' ? '100 !important' : '10 !important' }"
       v-if="isPageLoading"></PageLoading>
 
     <view class="no-data" v-if="!$data._list.length && $data._status !== 'loading'"
