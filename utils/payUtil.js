@@ -430,7 +430,7 @@ export async function handleDoPay(submitResult, purchaseMode) {
           query += key + '=' + payAppesult.data[key] + '&';
         }
         wx.miniProgram.navigateTo({
-          url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId()
+          url: '/pages/loading/loading?' + query + 'orderNo=' + submitInfo.orderSn + '&userId=' + getUserId()
         });
       } else {
         await h5TonglianPay(submitInfo);

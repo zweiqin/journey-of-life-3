@@ -18,18 +18,12 @@
 
 				<view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
 				<view class="image-list">
-					<image
-						src="../../static/images/new-community/home/p-1.png" class="p-img"
-						@click="go('/community-center/service-sort?value=1')"
-					></image>
-					<image
-						src="../../static/images/new-community/home/p-2.png" class="p-img"
-						@click="go('/community-center/service-sort?value=3')"
-					></image>
-					<image
-						src="../../static/images/new-community/home/p-3.png" class="p-img"
-						@click="go('/community-center/service-sort?value=4')"
-					></image>
+					<image src="../../static/images/new-community/home/p-1.png" class="p-img"
+						@click="go('/community-center/service-sort?value=1')"></image>
+					<image src="../../static/images/new-community/home/p-2.png" class="p-img"
+						@click="go('/community-center/service-sort?value=3')"></image>
+					<image src="../../static/images/new-community/home/p-3.png" class="p-img"
+						@click="go('/community-center/service-sort?value=4')"></image>
 				</view>
 			</view>
 		</view>
@@ -47,10 +41,8 @@
 			<!-- 四季专区 -->
 			<!-- <FourSeasonsZone></FourSeasonsZone> -->
 
-			<ServerPane
-				v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title"
-				:list="item.children"
-			>
+			<ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title"
+				:list="item.children">
 			</ServerPane>
 		</view>
 
@@ -62,10 +54,8 @@
 		<CheckedVersion ref="checkedVersion"></CheckedVersion>
 		<!-- #endif -->
 
-		<tui-modal
-			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '')"
-		></tui-modal>
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
 		<BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
@@ -76,10 +66,8 @@
 		<!-- 弹出关注公众号 -->
 		<TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-		<PopupInformation
-			ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl"
-			@close="handleShowBindMobilePopup" @click="handleToActiveDetail"
-		>
+		<PopupInformation ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl"
+			@close="handleShowBindMobilePopup" @click="handleToActiveDetail">
 		</PopupInformation>
 	</view>
 </template>
@@ -120,7 +108,7 @@ export default {
 		PopupInformation,
 		MakeSmallFortune
 	},
-	mixins: [ showModal() ],
+	mixins: [showModal()],
 	data() {
 		return {
 			bannerListIcon: Object.freeze(bannerListIcon),
@@ -133,6 +121,13 @@ export default {
 		}
 	},
 	onShow() {
+		try {
+			if ((window.location.origin + window.location.pathname + window.location.hash).includes('miniProgram')) {
+				this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true)
+			}
+		} catch (error) {
+			console.log(error);
+		}
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
 		this.$nextTick(() => {
@@ -330,7 +325,6 @@ export default {
 		const script = document.createElement('script')
 		script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
 		document.body.appendChild(script)
-
 		setTimeout(() => {
 			this.handleInitShare()
 		}, 500)

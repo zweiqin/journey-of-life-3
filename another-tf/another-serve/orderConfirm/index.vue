@@ -1011,6 +1011,7 @@ export default {
 				}
 				await handleDoPay.call(this, submitResult, 1)
 			} catch (e) {
+				// alert(e.message)
 				this.oneClickSubmit = true
 				this.$showToast('订单结算错误')
 			} finally {
