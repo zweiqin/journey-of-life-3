@@ -1,104 +1,104 @@
-import { AnotherTFRequest } from '../../utils'
+import { AnotherTFRequest } from '../../utils';
 
 /**
  * @description 商城相关接口
  */
 
 // 登录拿 新团蜂的 token
-export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrRegByPhone', data)
+export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrRegByPhone', data);
 
 // 获取支付宝小程序手机号绑定
-export const updateAliPhoneAppApi = (data) => AnotherTFRequest('/app/updateAliPhone', data, 'POST')
+export const updateAliPhoneAppApi = (data) => AnotherTFRequest('/app/updateAliPhone', data, 'POST');
 
 // 判断用户是否是商家
-export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
+export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data);
 
 // 账户注销
-export const deleteUserInfoApi = (data) => AnotherTFRequest(`/user/delUser/${data.code}`, data, 'DELETE')
+export const deleteUserInfoApi = (data) => AnotherTFRequest(`/user/delUser/${data.code}`, data, 'DELETE');
 
 // 个人系信息查询
-export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
+export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data);
 
 // 个人系信息修改
-export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST')
+export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST');
 
 // 查询地址一级分类
-export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
+export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data);
 
 // 查询地址一级分类
-export const getCityManageAreaTreeOneApi = (data) => AnotherTFRequest('/cityManageArea/getTreeOne', data)
+export const getCityManageAreaTreeOneApi = (data) => AnotherTFRequest('/cityManageArea/getTreeOne', data);
 
 // /classify/getClassifyProducts2 分类商品查询2
-export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data)
+export const getClassifyProducts2Api = (data) => AnotherTFRequest('/classify/getClassifyProducts2', data);
 
 // getClaasifyProducts 分类商品查询
-export const getClaasifyProductsApi = (data) => AnotherTFRequest('/classify/getClaasifyProducts', data)
+export const getClaasifyProductsApi = (data) => AnotherTFRequest('/classify/getClaasifyProducts', data);
 
 // /canvas/getCanvas  查询商品分类
-export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data)
+export const getCanvasApi = (data) => AnotherTFRequest('/canvas/getCanvas', data);
 
 // /canvas/getPrices  商家定价捆绑
-export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getPrices', data)
+export const getPricesCanvasApi = (data) => AnotherTFRequest('/canvas/getPrices', data);
 
 // 查询会员商品数据
-export const getMemberProductsCanvasApi = (data) => AnotherTFRequest('/canvas/getMemberProducts', data)
+export const getMemberProductsCanvasApi = (data) => AnotherTFRequest('/canvas/getMemberProducts', data);
 
 // /classify/getFirstClassify  查询店铺分类
-export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirstClassify', data)
+export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirstClassify', data);
 
 // /product/getById  商品详情查询
-export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/getById', data)
+export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/getById', data);
 
 // 查询商品sku详情
-export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProducts', data)
+export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProducts', data);
 
 // 优惠券商品列表查询
-export const getCouponProductsApi = (data) => AnotherTFRequest('/coupon/getCouponProducts', data)
+export const getCouponProductsApi = (data) => AnotherTFRequest('/coupon/getCouponProducts', data);
 
 // /app/getSearchProducts  商品搜索查询
-export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)
+export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data);
 
 // 查询最近的N条历史记录
-export const getSearchHistoryApi = (data) => AnotherTFRequest('/app/getHistory', data)
+export const getSearchHistoryApi = (data) => AnotherTFRequest('/app/getHistory', data);
 
 // 清空历史搜索记录
-export const deleteProductAllSearchApi = (data) => AnotherTFRequest('/product/deleteAllSearch', data, 'POST')
+export const deleteProductAllSearchApi = (data) => AnotherTFRequest('/product/deleteAllSearch', data, 'POST');
 
 // 删除搜索记录
-export const deleteSearchRecordApi = (data) => AnotherTFRequest('/app/deleteSearch', data, 'POST')
+export const deleteSearchRecordApi = (data) => AnotherTFRequest('/app/deleteSearch', data, 'POST');
 
 // 获取热门推荐
-export const getRandomSortProductApi = (data) => AnotherTFRequest('/product/getRandomSortProduct', data)
+export const getRandomSortProductApi = (data) => AnotherTFRequest('/product/getRandomSortProduct', data);
 
 // 查询用户所有收货地址
-export const getAllReceiveAddressApi = (data) => AnotherTFRequest('/receive/getAll', data)
+export const getAllReceiveAddressApi = (data) => AnotherTFRequest('/receive/getAll', data);
 
 // 修改收货地址查询
-export const getReceiveAddressByIdApi = (data) => AnotherTFRequest('/receive/getById', data)
+export const getReceiveAddressByIdApi = (data) => AnotherTFRequest('/receive/getById', data);
 
 // 更新收货地址
-export const updateReceiveAddressApi = (data) => AnotherTFRequest('/receive/update', data, 'POST')
+export const updateReceiveAddressApi = (data) => AnotherTFRequest('/receive/update', data, 'POST');
 
 // 保存收货地址
-export const addReceiveAddressApi = (data) => AnotherTFRequest('/receive/save', data, 'POST')
+export const addReceiveAddressApi = (data) => AnotherTFRequest('/receive/save', data, 'POST');
 
 // 删除收货地址
-export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/delete', data, 'POST')
+export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/delete', data, 'POST');
 
 // 支付有礼
-export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPolite', data)
+export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPolite', data);
 
 // 账户信息查询
-export const getPricePlatformAllApi = (data) => AnotherTFRequest('/distributor/getDistributor', data)
+export const getPricePlatformAllApi = (data) => AnotherTFRequest('/distributor/getDistributor', data);
 
 // 平台余额充值提交订单
-export const addOrderSubmitUserRechargeApi = (data) => AnotherTFRequest('/order/submitUserRecharge', data, 'POST')
+export const addOrderSubmitUserRechargeApi = (data) => AnotherTFRequest('/order/submitUserRecharge', data, 'POST');
 
 // 用户平台充值流水记录
-export const getByAllBuyerUserRechargeLogApi = (data) => AnotherTFRequest('/buyerUserRechargeLog/getByAll', data, 'POST')
+export const getByAllBuyerUserRechargeLogApi = (data) => AnotherTFRequest('/buyerUserRechargeLog/getByAll', data, 'POST');
 
 // 提现申请
-export const updateSaveDistributorWithdrawApi = (data) => AnotherTFRequest('/distributor/save', data, 'POST')
+export const updateSaveDistributorWithdrawApi = (data) => AnotherTFRequest('/distributor/save', data, 'POST');
 
 /**
  * @description 社区商圈相关接口
@@ -106,414 +106,417 @@ export const updateSaveDistributorWithdrawApi = (data) => AnotherTFRequest('/dis
 
 // 关系链接口
 // 各个等级申请
-export const addPlatformRelationshipApplyApi = (data) => AnotherTFRequest('/platformRelationshipApply/apply', data, 'POST')
+export const addPlatformRelationshipApplyApi = (data) => AnotherTFRequest('/platformRelationshipApply/apply', data, 'POST');
 
 // 查询用户Code邀请二维码
-export const getPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/getCode', data)
+export const getPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/getCode', data);
 
 // 用户绑定
-export const bindPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/bingCode', data)
+export const bindPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/bingCode', data);
 
 // 查询平台关系等级管理
-export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/platformRelationshipLevel/getAll', data)
+export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/platformRelationshipLevel/getAll', data);
 
 // 每个等级统计
-export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
+export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data);
 
 // 查询升级产品
-export const getSelectProductPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectProduct', data, 'POST')
+export const getSelectProductPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectProduct', data, 'POST');
 
 // 查询用户是否存在申请
-export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectApply', data)
+export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectApply', data);
 
 // 查询是否满足升级条件
-export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
+export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST');
 
 // 佣金金额统计
-export const getStatisticsAmountRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+export const getStatisticsAmountRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST');
 
 // 佣金金额记录
-export const getStatisticsRecordRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+export const getStatisticsRecordRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST');
 
 // 会员中心
 // 会员权益查询
-export const getMemberShipListApi = (data) => AnotherTFRequest('/member/getMemberShipList', data)
+export const getMemberShipListApi = (data) => AnotherTFRequest('/member/getMemberShipList', data);
 
 // 查询会员所有等级
-export const getAllMemberLevelInfoApi = (data) => AnotherTFRequest('/member/getAllMemberLevelInfo', data)
+export const getAllMemberLevelInfoApi = (data) => AnotherTFRequest('/member/getAllMemberLevelInfo', data);
 
 // 会员图标
-export const getMemberByMemberLevelIdApi = (data) => AnotherTFRequest(`/member/getMemberByMemberLevelId/${data.memberLevelId}`, data)
+export const getMemberByMemberLevelIdApi = (data) => AnotherTFRequest(`/member/getMemberByMemberLevelId/${data.memberLevelId}`, data);
 
 // 查询签到列表
-export const getSelectSigninRecordListApi = (data) => AnotherTFRequest('/member/selectSigninRecordList', data)
+export const getSelectSigninRecordListApi = (data) => AnotherTFRequest('/member/selectSigninRecordList', data);
 
 // 查询签到明细
-export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/selectSigninHistory', data)
+export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/selectSigninHistory', data);
 
 // 签到
-export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST')
+export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST');
 
 // 购物车
 // 商家购物车查询
-export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data)
+export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data);
 
 // 购物车列表
-export const getCartListApi = (data) => AnotherTFRequest('/cart/getCart', data)
+export const getCartListApi = (data) => AnotherTFRequest('/cart/getCart', data);
 
 // 修改购物车商品数量
-export const updateNumberCartGoodsApi = (data) => AnotherTFRequest('/cart/updateNumber', data, 'POST')
+export const updateNumberCartGoodsApi = (data) => AnotherTFRequest('/cart/updateNumber', data, 'POST');
 
 // 删除购物车商品
-export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', data, 'POST')
+export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', data, 'POST');
 
 // 店铺首页查询，查询店铺详情
-export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
+export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data);
 
 // 查询店铺分类
-export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)
+export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data);
 
 // 查询店铺父级分类查询子级分类
-export const getShopCategorySonApi = (data) => AnotherTFRequest('/shopCategory/getShopCategorySon', data)
+export const getShopCategorySonApi = (data) => AnotherTFRequest('/shopCategory/getShopCategorySon', data);
 
 // 附近商家
-export const getHomeBrandListApi = (data) => AnotherTFRequest('/shop/getShopAll', data, 'POST')
+export const getHomeBrandListApi = (data) => AnotherTFRequest('/shop/getShopAll', data, 'POST');
 
 // 获取邀请码
-export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode', data)
+export const getUserInfoCodeApi = (data) => AnotherTFRequest('/user/getInfoCode', data);
 
 // 用户扫码绑定
-export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platformInfoCode/saoMaBinding', data, 'POST')
+export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platformInfoCode/saoMaBinding', data, 'POST');
 
 // 我的收藏
 // 取消收藏
-export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data, 'POST')
+export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data, 'POST');
 // 取消收藏
-export const collectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel', data, 'PUT')
+export const collectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel', data, 'PUT');
 
 // 收藏商品、店铺
-export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST')
+export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST');
 
 // 消息
 // 消息详情
-export const getByIdNoticeMessageDateilsApi = (data) => AnotherTFRequest('/notice/getById', data)
+export const getByIdNoticeMessageDateilsApi = (data) => AnotherTFRequest('/notice/getById', data);
 
 // 消息已读
-export const updateReadNoticeApi = (data) => AnotherTFRequest('/notice/readNotice', data, 'POST')
+export const updateReadNoticeApi = (data) => AnotherTFRequest('/notice/readNotice', data, 'POST');
 
 // 购物车
 // 绑定关系
-export const addCartShoppingApi = (data) => AnotherTFRequest('/cart/addCart', data, 'POST')
+export const addCartShoppingApi = (data) => AnotherTFRequest('/cart/addCart', data, 'POST');
 
 // 分销中心
 // 验证当前客户是否为分销员
-export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data)
+export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data);
 
 // 绑定关系
-export const bindDistributorSalesCustomerApi = (data) => AnotherTFRequest('/distributor/bind', data, 'POST')
+export const bindDistributorSalesCustomerApi = (data) => AnotherTFRequest('/distributor/bind', data, 'POST');
 
 // 分享
-export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data)
+export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data);
 
 // 获取二维码和小程序码
-export const getShareWorkApi = (data) => AnotherTFRequest('/work/getShare', data)
+export const getShareWorkApi = (data) => AnotherTFRequest('/work/getShare', data);
 
 // 拼团滚动数据
-export const getBroadCastList = (data) => AnotherTFRequest('/', data)
+export const getBroadCastList = (data) => AnotherTFRequest('/', data);
 
 // 申请分销员
-export const addDistributorApplyApi = (data) => AnotherTFRequest('/distributor/addDistributor', data, 'POST')
+export const addDistributorApplyApi = (data) => AnotherTFRequest('/distributor/addDistributor', data, 'POST');
 
 // 查询店铺分类
-export const getShopClassifyApi = (data) => AnotherTFRequest('/shop/getShopClassify', data)
+export const getShopClassifyApi = (data) => AnotherTFRequest('/shop/getShopClassify', data);
 
 // 根据id查询店铺
-export const getShopProductsApi = (data) => AnotherTFRequest('/shop/getShopProducts', data)
+export const getShopProductsApi = (data) => AnotherTFRequest('/shop/getShopProducts', data);
 
 // 查询店铺banner
-export const getShopBannerApi = (data) => AnotherTFRequest('/shop/getShopBanner', data)
+export const getShopBannerApi = (data) => AnotherTFRequest('/shop/getShopBanner', data);
 
 // 查询直播间列表
-export const getCanvasSelectLiveListApi = (data) => AnotherTFRequest('/canvas/selectLiveList', data)
-export const getsubscribeLiveApi = (data) => AnotherTFRequest('/live/subscribeLive', data, 'POST')
+export const getCanvasSelectLiveListApi = (data) => AnotherTFRequest('/canvas/selectLiveList', data);
+export const getsubscribeLiveApi = (data) => AnotherTFRequest('/live/subscribeLive', data, 'POST');
 
 // 成为商家的客户
-export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/addBusinessBuyerUser', data, 'POST')
+export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/addBusinessBuyerUser', data, 'POST');
 
 // 小程序客服查询
-export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data)
+export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data);
 
 // 售后
 // 售后列表查询
-export const getAllFindReturnListApi = (data) => AnotherTFRequest('/after/getAll', data)
+export const getAllFindReturnListApi = (data) => AnotherTFRequest('/after/getAll', data);
 
 // 售后详情查询
-export const getReturnDetailByIdApi = (data) => AnotherTFRequest('/after/getById', data)
+export const getReturnDetailByIdApi = (data) => AnotherTFRequest('/after/getById', data);
 
 // 撤销退款
-export const updateCancelReturnRefundApi = (data) => AnotherTFRequest('/after/returnRefund', data, 'POST')
+export const updateCancelReturnRefundApi = (data) => AnotherTFRequest('/after/returnRefund', data, 'POST');
 
 // 撤销退货
-export const updateCancelReturnGoodsApi = (data) => AnotherTFRequest('/after/returnGoods', data, 'POST')
+export const updateCancelReturnGoodsApi = (data) => AnotherTFRequest('/after/returnGoods', data, 'POST');
 
 // 申请平台介入
-export const applyAfterPlatformApi = (data) => AnotherTFRequest('/after/platform', data, 'POST')
+export const applyAfterPlatformApi = (data) => AnotherTFRequest('/after/platform', data, 'POST');
 
 // 删除售后记录
-export const updateDeleteAfterRecordApi = (data) => AnotherTFRequest('/after/deleteAfter', data, 'POST')
+export const updateDeleteAfterRecordApi = (data) => AnotherTFRequest('/after/deleteAfter', data, 'POST');
 
 // 选择快递公司查询
-export const getExpressSelectShippingCompanyApi = (data) => AnotherTFRequest('/order/getExpressSelect', data)
+export const getExpressSelectShippingCompanyApi = (data) => AnotherTFRequest('/order/getExpressSelect', data);
 
 // 填写退货物流单
-export const updateSendGoodsReturnExpressApi = (data) => AnotherTFRequest('/order/returnExpress', data, 'POST')
+export const updateSendGoodsReturnExpressApi = (data) => AnotherTFRequest('/order/returnExpress', data, 'POST');
 
 // 优惠券
 // 优惠券查询
-export const getCanvasCouponsApi = (data) => AnotherTFRequest('/canvas/getCoupons', data)
+export const getCanvasCouponsApi = (data) => AnotherTFRequest('/canvas/getCoupons', data);
 
 // 领取优惠券
-export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')
+export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST');
 
 // 领取优惠券
-export const updateCouponBuildParam4PlugApi = (data) => AnotherTFRequest('/coupon/buildParam4Plug', data, 'POST')
+export const updateCouponBuildParam4PlugApi = (data) => AnotherTFRequest('/coupon/buildParam4Plug', data, 'POST');
 
 // 首页广告
 // 成为商家的客户
-export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST')
+export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST');
 
 // 积分签到
 // 积分兑换优惠券
-export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
+export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST');
 
 // 积分签到
-export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
+export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST');
 
 // 根据月份查询签到记录
-export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
+export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST');
 
 // 查询可以积分兑换的优惠券
-export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
+export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST');
 
 // 查询积分记录
-export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
+export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST');
 
 // 首页广告
 // 获取首页广告
-export const getSelectByConditionAdvertApi = (data) => AnotherTFRequest('/advert/selectByCondition', data, 'POST')
+export const getSelectByConditionAdvertApi = (data) => AnotherTFRequest('/advert/selectByCondition', data, 'POST');
 
 // 关闭首页广告
-export const updateCloseAdvertApi = (data) => AnotherTFRequest('/advert/closeAdvert', data, 'POST')
+export const updateCloseAdvertApi = (data) => AnotherTFRequest('/advert/closeAdvert', data, 'POST');
 
 // 订单相关接口，查询订单列表
-export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data)
+export const getAllOrderListApi = (data) => AnotherTFRequest('/order/getAll', data);
 
 // 订单详情查询
-export const getOrderDetailApi = (data) => AnotherTFRequest('/order/getById', data)
+export const getOrderDetailApi = (data) => AnotherTFRequest('/order/getById', data);
 
 // 删除订单
-export const deleteShopOrderApi = (data) => AnotherTFRequest('/order/delete', data, 'POST')
+export const deleteShopOrderApi = (data) => AnotherTFRequest('/order/delete', data, 'POST');
 
 // 取消订单
-export const cancelShopOrderApi = (data) => AnotherTFRequest('/order/cancel', data, 'POST')
+export const cancelShopOrderApi = (data) => AnotherTFRequest('/order/cancel', data, 'POST');
 
 // 物流信息查询
-export const getOrderDileveryShippingTraceApi = (data) => AnotherTFRequest('/order/getDilevery', data)
+export const getOrderDileveryShippingTraceApi = (data) => AnotherTFRequest('/order/getDilevery', data);
 
 // 生成用户订单的核销码
-export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderVerificationCode/getHxCode', data)
+export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderVerificationCode/getHxCode', data);
 
 // 核销订单
-export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST')
+export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST');
 
 // 商家订单管理查询
-export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST')
+export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST');
 
 // 商家统计
-export const getShopStatisticsApi = (data) => AnotherTFRequest('/shop/getShopStatistics', data, 'POST')
+export const getShopStatisticsApi = (data) => AnotherTFRequest('/shop/getShopStatistics', data, 'POST');
 
 // 查询绑定银行卡
-export const getShopBankApi = (data) => AnotherTFRequest('/shop/getBank', data, 'POST')
+export const getShopBankApi = (data) => AnotherTFRequest('/shop/getBank', data, 'POST');
 
 // 商家财务统计
-export const getShopFinanceCountApi = (data) => AnotherTFRequest('/shop/getFinanceCount', data, 'POST')
+export const getShopFinanceCountApi = (data) => AnotherTFRequest('/shop/getFinanceCount', data, 'POST');
 
 // 提现申请
-export const addShopWithdrawalApi = (data) => AnotherTFRequest('/shop/withdrawal', data, 'POST')
+export const addShopWithdrawalApi = (data) => AnotherTFRequest('/shop/withdrawal', data, 'POST');
 
 // 提现明细查询
-export const getShopWithdrawalDetailsApi = (data) => AnotherTFRequest('/shop/getWithdrawalDetails', data, 'POST')
+export const getShopWithdrawalDetailsApi = (data) => AnotherTFRequest('/shop/getWithdrawalDetails', data, 'POST');
 
 // 商家充值财务统计
-export const getShopRechargeCountApi = (data) => AnotherTFRequest('/shop/getRechargeCount', data, 'POST')
+export const getShopRechargeCountApi = (data) => AnotherTFRequest('/shop/getRechargeCount', data, 'POST');
 
 // 充值提现申请
-export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/withdrawalRecharge', data, 'POST')
+export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/withdrawalRecharge', data, 'POST');
 
 // 商家的客户充值列表
-export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST')
+export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST');
 
 // 用户银行卡相关接口
 // 查询用户所有银行卡
-export const getAllBankcardListApi = (data) => AnotherTFRequest('/bank/getAll', data)
+export const getAllBankcardListApi = (data) => AnotherTFRequest('/bank/getAll', data);
 
 // 删除用户银行卡
-export const deleteUserBankcardApi = (data) => AnotherTFRequest('/bank/delete', data, 'POST')
+export const deleteUserBankcardApi = (data) => AnotherTFRequest('/bank/delete', data, 'POST');
 
 // 修改银行卡
-export const updateUserBankcardApi = (data) => AnotherTFRequest('/bank/update', data, 'POST')
+export const updateUserBankcardApi = (data) => AnotherTFRequest('/bank/update', data, 'POST');
 
 // 添加银行卡
-export const addUserBankcardApi = (data) => AnotherTFRequest('/bank/save', data, 'POST')
+export const addUserBankcardApi = (data) => AnotherTFRequest('/bank/save', data, 'POST');
 
 // 修改银行卡
-export const getByIdUserBankcardApi = (data) => AnotherTFRequest('/bank/getById', data)
+export const getByIdUserBankcardApi = (data) => AnotherTFRequest('/bank/getById', data);
 
 // 收款账户。商家银行卡
 // 绑定账户
-export const addBankSaveApi = (data) => AnotherTFRequest('/shopBank/save', data, 'POST')
+export const addBankSaveApi = (data) => AnotherTFRequest('/shopBank/save', data, 'POST');
 
 // 更换账户
-export const updateBankUpdateApi = (data) => AnotherTFRequest('/shopBank/update', data, 'POST')
+export const updateBankUpdateApi = (data) => AnotherTFRequest('/shopBank/update', data, 'POST');
 
 // 解绑账户
-export const deleteBankDeleteApi = (data) => AnotherTFRequest('/shopBank/delete', data, 'POST')
+export const deleteBankDeleteApi = (data) => AnotherTFRequest('/shopBank/delete', data, 'POST');
 
 // 收款账户信息查询
-export const getByIdBankApi = (data) => AnotherTFRequest('/shopBank/getById', data, 'POST')
+export const getByIdBankApi = (data) => AnotherTFRequest('/shopBank/getById', data, 'POST');
 
 // 字典下拉数据查询
-export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST')
+export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST');
 
 // 获取短信验证码
-export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST')
+export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST');
 
 // 确认收货
-export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
+export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST');
 
 // 申请退款
-export const getOrderRefundApi = (data) => AnotherTFRequest('/order/refund', data)
+export const getOrderRefundApi = (data) => AnotherTFRequest('/order/refund', data);
 
 // APP立即支付
-export const gotoOrderAppPayApi = (data) => AnotherTFRequest('/order/gotoAppPay', data, 'POST')
+export const gotoOrderAppPayApi = (data) => AnotherTFRequest('/order/gotoAppPay', data, 'POST');
 
 // 商城订单
 // 通联H5支付
-export const gotoOrderH5PayApi = (data) => AnotherTFRequest('/order/gotoH5Pay', data, 'POST')
+export const gotoOrderH5PayApi = (data) => AnotherTFRequest('/order/gotoH5Pay', data, 'POST');
 
 // 小程序支付
-export const gotoOrderPayApi = (data) => AnotherTFRequest('/order/gotoPay', data, 'POST')
+export const gotoOrderPayApi = (data) => AnotherTFRequest('/order/gotoPay', data, 'POST');
 
 // 小程序支付成功
-export const payOrderSuccessApi = (data) => AnotherTFRequest('/order/paySuccess', data, 'POST')
+export const payOrderSuccessApi = (data) => AnotherTFRequest('/order/paySuccess', data, 'POST');
 
 // 查询花呗手续费配置
-export const getOrderHuabeiConfigApi = (data) => AnotherTFRequest('/order/getHuabeiConfig', data)
+export const getOrderHuabeiConfigApi = (data) => AnotherTFRequest('/order/getHuabeiConfig', data);
 
 // 服务协议-查询分类层级
-export const getQueryDictByNameApi = (data) => AnotherTFRequest('/dict/getByName', data)
+export const getQueryDictByNameApi = (data) => AnotherTFRequest('/dict/getByName', data);
 
 // 结算查询
-export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettlement', data, 'POST')
+export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettlement', data, 'POST');
 
 // 提交订单
-export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
+export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST');
 
 // 秒杀专区
 // 商品问答数据查询
-export const getProblemsSeckillApi = (data) => AnotherTFRequest('/seckill/getProblems', data)
+export const getProblemsSeckillApi = (data) => AnotherTFRequest('/seckill/getProblems', data);
 
 // 问答详情查询
-export const getProblemDetailApi = (data) => AnotherTFRequest('/seckill/getProblemDetail', data)
+export const getProblemDetailApi = (data) => AnotherTFRequest('/seckill/getProblemDetail', data);
 
 // 回答
-export const addAnswerProblemApi = (data) => AnotherTFRequest('/seckill/addAnswer', data, 'POST')
+export const addAnswerProblemApi = (data) => AnotherTFRequest('/seckill/addAnswer', data, 'POST');
 
 // 提问
-export const addProblemAnswerApi = (data) => AnotherTFRequest('/seckill/addProblem', data, 'POST')
+export const addProblemAnswerApi = (data) => AnotherTFRequest('/seckill/addProblem', data, 'POST');
 
 // 查询店铺秒杀
-export const getShopSeckillIndexApi = (data) => AnotherTFRequest('/seckill/getIndex', data)
+export const getShopSeckillIndexApi = (data) => AnotherTFRequest('/seckill/getIndex', data);
 
 // 我的问答
 // 批量删除提问
-export const deleteProblemAnswerApi = (data) => AnotherTFRequest('/seckill/deleteProblem', data, 'POST')
+export const deleteProblemAnswerApi = (data) => AnotherTFRequest('/seckill/deleteProblem', data, 'POST');
 
 // 批量删除回答
-export const deleteAnswerProblemApi = (data) => AnotherTFRequest('/seckill/deleteAnswer', data, 'POST')
+export const deleteAnswerProblemApi = (data) => AnotherTFRequest('/seckill/deleteAnswer', data, 'POST');
 
 // 我的提问
-export const getProblemSeckillApi = (data) => AnotherTFRequest('/seckill/getProblem', data)
+export const getProblemSeckillApi = (data) => AnotherTFRequest('/seckill/getProblem', data);
 
 // 我的回答
-export const getAnswerSeckillApi = (data) => AnotherTFRequest('/seckill/getAnswer', data)
+export const getAnswerSeckillApi = (data) => AnotherTFRequest('/seckill/getAnswer', data);
 
 // 拼团专区
 // 拼团单结算查询
-export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST')
+export const getGroupSettlementWorkApi = (data) => AnotherTFRequest('/work/getSettlement', data, 'POST');
 
 // 邀请好友拼单查询
-export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', data, 'POST')
+export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', data, 'POST');
 
 // 拼团专区首页数据查询
-export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data)
+export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data);
 
 // 限时折扣
 // 专区首页数据查询
-export const getIndexDiscountListApi = (data) => AnotherTFRequest('/discount/getIndex', data)
+export const getIndexDiscountListApi = (data) => AnotherTFRequest('/discount/getIndex', data);
 
 // 平台折扣
 // 平台折扣查询
-export const getQueryPlatformDiscountApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscount', data)
+export const getQueryPlatformDiscountApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscount', data);
 
 // 平台折扣商品查询
-export const getPlatformDiscountProductListApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscountProductList', data, 'POST')
+export const getPlatformDiscountProductListApi = (data) => AnotherTFRequest('/platform-discount/queryPlatformDiscountProductList', data, 'POST');
 
 // 根据场次时间查询商品列表
-export const getQueryProductListBySessionApi = (data) => AnotherTFRequest('/platform-seckill/queryProductListBySession', data, 'POST')
+export const getQueryProductListBySessionApi = (data) => AnotherTFRequest('/platform-seckill/queryProductListBySession', data, 'POST');
 
 // 平台秒杀列表
-export const getQueryPlatformSeckillListApi = (data) => AnotherTFRequest('/platform-seckill/queryPlatformSeckillList', data)
+export const getQueryPlatformSeckillListApi = (data) => AnotherTFRequest('/platform-seckill/queryPlatformSeckillList', data);
 
 // 根据seckillId查询对应的秒杀商品列表
-export const getPlatformSeckillsCanvasApi = (data) => AnotherTFRequest('/canvas/getPlatformSeckills', data)
+export const getPlatformSeckillsCanvasApi = (data) => AnotherTFRequest('/canvas/getPlatformSeckills', data);
 
 // 平台秒杀查询今日场次
-export const getPlatformSeckillsQuerySessionApi = (data) => AnotherTFRequest('/platform-seckill/querySession', data)
+export const getPlatformSeckillsQuerySessionApi = (data) => AnotherTFRequest('/platform-seckill/querySession', data);
 
 // 评价
 // 点赞或取消点赞某个评论
-export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')
+export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST');
 
 // 评价
-export const addCommentOrderApi = (data) => AnotherTFRequest('/order/addComment', data, 'POST')
+export const addCommentOrderApi = (data) => AnotherTFRequest('/order/addComment', data, 'POST');
 
 // 查询组合套餐
-export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/selectCompose', data)
+export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/selectCompose', data);
 
 // 提交订单
-export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/trackReport', data, 'POST')
+export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/trackReport', data, 'POST');
 
 // 获取品牌工厂列表
-export const getFactoryListApi = (data) => AnotherTFRequest('/shop/getShopAll2', data, 'post')
+export const getFactoryListApi = (data) => AnotherTFRequest('/shop/getShopAll2', data, 'post');
 
 // 获取工厂详情
-export const getFactoryDetailApi = (data) => AnotherTFRequest('/shop/getIndex2', data)
+export const getFactoryDetailApi = (data) => AnotherTFRequest('/shop/getIndex2', data);
 
 // 获取品牌工厂的分类
-export const getFactoryClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategoryLevel', data)
+export const getFactoryClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategoryLevel', data);
 
 // 获取品牌工厂下级分类
-export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data)
+export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryMall/getShopCategorySon', data);
 // 查询热搜词
 // 获取搜索栏的热门搜索
-export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)
+export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data);
 
 // 小账本
-export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST');
 
 // 今日会员，累计会员
-export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
+export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST');
 
 // 获取佣金列表
-export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST');
+
+// 小程序支付参数
+export const getPayMiniProgramQueryApi = (data) => AnotherTFRequest('/collect/getSybPaySign', data, 'POST');
