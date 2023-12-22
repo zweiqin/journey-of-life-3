@@ -84,12 +84,12 @@
 				<view class="account-title">家庭小卫士</view>
 			</view>
 
-			<view class="account-item" @click="go('/another-tf/another-serve/integral/index')">
+			<!-- <view class="account-item" @click="go('/another-tf/another-serve/integral/index')">
 				<view class="account-number">
-					{{ $store.getters.userInfo.credit || 0 }}
+				{{ $store.getters.userInfo.credit || 0 }}
 				</view>
 				<view class="account-title">积分</view>
-			</view>
+				</view> -->
 
 			<view class="account-item" @click="go('/user/newVoucher/voucher')">
 				<view class="account-number">
