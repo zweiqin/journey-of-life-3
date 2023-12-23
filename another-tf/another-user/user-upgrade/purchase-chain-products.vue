@@ -113,7 +113,7 @@
 				@close="handleCloseLandscape"
 			>
 				<view @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')">
-					<image src="../../../static/images/user/activity/upgrade-regimental-commander.png" mode="widthFix" style="width: 500upx; max-height: 75vh" />
+					<image src="../../../static/images/user/activity/upgrade-regimental-commander.png" mode="widthFix" style="width: 500upx;max-height: 75vh;" />
 				</view>
 			</tui-landscape>
 		</view>

@@ -134,9 +134,9 @@
                 "androidStyle" : "default",
                 "useOriginalMsgbox" : true,
                 "android" : {
-                    "hdpi" : "E:/front_end-project/icon/new.png",
-                    "xhdpi" : "E:/front_end-project/icon/new.png",
-                    "xxhdpi" : "E:/front_end-project/icon/new.png"
+                    "hdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png",
+                    "xhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png",
+                    "xxhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png"
                 }
             }
         }

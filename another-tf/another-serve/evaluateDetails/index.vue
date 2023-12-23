@@ -6,28 +6,28 @@
 			<view class="evaluate-content flex-items flex-row flex-sp-between">
 				<view class="flex-items">
 					<image
-						v-if="commentVOList.headImage" class="user-headSmallImg"
-						:src="common.seamingImgUrl(commentVOList.headImage)"
+						v-if="detailsCommentVOData.headImage" class="user-headSmallImg"
+						:src="common.seamingImgUrl(detailsCommentVOData.headImage)"
 					></image>
 					<image v-else class="user-headSmallImg" src="../../../static/images/new-user/default-user-avatar.png"></image>
-					<label v-if="commentVOList.name" class="fs28 mar-left-20">{{ commentVOList.name }}</label>
+					<label v-if="detailsCommentVOData.name" class="fs28 mar-left-20">{{ detailsCommentVOData.name }}</label>
 					<label v-else class="fs28 mar-left-20">匿名</label>
 				</view>
-				<label class="font-color-999 fs22">{{ commentVOList.createTime }}</label>
+				<label class="font-color-999 fs22">{{ detailsCommentVOData.createTime }}</label>
 			</view>
 			<view class="fs22 font-color-999 mar-top-10">
-				{{ commentVOList.value }}
+				{{ detailsCommentVOData.value }}
 			</view>
-			<view class="fs26 pad-topbot-20">{{ commentVOList.comment }}</view>
-			<view v-if="commentVOList.image" class="evaluateImg-box">
+			<view class="fs26 pad-topbot-20">{{ detailsCommentVOData.comment }}</view>
+			<view v-if="detailsCommentVOData.image" class="evaluateImg-box">
 				<view v-for="(cItem, index) in imageList" :key="index" @click="previewImg(1, index)">
 					<image class="evaluate-Img" :src="common.seamingImgUrl(cItem)"></image>
 				</view>
 			</view>
-			<view v-if="commentVOList.addComment" class="addComments-box flex-column-plus">
+			<view v-if="detailsCommentVOData.addComment" class="addComments-box flex-column-plus">
 				<label class="font-color-C5AA7B mar-top-30">用户追评</label>
-				<label class="mar-top-20">{{ commentVOList.addComment }}</label>
-				<view v-if="commentVOList.addImage" class="evaluateImg-box mar-top-20">
+				<label class="mar-top-20">{{ detailsCommentVOData.addComment }}</label>
+				<view v-if="detailsCommentVOData.addImage" class="evaluateImg-box mar-top-20">
 					<view v-for="(dItem, index) in imgDataResult" :key="index" @click="previewImg(2, index)">
 						<image class="evaluate-Img" :src="common.seamingImgUrl(dItem)"></image>
 					</view>
@@ -35,26 +35,26 @@
 			</view>
 			<view class="goodsDes-box flex-column-plus mar-top-30">
 				<view class="flex-row-plus" @click="goGoodsDetails">
-					<image class="goodsDes-img" :src="common.seamingImgUrl(commentVOList.productImage)"></image>
+					<image class="goodsDes-img" :src="common.seamingImgUrl(detailsCommentVOData.productImage)"></image>
 					<view class="goodsDesText-box">
-						<label class="fs26 goodsDes-text">{{ commentVOList.productName }}</label>
+						<label class="fs26 goodsDes-text">{{ detailsCommentVOData.productName }}</label>
 						<view class="mar-top-70">
-							<label>¥ {{ commentVOList.productPrice }}</label>
+							<label>¥ {{ detailsCommentVOData.productPrice }}</label>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="linkBox">
-			<view v-if="commentVOList.addComment != ''" class="butBox flex-row-plus">
+			<view v-if="detailsCommentVOData.addComment != ''" class="butBox flex-row-plus">
 				<view class="addPraise-box1 flex-items-plus" @click="zanTap">
 					<tui-icon
-						v-if="commentVOList.ifLike" :size="30" color="#c5aa7b" name="agree"
+						v-if="detailsCommentVOData.ifLike" :size="30" color="#c5aa7b" name="agree"
 					></tui-icon>
 					<tui-icon
 						v-else :size="30" color="#cccccc" name="agree"
 					></tui-icon>
-					<label class="mar-left-10" :class="[ commentVOList.ifLike ? 'font-color-FFEBC4' : 'font-color-DDD' ]">点赞</label>
+					<label class="mar-left-10" :class="[ detailsCommentVOData.ifLike ? 'font-color-FFEBC4' : 'font-color-DDD' ]">点赞</label>
 				</view>
 			</view>
 			<view v-else class="butBox flex-row-plus">
@@ -64,12 +64,12 @@
 				</view>
 				<view class="addPraise-box flex-items-plus" @click="zanTap">
 					<tui-icon
-						v-if="commentVOList.ifLike" :size="30" color="#c5aa7b" name="agree"
+						v-if="detailsCommentVOData.ifLike" :size="30" color="#c5aa7b" name="agree"
 					></tui-icon>
 					<tui-icon
 						v-else :size="30" color="#cccccc" name="agree"
 					></tui-icon>
-					<label class="mar-left-10" :class="[ commentVOList.ifLike ? 'font-color-FFEBC4' : 'font-color-DDD' ]">点赞</label>
+					<label class="mar-left-10" :class="[ detailsCommentVOData.ifLike ? 'font-color-FFEBC4' : 'font-color-DDD' ]">点赞</label>
 				</view>
 			</view>
 		</view>
@@ -82,23 +82,26 @@ export default {
 	name: 'EvaluateDetails',
 	data() {
 		return {
-			commentVOList: {},
+			detailsCommentVOData: {},
 			actionType: true,
 			imgDataResult: [],
 			imageList: []
 		}
 	},
 	onLoad() {
-		this.commentVOList = uni.getStorageSync('commentVOList')
-		uni.removeStorageSync('commentVOList')
-		this.commentImgData(this.commentVOList.image)
-		this.imgDataResultData(this.commentVOList.addImage)
+		uni.$on('sendAddEvaluateMsg', (data) => {
+			if (data.detailsCommentVOData) {
+				this.detailsCommentVOData = data.detailsCommentVOData
+				this.commentImgData(this.detailsCommentVOData.image)
+				this.imgDataResultData(this.detailsCommentVOData.addImage)
+			}
+		})
 	},
 	methods: {
 		goGoodsDetails() {
-			const shopId = this.commentVOList.shopId
-			const productId = this.commentVOList.productId
-			const skuId = this.commentVOList.skuId
+			const shopId = this.detailsCommentVOData.shopId
+			const productId = this.detailsCommentVOData.productId
+			const skuId = this.detailsCommentVOData.skuId
 			uni.navigateTo({
 				url: '/another-tf/another-serve/goodsDetails/index?shopId=' + shopId + '&productId=' + productId + '&skuId=' + skuId
 			})
@@ -112,14 +115,14 @@ export default {
 		// 点赞
 		zanTap() {
 			uni.showLoading()
-			this.actionType = this.commentVOList.ifLike == 1 ? 0 : 1
+			this.actionType = this.detailsCommentVOData.ifLike == 1 ? 0 : 1
 			updateLikeOrUnLikeCommentApi({
-				commentId: this.commentVOList.commentId,
+				commentId: this.detailsCommentVOData.commentId,
 				ifLike: this.actionType
 			}).then((res) => {
 				uni.hideLoading()
-				this.commentVOList.ifLike = !this.commentVOList.ifLike
-				this.commentVOList.likes = this.commentVOList.ifLike ? this.commentVOList.likes + 1 : this.commentVOList.likes - 1
+				this.detailsCommentVOData.ifLike = !this.detailsCommentVOData.ifLike
+				this.detailsCommentVOData.likes = this.detailsCommentVOData.ifLike ? this.detailsCommentVOData.likes + 1 : this.detailsCommentVOData.likes - 1
 				if (this.actionType == 1) {
 					uni.showToast({
 						title: '点赞成功'
@@ -137,9 +140,11 @@ export default {
 		},
 		// 追加评论
 		addCommentsClick() {
-			uni.setStorageSync('addCommentVOList', this.commentVOList)
 			uni.redirectTo({
-				url: '/another-tf/another-serve/addEvaluate/index?type=2'
+				url: '/another-tf/another-serve/addEvaluate/index?type=2',
+				success: () => {
+					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.detailsCommentVOData, commentId: '' })
+				}
 			})
 		},
 		// 预览图片多张
@@ -215,25 +220,6 @@ export default {
 				width: 416upx;
 				margin-left: 30upx;
 			}
-
-			.addCommentsBut {
-				width: 150upx;
-				height: 56upx;
-				border: 1upx solid #FF7800;
-				border-radius: 28upx;
-				font-size: 26upx;
-				line-height: 56upx;
-				text-align: center;
-				color: #FF7800;
-			}
-
-			.praise-box {
-				.praise-icon {
-					width: 36upx;
-					height: 36upx;
-				}
-
-			}
 		}
 
 		.addComments-box {
@@ -253,11 +239,6 @@ export default {
 			background-color: #FFFFFF;
 			color: #333333;
 			border: 2rpx solid #333333;
-
-			.addComments-cion {
-				width: 50upx;
-				height: 50upx;
-			}
 		}
 
 		.addPraise-box {
@@ -265,11 +246,6 @@ export default {
 			width: 330upx;
 			background: #333333;
 			color: #FFFFFF;
-
-			.addPraise-icon {
-				width: 50upx;
-				height: 50upx;
-			}
 		}
 
 		.addPraise-box1 {
@@ -277,11 +253,6 @@ export default {
 			width: 690upx;
 			background: #333333;
 			color: #FFFFFF;
-
-			.addPraise-icon {
-				width: 50upx;
-				height: 50upx;
-			}
 		}
 
 	}

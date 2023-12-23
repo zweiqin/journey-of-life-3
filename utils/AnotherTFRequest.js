@@ -44,7 +44,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 							title: res.data.message,
 							icon: 'none'
 						})
-						reject(res.data.message)
+						reject(res.data)
 					}
 				} else {
 					reject(res)

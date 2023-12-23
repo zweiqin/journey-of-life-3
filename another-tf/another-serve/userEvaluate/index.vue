@@ -278,18 +278,22 @@ export default {
 			})
 		},
 		commentDetails(index) {
-			if (this.currentTab === 0) uni.setStorageSync('commentVOList', this.commentInfo.data[index])
-			else if (this.currentTab === 1) uni.setStorageSync('commentVOList', this.commentPicInfo.data[index])
 			uni.redirectTo({
-				url: '/another-tf/another-serve/evaluateDetails/index'
+				url: '/another-tf/another-serve/evaluateDetails/index',
+				success: () => {
+					if (this.currentTab === 0) uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentInfo.data[index] })
+					else if (this.currentTab === 1) uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentPicInfo.data[index] })
+				}
 			})
 		},
 		// 追加评论
 		addCommentsClick(index) {
-			if (this.currentTab === 0) uni.setStorageSync('addCommentVOList', this.commentInfo.data[index])
-			else if (this.currentTab === 1) uni.setStorageSync('addCommentVOList', this.commentPicInfo.data[index])
 			uni.redirectTo({
-				url: '/another-tf/another-serve/addEvaluate/index?type=2'
+				url: '/another-tf/another-serve/addEvaluate/index?type=2',
+				success: () => {
+					if (this.currentTab === 0) uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentInfo.data[index], commentId: '' })
+					else if (this.currentTab === 1) uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentPicInfo.data[index], commentId: '' })
+				}
 			})
 		}
 	},

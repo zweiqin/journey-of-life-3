@@ -40,37 +40,33 @@ export default {
 	name: 'AddEvaluate',
 	data() {
 		return {
-			addCommentVOList: {},
+			type: '',
+			addCommentVOData: {},
 			orderProductVO: {},
+			productImage: '',
+			commentId: '',
 			commentText: '',
 			fileList: [],
-			commentImgs: '',
-			productImage: '',
-			type: 0
+			commentImgs: ''
 		}
 	},
 	onLoad(options) {
-		this.type = options.type
-		if (options.detail) {
-			const params = this.$getJumpParam(options)
-			this.addCommentVOList = params.addCommentVOList
-			this.orderProductVO = params.type === 1 ? this.addCommentVOList.skus[0] : this.addCommentVOList
-			this.productImage = this.orderProductVO.image
-		} else {
-			if (options.type == 1) {
-				this.addCommentVOList = uni.getStorageSync('addCommentVOList')
-				this.orderProductVO = this.addCommentVOList.skus[0]
-				this.productImage = this.orderProductVO.image
-			} else {
-				this.addCommentVOList = uni.getStorageSync('addCommentVOList')
-				this.orderProductVO = this.addCommentVOList
-				this.productImage = this.orderProductVO.productImage
+		this.type = Number(options.type)
+		uni.$on('sendAddEvaluateMsg', (data) => {
+			if (data.addCommentVOData) {
+				if (this.type == 1) { // 针对一个订单下面的每个产品的评论
+					this.addCommentVOData = data.addCommentVOData
+					this.orderProductVO = this.addCommentVOData.skus[0]
+					this.productImage = this.orderProductVO.image
+					if (options.commentId) this.commentId = options.commentId
+				} else if (this.type == 2) { // 针对一个产品的评论
+					this.addCommentVOData = data.addCommentVOData
+					this.orderProductVO = this.addCommentVOData
+					this.productImage = this.orderProductVO.productImage
+					this.commentId = this.addCommentVOData.commentId
+				}
 			}
-			uni.removeStorageSync('addCommentVOList')
-		}
-		if (options.commentId) {
-			this.commentId = options.commentId
-		}
+		})
 	},
 	methods: {
 		handleSaveImg(imgUrl) {
@@ -98,15 +94,9 @@ export default {
 				}
 			}
 			let data = []
-			if (this.type == 1) {
+			if (this.type) {
 				data = [ {
 					commentId: this.commentId,
-					image: this.commentImgs,
-					comment: this.commentText
-				} ]
-			} else if (this.type == 2) {
-				data = [ {
-					commentId: this.addCommentVOList.commentId,
 					image: this.commentImgs,
 					comment: this.commentText
 				} ]
@@ -135,6 +125,7 @@ export default {
 	background-color: #F7F7F7;
 	min-height: 100vh;
 	box-sizing: border-box;
+
 	.addEvaluate-box {
 		margin-top: 20upx;
 

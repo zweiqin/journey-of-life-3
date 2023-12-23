@@ -31,20 +31,19 @@
 						</view>
 						<view>
 							<image
-								v-if="[1, 2].includes($store.getters.levelType)"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/huiyuan.png"
-								@click="go()"
+								v-if="[1, 2].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								src="../../../static/images/user/displayBadges/huiyuan.png" @click.stop="isShowGloryFrame = true"
 							></image>
 							<image
-								v-if="[3, 4].includes($store.getters.levelType)"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/tuanzhang.png"
-								@click="go()"
-							></image>
+								v-if="[3, 4].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								src="../../../static/images/user/displayBadges/tuanzhang.png" @click.stop="isShowGloryFrame = true"
+							>
+							</image>
 							<image
-								v-if="[ 5 ].includes($store.getters.levelType)"
-								style="width: 68rpx;height: 68rpx;margin: 0 5rpx;" src="../../../static/images/user/displayBadges/hehuoren.png"
-								@click="go()"
-							></image>
+								v-if="[ 5 ].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
+								src="../../../static/images/user/displayBadges/hehuoren.png" @click.stop="isShowGloryFrame = true"
+							>
+							</image>
 						</view>
 					</view>
 				</view>
@@ -116,12 +115,37 @@
 		<tui-modal :show="isShow" title="提示" content="您已开通家庭小卫士" @click="handleToVip"></tui-modal>
 
 		<CodeCreatePopup ref="codeCreateRef"></CodeCreatePopup>
+
+		<tui-landscape
+			:show="isShowGloryFrame" :position="1" mask mask-closable
+			:icon-size="28" icon-color="#FFFFFF"
+			@close="isShowGloryFrame = false"
+		>
+			<view style="position: relative;">
+				<view v-if="[3, 4, 5].includes($store.getters.levelType)" class="rotation-box"></view>
+				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
+					<image
+						style="position: absolute;top: 180upx;left: 50%;transform: translateX(-50%);width: 174upx;height: 174upx;border-radius: 40upx;"
+						:src="common.seamingImgUrl($store.getters.userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
+					>
+					</image>
+					<image src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix" style="width: 500upx;" />
+					<view
+						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
+					>
+						<text v-if="[1, 2].includes($store.getters.levelType)">您是普通会员</text>
+						<text v-if="[3, 4].includes($store.getters.levelType)">恭喜你成为团长</text>
+						<text v-if="[ 5 ].includes($store.getters.levelType)">恭喜你成为合伙人</text>
+					</view>
+				</view>
+			</view>
+		</tui-landscape>
 	</view>
 </template>
 
 <script>
 import { userIsPurchaseApi } from '../../../api/user'
-import { USER_ID } from 'constant'
+import { USER_ID } from '../../../constant'
 import showModalMixin from 'mixin/showModal'
 import { convertToDecimal } from '../../../utils'
 
@@ -129,9 +153,9 @@ export default {
 	name: 'BaseInfo',
 	data() {
 		return {
-			isShow: false,
 			isBuy: false,
-			isDisplayBadges: false
+			isShow: false,
+			isShowGloryFrame: false
 		}
 	},
 	mixins: [ showModalMixin() ],
@@ -179,9 +203,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-view,
-text {
-	line-height: 1.5 !important;
+.rotation-box {
+	position: absolute;
+	top: -45vh;
+	left: 50%;
+	margin-left: -60vh;
+	display: block;
+	width: 120vh;
+	height: 120vh;
+	opacity: 0.4;
+	background: repeating-conic-gradient(from 0deg, white 0deg 19deg, transparent 15deg 53deg);
+	mask-image: radial-gradient(rgb(0, 0, 0), rgb(0, 0, 0) 50%);
+	animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+	to {
+		transform: rotate(1turn)
+	}
 }
 
 .base-info-container {
