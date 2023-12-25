@@ -61,7 +61,7 @@ export default {
   methods: {
     async handlePayOrder() {
       const _this = this
-      if (this.$store.state.app.isInMiniProgram) {
+      if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),

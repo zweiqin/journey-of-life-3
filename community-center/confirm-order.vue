@@ -109,7 +109,7 @@ export default {
     async getServiceOrderPay() {
       uni.setStorageSync(T_COMMUNITY_ORDER_NO, this.orderNo);
       const _this = this
-      if (this.$store.state.app.isInMiniProgram) {
+      if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),
