@@ -1,7 +1,7 @@
 import { gotoOrderAppPayApi, gotoOrderH5PayApi, gotoOrderPayApi, payOrderSuccessApi } from '../api/anotherTFInterface';
 import { getPayMiniProgramQueryApi } from '../api/anotherTFInterface';
 import store from '../store';
-import { getUserId } from '.';
+import { getUserId, isH5InWebview } from '.';
 
 // #ifdef H5
 const jweixin = require('jweixin-module');
@@ -419,7 +419,7 @@ export async function handleDoPay(submitResult, purchaseMode) {
       // #endif
     } else if (submitInfo.paymentMode === 4) {
       // #ifdef H5
-      if (store.state.app.isInMiniProgram) {
+      if (store.state.app.isInMiniProgram || isH5InWebview()) {
         const payAppesult = await getPayMiniProgramQueryApi({
           orderNo: submitInfo.orderSn,
           purchaseMode,
