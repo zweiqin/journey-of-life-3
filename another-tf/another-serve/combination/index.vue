@@ -1,9 +1,9 @@
 <template>
 	<view class="combinationBox">
-		<JHeader title="组合优惠" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader :dark="false" title="组合优惠" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="topInfo">
 			<view class="topBg">
-				<swiper class="swiper" :circular="circular" :autoplay="autoplay" :vertical="vertical" :duration="duration">
+				<swiper class="swiper" circular autoplay vertical :duration="2000">
 					<swiper-item v-for="(item, index) in ruleList" :key="index">
 						<view class="swiper-item uni-bg-red">{{ item.price }}元任选{{ item.number }}件</view>
 					</swiper-item>
@@ -11,32 +11,42 @@
 			</view>
 		</view>
 		<view class="combinationList">
-			<view
-				v-for="(item, index) in productList" :key="index" class="combinationItem"
-				@click="goodsDateils(item.shopId, item.productId, item.skuId)"
-			>
-				<view class="imgBox">
-					<image :src="item.image" class="pic-img default-img"></image>
-				</view>
-				<view class="itemInfoBox">
-					<view class="itemTit">{{ item.productName }}</view>
-					<view class="itemNum">{{ item.number }}人付款</view>
-					<view class="addInfo">
-						<view class="price">￥{{ item.price }}</view>
-						<view class="selectBtn" @click.stop="showRuleBox(item, index)">
-							<!-- <image v-if="item.selected === 0" src="../../static/images/origin/cart1.png"></image>
-								<image v-else src="../../static/images/origin/cart2.png"></image> -->
+			<view v-if="productList && productList.length" class="listBox">
+				<view
+					v-for="(item, index) in productList" :key="index" class="combinationItem"
+					@click="goodsDateils(item.shopId, item.productId, item.skuId)"
+				>
+					<view class="imgBox">
+						<image :src="common.seamingImgUrl(item.image)" class="pic-img default-img"></image>
+					</view>
+					<view class="itemInfoBox">
+						<view class="itemTit">{{ item.productName }}</view>
+						<view class="itemNum">{{ item.number }}人付款</view>
+						<view class="addInfo">
+							<view class="price">￥{{ item.price }}</view>
+							<view class="selectBtn" @click.stop="showRuleBox(item, index)">
+								<tui-icon v-if="item.selected === 0" name="cart" :size="54" unit="upx" color="#cccccc"></tui-icon>
+								<tui-icon v-else name="cart-fill" :size="54" unit="upx" color="#333333"></tui-icon>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			<view style="padding-bottom: 45upx;">
+				<LoadingMore
+					:status="!isEmpty && !productList.length
+						? 'loading' : !isEmpty && productList.length && (productList.length >= productTotal) ? 'no-more' : ''"
+				>
+				</LoadingMore>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			</view>
 		</view>
 
 		<!--     商品详情 -->
-		<u-popup v-model="goosDetailshowFlag" mode="bottom" border-radius="14">
+		<tui-bottom-popup :show="goosDetailshowFlag" @close="goosDetailshowFlag = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
-					<image class="detailImg default-img" :src="skuImg"></image>
+					<image class="detailImg default-img" :src="common.seamingImgUrl(skuImg)"></image>
 					<view class="flex-column-plus mar-left-40">
 						<view class="font-color-C5AA7B">
 							<label class="fs24">¥</label>
@@ -65,7 +75,7 @@
 					<label class="font-color-999 fs24">数量</label>
 					<view class="goodsNum">
 						<text class="subtract" @click="numSub()">-</text>
-						<text v-model="buyNum" class="goodsNumber">{{ buyNum }}</text>
+						<text class="goodsNumber">{{ buyNum }}</text>
 						<text class="add" @click.stop="numAdd()">+</text>
 					</view>
 				</view>
@@ -78,33 +88,34 @@
 					</view>
 				</view>
 			</view>
-		</u-popup>
+		</tui-bottom-popup>
 	</view>
 </template>
 
 <script>
-// const NET = require('../../utils/request')
-// const API = require('../../config/api')
+import { getSelectByPriceIdApi, getSelectProductListByPriceIdApi, getProductDetailsByIdApi, getProductsSkuApi, addCartShoppingApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'Combination',
 	data() {
 		return {
-			page: 1,
-			pageSize: 10,
-			list: [],
-			pricing: {},
+			isEmpty: false,
 			productList: [],
+			productTotal: 0,
+			queryInfo: {
+				page: 1,
+				pageSize: 20,
+				priceId: null
+			},
 			ruleList: [],
-			autoplay: true,
-			duration: 2000,
-			vertical: true,
-			circular: true,
 			buyNum: 1,
 			goosDetailshowFlag: false, // 规格选择
-			shopId: 0,
-			skuId: 0,
-			terminal: 1,
+			selectedMsg: {
+				shopId: 0,
+				skuId: 0,
+				productId: 0
+			},
+			skuProdId: '',
 			skuPrice: '',
 			skuOriginalPrice: '',
 			attrItemIdArr: [],
@@ -114,8 +125,7 @@ export default {
 			skuProdList: [],
 			stockNumber: 0,
 			skuImg: '',
-			currentIndex: null,
-			priceId: null
+			currentIndex: null
 		}
 	},
 	onLoad(option) {
@@ -129,58 +139,52 @@ export default {
 			//   mask: true,
 			//   title: '加载中...',
 			// })
-			NET.request(API.selectByPriceId, {
+			getSelectByPriceIdApi({
 				priceId: this.priceId
-			}, 'GET').then((res) => {
+			}).then((res) => {
 				uni.hideLoading()
 				this.ruleList = res.data
 			})
-				.catch((res) => {
-				})
 		},
 		showRuleBox(item, index) {
-			this.shopId = item.shopId
+			this.selectedMsg.shopId = item.shopId
 			this.productId = item.productId
-			this.skuId = item.skuId
+			this.selectedMsg.skuId = item.skuId
 			this.currentIndex = index
 			this.goosDetailshowFlag = true
 			this.getProductSku()
 			this.queryProductDetail()
 		},
-		getSelectProductListByPriceId() {
-			NET.request(API.selectProductListByPriceId, {
-				priceId: this.priceId,
-				page: this.page,
-				pageSize: this.pageSize
-			}, 'GET').then((res) => {
+		getSelectProductListByPriceId(isLoadmore) {
+			uni.showLoading()
+			getSelectProductListByPriceIdApi(this.queryInfo).then((res) => {
+				this.productTotal = res.data.total
+				if (isLoadmore) {
+					this.productList.push(...res.data.list)
+				} else {
+					this.productList = res.data.list
+				}
+				this.isEmpty = this.productList.length === 0
 				uni.hideLoading()
-				// this.productList = res.data.list
-				var proList = res.data.list
-				proList.forEach((item) => {
-					item.selected = 0
-					this.productList.push(item)
-				})
 			})
-				.catch((res) => {
+				.catch((e) => {
+					uni.hideLoading()
 				})
 		},
 		// 商品详情
 		goodsDateils(shopId, productId, skuId) {
 			uni.navigateTo({
-				url: 'goodsDetails?shopId=' + shopId + '&productId=' + productId + '&skuId=' + skuId
+				url: '/another-tf/another-serve/goodsDetails/index?shopId=' + shopId + '&productId=' + productId + '&skuId=' + skuId
 			})
 		},
 		// 获取商品详情
 		queryProductDetail() {
-			NET.request(
-				API.QueryProductDetail, {
-					shopId: this.shopId,
-					productId: this.productId,
-					skuId: this.skuId,
-					terminal: 1
-				},
-				'GET'
-			).then((res) => {
+			getProductDetailsByIdApi({
+				shopId: this.selectedMsg.shopId,
+				productId: this.productId,
+				skuId: this.selectedMsg.skuId,
+				terminal: 1
+			}).then((res) => {
 				this.detailList = res.data
 				this.skuPrice = res.data.price
 				this.skuOriginalPrice = res.data.originalPrice
@@ -190,31 +194,23 @@ export default {
 				this.attrItemIdArr[0] = res.data.attrList[0].attrValueList[0].id
 				this.$forceUpdate()
 			})
-				.catch((res) => {
-				})
 		},
 		getProductSku() {
-			NET.request(API.QueryProductSku, {
-				skuId: this.skuId,
+			getProductsSkuApi(API.QueryProductSku, {
+				skuId: this.selectedMsg.skuId,
 				productId: this.productId
-			}, 'GET').then((res) => {
+			}).then((res) => {
 				this.skuProdList = res.data
-				this.attrList = res.data.names
-				this.attrValueList = res.data.names[0].values
-				console.log(this.attrValueList[0], 'arr')
 				// 渲染商详之后，默认先选中第一个规格
-				this.colorActiveClick(this.attrValueList[0], 0, 0)
-				this.skuProdId = this.skuId
+				this.colorActiveClick(res.data.names[0].values[0], 0, 0)
+				this.skuProdId = this.selectedMsg.skuId
 				// this.skuImg = res.data.image
 				this.skuPrice = res.data.price
 				this.skuOriginalPrice = res.data.originalPrice
 				this.stockNumber = res.data.stockNumber
 				this.detailList.ifHuabei = res.data.ifHuabei
-				// this.renderHuabei(this.skuPrice)
 				this.$forceUpdate()
 			})
-				.catch((res) => {
-				})
 		},
 		// 颜色选中事件
 		colorActiveClick(res, index, resIndex) {
@@ -264,7 +260,7 @@ export default {
 		},
 		checkItem() {
 			var self = this
-			var option = self.attrList
+			var option = self.skuProdList.names
 			var result = [] // 定义数组存储被选中的值
 			for (const i in option) {
 				result[i] = self.selectArr[i] ? self.selectArr[i] : ''
@@ -315,14 +311,14 @@ export default {
 					icon: 'none'
 				})
 			} else {
-				// uni.showLoading({
-				//   mask: true,
-				//   title: '添加中...',
-				// })
-				NET.request(API.ShoppingaddCart, {
+				uni.showLoading({
+					mask: true,
+					title: '添加中...'
+				})
+				addCartShoppingApi({
 					skuId: this.skuProdId,
 					number: this.buyNum
-				}, 'POST').then((res) => {
+				}).then((res) => {
 					uni.hideLoading()
 					uni.showToast({
 						title: '添加成功',
@@ -338,9 +334,7 @@ export default {
 							cancelText: '继续添加',
 							success: (res) => {
 								if (res.confirm) {
-									uni.switchTab({
-										url: '../../pages/tabbar/cart/index'
-									})
+									this.go('/another-tf/another-serve/shopCar/shopCar')
 								} else if (res.cancel) {
 								}
 							}
@@ -348,26 +342,27 @@ export default {
 					}, 1000)
 					this.buyNum = 1
 				})
-					.catch((res) => {
+					.catch((e) => {
 						uni.hideLoading()
-						if (res.data.code == 40005) {
-							uni.navigateTo({
-								url: '../../pages_category_page2/userModule/login'
-							})
-						}
 					})
 			}
+		}
+	},
+	onReachBottom() {
+		if (this.productList.length < this.productTotal) {
+			++this.queryInfo.page
+			this.getSelectProductListByPriceId(true)
 		}
 	}
 }
 </script>
 
-<style lang="scss" scoped>
-page {
-	background: #333333;
-}
-
+<style lang="less" scoped>
 .combinationBox {
+	background: #333333;
+	min-height: 100vh;
+	box-sizing: border-box;
+
 	.topInfo {
 		margin: 40rpx 0;
 
@@ -377,16 +372,12 @@ page {
 			height: 86rpx;
 			line-height: 86rpx;
 			text-align: center;
-			// background: url("../../static/images/origin/combinationBg.png") no-repeat center center;
-			background-size: contain;
+			background-color: #d5bd90;
 			overflow: hidden;
 		}
 	}
 
 	.combinationList {
-		display: flex;
-		flex-flow: wrap;
-		justify-content: space-between;
 		padding: 0 20rpx;
 
 		.combinationItem {
@@ -443,11 +434,6 @@ page {
 						display: flex;
 						align-items: center;
 						justify-content: center;
-
-						image {
-							width: 54rpx;
-							height: 54rpx;
-						}
 					}
 				}
 			}
@@ -457,13 +443,13 @@ page {
 
 .goosDetailshow-box {
 	padding-bottom: 10upx;
+	box-sizing: border-box;
 
 	.detailImg-box {
 		margin-top: 30upx;
 		margin-left: 30upx;
 		border-bottom: 2upx solid #EDEDED;
 		padding-bottom: 20upx;
-		width: 100%;
 
 		.detailImg {
 			width: 180upx;
@@ -474,7 +460,6 @@ page {
 	.color-box {
 		padding: 30upx 30upx;
 		border-bottom: 1upx solid #EDEDED;
-		width: 100%;
 
 		.colorName-box {
 			display: flex;
@@ -506,47 +491,10 @@ page {
 				border: none;
 			}
 		}
-
-	}
-
-	.modelNum-box {
-		padding: 30upx 30upx;
-		border-bottom: 1upx solid #EDEDED;
-		width: 690upx;
-
-		.modelNumName-box {
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: center;
-			margin-top: 30upx;
-			margin-left: -30upx;
-
-			.modelNumName-on {
-				background-color: #FFE4D0;
-				color: #FF7800;
-				margin-left: 30upx;
-				padding: 10upx 32upx;
-				border-radius: 28upx;
-				border: 1upx solid #FF7800;
-				font-size: 26upx;
-				text-align: center;
-			}
-
-			.modelNumName {
-				background-color: #F5F5F5;
-				margin-left: 30upx;
-				padding: 10upx 32upx;
-				border-radius: 28upx;
-				font-size: 26upx;
-			}
-		}
 	}
 
 	.goodsNum-box {
 		padding: 30upx 30upx;
-		width: 100%;
 		padding-bottom: 200upx;
 
 		.goodsNum {
@@ -571,57 +519,8 @@ page {
 		}
 	}
 
-	.bottom-line {
-		border-bottom: 1upx solid #EDEDED;
-	}
-
-	.huabei-box {
-		padding: 30upx 30upx;
-		width: 690upx;
-
-		.fenqi-box {
-			margin-top: 15upx;
-			width: 120%;
-
-			.huabei-item {
-				display: inline-block;
-				background: #f3f3f3;
-				padding: 16upx 24upx;
-				margin: 5upx 10upx;
-				border-radius: 15upx;
-				text-align: center;
-				font-size: 7upx;
-
-				.huabei-period {
-					display: block;
-				}
-			}
-
-			.fenqi-on {
-				border: 1px solid #EF7F93;
-				color: #EF7F93;
-			}
-
-			.disabled {
-				color: #cacaca;
-			}
-		}
-	}
-
 	.goosDetailbut-box {
 		justify-content: center;
-
-		.joinShopCartBut {
-			width: 343upx;
-			height: 80upx;
-			border-radius: 40upx 0 0 40upx;
-			background-color: #FFC300;
-			color: #FFFEFE;
-			font-size: 28upx;
-			line-height: 80upx;
-			text-align: center;
-			margin-left: 30upx;
-		}
 
 		.buyNowBut {
 			width: 343upx;

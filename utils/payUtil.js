@@ -360,7 +360,7 @@ async function h5TonglianPay(payInfo) {
   try {
     const res = await gotoOrderH5PayApi(payInfo);
     console.log(res);
-    if (res.data === '支付成功') {
+    if (!res.data.package) {
       // 零元支付情况
       uni.redirectTo({ url: '/user/otherServe/payment-completed/index' });
     } else {

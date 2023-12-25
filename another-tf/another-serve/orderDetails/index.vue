@@ -648,7 +648,7 @@ export default {
 			if (this.orderRefundList.length === 0) return this.$showToast('您所有商品已经申请退款，请勿重复申请')
 			uni.setStorageSync(T_AFTER_SALE_APPLY_REFUND, this.orderRefundList)
 			uni.navigateTo({
-				url: `/another-tf/another-serve/afterSaleApplyRefund/index?orderId=${this.orderId}&sellPriceitem=${this.dataList.price}&isAllSelect=${isAllSelect}`
+				url: `/another-tf/another-serve/afterSaleApplyRefund/index?orderId=${this.orderId}&isAllSelect=${isAllSelect}`
 			})
 		},
 		confirmReceiptTap() {

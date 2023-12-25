@@ -116,7 +116,6 @@ export default {
 			page: 1,
 			pageSize: 10,
 			isEmpty: false,
-			loadingType: 0,
 			currentCoupon: {
 				startTime: '',
 				endTime: '',

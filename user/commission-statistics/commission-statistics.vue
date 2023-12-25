@@ -62,7 +62,7 @@
       </view>
 
       <view class="button-wrapper">
-        <view class="tip">可提现 ￥{{ commissionData.totalAmount || 0 }}</view>
+        <!-- <view class="tip">可提现 ￥{{ commissionData.totalAmount || 0 }}</view> -->
         <button @click="handleWithdrawal(commissionData.totalAmount)"
           :class="{ disabled: !commissionData.totalAmount || commissionData.totalAmount == 0 }" class="uni-btn">
           佣金提现

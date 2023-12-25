@@ -113,7 +113,7 @@ export default {
 			isShowBottomBtn: false,
 			displayBadgesMsg: {
 				name: '',
-				topUrl: require('../../../static/images/user/displayBadges/tuantop.png'),
+				topUrl: require('../../../static/images/user/displayBadges/glory-frame.png'),
 				isShowBadges: false
 			}
 		}

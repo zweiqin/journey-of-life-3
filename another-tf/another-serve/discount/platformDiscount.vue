@@ -116,12 +116,6 @@ export default {
 				this.dateformat(new Date(this.discountInfo.endTime).getTime() - new Date().getTime())
 				this.countDown()
 			})
-				.catch((res) => {
-					uni.showToast({
-						title: '失败',
-						icon: 'none'
-					})
-				})
 		},
 		getPercent(num, total) {
 			num = parseFloat(num)

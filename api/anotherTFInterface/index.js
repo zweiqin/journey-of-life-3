@@ -104,6 +104,10 @@ export const updateSaveDistributorWithdrawApi = (data) => AnotherTFRequest('/dis
  * @description 社区商圈相关接口
  */
 
+// 画布模块
+// 选择商品查询
+export const getProducts2CanvasApi = (data) => AnotherTFRequest('/canvas/getProducts2', data)
+
 // 关系链接口
 // 各个等级申请
 export const addPlatformRelationshipApplyApi = (data) => AnotherTFRequest('/platformRelationshipApply/apply', data, 'POST');
@@ -267,6 +271,15 @@ export const getExpressSelectShippingCompanyApi = (data) => AnotherTFRequest('/o
 
 // 填写退货物流单
 export const updateSendGoodsReturnExpressApi = (data) => AnotherTFRequest('/order/returnExpress', data, 'POST');
+
+// 获取退款金额
+export const getReturnPriceRefundMoneyApi = (data) => AnotherTFRequest('/after/getReturnPrice', data, 'POST')
+
+// 选择退款原因查询
+export const getReasonSelectEnumsApi = (data) => AnotherTFRequest('/after/getReasonSelect', data)
+
+// 申请售后
+export const updateApplyReturnMoneySubmitApi = (data) => AnotherTFRequest('/after/submit', data, 'POST')
 
 // 优惠券
 // 优惠券查询
@@ -485,11 +498,23 @@ export const getPlatformSeckillsQuerySessionApi = (data) => AnotherTFRequest('/p
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST');
 
+// 查看我的评论列表
+export const getAllMyCommentListApi = (data) => AnotherTFRequest('/comment/getAll', data)
+
+// 追评接口
+export const addToCommentOrderAdditionalApi = (data) => AnotherTFRequest('/order/addToComment', data, 'POST')
+
 // 评价
 export const addCommentOrderApi = (data) => AnotherTFRequest('/order/addComment', data, 'POST');
 
 // 查询组合套餐
 export const getProductSelectComposeApi = (data) => AnotherTFRequest('/product/selectCompose', data);
+
+// 捆绑商品查询
+export const getSelectProductListByPriceIdApi = (data) => AnotherTFRequest('/product/selectProductListByPriceId', data)
+
+// 定价捆绑规则查询
+export const getSelectByPriceIdApi = (data) => AnotherTFRequest('/price/selectByPriceId', data)
 
 // 提交订单
 export const addUserTrackReportDoPointerApi = (data) => AnotherTFRequest('/user/trackReport', data, 'POST');

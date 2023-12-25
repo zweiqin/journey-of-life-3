@@ -2,11 +2,14 @@
 	<view class="container">
 		<JHeader title="提现" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="addressBack-box">
+			<view style="font-size: 28upx;text-align: right;">
+				可提现金额：{{ price || 0 }}元
+			</view>
 			<view class="consignee-box bor-line-F7F7F7">
 				<input
 					v-model="balance" type="number" maxlength="9" class="fs28"
 					placeholder-class="consignee"
-					placeholder="提现金额(元)" @input="applycheck"
+					placeholder="请输入提现金额(元)" @input="applycheck"
 				/>
 			</view>
 			<view class="bankTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="bankTagClick">
@@ -78,9 +81,9 @@ export default {
 			bankTagShowFlag: false,
 			choosedValueList: [ 0 ],
 			bankcardList: [],
-			withdrawHistoryList: [],
 			bankcardselectList: [ { value: '', label: '' } ],
-			price: 0
+			price: 0,
+			withdrawHistoryList: []
 		}
 	},
 	onLoad(options) {

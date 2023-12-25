@@ -8,7 +8,7 @@
 				icon-right="50rpx" @close="close"
 			>
 				<view @click="type = '' || $emit('click')">
-					<image :src="imgUrl" mode="widthFix" style="width: 500upx; max-height: 75vh" />
+					<image :src="imgUrl" mode="widthFix" style="width: 500upx; max-height: 75vh;" />
 					<!-- <view style="position: absolute;top: 52%;left:52%;font-size: 38rpx;font-weight: 700;">羊驼坐凳</view> -->
 				</view>
 

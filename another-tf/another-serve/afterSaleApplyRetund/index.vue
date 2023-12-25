@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
-		<JHeader title="申请退款" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="申请退货" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="content" style="padding-bottom:200upx;">
-			<view v-for="(item, index) in orderList" :key="index" class="order-list-box">
+			<view v-for="(item, index) in retundlist" :key="index" class="order-list-box">
 				<view class="item">
 					<view class="order-info-box">
 						<view class="order-info">
@@ -10,7 +10,7 @@
 								<image :src="common.seamingImgUrl(item.image)" class="product-img"></image>
 								<view class="info-box">
 									<text class="product-name">{{ item.productName }}</text>
-									<view class="product-sku">{{ item.sku }} {{ item.value }}</view>
+									<view class="product-sku">{{ item.value }}</view>
 									<view class="price-sku-box">
 										<text class="product-price">
 											<text class="fuhao">￥</text>
@@ -24,18 +24,8 @@
 					</view>
 				</view>
 			</view>
+
 			<view class="afterSale-select-box">
-				<view class="item" @click="refundType">
-					<view class="l">退款类型</view>
-					<view v-if="afterType == 1" class="r-box">
-						<text>仅退款</text>
-						<tui-icon name="arrowright" :size="48" unit="upx" color="#999999" margin="0 0 0 10upx"></tui-icon>
-					</view>
-					<view v-if="afterType == 2" class="r-box">
-						<text>退货退款</text>
-						<tui-icon name="arrowright" :size="48" unit="upx" color="#999999" margin="0 0 0 10upx"></tui-icon>
-					</view>
-				</view>
 				<view class="item" @click="openStatusSelect">
 					<view class="l">货物状态</view>
 					<view v-if="ReturnMoneyQuery.goodsState == 0" class="r-box">
@@ -94,7 +84,7 @@
 
 		<view
 			class="order-confirm-box" style="padding-top:30upx;"
-			:style="{ 'padding-bottom': (isIphone == true ? 60 : 0) + 'rpx' }"
+			:style="{ 'padding-bottom': (isIphone == true ? 90 : 0) + 'rpx' }"
 		>
 			<text class="btn" @click="confirmTap">
 				提交
@@ -102,36 +92,6 @@
 		</view>
 
 		<!-- 货物状态弹框 -->
-		<tui-bottom-popup :show="refundTypeShow" @close="refundTypeShow = false">
-			<view class="alert-box">
-				<view class="afterSale-status-box">
-					<view class="status-title">退款类型</view>
-					<view class="item-box">
-						<view class="item" @click="afterType = 1">
-							<text class="status-select-title">仅退款</text>
-							<tui-icon
-								v-if="afterType == 1" name="circle-fill" :size="40" unit="upx"
-								color="#c5aa7b"
-								margin="30upx"
-							></tui-icon>
-							<tui-icon v-else name="circle" :size="40" unit="upx" color="#cccccc" margin="30upx"></tui-icon>
-						</view>
-						<view class="item" @click="afterType = 2">
-							<text class="status-select-title">退货退款</text>
-							<tui-icon
-								v-if="afterType == 2" name="circle-fill" :size="40" unit="upx"
-								color="#c5aa7b"
-								margin="30upx"
-							></tui-icon>
-							<tui-icon v-else name="circle" :size="40" unit="upx" color="#cccccc" margin="30upx"></tui-icon>
-						</view>
-					</view>
-					<view class="status-btn" @click="closeAfterSelect">
-						确定
-					</view>
-				</view>
-			</view>
-		</tui-bottom-popup>
 		<tui-bottom-popup :show="cargoStatusShowFalg" @close="closeStatusSelect">
 			<view class="alert-box">
 				<view class="afterSale-status-box">
@@ -165,7 +125,7 @@
 		<!-- 退款原因弹框 -->
 		<tui-bottom-popup :show="reasonShowFalg" @close="reasonShowFalg = false">
 			<view class="alert-box">
-				<view class="afterSale-status-box" scroll-y style="height:60%;">
+				<view class="afterSale-status-box" scroll-y>
 					<view class="status-title">退款原因</view>
 					<view class="item-box">
 						<view v-for="(item, index) in liyouData" :key="index" class="item" @click="returnReasonTap(item, index)">
@@ -188,57 +148,45 @@
 
 <script>
 import { getReturnPriceRefundMoneyApi, getReasonSelectEnumsApi, updateApplyReturnMoneySubmitApi } from '../../../api/anotherTFInterface'
-import { T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
-
 export default {
-	name: 'AfterSaleApplyRefund',
+	name: 'AfterSaleApplyRetund',
 	data() {
 		return {
 			cargoStatusShowFalg: false,
-			refundTypeShow: false,
 			reasonShowFalg: false,
-			orderList: [],
 			ReturnMoneyQuery: {
-				goodsState: 0,
+				goodsState: 1,
 				orderCode: '',
 				orderProductIds: '',
 				refundFee: 0,
 				returnDesc: '',
 				returnImgs: '',
-				returnReason: 0
+				returnReason: 0,
+				returnType: 0
 			},
 			fileList: [],
 			sellPriceitem: 0, // 退款价格
+
 			liyouData: [],
 			liyoutext: '',
+			retundlist: [],
 			orderId: 0,
 			isIphone: false,
-			commentImgs: '',
-			afterType: 1,
-			isAllSelect: 0
+			isAllSelect: 0,
+			commentImgs: ''
 		}
 	},
 	onReady() {
 		this.isIphone = getApp().globalData.isIphone
 	},
-	async onLoad(options) {
-		if (uni.getStorageSync(T_REFUND_APPLY_ITEM)) {
-			this.orderList.push(uni.getStorageSync(T_REFUND_APPLY_ITEM))
-		} else if (uni.getStorageSync(T_AFTER_SALE_APPLY_REFUND)) {
-			this.orderList = uni.getStorageSync(T_AFTER_SALE_APPLY_REFUND)
-		}
-		this.orderId = parseInt(options.orderId)
-		this.isAllSelect = options.isAllSelect
-		this.orderList.forEach((el) => {
-			if (this.isAllSelect > 0) {
-				this.sellPriceitem = this.sellPriceitem + (el.number * el.price) + el.logisticsPrice
-			} else {
-				this.sellPriceitem = this.sellPriceitem + (el.number * el.price)
-			}
+	async onLoad(option) {
+		if (option.list) this.retundlist = JSON.parse(decodeURIComponent(option.list))
+		this.orderId = option.orderId
+		this.isAllSelect = option.isAllSelect
+		this.retundlist.forEach((el) => {
+			this.sellPriceitem = this.sellPriceitem + el.number * el.price
 		})
 		this.getReasonEnums()
-		uni.removeStorageSync(T_REFUND_APPLY_ITEM)
-		uni.removeStorageSync(T_AFTER_SALE_APPLY_REFUND)
 		this.sellPriceitem = await this.HandleGetRefundMoney()
 	},
 	methods: {
@@ -253,14 +201,17 @@ export default {
 		// 算钱
 		HandleGetRefundMoney() {
 			return new Promise((resolve, reject) => {
-				uni.showLoading()
-				getReturnPriceRefundMoneyApi({
+				// uni.showLoading({
+				//   title: "计算中..."
+				// })
+				const postData = {
 					orderId: this.orderId,
 					isAllSelect: this.isAllSelect == 1 ? 1 : 0,
-					skus: this.orderList,
+					skus: this.retundlist,
 					afterType: 2,
 					goodsState: this.ReturnMoneyQuery.goodsState
-				}).then((res) => {
+				}
+				getReturnPriceRefundMoneyApi(postData).then((res) => {
 					uni.hideLoading()
 					resolve(parseFloat(res.json))
 				})
@@ -269,7 +220,6 @@ export default {
 					})
 			})
 		},
-
 		confirmTap() {
 			if (this.fileList.length > 0) {
 				for (let i = 0; i < this.fileList.length; i++) {
@@ -291,9 +241,9 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-			} else if (this.liyoutext == '') {
+			} else if (this.liyoutext === '') {
 				uni.showToast({
-					title: '请选择退款原因！',
+					title: '请选择退货原因！',
 					duration: 2000,
 					icon: 'none'
 				})
@@ -303,7 +253,7 @@ export default {
 					title: '正在提交...'
 				})
 				const skusobjdata = []
-				this.orderList.forEach((i) => {
+				this.retundlist.forEach((i) => {
 					const skusobj = {}
 					skusobj.skuId = i.skuId
 					skusobj.number = i.number
@@ -311,7 +261,7 @@ export default {
 				})
 				updateApplyReturnMoneySubmitApi({
 					orderId: this.orderId,
-					afterType: this.afterType,
+					afterType: 2,
 					goodsState: this.ReturnMoneyQuery.goodsState,
 					price: this.sellPriceitem,
 					returnReason: this.liyoutext,
@@ -345,12 +295,8 @@ export default {
 			this.ReturnMoneyQuery.returnReason = index
 			this.liyoutext = item
 		},
-
 		openStatusSelect() {
 			this.cargoStatusShowFalg = true
-		},
-		refundType() {
-			this.refundTypeShow = true
 		},
 		openReasonSelect() {
 			this.reasonShowFalg = true
@@ -359,12 +305,10 @@ export default {
 			this.cargoStatusShowFalg = false
 			this.sellPriceitem = await this.HandleGetRefundMoney()
 		},
-		closeAfterSelect() {
-			this.refundTypeShow = false
-		},
 		closeReasonSelect() {
 			this.reasonShowFalg = false
 		}
+
 	}
 }
 </script>
@@ -493,12 +437,6 @@ export default {
 	align-items: center;
 }
 
-.afterSale-select-box .item .afterSale-img {
-	width: 26upx;
-	height: 26upx;
-	margin-right: 20upx;
-}
-
 .afterSale-select-box .item .r-box {
 	display: flex;
 	flex-direction: row;
@@ -509,12 +447,6 @@ export default {
 .afterSale-select-box .item .r-box2 {
 	width: 100%;
 	flex: 1;
-}
-
-.afterSale-select-box .item .r {
-	width: 24upx;
-	height: 24upx;
-	margin-left: 10upx;
 }
 
 .mt20 {
@@ -561,7 +493,7 @@ export default {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 180upx;
+	height: 160upx;
 	background: #fff;
 	padding: 0 30upx;
 	box-sizing: border-box;
@@ -577,7 +509,7 @@ export default {
 	line-height: 100upx;
 	background: #333333;
 	font-size: 28upx;
-	color: #fff;
+	color: #FFEBC4;
 	text-align: center;
 }
 
@@ -602,8 +534,6 @@ export default {
 	color: #333;
 	text-align: center;
 	line-height: 140upx;
-	position: fixed;
-	left: 0;
 }
 
 .afterSale-status-box .item {
@@ -619,7 +549,7 @@ export default {
 }
 
 .afterSale-status-box .item-box {
-	padding: 140upx 0;
+	padding: 0 0 60upx 0;
 }
 
 .afterSale-status-box .status-select-title {
@@ -635,10 +565,7 @@ export default {
 	line-height: 100upx;
 	background: #333333;
 	font-size: 28upx;
-	color: #F5DEB2;
+	color: #FFEBC4;
 	text-align: center;
-	position: fixed;
-	bottom: 0;
-	left: 0;
 }
 </style>
