@@ -168,6 +168,7 @@ export default {
 .container {
 	min-height: 100vh;
 	background-color: #F7F7F7;
+	box-sizing: border-box;
 
 	.addEvaluate-box {
 		margin-top: 20upx;

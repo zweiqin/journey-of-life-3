@@ -102,6 +102,7 @@ export default {
 .container {
 	min-height: 100vh;
 	background-color: #FFFFFF;
+	box-sizing: border-box;
 
 	.evaluateTag-box {
 		margin-top: 10upx;

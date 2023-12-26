@@ -1585,6 +1585,18 @@
           }
         },
         {
+          "path": "another-serve/userEvaluate/index",
+          "style": {
+            "navigationBarTitleText": "我的评价"
+          }
+        },
+        {
+          "path": "another-serve/evaluateDetails/index",
+          "style": {
+            "navigationBarTitleText": "评价详情"
+          }
+        },
+        {
           "path": "another-serve/paySuccessful/index",
           "style": {
             "navigationBarTitleText": "支付成功"
@@ -1716,6 +1728,12 @@
 						"navigationBarTitleText": "申请退款"
 					}
 				},
+        {
+          "path": "another-serve/afterSaleApplyRetund/index",
+          "style": {
+            "navigationBarTitleText": "申请退货"
+          }
+        },
         {
           "path": "another-serve/shareProduct/index",
           "style": {

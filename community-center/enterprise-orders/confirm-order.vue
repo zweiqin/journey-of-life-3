@@ -615,7 +615,7 @@ export default {
               })
             }
           } else {
-            if (this.$store.state.app.isInMiniProgram) {
+            if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
               try {
                 const payAppesult = await payOrderForBeeStewadAPPApi({
                   userId: getUserId(),

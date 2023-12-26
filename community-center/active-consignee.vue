@@ -264,7 +264,7 @@ export default {
           return;
         }
         if (createOrderRes.statusCode == 20000) {
-          if (this.$store.state.app.isInMiniProgram) {
+          if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
             const payAppesult = await payOrderForBeeStewadAPPApi({
               userId: getUserId(),
               orderNo: createOrderRes.data

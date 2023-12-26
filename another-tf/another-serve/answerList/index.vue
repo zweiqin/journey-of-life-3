@@ -1,25 +1,142 @@
 <template>
-	<view>
-		<view>全部问答页</view>
+	<view class="wid bor-line-F7F7F7">
+		<JHeader title="全部问答" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<view class="qaBox">
+			<view class="qaTopInfo">
+				<view class="qaTopInfoBox">
+					<image :src="common.seamingImgUrl(productInfo.images)"></image>
+					<view class="qaInfoText">
+						<h3>{{ productInfo.productName }}</h3>
+						<span>共{{ problemsList.length }}个问题</span>
+					</view>
+				</view>
+			</view>
+			<QuestionsAndAnswersList :product-info="productInfo" :problems-list="problemsList" />
+			<view class="putQuestionsBox">
+				<view class="putQuestionsBtn" @click="goToQuestions">
+					去提问
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
-export default {
-	components: {
-	},
-	onLoad() {
-		console.log(111111)
-	},
+import { getProblemsSeckillApi } from '../../../api/anotherTFInterface'
+import QuestionsAndAnswersList from '../goodsDetails/components/QuestionsAndAnswersList'
 
-	computed: {
+export default {
+	name: 'QADetail',
+	components: { QuestionsAndAnswersList },
+	data() {
+		return {
+			isEmpty: false,
+			problemsList: [], // 商品问答数据
+			problemsTotal: 0,
+			queryInfo: {
+				page: 1,
+				pageSize: 20
+			},
+			productInfo: {}
+		}
+	},
+	onLoad(options) {
+		this.productInfo = this.$getJumpParam(options)
+		this.getProblemsList()
+	},
+	methods: {
+		// 商品问答数据
+		getProblemsList(isLoadmore) {
+			uni.showLoading()
+			getProblemsSeckillApi({ ...this.queryInfo, productId: this.productInfo.productId }).then((res) => {
+				this.problemsTotal = res.data.total
+				if (isLoadmore) {
+					this.problemsList.push(...res.data.list)
+				} else {
+					this.problemsList = res.data.list
+				}
+				this.isEmpty = this.problemsList.length === 0
+				uni.hideLoading()
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		// 提问
+		goToQuestions() {
+			const paramObj = Object.assign({}, this.productInfo, {
+				questionNumber: this.problemsList.length,
+				images: this.productInfo.images
+			})
+			this.go('/another-tf/another-serve/putQuestions/index', paramObj)
+		},
+		onReachBottom() {
+			if (this.problemsList.length < this.problemsTotal) {
+				++this.queryInfo.page
+				this.getProblemsList(true)
+			}
+		}
 	}
 }
 </script>
 
-<style lang="scss" scoped>
-.xxxxxx {
-  width: 100%;
-  min-height: 100vh;
+<style lang="less" scoped>
+.qaBox {
+	padding-bottom: 140upx;
+
+	.qaTopInfo {
+		margin-top: 20upx;
+		margin-bottom: 30upx;
+		padding: 0 40upx;
+
+		.qaTopInfoBox {
+			border-radius: 10upx;
+			display: flex;
+			align-items: center;
+			padding: 15upx 20upx;
+			margin-bottom: 55upx;
+			background: #F6F6F6;
+
+			image {
+				width: 60upx;
+				height: 60upx;
+				border-radius: 5upx;
+				margin-right: 20upx;
+			}
+
+			.qaInfoText {
+				h3 {
+					font-size: 30upx;
+					font-weight: 500;
+					color: #333333;
+				}
+
+				span {
+					font-size: 24upx;
+					color: #999999;
+				}
+			}
+		}
+	}
+
+	.putQuestionsBox {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background: #FFFFFF;
+	}
+
+	.putQuestionsBtn {
+		width: 421upx;
+		height: 67upx;
+		line-height: 67upx;
+		text-align: center;
+		background: #333333;
+		border-radius: 5upx;
+		display: block;
+		margin: 35rpx auto 35rpx auto;
+		color: #FFEBC4;
+	}
 }
 </style>

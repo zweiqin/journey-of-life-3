@@ -36,7 +36,7 @@
 								</view>
 								<view
 									v-if="skuItem.commentId !== 0 && data.state === 4 && data.skus[0].ifAdd !== 1" class="evaluate2"
-									@click.stop="go(`/another-tf/another-serve/addEvaluate/index`, { addCommentVOList: data, commentId: skuItem.commentId, type: 1 })"
+									@click.stop="handleAddEvaluate(skuItem)"
 								>
 									追加评价
 								</view>
@@ -120,6 +120,14 @@ export default {
 							uni.hideLoading()
 						}
 					}
+				}
+			})
+		},
+		handleAddEvaluate(skuItem) {
+			uni.navigateTo({
+				url: '/another-tf/another-serve/addEvaluate/index?type=1',
+				success: () => {
+					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.data, commentId: skuItem.commentId })
 				}
 			})
 		},

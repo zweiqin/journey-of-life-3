@@ -4,17 +4,29 @@
         <view class="AmountSelection">
             <view class="selectionItem" @click="active = index;$emit('getCustomValue', index)" v-for="(item, index) in amountData" :key="index">
                 <image class="selectIcon" v-show="active == index" src="@/static/images/user/xuanzhong.png"></image>
-                <!-- <p class="numbers" contenteditable 
-                   v-if="index == amountData.length-1" 
-                   @blur="$emit('getCustomValue', $event)">
-                    {{ item * 2 }}
-                </p> -->
-                <!-- <input class="numbers" type="number" v-model="amountData[index]"> -->
-                <tui-input type="number" min="0" max="20000" class="numbers" @input="$emit('getCustomValue', index)" v-if="index == amountData.length-1" v-model="amountData[index].value"></tui-input>
+
+                <!-- <tui-input type="number" min="0" max="20000" class="numbers" @input="$emit('getCustomValue', index)" v-if="index == amountData.length-1" v-model="amountData[index].value"></tui-input> -->
+                <view v-if="index == amountData.length-1" class="numbers" @click="(isShowGiveCustomDialog = true) && (customIndex = index)">{{ amountData[index].value }}</view>
                 <p v-else class="numbers">{{ item.value  }}</p>
+
                 <p class="title">{{index != amountData.length-1?title2[Number(isGift)] + item.price:'自定义金额'}}</p>
             </view>
         </view>
+
+
+				<tui-dialog
+					style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+					:show="isShowGiveCustomDialog" title="自定义转赠数量" @click="handleClickGiveCustomDialog"
+				>
+					<template #content>
+						<tui-input v-model="amountData[customIndex].value" label="转赠数量" type="number" placeholder="请输入转赠数量" @input="$emit('getCustomValue', customIndex)">
+							<template #right>
+								<text>代金券</text>
+							</template>
+						</tui-input>
+					</template>
+				</tui-dialog>
+		
     </view>
 </template>
 
@@ -35,11 +47,18 @@ export default {
         return {
             active: 0,
             title: ['充值','转赠'],
-            title2: ['售价', '价值']
+            title2: ['售价', '价值'],
+            isShowGiveCustomDialog: false,
+            customIndex: '',
         }
     },
     methods: {
-        
+			handleClickGiveCustomDialog(e) {
+				if (e.index === 0) {
+				} else if (e.index === 1) {
+				}
+				this.isShowGiveCustomDialog = false
+			},
     }
 }
 </script>
