@@ -2,7 +2,7 @@
 	<view class="user-upgrade-application-container">
 		<FieldPaneUUA
 			ref="refFieldPaneUUA" v-model="form.basicInfo" :fields="applyUserUpgradeOne" title="申请表单"
-			:user-info="userInfo" @Unlock="handleUnlock"
+			:user-info="userInfo" @unlock="handleUnlock"
 		></FieldPaneUUA>
 		<view
 			v-if="isShowBottomBtn"
@@ -22,33 +22,29 @@
 				确认升级
 			</tui-button>
 		</view>
-		<view
-			style="z-index: 99999;position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0, 0, 0, 0.7);transition: all 0.3s ease-in-out;opacity: 0;visibility: hidden;"
-			:style="{ opacity: displayBadgesMsg.isShowBadges ? 1 : 0, visibility: displayBadgesMsg.isShowBadges ? 'visible' : 'hidden' }"
-			@click.prevent="$switchTab('/pages/user/user')"
+
+		<tui-landscape
+			:show="displayBadgesMsg.isShowBadges" :position="1" mask mask-closable
+			:icon-size="28"
+			icon-color="#FFFFFF" @close="handleCloseBadges"
 		>
-			<view>
-				<image style="position: fixed;top: 40%;left: 50%;transform: translate(-50%, -50%);width: 576rpx;height: 576rpx;" :src="displayBadgesMsg.topUrl" mode="" />
-				<view style="margin-top: 5rpx;position: fixed;top: 42%;left: 50%;transform: translate(-50%, -50%);float: left;width: 50%;">
-					<view style="border-radius: 15rpx;width: 196rpx;height: 220rpx;overflow: hidden;margin: 0 auto;transform: rotate(120deg);">
-						<view style="border-radius: 15rpx;width: 196rpx;height: 220rpx;overflow: hidden;margin: 0 auto;transform: rotate(-60deg);">
-							<view style="border-radius: 15rpx;width: 196rpx;height: 220rpx;overflow: hidden;margin: 0 auto;transform: rotate(-60deg);">
-								<image
-									style="width: 196rpx;height: 210rpx;"
-									:src="common.seamingImgUrl(userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
-								>
-								</image>
-							</view>
-						</view>
+			<view style="position: relative;">
+				<view v-if="displayBadgesMsg.name" class="rotation-box"></view>
+				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
+					<image
+						style="position: absolute;top: 180upx;left: 50%;transform: translateX(-50%);width: 174upx;height: 174upx;border-radius: 40upx;"
+						:src="common.seamingImgUrl($store.getters.userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
+					>
+					</image>
+					<image src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix" style="width: 500upx;" />
+					<view
+						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
+					>
+						<text>恭喜你成为{{ displayBadgesMsg.name }}</text>
 					</view>
 				</view>
 			</view>
-			<view
-				style="position: fixed;top: 58%;left: 50%;transform: translateX(-50%);width: 304rpx;height: 74rpx;line-height: 74rpx;color: #fff;font-weight: bold;text-align: center;background-color: #ef4714;border-radius: 50rpx;"
-			>
-				恭喜你成为{{ displayBadgesMsg.name }}
-			</view>
-		</view>
+		</tui-landscape>
 	</view>
 </template>
 
@@ -113,7 +109,6 @@ export default {
 			isShowBottomBtn: false,
 			displayBadgesMsg: {
 				name: '',
-				topUrl: require('../../../static/images/user/displayBadges/glory-frame.png'),
 				isShowBadges: false
 			}
 		}
@@ -166,6 +161,23 @@ export default {
 				}
 			})
 		},
+		handleCloseBadges() {
+			this.displayBadgesMsg.isShowBadges = false
+			this.displayBadgesMsg.name = ''
+			this.form.basicInfo.relationshipLevelId = ''
+			this.form.basicInfo.region = ''
+			this.form.basicInfo.address = ''
+			this.form.basicInfo.name = ''
+			this.isShowBottomBtn = false
+			this.$refs.refFieldPaneUUA.relationshipLevelName = ''
+			this.$refs.refFieldPaneUUA.relationLevelName = ''
+			this.$refs.refFieldPaneUUA.upgradeLevelType = ''
+			this.$refs.refFieldPaneUUA.isShowLock = true
+			this.$refs.refFieldPaneUUA.relationshipLevelList = []
+			this.$refs.refFieldPaneUUA.isShowRelationshipLevelSelect = false
+			this.$refs.refFieldPaneUUA.regionName = ''
+			this.$refs.refFieldPaneUUA.handleInitUpgradeInfo()
+		},
 		handleBack() {
 			uni.navigateBack()
 		},
@@ -177,6 +189,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.rotation-box {
+	position: absolute;
+	top: -45vh;
+	left: 50%;
+	margin-left: -60vh;
+	display: block;
+	width: 120vh;
+	height: 120vh;
+	opacity: 0.4;
+	background: repeating-conic-gradient(from 0deg, white 0deg 19deg, transparent 15deg 53deg);
+	mask-image: radial-gradient(rgb(0, 0, 0), rgb(0, 0, 0) 50%);
+	animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+	to {
+		transform: rotate(1turn)
+	}
+}
+
 .user-upgrade-application-container {
 	width: 100%;
 	min-height: 100vh;

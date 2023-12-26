@@ -1,5 +1,5 @@
 <template>
-	<view v-if="goodsData" class="voucher-goods-container" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goodsData.shopId}6&productId=${goodsData.productId}&skuId=${goodsData.skuId}`)">
+	<view v-if="goodsData" class="voucher-goods-container" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goodsData.shopId}&productId=${goodsData.productId}&skuId=${goodsData.skuId}`)">
 		<view class="goods-wrapper">
 			<image class="goods-img" :src="common.seamingImgUrl(goodsData.image)"></image>
 		</view>

@@ -112,6 +112,22 @@
 								</view>
 							</view>
 						</view>
+						<view v-else-if="item.field === 'address'" class="item">
+							<view
+								class="input-wrapper" style="position: relative;flex-direction: column;align-items: flex-start;"
+							>
+								<view class="sub-title">{{ item.label }}</view>
+								<textarea
+									v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
+									:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+								></textarea>
+								<tui-icon
+									name="position" :size="35" unit="upx" color="#999999"
+									style="position: absolute;right: 20upx;bottom: 20upx;"
+									@click="handleClickPosition"
+								></tui-icon>
+							</view>
+						</view>
 						<view v-else class="item">
 							<template>
 								<view
@@ -204,40 +220,46 @@ export default {
 		}
 	},
 	created() {
-		uni.showLoading()
-		getSelectLevelPlatformRelationApi({})
-			.then((res) => {
-				this.upgradeLevelType = res.data ? res.data.levelType : ''
-				if (res.data && res.data.levelType === 1) {
-					this.relationshipLevelName = '团长'
-				} else if (res.data && res.data.levelType === 2) {
-					this.relationLevelName = '团长'
-					this.relationshipLevelName = '团长'
-				} else if (res.data && res.data.levelType === 3) {
-					this.relationshipLevelName = '合伙人'
-				} else if (res.data && res.data.levelType === 4) {
-					this.relationLevelName = '合伙人'
-					this.relationshipLevelName = '合伙人'
-				} else if (res.data && res.data.levelType === 5) { // 已经是合伙人
-					this.relationLevelName = ''
-				} else if (res.data && res.data.levelType === 0) {
-					this.relationLevelName = ''
-				}
-				// this.upgradeLevelType = 0
-				// this.relationLevelName = ''
-				// this.relationshipLevelName = ''
-				uni.hideLoading()
-			})
-			.catch((e) => {
-				this.relationLevelName = null
-				uni.hideLoading()
-			})
+		this.handleInitUpgradeInfo()
 	},
 
 	methods: {
+		handleInitUpgradeInfo() {
+			uni.showLoading()
+			getSelectLevelPlatformRelationApi({})
+				.then((res) => {
+					this.upgradeLevelType = res.data ? res.data.levelType : ''
+					if (res.data && res.data.levelType === 1) {
+						this.relationshipLevelName = '团长'
+					} else if (res.data && res.data.levelType === 2) {
+						this.relationLevelName = '团长'
+						this.relationshipLevelName = '团长'
+					} else if (res.data && res.data.levelType === 3) {
+						this.relationshipLevelName = '合伙人'
+					} else if (res.data && res.data.levelType === 4) {
+						this.relationLevelName = '合伙人'
+						this.relationshipLevelName = '合伙人'
+					} else if (res.data && res.data.levelType === 5) { // 已经是合伙人
+						this.relationLevelName = ''
+					} else if (res.data && res.data.levelType === 0) {
+						this.relationLevelName = ''
+					}
+					// this.upgradeLevelType = 0
+					// this.relationLevelName = ''
+					// this.relationshipLevelName = ''
+					this.upgradeLevelType = 4
+					this.relationLevelName = '合伙人'
+					this.relationshipLevelName = '合伙人'
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.relationLevelName = null
+					uni.hideLoading()
+				})
+		},
 		handleClickUnlock() {
 			if (this.relationLevelName) {
-				this.$emit('Unlock')
+				this.$emit('unlock')
 				this.isShowLock = false
 				if (this.upgradeLevelType === 2) {
 					// if (this.$store.state.location.locationInfo.towncode) {
@@ -312,6 +334,10 @@ export default {
 			if (field === 'address' || field === 'phone' || field === 'name') {
 				this.form[field] = e.detail.value
 			}
+		},
+		handleClickPosition() {
+			if (!this.$store.state.location.detailAddress) return this.$showToast('定位失败')
+			this.form.address = this.$store.state.location.detailAddress
 		}
 	}
 }

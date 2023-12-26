@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { getRechargeSubmit, rechargeSubmit, getRechargeTotal, getByShopAll, getByRecharge } from '@/api/anotherTFInterface/merchantUp'
+import { getRechargeSubmit, rechargeSubmit, getRechargeTotalCustomersApi, getByShopAll, getByRecharge } from '@/api/anotherTFInterface/merchantUp'
 import { getIndexShopDetailApi } from '@/api/anotherTFInterface'
 import { handleDoPay } from '@/utils/payUtil'
 
@@ -127,7 +127,7 @@ export default {
       // console.log(res);
     })
 
-    getRechargeTotal({  // 空数据，先不作处理
+    getRechargeTotalCustomersApi({  // 空数据，先不作处理
       shopId: this.shopId
     }).then(res => {
       console.log(res);

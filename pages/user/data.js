@@ -182,6 +182,16 @@ export const myFunction = [
 	// 	url: '/user/sever/regional-agent/regional-agent'
 	// },
 	// {
+	// 	name: '加盟商',
+	// 	icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png'),
+	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=4',
+	// },
+	// {
+	// 	name: '区代理',
+	// 	icon: require('../../static/images/new-user/menu-icon/qudaili.png'),
+	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=5'
+	// },
+	// {
 	// 	name: '申请开店', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 	// 	url: '/user/sever/applyStore/index',
@@ -203,7 +213,8 @@ export const myServe = [
 	{
 		name: '地址管理',
 		icon: require('../../static/images/new-user/menu-icon/dizhiguanli.png'),
-		url: '/user/site/site-manage'
+		// url: '/user/site/site-manage',
+		url: '/another-tf/another-serve/address/index'
 	},
 	{
 		name: '银行卡',

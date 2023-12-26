@@ -13,7 +13,7 @@
         <view class="goods-list-wrapper">
 
           <view class="goods-item" v-for="item in topGoods" :key="item.id"
-            @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)">
+            @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)">
             <image class="goods-img" :src="item.image"></image>
             <view class="salsed-price">￥{{ item.price }}</view>
             <view class="salsed-count">已售100+</view>
@@ -24,7 +24,7 @@
       <scroll-view scroll-x style="margin-top: 40upx;" v-if="bottomGoods.length">
         <view class="goods-list-wrapper">
           <view class="goods-item" v-for="item in bottomGoods" :key="item.id"
-            @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)">
+            @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)">
             <image class="goods-img" :src="item.image"></image>
             <view class="salsed-price">￥{{ item.price }}</view>
             <view class="salsed-count">已售100+</view>

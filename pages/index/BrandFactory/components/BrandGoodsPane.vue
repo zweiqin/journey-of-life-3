@@ -1,6 +1,6 @@
 <template>
   <view class="brand-goods-pane" v-if="goods"
-    @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goods.shopId}6&productId=${goods.productId}&skuId=${goods.skuId}`)">
+    @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goods.shopId}&productId=${goods.productId}&skuId=${goods.skuId}`)">
     <image class="brand-goods-img" :src="goods.image">
     </image>
 

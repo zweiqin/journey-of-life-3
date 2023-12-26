@@ -2,13 +2,15 @@
 <template>
 	<view class="address-container">
 		<JHeader width="50" height="50" title="地址管理" style="padding: 24upx 0 0;"></JHeader>
-		<view v-if="addresListlist.length" class="pad-bot-140 addAddress">
-			<view v-for="(item, index) in addresListlist" :key="index" class="addAddress-content flex-row-plus">
-				<!--				<view class="address-hesd">{{item.username1}}</view> -->
+		<view v-if="addressList && addressList.length" class="pad-bot-20 addAddress">
+			<view v-for="(item, index) in addressList" :key="index" class="addAddress-content flex-row-plus">
 				<view class="address-detail" @click="itemTap(item)">
 					<view class="userName">
 						<text>{{ item.receiveName }}</text>
-						<text class="font-color-999 mar-left-30">{{ item.receivePhone }}</text>
+						<text class="font-color-999 mar-left-30">
+							{{ item.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+							}}
+						</text>
 					</view>
 					<view class="defaultAD-box">
 						<text v-if="item.ifDefault" class="def">默认</text>
@@ -16,12 +18,16 @@
 						<text class="user-address font-color-999">{{ item.receiveAdress }}{{ item.address }}</text>
 					</view>
 				</view>
-				<tui-icon name="edit" :size="50" unit="upx" color="#cccccc" @click="editAdress(index, item)"></tui-icon>
+				<tui-icon name="edit" :size="50" unit="upx" color="#cccccc" @click="editAdress(item)"></tui-icon>
 			</view>
 		</view>
-		<view v-else class="emptyAddress-box">
-			<tui-icon name="position" :size="150" unit="upx" color="#ffffff"></tui-icon>
-			<text>你还没有添加地址哦～</text>
+		<view style="padding-bottom: 45upx;">
+			<LoadingMore
+				:status="!isEmpty && !addressList.length
+					? 'loading' : !isEmpty && addressList.length && (addressList.length >= addresTotal) ? 'no-more' : ''"
+			>
+			</LoadingMore>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">你还没有添加地址哦～</tui-no-data>
 		</view>
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="wxAddressNBox">
@@ -50,13 +56,14 @@ export default {
 	name: 'Address',
 	data() {
 		return {
-			addresList: [],
-			headWord: '',
 			type: 0,
-			addresListlist: [],
-			page: 1, // 当前页
-			pageSize: 20, // 每页记录数
-			loadingType: 0,
+			isEmpty: false,
+			addressList: [],
+			addresTotal: 0,
+			queryInfo: {
+				page: 1,
+				pageSize: 20
+			},
 			addData: {}
 		}
 	},
@@ -64,17 +71,7 @@ export default {
 		this.type = options.type
 	},
 	onShow() {
-		this.addresListlist = []
-		this.page = 1
-		this.getAddressData()
-	},
-	onReachBottom() {
-		if (this.loadingType == 1) {
-			uni.stopPullDownRefresh()
-		} else {
-			this.page = this.page + 1
-			this.getAddressData()
-		}
+		this.getAddressDataList()
 	},
 	methods: {
 		addAddressClick() {
@@ -88,30 +85,23 @@ export default {
 				})
 			}
 		},
-		getAddressData() {
+		getAddressDataList(isLoadmore) {
 			uni.showLoading()
-			getAllReceiveAddressApi({
-				page: this.page,
-				pageSize: this.pageSize
-			}).then((res) => {
-				this.addresList = res.data
-				if (res.data.list.length == 0) {
-					this.loadingType = 1
+			getAllReceiveAddressApi(this.queryInfo).then((res) => {
+				this.addresTotal = res.data.total
+				if (isLoadmore) {
+					this.addressList.push(...res.data.list)
+				} else {
+					this.addressList = res.data.list
 				}
-				for (let i = 0; i < res.data.list.length; i++) {
-					this.addresList.list[i].username1 = this.addresList.list[i].receiveName.slice(0, 1)
-				}
-				this.addresListlist = this.addresListlist.concat(res.data.list)
-				this.addresListlist.forEach((item) => {
-					item.receivePhone = item.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
-				})
+				this.isEmpty = this.addressList.length === 0
 				uni.hideLoading()
 			})
-				.catch((err) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		},
-		editAdress(id, item) {
+		editAdress(item) {
 			uni.navigateTo({
 				url: '/another-tf/another-serve/addAddress/index?type=2&receiveId=' + item.receiveId
 			})
@@ -145,9 +135,15 @@ export default {
 						})
 					}, 500)
 				},
-				fail: (res) => {
+				fail: (e) => {
 				}
 			})
+		}
+	},
+	onReachBottom() {
+		if (this.addressList.length < this.addresTotal) {
+			++this.queryInfo.page
+			this.getAddressDataList(true)
 		}
 	}
 }
@@ -160,19 +156,6 @@ export default {
 	.addAddress {
 		border-top: 2rpx solid #F3F4F5;
 		padding-top: 30rpx;
-	}
-
-	.emptyAddress-box {
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		align-items: center;
-		margin-top: 50%;
-
-		text {
-			margin-top: 40upx;
-			color: #999999;
-		}
 	}
 
 	.addAddress-box {
@@ -230,8 +213,8 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding-bottom: 40rpx;
-		margin-bottom: 40rpx;
+		padding-bottom: 20rpx;
+		margin-bottom: 20rpx;
 		border-bottom: 2rpx solid #F3F4F5;
 
 		.address-detail {
@@ -260,41 +243,10 @@ export default {
 		.user-address {
 			font-size: 28rpx;
 			margin-left: 10rpx;
-
-		}
-
-		.address-hesd {
-			height: 70upx;
-			width: 70upx;
-			background-color: #BBBBBB;
-			color: #FFFFFF;
-			border-radius: 50%;
-			line-height: 70upx;
-			text-align: center;
 		}
 
 		.defaultAD-box {
 			width: 455upx;
-
-			.default-textBox {
-				padding-right: 20upx;
-				width: 80upx;
-			}
-
-			.default-content {
-				width: 435upx;
-			}
-
-			.default-text {
-				color: #C5AA7B;
-				background-color: #FFE4CC;
-				height: 36upx;
-				width: 60upx;
-				font-size: 26upx;
-				border-radius: 4upx;
-				align-items: center;
-				line-height: 36upx;
-			}
 		}
 	}
 }

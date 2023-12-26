@@ -227,6 +227,10 @@ export default {
 						uni.redirectTo({
 							url: '/user/sever/activityCenter/index'
 						})
+					} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
+						uni.redirectTo({
+							url: '/pages/jump/jump'
+						})
 					} else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
 						uni.redirectTo({
 							url: uni.getStorageSync(NEW_BIND_SERVICE_URL)

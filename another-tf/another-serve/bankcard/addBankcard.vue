@@ -10,18 +10,18 @@
 		</view>
 		<view class="addressBack-box">
 			<view class="consignee-box bor-line-F7F7F7">
-				<input v-model="username" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="姓名" />
+				<input v-model="username" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="请填写真实姓名" />
 			</view>
 			<view class="iphoneNum-box bor-line-F7F7F7">
 				<input v-model="phone" type="number" maxlength="11" class="fs28" placeholder-class="iphoneNum"
-					placeholder="手机号码" />
+					placeholder="请填写手机号码" />
 			</view>
 			<view class="consignee-box bor-line-F7F7F7">
-				<input v-model="bankName" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="银行名称" />
+				<input v-model="bankName" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="请填写银行名称" />
 			</view>
 			<view class="cardnum">
 				<input v-model="cardNum" type="number" class="fs28" maxlength="20" placeholder-class="detailAddress"
-					placeholder="卡号" />
+					placeholder="请填写卡号" />
 			</view>
 		</view>
 		<view v-if="type == 2" class="deleteBankcard-box">

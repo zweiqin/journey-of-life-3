@@ -1417,6 +1417,12 @@
           }
         },
         {
+          "path": "another-user/advanced-role-application/index",
+          "style": {
+            "navigationBarTitleText": "高级角色申请"
+          }
+        },
+        {
           "path": "another-user/user-upgrade/purchase-chain-products",
           "style": {
             "navigationBarTitleText": "购买关系链相关产品"

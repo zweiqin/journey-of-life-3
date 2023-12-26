@@ -1,5 +1,5 @@
 import { AnotherTFRequest } from '../../utils'
- 
+
 // /businessRechargeCustomers/getRechargeShopAll 充值商家列表
 export const getRechargeShopAll = (data) => AnotherTFRequest('/businessRechargeCustomers/getRechargeShopAll', data, 'POST')
 
@@ -13,7 +13,7 @@ export const rechargeSubmit = (data) => AnotherTFRequest('/businessRechargeOrder
 export const getRechargeSubmit = (data) => AnotherTFRequest('/businessRechargeAmounts/getAll', data)
 
 // /businessRechargeCustomers/getRechargeTotal
-export const getRechargeTotal = (data) => AnotherTFRequest('/businessRechargeCustomers/getRechargeTotal', data, 'POST')
+export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getRechargeTotal', data, 'POST')
 
 // /businessRechargeCustomers/getByRecharge 客户充值记录列表
 export const getByRecharge = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')

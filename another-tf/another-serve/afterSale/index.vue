@@ -20,7 +20,7 @@
 						<view v-for="(itemlist, index) in item.skus" :key="index" class="order-info-box">
 							<view
 								class="order-info"
-								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
+								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${itemlist.shopId}&productId=${itemlist.productId}&skuId=${itemlist.skuId}`)"
 							>
 								<view class="order-info-item">
 									<image :src="common.seamingImgUrl(itemlist.image)" class="product-img"></image>
