@@ -41,7 +41,7 @@ export default {
 
 	actions: {
 		// TODO: 三种登录方式合在一起
-
+		
 		// 密码登录
 		loginAction({ commit, dispatch }, loginData) {
 			return new Promise((resolve, reject) => {
