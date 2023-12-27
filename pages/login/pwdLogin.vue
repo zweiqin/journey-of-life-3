@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import { sf } from '../../config'
+import { sf, A_TF_MAIN } from '../../config'
+// import { sf } from '../../config'
 import pwdLoginRules from './rules'
 import { throttle } from '../../utils'
 import {

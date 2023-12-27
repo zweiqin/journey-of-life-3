@@ -62,8 +62,9 @@
 </template>
 
 <script>
+import { sf, A_TF_MAIN } from '../../config'
 import { msgLoginRules } from './rules'
-import { sf } from '../../config'
+// import { sf } from '../../config'
 // import { verificationCodeRule } from './rules'
 import { throttle } from '../../utils'
 import {
@@ -95,7 +96,8 @@ export default {
             },
             focusMap: [false,false],
 			partnerCode: '',
-			partnerCode2: ''
+			partnerCode2: '',
+			redirect: ''
         }
     },
 	onShow() {
@@ -111,7 +113,8 @@ export default {
 		this.onGetCode = throttle(this.handleGetCode, 1000)
 
 		this.redirect = options.to
-
+		// console.log(this.redirect);
+		// debugger
 		const userId = uni.getStorageSync(USER_ID)
 		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 
@@ -385,6 +388,7 @@ export default {
     pointer-events: none;
 }
 .container {
+	position: relative;
     width: 100vw;
     height: 100vh;
     background-color: #EA5B1D;
@@ -445,9 +449,13 @@ export default {
         color: #EA5B1D;
     }
     .loginFn {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 88rpx;
         width: 420rpx;
         height: 114rpx;
-        margin: 336rpx auto 88rpx auto;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         .loginFnItem {
