@@ -22,6 +22,17 @@
               {{ factoryDetail.shop_brief || '暂无简介~' }}
             </view>
           </view>
+          <!-- 装修模块 -->
+          <view class="brand-description">
+						<CanvasPage
+							v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
+							:type-id="3" :shop-id="Number(shopId)"
+						>
+						</CanvasPage>
+						<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false" style="margin-top: 40upx;">
+							商家未装修首页
+						</tui-no-data>
+          </view>
         </view>
 
         <!-- 推荐 -->
@@ -114,9 +125,8 @@ import BrandGoods from './components/BrandGoods.vue'
 import BrandPerformance from './components/BrandPerformance.vue'
 import BrandPane from './components/BrandPane.vue'
 import BrandGoodsPane from './components/BrandGoodsPane.vue'
-import { getFactoryDetailApi, getShopClassifyApi, getShopProductsApi, collectToCollectApi } from '../../../api/anotherTFInterface'
-import { getFactoryListApi, collectCancelApi } from '../../../api/anotherTFInterface'
-import { USER_INFO } from '../../../constant'
+import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
+import { getFactoryDetailApi, getShopClassifyApi, getShopProductsApi, collectToCollectApi, getFactoryListApi, collectCancelApi, getCanvasApi } from '../../../api/anotherTFInterface'
 import { A_TF_MAIN } from '../../../config'
 
 export default {
@@ -127,7 +137,8 @@ export default {
     BrandGoods,
     BrandPerformance,
     BrandPane,
-    BrandGoodsPane
+    BrandGoodsPane,
+		CanvasPage
   },
 
   data() {
@@ -146,6 +157,8 @@ export default {
         pageSize: 20,
         groupId: ''
       },
+			componentsData: null,
+			terminal: getApp().globalData.terminal,
       goodsList: [],
       totalGoodsCount: 0,
       goodsMap: new Map(),
@@ -162,6 +175,13 @@ export default {
     this.getCategoryList()
     this.getRecommendBrand(params.id)
     this.getAllGoods(params.id)
+		getCanvasApi({ terminal: this.terminal, type: 3, shopId: this.queryGoods.shopId }).then((res) => {
+			if (JSON.stringify(res.data) !== '{}') {
+				this.componentsData = JSON.parse(res.data.json)
+			} else {
+				this.componentsData = []
+			}
+		})
   },
 
   methods: {

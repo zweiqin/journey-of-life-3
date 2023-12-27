@@ -15,7 +15,7 @@
 			<view class="bankTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="bankTagClick">
 				<view class="fs28 addressTag">银行卡</view>
 				<view>
-					<label v-model="cardNum">{{ cardNum }}</label>
+					<label>{{ cardNum }}</label>
 					<tui-icon name="arrowright" :size="48" unit="upx" color="#b19970" margin="0 20upx 0 0"></tui-icon>
 				</view>
 			</view>
@@ -31,17 +31,19 @@
 				<view v-for="(item, index) in withdrawHistoryList" :key="index" class="history-content">
 					<view class="withdraw-detail flex-items flex-sp-between">
 						<view class="detail-top">
-							<view class="detail-bottom">
-								<label v-if="item.state == 0" class="status fs28 font-color-333">审核中</label>
-								<label v-else-if="item.state == 1" class="status fs28 font-color-333">通过</label>
-								<label v-else-if="item.state == 2" class="status fs28 font-color-333">拒绝</label>
-							</view>
+							<view class="fs24 font-color-999 mar-top-10">流水号：{{ item.number || '--' }}</view>
 							<view>
-								<label class="cardnum fs24 font-color-999">银行卡号：{{ item.bankCard }}</label>
+								<label class="fs24 font-color-999">银行卡号：{{ item.bankCard }}</label>
 							</view>
+							<view class="fs24 font-color-999 mar-top-10">{{ item.createTime }}</view>
 						</view>
 						<view>
-							<label class="apply-balance">{{ item.withdrawalMoney }}</label>
+							<view class="detail-bottom text-align">
+								<label v-if="item.state == 0" class="fs28 font-color-333">审核中</label>
+								<label v-else-if="item.state == 1" class="fs28 font-color-333">通过</label>
+								<label v-else-if="item.state == 2" class="fs28 font-color-333">拒绝</label>
+							</view>
+							<view class="apply-balance">￥{{ item.withdrawalMoney }}</view>
 						</view>
 					</view>
 				</view>
@@ -257,9 +259,7 @@ export default {
 					height: 150rpx;
 
 					.apply-balance {
-						width: 160rpx;
-						height: 58rpx;
-						line-height: 58rpx;
+						padding: 10upx 20upx;
 						font-size: 24rpx;
 						background: #EEEEEE;
 						display: block;

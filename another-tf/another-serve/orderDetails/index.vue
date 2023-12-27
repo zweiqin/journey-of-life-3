@@ -141,11 +141,6 @@
 												<view class="product-num">x {{ proItem.number }}</view>
 											</view>
 											<view class="price-sku-box">
-												<!--	<view class="price-box"> -->
-												<!--		<view class="product-price1">实付：<text -->
-												<!--				class="fuhao">￥</text>{{proItem.price}}</view> -->
-												<!--		&lt;!&ndash; <view class="product-price2">价格：<text class="fuhao">￥</text>{{proItem.price}}</view> &ndash;&gt; -->
-												<!--	</view> -->
 												<view
 													v-if="(dataList.state === 3 || dataList.state === 4) && proItem.afterState == 0 && !proItem.returnType"
 												>
@@ -421,7 +416,6 @@ export default {
 			steps: [],
 			isShowWuLiu: false,
 			orderRefundList: [],
-			item: {},
 			isIphone: false,
 			noticeId: 0,
 
@@ -437,13 +431,11 @@ export default {
 	},
 	onLoad(options) {
 		this.isIphone = getApp().globalData.isIphone
-		if (options.detail) options = this.$getJumpParam(options)
 		this.orderId = parseInt(options.orderId)
-		this.item = options
 		if (options.noticeId) {
 			this.noticeId = options.noticeId
 		}
-		this.getDataList(this.orderId)
+		this.getOrderDetailData(this.orderId)
 		getOrderRefundApi({
 			orderId: this.orderId
 		}).then((res) => {
@@ -529,7 +521,7 @@ export default {
 				url: '/another-tf/another-serve/goodsDetails/index?shopId=' + this.dataList.shopId + '&productId=' + productId + '&skuId=' + skuId
 			})
 		},
-		getDataList(orderId) {
+		getOrderDetailData(orderId) {
 			getOrderDetailApi({
 				orderId,
 				noticeId: this.noticeId
@@ -578,7 +570,7 @@ export default {
 							uni.showToast({
 								title: '取消成功'
 							})
-							this.getDataList(this.orderId)
+							this.getOrderDetailData(this.orderId)
 						})
 							.catch((e) => {
 								uni.hideLoading()
@@ -669,7 +661,7 @@ export default {
 							uni.showToast({
 								title: '确认成功'
 							})
-							this.getDataList(this.orderId)
+							this.getOrderDetailData(this.orderId)
 						})
 							.catch((e) => {
 								uni.hideLoading()
@@ -682,15 +674,13 @@ export default {
 		handleApplyTap() {
 			if (this.orderRefundList.length === 0) return this.$showToast('您所有商品已经申请退款，请勿重复申请')
 			let isAllSelect = 1
-			const newArr = JSON.parse(JSON.stringify(this.item))
-			newArr.skus.map((item, index) => {
-				if (item.afterState) {
-					newArr.skus.splice(index, 1)
-					isAllSelect = 0
-				}
+			let newInfoObj = JSON.parse(JSON.stringify(this.dataList))
+			newInfoObj = newInfoObj.skus.filter((item, index) => {
+				if (item.afterState) isAllSelect = 0
+				return !item.afterState
 			})
 			uni.navigateTo({
-				url: '/another-tf/another-serve/afterSaleApply/index?item=' + JSON.stringify(newArr) + '&isAllSelect=' + isAllSelect
+				url: '/another-tf/another-serve/afterSaleApply/index?item=' + JSON.stringify(newInfoObj) + '&isAllSelect=' + isAllSelect
 			})
 		},
 
@@ -704,7 +694,7 @@ export default {
 			}, 1)
 		},
 
-		async handleFlyToService() { // dataList.shopId
+		async handleFlyToService() {
 			let corpId = null
 			let serviceURL = null
 			uni.showLoading({
@@ -951,28 +941,6 @@ export default {
 											font-size: 28upx;
 											color: #999;
 											display: inline-block;
-										}
-
-										.price-box {
-											display: flex;
-											flex-direction: column;
-
-											.product-price1 {
-												font-size: 24upx;
-												color: #333;
-												font-weight: 400;
-											}
-
-											.product-price2 {
-												font-size: 24upx;
-												color: #999;
-												text-decoration: line-through;
-												font-weight: 400;
-											}
-
-											.fuhao {
-												font-size: 28upx;
-											}
 										}
 
 										.item-applay-btn {

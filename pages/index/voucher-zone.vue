@@ -66,7 +66,7 @@
         <view class="voucher-list">
           <view class="goods-wrapper">
             <view class="goods-item"
-              @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}6&productId=${item.productId}&skuId=${item.skuId}`)"
+              @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
               v-for=" item  in  $data._list.slice(4) " :key="item.id">
               <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(item.image)})`, margin: 0 }" mode="aspectFit"
                 :src="common.seamingImgUrl(item.image)"></tui-lazyload-img>

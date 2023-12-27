@@ -10,7 +10,7 @@
 				{{ data.returnType ? '退款中' : orderTypeEnum[data.state] || '--' }}
 			</view>
 		</view>
-		<view class="order-info-box" @click="go(`/another-tf/another-serve/orderDetails/index`, data)">
+		<view class="order-info-box" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
 			<view class="order-info">
 				<view v-for="(skuItem, skuIndex) in data.skus" :key="skuIndex" class="order-info-item">
 					<image :src="skuItem.image" class="product-img default-img" />

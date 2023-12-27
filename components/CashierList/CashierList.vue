@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { getOrderHuabeiConfigApi } from '../../api/anotherTFInterface'
+import { getOrderHuabeiConfigApi, getRechargeTotalCustomersApi, getPricePlatformAllApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'CashierList',
