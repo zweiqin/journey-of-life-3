@@ -1,12 +1,14 @@
 <template>
-    <view class="container">
-        <image class="backFn" @click="goBack" src="@/static/images/common/back.png"></image>
+    <view class="container" style="min-height: 100vh;">
+		<view class="header" style="width: 100vw;height: 122rpx">
+        	<image class="backFn" @click="goBack" src="@/static/images/common/back.png"></image>
+		</view>
         <view class="logoText">
-			<view class="texts animate__animated animate__bounce" style="font-weight: bold;">
+			<view class="texts" style="font-weight: bold;">
 				<view class="txt">欢迎来到</view>
 				<view class="txt">团蜂社区</view>
 			</view>
-			<view class="animate__animated animate__slideInLeft" style="margin-top: 48rpx;margin-left: -6rpx;">
+			<view class="" style="margin-top: 48rpx;margin-left: -6rpx;">
 				<text class="appTitle">年轻的社区生活元宇宙</text>
 			</view>
 		</view>
@@ -14,19 +16,19 @@
             <tui-form ref="form" :show-message="false">
                 <view class="iphoneNum-box">
 					<!-- <text class="labels">手机号</text> -->
-					<tui-input placeholder-class="inputs"
+					<tui-input placeholder-class="inputs" :adjustPosition="false"
 						v-model="loginForm.phone" label="+ 86" labelColor="#FFFFFF" borderColor="#EA5B1D"
 						placeholder="请输入手机号码" backgroundColor="" :borderTop="false"
-						color="#fff" :focus="focusMap[0]" :confirm-type="keybordEnterText"
+						color="#fff" :confirm-type="keybordEnterText"
 						@confirm="handleClickConfirmType(0)"
 					></tui-input>
 					<!-- <input v-model="loginForm.phone" type="texts" placeholder="请输入手机号"> -->
 				</view>
 				<view class="iphoneNum-box">
-					<tui-input placeholder-class="inputs"
+					<tui-input placeholder-class="inputs" :adjustPosition="false"
 						v-model="loginForm.code" class="reset-wrapper"
 						backgroundColor="" :borderTop="false" borderColor="#EA5B1D"  labelColor="#FFFFFF"
-						placeholder="请输入验证码" color="#fff" :focus="focusMap[1]" :confirm-type="keybordEnterText"
+						placeholder="请输入验证码" color="#fff" :confirm-type="keybordEnterText"
 						@confirm="handleClickConfirmType(1)"
 					>
 						<block slot="right">
@@ -40,7 +42,9 @@
 				</view>
             </tui-form>
         </view>
-        <button class="loginBtn animate__animated" :class="{animate__tada : isOverPwd}" @click="onlogin">登录</button>
+		<view class="loginBtnBox">
+        	<button class="uni-btn loginBtn" @click="onlogin">登录</button>
+		</view>
         <view class="loginFn">
             <view class="loginFnItem">
                 <image class="loginIcon" @click="go('/pages/login/register')" src="@/static/images/icon/register.png"></image>
@@ -57,7 +61,7 @@
 				</view>
 			</TuanWXLogin>
         </view>
-        <tui-toast ref="toast"></tui-toast>
+        <!-- <tui-toast ref="toast"></tui-toast> -->
     </view>
 </template>
 
@@ -388,19 +392,27 @@ export default {
     pointer-events: none;
 }
 .container {
+	display: flex;
+	flex-direction: column;
 	position: relative;
-    width: 100vw;
-    height: 100vh;
+	box-sizing: border-box;
+    /* width: 100vw; */
+	/* height: 100vh; */
+	/* min-height: 100%; */
+	padding-bottom: 66rpx;
     background-color: #EA5B1D;
     .backFn {
-        display: block;
         padding: 30rpx 30rpx;
         width: 62rpx;
         height: 62rpx;
     }
     .logoText {
+		width: 100vw;
+		height: 280rpx;
+		box-sizing: border-box;
         padding: 30rpx 0 0 56rpx;
         color: #ffffff;
+		clear: both;
         .texts {
             /* font-style: oblique; */
             .txt {
@@ -424,40 +436,47 @@ export default {
     }
     .loginForm {
         box-sizing: border-box;
-        padding: 0 20rpx;
-        padding-right: 40rpx;
-        margin-top: 186rpx;
+        padding: 146rpx 20rpx 10rpx 20rpx;
+        /* padding-right: 40rpx; */
+        /* margin-top: 186rpx; */
         width: 750rpx;
+		height: 336rpx;
         .iphoneNum-box {
+			box-sizing: border-box;
+			padding-right: 20rpx;
             .get-code {
                 font-size: 28rpx;
                 color: rgba(255, 255, 255, 0.679);
             }
         }
     }
-    .loginBtn {
-        margin: 0 auto;
-        margin-top: 122rpx;
-        width: 640rpx;
-        height: 80rpx;
-        border-radius: 50rpx;
-        background: #FFFFFF;
-        font-family: Source Han Sans;
-        font-weight: 600;
-        font-size: 38rpx;
-        line-height: 80rpx;
-        color: #EA5B1D;
-    }
+	.loginBtnBox {
+		clear: both;
+		width: 100%;
+		height: 800rpx;
+		box-sizing: border-box;
+		margin-top: 100rpx;
+		.loginBtn {
+			margin: 0 auto;
+			width: 640rpx;
+			height: 80rpx;
+			border-radius: 50rpx;
+			background: #ffffff;
+			font-family: Source Han Sans;
+			font-weight: 600;
+			font-size: 38rpx;
+			line-height: 80rpx;
+			color: #EA5B1D;
+		}
+	}
     .loginFn {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		bottom: 88rpx;
         width: 420rpx;
         height: 114rpx;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
+		align-items: flex-end;
+		/* margin-bottom: 68rpx; */
         .loginFnItem {
             display: flex;
             align-items: center;

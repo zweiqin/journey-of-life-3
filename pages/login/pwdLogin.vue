@@ -1,8 +1,10 @@
 <template>
     <view class="container">
-        <image class="backFn" @click="goBack" src="@/static/images/common/back.png"></image>
+        <view class="header" style="width: 100vw;height: 122rpx">
+        	<image class="backFn" @click="goBack" src="@/static/images/common/back.png"></image>
+		</view>
         <view class="logoText">
-			<view class="texts animate__animated animate__bounce" style="font-weight: bold;">
+			<view class="texts" style="font-weight: bold;">
 				<view class="txt">欢迎来到</view>
 				<view class="txt">团蜂社区</view>
 			</view>
@@ -36,7 +38,10 @@
 				</view>
             </tui-form>
         </view>
-        <button class="loginBtn animate__animated" :class="{animate__tada : isOverPwd}" @click="onlogin">登录</button>
+		<view class="loginBtnBox">
+        	<button class="uni-btn loginBtn" @click="onlogin">登录</button>
+		</view>
+        <!-- <button class="loginBtn animate__animated" :class="{animate__tada : isOverPwd}" @click="onlogin">登录</button> -->
         <view class="loginFn">
             <view class="loginFnItem">
                 <image class="loginIcon" @click="go('/pages/login/register')" src="@/static/images/icon/register.png"></image>
@@ -363,8 +368,13 @@ export default {
     pointer-events: none;
 }
 .container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	box-sizing: border-box;
+	padding-bottom: 66rpx;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #EA5B1D;
     .backFn {
         display: block;
@@ -400,7 +410,7 @@ export default {
         box-sizing: border-box;
         padding: 0 20rpx;
         padding-right: 40rpx;
-        margin-top: 186rpx;
+        margin-top: 146rpx;
         width: 750rpx;
         .iphoneNum-box {
             .get-code {
@@ -409,25 +419,33 @@ export default {
             }
         }
     }
-    .loginBtn {
-        margin: 0 auto;
-        margin-top: 122rpx;
-        width: 640rpx;
-        height: 80rpx;
-        border-radius: 50rpx;
-        background: #FFFFFF;
-        font-family: Source Han Sans;
-        font-weight: 600;
-        font-size: 38rpx;
-        line-height: 80rpx;
-        color: #EA5B1D;
-    }
+    .loginBtnBox {
+		clear: both;
+		width: 100%;
+		height: 800rpx;
+		box-sizing: border-box;
+		margin-top: 100rpx;
+		.loginBtn {
+			margin: 0 auto;
+			width: 640rpx;
+			height: 80rpx;
+			border-radius: 50rpx;
+			background: #ffffff;
+			font-family: Source Han Sans;
+			font-weight: 600;
+			font-size: 38rpx;
+			line-height: 80rpx;
+			color: #EA5B1D;
+		}
+	}
     .loginFn {
         width: 420rpx;
         height: 114rpx;
-        margin: 336rpx auto 88rpx auto;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
+		align-items: flex-end;
+		/* margin-bottom: 68rpx; */
         .loginFnItem {
             display: flex;
             align-items: center;

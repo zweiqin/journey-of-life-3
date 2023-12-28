@@ -213,7 +213,8 @@ export default {
 .container {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    /* background-color: #888889; */
     .backIcon {
         width: 40rpx;
         height: 40rpx;
