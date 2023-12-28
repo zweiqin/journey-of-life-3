@@ -237,7 +237,6 @@ export default {
 <style lang="scss" scoped>
 .container {
   box-sizing: border-box;
-  min-height: 100vh;
   background-color: #ffffff;
 
   .redText {

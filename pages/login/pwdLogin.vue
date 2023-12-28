@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="containers">
         <view class="header" style="width: 100vw;height: 122rpx">
         	<image class="backFn" @click="goBack" src="@/static/images/common/back.png"></image>
 		</view>
@@ -367,7 +367,7 @@ export default {
     z-index: 2;
     pointer-events: none;
 }
-.container {
+.containers {
 	display: flex;
 	flex-direction: column;
 	position: relative;
@@ -422,7 +422,7 @@ export default {
     .loginBtnBox {
 		clear: both;
 		width: 100%;
-		height: 800rpx;
+		height: 230rpx;
 		box-sizing: border-box;
 		margin-top: 100rpx;
 		.loginBtn {
