@@ -102,7 +102,7 @@ export default {
 		},
 		handleRadioChange(e) {
 			console.log(e)
-			this.voucherName = '不使用'
+			this.voucherName = '点击使用'
 			if (this.voucherSelected !== Number(e.detail.value)) {
 				this.voucherSelected = Number(e.detail.value)
 				this.$emit('choose', { id: this.voucherSelected })
@@ -127,7 +127,7 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	height: 100upx;
-	margin: 20upx 0;
+	margin: 20upx 0 0;
 	padding: 20upx 18upx;
 	background-color: #fff;
 

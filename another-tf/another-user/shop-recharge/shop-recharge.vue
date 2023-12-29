@@ -71,16 +71,27 @@
       </view>
 
       <button v-if="rechargePriceList && rechargePriceList.length > 0" class="recharge-button uni-btn" :style="{ opacity: currentRechargeCount ? 1 : 0.6 }"
-        @click="handleRecharge"> {{ currentRechargeCount ? `${currentRechargeCount} 立即充值` : '请输入充值金额' }} </button>
+        @click="showPayTypePopup = true"> {{ currentRechargeCount ? `${currentRechargeCount} 立即充值` : '请输入充值金额' }} </button>
     </view>
 
+		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
+			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+				<CashierList :price-pay="currentRechargeCount" show show-platform-pay @change="(e) => payInfo = e" />
+				<tui-button
+					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					shape="circle"
+					@click="handleRecharge"
+				>
+					确认支付
+				</tui-button>
+			</view>
+		</tui-bottom-popup>
     <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import { getRechargeSubmit, rechargeSubmit, getRechargeTotalCustomersApi, getByShopAll, getByRecharge } from '@/api/anotherTFInterface/merchantUp'
-import { getIndexShopDetailApi } from '@/api/anotherTFInterface'
+import { getRechargeSubmitApi, addRechargeSubmitApi, getRechargeTotalCustomersApi, getByShopAllApi, getByRechargeApi, getIndexShopDetailApi } from '@/api/anotherTFInterface'
 import { handleDoPay } from '@/utils/payUtil'
 
 export default {
@@ -98,12 +109,14 @@ export default {
       currentRechargeType: 0,
       currentRechargeCount: 50,
       searchShopValue: "",
+			showPayTypePopup: false,
+			payInfo: {},
     }
   },
   onLoad(options) {
     this.shopInfo = JSON.parse(options.shopInfo)
     this.shopId = this.shopInfo.shopId
-    // getByShopAll().then(res => {
+    // getByShopAllApi().then(res => {
     //   this.historyMerchantNumber = res.data.records.length
     // })
     // getIndexShopDetailApi({
@@ -112,14 +125,14 @@ export default {
     //   this.shopInfo = res.data
     // })
 
-    // getByRecharge({
+    // getByRechargeApi({
     //    "page":"1",
     //    "pageSize":"10"
     // }).then(res => {
     //   console.log(res);
     // })
     
-    getRechargeSubmit({
+    getRechargeSubmitApi({
       shopId: this.shopId
     }).then(res => {
       this.rechargePriceList = Object.freeze(res.data)
@@ -153,13 +166,13 @@ export default {
         return
       }
 
-      rechargeSubmit({
+      addRechargeSubmitApi({
         shopId: this.shopId,
         amountId: this.rechargePriceList[this.currentRechargeType].amountId,
         rechargeBalance: this.currentRechargeCount,
         remark: 'normal'
       }).then(res => {
-        handleDoPay({ ...res.data, type: 1, paymentMode: 4, huabeiPeriod: -1 }, 7)
+        handleDoPay({ ...res.data, ...this.payInfo }, 7)
         console.log(res);
       }).catch(err => {
         console.log(err);

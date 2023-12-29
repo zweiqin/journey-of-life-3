@@ -174,15 +174,15 @@
         "navigationBarTextStyle": "black"
       }
     },
-    {
-      "path": "pages/stuff/brand/index",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "提交订单",
-        "navigationBarTextStyle": "black"
-      }
-    },
+    // {
+    //   "path": "pages/stuff/brand/index",
+    //   "style": {
+    //     "backgroundTextStyle": "light",
+    //     "navigationBarBackgroundColor": "#fff",
+    //     "navigationBarTitleText": "提交订单",
+    //     "navigationBarTextStyle": "black"
+    //   }
+    // },
     {
       "path": "pages/prod/prod",
       "style": {
@@ -1294,33 +1294,33 @@
         {
           "path": "industry/infomation-detail"
         },
-        {
-          "path": "store/index"
-        },
+        // {
+        //   "path": "store/index"
+        // },
         {
           "path": "gongqiu/gongqiu",
           "style": {
             "navigationBarTitleText": "供求指数"
           }
         },
-        {
-          "path": "shop/store",
-          "style": {
-            "navigationBarTitleText": "店铺"
-          }
-        },
-        {
-          "path": "brand/brand"
-        },
-        {
-          "path": "price/price",
-          "style": {
-            "navigationBarTitleText": "价格指数"
-          }
-        },
-        {
-          "path": "price/echar"
-        },
+        // {
+        //   "path": "shop/store",
+        //   "style": {
+        //     "navigationBarTitleText": "店铺"
+        //   }
+        // },
+        // {
+        //   "path": "brand/brand"
+        // },
+        // {
+        //   "path": "price/price",
+        //   "style": {
+        //     "navigationBarTitleText": "价格指数"
+        //   }
+        // },
+        // {
+        //   "path": "price/echar"
+        // },
         {
           "path": "purchase/purchase",
           "style": {
@@ -1328,15 +1328,15 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "buyer/buyer"
-        },
+        // {
+        //   "path": "buyer/buyer"
+        // },
         {
           "path": "more/more"
         },
-        {
-          "path": "directsalestore/directsalestore"
-        },
+        // {
+        //   "path": "directsalestore/directsalestore"
+        // },
         {
           "path": "search"
         },

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getByRecharge } from '@/api/anotherTFInterface/merchantUp'
+import { getByRechargeApi } from '@/api/anotherTFInterface'
 export default {
     name: 'historyRecord',
     data() {
@@ -23,7 +23,7 @@ export default {
         }
     },
     created() {
-        getByRecharge({
+        getByRechargeApi({
             page: 1,
             pageSize: 100
         }).then(res => [

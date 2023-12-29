@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Withdraw',
 	filters: {

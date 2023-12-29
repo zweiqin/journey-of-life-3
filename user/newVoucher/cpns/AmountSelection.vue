@@ -16,10 +16,10 @@
 
 				<tui-dialog
 					style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-					:show="isShowGiveCustomDialog" title="自定义转赠数量" @click="handleClickGiveCustomDialog"
+					:show="isShowGiveCustomDialog" :title="`自定义${title[Number(isGift)]}数量`" @click="handleClickGiveCustomDialog"
 				>
 					<template #content>
-						<tui-input v-model="amountData[customIndex].value" label="转赠数量" type="number" placeholder="请输入转赠数量" @input="$emit('getCustomValue', customIndex)">
+						<tui-input :label="`${title[Number(isGift)]}数量`" type="number" :placeholder="`请输入${title[Number(isGift)]}数量`" @input="(e) => $emit('getCustomValue', customIndex, e)">
 							<template #right>
 								<text>代金券</text>
 							</template>

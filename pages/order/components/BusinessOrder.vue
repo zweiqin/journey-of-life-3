@@ -132,7 +132,7 @@ export default {
 			})
 		},
 		getOrderOptionButtonObj(orderItem) {
-			const { state, returnType, afterState, skus, collageId, paymentState } = orderItem
+			const { state, returnType, afterState, skus = [], collageId, paymentState } = orderItem
 			const orderNeedBtnList = [] // 订单应有的btn
 			// 取消订单
 			if ([1, 6].includes(state) || ((state === 8) && (paymentState === 0))) {
@@ -153,7 +153,7 @@ export default {
 				})
 			}
 			// 申请售后
-			if (([2, 3, 4].includes(state) || ((state === 8) && (paymentState === 1))) && [0, 6].includes(Number(afterState)) && skus[0].ifAdd !== 1) {
+			if (([2, 3, 4].includes(state) || ((state === 8) && (paymentState === 1))) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
 				orderNeedBtnList.push({
 					name: '申请售后',
 					className: 'l',
@@ -243,10 +243,11 @@ export default {
 			uni.showModal(modalOptions)
 		},
 		handlePayOrder(orderItem) {
-			const { orderPrice, collageId, orderId } = orderItem
+			const { orderPrice, collageId, orderId, shopId } = orderItem
 			this.$emit('pay-order', {
 				showPayPopup: true,
-				totalPrice: orderPrice,
+				pricePay: orderPrice,
+				shopId,
 				payInfo: {
 					collageId,
 					money: orderPrice,
@@ -256,7 +257,7 @@ export default {
 			})
 		},
 		goAfterSalesService(orderItem) {
-			this.go(`/another-tf/another-serve/afterSaleApply/index?item=${JSON.stringify(orderItem)}`)
+			this.go(`/another-tf/another-serve/afterSaleApply/index?orderId=${orderItem.orderId}`)
 		},
 		goLogisticsInformation(orderItem) {
 			this.go(`/another-tf/another-serve/logisticsInfo/index?express=${orderItem.express}&deliverFormid=${orderItem.deliverFormid}`)

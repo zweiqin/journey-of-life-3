@@ -118,7 +118,7 @@
 			</template>
 		</tui-dialog>
 
-		<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" @cancel="isShowModalRecharge = false">
+		<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" :z-index="995" :mask-z-index="994" @cancel="isShowModalRecharge = false">
 			<view style="padding: 28upx 0;text-align: center;">
 				<view>
 					<image style="width: 435upx;height: 337upx;" src="../../../static/images/common/modal-show.png"></image>
@@ -141,7 +141,7 @@
 			</view>
 		</tui-modal>
 
-		<CashierList :total-price="rechargeForm.amounts" @change="(e) => payInfo = e" />
+		<CashierList :price-pay="rechargeForm.amounts || 0" show @change="(e) => payInfo = e" />
 	</view>
 </template>
 

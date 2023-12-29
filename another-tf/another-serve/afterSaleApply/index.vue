@@ -7,10 +7,10 @@
 				<view class="item">
 					<view class="order-info-box">
 						<view class="order-info">
-							<checkbox-group>
+							<checkbox-group @change="checkboxChange">
 								<checkbox
-									v-for="(item, index) in orderMsg.skus" :key="index" :checked="item.checked"
-									:value="String(item.checked)" active-background-color="#C5AA7B" @change="checkboxChange(item)"
+									v-for="(item, index) in orderMsg.skus" :key="index" :disabled="item.afterState || item.classifyId == 1439" :checked="item.checked"
+									:value="String(index)" active-background-color="#C5AA7B"
 								>
 									<view class="order-info-item">
 										<image :src="common.seamingImgUrl(item.image)" class="product-img"></image>
@@ -37,7 +37,7 @@
 					<view class="selectBox">
 						<checkbox-group @change="changeAll">
 							<view>
-								<checkbox :checked="allCheck.checked" :value="allCheck.value" color="#C5AA7B"></checkbox>
+								<checkbox :disabled="orderMsg.skus.some(i => i.afterState || i.classifyId == 1439)" :checked="allCheck.checked" :value="allCheck.value" color="#C5AA7B"></checkbox>
 								<text>{{ allCheck.name }}</text>
 							</view>
 						</checkbox-group>
@@ -54,7 +54,7 @@
 					<view class="afterBtn1" @click="ReturnMoney(orderMsg)">
 						仅退款
 					</view>
-					<view v-if="distribution !== 1" class="afterBtn2" @click="ReturnGoods(orderMsg)">
+					<view v-if="orderMsg.state != 2" class="afterBtn2" @click="ReturnGoods(orderMsg)">
 						退款退货
 					</view>
 				</view>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { getReturnPriceRefundMoneyApi } from '../../../api/anotherTFInterface'
+import { getReturnPriceRefundMoneyApi, getOrderDetailApi } from '../../../api/anotherTFInterface'
 import { T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
 
 export default {
@@ -80,19 +80,20 @@ export default {
 				checked: false
 			},
 			number: null,
-			total: 0,
-			distribution: null,
-			isAllSelect: 0,
-			evaluated: 0 // 待评价订单申请
+			total: 0
 		}
 	},
 	onLoad(options) {
-		this.orderMsg = JSON.parse(options.item)
-		this.distribution = this.orderMsg.skus[0].distribution
-		if ([ 2 ].includes(this.orderMsg.state)) {
-			this.distribution = 1
-		}
-		this.evaluated = options.isAllSelect
+		uni.showLoading()
+		getOrderDetailApi({ orderId: options.orderId, noticeId: 0 })
+			.then((res) => {
+				uni.hideLoading()
+				this.orderMsg = res.data
+				this.orderMsg.skus.map((item) => ({ ...item, checked: false }))
+			})
+			.catch((e) => {
+				uni.hideLoading()
+			})
 	},
 	methods: {
 		// 算钱
@@ -103,15 +104,15 @@ export default {
 					return
 				}
 				uni.showLoading()
-				const postData = {
+				getReturnPriceRefundMoneyApi({
 					orderId: this.orderMsg.orderId,
-					isAllSelect: this.evaluated == 1 ? this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0 : 0,
+					isAllSelect: this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0,
 					skus: this.xuanzlist
-				}
-				getReturnPriceRefundMoneyApi(postData).then((res) => {
-					uni.hideLoading()
-					resolve(parseFloat(res.json))
 				})
+					.then((res) => {
+						uni.hideLoading()
+						resolve(parseFloat(res.json))
+					})
 					.catch((e) => {
 						uni.hideLoading()
 					})
@@ -128,7 +129,7 @@ export default {
 			} else {
 				uni.setStorageSync(T_AFTER_SALE_APPLY_REFUND, this.xuanzlist)
 				uni.navigateTo({
-					url: '/another-tf/another-serve/afterSaleApplyRefund/index?orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.evaluated == 1 ? this.isAllSelect : 0)
+					url: '/another-tf/another-serve/afterSaleApplyRefund/index?orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0)
 				})
 			}
 		},
@@ -138,19 +139,9 @@ export default {
 				this.orderMsg.skus.forEach((item) => this.$set(item, 'checked', false))
 				this.$set(this.allCheck, 'checked', false)
 				this.xuanzlist = []
-				if (this.orderMsg.state === 4 && this.evaluated != undefined) {
-					this.isAllSelect = this.evaluated
-				} else {
-					this.isAllSelect = 0
-				}
 			} else {
 				this.orderMsg.skus.forEach((item) => this.$set(item, 'checked', true))
 				this.$set(this.allCheck, 'checked', true)
-				if (this.orderMsg.state === 4 && this.evaluated != undefined) {
-					this.isAllSelect = this.evaluated
-				} else {
-					this.isAllSelect = 1
-				}
 				this.xuanzlist = this.orderMsg.skus.filter((item) => item.checked == true)
 				this.number = 0
 				this.orderMsg.skus.forEach((item) => {
@@ -169,34 +160,25 @@ export default {
 				})
 			} else {
 				uni.navigateTo({
-					url: '/another-tf/another-serve/afterSaleApplyRetund/index?list=' + encodeURIComponent(JSON.stringify(this.xuanzlist)) + '&orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.evaluated == 1 ? this.isAllSelect : 0)
+					url: '/another-tf/another-serve/afterSaleApplyRetund/index?list=' + encodeURIComponent(JSON.stringify(this.xuanzlist)) + '&orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0)
 				})
 			}
 		},
 
 		async checkboxChange(e) {
 			// 动态设置商品件数和总计
-			if (e.checked) {
-				this.number = this.number + e.number
+			this.orderMsg.skus[Number(e.detail.value)].checked = !this.orderMsg.skus[Number(e.detail.value)].checked
+			if (this.orderMsg.skus[Number(e.detail.value)].checked) {
+				this.number = this.number + this.orderMsg.skus[Number(e.detail.value)].number
 			} else {
-				this.number = this.number - e.number
+				this.number = this.number - this.orderMsg.skus[Number(e.detail.value)].number
 			}
 			// 筛选勾选的
 			this.xuanzlist = this.orderMsg.skus.filter((item) => item.checked == true)
 			// 是否为全选
 			if (this.orderMsg.skus.length == this.xuanzlist.length) {
-				if (this.orderMsg.state === 4 && this.evaluated != undefined) {
-					this.isAllSelect = this.evaluated
-				} else {
-					this.isAllSelect = 1
-				}
 				this.$set(this.allCheck, 'checked', true)
 			} else {
-				if (this.orderMsg.state === 4 && this.evaluated != undefined) {
-					this.isAllSelect = this.evaluated
-				} else {
-					this.isAllSelect = 0
-				}
 				this.$set(this.allCheck, 'checked', false)
 			}
 			this.total = await this.HandleGetRefundMoney()

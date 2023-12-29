@@ -142,10 +142,10 @@
 											</view>
 											<view class="price-sku-box">
 												<view
-													v-if="(dataList.state === 3 || dataList.state === 4) && proItem.afterState == 0 && !proItem.returnType"
+													v-if="((dataList.state === 3) || (dataList.state === 4)) && (proItem.afterState == 0) && !proItem.returnType"
 												>
 													<view
-														v-if="proItem.returnStatus == null || (!proItem.canApplyIntervention && proItem.returnStatus == 2)"
+														v-if="(!proItem.returnStatus || (!proItem.canApplyIntervention && (proItem.returnStatus == 2))) && (proItem.classifyId != 1439)"
 														class="item-applay-btn" @click.stop="applayItemTap(proItem)"
 													>
 														退款
@@ -154,7 +154,7 @@
 
 												<view v-if="proItem.returnType == 1">
 													<view
-														v-if="proItem.returnStatus == 0 || proItem.returnStatus == 1 || proItem.returnStatus == 3 || proItem.returnStatus == 4"
+														v-if="!proItem.returnStatus || (proItem.returnStatus == 1) || (proItem.returnStatus == 3) || (proItem.returnStatus == 4)"
 														class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
 													>
 														退款中
@@ -180,7 +180,7 @@
 												</view>
 												<view v-if="proItem.returnType == 2">
 													<view
-														v-if="proItem.returnStatus == 0 || proItem.returnStatus == 1 || proItem.returnStatus == 3 || proItem.returnStatus == 4"
+														v-if="!proItem.returnStatus || (proItem.returnStatus == 1) || (proItem.returnStatus == 3) || (proItem.returnStatus == 4)"
 														class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
 													>
 														退货中
@@ -198,7 +198,7 @@
 														退款中
 													</view>
 													<view
-														v-if="proItem.returnStatus == 5 || proItem.returnStatus == 8" class="item-applay-btn"
+														v-if="(proItem.returnStatus == 5) || (proItem.returnStatus == 8)" class="item-applay-btn"
 														@click="goApplyTap(proItem.returnType)"
 													>
 														退款失败
@@ -215,7 +215,7 @@
 													立即评价
 												</view>
 												<view
-													v-if="proItem.commentStatus == 1 && proItem.additionalComment != null" class="evaluate2"
+													v-if="(proItem.commentStatus == 1) && proItem.additionalComment" class="evaluate2"
 													@click="evaluateTowTap(pIndex)"
 												>
 													追加评价
@@ -338,13 +338,18 @@
 					立即付款
 				</text>
 				<text
-					v-if="(dataList.state == 2) || (dataList.state == 3) || ((dataList.state === 8) && (dataList.paymentState === 1))"
+					v-if="((dataList.state == 2) || (dataList.state == 3) || ((dataList.state === 8) && (dataList.paymentState === 1))) && dataList.skus.every(i => i.classifyId != 1439)"
 					class="btn-l" @click="applyMoneyAllTap"
 				>
 					申请退款
 				</text>
 				<text v-if="dataList.state == 3" class="btn btn-r" @click="confirmReceiptTap">确认收货</text>
-				<text v-if="dataList.state == 4" class="btn" @click="handleApplyTap">申请售后</text>
+				<text
+					v-if="([2, 3, 4].includes(dataList.state) || ((dataList.state === 8) && (dataList.paymentState === 1))) && [0, 6].includes(Number(dataList.afterState)) && (dataList.skus[0].ifAdd !== 1) && dataList.skus.some(i => i.classifyId != 1439)"
+					class="btn" @click="handleApplyTap"
+				>
+					申请售后
+				</text>
 				<text
 					v-if="dataList.state == 6" class="btn btn-r"
 					@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
@@ -367,7 +372,10 @@
 			</view>
 			<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 				<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-					<CashierList :total-price="dataList.orderPrice" show @change="(e) => payInfo = { ...payInfo, ...e }" />
+					<CashierList
+						:price-pay="dataList.orderPrice" show show-platform-pay :shop-id-pay="dataList.shopId"
+						@change="(e) => payInfo = e"
+					/>
 					<tui-button
 						type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 						shape="circle"
@@ -410,7 +418,8 @@ export default {
 				createTime: null,
 				orderPrice: 0,
 				logisticsPrice: 0,
-				discountPrice: 0
+				discountPrice: 0,
+				skus: []
 			},
 			orderId: 0,
 			steps: [],
@@ -673,14 +682,8 @@ export default {
 		// 申请售后
 		handleApplyTap() {
 			if (this.orderRefundList.length === 0) return this.$showToast('您所有商品已经申请退款，请勿重复申请')
-			let isAllSelect = 1
-			let newInfoObj = JSON.parse(JSON.stringify(this.dataList))
-			newInfoObj = newInfoObj.skus.filter((item, index) => {
-				if (item.afterState) isAllSelect = 0
-				return !item.afterState
-			})
 			uni.navigateTo({
-				url: '/another-tf/another-serve/afterSaleApply/index?item=' + JSON.stringify(newInfoObj) + '&isAllSelect=' + isAllSelect
+				url: `/another-tf/another-serve/afterSaleApply/index?orderId=${this.dataList.orderId}`
 			})
 		},
 

@@ -127,12 +127,13 @@
 				</view>
 			</view>
 			<VoucherUse
-				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse" :voucher-list="settlement.voucherList"
-				:voucher-num="settlement.userVoucherDeductLimit" @choose="handleChooseVoucher"
+				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse"
+				:voucher-list="settlement.voucherList" :voucher-num="settlement.userVoucherDeductLimit"
+				@choose="handleChooseVoucher"
 			></VoucherUse>
 
-			<view class="cashier-box">
-				<CashierList :total-price="totalPrice" @change="(e) => payInfo = e" />
+			<view style="margin-top: 20upx;">
+				<CashierList show show-platform-pay :price-pay="totalPrice" :shop-id-pay="shopIdPay" @change="(e) => payInfo = e" />
 			</view>
 			<view class="order-flow-box">
 				<view class="flow-word">交易流程：</view>
@@ -286,6 +287,7 @@ export default {
 			userAddressInfo: {},
 			isRegionalScope: false, // 是否在商家配置范围内地址
 			payInfo: {}, // 支付相关
+			shopIdPay: '', // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			oneClickSubmit: true, // 只提交订单一次
 			// 拼团相关
 			skuItemList: {},
@@ -388,6 +390,7 @@ export default {
 			_url(_data).then((res) => {
 				uni.hideLoading()
 				this.settlement = res.data
+				if (this.settlement.shops.length === 1) this.shopIdPay = this.settlement.shops[0].shopId
 				this.settlement.shops.forEach((value) => {
 					value.totalNum = value.total
 					value.pricing = 0
@@ -450,6 +453,7 @@ export default {
 					return item.receiveNotMatch
 				})
 				this.getTotal()
+				console.log(this.settlement)
 			})
 				.catch((e) => {
 					uni.hideLoading()
@@ -1090,6 +1094,7 @@ export default {
 
 		.order-list-box {
 			margin-top: 20upx;
+
 			.item {
 				background: #fff;
 				border-radius: 10upx;
@@ -1243,7 +1248,7 @@ export default {
 			width: 100%;
 			height: 98upx;
 			box-sizing: border-box;
-			margin: 30upx 0;
+			margin: 20upx 0 0;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
@@ -1253,7 +1258,7 @@ export default {
 		}
 
 		.integralPayBox {
-			margin: 20rpx 0;
+			margin: 20rpx 0 0;
 
 			.integralBg {
 				height: 98rpx;
@@ -1279,6 +1284,7 @@ export default {
 		}
 
 		.order-flow-box {
+			margin-top: 20upx;
 			display: flex;
 			flex-direction: column;
 

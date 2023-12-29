@@ -63,7 +63,7 @@
 		<!-- 商圈支付 -->
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
-				<CashierList :total-price="payObj.totalPrice" show
+				<CashierList :price-pay="payObj.pricePay" show show-platform-pay :shop-id-pay="payObj.shopId"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }" />
 				<tui-button type="warning" width="168upx" height="64upx" margin="30upx auto 0" shape="circle"
 					@click="handleShopGoPay">
@@ -155,7 +155,8 @@ export default {
 			businessIsEmpty: false,
 			payObj: {
 				showPayPopup: false,
-				totalPrice: 0,
+				pricePay: 0,
+				shopId: '',
 				payInfo: {}
 			}
 		}
@@ -442,7 +443,8 @@ export default {
 			await handleDoPay(this.payObj.payInfo, 1)
 			this.payObj = {
 				showPayPopup: false,
-				totalPrice: 0,
+				pricePay: 0,
+				shopId: '',
 				payInfo: {}
 			}
 		}

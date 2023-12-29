@@ -50,7 +50,7 @@
             <button class="fuckBtn" :loading="isLoding" :disabled="isLoding" @click="giveAmount && (isShowModalRecharge = true)" v-else>&nbsp;立即转赠</button>
         </view>
 
-				<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" @cancel="isShowModalRecharge = false">
+				<tui-modal :show="isShowModalRecharge" custom fadein :button="[]" :z-index="995" :mask-z-index="994" @cancel="isShowModalRecharge = false">
 					<view style="padding: 28upx 0;text-align: center;">
 						<view>
 							<image style="width: 435upx;height: 337upx;" src="../../../static/images/common/modal-show.png"></image>
@@ -72,13 +72,25 @@
 							</tui-button>
 							<tui-button
 								v-else type="warning" width="238rpx" height="108rpx" margin="32upx 0 0" :size="40" shape="circle"
-								style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;" @click="submitVouchers"
+								style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;" @click="showPayTypePopup = true"
 							>
 								确定
 							</tui-button>
 						</view>
 					</view>
 				</tui-modal>
+		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
+			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+				<CashierList :price-pay="amount" show show-platform-pay @change="(e) => payInfo = e" />
+				<tui-button
+					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					shape="circle"
+					@click="submitVouchers"
+				>
+					确认支付
+				</tui-button>
+			</view>
+		</tui-bottom-popup>
     </view>
 </template>
 
@@ -124,11 +136,14 @@ export default {
             isShowKeyboard: false,
             isLoding: false,
             isShowModalRecharge: false,
+			showPayTypePopup: false,
+			payInfo: {},
         }
     },
     methods: {
-        getCustomValue(index) {
-            // console.log(1);
+        getCustomValue(index,valueNum) {
+            console.log(index, valueNum);
+						if (valueNum) this.amountData[index].value = valueNum
             this.amountData[index].price = this.amountData[index].value/2
             this.amount = this.amountData[index].price
             this.giveAmount = this.amountData[index].value
@@ -142,7 +157,7 @@ export default {
                 // token,
                 // buyerUserId
             }).then(res => {
-                handleDoPay({...res.data, paymentMode: 4, huabeiPeriod: -1}, 4)
+                handleDoPay({ ...res.data, ...this.payInfo }, 4)
             }).catch(err => {
                 console.log(err);
             })

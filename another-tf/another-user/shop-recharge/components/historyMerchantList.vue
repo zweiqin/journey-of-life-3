@@ -8,9 +8,8 @@
 
 <script>
 import {
-  getRechargeShopAll,
-  getByShopAll,
-} from "@/api/anotherTFInterface/merchantUp";
+  getByShopAllApi,
+} from "@/api/anotherTFInterface";
 import listItem from './listItem.vue'
 export default {
     name: 'historyMerchantList',
@@ -27,7 +26,7 @@ export default {
     },
     methods: {
         getList() {
-            getByShopAll().then(res => {
+            getByShopAllApi().then(res => {
                 res.data.forEach(item => {
                     this.dataList.push(item)
                 })

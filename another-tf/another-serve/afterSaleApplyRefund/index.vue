@@ -228,9 +228,9 @@ export default {
 			this.orderList = uni.getStorageSync(T_AFTER_SALE_APPLY_REFUND)
 		}
 		this.orderId = parseInt(options.orderId)
-		this.isAllSelect = options.isAllSelect
+		this.isAllSelect = Number(options.isAllSelect)
 		this.orderList.forEach((el) => {
-			if (this.isAllSelect > 0) {
+			if (this.isAllSelect) {
 				this.sellPriceitem = this.sellPriceitem + (el.number * el.price) + el.logisticsPrice
 			} else {
 				this.sellPriceitem = this.sellPriceitem + (el.number * el.price)
@@ -256,7 +256,7 @@ export default {
 				uni.showLoading()
 				getReturnPriceRefundMoneyApi({
 					orderId: this.orderId,
-					isAllSelect: this.isAllSelect == 1 ? 1 : 0,
+					isAllSelect: this.isAllSelect,
 					skus: this.orderList,
 					afterType: 2,
 					goodsState: this.ReturnMoneyQuery.goodsState

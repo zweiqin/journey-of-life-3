@@ -402,7 +402,7 @@ export async function handleDoPay(submitResult, purchaseMode) {
     mask: true,
     title: '支付中...'
   });
-  if (purchaseMode) {
+  if (purchaseMode) { // 1-商城 2-本地 3-入驻 4-代金券 5-地图红包
     const submitInfo = { ...submitResult, purchaseMode };
     if (submitInfo.paymentMode === 999) {
       await bankCardPay(submitInfo);
@@ -417,13 +417,20 @@ export async function handleDoPay(submitResult, purchaseMode) {
       // #ifdef H5
       await h5Pay(submitInfo);
       // #endif
+    } else if ([2, 3].includes(submitInfo.paymentMode)) {
+      // 支付宝
+      // #ifdef MP-ALIPAY
+      await mpAliPay(submitInfo);
+      // await appWechatPay(submitResult,this.orderId)
+      throw new Error('支付宝相关支付暂时只支持支付宝小程序');
+      // #endif
     } else if (submitInfo.paymentMode === 4) {
       // #ifdef H5
       if (store.state.app.isInMiniProgram || isH5InWebview()) {
         const payAppesult = await getPayMiniProgramQueryApi({
           orderNo: submitInfo.orderSn,
           purchaseMode,
-          paymentMode: 4
+          paymentMode: submitInfo.paymentMode
         });
         let query = '';
         for (const key in payAppesult.data) {
@@ -436,13 +443,8 @@ export async function handleDoPay(submitResult, purchaseMode) {
         await h5TonglianPay(submitInfo);
       }
       // #endif
-    } else if ([2, 3].includes(submitInfo.paymentMode)) {
-      // 支付宝
-      // #ifdef MP-ALIPAY
-      await mpAliPay(submitInfo);
-      // await appWechatPay(submitResult,this.orderId)
-      throw new Error('支付宝相关支付暂时只支持支付宝小程序');
-      // #endif
+    } else if ([5, 6].includes(submitInfo.paymentMode)) {
+      await h5TonglianPay(submitInfo);
     }
   }
 }

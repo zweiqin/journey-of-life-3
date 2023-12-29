@@ -366,6 +366,24 @@ export const addShopWithdrawalRechargeApi = (data) => AnotherTFRequest('/shop/wi
 // 商家的客户充值列表
 export const getbBusinessByRechargeCustomApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRechargeCustom', data, 'POST');
 
+// /businessRechargeCustomers/getRechargeShopAll 充值商家列表
+export const getRechargeShopAllApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getRechargeShopAll', data, 'POST')
+
+// /businessRechargeCustomers/getByShopAll 客户充值的商家列表 历史记录商家
+export const getByShopAllApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByShopAll', data)
+
+// /businessRechargeOrder/rechargeSubmit 充值提交订单
+export const addRechargeSubmitApi = (data) => AnotherTFRequest('/businessRechargeOrder/rechargeSubmit', data, 'POST')
+
+// /businessRechargeAmounts/getAll 商家充值金额列表
+export const getRechargeSubmitApi = (data) => AnotherTFRequest('/businessRechargeAmounts/getAll', data)
+
+// /businessRechargeCustomers/getRechargeTotal
+export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getRechargeTotal', data, 'POST')
+
+// /businessRechargeCustomers/getByRecharge 客户充值记录列表
+export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')
+
 // 用户银行卡相关接口
 // 查询用户所有银行卡
 export const getAllBankcardListApi = (data) => AnotherTFRequest('/bank/getAll', data);
@@ -379,8 +397,11 @@ export const updateUserBankcardApi = (data) => AnotherTFRequest('/bank/update', 
 // 添加银行卡
 export const addUserBankcardApi = (data) => AnotherTFRequest('/bank/save', data, 'POST');
 
-// 修改银行卡
+// 根据银行卡ID查询信息
 export const getByIdUserBankcardApi = (data) => AnotherTFRequest('/bank/getById', data);
+
+// 提现手续费计算
+export const getCommissionBankApi = (data) => AnotherTFRequest('/bank/getCommission', data)
 
 // 收款账户。商家银行卡
 // 绑定账户

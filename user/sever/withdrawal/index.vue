@@ -61,7 +61,7 @@
 			</view>
 		</view>
 
-		<CashierList :total-price="rechargeForm.amounts" @change="(e) => payInfo = e" />
+		<CashierList :price-pay="rechargeForm.amounts || 0" @change="(e) => payInfo = e" />
 		<tui-select
 			:list="bankCardList" reverse :show="isShowBankCardSelect" @confirm="handleSelectBankCard"
 			@close="isShowBankCardSelect = false"
