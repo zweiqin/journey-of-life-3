@@ -158,7 +158,7 @@ export default {
 				this.globalData.isHasLocationPermission = true
 				// #endif
 				await this.$store.dispatch('location/getCurrentLocation', (res) => {
-					this.$store.dispatch('community/getHomePopupImage', res.detail)
+					// this.$store.dispatch('community/getHomePopupImage', res.detail)
 					this.$store.commit('community/CHANGE_HOME_STORE', res.town)
 					this.$store.dispatch('community/getVipPackageList', res.detail)
 				})

@@ -51,14 +51,20 @@
     </view> -->
 
     <view class="other-package">
-      <view class="package whole-package" @click="go('/community-center/vip-center/vip-detail?type=2')">
+
+      <!-- 399会员 -->
+      <!-- <view class="package whole-package" @click="go('/community-center/vip-center/vip-detail?type=2')">
         <view class="package-title"> 家庭小卫士 </view>
         <view class="title"><text class="vip-price">399</text>全年套餐</view>
         <button class="uni-btn">立省1500</button>
 
         <image class="li" src="../../../static/images/new-community/home/li.png"></image>
-        <image class="king" src="../../../static/images/new-community/home/king.png"></image>
-      </view>
+        <image class="king" src="../../../static/images/new-community/home/king.png"></image> 
+      </view>-->
+
+      <!-- 499会员 -->
+      <!-- <view class="package whole-package v-499" @click="go('/another-tf/another-user/user-upgrade/purchase-chain-products')"></view> -->
+      <view class="package whole-package v-499" @click="$emit('view499')"></view>
 
       <!-- <view class="package ilo-package" @click="empty()">
         <view class="package-title"> 加油劵 </view>
@@ -272,6 +278,11 @@ export default {
       text-align: center;
       line-height: 42upx;
     }
+  }
+
+  .v-499 {
+    background: url('../../../static/images/new-community/home/499.png') no-repeat !important;
+    background-size: cover !important;
   }
 
   .package-1 {

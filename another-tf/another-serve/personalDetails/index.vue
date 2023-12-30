@@ -24,7 +24,8 @@
 				<label class="font-color-999">{{ userInfo.sex }}</label>
 			</view>
 			<view class="personalHead-box1">
-				<picker mode="date" :value="birthday" start="1970-01-01" :disabled="!((birthday === '1970-01-01') || !birthday)" @change="handleConfirmTime">
+				<picker mode="date" :value="birthday" start="1970-01-01" :disabled="!((birthday === '1970-01-01') || !birthday)"
+					@change="handleConfirmTime">
 					<view class="flex-sp-between flex-display flex-items">
 						<label>生日</label>
 						<label class="font-color-999">{{ birthday | parsebirthday }}</label>
@@ -71,10 +72,7 @@
 		</view>
 
 		<!-- 修改性别弹窗 -->
-		<tui-select
-			:list="sexList" reverse :show="sexShow" @confirm="handleConfirmSex"
-			@close="sexShow = false"
-		></tui-select>
+		<tui-select :list="sexList" reverse :show="sexShow" @confirm="handleConfirmSex" @close="sexShow = false"></tui-select>
 	</view>
 </template>
 

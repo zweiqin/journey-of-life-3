@@ -35,7 +35,7 @@
         </view>
         <button @click="handleSubmit" :style="{ opacity: selectServes.length ? 1 : 0.6 }" class="uni-btn order-btn">{{
           isAuth ? selectServes.length ?
-          `已选${selectServes.length}个 立即下单` : '请选择服务项目' : '请先进行企业认证'
+          siteExist ? `已选${selectServes.length}个 立即下单` : '您不在服务范围内' : '请选择服务项目' : '请先进行企业认证'
         }}</button>
         <view class="tip" v-if="!isAuth">
           企业未认证？<button class="uni-btn" @click="go('/community-center/enterprise-orders/authentication')">去认证</button>
@@ -45,13 +45,12 @@
 
     <tui-toast ref="toast"></tui-toast>
     <tui-modal :show="isShowAuthModal" title="提示" content="请先完成企业认证" @click="handleAuth"></tui-modal>
-
   </view>
 </template>
 
 <script>
 import { advantageList } from './data'
-import { isAuthHuozhuApi, getBuServeListApi } from '../../api/community-center'
+import { isAuthHuozhuApi, getBuServeListApi, getBAuthInfoApi, getShopSiteListApi } from '../../api/community-center'
 import { USER_INFO } from '../../constant'
 
 export default {
@@ -62,7 +61,8 @@ export default {
       isAnimate: false,
       isAuth: false,
       isShowAuthModal: false,
-      serveList: []
+      serveList: [],
+      siteExist: false
     }
   },
 
@@ -98,6 +98,19 @@ export default {
 
       if (res.statusCode === 20000) {
         this.isAuth = res.data
+
+        if (this.isAuth) {
+          const enInfoInfo = await getBAuthInfoApi({
+            phone: uni.getStorageSync(USER_INFO).phone
+          })
+
+          console.log("来了老弟", enInfoInfo);
+          if (enInfoInfo.statusCode === 20000 && enInfoInfo.data) {
+            const companyAddress = enInfoInfo.data.company.companyAddress
+            const sitesRes = await getShopSiteListApi({ address: companyAddress })
+            this.siteExist = sitesRes.statusCode === 20000 && sitesRes.data.length
+          }
+        }
       }
     },
 
@@ -113,6 +126,14 @@ export default {
     handleSubmit() {
       if (!this.isAuth) {
         this.isShowAuthModal = true
+        return
+      }
+
+      if (!this.siteExist) {
+        this.ttoast({
+          type: 'info',
+          title: "您不在服务范围内"
+        })
         return
       }
 
