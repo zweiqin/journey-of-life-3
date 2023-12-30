@@ -1,7 +1,8 @@
-import { A_TF_MAIN } from '../../config'
+import { A_TF_MAIN } from '../../config';
 import { queryDynamicDataApi } from '../../api/address';
-import { CHANGE_HOME_PAGE_IMAGE, CHANGE_HOME_STORE, CHANGE_HOME_PAGE_IMAGE_PATH, CHANGE_DZ_VIP_PACKAGE } from './type';
+import { CHANGE_HOME_PAGE_IMAGE, CHANGE_HOME_STORE, CHANGE_HOME_PAGE_IMAGE_PATH, CHANGE_DZ_VIP_PACKAGE, CHANGE_IS_EXIST_SITE } from './type';
 import communityShopList from 'data/communityShopList';
+import { getShopSiteListApi } from '../../api/community-center';
 
 export default {
   namespaced: true,
@@ -49,10 +50,7 @@ export default {
 
       commit(CHANGE_HOME_PAGE_IMAGE, res.statusCode == 20000 && res.data !== '该区域暂无自定义属性' ? res.data[res.data.length - 1].url : '');
 
-      commit(
-        CHANGE_HOME_PAGE_IMAGE_PATH,
-        res.statusCode == 20000 && res.data !== '该区域暂无自定义属性' ? res.data[0].path.replace(`${A_TF_MAIN}/#`, '') : ''
-      );
+      commit(CHANGE_HOME_PAGE_IMAGE_PATH, res.statusCode == 20000 && res.data !== '该区域暂无自定义属性' ? res.data[0].path.replace(`${A_TF_MAIN}/#`, '') : '');
     },
 
     // 获取自定义服务

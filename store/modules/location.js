@@ -205,7 +205,7 @@ export default {
 					currentCity: data.town || '',
 					currentShopCity: data.town || data.distinguish || data.city
 				})
-				dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
+				// dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
 				commit('community/CHANGE_HOME_STORE', data.town, { root: true })
 				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
 			}

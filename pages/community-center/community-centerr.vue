@@ -31,7 +31,7 @@
 		<view style="background: linear-gradient(180deg, #ffffff 0%, #f4f4f4); padding-bottom: 30upx">
 			<view style="padding: 0 30upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
 				<ServeMenus></ServeMenus>
-				<VipPackage :scroll-top="scrollTop"></VipPackage>
+				<VipPackage @view499="handleToActiveDetail" :scroll-top="scrollTop"></VipPackage>
 			</view>
 
 			<view class="MakeSmallFortune">
