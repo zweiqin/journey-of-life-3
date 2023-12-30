@@ -1477,6 +1477,12 @@
           }
         },
         {
+          "path": "another-user/franchisee-statistics/index",
+          "style": {
+            "navigationBarTitleText": "加盟统计"
+          }
+        },
+        {
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"

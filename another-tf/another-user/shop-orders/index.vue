@@ -211,6 +211,7 @@ export default {
 	},
 
 	onShow() {
+		this.queryInfo.page = 1
 		this.getOrderList()
 	},
 
@@ -249,6 +250,8 @@ export default {
 				await updateSetHxCodeApi({ orderId: this.verificationCode, noticeId: 0 })
 					.then((res) => {
 						this.$showToast('核销成功', 'success')
+						this.queryInfo.page = 1
+						this.getOrderList()
 					})
 			}
 			this.verificationCode = ''

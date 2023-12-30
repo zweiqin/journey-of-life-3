@@ -29,21 +29,39 @@
 							No.{{ $store.getters.userInfo.buyerUserId }}
 							<!-- {{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }} -->
 						</view>
-						<view>
+						<view style="display: flex;justify-content: center;align-items: flex-end;">
 							<image
 								v-if="[1, 2].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="../../../static/images/user/displayBadges/huiyuan.png" @click.stop="isShowGloryFrame = true"
+								src="../../../static/images/user/displayBadges/huiyuan.png" @click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 							></image>
 							<image
 								v-if="[3, 4].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="../../../static/images/user/displayBadges/tuanzhang.png" @click.stop="isShowGloryFrame = true"
+								src="../../../static/images/user/displayBadges/tuanzhang.png" @click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 							>
 							</image>
 							<image
 								v-if="[ 5 ].includes($store.getters.levelType)" style="width: 68rpx;height: 68rpx;margin: 0 5rpx;"
-								src="../../../static/images/user/displayBadges/hehuoren.png" @click.stop="isShowGloryFrame = true"
+								src="../../../static/images/user/displayBadges/hehuoren.png" @click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 							>
 							</image>
+							<view @click.stop="(frameType = 'shop') && (isShowGloryFrame = true)">
+								<tui-icon
+									v-if="$store.state.auth.identityInfo.type.includes(9)" name="shop-fill" :size="48" unit="upx"
+									color="#ff973f" margin="0 5upx 0 0"
+								></tui-icon>
+							</view>
+							<view @click.stop="(frameType = 'franchisee') && (isShowGloryFrame = true)">
+								<tui-icon
+									v-if="$store.state.auth.identityInfo.type.includes(1)" name="friendadd-fill" :size="48" unit="upx"
+									color="#e19220" margin="0 5upx 0 0"
+								></tui-icon>
+							</view>
+							<view @click.stop="(frameType = 'agent') && (isShowGloryFrame = true)">
+								<tui-icon
+									v-if="$store.state.auth.identityInfo.type.includes(2)" name="wealth-fill" :size="48" unit="upx"
+									color="#e19220" margin="0 5upx 0 0"
+								></tui-icon>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -122,7 +140,7 @@
 			@close="isShowGloryFrame = false"
 		>
 			<view style="position: relative;">
-				<view v-if="[3, 4, 5].includes($store.getters.levelType)" class="rotation-box"></view>
+				<view v-if="(frameType === 'relationship') && [3, 4, 5].includes($store.getters.levelType)" class="rotation-box"></view>
 				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
 					<image
 						style="position: absolute;top: 180upx;left: 50%;transform: translateX(-50%);width: 174upx;height: 174upx;border-radius: 40upx;"
@@ -133,9 +151,20 @@
 					<view
 						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
 					>
-						<text v-if="[1, 2].includes($store.getters.levelType)">您是普通会员</text>
-						<text v-if="[3, 4].includes($store.getters.levelType)">恭喜你成为团长</text>
-						<text v-if="[ 5 ].includes($store.getters.levelType)">恭喜你成为合伙人</text>
+						<template v-if="frameType === 'relationship'">
+							<text v-if="[1, 2].includes($store.getters.levelType)">您是普通会员</text>
+							<text v-if="[3, 4].includes($store.getters.levelType)">恭喜你成为团长</text>
+							<text v-if="[ 5 ].includes($store.getters.levelType)">恭喜你成为合伙人</text>
+						</template>
+						<template v-else-if="frameType === 'shop'">
+							<text>您是商家</text>
+						</template>
+						<template v-else-if="frameType === 'franchisee'">
+							<text>您是加盟商</text>
+						</template>
+						<template v-else-if="frameType === 'agent'">
+							<text>您是代理商</text>
+						</template>
 					</view>
 				</view>
 			</view>
@@ -155,7 +184,8 @@ export default {
 		return {
 			isBuy: false,
 			isShow: false,
-			isShowGloryFrame: false
+			isShowGloryFrame: false,
+			frameType: ''
 		}
 	},
 	mixins: [ showModalMixin() ],
@@ -379,7 +409,7 @@ export default {
 		.tags {
 			display: flex;
 			align-items: center;
-			/* padding-left: 24upx; */
+			align-items: center;
 			box-sizing: border-box;
 			margin-top: 12upx;
 			flex-wrap: wrap;

@@ -1,23 +1,30 @@
 <template>
-	<view class="code-mask" :style="{
-		'opacity': codePicUrl && userInfo && userInfo.nickName ? '1' : '0',
-		'z-index':
-			codePicUrl && userInfo && userInfo.nickName ? '99' : '-1'
-	}">
-		<view class="code-wrapper" :style="{
-			transform: codePicUrl ? 'scale(1)' : 'scale(0)'
-		}">
+	<view
+		class="code-mask" :style="{
+			'opacity': codePicUrl ? '1' : '0',
+			'z-index':
+				codePicUrl ? '99' : '-1'
+		}"
+	>
+		<view
+			class="code-wrapper" :style="{
+				transform: codePicUrl ? 'scale(1)' : 'scale(0)'
+			}"
+		>
 			<view class="header">
 				<view style="display: flex;justify-content: center;align-items: center;">
-					<image class="header-icon"
-						:src="userInfo.avatarUrl || require('../../static/images/new-user/default-user-avatar.png')" mode="" />
+					<image
+						class="header-icon"
+						:src="userInfo.avatarUrl || require('../../static/images/new-user/default-user-avatar.png')" mode=""
+					/>
 					<text>
 						<text v-if="type === 'userInvitation'">我的邀请码：</text>
+						<text v-if="type === 'franchiseeInvitation'">我的加盟商码：</text>
 						<text v-else-if="type === 'shopInvitation'">我的商家码：</text>
 						<text v-else-if="type === 'teamMembersInvitation'">我的社区邀请码：</text>
 					</text>
 					<text>
-						<text v-if="type === 'userInvitation' || type === 'shopInvitation' || type === 'teamMembersInvitation'">
+						<text v-if="type === 'userInvitation' || type === 'franchiseeInvitation' || type === 'shopInvitation' || type === 'teamMembersInvitation'">
 							<text>{{ createCode }}</text>
 							<text style="margin-left: 12upx;font-size: 26upx;color: #0061C8;" @click="$copy(createCode)">复制</text>
 						</text>
@@ -25,7 +32,7 @@
 					</text>
 				</view>
 				<view>
-					昵称：{{ userInfo.nickName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.userId }}
+					昵称：{{ userInfo.nickName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.buyerUserId }}
 				</view>
 			</view>
 
@@ -40,29 +47,44 @@
 				</view>
 				<view style="text-align: center;">
 					<image class="code" :src="codePicUrl" alt="" />
-					<view v-if="type === 'bindingUser'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingUser&code=${createCode}`)">
+					<view
+						v-if="type === 'userInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingUser&code=${createCode}`)"
+					>
 						复制链接
 					</view>
-					<view v-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingShop&code=${createCode}`)">
+					<view
+						v-else-if="type === 'franchiseeInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingUser&code=${createCode}`)"
+					>
 						复制链接
 					</view>
-					<view v-else-if="type === 'teamMembersInvitation'" style="font-size: 26upx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingTeamMembers&code=${userInfo.phone}`)">
+					<view
+						v-else-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingShop&code=${createCode}`)"
+					>
+						复制链接
+					</view>
+					<view
+						v-else-if="type === 'teamMembersInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingTeamMembers&code=${userInfo.phone}`)"
+					>
 						复制链接
 					</view>
 				</view>
 			</view>
 
-			<button class="uni-btn"
-				@click="(type = '') || (createCode = '') || (qrcodeUrl = '') || (codePicUrl = '')">取消</button>
+			<button class="uni-btn" @click="(type = '') || (createCode = '') || (qrcodeUrl = '') || (codePicUrl = '')">
+				取消
+			</button>
 		</view>
 
 		<!-- 生成二维码 -->
 		<view v-if="qrcodeUrl && createCode">
-			<uqrcode ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + createCode"
-				@complete="handleCompleteCode"></uqrcode>
+			<uqrcode
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + createCode"
+				@complete="handleCompleteCode"
+			></uqrcode>
 		</view>
 	</view>
 </template>
@@ -70,7 +92,7 @@
 <script>
 // import jsQR from 'jsqr'
 import { A_TF_MAIN } from '../../config'
-import { USER_INFO } from '../../constant'
+import { T_STORAGE_KEY } from '../../constant'
 import { getUserInfoCodeApi, getPlatformRelationshipCodeApi } from '../../api/anotherTFInterface'
 export default {
 	name: 'CodeCreatePopup',
@@ -95,27 +117,32 @@ export default {
 		getCode(type) {
 			if (!type) return
 			this.type = type
-			this.userInfo = uni.getStorageSync(USER_INFO)
+			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
 			uni.showLoading({
 				title: '生成中...'
 			})
 			if (type === 'userInvitation') {
 				getPlatformRelationshipCodeApi({})
 					.then((res) => {
-						console.log(res)
 						this.createCode = res.data.invitationCode || ''
-						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingUser&code=`
+						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingUser&code=`
+					})
+			} else if (type === 'franchiseeInvitation') {
+				getPlatformRelationshipCodeApi({})
+					.then((res) => {
+						this.createCode = res.data.invitationCode || ''
+						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingFranchisee&code=`
 					})
 			} else if (type === 'shopInvitation') {
 				this.createCode = this.userInfo.phone || ''
-				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingShop&code=`
+				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingShop&code=`
 				// this.$refs.uqrcode.make({})
 			} else if (type === 'teamMembersInvitation') {
 				getUserInfoCodeApi({
 					type: 1
 				}).then((res) => {
 					this.createCode = res.data.invitationCode || ''
-					this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.userId}&type=bindingTeamMembers&code=`
+					this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingTeamMembers&code=`
 				})
 			}
 		},

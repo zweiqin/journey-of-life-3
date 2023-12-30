@@ -206,6 +206,12 @@ export const myFunction = [
 	// 	name: '股东看板', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/gudongkanban.png'),
 	// 	url: '/user/shareholder/shareholder'
+	// },
+	// {
+	// 	name: '加盟统计',
+	// 	icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
+	// 	url: '/another-tf/another-user/franchisee-statistics/index',
+	// 	showRole: [ 'franchisee' ]
 	// }
 ]
 

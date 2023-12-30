@@ -27,7 +27,7 @@
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi } from '../../api/user'
-import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
+import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 
@@ -169,6 +169,10 @@ export default {
 				}
 			} else if (this.type === 'bindingUser') {
 				bindPlatformRelationshipCodeApi({ code: this.code })
+					.then((res) => { this.$showToast('绑定成功', 'success') })
+					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+			} else if (this.type === 'bindingFranchisee') {
+				bindPlatformRelationshipShopApi({ code: this.code })
 					.then((res) => { this.$showToast('绑定成功', 'success') })
 					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingShop') {

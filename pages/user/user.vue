@@ -83,7 +83,21 @@ export default {
 			}
 			if (this.isLogin()) {
 				if (item.type === 'userInvitation') {
-					this.$refs.codeCreateRef.getCode('userInvitation')
+					if (this.$store.state.auth.identityInfo.type.includes(1)) {
+						uni.showActionSheet({
+							title: '请选择业务',
+							itemList: ['关系链绑定', '绑定加盟商'],
+							success: (res) => {
+								if (res.tapIndex === 0) {
+									this.$refs.codeCreateRef.getCode('userInvitation')
+								} else if (res.tapIndex === 1) {
+									this.$refs.codeCreateRef.getCode('franchiseeInvitation')
+								}
+							}
+						})
+					} else {
+						this.$refs.codeCreateRef.getCode('userInvitation')
+					}
 					return
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
@@ -117,11 +131,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-view,
-text {
-  line-height: 1.5 !important;
-}
-
 .user-page-container {
   widows: 100vw;
   min-height: 100vh;

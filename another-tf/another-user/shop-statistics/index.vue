@@ -166,7 +166,7 @@ export default {
 				title: '加载中'
 			})
 			getShopStatisticsApi({
-				shopId: this.$store.state.auth.identityInfo.info.shopId,
+				shopId: this.$store.state.auth.identityInfo.shopInfo.shopId,
 				...this.queryInfo
 			})
 				.then((res) => {

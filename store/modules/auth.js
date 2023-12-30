@@ -12,8 +12,8 @@ export default {
 			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
 			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
 			identityInfo: {
-				type: 0,
-				info: {}
+				type: [], // 9商家，1加盟商，2代理商
+				shopInfo: {}
 			},
 			historyPopup: []
 		}
@@ -31,7 +31,8 @@ export default {
 		},
 
 		[CHNAGE_USER_IDENTITY](state, data) {
-			state.identityInfo = data
+			if (data.type) state.identityInfo.type = data.type
+			if (data.shopInfo) state.identityInfo.shopInfo = data.shopInfo
 		},
 
 		[CHNAGE_HISTORY_POPUP](state, type) {
@@ -41,7 +42,7 @@ export default {
 
 	actions: {
 		// TODO: 三种登录方式合在一起
-		
+
 		// 密码登录
 		loginAction({ commit, dispatch }, loginData) {
 			return new Promise((resolve, reject) => {
@@ -194,6 +195,7 @@ export default {
 						.then((res) => {
 							commit(CHNAGE_USER_TOKEN, res.data.token)
 							commit(CHNAGE_USER_INFO, res.data)
+							if (res.data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, res.data.roleId]) ] })
 							uni.hideLoading()
 							resolve(res.data)
 						})
@@ -218,7 +220,7 @@ export default {
 				if (userInfo && userInfo.phone) {
 					getIsShopByUserApi({ mobile: userInfo.phone })
 						.then((res) => {
-							if (res.data) commit(CHNAGE_USER_IDENTITY, { type: 1, info: res.data || {} })
+							if (res.data) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
 							resolve(res.data)
 						})
 						.catch((err) => {

@@ -65,7 +65,7 @@
         <!-- <view class="tip">可提现 ￥{{ commissionData.totalAmount || 0 }}</view> -->
         <button @click="handleWithdrawal(commissionData.totalAmount)"
           :class="{ disabled: !commissionData.totalAmount || commissionData.totalAmount == 0 }" class="uni-btn">
-          佣金提现
+          去提现
         </button>
       </view>
     </view>
@@ -130,7 +130,7 @@ export default {
       // }
 
       uni.navigateTo({
-        url: '/another-tf/another-serve/withdraw/index'
+        url: '/another-tf/another-user/platform-recharge/index'
       });
     }
   },

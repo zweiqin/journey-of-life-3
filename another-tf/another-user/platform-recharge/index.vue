@@ -141,7 +141,7 @@
 			</view>
 		</tui-modal>
 
-		<CashierList :price-pay="rechargeForm.amounts || 0" show @change="(e) => payInfo = e" />
+		<CashierList :price-pay="rechargeForm.amounts || 0" @change="(e) => payInfo = e" />
 	</view>
 </template>
 
