@@ -2,13 +2,14 @@
 	<view>
 		<TuanAppShim bg="#fff"></TuanAppShim>
 		<view v-if="userId" class="my-order-container">
-			<OrderHeader ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
-				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList">
+			<OrderHeader ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus"
+				:current-mode="currentOrderMode" @change-status="handleChangeStatus" @change-mode="handleChangeOrderMode"
+				@search="handleSearchCommunityOrderList">
 			</OrderHeader>
 
 			<view class="order-list" :class="{ ani: !isLoading }">
-				<SubNavs v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)" :active-value="currentSubValue"
-					:navs="subNavs" @change-sub="handleChangeSubNavs"></SubNavs>
+				<SubNavs v-show="isShowSubNav && ['comment', 'append'].includes(isShowSubNav)"
+					:active-value="currentSubValue" :navs="subNavs" @change-sub="handleChangeSubNavs"></SubNavs>
 
 				<view v-show="currentOrderMode === 'community'">
 					<!-- 社区普通订单 -->
@@ -26,19 +27,22 @@
 						<block v-if="[0, 1].includes(currentSubValue)">
 							<CommentTypeV1
 								v-for="order in currentSubValue === 0 ? commentOrder.commentOrderList : commentOrder.commentedOrderList"
-								:key="order.orderNo" :is-append="currentSubValue === 1" :item-data="order" @comment="handleComment">
+								:key="order.orderNo" :is-append="currentSubValue === 1" :item-data="order"
+								@comment="handleComment">
 							</CommentTypeV1>
 						</block>
 						<block v-if="currentSubValue === 2">
-							<CommentTypeV2 v-for="order in commentOrder.commentAppendOrderList" :key="order.orderNo" :item-data="order">
+							<CommentTypeV2 v-for="order in commentOrder.commentAppendOrderList" :key="order.orderNo"
+								:item-data="order">
 							</CommentTypeV2>
 						</block>
 					</view>
 					<NoData v-show="noDataVisible" :is-seach="!!communityQueryInfo.orderNo" @clear="clearSearch()"></NoData>
 					<Loading v-show="isLoading" style="z-index: 1;"></Loading>
-					<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus"></LoadingMore>
+					<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus">
+					</LoadingMore>
 				</view>
-
+				<!--  商城 -->
 				<view v-show="currentOrderMode === 'businessDistrict'">
 					<BusinessOrder v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
 						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"></BusinessOrder>
@@ -50,6 +54,17 @@
 						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 					</view>
 				</view>
+
+				<!--  商圈 -->
+				<view v-show="currentOrderMode === 'shoppingMall'">
+					<BusinessOrder v-for="(orderItem, orderIndex) in shoppingMallList" :key="orderIndex" :data="orderItem"
+						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"></BusinessOrder>
+					<view style="padding-bottom: 45upx;">
+						<tui-no-data v-if="shoppingMallList.length <= 0" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+					</view>
+				</view>
+
+
 
 			</view>
 
@@ -78,7 +93,7 @@
 </template>
 
 <script>
-import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs } from './config'
+import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs, shoppingNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
 import { getAllOrderListApi } from '../../api/anotherTFInterface'
 import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO } from '../../constant'
@@ -145,7 +160,7 @@ export default {
 				value: -1
 			},
 
-			// 商圈订单
+			// 商城订单
 			businessQueryInfo: {
 				page: 1,
 				pageSize: 10
@@ -153,6 +168,15 @@ export default {
 			businessOrderList: [],
 			businessListTotal: 0,
 			businessIsEmpty: false,
+			//  商圈订单
+			shoppingQueryInfo: {
+				page: 1,
+				pageSize: 10,
+				state: "",
+				orderType: 2
+			},
+			// 商圈订单数据
+			shoppingMallList: [],
 			payObj: {
 				showPayPopup: false,
 				totalPrice: 0,
@@ -163,7 +187,21 @@ export default {
 
 	computed: {
 		navMenus() {
-			return this.currentOrderMode === 'community' ? communityOrderStatusList : this.currentOrderMode === 'businessDistrict' ? businessSubNavs : ''
+			switch (this.currentOrderMode) {
+				case 'community':
+					return communityOrderStatusList
+					break;
+				case 'businessDistrict':
+					return businessSubNavs
+					break;
+				case 'shoppingMall':
+					return shoppingNavs
+					break;
+				default:
+					return ""
+					break;
+			}
+			// return this.currentOrderMode === 'community' ? communityOrderStatusList : this.currentOrderMode === 'businessDistrict' ? businessSubNavs : ''
 		},
 		subNavs() {
 			if (this.isShowSubNav) return this.isShowSubNav === 'append' ? communityAppendOrderNavs : this.isShowSubNav === 'comment' ? this.communityCommentOrder : ''
@@ -225,6 +263,8 @@ export default {
 				this.communityQueryInfo.status = undefined
 			} else if (this.currentOrderMode === 'businessDistrict') {
 				this.currentStatus = 0
+			} else if (this.currentOrderMode === 'shoppingMall') {
+				this.currentStatus = 0
 			}
 			this.isShowSubNav = null
 			this.getOrderList()
@@ -273,6 +313,13 @@ export default {
 					this.communityQueryInfo.status = navInfo.value
 				}
 			} else if (this.currentOrderMode === 'businessDistrict') {
+			} else if (this.currentOrderMode === "shoppingMall") {
+				if(navInfo.value === 0){
+					this.shoppingQueryInfo.state = ""
+					this.getOrderList()
+					return
+				}
+				this.shoppingQueryInfo.state = navInfo.value;
 			}
 			this.getOrderList()
 		},
@@ -321,7 +368,7 @@ export default {
 				}
 			} else if (this.currentOrderMode === 'businessDistrict') {
 				uni.showLoading()
-				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus || '' })
+				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus || '', orderType: 1 })
 					.then((res) => {
 						this.businessListTotal = res.data.total
 						if (isLoadmore) {
@@ -335,6 +382,11 @@ export default {
 					.catch(() => {
 						uni.hideLoading()
 					})
+			} else if (this.currentOrderMode === 'shoppingMall') {
+				uni.showLoading()
+				let res = await getAllOrderListApi(this.shoppingQueryInfo);
+				this.shoppingMallList = res.data.list
+				uni.hideLoading()
 			}
 		},
 

@@ -10,11 +10,12 @@
 					社区
 				</button>
 				<button class="uni-btn" :class="{ active: currentMode === 'businessDistrict' }" @click="$emit('change-mode', 'businessDistrict')">
-					商圈
+					商城
 				</button>
+				<button class="uni-btn" :class="{ active: currentMode === 'shoppingMall' }" @click="$emit('change-mode', 'shoppingMall')">商圈</button>
 				<view
 					class="active-scroll-bar"
-					:class="{ 'scroll-right': currentMode === 'businessDistrict', 'scroll-center': currentMode === 'xxx' }"
+					:class="{ 'scroll-right': currentMode === 'businessDistrict', 'scroll-center': currentMode === 'shoppingMall' }"
 				></view>
 			</view>
 			<view
@@ -66,7 +67,6 @@ export default {
 			required: true
 		}
 	},
-
 	data() {
 		return {
 			searchValue: ''
@@ -157,21 +157,21 @@ export default {
 				left: 0;
 				top: 0;
 				// width: 150upx;
-				width: 220upx;
+				width: 145upx;
 				height: 62upx;
-				border-radius: 50upx 0px 84upx 50upx;
+				border-radius: 50upx 0px 0 50upx;
 				background: linear-gradient(112deg, #ef5613 6%, #f87f4b 74%);
 				transition: all 350ms;
 
 				&.scroll-right {
 					// left: 260upx;
-					left: 190upx;
-					border-radius: 0 0 0px 54upx;
+					left: 130upx;
+					border-radius: 0 0 0px 0px ;
 				}
 
 				&.scroll-center {
-					left: 126upx;
-					border-radius: 0;
+					left: 280upx;
+					border-radius: 0 0 54upx 0px ;
 				}
 			}
 		}
