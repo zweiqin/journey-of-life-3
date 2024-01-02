@@ -9,10 +9,10 @@
 				>
 					社区
 				</button>
+				<button class="uni-btn" :class="{ active: currentMode === 'shoppingMall' }" @click="$emit('change-mode', 'shoppingMall')">商城</button>
 				<button class="uni-btn" :class="{ active: currentMode === 'businessDistrict' }" @click="$emit('change-mode', 'businessDistrict')">
-					商城
+					商圈
 				</button>
-				<button class="uni-btn" :class="{ active: currentMode === 'shoppingMall' }" @click="$emit('change-mode', 'shoppingMall')">商圈</button>
 				<view
 					class="active-scroll-bar"
 					:class="{ 'scroll-right': currentMode === 'businessDistrict', 'scroll-center': currentMode === 'shoppingMall' }"
@@ -163,13 +163,13 @@ export default {
 				background: linear-gradient(112deg, #ef5613 6%, #f87f4b 74%);
 				transition: all 350ms;
 
-				&.scroll-right {
+				&.scroll-center {
 					// left: 260upx;
 					left: 130upx;
 					border-radius: 0 0 0px 0px ;
 				}
 
-				&.scroll-center {
+				&.scroll-right {
 					left: 280upx;
 					border-radius: 0 0 54upx 0px ;
 				}

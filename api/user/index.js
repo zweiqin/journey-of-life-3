@@ -191,8 +191,7 @@ export const getCreateCodeApi = (data) => RuanRequest('/infoCode/createCode', da
 export const changeActivityUserBindingApi = (data) => shopRequest('/userBindingUser/userBindingUser', data)
 
 // 服务记录邀请绑定接口
-// export const changeServiceUserBindingApi = (data) => shopRequest('/dtsUserSharingLogs/saveLog', data)
-export const changeServiceUserBindingApi = (data) => shopRequest('/dtsUserSharingLogs/saveLog', data, 'get')
+export const bindServiceUserBindingApi = (data) => shopRequest('/dtsUserSharingLogs/saveLog', data, 'get')
 
 // 查询我的(服务记录)分享数购买数接口
 export const getServiceSharingLogsApi = (data) => RuanRequest('/dtsUserSharingLogs/selectId', data, 'get')

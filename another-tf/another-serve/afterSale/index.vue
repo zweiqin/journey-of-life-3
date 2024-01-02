@@ -59,7 +59,7 @@
 								<text v-if="item.afterState == 9" class="total-price-l">撤销申请</text>
 								<text v-if="item.afterState == 10" class="total-price-l">审核通过</text>
 							</view>
-							<text v-if="item.afterState != 0 || item.afterState != 6" class="total-price-r mar-left-30">
+							<text v-if="item.afterState != 0" class="total-price-r mar-left-30">
 								退款金额 ¥ {{ item.price }}
 							</text>
 						</view>
@@ -67,7 +67,7 @@
 						<view v-if="item.afterType == 1" class="order-btn-box">
 							<text class="btn l" @click="deleteRecord(item)">删除记录</text>
 							<text
-								v-if="(item.afterType == 1 && item.afterState == 1 || item.returnType == 2 && item.afterState == 6)"
+								v-if="(((item.afterType == 1) && (item.afterState == 1)) || ((item.returnType == 2) && (item.afterState == 6)))"
 								class="btn l" @click="cancelRefundTap(item)"
 							>
 								撤销退款
@@ -84,7 +84,7 @@
 						<view v-if="item.afterType == 2" class="order-btn-box">
 							<text class="btn l" @click="deleteRecord(item)">删除记录</text>
 							<text
-								v-if="(item.afterType == 2 && item.afterState == 1 || item.afterType == 2 && item.afterState == 10 || item.afterState == 6)"
+								v-if="(((item.afterType == 2) && (item.afterState == 1)) || ((item.afterType == 2) && (item.afterState == 10)) || (item.afterState == 6))"
 								class="btn l" @click="cancelRefundTaphuo(item)"
 							>
 								撤销退货

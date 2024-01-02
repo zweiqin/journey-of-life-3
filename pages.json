@@ -1701,7 +1701,13 @@
         {
           "path": "another-serve/logisticsInfo/index",
           "style": {
-            "navigationBarTitleText": "物流信息"
+            "navigationBarTitleText": "订单物流信息"
+          }
+        },
+        {
+          "path": "another-user/product-logistics/index",
+          "style": {
+            "navigationBarTitleText": "订单物流信息"
           }
         },
         {

@@ -342,8 +342,11 @@ export const deleteShopOrderApi = (data) => AnotherTFRequest('/order/delete', da
 // 取消订单
 export const cancelShopOrderApi = (data) => AnotherTFRequest('/order/cancel', data, 'POST')
 
-// 物流信息查询
+// 订单物流信息查询
 export const getOrderDileveryShippingTraceApi = (data) => AnotherTFRequest('/order/getDilevery', data)
+
+// 产品物流信息查询（半子物流信息查询）
+export const getBanziDileveryOrderApi = (data) => AnotherTFRequest('/order/getBanziDilevery', data)
 
 // 生成用户订单的核销码
 export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderVerificationCode/getHxCode', data)

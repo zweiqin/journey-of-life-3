@@ -32,7 +32,7 @@
 					</text>
 				</view>
 				<view>
-					昵称：{{ userInfo.nickName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.buyerUserId }}
+					昵称：{{ userInfo.name || userInfo.wechatName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.buyerUserId }}
 				</view>
 			</view>
 

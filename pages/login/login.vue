@@ -68,16 +68,12 @@
 <script>
 import { sf, A_TF_MAIN } from '../../config'
 import { msgLoginRules } from './rules'
-// import { sf } from '../../config'
-// import { verificationCodeRule } from './rules'
 import { throttle } from '../../utils'
 import {
 	T_NEW_BIND_TYPE,
 	USER_ID,
 	T_STORAGE_KEY,
 	NEW_BIND_ACTIVITY_ID,
-	NEW_BIND_SERVICE_ID,
-	NEW_BIND_SERVICE_URL,
 	SF_INVITE_CODE,
 	GROUP_INVITE_CODE
 } from '../../constant'

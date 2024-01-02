@@ -43,7 +43,7 @@
 						</view>
 					</view>
 					<!--  拼团失败 -->
-					<view v-else-if="dataList.state == 5 && dataList.collageId != 0" class="status-title-box">
+					<view v-else-if="(dataList.state == 5) && (dataList.collageId != 0)" class="status-title-box">
 						<view class="l">
 							<text class="status">拼团失败</text>
 							<text class="label">剩余时间 00:00:00</text>
@@ -58,7 +58,7 @@
 					</view>
 					<!-- 退款成功 -->
 					<view
-						v-else-if="(dataList.returnType == 1 && dataList.moneyReturnList.status == 4) || (dataList.returnType == 2 && dataList.moneyReturnList.status == 6)"
+						v-else-if="((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.moneyReturnList.status == 6))"
 						class="status-title-box2"
 					>
 						<text class="status">退款成功</text>
@@ -210,17 +210,31 @@
 														客服介入
 													</view>
 												</view>
-
-												<view v-if="proItem.commentStatus == 0" class="evaluate" @click="evaluateTap(pIndex)">
+											</view>
+											<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;margin-top: 20upx;">
+												<tui-button
+													v-if="[3, 4].includes(dataList.state) && (proItem.commentId === 0) && proItem.additionalComment"
+													type="blue" plain width="180upx" height="60rpx"
+													margin="0 12upx 0 0"
+													@click="go(`/another-tf/another-serve/product-logistics/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
+												>
+													查看物流
+												</tui-button>
+												<tui-button
+													v-if="[4, 10].includes(dataList.state) && (proItem.commentId === 0)" type="blue" plain
+													width="180upx" height="60rpx" margin="0 12upx 0 0"
+													@click="go(`/another-tf/another-serve/evaluate/index`, { commentData: proItem, orderId: dataList.orderId })"
+												>
 													立即评价
-												</view>
-												<view
-													v-if="(proItem.commentStatus == 1) && proItem.additionalComment" class="evaluate2"
-													@click="evaluateTowTap(pIndex)"
+												</tui-button>
+												<tui-button
+													v-if="[4, 10].includes(dataList.state) && (proItem.commentId !== 0) && (dataList.skus[0].ifAdd !== 1)"
+													type="blue" plain width="180upx" height="60rpx"
+													margin="0 12upx 0 0"
+													@click="handleAddEvaluate(proItem)"
 												>
 													追加评价
-												</view>
-
+												</tui-button>
 											</view>
 										</view>
 									</view>
@@ -240,24 +254,18 @@
 									</view>
 								</view>
 								<!-- 待发货 待收货 已完成 -->
-								<view
-									v-if="(dataList.state == 2) || (dataList.state == 3) || (dataList.state == 4) || ((dataList.state == 8) && (dataList.paymentState === 1))"
-									class="order-total-box"
-								>
+								<view v-if="[2, 3, 4, 9, 10].includes(dataList.state)" class="order-total-box">
 									<text>实付款</text>
 									<text class="way-color">¥{{ dataList.price }}</text>
 								</view>
 								<!-- 待付款 价格是橙色 -->
-								<view
-									v-else-if="(dataList.state == 1) || ((dataList.state == 8) && (dataList.paymentState === 0))"
-									class="order-total-box"
-								>
+								<view v-else-if="[1, 9].includes(dataList.state)" class="order-total-box">
 									<text>需付款</text>
 									<text class="way-color">¥{{ dataList.price }}</text>
 								</view>
 								<!-- 退款成功 交易关闭 -->
 								<view
-									v-else-if="(dataList.returnType == 1 && dataList.moneyReturnList.status == 4) || (dataList.returnType == 2 && dataList.goodsReturn.status == 6) || (dataList.state == 5)"
+									v-else-if="((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.goodsReturn.status == 6)) || [ 5 ].includes(dataList.state)"
 									class="order-total-box"
 								>
 									<text>需付款</text>
@@ -325,47 +333,41 @@
 				class="order-details-btn" style="padding-top:30upx;"
 				:style="{ 'padding-bottom': (isIphone == true ? 40 : 0) + 'rpx' }"
 			>
-				<text
-					v-if="(dataList.state == 1) || (dataList.state == 6) || ((dataList.state === 8) && (dataList.paymentState === 0))"
-					class="btn-l" @click="cancelOrder"
-				>
+				<text v-if="[1, 6, 8].includes(dataList.state)" class="btn-l" @click="cancelOrder">
 					取消订单
 				</text>
-				<text
-					v-if="(dataList.state == 1) || ((dataList.state === 8) && (dataList.paymentState === 0))" class="btn btn-r"
-					@click="showPayTypePopup = true"
-				>
+				<text v-if="[1, 9].includes(dataList.state)" class="btn btn-r" @click="showPayTypePopup = true">
 					立即付款
 				</text>
 				<text
-					v-if="((dataList.state == 2) || (dataList.state == 3) || ((dataList.state === 8) && (dataList.paymentState === 1))) && dataList.skus.every(i => i.classifyId != 1439)"
-					class="btn-l" @click="applyMoneyAllTap"
+					v-if="[2, 3, 9].includes(dataList.state) && dataList.skus.every(i => i.classifyId != 1439)" class="btn-l"
+					@click="applyMoneyAllTap"
 				>
 					申请退款
 				</text>
 				<text v-if="dataList.state == 3" class="btn btn-r" @click="confirmReceiptTap">确认收货</text>
 				<text
-					v-if="([2, 3, 4].includes(dataList.state) || ((dataList.state === 8) && (dataList.paymentState === 1))) && [0, 6].includes(Number(dataList.afterState)) && (dataList.skus[0].ifAdd !== 1) && dataList.skus.some(i => i.classifyId != 1439)"
+					v-if="[2, 3, 4, 9, 10].includes(dataList.state) && [0, 6].includes(Number(dataList.afterState)) && (dataList.skus[0].ifAdd !== 1) && dataList.skus.some(i => i.classifyId != 1439)"
 					class="btn" @click="handleApplyTap"
 				>
 					申请售后
 				</text>
 				<text
-					v-if="dataList.state == 6" class="btn btn-r"
+					v-if="[ 6 ].includes(dataList.state)" class="btn btn-r"
 					@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
 				>
 					邀请拼单
 				</text>
-				<text v-if="dataList.state == 5 && dataList.collageId == 0" class="btn-l" @click="delOrder">删除订单</text>
+				<text v-if="[ 5 ].includes(dataList.state) && !dataList.collageId" class="btn-l" @click="delOrder">删除订单</text>
 				<text
-					v-if="dataList.state == 5 && dataList.collageId == 0" class="btn btn-r"
-					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
+					v-if="[ 5 ].includes(dataList.state) && !dataList.collageId" class="btn btn-r"
+					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
 				>
 					再次购买
 				</text>
 				<text
-					v-if="dataList.state == 5 && dataList.collageId != 0" class="btn"
-					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
+					v-if="[ 5 ].includes(dataList.state) && dataList.collageId" class="btn"
+					@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 				>
 					再次开团
 				</text>
@@ -451,7 +453,7 @@ export default {
 			this.orderRefundList = res.data
 		})
 		getOrderVerificationHxCodeApi({
-			url: `${A_TF_MAIN}/#/pages/jump/jump?orderId=${this.orderId}&type=verification&code=${this.orderId}-`
+			url: `${A_TF_MAIN}/#/pages/jump/jump?orderId=${this.orderId}&type=verification&code=${this.orderId}~`
 		}).then((res) => {
 			// if (res.errno === -1) return
 			this.verificationCode = res.data.code
@@ -516,6 +518,15 @@ export default {
 			})
 			uni.hideLoading()
 			return res.data
+		},
+
+		handleAddEvaluate(skuItem) {
+			uni.navigateTo({
+				url: '/another-tf/another-serve/addEvaluate/index?type=1',
+				success: () => {
+					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.dataList, commentId: skuItem.commentId })
+				}
+			})
 		},
 
 		goInviteSpll(collageId, orderId, productId, skuId, shopGroupWorkId) {
@@ -959,28 +970,6 @@ export default {
 											font-size: 24upx;
 											font-weight: 400;
 											color: rgba(51, 51, 51, 1);
-										}
-
-										.evaluate {
-											height: 56upx;
-											border-radius: 28upx;
-											text-align: center;
-											line-height: 56upx;
-											font-size: 26upx;
-											padding: 0 30upx;
-											border: 1px solid #C5AA7B;
-											color: #C5AA7B;
-										}
-
-										.evaluate2 {
-											height: 56upx;
-											border-radius: 28upx;
-											text-align: center;
-											line-height: 56upx;
-											font-size: 26upx;
-											padding: 0 30upx;
-											border: 1px solid #BBBBBB;
-											color: #333;
 										}
 
 									}

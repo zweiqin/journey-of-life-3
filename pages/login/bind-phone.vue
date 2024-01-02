@@ -52,7 +52,7 @@
 import { sf } from '../../config'
 import { getCodeApi, bindMobileForWXApi } from '../../api/auth'
 import { throttle } from '../../utils'
-import { T_NEW_BIND_TYPE, NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL, SF_INVITE_CODE, NEW_BIND_ACTIVITY_ID } from '../../constant'
+import { T_NEW_BIND_TYPE, SF_INVITE_CODE, NEW_BIND_ACTIVITY_ID } from '../../constant'
 
 export default {
 	name: 'BindPhone',
@@ -185,10 +185,6 @@ export default {
 				if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
 					uni.redirectTo({
 						url: '/user/sever/activityCenter/index'
-					})
-				} else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
-					uni.redirectTo({
-						url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
 					})
 				} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 					uni.redirectTo({

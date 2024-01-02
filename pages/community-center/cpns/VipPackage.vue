@@ -104,7 +104,6 @@
 
 <script>
 import showModal from "../../../mixin/showModal.js";
-import { USER_ID } from '../../../constant'
 
 export default {
   props: {

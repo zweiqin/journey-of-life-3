@@ -26,7 +26,7 @@
 <script>
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
-import { checkBindApi, bindLastUserApi } from '../../api/user'
+import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi } from '../../api/user'
 import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
@@ -80,6 +80,7 @@ export default {
 
 	onLoad(options) {
 		if (options.type) uni.setStorageSync(T_NEW_BIND_TYPE, options.type) || uni.setStorageSync(T_NEW_BIND_CODE, options.code || '') || uni.setStorageSync(T_NEW_BIND_ID, options.userId || '') // 有绑定id就进行存储，以防下面没登录跳到登录页
+		if (!getStorageKeyToken()) return
 		this.userId = getUserId() || ''
 		if (this.userId && !options.type && uni.getStorageSync(T_NEW_BIND_TYPE)) { // 如果原先有绑定id，例如注册/重新登陆了然后跳回来（options没携带绑定id），则是存储里的绑定id
 			this.userInfo = uni.getStorageSync(USER_INFO)
@@ -148,16 +149,15 @@ export default {
 			if (this.type === 'nothing') {
 				this.$switchTab('/pages/user/user')
 			} else if (this.type === 'verification') {
-				this.orderId = this.code.split('-')[0]
-				this.code = this.code.split('-')[1]
-				console.log(this.code)
-				await getOrderDetailApi({
+				this.orderId = this.code.split('~')[0]
+				console.log(this.code.split('~')[1])
+				this.viewType = 'verification'
+				getOrderDetailApi({
 					orderId: this.orderId,
 					noticeId: 0
 				}).then(({ data }) => {
 					this.orderInfo = data
 				})
-				this.viewType = 'verification'
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'toAnotherTFSettle') {
@@ -186,7 +186,7 @@ export default {
 						jumpToOtherProject(`${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
 					}, 300)
 				}
-			} else if (this.type === 'bindLastUser') {
+			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
 					.then(() => {
 						this.$showToast('已存在上级绑定')
@@ -198,6 +198,16 @@ export default {
 							.then((res) => { this.$showToast('绑定成功', 'success') })
 							.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 					})
+			} else if (this.type === 'bindCommunityService') { // 旧系统
+				const serverTypeId = this.code.split('~')[0]
+				const title = this.code.split('~')[1]
+				const serverUrl = this.code.split('~')[2]
+				bindServiceUserBindingApi({
+					bindingUserId: this.userId,
+					shareUserId: this.otherSideUserId
+				})
+					.then((res) => { this.$showToast('成功参与服务分享！', 'success') })
+					.finally((e) => { setTimeout(() => { this.$redirectTo(`/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}`) }, 2000) })
 			}
 		},
 		handleVerification() {

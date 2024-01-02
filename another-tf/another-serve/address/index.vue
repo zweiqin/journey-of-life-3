@@ -75,7 +75,7 @@ export default {
 	},
 	methods: {
 		addAddressClick() {
-			if (this.type == 1 || this.type == 2) {
+			if ([1, 2, 3].includes(this.type)) {
 				uni.navigateTo({
 					url: '/another-tf/another-serve/addAddress/index?type=1&ordertype=1'
 				})

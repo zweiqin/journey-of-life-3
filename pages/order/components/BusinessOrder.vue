@@ -29,13 +29,19 @@
 							</view>
 							<view v-if="showOperate">
 								<view
-									v-if="skuItem.commentId === 0 && data.state === 4" class="evaluate"
+									v-if="[3, 4].includes(data.state) && (data.orderType === 1)" class="evaluate"
+									@click.stop="go(`/another-tf/another-serve/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+								>
+									查看物流
+								</view>
+								<view
+									v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" class="evaluate2"
 									@click.stop="go(`/another-tf/another-serve/evaluate/index`, { commentData: skuItem, orderId: data.orderId })"
 								>
 									立即评价
 								</view>
 								<view
-									v-if="skuItem.commentId !== 0 && data.state === 4 && data.skus[0].ifAdd !== 1" class="evaluate2"
+									v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)" class="evaluate2"
 									@click.stop="handleAddEvaluate(skuItem)"
 								>
 									追加评价
@@ -132,10 +138,10 @@ export default {
 			})
 		},
 		getOrderOptionButtonObj(orderItem) {
-			const { state, returnType, afterState, skus = [], collageId, paymentState } = orderItem
+			const { state, returnType, afterState, skus = [], collageId, paymentState, orderType } = orderItem
 			const orderNeedBtnList = [] // 订单应有的btn
 			// 取消订单
-			if ([1, 6].includes(state) || ((state === 8) && (paymentState === 0))) {
+			if ([1, 6, 8].includes(state)) {
 				orderNeedBtnList.push({
 					name: '取消订单',
 					className: 'l',
@@ -144,7 +150,7 @@ export default {
 				})
 			}
 			// 立即付款
-			if ((state === 1) || ((state === 8) && (paymentState === 0))) {
+			if ([1, 8].includes(state)) {
 				orderNeedBtnList.push({
 					name: '立即付款',
 					className: 'r',
@@ -153,7 +159,7 @@ export default {
 				})
 			}
 			// 申请售后
-			if (([2, 3, 4].includes(state) || ((state === 8) && (paymentState === 1))) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
+			if ([2, 3, 4, 9, 10].includes(state) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
 				orderNeedBtnList.push({
 					name: '申请售后',
 					className: 'l',
@@ -161,8 +167,17 @@ export default {
 					functionParams: [ orderItem ]
 				})
 			}
+			// 退款详情
+			if ([ 1 ].includes(returnType)) {
+				orderNeedBtnList.push({
+					name: '退款详情',
+					className: 'l',
+					functionName: 'goRefundDetail',
+					functionParams: [ orderItem ]
+				})
+			}
 			// 查看物流
-			if ([3, 4].includes(state)) {
+			if ([3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
 				orderNeedBtnList.push({
 					name: '查看物流',
 					className: 'l',
@@ -176,15 +191,6 @@ export default {
 					name: '确认收货',
 					className: 'r',
 					functionName: 'handleConfirmReceipt',
-					functionParams: [ orderItem ]
-				})
-			}
-			// 退款详情
-			if ([ 1 ].includes(returnType)) {
-				orderNeedBtnList.push({
-					name: '退款详情',
-					className: 'l',
-					functionName: 'goRefundDetail',
 					functionParams: [ orderItem ]
 				})
 			}
@@ -297,7 +303,7 @@ export default {
 		},
 		handleBuyAgainEvent(orderItem) {
 			// 判断拼团ID是否为0
-			if (orderItem.collageId !== 0) {
+			if (orderItem.collageId) {
 				// 拼团直接跳回商品详情
 				this.go(`/another-tf/another-serve/goodsDetails/index?shopId=${orderItem.shopId}&productId=${orderItem.skus[0].productId}&skuId=${orderItem.skus[0].skuId}`)
 			} else {

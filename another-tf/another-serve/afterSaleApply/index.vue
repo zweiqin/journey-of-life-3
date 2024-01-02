@@ -9,8 +9,9 @@
 						<view class="order-info">
 							<checkbox-group @change="checkboxChange">
 								<checkbox
-									v-for="(item, index) in orderMsg.skus" :key="index" :disabled="item.afterState || item.classifyId == 1439" :checked="item.checked"
-									:value="String(index)" active-background-color="#C5AA7B"
+									v-for="(item, index) in orderMsg.skus" :key="index"
+									:disabled="item.afterState || (item.classifyId == 1439)" :checked="item.checked" :value="String(index)"
+									active-background-color="#C5AA7B"
 								>
 									<view class="order-info-item">
 										<image :src="common.seamingImgUrl(item.image)" class="product-img"></image>
@@ -37,7 +38,10 @@
 					<view class="selectBox">
 						<checkbox-group @change="changeAll">
 							<view>
-								<checkbox :disabled="orderMsg.skus.some(i => i.afterState || i.classifyId == 1439)" :checked="allCheck.checked" :value="allCheck.value" color="#C5AA7B"></checkbox>
+								<checkbox
+									:disabled="orderMsg.skus.some(i => i.afterState || (i.classifyId == 1439))"
+									:checked="allCheck.checked" :value="allCheck.value" color="#C5AA7B"
+								></checkbox>
 								<text>{{ allCheck.name }}</text>
 							</view>
 						</checkbox-group>
@@ -54,7 +58,7 @@
 					<view class="afterBtn1" @click="ReturnMoney(orderMsg)">
 						仅退款
 					</view>
-					<view v-if="orderMsg.state != 2" class="afterBtn2" @click="ReturnGoods(orderMsg)">
+					<view v-if="[3, 4, 5, 7, 9, 10].includes(orderMsg.state)" class="afterBtn2" @click="ReturnGoods(orderMsg)">
 						退款退货
 					</view>
 				</view>

@@ -110,12 +110,12 @@ export default {
 		withdrawalAmount(value) {
 			if ((value + '').includes('.') && (value + '').split('.')[1].length > 2) {
 				this.errMsg = '提现金额错误'
+			} else if (value === '') {
+				this.errMsg = '提现金额不能为空'
 			} else if (value === 0) {
 				this.errMsg = '提现金额不能等于零'
 			} else if (value < 1) {
 				this.errMsg = '提现金额不能小于1元'
-			} else if (value === '') {
-				this.errMsg = '提现金额不能为空'
 			} else if (value > this.price) {
 				this.errMsg = '余额不足，请重新输入申请金额'
 			} else if (parseFloat(value) > 1000000) {
@@ -198,20 +198,28 @@ export default {
 					icon: 'none'
 				})
 			} else {
+				uni.showLoading()
 				updateSaveDistributorWithdrawApi({
 					bankName: this.bankName,
 					bankCard: this.bankCardNum,
 					withdrawalMoney: this.withdrawalAmount
 				}).then((res) => {
+					uni.hideLoading()
 					uni.showToast({
 						title: '申请成功',
 						duration: 2000,
 						icon: 'none'
 					})
 					this.withdrawalAmount = ''
+					this.$nextTick(() => {
+						this.errMsg = ''
+					})
 					this.getBalance()
 					this.initBankcardList()
 				})
+					.catch((e) => {
+						uni.hideLoading()
+					})
 			}
 			// else {
 			// 	let dotPos = this.withdrawalAmount.indexOf(".")

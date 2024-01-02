@@ -191,7 +191,7 @@ export default {
 				const userInfo = uni.getStorageSync(USER_INFO)
 				if (phone) {
 					uni.showLoading({ mask: true })
-					getAnotherTFTokenApi({ phone, wechatName: userInfo.nickName, headImage: userInfo.avatarUrl })
+					getAnotherTFTokenApi({ phone, wechatName: userInfo.name || userInfo.nickName, headImage: userInfo.avatarUrl })
 						.then((res) => {
 							commit(CHNAGE_USER_TOKEN, res.data.token)
 							commit(CHNAGE_USER_INFO, res.data)

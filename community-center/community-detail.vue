@@ -212,7 +212,7 @@
       ref="uqrcode"
       class="generate-code-container"
       canvas-id="qrcode"
-      :value="`${rootUrl}/#/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}&code=${userId}`"
+      :value="`${rootUrl}/#/pages/jump/jump?userId=${userId}&type=bindCommunityService&code=${serverTypeId}~${title}~${serverUrl}`"
       @complete="handleCompleteCode"
     ></uqrcode>
 
@@ -233,9 +233,7 @@ import { splitProject } from './componts/utile';
 import item from '../community-center/componts/item';
 import charge from '../community-center/componts/charge';
 import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center';
-import { changeServiceUserBindingApi } from '../api/user';
 import { moreService } from '../pages/community-center/config';
-import { NEW_BIND_SERVICE_ID, NEW_BIND_SERVICE_URL } from '../constant';
 import { getUserId, getAdressDetailByLngLat } from '../utils';
 import CommentList from './components/CommentList.vue';
 
@@ -303,17 +301,7 @@ export default {
 
   created() {},
   onLoad(options) {
-    if (options.code) uni.setStorageSync(NEW_BIND_SERVICE_ID, options.code) || uni.setStorageSync(NEW_BIND_SERVICE_URL, this.$route.fullPath); // 有服务邀请绑定id就进行存储，以防下面没登录跳到登录页
     this.userId = getUserId() || '';
-    if (this.userId && !options.code && uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
-      // 如果原先有服务邀请绑定id，例如注册/重新登陆了然后跳回来（options没携带服务邀请绑定id），则是存储里的服务邀请绑定id
-      this.bindServiceId = uni.getStorageSync(NEW_BIND_SERVICE_ID) * 1;
-      this.binding(this.userId, () => {});
-    } else if (this.userId && options.code) {
-      // 请求路径上面直接有服务邀请绑定id参数
-      this.bindServiceId = options.code * 1;
-      this.binding(this.userId, () => {});
-    }
 
     this.serverTypeId = options.id * 1;
     this.serverImageUrl = options.serverImageUrl;
@@ -355,36 +343,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    // 绑定
-    binding(userId, cb) {
-      const _this = this;
-      return new Promise((resolve, reject) => {
-        changeServiceUserBindingApi({
-          bindingUserId: userId,
-          shareUserId: this.bindServiceId
-        })
-          .then((res) => {
-            uni.removeStorageSync(NEW_BIND_SERVICE_ID);
-            uni.removeStorageSync(NEW_BIND_SERVICE_URL);
-            uni.showToast({
-              title: '成功参与服务分享！',
-              duration: 1000
-            });
-            _this.timer = setTimeout(() => {
-              cb && typeof cb === 'function' && cb();
-            }, 1000);
-            resolve();
-          })
-          .catch((err) => {
-            uni.removeStorageSync(NEW_BIND_SERVICE_ID);
-            uni.removeStorageSync(NEW_BIND_SERVICE_URL);
-            _this.timer = setTimeout(() => {
-              cb && typeof cb === 'function' && cb();
-            }, 1000);
-            reject();
-          });
-      });
     },
     handleBack() {
       uni.navigateBack();
@@ -596,7 +554,7 @@ export default {
         data: {
           title: _this.title,
           desc,
-          link: `${A_TF_MAIN}/#/community-center/community-detail?id=${_this.serverTypeId}&serverNameThree=${_this.title}&serverImageUrl=${_this.serverUrl}&code=${_this.userId}`,
+          link: `${A_TF_MAIN}/#/pages/jump/jump?userId=${_this.userId}&type=bindCommunityService&code=${_this.serverTypeId}~${_this.title}~${_this.serverUrl}`,
           imageUrl: _this.serverUrl
         },
         successCb: () => {},

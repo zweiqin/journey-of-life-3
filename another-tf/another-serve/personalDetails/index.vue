@@ -24,8 +24,10 @@
 				<label class="font-color-999">{{ userInfo.sex }}</label>
 			</view>
 			<view class="personalHead-box1">
-				<picker mode="date" :value="birthday" start="1970-01-01" :disabled="!((birthday === '1970-01-01') || !birthday)"
-					@change="handleConfirmTime">
+				<picker
+					mode="date" :value="birthday" start="1970-01-01" :disabled="!((birthday === '1970-01-01') || !birthday)"
+					@change="handleConfirmTime"
+				>
 					<view class="flex-sp-between flex-display flex-items">
 						<label>生日</label>
 						<label class="font-color-999">{{ birthday | parsebirthday }}</label>
@@ -62,6 +64,12 @@
 
 		<view style="margin-top: 30upx;background-color: #ffffff;">
 			<view style="padding: 28upx 38upx;" @click="go(`/another-tf/another-serve/afterSale/index`)">我的售后 ></view>
+			<view
+				v-if="$store.state.auth.identityInfo.type.includes(1)" style="padding: 28upx 38upx;"
+				@click="go(`/another-tf/another-user/franchisee-statistics/index`)"
+			>
+				加盟统计 >
+			</view>
 		</view>
 
 		<view class="mar-top-100">

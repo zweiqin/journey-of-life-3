@@ -64,7 +64,6 @@
 
 <script>
 import { sf, A_TF_MAIN } from '../../config'
-// import { sf } from '../../config'
 import pwdLoginRules from './rules'
 import { throttle } from '../../utils'
 import {
@@ -72,8 +71,6 @@ import {
 	USER_ID,
 	T_STORAGE_KEY,
 	NEW_BIND_ACTIVITY_ID,
-	NEW_BIND_SERVICE_ID,
-	NEW_BIND_SERVICE_URL,
 	SF_INVITE_CODE,
 	GROUP_INVITE_CODE
 } from '../../constant'
@@ -98,16 +95,6 @@ export default {
         }
     },
     async onLoad(options) {
-		// 加装一个if判断，判断是否由新项目跳转过来，如果是，则阻止这一页的已登录判断造成的重定向到其他页面的问题
-		// #ifdef H5
-		// console.log('new OldTuanFeng',params)
-		// console.log(this.$store.state.app.isFromNewSystem)
-		if (options.from && options.from == 'NewSystem') {
-			// 如果来自于新系统则将全局的新系统判断改为true
-			this.$store.commit('app/JUDGMENT_NEW_SYSTEAM', true)
-		}
-		// #endif
-		// this.$store.state.app.isFromNewSystem
 		if (options.miniProgram) {
 			getApp().globalData.isInMiniprogram = true
 		}
@@ -143,8 +130,6 @@ export default {
 				uni.switchTab({
 					url: '/'
 				})
-			} else if (this.$store.state.app.isFromNewSystem) {
-				// 啥也不干，给爷干等着登录
 			} else {
 				uni.switchTab({
 					url: '/'
@@ -232,10 +217,6 @@ export default {
 					} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 						uni.redirectTo({
 							url: '/pages/jump/jump'
-						})
-					} else if (uni.getStorageSync(NEW_BIND_SERVICE_ID)) {
-						uni.redirectTo({
-							url: uni.getStorageSync(NEW_BIND_SERVICE_URL)
 						})
 					} else {
 						uni.switchTab({

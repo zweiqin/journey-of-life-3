@@ -36,8 +36,6 @@ export const T_PAY_ORDER = 'T_PAY_ORDER'
 export const T_COMMUNITY_ORDER_NO = 'T_COMMUNITY_ORDER_NO'
 
 export const NEW_BIND_ACTIVITY_ID = 'NEW_BIND_ACTIVITY_ID'
-export const NEW_BIND_SERVICE_ID = 'NEW_BIND_SERVICE_ID'
-export const NEW_BIND_SERVICE_URL = 'NEW_BIND_SERVICE_URL'
 
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
@@ -72,8 +70,6 @@ export const clearAllCache = () => {
 		T_PAY_ORDER,
 		T_COMMUNITY_ORDER_NO,
 		NEW_BIND_ACTIVITY_ID,
-		NEW_BIND_SERVICE_ID,
-		NEW_BIND_SERVICE_URL,
 		SF_INVITE_CODE,
 		GROUP_INVITE_CODE
 	].forEach((item) => {

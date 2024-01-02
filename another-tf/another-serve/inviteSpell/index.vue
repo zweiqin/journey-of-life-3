@@ -270,8 +270,7 @@ export default {
 		// 拼团下单
 		getGroupSettlement(type) {
 			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
-			let data = {}
-			data = {
+			const data = {
 				collageId: this.collageId,
 				number: this.buyNum,
 				productId: this.productId,
@@ -284,7 +283,7 @@ export default {
 			this.goosDetailshowFlag = false
 			this.buyNum = 1
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=1'
+				url: '/another-tf/another-serve/orderConfirm/index?type=3'
 			})
 		},
 		// 获取商品详情

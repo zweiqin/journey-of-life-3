@@ -2,45 +2,38 @@
 	<view class="finance-statistics-container">
 		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view
-			style="width: 100%;color: #000;padding: 34upx 24upx 44upx;box-sizing: border-box;margin-top: 2upx;margin-bottom: 20upx;background-color: #ffa637;border-radius: 20upx;font-size: 28upx;"
+			style="padding: 8upx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
-			<view style="margin-top: 20upx;">
-				<view style="display: flex;justify-content: space-between;align-items: center;">
-					<view
-						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
-					>
-						<view>店铺访问次数 (次)</view>
-						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof franchiseeStatisticsData.total === 'number' ? franchiseeStatisticsData.total : '--' }}
-						</view>
-					</view>
-					<view
-						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
-					>
-						<view>待处理订单 (件)</view>
-						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof franchiseeStatisticsData.stayOrders === 'number' ? franchiseeStatisticsData.stayOrders : '--' }}
-						</view>
-					</view>
-					<view
-						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
-					>
-						<view>售后订单 (件)</view>
-						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof franchiseeStatisticsData.stayAfters === 'number' ? franchiseeStatisticsData.stayAfters : '--' }}
-						</view>
-					</view>
-					<view
-						style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
-					>
-						<view>{{ franchiseeStatisticsData.money < 10000 ? '成交金额 (元)' : '成交金额 (万元)' }}</view>
-						<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
-							{{ typeof franchiseeStatisticsData.money === 'number' ? franchiseeStatisticsData.money : '--' }}
-						</view>
-					</view>
+			<view style="font-size: 28upx;">
+				<view>累计收益</view>
+				<view style="margin-top: 24upx;font-size: 64upx;">{{ franchiseeStatisticsData.accumulateIncome || 0 }}</view>
+				<view style="margin-top: 22upx;color: #f6a07a;">待提现：{{ franchiseeStatisticsData.withdrawalIncome || 0 }}元</view>
+			</view>
+			<view
+				style="display: flex;justify-content: space-evenly;margin-top: 76upx;padding: 20upx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
+			>
+				<view>
+					<view style="color: #f7a783;">今日商家数</view>
+					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.shopTodayNum || 0 }}</view>
+				</view>
+				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view>
+					<view style="color: #f7a783;">累计商家数</view>
+					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.shopAllNum || 0 }}</view>
+				</view>
+				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view>
+					<view style="color: #f7a783;">今日收益</view>
+					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.todayIncome || 0 }}</view>
+				</view>
+				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view>
+					<view style="color: #f7a783;">预计收益</view>
+					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.wayIncome || 0 }}</view>
 				</view>
 			</view>
 		</view>
+
 		<view style="padding: 0 24upx;background-color: #ffffff;">
 			<tui-tabs
 				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="351" :padding="24"
@@ -52,9 +45,13 @@
 		<view style="padding: 20upx;">
 			<tui-list-view v-if="shopIncomeList && shopIncomeList.length" title="">
 				<tui-list-cell v-for="(item, index) in shopIncomeList" :key="item.id">
-					<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-						<view>{{ index + 1 }}：{{ item.productName }}</view>
-						<view style="flex: 1;text-align: right;white-space: nowrap;">{{ `已售 ${item.number} 件` }}</view>
+					<view style="display: flex;justify-content: space-between;">
+						<view>{{ item.shopName }}</view>
+						<view>累计：￥{{ item.accumulateIncome || '--' }}</view>
+					</view>
+					<view style="display: flex;justify-content: space-between;">
+						<view>今日：￥{{ item.todayIncome || '--' }}</view>
+						<view>预计：￥{{ item.wayIncome || '--' }}</view>
 					</view>
 				</tui-list-cell>
 			</tui-list-view>
@@ -105,8 +102,7 @@ export default {
 	methods: {
 		handleCurrentChange(e) {
 			this.currentTab = e.index
-			this.queryInfo.condition = this.currentTab + 1
-			this.getShopStatistics()
+			this.getFranchiseeShopIncomeList()
 		},
 		getShopStatistics() {
 			uni.showLoading({
@@ -126,7 +122,7 @@ export default {
 		},
 		getFranchiseeShopIncomeList(isLoadmore) {
 			uni.showLoading()
-			getPlatformFranchiseeIncomeApi(this.queryInfo).then((res) => {
+			getPlatformFranchiseeIncomeApi({ ...this.queryInfo, type: this.currentTab + 1 }).then((res) => {
 				this.shopIncomeTotal = res.data.total
 				if (isLoadmore) {
 					this.shopIncomeList.push(...res.data.list)

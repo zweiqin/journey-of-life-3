@@ -280,7 +280,7 @@ export default {
 						})
 					}, 1500)
 				})
-					.catch((res) => {
+					.catch((e) => {
 						uni.showToast({
 							title: '商品已在售后，请勿重新操作！',
 							duration: 2000,

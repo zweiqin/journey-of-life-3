@@ -893,7 +893,8 @@ export default {
 			const data = {
 				shopDiscountId: null,
 				collageId: this.collageId,
-				type: this.sumitType,
+				// type: this.sumitType, // 1发起拼团，2参与拼团，3秒杀活动，4限时折扣活动
+				type: this.fromType, // 1立即购买，2购物车结算，3拼团商品立即购买
 				shopGroupWorkId: null,
 				receiveId: this.userAddressInfo.receiveId,
 				couponId: couponIdinfo,

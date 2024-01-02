@@ -126,7 +126,7 @@
 						<view v-if="btnType === 1" class="buyNowBut" @click="handleAddCart">
 							确认
 						</view>
-						<view v-else class="buyNowBut" @click="handleBuyNow(2)">
+						<view v-else class="buyNowBut" @click="handleBuyNow">
 							确认
 						</view>
 					</view>
@@ -404,7 +404,7 @@ export default {
 			this.goodsDetailShowFlag = false
 			this.buyNum = 1
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=1'
+				url: '/another-tf/another-serve/orderConfirm/index?type=3'
 			})
 		},
 

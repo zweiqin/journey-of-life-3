@@ -1,7 +1,7 @@
 <!-- 物流详情 -->
 <template>
 	<view>
-		<JHeader title="物流信息" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="订单物流信息" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view v-if="steps.length > 0" class="content" style="padding-bottom:100upx;">
 			<view class="order-details-information mt20">
 				<view class="order-title-box">

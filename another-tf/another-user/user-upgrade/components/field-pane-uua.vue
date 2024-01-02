@@ -34,7 +34,7 @@
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view style="display: flex;align-items: center;">
 						<BeeIcon :size="30" :src="common.seamingImgUrl(userInfo.headImage)"></BeeIcon>
-						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.wechatName || '--' }}</view>
+						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.name || userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
 						<text v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
@@ -247,9 +247,6 @@ export default {
 					// this.upgradeLevelType = 0
 					// this.relationLevelName = ''
 					// this.relationshipLevelName = ''
-					this.upgradeLevelType = 4
-					this.relationLevelName = '合伙人'
-					this.relationshipLevelName = '合伙人'
 					uni.hideLoading()
 				})
 				.catch((e) => {
