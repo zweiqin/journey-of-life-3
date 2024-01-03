@@ -49,10 +49,9 @@
 </template>
 
 <script>
-import { sf } from '../../config'
 import { getCodeApi, bindMobileForWXApi } from '../../api/auth'
 import { throttle } from '../../utils'
-import { T_NEW_BIND_TYPE, SF_INVITE_CODE, NEW_BIND_ACTIVITY_ID } from '../../constant'
+import { T_NEW_BIND_TYPE } from '../../constant'
 
 export default {
 	name: 'BindPhone',
@@ -67,8 +66,7 @@ export default {
 			onBind: '',
 			timer: null,
 			awaitSecond: 60,
-			userId: null,
-			partnerCode: null
+			userId: null
 		}
 	},
 
@@ -80,7 +78,6 @@ export default {
 		this.onBind = throttle(this.handleBindMobile, 1000)
 		this.bindForm.openId = options.openId
 		this.userId = options.userId
-		this.partnerCode = uni.getStorageSync(SF_INVITE_CODE)
 	},
 
 	computed: {
@@ -159,10 +156,15 @@ export default {
 			const _this = this
 			try {
 				await bindMobileForWXApi(this.bindForm)
-				this.$store.dispatch('auth/refrshUserInfo', () => {
-					_this.ttoast('绑定成功')
-					_this.handleSkip()
-				})
+				_this.ttoast('绑定成功')
+				setTimeout(() => {
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				}, 2000)
+				// this.$store.dispatch('auth/refrshUserInfo', () => {
+				// 	_this.handleSkip()
+				// })
 			} catch (error) {
 				this.ttoast({
 					type: 'fail',
@@ -179,14 +181,7 @@ export default {
 		async handleSkip() {
 			console.log('手机号绑定成功')
 			try {
-				if (this.partnerCode) {
-					await this.handlePartnerBind(this.userId)
-				}
-				if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-					uni.redirectTo({
-						url: '/user/sever/activityCenter/index'
-					})
-				} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
+				if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 					uni.redirectTo({
 						url: '/pages/jump/jump'
 					})
@@ -202,29 +197,6 @@ export default {
 					})
 				}, 1000)
 			}
-		},
-
-		// 师傅绑定用户
-		async handlePartnerBind(userId) {
-			const _this = this
-			uni.request({
-				url: sf + '/api/third/partner/memberBindingSf',
-				method: 'post',
-				data: {
-					userId,
-					partnerCode: this.partnerCode
-				},
-				success: (res) => {
-					if (!res.data.ok) {
-						_this.ttoast({
-							type: 'fail',
-							title: res.data.msg || '扫码失败'
-						})
-					}
-				},
-				fail: () => { },
-				complete: () => { }
-			})
 		}
 	}
 }

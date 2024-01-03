@@ -123,7 +123,7 @@ export default {
 		this.type = option.type
 		if (option.campaignsType) {
 			this.campaignsType = option.campaignsType * 1
-			this.qrcodeUrl = `${A_TF_MAIN}/#/user/sever/activityCenter/index?code=${this.campaignsType}-`
+			this.qrcodeUrl = `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindActivityUser&code=${this.campaignsType}-`
 		}
 		if (this.type === 2) {
 			uni.setStorageSync('SERVE_TYPE', option.type)
@@ -370,7 +370,7 @@ export default {
 						title: '团蜂社区家庭小卫士',
 						desc: `送价值980元品牌超值大礼包`,
 						link: `${A_TF_MAIN}/#/community-center/vip-center/vip-detail?type=2`,
-						imageUrl:`${A_TF_MAIN}/static/images/con-center/alpaca-forward-300.png`
+						imageUrl: `${A_TF_MAIN}/static/images/con-center/alpaca-forward-300.png`
 					},
 					successCb: () => { },
 					failCb: () => { }
@@ -437,13 +437,13 @@ export default {
 					failCb: () => { }
 				}
 			}
-		  try {
-		  	await this.$refs.beeWxShareRef.share(data, isQuit)
-		  	uni.hideLoading()
-		  	if (isQuit && this.activityCode) uni.showLoading({ mask: true })
-		  } catch (error) {
-		  	uni.hideLoading()
-		  }
+			try {
+				await this.$refs.beeWxShareRef.share(data, isQuit)
+				uni.hideLoading()
+				if (isQuit && this.activityCode) uni.showLoading({ mask: true })
+			} catch (error) {
+				uni.hideLoading()
+			}
 		}
 	}
 }

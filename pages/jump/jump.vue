@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID } from '../../constant'
+import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
-import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi } from '../../api/user'
+import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
 import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
@@ -141,6 +141,7 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
+		// eslint-disable-next-line complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -202,12 +203,43 @@ export default {
 				const serverTypeId = this.code.split('~')[0]
 				const title = this.code.split('~')[1]
 				const serverUrl = this.code.split('~')[2]
-				bindServiceUserBindingApi({
-					bindingUserId: this.userId,
-					shareUserId: this.otherSideUserId
-				})
+				bindServiceUserBindingApi({ bindingUserId: this.userId, shareUserId: this.otherSideUserId })
 					.then((res) => { this.$showToast('成功参与服务分享！', 'success') })
-					.finally((e) => { setTimeout(() => { this.$redirectTo(`/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}`) }, 2000) })
+					.finally((e) => { setTimeout(() => { uni.redirectTo({ url: `/community-center/community-detail?id=${serverTypeId}&serverNameThree=${title}&serverImageUrl=${serverUrl}` }) }, 2000) })
+			} else if (this.type === 'bindPartnerInvite') { // 旧系统 // 师傅邀请码，用户绑定师傅
+				bindPartnerInviteApi({ userId: this.userId, partnerCode: this.code })
+					.then((data) => {
+						if (data.ok) {
+							this.$showToast('扫码成功', 'success')
+						} else {
+							this.$showToast(data.msg || '扫码失败', 'error')
+						}
+					})
+					.catch((e) => { this.$showToast('操作失败,请重试', 'error') })
+					.finally((e) => {
+						setTimeout(() => {
+							getApp().globalData.isShowFollowOfficialAccount = true
+							uni.setStorageSync(SF_INVITE_CODE, this.code)
+							this.$switchTab('/')
+						}, 2000)
+					})
+			} else if (this.type === 'bindPartnerGroup') { // 旧系统 // 团长码，用户绑定团长
+				bindPartnerGroupApi({ userId: this.userId, partnerCode: this.code })
+					.then((data) => {
+						if (data.ok) {
+							this.$showToast('操作成功', 'success')
+						} else {
+							this.$showToast('操作失败,请重试', 'error')
+						}
+					})
+					.catch((e) => { this.$showToast('操作失败,请重试', 'error') })
+					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+			} else if (this.type === 'bindActivityUser') { // 旧系统 // 活动码，399活动绑定
+				const campaignsType = this.code.split('-')[0] * 1
+				const bindActivityId = this.code.split('-')[1]
+				bindchangeActivityUserApi({ userId: this.userId, userCode: bindActivityId, type: campaignsType })
+					.then((res) => { this.$showToast('绑定成功', 'success') })
+					.finally((e) => { setTimeout(() => { uni.redirectTo({ url: '/user/sever/activityCenter/index' }) }, 2000) })
 			}
 		},
 		handleVerification() {

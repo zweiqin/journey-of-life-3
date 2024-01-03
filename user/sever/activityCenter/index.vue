@@ -198,8 +198,7 @@
 
 <script>
 import Extension from './cpns/extension.vue'
-import { updateWithdrawalApi, getUserIncomeApi, getUserCrmListApi, getBindingUserApi, changeActivityUserBindingApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
-import { NEW_BIND_ACTIVITY_ID } from '../../../constant'
+import { updateWithdrawalApi, getUserIncomeApi, getUserCrmListApi, getBindingUserApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
 import { getUserId } from '../../../utils'
 
 export default {
@@ -239,37 +238,9 @@ export default {
 			serviceSharingLogs: {},
 			currentIndexService: -1,
 
-			bindActivityId: null,
-			campaignsType: '',
-
 			isShowWithdrawalDialog: false,
 			withdrawalAmount: ''
 
-		}
-	},
-
-	onLoad(options) {
-		// this.bindActivityId = options.code
-		// if (getUserId() && this.bindActivityId) {
-		// 	this.binding(getUserId(), () => {
-		// 		uni.switchTab({
-		// 			url: '/pages/user/user'
-		// 		})
-		// 	})
-		// }
-		if (options.code) uni.setStorageSync(NEW_BIND_ACTIVITY_ID, options.code) // 有活动id就进行存储，以防下面没登录跳到登录页
-		if (getUserId() && !options.code && uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) { // 如果原先有活动id，例如注册/重新登陆了然后跳回来（options没携带活动id），则是存储里的活动id
-			this.bindActivityId = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[1]
-			this.campaignsType = uni.getStorageSync(NEW_BIND_ACTIVITY_ID).split('-')[0] * 1
-			// try {
-			//   await this.checkBind({ userId: userId })
-			// } catch (error) {
-			this.binding(getUserId(), () => { })
-			// }
-		} else if (getUserId() && options.code) { // 请求路径上面直接有活动id参数
-			this.bindActivityId = options.code.split('-')[1]
-			this.campaignsType = options.code.split('-')[0] * 1
-			this.binding(getUserId(), () => { })
 		}
 	},
 
@@ -331,37 +302,6 @@ export default {
 			}
 			this.withdrawalAmount = ''
 			this.isShowWithdrawalDialog = false
-		},
-
-		// 绑定
-		binding(userId, cb) {
-			console.log('我来绑定了')
-			const _this = this
-			return new Promise((resolve, reject) => {
-				changeActivityUserBindingApi({
-					userId,
-					userCode: this.bindActivityId,
-					type: this.campaignsType
-				})
-					.then((res) => {
-						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
-						uni.showToast({
-							title: '绑定成功',
-							duration: 1000
-						})
-						_this.timer = setTimeout(() => {
-							cb && typeof cb === 'function' && cb()
-						}, 1000)
-						resolve()
-					})
-					.catch((err) => {
-						uni.removeStorageSync(NEW_BIND_ACTIVITY_ID)
-						_this.timer = setTimeout(() => {
-							cb && typeof cb === 'function' && cb()
-						}, 1000)
-						reject()
-					})
-			})
 		},
 
 		async getUserCrmList(isLoadmore) {

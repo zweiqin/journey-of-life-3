@@ -85,8 +85,9 @@ export default {
 				if (item.type === 'userInvitation') {
 					if (this.$store.state.auth.identityInfo.type.includes(1)) {
 						uni.showActionSheet({
-							title: '请选择业务',
+							title: '* 请选择业务 *',
 							itemList: ['关系链绑定', '绑定加盟商'],
+							itemColor: '#2c3e50',
 							success: (res) => {
 								if (res.tapIndex === 0) {
 									this.$refs.codeCreateRef.getCode('userInvitation')

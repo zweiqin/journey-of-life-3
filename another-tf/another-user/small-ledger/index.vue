@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="container">
 		<JHeader title="小账本" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view>小账本页</view>
 	</view>
@@ -34,9 +34,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.xxxxxx {
-  width: 100%;
+<style lang="less" scoped>
+.container {
   min-height: 100vh;
+	box-sizing: border-box;
 }
 </style>

@@ -142,7 +142,8 @@ export const myFunction = [
 	{
 		name: '收藏',
 		icon: require('../../static/images/new-user/menu-icon/shoucang.png'),
-		url: '/user/sever/view-history?page=collection'
+		// url: '/user/sever/view-history?page=collection',
+		url: '/another-tf/another-serve/collection/index'
 	},
 	{
 		name: '足迹',

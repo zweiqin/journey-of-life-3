@@ -108,7 +108,7 @@
 
 <script>
 import { A_TF_MAIN } from '../../../config'
-import { collectCancelApi, collectToCollectApi, getCustomerServiceAppletKfApi } from '../../../api/anotherTFInterface'
+import { updateCollectCancelApi, updateCollectToCollectApi, getCustomerServiceAppletKfApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BrandInfo',
 	props: {
@@ -155,7 +155,7 @@ export default {
 		handleCollectToggle() {
 			uni.showLoading()
 			if (this.brandDetail.ifCollect == 0) {
-				collectToCollectApi({
+				updateCollectToCollectApi({
 					shopId: parseInt(this.brandDetail.shopId)
 				})
 					.then(() => {
@@ -167,7 +167,7 @@ export default {
 						uni.hideLoading()
 					})
 			} else {
-				collectCancelApi({
+				updateCollectCancelApi({
 					ids: [ this.brandDetail.collectId ]
 				})
 					.then(() => {

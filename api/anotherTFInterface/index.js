@@ -203,12 +203,21 @@ export const bindPlatformInfoCodeBindingApi = (data) => AnotherTFRequest('/platf
 
 // 我的收藏
 // 取消收藏
-export const collectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data, 'POST')
+export const updateCollectCancelApi = (data) => AnotherTFRequest('/collect/cancel', data, 'POST')
 // 取消收藏
-export const collectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel', data, 'PUT')
+export const updateCollectCancelPUTApi = (data) => AnotherTFRequest('/collect/cancel', data, 'PUT')
 
 // 收藏商品、店铺
-export const collectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST')
+export const updateCollectToCollectApi = (data) => AnotherTFRequest('/collect/collect', data, 'POST')
+
+// 批量删除收藏商品、店铺
+export const deleteCollectToCollectApi = (data) => AnotherTFRequest('/collect/delete', data, 'POST')
+
+// 收藏商品查询
+export const getAllProductCollectApi = (data) => AnotherTFRequest('/collect/getAllProduct', data)
+
+// 收藏店铺查询
+export const getAllShopStoreCollectApi = (data) => AnotherTFRequest('/collect/getAllShop', data)
 
 // 消息
 // 消息详情
