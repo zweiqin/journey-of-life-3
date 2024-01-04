@@ -24,7 +24,7 @@
 					mode=""
 				/>
 				<TuanWXLogin @login="handleWXLoginAfter">
-					<view class="CaoNiMaZhongWeiQing">
+					<view class="wxLogin">
 						微信一键登录
 					</view>
 					<!-- <view class="item">
@@ -403,7 +403,7 @@ export default {
 	color: #ffffff;
 }
 
-.CaoNiMaZhongWeiQing {
+.wxLogin {
 	margin-top: 40rpx;
 	width: 600rpx;
 	height: 80rpx;
@@ -480,4 +480,5 @@ export default {
 .Agreements {
 	display: flex;
 }
+// 阿弥诺斯 zwq
 </style>
