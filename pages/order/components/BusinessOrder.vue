@@ -30,7 +30,7 @@
 							<view v-if="showOperate">
 								<view
 									v-if="[3, 4].includes(data.state) && (data.orderType === 1)" class="evaluate"
-									@click.stop="go(`/another-tf/another-serve/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+									@click.stop="go(`/another-tf/another-user/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
 								>
 									查看物流
 								</view>
