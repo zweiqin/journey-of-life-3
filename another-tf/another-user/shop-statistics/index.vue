@@ -4,13 +4,15 @@
 		<view style="margin-bottom: 20upx;text-align: right;">
 			<tui-button
 				type="primary" width="268rpx" height="60rpx" margin="0 20upx 0 0"
-				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=recharge')"
+				style="display: inline-block;border-radius: 30rpx;"
+				@click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=recharge')"
 			>
 				充值财务数据 →
 			</tui-button>
 			<tui-button
 				type="primary" width="268rpx" height="60rpx" margin="0 20upx 0 0"
-				style="display: inline-block;border-radius: 30rpx;" @click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=order')"
+				style="display: inline-block;border-radius: 30rpx;"
+				@click="go('/another-tf/another-user/shop-statistics/finance-statistics?type=order')"
 			>
 				订单财务数据 →
 			</tui-button>
@@ -189,9 +191,10 @@ export default {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;
-	.tui-tabs-view{
-		/deep/ .tui-tabs-slider{
-		margin-left: -24upx;
+
+	.tui-tabs-view {
+		/deep/ .tui-tabs-slider {
+			margin-left: -24upx;
 		}
 	}
 }
