@@ -62,7 +62,7 @@ export default {
 	data() {
 		return {
 			campaignsType: '',
-			qrcodeUrl: `${A_TF_MAIN}/#/user/sever/activityCenter/index?code=`,
+			qrcodeUrl: '',
 			shareCode: '',
 			fillCodeVisible: false,
 			activityCode: '',
@@ -73,7 +73,7 @@ export default {
 	async onLoad(options) {
 		if (options.campaignsType) {
 			this.campaignsType = options.campaignsType * 1
-			this.qrcodeUrl = `${A_TF_MAIN}/#/user/sever/activityCenter/index?campaignsType=${this.campaignsType}code=`
+			this.qrcodeUrl = `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindActivityUser&code=`
 			if (this.campaignsType === 0 || this.campaignsType === 3) {
 				let res
 				if (this.campaignsType === 0) {

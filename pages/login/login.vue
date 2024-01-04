@@ -61,21 +61,18 @@
 				</view>
 			</TuanWXLogin>
         </view>
-        <!-- <tui-toast ref="toast"></tui-toast> -->
+        <tui-toast ref="toast"></tui-toast>
     </view>
 </template>
 
 <script>
-import { sf, A_TF_MAIN } from '../../config'
+import { A_TF_MAIN } from '../../config'
 import { msgLoginRules } from './rules'
 import { throttle } from '../../utils'
 import {
 	T_NEW_BIND_TYPE,
 	USER_ID,
-	T_STORAGE_KEY,
-	NEW_BIND_ACTIVITY_ID,
-	SF_INVITE_CODE,
-	GROUP_INVITE_CODE
+	T_STORAGE_KEY
 } from '../../constant'
 import { getCodeApi } from '../../api/auth'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
@@ -95,15 +92,9 @@ export default {
                 code: ''
             },
             focusMap: [false,false],
-			partnerCode: '',
-			partnerCode2: '',
 			redirect: ''
         }
     },
-	onShow() {
-		this.partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
-		this.partnerCode2 = uni.getStorageSync(GROUP_INVITE_CODE) || null
-	},
 	async onLoad(options) {
 		if (options.miniProgram) {
 			getApp().globalData.isInMiniprogram = true
@@ -119,21 +110,9 @@ export default {
 		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 
 		if (userId && userInfo.token) {
-			if (this.partnerCode) {
-				await this.handlePartnerBind(userId)
 				uni.switchTab({
 					url: '/'
 				})
-			} else if (this.partnerCode2) {
-				await this.handleGroupBind(userId)
-				uni.switchTab({
-					url: '/'
-				})
-			} else {
-				uni.switchTab({
-					url: '/'
-				})
-			}
 		}
 	},
     computed: {
@@ -203,31 +182,10 @@ export default {
 			this.$refs.form
 				.validate(this.loginForm, msgLoginRules)
 				.then(async () => {
-					const res = await this.$store.dispatch('auth/codeLoginAction', {
+					await this.$store.dispatch('auth/codeLoginAction', {
 						phone: _this.loginForm.phone,
 						code: _this.loginForm.code
 					})
-					// debugger
-					// console.log(res)
-					// console.log(_this)
-					// 是否是师傅邀请码
-					if (_this.partnerCode) {
-						//  console.log('是否是师傅邀请码')
-						await _this.handlePartnerBind(res.userInfo.userId)
-						uni.switchTab({
-							url: '/'
-						})
-						return
-					}
-
-					//  是否存在团长推广码
-					if (_this.partnerCode2) {
-						await _this.handleGroupBind(res.userInfo.userId)
-						uni.switchTab({
-							url: '/'
-						})
-						return
-					}
 
 					if (this.redirect) {
 						if (tabbarList.includes(_this.redirect)) {
@@ -239,10 +197,6 @@ export default {
 								url: _this.redirect
 							})
 						}
-					} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-						uni.redirectTo({
-							url: '/user/sever/activityCenter/index'
-						})
 					} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 						uni.redirectTo({
 							url: '/pages/jump/jump'
@@ -253,10 +207,10 @@ export default {
 						})
 					}
 				})
-				.catch((errors) => {
+				.catch((e) => {
 					_this.ttoast({
 						type: 'fail',
-						title: errors.errorMsg,
+						title: e,
 						content: '登录失败'
 					})
 				})
@@ -272,89 +226,15 @@ export default {
 				this.focusMap[tag] = true
 			}
 		},
-        async handlePartnerBind(userId) {
-			const _this = this
-			uni.request({
-				url: sf + '/api/third/partner/memberBindingSf',
-				method: 'post',
-				data: {
-					userId,
-					partnerCode: this.partnerCode
-				},
-				success: (res) => {
-					if (!res.data.ok) {
-						_this.ttoast({
-							type: 'fail',
-							title: res.data.msg || '扫码失败'
-						})
-					}
-				},
-				fail: () => { },
-				complete: () => { }
-			})
-		},
-		// 团长绑定用户
-		handleGroupBind(userId) {
-			const _this = this
-			return new Promise((resolve, reject) => {
-				uni.request({
-					url: sf + '/api/third/tz/memberBindingSf',
-					method: 'post',
-					data: {
-						userId,
-						partnerCode: _this.partnerCode2
-					},
-					success: (res) => {
-						const data = res.data
-						if (data.ok) {
-							_this.ttoast('操作成功')
-						} else {
-							_this.ttoast({
-								type: 'fail',
-								title: data.msg || '操作失败,请重试'
-							})
-						}
-
-						uni.removeStorageSync(GROUP_INVITE_CODE)
-					},
-					fail: (fail) => {
-						_this.ttoast({
-							type: 'fail',
-							title: '操作失败,请重试'
-						})
-					},
-					complete: (complete) => {
-						setTimeout(() => {
-							resolve()
-						}, 1000)
-					}
-				})
-			})
-		},
 		async handleWXLoginAfter(res) {
-			const _this = this
 			// #ifdef H5
 			// 判断是否已经绑定了手机号
 			// if (!res.userInfo.phone) {
 			// 	window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${res.userInfo.weixinOpenid}`)
 			// 	return
 			// }
-			// 是否是师傅邀请码
-			if (_this.partnerCode) {
-				await _this.handlePartnerBind(res.userInfo.userId)
-				window.location.replace(`${A_TF_MAIN}/#/`)
-				return
-			}
-			// 是否存在团长推广码
-			if (_this.partnerCode2) {
-				await _this.handleGroupBind(res.userInfo.userId)
-				window.location.replace(`${A_TF_MAIN}/#/`)
-				return
-			}
 			if (this.redirect) {
 				window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
-			} else if (uni.getStorageSync(NEW_BIND_ACTIVITY_ID)) {
-				window.location.replace(`${A_TF_MAIN}/#/user/sever/activityCenter/index`)
 			} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 				window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
 			} else {

@@ -188,7 +188,7 @@ export const getIsPurchaseApi = (data) => RuanRequest('/userCrm/isPurchase', dat
 export const getCreateCodeApi = (data) => RuanRequest('/infoCode/createCode', data, 'get')
 
 // 活动码绑定
-export const changeActivityUserBindingApi = (data) => shopRequest('/userBindingUser/userBindingUser', data)
+export const bindchangeActivityUserApi = (data) => shopRequest('/userBindingUser/userBindingUser', data)
 
 // 服务记录邀请绑定接口
 export const bindServiceUserBindingApi = (data) => shopRequest('/dtsUserSharingLogs/saveLog', data, 'get')
@@ -342,6 +342,20 @@ export const getBankCardDetailUserApi = (data) => endRequest({
 // 查询提现记录
 export const getWithdrawRecordListUserApi = (data) => endRequest({
 	url: '/api/third/tz/getWithdrawRecordListUser',
+	data,
+	method: 'POST'
+})
+
+// 绑定团长
+export const bindPartnerGroupApi = (data) => endRequest({
+	url: '/api/third/tz/memberBindingSf',
+	data,
+	method: 'POST'
+})
+
+// 绑定师傅
+export const bindPartnerInviteApi = (data) => endRequest({
+	url: '/api/third/partner/memberBindingSf',
 	data,
 	method: 'POST'
 })

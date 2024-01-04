@@ -147,7 +147,7 @@
 
 <script>
 import { timeFormatting, isVideoSource } from '../../../../utils'
-import { getProductSharePicApi, collectCancelPUTApi, collectToCollectApi } from '../../../../api/anotherTFInterface'
+import { getProductSharePicApi, updateCollectCancelPUTApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodActivityDetail',
@@ -254,7 +254,7 @@ export default {
 
 		handleCollect() {
 			if (this.productInfo.ifCollect === 0) {
-				collectToCollectApi({
+				updateCollectToCollectApi({
 					productId: parseInt(this.productInfo.productId)
 				}).then((res) => {
 					this.productInfo.ifCollect = 1
@@ -264,7 +264,7 @@ export default {
 					})
 				})
 			} else {
-				collectCancelPUTApi({
+				updateCollectCancelPUTApi({
 					ids: [ this.productInfo.productId ]
 				}).then((res) => {
 					this.productInfo.ifCollect = 0

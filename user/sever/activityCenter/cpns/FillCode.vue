@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { changeActivityUserBindingApi } from '../../../../api/user'
+import { bindchangeActivityUserApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
 	props: {
@@ -59,7 +59,7 @@ export default {
 			}
 
 			try {
-				await changeActivityUserBindingApi({
+				await bindchangeActivityUserApi({
 					userId: getUserId(),
 					userCode: this.code
 				})

@@ -126,7 +126,7 @@ import BrandPerformance from './components/BrandPerformance.vue'
 import BrandPane from './components/BrandPane.vue'
 import BrandGoodsPane from './components/BrandGoodsPane.vue'
 import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
-import { getFactoryDetailApi, getShopClassifyApi, getShopProductsApi, collectToCollectApi, getFactoryListApi, collectCancelApi, getCanvasApi } from '../../../api/anotherTFInterface'
+import { getFactoryDetailApi, getShopClassifyApi, getShopProductsApi, updateCollectToCollectApi, getFactoryListApi, updateCollectCancelApi, getCanvasApi } from '../../../api/anotherTFInterface'
 import { A_TF_MAIN } from '../../../config'
 
 export default {
@@ -298,7 +298,7 @@ export default {
       const ifCollect = this.factoryDetail.ifCollect
       try {
         uni.showLoading()
-        const collectApi = !ifCollect ? collectToCollectApi : collectCancelApi
+        const collectApi = !ifCollect ? updateCollectToCollectApi : updateCollectCancelApi
         const res = await collectApi({
           shopId: this.factoryDetail.id
         })

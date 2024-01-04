@@ -60,7 +60,7 @@ export default {
 								})
 								resolve(data)
 							} catch (err) {
-								return reject(err)
+								reject(err)
 							}
 						} else {
 							uni.navigateTo({
@@ -92,7 +92,7 @@ export default {
 								})
 								resolve(data)
 							} catch (err) {
-								return reject(err)
+								reject(err)
 							}
 						} else {
 							uni.navigateTo({
@@ -123,7 +123,7 @@ export default {
 								})
 								resolve(data)
 							} catch (err) {
-								return reject(err)
+								reject(err)
 							}
 						} else {
 							window.location.replace(`${A_TF_MAIN}/#/pages/login/bind-phone?openId=${data.userInfo.weixinOpenid}`)

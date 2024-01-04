@@ -2,10 +2,10 @@
 	<view class="coupon-popup" :class="showActivity && 'show'">
 		<view class="mask" @click="closePopup"></view>
 		<view id="popupInner" class="couponShow-box">
-			<view class="tabsbox">
+			<view style="padding: 0 20upx;">
 				<tui-tabs
-					style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="375" :padding="0"
-					item-width="375rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
+					style="width: 710upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="355" :padding="20"
+					item-width="355rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
 					:tabs="activeTypeList"
 					:current-tab="activeTypeFlag" @change="activeTypeActive"
 				></tui-tabs>
@@ -215,6 +215,12 @@ export default {
 		}
 	}
 
+	.tui-tabs-view {
+		/deep/ .tui-tabs-slider {
+			margin-left: -20upx;
+		}
+	}
+
 	.mask {
 		display: block;
 		position: fixed;
@@ -244,15 +250,6 @@ export default {
 		.couponShow {
 			height: 1000rpx;
 			z-index: 333;
-		}
-
-		.tabsbox {
-			padding: 0 20rpx;
-
-			/deep/ .u-tab-item {
-				height: 100rpx !important;
-				line-height: 100rpx !important;
-			}
 		}
 
 		.close-btn {

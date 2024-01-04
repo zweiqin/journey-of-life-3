@@ -38,7 +38,6 @@
 											@click="problemItemSel(index, 1)"
 										></tui-icon>
 									</view>
-									<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 									<view class="title-wrap replynum-box" @click="goQuestionDetails(item.productId, item.problemId)">
 										<view class="flex-items">
 											<label>问</label>
@@ -202,9 +201,6 @@ export default {
 				name: '我的回答(0)'
 			}],
 			questionTypeFlag: 0,
-			disabled: false,
-			btnWidth: 180,
-			show: false,
 			options: [ {
 				name: '删除',
 				color: '#fff',

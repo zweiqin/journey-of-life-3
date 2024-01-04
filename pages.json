@@ -1441,6 +1441,12 @@
           }
         },
         {
+          "path": "another-serve/collection/index",
+          "style": {
+            "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
           "path": "another-user/platform-recharge/recharge-record",
           "style": {
             "navigationBarTitleText": "平台充值流水记录"
@@ -1707,7 +1713,7 @@
         {
           "path": "another-user/product-logistics/index",
           "style": {
-            "navigationBarTitleText": "订单物流信息"
+            "navigationBarTitleText": "产品物流信息"
           }
         },
         {

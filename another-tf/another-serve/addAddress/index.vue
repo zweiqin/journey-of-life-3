@@ -311,6 +311,8 @@ export default {
 <style lang="scss" scoped>
 .add-address-container {
 	background-color: #F7F7F7;
+	min-height: 100vh;
+	box-sizing: border-box;
 
 	.addressBack-box {
 		background-color: #FFFFFF;
