@@ -63,7 +63,7 @@ export default {
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
 			if (this.isLogin()) {
 				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
-				this.$store.dispatch('auth/refrshUserInfo')
+				this.$store.dispatch('auth/refrshUserInfoAction')
 				this.$store.dispatch('user/count')
 			}
 			this.$forceUpdate()

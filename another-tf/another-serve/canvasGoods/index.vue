@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<JHeader title="商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<!-- 商品列表 -->
 		<view v-if="goodsList.length > 0" class="listBox">
 			<view
 				v-for="(item, index) in goodsList" :key="index" class="goodsDetails-box flex-display flex-column"
@@ -155,7 +154,7 @@ input {
 }
 
 .container {
-	background: #f8f8f8;
+	background-color: #f8f8f8;
 	min-height: 100vh;
 	box-sizing: border-box;
 

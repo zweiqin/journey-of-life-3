@@ -38,17 +38,6 @@ export default {
 	},
 
 	watch: {
-		// popupType: {
-		//   handler(val) {
-		//     if (this.$store.getters.historyPopup.includes(val)) {
-		//       this.type = "";
-		//     } else {
-		//       this.type = val;
-		//       this.$store.dispatch("auth/updateHistoryPopup", val);
-		//     }
-		//   },
-		//   immediate: true,
-		// },
 	},
 	created() {
 		// console.log(app)

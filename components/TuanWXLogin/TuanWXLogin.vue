@@ -43,7 +43,7 @@ export default {
         window.location.href =
           'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid + '&redirect_uri=' + encodeURIComponent(local) + '&response_type=code&scope=snsapi_userinfo#wechat_redirect';
       } else {
-        const data = await this.$store.dispatch('auth/wxLogin', code);
+        const data = await this.$store.dispatch('auth/wxLoginAction', code);
         this.$emit('login', data);
       }
       // #endif

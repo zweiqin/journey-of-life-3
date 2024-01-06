@@ -321,30 +321,16 @@ export default {
 		if (options.detail) {
 			options = this.$getJumpParam(options)
 		}
-		let salesId = null
 		this.pointOption.inTime = new Date().getTime()
 		this.isIphone = getApp().globalData.isIphone
-		const item = getApp().globalData.productShareItem
-		if (item) {
-			const item = getApp().globalData.productShareItem
-			this.shopId = parseInt(item.shopId)
-			this.productId = item.productId
-			this.paramSkuId = item.skuId
-			salesId = parseInt(item.salesId)
-			getApp().globalData.productShareItem = undefined
-		} else {
-			this.shopId = parseInt(options.shopId)
-			this.productId = options.productId
-			this.paramSkuId = options.skuId
-			salesId = parseInt(options.salesId)
-		}
+		this.shopId = parseInt(options.shopId)
+		this.productId = options.productId
+		this.paramSkuId = options.skuId
 		// 判断是否是拼团
 		if (options.shopGroupWorkId) {
 			this.shopGroupWorkId = options.shopGroupWorkId
 		}
 		this.handleGetProductDetail()
-		// 绑定分销关系
-		salesId && this.shopId ? this.bindSalesCustomer(salesId, this.shopId) : ''
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
 		})
@@ -592,17 +578,6 @@ export default {
 			} finally {
 				uni.hideLoading()
 			}
-		},
-
-		/**
-		 * 绑定分销关系
-		 * @param salesId 分销员ID
-		 * @param storeId 店铺ID
-		 */
-
-		bindSalesCustomer(salesId, storeId) {
-			// 如果已登录，静默绑定客户关系，否则跳转到登录页面
-			bindDistributorSalesCustomerApi({ shopId: storeId, distributorId: salesId })
 		},
 
 		/**

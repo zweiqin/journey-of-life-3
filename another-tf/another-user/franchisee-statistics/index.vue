@@ -150,7 +150,7 @@ export default {
 .finance-statistics-container {
 	min-height: 100vh;
 	width: 100%;
-	background: #f6f6f6;
+	background-color: #f6f6f6;
 	.tui-tabs-view{
 		/deep/ .tui-tabs-slider{
 		margin-left: -24upx;

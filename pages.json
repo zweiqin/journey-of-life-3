@@ -292,12 +292,12 @@
         "navigationBarTitleText": "电话登录"
       }
     },
-    {
-      "path": "pages/login/editPwd",
-      "style": {
-        "navigationBarTitleText": "重置密码"
-      }
-    },
+    // {
+    //   "path": "pages/login/editPwd",
+    //   "style": {
+    //     "navigationBarTitleText": "重置密码"
+    //   }
+    // },
     // {
     //   "path": "pages/reset-password/reset-password",
     //   "style": {
@@ -387,12 +387,24 @@
             "navigationBarTitleText": "完善服务信息"
           }
         },
-        {
-          "path": "merchant-settlement/login/login",
-          "style": {
-            "navigationBarTitleText": "商家认证"
-          }
-        },
+        // {
+        //   "path": "merchant-settlement/login/login",
+        //   "style": {
+        //     "navigationBarTitleText": "商家认证"
+        //   }
+        // },
+        // {
+        //   "path": "merchant-settlement/authentication/index",
+        //   "style": {
+        //     "navigationBarTitleText": "个人信息验证"
+        //   }
+        // },
+        // {
+        //   "path": "merchant-settlement/login/choose-type",
+        //   "style": {
+        //     "navigationBarTitleText": "选择门店标签"
+        //   }
+        // },
         {
           "path": "shop/shop-enter",
           "style": {
@@ -599,18 +611,6 @@
           }
         },
         {
-          "path": "/merchant-settlement/authentication/index",
-          "style": {
-            "navigationBarTitleText": "个人信息验证"
-          }
-        },
-        {
-          "path": "merchant-settlement/login/choose-type",
-          "style": {
-            "navigationBarTitleText": "选择门店标签"
-          }
-        },
-        {
           "path": "makeSmallFortune/index",
           "style": {
             "navigationBarTitleText": "赚小钱"
@@ -802,26 +802,32 @@
             "navigationBarTitleText": "验证码"
           }
         },
-        {
-          "path": "info/detail",
-          "style": {
-            "navigationBarTitleText": "信息设置",
-            "usingComponents": {
-              "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-              "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
-            }
-          }
-        },
-        {
-          "path": "info/cropper",
-          "style": {
-            "navigationBarTitleText": "修改头像",
-            "usingComponents": {
-              "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-              "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
-            }
-          }
-        },
+        // {
+        //   "path": "info/detail",
+        //   "style": {
+        //     "navigationBarTitleText": "信息设置",
+        //     "usingComponents": {
+        //       "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+        //       "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+        //     }
+        //   }
+        // },
+        // {
+        //   "path": "info/cropper",
+        //   "style": {
+        //     "navigationBarTitleText": "修改头像",
+        //     "usingComponents": {
+        //       "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+        //       "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+        //     }
+        //   }
+        // },
+        // {
+        //   "path": "info/privacy",
+        //   "style": {
+        //     "navigationBarTitleText": "我的隐私"
+        //   }
+        // },
         {
           "path": "marketing-tools/contact-guide/index"
         },
@@ -1221,12 +1227,6 @@
           }
         },
         {
-          "path": "/info/privacy",
-          "style": {
-            "navigationBarTitleText": "我的隐私"
-          }
-        },
-        {
           "path": "shareholder/shareholder",
           "style": {
             "navigationBarTitleText": ""
@@ -1393,6 +1393,12 @@
       "root": "another-tf",
       "pages": [
         {
+          "path": "another-serve/bindPhone/index",
+          "style": {
+            "navigationBarTitleText": "绑定手机号"
+          }
+        },
+        {
           "path": "another-serve/personalDetails/index",
           "style": {
             "navigationBarTitleText": "个人信息"
@@ -1444,6 +1450,12 @@
           "path": "another-serve/collection/index",
           "style": {
             "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
+          "path": "another-serve/footprintList/index",
+          "style": {
+            "navigationBarTitleText": "浏览足迹"
           }
         },
         {
@@ -1570,6 +1582,30 @@
           "path": "another-serve/livePage/index",
           "style": {
             "navigationBarTitleText": "直播推荐"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/index",
+          "style": {
+            "navigationBarTitleText": "分销中心"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/salesIndex",
+          "style": {
+            "navigationBarTitleText": "店铺分销中心"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/totalAward",
+          "style": {
+            "navigationBarTitleText": "累计奖励"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/commodity",
+          "style": {
+            "navigationBarTitleText": "推广商品"
           }
         },
         {

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<tui-popup :show="show" mode="fade" style="background-color: rgba(0,0,0,0.4);">
+		<tui-popup show mode="fade" style="background-color: rgba(0,0,0,0.4);">
 			<view class="warp">
 				<view class="rect" @tap.stop>
 					<!-- 关闭按钮 -->
@@ -31,20 +31,20 @@
 				</view>
 			</view>
 			<view class="fenx" :style="{ 'height': (isIphone === true ? 140 : 130) + 'rpx' }">
-				<view class="shareBox" :class="{ 'width100': noMp }" hover-class="btn-click" @click="WXfenx">
+				<view class="shareBox width100" hover-class="btn-click" @click="WXfenx">
 					<view style="flex: 1;text-align: center;display: flex;align-items: center;">
-						<view v-if="noMp" style="margin-left: 120rpx;">
+						<view style="margin-left: 120rpx;">
 							<tui-icon name="pic-fill" :size="32" color="#7dc932"></tui-icon>
-						</view>
-						<view v-else style="margin-left: 35%;">
-							<tui-icon name="pic-fill" :size="64" color="#7dc932"></tui-icon>
 						</view>
 						<view style="margin-left: 10rpx;font-size: 28rpx;color: #333333">保存到本地</view>
 					</view>
 				</view>
-				<view v-if="noMp" class="linkBtnBox" hover-class="btn-click" @click="FZlianj">
+				<view class="linkBtnBox" hover-class="btn-click" @click="FZlianj">
 					<view style="flex: 1;text-align: center;display: flex;align-items: center;">
-						<view class="linkBox" style="width: fit-content;height: fit-content;padding: 14upx;background-color: #f3b44b;border-radius: 50%;line-height: 1;">
+						<view
+							class="linkBox"
+							style="width: fit-content;height: fit-content;padding: 14upx;background-color: #f3b44b;border-radius: 50%;line-height: 1;"
+						>
 							<tui-icon name="link" :size="18" color="#ffffff"></tui-icon>
 						</view>
 						<view style="margin-left: 10rpx;">
@@ -63,29 +63,23 @@ export default {
 	name: 'ShareProduct',
 	data() {
 		return {
-			size: 110, // 二维码大小
-			onval: true, // val值变化时自动重新生成二维码
-			loadMake: true, // 组件加载完成后自动生成二维码
-			erweima: '',
-			openSettingBtnHidden: true, // 是否授权
-			show: true,
-			item: {},
-			listitem: {},
-			skuId: 0,
-			FindSalesPromQuery: {
-				type: 1,
-				tenantCode: ''
-			},
-			shopId: null,
-			salesId: null,
-			productId: null,
-			noMp: false,
 			shareType: 1,
-			isIphone: false
+			salesId: null,
+			shopId: null,
+			productId: null,
+			skuId: 0,
+			isIphone: false,
+			erweima: ''
 		}
 	},
 	onLoad(options) {
 		this.isIphone = getApp().globalData.isIphone
+		if (options.shareType) {
+			this.shareType = Number(options.shareType) // 1店铺（shopId、shareImg），2商品（shopId、productId、skuId、shareImg）
+		}
+		if (options.salesId) {
+			this.salesId = options.salesId
+		}
 		if (options.productId) {
 			this.productId = options.productId
 		}
@@ -95,16 +89,7 @@ export default {
 		if (options.shopId) {
 			this.shopId = options.shopId
 		}
-		if (options.salesId) {
-			this.salesId = options.salesId
-		}
-		if (options.shareType) {
-			this.shareType = options.shareType
-		}
-		console.log(options.shareImg)
 		this.erweima = options.shareImg
-		// #ifndef MP
-		this.noMp = true
 		// #endif
 	},
 	methods: {
@@ -195,7 +180,7 @@ export default {
 						}
 					})
 				},
-				fail(err) {}
+				fail(err) { }
 			})
 			// #endif
 			// #ifdef H5
@@ -210,10 +195,12 @@ export default {
 		// 复制链接
 		FZlianj() {
 			let link
-			if (this.productId) {
-				link = `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.shopId}&productId=${this.productId}&skuId=${this.skuId}&salesId=${this.salesId}`
-			} else {
-				link = `${A_TF_MAIN}/#/community-center/shop/shop-detail?storeId=${this.shopId}&salesId=${this.salesId}`
+			if (this.salesId) {
+				link = `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindingSalesCustomer&code=${this.shareType}~${this.shopId}~${this.productId}~${this.skuId}~${this.salesId}`
+			} else if (this.shareType === 1) {
+				link = `${A_TF_MAIN}/#/community-center/shop/shop-detail?storeId=${this.shopId}`
+			} else if (this.shareType === 2) {
+				link = `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.shopId}&productId=${this.productId}&skuId=${this.skuId}`
 			}
 			// #ifdef MP-WEIXIN || MP-ALIPAY || APP-PLUS
 			uni.setClipboardData({

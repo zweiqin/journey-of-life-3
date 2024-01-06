@@ -303,8 +303,7 @@ export default {
 
 <style lang="less" scoped>
 .memberCenter {
-	background: #F8F8F8;
-	background-size: contain;
+	background-color: #F8F8F8;
 	min-height: 100vh;
 	padding: 0 20rpx;
 

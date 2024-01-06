@@ -148,8 +148,14 @@ export const myFunction = [
 	{
 		name: '足迹',
 		icon: require('../../static/images/new-user/menu-icon/zuji.png'),
-		url: '/user/sever/view-history?page=history'
+		// url: '/user/sever/view-history?page=history',
+		url: '/another-tf/another-serve/footprintList/index'
 	}
+	// {
+	// 	name: '分销中心',
+	// 	icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+	// 	url: '/another-tf/another-serve/distributionModule/index'
+	// },
 	// {
 	// 	name: '粉丝统计',
 	// 	icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),

@@ -32,14 +32,6 @@
 					</block>
 				</tui-input>
 			</tui-form>
-			<!-- <view class="ReadingAgreement">
-				<view class="Agreement">
-				<view class="skip" @click="handleSkip">
-				<text>暂时跳过</text>
-				<tui-icon :size="24" name="toright"></tui-icon>
-				</view>
-				</view>
-				</view> -->
 		</view>
 		<tui-button type="danger" width="650rpx" margin="0 auto" height="82rpx" style="margin-top: 60rpx" @click="onBind">
 			立即绑定
@@ -162,40 +154,12 @@ export default {
 						url: '/pages/login/login'
 					})
 				}, 2000)
-				// this.$store.dispatch('auth/refrshUserInfo', () => {
-				// 	_this.handleSkip()
-				// })
 			} catch (error) {
 				this.ttoast({
 					type: 'fail',
 					title: '绑定失败',
 					content: error
 				})
-			}
-		},
-
-		handleBack() {
-			uni.switchTab({ url: '/' })
-		},
-
-		async handleSkip() {
-			console.log('手机号绑定成功')
-			try {
-				if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-					uni.redirectTo({
-						url: '/pages/jump/jump'
-					})
-				} else {
-					uni.switchTab({
-						url: '/pages/community-center/community-centerr'
-					})
-				}
-			} catch (error) {
-				setTimeout(() => {
-					uni.switchTab({
-						url: '/'
-					})
-				}, 1000)
 			}
 		}
 	}

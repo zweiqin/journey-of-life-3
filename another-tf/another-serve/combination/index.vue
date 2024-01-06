@@ -359,7 +359,7 @@ export default {
 
 <style lang="less" scoped>
 .combinationBox {
-	background: #333333;
+	background-color: #333333;
 	min-height: 100vh;
 	box-sizing: border-box;
 

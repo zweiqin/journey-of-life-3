@@ -10,6 +10,21 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 // 获取支付宝小程序手机号绑定
 export const updateAliPhoneAppApi = (data) => AnotherTFRequest('/app/updateAliPhone', data, 'POST')
 
+// 获取短信验证码
+export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST')
+
+// 获取短信验证码
+export const getVerifyCodeApi = (data) => AnotherTFRequest('/app/getCode', data)
+
+// 手机号验证码登录、注册
+export const updatePhoneLoginRegisterApi = (data) => AnotherTFRequest('/app/login', data, 'POST')
+
+// 微信登录
+export const updateWXLoginApi = (data) => AnotherTFRequest('/app/login', data, 'POST')
+
+// APP微信登录
+export const updateWXAppLoginApi = (data) => AnotherTFRequest('/app/wxAppLogin', data, 'POST')
+
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
@@ -219,6 +234,13 @@ export const getAllProductCollectApi = (data) => AnotherTFRequest('/collect/getA
 // 收藏店铺查询
 export const getAllShopStoreCollectApi = (data) => AnotherTFRequest('/collect/getAllShop', data)
 
+// 浏览足迹
+// 删除足迹
+export const deleteFootprintApi = (data) => AnotherTFRequest('/footprint/delete', data, 'POST')
+
+// 我的足迹查询
+export const getAllFootprintApi = (data) => AnotherTFRequest('/footprint/getAll', data)
+
 // 消息
 // 消息详情
 export const getByIdNoticeMessageDateilsApi = (data) => AnotherTFRequest('/notice/getById', data)
@@ -231,14 +253,23 @@ export const updateReadNoticeApi = (data) => AnotherTFRequest('/notice/readNotic
 export const addCartShoppingApi = (data) => AnotherTFRequest('/cart/addCart', data, 'POST')
 
 // 分销中心
+// 分销中心列表查询
+export const getDistributorAllShopApi = (data) => AnotherTFRequest('/distributor/getDistributorAll', data)
+
+// 店铺分销数据查询
+export const getShopDistributorSalesMainInfoApi = (data) => AnotherTFRequest('/distributor/getShopDistributor', data)
+
+// 店铺分销数据查询
+export const getRewardDistributorApi = (data) => AnotherTFRequest('/distributor/getReward', data)
+
 // 验证当前客户是否为分销员
 export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data)
 
+// 推广商品查询
+export const getExtensionProductDistributorApi = (data) => AnotherTFRequest('/distributor/getExtensionProduct', data)
+
 // 绑定关系
 export const bindDistributorSalesCustomerApi = (data) => AnotherTFRequest('/distributor/bind', data, 'POST')
-
-// 分享
-export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data)
 
 // 获取二维码和小程序码
 export const getShareWorkApi = (data) => AnotherTFRequest('/work/getShare', data)
@@ -257,6 +288,12 @@ export const getShopProductsApi = (data) => AnotherTFRequest('/shop/getShopProdu
 
 // 查询店铺banner
 export const getShopBannerApi = (data) => AnotherTFRequest('/shop/getShopBanner', data)
+
+// 推广店铺
+export const getSharePicShopApi = (data) => AnotherTFRequest('/shop/getSharePic', data)
+
+// 分享
+export const getProductSharePicApi = (data) => AnotherTFRequest('/product/getSharePic', data)
 
 // 查询直播间列表
 export const getCanvasSelectLiveListApi = (data) => AnotherTFRequest('/canvas/selectLiveList', data)
@@ -442,9 +479,6 @@ export const getByIdBankApi = (data) => AnotherTFRequest('/shopBank/getById', da
 
 // 字典下拉数据查询
 export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST')
-
-// 获取短信验证码
-export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST')
 
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')

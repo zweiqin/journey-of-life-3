@@ -216,7 +216,7 @@
 													v-if="[3, 4].includes(dataList.state) && (proItem.commentId === 0) && proItem.additionalComment"
 													type="blue" plain width="180upx" height="60rpx"
 													margin="0 12upx 0 0"
-													@click="go(`/another-tf/another-serve/product-logistics/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
+													@click="go(`/another-tf/another-user/product-logistics/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
 												>
 													查看物流
 												</tui-button>

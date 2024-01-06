@@ -27,7 +27,7 @@
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
-import { getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
+import { bindDistributorSalesCustomerApi, getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 
@@ -141,7 +141,6 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
-		// eslint-disable-next-line complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -149,6 +148,26 @@ export default {
 			uni.removeStorageSync(T_NEW_BIND_ID)
 			if (this.type === 'nothing') {
 				this.$switchTab('/pages/user/user')
+			} else if (this.type === 'bindingSalesCustomer') { // 绑定分销关系，salesId分销员ID
+				const shareType = Number(this.code.split('~')[0])
+				const shopId = this.code.split('~')[1]
+				const productId = this.code.split('~')[2]
+				const skuId = this.code.split('~')[3]
+				const salesId = this.code.split('~')[4]
+				bindDistributorSalesCustomerApi({ shopId, distributorId: salesId })
+					.then((res) => {
+						this.$showToast('绑定成功', 'success')
+						setTimeout(() => {
+							if (shareType === 1) {
+								uni.redirectTo({ url: `/community-center/shop/shop-detail?storeId=${shopId}` })
+							} else if (shareType === 2) {
+								uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
+							}
+						}, 2000)
+					})
+					.catch((e) => {
+						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
+					})
 			} else if (this.type === 'verification') {
 				this.orderId = this.code.split('~')[0]
 				console.log(this.code.split('~')[1])

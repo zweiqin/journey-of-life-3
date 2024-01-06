@@ -222,7 +222,7 @@ export default {
 			if (this.$store.getters.popupImage) {
 				return
 			}
-			this.$store.dispatch('auth/refrshUserInfo', this.handleShowBindMobilePopup)
+			this.$store.dispatch('auth/refrshUserInfoAction', this.handleShowBindMobilePopup)
 		},
 
 		// 开始绑定手机号
@@ -257,7 +257,7 @@ export default {
 		},
 
 		handleBindPhoneSuccess() {
-			this.$store.dispatch('auth/refrshUserInfo')
+			this.$store.dispatch('auth/refrshUserInfoAction')
 		},
 		// 是否显示金管家或会员升级弹窗
 		async isShowVipPostPopup() {

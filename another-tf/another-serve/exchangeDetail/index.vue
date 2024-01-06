@@ -206,7 +206,7 @@ export default {
 
 .exchangeDetailBox {
 	padding-bottom: 200rpx;
-	background: #F8F8F8;
+	background-color: #F8F8F8;
 	min-height: 100vh;
 	box-sizing: border-box;
 

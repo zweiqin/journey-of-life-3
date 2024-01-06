@@ -230,7 +230,7 @@ export default {
 <style lang="less" scoped>
 .spikeListBox {
 	min-height: 100vh;
-	background: #333333;
+	background-color: #333333;
 	box-sizing: border-box;
 
 	.discountBg {

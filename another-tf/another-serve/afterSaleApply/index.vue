@@ -193,7 +193,7 @@ export default {
 
 <style lang="less" scoped>
 .after-sale-apply-container {
-	background: #F8F8F8;
+	background-color: #F8F8F8;
 	min-height: 100vh;
 	box-sizing: border-box;
 }

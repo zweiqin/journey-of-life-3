@@ -68,7 +68,7 @@ export default {
 		unsubscribe() {
 			deleteUserInfoApi({ code: this.code })
 				.then((res) => {
-					this.$store.dispatch('auth/logout', true)
+					this.$store.dispatch('auth/logoutAction', true)
 				})
 		},
 		sendCode() {
