@@ -2,7 +2,7 @@ import { USER_INFO, USER_ID, USER_TOKEN, T_USER_TOKEN, T_STORAGE_KEY, clearAllCa
 import { A_TF_MAIN } from '../../config'
 import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './type'
 import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
-import { getAnotherTFTokenApi, getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi } from '../../api/anotherTFInterface'
+import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
@@ -74,27 +74,37 @@ export default {
 		// 微信登陆
 		wxLoginAction({ commit, dispatch }, code) {
 			return new Promise((resolve, reject) => {
-				updateWXAppLoginApi()
-				updateWXLoginApi({ code })
-					.then(async ({ data }) => {
-						if (data.userInfo.phone) {
-							try {
-								uni.setStorageSync(USER_ID, data.userInfo.userId)
-								uni.setStorageSync(USER_TOKEN, data.token)
-								uni.setStorageSync(USER_INFO, data.userInfo)
-								uni.showToast({ title: '登录成功' })
-								resolve(data)
-							} catch (err) {
-								reject(err)
+				// #ifdef H5
+				const appid = 'wxb19ccb829623be12'
+				const local = this.$store.state.app.isInMiniProgram ? `${A_TF_MAIN}/#/pages/login/login?miniProgram=1` : `${A_TF_MAIN}/#/pages/login/login`
+				const code = getUrlCode().code
+				if (!code) {
+					window.location.href =
+						'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appid + '&redirect_uri=' + encodeURIComponent(local) + '&response_type=code&scope=snsapi_userinfo#wechat_redirect'
+				} else {
+					updateWXAppLoginApi()
+					updateWXLoginApi({ code })
+						.then(async ({ data }) => {
+							if (data.userInfo.phone) {
+								try {
+									uni.setStorageSync(USER_ID, data.userInfo.userId)
+									uni.setStorageSync(USER_TOKEN, data.token)
+									uni.setStorageSync(USER_INFO, data.userInfo)
+									uni.showToast({ title: '登录成功' })
+									resolve(data)
+								} catch (err) {
+									reject(err)
+								}
+							} else {
+								window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone?openId=${data.userInfo.weixinOpenid}`)
+								reject()
 							}
-						} else {
-							window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone?openId=${data.userInfo.weixinOpenid}`)
-							reject()
-						}
-					})
-					.catch((err) => {
-						reject(err)
-					})
+						})
+						.catch((err) => {
+							reject(err)
+						})
+				}
+				// #endif
 			})
 		},
 
@@ -171,7 +181,7 @@ export default {
 				if (userInfo && userInfo.phone) {
 					getIsShopByUserApi({ mobile: userInfo.phone })
 						.then((res) => {
-							if (res.data) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
+							if (res.data && res.data.shopId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
 							resolve(res.data)
 						})
 						.catch((err) => {

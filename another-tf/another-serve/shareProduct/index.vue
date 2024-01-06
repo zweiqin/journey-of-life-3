@@ -90,7 +90,6 @@ export default {
 			this.shopId = options.shopId
 		}
 		this.erweima = options.shareImg
-		// #endif
 	},
 	methods: {
 		showcos() {

@@ -9,23 +9,15 @@
 			<tui-form ref="form" :show-message="false">
 				<view class="formItem">
 					<tui-input
-						v-model="formData.username" placeholder-class="inputs" label="" border-color="#EA5B1D"
-						placeholder="请输入用户名" background-color="" :border-top="false" color="#222229"
-						:clearable="true" size="34"
-						@confirm="handleClickConfirmType(0)"
-					></tui-input>
-				</view>
-				<view class="formItem">
-					<tui-input
 						v-model="formData.mobile" placeholder-class="inputs" label="" border-color="#EA5B1D"
-						placeholder="请输入电话号码" background-color="" :border-top="false" color="#222229"
+						placeholder="请输入电话号码" :border-top="false" color="#222229"
 						:clearable="true" size="34"
 						@confirm="handleClickConfirmType(0)"
 					></tui-input>
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="formData.code" placeholder-class="inputs" class="reset-wrapper" background-color=""
+						v-model="formData.code" placeholder-class="inputs" class="reset-wrapper"
 						:border-top="false" border-color="#EA5B1D" label-color="#FFFFFF" placeholder="请输入验证码"
 						color="#222229"
 						@confirm="handleClickConfirmType(1)"
@@ -42,7 +34,7 @@
 				<view class="formItem">
 					<tui-input
 						v-model="formData.password" placeholder-class="inputs" type="password" label=""
-						border-color="#EA5B1D" placeholder="请输入密码" background-color="" :border-top="false"
+						border-color="#EA5B1D" placeholder="请输入密码" :border-top="false"
 						color="#222229"
 						:clearable="true" size="34" @confirm="handleClickConfirmType(0)"
 					></tui-input>
@@ -50,7 +42,7 @@
 				<view class="formItem">
 					<tui-input
 						v-model="formData.confirmPassword" placeholder-class="inputs" type="password" label=""
-						border-color="#EA5B1D" placeholder="请再次确认密码" background-color="" :border-top="false"
+						border-color="#EA5B1D" placeholder="请再次确认密码" :border-top="false"
 						color="#222229"
 						:clearable="true" size="34" @confirm="handleClickConfirmType(0)"
 					></tui-input>
@@ -58,7 +50,13 @@
 			</tui-form>
 			<view class="tips">密码长度8-16位,必须同时含有字母和数字</view>
 		</view>
-		<button class="loginBtn" :class="{ disbleds }" @click="addAcount">确定</button>
+		<button
+			class="loginBtn"
+			:class="{ disbleds: !!(formData.password && formData.confirmPassword && formData.mobile && formData.code) }"
+			@click="addAcount"
+		>
+			确定
+		</button>
 		<view class="agreement">
 			登录即代表你已阅读并同意<text class="agreementDetails">《用户服务协议》</text>
 		</view>
@@ -80,7 +78,8 @@
 </template>
 
 <script>
-import { userRegisterApi, resetPasswodApi, getCodeApi } from '@/api/auth'
+import { updatePhoneLoginRegisterApi, getVerifyCodeApi } from '../../api/anotherTFInterface'
+
 export default {
 	name: 'Register',
 	data() {
@@ -89,24 +88,12 @@ export default {
 			timer: false,
 			awaitSecond: 60,
 			formData: {
-				username: '',
 				password: '',
 				confirmPassword: '',
 				mobile: '',
 				code: ''
 			},
 			isOk: false
-		}
-	},
-	computed: {
-		disbleds: {
-			get() {
-				return this.formData.password && this.formData.confirmPassword && this.formData.mobile && this.formData.code
-			},
-			set(value) {
-				console.log(value)
-				// return value
-			}
 		}
 	},
 	methods: {
@@ -131,7 +118,7 @@ export default {
 			})
 
 			try {
-				await getCodeApi({
+				await getVerifyCodeApi({
 					phone: this.formData.mobile,
 					flag: 2
 				})
@@ -157,10 +144,6 @@ export default {
 			}
 		},
 		addAcount() {
-			if (!this.disbleds) {
-				console.log(this.disbleds)
-				return
-			}
 			this.$refs.form.validate(this.formData, [
 				{
 					name: 'mobile',
@@ -184,7 +167,7 @@ export default {
 				}
 			])
 				.then((res) => {
-					userRegisterApi({
+					updatePhoneLoginRegisterApi({
 						mobile: this.formData.mobile,
 						password: this.formData.password
 					}).then((res) => {

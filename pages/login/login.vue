@@ -1,7 +1,7 @@
 <template>
 	<view class="containers" style="min-height: 100vh;">
 		<view class="header" style="width: 100vw;height: 122rpx">
-			<image class="backFn" src="@/static/images/common/back.png" @click="goBack"></image>
+			<image class="backFn" src="../../static/images/common/back.png" @click="$switchTab('/pages/index/index')"></image>
 		</view>
 		<view class="logoText">
 			<view class="texts" style="font-weight: bold;">
@@ -23,7 +23,7 @@
 				</view>
 				<view class="iphoneNum-box">
 					<tui-input
-						v-model="loginForm.code" background-color="transparent" :border-top="false" border-color="#EA5B1D"
+						v-model="loginForm.verificationCode" background-color="transparent" :border-top="false" border-color="#EA5B1D"
 						label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
 					>
 						<template #right>
@@ -35,6 +35,15 @@
 						</template>
 					</tui-input>
 				</view>
+				<!-- <view class="iphoneNum-box">
+					<tui-input
+					v-model="loginForm.password" placeholder-class="inputs" type="password" class="reset-wrapper"
+					background-color="" :border-top="false" border-color="#EA5B1D" label-color="#FFFFFF"
+					placeholder="请输入密码"
+					color="#fff"
+					>
+					</tui-input>
+					</view> -->
 			</tui-form>
 		</view>
 		<view class="loginBtnBox">
@@ -42,19 +51,17 @@
 		</view>
 		<view class="loginFn">
 			<view class="loginFnItem">
-				<image class="loginIcon" src="@/static/images/icon/register.png" @click="go('/pages/login/register')"></image>
+				<image class="loginIcon" src="../../static/images/icon/register.png" @click="go('/pages/login/register')"></image>
 				<text class="title">注册</text>
 			</view>
 			<view class="loginFnItem">
-				<image class="loginIcon" src="@/static/images/icon/pwd.png" @click="gotoPwdLogin"></image>
+				<image class="loginIcon" src="../../static/images/icon/pwd.png" @click="handlePasswordLogin"></image>
 				<text class="title">密码登录</text>
 			</view>
-			<TuanWXLogin @login="handleWXLoginAfter">
-				<view class="loginFnItem">
-					<image class="loginIcon" src="@/static/images/icon/wechat.png"></image>
-					<text class="title">微信登录</text>
-				</view>
-			</TuanWXLogin>
+			<view class="loginFnItem">
+				<image class="loginIcon" src="../../static/images/icon/wechat.png" @click="handleWXLoginAfter"></image>
+				<text class="title">微信登录</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -64,63 +71,42 @@ import { A_TF_MAIN } from '../../config'
 import { T_NEW_BIND_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
 import { getVerifyCodeApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
+import { isInWx, getUrlCode } from '../../utils'
 
 const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index']
 export default {
 	name: 'Login',
 	data() {
 		return {
+			loginType: 'verificationCode', // password,verificationCode
 			loginForm: {
 				phone: '',
-				code: ''
+				verificationCode: '',
+				password: ''
 			},
 			redirect: ''
 		}
 	},
-	async onLoad(options) {
+	onLoad(options) {
 		if (options.miniProgram) {
 			getApp().globalData.isInMiniprogram = true
 		}
 		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
-
 		this.redirect = options.to
+	},
+	onShow() {
 		const userId = uni.getStorageSync(USER_ID)
 		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
-
 		if (userId && userInfo.token) {
 			uni.switchTab({
 				url: '/'
 			})
+		} else if (isInWx()) {
+			const code = getUrlCode().code
+			if (code) this.handleWXLogin()
 		}
 	},
 	methods: {
-		goBack() {
-			uni.navigateBack()
-		},
-		gotoPwdLogin() {
-			uni.navigateTo({
-				url: '/pages/login/pwdLogin'
-			})
-		},
-		// 获取验证码
-		handleSendVerify() {
-			if (!this.loginForm.phone) {
-				this.$refs.refLoginVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.loginForm.phone)) {
-				this.$refs.refLoginVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			getVerifyCodeApi({ phone: this.loginForm.phone })
-				.then((res) => {
-					this.$refs.refLoginVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refLoginVerify.reset()
-				})
-		},
 		// 点击登录
 		handleLogin() {
 			this.$refs.form
@@ -135,12 +121,17 @@ export default {
 						rule: [ 'required' ],
 						msg: [ '请输入验证码' ]
 					}
+					// {
+					// 	name: 'password',
+					// 	rule: ['required', 'isEnAndNo'],
+					// 	msg: ['请输入密码', '密码为8~20位英文和数字组合']
+					// }
 				])
 				.then(async () => {
 					await this.$store.dispatch('auth/phoneLoginRegisterAction', {
 						type: 2, // 1注册，2登录
 						phone: this.loginForm.phone,
-						verificationCode: this.loginForm.code,
+						verificationCode: this.loginForm.verificationCode,
 						password: this.loginForm.password
 					})
 					if (this.redirect) {
@@ -165,6 +156,31 @@ export default {
 				})
 				.catch((e) => {
 					this.$showToast(JSON.stringify(e))
+				})
+		},
+		handlePasswordLogin() {
+		},
+		async handleWXLogin() {
+			const data = await this.$store.dispatch('auth/wxLoginAction', code)
+			this.handleWXLoginAfter(data)
+		},
+		// 获取验证码
+		handleSendVerify() {
+			if (!this.loginForm.phone) {
+				this.$refs.refLoginVerify.reset()
+				return this.$showToast('请填写手机号')
+			}
+			if (!/^1[3-9]\d{9}$/.test(this.loginForm.phone)) {
+				this.$refs.refLoginVerify.reset()
+				return this.$showToast('请输入正确的手机号')
+			}
+			getVerifyCodeApi({ phone: this.loginForm.phone })
+				.then((res) => {
+					this.$refs.refLoginVerify.success()
+					this.$showToast('发送成功，请注意查看手机短信')
+				})
+				.catch(() => {
+					this.$refs.refLoginVerify.reset()
 				})
 		},
 		handleWXLoginAfter(res) {

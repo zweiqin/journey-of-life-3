@@ -48,10 +48,10 @@
 				v-for="(item, index) in goodsList" :key="index" class="goodsDetails-box flex-display flex-column"
 				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
-				<view class="spikeList goodsDetails ">
+				<view class="spikeList goodsDetails">
 					<view class="listItem">
 						<view class="itemBox">
-							<img :src="common.seamingImgUrl(item.image)" class="pic-img default-img">
+							<image :src="common.seamingImgUrl(item.image)" class="pic-img default-img"></image>
 						</view>
 						<view class="itemInfo">
 							<p>{{ item.productName }}</p>
@@ -80,9 +80,9 @@
 							>
 								可使用{{ item.voucherPrice }}代金券抵扣
 							</view>
-							<view class="flex-display flex-sp-between flex-row mar-top-20 flex-items shopName">
+							<!-- <view class="flex-display flex-sp-between flex-row mar-top-20 flex-items shopName">
 								<label class="fs22 font-color-FFEBC4">{{ item.shopName }}</label>
-							</view>
+								</view> -->
 						</view>
 					</view>
 				</view>

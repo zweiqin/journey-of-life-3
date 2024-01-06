@@ -80,7 +80,6 @@ export default {
 				})
 		},
 		fenxiang(item) {
-			// #endif
 			let system
 			// #ifdef APP
 			system = 1
