@@ -113,7 +113,7 @@ export default {
       isShowPane: false,
       homeTopNavs: homeTopNavs,
       queryList: {
-        classifyId: '1160', // 分类ID 1160 备用ID 978
+        classifyId: '1163', // 分类ID 1160 备用ID 978 1163
         productName: '', // 商品名称
         search: '',
         type: 1, // 价格升降序
