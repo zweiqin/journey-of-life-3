@@ -7,7 +7,7 @@
 					:name="brandDetail.ifCollect ? 'star-fill' : 'star'" :size="22"
 					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'" @click="handleCollectToggle"
 				></BeeIcon>
-				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
+				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
 					<BeeIcon
 						:src="require('../../../static/images/new-brand/detail/share.png')" :size="22"
 						style="margin-left: 24upx;"

@@ -109,6 +109,7 @@ const rules = [ {
 	rule: [ 'required' ],
 	msg: ['请输入预期的货物重量', '请输入正常数值的重量']
 } ]
+import { ANOTHER_TF_INTERFACE } from '../../../config/index'
 import { getUserId, KuaiDiRequest, getBrandId } from '@/utils'
 import tuiForm from '@/components/thorui/tui-form/tui-form.vue'
 import NavHeader from './components/header.vue'
@@ -146,8 +147,8 @@ export default {
 				mobile: ''
 			},
 			FormData: {
-				callBackUrl: 'https://h5.jfcmei.com/api/wx/kuaidi100/cloud/corderCb',
-				pollCallBackUrl: 'https://h5.jfcmei.com/api/wx/kuaidi100/cloud/corderTrackCb',
+				callBackUrl: `${ANOTHER_TF_INTERFACE}/api/wx/kuaidi100/cloud/corderCb`,
+				pollCallBackUrl: `${ANOTHER_TF_INTERFACE}/api/wx/kuaidi100/cloud/corderTrackCb`,
 				kuaidicom: '', // 选择快递公司的key
 				cargo: '',   // 留言
 				weight: ''  // 重量

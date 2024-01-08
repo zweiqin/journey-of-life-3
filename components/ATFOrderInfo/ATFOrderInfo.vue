@@ -9,16 +9,7 @@
 		<view style="margin-top: 20upx;padding: 0 20upx;">
 			<view v-if="data.state">
 				订单状态：
-				<text v-if="data.state === 1">待付款</text>
-				<text v-else-if="data.state === 2">待发货</text>
-				<text v-else-if="data.state === 8">待核销</text>
-				<text v-else-if="data.state === 3">待收货</text>
-				<text v-else-if="data.state === 4">已完成</text>
-				<text v-else-if="(data.state === 5) && (data.collageId != 0)">拼团失败</text>
-				<text v-else-if="data.state === 5">已关闭</text>
-				<text v-else-if="data.state === 6">待成团</text>
-				<text v-else-if="data.state === 7">待售后</text>
-				<text v-else>--</text>
+				{{ orderTypeEnum[data.state] || '--' }}
 			</view>
 			<view v-if="data.shopName">商户：{{ data.shopName }}</view>
 			<view v-if="data.logisticsPrice">快递运费：￥{{ data.logisticsPrice }}</view>
@@ -40,14 +31,21 @@
 </template>
 
 <script>
+import { orderTypeEnum } from './config'
+
 export default {
+	name: 'ATFOrderInfo',
 	props: {
 		data: {
 			type: Object,
 			required: true
 		}
 	},
-
+	data() {
+		return {
+			orderTypeEnum
+		}
+	},
 	methods: {
 	}
 }

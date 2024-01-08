@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { transferLogs, getAll } from '@/api/user/voucher'
-import { watch } from 'vue'
+import { getAllVoucherOrderApi } from '../../../api/anotherTFInterface'
 export default {
     name: 'RechargeRecord',
     props: {
@@ -59,7 +58,7 @@ export default {
     },
     methods: {
         getListData() {
-            getAll({
+            getAllVoucherOrderApi({
                 ...this.queryList,
                 condition: this.condition
             }).then(res => {
@@ -77,7 +76,7 @@ export default {
             }).catch(err => {
                 console.log(err);
             })
-            // getAll({
+            // getAllVoucherOrderApi({
             //     ...this.queryList,
             //     condition: this.condition
             // }).then(res => {

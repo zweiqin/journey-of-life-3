@@ -19,8 +19,11 @@ export const getVerifyCodeApi = (data) => AnotherTFRequest('/app/getCode', data)
 // 手机号验证码登录、注册
 export const updatePhoneLoginRegisterApi = (data) => AnotherTFRequest('/app/login', data, 'POST')
 
+// 支付宝登录
+export const updateAlipayLoginApi = (data) => AnotherTFRequest('/app/alipayLogin', data, 'POST')
+
 // 微信登录
-export const updateWXLoginApi = (data) => AnotherTFRequest('/app/login', data, 'POST')
+export const updateWXLoginApi = (data) => AnotherTFRequest('/app/wxLogin', data, 'POST')
 
 // APP微信登录
 export const updateWXAppLoginApi = (data) => AnotherTFRequest('/app/wxAppLogin', data, 'POST')
@@ -36,6 +39,9 @@ export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
 
 // 个人系信息修改
 export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST')
+
+// 用户信息查询，用户代金券查询(新)
+export const getBandUserInfoApi = (data) => AnotherTFRequest('/user/getBandUser', data)
 
 // 查询地址一级分类
 export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
@@ -444,6 +450,28 @@ export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/busines
 
 // /businessRechargeCustomers/getByRecharge 客户充值记录列表
 export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')
+
+// 代金券
+// 获取可用代金卷
+export const getVoucherApi = (data) => AnotherTFRequest('/voucher/getVoucher', data)
+
+// 创建购买代金卷订单 /order/submitVoucher
+export const submitVoucherOrderApi = (data) => AnotherTFRequest('/order/submitVoucher', data, 'POST')
+
+// 获取用户代金卷
+export const getByUserVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/getByUserVoucher', data)
+
+// /voucherShopHold/transfer 赠送代金卷
+export const updateTransferVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/transfer', data, 'POST')
+
+// /voucherOrder/getTotal 获取代金卷总数据
+export const getTotalVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getTotal', data, 'POST')
+
+// /voucherShopHold/transferLogs 获取代金卷转增数据
+export const getTransferLogsVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/transferLogs', data, 'POST')
+
+// /voucherOrder/getAll 获取代金卷充值数据
+export const getAllVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getAll', data, 'POST')
 
 // 用户银行卡相关接口
 // 查询用户所有银行卡

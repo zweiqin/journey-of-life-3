@@ -75,16 +75,34 @@ export default {
 	computed: {
 	},
 	watch: {
-		menuData: {
+		'menuData': {
 			handler(newVal) {
+				const renderMenuArr = []
 				newVal.forEach((item) => {
 					if (item.showRole) {
-						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) this.renderMenu.push(item)
-						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) this.renderMenu.push(item)
+						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) renderMenuArr.push(item)
+						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) renderMenuArr.push(item)
 					} else {
-						this.renderMenu.push(item)
+						renderMenuArr.push(item)
+					}
+					this.renderMenu = renderMenuArr
+				})
+			},
+			immediate: true,
+			deep: true
+		},
+		'$store.state.auth.identityInfo.type': {
+			handler(newVal) {
+				const renderMenuArr = []
+				this.menuData.forEach((item) => {
+					if (item.showRole) {
+						if (item.showRole.includes('shop') && newVal.includes(9)) renderMenuArr.push(item)
+						if (item.showRole.includes('franchisee') && newVal.includes(1)) renderMenuArr.push(item)
+					} else {
+						renderMenuArr.push(item)
 					}
 				})
+				this.renderMenu = renderMenuArr
 			},
 			immediate: true,
 			deep: true

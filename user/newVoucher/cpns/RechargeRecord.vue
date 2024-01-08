@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { transferLogs, getAll } from '@/api/user/voucher'
+import { getTransferLogsVoucherShopHoldApi } from '../../../api/anotherTFInterface'
 export default {
     name: 'RechargeRecord',
     props: {
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         getListData() {
-            transferLogs({
+            getTransferLogsVoucherShopHoldApi({
                 ...this.queryList,
                 condition: this.condition
             }).then(res => {

@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { orderTypeEnum } from '../config'
+import { orderTypeEnum } from '../../../components/ATFOrderInfo/config'
 import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
 export default {

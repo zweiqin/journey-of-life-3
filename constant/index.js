@@ -22,6 +22,7 @@ export const T_STORAGE_KEY = 'T_STORAGE_KEY'
 export const T_USER_TOKEN = 'T_USER_TOKEN'
 
 // 绑定
+export const T_REDIRECT_TYPE = 'T_REDIRECT_TYPE'
 export const T_NEW_BIND_TYPE = 'T_NEW_BIND_TYPE'
 export const T_NEW_BIND_CODE = 'T_NEW_BIND_CODE'
 export const T_NEW_BIND_ID = 'T_NEW_BIND_ID'
@@ -58,6 +59,7 @@ export const clearAllCache = () => {
 		USER_INFO,
 		T_USER_TOKEN,
 		T_STORAGE_KEY,
+		T_REDIRECT_TYPE,
 		T_NEW_BIND_TYPE,
 		T_NEW_BIND_CODE,
 		T_NEW_BIND_ID,

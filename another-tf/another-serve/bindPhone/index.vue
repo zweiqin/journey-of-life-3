@@ -2,6 +2,8 @@
 	<view class="bind-phone-container">
 		<JHeader title="绑定手机号" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view>绑定手机号页</view>
+		<view>{{ wechatOpenId }}</view>
+		<view style="word-break: break-all;">{{ bindPhoneData }}</view>
 	</view>
 </template>
 
@@ -11,7 +13,15 @@ export default {
 	name: 'BindPhone',
 	components: {
 	},
-	onLoad() {
+	data() {
+		return {
+			bindPhoneData: '',
+			wechatOpenId: ''
+		}
+	},
+	onLoad(options) {
+		this.bindPhoneData = options.data
+		this.wechatOpenId = options.wechatOpenId
 	},
 
 	computed: {

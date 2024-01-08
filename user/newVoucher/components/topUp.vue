@@ -3,7 +3,7 @@
         <VoucherBalance :userAcount="userAcount"></VoucherBalance>
         <view v-show="isGift" class="selectAcount">
             <tui-form ref="giftForm">
-                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入旧用户ID / 手机号" v-model="findUserId">
+                <tui-input :borderBottom="false" label="转增账号" placeholder="请输入用户ID / 手机号" v-model="findUserId">
                     <button class="selectBtn" slot="right" @click="getUserInfo">查询</button>
                 </tui-input>
                 <view class="selectUserInfo" v-if="findUserInfo">
@@ -95,12 +95,10 @@
 </template>
 
 <script>
-import { submitVoucher, giftVoucher } from '@/api/user/voucher'
+import { submitVoucherOrderApi, updateTransferVoucherShopHoldApi, getBandUserInfoApi } from '../../../api/anotherTFInterface'
 import VoucherBalance from '../cpns/VoucherBalance.vue'
 import AmountSelection from '../cpns/AmountSelection.vue'
 import { handleDoPay } from '@/utils/payUtil'
-import { refrshUserInfoApi } from '@/api/user' // userID
-import { getAnotherTFTokenApi } from '@/api/anotherTFInterface' // phone 电话号码
 
 export default {
     components: {
@@ -150,7 +148,7 @@ export default {
         },
         submitVouchers() {
             let {buyerUserId,token} = this.userInfo
-            submitVoucher({
+            submitVoucherOrderApi({
                 voucherId: '1',
                 number: this.amount * 2,
                 payGrade: this.amount,
@@ -164,54 +162,30 @@ export default {
         },
         getUserInfo() {
             let regExp  = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/
-            if (regExp.exec(this.findUserId)) { // 通过
-                getAnotherTFTokenApi({ // 
-                    phone: this.findUserId
+            if (regExp.exec(this.findUserId)) { // 手机号
+                getBandUserInfoApi({
+									type: 2,
+									value: this.findUserId,
                 }).then(res => {
                     this.findUserInfo = { oldTF: {
                         avatarUrl: res.data.headImage,
                         nickName: res.data.phone,
                     }, newTF: res.data}
                 }).catch(err => {
-                    this.showToast({
-                        title: '该用户不存在',
-                        icon: 'none'
-                    })
                     this.findUserInfo = null
-                    console.log(err);
                     })
             }else {
-                refrshUserInfoApi({ // 书写屎山 因为要查两遍 so。。。。 简化后面再说
-                    userId: this.findUserId
-                }).then(res => {
-                    let userData = res.data
-                    if (userData.phone) {
-                        getAnotherTFTokenApi({ // 
-                            phone: userData.phone
-                        }).then(res => {
-                            this.findUserInfo = { oldTF: userData, newTF: res.data}
-                        }).catch(err => {
-                            this.showToast({
-                                title: '该用户不存在',
-                                icon: 'none'
-                            })
-                            this.findUserInfo = null
-                            console.log(err);
-                        })
-                    } else {
-                      uni.showToast({
-                          title: '用户未绑定手机号',
-                          icon: 'none'
-                      })
-										}
-                }).catch(err => {
-                    uni.showToast({
-                        title: '该用户不存在',
-                        icon: 'none'
-                    })
-                    this.findUserInfo = null
-                    console.log(err);
-                })
+							getBandUserInfoApi({
+									type: 1,
+									value: this.findUserId,
+							}).then(res => {
+									this.findUserInfo = { oldTF: {
+                        avatarUrl: res.data.headImage,
+                        nickName: res.data.phone,
+                    }, newTF: res.data}
+							}).catch(err => {
+									this.findUserInfo = null
+							})
             }
         },
         customNumber() {
@@ -221,7 +195,7 @@ export default {
             if (!this.findUserInfo) return this.$showToast('请选择赠送对象')
             if (!this.amount || this.amount <= 0) return this.$showToast('赠送金额大于需大于0')
             this.isLoding = true
-            giftVoucher({
+            updateTransferVoucherShopHoldApi({
                 "buyerUserId": this.findUserInfo.newTF.buyerUserId,
                 "voucherNum":this.giveAmount
             }).then(res => {

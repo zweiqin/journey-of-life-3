@@ -12,169 +12,150 @@
 				<text class="appTitle">年轻的社区生活元宇宙</text>
 			</view>
 		</view>
-		<view class="loginForm">
-			<tui-form ref="form" :show-message="false">
+		<view class="login-form">
+			<tui-form ref="refLoginForm" :show-message="false">
 				<view class="iphoneNum-box">
 					<tui-input
-						v-model="loginForm.phone" label="+ 86" type="number" label-color="#ffffff"
+						v-model="loginQuery.phone" label="+ 86" type="number" label-color="#ffffff"
 						border-color="#EA5B1D"
 						placeholder="请输入手机号码" background-color="transparent" :border-top="false" color="#ffffff"
 					></tui-input>
 				</view>
-				<view class="iphoneNum-box">
+				<view v-if="loginType === 'verificationCode'" class="iphoneNum-box">
 					<tui-input
-						v-model="loginForm.verificationCode" background-color="transparent" :border-top="false" border-color="#EA5B1D"
-						label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
+						v-model="loginQuery.verificationCode" background-color="transparent" :border-top="false"
+						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
 					>
 						<template #right>
 							<tui-countdown-verify
-								ref="refLoginVerify" width="188upx" height="48upx"
-								border-width="0" text="获取验证码" :size="30" color="#dddddd"
-								@send="handleSendVerify"
+								ref="refLoginVerify" width="188upx" height="48upx" border-width="0"
+								text="获取验证码"
+								:size="30" color="#dddddd" @send="handleSendVerify"
 							></tui-countdown-verify>
 						</template>
 					</tui-input>
 				</view>
-				<!-- <view class="iphoneNum-box">
+				<view v-if="loginType === 'password'" class="iphoneNum-box">
 					<tui-input
-					v-model="loginForm.password" placeholder-class="inputs" type="password" class="reset-wrapper"
-					background-color="" :border-top="false" border-color="#EA5B1D" label-color="#FFFFFF"
-					placeholder="请输入密码"
-					color="#fff"
+						v-model="loginQuery.password" placeholder-class="inputs" type="password" class="reset-wrapper"
+						background-color="" :border-top="false" border-color="#EA5B1D" label-color="#FFFFFF"
+						placeholder="请输入密码"
+						color="#fff"
 					>
 					</tui-input>
-					</view> -->
+				</view>
 			</tui-form>
 		</view>
-		<view class="loginBtnBox">
-			<button class="uni-btn loginBtn" @click="handleLogin">登录</button>
+		<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;margin-top: 80upx;">
+			<view style="text-align: center;">
+				<tui-button
+					type="white" width="640rpx" height="82rpx" :size="38"
+					margin="40upx 0 0" shape="circle"
+					style="font-weight: bold;color: #ea5b1d!important;" @click="handleLogin"
+				>
+					登录
+				</tui-button>
+			</view>
 		</view>
-		<view class="loginFn">
-			<view class="loginFnItem">
-				<image class="loginIcon" src="../../static/images/icon/register.png" @click="go('/pages/login/register')"></image>
-				<text class="title">注册</text>
-			</view>
-			<view class="loginFnItem">
-				<image class="loginIcon" src="../../static/images/icon/pwd.png" @click="handlePasswordLogin"></image>
-				<text class="title">密码登录</text>
-			</view>
-			<view class="loginFnItem">
-				<image class="loginIcon" src="../../static/images/icon/wechat.png" @click="handleWXLoginAfter"></image>
-				<text class="title">微信登录</text>
+		<view style="margin-top: 120upx;display: flex;flex-direction: column;align-items: center;">
+			<view style="display: flex;justify-content: space-around;white-space: nowrap;">
+				<view style="display: flex;flex-direction: column;align-items: center;">
+					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+						<tui-icon name="friendadd-fill" color="#ffffff" :size="22" @click="go('/pages/login/register')"></tui-icon>
+					</view>
+					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">密码注册</view>
+				</view>
+				<view
+					v-if="!(loginType === 'password')"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+				>
+					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+						<tui-icon name="pwd" color="#ffffff" :size="22" @click="loginType = 'password'"></tui-icon>
+					</view>
+					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">密码登录</view>
+				</view>
+				<view
+					v-if="!(loginType === 'verificationCode')"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+				>
+					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+						<tui-icon name="mobile" color="#ffffff" :size="22" @click="loginType = 'verificationCode'"></tui-icon>
+					</view>
+					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">短信登录</view>
+				</view>
+				<!-- #ifdef MP-ALIPAY -->
+				<view
+					v-if="!(loginType === 'verificationCode')"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+				>
+					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+						<tui-icon name="mobile" color="#ffffff" :size="22" @click="handleAliPayLogin"></tui-icon>
+					</view>
+					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">支付宝登录</view>
+				</view>
+				<!-- #endif -->
+				<view
+					v-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+				>
+					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+						<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
+					</view>
+					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">微信登录</view>
+				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../config'
-import { T_NEW_BIND_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
+import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
 import { getVerifyCodeApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
-import { isInWx, getUrlCode } from '../../utils'
+import { getUrlCode } from '../../utils'
 
-const tabbarList = ['/pages/user/user', '/pages/community-center/community-center', '/pages/index/index']
 export default {
 	name: 'Login',
 	data() {
 		return {
 			loginType: 'verificationCode', // password,verificationCode
-			loginForm: {
+			loginQuery: {
 				phone: '',
 				verificationCode: '',
 				password: ''
-			},
-			redirect: ''
+			}
 		}
 	},
 	onLoad(options) {
+		if (options.to) uni.setStorageSync(T_REDIRECT_TYPE, options.to)
 		if (options.miniProgram) {
-			getApp().globalData.isInMiniprogram = true
+			this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		}
-		this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
-		this.redirect = options.to
 	},
 	onShow() {
 		const userId = uni.getStorageSync(USER_ID)
 		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
-		if (userId && userInfo.token) {
+		if (userId && userInfo && userInfo.token) {
 			uni.switchTab({
 				url: '/'
 			})
-		} else if (isInWx()) {
+		} else if (this.$store.state.app.terminal === 3) {
 			const code = getUrlCode().code
 			if (code) this.handleWXLogin()
 		}
 	},
 	methods: {
-		// 点击登录
-		handleLogin() {
-			this.$refs.form
-				.validate(this.loginForm, [
-					{
-						name: 'phone',
-						rule: ['required', 'isMobile'],
-						msg: ['请输入手机号', '请输入正确的手机号']
-					},
-					{
-						name: 'code',
-						rule: [ 'required' ],
-						msg: [ '请输入验证码' ]
-					}
-					// {
-					// 	name: 'password',
-					// 	rule: ['required', 'isEnAndNo'],
-					// 	msg: ['请输入密码', '密码为8~20位英文和数字组合']
-					// }
-				])
-				.then(async () => {
-					await this.$store.dispatch('auth/phoneLoginRegisterAction', {
-						type: 2, // 1注册，2登录
-						phone: this.loginForm.phone,
-						verificationCode: this.loginForm.verificationCode,
-						password: this.loginForm.password
-					})
-					if (this.redirect) {
-						if (tabbarList.includes(this.redirect)) {
-							uni.switchTab({
-								url: this.redirect
-							})
-						} else {
-							uni.redirectTo({
-								url: this.redirect
-							})
-						}
-					} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-						uni.redirectTo({
-							url: '/pages/jump/jump'
-						})
-					} else {
-						uni.switchTab({
-							url: '/pages/community-center/community-centerr'
-						})
-					}
-				})
-				.catch((e) => {
-					this.$showToast(JSON.stringify(e))
-				})
-		},
-		handlePasswordLogin() {
-		},
-		async handleWXLogin() {
-			const data = await this.$store.dispatch('auth/wxLoginAction', code)
-			this.handleWXLoginAfter(data)
-		},
 		// 获取验证码
 		handleSendVerify() {
-			if (!this.loginForm.phone) {
+			if (!this.loginQuery.phone) {
 				this.$refs.refLoginVerify.reset()
 				return this.$showToast('请填写手机号')
 			}
-			if (!/^1[3-9]\d{9}$/.test(this.loginForm.phone)) {
+			if (!/^1[3-9]\d{9}$/.test(this.loginQuery.phone)) {
 				this.$refs.refLoginVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.loginForm.phone })
+			getVerifyCodeApi({ phone: this.loginQuery.phone })
 				.then((res) => {
 					this.$refs.refLoginVerify.success()
 					this.$showToast('发送成功，请注意查看手机短信')
@@ -183,14 +164,55 @@ export default {
 					this.$refs.refLoginVerify.reset()
 				})
 		},
-		handleWXLoginAfter(res) {
-			if (this.redirect) {
-				window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
-			} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-				window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
-			} else {
-				window.location.replace(`${A_TF_MAIN}/#/`)
+		// 点击登录
+		handleLogin() {
+			const validateRules = [ {
+				name: 'phone',
+				rule: ['required', 'isMobile'],
+				msg: ['请输入手机号', '请输入正确的手机号']
+			} ]
+			let loginFilterQuery
+			if (this.loginType === 'verificationCode') {
+				validateRules.push({
+					name: 'verificationCode',
+					rule: ['required', 'isNum'],
+					msg: [ '请输入验证码' ]
+				})
+				loginFilterQuery = {
+					phone: this.loginQuery.phone,
+					verificationCode: this.loginQuery.verificationCode
+				}
+			} else if (this.loginType === 'password') {
+				validateRules.push({
+					name: 'password',
+					rule: ['required', 'isEnAndNo'],
+					msg: ['请输入密码', '密码为8~20位英文和数字组合']
+				})
+				loginFilterQuery = {
+					phone: this.loginQuery.phone,
+					password: this.loginQuery.password
+				}
 			}
+			this.$refs.refLoginForm
+				.validate(this.loginQuery, validateRules)
+				.then(() => {
+					this.$store.dispatch('auth/phoneLoginRegisterAction', {
+						isAfter: true,
+						loginData: {
+							type: 2, // 1注册，2登录
+							...loginFilterQuery
+						}
+					})
+				})
+				.catch((e) => {
+					this.$showToast(JSON.stringify(e.errorMsg))
+				})
+		},
+		async handleAliPayLogin() {
+			await this.$store.dispatch('auth/aliPayLoginAction', { isAfter: true })
+		},
+		async handleWXLogin() {
+			await this.$store.dispatch('auth/wxLoginAction', { isAfter: true })
 		}
 	}
 }
@@ -270,7 +292,7 @@ export default {
 		color: rgba(255, 255, 255, 0.914);
 	}
 
-	.loginForm {
+	.login-form {
 		box-sizing: border-box;
 		padding: 146rpx 20rpx 10rpx 20rpx;
 		/* padding-right: 40rpx; */
@@ -285,57 +307,6 @@ export default {
 			.get-code {
 				font-size: 28rpx;
 				color: rgba(255, 255, 255, 0.679);
-			}
-		}
-	}
-
-	.loginBtnBox {
-		clear: both;
-		width: 100%;
-		height: 230rpx;
-		box-sizing: border-box;
-		margin-top: 100rpx;
-
-		.loginBtn {
-			margin: 0 auto;
-			width: 640rpx;
-			height: 80rpx;
-			border-radius: 50rpx;
-			background: #ffffff;
-			font-family: Source Han Sans;
-			font-weight: 600;
-			font-size: 38rpx;
-			line-height: 80rpx;
-			color: #EA5B1D;
-		}
-	}
-
-	.loginFn {
-		width: 420rpx;
-		height: 114rpx;
-		margin: 0 auto;
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-
-		/* margin-bottom: 68rpx; */
-		.loginFnItem {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
-
-			.loginIcon {
-				width: 64rpx;
-				height: 64rpx;
-				border-radius: 50rpx;
-			}
-
-			.title {
-				margin-top: 5rpx;
-				font-size: 28rpx;
-				font-weight: normal;
-				line-height: 40rpx;
-				color: #FFFFFF;
 			}
 		}
 	}

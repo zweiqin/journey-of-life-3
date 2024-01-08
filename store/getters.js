@@ -32,5 +32,6 @@ export default {
 
   // app
   statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
-  systermInfo: state => state.app.systermInfo
+  systermInfo: (state) => state.app.systermInfo,
+  terminal: (state) => state.app.terminal
 };

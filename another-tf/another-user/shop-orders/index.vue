@@ -185,7 +185,8 @@
 </template>
 
 <script>
-import { businessSubNavs, orderTypeEnum } from '../../../pages/order/config'
+import { businessSubNavs } from '../../../pages/order/config'
+import { orderTypeEnum } from '../../../components/ATFOrderInfo/config'
 import { getShopOrderAllApi, updateSetHxCodeApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'ShopOrders',
@@ -197,7 +198,7 @@ export default {
 			queryInfo: {
 				searchType: 1, // "搜索类型  1-订单ID 2-买家账户 3-收件人姓名 4-收件人手机号 5-商品ID"
 				search: '',
-				state: 0, // "订单状态 1-待付款 2-待发货 3-已发货 4-已完成 5-已关闭 6-待成团 7-待售后 8-待核销（该接口目前只传4和8）"
+				state: 0,
 				afterState: '',
 				dates: [],
 				page: 1,

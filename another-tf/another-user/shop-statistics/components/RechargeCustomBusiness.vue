@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { orderTypeEnum } from '../../../../pages/order/config'
+import { orderTypeEnum } from '../../../../components/ATFOrderInfo/config'
 import { getbBusinessByRechargeCustomApi } from '../../../../api/anotherTFInterface'
 
 export default {

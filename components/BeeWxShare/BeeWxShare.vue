@@ -70,7 +70,7 @@ export default {
 		async share(data, quiet, backUrl) {
 			this.shareData = data
 			this.backUrl = backUrl
-			if (!uni.getStorageSync(T_STORAGE_KEY) || !(uni.getStorageSync(T_STORAGE_KEY) && !uni.getStorageSync(T_STORAGE_KEY).token)) {
+			if (!uni.getStorageSync(T_STORAGE_KEY) || (uni.getStorageSync(T_STORAGE_KEY) && !uni.getStorageSync(T_STORAGE_KEY).token)) {
 				if (!quiet) {
 					this.$data._isShowTuiModel = true
 				}

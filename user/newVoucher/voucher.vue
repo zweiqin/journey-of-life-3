@@ -25,8 +25,7 @@
 
 <script>
 import topUp from './components/topUp.vue'
-import { getVoucher } from '@/api/user/voucher'
-import { getByUserVoucher } from '@/api/user/voucher'
+import { getByUserVoucherShopHoldApi } from '../../api/anotherTFInterface'
 import newRecords from './components/newRecords.vue'
 export default {
     name: 'voucher',
@@ -55,7 +54,7 @@ export default {
             return Phone.substr(0, 3) + '****' + Phone.substr(7, 11)
         },
         getUserVoucher() {
-            getByUserVoucher().then(res => {
+            getByUserVoucherShopHoldApi().then(res => {
                 this.userAcount = res.data
                 // console.log(res);
             }).catch(err => {

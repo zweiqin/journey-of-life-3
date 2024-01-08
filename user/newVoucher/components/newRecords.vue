@@ -34,7 +34,7 @@
 import RecordsEvery from '../cpns/RecordsEvery.vue'
 import RechargeRecord from '../cpns/RechargeRecord.vue'
 import IncrementRecord from '../cpns/IncrementRecord.vue'
-import { getTotal } from '@/api/user/voucher'
+import { getTotalVoucherOrderApi } from '../../../api/anotherTFInterface'
 export default {
     name: 'Records',
     components: {
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         getAcountNumber() {
-            getTotal({
+            getTotalVoucherOrderApi({
                 type: 3 - this.currentIndex,
                 condition: this.dateValue
             }).then(res => {

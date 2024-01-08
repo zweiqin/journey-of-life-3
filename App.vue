@@ -22,6 +22,7 @@ export default {
 				}
 			}
 		})
+		this.$store.dispatch('app/getSystermTerminal')
 		// #ifdef H5
 		this.globalData.terminal = 2
 		// #endif
@@ -29,7 +30,6 @@ export default {
 		this.globalData.terminal = 3
 		// #endif
 		// #ifdef MP
-
 		this.globalData.terminal = 1
 		// #endif
 	},
@@ -58,8 +58,6 @@ export default {
 		totalCartCount: 0,
 		// 是否一直显示 弹窗
 		isShowCommunityPopup: true,
-		// 是否处于小程序环境
-		isInMiniprogram: false,
 		// 是否已经打开过绑定手机号弹窗
 		isShowedBindMobilePopu: false,
 		// 用户是否授权获取当前位置

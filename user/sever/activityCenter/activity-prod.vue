@@ -296,7 +296,6 @@ export default {
 					success: ({ confirm }) => {
 						if (confirm) {
 							uni.navigateTo({
-								// url: '/pages/login/login?to=' + this.redirect
 								url: '/pages/login/login'
 							})
 						}
