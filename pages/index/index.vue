@@ -137,6 +137,12 @@ export default {
   methods: {
     getGoodsList(isCheckOutClass) {
       getClaasifyProductsApi(this.queryList).then(res => {
+        if (res.data.list.length <= 0) {
+          uni.showToast({
+            title: '没有更多商品了',
+            icon: 'none',
+          });
+        }
         if (!isCheckOutClass) {
             res.data.list.forEach(item => this.goodsList.push(item))
         }else {
