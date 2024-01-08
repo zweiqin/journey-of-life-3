@@ -27,7 +27,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 							content: '账号未登录，请重新登陆！',
 							success(res) {
 								if (res.confirm) {
-									store.dispatch('auth/logout')
+									store.dispatch('auth/logoutAction')
 									setTimeout(() => {
 										uni.navigateTo({
 											url: '/pages/login/login'

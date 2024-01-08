@@ -53,7 +53,7 @@ const service = (base_url, hideLoading) => function (url, data = {}, method = 'p
 						icon: 'none',
 						mask: true
 					})
-					store.dispatch('auth/logout')
+					store.dispatch('auth/logoutAction')
 					setTimeout(() => {
 						uni.navigateTo({
 							url: '/pages/login/login'

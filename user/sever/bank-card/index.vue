@@ -84,7 +84,7 @@ export default {
 
     // 绑定成功
     handleBindSuccess() {
-      this.$store.dispatch('auth/refrshUserInfo', (userInfo) => {
+      this.$store.dispatch('auth/refrshUserInfoAction', (userInfo) => {
         this.userInfo = userInfo;
       });
     },

@@ -91,7 +91,7 @@ export default {
         })
 
         this.ttoast("注销成功")
-        this.$store.dispatch('auth/logout', true)
+        this.$store.dispatch('auth/logoutAction', true)
       } finally {
         uni.hideLoading()
       }

@@ -256,7 +256,7 @@ export default {
 
 <style lang="less" scoped>
 .signBox {
-	background: #F8F8F8;
+	background-color: #F8F8F8;
 	padding-bottom: 50rpx;
 
 	.signBg {

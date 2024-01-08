@@ -4,16 +4,13 @@
 		<view class="flex-items-plus flex-row search">
 			<view class="searchBg">
 				<view class="searchImg-box flex-items-plus">
-					<tui-icon
-						style="position: absolute;left: 0;" name="search" :size="50" unit="upx"
-						color="#d1d1d1"
-					></tui-icon>
+					<tui-icon style="position: absolute;left: 0;" name="search" :size="50" unit="upx" color="#d1d1d1"></tui-icon>
 					<input
-						v-model="queryInfo.keyWord" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
+						v-model="queryInfo.search" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
 						placeholder="请输入您想要的宝贝"
 					/>
 				</view>
-				<label class="mar-left-40 fs28" @click="queryInfo.keyWord && (queryInfo.page = 1) && getGoodsSearchList()">
+				<label class="mar-left-40 fs28" @click="queryInfo.search && (queryInfo.page = 1) && getGoodsSearchList()">
 					搜索
 				</label>
 			</view>
@@ -51,10 +48,10 @@
 				v-for="(item, index) in goodsList" :key="index" class="goodsDetails-box flex-display flex-column"
 				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
-				<view class="spikeList goodsDetails ">
+				<view class="spikeList goodsDetails">
 					<view class="listItem">
 						<view class="itemBox">
-							<img :src="common.seamingImgUrl(item.image)" class="pic-img default-img">
+							<image :src="common.seamingImgUrl(item.image)" class="pic-img default-img"></image>
 						</view>
 						<view class="itemInfo">
 							<p>{{ item.productName }}</p>
@@ -83,9 +80,9 @@
 							>
 								可使用{{ item.voucherPrice }}代金券抵扣
 							</view>
-							<view class="flex-display flex-sp-between flex-row mar-top-20 flex-items shopName">
+							<!-- <view class="flex-display flex-sp-between flex-row mar-top-20 flex-items shopName">
 								<label class="fs22 font-color-FFEBC4">{{ item.shopName }}</label>
-							</view>
+								</view> -->
 						</view>
 					</view>
 				</view>
@@ -116,7 +113,7 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
-				keyWord: '',
+				search: '',
 				classifyId: '',
 				type: 0, // 价格排序条件
 				volume: 0 // 销量排序条件
@@ -125,7 +122,7 @@ export default {
 	},
 	onLoad(option) {
 		if (option.keyWord) {
-			this.queryInfo.keyWord = option.keyWord
+			this.queryInfo.search = option.keyWord
 		}
 		if (option.classifyId) {
 			this.queryInfo.classifyId = option.classifyId
@@ -196,9 +193,10 @@ input {
 }
 
 .goods-list-container {
-	min-height: 100%;
-	background: #f8f8f8;
 	position: relative;
+	min-height: 100%;
+	background-color: #f8f8f8;
+	box-sizing: border-box;
 
 	.search {
 		padding: 20rpx;
@@ -241,7 +239,6 @@ input {
 	.goodsDetails-box {
 		background: #FFFFFF;
 		margin-top: 20rpx;
-		box-sizing: border-box;
 
 		.spikeList {
 			border-bottom: 1upx solid #EDEDED;
@@ -320,12 +317,10 @@ input {
 
 	.listBox {
 		padding: 0 24rpx;
-		box-sizing: border-box;
 	}
 }
 
 .shop-list-nav {
-
 	background: #fff;
 
 	.mlr-20 {

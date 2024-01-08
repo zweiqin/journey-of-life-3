@@ -1,7 +1,6 @@
 export default {
   userInfo: (state) => state.auth.userInfo,
   userToken: (state) => state.auth.userToken,
-  historyPopup: (state) => state.auth.historyPopup,
 
   // 购物车
   shopCarInfo: (state) => state.shopCar.shopCarInfo,

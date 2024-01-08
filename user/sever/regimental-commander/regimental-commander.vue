@@ -103,7 +103,7 @@ export default {
 
     // 绑定手机号成功
     async handleBindMobileSuccess() {
-      await this.$store.dispatch('auth/refrshUserInfo', (userInfo) => {
+      await this.$store.dispatch('auth/refrshUserInfoAction', (userInfo) => {
         this.applyGroupForm.userId = userInfo.userId;
         this.applyGroupForm.mobile = userInfo.phone;
       });

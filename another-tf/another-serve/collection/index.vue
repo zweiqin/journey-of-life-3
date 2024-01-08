@@ -41,7 +41,7 @@
 										</view>
 										<view
 											class="infoCent flex-items"
-											@click.stop="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId${item.productId}&skuId=${item.skuId}`)"
+											@click.stop="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 										>
 											<image class="product-img default-img" mode="aspectFill" :src="common.seamingImgUrl(item.image)" />
 											<view class="title-wrap mar-left-20 priceBox">
@@ -140,14 +140,17 @@
 													<text class="font-color-CCC fs24">{{ item.person }}人关注</text>
 												</view>
 											</view>
-											<view class="toStore flex-items-plus fs24" @click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)">
+											<view
+												class="toStore flex-items-plus fs24"
+												@click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)"
+											>
 												进入店铺 >
 											</view>
 										</view>
 										<view v-if="item.productList.length > 0" class="shopImgBox">
 											<view
 												v-for="(sItem, sIndex) in item.productList" :key="sIndex" class="itemImgBox"
-												@click.stop="go(`/another-tf/another-serve/goodsDetails/index?shopId=${sItem.shopId}&productId${sItem.productId}&skuId=${sItem.skuId}`)"
+												@click.stop="go(`/another-tf/another-serve/goodsDetails/index?shopId=${sItem.shopId}&productId=${sItem.productId}&skuId=${sItem.skuId}`)"
 											>
 												<image :src="common.seamingImgUrl(sItem.image)" class="pic-img default-img"></image>
 											</view>
@@ -253,8 +256,14 @@ export default {
 			}
 		}
 	},
-	onLoad() {
-		this.getProductCollectList()
+	onShow() {
+		if (this.collectionTypeFlag === 0) {
+			this.productInfo.query.page = 1
+			this.getProductCollectList()
+		} else if (this.collectionTypeFlag === 1) {
+			this.storeInfo.query.page = 1
+			this.getStoreCollectList()
+		}
 	},
 	methods: {
 		collectionTypeActive(e) {
@@ -343,11 +352,13 @@ export default {
 				updateCollectCancelApi({ ids: [ this.ids ] })
 					.then((res) => {
 						this.delshow = false
-						this.$showToast('删除成功')
 						this.ids = null
 						uni.hideLoading()
-						this.productInfo.query.page = 1
-						this.getProductCollectList()
+						this.$showToast('删除成功')
+						setTimeout(() => {
+							this.productInfo.query.page = 1
+							this.getProductCollectList()
+						}, 2000)
 					})
 					.catch((e) => {
 						uni.hideLoading()
@@ -361,10 +372,12 @@ export default {
 				})
 				deleteCollectToCollectApi({ tempArr }).then((res) => {
 					this.delshow = false
-					this.$showToast('删除成功')
 					uni.hideLoading()
-					this.productInfo.query.page = 1
-					this.getProductCollectList()
+					this.$showToast('删除成功')
+					setTimeout(() => {
+						this.productInfo.query.page = 1
+						this.getProductCollectList()
+					}, 2000)
 				})
 					.catch((res) => {
 						this.delshow = false
@@ -378,11 +391,13 @@ export default {
 				updateCollectCancelApi({ ids: [ this.ids ] })
 					.then((res) => {
 						this.delshow = false
-						this.$showToast('删除成功')
 						this.ids = null
 						uni.hideLoading()
-						this.storeInfo.query.page = 1
-						this.getStoreCollectList()
+						this.$showToast('删除成功')
+						setTimeout(() => {
+							this.storeInfo.query.page = 1
+							this.getStoreCollectList()
+						}, 2000)
 					})
 					.catch((e) => {
 						uni.hideLoading()
@@ -397,10 +412,12 @@ export default {
 				})
 				deleteCollectToCollectApi({ tempArr }).then((res) => {
 					this.delshow = false
-					this.$showToast('删除成功')
 					uni.hideLoading()
-					this.storeInfo.query.page = 1
-					this.getStoreCollectList()
+					this.$showToast('删除成功')
+					setTimeout(() => {
+						this.storeInfo.query.page = 1
+						this.getStoreCollectList()
+					}, 2000)
 				})
 					.catch((res) => {
 						this.delshow = false
@@ -500,29 +517,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .collection-container {
 	min-height: 100vh;
 	background-color: #F7F7F7;
 	box-sizing: border-box;
-
-	.empty-box {
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		align-items: center;
-
-		.tohome-box {
-			color: #999999;
-			margin-top: 50rpx;
-		}
-
-		.collect-empty {
-			margin-top: 30%;
-			width: 198rpx;
-			height: 183rpx;
-		}
-	}
 
 	.function-box {
 		background-color: #F7F7F7;
@@ -683,18 +682,6 @@ export default {
 		position: absolute;
 		bottom: -50px;
 		left: 45%;
-	}
-}
-
-.priceBox {
-	.iconImg {
-		width: 58rpx;
-		height: 36rpx;
-		margin-right: 10rpx;
-	}
-
-	.discountIcon {
-		width: 100rpx;
 	}
 }
 </style>

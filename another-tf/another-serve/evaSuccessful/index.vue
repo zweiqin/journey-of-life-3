@@ -42,7 +42,7 @@ export default {
 .payCourteous {
 	min-height: 100vh;
 	border-top: 2rpx solid #F3F4F5;
-	background: #F8F8F8;
+	background-color: #F8F8F8;
 	box-sizing: border-box;
 
 	.evaBox {

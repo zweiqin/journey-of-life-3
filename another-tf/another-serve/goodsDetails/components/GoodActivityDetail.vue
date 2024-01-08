@@ -294,10 +294,7 @@ export default {
 			// #ifdef MP-ALIPAY
 			system = 4
 			// #endif
-			uni.showLoading({
-				mask: true,
-				title: '请稍候...'
-			})
+			uni.showLoading()
 			getProductSharePicApi({
 				productId: this.productInfo.productId,
 				shopId: this.productInfo.shopId,
@@ -307,10 +304,10 @@ export default {
 				uni.hideLoading()
 				// 推广商品
 				uni.navigateTo({
-					url: `/another-tf/another-serve/shareProduct/index?shareType=2&productImage=${this.productInfo.images[0]}&shopId=${this.productInfo.shopId}&productId=${this.productInfo.productId}&skuId=${this.skuSelect.skuId}&productName=${this.productInfo.productName}&price=${this.productInfo.price}&headImage=${res.data.headImage}&shareName=${res.data.name}&shareImg=${res.data}`
+					url: `/another-tf/another-serve/shareProduct/index?shareType=2&shopId=${this.productInfo.shopId}&productId=${this.productInfo.productId}&skuId=${this.skuSelect.skuId}&shareImg=${res.data}`
 				})
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		},

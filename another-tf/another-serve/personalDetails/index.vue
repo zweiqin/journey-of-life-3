@@ -232,7 +232,7 @@ export default {
 			})
 		},
 		handleQuit() {
-			this.$store.dispatch('auth/logout', true)
+			this.$store.dispatch('auth/logoutAction', true)
 		},
 		onGetAuthorize() {
 			uni.showLoading({
@@ -245,9 +245,12 @@ export default {
 					updateAliPhoneAppApi({
 						'phone': encryptedData
 					}).then((res) => {
-						// uni.setStorageSync(T_STORAGE_KEY, res.data)
-						this.$store.dispatch('auth/updateStorageKey', res.data.phone)
-						this.phone = res.data.phone
+						this.$store.dispatch('auth/refrshUserInfoAction', () => {
+							uni.showToast({
+								title: '验证成功',
+								icon: 'none'
+							})
+						})
 						uni.hideLoading()
 					})
 						.catch((e) => {
