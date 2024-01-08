@@ -38,45 +38,14 @@
       </view>
 
       <view class="rest-area">
-        <view class="goods-filter">
-          <!-- <view class="item" :class="{active: true}">
-            默认
-          </view> -->
-          <block  v-for="(item, index) in filters" :key="index">
-             <view v-if="index >= 1" class="item" @click="filterList(index);" :class="{active: index == filterActive}">
-              {{ item.name}}
-              <view class="sort" v-if="item.children">
-                <!--                @click="item.value = item.children[0].value"  -->
-                <!--                @click="item.value = item.children[1].value" -->
-                <tui-icon
-                :color="item.children[0].value === item.value ? '#f40' : '#ccc'"
-                  class="top" :size="20" name="turningup"></tui-icon>
-                <tui-icon
-                  :color="item.children[1].value === item.value ? '#f40' : '#ccc'"
-                  class="bottom" :size="20" name="turningdown"></tui-icon>
-              </view>
-            </view>
-          </block>
-        </view>
-        <view class="fillterPanners" v-show="isShowPane">
-          <view @click="filtersFn(item)" class="filterItem" :class="{ isactives : filters[1].value === item.value}" v-for="(item, index) in filters[1].children" :key="index + 123">
-              <text>{{ item.name }}</text>
-          </view>
-        </view>
-        <!-- <tui-top-dropdown
-          :show="isShowPane"
-          style="left: 0"
-          :translatey="translatey"
-          @close="cloasePopup"
-          :maskZIndex="10"
-          :height="0"
-        >
-          <view class="filterPaners" style="background: #fff;">
-            <view v-for="(item, index) in filters[1].children" :key="index + 123">
-              <text>{{ item.name }}</text>
+        <scroll-view :scroll-x="true" class="goods-filter">
+          <view style="display: flex;padding: 0rpx 20rpx">
+            <view @click="checkOutShopClass(item, index)" v-for="(item, index) in filtersMenus" :key="item.classifyId" :isActive="index == filterActive" class="filtersItem">
+              <image class="icons" :src="item.classifyImage"></image>
+              <text class="itemName_two">{{ item.classifyName }}</text>
             </view>
           </view>
-        </tui-top-dropdown> -->
+        </scroll-view>
       </view>
         <view class="goods-list">
           <NewGoodsPane v-for="(item, index)  in  goodsList" :index="index" :goods="item" :key="item.productId"> </NewGoodsPane>
@@ -93,7 +62,6 @@ import PageHeader from './cpns/PageHeader.vue';
 import VoucherPane from './cpns/VoucherPane.vue';
 import HotPane from './cpns/HotPane.vue';
 import NewGoodsPane from './cpns/NewGoodsPane.vue';
-
 import { goodsListApi } from '../../api/goods';
 import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
 import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
@@ -122,11 +90,7 @@ export default {
         pageSize: 25
       },
       filterActive: 0,
-      filters: [
-        { name: '默认', value: 0 },
-        { name: '价格', children: [{name: '由低到高', value: 1},{name: '由高到低', value: 2}], value: 1 },
-        { name: '筛选', children: [{name: '升序', value: 1},{name: '降序', value: 2}], value: 1 },
-      ],
+      filtersMenus: [],
       ad: {
         hot: [],
         good: []
@@ -139,6 +103,13 @@ export default {
   onLoad(options) {
     // this.setSearchParams('voucher')
     this.getGoodsList()
+
+    getFirstClassifyApi({ // ! 获取所有的爆品家具分类
+      classifyId: 1160
+    }).then(res => {
+      this.filtersMenus = new Set([res.data[1],res.data[0], ...res.data]) // 反转一二号分类的位置
+      // console.log(this.filtersMenus);
+    })
     // this.getCategoryList();
     // getClassifyProducts2Api({
     //   classifyId: '',
@@ -164,9 +135,14 @@ export default {
     },
   },
   methods: {
-    getGoodsList() {
+    getGoodsList(isCheckOutClass) {
       getClaasifyProductsApi(this.queryList).then(res => {
-        res.data.list.forEach(item => this.goodsList.push(item))
+        if (!isCheckOutClass) {
+            res.data.list.forEach(item => this.goodsList.push(item))
+        }else {
+            this.goodsList.length =  res.data.list.length
+            res.data.list.forEach((item, index, preArray) => this.goodsList[index] = preArray[index])
+        }
         // console.log(this.goodsList);
         this.ad.good = this.goodsList.slice(0,2)
         this.ad.hot = this.goodsList.slice(2,4)
@@ -225,38 +201,15 @@ export default {
         console.log(err)
       })
     },
-    filterList(index) {
-      if(index == 1) {
-         this.isShowPane = !this.isShowPane
-         return
-      }
-      if (index == 2) {
-        uni.navigateTo({
-          url: '/pages/index/Explosive/category'
-        })
-      }
+    checkOutShopClass(item, index) {
+      this.queryList.page = 1
+      this.queryList.classifyId = item.classifyId
       this.filterActive = index
-      if (index == 0) {
-        this.queryList = {...this.queryList, type: 1,volume: 0 }
-        this.filters[1].value = 1
-        this.filters[2].value = 0
-      }else {
-        this.queryList = {...this.queryList, type: this.filters[1].value, volume: this.filters[2].value }
-      }
-      this.goodsList = []
-      this.getGoodsList()
-      // console.log(this.queryList)
+      this.getGoodsList(true)
     },
     cloasePopup() {
       this.isShowPane = false
     },
-    filtersFn(item) {
-      this.filters[1].value = item.value
-      this.queryList = {...this.queryList, type: this.filters[1].value, volume: this.filters[2].value }
-      this.goodsList = []
-       this.getGoodsList()
-      this.isShowPane = false
-    }
   },
   onReachBottom(value) {
         // this.isLoding = true
@@ -408,57 +361,44 @@ export default {
       // }
 
       .goods-filter {
+        padding-top: 10rpx;
         z-index: 999;
         position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        white-space: nowrap;
         box-sizing: border-box;
-        padding: 30upx 88upx;
-        background-color: #fff;
-
-        .item {
-          position: relative;
-          font-size: 32upx;
-          width: 140upx;
-
-          &:nth-child(3) {
-            text-align: center;
+        width: 100vw;
+        display: flex;
+        /* padding: 30upx; */
+        /* background-color: #ffffff; */
+        
+        .filtersItem {
+          width: 130upx;
+          background-color: rgb(255, 255, 255);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 10upx;
+          color: #000000;
+          margin-right: 20upx;
+          transition: transform 350ms;
+          border-radius: 4px;
+          .icons {
+            width: 120upx;
+            height: 120upx;
+            object-fit: cover;
+            margin-bottom: 10upx;
           }
 
-          &:nth-child(2) {
-            text-align: center;
+          .itemName_two {
+            color: #1d1f1f;
           }
 
-          &.active {
-            color: #ef530e;
-          }
-
-
-          .sort {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            right: -8upx;
-
-            .top,
-            .bottom {
-              position: relative;
-            }
-
-            .top {
-              top: 12upx;
-            }
-
-            .bottom {
-              top: -12upx;
-            }
-          }
         }
+        .filtersItem[isactive="true"] {
+            border: 1rpx solid #e95d20;
+        }
+        
       }
 
       .main-sub-title {

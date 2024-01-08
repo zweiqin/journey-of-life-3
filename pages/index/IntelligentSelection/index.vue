@@ -6,7 +6,7 @@
       </view>
       <Fields></Fields>
       <!-- 精选案例 -->
-      <view class="SelectedCases" hover-class="none" :hover-stop-propagation="false">
+      <view class="SelectedCases" style="display: none;" hover-class="none" :hover-stop-propagation="false">
         <view class="title-wrapper">
           <view class="left-bar"></view>
           <view class="title-text">精选案例</view>
@@ -434,7 +434,8 @@ export default {
   .main {
         box-sizing: border-box;
         width: 100%;
-        padding: 50rpx 30rpx;
+        padding: 10rpx 30rpx 50rpx 30rpx;
+        /* padding: 50rpx 30rpx; */
         .styles {
             box-sizing: border-box;
             padding: 20rpx 18rpx;
