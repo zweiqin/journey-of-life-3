@@ -4,8 +4,9 @@
       <view class="level-1  level"></view>
       <view class="level-2  level"></view>
       <view class="level-3 level"></view>
+      <!-- <FastLazyLoad :src="common.seamingImgUrl(goods.image)"></FastLazyLoad> -->
       <!-- background: `url(${common.seamingImgUrl(goods.image)})`, -->
-      <tui-lazyload-img :style="{ filter: 'blur(10ox)' }" mode="aspectFit"
+      <tui-lazyload-img :style="{ filter: 'blur(10ox)', 'z-index': 3 }" mode="scaleToFill"
         :src="common.seamingImgUrl(goods.image)"></tui-lazyload-img>
     </view>
 
@@ -27,7 +28,11 @@
 </template>
 
 <script>
+import FastLazyLoad from 'components/fast-lazy-load/fast-lazy-load.vue';
 export default {
+  components: {
+    FastLazyLoad
+  },
   props: {
     goods: {
       type: Object,

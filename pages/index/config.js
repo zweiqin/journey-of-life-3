@@ -100,3 +100,38 @@ export const homeTopNavs = [
 //     value: 100101735
 //   }
 // ];
+
+export const proDropList =  [{
+  listName: '排序',
+  paramsKey: 'order',
+  paramsVallue: '',
+  listActiveIndex: 0,
+  list: [{
+    name: '升序',
+    params: 'asc'
+  }, {
+    name: '降序',
+    params: 'desc'
+  }]
+}, {
+  name: '排序条件',
+  paramsKey: 'sort',
+  paramsVallue: 'retail_price',
+  listActiveIndex: 0,
+  list: [ {
+    name: '价格',
+    params: 'retail_price'
+  } ]
+}, {
+  name: '新品',
+  paramsKey: 'isNew',
+  paramsVallue: '',
+  listActiveIndex: 0,
+  list: [{
+    name: '开启新品筛选',
+    params: 'true'
+  }, {
+    name: '关闭新品筛选',
+    params: 'false'
+  }]
+}]
