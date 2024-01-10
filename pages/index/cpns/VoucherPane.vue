@@ -88,7 +88,7 @@ export default {
     width: 377upx;
     height: 514upx;
     background: linear-gradient(147deg, #F09664 1%, #DF489C 31%, #EF9563 123%);
-    z-index: 10;
+    z-index: 3;
     animation: top-ani 500ms;
     padding-top: 28upx;
     padding-left: 48upx;
