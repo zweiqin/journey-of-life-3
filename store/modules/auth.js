@@ -208,7 +208,6 @@ export default {
 			})
 		},
 
-		// eslint-disable-next-line complexity
 		LoginAfterAction({ state, commit, dispatch }, { type, data }) {
 			try {
 				const tabbarList = ['pages/index/index', 'pages/business-district/business-district', '/pages/community-center/community-center', 'pages/order/order', '/pages/user/user']
@@ -369,7 +368,7 @@ export default {
 				// 				uni.hideLoading()
 				// 				reject(err)
 				// 			})
-				// 		dispatch('updateIdentityInfo')
+				dispatch('updateIdentityInfo')
 				// 	} else {
 				// 		uni.showToast({ title: '缺少手机号码', icon: 'none' })
 				// 		reject('缺少手机号码')

@@ -3,20 +3,28 @@
 		class="item"
 		@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}`)"
 	>
-		<image :src="cItem.image" class="product-img"></image>
+		<image :src="common.seamingImgUrl(cItem.image)" mode="aspectFit" class="product-img"></image>
 		<view class="product-bottom-box">
 			<view class="product-name">{{ cItem.productName }}</view>
 			<view v-if="cItem.number" class="product-num font-color-C5AA7B mar-top-10">
 				已售{{ cItem.number }}件
 			</view>
-			<view class="product-price-box">
-				<ATFActivityImage :type="cItem.activityType"></ATFActivityImage>
-				<view style="flex: 1;display: flex;align-items: center;flex-wrap: wrap;">
-					<text class="price-box fs40 font-color-C83732 mar-right-20">
-						<text class="fs32">￥</text>
-						{{ cItem.price }}
-					</text>
-					<text v-if="cItem.price !== cItem.originalPrice" class="price-through">￥{{ cItem.originalPrice }}</text>
+			<view class="product-line-box">
+				<view class="product-price-box">
+					<ATFActivityImage :type="cItem.activityType"></ATFActivityImage>
+					<view style="flex: 1;display: flex;align-items: center;flex-wrap: wrap;">
+						<text class="price-box fs40 font-color-C83732 mar-right-20">
+							<text class="fs32">￥</text>
+							{{ cItem.price }}
+						</text>
+						<text v-if="cItem.price !== cItem.originalPrice" class="price-through">￥{{ cItem.originalPrice }}</text>
+					</view>
+				</view>
+				<view
+					style="padding: 10upx;background-color: #ffe500;border-radius: 50%;line-height: 1;"
+					@click.stop="$emit('add-car', cItem)"
+				>
+					<tui-icon name="plus" color="#000000" :size="28" unit="upx" bold></tui-icon>
 				</view>
 			</view>
 			<view
@@ -87,19 +95,28 @@ export default {
 			display: inline-block;
 		}
 
-		.product-price-box {
-			width: 100%;
+		.product-line-box {
+			margin-top: 18rpx;
 			display: flex;
+			justify-content: space-between;
 			flex-direction: row;
 			align-items: center;
 			flex-wrap: wrap;
-			margin-top: 18rpx;
-		}
 
-		.product-price-box .price-through {
-			text-decoration: line-through;
-			font-size: 24rpx;
-			color: #CCC;
+			.product-price-box {
+				flex: 1;
+				width: 100%;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+
+			.product-price-box .price-through {
+				text-decoration: line-through;
+				font-size: 24rpx;
+				color: #CCC;
+			}
 		}
 
 	}

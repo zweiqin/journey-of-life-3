@@ -103,18 +103,13 @@ export const myFunction = [
 		icon: require('../../static/images/new-user/menu-icon/yaoqingma.png'),
 		type: 'userInvitation'
 	},
-	// {
-	// 	name: '会员中心',
-	// 	icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
-	// 	url: '/another-tf/another-serve/memberCenter/index'
-	// },
 	{
 		name: '会员升级',
 		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
 		url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
 	},
 	// {
-	//   name: "会员升级",
+	//   name: "会员升级", // 老团蜂的
 	//   icon: require("../../static/images/new-user/menu-icon/huiyuanshengji.png"),
 	//   url: "/user/sever/userUp/partner-appay",
 	// },
@@ -152,22 +147,12 @@ export const myFunction = [
 		url: '/another-tf/another-serve/footprintList/index'
 	}
 	// {
-	// 	name: '分销中心',
-	// 	icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-	// 	url: '/another-tf/another-serve/distributionModule/index'
-	// },
-	// {
-	// 	name: '粉丝统计',
-	// 	icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-	// 	url: '/another-tf/another-user/fan-statistics/index'
-	// },
-	// {
-	// 	name: '我的推广',
+	// 	name: '我的推广', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
 	// 	url: '/user/sever/group-code/group-code'
 	// },
 	// {
-	// 	name: '订阅',
+	// 	name: '订阅', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/dingyue.png'),
 	// 	url: '/user/sever/view-history?page=follow'
 	// },
@@ -189,23 +174,13 @@ export const myFunction = [
 	// 	url: '/user/sever/regional-agent/regional-agent'
 	// },
 	// {
-	// 	name: '加盟商',
-	// 	icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png'),
-	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=4',
-	// },
-	// {
-	// 	name: '区代理',
-	// 	icon: require('../../static/images/new-user/menu-icon/qudaili.png'),
-	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=5'
-	// },
-	// {
 	// 	name: '申请开店', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 	// 	url: '/user/sever/applyStore/index',
 	// 	role: [1, 6, 7]
 	// },
 	// {
-	// 	name: '智能画册',
+	// 	name: '智能画册', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
 	// 	url: '/user/smartAlbum/index'
 	// },
@@ -214,12 +189,6 @@ export const myFunction = [
 	// 	icon: require('../../static/images/new-user/menu-icon/gudongkanban.png'),
 	// 	url: '/user/shareholder/shareholder'
 	// },
-	// {
-	// 	name: '加盟统计',
-	// 	icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
-	// 	url: '/another-tf/another-user/franchisee-statistics/index',
-	// 	showRole: [ 'franchisee' ]
-	// }
 ]
 
 export const myServe = [
@@ -288,12 +257,6 @@ export const shopServe = [
 		type: 'shopInvitation',
 		showRole: [ 'shop' ]
 	}
-	// {
-	// 	name: '收款账户',
-	// 	icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
-	// 	url: '/another-tf/another-user/receiving-account/index',
-	// 	showRole: ['shop']
-	// }
 ]
 
 export const additionalFunction = [
@@ -359,5 +322,52 @@ export const myPreferential = [
 	{
 		name: '同城卡',
 		icon: require('../../static/images/new-user/menu-icon/qudaili.png')
+	}
+]
+
+export const otherFunction = [
+	// myFunction
+	{
+		name: '会员中心',
+		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
+		url: '/another-tf/another-serve/memberCenter/index'
+	},
+	{
+		name: '分销中心',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-serve/distributionModule/index'
+	},
+	{
+		name: '粉丝统计',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/fan-statistics/index'
+	},
+	// {
+	// 	name: '加盟商',
+	// 	icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png'),
+	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=4',
+	// },
+	// {
+	// 	name: '区代理',
+	// 	icon: require('../../static/images/new-user/menu-icon/qudaili.png'),
+	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=5'
+	// },
+	{
+		name: '我的售后',
+		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
+		url: '/another-tf/another-serve/afterSale/index'
+	},
+	{
+		name: '加盟统计',
+		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
+		url: '/another-tf/another-user/franchisee-statistics/index',
+		showRole: [ 'franchisee' ]
+	},
+	// shopServe
+	{
+		name: '收款账户',
+		icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
+		url: '/another-tf/another-user/receiving-account/index',
+		showRole: [ 'shop' ]
 	}
 ]

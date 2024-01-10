@@ -1,5 +1,5 @@
 <template>
-	<view class="goods-details-container" @scroll="handlePageScroll">
+	<view class="goods-details-container">
 		<BeeBack>
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
@@ -11,28 +11,16 @@
 			<!--  拼团滚动 -->
 			<view class="news-box">
 				<view class="news-bg">
-					<swiper
-						class="goodsImgswiper-box" :vertical="true" :circular="true" interval="8000"
-						duration="2000"
-						:autoplay="true"
-					>
+					<swiper vertical circular interval="8000" duration="2000" autoplay>
 						<swiper-item v-for="(item, index) in broadCastList" :key="index">
 							<view class="news-item flex-items">
 								<image class="item-avatar" :src="common.seamingImgUrl(item.headImage)"></image>
 								<view class="news-item-user">{{ item.name }}</view>
-								<view class="news-item-info">{{ item.timeStr }}</view>
-								<view v-if="item.type === 1" class="news-item-info">
-									给了好评
-								</view>
-								<view v-if="item.type === 2" class="news-item-info">
-									正在拼单
-								</view>
-								<view v-if="item.type === 3" class="news-item-info">
-									拼单成功
-								</view>
-								<view v-if="item.type === 4" class="news-item-info">
-									下单
-								</view>
+								<view>{{ item.timeStr }}</view>
+								<view v-if="item.type === 1">给了好评</view>
+								<view v-if="item.type === 2">正在拼单</view>
+								<view v-if="item.type === 3">拼单成功</view>
+								<view v-if="item.type === 4">下单</view>
 							</view>
 						</swiper-item>
 					</swiper>
@@ -41,31 +29,38 @@
 
 			<!-- 轮播图+分享+价格名称+活动倒计时+优惠券 -->
 			<GoodActivityDetail
-				ref="goodActivityDetail" :sku-select="selectedSku" :product-info="productData"
-				:time-active-type="timeActiveType" :mark-tools="markTools" :shop-mark-tools="shopMarkTools"
-				@activityEnd="handleActivityEnd" @couponClick="handleShowCoupon"
+				ref="goodActivityDetail" :sku-select="selectedCurrentMsg.selectedSku"
+				:goods-detail="goodsDetail" @activityEnd="handleGetProductDetail"
 			/>
 
+			<view
+				v-if="goodsDetail.productBrief"
+				style="display: flex;align-items: center;margin-top: 10upx;padding: 10upx 20upx 10upx;font-size: 24upx;background-color: #ffffff;"
+			>
+				<view style="color: #999999;">卖点</view>
+				<view style="flex: 1;margin-left: 20upx;">{{ goodsDetail.productBrief }}</view>
+			</view>
+
 			<!-- 发货 -->
-			<view v-if="productData.ifLogistics" class="express-box flex-items flex-row fs24">
+			<view v-if="goodsDetail.ifLogistics" class="express-box flex-items flex-row fs24">
 				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
 				<tui-icon
-					v-if="productData.receive && productData.receive.receiveAdress" name="gps" :size="14"
+					v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
 					color="#c1c1c1"
 				></tui-icon>
-				<label v-if="productData.receive && productData.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
-					{{ productData.receive.receiveAdress }}
+				<label v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
+					{{ goodsDetail.receive.receiveAdress }}
 				</label>
-				<label>快递：¥ {{ productData.logisticsPrice || 0 }}</label>
+				<label>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</label>
 			</view>
 
 			<!-- 选择SKU -->
-			<view class="fs24 chooseSize-box flex-start" @click=" handleShowGoodsSkuSelect(6)">
+			<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
 				<view class="chooseSize-content flex-items flex-row flex-sp-between">
-					<view class="flex-row-plus ">
+					<view class="flex-row-plus">
 						<label class="fs26 mar-left-30 font-color-999">选择</label>
-						<view class="valueBox mar-left-20 flex-items">
-							<view v-for="(item, index) in currentSuk" :key="index" class="mar-right-10">
+						<view style="flex: 1;">
+							<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10upx 6upx;">
 								{{ item.skuText || '-' }}
 							</view>
 						</view>
@@ -75,25 +70,29 @@
 			</view>
 
 			<!-- 结合销售 -->
-			<CombinedSales :pid="productId" :product-data="productData"></CombinedSales>
-			<!-- 拼团 -->
-			<view v-if="selectedSku.activityType === 1" class="borRig-line-20"></view>
+			<CombinedSales :pid="productId" :goods-detail="goodsDetail"></CombinedSales>
 			<!-- 拼单列表 -->
-			<view v-if="selectedSku.activityType === 1 && topThreeCollageOrders.length > 0" class="goodsDiscount">
+			<view
+				v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders.length"
+				class="goodsDiscount"
+			>
 				<view class="questionTit mar-left-30 flex-items flex-row flex-sp-between">
 					<label class="">这些人正在拼单</label>
 					<view class="allMoreBox">
-						<view class="allMore" @click="handleOpenGroupBookingList">
+						<view class="allMore" @click="showGroupBuyList = true">
 							查看全部
 						</view>
 						<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
 					</view>
 				</view>
-				<view v-for="(Gitem, index) in topThreeCollageOrders" :key="index" class="groupBuy">
+				<view
+					v-for="(Gitem, index) in selectedCurrentMsg.selectedSku.collageOrders.slice(0, 3)" :key="index"
+					class="groupBuy"
+				>
 					<view v-if="Gitem.time > 0" class="groupBuyList">
 						<view class="groupBuyItem">
 							<view class="leftAvatar">
-								<img :src="common.seamingImgUrl(Gitem.headImage)" alt="">
+								<image :src="common.seamingImgUrl(Gitem.headImage)" alt=""></image>
 								<span>{{ Gitem.name }}</span>
 							</view>
 							<view class="rightInfo">
@@ -110,37 +109,38 @@
 				</view>
 			</view>
 			<!--  评价  -->
-			<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :product-info="productData" :comment-list="commentList" />
+			<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :goods-detail="goodsDetail" />
 			<!-- 店铺 -->
-			<view v-if="!(productData.shopName === '团蜂自营')" class="inStore-box flex-items flex-row flex-sp-between">
+			<view v-if="!(goodsDetail.shopName === '团蜂自营')" class="inStore-box flex-items flex-row flex-sp-between">
 				<view class="flex-display flex-row">
 					<view>
-						<image class="inStore-logo default-img" :src="common.seamingImgUrl(productData.shopLogo)" @click="handleJumpToStore"></image>
+						<image
+							class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
+							@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+						></image>
 					</view>
 					<view class="flex-display flex-column mar-left-20">
-						<label @click="handleJumpToStore">{{ productData.shopName }}</label>
+						<label @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
 						<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
-							<label>商品总类：{{ productData.classifyNumber }}</label>
-							<label class="mar-left-30">已售：{{ productData.number }}件</label>
+							<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
+							<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
 						</view>
 					</view>
 				</view>
-				<view class="inStore-but" @click="handleJumpToStore">
+				<view class="inStore-but" @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">
 					<text>去逛逛</text>
 					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
 				</view>
 			</view>
 			<!-- 详细信息 -->
-			<view class="goodsDetails-box">
-				<view class="goodsDetails-title">
-					<view class="goodsDetails-Line"></view>
-					<label class="goodsDetails-text">宝贝详情</label>
-					<view class="goodsDetails-Line"></view>
+			<view style="background-color: #FFFFFF;margin-top: 20rpx;padding: 20rpx 30rpx;">
+				<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10upx;">
+					<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
+					<label style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</label>
+					<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
 				</view>
-				<view class="goodsDetailsimg-box">
-					<view class="">
-						<rich-text :nodes="sellDescList"></rich-text>
-					</view>
+				<view>
+					<rich-text :nodes="goodsDetail.text.replace(/\<img/gi, replaceImgText)"></rich-text>
 				</view>
 			</view>
 		</view>
@@ -148,7 +148,10 @@
 		<view class="buygoods-box">
 			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 				<view class="btns_container">
-					<view v-if="!(productData.shopName === '团蜂自营')" class="btns flex-column-plus flex-items" @click="handleJumpToStore">
+					<view
+						v-if="!(goodsDetail.shopName === '团蜂自营')" class="btns flex-column-plus flex-items"
+						@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+					>
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
@@ -170,22 +173,22 @@
 					</view>
 				</view>
 				<view class="btns_container">
-					<view v-if="productData.shelveState === 0" class="flex-row-plus offShelf">
+					<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
 						商品已下架
 					</view>
-					<view v-else-if="selectedSku.activityType === 1" class="flex-row-plus flex-items">
-						<view class="joinShopCartBut" @click=" handleShowGoodsSkuSelect(4)">
+					<view v-else-if="selectedCurrentMsg.selectedSku.activityType === 1" class="flex-row-plus flex-items">
+						<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(4)">
 							单独购买
 						</view>
-						<view class="buyNowBut" @click=" handleShowGoodsSkuSelect(3)">
+						<view class="buyNowBut" @click="handleShowGoodsSkuSelect(3)">
 							我要开团
 						</view>
 					</view>
 					<view v-else class="flex-row-plus flex-items">
-						<view class="joinShopCartBut" @click=" handleShowGoodsSkuSelect(1)">
+						<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(1)">
 							加入购物车
 						</view>
-						<view class="buyNowBut" @click=" handleShowGoodsSkuSelect(2)">
+						<view class="buyNowBut" @click="handleShowGoodsSkuSelect(2)">
 							立即购买
 						</view>
 					</view>
@@ -203,24 +206,21 @@
 		</view>
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
-			ref="skuSelect" :product-data="productData" :selected-sku="selectedSku" :collage-id="collageId"
-			@postSelectSku="selectSkuPostProcessor" @getCurrentSku="handleSelectSku"
-			@changeCartNum="(num) => allCartNum = num"
+			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :selected-sku="selectedCurrentMsg.selectedSku"
+			:collage-id="collageId" @current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 		/>
-		<!-- 优惠券选择器 -->
-		<CouponPopup
-			ref="couponPopup" :mark-tools="markTools" :shop-mark-tools="shopMarkTools" :set-top="topLeft"
-			:current-active="currentActive"
-		></CouponPopup>
 		<!-- 拼单弹框 -->
 		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
 					<scroll-view style="height: 480upx;" scroll-y>
-						<view v-for="(aitem, index) in selectedSku.collageOrders" :key="index" class="groupBuyItem1">
+						<view
+							v-for="(aitem, index) in selectedCurrentMsg.selectedSku.collageOrders" :key="index"
+							class="groupBuyItem1"
+						>
 							<view v-if="aitem.time > 0" class="leftAvatar">
-								<img :src="common.seamingImgUrl(aitem.headImage)" alt="">
+								<image :src="common.seamingImgUrl(aitem.headImage)" alt=""></image>
 								<view class="groupBuyTime">
 									<view class="needPeople">
 										<span>{{ aitem.name }}</span>还差<b>{{ aitem.person }}人</b>
@@ -243,17 +243,15 @@
 
 <script>
 import CombinedSales from './components/combinedSales'
-import CouponPopup from './components/coupon-popup'
 import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting } from '../../../utils'
-import { getProductDetailsByIdApi, bindDistributorSalesCustomerApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
 	components: {
-		CouponPopup,
 		CombinedSales,
 		GoodEvaluateAndQuestion,
 		GoodActivityDetail,
@@ -261,32 +259,7 @@ export default {
 	},
 	data() {
 		return {
-			isIphone: '',
-			returnTopFlag: false, // 回到顶部
-			productId: '', // 商品ID，有可能屎缓存数据
-			shopGroupWorkId: null, // 拼团数据ID
-			topThreeCollageOrders: {}, // 当前商品拼单数据
-			collageId: 0, // 去拼团时的拼单ID
-			broadCastList: [], // 拼团滚动数据
-			showGroupBuyList: false, // 是否展示拼单弹窗
-			shopGroupWorkTicker: null, // 拼团倒计时定时器
-			paramSkuId: null, // 秒杀商品ID
-			// 商品详情
-			productData: {},
-			// 当前选中SKU
-			selectedSku: {},
-			currentSuk: [], // 选中的SKU（子组件给当前页面做数据渲染）
-			buyNum: 1, // 当前选取的SKU购买数量
-			storeId: '', // 店铺ID
-			commentList: [], // 商品评价列表
-			sellDescList: '', // 商品详情长图（富文本）
-			timeActiveType: true, // 是否开启活动（非则预热）
-			btnType: 1, // 拉起SKU窗口的按钮类型 1加入购物车 2立即购买 3开团 4单独购买 6选择SKU
-			allCartNum: 0, // 购物车数量
-			markTools: [], // 平台优惠券
-			shopMarkTools: [], // 店铺优惠券
-			currentActive: 0, // 优惠券选项卡类型
-			topLeft: 0, // 距离顶部（返回顶部使用）
+			replaceImgText: '<img style="max-width:100%;height:auto" ',
 			// 埋点对象
 			pointOption: {
 				inTime: null,
@@ -294,42 +267,39 @@ export default {
 					eventType: 1,
 					productIds: ''
 				}
-			}
-		}
-	},
-	created() {
-		if (this.ticker) { // 这一段是防止进入页面出去后再进来计时器重复启动
-			clearInterval(this.ticker)
+			},
+			isIphone: getApp().globalData.isIphone,
+			shopId: '',
+			productId: '', // 商品ID，有可能屎缓存数据
+			skuId: '', // 产品ID
+
+			returnTopFlag: false, // 回到顶部
+			collageId: 0, // 去拼团时的拼单ID
+			broadCastList: [], // 拼团滚动数据
+			showGroupBuyList: false, // 是否展示拼单弹窗
+			shopGroupWorkTicker: null, // 拼团倒计时定时器
+			// 商品详情
+			goodsDetail: {
+				text: '', // 宝贝详情，商品详情长图（富文本）
+				markTools: [], // 平台优惠券
+				shopMarkTools: [], // 店铺优惠券
+				comments: [] // 商品评价列表
+			},
+			selectedCurrentMsg: {
+				selectedSku: { // 当前选中SKU
+					collageOrders: [] // 当前商品拼单数据
+				},
+				currentSku: [], // 选中的SKU（子组件给当前页面做数据渲染）
+				number: 1
+			},
+			allCartNum: 0 // 购物车数量
 		}
 	},
 	onLoad(options) {
-		// 页面滚动条归0，不然骨架屏有问题
-		uni.pageScrollTo({
-			scrollTop: 0,
-			duration: 0
-		})
-		this.productData = {
-			logisticsPrice: 0,
-			images: ['123', '123', '123'],
-			productName: '....',
-			ifCollect: 1
-		}
-		this.selectedSku = {
-			activityType: 0,
-			originalPrice: 0
-		}
-		if (options.detail) {
-			options = this.$getJumpParam(options)
-		}
 		this.pointOption.inTime = new Date().getTime()
-		this.isIphone = getApp().globalData.isIphone
-		this.shopId = parseInt(options.shopId)
-		this.productId = options.productId
-		this.paramSkuId = options.skuId
-		// 判断是否是拼团
-		if (options.shopGroupWorkId) {
-			this.shopGroupWorkId = options.shopGroupWorkId
-		}
+		this.shopId = Number(options.shopId)
+		this.productId = Number(options.productId)
+		this.skuId = Number(options.skuId)
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
@@ -338,9 +308,7 @@ export default {
 	},
 	onUnload() {
 		// 判断是否要埋点
-		const nowTime = new Date().getTime()
-		if (nowTime - this.pointOption.inTime >= 5000) {
-			// 埋点
+		if ((new Date().getTime() - this.pointOption.inTime) >= 5000) {
 			this.pointOption.data.productIds = this.productId
 			addUserTrackReportDoPointerApi(this.pointOption.data)
 		}
@@ -352,68 +320,21 @@ export default {
 	},
 	onPageScroll(e) {
 		this.returnTopFlag = e.scrollTop > 600
-		this.topLeft = e.scrollTop
 	},
 	methods: {
-		/**
-		 * 页面滚动事件
-		 * @param e
-		 */
-
-		handlePageScroll(e) {
-			this.topLeft = e.scrollTop
+		// 选取sku
+		handleSelectCurrent(selectedCurrentMsg) {
+			console.log(selectedCurrentMsg)
+			this.selectedCurrentMsg.selectedSku = selectedCurrentMsg.selectedSku
+			this.selectedCurrentMsg.currentSku = selectedCurrentMsg.currentSku
+			this.selectedCurrentMsg.number = selectedCurrentMsg.number
 		},
 
-		/**
-		 * 选取sku
-		 * @param skuObj:{currentSuk:object,selectedSku:object,buyNum:number}
-		 */
-
-		handleSelectSku(skuObj) {
-			console.log(skuObj)
-			this.currentSuk = skuObj.currentSku
-			this.selectedSku = skuObj.skuItem
-			this.buyNum = skuObj.buyNum
-		},
-
-		/**
-		 * 选择sku后置方法
-		 * 判断有无活动等操作
-		 */
-
-		selectSkuPostProcessor() {
-			const ifEnable = this.selectedSku.ifEnable
-			if (this.selectedSku.activityType === 1 && ifEnable === 0) {
-				this.topThreeCollageOrders = this.selectedSku.collageOrders.slice(0, 3)
-			}
-			if ([1, 2, 3, 4, 5].includes(this.selectedSku.activityType) && ifEnable === 0) {
-				this.$refs.goodActivityDetail.handleGetCountDownNumber(this.selectedSku.endTime)
-			}
-			this.timeActiveType = ifEnable === 0
-		},
-
-		/**
-		 * 获取拼团滚动数据
-		 */
-
-		async handleGetGroupBookingRollList() {
-			const param = {
-				productId: this.productId,
-				shopGroupWorkId: this.shopGroupWorkId ?? undefined
-			}
-			const res = await getBroadCastList(param)
-			this.broadCastList = res.data
-		},
-
-		/**
-		 * 和他人拼单
-		 * @param collageId 已存在的拼团订单ID
-		 */
-
+		// 和他人拼单
 		handleGoGroupBooking(collageId) {
 			this.showGroupBuyList = false
 			this.collageId = collageId
-			this.$refs.skuSelect.goodsDetailShowFlag = true
+			this.$refs.refGoodSkuSelect.isShowDetails = true
 		},
 
 		/**
@@ -422,19 +343,17 @@ export default {
 		handleSetDownTime() { // 这个计时器是每秒减去数组中指定字段的时间
 			let productHaveCollageOrder = false
 			// 判断sku组合中是否存在拼单
-			const skuCollects = this.productData.map
-			for (const skuCollectItemKey in skuCollects) {
-				const collageOrders = skuCollects[skuCollectItemKey].collageOrders
+			for (const skuCollectItemKey in this.goodsDetail.map) {
+				const collageOrders = this.goodsDetail.map[skuCollectItemKey].collageOrders
 				if (collageOrders && collageOrders.length > 0) {
 					productHaveCollageOrder = true
 					break
 				}
 			}
 			if (!productHaveCollageOrder) return
-
 			this.shopGroupWorkTicker = setInterval(() => {
-				for (const skuCollectItemKey in skuCollects) {
-					const collageOrders = skuCollects[skuCollectItemKey].collageOrders
+				for (const skuCollectItemKey in this.goodsDetail.map) {
+					const collageOrders = this.goodsDetail.map[skuCollectItemKey].collageOrders
 					if (collageOrders && collageOrders.length > 0) {
 						collageOrders.forEach((collageItem) => {
 							collageItem.time > 0 ? collageItem.time -= 1000 : ''
@@ -460,18 +379,7 @@ export default {
 			return `${timeFormat.hour}:${timeFormat.min}:${timeFormat.sec}`
 		},
 
-		/**
-		 * 跳转到店铺
-		 */
-
-		handleJumpToStore() {
-			this.go(`/community-center/shop/shop-detail?shopId=${this.shopId}`)
-		},
-
-		/**
-		 * 返回头部
-		 */
-
+		// 返回头部
 		handleReturnTop() {
 			uni.pageScrollTo({
 				scrollTop: 0,
@@ -479,98 +387,57 @@ export default {
 			})
 		},
 
-		/**
-		 * 打开SKU弹窗
-		 * @param type 1加入购物车 2立即购买 3开团 4单独购买 6选择SKU
-		 */
-
-		handleShowGoodsSkuSelect(type) {
+		// 打开SKU弹窗
+		handleShowGoodsSkuSelect(btnType) {
 			// 为type情况时，绝不可能为和他人拼单
 			this.collageId = 0
-			this.$refs.skuSelect.btnType = type
-			this.$refs.skuSelect.goodsDetailShowFlag = true
+			this.$refs.refGoodSkuSelect.btnType = btnType
+			this.$refs.refGoodSkuSelect.isShowDetails = true
 		},
 
-		/**
-		 * 打开优惠券弹窗
-		 */
-
-		handleShowCoupon() {
-			this.$refs.couponPopup.showActivity = true
-		},
-
-		/**
-		 * 活动商品时间到后置方法
-		 * 供GoodActivityDetail组件调用
-		 */
-
-		handleActivityEnd() {
-			this.selectedSku.activityType = 0
-			location.reload()
-		},
-
-		/**
-		 * 获取商品详情
-		 */
-
+		// 获取商品详情
 		async handleGetProductDetail() {
 			uni.showLoading({
 				title: '加载中...',
 				mask: true
 			})
 			try {
-				const postData = {
+				const res = await getProductDetailsByIdApi({
 					shopId: this.shopId,
 					productId: this.productId,
-					skuId: this.paramSkuId,
+					skuId: this.skuId,
 					terminal: 1
-				}
-				const res = await getProductDetailsByIdApi(postData)
+				})
 				// const sameSkuProduct = Object.values(res.data.map).find((item) => item.skuId === res.data.skuId) || {}
-				// this.productData = { ...res.data, voucherId: sameSkuProduct.voucherId || '', voucherPrice: sameSkuProduct.voucherPrice || '' }
-				this.productData = res.data
-				this.markTools = res.data.markTools // 平台优惠券
-				this.shopMarkTools = res.data.shopMarkTools // 店铺优惠券
-				this.currentActive = this.markTools.length === 0 && this.shopMarkTools.length > 0 ? 1 : 0
-				// 处理单规格商品，如果是单款式商品，需要特殊处理productData.names
-				const skuCollectionList = this.productData.map
-				const skuCollectionListKeys = Object.keys(skuCollectionList)
-				if (skuCollectionListKeys.length === 1 && skuCollectionListKeys[0] === '单款项') {
-					this.productData.names[0].values.push({
-						skuValue: this.productData.names[0].skuName,
+				// this.goodsDetail = { ...res.data, voucherId: sameSkuProduct.voucherId || '', voucherPrice: sameSkuProduct.voucherPrice || '' }
+				this.goodsDetail = res.data
+				// 处理单规格商品，如果是单款式商品，需要特殊处理goodsDetail.names
+				const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
+				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
+					this.goodsDetail.names[0].values.push({
+						skuValue: this.goodsDetail.names[0].skuName,
 						valueCode: '单款项'
 					})
 				}
-
 				// 如果sku的图像为空，设置为商品的图像
-				for (const key in skuCollectionList) {
-					if (!skuCollectionList[key].image) {
-						skuCollectionList[key].image = this.productData.images[0]
-					}
-				}
-
-				// 评价
-				this.commentList = res.data.comments
-				// 宝贝详情
-				this.sellDescList = res.data.text.replace(
-					/\<img/gi,
-					'<img style="max-width:100%;height:auto" '
-				)
-
+				skuCollectionListKeys.forEach((allSkuValueCodeMap) => {
+					if (!this.goodsDetail.map[allSkuValueCodeMap].image) this.goodsDetail.map[allSkuValueCodeMap].image = this.goodsDetail.images[0]
+				})
 				// 渲染商详之后，如果参数传了skuId，则选中该skuId，否则选中第一个规格
 				this.$nextTick(async () => {
-					if (this.paramSkuId) {
-						this.$refs.skuSelect.handleSelectBySkuId(this.paramSkuId)
+					if (this.skuId) {
+						this.$refs.refGoodSkuSelect.handleSelectBySkuId(this.skuId)
 					} else {
 						// 默认选中第0个
-						for (const skuRowItem of this.productData.names) {
-							this.$refs.skuSelect.handleClickSkuItem(skuRowItem.nameCode, skuRowItem.values[0].valueCode)
-						}
+						this.goodsDetail.names.forEach((skuRowItem) => {
+							this.$refs.refGoodSkuSelect.handleClickSkuItem(skuRowItem.nameCode, skuRowItem.values[0].valueCode)
+						})
 					}
 					// 如果是拼团，设置拼团id
-					if (this.productData.activityType === 1) {
-						this.shopGroupWorkId = this.productData.shopGroupWorkId
-						await this.handleGetGroupBookingRollList()
+					if (this.goodsDetail.activityType === 1) {
+						// 获取拼团滚动数据，传入拼团数据ID
+						const broadCastData = await getBroadCastList({ productId: this.productId, shopGroupWorkId: this.goodsDetail.shopGroupWorkId })
+						this.broadCastList = broadCastData.data
 						this.handleSetDownTime()
 					}
 					await this.$refs.goodEvaluateAndQuestion.handleGetProblemList()
@@ -580,26 +447,7 @@ export default {
 			}
 		},
 
-		/**
-		 * 打开拼团列表
-		 */
-
-		handleOpenGroupBookingList() {
-			if (this.topThreeCollageOrders.length > 0) {
-				this.showGroupBuyList = true
-			} else {
-				uni.showToast({
-					title: '还没有人拼单，快去拼单吧！',
-					icon: 'none'
-				})
-			}
-		},
-
-		/**
-		 * 打开客服
-		 * @return {Promise<void>}
-		 */
-
+		// 打开客服
 		async handleFlyToService() {
 			let corpId = null
 			let serviceURL = null
@@ -659,14 +507,16 @@ export default {
 
 <style lang="less" scoped>
 .goods-details-container {
-	min-height: 100%;
+	min-height: 100vh;
+	box-sizing: border-box;
+	background-color: #f8f8f8;
 	padding-bottom: 180upx;
 
 	.express-box {
 		height: 100rpx;
-		background-color: #FFFFFF;
 		padding-left: 30rpx;
-		border-top: 12rpx solid #F8F8F8;
+		margin-top: 10upx;
+		background-color: #FFFFFF;
 
 		image {
 			width: 21rpx;
@@ -691,7 +541,6 @@ export default {
 
 	.chooseSize-box {
 		border-top: 12rpx solid #F8F8F8;
-		height: 90rpx;
 		background-color: #FFFFFF;
 		margin: 10rpx 0;
 
@@ -738,29 +587,6 @@ export default {
 			background: #333333;
 			padding-left: 20rpx;
 			position: relative;
-		}
-	}
-
-	.goodsDetails-box {
-		background-color: #FFFFFF;
-		margin-top: 20rpx;
-		padding: 20rpx 30rpx;
-
-		.goodsDetails-title {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			margin-bottom: 10upx;
-
-			.goodsDetails-Line {
-				width: 265rpx;
-				border-bottom: 1rpx solid #EDEDED;
-			}
-
-			.goodsDetails-text {
-				padding: 0 22rpx;
-				white-space: nowrap;
-			}
 		}
 	}
 
@@ -927,7 +753,7 @@ export default {
 					align-items: center;
 					width: 50%;
 
-					img {
+					image {
 						width: 72rpx;
 						height: 72rpx;
 						margin-right: 10rpx;
@@ -1001,7 +827,7 @@ export default {
 					display: flex;
 					align-items: center;
 
-					img {
+					image {
 						width: 72rpx;
 						height: 72rpx;
 						margin-right: 10rpx;

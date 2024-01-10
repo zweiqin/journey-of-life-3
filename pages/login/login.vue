@@ -14,34 +14,37 @@
 		</view>
 		<view class="login-form">
 			<tui-form ref="refLoginForm" :show-message="false">
-				<view class="iphoneNum-box">
+				<view>
 					<tui-input
-						v-model="loginQuery.phone" label="+ 86" type="number" label-color="#ffffff"
-						border-color="#EA5B1D"
+						v-model="loginQuery.phone" label="+ 86" type="number" padding="26upx 20upx 26upx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32upx;" label-color="#ffffff" border-color="#EA5B1D"
 						placeholder="请输入手机号码" background-color="transparent" :border-top="false" color="#ffffff"
+						style="border-bottom: 2upx solid #ffffff;"
 					></tui-input>
 				</view>
-				<view v-if="loginType === 'verificationCode'" class="iphoneNum-box">
+				<view v-if="loginType === 'password'">
 					<tui-input
-						v-model="loginQuery.verificationCode" background-color="transparent" :border-top="false"
+						v-model="loginQuery.password" type="password" padding="26upx 20upx 26upx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
+						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入密码" color="#ffffff"
+						style="border-bottom: 2upx solid #ffffff;"
+					>
+					</tui-input>
+				</view>
+				<view v-if="loginType === 'verificationCode'">
+					<tui-input
+						v-model="loginQuery.verificationCode" padding="26upx 20upx 26upx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
+						style="border-bottom: 2upx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
-								ref="refLoginVerify" width="188upx" height="48upx" border-width="0"
-								text="获取验证码"
+								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188upx" height="48upx"
+								border-width="0" text="获取验证码"
 								:size="30" color="#dddddd" @send="handleSendVerify"
 							></tui-countdown-verify>
 						</template>
-					</tui-input>
-				</view>
-				<view v-if="loginType === 'password'" class="iphoneNum-box">
-					<tui-input
-						v-model="loginQuery.password" placeholder-class="inputs" type="password" class="reset-wrapper"
-						background-color="" :border-top="false" border-color="#EA5B1D" label-color="#FFFFFF"
-						placeholder="请输入密码"
-						color="#fff"
-					>
 					</tui-input>
 				</view>
 			</tui-form>
@@ -94,15 +97,15 @@
 					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">支付宝登录</view>
 				</view>
 				<!-- #endif -->
-				<view
+				<!-- <view
 					v-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
 					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
-				>
+					>
 					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
-						<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
+					<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
 					</view>
 					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">微信登录</view>
-				</view>
+					</view> -->
 			</view>
 		</view>
 	</view>
@@ -218,38 +221,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-/deep/ .tui-input__placeholder {
-	color: rgba(255, 255, 255, 0.738);
-
-	inout {
-		color: #fff;
-	}
-}
-
-/deep/ .tui-input__wrap::after {
-	content: ' ';
-	position: absolute;
-	border-bottom: 4rpx solid var(--thorui-line-color, rgba(255, 255, 255, 0.741));
-	-webkit-transform: scaleY(0.5);
-	transform: scaleY(0.5);
-	-webkit-transform-origin: 0 100%;
-	transform-origin: 0 100%;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	z-index: 2;
-	pointer-events: none;
-}
-
+<style lang="less" scoped>
 .containers {
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	box-sizing: border-box;
-	/* width: 100vw; */
-	/* height: 100vh; */
-	/* min-height: 100%; */
 	padding-bottom: 66rpx;
 	background-color: #EA5B1D;
 
@@ -279,8 +256,6 @@ export default {
 			letter-spacing: 6rpx;
 			-webkit-box-reflect: below 2px -webkit-linear-gradient(top, rgba(250, 250, 250, 0), rgba(250, 250, 250, 0) 70%, rgba(255, 255, 255, 0.644));
 			box-reflect: below 0px linear-gradient(top, rgba(250, 250, 250, 0), rgba(250, 250, 250, .05) 70%, rgba(250, 250, 250, 0.3));
-			/* -webkit-transform: skewX(15deg);
-            -moz-transform: skewX(-15deg); */
 		}
 	}
 
@@ -293,22 +268,8 @@ export default {
 	}
 
 	.login-form {
-		box-sizing: border-box;
-		padding: 146rpx 20rpx 10rpx 20rpx;
-		/* padding-right: 40rpx; */
-		/* margin-top: 186rpx; */
-		width: 750rpx;
-		height: 336rpx;
-
-		.iphoneNum-box {
-			box-sizing: border-box;
-			padding-right: 20rpx;
-
-			.get-code {
-				font-size: 28rpx;
-				color: rgba(255, 255, 255, 0.679);
-			}
-		}
+		margin-top: 20upx;
+		padding: 146rpx 48rpx 10rpx 48rpx;
 	}
 }
 </style>

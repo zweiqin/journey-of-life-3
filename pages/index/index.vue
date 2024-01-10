@@ -62,9 +62,7 @@ import PageHeader from './cpns/PageHeader.vue';
 import VoucherPane from './cpns/VoucherPane.vue';
 import HotPane from './cpns/HotPane.vue';
 import NewGoodsPane from './cpns/NewGoodsPane.vue';
-import { goodsListApi } from '../../api/goods';
-import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
-import { getGoodsTypesApi, getTypeDetailList } from '../../api/home';
+import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
 
 import { homeTopNavs } from './config';
 export default {
@@ -107,7 +105,7 @@ export default {
     getFirstClassifyApi({ // ! 获取所有的爆品家具分类
       classifyId: 1160
     }).then(res => {
-      this.filtersMenus = new Set([res.data[1],res.data[0], ...res.data]) // 反转一二号分类的位置
+      this.filtersMenus = new Set([res.data[1],res.data[2],res.data[3],res.data[res.data.length-1], ...res.data]) // 反转一二号分类的位置
       // console.log(this.filtersMenus);
     })
     // this.getCategoryList();

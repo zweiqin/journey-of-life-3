@@ -9,6 +9,12 @@
 			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
+			<view>
+				<Pane v-if="isShowOther" title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
+				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
+					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
+				</view>
+			</view>
 		</view>
 		<tui-modal
 			:show="$data._isShowTuiModel"
@@ -31,7 +37,7 @@ import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
 import { USER_ID, T_STORAGE_KEY } from '../../constant'
-import { myFunction, myServe, additionalFunction, shopServe, myPreferential } from './data'
+import { myFunction, myServe, additionalFunction, shopServe, myPreferential, otherFunction } from './data'
 import { Encrypt } from '../../utils/secret'
 
 export default {
@@ -53,6 +59,8 @@ export default {
 			shopServe,
 			additionalFunction,
 			myPreferential,
+			otherFunction,
+			isShowOther: false,
 			userInfo: {},
 			bindingCode: ''
 		}

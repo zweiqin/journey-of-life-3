@@ -25,10 +25,7 @@
 
 <script>
 	import NewGoodsPane from './cpns/NewGoodsPane.vue';
-    import { getClassifyProducts2Api, getCanvasApi, getFirstClassifyApi, getProductDetailsByIdApi, getSearchProductsApi } from '@/api/anotherTFInterface';
-	import { goodsListApi } from '@/api/goods';
-	import { getGoodsTypesApi, getTypeDetailList } from '@/api/home';
-	import loadMore from '@/mixin/loadMore';
+    import { getClassifyProducts2Api } from '@/api/anotherTFInterface';
 	// import { homeTopNavs } from './config';
 	export default {
 		components: {
