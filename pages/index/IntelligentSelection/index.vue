@@ -58,7 +58,7 @@
         </view>
       </view>
       <view class="main">
-          <view class="styles">
+          <view class="styles" style="display: none;">
               <view class="stylesItem">
                   <image class="itemImage" src="@/static/images/new-index/taocan/styles1.png"></image>
                   <text class="itemText">新中式</text>
@@ -88,66 +88,22 @@
               </view>
           </view>
           <view class="productList">
-              <view class="listItem" @click="gotoDetails">
-                  <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
+              <view v-for="(item, index) in listData" :key="item.classifyId" class="listItem" @click="gotoDetails(item)">
+                  <image class="productImg" :src="item.image"></image>
+                  <!-- <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image> -->
                   <view class="titleBox">
                       <view class="title">
-                          <text>意式极简</text>
-                          <text>B1搭配效果(一房一厅)</text>
+                        <text>
+                          {{ item.productName }}12312
+                        </text>
+                          <!-- <text>{{ item.productName.split(' ')[0] }}</text>
+                          <text>{{ item.productName.split(' ')[1] }}</text> -->
                       </view>
                       <view class="amount">
                           <text class="amountL">
-                              <text class="daoler">￥</text>52220
+                              <text class="daoler">￥</text>{{ item.price }}
                           </text>
-                          <text class="amountR">￥62200</text>
-                      </view>
-                      <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
-                  </view>
-              </view>
-              <view class="listItem" @click="gotoDetails">
-                  <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
-                  <view class="titleBox">
-                      <view class="title">
-                          <text>意式极简</text>
-                          <text>B1搭配效果(一房一厅)</text>
-                      </view>
-                      <view class="amount">
-                          <text class="amountL">
-                              <text class="daoler">￥</text>52220
-                          </text>
-                          <text class="amountR">￥62200</text>
-                      </view>
-                      <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
-                  </view>
-              </view>
-              <view class="listItem" @click="gotoDetails">
-                  <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
-                  <view class="titleBox">
-                      <view class="title">
-                          <text>意式极简</text>
-                          <text>B1搭配效果(一房一厅)</text>
-                      </view>
-                      <view class="amount">
-                          <text class="amountL">
-                              <text class="daoler">￥</text>52220
-                          </text>
-                          <text class="amountR">￥62200</text>
-                      </view>
-                      <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
-                  </view>
-              </view>
-              <view class="listItem" @click="gotoDetails">
-                  <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image>
-                  <view class="titleBox">
-                      <view class="title">
-                          <text>意式极简</text>
-                          <text>B1搭配效果(一房一厅)</text>
-                      </view>
-                      <view class="amount">
-                          <text class="amountL">
-                              <text class="daoler">￥</text>52220
-                          </text>
-                          <text class="amountR">￥62200</text>
+                          <text class="amountR">￥{{ item.originalPrice }}</text>
                       </view>
                       <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
                   </view>
@@ -160,6 +116,8 @@
 <script>
 import Fields from './Fields.vue'
 import Package from './Package.vue'
+import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
+
 // import { tempData } from './data'
 export default {
   components: {
@@ -172,19 +130,45 @@ export default {
       // tempData: Object.freeze(tempData),
       tabNavsData: ['客厅翻新','卧室翻新','餐厅翻新','全屋整装'],
       isLeft: false,
-      isOne: false
+      isOne: false,
+      query: {
+        classifyId: '1440', // 分类ID 1160 备用ID 978 1163
+        search: '',
+        type: 1, // 价格升降序
+        volume: 0, // 销量升降序
+        page: 1,
+        pageSize: 24
+      },
+      listData: []
 	  // tempData: tempData,
 	  // show: 0
     }
+  },
+  onLoad() {
+    this.getProductList()
   },
   methods: {
       handleBack() {
         uni.navigateBack()
       },
-      gotoDetails() {
-            uni.navigateTo({
-                 url: '/pages/index/WholehouseCustomization/newDetail/index'
-            });
+      getProductList(isUpLoading = false) {
+        getClaasifyProductsApi(this.query).then(res => {
+          if (isUpLoading) {
+            this.listData = [...this.listData,...res.data.list]
+          }else {
+            this.listData = res.data.list
+          }
+          // console.log(this.listData);
+        })
+      },
+      gotoDetails(shopItem) {
+        uni.navigateTo({
+          //  url: `/pages/prod/prod?shopInfo=${JSON.stringify(this.goods)}&detailInfo=${JSON.stringify(this.voucherJudgment(this.goods))}`
+          url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`
+        });
+            // uni.navigateTo({
+            //      url: '/pages/index/WholehouseCustomization/newDetail/index'
+            // });
       },
   }
 }
@@ -506,14 +490,18 @@ export default {
         .productList {
             width: 100%;
             height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20rpx;
+            justify-content: space-between;
             .listItem {
-                margin: 24rpx 0;
-                width: 100%;
+                margin: 6rpx 0;
+                width: 48%;
                 height: 538rpx;
                 background-color: #fff;
                 border-radius: 20rpx;
                 .productImg {
-                    width: 690rpx;
+                    width: 100%;
                     height: 380rpx;
                     border-radius: 20rpx;
                     border-bottom: 2rpx solid #bcbcbc;
@@ -531,6 +519,12 @@ export default {
                         font-weight: 600;
                         line-height: 36rpx;
                         color: #222229;
+                        > text {
+                          white-space: nowrap;
+                          max-width: 100%;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
                     }
                     .amount {
                         margin-top: 24rpx;
@@ -554,10 +548,10 @@ export default {
                     }
                     .ShoppingCart {
                         position: absolute;
-                        top: 65rpx;
-                        right: 35rpx;
-                        width: 60rpx;
-                        height: 60rpx;
+                        bottom: 30rpx;
+                        right: 10rpx;
+                        width: 50rpx;
+                        height: 50rpx;
                         border-radius: 50%;
                     }
                 }

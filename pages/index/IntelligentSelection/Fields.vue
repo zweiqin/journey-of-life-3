@@ -22,6 +22,17 @@
         </view>
 
         <view class="item input">
+          <view class="title">预算</view>
+
+          <view class="value">
+            <view class="input">
+              <input type="text" placeholder="0" />
+              <text class="value-text">元</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- <view class="item input">
           <view class="title">面积</view>
 
           <view class="value">
@@ -30,10 +41,10 @@
               <text class="value-text">㎡</text>
             </view>
           </view>
-        </view>
+        </view> -->
       </view>
 
-      <view class="wrapper">
+      <!-- <view class="wrapper">
         <view class="select item">
           <view class="title">风格</view>
 
@@ -55,7 +66,7 @@
             </view>
           </view>
         </view>
-      </view>
+      </view> -->
       <button class="uni-btn">智能匹配</button>
     </view>
   </view>
@@ -90,6 +101,7 @@ export default {}
   // padding: 20upx;
   box-sizing: border-box;
   padding: 31rpx;
+  padding-bottom: 0;
   // border-radius: 0 0 24upx 24upx;
 
   .wrapper {
