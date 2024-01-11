@@ -1,12 +1,12 @@
 <template>
   <view class="new-goods-pane-container" v-if="goods" @click="goGoodsDetsil(goods)">
     <view class="goods-logo">
-      <view class="level-1  level"></view>
+      <!-- <view class="level-1  level"></view>
       <view class="level-2  level"></view>
-      <view class="level-3 level"></view>
+      <view class="level-3 level"></view> -->
       <!-- <FastLazyLoad :src="common.seamingImgUrl(goods.image)"></FastLazyLoad> -->
       <!-- background: `url(${common.seamingImgUrl(goods.image)})`, -->
-      <tui-lazyload-img :style="{ filter: 'blur(10ox)', 'z-index': 3 }" mode="scaleToFill"
+      <tui-lazyload-img :style="{ filter: 'blur(10ox)', 'z-index': 3, background: 'none', 'border-radius': '10rpx' }" mode="scaleToFill"
         :src="common.seamingImgUrl(goods.image)"></tui-lazyload-img>
     </view>
 
@@ -75,13 +75,13 @@ export default {
   width: 333upx;
   background-color: #fff;
   margin-bottom: 23upx;
-  border-radius: 20upx;
+  border-radius: 10upx;
   // overflow: hidden;
 
   .goods-logo {
     position: relative;
     width: 333upx;
-    height: 374upx;
+    // height: 374upx;
     overflow: hidden;
 
 
@@ -136,6 +136,7 @@ export default {
 
   .goods-info {
     padding: 20upx 22upx 18upx;
+    padding-top: 0rpx;
     box-sizing: border-box;
 
     .goods-name {
