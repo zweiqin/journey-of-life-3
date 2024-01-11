@@ -2,21 +2,21 @@
 	<view>
 		<!-- 商品详情 -->
 		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
-			<swiper-item v-for="(imgItem, index) in productInfo.images" :key="index">
-				<image v-if="!isVideoSource(imgItem)" class="goodsImg default-img" :src="common.seamingImgUrl(imgItem)"></image>
+			<swiper-item v-for="(imgItem, index) in goodsDetail.images" :key="index">
+				<image
+					v-if="!isVideoSource(imgItem)" mode="aspectFit" class="goodsImg default-img"
+					:src="common.seamingImgUrl(imgItem)"
+				></image>
 				<video v-else style="width: 750upx; height: 750upx;" :src="common.seamingImgUrl(imgItem)"></video>
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->
-		<view class="share-box flex-items-plus" @click="shareMenuShow">
+		<view class="share-box flex-items-plus" @click="shareObj.actionShow = true">
 			<tui-icon :size="18" color="#141414" name="share-fill"></tui-icon>
 			<label class="fs24 mar-left-5">分享</label>
 		</view>
 		<view class="goodgDes-box flex-start flex-column">
-			<view
-				v-if="skuSelect.activityType === 0"
-				class="priceBuyNum-box flex-items flex-sp-between mar-left-30"
-			>
+			<view v-if="skuSelect.activityType === 0" class="priceBuyNum-box flex-items flex-sp-between mar-left-30">
 				<view class="flex-items">
 					<label class="fs36 font-color-C83732">¥</label>
 					<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
@@ -27,12 +27,15 @@
 						>
 							可使用{{ skuSelect.voucherPrice }}代金券抵扣
 						</text>
-						<label v-if="skuSelect.price !== skuSelect.originalPrice" class="fs24 font-color-999 discountsPriceLine mar-left-20">
+						<label
+							v-if="skuSelect.price !== skuSelect.originalPrice"
+							class="fs24 font-color-999 discountsPriceLine mar-left-20"
+						>
 							¥ {{ skuSelect.originalPrice || 0 }}
 						</label>
 					</view>
 				</view>
-				<label class="fs24 font-color-999">{{ productInfo.users || 0 }}人付款</label>
+				<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
 			</view>
 			<view v-else-if="skuSelect.activityType === 8" class="sceneMarketingBox">
 				<view class="flex-row-plus flex-items-plus mar-left-30 mar-top-10">
@@ -43,7 +46,7 @@
 						{{ skuSelect.originalPrice || 0 }}
 					</label>
 				</view>
-				<view class="sceneNameBox">{{ productInfo.sceneName }}</view>
+				<view class="sceneNameBox">{{ goodsDetail.sceneName }}</view>
 			</view>
 			<view v-else class="seckill-box">
 				<view v-if="skuSelect.activityType === 9" class="flex-items flex-sp-between">
@@ -84,7 +87,7 @@
 						</view>
 					</view>
 					<view v-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="countdown flex-column-plus">
-						<view v-if="timeActiveType">
+						<view v-if="skuSelect.ifEnable === 0">
 							<label class="fs28">距离结束剩余</label>
 							<view class="flex-row-plus fs34 flex-items-plus mar-top-10">
 								<view class="countdown-box flex-items-plus">{{ activeTimeObj.day }}</view>
@@ -98,29 +101,28 @@
 						</view>
 						<view v-else>
 							<label class="fs28 mar-right-20">即将开始：{{ skuSelect.startTime }}</label>
-							<!--              <view class="fs28 mar-right-20 mar-top-20">{{productInfo.startTime}}</view> -->
 						</view>
 					</view>
 				</view>
 			</view>
 			<view class="nameContainer">
 				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30">
-					<label class="goodsName fs32 mar-left-20 ">{{ productInfo.productName }}</label>
+					<label class="goodsName fs32 mar-left-20 ">{{ goodsDetail.productName }}</label>
 				</view>
 				<view class="collectBox " @click="handleCollect">
-					<tui-icon v-if="productInfo.ifCollect === 1" :size="24" color="#c5aa7b" name="star-fill"></tui-icon>
+					<tui-icon v-if="goodsDetail.ifCollect === 1" :size="24" color="#c5aa7b" name="star-fill"></tui-icon>
 					<tui-icon v-else :size="24" color="#333333" name="star"></tui-icon>
 					<label class="fs22">收藏</label>
 				</view>
 			</view>
 			<view
-				v-if="markTools.length > 0 || shopMarkTools.length > 0" class="activity-box mar-top-10"
-				@click="couponShowClick"
+				v-if="goodsDetail.markTools.length > 0 || goodsDetail.shopMarkTools.length > 0"
+				class="activity-box mar-top-10" @click="$refs.refCouponPopup && ($refs.refCouponPopup.showActivity = true)"
 			>
 				<label class="fs24 font-color-999">优惠</label>
 				<view class="activity-content mar-left-30 flex-items flex-sp-between flex-row">
 					<view class="fs20 overflow" style="width: 500rpx;">
-						{{ productInfo.couponSplicing }}
+						{{ goodsDetail.couponSplicing }}
 					</view>
 					<view class="flex-items">
 						<label class="fs24 font-color-C5AA7B">领券</label>
@@ -142,18 +144,28 @@
 			@shareCancel="shareCancel"
 		>
 		</ShareSpell>
+
+		<!-- 优惠券选择器 -->
+		<CouponPopup
+			ref="refCouponPopup" :platform-mark-tools="goodsDetail.shopMarkTools"
+			:shop-mark-tools="goodsDetail.shopMarkTools"
+		></CouponPopup>
 	</view>
 </template>
 
 <script>
+import CouponPopup from './CouponPopup'
 import { timeFormatting, isVideoSource } from '../../../../utils'
 import { getProductSharePicApi, updateCollectCancelPUTApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodActivityDetail',
+	components: {
+		CouponPopup
+	},
 	props: {
 		// 商品信息
-		productInfo: {
+		goodsDetail: {
 			type: Object,
 			default: () => ({})
 		},
@@ -161,18 +173,6 @@ export default {
 		skuSelect: {
 			type: Object,
 			default: () => ({})
-		},
-		timeActiveType: {
-			type: Boolean,
-			default: () => false
-		},
-		markTools: {
-			type: Array,
-			default: () => []
-		},
-		shopMarkTools: {
-			type: Array,
-			default: () => []
 		}
 	},
 	data() {
@@ -199,6 +199,17 @@ export default {
 			}
 		}
 	},
+	watch: {
+		skuSelect: {
+			handler(newVal) {
+				if ([1, 2, 3, 4, 5].includes(newVal.activityType) && (newVal.ifEnable === 0)) {
+					this.$refs.goodActivityDetail.handleGetCountDownNumber(newVal.endTime)
+				}
+			},
+			immediate: false,
+			deep: true
+		}
+	},
 	methods: {
 		isVideoSource,
 
@@ -208,11 +219,9 @@ export default {
 		 */
 
 		handleGetCountDownNumber(endTimestamp) {
-			endTimestamp = endTimestamp.substring(0, 19).replace(/-/g, '/')
 			// 与当前时间的时间差（秒）
-			const timeDifference = (new Date(endTimestamp).getTime() - new Date().getTime()) / 1000
-			this.timeDifference = timeDifference
-			this.activeTimeObj = timeFormatting(timeDifference)
+			this.timeDifference = (new Date(endTimestamp.substring(0, 19).replace(/-/g, '/')).getTime() - new Date().getTime()) / 1000
+			this.activeTimeObj = timeFormatting(this.timeDifference)
 			this.handleCountDown()
 		},
 
@@ -232,7 +241,7 @@ export default {
 						duration: 2000,
 						icon: 'none'
 					})
-					this.$emit('activityEnd', 0)
+					this.$emit('activityEnd')
 				} else {
 					this.timeDifference--
 					this.activeTimeObj = timeFormatting(this.timeDifference)
@@ -241,23 +250,15 @@ export default {
 		},
 
 		/**
-		 * 拉起父组件优惠券
-		 */
-
-		couponShowClick() {
-			this.$emit('couponClick')
-		},
-
-		/**
 		 * 收藏
 		 */
 
 		handleCollect() {
-			if (this.productInfo.ifCollect === 0) {
+			if (this.goodsDetail.ifCollect === 0) {
 				updateCollectToCollectApi({
-					productId: parseInt(this.productInfo.productId)
+					productId: parseInt(this.goodsDetail.productId)
 				}).then((res) => {
-					this.productInfo.ifCollect = 1
+					this.goodsDetail.ifCollect = 1
 					uni.showToast({
 						title: '收藏成功',
 						icon: 'success'
@@ -265,9 +266,9 @@ export default {
 				})
 			} else {
 				updateCollectCancelPUTApi({
-					ids: [ this.productInfo.productId ]
+					ids: [ this.goodsDetail.productId ]
 				}).then((res) => {
-					this.productInfo.ifCollect = 0
+					this.goodsDetail.ifCollect = 0
 					uni.showToast({
 						title: '取消收藏成功',
 						icon: 'success'
@@ -296,23 +297,20 @@ export default {
 			// #endif
 			uni.showLoading()
 			getProductSharePicApi({
-				productId: this.productInfo.productId,
-				shopId: this.productInfo.shopId,
+				productId: this.goodsDetail.productId,
+				shopId: this.goodsDetail.shopId,
 				skuId: this.skuSelect.skuId,
 				terminal: system
 			}).then((res) => {
 				uni.hideLoading()
 				// 推广商品
 				uni.navigateTo({
-					url: `/another-tf/another-serve/shareProduct/index?shareType=2&shopId=${this.productInfo.shopId}&productId=${this.productInfo.productId}&skuId=${this.skuSelect.skuId}&shareImg=${res.data}`
+					url: `/another-tf/another-serve/shareProduct/index?shareType=2&shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.skuSelect.skuId}&shareImg=${res.data}`
 				})
 			})
 				.catch((e) => {
 					uni.hideLoading()
 				})
-		},
-		shareMenuShow() {
-			this.shareObj.actionShow = true
 		},
 		shareCancel() {
 			this.$refs.shareSpell.shareShow = false
@@ -321,9 +319,9 @@ export default {
 			if (e.index === 0) {
 				this.sharePoster()
 			} else {
-				this.shareObj.url = '/another-tf/another-serve/goodsDetails/index?shopId=' + this.productInfo.shopId + '&productId=' + this.productInfo.productId + '&skuId=' + this.skuSelect.skuId
-				this.shareObj.image = this.productInfo.images[0]
-				this.shareObj.title = `【shop】好友分享了一个好物给您！${this.productInfo.productName} ￥${this.productInfo.price} `
+				this.shareObj.url = '/another-tf/another-serve/goodsDetails/index?shopId=' + this.goodsDetail.shopId + '&productId=' + this.goodsDetail.productId + '&skuId=' + this.skuSelect.skuId
+				this.shareObj.image = this.goodsDetail.images[0]
+				this.shareObj.title = `【shop】好友分享了一个好物给您！${this.goodsDetail.productName} ￥${this.goodsDetail.price} `
 				this.$refs.shareSpell.shareShow = true
 			}
 		}
@@ -368,7 +366,6 @@ export default {
 
 		.goodsName-box {
 			width: 677upx;
-			height: 85upx;
 		}
 
 		.collectBox {

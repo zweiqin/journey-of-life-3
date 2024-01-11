@@ -1,8 +1,8 @@
 <template>
-	<div class="content">
+	<div class="good-evaluate-and-question-container">
 		<view class="evaQaTab flex-items flex-sp-around">
 			<view :class="{ active: activeTab === 1 }" class="evaBtn" @click="activeTab = 1">
-				<view class="tabTit">宝贝评价（{{ commentList.length }}）</view>
+				<view class="tabTit">宝贝评价（{{ goodsDetail.comments.length }}）</view>
 			</view>
 			<view :class="{ active: activeTab === 2 }" class="qaBtn" @click="activeTab = 2">
 				<view class="tabTit">商品问答（{{ problemsTotal }}）</view>
@@ -11,13 +11,13 @@
 		<!-- 评价 -->
 		<view class="borRig-line-20"></view>
 		<view v-show="activeTab === 1" class="evaluate-box flex-start flex-column">
-			<view v-if="commentList.length > 0" class="evaluateTag-box">
+			<view v-if="goodsDetail.comments.length > 0" class="evaluateTag-box">
 				<view class="evaluateTag-text">
-					全部({{ commentList.length }})
+					全部({{ goodsDetail.comments.length }})
 				</view>
 			</view>
 			<view
-				v-for="(commentItem, commentIndex) in commentList.slice(0, 2)" :key="commentIndex"
+				v-for="(commentItem, commentIndex) in goodsDetail.comments.slice(0, 2)" :key="commentIndex"
 				class="evaluate-contentbox mar-top-30"
 			>
 				<view class="evaluate-content flex-items flex-row flex-sp-between">
@@ -34,7 +34,7 @@
 					<view v-for="(imgItem, imgIndex) in (commentItem.image.split(',') || [])" :key="imgIndex">
 						<image
 							class="img-item" :src="common.seamingImgUrl(imgItem)"
-							@click="handlePreviewImage(commentList[commentIndex].images, imgIndex)"
+							@click="handlePreviewImage(goodsDetail.comments[commentIndex].images, imgIndex)"
 						>
 						</image>
 					</view>
@@ -47,7 +47,7 @@
 							<view v-for="(itemAddImg, imgIndex) in commentItem.addImages" :key="imgIndex">
 								<image
 									class="img-item" :src="common.seamingImgUrl(itemAddImg)"
-									@click="handlePreviewImage(commentList[commentIndex].addImages, imgIndex)"
+									@click="handlePreviewImage(goodsDetail.comments[commentIndex].addImages, imgIndex)"
 								>
 								</image>
 							</view>
@@ -64,8 +64,8 @@
 				</view>
 			</view>
 			<view
-				v-if="commentList.length > 0" class="moreBox"
-				@click="go('/another-tf/another-serve/evaluateList/index', commentList)"
+				v-if="goodsDetail.comments.length > 0" class="moreBox"
+				@click="go('/another-tf/another-serve/evaluateList/index', goodsDetail.comments)"
 			>
 				<label class="fs24">查看全部</label>
 				<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
@@ -82,7 +82,7 @@
 				</view>
 			</view>
 			<view class="listBox">
-				<QuestionsAndAnswersList :product-info="productInfo" :problems-list="problemsList" />
+				<QuestionsAndAnswersList :product-info="goodsDetail" :problems-list="problemsList" />
 				<view v-if="problemsList.length > 0" class="moreBox" @click="handleJumpAllAnswer">
 					<label class="fs24">查看全部</label>
 					<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
@@ -101,11 +101,7 @@ export default {
 	name: 'GoodEvaluateAndQuestion',
 	components: { QuestionsAndAnswersList },
 	props: {
-		commentList: {
-			type: Array,
-			default: () => []
-		},
-		productInfo: {
+		goodsDetail: {
 			type: Object,
 			default: () => ({})
 		}
@@ -128,11 +124,11 @@ export default {
 		 */
 
 		async handleGetProblemList() {
-			if (!this.productInfo.productId) {
+			if (!this.goodsDetail.productId) {
 				return
 			}
 			const res = await getProblemsSeckillApi({
-				productId: this.productInfo.productId,
+				productId: this.goodsDetail.productId,
 				page: 1,
 				pageSize: 2
 			})
@@ -183,17 +179,17 @@ export default {
 
 		// 跳转到提问
 		handleJumpToQuestion() {
-			const paramObj = Object.assign({}, this.productInfo, {
+			const paramObj = Object.assign({}, this.goodsDetail, {
 				questionNumber: this.problemsList.length,
-				images: this.productInfo.images[0]
+				images: this.goodsDetail.images[0]
 			})
 			this.go('/another-tf/another-serve/putQuestions/index', paramObj)
 		},
 
 		// 跳转到该商品下所有问答
 		handleJumpAllAnswer() {
-			const paramObj = Object.assign({}, this.productInfo, {
-				images: this.productInfo.images[0]
+			const paramObj = Object.assign({}, this.goodsDetail, {
+				images: this.goodsDetail.images[0]
 			})
 			this.gp('/another-tf/another-serve/answerList/index', paramObj)
 		}
@@ -202,196 +198,200 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.evaQaTab {
-	height: 82rpx;
-	line-height: 82rpx;
-	border-bottom: #F3F4F5 solid 2rpx;
-	font-size: 30rpx;
-	color: #CCCCCC;
+.good-evaluate-and-question-container {
+	background-color: #ffffff;
 
-	.evaBtn {
-		width: 50%;
-		position: relative;
-		text-align: center;
-
-		&:before {
-			content: '';
-			width: 2rpx;
-			height: 30rpx;
-			background: #CCCCCC;
-			display: block;
-			position: absolute;
-			right: 0;
-			top: 20rpx;
-		}
-	}
-
-	.qaBtn {
-		width: 50%;
-		text-align: center;
-	}
-
-	.tabTit {
-		display: inline-block;
+	.evaQaTab {
 		height: 82rpx;
 		line-height: 82rpx;
-	}
+		border-bottom: #F3F4F5 solid 2rpx;
+		font-size: 30rpx;
+		color: #CCCCCC;
 
-	.active {
-		color: #333333;
+		.evaBtn {
+			width: 50%;
+			position: relative;
+			text-align: center;
+
+			&:before {
+				content: '';
+				width: 2rpx;
+				height: 30rpx;
+				background: #CCCCCC;
+				display: block;
+				position: absolute;
+				right: 0;
+				top: 20rpx;
+			}
+		}
+
+		.qaBtn {
+			width: 50%;
+			text-align: center;
+		}
 
 		.tabTit {
-			border-bottom: 4rpx solid #444444;
+			display: inline-block;
+			height: 82rpx;
+			line-height: 82rpx;
+		}
+
+		.active {
+			color: #333333;
+
+			.tabTit {
+				border-bottom: 4rpx solid #444444;
+			}
 		}
 	}
-}
 
-.questions {
-	.questionInfo {
-		padding: 0 30upx;
-		min-height: 150upx;
+	.questions {
+		.questionInfo {
+			padding: 0 30upx;
+			min-height: 150upx;
 
-		.infoTit {
-			font-size: 28upx;
+			.infoTit {
+				font-size: 28upx;
+			}
+
+			.putQuestion {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 140upx;
+				height: 60upx;
+				background: #333333;
+				line-height: 60upx;
+				font-size: 24upx;
+				color: #FFEBC4;
+				padding-left: 20rpx;
+				position: relative;
+			}
 		}
 
-		.putQuestion {
+		.listBox {
+			padding: 0 30upx;
+			border-bottom: 20upx solid #EEEEEE;
+		}
+	}
+
+	.evaluate-box {
+		background-color: #FFFFFF;
+		margin-top: 20upx;
+
+		.evaluateTag-box {
+			margin-top: 10upx;
+			margin-left: 10upx;
+			padding-bottom: 10upx;
 			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 140upx;
-			height: 60upx;
-			background: #333333;
-			line-height: 60upx;
-			font-size: 24upx;
-			color: #FFEBC4;
-			padding-left: 20rpx;
-			position: relative;
+			flex-wrap: wrap;
+
+			.evaluateTag-text {
+				background-color: #F4F4F4;
+				border-radius: 6upx;
+				padding: 16upx 14upx;
+				color: #656565;
+				margin-left: 20upx;
+				margin-top: 20upx;
+			}
+		}
+
+		.evaluate-contentbox {
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			margin-left: 30upx;
+			// border-bottom: 1upx solid #EDEDED;
+			padding-bottom: 50upx;
+
+			.evaluate-content {
+				width: 670upx;
+				display: flex;
+				justify-content: space-between;
+
+				.user-headSmallImg {
+					width: 46upx;
+					height: 46upx;
+					border-radius: 50%;
+				}
+			}
+
+			.evaluateDes-box {
+				width: 670upx;
+				margin-top: 30upx;
+
+				.evaluateDes {
+					width: 670upx;
+				}
+			}
+
+			.addEvaluate {
+				padding-top: 30upx;
+			}
 		}
 	}
 
-	.listBox {
-		padding: 0 30upx;
-		border-bottom: 20upx solid #EEEEEE;
-	}
-}
-
-.evaluate-box {
-	background-color: #FFFFFF;
-	margin-top: 20upx;
-
-	.evaluateTag-box {
-		margin-top: 10upx;
-		margin-left: 10upx;
-		padding-bottom: 10upx;
+	.item-image-box {
+		width: 700upx;
 		display: flex;
+		flex-direction: row;
 		flex-wrap: wrap;
 
-		.evaluateTag-text {
-			background-color: #F4F4F4;
-			border-radius: 6upx;
-			padding: 16upx 14upx;
-			color: #656565;
-			margin-left: 20upx;
-			margin-top: 20upx;
+		.img-item {
+			width: 223upx;
+			height: 223upx;
+			border-radius: 10upx;
+			margin-right: 10upx;
+			margin-top: 10upx;
 		}
 	}
 
-	.evaluate-contentbox {
+	.item-line {
+		width: 690upx;
+		height: 1px;
+		background: rgba(238, 238, 238, 1);
+		margin-top: 20upx;
+	}
+
+	.item-like-box {
 		display: flex;
+		flex-direction: row;
+		width: 690upx;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.like-box {
+		display: flex;
+		flex-direction: row;
+		padding-top: 30upx;
+		align-items: center;
+		justify-content: flex-end;
+		margin-right: 50upx;
+
+		.like-num {
+			font-size: 28upx;
+			font-weight: 500;
+			color: rgba(51, 51, 51, 1);
+			margin-left: 30upx;
+		}
+	}
+
+	.moreBox {
+		width: 170rpx;
+		height: 54rpx;
+		line-height: 54rpx;
+		margin: 0 auto 50rpx auto;
+		border: 2rpx solid #C5AA7B;
+		color: #C5AA7B;
+		display: flex;
+		align-items: center;
 		justify-content: center;
-		flex-direction: column;
-		margin-left: 30upx;
-		// border-bottom: 1upx solid #EDEDED;
-		padding-bottom: 50upx;
 
-		.evaluate-content {
-			width: 670upx;
-			display: flex;
-			justify-content: space-between;
-
-			.user-headSmallImg {
-				width: 46upx;
-				height: 46upx;
-				border-radius: 50%;
-			}
+		image {
+			width: 10rpx;
+			height: 20rpx;
 		}
-
-		.evaluateDes-box {
-			width: 670upx;
-			margin-top: 30upx;
-
-			.evaluateDes {
-				width: 670upx;
-			}
-		}
-
-		.addEvaluate {
-			padding-top: 30upx;
-		}
-	}
-}
-
-.item-image-box {
-	width: 700upx;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-
-	.img-item {
-		width: 223upx;
-		height: 223upx;
-		border-radius: 10upx;
-		margin-right: 10upx;
-		margin-top: 10upx;
-	}
-}
-
-.item-line {
-	width: 690upx;
-	height: 1px;
-	background: rgba(238, 238, 238, 1);
-	margin-top: 20upx;
-}
-
-.item-like-box {
-	display: flex;
-	flex-direction: row;
-	width: 690upx;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.like-box {
-	display: flex;
-	flex-direction: row;
-	padding-top: 30upx;
-	align-items: center;
-	justify-content: flex-end;
-	margin-right: 50upx;
-
-	.like-num {
-		font-size: 28upx;
-		font-weight: 500;
-		color: rgba(51, 51, 51, 1);
-		margin-left: 30upx;
-	}
-}
-
-.moreBox {
-	width: 170rpx;
-	height: 54rpx;
-	line-height: 54rpx;
-	margin: 0 auto 50rpx auto;
-	border: 2rpx solid #C5AA7B;
-	color: #C5AA7B;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	image {
-		width: 10rpx;
-		height: 20rpx;
 	}
 }
 </style>

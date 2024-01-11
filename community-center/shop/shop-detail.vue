@@ -1,7 +1,10 @@
 <template>
 	<view class="brand-detail-container">
 
-		<BeeBack :success-cb="successCb" style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;">
+		<BeeBack
+			:success-cb="successCb"
+			style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;"
+		>
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon
 					name="arrowleft" :size="34" color="#222229"
@@ -32,17 +35,19 @@
 		<!-- ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食']allTabList.map(i => i.classifyName) -->
 		<tui-tab
 			:tabs="allTabList" :current="currentTab" scroll background-color="transparent"
-			:size="32" bold bottom="6upx" color="#222229"
-			selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+			:size="32" bold bottom="6upx"
+			color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
 			@change="handleTabChange"
 		></tui-tab>
-		
-		<view class="childsSelect" v-if="allTabListData[currentTab].classify && allTabListData[currentTab].classify.length > 0">
-			<view class="childsItem"
-			 :class="{active: index == childsCurrent}"
-			 v-for="(item,index) in allTabListData[currentTab].classify"
-			 @click="checkChildsClassIfyIds(item, index)"
-			  >
+
+		<view
+			v-if="allTabListData[currentTab].classify && allTabListData[currentTab].classify.length > 0"
+			class="childsSelect"
+		>
+			<view
+				v-for="(item, index) in allTabListData[currentTab].classify" :key="index" class="childsItem"
+				:class="{ active: index == childsCurrent }" @click="checkChildsClassIfyIds(item, index)"
+			>
 				{{ item.classifyName }}
 			</view>
 		</view>
@@ -89,10 +94,18 @@
 				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 						<template #left="{ entity }">
-							<ShopGoods :shop-id="shopId" :c-item="entity"></ShopGoods>
+							<ShopGoods
+								:shop-id="shopId" :c-item="entity"
+								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
+							>
+							</ShopGoods>
 						</template>
 						<template #right="{ entity }">
-							<ShopGoods :shop-id="shopId" :c-item="entity"></ShopGoods>
+							<ShopGoods
+								:shop-id="shopId" :c-item="entity"
+								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
+							>
+							</ShopGoods>
 						</template>
 					</tui-waterfall>
 				</view>
@@ -106,6 +119,8 @@
 				</view>
 			</view>
 		</view>
+
+		<ATFSpecificationScreen ref="refATFSpecificationScreen" @success="initShopCart"></ATFSpecificationScreen>
 
 		<view v-if="currentTab === 0 && brandDetail.shopId">
 			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId"></StoreShopCart>
@@ -189,12 +204,15 @@ export default {
 		this.getShopGoodsTemplate()
 	},
 	onShow() {
-		if (this.currentTab === 0 && this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
-			this.$refs.refStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
-		}
+		this.initShopCart()
 	},
 
 	methods: {
+		initShopCart() {
+			if (this.currentTab === 0 && this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
+				this.$refs.refStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
+			}
+		},
 		async getBrandDetail() {
 			try {
 				uni.showLoading()
@@ -240,6 +258,7 @@ export default {
 			this.childsCurrent = 0
 			this.currentTab = e.index
 			console.log(this.currentTab)
+			this.initShopCart()
 			// if (e.index === 1) return
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
@@ -326,6 +345,7 @@ export default {
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;
+
 	.childsItem {
 		border-radius: 8rpx;
 		box-sizing: border-box;
@@ -340,11 +360,13 @@ export default {
 		background-color: #fffffff2;
 		display: inline-block;
 	}
+
 	.active {
 		color: #fff;
 		background-color: #ff8000;
 	}
 }
+
 .brand-detail-container {
 	position: relative;
 	min-height: 100vh;

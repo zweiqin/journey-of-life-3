@@ -281,6 +281,7 @@ export default {
 				voucherList: []
 			},
 			fromType: 0,
+			brandId: 0,
 			skuItemDTOList: [],
 			totalPrice: 0, // 合计
 			totalCount: 0,
@@ -329,6 +330,7 @@ export default {
 				this.integralRatio = parseFloat(res.data.dictDescribe)
 			})
 		this.fromType = options.type
+		this.brandId = options.brandId || ''
 	},
 	onShow() {
 		this.handleOnShow()
@@ -382,6 +384,7 @@ export default {
 				_url = getSettlementOrderApi
 				_data = {
 					type: this.fromType,
+					shopId: this.brandId,
 					shops: this.skuItemDTOList,
 					receiveId: this.userAddressInfo.receiveId,
 					...this.voucherObj

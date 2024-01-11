@@ -1,6 +1,6 @@
 <template>
 	<div class="content">
-		<tui-bottom-popup :show="goodsDetailShowFlag" @close="goodsDetailShowFlag = false">
+		<tui-bottom-popup :show="isShowDetails" @close="isShowDetails = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
 					<image class="detailImg" :src="common.seamingImgUrl(selectedSku.image)"></image>
@@ -16,33 +16,35 @@
 						<label class="fs24 mar-top-20">已选</label>
 					</view>
 				</view>
-				<view class="color-box flex-column-plus">
-					<view v-for="(skuRowItem, skuRowIndex) in productData.names" :key="skuRowIndex">
-						<label v-if="skuRowItem.nameCode" class="fs26 font-color-333">
-							{{ skuRowItem.skuName }}
-						</label>
-						<view class="colorName-box">
-							<view v-for="(skuColItem, skuColIndex) in skuRowItem.values" :key="skuColIndex" class="pad-bot-30">
-								<view
-									class="colorName"
-									:class="{ 'colorName-on': selectedAttr[skuRowItem.nameCode] === skuColItem.valueCode }"
-									@click="handleClickSkuItem(skuRowItem.nameCode, skuColItem.valueCode)"
-								>
-									{{ skuColItem.skuValue }}
+				<view class="color-box">
+					<scroll-view scroll-y style="max-height: 50vh;">
+						<view v-for="(skuRowItem, skuRowIndex) in goodsDetail.names" :key="skuRowIndex">
+							<label v-if="skuRowItem.nameCode" class="fs26 font-color-333">
+								{{ skuRowItem.skuName }}
+							</label>
+							<view class="colorName-box">
+								<view v-for="(skuColItem, skuColIndex) in skuRowItem.values" :key="skuColIndex" class="pad-bot-30">
+									<view
+										class="colorName"
+										:class="{ 'colorName-on': selectedAttr[skuRowItem.nameCode] === skuColItem.valueCode }"
+										@click="handleClickSkuItem(skuRowItem.nameCode, skuColItem.valueCode)"
+									>
+										{{ skuColItem.skuValue }}
+									</view>
 								</view>
 							</view>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 				<view class="goodsNumCent">
-					<view class="goodsNum-box flex-row-plus flex-sp-between" :class="{ 'bottom-line': aliAgingObj.supportHanaUta }">
+					<view class="goodsNum-box flex-row-plus flex-sp-between">
 						<label class="font-color-333 fs26">数量</label>
 						<view class="goodsNum">
 							<view class="item subtract" @click="handleNumSub">
 								-
 							</view>
-							<view v-model="buyNum" class="item goodsNumber">
-								{{ buyNum }}
+							<view class="item goodsNumber">
+								{{ number }}
 							</view>
 							<view class="item add" @click="handleNumAdd">
 								+
@@ -50,46 +52,16 @@
 						</view>
 					</view>
 				</view>
-				<!-- 花呗分期 -->
-				<view v-if="aliAgingObj.supportHanaUta" class="huabei-box flex-column-plus">
-					<label class="font-color-999 fs24">花呗分期</label>
-					<scroll-view class="fenqi-box" scroll-x="true">
-						<view
-							class="huabei-item"
-							:class="[{ 'fenqi-on': aliAgingObj.selectIndex === 0 }, { 'disabled': aliAgingObj.disableSelectList[0] }]"
-							@click="handleSelectAliAging(0)"
-						>
-							<label class="huabei-period">分3期(含手续费)</label>
-							<label class="huabei-money">￥{{ aliAgingObj.agingMoneyList[0] }}/期</label>
-						</view>
-						<view
-							class="huabei-item"
-							:class="[{ 'fenqi-on': aliAgingObj.selectIndex === 1 }, { 'disabled': aliAgingObj.disableSelectList[1] }]"
-							@click="handleSelectAliAging(1)"
-						>
-							<label class="huabei-period">分6期(含手续费)</label>
-							<label class="huabei-money">￥{{ aliAgingObj.agingMoneyList[1] }}/期</label>
-						</view>
-						<view
-							class="huabei-item"
-							:class="[{ 'fenqi-on': aliAgingObj.selectIndex === 2 }, { 'disabled': aliAgingObj.disableSelectList[2] }]"
-							@click="handleSelectAliAging(2)"
-						>
-							<label class="huabei-period">分12期(含手续费)</label>
-							<label class="huabei-money">￥{{ aliAgingObj.agingMoneyList[2] }}/期</label>
-						</view>
-					</scroll-view>
-				</view>
 
 				<view v-if="btnType === 6" class="skuSelectBtn">
-					<view v-if="productData.shelveState === 0" class="flex-row-plus offShelf">
+					<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
 						商品已下架
 					</view>
 					<view v-else-if="selectedSku.activityType === 1" class="flex-row-plus flex-items flex-sp-around">
 						<view class="selectJoinShop selectBtn font-color-333" @click="handleBuyNow">
 							单独购买
 						</view>
-						<view class="selectBuyNow selectBtn font-color-FFEBC4" @click="handleBuyWithGroup(1)">
+						<view class="selectBuyNow selectBtn font-color-FFEBC4" @click="handleBuyWithGroup">
 							我要开团
 						</view>
 					</view>
@@ -104,18 +76,18 @@
 				</view>
 				<view v-else>
 					<view
-						v-if="selectedSku.activityType === 1 && collageId !== 0" class="goosDetailbut-box flex-items-plus"
+						v-if="(selectedSku.activityType === 1) && collageId" class="goosDetailbut-box flex-items-plus"
 						:style="{ 'padding-bottom': (isIphone === true ? 60 : 20) + 'rpx' }"
 					>
-						<view class="joinbuyBut" @click="handleBuyWithGroup(2)">
+						<view class="joinbuyBut" @click="handleBuyWithGroup">
 							确定
 						</view>
 					</view>
 					<view
-						v-else-if="selectedSku.activityType === 1 && btnType === 3" class="goosDetailbut-box flex-row-plus"
+						v-else-if="(selectedSku.activityType === 1) && (btnType === 3)" class="goosDetailbut-box flex-row-plus"
 						:style="{ 'padding-bottom': (isIphone === true ? 60 : 20) + 'rpx' }"
 					>
-						<view class="buyNowBut" @click="handleBuyWithGroup(1)">
+						<view class="buyNowBut" @click="handleBuyWithGroup">
 							去拼团
 						</view>
 					</view>
@@ -143,13 +115,9 @@ import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../../constant'
 export default {
 	name: 'GoodSkuSelect',
 	props: {
-		productData: {
+		goodsDetail: {
 			type: Object,
 			default: () => ({})
-		},
-		isIphone: {
-			type: Boolean,
-			default: () => false
 		},
 		collageId: {
 			type: Number,
@@ -158,29 +126,80 @@ export default {
 	},
 	data() {
 		return {
+			isIphone: getApp().globalData.isIphone,
 			// 是否展示SKU弹窗
-			goodsDetailShowFlag: false,
+			isShowDetails: false,
 			// 已经选中的valueCode key => value  names.nameCode=>values.valueCode 处理选中渲染
 			selectedAttr: {},
 			// 当前选中的skuMap对象（服务端数据）
 			selectedSku: {},
 			// 1加入购物车 2立即购买 3开团 4单独购买 6SKU选择
 			btnType: 0,
-			buyNum: 1,
-			// 花呗对象
-			aliAgingObj: {
-				supportHanaUta: false,
-				selectIndex: -1,
-				disableSelectList: [true, true, true],
-				agingMoneyList: ['0.00', '0.00', '0.00']
-			}
+			number: 1
 		}
 	},
 	methods: {
+		// 根据skuId选择SKU
+		handleSelectBySkuId(skuId) {
+			if (!skuId) return
+			// 当前商品后端返回的所有sku的排列组合
+			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
+				if (this.goodsDetail.map[allSkuValueCodeMap].skuId === skuId) {
+					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
+					this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
+					// 控制组件选中渲染
+					this.goodsDetail.names.forEach((skuRow) => {
+						skuRow.values.some((skuCol) => {
+							if (this.selectedSku.valueCodes.split(',').includes(skuCol.valueCode)) {
+								this.$set(this.selectedAttr, skuRow.nameCode, skuCol.valueCode)
+								return true
+							}
+							return false
+						})
+					})
+				}
+			})
+		},
+
+		// 点击sku的一项
+		handleClickSkuItem(nameCode, valueCode) {
+			// 当前选中
+			this.$set(this.selectedAttr, nameCode, valueCode)
+			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
+				// 当和当前选中的sku一致
+				if (Object.values(this.selectedAttr).join(',') === allSkuValueCodeMap) {
+					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
+					this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
+				}
+			})
+		},
+
+		// 获取选择后的文本显示
+		getCurrentSkuName() {
+			if (this.selectedSku.valueCodes) {
+				const currentSku = []
+				this.goodsDetail.names.forEach((skuRow) => {
+					skuRow.values.some((skuValue) => {
+						if (this.selectedSku.valueCodes.split(',').includes(skuValue.valueCode)) {
+							if (skuValue.valueCode === '单款项') {
+								currentSku.push({ skuText: skuValue.skuValue })
+							} else {
+								currentSku.push({ skuText: `${skuValue.skuName}：${skuValue.skuValue}` })
+							}
+							return true
+						}
+						return false
+					})
+				})
+				return currentSku
+			}
+			return []
+		},
+
 		// 当前SKU数量减少
 		handleNumSub() {
-			if (this.buyNum > 1) {
-				this.buyNum = this.buyNum - 1
+			if (this.number > 1) {
+				this.number = this.number - 1
 			} else {
 				uni.showToast({
 					title: '亲！至少一件哦！',
@@ -191,106 +210,14 @@ export default {
 
 		// 当前SKU数量加
 		handleNumAdd() {
-			if (this.buyNum < this.selectedSku.stockNumber) {
-				this.buyNum = this.buyNum + 1
+			if (this.number < this.selectedSku.stockNumber) {
+				this.number = this.number + 1
 			} else {
 				uni.showToast({
 					title: '库存不足！',
 					icon: 'none'
 				})
 			}
-		},
-
-		/**
-		 * 根据skuId选择SKU
-		 * @param skuId SkuId
-		 */
-
-		handleSelectBySkuId(skuId) {
-			if (!skuId) return
-			// 当前商品后端返回的所有sku的排列组合
-			const allSkuValueGroupMap = this.productData.map
-			for (const allSkuValueGroupMapKey in allSkuValueGroupMap) {
-				if (parseInt(allSkuValueGroupMap[allSkuValueGroupMapKey].skuId) !== parseInt(skuId)) continue
-				this.selectedSku = allSkuValueGroupMap[allSkuValueGroupMapKey]
-				this.echoFatherRowText(this.productData, this.selectedSku, this.buyNum)
-				// 控制组件选中渲染
-				const selectValueCodes = this.selectedSku.valueCodes.split(',')
-				for (const skuRow of this.productData.names) {
-					for (const skuCol of skuRow.values) {
-						if (!selectValueCodes.includes(skuCol.valueCode)) continue
-						this.$set(this.selectedAttr, skuRow.nameCode, skuCol.valueCode)
-						break // 一行的sku只会有一个value
-					}
-				}
-			}
-		},
-
-		/**
-		 * 点击sku的一项
-		 * @param nameCode SKU行的nameCode
-		 * @param valueCode SKU列的valueCode
-		 * nameCodeValueCodeClick
-		 */
-
-		handleClickSkuItem(nameCode, valueCode) {
-			// 当前选中
-			this.$set(this.selectedAttr, nameCode, valueCode)
-			// 获取到所有的sku的values.valueCode
-			const values = []
-			for (const key in this.selectedAttr) {
-				values.push(this.selectedAttr[key])
-			}
-			// 当前选中的sku的key组合
-			// 后端返回的productData.map中，排列组合了所有values[].valueCode的情况，使用逗号分隔
-			const nowSelectSkuValueGroupKey = values.join(',') // 相较于allSkuValueGroupMap的key
-			// 后端返回的所有sku组合（values.valueCode）
-			const allSkuValueGroupMap = this.productData.map
-			// 遍历后端数据
-			for (const allSkuValueGroupMapKey in allSkuValueGroupMap) {
-				// 当和当前选中的sku一致
-				if (nowSelectSkuValueGroupKey === allSkuValueGroupMapKey) {
-					this.selectedSku = allSkuValueGroupMap[allSkuValueGroupMapKey]
-					this.echoFatherRowText(this.productData, this.selectedSku, this.buyNum)
-				}
-			}
-		},
-
-		/**
-		 * 回显父组件（通讯）
-		 * @param productData 当前商品对象
-		 * @param skuItem 当前选中的sku的后端数据
-		 * @param buyNum 当前sku购买数量
-		 */
-
-		echoFatherRowText(productData, skuItem, buyNum) {
-			// 获取到当前选中的sku的valueCode
-			const currentSku = []
-			// 取出所有的valueCode
-			const nowSelectValueCodeList = skuItem.valueCodes.split(',')
-			const skuRows = productData.names
-			for (const skuRow of skuRows) {
-				const skuValues = skuRow.values
-				for (const skuValue of skuValues) {
-					if (!nowSelectValueCodeList.includes(skuValue.valueCode)) continue
-					const currentSkuItem = { skuText: '' }
-					if (skuValue.valueCode === '单款项') {
-						currentSkuItem.skuText = skuValue.skuValue
-					} else {
-						currentSkuItem.skuText = `${skuValue.skuName}:${skuValue.skuValue}`
-					}
-					currentSku.push(currentSkuItem)
-					break // 只会对应一个value数据，找到就break减少循环
-				}
-			}
-			this.$emit('getCurrentSku', {
-				skuItem,
-				currentSku,
-				buyNum
-			})
-			// 选中sku之后，做一些相应的操作
-			// postSelectSku依赖于getCurrentSku的数据
-			this.$emit('postSelectSku')
 		},
 
 		// 加入购物车
@@ -303,15 +230,14 @@ export default {
 			}
 			uni.showLoading()
 			try {
-				const postData = {
+				await addCartShoppingApi({
 					skuId: this.selectedSku.skuId,
-					number: this.buyNum
-				}
-				await addCartShoppingApi(postData)
+					number: this.number
+				})
 				// 埋点
 				addUserTrackReportDoPointerApi({
 					eventType: 2,
-					productIds: this.productId
+					productIds: this.goodsDetail.productId
 				})
 				// 给购物车小图标赋值数量
 				getCartListApi({}).then((res) => {
@@ -322,8 +248,8 @@ export default {
 					icon: 'none'
 				})
 				setTimeout(() => {
-					this.buyNum = 1
-					this.goodsDetailShowFlag = false
+					this.number = 1
+					this.isShowDetails = false
 				}, 2000)
 			} finally {
 				uni.hideLoading()
@@ -341,36 +267,35 @@ export default {
 					icon: 'none'
 				})
 			}
-			if (this.buyNum > this.selectedSku.stockNumber && this.selectedSku.stockNumber !== 0) {
+			if (this.number > this.selectedSku.stockNumber && this.selectedSku.stockNumber !== 0) {
 				return uni.showToast({
 					title: '已超出最大数量限制',
 					icon: 'none'
 				})
 			}
-
 			// 组装后端数据
 			const list = [ {
 				ifWork: 0,
-				shopId: this.productData.shopId,
-				shopName: this.productData.shopName,
-				shopDiscountId: this.shopDiscountId > 0 ? this.shopDiscountId : null,
-				shopSeckillId: this.shopSeckillId > 0 ? this.shopSeckillId : null,
+				shopId: this.goodsDetail.shopId,
+				shopName: this.goodsDetail.shopName,
+				shopDiscountId: this.goodsDetail.shopDiscountId || '',
+				shopSeckillId: this.goodsDetail.shopSeckillId || '',
 				skus: [ {
-					productId: this.productData.productId,
+					productId: this.goodsDetail.productId,
 					skuId: this.selectedSku.skuId,
-					productName: this.productData.productName,
+					productName: this.goodsDetail.productName,
 					image: this.selectedSku.image,
 					price: this.selectedSku.price,
 					weight: 0,
-					number: this.buyNum,
+					number: this.number,
 					SKU: '',
-					total: this.selectedSku.price * this.buyNum,
+					total: this.selectedSku.price * this.number,
 					ifLogistics: 1
 				} ]
 			} ]
 			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, list)
-			this.buyNum = 1
-			this.goodsDetailShowFlag = false
+			this.number = 1
+			this.isShowDetails = false
 			uni.navigateTo({
 				url: '/another-tf/another-serve/orderConfirm/index?type=1'
 			})
@@ -381,71 +306,24 @@ export default {
 		 * @param type 1单独开团2拼团
 		 */
 
-		handleBuyWithGroup(type) {
-			if (this.selectedSku.stockNumber < 1) {
-				return uni.showToast({
-					title: '库存不足',
-					icon: 'none'
-				})
-			}
+		handleBuyWithGroup() {
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('库存不足')
 			const data = {
-				number: this.buyNum,
-				productId: this.productId,
-				shopId: this.shopId,
+				number: this.number,
+				productId: this.goodsDetail.productId,
+				shopId: this.goodsDetail.shopId,
 				skuId: this.selectedSku.skuId,
 				shopGroupWorkId: this.selectedSku.shopGroupWorkId,
-				type
-			}
-			if (type !== 1) {
-				data.collageId = this.collageId
+				type: this.collageId ? 2 : 1, // 1单独开团，2拼团
+				collageId: this.collageId
 			}
 			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
 			uni.setStorageSync(T_SKU_ITEM_LIST, data)
-			this.goodsDetailShowFlag = false
-			this.buyNum = 1
+			this.isShowDetails = false
+			this.number = 1
 			uni.navigateTo({
 				url: '/another-tf/another-serve/orderConfirm/index?type=3'
 			})
-		},
-
-		/**
-		 * 选择分期
-		 * @param index 0:3期 1:6期 2:12期
-		 */
-
-		handleSelectAliAging(index) {
-			const aliAgingObj = this.aliAgingObj
-			if (aliAgingObj.selectIndex !== index && !aliAgingObj.disableSelectList[index]) {
-				aliAgingObj.selectIndex = index
-			} else {
-				aliAgingObj.selectIndex = -1
-			}
-		},
-
-		/**
-		 * 渲染是否支持花呗
-		 * @param productData 当前商品
-		 * @param skuPrice:number 选中SKU的价格
-		 */
-
-		handleRenderAliAging(productData, skuPrice) {
-			if (productData.ifHuabei !== 1) return
-			const aliAgingObj = this.aliAgingObj
-			if (skuPrice && skuPrice >= 0.03) {
-				aliAgingObj.supportHanaUta = true
-				aliAgingObj.disableSelectList[0] = false
-				aliAgingObj.agingMoneyList[0] = parseInt((skuPrice / 3 * 100) / 100 + '').toFixed(2) + ''
-			}
-			if (skuPrice && skuPrice >= 0.06) {
-				aliAgingObj.supportHanaUta = false
-				aliAgingObj.disableSelectList[1] = false
-				aliAgingObj.agingMoneyList[1] = parseInt((skuPrice / 6 * 100) / 100 + '').toFixed(2) + ''
-			}
-			if (skuPrice && skuPrice >= 0.12) {
-				aliAgingObj.supportHanaUta = true
-				aliAgingObj.disableSelectList[2] = false
-				aliAgingObj.agingMoneyList[2] = parseInt((skuPrice / 12 * 100) / 100 + '').toFixed(2) + ''
-			}
 		}
 	}
 }
@@ -541,57 +419,8 @@ export default {
 		}
 	}
 
-	.bottom-line {
-		border-bottom: 1upx solid #EDEDED;
-	}
-
-	.huabei-box {
-		padding: 30upx 30upx;
-		width: 690upx;
-
-		.fenqi-box {
-			margin-top: 15upx;
-			width: 120%;
-
-			.huabei-item {
-				display: inline-block;
-				background: #f3f3f3;
-				padding: 16upx 24upx;
-				margin: 5upx 10upx;
-				border-radius: 15upx;
-				text-align: center;
-				font-size: 7upx;
-
-				.huabei-period {
-					display: block;
-				}
-			}
-
-			.fenqi-on {
-				border: 1px solid #EF7F93;
-				color: #EF7F93;
-			}
-
-			.disabled {
-				color: #cacaca;
-			}
-		}
-	}
-
 	.goosDetailbut-box {
 		justify-content: center;
-
-		.joinShopCartBut {
-			width: 343upx;
-			height: 80upx;
-			border-radius: 40upx 0 0 40upx;
-			background-color: #FFC300;
-			color: #FFFEFE;
-			font-size: 28upx;
-			line-height: 80upx;
-			text-align: center;
-			margin-left: 30upx;
-		}
 
 		.buyNowBut {
 			width: 90%;

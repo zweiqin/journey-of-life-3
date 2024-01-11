@@ -50,12 +50,12 @@
 						<tui-icon
 							v-if="cartMsgObj.isAllCheck" name="circle-fill" :size="40" unit="upx"
 							color="#c5aa7b"
-							margin="40upx" @click="handleSelectAll(0)"
+							margin="40upx" @click="$refs.refATFShopCartList && $refs.refATFShopCartList.handleSelectAll(0)"
 						></tui-icon>
 						<tui-icon
 							v-else name="circle" :size="40" unit="upx"
 							color="#cccccc" margin="40upx"
-							@click="handleSelectAll(1)"
+							@click="$refs.refATFShopCartList && $refs.refATFShopCartList.handleSelectAll(1)"
 						></tui-icon>
 						<text>全选</text>
 					</view>

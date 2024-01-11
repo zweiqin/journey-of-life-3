@@ -99,6 +99,7 @@ export default {
 			try {
 				const res = await getSettlementOrderApi({
 					type: 2,
+					shopId: this.brandId, // '购物车结算'的'商家购物车结算'对应的商家
 					shops: addCartSelectedList,
 					voucherTotalAll: 0,
 					isVoucher: false,
@@ -129,7 +130,7 @@ export default {
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
 					uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCartSelectedList)
-					this.go('/another-tf/another-serve/orderConfirm/index?type=2')
+					this.go(`/another-tf/another-serve/orderConfirm/index?type=2&brandId=${this.brandId}`)
 				} else {
 					this.$showToast('请先勾选商品')
 				}

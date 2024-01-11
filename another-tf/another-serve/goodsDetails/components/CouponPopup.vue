@@ -7,7 +7,7 @@
 					style="width: 710upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="355" :padding="20"
 					item-width="355rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
 					:tabs="activeTypeList"
-					:current-tab="activeTypeFlag" @change="activeTypeActive"
+					:current-tab="activeTypeFlag" @change="(e) => activeTypeFlag = e.index"
 				></tui-tabs>
 			</view>
 			<view v-show="activeTypeFlag === 0">
@@ -17,9 +17,9 @@
 						class="close-btn"
 						@click="onActivityClose"
 					></tui-icon>
-					<view class="shopCouponBox" :class="markTools.length === 0 && 'flex'">
-						<view v-if="markTools.length > 0" class="list">
-							<view v-for="(item, index) in markTools" :key="index" class="item" :class="{ received: item.state === 1 }">
+					<view class="shopCouponBox" :class="platformMarkTools.length === 0 && 'flex'">
+						<view v-if="platformMarkTools.length > 0" class="list">
+							<view v-for="(item, index) in platformMarkTools" :key="index" class="item" :class="{ received: item.state === 1 }">
 								<view class="info-box">
 									<view v-if="item.couponType == 1" class="discoun">
 										<text style="font-size: 28rpx">￥</text>{{ item.reduceMoney }}
@@ -39,7 +39,6 @@
 							</view>
 						</view>
 						<view v-else class="emptyOrder-box flex-items-plus flex-column">
-							<image class="emptyOrder-img" src="../../../../static/images/new-business/shop/bgnull.png"></image>
 							<label class="font-color-999 fs26 mar-top-30">你还没有优惠券哦～</label>
 						</view>
 					</view>
@@ -80,7 +79,6 @@
 							</view>
 						</view>
 						<view v-else class="emptyOrder-box flex-items-plus flex-column">
-							<image class="emptyOrder-img" src="../../../../static/images/new-business/shop/bgnull.png"></image>
 							<label class="font-color-999 fs26 mar-top-30">你还没有优惠券哦～</label>
 						</view>
 					</view>
@@ -102,28 +100,20 @@ import { updateTakeCouponReceiveApi } from '../../../../api/anotherTFInterface'
 export default {
 	name: 'CouponPopup',
 	props: {
-		markTools: {
+		platformMarkTools: {
 			type: Array,
 			default: () => []
 		},
 		shopMarkTools: {
 			type: Array,
 			default: () => []
-		},
-		setTop: {
-			type: Number,
-			default: 0
-		},
-		currentActive: {
-			type: Number,
-			default: 0
 		}
 	},
 	data() {
 		return {
 			showActivity: false,
 			isShowSuccess: false,
-			activeTypeFlag: this.currentActive,
+			activeTypeFlag: 0, // 优惠券选项卡类型
 			activeTypeList: [{
 				name: '平台活动'
 			}, {
@@ -132,9 +122,6 @@ export default {
 		}
 	},
 	methods: {
-		activeTypeActive(e) {
-			this.activeTypeFlag = e.index
-		},
 		// 关闭优惠券弹窗
 		onActivityClose() {
 			this.showActivity = false

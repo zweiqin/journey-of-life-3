@@ -62,16 +62,6 @@
 			</view>
 		</view>
 
-		<view style="margin-top: 30upx;background-color: #ffffff;">
-			<view style="padding: 28upx 38upx;" @click="go(`/another-tf/another-serve/afterSale/index`)">我的售后 ></view>
-			<view
-				v-if="$store.state.auth.identityInfo.type.includes(1)" style="padding: 28upx 38upx;"
-				@click="go(`/another-tf/another-user/franchisee-statistics/index`)"
-			>
-				加盟统计 >
-			</view>
-		</view>
-
 		<view class="mar-top-100">
 			<view class="exitLoginBut  flex-items-plus" @click="handleQuit">退出登录</view>
 			<!-- #ifdef APP-PLUS -->

@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<!-- 商品详情 -->
-		<tui-bottom-popup class="activity-con" :show="goodsDetailShowFlag" @close="goodsDetailShowFlag = false">
+		<tui-bottom-popup class="activity-con" :show="isShowDetails" @close="isShowDetails = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
 					<image class="detailImg" :src="common.seamingImgUrl(selectedSku.image)"></image>
@@ -117,10 +117,10 @@ export default {
 	name: 'CombinedSales',
 	props: {
 		pid: {
-			type: String,
+			type: Number,
 			default: ''
 		},
-		productData: {
+		goodsDetail: {
 			type: Object,
 			default: () => { }
 		}
@@ -135,7 +135,7 @@ export default {
 			selectedSku: [],
 			selectedAttr: [],
 			skuProData: {},
-			goodsDetailShowFlag: false,
+			isShowDetails: false,
 			composePrice: 0
 		}
 	},
@@ -166,9 +166,6 @@ export default {
 				}
 				this.calculatePrice()
 			})
-				.catch((res) => {
-
-				})
 		},
 		// 更换商品样式
 		changeSkuItemValue(item, index) {
@@ -178,14 +175,14 @@ export default {
 				title: '加载中...'
 			})
 			getProductDetailsByIdApi({
-				shopId: this.productData.shopId,
+				shopId: this.goodsDetail.shopId,
 				productId: item.productId,
 				skuId: item.skuItem.skuId,
 				terminal: 1
 			}).then((res) => {
 				uni.hideLoading()
 				this.skuProData = res.data
-				// 如果是单款式商品，需要特殊处理productData.names
+				// 如果是单款式商品，需要特殊处理goodsDetail.names
 				const mapKeys = Object.keys(this.skuProData.map)
 				if (mapKeys.length === 1 && mapKeys[0] === '单款项') {
 					this.skuProData.names[0].values.push({
@@ -201,7 +198,7 @@ export default {
 						this.skuProData.map[key].image = this.skuProData.images[0]
 					}
 				}
-				this.goodsDetailShowFlag = true
+				this.isShowDetails = true
 				this.selectBySkuId(item.skuItem.skuId)
 			})
 				.catch((res) => {
@@ -267,11 +264,14 @@ export default {
 			}
 			curPro.skuItem = this.selectedSku
 			this.calculatePrice()
-			this.goodsDetailShowFlag = false
+			this.isShowDetails = false
 		},
 		// 计算组合价
 		calculatePrice() {
-			const proList = this.selectComposeData[this.tabIndex].composeProductInfoList; const composeType = this.selectComposeData[this.tabIndex].composeType; const promote = this.selectComposeData[this.tabIndex].promote
+			if (!this.selectComposeData.length) return
+			const proList = this.selectComposeData[this.tabIndex].composeProductInfoList
+			const composeType = this.selectComposeData[this.tabIndex].composeType
+			const promote = this.selectComposeData[this.tabIndex].promote
 			let total = 0
 			for (let i = 0; i < proList.length; i++) {
 				total += this.getPrice(proList[i].skuItem)
@@ -303,7 +303,7 @@ export default {
 		doBuy() {
 			const addCart = []
 			const shopObj = {}
-			shopObj.shopId = this.productData.shopId
+			shopObj.shopId = this.goodsDetail.shopId
 			shopObj.composeId = this.selectComposeData[this.tabIndex].composeId
 			shopObj.skus = []
 			const proList = this.selectComposeData[this.tabIndex].composeProductInfoList
