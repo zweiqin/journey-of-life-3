@@ -8,7 +8,11 @@
 			<view class="member-top" :style="{ 'top': topHeight + 'px' }">
 				<view class="memberTopInfo">
 					<view class="backBox">
-						<tui-icon name="arrowleft" :size="50" unit="upx" color="#ffffff" margin="0 10upx 0 10upx" @click="back"></tui-icon>
+						<tui-icon
+							name="arrowleft" :size="50" unit="upx" color="#ffffff"
+							margin="0 10upx 0 10upx"
+							@click="back"
+						></tui-icon>
 					</view>
 					<view class="memberTit fs30 font-color-FFF">会员中心</view>
 				</view>
@@ -26,20 +30,20 @@
 										<view class="memberTopBg" :style="{ backgroundImage: 'url(' + item.memberLevelBackground + ')' }">
 											<view class="flex-display flex-sp-between">
 												<view class="nameBox">
-													<view class="name fs36">{{ memberData.name }}</view>
+													<view class="name fs36">{{ $store.getters.userInfo.name }}</view>
 													<view class="level">
 														<image :src="common.seamingImgUrl(item.memberLevelIcon)"></image>
 													</view>
 												</view>
 												<view class="avatarBox">
-													<image :src="common.seamingImgUrl(memberData.headImage)"></image>
+													<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
 												</view>
 											</view>
 											<view class="growing">
 												<view class="growingValue flex-display flex-sp-between">
 													<label class="fs24 fs-weight-400 font-color-333">
 														当前会员成长值
-														{{ memberData.growth }}
+														{{ $store.getters.userInfo.growth }}
 													</label>
 													<label
 														v-if="nextGrowth !== 0 && nextGrowth !== item.growth"
@@ -48,11 +52,11 @@
 														{{ nextGrowth }}
 													</label>
 												</view>
-												<view v-if="memberData.growth < nextGrowth" class="progressBar">
+												<view v-if="$store.getters.userInfo.growth < nextGrowth" class="progressBar">
 													<view style="width: 100%">
 														<progress
-															activeColor="#FFEBC4" :percent="getPercent(memberData.growth, nextGrowth)" active
-															stroke-width="2"
+															activeColor="#FFEBC4"
+															:percent="getPercent($store.getters.userInfo.growth, nextGrowth)" active stroke-width="2"
 														/>
 													</view>
 												</view>
@@ -60,8 +64,8 @@
 													以超越该等级
 												</view>
 												<!--                      <view class="flex-display flex-sp-between"> -->
-												<!--                        <label class="fs24 font-color-71521B">{{memberData.memberLevelName}}</label> -->
-												<!--                        <label class="fs24 font-color-71521B">{{memberData.nextLevelName}}</label> -->
+												<!--                        <label class="fs24 font-color-71521B">{{$store.getters.userInfo.memberLevelName}}</label> -->
+												<!--                        <label class="fs24 font-color-71521B">{{$store.getters.userInfo.nextLevelName}}</label> -->
 												<!--                      </view> -->
 											</view>
 										</view>
@@ -109,12 +113,11 @@
 </template>
 
 <script>
-import { getUserInfoApi, getMemberByMemberLevelIdApi, getAllMemberLevelInfoApi, getMemberShipListApi } from '../../../api/anotherTFInterface'
+import { getMemberByMemberLevelIdApi, getAllMemberLevelInfoApi, getMemberShipListApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Index',
 	data() {
 		return {
-			memberData: {},
 			equityList: [],
 			levelInfo: {},
 			isShow: false,
@@ -139,8 +142,7 @@ export default {
 		setTimeout(() => {
 			this.getMemberShipList()
 		}, 200)
-		getUserInfoApi({}).then((res) => {
-			this.memberData = res.data
+		this.$store.dispatch('auth/refrshUserInfoAction', () => {
 			this.getMemberByMemberLevel()
 		})
 		this.getMemberList()
@@ -165,7 +167,7 @@ export default {
 			getAllMemberLevelInfoApi({}).then((res) => {
 				this.memberListData = res.data
 				this.memberListData.forEach((item, index) => {
-					if (item.memberLevelId === this.memberData.memberLevelId) {
+					if (item.memberLevelId === this.$store.getters.userInfo.memberLevelId) {
 						this.activeIndex = index
 						let num = 0
 						num = this.activeIndex + 1
@@ -205,7 +207,7 @@ export default {
 		},
 		// 获取会员等级
 		getMemberByMemberLevel() {
-			getMemberByMemberLevelIdApi({ memberLevelId: this.memberData.memberLevelId })
+			getMemberByMemberLevelIdApi({ memberLevelId: this.$store.getters.userInfo.memberLevelId })
 				.then((res) => {
 					this.levelInfo = res.data
 				})

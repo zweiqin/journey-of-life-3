@@ -154,9 +154,16 @@
 								</div>
 							</div>
 							<div
-								style="width: fit-content;margin-top: -4upx;padding: 2upx 12upx 6upx 2upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;vertical-align: middle;"
+								v-if="item.voucherId && item.voucherPrice"
+								style="width: fit-content;margin-top: 4upx;padding: 2upx 12upx 6upx 2upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;"
 							>
-								可使用{{ Math.ceil(Number(item.price || 0)) }}代金券抵扣
+								可使用{{ item.voucherPrice }}代金券抵扣
+							</div>
+							<div
+								v-if="item.presenterVoucher"
+								style="width: fit-content;margin-top: 4upx;padding: 2upx 12upx 6upx 2upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;"
+							>
+								赠送 {{ item.presenterVoucher }} 代金券
 							</div>
 						</div>
 					</div>

@@ -14,8 +14,8 @@
         </view>
         <view class="listMain">
             <keep-alive>
-                <RecordsEvery :acountNumbers="acountNumbers" ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 0"></RecordsEvery>
-                <RechargeRecord :acountNumbers="acountNumbers" ref="RechargeRecord" :condition="dateValue" v-if="currentIndex == 1"></RechargeRecord>
+                <RecordsEvery show-type="income" :acountNumbers="acountNumbers" ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 0"></RecordsEvery>
+                <RecordsEvery show-type="expenditure"  :acountNumbers="acountNumbers" ref="RecordsEvery" :condition="dateValue" v-if="currentIndex == 1"></RecordsEvery>
                 <IncrementRecord :acountNumbers="acountNumbers" ref="IncrementRecord" :condition="dateValue" v-if="currentIndex == 2"></IncrementRecord>
             </keep-alive>
         </view>
@@ -32,14 +32,12 @@
 
 <script>
 import RecordsEvery from '../cpns/RecordsEvery.vue'
-import RechargeRecord from '../cpns/RechargeRecord.vue'
 import IncrementRecord from '../cpns/IncrementRecord.vue'
 import { getTotalVoucherOrderApi } from '../../../api/anotherTFInterface'
 export default {
     name: 'Records',
     components: {
         RecordsEvery,
-        RechargeRecord,
         IncrementRecord
     },
     data() {

@@ -1,9 +1,12 @@
 <template>
 	<view>
-		<view class="line-pane" @click="drawerVisible = true">
+		<view class="line-pane" @click="handleChangeVoucher">
 			<view style="font-size: 28upx;" class="title">代金券（余额：{{ voucherNum }}）</view>
 			<view style="display: flex;align-items: center;">
-				<view class="desc" style="color: #999999">{{ voucherName }}</view>
+				<view style="color: #999999">
+					<text v-if="voucherSelected && (voucherList.length === 1)">已选择</text>
+					<text v-else>{{ voucherName }}</text>
+				</view>
 				<tui-icon name="arrowright" size="22" color="#979797" style="padding: 2upx 0 2upx 8upx;"></tui-icon>
 			</view>
 		</view>
@@ -95,6 +98,15 @@ export default {
 		}
 	},
 	methods: {
+		handleChangeVoucher() {
+			if (!this.voucherSelected && (this.voucherList.length === 1)) {
+				this.voucherName = this.voucherList[0].voucherName
+				this.voucherSelected = this.voucherList[0].id
+				this.$emit('choose', { id: this.voucherSelected })
+			} else {
+				this.drawerVisible = true
+			}
+		},
 		handleReset() {
 			this.voucherName = '点击使用'
 			this.voucherSelected = 0

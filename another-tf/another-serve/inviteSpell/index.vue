@@ -132,7 +132,7 @@
 
 <script>
 import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
-import { getUserInfoApi, getProductDetailsByIdApi, getProductsSkuApi, getInviteWorkApi } from '../../../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getProductsSkuApi, getInviteWorkApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'InviteSpell',
@@ -234,9 +234,8 @@ export default {
 			}
 			this.getInviteSpell()
 		} else {
-			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
-			getUserInfoApi({}).then((res) => {
-				this.userInfo = res.data
+			this.$store.dispatch('auth/refrshUserInfoAction', () => {
+				this.userInfo = this.$store.getters.userInfo
 				this.getInviteSpell()
 			})
 		}

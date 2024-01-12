@@ -133,6 +133,41 @@ export default {
 		}
 	},
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
+		showPlatformPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					uni.showLoading()
+					if (!this.paymentList.find((item) => item.paymentMode === '5')) {
+						this.paymentList.push({
+							label: '平台余额支付',
+							paymentMode: '5',
+							icon: require('../../static/images/user/pay/platform-pay.png'),
+							disabled: true
+						})
+					}
+					getPricePlatformAllApi({})
+						.then((res) => {
+							this.pricePlatformInfo = res.data
+							this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.totalPrice)
+							if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+						.catch((e) => {
+							if (this.paymentMode === '5') this.handleSetDisable()
+							if (this.paymentList.find((item) => item.paymentMode === '5')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '5'), 1)
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+				} else {
+					if (this.paymentMode === '5') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '5')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '5'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		shopIdPay: {
 			handler(newValue, oldValue) {
 				// console.log(2222)

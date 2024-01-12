@@ -3,8 +3,8 @@ import { A_TF_MAIN } from '../../config'
 import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './type'
 import store from '../index'
 import { getUrlCode } from '../../utils'
-import { refrshUserInfoApi, updateUserInfoApi } from '../../api/user'
-import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi } from '../../api/anotherTFInterface'
+import { refrshUserInfoApi } from '../../api/user'
+import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
@@ -47,6 +47,7 @@ export default {
 						if (data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) {
 							try {
 								uni.hideLoading()
+								uni.showToast({ title: '登录成功', icon: 'none' })
 								if (isAfter) dispatch('LoginAfterAction', { type: 'phone', data })
 								resolve(data)
 							} catch (err) {
@@ -214,7 +215,6 @@ export default {
 				const redirect = uni.getStorageSync(T_REDIRECT_TYPE)
 				console.log(type)
 				if (type === 'phone') {
-					uni.showToast({ title: '登录成功', icon: 'none' })
 					setTimeout(() => {
 						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo.userId)
 						uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
@@ -330,51 +330,55 @@ export default {
 			}
 		},
 
-		updateUserInfo({ state, dispatch }, updateData) {
-			const originData = {
-				nickname: state.userInfo.nickName,
-				avatar: state.userInfo.avatarUrl,
-				password: state.userInfo.password,
-				id: uni.getStorageSync(USER_ID)
-			}
-			originData[updateData.key] = updateData.value
-			updateUserInfoApi(originData).then(() => {
-				uni.showToast({ title: '修改成功', icon: 'none' })
-				dispatch('refrshUserInfoAction')
-			})
+		updateUserInfoAction({ state, dispatch }, updateData) {
+			uni.showLoading()
+			updateUserInfoApi(updateData)
+				.then((res) => {
+					uni.hideLoading()
+					uni.showToast({ title: '修改成功', icon: 'success' })
+					dispatch('refrshUserInfoAction')
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
 		},
 
 		// 刷新用户信息
 		refrshUserInfoAction({ state, dispatch, commit }, cb) {
-			if (!uni.getStorageSync(USER_ID)) return
-			refrshUserInfoApi({
-				userId: uni.getStorageSync(USER_ID)
-			}).then(async ({ data }) => {
-				uni.setStorageSync(USER_ID, data.userId)
-				uni.setStorageSync(USER_INFO, data)
-				// return new Promise((resolve, reject) => {
-				// 	const userInfo = uni.getStorageSync(USER_INFO)
-				// 	if (data.phone) {
-				// 		uni.showLoading({ mask: true })
-				// 		getAnotherTFTokenApi({ phone: data.phone, wechatName: userInfo.name || userInfo.nickName, headImage: userInfo.avatarUrl })
-				// 			.then((res) => {
-				// 				commit(CHNAGE_USER_TOKEN, res.data.token)
-				// 				commit(CHNAGE_USER_INFO, res.data)
-				// 				if (res.data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, res.data.roleId]) ] })
-				// 				uni.hideLoading()
-				// 				resolve(res.data)
-				// 			})
-				// 			.catch((err) => {
-				// 				uni.hideLoading()
-				// 				reject(err)
-				// 			})
-				dispatch('updateIdentityInfo')
-				// 	} else {
-				// 		uni.showToast({ title: '缺少手机号码', icon: 'none' })
-				// 		reject('缺少手机号码')
-				// 	}
-				// })
-				cb && typeof cb === 'function' && cb(data)
+			return new Promise((resolve, reject) => {
+				getUserInfoApi({})
+					.then((res) => {
+						if (uni.getStorageSync(USER_ID)) {
+							refrshUserInfoApi({
+								userId: uni.getStorageSync(USER_ID)
+							})
+								.then((result) => {
+									uni.setStorageSync(USER_ID, result.data.userId)
+									uni.setStorageSync(USER_INFO, result.data)
+									const tempUserInfo = uni.getStorageSync(T_STORAGE_KEY)
+									commit(CHNAGE_USER_INFO, Object.assign(res.data, {
+										ifFirst: tempUserInfo.ifFirst,
+										oldShopUserInfo: tempUserInfo.oldShopUserInfo,
+										refreshToken: tempUserInfo.refreshToken,
+										sessionKey: tempUserInfo.sessionKey,
+										ssoUserInfo: tempUserInfo.ssoUserInfo,
+										token: tempUserInfo.token
+									}))
+									if (res.data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, res.data.roleId]) ] })
+									dispatch('updateIdentityInfo')
+									cb && typeof cb === 'function' && cb(result.data)
+									resolve(result.data)
+								})
+								.catch((err) => {
+									reject(err)
+								})
+						} else {
+							reject()
+						}
+					})
+					.catch((err) => {
+						reject(err)
+					})
 			})
 		},
 

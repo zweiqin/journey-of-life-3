@@ -1,26 +1,47 @@
 <template>
     <view class="container">
         <view class="TotalRevenue">
-            <view class="amountText">
+            <view v-if="showType === 'income'" class="amountText">
                 总收益 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总收益'] }}
+            </view>
+            <view v-else-if="showType === 'expenditure'" class="amountText">
+                总支出 &nbsp;(元) &nbsp;:&nbsp; {{ acountNumbers['总支出'] }}
             </view>
         </view>
         <view class="MakeMoneyRecordsList">
             <scroll-view scroll-y="true" class="scrollY" @scrolltolower="getMore">
                 <view class="listItem" v-for="(item, index) in dataList" :key="index">
-                    <view class="itemIcon" style="background: #FF380C;">
-                        <image class="Iconimg" src="@/static/images/user/zengsong.png"></image>
+                    <view class="itemIcon" :style="{background: showType === 'income'?'#FF380C':showType === 'expenditure'?'#3982F1':''}">
+                        <image class="Iconimg" src="../../../static/images/user/zengsong.png"></image>
                     </view>
                     <text class="txt2">{{ item.number }}</text>
                     <view class="itemDetails">
-                        <text class="txt1">代金卷{{ item.typeStrName }}</text>
+                        <text class="txt1">
+													代金卷
+													<text v-if="item.type === 1">充值</text>
+													<text v-else-if="item.type === 2">转赠</text>
+													<text v-else-if="item.type === 3">签到</text>
+													<text v-else-if="item.type === 4">抵扣</text>
+													<text v-else-if="item.type === 5">核销</text>
+													<text v-else-if="item.type === 6">抽奖</text>
+													<text v-else-if="item.type === 7">退款</text>
+													<text v-else-if="item.type === 8">充值赠送</text>
+													<text v-else-if="item.type === 9">下单</text>
+													<text v-else>--</text>
+												</text>
                         <text class="txt3">{{ item.typeStrName }}  ID : {{ item.id }}</text>
                         <text class="txt3">{{ item.createTime }}</text>
                     </view>
-                    <view style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;">
-                        <image style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"  :src="item.imgOne"></image>
+                    <view v-if="showType === 'income'" style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;">
+                        <image style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"  :src="common.seamingImgUrl(item.imgOne)"></image>
                         <text style="font-size: 24upx;">{{ item.userNameOne }}</text>
                         <text style="font-size: 24upx;">（ID：{{ item.holdId }}）</text>
+                    </view>
+                    <view v-else-if="showType === 'expenditure'" style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;">
+                        <image style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
+                            :src="common.seamingImgUrl(item.userLogs)"></image>
+                        <text style="font-size: 24upx; color: rgb(26, 26, 26);">{{ item.username }}</text>
+                        <text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text>
                     </view>
                 </view>
              </scroll-view>
@@ -31,8 +52,12 @@
 <script>
 import { getTransferLogsVoucherShopHoldApi } from '../../../api/anotherTFInterface'
 export default {
-    name: 'RechargeRecord',
+    name: 'RecordsEvery',
     props: {
+        showType: {
+            type: String,
+            required: true
+        },
         condition: {
             type: [Number, String],
             default: 5
@@ -40,7 +65,7 @@ export default {
         acountNumbers: {
             type: Object,
             default: {
-                ['总支出']: 0,
+							'总收益': 0,
                 '总收入': 0
             }
         }
@@ -50,7 +75,6 @@ export default {
             queryList: {
                 page: 1,
                 pageSize: 20,
-                type: 3
             },
             dataList: []
         }
@@ -62,6 +86,7 @@ export default {
         getListData() {
             getTransferLogsVoucherShopHoldApi({
                 ...this.queryList,
+                type: this.showType === 'income' ? 3 : this.showType === 'expenditure' ? 2 : '',
                 condition: this.condition
             }).then(res => {
                 if (res.data.records.length <= 0) {

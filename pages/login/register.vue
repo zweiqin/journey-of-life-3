@@ -1,6 +1,6 @@
 <template>
-	<view class="container">
-		<image class="backIcon" src="@/static/images/icon/goback.png" @click="goBack"></image>
+	<view class="register-container">
+		<JHeader title="" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="titleBox">
 			<p class="bigTitle">填写注册信息</p>
 			<p class="tips">请仔细填写以下信息，以免后期登陆异常</p>
@@ -9,42 +9,41 @@
 			<tui-form ref="form" :show-message="false">
 				<view class="formItem">
 					<tui-input
-						v-model="formData.mobile" placeholder-class="inputs" label="" border-color="#EA5B1D"
-						placeholder="请输入电话号码" :border-top="false" color="#222229"
-						:clearable="true" size="34"
-						@confirm="handleClickConfirmType(0)"
+						v-model="registerQuery.phone" placeholder-class="inputs" label="" border-color="#EA5B1D"
+						placeholder="请输入电话号码" :border-top="false" color="#222229" clearable
+						size="34"
 					></tui-input>
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="formData.code" placeholder-class="inputs" class="reset-wrapper"
-						:border-top="false" border-color="#EA5B1D" label-color="#FFFFFF" placeholder="请输入验证码"
-						color="#222229"
-						@confirm="handleClickConfirmType(1)"
+						v-model="registerQuery.verificationCode" padding="26upx 20upx 26upx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
+						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#222229"
+						style="border-bottom: 2upx solid #ffffff;"
 					>
-						<block slot="right">
-							<button v-show="!timer" class="uni-btn get-code" @click="handleGetCode">获取验证码</button>
-							<view v-show="timer" class="awaiting" style="color: #EF530E;">
-								<text class="second-text">{{ awaitSecond }}s</text>
-								<text>后重新获取</text>
-							</view>
-						</block>
+						<template #right>
+							<tui-countdown-verify
+								ref="refRegisterVerify" width="188upx" height="48upx" border-width="0"
+								text="获取验证码"
+								:size="30" color="#EF530E" @send="handleSendVerify"
+							></tui-countdown-verify>
+						</template>
 					</tui-input>
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="formData.password" placeholder-class="inputs" type="password" label=""
-						border-color="#EA5B1D" placeholder="请输入密码" :border-top="false"
-						color="#222229"
-						:clearable="true" size="34" @confirm="handleClickConfirmType(0)"
+						v-model="registerQuery.password" placeholder-class="inputs" type="password" label=""
+						border-color="#EA5B1D" placeholder="请输入密码" :border-top="false" color="#222229"
+						clearable
+						size="34"
 					></tui-input>
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="formData.confirmPassword" placeholder-class="inputs" type="password" label=""
-						border-color="#EA5B1D" placeholder="请再次确认密码" :border-top="false"
-						color="#222229"
-						:clearable="true" size="34" @confirm="handleClickConfirmType(0)"
+						v-model="registerQuery.passwordAgain" placeholder-class="inputs" type="password" label=""
+						border-color="#EA5B1D" placeholder="请再次确认密码" :border-top="false" color="#222229"
+						clearable
+						size="34"
 					></tui-input>
 				</view>
 			</tui-form>
@@ -52,25 +51,33 @@
 		</view>
 		<button
 			class="loginBtn"
-			:class="{ disbleds: !!(formData.password && formData.confirmPassword && formData.mobile && formData.code) }"
+			:class="{ disbleds: !!(registerQuery.password && registerQuery.passwordAgain && registerQuery.phone && registerQuery.verificationCode) }"
 			@click="addAcount"
 		>
 			确定
 		</button>
 		<view class="agreement">
-			登录即代表你已阅读并同意<text class="agreementDetails">《用户服务协议》</text>
+			登录即代表你已阅读并同意<text style="color: #222229;">《用户服务协议》</text>
 		</view>
 		<tui-toast ref="toast"></tui-toast>
-		<tui-modal :show="isOk" custom :fade-in="true" :button="[]" @cancel="isOk = false">
+		<tui-modal :show="hasRegister" custom fade-i :button="[]" @cancel="hasRegister = false">
 			<view style="padding: 28upx 0;text-align: center;">
-				<image style="width: 240rpx;height: 144rpx;" src="@/static/images/icon/acount.png"></image>
-				<view class="text">注册完成</view>
-				<view class="text2">您已完成注册，请前往登录</view>
+				<image style="width: 240rpx;height: 144rpx;" src="../../static/images/icon/acount.png"></image>
+				<view
+					style="margin-top: 46rpx;font-size: 36rpx;font-weight: normal;line-height: 52rpx;text-align: center;color: #222229;"
+				>
+					注册完成
+				</view>
+				<view
+					style="margin-top: 18rpx;font-size: 28fpx;font-weight: 350;line-height: 40fpx;text-align: center;color: #888889;"
+				>
+					您已完成注册，请前往首页
+				</view>
 				<button
 					style="width: 484rpx;height: 80rpx;border-radius: 8rpx;background: #EF530E;color: #fff;line-height: 80rpx;margin-top: 80rpx;"
-					@click="go('/pages/login/login')"
+					@click="$switchTab('/pages/index/index')"
 				>
-					立即登录
+					立即跳转
 				</button>
 			</view>
 		</tui-modal>
@@ -84,74 +91,45 @@ export default {
 	name: 'Register',
 	data() {
 		return {
-			isOverPwd: false,
-			timer: false,
-			awaitSecond: 60,
-			formData: {
+			registerQuery: {
 				password: '',
-				confirmPassword: '',
-				mobile: '',
-				code: ''
+				passwordAgain: '',
+				phone: '',
+				verificationCode: ''
 			},
-			isOk: false
+			hasRegister: false
 		}
 	},
 	methods: {
-		goBack() {
-			uni.navigateBack()
-		},
-		handleClickConfirmType(index) {
-			console.log(index)
-		},
 		// 获取验证码
-		async handleGetCode() {
-			if (this.formData.mobile.length !== 11) {
-				this.ttoast({
-					type: 'fail',
-					title: '请输入合法的手机号码'
-				})
-				return
+		handleSendVerify() {
+			if (!this.registerQuery.phone) {
+				this.$refs.refRegisterVerify.reset()
+				return this.$showToast('请填写手机号')
 			}
-
-			uni.showLoading({
-				title: '加载中...'
-			})
-
-			try {
-				await getVerifyCodeApi({
-					phone: this.formData.mobile,
-					flag: 2
-				})
-
-				this.timer = setInterval(() => {
-					this.awaitSecond--
-
-					if (this.awaitSecond === 0) {
-						this.awaitSecond = 60
-						clearInterval(this.timer)
-						this.timer = null
-					}
-				}, 1000)
-			} catch (error) {
-				console.log(error)
-				this.ttoast({
-					type: 'fail',
-					title: '验证码发送失败',
-					content: '请稍后重试'
-				})
-			} finally {
-				uni.hideLoading()
+			if (!/^1[3-9]\d{9}$/.test(this.registerQuery.phone)) {
+				this.$refs.refRegisterVerify.reset()
+				return this.$showToast('请输入正确的手机号')
 			}
+			getVerifyCodeApi({ phone: this.registerQuery.phone })
+				.then((res) => {
+					this.$refs.refRegisterVerify.success()
+					this.$showToast('发送成功，请注意查看手机短信')
+				})
+				.catch(() => {
+					this.$refs.refRegisterVerify.reset()
+				})
 		},
+
 		addAcount() {
-			this.$refs.form.validate(this.formData, [
+			this.$refs.form.validate(this.registerQuery, [
 				{
-					name: 'mobile',
+					name: 'phone',
 					rule: ['required', 'isMobile'],
 					msg: ['请输入手机号', '请输入正确的手机号']
 				},
 				{
-					name: 'code',
+					name: 'verificationCode',
 					rule: [ 'required' ],
 					msg: [ '请输入验证码' ]
 				},
@@ -161,79 +139,38 @@ export default {
 					msg: ['请输入密码', '密码为8~20位英文和数字组合']
 				},
 				{
-					name: 'confirmPassword',
+					name: 'passwordAgain',
 					rule: ['required', 'isSame:password'],
 					msg: ['请再次确认密码', '两次密码不一致']
 				}
 			])
-				.then((res) => {
+				.then(() => {
 					updatePhoneLoginRegisterApi({
-						mobile: this.formData.mobile,
-						password: this.formData.password
+						type: 1,
+						phone: this.registerQuery.phone,
+						verificationCode: this.registerQuery.verificationCode,
+						password: this.registerQuery.password
 					}).then((res) => {
-						this.isOk = true
-						console.log(res)
+						this.$store.dispatch('auth/LoginAfterAction', { type: 'phone', data: res.data })
+						this.hasRegister = true
 					})
-						.catch((err) => {
-							console.log(err)
-						})
 				})
-				.catch((errors) => {
-					uni.showToast({
-						title: errors.errorMsg,
-						icon: 'none'
-					})
+				.catch((e) => {
+					this.$showToast(JSON.stringify(e.errorMsg))
 				})
 		}
 	}
 }
 </script>
 
-<style lang="scss" scoped>
-.text {
-	margin-top: 46rpx;
-	font-family: 思源黑体;
-	font-size: 36rpx;
-	font-weight: normal;
-	line-height: 52rpx;
-	text-align: center;
-	color: #222229;
-}
-
-.text2 {
-	margin-top: 18rpx;
-	font-family: 思源黑体;
-	font-size: 28fpx;
-	font-weight: 350;
-	line-height: 40fpx;
-	text-align: center;
-	color: #888889;
-}
-
-.disbleds {
-	background-color: #EF530E !important;
-}
-
-.get-code {
-	font-family: Source Han Sans;
-	font-size: 30rpx;
-	font-weight: normal;
-	line-height: 40rpx;
-	text-align: right;
-	letter-spacing: 0px;
-	color: #EF530E;
-}
-
-.container {
+<style lang="less" scoped>
+.register-container {
 	position: relative;
-	width: 100vw;
 	min-height: 100vh;
+	box-sizing: border-box;
 
-	/* background-color: #888889; */
-	.backIcon {
-		width: 40rpx;
-		height: 40rpx;
-		padding: 24rpx 30rpx;
+	.disbleds {
+		background-color: #EF530E !important;
 	}
 
 	.titleBox {
@@ -293,18 +230,12 @@ export default {
 		left: 50%;
 		transform: translateX(-50%);
 		white-space: nowrap;
-		font-family: 思源黑体;
 		font-size: 28rx;
 		font-weight: 350;
 		line-height: 36rpx;
 		text-align: center;
 		letter-spacing: 0rpx;
-		/* 登录即代表你已阅读并同意 */
 		color: #888889;
-
-		.agreementDetails {
-			color: #222229;
-		}
 	}
 }
 </style>

@@ -33,6 +33,12 @@
 			>
 				可使用{{ cItem.voucherPrice }}代金券抵扣
 			</view>
+			<view
+				v-if="cItem.presenterVoucher"
+				style="width: fit-content;max-width: 100%;padding: 2upx 8upx;margin: 10upx 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+			>
+				赠送 {{ cItem.presenterVoucher }} 代金券
+			</view>
 		</view>
 	</view>
 </template>

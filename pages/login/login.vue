@@ -97,15 +97,15 @@
 					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">支付宝登录</view>
 				</view>
 				<!-- #endif -->
-				<!-- <view
+				<view
 					v-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
 					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
-					>
+				>
 					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
-					<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
+						<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
 					</view>
 					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">微信登录</view>
-					</view> -->
+				</view>
 			</view>
 		</view>
 	</view>

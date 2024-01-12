@@ -27,7 +27,7 @@
 <script>
 import { getAllVoucherOrderApi } from '../../../api/anotherTFInterface'
 export default {
-    name: 'RechargeRecord',
+    name: 'IncrementRecord',
     props: {
         condition: {
             type: [Number, String],

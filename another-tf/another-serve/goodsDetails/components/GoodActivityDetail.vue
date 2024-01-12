@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="good-activity-detail-container">
 		<!-- 商品详情 -->
 		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
 			<swiper-item v-for="(imgItem, index) in goodsDetail.images" :key="index">
@@ -16,17 +16,11 @@
 			<label class="fs24 mar-left-5">分享</label>
 		</view>
 		<view class="goodgDes-box flex-start flex-column">
-			<view v-if="skuSelect.activityType === 0" class="priceBuyNum-box flex-items flex-sp-between mar-left-30">
+			<view v-if="skuSelect.activityType === 0" class="flex-items flex-sp-between">
 				<view class="flex-items">
 					<label class="fs36 font-color-C83732">¥</label>
 					<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
 					<view class="flex-column-plus mar-left-20">
-						<text
-							v-if="skuSelect.voucherId"
-							style="padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;vertical-align: middle;"
-						>
-							可使用{{ skuSelect.voucherPrice }}代金券抵扣
-						</text>
 						<label
 							v-if="skuSelect.price !== skuSelect.originalPrice"
 							class="fs24 font-color-999 discountsPriceLine mar-left-20"
@@ -37,8 +31,8 @@
 				</view>
 				<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
 			</view>
-			<view v-else-if="skuSelect.activityType === 8" class="sceneMarketingBox">
-				<view class="flex-row-plus flex-items-plus mar-left-30 mar-top-10">
+			<view v-else-if="skuSelect.activityType === 8">
+				<view class="flex-row-plus flex-items-plus">
 					<label class="fs30 font-color-FFF">¥</label>
 					<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
 					<label class="fs28 mar-left-10 discountsPriceLine font-color-CCC">
@@ -104,6 +98,20 @@
 						</view>
 					</view>
 				</view>
+			</view>
+			<view style="display: flex;align-items: center;flex-wrap: wrap;">
+				<text
+					v-if="skuSelect.voucherId"
+					style="padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+				>
+					可使用{{ skuSelect.voucherPrice }}代金券抵扣
+				</text>
+				<text
+					v-if="skuSelect.presenterVoucher"
+					style="margin-left: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+				>
+					赠送 {{ skuSelect.presenterVoucher }} 代金券
+				</text>
 			</view>
 			<view class="nameContainer">
 				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30">
@@ -329,114 +337,111 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.goodsImgswiper-box {
-	width: 750upx;
-	height: 750upx;
+<style lang="less" scoped>
+.good-activity-detail-container {
+	box-sizing: border-box;
 
-	.goodsImg {
+	.goodsImgswiper-box {
 		width: 750upx;
 		height: 750upx;
-	}
-}
 
-.share-box {
-	width: 200upx;
-	height: 60upx;
-	background-color: #FFFFFF;
-	border-radius: 30upx 0 0 30upx;
-	position: absolute;
-	top: 110upx;
-	right: 0;
-	z-index: 99;
-}
-
-.goodgDes-box {
-	background-color: #FFFFFF;
-	width: 100%;
-	padding-bottom: 25upx;
-
-	.priceBuyNum-box {
-		width: 677upx;
-		margin-top: 30upx;
-	}
-
-	.nameContainer {
-		display: flex;
-
-		.goodsName-box {
-			width: 677upx;
+		.goodsImg {
+			width: 750upx;
+			height: 750upx;
 		}
+	}
 
-		.collectBox {
-			width: 80rpx;
-			margin: 0 30rpx 0 15rpx;
+	.share-box {
+		width: 200upx;
+		height: 60upx;
+		background-color: #FFFFFF;
+		border-radius: 30upx 0 0 30upx;
+		position: absolute;
+		top: 110upx;
+		right: 0;
+		z-index: 99;
+	}
+
+	.goodgDes-box {
+		background-color: #FFFFFF;
+		padding: 30upx 25upx 25upx;
+
+		.nameContainer {
 			display: flex;
-			flex-direction: column;
+
+			.goodsName-box {
+				width: 677upx;
+			}
+
+			.collectBox {
+				width: 80rpx;
+				margin: 0 30rpx 0 15rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+
+		.activity-box {
+			display: flex;
+			flex-direction: row;
 			justify-content: center;
-			align-items: center;
+			align-items: flex-end;
+			border-top: 1upx solid #EDEDED;
+
+			.activity-content {
+				width: 614upx;
+				padding-top: 20upx;
+			}
 		}
 	}
 
-	.activity-box {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: flex-end;
-		border-top: 1upx solid #EDEDED;
+	.seckill-box {
+		width: 100%;
+		background: url("../../../../static/images/new-business/shop/storeTop_Img.png") no-repeat left top;
 
-		.activity-content {
-			width: 614upx;
-			padding-top: 20upx;
+		.seckill-icon {
+			width: 187rpx;
+			height: 41rpx;
+			background-size: contain;
 		}
-	}
-}
 
-.seckill-box {
-	width: 100%;
-	background: url("../../../../static/images/new-business/shop/storeTop_Img.png") no-repeat left top;
-	padding: 35rpx 30rpx;
+		.vip-icon {
+			width: 187rpx;
+			height: 41rpx;
+			background-size: contain;
+		}
 
-	.seckill-icon {
-		width: 187rpx;
-		height: 41rpx;
-		background-size: contain;
-	}
+		.discount-icon {
+			width: 187rpx;
+			height: 41rpx;
+			background-size: contain;
+		}
 
-	.vip-icon {
-		width: 187rpx;
-		height: 41rpx;
-		background-size: contain;
-	}
+		.spell-icon {
+			width: 182rpx;
+			height: 37rpx;
+			background-size: contain;
+			margin-bottom: 20rpx;
+		}
 
-	.discount-icon {
-		width: 187rpx;
-		height: 41rpx;
-		background-size: contain;
-	}
-
-	.spell-icon {
-		width: 182rpx;
-		height: 37rpx;
-		background-size: contain;
-		margin-bottom: 20rpx;
-	}
-
-	.countdown {
-		text-align: center;
-
-		label {
+		.countdown {
 			text-align: center;
-			color: #CCCCCC;
-		}
-	}
 
-	.countdown-box {
-		padding: 0 8rpx;
-		height: 48rpx;
-		color: #FFEBC4;
-		background-color: #525252;
-		margin: 10rpx;
+			label {
+				text-align: center;
+				color: #CCCCCC;
+			}
+		}
+
+		.countdown-box {
+			padding: 0 8rpx;
+			height: 48rpx;
+			color: #FFEBC4;
+			background-color: #525252;
+			margin: 10rpx;
+		}
 	}
 }
 </style>

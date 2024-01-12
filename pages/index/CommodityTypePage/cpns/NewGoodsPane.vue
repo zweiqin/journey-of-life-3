@@ -14,7 +14,6 @@
         <view class="price-wrapper">
           ￥<text class="price-text">{{ goods.price }}</text>
         </view>
-        <!-- <view v-if="goods.supportVoucher && goods.voucherAmount" class="is-suppot-voucher">可使用{{ goods.voucherAmount }}代金券抵扣</view> -->
       </view>
     </view>
   </view>

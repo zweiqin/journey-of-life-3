@@ -8,10 +8,10 @@
 						<view class="memberTopBg">
 							<view class="flex-items">
 								<view class="avatarBox">
-									<image :src="common.seamingImgUrl(memberData.headImage)"></image>
+									<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
 								</view>
 								<view class="nameBox">
-									<view class="name fs36">{{ memberData.name }}</view>
+									<view class="name fs36">{{ $store.getters.userInfo.name }}</view>
 									<view class="level">
 										<image :src="common.seamingImgUrl(levelInfo.memberLevelIcon)"></image>
 									</view>
@@ -19,17 +19,17 @@
 							</view>
 							<view class="integralInfo flex-items flex-sp-between mar-top-20">
 								<view class="itemBox">
-									<view class="integraNum fs32 font-color-333 fs-weight-400">{{ memberData.totalCredit }}</view>
+									<view class="integraNum fs32 font-color-333 fs-weight-400">{{ $store.getters.userInfo.totalCredit }}</view>
 									<view class="fs24 font-color-333 fs-weight-400">累计积分</view>
 								</view>
 								<view class="itemBox">
 									<view class="integraNum fs32 font-color-333 fs-weight-400">
-										{{ memberData.totalCredit - memberData.credit }}
+										{{ $store.getters.userInfo.totalCredit - $store.getters.userInfo.credit }}
 									</view>
 									<view class="fs24 font-color-333 fs-weight-400">累计消费</view>
 								</view>
 								<view class="itemBox">
-									<view class="integraNum fs32 font-color-333 fs-weight-400">{{ memberData.credit }}</view>
+									<view class="integraNum fs32 font-color-333 fs-weight-400">{{ $store.getters.userInfo.credit }}</view>
 									<view class="fs24 font-color-333 fs-weight-400">剩余积分</view>
 								</view>
 							</view>
@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { getUserInfoApi, getMemberByMemberLevelIdApi, getSelectCreditCouponListApi, getSelectCreditRecordApi } from '../../../api/anotherTFInterface'
+import { getMemberByMemberLevelIdApi, getSelectCreditCouponListApi, getSelectCreditRecordApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Integral',
 	data() {
@@ -186,15 +186,13 @@ export default {
 				listTotal: 0, // 列表数据总数
 				isEmpty: false // 列表是否为空
 			},
-			memberData: {},
 			levelInfo: {},
 			isConvertible: false
 		}
 	},
 	onLoad(option) {
 		if (option.tabActive) this.currentTab = parseInt(option.tabActive)
-		getUserInfoApi({}).then((res) => {
-			this.memberData = res.data
+		this.$store.dispatch('auth/refrshUserInfoAction', () => {
 			this.getIntegralList()
 			this.getMemberByMemberLevel()
 		})
@@ -263,7 +261,7 @@ export default {
 
 		// 获取会员等级
 		getMemberByMemberLevel() {
-			getMemberByMemberLevelIdApi({ memberLevelId: this.memberData.memberLevelId })
+			getMemberByMemberLevelIdApi({ memberLevelId: this.$store.getters.userInfo.memberLevelId })
 				.then((res) => {
 					this.levelInfo = res.data
 				})
@@ -276,7 +274,7 @@ export default {
 		},
 		// 跳转到兑换优惠详情
 		goExchangeDetail(item) {
-			if (this.memberData.credit < item.credit) {
+			if (this.$store.getters.userInfo.credit < item.credit) {
 				this.isConvertible = true
 			} else {
 				uni.navigateTo({

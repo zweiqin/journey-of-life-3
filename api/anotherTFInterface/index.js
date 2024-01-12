@@ -28,6 +28,15 @@ export const updateWXLoginApi = (data) => AnotherTFRequest('/app/wxLogin', data,
 // APP微信登录
 export const updateWXAppLoginApi = (data) => AnotherTFRequest('/app/wxAppLogin', data, 'POST')
 
+// 获取微信手机号绑定
+export const getSessionKeyAppApi = (data) => AnotherTFRequest('/app/getSessionKey', data, 'POST')
+
+// 获取微信手机号绑定
+export const updateSetWxPhoneAppApi = (data) => AnotherTFRequest('/app/setWxPhone', data, 'POST')
+
+// 获取微信手机号绑定
+export const updateWxPhoneAppApi = (data) => AnotherTFRequest('/app/updateWxPhone', data, 'POST')
+
 // 判断用户是否是商家
 export const getIsShopByUserApi = (data) => AnotherTFRequest('/shop/getShopByUser', data)
 
@@ -39,6 +48,9 @@ export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
 
 // 个人系信息修改
 export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST')
+
+// 修改密码
+export const updatePasswordUserApi = (data) => AnotherTFRequest('/user/updatePassword', data, 'POST')
 
 // 用户信息查询，用户代金券查询(新)
 export const getBandUserInfoApi = (data) => AnotherTFRequest('/user/getBandUser', data)

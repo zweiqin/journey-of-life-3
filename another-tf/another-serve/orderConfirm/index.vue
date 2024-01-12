@@ -133,7 +133,7 @@
 			></VoucherUse>
 
 			<view style="margin-top: 20upx;">
-				<CashierList show show-platform-pay :price-pay="totalPrice" :shop-id-pay="shopIdPay" @change="(e) => payInfo = e" />
+				<CashierList show :show-platform-pay="!!totalPrice" :price-pay="totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0" @change="(e) => payInfo = e" />
 			</view>
 			<view class="order-flow-box">
 				<view class="flow-word">交易流程：</view>

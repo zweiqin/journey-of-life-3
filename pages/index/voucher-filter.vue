@@ -47,8 +47,11 @@
             <view class="goods-name">{{ item.productName }}</view>
             <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{
               item.originalPrice }}</text> </view>
-            <view class="voucher-num" v-if="item.voucherId">
+            <view class="voucher-num" v-if="item.voucherId && item.voucherPrice">
               可使用{{ item.voucherPrice }}代金券抵扣
+            </view>
+            <view class="voucher-num" v-if="item.presenterVoucher">
+              赠送 {{ item.presenterVoucher }} 代金券
             </view>
           </view>
         </view>

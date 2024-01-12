@@ -5,7 +5,7 @@
 		<view class="headBox">
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>头像</label>
-				<image v-if="userInfo.headImage" class="user-headImg" :src="common.seamingImgUrl(userInfo.headImage)"></image>
+				<image v-if="$store.getters.userInfo.headImage" class="user-headImg" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
 				<image v-else class="user-headImg" src="../../../static/images/new-user/default-user-avatar.png">
 				</image>
 			</view>
@@ -21,16 +21,17 @@
 			</view>
 			<view class="personalHead-box flex-sp-between flex-display flex-items" @click="sexShowClick">
 				<label>性别</label>
-				<label class="font-color-999">{{ userInfo.sex }}</label>
+				<label class="font-color-999">{{ $store.getters.userInfo.sex }}</label>
 			</view>
 			<view class="personalHead-box1">
 				<picker
-					mode="date" :value="birthday" start="1970-01-01" :disabled="!((birthday === '1970-01-01') || !birthday)"
+					mode="date" :value="$store.getters.userInfo.birthday" start="1970-01-01"
+					:disabled="!(($store.getters.userInfo.birthday === '1970-01-01') || !$store.getters.userInfo.birthday)"
 					@change="handleConfirmTime"
 				>
 					<view class="flex-sp-between flex-display flex-items">
 						<label>生日</label>
-						<label class="font-color-999">{{ birthday | parsebirthday }}</label>
+						<label class="font-color-999">{{ $store.getters.userInfo.birthday }}</label>
 					</view>
 				</picker>
 			</view>
@@ -38,7 +39,7 @@
 		<view class="iphoneNumback-box  flex-items-plus">
 			<view class="iphoneNum-box flex-row-plus flex-sp-between flex-items">
 				<label style="width: 50%;">手机号</label>
-				<label v-if="phone" class="font-color-C5AA7B">{{ phone }}</label>
+				<label v-if="$store.getters.userInfo.phone" class="font-color-C5AA7B">{{ $store.getters.userInfo.phone }}</label>
 				<label v-else class="font-color-C5AA7B">
 					<!-- #ifdef MP-ALIPAY -->
 					<button class="verifyPhone" open-type="getAuthorize" scope="phoneNumber" @getAuthorize="onGetAuthorize">
@@ -62,6 +63,10 @@
 			</view>
 		</view>
 
+		<view style="margin-top: 30upx;background-color: #ffffff;">
+			<view style="padding: 28upx 38upx;" @click="isShowResettingPasswordDialog = true">重置密码 ></view>
+		</view>
+
 		<view class="mar-top-100">
 			<view class="exitLoginBut  flex-items-plus" @click="handleQuit">退出登录</view>
 			<!-- #ifdef APP-PLUS -->
@@ -71,37 +76,55 @@
 
 		<!-- 修改性别弹窗 -->
 		<tui-select :list="sexList" reverse :show="sexShow" @confirm="handleConfirmSex" @close="sexShow = false"></tui-select>
+
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowResettingPasswordDialog" title="重置密码" @click="handleResettingPassword"
+		>
+			<template #content>
+				<tui-input v-model="resettingFormData.phone" label="手机号" type="number" placeholder="请输入手机号"></tui-input>
+				<tui-input v-model="resettingFormData.password" label="密码" type="password" placeholder="请输入密码"></tui-input>
+				<tui-input
+					v-model="resettingFormData.passwordAgain" label="确认密码" type="password"
+					placeholder="请再次输入密码"
+				></tui-input>
+				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
+					<template #right>
+						<tui-countdown-verify
+							ref="refResettingPasswordVerify" width="144upx"
+							@send="handleSendVerify"
+						></tui-countdown-verify>
+					</template>
+				</tui-input>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
 <script>
-import { updateAliPhoneAppApi, getUserInfoApi, updateUserInfoApi } from '../../../api/anotherTFInterface'
+import { updateAliPhoneAppApi, getVerifyCodeApi, updatePasswordUserApi } from '../../../api/anotherTFInterface'
 import { USER_ID } from '../../../constant'
 
 export default {
 	name: 'PersonalDetails',
-	filters: {
-		parsebirthday(birthday) {
-			if (birthday == '') {
-				return '1970-01-01'
-			}
-			return birthday
-		}
-	},
 	data() {
 		return {
 			userId: '',
 			screenHeight: 0,
-			birthday: '',
 			sexShow: false,
 			timeShow: false,
-			userInfo: {},
-			phone: '',
 			name: '',
 			sexList: [
 				{ value: '1', text: '男' },
 				{ value: '2', text: '女' }
-			]
+			],
+			resettingFormData: {
+				phone: '',
+				password: '',
+				passwordAgain: '',
+				verificationCode: ''
+			},
+			isShowResettingPasswordDialog: false
 		}
 	},
 	onLoad() {
@@ -146,7 +169,7 @@ export default {
 		},
 		// 修改昵称
 		changeName() {
-			const newName = this.name || this.phone
+			const newName = this.name
 			if (!newName) {
 				uni.showToast({
 					title: '请输入新的内容',
@@ -154,39 +177,17 @@ export default {
 				})
 				return false
 			}
-			uni.showLoading()
-			updateUserInfoApi({
+			this.$store.dispatch('auth/updateUserInfoAction', {
 				name: newName
-			}).then((res) => {
-				uni.hideLoading()
-				uni.showToast({
-					title: '修改成功',
-					icon: 'success'
-				})
-				this.getUserInfoData()
 			})
-				.catch((e) => {
-					uni.hideLoading()
-				})
 		},
 		// 提交修改生日
 		handleConfirmTime(e) {
-			if (this.birthday == '1970-01-01' || this.birthday == '') {
+			if ((this.$store.getters.userInfo.birthday == '1970-01-01') || (this.$store.getters.userInfo.birthday == '')) {
 				const birthday = e.detail.value
-				uni.showLoading()
-				updateUserInfoApi({
+				this.$store.dispatch('auth/updateUserInfoAction', {
 					birthday
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showToast({
-						title: '修改成功',
-						icon: 'success'
-					})
-					this.getUserInfoData()
 				})
-					.catch((e) => {
-						uni.hideLoading()
-					})
 			}
 		},
 		// 点击弹窗修改性别
@@ -198,27 +199,14 @@ export default {
 			this.sexShow = false
 			uni.showLoading()
 			const sex = e.options.text
-			updateUserInfoApi({
+			this.$store.dispatch('auth/updateUserInfoAction', {
 				sex
-			}).then((res) => {
-				uni.hideLoading()
-				uni.showToast({
-					title: '修改成功',
-					icon: 'success'
-				})
-				this.getUserInfoData()
 			})
-				.catch((e) => {
-					uni.hideLoading()
-				})
 		},
 		// 获取用户信息
 		getUserInfoData() {
-			getUserInfoApi({}).then((res) => {
-				this.userInfo = res.data
-				this.phone = res.data.phone
-				this.name = res.data.name
-				this.birthday = res.data.birthday
+			this.$store.dispatch('auth/refrshUserInfoAction', () => {
+				this.name = this.$store.getters.userInfo.name
 			})
 		},
 		handleQuit() {
@@ -255,6 +243,48 @@ export default {
 					})
 				}
 			})
+		},
+		handleSendVerify() {
+			if (!this.resettingFormData.phone) {
+				this.$refs.refResettingPasswordVerify.reset()
+				return this.$showToast('请填写手机号')
+			}
+			if (!/^1[3-9]\d{9}$/.test(this.resettingFormData.phone)) {
+				this.$refs.refResettingPasswordVerify.reset()
+				return this.$showToast('请输入正确的手机号')
+			}
+			getVerifyCodeApi({ phone: this.resettingFormData.phone })
+				.then((res) => {
+					this.$refs.refResettingPasswordVerify.success()
+					this.$showToast('发送成功，请注意查看手机短信')
+				})
+				.catch(() => {
+					this.$refs.refResettingPasswordVerify.reset()
+				})
+		},
+		handleResettingPassword(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!this.resettingFormData.phone) return this.$showToast('请填写手机号')
+				if (!this.resettingFormData.verificationCode) return this.$showToast('请填写验证码')
+				if (!this.resettingFormData.password) return this.$showToast('请设置密码！')
+				if (this.resettingFormData.password !== this.resettingFormData.passwordAgain) return this.$showToast('密码不一致')
+				uni.showLoading({
+					title: '操作中'
+				})
+				updatePasswordUserApi({ ...this.resettingFormData })
+					.then(({ data }) => {
+						uni.hideLoading()
+						this.$showToast('重置成功')
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			}
+			this.resettingFormData.phone = ''
+			this.resettingFormData.verificationCode = ''
+			this.resettingFormData.password = ''
+			this.resettingFormData.passwordAgain = ''
+			this.isShowResettingPasswordDialog = false
 		}
 	}
 }

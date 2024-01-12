@@ -50,39 +50,48 @@
 					</tui-button>
 				</view>
 				<view style="margin-top: 20upx;">
-					<view style="display: flex;justify-content: space-between;align-items: center;">
+					<view style="display: flex;justify-content: space-evenly;flex-wrap: wrap;align-items: stretch;">
 						<view
-							style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
+							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
 						>
 							<view>累计营业额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
+							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
 								{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
 							</view>
 						</view>
 						<view
-							style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
+							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
 						>
 							<view>冻结金额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
+							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
 								{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
 							</view>
 						</view>
 						<view
-							style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
+							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
 						>
 							<view>可提现金额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
+							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
 								{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
 									: '--' }}
 							</view>
 						</view>
 						<view
-							style="width: 20%;padding: 40upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: rgba(255, 255, 255, 0.32);border: 2px solid rgba(255, 255, 255, 0.16);"
+							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
 						>
 							<view>提现中（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 10upx;">
+							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
 								{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
 									? financeStatisticsData.withdrawableStayMoney : '--' }}
+							</view>
+						</view>
+						<view
+							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
+						>
+							<view>赠送代金券</view>
+							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
+								{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher
+									: '--' }}
 							</view>
 						</view>
 					</view>
@@ -158,6 +167,7 @@ export default {
 				frozenMoney: '',
 				withdrawableMoney: '',
 				withdrawableStayMoney: '',
+				presenterVoucher: '',
 				finances: []
 			},
 			queryInfo: {
@@ -181,6 +191,7 @@ export default {
 		handleCurrentChange(e) {
 			this.currentTab = e.index
 			this.queryInfo.condition = this.currentTab + 1
+			this.queryInfo.time = ''
 			this.getFinanceStatistics()
 		},
 		getFinanceStatistics() {

@@ -3,10 +3,10 @@
 		<JHeader title="会员签到" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="avatarTop">
 			<view class="avatarBox">
-				<image :src="common.seamingImgUrl(memberData.headImage)"></image>
+				<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
 			</view>
 			<view class="nameBox">
-				<view class="name fs36">{{ memberData.name }}</view>
+				<view class="name fs36">{{ $store.getters.userInfo.name }}</view>
 				<view class="level">
 					<image :src="common.seamingImgUrl(levelInfo.memberLevelIcon)"></image>
 				</view>
@@ -84,13 +84,12 @@
 </template>
 
 <script>
-import { getUserInfoApi, getMemberByMemberLevelIdApi, getSelectSigninRecordListApi, getSelectSigninHistoryApi, updateMemberSignInApi } from '../../../api/anotherTFInterface'
+import { getMemberByMemberLevelIdApi, getSelectSigninRecordListApi, getSelectSigninHistoryApi, updateMemberSignInApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'MemberSign',
 	data() {
 		return {
-			memberData: {},
 			levelInfo: {},
 			recordList: {},
 			noSign: 7,
@@ -107,9 +106,8 @@ export default {
 	},
 	onLoad() {
 		this.getDate()
-		getUserInfoApi({}).then((res) => {
-			this.memberData = res.data
-			getMemberByMemberLevelIdApi({ memberLevelId: this.memberData.memberLevelId })
+		this.$store.dispatch('auth/refrshUserInfoAction', () => {
+			getMemberByMemberLevelIdApi({ memberLevelId: this.$store.getters.userInfo.memberLevelId })
 				.then((res) => {
 					this.levelInfo = res.data
 				})
