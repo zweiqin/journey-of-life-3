@@ -55,6 +55,18 @@ export const updatePasswordUserApi = (data) => AnotherTFRequest('/user/updatePas
 // 用户信息查询，用户代金券查询(新)
 export const getBandUserInfoApi = (data) => AnotherTFRequest('/user/getBandUser', data)
 
+// 用户粉丝统计+列表
+export const getUserListUserApi = (data) => AnotherTFRequest('/user/getUserList', data)
+
+// 用户佣金统计+记录
+export const getCommissionUserApi = (data) => AnotherTFRequest('/user/getCommission', data)
+
+// 绑定的策划师或分公司角色信息
+export const getPlatformUserUserApi = (data) => AnotherTFRequest('/user/getPlatformUser', data)
+
+// 获取绑定的商家信息
+export const getPlatformShopUserApi = (data) => AnotherTFRequest('/user/getPlatformShop', data)
+
 // 查询地址一级分类
 export const getCityManageAreaTreeClassApi = (data) => AnotherTFRequest('/cityManageArea/getTreeClass', data)
 
@@ -277,8 +289,20 @@ export const getDistributorAllShopApi = (data) => AnotherTFRequest('/distributor
 // 店铺分销数据查询
 export const getShopDistributorSalesMainInfoApi = (data) => AnotherTFRequest('/distributor/getShopDistributor', data)
 
-// 店铺分销数据查询
+// 累计奖励查询
 export const getRewardDistributorApi = (data) => AnotherTFRequest('/distributor/getReward', data)
+
+// 累计未结算奖励查询
+export const getNotRewardDistributorApi = (data) => AnotherTFRequest('/distributor/getNotReward', data)
+
+// 累计客户查询
+export const getBuyersDistributorApi = (data) => AnotherTFRequest('/distributor/getBuyers', data)
+
+// 累计分销员查询
+export const getDistributorsDistributorApi = (data) => AnotherTFRequest('/distributor/getDistributors', data)
+
+// 分销订单查询
+export const getDistributorOrderApi = (data) => AnotherTFRequest('/distributor/getDistributorOrder', data)
 
 // 验证当前客户是否为分销员
 export const checkDistributorHasApplyApi = (data) => AnotherTFRequest('/distributor/check', data)
@@ -360,6 +384,9 @@ export const updateApplyReturnMoneySubmitApi = (data) => AnotherTFRequest('/afte
 // 优惠券
 // 优惠券查询
 export const getCanvasCouponsApi = (data) => AnotherTFRequest('/canvas/getCoupons', data)
+
+// 我的卡券列表查询
+export const getCouponsCouponApi = (data) => AnotherTFRequest('/coupon/getCoupons', data)
 
 // 领取优惠券
 export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/takeCoupon', data, 'POST')

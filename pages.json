@@ -1603,15 +1603,69 @@
           }
         },
         {
+          "path": "another-serve/distributionModule/unliquidated",
+          "style": {
+            "navigationBarTitleText": "未结算奖励"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/totalClient",
+          "style": {
+            "navigationBarTitleText": "累计客户"
+          }
+        },
+        {
+          "path": "another-serve/distributionModule/totalPersonnel",
+          "style": {
+            "navigationBarTitleText": "累计分销员"
+          }
+        },
+        {
           "path": "another-serve/distributionModule/commodity",
           "style": {
             "navigationBarTitleText": "推广商品"
           }
         },
         {
+          "path": "another-serve/distributionModule/distributionOrder",
+          "style": {
+            "navigationBarTitleText": "我的分销订单"
+          }
+        },
+        {
           "path": "another-serve/distributionModule/recruit",
           "style": {
             "navigationBarTitleText": "分销员招募令"
+          }
+        },
+        {
+          "path": "another-serve/ledger/index",
+          "style": {
+            "navigationBarTitleText": "推广中心"
+          }
+        },
+        {
+          "path": "another-serve/coupon/index",
+          "style": {
+            "navigationBarTitleText": "我的卡券"
+          }
+        },
+        {
+          "path": "another-serve/couponShopList/index",
+          "style": {
+            "navigationBarTitleText": "优惠券可用商品列表"
+          }
+        },
+        {
+          "path": "another-serve/coupon/list",
+          "style": {
+            "navigationBarTitleText": "优惠券"
+          }
+        },
+        {
+          "path": "another-serve/coupon/product",
+          "style": {
+            "navigationBarTitleText": "可用商品"
           }
         },
         {

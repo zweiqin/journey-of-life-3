@@ -131,8 +131,8 @@ export default {
 	data() {
 		return {
 			awardTypeFlag: 0,
-			directSalesDataList: [],
-			secondhandSalesDataList: [],
+			directSalesDataList: {},
+			secondhandSalesDataList: {},
 			shopId: 0,
 			distributorId: 0,
 
@@ -230,6 +230,19 @@ export default {
 			this.secondhandSalesInfo.data[arrowTypeId].ifOpen = this.secondhandSalesInfo.data[arrowTypeId].ifOpen == false
 		}
 
+	},
+	onReachBottom() {
+		if (this.awardTypeFlag === 0) {
+			if (this.directSalesInfo.data.length < this.directSalesInfo.listTotal) {
+				++this.directSalesInfo.query.page
+				this.getDirectSalesDataList(true)
+			}
+		} else if (this.awardTypeFlag === 1) {
+			if (this.secondhandSalesInfo.data.length < this.secondhandSalesInfo.listTotal) {
+				++this.secondhandSalesInfo.query.page
+				this.getSecondhandSalesDataList(true)
+			}
+		}
 	}
 }
 </script>
@@ -286,15 +299,6 @@ export default {
 
 	.current {
 		color: #C83732 !important;
-	}
-}
-
-.totalAwardEmpty-box {
-	margin-top: 65 upx;
-
-	.totalAwardEmpty {
-		width: 270 upx;
-		height: 270 upx;
 	}
 }
 </style>

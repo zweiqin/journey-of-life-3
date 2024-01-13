@@ -58,7 +58,7 @@
 						style="display: inline-block;font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;"
 						@click="handleClickUnlock"
 					>
-						{{ relationLevelName ? '立即升级' : '立即解锁' }}
+						{{ relationLevelName ? '立刻升级' : '立即升级' }}
 					</tui-button>
 				</view>
 			</view>

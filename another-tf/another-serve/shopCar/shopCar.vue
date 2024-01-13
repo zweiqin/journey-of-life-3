@@ -77,7 +77,7 @@
 			</view>
 
 			<!-- 热门推荐 -->
-			<ATFHoteRecommed class="tui-skeleton-fillet"></ATFHoteRecommed>
+			<!-- <ATFHoteRecommed class="tui-skeleton-fillet"></ATFHoteRecommed> -->
 
 			<!-- 删除确认弹窗 -->
 			<DeleteModal :show-tip.sync="showDeleteModal" @confirm="handleDoDelete"></DeleteModal>

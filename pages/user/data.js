@@ -206,7 +206,8 @@ export const myServe = [
 	},
 	{
 		name: '卡包',
-		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png')
+		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
+		url: '/another-tf/another-serve/coupon/index'
 	},
 	{
 		name: '联系客服',
@@ -336,6 +337,16 @@ export const otherFunction = [
 		name: '分销中心',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/distributionModule/index'
+	},
+	{
+		name: '推广中心',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-serve/ledger/index'
+	},
+	{
+		name: '优惠券',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-serve/coupon/list'
 	},
 	{
 		name: '粉丝统计',
