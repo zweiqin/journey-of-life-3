@@ -81,6 +81,7 @@ export default {
 				newVal.forEach((item) => {
 					if (item.showRole) {
 						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) renderMenuArr.push(item)
+						if (item.showRole.includes('merchantStaff') && this.$store.state.auth.identityInfo.type.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) renderMenuArr.push(item)
 					} else {
 						renderMenuArr.push(item)
@@ -97,6 +98,7 @@ export default {
 				this.menuData.forEach((item) => {
 					if (item.showRole) {
 						if (item.showRole.includes('shop') && newVal.includes(9)) renderMenuArr.push(item)
+						if (item.showRole.includes('merchantStaff') && newVal.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && newVal.includes(1)) renderMenuArr.push(item)
 					} else {
 						renderMenuArr.push(item)

@@ -68,13 +68,13 @@ export default {
 			answerText: '',
 			answerslength: 0,
 			num: 0,
-			isIphone: false,
+			isIphone: getApp().globalData.isIphone,
 			ifShow: false
 		}
 	},
 	onLoad(options) {
-		this.isIphone = getApp().globalData.isIphone
-		this.problemsData = this.$getJumpParam(options)
+		this.problemsData.productId = options.productId
+		this.problemsData.problemId = options.problemId
 		this.getProblems()
 	},
 	methods: {

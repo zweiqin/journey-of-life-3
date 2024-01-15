@@ -147,13 +147,10 @@ export default {
             this.giveAmount = this.amountData[index].value
         },
         submitVouchers() {
-            let {buyerUserId,token} = this.userInfo
             submitVoucherOrderApi({
                 voucherId: '1',
                 number: this.amount * 2,
                 payGrade: this.amount,
-                // token,
-                // buyerUserId
             }).then(res => {
                 handleDoPay({ ...res.data, ...this.payInfo }, 4)
             }).catch(err => {

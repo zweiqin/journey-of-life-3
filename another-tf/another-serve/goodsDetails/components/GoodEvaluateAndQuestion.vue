@@ -65,7 +65,7 @@
 			</view>
 			<view
 				v-if="goodsDetail.comments.length > 0" class="moreBox"
-				@click="go('/another-tf/another-serve/evaluateList/index', goodsDetail.comments)"
+				@click="go(`/another-tf/another-serve/evaluateList/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}`)"
 			>
 				<label class="fs24">查看全部</label>
 				<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
@@ -76,14 +76,20 @@
 		<view v-show="activeTab === 2" class="questions">
 			<view class="questionInfo flex-items flex-row flex-sp-between">
 				<view class="infoTit">宝贝好不好，问问已买过的人</view>
-				<view class="putQuestion" @click="handleJumpToQuestion">
+				<view
+					class="putQuestion"
+					@click="go(`/another-tf/another-serve/putQuestions/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}&questionNumber=${problemsList.length}`)"
+				>
 					<text>去提问</text>
 					<tui-icon :size="30" color="#d9c9a8" name="arrowright"></tui-icon>
 				</view>
 			</view>
 			<view class="listBox">
 				<QuestionsAndAnswersList :product-info="goodsDetail" :problems-list="problemsList" />
-				<view v-if="problemsList.length > 0" class="moreBox" @click="handleJumpAllAnswer">
+				<view
+					v-if="problemsList.length > 0" class="moreBox"
+					@click="go(`/another-tf/another-serve/answerList/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}`)"
+				>
 					<label class="fs24">查看全部</label>
 					<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
 				</view>
@@ -175,24 +181,7 @@ export default {
 			} finally {
 				uni.hideLoading()
 			}
-		}, 500),
-
-		// 跳转到提问
-		handleJumpToQuestion() {
-			const paramObj = Object.assign({}, this.goodsDetail, {
-				questionNumber: this.problemsList.length,
-				images: this.goodsDetail.images[0]
-			})
-			this.go('/another-tf/another-serve/putQuestions/index', paramObj)
-		},
-
-		// 跳转到该商品下所有问答
-		handleJumpAllAnswer() {
-			const paramObj = Object.assign({}, this.goodsDetail, {
-				images: this.goodsDetail.images[0]
-			})
-			this.gp('/another-tf/another-serve/answerList/index', paramObj)
-		}
+		}, 500)
 	}
 }
 </script>

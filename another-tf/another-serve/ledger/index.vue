@@ -134,7 +134,7 @@ export default {
 		return {
 			modelShow: false,
 			inputShow: false,
-			buyerUserId: '',
+			transferId: '',
 			giftNumber: 0,
 			codeData: {},
 			codeImage: '',
@@ -204,11 +204,11 @@ export default {
 		},
 		giftVoucher(ID) {
 			this.inputShow = true
-			this.buyerUserId = ID
+			this.transferId = ID
 		},
 		qnmdVoucher() {
 			updateTransferVoucherShopHoldApi({
-				buyerUserId: this.buyerUserId,
+				buyerUserId: this.transferId,
 				voucherNum: this.giftNumber
 			}).then((res) => {
 				this.giftNumber = 0

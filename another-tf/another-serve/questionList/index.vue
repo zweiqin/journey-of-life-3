@@ -20,8 +20,9 @@
 				</view>
 				<view class="swipe-box">
 					<tui-swipe-action
-						v-for="(item, index) in problemInfo.data" :key="item.problemId" :params="{ index }" :open="item.show"
-						:forbid="allCheckShow" :actions="options" :closable="false" @click="problemClick"
+						v-for="(item, index) in problemInfo.data" :key="item.problemId" :params="{ index }"
+						:open="item.show" :forbid="allCheckShow" :actions="options" :closable="false"
+						@click="problemClick"
 					>
 						<template #content>
 							<view class="flex-item itemBox">
@@ -38,10 +39,19 @@
 											@click="problemItemSel(index, 1)"
 										></tui-icon>
 									</view>
-									<view class="title-wrap replynum-box" @click="goQuestionDetails(item.productId, item.problemId)">
+									<view
+										class="title-wrap replynum-box"
+										@click="go(`/another-tf/another-serve/qADetail/index?productId=${item.productId}&problemId=${item.problemId}`)"
+									>
 										<view class="flex-items">
 											<label>问</label>
-											<text class="title font-weight-bold fs28" style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;">{{ item.problem }}</text>
+											<text
+												class="title font-weight-bold fs28"
+												style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+											>
+												{{
+													item.problem }}
+											</text>
 										</view>
 										<view class="flex-items reply">
 											<label>答</label>
@@ -92,8 +102,9 @@
 				</view>
 				<view class="swipe-box">
 					<tui-swipe-action
-						v-for="(item, index) in answerInfo.data" :key="item.answerId" :params="{ index }" :open="item.show"
-						:forbid="allCheckShow" :actions="options" :closable="false" @click="answerClick"
+						v-for="(item, index) in answerInfo.data" :key="item.answerId" :params="{ index }"
+						:open="item.show" :forbid="allCheckShow" :actions="options" :closable="false"
+						@click="answerClick"
 					>
 						<template #content>
 							<view class="item itemBox flex-item">
@@ -111,10 +122,19 @@
 												@click="answerItemSel(index, 1)"
 											></tui-icon>
 										</view>
-										<view class="title-wrap replynum-box wid" @click="goQuestionDetails(item.productId, item.problemId)">
+										<view
+											class="title-wrap replynum-box wid"
+											@click="go(`/another-tf/another-serve/qADetail/index?productId=${item.productId}&problemId=${item.problemId}`)"
+										>
 											<view class="flex-items">
 												<label>问</label>
-												<text class="title fs28 font-weight-bold" style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;">{{ item.problem }}</text>
+												<text
+													class="title fs28 font-weight-bold"
+													style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+												>
+													{{
+														item.problem }}
+												</text>
 											</view>
 											<view class="replyBox">
 												<view class="flex-items reply">
@@ -238,13 +258,6 @@ export default {
 		this.getProblemList()
 	},
 	methods: {
-		goQuestionDetails(productId, problemId) {
-			const data = {
-				productId,
-				problemId
-			}
-			this.go('/another-tf/another-serve/qADetail/index', data)
-		},
 		// 确定批量删除
 		delClick() {
 			this.delshow = false

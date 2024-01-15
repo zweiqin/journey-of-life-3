@@ -67,7 +67,7 @@
 				</view>
 
 				<view class="op-container">
-					<view class="wrapper" @click="go('/user/sever/chat/chat')">
+					<view class="wrapper" @click="go('/another-tf/another-serve/messageCenter/index')">
 						<image src="../../../static/images/new-user/user-chat.png" mode="" />
 					</view>
 					<view class="wrapper" @click="go('/another-tf/another-serve/personalDetails/index')">

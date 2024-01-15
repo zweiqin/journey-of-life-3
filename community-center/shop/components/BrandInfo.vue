@@ -30,12 +30,10 @@
 					<view v-if="brandDetail.isVoucher" class="tag">支持代金券</view>
 				</view>
 			</view>
-			<!-- #ifdef MP-WEIXIN -->
-			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleFlyToService">
+			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleOpenCustomerService">
 				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
 				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
 			</view>
-			<!-- #endif -->
 		</view>
 
 		<view style="display: flex;align-items: center;margin-top: 10upx;">
@@ -103,12 +101,16 @@
 			</view>
 		</view>
 
+		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+		</tui-bottom-popup>
+
 	</view>
 </template>
 
 <script>
 import { A_TF_MAIN } from '../../../config'
-import { updateCollectCancelApi, updateCollectToCollectApi, getCustomerServiceAppletKfApi } from '../../../api/anotherTFInterface'
+import { updateCollectCancelApi, updateCollectToCollectApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BrandInfo',
 	props: {
@@ -121,9 +123,11 @@ export default {
 		return {
 			previousMargin: '0',
 			nextMargin: '80rpx',
-			hasService: false,
-			serviceURL: false,
-			corpId: false
+			shopId: '',
+
+			// 客服
+			isShowCustomerServicePopup: false,
+			customerServiceList: []
 		}
 	},
 
@@ -131,13 +135,11 @@ export default {
 		brandDetail: {
 			handler(newV) {
 				if (newV.shopId) {
+					this.shopId = newV.shopId
 					// #ifdef H5
 					this.$nextTick(() => {
 						this.handleShareServe(true)
 					})
-					// #endif
-					// #ifdef MP-WEIXIN
-					this.getServiceUrl(newV.shopId)
 					// #endif
 				}
 			},
@@ -210,35 +212,12 @@ export default {
 			}
 		},
 
-		// 获取客服url
-		getServiceUrl(id) {
-			if (!this.brandDetail.shopId) return this.$showToast('缺少商家信息')
-			getCustomerServiceAppletKfApi({ id }).then((res) => {
-				if (res.code === '' && res.data.corpId && res.data.url) {
-					this.corpId = res.data.corpId
-					this.serviceURL = res.data.url
-					if (this.serviceURL) {
-						this.hasService = true
-					}
-				}
+		// 打开客服
+		async handleOpenCustomerService() {
+			this.customerServiceList = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: this.brandDetail.shopId
 			})
-		},
-
-		// 跳转客服
-		handleFlyToService() {
-			if (!this.serviceURL || !this.corpId) {
-				this.hasService = false
-				return
-			}
-			const extInfo = { // 客服信息
-				url: this.serviceURL // 客服链接
-			}
-			// #ifdef MP-WEIXIN
-			wx.openCustomerServiceChat({
-				extInfo,
-				corpId: this.corpId // 企业ID
-			})
-			// #endif
+			if (!this.customerServiceList.length) this.$showToast('暂无客服')
 		}
 	}
 }

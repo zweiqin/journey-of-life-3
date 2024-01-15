@@ -338,18 +338,18 @@ export default {
 	methods: {
 		handleOnShow() {
 			if (uni.getStorageSync(T_RECEIVE_ITEM)) this.userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
-			if (uni.getStorageSync(T_SKU_ITEM_DTO_LIST)) {
+			if (uni.getStorageSync(T_SKU_ITEM_DTO_LIST)) { // 1立即购买，2购物车结算
 				this.skuItemDTOList = uni.getStorageSync(T_SKU_ITEM_DTO_LIST)
 				if (this.skuItemDTOList[0].shopDiscountId > 0) {
-					this.sumitType = 4
+					this.sumitType = 4 // 4限时折扣活动
 				} else if (this.skuItemDTOList[0].shopSeckillId > 0) {
-					this.sumitType = 3
+					this.sumitType = 3 // 3秒杀活动
 				}
 				this.getSettlement(false)
-			} else if (uni.getStorageSync(T_SKU_ITEM_LIST)) {
+			} else if (uni.getStorageSync(T_SKU_ITEM_LIST)) { // 3拼团商品立即购买
 				this.skuItemList = uni.getStorageSync(T_SKU_ITEM_LIST)
 				this.shopGroupWorkId = this.skuItemList.shopGroupWorkId
-				this.sumitType = this.skuItemList.type
+				this.sumitType = this.skuItemList.type // 1发起拼团(单独开团)，2参与拼团(拼团)
 				this.collageId = this.skuItemList.collageId
 				this.getSettlement(true)
 			}

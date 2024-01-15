@@ -108,6 +108,12 @@ export default {
 						this.$refs.codeCreateRef.getCode('userInvitation')
 					}
 					return
+				} else if (item.type === 'flyToService') {
+					this.$store.dispatch('app/getCustomerServiceAction', {
+						isToService: true
+						// shopId: this.$store.state.app.platformOperationShopId
+					})
+					return
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
 					if (storageKeyToken) {

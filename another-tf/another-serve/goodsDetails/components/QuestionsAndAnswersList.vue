@@ -12,7 +12,7 @@
 						</view>
 						<view
 							v-if="problemItem.ifAnswer === 1" class="answerBtn"
-							@click="handleJumpAnswerByProblemId(problemItem.problemId)"
+							@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
 						>
 							立即回答
 						</view>
@@ -25,7 +25,7 @@
 						</view>
 						<view
 							v-if="problemItem.ifAnswer === 1" class="answerBtn"
-							@click="handleJumpAnswerByProblemId(problemItem.problemId)"
+							@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
 						>
 							立即回答
 						</view>
@@ -33,7 +33,7 @@
 				</view>
 				<view
 					v-if="problemItem.answers.length > 1" class="seeAll"
-					@click="handleJumpAnswerByProblemId(problemItem.problemId)"
+					@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
 				>
 					查看全部答复
 				</view>
@@ -59,20 +59,6 @@ export default {
 		return {}
 	},
 	methods: {
-
-		/**
-		 * 跳转到问题的所有回答
-		 * @param problemId 问答ID
-		 */
-
-		handleJumpAnswerByProblemId(problemId) {
-			const paramObj = Object.assign({}, this.productInfo, {
-				questionlength: this.problemsList.length,
-				problemId,
-				img: this.productInfo.images[0]
-			})
-			this.go('/another-tf/another-serve/qADetail/index', paramObj)
-		}
 	}
 }
 </script>

@@ -36,7 +36,7 @@
 								</view>
 								<view
 									v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" class="evaluate2"
-									@click.stop="go(`/another-tf/another-serve/evaluate/index`, { commentData: skuItem, orderId: data.orderId })"
+									@click.stop="go(`/another-tf/another-serve/evaluate/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
 								>
 									立即评价
 								</view>

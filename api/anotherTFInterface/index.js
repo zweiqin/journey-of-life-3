@@ -196,6 +196,15 @@ export const getPlatformFranchiseeShopListApi = (data) => AnotherTFRequest('/pla
 // 每个商家收益列表
 export const getPlatformFranchiseeIncomeApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/shopListIncome', data, 'POST')
 
+// 加盟商统计模块2
+export const getPlatformFranchiseeStatisticsApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/franchiseeStatistics2', data, 'POST')
+
+// 加盟商商家统计列表
+export const getFranchiseeShopListApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/franchiseeShopList', data, 'POST')
+
+// 加盟商团长合伙人统计列表
+export const getFranchiseeCommanderListApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/franchiseeTZList', data, 'POST')
+
 // 会员中心
 // 会员权益查询
 export const getMemberShipListApi = (data) => AnotherTFRequest('/member/getMemberShipList', data)
@@ -272,11 +281,20 @@ export const deleteFootprintApi = (data) => AnotherTFRequest('/footprint/delete'
 export const getAllFootprintApi = (data) => AnotherTFRequest('/footprint/getAll', data)
 
 // 消息
+// 消息列表查询
+export const getAllNoticeMessageApi = (data) => AnotherTFRequest('/notice/getAll', data)
+
 // 消息详情
 export const getByIdNoticeMessageDateilsApi = (data) => AnotherTFRequest('/notice/getById', data)
 
 // 消息已读
 export const updateReadNoticeApi = (data) => AnotherTFRequest('/notice/readNotice', data, 'POST')
+
+// 删除消息
+export const deleteRemoveByIdNoticeApi = (data) => AnotherTFRequest('/notice/removeById', data, 'POST')
+
+// 全部已读
+export const updateReadAllNoticeApi = (data) => AnotherTFRequest('/notice/readAll', data, 'POST')
 
 // 购物车
 // 绑定关系
@@ -346,6 +364,15 @@ export const addShopBusinessBuyerUserApi = (data) => AnotherTFRequest('/shop/add
 
 // 小程序客服查询
 export const getCustomerServiceAppletKfApi = (data) => AnotherTFRequest('/kf/getAppletKf', data)
+
+// 查询H5客服
+export const getCustomerServiceH5KfApi = (data) => AnotherTFRequest('/kf/getH5Kf', data)
+
+// 查询PC客服
+export const getCustomerServicePCKfApi = (data) => AnotherTFRequest('/kf/getPCKf', data)
+
+// 查询商家客服列表
+export const getAllCustomerServiceApi = (data) => AnotherTFRequest('/kf/getAll', data)
 
 // 售后
 // 售后列表查询

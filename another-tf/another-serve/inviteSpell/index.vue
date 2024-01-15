@@ -174,7 +174,6 @@ export default {
 			shopId: 0,
 			attrList: [],
 			productDetail: {},
-			userInfo: {},
 			url: '',
 			shareTitle: '',
 			urlParms: ''
@@ -235,7 +234,6 @@ export default {
 			this.getInviteSpell()
 		} else {
 			this.$store.dispatch('auth/refrshUserInfoAction', () => {
-				this.userInfo = this.$store.getters.userInfo
 				this.getInviteSpell()
 			})
 		}
@@ -421,7 +419,7 @@ export default {
 				this.inviteSpell = res.data
 				this.type = 0
 				this.inviteSpell.personList.forEach((item) => {
-					if (item.buyerUserId === this.userInfo.buyerUserId) {
+					if (item.buyerUserId === this.$store.getters.userInfo.buyerUserId) {
 						this.type = 1
 					}
 				})

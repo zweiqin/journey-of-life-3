@@ -4,7 +4,7 @@
 		<!-- 查看全部评论 -->
 		<view class="evaluateTag-box">
 			<view class="evaluateTag-text">
-				全部({{ commentListLength }})
+				全部({{ commentList.length }})
 			</view>
 		</view>
 		<view class="flex-column-plus evaluateList-box">
@@ -49,19 +49,29 @@
 </template>
 
 <script>
-import { updateLikeOrUnLikeCommentApi } from '../../../api/anotherTFInterface'
+import { updateLikeOrUnLikeCommentApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'EvaluateList',
 	data() {
 		return {
-			commentList: [],
-			commentListLength: ''
+			commentList: []
 		}
 	},
 	onLoad(options) {
-		this.commentList = this.$getJumpParam(options)
-		this.commentListLength = this.commentList.length
+		uni.showLoading()
+		getProductDetailsByIdApi({
+			shopId: options.shopId,
+			productId: options.productId,
+			skuId: options.skuId,
+			terminal: 1
+		}).then((res) => {
+			uni.hideLoading()
+			this.commentList = res.data.comments
+		})
+			.catch((res) => {
+				uni.hideLoading()
+			})
 	},
 	methods: {
 		previewImg(img) {

@@ -1423,6 +1423,12 @@
           }
         },
         {
+          "path": "another-serve/messageCenter/index",
+          "style": {
+            "navigationBarTitleText": "消息中心"
+          }
+        },
+        {
           "path": "another-user/platform-recharge/index",
           "style": {
             "navigationBarTitleText": "平台充值"

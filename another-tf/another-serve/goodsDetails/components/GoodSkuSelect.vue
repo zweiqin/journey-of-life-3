@@ -314,7 +314,7 @@ export default {
 				shopId: this.goodsDetail.shopId,
 				skuId: this.selectedSku.skuId,
 				shopGroupWorkId: this.selectedSku.shopGroupWorkId,
-				type: this.collageId ? 2 : 1, // 1单独开团，2拼团
+				type: this.collageId ? 2 : 1,
 				collageId: this.collageId
 			}
 			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
