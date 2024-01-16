@@ -727,27 +727,6 @@
           }
         },
         {
-          "path": "commission-statistics/commission-statistics",
-          "style": {
-            "navigationBarTitleText": "佣金统计",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "commission-statistics/commission-detail",
-          "style": {
-            "navigationBarTitleText": "佣金详情",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "commission-statistics/vip-user",
-          "style": {
-            "navigationBarTitleText": "会员列表",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
           "path": "voucher/voucher",
           "style": {
             "navigationBarTitleText": "我的代金券",
@@ -764,12 +743,6 @@
           "path": "voucher/transfer-history",
           "style": {
             "navigationBarTitleText": "代金券流水"
-          }
-        },
-        {
-          "path": "view",
-          "style": {
-            "navigationBarTitleText": ""
           }
         },
         {
@@ -1214,28 +1187,55 @@
             "navigationBarTitleText": ""
           }
         },
+        // {
+        //   "path": "commission-statistics/commission-statistics",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金统计",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/commission-detail",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金详情",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/vip-user",
+        //   "style": {
+        //     "navigationBarTitleText": "会员列表",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/bank-list",
+        //   "style": {
+        //     "navigationBarTitleText": "我的银行卡"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/bank-item",
+        //   "style": {
+        //     "navigationBarTitleText": "添加银行卡"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/withdrawal",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金提现"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/identity-authentication",
+        //   "style": {
+        //     "navigationBarTitleText": "身份实名认证"
+        //   }
+        // },
         {
-          "path": "commission-statistics/bank-list",
+          "path": "view",
           "style": {
-            "navigationBarTitleText": "我的银行卡"
-          }
-        },
-        {
-          "path": "commission-statistics/bank-item",
-          "style": {
-            "navigationBarTitleText": "添加银行卡"
-          }
-        },
-        {
-          "path": "commission-statistics/withdrawal",
-          "style": {
-            "navigationBarTitleText": "佣金提现"
-          }
-        },
-        {
-          "path": "commission-statistics/identity-authentication",
-          "style": {
-            "navigationBarTitleText": "身份实名认证"
+            "navigationBarTitleText": ""
           }
         },
         {
@@ -1438,6 +1438,27 @@
           "path": "another-user/voucher/orderStatus",
           "style": {
             "navigationBarTitleText": "代金卷订单完成状态"
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/commission-statistics",
+          "style": {
+            "navigationBarTitleText": "佣金统计",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/commission-detail",
+          "style": {
+            "navigationBarTitleText": "佣金详情",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/vip-user",
+          "style": {
+            "navigationBarTitleText": "会员列表",
+            "enablePullDownRefresh": true
           }
         },
         {
