@@ -2,7 +2,7 @@
 	<view class="shop-container">
 		<!-- 顶部栏 -->
 		<view class="shop-header-container">
-			<image class="back-icon" src="../../static/images/new-business/category/back.png" @click="back"></image>
+			<image class="back-icon" src="../../../static/images/new-business/category/back.png" @click="back"></image>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36upx;">{{ transformation[currentType] }}</text>
 				<tui-input
@@ -30,12 +30,12 @@
 		>
 			<view
 				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
-				@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
+				@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 			>
 				<view>
 					<BeeIcon
 						:size="34"
-						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
 					>
 					</BeeIcon>
 				</view>
@@ -52,12 +52,12 @@
 				<view
 					v-for="item in menuBarArr.slice(0, -5)" :key="item.id"
 					style="width: 20%;margin-bottom: 20upx;text-align: center;"
-					@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
+					@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 				>
 					<view>
 						<BeeIcon
 							:size="34"
-							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
 						>
 						</BeeIcon>
 					</view>
@@ -68,12 +68,12 @@
 				<view
 					v-for="item in menuBarArr.slice(-5)" :key="item.id"
 					style="display: flex;align-items: center;margin-right: 24upx;padding: 12upx 20upx;background-color: #ffffff;"
-					@click="go(`/community-center/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
+					@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 				>
 					<view>
 						<BeeIcon
 							:size="18" style="line-height: 1;"
-							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
 						>
 						</BeeIcon>
 					</view>
@@ -114,7 +114,7 @@
 							<view>
 								<BeeIcon
 									width="180upx" height="150upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
-									:src="item.url || require('../../static/images/index/explosion.webp')"
+									:src="item.url || require('../../../static/images/index/explosion.webp')"
 								>
 								</BeeIcon>
 								<view style="height: 10upx;margin: 0 20upx;background-color: #c8c9b7;border-radius: 0 0 20upx 20upx;">
@@ -291,7 +291,7 @@
 						<view>
 							<BeeIcon
 								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
-								:src="item.url || require('../../static/images/index/explosion.webp')"
+								:src="item.url || require('../../../static/images/index/explosion.webp')"
 							>
 							</BeeIcon>
 						</view>
@@ -452,11 +452,11 @@
 </template>
 
 <script>
-import CommonShop from '../../pages/business-district/components/CommonShop.vue'
-import BrandShop from '../../pages/business-district/components/BrandShop.vue'
+import CommonShop from '../../../pages/business-district/components/CommonShop.vue'
+import BrandShop from '../../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
-import { getShopCategorySonApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
+import { getShopCategorySonApi, getHomeBrandListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'ShopEnter',

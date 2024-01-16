@@ -113,7 +113,7 @@
 					<view class="order-list-box">
 						<view class="item">
 							<view class="order-list-top">
-								<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${dataList.shopId}`)">
+								<view class="top-l" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${dataList.shopId}`)">
 									<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 10upx 0 0"></tui-icon>
 									<text class="shop-name">{{ dataList.shopName }}</text>
 									<tui-icon :size="24" color="#999999" name="arrowright" margin="0 0 0 15upx"></tui-icon>
@@ -717,9 +717,10 @@ export default {
 
 		// 打开客服
 		async handleOpenCustomerService() {
-			this.customerServiceList = await this.$store.dispatch('app/getCustomerServiceAction', {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
 				shopId: this.dataList.shopId
 			})
+			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
 		}
 	}
@@ -730,6 +731,10 @@ export default {
 .order-details-container {
 	min-height: 100vh;
 	background: #f7f7f7;
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 
 	.content {
 		padding: 0 0 160upx 0;

@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="shopInfo" class="direct-sale-store-container"
-		@click="go(`/community-center/shop/shop-detail?shopId=${shopInfo.shopId}`)"
+		@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopInfo.shopId}`)"
 	>
 		<view class="item-1">
 			<view class="shop-name">{{ shopInfo.shopName }}</view>

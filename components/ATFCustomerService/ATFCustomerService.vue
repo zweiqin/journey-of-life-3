@@ -41,7 +41,7 @@ export default {
 	props: {
 		shopId: {
 			type: [Number, String],
-			default: () => []
+			default: ''
 		},
 		data: {
 			type: Array,

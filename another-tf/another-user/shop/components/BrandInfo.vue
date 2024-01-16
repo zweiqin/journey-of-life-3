@@ -9,7 +9,7 @@
 				></BeeIcon>
 				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
 					<BeeIcon
-						:src="require('../../../static/images/new-brand/detail/share.png')" :size="22"
+						:src="require('../../../../static/images/new-brand/detail/share.png')" :size="22"
 						style="margin-left: 24upx;"
 					></BeeIcon>
 				</BeeWxShare>
@@ -47,7 +47,11 @@
 
 		<view v-if="brandDetail.shopLogo" style="margin-top: 22upx;">
 			<!-- 轮播图 -->
-			<swiper autoplay :interval="3000" circular :previous-margin="previousMargin" :next-margin="nextMargin" :duration="1000" style="height: 328upx;" @change="handleSwiperChange">
+			<swiper
+				autoplay :interval="3000" circular :previous-margin="previousMargin"
+				:next-margin="nextMargin"
+				:duration="1000" style="height: 328upx;" @change="handleSwiperChange"
+			>
 				<swiper-item>
 					<tui-lazyload-img
 						mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
@@ -109,8 +113,8 @@
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../../config'
-import { updateCollectCancelApi, updateCollectToCollectApi } from '../../../api/anotherTFInterface'
+import { A_TF_MAIN } from '../../../../config'
+import { updateCollectCancelApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
 export default {
 	name: 'BrandInfo',
 	props: {
@@ -190,7 +194,7 @@ export default {
 				data: {
 					title: `团蜂社区商圈 - ${this.brandDetail.shopName}`,
 					desc: this.brandDetail.shopBrief,
-					link: `${A_TF_MAIN}/#/community-center/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 				},
 				successCb: () => { },
@@ -214,9 +218,10 @@ export default {
 
 		// 打开客服
 		async handleOpenCustomerService() {
-			this.customerServiceList = await this.$store.dispatch('app/getCustomerServiceAction', {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
 				shopId: this.brandDetail.shopId
 			})
+			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
 		}
 	}
@@ -227,6 +232,10 @@ export default {
 .brand-info-container {
 	// padding: 28upx 34upx;
 	box-sizing: border-box;
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 
 	.tags {
 		display: flex;

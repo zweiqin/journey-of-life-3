@@ -14,7 +14,7 @@
 							color="#cccccc" margin="40upx"
 							@click="handleSelectShop(index, 1)"
 						></tui-icon>
-						<view class="shop-name-box" @click="isToShop && go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)">
+						<view class="shop-name-box" @click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
 							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 							<text class="shop-name">{{ item.shopName }}</text>
 							<tui-icon

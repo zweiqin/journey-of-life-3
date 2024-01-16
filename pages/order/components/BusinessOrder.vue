@@ -1,7 +1,7 @@
 <template>
 	<view class="item ske-loading">
 		<view class="order-list-top">
-			<view class="top-l" @click.stop="go(`/community-center/shop/shop-detail?shopId=${data.shopId}`)">
+			<view class="top-l" @click.stop="go(`/another-tf/another-user/shop/shop-detail?shopId=${data.shopId}`)">
 				<image :src="data.shopLogo" class="shop-img" />
 				<text class="shop-name">{{ data.shopName }}</text>
 				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>

@@ -37,7 +37,7 @@
 				<view>
 					<BeeIcon
 						:size="34"
-						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../static/images/index/design.png')"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
 					>
 					</BeeIcon>
 				</view>
@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import CommonShop from '../../pages/business-district/components/CommonShop.vue'
-import { getShopCategorySonApi, getHomeBrandListApi } from '../../api/anotherTFInterface'
+import CommonShop from '../../../pages/business-district/components/CommonShop.vue'
+import { getShopCategorySonApi, getHomeBrandListApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'ShopDeep',
 	components: { CommonShop },

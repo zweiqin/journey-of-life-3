@@ -159,7 +159,7 @@ export default {
 						this.$showToast('绑定成功', 'success')
 						setTimeout(() => {
 							if (shareType === 1) {
-								uni.redirectTo({ url: `/community-center/shop/shop-detail?storeId=${shopId}` })
+								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?storeId=${shopId}` })
 							} else if (shareType === 2) {
 								uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
 							}

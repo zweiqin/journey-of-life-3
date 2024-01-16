@@ -44,7 +44,7 @@ export default {
     methods: {
         gotoMerchan() {
             uni.navigateTo({
-                 url: `/community-center/shop/shop-detail?shopId=${this.datas.shopId}`
+                 url: `/another-tf/another-user/shop/shop-detail?shopId=${this.datas.shopId}`
             });
         },
         gotoUpMoney() {

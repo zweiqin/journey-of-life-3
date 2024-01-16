@@ -45,8 +45,8 @@
 <script>
 import {
 	getSettlementOrderApi
-} from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
+} from '../../../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST } from '../../../../constant'
 
 export default {
 	name: 'StoreShopCart',

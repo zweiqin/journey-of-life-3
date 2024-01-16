@@ -1,7 +1,7 @@
 <template>
 	<view
 		v-if="shopInfo" class="common-shop-container" :style="{ margin, borderRadius: radius }"
-		@click="go(`/community-center/shop/shop-detail?shopId=${shopInfo.shopId}`)"
+		@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopInfo.shopId}`)"
 	>
 		<view class="shop-top" :style="{ padding }">
 			<image

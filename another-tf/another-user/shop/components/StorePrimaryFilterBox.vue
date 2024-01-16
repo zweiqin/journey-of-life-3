@@ -179,7 +179,6 @@
 </template>
 
 <script>
-// import { xxx } from '../../../api/user'
 export default {
 	name: 'StorePrimaryFilterBox',
 	props: {
