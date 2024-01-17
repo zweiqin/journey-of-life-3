@@ -105,6 +105,7 @@
 		<div v-else class="product-list">
 			<LoadingMore v-if="isFirst" :status="loading ? 'loading' : 'no-more'"></LoadingMore>
 			<div v-else class="product-list-box">
+				<!-- <div class="product-list-box"> -->
 				<div v-for="(item, index) in productData" :key="index" class="product-list-item-warp">
 					<div class="product-list-item" @click="jumpProductDetail(item)">
 						<div class="product-list-img">
