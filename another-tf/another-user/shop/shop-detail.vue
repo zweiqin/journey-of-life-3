@@ -72,7 +72,7 @@
 					</swiper>
 				</view>
 				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
-					<view :style="{ color: sortGoodsIndex == 1 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
+					<view :style="{ color: shopGoodsInfo.query.ifNew == 1 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
 						<text>新品</text>
 					</view>
 					<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
@@ -122,7 +122,7 @@
 
 		<ATFSpecificationScreen ref="refATFSpecificationScreen" @success="initShopCart"></ATFSpecificationScreen>
 
-		<view v-if="currentTab === 0 && brandDetail.shopId">
+		<view v-if="brandDetail.shopId">
 			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId"></StoreShopCart>
 		</view>
 	</view>
@@ -149,7 +149,7 @@ export default {
 		return {
 			successCb: () => {
 				const pages = getCurrentPages()
-				if (pages[pages.length - 2].route === 'pages/store/store') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
+				if (pages[pages.length - 2].route === 'pages/business-district/business-district') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
 			},
 			shopId: null,
 			brandDetail: {},
@@ -209,7 +209,7 @@ export default {
 
 	methods: {
 		initShopCart() {
-			if (this.currentTab === 0 && this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
+			if (this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
 				this.$refs.refStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
 			}
 		},

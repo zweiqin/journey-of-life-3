@@ -5,15 +5,25 @@
 				mode="bottom" :visible="visibleDrawer" :mask-z-index="996" :z-index="998"
 				@close="visibleDrawer = false"
 			>
-				<ATFShopCartList
-					ref="refATFShopCartList" type="single" :shop-id="brandId" is-sub-delete
-					max-height="50vh"
-					@update-msg="handleUpdateMoneyAndNum"
-				></ATFShopCartList>
+				<view style="padding-bottom: 102upx;">
+					<view style="padding: 20upx 0;display: flex;align-items: center;justify-content: space-between;">
+						<BeeIcon
+							name="arrowleft" :size="34" color="#222229"
+							style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;z-index: 1;"
+							@click="visibleDrawer = false"
+						>
+						</BeeIcon>
+						<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">商家购物车</text>
+					</view>
+					<ATFShopCartList
+						ref="refATFShopCartList" type="single" :shop-id="brandId" is-sub-delete
+						@update-msg="handleUpdateMoneyAndNum"
+					></ATFShopCartList>
+				</view>
 			</tui-drawer>
 		</view>
 		<view
-			style="position: fixed;bottom: 0;z-index: 2;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;"
+			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view
 				style="display: flex;justify-content: flex-end;align-items: flex-end;font-size: 28upx;"
@@ -142,4 +152,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+
+/deep/ .tui-drawer-container {
+		height: 100vh !important;
+	}
+</style>

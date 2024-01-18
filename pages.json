@@ -1510,6 +1510,12 @@
           }
         },
         {
+          "path": "another-user/user-upgrade/purchase-chain-goods",
+          "style": {
+            "navigationBarTitleText": "购买关系链相关产品"
+          }
+        },
+        {
           "path": "another-user/small-ledger/index",
           "style": {
             "navigationBarTitleText": "小账本"
@@ -1531,6 +1537,18 @@
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"
+          }
+        },
+        {
+          "path": "another-user/shop-commodity/index",
+          "style": {
+            "navigationBarTitleText": "商家商品"
+          }
+        },
+        {
+          "path": "another-user/shop-goods/index",
+          "style": {
+            "navigationBarTitleText": "商家商品列表"
           }
         },
         {

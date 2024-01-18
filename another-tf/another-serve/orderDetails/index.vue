@@ -118,10 +118,6 @@
 									<text class="shop-name">{{ dataList.shopName }}</text>
 									<tui-icon :size="24" color="#999999" name="arrowright" margin="0 0 0 15upx"></tui-icon>
 								</view>
-								<view class="toService" @click="handleOpenCustomerService">
-									<tui-icon name="people-fill" :size="60" unit="upx" color="#9aedbe" margin="0 15upx 0 0"></tui-icon>
-									<text>联系客服</text>
-								</view>
 							</view>
 							<view class="order-info-box">
 								<view class="order-info">
@@ -392,6 +388,11 @@
 				<ATFCustomerService :shop-id="dataList.shopId" :data="customerServiceList"></ATFCustomerService>
 			</tui-bottom-popup>
 		</view>
+
+		<DragButton
+			text="联系客服" :icon-src="require('../../../static/images/new-user/menu-icon/lianxikefu.png')" is-dock
+			exist-tab-bar @btnClick="handleOpenCustomerService"
+		/>
 	</view>
 </template>
 
@@ -722,6 +723,7 @@ export default {
 			})
 			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }

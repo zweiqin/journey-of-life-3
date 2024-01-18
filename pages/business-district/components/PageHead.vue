@@ -22,13 +22,13 @@
 					label="" placeholder="社区商圈" disabled clearable
 					:border-bottom="false"
 					padding="6upx 10upx 6upx 2upx" placeholder-style="color: #292930;font-size: 28upx;"
-					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index`)"
+					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index?searchType=shop`)"
 				>
 					<template #right>
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							style="background: #ee692f!important;"
-							@click="go(`/another-tf/another-serve/search/index`)"
+							@click="go(`/another-tf/another-serve/search/index?searchType=shop`)"
 						>
 							搜索
 						</tui-button>

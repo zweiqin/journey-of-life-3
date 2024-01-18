@@ -114,7 +114,7 @@
 							<view>
 								<BeeIcon
 									width="180upx" height="150upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
-									:src="item.url || require('../../../static/images/index/explosion.webp')"
+									:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
 								>
 								</BeeIcon>
 								<view style="height: 10upx;margin: 0 20upx;background-color: #c8c9b7;border-radius: 0 0 20upx 20upx;">
@@ -291,7 +291,7 @@
 						<view>
 							<BeeIcon
 								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
-								:src="item.url || require('../../../static/images/index/explosion.webp')"
+								:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
 							>
 							</BeeIcon>
 						</view>
@@ -339,14 +339,14 @@
 		</view>
 
 		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop
+			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
 				margin="22upx 0"
 				radius="20upx"
-			></CommonShop>
+			></ATFCommonShop>
 		</view>
 		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop
+			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
 				margin="22upx 0"
 				radius="20upx"
@@ -370,10 +370,10 @@
 						</view>
 					</view>
 				</view>
-			</CommonShop>
+			</ATFCommonShop>
 		</view>
 		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop
+			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
 				margin="22upx 0"
 				radius="20upx"
@@ -389,7 +389,7 @@
 								<view style="width: 160upx;">
 									<tui-lazyload-img
 										width="100%" height="168upx" mode="scaleToFill" radius="20upx"
-										:src="item.picUrl"
+										:src="common.seamingImgUrl(item.picUrl)"
 									></tui-lazyload-img>
 									<view
 										style="line-height: 1;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
@@ -410,7 +410,7 @@
 						</view>
 					</scroll-view>
 				</view>
-			</CommonShop>
+			</ATFCommonShop>
 		</view>
 		<view v-if="ownBrandCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
 			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
@@ -452,7 +452,6 @@
 </template>
 
 <script>
-import CommonShop from '../../../pages/business-district/components/CommonShop.vue'
 import BrandShop from '../../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
@@ -460,7 +459,7 @@ import { getShopCategorySonApi, getHomeBrandListApi } from '../../../api/another
 
 export default {
 	name: 'ShopEnter',
-	components: { CommonShop, BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
+	components: { BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
 	data() {
 		return {
 			transformation: {

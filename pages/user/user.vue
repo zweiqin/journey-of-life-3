@@ -1,8 +1,7 @@
 <template>
-
 	<view class="user-page-container">
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
-		<BaseInfo ref="baseInfoRef" :user-id="userId" @handleNavigate="handleNavigate"></BaseInfo>
+		<BaseInfo ref="baseInfoRef" @handleNavigate="handleNavigate"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
@@ -17,9 +16,7 @@
 			</view>
 		</view>
 		<tui-modal
-			:show="$data._isShowTuiModel"
-			title="提示"
-			content="您还未登录，是否先去登录？"
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
 			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
 		></tui-modal>
 
@@ -28,6 +25,16 @@
 
 		<!-- 特殊code的 menu 操作 -->
 		<CodeCreatePopup ref="codeCreateRef"></CodeCreatePopup>
+
+		<!-- 参与抽奖输入暗语 -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowLotteryDialog" title="暗语" @click="handleLotteryDialog"
+		>
+			<template #content>
+				<tui-input v-model="codeWordLottery" label="" type="text" placeholder="请输入抽奖暗语"></tui-input>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
@@ -36,7 +43,7 @@ import { getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
-import { USER_ID, T_STORAGE_KEY } from '../../constant'
+import { T_STORAGE_KEY } from '../../constant'
 import { myFunction, myServe, additionalFunction, shopServe, myPreferential, otherFunction } from './data'
 import { Encrypt } from '../../utils/secret'
 
@@ -53,7 +60,6 @@ export default {
 	data() {
 		return {
 			timer: null,
-			userId: null,
 			myFunction,
 			myServe,
 			shopServe,
@@ -62,12 +68,15 @@ export default {
 			otherFunction,
 			isShowOther: false,
 			userInfo: {},
-			bindingCode: ''
+			bindingCode: '',
+
+			// 参与抽奖
+			isShowLotteryDialog: false,
+			codeWordLottery: ''
 		}
 	},
 	methods: {
 		init() {
-			this.userId = uni.getStorageSync(USER_ID)
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
 			if (this.isLogin()) {
 				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
@@ -90,7 +99,10 @@ export default {
 				return
 			}
 			if (this.isLogin()) {
-				if (item.type === 'userInvitation') {
+				if (item.type === 'participateLottery') {
+					this.isShowLotteryDialog = true
+					return
+				} else if (item.type === 'userInvitation') {
 					if (this.$store.state.auth.identityInfo.type.includes(1)) {
 						uni.showActionSheet({
 							title: '* 请选择业务 *',
@@ -110,8 +122,8 @@ export default {
 					return
 				} else if (item.type === 'flyToService') {
 					this.$store.dispatch('app/getCustomerServiceAction', {
-						isToService: true
-						// shopId: this.$store.state.app.platformOperationShopId
+						isToService: true,
+						shopId: this.$store.state.app.platformOperationShopId
 					})
 					return
 				} else if (item.type === 'settle') {
@@ -140,6 +152,14 @@ export default {
 			} else {
 				this.$data._isShowTuiModel = true
 			}
+		},
+		handleLotteryDialog(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!(this.codeWordLottery === '新年快乐')) return this.$showToast('暗语错误')
+				this.go(`/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=participateLottery&code=`)
+			}
+			this.codeWordLottery = ''
+			this.isShowLotteryDialog = false
 		}
 	}
 }
@@ -147,59 +167,59 @@ export default {
 
 <style lang="less" scoped>
 .user-page-container {
-  widows: 100vw;
-  min-height: 100vh;
-  background-color: #f6f6f5;
-  padding-bottom: 120upx;
+	widows: 100vw;
+	min-height: 100vh;
+	background-color: #f6f6f5;
+	padding-bottom: 120upx;
 
-  .main-area {
-    width: 100%;
-    padding: 0 32upx 32upx;
-    box-sizing: border-box;
+	.main-area {
+		width: 100%;
+		padding: 0 32upx 32upx;
+		box-sizing: border-box;
 
-    /deep/ .menu-title {
-      font-size: 24upx;
-      color: #3a3629;
-    }
+		/deep/ .menu-title {
+			font-size: 24upx;
+			color: #3a3629;
+		}
 
-    /deep/ .menu-icon {
-      width: 64upx;
-      height: 64upx;
-    }
+		/deep/ .menu-icon {
+			width: 64upx;
+			height: 64upx;
+		}
 
-    /deep/ .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
+		/deep/ .menu-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
 
-    /deep/ .order-pane {
-      margin-top: 20upx;
-    }
-  }
+		/deep/ .order-pane {
+			margin-top: 20upx;
+		}
+	}
 }
 
 /deep/ .tui-loading-init {
-  position: inherit;
-  transform: translate(0, 0);
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  min-width: 100vw;
-  max-width: 100vw;
-  flex-direction: row;
-  // padding-top: 30upx;
+	position: inherit;
+	transform: translate(0, 0);
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	min-width: 100vw;
+	max-width: 100vw;
+	flex-direction: row;
+	// padding-top: 30upx;
 }
 
 /deep/ .tui-loadmore-tips {
-  color: #ff7a4e;
-  margin-bottom: 40upx;
+	color: #ff7a4e;
+	margin-bottom: 40upx;
 }
 
 /deep/ .tui-loading-center {
-  border-color: #ff7a4e;
+	border-color: #ff7a4e;
 }
 </style>

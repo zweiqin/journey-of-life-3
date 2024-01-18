@@ -10,7 +10,7 @@
 						color="#d1d1d1"
 					></tui-icon>
 					<input
-						v-model="keyWord" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
+						v-model="search" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
 						placeholder="请输入您想要的宝贝"
 					/>
 				</view>
@@ -25,12 +25,12 @@
 				<tui-icon
 					v-if="isSee" name="seen" color="#393939" :size="40"
 					unit="upx" style="position: absolute;right: 30upx;"
-					@click="changeHotSearchListIsSee"
+					@click="isSee = !isSee"
 				></tui-icon>
 				<tui-icon
 					v-else name="unseen" color="#393939" :size="40"
 					unit="upx" style="position: absolute;right: 30upx;"
-					@click="changeHotSearchListIsSee"
+					@click="isSee = !isSee"
 				></tui-icon>
 			</view>
 			<view>
@@ -39,7 +39,7 @@
 						v-for="(item, index) in hotSearchList" :key="index"
 						class="historySearDel-box flex-items-plus mar-right-30"
 					>
-						<view class="boxContent" @click="historyKeyword(item)">{{ item }}</view>
+						<view class="boxContent" @click="historySearch(item)">{{ item }}</view>
 					</view>
 				</view>
 				<view v-else class="notSeeContent">当前热门搜索已隐藏</view>
@@ -58,7 +58,7 @@
 					v-for="(item, index) in historyList" :key="item.searchId"
 					class="historySearDel-box flex-items-plus flex-sp-between mar-right-30"
 				>
-					<view class="boxContent historyText line1" @click="historyKeyword(item.search)">{{ item.search }}</view>
+					<view class="boxContent historyText line1" @click="historySearch(item.search)">{{ item.search }}</view>
 					<label class="font-color-DDD fs22 pad-topbot-10 text-align">|</label>
 					<view class="historyIconBox" @click="historyDelOne(item.searchId)">
 						<tui-icon name="shut" color="#9e9e9e" :size="16" unit="upx"></tui-icon>
@@ -77,47 +77,35 @@ export default {
 	name: 'Search',
 	data() {
 		return {
-			keyWord: '',
+			searchType: 'goods', // goods或shop
+			search: '',
 			historyList: [],
 			hotSearchList: [],
-			list: [],
 			isSee: true
 		}
+	},
+	onLoad(option) {
+		this.searchType = option.searchType || 'goods'
 	},
 	onShow() {
 		this.findSearchHistory()
 		this.findHotSearch()
 	},
 	methods: {
-		searchTextDel() {
-			this.keyWord = ''
-		},
 		getList() {
-			if (!this.keyWord) {
-				uni.showToast({
-					title: '请输入要搜索内容！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else {
-				uni.navigateTo({
-					url: `/another-tf/another-serve/goodsList/index?keyWord=${this.keyWord}`
-				})
-			}
+			if (!this.search) return this.$showToast('请输入要搜索内容！')
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${this.search}`)
+			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${this.search}`)
 		},
-		historyKeyword(keyWord) {
-			uni.navigateTo({
-				url: `/another-tf/another-serve/goodsList/index?keyWord=${keyWord}`
-			})
+		historySearch(search) {
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${search}`)
+			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${search}`)
 		},
 		// 热门搜索
 		findHotSearch() {
 			getSelectHotSearchApi({}).then((res) => {
 				this.hotSearchList = res.data
 			})
-		},
-		changeHotSearchListIsSee() {
-			this.isSee = !this.isSee
 		},
 		// 历史记录
 		findSearchHistory() {

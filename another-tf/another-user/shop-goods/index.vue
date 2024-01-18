@@ -1,6 +1,6 @@
 <template>
-	<view class="goods-list-container">
-		<JHeader title="商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="shop-goods-container">
+		<JHeader title="商家商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="flex-items-plus flex-row search">
 			<view class="searchBg">
 				<view class="searchImg-box flex-items-plus">
@@ -10,36 +10,29 @@
 						placeholder="请输入您想要的宝贝"
 					/>
 				</view>
-				<label class="mar-left-40 fs28" @click="queryInfo.search && (queryInfo.page = 1) && getGoodsSearchList()">
+				<label class="mar-left-40 fs28" @click="queryInfo.search && (queryInfo.page = 1) && getShopGoodsTemplate()">
 					搜索
 				</label>
 			</view>
 		</view>
-		<view class="shop-list-nav">
-			<view class="mlr-20">
-				<view class="nav-item-sort" @click="handleSortTap(1)">
-					<text class="nav-title" :class="{ 'active': sortIndex == 1 }">
-						默认
-					</text>
-				</view>
-				<view class="nav-item-sort" @click="handleSortTap(2)">
-					<text class="nav-title" :class="{ 'active': sortIndex == 2 }">
-						价格
-					</text>
-					<view class="r">
-						<view class="arrowUp" :class="{ activeUp: queryInfo.type == 1 }"></view>
-						<view class="arrowDown" :class="{ activeDown: queryInfo.type == 2 }"></view>
-					</view>
-				</view>
-				<view class="nav-item-sort" @click="handleSortTap(3)">
-					<text class="nav-title" :class="{ 'active': sortIndex == 3 }">
-						销量
-					</text>
-					<view class="r">
-						<view class="arrowUp" :class="{ activeUp: queryInfo.volume == 1 }"></view>
-						<view class="arrowDown" :class="{ activeDown: queryInfo.volume == 2 }"></view>
-					</view>
-				</view>
+		<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
+			<view :style="{ color: queryInfo.ifNew ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
+				<text>新品</text>
+			</view>
+			<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+				<text>价格</text>
+				<tui-icon
+					:name="queryInfo.type == 1 ? 'turningup' : queryInfo.type == 2 ? 'turningdown' : ''"
+					color="#666666" :size="16"
+				></tui-icon>
+			</view>
+			<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+				<text>销量</text>
+				<tui-icon
+					v-if="[1, 2].includes(queryInfo.volume)"
+					:name="queryInfo.volume == 1 ? 'turningup' : queryInfo.volume == 2 ? 'turningdown' : ''"
+					color="#666666" :size="16"
+				></tui-icon>
 			</view>
 		</view>
 		<!-- 商品列表 -->
@@ -106,79 +99,73 @@
 </template>
 
 <script>
-import { getClaasifyProductsApi, getSearchProductsApi } from '../../../api/anotherTFInterface'
+import { getShopProductsApi } from '../../../api/anotherTFInterface'
+
 export default {
-	name: 'GoodsList',
+	name: 'ShopGoods',
 	data() {
 		return {
-			source: 2,
-			sortIndex: 1,
+			sortGoodsIndex: 1,
 			isEmpty: false,
 			goodsList: [],
 			goodsTotal: 0,
 			queryInfo: {
-				page: 1,
-				pageSize: 20,
+				shopId: '',
+				groupId: '',
 				search: '',
-				classifyId: '',
-				type: 0, // 价格排序条件
-				volume: 0 // 销量排序条件
+				ifNew: 1,
+				type: 1,
+				volume: 0,
+				page: 1,
+				pageSize: 20
 			}
 		}
 	},
 	onLoad(option) {
-		if (option.search) {
-			this.queryInfo.search = option.search
+		if (option.shopId) {
+			this.queryInfo.shopId = option.shopId
 		}
-		if (option.classifyId) {
-			this.queryInfo.classifyId = option.classifyId
+		if (option.groupId) {
+			this.queryInfo.groupId = option.groupId
 		}
-		this.getGoodsSearchList()
+		this.getShopGoodsTemplate()
 	},
 
 	methods: {
-		handleSortTap(index) {
-			this.sortIndex = index
-			this.goodsList = []
+		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
-			if (index === 1) {
-				this.queryInfo.type = 0
-				this.queryInfo.volume = 0
-			} else if (index === 2) {
-				this.queryInfo.volume = 0
-				if (this.queryInfo.type === 0) {
-					this.queryInfo.type = 1
-				} else {
-					this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				}
-			} else if (index === 3) {
-				this.queryInfo.type = 0
-				if (this.queryInfo.volume === 0) {
-					this.queryInfo.volume = 1
-				} else {
-					this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				}
+			this.goodsList = []
+			if (index == 1) {
+				this.queryInfo.ifNew = this.queryInfo.ifNew != 0 ? 0 : 1,
+				this.queryInfo.type = 1,
+				this.queryInfo.volume = 1,
+				this.sortGoodsIndex = index
+			} else if (index == 2) {
+				this.queryInfo.ifNew = 0,
+				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2,
+				this.queryInfo.volume = 1,
+				this.sortGoodsIndex = index
+			} else if (index == 3) {
+				this.queryInfo.ifNew = 0,
+				this.queryInfo.type = 1,
+				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2,
+				this.sortGoodsIndex = index
 			}
-			this.getGoodsSearchList()
+			this.getShopGoodsTemplate()
 		},
-		getGoodsSearchList(isLoadmore) {
-			let api
-			if (this.queryInfo.classifyId) {
-				api = getClaasifyProductsApi
-			} else {
-				api = getSearchProductsApi
-			}
+		getShopGoodsTemplate(isLoadmore) {
 			uni.showLoading()
-			api(this.queryInfo).then((res) => {
-				this.goodsTotal = res.data.total
-				if (isLoadmore) {
-					this.goodsList.push(...res.data.list)
-				} else {
-					this.goodsList = res.data.list
-				}
-				this.isEmpty = this.goodsList.length === 0
-				uni.hideLoading()
-			})
+			getShopProductsApi(this.queryInfo)
+				.then((res) => {
+					this.goodsTotal = res.data.page.total
+					if (isLoadmore) {
+						this.goodsList.push(...res.data.page.list)
+					} else {
+						this.goodsList = res.data.page.list
+					}
+					this.isEmpty = this.goodsList.length === 0
+					uni.hideLoading()
+				})
 				.catch((e) => {
 					uni.hideLoading()
 				})
@@ -187,7 +174,7 @@ export default {
 	onReachBottom() {
 		if (this.goodsList.length < this.goodsTotal) {
 			++this.queryInfo.page
-			this.getGoodsSearchList(true)
+			this.getShopGoodsTemplate(true)
 		}
 	}
 }
@@ -198,7 +185,7 @@ input {
 	padding-left: 80upx;
 }
 
-.goods-list-container {
+.shop-goods-container {
 	position: relative;
 	min-height: 100%;
 	background-color: #f8f8f8;
@@ -324,69 +311,6 @@ input {
 
 	.listBox {
 		padding: 0 24rpx;
-	}
-}
-
-.shop-list-nav {
-	background: #fff;
-
-	.mlr-20 {
-		margin: 0 20rpx;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		height: 80rpx;
-		line-height: 76rpx;
-	}
-}
-
-.active {
-	color: #C5AA7B;
-}
-
-.nav-item-sort {
-	flex: 1;
-	font-size: 24rpx;
-	color: #222;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	height: 80rpx;
-	line-height: 80rpx;
-}
-
-.nav-item-sort .r {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin-left: 5rpx;
-
-	.arrowDown {
-		width: 0;
-		height: 0;
-		border-width: 10rpx;
-		border-style: solid;
-		border-color: #CCCCCC transparent transparent transparent;
-		margin-top: 2rpx;
-	}
-
-	.arrowUp {
-		margin-bottom: 2rpx;
-		width: 0;
-		height: 0;
-		border-width: 10rpx;
-		border-style: solid;
-		border-color: transparent transparent #CCCCCC transparent;
-	}
-
-	.activeDown {
-		border-color: #C5AA7B transparent transparent transparent;
-	}
-
-	.activeUp {
-		border-color: transparent transparent #C5AA7B transparent;
 	}
 }
 </style>

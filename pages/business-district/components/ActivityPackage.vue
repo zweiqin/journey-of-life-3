@@ -1,6 +1,6 @@
 <template>
 	<view class="activity-package-container">
-		<view class="left-container" @click="go('/another-tf/another-serve/goodsList/index?classifyId=1439')">
+		<view class="left-container" @click="go('/another-tf/another-user/user-upgrade/purchase-chain-goods')">
 			<image src="../../../static/images/new-business/home/user-upgrade-goods.png" style="width: 100%;height: 100%;" mode="aspectFit"></image>
 			<view style="position: absolute;top: 8upx;width: 100%;font-size: 38upx;font-weight: bold;color: #ffffff;text-align: center;">
 				<view>特殊产品</view>

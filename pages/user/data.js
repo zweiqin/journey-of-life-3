@@ -307,7 +307,8 @@ export const myPreferential = [
 	},
 	{
 		name: '我的抽奖',
-		icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png')
+		icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
+		type: 'participateLottery'
 	},
 	{
 		name: '我的红包',

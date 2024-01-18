@@ -30,10 +30,10 @@
 					<view v-if="brandDetail.isVoucher" class="tag">支持代金券</view>
 				</view>
 			</view>
-			<view style="display: flex;flex-direction: column;align-items: center;" @click="handleOpenCustomerService">
+			<!-- <view style="display: flex;flex-direction: column;align-items: center;" @click="handleOpenCustomerService">
 				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
 				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
-			</view>
+				</view> -->
 		</view>
 
 		<view style="display: flex;align-items: center;margin-top: 10upx;">
@@ -109,6 +109,10 @@
 			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
 		</tui-bottom-popup>
 
+		<DragButton
+			text="联系商家" :icon-src="require('../../../../static/images/new-user/menu-icon/lianxikefu.png')" is-dock
+			exist-tab-bar @btnClick="handleOpenCustomerService"
+		/>
 	</view>
 </template>
 
@@ -223,6 +227,7 @@ export default {
 			})
 			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }

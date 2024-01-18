@@ -77,7 +77,7 @@
 			</view>
 		</view>
 		<view style="padding-bottom: 45upx;">
-			<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
+			<LoadingMore :status="isLoading && isFirstLoading ? 'loading' : ''"></LoadingMore>
 			<view v-if="!isLoading && !shopCartList.length">
 				<slot name="empty" :data="shopCartList">
 					<tui-no-data :fixed="false" style="padding-top: 60upx;">购物车空空如也~</tui-no-data>
@@ -89,7 +89,6 @@
 
 <script>
 import { getShopCartApi, getCartListApi, getPricesCanvasApi, updateNumberCartGoodsApi, deleteCartGoodsApi } from '../../api/anotherTFInterface'
-import lodash from 'lodash-es'
 
 export default {
 	name: 'ATFShopCartList',
@@ -116,8 +115,10 @@ export default {
 	},
 	data() {
 		return {
+			timer: '',
 			shopCartList: [], // 购物车数据
-			isLoading: true // 购物车是否为空
+			isLoading: true, // 购物车是否为空
+			isFirstLoading: true
 		}
 	},
 	created() {
@@ -166,8 +167,9 @@ export default {
 			} catch (e) {
 				console.log(e)
 			} finally {
-				console.log(typeof cb)
+				// console.log(typeof cb)
 				this.isLoading = false
+				this.isFirstLoading = false
 				cb && typeof cb === 'function' && cb()
 			}
 		},
@@ -204,7 +206,7 @@ export default {
 		 * @param skuIndex index店铺下sku商品索引
 		 */
 
-		async handleSubSkuNumber(shopIndex, skuIndex) {
+		handleSubSkuNumber(shopIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
 			if (selectSku.number <= 1) {
 				if (this.isSubDelete) {
@@ -222,11 +224,11 @@ export default {
 					return uni.$showToast('亲！至少一件哦！')
 				}
 			} else {
+				if (this.timer) clearTimeout(this.timer)
 				--selectSku.number
-				await this.handleUpdateCart(selectSku.skuId, selectSku.number)
-				setTimeout(async () => {
-					await this.getShopCartData(this.type)
-				}, 500)
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
 			}
 		},
 
@@ -236,18 +238,18 @@ export default {
 		 * @param skuIndex index店铺下sku商品索引
 		 */
 
-		async handleAddSkuNumber(shopIndex, skuIndex) {
+		handleAddSkuNumber(shopIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
 			if (selectSku.number >= selectSku.stockNumber) {
 				selectSku.number = selectSku.stockNumber
 				return uni.$showToast('库存不足！')
 			}
 			if (selectSku.number < selectSku.stockNumber) {
+				if (this.timer) clearTimeout(this.timer)
 				++selectSku.number
-				await this.handleUpdateCart(selectSku.skuId, selectSku.number)
-				setTimeout(async () => {
-					await this.getShopCartData(this.type)
-				}, 500)
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
 			}
 		},
 
@@ -257,9 +259,17 @@ export default {
 		 * @param number: 数量
 		 */
 
-		handleUpdateCart: lodash.debounce(async function (skuId, number) {
-			await updateNumberCartGoodsApi({ skuId, number }) // 重新算钱和数量
-		}, 500),
+		async handleUpdateCart(skuId, number) {
+			try {
+				uni.showLoading()
+				await updateNumberCartGoodsApi({ skuId, number }) // 重新算钱和数量
+				await this.getShopCartData(this.type)
+				uni.hideLoading()
+			} catch (e) {
+				console.log(e)
+				uni.hideLoading()
+			}
+		},
 
 		/**
 		 * 选中店铺

@@ -46,11 +46,11 @@
 		</view>
 
 		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
-			<CommonShop
+			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
 				margin="22upx 0"
 				radius="20upx"
-			></CommonShop>
+			></ATFCommonShop>
 		</view>
 		<view style="padding-bottom: 45upx;">
 			<LoadingMore
@@ -65,11 +65,9 @@
 </template>
 
 <script>
-import CommonShop from '../../../pages/business-district/components/CommonShop.vue'
 import { getShopCategorySonApi, getHomeBrandListApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'ShopDeep',
-	components: { CommonShop },
 	data() {
 		return {
 			title: '',

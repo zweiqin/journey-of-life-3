@@ -155,12 +155,10 @@
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
-					<!-- #ifdef MP-WEIXIN || APP-PLUS || H5 -->
 					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
 						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 						<label class="fs22">客服</label>
 					</view>
-					<!-- #endif -->
 					<view
 						class="btns flex-column-plus mar-left-10 flex-items Cart"
 						@click="go('/another-tf/another-serve/shopCar/shopCar')"
@@ -462,6 +460,7 @@ export default {
 			})
 			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }

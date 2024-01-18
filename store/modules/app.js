@@ -78,8 +78,8 @@ export default {
 									title: '* 请选择客服 *',
 									itemList: res.data.map((item) => `${item.name}（${item.state ? '在线' : '已下线'}）`),
 									itemColor: '#2c3e50',
-									success: (res) => {
-										dispatch('flyToServiceAction', { shopId, customerId: res.data[res.tapIndex].kfId })
+									success: (result) => {
+										dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
 									}
 								})
 							} else {
@@ -98,7 +98,7 @@ export default {
 			})
 		},
 
-		flyToServiceAction({ state, dispatch, commit }, { shopId, customerId }) {
+		flyToServiceAction({ state, dispatch, commit }, { shopId, openKfId }) {
 			let _url = null
 			if ([1, 2, 4].includes(state.terminal)) {
 				_url = getCustomerServiceAppletKfApi
@@ -107,12 +107,13 @@ export default {
 			} else if ([ 5 ].includes(state.terminal)) {
 				_url = getCustomerServicePCKfApi
 			}
+			_url = getCustomerServiceAppletKfApi // 原本的
 			let corpId = null
 			let serviceURL = null
 			uni.showLoading({
 				title: '加载中...'
 			})
-			_url({ id: shopId, customerId })
+			_url({ id: shopId, openKfId })
 				.then((res) => {
 					if (res.code === '' && res.data.corpId && res.data.url) {
 						corpId = res.data.corpId

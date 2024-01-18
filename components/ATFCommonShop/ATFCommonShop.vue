@@ -1,12 +1,12 @@
 <template>
-	<view
-		v-if="shopInfo" class="common-shop-container" :style="{ margin, borderRadius: radius }"
-		@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopInfo.shopId}`)"
-	>
-		<view class="shop-top" :style="{ padding }">
+	<view v-if="shopInfo" class="common-shop-container" :style="{ margin, borderRadius: radius }">
+		<view
+			class="shop-top" :style="{ padding }"
+			@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopInfo.shopId}`)"
+		>
 			<image
 				class="shop-logo" :style="{ width: picWidth, height: picHeight }"
-				:src="common.seamingImgUrl(shopInfo.shopLogo) || require('../../../static/images/new-user/fee.icon.png')"
+				:src="common.seamingImgUrl(shopInfo.shopLogo) || require('../../static/images/new-user/fee.icon.png')"
 			>
 			</image>
 
@@ -15,7 +15,7 @@
 					<view style="flex: 1;width: 0;display: flex;align-items: center;">
 						<image
 							v-if="showLogo" style="width: 32upx;height: 32upx;margin-right: 6upx;"
-							src="../../../static/images/new-community/home/tag.png"
+							src="../../static/images/new-community/home/tag.png"
 						></image>
 						<view
 							style="flex: 1;margin-left: 5upx;font-size: 32upx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
@@ -24,7 +24,7 @@
 						</view>
 					</view>
 					<image
-						v-if="showSign && shopInfo.contractState" src="../../../static/images/new-community/home/gold-star.png"
+						v-if="showSign && shopInfo.contractState" src="../../static/images/new-community/home/gold-star.png"
 						style="width: 48upx;height: 48upx;"
 					></image>
 				</view>
@@ -120,15 +120,24 @@
 							{{ item }}
 							</text>
 							</view> -->
-						<view v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState || shopInfo.startTime" class="type-list">
-							<text v-if="shopInfo.authenType" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
+						<view
+							v-if="shopInfo.authenType || shopInfo.checkState || shopInfo.authenticationState || shopInfo.startTime"
+							class="type-list"
+						>
+							<text
+								v-if="shopInfo.authenType"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;"
+							>
 								<template v-if="shopInfo.authenType === 1">个人</template>
 								<template v-else-if="shopInfo.authenType === 2">个体工商户</template>
 								<template v-else-if="shopInfo.authenType === 3">企业</template>
 								<template v-else-if="shopInfo.authenType === 4">其它组织</template>
 								<template v-else>特殊角色</template>
 							</text>
-							<text v-if="shopInfo.checkState" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
+							<text
+								v-if="shopInfo.checkState"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;"
+							>
 								已入驻
 							</text>
 							<text
@@ -137,13 +146,16 @@
 							>
 								已签约
 							</text>
-							<text v-if="shopInfo.startTime" style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;">
+							<text
+								v-if="shopInfo.startTime"
+								style="padding: 4upx 18upx;margin-right: 10upx;background-color: #f7f7f7;border-radius: 24upx;"
+							>
 								{{ shopInfo.startTime }}营业
 							</text>
 						</view>
 					</view>
 					<view v-if="shopInfo.distance" class="brief-right">
-						<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
+						<image class="icon" src="../../static/images/new-community/home/location.png"></image>
 						<text>{{ shopInfo.distance || 0 }}Km</text>
 					</view>
 				</view>
@@ -171,15 +183,15 @@
 				<view v-if="bottomType === 'display'" class="bottom-detail">
 					<view class="op-info">
 						<view class="item">
-							<image class="icon" src="../../../static/images/new-community/home/follow.png"></image>
+							<image class="icon" src="../../static/images/new-community/home/follow.png"></image>
 							<text class="num">{{ shopInfo.score || 0 }}</text>
 						</view>
 						<view class="item">
-							<image class="icon" src="../../../static/images/new-community/home/views.png"></image>
+							<image class="icon" src="../../static/images/new-community/home/views.png"></image>
 							<text class="num">{{ shopInfo.fansNumber || 0 }}</text>
 						</view>
 						<view v-if="shopInfo.distance" class="item">
-							<image class="icon" src="../../../static/images/new-community/home/location.png"></image>
+							<image class="icon" src="../../static/images/new-community/home/location.png"></image>
 							<text class="num">{{ shopInfo.distance || 0 }}Km</text>
 						</view>
 					</view>
@@ -195,7 +207,7 @@
 
 <script>
 export default {
-	name: 'CommonShop',
+	name: 'ATFCommonShop',
 	props: {
 		shopInfo: {
 			type: Object,

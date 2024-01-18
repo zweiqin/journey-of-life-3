@@ -27,7 +27,15 @@
 import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
-import { bindDistributorSalesCustomerApi, getOrderDetailApi, updateSetHxCodeApi, bindPlatformRelationshipCodeApi, bindPlatformRelationshipShopApi, bindPlatformInfoCodeBindingApi } from '../../api/anotherTFInterface'
+import {
+	bindDistributorSalesCustomerApi,
+	getOrderDetailApi,
+	updateSetHxCodeApi,
+	bindPlatformRelationshipCodeApi,
+	bindPlatformRelationshipShopApi,
+	bindPlatformInfoCodeBindingApi,
+	addDrawParticipateLotteryApi
+} from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 
@@ -148,6 +156,10 @@ export default {
 			uni.removeStorageSync(T_NEW_BIND_ID)
 			if (this.type === 'nothing') {
 				this.$switchTab('/pages/user/user')
+			} else if (this.type === 'participateLottery') {
+				addDrawParticipateLotteryApi({})
+					.then((res) => { this.$showToast('参与成功') })
+					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingSalesCustomer') { // 绑定分销关系，salesId分销员ID
 				const shareType = Number(this.code.split('~')[0])
 				const shopId = this.code.split('~')[1]
