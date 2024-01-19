@@ -426,3 +426,12 @@ export const bankCardAnalysisApi = data => {
     method: "POST"
   })
 }
+
+// 指派师傅服务
+export const apponitServerSFApi= data => {
+  return endRequest({
+    url: "/api/shifu/consumerSelectSf",
+    data,
+    method: "GET"
+  })
+}
