@@ -69,6 +69,12 @@
 		<PopupInformation ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl"
 			@close="handleShowBindMobilePopup" @click="handleToActiveDetail">
 		</PopupInformation>
+
+		<DragButton
+			text="联系客服" is-dock exist-tab-bar
+			@btnClick="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+		>
+		</DragButton>
 	</view>
 </template>
 

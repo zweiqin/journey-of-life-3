@@ -109,10 +109,7 @@
 			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
 		</tui-bottom-popup>
 
-		<DragButton
-			text="联系商家" :icon-src="require('../../../../static/images/new-user/menu-icon/lianxikefu.png')" is-dock
-			exist-tab-bar @btnClick="handleOpenCustomerService"
-		/>
+		<DragButton text="联系商家" is-dock exist-tab-bar @btnClick="handleOpenCustomerService"></DragButton>
 	</view>
 </template>
 

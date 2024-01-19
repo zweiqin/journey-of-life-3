@@ -13,7 +13,7 @@
 							<view>{{ item.name }}</view>
 							<view>
 								<text v-if="item.state">在线</text>
-								<text v-else>已下线</text>
+								<!-- <text v-else>已下线</text> -->
 							</view>
 						</view>
 					</view>

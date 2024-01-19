@@ -1381,6 +1381,12 @@
           }
         },
         {
+          "path": "another-user/share-shop-and-commodity/index",
+          "style": {
+            "navigationBarTitleText": "商家商品分享"
+          }
+        },
+        {
           "path": "another-serve/bindPhone/index",
           "style": {
             "navigationBarTitleText": "绑定手机号"

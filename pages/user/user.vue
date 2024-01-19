@@ -121,10 +121,7 @@ export default {
 					}
 					return
 				} else if (item.type === 'flyToService') {
-					this.$store.dispatch('app/getCustomerServiceAction', {
-						isToService: true,
-						shopId: this.$store.state.app.platformOperationShopId
-					})
+					this.$store.dispatch('app/getCustomerServiceAction', { isToService: true })
 					return
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()

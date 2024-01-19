@@ -76,7 +76,7 @@ export default {
 							if (res.data.length) {
 								uni.showActionSheet({
 									title: '* 请选择客服 *',
-									itemList: res.data.map((item) => `${item.name}（${item.state ? '在线' : '已下线'}）`),
+									itemList: res.data.map((item) => `${item.name}${item.state ? '（在线）' : ''}`), // （已下线）
 									itemColor: '#2c3e50',
 									success: (result) => {
 										dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })

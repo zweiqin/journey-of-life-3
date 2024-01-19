@@ -21,7 +21,8 @@ export default {
 		},
 		iconSrc: {
 			type: String,
-			required: true
+			// required: true
+			default: require('../../static/images/new-user/menu-icon/lianxikefu.png')
 		},
 		isDock: {
 			type: Boolean,
@@ -118,7 +119,7 @@ $uni-text-color-inverse: #979797;
 
 .drag {
 	position: fixed;
-	z-index: 999999;
+	z-index: 10;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -140,7 +141,7 @@ $uni-text-color-inverse: #979797;
 
 	.drag-text {
 		padding: 8upx;
-		background-color: #ffffff;
+		background-color: #ef530e;
 		border-radius: 28upx;
 		box-shadow: 0px 4px 10px 0px rgba(4, 10, 19, 0.2);
 	}
