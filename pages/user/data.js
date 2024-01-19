@@ -117,7 +117,7 @@ export const myFunction = [
 		name: '小账本',
 		icon: require('../../static/images/new-user/menu-icon/xiaozhangben.png'),
 		// url: '/user/account-book/index', // 老的
-		url: '/user/commission-statistics/commission-statistics'
+		url: '/another-tf/another-user/commission-statistics/commission-statistics'
 		// url: '/another-tf/another-user/small-ledger/index'
 	},
 	{
@@ -212,7 +212,8 @@ export const myServe = [
 	{
 		name: '联系客服',
 		icon: require('../../static/images/new-user/menu-icon/lianxikefu.png'),
-		url: '/user/sever/service-center/service-center'
+		// url: '/user/sever/service-center/service-center',
+		type: 'flyToService'
 	}
 ]
 
@@ -227,7 +228,7 @@ export const shopServe = [
 		name: '商家订单',
 		icon: require('../../static/images/new-user/menu-icon/shangjiadingdan.png'),
 		url: '/another-tf/another-user/shop-orders/index',
-		showRole: [ 'shop' ]
+		showRole: ['shop', 'merchantStaff']
 	},
 	{
 		name: '商家充值',
@@ -245,7 +246,7 @@ export const shopServe = [
 		name: '商家统计',
 		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
 		url: '/another-tf/another-user/shop-statistics/index',
-		showRole: [ 'shop' ]
+		showRole: ['shop', 'merchantStaff']
 	},
 	{
 		name: '商家营销',
@@ -306,7 +307,8 @@ export const myPreferential = [
 	},
 	{
 		name: '我的抽奖',
-		icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png')
+		icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
+		type: 'participateLottery'
 	},
 	{
 		name: '我的红包',
@@ -379,6 +381,6 @@ export const otherFunction = [
 		name: '收款账户',
 		icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
 		url: '/another-tf/another-user/receiving-account/index',
-		showRole: [ 'shop' ]
+		showRole: ['shop', 'merchantStaff']
 	}
 ]

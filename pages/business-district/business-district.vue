@@ -32,11 +32,11 @@
 				</tui-waterfall>
 				</view> -->
 			<view>
-				<CommonShop
+				<ATFCommonShop
 					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop" margin="22upx 0"
 					radius="20upx"
 					pic-width="222upx" pic-height="222upx" show-sign
-				></CommonShop>
+				></ATFCommonShop>
 			</view>
 			<view style="padding-bottom: 45upx;">
 				<LoadingMore
@@ -62,7 +62,6 @@ import WelfareBar from './components/WelfareBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
 // import BrandShop from './components/BrandShop.vue'
-import CommonShop from './components/CommonShop.vue'
 import { getHomeBrandListApi } from '../../api/anotherTFInterface'
 import { getAdressDetailByLngLat } from '../../utils'
 
@@ -75,7 +74,6 @@ export default {
 		AdvertisementBar,
 		ActivityPackage,
 		// BrandShop,
-		CommonShop
 	},
 	data() {
 		return {
@@ -209,7 +207,7 @@ export default {
 		handleToDetail(item) {
 			const { type } = item
 			if (!type) return this.empty() // 特殊图标或图标名称对应不上就跳不了页面
-			uni.navigateTo({ url: `/community-center/shop/shop-enter?type=${item.type}&id=${item.id}` })
+			uni.navigateTo({ url: `/another-tf/another-user/shop/shop-enter?type=${item.type}&id=${item.id}` })
 		}
 	},
 	onPullDownRefresh() {

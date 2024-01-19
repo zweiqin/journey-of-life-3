@@ -3,10 +3,10 @@
 		<JHeader title="提问" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="qaTopInfo">
 			<view class="qaTopInfoBox">
-				<image :src="common.seamingImgUrl(qudata.images)"></image>
+				<image :src="common.seamingImgUrl(qudata.images[0])"></image>
 				<view class="qaInfoText">
 					<h3>{{ qudata.productName }}</h3>
-					<span>共{{ qudata.questionNumber }}个问题</span>
+					<span>共{{ questionNumber }}个问题</span>
 				</view>
 			</view>
 		</view>
@@ -27,26 +27,37 @@
 </template>
 
 <script>
-import { addProblemAnswerApi } from '../../../api/anotherTFInterface'
+import { addProblemAnswerApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 export default {
-	name: 'QADetail',
+	name: 'PutQuestions',
 	data() {
 		return {
 			anonymous: false,
-			qudata: {},
+			qudata: {
+				images: []
+			},
 			questionText: '',
-			ifAnonymous: 0
+			ifAnonymous: 0,
+			questionNumber: ''
 		}
 	},
-	onLoad(params) {
-		this.qudata = this.$getJumpParam(params)
+	onLoad(options) {
+		this.questionNumber = options.questionNumber
+		uni.showLoading()
+		getProductDetailsByIdApi({
+			shopId: options.shopId,
+			productId: options.productId,
+			skuId: options.skuId,
+			terminal: 1
+		}).then((res) => {
+			uni.hideLoading()
+			this.qudata = res.data
+		})
+			.catch((res) => {
+				uni.hideLoading()
+			})
 	},
 	methods: {
-		seeAllFn() {
-			uni.navigateTo({
-				url: 'qADetail'
-			})
-		},
 		changeCheck() {
 			this.anonymous = !this.anonymous
 		},

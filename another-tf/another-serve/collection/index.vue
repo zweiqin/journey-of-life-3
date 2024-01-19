@@ -142,7 +142,7 @@
 											</view>
 											<view
 												class="toStore flex-items-plus fs24"
-												@click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)"
+												@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
 											>
 												进入店铺 >
 											</view>

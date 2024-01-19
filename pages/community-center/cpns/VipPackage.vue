@@ -63,7 +63,6 @@
       </view>-->
 
       <!-- 499会员 -->
-      <!-- <view class="package whole-package v-499" @click="go('/another-tf/another-user/user-upgrade/purchase-chain-products')"></view> -->
       <view class="package whole-package v-499" @click="$emit('view499')"></view>
 
       <!-- <view class="package ilo-package" @click="empty()">

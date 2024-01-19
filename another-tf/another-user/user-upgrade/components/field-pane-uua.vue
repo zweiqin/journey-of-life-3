@@ -278,7 +278,7 @@ export default {
 						})
 				}
 			} else if (this.upgradeLevelType === 1) {
-				this.go('/another-tf/another-user/user-upgrade/purchase-chain-products')
+				this.go('/another-tf/another-user/user-upgrade/purchase-chain-goods')
 			} else if (this.upgradeLevelType === 3) {
 				uni.showModal({
 					title: '您当前合伙人条件未达到！',

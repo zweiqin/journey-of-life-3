@@ -3,6 +3,15 @@
 	<view class="order-confirm-container">
 		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="content">
+			<view style="text-align: right;">
+				<tui-button
+					type="danger" plain width="180rpx" height="54rpx"
+					style="display: inline-block;" shape="circle"
+					@click="handleShare"
+				>
+					一键分享
+				</tui-button>
+			</view>
 			<view v-if="settlement.shopType !== 2">
 				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
 					<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
@@ -257,6 +266,9 @@
 				</view>
 			</view>
 		</tui-bottom-popup>
+
+		<!-- 分享订单商品海报 -->
+		<OrderPoster ref="refOrderPoster"></OrderPoster>
 	</view>
 </template>
 
@@ -338,18 +350,18 @@ export default {
 	methods: {
 		handleOnShow() {
 			if (uni.getStorageSync(T_RECEIVE_ITEM)) this.userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
-			if (uni.getStorageSync(T_SKU_ITEM_DTO_LIST)) {
+			if (uni.getStorageSync(T_SKU_ITEM_DTO_LIST)) { // 1立即购买，2购物车结算
 				this.skuItemDTOList = uni.getStorageSync(T_SKU_ITEM_DTO_LIST)
 				if (this.skuItemDTOList[0].shopDiscountId > 0) {
-					this.sumitType = 4
+					this.sumitType = 4 // 4限时折扣活动
 				} else if (this.skuItemDTOList[0].shopSeckillId > 0) {
-					this.sumitType = 3
+					this.sumitType = 3 // 3秒杀活动
 				}
 				this.getSettlement(false)
-			} else if (uni.getStorageSync(T_SKU_ITEM_LIST)) {
+			} else if (uni.getStorageSync(T_SKU_ITEM_LIST)) { // 3拼团商品立即购买
 				this.skuItemList = uni.getStorageSync(T_SKU_ITEM_LIST)
 				this.shopGroupWorkId = this.skuItemList.shopGroupWorkId
-				this.sumitType = this.skuItemList.type
+				this.sumitType = this.skuItemList.type // 1发起拼团(单独开团)，2参与拼团(拼团)
 				this.collageId = this.skuItemList.collageId
 				this.getSettlement(true)
 			}
@@ -1023,6 +1035,27 @@ export default {
 				this.$showToast(`${e.message}-${e.errorData}`)
 			} finally {
 				uni.hideLoading()
+			}
+		},
+
+		// 点击分享
+		handleShare() {
+			if (this.settlement.shops && this.settlement.shops.length) {
+				const nickName = this.$store.getters.userInfo.name
+				this.$refs.refOrderPoster.show({
+					headerTitle: nickName ? nickName + '的订单商品' : '订单商品',
+					brandList: this.settlement.shops.map((brand) => ({
+						brandName: brand.shopName,
+						goodsList: brand.skus.map((item) => ({
+							picUrl: item.image,
+							goodsName: item.productName,
+							specifications: item.value,
+							price: item.price
+						}))
+					}))
+				})
+			} else {
+				return this.$showToast('缺少商品数据')
 			}
 		}
 	}

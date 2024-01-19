@@ -89,7 +89,7 @@ export default {
 		}
 	},
 	onLoad() {
-		uni.$on('sendAddEvaluateMsg', (data) => {
+		uni.$on('sendEvaluateDetailsMsg', (data) => {
 			if (data.detailsCommentVOData) {
 				this.detailsCommentVOData = data.detailsCommentVOData
 				this.commentImgData(this.detailsCommentVOData.image)

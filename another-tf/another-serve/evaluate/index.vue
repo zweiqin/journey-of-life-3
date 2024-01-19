@@ -66,13 +66,14 @@
 </template>
 
 <script>
-import { addCommentOrderApi } from '../../../api/anotherTFInterface'
+import { addCommentOrderApi, getOrderDetailApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Evaluate',
 	data() {
 		return {
 			commentData: {},
 			orderId: 0,
+			skuId: 0,
 			commentStar: 5,
 			descStar: 5,
 			logisticsStar: 5,
@@ -84,11 +85,14 @@ export default {
 		}
 	},
 	onLoad(options) {
-		if (options.detail) {
-			const params = this.$getJumpParam(options)
-			this.commentData = params.commentData
-			this.orderId = params.orderId
-		}
+		this.orderId = Number(options.orderId)
+		this.skuId = Number(options.skuId)
+		getOrderDetailApi({
+			orderId: this.orderId,
+			noticeId: 0
+		}).then((res) => {
+			this.commentData = res.data.skus.find((item) => item.skuId === this.skuId) || {}
+		})
 	},
 	methods: {
 		handleSaveImg(imgUrl) {

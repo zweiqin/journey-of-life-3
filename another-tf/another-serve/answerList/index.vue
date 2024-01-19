@@ -4,7 +4,7 @@
 		<view class="qaBox">
 			<view class="qaTopInfo">
 				<view class="qaTopInfoBox">
-					<image :src="common.seamingImgUrl(productInfo.images)"></image>
+					<image :src="common.seamingImgUrl(productInfo.images[0])"></image>
 					<view class="qaInfoText">
 						<h3>{{ productInfo.productName }}</h3>
 						<span>共{{ problemsList.length }}个问题</span>
@@ -13,7 +13,10 @@
 			</view>
 			<QuestionsAndAnswersList :product-info="productInfo" :problems-list="problemsList" />
 			<view class="putQuestionsBox">
-				<view class="putQuestionsBtn" @click="goToQuestions">
+				<view
+					class="putQuestionsBtn"
+					@click="go(`/another-tf/another-serve/putQuestions/index?shopId=${productInfo.shopId}&productId=${productInfo.productId}&skuId=${productInfo.skuId}&questionNumber=${problemsList.length}`)"
+				>
 					去提问
 				</view>
 			</view>
@@ -22,14 +25,15 @@
 </template>
 
 <script>
-import { getProblemsSeckillApi } from '../../../api/anotherTFInterface'
+import { getProblemsSeckillApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 import QuestionsAndAnswersList from '../goodsDetails/components/QuestionsAndAnswersList'
 
 export default {
-	name: 'QADetail',
+	name: 'AnswerList',
 	components: { QuestionsAndAnswersList },
 	data() {
 		return {
+			productId: 0,
 			isEmpty: false,
 			problemsList: [], // 商品问答数据
 			problemsTotal: 0,
@@ -37,18 +41,33 @@ export default {
 				page: 1,
 				pageSize: 20
 			},
-			productInfo: {}
+			productInfo: {
+				images: []
+			}
 		}
 	},
 	onLoad(options) {
-		this.productInfo = this.$getJumpParam(options)
+		this.productId = options.productId
+		uni.showLoading()
+		getProductDetailsByIdApi({
+			shopId: options.shopId,
+			productId: this.productId,
+			skuId: options.skuId,
+			terminal: 1
+		}).then((res) => {
+			uni.hideLoading()
+			this.productInfo = res.data
+		})
+			.catch((res) => {
+				uni.hideLoading()
+			})
 		this.getProblemsList()
 	},
 	methods: {
 		// 商品问答数据
 		getProblemsList(isLoadmore) {
 			uni.showLoading()
-			getProblemsSeckillApi({ ...this.queryInfo, productId: this.productInfo.productId }).then((res) => {
+			getProblemsSeckillApi({ ...this.queryInfo, productId: this.productId }).then((res) => {
 				this.problemsTotal = res.data.total
 				if (isLoadmore) {
 					this.problemsList.push(...res.data.list)
@@ -61,14 +80,6 @@ export default {
 				.catch((e) => {
 					uni.hideLoading()
 				})
-		},
-		// 提问
-		goToQuestions() {
-			const paramObj = Object.assign({}, this.productInfo, {
-				questionNumber: this.problemsList.length,
-				images: this.productInfo.images
-			})
-			this.go('/another-tf/another-serve/putQuestions/index', paramObj)
 		},
 		onReachBottom() {
 			if (this.problemsList.length < this.problemsTotal) {

@@ -113,14 +113,10 @@
 					<view class="order-list-box">
 						<view class="item">
 							<view class="order-list-top">
-								<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${dataList.shopId}`)">
+								<view class="top-l" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${dataList.shopId}`)">
 									<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 10upx 0 0"></tui-icon>
 									<text class="shop-name">{{ dataList.shopName }}</text>
 									<tui-icon :size="24" color="#999999" name="arrowright" margin="0 0 0 15upx"></tui-icon>
-								</view>
-								<view class="toService" @click="handleFlyToService">
-									<tui-icon name="people-fill" :size="60" unit="upx" color="#9aedbe" margin="0 15upx 0 0"></tui-icon>
-									<text>联系客服</text>
 								</view>
 							</view>
 							<view class="order-info-box">
@@ -223,7 +219,7 @@
 												<tui-button
 													v-if="[4, 10].includes(dataList.state) && (proItem.commentId === 0)" type="blue" plain
 													width="180upx" height="60rpx" margin="0 12upx 0 0"
-													@click="go(`/another-tf/another-serve/evaluate/index`, { commentData: proItem, orderId: dataList.orderId })"
+													@click="go(`/another-tf/another-serve/evaluate/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
 												>
 													立即评价
 												</tui-button>
@@ -387,7 +383,16 @@
 					</tui-button>
 				</view>
 			</tui-bottom-popup>
+
+			<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+				<ATFCustomerService :shop-id="dataList.shopId" :data="customerServiceList"></ATFCustomerService>
+			</tui-bottom-popup>
 		</view>
+
+		<DragButton
+			text="联系客服" :icon-src="require('../../../static/images/new-user/menu-icon/lianxikefu.png')" is-dock
+			exist-tab-bar @btnClick="handleOpenCustomerService"
+		/>
 	</view>
 </template>
 
@@ -396,7 +401,6 @@ import { handleDoPay } from '../../../utils/payUtil'
 import {
 	getOrderDetailApi,
 	getOrderVerificationHxCodeApi,
-	getCustomerServiceAppletKfApi,
 	getProductDetailsByIdApi,
 	getOrderDileveryShippingTraceApi,
 	deleteShopOrderApi,
@@ -437,7 +441,11 @@ export default {
 
 			// 支付
 			showPayTypePopup: false,
-			payInfo: {}
+			payInfo: {},
+
+			// 客服
+			isShowCustomerServicePopup: false,
+			customerServiceList: []
 		}
 	},
 	onLoad(options) {
@@ -708,57 +716,14 @@ export default {
 			}, 1)
 		},
 
-		async handleFlyToService() {
-			let corpId = null
-			let serviceURL = null
-			uni.showLoading({
-				title: '加载中...'
+		// 打开客服
+		async handleOpenCustomerService() {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: this.dataList.shopId
 			})
-			try {
-				const res = await getCustomerServiceAppletKfApi({ id: this.dataList.shopId })
-				if (res.code === '' && res.data.corpId && res.data.url) {
-					corpId = res.data.corpId
-					serviceURL = res.data.url
-				}
-			} finally {
-				uni.hideLoading()
-			}
-			if (!serviceURL || !corpId) {
-				return uni.showToast({
-					icon: 'none',
-					title: '暂无客服~'
-				})
-			}
-			// #ifdef MP-WEIXIN
-			wx.openCustomerServiceChat({
-				extInfo: { url: serviceURL },
-				corpId
-			})
-			// #endif
-			// #ifdef APP
-			try {
-				let wechatServices = null
-				plus.share.getServices((res) => {
-					wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
-					if (wechatServices) {
-						wechatServices.openCustomerServiceChat({
-							corpid: corpId,
-							url: serviceURL
-						}, (success) => { }, (err) => { })
-					} else {
-						plus.nativeUI.alert('当前环境不支持微信操作!')
-					}
-				}, (err) => {
-					uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-				})
-			} catch (err) {
-				uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-			}
-			// #endif
-			// #ifdef H5
-			// window.open(serviceURL) safari浏览器不支持window.open
-			window.location.href = serviceURL
-			// #endif
+			this.customerServiceList = res.data
+			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }
@@ -768,6 +733,10 @@ export default {
 .order-details-container {
 	min-height: 100vh;
 	background: #f7f7f7;
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 
 	.content {
 		padding: 0 0 160upx 0;

@@ -40,10 +40,6 @@
 							<text>{{ orderTypeEnum[item.state] || '--' }}</text>
 						</view>
 					</view>
-					<!-- <view>
-						<text>客户ID：</text>
-						<text>{{ item.buyerUserId || '--' }}</text>
-						</view> -->
 					<view style="display: flex;justify-content: space-between;align-items: center;">
 						<view>
 							<text>用户手机号：</text>

@@ -13,7 +13,7 @@ export default {
 			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
 			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
 			identityInfo: {
-				type: [], // 9商家，1加盟商，2代理商
+				type: [], // 9商家或8商家员工，1加盟商，2代理商
 				shopInfo: {}
 			}
 		}
@@ -389,12 +389,18 @@ export default {
 				if (userInfo && userInfo.phone) {
 					getIsShopByUserApi({ mobile: userInfo.phone })
 						.then((res) => {
-							if (res.data && res.data.shopId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
+							if (res.data && res.data.shopId) {
+								if (res.data.staff) {
+									commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 8]) ], shopInfo: res.data || {} })
+								} else {
+									commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
+								}
+							}
 							resolve(res.data)
 						})
 						.catch((err) => {
 							uni.hideToast()
-							resolve(err)
+							reject(err)
 						})
 				}
 			})

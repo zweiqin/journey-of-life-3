@@ -202,6 +202,7 @@ export default {
 					this.getCurrentSkuName()
 				}
 			})
+			console.log(this.selectedAttr, this.selectedSku)
 		},
 
 		// 获取选择后的文本显示

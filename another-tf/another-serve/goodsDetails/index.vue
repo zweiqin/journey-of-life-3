@@ -116,18 +116,18 @@
 					<view>
 						<image
 							class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
-							@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 						></image>
 					</view>
 					<view class="flex-display flex-column mar-left-20">
-						<label @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
+						<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
 						<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
 							<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
 							<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
 						</view>
 					</view>
 				</view>
-				<view class="inStore-but" @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">
+				<view class="inStore-but" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
 					<text>去逛逛</text>
 					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
 				</view>
@@ -150,17 +150,15 @@
 				<view class="btns_container">
 					<view
 						v-if="!(goodsDetail.shopName === '团蜂自营')" class="btns flex-column-plus flex-items"
-						@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+						@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 					>
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
-					<!-- #ifdef MP-WEIXIN || APP-PLUS || H5 -->
-					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleFlyToService">
+					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
 						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 						<label class="fs22">客服</label>
 					</view>
-					<!-- #endif -->
 					<view
 						class="btns flex-column-plus mar-left-10 flex-items Cart"
 						@click="go('/another-tf/another-serve/shopCar/shopCar')"
@@ -238,6 +236,10 @@
 				</view>
 			</view>
 		</tui-popup>
+
+		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+		</tui-bottom-popup>
 	</view>
 </template>
 
@@ -247,7 +249,7 @@ import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting } from '../../../utils'
-import { getProductDetailsByIdApi, getBroadCastList, getCustomerServiceAppletKfApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -292,7 +294,11 @@ export default {
 				currentSku: [], // 选中的SKU（子组件给当前页面做数据渲染）
 				number: 1
 			},
-			allCartNum: 0 // 购物车数量
+			allCartNum: 0, // 购物车数量
+
+			// 客服
+			isShowCustomerServicePopup: false,
+			customerServiceList: []
 		}
 	},
 	onLoad(options) {
@@ -448,59 +454,14 @@ export default {
 		},
 
 		// 打开客服
-		async handleFlyToService() {
-			let corpId = null
-			let serviceURL = null
-			uni.showLoading({
-				title: '加载中...'
+		async handleOpenCustomerService() {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: this.shopId
 			})
-			try {
-				const res = await getCustomerServiceAppletKfApi({ id: this.shopId })
-				if (res.code === '' && res.data.corpId && res.data.url) {
-					corpId = res.data.corpId
-					serviceURL = res.data.url
-				}
-			} finally {
-				uni.hideLoading()
-			}
-			if (!serviceURL || !corpId) {
-				return uni.showToast({
-					icon: 'none',
-					title: '暂无客服~'
-				})
-			}
-			// #ifdef MP-WEIXIN
-			wx.openCustomerServiceChat({
-				extInfo: { url: serviceURL },
-				corpId
-			})
-			// #endif
-			// #ifdef APP
-			try {
-				let wechatServices = null
-				plus.share.getServices((res) => {
-					wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
-					if (wechatServices) {
-						wechatServices.openCustomerServiceChat({
-							corpid: corpId,
-							url: serviceURL
-						}, (success) => { }, (err) => { })
-					} else {
-						plus.nativeUI.alert('当前环境不支持微信操作!')
-					}
-				}, (err) => {
-					uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-				})
-			} catch (err) {
-				uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-			}
-			// #endif
-			// #ifdef H5
-			// window.open(serviceURL) safari浏览器不支持window.open
-			window.location.href = serviceURL
-			// #endif
+			this.customerServiceList = res.data
+			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
-
 	}
 }
 </script>
@@ -511,6 +472,10 @@ export default {
 	box-sizing: border-box;
 	background-color: #f8f8f8;
 	padding-bottom: 180upx;
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 
 	.express-box {
 		height: 100rpx;
@@ -705,175 +670,174 @@ export default {
 		}
 	}
 
-}
+	.news-box {
+		position: fixed;
+		left: 20rpx;
+		top: 200rpx;
+		z-index: 1;
 
-.news-box {
-	position: fixed;
-	left: 20rpx;
-	top: 200rpx;
-	z-index: 1;
-
-	.news-bg {
-		width: 450rpx;
-		height: 70rpx;
-		overflow: hidden;
-
-		.news-item {
-			background: rgba(0, 0, 0, 0.75);
-			border-radius: 16rpx;
-			height: 70rpx;
-			color: #FFFFFF;
-			font-size: 24rpx;
-			padding: 0 20rpx;
+		.news-bg {
 			width: 450rpx;
+			height: 70rpx;
+			overflow: hidden;
 
-			.item-avatar {
-				width: 50rpx;
-				height: 50rpx;
-				border-radius: 50%;
-				margin-right: 20rpx;
-			}
-		}
-	}
-}
+			.news-item {
+				background: rgba(0, 0, 0, 0.75);
+				border-radius: 16rpx;
+				height: 70rpx;
+				color: #FFFFFF;
+				font-size: 24rpx;
+				padding: 0 20rpx;
+				width: 450rpx;
 
-.goodsDiscount {
-	.groupBuy {
-		.groupBuyList {
-			.groupBuyItem {
-				padding: 0 30rpx;
-				height: 116rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-bottom: 1rpx solid #EEEEEE;
-
-				.leftAvatar {
-					display: flex;
-					align-items: center;
-					width: 50%;
-
-					image {
-						width: 72rpx;
-						height: 72rpx;
-						margin-right: 10rpx;
-						border-radius: 50%;
-					}
-				}
-
-				.rightInfo {
-					display: flex;
-					align-items: center;
-					width: 50%;
-
-					.groupBuyTime {
-						.needPeople {
-							font-size: 28rpx;
-							color: #333333;
-							margin-bottom: 10rpx;
-							font-weight: 400;
-
-							b {
-								color: #C5AA7B;
-								font-weight: 400;
-							}
-						}
-
-						.endDate {
-							color: #666666;
-						}
-					}
-
-					.groupBuyBtn {
-						width: 140rpx;
-						height: 60rpx;
-						line-height: 60rpx;
-						background: #333333;
-						text-align: center;
-						color: #FFEBC4;
-						font-size: 24rpx;
-					}
+				.item-avatar {
+					width: 50rpx;
+					height: 50rpx;
+					border-radius: 50%;
+					margin-right: 20rpx;
 				}
 			}
 		}
 	}
-}
 
-.popupDiscount {
-	padding-bottom: 70rpx;
-
-	.popupDiscountTit {
-		font-size: 36rpx;
-		color: #333333;
-		height: 105rpx;
-		line-height: 105rpx;
-		text-align: center;
-		border-bottom: 1rpx solid #EEEEEE;
-	}
-
-	.groupBuy {
-		padding-bottom: 80rpx;
-
-		.groupBuyList {
-			.groupBuyItem1 {
-				padding: 0 30rpx;
-				height: 116rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-bottom: 1rpx solid #EEEEEE;
-
-				.leftAvatar {
+	.goodsDiscount {
+		.groupBuy {
+			.groupBuyList {
+				.groupBuyItem {
+					padding: 0 30rpx;
+					height: 116rpx;
 					display: flex;
 					align-items: center;
+					justify-content: space-between;
+					border-bottom: 1rpx solid #EEEEEE;
 
-					image {
-						width: 72rpx;
-						height: 72rpx;
-						margin-right: 10rpx;
-						border-radius: 50%;
+					.leftAvatar {
+						display: flex;
+						align-items: center;
+						width: 50%;
+
+						image {
+							width: 72rpx;
+							height: 72rpx;
+							margin-right: 10rpx;
+							border-radius: 50%;
+						}
 					}
 
-					.groupBuyTime {
-						margin-right: 80rpx;
-						margin-bottom: 10rpx;
-						width: 320rpx;
+					.rightInfo {
+						display: flex;
+						align-items: center;
+						width: 50%;
 
-						.needPeople {
-							font-size: 26rpx;
-							color: #333333;
-
-							span {
+						.groupBuyTime {
+							.needPeople {
+								font-size: 28rpx;
 								color: #333333;
-								padding-right: 10rpx;
+								margin-bottom: 10rpx;
+								font-weight: 400;
+
+								b {
+									color: #C5AA7B;
+									font-weight: 400;
+								}
 							}
 
-							b {
-								color: #C5AA7B;
-								font-weight: 400;
+							.endDate {
+								color: #666666;
 							}
 						}
 
-						.endDate {
-							color: #333333;
-							opacity: 0.7;
+						.groupBuyBtn {
+							width: 140rpx;
+							height: 60rpx;
+							line-height: 60rpx;
+							background: #333333;
+							text-align: center;
+							color: #FFEBC4;
 							font-size: 24rpx;
 						}
 					}
 				}
+			}
+		}
+	}
 
-				.rightInfo {
+	.popupDiscount {
+		padding-bottom: 70rpx;
+
+		.popupDiscountTit {
+			font-size: 36rpx;
+			color: #333333;
+			height: 105rpx;
+			line-height: 105rpx;
+			text-align: center;
+			border-bottom: 1rpx solid #EEEEEE;
+		}
+
+		.groupBuy {
+			padding-bottom: 80rpx;
+
+			.groupBuyList {
+				.groupBuyItem1 {
+					padding: 0 30rpx;
+					height: 116rpx;
 					display: flex;
 					align-items: center;
+					justify-content: space-between;
+					border-bottom: 1rpx solid #EEEEEE;
 
-					.groupBuyBtn {
-						width: 140rpx;
-						height: 70rpx;
-						line-height: 70rpx;
-						background: #333333;
-						text-align: center;
-						color: #FFEBC4;
-						font-weight: 400;
+					.leftAvatar {
+						display: flex;
+						align-items: center;
+
+						image {
+							width: 72rpx;
+							height: 72rpx;
+							margin-right: 10rpx;
+							border-radius: 50%;
+						}
+
+						.groupBuyTime {
+							margin-right: 80rpx;
+							margin-bottom: 10rpx;
+							width: 320rpx;
+
+							.needPeople {
+								font-size: 26rpx;
+								color: #333333;
+
+								span {
+									color: #333333;
+									padding-right: 10rpx;
+								}
+
+								b {
+									color: #C5AA7B;
+									font-weight: 400;
+								}
+							}
+
+							.endDate {
+								color: #333333;
+								opacity: 0.7;
+								font-size: 24rpx;
+							}
+						}
+					}
+
+					.rightInfo {
+						display: flex;
+						align-items: center;
+
+						.groupBuyBtn {
+							width: 140rpx;
+							height: 70rpx;
+							line-height: 70rpx;
+							background: #333333;
+							text-align: center;
+							color: #FFEBC4;
+							font-weight: 400;
+						}
 					}
 				}
 			}

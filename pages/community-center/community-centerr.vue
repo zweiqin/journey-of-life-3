@@ -166,7 +166,7 @@ export default {
 		handleToActiveDetail() {
 			if (this.isLogin()) {
 				// this.go('/community-center/vip-center/vip-detail?type=2')
-				if (this.pupupLevelType === 1) this.go('/another-tf/another-user/user-upgrade/purchase-chain-products')
+				if (this.pupupLevelType === 1) this.go('/another-tf/another-user/user-upgrade/purchase-chain-goods')
 				else if (this.pupupLevelType === 2) this.go('/another-tf/another-user/user-upgrade/user-upgrade-application')
 				else if (this.pupupLevelType === 4) this.go('/another-tf/another-user/user-upgrade/user-upgrade-application')
 			} else {

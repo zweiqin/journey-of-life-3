@@ -7,7 +7,7 @@
 				<view>
 					<view v-for="item in findReturnDatalist" class="item">
 						<view class="order-list-top">
-							<view class="top-l" @click="go(`/community-center/shop/shop-detail?shopId=${item.shopId}`)">
+							<view class="top-l" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
 								<image :src="common.seamingImgUrl(item.shopLogo)" class="shop-img"></image>
 								<text class="shop-name">{{ item.shopName }}</text>
 								<tui-icon name="arrowright" :size="24" unit="upx" color="#999999" margin="0 0 0 15upx"></tui-icon>
