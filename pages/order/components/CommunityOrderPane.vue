@@ -6,6 +6,8 @@
     </view>
 
     <view class="order-base-info">
+      <view class="offer-tip" v-if="!orderInfo.belongsToSfUserId && orderInfo && orderInfo.extraInfo && orderInfo.extraInfo.includes('quotaPrice')">已有师傅报价啦! 点我查看</view>
+
       <view class="item">
         <view class="title">服务类型</view>
         <view class="value">{{ orderInfo.dictName }}</view>
@@ -84,18 +86,17 @@ export default {
 
   computed: {
     extraInfo() {
-      let extraInfo = this.orderInfo.extraInfo
+      let extraInfo = this.orderInfo.extraInfo;
       if (extraInfo) {
         try {
-          extraInfo = JSON.parse(extraInfo)
-          return extraInfo.payType
+          extraInfo = JSON.parse(extraInfo);
+          return extraInfo.payType;
         } catch (error) {
-          return undefined
+          return undefined;
         }
       }
     }
   }
-
 };
 </script>
 
@@ -137,6 +138,12 @@ export default {
         color: #888889;
         margin-right: 38upx;
       }
+    }
+
+    .offer-tip {
+      margin-bottom: 10upx;
+      color: #ef5613;
+      font-size: 28upx;
     }
   }
 

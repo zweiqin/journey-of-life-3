@@ -127,8 +127,8 @@ export default {
 		}
 	},
 	onLoad(option) {
-		if (option.keyWord) {
-			this.queryInfo.search = option.keyWord
+		if (option.search) {
+			this.queryInfo.search = option.search
 		}
 		if (option.classifyId) {
 			this.queryInfo.classifyId = option.classifyId
@@ -206,6 +206,7 @@ input {
 
 	.search {
 		padding: 20rpx;
+		padding-top: 20rpx;
 		background: #FFFFFF;
 		border-top: 2rpx solid #F3F4F5;
 		position: relative;
@@ -387,9 +388,5 @@ input {
 	.activeUp {
 		border-color: transparent transparent #C5AA7B transparent;
 	}
-}
-
-.search {
-	padding-top: 20rpx;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<view class="item ske-loading">
 		<view class="order-list-top">
-			<view class="top-l" @click.stop="go(`/community-center/shop/shop-detail?shopId=${data.shopId}`)">
+			<view class="top-l" @click.stop="go(`/another-tf/another-user/shop/shop-detail?shopId=${data.shopId}`)">
 				<image :src="data.shopLogo" class="shop-img" />
 				<text class="shop-name">{{ data.shopName }}</text>
 				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
@@ -10,8 +10,8 @@
 				{{ data.returnType ? '退款中' : orderTypeEnum[data.state] || '--' }}
 			</view>
 		</view>
-		<view class="order-info-box" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
-			<view class="order-info">
+		<view class="order-info-box">
+			<view class="order-info" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
 				<view v-for="(skuItem, skuIndex) in data.skus" :key="skuIndex" class="order-info-item">
 					<image :src="skuItem.image" class="product-img default-img" />
 					<view class="info-box">
@@ -62,10 +62,10 @@
 				</view>
 			</view>
 			<view v-if="showOperate" class="btnBox flex-items" :class="{ flexSpBetween: data.state === 5 || data.state === 9 }">
-				<tui-icon
+				<!-- <tui-icon
 					v-if="data.state === 5 || data.state === 9" name="delete" :size="14" color="#333333"
-					@click.stop="handleDeleteOrder(data)"
-				></tui-icon>
+					@click="handleDeleteOrder(data)"
+					></tui-icon> -->
 				<view class="order-btn-box">
 					<text
 						v-for="buttonItem in getOrderOptionButtonObj(data)" :key="buttonItem.name" class="btn"
@@ -141,11 +141,20 @@ export default {
 			const { state, returnType, afterState, skus = [], collageId, paymentState, orderType } = orderItem
 			const orderNeedBtnList = [] // 订单应有的btn
 			// 取消订单
-			if ([1, 6, 8].includes(state)) {
+			// if ([1, 6, 8].includes(state)) {
+			// 	orderNeedBtnList.push({
+			// 		name: '取消订单',
+			// 		className: 'l',
+			// 		functionName: 'handleCancelOrder',
+			// 		functionParams: [ orderItem ]
+			// 	})
+			// }
+			// 核销码
+			if ([1, 8].includes(state)) {
 				orderNeedBtnList.push({
-					name: '取消订单',
+					name: '核销码',
 					className: 'l',
-					functionName: 'handleCancelOrder',
+					functionName: 'handleOrderWriteOff',
 					functionParams: [ orderItem ]
 				})
 			}
@@ -159,14 +168,14 @@ export default {
 				})
 			}
 			// 申请售后
-			if ([2, 3, 4, 9, 10].includes(state) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
-				orderNeedBtnList.push({
-					name: '申请售后',
-					className: 'l',
-					functionName: 'goAfterSalesService',
-					functionParams: [ orderItem ]
-				})
-			}
+			// if ([2, 3, 4, 9, 10].includes(state) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
+			// 	orderNeedBtnList.push({
+			// 		name: '申请售后',
+			// 		className: 'l',
+			// 		functionName: 'goAfterSalesService',
+			// 		functionParams: [ orderItem ]
+			// 	})
+			// }
 			// 退款详情
 			if ([ 1 ].includes(returnType)) {
 				orderNeedBtnList.push({
@@ -222,6 +231,9 @@ export default {
 				throw new Error(`${buttonItem.name}的function在本VM中不存在`)
 			}
 		},
+		handleOrderWriteOff(orderItem) {
+			this.go(`/another-tf/another-serve/orderDetails/index?orderId=${orderItem.orderId}&showType=writeOff`)
+		},
 		handleCancelOrder(orderItem) {
 			const modalOptions = {
 				title: '温馨提示',
@@ -232,9 +244,7 @@ export default {
 					if (res.confirm) {
 						uni.showLoading()
 						try {
-							await cancelShopOrderApi({
-								orderId: orderItem.orderId
-							})
+							await cancelShopOrderApi({ orderId: orderItem.orderId })
 							this.$emit('refresh')
 							uni.showToast({
 								icon: 'none',

@@ -78,7 +78,7 @@ export default {
 			adInfo: {},
 			jumpContent: {},
 			couponList: [],
-			isLogin: false,
+			isHasLogin: false,
 			buyerUserId: 0,
 			cParams: {}
 		}
@@ -92,7 +92,7 @@ export default {
 			const token = res.token
 			setTimeout(() => {
 				this.buyerUserId = res.buyerUserId
-				this.isLogin = !!token
+				this.isHasLogin = !!token
 				getSelectByConditionAdvertApi({
 					triggerCondition: this.triggerCondition
 				}).then((res) => {
@@ -112,7 +112,7 @@ export default {
 		},
 		// 查询优惠券
 		getCoupons() {
-			if (this.isLogin) {
+			if (this.isHasLogin) {
 				const _items = this.jumpContent.items
 				if (_items) {
 					getCanvasCouponsApi({
@@ -136,7 +136,7 @@ export default {
 		close() {
 			this.visible = false
 			var params = {}
-			if (this.isLogin) {
+			if (this.isHasLogin) {
 				params.buyerUserId = this.buyerUserId
 			} else {
 				uni.getSystemInfo({

@@ -13,14 +13,14 @@
 							<view>{{ item.name }}</view>
 							<view>
 								<text v-if="item.state">在线</text>
-								<text v-else>已下线</text>
+								<!-- <text v-else>已下线</text> -->
 							</view>
 						</view>
 					</view>
 					<view style="margin-left: 46upx;">
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
-							@click="handleFlyToService(item.kfId)"
+							@click="handleFlyToService(item.openKfId)"
 						>
 							选择
 						</tui-button>
@@ -41,7 +41,7 @@ export default {
 	props: {
 		shopId: {
 			type: [Number, String],
-			default: () => []
+			default: ''
 		},
 		data: {
 			type: Array,
@@ -55,10 +55,10 @@ export default {
 	created() {
 	},
 	methods: {
-		handleFlyToService(customerId) {
+		handleFlyToService(openKfId) {
 			this.$store.dispatch('app/flyToServiceAction', {
 				shopId: this.shopId,
-				customerId
+				openKfId
 			})
 		}
 	}

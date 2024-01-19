@@ -116,18 +116,18 @@
 					<view>
 						<image
 							class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
-							@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 						></image>
 					</view>
 					<view class="flex-display flex-column mar-left-20">
-						<label @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
+						<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
 						<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
 							<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
 							<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
 						</view>
 					</view>
 				</view>
-				<view class="inStore-but" @click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)">
+				<view class="inStore-but" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
 					<text>去逛逛</text>
 					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
 				</view>
@@ -150,17 +150,15 @@
 				<view class="btns_container">
 					<view
 						v-if="!(goodsDetail.shopName === '团蜂自营')" class="btns flex-column-plus flex-items"
-						@click="go(`/community-center/shop/shop-detail?shopId=${shopId}`)"
+						@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 					>
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 						<label class="fs22">店铺</label>
 					</view>
-					<!-- #ifdef MP-WEIXIN || APP-PLUS || H5 -->
 					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
 						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 						<label class="fs22">客服</label>
 					</view>
-					<!-- #endif -->
 					<view
 						class="btns flex-column-plus mar-left-10 flex-items Cart"
 						@click="go('/another-tf/another-serve/shopCar/shopCar')"
@@ -457,10 +455,12 @@ export default {
 
 		// 打开客服
 		async handleOpenCustomerService() {
-			this.customerServiceList = await this.$store.dispatch('app/getCustomerServiceAction', {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
 				shopId: this.shopId
 			})
+			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }

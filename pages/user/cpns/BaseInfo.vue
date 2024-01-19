@@ -50,6 +50,12 @@
 									color="#ff973f" margin="0 5upx 0 0"
 								></tui-icon>
 							</view>
+							<view @click.stop="(frameType = 'merchantStaff') && (isShowGloryFrame = true)">
+								<tui-icon
+									v-if="$store.state.auth.identityInfo.type.includes(8)" name="shop" :size="48" unit="upx"
+									color="#ff973f" margin="0 5upx 0 0"
+								></tui-icon>
+							</view>
 							<view @click.stop="(frameType = 'franchisee') && (isShowGloryFrame = true)">
 								<tui-icon
 									v-if="$store.state.auth.identityInfo.type.includes(1)" name="friendadd-fill" :size="48" unit="upx"
@@ -108,7 +114,7 @@
 				<view class="account-title">积分</view>
 				</view> -->
 
-			<view class="account-item" @click="go('/user/newVoucher/voucher')">
+			<view class="account-item" @click="go('/another-tf/another-user/voucher/voucher')">
 				<view class="account-number">
 					{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
 				</view>
@@ -158,6 +164,9 @@
 						</template>
 						<template v-else-if="frameType === 'shop'">
 							<text>您是商家</text>
+						</template>
+						<template v-else-if="frameType === 'merchantStaff'">
+							<text>您是商家员工</text>
 						</template>
 						<template v-else-if="frameType === 'franchisee'">
 							<text>您是加盟商</text>

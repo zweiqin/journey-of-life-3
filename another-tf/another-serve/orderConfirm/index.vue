@@ -3,6 +3,15 @@
 	<view class="order-confirm-container">
 		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="content">
+			<view style="text-align: right;">
+				<tui-button
+					type="danger" plain width="180rpx" height="54rpx"
+					style="display: inline-block;" shape="circle"
+					@click="handleShare"
+				>
+					一键分享
+				</tui-button>
+			</view>
 			<view v-if="settlement.shopType !== 2">
 				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
 					<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
@@ -257,6 +266,9 @@
 				</view>
 			</view>
 		</tui-bottom-popup>
+
+		<!-- 分享订单商品海报 -->
+		<OrderPoster ref="refOrderPoster"></OrderPoster>
 	</view>
 </template>
 
@@ -1023,6 +1035,27 @@ export default {
 				this.$showToast(`${e.message}-${e.errorData}`)
 			} finally {
 				uni.hideLoading()
+			}
+		},
+
+		// 点击分享
+		handleShare() {
+			if (this.settlement.shops && this.settlement.shops.length) {
+				const nickName = this.$store.getters.userInfo.name
+				this.$refs.refOrderPoster.show({
+					headerTitle: nickName ? nickName + '的订单商品' : '订单商品',
+					brandList: this.settlement.shops.map((brand) => ({
+						brandName: brand.shopName,
+						goodsList: brand.skus.map((item) => ({
+							picUrl: item.image,
+							goodsName: item.productName,
+							specifications: item.value,
+							price: item.price
+						}))
+					}))
+				})
+			} else {
+				return this.$showToast('缺少商品数据')
 			}
 		}
 	}

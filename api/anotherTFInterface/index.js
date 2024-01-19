@@ -1,6 +1,13 @@
 import { AnotherTFRequest } from '../../utils'
 
 /**
+ * @description 临时接口
+ */
+
+// 参与抽奖
+export const addDrawParticipateLotteryApi = (data) => AnotherTFRequest('/draw/addDraw', data)
+
+/**
  * @description 商城相关接口
  */
 
@@ -99,6 +106,9 @@ export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProduct
 
 // 优惠券商品列表查询
 export const getCouponProductsApi = (data) => AnotherTFRequest('/coupon/getCouponProducts', data)
+
+// 商圈搜索
+export const getBusinessSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProductsBusiness', data)
 
 // /app/getSearchProducts  商品搜索查询
 export const getSearchProductsApi = (data) => AnotherTFRequest('/app/getSearchProducts', data)

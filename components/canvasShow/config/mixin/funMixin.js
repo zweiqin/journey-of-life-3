@@ -74,7 +74,7 @@ export const tool = {
 		// 跳转到店铺主页
 		jumpStore(item) {
 			uni.navigateTo({
-				url: `/community-center/shop/shop-detail?shopId=${item.shopId}`
+				url: `/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`
 			})
 		},
 		// 跳转到商品详情

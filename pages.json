@@ -405,12 +405,6 @@
         //     "navigationBarTitleText": "选择门店标签"
         //   }
         // },
-        {
-          "path": "shop/shop-enter",
-          "style": {
-            "navigationBarTitleText": "商圈二级页面"
-          }
-        },
         // {
         //   "path": "shop/serve-detail",
         //   "style": {
@@ -435,18 +429,6 @@
         //     "navigationBarTitleText": "确认订单"
         //   }
         // },
-        {
-          "path": "shop/shop-detail",
-          "style": {
-            "navigationBarTitleText": "商圈商家详情"
-          }
-        },
-        {
-          "path": "shop/shop-deep",
-          "style": {
-            "navigationBarTitleText": "商圈三级页面"
-          }
-        },
         // {
         //   "path": "install",
         //   "style": {
@@ -763,27 +745,6 @@
           }
         },
         {
-          "path": "commission-statistics/commission-statistics",
-          "style": {
-            "navigationBarTitleText": "佣金统计",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "commission-statistics/commission-detail",
-          "style": {
-            "navigationBarTitleText": "佣金详情",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "commission-statistics/vip-user",
-          "style": {
-            "navigationBarTitleText": "会员列表",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
           "path": "voucher/voucher",
           "style": {
             "navigationBarTitleText": "我的代金券",
@@ -800,12 +761,6 @@
           "path": "voucher/transfer-history",
           "style": {
             "navigationBarTitleText": "代金券流水"
-          }
-        },
-        {
-          "path": "view",
-          "style": {
-            "navigationBarTitleText": ""
           }
         },
         {
@@ -1250,46 +1205,61 @@
             "navigationBarTitleText": ""
           }
         },
+        // {
+        //   "path": "commission-statistics/commission-statistics",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金统计",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/commission-detail",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金详情",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/vip-user",
+        //   "style": {
+        //     "navigationBarTitleText": "会员列表",
+        //     "enablePullDownRefresh": true
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/bank-list",
+        //   "style": {
+        //     "navigationBarTitleText": "我的银行卡"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/bank-item",
+        //   "style": {
+        //     "navigationBarTitleText": "添加银行卡"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/withdrawal",
+        //   "style": {
+        //     "navigationBarTitleText": "佣金提现"
+        //   }
+        // },
+        // {
+        //   "path": "commission-statistics/identity-authentication",
+        //   "style": {
+        //     "navigationBarTitleText": "身份实名认证"
+        //   }
+        // },
         {
-          "path": "commission-statistics/bank-list",
+          "path": "view",
           "style": {
-            "navigationBarTitleText": "我的银行卡"
-          }
-        },
-        {
-          "path": "commission-statistics/bank-item",
-          "style": {
-            "navigationBarTitleText": "添加银行卡"
-          }
-        },
-        {
-          "path": "commission-statistics/withdrawal",
-          "style": {
-            "navigationBarTitleText": "佣金提现"
-          }
-        },
-        {
-          "path": "commission-statistics/identity-authentication",
-          "style": {
-            "navigationBarTitleText": "身份实名认证"
+            "navigationBarTitleText": ""
           }
         },
         {
           "path": "otherServe/payment-completed/index",
           "style": {
             "navigationBarTitleText": "支付完成"
-          }
-        },
-        {
-          "path": "newVoucher/voucher",
-          "style": {
-            "navigationBarTitleText": "代金卷"
-          }
-        },
-        {
-          "path": "newVoucher/orderStatus",
-          "style": {
-            "navigationBarTitleText": "代金卷订单完成状态"
           }
         }
       ]
@@ -1411,6 +1381,30 @@
       "root": "another-tf",
       "pages": [
         {
+          "path": "another-user/shop/shop-enter",
+          "style": {
+            "navigationBarTitleText": "商圈二级页面"
+          }
+        },
+        {
+          "path": "another-user/shop/shop-detail",
+          "style": {
+            "navigationBarTitleText": "商圈商家详情"
+          }
+        },
+        {
+          "path": "another-user/shop/shop-deep",
+          "style": {
+            "navigationBarTitleText": "商圈三级页面"
+          }
+        },
+        {
+          "path": "another-user/share-shop-and-commodity/index",
+          "style": {
+            "navigationBarTitleText": "商家商品分享"
+          }
+        },
+        {
           "path": "another-serve/bindPhone/index",
           "style": {
             "navigationBarTitleText": "绑定手机号"
@@ -1456,6 +1450,39 @@
           "path": "another-serve/withdraw/index",
           "style": {
             "navigationBarTitleText": "提现"
+          }
+        },
+        {
+          "path": "another-user/voucher/voucher",
+          "style": {
+            "navigationBarTitleText": "代金卷"
+          }
+        },
+        {
+          "path": "another-user/voucher/orderStatus",
+          "style": {
+            "navigationBarTitleText": "代金卷订单完成状态"
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/commission-statistics",
+          "style": {
+            "navigationBarTitleText": "佣金统计",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/commission-detail",
+          "style": {
+            "navigationBarTitleText": "佣金详情",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/vip-user",
+          "style": {
+            "navigationBarTitleText": "会员列表",
+            "enablePullDownRefresh": true
           }
         },
         {
@@ -1507,6 +1534,12 @@
           }
         },
         {
+          "path": "another-user/user-upgrade/purchase-chain-goods",
+          "style": {
+            "navigationBarTitleText": "购买关系链相关产品"
+          }
+        },
+        {
           "path": "another-user/small-ledger/index",
           "style": {
             "navigationBarTitleText": "小账本"
@@ -1528,6 +1561,18 @@
           "path": "another-serve/shopCar/shopCar",
           "style": {
             "navigationBarTitleText": "购物车"
+          }
+        },
+        {
+          "path": "another-user/shop-commodity/index",
+          "style": {
+            "navigationBarTitleText": "商家商品"
+          }
+        },
+        {
+          "path": "another-user/shop-goods/index",
+          "style": {
+            "navigationBarTitleText": "商家商品列表"
           }
         },
         {

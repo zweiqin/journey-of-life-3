@@ -2,6 +2,12 @@
 	<view style="margin-top: 24upx;">
 		<view>
 			<view v-for="menu in specialPane" :key="menu.name" style="margin-bottom: 24upx;">
+				<view v-if="menu.name === '联系客服'">
+					<DragButton
+						text="客服在线" :icon-src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" is-dock
+						exist-tab-bar @btnClick="$emit('menu-click', menu)"
+					/>
+				</view>
 			</view>
 		</view>
 
@@ -77,15 +83,20 @@ export default {
 	watch: {
 		'menuData': {
 			handler(newVal) {
+				if (!this.menuData) return this.renderMenu = this.specialPane = []
+				const haveSpecialData = []
 				const renderMenuArr = []
 				newVal.forEach((item) => {
-					if (item.showRole) {
+					if (item.name === '联系客服') {
+						haveSpecialData.push(item)
+					} else if (item.showRole) {
 						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) renderMenuArr.push(item)
 						if (item.showRole.includes('merchantStaff') && this.$store.state.auth.identityInfo.type.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) renderMenuArr.push(item)
 					} else {
 						renderMenuArr.push(item)
 					}
+					this.specialPane = haveSpecialData
 					this.renderMenu = renderMenuArr
 				})
 			},
@@ -94,9 +105,13 @@ export default {
 		},
 		'$store.state.auth.identityInfo.type': {
 			handler(newVal) {
+				if (!this.menuData) return this.renderMenu = this.specialPane = []
+				const haveSpecialData = []
 				const renderMenuArr = []
 				this.menuData.forEach((item) => {
-					if (item.showRole) {
+					if (item.name === '联系客服') {
+						haveSpecialData.push(item)
+					} else if (item.showRole) {
 						if (item.showRole.includes('shop') && newVal.includes(9)) renderMenuArr.push(item)
 						if (item.showRole.includes('merchantStaff') && newVal.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && newVal.includes(1)) renderMenuArr.push(item)
@@ -104,6 +119,7 @@ export default {
 						renderMenuArr.push(item)
 					}
 				})
+				this.specialPane = haveSpecialData
 				this.renderMenu = renderMenuArr
 			},
 			immediate: true,

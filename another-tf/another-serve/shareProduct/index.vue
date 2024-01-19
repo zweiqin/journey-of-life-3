@@ -197,7 +197,7 @@ export default {
 			if (this.salesId) {
 				link = `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindingSalesCustomer&code=${this.shareType}~${this.shopId}~${this.productId}~${this.skuId}~${this.salesId}`
 			} else if (this.shareType === 1) {
-				link = `${A_TF_MAIN}/#/community-center/shop/shop-detail?storeId=${this.shopId}`
+				link = `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?storeId=${this.shopId}`
 			} else if (this.shareType === 2) {
 				link = `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.shopId}&productId=${this.productId}&skuId=${this.skuId}`
 			}

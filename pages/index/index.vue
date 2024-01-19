@@ -137,6 +137,12 @@
     </view>
 
     <tui-toast ref="toast"></tui-toast>
+
+		<DragButton
+			text="联系客服" is-dock exist-tab-bar
+			@btnClick="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+		>
+		</DragButton>
   </view>
 </template>
 
