@@ -270,7 +270,7 @@ export default {
 							uni.showToast({ title: '未能识别的错误', icon: 'none' })
 						}
 					} else {
-						window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&buyerUserId=${data.buyerUserId || ''}`) // data=${JSON.stringify(data)}&
+						window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`) // data=${JSON.stringify(data)}&
 					}
 				} else if (type === 'alipay') {
 					if (data.ifFirst == 0) {
@@ -303,7 +303,7 @@ export default {
 						}
 					} else { // 第一次登录，绑定手机号
 						uni.redirectTo({
-							url: `/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&buyerUserId=${data.buyerUserId || ''}`
+							url: `/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`
 						})
 					}
 				}

@@ -69,7 +69,7 @@ export default {
 			uni.hideLoading()
 			this.commentList = res.data.comments
 		})
-			.catch((res) => {
+			.catch((e) => {
 				uni.hideLoading()
 			})
 	},

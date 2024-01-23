@@ -370,16 +370,24 @@ export function isVideoSource(src) {
 
 export const saveImg = (url, cb) => {
 	// #ifdef H5
-	const uniappA = document.createElement('a')
-	uniappA.download = ''
-	uniappA.href = url
-	document.body.appendChild(uniappA)
-	uniappA.click()
-	uniappA.remove()
-	cb && typeof cb === 'function' && cb()
+	if (isInWx()) {
+		uni.showToast({
+			title: '请长按图片保存',
+			duration: 2000,
+			icon: 'none'
+		})
+	} else {
+		const uniappA = document.createElement('a')
+		uniappA.download = ''
+		uniappA.href = url
+		document.body.appendChild(uniappA)
+		uniappA.click()
+		uniappA.remove()
+		cb && typeof cb === 'function' && cb()
+	}
 	// #endif
 
-	// #ifdef APP
+	// #ifdef APP || MP
 	uni.saveImageToPhotosAlbum({
 		filePath: url,
 		success() {

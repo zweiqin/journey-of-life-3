@@ -258,6 +258,12 @@ export const shopServe = [
 		icon: require('../../static/images/new-user/menu-icon/shangjiama.png'),
 		type: 'shopInvitation',
 		showRole: [ 'shop' ]
+	},
+	{
+		name: '收款账户',
+		icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
+		url: '/another-tf/another-user/receiving-account/index',
+		showRole: ['shop', 'merchantStaff']
 	}
 ]
 
@@ -375,12 +381,6 @@ export const otherFunction = [
 		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
 		url: '/another-tf/another-user/franchisee-statistics/index',
 		showRole: [ 'franchisee' ]
-	},
-	// shopServe
-	{
-		name: '收款账户',
-		icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
-		url: '/another-tf/another-user/receiving-account/index',
-		showRole: ['shop', 'merchantStaff']
 	}
+	// shopServe
 ]

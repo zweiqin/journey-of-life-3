@@ -115,7 +115,7 @@ export default {
 
 <style lang="scss">
 $uni-font-size-sm: 24upx;
-$uni-text-color-inverse: #979797;
+$uni-text-color-inverse: #ffffff;
 
 .drag {
 	position: fixed;

@@ -143,7 +143,9 @@ export default {
 			uni.redirectTo({
 				url: '/another-tf/another-serve/addEvaluate/index?type=2',
 				success: () => {
-					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.detailsCommentVOData, commentId: '' })
+					setTimeout(() => {
+						uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.detailsCommentVOData, commentId: '' })
+					}, 400)
 				}
 			})
 		},

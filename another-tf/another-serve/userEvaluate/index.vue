@@ -281,8 +281,15 @@ export default {
 			uni.redirectTo({
 				url: '/another-tf/another-serve/evaluateDetails/index',
 				success: () => {
-					if (this.currentTab === 0) uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentInfo.data[index] })
-					else if (this.currentTab === 1) uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentPicInfo.data[index] })
+					if (this.currentTab === 0) {
+						setTimeout(() => {
+							uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentInfo.data[index] })
+						}, 400)
+					} else if (this.currentTab === 1) {
+						setTimeout(() => {
+							uni.$emit('sendEvaluateDetailsMsg', { detailsCommentVOData: this.commentPicInfo.data[index] })
+						}, 400)
+					}
 				}
 			})
 		},
@@ -291,8 +298,15 @@ export default {
 			uni.redirectTo({
 				url: '/another-tf/another-serve/addEvaluate/index?type=2',
 				success: () => {
-					if (this.currentTab === 0) uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentInfo.data[index], commentId: '' })
-					else if (this.currentTab === 1) uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentPicInfo.data[index], commentId: '' })
+					if (this.currentTab === 0) {
+						setTimeout(() => {
+							uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentInfo.data[index], commentId: '' })
+						}, 400)
+					} else if (this.currentTab === 1) {
+						setTimeout(() => {
+							uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.commentPicInfo.data[index], commentId: '' })
+						}, 400)
+					}
 				}
 			})
 		}

@@ -201,7 +201,7 @@ export default {
 				this.isShowDetails = true
 				this.selectBySkuId(item.skuItem.skuId)
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		},

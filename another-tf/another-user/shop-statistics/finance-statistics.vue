@@ -1,103 +1,128 @@
 <template>
-	<view class="shop-statistics-container">
-		<JHeader title="财务数据" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view>
-			<view style="padding: 0 24upx;background-color: #ffffff;">
-				<tui-tabs
-					style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="351" :padding="24"
-					item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
-					:tabs="[{ name: '日汇款' }, { name: '月汇款' }]" :current-tab="currentTab" @change="handleCurrentChange"
-				></tui-tabs>
-			</view>
-			<view style="margin: 10upx 0;text-align: right;">
-				<tui-button
-					type="blue" width="220rpx" height="60rpx" margin="0 30upx 0 0"
-					style="display: inline-block;border-radius: 30rpx;" @click="$refs.dateTimeFinance.show()"
+	<view class="finance-statistics-container">
+		<JHeader title="商家服务" width="50" height="50" style="padding: 24upx 0 0;background-color: #ffffff;">
+			<template #ftFn>
+				<text style="padding-right: 18upx;font-size: 26upx;color: #222229;">帮助</text>
+			</template>
+		</JHeader>
+		<view style="padding: 40upx 0 16upx;background-color: #ffffff;text-align: center;">
+			<view style="display: flex;width: fit-content;margin: 0 auto;border: 2upx solid #EF530E;border-radius: 12upx;">
+				<view
+					style="width: 198upx;padding: 6upx 0;color: #EF530E;"
+					@click="$redirectTo('/another-tf/another-user/shop-statistics/index')"
 				>
-					选择日期
+					经营统计
+				</view>
+				<view style="width: 220upx;padding: 6upx 0;color: #ffffff;background-color: #ef530e;">财务数据</view>
+			</view>
+		</view>
+
+		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 32upx;margin: 44upx 0 0;">
+			<tui-tabs
+				style="width: 172upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="80" :slider-height="54"
+				:padding="289" slider-radius="8upx" item-width="80rpx" selected-color="#ffffff"
+				bold :height="54" color="#222229"
+				slider-bg-color="#ef530e" background-color="transparent" :tabs="[{ name: '充值' }, { name: '订单' }]"
+				:current-tab="currentTab" @change="handleCurrentChange"
+			></tui-tabs>
+			<view style="text-align: right;">
+				<tui-button
+					type="primary" width="140rpx" height="60rpx" margin="0 20upx 0 0"
+					style="display: inline-block;border-radius: 30rpx;" @click="isShowRechargeDialog = true"
+				>
+					提现
 				</tui-button>
-				<tui-datetime
-					ref="dateTimeFinance" :type="3" radius
-					:end-year="Number(new Date(Date.now()).toLocaleString().substring(0, 4))"
-					@confirm="handleConfirmTime"
-				></tui-datetime>
+				<tui-button
+					v-if="pageType === 'order'" type="primary" width="140rpx" height="60rpx"
+					margin="0 20upx 0 0"
+					style="display: inline-block;border-radius: 30rpx;"
+					@click="(isShowWithdrawalDetailsPopup = true) && $refs.refOrderWithdrawalDetails && $refs.refOrderWithdrawalDetails.getShopWithdrawalDetails()"
+				>
+					明细
+				</tui-button>
+				<tui-button
+					v-if="pageType === 'recharge'" type="primary" width="240rpx" height="60rpx"
+					margin="0 20upx 0 0"
+					style="display: inline-block;border-radius: 30rpx;"
+					@click="(isShowCustomBusinessPopup = true) && $refs.refRechargeCustomBusiness && $refs.refRechargeCustomBusiness.getShopRechargeCustom()"
+				>
+					客户充值统计
+				</tui-button>
+			</view>
+		</view>
+
+		<view style="margin: 36upx 32upx 0;">
+			<view style="font-weight: bold;color: #222229;">
+				<text v-if="pageType === 'recharge'">充值</text>
+				<text v-else-if="pageType === 'order'">订单</text>
+				<text>财务数据</text>
 			</view>
 			<view
-				style="width: 100%;color: #000;padding: 14upx 24upx 44upx;box-sizing: border-box;margin-top: 2upx;margin-bottom: 20upx;background-color: #ffa637;border-radius: 20upx;font-size: 28upx;"
+				style="display: flex;justify-content: space-evenly;margin-top: 36upx;padding: 34upx 0;text-align: center;color: #222229;background-color: #ffffff;border-radius: 16upx;"
 			>
-				<view style="text-align: right;">
-					<tui-button
-						type="primary" width="140rpx" height="60rpx" margin="0 20upx 0 0"
-						style="display: inline-block;border-radius: 30rpx;" @click="isShowRechargeDialog = true"
-					>
-						提现
-					</tui-button>
-					<tui-button
-						v-if="type === 'order'" type="primary" width="140rpx" height="60rpx"
-						margin="0 20upx 0 0"
-						style="display: inline-block;border-radius: 30rpx;"
-						@click="(isShowWithdrawalDetailsPopup = true) && $refs.refOrderWithdrawalDetails && $refs.refOrderWithdrawalDetails.getShopWithdrawalDetails()"
-					>
-						明细
-					</tui-button>
-					<tui-button
-						v-if="type === 'recharge'" type="primary" width="240rpx" height="60rpx"
-						margin="0 20upx 0 0"
-						style="display: inline-block;border-radius: 30rpx;"
-						@click="(isShowCustomBusinessPopup = true) && $refs.refRechargeCustomBusiness && $refs.refRechargeCustomBusiness.getShopRechargeCustom()"
-					>
-						客户充值统计
-					</tui-button>
-				</view>
-				<view style="margin-top: 20upx;">
-					<view style="display: flex;justify-content: space-evenly;flex-wrap: wrap;align-items: stretch;">
-						<view
-							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
-						>
-							<view>累计营业额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
-								{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
-							</view>
-						</view>
-						<view
-							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
-						>
-							<view>冻结金额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
-								{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
-							</view>
-						</view>
-						<view
-							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
-						>
-							<view>可提现金额（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
-								{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
-									: '--' }}
-							</view>
-						</view>
-						<view
-							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
-						>
-							<view>提现中（元）</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
-								{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
-									? financeStatisticsData.withdrawableStayMoney : '--' }}
-							</view>
-						</view>
-						<view
-							style="display: flex;flex-direction: column;justify-content: space-between;width: 30%;margin-top: 10upx;padding: 18upx 6upx;color: #FFFFFF;text-align: center;border-radius: 24px;background: #ffc377;border: 2px solid #ffcc8d;"
-						>
-							<view>赠送代金券</view>
-							<view style="font-size: 40upx;font-weight: bold;margin-top: 4upx;">
-								{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher
-									: '--' }}
-							</view>
-						</view>
+				<view>
+					<view style="font-size: 34upx;font-weight: bold;">
+						{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
 					</view>
+					<view style="margin-top: 14upx;font-size: 24upx;">累计营业额</view>
+				</view>
+				<view>
+					<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+						{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
+					</view>
+					<view style="margin-top: 14upx;font-size: 24upx;">冻结金额</view>
+				</view>
+				<view>
+					<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+						{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
+							: '--' }}
+					</view>
+					<view style="margin-top: 14upx;font-size: 24upx;">可提现金额</view>
+				</view>
+				<view>
+					<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
+						{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
+							? financeStatisticsData.withdrawableStayMoney : '--' }}
+					</view>
+					<view style="margin-top: 14upx;font-size: 24upx;">提现中</view>
+				</view>
+				<view>
+					<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+						{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
+					</view>
+					<view style="margin-top: 14upx;font-size: 24upx;">赠送代金券</view>
 				</view>
 			</view>
-			<view style="padding: 20upx;">
+
+			<view style="margin-top: 36upx;display: flex;justify-content: space-between;align-items: center;">
+				<view style="display: flex;align-items: center;font-size: 32upx;">
+					<view
+						:style="{ fontWeight: queryInfo.condition === 1 ? 'bold' : 'normal', color: queryInfo.condition === 1 ? '#222229' : '#9E9E9E' }"
+						@click="((queryInfo.condition = 1) && (queryInfo.time = '')) || getFinanceStatistics()"
+					>
+						日汇款
+					</view>
+					<view
+						style="margin-left: 32upx;"
+						:style="{ fontWeight: queryInfo.condition === 2 ? 'bold' : 'normal', color: queryInfo.condition === 2 ? '#222229' : '#9E9E9E' }"
+						@click="((queryInfo.condition = 2) && (queryInfo.time = '')) || getFinanceStatistics()"
+					>
+						月汇款
+					</view>
+				</view>
+				<view style="padding: 10upx 16upx;color: #222229;background-color: #ffffff;">
+					<view @click="$refs.dateTimeFinance.show()">
+						<tui-icon name="calendar" :size="14" color="#222229"></tui-icon>
+						<text style="margin-left: 10upx;font-size: 26upx;">{{ queryInfo.time || '选择日期' }}</text>
+					</view>
+					<tui-datetime
+						ref="dateTimeFinance" :type="3" radius
+						:end-year="Number(new Date(Date.now()).toLocaleString().substring(0, 4))"
+						@confirm="handleConfirmTime"
+					></tui-datetime>
+				</view>
+			</view>
+			<view style="padding: 32upx 28upx 0;margin-top: 24upx;background-color: #ffffff;border-radius: 16upx;">
 				<view v-if="financeStatisticsData.finances && financeStatisticsData.finances.length">
 					<tui-table>
 						<tui-tr>
@@ -121,14 +146,14 @@
 			</view>
 		</view>
 
-		<view v-if="type === 'order'">
+		<view v-if="pageType === 'order'">
 			<tui-bottom-popup :show="isShowWithdrawalDetailsPopup" @close="isShowWithdrawalDetailsPopup = false">
 				<view style="height: 100%;padding: 20upx;overflow-y: auto;box-sizing: border-box;">
 					<OrderWithdrawalDetails ref="refOrderWithdrawalDetails"></OrderWithdrawalDetails>
 				</view>
 			</tui-bottom-popup>
 		</view>
-		<view v-else-if="type === 'recharge'">
+		<view v-else-if="pageType === 'recharge'">
 			<tui-bottom-popup :show="isShowCustomBusinessPopup" @close="isShowCustomBusinessPopup = false">
 				<view style="height: 100%;padding: 20upx;overflow-y: auto;box-sizing: border-box;">
 					<RechargeCustomBusiness ref="refRechargeCustomBusiness"></RechargeCustomBusiness>
@@ -160,7 +185,7 @@ export default {
 	components: { OrderWithdrawalDetails, RechargeCustomBusiness },
 	data() {
 		return {
-			type: '',
+			pageType: '',
 			currentTab: 1,
 			financeStatisticsData: {
 				turnover: '',
@@ -184,21 +209,23 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.type = options.type || 'order'
+		this.pageType = options.type || 'order'
 		this.getFinanceStatistics()
 	},
 	methods: {
 		handleCurrentChange(e) {
 			this.currentTab = e.index
-			this.queryInfo.condition = this.currentTab + 1
+			if (this.currentTab === 0) this.pageType = 'recharge'
+			else if (this.currentTab === 1) this.pageType = 'order'
+			this.queryInfo.condition = 2
 			this.queryInfo.time = ''
 			this.getFinanceStatistics()
 		},
 		getFinanceStatistics() {
 			this.isLoading = true
 			let api
-			if (this.type === 'order') api = getShopFinanceCountApi
-			else if (this.type === 'recharge') api = getShopRechargeCountApi
+			if (this.pageType === 'order') api = getShopFinanceCountApi
+			else if (this.pageType === 'recharge') api = getShopRechargeCountApi
 			api({ ...this.queryInfo })
 				.then((res) => {
 					this.financeStatisticsData = res.data
@@ -225,8 +252,8 @@ export default {
 				getShopBankApi({})
 					.then((result) => {
 						let api
-						if (this.type === 'order') api = addShopWithdrawalApi
-						else if (this.type === 'recharge') api = addShopWithdrawalRechargeApi
+						if (this.pageType === 'order') api = addShopWithdrawalApi
+						else if (this.pageType === 'recharge') api = addShopWithdrawalRechargeApi
 						api({
 							shopName: result.data.shopName,
 							shopCode: result.data.shopCode,
@@ -254,16 +281,27 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.shop-statistics-container {
+.finance-statistics-container {
 	min-height: 100vh;
 	width: 100%;
-	background: #f6f6f6;
 	box-sizing: border-box;
+	padding-bottom: 42upx;
+	background-color: #f4f4f4;
 
 	.tui-tabs-view {
 		/deep/ .tui-tabs-slider {
-			margin-left: -24upx;
+			margin-left: -289upx;
 		}
+
+		/deep/ .tui-tabs-title {
+			font-weight: bold !important;
+		}
+	}
+
+	/deep/ .j-header-container .title {
+		font-size: 36upx;
+		font-weight: bold;
+		color: #222229;
 	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {

@@ -78,10 +78,6 @@
 </template>
 
 <script>
-import {
-	getOrderListApi
-} from '../../../../api/order'
-import { getUserId } from '../../../../utils'
 export default {
 	name: 'OrderList',
 	data() {
