@@ -4,7 +4,7 @@
         <image @click="handleBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
         <text class="pageTitle">智能选配</text>
       </view>
-      <Fields></Fields>
+      <Fields :query="query"></Fields>
       <!-- 精选案例 -->
       <view class="SelectedCases" style="display: none;" hover-class="none" :hover-stop-propagation="false">
         <view class="title-wrapper">
@@ -137,7 +137,8 @@ export default {
         type: 1, // 价格升降序
         volume: 0, // 销量升降序
         page: 1,
-        pageSize: 24
+        pageSize: 24,
+        keyword: '全部户型'
       },
       listData: []
 	  // tempData: tempData,

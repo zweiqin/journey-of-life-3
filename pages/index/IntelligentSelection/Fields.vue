@@ -10,12 +10,13 @@
         </view>
       </view>
       <view class="wrapper" style="margin-top: 20rpx;">
-        <view class="select item">
+        <view class="select item" @click="pickerShow = true">
           <view class="title">户型</view>
 
           <view class="value">
             <view class="select">
-              <view class="value-text">全部户型</view>
+              <view class="value-text">{{ query.keyword }}</view>
+              <tui-picker :show="pickerShow" :pickerData="pickerData" @hide="pickerShow = false" @change="change"></tui-picker>
               <tui-icon name="arrowdown" :size="20"></tui-icon>
             </view>
           </view>
@@ -73,7 +74,57 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Fields',
+  props: {
+    query: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data() {
+    return {
+      pickerShow: false,
+      pickerData: [
+        {
+          text: "公寓",
+          value: "001"
+        }, {
+          text: "一房一厅",
+          value: "002"
+        }, {
+          text: "二房一厅",
+          value: "003"
+        }, {
+          text: "三房一厅",
+          value: "004"
+        }, {
+          text: "四房一厅",
+          value: "005"
+        }, {
+          text: "三房二厅",
+          value: "006"
+        }, {
+          text: "客厅",
+          value: "007"
+        }, {
+          text: "卧室",
+          value: "008"
+        }, {
+          text: "餐厅",
+          value: "9"
+        }
+      ]
+    }
+  },
+  methods: {
+    change(value) {
+      // console.log(value);
+      this.query.keyword = value.text
+      this.pickerShow = false
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
