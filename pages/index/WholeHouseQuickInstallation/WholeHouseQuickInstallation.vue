@@ -30,7 +30,35 @@
           </view>
         </view>
 
-        <button class="uni-btn">咨询预约</button>
+        <button class="uni-btn" v-on:click="formShow = true">咨询预约</button>
+        <tui-drawer mode="bottom" :visible="formShow" @close="closeDrawer">
+          <view class="formTitle">
+            请输入你的信息
+          </view>
+          <tui-form ref="form" labelWidth="180rpx">
+            <tui-form-item label="姓名">
+              <tui-input padding="0" :borderBottom="false" v-model="formData.name" placeholder="请输入姓名"></tui-input>
+            </tui-form-item>
+            <tui-form-item label="电话号码">
+              <tui-input padding="0" :borderBottom="false" v-model="formData.phone" placeholder="请输入电话号码"></tui-input>
+            </tui-form-item>
+            <tui-form-item label="地址">
+              <tui-input padding="0" :borderBottom="false" v-model="formData.addres" placeholder="请选择你的地址"></tui-input>
+            </tui-form-item>
+            <tui-form-item label="详细地址">
+              <tui-input padding="0" :borderBottom="false" v-model="formData.addres" placeholder="请输入详细地址"></tui-input>
+            </tui-form-item> 
+            <tui-form-item label="户型">
+              <tui-input padding="0" :borderBottom="false" v-model="formData.homeType" placeholder="请输入您的户型"></tui-input>
+            </tui-form-item>
+            <tui-form-item label="其他需求">
+              <tui-textarea padding="0" :borderBottom="false" v-model="formData.moreRequirement" placeholder=""></tui-textarea>
+            </tui-form-item>
+          </tui-form>
+          <view class="formSubmit">
+              <tui-button @click="formShow = false">提交信息</tui-button>
+          </view>
+        </tui-drawer>
 
         <view class="tip">
           <image src="https://img0.baidu.com/it/u=142583684,3035502695&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" class="user-avatar"></image>
@@ -63,7 +91,7 @@
       </view>
 
       <!-- 精选案例 -->
-      <view class="SelectedCases" hover-class="none" hover-stop-propagation="false">
+      <view class="SelectedCases" hover-class="none" :hover-stop-propagation="false">
         <view class="title-wrapper">
           <view class="left-bar"></view>
           <view class="title-text">精选案例</view>
@@ -200,12 +228,26 @@ export default {
     return {
       tabNavsData: ['客厅翻新','卧室翻新','餐厅翻新','全屋整装'],
       isLeft: false,
-      isOne: false
+      isOne: false,
+      formShow: false,
+      formData: {
+        name: '',
+        phone: '',
+        addres: '',
+        homeType: '',
+        moreRequirement: ''
+      }
     }
   },
   methods: {
     goBack() {
       uni.navigateBack();
+    },
+    consultFn() {
+      console.log("表单提交");
+    },
+    closeDrawer() {
+      this.formShow = false;
     }
   },
   computed: {
@@ -215,6 +257,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/ .tui-drawer-container {
+  border-top-left-radius: 50rpx;
+  border-top-right-radius: 50rpx;
+}
+/deep/ .tui-form__item-wrap {
+  align-items: flex-start;
+}
+.formSubmit {
+  box-sizing: border-box;
+  padding: 30rpx 40rpx;
+}
+.formTitle {
+  width: 100vw;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38rpx;
+  font-weight: 550;
+}
 @keyframes gotoRight {
   0% {
     left: -304rpx;
@@ -364,7 +426,6 @@ export default {
     margin-top: -100upx;
     padding: 0 30upx;
     box-sizing: border-box;
-
     .menu-pane {
       background-color: #fff;
       padding: 30upx 26upx;

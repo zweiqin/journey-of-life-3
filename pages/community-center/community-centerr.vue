@@ -33,7 +33,8 @@
 				<ServeMenus></ServeMenus>
 				<VipPackage @view499="handleToActiveDetail" :scroll-top="scrollTop"></VipPackage>
 			</view>
-
+			
+			<!-- 赚小钱 -->
 			<view class="MakeSmallFortune">
 				<MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
 			</view>

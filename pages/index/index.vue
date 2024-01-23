@@ -231,6 +231,17 @@ export default {
     // },
   },
   methods: {
+	// bubbleSort(array, isUpGoDown = false) {
+	// 	if(isUpGoDown) { // 由高到低
+	// 		return array.sort(function(a, b) {
+	// 					return b.price - a.price;
+	// 				});
+			
+	// 	}
+	// 	return array.sort(function(a, b) {
+	// 					return a.price - b.price;
+	// 				});
+	// },
     getGoodsList(isCheckOutClass) {
       getClaasifyProductsApi(this.queryList).then(res => {
         if (res.data.list.length <= 0) {
@@ -240,8 +251,10 @@ export default {
           });
         }
         if (!isCheckOutClass) {
+			// console.log(this.bubbleSort(res.data.list))
             res.data.list.forEach(item => this.goodsList.push(item))
         }else {
+			// console.log(this.bubbleSort(res.data.list))
             this.goodsList.length =  res.data.list.length
             res.data.list.forEach((item, index, preArray) => this.goodsList[index] = preArray[index])
         }
