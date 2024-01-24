@@ -192,9 +192,13 @@
 					v-for="(item, index) in shopStatisticsData.hotSellProducts" :key="item.id" unlined
 					padding="20upx 0"
 				>
-					<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-						<view>{{ index + 1 }}：{{ item.productName }}</view>
-						<view style="flex: 1;text-align: right;white-space: nowrap;">{{ `已售 ${item.number} 件` }}</view>
+					<view style="display: flex;justify-content: space-between;">
+						<view
+							style="flex: 1;width: 0;margin-right: 16upx;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+						>
+							{{ index + 1 }}：{{ item.productName }}
+						</view>
+						<view style="text-align: right;white-space: nowrap;">{{ `已售 ${item.number} 件` }}</view>
 					</view>
 				</tui-list-cell>
 			</tui-list-view>

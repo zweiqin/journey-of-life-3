@@ -183,7 +183,7 @@ export default {
 	width: 100vw;
 	height: 100vh;
 	overflow: auto;
-	background: rgba(255, 198, 15, .3) url('../../../static/images/new-user/info-bg.png') no-repeat;
+	background: linear-gradient(138deg, #FFFCE7 13%, #F7EBDF 54%);
 	background-size: cover;
 
 	&::after {

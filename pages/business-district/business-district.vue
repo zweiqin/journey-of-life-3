@@ -78,7 +78,7 @@ export default {
 		NavBar,
 		WelfareBar,
 		AdvertisementBar,
-		ActivityPackage,
+		ActivityPackage
 		// BrandShop,
 	},
 	data() {
@@ -86,7 +86,8 @@ export default {
 			isPositioning: true,
 			queryParam: {
 				search: '',
-				classifyId: ''
+				classifyId: '',
+				distance: '999999999'
 			}
 		}
 	},

@@ -4,6 +4,7 @@ export {
 	fomartNumber,
 	removeCache,
 	getUserId,
+	getStorageUserId,
 	getStorageKeyToken,
 	checkWhoami,
 	useCopy,

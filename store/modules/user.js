@@ -38,7 +38,7 @@ export default {
 					commit(CHNAGE_PRICE_PLATFORM_INFO, res.data)
 				})
 			getCartListApi({}).then((res) => {
-				this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
+				commit(CHNAGE_SHOP_CAR_NUMBER, res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0))
 			})
 			getSelectLevelPlatformRelationApi({})
 				.then((res) => {

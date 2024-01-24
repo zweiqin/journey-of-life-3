@@ -5,21 +5,25 @@
 		<view class="headBox">
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>头像</label>
-				<image v-if="$store.getters.userInfo.headImage" class="user-headImg" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
+				<image
+					v-if="$store.getters.userInfo.headImage" class="user-headImg"
+					:src="common.seamingImgUrl($store.getters.userInfo.headImage)"
+					@click="handleChooseImage"
+				></image>
 				<image v-else class="user-headImg" src="../../../static/images/new-user/default-user-avatar.png">
 				</image>
 			</view>
 		</view>
 		<view class="personalBack-box flex-items-plus flex-column">
-			<view class="personalHead-box flex-sp-between flex-display flex-items">
+			<!-- <view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>旧系统ID</label>
 				<view>{{ userId }}</view>
-			</view>
+				</view> -->
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>昵称</label>
 				<input v-model="name" class="nameInput" type="text" placeholder="请输入内容" @blur="changeName" />
 			</view>
-			<view class="personalHead-box flex-sp-between flex-display flex-items" @click="sexShowClick">
+			<view class="personalHead-box flex-sp-between flex-display flex-items" @click="sexShow = true">
 				<label>性别</label>
 				<label class="font-color-999">{{ $store.getters.userInfo.sex }}</label>
 			</view>
@@ -36,11 +40,12 @@
 				</picker>
 			</view>
 		</view>
-		<view class="iphoneNumback-box  flex-items-plus">
-			<view class="iphoneNum-box flex-row-plus flex-sp-between flex-items">
-				<label style="width: 50%;">手机号</label>
-				<label v-if="$store.getters.userInfo.phone" class="font-color-C5AA7B">{{ $store.getters.userInfo.phone }}</label>
-				<label v-else class="font-color-C5AA7B">
+
+		<view style="margin-top: 30upx;background-color: #ffffff;">
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
+				<view>手机号</view>
+				<view v-if="$store.getters.userInfo.phone" class="font-color-C5AA7B">{{ $store.getters.userInfo.phone }}</view>
+				<view v-else class="font-color-C5AA7B">
 					<!-- #ifdef MP-ALIPAY -->
 					<button class="verifyPhone" open-type="getAuthorize" scope="phoneNumber" @getAuthorize="onGetAuthorize">
 						去验证
@@ -49,9 +54,15 @@
 					<!-- #ifndef MP-ALIPAY -->
 					去验证
 					<!-- #endif -->
-				</label>
+				</view>
+			</view>
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
+				<view>微信账号</view>
+				<view v-if="$store.getters.userInfo.wechatOpenId">已绑定</view>
+				<view v-else-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)" @click="handleWXBind">开始绑定</view>
 			</view>
 		</view>
+
 		<view class="agreement">
 			<view class="agreement agreement_top" @click="protocol('app_privacy_agreement')">
 				<text>用户隐私协议</text>
@@ -91,8 +102,23 @@
 				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
-							ref="refResettingPasswordVerify" width="144upx"
-							@send="handleSendVerify"
+							ref="refResettingPasswordVerify" width="144upx" @send="handleSendVerifyResettingPassword"
+						></tui-countdown-verify>
+					</template>
+				</tui-input>
+			</template>
+		</tui-dialog>
+
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowbindWXFDialog" title="绑定微信" @click="handleBindWX"
+		>
+			<template #content>
+				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请输入手机号" disabled></tui-input>
+				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
+					<template #right>
+						<tui-countdown-verify
+							ref="refBindWXVerify" width="144upx" @send="handleSendVerifyBindWX"
 						></tui-countdown-verify>
 					</template>
 				</tui-input>
@@ -102,14 +128,14 @@
 </template>
 
 <script>
-import { updateAliPhoneAppApi, getVerifyCodeApi, updatePasswordUserApi } from '../../../api/anotherTFInterface'
-import { USER_ID } from '../../../constant'
+import { updateWxPhoneAppApi, updateAliPhoneAppApi, getVerifyCodeApi, updatePasswordUserApi } from '../../../api/anotherTFInterface'
+import { getUrlCode } from '../../../utils'
 
 export default {
 	name: 'PersonalDetails',
 	data() {
 		return {
-			userId: '',
+			// userId: '',
 			screenHeight: 0,
 			sexShow: false,
 			timeShow: false,
@@ -124,14 +150,30 @@ export default {
 				passwordAgain: '',
 				verificationCode: ''
 			},
-			isShowResettingPasswordDialog: false
+			isShowResettingPasswordDialog: false,
+
+			// 微信绑定
+			bindWXFormData: {
+				phone: '',
+				wechatOpenId: '',
+				headImage: '',
+				wechatName: '',
+				verificationCode: '',
+				channelCode: '',
+				terminal: 3
+			},
+			isShowbindWXFDialog: false
 		}
 	},
 	onLoad() {
 		this.getUserInfoData()
 	},
 	onShow() {
-		this.userId = uni.getStorageSync(USER_ID)
+		// this.userId = uni.getStorageSync(USER_ID)
+		if (this.$store.state.app.terminal === 3) {
+			const code = getUrlCode().code
+			if (code) this.handleWXBind()
+		}
 	},
 	mounted() {
 		// 获取手机的屏幕高度
@@ -190,10 +232,6 @@ export default {
 				})
 			}
 		},
-		// 点击弹窗修改性别
-		sexShowClick() {
-			this.sexShow = true
-		},
 		// 提交修改性别
 		handleConfirmSex(e) {
 			this.sexShow = false
@@ -201,6 +239,19 @@ export default {
 			const sex = e.options.text
 			this.$store.dispatch('auth/updateUserInfoAction', {
 				sex
+			})
+		},
+		handleChooseImage() {
+			uni.chooseImage({
+				count: 1,
+				success: (res) => {
+					uni.navigateTo({
+						url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+					})
+				},
+				fail: () => {
+					this.ttoast('图片上传失败')
+				}
 			})
 		},
 		// 获取用户信息
@@ -244,7 +295,59 @@ export default {
 				}
 			})
 		},
-		handleSendVerify() {
+		handleSendVerifyBindWX() {
+			if (!this.bindWXFormData.phone) {
+				this.$refs.refBindWXVerify.reset()
+				return this.$showToast('请填写手机号')
+			}
+			if (!/^1[3-9]\d{9}$/.test(this.bindWXFormData.phone)) {
+				this.$refs.refBindWXVerify.reset()
+				return this.$showToast('请输入正确的手机号')
+			}
+			getVerifyCodeApi({ phone: this.bindWXFormData.phone })
+				.then((res) => {
+					this.$refs.refBindWXVerify.success()
+					this.$showToast('发送成功，请注意查看手机短信')
+				})
+				.catch(() => {
+					this.$refs.refBindWXVerify.reset()
+				})
+		},
+		async handleWXBind() {
+			const data = await this.$store.dispatch('auth/wxLoginAction', { isAfter: false, pageUrl: '/another-tf/another-serve/personalDetails/index' })
+			this.bindWXFormData.wechatOpenId = data.wechatOpenId
+			this.bindWXFormData.headImage = data.headImage
+			this.bindWXFormData.wechatName = data.wechatName
+			this.bindWXFormData.phone = data.phone
+			this.isShowbindWXFDialog = true
+		},
+		handleBindWX(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!this.bindWXFormData.phone) return this.$showToast('请填写手机号')
+				if (!this.bindWXFormData.verificationCode) return this.$showToast('请填写验证码')
+				uni.showLoading({
+					title: '操作中'
+				})
+				updateWxPhoneAppApi(this.bindWXFormData)
+					.then((res) => {
+						uni.hideLoading()
+						this.$showToast('绑定成功')
+						setTimeout(() => {
+							this.$store.dispatch('auth/LoginAfterAction', { type: 'wx', data: res.data })
+						}, 2000)
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			}
+			this.bindWXFormData.wechatOpenId = ''
+			this.bindWXFormData.headImage = ''
+			this.bindWXFormData.wechatName = ''
+			this.bindWXFormData.phone = ''
+			this.bindWXFormData.verificationCode = ''
+			this.isShowbindWXFDialog = false
+		},
+		handleSendVerifyResettingPassword() {
 			if (!this.resettingFormData.phone) {
 				this.$refs.refResettingPasswordVerify.reset()
 				return this.$showToast('请填写手机号')
@@ -294,7 +397,8 @@ export default {
 .agreement {
 	width: 710rpx;
 	margin: 20rpx auto 0;
-	background-color: #fff;
+	background-color: #ffffff;
+	box-sizing: border-box;
 
 	.agreement_top {
 		&::after {
@@ -352,23 +456,6 @@ export default {
 				width: 120upx;
 				height: 112upx;
 				border-radius: 50%;
-			}
-		}
-	}
-
-	.iphoneNumback-box {
-		width: 100%;
-		background-color: #FFFFFF;
-		height: 100upx;
-		margin-top: 20upx;
-
-		.iphoneNum-box {
-			width: 90%;
-
-			.verifyPhone {
-				color: #C5AA7B;
-				font-size: 30upx;
-				border: 0;
 			}
 		}
 	}

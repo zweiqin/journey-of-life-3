@@ -85,6 +85,32 @@ export const getUserId = () => {
 }
 
 /**
+ * 获取新团蜂用户id
+ * @returns
+ */
+
+export const getStorageUserId = () => {
+	const userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
+	if (!userInfo.buyerUserId) {
+		uni.showModal({
+			title: '提示',
+			content: '您还未登录，是否去登录？',
+			success(res) {
+				if (res.confirm) {
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				} else if (res.cancel) {
+					// uni.navigateBack();
+				}
+			}
+		})
+		return
+	}
+	return userInfo.buyerUserId
+}
+
+/**
  * 获取新团蜂token
  * @returns
  */

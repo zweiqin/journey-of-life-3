@@ -69,7 +69,7 @@ export default {
 		},
 
 		// 微信登陆
-		wxLoginAction({ state, commit, dispatch }, { isAfter } = {}) {
+		wxLoginAction({ state, commit, dispatch }, { isAfter, pageUrl } = { isAfter: true, pageUrl: '/pages/login/login' }) {
 			uni.showLoading({ mask: true })
 			return new Promise((resolve, reject) => {
 				const loginData = {
@@ -79,7 +79,7 @@ export default {
 				}
 				if (loginData.terminal === 3) {
 					const appid = 'wxb19ccb829623be12' // 团蜂wxb19ccb829623be12，新巨蜂wx603b04a561e4683e，别的wxdf390bb4f8a67641
-					const local = store.state.app.isInMiniProgram ? `${A_TF_MAIN}/#/pages/login/login?miniProgram=1` : `${A_TF_MAIN}/#/pages/login/login`
+					const local = store.state.app.isInMiniProgram ? `${A_TF_MAIN}/#${pageUrl}?miniProgram=1` : `${A_TF_MAIN}/#${pageUrl}`
 					const code = getUrlCode().code
 					if (!code) {
 						// 如https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb19ccb829623be12&redirect_uri=http%3A%2F%2Flocalhost%3A8988%2FTFShop_Uni_H5%2F%23%2Fpages%2Flogin%2Flogin&response_type=code&scope=snsapi_userinfo#wechat_redirect
@@ -185,7 +185,7 @@ export default {
 		},
 
 		// 支付宝登陆
-		aliPayLoginAction({ commit, dispatch }, { isAfter } = {}) {
+		aliPayLoginAction({ commit, dispatch }, { isAfter } = { isAfter: true }) {
 			uni.showLoading({ mask: true })
 			return new Promise((resolve, reject) => {
 				uni.login({
@@ -331,16 +331,20 @@ export default {
 		},
 
 		updateUserInfoAction({ state, dispatch }, updateData) {
-			uni.showLoading()
-			updateUserInfoApi(updateData)
-				.then((res) => {
-					uni.hideLoading()
-					uni.showToast({ title: '修改成功', icon: 'success' })
-					dispatch('refrshUserInfoAction')
-				})
-				.catch((e) => {
-					uni.hideLoading()
-				})
+			return new Promise((resolve, reject) => {
+				uni.showLoading()
+				updateUserInfoApi(updateData)
+					.then((res) => {
+						uni.hideLoading()
+						uni.showToast({ title: '修改成功', icon: 'success' })
+						dispatch('refrshUserInfoAction')
+						resolve(res)
+					})
+					.catch((err) => {
+						uni.hideLoading()
+						reject(err)
+					})
+			})
 		},
 
 		// 刷新用户信息

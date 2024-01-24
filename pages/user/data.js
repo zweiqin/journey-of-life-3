@@ -108,6 +108,11 @@ export const myFunction = [
 		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
 		url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
 	},
+	{
+		name: '我的推广',
+		icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
+		url: '/another-tf/another-user/commission-statistics/vip-user'
+	},
 	// {
 	//   name: "会员升级", // 老团蜂的
 	//   icon: require("../../static/images/new-user/menu-icon/huiyuanshengji.png"),
@@ -239,7 +244,7 @@ export const shopServe = [
 	},
 	{
 		name: '商品管理',
-		icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
+		icon: require('../../static/images/new-user/menu-icon/shangpinguanli.png'),
 		showRole: [ 'shop' ]
 	},
 	{
@@ -338,7 +343,7 @@ export const otherFunction = [
 	// myFunction
 	{
 		name: '会员中心',
-		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/memberCenter/index'
 	},
 	{
@@ -364,12 +369,12 @@ export const otherFunction = [
 	// {
 	// 	name: '加盟商',
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png'),
-	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=4',
+	// 	url: '/another-tf/another-user/advanced-role-application/index?type=4',
 	// },
 	// {
 	// 	name: '区代理',
 	// 	icon: require('../../static/images/new-user/menu-icon/qudaili.png'),
-	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application?type=5'
+	// 	url: '/another-tf/another-user/advanced-role-application/index?type=5'
 	// },
 	{
 		name: '我的售后',

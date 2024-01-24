@@ -124,7 +124,7 @@
 					<!-- #endif -->
 					<!-- #ifdef APP || MP -->
 					<text>保存</text>
-					<!-- #endif -->
+				<!-- #endif -->
 				</button>
 				<view class="close-wrapper">
 					<tui-icon name="close" color="#fff" :size="37" @click="handleClosePopup"></tui-icon>
@@ -157,6 +157,7 @@ export default {
 				'align-items': 'flex-start',
 				'padding-top': '7vh',
 				'background': 'rgba(0, 0, 0, 0.6)'
+				// 'pointer-events': 'visible'
 			}),
 			posterImage: '',
 			logoBg: '#fff',
@@ -225,8 +226,11 @@ export default {
 					success: (res) => {
 						if (!this.posterImage) {
 							this.posterImage = res.tempFilePath
-							// console.log(this.posterImage)
+							console.log(this.posterImage)
 						}
+					},
+					fail: (res) => {
+						// this.posterImage = JSON.stringify(res)
 					}
 				})
 			})

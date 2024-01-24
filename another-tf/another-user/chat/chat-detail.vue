@@ -25,22 +25,22 @@
 								</text>
 							</view>
 							<view v-if="item.message.type === 'serviceAssistant'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="words">{{ item.message.content }}</view>
 								</view>
 								<view v-else class="kefu-wrapper">
 									<view class="words">
 										<view>{{ item.message.content }}</view>
-										<view v-if="popularData">
+										<view v-if="popularData && popularData.length">
 											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
 												热门问题
 											</view>
-											<view v-if="popularData.children && popularData.children.length">
+											<view>
 												<view
-													v-for="(part, count) in popularData.children" :key="part.id"
+													v-for="(part, count) in popularData" :key="count"
 													style="padding: 8upx;color: #4d89ff;" @click="handleClickQuestion(part)"
 												>
-													{{ `${count + 1}、${part.name}` }}
+													{{ `${count + 1}、${part.content}` }}
 												</view>
 											</view>
 										</view>
@@ -49,77 +49,43 @@
 							</view>
 
 							<view v-if="item.message.type === 'serviceAnswer'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="words">待定</view>
 								</view>
 								<view v-else class="kefu-wrapper">
 									<view class="words">
-										<view>{{ item.message.content.describe }}</view>
-										<view v-if="item.message.content.picUrl" style="margin-top: 50upx;text-align: center;">
-											<Avatar
-												:width="192" :height="192" radius="10upx"
-												:src="common.seamingImgUrl(item.message.content.picUrl)"
-											></Avatar>
+										<view>{{ item.message.content.content || '无答案内容' }}</view>
+										<view v-if="item.message.content.link" style="margin-top: 20upx;">
+											<text>关联链接：{{ item.message.content.link }}</text>
+											<text style="margin-left: 28upx;color: #ef5613;" @click="$copy(item.message.content.link)">复制</text>
 										</view>
-										<view v-if="item.message.content.categoryList && item.message.content.categoryList.length">
+										<view v-if="item.message.content.picUrl" style="margin-top: 20upx;text-align: center;">
+											<TuanImage
+												:width="192" :height="192" radius="10upx"
+												:src="common.seamingImgUrl(item.message.content.picture)"
+											></TuanImage>
+										</view>
+										<view v-if="popularData && popularData.length" style="margin-top: 18upx;">
 											<view>您可以直接点击以下问题直接咨询</view>
 											<view>
 												<view
-													v-for="(part, count) in item.message.content.categoryList" :key="part.id"
+													v-for="(part, count) in popularData" :key="count"
 													style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
 													@click="handleClickQuestion(part)"
 												>
-													<view>{{ `${count + 1}、${part.name}` }}</view>
+													<view>{{ `${count + 1}、${part.content}` }}</view>
 													<view>
 														<tui-icon name="arrowright" :size="18" color="#cccccc"></tui-icon>
 													</view>
 												</view>
 											</view>
 										</view>
-										<view
-											style="display: flex;justify-content: space-evenly;margin-top: 14upx;padding-top: 12upx;border-top: 2upx solid #e9e9e9;"
-										>
-											<tui-button
-												width="260rpx" height="72rpx" :size="28" plain
-												link
-												:type="item.message.content.statisticsSelect === 0 ? 'danger' : 'gray'" shape="circle"
-												@click="handleClickStatistics(0, item)"
-											>
-												<view>
-													<tui-icon
-														name="agree-fill" :size="18"
-														:color="item.message.content.statisticsSelect === 0 ? '#eb0909' : '#999999'"
-													></tui-icon>
-													<text style="margin-left: 10upx;">
-														有用（{{ item.message.content.statistics
-															? item.message.content.statistics.split(':')[0] : '0' }}）
-													</text>
-												</view>
-											</tui-button>
-											<tui-button
-												width="260rpx" height="72rpx" :size="28" plain
-												link
-												:type="item.message.content.statisticsSelect === 1 ? 'danger' : 'gray'" shape="circle"
-												@click="handleClickStatistics(1, item)"
-											>
-												<view>
-													<tui-icon
-														name="oppose-fill" :size="18"
-														:color="item.message.content.statisticsSelect === 1 ? '#eb0909' : '#999999'"
-													></tui-icon>
-													<text style="margin-left: 10upx;">
-														无用（{{ item.message.content.statistics
-															? item.message.content.statistics.split(':')[1] : '0' }}）
-													</text>
-												</view>
-											</tui-button>
-										</view>
 									</view>
 								</view>
 							</view>
 
 							<view v-if="item.message.type === 'serviceReply'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="words">待定</view>
 								</view>
 								<view v-else class="kefu-wrapper">
@@ -145,7 +111,7 @@
 							</view>
 
 							<view v-if="item.message.type === 'text'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="words">{{ item.message.content }}</view>
 								</view>
 								<view v-else class="kefu-wrapper">
@@ -154,7 +120,7 @@
 							</view>
 
 							<view v-else-if="item.message.type === 'image'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="image">
 										<image
 											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)"
@@ -173,7 +139,7 @@
 							</view>
 
 							<view v-else-if="item.message.type === 'order'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="order">
 										<tui-card :title="{ text: '订单' }" :tag="{ text: item.message.content.orderSn }" full border>
 											<template #body>
@@ -200,7 +166,7 @@
 							</view>
 
 							<view v-else-if="item.message.type === 'goods'">
-								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="goods">
 										<tui-card :title="{ text: '商品' }" :tag="{ text: item.message.content.goodsSn }" full border>
 											<template #body>
@@ -247,10 +213,10 @@
 					translate-y="-110%" triangle-right="28rpx"
 					triangle-bottom="-22rpx"
 				>
-					<view class="tui-menu-item" @click="handleSendImg">发送图片</view>
-					<view class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
-					<view class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
-					<view v-if="!Number(chat)" class="tui-menu-item" @click="handlePopup('Person')">转人工</view>
+					<view v-if="Number(chat)" class="tui-menu-item" @click="handleSendImg">发送图片</view>
+					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
+					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
+					<view v-if="!Number(chat)" class="tui-menu-item" @click="$store.dispatch('app/flyToServiceAction', { openKfId })">转人工</view>
 				</tui-bubble-popup>
 				<image
 					class="upload" src="../../../static/images/icon/add.png" mode=""
@@ -276,13 +242,14 @@ import OrderList from './components/order-list.vue'
 import GoodsList from './components/goods-list.vue'
 import PersonList from './components/person-list.vue'
 import {
-	getUserId,
+	getStorageUserId,
 	timestampToTime
 } from '../../../utils'
 import {
 	T_STORAGE_KEY
 } from '../../../constant'
-import { IMG_UPLOAD_URL } from '../../../config'
+import { ANOTHER_TF_UPLOAD } from '../../../config'
+import { getCustomerProblemByIdApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'ChatDetail',
@@ -302,19 +269,21 @@ export default {
 			isShowGoodsPopup: false,
 
 			// 客服助手
-			popularData: '',
+			openKfId: '',
+			popularData: [],
 			isShowPersonPopup: false
 		}
 	},
 	onLoad(options) {
 		if (options.chat === 'serviceAssistant') {
 			this.chat = options.chat
+			this.openKfId = options.openKfId
 			this.name = '客服助手'
 			this.avatar = require('../../../static/images/icon/kefu.png')
 			uni.showLoading({
 				title: '加载中'
 			})
-			getCustomerPopularApi({ categoryId: 5 })
+			getCustomerProblemByIdApi({ kfId: options.kfId })
 				.then((res) => {
 					uni.hideLoading()
 					this.popularData = res.data
@@ -327,7 +296,7 @@ export default {
 							type: 'serviceAssistant',
 							sendTime: tempDate,
 							content: '您好，很高兴为您服务，我是智能客服助手。您可以通过下方问题列表、输入框旁的按钮、以及在输入框内输入关键词快速获得帮助。',
-							toContactId: getUserId(),
+							toContactId: getStorageUserId(),
 							fileSize: 0,
 							fileName: '',
 							fromUser: {
@@ -362,7 +331,7 @@ export default {
 			this.name = options.name
 			this.avatar = options.avatar
 			this.$store.dispatch('customerService/queryChatMessage', {
-				foUserId: getUserId(),
+				foUserId: getStorageUserId(),
 				toUserId: this.chat
 			}).then((res) => {
 				console.log(res)
@@ -394,7 +363,7 @@ export default {
 							type: 'text',
 							sendTime: tempDate,
 							content: '您好，请问有什么能够帮到您？',
-							toContactId: getUserId(),
+							toContactId: getStorageUserId(),
 							fileSize: 0,
 							fileName: '',
 							fromUser: {
@@ -424,7 +393,7 @@ export default {
 					icon: 'none'
 				}) // 弹出提示框
 			} else if (data.status == 13140) {
-				// if (data.message.fromUser.id === this.userInfo.userId) return
+				// if (data.message.fromUser.id === this.userInfo.buyerUserId) return
 				const tempData = {
 					event: '',
 					message: {
@@ -467,7 +436,7 @@ export default {
 		// 		this.$store.dispatch('customerService/xxx', {
 		// 			ref: this,
 		// 			wsHandleInfo: uni.connectSocket({
-		// 				url: `${BASE_WS_API}/APP/${getUserId()}`,
+		// 				url: `${BASE_WS_API}/APP/${getStorageUserId()}`,
 		// 				complete: () => { }
 		// 			})
 		// 		})
@@ -479,69 +448,50 @@ export default {
 		},
 
 		handleClickQuestion(obj) {
-			uni.showLoading({
-				title: '请稍等~'
-			})
-			getCustomerAnswerSelectApi({ categoryId: obj.id })
-				.then((res) => {
-					uni.hideLoading()
-					const tempDate = Date.now()
-					this.groupMessages = this.groupMessages.concat([{
-						event: '',
-						message: {
-							id: tempDate,
-							status: 'succeed',
-							type: 'serviceAssistant',
-							sendTime: tempDate,
-							content: `【问题】${obj.name}`,
-							toContactId: 0,
-							fileSize: 0,
-							fileName: '',
-							fromUser: {
-								id: this.userInfo.userId,
-								displayName: this.userInfo.nickName,
-								avatar: this.userInfo.avatarUrl
-							},
-							isGroup: false
-						}
-					}, {
-						event: '',
-						message: {
-							id: tempDate,
-							status: 'succeed',
-							type: 'serviceAnswer',
-							sendTime: tempDate + 1,
-							content: {
-								...res.data,
-								'statisticsSelect': '',
-								'questionSelectId': obj.id
-							},
-							toContactId: getUserId(),
-							fileSize: 0,
-							fileName: '',
-							fromUser: {
-								id: 0,
-								displayName: '客服',
-								avatar: '/static/logo.png'
-							},
-							isGroup: false
-						}
-					}])
-					this.scrollToBottom()
-				})
-				.catch((e) => {
-					uni.hideLoading()
-				})
-		},
-		handleClickStatistics(type, item) {
-			getCustomerAnswerStatisticsApi({ feedbackId: item.message.content.id, type })
-				.then((result) => {
-					item.message.content = { ...item.message.content, statisticsSelect: type }
-					getCustomerAnswerSelectApi({ categoryId: item.message.content.questionSelectId })
-						.then((res) => {
-							item.message.content = { ...item.message.content, statistics: res.data.statistics }
-						})
-				})
+			const tempDate = Date.now()
+			this.groupMessages = this.groupMessages.concat([{
+				event: '',
+				message: {
+					id: tempDate,
+					status: 'succeed',
+					type: 'serviceAssistant',
+					sendTime: tempDate,
+					content: `【问题】${obj.content}`,
+					toContactId: 0,
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: this.userInfo.buyerUserId,
+						displayName: this.userInfo.name,
+						avatar: this.userInfo.headImage
+					},
+					isGroup: false
+				}
+			}, {
+				event: '',
+				message: {
+					id: tempDate,
+					status: 'succeed',
+					type: 'serviceAnswer',
+					sendTime: tempDate + 1,
+					content: {
+						problemId: obj.problemList.problemId,
+						picture: obj.problemList.picture,
+						link: obj.problemList.link,
+						content: obj.problemList.content
+					},
+					toContactId: getStorageUserId(),
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: 0,
+						displayName: '客服',
+						avatar: '/static/logo.png'
+					},
+					isGroup: false
+				}
+			}])
+			this.scrollToBottom()
 		},
 
 		send(sendMsg) {
@@ -586,23 +536,23 @@ export default {
 					duration: 2000
 				})
 			}
-			const tempDate = Date.now()
+			const tempDateAssistant = Date.now()
 			if (this.chat === 'serviceAssistant') {
 				this.groupMessages = this.groupMessages.concat([ {
 					event: '',
 					message: {
-						id: tempDate,
+						id: tempDateAssistant,
 						status: 'succeed',
 						type: 'serviceAssistant',
-						sendTime: tempDate,
+						sendTime: tempDateAssistant,
 						content: this.words,
 						toContactId: 0,
 						fileSize: 0,
 						fileName: '',
 						fromUser: {
-							id: this.userInfo.userId,
-							displayName: this.userInfo.nickName,
-							avatar: this.userInfo.avatarUrl
+							id: this.userInfo.buyerUserId,
+							displayName: this.userInfo.name,
+							avatar: this.userInfo.headImage
 						},
 						isGroup: false
 					}
@@ -610,36 +560,29 @@ export default {
 				uni.showLoading({
 					title: '请稍等~'
 				})
-				getcustomerSendingApi({ keywords: this.words })
-					.then((res) => {
-						uni.hideLoading()
-						const tempDate = Date.now()
-						this.groupMessages = this.groupMessages.concat([ {
-							event: '',
-							message: {
-								id: tempDate,
-								status: 'succeed',
-								type: 'serviceReply',
-								sendTime: tempDate + 1,
-								content: res.data,
-								toContactId: getUserId(),
-								fileSize: 0,
-								fileName: '',
-								fromUser: {
-									id: 0,
-									displayName: '客服',
-									avatar: '/static/logo.png'
-								},
-								isGroup: false
-							}
-						} ])
-						this.scrollToBottom()
-						this.words = ''
-					})
-					.catch((e) => {
-						this.words = ''
-						uni.hideLoading()
-					})
+				uni.hideLoading()
+				const tempDateReply = Date.now() + 1
+				this.groupMessages = this.groupMessages.concat([ {
+					event: '',
+					message: {
+						id: tempDateReply,
+						status: 'succeed',
+						type: 'serviceReply',
+						sendTime: tempDateReply + 1,
+						content: [],
+						toContactId: getStorageUserId(),
+						fileSize: 0,
+						fileName: '',
+						fromUser: {
+							id: 0,
+							displayName: '客服',
+							avatar: '/static/logo.png'
+						},
+						isGroup: false
+					}
+				} ])
+				this.scrollToBottom()
+				this.words = ''
 			} else {
 				// this.send({
 				// 	event: '',
@@ -653,21 +596,21 @@ export default {
 				// 		fileSize: 0,
 				// 		fileName: '',
 				// 		fromUser: {
-				// 			id: this.userInfo.userId,
-				// 			displayName: this.userInfo.nickName,
-				// 			avatar: this.userInfo.avatarUrl
+				// 			id: this.userInfo.buyerUserId,
+				// 			displayName: this.userInfo.name,
+				// 			avatar: this.userInfo.headImage
 				// 		},
 				// 		isGroup: true
 				// 	}
 				// })
 				this.$store.dispatch('customerService/addChatMessage', {
-					userId: this.userInfo.userId,
+					userId: this.userInfo.buyerUserId,
 					messageDetails: {
 						contentText: this.words,
-						fromAvatarImage: this.userInfo.avatarUrl,
-						fromUserName: this.userInfo.nickName,
-						fromUserId: this.userInfo.userId,
-						sendTime: tempDate,
+						fromAvatarImage: this.userInfo.headImage,
+						fromUserName: this.userInfo.name,
+						fromUserId: this.userInfo.buyerUserId,
+						sendTime: tempDateAssistant,
 						toUserId: this.chat,
 						toUsername: '',
 						toAvatarImage: '',
@@ -680,10 +623,10 @@ export default {
 						message: '发送消息',
 						data: {
 							contentText: this.words,
-							fromAvatarImage: this.userInfo.avatarUrl,
-							fromUserName: this.userInfo.nickName,
-							fromUserId: this.userInfo.userId,
-							sendTime: tempDate,
+							fromAvatarImage: this.userInfo.headImage,
+							fromUserName: this.userInfo.name,
+							fromUserId: this.userInfo.buyerUserId,
+							sendTime: tempDateAssistant,
 							toUserId: this.chat,
 							toUsername: '',
 							toAvatarImage: '',
@@ -704,14 +647,10 @@ export default {
 					uni.showLoading({
 						title: '图片上传中...'
 					})
-					const tempFilePaths = chooseImageRes.tempFilePaths
 					uni.uploadFile({
-						url: IMG_UPLOAD_URL, // 仅为示例，非真实的接口地址
-						filePath: tempFilePaths[0],
+						url: ANOTHER_TF_UPLOAD, // 仅为示例，非真实的接口地址
+						filePath: chooseImageRes.tempFilePaths[0].path,
 						name: 'file',
-						formData: {
-							'user': 'test'
-						},
 						success: (uploadFileRes) => {
 							console.log(uploadFileRes, uploadFileRes.data)
 							const messageUrl = JSON.parse(uploadFileRes.data).data.url
@@ -728,20 +667,20 @@ export default {
 							// 		fileSize: 0,
 							// 		fileName: '',
 							// 		fromUser: {
-							// 			id: this.userInfo.userId,
-							// 			displayName: this.userInfo.nickName,
-							// 			avatar: this.userInfo.avatarUrl
+							// 			id: this.userInfo.buyerUserId,
+							// 			displayName: this.userInfo.name,
+							// 			avatar: this.userInfo.headImage
 							// 		},
 							// 		isGroup: true
 							// 	}
 							// })
 							this.$store.dispatch('customerService/addChatMessage', {
-								userId: this.userInfo.userId,
+								userId: this.userInfo.buyerUserId,
 								messageDetails: {
 									contentText: messageUrl,
-									fromAvatarImage: this.userInfo.avatarUrl,
-									fromUserName: this.userInfo.nickName,
-									fromUserId: this.userInfo.userId,
+									fromAvatarImage: this.userInfo.headImage,
+									fromUserName: this.userInfo.name,
+									fromUserId: this.userInfo.buyerUserId,
 									sendTime: tempDate,
 									toUserId: this.chat,
 									toUsername: '',
@@ -755,9 +694,9 @@ export default {
 									message: '发送消息',
 									data: {
 										contentText: messageUrl,
-										fromAvatarImage: this.userInfo.avatarUrl,
-										fromUserName: this.userInfo.nickName,
-										fromUserId: this.userInfo.userId,
+										fromAvatarImage: this.userInfo.headImage,
+										fromUserName: this.userInfo.name,
+										fromUserId: this.userInfo.buyerUserId,
 										sendTime: tempDate,
 										toUserId: this.chat,
 										toUsername: '',
@@ -811,12 +750,12 @@ export default {
 			} else {
 				const tempDate = Date.now()
 				this.$store.dispatch('customerService/addChatMessage', {
-					userId: this.userInfo.userId,
+					userId: this.userInfo.buyerUserId,
 					messageDetails: {
 						contentText: obj.msg,
-						fromAvatarImage: this.userInfo.avatarUrl,
-						fromUserName: this.userInfo.nickName,
-						fromUserId: this.userInfo.userId,
+						fromAvatarImage: this.userInfo.headImage,
+						fromUserName: this.userInfo.name,
+						fromUserId: this.userInfo.buyerUserId,
 						sendTime: tempDate,
 						toUserId: this.chat,
 						toUsername: '',
@@ -837,9 +776,9 @@ export default {
 					// 		fileSize: 0,
 					// 		fileName: '',
 					// 		fromUser: {
-					// 			id: this.userInfo.userId,
-					// 			displayName: this.userInfo.nickName,
-					// 			avatar: this.userInfo.avatarUrl
+					// 			id: this.userInfo.buyerUserId,
+					// 			displayName: this.userInfo.name,
+					// 			avatar: this.userInfo.headImage
 					// 		},
 					// 		isGroup: true
 					// 	}
@@ -849,9 +788,9 @@ export default {
 						message: '发送消息',
 						data: {
 							contentText: obj.msg,
-							fromAvatarImage: this.userInfo.avatarUrl,
-							fromUserName: this.userInfo.nickName,
-							fromUserId: this.userInfo.userId,
+							fromAvatarImage: this.userInfo.headImage,
+							fromUserName: this.userInfo.name,
+							fromUserId: this.userInfo.buyerUserId,
 							sendTime: tempDate,
 							toUserId: this.chat,
 							toUsername: '',

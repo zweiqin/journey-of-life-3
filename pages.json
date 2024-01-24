@@ -1417,6 +1417,12 @@
           }
         },
         {
+          "path": "another-user/cropper/index",
+          "style": {
+            "navigationBarTitleText": "图片裁剪"
+          }
+        },
+        {
           "path": "another-serve/unsubscribe/index",
           "style": {
             "navigationBarTitleText": "账户注销"
