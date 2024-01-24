@@ -5,7 +5,7 @@
             </image>
         </TuanPageHead>
         <GradationBackground></GradationBackground>
-                <!-- 选择tab栏 -->
+        <!-- 选择tab栏 -->
         <scroll-view :scroll-x="true" class="tabNavsContainer">
             <view class="selectClassBox">
                 <view class="tabs-item" :class="{isActive: index == 0}" v-for="(item, index) in tabNavs" :key="index">
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { getNextLevelPage } from '@/api/community-center/communityPackage'
 import GradationBackground from './components/gradationBackground3'
 // import PageHead from 'pages/business-district/components/PageHead.vue'
 export default {
@@ -78,6 +79,17 @@ export default {
     components: {
         // PageHead
         GradationBackground
+    },
+    created() {
+        getNextLevelPage({
+            pageNo: 1,
+            pageSize: 10,
+            pid: 0
+        }).then(res => { 
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     },
     data() {
         return {
