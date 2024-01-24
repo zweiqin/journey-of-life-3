@@ -36,6 +36,7 @@
 						<text class="txt3">{{ item.createTime }}</text>
 					</view>
 					<view
+						v-if="showType === 'income'"
 						style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;"
 					>
 						<image
@@ -45,17 +46,17 @@
 						<text class="userName">{{ item.userNameOne }}</text>
 						<!-- <text style="font-size: 24upx;">（ID：{{ item.holdId }}）</text> -->
 					</view>
-					<!-- <view
+					<view
 						v-else-if="showType === 'expenditure'"
 						style="display: flex; flex-direction: column; margin-left: 50upx; align-items: center;"
 					>
 						<image
 							style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
-							:src="common.seamingImgUrl(item.userLogs)"
+							:src="common.seamingImgUrl(item.imgOne)"
 						></image>
-						<text style="font-size: 24upx; color: rgb(26, 26, 26);">{{ item.username }}</text>
-						<text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text>
-					</view> -->
+						<text class="userName">{{ item.userNameOne }}</text>
+						<!-- <text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text> -->
+					</view>
 				</view>
 			</scroll-view>
 		</view>
