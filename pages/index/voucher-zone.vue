@@ -127,6 +127,7 @@ export default {
   })],
   mounted() {
     this.$data._query.classifyId = 822
+      this.$data._query.pageSize = 10
     this._loadData()
     this.getCtagory()
   },

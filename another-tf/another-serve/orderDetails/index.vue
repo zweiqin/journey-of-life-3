@@ -51,87 +51,67 @@
 				</view>
 			</view>
 		</view>
+
 		<view v-else-if="showType === 'detail'">
 			<JHeader title="订单详情" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;"></JHeader>
 			<view>
 				<view class="content" style="padding-bottom:200upx;">
-					<view class="order-details-status">
-						<!--  待付款 -->
-						<view v-if="dataList.state == 1" class="status-title-box">
-							<view class="l">
-								<text class="status">等待买家付款</text>
-								<view
-									style="display: flex;justify-content: center;align-items: center;color: #FFFFFF; margin-top: 20rpx;"
-								>
-									<text>剩</text>
-									<tui-countdown :size="24" :colon-size="24" colon-color="#ffffff" :time="remainingTime"></tui-countdown>
-									<text>自动关闭</text>
-								</view>
-							</view>
+					<view style="margin: 24upx 30upx 0;">
+						<view v-if="dataList.state == 1" style="display: flex;align-items: center;justify-content: space-between;">
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待买家付款</text>
+							<text style="color: #1A66FF;font-size: 26upx;">待支付</text>
 						</view>
-						<!--  待发货 -->
-						<view v-else-if="dataList.state == 2" class="status-title-box">
-							<view class="l">
-								<text class="status">等待卖家发货</text>
-								<text class="label">付款后2-5个工作日发货</text>
-							</view>
+						<view
+							v-else-if="dataList.state == 2"
+							style="display: flex;align-items: center;justify-content: space-between;"
+						>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待卖家发货</text>
+							<text style="color: #1A66FF;font-size: 26upx;">付款后2-5个工作日发货</text>
 						</view>
-						<!--  待核销 -->
-						<view v-else-if="dataList.state == 8" class="status-title-box">
-							<view class="l">
-								<text class="status">等待核销</text>
-								<text class="label">向商家出示核销码进行核销</text>
-							</view>
+						<view
+							v-else-if="dataList.state == 8"
+							style="display: flex;align-items: center;justify-content: space-between;"
+						>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待核销</text>
+							<text style="color: #1A66FF;font-size: 26upx;">向商家出示核销码进行核销</text>
 						</view>
-						<!--  待收货 -->
-						<view v-else-if="dataList.state == 3" class="status-title-box">
-							<view class="l">
-								<text class="status">卖家已发货</text>
-							</view>
+						<view v-else-if="dataList.state == 3">
+							<!--  待收货 -->
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 卖家已发货</text>
 						</view>
-						<!-- 已完成 -->
-						<view v-else-if="dataList.state == 4" class="status-title-box">
-							<view class="l">
-								<text class="status">交易成功</text>
-								<text class="label">感谢您的使用</text>
-							</view>
+						<view
+							v-else-if="dataList.state == 4"
+							style="display: flex;align-items: center;justify-content: space-between;"
+						>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 交易成功</text>
+							<text style="color: #1A66FF;font-size: 26upx;">感谢您的使用</text>
 						</view>
-						<!--  拼团失败 -->
-						<view v-else-if="(dataList.state == 5) && (dataList.collageId != 0)" class="status-title-box">
-							<view class="l">
-								<text class="status">拼团失败</text>
-								<text class="label">剩余时间 00:00:00</text>
-							</view>
-							<view class="clusterback">
-							</view>
+						<view
+							v-else-if="(dataList.state == 5) && dataList.collageId"
+							style="display: flex;align-items: center;justify-content: space-between;"
+						>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 拼团失败</text>
+							<text style="color: #1A66FF;font-size: 26upx;">剩余时间 00:00:00</text>
 						</view>
-						<!-- 交易关闭 -->
-						<view v-else-if="dataList.state == 5" class="status-title-box2">
-							<text class="status">交易关闭</text>
-							<text class="label">您已关闭了这笔交易</text>
+						<view
+							v-else-if="dataList.state == 5"
+							style="display: flex;align-items: center;justify-content: space-between;"
+						>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 交易关闭</text>
+							<text style="color: #1A66FF;font-size: 26upx;">您已关闭了这笔交易</text>
 						</view>
-						<!-- 退款成功 -->
 						<view
 							v-else-if="((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.moneyReturnList.status == 6))"
-							class="status-title-box2"
+							style="display: flex;align-items: center;justify-content: space-between;"
 						>
-							<text class="status">退款成功</text>
-							<text class="label">该笔订单 ¥{{ dataList.paySum }} 退款，已原路退回</text>
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 退款成功</text>
+							<text style="color: #1A66FF;font-size: 26upx;">该笔订单 ¥{{ dataList.paySum }} 退款，已原路退回</text>
 						</view>
-						<!--  待成团 -->
-						<view v-else-if="dataList.state == 6" class="status-title-box">
-							<view class="l">
-								<text class="status">待成团</text>
-								<view
-									style="display: flex;justify-content: center;align-items: center;color: #FFFFFF; margin-top: 20rpx;"
-								>
-									<text>剩余时间</text>
-									<tui-countdown :size="24" :colon-size="24" colon-color="#ffffff" :time="remainingTime"></tui-countdown>
-								</view>
-							</view>
+						<view v-else-if="dataList.state == 6">
+							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 待成团</text>
 						</view>
-
 					</view>
+
 					<view class="order-details-info-box">
 						<view v-if="dataList.orderType === 1" class="address-box">
 							<tui-icon name="position" :size="70" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
@@ -145,36 +125,49 @@
 								</view>
 							</view>
 						</view>
-
 					</view>
 
 					<view style="padding: 30upx 40upx;margin: 24upx 30upx 0;background-color: #ffffff;border-radius: 20upx;">
-						<view
-							style="display: flex;align-items: center;"
-							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${dataList.shopId}`)"
-						>
-							<image
-								style="width: 200upx;height: 200upx;border-radius: 20upx"
-								:src="common.seamingImgUrl(brandDetail.shopLogo)"
+						<view style="display: flex;align-items: center;">
+							<view
+								style="flex: 1;display: flex;align-items: stretch;"
+								@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${dataList.shopId}`)"
 							>
-							</image>
-							<view style="flex: 1;display: flex;align-items: center;">
-								<view style="flex: 1;width: 0;">
+								<image
+									style="width: 200upx;height: 200upx;margin-right: 18upx;border-radius: 20upx"
+									:src="common.seamingImgUrl(brandDetail.shopLogo)"
+								>
+								</image>
+								<view style="flex: 1;display: flex;flex-direction: column;justify-content: flex-start;width: 0;">
 									<text style="font-size: 30upx;color: #333;font-weight: bold;">{{ dataList.shopName }}</text>
-									<view>
+									<view style="margin-top: 6upx;">
 										<tui-rate active="#EF530E" :current="brandDetail.score" :size="14" disabled></tui-rate>
 										<text style="font-size: 24upx;color: #ef530e;margin-left: 4upx;">{{ brandDetail.score }}</text>
 									</view>
+									<view
+										v-if="brandDetail.startTime"
+										style="width: fit-content;margin-top: 12upx;padding: 4upx 18upx;font-size: 20upx;color: #EF530E;border: 2upx solid #EF530E;border-radius: 20upx;"
+									>
+										{{ brandDetail.startTime }}营业
+									</view>
+									<view style="margin-top: 12upx;display: flex;align-items: center;">
+										<tui-icon name="gps" :size="14" color="#222229"></tui-icon>
+										<text style="margin-left: 4upx;font-size: 24upx;">{{ brandDetail.distance || 0 }}Km</text>
+										<text
+											style="margin-left: 30upx;flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+										>
+											{{ brandDetail.shopAdress || '--' }}
+										</text>
+									</view>
 								</view>
-								<view>
-									<BeeMakePhone :phone="brandDetail.chargePersonPhone">
-										<view class="item">
-											<BeeIcon :size="20" color="#e02208" name="voipphone"></BeeIcon>
-											<text>电话</text>
-										</view>
-									</BeeMakePhone>
-									<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 10upx 0 0"></tui-icon>
-								</view>
+							</view>
+							<view>
+								<BeeMakePhone :phone="brandDetail.chargePersonPhone">
+									<BeeIcon
+										:size="18" color="#e02208" name="voipphone"
+										style="padding: 12upx;background-color: #fbeeee;border-radius: 50%;line-height: 1;"
+									></BeeIcon>
+								</BeeMakePhone>
 							</view>
 						</view>
 					</view>
@@ -210,14 +203,14 @@
 									<view style="color: #EF530E;" @click="$copy(dataList.orderFormid)">复制</view>
 								</view>
 								<view
-									v-if="[1, 8, 5].includes(dataList.state) || ((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.goodsReturn.status == 6))"
+									v-if="[1, 8, 5, 6].includes(dataList.state) || ((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.goodsReturn.status == 6))"
 									style="display: flex;align-items: center;justify-content: space-between;padding-top: 32upx;"
 								>
 									<view>
 										<text style="color: #8F8F8F;">需付金额</text>
 										<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.price }}</text>
 									</view>
-									<view v-if="[ 1 ].includes(dataList.state)">
+									<view v-if="[1, 6].includes(dataList.state)">
 										<view style="display: flex;align-items: center;color: #1A66FF;">
 											<text>剩余时间：</text>
 											<tui-countdown
@@ -269,7 +262,7 @@
 							>
 								<view
 									style="flex: 1;display: flex;align-items: center;justify-content: center;color: #EF530E;"
-									@click="go(`/another-tf/another-user/share-shop-and-commodity/index?isSharer=1&shopId=${dataList.shopId}&goods=${JSON.stringify(dataList.skus.map(i => i.productId))}`)"
+									@click="handleClickShare"
 								>
 									<tui-icon name="share" :size="42" unit="upx" margin="0 20upx 0 0" color="#EF530E"></tui-icon>
 									一键分享
@@ -281,6 +274,14 @@
 								>
 									<tui-icon name="kefu" :size="42" unit="upx" margin="0 20upx 0 0" color="#8F8F8F"></tui-icon>
 									申请售后
+								</view>
+								<view
+									v-if="[2, 3, 9].includes(dataList.state) && dataList.skus.every(i => i.classifyId != 1439)"
+									style="flex: 1;display: flex;align-items: center;justify-content: center;color: #8F8F8F;"
+									@click="handleApplyTap"
+								>
+									<tui-icon name="offline" :size="42" unit="upx" margin="0 20upx 0 0" color="#8F8F8F"></tui-icon>
+									申请退款
 								</view>
 							</view>
 						</view>
@@ -410,44 +411,61 @@
 					</view>
 				</view>
 
-				<!-- 待付款 待发货 待收货 已完成 退款成功 -->
-				<view
-					class="order-details-btn" style="padding-top:30upx;"
-					:style="{ 'padding-bottom': (isIphone == true ? 40 : 0) + 'rpx' }"
-				>
-					<text v-if="[1, 6, 8].includes(dataList.state)" class="btn-l" @click="cancelOrder">
-						取消订单
-					</text>
-					<text v-if="[1, 9].includes(dataList.state)" class="btn btn-r" @click="showPayTypePopup = true">
-						立即付款
-					</text>
-					<text
-						v-if="[2, 3, 9].includes(dataList.state) && dataList.skus.every(i => i.classifyId != 1439)" class="btn-l"
-						@click="applyMoneyAllTap"
+				<view class="order-details-btn" :style="{ 'padding-bottom': (isIphone == true ? 40 : 0) + 'rpx' }">
+					<tui-button
+						v-if="[1, 6, 8].includes(dataList.state)" type="gray" width="48%" height="82rpx"
+						plain
+						margin="20upx 0 0" style="border-radius: 8upx;" @click="cancelOrder"
 					>
-						申请退款
-					</text>
-					<text v-if="dataList.state == 3" class="btn btn-r" @click="confirmReceiptTap">确认收货</text>
-					<text
-						v-if="[ 6 ].includes(dataList.state)" class="btn btn-r"
+						取消订单
+					</tui-button>
+					<tui-button
+						v-if="[1, 8].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0"
+						style="background: #ef530e!important;border-radius: 8upx;" @click="showPayTypePopup = true"
+					>
+						提交支付
+					</tui-button>
+					<tui-button
+						v-if="[ 3 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0"
+						style="background: #ef530e!important;border-radius: 8upx;" @click="confirmReceiptTap"
+					>
+						确认完成
+					</tui-button>
+					<tui-button
+						v-if="[ 6 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0"
+						style="background: #ef530e!important;border-radius: 8upx;"
 						@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
 					>
 						邀请拼单
-					</text>
-					<text v-if="[ 5 ].includes(dataList.state) && !dataList.collageId" class="btn-l" @click="delOrder">删除订单</text>
-					<text
-						v-if="[ 5 ].includes(dataList.state) && !dataList.collageId" class="btn btn-r"
-						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
-					>
-						再次购买
-					</text>
-					<text
-						v-if="[ 5 ].includes(dataList.state) && dataList.collageId" class="btn"
+					</tui-button>
+					<tui-button
+						v-if="[ 5 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0"
+						style="background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 					>
 						再次开团
-					</text>
+					</tui-button>
+					<tui-button
+						v-if="[ 5 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0"
+						style="background: #ef530e!important;border-radius: 8upx;" @click="delOrder"
+					>
+						删除订单
+					</tui-button>
+					<tui-button
+						v-if="[ 5 ].includes(dataList.state)" type="warning" width="100%" height="82rpx"
+						margin="20upx 0 0"
+						style="min-width: 100%;background: #ef530e!important;border-radius: 8upx;"
+						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
+					>
+						再下一单
+					</tui-button>
 				</view>
+
 				<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 					<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 						<CashierList
@@ -561,6 +579,16 @@ export default {
 				this.handleGoBuyAgain(item) // 跳转详情
 			}
 		},
+		handleClickShare() {
+			uni.navigateTo({
+				url: '/another-tf/another-user/share-shop-and-commodity/index?isSharer=1',
+				success: () => {
+					setTimeout(() => {
+						uni.$emit('sendShareShopAndCommodityMsg', { shopId: this.dataList.shopId, goods: JSON.stringify(this.dataList.skus.map((i) => `${i.productId}~${i.skuId}`)) })
+					}, 400)
+				}
+			})
+		},
 		async handleGoBuyAgain(item) {
 			// 循环sku，获取商品详情
 			const postAjax = []
@@ -615,7 +643,9 @@ export default {
 			uni.navigateTo({
 				url: '/another-tf/another-serve/addEvaluate/index?type=1',
 				success: () => {
-					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.dataList, commentId: skuItem.commentId })
+					setTimeout(() => {
+						uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.dataList, commentId: skuItem.commentId })
+					}, 100)
 				}
 			})
 		},
@@ -678,10 +708,10 @@ export default {
 		// 取消订单
 		cancelOrder() {
 			uni.showModal({
-				title: '温馨提示',
-				content: '您确定要取消该订单吗？',
-				confirmText: '确定取消',
-				cancelText: '点错了',
+				title: '',
+				content: '取消订单将不保存你的内容，\n确认取消订单吗？',
+				confirmText: '是',
+				cancelText: '否',
 				success: (res) => {
 					if (res.confirm) {
 						uni.showLoading({
@@ -839,51 +869,10 @@ export default {
 	.content {
 		padding: 0 0 160upx 0;
 
-		.order-details-status {
-			width: 750upx;
-			height: 250upx;
-			background: #333333;
-
-			.status-title-box {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: center;
-				padding: 40upx 30upx 0;
-				box-sizing: border-box;
-				text-align: center;
-
-				.l {
-					display: flex;
-					flex-direction: column;
-				}
-			}
-
-			.status-title-box2 {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 40upx 30upx 0;
-				box-sizing: border-box;
-			}
-
-			.status {
-				font-size: 30upx;
-				color: #fff;
-			}
-
-			.label {
-				font-size: 24upx;
-				color: #fff;
-				margin-top: 14upx;
-			}
-
-		}
-
 		.order-details-info-box {
 			padding: 0 30upx;
 			box-sizing: border-box;
-			margin-top: -80upx;
+			margin-top: 24upx;
 
 			.address-box {
 				margin-top: 20upx;
@@ -997,44 +986,15 @@ export default {
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		min-height: 160upx;
-		background: #fff;
-		box-shadow: 0px 0px 10px 0px rgba(51, 51, 51, 0.1);
-		box-sizing: border-box;
+		padding: 0 30upx 20upx;
 		display: flex;
-		padding: 0 30upx;
-		flex-direction: row;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
+		background: #ffffff;
+		box-shadow: 0px 0px 10px 0px rgba(51, 51, 51, 0.1);
 		z-index: 10;
-
-		.btn {
-			width: 100%;
-			height: 100upx;
-			background: #333333;
-			font-size: 28upx;
-			color: #FFEBC4;
-			text-align: center;
-			line-height: 100upx;
-			font-weight: 500upx;
-		}
-
-		.btn-l {
-			width: 50%;
-			height: 100upx;
-			border: 2rpx solid #333333;
-			font-size: 28upx;
-			color: #333;
-			text-align: center;
-			line-height: 100upx;
-			box-sizing: border-box;
-			margin-right: 10rpx;
-		}
-
-		.btn-r {
-			width: 50%;
-			margin-left: 10rpx;
-		}
+		box-sizing: border-box;
 	}
 }
 </style>

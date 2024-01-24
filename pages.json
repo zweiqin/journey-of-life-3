@@ -1136,18 +1136,18 @@
             "navigationBarTitleText": "我的推广"
           }
         },
-        {
-          "path": "sever/service-center/service-center",
-          "style": {
-            "navigationBarTitleText": "客服中心"
-          }
-        },
-        {
-          "path": "sever/customer-service/customer-service",
-          "style": {
-            "navigationBarTitleText": "联系客服"
-          }
-        },
+        // {
+        //   "path": "sever/service-center/service-center",
+        //   "style": {
+        //     "navigationBarTitleText": "客服中心"
+        //   }
+        // },
+        // {
+        //   "path": "sever/customer-service/customer-service",
+        //   "style": {
+        //     "navigationBarTitleText": "联系客服"
+        //   }
+        // },
         {
           "path": "sever/code/fille-code",
           "style": {
@@ -1160,15 +1160,15 @@
             "navigationBarTitleText": "我的微店"
           }
         },
-        {
-          "path": "sever/chat/chat",
-          "style": {
-            "navigationBarTitleText": "消息"
-          }
-        },
-        {
-          "path": "sever/chat/chat-detail"
-        },
+        // {
+        //   "path": "sever/chat/chat",
+        //   "style": {
+        //     "navigationBarTitleText": "消息"
+        //   }
+        // },
+        // {
+        //   "path": "sever/chat/chat-detail"
+        // },
         {
           "path": "sever/microstore/m-microstore",
           "style": {
@@ -1366,17 +1366,6 @@
         }
       ]
     },
-    // {
-    //   "root": "order",
-    //   "pages": [
-    //     {
-    //       "path": "b-order-form/b-order-form",
-    //       "style": {
-    //         "navigationBarTitleText": "订单详情"
-    //       }
-    //     }
-    //   ]
-    // },
     {
       "root": "another-tf",
       "pages": [
@@ -1555,6 +1544,30 @@
           "path": "another-user/franchisee-statistics/index",
           "style": {
             "navigationBarTitleText": "加盟统计"
+          }
+        },
+        {
+          "path": "another-user/chat/chat",
+          "style": {
+            "navigationBarTitleText": "消息列表"
+          }
+        },
+        {
+          "path": "another-user/chat/chat-detail",
+          "style": {
+            "navigationBarTitleText": "聊天"
+          }
+        },
+        {
+          "path": "another-user/service-center/service-center",
+          "style": {
+            "navigationBarTitleText": "客服中心"
+          }
+        },
+        {
+          "path": "another-user/customer-service/customer-service",
+          "style": {
+            "navigationBarTitleText": "联系客服"
           }
         },
         {

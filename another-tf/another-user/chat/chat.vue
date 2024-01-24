@@ -7,7 +7,7 @@
 		<view v-if="chatListData.length" class="message-list">
 			<view
 				v-for="item in chatListData" :key="item.chatId" class="item"
-				@click="go(`/user/sever/chat/chat-detail?chat=${item.toUserId}&name=${item.toUsername}&avatar=${item.toAvatarImage}`)"
+				@click="go(`/another-tf/another-user/chat/chat-detail?chat=${item.toUserId}&name=${item.toUsername}&avatar=${item.toAvatarImage}`)"
 			>
 				<image class="avatar" :src="item.toAvatarImage" mode="" />
 				<view class="chat-wrapper">

@@ -55,10 +55,6 @@
 </template>
 
 <script>
-import {
-	getShopCarListApi
-} from '../../../../api/cart'
-import { getUserId } from '../../../../utils'
 export default {
 	data() {
 		return {

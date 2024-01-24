@@ -280,10 +280,9 @@ import {
 	timestampToTime
 } from '../../../utils'
 import {
-	USER_INFO
+	T_STORAGE_KEY
 } from '../../../constant'
 import { IMG_UPLOAD_URL } from '../../../config'
-import { getCustomerPopularApi, getCustomerAnswerSelectApi, getCustomerAnswerStatisticsApi, getcustomerSendingApi } from '../../../api/user'
 
 export default {
 	name: 'ChatDetail',
@@ -295,7 +294,7 @@ export default {
 			chat: '',
 			name: '',
 			avatar: '',
-			userInfo: uni.getStorageSync(USER_INFO),
+			userInfo: uni.getStorageSync(T_STORAGE_KEY),
 			groupMessages: [],
 			scrollTop: '',
 			isShowBubblePopup: false,

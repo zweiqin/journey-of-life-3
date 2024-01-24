@@ -133,7 +133,9 @@ export default {
 			uni.navigateTo({
 				url: '/another-tf/another-serve/addEvaluate/index?type=1',
 				success: () => {
-					uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.data, commentId: skuItem.commentId })
+					setTimeout(() => {
+						uni.$emit('sendAddEvaluateMsg', { addCommentVOData: this.data, commentId: skuItem.commentId })
+					}, 400)
 				}
 			})
 		},
@@ -150,7 +152,7 @@ export default {
 			// 	})
 			// }
 			// 核销码
-			if ([1, 8].includes(state)) {
+			if ([1, 8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
 					className: 'l',

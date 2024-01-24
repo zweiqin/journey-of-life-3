@@ -84,6 +84,7 @@ export default {
 			code: '',
 			wechatOpenId: '',
 			headImage: '',
+			wechatName: '',
 			verifyType: 0,
 			buyerUserId: 0
 		}
@@ -91,6 +92,7 @@ export default {
 	onLoad(options) {
 		this.wechatOpenId = options.wechatOpenId
 		this.headImage = options.headImage
+		this.wechatName = options.wechatName
 		this.buyerUserId = options.buyerUserId
 		if (![2, 4].includes(this.$store.state.app.terminal)) this.verifyType = 1
 	},
@@ -128,6 +130,7 @@ export default {
 				phone: this.phone,
 				wechatOpenId: this.wechatOpenId,
 				headImage: this.headImage,
+				wechatName: this.wechatName,
 				verificationCode: this.code,
 				channelCode: '',
 				terminal: 3
@@ -150,7 +153,8 @@ export default {
 								sessionKey: result.data.sessionKey,
 								encryptedData: e.detail.encryptedData,
 								iv: e.detail.iv,
-								headImage: this.headImage
+								headImage: this.headImage,
+								wechatName: this.wechatName
 							}).then((res) => {
 								this.$showToast('绑定成功')
 								this.$store.dispatch('auth/LoginAfterAction', { type: 'wx', data: res.data })

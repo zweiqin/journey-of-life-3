@@ -38,7 +38,7 @@
 		<view style="position: fixed;bottom: 0;width: 100%;padding: 4upx 0;background-color: #ffffff;">
 			<view
 				style="text-align: center;"
-				@click="go('/user/sever/chat/chat-detail?chat=serviceAssistant')"
+				@click="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"
 			>
 				<tui-icon name="message" size="36" color="#4b4b4b"></tui-icon>
 				<view style="font-size: 30upx;color: #bcb5b2;">客服助手</view>
@@ -87,8 +87,6 @@
 </template>
 
 <script>
-import { getCustomerCategoryApi, getCustomerSelectAnswerApi, getCustomerAnswerStatisticsApi } from '../../../api/user'
-import { getUserId } from '../../../utils'
 
 export default {
 	name: 'ServiceCenter',

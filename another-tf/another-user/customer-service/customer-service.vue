@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import CustomerServiceHeader from './cpns/CustomerServiceHeader.vue'
 import CustomerServiceContainer from './cpns/CustomerServiceContainer/index.vue'
 export default {
