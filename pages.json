@@ -1366,17 +1366,6 @@
         }
       ]
     },
-    // {
-    //   "root": "order",
-    //   "pages": [
-    //     {
-    //       "path": "b-order-form/b-order-form",
-    //       "style": {
-    //         "navigationBarTitleText": "订单详情"
-    //       }
-    //     }
-    //   ]
-    // },
     {
       "root": "another-tf",
       "pages": [

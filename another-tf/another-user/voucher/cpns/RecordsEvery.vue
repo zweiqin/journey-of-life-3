@@ -17,7 +17,7 @@
 					>
 						<image class="Iconimg" src="../../../../static/images/user/zengsong.png"></image>
 					</view>
-					<text class="txt2">{{ item.number }}</text>
+					<text class="txt2" style="display: flex;"> {{ item.number }}</text>
 					<view class="itemDetails">
 						<text class="txt1">
 							代金卷
@@ -43,8 +43,8 @@
 							style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
 							:src="common.seamingImgUrl(item.imgOne)"
 						></image>
-						<text style="font-size: 24upx;">{{ item.userNameOne }}</text>
-						<text style="font-size: 24upx;">（ID：{{ item.holdId }}）</text>
+						<text class="userName">{{ item.userNameOne }}</text>
+						<!-- <text style="font-size: 24upx;">（ID：{{ item.holdId }}）</text> -->
 					</view>
 					<view
 						v-else-if="showType === 'expenditure'"
@@ -52,10 +52,10 @@
 					>
 						<image
 							style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
-							:src="common.seamingImgUrl(item.userLogs)"
+							:src="common.seamingImgUrl(item.imgOne)"
 						></image>
-						<text style="font-size: 24upx; color: rgb(26, 26, 26);">{{ item.username }}</text>
-						<text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text>
+						<text class="userName">{{ item.userNameOne }}</text>
+						<!-- <text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text> -->
 					</view>
 				</view>
 			</scroll-view>
@@ -103,6 +103,7 @@ export default {
 	},
 	created() {
 		this.getListData()
+					// console.log(this.showType);
 	},
 	methods: {
 		getListData() {
@@ -136,6 +137,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.userName {
+	margin-top: 15rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 24upx;
+	width:120rpx;
+	text-align: center;
+}
 .TotalRevenue {
 	width: 100%;
 	box-sizing: border-box;
