@@ -17,7 +17,7 @@
 					>
 						<image class="Iconimg" src="../../../../static/images/user/zengsong.png"></image>
 					</view>
-					<text class="txt2" style="display: flex;"> + {{ item.number }}</text>
+					<text class="txt2" style="display: flex;"> {{ item.number }}</text>
 					<view class="itemDetails">
 						<text class="txt1">
 							代金卷
