@@ -22,7 +22,7 @@
 						:style="{
 							fontWeight: item.name === sortText ? 'bold' : 'normal',
 							color: item.name === sortText ? '#222229' : '#979797'
-						}" @click="(sortText = item.name) && $emit('select', item.id)"
+						}" @click="handleSelectFilter(item, index)"
 					>
 						<text>{{ item.name }}</text>
 					</view>
@@ -57,7 +57,7 @@
 							:style="{
 								fontWeight: item.name === sortText ? 'bold' : 'normal',
 								color: item.name === sortText ? '#222229' : '#979797'
-							}" @click="(sortText = item.name) && ((dropdownShow = false) || $emit('select', item.id))"
+							}" @click="handleSelectFilter(item, index)"
 						>
 							<text>{{ item.name }}</text>
 						</view>
@@ -67,7 +67,7 @@
 					<view
 						v-for="(item, index) in [{ name: '综合排序', id: '' }, ...sortList.slice(2)]" :key="index"
 						style="padding: 18upx 0;" :style="{ color: item.name === sortText ? '#ff4b10' : '#333333' }"
-						@click="(sortText = item.name) && ((dropdownShow = false) || $emit('select', item.id))"
+						@click="handleSelectSort(item, index)"
 					>
 						{{ item.name }}
 					</view>
@@ -79,7 +79,7 @@
 
 <script>
 export default {
-	name: 'StorePrimaryFilterBox',
+	name: 'StoreSecondaryFilterBox',
 	props: {
 		translatey: {
 			type: Number,
@@ -90,7 +90,11 @@ export default {
 		return {
 			dropdownShow: false,
 			sortText: '综合排序',
-			sortList: [{ name: '销量优先', id: 1 }, { name: '距离优先', id: 2 }, { name: '好评优先', id: 3 }, { name: '低价优先', id: 4 }, { name: '高价优先', id: 5 }]
+			sortList: [{ name: '销量优先', id: 1 }, { name: '距离优先', id: 2 }, { name: '低价优先', id: 3 }, { name: '高价优先', id: 4 }], // , { name: '好评优先', id: 5 }
+			secondaryFilterBoxObj: {
+				type: '',
+				volume: ''
+			}
 		}
 	},
 	created() {
@@ -100,6 +104,25 @@ export default {
 		// 	})
 	},
 	methods: {
+		handleSelectSort(item, index) {
+			this.sortText = item.name
+			this.secondaryFilterBoxObj.type = index
+			this.secondaryFilterBoxObj.volume = ''
+			this.dropdownShow = false
+			this.$emit('select', this.secondaryFilterBoxObj)
+		},
+		handleSelectFilter(item, index) {
+			this.sortText = item.name
+			if (index === 0) {
+				this.secondaryFilterBoxObj.type = ''
+				this.secondaryFilterBoxObj.volume = 2
+			} else if (index === 1) {
+				this.secondaryFilterBoxObj.type = ''
+				this.secondaryFilterBoxObj.volume = ''
+			}
+			this.dropdownShow = false
+			this.$emit('select', this.secondaryFilterBoxObj)
+		}
 	}
 }
 </script>

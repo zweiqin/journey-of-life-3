@@ -99,7 +99,6 @@ export default {
 				// 	userType: 'APP',
 				// 	userId: getUserId()
 				// }))
-				// uni.redirectTo({ url: `/user/sever/chat/chat-detail?chat=${res.data.chatId}&name=${res.data.name}` }) // 进入聊天室（创建ws）
 				uni.redirectTo({
 					url: `/user/sever/chat/chat-detail?chat=${data.friendId}&name=${data.chatName}&avatar=${data.avatar}`
 				})

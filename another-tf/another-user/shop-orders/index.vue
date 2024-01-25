@@ -1,15 +1,17 @@
 <template>
 	<view class="orders-container">
-		<JHeader title="商家订单" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-
-		<view style="text-align: right;">
-			<tui-button
-				type="danger" width="220rpx" height="60rpx" margin="0 30upx 0 0"
-				style="display: inline-block;border-radius: 30rpx;" @click="isShowVerificationCodeDialog = true"
-			>
-				订单核销 →
-			</tui-button>
-		</view>
+		<JHeader title="商家订单" width="50" height="50" style="padding: 24upx 0;background-color: #ffffff;">
+			<template #ftFn>
+				<view style="text-align: right;">
+					<tui-button
+						type="blue" width="220rpx" height="60rpx" margin="0 30upx 0 0"
+						style="display: inline-block;border-radius: 30rpx;" @click="isShowVerificationCodeDialog = true"
+					>
+						订单核销 →
+					</tui-button>
+				</view>
+			</template>
+		</JHeader>
 
 		<view class="navs">
 			<view
@@ -20,103 +22,83 @@
 			</view>
 		</view>
 
-		<view v-if="orderList && orderList.length" class="order-list-wrapper">
+		<view v-if="orderList && orderList.length" style="margin-top: 10px;">
 			<view
 				v-for="item in orderList" :key="item.id"
-				style="padding: 16upx 24upx 26upx;margin: 0 14upx 20upx;font-size: 28upx;background-color: #ffffff;"
+				style="padding: 30upx 40upx;margin: 0 30upx 24upx;font-size: 28upx;color: #222229;background-color: #ffffff;border-radius: 20upx;"
 			>
-
+				<view style="margin-left: -12upx;font-size: 28upx;font-weight: bold;">
+					<text style="color: #e02208;">●</text>
+					<text style="color: #222229;margin-left: 8upx;">商品信息</text>
+				</view>
 				<view>
-					<!-- <view>
-						<text>订单ID：</text>
-						<text>{{ item.orderId || '--' }}</text>
-						</view> -->
-					<view style="display: flex;justify-content: space-between;align-items: center;">
-						<view>
-							<text>订单编号：</text>
-							<text>{{ item.orderFormid || '--' }}</text>
-						</view>
-						<view>
-							<text>{{ orderTypeEnum[item.state] || '--' }}</text>
-						</view>
-					</view>
-					<view style="display: flex;justify-content: space-between;align-items: center;">
-						<view>
-							<text>用户手机号：</text>
-							<text>{{ item.buyerPhone || '--' }}</text>
-						</view>
-						<view>
-							<text v-if="item.paymentState">已支付</text>
-							<text v-else>未支付</text>
-						</view>
-					</view>
-					<view style="margin-top: 8upx;">
+					<view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<view>
-								<text>收货人姓名：</text>
-								<text>{{ item.receiveName || '--' }}</text>
+								<text>订单编号：</text>
+								<text>{{ item.orderFormid || '--' }}</text>
 							</view>
 							<view>
-								<text>手机号：</text>
-								<text>{{ item.receivePhone || '--' }}</text>
-							</view>
-						</view>
-						<view>
-							<text>收货人地址：</text>
-							<text>{{ item.receiveAdress || '--' }}</text>
-						</view>
-						<view>
-							<text>详细地址：</text>
-							<text>{{ item.address || '--' }}</text>
-						</view>
-					</view>
-					<view v-if="item.logisticsName || item.deliverFormid" style="margin-top: 8upx;">
-						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<view>
-								<text>物流方案名称：</text>
-								<text>{{ item.logisticsName || '--' }}</text>
-							</view>
-							<view>
-								<text>费用：</text>
-								<text style="font-size: 32upx;color: #eb0909;">￥{{ item.logisticsPrice || '--' }}</text>
+								<text>{{ orderTypeEnum[item.state] || '--' }}</text>
 							</view>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<view>
-								<text>单号：</text>
-								<text>{{ item.deliverFormid || '--' }}</text>
+								<text>用户手机号：</text>
+								<text>{{ item.buyerPhone || '--' }}</text>
 							</view>
 							<view>
-								<text>公司：</text>
-								<text>{{ item.express || '--' }}</text>
-							</view>
-						</view>
-					</view>
-					<view style="padding: 12upx 0;margin-top: 12upx;border-top: 2upx solid #eeeeee;border-bottom: 2upx solid #eeeeee;">
-						<view v-if="item.products && item.products.length">
-							<view v-for="prod in item.products" :key="prod.skuId" style="display: flex;margin-top: 10upx;">
-								<view>
-									<image :src="common.seamingImgUrl(prod.image)" style="width: 180upx;height: 180upx;" />
-								</view>
-								<view style="display: flex;flex-direction: column;justify-content: space-evenly;margin-left: 18upx;">
-									<view>{{ prod.productName }}</view>
-									<view>{{ prod.value }}</view>
-									<view><text style="margin-right: 8upx;font-size: 32upx;color: #eb0909;">￥{{ prod.price }}</text> x {{ prod.number }}</view>
-								</view>
+								<text v-if="item.paymentState">已支付</text>
+								<text v-else>未支付</text>
 							</view>
 						</view>
 						<view style="margin-top: 8upx;">
 							<view style="display: flex;justify-content: space-between;align-items: center;">
 								<view>
-									<text>商品数量：</text>
-									<text>{{ item.number }}</text>
+									<text>收货人姓名：</text>
+									<text>{{ item.receiveName || '--' }}</text>
 								</view>
 								<view>
-									<text>售后单号：</text>
-									<text>{{ item.afterFormIds || '--' }}</text>
+									<text>手机号：</text>
+									<text>{{ item.receivePhone || '--' }}</text>
+								</view>
+							</view>
+							<view>
+								<text>收货人地址：</text>
+								<text>{{ item.receiveAdress || '--' }}</text>
+							</view>
+							<view>
+								<text>详细地址：</text>
+								<text>{{ item.address || '--' }}</text>
+							</view>
+						</view>
+						<view v-if="item.logisticsName || item.deliverFormid" style="margin-top: 8upx;">
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view>
+									<text>物流方案名称：</text>
+									<text>{{ item.logisticsName || '--' }}</text>
+								</view>
+								<view>
+									<text>费用：</text>
+									<text style="font-size: 32upx;color: #eb0909;">￥{{ item.logisticsPrice || '--' }}</text>
 								</view>
 							</view>
 							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view>
+									<text>单号：</text>
+									<text>{{ item.deliverFormid || '--' }}</text>
+								</view>
+								<view>
+									<text>公司：</text>
+									<text>{{ item.express || '--' }}</text>
+								</view>
+							</view>
+						</view>
+						<view
+							style="padding: 12upx 0;margin-top: 12upx;border-top: 2upx solid #eeeeee;border-bottom: 2upx solid #eeeeee;"
+						>
+							<ATFOrderSkus :data="item.products"></ATFOrderSkus>
+							<view style="margin-top: 8upx;display: flex;justify-content: space-between;align-items: center;">
 								<view>
 									<text>商品总价：</text>
 									<text style="font-size: 32upx;color: #eb0909;">￥{{ item.orderPrice }}</text>
@@ -128,32 +110,35 @@
 							</view>
 						</view>
 					</view>
-				</view>
-				<view style="padding: 18upx 15upx 0;">
-					<view style="display: flex;justify-content: space-between;">
-						<text>下单时间：</text>
-						<text>{{ item.createTime || '--' }}</text>
-					</view>
-					<view style="display: flex;justify-content: space-between;">
-						<text>支付时间：</text>
-						<text>{{ item.paymentTime || '--' }}</text>
-					</view>
-					<view style="display: flex;justify-content: space-between;align-items: center;">
-						<view>
-							<text>下单账户：</text>
-							<text>{{ item.customerName || '--' }}</text>
+					<view style="padding: 18upx 15upx 0;">
+						<view style="display: flex;justify-content: space-between;">
+							<text>下单时间：</text>
+							<text>{{ item.createTime || '--' }}</text>
 						</view>
-						<view>
-							<text>下单总数：</text>
-							<text>{{ item.total || '--' }}</text>
+						<view style="display: flex;justify-content: space-between;">
+							<text>支付时间：</text>
+							<text>{{ item.paymentTime || '--' }}</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<view>
+								<text>下单账户：</text>
+								<text>{{ item.customerName || '--' }}</text>
+							</view>
+							<view>
+								<text>下单总数：</text>
+								<text>{{ item.total || '--' }}</text>
+							</view>
+						</view>
+						<view style="display: flex;justify-content: space-between;">
+							<text>下单备注：</text>
+							<text>{{ item.remark || '--' }}</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<text>售后单号：</text>
+							<text>{{ item.afterFormIds || '--' }}</text>
 						</view>
 					</view>
-					<view style="display: flex;justify-content: space-between;">
-						<text>下单备注：</text>
-						<text>{{ item.remark || '--' }}</text>
-					</view>
 				</view>
-
 			</view>
 		</view>
 
@@ -207,10 +192,13 @@ export default {
 		}
 	},
 
-	onShow() {
-		this.queryInfo.page = 1
+	onLoad() {
 		this.getOrderList()
 	},
+	// onShow() {
+	// 	this.queryInfo.page = 1
+	// 	this.getOrderList()
+	// },
 
 	methods: {
 		// 获取订单信息
@@ -268,15 +256,15 @@ export default {
 <style lang="less" scoped>
 .orders-container {
 	font-size: 28upx;
-	color: #3d3d3d;
-	padding: 60upx 0;
+	padding: 0 0 60upx;
+	background-color: #f5f4f6;
 	box-sizing: border-box;
 
 	.navs {
 		width: 100%;
 		display: flex;
-		margin: 34upx 0;
-		padding: 0 28upx;
+		margin: 18upx 0 0;
+		padding: 0 8upx;
 		white-space: nowrap;
 		overflow-x: auto;
 
@@ -289,12 +277,6 @@ export default {
 				color: #ff8f1f;
 			}
 		}
-	}
-
-	.order-list-wrapper {
-		background-color: #f6f6f6;
-		padding-top: 10px;
-		font-size: 24upx;
 	}
 }
 </style>

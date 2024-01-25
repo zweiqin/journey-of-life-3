@@ -5,27 +5,30 @@
 			@click="dropdownShow = true"
 		>
 			<view
-				:style="{ color: primaryFilterBoxObj.quanbumeishi ? '#ff4b10' : '#000000' }"
+				:style="{ color: primaryFilterBoxObj.currentClassifyId ? '#ff4b10' : '#000000' }"
 				@click="dropdownType = 'classification'"
 			>
 				<text>{{ classificationText }}</text>
 				<tui-icon
-					name="arrowdown" :color="primaryFilterBoxObj.quanbumeishi ? '#ff4b10' : '#888889'" :size="12"
+					name="arrowdown" :color="primaryFilterBoxObj.currentClassifyId ? '#ff4b10' : '#888889'" :size="12"
 					margin="0 0 0 6upx"
 				></tui-icon>
 			</view>
-			<view :style="{ color: primaryFilterBoxObj.fujin ? '#ff4b10' : '#000000' }" @click="dropdownType = 'nearby'">
+			<view :style="{ color: primaryFilterBoxObj.distance ? '#ff4b10' : '#000000' }" @click="dropdownType = 'nearby'">
 				<text>{{ nearbyText }}</text>
 				<tui-icon
-					name="arrowdown" :color="primaryFilterBoxObj.fujin ? '#ff4b10' : '#888889'" :size="12"
+					name="arrowdown" :color="primaryFilterBoxObj.distance ? '#ff4b10' : '#888889'" :size="12"
 					margin="0 0 0 6upx"
 				></tui-icon>
 			</view>
-			<view :style="{ color: primaryFilterBoxObj.zhinengpaixu ? '#ff4b10' : '#000000' }" @click="dropdownType = 'sort'">
+			<view
+				:style="{ color: primaryFilterBoxObj.type || primaryFilterBoxObj.volume ? '#ff4b10' : '#000000' }"
+				@click="dropdownType = 'sort'"
+			>
 				<text>{{ sortText }}</text>
 				<tui-icon
-					name="arrowdown" :color="primaryFilterBoxObj.zhinengpaixu ? '#ff4b10' : '#888889'" :size="12"
-					margin="0 0 0 6upx"
+					name="arrowdown" :color="primaryFilterBoxObj.type || primaryFilterBoxObj.volume ? '#ff4b10' : '#888889'"
+					:size="12" margin="0 0 0 6upx"
 				></tui-icon>
 			</view>
 			<view :style="{ color: filterText === '筛选 ' ? '#000000' : '#ff4b10' }" @click="dropdownType = 'filter'">
@@ -44,36 +47,36 @@
 			<view style="padding: 6upx 24upx 26upx;">
 				<view style="display: flex;justify-content: space-between;align-items: center;font-size: 28upx;">
 					<view
-						:style="{ color: primaryFilterBoxObj.quanbumeishi || (dropdownType === 'classification') ? '#ff4b10' : '#000000' }"
+						:style="{ color: primaryFilterBoxObj.currentClassifyId || (dropdownType === 'classification') ? '#ff4b10' : '#000000' }"
 						@click="dropdownType === 'classification' ? handleCloseDropdown() : dropdownType = 'classification'"
 					>
 						<text>{{ classificationText }}</text>
 						<tui-icon
 							name="arrowdown"
-							:color="primaryFilterBoxObj.quanbumeishi || (dropdownType === 'classification') ? '#ff4b10' : '#888889'"
+							:color="primaryFilterBoxObj.currentClassifyId || (dropdownType === 'classification') ? '#ff4b10' : '#888889'"
 							:size="12" margin="0 0 0 6upx"
 						></tui-icon>
 					</view>
 					<view
-						:style="{ color: primaryFilterBoxObj.fujin || (dropdownType === 'nearby') ? '#ff4b10' : '#000000' }"
+						:style="{ color: primaryFilterBoxObj.distance || (dropdownType === 'nearby') ? '#ff4b10' : '#000000' }"
 						@click="dropdownType === 'nearby' ? handleCloseDropdown() : dropdownType = 'nearby'"
 					>
 						<text>{{ nearbyText }}</text>
 						<tui-icon
 							name="arrowdown"
-							:color="primaryFilterBoxObj.fujin || (dropdownType === 'nearby') ? '#ff4b10' : '#888889'" :size="12"
+							:color="primaryFilterBoxObj.distance || (dropdownType === 'nearby') ? '#ff4b10' : '#888889'" :size="12"
 							margin="0 0 0 6upx"
 						></tui-icon>
 					</view>
 					<view
-						:style="{ color: primaryFilterBoxObj.zhinengpaixu || (dropdownType === 'sort') ? '#ff4b10' : '#000000' }"
+						:style="{ color: (primaryFilterBoxObj.type || primaryFilterBoxObj.volume) || (dropdownType === 'sort') ? '#ff4b10' : '#000000' }"
 						@click="dropdownType === 'sort' ? handleCloseDropdown() : dropdownType = 'sort'"
 					>
 						<text>{{ sortText }}</text>
 						<tui-icon
 							name="arrowdown"
-							:color="primaryFilterBoxObj.zhinengpaixu || (dropdownType === 'sort') ? '#ff4b10' : '#888889'" :size="12"
-							margin="0 0 0 6upx"
+							:color="(primaryFilterBoxObj.type || primaryFilterBoxObj.volume) || (dropdownType === 'sort') ? '#ff4b10' : '#888889'"
+							:size="12" margin="0 0 0 6upx"
 						></tui-icon>
 					</view>
 					<view
@@ -90,7 +93,37 @@
 				</view>
 				<view style="position: relative;max-height: 68vh;margin-top: 20upx;overflow-y: auto;">
 					<view v-if="dropdownType === 'classification'">
-						classification二级目录里面包含三极目录
+						<view>
+							<view v-if="classifyTreeList && classifyTreeList.length" style="display: flex;box-sizing: border-box;">
+								<view style="background-color: #f3f3f3;max-height: 85vh;overflow-y: auto;">
+									<view
+										v-for="item in classifyTreeList" :key="item.id"
+										style="max-width: 286upx;padding: 20upx 28upx;word-break: break-all;box-sizing: border-box;"
+										:style="{ backgroundColor: item.id === currentClassifyTab ? '#ffffff' : 'transparent' }"
+										@click="(currentClassifyTab = item.id) && (currentClassifyList = classifyTreeList.find(part => part.id === item.id).childs || [])"
+									>
+										{{ item.levelName }}
+									</view>
+								</view>
+								<view style="flex: 1;padding: 20upx;max-height: 85vh;overflow-y: auto;">
+									<view v-if="currentClassifyList && currentClassifyList.length">
+										<view
+											v-for="item in currentClassifyList" :key="item.id" style="padding: 20upx 18upx;"
+											:style="{ color: item.id === primaryFilterBoxObj.currentClassifyId ? '#ff4b10' : '#000000' }"
+											@click="handleSelectClassify(item)"
+										>
+											{{ item.levelName }}
+										</view>
+									</view>
+									<view v-else style="margin: 40upx 0;text-align: center;">
+										暂无数据~
+									</view>
+								</view>
+							</view>
+							<view v-else style="padding-bottom: 45upx;">
+								<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据</tui-no-data>
+							</view>
+						</view>
 					</view>
 					<view v-else-if="dropdownType === 'nearby'">
 						<view style="font-size: 28upx;">
@@ -101,8 +134,8 @@
 								v-for="(item, index) in 6" :key="index"
 								style="width: 20%;padding: 10upx 0;margin: 18upx 15upx 0;font-size: 26upx;background-color: #f4f4f4;border-radius: 16upx;"
 								:style="{
-									border: (!primaryFilterBoxObj.fujin && (index === 0)) || ((primaryFilterBoxObj.fujin / 0.25 - index) / index === index) ? '2upx solid #ff4b10' : '2upx solid #fff1ec',
-									color: (!primaryFilterBoxObj.fujin && (index === 0)) || ((primaryFilterBoxObj.fujin / 0.25 - index) / index === index) ? '#ff4b10' : '#000000'
+									border: (!primaryFilterBoxObj.distance && (index === 0)) || ((primaryFilterBoxObj.distance / 0.25 - index) / index === index) ? '2upx solid #ff4b10' : '2upx solid #fff1ec',
+									color: (!primaryFilterBoxObj.distance && (index === 0)) || ((primaryFilterBoxObj.distance / 0.25 - index) / index === index) ? '#ff4b10' : '#000000'
 								}" @click="handleSelectNearby(index * ((index + 1) * 0.25))"
 							>
 								{{ index === 0 ? '附近' : `${index * ((index + 1) * 0.25)}km` }}
@@ -111,9 +144,9 @@
 					</view>
 					<view v-else-if="dropdownType === 'sort'">
 						<view
-							v-for="(item, index) in ['智能排序', ...['销量优先', '距离优先', '好评优先', '低价优先', '高价优先']]" :key="index"
+							v-for="(item, index) in ['智能排序', ...['低价优先', '高价优先', '销量低优先', '销量高优先']]" :key="index"
 							style="padding: 12upx 0;"
-							:style="{ color: primaryFilterBoxObj.zhinengpaixu === index ? '#ff4b10' : '#000000' }"
+							:style="{ color: [ primaryFilterBoxObj.type ].includes(index) || [ primaryFilterBoxObj.volume ].includes(index - 2) ? '#ff4b10' : '#000000' }"
 							@click="handleSelectSort(index, item)"
 						>
 							{{ item }}
@@ -179,10 +212,16 @@
 </template>
 
 <script>
+import { getShopOneClassifyApi } from '../../../../api/anotherTFInterface'
+
 export default {
 	name: 'StorePrimaryFilterBox',
 	props: {
 		type: {
+			type: String,
+			require: true
+		},
+		parentClassifyId: {
 			type: [Number, String],
 			require: true
 		},
@@ -195,43 +234,78 @@ export default {
 		return {
 			dropdownShow: false,
 			dropdownType: '',
-			classificationText: '全部美食',
 			nearbyText: '附近',
 			sortText: '智能排序',
 			filterText: '筛选 ',
 			filterTimeText: [],
 			filterServeText: [],
 			primaryFilterBoxObj: {
-				quanbumeishi: '',
-				fujin: '',
-				zhinengpaixu: '',
+				currentClassifyId: '',
+				distance: '',
+				type: '',
+				volume: '',
 				shaixuan: {
 					yingyeshijian: [],
 					cantingfuwu: []
 				}
-			}
+			},
+
+			// 分类数据
+			classifyTreeList: [],
+			currentClassifyTab: '',
+			currentClassifyList: [],
+			classificationText: '全部美食'
 		}
 	},
 	created() {
-		// xxx({})
-		// 	.then((res) => {
-		// 		this.xxxList = res.data || []
-		// 	})
+		if ([ '6' ].includes(this.type)) {
+			getShopOneClassifyApi({ classifyId: this.parentClassifyId })
+				.then((res) => {
+					this.classifyTreeList = res.data || []
+					if (this.classifyTreeList && this.classifyTreeList.length) {
+						(this.currentClassifyTab = this.classifyTreeList[0].id) && (this.currentClassifyList = this.classifyTreeList[0].childs || [])
+					}
+				})
+		}
 	},
 	methods: {
+		// mapTree(data) {
+		// 	data.forEach((items) => {
+		// 		items.text = items.label
+		// 		if (level === '1' && items.children && items.children.length === 0) {
+		// 			items.children[0] = { text: '无', value: 0, children: [ { text: '无', value: 0 } ] }
+		// 		} else if (items.children) {
+		// 			this.mapTree(items.children, String(Number(level) + 1))
+		// 		}
+		// 	})
+		// },
 		handleCloseDropdown() {
 			this.dropdownShow = false
 			this.dropdownType = ''
 			// console.log('handleCloseDropdown', this.dropdownType)
 		},
+		handleSelectClassify(e) {
+			this.primaryFilterBoxObj.currentClassifyId = e.id || ''
+			this.classificationText = e.levelName
+			this.$emit('select', this.primaryFilterBoxObj)
+			this.dropdownShow = false
+		},
 		handleSelectNearby(e) {
-			this.primaryFilterBoxObj.fujin = e || ''
+			this.primaryFilterBoxObj.distance = e || ''
 			this.nearbyText = e ? `${e}km` : '附近'
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false
 		},
 		handleSelectSort(e, name) {
-			this.primaryFilterBoxObj.zhinengpaixu = e || ''
+			if (e === 0) {
+				this.primaryFilterBoxObj.type = this.primaryFilterBoxObj.volume = ''
+			} else if ((e === 1) || (e === 2)) {
+				this.primaryFilterBoxObj.type = e
+				this.primaryFilterBoxObj.volume = ''
+			} else if ((e === 3) || (e === 4)) {
+				this.primaryFilterBoxObj.type = ''
+				this.primaryFilterBoxObj.volume = e - 2
+			}
 			this.sortText = name
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false

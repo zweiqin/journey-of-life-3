@@ -511,6 +511,7 @@ export default {
 			// 订单相关
 			brandDetail: {},
 			dataList: {
+				shopName: '',
 				orderFormid: null,
 				createTime: null,
 				orderPrice: 0,

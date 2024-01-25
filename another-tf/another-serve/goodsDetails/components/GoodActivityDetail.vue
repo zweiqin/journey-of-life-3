@@ -100,18 +100,18 @@
 				</view>
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;">
-				<text
+				<view
 					v-if="skuSelect.voucherId"
-					style="padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					可使用{{ skuSelect.voucherPrice }}代金券抵扣
-				</text>
-				<text
+				</view>
+				<view
 					v-if="skuSelect.presenterVoucher"
-					style="margin-left: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;margin-left: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					赠送 {{ skuSelect.presenterVoucher }} 代金券
-				</text>
+				</view>
 			</view>
 			<view class="nameContainer">
 				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30">

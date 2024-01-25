@@ -52,7 +52,7 @@
 
 		<DragButton
 			text="联系客服" is-dock exist-tab-bar
-			@btnClick="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+			@btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"
 		>
 		</DragButton>
 	</view>
