@@ -111,7 +111,7 @@
 			<!--  评价  -->
 			<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :goods-detail="goodsDetail" />
 			<!-- 店铺 -->
-			<view v-if="!(goodsDetail.shopName === '团蜂自营')" class="inStore-box flex-items flex-row flex-sp-between">
+			<view v-if="!goodsDetail.shopName.startsWith('团蜂')" class="inStore-box flex-items flex-row flex-sp-between">
 				<view class="flex-display flex-row">
 					<view>
 						<image
@@ -149,7 +149,7 @@
 			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 				<view class="btns_container">
 					<view
-						v-if="!(goodsDetail.shopName === '团蜂自营')" class="btns flex-column-plus flex-items"
+						v-if="!goodsDetail.shopName.startsWith('团蜂')" class="btns flex-column-plus flex-items"
 						@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 					>
 						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
@@ -204,7 +204,7 @@
 		</view>
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
-			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :selected-sku="selectedCurrentMsg.selectedSku"
+			ref="refGoodSkuSelect" :goods-detail="goodsDetail"
 			:collage-id="collageId" @current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 		/>
 		<!-- 拼单弹框 -->

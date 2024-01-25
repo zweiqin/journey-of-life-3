@@ -27,6 +27,7 @@
 				</view>
 			</view>
 		</view>
+		<ATFOrderSkus :data="data.skus"></ATFOrderSkus>
 	</view>
 </template>
 

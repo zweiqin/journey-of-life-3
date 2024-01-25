@@ -1,9 +1,12 @@
 <template>
 	<view class="item ske-loading">
 		<view class="order-list-top">
-			<view class="top-l" @click.stop="go(`/another-tf/another-user/shop/shop-detail?shopId=${data.shopId}`)">
-				<image :src="data.shopLogo" class="shop-img" />
-				<text class="shop-name">{{ data.shopName }}</text>
+			<view
+				v-if="!data.shopName.startsWith('团蜂')" style="display: flex;align-items: center;"
+				@click.stop="go(`/another-tf/another-user/shop/shop-detail?shopId=${data.shopId}`)"
+			>
+				<image :src="data.shopLogo" style="width: 36rpx;height: 36rpx;margin-right: 10rpx;" />
+				<text style="font-size: 30rpx;color: #333;font-weight: bold;">{{ data.shopName }}</text>
 				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
 			</view>
 			<view class="order-status">
@@ -41,8 +44,8 @@
 									立即评价
 								</view>
 								<view
-									v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)" class="evaluate2"
-									@click.stop="handleAddEvaluate(skuItem)"
+									v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)"
+									class="evaluate2" @click.stop="handleAddEvaluate(skuItem)"
 								>
 									追加评价
 								</view>
@@ -152,7 +155,7 @@ export default {
 			// 	})
 			// }
 			// 核销码
-			if ([1, 8, 9].includes(state)) {
+			if ([8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
 					className: 'l',
@@ -215,7 +218,7 @@ export default {
 				})
 			}
 			// 再次开团 | 再次购买
-			if ([ 5 ].includes(state)) {
+			if ([5, 4, 10].includes(state)) {
 				orderNeedBtnList.push({
 					name: collageId !== 0 ? '再次开团' : '再次购买',
 					className: 'r',
@@ -386,33 +389,15 @@ export default {
 		padding: 0 30rpx;
 		box-sizing: border-box;
 		display: flex;
-		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid #eee;
-
-		.top-l {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-
-			.shop-img {
-				width: 36rpx;
-				height: 36rpx;
-				margin-right: 10rpx;
-			}
-
-			.shop-name {
-				font-size: 30rpx;
-				color: #333;
-				font-weight: bold;
-			}
-		}
+		border-bottom: 1upx solid #eeeeee;
 
 		.order-status {
+			flex: 1;
 			font-size: 32upx;
 			color: #C5AA7B;
-			font-weight: 400;
+			text-align: right;
 		}
 	}
 
@@ -421,7 +406,7 @@ export default {
 		box-sizing: border-box;
 
 		.order-info {
-			border-bottom: 1px solid #eee;
+			border-bottom: 1px solid #eeeeee;
 
 			.order-info-item {
 				display: flex;

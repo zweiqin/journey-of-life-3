@@ -12,8 +12,21 @@
 								v-text="selectedSku.activityType === 1 && btnType === 4 ? selectedSku.salePrice : selectedSku.price"
 							></label>
 						</view>
-						<label class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</label>
-						<label class="fs24 mar-top-20">已选</label>
+						<view class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</view>
+						<view style="display: flex;align-items: center;flex-wrap: wrap;">
+							<text
+								v-if="selectedSku.voucherId"
+								style="margin-top: 10upx;margin-right: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							>
+								可使用{{ selectedSku.voucherPrice }}代金券抵扣
+							</text>
+							<text
+								v-if="selectedSku.presenterVoucher"
+								style="margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							>
+								赠送 {{ selectedSku.presenterVoucher }} 代金券
+							</text>
+						</view>
 					</view>
 				</view>
 				<view class="color-box">

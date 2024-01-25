@@ -127,7 +127,10 @@
 						</view>
 					</view>
 
-					<view style="padding: 30upx 40upx;margin: 24upx 30upx 0;background-color: #ffffff;border-radius: 20upx;">
+					<view
+						v-if="!dataList.shopName.startsWith('团蜂')"
+						style="padding: 30upx 40upx;margin: 24upx 30upx 0;background-color: #ffffff;border-radius: 20upx;"
+					>
 						<view style="display: flex;align-items: center;">
 							<view
 								style="flex: 1;display: flex;align-items: stretch;"
@@ -220,13 +223,13 @@
 										</view>
 									</view>
 								</view>
-								<view v-if="[2, 3, 4, 9, 10].includes(dataList.state)" style="padding-top: 32upx;">
-									<text style="color: #8F8F8F;">实付金额</text>
-									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.price }}</text>
-								</view>
 								<view style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">商品总价</text>
 									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.orderPrice }}</text>
+								</view>
+								<view v-if="[2, 3, 4, 9, 10].includes(dataList.state)" style="padding-top: 32upx;">
+									<text style="color: #8F8F8F;">实付金额</text>
+									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.price }}</text>
 								</view>
 								<view style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">快递运费</text>
@@ -294,120 +297,105 @@
 							<text style="color: #e02208;">●</text>
 							<text style="color: #222229;margin-left: 8upx;">商品信息</text>
 						</view>
-						<view class="order-info-box">
-							<view
-								v-for="proItem in dataList.skus" :key="proItem.productId" class="order-info-item"
-								@click="goodsItemTap(proItem.productId, proItem.skuId)"
-							>
-								<image :src="common.seamingImgUrl(proItem.image)" class="product-img default-img"></image>
-								<view class="info-box">
-									<text class="product-name">{{ proItem.productName }}</text>
-									<view class="price-sku-box">
-										<view class="product-sku">
-											<view v-for="(vItem, vIndex) in proItem.values" :key="vIndex">
-												<text>{{ vItem }}</text>
-											</view>
-										</view>
-										<view style="">￥{{ proItem.price }}</view>
-										<view style="margin-left: 20upx;font-size: 28upx;color: #222229;">x {{ proItem.number }}</view>
-									</view>
-									<view class="price-sku-box">
-										<view v-if="[3, 4].includes(dataList.state) && (proItem.afterState == 0) && !proItem.returnType">
-											<view
-												v-if="(!proItem.returnStatus || (!proItem.canApplyIntervention && (proItem.returnStatus == 2))) && (proItem.classifyId != 1439)"
-												class="item-applay-btn" @click.stop="applayItemTap(proItem)"
-											>
-												退款
-											</view>
-										</view>
-
-										<view v-if="proItem.returnType == 1">
-											<view
-												v-if="!proItem.returnStatus || (proItem.returnStatus == 1) || (proItem.returnStatus == 3) || (proItem.returnStatus == 4)"
-												class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
-											>
-												退款中
-											</view>
-											<view
-												v-if="proItem.returnStatus == 4" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												已退款
-											</view>
-											<view
-												v-if="proItem.returnStatus == 5" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												退款失败
-											</view>
-											<view
-												v-if="proItem.canApplyIntervention" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												客服介入
-											</view>
-										</view>
-										<view v-if="proItem.returnType == 2">
-											<view
-												v-if="!proItem.returnStatus || (proItem.returnStatus == 1) || (proItem.returnStatus == 3) || (proItem.returnStatus == 4)"
-												class="item-applay-btn" @click="goApplyTap(proItem.returnType)"
-											>
-												退货中
-											</view>
-											<view
-												v-if="proItem.returnStatus == 6" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												已退款
-											</view>
-											<view
-												v-if="proItem.returnStatus == 7" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												退款中
-											</view>
-											<view
-												v-if="(proItem.returnStatus == 5) || (proItem.returnStatus == 8)" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												退款失败
-											</view>
-											<view
-												v-if="proItem.canApplyIntervention" class="item-applay-btn"
-												@click="goApplyTap(proItem.returnType)"
-											>
-												客服介入
-											</view>
+						<ATFOrderSkus :data="dataList.skus">
+							<template #rightFoot="obj">
+								<view style="display: flex;align-items: center;justify-content: space-between;">
+									<view
+										v-if="[3, 4].includes(dataList.state) && (obj.proItem.afterState == 0) && !obj.proItem.returnType"
+									>
+										<view
+											v-if="(!obj.proItem.returnStatus || (!obj.proItem.canApplyIntervention && (obj.proItem.returnStatus == 2))) && (obj.proItem.classifyId != 1439)"
+											class="item-applay-btn" @click.stop="applayItemTap(obj.proItem)"
+										>
+											退款
 										</view>
 									</view>
-									<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;margin-top: 20upx;">
+									<view v-if="obj.proItem.returnType == 1">
+										<view
+											v-if="!obj.proItem.returnStatus || (obj.proItem.returnStatus == 1) || (obj.proItem.returnStatus == 3) || (obj.proItem.returnStatus == 4)"
+											class="item-applay-btn" @click="goApplyTap(obj.proItem.returnType)"
+										>
+											退款中
+										</view>
+										<view
+											v-if="obj.proItem.returnStatus == 4" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											已退款
+										</view>
+										<view
+											v-if="obj.proItem.returnStatus == 5" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											退款失败
+										</view>
+										<view
+											v-if="obj.proItem.canApplyIntervention" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											客服介入
+										</view>
+									</view>
+									<view v-if="obj.proItem.returnType == 2">
+										<view
+											v-if="!obj.proItem.returnStatus || (obj.proItem.returnStatus == 1) || (obj.proItem.returnStatus == 3) || (obj.proItem.returnStatus == 4)"
+											class="item-applay-btn" @click="goApplyTap(obj.proItem.returnType)"
+										>
+											退货中
+										</view>
+										<view
+											v-if="obj.proItem.returnStatus == 6" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											已退款
+										</view>
+										<view
+											v-if="obj.proItem.returnStatus == 7" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											退款中
+										</view>
+										<view
+											v-if="(obj.proItem.returnStatus == 5) || (obj.proItem.returnStatus == 8)"
+											class="item-applay-btn" @click="goApplyTap(obj.proItem.returnType)"
+										>
+											退款失败
+										</view>
+										<view
+											v-if="obj.proItem.canApplyIntervention" class="item-applay-btn"
+											@click="goApplyTap(obj.proItem.returnType)"
+										>
+											客服介入
+										</view>
+									</view>
+									<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;">
 										<tui-button
-											v-if="[3, 4].includes(dataList.state) && (proItem.commentId === 0) && proItem.additionalComment"
-											type="blue" plain width="180upx" height="60rpx"
-											margin="0 12upx 0 0"
-											@click="go(`/another-tf/another-user/product-logistics/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
+											v-if="[3, 4].includes(dataList.state) && (obj.proItem.commentId === 0) && obj.proItem.additionalComment"
+											type="blue" plain width="150upx" height="48rpx"
+											margin="20upx 12upx 0 0" :size="24"
+											@click="go(`/another-tf/another-user/product-logistics/index?orderId=${dataList.orderId}&skuId=${obj.proItem.skuId}`)"
 										>
 											查看物流
 										</tui-button>
 										<tui-button
-											v-if="[4, 10].includes(dataList.state) && (proItem.commentId === 0)" type="blue" plain
-											width="180upx" height="60rpx" margin="0 12upx 0 0"
-											@click="go(`/another-tf/another-serve/evaluate/index?orderId=${dataList.orderId}&skuId=${proItem.skuId}`)"
+											v-if="[4, 10].includes(dataList.state) && (obj.proItem.commentId === 0)" type="blue" plain
+											width="150upx" height="48rpx" margin="20upx 12upx 0 0"
+											@click="go(`/another-tf/another-serve/evaluate/index?orderId=${dataList.orderId}&skuId=${obj.proItem.skuId}`)"
 										>
 											立即评价
 										</tui-button>
 										<tui-button
-											v-if="[4, 10].includes(dataList.state) && (proItem.commentId !== 0) && (dataList.skus[0].ifAdd !== 1)"
-											type="blue" plain width="180upx" height="60rpx"
-											margin="0 12upx 0 0"
-											@click="handleAddEvaluate(proItem)"
+											v-if="[4, 10].includes(dataList.state) && (obj.proItem.commentId !== 0) && (dataList.skus[0].ifAdd !== 1)"
+											type="blue" plain width="150upx" height="48rpx"
+											margin="20upx 12upx 0 0"
+											@click="handleAddEvaluate(obj.proItem)"
 										>
 											追加评价
 										</tui-button>
 									</view>
 								</view>
-							</view>
-						</view>
+							</template>
+						</ATFOrderSkus>
 					</view>
 				</view>
 
@@ -442,9 +430,8 @@
 						邀请拼单
 					</tui-button>
 					<tui-button
-						v-if="[ 5 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
-						margin="20upx 0 0"
-						style="background: #ef530e!important;border-radius: 8upx;"
+						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						margin="20upx 0 0" style="background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 					>
 						再次开团
@@ -457,9 +444,8 @@
 						删除订单
 					</tui-button>
 					<tui-button
-						v-if="[ 5 ].includes(dataList.state)" type="warning" width="100%" height="82rpx"
-						margin="20upx 0 0"
-						style="min-width: 100%;background: #ef530e!important;border-radius: 8upx;"
+						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="100%" height="82rpx"
+						margin="20upx 0 0" style="min-width: 100%;background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
 					>
 						再下一单
@@ -654,12 +640,6 @@ export default {
 			uni.navigateTo({
 				url: '/another-tf/another-serve/inviteSpell/index?collageId=' + collageId + '&orderId=' + orderId + '&type=1' +
 					'&productId=' + productId + '&skuId=' + skuId + '&shopGroupWorkId=' + shopGroupWorkId
-			})
-		},
-		// 商品详情
-		goodsItemTap(productId, skuId) {
-			uni.navigateTo({
-				url: '/another-tf/another-serve/goodsDetails/index?shopId=' + this.dataList.shopId + '&productId=' + productId + '&skuId=' + skuId
 			})
 		},
 		getOrderDetailData(orderId) {
@@ -912,71 +892,20 @@ export default {
 
 		}
 
-		.order-info-box {
-
-			.order-info-item {
-				display: flex;
-				align-items: center;
-				padding: 20upx 0;
-
-				.product-img {
-					width: 90upx;
-					height: 90upx;
-					border-radius: 10upx;
-					margin-right: 30upx;
-				}
-
-				.info-box {
-					flex: 1;
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-
-					.product-name {
-						font-size: 26upx;
-						color: #222229;
-						height: 68upx;
-						line-height: 34upx;
-						display: -webkit-box;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						word-break: break-all;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 2;
-					}
-
-					.price-sku-box {
-						width: 100%;
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						justify-content: space-between;
-
-						.product-sku {
-							flex: 1;
-							font-size: 24upx;
-							color: #999999;
-						}
-
-						.item-applay-btn {
-							height: 50upx;
-							display: flex;
-							flex-direction: row;
-							align-items: center;
-							justify-content: center;
-							padding: 0 30upx;
-							background: rgba(255, 255, 255, 1);
-							border: 1px solid rgba(187, 187, 187, 1);
-							border-radius: 25upx;
-							font-size: 24upx;
-							font-weight: 400;
-							color: rgba(51, 51, 51, 1);
-						}
-
-					}
-				}
-			}
-
+		.item-applay-btn {
+			margin-top: 20upx;
+			height: 50upx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			padding: 0 30upx;
+			background: rgba(255, 255, 255, 1);
+			border: 1px solid rgba(187, 187, 187, 1);
+			border-radius: 25upx;
+			font-size: 24upx;
+			font-weight: 400;
+			color: rgba(51, 51, 51, 1);
 		}
 
 	}

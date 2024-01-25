@@ -54,7 +54,7 @@
 				<view style="font-size: 38upx;">{{ questionSelect.name }}</view>
 				<view style="margin-top: 50upx;color: #aaaeae;">{{ answer.describe || '暂无描述~' }}</view>
 				<view v-if="answer.picUrl" style="margin-top: 50upx;text-align: center;">
-					<Avatar :width="192" :height="192" radius="10upx" :src="common.seamingImgUrl(answer.picUrl)"></Avatar>
+					<TuanImage :width="192" :height="192" radius="10upx" :src="common.seamingImgUrl(answer.picUrl)"></TuanImage>
 				</view>
 				<view style="display: flex;justify-content: space-evenly;margin-top: 50upx;">
 					<tui-button

@@ -384,6 +384,9 @@ export const getCustomerServicePCKfApi = (data) => AnotherTFRequest('/kf/getPCKf
 // 查询商家客服列表
 export const getAllCustomerServiceApi = (data) => AnotherTFRequest('/kf/getAll', data)
 
+// 查询问答
+export const getCustomerProblemByIdApi = (data) => AnotherTFRequest('/customerProblem/getById', data)
+
 // 售后
 // 售后列表查询
 export const getAllFindReturnListApi = (data) => AnotherTFRequest('/after/getAll', data)

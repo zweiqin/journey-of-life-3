@@ -212,10 +212,10 @@ export default {
 				})
 		},
 		async handleAliPayLogin() {
-			await this.$store.dispatch('auth/aliPayLoginAction', { isAfter: true })
+			await this.$store.dispatch('auth/aliPayLoginAction')
 		},
 		async handleWXLogin() {
-			await this.$store.dispatch('auth/wxLoginAction', { isAfter: true })
+			await this.$store.dispatch('auth/wxLoginAction')
 		}
 	}
 }

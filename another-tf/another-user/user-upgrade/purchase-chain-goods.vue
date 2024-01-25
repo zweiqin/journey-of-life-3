@@ -75,8 +75,7 @@
 							>
 								<view style="padding-left: 14upx;">
 									<view style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;font-weight: bold;">
-										{{
-											item.productName }}
+										{{ item.productName }}
 									</view>
 									<view style="margin-top: 10upx;;color: #824100;">
 										<text style="font-size: 26upx;">价值： ￥</text>
@@ -128,7 +127,7 @@
 				<view style="padding: 20upx 0 18upx;text-align: center;">
 					<tui-button
 						type="warning" width="680rpx" height="104upx" margin="0 20upx 0"
-						style="display: inline-block;background: linear-gradient(90deg, #F52E29 0%, #FA5151 45%, #FF8F1F 97%)!important;border-radius: 16upx;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
+						style="display: inline-block;background: linear-gradient(90deg, #F52E29 0%, #FA5151 45%, #FF8F1F 97%)!important;border-radius: 16upx;"
 						@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${selectGoods.shopId}&productId=${selectGoods.productId}&skuId=${selectGoods.skuId}`)"
 					>
 						<text style="font-size: 34upx;font-weight: bold;">
