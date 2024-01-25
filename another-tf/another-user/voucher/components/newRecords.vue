@@ -57,7 +57,7 @@ export default {
 	},
 	data() {
 		return {
-			tabNavs: [{ name: '收益记录' }, { name: '支出记录' }, { name: '充值记录' }],
+			tabNavs: [{ name: '代金卷流水' }, { name: '支出记录' }, { name: '充值记录' }],
 			currentIndex: 0,
 			dateSelection: [{ name: '年', value: 5 }, { name: '月', value: 4 }, { name: '日', value: 1 }],
 			dateIndex: 0,

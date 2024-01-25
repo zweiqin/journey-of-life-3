@@ -184,7 +184,7 @@
             "port" : 8988,
             "proxy" : {
                 "/sf" : {
-                    "target" : "http://192.168.0.83:8790/samrtWorker",
+                    "target" : "http://192.168.0.82:8790/samrtWorker",
                     "changeOrigin" : true,
                     "pathRewrite" : {
                         "^/sf" : ""

@@ -17,7 +17,7 @@
 					>
 						<image class="Iconimg" src="../../../../static/images/user/zengsong.png"></image>
 					</view>
-					<text class="txt2" style="display: flex;"> {{ item.number }}</text>
+					<text class="txt2" style="display: flex;"> <text v-if="showType == 'income' && item.type != 2 && item.type != 4">+</text>  <text v-else>-</text> {{ item.number }}</text>
 					<view class="itemDetails">
 						<text class="txt1">
 							代金卷
@@ -52,9 +52,9 @@
 					>
 						<image
 							style="width: 56upx; height: 56upx; border-radius: 50%; border: 1upx solid #f3f3f3;"
-							:src="common.seamingImgUrl(item.imgOne)"
+							:src="common.seamingImgUrl(item.userLogs)"
 						></image>
-						<text class="userName">{{ item.userNameOne }}</text>
+						<text class="userName">{{ item.username }}</text>
 						<!-- <text style="font-size: 24upx; color: rgb(26, 26, 26);">（ID：{{ item.userId }}）</text> -->
 					</view>
 				</view>
@@ -105,8 +105,17 @@ export default {
 		this.getListData()
 					// console.log(this.showType);
 	},
+	watch: {
+		showType(newValue, oldVlaue) {
+			this.queryList = {
+				page: 1,
+				pageSize: 20
+			}
+			this.getListData()
+		}
+	},
 	methods: {
-		getListData() {
+		getListData(isAdd = false) {
 			getTransferLogsVoucherShopHoldApi({
 				...this.queryList,
 				type: this.showType === 'income' ? 3 : this.showType === 'expenditure' ? 2 : '',
@@ -118,8 +127,12 @@ export default {
 						icon: 'none'
 					})
 				}
-				for (let index = 0; index < res.data.records.length; index++) {
-					this.dataList.push(res.data.records[index])
+				if (isAdd) {
+					for (let index = 0; index < res.data.records.length; index++) {
+						this.dataList.push(res.data.records[index])
+					}
+				}else {
+					this.dataList = res.data.records
 				}
 				// this.dataList = res.data.records;
 				// console.log(res);
@@ -130,7 +143,7 @@ export default {
 		},
 		getMore() {
 			this.queryList.page++
-			this.getListData()
+			this.getListData(true)
 		}
 	}
 }
