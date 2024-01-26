@@ -18,8 +18,8 @@
 				style="border-bottom: 1px solid #eeeeee;"
 				@click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)"
 			>
-				<view style="max-height: 52vh;overflow-y: auto;">
-					<view v-for="(skuItem, skuIndex) in data.skus" :key="skuIndex" class="order-info-item">
+				<view>
+					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" class="order-info-item">
 						<image :src="skuItem.image" class="product-img default-img" />
 						<view class="info-box">
 							<text class="product-name">{{ skuItem.productName && skuItem.productName }}</text>
@@ -62,14 +62,23 @@
 						</view>
 					</view>
 				</view>
+				<view v-if="!isShowAll">
+					<tui-button
+						type="warning" plain width="180rpx" height="54rpx"
+						shape="circle" margin="18upx auto 0"
+						@click="(isShowAll = true) && (showSkusArr = data.skus)"
+					>
+						显示全部
+					</tui-button>
+				</view>
 				<view class="total-price-box">
 					<template v-if="data.orderPrice !== undefined || data.discountPrice !== undefined">
-						总价¥{{
+						总价￥{{
 							(data.orderPrice + data.logisticsPrice).toFixed(2)
-						}},优惠¥{{ data.discountPrice }}
-						<span v-if="data.price > 0">
-							，{{ data.state === 1 ? '应付¥' : '实付¥' }}{{ data.price }}
-						</span>
+						}}，优惠￥{{ data.discountPrice }}
+						<text v-if="data.price > 0">
+							，{{ data.state === 1 ? '应付￥' : '实付￥' }}{{ data.price }}
+						</text>
 					</template>
 				</view>
 			</view>
@@ -109,11 +118,31 @@ export default {
 	},
 	data() {
 		return {
-			orderTypeEnum
+			orderTypeEnum,
+			showSkusArr: [],
+			isShowAll: false
 		}
 	},
 
 	watch: {
+		data: {
+			handler(newValue, oldValue) {
+				if (newValue.skus && (newValue.skus.length === 1)) {
+					this.showSkusArr = newValue.skus
+					this.isShowAll = true
+				} else if (newValue.skus && (newValue.skus.length > 1)) {
+					if (this.isShowAll) {
+						this.showSkusArr = newValue.skus
+					} else {
+						this.showSkusArr = [ newValue.skus[0] ]
+					}
+				} else if (!newValue.skus || !newValue.skus.length) {
+					this.isShowAll = true
+				}
+			},
+			immediate: true,
+			deep: true
+		}
 	},
 
 	methods: {
@@ -496,7 +525,7 @@ export default {
 			font-size: 26upx;
 			color: #333;
 			text-align: right;
-			padding: 30upx 0;
+			padding: 18upx 0;
 		}
 
 		.btnBox {
