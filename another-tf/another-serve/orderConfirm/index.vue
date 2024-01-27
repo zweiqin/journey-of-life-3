@@ -1038,7 +1038,6 @@ export default {
 			}
 		},
 
-		// 点击分享
 		handleShare() {
 			if (this.settlement.shops && this.settlement.shops.length) {
 				const nickName = this.$store.getters.userInfo.name

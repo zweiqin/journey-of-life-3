@@ -305,7 +305,6 @@ export default {
 
 	/deep/ .j-header-container .title {
 		font-size: 36upx;
-		font-weight: bold;
 		color: #222229;
 	}
 

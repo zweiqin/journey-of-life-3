@@ -2,7 +2,7 @@
 	<view class="user-upgrade-application-container">
 		<FieldPaneUUA
 			ref="refFieldPaneUUA" v-model="form.basicInfo" :fields="applyUserUpgradeOne" title="申请表单"
-			:user-info="userInfo" @unlock="handleUnlock"
+			@unlock="handleUnlock"
 		></FieldPaneUUA>
 		<view
 			v-if="isShowBottomBtn"
@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { T_STORAGE_KEY } from '../../../constant'
 import FieldPaneUUA from './components/field-pane-uua.vue'
 import { addPlatformRelationshipApplyApi } from '../../../api/anotherTFInterface'
 
@@ -59,12 +58,9 @@ export default {
 		FieldPaneUUA
 	},
 	onLoad(options) {
-		this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
-		this.form.basicInfo.phone = this.userInfo.phone || ''
 	},
 	data() {
 		return {
-			userInfo: {},
 			applyUserUpgradeOne: [
 				{
 					label: '区域',

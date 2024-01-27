@@ -169,8 +169,6 @@
 
 		<tui-modal :show="isShow" title="提示" content="您已开通家庭小卫士" @click="handleToVip"></tui-modal>
 
-		<CodeCreatePopup ref="codeCreateRef"></CodeCreatePopup>
-
 		<tui-landscape
 			:show="isShowGloryFrame" :position="1" mask mask-closable
 			:icon-size="28" icon-color="#FFFFFF"
