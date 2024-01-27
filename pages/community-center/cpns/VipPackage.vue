@@ -82,7 +82,7 @@
 
       <view class="package ilo-package server"
         @click="go('/community-center/community-detail?id=313&serverNameThree=空调清洗服务&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fcbcl11hwac3imq3pm9bc.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2Fk2y9voxtnik637lqk059.png,https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F9clf6yvvfnwf9ltbh0p6.png')">
-        <view class="package-title"
+        <!-- <view class="package-title"
           style="position: relative; z-index: 10; background: linear-gradient(270deg, #178AF8 0%, #1175FC 97%);"> 限时钜惠
         </view>
 
@@ -91,7 +91,7 @@
 
         <button
           style="z-index: 10; background-color: #fff; color: #1175FC; font-size:22upx; border: none; border:1upx solid #1175FC;"
-          class="uni-btn">立即下单</button>
+          class="uni-btn">立即下单</button> -->
       </view>
     </view>
 
@@ -279,7 +279,7 @@ export default {
   }
 
   .v-499 {
-    background: url('../../../static/images/new-community/home/499.png') no-repeat !important;
+    background: url('../../../static/images/new-community/home/fucaicaoshi.png') no-repeat !important;
     background-size: cover !important;
   }
 
@@ -464,7 +464,7 @@ export default {
       background: linear-gradient(270deg, #fff0d9 0%, #fefaef 98%);
 
       &.server {
-        background: url('../../../static/images/new-community/home/bg-v1.png') no-repeat;
+        background: url('../../../static/images/new-community/home/taocanzhuanqu.png') no-repeat;
         background-size: cover;
         position: relative;
       }

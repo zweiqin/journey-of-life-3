@@ -8,16 +8,23 @@
         <!-- 选择tab栏 -->
         <scroll-view :scroll-x="true" class="tabNavsContainer">
             <view class="selectClassBox">
-                <view class="tabs-item" :class="{isActive: index == 0}" v-for="(item, index) in tabNavs" :key="index">
-                    {{ item }}
+                <view class="tabs-item"
+                 :class="{isActive: index == tabCurrenIndex}"
+                 v-for="(item, index) in tabNavs"
+                 :key="index" @click="tapSelect(item, index)"
+                >
+                    {{ item.serverName }}
                 </view>
             </view>
         </scroll-view>
 
         <scroll-view :scroll-x="true" class="tabNavsContainer2">
             <view class="selectClassBox">
-                <view class="tabs-item" :class="{isActive: index == 0}" v-for="(item, index) in tabNavs" :key="index">
-                    {{ item }}
+                <view class="tabs-item"
+                :class="{isActive: index == childsCurrenIndex}"
+                v-for="(item, index) in childsTabNavs"
+                :key="index" @click="tapChildsSelect(item, index)">
+                    {{ item.serverName }}
                 </view>
             </view>
         </scroll-view>
@@ -46,18 +53,21 @@
             <view class="title1">
                 服务清单 <text>(2项)</text>
             </view>
-            <view class="selectItem">
-                <view class="line"></view>
-                <view class="selectNumbers">可选服务<text>1</text>/{{ 2 }}</view>
-                <view class="line"></view>
-            </view>
-            <view class="ServiceSelection">
-                <view class="serverItems" :class="{isActive: index == 0}" v-for="(item, index) in 6" :key="index">
-                    <image class="images" src="@/static/images/con-center/communityPackage/kongtiao.png" mode="" />
-                    <view class="serverName">挂式空调清洗</view>
-                    <view class="prices">￥<text>148</text></view>
+            <block v-for="(item, index) in serverData" :key="item.serverTypeId">
+                <view class="selectItem">
+                    <view class="line"></view>
+                    <view class="selectNumbers">{{ item.serverTypeName }}<text>{{ item.everySelectNumber }}</text>/{{ item.maxSelCnt }}</view>
+                    <view class="line"></view>
                 </view>
-            </view>
+                <view class="ServiceSelection">
+                    <view class="serverItems" :class="{isActive: ChildsItem.isChecked}" v-for="(ChildsItem, ChildsIndex) in item.children" :key="ChildsItem.id">
+                        <!-- <image class="images" src="@/static/images/con-center/communityPackage/kongtiao.png" mode="" /> -->
+                        <image class="images" :src="ChildsItem.serverInfoUrl" mode="" />
+                        <view class="serverName">{{ ChildsItem.serverTypeName }}</view>
+                        <view class="prices">￥<text>{{ ChildsItem.serverPrice }}</text></view>
+                    </view>
+                </view>
+            </block>
         </view>
 
         <view class="buyNow">
@@ -71,7 +81,7 @@
 </template>
 
 <script>
-import { getNextLevelPage } from '@/api/community-center/communityPackage'
+import { getNextLevelPage, getServersByAddr } from '@/api/community-center/communityPackage'
 import GradationBackground from './components/gradationBackground3'
 // import PageHead from 'pages/business-district/components/PageHead.vue'
 export default {
@@ -80,21 +90,71 @@ export default {
         // PageHead
         GradationBackground
     },
-    created() {
-        getNextLevelPage({
-            pageNo: 1,
-            pageSize: 10,
-            pid: 0
-        }).then(res => { 
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
+    async created() {
+        await this.getServeTabData()
+        this.getServeCardData()
+        // uni.getLocation({
+        //     type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+        //     success: function (res) {
+        //         console.log(1,res);
+        //     }
+        // });
+    },
+    watch: {
+        // !给数据添加控制选择效果的属性 方便书写选择逻辑
+        serverData(newVal, oldVal) {
+            this.serverData.forEach((item, index) => {
+                item.everySelectNumber = 0
+                // console.log(item);
+                item.children.forEach((childItem, childIndex) => {
+                    childItem.isChecked = false
+                    childItem.selectNumber = 1
+                })
+            })
+            console.log(this.serverData);
+        }
     },
     data() {
         return {
-            tabNavs: ['家电清洗随心搭','家电清洗随心搭','家电清洗随心搭','家电清洗随心搭'],
-            tabNavs2:['任选2台家电','任选3台家电','任选4台家电','任选5台家电','任选8台家电']
+            addres: uni.getStorageSync('T_SELECTED_ADDRESS').data,
+            tabNavs: [],
+            tabCurrenIndex: 0,
+            childsTabNavs: [],
+            childsCurrenIndex: 0,
+            query: {
+                pageNo: 1,
+                pageSize: 10,
+            },
+            renderData: {}, //! 获取过来的初始渲染数据
+            serverData: [], //! 经过梳理后用于渲染和书写交互逻辑使用的数据
+        }
+    },
+    methods: {
+        async getServeTabData() {
+            let address = this.$store.getters.detailAddress || '广东省佛山市顺德区龙江镇'
+            if (!address) {
+                uni.navigateTo({ url:"/pages/choose-location/choose-location" })
+            }
+            this.tabNavs = (await getServersByAddr({pageNo: 1,pageSize: 10,pid: 0,srvTypeEnum: '5',address})).records;
+            // console.log('tabNavs', this.tabNavs);
+        },
+        async getServeCardData() {
+            this.childsTabNavs = (await getNextLevelPage({...this.query,pid: this.tabNavs[this.tabCurrenIndex].id})).records
+            this.renderData = this.childsTabNavs[0]
+            this.serverData = JSON.parse(this.renderData.extraInfo).selectServetree
+            console.log(this.serverData);
+            // console.log(this.renderData);
+            // console.log('extraInfo的JSON数据',JSON.parse(this.renderData.extraInfo));
+            // console.log(this.childsTabNavs);
+        },
+        tapSelect(res, index) {
+            this.tabCurrenIndex = index
+            this.childsCurrenIndex = 0
+            this.getServeCardData()
+        },
+        tapChildsSelect(res, index) {
+             this.childsCurrenIndex = index
+             this.renderData = res
         }
     }
 }
@@ -132,7 +192,7 @@ export default {
                 position: relative;
                 width: auto;
                 height: 100%;
-                font-size: 28rpx;
+                font-size: 30rpx;
                 font-weight: normal;
                 line-height: 80rpx;
                 color: #888889;
@@ -149,7 +209,7 @@ export default {
             .isActive::before {
                 content: '';
                 width: 50rpx;
-                height: 2rpx;
+                height: 1rpx;
                 border: 6rpx solid #222229;
                 background-color: #222229;
                 border-radius: 50rpx;
@@ -315,6 +375,7 @@ export default {
                     border-radius: 16rpx;
                 }
                 .serverName {
+                    margin-top: 6rpx;
                     font-size: 24rpx;
                     font-weight: normal;
                     /* line-height: 32px; */
