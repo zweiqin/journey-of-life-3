@@ -24,20 +24,49 @@
 									{{ timestampToTime(item.message.sendTime) }}
 								</text>
 							</view>
-							<view v-if="item.message.type === 'serviceAssistant'">
+							<view v-if="item.message.type === 'servicePersonnel'">
+								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
+									<view class="words">待定</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="words">
+										<view>{{ item.message.content.content }}</view>
+										<view
+											v-if="item.message.content.customerServiceList && item.message.content.customerServiceList.length"
+										>
+											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
+												客服列表
+											</view>
+											<view>
+												<view
+													v-for="(part, count) in item.message.content.customerServiceList" :key="count"
+													style="padding: 8upx;color: #4d89ff;" @click="handleClickService(part)"
+												>
+													{{ `${count + 1}、${part.name}` }}
+												</view>
+											</view>
+										</view>
+										<view v-else style="padding-bottom: 45upx;">
+											<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无客服~</tui-no-data>
+										</view>
+									</view>
+								</view>
+							</view>
+
+							<view v-if="item.message.type === 'serviceQuestion'">
 								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="words">{{ item.message.content }}</view>
 								</view>
 								<view v-else class="kefu-wrapper">
 									<view class="words">
-										<view>{{ item.message.content }}</view>
-										<view v-if="popularData && popularData.length">
+										<view>{{ item.message.content.content }}</view>
+										<view v-if="item.message.content.questionList && item.message.content.questionList.length">
 											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
 												热门问题
 											</view>
 											<view>
 												<view
-													v-for="(part, count) in popularData" :key="count"
+													v-for="(part, count) in item.message.content.questionList" :key="count"
 													style="padding: 8upx;color: #4d89ff;" @click="handleClickQuestion(part)"
 												>
 													{{ `${count + 1}、${part.content}` }}
@@ -54,31 +83,38 @@
 								</view>
 								<view v-else class="kefu-wrapper">
 									<view class="words">
-										<view>{{ item.message.content.content || '无答案内容' }}</view>
-										<view v-if="item.message.content.link" style="margin-top: 20upx;">
-											<text>关联链接：{{ item.message.content.link }}</text>
-											<text style="margin-left: 28upx;color: #ef5613;" @click="$copy(item.message.content.link)">复制</text>
-										</view>
-										<view v-if="item.message.content.picUrl" style="margin-top: 20upx;text-align: center;">
-											<TuanImage
-												:width="192" :height="192" radius="10upx"
-												:src="common.seamingImgUrl(item.message.content.picture)"
-											></TuanImage>
-										</view>
-										<view v-if="popularData && popularData.length" style="margin-top: 18upx;">
-											<view>您可以直接点击以下问题直接咨询</view>
-											<view>
-												<view
-													v-for="(part, count) in popularData" :key="count"
-													style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
-													@click="handleClickQuestion(part)"
-												>
-													<view>{{ `${count + 1}、${part.content}` }}</view>
+										<view v-if="item.message.content && item.message.content.length">
+											<view v-for="(section, num) in item.message.content" :key="num" style="margin-bottom: 10upx;">
+												<view>{{ section.content || '无答案内容' }}</view>
+												<view v-if="section.link" style="margin-top: 20upx;">
+													<text>关联链接：{{ section.link }}</text>
+													<text style="margin-left: 28upx;color: #ef5613;" @click="$copy(section.link)">复制</text>
+												</view>
+												<view v-if="section.picUrl" style="margin-top: 20upx;text-align: center;">
+													<TuanImage
+														:width="192" :height="192" radius="10upx"
+														:src="common.seamingImgUrl(section.picture)"
+													></TuanImage>
+												</view>
+												<view v-if="section.problemList && section.problemList.length" style="margin-top: 18upx;">
+													<view>您可以直接点击以下问题直接咨询</view>
 													<view>
-														<tui-icon name="arrowright" :size="18" color="#cccccc"></tui-icon>
+														<view
+															v-for="(part, count) in section.problemList" :key="count"
+															style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
+															@click="handleClickQuestion(part)"
+														>
+															<view>{{ `${count + 1}、${part.content}` }}</view>
+															<view>
+																<tui-icon name="arrowright" :size="18" color="#cccccc"></tui-icon>
+															</view>
+														</view>
 													</view>
 												</view>
 											</view>
+										</view>
+										<view v-else style="padding-bottom: 45upx;">
+											<tui-no-data :fixed="false" style="padding-top: 60upx;">无答案内容~</tui-no-data>
 										</view>
 									</view>
 								</view>
@@ -216,7 +252,12 @@
 					<view v-if="Number(chat)" class="tui-menu-item" @click="handleSendImg">发送图片</view>
 					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
 					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
-					<view v-if="!Number(chat)" class="tui-menu-item" @click="$store.dispatch('app/flyToServiceAction', { openKfId })">转人工</view>
+					<view
+						v-if="!Number(chat)" class="tui-menu-item"
+						@click="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+					>
+						转人工
+					</view>
 				</tui-bubble-popup>
 				<image
 					class="upload" src="../../../static/images/icon/add.png" mode=""
@@ -269,49 +310,41 @@ export default {
 			isShowGoodsPopup: false,
 
 			// 客服助手
-			openKfId: '',
-			popularData: [],
 			isShowPersonPopup: false
 		}
 	},
-	onLoad(options) {
+	async onLoad(options) {
 		if (options.chat === 'serviceAssistant') {
 			this.chat = options.chat
-			this.openKfId = options.openKfId
 			this.name = '客服助手'
 			this.avatar = require('../../../static/images/icon/kefu.png')
-			uni.showLoading({
-				title: '加载中'
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: ''
 			})
-			getCustomerProblemByIdApi({ kfId: options.kfId })
-				.then((res) => {
-					uni.hideLoading()
-					this.popularData = res.data
-					const tempDate = Date.now()
-					this.groupMessages = [ {
-						event: '',
-						message: {
-							id: tempDate,
-							status: 'succeed',
-							type: 'serviceAssistant',
-							sendTime: tempDate,
-							content: '您好，很高兴为您服务，我是智能客服助手。您可以通过下方问题列表、输入框旁的按钮、以及在输入框内输入关键词快速获得帮助。',
-							toContactId: getStorageUserId(),
-							fileSize: 0,
-							fileName: '',
-							fromUser: {
-								id: 0,
-								displayName: '客服',
-								avatar: '/static/logo.png'
-							},
-							isGroup: false
-						}
-					} ]
-					this.scrollToBottom()
-				})
-				.catch((e) => {
-					uni.hideLoading()
-				})
+			const tempDate = Date.now()
+			this.groupMessages = [ {
+				event: '',
+				message: {
+					id: tempDate,
+					status: 'succeed',
+					type: 'servicePersonnel',
+					sendTime: tempDate,
+					content: {
+						content: '您好，很高兴为您服务，我是智能客服助手。请选择智能客服：',
+						customerServiceList: res.data || []
+					},
+					toContactId: getStorageUserId(),
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: 0,
+						displayName: '客服',
+						avatar: '/static/logo.png'
+					},
+					isGroup: false
+				}
+			} ]
+			this.scrollToBottom()
 		} else {
 			this.initWSChat({ chat: options.chat, name: options.name, avatar: options.avatar })
 		}
@@ -447,6 +480,41 @@ export default {
 			console.log('onOpen连接成功')
 		},
 
+		handleClickService(item) {
+			uni.showLoading()
+			getCustomerProblemByIdApi({ kfId: item.kfId })
+				.then((res) => {
+					uni.hideLoading()
+					const tempDate = Date.now()
+					this.groupMessages = this.groupMessages.concat([ {
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'serviceQuestion',
+							sendTime: tempDate,
+							content: {
+								content: '您可以通过下方问题列表、输入框旁的按钮、以及在输入框内输入关键词快速获得帮助。',
+								questionList: res.data || []
+							},
+							toContactId: getStorageUserId(),
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: 0,
+								displayName: '客服',
+								avatar: '/static/logo.png'
+							},
+							isGroup: false
+						}
+					} ])
+					this.scrollToBottom()
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+
 		handleClickQuestion(obj) {
 			const tempDate = Date.now()
 			this.groupMessages = this.groupMessages.concat([{
@@ -454,7 +522,7 @@ export default {
 				message: {
 					id: tempDate,
 					status: 'succeed',
-					type: 'serviceAssistant',
+					type: 'serviceQuestion',
 					sendTime: tempDate,
 					content: `【问题】${obj.content}`,
 					toContactId: 0,
@@ -474,12 +542,7 @@ export default {
 					status: 'succeed',
 					type: 'serviceAnswer',
 					sendTime: tempDate + 1,
-					content: {
-						problemId: obj.problemList.problemId,
-						picture: obj.problemList.picture,
-						link: obj.problemList.link,
-						content: obj.problemList.content
-					},
+					content: obj.problemList,
 					toContactId: getStorageUserId(),
 					fileSize: 0,
 					fileName: '',
@@ -543,7 +606,7 @@ export default {
 					message: {
 						id: tempDateAssistant,
 						status: 'succeed',
-						type: 'serviceAssistant',
+						type: 'serviceQuestion',
 						sendTime: tempDateAssistant,
 						content: this.words,
 						toContactId: 0,

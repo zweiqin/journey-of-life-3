@@ -111,7 +111,7 @@
 
 		<DragButton
 			text="联系客服" is-dock exist-tab-bar
-			@btnClick="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+			@btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"
 		>
 		</DragButton>
 	</view>
@@ -154,6 +154,7 @@ export default {
 	data() {
 		return {
 			currentOrderMode: 'community',
+			navMenus: communityOrderStatusList,
 			currentStatus: -1,
 			currentSubValue: 0,
 			userId: null,
@@ -215,22 +216,6 @@ export default {
 	},
 
 	computed: {
-		navMenus() {
-			switch (this.currentOrderMode) {
-				case 'community':
-					return communityOrderStatusList
-					break
-				case 'shoppingMall':
-					return shoppingSubNavs
-					break
-				case 'businessDistrict':
-					return businessSubNavs
-					break
-				default:
-					return ''
-					break
-			}
-		},
 		subNavs() {
 			if (this.isShowSubNav) return this.isShowSubNav === 'append' ? communityAppendOrderNavs : this.isShowSubNav === 'comment' ? this.communityCommentOrder : ''
 			return []
@@ -285,17 +270,32 @@ export default {
 	methods: {
 		handleChangeOrderMode(mode) {
 			if (mode === this.currentOrderMode) return
-			this.currentOrderMode = mode
-			if (this.currentOrderMode === 'community') {
-				this.currentStatus = -1
-				this.communityQueryInfo.status = undefined
-			} else if (this.currentOrderMode === 'shoppingMall') {
-				this.currentStatus = 0
-			} else if (this.currentOrderMode === 'businessDistrict') {
-				this.currentStatus = 0
+			switch (mode) {
+				case 'community':
+					this.navMenus = communityOrderStatusList
+					break
+				case 'shoppingMall':
+					this.navMenus = shoppingSubNavs
+					break
+				case 'businessDistrict':
+					this.navMenus = businessSubNavs
+					break
+				default:
+					break
 			}
-			this.isShowSubNav = null
-			this.getOrderList()
+			this.$nextTick(() => {
+				this.currentOrderMode = mode
+				if (this.currentOrderMode === 'community') {
+					this.currentStatus = -1
+					this.communityQueryInfo.status = undefined
+				} else if (this.currentOrderMode === 'shoppingMall') {
+					this.currentStatus = 0
+				} else if (this.currentOrderMode === 'businessDistrict') {
+					this.currentStatus = 0
+				}
+				this.isShowSubNav = null
+				this.getOrderList()
+			})
 		},
 
 		// 清空搜索

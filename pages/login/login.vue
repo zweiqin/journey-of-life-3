@@ -29,6 +29,9 @@
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入密码" color="#ffffff"
 						style="border-bottom: 2upx solid #ffffff;"
 					>
+						<template #right>
+							<text style="font-size: 30upx;color: #dddddd;" @click="isShowResettingPasswordDialog = true">忘记密码</text>
+						</template>
 					</tui-input>
 				</view>
 				<view v-if="loginType === 'verificationCode'">
@@ -40,9 +43,10 @@
 					>
 						<template #right>
 							<tui-countdown-verify
-								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188upx" height="48upx"
-								border-width="0" text="获取验证码"
-								:size="30" color="#dddddd" @send="handleSendVerify"
+								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188upx"
+								height="48upx" border-width="0" text="获取验证码" :size="30"
+								color="#dddddd"
+								@send="handleSendVerify"
 							></tui-countdown-verify>
 						</template>
 					</tui-input>
@@ -108,12 +112,34 @@
 				</view>
 			</view>
 		</view>
+
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowResettingPasswordDialog" title="重置密码" @click="handleResettingPassword"
+		>
+			<template #content>
+				<tui-input v-model="resettingFormData.phone" label="手机号" type="number" placeholder="请输入手机号"></tui-input>
+				<tui-input v-model="resettingFormData.password" label="密码" type="password" placeholder="请输入密码"></tui-input>
+				<tui-input
+					v-model="resettingFormData.passwordAgain" label="确认密码" type="password"
+					placeholder="请再次输入密码"
+				></tui-input>
+				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
+					<template #right>
+						<tui-countdown-verify
+							ref="refResettingPasswordVerify" width="144upx"
+							@send="handleSendVerifyResettingPassword"
+						></tui-countdown-verify>
+					</template>
+				</tui-input>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
 <script>
 import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
-import { getVerifyCodeApi } from '../../api/anotherTFInterface'
+import { getVerifyCodeApi, updatePasswordUserApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import { getUrlCode } from '../../utils'
 
@@ -126,7 +152,14 @@ export default {
 				phone: '',
 				verificationCode: '',
 				password: ''
-			}
+			},
+			resettingFormData: {
+				phone: '',
+				password: '',
+				passwordAgain: '',
+				verificationCode: ''
+			},
+			isShowResettingPasswordDialog: false
 		}
 	},
 	onLoad(options) {
@@ -212,10 +245,52 @@ export default {
 				})
 		},
 		async handleAliPayLogin() {
-			await this.$store.dispatch('auth/aliPayLoginAction')
+			await this.$store.dispatch('auth/aliPayLoginAction', { isAfter: true })
 		},
 		async handleWXLogin() {
-			await this.$store.dispatch('auth/wxLoginAction')
+			await this.$store.dispatch('auth/wxLoginAction', { isAfter: true })
+		},
+		handleSendVerifyResettingPassword() {
+			if (!this.resettingFormData.phone) {
+				this.$refs.refResettingPasswordVerify.reset()
+				return this.$showToast('请填写手机号')
+			}
+			if (!/^1[3-9]\d{9}$/.test(this.resettingFormData.phone)) {
+				this.$refs.refResettingPasswordVerify.reset()
+				return this.$showToast('请输入正确的手机号')
+			}
+			getVerifyCodeApi({ phone: this.resettingFormData.phone })
+				.then((res) => {
+					this.$refs.refResettingPasswordVerify.success()
+					this.$showToast('发送成功，请注意查看手机短信')
+				})
+				.catch(() => {
+					this.$refs.refResettingPasswordVerify.reset()
+				})
+		},
+		handleResettingPassword(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!this.resettingFormData.phone) return this.$showToast('请填写手机号')
+				if (!this.resettingFormData.verificationCode) return this.$showToast('请填写验证码')
+				if (!this.resettingFormData.password) return this.$showToast('请设置密码！')
+				if (this.resettingFormData.password !== this.resettingFormData.passwordAgain) return this.$showToast('密码不一致')
+				uni.showLoading({
+					title: '操作中'
+				})
+				updatePasswordUserApi({ ...this.resettingFormData })
+					.then(({ data }) => {
+						uni.hideLoading()
+						this.$showToast('重置成功')
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			}
+			this.resettingFormData.phone = ''
+			this.resettingFormData.verificationCode = ''
+			this.resettingFormData.password = ''
+			this.resettingFormData.passwordAgain = ''
+			this.isShowResettingPasswordDialog = false
 		}
 	}
 }

@@ -29,7 +29,6 @@
 				<tui-icon :size="20" name="search" :color="!!searchValue ? '#ef5613' : ''" @click="handleSearchOrder"></tui-icon>
 			</view>
 		</view>
-
 		<scroll-view
 			v-if="menus && menus.length" :scroll-into-view="currentActiveId" scroll-with-animation
 			class="menus-wrapper" scroll-x="true"

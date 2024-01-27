@@ -350,6 +350,9 @@ export const getBroadCastList = (data) => AnotherTFRequest('/', data)
 // 申请分销员
 export const addDistributorApplyApi = (data) => AnotherTFRequest('/distributor/addDistributor', data, 'POST')
 
+// 查询商家分类
+export const getShopOneClassifyApi = (data) => AnotherTFRequest('/shop/getShopOneClassify', data)
+
 // 查询店铺分类
 export const getShopClassifyApi = (data) => AnotherTFRequest('/shop/getShopClassify', data)
 

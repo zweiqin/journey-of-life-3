@@ -148,10 +148,6 @@ export const shoppingSubNavs = [
 		value: 2
 	},
 	{
-		label: '待核销',
-		value: 8
-	},
-	{
 		label: '待收货',
 		value: 3
 	},

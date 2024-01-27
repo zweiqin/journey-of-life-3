@@ -160,7 +160,7 @@
 
 		<!-- 首要标签筛选框 -->
 		<view v-if="ownPrimaryFilterBox.includes(currentType)" style="margin: 14upx 26upx 0;">
-			<StorePrimaryFilterBox :type="currentType" @select="handleSelectPrimaryFilter"></StorePrimaryFilterBox>
+			<StorePrimaryFilterBox :type="currentType" :parent-classify-id="queryInfo.classifyId" @select="handleSelectPrimaryFilter"></StorePrimaryFilterBox>
 		</view>
 
 		<!-- 次要排序筛选框 -->
@@ -540,8 +540,13 @@ export default {
 				page: 1,
 				pageSize: 10,
 				search: '',
-				classifyId: ''
-			}
+				classifyId: '',
+				distance: '999999999',
+				type: '',
+				volume: ''
+			},
+			// 来自筛选功能
+			currentClassifyId: ''
 		}
 	},
 	watch: {
@@ -580,7 +585,7 @@ export default {
 			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 		}
 		if (this.ownShopCardBox.includes(this.currentType) || this.ownShopCardWithLineBox.includes(this.currentType) || this.ownShopCardWithGoodsBox.includes(this.currentType) || this.ownBrandCardBox.includes(this.currentType) || this.ownBrandCardWithPriceBox.includes(this.currentType)) {
-			this.getNearByShopList(true)
+			this.getNearByShopList()
 		}
 		if (this.ownMenuBar.includes(this.currentType) || this.ownSpecialLineMenuBar.includes(this.currentType)) {
 			const res = await getShopCategorySonApi({ pid: this.queryInfo.classifyId })
@@ -595,8 +600,18 @@ export default {
 		},
 		handleSelectPrimaryFilter(e) {
 			console.log(e)
+			this.currentClassifyId = e.currentClassifyId || ''
+			this.queryInfo.distance = e.distance * 1000 || '999999999'
+			this.queryInfo.type = e.type || ''
+			this.queryInfo.volume = e.volume || ''
+			this.queryInfo.page = 1
+			this.getNearByShopList()
 		},
 		handleSelectSecondaryFilter(e) {
+			this.queryInfo.type = e.type || ''
+			this.queryInfo.volume = e.volume || ''
+			this.queryInfo.page = 1
+			this.getNearByShopList()
 			console.log(e)
 		},
 		handleSelectSpecialHotelBoxCalendar(e) {
@@ -611,6 +626,7 @@ export default {
 			uni.showLoading()
 			getHomeBrandListApi({
 				...this.queryInfo,
+				classifyId: this.currentClassifyId || this.queryInfo.classifyId,
 				areaId: this.$store.state.location.locationInfo.adcode,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]

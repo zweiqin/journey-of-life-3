@@ -153,11 +153,6 @@ export default {
 		}
 	},
 	methods: {
-		// handleToConnectStore() {
-		// 	if (!this.brandDetail.userId || !this.brandDetail.name) return this.$showToast('缺少商家信息')
-		// 	this.go(`/user/otherServe/chat/chat-detail?chat=${this.brandDetail.userId}&name=${this.brandDetail.name}&avatar=${this.brandDetail.picUrl}`)
-		// },
-
 		// 收藏店辅
 		handleCollectToggle() {
 			uni.showLoading()

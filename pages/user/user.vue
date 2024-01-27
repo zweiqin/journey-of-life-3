@@ -121,7 +121,8 @@ export default {
 					}
 					return
 				} else if (item.type === 'flyToService') {
-					this.$store.dispatch('app/getCustomerServiceAction', { isToService: true })
+					// this.$store.dispatch('app/getCustomerServiceAction', { isToService: true })
+					this.go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')
 					return
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()

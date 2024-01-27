@@ -57,40 +57,51 @@
 				<text v-else-if="pageType === 'order'">订单</text>
 				<text>财务数据</text>
 			</view>
-			<view
-				style="display: flex;justify-content: space-evenly;margin-top: 36upx;padding: 34upx 0;text-align: center;color: #222229;background-color: #ffffff;border-radius: 16upx;"
-			>
-				<view>
-					<view style="font-size: 34upx;font-weight: bold;">
-						{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
+			<view style="margin-top: 36upx;padding-bottom: 34upx;background-color: #ffffff;text-align: center;color: #222229;border-radius: 16upx;">
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;">
+							{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">累计营业额</view>
 					</view>
-					<view style="margin-top: 14upx;font-size: 24upx;">累计营业额</view>
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+							{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
+						</view>
+						<!-- 冻结金额 -->
+						<view style="margin-top: 14upx;font-size: 24upx;">途中金额</view>
+					</view>
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--' }}
+						</view>
+						<!-- 已提现金额 -->
+						<view style="margin-top: 14upx;font-size: 24upx;">已到账</view>
+					</view>
 				</view>
-				<view>
-					<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
-						{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+							{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
+								: '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">可提现</view>
 					</view>
-					<view style="margin-top: 14upx;font-size: 24upx;">冻结金额</view>
-				</view>
-				<view>
-					<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
-						{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
-							: '--' }}
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
+							{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
+								? financeStatisticsData.withdrawableStayMoney : '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">提现中</view>
 					</view>
-					<view style="margin-top: 14upx;font-size: 24upx;">可提现金额</view>
-				</view>
-				<view>
-					<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
-						{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
-							? financeStatisticsData.withdrawableStayMoney : '--' }}
+					<view style="padding-top: 34upx;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+							{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
+						</view>
+						<!-- 赠送代金券 -->
+						<view style="margin-top: 14upx;font-size: 24upx;">总赠送</view>
 					</view>
-					<view style="margin-top: 14upx;font-size: 24upx;">提现中</view>
-				</view>
-				<view>
-					<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
-						{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
-					</view>
-					<view style="margin-top: 14upx;font-size: 24upx;">赠送代金券</view>
 				</view>
 			</view>
 
@@ -100,14 +111,14 @@
 						:style="{ fontWeight: queryInfo.condition === 1 ? 'bold' : 'normal', color: queryInfo.condition === 1 ? '#222229' : '#9E9E9E' }"
 						@click="((queryInfo.condition = 1) && (queryInfo.time = '')) || getFinanceStatistics()"
 					>
-						日汇款
+						日流水
 					</view>
 					<view
 						style="margin-left: 32upx;"
 						:style="{ fontWeight: queryInfo.condition === 2 ? 'bold' : 'normal', color: queryInfo.condition === 2 ? '#222229' : '#9E9E9E' }"
 						@click="((queryInfo.condition = 2) && (queryInfo.time = '')) || getFinanceStatistics()"
 					>
-						月汇款
+						月流水
 					</view>
 				</view>
 				<view style="padding: 10upx 16upx;color: #222229;background-color: #ffffff;">
@@ -190,6 +201,7 @@ export default {
 			financeStatisticsData: {
 				turnover: '',
 				frozenMoney: '',
+				alreadyArrived: '',
 				withdrawableMoney: '',
 				withdrawableStayMoney: '',
 				presenterVoucher: '',

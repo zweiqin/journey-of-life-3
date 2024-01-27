@@ -34,14 +34,14 @@
 			</view>
 			<view class="order-list-box">
 				<view v-for="(item, sIndex) in settlement.shops" :key="item.shopId" class="item">
-					<view class="order-list-top">
+					<view v-if="!item.shopName.startsWith('团蜂')" class="order-list-top">
 						<view class="top-l">
 							<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 20upx 0 0"></tui-icon>
 							<text class="shop-name">{{ item.shopName }}</text>
 						</view>
 					</view>
 					<view class="order-info-box">
-						<view class="order-info">
+						<view>
 							<view v-for="(cItem, index) in item.skus" :key="cItem.productId" class="order-info-item">
 								<image :src="common.seamingImgUrl(cItem.image)" class="product-img"></image>
 								<view class="info-box">
@@ -65,7 +65,7 @@
 							</view>
 							<view class="delivery-way-box">
 								<view>
-									<view class="item">
+									<view style="display: flex;align-items: center;justify-content: space-between;font-size: 26upx;">
 										<view class="flex-items">
 											<text>配送方式</text>
 										</view>
@@ -1135,20 +1135,17 @@ export default {
 			.item {
 				background: #fff;
 				border-radius: 10upx;
+				border-bottom: 2upx solid #eeeeee;
 
 				.order-list-top {
-					height: 96upx;
-					padding: 0 30upx;
+					padding: 20upx 30upx;
 					box-sizing: border-box;
 					display: flex;
-					flex-direction: row;
 					align-items: center;
 					justify-content: space-between;
-					border-bottom: 2rpx solid #eee;
 
 					.top-l {
 						display: flex;
-						flex-direction: row;
 						align-items: center;
 
 						.shop-name {
@@ -1236,15 +1233,6 @@ export default {
 						padding: 20rpx;
 						margin-bottom: 20rpx;
 						box-sizing: content-box;
-
-						.item {
-							display: flex;
-							flex-direction: row;
-							align-items: center;
-							justify-content: space-between;
-							font-size: 26upx;
-							color: #333;
-						}
 					}
 
 					.discount-item1 {

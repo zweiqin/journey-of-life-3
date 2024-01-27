@@ -14,53 +14,71 @@
 			</view>
 		</view>
 		<view class="order-info-box">
-			<view class="order-info" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
-				<view v-for="(skuItem, skuIndex) in data.skus" :key="skuIndex" class="order-info-item">
-					<image :src="skuItem.image" class="product-img default-img" />
-					<view class="info-box">
-						<text class="product-name">{{ skuItem.productName && skuItem.productName }}</text>
-						<view class="product-sku">{{ skuItem.value && skuItem.value }}</view>
-						<view class="price-sku-box">
-							<view class="box-h flex-items-plus">
-								<text class="product-price">
-									<text class="fuhao">
-										￥
-									</text>
-									{{ skuItem.price && skuItem.price }}
-								</text>
-								<text class="product-num">x {{ skuItem.number && skuItem.number }}</text>
+			<view
+				style="border-bottom: 1px solid #eeeeee;"
+				@click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)"
+			>
+				<view>
+					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" class="order-info-item">
+						<image :src="skuItem.image" class="product-img default-img" />
+						<view class="info-box">
+							<text class="product-name">{{ skuItem.productName && skuItem.productName }}</text>
+							<view
+								v-if="skuItem.presenterVoucher"
+								style="width: fit-content;margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							>
+								赠送 {{ skuItem.presenterVoucher }} 代金券
 							</view>
-							<view v-if="showOperate">
-								<view
-									v-if="[3, 4].includes(data.state) && (data.orderType === 1)" class="evaluate"
-									@click.stop="go(`/another-tf/another-user/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
-								>
-									查看物流
+							<view class="product-sku">{{ skuItem.value && skuItem.value }}</view>
+							<view class="price-sku-box">
+								<view class="box-h flex-items-plus">
+									<text class="product-price">
+										<text class="fuhao">￥</text>
+										{{ skuItem.price || 0 }}
+									</text>
+									<text class="product-num">x {{ skuItem.number && skuItem.number }}</text>
 								</view>
-								<view
-									v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" class="evaluate2"
-									@click.stop="go(`/another-tf/another-serve/evaluate/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
-								>
-									立即评价
-								</view>
-								<view
-									v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)"
-									class="evaluate2" @click.stop="handleAddEvaluate(skuItem)"
-								>
-									追加评价
+								<view v-if="showOperate">
+									<view
+										v-if="[3, 4].includes(data.state) && (data.orderType === 1)" class="evaluate"
+										@click.stop="go(`/another-tf/another-user/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+									>
+										查看物流
+									</view>
+									<view
+										v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" class="evaluate2"
+										@click.stop="go(`/another-tf/another-serve/evaluate/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+									>
+										立即评价
+									</view>
+									<view
+										v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)"
+										class="evaluate2" @click.stop="handleAddEvaluate(skuItem)"
+									>
+										追加评价
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
+				<view v-if="!isShowAll">
+					<tui-button
+						type="warning" plain width="180rpx" height="54rpx"
+						shape="circle" margin="18upx auto 0"
+						@click="(isShowAll = true) && (showSkusArr = data.skus)"
+					>
+						显示全部
+					</tui-button>
+				</view>
 				<view class="total-price-box">
 					<template v-if="data.orderPrice !== undefined || data.discountPrice !== undefined">
-						总价¥{{
+						总价￥{{
 							(data.orderPrice + data.logisticsPrice).toFixed(2)
-						}},优惠¥{{ data.discountPrice }}
-						<span v-if="data.price > 0">
-							，{{ data.state === 1 ? '应付¥' : '实付¥' }}{{ data.price }}
-						</span>
+						}}，优惠￥{{ data.discountPrice }}
+						<text v-if="data.price > 0">
+							，{{ data.state === 1 ? '应付￥' : '实付￥' }}{{ data.price }}
+						</text>
 					</template>
 				</view>
 			</view>
@@ -100,11 +118,31 @@ export default {
 	},
 	data() {
 		return {
-			orderTypeEnum
+			orderTypeEnum,
+			showSkusArr: [],
+			isShowAll: false
 		}
 	},
 
 	watch: {
+		data: {
+			handler(newValue, oldValue) {
+				if (newValue.skus && (newValue.skus.length === 1)) {
+					this.showSkusArr = newValue.skus
+					this.isShowAll = true
+				} else if (newValue.skus && (newValue.skus.length > 1)) {
+					if (this.isShowAll) {
+						this.showSkusArr = newValue.skus
+					} else {
+						this.showSkusArr = [ newValue.skus[0] ]
+					}
+				} else if (!newValue.skus || !newValue.skus.length) {
+					this.isShowAll = true
+				}
+			},
+			immediate: true,
+			deep: true
+		}
 	},
 
 	methods: {
@@ -405,96 +443,89 @@ export default {
 		padding: 0 30upx;
 		box-sizing: border-box;
 
-		.order-info {
-			border-bottom: 1px solid #eeeeee;
+		.order-info-item {
+			display: flex;
+			padding: 20upx 0;
 
-			.order-info-item {
+			.product-img {
+				width: 180upx;
+				height: 180upx;
+				margin-right: 30upx;
+			}
+
+			.info-box {
+				flex: 1;
 				display: flex;
-				flex-direction: row;
-				padding: 20upx 0;
+				flex-direction: column;
+				justify-content: space-between;
 
-				.product-img {
-					width: 180upx;
-					height: 180upx;
-					margin-right: 30upx;
+				.product-name {
+					font-size: 26upx;
+					color: #333;
+					display: -webkit-box;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					word-break: break-all;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
 				}
 
-				.info-box {
-					flex: 1;
+				.product-sku {
+					font-size: 24upx;
+					color: #999;
+				}
+
+				.price-sku-box {
 					display: flex;
-					flex-direction: column;
+					flex-direction: row;
 					justify-content: space-between;
 
-					.product-name {
-						font-size: 26upx;
+					.product-price {
+						font-size: 28upx;
 						color: #333;
-						height: 68upx;
-						line-height: 34upx;
-						display: -webkit-box;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						word-break: break-all;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 2;
+						font-weight: 400;
+
+						.fuhao {
+							font-size: 28upx;
+						}
 					}
 
-					.product-sku {
-						font-size: 24upx;
+					.product-num {
+						display: inline-view;
+						font-size: 28upx;
+						margin-left: 20upx;
 						color: #999;
 					}
 
-					.price-sku-box {
-						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
+					.evaluate {
+						height: 56upx;
+						text-align: center;
+						line-height: 56upx;
+						font-size: 26upx;
+						padding: 0 30upx;
+						color: #C5AA7B;
+						background: #333333;
+					}
 
-						.product-price {
-							font-size: 28upx;
-							color: #333;
-							font-weight: 400;
-
-							.fuhao {
-								font-size: 28upx;
-							}
-						}
-
-						.product-num {
-							display: inline-view;
-							font-size: 28upx;
-							margin-left: 20upx;
-							color: #999;
-						}
-
-						.evaluate {
-							height: 56upx;
-							text-align: center;
-							line-height: 56upx;
-							font-size: 26upx;
-							padding: 0 30upx;
-							color: #C5AA7B;
-							background: #333333;
-						}
-
-						.evaluate2 {
-							height: 56upx;
-							margin-top: 6upx;
-							text-align: center;
-							line-height: 56upx;
-							font-size: 26upx;
-							padding: 0 30upx;
-							background: #333333;
-							color: #C5AA7B;
-						}
+					.evaluate2 {
+						height: 56upx;
+						margin-top: 6upx;
+						text-align: center;
+						line-height: 56upx;
+						font-size: 26upx;
+						padding: 0 30upx;
+						background: #333333;
+						color: #C5AA7B;
 					}
 				}
 			}
+		}
 
-			.total-price-box {
-				font-size: 26upx;
-				color: #333;
-				text-align: right;
-				padding: 30upx 0;
-			}
+		.total-price-box {
+			font-size: 26upx;
+			color: #333;
+			text-align: right;
+			padding: 18upx 0;
 		}
 
 		.btnBox {
