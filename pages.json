@@ -1589,6 +1589,12 @@
           }
         },
         {
+          "path": "another-user/claasify-products/index",
+          "style": {
+            "navigationBarTitleText": "分类商品"
+          }
+        },
+        {
           "path": "another-user/shop-commodity/index",
           "style": {
             "navigationBarTitleText": "商家商品"

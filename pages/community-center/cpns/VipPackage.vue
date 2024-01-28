@@ -63,7 +63,7 @@
       </view>-->
 
       <!-- 499会员 -->
-      <view class="package whole-package v-499" @click="$emit('view499')"></view>
+      <view class="package whole-package v-499" @click="go(`/another-tf/another-user/claasify-products/index?type=auxiliaryMaterials&id=1446`)"></view>
 
       <!-- <view class="package ilo-package" @click="empty()">
         <view class="package-title"> 加油劵 </view>

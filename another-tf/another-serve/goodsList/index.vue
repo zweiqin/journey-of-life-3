@@ -71,7 +71,7 @@
 									v-if="item.originalPrice && item.originalPrice > item.price"
 									class="mar-left-30 discountsPriceLine font-color-999"
 								>
-									¥{{ item.originalPrice }}
+									￥{{ item.originalPrice }}
 								</view>
 							</view>
 							<view

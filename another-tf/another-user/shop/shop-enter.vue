@@ -488,13 +488,14 @@ export default {
 				22: '创意策划',
 				23: '酒庄',
 				24: '就医买药',
-				25: '金融财务'
+				25: '金融财务',
+				26: '辅材超市'
 			},
 			currentType: '',
 
 			// 判断每个类板块是否拥有某个页面结构
-			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'],
-			ownMenuBar: ['1', '2', '3', '4', '5', '6', '7', '8', '13', '16'],
+			ownSearchBar: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26'],
+			ownMenuBar: ['1', '2', '3', '4', '5', '6', '7', '8', '13', '16', '26'],
 			ownSpecialLineMenuBar: [ '9' ],
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
@@ -504,15 +505,6 @@ export default {
 			selectionBoxArr: [],
 			selectionBoxNum: 0,
 			ownPrimaryFilterBox: [ '6' ],
-			primaryFilterBoxObj: {
-				quanbumeishi: '',
-				fujin: '',
-				zhinengpaixu: '',
-				shaixuan: {
-					yingyeshijian: '',
-					cantingfuwu: ''
-				}
-			},
 			ownSecondaryFilterBox: ['7', '8'],
 			ownSpecialHotelBox: [ '11' ],
 			specialHotelGoodsArr: [],
@@ -528,7 +520,7 @@ export default {
 				endWeek: ''
 			},
 			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'],
-			ownShopCardWithLineBox: [ '13' ],
+			ownShopCardWithLineBox: ['13', '26'],
 			ownShopCardWithGoodsBox: ['7', '8'],
 			ownBrandCardBox: [ '5' ],
 			ownBrandCardWithPriceBox: [ '11' ],

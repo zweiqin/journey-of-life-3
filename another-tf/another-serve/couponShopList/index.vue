@@ -5,7 +5,7 @@
 		<!-- 商品列表 -->
 		<view>
 			<view
-				v-for="(item, index) in couponProductsList" :key="index"
+				v-for="(item, index) in couponProductList" :key="index"
 				class="goodsDetails-box flex-display flex-column mar-left-30"
 				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
@@ -62,8 +62,8 @@
 
 		<view style="padding-bottom: 45upx;">
 			<LoadingMore
-				:status="!isEmpty && !couponProductsList.length
-					? 'loading' : !isEmpty && couponProductsList.length && (couponProductsList.length >= couponProductsTotal) ? 'no-more' : ''"
+				:status="!isEmpty && !couponProductList.length
+					? 'loading' : !isEmpty && couponProductList.length && (couponProductList.length >= couponProductsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">无可用商品</tui-no-data>
@@ -79,7 +79,7 @@ export default {
 	data() {
 		return {
 			isEmpty: false,
-			couponProductsList: [],
+			couponProductList: [],
 			couponProductsTotal: 0,
 			queryInfo: {
 				page: 1,
@@ -92,19 +92,19 @@ export default {
 	onLoad(option) {
 		this.queryInfo.activityId = option.activityId
 		this.queryInfo.shopCouponId = option.shopCouponId
-		this.getCouponProductsList()
+		this.getCouponProductList()
 	},
 	methods: {
-		getCouponProductsList(isLoadmore) {
+		getCouponProductList(isLoadmore) {
 			uni.showLoading()
 			getCouponProductsApi(this.queryInfo).then((res) => {
 				this.couponProductsTotal = res.data.total
 				if (isLoadmore) {
-					this.couponProductsList.push(...res.data.list)
+					this.couponProductList.push(...res.data.list)
 				} else {
-					this.couponProductsList = res.data.list
+					this.couponProductList = res.data.list
 				}
-				this.isEmpty = this.couponProductsList.length === 0
+				this.isEmpty = this.couponProductList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
@@ -113,9 +113,9 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.couponProductsList.length < this.couponProductsTotal) {
+		if (this.couponProductList.length < this.couponProductsTotal) {
 			++this.queryInfo.page
-			this.getCouponProductsList(true)
+			this.getCouponProductList(true)
 		}
 	}
 }

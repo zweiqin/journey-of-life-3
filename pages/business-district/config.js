@@ -131,5 +131,10 @@ export const navbarAll = [
 		storeName: '金融财务',
 		iconUrl: require('../../static/images/new-business/home/jinrongcaiwu.png'),
 		type: 25
+	},
+	{
+		storeName: '辅材超市',
+		iconUrl: require('../../static/images/new-user/default-user-avatar.png'),
+		type: 26
 	}
 ]
