@@ -186,7 +186,7 @@ import PayMethods from './components/PayMethods.vue'
 import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
 import { USER_INFO, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
-import { getUserId } from '../../utils'
+import { getUserId, throttle, isH5InWebview } from '@/utils';
 import { IMG_UPLOAD_URL } from '../../config';
 import { validateOrderForm } from './data'
 

@@ -1,44 +1,44 @@
 <template>
     <view class="mainBox">
         <TuanPageHead title="社区套餐" style="background: #Fff;">
-            <image slot="left" src="@/static/images/con-center/goBack.png" class="backIcon" mode="" >
+            <image slot="left" src="@/static/images/con-center/goBack.png" @click="goBack" class="backIcon" mode="" >
             </image>
         </TuanPageHead>
 
         <!-- 背景板 z-index == 0 -->
         <GradationBackground></GradationBackground>
         <view class="HeightBox">
-            <view class="MySetMeal" @click="mySetMeal">
+            <!-- <view class="MySetMeal" @click="mySetMeal">
                 我的套餐
-            </view>
+            </view> -->
         </view>
 
         <!-- 选择tab栏 -->
         <scroll-view :scroll-x="true" class="tabNavsContainer">
             <view class="selectClassBox">
                 <view class="tabs-item" :class="{isActive: index == 0}" v-for="(item, index) in tabNavs" :key="index">
-                    {{ item }}
+                    {{ item.serverName }}
                     <image v-if="index == 0" class="activeIocn" src="@/static/images/con-center/communityPackage/wande.png" mode="" ></image>
                 </view>
             </view>
         </scroll-view>
 
         <view class="PackageList">
-            <view class="ListItem">
+            <!-- <view class="ListItem" v-for="(item, index) in childsTabNavs" :key="item.id">
                 <view class="bigClass">
-                    <image class="" src="@/static/images/con-center/communityPackage/kongtiaoqingxi.png" mode="" />
+                    <image class="" :src="item.picUrl" mode="" />
                 </view>
                 <view class="smallPackages">
-                    <view class="PackagesItems">
-                        <view class="pagesImgBox">
-                            <image class="pagesImg" src="@/static/images/con-center/communityPackage/ktqxSmall.png" mode="" />
+                    <view class="PackagesItems" v-for="(childItem, childIndex) in ConvertJSON(item.extraInfo).selectServetree" :key="index">
+                        <view class="pagesImgBox" :style="{'background-color': backgrounds[index]}">
+                            <image class="pagesImg" :src="childItem.children[0].serverInfoUrl" mode="" />
                             <view class="SalesVolume">
                                 已售 {{ 200 }} ++
                             </view>
                         </view>
                         <view class="pagesDetails">
-                            <view class="names">挂式空调+柜式空调</view>
-                            <view class="advantageTitle">保护您和家人的健康享受更优质的生活</view>
+                            <view class="names">{{ childItem.serverTypeName }}</view>
+                            <view class="advantageTitle">{{ childItem.children[0].serverIntroduction || '带给你全新的效果' }}</view>
                             <view class="tagBox">
                                 <text class="tags" type="success">提升效能</text>
                                 <text class="tags" type="default">去除异味</text>
@@ -49,34 +49,7 @@
                         </view>
                     </view>
                 </view>
-            </view>
-
-            <view class="ListItem">
-                <view class="bigClass">
-                    <image class="" src="@/static/images/con-center/communityPackage/kongtiaoqingxi2.png" mode="" />
-                </view>
-                <view class="smallPackages">
-                    <view class="PackagesItems" v-for="(item,index) in 5" :key="index">
-                        <view class="pagesImgBox" :style="{'background-color': backgrounds[index]}">
-                            <image class="pagesImg" :src="require(`@/static/images/con-center/communityPackage/smallktqx${item}.png`)" mode="" />
-                            <!-- <view class="SalesVolume">
-                                已售 {{ 200 }} ++
-                            </view> -->
-                        </view>
-                        <view class="pagesDetails">
-                            <view class="names">挂式空调+柜式空调</view>
-                            <view class="advantageTitle">保护您和家人的健康享受更优质的生活</view>
-                            <view class="tagBox">
-                                <text class="tags" type="success">提升效能</text>
-                                <text class="tags" type="default">去除异味</text>
-                            </view>
-                            <view class="money">
-                                <text class="nowMoney"><text style="font-size: 28rpx;">￥</text>{{ 299 }}</text> <text class="saveMoney">已省{{ 299 }} 元</text>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </view>
+            </view> -->
 
             <view class="ListItem">
                 <view class="bigClass">
@@ -86,9 +59,9 @@
                     <view class="PackagesItems" v-for="(item,index) in 5" :key="index">
                         <view class="pagesImgBox" :style="{'background-color': backgrounds[index]}">
                             <image class="pagesImg" :src="require(`@/static/images/con-center/communityPackage/smallktqx${item}.png`)" mode="" />
-                            <!-- <view class="SalesVolume">
+                            <view class="SalesVolume">
                                 已售 {{ 200 }} ++
-                            </view> -->
+                            </view>
                         </view>
                         <view class="pagesDetails">
                             <view class="names">挂式空调+柜式空调</view>
@@ -112,6 +85,7 @@
 <script>
 // import PageHead from 'pages/business-district/components/PageHead.vue'
 import GradationBackground from './components/gradationBackground'
+import { getNextLevelPage, getServersByAddr,} from "@/api/community-center/communityPackage";
 
 export default {
     components: { 
@@ -122,12 +96,54 @@ export default {
     data() {
         return {
             tabNavs: ['空调清洗套餐','空调清洗套餐','空调清洗套餐','空调清洗套餐'],
-            backgrounds: ['#159AF2','#1D57D3','#F65455','#C60A2D','#F68F32']
+            childsTabNavs: [],
+            tabCurrenIndex: 0,
+            backgrounds: ['#159AF2','#1D57D3','#F65455','#C60A2D','#F68F32'],
+            query: {
+                pageNo: 1,
+                pageSize: 10,
+            },
+            renderData: {},
+            serverData: [],
         }
     },
+    async onShow() {
+        await this.getServeTabData()
+        this.getServeCardData()
+    },
     methods: {
-        mySetMeal() {
-            console.log("我的套餐");
+        goBack() {
+            uni.navigateBack();
+        },
+        async getServeTabData() { //! 获取tab栏数据
+            let address =
+                this.$store.getters.detailAddress || "广东省佛山市顺德区龙江镇";
+            // if (!address) {
+            //   uni.navigateTo({ url: "/pages/choose-location/choose-location" });
+            // }
+            this.tabNavs = (
+                await getServersByAddr({
+                pageNo: 1,
+                pageSize: 10,
+                pid: 0,
+                srvTypeEnum: "5",
+                address,
+                })
+            ).records;
+            console.log('tabNavs', this.tabNavs);
+        },
+        async getServeCardData() { //! 初始化渲染数据的方法，为其添加控制选择效果的属性
+            this.childsTabNavs = (
+                await getNextLevelPage({
+                ...this.query,
+                pid: this.tabNavs[this.tabCurrenIndex].id,
+                })
+            ).records;
+            console.log('childsTabNavs', this.childsTabNavs);
+        },
+        ConvertJSON(jsonData) {
+            console.log(JSON.parse(jsonData));
+            return JSON.parse(jsonData)
         }
     }
 }
