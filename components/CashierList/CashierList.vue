@@ -261,7 +261,7 @@ export default {
 		}
 		if (this.showTonglianPay) {
 			this.paymentList.push({
-				label: '通联支付',
+				label: '通联支付（微信）',
 				paymentMode: '4',
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true

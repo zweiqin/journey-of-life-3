@@ -110,14 +110,14 @@ export default {
 							itemColor: '#2c3e50',
 							success: (res) => {
 								if (res.tapIndex === 0) {
-									this.$refs.codeCreateRef.getCode('userInvitation')
+									this.go('/another-tf/another-user/user-invitation/index')
 								} else if (res.tapIndex === 1) {
 									this.$refs.codeCreateRef.getCode('franchiseeInvitation')
 								}
 							}
 						})
 					} else {
-						this.$refs.codeCreateRef.getCode('userInvitation')
+						this.go('/another-tf/another-user/user-invitation/index')
 					}
 					return
 				} else if (item.type === 'flyToService') {

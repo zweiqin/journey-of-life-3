@@ -247,7 +247,7 @@ export default {
 			if (!this.brandDetail.shopAdress) return this.$showToast('商家地址有误，导航失败')
 			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
 		},
-		// 点击分享
+
 		handleShare() {
 			uni.showLoading({
 				title: '海报生成中...'

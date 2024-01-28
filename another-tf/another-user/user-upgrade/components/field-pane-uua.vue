@@ -33,8 +33,8 @@
 			<view style="padding: 20upx 18upx;background-color: #f5f4fb;">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view style="display: flex;align-items: center;">
-						<BeeIcon :size="30" :src="common.seamingImgUrl(userInfo.headImage)"></BeeIcon>
-						<view style="margin-left: 20upx;color: #222229;">{{ userInfo.name || userInfo.wechatName || '--' }}</view>
+						<BeeIcon :size="30" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></BeeIcon>
+						<view style="margin-left: 20upx;color: #222229;">{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}</view>
 					</view>
 					<view style="font-size: 28upx;color: #533A23;">
 						<text v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
@@ -176,11 +176,7 @@ export default {
 			type: Object,
 			required: true
 		},
-		title: String,
-		userInfo: {
-			type: Object,
-			default: () => ({})
-		}
+		title: String
 	},
 
 	data() {
@@ -244,9 +240,9 @@ export default {
 					} else if (res.data && res.data.levelType === 0) {
 						this.relationLevelName = ''
 					}
-					// this.upgradeLevelType = 0
-					// this.relationLevelName = ''
-					// this.relationshipLevelName = ''
+					// this.upgradeLevelType = 2
+					// this.relationLevelName = '团长'
+					// this.relationshipLevelName = '团长'
 					uni.hideLoading()
 				})
 				.catch((e) => {
@@ -259,11 +255,13 @@ export default {
 				this.$emit('unlock')
 				this.isShowLock = false
 				if (this.upgradeLevelType === 2) {
-					// if (this.$store.state.location.locationInfo.towncode) {
-					// 	this.form.address = this.$store.state.location.detailAddress || ''
-					// 	this.form.region = this.$store.state.location.locationInfo.towncode || ''
-					// 	this.form.regionName = (this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district + this.$store.state.location.locationInfo.township) || ''
-					// }
+					if (this.$store.state.location.locationInfo.towncode) {
+						this.form.address = this.$store.state.location.detailAddress || ''
+						// this.form.region = this.$store.state.location.locationInfo.towncode || ''
+						// this.form.regionName = (this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district + this.$store.state.location.locationInfo.township) || ''
+					}
+					this.form.name = this.$store.getters.userInfo.name || ''
+					this.form.phone = this.$store.getters.userInfo.phone || ''
 				} else if (this.upgradeLevelType === 4) {
 					getSelectApplyPlatformRelationApi({})
 						.then((res) => {

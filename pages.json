@@ -1535,6 +1535,12 @@
           }
         },
         {
+          "path": "another-user/user-invitation/index",
+          "style": {
+            "navigationBarTitleText": "我的推广"
+          }
+        },
+        {
           "path": "another-user/small-ledger/index",
           "style": {
             "navigationBarTitleText": "小账本"

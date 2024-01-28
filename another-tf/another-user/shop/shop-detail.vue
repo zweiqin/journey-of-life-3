@@ -66,7 +66,7 @@
 			<view v-else>
 				<view v-if="bannerInfoList && bannerInfoList.length > 0" style="background: #f7f7f7;padding: 20upx 30upx;">
 					<swiper indicator-dots="true">
-						<swiper-item v-for="(item, index) in bannerInfoList" :key="index" @click="handleApplyForRecruit()">
+						<swiper-item v-for="(item, index) in bannerInfoList" :key="index">
 							<image :src="item.bannerImage" style="width: 100%;height: 280upx;border-radius: 20upx;"></image>
 						</swiper-item>
 					</swiper>
