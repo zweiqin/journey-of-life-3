@@ -22,9 +22,9 @@ export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-app-api/ws' // �
 
 // 师傅的
 
-// export const sf = 'https://www.zhult.com/samrtWorker' // 线上
+export const sf = 'https://www.zhult.com/samrtWorker' // 线上
 // export const sf = "https://www.zhult.com/test-samrtWorker"; // 测试
-export const sf = "/sf"; // 本地
+// export const sf = "/sf"; // 本地
 
 // 团蜂H5项目地址
 export const A_TF_MAIN = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5'

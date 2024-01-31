@@ -11,11 +11,11 @@
 			</view>
 		</view>
 
-		<view style="margin: 24upx -12upx 0;display: flex;flex-wrap: wrap;">
+		<view style="margin: 24upx -12upx 0;display: flex;justify-content: center;flex-wrap: wrap;">
 			<view v-for="menu in specialPane" :key="menu.name" @click="$emit('menu-click', menu)">
 				<view
 					v-if="menu.name === '会员升级'"
-					style="display: flex;justify-content: space-between;align-items: center;width: 332upx;margin: 0 12upx 22upx;padding: 32upx 32upx;background-color: #ffffff;border-radius: 10upx;box-sizing: border-box;"
+					style="display: flex;justify-content: space-between;align-items: center;width: 330upx;margin: 0 12upx 22upx;padding: 32upx 32upx;background-color: #ffffff;border-radius: 10upx;box-sizing: border-box;"
 				>
 					<view>
 						<view style="margin-bottom: 6upx;font-size: 32upx;font-weight: bold;color: #222229;">{{ menu.name }}</view>
@@ -28,7 +28,7 @@
 				</view>
 				<view
 					v-else-if="menu.name === '我的推广'"
-					style="display: flex;justify-content: space-between;align-items: center;width: 332upx;margin: 0 12upx 22upx;padding: 32upx 32upx;background-color: #ffffff;border-radius: 10upx;box-sizing: border-box;"
+					style="display: flex;justify-content: space-between;align-items: center;width: 330upx;margin: 0 12upx 22upx;padding: 32upx 32upx;background-color: #ffffff;border-radius: 10upx;box-sizing: border-box;"
 				>
 					<view>
 						<view style="margin-bottom: 6upx;font-size: 32upx;font-weight: bold;color: #222229;">{{ menu.name }}</view>

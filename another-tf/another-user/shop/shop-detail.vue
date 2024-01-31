@@ -94,18 +94,18 @@
 				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 						<template #left="{ entity }">
-							<ShopGoods
-								:shop-id="shopId" :c-item="entity"
+							<ATFShopGoods
+								:shop-id="shopId" :c-item="entity" show-sales
 								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
 							>
-							</ShopGoods>
+							</ATFShopGoods>
 						</template>
 						<template #right="{ entity }">
-							<ShopGoods
-								:shop-id="shopId" :c-item="entity"
+							<ATFShopGoods
+								:shop-id="shopId" :c-item="entity" show-sales
 								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
 							>
-							</ShopGoods>
+							</ATFShopGoods>
 						</template>
 					</tui-waterfall>
 				</view>
@@ -131,7 +131,6 @@
 <script>
 import BrandInfo from './components/BrandInfo'
 import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
-import ShopGoods from './components/ShopGoods'
 import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
 import { navigationAddress } from '../../../utils'
@@ -141,7 +140,6 @@ export default {
 	components: {
 		BrandInfo,
 		CanvasPage,
-		ShopGoods,
 		StoreShopCart
 	},
 

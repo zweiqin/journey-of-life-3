@@ -79,7 +79,7 @@ export default {
 				pageSize: 10,
 				search: '',
 				classifyId: '',
-				distance: '999999999'
+				distance: '9999999999'
 			},
 			menuBarArr: []
 		}

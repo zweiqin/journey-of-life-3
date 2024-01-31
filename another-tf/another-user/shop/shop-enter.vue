@@ -533,7 +533,7 @@ export default {
 				pageSize: 10,
 				search: '',
 				classifyId: '',
-				distance: '999999999',
+				distance: '9999999999',
 				type: '',
 				volume: ''
 			},
@@ -593,7 +593,7 @@ export default {
 		handleSelectPrimaryFilter(e) {
 			console.log(e)
 			this.currentClassifyId = e.currentClassifyId || ''
-			this.queryInfo.distance = e.distance * 1000 || '999999999'
+			this.queryInfo.distance = e.distance * 1000 || '9999999999'
 			this.queryInfo.type = e.type || ''
 			this.queryInfo.volume = e.volume || ''
 			this.queryInfo.page = 1
