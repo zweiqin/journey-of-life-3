@@ -49,8 +49,8 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ],
-                "minSdkVersion" : 29,
-                "targetSdkVersion" : 30
+                "minSdkVersion" : 21,
+                "targetSdkVersion" : 31
             },
             "ios" : {
                 "dSYMs" : false,
@@ -59,7 +59,8 @@
                     "entitlements" : {
                         "com.apple.developer.associated-domains" : [
                             "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com",
-                            "applinks:www.tuanfengkeji.cn"
+                            "applinks:www.tuanfengkeji.cn",
+                            "applinks:nsappapi.tuanfengkeji.cn"
                         ]
                     }
                 },

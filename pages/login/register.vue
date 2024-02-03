@@ -1,6 +1,6 @@
 <template>
 	<view class="register-container">
-		<JHeader title="" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="titleBox">
 			<p class="bigTitle">填写注册信息</p>
 			<p class="tips">请仔细填写以下信息，以免后期登陆异常</p>
@@ -16,14 +16,14 @@
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.verificationCode" padding="26upx 20upx 26upx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
+						v-model="registerQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#222229"
-						style="border-bottom: 2upx solid #ffffff;"
+						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
-								ref="refRegisterVerify" width="188upx" height="48upx" border-width="0"
+								ref="refRegisterVerify" width="188rpx" height="48rpx" border-width="0"
 								text="获取验证码"
 								:size="30" color="#EF530E" @send="handleSendVerify"
 							></tui-countdown-verify>
@@ -61,7 +61,7 @@
 		</view>
 		<tui-toast ref="toast"></tui-toast>
 		<tui-modal :show="hasRegister" custom fade-i :button="[]" @cancel="hasRegister = false">
-			<view style="padding: 28upx 0;text-align: center;">
+			<view style="padding: 28rpx 0;text-align: center;">
 				<image style="width: 240rpx;height: 144rpx;" src="../../static/images/icon/acount.png"></image>
 				<view
 					style="margin-top: 46rpx;font-size: 36rpx;font-weight: normal;line-height: 52rpx;text-align: center;color: #222229;"

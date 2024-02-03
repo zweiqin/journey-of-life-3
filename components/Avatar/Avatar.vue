@@ -5,9 +5,9 @@
       :src="src"
       :mode="mode"
       :style="{
-        borderRadius: radius * 2 + 'upx',
-        width: size * 2 + 'upx',
-        height: size * 2 + 'upx',
+        borderRadius: radius * 2 + 'rpx',
+        width: size * 2 + 'rpx',
+        height: size * 2 + 'rpx',
         margin: margin,
       }"
     />

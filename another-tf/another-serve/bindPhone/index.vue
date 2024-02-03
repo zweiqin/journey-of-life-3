@@ -4,7 +4,7 @@
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40upx;text-align: center;line-height: 2.5;">绑定手机号</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;line-height: 2.5;">绑定手机号</text>
 			</view>
 		</BeeBack>
 		<view class="loginInfo fs26 font-color-999">
@@ -21,21 +21,21 @@
 		</view>
 		<view v-else-if="verifyType === 1" class="phoneVerify">
 			<view class="iphoneNum-box flex-row-plus flex-items">
-				<tui-icon :size="50" color="#cccccc" name="mobile" unit="upx" margin="0 30upx 0 0"></tui-icon>
+				<tui-icon :size="50" color="#cccccc" name="mobile" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
 				<view>
 					<input v-model="phone" maxlength="11" type="number" placeholder="请输入您的手机号" />
 				</view>
 			</view>
 			<view class="mar-top-20">
 				<view class="code-box">
-					<tui-icon :size="50" color="#cccccc" name="shield" unit="upx" margin="0 30upx 0 0"></tui-icon>
+					<tui-icon :size="50" color="#cccccc" name="shield" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
 					<tui-input
-						v-model="code" padding="26upx 20upx 26upx 0" background-color="transparent" label-color="#ffffff"
-						placeholder="请输入验证码" style="flex: 1;border-bottom: 2upx solid #ffffff;"
+						v-model="code" padding="26rpx 20rpx 26rpx 0" background-color="transparent" label-color="#ffffff"
+						placeholder="请输入验证码" style="flex: 1;border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
-								ref="refBindPhoneVerify" width="188upx" height="48upx" border-width="0"
+								ref="refBindPhoneVerify" width="188rpx" height="48rpx" border-width="0"
 								text="获取验证码"
 								:size="30" color="#dddddd" @send="handleSendVerify"
 							></tui-countdown-verify>
@@ -222,9 +222,9 @@ export default {
 			width: 80%;
 			display: block;
 			text-align: center;
-			border: 2upx solid #F3F4F5;
-			padding: 30upx;
-			font-size: 34upx;
+			border: 2rpx solid #F3F4F5;
+			padding: 30rpx;
+			font-size: 34rpx;
 			margin: 0 auto 30rpx auto;
 			color: #C5AA7B;
 		}
@@ -236,7 +236,7 @@ export default {
 	}
 
 	.phoneVerify {
-		padding: 20upx 30upx;
+		padding: 20rpx 30rpx;
 
 		.iphoneNum-box {
 			border-bottom: 1rpx solid #DDDDDD;
@@ -267,16 +267,16 @@ export default {
 	}
 
 	.mpVerify {
-		height: 300upx;
+		height: 300rpx;
 
 		.verifyPhone {
 			background: #333333;
 			color: #FFEBC4;
-			height: 100upx;
-			width: 600upx;
+			height: 100rpx;
+			width: 600rpx;
 			text-align: center;
-			line-height: 100upx;
-			margin-top: 88upx;
+			line-height: 100rpx;
+			margin-top: 88rpx;
 			border-radius: 0;
 		}
 	}

@@ -2,9 +2,9 @@
 	<view class="j-avatar">
 		<image
 			:style="{
-				'width': size * 1 + 'upx',
-				'height': size * 1 + 'upx',
-				'border-radius': radius.includes('%') ? radius : radius * 1 + 'upx',
+				'width': size * 1 + 'rpx',
+				'height': size * 1 + 'rpx',
+				'border-radius': radius.includes('%') ? radius : radius * 1 + 'rpx',
 				border
 			}"
 			class="img"

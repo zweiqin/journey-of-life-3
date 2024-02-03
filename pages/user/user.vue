@@ -1,7 +1,7 @@
 <template>
 	<view class="user-page-container">
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
-		<BaseInfo ref="baseInfoRef" @handleNavigate="handleNavigate"></BaseInfo>
+		<BaseInfo ref="baseInfoRef"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>

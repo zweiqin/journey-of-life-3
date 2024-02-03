@@ -3,8 +3,8 @@
     @click="$emit('click')"
     v-if="iconUrl"
     :style="{
-      width: width + 'upx',
-      height: height + 'upx',
+      width: width + 'rpx',
+      height: height + 'rpx',
     }"
     :src="iconUrl"
     mode=""

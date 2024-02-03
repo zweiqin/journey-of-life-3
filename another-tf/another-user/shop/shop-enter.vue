@@ -4,11 +4,14 @@
 		<view class="shop-header-container">
 			<image class="back-icon" src="../../../static/images/new-business/category/back.png" @click="back"></image>
 			<view class="search-container">
-				<text style="font-weight: bold;font-size: 36upx;">{{ transformation[currentType] }}</text>
+				<text style="font-weight: bold;font-size: 36rpx;">
+					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
+				</text>
+				<!-- v-if="ownSearchBar.includes(currentType)"  -->
 				<tui-input
-					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" label="" placeholder="社区商圈"
-					clearable is-fillet padding="6upx 10upx 6upx 26upx"
-					style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
+					v-model="queryInfo.search" label="" placeholder="社区商圈"
+					clearable is-fillet padding="6rpx 10rpx 6rpx 26rpx"
+					style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
 				>
 					<template #right>
 						<tui-button
@@ -26,10 +29,10 @@
 		<!-- 菜单栏 -->
 		<view
 			v-if="ownMenuBar.includes(currentType)"
-			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14upx 26upx 0;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
+			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14rpx 26rpx 0;padding: 22rpx 22rpx 2rpx;background-color: #ffffff;border-radius: 20rpx;"
 		>
 			<view
-				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
+				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20rpx;text-align: center;"
 				@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 			>
 				<view>
@@ -39,19 +42,19 @@
 					>
 					</BeeIcon>
 				</view>
-				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+				<view style="margin-top: 6rpx;font-size: 26rpx;white-space: nowrap;">{{ item.storeName }}</view>
 			</view>
 		</view>
 
 		<!-- 特殊显示菜单栏 -->
-		<view v-if="ownSpecialLineMenuBar.includes(currentType)" style="margin: 14upx 26upx 0;">
+		<view v-if="ownSpecialLineMenuBar.includes(currentType)" style="margin: 14rpx 26rpx 0;">
 			<view
 				v-if="menuBarArr.slice(0, -5).length"
-				style="display: flex;align-items: center;flex-wrap: wrap;margin-bottom: 14upx;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
+				style="display: flex;align-items: center;flex-wrap: wrap;margin-bottom: 14rpx;padding: 22rpx 22rpx 2rpx;background-color: #ffffff;border-radius: 20rpx;"
 			>
 				<view
 					v-for="item in menuBarArr.slice(0, -5)" :key="item.id"
-					style="width: 20%;margin-bottom: 20upx;text-align: center;"
+					style="width: 20%;margin-bottom: 20rpx;text-align: center;"
 					@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 				>
 					<view>
@@ -61,13 +64,13 @@
 						>
 						</BeeIcon>
 					</view>
-					<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+					<view style="margin-top: 6rpx;font-size: 26rpx;white-space: nowrap;">{{ item.storeName }}</view>
 				</view>
 			</view>
 			<view v-if="menuBarArr.length" style="display: flex;overflow-x: auto;">
 				<view
 					v-for="item in menuBarArr.slice(-5)" :key="item.id"
-					style="display: flex;align-items: center;margin-right: 24upx;padding: 12upx 20upx;background-color: #ffffff;"
+					style="display: flex;align-items: center;margin-right: 24rpx;padding: 12rpx 20rpx;background-color: #ffffff;"
 					@click="go(`/another-tf/another-user/shop/shop-deep?id=${item.id}&name=${item.storeName}`)"
 				>
 					<view>
@@ -77,7 +80,7 @@
 						>
 						</BeeIcon>
 					</view>
-					<view style="margin-left: 12upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+					<view style="margin-left: 12rpx;font-size: 26rpx;white-space: nowrap;">{{ item.storeName }}</view>
 				</view>
 			</view>
 		</view>
@@ -85,23 +88,23 @@
 		<!-- 限时秒杀 -->
 		<view
 			v-if="ownLimitedTimeSeckill.includes(currentType)"
-			style="margin: 14upx 26upx 0;padding: 22upx;background: linear-gradient(122deg, #FDF3F1 2%, #FEEAEC 6%, #FFFBEF 12%, #FFFFFF 64%);border-radius: 20upx;"
+			style="margin: 14rpx 26rpx 0;padding: 22rpx;background: linear-gradient(122deg, #FDF3F1 2%, #FEEAEC 6%, #FFFBEF 12%, #FFFFFF 64%);border-radius: 20rpx;"
 		>
 			<view style="display: flex;align-items: center;">
-				<text style="font-size: 34upx;font-weight: bold;">限时秒杀</text>
+				<text style="font-size: 34rpx;font-weight: bold;">限时秒杀</text>
 				<view
-					style="display: flex;align-items: center;margin-left: 18upx;background-color: #fce5df;border-radius: 20upx;"
+					style="display: flex;align-items: center;margin-left: 18rpx;background-color: #fce5df;border-radius: 20rpx;"
 				>
 					<view
-						style="width: 110upx;height: 36upx;padding: 6upx 12upx;font-size: 28upx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20upx 0 26upx 20upx;clip-path: polygon(0upx 0upx, 134upx 0, 124upx 8upx, 124upx 48upx, 0 48upx);"
+						style="width: 110rpx;height: 36rpx;padding: 6rpx 12rpx;font-size: 28rpx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20rpx 0 26rpx 20rpx;clip-path: polygon(0rpx 0rpx, 134rpx 0, 124rpx 8rpx, 124rpx 48rpx, 0 48rpx);"
 					>
-						<text style="margin-left: -10upx;">距结束</text>
+						<text style="margin-left: -10rpx;">距结束</text>
 					</view>
-					<view style="font-size: 26upx;font-weight: bold;color: #f84715;padding: 0 14upx 0;">01:02:15</view>
+					<view style="font-size: 26rpx;font-weight: bold;color: #f84715;padding: 0 14rpx 0;">01:02:15</view>
 				</view>
 			</view>
-			<view style="margin-top: 20upx;">
-				<swiper autoplay vertical style="width: 100%;height: 160upx;">
+			<view style="margin-top: 20rpx;">
+				<swiper autoplay vertical style="width: 100%;height: 160rpx;">
 					<swiper-item
 						v-for="(item, index) in limitedTimeSeckillArr" :key="index"
 						style="display: flex;justify-content: space-between;align-items: center;"
@@ -113,29 +116,29 @@
 						>
 							<view>
 								<BeeIcon
-									width="180upx" height="150upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
+									width="180rpx" height="150rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
 									:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
 								>
 								</BeeIcon>
-								<view style="height: 10upx;margin: 0 20upx;background-color: #c8c9b7;border-radius: 0 0 20upx 20upx;">
+								<view style="height: 10rpx;margin: 0 20rpx;background-color: #c8c9b7;border-radius: 0 0 20rpx 20rpx;">
 								</view>
 							</view>
 							<view
-								style="flex: 1;display: flex;flex-direction: column;justify-content: space-around;width: 0;height: 100%;margin-left: 20upx;"
+								style="flex: 1;display: flex;flex-direction: column;justify-content: space-around;width: 0;height: 100%;margin-left: 20rpx;"
 							>
 								<view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ part.name }}</view>
 								<view
-									style="font-size: 26upx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+									style="font-size: 26rpx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
 								>
 									{{ part.typeName }}
 								</view>
 								<view style="display: flex;flex-wrap: wrap;color: #ef530e;">
 									<text>
-										<text style="font-size: 24upx;">￥</text>
+										<text style="font-size: 24rpx;">￥</text>
 										<text style="font-weight: bold;">{{ part.price }}</text>
 									</text>
 									<text
-										style="padding: 4upx 14upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 16upx;"
+										style="padding: 4rpx 14rpx;margin-left: 10rpx;font-size: 24rpx;border: 1rpx solid #f9c1a6;border-radius: 16rpx;"
 									>
 										{{ part.discount }}折
 									</text>
@@ -148,84 +151,87 @@
 		</view>
 
 		<!-- 类别选择框（额外的同‘一级分类’的分类） -->
-		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14upx 26upx 0;" class="selection-box-tab">
+		<view v-if="ownSelectionBox.includes(currentType)" style="margin: 14rpx 26rpx 0;" class="selection-box-tab">
 			<tui-tab
 				:tabs="selectionBoxArr" :current="selectionBoxNum" scroll background-color="transparent"
 				:size="32" bold
-				bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
+				bottom="6rpx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
 				slider-height="4px"
 				@change="(e) => selectionBoxNum = e.index"
 			></tui-tab>
 		</view>
 
 		<!-- 首要标签筛选框 -->
-		<view v-if="ownPrimaryFilterBox.includes(currentType)" style="margin: 14upx 26upx 0;">
-			<StorePrimaryFilterBox :type="currentType" :parent-classify-id="queryInfo.classifyId" @select="handleSelectPrimaryFilter"></StorePrimaryFilterBox>
+		<view v-if="ownPrimaryFilterBox.includes(currentType)" style="margin: 14rpx 26rpx 0;">
+			<StorePrimaryFilterBox
+				:type="currentType" :parent-classify-id="queryInfo.classifyId"
+				@select="handleSelectPrimaryFilter"
+			></StorePrimaryFilterBox>
 		</view>
 
 		<!-- 次要排序筛选框 -->
-		<view v-if="ownSecondaryFilterBox.includes(currentType)" style="margin: 14upx 26upx 0;">
+		<view v-if="ownSecondaryFilterBox.includes(currentType)" style="margin: 14rpx 26rpx 0;">
 			<StoreSecondaryFilterBox @select="handleSelectSecondaryFilter"></StoreSecondaryFilterBox>
 		</view>
 
 		<!-- 酒店特殊中间结构 -->
 		<view v-if="ownSpecialHotelBox.includes(currentType)">
 			<view
-				style="padding: 200upx 26upx 0;background: url('~@/../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;"
+				style="padding: 200rpx 26rpx 0;background: url('~@/../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;"
 			>
-				<view style="padding: 28upx 22upx;background-color: #ffffff;border-radius: 24upx;">
+				<view style="padding: 28rpx 22rpx;background-color: #ffffff;border-radius: 24rpx;">
 					<view class="special-hotel-tab">
 						<tui-tab
 							:tabs="['国内', '民宿公寓', '钟点房']" :current="specialHotelBoxObj.tabIndex" scroll
-							background-color="transparent" :size="32" bold bottom="6upx"
+							background-color="transparent" :size="32" bold bottom="6rpx"
 							color="#222229" selected-color="#222229"
 							slider-bg-color="#ef530e" slider-height="3px"
 							@change="(e) => specialHotelBoxObj.tabIndex = e.index"
 						></tui-tab>
 					</view>
-					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 18upx;">
-						<TuanLocation free style="flex: 1;font-size: 38upx;font-weight: bold;">
-							{{ $store.getters.currentShopCity || '定位失败' }}
+					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 18rpx;">
+						<TuanLocation free style="flex: 1;font-size: 38rpx;font-weight: bold;">
+							{{ currentShopCity || '定位失败' }}
 						</TuanLocation>
-						<view style="display: flex;align-items: center;padding-left: 16upx;border-left: 1upx solid #CDCDCD;">
+						<view style="display: flex;align-items: center;padding-left: 16rpx;border-left: 1rpx solid #CDCDCD;">
 							<BeeIcon
 								:size="16" name="gps" color="#EF5613"
-								style="padding: 2upx;border: 1upx solid #EF5613;border-radius: 50%;line-height: 1;"
+								style="padding: 2rpx;border: 1rpx solid #EF5613;border-radius: 50%;line-height: 1;"
 							></BeeIcon>
-							<text style="margin-left: 14upx;font-size: 30upx;color: #EF5613;">我的位置</text>
+							<text style="margin-left: 14rpx;font-size: 30rpx;color: #EF5613;">我的位置</text>
 						</view>
 					</view>
-					<view style="margin-top: 18upx;">
+					<view style="margin-top: 18rpx;">
 						<view
 							style="display: flex;justify-content: space-between;align-items: center;"
 							@click="$refs.refSpecialHotelBoxCalendar && $refs.refSpecialHotelBoxCalendar.show()"
 						>
 							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<view style="padding-right: 24upx;border-right: 1upx solid #D8D8D8;">
-									<view style="display: flex;align-items: center;font-size: 24upx;">
-										<BeeIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6upx;"></BeeIcon>
+								<view style="padding-right: 24rpx;border-right: 1rpx solid #D8D8D8;">
+									<view style="display: flex;align-items: center;font-size: 24rpx;">
+										<BeeIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6rpx;"></BeeIcon>
 										{{ specialHotelBoxObj.startDate === new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')
 											? '今日' : '' }}入住
 									</view>
-									<view style="padding-top: 16upx;">
+									<view style="padding-top: 16rpx;">
 										<text style="color: #ef5613;">
 											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月') }}日
 										</text>
-										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8upx;font-size: 24upx;">
+										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8rpx;font-size: 24rpx;">
 											{{
 												specialHotelBoxObj.startWeek.replace('星期', '周') }}
 										</text>
 									</view>
 								</view>
-								<view style="padding-left: 24upx;">
-									<view style="display: flex;align-items: center;font-size: 24upx;">
-										<BeeIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6upx;"></BeeIcon>
+								<view style="padding-left: 24rpx;">
+									<view style="display: flex;align-items: center;font-size: 24rpx;">
+										<BeeIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6rpx;"></BeeIcon>
 										{{ specialHotelBoxObj.endDate === new Date(Date.now() + 24 * 60 * 60 *
 											1000).toLocaleString().substring(0, 10).replaceAll('/', '-') ? '明日' : '' }}离店
 									</view>
-									<view style="padding-top: 16upx;">
+									<view style="padding-top: 16rpx;">
 										<text>{{ specialHotelBoxObj.endDate.substring(5, 10).replaceAll('-', '月') }}日</text>
-										<text v-if="specialHotelBoxObj.endWeek" style="padding-left: 8upx;font-size: 24upx;">
+										<text v-if="specialHotelBoxObj.endWeek" style="padding-left: 8rpx;font-size: 24rpx;">
 											{{
 												specialHotelBoxObj.endWeek.replace('星期', '周') }}
 										</text>
@@ -233,7 +239,7 @@
 								</view>
 							</view>
 							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<text style="margin-right: 6upx;font-size: 28upx;color: #014BB8;">
+								<text style="margin-right: 6rpx;font-size: 28rpx;color: #014BB8;">
 									共{{
 										(Date.parse(specialHotelBoxObj.endDate.replaceAll('-', '/')) -
 											Date.parse(specialHotelBoxObj.startDate.replaceAll('-', '/'))) / (24 * 60 * 60 * 1000) }}晚
@@ -251,16 +257,16 @@
 					<view>
 						<tui-input
 							v-model="queryInfo.search" label="" placeholder="搜索酒店/地名/关键词" clearable
-							padding="14upx 0upx"
+							padding="14rpx 0rpx"
 							:margin-top="20"
-							style="border-top: 1upx solid rgba(216, 216, 216, 0.5);border-bottom: 1upx solid rgba(216, 216, 216, 0.5);"
+							style="border-top: 1rpx solid rgba(216, 216, 216, 0.5);border-bottom: 1rpx solid rgba(216, 216, 216, 0.5);"
 						>
 						</tui-input>
 					</view>
-					<view style="margin-top: 20upx;">
+					<view style="margin-top: 20rpx;">
 						<tui-button
 							type="warning" width="100%" height="82rpx"
-							style="background: #ef5613!important;border-radius: 10upx;"
+							style="background: #ef5613!important;border-radius: 10rpx;"
 						>
 							查找酒店
 						</tui-button>
@@ -268,57 +274,57 @@
 				</view>
 			</view>
 			<view
-				style="margin: 14upx 26upx 0;padding: 22upx 22upx 36upx;background: linear-gradient(150deg, #FDF3F1 3%, #FEEAEC 6%, #FFFBEF 10%, #FFFFFF 45%);"
+				style="margin: 14rpx 26rpx 0;padding: 22rpx 22rpx 36rpx;background: linear-gradient(150deg, #FDF3F1 3%, #FEEAEC 6%, #FFFBEF 10%, #FFFFFF 45%);"
 			>
 				<view style="display: flex;align-items: center;">
-					<text style="font-size: 34upx;font-weight: bold;">超低一口价</text>
+					<text style="font-size: 34rpx;font-weight: bold;">超低一口价</text>
 					<view
-						style="display: flex;align-items: center;margin-left: 18upx;background-color: #fce5df;border-radius: 20upx;"
+						style="display: flex;align-items: center;margin-left: 18rpx;background-color: #fce5df;border-radius: 20rpx;"
 					>
 						<view
-							style="width: 110upx;height: 36upx;padding: 6upx 12upx;font-size: 28upx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20upx 0 26upx 20upx;clip-path: polygon(0upx 0upx, 134upx 0, 124upx 8upx, 124upx 48upx, 0 48upx);"
+							style="width: 110rpx;height: 36rpx;padding: 6rpx 12rpx;font-size: 28rpx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20rpx 0 26rpx 20rpx;clip-path: polygon(0rpx 0rpx, 134rpx 0, 124rpx 8rpx, 124rpx 48rpx, 0 48rpx);"
 						>
-							<text style="margin-left: -10upx;">限时购</text>
+							<text style="margin-left: -10rpx;">限时购</text>
 						</view>
-						<view style="font-size: 26upx;font-weight: bold;color: #f84715;padding: 0 14upx 0;">01:02:15</view>
+						<view style="font-size: 26rpx;font-weight: bold;color: #f84715;padding: 0 14rpx 0;">01:02:15</view>
 					</view>
 				</view>
-				<view style="margin-top: 20upx;">
+				<view style="margin-top: 20rpx;">
 					<view
-						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18upx;"
+						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18rpx;"
 						@click="go(`/pages/prod/prod?goodsId==${item.id}`)"
 					>
 						<view>
 							<BeeIcon
-								width="180upx" height="252upx" style="width: fit-content;border-radius: 22upx;overflow: hidden;"
+								width="180rpx" height="252rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
 								:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
 							>
 							</BeeIcon>
 						</view>
-						<view style="flex: 1;width: 0;margin-left: 20upx;">
+						<view style="flex: 1;width: 0;margin-left: 20rpx;">
 							<view
-								style="font-size: 34upx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+								style="font-size: 34rpx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 							>
 								{{ item.name }}
 							</view>
 							<view
-								style="margin-top: 6upx;font-size: 26upx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+								style="margin-top: 6rpx;font-size: 26rpx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
 							>
 								{{ item.typeName }}
 							</view>
-							<view style="margin-top: 8upx;">
-								<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">已售100+</view>
-								<view style="display: flex;justify-content: flex-end;align-items: center;margin-top: 14upx;">
-									<view style="margin-right: 12upx;">
-										<view style="font-size: 26upx;color: #9e9e9e;text-align: right;">1晚价</view>
+							<view style="margin-top: 8rpx;">
+								<view style="font-size: 26rpx;color: #9e9e9e;text-align: right;">已售100+</view>
+								<view style="display: flex;justify-content: flex-end;align-items: center;margin-top: 14rpx;">
+									<view style="margin-right: 12rpx;">
+										<view style="font-size: 26rpx;color: #9e9e9e;text-align: right;">1晚价</view>
 										<view style="display: flex;align-items: center;color: #ef530e;">
-											<view style="font-size: 24upx;color: #9e9e9e;text-decoration: line-through;">￥444.44</view>
+											<view style="font-size: 24rpx;color: #9e9e9e;text-decoration: line-through;">￥444.44</view>
 											<text>
-												<text style="font-size: 24upx;">￥</text>
-												<text style="font-size: 38upx;font-weight: bold;">{{ item.price }}</text>
+												<text style="font-size: 24rpx;">￥</text>
+												<text style="font-size: 38rpx;font-weight: bold;">{{ item.price }}</text>
 											</text>
 											<text
-												style="padding: 2upx 10upx;margin-left: 10upx;font-size: 24upx;border: 1upx solid #f9c1a6;border-radius: 12upx;white-space: nowrap;"
+												style="padding: 2rpx 10rpx;margin-left: 10rpx;font-size: 24rpx;border: 1rpx solid #f9c1a6;border-radius: 12rpx;white-space: nowrap;"
 											>
 												{{ item.discount }}折
 											</text>
@@ -338,71 +344,68 @@
 			</view>
 		</view>
 
-		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx"
+				margin="22rpx 0" radius="20rpx"
 			></ATFCommonShop>
 		</view>
-		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="ownShopCardWithLineBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx"
+				margin="22rpx 0" radius="20rpx"
 			>
-				<view style="padding: 20upx 0">
+				<view style="padding: 20rpx 0">
 					<view
 						v-for="item in [{ id: 1, price: 288.88, originPrice: 444.44, name: '主题小包尊享休闲3小时gfgdfnbfngmhgmhgmghnh' }, { id: 2, price: 299.88, originPrice: 444.44, name: '主题小包尊享' }]"
-						:key="item.id" style="display: flex;padding-left: 26upx;padding-right: 26upx;" class="shop-card-line"
+						:key="item.id" style="display: flex;padding-left: 26rpx;padding-right: 26rpx;" class="shop-card-line"
 					>
-						<view style="text-align: right;padding-right: 26upx;">
+						<view style="text-align: right;padding-right: 26rpx;">
 							<view style="color: #EF530E;">￥{{ item.price }}</view>
-							<view style="font-size: 28upx;color: #979797;">门市价:￥{{ item.originPrice }}</view>
+							<view style="font-size: 28rpx;color: #979797;">门市价:￥{{ item.originPrice }}</view>
 						</view>
 						<view style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 							<text
-								style="padding: 2upx 6upx;margin-right: 16upx;font-size: 24upx;color: #ffffff;background-color: #ef5613;"
+								style="padding: 2rpx 6rpx;margin-right: 16rpx;font-size: 24rpx;color: #ffffff;background-color: #ef5613;"
 							>
 								商
 							</text>
-							<text style="font-size: 28upx;color: #a2a2a2;">{{ item.name }}</text>
+							<text style="font-size: 28rpx;color: #a2a2a2;">{{ item.name }}</text>
 						</view>
 					</view>
 				</view>
 			</ATFCommonShop>
 		</view>
-		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="ownShopCardWithGoodsBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx"
+				margin="22rpx 0" radius="20rpx"
 			>
-				<view style="padding: 20upx 26upx">
+				<view style="padding: 20rpx 26rpx">
 					<scroll-view scroll-x="true">
 						<view style="display: flex;">
 							<view
 								v-for="item in [{ id: 1, price: 4.00, originPrice: 7.44, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1699437546378-微信图片_20231108164901.jpg', name: '黄瓜一根约300g' }, { id: 2, price: 4.00, originPrice: 44.44, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1700214488615-粤盐 加碘精制盐500克袋，3.5元.jpg', name: '粤盐 加碘精制盐500克袋' }, { id: 3, price: 5.00, originPrice: 14.74, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1700214401740-茉莉香米500g，4.86元.jpg', name: '茉莉香米500g' }, { id: 4, price: 5.00, originPrice: 11.02, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1700214433330-太太乐 鸡精调味料40克包，4.5元.jpg', name: '太太乐 鸡精调味料40克/包' }, { id: 5, price: 6.00, originPrice: 73.44, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1700213979774-烧烤料（品牌随机），5.5.png', name: '烧烤料（品牌随机）' }, { id: 6, price: 6.00, originPrice: 99.20, picUrl: 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1700214245309-国产 绿心猕猴桃一个约120克【维C】5.5元.jpg', name: '国产 绿心猕猴桃一个约120克【维C】' }]"
 								:key="item.id"
-								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18upx;"
+								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18rpx;"
 							>
-								<view style="width: 160upx;">
+								<view style="width: 160rpx;">
 									<tui-lazyload-img
-										width="100%" height="168upx" mode="scaleToFill" radius="20upx"
+										width="100%" height="168rpx" mode="scaleToFill" radius="20rpx"
 										:src="common.seamingImgUrl(item.picUrl)"
 									></tui-lazyload-img>
 									<view
 										style="line-height: 1;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 									>
-										<text style="font-size: 24upx;">{{ item.name }}</text>
+										<text style="font-size: 24rpx;">{{ item.name }}</text>
 									</view>
 								</view>
-								<view style="margin-top: 14upx;display: flex;align-items: center;flex-wrap: wrap;">
-									<view style="font-size: 28upx;font-weight: bold;color: #E02208;margin-right: 10upx;">
-										<text style="font-size: 26upx;">￥</text>
+								<view style="margin-top: 14rpx;display: flex;align-items: center;flex-wrap: wrap;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #E02208;margin-right: 10rpx;">
+										<text style="font-size: 26rpx;">￥</text>
 										{{ item.price }}
 									</view>
-									<view style="font-size: 24upx;color: #979797;text-decoration: line-through;">
+									<view style="font-size: 24rpx;color: #979797;text-decoration: line-through;">
 										￥{{ item.originPrice }}
 									</view>
 								</view>
@@ -412,46 +415,47 @@
 				</view>
 			</ATFCommonShop>
 		</view>
-		<view v-if="ownBrandCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="ownBrandCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
 				<template #left="{ entity }">
-					<view style="width: 338upx;">
+					<view style="width: 338rpx;">
 						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
 					</view>
 				</template>
 				<template #right="{ entity }">
-					<view style="width: 338upx;">
+					<view style="width: 338rpx;">
 						<BrandShop :brand-info="entity" bottom-type="brief" :show-logo="false"></BrandShop>
 					</view>
 				</template>
 			</tui-waterfall>
 		</view>
-		<view v-if="ownBrandCardWithPriceBox.includes(currentType) && nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="ownBrandCardWithPriceBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<tui-waterfall :list-data="nearbyShopList" :type="2" :page-size="queryInfo.pageSize">
 				<template #left="{ entity }">
-					<view style="width: 338upx;">
+					<view style="width: 338rpx;">
 						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
 					</view>
 				</template>
 				<template #right="{ entity }">
-					<view style="width: 338upx;">
+					<view style="width: 338rpx;">
 						<BrandShop :brand-info="entity" bottom-type="brief" show-price :show-logo="false"></BrandShop>
 					</view>
 				</template>
 			</tui-waterfall>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !nearbyShopList.length
 					? 'loading' : !isEmpty && nearbyShopList.length && (nearbyShopList.length >= nearbyTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BrandShop from '../../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
@@ -541,15 +545,15 @@ export default {
 			currentClassifyId: ''
 		}
 	},
-	watch: {
-		// 'queryInfo.search'(value) {
-		// 	if (value) {
-		// 		this.getNearByShopList(true)
-		// 	}
-		// }
-	},
+	// watch: {
+	// 	'queryInfo.search'(value) {
+	// 		if (value) {
+	// 			this.getNearByShopList(true)
+	// 		}
+	// 	}
+	// },
 	async onLoad(options) {
-		this.currentType = options.type || '0'
+		this.currentType = Number(options.type) ? options.type : '0'
 		this.queryInfo.classifyId = options.id || ''
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
 			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
@@ -583,6 +587,9 @@ export default {
 			const res = await getShopCategorySonApi({ pid: this.queryInfo.classifyId })
 			this.menuBarArr = res.data || []
 		}
+	},
+	computed: {
+		...mapGetters([ 'currentShopCity' ])
 	},
 	methods: {
 		back() {
@@ -650,28 +657,29 @@ export default {
 
 <style lang="less" scoped>
 .shop-container {
+	position: relative;
 	min-height: 100vh;
 	background-color: #f6f6f8;
 	box-sizing: border-box;
-	padding: 108upx 0 0;
+	padding: 108rpx 0 0;
 
 	.shop-header-container {
 		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 108upx;
+		height: 108rpx;
 		width: 100vw;
 		background-color: #fff;
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		z-index: 998;
 
 		.back-icon {
-			width: 48upx;
-			height: 48upx;
+			width: 48rpx;
+			height: 48rpx;
 			flex-shrink: 0;
 		}
 
@@ -685,8 +693,8 @@ export default {
 	.selection-box-tab {
 		.tui-scroll__view {
 			/deep/ .tui-tabs__line {
-				margin-left: -26upx;
-				clip-path: inset(0% 30% 0% 30% round 4upx 4upx 4upx 4upx);
+				margin-left: -26rpx;
+				clip-path: inset(0% 30% 0% 30% round 4rpx 4rpx 4rpx 4rpx);
 				// background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ef530e 20%, #ef530e 80%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)!important;
 				// clip-path: polygon(20% 0, 80% 0, 80% 100%, 20% 100%);
 			}
@@ -696,19 +704,19 @@ export default {
 	.special-hotel-tab {
 		.tui-scroll__view {
 			/deep/ .tui-tabs__item {
-				padding: 0 60upx 0 0;
+				padding: 0 60rpx 0 0;
 			}
 
 			/deep/ .tui-tabs__line {
-				margin-left: -48upx;
+				margin-left: -48rpx;
 			}
 		}
 	}
 
 	.shop-card-line:not(:last-child) {
-		padding-bottom: 24upx;
-		margin-bottom: 24upx;
-		border-bottom: 1upx solid #D8D8D8;
+		padding-bottom: 24rpx;
+		margin-bottom: 24rpx;
+		border-bottom: 1rpx solid #D8D8D8;
 	}
 }
 </style>

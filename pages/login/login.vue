@@ -16,35 +16,35 @@
 			<tui-form ref="refLoginForm" :show-message="false">
 				<view>
 					<tui-input
-						v-model="loginQuery.phone" label="+ 86" type="number" padding="26upx 20upx 26upx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32upx;" label-color="#ffffff" border-color="#EA5B1D"
+						v-model="loginQuery.phone" label="+ 86" type="number" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" label-color="#ffffff" border-color="#EA5B1D"
 						placeholder="请输入手机号码" background-color="transparent" :border-top="false" color="#ffffff"
-						style="border-bottom: 2upx solid #ffffff;"
+						style="border-bottom: 2rpx solid #ffffff;"
 					></tui-input>
 				</view>
 				<view v-if="loginType === 'password'">
 					<tui-input
-						v-model="loginQuery.password" type="password" padding="26upx 20upx 26upx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
+						v-model="loginQuery.password" type="password" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入密码" color="#ffffff"
-						style="border-bottom: 2upx solid #ffffff;"
+						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
-							<text style="font-size: 30upx;color: #dddddd;" @click="isShowResettingPasswordDialog = true">忘记密码</text>
+							<text style="font-size: 30rpx;color: #dddddd;" @click="isShowResettingPasswordDialog = true">忘记密码</text>
 						</template>
 					</tui-input>
 				</view>
 				<view v-if="loginType === 'verificationCode'">
 					<tui-input
-						v-model="loginQuery.verificationCode" padding="26upx 20upx 26upx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32upx;" background-color="transparent" :border-top="false"
+						v-model="loginQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
-						style="border-bottom: 2upx solid #ffffff;"
+						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
-								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188upx"
-								height="48upx" border-width="0" text="获取验证码" :size="30"
+								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188rpx"
+								height="48rpx" border-width="0" text="获取验证码" :size="30"
 								color="#dddddd"
 								@send="handleSendVerify"
 							></tui-countdown-verify>
@@ -53,62 +53,62 @@
 				</view>
 			</tui-form>
 		</view>
-		<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;margin-top: 80upx;">
+		<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;margin-top: 80rpx;">
 			<view style="text-align: center;">
 				<tui-button
 					type="white" width="640rpx" height="82rpx" :size="38"
-					margin="40upx 0 0" shape="circle"
+					margin="40rpx 0 0" shape="circle"
 					style="font-weight: bold;color: #ea5b1d!important;" @click="handleLogin"
 				>
 					登录
 				</tui-button>
 			</view>
 		</view>
-		<view style="margin-top: 120upx;display: flex;flex-direction: column;align-items: center;">
+		<view style="margin-top: 120rpx;display: flex;flex-direction: column;align-items: center;">
 			<view style="display: flex;justify-content: space-around;white-space: nowrap;">
 				<view style="display: flex;flex-direction: column;align-items: center;">
-					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
 						<tui-icon name="friendadd-fill" color="#ffffff" :size="22" @click="go('/pages/login/register')"></tui-icon>
 					</view>
-					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">密码注册</view>
+					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">密码注册</view>
 				</view>
 				<view
 					v-if="!(loginType === 'password')"
-					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
-					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
 						<tui-icon name="pwd" color="#ffffff" :size="22" @click="loginType = 'password'"></tui-icon>
 					</view>
-					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">密码登录</view>
+					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">密码登录</view>
 				</view>
 				<view
 					v-if="!(loginType === 'verificationCode')"
-					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
-					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
 						<tui-icon name="mobile" color="#ffffff" :size="22" @click="loginType = 'verificationCode'"></tui-icon>
 					</view>
-					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">短信登录</view>
+					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">短信登录</view>
 				</view>
 				<!-- #ifdef MP-ALIPAY -->
 				<view
 					v-if="!(loginType === 'verificationCode')"
-					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
-					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
 						<tui-icon name="mobile" color="#ffffff" :size="22" @click="handleAliPayLogin"></tui-icon>
 					</view>
-					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">支付宝登录</view>
+					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">支付宝登录</view>
 				</view>
 				<!-- #endif -->
 				<view
 					v-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
-					style="display: flex;flex-direction: column;align-items: center;padding-left: 48upx;"
+					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
-					<view style="width: fit-content;padding: 14upx;border: 1upx solid #ffffff;border-radius: 48upx;">
+					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
 						<tui-icon name="wechat" color="#ffffff" :size="22" @click="handleWXLogin"></tui-icon>
 					</view>
-					<view style="margin-top: 12upx;font-size: 26upx;color: #ffffff;">微信登录</view>
+					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">微信登录</view>
 				</view>
 			</view>
 		</view>
@@ -127,7 +127,7 @@
 				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
-							ref="refResettingPasswordVerify" width="144upx"
+							ref="refResettingPasswordVerify" width="144rpx"
 							@send="handleSendVerifyResettingPassword"
 						></tui-countdown-verify>
 					</template>
@@ -343,7 +343,7 @@ export default {
 	}
 
 	.login-form {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 		padding: 146rpx 48rpx 10rpx 48rpx;
 	}
 }

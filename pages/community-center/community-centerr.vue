@@ -225,10 +225,8 @@ export default {
 
 		// 检查当前是否绑定手机号
 		checkedWXBindMobile() {
-			if (this.$store.getters.popupImage) {
-				return
-			}
-			this.$store.dispatch('auth/refrshUserInfoAction', this.handleShowBindMobilePopup)
+			if (this.$store.getters.popupImage) return
+			if (this.isLogin()) this.$store.dispatch('auth/refrshUserInfoAction', this.handleShowBindMobilePopup)
 		},
 
 		// 开始绑定手机号

@@ -4,7 +4,7 @@
 		<PageHead></PageHead>
 
 		<!-- 菜单 -->
-		<NavBar @view="handleToDetail"></NavBar>
+		<NavBar ref="refNavBar" @view="handleToDetail"></NavBar>
 
 		<!-- 福利 -->
 		<WelfareBar></WelfareBar>
@@ -33,7 +33,7 @@
 				</view> -->
 			<view>
 				<ATFCommonShop
-					v-for="shop in $data._list" :key="shop.shop_id" :shop-info="shop" margin="22upx 0"
+					v-for="shop in $data._list" :key="shop.shopId" :shop-info="shop" margin="22upx 0"
 					radius="20upx"
 					pic-width="222upx" pic-height="222upx" show-sign
 				></ATFCommonShop>
@@ -81,16 +81,6 @@ export default {
 		ActivityPackage
 		// BrandShop,
 	},
-	data() {
-		return {
-			isPositioning: true,
-			queryParam: {
-				search: '',
-				classifyId: '',
-				distance: '9999999999'
-			}
-		}
-	},
 	mixins: [
 		loadData({
 			api: getHomeBrandListApi,
@@ -106,6 +96,16 @@ export default {
 			}
 		})
 	],
+	data() {
+		return {
+			isPositioning: true,
+			queryParam: {
+				search: '',
+				classifyId: '',
+				distance: '9999999999'
+			}
+		}
+	},
 	async onShow() {
 		// if (this.$data._list.length && (this.$data._list.length <= this.queryParam.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
 		// 	const currentAddress = await getCurrentLocation()
@@ -116,6 +116,9 @@ export default {
 		// 		}
 		// 	}
 		// }
+		this.$nextTick(() => {
+			this.$refs.refNavBar && this.$refs.refNavBar.handleGetShopCategory()
+		})
 	},
 	onLoad() {
 		this.getBrandList()
@@ -212,9 +215,8 @@ export default {
 
 		// 点击常看详情
 		handleToDetail(item) {
-			const { type } = item
-			if (!type) return this.empty() // 特殊图标或图标名称对应不上就跳不了页面
-			uni.navigateTo({ url: `/another-tf/another-user/shop/shop-enter?type=${item.type}&id=${item.id}` })
+			if (!item.type) return this.empty() // 特殊图标或图标名称对应不上就跳不了页面
+			uni.navigateTo({ url: `/another-tf/another-user/shop/shop-enter?type=${item.type || ''}&id=${item.id || ''}` })
 		}
 	},
 	onPullDownRefresh() {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import store from './store'
 import globalMixin from './mixin/global'
+Vue.prototype.$store = store
 
 // #ifdef H5
 import './forLogistics'
@@ -35,7 +36,7 @@ Vue.mixin({
 						return url.replace('http://', 'https://')
 					} else if (url.startsWith('https://')) {
 						return url
-					} else if(url.startsWith('//')) {
+					} else if (url.startsWith('//')) {
 						return 'https:' + url
 					}
 					// https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/

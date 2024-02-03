@@ -2,8 +2,8 @@
 	<view class="j-back-container">
 		<image
 			:style="{
-				width: width * 1 + 'upx',
-				height: height * 1 + 'upx'
+				width: width * 1 + 'rpx',
+				height: height * 1 + 'rpx'
 			}" :src="dark
 				? require('../../static/images/store/chevron-states.png')
 				: require('../../static/images/common/back.png')
