@@ -81,7 +81,7 @@ export default {
 			if (this.isLogin()) {
 				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
 				this.$store.dispatch('auth/refrshUserInfoAction')
-				this.$store.dispatch('user/count')
+				this.$store.dispatch('user/getCountAction')
 			}
 			this.$forceUpdate()
 		},

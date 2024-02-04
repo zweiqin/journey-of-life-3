@@ -57,7 +57,7 @@ export default {
 
         this.timer = setTimeout(() => {
           uni.switchTab({
-            url: '/',
+            url: '/pages/index/index',
           })
         }, 1000)
       } catch (error) {
@@ -67,7 +67,7 @@ export default {
           success: function (res) {
             if (res.confirm) {
               uni.switchTab({
-                url: '/',
+                url: '/pages/index/index',
               })
             }
           },

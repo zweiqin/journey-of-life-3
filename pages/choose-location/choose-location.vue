@@ -204,7 +204,7 @@ export default {
 
     handleBack(mean) {
       if (this.backUrl) {
-        uni.switchTab({ url: '/' });
+        uni.switchTab({ url: '/pages/index/index' });
         return;
       }
       uni.navigateBack({

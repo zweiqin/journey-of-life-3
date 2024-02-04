@@ -163,7 +163,7 @@ export default {
 
       setTimeout(() => {
         uni.switchTab({
-          url: '/'
+          url: '/pages/index/index'
         });
       }, 1000);
     }

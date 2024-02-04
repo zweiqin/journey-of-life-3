@@ -44,7 +44,7 @@ export default {
       let backLevel = 1
       if (pages.length === 1) {
         uni.switchTab({
-          url: '/',
+          url: '/pages/index/index',
         })
         return
       } else {

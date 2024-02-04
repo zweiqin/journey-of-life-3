@@ -251,7 +251,7 @@ export default {
 						setTimeout(() => {
 							getApp().globalData.isShowFollowOfficialAccount = true
 							uni.setStorageSync(SF_INVITE_CODE, this.code)
-							this.$switchTab('/')
+							this.$switchTab('/pages/user/user')
 						}, 2000)
 					})
 			} else if (this.type === 'bindPartnerGroup') { // 旧系统 // 团长码，用户绑定团长

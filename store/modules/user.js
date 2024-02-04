@@ -31,7 +31,7 @@ export default {
 	},
 
 	actions: {
-		count({ commit }) {
+		getCountAction({ commit }) {
 			if (!getStorageKeyToken()) return
 			getPricePlatformAllApi({})
 				.then((res) => {

@@ -31,7 +31,6 @@ export default {
   dzVipList: (state) => state.community.dzVipList,
 
   // app
-  statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
   systermInfo: (state) => state.app.systermInfo,
   terminal: (state) => state.app.terminal
 };

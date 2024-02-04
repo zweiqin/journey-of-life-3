@@ -173,7 +173,7 @@ export default {
 		const userInfo = uni.getStorageSync(T_STORAGE_KEY)
 		if (userId && userInfo && userInfo.token) {
 			uni.switchTab({
-				url: '/'
+				url: '/pages/index/index'
 			})
 		} else if (this.$store.state.app.terminal === 3) {
 			const code = getUrlCode().code
