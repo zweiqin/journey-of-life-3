@@ -7,9 +7,8 @@
 				<text style="font-weight: bold;font-size: 36rpx;">
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
 				</text>
-				<!-- v-if="ownSearchBar.includes(currentType)"  -->
 				<tui-input
-					v-model="queryInfo.search" label="" placeholder="社区商圈"
+					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" label="" placeholder="社区商圈"
 					clearable is-fillet padding="6rpx 10rpx 6rpx 26rpx"
 					style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
 				>
@@ -176,9 +175,7 @@
 
 		<!-- 酒店特殊中间结构 -->
 		<view v-if="ownSpecialHotelBox.includes(currentType)">
-			<view
-				style="padding: 200rpx 26rpx 0;background: url('~@/../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;"
-			>
+			<view style="padding: 200rpx 26rpx 0;" class="special-hotel-box-bg">
 				<view style="padding: 28rpx 22rpx;background-color: #ffffff;border-radius: 24rpx;">
 					<view class="special-hotel-tab">
 						<tui-tab
@@ -210,30 +207,30 @@
 								<view style="padding-right: 24rpx;border-right: 1rpx solid #D8D8D8;">
 									<view style="display: flex;align-items: center;font-size: 24rpx;">
 										<BeeIcon :size="20" name="card-fill" color="#ef5613" style="margin-right: 6rpx;"></BeeIcon>
-										{{ specialHotelBoxObj.startDate === new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')
+										{{ specialHotelBoxObj.startDate === `${String(new Date().getFullYear())}-${String(new
+											Date().getMonth() + 1)}-${String(new Date().getDate())}`
 											? '今日' : '' }}入住
 									</view>
 									<view style="padding-top: 16rpx;">
 										<text style="color: #ef5613;">
-											{{ specialHotelBoxObj.startDate.substring(5, 10).replaceAll('-', '月') }}日
+											{{ specialHotelBoxObj.startDate.substring(5).replace(/-/g, '月') }}日
 										</text>
 										<text v-if="specialHotelBoxObj.startWeek" style="padding-left: 8rpx;font-size: 24rpx;">
-											{{
-												specialHotelBoxObj.startWeek.replace('星期', '周') }}
+											{{ specialHotelBoxObj.startWeek.replace('星期', '周') }}
 										</text>
 									</view>
 								</view>
 								<view style="padding-left: 24rpx;">
 									<view style="display: flex;align-items: center;font-size: 24rpx;">
 										<BeeIcon :size="20" name="friendadd-fill" color="#ef5613" style="margin-right: 6rpx;"></BeeIcon>
-										{{ specialHotelBoxObj.endDate === new Date(Date.now() + 24 * 60 * 60 *
-											1000).toLocaleString().substring(0, 10).replaceAll('/', '-') ? '明日' : '' }}离店
+										{{ specialHotelBoxObj.endDate === `${String(new Date(Date.now() + 24 * 60 * 60 *
+											1000).getFullYear())}-${String(new Date(Date.now() + 24 * 60 * 60 * 1000).getMonth() +
+											1)}-${String(new Date(Date.now() + 24 * 60 * 60 * 1000).getDate())}` ? '明日' : '' }}离店
 									</view>
 									<view style="padding-top: 16rpx;">
-										<text>{{ specialHotelBoxObj.endDate.substring(5, 10).replaceAll('-', '月') }}日</text>
+										<text>{{ specialHotelBoxObj.endDate.substring(5).replace(/-/g, '月') }}日</text>
 										<text v-if="specialHotelBoxObj.endWeek" style="padding-left: 8rpx;font-size: 24rpx;">
-											{{
-												specialHotelBoxObj.endWeek.replace('星期', '周') }}
+											{{ specialHotelBoxObj.endWeek.replace('星期', '周') }}
 										</text>
 									</view>
 								</view>
@@ -241,16 +238,16 @@
 							<view style="display: flex;justify-content: space-between;align-items: center;">
 								<text style="margin-right: 6rpx;font-size: 28rpx;color: #014BB8;">
 									共{{
-										(Date.parse(specialHotelBoxObj.endDate.replaceAll('-', '/')) -
-											Date.parse(specialHotelBoxObj.startDate.replaceAll('-', '/'))) / (24 * 60 * 60 * 1000) }}晚
+										(Date.parse(specialHotelBoxObj.endDate.replace(/-/g, '/')) -
+											Date.parse(specialHotelBoxObj.startDate.replace(/-/g, '/'))) / (24 * 60 * 60 * 1000) }}晚
 								</text>
 								<BeeIcon :size="20" name="arrowright" color="#3D3D3D" style="line-height: 1;"></BeeIcon>
 							</view>
 						</view>
 						<tui-calendar
 							ref="refSpecialHotelBoxCalendar" :type="2" is-fixed
-							:min-date="new Date().toLocaleString().substring(0, 10).replaceAll('/', '-')"
-							:max-date="new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleString().substring(0, 10).replaceAll('/', '-')"
+							:min-date="`${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1)}-${String(new Date().getDate())}`"
+							:max-date="`${String(new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).getFullYear())}-${String(new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).getMonth() + 1)}-${String(new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).getDate())}`"
 							@change="handleSelectSpecialHotelBoxCalendar"
 						></tui-calendar>
 					</view>
@@ -514,12 +511,8 @@ export default {
 			specialHotelGoodsArr: [],
 			specialHotelBoxObj: {
 				tabIndex: 0,
-				startDate: new Date().toLocaleString()
-					.substring(0, 10)
-					.replaceAll('/', '-'),
-				endDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString()
-					.substring(0, 10)
-					.replaceAll('/', '-'),
+				startDate: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1)}-${String(new Date().getDate())}`,
+				endDate: `${String(new Date(Date.now() + 24 * 60 * 60 * 1000).getFullYear())}-${String(new Date(Date.now() + 24 * 60 * 60 * 1000).getMonth() + 1)}-${String(new Date(Date.now() + 24 * 60 * 60 * 1000).getDate())}`,
 				startWeek: '',
 				endWeek: ''
 			},
@@ -711,6 +704,10 @@ export default {
 				margin-left: -48rpx;
 			}
 		}
+	}
+
+	.special-hotel-box-bg {
+		background: url('../../../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;
 	}
 
 	.shop-card-line:not(:last-child) {

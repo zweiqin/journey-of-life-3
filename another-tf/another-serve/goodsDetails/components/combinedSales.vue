@@ -122,7 +122,7 @@ export default {
 		},
 		goodsDetail: {
 			type: Object,
-			default: () => { }
+			default: () => ({})
 		}
 	},
 	data() {

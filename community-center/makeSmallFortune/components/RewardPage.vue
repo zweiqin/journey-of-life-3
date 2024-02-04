@@ -117,7 +117,7 @@ export default {
 		},
 		userShopInfo: {
 			type: Object,
-			default: null
+			default: () => ({})
 		}
 	},
 	data() {

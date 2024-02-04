@@ -64,7 +64,6 @@ export default {
 		}
 
 		.pageTitle {
-			font-family: 思源黑体;
 			font-size: 32rpx;
 			font-weight: 600;
 			line-height: 44rpx;

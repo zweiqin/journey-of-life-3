@@ -14,7 +14,7 @@ export default {
 	props: {
 		userAcount: {
 			type: Object,
-			default: {}
+			default: () => ({})
 		}
 	}
 }
@@ -30,7 +30,6 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
-	font-family: 思源黑体;
 
 	.titles-one {
 		font-size: 28rpx;

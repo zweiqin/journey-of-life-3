@@ -119,6 +119,7 @@ import AmountSelection from '../cpns/AmountSelection.vue'
 import { handleDoPay } from '../../../../utils/payUtil'
 
 export default {
+	name: 'TopUp',
 	components: {
 		VoucherBalance,
 		AmountSelection
@@ -126,11 +127,11 @@ export default {
 	props: {
 		userAcount: {
 			type: Object,
-			default: {}
+			default: () => ({})
 		},
 		userInfo: {
 			type: Object,
-			default: {}
+			default: () => ({})
 		},
 		isGift: {
 			type: Boolean,
@@ -417,7 +418,6 @@ export default {
 			padding: 20rpx 48rpx;
 			gap: 19.999998092651367rpx;
 			background: #FF380C;
-			font-family: 思源黑体;
 			font-size: 32rpx;
 			line-height: 48rpx;
 			color: #FFFFFF;

@@ -5,7 +5,10 @@
 		</view>
 		<view v-if="withdrawalRecordList && withdrawalRecordList.length">
 			<view v-for="(item, index) in withdrawalRecordList" :key="index" class="" style="padding-bottom: 45upx;">
-				<tui-card :title="{ text: '' }" :tag="{ text: new Date(item.addTime).toLocaleString() }">
+				<tui-card
+					:title="{ text: '' }"
+					:tag="{ text: `${String(new Date(item.addTime).getFullYear())}/${String(new Date(item.addTime).getMonth() + 1).padStart(2, '0')}/${String(new Date(item.addTime).getDate()).padStart(2, '0')}` }"
+				>
 					<template #body>
 						<view style="padding: 20upx 30upx;">
 							<view>

@@ -5,7 +5,10 @@
 		</view>
 		<view v-if="withdrawalRecordList && withdrawalRecordList.length">
 			<view v-for="(item, index) in withdrawalRecordList" :key="index" class="" style="padding-bottom: 45upx;">
-				<tui-card :title="{ text: `用户ID：${item.userId}` }" :tag="{ text: new Date(item.createTime).toLocaleString() }">
+				<tui-card
+					:title="{ text: `用户ID：${item.userId}` }"
+					:tag="{ text: `${String(new Date(item.createTime).getFullYear())}/${String(new Date(item.createTime).getMonth() + 1).padStart(2, '0')}/${String(new Date(item.createTime).getDate()).padStart(2, '0')}` }"
+				>
 					<template #body>
 						<view style="padding: 20upx 30upx;">
 							<!-- <view>
@@ -38,8 +41,7 @@
 								</view>
 								<view>
 									第三方手续费：<text style="color: #ee442f;">
-										{{ typeof item.outFee === 'number' ? `￥${item.outFee}` : '--'
-										}}
+										{{ typeof item.outFee === 'number' ? `￥${item.outFee}` : '--' }}
 									</text>
 								</view>
 							</view>

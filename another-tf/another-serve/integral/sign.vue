@@ -92,12 +92,8 @@ export default {
 			year: new Date().getFullYear(), // 当前年
 			month: new Date().getMonth() + 1, // 当前月
 			continuousNum: '', // 连续签到天数
-			currentDay: new Date(Date.now()).toLocaleString()
-				.substring(0, 10)
-				.replaceAll('/', '-'),
-			currentMonth: new Date(Date.now()).toLocaleString()
-				.substring(0, 7)
-				.replaceAll('/', '-'),
+			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
+			currentMonth: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
 			lastDay: '',
 			weeked: '', // 今天周几
 			dayArr: [], // 当前月每日

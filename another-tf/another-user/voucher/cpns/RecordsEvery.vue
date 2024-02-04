@@ -78,10 +78,12 @@ export default {
 		},
 		acountNumbers: {
 			type: Object,
-			default: {
+			default: () => ({
 				'总收益': 0,
-				'总收入': 0
-			}
+				'总收入': 0,
+				'总支出': 0,
+				'总充值': 0
+			})
 		}
 	},
 	data() {
@@ -99,13 +101,7 @@ export default {
 			this.queryList.page = 1
 			this.queryList.pageSize = 20
 			this.getListData()
-		}
-	},
-	created() {
-		this.getListData()
-					// console.log(this.showType);
-	},
-	watch: {
+		},
 		showType(newValue, oldVlaue) {
 			this.queryList = {
 				page: 1,
@@ -113,6 +109,10 @@ export default {
 			}
 			this.getListData()
 		}
+	},
+	created() {
+		this.getListData()
+		// console.log(this.showType);
 	},
 	methods: {
 		getListData(isAdd = false) {
@@ -131,7 +131,7 @@ export default {
 					for (let index = 0; index < res.data.records.length; index++) {
 						this.dataList.push(res.data.records[index])
 					}
-				}else {
+				} else {
 					this.dataList = res.data.records
 				}
 				// this.dataList = res.data.records;
@@ -169,7 +169,6 @@ export default {
 		/* display: flex;
         align-items: center; */
 		margin: 20rpx 0rpx;
-		font-family: 思源黑体;
 		font-size: 32rpx;
 		font-weight: normal;
 		line-height: 32rpx;
@@ -197,7 +196,6 @@ export default {
 		width: 100%;
 		height: 120rpx;
 		display: flex;
-		font-family: 思源黑体;
 		position: relative;
 
 		.itemIcon {
@@ -219,7 +217,6 @@ export default {
 			position: absolute;
 			right: 20rpx;
 			top: 30rpx;
-			font-family: 思源黑体;
 			font-size: 42rpx;
 			line-height: 5rpx;
 			color: #222229;

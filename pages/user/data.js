@@ -310,7 +310,8 @@ export const additionalFunction = [
 export const myPreferential = [
 	{
 		name: '签到积分',
-		icon: require('../../static/images/new-user/menu-icon/fensitongji.png')
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-serve/integral/index'
 	},
 	{
 		name: '我的拼团',

@@ -3,9 +3,7 @@
 		<view v-if="showType === 'writeOff'">
 			<!-- 核销相关 -->
 			<JHeader title="订单核销码" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;"></JHeader>
-			<view
-				style="padding: 90upx 28upx 0;background: url('~@/../static/images/new-business/order/orange-bg.png') no-repeat center top/contain;"
-			>
+			<view style="padding: 90upx 28upx 0;" clss="write-off-bg">
 				<view style="text-align: center;color: #ffffff;">
 					<view style="font-size: 38upx;font-weight: bold;">
 						<text v-if="verificationStatus == '0'">待核销-待付款</text>
@@ -845,6 +843,10 @@ export default {
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
+	}
+
+	.write-off-bg {
+		background: url('../../../static/images/new-business/order/orange-bg.png') no-repeat center top/contain;
 	}
 
 	.content {

@@ -3,7 +3,7 @@
 		<view class="tabNavs">
 			<view style="display:flex;">
 				<view
-					v-for="(item, index) in tabNavs" :key="item.name" class="tabNavsItem"
+					v-for="(item, index) in tabNavs" :key="index" class="tabNavsItem"
 					:class="{ active: currentIndex == index }" @click="chekoutCurrent(index)"
 				>
 					{{ item.name }}
@@ -11,7 +11,7 @@
 			</view>
 			<view class="dateSelection">
 				<view
-					v-for="(item, index) in dateSelection" :key="item.name" class="dateSetItem"
+					v-for="(item, index) in dateSelection" :key="index" class="dateSetItem"
 					:class="{ activeDate: dateIndex == index }" @click="chekoutDateSelection(index)"
 				>
 					{{ item.name }}
@@ -19,20 +19,18 @@
 			</view>
 		</view>
 		<view class="listMain">
-			<keep-alive>
-				<RecordsEvery
-					v-if="currentIndex == 0" ref="RecordsEvery" show-type="income" :acount-numbers="acountNumbers"
-					:condition="dateValue"
-				></RecordsEvery>
-				<RecordsEvery
-					v-if="currentIndex == 1" ref="RecordsEvery" show-type="expenditure" :acount-numbers="acountNumbers"
-					:condition="dateValue"
-				></RecordsEvery>
-				<IncrementRecord
-					v-if="currentIndex == 2" ref="IncrementRecord" :acount-numbers="acountNumbers"
-					:condition="dateValue"
-				></IncrementRecord>
-			</keep-alive>
+			<RecordsEvery
+				v-if="currentIndex == 0" ref="RecordsEvery" show-type="income" :acount-numbers="acountNumbers"
+				:condition="dateValue"
+			></RecordsEvery>
+			<RecordsEvery
+				v-if="currentIndex == 1" ref="RecordsEvery" show-type="expenditure" :acount-numbers="acountNumbers"
+				:condition="dateValue"
+			></RecordsEvery>
+			<IncrementRecord
+				v-if="currentIndex == 2" ref="IncrementRecord" :acount-numbers="acountNumbers"
+				:condition="dateValue"
+			></IncrementRecord>
 		</view>
 		<view class="footer">
 			<view class="titles">
@@ -62,7 +60,12 @@ export default {
 			dateSelection: [{ name: '年', value: 5 }, { name: '月', value: 4 }, { name: '日', value: 1 }],
 			dateIndex: 0,
 			dateValue: 0,
-			acountNumbers: null
+			acountNumbers: {
+				'总收益': 0,
+				'总收入': 0,
+				'总支出': 0,
+				'总充值': 0
+			}
 		}
 	},
 	created() {
@@ -75,7 +78,7 @@ export default {
 				condition: this.dateValue
 			}).then((res) => {
 				console.log(res)
-				this.acountNumbers = res.data
+				this.acountNumbers = { ...this.acountNumbers, ...res.data }
 			})
 				.catch((err) => {
 					console.log(err)
@@ -128,7 +131,6 @@ export default {
 			/* width: 132rpx; */
 			height: 51rpx;
 			border-radius: 10rpx;
-			font-family: 思源黑体;
 			font-size: 28rpx;
 			font-weight: normal;
 			line-height: 51rpx;

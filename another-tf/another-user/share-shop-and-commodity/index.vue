@@ -11,7 +11,8 @@
 			<view v-else style="height: 100upx;"></view>
 			<view style="padding: 42upx 40upx 0;">
 				<view
-					style="position: relative;min-height: 500upx;padding: 54upx 40upx;background: url('~@/../static/images/new-business/order/orange-white-bg.png') no-repeat center top/cover;border-radius: 20upx;"
+					style="position: relative;min-height: 500upx;padding: 54upx 40upx;border-radius: 20upx;"
+					class="my-share-bg"
 				>
 					<tui-icon
 						v-if="!isSharer" name="close" :size="25" color="#F5F4F6"
@@ -338,6 +339,10 @@ export default {
 	.generate-code-container {
 		position: absolute;
 		top: -10000upx;
+	}
+
+	.my-share-bg {
+		background: url('../../../static/images/new-business/order/orange-white-bg.png') no-repeat center top/cover;
 	}
 }
 </style>

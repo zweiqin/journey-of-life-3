@@ -10,7 +10,7 @@
 					</view>
 					<tui-calendar
 						ref="dateTimeWithdrawalDetails" :type="2" is-fixed
-						:max-date="new Date(Date.now()).toLocaleString().substring(0, 10).replaceAll('/', '-')"
+						:max-date="`${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`"
 						@change="handleWithdrawalDetailsCalendar"
 					></tui-calendar>
 				</view>

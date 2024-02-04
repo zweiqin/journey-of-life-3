@@ -17,10 +17,8 @@
         </div>
     </view>
     <view class="merchantList">
-        <keep-alive>
             <merchantList ref="merchantList" v-if="currentIndex == 0"></merchantList>
             <historyMerchantList ref="historyMerchantList" v-if="currentIndex == 1"></historyMerchantList>
-        </keep-alive>
     </view>
   </view>
 </template>

@@ -97,7 +97,6 @@ export default {
 	width: 690rpx;
 	border-radius: 20rpx;
 	background: #FFFFFF;
-	font-family: 思源黑体;
 
 	>p {
 		font-size: 32rpx;

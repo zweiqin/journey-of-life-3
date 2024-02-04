@@ -7,192 +7,202 @@
 				<text style="flex: 1;margin-left: -40upx;text-align: center;line-height: 2.5;">商品详情</text>
 			</view>
 		</BeeBack>
-		<view style="padding-bottom: 160upx;">
-			<!--  拼团滚动 -->
-			<view class="news-box">
-				<view class="news-bg">
-					<swiper vertical circular interval="8000" duration="2000" autoplay>
-						<swiper-item v-for="(item, index) in broadCastList" :key="index">
-							<view class="news-item flex-items">
-								<image class="item-avatar" :src="common.seamingImgUrl(item.headImage)"></image>
-								<view class="news-item-user">{{ item.name }}</view>
-								<view>{{ item.timeStr }}</view>
-								<view v-if="item.type === 1">给了好评</view>
-								<view v-if="item.type === 2">正在拼单</view>
-								<view v-if="item.type === 3">拼单成功</view>
-								<view v-if="item.type === 4">下单</view>
-							</view>
-						</swiper-item>
-					</swiper>
-				</view>
-			</view>
 
-			<!-- 轮播图+分享+价格名称+活动倒计时+优惠券 -->
-			<GoodActivityDetail
-				ref="goodActivityDetail" :sku-select="selectedCurrentMsg.selectedSku"
-				:goods-detail="goodsDetail" @activityEnd="handleGetProductDetail"
-			/>
-
-			<view
-				v-if="goodsDetail.productBrief"
-				style="display: flex;align-items: center;margin-top: 10upx;padding: 10upx 20upx 10upx;font-size: 24upx;background-color: #ffffff;"
-			>
-				<view style="color: #999999;">卖点</view>
-				<view style="flex: 1;margin-left: 20upx;">{{ goodsDetail.productBrief }}</view>
-			</view>
-
-			<!-- 发货 -->
-			<view v-if="goodsDetail.ifLogistics" class="express-box flex-items flex-row fs24">
-				<label class="fs24 font-color-999 mar-right-20 ">发货</label>
-				<tui-icon
-					v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
-					color="#c1c1c1"
-				></tui-icon>
-				<label v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
-					{{ goodsDetail.receive.receiveAdress }}
-				</label>
-				<label>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</label>
-			</view>
-
-			<!-- 选择SKU -->
-			<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
-				<view class="chooseSize-content flex-items flex-row flex-sp-between">
-					<view class="flex-row-plus">
-						<label class="fs26 mar-left-30 font-color-999">选择</label>
-						<view style="flex: 1;">
-							<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10upx 6upx;">
-								{{ item.skuText || '-' }}
-							</view>
-						</view>
-					</view>
-					<tui-icon :size="24" color="#baa174" name="arrowright"></tui-icon>
-				</view>
-			</view>
-
-			<!-- 结合销售 -->
-			<CombinedSales :pid="productId" :goods-detail="goodsDetail"></CombinedSales>
-			<!-- 拼单列表 -->
-			<view
-				v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders.length"
-				class="goodsDiscount"
-			>
-				<view class="questionTit mar-left-30 flex-items flex-row flex-sp-between">
-					<label class="">这些人正在拼单</label>
-					<view class="allMoreBox">
-						<view class="allMore" @click="showGroupBuyList = true">
-							查看全部
-						</view>
-						<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
+		<view v-if="goodsDetail.productId">
+			<view style="padding-bottom: 160upx;">
+				<!--  拼团滚动 -->
+				<view class="news-box">
+					<view class="news-bg">
+						<swiper vertical circular interval="8000" duration="2000" autoplay>
+							<swiper-item v-for="(item, index) in broadCastList" :key="index">
+								<view class="news-item flex-items">
+									<image class="item-avatar" :src="common.seamingImgUrl(item.headImage)"></image>
+									<view class="news-item-user">{{ item.name }}</view>
+									<view>{{ item.timeStr }}</view>
+									<view v-if="item.type === 1">给了好评</view>
+									<view v-if="item.type === 2">正在拼单</view>
+									<view v-if="item.type === 3">拼单成功</view>
+									<view v-if="item.type === 4">下单</view>
+								</view>
+							</swiper-item>
+						</swiper>
 					</view>
 				</view>
+
+				<!-- 轮播图+分享+价格名称+活动倒计时+优惠券 -->
+				<GoodActivityDetail
+					ref="goodActivityDetail" :sku-select="selectedCurrentMsg.selectedSku"
+					:goods-detail="goodsDetail" @activityEnd="handleGetProductDetail"
+				/>
+
 				<view
-					v-for="(Gitem, index) in selectedCurrentMsg.selectedSku.collageOrders.slice(0, 3)" :key="index"
-					class="groupBuy"
+					v-if="goodsDetail.productBrief"
+					style="display: flex;align-items: center;margin-top: 10upx;padding: 10upx 20upx 10upx;font-size: 24upx;background-color: #ffffff;"
 				>
-					<view v-if="Gitem.time > 0" class="groupBuyList">
-						<view class="groupBuyItem">
-							<view class="leftAvatar">
-								<image :src="common.seamingImgUrl(Gitem.headImage)" alt=""></image>
-								<span>{{ Gitem.name }}</span>
-							</view>
-							<view class="rightInfo">
-								<view class="groupBuyTime" style="width: 70%;">
-									<view class="needPeople flex-row-plus">还差<b>{{ Gitem.person }}人</b>拼成</view>
-									<view class="endDate">剩余{{ handleGetDownTime(Gitem.time) }}</view>
+					<view style="color: #999999;">卖点</view>
+					<view style="flex: 1;margin-left: 20upx;">{{ goodsDetail.productBrief }}</view>
+				</view>
+
+				<!-- 发货 -->
+				<view v-if="goodsDetail.ifLogistics" class="express-box flex-items flex-row fs24">
+					<label class="fs24 font-color-999 mar-right-20 ">发货</label>
+					<tui-icon
+						v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
+						color="#c1c1c1"
+					></tui-icon>
+					<label v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
+						{{ goodsDetail.receive.receiveAdress }}
+					</label>
+					<label>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</label>
+				</view>
+
+				<!-- 选择SKU -->
+				<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
+					<view class="chooseSize-content flex-items flex-row flex-sp-between">
+						<view class="flex-row-plus">
+							<label class="fs26 mar-left-30 font-color-999">选择</label>
+							<view style="flex: 1;">
+								<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10upx 6upx;">
+									{{ item.skuText || '-' }}
 								</view>
-								<view class="groupBuyBtn" @click="handleGoGroupBooking(Gitem.collageId)">
-									和Ta拼
+							</view>
+						</view>
+						<tui-icon :size="24" color="#baa174" name="arrowright"></tui-icon>
+					</view>
+				</view>
+
+				<!-- 结合销售 -->
+				<CombinedSales :pid="productId" :goods-detail="goodsDetail"></CombinedSales>
+				<!-- 拼单列表 -->
+				<view
+					v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders.length"
+					class="goodsDiscount"
+				>
+					<view class="questionTit mar-left-30 flex-items flex-row flex-sp-between">
+						<label class="">这些人正在拼单</label>
+						<view class="allMoreBox">
+							<view class="allMore" @click="showGroupBuyList = true">
+								查看全部
+							</view>
+							<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
+						</view>
+					</view>
+					<view
+						v-for="(Gitem, index) in selectedCurrentMsg.selectedSku.collageOrders.slice(0, 3)" :key="index"
+						class="groupBuy"
+					>
+						<view v-if="Gitem.time > 0" class="groupBuyList">
+							<view class="groupBuyItem">
+								<view class="leftAvatar">
+									<image :src="common.seamingImgUrl(Gitem.headImage)" alt=""></image>
+									<span>{{ Gitem.name }}</span>
+								</view>
+								<view class="rightInfo">
+									<view class="groupBuyTime" style="width: 70%;">
+										<view class="needPeople flex-row-plus">还差<b>{{ Gitem.person }}人</b>拼成</view>
+										<view class="endDate">剩余{{ handleGetDownTime(Gitem.time) }}</view>
+									</view>
+									<view class="groupBuyBtn" @click="handleGoGroupBooking(Gitem.collageId)">
+										和Ta拼
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-			<!--  评价  -->
-			<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :goods-detail="goodsDetail" />
-			<!-- 店铺 -->
-			<view v-if="!goodsDetail.shopName.startsWith('团蜂')" class="inStore-box flex-items flex-row flex-sp-between">
-				<view class="flex-display flex-row">
+				<!--  评价  -->
+				<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :goods-detail="goodsDetail" />
+				<!-- 店铺 -->
+				<view
+					v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
+					class="inStore-box flex-items flex-row flex-sp-between"
+				>
+					<view class="flex-display flex-row">
+						<view>
+							<image
+								class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
+								@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
+							></image>
+						</view>
+						<view class="flex-display flex-column mar-left-20">
+							<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
+								{{ goodsDetail.shopName
+								}}
+							</label>
+							<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
+								<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
+								<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
+							</view>
+						</view>
+					</view>
+					<view class="inStore-but" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
+						<text>去逛逛</text>
+						<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
+					</view>
+				</view>
+				<!-- 详细信息 -->
+				<view style="background-color: #FFFFFF;margin-top: 20rpx;padding: 20rpx 30rpx;">
+					<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10upx;">
+						<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
+						<label style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</label>
+						<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
+					</view>
 					<view>
-						<image
-							class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
+						<rich-text :nodes="goodsDetail.text.replace(/\<img/gi, replaceImgText)"></rich-text>
+					</view>
+				</view>
+			</view>
+			<!-- 底部购买 -->
+			<view class="buygoods-box">
+				<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
+					<view class="btns_container">
+						<view
+							v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')" class="btns flex-column-plus flex-items"
 							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
-						></image>
-					</view>
-					<view class="flex-display flex-column mar-left-20">
-						<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">{{ goodsDetail.shopName }}</label>
-						<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
-							<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
-							<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
+						>
+							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+							<label class="fs22">店铺</label>
+						</view>
+						<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
+							<tui-icon :size="24" color="#333333" name="message"></tui-icon>
+							<label class="fs22">客服</label>
+						</view>
+						<view
+							class="btns flex-column-plus mar-left-10 flex-items Cart"
+							@click="go('/another-tf/another-serve/shopCar/shopCar')"
+						>
+							<view v-if="allCartNum > 0" class="cartAllNum">
+								{{ allCartNum }}
+							</view>
+							<tui-icon :size="24" color="#333333" name="cart"></tui-icon>
+							<label class="fs22">购物车</label>
 						</view>
 					</view>
-				</view>
-				<view class="inStore-but" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
-					<text>去逛逛</text>
-					<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
-				</view>
-			</view>
-			<!-- 详细信息 -->
-			<view style="background-color: #FFFFFF;margin-top: 20rpx;padding: 20rpx 30rpx;">
-				<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10upx;">
-					<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
-					<label style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</label>
-					<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
-				</view>
-				<view>
-					<rich-text :nodes="goodsDetail.text.replace(/\<img/gi, replaceImgText)"></rich-text>
-				</view>
-			</view>
-		</view>
-		<!-- 底部购买 -->
-		<view class="buygoods-box">
-			<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
-				<view class="btns_container">
-					<view
-						v-if="!goodsDetail.shopName.startsWith('团蜂')" class="btns flex-column-plus flex-items"
-						@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
-					>
-						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
-						<label class="fs22">店铺</label>
-					</view>
-					<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
-						<tui-icon :size="24" color="#333333" name="message"></tui-icon>
-						<label class="fs22">客服</label>
-					</view>
-					<view
-						class="btns flex-column-plus mar-left-10 flex-items Cart"
-						@click="go('/another-tf/another-serve/shopCar/shopCar')"
-					>
-						<view v-if="allCartNum > 0" class="cartAllNum">
-							{{ allCartNum }}
+					<view class="btns_container">
+						<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
+							商品已下架
 						</view>
-						<tui-icon :size="24" color="#333333" name="cart"></tui-icon>
-						<label class="fs22">购物车</label>
-					</view>
-				</view>
-				<view class="btns_container">
-					<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
-						商品已下架
-					</view>
-					<view v-else-if="selectedCurrentMsg.selectedSku.activityType === 1" class="flex-row-plus flex-items">
-						<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(4)">
-							单独购买
+						<view v-else-if="selectedCurrentMsg.selectedSku.activityType === 1" class="flex-row-plus flex-items">
+							<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(4)">
+								单独购买
+							</view>
+							<view class="buyNowBut" @click="handleShowGoodsSkuSelect(3)">
+								我要开团
+							</view>
 						</view>
-						<view class="buyNowBut" @click="handleShowGoodsSkuSelect(3)">
-							我要开团
-						</view>
-					</view>
-					<view v-else class="flex-row-plus flex-items">
-						<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(1)">
-							加入购物车
-						</view>
-						<view class="buyNowBut" @click="handleShowGoodsSkuSelect(2)">
-							立即购买
+						<view v-else class="flex-row-plus flex-items">
+							<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(1)">
+								加入购物车
+							</view>
+							<view class="buyNowBut" @click="handleShowGoodsSkuSelect(2)">
+								立即购买
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+
 		<!-- 回到顶部 -->
 		<view class="returnTopService-box">
 			<view
@@ -204,8 +214,8 @@
 		</view>
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
-			ref="refGoodSkuSelect" :goods-detail="goodsDetail"
-			:collage-id="collageId" @current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
+			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId"
+			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 		/>
 		<!-- 拼单弹框 -->
 		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
@@ -282,6 +292,9 @@ export default {
 			shopGroupWorkTicker: null, // 拼团倒计时定时器
 			// 商品详情
 			goodsDetail: {
+				productId: '',
+				names: [],
+				shelveState: 0, // 0下架
 				text: '', // 宝贝详情，商品详情长图（富文本）
 				markTools: [], // 平台优惠券
 				shopMarkTools: [], // 店铺优惠券

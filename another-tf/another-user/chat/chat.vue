@@ -14,7 +14,7 @@
 					<view class="name-time">
 						<text class="name">{{ item.toUsername }}</text>
 						<text class="time">
-							{{ new Date(item.sendTime).toLocaleString() }}
+							{{ `${String(new Date(item.sendTime).getFullYear())}/${String(new Date(item.sendTime).getMonth() + 1).padStart(2, '0')}/${String(new Date(item.sendTime).getDate()).padStart(2, '0')}` }}
 						</text>
 					</view>
 					<view class="last-message">

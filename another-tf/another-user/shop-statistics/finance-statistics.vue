@@ -128,7 +128,7 @@
 					</view>
 					<tui-datetime
 						ref="dateTimeFinance" :type="3" radius
-						:end-year="Number(new Date(Date.now()).toLocaleString().substring(0, 4))"
+						:end-year="new Date().getFullYear()"
 						@confirm="handleConfirmTime"
 					></tui-datetime>
 				</view>

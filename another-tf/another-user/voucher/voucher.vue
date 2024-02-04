@@ -55,7 +55,7 @@ export default {
 	},
 	methods: {
 		hiddenPhone(Phone) {
-			return Phone.substr(0, 3) + '****' + Phone.substr(7, 11)
+			return Phone.substring(0, 3) + '****' + Phone.substring(7, 11)
 		},
 		getUserVoucher() {
 			getByUserVoucherShopHoldApi().then((res) => {
@@ -100,7 +100,6 @@ export default {
 
 		.tabItem {
 			position: relative;
-			font-family: 思源黑体;
 			font-size: 36rpx;
 			font-weight: 500;
 			font-feature-settings: "kern" on;
@@ -136,7 +135,6 @@ export default {
 
 		.userPhone {
 			margin-left: 20rpx;
-			font-family: 思源黑体;
 			font-size: 42rpx;
 			font-weight: 500;
 			font-feature-settings: "kern" on;

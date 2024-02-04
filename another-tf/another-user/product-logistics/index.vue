@@ -20,7 +20,7 @@
 					</button> -->
 					<span class="timeline__dot"></span>
 					<span id="item1-name" class="timeline__meta">
-						<time class="timeline__date" datetime="1970-01-01">{{ new Date(Number(item.time)).toLocaleString() }}</time><br>
+						<time class="timeline__date" datetime="1970-01-01">{{ `${String(new Date(Number(item.time)).getFullYear())}-${String(new Date(Number(item.time)).getMonth() + 1).padStart(2, '0')}-${String(new Date(Number(item.time)).getDate()).padStart(2, '0')}` }}</time><br>
 						<strong class="timeline__title">{{ item.source }}</strong>
 					</span>
 				</view>

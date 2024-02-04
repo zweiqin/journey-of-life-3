@@ -50,7 +50,7 @@ export default {
 	props: {
 		datas: {
 			type: Object,
-			default: {}
+			default: () => ({})
 		},
     redirection: {
       type: Function,
