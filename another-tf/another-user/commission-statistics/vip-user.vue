@@ -30,6 +30,7 @@ import { USER_INFO } from '../../../constant'
 import { getFansListApi } from '../../../api/anotherTFInterface'
 import FansPane from './components/FansPane.vue'
 export default {
+	name: 'VipUser',
 	components: {
 		FansPane
 	},
@@ -85,6 +86,8 @@ export default {
 
 				this.subFansInfo = currentFansInfo
 				this.subFansListVisible = true
+			} else {
+				this.$showToast('该用户暂无粉丝')
 			}
 		},
 

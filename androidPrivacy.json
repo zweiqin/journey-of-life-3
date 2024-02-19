@@ -18,8 +18,8 @@
     "disagreeMode" : {
         "support" : false,
         "loadNativePlugins" : false,
-        "visitorEntry" : true,
-        "showAlways" : false
+        "visitorEntry" : false,
+        "showAlways" : true
     },
     "styles" : {
         "backgroundColor" : "#fff",

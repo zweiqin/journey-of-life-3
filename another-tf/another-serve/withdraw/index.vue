@@ -1,15 +1,15 @@
 <template>
 	<view class="container">
-		<JHeader title="提现" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="提现" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="addressBack-box">
 			<view class="bankTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="handleBankTagClick">
 				<view class="fs28 addressTag">银行卡</view>
 				<view>
 					<label>{{ bankCardNum }}</label>
-					<tui-icon name="arrowright" :size="48" unit="upx" color="#b19970" margin="0 20upx 0 0"></tui-icon>
+					<tui-icon name="arrowright" :size="48" unit="rpx" color="#b19970" margin="0 20rpx 0 0"></tui-icon>
 				</view>
 			</view>
-			<view style="margin-top: 20upx;font-size: 28upx;">
+			<view style="margin-top: 20rpx;font-size: 28rpx;">
 				可提现金额：{{ price || 0 }}元
 			</view>
 			<view class="consignee-box bor-line-F7F7F7">
@@ -19,8 +19,8 @@
 					placeholder="请输入提现金额(元)" @input="applycheck"
 				/>
 			</view>
-			<view style="color: red;margin-top: 10upx;">{{ errMsg }}</view>
-			<view v-if="!errMsg" style="margin-top: 10upx;text-align: right;">
+			<view style="color: red;margin-top: 10rpx;">{{ errMsg }}</view>
+			<view v-if="!errMsg" style="margin-top: 10rpx;text-align: right;">
 				手续费：{{ typeof withdrawCharge === 'number' ? withdrawCharge : '--' }} 元
 			</view>
 			<view class="apply-box">
@@ -29,19 +29,22 @@
 		</view>
 		<view v-if="withdrawHistoryList && withdrawHistoryList.length" class="withdraw-history">
 			<view class="history-list">
-				<view class="history-head">
-					<label class="history-label fs30 font-color-333">历史记录</label>
-				</view>
-				<view v-for="(item, index) in withdrawHistoryList" :key="index" class="history-content">
-					<view class="withdraw-detail flex-items flex-sp-between">
-						<view class="detail-top">
-							<view class="fs24 font-color-999 mar-top-10">流水号：{{ item.orderSn || '--' }}</view>
-							<view class="fs24 font-color-999">银行卡号：{{ item.bankCard }}</view>
-							<view style="font-size: 24upx;color: #999999;">手续费：￥{{ item.cost }}</view>
-							<view class="fs24 font-color-999 mar-top-10">{{ item.createTime }}</view>
+				<view style="padding: 0 0 18rpx;" class="fs30 font-color-333">历史记录</view>
+				<view
+					v-for="(item, index) in withdrawHistoryList" :key="index"
+					style="padding: 8rpx 0;font-size: 24rpx;border-top: 2rpx solid #F3F4F5;"
+				>
+					<view class="flex-items flex-sp-between">
+						<view style="color: #999999;">
+							<view>流水号：{{ item.orderSn || '--' }}</view>
+							<view>手续费：￥{{ item.cost }}</view>
+							<view>银行卡号：{{ item.bankCard }}</view>
+							<view>{{ item.createTime }}</view>
 						</view>
 						<view>
-							<view class="detail-bottom text-align fs28 font-color-333">
+							<view style="padding: 10rpx 20rpx;background: #EEEEEE;color: #696868;">提现￥{{ item.withdrawalMoney }}</view>
+							<view style="font-size: 28rpx;color: #201f1f;text-align: center;">到账￥{{ item.actualReceipt }}</view>
+							<view class="text-align fs28 font-color-333">
 								<text v-if="item.state == 0">审核中</text>
 								<text v-else-if="item.state == 1">通过</text>
 								<text v-else-if="item.state == 2">拒绝</text>
@@ -49,9 +52,11 @@
 								<text v-else-if="item.state == 4">打款失败</text>
 								<text v-else>--</text>
 							</view>
-							<view class="apply-balance">提现￥{{ item.withdrawalMoney }}</view>
-							<view style="font-size: 28upx;color: #201f1f;text-align: center;">到账￥{{ item.actualReceipt }}</view>
 						</view>
+					</view>
+					<view>
+						<view style="text-align: right;">申请时间：{{ item.applyTime }}</view>
+						<view v-if="item.state == 2">拒绝原因：{{ item.rejectReason }}</view>
 					</view>
 				</view>
 			</view>
@@ -248,23 +253,23 @@ export default {
 
 	.addressBack-box {
 		background-color: #FFFFFF;
-		padding: 30upx 30upx;
+		padding: 30rpx 30rpx;
 
 		.consignee-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 20upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 20rpx;
 
 			.consignee {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
 		.apply-withdraw {
 			width: 100%;
-			height: 100upx;
-			line-height: 100upx;
+			height: 100rpx;
+			line-height: 100rpx;
 			color: #FFEBC4;
 			text-align: center;
 			background: #333333;
@@ -288,27 +293,6 @@ export default {
 			background: white;
 			padding: 30rpx;
 
-			.history-label {
-				height: 92rpx;
-				line-height: 92rpx;
-			}
-
-			.history-content {
-				border-top: 2rpx solid #F3F4F5;
-
-				.withdraw-detail {
-					height: 150rpx;
-
-					.apply-balance {
-						padding: 10upx 20upx;
-						font-size: 24upx;
-						background: #EEEEEE;
-						display: block;
-						text-align: center;
-						color: #696868;
-					}
-				}
-			}
 		}
 	}
 }

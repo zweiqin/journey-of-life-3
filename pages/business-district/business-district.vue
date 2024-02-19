@@ -160,6 +160,7 @@ export default {
 	},
 	methods: {
 		getBrandList() {
+			// #ifdef H5
 			if (!this.$store.getters.obtainLocationCount) {
 				const tempTime = Date.now()
 				const queryLocation = { longitude: '', latitude: '' }
@@ -211,6 +212,18 @@ export default {
 				}
 				this._loadData(null, () => this.isPositioning = false)
 			}
+			// #endif
+
+			// #ifdef APP
+			this.$data._query = {
+				...this.$data._query,
+				...this.queryParam,
+				areaId: this.$store.state.location.locationInfo.adcode,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			}
+			this._loadData(null, () => this.isPositioning = false)
+			// #endif
 		},
 
 		// 点击常看详情

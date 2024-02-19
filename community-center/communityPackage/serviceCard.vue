@@ -287,12 +287,6 @@ export default {
   async created() {
     await this.getServeTabData();
     this.getServeCardData();
-    // uni.getLocation({
-    //     type: 'gcj02', //返回可以用于uni.openLocation的经纬度
-    //     success: function (res) {
-    //         console.log(1,res);
-    //     }
-    // });
   },
   onShow() {
     this.getShopSiteList();

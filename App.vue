@@ -147,14 +147,9 @@ export default {
 
 		// 设置用户定位
 		async setUserLocation() {
-			// // #ifdef APP
-			// this.useStorageLocation();
-			// // #endif
-
+			// #ifdef H5
 			try {
-				//  #ifdef H5
 				this.globalData.isHasLocationPermission = true
-				// #endif
 				await this.$store.dispatch('location/getCurrentLocation', (res) => {
 					// this.$store.dispatch('community/getHomePopupImage', res.detail)
 					this.$store.commit('community/CHANGE_HOME_STORE', res.town)
@@ -169,12 +164,16 @@ export default {
 					// 后端兜底1
 				}
 			}
-
 			setTimeout(() => {
 				if (!this.$store.getters.currentCity) {
 					this.useStorageLocation()
 				}
 			}, 2000)
+			// #endif
+
+			// #ifdef APP
+			this.useStorageLocation()
+			// #endif
 		},
 
 		// 使用本地数据
