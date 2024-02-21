@@ -102,7 +102,7 @@
 				</view>
 				<!-- #endif -->
 				<view
-					v-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
+					v-if="(terminal === 3) || (terminal === 2)"
 					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
 					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
 import { getVerifyCodeApi, updatePasswordUserApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
@@ -179,6 +180,9 @@ export default {
 			const code = getUrlCode().code
 			if (code) this.handleWXLogin()
 		}
+	},
+	computed: {
+		...mapGetters([ 'terminal' ])
 	},
 	methods: {
 		// 获取验证码

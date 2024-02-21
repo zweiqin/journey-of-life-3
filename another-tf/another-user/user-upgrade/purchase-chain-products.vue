@@ -44,12 +44,12 @@
 										{{
 											item.productName }}
 									</view>
-									<view style="margin-top: 10upx;;color: #824100;">
+									<view style="margin-top: 10upx;color: #824100;">
 										<text style="font-size: 26upx;">价值： ￥</text>
 										<text style="font-size: 28upx;font-weight: bold;">{{ item.price }}</text>
 									</view>
 								</view>
-								<view style="margin-top: 20upx;;text-align: center;">
+								<view style="margin-top: 20upx;text-align: center;">
 									<image :src="common.seamingImgUrl(item.image)" style="width: 276upx;height: 168upx;border-radius: 20upx;"></image>
 								</view>
 							</view>

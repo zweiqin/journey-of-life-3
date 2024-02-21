@@ -42,7 +42,7 @@ export const getAdressDetailByLngLat = (lat, lng) => {
       });
     // #endif
 
-    // #ifdef APP-PLUS
+    // #ifdef APP
     uni.request({
       url: 'https://restapi.amap.com/v3/geocode/regeo',
       data: {
