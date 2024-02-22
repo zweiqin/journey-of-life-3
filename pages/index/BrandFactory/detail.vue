@@ -61,11 +61,19 @@
           <view class="goods-list">
             <view class="sub-category-list" v-if="categoryList.length">
               <scroll-view scroll-y>
-                <view class="sub-category-wrapper">
+                <view class="sub-category-wrapper" v-for="category in categoryList" :key="category.classifyId">
                   <view class="item" @click="handleChangeCategory(category.classifyId)"
-                    :class="{ active: queryGoods.groupId === category.classifyId }" v-for="category in categoryList"
-                    :key="category.classifyId">{{ category.classifyName
+                    :class="{ active: queryGoods.groupId === category.classifyId }">{{ category.classifyName
                     }}</view>
+										<view v-if="category.classify && category.classify.length">
+											<view v-for="section in category.classify" :key="section.classifyId"
+												@click="handleChangeCategory(section.classifyId)"
+												:class="{ active: queryGoods.groupId === section.classifyId }"
+												style="padding: 4upx 0 24upx;font-size: 24upx;color: #888889;text-align: right;"
+											>
+												{{ section.classifyName }}
+											</view>
+										</view>
                 </view>
               </scroll-view>
             </view>
@@ -507,18 +515,13 @@ export default {
               transform: translateY(-50%);
               transition: all 350ms;
             }
-
-            &.active {
-              // background-color: #fff;
-              color: #185BCC;
-
-              &::after {
-                background-color: #185BCC;
-
-
-              }
-            }
           }
+					.active {
+						color: #185BCC!important;
+						&::after {
+							background-color: #185BCC;
+						}
+					}
         }
       }
 
