@@ -230,7 +230,7 @@
 		<view class="op-footer">
 			<view class="send-wrapper">
 				<tui-input
-					v-model="words" label="" placeholder="请输入..." type="text"
+					v-model="words" placeholder="请输入..." type="text"
 					confirm-type="发送" padding="0"
 					style="width: 100%;" @confirm="handleSendMessage"
 				>
@@ -254,7 +254,7 @@
 					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
 					<view
 						v-if="!Number(chat)" class="tui-menu-item"
-						@click="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+						@click="handleOpenCustomerService"
 					>
 						转人工
 					</view>
@@ -275,6 +275,10 @@
 			<PersonList v-if="isShowPersonPopup" @send="handleSend"></PersonList>
 		</tui-bottom-popup>
 		<tui-toast ref="toast"></tui-toast>
+
+		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+		</tui-bottom-popup>
 	</view>
 </template>
 
@@ -310,7 +314,11 @@ export default {
 			isShowGoodsPopup: false,
 
 			// 客服助手
-			isShowPersonPopup: false
+			isShowPersonPopup: false,
+
+			// 客服
+			isShowCustomerServicePopup: false,
+			customerServiceList: []
 		}
 	},
 	async onLoad(options) {
@@ -921,6 +929,16 @@ export default {
 				urls: imgsArray,
 				current: 0
 			})
+		},
+
+		// 打开客服
+		async handleOpenCustomerService() {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: ''
+			})
+			this.customerServiceList = res.data
+			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
 		}
 	}
 }

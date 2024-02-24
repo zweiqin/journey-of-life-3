@@ -38,7 +38,7 @@
 				</view>
 				<view>
 					<tui-input
-						v-model="queryInfo.search" label="" placeholder="请输入您想要的宝贝"
+						v-model="queryInfo.search" placeholder="请输入您想要的宝贝"
 						clearable is-fillet padding="6upx 10upx 6upx 26upx"
 						style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
 					>

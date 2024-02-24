@@ -17,7 +17,7 @@
 				</TuanLocation>
 				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
 				<tui-input
-					v-model="queryInfo.search" label="" :placeholder="transformation[currentType]" clearable
+					v-model="queryInfo.search" :placeholder="transformation[currentType]" clearable
 					:border-bottom="false" padding="6upx 10upx 6upx 2upx" placeholder-style="color: #222229;font-size: 28upx;"
 					background-color="transparent" style="flex: 1;margin-left: 14upx;"
 				>

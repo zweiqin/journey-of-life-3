@@ -8,7 +8,7 @@
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
 				</text>
 				<tui-input
-					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" label="" placeholder="社区商圈"
+					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" placeholder="社区商圈"
 					clearable is-fillet padding="6rpx 10rpx 6rpx 26rpx"
 					style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
 				>
@@ -253,7 +253,7 @@
 					</view>
 					<view>
 						<tui-input
-							v-model="queryInfo.search" label="" placeholder="搜索酒店/地名/关键词" clearable
+							v-model="queryInfo.search" placeholder="搜索酒店/地名/关键词" clearable
 							padding="14rpx 0rpx"
 							:margin-top="20"
 							style="border-top: 1rpx solid rgba(216, 216, 216, 0.5);border-bottom: 1rpx solid rgba(216, 216, 216, 0.5);"

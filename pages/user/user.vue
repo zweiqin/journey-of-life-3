@@ -32,7 +32,7 @@
 			:show="isShowLotteryDialog" title="暗语" @click="handleLotteryDialog"
 		>
 			<template #content>
-				<tui-input v-model="codeWordLottery" label="" type="text" placeholder="请输入抽奖暗语"></tui-input>
+				<tui-input v-model="codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input>
 			</template>
 		</tui-dialog>
 	</view>

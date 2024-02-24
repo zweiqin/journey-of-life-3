@@ -31,7 +31,7 @@
 					<tui-icon :size="50" color="#cccccc" name="shield" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
 					<tui-input
 						v-model="code" padding="26rpx 20rpx 26rpx 0" background-color="transparent" label-color="#ffffff"
-						placeholder="请输入验证码" style="flex: 1;border-bottom: 2rpx solid #ffffff;"
+						placeholder="请输入验证码"
 					>
 						<template #right>
 							<tui-countdown-verify
@@ -55,15 +55,15 @@
 		</view>
 		<view v-else-if="verifyType === 2" class="mpVerify">
 			<button
-				v-if="[ 4 ].includes(terminal)" class="verifyPhone" open-type="getAuthorize"
-				scope="phoneNumber" @getAuthorize="onGetAuthorize" @error="() => { }"
+				v-if="[ 4 ].includes(terminal)" class="verifyPhone" open-type="getAuthorize" scope="phoneNumber"
+				@getAuthorize="onGetAuthorize" @error="() => { }"
 			>
 				授权手机号验证
 			</button>
 
 			<button
-				v-if="[ 2 ].includes(terminal)" class="verifyPhone fs28 mar-top-100"
-				open-type="getPhoneNumber" @getphonenumber="getWxPhoneNumber"
+				v-if="[ 2 ].includes(terminal)" class="verifyPhone fs28 mar-top-100" open-type="getPhoneNumber"
+				@getphonenumber="getWxPhoneNumber"
 			>
 				微信手机号授权
 			</button>
@@ -252,6 +252,11 @@ export default {
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: center;
+
+			/deep/ .tui-input__wrap {
+				flex: 1;
+				border-bottom: 2rpx solid #ffffff;
+			}
 		}
 
 		.registerBut {
