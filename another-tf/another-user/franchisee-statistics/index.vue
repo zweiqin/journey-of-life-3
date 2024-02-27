@@ -75,7 +75,7 @@
 						<template #dropdownbox>
 							<view style="width: fit-content;box-sizing: border-box;">
 								<tui-list-view
-									title="" color="#777" margin-top="2rpx"
+									color="#777" margin-top="2rpx"
 									style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
 								>
 									<tui-list-cell
@@ -104,7 +104,7 @@
 						</template>
 					</tui-dropdown-list>
 				</view>
-				<tui-list-view v-if="franchiseeShopInfo.data && franchiseeShopInfo.data.length" margin-top="20upx" title="">
+				<tui-list-view v-if="franchiseeShopInfo.data && franchiseeShopInfo.data.length" margin-top="20upx">
 					<tui-list-cell v-for="(item, index) in franchiseeShopInfo.data" :key="item.id">
 						<view style="display: flex;align-items: center;">
 							<JAvatar :src="common.seamingImgUrl(item.shopLogo)" :size="80" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
@@ -146,7 +146,7 @@
 						<template #dropdownbox>
 							<view style="width: fit-content;box-sizing: border-box;">
 								<tui-list-view
-									title="" color="#777" margin-top="2rpx"
+									color="#777" margin-top="2rpx"
 									style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
 								>
 									<tui-list-cell
@@ -175,7 +175,7 @@
 						</template>
 					</tui-dropdown-list>
 				</view>
-				<tui-list-view v-if="franchiseeCommanderInfo.data && franchiseeCommanderInfo.data.length" margin-top="20upx" title="">
+				<tui-list-view v-if="franchiseeCommanderInfo.data && franchiseeCommanderInfo.data.length" margin-top="20upx">
 					<tui-list-cell v-for="(item, index) in franchiseeCommanderInfo.data" :key="item.id">
 						<view style="display: flex;align-items: center;">
 							<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="80" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>

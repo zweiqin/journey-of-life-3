@@ -5,7 +5,7 @@
 		<view class="addressBack-box">
 			<view class="consignee-box bor-line-F7F7F7">
 				<input
-					v-model="addressData.username" maxlength="20" class="fs28" placeholder-class="consignee"
+					v-model="addressData.receiveName" maxlength="20" class="fs28" placeholder-class="consignee"
 					placeholder="收货人"
 				/>
 			</view>
@@ -16,10 +16,10 @@
 					placeholder="手机号码"
 				/>
 			</view>
-			<view class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="locationClick">
+			<view class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items">
 				<view class="fs28 location">所在地</view>
 				<view class="locationBox">
-					<JCity :text="addressData.ssqText" placeholder="请选择所在地" @confirm="cityChange"></JCity>
+					<JArea :text="addressData.receiveAdress" placeholder="请选择所在地" @confirm="handleSelectArea"></JArea>
 					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
@@ -31,18 +31,21 @@
 			</view>
 		</view>
 		<view class="addressTagBack-box">
-			<view class="addressTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="addressTagClick">
+			<view
+				class="addressTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items"
+				@click="addressTagShowFalg = true"
+			>
 				<view class="fs28 addressTag">地址标签</view>
 				<view class="flex-items">
-					<text v-model="tag">{{ tag }}</text>
+					<text>{{ addressData.tag }}</text>
 					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
 			<view class="defaultState-box flex-row-plus flex-sp-between flex-items">
 				<view class="fs28 defaultState">设为默认地址</view>
 				<tui-switch
-					:scale-ratio="0.6" color="#C5AA7B"
-					:checked="!!ifDefault" @change="(e) => ifDefault = Number(e.value)"
+					:scale-ratio="0.6" color="#C5AA7B" :checked="!!addressData.ifDefault"
+					@change="(e) => addressData.ifDefault = Number(e.value)"
 				></tui-switch>
 			</view>
 		</view>
@@ -54,8 +57,8 @@
 			<view v-else class="saveAddress" @click="saveAddressClick">保存</view>
 		</view>
 		<tui-picker
-			:show="addressTagShowFalg" :picker-data="addressTagList" :value="[ tag ]"
-			@hide="addressTagShowFalg = false" @change="(e) => tag = e.text"
+			:show="addressTagShowFalg" :picker-data="addressTagList" :value="[ addressData.tag ]"
+			@hide="addressTagShowFalg = false" @change="(e) => addressData.tag = e.text"
 		>
 		</tui-picker>
 	</view>
@@ -68,14 +71,7 @@ export default {
 	name: 'AddAddress',
 	data() {
 		return {
-			show: false,
 			type: 1, // 1.添加新地址 2.编辑收货地址
-			locationShowFalg: false,
-			locationList: [],
-			locationName: '',
-			provinceName: '',
-			cityName: '',
-			districtName: '',
 			addressTagList: [
 				{
 					value: '1',
@@ -91,100 +87,68 @@ export default {
 				}
 			],
 			addressTagShowFalg: false,
-			areaList: [],
-			username: '',
-			phone: '',
-			ssqText: '',
-			address: '',
-			tag: '',
-			ifDefault: 0,
-			province: '',
-			city: '',
-			area: '',
-			id: '',
 			ordertype: 0,
-			editAddress: {},
-			// defaultRegion: [],
 			addressData: {
-				username: '',
+				receiveId: '',
+				receiveName: '',
 				phone: '',
-				ssqText: '',
+				receiveAdress: '',
 				address: '',
+				ifDefault: 0,
 				defaultRegion: [],
+				province: '',
 				city: '',
-				province: ''
+				area: '',
+				township: '',
+				tag: ''
 			}
 		}
 	},
 	onLoad(options) {
 		this.type = options.type
-		if (options.ordertype == 1) {
-			this.ordertype = 1
-		}
-		const receiveId = options.receiveId
-		this.id = receiveId
+		if (options.ordertype == 1) this.ordertype = 1
+		this.addressData.receiveId = options.receiveId
 		if (this.type == 2) {
-			// uni.showLoading({
-			//   mask: true,
-			//   title: '请稍后...',
-			// })
-			getReceiveAddressByIdApi({ receiveId }).then((res) => {
-				this.editAddress = res.data
-				this.addressData.username = this.editAddress.receiveName
-				this.addressData.phone = this.editAddress.receivePhone
-				this.addressData.ssqText = this.editAddress.receiveAdress
-				this.addressData.address = this.editAddress.address
-				this.tag = this.editAddress.label
-				this.ifDefault = this.editAddress.ifDefault
-				this.addressData.defaultRegion = this.addressData.ssqText.split('-')
+			uni.showLoading()
+			getReceiveAddressByIdApi({ receiveId: options.receiveId }).then((res) => {
+				this.addressData.receiveName = res.data.receiveName
+				this.addressData.phone = res.data.receivePhone
+				this.addressData.receiveAdress = res.data.receiveAdress
+				this.addressData.address = res.data.address
+				this.addressData.tag = res.data.label
+				this.addressData.ifDefault = res.data.ifDefault
+				this.addressData.defaultRegion = res.data.receiveAdress.split('-')
 				this.addressData.province = this.addressData.defaultRegion[0]
 				this.addressData.city = this.addressData.defaultRegion[1]
 				this.addressData.area = this.addressData.defaultRegion[2]
-				this.addressData.id = this.editAddress.receiveId
+				this.addressData.township = this.addressData.defaultRegion[3]
+				this.addressData.receiveId = res.data.receiveId
 				uni.hideLoading()
 			})
 		}
 		if (this.type == 3) {
 			const obj = JSON.parse(options.wxAddressData)
-			this.addressData = obj
-			// this.username = obj.username
-			// this.phone = obj.phone
-			// this.ssqText =  obj.ssqText
-			// this.defaultRegion = obj.defaultRegion
-			// this.address = obj.address
-			// this.province = obj.provinceName
-			// this.city = obj.cityName
+			this.addressData = { ...this.addressData, ...obj }
 		}
 	},
 	methods: {
-		cityChange(e) {
-			this.addressData.ssqText = e.province.text + '-' + e.city.text + '-' + e.county.text
+		handleSelectArea(e) {
+			this.addressData.receiveAdress = e.province.text + '-' + e.city.text + '-' + e.county.text + '-' + e.township.text
 			this.addressData.province = e.province.text
 			this.addressData.city = e.city.text
 			this.addressData.area = e.county.text
-		},
-		locationClick() {
-			this.locationShowFalg = true
-		},
-		locationConfirm(e) {
-			this.provinceName = e[0].label
-			this.cityName = e[1].label
-			this.districtName = e[2].label
-			this.locationDot = '·'
-		},
-		addressTagClick() {
-			this.addressTagShowFalg = true
+			this.addressData.township = e.township.text
 		},
 		// 编辑地址
 		saveAddressClick() {
 			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
-			if (this.addressData.username == '') {
+			if (!this.addressData.receiveName) {
 				uni.showToast({
 					title: '请输入收货人！',
 					duration: 2000,
 					icon: 'none'
 				})
-			} else if (this.addressData.phone == '') {
+			} else if (!this.addressData.phone) {
 				uni.showToast({
 					title: '请输入手机号！',
 					duration: 2000,
@@ -196,7 +160,7 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-			} else if (this.addressData.province == '' || this.addressData.city == '') {
+			} else if (!this.addressData.province || !this.addressData.city) {
 				uni.showToast({
 					title: '所在地不能为空！',
 					duration: 2000,
@@ -210,30 +174,28 @@ export default {
 				})
 			} else {
 				updateReceiveAddressApi({
-					receiveId: this.id,
-					receiveName: this.addressData.username,
+					receiveId: this.addressData.receiveId,
+					receiveName: this.addressData.receiveName,
 					receivePhone: this.addressData.phone,
-					receiveAdress: this.addressData.ssqText,
+					receiveAdress: this.addressData.receiveAdress,
 					address: this.addressData.address,
-					label: this.tag,
-					ifDefault: this.ifDefault ? 1 : 0
+					label: this.addressData.tag,
+					ifDefault: this.addressData.ifDefault
 				}).then((res) => {
-					uni.navigateBack({
-						delta: 1
-					})
+					uni.navigateBack()
 				})
 			}
 		},
 		// 新增地址
 		addAddressClick() {
 			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
-			if (this.addressData.username == '') {
+			if (!this.addressData.receiveName) {
 				uni.showToast({
 					title: '请输入收货人！',
 					duration: 2000,
 					icon: 'none'
 				})
-			} else if (this.addressData.phone == '') {
+			} else if (!this.addressData.phone) {
 				uni.showToast({
 					title: '请输入手机号！',
 					duration: 2000,
@@ -245,7 +207,7 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-			} else if (this.addressData.province == '' || this.addressData.city == '') {
+			} else if (!this.addressData.province || !this.addressData.city) {
 				uni.showToast({
 					title: '所在地不能为空！',
 					duration: 2000,
@@ -259,12 +221,12 @@ export default {
 				})
 			} else {
 				addReceiveAddressApi({
-					receiveName: this.addressData.username,
+					receiveName: this.addressData.receiveName,
 					receivePhone: this.addressData.phone,
-					receiveAdress: this.addressData.ssqText,
+					receiveAdress: this.addressData.receiveAdress,
 					address: this.addressData.address,
-					label: this.tag,
-					ifDefault: this.ifDefault ? 1 : 0
+					label: this.addressData.tag,
+					ifDefault: this.addressData.ifDefault
 				}).then((res) => {
 					if (this.ordertype == 1) {
 						uni.setStorageSync(T_RECEIVE_ITEM, res.data)

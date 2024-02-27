@@ -34,7 +34,7 @@
 				></tui-tabs>
 			</view>
 			<view v-if="currentTab === 0">
-				<tui-list-view v-if="activityList && activityList.length" title="">
+				<tui-list-view v-if="activityList && activityList.length">
 					<tui-list-cell v-for="item in activityList" :key="item.id">
 						<view style="display: flex;" @click="handleClickActivity(item)">
 							<view>
@@ -52,7 +52,7 @@
 						</view>
 					</tui-list-cell>
 				</tui-list-view>
-				<tui-list-view v-else margin-top="20px" title="">
+				<tui-list-view v-else margin-top="20px">
 					<view style="text-align: center;">该地区暂无活动哟~</view>
 				</tui-list-view>
 				<!-- <LoadingMore v-show="status !== 'none'" :status="status"></LoadingMore> -->
@@ -112,7 +112,7 @@
 													<template #content>
 														<view style="margin: 0 16upx;background-color: #e1e2e0;">
 															<view v-if="part.userDtoList && part.userDtoList.length">
-																<tui-list-view title="">
+																<tui-list-view>
 																	<tui-list-cell
 																		v-for="section in part.userDtoList" :key="section.id"
 																		background-color="transparent"
@@ -142,7 +142,7 @@
 									<view v-else-if="item.campaignsType === 1">1</view>
 									<view v-else-if="item.campaignsType === 2">
 										<view v-if="serviceSharingLogs.userDtos && serviceSharingLogs.userDtos.length">
-											<tui-list-view title="">
+											<tui-list-view>
 												<tui-list-cell
 													v-for="part in serviceSharingLogs.userDtos" :key="part.userId"
 													background-color="transparent"

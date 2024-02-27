@@ -23,7 +23,7 @@
 						<template #content>
 							<view style="margin: 0 24upx;background-color: #ebebea;">
 								<view v-if="item.orderList && item.orderList.length">
-									<tui-list-view title="">
+									<tui-list-view>
 										<tui-list-cell
 											v-for="part in item.orderList" :key="part.orderFormid"
 											background-color="transparent"

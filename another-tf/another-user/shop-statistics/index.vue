@@ -43,7 +43,7 @@
 					<template #dropdownbox>
 						<view style="width: fit-content;box-sizing: border-box;">
 							<tui-list-view
-								title="" color="#777" margin-top="2rpx"
+								color="#777" margin-top="2rpx"
 								style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
 							>
 								<tui-list-cell
@@ -185,7 +185,7 @@
 				</view>
 			</view>
 			<tui-list-view
-				v-if="shopStatisticsData.hotSellProducts && shopStatisticsData.hotSellProducts.length" title=""
+				v-if="shopStatisticsData.hotSellProducts && shopStatisticsData.hotSellProducts.length"
 				unlined="all" margin-top="30upx"
 			>
 				<tui-list-cell

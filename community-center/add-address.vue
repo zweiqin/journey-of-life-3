@@ -1,8 +1,6 @@
 <template>
 	<view class="add-address">
-		<view class="title">添加服务地址</view>
-		<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-			class="return" @click="handleBack" />
+		<JHeader title="添加服务地址" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 
 
 		<view class="main">
@@ -38,14 +36,7 @@
 										            font-size: 30upx;
 										          ">
 				</JCity>
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png" alt=""
-					class="location" style="
-										            width: 40upx;
-										            height: 40upx;
-										            position: absolute;
-										            top: 20upx;
-										            right: 20upx;
-										          " />
+										<tui-icon name="gps" :size="20" color="#3662ec"></tui-icon>
 			</view>
 			<view class="add-list">
 				<view class="detail-address">详细地址</view>
@@ -53,14 +44,9 @@
 					<textarea name="input" class="address" v-model="form.addressDetail" placeholder="(请输入详细地址)"
 						placeholder-class="input-placeholder" />
 				</view>
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png" alt=""
-					class="edit" style="
-									            width: 32upx;
-									            height: 32upx;
-									            position: absolute;
-									            right: 20upx;
-									            bottom: 30upx;
-									          " />
+								<view style="position: absolute;right: 20upx;bottom: 30upx;">
+										<tui-icon name="feedback" :size="16" color="#999999"></tui-icon>
+								</view>
 			</view>
 			<!-- <view class="background">
 				<textarea name="" id="" cols="30" rows="10" placeholder="粘贴地址信息、电话、姓名可自动识别" class="input"></textarea>

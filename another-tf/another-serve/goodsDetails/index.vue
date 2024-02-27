@@ -45,15 +45,22 @@
 
 				<!-- 发货 -->
 				<view v-if="goodsDetail.ifLogistics" class="express-box flex-items flex-row fs24">
-					<label class="fs24 font-color-999 mar-right-20 ">发货</label>
+					<view class="fs24 font-color-999 mar-right-20 ">发货</view>
 					<tui-icon
 						v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
 						color="#c1c1c1"
 					></tui-icon>
-					<label v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
+					<view v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
 						{{ goodsDetail.receive.receiveAdress }}
-					</label>
-					<label>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</label>
+					</view>
+					<view>
+						<text
+							v-if="[1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1285, 1286].includes(goodsDetail.classifyId)"
+						>
+							物流费另算
+						</text>
+						<text v-else>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</text>
+					</view>
 				</view>
 
 				<!-- 选择SKU -->
@@ -126,8 +133,7 @@
 						</view>
 						<view class="flex-display flex-column mar-left-20">
 							<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
-								{{ goodsDetail.shopName
-								}}
+								{{ goodsDetail.shopName }}
 							</label>
 							<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
 								<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
@@ -157,7 +163,8 @@
 				<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
 					<view class="btns_container">
 						<view
-							v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')" class="btns flex-column-plus flex-items"
+							v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
+							class="btns flex-column-plus flex-items"
 							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 						>
 							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>

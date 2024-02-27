@@ -2,27 +2,21 @@
   <view class="community-detail">
     <view class="head">
       <!-- 顶部区域 -->
-      <view class="title-list">
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
-        <view class="title" @click="handleBack">
-          <text class="page-title">{{ title }}</text>
-        </view>
-        <view class="location">
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt="" class="icon" />
-          <TuanLocation>
-            <text class="locale">
-              {{ $store.getters.currentCity || '定位失败' }}
-            </text>
-          </TuanLocation>
-        </view>
-      </view>
+			<JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx;">
+				<template #ftFn>
+					<view style="display: flex;align-items: center;justify-content: space-between;padding-right: 18upx;">
+						<tui-icon name="gps" :size="20" color="#2b2b2b"></tui-icon>
+						<TuanLocation>
+							<text class="locale">
+								{{ $store.getters.currentCity || '定位失败' }}
+							</text>
+						</TuanLocation>
+					</view>
+				</template>
+			</JHeader>
 
       <!-- 轮播图 -->
       <view class="goods">
-        <!-- <image :src="
-					serverUrl ||
-					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-					" alt="" class="img" @click="preview(serverUrl)" /> -->
         <Carousel
           ref="carouselRef"
           :is-lazy-load="false"
@@ -344,9 +338,6 @@ export default {
         console.log(error);
       }
     },
-    handleBack() {
-      uni.navigateBack();
-    },
     handleToServiceListHome(item) {
       // console.log('更多服务分类列表', item)
       this.value = item;
@@ -619,50 +610,9 @@ export default {
   background: #f7f8fa;
 
   .head {
-    padding-top: 20upx;
     background: #ffffff;
     // padding-right: 20upx;
     box-sizing: border-box;
-
-    .title-list {
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 20upx 0upx 36upx 16upx;
-
-      .return {
-        width: 48upx;
-        height: 48upx;
-      }
-
-      .title {
-        // flex: 1;
-        text-align: center;
-        font-size: 36upx;
-        font-weight: bold;
-        color: #3d3d3d;
-      }
-
-      .location {
-        // width: 124upx;
-        height: 40upx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        right: 20upx;
-
-        .icon {
-          width: 28upx;
-          height: 28upx;
-        }
-
-        .address {
-          font-size: 28upx;
-          color: rgba(0, 0, 0, 0.85);
-        }
-      }
-    }
 
     .goods {
       // margin: 0upx 82upx;
