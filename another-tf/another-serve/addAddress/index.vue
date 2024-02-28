@@ -23,6 +23,15 @@
 					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
+			<view
+				v-if="selectTownshipId && communityList && communityList.length" class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items"
+				@click="isShowCommunityListSelect = true"
+			>
+				<view class="fs28 location">所在小区</view>
+				<view :style="{ color: selectTownshipId ? '#999999' : '#000000' }">
+					请选择所在小区
+				</view>
+			</view>
 			<view class="detailAddress-box">
 				<input
 					v-model="addressData.address" class="fs28" maxlength="60" placeholder-class="detailAddress"
@@ -53,20 +62,25 @@
 			<text class="font-color-C5AA7B">删除收货地址</text>
 		</view>
 		<view class="saveAddress-box">
-			<view v-if="type == 1 || type == 3" class="saveAddress" @click="addAddressClick">保存</view>
-			<view v-else class="saveAddress" @click="saveAddressClick">保存</view>
+			<view v-if="type == 1 || type == 3" class="saveAddress" @click="handleAddressClick">保存</view>
+			<view v-else class="saveAddress" @click="handleAddressClick">保存</view>
 		</view>
 		<tui-picker
 			:show="addressTagShowFalg" :picker-data="addressTagList" :value="[ addressData.tag ]"
 			@hide="addressTagShowFalg = false" @change="(e) => addressData.tag = e.text"
 		>
 		</tui-picker>
+		<!-- 银行 -->
+		<tui-select
+			:list="communityList" reverse :show="isShowCommunityListSelect" @confirm="handleSelectCommunityList"
+			@close="isShowCommunityListSelect = false"
+		></tui-select>
 	</view>
 </template>
 
 <script>
 import { T_RECEIVE_ITEM } from '../../../constant'
-import { getReceiveAddressByIdApi, updateReceiveAddressApi, addReceiveAddressApi, deleteReceiveAddressApi } from '../../../api/anotherTFInterface'
+import { getReceiveAddressByIdApi, updateReceiveAddressApi, addReceiveAddressApi, deleteReceiveAddressApi, getCityCommunitySelectApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'AddAddress',
 	data() {
@@ -100,8 +114,12 @@ export default {
 				city: '',
 				area: '',
 				township: '',
+				communityName: '',
 				tag: ''
-			}
+			},
+			selectTownshipId: '',
+			communityList: [],
+			isShowCommunityListSelect: false
 		}
 	},
 	onLoad(options) {
@@ -118,10 +136,11 @@ export default {
 				this.addressData.tag = res.data.label
 				this.addressData.ifDefault = res.data.ifDefault
 				this.addressData.defaultRegion = res.data.receiveAdress.split('-')
-				this.addressData.province = this.addressData.defaultRegion[0]
-				this.addressData.city = this.addressData.defaultRegion[1]
-				this.addressData.area = this.addressData.defaultRegion[2]
-				this.addressData.township = this.addressData.defaultRegion[3]
+				this.addressData.province = this.addressData.defaultRegion[0] || ''
+				this.addressData.city = this.addressData.defaultRegion[1] || ''
+				this.addressData.area = this.addressData.defaultRegion[2] || ''
+				this.addressData.township = this.addressData.defaultRegion[3] || ''
+				this.addressData.communityName = this.addressData.defaultRegion[4] || ''
 				this.addressData.receiveId = res.data.receiveId
 				uni.hideLoading()
 			})
@@ -138,92 +157,47 @@ export default {
 			this.addressData.city = e.city.text
 			this.addressData.area = e.county.text
 			this.addressData.township = e.township.text
+			this.selectTownshipId = e.township.id
+			if (e.township.id) this.handleGetCommunityList(e.township.id)
 		},
-		// 编辑地址
-		saveAddressClick() {
+		handleGetCommunityList(cityId) {
+			uni.showLoading()
+			getCityCommunitySelectApi({ cityId })
+				.then(({ data }) => {
+					this.communityList = data.map((item) => ({
+						...item,
+						value: item.id,
+						text: item.communityName
+					}))
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		handleSelectCommunityList(e) {
+			this.isShowCommunityListSelect = false
+			this.addressData.communityName = e.options.text
+		},
+		handleAddressClick() {
 			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
 			if (!this.addressData.receiveName) {
-				uni.showToast({
-					title: '请输入收货人！',
-					duration: 2000,
-					icon: 'none'
-				})
+				this.$showToast('请输入收货人！')
 			} else if (!this.addressData.phone) {
-				uni.showToast({
-					title: '请输入手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
+				this.$showToast('请输入手机号！')
 			} else if (!phoneCodeVerification.test(this.addressData.phone)) {
-				uni.showToast({
-					title: '请输入正确的手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
+				this.$showToast('请输入正确的手机号！')
 			} else if (!this.addressData.province || !this.addressData.city) {
-				uni.showToast({
-					title: '所在地不能为空！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.addressData.address == '') {
-				uni.showToast({
-					title: '请输入详细地址！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else {
-				updateReceiveAddressApi({
-					receiveId: this.addressData.receiveId,
-					receiveName: this.addressData.receiveName,
-					receivePhone: this.addressData.phone,
-					receiveAdress: this.addressData.receiveAdress,
-					address: this.addressData.address,
-					label: this.addressData.tag,
-					ifDefault: this.addressData.ifDefault
-				}).then((res) => {
-					uni.navigateBack()
-				})
-			}
-		},
-		// 新增地址
-		addAddressClick() {
-			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
-			if (!this.addressData.receiveName) {
-				uni.showToast({
-					title: '请输入收货人！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (!this.addressData.phone) {
-				uni.showToast({
-					title: '请输入手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (!phoneCodeVerification.test(this.addressData.phone)) {
-				uni.showToast({
-					title: '请输入正确的手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (!this.addressData.province || !this.addressData.city) {
-				uni.showToast({
-					title: '所在地不能为空！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.addressData.address == '') {
-				uni.showToast({
-					title: '请输入详细地址！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else {
+				this.$showToast('所在地不能为空！')
+			} else if (!this.addressData.address) {
+				this.$showToast('请输入详细地址！')
+			} else if (this.communityList && this.communityList.length && !this.addressData.communityName) {
+				this.$showToast('请选择所在社区！')
+			} else if ((this.type == 1) || (this.type == 3)) {
 				addReceiveAddressApi({
 					receiveName: this.addressData.receiveName,
 					receivePhone: this.addressData.phone,
-					receiveAdress: this.addressData.receiveAdress,
+					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
 					address: this.addressData.address,
 					label: this.addressData.tag,
 					ifDefault: this.addressData.ifDefault
@@ -234,10 +208,20 @@ export default {
 							delta: 2
 						})
 					} else {
-						uni.navigateBack({
-							delta: 1
-						})
+						uni.navigateBack()
 					}
+				})
+			} else {
+				updateReceiveAddressApi({
+					receiveId: this.addressData.receiveId,
+					receiveName: this.addressData.receiveName,
+					receivePhone: this.addressData.phone,
+					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
+					address: this.addressData.address,
+					label: this.addressData.tag,
+					ifDefault: this.addressData.ifDefault
+				}).then((res) => {
+					uni.navigateBack()
 				})
 			}
 		},

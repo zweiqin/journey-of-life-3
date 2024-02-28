@@ -412,22 +412,6 @@ export const navList = [
   }
 ];
 
-//详情图片
-export const imglist = [
-  {
-    value: 1,
-    icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6h2p8u4uktb8gbhwauw8.png'
-  },
-  {
-    value: 2,
-    icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/q2rf6x9hlytiuo53urkx.png'
-  },
-  {
-    value: 3,
-    icon: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/chkivuapm9jn8z8bz29k.png'
-  }
-];
-
 export const orderStatusMap = {
   0: {
     label: '待支付',

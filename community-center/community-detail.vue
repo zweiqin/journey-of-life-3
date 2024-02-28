@@ -52,7 +52,7 @@
         <view class="a">
           <BeeWxShare ref="beeWxShareRef" @click="handleClickShare">
             <view class="share">
-              <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png" alt="" class="image" />
+							<tui-icon name="share-fill" :size="40" unit="rpx" color="#999999"></tui-icon>
               <view class="text">分享</view>
             </view>
           </BeeWxShare>
@@ -125,16 +125,12 @@
         </view>
 
         <!-- #ifdef H5 -->
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt="" class="more" />
+				<tui-icon :size="32" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
         <!-- #endif -->
       </view>
     </view>
 
     <view id="norm" class="body">
-      <!-- <view class="top">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
-				class="top-img" />
-				</view> -->
       <!-- 收费标准,服务内容,用户评价 -->
       <view class="top-list">
         <view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
@@ -164,24 +160,12 @@
           <UParse v-if="serverInfo" :content="goodsInfoDetail"></UParse>
         </view>
       </view>
-
-      <!-- <view class="middle">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
-				class="mid-img" />
-				</view>
-				<view class="process">
-				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
-				</view>
-				<view class="tips">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
-				class="img-tips" />
-				</view> -->
     </view>
     <!-- 其他服务 -->
     <view class="other">
       <view v-for="item in moreService" :key="item.value" class="other-service" @click="handleToServiceListHome(item.value)">
         <view class="text">其他服务</view>
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt="" class="show" />
+				<tui-icon :size="40" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
       </view>
     </view>
 
@@ -190,7 +174,7 @@
       <view class="list">
         <view class="online" @click="handleChat">
           <!-- #ifdef H5 -->
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt="" class="seek" />
+					<tui-icon :size="48" unit="rpx" color="#e95e20" name="kefu" margin="0"></tui-icon>
           <view class="name">在线咨询</view>
           <!-- #endif -->
         </view>

@@ -6,12 +6,7 @@
         :searchValue="searchValue"
         v-model="showSearchPane"
       ></SearchPane>
-      <image
-        @click="handleBack"
-        class="back"
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-        mode=""
-      />
+			<tui-icon :size="48" unit="rpx" color="#000000" name="arrowleft" margin="0" @click="handleBack"></tui-icon>
 			<TuanLocation>
 				<text>{{ $store.getters.currentCity || '定位失败' }}</text>
 			</TuanLocation>

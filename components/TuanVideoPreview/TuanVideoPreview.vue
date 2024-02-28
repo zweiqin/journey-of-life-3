@@ -7,7 +7,7 @@
         <video
           v-if="videoList.length === 1"
           style="width: 100vw"
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/s6ozuktlz0n5jtoc9plr.mp4"
+          :src="common.seamingImgUrl(videoList[0])"
         ></video>
 
         <swiper :current="currentIndex" @change="handleSwiperChange" class="swiper-container" v-if="videoList.length > 1">

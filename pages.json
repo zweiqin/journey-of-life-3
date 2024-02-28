@@ -491,15 +491,15 @@
         {
           "path": "pay"
         },
-        {
-          "path": "furniture-maintenance"
-        },
-        {
-          "path": "service-detail"
-        },
-        {
-          "path": "service-order"
-        },
+        // {
+        //   "path": "furniture-maintenance"
+        // },
+        // {
+        //   "path": "service-detail"
+        // },
+        // {
+        //   "path": "service-order"
+        // },
         {
           "path": "add-address"
         },
