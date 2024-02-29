@@ -4,18 +4,15 @@
     <view class="border">
       <view class="detail">
         <img
-          src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.gpbctv.com%2Fuploads%2F20210424%2Fzip_1619246266UkP6CL.jpg&refer=http%3A%2F%2Fwww.gpbctv.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1669429029&t=b6ce2f095df9c91c800c4389e8a24e7f"
+          src="../../../static/logo.png"
           alt=""
           class="leftImg"
         />
         <view class="rightText">
           <view class="top">
             <view class="topLeft">{{ "莎士比亚·代斯基二世" || name }}</view>
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/76brxks9dvmy40qho2fl.png"
-              alt=""
-              class="topRight"
-          /></view>
+					<view class="topRight"><tui-icon name="share" :size="36" unit="rpx" color="#a8a8a8" margin="0"></tui-icon></view>
+					</view>
           <view class="middle">{{ "营销策划师" || identity }}</view>
           <view class="bottom">{{ "广东团蜂科技有限公司" || address }}</view>
         </view>

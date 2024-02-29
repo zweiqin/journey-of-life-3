@@ -36,9 +36,7 @@ export default {
 		list: {
 			type: Array,
 			default: () => [
-				'https://img0.baidu.com/it/u=138670212,3825563627&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=248',
-				'https://img0.baidu.com/it/u=906034522,1602987140&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=208',
-				'https://img2.baidu.com/it/u=3652009798,4006120259&fm=253&fmt=auto&app=138&f=JPEG?w=1024&h=479',
+				require('../../static/logo.png')
 			],
 		},
 		indicationPoint: {

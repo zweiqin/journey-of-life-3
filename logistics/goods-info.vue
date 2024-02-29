@@ -66,7 +66,7 @@
                   <image
                     :src="
                       item.imageUrl ||
-                      'https://img0.baidu.com/it/u=3623336039,4242912317&fm=253&fmt=auto&app=138&f=JPEG?w=300&h=300'
+                      require('../static/logo.png')
                     "
                     class="category-img"
                     mode=""

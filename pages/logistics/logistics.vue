@@ -6,9 +6,7 @@
     </Search>
     <Carousel
       :list="[
-        'https://img0.baidu.com/it/u=1781395553,1101009469&fm=253&fmt=auto&app=138&f=JPEG?w=540&h=300',
-        'https://img0.baidu.com/it/u=3581503522,3128729929&fm=253&fmt=auto&app=138&f=JPEG?w=903&h=500',
-        'https://img2.baidu.com/it/u=483246757,1868984082&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=210'
+        require('../../static/logo.png')
       ]"
       :height="152"
     ></Carousel>
@@ -64,35 +62,6 @@
 				</view>
       </view>
     </view>
-
-    <!-- <Panel title="历史签收包裹" routeText="查看更多">
-      <view class="packagee-wrapper">
-        <img
-          class="package"
-          src="https://img0.baidu.com/it/u=2996696574,2705500697&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-          alt=""
-        />
-        <img
-          class="package"
-          src="https://img0.baidu.com/it/u=2996696574,2705500697&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-          alt=""
-        />
-        <img
-          class="package"
-          src="https://img0.baidu.com/it/u=2996696574,2705500697&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-          alt=""
-        />
-        <img
-          class="package"
-          src="https://img0.baidu.com/it/u=2996696574,2705500697&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-          alt=""
-        />
-      </view>
-    </Panel> -->
-
-    <!-- <view class="kefu">
-      <img class="img" src="../../static/images/wuliu/kefu.png" alt="" />
-    </view> -->
   </view>
 </template>
 

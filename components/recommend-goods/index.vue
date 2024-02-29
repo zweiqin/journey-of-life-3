@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Goods from '../goods';
+import Goods from './goods';
 import { everyLookApi } from '../../api/goods';
 export default {
   props: {

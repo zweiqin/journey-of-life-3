@@ -19,7 +19,10 @@
 			<view class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items">
 				<view class="fs28 location">所在地</view>
 				<view class="locationBox">
-					<JArea :text="addressData.receiveAdress" placeholder="请选择所在地" @confirm="handleSelectArea"></JArea>
+					<JSubArea
+						:code="0" :text="addressData.receiveAdress" placeholder="请选择所在地"
+						@confirm="handleSelectArea"
+					></JSubArea>
 					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
@@ -115,9 +118,12 @@ export default {
 				area: '',
 				township: '',
 				communityName: '',
+				areaId: '',
+				communityId: '',
 				tag: ''
 			},
 			selectTownshipId: '',
+			selectCommunityId: '',
 			communityList: [],
 			isShowCommunityListSelect: false
 		}
@@ -141,6 +147,8 @@ export default {
 				this.addressData.area = this.addressData.defaultRegion[2] || ''
 				this.addressData.township = this.addressData.defaultRegion[3] || ''
 				this.addressData.communityName = this.addressData.defaultRegion[4] || ''
+				this.addressData.areaId = this.addressData.areaId || ''
+				this.addressData.communityId = this.addressData.communityId || ''
 				this.addressData.receiveId = res.data.receiveId
 				uni.hideLoading()
 			})
@@ -152,13 +160,14 @@ export default {
 	},
 	methods: {
 		handleSelectArea(e) {
-			this.addressData.receiveAdress = e.province.text + '-' + e.city.text + '-' + e.county.text + '-' + e.township.text
-			this.addressData.province = e.province.text
-			this.addressData.city = e.city.text
-			this.addressData.area = e.county.text
-			this.addressData.township = e.township.text
-			this.selectTownshipId = e.township.id
-			if (e.township.id) this.handleGetCommunityList(e.township.id)
+			this.addressData.receiveAdress = e.areaInfo.reduce((total, value, index, arr) => `${index ? total + '-' : ''}${value.text}`, '')
+			this.addressData.province = e.areaInfo[0].text
+			this.addressData.city = e.areaInfo[1].text
+			this.addressData.area = (e.areaInfo[2] && e.areaInfo[2].text) || ''
+			this.addressData.township = (e.areaInfo[3] && e.areaInfo[3].text) || ''
+			this.addressData.areaId = (e.areaInfo[e.areaInfo.length - 1] && e.areaInfo[e.areaInfo.length - 1].parentId) || ''
+			this.selectTownshipId = (e.areaInfo[3] && e.areaInfo[3].parentId) || ''
+			if (this.selectTownshipId) this.handleGetCommunityList(this.selectTownshipId)
 		},
 		handleGetCommunityList(cityId) {
 			uni.showLoading()
@@ -178,6 +187,7 @@ export default {
 		handleSelectCommunityList(e) {
 			this.isShowCommunityListSelect = false
 			this.addressData.communityName = e.options.text
+			this.selectCommunityId = e.options.value
 		},
 		handleAddressClick() {
 			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
@@ -198,6 +208,8 @@ export default {
 					receiveName: this.addressData.receiveName,
 					receivePhone: this.addressData.phone,
 					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
+					areaId: this.addressData.areaId,
+					communityId: this.addressData.communityId,
 					address: this.addressData.address,
 					label: this.addressData.tag,
 					ifDefault: this.addressData.ifDefault
@@ -217,6 +229,8 @@ export default {
 					receiveName: this.addressData.receiveName,
 					receivePhone: this.addressData.phone,
 					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
+					areaId: this.addressData.areaId,
+					communityId: this.addressData.communityId,
 					address: this.addressData.address,
 					label: this.addressData.tag,
 					ifDefault: this.addressData.ifDefault
@@ -234,19 +248,14 @@ export default {
 				cancelText: '取消',
 				success: (res) => {
 					if (res.confirm) {
-						this.subm()
+						deleteReceiveAddressApi({
+							receiveId: this.addressData.receiveId
+						}).then((res) => {
+							if (res.code === '200') {
+								uni.navigateBack()
+							}
+						})
 					}
-				}
-			})
-		},
-		subm() {
-			deleteReceiveAddressApi({
-				receiveId: this.id
-			}).then((res) => {
-				if (res.code === '200') {
-					uni.navigateBack({
-						delta: 1
-					})
 				}
 			})
 		}

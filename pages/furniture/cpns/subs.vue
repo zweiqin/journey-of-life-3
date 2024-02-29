@@ -5,7 +5,7 @@
       <img
         :src="
           picUrl ||
-          'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png'
+          require('../../../static/images/new-user/default-user-avatar.png')
         "
         alt=""
         class="goods"

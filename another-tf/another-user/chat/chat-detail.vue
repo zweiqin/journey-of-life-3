@@ -230,9 +230,9 @@
 		<view class="op-footer">
 			<view class="send-wrapper">
 				<tui-input
-					v-model="words" placeholder="请输入..." type="text"
-					confirm-type="发送" padding="0"
-					style="width: 100%;" @confirm="handleSendMessage"
+					v-model="words" placeholder="请输入..." type="text" confirm-type="发送"
+					padding="0" style="width: 100%;"
+					@confirm="handleSendMessage"
 				>
 					<template #right>
 						<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleSendMessage">
@@ -241,28 +241,35 @@
 					</template>
 				</tui-input>
 			</view>
-
-			<view class="upload-container">
+			<tui-button
+				v-if="!Number(chat)" type="warning" width="116rpx" height="46rpx"
+				shape="circle" margin="0 8rpx" plain
+				@click="handleOpenCustomerService"
+			>
+				转人工
+			</tui-button>
+			<view v-if="Number(chat)" style="position: relative;">
 				<tui-bubble-popup
 					ref="refBubblePopup" :show="isShowBubblePopup" :mask="false" position="absolute"
 					direction="bottom" width="180rpx" right="0" top="0rpx"
-					translate-y="-110%" triangle-right="28rpx"
+					translate-y="-110%" triangle-right="18rpx"
 					triangle-bottom="-22rpx"
 				>
-					<view v-if="Number(chat)" class="tui-menu-item" @click="handleSendImg">发送图片</view>
-					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
-					<view v-if="Number(chat)" class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
-					<view
-						v-if="!Number(chat)" class="tui-menu-item"
+					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handleSendImg">发送图片</view>
+					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handlePopup('Order')">发送订单</view>
+					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handlePopup('Goods')">发送商品</view>
+					<!-- <view
+						v-if="!Number(chat)" style="padding: 16upx 10upx;"
 						@click="handleOpenCustomerService"
-					>
+						>
 						转人工
-					</view>
+						</view> -->
 				</tui-bubble-popup>
-				<image
-					class="upload" src="../../../static/images/icon/add.png" mode=""
+				<tui-icon
+					name="add-fill" :size="54" unit="rpx" color="#e95d20"
+					margin="0"
 					@click="isShowBubblePopup = !isShowBubblePopup"
-				/>
+				></tui-icon>
 			</view>
 		</view>
 		<tui-bottom-popup :show="isShowOrderPopup" @close="handleClosePopup('Order')">
@@ -1098,7 +1105,6 @@ export default {
 
 		.send-wrapper {
 			flex: 1;
-			background-color: brown;
 			background-color: #fff;
 			border-radius: 100upx;
 			height: 80upx;
@@ -1107,26 +1113,6 @@ export default {
 			padding: 10upx 30upx;
 			box-sizing: border-box;
 
-		}
-
-		.upload-container {
-			position: relative;
-
-			.tui-menu-item {
-				width: 100%;
-				padding: 16upx 10upx;
-				box-sizing: border-box;
-			}
-
-			.upload {
-				width: 64upx;
-				height: 64upx;
-				border-radius: 50%;
-				overflow: hidden;
-				// margin-left: 32upx;
-				flex-shrink: 0;
-				background-color: #fff;
-			}
 		}
 	}
 

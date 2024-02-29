@@ -12,7 +12,8 @@
 					一键分享
 				</tui-button>
 			</view>
-			<view v-if="settlement.shopType !== 2">
+			<!-- v-if="settlement.shopType !== 2" -->
+			<view>
 				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
 					<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
 					<!-- 有地址的 -->
@@ -448,7 +449,7 @@ export default {
 					}
 				}
 				this.shopIndex = 0
-				if (this.settlement.shopType !== 2) { // 1品牌商家，2商圈商家
+				if (this.settlement.shopType) { // this.settlement.shopType === 1 // 1品牌商家，2商圈商家
 					if (uni.getStorageSync(T_RECEIVE_ITEM)) {
 						this.userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
 						this.userAddressInfo.receivePhone = this.userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')

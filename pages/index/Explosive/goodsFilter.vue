@@ -2,19 +2,10 @@
   <view class="goods-filter">
       <view class="header-container">
         <view class="header">
-            <image
-            @click="handleBack"
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-            mode=""
-            />
+						<tui-icon :size="48" unit="rpx" color="#000000" name="arrowleft" margin="0" @click="handleBack"></tui-icon>
             <text>爆品专区</text>
             <view class="search-wrapper">
-            <image
-                class="search-icon"
-                src="@/static/images/index/search.png"
-                mode=""
-            />
+						<tui-icon name="search" :size="26.6" unit="rpx" color="#767676" margin="0"></tui-icon>
             <input
                 @click="go('/pages/search-page/search-page')"
                 v-model="querList.productName"
@@ -22,11 +13,7 @@
                 class="text"
                 placeholder="输入你想搜索的产品"
             />
-            <image
-                class="camera"
-                src="@/static/images/index/camera.png"
-                mode=""
-            />
+						<tui-icon name="camera" :size="33.2" unit="rpx" color="#787878" margin="0"></tui-icon>
             </view>
 
             <button class="uni-btn" @click="handleSearch">搜索</button>

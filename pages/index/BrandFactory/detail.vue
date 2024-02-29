@@ -328,7 +328,7 @@ export default {
             title: this.factoryDetail.shopName,
             desc: this.factoryDetail.label || this.factoryDetail.shopBrief || this.factoryDetail.shopAdress,
             link: `${A_TF_MAIN}/#/pages/index/BrandFactory/detail?id=${this.factoryDetail.shopId}`,
-            imageUrl: this.factoryDetail.advertisement ? this.factoryDetail.advertisement.split(',')[0] : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
+            imageUrl: this.factoryDetail.advertisement ? this.factoryDetail.advertisement.split(',')[0] : `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
           },
           successCb: () => { },
           failCb: () => { }
