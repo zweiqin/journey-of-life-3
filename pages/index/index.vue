@@ -29,7 +29,7 @@
               <block slot="title">
                 <view class="hot">
                   <text class="text">好物推荐</text>
-                  
+                  <!--  -->
                 </view>
               </block>
             </HotPane>
@@ -60,20 +60,19 @@
       <view class="goods-wrapper">
           <scroll-view scroll-x="true" class="goodsScoll">
             <view class="sub-menus">
-
-              <view class="childsItem" @click="handleChangeSubMenu({
-                classifyId: filtersMenus[filterActive].classifyId,
-              }, -1)" :class="{ active: childsIndex == -1 }">
+              <view class="childsItem" 
+              @click="handleChangeSubMenu({classifyId: filtersMenus[filterActive].classifyId}, -1)" 
+              :class="{ active: childsIndex == -1 }">
                 全部
               </view>
-
               <view
-                v-for="(item, index) in filtersMenus[filterActive].childs" :key="item.classifyId" class="childsItem" :class="{ active: childsIndex == index }"
+                v-for="(item, index) in filtersMenus[filterActive].childs"
+                :key="item.classifyId" class="childsItem" 
+                :class="{ active: childsIndex == index }"
                 @click="handleChangeSubMenu(item, index)"
               >
                 {{ item.classifyName }}
               </view>
-
             </view>
           </scroll-view>
       </view>

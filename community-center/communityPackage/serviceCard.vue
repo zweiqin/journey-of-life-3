@@ -547,19 +547,19 @@ export default {
         return;
       }
       let extraInfoData = this.serverData.map((item, index) => {
-                            let id = "";
-                            let number = "";
-                            item.children.forEach((items) => {
-                                if (items.isChecked) {
-                                    id = items.id;
-                                    number = items.selectNumber;
-                                }
-                            });
-                            return {
-                                id,
-                                cnt: number,
-                            };
+                        let id = "";
+                        let number = "";
+                        item.children.forEach((items) => {
+                            if (items.isChecked) {
+                                id = items.id;
+                                number = items.selectNumber;
+                            }
                         });
+                        return {
+                            id,
+                            cnt: number,
+                        };
+                    });
 
       let params = {
         //! 拼接参数
