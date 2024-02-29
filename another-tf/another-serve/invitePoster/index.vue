@@ -136,6 +136,7 @@ export default {
 						quality: 0, // 图片质量
 						canvasId: 'posterCanvas', // 画布ID
 						success: (res) => {
+							console.log(res.tempFilePath)
 							uni.downloadFile({
 								url: res.tempFilePath, // 网络路径，下载下来
 								success: (res1) => {
@@ -146,8 +147,8 @@ export default {
 											content: '长按即可保存图片',
 											confirmText: '确定',
 											cancelText: '取消',
-											success: (res) => {
-												if (res.confirm) {
+											success: (res2) => {
+												if (res2.confirm) {
 													uni.previewImage({
 														current: res1.tempFilePath, // 当前显示图片的http链接
 														urls: [ res1.tempFilePath ] // 需要预览的图片http链接列表

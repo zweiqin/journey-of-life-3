@@ -7,7 +7,7 @@
 				<view style="flex: 1;display: flex;align-items: center;" @click.stop="() => {}">
 					<text style="font-weight: bold;font-size: 36upx;">{{ title }}</text>
 					<tui-input
-						v-model="queryInfo.search" label="" placeholder="社区商圈"
+						v-model="queryInfo.search" placeholder="社区商圈"
 						clearable is-fillet padding="6upx 10upx 6upx 26upx"
 						style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
 					>

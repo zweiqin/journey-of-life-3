@@ -79,10 +79,13 @@ export default {
 									itemList: res.data.map((item) => `${item.name}${item.state ? '（在线）' : ''}`), // （已下线）
 									itemColor: '#2c3e50',
 									success: (result) => {
-										dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
-										// uni.navigateTo({
-										// 	url: `/another-tf/another-user/chat/chat-detail?chat=serviceAssistant&kfId=${res.data[result.tapIndex].kfId}&openKfId=${res.data[result.tapIndex].openKfId}`
-										// })
+										uni.showToast({ title: res.data[result.tapIndex].name })
+										setTimeout(() => {
+											dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
+											// uni.navigateTo({
+											// 	url: `/another-tf/another-user/chat/chat-detail?chat=serviceAssistant&kfId=${res.data[result.tapIndex].kfId}&openKfId=${res.data[result.tapIndex].openKfId}`
+											// })
+										}, 2000)
 									}
 								})
 							} else {
@@ -118,6 +121,7 @@ export default {
 			})
 			_url({ id: shopId, openKfId })
 				.then((res) => {
+					console.log(res)
 					if (res.code === '' && res.data.corpId && res.data.url) {
 						corpId = res.data.corpId
 						serviceURL = res.data.url
@@ -129,36 +133,36 @@ export default {
 							title: '暂无客服~'
 						})
 					}
-					// #ifdef MP-WEIXIN
-					wx.openCustomerServiceChat({
-						extInfo: { url: serviceURL },
-						corpId
-					})
-					// #endif
-					// #ifdef APP
-					try {
-						let wechatServices = null
-						plus.share.getServices((res) => {
-							wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
-							if (wechatServices) {
-								wechatServices.openCustomerServiceChat({
-									corpid: corpId,
-									url: serviceURL
-								}, (success) => { }, (err) => { })
-							} else {
-								plus.nativeUI.alert('当前环境不支持微信操作!')
-							}
-						}, (err) => {
-							uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-						})
-					} catch (err) {
-						uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-					}
-					// #endif
-					// #ifdef H5
-					// window.open(serviceURL) safari浏览器不支持window.open
-					window.location.href = serviceURL
-					// #endif
+					// // #ifdef MP-WEIXIN
+					// wx.openCustomerServiceChat({
+					// 	extInfo: { url: serviceURL },
+					// 	corpId
+					// })
+					// // #endif
+					// // #ifdef APP
+					// try {
+					// 	let wechatServices = null
+					// 	plus.share.getServices((res) => {
+					// 		wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
+					// 		if (wechatServices) {
+					// 			wechatServices.openCustomerServiceChat({
+					// 				corpid: corpId,
+					// 				url: serviceURL
+					// 			}, (success) => { }, (err) => { })
+					// 		} else {
+					// 			plus.nativeUI.alert('当前环境不支持微信操作!')
+					// 		}
+					// 	}, (err) => {
+					// 		uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+					// 	})
+					// } catch (err) {
+					// 	uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+					// }
+					// // #endif
+					// // #ifdef H5
+					// // window.open(serviceURL) safari浏览器不支持window.open
+					// window.location.href = serviceURL
+					// // #endif
 				})
 				.catch((e) => {
 					uni.hideLoading()

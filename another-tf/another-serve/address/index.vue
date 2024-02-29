@@ -63,8 +63,7 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20
-			},
-			addData: {}
+			}
 		}
 	},
 	onLoad(options) {
@@ -114,24 +113,19 @@ export default {
 		},
 		// 微信导入
 		wxAddFn() {
-			const self = this
 			uni.chooseAddress({
 				success(res) {
-					self.addData.username = res.userName
-					self.addData.phone = res.telNumber
-					self.addData.ssqText = `${res.provinceName}-${res.cityName}-${res.countyName}`
-					self.addData.defaultRegion = self.addData.ssqText.split('-')
-					self.addData.address = res.detailInfo
-					self.addData.province = res.provinceName
-					self.addData.city = res.cityName
-					// uni.showLoading({
-					// 	mask: true,
-					// 	title: '导入中...',
-					// })
 					setTimeout(() => {
-						uni.hideLoading()
 						uni.navigateTo({
-							url: '/another-tf/another-serve/addAddress/index?type=3&wxAddressData=' + JSON.stringify(self.addData)
+							url: '/another-tf/another-serve/addAddress/index?type=3&wxAddressData=' + JSON.stringify({
+								receiveName: res.userName,
+								phone: res.telNumber,
+								receiveAdress: `${res.provinceName}-${res.cityName}-${res.countyName}-${res.streetName}`,
+								defaultRegion: [res.provinceName, res.cityName, res.countyName, res.streetName],
+								address: res.detailInfo,
+								province: res.provinceName,
+								city: res.cityName
+							})
 						})
 					}, 500)
 				},

@@ -140,6 +140,9 @@ export const addReceiveAddressApi = (data) => AnotherTFRequest('/receive/save', 
 // 删除收货地址
 export const deleteReceiveAddressApi = (data) => AnotherTFRequest('/receive/delete', data, 'POST')
 
+// 查询所有小区
+export const getCityCommunitySelectApi = (data) => AnotherTFRequest('/cityCommunity/selectCommunity', data)
+
 // 支付有礼
 export const getOrderPoliteApi = (data) => AnotherTFRequest('/order/getOrderPolite', data)
 

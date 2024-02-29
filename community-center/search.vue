@@ -4,8 +4,9 @@
 			<tui-icon name="arrowleft" @click="handleBack"></tui-icon>
 
 			<view class="wrapper">
-				<image src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
-					class="search-icon" />
+				<view class="search-icon">
+					<tui-icon name="search" :size="40" unit="rpx" color="#000000" margin="0"></tui-icon>
+				</view>
 				<input confirm-type="search" @confirm="handleSearchServe" v-model="searchValue" type="text"
 					placeholder="请输入您想要的服务" />
 			</view>
@@ -134,9 +135,8 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		height: 128upx;
 		background-color: #fff;
-		padding: 0 10upx;
+		padding: 20upx 10upx;
 		box-sizing: border-box;
 
 		&.fixed {
@@ -156,8 +156,6 @@ export default {
 			border-radius: 100px;
 
 			.search-icon {
-				width: 30upx;
-				height: 30upx;
 				flex-shrink: 0;
 				margin-right: 16upx;
 				padding-right: 16upx;

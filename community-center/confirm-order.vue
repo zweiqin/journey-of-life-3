@@ -1,10 +1,6 @@
 <template>
   <view class="confirm-order">
-    <view class="title-list">
-      <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-        class="return" @click="handleBack" />
-      <view class="title">确认订单</view>
-    </view>
+		<JHeader title="确认订单" width="50" height="50"></JHeader>
 
     <view class="main">
       <view class="service-list">
@@ -261,23 +257,15 @@ export default {
 
 <style lang="less" scoped>
 .confirm-order {
-  .title-list {
+
+	/deep/ .j-header-container {
     padding: 40upx 34upx 36upx 26upx;
-    display: flex;
-
-    .return {
-      width: 48upx;
-      height: 48upx;
-    }
-
-    .title {
-      flex: 1;
-      text-align: center;
-      font-size: 36upx;
+		.title {
+			font-size: 36upx;
       font-weight: bold;
       color: #3d3d3d;
-    }
-  }
+		}
+	}
 
   .main {
     padding: 56upx 34upx 0upx 34upx;

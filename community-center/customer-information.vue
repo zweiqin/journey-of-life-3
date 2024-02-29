@@ -1,23 +1,11 @@
 <template>
   <view class="customer-information">
     <!--顶部完善服务信息-->
-    <view class="title-list">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-        alt=""
-        class="return"
-        @click="handleBack"
-      />
-      <view class="title">完善服务信息</view>
-    </view>
+		<JHeader title="完善服务信息" width="50" height="50"></JHeader>
     <view class="top">
       <!--联系电话-->
       <view class="iphone-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/vfu5gpaxvj4hbez4k7mr.png"
-          alt=""
-          class="iphone"
-        />
+				<tui-icon name="mobile" :size="40" unit="rpx" color="#fa5151" margin="0"></tui-icon>
         <view class="text">联系电话</view>
       </view>
 
@@ -46,11 +34,7 @@
       </view>
       <!--填写上门地址-->
       <view class="address-list">
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ihtpa3x378wrofqdiqrj.png"
-          alt=""
-          class="location"
-        />
+				<tui-icon name="gps" :size="40" unit="rpx" color="#fa5151" margin="0"></tui-icon>
         <view class="text">填写上门地址</view>
       </view>
 
@@ -91,18 +75,9 @@
           <text v-if="!address" style="color: #808080">请选择服务地址</text>
           <text v-else>{{ address }}</text>
         </view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/kl48nylx52l3vy6f5bj9.png"
-          alt=""
-          class="location"
-          style="
-            width: 40upx;
-            height: 40upx;
-            position: absolute;
-            top: 20upx;
-            right: 20upx;
-          "
-        />
+				<view style="position: absolute;top: 20upx;right: 20upx;">
+					<tui-icon name="mobile" :size="40" unit="rpx" color="#3662ec" margin="0"></tui-icon>
+				</view>
       </view>
 
       <view class="add-list">
@@ -116,27 +91,14 @@
             placeholder-class="input-placeholder"
           />
         </view>
-        <img
-          src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zq3azkzz4bf57d9dh753.png"
-          alt=""
-          class="edit"
-          style="
-            width: 32upx;
-            height: 32upx;
-            position: absolute;
-            right: 20upx;
-            bottom: 30upx;
-          "
-        />
+				<view style="position: absolute;right: 20upx;bottom: 30upx;">
+					<tui-icon name="feedback" :size="40" unit="rpx" color="#3662ec" margin="0"></tui-icon>
+				</view>
       </view>
       <!--期望上门时间-->
       <view class="time-list">
         <view class="left">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/t0ktlzvrfi9ionu9rr10.png"
-            alt=""
-            class="time"
-          />
+					<tui-icon name="clock" :size="40" unit="rpx" color="#fa5151" margin="0"></tui-icon>
           <view class="text">期望上门时间</view>
         </view>
 
@@ -146,11 +108,7 @@
               <chooseTime @choose="handleChoose" v-model="show"></chooseTime>
               <view class="choice-time" @click="show = true">
                 <view class="input">{{ datetimerange || "选择时间" }}</view>
-                <img
-                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-                  alt=""
-                  class="btn-show-btn"
-                />
+								<tui-icon name="arrowright" :size="40" unit="rpx" color="#999999" margin="0"></tui-icon>
               </view>
             </view>
           </template>
@@ -164,7 +122,7 @@
           <img
             :src="
               imgUrl ||
-              'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+              require('../static/images/new-user/default-user-avatar.png')
             "
             alt=""
             class="goods"
@@ -184,19 +142,9 @@
           </view>
         </view>
         <view class="add">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
-            alt=""
-            class="img"
-            @click="goodsdelete"
-          />
+					<tui-icon name="offline-fill" :size="48" unit="rpx" color="#d8d8d8" margin="0" @click="goodsdelete"></tui-icon>
           <view class="number">{{ number }}</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
-            alt=""
-            class="img"
-            @click="goodsadd"
-          />
+					<tui-icon name="add-fill" :size="48" unit="rpx" color="#e95d20" margin="0" @click="goodsadd"></tui-icon>
         </view>
       </view>
       <view v-if="id2 == 97" class="middle2">
@@ -204,7 +152,7 @@
           <img
             :src="
               imgUrl ||
-              'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9k786yg2qqbj7u35zwr5.png'
+              require('../static/images/new-user/default-user-avatar.png')
             "
             alt=""
             class="goods"
@@ -221,19 +169,9 @@
           </view>
         </view>
         <view class="add">
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ie5tzuaheizwyypdp78e.png"
-            alt=""
-            class="img"
-            @click="piecedelete"
-          />
+					<tui-icon name="offline-fill" :size="48" unit="rpx" color="#d8d8d8" margin="0" @click="goodsdelete"></tui-icon>
           <view class="number">{{ specsId }}</view>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zvm9f03y096iyrjgbuk2.png"
-            alt=""
-            class="img"
-            @click="pieceadd"
-          />
+					<tui-icon name="add-fill" :size="48" unit="rpx" color="#e95d20" margin="0" @click="goodsadd"></tui-icon>
         </view>
       </view>
     </view>
@@ -251,11 +189,7 @@
           <view class="coupon">优惠券</view>
           <view class="text-list">
             <view class="text">暂无</view>
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/unclmibq0dktn12nodz0.png"
-              alt=""
-              class="more"
-            />
+						<tui-icon name="arrowright" :size="40" unit="rpx" color="#999999" margin="0"></tui-icon>
           </view>
         </view>
         <view class="pay-list">
@@ -379,9 +313,6 @@ export default {
       //     },
       //   });
       // }
-    },
-    handleBack() {
-      uni.navigateBack();
     },
 
     handleToServiceConfirmOrder() {
@@ -685,24 +616,14 @@ export default {
   // background: #f1f2f6;
   padding-bottom: 168upx;
 
-  .title-list {
+	/deep/ .j-header-container {
     padding: 40upx 34upx 20upx 26upx;
-    display: flex;
-    background: #ffffff;
-
-    .return {
-      width: 48upx;
-      height: 48upx;
-    }
-
-    .title {
-      flex: 1;
-      text-align: center;
-      font-size: 36upx;
+		.title {
+			font-size: 36upx;
       font-weight: bold;
       color: #3d3d3d;
-    }
-  }
+		}
+	}
 
   .top {
     padding: 20upx 30upx 0upx 30upx;

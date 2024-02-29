@@ -43,7 +43,7 @@
 			></tui-tabs>
 		</view>
 		<view style="padding: 20upx;">
-			<tui-list-view v-if="shopIncomeList && shopIncomeList.length" title="">
+			<tui-list-view v-if="shopIncomeList && shopIncomeList.length">
 				<tui-list-cell v-for="(item, index) in shopIncomeList" :key="item.id">
 					<view style="display: flex;justify-content: space-between;">
 						<view>{{ item.shopName }}</view>

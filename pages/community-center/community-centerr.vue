@@ -81,7 +81,6 @@
 
 <script>
 import { A_TF_MAIN } from '../../config'
-import { bannerListIcon } from './config'
 import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
 import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
@@ -117,7 +116,6 @@ export default {
 	mixins: [showModal()],
 	data() {
 		return {
-			bannerListIcon: Object.freeze(bannerListIcon),
 			data: [],
 			pupupLevelType: '',
 			popupImageUrl: '',
@@ -215,7 +213,7 @@ export default {
 					title: '团蜂家居社区服务中心',
 					desc: '一切和家居有关的问题，我们都能解决',
 					link: `${A_TF_MAIN}/#/`,
-					imageUrl: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/8stwtn8hbay7amo0u6hb.png'
+					imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
 				},
 				successCb: () => { },
 				failCb: () => { }

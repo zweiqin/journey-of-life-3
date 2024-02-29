@@ -6,22 +6,19 @@
 				<!--定位-->
 				<view class="location">
 					<!-- #ifdef H5 -->
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
-						class="return" @click="handleBack" />
+					<tui-icon :size="48" unit="rpx" color="#000000" name="arrowleft" margin="0" @click="handleBack"></tui-icon>
 					<!-- #endif -->
 					<TuanLocation>
 						<text class="locale">{{
 							$store.getters.currentCity || '定位失败'
 						}}</text>
 					</TuanLocation>
-					<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png" alt=""
-						class="show" @click.stop="handleClick" />
+					<tui-icon :size="32" unit="rpx" color="#000000" name="turningdown" margin="0" @click="handleClick"></tui-icon>
 				</view>
 				<!--搜索栏-->
 				<view class="search-box" @click="goToSearch">
 					<view class="search">
-						<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt=""
-							class="img" />
+						<tui-icon :size="30" unit="rpx" color="#000000" name="search" margin="0"></tui-icon>
 					</view>
 					<input confirm-type="search" type="text" class="content" placeholder="搜索社区服务，一站式解决家居问题" />
 				</view>

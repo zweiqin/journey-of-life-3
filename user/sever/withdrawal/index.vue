@@ -12,7 +12,7 @@
 				</tui-button>
 			</view>
 			<view>
-				<tui-list-view title="" color="#777" margin-top="20rpx">
+				<tui-list-view color="#777" margin-top="20rpx">
 					<tui-list-cell arrow @click="getBankCardList">
 						提现方式&nbsp;&nbsp;&nbsp;&nbsp;{{ tempwithdrawBankName }}
 					</tui-list-cell>

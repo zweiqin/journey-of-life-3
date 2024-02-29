@@ -2,27 +2,21 @@
   <view class="community-detail">
     <view class="head">
       <!-- 顶部区域 -->
-      <view class="title-list">
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
-        <view class="title" @click="handleBack">
-          <text class="page-title">{{ title }}</text>
-        </view>
-        <view class="location">
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iglo65306wogezn1kjmf.png" alt="" class="icon" />
-          <TuanLocation>
-            <text class="locale">
-              {{ $store.getters.currentCity || '定位失败' }}
-            </text>
-          </TuanLocation>
-        </view>
-      </view>
+			<JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx;">
+				<template #ftFn>
+					<view style="display: flex;align-items: center;justify-content: space-between;padding-right: 18upx;">
+						<tui-icon name="gps" :size="20" color="#2b2b2b"></tui-icon>
+						<TuanLocation>
+							<text class="locale">
+								{{ $store.getters.currentCity || '定位失败' }}
+							</text>
+						</TuanLocation>
+					</view>
+				</template>
+			</JHeader>
 
       <!-- 轮播图 -->
       <view class="goods">
-        <!-- <image :src="
-					serverUrl ||
-					'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjor6av7ldr00pua8b6q.png'
-					" alt="" class="img" @click="preview(serverUrl)" /> -->
         <Carousel
           ref="carouselRef"
           :is-lazy-load="false"
@@ -58,7 +52,7 @@
         <view class="a">
           <BeeWxShare ref="beeWxShareRef" @click="handleClickShare">
             <view class="share">
-              <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/mi4jzqbzsb31mge61s18.png" alt="" class="image" />
+							<tui-icon name="share-fill" :size="40" unit="rpx" color="#999999"></tui-icon>
               <view class="text">分享</view>
             </view>
           </BeeWxShare>
@@ -131,16 +125,12 @@
         </view>
 
         <!-- #ifdef H5 -->
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cofcgw5ox0ctbtqn1txr.png" alt="" class="more" />
+				<tui-icon :size="32" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
         <!-- #endif -->
       </view>
     </view>
 
     <view id="norm" class="body">
-      <!-- <view class="top">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/e6r4nzkriag797mchd56.png" alt=""
-				class="top-img" />
-				</view> -->
       <!-- 收费标准,服务内容,用户评价 -->
       <view class="top-list">
         <view class="item" :class="{ active: currentMoveTab === 0 }" @click="toJump(0)">收费标准</view>
@@ -170,24 +160,12 @@
           <UParse v-if="serverInfo" :content="goodsInfoDetail"></UParse>
         </view>
       </view>
-
-      <!-- <view class="middle">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/48h3rr7tsuwxtkh0jpky.png" alt=""
-				class="mid-img" />
-				</view>
-				<view class="process">
-				<image src="../static/images/con-center/process.jpg" mode="" class="process-img" />
-				</view>
-				<view class="tips">
-				<img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/iftnzg3gb548iy7p7n5b.png" alt=""
-				class="img-tips" />
-				</view> -->
     </view>
     <!-- 其他服务 -->
     <view class="other">
       <view v-for="item in moreService" :key="item.value" class="other-service" @click="handleToServiceListHome(item.value)">
         <view class="text">其他服务</view>
-        <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/63apnwjyguuyva9itx9k.png" alt="" class="show" />
+				<tui-icon :size="40" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
       </view>
     </view>
 
@@ -196,7 +174,7 @@
       <view class="list">
         <view class="online" @click="handleChat">
           <!-- #ifdef H5 -->
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/aivl8ag811bco1skdda2.png" alt="" class="seek" />
+					<tui-icon :size="48" unit="rpx" color="#e95e20" name="kefu" margin="0"></tui-icon>
           <view class="name">在线咨询</view>
           <!-- #endif -->
         </view>
@@ -343,9 +321,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    handleBack() {
-      uni.navigateBack();
     },
     handleToServiceListHome(item) {
       // console.log('更多服务分类列表', item)
@@ -619,50 +594,9 @@ export default {
   background: #f7f8fa;
 
   .head {
-    padding-top: 20upx;
     background: #ffffff;
     // padding-right: 20upx;
     box-sizing: border-box;
-
-    .title-list {
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 20upx 0upx 36upx 16upx;
-
-      .return {
-        width: 48upx;
-        height: 48upx;
-      }
-
-      .title {
-        // flex: 1;
-        text-align: center;
-        font-size: 36upx;
-        font-weight: bold;
-        color: #3d3d3d;
-      }
-
-      .location {
-        // width: 124upx;
-        height: 40upx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        right: 20upx;
-
-        .icon {
-          width: 28upx;
-          height: 28upx;
-        }
-
-        .address {
-          font-size: 28upx;
-          color: rgba(0, 0, 0, 0.85);
-        }
-      }
-    }
 
     .goods {
       // margin: 0upx 82upx;
