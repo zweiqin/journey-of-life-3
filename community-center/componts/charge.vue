@@ -9,8 +9,8 @@
 				<view class="top">
 					<text>{{ project.parentName }}</text>
 					<view @click="togglebox">
-						<image src="../../static/images/a1.png" mode="" v-if="isSpread" />
-						<image src="../../static/images/a2.png" mode="" v-if="!isSpread" />
+						<tui-icon :size="32" unit="rpx" color="#e95d20" name="arrowup" margin="0" v-if="isSpread"></tui-icon>
+						<tui-icon :size="32" unit="rpx" color="#e95d20" name="arrowdown" margin="0" v-if="!isSpread"></tui-icon>
 					</view>
 				</view>
 				<transition>

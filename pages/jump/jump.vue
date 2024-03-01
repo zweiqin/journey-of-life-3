@@ -196,7 +196,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject(`${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`)
+						jumpToOtherProject({ url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`, toType: 'H5' })
 					}, 300)
 				}
 			} else if (this.type === 'bindingUser') {
@@ -215,7 +215,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject(`${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`)
+						jumpToOtherProject({ url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, toType: 'H5' })
 					}, 300)
 				}
 			} else if (this.type === 'bindLastUser') { // 旧系统

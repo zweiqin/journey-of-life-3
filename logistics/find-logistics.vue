@@ -14,11 +14,7 @@
       <view class="find-wuliu">
         <view class="search">
           <view class="from">佛山</view>
-          <img
-            class="icon"
-            src="../static/images/wuliu/wuliu-icon.png"
-            alt=""
-          />
+					<tui-icon :size="72" unit="rpx" color="#fd7433" name="explore-fill" margin="0 110rpx"></tui-icon>
           <view
             class="to desc form_address_input"
             @click="() => (visibleMuti = true)"

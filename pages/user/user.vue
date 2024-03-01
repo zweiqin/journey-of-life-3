@@ -97,6 +97,9 @@ export default {
 			if (item.type === 'external') {
 				this.go('/user/view?target=' + item.url)
 				return
+			} else if (item.type === 'electronicCard') {
+				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
+				return
 			}
 			if (this.isLogin()) {
 				if (item.type === 'participateLottery') {
@@ -127,7 +130,7 @@ export default {
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
 					if (storageKeyToken) {
-						jumpToOtherProject(`${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`)
+						jumpToOtherProject({ url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, toType: 'H5' })
 					}
 					return
 				} else if (item.type === 'shopInvitation') {

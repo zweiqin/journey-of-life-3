@@ -7,8 +7,7 @@
 				<label>头像</label>
 				<image
 					v-if="$store.getters.userInfo.headImage" class="user-headImg"
-					:src="common.seamingImgUrl($store.getters.userInfo.headImage)"
-					@click="handleChooseImage"
+					:src="common.seamingImgUrl($store.getters.userInfo.headImage)" @click="handleChooseImage"
 				></image>
 				<image v-else class="user-headImg" src="../../../static/images/new-user/default-user-avatar.png">
 				</image>
@@ -59,7 +58,12 @@
 			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
 				<view>微信账号</view>
 				<view v-if="$store.getters.userInfo.wechatOpenId">已绑定</view>
-				<view v-else-if="($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)" @click="handleWXBind">开始绑定</view>
+				<view
+					v-else-if="($store.state.app.terminal === 6) || ($store.state.app.terminal === 3) || ($store.state.app.terminal === 2)"
+					@click="handleWXBind"
+				>
+					开始绑定
+				</view>
 			</view>
 		</view>
 
@@ -102,7 +106,8 @@
 				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
-							ref="refResettingPasswordVerify" width="144upx" @send="handleSendVerifyResettingPassword"
+							ref="refResettingPasswordVerify" width="144upx"
+							@send="handleSendVerifyResettingPassword"
 						></tui-countdown-verify>
 					</template>
 				</tui-input>
@@ -118,7 +123,8 @@
 				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
-							ref="refBindWXVerify" width="144upx" @send="handleSendVerifyBindWX"
+							ref="refBindWXVerify" width="144upx"
+							@send="handleSendVerifyBindWX"
 						></tui-countdown-verify>
 					</template>
 				</tui-input>
@@ -170,7 +176,7 @@ export default {
 	},
 	onShow() {
 		// this.userId = uni.getStorageSync(USER_ID)
-		if (this.$store.state.app.terminal === 3) {
+		if ((this.$store.state.app.terminal === 6) || (this.$store.state.app.terminal === 3)) {
 			const code = getUrlCode().code
 			if (code) this.handleWXBind()
 		}

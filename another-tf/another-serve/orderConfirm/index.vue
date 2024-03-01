@@ -913,6 +913,8 @@ export default {
 				// type: this.fromType, // 1立即购买，2购物车结算，3拼团商品立即购买
 				shopGroupWorkId: null,
 				receiveId: this.userAddressInfo.receiveId,
+				areaId: this.userAddressInfo.areaId,
+				communityId: this.userAddressInfo.communityId,
 				couponId: couponIdinfo,
 				price: this.totalPrice,
 				remark: '',

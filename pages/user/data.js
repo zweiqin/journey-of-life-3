@@ -132,7 +132,8 @@ export const myFunction = [
 	},
 	{
 		name: '电子名片',
-		icon: require('../../static/images/new-user/menu-icon/dingyue.png')
+		icon: require('../../static/images/new-user/menu-icon/dingyue.png'),
+		type: 'electronicCard'
 	},
 	{
 		name: '购物车',
