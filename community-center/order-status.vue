@@ -39,7 +39,7 @@
           </view>
         </view>
 
-        <view v-if="extraInfo.sfQuotas.length && !masterInfo" class="sfs-list-wrapper">
+        <view v-if="(extraInfo.sfQuotas && extraInfo.sfQuotas.length) && !masterInfo" class="sfs-list-wrapper">
           <view class="title">已报价的师傅</view>
           <view class="sf-offer-pane" v-for="item in extraInfo.sfQuotas" :key="item.worker.id">
             <image class="avata-img" :src="item.worker.headUrl"></image>
