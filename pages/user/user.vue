@@ -9,7 +9,10 @@
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
 			<view>
-				<Pane v-if="isShowOther" title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
+				<view v-if="isShowOther">
+					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
+					{{ $store.state.app.terminal }}
+				</view>
 				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
 					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
 				</view>
@@ -98,7 +101,7 @@ export default {
 				this.go('/user/view?target=' + item.url)
 				return
 			} else if (item.type === 'electronicCard') {
-				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
+				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/loading/loading`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
 				return
 			}
 			if (this.isLogin()) {

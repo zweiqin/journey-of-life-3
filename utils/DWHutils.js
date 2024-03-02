@@ -196,7 +196,7 @@ export const isInWx = () => {
  * @returns
  */
 
-export const jumpToOtherProject = ({ id, appId, url, toType, query, montageTerminal }, cb = () => { }) => {
+export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
 		// #ifdef H5
 		window.location.href = url
@@ -211,7 +211,7 @@ export const jumpToOtherProject = ({ id, appId, url, toType, query, montageTermi
 		// #endif
 	} else if (toType === 'MP') {
 		if (isInWx()) {
-			if (isH5InWebview()) {
+			if (isInMiniProgram || isH5InWebview()) {
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去其它小程序页面
 					url: query && montageTerminal && montageTerminal.includes(6) ? `/${url}${query}` : `/${url}`,
 					fail: () => {

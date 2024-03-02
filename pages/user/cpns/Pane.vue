@@ -55,18 +55,39 @@
 
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item-wrapper" @click="$emit('menu-click', menu)">
-					<view v-if="menu.name === '电子名片'">
-						<view v-if="$store.state.app.terminal === 3">
-							<wx-open-launch-weapp appid="wxb446588ba0dbb9d7" username="gh_5668ad6e5290" path="pages/index/index">
-								<template>
+					<view v-if="menu.name === '电子名片'" style="width: 100%;height: 100%;">
+						<view v-if="$store.state.app.terminal === 3" style="position: relative;width: 100%;height: 100%;">
+							<wx-open-launch-weapp
+								id="launch-btn" appid="wxb446588ba0dbb9d7" username="gh_5668ad6e5290" path="pages/index/index"
+								style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
+							>
+								<script type="text/wxtag-template">
+									<style>
+									.item { display: flex; align-items: center; justify-content: center; flex-direction: column;padding-top: 17.4859%; }
+									.menu-name { margin-top: 4.7695925%; font-size: 90%; color: #2A2B23; }
+									</style>
+									<view style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;">
 									<view class="item">
-										<BeeIcon
-											v-if="menu.iconUrl || menu.icon" :size="28"
-											:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
-										></BeeIcon>
-										<text class="menu-name">{{ menu.name }}</text>
+									<image
+									src="{{ menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon }}"
+									style="width: 36.283582%;height: 36.283582%;"
+									mode="scaleToFill"
+									/>
+									<text class="menu-name">电子名片</text>
 									</view>
-								</template>
+									</view>
+								</script>
+								<!-- src="https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/new-user/menu-icon/dingyue.png" -->
+								<!-- margin-top: 0.013333vw; font-size: 0.037333vw; width: 0.074667vw; -->
+								<!-- <template>
+									<view class="item">
+									<BeeIcon
+									v-if="menu.iconUrl || menu.icon" :size="28"
+									:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
+									></BeeIcon>
+									<text class="menu-name">{{ menu.name }}</text>
+									</view>
+									</template> -->
 							</wx-open-launch-weapp>
 						</view>
 						<view v-else>
@@ -241,7 +262,7 @@ export default {
 
 	.row-wrapper {
 		display: flex;
-		align-items: center;
+		align-items: stretch;
 		justify-content: flex-start;
 		flex-wrap: wrap;
 		width: 100%;
@@ -249,17 +270,17 @@ export default {
 		.item-wrapper {
 			position: relative;
 			width: 25%;
-			padding-top: 28upx;
-			border-radius: 4upx;
+			border-radius: 4rpx;
 
 			.item {
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				flex-direction: column;
+				padding-top: 28rpx;
 
 				.menu-name {
-					margin-top: 10upx;
+					margin-top: 10rpx;
 					font-size: 28rpx;
 					color: #2A2B23;
 				}

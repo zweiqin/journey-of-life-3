@@ -17,6 +17,7 @@ export default {
 		[CHANGE_IS_IN_MINIPROGRAM](state, tag) {
 			if (tag) {
 				state.isInMiniProgram = tag
+				state.terminal = 6
 			}
 		},
 
@@ -45,10 +46,10 @@ export default {
 				})
 			})
 		},
-		getSystermTerminal({ commit }) {
+		getSystermTerminal({ state, dispatch, commit }) {
 			return new Promise((resolve, reject) => {
 				if (isInWx()) {
-					if (isH5InWebview()) {
+					if (state.isInMiniProgram || isH5InWebview()) {
 						commit(CHANGE_SYSTERM_TERMINAL, 6)
 					} else {
 						commit(CHANGE_SYSTERM_TERMINAL, 3)
