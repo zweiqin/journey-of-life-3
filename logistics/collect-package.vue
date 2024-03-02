@@ -21,11 +21,6 @@
         <view v-if="list && list.length" class="orders">
           <view v-for="item in list" :key="item.id" class="order-wrapper">
             <view class="order-item" @click="toDetail(item.orderNo)">
-              <!-- <img
-                class="img"
-                src="https://t7.baidu.com/it/u=2978830395,2475392084&fm=193&f=GIF"
-                alt=""
-              /> -->
               <view class="info hidden">
                 <view class="text">运单号：{{ item.orderNo }}</view>
                 <view class="text"

@@ -24,12 +24,9 @@
             <view style="display: flex; flex-wrap: wrap">
               <view v-for="img in images" :key="img" style="position: relative; width: 110upx; height: 110upx; margin-right: 20upx; margin-bottom: 20upx">
                 <img :src="img" alt="" class="img1" />
-                <img
-                  src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-                  alt=""
-                  class="img2"
-                  @click="removeBackground(img)"
-                />
+								<view class="img2" @click="removeBackground(img)">
+									<tui-icon name="close" :size="40" unit="rpx" color="#ea0000" margin="0"></tui-icon>
+								</view>
               </view>
             </view>
 

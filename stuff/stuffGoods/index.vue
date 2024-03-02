@@ -3,20 +3,15 @@
     <view class="head">
       <view class="search-bar">
         <view class="location">
-          <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt="" class="return" @click="handleBack" />
+					<tui-icon :size="48" unit="rpx" color="#000000" name="arrowleft" margin="0" @click="handleBack"></tui-icon>
           <TuanLocation>
             <text class="locale">{{ $store.getters.currentCity || '定位失败' }}</text>
           </TuanLocation>
-          <img
-            src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/6hqerqcab0sqrsp0j72h.png"
-            alt=""
-            class="show"
-            @click.stop="handleClick"
-          />
+					<tui-icon :size="32" unit="rpx" color="#000000" name="turningdown" margin="0" @click="handleClick"></tui-icon>
         </view>
         <view class="search-box">
           <view class="search">
-            <img src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2qpjht84e85rhmt6y1ce.png" alt="" class="img" />
+						<tui-icon name="search" :size="30" unit="rpx" color="#767676" margin="0"></tui-icon>
           </view>
           <input type="text" class="content" placeholder="输入你想搜索的品类/单品/品牌" @click="goToSearch" />
         </view>

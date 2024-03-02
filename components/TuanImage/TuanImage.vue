@@ -10,7 +10,7 @@ export default {
     src: {
       type: String,
       default:
-        'https://img0.baidu.com/it/u=2256442941,3471177641&fm=253&fmt=auto&app=138&f=JPEG?w=480&h=854',
+				require('../../static/logo.png')
     },
 
     size: {

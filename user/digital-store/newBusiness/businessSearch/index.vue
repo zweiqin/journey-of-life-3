@@ -1,10 +1,6 @@
 <template>
   <view class="businessSearch">
-    <image
-      src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/2iru69wqtidchb8m7oy1.png"
-      class="searchImg"
-      mode="scaleToFill"
-    />
+		<tui-icon name="search" :size="40" unit="rpx" color="#767676" margin="0"></tui-icon>
     <input
       class="searchInput"
       @input="importInput"

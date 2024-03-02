@@ -1,5 +1,5 @@
 import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO, CHANGE_SYSTERM_TERMINAL } from './type'
-import { isInWx } from '../../utils'
+import { isInWx, isH5InWebview } from '../../utils'
 import { getCustomerServiceAppletKfApi, getCustomerServiceH5KfApi, getCustomerServicePCKfApi, getAllCustomerServiceApi } from '../../api/anotherTFInterface'
 
 export default {
@@ -48,7 +48,11 @@ export default {
 		getSystermTerminal({ commit }) {
 			return new Promise((resolve, reject) => {
 				if (isInWx()) {
-					commit(CHANGE_SYSTERM_TERMINAL, 3)
+					if (isH5InWebview()) {
+						commit(CHANGE_SYSTERM_TERMINAL, 6)
+					} else {
+						commit(CHANGE_SYSTERM_TERMINAL, 3)
+					}
 				} else {
 					// #ifdef H5
 					commit(CHANGE_SYSTERM_TERMINAL, 5) // H5包含pc和移动端浏览器和微信浏览器的可能
@@ -133,36 +137,36 @@ export default {
 							title: '暂无客服~'
 						})
 					}
-					// // #ifdef MP-WEIXIN
-					// wx.openCustomerServiceChat({
-					// 	extInfo: { url: serviceURL },
-					// 	corpId
-					// })
-					// // #endif
-					// // #ifdef APP
-					// try {
-					// 	let wechatServices = null
-					// 	plus.share.getServices((res) => {
-					// 		wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
-					// 		if (wechatServices) {
-					// 			wechatServices.openCustomerServiceChat({
-					// 				corpid: corpId,
-					// 				url: serviceURL
-					// 			}, (success) => { }, (err) => { })
-					// 		} else {
-					// 			plus.nativeUI.alert('当前环境不支持微信操作!')
-					// 		}
-					// 	}, (err) => {
-					// 		uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-					// 	})
-					// } catch (err) {
-					// 	uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
-					// }
-					// // #endif
-					// // #ifdef H5
-					// // window.open(serviceURL) safari浏览器不支持window.open
-					// window.location.href = serviceURL
-					// // #endif
+					// #ifdef MP-WEIXIN
+					wx.openCustomerServiceChat({
+						extInfo: { url: serviceURL },
+						corpId
+					})
+					// #endif
+					// #ifdef APP
+					try {
+						let wechatServices = null
+						plus.share.getServices((res) => {
+							wechatServices = res.find((wechatItem) => wechatItem.id === 'weixin')
+							if (wechatServices) {
+								wechatServices.openCustomerServiceChat({
+									corpid: corpId,
+									url: serviceURL
+								}, (success) => { }, (err) => { })
+							} else {
+								plus.nativeUI.alert('当前环境不支持微信操作!')
+							}
+						}, (err) => {
+							uni.showToast({ title: '获取服务失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+						})
+					} catch (err) {
+						uni.showToast({ title: '调用失败，不支持该操作。' + JSON.stringify(err), icon: 'none' })
+					}
+					// #endif
+					// #ifdef H5
+					// window.open(serviceURL) safari浏览器不支持window.open
+					window.location.href = serviceURL
+					// #endif
 				})
 				.catch((e) => {
 					uni.hideLoading()

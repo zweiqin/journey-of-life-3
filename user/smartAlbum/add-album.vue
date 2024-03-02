@@ -1,14 +1,6 @@
 <template>
 	<view class="community-order">
-		<view class="title-list">
-			<img
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
-				alt=""
-				class="return"
-				@click="handleBack"
-			/>
-			<view class="title">新建画册</view>
-		</view>
+		<JHeader title="新建画册" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 
 		<view class="add-album-content">
 			<view class="item-wrapper">
@@ -44,12 +36,9 @@
               "
 						>
 							<img :src="img" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackgroundFace(img)"
-							/>
+							<view class="img2" @click="removeBackgroundFace(img)">
+								<tui-icon name="close" :size="40" unit="rpx" color="#ea0000" margin="0"></tui-icon>
+							</view>
 						</view>
 					</view>
 					<view
@@ -82,12 +71,9 @@
               "
 						>
 							<img :src="img" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackground(img)"
-							/>
+							<view class="img2" @click="removeBackground(img)">
+								<tui-icon name="close" :size="40" unit="rpx" color="#ea0000" margin="0"></tui-icon>
+							</view>
 						</view>
 					</view>
 					<view
@@ -119,12 +105,9 @@
               "
 						>
 							<img :src="img" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackgroundEnd(img)"
-							/>
+							<view class="img2" @click="removeBackgroundEnd(img)">
+								<tui-icon name="close" :size="40" unit="rpx" color="#ea0000" margin="0"></tui-icon>
+							</view>
 						</view>
 					</view>
 					<view

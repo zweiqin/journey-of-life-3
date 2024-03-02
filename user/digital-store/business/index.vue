@@ -257,14 +257,9 @@
       </view>
     </uni-popup>
     <view class="addimg">
-      <img
-        v-if="currentTab == 0"
-        class="img"
-        src="	
-https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ifpelt2gfb91mkkrxy1n.png"
-        alt=""
-        @click="useradd"
-      />
+			<view class="img">
+				<tui-icon v-if="currentTab == 0" name="add" :size="80" unit="rpx" color="#aaaaaa" margin="0" @click="useradd"></tui-icon>
+			</view>
     </view>
     <!-- 提示弹窗 -->
     <view>

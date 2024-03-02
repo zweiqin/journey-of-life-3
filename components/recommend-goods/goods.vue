@@ -1,12 +1,10 @@
 <template>
   <div class="goods" @click="handeViewDetail">
-    <!-- <img class="img" :src="url || 'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'" alt="" /> -->
-
     <tui-lazyload-img
       width="334rpx"
       height="300rpx"
       style="{width: 334upx !important, height: 300upx !important}"
-      :src="url || 'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'"
+      :src="url || require('../../static/logo.png')"
     ></tui-lazyload-img>
 
     <view class="body">

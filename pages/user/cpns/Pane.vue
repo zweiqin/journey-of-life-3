@@ -54,28 +54,56 @@
 			</view>
 
 			<view class="row-wrapper">
-				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
-					<BeeIcon
-						v-if="menu.iconUrl || menu.icon" :size="28"
-						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
-					></BeeIcon>
-					<text class="menu-name">{{ menu.name }}</text>
-					<tui-badge
-						v-show="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
-						:scale-ratio="0.8" translate-x="40%" top="-18rpx"
-					>
-						{{ $store.getters.shopCarNumber > 10 ? '10+' : $store.getters.shopCarNumber }}
-					</tui-badge>
+				<view v-for="menu in renderMenu" :key="menu.name" class="item-wrapper" @click="$emit('menu-click', menu)">
+					<view v-if="menu.name === '电子名片'">
+						<view v-if="$store.state.app.terminal === 3">
+							<wx-open-launch-weapp appid="wxb446588ba0dbb9d7" username="gh_5668ad6e5290" path="pages/index/index">
+								<template>
+									<view class="item">
+										<BeeIcon
+											v-if="menu.iconUrl || menu.icon" :size="28"
+											:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
+										></BeeIcon>
+										<text class="menu-name">{{ menu.name }}</text>
+									</view>
+								</template>
+							</wx-open-launch-weapp>
+						</view>
+						<view v-else>
+							<view class="item">
+								<BeeIcon
+									v-if="menu.iconUrl || menu.icon" :size="28"
+									:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
+								></BeeIcon>
+								<text class="menu-name">{{ menu.name }}</text>
+							</view>
+						</view>
+					</view>
+					<view v-else class="item">
+						<BeeIcon
+							v-if="menu.iconUrl || menu.icon" :size="28"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
+						></BeeIcon>
+						<text class="menu-name">{{ menu.name }}</text>
+						<tui-badge
+							v-show="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
+							:scale-ratio="0.8" translate-x="40%" top="4rpx"
+						>
+							{{ $store.getters.shopCarNumber > 10 ? '10+' : $store.getters.shopCarNumber }}
+						</tui-badge>
+					</view>
 				</view>
 				<view
-					v-for="menu in specialPane.filter(item => item.name === '股东看板')" :key="menu.name" class="item"
+					v-for="menu in specialPane.filter(item => item.name === '股东看板')" :key="menu.name" class="item-wrapper"
 					@click="$emit('menu-click', menu)"
 				>
-					<BeeIcon
-						v-if="menu.iconUrl || menu.icon" :size="28"
-						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
-					></BeeIcon>
-					<text class="menu-name">{{ menu.name }}</text>
+					<view class="item">
+						<BeeIcon
+							v-if="menu.iconUrl || menu.icon" :size="28"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
+						></BeeIcon>
+						<text class="menu-name">{{ menu.name }}</text>
+					</view>
 				</view>
 			</view>
 
@@ -89,6 +117,7 @@
 </template>
 
 <script>
+import { jumpToOtherProject } from '../../../utils'
 export default {
 	name: 'Pane',
 	props: {
@@ -108,7 +137,8 @@ export default {
 	data() {
 		return {
 			specialPane: [],
-			renderMenu: []
+			renderMenu: [],
+			hasElectronicCardConfig: false
 		}
 	},
 
@@ -128,6 +158,12 @@ export default {
 						if (item.showRole.includes('merchantStaff') && this.$store.state.auth.identityInfo.type.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) renderMenuArr.push(item)
 					} else {
+						if (item.name === '电子名片') {
+							if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {
+								jumpToOtherProject({ toType: 'MP' })
+								this.hasElectronicCardConfig = true
+							}
+						}
 						renderMenuArr.push(item)
 					}
 					this.specialPane = haveSpecialData
@@ -150,6 +186,12 @@ export default {
 						if (item.showRole.includes('merchantStaff') && newVal.includes(8)) renderMenuArr.push(item)
 						if (item.showRole.includes('franchisee') && newVal.includes(1)) renderMenuArr.push(item)
 					} else {
+						if (item.name === '电子名片') {
+							if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {
+								jumpToOtherProject({ toType: 'MP' })
+								this.hasElectronicCardConfig = true
+							}
+						}
 						renderMenuArr.push(item)
 					}
 				})
@@ -204,28 +246,26 @@ export default {
 		flex-wrap: wrap;
 		width: 100%;
 
-		.item {
+		.item-wrapper {
 			position: relative;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
 			width: 25%;
-			margin-top: 28upx;
-			transition: 350ms all;
-			border-radius: 4px;
+			padding-top: 28upx;
+			border-radius: 4upx;
 
-			&:active {
-				background-color: #f0f0f0;
-			}
+			.item {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
 
-			.menu-name {
-				margin-top: 10upx;
-				font-size: 28rpx;
-				line-height: 51rpx;
-				color: #2A2B23;
+				.menu-name {
+					margin-top: 10upx;
+					font-size: 28rpx;
+					color: #2A2B23;
+				}
 			}
 		}
+
 	}
 }
 </style>

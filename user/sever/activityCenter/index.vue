@@ -197,6 +197,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import Extension from './cpns/extension.vue'
 import { updateWithdrawalApi, getUserIncomeApi, getUserCrmListApi, getBindingUserApi, getPurchaseRecordApi, getPurchaseRecord2Api, getServiceSharingLogsApi } from '../../../api/user'
 import { getUserId } from '../../../utils'
@@ -347,7 +348,7 @@ export default {
 				this.go(`/user/sever/activityCenter/activity-prod?goodsId=${item.productId}&campaignsType=${item.campaignsType}&activityId=${item.id}`)
 			} else if (item.campaignsType === 2) {
 				if (item.productId === 313) {
-					this.go('/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=https%3A%2F%2Fwww.tuanfengkeji.cn%3A9527%2Fdts-admin-api%2Fadmin%2Fstorage%2Ffetch%2F5ub5gxq8btzj41dyewdk.png')
+					this.go(`/community-center/community-detail?id=313&serverNameThree=%E7%A9%BA%E8%B0%83%E6%B8%85%E6%B4%97%E6%9C%8D%E5%8A%A1&serverImageUrl=${encodeURI(`${A_TF_MAIN}/static/images/new-user/fee.icon.png`)}`)
 				}
 			} else if (item.campaignsType === 3) {
 				this.go(`/community-center/vip-center/vip-detail?type=2&campaignsType=${item.campaignsType}`)
