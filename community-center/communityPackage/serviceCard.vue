@@ -272,6 +272,8 @@ import {
   orderPayH5PabUseBlanceApi,
 } from "@/api/community-center";
 
+import { communityPayment } from '@/utils/communityPayment'
+
 import { USER_INFO, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getUserId, throttle, isH5InWebview } from '@/utils';
 // import PageHead from 'pages/business-district/components/PageHead.vue'
@@ -579,136 +581,7 @@ export default {
         const res = await createRepairOrderApi(params);
         console.log(res);
         if (res.statusCode === 20000) {
-          const orderNo = res.data;
-          uni.setStorageSync(ENTERPRISE_ORDERS_NO, orderNo);
-            if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
-              try {
-                const payAppesult = await payOrderForBeeStewadAPPApi({
-                  userId: getUserId(),
-                  orderNo: orderNo,
-                });
-
-                if (payAppesult.statusCode === 20000) {
-                  let query = "";
-                  for (const key in payAppesult.data) {
-                    query += key + "=" + payAppesult.data[key] + "&";
-                  }
-
-                  // console.log(payAppesult);
-
-                  wx.miniProgram.navigateTo({
-                    url:
-                      "/pages/loading/loading?" +
-                      query +
-                      "orderNo=" +
-                      this.orderNo +
-                      "&userId=" +
-                      getUserId(),
-                    fail: async () => {
-                      if (!isH5InWebview()) {
-                        let res = await getServiceOrderPayApi({
-                          orderNo: orderNo,
-                          userId: getUserId(),
-                        });
-
-                        res = JSON.parse(res.data);
-                        const form = document.createElement("form");
-                        form.setAttribute("action", res.url);
-                        form.setAttribute("method", "POST");
-
-                        const data1 = JSON.parse(res.data);
-                        let input;
-                        for (const key in data1) {
-                          input = document.createElement("input");
-                          input.name = key;
-                          input.value = data1[key];
-                          form.appendChild(input);
-                        }
-
-                        document.body.appendChild(form);
-                        form.submit();
-                        document.body.removeChild(form);
-                      } else {
-                        _this.ttoast({
-                          type: "fail",
-                          title: error,
-                        });
-
-                        setTimeout(() => {
-                          uni.switchTab({
-                            url: "/pages/order/order",
-                          });
-                        }, 3000);
-                      }
-                    },
-                  });
-                }
-              } catch (error) {
-                console.log(error);
-              }
-            } else {
-              // #ifdef H5
-              let res = await getServiceOrderPayApi({
-                orderNo: orderNo,
-                userId: getUserId(),
-              });
-
-              res = JSON.parse(res.data);
-
-              const form = document.createElement("form");
-              form.setAttribute("action", res.url);
-              form.setAttribute("method", "POST");
-
-              const data1 = JSON.parse(res.data);
-              let input;
-              for (const key in data1) {
-                input = document.createElement("input");
-                input.name = key;
-                input.value = data1[key];
-                form.appendChild(input);
-              }
-
-              document.body.appendChild(form);
-              form.submit();
-              document.body.removeChild(form);
-              // #endif
-
-              // #ifdef APP
-              const payAppesult = await payOrderForBeeStewadAPPApi({
-                userId: getUserId(),
-                orderNo: orderNo,
-              });
-
-              if (payAppesult.statusCode === 20000) {
-                let query = "";
-                for (const key in payAppesult.data) {
-                  query += key + "=" + payAppesult.data[key] + "&";
-                }
-
-                plus.share.getServices(
-                  function (res) {
-                    let sweixin = null;
-                    for (let i in res) {
-                      if (res[i].id == "weixin") {
-                        sweixin = res[i];
-                      }
-                    }
-                    console.log(sweixin);
-                    if (sweixin) {
-                      sweixin.launchMiniProgram({
-                        id: "gh_e64a1a89a0ad",
-                        type: 0,
-                        path: "pages/orderDetail/orderDetail?" + query,
-                      });
-                    }
-                  },
-                  function (e) {
-                    console.log("获取分享服务列表失败：" + e.message);
-                  }
-                );
-              }
-              // #endif
-            }
+          communityPayment(res)
         } else {
           if (res.statusMsg.includes("余额不足")) {
             this.isShowRechargeModal = true;
