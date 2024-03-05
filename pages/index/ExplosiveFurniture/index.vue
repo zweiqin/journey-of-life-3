@@ -1,7 +1,11 @@
 <template>
 	<view class="HotBoxContainer">
 		<view class="backHeader">
-			<image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+			<tui-icon
+				name="arrowleft" :size="60" unit="rpx"
+				color="#000000"
+				margin="0" @click="goBack"
+			></tui-icon>
 			<text class="pageTitle">爆款专区</text>
 		</view>
 		<view class="header">

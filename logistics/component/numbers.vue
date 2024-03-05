@@ -1,19 +1,16 @@
 <template>
   <view class="numbers">
-    <image
-      class="op-icon"
-      src="../../static/images/wuliu/indeterminate.png"
-      mode=""
-      @click="$emit('op', -1)"
-    />
+		<tui-icon
+			name="offline-fill" :size="40" unit="rpx"
+			color="#bfbfbf"
+			margin="0 20rpx 0 0" @click="$emit('op', -1)"
+		></tui-icon>
     <view class="number">{{ number || 1 }}</view>
-
-    <image
-      @click="$emit('op', 1)"
-      class="op-icon"
-      src="../../static/images/wuliu/add.png"
-      mode=""
-    />
+		<tui-icon
+			name="add-fill" :size="40" unit="rpx"
+			color="#e95d20"
+			margin="0 20rpx 0 0" @click="$emit('op', 1)"
+		></tui-icon>
   </view>
 </template>
 

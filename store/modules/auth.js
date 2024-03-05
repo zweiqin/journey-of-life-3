@@ -63,6 +63,9 @@ export default {
 					})
 					.catch((err) => {
 						uni.hideLoading()
+						// // #ifdef MP
+						// uni.showToast({ title: (err && err.message) || JSON.stringify(err), icon: 'none' })
+						// // #endif
 						reject(err)
 					})
 			})
@@ -145,7 +148,6 @@ export default {
 					uni.login({
 						provider: 'weixin',
 						success: (res) => {
-							uni.hideLoading()
 							loginData.code = res.code
 						},
 						fail: (err) => {

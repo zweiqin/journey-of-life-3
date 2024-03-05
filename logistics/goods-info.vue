@@ -93,21 +93,16 @@
                     <text>件</text>
                   </view>
                 </view>
-                <image
-                  :src="
-                    !selectList.includes(`${item.parentName},${item.name}`)
-                      ? require('../static/images/wuliu/default.png')
-                      : require('../static/images/wuliu/active.png')
-                  "
-                  class="select-img"
-                  mode=""
-                  @click="
-                    handleChoose(
-                      item,
-                      !selectList.includes(`${item.parentName},${item.name}`)
-                    )
-                  "
-                />
+								<tui-icon
+									v-if="!selectList.includes(`${item.parentName},${item.name}`)" name="circle" :size="34" unit="rpx"
+									color="#d6d6d6"
+									margin="0 0 0 20rpx" @click="handleChoose(item, !selectList.includes(`${item.parentName},${item.name}`))"
+								></tui-icon>
+								<tui-icon
+									v-else name="circle-selected" :size="34" unit="rpx"
+									color="#f65050"
+									margin="0 0 0 20rpx" @click="handleChoose(item, !selectList.includes(`${item.parentName},${item.name}`))"
+								></tui-icon>
               </view>
             </view>
             <view class="main-area selected" v-else>

@@ -7,12 +7,11 @@
         <view class="menu-detail">
           <view class="name">
             <view>{{ chooseData.name }}</view>
-            <image
-              @click="close"
-              class="close"
-              src="../../static/images/wuliu/close.png"
-              mode=""
-            />
+						<tui-icon
+							name="close-fill" :size="30" unit="rpx"
+							color="#d8d8d8"
+							margin="0" @click="close"
+						></tui-icon>
           </view>
           <view class="selected"> 已选择：{{ selectStr() }} </view>
         </view>

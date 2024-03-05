@@ -1,7 +1,11 @@
 <template>
   <view class="intelligent-selection-container">
       <view class="backHeader">
-        <image @click="handleBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+				<tui-icon
+					name="arrowleft" :size="60" unit="rpx"
+					color="#000000"
+					margin="0" @click="handleBack"
+				></tui-icon>
         <text class="pageTitle">智能选配</text>
       </view>
       <Fields :query="query"></Fields>

@@ -1,7 +1,11 @@
 <template>
   <view class="whole-house-quick-installation-container">
     <view class="backHeader">
-      <image @click="goBack" class="backIcon" src="@/static/index/convenient-services/return.png"></image>
+			<tui-icon
+				name="arrowleft" :size="60" unit="rpx"
+				color="#000000"
+				margin="0" @click="goBack"
+			></tui-icon>
       <text class="pageTitle">全屋快装</text>
     </view>
     <view class="banner-wrapper">

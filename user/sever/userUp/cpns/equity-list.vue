@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { hehuoWq } from '../../../../data/user'
+// import { hehuoWq } from '../../../../data/user'
 
 export default {
   props: {
@@ -21,7 +21,8 @@ export default {
 
   data() {
     return {
-      equity: Object.freeze(hehuoWq),
+      // equity: Object.freeze(hehuoWq),
+      equity: {},
     }
   },
 }

@@ -130,7 +130,7 @@ export default {
 			if (this.fileList.length > 0) {
 				this.commentImgsFlag = true
 				for (let i = 0; i < this.fileList.length; i++) {
-					this.commentImgs += this.fileList[i].response.data.url + ','
+					this.commentImgs += this.fileList[i] + ','
 				}
 			}
 			const data = [ {

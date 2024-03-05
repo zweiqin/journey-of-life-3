@@ -46,11 +46,11 @@
         :key="index"
       >
         <view class="left-view">
-          <img
-            src="../../static/images/wuliu/user-blue.png"
-            alt=""
-            class="left-img"
-          />
+					<tui-icon
+						name="people-fill" :size="48" unit="rpx"
+						color="#2f6fe3"
+						margin="0 20rpx 0 0"
+					></tui-icon>
           <view>
             <view class="left-shopname">{{ item.shopname }}</view>
             <view class="shopdeatil">
@@ -94,11 +94,11 @@
       >
 
           <view class="left-view">
-            <img
-              src="../../static/images/wuliu/user-blue.png"
-              alt=""
-              class="left-img"
-            />
+						<tui-icon
+							name="people-fill" :size="48" unit="rpx"
+							color="#2f6fe3"
+							margin="0 20rpx 0 0"
+						></tui-icon>
             <view>
               <view class="left-shopname">{{ item.shopname }}</view>
               <view class="shopdeatil">

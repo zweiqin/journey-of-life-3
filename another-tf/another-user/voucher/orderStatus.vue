@@ -1,7 +1,11 @@
 <template>
 	<view class="container">
 		<view class="backHeader">
-			<image class="backIcon" src="../../../static/index/convenient-services/return.png" @click="goBack"></image>
+			<tui-icon
+				name="arrowleft" :size="60" unit="rpx"
+				color="#000000"
+				margin="0" @click="goBack"
+			></tui-icon>
 			<text class="pageTitle">订单状态</text>
 		</view>
 		<view class="statusBox">

@@ -6,18 +6,16 @@
       <view class="chhose">已选择：{{ selectedStr }}</view>
     </view>
     <view class="ops">
-      <image
-        class="icon"
-        src="../../static/images/wuliu/delete.png"
-        @click="$emit('delete', data)"
-        mode=""
-      />
-      <image
-        @click="$emit('edit', data)"
-        class="icon"
-        src="../../static/images/wuliu/edit.png"
-        mode=""
-      />
+			<tui-icon
+				name="delete" :size="40" unit="rpx"
+				color="#767676"
+				margin="0 0 20rpx 0" @click="$emit('delete', data)"
+			></tui-icon>
+			<tui-icon
+				name="evaluate" :size="40" unit="rpx"
+				color="#767676"
+				margin="0 0 20rpx 0" @click="$emit('edit', data)"
+			></tui-icon>
     </view>
   </view>
 </template>

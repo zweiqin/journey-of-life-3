@@ -4,10 +4,6 @@
 
 		<view class="pane-container">
 			<view class="item" @click="changeVipType('partner')" :class="{ active: value === 'partner' }">
-				<!-- <image
-          src="../../../../static/images/center/userUp/vip_2.png"
-          mode=""
-        /> -->
 				<view class="img" v-if="value === 'sup-partner'">
 					<image src="../../../../static/images/user/logo1.png" mode="" class="logo" />
 				</view>
@@ -21,7 +17,6 @@
 			</view>
 
 			<view class="item" @click="changeVipType('sup-partner')" :class="{ active: value === 'sup-partner' }">
-				<!-- <image src="../../../../static/images/center/userUp/vip_1.png" mode="" /> -->
 				<view class="img" v-if="value === 'partner'">
 					<image src="../../../../static/images/user/logo2.png" mode="" class="logo" />
 				</view>

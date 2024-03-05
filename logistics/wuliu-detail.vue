@@ -16,21 +16,21 @@
       <view class="main-info">
         <view class="info">
           <view class="info-item">
-            <img
-              class="icon"
-              src="../static/images/wuliu/user-blue.png"
-              alt=""
-            />
+						<tui-icon
+							name="people-fill" :size="36" unit="rpx"
+							color="#2978df"
+							margin="0 20rpx 0 0"
+						></tui-icon>
             <view class="text">联系人：</view>
             <view class="text">{{ info.contactsName }}</view>
           </view>
 
           <view class="info-item">
-            <img
-              class="icon"
-              src="../static/images/wuliu/phone-blue.png"
-              alt=""
-            />
+						<tui-icon
+							name="voipphone" :size="36" unit="rpx"
+							color="#085ce7"
+							margin="0 20rpx 0 0"
+						></tui-icon>
             <view class="text">电话：</view>
             <view class="text" style="color: #3662ec">{{
               info.contactsMobile
@@ -38,11 +38,11 @@
           </view>
 
           <view class="info-item">
-            <img
-              class="icon"
-              src="../static/images/wuliu/local-blue.png"
-              alt=""
-            />
+						<tui-icon
+							name="position" :size="36" unit="rpx"
+							color="#085ce7"
+							margin="0 20rpx 0 0"
+						></tui-icon>
             <view class="text">地址：</view>
             <view class="text" style="color: #3662ec">{{ info.address }}</view>
           </view>

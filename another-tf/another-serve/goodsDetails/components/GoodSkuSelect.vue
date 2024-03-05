@@ -66,54 +66,93 @@
 					</view>
 				</view>
 
-				<view v-if="btnType === 6" class="skuSelectBtn">
-					<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
-						商品已下架
+				<view v-if="btnType === 6" style="padding: 0 18rpx 30rpx;">
+					<view v-if="goodsDetail.shelveState === 0" style="display: flex;align-items: center;justify-content: center;">
+						<tui-button type="gray" width="360rpx" height="80rpx" disabled shape="circle" margin="0">
+							商品已下架
+						</tui-button>
 					</view>
-					<view v-else-if="selectedSku.activityType === 1" class="flex-row-plus flex-items flex-sp-around">
-						<view class="selectJoinShop selectBtn font-color-333" @click="handleBuyNow">
+					<view
+						v-else-if="selectedSku.activityType === 1"
+						style="display: flex;align-items: center;justify-content: space-around;"
+					>
+						<tui-button
+							type="gray" width="190rpx" height="80rpx" plain
+							margin="0" :disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;" @click="handleBuyNow"
+						>
 							单独购买
-						</view>
-						<view class="selectBuyNow selectBtn font-color-FFEBC4" @click="handleBuyWithGroup">
+						</tui-button>
+						<tui-button
+							type="black" width="190rpx" height="80rpx" margin="0"
+							:disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+						>
 							我要开团
-						</view>
+						</tui-button>
 					</view>
-					<view v-else class="flex-row-plus flex-items flex-sp-around">
-						<view class="selectJoinShop selectBtn font-color-333" @click="handleAddCart">
+					<view v-else style="display: flex;align-items: center;justify-content: space-around;">
+						<tui-button
+							type="gray" width="190rpx" height="80rpx" plain
+							margin="0" :disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;" @click="handleAddCart"
+						>
 							加入购物车
-						</view>
-						<view class="selectBuyNow selectBtn font-color-FFEBC4" @click="handleBuyNow">
+						</tui-button>
+						<tui-button
+							type="black" width="190rpx" height="80rpx" margin="0"
+							:disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyNow"
+						>
 							立即购买
-						</view>
+						</tui-button>
 					</view>
 				</view>
 				<view v-else>
 					<view
-						v-if="(selectedSku.activityType === 1) && collageId" class="goosDetailbut-box flex-items-plus"
+						v-if="(selectedSku.activityType === 1) && collageId"
+						style="display: flex;align-items: center;justify-content: center;"
 						:style="{ 'padding-bottom': (isIphone === true ? 60 : 20) + 'rpx' }"
 					>
-						<view class="joinbuyBut" @click="handleBuyWithGroup">
+						<tui-button
+							type="black" width="590rpx" height="80rpx" margin="0 0 0 16rpx"
+							:disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+						>
 							确定
-						</view>
+						</tui-button>
 					</view>
 					<view
-						v-else-if="(selectedSku.activityType === 1) && (btnType === 3)" class="goosDetailbut-box flex-row-plus"
+						v-else-if="(selectedSku.activityType === 1) && (btnType === 3)"
+						style="display: flex;align-items: center;justify-content: center;"
 						:style="{ 'padding-bottom': (isIphone === true ? 60 : 20) + 'rpx' }"
 					>
-						<view class="buyNowBut" @click="handleBuyWithGroup">
+						<tui-button
+							type="black" width="590rpx" height="80rpx" margin="0 0 0 16rpx"
+							:disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+						>
 							去拼团
-						</view>
+						</tui-button>
 					</view>
 					<view
-						v-else class="goosDetailbut-box flex-row-plus"
+						v-else style="display: flex;align-items: center;justify-content: center;"
 						:style="{ 'padding-bottom': (isIphone === true ? 60 : 20) + 'rpx' }"
 					>
-						<view v-if="btnType === 1" class="buyNowBut" @click="handleAddCart">
+						<tui-button
+							v-if="btnType === 1" type="black" width="590rpx" height="80rpx"
+							margin="0 0 0 16rpx" :disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleAddCart"
+						>
 							确认
-						</view>
-						<view v-else class="buyNowBut" @click="handleBuyNow">
+						</tui-button>
+						<tui-button
+							v-else type="black" width="590rpx" height="80rpx"
+							margin="0 0 0 16rpx" :disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyNow"
+						>
 							确认
-						</view>
+						</tui-button>
 					</view>
 				</view>
 			</view>
@@ -280,7 +319,7 @@ export default {
 					icon: 'none'
 				})
 			}
-			if (this.number > this.selectedSku.stockNumber && this.selectedSku.stockNumber !== 0) {
+			if ((this.number > this.selectedSku.stockNumber) && this.selectedSku.stockNumber) {
 				return uni.showToast({
 					title: '已超出最大数量限制',
 					icon: 'none'
@@ -431,48 +470,5 @@ export default {
 			}
 		}
 	}
-
-	.goosDetailbut-box {
-		justify-content: center;
-
-		.buyNowBut {
-			width: 90%;
-			height: 90upx;
-			background-color: #333333;
-			font-size: 28upx;
-			line-height: 90upx;
-			text-align: center;
-			color: #FFEBC4;
-		}
-	}
-}
-
-.skuSelectBtn {
-	padding-bottom: 30rpx;
-
-	.selectBtn {
-		width: 342rpx;
-		height: 100rpx;
-		line-height: 100rpx;
-		text-align: center;
-		border: 2rpx solid #333333;
-		font-size: 28rpx;
-		border-radius: 8rpx;
-	}
-
-	.selectBuyNow {
-		background: #333333;
-	}
-}
-
-.joinbuyBut {
-	width: 190upx;
-	height: 80upx;
-	background: #333333;
-	color: #FFEBC4;
-	font-size: 28upx;
-	line-height: 80upx;
-	text-align: center;
-	margin-left: 30upx;
 }
 </style>

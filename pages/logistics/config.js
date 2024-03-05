@@ -1,22 +1,22 @@
 export const menus = [
   {
     label: '附近网点',
-    icon: require('../../static/images/wuliu/fujinwangdian.png')
+    icon: require('../../static/logo.png')
   },
   {
     label: '价格时效',
-    icon: require('../../static/images/wuliu/jiageshixiao.png')
+    icon: require('../../static/logo.png')
   },
   {
     label: '派送范围',
-    icon: require('../../static/images/wuliu/paisongfanwei.png')
+    icon: require('../../static/logo.png')
   },
   {
     label: '收费标准',
-    icon: require('../../static/images/wuliu/shoujibiaozhun.png')
+    icon: require('../../static/logo.png')
   },
   {
     label: '意见反馈',
-    icon: require('../../static/images/wuliu/yijianfankaui.png')
+    icon: require('../../static/logo.png')
   },
 ]

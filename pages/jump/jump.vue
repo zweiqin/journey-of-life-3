@@ -149,6 +149,7 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
+		// eslint-disable-next-line require-await, complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -199,6 +200,8 @@ export default {
 						jumpToOtherProject({ url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`, toType: 'H5' })
 					}, 300)
 				}
+			} else if (this.type === 'downloadApp') {
+				setTimeout(() => { uni.redirectTo({ url: '/pages/download/download' }) }, 300)
 			} else if (this.type === 'bindingUser') {
 				bindPlatformRelationshipCodeApi({ code: this.code })
 					.then((res) => { this.$showToast('绑定成功', 'success') })

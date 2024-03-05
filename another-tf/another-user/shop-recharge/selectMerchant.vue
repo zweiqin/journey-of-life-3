@@ -1,11 +1,11 @@
 <template>
   <view class="container">
     <view class="backHeader">
-      <image
-        @click="handleBack"
-        class="backIcon"
-        src="@/static/index/convenient-services/return.png"
-      ></image>
+			<tui-icon
+				name="arrowleft" :size="60" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
       <text class="pageTitle">充值商家</text>
     </view>
     <view class="checkoutMerchant">

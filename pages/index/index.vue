@@ -81,19 +81,26 @@
         <view class="tui-header">
           <view class="tui-header-top">
             <view class="tui-top-item" @tap="btnDropChange(0)">
-              排序 <image
-                style="width: 20rpx;height: 16rpx;margin-left: 4rpx;" src="@/static/index/shop/down.png" mode=""
-              ></image>
+              排序 <tui-icon
+								name="turningdown" :size="20" unit="rpx"
+								color="#999999"
+								margin="0 0 0 4rpx" @click="$emit('edit', data)"
+							></tui-icon>
             </view>
             <view class="tui-top-item" @tap="btnDropChange(1)">
-              排序条件 <image
-                style="width: 20rpx;height: 16rpx;margin-left: 4rpx;" src="@/static/index/shop/down.png" mode=""
-              ></image>
+              排序条件 <tui-icon
+								name="turningdown" :size="20" unit="rpx"
+								color="#999999"
+								margin="0 0 0 4rpx" @click="$emit('edit', data)"
+							></tui-icon>
             </view>
             <view class="tui-top-item" @tap="btnDropChange(2)">
               <view>是否新品</view>
-              <image style="width: 20rpx;height: 16rpx;margin-left: 4rpx;" src="@/static/index/shop/down.png" mode="">
-              </image>
+              <tui-icon
+								name="turningdown" :size="20" unit="rpx"
+								color="#999999"
+								margin="0 0 0 4rpx" @click="$emit('edit', data)"
+							></tui-icon>
             </view>
             <view class="tui-top-item tui-screen" @tap="screen">
               <text class="tui-bold">筛选</text>

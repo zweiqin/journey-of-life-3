@@ -11,7 +11,13 @@
 			<view class="timeline__item" v-for="(item, index) in orderDetail.list" :key="index">
 				<view class="timeline__item-header">
 					<view class="icon_body_content" :class="{ isOpen:item.isOpenDetail }" @click="openDetails($event, index)">
-						<image class="timeline__arrow-icon" :aria-expanded="item.isOpenDetail" src="@/static/images/center/rightArrow.png"></image>
+						<view class="timeline__arrow-icon" :aria-expanded="item.isOpenDetail">
+							<tui-icon
+								name="arrowright" :size="40" unit="rpx"
+								color="#272636"
+								margin="0 20rpx 0 0"
+							></tui-icon>
+						</view>
 					</view>
 					<!-- <button class="timeline__arrow" type="button" id="item1" aria-labelledby="item1-name" aria-controls="item1-ctrld" aria-haspopup="true" data-item="1">
 						<svg class="timeline__arrow-icon">

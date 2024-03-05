@@ -54,9 +54,7 @@
 						{{ goodsDetail.receive.receiveAdress }}
 					</view>
 					<view>
-						<text
-							v-if="[1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1285, 1286].includes(goodsDetail.classifyId)"
-						>
+						<text v-if="[1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1285, 1286].includes(goodsDetail.classifyId)">
 							物流费另算
 						</text>
 						<text v-else>快递：¥ {{ goodsDetail.logisticsPrice || 0 }}</text>
@@ -160,8 +158,8 @@
 			</view>
 			<!-- 底部购买 -->
 			<view class="buygoods-box">
-				<view class="buygoodsBut-box flex-row-plus" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
-					<view class="btns_container">
+				<view class="buygoodsBut-box" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
+					<view style="display: flex;align-items: center;">
 						<view
 							v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
 							class="btns flex-column-plus flex-items"
@@ -185,25 +183,51 @@
 							<label class="fs22">购物车</label>
 						</view>
 					</view>
-					<view class="btns_container">
-						<view v-if="goodsDetail.shelveState === 0" class="flex-row-plus offShelf">
-							商品已下架
+					<view style="flex: 1;">
+						<view
+							v-if="goodsDetail.shelveState === 0"
+							style="display: flex;align-items: center;justify-content: flex-end;"
+						>
+							<tui-button type="gray" width="360rpx" height="80rpx" disabled shape="circle" margin="0 0 0 40rpx">
+								商品已下架
+							</tui-button>
 						</view>
-						<view v-else-if="selectedCurrentMsg.selectedSku.activityType === 1" class="flex-row-plus flex-items">
-							<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(4)">
+						<view
+							v-else-if="selectedCurrentMsg.selectedSku.activityType === 1"
+							style="display: flex;align-items: center;justify-content: flex-end;"
+						>
+							<tui-button
+								type="gray" width="190rpx" height="80rpx" plain
+								margin="0 0 0 40rpx"
+								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
+								@click="handleShowGoodsSkuSelect(4)"
+							>
 								单独购买
-							</view>
-							<view class="buyNowBut" @click="handleShowGoodsSkuSelect(3)">
+							</tui-button>
+							<tui-button
+								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
+								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;"
+								@click="handleShowGoodsSkuSelect(3)"
+							>
 								我要开团
-							</view>
+							</tui-button>
 						</view>
-						<view v-else class="flex-row-plus flex-items">
-							<view class="joinShopCartBut" @click="handleShowGoodsSkuSelect(1)">
+						<view v-else style="display: flex;align-items: center;justify-content: flex-end;">
+							<tui-button
+								type="gray" width="190rpx" height="80rpx" plain
+								margin="0 0 0 40rpx"
+								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
+								@click="handleShowGoodsSkuSelect(1)"
+							>
 								加入购物车
-							</view>
-							<view class="buyNowBut" @click="handleShowGoodsSkuSelect(2)">
+							</tui-button>
+							<tui-button
+								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
+								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;"
+								@click="handleShowGoodsSkuSelect(2)"
+							>
 								立即购买
-							</view>
+							</tui-button>
 						</view>
 					</view>
 				</view>
@@ -576,24 +600,20 @@ export default {
 	}
 
 	.buygoods-box {
+		width: 100%;
 		position: fixed;
 		bottom: 0rpx;
 		box-sizing: border-box;
 		z-index: 1;
 
 		.buygoodsBut-box {
-			background-color: #FFFFFF;
-			width: 750rpx;
-			padding: 20rpx 32rpx;
-			box-shadow: 0rpx 0rpx 10rpx 1rpx #EDEDED;
-			box-sizing: border-box;
 			display: flex;
 			justify-content: space-between;
-
-			.btns_container {
-				display: flex;
-				align-items: center;
-			}
+			width: 100%;
+			padding: 20rpx 18rpx;
+			box-shadow: 0rpx 0rpx 10rpx 1rpx #EDEDED;
+			background-color: #FFFFFF;
+			box-sizing: border-box;
 
 			.btns {
 				width: 80rpx;
@@ -637,41 +657,6 @@ export default {
 				}
 
 				/* #endif */
-			}
-
-			.joinShopCartBut {
-				width: 190rpx;
-				height: 80rpx;
-				background-color: #FFFFFF;
-				color: #333333;
-				font-size: 28rpx;
-				line-height: 80rpx;
-				border: 2rpx solid #333333;
-				text-align: center;
-				margin-left: 40rpx;
-				box-sizing: border-box;
-			}
-
-			.buyNowBut {
-				width: 190rpx;
-				height: 80rpx;
-				background: #333333;
-				color: #FFEBC4;
-				font-size: 28rpx;
-				line-height: 80rpx;
-				text-align: center;
-				margin-left: 16rpx;
-			}
-
-			.offShelf {
-				background: #b7b7b7;
-				border-radius: 50rpx;
-				width: 360rpx;
-				margin-left: 50rpx;
-				line-height: 80rpx;
-				height: 80rpx;
-				justify-content: center;
-				color: #333333;
 			}
 		}
 	}

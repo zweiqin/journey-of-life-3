@@ -119,18 +119,16 @@
           </view>
 
           <view class="op">
-            <image
-              @click="handleEditGoods(goods)"
-              class="op-img"
-              src="../static/images/wuliu/edit.png"
-              alt=""
-            />
-            <image
-              @click="handleDeleteGood(index)"
-              class="op-img"
-              src="../static/images/wuliu/delete.png"
-              alt=""
-            />
+						<tui-icon
+							name="evaluate" :size="36" unit="rpx"
+							color="#767676"
+							margin="0" @click="handleEditGoods(goods)"
+						></tui-icon>
+						<tui-icon
+							name="delete" :size="36" unit="rpx"
+							color="#767676"
+							margin="0 20rpx 0 0" @click="handleDeleteGood(index)"
+						></tui-icon>
           </view>
         </view>
       </view>

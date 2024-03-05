@@ -1,6 +1,10 @@
 <template>
   <view class="orderbook">
-    <image src="../../../static/images/center/back.png" mode="" @click="handleBack" class="back" />
+		<tui-icon
+			name="arrowleft" :size="48" unit="rpx"
+			color="#000000"
+			margin="36rpx 0 0 40rpx" @click="handleBack"
+		></tui-icon>
     <view class="main">
       <view class="type">
         <view class="t-left">服务类型</view>
@@ -246,6 +250,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background: #f6f6f5;
+  padding-top: 36upx;
 
   .back {
     width: 24upx;

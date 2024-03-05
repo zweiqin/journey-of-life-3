@@ -1,18 +1,28 @@
 <template>
 	<view class="service-oil">
 		<view class="top">
-			<image src="@/static/index/convenient-services/return.png" mode="" @click="back" />
+			<tui-icon
+				name="arrowleft" :size="60" unit="rpx"
+				color="#000000"
+				margin="0" @click="back"
+			></tui-icon>
 			<text>加油</text>
 		</view>
 		<view class="bar-list">
 			<view v-for="test in tests" :key="test.id" class="bar">
-				<image :src="test.icon" mode="" @click="processById(test.id)" />
+				<tui-icon
+					:name="test.icon" :size="64" unit="rpx"
+					:color="test.color"
+					margin="0" @click="processById(test.id)"
+				></tui-icon>
 				<view class="text">{{ test.name }}</view>
 			</view>
 		</view>
 		<view class="mid">
 			<view class="card">
-				<image src="@/static/index/convenient-services/card.png" mode="" />
+				<view style="width: 302upx;height: 100upx;position: absolute;top: 0upx;left: 0upx;color: #ffffff;text-align: center;line-height: 100upx;background-color: #0e2058;">
+					加油卡
+				</view>
 				<view v-if="showyouka" class="number">
 					油卡编号: <text>{{ youkabianhao }}</text>
 					<view class="copy" @tap="copyText(youkabianhao)">复制</view>
@@ -38,16 +48,47 @@
 </template>
 
 <script>
-import { tests, tests1 } from './data'
-import { RuanRequest, getUserId } from '@/utils'
+import { RuanRequest } from '@/utils'
 export default {
 	name: 'PhoneBill',
 	props: {
 	},
 	data() {
 		return {
-			tests,
-			tests1,
+			tests: [
+				{
+					name: '去开卡',
+					id: 1,
+					icon: 'card-fill',
+					color: '#1357fe'
+				},
+				{
+					name: '去充值',
+					id: 2,
+					icon: 'coupon',
+					color: '#467cfd'
+				},
+				{
+					name: '去加油',
+					id: 3,
+					icon: 'listview',
+					color: '#d81e06'
+				}
+			],
+			tests1: [
+				{
+					name: '去充值',
+					id: 2,
+					icon: 'coupon',
+					color: '#467cfd'
+				},
+				{
+					name: '去加油',
+					id: 3,
+					icon: 'listview',
+					color: '#d81e06'
+				}
+			],
 			showyouka: false,
 			youkabianhao: '',
 			youkayue: 0,

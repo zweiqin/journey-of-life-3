@@ -2,7 +2,11 @@
   <view class="gold-butler">
     <!-- 导航栏 -->
     <view class="navbar">
-      <image src="../../../static/images/center/back.png" mode="" @click="handleBack" />
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0 62rpx 0 40rpx" @click="handleBack"
+			></tui-icon>
       <view class="navs" v-if="status == 2">
         <view class="item" v-for="item in navs" :key="item.value" :class="{ active: currentTab === item.value }" @click="handleClick(item)">{{
           item.name
