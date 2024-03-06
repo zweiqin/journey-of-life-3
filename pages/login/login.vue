@@ -1,7 +1,11 @@
 <template>
 	<view class="containers" style="min-height: 100vh;">
-		<view class="header" style="width: 100vw;height: 122rpx">
-			<image class="backFn" src="../../static/images/common/back.png" @click="$switchTab('/pages/index/index')"></image>
+		<view class="header" style="width: 100vw;padding: 30rpx 0;">
+			<tui-icon
+				name="arrowleft" :size="62" unit="rpx"
+				color="#ffffff"
+				margin="0 30rpx" @click="$switchTab('/pages/index/index')"
+			></tui-icon>
 		</view>
 		<view class="logoText">
 			<view class="texts" style="font-weight: bold;">
@@ -305,12 +309,6 @@ export default {
 	box-sizing: border-box;
 	padding-bottom: 66rpx;
 	background-color: #EA5B1D;
-
-	.backFn {
-		padding: 30rpx 30rpx;
-		width: 62rpx;
-		height: 62rpx;
-	}
 
 	.logoText {
 		width: 100vw;

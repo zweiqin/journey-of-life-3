@@ -1,116 +1,39 @@
 <!-- 退款详情 -->
 <template>
-	<view>
+	<view class="refund-details-container">
 		<JHeader title="退款详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view v-if="ifShow">
 			<view>
 				<view class="order-details-status">
-					<view v-if="status == 1" class="status-title-box">
-						<view class="l">
-							<text class="status">审核中</text>
-						</view>
+					<view style="font-size: 34rpx;text-align: center;">{{ afterConditionEnum(afterState) }}</view>
+					<view style="margin-top: 20rpx;">
+						<view v-if="afterState == 4">已原路退回金额：￥{{ itemlist.price }}</view>
+						<view v-if="afterState == 6" class="reason">原因: {{ itemlist.reason }}</view>
+						<view v-if="afterState == 9" style="text-align: center;">因您撤销退款申请，退款已关闭</view>
 					</view>
-					<!--  审核通过 -->
-					<view v-if="status == 10" class="status-title-box">
-						<view class="l">
-							<text class="status">审核通过</text>
-						</view>
-					</view>
-					<!--  审核不通过 -->
-					<view v-if="status == 6" class="status-title-box">
-						<view class="l">
-							<text class="status">审核不通过</text>
-						</view>
-					</view>
-					<view v-if="status == 6" class="reason">原因: {{ itemlist.reason }}</view>
-					<!--  退款中 -->
-					<view v-if="status == 2" class="status-title-box">
-						<view class="l">
-							<text class="status">退款中</text>
-						</view>
-					</view>
-					<!--  退款中 -->
-					<view v-if="status == 7" class="status-title-box">
-						<view class="l">
-							<text class="status">评审中</text>
-						</view>
-					</view>
-					<!--  退货完成待退款 -->
-					<view v-if="status == 4" class="status-title-box">
-						<view class="l">
-							<text class="status">退款成功</text>
-						</view>
-					</view>
-					<!--  退货完成拒绝退款 -->
-					<view v-if="status == 5" class="status-title-box">
-						<view class="l">
-							<text class="status">退款失败</text>
-						</view>
-					</view>
-					<!--  平台介入拒绝 -->
-					<view v-if="status == 9 && isPlaformState === 1" class="status-title-box">
-						<view class="l">
-							<text class="status">审核失败</text>
-						</view>
-					</view>
-					<!--  退款成功 -->
-					<view v-if="status == 9" class="status-title-box">
-						<view class="l">
-							<text class="status">撤销申请</text>
-						</view>
-					</view>
+				</view>
 
+				<view v-if="afterState == 6 || afterState == 8" class="return-explain-btn">
+					<text class="btn" @click="cancelRefundTap">撤销申请</text>
+					<text class="btn" @click="platform(itemlist.afterId, itemlist.orderId)">平台介入</text>
 				</view>
 
 				<!-- 发起退款 -->
-				<view v-if="status == 0" class="order-details-info-box mt20">
-					<view v-if="status != 0" class="order-details-price">
-						<text>退款总金额</text>
-						<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
-					</view>
-					<view class="address-box return-explain-box">
-						<view>您已成功发起退款申请，请耐心等待商家处理。</view>
-						<view class="address-info-r mt20 mar-top-20">
-							<view class="item fs24">
-								<text class="circle"></text>
-								<text class="">卖家同意或超时未处理，系统将退款给您</text>
-							</view>
-							<view class="item fs24">
-								<text class="circle"></text>
-								<text class="">如果卖家拒绝，您可以修改退款申请后再次发起，卖家会重新处理</text>
-							</view>
+				<view v-if="afterState" class="order-details-price">
+					<text>退款总金额</text>
+					<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
+				</view>
+				<view v-else class="address-box">
+					<view>您已成功发起退款申请，请耐心等待商家处理。</view>
+					<view style="margin-top: 20rpx;">
+						<view class="item fs24">
+							<text class="circle"></text>
+							<text class="">卖家同意或超时未处理，系统将退款给您</text>
 						</view>
-						<view class="return-explain-btn">
-							<text class="btn" @click="cancelRefundTap">撤销申请</text>
-							<text v-if="status == 6 || status == 8" class="btn" @click="platform(itemlist.afterId, itemlist.orderId)">
-								平台介入
-							</text>
+						<view class="item fs24">
+							<text class="circle"></text>
+							<text class="">如果卖家拒绝，您可以修改退款申请后再次发起，卖家会重新处理</text>
 						</view>
-					</view>
-				</view>
-				<view v-if="status == 6 || status == 8" class="order-details-info-box mt20">
-					<view class="return-explain-btn">
-						<text class="btn" @click="cancelRefundTap">撤销申请</text>
-						<text class="btn" @click="platform(itemlist.afterId, itemlist.orderId)">平台介入</text>
-					</view>
-				</view>
-				<!-- 退款成功 -->
-				<view v-if="status == 4" class="order-details-info-box mt20">
-					<view class="order-details-price return-explain-box">
-						<text>已原路退回金额</text>
-						<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
-					</view>
-				</view>
-				<!-- 平台介入关闭 -->
-				<view v-if="status == 9 && isPlaformState === 1" class="order-details-info-box mt20">
-					<view class="address-box return-explain-box">
-						<view>平台介入申请失败</view>
-					</view>
-				</view>
-				<!-- 退款关闭 -->
-				<view v-if="status == 9" class="order-details-info-box mt20">
-					<view class="address-box return-explain-box">
-						<view>因您撤销退款申请，退款已关闭</view>
 					</view>
 				</view>
 
@@ -123,7 +46,7 @@
 									<image :src="common.seamingImgUrl(item.image)" class="product-img"></image>
 									<view class="info-box">
 										<text class="product-name">{{ item.productName }}</text>
-										<view class="product-sku mt20">{{ item.value }}</view>
+										<view class="product-sku">{{ item.value }}</view>
 									</view>
 								</view>
 							</view>
@@ -168,6 +91,7 @@
 </template>
 
 <script>
+import { afterConditionEnum } from '../../../components/ATFOrderInfo/config'
 import {
 	getReturnDetailByIdApi,
 	updateCancelReturnGoodsApi
@@ -176,28 +100,29 @@ export default {
 	name: 'RefundDetails',
 	data() {
 		return {
-			orderMsg: {},
+			orderMsg: {
+				afterId: '',
+				orderId: ''
+			},
 			itemlist: {},
-			status: 0,
+			afterState: 0,
 			deliveryfalse: false,
-			ReturnDetailData: [],
-			images: '',
-			afterId: '',
-			orderId: '',
 			ifShow: false
 		}
 	},
 	onLoad(options) {
-		this.orderMsg = JSON.parse(options.item)
+		this.orderMsg.afterId = options.afterId
+		this.orderMsg.orderId = options.orderId
 		this.getReturnDetail()
 	},
 	methods: {
+		afterConditionEnum,
 		getReturnDetail() {
 			getReturnDetailByIdApi({
 				afterId: this.orderMsg.afterId,
 				orderId: this.orderMsg.orderId
 			}).then((res) => {
-				this.status = res.data.afterState
+				this.afterState = res.data.afterState
 				this.itemlist = res.data
 				this.ifShow = true
 			})
@@ -231,222 +156,174 @@ export default {
 </script>
 
 <style  lang="less" scoped>
-page {
+.refund-details-container {
+	min-height: 100vh;
 	background: #f8f8f8;
-}
-
-.order-details-status {
-	width: 100%;
-	height: 302upx;
-	background-color: #333333;
-	background-size: contain;
-}
-
-.status-title-box {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	padding: 40upx 30upx 0;
 	box-sizing: border-box;
-}
 
-.reason {
-	padding-left: 32rpx;
-	color: #FFFFFF;
-}
+	.order-details-status {
+		padding: 30rpx;
+		background-color: #333333;
+		font-size: 30upx;
+		color: #ffffff;
+	}
 
-.status-title-box .l {
-	display: flex;
-	flex-direction: column;
-}
+	.reason {
+		padding-left: 32rpx;
+		color: #FFFFFF;
+	}
 
-.status-title-box .l .status {
-	font-size: 30upx;
-	color: #fff;
-}
+	.order-details-price {
+		padding: 30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1rpx solid #e5e5e5;
+		font-size: 30upx;
+		color: #333333;
+	}
 
-.status-title-box .l .label {
-	font-size: 24upx;
-	color: #fff;
-	margin-top: 14upx;
-}
+	.order-details-price .price-box {
+		font-size: 36upx;
+		color: #C83732;
+	}
 
-.order-details-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-	background: #fff;
-}
+	.order-details-price .fuhao {
+		font-size: 24upx;
+	}
 
-.order-details-info-box.mt20 {
-	margin-top: 20upx;
-}
+	.address-box {
+		padding: 30upx;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		font-size: 28upx;
+		color: #333;
+		border-bottom: 1rpx solid #e5e5e5;
+	}
 
-.order-details-price {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	height: 100upx;
-	border-bottom: 1px solid #e5e5e5;
-	font-size: 30upx;
-	color: #333;
-}
+	.return-explain-btn {
+		padding: 30upx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
 
-.order-details-price .price-box {
-	font-size: 36upx;
-	color: #C83732;
-}
+	.return-explain-btn .btn {
+		width: 130upx;
+		height: 56upx;
+		background: #fff;
+		border: 1px solid #bbb;
+		border-radius: 4upx;
+		text-align: center;
+		line-height: 56upx;
+		margin-left: 20upx;
+		color: #333;
+		font-size: 26upx;
+	}
 
-.order-details-price .fuhao {
-	font-size: 24upx;
-}
+	.negotiate {
+		padding-bottom: 20rpx;
+		background: #FFFFFF;
+	}
 
-.address-box {
-	background: #fff;
-	padding: 30upx 0;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	font-size: 28upx;
-	color: #333;
-	border-bottom: 1px solid #e5e5e5;
-}
+	.order-list-box {
+		margin-top: 20upx;
+	}
 
-.address-box .address-info-r .title {
-	display: inline-block;
-	width: 100upx;
-	text-align: justify;
-	text-justify: distribute-all-lines;
-	text-align-last: justify;
-}
+	.orderLineBox {
+		padding: 0 30rpx;
+		background: #FFFFFF;
+	}
 
-.return-explain-btn {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-end;
-	margin-top: 20upx;
-}
+	.order-list-box .title {
+		padding: 30upx;
+		box-sizing: border-box;
+		font-size: 30upx;
+		color: #333;
+		background: #fff;
+	}
 
-.negotiate {
-	padding-bottom: 20rpx;
-	background: #FFFFFF;
-}
+	.order-list-box .item {
+		margin-bottom: 20upx;
+		background: #fff;
+		border-radius: 10upx;
+	}
 
-.return-explain-btn .btn {
-	width: 130upx;
-	height: 56upx;
-	background: #fff;
-	border: 1px solid #bbb;
-	border-radius: 4upx;
-	text-align: center;
-	line-height: 56upx;
-	margin-left: 20upx;
-	color: #333;
-	font-size: 26upx;
-}
+	.order-info-box {
+		padding: 0 30upx;
+		box-sizing: border-box;
+	}
 
-.return-explain-btn .btn.on {
-	color: #ff7911;
-	border: 1px solid #ff7911;
-}
+	.order-info {
+		border-bottom: 1px solid #eee;
+	}
 
-.order-list-box {
-	margin-top: 20upx;
-}
+	.order-info-item {
+		display: flex;
+		flex-direction: row;
+		padding: 20upx 0;
+	}
 
-.orderLineBox {
-	padding: 0 30rpx;
-	background: #FFFFFF;
-}
+	.product-img {
+		width: 180upx;
+		height: 180upx;
+		border-radius: 10upx;
+		margin-right: 30upx;
+	}
 
-.order-list-box .title {
-	padding: 30upx;
-	box-sizing: border-box;
-	font-size: 30upx;
-	color: #333;
-	background: #fff;
-}
+	.info-box {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
 
-.order-list-box .item {
-	margin-bottom: 20upx;
-	background: #fff;
-	border-radius: 10upx;
-}
+	.product-name {
+		font-size: 26upx;
+		color: #333;
+		height: 68upx;
+		line-height: 34upx;
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
 
-.order-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-}
+	.product-sku {
+		margin-top: 20rpx;
+		font-size: 24upx;
+		color: #999;
+	}
 
-.order-info {
-	border-bottom: 1px solid #eee;
-}
+	.delivery-way-box {
+		display: flex;
+		flex-direction: column;
+		margin: 30upx 0 10upx;
+	}
 
-.order-info-item {
-	display: flex;
-	flex-direction: row;
-	padding: 20upx 0;
-}
+	.delivery-way-box .item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-size: 26upx;
+		color: #333;
+	}
 
-.product-img {
-	width: 180upx;
-	height: 180upx;
-	border-radius: 10upx;
-	margin-right: 30upx;
-}
+	.delivery-way-box .item .way {
+		color: #999;
+	}
 
-.info-box {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
+	.order-desc {
+		color: rgb(150, 150, 150);
+		font-size: 28rpx;
+		margin-bottom: 6rpx;
+	}
 
-.product-name {
-	font-size: 26upx;
-	color: #333;
-	height: 68upx;
-	line-height: 34upx;
-	display: -webkit-box;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	word-break: break-all;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
-
-.product-sku {
-	font-size: 24upx;
-	color: #999;
-}
-
-.delivery-way-box {
-	display: flex;
-	flex-direction: column;
-	margin: 30upx 0 10upx;
-}
-
-.delivery-way-box .item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	font-size: 26upx;
-	color: #333;
-}
-
-.delivery-way-box .item .way {
-	color: #999;
-}
-
-.order-desc {
-	color: rgb(150, 150, 150);
-	font-size: 28rpx;
-	margin-bottom: 6rpx;
-}
-
-.order-time {
-	color: rgb(200, 200, 200);
-	font-size: 26rpx;
+	.order-time {
+		color: rgb(200, 200, 200);
+		font-size: 26rpx;
+	}
 }
 </style>

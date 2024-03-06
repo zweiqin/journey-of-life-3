@@ -1,12 +1,11 @@
 <template>
   <view class="value-added-services">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/common/back.png"
-        alt=""
-      />
+			<tui-icon
+				name="arrowleft" :size="32" unit="rpx"
+				color="#ffffff"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">货物信息</view>
     </view>
 
@@ -26,7 +25,11 @@
             <view v-else>{{ orderInfo.goodType }}</view>
           </picker>
         </view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
+				<tui-icon
+					name="arrowright" :size="32" unit="rpx"
+					color="#a6a6a6"
+					margin="0"
+				></tui-icon>
       </view>
 
       <view class="item">
@@ -54,7 +57,11 @@
             <view v-else>{{ orderInfo.packType }}</view>
           </picker>
         </view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
+				<tui-icon
+					name="arrowright" :size="32" unit="rpx"
+					color="#a6a6a6"
+					margin="0"
+				></tui-icon>
       </view>
 
       <view class="item">

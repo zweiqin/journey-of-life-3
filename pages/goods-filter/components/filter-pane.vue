@@ -8,7 +8,11 @@
         @click="handleFilter(item.ename)"
       >
         <text>{{ formLabel[item.key] || item.label }}</text>
-        <image src="../../../static/images/common/tag.png" mode="" />
+				<tui-icon
+					name="turningdown" :size="26" unit="rpx"
+					color="#999999"
+					margin="4rpx 0 0 10rpx"
+				></tui-icon>
       </view>
     </view>
 

@@ -1,7 +1,11 @@
 <template>
   <view class="collect-package">
     <view class="header">
-      <img class="back" @click="back" src="../static/images/common/back.png" alt="" />
+			<tui-icon
+				name="arrowleft" :size="32" unit="rpx"
+				color="#ffffff"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">查件</view>
     </view>
 

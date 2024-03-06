@@ -6,11 +6,12 @@
 					<p class="Logo"></p>
 					<view class="AppName">团蜂家居 App</view>
 					<view v-if="!isWeixin">
-						<a download href="https://xxx.apk" class="DownLoaButton">
-							<span class="iconfont icon-anzhuologo"></span> 安卓下载
+						<a download href="https://www.tuanfengkeji.cn/#/TF_APP_Download/__UNI__B07FE0F__20240304091645.apk" class="DownLoaButton">
+							<span class="iconfont icon-anzhuo"></span> 安卓下载
 						</a>
-						<a download href="https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1709636108448-__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton">
-							<span class="iconfont icon-ios"></span> IOS下载
+						<!-- <a download href="https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1709636108448-__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton"> -->
+						<a download href="https://www.tuanfengkeji.cn/#/TF_APP_Download/__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton">
+							<span class="iconfont icon-iOS"></span> IOS下载
 						</a>
 					</view>
 
@@ -19,14 +20,14 @@
 							style="display: flex; align-items: center; justify-content: center" class="DownLoaButton"
 							@click="handleShow"
 						>
-							<span class="iconfont icon-anzhuologo"></span> 安卓下载
+							<span class="iconfont icon-anzhuo"></span> 安卓下载
 						</view>
 
 						<view
 							style="display: flex; align-items: center; justify-content: center" class="DownLoaButton"
 							@click="handleShow"
 						>
-							<span class="iconfont icon-ios"></span> IOS下载
+							<span class="iconfont icon-iOS"></span> IOS下载
 						</view>
 					</view>
 				</view>
@@ -80,8 +81,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "./iconfont/iconfont.css";
+<style lang="less">
+@import "../../static/iconfont/download/iconfont.css";
 
 .download-container {
 	display: flex;
@@ -136,11 +137,11 @@ export default {
 			margin-right: 10px;
 		}
 
-		.icon-anzhuologo {
+		.icon-anzhuo {
 			color: #99c149;
 		}
 
-		.icon-ios {
+		.icon-iOS {
 			color: #0389d0;
 		}
 

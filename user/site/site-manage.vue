@@ -32,16 +32,18 @@
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
           <view class="site-detail-top">
-            <image
-              src="../../static/images/lqb/site/site-pitch.png"
-              class="site-detail-icon"
-              v-if="item.isDefault"
-            />
-            <image
-              src="../../static/images/lqb/site/site-nopitch.png"
-              class="site-detail-icon"
-              v-else
-            />
+						<tui-icon
+									v-if="item.isDefault"
+							name="label-fill" :size="42" unit="rpx"
+							color="#fe8129"
+							margin="0"
+						></tui-icon>
+						<tui-icon
+									v-else
+							name="label-fill" :size="42" unit="rpx"
+							color="#efefef"
+							margin="0"
+						></tui-icon>
             <view class="site-detail-name">{{ item.name }}</view>
             <view class="site-detail-phone">{{ item.mobile }}</view>
             <view class="default-site" v-if="item.isDefault">默认</view>
@@ -53,13 +55,12 @@
                 <view class="city">佛山市</view>
                 <view class="area">顺德区</view> -->
               </view>
-              <image
+							<tui-icon
                 v-if="!isSelect"
-                class="compile"
-                style="width: 32upx"
-                src="../../static/images/lqb/site/compile.png"
-                @click="editAddress(item)"
-              />
+								name="evaluate" :size="32" unit="rpx"
+								color="#767676"
+								margin="0" @click="editAddress(item)"
+							></tui-icon>
               <view
                 class="choose-address"
                 v-else
@@ -75,20 +76,17 @@
                   <view style="display: flex"> </view>
                 </view>
                 <view>
-                  <image
-                    class="site-delete"
-                    src="../../static/images/lqb/site/delete.png"
-                    alt=""
-                    @click="addressDelete(item)"
-                  />
-
-                  <image
+									<tui-icon
+										name="delete" :size="38" unit="rpx"
+										color="#767676"
+										margin="0" @click="addressDelete(item)"
+									></tui-icon>
+									<tui-icon
                     v-if="isSelect"
-                    class="compile"
-                    style="width: 32upx; margin-left: 40upx;"
-                    src="../../static/images/lqb/site/compile.png"
-                    @click="editAddress(item)"
-                  />
+										name="evaluate" :size="32" unit="rpx"
+										color="#767676"
+										margin="0" @click="editAddress(item)"
+									></tui-icon>
                 </view>
               </view>
             </view>

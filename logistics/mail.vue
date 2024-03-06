@@ -1,12 +1,11 @@
 <template>
   <view class="mail">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/common/back.png"
-        alt=""
-      />
+			<tui-icon
+				name="arrowleft" :size="32" unit="rpx"
+				color="#ffffff"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">寄件</view>
     </view>
 
@@ -21,7 +20,11 @@
               : "请输入寄件人信息(出发地）"
           }}</view
         >
-        <img src="../static/images/common/chevron-states.png" alt="" />
+				<tui-icon
+					name="arrowright" :size="32" unit="rpx"
+					color="#a6a6a6"
+					margin="0"
+				></tui-icon>
       </view>
       <view class="line"></view>
       <view class="info-item" @click="changeServe('/logistics/consignee')">
@@ -31,7 +34,11 @@
             ? consigneeUserInfoString
             : "请输入收件人信息(目的地）"
         }}</view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
+				<tui-icon
+					name="arrowright" :size="32" unit="rpx"
+					color="#a6a6a6"
+					margin="0"
+				></tui-icon>
       </view>
     </view>
 
@@ -59,7 +66,11 @@
           <view class="title">{{
             orderForm.warehouseId ? warehouseInfoString : "请选择物流公司"
           }}</view>
-          <img src="../static/images/common/chevron-states.png" alt="" />
+					<tui-icon
+						name="arrowright" :size="32" unit="rpx"
+						color="#a6a6a6"
+						margin="0"
+					></tui-icon>
         </view>
       </picker>
     </view>
@@ -71,7 +82,11 @@
         @click="changeServe('/logistics/value-added-services')"
       >
         <view class="text">增值服务</view>
-        <img src="../static/images/common/chevron-states.png" alt="" />
+				<tui-icon
+					name="arrowright" :size="32" unit="rpx"
+					color="#a6a6a6"
+					margin="0"
+				></tui-icon>
       </view>
 
       <view
@@ -133,22 +148,24 @@
         </view>
       </view>
 
-      <img
-        v-show="orderForm.goodsList.length > 0"
-        class="toggle"
-        :class="{ rotate: !goodsCollapse }"
-        src="../static/images/common/toggle.png"
-        alt=""
-        ref="collapseIconRef"
-        @click="showGoodsDetail"
-      />
+			<view v-show="orderForm.goodsList.length > 0" class="toggle" :class="{ rotate: !goodsCollapse }" ref="collapseIconRef">
+				<tui-icon
+					name="up" :size="30" unit="rpx"
+					color="#767676"
+					margin="0" @click="showGoodsDetail"
+				></tui-icon>
+			</view>
     </view>
 
     <!-- 备注 -->
     <view class="item flex" @click="showRemarksDialog">
       <view class="text">备注:</view>
       <view class="remarks">{{ orderForm.remarks }}</view>
-      <img src="../static/images/common/chevron-states.png" alt="" />
+			<tui-icon
+				name="arrowright" :size="32" unit="rpx"
+				color="#a6a6a6"
+				margin="0"
+			></tui-icon>
     </view>
 
     <!-- 报价 -->

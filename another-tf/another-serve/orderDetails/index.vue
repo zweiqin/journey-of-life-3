@@ -299,7 +299,7 @@
 							<template #rightFoot="obj">
 								<view style="display: flex;align-items: center;justify-content: space-between;">
 									<view
-										v-if="[3, 4].includes(dataList.state) && (obj.proItem.afterState == 0) && !obj.proItem.returnType"
+										v-if="[3, 4].includes(dataList.state) && !obj.proItem.afterState && !obj.proItem.returnType"
 									>
 										<view
 											v-if="(!obj.proItem.returnStatus || (!obj.proItem.canApplyIntervention && (obj.proItem.returnStatus == 2))) && (obj.proItem.classifyId != 1439)"
@@ -758,11 +758,11 @@ export default {
 		goApplyTap(type) {
 			if (type == 1) {
 				uni.navigateTo({
-					url: `/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(this.dataList)}`
+					url: `/another-tf/another-serve/refundDetails/index?orderId=${this.dataList.orderId}&afterId=${this.dataList.afterId}}`
 				})
 			} else if (type == 2) {
 				uni.navigateTo({
-					url: `/another-tf/another-serve/returnDetails/index?item=${JSON.stringify(this.dataList)}`
+					url: `/another-tf/another-serve/returnDetails/index?orderId=${this.dataList.orderId}&afterId=${this.dataList.afterId}`
 				})
 			}
 		},

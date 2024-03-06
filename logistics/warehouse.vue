@@ -1,12 +1,11 @@
 <template>
   <view class="value-added-services">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/common/back.png"
-        alt=""
-      />
+			<tui-icon
+				name="arrowleft" :size="36" unit="rpx"
+				color="#ffffff"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">落货点列表</view>
     </view>
 

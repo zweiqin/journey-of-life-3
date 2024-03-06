@@ -11,11 +11,6 @@
         height="320upx"
         :src="data.image"
       ></fast-lazy-load>
-      <!-- <image
-        class="icon"
-        src="../../../../static/images/common/color-bottom.png"
-        mode=""
-      /> -->
     </view>
     <view class="goods-info">
       <view class="goods-name">

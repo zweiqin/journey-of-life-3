@@ -1,7 +1,11 @@
 <template>
   <view class="hot-container">
     <view class="header">
-      <image @click="handleBack" class="icon" src="../../static/images/common/back.png" mode="" />
+			<tui-icon
+				name="arrowleft" :size="28" unit="rpx"
+				color="#ffffff"
+				margin="0 10rpx 0 0" @click="handleBack"
+			></tui-icon>
 			<TuanLocation free>
 				<text>{{ $store.getters.currentShopCity || '定位失败' }}</text>
 			</TuanLocation>

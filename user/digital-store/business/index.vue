@@ -9,12 +9,13 @@
 <template>
   <view>
     <view class="header">
-      <img
-        src="../../../static/images/lqb/site/back.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
+			<view class="back">
+				<tui-icon
+					name="arrowleft" :size="38" unit="rpx"
+					color="#757575"
+					margin="0" @click="back"
+				></tui-icon>
+			</view>
       <h2>业务管理</h2>
     </view>
     <view class="bussiness-chose">

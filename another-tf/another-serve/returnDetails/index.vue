@@ -210,7 +210,7 @@ export default {
 	name: 'ReturnDetails',
 	data() {
 		return {
-			item: {},
+			orderMsg: {},
 			itemlist: {},
 			status: 0,
 			ReturnDetailData: [],
@@ -223,14 +223,15 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.item = JSON.parse(options.item)
+		this.orderMsg.afterId = options.afterId
+		this.orderMsg.orderId = options.orderId
 		this.getReturnDetail()
 	},
 	methods: {
 		getReturnDetail() {
 			getReturnDetailByIdApi({
-				afterId: this.item.afterId,
-				orderId: this.item.orderId
+				afterId: this.orderMsg.afterId,
+				orderId: this.orderMsg.orderId
 			}).then((res) => {
 				this.status = res.data.afterState
 				this.itemlist = res.data
@@ -241,8 +242,8 @@ export default {
 				title: '正在撤销退货...'
 			})
 			updateCancelReturnGoodsApi({
-				afterId: this.item.afterId,
-				orderId: this.item.orderId
+				afterId: this.orderMsg.afterId,
+				orderId: this.orderMsg.orderId
 			}).then((res) => {
 				uni.hideLoading()
 				uni.showToast({
@@ -253,7 +254,7 @@ export default {
 		},
 		goAddLogistics() {
 			uni.navigateTo({
-				url: `/another-tf/another-serve/addLogistics/index?orderId=${this.item.orderId}&afterId=${this.item.afterId}`
+				url: `/another-tf/another-serve/addLogistics/index?orderId=${this.orderMsg.orderId}&afterId=${this.orderMsg.afterId}`
 			})
 		},
 		// 平台介入

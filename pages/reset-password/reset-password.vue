@@ -37,16 +37,11 @@
           v-model="resetPasswordForm.password"
         >
           <block slot="right">
-            <image
-              class="password-status"
-              @click="isShowPassword = !isShowPassword"
-              :src="
-                isShowPassword
-                  ? '../../static/images/common/view-password .png'
-                  : '../../static/images/common/close-password.png'
-              "
-              mode=""
-            />
+						<tui-icon
+							:name="isShowPassword ? 'seen' : 'unseen'" :size="48" unit="rpx"
+							color="#8f8d85"
+							margin="12rpx 0 0" @click="isShowPassword = !isShowPassword"
+						></tui-icon>
           </block>
         </tui-input>
         <tui-input
@@ -64,16 +59,11 @@
           v-model="resetPasswordForm.confirmPassword"
         >
           <block slot="right">
-            <image
-              class="password-status"
-              @click="isShowConfirmPassword = !isShowConfirmPassword"
-              :src="
-                isShowConfirmPassword
-                  ? '../../static/images/common/view-password .png'
-                  : '../../static/images/common/close-password.png'
-              "
-              mode=""
-            />
+						<tui-icon
+							:name="isShowConfirmPassword ? 'seen' : 'unseen'" :size="48" unit="rpx"
+							color="#8f8d85"
+							margin="12rpx 0 0" @click="isShowConfirmPassword = !isShowConfirmPassword"
+						></tui-icon>
           </block>
         </tui-input>
       </tui-form>

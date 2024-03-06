@@ -10,7 +10,11 @@
 				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
 			</view>
 			<view class="order-status">
-				{{ data.returnType ? '退款中' : orderTypeEnum[data.state] || '--' }}
+				<text v-if="data.afterState">
+					<text v-if="[5, 6, 9].includes(data.afterState)">{{ `【退】${afterConditionEnum(data.afterState)}-${orderTypeEnum[data.state]}` }}</text>
+					<text v-else>{{ `【退】${afterConditionEnum(data.afterState)}` }}</text>
+				</text>
+				<text v-else>{{ orderTypeEnum[data.state] || '--' }}</text>
 			</view>
 		</view>
 		<view class="order-info-box">
@@ -101,7 +105,7 @@
 </template>
 
 <script>
-import { orderTypeEnum } from '../../../components/ATFOrderInfo/config'
+import { afterConditionEnum, orderTypeEnum } from '../../../components/ATFOrderInfo/config'
 import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
 export default {
@@ -146,6 +150,7 @@ export default {
 	},
 
 	methods: {
+		afterConditionEnum,
 		handleDeleteOrder(orderItem) {
 			uni.showModal({
 				title: '温馨提示',
@@ -349,7 +354,7 @@ export default {
 			})
 		},
 		goRefundDetail(orderItem) {
-			this.go(`/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(orderItem)}`)
+			this.go(`/another-tf/another-serve/refundDetails/index?orderId=${orderItem.orderId}&afterId=${orderItem.afterId}`)
 		},
 		goSpellGroup(orderItem) {
 			this.go(`/another-tf/another-serve/inviteSpell/index?collageId=${orderItem.collageId}&orderId=${orderItem.orderId}&type=1&productId=${orderItem.skus[0].productId}&skuId=${orderItem.skus[0].skuId}&shopGroupWorkId=${orderItem.shopGroupWorkId}`)

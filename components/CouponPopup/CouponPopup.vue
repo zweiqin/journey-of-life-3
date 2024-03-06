@@ -8,12 +8,13 @@
     <view class="coupon-container">
       <view class="title-wrapper">
         可使用优惠劵
-        <image
-          @click="$emit('input', false)"
-          class="close-icon"
-          src="../../static/images/common/close.png"
-          mode=""
-        />
+				<view class="close-icon">
+					<tui-icon
+						name="shut" :size="48" unit="rpx"
+						color="#b3b2ad"
+						margin="0" @click="$emit('input', false)"
+					></tui-icon>
+				</view>
       </view>
       <view class="coupon-list" v-if="couponList.length">
         <view
@@ -161,7 +162,7 @@ export default {
       position: absolute;
       width: 48upx;
       height: 48upx;
-      top: 50%;
+      top: 30%;
       right: 32upx;
       transform: translateY(-50%);
     }
@@ -234,22 +235,12 @@ export default {
         color: #ffc117;
         font-size: 68upx;
         font-weight: bold;
+				border-left: 1px dotted #141414;
 
         text {
           position: relative;
           top: 10upx;
           font-size: 42upx;
-        }
-
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 1upx;
-          height: 100%;
-          background: url('../../static/images/common/doot.png') no-repeat;
-          background-size: cover;
         }
       }
     }

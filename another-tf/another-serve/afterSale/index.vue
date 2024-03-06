@@ -35,47 +35,21 @@
 							</view>
 						</view>
 						<view class="total-price-box">
-							<!-- 退款 -->
-							<view v-if="item.afterType == 1">
-								<text v-if="item.afterState == 1" class="total-price-l">审核中</text>
-								<text v-if="item.afterState == 2" class="total-price-l">退款中</text>
-								<text v-if="item.afterState == 4" class="total-price-l">退款完成</text>
-								<text v-if="item.afterState == 5" class="total-price-l">退款失败</text>
-								<text v-if="item.afterState == 6" class="total-price-l">审核不通过</text>
-								<text v-if="item.afterState == 7" class="total-price-l">评审中</text>
-								<text v-if="item.afterState == 9" class="total-price-l">撤销申请</text>
-								<text v-if="item.afterState == 10" class="total-price-l">审核通过</text>
-							</view>
-							<!-- 退货 -->
-							<view v-if="item.afterType == 2">
-								<text v-if="item.afterState == 1" class="total-price-l">退货审核中</text>
-								<text v-if="item.afterState == 3" class="total-price-l">退货中</text>
-								<text v-if="item.afterState == 4" class="total-price-l">已退款</text>
-								<text v-if="item.afterState == 2" class="total-price-l">退款中</text>
-								<text v-if="item.afterState == 5" class="total-price-l">退款失败</text>
-								<text v-if="item.afterState == 6" class="total-price-l">审核不通过</text>
-								<text v-if="item.afterState == 7" class="total-price-l">评审中</text>
-								<text v-if="item.afterState == 8" class="total-price-l">退货完成，拒绝退款</text>
-								<text v-if="item.afterState == 9" class="total-price-l">撤销申请</text>
-								<text v-if="item.afterState == 10" class="total-price-l">审核通过</text>
-							</view>
-							<text v-if="item.afterState != 0" class="total-price-r mar-left-30">
+							<view class="total-price-l">{{ afterConditionEnum(item.afterState, item.afterType) }}</view>
+							<text v-if="item.afterState" class="total-price-r mar-left-30">
 								退款金额 ¥ {{ item.price }}
 							</text>
 						</view>
 						<!-- 退款 -->
 						<view v-if="item.afterType == 1" class="order-btn-box">
 							<text class="btn l" @click="deleteRecord(item)">删除记录</text>
-							<text
-								v-if="(((item.afterType == 1) && (item.afterState == 1)) || ((item.returnType == 2) && (item.afterState == 6)))"
-								class="btn l" @click="cancelRefundTap(item)"
-							>
+							<text v-if="(item.afterState == 1) || (item.afterState == 6)" class="btn l" @click="cancelRefundTap(item)">
 								撤销退款
 							</text>
 							<!-- 退款查看详情 -->
 							<text
 								class="btn viewDetail l"
-								@click="go(`/another-tf/another-serve/refundDetails/index?item=${JSON.stringify(item)}`)"
+								@click="go(`/another-tf/another-serve/refundDetails/index?orderId=${item.orderId}&afterId=${item.afterId}`)"
 							>
 								查看详情
 							</text>
@@ -84,15 +58,15 @@
 						<view v-if="item.afterType == 2" class="order-btn-box">
 							<text class="btn l" @click="deleteRecord(item)">删除记录</text>
 							<text
-								v-if="(((item.afterType == 2) && (item.afterState == 1)) || ((item.afterType == 2) && (item.afterState == 10)) || (item.afterState == 6))"
-								class="btn l" @click="cancelRefundTaphuo(item)"
+								v-if="(item.afterState == 1) || (item.afterState == 10) || (item.afterState == 6)" class="btn l"
+								@click="cancelRefundTaphuo(item)"
 							>
 								撤销退货
 							</text>
 							<!-- 退货查看详情 -->
 							<text
 								class="btn viewDetail l"
-								@click="go(`/another-tf/another-serve/returnDetails/index?item=${JSON.stringify(item)}`)"
+								@click="go(`/another-tf/another-serve/returnDetails/index?orderId=${item.orderId}&afterId=${item.afterId}`)"
 							>
 								查看详情
 							</text>
@@ -129,6 +103,7 @@
 </template>
 
 <script>
+import { afterConditionEnum } from '../../../components/ATFOrderInfo/config'
 import { getAllFindReturnListApi, updateDeleteAfterRecordApi, updateCancelReturnRefundApi, updateCancelReturnGoodsApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'AfterSale',
@@ -152,6 +127,7 @@ export default {
 		this.getFindReturn()
 	},
 	methods: {
+		afterConditionEnum,
 		// 获取售后列表数据
 		getFindReturn(isLoadmore) {
 			uni.showLoading()
@@ -413,7 +389,6 @@ page {
 }
 
 .total-price-l {
-	width: 170upx;
 	margin-left: 40upx;
 	font-size: 30upx;
 	color: #333;

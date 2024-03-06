@@ -9,12 +9,13 @@
 <template>
   <view class="all">
     <view class="header">
-      <img
-        src="../../static/images/lqb/site/back.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
+			<view class="back">
+				<tui-icon
+					name="arrowleft" :size="36" unit="rpx"
+					color="#757575"
+					margin="0" @click="back"
+				></tui-icon>
+			</view>
       <h2>业绩哨兵</h2>
     </view>
     <view class="performance-chose-bottom">
@@ -149,11 +150,7 @@
         <view class="chose-time">报警金额：5万</view>
         <view class="close-window" @click="closeWindow">
           <view>收起</view
-          ><img
-            src="../../static/images/lqb/digital-store/double-close.png"
-            alt=""
-            class="double-close"
-          />
+          >
         </view>
       </view>
     </view> -->

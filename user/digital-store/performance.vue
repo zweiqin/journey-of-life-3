@@ -18,12 +18,13 @@
   <view>
     <!-- 标题栏 -->
     <view class="header">
-      <img
-        src="../../static/images/lqb/site/back.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
+			<view class="back">
+				<tui-icon
+					name="arrowleft" :size="38" unit="rpx"
+					color="#757575"
+					margin="0" @click="back"
+				></tui-icon>
+			</view>
       <h2>业务哨兵</h2>
     </view>
     <!-- 业绩管理选择栏 -->
