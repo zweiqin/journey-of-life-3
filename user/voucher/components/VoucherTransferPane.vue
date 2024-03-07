@@ -7,7 +7,11 @@
       <view class="transform-time">{{ orderData.addTime }}</view>
     </view>
     <view class="count-wrapper">
-      <image style="width: 30upx; height: 30upx; margin-right: 4upx" src="../../../static/images/user/d53fje7jgft1srkwej8m.png"></image>
+			<tui-icon
+				name="coupon" :size="30" unit="rpx"
+				color="#f5db1b"
+				margin="0 4rpx 0 0"
+			></tui-icon>
       {{ orderData.number }} 个
     </view>
   </view>

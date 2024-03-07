@@ -25,15 +25,27 @@
 			<p class="title">代金卷服务</p>
 			<view class="VoucherServiceBox">
 				<view class="VoucherServiceItem">
-					<image class="icons" src="../../../../static/images/user/qianbao.png"></image>
+					<tui-icon
+						name="member" :size="48" unit="rpx"
+						color="#222229"
+						margin="0"
+					></tui-icon>
 					<text class="texts">充值记录</text>
 				</view>
 				<view class="VoucherServiceItem">
-					<image class="icons" src="../../../../static/images/user/zhuanzheng.png"></image>
+					<tui-icon
+						name="strategy" :size="48" unit="rpx"
+						color="#222229"
+						margin="0"
+					></tui-icon>
 					<text class="texts">支出记录</text>
 				</view>
 				<view class="VoucherServiceItem">
-					<image class="icons" src="../../../../static/images/user/shouyi.png"></image>
+					<tui-icon
+						name="bag" :size="48" unit="rpx"
+						color="#222229"
+						margin="0"
+					></tui-icon>
 					<text class="texts">收益记录</text>
 				</view>
 			</view>

@@ -19,7 +19,11 @@
                 <template v-slot:content>
                     <view class="listItem">
                         <view class="itemIcon">
-                            <image class="Iconimg" src="@/static/images/user/shou.png"></image>
+														<tui-icon
+															name="bag" :size="50" unit="rpx"
+															color="#fffefe"
+															margin="0"
+														></tui-icon>
                         </view>
                         <text class="txt2">{{ item.amount }}</text>
                         <view class="itemDetails">
@@ -41,7 +45,11 @@
             <!-- <view class="listItem" v-for="(item, index) in myRenderList.recordList" :key="index">
                 
                 <view class="itemIcon">
-                    <image class="Iconimg" src="@/static/images/user/shou.png"></image>
+									<tui-icon
+										name="bag" :size="50" unit="rpx"
+										color="#fffefe"
+										margin="0"
+									></tui-icon>
                 </view>
                 <text class="txt2">{{ item.amount }}</text>
                 <view class="itemDetails">
@@ -58,7 +66,11 @@
                 <template v-slot:content>
                     <view class="listItem">
                         <view class="itemIcon" style="background: #FF380C;">
-                            <image class="Iconimg" src="@/static/images/user/zhichu.png"></image>
+														<tui-icon
+															name="strategy" :size="50" unit="rpx"
+															color="#fffefe"
+															margin="0"
+														></tui-icon>
                         </view>
                         <text class="txt2">{{ item.amount }}</text>
                         <view class="itemDetails">
@@ -79,7 +91,11 @@
             </tui-swipe-action>
                 <!-- <view class="listItem" v-for="(item, index) in filterList" :key="index">
                     <view class="itemIcon" style="background: #FF380C;">
-                        <image class="Iconimg" src="@/static/images/user/zhichu.png"></image>
+											<tui-icon
+												name="strategy" :size="50" unit="rpx"
+												color="#fffefe"
+												margin="0"
+											></tui-icon>
                     </view>
                     <text class="txt2">{{ item.amount }}</text>
                     <view class="itemDetails">

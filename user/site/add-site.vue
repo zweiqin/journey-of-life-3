@@ -1,9 +1,12 @@
 <template>
   <view class="add-site-container">
     <view class="header">
-      <!-- <JBack dark width="50" height="50"></JBack> -->
       <!-- <h2>添加新的地址</h2> -->
-      <image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
     </view>
 
     <view class="add-site-content">

@@ -5,10 +5,18 @@
 		<view class="pane-container">
 			<view class="item" @click="changeVipType('partner')" :class="{ active: value === 'partner' }">
 				<view class="img" v-if="value === 'sup-partner'">
-					<image src="../../../../static/images/user/logo1.png" mode="" class="logo" />
+					<tui-icon
+						name="member" :size="64" unit="rpx"
+						color="#ffffff"
+						margin="0"
+					></tui-icon>
 				</view>
 				<view class="lg" v-if="value === 'partner'">
-					<image src="../../../../static/images/user/logo3.png" mode="" class="logo"  />
+					<tui-icon
+						name="member" :size="64" unit="rpx"
+						color="#ffffff"
+						margin="0"
+					></tui-icon>
 				</view>
 				<view class="vip-type-name">合伙人</view>
 				<view class="vip-cost">￥<text>2000</text></view>
@@ -18,10 +26,18 @@
 
 			<view class="item" @click="changeVipType('sup-partner')" :class="{ active: value === 'sup-partner' }">
 				<view class="img" v-if="value === 'partner'">
-					<image src="../../../../static/images/user/logo2.png" mode="" class="logo" />
+					<tui-icon
+						name="service" :size="64" unit="rpx"
+						color="#ffffff"
+						margin="0"
+					></tui-icon>
 				</view>
 				<view class="lg" v-if="value === 'sup-partner'">
-						<image src="../../../../static/images/user/logo4.png" mode="" class="logo"  />
+					<tui-icon
+						name="service" :size="64" unit="rpx"
+						color="#ffffff"
+						margin="0"
+					></tui-icon>
 					</view>
 				<view class="vip-type-name">超级合伙人</view>
 				<view class="vip-cost">￥<text>5000</text></view>

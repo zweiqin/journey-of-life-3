@@ -2,21 +2,11 @@
   <view class="site">
     <view class="site-title">
       <view class="title-left-view">
-        <!-- <view>
-          <img
-            class="back"
-            @click="handleBack"
-            src="../../static/images/store/chevron-states.png"
-          />
-        </view> -->
-
-        <!-- <JBack :tabbar="backUrl" style="margin-top: 10upx; margin-left: 20upx" width="50" height="50" dark></JBack> -->
-        <image
-          src="../../static/images/user/back.png"
-          mode="scaleToFill"
-          class="return"
-          @click="handleBack"
-        />
+				<tui-icon
+					name="arrowleft" :size="48" unit="rpx"
+					color="#000000"
+					margin="0" @click="handleBack"
+				></tui-icon>
         <!-- <view class="site-mine">我的地址</view> -->
       </view>
       <view class="title-right-view">
