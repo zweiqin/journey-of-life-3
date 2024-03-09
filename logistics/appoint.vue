@@ -1,18 +1,23 @@
 <template>
   <view class="appoint">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/store/chevron-states.png"
-        alt=""
-      />
+			<tui-icon
+				name="arrowleft" :size="44" unit="rpx"
+				color="#767676"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">关注列表</view>
     </view>
 
     <view class="search">
       <input class="search-input" type="text" @input="search" />
-      <img class="img" src="../static/images/store/search.png" alt="" />
+			<view class="img">
+				<tui-icon
+					name="search" :size="32" unit="rpx"
+					color="#767676"
+					margin="0"
+				></tui-icon>
+			</view>
     </view>
 
     <view class="wuliu-list" v-if="list.length">

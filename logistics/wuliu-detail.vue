@@ -1,12 +1,11 @@
 <template>
   <view class="value-added-services" v-if="info">
     <view class="header">
-      <img
-        class="back"
-        @click="back"
-        src="../static/images/store/chevron-states.png"
-        alt=""
-      />
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#767676"
+				margin="0" @click="back"
+			></tui-icon>
       <view class="title">物流详情</view>
     </view>
 

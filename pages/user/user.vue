@@ -101,7 +101,7 @@ export default {
 				this.go('/user/view?target=' + item.url)
 				return
 			} else if (item.type === 'electronicCard') {
-				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/loading/loading`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
+				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, programUrl: `pages/skip/skip`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
 				return
 			}
 			if (this.isLogin()) {

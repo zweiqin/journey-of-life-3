@@ -2,7 +2,11 @@
   <view class="brand-factory-container">
 
     <view class="search-header">
-      <image @click="handleBack" class="back-icon" src="../../../static/images/con-center/order-back.png"></image>
+			<tui-icon
+				name="arrowleft" :size="38" unit="rpx"
+				color="#000000"
+				margin="0 20rpx 0 0" @click="handleBack"
+			></tui-icon>
       <view class="page-title">品牌工厂</view>
       <PageHeader searchPaddding="10upx 15upx 10upx 28upx" placeholder="品牌工厂" :showLocation="false" padding="0"
         background-color="transparent" :showMessage="false" showSearchBtn>

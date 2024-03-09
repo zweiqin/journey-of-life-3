@@ -51,7 +51,9 @@
 				<view class="user-name">{{ liveData.anchorNickName }}</view>
 			</view>
 			<view v-if="liveStatus === 102" class="count-down">
-				<image v-if="isLate" class="img" src="@/static/images/store/time.png" />
+				<view class="img" style="text-align: center;">
+					<icon type="waiting" :size="40" color="#ff8f1f" />
+				</view>
 				<view class="text">{{ liveTimeTitle }}</view>
 				<view v-if="!isLate" class="time">
 					<view class="time-item">{{ times[0] }}</view>

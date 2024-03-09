@@ -10,7 +10,7 @@
 				{{ componentContent.title }}
 			</view>
 			<view class="search-btn" @click="searchPro">
-				<image class="search-icon" src="../../../../../static/images/store/search.png" mode="widthFix"></image>
+				<icon type="search" :size="28" />
 			</view>
 		</view>
 		<view class="tabs-nav-warp">

@@ -11,12 +11,11 @@
     <!-- 标题 -->
     <view class="subscription-title">
       <view class="left-view">
-        <img
-          @click="back"
-          class="left-img"
-          src="../../static/images/store/chevron-states.png"
-          alt=""
-        />
+				<tui-icon
+					name="arrowleft" :size="48" unit="rpx"
+					color="#767676"
+					margin="0" @click="back"
+				></tui-icon>
       </view>
       <view class="middle-view">
         <view class="text">订阅</view>

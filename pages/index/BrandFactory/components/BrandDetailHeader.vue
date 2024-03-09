@@ -1,7 +1,11 @@
 <template>
   <view class="brand-detail-header-container">
     <view class="page-header-container">
-      <image class="back-icon" @click="handleBack" src="../../../../static/images/con-center/order-back.png"></image>
+			<tui-icon
+				name="arrowleft" :size="38" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
       <view class="search-wrapper">
         <image class="search-icon" src="../../../../static/images/new-index/brandFactory/search-icon.png"></image>
         <view class="placeholder">请输入您想搜索的商品</view>

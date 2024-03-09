@@ -12,7 +12,13 @@
     <view class="main">
       <view class="search">
         <input class="search-input" type="text" placeholder="发货人姓名/订单号/收货人姓名/收货人手机号" @input="search" />
-        <img class="img" src="../static/images/store/search.png" alt="" />
+				<view class="img">
+					<tui-icon
+						name="search" :size="32" unit="rpx"
+						color="#767676"
+						margin="0"
+					></tui-icon>
+				</view>
       </view>
 
       <view class="order-list">

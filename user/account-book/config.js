@@ -1,6 +1,6 @@
 export const titleIcon = {
-  profile: require('../../static/images/promotion/money-cny-circle-fill.png'),
-  fans: require('../../static/images/promotion/group-2-fill.png'),
-  gen: require('../../static/images/promotion/bar-chart-box-fill.png'),
-  analysis: require('../../static/images/promotion/fenxi.png')
+  profile: 'wealth-fill',
+  fans: 'people-fill',
+  gen: 'polygonal',
+  analysis: 'pie'
 }

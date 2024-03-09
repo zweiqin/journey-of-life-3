@@ -193,10 +193,11 @@ export const isInWx = () => {
 
 /**
  * 跳转到新团蜂入驻端项目
+ * @param {Array} montageTerminal 决定在哪种环境下才拼接自定义query参数
  * @returns
  */
 
-export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, toType, query, montageTerminal }, cb = () => { }) => {
+export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
 		// #ifdef H5
 		window.location.href = url
@@ -213,7 +214,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, toType, qu
 		if (isInWx()) {
 			if (isInMiniProgram || isH5InWebview()) {
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去其它小程序页面
-					url: query && montageTerminal && montageTerminal.includes(6) ? `/${url}${query}` : `/${url}`,
+					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
 					fail: () => {
 						setTimeout(() => { uni.switchTab({	url: '/pages/index/index' }) }, 2000)
 					}

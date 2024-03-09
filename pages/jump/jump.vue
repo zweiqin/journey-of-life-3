@@ -1,6 +1,6 @@
 <template>
 	<view class="jump-container">
-		<view v-if="viewType === 'verification'">
+		<view v-if="viewType === 'verification'" style="padding: 44upx;">
 			<JHeader tabbar="/pages/user/user" width="50" height="50" title="订单核销"></JHeader>
 			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40upx;">
 				<ATFOrderInfo :data="orderInfo"></ATFOrderInfo>
@@ -17,7 +17,7 @@
 				</tui-button>
 			</view>
 		</view>
-		<view v-else>
+		<view v-else style="padding: 46upx;">
 			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
 		</view>
 	</view>
@@ -149,7 +149,6 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
-		// eslint-disable-next-line require-await, complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -288,7 +287,6 @@ export default {
 <style lang="less" scoped>
 .jump-container {
 	min-height: 100vh;
-	padding: 46upx;
 	box-sizing: border-box;
 }
 </style>

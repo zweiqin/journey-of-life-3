@@ -10,14 +10,13 @@
 
       <view class="header" :class="{ 'header-fix': scrollTop > 0 }">
         <navigator url="" open-type="navigateBack">
-          <image
-            :src="
-              scrollTop > 0
-                ? '../../../static/images/store/back-block.png'
-                : '../../../static/images/store/back-white.png'
-            "
-            mode=""
-          />
+					<view class="image">
+						<tui-icon
+							name="towardsleft" :size="50" unit="rpx"
+							:color="scrollTop > 0 ? '#3d3d3d' : '#ffffff'"
+							margin="0"
+						></tui-icon>
+					</view>
         </navigator>
 
         <view
@@ -234,7 +233,7 @@ export default {
         background-color: #fff;
       }
 
-      image {
+      .image {
         position: absolute;
         top: 50%;
         left: 32upx;

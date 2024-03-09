@@ -1,7 +1,13 @@
 <template>
   <view class="recharge-history-list">
     <TuanPageHead title="充值记录" background="#fff">
-      <block slot="left"> <image src="../../static/images/con-center/order-detail-back.png" @click="handleToOrderList" class="back-icon"></image> </block>
+      <block slot="left">
+				<tui-icon
+					name="arrowleft" :size="64" unit="rpx"
+					color="#222229"
+					margin="0 20rpx 0 0" @click="handleToOrderList"
+				></tui-icon>
+			</block>
     </TuanPageHead>
 
     <view class="main-wrapper">

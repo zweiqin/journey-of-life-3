@@ -3,6 +3,11 @@
     <view class="title-container">
       <view class="title">
         <image class="icon" :src="titleIcon" mode="" />
+				<tui-icon
+					:name="titleIcon" :size="48" unit="rpx"
+					color="#e95d20"
+					margin="0 20rpx 0 0"
+				></tui-icon>
         <span class="pane-title">{{ title }}</span>
         <slot name="title"></slot>
       </view>
