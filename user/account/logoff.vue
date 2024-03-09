@@ -1,6 +1,10 @@
 <template>
   <view class="logoff-page">
-    <image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
+		<tui-icon
+			name="arrowleft" :size="48" unit="rpx"
+			color="#000000"
+			margin="0" @click="handleBack"
+		></tui-icon>
 
     <view class="warn-wrapper">
       <tui-icon name="about-fill" :size="80" color="#fb5d46"></tui-icon>

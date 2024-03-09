@@ -2,7 +2,11 @@
 	<view v-if="calcOrderMsg" class="order-detail">
 		<!-- <JHeader title="" width="50" height="50"></JHeader> -->
 		<view class="back">
-			<image src="../../static/images/user/back.png" alt="" class="back-img" @click="handleBack" />
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
 		</view>
 		<view class="main-area">
 			<view class="address container" @click="go('/user/site/site-manage?appoint=true')">

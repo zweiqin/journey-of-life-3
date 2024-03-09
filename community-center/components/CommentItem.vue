@@ -1,7 +1,7 @@
 <template>
   <view class="comment-item" v-if="comment">
     <view class="user-info">
-      <image class="user-avatar" :src="comment.userHeadUrl || require('../../static/images/user/weidian/no-goods.png')"></image>
+      <image class="user-avatar" :src="comment.userHeadUrl || require('../../static/images/common/default.png')"></image>
       <view class="detail">
         <view class="user-name">{{ comment.userName }}</view>
         <view class="comment-time">

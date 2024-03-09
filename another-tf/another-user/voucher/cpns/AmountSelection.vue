@@ -6,7 +6,13 @@
 				v-for="(item, index) in amountData" :key="index" class="selectionItem"
 				@click="active = index; $emit('getCustomValue', index)"
 			>
-				<image v-show="active == index" class="selectIcon" src="../../../../static/images/user/xuanzhong.png"></image>
+				<view v-show="active == index" class="selectIcon">
+					<tui-icon
+						name="circle-selected" :size="36" unit="rpx"
+						color="#b8282e"
+						margin="0"
+					></tui-icon>
+				</view>
 
 				<!-- <tui-input type="number" min="0" max="20000" class="numbers" @input="$emit('getCustomValue', index)" v-if="index == amountData.length-1" v-model="amountData[index].value"></tui-input> -->
 				<view

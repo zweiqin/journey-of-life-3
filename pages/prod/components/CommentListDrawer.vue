@@ -14,7 +14,7 @@
 
         <view class="comment-item" v-for="item in commentList" :key="item.id">
           <view class="user-info">
-            <image class="user-avatar" :src="item.avatar || require('../../../static/images/user/weidian/no-goods.png')"> </image>
+            <image class="user-avatar" :src="item.avatar || require('../../../static/images/common/default.png')"> </image>
             <view class="user-name">{{ item.nickname }}</view>
           </view>
 

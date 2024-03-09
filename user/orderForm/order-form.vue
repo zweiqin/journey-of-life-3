@@ -6,7 +6,11 @@
 			</view> -->
 
 		<view class="navs">
-			<image src="../../static/images/user/back.png" alt="" class="back" @click="handleBack"> </image>
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
 			<scroll-view scroll-x="true">
 				<view class="navs-list">
 					<view

@@ -30,7 +30,7 @@
 					</view>
 				</view>
 				<view class="color-box">
-					<scroll-view scroll-y style="max-height: 50vh;">
+					<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
 						<view v-for="(skuRowItem, skuRowIndex) in goodsDetail.names" :key="skuRowIndex">
 							<label v-if="skuRowItem.nameCode" class="fs26 font-color-333">
 								{{ skuRowItem.skuName }}
@@ -383,11 +383,17 @@ export default {
 
 <style lang="less" scoped>
 .goosDetailshow-box {
-	margin-bottom: -5upx;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 0 0 44rpx;
+	height: 100%;
+	overflow-y: auto;
+	box-sizing: border-box;
 
 	.detailImg-box {
-		margin-top: 30upx;
-		margin-left: 30upx;
+		padding-top: 30upx;
+		padding-left: 30upx;
 		border-bottom: 1upx solid #EDEDED;
 		padding-bottom: 20upx;
 		width: 690upx;
@@ -399,8 +405,10 @@ export default {
 	}
 
 	.color-box {
-		padding: 30upx 30upx;
-		width: 690upx;
+		flex: 1;
+		height: 0;
+		overflow: hidden;
+		padding: 30upx;
 
 		.colorName-box {
 			display: flex;
@@ -440,7 +448,7 @@ export default {
 
 		.goodsNum-box {
 			width: 100%;
-			padding: 30rpx 0 180rpx 0;
+			padding: 30rpx 0 60rpx;
 			border-top: 2rpx solid #EDEDED;
 
 			.goodsNum {

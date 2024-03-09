@@ -1,103 +1,49 @@
 <!-- 退货详情 -->
 <template>
-	<view>
+	<view class="return-details-container">
 		<JHeader title="退货详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view class="">
+		<view>
 			<view class="order-details-status">
-				<view v-if="status == -1" class="status-title-box">
-					<view class="l">
-						<text class="status">无退货</text>
-					</view>
-				</view>
-				<view v-if="status == 1" class="status-title-box">
-					<view class="l">
-						<text class="status">退货审核中</text>
-					</view>
-				</view>
-				<!--  审核通过 -->
-				<view v-if="status == 10" class="status-title-box">
-					<view class="l">
-						<text class="status">审核通过</text>
-					</view>
-				</view>
-				<!--  审核通过 -->
-				<view v-if="status == 6" class="status-title-box">
-					<view class="l">
-						<text class="status">审核不通过</text>
-					</view>
-				</view>
-				<!--  审核中 -->
-				<view v-if="status == 7" class="status-title-box">
-					<view class="l">
-						<text class="status">退货中</text>
-					</view>
-				</view>
-				<!--  退货中 -->
-				<view v-if="status == 3" class="status-title-box">
-					<view class="l">
-						<text class="status">退货中</text>
-					</view>
-				</view>
-				<!--  退货完成拒绝退款 -->
-				<view v-if="status == 8" class="status-title-box">
-					<view class="l">
-						<text class="status">退货完成，拒绝退款</text>
-					</view>
-				</view>
-				<!--  退款成功 -->
-				<view v-if="status == 4" class="status-title-box">
-					<view class="l">
-						<text class="status">已退款</text>
-					</view>
-				</view>
-				<!-- 退款中 -->
-				<view v-if="status == 2" class="status-title-box">
-					<view class="l">
-						<text class="status">退款中</text>
-					</view>
-				</view>
-				<!-- 退款失败 -->
-				<view v-if="status == 5" class="status-title-box">
-					<view class="l">
-						<text class="status">退款失败</text>
-					</view>
-				</view>
-				<!-- 退款关闭 -->
-				<view v-if="status == 9" class="status-title-box">
-					<view class="l">
-						<text class="status">退货关闭</text>
-					</view>
-				</view>
+				<view style="font-size: 34rpx;text-align: center;">{{ afterConditionEnum(afterState) }}</view>
 			</view>
 
 			<view class="order-details-info-box mt20">
-				<view v-if="status == 1" class="order-details-price">
+				<view v-if="afterState == 1" class="order-details-price">
 					<text>退款总金额</text>
 					<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
 				</view>
-				<view v-if="status == 10" class="address-box">
+				<view v-if="afterState == 10" class="address-box">
 					<view>商家已同意退货申请，请尽早发货。</view>
 					<view class="address-info">
-						<tui-icon name="circle" :size="45" unit="upx" color="#cdcdcd" margin="0 40upx 0 0"></tui-icon>
-						<view class="address-info-r">
-							<view class="item">
-								<text><text class="title">收货人</text>：</text>
-								<text class="r">
-									<text>{{ itemlist.returnPerson }}</text>
-									<text class="ml30">{{ itemlist.returnPhone }}</text>
-								</text>
-							</view>
-							<view class="item">
-								<text><text class="title">地址</text>：</text>
-								<text class="r">{{ itemlist.returnAdress }}</text>
-							</view>
+						<view class="item">
+							<text><text class="title">收货人</text>：</text>
+							<text class="r">
+								<text>{{ itemlist.returnPerson }}</text>
+								<text class="ml30">{{ itemlist.returnPhone }}</text>
+							</text>
+						</view>
+						<view class="item">
+							<text><text class="title">地址</text>：</text>
+							<text class="r">{{ itemlist.returnAdress }}</text>
 						</view>
 					</view>
 				</view>
 			</view>
+			<!-- 退款成功 -->
+			<view v-if="afterState == 4" class="order-details-info-box mt20">
+				<view class="order-details-price return-explain-box">
+					<text>已原路退回金额 {{ itemlist.afterState }}</text>
+					<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
+				</view>
+			</view>
+			<!-- 退款关闭 -->
+			<view v-if="afterState == 9" class="order-details-info-box mt20">
+				<view class="address-box return-explain-box">
+					<view>因您撤销退货申请，退货退款已关闭</view>
+				</view>
+			</view>
 			<!-- 发起退货 -->
 			<view class="order-details-info-box mt20">
-
 				<view class="address-box return-explain-box">
 					<view>退货说明</view>
 					<view class="address-info-r mt20 mar-top-20">
@@ -115,29 +61,12 @@
 						</view>
 					</view>
 					<view class="return-explain-btn">
-						<text v-if="status == 6 || status == 10" class="btn" @click="cancelRefundTap">撤销申请</text>
-						<text
-							v-if="status == 6 || status == 8" class="btn"
-							@click="platform(itemlist.afterId, itemlist.orderId)"
-						>
+						<text v-if="afterState == 6 || afterState == 10" class="btn" @click="cancelRefundTap">撤销申请</text>
+						<text v-if="afterState == 6 || afterState == 8" class="btn" @click="platform(itemlist.afterId, itemlist.orderId)">
 							平台介入
 						</text>
-						<text v-if="status == 10" class="btn on" @click="goAddLogistics">填写物流</text>
+						<text v-if="afterState == 10" class="btn on" @click="goAddLogistics">填写物流</text>
 					</view>
-
-				</view>
-			</view>
-			<!-- 退款成功 -->
-			<view v-if="itemlist.afterState != 6 && status == 6" class="order-details-info-box mt20">
-				<view class="order-details-price return-explain-box">
-					<text>已原路退回金额 {{ itemlist.afterState }}</text>
-					<text class="price-box"><text class="fuhao">￥</text>{{ itemlist.price }}</text>
-				</view>
-			</view>
-			<!-- 退款关闭 -->
-			<view v-if="status == 9" class="order-details-info-box mt20">
-				<view class="address-box return-explain-box">
-					<view>因您撤销退货申请，退货退款已关闭</view>
 				</view>
 			</view>
 
@@ -201,6 +130,7 @@
 </template>
 
 <script>
+import { afterConditionEnum } from '../../../components/ATFOrderInfo/config'
 import {
 	getReturnDetailByIdApi,
 	updateCancelReturnGoodsApi,
@@ -212,12 +142,9 @@ export default {
 		return {
 			orderMsg: {},
 			itemlist: {},
-			status: 0,
-			ReturnDetailData: [],
+			afterState: 0,
 			reason: '',
-			images: '',
 			intervention: false,
-			interventionText: '',
 			afterId: '',
 			orderId: ''
 		}
@@ -228,12 +155,13 @@ export default {
 		this.getReturnDetail()
 	},
 	methods: {
+		afterConditionEnum,
 		getReturnDetail() {
 			getReturnDetailByIdApi({
 				afterId: this.orderMsg.afterId,
 				orderId: this.orderMsg.orderId
 			}).then((res) => {
-				this.status = res.data.afterState
+				this.afterState = res.data.afterState
 				this.itemlist = res.data
 			})
 		},
@@ -273,7 +201,7 @@ export default {
 			applyAfterPlatformApi({
 				afterId: this.afterId,
 				orderId: this.orderId,
-				image: this.images,
+				image: '',
 				reason: this.reason
 			}).then((res) => {
 				uni.hideLoading()
@@ -291,283 +219,255 @@ export default {
 </script>
 
 <style lang="less" scoped>
-page {
+.return-details-container {
+	min-height: 100vh;
 	background: #f7f7f7;
-}
-
-.order-details-status {
-	width: 750upx;
-	height: 180upx;
-	background: #333333;
-}
-
-.status-title-box {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	padding: 40upx 30upx 0;
 	box-sizing: border-box;
-}
 
-.status-title-box .l {
-	display: flex;
-	flex-direction: column;
-}
+	.order-details-status {
+		padding: 30rpx;
+		background-color: #333333;
+		font-size: 30upx;
+		color: #ffffff;
+	}
 
-.status-title-box .l .status,
-.status-title-box2 .status {
-	font-size: 30upx;
-	color: #fff;
-}
+	.order-details-info-box {
+		padding: 0 30upx;
+		box-sizing: border-box;
+		background: #fff;
+	}
 
-.status-title-box .r {
-	width: 80upx;
-	height: 80upx;
-}
+	.order-details-info-box.mt20 {
+		margin-top: 20upx;
+	}
 
-.order-details-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-	background: #fff;
-}
+	.order-details-price {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		height: 100upx;
+		border-bottom: 1px solid #e5e5e5;
+		font-size: 30upx;
+		color: #333;
+	}
 
-.order-details-info-box.mt20 {
-	margin-top: 20upx;
-}
+	.order-details-price .price-box {
+		font-size: 36upx;
+		color: #ff7911;
+	}
 
-.order-details-price {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	height: 100upx;
-	border-bottom: 1px solid #e5e5e5;
-	font-size: 30upx;
-	color: #333;
-}
+	.order-details-price .fuhao {
+		font-size: 24upx;
+	}
 
-.order-details-price .price-box {
-	font-size: 36upx;
-	color: #ff7911;
-}
+	.address-box {
+		background: #fff;
+		padding: 30upx 0;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		font-size: 28upx;
+		color: #333;
+		border-bottom: 1px solid #e5e5e5;
+	}
 
-.order-details-price .fuhao {
-	font-size: 24upx;
-}
+	.address-info {
+		margin-top: 20upx;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		font-size: 28upx;
+		color: #999;
+	}
 
-.address-box {
-	background: #fff;
-	padding: 30upx 0;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	font-size: 28upx;
-	color: #333;
-	border-bottom: 1px solid #e5e5e5;
-}
+	.ml30 {
+		margin-left: 30upx;
+	}
 
-.address-info {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-top: 20upx;
-}
+	.address-box .address-info-r .item {
+		display: flex;
+		flex-direction: row;
+	}
 
-.address-box .address-info-r {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	font-size: 28upx;
-	color: #999;
-}
+	.address-box .address-info-r .title {
+		display: inline-block;
+		width: 100upx;
+		text-align: justify;
+		text-justify: distribute-all-lines;
+		text-align-last: justify;
+	}
 
-.ml30 {
-	margin-left: 30upx;
-}
+	.address-box .address-info-r .item .r {
+		flex: 1;
+		line-height: 40upx;
+	}
 
-.address-box .address-info-r .item {
-	display: flex;
-	flex-direction: row;
-}
+	.return-explain-box {
+		border-bottom: none;
+	}
 
-.address-box .address-info-r .title {
-	display: inline-block;
-	width: 100upx;
-	text-align: justify;
-	text-justify: distribute-all-lines;
-	text-align-last: justify;
-}
+	.return-explain-box .address-info-r .item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		line-height: 40upx;
+	}
 
-.address-box .address-info-r .item .r {
-	flex: 1;
-	line-height: 40upx;
-}
+	.address-info-r .item .circle {
+		width: 8upx;
+		height: 8upx;
+		border-radius: 50%;
+		background: #bbb;
+		margin-right: 10upx;
+	}
 
-.return-explain-box {
-	border-bottom: none;
-}
+	.return-explain-btn {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		margin-top: 20upx;
+	}
 
-.return-explain-box .address-info-r .item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	line-height: 40upx;
-}
+	.return-explain-btn .btn {
+		width: 130upx;
+		height: 56upx;
+		background: #fff;
+		border: 1px solid #bbb;
+		border-radius: 4upx;
+		text-align: center;
+		line-height: 56upx;
+		margin-left: 20upx;
+		color: #333;
+		font-size: 26upx;
+	}
 
-.address-info-r .item .circle {
-	width: 8upx;
-	height: 8upx;
-	border-radius: 50%;
-	background: #bbb;
-	margin-right: 10upx;
-}
+	.return-explain-btn .btn.on {
+		color: #333333;
+		border: 2rpx solid #333333;
+	}
 
-.return-explain-btn {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-end;
-	margin-top: 20upx;
-}
+	.order-list-box {
+		margin-top: 20upx;
+	}
 
-.return-explain-btn .btn {
-	width: 130upx;
-	height: 56upx;
-	background: #fff;
-	border: 1px solid #bbb;
-	border-radius: 4upx;
-	text-align: center;
-	line-height: 56upx;
-	margin-left: 20upx;
-	color: #333;
-	font-size: 26upx;
-}
+	.order-list-box .title {
+		padding: 30upx;
+		box-sizing: border-box;
+		font-size: 30upx;
+		color: #333;
+		background: #fff;
+	}
 
-.return-explain-btn .btn.on {
-	color: #333333;
-	border: 2rpx solid #333333;
-}
+	.order-list-box .item {
+		margin-bottom: 20upx;
+		background: #fff;
+		border-radius: 10upx;
+	}
 
-.order-list-box {
-	margin-top: 20upx;
-}
+	.order-info-box {
+		padding: 0 30upx;
+		box-sizing: border-box;
+	}
 
-.order-list-box .title {
-	padding: 30upx;
-	box-sizing: border-box;
-	font-size: 30upx;
-	color: #333;
-	background: #fff;
-}
+	.order-info {
+		border-bottom: 1px solid #eee;
+	}
 
-.order-list-box .item {
-	margin-bottom: 20upx;
-	background: #fff;
-	border-radius: 10upx;
-}
+	.order-info-item {
+		display: flex;
+		flex-direction: row;
+		padding: 20upx 0;
+	}
 
-.order-info-box {
-	padding: 0 30upx;
-	box-sizing: border-box;
-}
+	.product-img {
+		width: 180upx;
+		height: 180upx;
+		border-radius: 10upx;
+		margin-right: 30upx;
+	}
 
-.order-info {
-	border-bottom: 1px solid #eee;
-}
+	.info-box {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
 
-.order-info-item {
-	display: flex;
-	flex-direction: row;
-	padding: 20upx 0;
-}
+	.product-name {
+		font-size: 26upx;
+		color: #333;
+		height: 68upx;
+		line-height: 34upx;
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
 
-.product-img {
-	width: 180upx;
-	height: 180upx;
-	border-radius: 10upx;
-	margin-right: 30upx;
-}
+	.product-sku {
+		font-size: 24upx;
+		color: #999;
+	}
 
-.info-box {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
+	.delivery-way-box {
+		display: flex;
+		flex-direction: column;
+		margin: 30upx 0 10upx;
+	}
 
-.product-name {
-	font-size: 26upx;
-	color: #333;
-	height: 68upx;
-	line-height: 34upx;
-	display: -webkit-box;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	word-break: break-all;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
+	.delivery-way-box .item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-size: 26upx;
+		color: #333;
+	}
 
-.product-sku {
-	font-size: 24upx;
-	color: #999;
-}
+	.delivery-way-box .item .way {
+		color: #999;
+	}
 
-.delivery-way-box {
-	display: flex;
-	flex-direction: column;
-	margin: 30upx 0 10upx;
-}
+	.interventionBox .btnBox {
+		display: flex;
+	}
 
-.delivery-way-box .item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	font-size: 26upx;
-	color: #333;
-}
+	.interventionBox .btnBox button {
+		width: 50%;
+		border-radius: 0;
+	}
 
-.delivery-way-box .item .way {
-	color: #999;
-}
+	.interventionBox .btnBox .primary {
+		color: #FFFFFF;
+		background: #FF7700;
+	}
 
-.interventionBox .btnBox {
-	display: flex;
-}
+	.interventionBox .btnBox /deep/ uni-button:after {
+		border-radius: 0;
+	}
 
-.interventionBox .btnBox button {
-	width: 50%;
-	border-radius: 0;
-}
+	.interventionBox .intTit {
+		height: 100upx;
+		line-height: 100upx;
+		text-align: center;
+		border-bottom: 1upx solid #EEE;
+		font-size: 32upx;
+	}
 
-.interventionBox .btnBox .primary {
-	color: #FFFFFF;
-	background: #FF7700;
-}
+	.interventionBox .textarea-text {
+		padding: 20upx;
+		font-size: 20upx;
+		height: 200rpx;
+	}
 
-.interventionBox .btnBox /deep/ uni-button:after {
-	border-radius: 0;
-}
+	.interventionBox /deep/ .uni-textarea-textarea {
+		width: 100%;
+	}
 
-.interventionBox .intTit {
-	height: 100upx;
-	line-height: 100upx;
-	text-align: center;
-	border-bottom: 1upx solid #EEE;
-	font-size: 32upx;
-}
-
-.interventionBox .textarea-text {
-	padding: 20upx;
-	font-size: 20upx;
-	height: 200rpx;
-}
-
-.interventionBox /deep/ .uni-textarea-textarea {
-	width: 100%;
-}
-
-.interventionBox /deep/ .uni-textarea {
-	width: 100%;
+	.interventionBox /deep/ .uni-textarea {
+		width: 100%;
+	}
 }
 </style>

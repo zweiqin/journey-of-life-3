@@ -9,11 +9,13 @@
           name="arrowleft"
         ></tui-icon>
         <view class="input-wrapper">
-          <image
-            class="search-icon"
-            src="../../../static/images/user/weidian/search.png"
-            mode=""
-          />
+					<view class="search-icon">
+						<tui-icon
+							name="search" :size="32" unit="rpx"
+							color="#b3b2ad"
+							margin="0"
+						></tui-icon>
+					</view>
           <input v-model="searchValue" type="text" placeholder="搜索" />
         </view>
         <view

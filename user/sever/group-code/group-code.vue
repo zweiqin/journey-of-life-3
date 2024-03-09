@@ -137,8 +137,6 @@ export default {
     width: 622upx;
     height: 1160upx;
     margin: 0 auto;
-    // background: url('../../../static/images/user/code/mian-bg.png') no-repeat;
-    // background-size: cover;
     margin-top: 154upx;
     background-color: #fff;
     border-radius: 30upx;

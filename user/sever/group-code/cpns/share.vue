@@ -6,7 +6,11 @@
       v-for="(item, index) in shareList"
       :key="index"
     >
-      <image class="icon" :src="item.icon" mode="" />
+			<tui-icon
+				:name="item.icon" :size="55" unit="rpx"
+				:color="item.color"
+				margin="0"
+			></tui-icon>
       <view class="label">{{ item.label }}</view>
     </view>
 
@@ -23,17 +27,20 @@ import SaveImage from './SaveImage.vue'
 const shareList = [
   {
     label: '微信朋友',
-    icon: require('../../../../static/images/user/code/we-chat.png'),
+    icon: 'wechat',
+    color: '#28c445',
     key: 'wechat',
   },
   {
     label: '保存图片',
-    icon: require('../../../../static/images/user/code/save.png'),
+    icon: 'pic-fill',
+    color: '#f98833',
     key: 'image',
   },
   // {
   //   label: '分享链接',
-  //   icon: require('../../../../static/images/user/code/link.png'),
+  //   icon: 'applets',
+  //   color: '#3a3629',
   //   key: 'link',
   // },
 ]

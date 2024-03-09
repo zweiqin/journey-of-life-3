@@ -113,7 +113,7 @@ export default {
 			let _url = null
 			if ([1, 2, 4].includes(state.terminal)) {
 				_url = getCustomerServiceAppletKfApi
-			} else if ([ 3 ].includes(state.terminal)) {
+			} else if ([3, 6].includes(state.terminal)) {
 				_url = getCustomerServiceH5KfApi
 			} else if ([ 5 ].includes(state.terminal)) {
 				_url = getCustomerServicePCKfApi

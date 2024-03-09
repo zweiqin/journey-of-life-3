@@ -12,26 +12,38 @@
 		</view>
 		<view class="amount">充值金额</view>
 		<view class="item-list">
-			<view class="item" 
-			:class="{ active: currentTab === item.value }" 
-			@click="handleClick(item)"
-			v-for="item in items"
-			:key="item.value">￥<view class="sum">{{ item.number }}</view></view>
+			<view
+				v-for="item in items"
+				:key="item.value"
+				class="item"
+				:class="{ active: currentTab === item.value }"
+				@click="handleClick(item)"
+			>
+				￥<view class="sum">{{ item.number }}</view>
+			</view>
 		</view>
 		<view class="custom">自定义充值金额</view>
 		<view class="custom-recharge">
 			<view class="logo">￥</view>
 			<!-- <view class="num">0.00</view> -->
-			<input type="text" class="input" placeholder="0.00" placeholder-class="num" v-model="number">
+			<input v-model="number" type="text" class="input" placeholder="0.00" placeholder-class="num">
 		</view>
 		<view class="type">选择充值方式</view>
 		<view class="type-list">
 			<view class="left">
-				<img src="../../../static/images/user/vx.png" alt="" class="vx">
+				<tui-icon
+					name="wechat" :size="64" unit="rpx"
+					color="#28c445"
+					margin="0 16rpx 0 0"
+				></tui-icon>
 				<view class="text">微信支付</view>
 			</view>
 			<view class="right">
-				<img src="../../../static/images/user/arrow.png" alt="" class="arrow">
+				<tui-icon
+					name="arrowright" :size="40" unit="rpx"
+					color="#b3b2ad"
+					margin="0 16rpx 0 0"
+				></tui-icon>
 			</view>
 		</view>
 		<view class="foot">
@@ -49,33 +61,32 @@
 <script>
 import { items } from './config'
 export default {
-	name: "Recharge",
+	name: 'Recharge',
 	props: {
 
 	},
 	data() {
 		return {
 			items,
-			currentTab:'',
-			number:'',
+			currentTab: '',
+			number: ''
 		}
 	},
+	created() { },
 	methods: {
 		handleBack() {
 			uni.navigateBack()
 		},
 		handleClick(index) {
-			if(this.currentTab === index.value){
+			if (this.currentTab === index.value) {
 				this.currentTab = ''
-				this.number ='';
+				this.number = ''
 				return
 			}
-			this.currentTab = index.value;
-			this.number = index.number;
-			
+			this.currentTab = index.value
+			this.number = index.number
 		}
-	},
-	created() { }
+	}
 }
 </script>
 

@@ -1,6 +1,10 @@
 <template>
   <view class="ver-page">
-    <image src="../../static/images/user/back.png" mode="scaleToFill" class="return" @click="handleBack" />
+		<tui-icon
+			name="arrowleft" :size="48" unit="rpx"
+			color="#000000"
+			margin="0" @click="handleBack"
+		></tui-icon>
 
     <view class="wrapper">
       <view class="tip">我们已经向 {{ $store.getters.userInfo.phone.slice(0, 3)

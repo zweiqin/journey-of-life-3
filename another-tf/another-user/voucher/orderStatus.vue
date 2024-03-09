@@ -10,7 +10,11 @@
 		</view>
 		<view class="statusBox">
 			<view class="orderStatus">
-				<image class="statusIcon" :src="statusImgSrc[Number(orderStatus)]"></image>
+				<tui-icon
+					:name="statusImgSrc[Number(orderStatus)].name" :size="52" unit="rpx"
+					:color="statusImgSrc[Number(orderStatus)].color"
+					margin="0"
+				></tui-icon>
 				<text class="statusTitle">{{ (istopUp ? '充值' : '转赠') + (orderStatus ? '成功' : '失败') }}</text>
 			</view>
 			<image class="orderType" :src="imgSrc[Number(istopUp)]"></image>
@@ -30,7 +34,7 @@ export default {
 			istopUp: false,
 			orderStatus: true,
 			imgSrc: [require('../../../static/images/user/voucher/zhuan.png'), require('../../../static/images/user/voucher/chon.png')],
-			statusImgSrc: [require('../../../static/images/user/voucher/error.png'), require('../../../static/images/user/voucher/great.png')]
+			statusImgSrc: [{ name: 'close-fill', color: '#e02208' }, { name: 'circle-fill', color: '#208f57' }]
 		}
 	},
 	onLoad(options) {

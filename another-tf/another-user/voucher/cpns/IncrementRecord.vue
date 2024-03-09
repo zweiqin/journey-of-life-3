@@ -9,7 +9,11 @@
 			<scroll-view scroll-y="true" class="scrollY" @scrolltolower="getMore">
 				<view v-for="(item, index) in dataList" :key="index" class="listItem">
 					<view class="itemIcon" style="background: #FF380C;">
-						<image class="Iconimg" src="../../../../static/images/user/zhichu.png"></image>
+						<tui-icon
+							name="friendadd" :size="50" unit="rpx"
+							color="#ffffff"
+							margin="0"
+						></tui-icon>
 					</view>
 					<text class="txt2">{{ item.number }}<text class="texts">({{ statusData[item.status] }})</text></text>
 					<!-- <text class="txt2">{{ item.number }}<text class="">({{ statusData[item.status] }})</text></text> -->

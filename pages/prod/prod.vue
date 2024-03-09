@@ -122,7 +122,7 @@
 
         <view class="one-eval-container" v-if="commentInfo.data.length">
           <view class="user-info">
-            <image class="avatar" :src="commentInfo.data[0].avatar? common.seamingImgUrl(commentInfo.data[0].avatar) : require('../../static/images/user/weidian/no-goods.png')"></image>
+            <image class="avatar" :src="commentInfo.data[0].avatar? common.seamingImgUrl(commentInfo.data[0].avatar) : require('../../static/images/common/default.png')"></image>
             <view class="info">
               <view class="nickname">{{ commentInfo.data[0].nickname || '匿名用户' }} </view>
               <view class="eval-time">{{ commentInfo.data[0].addTime }}</view>

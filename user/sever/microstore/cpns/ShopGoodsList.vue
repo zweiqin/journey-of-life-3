@@ -22,10 +22,11 @@
                 })
               "
             >
-              <image
-                src="../../../../static/images/user/weidian/download.png"
-                mode=""
-              />
+							<tui-icon
+								name="bottom" :size="32" unit="rpx"
+								color="#ffffff"
+								margin="0"
+							></tui-icon>
               <text>下架</text>
             </button>
             <button
@@ -37,10 +38,11 @@
                 })
               "
             >
-              <image
-                src="../../../../static/images/user/weidian/share.png"
-                mode=""
-              />
+							<tui-icon
+								name="share" :size="32" unit="rpx"
+								color="#ffffff"
+								margin="0"
+							></tui-icon>
               <text>分享</text>
             </button>
           </view>
@@ -55,10 +57,11 @@
                 })
               "
             >
-              <image
-                src="../../../../static/images/user/weidian/upload.png"
-                mode=""
-              />
+							<tui-icon
+								name="partake" :size="32" unit="rpx"
+								color="#ffffff"
+								margin="0"
+							></tui-icon>
               <text>上架</text>
             </button>
           </view>
@@ -69,10 +72,11 @@
     </view>
 
     <view class="no-data" v-show="!data.goodsList.length">
-      <image
-        src="../../../../static/images/user/weidian/no-goods.png"
-        mode=""
-      />
+			<tui-icon
+				name="nodata" :size="432" unit="rpx"
+				color="#b6cadc"
+				margin="0"
+			></tui-icon>
       <view>暂无商品~</view>
     </view>
   </view>

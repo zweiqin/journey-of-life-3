@@ -1,12 +1,16 @@
 <template>
 	<view class="tixian">
 		<view class="return">
-			<img src="../../../static/images/icon/return.png" alt="" class="return-logo" @click="handleBack">
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
 		</view>
 		<view class="tixian-name">提现金额</view>
 		<view class="tixian-list">
 			<view class="logo">￥</view>
-			<input type="text" class="input" placeholder="0.00" placeholder-class="num" v-model="number">
+			<input v-model="number" type="text" class="input" placeholder="0.00" placeholder-class="num">
 		</view>
 		<view class="tixian-money">
 			<view class="allow">
@@ -18,11 +22,19 @@
 		<view class="go-to">提现到</view>
 		<view class="type-list">
 			<view class="left">
-				<img src="../../../static/images/user/vx.png" alt="" class="vx">
+				<tui-icon
+					name="wechat" :size="64" unit="rpx"
+					color="#28c445"
+					margin="0 16rpx 0 0"
+				></tui-icon>
 				<view class="text">微信余额</view>
 			</view>
 			<view class="right">
-				<img src="../../../static/images/user/arrow.png" alt="" class="arrow">
+				<tui-icon
+					name="arrowright" :size="40" unit="rpx"
+					color="#b3b2ad"
+					margin="0 16rpx 0 0"
+				></tui-icon>
 			</view>
 		</view>
 		<view class="foot">
@@ -39,21 +51,21 @@
 
 <script>
 export default {
-	name: "Tixian",
+	name: 'Tixian',
 	props: {
 
 	},
 	data() {
 		return {
-			number:"",
+			number: ''
 		}
 	},
+	created() { },
 	methods: {
 		handleBack() {
 			uni.navigateBack()
-		},
-	},
-	created() { }
+		}
+	}
 }
 </script>
 

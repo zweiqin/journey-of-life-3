@@ -1,7 +1,7 @@
 <template>
     <view class="historyList">
         <view class="historyListItem" v-for="(item, index) in dataList" :key="item.rechargeOrderSn">
-            <image class="itemImages" src="@/static/images/user/chon.png"></image>
+            <image class="itemImages" src="../../../static/images/user/voucher/chon.png"></image>
             <view class="texts">
                 <text class="names">余额充值</text>
                 <text class="timers">{{ item.createTime }}</text>

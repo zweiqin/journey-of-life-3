@@ -15,7 +15,11 @@
 						class="itemIcon"
 						:style="{ background: showType === 'income' ? '#FF380C' : showType === 'expenditure' ? '#3982F1' : '' }"
 					>
-						<image class="Iconimg" src="../../../../static/images/user/zengsong.png"></image>
+						<tui-icon
+							name="wealth" :size="50" unit="rpx"
+							color="#ffffff"
+							margin="0"
+						></tui-icon>
 					</view>
 					<text class="txt2" style="display: flex;"> <text v-if="showType == 'income' && item.type != 2 && item.type != 4">+</text>  <text v-else>-</text> {{ item.number }}</text>
 					<view class="itemDetails">

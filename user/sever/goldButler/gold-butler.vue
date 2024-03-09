@@ -48,7 +48,11 @@
             <view class="name"> 享受<text>4</text>大服务 </view>
           </view>
           <view class="main-service-item" v-for="item in value.children" :key="item.id">
-            <image src="../../../static/images/user/vip.png" mode="" />
+						<tui-icon
+							name="member-fill" :size="56" unit="rpx"
+							color="#edb24c"
+							margin="0"
+						></tui-icon>
             <view class="text">{{ item.serverContent }}</view>
             <view class="order" :style="getOrderBtnStyle(value, item)" @click="handleToBook(value, item)">预约</view>
           </view>
@@ -90,7 +94,11 @@
           <view class="name"> 享受<text>4</text>大服务 </view>
         </view>
         <view class="main-service-item" v-for="item in vipContent" :key="item">
-          <image src="../../../static/images/user/vip.png" mode="" />
+					<tui-icon
+						name="member-fill" :size="56" unit="rpx"
+						color="#edb24c"
+						margin="0"
+					></tui-icon>
           <view class="text">{{ item }}</view>
           <!-- <view class="order" :style="getOrderBtnStyle(value, item)" @click="handleToBook(value, item)">预约</view> -->
         </view>
