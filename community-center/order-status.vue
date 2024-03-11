@@ -2,7 +2,11 @@
   <view class="order-info-wrapper">
     <TuanPageHead title="订单详情" fixed :scrollTop="scrollTop">
       <block slot="left">
-        <image src="../static/images/con-center/order-detail-back.png" @click="handleToOrderList" class="back-icon"> </image>
+				<tui-icon
+					name="arrowleft" :size="64" unit="rpx"
+					color="#222229"
+					margin="0" @click="handleToOrderList"
+				></tui-icon>
       </block>
     </TuanPageHead>
     <view class="c-order-detail" v-if="orderDetail" :style="{ marginTop: scrollTop > 300 ? '100upx' : '' }">
@@ -82,7 +86,11 @@
               <view class="left">
                 <text class="master-name">{{ masterInfo.name }}</text>
                 <view class="rate">
-                  <image class="rate-star" src="../static/images/con-center/rate-star.png"></image>
+									<tui-icon
+										name="star-fill" :size="24" unit="rpx"
+										color="#ff9554"
+										margin="0"
+									></tui-icon>
                   <text class="rate-text">{{ masterInfo.score || '5.0' }}</text>
                 </view>
                 <view class="tag tag1">已认证</view>
@@ -101,9 +109,17 @@
           </view>
 
           <view class="contect-master" v-if="masterInfo.tel" @click="handleCallMaster(masterInfo.tel)">
-            <image class="icon1" src="../static/images/con-center/connect-icon.png"></image>
+						<tui-icon
+							name="voipphone" :size="40" unit="rpx"
+							color="#ef530e"
+							margin="0"
+						></tui-icon>
             <text class="text">联系师傅</text>
-            <image class="icon2" src="../static/images/con-center/right-arrow.png"></image>
+						<tui-icon
+							name="arrowright" :size="28" unit="rpx"
+							color="#888889"
+							margin="0"
+						></tui-icon>
           </view>
         </view>
       </view>

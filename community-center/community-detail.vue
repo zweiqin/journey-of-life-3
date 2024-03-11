@@ -101,16 +101,24 @@
     <view class="add">
       <view class="add-list" @click="handleToAddress">
         <view class="left">
-          <image src="../static/images/con-center/map-pin.png" mode="" class="left-logo" />
+					<tui-icon
+						name="gps" :size="32" unit="rpx"
+						color="#e95d20"
+						margin="0"
+					></tui-icon>
           <view class="left-address">{{ addressDetail || '请添加服务地址' }}</view>
         </view>
         <view class="right">
-          <image src="../static/images/con-center/jump.png" mode="" class="jump" />
+					<tui-icon
+						name="arrowright" :size="32" unit="rpx"
+						color="#9a9a9a"
+						margin="0"
+					></tui-icon>
         </view>
       </view>
       <view class="kaitong">
-        <image v-if="type == 1" src="../static/images/con-center/open.png" mode="" class="open" />
-        <image v-if="type == 2" src="../static/images/con-center/shut.png" mode="" class="close" />
+				<view v-if="type == 1" class="open" style="padding-right: 24upx;text-align: right;font-size: 28upx;color: #ff1717;font-weight: bold;background-color: #feebe9;clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);">服务已开通</view>
+				<view v-if="type == 2" class="close" style="padding-right: 24upx;text-align: right;font-size: 28upx;color: #777777;font-weight: bold;background-color: #e1e1e1;clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);">服务未开通</view>
       </view>
     </view>
 
@@ -867,17 +875,20 @@ export default {
     }
 
     .kaitong {
-      text-align: right;
+			display: flex;
+			justify-content: flex-end;
       padding-top: 10upx;
 
       .open {
         width: 200upx;
         height: 48upx;
+				line-height: 48upx;
       }
 
       .close {
         width: 200upx;
         height: 48upx;
+				line-height: 48upx;
       }
     }
   }

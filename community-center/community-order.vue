@@ -2,7 +2,11 @@
   <view class="community-order-container">
     <!-- 返回键 -->
     <view class="head">
-      <image @click="handleBack" class="back-icon" src="../static/images/con-center/order-back.png"></image>
+			<tui-icon
+				name="arrowleft" :size="42" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
     </view>
 
     <!-- 上门地址 -->
@@ -18,7 +22,13 @@
 
       <view v-else class="section-title">请添加上门地址</view>
 
-      <image class="address-icon" src="../static/images/con-center/address-icon.png"></image>
+			<view class="address-icon" style="display: flex;justify-content: center;align-items: center;border: 2rpx solid #605d52;">
+				<tui-icon
+					name="gps" :size="42" unit="rpx"
+					color="#605d52"
+					margin="0"
+				></tui-icon>
+			</view>
     </view>
 
     <view v-if="!isExistCommunityStore" class="alert-wrapper section" style="padding: 0">
@@ -76,7 +86,13 @@
     <view class="serve-time section animate" @click="chooseTimeVisible = true">
       <view class="header-wrapper">
         <view class="section-title">请选择期望上门时间</view>
-        <image class="address-icon" src="../static/images/con-center/order-time.png"></image>
+				<view class="address-icon" style="display: flex;justify-content: center;align-items: center;border: 2rpx solid #605d52;">
+					<tui-icon
+						name="clock" :size="42" unit="rpx"
+						color="#605d52"
+						margin="0"
+					></tui-icon>
+				</view>
       </view>
 
       <view class="choose-time">{{ orderForm.datetimerange }}</view>
@@ -92,7 +108,13 @@
         </view>
 
         <view class="add-img-icon item" @click="handleUploadImg">
-          <image class="add-icon" src="../static/images/con-center/add-icon.png"></image>
+					<view class="add-icon">
+						<tui-icon
+							name="add" :size="64" unit="rpx"
+							color="#b3b2ad"
+							margin="0"
+						></tui-icon>
+					</view>
         </view>
       </view>
 

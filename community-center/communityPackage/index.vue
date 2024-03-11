@@ -1,8 +1,13 @@
 <template>
     <view class="mainBox">
         <TuanPageHead title="社区套餐" style="background: #Fff;">
-            <image slot="left" src="@/static/images/con-center/goBack.png" @click="goBack" class="backIcon" mode="" >
-            </image>
+					<view slot="left">
+						<tui-icon
+							name="toleft" :size="68" unit="rpx"
+							color="#2a2b23"
+							margin="0 20rpx 0 0" @click="goBack"
+						></tui-icon>
+					</view>
         </TuanPageHead>
 
         <!-- 背景板 z-index == 0 -->

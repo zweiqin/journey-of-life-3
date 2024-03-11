@@ -20,7 +20,7 @@
         <view class="brand-filter-wrapper">
           <view class="brand-item" :id="'item_' + category.id" @click="handleChangeSecondClass(category)"
             v-for="category in categoryList" :key="category.id">
-            <image :src="currentBrandType === category.id ? category.active : common.seamingImgUrl(category.picUrl)" class="category-img">
+            <image :src="category.localPic ? category.localPic : common.seamingImgUrl(category.picUrl)" class="category-img">
             </image>
           </view>
         </view>
@@ -101,7 +101,7 @@ export default {
     },
 
 
-    // 获取二级分类
+    // 获取二级分类，或三级分类
     async getSecondClassList(pid, isSecondClass) {
       try {
         const res = await getFactoryNextClassApi({
@@ -109,10 +109,18 @@ export default {
         })
 
         if (isSecondClass) {
-          this.mapLocalToNetData(res.data)
+          this.mapLocalToNetData([{
+						"id": "",
+						"storeName": "全部品牌",
+						"pid": pid,
+						"level": "2",
+						"sort": 0,
+						localPic: require('../../../static/images/new-index/brandFactory/quanbupinpai.png'),
+					}, ...res.data])
         } else {
           this.nextCategory = res.data
-          this.handleChangeNextCategory(res.data[0] ? res.data[0].id : null)
+					this.currentNextCategoryId = res.data[0] ? res.data[0].id : ''
+          this.handleChangeNextCategory(this.currentNextCategoryId)
         }
       } finally {
         this.isPageLoading = undefined
@@ -123,13 +131,13 @@ export default {
     mapLocalToNetData(classList) {
       if (this.categoryList.length) return
       if (classList && classList.length) {
-        const localClassMap = new Map(categoryList.map(localClass => [localClass.storeName, localClass]));
-        for (const netClass of classList) {
-          const localClass = localClassMap.get(netClass.storeName);
-          if (localClass) {
-            netClass.active = localClass.active;
-          }
-        }
+        // const localClassMap = new Map(categoryList.map(localClass => [localClass.storeName, localClass]));
+        // for (const netClass of classList) {
+        //   const localClass = localClassMap.get(netClass.storeName);
+        //   if (localClass) {
+        //     netClass.active = localClass.active;
+        //   }
+        // }
         this.categoryList = classList
       } else {
         this.categoryList = categoryList;
@@ -154,7 +162,7 @@ export default {
         this.$data._query.classifyId = this.currentBrandType
         this._loadData()
       } else {
-        if (this.currentNextCategoryId === id) return
+        // if (this.currentNextCategoryId === id) return
         this.currentNextCategoryId = id
         this.$data._query.classifyId = id
         this._loadData()
