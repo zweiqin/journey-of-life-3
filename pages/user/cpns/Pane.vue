@@ -14,12 +14,12 @@
 		<view style="margin: 24upx -12upx 0;display: flex;justify-content: center;flex-wrap: wrap;">
 			<view v-for="menu in specialPane" :key="menu.name" @click="$emit('menu-click', menu)">
 				<view
-					v-if="menu.name === '会员升级'"
+					v-if="menu.name === '我的账本'"
 					style="display: flex;justify-content: space-between;align-items: center;width: 330upx;margin: 0 12upx 22upx;padding: 32upx 32upx;background-color: #ffffff;border-radius: 10upx;box-sizing: border-box;"
 				>
 					<view>
 						<view style="margin-bottom: 6upx;font-size: 32upx;font-weight: bold;color: #222229;">{{ menu.name }}</view>
-						<view style="font-size: 22upx;color: #888889;">领取升级福利</view>
+						<view style="font-size: 22upx;color: #888889;">分享收益随时看</view>
 					</view>
 					<image
 						style="width: 92upx;height: 92upx;" :src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
@@ -107,10 +107,18 @@
 						></BeeIcon>
 						<text class="menu-name">{{ menu.name }}</text>
 						<tui-badge
-							v-show="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
+							v-if="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
 							:scale-ratio="0.8" translate-x="40%" top="4rpx"
 						>
 							{{ $store.getters.shopCarNumber > 10 ? '10+' : $store.getters.shopCarNumber }}
+						</tui-badge>
+						<tui-badge
+							v-else-if="menu.name === '活动中心'" type="danger" absolute
+							:scale-ratio="0.9" translate-x="40%" top="4rpx"
+						>
+							<view style="padding: 8rpx;">
+								家庭小卫士
+							</view>
 						</tui-badge>
 					</view>
 				</view>
@@ -172,7 +180,7 @@ export default {
 				const haveSpecialData = []
 				const renderMenuArr = []
 				newVal.forEach((item) => {
-					if (item.name === '会员升级' || item.name === '我的推广' || item.name === '联系客服') {
+					if (item.name === '我的账本' || item.name === '我的推广') {
 						haveSpecialData.push(item)
 					} else if (item.showRole) {
 						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) renderMenuArr.push(item)
@@ -200,7 +208,7 @@ export default {
 				const haveSpecialData = []
 				const renderMenuArr = []
 				this.menuData.forEach((item) => {
-					if (item.name === '会员升级' || item.name === '我的推广' || item.name === '联系客服') {
+					if (item.name === '我的账本' || item.name === '我的推广') {
 						haveSpecialData.push(item)
 					} else if (item.showRole) {
 						if (item.showRole.includes('shop') && newVal.includes(9)) renderMenuArr.push(item)

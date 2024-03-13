@@ -4,7 +4,6 @@
 		<BaseInfo ref="baseInfoRef"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
-			<Pane title="我的服务" :menu-data="myServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
@@ -47,7 +46,7 @@ import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
 import { T_STORAGE_KEY } from '../../constant'
-import { myFunction, myServe, additionalFunction, shopServe, myPreferential, otherFunction } from './data'
+import { myFunction, additionalFunction, shopServe, myPreferential, otherFunction } from './data'
 import { Encrypt } from '../../utils/secret'
 
 export default {
@@ -64,7 +63,6 @@ export default {
 		return {
 			timer: null,
 			myFunction,
-			myServe,
 			shopServe,
 			additionalFunction,
 			myPreferential,

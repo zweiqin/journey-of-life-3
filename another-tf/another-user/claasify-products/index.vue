@@ -2,7 +2,7 @@
 	<view class="claasify-products-container">
 		<JHeader
 			:title="transformation[currentType]" width="50" height="50"
-			style="padding: 24upx 0 18upx;background-color: #ffffff;;"
+			style="padding: 24upx 0 18upx;background-color: #ffffff;"
 		></JHeader>
 		<view v-if="ownSearchBar.includes(currentType)" style="padding: 0 0 12upx;background-color: #ffffff;">
 			<view style="display: flex;align-items: center;margin: 0 28upx;border: 2upx solid #EF5511;border-radius: 50upx;">

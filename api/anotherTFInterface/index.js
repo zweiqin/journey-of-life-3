@@ -59,6 +59,9 @@ export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data
 // 修改密码
 export const updatePasswordUserApi = (data) => AnotherTFRequest('/user/updatePassword', data, 'POST')
 
+// 重置密码
+export const updateForgetPasswordUserApi = (data) => AnotherTFRequest('/user/forgetPassword', data, 'POST')
+
 // 用户信息查询，用户代金券查询(新)
 export const getBandUserInfoApi = (data) => AnotherTFRequest('/user/getBandUser', data)
 
@@ -726,7 +729,7 @@ export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryM
 // 获取搜索栏的热门搜索
 export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)
 
-// 小账本
+// 我的账本
 export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
 
 // 今日会员，累计会员

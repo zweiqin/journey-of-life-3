@@ -1442,15 +1442,39 @@
           }
         },
         {
-          "path": "another-user/platform-recharge/index",
+          "path": "another-serve/withdraw/index",
+          "style": {
+            "navigationBarTitleText": "提现"
+          }
+        },
+        {
+          "path": "another-user/my-wallet/index",
+          "style": {
+            "navigationBarTitleText": "我的钱包"
+          }
+        },
+        {
+          "path": "another-user/my-wallet/balance-operation",
+          "style": {
+            "navigationBarTitleText": "余额操作"
+          }
+        },
+        {
+          "path": "another-user/my-wallet/platform-recharge",
           "style": {
             "navigationBarTitleText": "平台充值"
           }
         },
         {
-          "path": "another-serve/withdraw/index",
+          "path": "another-user/my-wallet/recharge-record",
           "style": {
-            "navigationBarTitleText": "提现"
+            "navigationBarTitleText": "平台充值流水记录"
+          }
+        },
+        {
+          "path": "another-user/voucher/voucher-operation",
+          "style": {
+            "navigationBarTitleText": "代金卷操作"
           }
         },
         {
@@ -1463,6 +1487,13 @@
           "path": "another-user/voucher/orderStatus",
           "style": {
             "navigationBarTitleText": "代金卷订单完成状态"
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/commission-operation",
+          "style": {
+            "navigationBarTitleText": "推广佣金操作",
+            "enablePullDownRefresh": true
           }
         },
         {
@@ -1511,12 +1542,6 @@
           }
         },
         {
-          "path": "another-user/platform-recharge/recharge-record",
-          "style": {
-            "navigationBarTitleText": "平台充值流水记录"
-          }
-        },
-        {
           "path": "another-user/user-upgrade/user-upgrade-application",
           "style": {
             "navigationBarTitleText": "会员升级"
@@ -1549,7 +1574,7 @@
         {
           "path": "another-user/small-ledger/index",
           "style": {
-            "navigationBarTitleText": "小账本"
+            "navigationBarTitleText": "我的账本"
           }
         },
         {

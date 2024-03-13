@@ -93,43 +93,6 @@ export const shequTwiceOrder = [
 
 export const myFunction = [
 	{
-		name: '邀请码',
-		icon: require('../../static/images/new-user/menu-icon/yaoqingma.png'),
-		type: 'userInvitation'
-	},
-	{
-		name: '会员升级',
-		icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
-		url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
-	},
-	{
-		name: '我的推广',
-		icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
-		url: '/another-tf/another-user/commission-statistics/vip-user'
-	},
-	// {
-	//   name: "会员升级", // 老团蜂的
-	//   icon: require("../../static/images/new-user/menu-icon/huiyuanshengji.png"),
-	//   url: "/user/sever/userUp/partner-appay",
-	// },
-	{
-		name: '小账本',
-		icon: require('../../static/images/new-user/menu-icon/xiaozhangben.png'),
-		// url: '/user/account-book/index', // 老的
-		url: '/another-tf/another-user/commission-statistics/commission-statistics'
-		// url: '/another-tf/another-user/small-ledger/index'
-	},
-	{
-		name: '活动中心',
-		icon: require('../../static/images/new-user/menu-icon/huodongzhongxin.png'),
-		url: '/user/sever/activityCenter/index'
-	},
-	{
-		name: '电子名片',
-		icon: require('../../static/images/new-user/menu-icon/dingyue.png'),
-		type: 'electronicCard'
-	},
-	{
 		name: '购物车',
 		icon: require('../../static/images/new-user/menu-icon/gouwuche.png'),
 		url: '/another-tf/another-serve/shopCar/shopCar'
@@ -141,11 +104,60 @@ export const myFunction = [
 		url: '/another-tf/another-serve/collection/index'
 	},
 	{
+		name: '活动中心',
+		icon: require('../../static/images/new-user/menu-icon/huodongzhongxin.png'),
+		url: '/user/sever/activityCenter/index'
+	},
+	{
 		name: '足迹',
 		icon: require('../../static/images/new-user/menu-icon/zuji.png'),
 		// url: '/user/sever/view-history?page=history',
 		url: '/another-tf/another-serve/footprintList/index'
+	},
+	{
+		name: '电子名片',
+		icon: require('../../static/images/new-user/menu-icon/dingyue.png'),
+		type: 'electronicCard'
+	},
+	{
+		name: '我的账本',
+		icon: require('../../static/images/new-user/menu-icon/wodezhangben.png'),
+		// url: '/user/account-book/index', // 老的
+		url: '/another-tf/another-user/commission-statistics/commission-statistics'
+		// url: '/another-tf/another-user/small-ledger/index'
+	},
+	{
+		name: '联系客服',
+		icon: require('../../static/images/new-user/menu-icon/lianxikefu.png'),
+		// url: '/user/sever/service-center/service-center',
+		type: 'flyToService'
+	},
+	{
+		name: '地址管理',
+		icon: require('../../static/images/new-user/menu-icon/dizhiguanli.png'),
+		// url: '/user/site/site-manage',
+		url: '/another-tf/another-serve/address/index'
+	},
+	{
+		name: '我的推广',
+		icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
+		type: 'userInvitation'
 	}
+	// {
+	// 	name: '我的推广',
+	// 	icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
+	// 	url: '/another-tf/another-user/commission-statistics/vip-user'
+	// },
+	// {
+	// 	name: '会员升级',
+	// 	icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
+	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
+	// },
+	// {
+	//   name: "会员升级", // 老团蜂的
+	//   icon: require("../../static/images/new-user/menu-icon/huiyuanshengji.png"),
+	//   url: "/user/sever/userUp/partner-appay",
+	// },
 	// {
 	// 	name: '我的推广', // 老团蜂的
 	// 	icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
@@ -189,32 +201,6 @@ export const myFunction = [
 	// 	icon: require('../../static/images/new-user/menu-icon/gudongkanban.png'),
 	// 	url: '/user/shareholder/shareholder'
 	// },
-]
-
-export const myServe = [
-	{
-		name: '地址管理',
-		icon: require('../../static/images/new-user/menu-icon/dizhiguanli.png'),
-		// url: '/user/site/site-manage',
-		url: '/another-tf/another-serve/address/index'
-	},
-	{
-		name: '银行卡',
-		icon: require('../../static/images/new-user/menu-icon/yinhangka.png'),
-		// url: '/user/sever/bank-card/index',
-		url: '/another-tf/another-serve/bankcard/index'
-	},
-	{
-		name: '卡包',
-		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
-		url: '/another-tf/another-serve/coupon/index'
-	},
-	{
-		name: '联系客服',
-		icon: require('../../static/images/new-user/menu-icon/lianxikefu.png'),
-		// url: '/user/sever/service-center/service-center',
-		type: 'flyToService'
-	}
 ]
 
 export const shopServe = [
@@ -383,5 +369,16 @@ export const otherFunction = [
 		url: '/another-tf/another-user/franchisee-statistics/index',
 		showRole: [ 'franchisee' ]
 	}
+	// {
+	// 	name: '银行卡',
+	// 	icon: require('../../static/images/new-user/menu-icon/yinhangka.png'),
+	// 	// url: '/user/sever/bank-card/index',
+	// 	url: '/another-tf/another-serve/bankcard/index'
+	// },
+	// {
+	// 	name: '卡包',
+	// 	icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
+	// 	url: '/another-tf/another-serve/coupon/index'
+	// },
 	// shopServe
 ]

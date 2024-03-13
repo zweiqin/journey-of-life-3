@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
-		<JHeader title="小账本" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view>小账本页</view>
+		<JHeader title="我的账本" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<view>我的账本页</view>
 	</view>
 </template>
 

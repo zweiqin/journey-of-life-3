@@ -22,7 +22,7 @@ export default {
 		iconSrc: {
 			type: String,
 			// required: true
-			default: require('../../static/images/new-user/menu-icon/lianxikefu.png')
+			default: require('../../static/images/new-user/menu-icon/kefuzaixian.png')
 		},
 		isDock: {
 			type: Boolean,

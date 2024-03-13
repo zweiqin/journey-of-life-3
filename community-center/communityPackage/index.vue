@@ -23,7 +23,13 @@
             <view class="selectClassBox">
                 <view class="tabs-item" :class="{isActive: index == 0}" v-for="(item, index) in tabNavs" :key="index">
                     {{ item.serverName }}
-                    <image v-if="index == 0" class="activeIocn" src="@/static/images/con-center/communityPackage/wande.png" mode="" ></image>
+										<view class="activeIocn">
+											<tui-icon  v-if="index == 0"
+												name="reduce" :size="74" unit="rpx"
+												color="#dddfe4"
+												margin="0" @click="goBack"
+											></tui-icon>
+										</view>
                 </view>
             </view>
         </scroll-view>
@@ -58,12 +64,12 @@
 
             <view class="ListItem">
                 <view class="bigClass">
-                    <image class="" src="@/static/images/con-center/communityPackage/kongtiaoqingxi3.png" mode="" />
+                    <image class="" src="../../static/images/con-center/communityPackage/kongtiaoqingxi3.png" mode="" />
                 </view>
                 <view class="smallPackages">
                     <view class="PackagesItems" v-for="(item,index) in 5" :key="index">
                         <view class="pagesImgBox" :style="{'background-color': backgrounds[index]}">
-                            <image class="pagesImg" :src="require(`@/static/images/con-center/communityPackage/smallktqx${item}.png`)" mode="" />
+                            <image class="pagesImg" :src="require(`../../static/images/con-center/communityPackage/kongtiaoqingxi3.png`)" mode="" />
                             <view class="SalesVolume">
                                 已售 {{ 200 }} ++
                             </view>

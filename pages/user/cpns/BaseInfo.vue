@@ -1,22 +1,6 @@
 <template>
 	<view class="base-info-container">
-		<!-- <view style="font-size: 36upx;font-weight: bold;color: #2A2B23;">个人中心</view> -->
-		<view class="op-container">
-			<view class="wrapper" @click="go('/another-tf/another-serve/messageCenter/index')">
-				<tui-icon name="message" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
-				<tui-badge
-					v-show="$store.getters.userInfo.notRead" type="danger" right="-6rpx" absolute
-					:scale-ratio="0.8"
-					translate-x="38%" top="-6rpx"
-				>
-					{{ $store.getters.userInfo.notRead > 99 ? '99+' : $store.getters.userInfo.notRead }}
-				</tui-badge>
-			</view>
-			<view class="wrapper" @click="go('/another-tf/another-serve/personalDetails/index')">
-				<tui-icon name="setup" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
-			</view>
-		</view>
-
+		<view style="font-size: 36upx;font-weight: bold;color: #2A2B23;">个人中心</view>
 		<view class="user-info">
 			<Avatar
 				margin="0 12upx 0 0" :size="49"
@@ -104,14 +88,21 @@
 						</view>
 					</view>
 					<view style="flex: 1;text-align: right;">
-						<tui-button
-							type="warning" width="128rpx" height="64upx" margin="0"
-							shape="circle" :size="24"
-							style="display: inline-block;background: linear-gradient(270deg, #FE4013 0%, #F86D3A 100%)!important;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
-							@click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')"
-						>
-							升级
-						</tui-button>
+						<view style="display: flex;align-items: center;justify-content: flex-end;padding-right: 30upx;">
+							<view style="position: relative;margin-right: 24upx;" @click="go('/another-tf/another-serve/messageCenter/index')">
+								<tui-icon name="message" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
+								<tui-badge
+									v-show="$store.getters.userInfo.notRead" type="danger" right="-6rpx" absolute
+									:scale-ratio="0.8"
+									translate-x="38%" top="-6rpx"
+								>
+									{{ $store.getters.userInfo.notRead > 99 ? '99+' : $store.getters.userInfo.notRead }}
+								</tui-badge>
+							</view>
+							<view @click="go('/another-tf/another-serve/personalDetails/index')">
+								<tui-icon name="setup" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -127,39 +118,56 @@
 				</view> -->
 		</view>
 
-		<view class="account-container">
-			<view class="account-item" @click="go('/another-tf/another-user/platform-recharge/index')">
-				<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
-				<view class="account-title">余额</view>
+		<!-- <view class="account-container">
+			<view class="account-item" @click="go('/another-tf/another-user/my-wallet/platform-recharge')">
+			<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
+			<view class="account-title">余额</view>
 			</view>
 
 			<view class="account-item" @click="go('/user/sever/goldButler/gold-butler')">
-				<view class="account-number">
-					{{ isBuy ? 1 : 0 }}
-				</view>
-				<view class="account-title">家庭小卫士</view>
+			<view class="account-number">
+			{{ isBuy ? 1 : 0 }}
+			</view>
+			<view class="account-title">家庭小卫士</view>
 			</view>
 
-			<!-- <view class="account-item" @click="go('/another-tf/another-serve/integral/index')">
-				<view class="account-number">
-				{{ $store.getters.userInfo.credit || 0 }}
-				</view>
-				<view class="account-title">积分</view>
-				</view> -->
+			<view class="account-item" @click="go('/another-tf/another-serve/integral/index')">
+			<view class="account-number">
+			{{ $store.getters.userInfo.credit || 0 }}
+			</view>
+			<view class="account-title">积分</view>
+			</view>
 
 			<view class="account-item" @click="go('/another-tf/another-user/voucher/voucher')">
-				<view class="account-number">
-					{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
-				</view>
-				<view class="account-title">代金劵</view>
+			<view class="account-number">
+			{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
 			</view>
-		</view>
+			<view class="account-title">代金劵</view>
+			</view>
+			</view> -->
 
-		<view style="margin-top: 32upx;" @click="handleToOpen">
-			<image
-				src="../../../static/images/user/activity/499huiyuan.png" mode="widthFix"
-				style="width: 100%;vertical-align: middle;"
-			/>
+		<view>
+			<view style="position: relative;padding-top: 38upx;" @click="go('/another-tf/another-user/my-wallet/index')">
+				<image
+					src="../../../static/images/new-user/group/my-wallet.png" mode="widthFix"
+					style="width: 100%;vertical-align: middle;"
+				/>
+				<view style="position: absolute;top: 50rpx;right: 18rpx;display: flex;align-items: center;color: #ffffff;">
+					<view style="text-align: right;">
+						<view style="font-size: 30rpx;">￥{{ $store.getters.pricePlatformInfo.totalPrice || 0 }}</view>
+						<view style="font-size: 26rpx;">可提现余额：{{ $store.getters.pricePlatformInfo.price || 0 }}</view>
+					</view>
+					<view>
+						<tui-icon name="arrowright" :size="34" unit="rpx" color="#ffffff" margin="0 0 0 10rpx"></tui-icon>
+					</view>
+				</view>
+			</view>
+			<view style="padding-top: 24upx;" @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')">
+				<image
+					src="../../../static/images/user/activity/499huiyuan.png" mode="widthFix"
+					style="width: 100%;vertical-align: middle;"
+				/>
+			</view>
 		</view>
 
 		<tui-modal
@@ -230,7 +238,7 @@ export default {
 	mixins: [ showModalMixin() ],
 	mounted() {
 		console.log(this.$store.getters.userInfo)
-		this.userIsPurchase()
+		// this.userIsPurchase()
 	},
 	methods: {
 		convertToDecimal,
@@ -239,14 +247,6 @@ export default {
 				uni.navigateTo({ url: '/user/sever/goldButler/gold-butler' })
 			}
 			this.isShow = false
-		},
-		// 立即开通
-		handleToOpen() {
-			// const url = this.isBuy ? '/user/sever/goldButler/gold-butler' : '/community-center/vip-center/vip-detail?type=2'
-			const url = '/another-tf/another-user/user-upgrade/user-upgrade-application'
-			uni.navigateTo({
-				url
-			})
 		},
 
 		// 查询用户是否购买过家庭小卫士套餐
@@ -299,21 +299,6 @@ export default {
 	background-size: cover;
 	padding: 48upx 32upx 0upx;
 	box-sizing: border-box;
-
-	.op-container {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		padding-top: 20upx;
-
-		.wrapper {
-			position: relative;
-
-			&:nth-child(1) {
-				margin-right: 24upx;
-			}
-		}
-	}
 
 	.user-info {
 		display: flex;

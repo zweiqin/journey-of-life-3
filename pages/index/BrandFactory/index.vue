@@ -109,14 +109,14 @@ export default {
         })
 
         if (isSecondClass) {
-          this.mapLocalToNetData([{
+          this.mapLocalToNetData([ ...res.data, {
 						"id": "",
 						"storeName": "全部品牌",
 						"pid": pid,
 						"level": "2",
 						"sort": 0,
 						localPic: require('../../../static/images/new-index/brandFactory/quanbupinpai.png'),
-					}, ...res.data])
+					}])
         } else {
           this.nextCategory = res.data
 					this.currentNextCategoryId = res.data[0] ? res.data[0].id : ''
@@ -138,7 +138,10 @@ export default {
         //     netClass.active = localClass.active;
         //   }
         // }
-        this.categoryList = classList
+        this.categoryList = classList.sort((a, b) => {
+					if(a.storeName === '品牌家具') return -1
+          else return 0
+        })
       } else {
         this.categoryList = categoryList;
       }
