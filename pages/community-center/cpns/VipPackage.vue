@@ -18,18 +18,9 @@
       <image class="money" src="../../../static/images/new-community/home/money.png"></image>
       <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
-    </view> -->
-
-    <view class="package package-1" @click="handleToOrder">
-      <view style="background: linear-gradient(270deg, #1648D5 -3%, #2B45D9 112%);" class="package-title"> 企业服务 </view>
-      <view class="content">
-        <view class="title-1">家具工厂<text class="vip-price">{{ XIAN.price }}</text></view>
-        <view class="title-2">维修专项入口</view>
-      </view>
-      <button class="uni-btn">立即申请</button>
     </view>
 
-    <!-- <view v-else class="package package-1" @click="
+    <view v-else class="package package-1" @click="
       go(
         '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=xxx'
       )
@@ -49,6 +40,15 @@
       <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
     </view> -->
+
+    <view class="package package-1" @click="handleToOrder">
+      <view style="background: linear-gradient(270deg, #1648D5 -3%, #2B45D9 112%);" class="package-title"> 企业服务 </view>
+      <view class="content">
+        <view class="title-1">家具工厂<text class="vip-price">{{ XIAN.price }}</text></view>
+        <view class="title-2">维修专项入口</view>
+      </view>
+      <button class="uni-btn">立即申请</button>
+    </view>
 
     <view class="other-package">
 

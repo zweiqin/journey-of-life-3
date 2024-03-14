@@ -107,22 +107,22 @@ export default {
 					this.isShowLotteryDialog = true
 					return
 				} else if (item.type === 'userInvitation') {
-					if (this.$store.state.auth.identityInfo.type.includes(1)) {
-						uni.showActionSheet({
-							title: '* 请选择业务 *',
-							itemList: ['关系链绑定', '绑定加盟商'],
-							itemColor: '#2c3e50',
-							success: (res) => {
-								if (res.tapIndex === 0) {
-									this.go('/another-tf/another-user/user-invitation/index')
-								} else if (res.tapIndex === 1) {
-									this.$refs.codeCreateRef.getCode('franchiseeInvitation')
-								}
-							}
-						})
-					} else {
-						this.go('/another-tf/another-user/user-invitation/index')
-					}
+					// if (this.$store.state.auth.identityInfo.type.includes(1)) {
+					// 	uni.showActionSheet({
+					// 		title: '* 请选择业务 *',
+					// 		itemList: ['关系链绑定', '绑定加盟商'],
+					// 		itemColor: '#2c3e50',
+					// 		success: (res) => {
+					// 			if (res.tapIndex === 0) {
+					// 				this.go('/another-tf/another-user/user-invitation/index')
+					// 			} else if (res.tapIndex === 1) {
+					// 				this.$refs.codeCreateRef.getCode('franchiseeInvitation')
+					// 			}
+					// 		}
+					// 	})
+					// } else {
+					this.go('/another-tf/another-user/user-invitation/index')
+					// }
 					return
 				} else if (item.type === 'flyToService') {
 					// this.$store.dispatch('app/getCustomerServiceAction', { isToService: true })

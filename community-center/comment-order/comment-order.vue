@@ -97,7 +97,7 @@ export default {
 
     // 点击去下单
     handleToOrder() {
-      uni.navigateTo({ url: '/community-center/service-sort?value=2' });
+      uni.navigateTo({ url: '/community-center/service-sort/index?value=2&name=家具维保' });
     },
 
     // 去评论

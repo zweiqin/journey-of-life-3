@@ -61,7 +61,7 @@ export default {
   methods: {
     viewMore() {
       uni.navigateTo({
-        url: `/community-center/service-sort?value=${this.id}`
+        url: `/community-center/service-sort/index?value=${this.id}&name=${this.title}`
       });
     },
 

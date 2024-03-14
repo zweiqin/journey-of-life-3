@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import { getServiceSortApi } from '../api/community-center'
-import { getSearchDataApi } from '../api/community-center'
-import sort from '../community-center/componts'
-import { getAdressDetailByLngLat } from '../utils'
-import { getIsOpenServerAreaApi } from '../api/community-center'
+import { getServiceSortApi } from '../../api/community-center'
+import { getSearchDataApi } from '../../api/community-center'
+import sort from '../../community-center/componts'
+import { getAdressDetailByLngLat } from '../../utils'
+import { getIsOpenServerAreaApi } from '../../api/community-center'
 export default {
 	name: 'Service-sort',
 	components: {
