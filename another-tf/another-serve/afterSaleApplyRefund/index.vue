@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import { getReturnPriceRefundMoneyApi, getReasonSelectEnumsApi, updateApplyReturnMoneySubmitApi } from '../../../api/anotherTFInterface'
+import { getReturnPriceRefundMoneyApi, getReasonSelectEnumsApi, updateApplyReturnMoneySubmitApi,directRefund } from '../../../api/anotherTFInterface'
 import { T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
 
 export default {
@@ -319,11 +319,20 @@ export default {
 					image: this.commentImgs,
 					skus: skusobjdata,
 					isAllSelect: this.isAllSelect
-				}).then((res) => {
+				}).then(async (res) => {
 					uni.hideLoading()
 					uni.showToast({
 						title: '提交成功'
 					})
+					
+				//  发起直接同意退款请求
+				//  请求参数
+				let obj = {
+					orderId:res.data.orderId,
+				 	afterId:res.data.afterId
+				}
+				let resSubmit = await directRefund(obj);
+				console.log("sadashdjkasd",resSubmit);
 					setTimeout(() => {
 						uni.redirectTo({
 							url: `/another-tf/another-serve/afterSale/index`

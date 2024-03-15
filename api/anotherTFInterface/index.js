@@ -740,3 +740,7 @@ export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformR
 
 // 小程序支付参数
 export const getPayMiniProgramQueryApi = (data) => AnotherTFRequest('/collect/getSybPaySign', data, 'POST')
+
+
+// 直接同意退款
+export const directRefund = (data) => AnotherTFRequest('/after/agreeToRefund', data, 'POST')
