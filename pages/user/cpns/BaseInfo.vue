@@ -170,8 +170,11 @@
 					style="position: relative;display: flex;align-items: center;justify-content: space-between;color: #ffffff;"
 				>
 					<view style="display: flex;align-items: center;">
-						<tui-icon name="wallet" :size="52" unit="rpx" color="#ffffff" margin="0 16rpx 0 0"></tui-icon>
-						<text style="font-size: 34rpx;font-weight: bold;">我的钱包</text>
+						<image
+							src="../../../static/images/icon/wallet-white.png" mode="widthFix"
+							style="width: 52rpx;vertical-align: middle;"
+						/>
+						<text style="margin-left: 16rpx;font-size: 34rpx;font-weight: bold;">我的钱包</text>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: flex-end;">
 						<view style="text-align: right;">

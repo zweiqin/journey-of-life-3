@@ -1,28 +1,33 @@
 export const communityServeMenu = [
   {
-    label: '旧房翻新',
-    icon: require('../../static/images/new-community/home/fangwu.png'),
-    url: '/community-center/service-sort/index?value=288&name=保洁服务'
+    label: '装修服务',
+    icon: require('../../static/images/new-community/home/zhuangxiufuwu.png'),
+    url: '/community-center/service-sort/index?value=579&name=装修服务'
   },
   {
     label: '局部改造',
     icon: require('../../static/images/new-community/home/bianmin.png'),
-    url: '/community-center/service-sort/index?value=289&name=工程服务'
+    url: '/community-center/service-sort/index?value=14&name=局部改造'
   },
   {
     label: '房屋修缮',
     icon: require('../../static/images/new-community/home/guandao.png'),
-    url: '/community-center/service-sort/index?value=13&name=墙面地面'
+    url: '/community-center/service-sort/index?value=580&name=房屋修缮'
   },
   {
     label: '防水补漏',
     icon: require('../../static/images/new-community/home/fangshui.png'),
     url: '/community-center/service-sort/index?value=9&name=防水补漏'
   },
+  // {
+  //   label: '旧房翻新',
+  //   icon: require('../../static/images/new-community/home/fangwu.png'),
+  //   url: '/community-center/service-sort/index?value=288&name=保洁服务'
+  // },
   {
-    label: '装修服务',
-    icon: require('../../static/images/new-community/home/zhuangxiufuwu.png'),
-    url: '/community-center/service-sort/index?value=8&name=门窗维保'
+    label: '管道疏通',
+    icon: require('../../static/images/new-community/home/fangwu.png'),
+    url: '/community-center/service-sort/index?value=10&name=管道疏通'
   },
   {
     label: '家具维保',
@@ -35,19 +40,19 @@ export const communityServeMenu = [
     url: '/community-center/service-sort/index?value=5&name=家电维保'
   },
   {
-    label: '水电服务',
+    label: '水电灯具',
     icon: require('../../static/images/new-community/home/shuidian.png'),
     url: '/community-center/service-sort/index?value=7&name=水电灯具'
   },
   {
     label: '家政服务',
     icon: require('../../static/images/new-community/home/qingxi.png'),
-    url: '/community-center/service-sort/index?value=10&name=管道疏通'
+    url: '/community-center/service-sort/index?value=288&name=家政服务'
   },
   {
-    label: '全部服务',
+    label: '更多',
     icon: require('../../static/images/new-community/home/quanbu.png'),
-    url: '/community-center/service-sort/index?value=1&name=门窗维保'
+    url: '/community-center/service-sort/index?value=2&name=家具维保'
   }
 ];
 

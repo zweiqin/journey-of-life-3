@@ -1,4 +1,4 @@
-import { RUAN_URL, SheQu_URL, SheQu1_URL, sf, shopUrl } from '../config'
+import { RUAN_URL, SheQu_URL, SheQu1_URL, sf } from '../config'
 import { USER_TOKEN, T_STORAGE_KEY } from '../constant'
 import store from '../store'
 
@@ -137,6 +137,6 @@ export const SheQu1Request = request(SheQu1_URL)
 
 export const RuanRequest = request(RUAN_URL)
 export const shopRequest = service(RUAN_URL)
-export const shopRequest1 = service(shopUrl)
+export const shopRequest1 = service(SheQu_URL)
 
 export const endRequest = endService(sf)

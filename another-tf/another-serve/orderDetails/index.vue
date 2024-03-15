@@ -279,7 +279,7 @@
 								<view
 									v-if="[2, 3, 9].includes(dataList.state) && dataList.skus.every(i => i.classifyId != 1439)"
 									style="flex: 1;display: flex;align-items: center;justify-content: center;color: #8F8F8F;"
-									@click="handleApplyTap"
+									@click="applyMoneyAllTap"
 								>
 									<tui-icon name="offline" :size="42" unit="upx" margin="0 20upx 0 0" color="#8F8F8F"></tui-icon>
 									申请退款

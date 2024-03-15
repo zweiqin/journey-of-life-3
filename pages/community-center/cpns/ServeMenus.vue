@@ -1,7 +1,6 @@
 <template>
 	<view class="serve-menus-container">
 		<view class="serve-menus-wrapper">
-			<!-- TODO: 加图标动画 -->
 			<view v-for="serve in communityServeMenu" :key="serve.label" class="item" @click="handleToServe(serve)">
 				<image class="serve-icon" :src="serve.icon"></image>
 				<view class="serve-name">{{ serve.label }}</view>
@@ -10,7 +9,7 @@
 		<view style="display: flex;justify-content: space-between;align-items: stretch;">
 			<view
 				style="position: relative;width: 30.2%;height: 310rpx;background-color: #f6f6f6;overflow: hidden;"
-				@click="go('/community-center/service-sort/index?value=13&name=墙面地面')"
+				@click="go('/community-center/service-sort/index?value=579&name=装修服务')"
 			>
 				<view style="position: absolute;top: 18rpx;left: 10rpx;">
 					<view style="font-size: 32rpx;font-weight: bold;">全屋整装</view>
@@ -24,7 +23,7 @@
 			<view style="width: 34%;">
 				<view
 					style="height: 150rpx;background-color: #f6f6f6;overflow: hidden;"
-					@click="go('/community-center/service-sort/index?value=8&name=门窗维保')"
+					@click="go('/community-center/service-sort/index?value=14&name=局部改造')"
 				>
 					<view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
 						<view style="font-size: 32rpx;font-weight: bold;">阳台改造</view>
@@ -52,7 +51,7 @@
 			<view style="width: 34%;">
 				<view
 					style="height: 150rpx;background-color: #f6f6f6;overflow: hidden;"
-					@click="go('/community-center/service-sort/index?value=9&name=防水补漏')"
+					@click="go('/community-center/service-sort/index?value=14&name=局部改造')"
 				>
 					<view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
 						<view style="font-size: 32rpx;font-weight: bold;">卫生间改造</view>
@@ -110,24 +109,19 @@ export default {
 	box-sizing: border-box;
 
 	.serve-menus-wrapper {
-		width: 100%;
-		padding: 15upx 7upx;
-		box-sizing: border-box;
-		// background-color: #fff;
-		margin-top: 24upx;
-		border-radius: 20upx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
+		width: 100%;
+		padding: 15upx 7upx;
+		margin: 24rpx -15rpx 0;
+		border-radius: 20upx;
+		text-align: center;
 
 		.item {
-			margin-right: 30upx;
-			margin-bottom: 20upx;
-
-			&:nth-child(5n) {
-				margin-right: 0;
-			}
+			width: 15%;
+			margin: 0 15rpx 20rpx;
 
 			.serve-icon {
 				width: 80upx;
