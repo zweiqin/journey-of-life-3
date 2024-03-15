@@ -322,6 +322,11 @@ export const myPreferential = [
 ]
 
 export const otherFunction = [
+	{
+		name: '便民服务',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/pages/user/kuai-di/index'
+	},
 	// myFunction
 	{
 		name: '会员中心',

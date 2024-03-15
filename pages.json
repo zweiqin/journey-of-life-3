@@ -510,12 +510,6 @@
           "path": "add-address"
         },
         {
-          "path": "service-sort",
-          "style": {
-            "navigationBarTitleText": "社区服务分类"
-          }
-        },
-        {
           "path": "community-detail"
         },
         {
@@ -540,6 +534,12 @@
           "path": "vip-center/vip-detail",
           "style": {
             "navigationBarTitleText": "套餐详情"
+          }
+        },
+        {
+          "path": "service-sort/index",
+          "style": {
+            "navigationBarTitleText": "社区服务分类"
           }
         },
         {

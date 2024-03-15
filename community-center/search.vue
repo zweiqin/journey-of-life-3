@@ -106,7 +106,7 @@ export default {
 
 		// 返回
 		handleBack() {
-			uni.redirectTo({ url: '/community-center/service-sort?value=1' })
+			uni.navigateBack()
 		},
 	},
 

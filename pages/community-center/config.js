@@ -1,53 +1,53 @@
 export const communityServeMenu = [
   {
-    label: '便民服务',
+    label: '旧房翻新',
+    icon: require('../../static/images/new-community/home/fangwu.png'),
+    url: '/community-center/service-sort/index?value=288&name=保洁服务'
+  },
+  {
+    label: '局部改造',
     icon: require('../../static/images/new-community/home/bianmin.png'),
-    url: '/pages/user/kuai-di/index'
+    url: '/community-center/service-sort/index?value=289&name=工程服务'
   },
   {
-    label: '家具服务',
-    icon: require('../../static/images/new-community/home/jiaju.png'),
-    url: '/community-center/service-sort?value=2'
-  },
-  {
-    label: '家电服务',
-    icon: require('../../static/images/new-community/home/jiadian.png'),
-    url: '/community-center/service-sort?value=5'
-  },
-  {
-    label: '水电服务',
-    icon: require('../../static/images/new-community/home/shuidian.png'),
-    url: '/community-center/service-sort?value=7'
-  },
-  {
-    label: '清洗保洁',
-    icon: require('../../static/images/new-community/home/qingxi.png'),
-    url: '/community-center/service-sort?value=4'
+    label: '房屋修缮',
+    icon: require('../../static/images/new-community/home/guandao.png'),
+    url: '/community-center/service-sort/index?value=13&name=墙面地面'
   },
   {
     label: '防水补漏',
     icon: require('../../static/images/new-community/home/fangshui.png'),
-    url: '/community-center/service-sort?value=9'
+    url: '/community-center/service-sort/index?value=9&name=防水补漏'
   },
   {
-    label: '管道疏通',
-    icon: require('../../static/images/new-community/home/guandao.png'),
-    url: '/community-center/service-sort?value=10'
+    label: '装修服务',
+    icon: require('../../static/images/new-community/home/zhuangxiufuwu.png'),
+    url: '/community-center/service-sort/index?value=8&name=门窗维保'
   },
   {
-    label: '房屋翻新',
-    icon: require('../../static/images/new-community/home/fangwu.png'),
-    url: '/community-center/service-sort?value=13'
+    label: '家具维保',
+    icon: require('../../static/images/new-community/home/jiaju.png'),
+    url: '/community-center/service-sort/index?value=2&name=家具维保'
   },
   {
-    label: '四害消杀',
-    icon: require('../../static/images/new-community/home/sihai.png'),
-    url: '/community-center/service-sort?value=279'
+    label: '家电维保',
+    icon: require('../../static/images/new-community/home/jiadian.png'),
+    url: '/community-center/service-sort/index?value=5&name=家电维保'
+  },
+  {
+    label: '水电服务',
+    icon: require('../../static/images/new-community/home/shuidian.png'),
+    url: '/community-center/service-sort/index?value=7&name=水电灯具'
+  },
+  {
+    label: '家政服务',
+    icon: require('../../static/images/new-community/home/qingxi.png'),
+    url: '/community-center/service-sort/index?value=10&name=管道疏通'
   },
   {
     label: '全部服务',
     icon: require('../../static/images/new-community/home/quanbu.png'),
-    url: '/community-center/service-sort?value=2'
+    url: '/community-center/service-sort/index?value=1&name=门窗维保'
   }
 ];
 
@@ -191,13 +191,6 @@ export const list = [
   }
 ];
 
-export const moreService = [
-  {
-    value: 1,
-    moreName: '更多服务'
-  }
-];
-
 export const serviceType = [
   {
     value: 2,
@@ -231,47 +224,5 @@ export const countList = [
   {
     name: '服务家庭',
     value: '120万+'
-  }
-];
-
-export const vipBarConfig = [
-  {
-    img: require('../../static/images/con-center/cao-2.png'),
-    url: '/community-center/vip-center/vip-detail?type=2',
-    name: '全年家庭小卫士套餐',
-    price: '399'
-  },
-  {
-    img: require('../../static/images/con-center/cao-1.png'),
-    url: '/community-center/vip-center/vip-detail?type=1',
-    name: '限时钜惠',
-    price: '39.9'
-  },
-  {
-    img: require('../../static/images/con-center/cao-3.png')
-  },
-  {
-    label: '防水补漏',
-    icon: require('../../static/images/new-community/home/fangshui.png'),
-    url: '/community-center/service-sort?value=9'
-  },
-  {
-    label: '管道疏通',
-    icon: require('../../static/images/new-community/home/guandao.png'),
-    url: '/community-center/service-sort?value=10'
-  },
-  {
-    label: '房屋翻新',
-    icon: require('../../static/images/new-community/home/fangwu.png')
-  },
-  {
-    label: '四害消杀',
-    icon: require('../../static/images/new-community/home/sihai.png'),
-    url: '/community-center/service-sort?value=279'
-  },
-  {
-    label: '全部服务',
-    icon: require('../../static/images/new-community/home/quanbu.png'),
-    url: '/community-center/service-sort?value=2'
   }
 ];

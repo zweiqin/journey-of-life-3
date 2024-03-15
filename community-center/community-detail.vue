@@ -171,7 +171,7 @@
     </view>
     <!-- 其他服务 -->
     <view class="other">
-      <view v-for="item in moreService" :key="item.value" class="other-service" @click="handleToServiceListHome(item.value)">
+      <view v-for="item in [{value: 1,name: '更多服务'}]" :key="item.value" class="other-service" @click="handleToServiceListHome(item)">
         <view class="text">其他服务</view>
 				<tui-icon :size="40" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
       </view>
@@ -219,7 +219,6 @@ import { splitProject } from './componts/utile';
 import item from '../community-center/componts/item';
 import charge from '../community-center/componts/charge';
 import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center';
-import { moreService } from '../pages/community-center/config';
 import { getUserId, getAdressDetailByLngLat } from '../utils';
 import CommentList from './components/CommentList.vue';
 
@@ -243,7 +242,6 @@ export default {
     return {
 			rootUrl: A_TF_MAIN,
       currentMoveTab: 0,
-      moreService,
       address: '',
       serviceDetail: [],
       id: '',
@@ -331,10 +329,8 @@ export default {
       }
     },
     handleToServiceListHome(item) {
-      // console.log('更多服务分类列表', item)
-      this.value = item;
       uni.navigateTo({
-        url: `/community-center/service-sort?value=${this.value}`
+        url: `/community-center/service-sort/index?value=${item.value}&name=${item.name}`
       });
     },
     handleToAddress() {

@@ -12,7 +12,16 @@
 		</view>
 
 		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;">
-			<tui-icon name="wallet" :size="130" unit="rpx" color="#3481f5" bold margin="0"></tui-icon>
+			<!-- <tui-icon name="wallet" :size="130" unit="rpx" color="#3481f5" bold margin="0"></tui-icon> -->
+			<view style="padding: 10rpx;background-color: #3481f5;border-radius: 50%;">
+				<view style="padding: 6rpx;background-color: #ffffff;border-radius: 50%;">
+					<view
+						style="display: flex;align-items: center;justify-content: center;width: 96rpx;height: 96rpx;padding: 6rpx;background-color: #3481f5;border-radius: 50%;box-sizing: border-box;"
+					>
+						<text style="font-size: 66rpx;font-weight: bold;color: #ffffff;">￥</text>
+					</view>
+				</view>
+			</view>
 			<view style="margin-top: 26rpx;font-size: 36rpx;">余额</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
 				￥{{ pricePlatformInfo.totalPrice || 0 }}
@@ -87,12 +96,11 @@
 							<tui-input
 								v-model="customRecharge" type="number" label="￥" :label-size="48"
 								label-color="#000000"
-								:label-width="80" placeholder="输入自定义金额" clearable :border-bottom="false"
-								padding="18rpx 2rpx 10rpx"
+								:label-width="80" placeholder="输入自定义金额" :border-bottom="false" padding="18rpx 2rpx 10rpx"
 								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectCustom"
 							>
 								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">{{ customRecharge ? customRecharge : '赠送代金券' }}</text>
+									<text style="font-size: 30rpx;color: #979797;">赠送代金券{{ customRecharge || '' }}</text>
 								</template>
 							</tui-input>
 						</view>

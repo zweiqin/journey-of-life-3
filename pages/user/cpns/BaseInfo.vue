@@ -25,26 +25,29 @@
 							</view>
 							<view style="display: flex;justify-content: center;align-items: flex-end;">
 								<image
-									v-if="[1, 2].includes($store.getters.levelType)" style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
+									v-if="[1, 2].includes($store.getters.levelType)"
+									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/huiyuan.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								></image>
 								<image
-									v-if="[3, 4].includes($store.getters.levelType)" style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
+									v-if="[3, 4].includes($store.getters.levelType)"
+									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/tuanzhang.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								>
 								</image>
 								<image
-									v-if="[ 5 ].includes($store.getters.levelType)" style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
+									v-if="[ 5 ].includes($store.getters.levelType)"
+									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/hehuoren.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								>
 								</image>
 								<view @click.stop="(frameType = 'shop') && (isShowGloryFrame = true)">
 									<tui-icon
-										v-if="$store.state.auth.identityInfo.type.includes(9)" name="shop-fill" :size="42" unit="upx"
-										color="#ff973f" margin="0 5upx 0 0"
+										v-if="$store.state.auth.identityInfo.type.includes(9)" name="shop-fill" :size="42"
+										unit="upx" color="#ff973f" margin="0 5upx 0 0"
 									></tui-icon>
 								</view>
 								<view @click.stop="(frameType = 'merchantStaff') && (isShowGloryFrame = true)">
@@ -89,12 +92,14 @@
 					</view>
 					<view style="flex: 1;text-align: right;">
 						<view style="display: flex;align-items: center;justify-content: flex-end;padding-right: 30upx;">
-							<view style="position: relative;margin-right: 24upx;" @click="go('/another-tf/another-serve/messageCenter/index')">
+							<view
+								style="position: relative;margin-right: 24upx;"
+								@click="go('/another-tf/another-serve/messageCenter/index')"
+							>
 								<tui-icon name="message" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
 								<tui-badge
 									v-show="$store.getters.userInfo.notRead" type="danger" right="-6rpx" absolute
-									:scale-ratio="0.8"
-									translate-x="38%" top="-6rpx"
+									:scale-ratio="0.8" translate-x="38%" top="-6rpx"
 								>
 									{{ $store.getters.userInfo.notRead > 99 ? '99+' : $store.getters.userInfo.notRead }}
 								</tui-badge>
@@ -146,19 +151,36 @@
 			</view>
 			</view> -->
 
-		<view>
-			<view style="position: relative;padding-top: 38upx;" @click="go('/another-tf/another-user/my-wallet/index')">
-				<image
-					src="../../../static/images/new-user/group/my-wallet.png" mode="widthFix"
-					style="width: 100%;vertical-align: middle;"
-				/>
-				<view style="position: absolute;top: 50rpx;right: 18rpx;display: flex;align-items: center;color: #ffffff;">
-					<view style="text-align: right;">
-						<view style="font-size: 30rpx;">￥{{ $store.getters.pricePlatformInfo.totalPrice || 0 }}</view>
-						<view style="font-size: 26rpx;">可提现余额：{{ $store.getters.pricePlatformInfo.price || 0 }}</view>
+		<view style="padding-top: 38upx;">
+			<view
+				style="position: relative;padding: 20upx 12rpx 18rpx 36rpx;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);border-radius: 20rpx;overflow: hidden;"
+				@click="go('/another-tf/another-user/my-wallet/index')"
+			>
+				<view>
+					<view
+						style="position: absolute;top: -360%;left: -50%;width: 600upx;height: 620upx;background-color: #f16527;border-radius: 50%;"
+					>
 					</view>
-					<view>
-						<tui-icon name="arrowright" :size="34" unit="rpx" color="#ffffff" margin="0 0 0 10rpx"></tui-icon>
+					<view
+						style="position: absolute;top: -360%;left: -50%;width: 508upx;height: 538upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.2;"
+					>
+					</view>
+				</view>
+				<view
+					style="position: relative;display: flex;align-items: center;justify-content: space-between;color: #ffffff;"
+				>
+					<view style="display: flex;align-items: center;">
+						<tui-icon name="wallet" :size="52" unit="rpx" color="#ffffff" margin="0 16rpx 0 0"></tui-icon>
+						<text style="font-size: 34rpx;font-weight: bold;">我的钱包</text>
+					</view>
+					<view style="display: flex;align-items: center;justify-content: flex-end;">
+						<view style="text-align: right;">
+							<view style="font-size: 30rpx;">￥{{ $store.getters.pricePlatformInfo.totalPrice || 0 }}</view>
+							<view style="font-size: 26rpx;">可提现余额：{{ $store.getters.pricePlatformInfo.price || 0 }}</view>
+						</view>
+						<view>
+							<tui-icon name="arrowright" :size="34" unit="rpx" color="#ffffff" margin="0 0 0 10rpx"></tui-icon>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -183,7 +205,10 @@
 			@close="isShowGloryFrame = false"
 		>
 			<view style="position: relative;">
-				<view v-if="(frameType === 'relationship') && [3, 4, 5].includes($store.getters.levelType)" class="rotation-box">
+				<view
+					v-if="(frameType === 'relationship') && [3, 4, 5].includes($store.getters.levelType)"
+					class="rotation-box"
+				>
 				</view>
 				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
 					<image
@@ -191,7 +216,10 @@
 						:src="common.seamingImgUrl($store.getters.userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</image>
-					<image src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix" style="width: 500upx;" />
+					<image
+						src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix"
+						style="width: 500upx;"
+					/>
 					<view
 						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
 					>
