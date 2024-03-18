@@ -35,28 +35,31 @@
 		<!-- ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食']allTabList.map(i => i.classifyName) -->
 		<tui-tab
 			:tabs="allTabList" :current="currentTab" scroll background-color="transparent"
-			:size="32" bold bottom="6upx"
-			color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+			:size="32" bold
+			bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
+			slider-height="4px"
 			@change="handleTabChange"
 		></tui-tab>
 
 		<view
-			v-if="allTabListData[currentTab].classify && allTabListData[currentTab].classify.length > 0"
-			class="childsSelect"
+			v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length > 0"
+			style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
 		>
 			<view
-				v-for="(item, index) in allTabListData[currentTab].classify" :key="index" class="childsItem"
-				:class="{ active: index == childsCurrent }" @click="checkChildsClassIfyIds(item, index)"
+				v-for="(item, index) in allTabData[currentTab].classify" :key="index"
+				style="padding: 12rpx 10rpx;margin-right: 10rpx;font-size: 30rpx;border-radius: 8rpx;"
+				:style="{ color: index == childsCurrent ? '#ffffff' : '#8c8b8d', backgroundColor: index == childsCurrent ? '#ff8000' : '#fefeff' }"
+				@click="handleSelectChild(item, index)"
 			>
 				{{ item.classifyName }}
 			</view>
 		</view>
 
-		<view class="brand-pane">
+		<view style="background-color: #fff;padding: 4upx 20upx 0 20upx;margin-top: 10upx;">
 			<view v-if="currentTab === -1">
 				<CanvasPage
-					v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
-					:type-id="3" :shop-id="Number(shopId)"
+					v-if="componentsData && componentsData.length" :components-data="componentsData"
+					:terminal="terminal" :type-id="3" :shop-id="Number(shopId)"
 				>
 				</CanvasPage>
 				<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false" style="margin-top: 40upx;">
@@ -71,8 +74,13 @@
 						</swiper-item>
 					</swiper>
 				</view>
-				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
-					<view :style="{ color: shopGoodsInfo.query.ifNew == 1 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
+				<view
+					style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;"
+				>
+					<view
+						:style="{ color: shopGoodsInfo.query.ifNew == 1 ? '#ff7911' : '#000000' }"
+						@click="handleGoodsSortTap(1)"
+					>
 						<text>新品</text>
 					</view>
 					<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
@@ -152,7 +160,7 @@ export default {
 			shopId: null,
 			brandDetail: {},
 			allTabList: [ '商品' ],
-			allTabListData: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
+			allTabData: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			childsCurrent: -1,
 			// 首页
@@ -183,8 +191,8 @@ export default {
 		getShopClassifyApi({
 			shopId: this.shopId
 		}).then((res) => {
-			this.allTabListData = this.allTabListData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
-			this.allTabList = this.allTabListData.map((item) => item.classifyName)
+			this.allTabData = this.allTabData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+			this.allTabList = this.allTabData.map((item) => item.classifyName)
 		})
 		getShopBannerApi({
 			shopId: this.shopId
@@ -260,16 +268,18 @@ export default {
 			// if (e.index === 1) return
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
-			if (this.allTabListData[e.index].classify && this.allTabListData[e.index].classify.length > 0) {
-				this.classifyId = this.allTabListData[e.index].classify[0].classifyId
-				this.getShopGoodsTemplate()
-				return
-			}
-			if (e.index === 0) {
+			if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length > 0) {
+				this.classifyId = this.allTabData[e.index].classify[0].classifyId
+			} else if (e.index === 0) {
 				this.classifyId = ''
 			} else {
-				this.classifyId = this.allTabListData[e.index].classifyId
+				this.classifyId = this.allTabData[e.index].classifyId
 			}
+			this.getShopGoodsTemplate()
+		},
+		handleSelectChild(item, index) {
+			this.childsCurrent = index
+			this.classifyId = item.classifyId
 			this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
@@ -312,15 +322,10 @@ export default {
 				this.sortGoodsIndex = index
 			}
 			this.getShopGoodsTemplate()
-		},
-		checkChildsClassIfyIds(item, index) {
-			this.childsCurrent = index
-			this.classifyId = item.classifyId
-			this.getShopGoodsTemplate()
 		}
 	},
 	onReachBottom() {
-		if (this.currentTab !== 0) {
+		if (this.currentTab !== -1) {
 			if (this.shopGoodsInfo.data.length < this.shopGoodsInfo.listTotal) {
 				++this.shopGoodsInfo.query.page
 				this.getShopGoodsTemplate(true)
@@ -331,40 +336,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.childsSelect {
-	margin-top: 4rpx;
-	box-sizing: border-box;
-	padding: 0rpx 20rpx;
-	width: 100vw;
-	height: 60rpx;
-	display: flex;
-	align-items: center;
-	gap: 20rpx;
-	white-space: nowrap;
-	overflow-x: auto;
-	overflow-y: hidden;
-
-	.childsItem {
-		border-radius: 8rpx;
-		box-sizing: border-box;
-		padding: 12rpx 10rpx;
-		// display: flex;
-		// align-items: center;
-		// line-height: 48rpx;
-		// width: 70rpx;
-		height: 58rpx;
-		color: #8c8b8d;
-		font-size: 30rpx;
-		background-color: #fffffff2;
-		display: inline-block;
-	}
-
-	.active {
-		color: #fff;
-		background-color: #ff8000;
-	}
-}
-
 .brand-detail-container {
 	position: relative;
 	min-height: 100vh;
@@ -376,12 +347,6 @@ export default {
 		/deep/ .tui-tabs__line {
 			clip-path: inset(0% 15% 0% 15% round 4upx 4upx 4upx 4upx);
 		}
-	}
-
-	.brand-pane {
-		background-color: #fff;
-		padding: 4upx 20upx 0 20upx;
-		margin-top: 10upx;
 	}
 }
 </style>

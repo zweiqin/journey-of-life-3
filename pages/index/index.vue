@@ -157,7 +157,7 @@ import PageHeader from './cpns/PageHeader.vue';
 import VoucherPane from './cpns/VoucherPane.vue';
 import HotPane from './cpns/HotPane.vue';
 import NewGoodsPane from './cpns/NewGoodsPane.vue';
-import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
+import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
 
 import { proDropList } from './config'
 

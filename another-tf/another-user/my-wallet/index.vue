@@ -56,7 +56,7 @@
 							<text>余额</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.rechargePrice || 0) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.totalPrice || 0) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>

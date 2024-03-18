@@ -427,6 +427,9 @@ export const getReturnPriceRefundMoneyApi = (data) => AnotherTFRequest('/after/g
 // 选择退款原因查询
 export const getReasonSelectEnumsApi = (data) => AnotherTFRequest('/after/getReasonSelect', data)
 
+// 直接同意退款
+export const updateDirectRefundApi = (data) => AnotherTFRequest('/after/agreeToRefund', data, 'POST')
+
 // 申请售后
 export const updateApplyReturnMoneySubmitApi = (data) => AnotherTFRequest('/after/submit', data, 'POST')
 
@@ -740,7 +743,3 @@ export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformR
 
 // 小程序支付参数
 export const getPayMiniProgramQueryApi = (data) => AnotherTFRequest('/collect/getSybPaySign', data, 'POST')
-
-
-// 直接同意退款
-export const directRefund = (data) => AnotherTFRequest('/after/agreeToRefund', data, 'POST')

@@ -165,8 +165,8 @@ export default {
 			this.addressData.city = e.areaInfo[1].text
 			this.addressData.area = (e.areaInfo[2] && e.areaInfo[2].text) || ''
 			this.addressData.township = (e.areaInfo[3] && e.areaInfo[3].text) || ''
-			this.addressData.areaId = (e.areaInfo[e.areaInfo.length - 1] && e.areaInfo[e.areaInfo.length - 1].parentId) || ''
-			this.selectTownshipId = (e.areaInfo[3] && e.areaInfo[3].parentId) || ''
+			this.addressData.areaId = (e.areaInfo[e.areaInfo.length - 1] && e.areaInfo[e.areaInfo.length - 1].id) || ''
+			this.selectTownshipId = (e.areaInfo[3] && e.areaInfo[3].id) || ''
 			if (this.selectTownshipId) this.handleGetCommunityList(this.selectTownshipId)
 		},
 		handleGetCommunityList(cityId) {

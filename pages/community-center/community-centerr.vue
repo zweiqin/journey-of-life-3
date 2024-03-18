@@ -19,11 +19,11 @@
 				<view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
 				<view class="image-list">
 					<image src="../../static/images/new-community/home/p-1.png" class="p-img"
-						@click="go('/community-center/service-sort/index?value=2&name=家具维保')"></image>
+						@click="go('/community-center/service-sort/index?value=288&name=家政服务')"></image>
 					<image src="../../static/images/new-community/home/p-2.png" class="p-img"
-						@click="go('/community-center/service-sort/index?value=5&name=家电维保')"></image>
+						@click="go('/community-center/service-sort/index?value=2&name=家具维保')"></image>
 					<image src="../../static/images/new-community/home/p-3.png" class="p-img"
-						@click="go('/community-center/service-sort/index?value=288&name=保洁服务')"></image>
+						@click="go('/community-center/service-sort/index?value=13&name=旧房翻新')"></image>
 				</view>
 			</view>
 		</view>

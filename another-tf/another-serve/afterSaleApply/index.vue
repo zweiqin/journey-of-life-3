@@ -132,7 +132,7 @@ export default {
 				})
 			} else {
 				uni.setStorageSync(T_AFTER_SALE_APPLY_REFUND, this.xuanzlist)
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/another-tf/another-serve/afterSaleApplyRefund/index?orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0)
 				})
 			}
@@ -163,7 +163,7 @@ export default {
 					icon: 'none'
 				})
 			} else {
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/another-tf/another-serve/afterSaleApplyRetund/index?list=' + encodeURIComponent(JSON.stringify(this.xuanzlist)) + '&orderId=' + this.orderMsg.orderId + '&isAllSelect=' + (this.xuanzlist.length === this.orderMsg.skus.length ? 1 : 0)
 				})
 			}

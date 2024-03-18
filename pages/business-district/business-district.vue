@@ -31,7 +31,7 @@
 				</template>
 				</tui-waterfall>
 				</view> -->
-			<view>
+			<view v-if="$data._list && $data._list.length">
 				<ATFCommonShop
 					v-for="shop in $data._list" :key="shop.shopId" :shop-info="shop" margin="22upx 0"
 					radius="20upx"

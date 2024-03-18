@@ -120,7 +120,7 @@
 <script>
 import Fields from './Fields.vue'
 import Package from './Package.vue'
-import { getClaasifyProductsApi, getCanvasApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
+import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
 
 // import { tempData } from './data'
 export default {

@@ -66,12 +66,6 @@
       }
     },
     {
-      "path": "pages/index/BrandFactory/index",
-      "style": {
-        "navigationBarTitleText": "品牌工厂"
-      }
-    },
-    {
       "path": "pages/pre-order/pre-order",
       "style": {
         "usingComponents": {
@@ -147,12 +141,18 @@
     //     "navigationBarTitleText": "品牌家居"
     //   }
     // },
-    {
-      "path": "pages/index/BrandFactory/detail",
-      "style": {
-        "navigationBarTitleText": "详情"
-      }
-    },
+    // {
+    //   "path": "pages/index/BrandFactory/index",
+    //   "style": {
+    //     "navigationBarTitleText": "品牌工厂"
+    //   }
+    // },
+    // {
+    //   "path": "pages/index/BrandFactory/detail",
+    //   "style": {
+    //     "navigationBarTitleText": "详情"
+    //   }
+    // },
     {
       "path": "pages/search-page/search-page",
       "style": {
@@ -1391,6 +1391,18 @@
           "path": "another-user/shop/shop-deep",
           "style": {
             "navigationBarTitleText": "商圈三级页面"
+          }
+        },
+        {
+          "path": "another-user/brand-factory/index",
+          "style": {
+            "navigationBarTitleText": "品牌工厂"
+          }
+        },
+        {
+          "path": "another-user/brand-factory/detail",
+          "style": {
+            "navigationBarTitleText": "品牌详情"
           }
         },
         {
