@@ -22,15 +22,15 @@
 				</view>
 
 				<view v-if="goodsDetail.names">
-					<view v-for="item in goodsDetail.names" :key="item.nameCode" style="margin-top: 20upx;">
-						<view v-if="item.nameCode" style="font-size: 26upx;color: #a5a4a4;">{{ item.skuName }}</view>
+					<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="margin-top: 20upx;">
+						<view v-if="nameItem.nameCode" style="font-size: 26upx;color: #a5a4a4;">{{ nameItem.skuName }}</view>
 						<view style="display: flex;flex-wrap: wrap;margin-top: 10upx;font-size: 28upx;">
 							<view
-								v-for="tag in item.values" :key="tag.id"
+								v-for="tag in nameItem.values" :key="tag.valueCode"
 								style="width: fit-content;padding: 6upx 28upx;margin-right: 20upx;border-radius: 20upx;" :style="{
-									border: selectedAttr[item.nameCode] == tag.valueCode ? '1upx solid #ffbd87' : '1upx solid #c2c2c2',
-									backgroundColor: selectedAttr[item.nameCode] == tag.valueCode ? '#fffce3' : 'transparent'
-								}" @click="handleClickSkuItem(item.nameCode, tag.valueCode)"
+									border: selectedAttr[nameItem.nameCode] == tag.valueCode ? '1upx solid #ffbd87' : '1upx solid #c2c2c2',
+									backgroundColor: selectedAttr[nameItem.nameCode] == tag.valueCode ? '#fffce3' : 'transparent'
+								}" @click="handleClickSkuItem(nameItem.nameCode, tag.valueCode)"
 							>
 								{{ tag.skuValue }}
 							</view>
@@ -159,16 +159,16 @@ export default {
 					valueCode: '单款项'
 				})
 			}
-			skuCollectionListKeys.forEach((allSkuValueCodeMap) => {
-				if (!this.goodsDetail.map[allSkuValueCodeMap].image) this.goodsDetail.map[allSkuValueCodeMap].image = this.goodsDetail.images[0]
+			skuCollectionListKeys.forEach((skuValueCodeItem) => {
+				if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
 			})
 			this.$nextTick(() => {
 				if (skuId) {
 					this.handleSelectBySkuId(skuId)
 				} else {
 					// 默认选中第0个
-					this.goodsDetail.names.forEach((skuRowItem) => {
-						this.handleClickSkuItem(skuRowItem.nameCode, skuRowItem.values[0].valueCode)
+					this.goodsDetail.names.forEach((nameItem) => {
+						this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0].valueCode)
 					})
 				}
 			})
@@ -177,14 +177,14 @@ export default {
 
 		handleSelectBySkuId(skuId) {
 			if (!skuId) return
-			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
-				if (this.goodsDetail.map[allSkuValueCodeMap].skuId === skuId) {
-					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
+			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
+				if (this.goodsDetail.map[skuValueCodeItem].skuId === skuId) {
+					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
 					this.getCurrentSkuName()
-					this.goodsDetail.names.forEach((skuRow) => {
-						skuRow.values.some((skuCol) => {
-							if (this.selectedSku.valueCodes.split(',').includes(skuCol.valueCode)) {
-								this.$set(this.selectedAttr, skuRow.nameCode, skuCol.valueCode)
+					this.goodsDetail.names.forEach((nameItem) => {
+						nameItem.values.some((tag) => {
+							if (this.selectedSku.valueCodes.split(',').includes(tag.valueCode)) {
+								this.$set(this.selectedAttr, nameItem.nameCode, tag.valueCode)
 								return true
 							}
 							return false
@@ -196,9 +196,9 @@ export default {
 
 		handleClickSkuItem(nameCode, valueCode) {
 			this.$set(this.selectedAttr, nameCode, valueCode)
-			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
-				if (Object.values(this.selectedAttr).join(',') === allSkuValueCodeMap) {
-					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
+			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
+				if (Object.values(this.selectedAttr).join(',') === skuValueCodeItem) {
+					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
 					this.getCurrentSkuName()
 				}
 			})
@@ -210,15 +210,15 @@ export default {
 			if (this.selectedSku.valueCodes) {
 				let str = ''
 				const currentSku = []
-				this.goodsDetail.names.forEach((skuRow) => {
-					skuRow.values.some((skuValue) => {
-						if (this.selectedSku.valueCodes.split(',').includes(skuValue.valueCode)) {
-							if (skuValue.valueCode === '单款项') {
-								currentSku.push({ skuText: skuValue.skuValue })
+				this.goodsDetail.names.forEach((nameItem) => {
+					nameItem.values.some((tag) => {
+						if (this.selectedSku.valueCodes.split(',').includes(tag.valueCode)) {
+							if (tag.valueCode === '单款项') {
+								currentSku.push({ skuText: tag.skuValue })
 							} else {
-								currentSku.push({ skuText: `${skuValue.skuName}：${skuValue.skuValue}` })
+								currentSku.push({ skuText: `${tag.skuName}：${tag.skuValue}` })
 							}
-							str += skuValue.skuValue + '，'
+							str += tag.skuValue + '，'
 							return true
 						}
 						return false

@@ -104,6 +104,9 @@ export const getFirstClassifyApi = (data) => AnotherTFRequest('/classify/getFirs
 // /product/getById  商品详情查询
 export const getProductDetailsByIdApi = (data) => AnotherTFRequest('/product/getById', data)
 
+// 可售检测
+export const getBanziProductCanSaleApi = (data) => AnotherTFRequest('/banziProduct/canSale', data, 'POST')
+
 // 查询商品sku详情
 export const getProductsSkuApi = (data) => AnotherTFRequest('/product/getProducts', data)
 
@@ -185,9 +188,6 @@ export const bindPlatformRelationshipShopApi = (data) => AnotherTFRequest('/plat
 // 查询平台关系等级管理
 export const getPlatformRelationshipLevelApi = (data) => AnotherTFRequest('/platformRelationshipLevel/getAll', data)
 
-// 每个等级统计
-export const getStatisticsPlatformRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data)
-
 // 查询升级产品
 export const getSelectProductPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectProduct', data, 'POST')
 
@@ -197,11 +197,14 @@ export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/pl
 // 查询是否满足升级条件
 export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
 
-// 佣金金额统计
-export const getStatisticsAmountRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+// 我的账本 // 佣金金额统计
+export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
 
-// 佣金金额记录
-export const getStatisticsRecordRelationshipApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+// 今日会员，累计会员 // 每个等级统计
+export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
+
+// 获取佣金列表 // 佣金金额记录
+export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
 
 // 加盟商统计模块
 export const getFranchiseeStatisticsApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/franchiseeStatistics', data, 'POST')
@@ -731,15 +734,6 @@ export const getFactoryNextClassApi = (data) => AnotherTFRequest('/shopCategoryM
 // 查询热搜词
 // 获取搜索栏的热门搜索
 export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotSearch', data)
-
-// 我的账本
-export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
-
-// 今日会员，累计会员
-export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
-
-// 获取佣金列表
-export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
 
 // 小程序支付参数
 export const getPayMiniProgramQueryApi = (data) => AnotherTFRequest('/collect/getSybPaySign', data, 'POST')

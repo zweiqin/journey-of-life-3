@@ -116,7 +116,7 @@ export default {
 		joinCustomerServiceChat({ commit, rootState, state }, { ref, wsHandle, wsHandleInfo }) {
 			if (ref) commit(CHANGE_ON_FN, ref)
 			if (wsHandle) {
-				commit('CHANGE_WS_INFO', wsHandle)
+				commit(CHANGE_WS_INFO, wsHandle)
 				rootState.customerService.onOpen && wsHandle.onOpen(rootState.customerService.onOpen)
 				rootState.customerService.onMessage && wsHandle.onMessage(rootState.customerService.onMessage)
 				rootState.customerService.onClose && wsHandle.onClose(rootState.customerService.onClose)

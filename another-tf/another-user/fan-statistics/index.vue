@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { getStatisticsPlatformRelationshipApi } from '../../../api/anotherTFInterface'
+import { getFansListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'FanStatistics',
@@ -79,7 +79,7 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			})
-			getStatisticsPlatformRelationshipApi({})
+			getFansListApi({})
 				.then(({ data }) => {
 					console.log(data)
 					this.statistics.userName = data.userName || ''

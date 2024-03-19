@@ -29,21 +29,23 @@
 						</view>
 					</view>
 				</view>
-				<view class="color-box">
+
+				<view style="flex: 1;height: 0;overflow: hidden;padding: 30upx;font-size: 26rpx;">
 					<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
-						<view v-for="(skuRowItem, skuRowIndex) in goodsDetail.names" :key="skuRowIndex">
-							<label v-if="skuRowItem.nameCode" class="fs26 font-color-333">
-								{{ skuRowItem.skuName }}
-							</label>
-							<view class="colorName-box">
-								<view v-for="(skuColItem, skuColIndex) in skuRowItem.values" :key="skuColIndex" class="pad-bot-30">
-									<view
-										class="colorName"
-										:class="{ 'colorName-on': selectedAttr[skuRowItem.nameCode] === skuColItem.valueCode }"
-										@click="handleClickSkuItem(skuRowItem.nameCode, skuColItem.valueCode)"
-									>
-										{{ skuColItem.skuValue }}
-									</view>
+						<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="padding-bottom: 30rpx;">
+							<view v-if="nameItem.nameCode" style="color: #333333;">
+								{{ nameItem.skuName }}
+							</view>
+							<view style="display: flex;flex-wrap: wrap;align-items: center;margin: 0 -15rpx;">
+								<view
+									v-for="tag in nameItem.values" :key="tag.valueCode"
+									style="background-color: #FFFFFF;margin: 24rpx 15upx 0;padding: 10upx 32upx;" :style="{
+										boxShadow: selectedAttr[nameItem.nameCode] === tag.valueCode ? '0 0 20rpx rgba(0, 0, 0, 0.1)' : 'none',
+										color: selectedAttr[nameItem.nameCode] === tag.valueCode ? '#C5AA7B' : tag.ifEnable ? '#cccccc' : '#333333',
+										border: selectedAttr[nameItem.nameCode] === tag.valueCode ? '2rpx solid #ffffff' : '2rpx solid #E4E5E6'
+									}" @click="handleClickSkuItem(nameItem.nameCode, tag.valueCode)"
+								>
+									{{ tag.skuValue }}
 								</view>
 							</view>
 						</view>
@@ -141,14 +143,16 @@
 					>
 						<tui-button
 							v-if="btnType === 1" type="black" width="590rpx" height="80rpx"
-							margin="0 0 0 16rpx" :disabled="!selectedSku.stockNumber"
+							margin="0 0 0 16rpx"
+							:disabled="!selectedSku.stockNumber"
 							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleAddCart"
 						>
 							确认
 						</tui-button>
 						<tui-button
 							v-else type="black" width="590rpx" height="80rpx"
-							margin="0 0 0 16rpx" :disabled="!selectedSku.stockNumber"
+							margin="0 0 0 16rpx"
+							:disabled="!selectedSku.stockNumber"
 							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyNow"
 						>
 							确认
@@ -195,15 +199,14 @@ export default {
 		handleSelectBySkuId(skuId) {
 			if (!skuId) return
 			// 当前商品后端返回的所有sku的排列组合
-			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
-				if (this.goodsDetail.map[allSkuValueCodeMap].skuId === skuId) {
-					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
-					this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
+			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
+				if (this.goodsDetail.map[skuValueCodeItem].skuId === skuId) {
 					// 控制组件选中渲染
-					this.goodsDetail.names.forEach((skuRow) => {
-						skuRow.values.some((skuCol) => {
-							if (this.selectedSku.valueCodes.split(',').includes(skuCol.valueCode)) {
-								this.$set(this.selectedAttr, skuRow.nameCode, skuCol.valueCode)
+					this.goodsDetail.names.forEach((nameItem) => {
+						nameItem.values.some((tag) => {
+							if (this.goodsDetail.map[skuValueCodeItem].valueCodes.split(',').includes(tag.valueCode)) {
+								this.handleClickSkuItem(nameItem.nameCode, tag.valueCode)
+								this.$set(this.selectedAttr, nameItem.nameCode, tag.valueCode)
 								return true
 							}
 							return false
@@ -217,10 +220,37 @@ export default {
 		handleClickSkuItem(nameCode, valueCode) {
 			// 当前选中
 			this.$set(this.selectedAttr, nameCode, valueCode)
-			Object.keys(this.goodsDetail.map).forEach((allSkuValueCodeMap) => {
+
+			// const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
+			// if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
+			// 		this.goodsDetail.names[0].values.push({
+			// 			skuValue: this.goodsDetail.names[0].skuName,
+			// 			valueCode: '单款项'
+			// 		})
+			// 	}
+			const associatedSkus = []
+			const nameCodeSelectedList = Object.keys(this.selectedAttr)
+			Object.values(this.goodsDetail.map).forEach((skuItem) => {
+				// 找出都存在已经选择的规格的关联的sku
+				if (nameCodeSelectedList.every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem]))) associatedSkus.push(skuItem)
+			})
+			this.goodsDetail.names.forEach((nameItem) => {
+				if (nameItem.values && nameItem.values.length) {
+					nameItem.values.forEach((i) => {
+						// 判断筛选出关联的sku里含有某个规格值的sku，这些产品是否全部都无法选择，是则让该规格值不可选择
+						if (associatedSkus.filter((skuItem) => skuItem.valueCodes.split(',').includes(i.valueCode)).every((skuItem) => skuItem.ifEnable)) {
+							i.ifEnable = 1
+						} else {
+							i.ifEnable = 0
+						}
+					})
+				}
+			})
+
+			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
 				// 当和当前选中的sku一致
-				if (Object.values(this.selectedAttr).join(',') === allSkuValueCodeMap) {
-					this.selectedSku = this.goodsDetail.map[allSkuValueCodeMap]
+				if (Object.values(this.selectedAttr).join(',') === skuValueCodeItem) {
+					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
 					this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
 				}
 			})
@@ -230,13 +260,13 @@ export default {
 		getCurrentSkuName() {
 			if (this.selectedSku.valueCodes) {
 				const currentSku = []
-				this.goodsDetail.names.forEach((skuRow) => {
-					skuRow.values.some((skuValue) => {
-						if (this.selectedSku.valueCodes.split(',').includes(skuValue.valueCode)) {
-							if (skuValue.valueCode === '单款项') {
-								currentSku.push({ skuText: skuValue.skuValue })
+				this.goodsDetail.names.forEach((nameItem) => {
+					nameItem.values.some((tag) => {
+						if (this.selectedSku.valueCodes.split(',').includes(tag.valueCode)) {
+							if (tag.valueCode === '单款项') {
+								currentSku.push({ skuText: tag.skuValue })
 							} else {
-								currentSku.push({ skuText: `${skuValue.skuName}：${skuValue.skuValue}` })
+								currentSku.push({ skuText: `${tag.skuName}：${tag.skuValue}` })
 							}
 							return true
 						}
@@ -402,45 +432,6 @@ export default {
 			width: 180upx;
 			height: 180upx;
 		}
-	}
-
-	.color-box {
-		flex: 1;
-		height: 0;
-		overflow: hidden;
-		padding: 30upx;
-
-		.colorName-box {
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: center;
-			margin-top: 30upx;
-			margin-left: -30upx;
-
-			.colorName {
-				background-color: #FFFFFF;
-				margin-left: 30upx;
-				padding: 10upx 32upx;
-				font-size: 26upx;
-				border: 2rpx solid #E4E5E6;
-				z-index: 2;
-				color: #333333;
-			}
-
-			.colorName-on {
-				box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.1);
-				color: #C5AA7B;
-				margin-left: 30upx;
-				padding: 10upx 32upx;
-				font-size: 26upx;
-				text-align: center;
-				z-index: 1;
-				border: none;
-			}
-		}
-
 	}
 
 	.goodsNumCent {

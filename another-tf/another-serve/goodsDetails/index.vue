@@ -290,7 +290,7 @@ import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting } from '../../../utils'
-import { getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -393,8 +393,8 @@ export default {
 		handleSetDownTime() { // 这个计时器是每秒减去数组中指定字段的时间
 			let productHaveCollageOrder = false
 			// 判断sku组合中是否存在拼单
-			for (const skuCollectItemKey in this.goodsDetail.map) {
-				const collageOrders = this.goodsDetail.map[skuCollectItemKey].collageOrders
+			for (const skuValueCodeItem in this.goodsDetail.map) {
+				const collageOrders = this.goodsDetail.map[skuValueCodeItem].collageOrders
 				if (collageOrders && collageOrders.length > 0) {
 					productHaveCollageOrder = true
 					break
@@ -402,8 +402,8 @@ export default {
 			}
 			if (!productHaveCollageOrder) return
 			this.shopGroupWorkTicker = setInterval(() => {
-				for (const skuCollectItemKey in this.goodsDetail.map) {
-					const collageOrders = this.goodsDetail.map[skuCollectItemKey].collageOrders
+				for (const skuValueCodeItem in this.goodsDetail.map) {
+					const collageOrders = this.goodsDetail.map[skuValueCodeItem].collageOrders
 					if (collageOrders && collageOrders.length > 0) {
 						collageOrders.forEach((collageItem) => {
 							collageItem.time > 0 ? collageItem.time -= 1000 : ''
@@ -470,17 +470,50 @@ export default {
 					})
 				}
 				// 如果sku的图像为空，设置为商品的图像
-				skuCollectionListKeys.forEach((allSkuValueCodeMap) => {
-					if (!this.goodsDetail.map[allSkuValueCodeMap].image) this.goodsDetail.map[allSkuValueCodeMap].image = this.goodsDetail.images[0]
+				skuCollectionListKeys.forEach((skuValueCodeItem) => {
+					if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
 				})
+				// 半子商品是否可售，对应规格值是否可点击。根据ifEnable，为0可选择，为1不可选择
+				try {
+					// const resCanSale = await getBanziProductCanSaleApi({
+					// 	productId: this.goodsDetail.productId,
+					// 	receiveId: '',
+					// 	skus: Object.values(this.goodsDetail.map || {}).map((i) => i.skuId)
+					// })
+					// const banSku = (JSON.parse(resCanSale.data.bzResp || '{}').ban || []).map((i) => resCanSale.data.banziSkuId2skuIdsMap[i]).filter((i) => i)
+					const banSku = [
+						319980,
+						319981,
+						319984,
+						319985,
+						332728,
+						332729,
+						// 332732,
+						332733,
+						332736,
+						332737
+					]
+					Object.keys(this.goodsDetail.map || {}).forEach((skuValueCodeItem) => {
+						if (banSku.includes(this.goodsDetail.map[skuValueCodeItem].skuId)) {
+							this.goodsDetail.map[skuValueCodeItem].ifEnable = 1
+						}
+					})
+					this.goodsDetail.names.forEach((nameItem) => {
+						if (nameItem.values && nameItem.values.length) {
+							nameItem.values.forEach((i) => {
+								i.ifEnable = 0
+							})
+						}
+					})
+				} catch {}
 				// 渲染商详之后，如果参数传了skuId，则选中该skuId，否则选中第一个规格
 				this.$nextTick(async () => {
 					if (this.skuId) {
 						this.$refs.refGoodSkuSelect.handleSelectBySkuId(this.skuId)
 					} else {
 						// 默认选中第0个
-						this.goodsDetail.names.forEach((skuRowItem) => {
-							this.$refs.refGoodSkuSelect.handleClickSkuItem(skuRowItem.nameCode, skuRowItem.values[0].valueCode)
+						this.goodsDetail.names.forEach((nameItem) => {
+							this.$refs.refGoodSkuSelect.handleClickSkuItem(nameItem.nameCode, nameItem.values[0].valueCode)
 						})
 					}
 					// 如果是拼团，设置拼团id

@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import { getStatisticsAmountRelationshipApi, getStatisticsRecordRelationshipApi } from '../../../api/anotherTFInterface'
+import { getSmallAccountBookStatisticsApi, getCommissionDeatilListApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'SmallLedger',
 	components: {
 	},
 	onLoad() {
 		uni.showLoading()
-		getStatisticsAmountRelationshipApi()
+		getSmallAccountBookStatisticsApi()
 			.then((res) => {
 				uni.hideLoading()
 			})
 			.catch((e) => {
 				uni.hideLoading()
 			})
-		getStatisticsRecordRelationshipApi()
+		getCommissionDeatilListApi()
 			.then((res) => {
 				uni.hideLoading()
 			})
