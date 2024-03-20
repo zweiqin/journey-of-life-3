@@ -501,9 +501,6 @@
         //   "path": "furniture-maintenance"
         // },
         // {
-        //   "path": "service-detail"
-        // },
-        // {
         //   "path": "service-order"
         // },
         {
@@ -540,6 +537,12 @@
           "path": "service-sort/index",
           "style": {
             "navigationBarTitleText": "社区服务分类"
+          }
+        },
+        {
+          "path": "service-detail/index",
+          "style": {
+            "navigationBarTitleText": "服务详情"
           }
         },
         {

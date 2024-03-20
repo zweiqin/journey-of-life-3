@@ -374,7 +374,7 @@ export default {
 	methods: {
 		// 选取sku
 		handleSelectCurrent(selectedCurrentMsg) {
-			console.log(selectedCurrentMsg)
+			// console.log(selectedCurrentMsg)
 			this.selectedCurrentMsg.selectedSku = selectedCurrentMsg.selectedSku
 			this.selectedCurrentMsg.currentSku = selectedCurrentMsg.currentSku
 			this.selectedCurrentMsg.number = selectedCurrentMsg.number
@@ -500,8 +500,8 @@ export default {
 					})
 					this.goodsDetail.names.forEach((nameItem) => {
 						if (nameItem.values && nameItem.values.length) {
-							nameItem.values.forEach((i) => {
-								i.ifEnable = 0
+							nameItem.values.forEach((tag) => {
+								tag.ifEnable = 0
 							})
 						}
 					})
@@ -513,7 +513,7 @@ export default {
 					} else {
 						// 默认选中第0个
 						this.goodsDetail.names.forEach((nameItem) => {
-							this.$refs.refGoodSkuSelect.handleClickSkuItem(nameItem.nameCode, nameItem.values[0].valueCode)
+							this.$refs.refGoodSkuSelect.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
 						})
 					}
 					// 如果是拼团，设置拼团id

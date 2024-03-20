@@ -41,7 +41,7 @@ Vue.mixin({
 					}
 					// https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/
 					// https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/
-					return 'https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/' + url
+					return 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/' + url
 				}
 			}
 		}

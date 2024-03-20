@@ -43,7 +43,7 @@
 										boxShadow: selectedAttr[nameItem.nameCode] === tag.valueCode ? '0 0 20rpx rgba(0, 0, 0, 0.1)' : 'none',
 										color: selectedAttr[nameItem.nameCode] === tag.valueCode ? '#C5AA7B' : tag.ifEnable ? '#cccccc' : '#333333',
 										border: selectedAttr[nameItem.nameCode] === tag.valueCode ? '2rpx solid #ffffff' : '2rpx solid #E4E5E6'
-									}" @click="handleClickSkuItem(nameItem.nameCode, tag.valueCode)"
+									}" @click="handleClickSkuItem(nameItem.nameCode, tag)"
 								>
 									{{ tag.skuValue }}
 								</view>
@@ -205,8 +205,7 @@ export default {
 					this.goodsDetail.names.forEach((nameItem) => {
 						nameItem.values.some((tag) => {
 							if (this.goodsDetail.map[skuValueCodeItem].valueCodes.split(',').includes(tag.valueCode)) {
-								this.handleClickSkuItem(nameItem.nameCode, tag.valueCode)
-								this.$set(this.selectedAttr, nameItem.nameCode, tag.valueCode)
+								this.handleClickSkuItem(nameItem.nameCode, tag)
 								return true
 							}
 							return false
@@ -217,33 +216,49 @@ export default {
 		},
 
 		// 点击sku的一项
-		handleClickSkuItem(nameCode, valueCode) {
-			// 当前选中
-			this.$set(this.selectedAttr, nameCode, valueCode)
+		handleClickSkuItem(nameCode, tagItem) {
+			if (tagItem.ifEnable) return
+			const isEverSelected = Object.keys(this.selectedAttr).includes(nameCode) // 是否曾经选中
+			// 是否重复点击
+			if (isEverSelected && (this.selectedAttr[nameCode] === tagItem.valueCode)) {
+				delete this.selectedAttr[nameCode]
+				this.$forceUpdate()
+			} else {
+				this.$set(this.selectedAttr, nameCode, tagItem.valueCode) // 当前选中
+			}
 
-			// const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
-			// if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
-			// 		this.goodsDetail.names[0].values.push({
-			// 			skuValue: this.goodsDetail.names[0].skuName,
-			// 			valueCode: '单款项'
-			// 		})
-			// 	}
-			const associatedSkus = []
 			const nameCodeSelectedList = Object.keys(this.selectedAttr)
-			Object.values(this.goodsDetail.map).forEach((skuItem) => {
-				// 找出都存在已经选择的规格的关联的sku
-				if (nameCodeSelectedList.every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem]))) associatedSkus.push(skuItem)
-			})
+			// 找出都存在已经选择的规格的关联的sku
+			const associatedSkus = Object.values(this.goodsDetail.map).filter((skuItem) => nameCodeSelectedList.every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem])))
 			this.goodsDetail.names.forEach((nameItem) => {
 				if (nameItem.values && nameItem.values.length) {
-					nameItem.values.forEach((i) => {
-						// 判断筛选出关联的sku里含有某个规格值的sku，这些产品是否全部都无法选择，是则让该规格值不可选择
-						if (associatedSkus.filter((skuItem) => skuItem.valueCodes.split(',').includes(i.valueCode)).every((skuItem) => skuItem.ifEnable)) {
-							i.ifEnable = 1
-						} else {
-							i.ifEnable = 0
+					if (nameCodeSelectedList.includes(nameItem.nameCode)) { // 对于选过的的规格 // 已经选择的情况
+						// if (isEverSelected) { // 如果点击的是曾经选过的
+						if (nameItem.nameCode !== nameCode) {
+							nameItem.values.forEach((tag) => {
+								if (
+									Object.values(this.goodsDetail.map).filter((skuItem) => nameCodeSelectedList.filter((nameCodeItem) => nameCodeItem !== nameItem.nameCode).every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem]) && skuItem.valueCodes.split(',').includes(tag.valueCode)))
+										.some((skuItem) => !skuItem.ifEnable)
+								) {
+									tag.ifEnable = 0
+								} else {
+									tag.ifEnable = 1
+								}
+							})
 						}
-					})
+						// } else {
+						// 	// 如果点击的是没选过的
+						// }
+					} else { // 对于没选过的规格 // 一个一个地选的情况
+						nameItem.values.forEach((tag) => {
+							// 判断筛选出关联的sku里含有某个规格值的sku，这些产品是否全部都无法选择，是则让该规格值不可选择
+							if (associatedSkus.filter((skuItem) => skuItem.valueCodes.split(',').includes(tag.valueCode)).every((skuItem) => skuItem.ifEnable)) {
+								tag.ifEnable = 1
+							} else {
+								tag.ifEnable = 0
+							}
+						})
+					}
 				}
 			})
 

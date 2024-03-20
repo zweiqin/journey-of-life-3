@@ -1,46 +1,151 @@
 <template>
-	<view class="service-sort">
-		<!--顶部-->
-		<view class="head">
-			<view class="search-bar">
-				<!--定位-->
-				<view class="location">
-					<!-- #ifdef H5 -->
-					<tui-icon :size="48" unit="rpx" color="#000000" name="arrowleft" margin="0" @click="handleBack"></tui-icon>
-					<!-- #endif -->
-					<TuanLocation>
-						<text class="locale">{{
-							$store.getters.currentCity || '定位失败'
-						}}</text>
-					</TuanLocation>
-					<tui-icon :size="32" unit="rpx" color="#000000" name="turningdown" margin="0" @click="handleClick"></tui-icon>
+	<view class="service-sort-container">
+		<JHeader title="社区服务分类" width="50" height="50"></JHeader>
+
+		<view style="display: flex;align-items: center;padding: 8rpx 14rpx 22rpx 18rpx;background-color: #ffffff;">
+			<TuanLocation>
+				<view style="display: flex;align-items: center;line-height: 1;">
+					<text style="max-width: 130rpx;font-size:32rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+						{{ $store.getters.currentShopCity || '定位失败' }}
+					</text>
+					<BeeIcon :size="26" name="turningdown" color="#222229"></BeeIcon>
 				</view>
-				<!--搜索栏-->
-				<view class="search-box" @click="goToSearch">
-					<view class="search">
-						<tui-icon :size="30" unit="rpx" color="#000000" name="search" margin="0"></tui-icon>
-					</view>
-					<input confirm-type="search" type="text" class="content" placeholder="搜索社区服务，一站式解决家居问题" />
-				</view>
+			</TuanLocation>
+			<view style="flex: 1;margin-left: 10rpx;">
+				<tui-input
+					placeholder="搜索社区服务，一站式解决家居问题" placeholder-style="color: #666666;font-size: 24rpx;" clearable
+					is-fillet padding="14rpx 10rpx 12rpx 24rpx" background-color="#e7e7e7"
+					@click="go('/community-center/search')"
+				>
+					<template #left>
+						<tui-icon :size="34" unit="rpx" color="#000000" name="search" margin="0 16rpx 0 0"></tui-icon>
+						<view style="margin-right: 14rpx;width: 4rpx;height: 38rpx;background-color: #D8D8D8;"></view>
+					</template>
+				</tui-input>
 			</view>
 		</view>
-		<!--中间区域-->
-		<view class="body" :style="{ height: scrollHeight + 'px' }">
-			<!--左边导航栏一级分类-->
-			<view class="navbar" ref="nav-barRef">
-				<view class="item" v-for="item in navbar" :class="{ active: item.id === currentTab }" :key="item.serverNameOne"
-					@click="switchTab(item.id)">{{ item.serverNameOne }}</view>
+		<view style="flex: 1;height: 0;display: flex;">
+			<view
+				style="max-width: 196rpx;height: 100%;padding: 28rpx 0 0;text-align: center;white-space: nowrap;background-color: #ffffff;box-sizing: border-box;"
+			>
+				<scroll-view style="height: 100%;" :scroll-top="scrollTop" scroll-x scroll-y>
+					<view
+						style="display: flex;align-items: center;justify-content: center;padding: 8rpx 6rpx;"
+						:style="{ backgroundColor: currentTab === 0 ? '#c70000' : 'transparent' }"
+						@click="(currentTab = 0) || (currentName = '') || (currentService = {})"
+					>
+						<image style="width: 48rpx;" src="../../static/images/icon/fire-orange.png" mode="widthFix" />
+						<text style="font-weight: bold;" :style="{ color: currentTab === 0 ? '#ffffff' : '#000000' }">
+							当期热门
+						</text>
+					</view>
+					<view style="padding: 2rpx 0 0;">
+						<view
+							v-for="item in serviceSortData" :key="item.serverNameOne" style="padding: 26rpx 6rpx 0;"
+							@click="handleClickOneLevel(item)"
+						>
+							<view style="font-size: 36rpx;font-weight: bold;">{{ item.serverNameOne }}</view>
+							<view v-if="item.children && item.children.length">
+								<view
+									v-for="section in item.children" :key="section.serverNameTwo" style="padding: 20rpx 0 0;"
+									:class="`scroll-current-tab-${section.id}`" @click.stop="handleClickTwoLevel(section)"
+								>
+									<view style="font-size: 24rpx;">
+										<text
+											style="padding-bottom: 4rpx;" :style="{
+												borderBottom: currentTab === section.id ? '4rpx solid #ed7a49' : '4rpx solid #ffffff',
+												color: currentTab === section.id ? '#ed7a49' : '#000000'
+											}"
+										>
+											{{ section.serverNameTwo }}
+										</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
 			</view>
-			<!--二三级分类-->
-			<view class="main">
-				<view class="mid">
-					<scroll-view scroll-y="true" @scroll="scroll" :style="{ height: scrollHeight + 'px' }">
-						<block v-if="sort && sort.children">
-							<sort v-for="item1 in sort.children" :key="item1.id" :serverNameTwo="item1.serverNameTwo" :id="item1.id"
-								:pid="item1.pid" :detailList="item1.children" :tips="tips" :scrollTop="scrollTop">
-							</sort>
-						</block>
-					</scroll-view>
+			<view style="flex: 1;height: 100%;padding: 14rpx 0 0 14rpx;overflow-y: auto;box-sizing: border-box;">
+				<view style="height: 100%;padding: 40rpx 10rpx 0;background-color: #ffffff;">
+					<view v-if="currentTab === 0" style="padding: 0 10rpx 0 6rpx;">
+						<view v-if="serviceSortData && serviceSortData.length">
+							<view
+								style="height: 158rpx;margin-bottom: 26rpx;"
+								:style="{ background: `url(${common.seamingImgUrl('1710932967442-quanwuzhuangxiu.png')}) no-repeat center top/contain` }"
+								@click="go('/community-center/service-detail/index?id=1')"
+							>
+							</view>
+							<view
+								style="height: 158rpx;margin-bottom: 26rpx;"
+								:style="{ background: `url(${common.seamingImgUrl('1710933032727-weishengjiangaizao.png')}) no-repeat center top/contain` }"
+								@click="go('/community-center/service-detail/index?id=2')"
+							>
+							</view>
+							<view
+								style="height: 158rpx;margin-bottom: 26rpx;"
+								:style="{ background: `url(${common.seamingImgUrl('1710933117004-yangtaigaizao.png')}) no-repeat center top/contain` }"
+								@click="go('/community-center/service-detail/index?id=3')"
+							>
+							</view>
+							<view
+								style="height: 158rpx;margin-bottom: 26rpx;"
+								:style="{ background: `url(${common.seamingImgUrl('1710932213899-chuanglianshengji.png')}) no-repeat center top/contain` }"
+								@click="go('/community-center/service-detail/index?id=4')"
+							>
+							</view>
+							<view
+								style="height: 158rpx;margin-bottom: 26rpx;"
+								:style="{ background: `url(${common.seamingImgUrl('1710933148685-jiajufanxin.png')}) no-repeat center top/contain` }"
+								@click="go('/community-center/service-detail/index?id=5')"
+							>
+							</view>
+							<!-- <view
+								style="display: flex;margin-bottom: 16rpx;padding: 0 0 20rpx;border-bottom: 2rpx solid #d8d8d8;"
+								@click="handleSelectTab('装修服务', 579)"
+								>
+								<view style="background-color: #d8d8d8;border-radius: 18rpx;">
+								<image
+								style="width: 136rpx;height: 136rpx;"
+								:src="common.seamingImgUrl('1710932967442-quanwuzhuangxiu.png')" mode="scaleToFill"
+								/>
+								</view>
+								<view style="margin: 10rpx 0 0 18rpx;font-weight: bold;">
+								<view style="font-size: 36rpx;">全屋装修</view>
+								<view style="margin-top: 16rpx;font-size: 28rpx;">让您的生活空间焕然一新尽享舒适与品质</view>
+								</view>
+								</view> -->
+						</view>
+						<view style="padding-bottom: 45upx;">
+							<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
+							<view v-if="!isLoading && !serviceSortData.length">
+								<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据</tui-no-data>
+							</view>
+						</view>
+					</view>
+					<view v-else style="height: 100%;overflow-y: auto;">
+						<view
+							v-if="currentService && currentService.children && currentService.children.length"
+							style="display: flex;align-items: center;flex-wrap: wrap;margin: 0 -15rpx;"
+						>
+							<view
+								v-for="serve in currentService.children" :key="serve.id"
+								style="width: 150rpx;margin: 0 15rpx 40rpx;text-align: center;" @click="handleToServiceDetail(serve)"
+							>
+								<view>
+									<image
+										style="width: 138rpx;height: 138rpx;"
+										:src="common.seamingImgUrl(serve.serverImageUrl.split(',').find((item) => item)) || require('../../static/images/new-user/default-user-avatar.png')"
+										mode="aspectFit"
+									/>
+								</view>
+								<view style="font-size: 28rpx;">{{ serve.serverNameThree }}</view>
+							</view>
+						</view>
+						<view v-else style="padding-bottom: 45upx;">
+							<tui-no-data :fixed="false" style="padding-top: 60upx;">这里空空如也～</tui-no-data>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -48,332 +153,175 @@
 </template>
 
 <script>
-import { getServiceSortApi } from '../../api/community-center'
-import { getSearchDataApi } from '../../api/community-center'
-import sort from '../../community-center/componts'
-import { getAdressDetailByLngLat } from '../../utils'
-import { getIsOpenServerAreaApi } from '../../api/community-center'
+import { getServiceSortApi, getIsOpenServerAreaApi } from '../../api/community-center'
+import { getAdressDetailByLngLat, getUserId } from '../../utils'
 export default {
-	name: 'Service-sort',
-	components: {
-		sort,
-	},
-	// mounted() {
-	//   this.getLocation();
-	// },
+	name: 'ServiceSort',
 	props: {},
 	data() {
 		return {
-			navbar: [],
-			currentTab: '',
-			sort: [],
-			id: '',
-			serverNameOne: '',
-			address: '',
-			scrollHeight: 667,
-			tips: '',
-			addressDetail: '',
-			candidates: [],
-			city: '',
-			searchName: '',
+			serviceSortData: [],
+			isLoading: false,
 			scrollTop: 0,
+			currentTab: 0,
+			currentName: '',
+			currentService: {},
+
+			addressDetail: '',
+			address: '',
+			tips: ''
 		}
 	},
-	methods: {
-
-		scroll(e) {
-			console.log(e);
-			this.scrollTop = e.detail.scrollTop;
-			console.log('滚动距离为：', this.scrollTop);
-		},
-
-		switchTab(index) {
-			this.currentTab = index
-			this.sort = this.data.find(item => item.id === index)
-		},
-
-		inoutWatcher(e) {
-			// this.searchName = e;
-			// this.getSearchData();
-		},
-
-		goToSearch() {
-			uni.navigateTo({ url: '/community-center/search' })
-		},
-
-		// handleBack() {
-		//   uni.navigateBack();
-		// },
-
-		handleBack() {
-			uni.switchTab({ url: '/pages/community-center/community-centerr' })
-		},
-
-		handleClick() {
-			const _this = this
-			if (
-				this.addressDetail === '定位失败' ||
-				this.addressDetail === '定位中...'
-			) {
-				uni.showModal({
-					title: '提示',
-					confirmText: '我已打开定位',
-					content: '请确认您已开启了定位',
-					success: function (res) {
-						if (res.confirm) {
-							_this.getLocation()
-						}
-					},
+	async onLoad(options) {
+		await this.getServiceSortData()
+		this.handleSelectTab(options.name || '', Number(options.value) || 0)
+		this.$nextTick(() => {
+			uni.createSelectorQuery().in(this)
+				.select(`.scroll-current-tab-${this.currentTab}`)
+				.boundingClientRect((res) => {
+					const top = (res && res.top && (res.top - 200)) || 0
+					if (top > 0) this.scrollTop = top
 				})
-			}
+				.exec()
+		})
+		// this.getIsOpenServerArea()
+	},
+	methods: {
+		// 查询社区服务分类接口
+		async getServiceSortData() {
+			this.isLoading = true
+			await getServiceSortApi({})
+				.then((res) => {
+					this.serviceSortData = res.data
+					this.isLoading = false
+				})
+				.catch(() => {
+					this.isLoading = false
+				})
 		},
-
-		async a() {
-			const res = await getIsOpenServerAreaApi({
-				address: this.address,
-			})
-
-			this.tips = res.data
-		},
-
-		//查询社区服务分类接口
-		async getServiceSort() {
-			const res = await getServiceSortApi({})
-
-			this.navbar = res.data
-			console.log(res.data.flat(Infinity))
-			this.sort = res.data[0]
-			this.data = res.data
-			this.sort = this.data.find(item => item.id === this.currentTab)
-		},
-
-		//搜索查询接口
-		async getSearchData() {
-			const res = await getSearchDataApi({
-				searchName: this.searchName,
-			})
-
-			this.candidates = res.data.map(item => item.serverTypeName)
-		},
-
-		//根据用户地址判断该区域是否开通了站长
+		// 根据用户地址判断该区域是否开通了站长
 		async getIsOpenServerArea() {
 			this.addressDetail = '定位中...'
 			const _this = this
 			// #ifdef H5
 			uni.getLocation({
 				type: 'gcj02',
-				success: function (res) {
-					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
+				success(result) {
+					getAdressDetailByLngLat(result.latitude, result.longitude).then(async (res) => {
 						if (res.status === '1') {
-							const result = res.regeocode
-							_this.addressDetail = result.addressComponent.township
-
+							_this.addressDetail = res.regeocode.addressComponent.township
 							_this.address =
-								result.addressComponent.province +
-								result.addressComponent.city +
-								result.addressComponent.district
-
-							_this.a()
+								res.regeocode.addressComponent.province +
+								res.regeocode.addressComponent.city +
+								res.regeocode.addressComponent.district
+							const resResult = await getIsOpenServerAreaApi({
+								address: this.address
+							})
+							this.tips = resResult.data
 						}
 					})
-				},
+				}
 			})
 			// #endif
-
 			// #ifdef APP
 			const locationInfo = this.$store.state.location
 			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
 			this.addressDetail = locationInfo.locationInfo.township
-			this.a()
+			const resResult = await getIsOpenServerAreaApi({
+				address: this.address
+			})
+			this.tips = resResult.data
 			// #endif
 		},
 
+		handleClickOneLevel(item) {
+			if (item.children && item.children.length) {
+				if (item.children[0] && item.children[0].children && item.children[0].children.length) {
+					this.currentTab = item.children[0].id
+					this.currentName = item.children[0].serverNameTwo
+					this.currentService = item.children[0] || {}
+				} else {
+					this.$showToast('该分类缺少服务')
+				}
+			} else {
+				this.$showToast('该分类缺少项目')
+			}
+		},
+		handleClickTwoLevel(section) {
+			this.currentTab = section.id
+			this.currentName = section.serverNameTwo
+			this.currentService = section || {}
+		},
+		handleSelectTab(name, value) {
+			if (name) {
+				this.serviceSortData.forEach((item, index) => {
+					if (item.serverNameOne === name) {
+						this.handleClickOneLevel(item)
+						return true
+					} else if (item.children && item.children.length) {
+						return item.children.some((section, index) => {
+							if (section.serverNameTwo === name) {
+								this.handleClickTwoLevel(section)
+								return true
+							}
+							return false
+						})
+					}
+					return false
+				})
+			}
+			if (!this.currentTab && value) {
+				this.serviceSortData.forEach((item, index) => {
+					if (item.id === value) {
+						this.handleClickOneLevel(item)
+						return true
+					} else if (item.children && item.children.length) {
+						return item.children.some((section, index) => {
+							if (section.id === value) {
+								this.handleClickTwoLevel(section)
+								return true
+							}
+							return false
+						})
+					}
+					return false
+				})
+			}
+		},
 
-	},
-	mounted() { },
-	onShow() {
-		//滚动条
-		uni.getStorage({
-			key: "listTop",
-			success: (res) => {
-				if (!isNaN(res.data)) {
-					var lefts = uni.pageScrollTo({
-						scrollTop: res.data,
-						duration: 0
+		handleToServiceDetail(serve) {
+			if (getUserId()) {
+				if (this.$store.getters.currentCity === '定位失败') {
+					this.$showToast('获取定位失败')
+				} else {
+					uni.navigateTo({
+						url: `/community-center/community-detail?id=${serve.id}&serverNameThree=${serve.serverNameThree}&serverImageUrl=${serve.serverImageUrl}`
 					})
 				}
 			}
-		})
-	},
-	onUnload() {
-		uni.setStorage({
-			key: "listTop",
-			data: 0
-		})
-	},
-	onLoad(options) {
-		this.currentTab = options.value * 1
+		}
 
-		this.getServiceSort()
-		this.getIsOpenServerArea()
-		// this.getSearchData()
-		const _this = this
-		uni.getSystemInfo({
-			success(res) {
-				_this.scrollHeight = res.safeArea.height - 60
-			},
-		})
-
-		// const _this = this;
-	},
+	}
 }
 </script>
 
 <style lang="less" scoped>
-uni-page-body {
-	overflow: hidden;
-	height: auto;
-}
+.service-sort-container {
+	height: 100vh;
+	background-color: #e7e7e7;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	padding: 0 0 14rpx;
 
-.service-sort {
-	.head {
-		width: 100%;
-		height: 120upx;
-		line-height: 120upx;
-		background: #ffffff;
-		padding-left: 16upx;
-		padding-right: 26upx;
-		box-sizing: border-box;
+	/deep/ .j-header-container {
+		padding: 24rpx 0 10rpx;
+		background-color: #ffffff;
 
-		// position: fixed;
-		.search-bar {
-			width: 100%;
-			// left: 3%;
-			// top: 80upx;
-			display: flex;
-			align-items: center;
-
-			.location {
-				display: flex;
-				align-items: center;
-				// margin: 0 20upx;
-				margin-right: 5px;
-
-				.return {
-					width: 48upx;
-					height: 48upx;
-				}
-
-				.text {
-					font-size: 32upx;
-					font-weight: bold;
-					color: #3d3d3d;
-				}
-
-				.show {
-					width: 32upx;
-					height: 32upx;
-				}
-			}
-
-			.search-box {
-				padding: 0upx 16upx;
-				display: flex;
-				flex: 1;
-				align-items: center;
-				width: 540upx;
-				height: 74upx;
-				border-radius: 100upx;
-				background: #f1f2f6;
-
-				.search {
-					width: 48upx;
-					height: 74upx;
-					line-height: 74upx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-
-					.img {
-						width: 30upx;
-						height: 30upx;
-					}
-				}
-
-				.content {
-					padding-left: 14upx;
-					flex: 1;
-					font-size: 24upx;
-					font-weight: 400;
-					color: #3d3d3d;
-					border-left: 2upx solid #d8d8d8;
-				}
-			}
-
-			.example-body {
-				background: #f1f2f6;
-				border-radius: 100upx;
-			}
-		}
-	}
-
-	.body {
-		display: flex;
-		overflow: scroll;
-		overflow: scroll;
-
-		.navbar {
-			// margin-top: 28upx;
-			width: 22%;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			overflow: scroll;
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
-
-			.item {
-				width: 130upx;
-				height: 52upx;
-				border-radius: 10upx;
-				font-size: 28upx;
-				font-weight: 500;
-				color: #3d3d3d;
-				text-align: center;
-				line-height: 52upx;
-				margin-bottom: 62upx;
-				transition: all 100ms;
-
-				&.active {
-					background: linear-gradient(270deg, #e95d20 0%, #faae63 99%);
-					color: #ffffff;
-				}
-			}
-		}
-
-		display: flex;
-
-		.main {
-			width: 78%;
-			border-radius: 10upx 0upx 0upx 0upx;
-			background: #f1f2f6;
-			overflow: scroll;
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
-
-			// position: fixed;
-			// right: 0upx;
-			// top: 172upx;
-			.mid {
-				margin: 18upx 0upx 0upx 12upx;
-				border-radius: 10upx 0upx 0upx 0upx;
-				background: #ffffff;
-			}
+		.title {
+			font-size: 28rpx;
+			color: #222229;
+			font-weight: bold;
 		}
 	}
 }

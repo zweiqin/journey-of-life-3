@@ -39,7 +39,7 @@ import { checkedVersionApi } from '../../api/app'
 export default {
   data() {
     return {
-      logVisible: false,
+      logVisible: true,
       logs: [],
       styles: {
         position: 'fixed',
@@ -51,6 +51,7 @@ export default {
         'justify-content': 'center',
         'align-items': 'center',
         'background-color': 'rgba(0,0,0,0.4)',
+        'z-index': 9999,
       },
       progress: 0,
       progressVisible: false,
