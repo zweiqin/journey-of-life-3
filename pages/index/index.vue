@@ -65,14 +65,16 @@
               :class="{ active: childsIndex == -1 }">
                 全部
               </view>
-              <view
-                v-for="(item, index) in filtersMenus[filterActive].childs"
-                :key="item.classifyId" class="childsItem" 
-                :class="{ active: childsIndex == index }"
-                @click="handleChangeSubMenu(item, index)"
-              >
-                {{ item.classifyName }}
-              </view>
+              <block v-if="filtersMenus[filterActive]">
+                <view
+                  v-for="(item, index) in filtersMenus[filterActive].childs"
+                  :key="item.classifyId" class="childsItem" 
+                  :class="{ active: childsIndex == index }"
+                  @click="handleChangeSubMenu(item, index)"
+                >
+                  {{ item.classifyName }}
+                </view>
+              </block>
             </view>
           </scroll-view>
       </view>

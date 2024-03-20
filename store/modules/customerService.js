@@ -28,10 +28,12 @@ export default {
 		},
 
 		[CHANGE_WS_INFO](state, wsHandle) {
+			// console.log('wsHandle', wsHandle);
 			state.wsHandle = wsHandle
 		},
 
 		[CHANGE_ON_FN](state, ref) {
+			// console.log(ref, state);
 			ref.onOpen && (state.onOpen = ref.onOpen)
 			ref.onMessage && (state.onMessage = ref.onMessage)
 			ref.onClose && (state.onClose = ref.onClose)
@@ -116,11 +118,18 @@ export default {
 		joinCustomerServiceChat({ commit, rootState, state }, { ref, wsHandle, wsHandleInfo }) {
 			if (ref) commit(CHANGE_ON_FN, ref)
 			if (wsHandle) {
-				commit(CHANGE_WS_INFO, wsHandle)
-				rootState.customerService.onOpen && wsHandle.onOpen(rootState.customerService.onOpen)
-				rootState.customerService.onMessage && wsHandle.onMessage(rootState.customerService.onMessage)
-				rootState.customerService.onClose && wsHandle.onClose(rootState.customerService.onClose)
-				rootState.customerService.onError && wsHandle.onError(rootState.customerService.onError)
+				try {
+					// console.log(rootState);
+					commit(CHANGE_WS_INFO, wsHandle)
+					// console.log(rootState);
+					rootState.customerService.onOpen && wsHandle.onOpen(rootState.customerService.onOpen)
+					rootState.customerService.onMessage && wsHandle.onMessage(rootState.customerService.onMessage)
+					rootState.customerService.onClose && wsHandle.onClose(rootState.customerService.onClose)
+					rootState.customerService.onError && wsHandle.onError(rootState.customerService.onError)
+				} catch (error) {
+					console.log(error);
+					// alert(error)
+				}
 				// console.log('顺序1')
 			} else {
 				rootState.customerService.onOpen && rootState.customerService.wsHandle.onOpen(rootState.customerService.onOpen)

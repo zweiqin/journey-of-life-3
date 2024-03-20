@@ -9,7 +9,7 @@ import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 export default {
 	name: 'App',
 	onLaunch(options) {
-		this.connectSocket()
+		// this.connectSocket()
 		if (this.isLogin()) {
 			getPurchaseRecordApi({ userId: getUserId(), price: 299 })
 			getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
