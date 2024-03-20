@@ -1,5 +1,6 @@
 <template>
   <view class="q-home">
+    <TuanAppShim></TuanAppShim>
     <view class="main-title">
       <image class="title-img" src="../../static/images/new-community/enterprise-orders/title-img.png"></image>
     </view>

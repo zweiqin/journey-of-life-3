@@ -1,5 +1,6 @@
 <template>
   <view class="my-address">
+    <TuanAppShim bg="#fff"></TuanAppShim>
     <!-- 定位区 -->
     <view class="search-box">
       <tui-icon @click="handleBack" name="arrowleft" :size="25" color="#00"></tui-icon>
