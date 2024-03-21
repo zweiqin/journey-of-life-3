@@ -9,7 +9,6 @@
 			<view v-if="codePicList && codePicList.length" style="padding: 40upx 0 0;">
 				<swiper
 					:current="1" previous-margin="150rpx" next-margin="150rpx" style="height: 698upx;"
-					active-class="aaa"
 					@change="handleSwiperChange"
 				>
 					<swiper-item v-for="(item, index) in codePicList" :key="index">

@@ -13,7 +13,7 @@
 		<AdvertisementBar></AdvertisementBar>
 
 		<!-- package -->
-		<ActivityPackage></ActivityPackage>
+		<!-- <ActivityPackage></ActivityPackage> -->
 
 		<!-- 商家列表 -->
 		<view>

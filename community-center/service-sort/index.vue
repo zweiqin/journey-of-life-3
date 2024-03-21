@@ -28,7 +28,7 @@
 			<view
 				style="max-width: 196rpx;height: 100%;padding: 28rpx 0 0;text-align: center;white-space: nowrap;background-color: #ffffff;box-sizing: border-box;"
 			>
-				<scroll-view style="height: 100%;" :scroll-top="scrollTop" scroll-x scroll-y>
+				<scroll-view style="height: 100%;" :scroll-top="scrollTop" scroll-y>
 					<view
 						style="display: flex;align-items: center;justify-content: center;padding: 8rpx 6rpx;"
 						:style="{ backgroundColor: currentTab === 0 ? '#c70000' : 'transparent' }"
@@ -41,27 +41,41 @@
 					</view>
 					<view style="padding: 2rpx 0 0;">
 						<view
-							v-for="item in serviceSortData" :key="item.serverNameOne" style="padding: 26rpx 6rpx 0;"
+							v-for="(item, index) in serviceSortData" :key="item.serverNameOne" style="padding: 26rpx 6rpx 0;"
 							@click="handleClickOneLevel(item)"
 						>
-							<view style="font-size: 36rpx;font-weight: bold;">{{ item.serverNameOne }}</view>
-							<view v-if="item.children && item.children.length">
-								<view
-									v-for="section in item.children" :key="section.serverNameTwo" style="padding: 20rpx 0 0;"
-									:class="`scroll-current-tab-${section.id}`" @click.stop="handleClickTwoLevel(section)"
-								>
-									<view style="font-size: 24rpx;">
-										<text
-											style="padding-bottom: 4rpx;" :style="{
-												borderBottom: currentTab === section.id ? '4rpx solid #ed7a49' : '4rpx solid #ffffff',
-												color: currentTab === section.id ? '#ed7a49' : '#000000'
-											}"
+							<tui-collapse
+								:index="index" :current="currentIndexMain" hd-bg-color="#ffffff" :arrow="false"
+								@click="changeCurrentMain"
+							>
+								<template #title>
+									<view style="font-size: 36rpx;font-weight: bold;">{{ item.serverNameOne }}</view>
+								</template>
+								<template #content>
+									<view v-if="item.children && item.children.length">
+										<view
+											v-for="section in item.children" :key="section.serverNameTwo"
+											style="display: flex;justify-content: center;padding: 20rpx 0 0;overflow-x: auto;"
+											:class="`scroll-current-tab-${section.id}`" @click.stop="handleClickTwoLevel(section)"
 										>
-											{{ section.serverNameTwo }}
-										</text>
+											<view
+												style="padding-bottom: 4rpx;font-size: 24rpx;" :style="{
+													borderBottom: currentTab === section.id ? '4rpx solid #ed7a49' : '4rpx solid #ffffff',
+													color: currentTab === section.id ? '#ed7a49' : '#000000'
+												}"
+											>
+												<text>{{ section.serverNameTwo }}</text>
+											</view>
+										</view>
 									</view>
-								</view>
-							</view>
+									<view
+										v-else
+										style="padding: 2rpx 0 6upx;text-align: center;background-color: #ebebea;font-size: 24rpx;"
+									>
+										缺少项目
+									</view>
+								</template>
+							</tui-collapse>
 						</view>
 					</view>
 				</scroll-view>
@@ -119,7 +133,7 @@
 						<view style="padding-bottom: 45upx;">
 							<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
 							<view v-if="!isLoading && !serviceSortData.length">
-								<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据</tui-no-data>
+								<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据~</tui-no-data>
 							</view>
 						</view>
 					</view>
@@ -166,6 +180,7 @@ export default {
 			currentTab: 0,
 			currentName: '',
 			currentService: {},
+			currentIndexMain: 0,
 
 			addressDetail: '',
 			address: '',
@@ -299,6 +314,9 @@ export default {
 					})
 				}
 			}
+		},
+		changeCurrentMain(e) {
+			this.currentIndexMain = this.currentIndexMain == e.index ? -1 : e.index
 		}
 
 	}

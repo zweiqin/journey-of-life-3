@@ -32,7 +32,7 @@
 			>
 				<view style="display: flex;align-items: flex-end;padding: 0 19rpx;box-sizing: border-box;">
 					<view
-						v-for="item in categoryList" :id="'item_' + item.id" :key="item.id"
+						v-for="item in categoryList" :id="'item_' + item.id" :key="item.id" style="position: relative;"
 						@click="handleChangeSecondClass(item)"
 					>
 						<image
@@ -40,6 +40,13 @@
 							:src="item.localPic ? item.localPic : common.seamingImgUrl(item.picUrl)"
 						>
 						</image>
+						<view v-if="currentBrandType === item.id">
+							<view
+								style="position: absolute;left: 50%;bottom: 13%;transform: translateX(-50%);width: 28rpx;height: 16rpx;border-radius: 0 0 18rpx 18rpx;"
+								:style="{ backgroundColor: categoryList.findIndex(i => i.id === currentBrandType) === (categoryList.length - 1) ? '#4e3d3d' : '#f2dfdf' }"
+							>
+							</view>
+						</view>
 					</view>
 				</view>
 			</scroll-view>
@@ -78,30 +85,30 @@
 					<view style="font-weight: bold;">{{ item.shopName }}</view>
 					<view style="display: flex;align-items: center;margin-top: 12rpx;font-size: 26rpx;">
 						<image src="../../../static/images/icon/v-icon.png" mode="widthFix" style="width: 30rpx;" />
-						<text style="margin-left: 8rpx;color: #222229;">品牌工厂</text>
-						<text style="margin-left: 16rpx;color: #9E9E9E;">
+						<text style="padding: 0 14rpx;color: #222229;border-right: 2rpx solid #D8D8D8;">品牌工厂</text>
+						<text style="padding: 0 14rpx;color: #9E9E9E;border-right: 2rpx solid #D8D8D8;">
 							{{ item.annualLimit ? `${item.annualLimit}年` : '经典老店' }}
 						</text>
 						<text
 							v-if="item.shopAdress"
-							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0 0 0 16rpx;color: #222229;"
+							style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0 0 0 12rpx;color: #222229;"
 						>
 							{{ item.shopAdress || '' }}
 						</text>
 					</view>
-					<view style="margin-top: 12rpx;">
+					<view style="margin-top: 12rpx;font-size: 28rpx;color: #9E9E9E;">
 						<text
-							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;"
 						>
 							销量 {{ item.monthlySales }}
 						</text>
 						<text
-							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;"
 						>
 							人均{{ item.perCapita || '：--' }}
 						</text>
 						<text
-							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;"
 						>
 							{{ item.fansNumber ? `粉丝数${item.fansNumber}` : '高回头率' }}
 						</text>
@@ -110,7 +117,7 @@
 						<view v-if="item.label" style="display: flex;flex-wrap: wrap;margin-top: 10upx;">
 							<view
 								v-for="(part, count) in item.label.split(',')" :key="count"
-								style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+								style="padding: 6rpx 12rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
 							>
 								{{ part }}
 							</view>
@@ -118,29 +125,30 @@
 						<view v-else style="display: flex;flex-wrap: wrap;margin-top: 10upx;">
 							<view
 								v-for="(part, count) in ['支持定制', '批量采购', '品牌正品']" :key="count"
-								style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+								style="padding: 6rpx 12rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
 							>
 								{{ part }}
 							</view>
 						</view>
 					</view>
-					<view style="display: flex; align-items: center;margin-top: 12rpx;">
+					<!-- <view style="display: flex; align-items: center;margin-top: 12rpx;">
 						<image style="width: 136rpx;" mode="widthFix" src="../../../static/images/icon/rate-icon.png"></image>
 						<view style="margin-left: 6rpx;">
-							<tui-rate active="#EF530E" :size="16" disabled :current="item.score || 0"></tui-rate>
+						<tui-rate active="#EF530E" :size="16" disabled :current="item.score || 0"></tui-rate>
 						</view>
 						<text v-if="item.score" style="margin-left: 6rpx;font-size: 26rpx;color: #EF530E;">
-							{{ item.score }}星工厂
+						{{ item.score }}星工厂
 						</text>
 						<tui-icon name="arrowright" :size="32" unit="rpx" color="#EF530E" margin="0 0 0 6rpx"></tui-icon>
-					</view>
+						</view> -->
 					<view style="display: flex; align-items: center;margin-top: 12rpx;">
 						<image style="width: 36rpx;" mode="widthFix" src="../../../static/images/icon/recommend.png"></image>
 						<text
-							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;background-color: #EFF3F6;"
+							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;"
 						>
 							多款品牌家具
 						</text>
+						<text style="margin-left: 2rpx;color: #D8D8D8;">· · ·</text>
 					</view>
 				</view>
 			</view>

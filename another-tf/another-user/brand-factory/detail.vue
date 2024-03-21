@@ -17,7 +17,7 @@
 							</template>
 						</tui-input>
 					</view>
-					<tui-button type="gray" width="120rpx" height="60rpx" margin="0" plain link @click="handleCollectToggle">
+					<tui-button type="gray" width="120rpx" height="60rpx" margin="0 0 0 20rpx" plain link @click="handleCollectToggle">
 						<view>
 							<tui-icon
 								:name="brandDetail.ifCollect ? 'like-fill' : 'like'" :size="30" unit="rpx"
@@ -71,10 +71,7 @@
 						{{ brandDetail.label }}
 					</view>
 				</view>
-				<view
-					style="display: flex;align-items: center;justify-content: space-between;margin-top: 14rpx;"
-					@click="handleNavigate"
-				>
+				<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 14rpx;">
 					<view style="display: flex;align-items: center;">
 						<view
 							style="padding: 4rpx 10rpx;background-color: #0f0847;font-size: 26rpx;font-weight: bold;color: #ffffff;border-radius: 8rpx;"
@@ -91,7 +88,10 @@
 					</view>
 					<tui-icon :size="36" unit="rpx" color="#a0a0a1" name="arrowright" margin="0"></tui-icon>
 				</view>
-				<view style="display: flex;align-items: center;margin-top: 16rpx;color: #000000;font-size: 26rpx;">
+				<view
+					style="display: flex;align-items: center;margin-top: 16rpx;color: #000000;font-size: 26rpx;"
+					@click="handleNavigate"
+				>
 					<view style="padding: 4rpx;margin-right: 12rpx;border: 2rpx solid #000000;border-radius: 50%;line-height: 1;">
 						<tui-icon :size="30" unit="rpx" color="#000000" name="position" margin="0"></tui-icon>
 					</view>
@@ -181,7 +181,7 @@
 					<tui-no-data :fixed="false" style="padding-top: 60upx;">这里空空如也～</tui-no-data>
 				</view>
 			</view>
-			<view v-else style="padding: 0 24rpx;">
+			<view v-else style="padding: 0 24rpx;background-color: #ffffff;">
 				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 						<template #left="{ entity }">

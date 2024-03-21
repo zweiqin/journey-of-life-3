@@ -482,16 +482,16 @@ export default {
 					// })
 					// const banSku = (JSON.parse(resCanSale.data.bzResp || '{}').ban || []).map((i) => resCanSale.data.banziSkuId2skuIdsMap[i]).filter((i) => i)
 					const banSku = [
-						319980,
-						319981,
-						319984,
-						319985,
-						332728,
-						332729,
-						// 332732,
-						332733,
-						332736,
-						332737
+						// 319980,
+						// 319981,
+						// 319984,
+						// 319985,
+						// 332728,
+						// 332729,
+						// // 332732,
+						// 332733,
+						// 332736,
+						// 332737
 					]
 					Object.keys(this.goodsDetail.map || {}).forEach((skuValueCodeItem) => {
 						if (banSku.includes(this.goodsDetail.map[skuValueCodeItem].skuId)) {

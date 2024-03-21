@@ -226,8 +226,8 @@ export default {
 			} else if (this.loginType === 'password') {
 				validateRules.push({
 					name: 'password',
-					rule: ['required', 'isEnAndNo'],
-					msg: ['请输入密码', '密码为8~20位英文和数字组合']
+					rule: ['required', 'isNotChinese'],
+					msg: ['请输入密码', '密码不能包含中文']
 				})
 				loginFilterQuery = {
 					phone: this.loginQuery.phone,
