@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<p class="titles-one">代金卷余额</p>
+		<p class="titles-one">代金券余额</p>
 		<view class="titles-two">
 			<text class="number">{{ userAcount.number || '0.00' }}</text>元
 		</view>

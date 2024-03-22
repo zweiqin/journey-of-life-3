@@ -373,7 +373,7 @@ export default {
 				],
 				servicePicList2: [
 					{
-						after: '1711007237470-weishengjiangaizao-a.png',
+						after: '1711081869695-weishengjiangaizao-a.png',
 						before: '1711007278498-weishengjiangaizao-a1.png',
 						isAfter: true
 					},
@@ -391,7 +391,7 @@ export default {
 				servicePicList3: [
 					{
 						after: '1711007363355-yangtaigaizao-a.png',
-						before: '1711007407426-yangtaigaizao-a1.png',
+						before: '1711081894657-yangtaigaizao-a1.png',
 						isAfter: true
 					},
 					{
@@ -424,8 +424,8 @@ export default {
 				],
 				servicePicList5: [
 					{
-						after: '1711007912378-jiajufanxin-a.png',
-						before: '1711008052434-jiajufanxin-a1.png',
+						after: '1711102872941-jiajufanxin-a.png',
+						before: '1711081841620-jiajufanxin-a1.png',
 						isAfter: true
 					},
 					{

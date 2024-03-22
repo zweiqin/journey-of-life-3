@@ -24,7 +24,7 @@
 					<text class="txt2" style="display: flex;"> <text v-if="showType == 'income' && item.type != 2 && item.type != 4">+</text>  <text v-else>-</text> {{ item.number }}</text>
 					<view class="itemDetails">
 						<text class="txt1">
-							代金卷
+							代金券
 							<text v-if="item.type === 1">充值</text>
 							<text v-else-if="item.type === 2">转赠</text>
 							<text v-else-if="item.type === 3">签到</text>

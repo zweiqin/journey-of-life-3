@@ -1489,19 +1489,19 @@
         {
           "path": "another-user/voucher/voucher-operation",
           "style": {
-            "navigationBarTitleText": "代金卷操作"
+            "navigationBarTitleText": "代金券操作"
           }
         },
         {
           "path": "another-user/voucher/voucher",
           "style": {
-            "navigationBarTitleText": "代金卷"
+            "navigationBarTitleText": "代金券"
           }
         },
         {
           "path": "another-user/voucher/orderStatus",
           "style": {
-            "navigationBarTitleText": "代金卷订单完成状态"
+            "navigationBarTitleText": "代金券订单完成状态"
           }
         },
         {

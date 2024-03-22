@@ -39,9 +39,8 @@
 <script>
 import { getByIdUserBankcardApi, addUserBankcardApi, updateUserBankcardApi, deleteUserBankcardApi } from '../../../api/anotherTFInterface'
 import { bankCardAnalysisApi } from '../../../api/community-center'
-import { getUserId } from '../../../utils'
-import { USER_INFO } from '../../../constant'
-import { IMG_UPLOAD_URL } from '../../../config';
+import { USER_INFO, T_STORAGE_KEY } from '../../../constant'
+import { ANOTHER_TF_UPLOAD } from '../../../config';
 
 
 export default {
@@ -189,11 +188,14 @@ export default {
 						title: '上传中...'
 					});
 					uni.uploadFile({
-						url: IMG_UPLOAD_URL,
+						url: ANOTHER_TF_UPLOAD,
 						filePath: imgPath,
 						name: 'file',
+						header: {
+							Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+						},
 						formData: {
-							userId: getUserId()
+							'folderId': -1
 						},
 						success: (uploadFileRes) => {
 							uni.hideLoading();

@@ -21,7 +21,7 @@
           <view class="tag">旗舰店</view>
           <view class="tag">官方正品</view>
         </view>
-        <!-- <view v-else class="is-suppot-voucher" style="color: #888889;box-shadow: 0px 0px 0px 1rpx #888889;">不支持使用代金卷</view> -->
+        <!-- <view v-else class="is-suppot-voucher" style="color: #888889;box-shadow: 0px 0px 0px 1rpx #888889;">不支持使用代金券</view> -->
       </view>
     </view>
   </view>
@@ -49,7 +49,7 @@ export default {
         url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`
       });
     },
-    /* getClassifyProducts2Api这个接口需要这个方法来判断是否支持使用代金卷
+    /* getClassifyProducts2Api这个接口需要这个方法来判断是否支持使用代金券
      * @param {Object, Array} Item 商品对象
      * @param {String} Item.skuId 商品id
      * @return {Boolean} 是否可使用代金券

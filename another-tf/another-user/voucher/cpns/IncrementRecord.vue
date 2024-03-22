@@ -18,7 +18,7 @@
 					<text class="txt2">{{ item.number }}<text class="texts">({{ statusData[item.status] }})</text></text>
 					<!-- <text class="txt2">{{ item.number }}<text class="">({{ statusData[item.status] }})</text></text> -->
 					<view class="itemDetails">
-						<text class="txt1">代金卷{{ item.typeStrName }}</text>
+						<text class="txt1">代金券{{ item.typeStrName }}</text>
 						<text class="txt3">{{ item.typeStrName }} ID : {{ item.id }}</text>
 						<text class="txt3">{{ item.createTime }}</text>
 					</view>

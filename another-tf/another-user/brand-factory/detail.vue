@@ -35,7 +35,7 @@
 
 		<view style="background-color: #ffffff;">
 			<view v-if="brandDetail.shopLogo || brandDetail.advertisement" style="margin-top: 2upx;">
-				<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 550upx;">
+				<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 375upx;">
 					<template v-if="brandDetail.shopLogo">
 						<swiper-item>
 							<tui-lazyload-img

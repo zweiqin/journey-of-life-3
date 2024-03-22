@@ -22,7 +22,7 @@
 		<AmountSelection ref="AmountSelection" v-bind="$props" :amount-data="amountData" @getCustomValue="getCustomValue">
 		</AmountSelection>
 		<view class="VoucherService" style="display: none;">
-			<p class="title">代金卷服务</p>
+			<p class="title">代金券服务</p>
 			<view class="VoucherServiceBox">
 				<view class="VoucherServiceItem">
 					<tui-icon

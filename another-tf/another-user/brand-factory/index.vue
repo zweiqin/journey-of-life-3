@@ -42,8 +42,8 @@
 						</image>
 						<view v-if="currentBrandType === item.id">
 							<view
-								style="position: absolute;left: 50%;bottom: 13%;transform: translateX(-50%);width: 28rpx;height: 16rpx;border-radius: 0 0 18rpx 18rpx;"
-								:style="{ backgroundColor: categoryList.findIndex(i => i.id === currentBrandType) === (categoryList.length - 1) ? '#4e3d3d' : '#f2dfdf' }"
+								style="position: absolute;left: 50%;bottom: 8.5%;transform: translateX(-50%);width: 48rpx;height: 24rpx;border-radius: 0 0 50rpx 50rpx;"
+								:style="{ backgroundColor: categoryList.findIndex(i => i.id === currentBrandType) === (categoryList.length - 1) ? '#4e3d3d' : { '品牌建材': '#9bc4b9', '品牌家具': '#f2dfdf', '品牌饰品': '#efe1d4', '品牌定制': '#c1cadb', '品牌窗帘': '#d0dddd', '品牌灯饰': '#ecd2c7', '全部品牌': '#4e3d3d' }[item.storeName] }"
 							>
 							</view>
 						</view>
@@ -70,14 +70,14 @@
 			</scroll-view>
 		</view>
 
-		<view v-if="$data._list && $data._list.length" style="padding: 0 18rpx;">
+		<view v-if="$data._list && $data._list.length">
 			<view
-				v-for="item in $data._list" :key="item.id" style="padding: 0 0 24rpx;"
+				v-for="item in $data._list" :key="item.id" style="padding: 0 0 4rpx;margin: 0 0 12rpx;border: 2rpx solid #DFDFDF;border-radius: 20rpx;"
 				@click="go(`/another-tf/another-user/brand-factory/detail?shopId=${item.shopId}`)"
 			>
 				<view>
 					<tui-lazyload-img
-						width="100%" height="266rpx" mode="aspectFit" radius="20rpx"
+						width="100%" height="352rpx" mode="aspectFit" radius="20rpx 20rpx 0 0"
 						:src="common.seamingImgUrl(item.advertisement.split(',')[0])"
 					></tui-lazyload-img>
 				</view>
@@ -97,19 +97,13 @@
 						</text>
 					</view>
 					<view style="margin-top: 12rpx;font-size: 28rpx;color: #9E9E9E;">
-						<text
-							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;"
-						>
+						<text style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;">
 							销量 {{ item.monthlySales }}
 						</text>
-						<text
-							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;"
-						>
+						<text style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;">
 							人均{{ item.perCapita || '：--' }}
 						</text>
-						<text
-							style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;"
-						>
+						<text style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;">
 							{{ item.fansNumber ? `粉丝数${item.fansNumber}` : '高回头率' }}
 						</text>
 					</view>
@@ -143,9 +137,7 @@
 						</view> -->
 					<view style="display: flex; align-items: center;margin-top: 12rpx;">
 						<image style="width: 36rpx;" mode="widthFix" src="../../../static/images/icon/recommend.png"></image>
-						<text
-							style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;"
-						>
+						<text style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;">
 							多款品牌家具
 						</text>
 						<text style="margin-left: 2rpx;color: #D8D8D8;">· · ·</text>

@@ -17,7 +17,7 @@
       </view>
       <view class="pane-2">
         <view class="item">
-          <view class="item-title">剩余代金卷</view>
+          <view class="item-title">剩余代金券</view>
           <view class="item-value">
             {{shopInfo.giveBalance}}
           </view>
@@ -61,7 +61,7 @@
         <view @click="handleChangePrice(item.rechargeAmount, index)" class="item" :class="{ active: currentRechargeType === index }"
           v-for="(item, index) in rechargePriceList" :key="item.updateTime">
           <view class="price-text">{{ item.rechargeAmount }}</view>
-          <view class="voucher">{{ '代金卷' + item.bonusAmount + '元' || '自定义金额' }}</view>
+          <view class="voucher">{{ '代金券' + item.bonusAmount + '元' || '自定义金额' }}</view>
         </view>
       </view>
       <view class="price-list" v-else>

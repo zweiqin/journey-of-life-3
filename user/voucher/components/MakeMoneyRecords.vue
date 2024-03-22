@@ -27,7 +27,7 @@
                         </view>
                         <text class="txt2">{{ item.amount }}</text>
                         <view class="itemDetails">
-                            <text class="txt1">代金卷收益</text>
+                            <text class="txt1">代金券收益</text>
                             <text class="txt3">赚小钱文章收益</text>
                             <text class="txt3">{{ item.createTime }}</text>
                         </view>
@@ -53,7 +53,7 @@
                 </view>
                 <text class="txt2">{{ item.amount }}</text>
                 <view class="itemDetails">
-                    <text class="txt1">代金卷收益</text>
+                    <text class="txt1">代金券收益</text>
                     <text class="txt3">赚小钱文章收益</text>
                     <text class="txt3">{{ item.createTime }}</text>
                 </view>
@@ -74,7 +74,7 @@
                         </view>
                         <text class="txt2">{{ item.amount }}</text>
                         <view class="itemDetails">
-                            <text class="txt1">代金卷支出</text>
+                            <text class="txt1">代金券支出</text>
                             <text class="txt3">赚小钱文章支出</text>
                             <text class="txt3">{{ item.createTime }}</text>
                         </view>
@@ -99,7 +99,7 @@
                     </view>
                     <text class="txt2">{{ item.amount }}</text>
                     <view class="itemDetails">
-                        <text class="txt1">代金卷收益</text>
+                        <text class="txt1">代金券收益</text>
                         <text class="txt3">赚小钱文章收益</text>
                         <text class="txt3">{{ item.createTime }}</text>
                     </view>

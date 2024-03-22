@@ -546,25 +546,25 @@ export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/busines
 export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')
 
 // 代金券
-// 获取可用代金卷
+// 获取可用代金券
 export const getVoucherApi = (data) => AnotherTFRequest('/voucher/getVoucher', data)
 
-// 创建购买代金卷订单 /order/submitVoucher
+// 创建购买代金券订单 /order/submitVoucher
 export const submitVoucherOrderApi = (data) => AnotherTFRequest('/order/submitVoucher', data, 'POST')
 
-// 获取用户代金卷
+// 获取用户代金券
 export const getByUserVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/getByUserVoucher', data)
 
-// /voucherShopHold/transfer 赠送代金卷
+// /voucherShopHold/transfer 赠送代金券
 export const updateTransferVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/transfer', data, 'POST')
 
-// /voucherOrder/getTotal 获取代金卷总数据
+// /voucherOrder/getTotal 获取代金券总数据
 export const getTotalVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getTotal', data, 'POST')
 
-// /voucherShopHold/transferLogs 获取代金卷转增数据
+// /voucherShopHold/transferLogs 获取代金券转增数据
 export const getTransferLogsVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/transferLogs', data, 'POST')
 
-// /voucherOrder/getAll 获取代金卷充值数据
+// /voucherOrder/getAll 获取代金券充值数据
 export const getAllVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getAll', data, 'POST')
 
 // 用户银行卡相关接口

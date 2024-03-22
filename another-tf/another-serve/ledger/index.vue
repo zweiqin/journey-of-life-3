@@ -91,7 +91,7 @@
 								{{ item.name }}
 							</view>
 							<view slot="right-icon" class="rightArrow">
-								<span>赠送代金卷 ></span>
+								<span>赠送代金券 ></span>
 							</view>
 						</tui-list-cell>
 					</tui-list-view>
@@ -190,7 +190,7 @@ export default {
 	},
 	methods: {
 		getTpye(typeNumber) { 	// (0代金券，1现金，2会员升级)
-			const arr = ['代金卷', '现金', '会员升级']
+			const arr = ['代金券', '现金', '会员升级']
 			return arr[typeNumber]
 		},
 		getInfoCodeImage() {
