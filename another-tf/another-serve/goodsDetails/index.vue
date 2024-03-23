@@ -475,24 +475,12 @@ export default {
 				})
 				// 半子商品是否可售，对应规格值是否可点击。根据ifEnable，为0可选择，为1不可选择
 				try {
-					// const resCanSale = await getBanziProductCanSaleApi({
-					// 	productId: this.goodsDetail.productId,
-					// 	receiveId: '',
-					// 	skus: Object.values(this.goodsDetail.map || {}).map((i) => i.skuId)
-					// })
-					// const banSku = (JSON.parse(resCanSale.data.bzResp || '{}').ban || []).map((i) => resCanSale.data.banziSkuId2skuIdsMap[i]).filter((i) => i)
-					const banSku = [
-						// 319980,
-						// 319981,
-						// 319984,
-						// 319985,
-						// 332728,
-						// 332729,
-						// // 332732,
-						// 332733,
-						// 332736,
-						// 332737
-					]
+					const resCanSale = await getBanziProductCanSaleApi({
+						productId: this.goodsDetail.productId,
+						receiveId: this.goodsDetail.receive.receiveId,
+						skus: Object.values(this.goodsDetail.map || {}).map((i) => ({ skuId: i.skuId, number: 1 }))
+					})
+					const banSku = (JSON.parse(resCanSale.data.bzResp || '{}').ban || []).map((i) => resCanSale.data.banziSkuId2skuIdsMap[i]).filter((i) => i)
 					Object.keys(this.goodsDetail.map || {}).forEach((skuValueCodeItem) => {
 						if (banSku.includes(this.goodsDetail.map[skuValueCodeItem].skuId)) {
 							this.goodsDetail.map[skuValueCodeItem].ifEnable = 1
@@ -505,7 +493,9 @@ export default {
 							})
 						}
 					})
-				} catch {}
+				} catch {
+					uni.hideToast()
+				}
 				// 渲染商详之后，如果参数传了skuId，则选中该skuId，否则选中第一个规格
 				this.$nextTick(async () => {
 					if (this.skuId) {

@@ -34,8 +34,8 @@
 		</BeeBack>
 
 		<view style="background-color: #ffffff;">
-			<view v-if="brandDetail.shopLogo || brandDetail.advertisement" style="margin-top: 2upx;">
-				<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 375upx;">
+			<view v-if="brandDetail.shopLogo || brandDetail.advertisement" style="margin-top: 2rpx;">
+				<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 375rpx;">
 					<template v-if="brandDetail.shopLogo">
 						<swiper-item>
 							<tui-lazyload-img
@@ -105,117 +105,133 @@
 			</view>
 		</view>
 
-		<tui-tab
-			:tabs="allTabList" :current="currentTab" scroll background-color="transparent"
-			:size="32" bold
-			bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
-			slider-height="4px"
-			@change="handleTabChange"
-		></tui-tab>
+		<view style="background-color: #ffffff;">
+			<tui-tab
+				:tabs="['产品', '视频', '公司简介']" :current="currentWrapper" scroll background-color="transparent"
+				:size="32" bold
+				bottom="6rpx" color="#222229" selected-color="#EF570F" slider-bg-color="#EF570F"
+				slider-height="2px"
+				@change="handleWrapperChange"
+			></tui-tab>
 
-		<view
-			v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length > 0"
-			style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
-		>
-			<view
-				v-for="(item, index) in allTabData[currentTab].classify" :key="index"
-				style="padding: 12rpx 10rpx;margin-right: 10rpx;font-size: 30rpx;border-radius: 8rpx;"
-				:style="{ color: index == childsCurrent ? '#ffffff' : '#8c8b8d', backgroundColor: index == childsCurrent ? '#ff8000' : '#fefeff' }"
-				@click="handleSelectChild(item, index)"
-			>
-				{{ item.classifyName }}
-			</view>
-		</view>
-
-		<view style="padding: 4rpx 0 100rpx;margin-top: 10upx;">
-			<view v-if="currentTab === -1" style="padding: 0 24rpx;">
-			</view>
-			<view v-else-if="currentTab === 1">
-				<view v-if="brandDetail.videos">
-					<view style="padding: 0 24rpx;">
+			<view style="padding: 4rpx 0 100rpx;margin-top: 10rpx;">
+				<view v-if="currentWrapper === -1" style="padding: 0 24rpx;">
+				</view>
+				<view v-else-if="currentWrapper === 1">
+					<view v-if="brandDetail.videos">
+						<view style="padding: 0 24rpx;">
+							<view
+								v-for="(item, index) in brandDetail.videos.split(',')" :key="index"
+								style="margin-bottom: 38rpx;text-align: center;"
+							>
+								<video
+									style="width: 100%; height: 300rpx;border-radius: 10rpx;"
+									:src="common.seamingImgUrl(item)"
+								></video>
+								<text style="margin-top: 10rpx;font-size: 26rpx;">视频{{ index + 1 }}</text>
+							</view>
+						</view>
 						<view
-							v-for="(item, index) in brandDetail.videos.split(',')" :key="index"
-							style="margin-bottom: 38rpx;text-align: center;"
+							style="padding: 40rpx 0 50rpx;font-size: 24rpx;color: #9E9E9E;text-align: center;background-color: #ffffff;"
 						>
-							<video
-								style="width: 100%; height: 300rpx;border-radius: 10rpx;"
-								:src="common.seamingImgUrl(item)"
-							></video>
-							<text style="margin-top: 10rpx;font-size: 26rpx;">视频{{ index + 1 }}</text>
+							~~到底啦~~
 						</view>
 					</view>
-					<view
-						style="padding: 40rpx 0 50rpx;font-size: 24rpx;color: #9E9E9E;text-align: center;background-color: #ffffff;"
-					>
-						~~到底啦~~
+					<view v-else style="padding-bottom: 45rpx;">
+						<tui-no-data :fixed="false" style="padding-top: 60rpx;">这里空空如也～</tui-no-data>
 					</view>
 				</view>
-				<view v-else style="padding-bottom: 45upx;">
-					<tui-no-data :fixed="false" style="padding-top: 60upx;">这里空空如也～</tui-no-data>
+				<view v-else-if="currentWrapper === 2">
+					<view v-if="brandDetail.shopBrief">
+						<view style="padding: 0 24rpx;">
+							<view v-if="brandDetail.advertisement" style="margin-bottom: 20rpx;">
+								<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 550rpx;">
+									<swiper-item v-for="(item, index) in brandDetail.advertisement.split(',')" :key="index">
+										<tui-lazyload-img
+											mode="scaleToFill" width="100%" height="100%" radius="20rpx"
+											:src="common.seamingImgUrl(item)"
+										></tui-lazyload-img>
+									</swiper-item>
+								</swiper>
+							</view>
+							<view style="padding-bottom: 86rpx;font-size: 30rpx;color: #222229;word-break: break-all;line-height: 1.8;">
+								{{ brandDetail.shopBrief }}
+							</view>
+						</view>
+						<view
+							style="padding: 40rpx 0 50rpx;font-size: 24rpx;color: #9E9E9E;text-align: center;background-color: #ffffff;"
+						>
+							~~到底啦~~
+						</view>
+					</view>
+					<view v-else style="padding-bottom: 45rpx;">
+						<tui-no-data :fixed="false" style="padding-top: 60rpx;">这里空空如也～</tui-no-data>
+					</view>
 				</view>
-			</view>
-			<view v-else-if="currentTab === 2">
-				<view v-if="brandDetail.shopBrief">
+				<view v-else>
+					<view
+						v-if="allTabList && allTabList.length"
+						style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
+					>
+						<view
+							v-for="(item, index) in allTabList" :key="index"
+							style="padding: 8rpx 24rpx;margin-right: 16rpx;font-size: 26rpx;border-radius: 8rpx;background-color: #dbdbdb;"
+							:style="{ color: index == currentTab ? '#000000' : '#767676', fontWeight: index == currentTab ? 'bold' : 'normal' }"
+							@click="handleTabChange({ index })"
+						>
+							{{ item }}
+						</view>
+					</view>
+					<!-- <view
+						v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length"
+						style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
+						>
+						<view
+						v-for="(item, index) in allTabData[currentTab].classify" :key="index"
+						style="padding: 8rpx 24rpx;margin-right: 16rpx;font-size: 26rpx;border-radius: 8rpx;background-color: #dbdbdb;"
+						:style="{ color: index == childsCurrent ? '#000000' : '#767676', fontWeight: index == childsCurrent ? 'bold' : 'normal' }"
+						@click="handleSelectChild(item, index)"
+						>
+						{{ item.classifyName }}
+						</view>
+						</view> -->
 					<view style="padding: 0 24rpx;">
-						<view v-if="brandDetail.advertisement" style="margin-bottom: 20rpx;">
-							<swiper indicator-dots autoplay :interval="3000" circular :duration="1000" style="height: 550upx;">
-								<swiper-item v-for="(item, index) in brandDetail.advertisement.split(',')" :key="index">
-									<tui-lazyload-img
-										mode="scaleToFill" width="100%" height="100%" radius="20rpx"
-										:src="common.seamingImgUrl(item)"
-									></tui-lazyload-img>
-								</swiper-item>
-							</swiper>
+						<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
+							<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
+								<template #left="{ entity }">
+									<view style="padding: 0 32rpx;">
+										<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
+										</BrandGoods>
+									</view>
+								</template>
+								<template #right="{ entity }">
+									<view style="padding: 0 32rpx;">
+										<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
+										</BrandGoods>
+									</view>
+								</template>
+							</tui-waterfall>
 						</view>
-						<view style="padding-bottom: 86rpx;font-size: 30rpx;color: #222229;word-break: break-all;line-height: 1.8;">
-							{{ brandDetail.shopBrief }}
+						<view style="padding-bottom: 45rpx;">
+							<LoadingMore
+								:status="!shopGoodsInfo.isEmpty && !shopGoodsInfo.data.length
+									? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''"
+							>
+							</LoadingMore>
+							<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 						</view>
 					</view>
-					<view
-						style="padding: 40rpx 0 50rpx;font-size: 24rpx;color: #9E9E9E;text-align: center;background-color: #ffffff;"
-					>
-						~~到底啦~~
-					</view>
-				</view>
-				<view v-else style="padding-bottom: 45upx;">
-					<tui-no-data :fixed="false" style="padding-top: 60upx;">这里空空如也～</tui-no-data>
-				</view>
-			</view>
-			<view v-else style="padding: 0 24rpx;background-color: #ffffff;">
-				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
-					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
-						<template #left="{ entity }">
-							<view style="padding: 0 32rpx;">
-								<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
-								</BrandGoods>
-							</view>
-						</template>
-						<template #right="{ entity }">
-							<view style="padding: 0 32rpx;">
-								<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
-								</BrandGoods>
-							</view>
-						</template>
-					</tui-waterfall>
-				</view>
-				<view style="padding-bottom: 45upx;">
-					<LoadingMore
-						:status="!shopGoodsInfo.isEmpty && !shopGoodsInfo.data.length
-							? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''"
-					>
-					</LoadingMore>
-					<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 				</view>
 			</view>
 		</view>
 
 		<view
-			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;"
+			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20rpx 24rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<view style="display: flex;align-items: center;">
 					<tui-lazyload-img
-						mode="scaleToFill" width="108rpx" height="108rpx"
+						mode="scaleToFill" width="92rpx" height="92rpx" radius="50%"
 						:src="common.seamingImgUrl(brandDetail.shopLogo || brandDetail.advertisement.split(',').find(i => i) || '')"
 					></tui-lazyload-img>
 					<view style="margin-left: 20rpx;">{{ brandDetail.shopName || '--' }}</view>
@@ -251,11 +267,23 @@ export default {
 	data() {
 		return {
 			shopId: null,
-			brandDetail: {},
-			allTabList: ['商品', '视频', '公司简介'],
-			allTabData: [{ classifyName: '商品', classifyId: 0 }, { classifyName: '视频', classifyId: 0 }, { classifyName: '公司简介', classifyId: 0 }], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
+			brandDetail: {
+				advertisement: '',
+				ifCollect: 0,
+				shopName: '',
+				shopLogo: '',
+				annualLimit: '',
+				label: '',
+				shopAdress: '',
+				shopBrief: '',
+				videos: ''
+			},
+			currentWrapper: 0,
+			allTabList: [ '全部' ],
+			allTabData: [ { classifyName: '全部', classifyId: 0 } ], // [{ classifyName: '产品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			childsCurrent: -1,
+			classifyId: '',
 			shopGoodsInfo: {
 				query: {
 					search: '',
@@ -321,20 +349,20 @@ export default {
 			if (!this.brandDetail.shopAdress) return this.$showToast('商家地址有误，导航失败')
 			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
 		},
+		handleWrapperChange(e) {
+			this.currentWrapper = e.index
+		},
 		handleTabChange(e) {
-			this.childsCurrent = 0
 			this.currentTab = e.index
-			console.log(this.currentTab)
 			// if (e.index === 1) return
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
-			if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length > 0) {
-				this.classifyId = this.allTabData[e.index].classify[0].classifyId
-			} else if (e.index === 0) {
+			// if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length) {
+			// 	this.childsCurrent = 0
+			// 	this.classifyId = this.allTabData[e.index].classify[0].classifyId
+			// } else
+			if (e.index === 0) {
 				this.classifyId = ''
-			} else if ((e.index === 1) || (e.index === 2)) {
-				this.classifyId = ''
-				return
 			} else {
 				this.classifyId = this.allTabData[e.index].classifyId
 			}
@@ -419,7 +447,7 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if ((this.currentTab !== -1) && (this.currentTab !== 1) && (this.currentTab !== 2)) {
+		if ((this.currentWrapper !== -1) && (this.currentWrapper !== 1) && (this.currentWrapper !== 2)) {
 			if (this.shopGoodsInfo.data.length < this.shopGoodsInfo.listTotal) {
 				++this.shopGoodsInfo.query.page
 				this.getShopGoodsTemplate(true)

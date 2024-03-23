@@ -84,7 +84,7 @@ export default {
 									itemList: res.data.map((item) => `${item.name}${item.state ? '（在线）' : ''}`), // （已下线）
 									itemColor: '#2c3e50',
 									success: (result) => {
-										uni.showToast({ title: res.data[result.tapIndex].name })
+										// uni.showToast({ title: res.data[result.tapIndex].name })
 										setTimeout(() => {
 											dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
 											// uni.navigateTo({

@@ -72,16 +72,18 @@
 
 		<view v-if="$data._list && $data._list.length">
 			<view
-				v-for="item in $data._list" :key="item.id" style="padding: 0 0 4rpx;margin: 0 0 12rpx;border: 2rpx solid #DFDFDF;border-radius: 20rpx;"
+				v-for="item in $data._list" :key="item.id" style="margin: 0 0 12rpx;padding: 0 24rpx;"
 				@click="go(`/another-tf/another-user/brand-factory/detail?shopId=${item.shopId}`)"
 			>
 				<view>
 					<tui-lazyload-img
-						width="100%" height="352rpx" mode="aspectFit" radius="20rpx 20rpx 0 0"
+						width="100%" height="352rpx" mode="scaleToFill" radius="20rpx 20rpx 0 0"
 						:src="common.seamingImgUrl(item.advertisement.split(',')[0])"
 					></tui-lazyload-img>
 				</view>
-				<view style="padding: 18rpx 16rpx;">
+				<view
+					style="padding: 18rpx 16rpx 20rpx;margin: 2rpx 0 0;border: 1rpx solid #DFDFDF;border-radius: 0 0 20rpx 20rpx;overflow: hidden;"
+				>
 					<view style="font-weight: bold;">{{ item.shopName }}</view>
 					<view style="display: flex;align-items: center;margin-top: 12rpx;font-size: 26rpx;">
 						<image src="../../../static/images/icon/v-icon.png" mode="widthFix" style="width: 30rpx;" />
@@ -135,12 +137,23 @@
 						</text>
 						<tui-icon name="arrowright" :size="32" unit="rpx" color="#EF530E" margin="0 0 0 6rpx"></tui-icon>
 						</view> -->
-					<view style="display: flex; align-items: center;margin-top: 12rpx;">
-						<image style="width: 36rpx;" mode="widthFix" src="../../../static/images/icon/recommend.png"></image>
-						<text style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;">
-							多款品牌家具
-						</text>
-						<text style="margin-left: 2rpx;color: #D8D8D8;">· · ·</text>
+					<view
+						class="middle-btn"
+						style="display: flex; align-items: center;justify-content: space-between;margin-top: 6rpx;"
+					>
+						<view style="display: flex; align-items: center;margin-top: 12rpx;">
+							<image style="width: 36rpx;" mode="widthFix" src="../../../static/images/icon/recommend.png"></image>
+							<text style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 24rpx;color: #9E9E9E;">
+								多款品牌家具
+							</text>
+							<text style="margin-left: 2rpx;color: #D8D8D8;">· · ·</text>
+						</view>
+						<tui-button
+							type="warning" width="130rpx" height="60rpx" shape="circle"
+							@click="go(`/another-tf/another-user/brand-factory/detail?shopId=${item.shopId}`)"
+						>
+							去了解
+						</tui-button>
 					</view>
 				</view>
 			</view>
@@ -285,6 +298,12 @@ export default {
 	.search-btn {
 		/deep/ .tui-btn {
 			background: #ee692f !important;
+		}
+	}
+
+	.middle-btn {
+		/deep/ .tui-btn {
+			background: #ef530e !important;
 		}
 	}
 }

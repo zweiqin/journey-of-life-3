@@ -275,7 +275,7 @@ export default {
 		},
 
 		handleConfirmTap() {
-			if (this.fileList.length > 0) {
+			if (this.fileList.length) {
 				for (let i = 0; i < this.fileList.length; i++) {
 					this.commentImgs += this.fileList[i] + ','
 				}

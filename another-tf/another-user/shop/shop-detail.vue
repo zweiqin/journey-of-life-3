@@ -42,7 +42,7 @@
 		></tui-tab>
 
 		<view
-			v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length > 0"
+			v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length"
 			style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
 		>
 			<view
@@ -67,7 +67,7 @@
 				</tui-no-data>
 			</view>
 			<view v-else>
-				<view v-if="bannerInfoList && bannerInfoList.length > 0" style="background: #f7f7f7;padding: 20upx 30upx;">
+				<view v-if="bannerInfoList && bannerInfoList.length" style="background: #f7f7f7;padding: 20upx 30upx;">
 					<swiper indicator-dots="true">
 						<swiper-item v-for="(item, index) in bannerInfoList" :key="index">
 							<image :src="item.bannerImage" style="width: 100%;height: 280upx;border-radius: 20upx;"></image>
@@ -261,14 +261,14 @@ export default {
 		},
 		// 栏目切换
 		handleTabChange(e) {
-			this.childsCurrent = 0
 			this.currentTab = e.index
 			console.log(this.currentTab)
 			this.initShopCart()
 			// if (e.index === 1) return
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
-			if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length > 0) {
+			if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length) {
+				this.childsCurrent = 0
 				this.classifyId = this.allTabData[e.index].classify[0].classifyId
 			} else if (e.index === 0) {
 				this.classifyId = ''

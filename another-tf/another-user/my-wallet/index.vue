@@ -56,23 +56,7 @@
 							<text>余额</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.totalPrice || 0) : '*****' }}</text>
-							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-						</view>
-					</view>
-				</tui-list-cell>
-				<tui-list-cell unlined padding="0 28rpx" :size="30" @click="go('/another-tf/another-user/voucher/voucher-operation')">
-					<view
-						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
-					>
-						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<view style="width: 48rpx;margin-right: 34rpx;">
-								<tui-icon name="coupon" :size="48" unit="rpx" color="#f77754" margin="0"></tui-icon>
-							</view>
-							<text>代金券</text>
-						</view>
-						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.voucherPrice || 0) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.rechargePrice || 0) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>
@@ -92,6 +76,22 @@
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.commissionPrice || 0) : '*****' }}</text>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
+						</view>
+					</view>
+				</tui-list-cell>
+				<tui-list-cell unlined padding="0 28rpx" :size="30" @click="go('/another-tf/another-user/voucher/voucher-operation')">
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
+					>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<view style="width: 48rpx;margin-right: 34rpx;">
+								<tui-icon name="coupon" :size="48" unit="rpx" color="#f77754" margin="0"></tui-icon>
+							</view>
+							<text>代金券</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.voucherPrice || 0) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>

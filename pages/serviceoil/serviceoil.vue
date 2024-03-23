@@ -56,24 +56,24 @@ export default {
 	data() {
 		return {
 			tests: [
-				{
-					name: '去开卡',
-					id: 1,
-					icon: 'card-fill',
-					color: '#1357fe'
-				},
-				{
-					name: '去充值',
-					id: 2,
-					icon: 'coupon',
-					color: '#467cfd'
-				},
-				{
-					name: '去加油',
-					id: 3,
-					icon: 'listview',
-					color: '#d81e06'
-				}
+				// {
+				// 	name: '去开卡',
+				// 	id: 1,
+				// 	icon: 'card-fill',
+				// 	color: '#1357fe'
+				// },
+				// {
+				// 	name: '去充值',
+				// 	id: 2,
+				// 	icon: 'coupon',
+				// 	color: '#467cfd'
+				// },
+				// {
+				// 	name: '去加油',
+				// 	id: 3,
+				// 	icon: 'listview',
+				// 	color: '#d81e06'
+				// }
 			],
 			tests1: [
 				{

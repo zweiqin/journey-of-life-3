@@ -24,23 +24,23 @@
 			</view>
 			<view style="margin-top: 26rpx;font-size: 36rpx;">余额</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ pricePlatformInfo.totalPrice || 0 }}
+				￥{{ pricePlatformInfo.rechargePrice || 0 }}
 			</view>
-			<view style="margin-top: 20rpx;font-size: 36rpx;">可提现余额：￥{{ pricePlatformInfo.price || 0 }}</view>
+			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">可提现余额：￥{{ pricePlatformInfo.rechargePrice || 0 }}</view> -->
 			<view class="operation-btn">
 				<view style="padding-top: 100rpx;">
 					<tui-button type="danger" width="280rpx" height="78rpx" margin="0" @click="isShowRechargePopup = true">
 						充值
 					</tui-button>
 				</view>
-				<view style="padding-top: 18rpx;">
+				<!-- <view style="padding-top: 18rpx;">
 					<tui-button
-						type="gray" width="280rpx" height="78rpx" margin="0"
-						@click="go('/another-tf/another-serve/withdraw/index')"
+					type="gray" width="280rpx" height="78rpx" margin="0"
+					@click="go('/another-tf/another-serve/withdraw/index')"
 					>
-						提现
+					提现
 					</tui-button>
-				</view>
+					</view> -->
 			</view>
 		</view>
 

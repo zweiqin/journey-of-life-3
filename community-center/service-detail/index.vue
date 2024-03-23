@@ -318,7 +318,10 @@
 			style="position: fixed;bottom: 0;z-index: 9;width: 100%;padding: 42rpx 30rpx 40rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view style="display: flex;align-items: center;justify-content: space-around;">
-				<view style="text-align: center;">
+				<view
+					style="text-align: center;"
+					@click="$store.dispatch('app/getCustomerServiceAction', { isToService: true })"
+				>
 					<view style="padding: 8rpx;background-color: #ffffff;line-height: 1;border-radius: 50%;">
 						<tui-icon name="kefu" :size="46" unit="rpx" color="#2C2C2C" margin="0"></tui-icon>
 					</view>
@@ -337,12 +340,14 @@
 </template>
 
 <script>
+import { getServiceSortApi } from '../../api/community-center'
 
 export default {
 	name: 'ServiceDetail',
 	props: {},
 	data() {
 		return {
+			serviceSortData: [],
 			transformation: {
 				0: '未知',
 				1: '全屋整装改造服务',
@@ -444,22 +449,64 @@ export default {
 	},
 	onLoad(options) {
 		this.currentType = Number(options.id) ? options.id : '0'
+		uni.showLoading()
+		getServiceSortApi({})
+			.then((res) => {
+				uni.hideLoading()
+				this.serviceSortData = res.data
+			})
+			.catch(() => {
+				uni.hideLoading()
+			})
 	},
 	methods: {
 		handleSwiperChange(e) {
 			this.currentSwiper = e.detail.current
 		},
 		handleClickService() {
+			// 全屋改造——616全包服务
+			// 卫生间改造——671卫生间改造服务
+			// 阳台改造——667阳台改造服务
+			// 窗帘升级——412窗帘维修服务
+			// 家具翻新——333皮革家具翻新
 			if (this.currentType === '1') {
-				this.$redirectTo('/community-center/service-sort/index?value=579&name=装修服务')
+				this.handleToServiceItem('全包服务')
+				// this.$redirectTo('/community-center/service-sort/index?value=579&name=装修服务')
 			} else if (this.currentType === '2') {
-				this.$redirectTo('/community-center/service-sort/index?value=14&name=局部改造')
+				this.handleToServiceItem('卫生间改造服务')
+				// this.$redirectTo('/community-center/service-sort/index?value=14&name=局部改造')
 			} else if (this.currentType === '3') {
-				this.$redirectTo('/community-center/service-sort/index?value=14&name=局部改造')
+				this.handleToServiceItem('阳台改造服务')
+				// this.$redirectTo('/community-center/service-sort/index?value=14&name=局部改造')
 			} else if (this.currentType === '4') {
-				this.$redirectTo('/community-center/service-sort/index?value=289&name=窗帘衣架')
+				this.handleToServiceItem('窗帘维修服务')
+				// this.$redirectTo('/community-center/service-sort/index?value=289&name=窗帘衣架')
 			} else if (this.currentType === '5') {
-				this.$redirectTo('/community-center/service-sort/index?value=2&name=家具维保')
+				this.handleToServiceItem('皮革家具翻新')
+				// this.$redirectTo('/community-center/service-sort/index?value=2&name=家具维保')
+			}
+		},
+		handleToServiceItem(name) {
+			if (name) {
+				let serviceObj = {}
+				this.serviceSortData.forEach((item) => {
+					if (item.children && item.children.length) {
+						item.children.forEach((section) => {
+							if (section.children && section.children.length) {
+								section.children.forEach((serve) => {
+									if (serve.serverNameThree === name) {
+										serviceObj = serve
+									}
+								})
+							}
+						})
+					}
+				})
+				if (serviceObj.id) {
+					this.go(`/community-center/community-detail?id=${serviceObj.id}&serverNameThree=${serviceObj.serverNameThree}&serverImageUrl=${serviceObj.serverImageUrl}`)
+				} else {
+					this.$showToast(`缺少${name}服务`)
+				}
 			}
 		}
 	}

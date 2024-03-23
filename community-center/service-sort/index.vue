@@ -40,14 +40,14 @@
 						</text>
 					</view>
 					<view style="padding: 2rpx 0 0;">
-						<view v-for="(item, index) in serviceSortData" :key="item.serverNameOne" style="padding: 26rpx 6rpx 0;">
+						<view v-for="(item, index) in serviceSortData" :key="item.serverNameOne" style="padding: 62rpx 6rpx 0;">
 							<tui-collapse
 								:index="index" :current="currentIndexMain" hd-bg-color="#ffffff" :arrow="false"
 								@click="changeCurrentMain"
 							>
 								<template #title>
 									<view
-										style="font-size: 32rpx;font-weight: bold;"
+										style="font-size: 30rpx;font-weight: bold;"
 										@click="(currentIndexMain !== index) && handleClickOneLevel(item)"
 									>
 										{{ item.serverNameOne }}
@@ -287,7 +287,7 @@ export default {
 					.select(`.scroll-current-serve-${this.currentTab}`)
 					.boundingClientRect((res) => {
 						this.$nextTick(() => {
-							const top = (res && res.top && (res.top - 125)) || 0
+							const top = (res && res.top && (res.top - 130)) || 0
 							if (top > 0) this.scrollServeTop = top
 						})
 					})
