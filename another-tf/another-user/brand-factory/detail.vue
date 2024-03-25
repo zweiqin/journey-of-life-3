@@ -17,7 +17,11 @@
 							</template>
 						</tui-input>
 					</view>
-					<tui-button type="gray" width="120rpx" height="60rpx" margin="0 0 0 20rpx" plain link @click="handleCollectToggle">
+					<tui-button
+						type="gray" width="120rpx" height="60rpx" margin="0 0 0 20rpx"
+						plain link
+						@click="handleCollectToggle"
+					>
 						<view>
 							<tui-icon
 								:name="brandDetail.ifCollect ? 'like-fill' : 'like'" :size="30" unit="rpx"
@@ -108,9 +112,9 @@
 		<view style="background-color: #ffffff;">
 			<tui-tab
 				:tabs="['产品', '视频', '公司简介']" :current="currentWrapper" scroll background-color="transparent"
-				:size="32" bold
-				bottom="6rpx" color="#222229" selected-color="#EF570F" slider-bg-color="#EF570F"
-				slider-height="2px"
+				:size="32"
+				bold bottom="6rpx" color="#222229" selected-color="#EF570F"
+				slider-bg-color="#EF570F" slider-height="2px"
 				@change="handleWrapperChange"
 			></tui-tab>
 
@@ -154,7 +158,9 @@
 									</swiper-item>
 								</swiper>
 							</view>
-							<view style="padding-bottom: 86rpx;font-size: 30rpx;color: #222229;word-break: break-all;line-height: 1.8;">
+							<view
+								style="padding-bottom: 86rpx;font-size: 30rpx;color: #222229;word-break: break-all;line-height: 1.8;"
+							>
 								{{ brandDetail.shopBrief }}
 							</view>
 						</view>
@@ -199,16 +205,20 @@
 						<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 							<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 								<template #left="{ entity }">
-									<view style="padding: 0 32rpx;">
-										<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
-										</BrandGoods>
-									</view>
+									<BrandGoods
+										:shop-id="shopId" :c-item="entity" pic-padding="0 32rpx" show-sales
+										:show-icon="false"
+										price-color="#E02208"
+									>
+									</BrandGoods>
 								</template>
 								<template #right="{ entity }">
-									<view style="padding: 0 32rpx;">
-										<BrandGoods :shop-id="shopId" :c-item="entity" show-sales :show-icon="false" price-color="#E02208">
-										</BrandGoods>
-									</view>
+									<BrandGoods
+										:shop-id="shopId" :c-item="entity" pic-padding="0 32rpx" show-sales
+										:show-icon="false"
+										price-color="#E02208"
+									>
+									</BrandGoods>
 								</template>
 							</tui-waterfall>
 						</view>

@@ -108,6 +108,7 @@
 import { afterConditionEnum, orderTypeEnum } from '../../../components/ATFOrderInfo/config'
 import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
+import { resolveGoodsDetailSkuSituation } from '../../../utils'
 export default {
 	name: 'BusinessOrder',
 	props: {
@@ -371,22 +372,28 @@ export default {
 		},
 		async handleGoBuyAgain(orderItem) {
 			// 循环sku，获取商品详情，并且判断库存
-			const postAjax = []
-			orderItem.skus.forEach((skuItem) => {
-				postAjax.push(this.queryProductDetail(skuItem))
-			})
-			// 并发执行
-			const skuDetailList = await Promise.all(postAjax)
+			uni.showLoading()
+			const goodsDetailList = []
+			for (const index in orderItem.skus) {
+				const skuItem = orderItem.skus[index]
+				let { data: goodsDetail } = await getProductDetailsByIdApi({
+					shopId: skuItem.shopId,
+					productId: skuItem.productId,
+					skuId: skuItem.skuId,
+					terminal: 1
+				})
+				goodsDetail = await resolveGoodsDetailSkuSituation(goodsDetail)
+				goodsDetailList.push(goodsDetail)
+			}
+			uni.hideLoading()
 			const canNotBuyNameList = []
 			// 判断库存
-			skuDetailList.forEach((skuDetail) => {
-				for (const skuDetailSkuMapKey in skuDetail.map) {
+			goodsDetailList.forEach((skuDetail) => {
+				for (const skuValueCodeItem in skuDetail.map) {
 					// 判断此SKU是否存在于传进来的item
-					const findSku = orderItem.skus.find((skuItem) => skuItem.skuId === skuDetail.map[skuDetailSkuMapKey].skuId)
-					if (findSku) {
-						if (findSku.number > skuDetail.map[skuDetailSkuMapKey].stockNumber) {
-							canNotBuyNameList.push(findSku.productName)
-						}
+					const findSku = orderItem.skus.find((skuItem) => skuItem.skuId === skuDetail.map[skuValueCodeItem].skuId)
+					if (findSku && (findSku.number > skuDetail.map[skuValueCodeItem].stockNumber)) {
+						canNotBuyNameList.push(findSku.productName)
 					}
 				}
 			})
@@ -402,20 +409,6 @@ export default {
 				skus: orderItem.skus
 			} ])
 			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
-		},
-		async queryProductDetail(skuItem) {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			})
-			const res = await getProductDetailsByIdApi({
-				shopId: skuItem.shopId,
-				productId: skuItem.productId,
-				skuId: skuItem.skuId,
-				terminal: 1
-			})
-			uni.hideLoading()
-			return res.data
 		}
 	}
 }

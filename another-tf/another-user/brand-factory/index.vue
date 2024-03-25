@@ -100,7 +100,7 @@
 					</view>
 					<view style="margin-top: 12rpx;font-size: 28rpx;color: #9E9E9E;">
 						<text style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;">
-							销量 {{ item.monthlySales }}
+							销量 {{ item.monthlySales > 1000 ? '1000+' : item.monthlySales > 100 ? '100+' : item.monthlySales }}
 						</text>
 						<text style="padding: 0 12rpx 0 0;margin: 6rpx 12rpx;border-right: 2rpx solid #D8D8D8;">
 							人均{{ item.perCapita || '：--' }}

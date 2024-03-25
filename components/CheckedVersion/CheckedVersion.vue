@@ -39,7 +39,7 @@ import { checkedVersionApi } from '../../api/app'
 export default {
   data() {
     return {
-      logVisible: true,
+      logVisible: false,
       logs: [],
       styles: {
         position: 'fixed',

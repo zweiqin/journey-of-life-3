@@ -55,13 +55,13 @@
 				<ATFActivityImage :type="cItem.activityType" style="margin: 10upx 2upx 0 0;"></ATFActivityImage>
 				<view
 					v-if="cItem.voucherId && cItem.voucherPrice"
-					style="width: fit-content;max-width: 100%;padding: 2upx 8upx;margin: 10upx 6upx 0 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+					style="width: fit-content;max-width: 218rpx;padding: 2upx 8upx;margin: 10upx 6upx 0 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 				>
 					可使用{{ cItem.voucherPrice }}代金券抵扣
 				</view>
 				<view
 					v-if="cItem.presenterVoucher"
-					style="width: fit-content;max-width: 100%;padding: 2upx 8upx;margin: 10upx 6upx 0 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+					style="width: fit-content;max-width: 218rpx;padding: 2upx 8upx;margin: 10upx 6upx 0 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 				>
 					赠送 {{ cItem.presenterVoucher }} 代金券
 				</view>

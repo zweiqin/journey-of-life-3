@@ -289,8 +289,8 @@ import CombinedSales from './components/combinedSales'
 import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
-import { timeFormatting } from '../../../utils'
-import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { timeFormatting, resolveGoodsDetailSkuSituation } from '../../../utils'
+import { getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -473,29 +473,8 @@ export default {
 				skuCollectionListKeys.forEach((skuValueCodeItem) => {
 					if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
 				})
-				// 半子商品是否可售，对应规格值是否可点击。根据ifEnable，为0可选择，为1不可选择
-				try {
-					const resCanSale = await getBanziProductCanSaleApi({
-						productId: this.goodsDetail.productId,
-						receiveId: this.goodsDetail.receive.receiveId,
-						skus: Object.values(this.goodsDetail.map || {}).map((i) => ({ skuId: i.skuId, number: 1 }))
-					})
-					const banSku = (JSON.parse(resCanSale.data.bzResp || '{}').ban || []).map((i) => resCanSale.data.banziSkuId2skuIdsMap[i]).filter((i) => i)
-					Object.keys(this.goodsDetail.map || {}).forEach((skuValueCodeItem) => {
-						if (banSku.includes(this.goodsDetail.map[skuValueCodeItem].skuId)) {
-							this.goodsDetail.map[skuValueCodeItem].ifEnable = 1
-						}
-					})
-					this.goodsDetail.names.forEach((nameItem) => {
-						if (nameItem.values && nameItem.values.length) {
-							nameItem.values.forEach((tag) => {
-								tag.ifEnable = 0
-							})
-						}
-					})
-				} catch {
-					uni.hideToast()
-				}
+				console.log(Object.values(this.goodsDetail.map).map((i) => i.skuId))
+				this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
 				// 渲染商详之后，如果参数传了skuId，则选中该skuId，否则选中第一个规格
 				this.$nextTick(async () => {
 					if (this.skuId) {
