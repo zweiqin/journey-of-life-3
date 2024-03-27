@@ -165,6 +165,7 @@
 </template>
 
 <script>
+import { resolveGoodsDetailTagsSituation } from '../../../../utils'
 import { addCartShoppingApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../../api/anotherTFInterface'
 import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../../constant'
 
@@ -188,7 +189,16 @@ export default {
 			// 已经选中的valueCode key => value  names.nameCode=>values.valueCode 处理选中渲染
 			selectedAttr: {},
 			// 当前选中的skuMap对象（服务端数据）
-			selectedSku: {},
+			selectedSku: {
+				image: '',
+				activityType: 0,
+				salePrice: 0,
+				price: 0,
+				stockNumber: 0,
+				voucherId: 0,
+				voucherPrice: 0,
+				presenterVoucher: 0
+			},
 			// 1加入购物车 2立即购买 3开团 4单独购买 6SKU选择
 			btnType: 0,
 			number: 1
@@ -218,57 +228,11 @@ export default {
 		// 点击sku的一项
 		handleClickSkuItem(nameCode, tagItem) {
 			if (tagItem.ifEnable) return
-			const isEverSelected = Object.keys(this.selectedAttr).includes(nameCode) // 是否曾经选中
-			// 是否重复点击
-			if (isEverSelected && (this.selectedAttr[nameCode] === tagItem.valueCode)) {
-				delete this.selectedAttr[nameCode]
-				this.$forceUpdate()
-			} else {
-				this.$set(this.selectedAttr, nameCode, tagItem.valueCode) // 当前选中
-			}
-
-			const nameCodeSelectedList = Object.keys(this.selectedAttr)
-			// 找出都存在已经选择的规格的关联的sku
-			const associatedSkus = Object.values(this.goodsDetail.map).filter((skuItem) => nameCodeSelectedList.every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem])))
-			this.goodsDetail.names.forEach((nameItem) => {
-				if (nameItem.values && nameItem.values.length) {
-					if (nameCodeSelectedList.includes(nameItem.nameCode)) { // 对于选过的的规格 // 已经选择的情况
-						// if (isEverSelected) { // 如果点击的是曾经选过的
-						if (nameItem.nameCode !== nameCode) {
-							nameItem.values.forEach((tag) => {
-								if (
-									Object.values(this.goodsDetail.map).filter((skuItem) => nameCodeSelectedList.filter((nameCodeItem) => nameCodeItem !== nameItem.nameCode).every((nameCodeItem) => skuItem.valueCodes.split(',').includes(this.selectedAttr[nameCodeItem]) && skuItem.valueCodes.split(',').includes(tag.valueCode)))
-										.some((skuItem) => !skuItem.ifEnable)
-								) {
-									tag.ifEnable = 0
-								} else {
-									tag.ifEnable = 1
-								}
-							})
-						}
-						// } else {
-						// 	// 如果点击的是没选过的
-						// }
-					} else { // 对于没选过的规格 // 一个一个地选的情况
-						nameItem.values.forEach((tag) => {
-							// 判断筛选出关联的sku里含有某个规格值的sku，这些产品是否全部都无法选择，是则让该规格值不可选择
-							if (associatedSkus.filter((skuItem) => skuItem.valueCodes.split(',').includes(tag.valueCode)).every((skuItem) => skuItem.ifEnable)) {
-								tag.ifEnable = 1
-							} else {
-								tag.ifEnable = 0
-							}
-						})
-					}
-				}
-			})
-
-			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
-				// 当和当前选中的sku一致
-				if (Object.values(this.selectedAttr).join(',') === skuValueCodeItem) {
-					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
-					this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
-				}
-			})
+			const { goodsDetail, selectedAttr } = resolveGoodsDetailTagsSituation(this.goodsDetail, this.selectedAttr, nameCode, tagItem)
+			this.selectedAttr = selectedAttr
+			this.$emit('change-goods-detail', goodsDetail)
+			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
+			if (this.selectedSku.skuId) this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
 		},
 
 		// 获取选择后的文本显示
@@ -319,12 +283,10 @@ export default {
 
 		// 加入购物车
 		async handleAddCart() {
-			if (this.selectedSku.stockNumber < 1) {
-				return uni.showToast({
-					title: '库存不足',
-					icon: 'none'
-				})
-			}
+			if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
+			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
 			uni.showLoading()
 			try {
 				await addCartShoppingApi({
@@ -358,18 +320,10 @@ export default {
 		 */
 
 		handleBuyNow() {
-			if (this.selectedSku.stockNumber < 1) {
-				return uni.showToast({
-					title: '库存不足',
-					icon: 'none'
-				})
-			}
-			if ((this.number > this.selectedSku.stockNumber) && this.selectedSku.stockNumber) {
-				return uni.showToast({
-					title: '已超出最大数量限制',
-					icon: 'none'
-				})
-			}
+			if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
+			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
 			// 组装后端数据
 			const list = [ {
 				ifWork: 0,
@@ -404,7 +358,10 @@ export default {
 		 */
 
 		handleBuyWithGroup() {
-			if (this.selectedSku.stockNumber < 1) return this.$showToast('库存不足')
+			if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
+			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
 			const data = {
 				number: this.number,
 				productId: this.goodsDetail.productId,

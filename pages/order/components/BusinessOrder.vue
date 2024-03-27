@@ -106,9 +106,9 @@
 
 <script>
 import { afterConditionEnum, orderTypeEnum } from '../../../components/ATFOrderInfo/config'
-import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi, getProductDetailsByIdApi } from '../../../api/anotherTFInterface'
+import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
-import { resolveGoodsDetailSkuSituation } from '../../../utils'
+import { resolveShowCanNotBuyMsg } from '../../../utils'
 export default {
 	name: 'BusinessOrder',
 	props: {
@@ -371,34 +371,8 @@ export default {
 			}
 		},
 		async handleGoBuyAgain(orderItem) {
-			// 循环sku，获取商品详情，并且判断库存
-			uni.showLoading()
-			const goodsDetailList = []
-			for (const index in orderItem.skus) {
-				const skuItem = orderItem.skus[index]
-				let { data: goodsDetail } = await getProductDetailsByIdApi({
-					shopId: skuItem.shopId,
-					productId: skuItem.productId,
-					skuId: skuItem.skuId,
-					terminal: 1
-				})
-				goodsDetail = await resolveGoodsDetailSkuSituation(goodsDetail)
-				goodsDetailList.push(goodsDetail)
-			}
-			uni.hideLoading()
-			const canNotBuyNameList = []
-			// 判断库存
-			goodsDetailList.forEach((skuDetail) => {
-				for (const skuValueCodeItem in skuDetail.map) {
-					// 判断此SKU是否存在于传进来的item
-					const findSku = orderItem.skus.find((skuItem) => skuItem.skuId === skuDetail.map[skuValueCodeItem].skuId)
-					if (findSku && (findSku.number > skuDetail.map[skuValueCodeItem].stockNumber)) {
-						canNotBuyNameList.push(findSku.productName)
-					}
-				}
-			})
-			// 如果有库存不足
-			if (canNotBuyNameList.length > 0) return this.$showToast(canNotBuyNameList.join(',') + ' 库存不足')
+			const { canNotBuySkuList, canNotSaleSkuList } = await resolveShowCanNotBuyMsg(orderItem.skus)
+			if (canNotBuySkuList.length || canNotSaleSkuList.length) return
 			// 制造数据
 			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
 				ifWork: orderItem.ifWork,

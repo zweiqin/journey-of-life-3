@@ -1,5 +1,5 @@
 <template>
-	<view class="inviteSpell-con">
+	<view class="invite-spell-container">
 		<JHeader title="邀请好友拼单" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="grouped">
 			<view class="fs32 font-color-FFF">{{ remainPerson !== 0 ? '等待成团' : '已成团' }}</view>
@@ -12,7 +12,6 @@
 					<view class="title-lab fs28">{{ inviteSpell.productName }}</view>
 					<view class="flex-row-plus flex-sp-between">
 						<view class="flex-column-plus">
-							<!--              <view class="spellNum flex-items-plus font-color-C5AA7B mar-top-30 fs24">{{inviteSpell.person}}人团</view> -->
 							<view class="flex-row-plus mar-top-30 flex-items">
 								<label class="font-color-C83732 fs24">¥</label>
 								<label class="font-color-C83732 fs36 mar-left-5">{{ inviteSpell.price }}</label>
@@ -44,12 +43,16 @@
 					<view class="mar-top-50 font-color-333">
 						还差<label class="font-color-C5AA7B">
 							{{ remainPerson }}
-						</label>人成团，距结束还剩{{ hou }}:{{ min }}:{{ sec }}
+						</label>人成团，距结束还剩
+						<tui-countdown
+							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+							border-color="transparent" :time="remainingTime"
+						></tui-countdown>
 					</view>
-					<view v-if="type == 1" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="shareClick">
+					<view v-if="type == 1" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="$refs.shareSpell.shareShow = true">
 						邀请好友拼单
 					</view>
-					<view v-if="type == 0" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="getOffered">
+					<view v-if="type == 0" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="goosDetailshowFlag = true">
 						立即参团
 					</view>
 					<view v-if="type == 1" class="poster-but flex-items-plus mar-top-40" @click="goinvitePoster">
@@ -109,13 +112,12 @@
 					<label class="font-color-999 fs24">数量</label>
 					<view class="goodsNum">
 						<label class="subtract" @click="numSub">-</label>
-						<label v-model="buyNum" class="goodsNumber">{{ buyNum }}</label>
+						<label class="goodsNumber">{{ buyNum }}</label>
 						<label class="add" @click="numAdd">+</label>
 					</view>
 				</view>
 				<view
-					class="goosDetailbut-box flex-items-plus"
-					:style="{ 'padding-bottom': (isIphone === true ? 50 : 20) + 'rpx' }"
+					class="flex-items-plus" style="padding-bottom: 50rpx;"
 				>
 					<view class="joinbuyBut" @click="getGroupSettlement(2)">确定</view>
 				</view>
@@ -124,7 +126,7 @@
 		<ShareSpell
 			ref="shareSpell" :url="url" :url-parms="urlParms" :img="inviteSpell.image"
 			title="好友邀请您来拼单啦"
-			@shareCancel="shareCancel"
+			@shareCancel="$refs.shareSpell.shareShow = false"
 		>
 		</ShareSpell>
 	</view>
@@ -153,11 +155,8 @@ export default {
 			inviteSpell: {},
 			personLen: 0,
 			remainPerson: 0,
-			hou: '00',
-			min: '00',
-			sec: '00',
-			timeOut: undefined,
 			goosDetailshowFlag: false,
+			remainingTime: null,
 			productId: 0,
 			skuId: 0,
 			shopGroupWorkId: 0,
@@ -167,7 +166,6 @@ export default {
 			skuPrice: 0,
 			stockNumber: 0,
 			skuProdList: {},
-			isIphone: '',
 			selectArr: [], // 存放被选中的值
 			subIndex: [], // 是否选中 因为不确定是多规格还是单规格，所以这里定义数组来判断
 			attrItemIdArr: [], // 存放被选中的id
@@ -212,11 +210,6 @@ export default {
 			}
 		}
 	},
-	onUnload() {
-		if (this.timeOut) {
-			clearTimeout(this.timeOut)
-		}
-	},
 	onShow() {
 		// 判断是否登录
 		let item = {}
@@ -224,13 +217,6 @@ export default {
 			item = uni.getStorageSync(T_STORAGE_KEY)
 		}
 		if (JSON.stringify(item) == '{}') {
-			const data = {
-				collageId: this.collageId,
-				orderId: this.orderId,
-				productId: this.productId,
-				skuId: this.skuId,
-				type: this.type
-			}
 			this.getInviteSpell()
 		} else {
 			this.$store.dispatch('auth/refrshUserInfoAction', () => {
@@ -239,14 +225,39 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.isIphone = getApp().globalData.isIphone
 		this.collageId = parseInt(options.collageId)
 		this.orderId = parseInt(options.orderId)
 		this.productId = parseInt(options.productId)
 		this.skuId = parseInt(options.skuId)
 		this.shopGroupWorkId = parseInt(options.shopGroupWorkId)
-		this.getProductSku()
-		this.queryProductDetail()
+
+		getProductsSkuApi({
+			skuId: this.skuId,
+			productId: this.productId
+		}).then((res) => {
+			this.skuProdList = res.data
+			this.attrList = res.data.names
+			// 渲染商详之后，默认先选中第一个规格
+			this.colorActiveClick(res.data.names[0].values[0], 0, 0)
+			this.skuProdId = this.skuId
+			this.skuImg = res.data.image
+			this.skuPrice = res.data.price
+			this.stockNumber = res.data.stockNumber
+			this.shopId = res.data.shopId
+		})
+
+		getProductDetailsByIdApi({
+			shopId: this.shopId,
+			productId: this.productId,
+			skuId: this.skuId,
+			terminal: 1
+		}).then((res) => {
+			this.productDetail = res.data
+			for (let i = 0; i < res.data.attrList.length; i++) {
+				this.subIndex[i] = 0
+			}
+			this.attrItemIdArr[0] = res.data.attrList[0].attrValueList[0].id
+		})
 		// #ifdef MP-WEIXIN
 		this.url = '/another-tf/another-serve/inviteSpell/index?collageId=' +
 			this.collageId + '&orderId=' + this.orderId + '&productId=' + this.productId + '&skuId=' + this.skuId +
@@ -261,9 +272,6 @@ export default {
 		// #endif
 	},
 	methods: {
-		getOffered() {
-			this.goosDetailshowFlag = true
-		},
 		// 拼团下单
 		getGroupSettlement(type) {
 			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
@@ -281,38 +289,6 @@ export default {
 			this.buyNum = 1
 			uni.navigateTo({
 				url: '/another-tf/another-serve/orderConfirm/index?type=3'
-			})
-		},
-		// 获取商品详情
-		queryProductDetail() {
-			getProductDetailsByIdApi({
-				shopId: this.shopId,
-				productId: this.productId,
-				skuId: this.skuId,
-				terminal: 1
-			}).then((res) => {
-				this.productDetail = res.data
-				for (let i = 0; i < res.data.attrList.length; i++) {
-					this.subIndex[i] = 0
-				}
-				this.attrItemIdArr[0] = res.data.attrList[0].attrValueList[0].id
-			})
-		},
-		getProductSku() {
-			getProductsSkuApi({
-				skuId: this.skuId,
-				productId: this.productId
-			}).then((res) => {
-				this.skuProdList = res.data
-				this.attrList = res.data.names
-				this.attrValueList = res.data.names[0].values
-				// 渲染商详之后，默认先选中第一个规格
-				this.colorActiveClick(this.attrValueList[0], 0, 0)
-				this.skuProdId = this.skuId
-				this.skuImg = res.data.image
-				this.skuPrice = res.data.price
-				this.stockNumber = res.data.stockNumber
-				this.shopId = res.data.shopId
 			})
 		},
 		// 数量减
@@ -339,39 +315,32 @@ export default {
 		},
 		// 颜色选中事件
 		colorActiveClick(res, index, resIndex) {
-			const t = this
-			t.selectArr[index] = res
-			t.subIndex[index] = resIndex
-			t.attrItemIdArr[index] = res.valueCode
-			t.checkItem()
-			t.checkItemDataClick(t.attrItemIdArr)
-		},
-		checkItem() {
-			var self = this
-			var option = self.attrList
-			var result = [] // 定义数组存储被选中的值
-			for (const i in option) {
-				result[i] = self.selectArr[i] ? self.selectArr[i] : ''
-				if (!self.subIndex[i]) {
-					self.subIndex[i] = 0
+			this.selectArr[index] = res
+			this.subIndex[index] = resIndex
+			this.attrItemIdArr[index] = res.valueCode
+
+			const result = [] // 定义数组存储被选中的值
+			for (const i in this.attrList) {
+				result[i] = this.selectArr[i] ? this.selectArr[i] : ''
+				if (!this.subIndex[i]) {
+					this.subIndex[i] = 0
 				}
-				if (!self.attrItemIdArr[i]) {
-					self.attrItemIdArr[i] = option[i].values[0].valueCode
+				if (!this.attrItemIdArr[i]) {
+					this.attrItemIdArr[i] = this.attrList[i].values[0].valueCode
 				}
 			}
-			for (const i in option) {
+			for (const i in this.attrList) {
 				var last = result[i] // 把选中的值存放到字符串last去
-				for (const k in option[i].item) {
-					result[i] = option[i].item[k].name // 赋值，存在直接覆盖，不存在往里面添加name值
+				for (const k in this.attrList[i].item) {
+					result[i] = this.attrList[i].item[k].name // 赋值，存在直接覆盖，不存在往里面添加name值
 				}
 				result[i] = last // 还原，目的是记录点下去那个值，避免下一次执行循环时避免被覆盖
 			}
-			self.$forceUpdate() // 重绘
-		},
-		checkItemDataClick(attrItemIdArr) {
+			this.$forceUpdate() // 重绘
+
 			let attrkey = ''
-			for (let i = 0; i < attrItemIdArr.length; i++) {
-				attrkey += attrItemIdArr[i] + ','
+			for (let i = 0; i < this.attrItemIdArr.length; i++) {
+				attrkey += this.attrItemIdArr[i] + ','
 			}
 			attrkey = attrkey.substring(0, attrkey.length - 1)
 			const mapinfo = this.skuProdList.map
@@ -383,12 +352,6 @@ export default {
 					this.stockNumber = mapinfo[key].stockNumber
 				}
 			}
-		},
-		shareClick() {
-			this.$refs.shareSpell.shareShow = true
-		},
-		shareCancel() {
-			this.$refs.shareSpell.shareShow = false
 		},
 		goinvitePoster() {
 			const data = {
@@ -425,62 +388,12 @@ export default {
 				})
 				this.personLen = res.data.personList.length
 				this.remainPerson = res.data.person - this.personLen
-				this.dateformat(res.data.time)
-				this.countDown()
+				this.remainingTime = Math.floor(res.data.time / 1000)
 				uni.hideLoading()
 			})
 				.catch((res) => {
 					uni.hideLoading()
 				})
-		},
-		// 时分秒换算
-		dateformat(micro_second) {
-			// 总秒数
-			const second = Math.floor(micro_second / 1000)
-			// 天数
-			const day = Math.floor(second / 3600 / 24)
-			// 小时
-			const hr = Math.floor(second / 3600 % 24)
-			// 分钟
-			const min = Math.floor(second / 60 % 60)
-			// 秒
-			const sec = Math.floor(second % 60)
-			this.hou = hr
-			this.min = min
-			this.sec = sec
-		},
-		countDown() {
-			const timeOut = setTimeout(() => {
-				const hou = parseInt(this.hou)
-				const min = parseInt(this.min)
-				const sec = parseInt(this.sec)
-				let netxSec = sec - 1
-				let netxMin = min
-				let netxHou = hou
-				if (netxHou == 0 && netxMin == 0 && netxSec == -1) {
-					clearTimeout(timeOut)
-				} else {
-					if (netxSec == -1) {
-						netxSec = 59
-						netxMin = netxMin - 1
-					}
-					if (netxMin == -1) {
-						netxMin = 59
-						netxHou = netxHou - 1
-					}
-					if (netxHou == -1) {
-						netxHou = 23
-					}
-					this.hou = this.timeFormat(netxHou),
-					this.min = this.timeFormat(netxMin),
-					this.sec = this.timeFormat(netxSec),
-					this.timeOut = timeOut
-					this.countDown()
-				}
-			}, 1000)
-		},
-		timeFormat(param) { // 小于10的格式化函数
-			return param < 10 ? '0' + param : param
 		}
 	}
 }
@@ -488,9 +401,10 @@ export default {
 
 <style lang="less" scoped>
 
-.inviteSpell-con {
+.invite-spell-container {
 	background-color: #333333;
-	background-size: contain;
+	min-height: 100vh;
+	box-sizing: border-box;
 
 	.grouped {
 		text-align: center;

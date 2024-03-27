@@ -406,25 +406,22 @@ export async function handleDoPay(submitResult, purchaseMode) {
     const submitInfo = { ...submitResult, purchaseMode };
     if (submitInfo.paymentMode === 999) {
       await bankCardPay(submitInfo);
-    } else if (submitInfo.paymentMode === 1) {
-      // 微信支付
+    } else if (submitInfo.paymentMode === 1) { // 微信支付
+      // #ifdef H5
+      await h5Pay(submitInfo);
+      // #endif
       // #ifdef APP
       await appWechatPay(submitInfo);
       // #endif
       // #ifdef MP-WEIXIN
       await mpWechatPay(submitInfo);
       // #endif
-      // #ifdef H5
-      await h5Pay(submitInfo);
-      // #endif
-    } else if ([2, 3].includes(submitInfo.paymentMode)) {
-      // 支付宝
+    } else if ([2, 3].includes(submitInfo.paymentMode)) { // 支付宝
       // #ifdef MP-ALIPAY
       await mpAliPay(submitInfo);
-      // await appWechatPay(submitResult,this.orderId)
       throw new Error('支付宝相关支付暂时只支持支付宝小程序');
       // #endif
-    } else if (submitInfo.paymentMode === 4) {
+    } else if (submitInfo.paymentMode === 4) { // 通联支付
       // #ifdef H5
       if (store.state.app.isInMiniProgram || isH5InWebview()) {
         const payAppesult = await getPayMiniProgramQueryApi({
@@ -443,7 +440,19 @@ export async function handleDoPay(submitResult, purchaseMode) {
         await h5TonglianPay(submitInfo);
       }
       // #endif
-    } else if ([5, 6].includes(submitInfo.paymentMode)) {
+      // #ifdef APP
+			uni.hideLoading()
+      uni.showToast({ title: '暂不支持在APP使用通联支付', icon: 'none' })
+      // #endif
+      // #ifdef MP-WEIXIN
+			uni.hideLoading()
+      uni.showToast({ title: '暂不支持在微信小程序使用通联支付', icon: 'none' })
+      // #endif
+      // #ifdef MP-ALIPAY
+			uni.hideLoading()
+      uni.showToast({ title: '暂不支持在支付宝小程序使用通联支付', icon: 'none' })
+      // #endif
+    } else if ([5, 6].includes(submitInfo.paymentMode)) { // 平台余额支付、商家余额支付
       await h5TonglianPay(submitInfo);
     }
   }

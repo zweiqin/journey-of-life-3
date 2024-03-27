@@ -13,7 +13,7 @@
           fansInfo.amount }}</text></view>
       </view>
 
-			<view style="color: #cccccc;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
+			<view style="font-size: 26upx;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
 
       <view class="phone">
         <view class="phone-number">{{ fansInfo.phone ? fansInfo.phone.slice(0, 3) + '****' + fansInfo.phone.slice(7) : '-'

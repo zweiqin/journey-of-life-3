@@ -62,7 +62,7 @@
 					<tui-button
 						type="warning" width="220rpx" height="60rpx" margin="0"
 						style="display: inline-block;border-radius: 30rpx;"
-						@click="go('/another-tf/another-user/platform-recharge/recharge-record')"
+						@click="go('/another-tf/another-user/my-wallet/recharge-record')"
 					>
 						充值流水 →
 					</tui-button>

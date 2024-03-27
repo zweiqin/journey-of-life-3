@@ -29,23 +29,25 @@
 					:class="tabIndex === index && 'on'"
 				>
 					<swiper
-						class="swiper pro-box" :indicator-dots="false" :autoplay="true"
+						class="pro-box" :indicator-dots="false" :autoplay="true"
 						:display-multiple-items="item.composeProductInfoList.length < 3 ? item.composeProductInfoList.length : 3"
-						:disable-touch="item.composeProductInfoList.length <= 3" @change="swiperChange"
+						:disable-touch="item.composeProductInfoList.length <= 3" @change="(e) => swiperCurrent = e.detail.current"
 					>
-						<swiper-item v-for="(itemJ, indexJ) in item.composeProductInfoList" :key="indexJ" class="pro-item-warp">
+						<swiper-item
+							v-for="(composeProItem, composeProIndex) in item.composeProductInfoList" :key="composeProIndex"
+						>
 							<view class="pro-item-inner">
 								<view class="pro-item">
 									<view class="pro-item-img">
-										<image class="img" :src="common.seamingImgUrl(itemJ.productImage)"></image>
+										<image class="img" :src="common.seamingImgUrl(composeProItem.productImage)"></image>
 									</view>
 									<view class="pro-item-info">
 										<h3 class="name">
-											{{ itemJ.productName }}
+											{{ composeProItem.productName }}
 										</h3>
-										<view class="sku" @click.stop="changeSkuItemValue(itemJ, indexJ)">
-											<view class="text">{{ itemJ.skuItem.skuName }}</view>
-											<tui-icon :size="30" color="#b7b7b7" name="arrowdown"></tui-icon>
+										<view class="sku" @click.stop="handleShowGoodsSkuSelect(composeProItem)">
+											<view class="text">{{ composeProItem.skuItem.skuName }}</view>
+											<tui-icon :size="22" color="#b7b7b7" name="arrowdown"></tui-icon>
 										</view>
 									</view>
 								</view>
@@ -63,7 +65,7 @@
 			</view>
 		</view>
 		<!-- 商品详情 -->
-		<tui-bottom-popup class="activity-con" :show="isShowDetails" @close="isShowDetails = false">
+		<tui-bottom-popup :show="isShowDetails" @close="isShowDetails = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
 					<image class="detailImg" :src="common.seamingImgUrl(selectedSku.image)"></image>
@@ -76,33 +78,37 @@
 						<label class="fs24 mar-top-20">已选</label>
 					</view>
 				</view>
-				<view class="color-box flex-column-plus">
-					<view v-for="(attritem, index) in skuProData.names" :key="index" class="skuStyle">
-						<label class="fs24 font-color-999">{{ attritem.skuName }}</label>
-						<view class="colorName-box">
-							<view v-for="(attrRes, resIndex) in attritem.values" :key="resIndex" class="pad-bot-30">
+
+				<view style="flex: 1;height: 0;overflow: hidden;padding: 30rpx;font-size: 26rpx;">
+					<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
+						<view v-for="nameItem in commodityDetail.names" :key="nameItem.nameCode" style="padding-bottom: 30rpx;">
+							<view v-if="nameItem.nameCode" style="color: #333333;">
+								{{ nameItem.skuName }}
+							</view>
+							<view style="display: flex;flex-wrap: wrap;align-items: center;margin: 0 -15rpx;">
 								<view
-									class="colorName" :class="{ 'colorName-on': selectedAttr[attritem.nameCode] == attrRes.valueCode }"
-									@click="nameCodeValueCodeClick(attritem.nameCode, attrRes.valueCode, true)"
+									v-for="tag in nameItem.values" :key="tag.valueCode"
+									style="background-color: #FFFFFF;margin: 24rpx 15rpx 0;padding: 10rpx 32rpx;" :style="{
+										boxShadow: selectedAttr[nameItem.nameCode] === tag.valueCode ? '0 0 20rpx rgba(0, 0, 0, 0.1)' : 'none',
+										color: selectedAttr[nameItem.nameCode] === tag.valueCode ? '#C5AA7B' : tag.ifEnable ? '#cccccc' : '#333333',
+										border: selectedAttr[nameItem.nameCode] === tag.valueCode ? '2rpx solid #ffffff' : '2rpx solid #E4E5E6'
+									}" @click="handleClickSkuItem(nameItem.nameCode, tag)"
 								>
-									{{ attrRes.skuValue }}
+									{{ tag.skuValue }}
 								</view>
 							</view>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
-				<!--        <view class="goodsNum-box flex-row-plus flex-sp-between" :class="{'bottom-line' :supportHuabei}"> -->
-				<!--          <label class="font-color-999 fs24">数量</label> -->
-				<!--          <view class="goodsNum"> -->
-				<!--            <text class="subtract" @click="updateNumSub()">-</text> -->
-				<!--            <text class="goodsNumber" v-model="buyNum">{{buyNum}}</text> -->
-				<!--            <text class="add" @click.stop=" -->
-				<!--            ()">+</text> -->
-				<!--          </view> -->
-				<!--        </view> -->
-				<view class="goosDetailbut-box flex-items-plus">
-					<!--          <button type="default" @click="goodsDateils(shopId,productId,skuId)" >查看详情</button> -->
-					<button type="default" class="submitBtn" @click="submitBtn()">确认</button>
+
+				<view style="display: flex;align-items: center;justify-content: center;">
+					<tui-button
+						type="black" width="590rpx" height="80rpx" margin="0 0 0 16rpx"
+						:disabled="!selectedSku.stockNumber" style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;"
+						@click="handleConfirmSelect"
+					>
+						确认
+					</tui-button>
 				</view>
 			</view>
 		</tui-bottom-popup>
@@ -111,32 +117,36 @@
 
 <script>
 import { T_SKU_ITEM_DTO_LIST } from '../../../../constant'
+import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../../utils'
 import { getProductDetailsByIdApi, getProductSelectComposeApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'CombinedSales',
 	props: {
-		pid: {
+		productId: {
 			type: Number,
-			default: ''
+			default: 0
 		},
-		goodsDetail: {
-			type: Object,
-			default: () => ({})
+		shopId: {
+			type: Number,
+			default: 0
 		}
 	},
 	data() {
 		return {
-			skuShowFalg: false,
+			selectComposeData: [],
 			tabIndex: 0,
 			swiperCurrent: 0,
-			selectComposeData: [],
-			curProIndex: 0,
-			selectedSku: [],
-			selectedAttr: [],
-			skuProData: {},
 			isShowDetails: false,
-			composePrice: 0
+			composePrice: 0,
+			commodityDetail: {
+				names: []
+			},
+			selectedSku: {
+				image: '',
+				stockNumber: ''
+			},
+			selectedAttr: {}
 		}
 	},
 	mounted() {
@@ -148,121 +158,102 @@ export default {
 			this.tabIndex = index
 			this.calculatePrice()
 		},
-		// 滑动回调方法
-		swiperChange(e) {
-			this.swiperCurrent = e.detail.current
-		},
 		// 获取组合销售数据
 		getSelectCompose() {
 			getProductSelectComposeApi({
-				productId: this.pid
+				productId: this.productId
 			}).then((res) => {
 				this.selectComposeData = res.data
 				for (let i = 0; i < this.selectComposeData.length; i++) {
 					const proList = this.selectComposeData[i].composeProductInfoList
 					for (let j = 0; j < proList.length; j++) {
-						proList[j].skuItem = proList[j].composeSkuInfoList[0]
+						proList[j].skuItem = proList[j].composeSkuInfoList[0] // { skuId: 0, price: 0, skuName: "" }
 					}
 				}
 				this.calculatePrice()
 			})
 		},
+
 		// 更换商品样式
-		changeSkuItemValue(item, index) {
-			this.curProIndex = index
-			uni.showLoading({
-				mask: true,
-				title: '加载中...'
-			})
-			getProductDetailsByIdApi({
-				shopId: this.goodsDetail.shopId,
-				productId: item.productId,
-				skuId: item.skuItem.skuId,
-				terminal: 1
-			}).then((res) => {
-				uni.hideLoading()
-				this.skuProData = res.data
-				// 如果是单款式商品，需要特殊处理goodsDetail.names
-				const mapKeys = Object.keys(this.skuProData.map)
-				if (mapKeys.length === 1 && mapKeys[0] === '单款项') {
-					this.skuProData.names[0].values.push({
-						skuValue: '单款项',
+		async handleShowGoodsSkuSelect(composeProItem) {
+			this.commodityDetail = { names: [] }
+			this.selectedAttr = {}
+			uni.showLoading()
+			try {
+				const res = await getProductDetailsByIdApi({
+					shopId: this.shopId,
+					productId: composeProItem.productId,
+					skuId: composeProItem.skuItem.skuId,
+					terminal: 1
+				})
+				this.commodityDetail = res.data
+				const skuCollectionListKeys = Object.keys(this.commodityDetail.map)
+				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
+					this.commodityDetail.names[0].values.push({
+						skuValue: this.commodityDetail.names[0].skuName,
 						valueCode: '单款项'
 					})
 				}
-
-				// 如果sku的图像为空，设置为商品的图像
-				for (var key in this.skuProData.map) {
-					const skuImage = this.skuProData.map[key].image
-					if (!skuImage) {
-						this.skuProData.map[key].image = this.skuProData.images[0]
-					}
-				}
-				this.isShowDetails = true
-				this.selectBySkuId(item.skuItem.skuId)
-			})
-				.catch((e) => {
-					uni.hideLoading()
+				skuCollectionListKeys.forEach((skuValueCodeItem) => {
+					if (!this.commodityDetail.map[skuValueCodeItem].image) this.commodityDetail.map[skuValueCodeItem].image = this.commodityDetail.images[0]
 				})
-		},
-		selectBySkuId(skuId) {
-			if (skuId) {
-				const mapinfo = this.skuProData.map
-				let flag = true
-				for (var key in mapinfo) {
-					if (parseInt(mapinfo[key].skuId) === parseInt(skuId)) {
-						flag = false
-						this.selectedSku = mapinfo[key]
-						// 选中sku对应的规格
-						const valueCodeList = key.split(',')
-						this.selectedAttr = []
-						this.skuProData.names.forEach((attr) => {
-							for (var index in attr.values) {
-								const valueCode = attr.values[index].valueCode
-								if (valueCodeList.includes(valueCode)) {
-									this.nameCodeValueCodeClick(attr.nameCode, valueCode, false)
-									break
-								}
-							}
+				this.commodityDetail = await resolveGoodsDetailSkuSituation(this.commodityDetail)
+				this.$nextTick(() => {
+					if (composeProItem.skuItem.skuId) {
+						this.handleSelectBySkuId(composeProItem.skuItem.skuId)
+					} else {
+						this.commodityDetail.names.forEach((nameItem) => {
+							this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
 						})
-						break
 					}
-				}
-				// 匹配不上就赋值第一个
-				if (flag) {
-					for (var key in mapinfo) {
-						this.selectedSku = mapinfo[key]
-						break
-					}
-				}
+					this.isShowDetails = true
+				})
+			} finally {
+				uni.hideLoading()
 			}
 		},
-		nameCodeValueCodeClick(nameCode, valueCode, reSelectSku) {
-			this.selectedAttr[nameCode] = valueCode
-			if (reSelectSku) {
-				const attrList = []
-				for (var key in this.selectedAttr) {
-					attrList.push(this.selectedAttr[key])
+		handleSelectBySkuId(skuId) {
+			if (!skuId) return
+			Object.keys(this.commodityDetail.map).forEach((skuValueCodeItem) => {
+				if (this.commodityDetail.map[skuValueCodeItem].skuId === skuId) {
+					this.commodityDetail.names.forEach((nameItem) => {
+						nameItem.values.some((tag) => {
+							if (this.commodityDetail.map[skuValueCodeItem].valueCodes.split(',').includes(tag.valueCode)) {
+								this.handleClickSkuItem(nameItem.nameCode, tag)
+								return true
+							}
+							return false
+						})
+					})
 				}
-				const attrkey = attrList.join(',')
-				const mapinfo = this.skuProData.map
-				for (var key in mapinfo) {
-					if (attrkey === key) {
-						this.selectedSku = mapinfo[key]
-					}
-				}
-			}
-			this.$forceUpdate() // 重绘
+			})
 		},
+		handleClickSkuItem(nameCode, tagItem) {
+			if (tagItem.ifEnable) return
+			const { goodsDetail: commodityDetail, selectedAttr } = resolveGoodsDetailTagsSituation(this.commodityDetail, this.selectedAttr, nameCode, tagItem)
+			this.selectedAttr = selectedAttr
+			this.commodityDetail = commodityDetail
+			this.selectedSku = Object.values(this.commodityDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
+		},
+
 		// 提交更换商品规格
-		submitBtn() {
-			const curPro = this.selectComposeData[this.tabIndex].composeProductInfoList[this.curProIndex]
-			for (let i = 0; i < curPro.composeSkuInfoList.length; i++) {
-				if (curPro.composeSkuInfoList[i].skuId === this.selectedSku.skuId) {
-					this.selectedSku.skuName = curPro.composeSkuInfoList[i].skuName
+		handleConfirmSelect() {
+			if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
+			this.selectComposeData[this.tabIndex].composeProductInfoList.some((composeProItem) => {
+				if (composeProItem.productId === this.commodityDetail.productId) {
+					composeProItem.composeSkuInfoList.some((composeSkuItem) => {
+						if (composeSkuItem.skuId === this.selectedSku.skuId) {
+							composeProItem.skuItem = { ...composeSkuItem, activityType: this.selectedSku.activityType, originalPrice: this.selectedSku.originalPrice, price: this.selectedSku.price, stockNumber: this.selectedSku.stockNumber }
+							return true
+						}
+						return false
+					})
+					return true
 				}
-			}
-			curPro.skuItem = this.selectedSku
+				return false
+			})
 			this.calculatePrice()
 			this.isShowDetails = false
 		},
@@ -303,7 +294,7 @@ export default {
 		doBuy() {
 			const addCart = []
 			const shopObj = {}
-			shopObj.shopId = this.goodsDetail.shopId
+			shopObj.shopId = this.shopId
 			shopObj.composeId = this.selectComposeData[this.tabIndex].composeId
 			shopObj.skus = []
 			const proList = this.selectComposeData[this.tabIndex].composeProductInfoList
@@ -324,18 +315,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .group-list {
-	padding: 10upx 20upx 60upx;
-	border-top: 12upx solid #F8F8F8;
+	padding: 10rpx 20rpx 60rpx;
+	border-top: 12rpx solid #F8F8F8;
 
 	.group-warp {
-		height: 680upx;
-
+		padding: 32rpx 12rpx 20rpx;
 		background: #333333;
-		box-shadow: 0 20upx 30upx rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20rpx 30rpx rgba(0, 0, 0, 0.3);
 		opacity: 1;
-		border-radius: 20upx;
+		border-radius: 20rpx;
 	}
 
 	.title {
@@ -343,40 +333,34 @@ export default {
 		align-items: center;
 		position: relative;
 		justify-content: space-between;
-		padding: 32upx 0 20upx 30upx;
 
 		.title-img {
-			width: 203upx;
+			width: 203rpx;
 		}
 
 		.price-text {
-			padding: 0 34upx;
-			margin-right: 10upx;
-			height: 50upx;
+			padding: 0 34rpx;
+			margin-right: 10rpx;
+			height: 50rpx;
 			background: linear-gradient(90deg, #C83732 0%, #E25C44 100%);
-			box-shadow: 0 6upx 12upx rgba(233, 0, 0, 0.3);
-			border-radius: 26upx;
-			font-size: 24upx;
+			box-shadow: 0 6rpx 12rpx rgba(233, 0, 0, 0.3);
+			border-radius: 26rpx;
+			font-size: 24rpx;
 			color: #fff;
 			text-align: center;
-			line-height: 50upx;
-			margin-left: 20upx;
-
-			.swiper {
-				height: 50upx;
-			}
+			line-height: 50rpx;
+			margin-left: 20rpx;
 		}
 	}
 
 	.tabs-nav {
-		padding: 0 10upx;
-		margin-bottom: 20upx;
+		padding: 0 10rpx;
+		margin-bottom: 20rpx;
 
 		.ul {
 			display: flex;
 
 			.li {
-				//flex: 1 0 auto;
 				text-align: center;
 				font-size: 26rpx;
 				color: #999;
@@ -414,63 +398,61 @@ export default {
 	}
 
 	.pro-box {
-		height: 318upx;
-		padding: 0 2upx 20upx;
+		height: 298rpx;
+		padding: 0 2rpx 20rpx;
 
 		.pro-item-inner {
-			padding: 0 8upx;
+			height: 100%;
 			display: flex;
 			justify-content: center;
 		}
 
 		.pro-item {
-			width: 219upx;
+			width: 219rpx;
+			height: 100%;
 			background: #FFFFFF;
-			padding: 10upx;
-			height: 318upx;
+			padding: 10rpx;
 
 			.pro-item-img {
 				width: 100%;
-				height: 160upx;
+				height: 160rpx;
 
 				.img {
 					width: 100%;
 					height: 100%;
 					object-fit: contain;
-
 				}
 			}
 
 			.pro-item-info {
 				.name {
-					font-size: 24upx;
-					line-height: 34upx;
+					font-size: 24rpx;
 					color: #333333;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					text-align: center;
 					font-weight: normal;
-					margin: 8upx 0 26upx;
+					margin: 8rpx 0;
 				}
 
 				.sku {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
-					width: 180upx;
-					height: 50upx;
-					margin: 0 auto;
-					line-height: 50upx;
-					border: 2upx solid #E4E5E6;
+					border: 2rpx solid #E4E5E6;
 
 					.text {
-						font-size: 24upx;
+						flex: 1;
+						font-size: 24rpx;
 						color: #999;
-						padding-left: 20upx;
-						width: 126px;
+						padding: 0 8rpx;
+						overflow: hidden;
+						word-break: break-all;
 						text-overflow: ellipsis;
-						white-space: nowrap;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
 					}
 				}
 			}
@@ -483,12 +465,12 @@ export default {
 
 		.dot {
 			display: block;
-			width: 24upx;
-			height: 4upx;
+			width: 24rpx;
+			height: 4rpx;
 			background: #FFFFFF;
 			opacity: 0.5;
-			border-radius: 2upx;
-			margin: 0 20upx;
+			border-radius: 2rpx;
+			margin: 0 20rpx;
 
 			&.dot-active {
 				opacity: 1;
@@ -498,18 +480,25 @@ export default {
 }
 
 .btn-buy {
-	width: 688upx;
-	height: 84upx;
-	//border: 2upx solid rgba(0, 0, 0, 0);
+	width: 688rpx;
+	height: 84rpx;
 	background: linear-gradient(88deg, #C5AA7B 0%, #FFEBC4 100%);
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #333;
-	line-height: 84upx;
-	margin: 30upx auto 0;
+	line-height: 84rpx;
+	margin: 30rpx auto 0;
 	text-align: center;
 }
 
 .goosDetailshow-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 0 0 44rpx;
+	height: 100%;
+	overflow-y: auto;
+	box-sizing: border-box;
+
 	.detailImg-box {
 		margin-top: 30rpx;
 		margin-left: 30rpx;
@@ -522,147 +511,6 @@ export default {
 			width: 180rpx;
 			height: 180rpx;
 		}
-	}
-
-	.color-box {
-		padding: 30rpx 30rpx;
-		border-bottom: 1rpx solid #EDEDED;
-		width: 690rpx;
-
-		.skuStyle {
-			padding: 20rpx 0;
-		}
-
-		.skuStyle:nth-child(2) {
-			border-top: 1px solid #F3F4F5;
-		}
-
-		.colorName-box {
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: center;
-			margin-top: 30rpx;
-			margin-left: -30rpx;
-
-			.colorName-on {
-				background-color: #FFE5D0;
-				color: #C5AA7B;
-				margin-left: 30rpx;
-				padding: 10rpx 32rpx;
-				border-radius: 28rpx;
-				border: 1rpx solid #C5AA7B;
-				font-size: 26rpx;
-				text-align: center;
-				z-index: 1;
-			}
-
-			.colorName {
-				background-color: #F5F5F5;
-				margin-left: 30rpx;
-				padding: 10rpx 32rpx;
-				border-radius: 28rpx;
-				font-size: 26rpx;
-				z-index: 2;
-			}
-		}
-
-	}
-
-	.modelNum-box {
-		padding: 30rpx 30rpx;
-		border-bottom: 1rpx solid #EDEDED;
-		width: 690rpx;
-
-		.modelNumName-box {
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: center;
-			margin-top: 30rpx;
-			margin-left: -30rpx;
-
-			.modelNumName-on {
-				background-color: #FFE4D0;
-				color: #C5AA7B;
-				margin-left: 30rpx;
-				padding: 10rpx 32rpx;
-				border-radius: 28rpx;
-				border: 1rpx solid #C5AA7B;
-				font-size: 26rpx;
-				text-align: center;
-			}
-
-			.modelNumName {
-				background-color: #F5F5F5;
-				margin-left: 30rpx;
-				padding: 10rpx 32rpx;
-				border-radius: 28rpx;
-				font-size: 26rpx;
-			}
-		}
-	}
-
-	.goodsNum-box {
-		padding: 30rpx 30rpx;
-		width: 690rpx;
-		padding-bottom: 140rpx;
-
-		.goodsNumber {
-			text-align: center;
-			border: 1rpx solid #999999;
-			padding: 3rpx 20rpx;
-		}
-
-		.subtract {
-			border: 1rpx solid #999999;
-			padding: 3rpx 20rpx;
-			margin-right: -1rpx;
-		}
-
-		.add {
-			border: 1rpx solid #999999;
-			padding: 3rpx 20rpx;
-			margin-left: -1rpx;
-		}
-	}
-
-	.goosDetailbut-box {
-		.joinShopCartBut {
-			width: 343rpx;
-			height: 80rpx;
-			background-color: #FFC300;
-			color: #FFFEFE;
-			font-size: 28rpx;
-			line-height: 80rpx;
-			text-align: center;
-			margin-left: 30rpx;
-		}
-
-		.buyNowBut {
-			width: 343rpx;
-			height: 80rpx;
-			border-radius: 0 40rpx 40rpx 0;
-			background-color: #FF6F00;
-			color: #FFFEFE;
-			font-size: 28rpx;
-			line-height: 80rpx;
-			text-align: center;
-		}
-	}
-
-	.submitBtn {
-		width: 342rpx;
-		height: 100rpx;
-		line-height: 100rpx;
-		font-size: 28rpx;
-		border: 1px solid;
-		border-radius: 0;
-		color: #FFEBC4;
-		background: #333333;
-		margin: 20rpx 0;
 	}
 }
 </style>

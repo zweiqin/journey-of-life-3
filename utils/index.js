@@ -24,7 +24,7 @@ export {
 	isVideo,
 	saveImg
 } from './DWHutils'
-export { resolveGoodsDetailSkuSituation } from './networkInterface'
+export { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveShowCanNotBuyMsg } from './networkInterface'
 export { formatTime } from './util'
 export { payFn, payShopFn } from './pay'
 export { navigationAddress, getAdressDetailByLngLat, getLngLatByAddress, MapLoader, isUserEmpowerLocationPermission, getCurrentLocation } from './localtion'

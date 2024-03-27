@@ -3,7 +3,7 @@
 
 		<tui-landscape
 			:show="showSpecification" :position="1" :mask-closable="true" icon-left="50rpx"
-			icon-right="50rpx"
+			icon-right="50rpx" :z-index="998" :mask-z-index="997"
 			@close="showSpecification = false"
 		>
 			<view
@@ -30,7 +30,7 @@
 								style="width: fit-content;padding: 6upx 28upx;margin-right: 20upx;border-radius: 20upx;" :style="{
 									border: selectedAttr[nameItem.nameCode] == tag.valueCode ? '1upx solid #ffbd87' : '1upx solid #c2c2c2',
 									backgroundColor: selectedAttr[nameItem.nameCode] == tag.valueCode ? '#fffce3' : 'transparent'
-								}" @click="handleClickSkuItem(nameItem.nameCode, tag.valueCode)"
+								}" @click="handleClickSkuItem(nameItem.nameCode, tag)"
 							>
 								{{ tag.skuValue }}
 							</view>
@@ -45,7 +45,9 @@
 					</view>
 				</view>
 				<view style="position: sticky;bottom: 0;margin-top: 40upx;padding-bottom: 20upx;background-color: #ffffff;">
-					<view style="padding: 12upx 46upx;margin: 0 -46upx;font-size: 28upx;color: #868686;background-color: #efefef;">
+					<view
+						style="padding: 12upx 46upx;margin: 0 -46upx;font-size: 28upx;color: #868686;background-color: #efefef;"
+					>
 						<text>已选规格：</text>
 						<text>{{ spStr }}</text>
 					</view>
@@ -53,15 +55,16 @@
 						<view>
 							<view v-if="selectedSku">
 								<text style="font-size: 28upx;">总计</text>
-								<text style="margin-left: 10upx;font-size: 38upx;color: #ff0505;">￥{{ selectedSku.price * number }}</text>
+								<text style="margin-left: 10upx;font-size: 38upx;color: #ff0505;">
+									￥{{ selectedSku.price * number || 0 }}
+								</text>
 							</view>
 						</view>
 						<view>
 							<view v-if="!showSelectBtn">
 								<tui-button
 									type="danger" width="240rpx" height="64rpx" margin="0 10rpx 0 0"
-									style="border-radius: 14rpx;"
-									@click="addShopCar"
+									style="border-radius: 14rpx;" @click="addShopCar"
 								>
 									{{ btnText || '+ 加入购物车' }}
 								</tui-button>
@@ -69,8 +72,7 @@
 							<view v-else>
 								<tui-button
 									type="danger" width="240rpx" height="64rpx" margin="0 10rpx 0 0"
-									style="border-radius: 14rpx;"
-									@click="handleClickBtn"
+									style="border-radius: 14rpx;" @click="handleClickBtn"
 								>
 									{{ btnText }}
 								</tui-button>
@@ -85,6 +87,7 @@
 </template>
 
 <script>
+import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../utils'
 import { getProductDetailsByIdApi, addCartShoppingApi } from '../../api/anotherTFInterface'
 export default {
 	name: 'ATFSpecificationScreen',
@@ -116,7 +119,11 @@ export default {
 			goodsDetail: {},
 			selectedAttr: {},
 			spStr: '请选择商品规格',
-			selectedSku: { collageOrders: [] },
+			selectedSku: {
+				collageOrders: [],
+				image: '',
+				price: 0
+			},
 			currentSku: [],
 			number: 1
 
@@ -162,13 +169,14 @@ export default {
 			skuCollectionListKeys.forEach((skuValueCodeItem) => {
 				if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
 			})
+			this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
 			this.$nextTick(() => {
 				if (skuId) {
 					this.handleSelectBySkuId(skuId)
 				} else {
 					// 默认选中第0个
 					this.goodsDetail.names.forEach((nameItem) => {
-						this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0].valueCode)
+						this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
 					})
 				}
 			})
@@ -179,12 +187,10 @@ export default {
 			if (!skuId) return
 			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
 				if (this.goodsDetail.map[skuValueCodeItem].skuId === skuId) {
-					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
-					this.getCurrentSkuName()
 					this.goodsDetail.names.forEach((nameItem) => {
 						nameItem.values.some((tag) => {
-							if (this.selectedSku.valueCodes.split(',').includes(tag.valueCode)) {
-								this.$set(this.selectedAttr, nameItem.nameCode, tag.valueCode)
+							if (this.goodsDetail.map[skuValueCodeItem].valueCodes.split(',').includes(tag.valueCode)) {
+								this.handleClickSkuItem(nameItem.nameCode, tag)
 								return true
 							}
 							return false
@@ -194,15 +200,13 @@ export default {
 			})
 		},
 
-		handleClickSkuItem(nameCode, valueCode) {
-			this.$set(this.selectedAttr, nameCode, valueCode)
-			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
-				if (Object.values(this.selectedAttr).join(',') === skuValueCodeItem) {
-					this.selectedSku = this.goodsDetail.map[skuValueCodeItem]
-					this.getCurrentSkuName()
-				}
-			})
-			console.log(this.selectedAttr, this.selectedSku)
+		handleClickSkuItem(nameCode, tagItem) {
+			if (tagItem.ifEnable) return
+			const { goodsDetail, selectedAttr } = resolveGoodsDetailTagsSituation(this.goodsDetail, this.selectedAttr, nameCode, tagItem)
+			this.selectedAttr = selectedAttr
+			this.goodsDetail = goodsDetail
+			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
+			if (this.selectedSku.skuId) this.getCurrentSkuName()
 		},
 
 		// 获取选择后的文本显示
@@ -235,6 +239,9 @@ export default {
 			if (this.isLogin()) {
 				try {
 					if (this.showSpecification) {
+						if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+						if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+						if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
 						const tempGoodsInfo = {
 							selectedSku: this.selectedSku,
 							currentSku: this.currentSku,
@@ -276,6 +283,9 @@ export default {
 		// 选择
 		handleClickBtn() {
 			if (this.showSpecification) {
+				if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+				if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+				if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
 				const tempGoodsInfo = {
 					selectedSku: this.selectedSku,
 					currentSku: this.currentSku,
@@ -302,5 +312,6 @@ export default {
 
 <style lang="less" scoped>
 .specification-screen-container {
+	box-sizing: border-box;
 }
 </style>

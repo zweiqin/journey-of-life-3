@@ -260,12 +260,14 @@ export default {
 			})
 		}
 		if (this.showTonglianPay) {
+			// #ifdef H5
 			this.paymentList.push({
 				label: '通联支付（微信）',
 				paymentMode: '4',
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true
 			})
+			// #endif
 		}
 		if (this.showPlatformPay) {
 			this.paymentList.push({
@@ -318,21 +320,24 @@ export default {
 		 */
 
 		handleSetDisable() {
+			// #ifdef H5
+			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+			this.paymentMode = '4'
+			// #endif
+			// #ifdef APP
+			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+			this.paymentMode = ''
+			// #endif
 			// #ifdef MP-WEIXIN
 			// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-			this.paymentMode = '4' // 1
+			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+			this.paymentMode = '' // 1
 			// #endif
 			// #ifdef MP-ALIPAY
 			// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
 			// if(this.flowerObj.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-			this.paymentMode = '4' // 2
-			// #endif
-			// #ifdef APP || H5
-			// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-			this.paymentMode = '4' // 1
+			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+			this.paymentMode = '' // 2
 			// #endif
 		},
 

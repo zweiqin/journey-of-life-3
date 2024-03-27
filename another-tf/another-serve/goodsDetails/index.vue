@@ -50,7 +50,10 @@
 						v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
 						color="#c1c1c1"
 					></tui-icon>
-					<view v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" class="mar-left-10 mapName mar-right-30">
+					<view
+						v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress"
+						class="mar-left-10 mapName mar-right-30"
+					>
 						{{ goodsDetail.receive.receiveAdress }}
 					</view>
 					<view>
@@ -77,7 +80,7 @@
 				</view>
 
 				<!-- 结合销售 -->
-				<CombinedSales :pid="productId" :goods-detail="goodsDetail"></CombinedSales>
+				<CombinedSales :shop-id="shopId" :product-id="productId"></CombinedSales>
 				<!-- 拼单列表 -->
 				<view
 					v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders.length"
@@ -247,9 +250,13 @@
 		<GoodSkuSelect
 			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId"
 			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
+			@change-goods-detail="(obj) => goodsDetail = obj"
 		/>
 		<!-- 拼单弹框 -->
-		<tui-popup :show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount" @click="showGroupBuyList = false">
+		<tui-popup
+			:show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount"
+			@click="showGroupBuyList = false"
+		>
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
@@ -313,7 +320,7 @@ export default {
 			},
 			isIphone: getApp().globalData.isIphone,
 			shopId: '',
-			productId: '', // 商品ID，有可能屎缓存数据
+			productId: '', // 商品ID，有可能是缓存数据
 			skuId: '', // 产品ID
 
 			returnTopFlag: false, // 回到顶部
@@ -473,7 +480,6 @@ export default {
 				skuCollectionListKeys.forEach((skuValueCodeItem) => {
 					if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
 				})
-				console.log(Object.values(this.goodsDetail.map).map((i) => i.skuId))
 				this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
 				// 渲染商详之后，如果参数传了skuId，则选中该skuId，否则选中第一个规格
 				this.$nextTick(async () => {

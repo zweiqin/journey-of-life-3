@@ -1,26 +1,26 @@
 <template>
 	<view class="container">
-		<JHeader title="我的账本" width="50" height="50"></JHeader>
-		<view>我的账本页</view>
+		<JHeader title="代金券收支明细" width="50" height="50"></JHeader>
+		<view>代金券收支明细页</view>
 	</view>
 </template>
 
 <script>
-import { getSmallAccountBookStatisticsApi, getCommissionDeatilListApi } from '../../../api/anotherTFInterface'
+import { getTransferLogsVoucherShopHoldApi, getAllVoucherOrderApi } from '../../../api/anotherTFInterface'
 export default {
-	name: 'SmallLedger',
+	name: 'VoucherRecord',
 	components: {
 	},
 	onLoad() {
 		uni.showLoading()
-		getSmallAccountBookStatisticsApi()
+		getTransferLogsVoucherShopHoldApi()
 			.then((res) => {
 				uni.hideLoading()
 			})
 			.catch((e) => {
 				uni.hideLoading()
 			})
-		getCommissionDeatilListApi()
+		getAllVoucherOrderApi()
 			.then((res) => {
 				uni.hideLoading()
 			})

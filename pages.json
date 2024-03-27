@@ -1474,12 +1474,12 @@
             "navigationBarTitleText": "余额操作"
           }
         },
-        {
-          "path": "another-user/my-wallet/platform-recharge",
-          "style": {
-            "navigationBarTitleText": "平台充值"
-          }
-        },
+        // {
+        //   "path": "another-user/my-wallet/platform-recharge",
+        //   "style": {
+        //     "navigationBarTitleText": "平台充值"
+        //   }
+        // },
         {
           "path": "another-user/my-wallet/recharge-record",
           "style": {
@@ -1493,17 +1493,23 @@
           }
         },
         {
-          "path": "another-user/voucher/voucher",
+          "path": "another-user/voucher/voucher-record",
           "style": {
-            "navigationBarTitleText": "代金券"
+            "navigationBarTitleText": "代金券收支明细"
           }
         },
-        {
-          "path": "another-user/voucher/orderStatus",
-          "style": {
-            "navigationBarTitleText": "代金券订单完成状态"
-          }
-        },
+        // {
+        //   "path": "another-user/voucher/voucher",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券"
+        //   }
+        // },
+        // {
+        //   "path": "another-user/voucher/orderStatus",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券订单完成状态"
+        //   }
+        // },
         {
           "path": "another-user/commission-statistics/commission-operation",
           "style": {

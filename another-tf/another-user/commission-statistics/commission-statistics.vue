@@ -118,7 +118,7 @@ export default {
 			// }
 
 			uni.navigateTo({
-				url: '/another-tf/another-user/my-wallet/platform-recharge'
+				url: '/another-tf/another-user/my-wallet/index'
 			})
 		}
 	},

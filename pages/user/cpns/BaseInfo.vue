@@ -124,7 +124,7 @@
 		</view>
 
 		<!-- <view class="account-container">
-			<view class="account-item" @click="go('/another-tf/another-user/my-wallet/platform-recharge')">
+			<view class="account-item" @click="go('')">
 			<view class="account-number"> {{ $store.getters.pricePlatformInfo.totalPrice || 0 }} </view>
 			<view class="account-title">余额</view>
 			</view>
@@ -143,7 +143,7 @@
 			<view class="account-title">积分</view>
 			</view>
 
-			<view class="account-item" @click="go('/another-tf/another-user/voucher/voucher')">
+			<view class="account-item" @click="go('')">
 			<view class="account-number">
 			{{ $store.getters.pricePlatformInfo.voucherPrice || 0 }}
 			</view>

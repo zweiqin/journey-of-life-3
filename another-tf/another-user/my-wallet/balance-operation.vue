@@ -220,7 +220,6 @@ export default {
 			}
 			this.isShowModalRecharge = true
 		},
-
 		handleRecharge() {
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })

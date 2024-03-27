@@ -973,28 +973,9 @@ export default {
 				}
 			}
 			if (this.pointProductIds.endsWith(',')) this.pointProductIds = this.pointProductIds.slice(0, -1) // 去除最后一个,
-			this.handleSetPayMode(data)
+			data.paymentMode = this.payInfo.paymentMode
 			uni.hideLoading()
 			return data
-		},
-
-		// 根据环境设置下单的支付信息@param data handlePackageData返回值
-		handleSetPayMode(data) {
-			// subPaymentMode 1-小程序支付 2-app支付 3-H5支付
-			// paymentMode 1-微信 2-支付宝
-			data.paymentMode = this.payInfo.paymentMode
-			// #ifdef H5
-			data.subPaymentMode = 3
-			// #endif
-			// #ifdef MP-WEIXIN
-			data.subPaymentMode = 1
-			// #endif
-			// #ifdef APP
-			data.paymentMode = 1
-			// #endif
-			// #ifdef MP-ALIPAY
-			data.subPaymentMode = 2
-			// #endif
 		},
 
 		// 提交订单@return {Promise<void>}

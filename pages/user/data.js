@@ -294,15 +294,18 @@ export const myPreferential = [
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/integral/index'
 	},
+	// #ifndef APP
 	{
 		name: '我的拼团',
 		icon: require('../../static/images/new-user/menu-icon/shenqingtuanzhang.png')
 	},
+	// #endif
 	{
 		name: '我的抽奖',
 		icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
 		type: 'participateLottery'
 	},
+	// #ifndef APP
 	{
 		name: '我的红包',
 		icon: require('../../static/images/new-user/menu-icon/wodehongbao.png')
@@ -319,6 +322,7 @@ export const myPreferential = [
 		name: '同城卡',
 		icon: require('../../static/images/new-user/menu-icon/qudaili.png')
 	}
+	// #endif
 ]
 
 export const otherFunction = [
