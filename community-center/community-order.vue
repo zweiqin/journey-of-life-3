@@ -31,9 +31,9 @@
 			</view>
     </view>
 
-    <view v-if="!isExistCommunityStore" class="alert-wrapper section" style="padding: 0">
+    <!-- <view v-if="!isExistCommunityStore" class="alert-wrapper section" style="padding: 0">
       <tui-alerts type="warn" title="您所在区域不在接单范围内"></tui-alerts>
-    </view>
+    </view> -->
 
     <!-- 计价类型 -->
     <view class="serve-info section" v-if="isShowPriceMode === 1">
@@ -257,7 +257,7 @@ export default {
       const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS);
       if (choosedAddress) {
         this.defualtAddress = choosedAddress;
-        this.checkAreaExistCommunitStore();
+        // this.checkAreaExistCommunitStore();
         this.handleGetOrderPrice();
         return;
       }
@@ -282,7 +282,7 @@ export default {
       }
 
       if (this.defualtAddress) {
-        this.checkAreaExistCommunitStore();
+        // this.checkAreaExistCommunitStore();
       }
     },
 

@@ -2,31 +2,22 @@
   <view class="community-detail">
     <view class="head">
       <!-- 顶部区域 -->
-			<JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx;">
-				<template #ftFn>
-					<view style="display: flex;align-items: center;justify-content: space-between;padding-right: 18upx;">
-						<tui-icon name="gps" :size="20" color="#2b2b2b"></tui-icon>
-						<TuanLocation>
-							<text class="locale">
-								{{ $store.getters.currentCity || '定位失败' }}
-							</text>
-						</TuanLocation>
-					</view>
-				</template>
-			</JHeader>
+      <JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx">
+        <template #ftFn>
+          <view style="display: flex; align-items: center; justify-content: space-between; padding-right: 18upx">
+            <tui-icon name="gps" :size="20" color="#2b2b2b"></tui-icon>
+            <TuanLocation>
+              <text class="locale">
+                {{ $store.getters.currentCity || '定位失败' }}
+              </text>
+            </TuanLocation>
+          </view>
+        </template>
+      </JHeader>
 
       <!-- 轮播图 -->
       <view class="goods">
-        <Carousel
-          ref="carouselRef"
-          :is-lazy-load="false"
-          :list="serverUrls.length == 0 ? [serverUrl] : serverUrls"
-          class="img"
-          :radius="0"
-          :height="270"
-          :top="-40"
-        >
-        </Carousel>
+        <Carousel ref="carouselRef" :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0" :height="270" :top="-40"> </Carousel>
         <image src="../static/images/con-center/imagebg.png" @click="handlePrev" mode="" class="imagebg" />
         <view class="goods-name">{{ title }}</view>
         <view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
@@ -52,7 +43,7 @@
         <view class="a">
           <BeeWxShare ref="beeWxShareRef" @click="handleClickShare">
             <view class="share">
-							<tui-icon name="share-fill" :size="40" unit="rpx" color="#999999"></tui-icon>
+              <tui-icon name="share-fill" :size="40" unit="rpx" color="#999999"></tui-icon>
               <view class="text">分享</view>
             </view>
           </BeeWxShare>
@@ -101,24 +92,27 @@
     <view class="add">
       <view class="add-list" @click="handleToAddress">
         <view class="left">
-					<tui-icon
-						name="gps" :size="32" unit="rpx"
-						color="#e95d20"
-						margin="0"
-					></tui-icon>
+          <tui-icon name="gps" :size="32" unit="rpx" color="#e95d20" margin="0"></tui-icon>
           <view class="left-address">{{ addressDetail || '请添加服务地址' }}</view>
         </view>
         <view class="right">
-					<tui-icon
-						name="arrowright" :size="32" unit="rpx"
-						color="#9a9a9a"
-						margin="0"
-					></tui-icon>
+          <tui-icon name="arrowright" :size="32" unit="rpx" color="#9a9a9a" margin="0"></tui-icon>
         </view>
       </view>
       <view class="kaitong">
-				<view v-if="type == 1" class="open" style="padding-right: 24upx;text-align: right;font-size: 28upx;color: #ff1717;font-weight: bold;background-color: #feebe9;clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);">服务已开通</view>
-				<view v-if="type == 2" class="close" style="padding-right: 24upx;text-align: right;font-size: 28upx;color: #777777;font-weight: bold;background-color: #e1e1e1;clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);">服务未开通</view>
+        <view
+          class="open"
+          style="
+            padding-right: 24upx;
+            text-align: right;
+            font-size: 28upx;
+            color: #ff1717;
+            font-weight: bold;
+            background-color: #feebe9;
+            clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);
+          "
+          >服务已开通</view
+        >
       </view>
     </view>
 
@@ -133,7 +127,7 @@
         </view>
 
         <!-- #ifdef H5 -->
-				<tui-icon :size="32" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
+        <tui-icon :size="32" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
         <!-- #endif -->
       </view>
     </view>
@@ -171,9 +165,9 @@
     </view>
     <!-- 其他服务 -->
     <view class="other">
-      <view v-for="item in [{value: 1,name: '更多服务'}]" :key="item.value" class="other-service" @click="handleToServiceListHome(item)">
+      <view v-for="item in [{ value: 1, name: '更多服务' }]" :key="item.value" class="other-service" @click="handleToServiceListHome(item)">
         <view class="text">其他服务</view>
-				<tui-icon :size="40" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
+        <tui-icon :size="40" unit="rpx" color="#999999" name="arrowright" margin="0"></tui-icon>
       </view>
     </view>
 
@@ -182,7 +176,7 @@
       <view class="list">
         <view class="online" @click="handleChat">
           <!-- #ifdef H5 -->
-					<tui-icon :size="48" unit="rpx" color="#e95e20" name="kefu" margin="0"></tui-icon>
+          <tui-icon :size="48" unit="rpx" color="#e95e20" name="kefu" margin="0"></tui-icon>
           <view class="name">在线咨询</view>
           <!-- #endif -->
         </view>
@@ -210,7 +204,7 @@
 </template>
 
 <script>
-import { A_TF_MAIN } from '../config'
+import { A_TF_MAIN } from '../config';
 import Carousel from '../components/carousel';
 import uParse from '../components/u-parse/u-parse.vue';
 import CommunityDetailPoster from './components/CommunityDetailPoster.vue';
@@ -240,7 +234,7 @@ export default {
   props: {},
   data() {
     return {
-			rootUrl: A_TF_MAIN,
+      rootUrl: A_TF_MAIN,
       currentMoveTab: 0,
       address: '',
       serviceDetail: [],
@@ -315,7 +309,7 @@ export default {
     // console.log('addressDetail', this.addressDetail);
     this.address = info.address;
     // console.log('address', this.address);
-    this.a();
+    // this.a();
   },
   methods: {
     splitProject,
@@ -482,7 +476,7 @@ export default {
       // #ifdef APP
       const locationInfo = this.$store.state.location;
       this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district;
-      this.a();
+      // this.a();
       this.addressDetail = locationInfo.detailAddress;
       // #endif
     },
@@ -871,20 +865,20 @@ export default {
     }
 
     .kaitong {
-			display: flex;
-			justify-content: flex-end;
+      display: flex;
+      justify-content: flex-end;
       padding-top: 10upx;
 
       .open {
         width: 200upx;
         height: 48upx;
-				line-height: 48upx;
+        line-height: 48upx;
       }
 
       .close {
         width: 200upx;
         height: 48upx;
-				line-height: 48upx;
+        line-height: 48upx;
       }
     }
   }
