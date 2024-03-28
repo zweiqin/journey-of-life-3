@@ -176,10 +176,10 @@ export default {
 			},
 			isShowRechargePopup: false,
 			rechargeAmountsList: [
-				{ amounts: 50, voucherNum: 50 },
-				{ amounts: 100, voucherNum: 100 },
-				{ amounts: 200, voucherNum: 200 },
 				{ amounts: 1000, voucherNum: 1000 },
+				{ amounts: 1200, voucherNum: 1200 },
+				{ amounts: 1500, voucherNum: 1500 },
+				{ amounts: 1800, voucherNum: 1800 },
 				{ amounts: 2000, voucherNum: 2000 }
 			],
 			currentRechargeIndex: 0,

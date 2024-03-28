@@ -8,14 +8,14 @@
 			<image class="avatar" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
 			<text class="userPhone">{{ hiddenPhone(userInfo.phone) }}</text>
 		</view>
-		<view class="tabNavs">
+		<!-- <view class="tabNavs">
 			<view
-				v-for="(item, index) in tabNavsData" :key="item" class="tabItem" :class="{ isActice: index == currIndex }"
-				@click="currIndex = index"
+			v-for="(item, index) in tabNavsData" :key="item" class="tabItem" :class="{ isActice: index == currIndex }"
+			@click="currIndex = index"
 			>
-				{{ item }}
+			{{ item }}
 			</view>
-		</view>
+			</view> -->
 		<view class="main">
 			<TopUp
 				v-if="currIndex != 2" :user-acount="userAcount" :user-info="userInfo" :is-gift="currIndex == 1"
@@ -46,7 +46,7 @@ export default {
 			userAcount: {
 				number: ''
 			},
-			currIndex: 0
+			currIndex: 2 // 0
 		}
 	},
 	onLoad() {

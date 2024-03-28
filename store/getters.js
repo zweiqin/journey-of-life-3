@@ -23,6 +23,7 @@ export default {
   pricePlatformInfo: (state) => state.user.pricePlatformInfo,
   shopCarNumber: (state) => state.user.shopCarNumber,
   levelType: (state) => state.user.levelType,
+  activityList: (state) => state.user.activityList,
 
   // 社区
   popupImage: (state) => state.community.popupImage,

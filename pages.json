@@ -1498,18 +1498,24 @@
             "navigationBarTitleText": "代金券收支明细"
           }
         },
-        // {
-        //   "path": "another-user/voucher/voucher",
-        //   "style": {
-        //     "navigationBarTitleText": "代金券"
-        //   }
-        // },
-        // {
-        //   "path": "another-user/voucher/orderStatus",
-        //   "style": {
-        //     "navigationBarTitleText": "代金券订单完成状态"
-        //   }
-        // },
+        {
+          "path": "another-user/voucher/voucher-record-detail",
+          "style": {
+            "navigationBarTitleText": "代金券收支明细详情"
+          }
+        },
+        {
+          "path": "another-user/voucher/voucher",
+          "style": {
+            "navigationBarTitleText": "代金券"
+          }
+        },
+        {
+          "path": "another-user/voucher/orderStatus",
+          "style": {
+            "navigationBarTitleText": "代金券订单完成状态"
+          }
+        },
         {
           "path": "another-user/commission-statistics/commission-operation",
           "style": {

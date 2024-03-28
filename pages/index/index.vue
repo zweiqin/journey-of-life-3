@@ -182,7 +182,7 @@ export default {
         productName: '', // 商品名称
         search: '',
         type: 1, // 价格升降序
-        volume: 0, // 销量升降序
+        // volume: 0, // 销量升降序
         page: 1,
         pageSize: 10
       },

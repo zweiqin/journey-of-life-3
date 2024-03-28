@@ -20,8 +20,9 @@
 						<tui-button
 							type="white" plain link :size="36"
 							width="184rpx" height="68rpx" margin="0"
-							@click="go('/another-tf/another-user/voucher/voucher-record')"
+							@click="go('/another-tf/another-user/voucher/voucher')"
 						>
+							<!-- go('/another-tf/another-user/voucher/voucher-record') -->
 							收支明细
 						</tui-button>
 					</view>
@@ -34,7 +35,7 @@
 						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
 							￥{{ typeof userAcount.number === 'number'
-								? userAcount.number : '--' }}
+								? Number.parseFloat(userAcount.number).toFixed(2) : '--' }}
 						</view>
 					</view>
 				</view>
@@ -47,8 +48,8 @@
 			<view style="margin-top: 30rpx;">
 				<view>充值代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof
-						voucherAcount.zongchongzhi === 'number' ? voucherAcount.zongchongzhi : '--' }}
+					￥{{ typeof voucherAcount.zongchongzhi === 'number' ? Number.parseFloat(voucherAcount.zongchongzhi).toFixed(2)
+						: '--' }}
 				</view>
 			</view>
 			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
@@ -56,7 +57,7 @@
 				<view>赠送代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
 					<!-- ￥{{ typeof voucherAcount.zongzengsong === 'number' ? voucherAcount.zongzengsong : '--' }} -->
-					￥{{ (Number(userAcount.number) - Number(voucherAcount.zongchongzhi)) || '--' }}
+					￥{{ Number.parseFloat(Number(userAcount.number) - Number(voucherAcount.zongchongzhi)).toFixed(2) || '--' }}
 				</view>
 			</view>
 			<!-- <view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
@@ -111,7 +112,7 @@
 		</view>
 
 		<view
-			style="position: fixed;left: 0;bottom: 0;width: 100%;padding: 10rpx 32rpx 44rpx;font-size: 24rpx;box-sizing: border-box;"
+			style="position: fixed;left: 0;bottom: 0;width: 100%;padding: 10rpx 32rpx 44rpx;font-size: 24rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view
 				style="width: 60%;margin: 0 auto;display: flex;justify-content: space-between;align-items: stretch;font-size: #222229;"
@@ -270,7 +271,10 @@
 							</view>
 						</view>
 						<view>
-							<view v-if="transferForm.buyerUserObj.buyerUserId" style="display: flex;align-items: center;padding: 2rpx 34rpx 0;">
+							<view
+								v-if="transferForm.buyerUserObj.buyerUserId"
+								style="display: flex;align-items: center;padding: 2rpx 34rpx 0;"
+							>
 								<image
 									style="width: 80rpx;height: 80rpx;border-radius: 50%;"
 									:src="common.seamingImgUrl(transferForm.buyerUserObj.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"

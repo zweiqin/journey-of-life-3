@@ -15,7 +15,7 @@
 				<view style="display: flex;justify-content: center;align-items: center;">
 					<image
 						class="header-icon"
-						:src="userInfo.avatarUrl || require('../../static/images/new-user/default-user-avatar.png')" mode=""
+						:src="common.seamingImgUrl(userInfo.headImage) || require('../../static/images/new-user/default-user-avatar.png')" mode=""
 					/>
 					<text>
 						<text v-if="type === 'userInvitation'">我的邀请码：</text>
@@ -26,18 +26,18 @@
 					<text>
 						<text v-if="type === 'userInvitation' || type === 'franchiseeInvitation' || type === 'shopInvitation' || type === 'teamMembersInvitation'">
 							<text>{{ createCode }}</text>
-							<text style="margin-left: 12upx;font-size: 26upx;color: #0061C8;" @click="$copy(createCode)">复制</text>
+							<text style="margin-left: 12rpx;font-size: 26rpx;color: #0061C8;" @click="$copy(createCode)">复制</text>
 						</text>
 						<text v-else></text>
 					</text>
 				</view>
-				<view>
+				<view style="margin-top: 20rpx;">
 					昵称：{{ userInfo.name || userInfo.wechatName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.buyerUserId }}
 				</view>
 			</view>
 
 			<view class="big-wrapper">
-				<image src="../../static/images/user/center-logo.png" class="big-icon" />
+				<image src="../../static/images/new-user/ju-logo.jpg" class="big-icon" />
 			</view>
 
 			<view class="images">
@@ -48,25 +48,25 @@
 				<view style="text-align: center;">
 					<image class="code" :src="codePicUrl" alt="" />
 					<view
-						v-if="type === 'userInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						v-if="type === 'userInvitation'" style="font-size: 26rpx;color: #06a6f0;"
 						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingUser&code=${createCode}`)"
 					>
 						复制链接
 					</view>
 					<view
-						v-else-if="type === 'franchiseeInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						v-else-if="type === 'franchiseeInvitation'" style="font-size: 26rpx;color: #06a6f0;"
 						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingUser&code=${createCode}`)"
 					>
 						复制链接
 					</view>
 					<view
-						v-else-if="type === 'shopInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						v-else-if="type === 'shopInvitation'" style="font-size: 26rpx;color: #06a6f0;"
 						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingShop&code=${createCode}`)"
 					>
 						复制链接
 					</view>
 					<view
-						v-else-if="type === 'teamMembersInvitation'" style="font-size: 26upx;color: #06a6f0;"
+						v-else-if="type === 'teamMembersInvitation'" style="font-size: 26rpx;color: #06a6f0;"
 						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingTeamMembers&code=${userInfo.phone}`)"
 					>
 						复制链接
@@ -164,7 +164,7 @@ export default {
 <style lang="scss" scoped>
 .generate-code-container {
 	position: absolute;
-	top: -10000upx;
+	top: -10000rpx;
 }
 
 .code-mask {
@@ -181,17 +181,17 @@ export default {
 	opacity: 0;
 
 	.code-wrapper {
-		width: 600upx;
-		padding: 30upx;
+		width: 600rpx;
+		padding: 30rpx;
 		box-sizing: border-box;
 		background-color: #fff;
-		border-radius: 20upx;
+		border-radius: 20rpx;
 		transform: scale(0);
 		transition: all 350ms;
 
 		.images {
 			display: flex;
-			margin: 30upx 0;
+			margin: 30rpx 0;
 			justify-content: space-around;
 
 			.zhiwen {
@@ -202,15 +202,15 @@ export default {
 				color: #999999;
 
 				image {
-					width: 120upx;
-					height: 120upx;
-					margin-bottom: 10upx;
+					width: 120rpx;
+					height: 120rpx;
+					margin-bottom: 10rpx;
 				}
 			}
 
 			image {
-				width: 200upx;
-				height: 200upx;
+				width: 200rpx;
+				height: 200rpx;
 				object-fit: cover;
 			}
 		}
@@ -222,8 +222,8 @@ export default {
 			align-items: center;
 
 			.header-icon {
-				width: 60upx;
-				height: 60upx;
+				width: 60rpx;
+				height: 60rpx;
 				margin-right: 10px;
 				border-radius: 50%;
 			}
@@ -231,28 +231,28 @@ export default {
 
 		.big-wrapper {
 			width: 100%;
-			margin-top: 40upx;
+			margin-top: 20rpx;
 			justify-content: center;
 			display: flex;
 
 			.big-icon {
-				width: 280upx;
-				height: 280upx;
+				width: 280rpx;
+				height: 280rpx;
 				object-fit: cover;
 			}
 		}
 
 		.code {
-			width: 540upx;
-			height: 540upx;
+			width: 540rpx;
+			height: 540rpx;
 			object-fit: cover;
-			// border-radius: 54upx;
+			// border-radius: 54rpx;
 		}
 
 		.uni-btn {
-			padding-top: 20upx;
-			border-top: 1upx solid #ccc;
-			font-size: 32upx;
+			padding-top: 20rpx;
+			border-top: 1rpx solid #ccc;
+			font-size: 32rpx;
 			letter-spacing: 1em;
 			color: #ccc;
 		}
