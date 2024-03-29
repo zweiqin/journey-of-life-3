@@ -186,7 +186,7 @@ export default {
 			customRecharge: '',
 			// 充值
 			rechargeForm: {
-				amounts: 50
+				amounts: 1000
 			},
 			payInfo: {},
 			isShowModalRecharge: false

@@ -231,6 +231,28 @@ export default {
 			},
 			immediate: false,
 			deep: true
+		},
+		showTonglianPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					if (!this.paymentList.find((item) => item.paymentMode === '4')) {
+						this.paymentList.push({
+							label: '通联支付（微信）',
+							paymentMode: '4',
+							icon: require('../../static/images/user/pay/tonglian.png'),
+							disabled: true
+						})
+					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
+				} else {
+					if (this.paymentMode === '4') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '4')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '4'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
 		}
 	},
 	created() {
@@ -260,14 +282,12 @@ export default {
 			})
 		}
 		if (this.showTonglianPay) {
-			// #ifdef H5
 			this.paymentList.push({
 				label: '通联支付（微信）',
 				paymentMode: '4',
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true
 			})
-			// #endif
 		}
 		if (this.showPlatformPay) {
 			this.paymentList.push({
@@ -321,23 +341,43 @@ export default {
 
 		handleSetDisable() {
 			// #ifdef H5
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-			this.paymentMode = '4'
+			if (this.showTonglianPay) {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+				this.paymentMode = '4'
+			} else {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+				this.paymentMode = ''
+			}
 			// #endif
 			// #ifdef APP
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
-			this.paymentMode = ''
+			if (this.showTonglianPay) {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+				this.paymentMode = '4'
+			} else {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+				this.paymentMode = ''
+			}
 			// #endif
 			// #ifdef MP-WEIXIN
-			// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
-			this.paymentMode = '' // 1
+			if (this.showTonglianPay) {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+				this.paymentMode = '4'
+			} else {
+				// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+				this.paymentMode = '' // 1
+			}
 			// #endif
 			// #ifdef MP-ALIPAY
-			// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
-			// if(this.flowerObj.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
-			this.paymentList.find((item) => item.paymentMode === '4').disabled = true
-			this.paymentMode = '' // 2
+			if (this.showTonglianPay) {
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+				this.paymentMode = '4'
+			} else {
+				// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
+				// if(this.flowerObj.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
+				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
+				this.paymentMode = '' // 2
+			}
 			// #endif
 		},
 
@@ -349,19 +389,21 @@ export default {
 
 		handleChangePaymentMode(e) {
 			console.log(e.detail.value)
-			if (this.paymentList.find((item) => item.paymentMode === e.detail.value).disabled) return
-			this.paymentMode = e.detail.value
-			const { flowerObj } = this
+			if (this.paymentList.find((item) => item.paymentMode === e.detail.value).disabled) {
+				this.paymentMode = ''
+			} else {
+				this.paymentMode = e.detail.value
+			}
 			if (this.paymentMode !== '3') {
 				// 支付宝支付，取消分期选择
-				flowerObj.hbByStagesPeriods = '-1'
+				this.flowerObj.hbByStagesPeriods = '-1'
 				// 3 6 12 全部禁止
-				flowerObj.hbByStagesList.forEach((item) => {
+				this.flowerObj.hbByStagesList.forEach((item) => {
 					item.disabled = true
 				})
 			} else {
 				// 分期支付，默认选三期
-				flowerObj.hbByStagesPeriods = '3'
+				this.flowerObj.hbByStagesPeriods = '3'
 			}
 			this.handleHbStagesAndPrice()
 			this.handleNoticeFather()

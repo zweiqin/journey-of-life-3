@@ -316,7 +316,7 @@ export default {
 					isAllSelect: this.isAllSelect
 				}).then(async (res) => {
 					uni.hideLoading()
-					if ((this.orderMsg.orderType === 2) && (this.orderMsg.state === 10)) {
+					if ((this.orderMsg.orderType === 2) && (this.orderMsg.state === 9)) {
 						await updateDirectRefundApi({
 							orderId: res.data.orderId,
 							afterId: res.data.afterId

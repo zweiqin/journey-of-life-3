@@ -97,14 +97,18 @@
 						<view
 							v-for="(item, index) in logsInfo.data" :key="item.id"
 							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
-							@click="handleClickVoucherRecord"
+							@click="handleClickVoucherRecord(item)"
 						>
 							<view style="flex: 1;display: flex;align-items: center;">
 								<view
 									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
 									:style="{ backgroundColor: [2, 4].includes(item.type) ? '#ef530e' : '#208f57' }"
 								>
-									<text v-if="[2, 4].includes(item.type)">支</text>
+									<text
+										v-if="([ 2 ].includes(queryType) && [2, 4].includes(item.type)) || ([ 3 ].includes(queryType) && [ 4 ].includes(item.type))"
+									>
+										支
+									</text>
 									<text v-else>收</text>
 								</view>
 								<view style="margin-left: 14rpx;">
@@ -161,7 +165,7 @@
 						<view
 							v-for="(item, index) in orderInfo.data" :key="item.id"
 							style="display: flex;align-items: center;justify-content: space-between;padding-top: 38rpx;"
-							@click="handleClickVoucherRecord"
+							@click="handleClickVoucherRecord(item)"
 						>
 							<view style="flex: 1;display: flex;align-items: center;">
 								<view
@@ -389,7 +393,7 @@ export default {
 				url: '/another-tf/another-user/voucher/voucher-record-detail',
 				success: () => {
 					setTimeout(() => {
-						uni.$emit('sendVoucherRecordDetailMsg', { voucherRecordData: item, from: this.queryType })
+						uni.$emit('sendVoucherRecordDetailMsg', { voucherRecordData: item, fromOrigin: this.queryType })
 					}, 400)
 				}
 			})

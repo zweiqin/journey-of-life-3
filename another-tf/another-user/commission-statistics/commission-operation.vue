@@ -1,258 +1,125 @@
 <template>
-	<view class="commision-page">
-		<view class="back">
-			<tui-icon name="arrowleft" color="#000" :size="30" @click="handleBack"></tui-icon>
+	<view class="balance-operation">
+		<JHeader title="推广佣金" width="50" height="50"></JHeader>
+		<view style="display: flex;justify-content: flex-end;">
+			<tui-button
+				type="black" width="220rpx" height="60rpx" margin="0"
+				plain link
+				@click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=2')"
+			>
+				收支明细
+			</tui-button>
 		</view>
 
-		<!-- 上面三个统计 -->
-		<view class="top-pane">
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=1')">
-				<image class="img" src="../../../static/images/new-user/group/today-price.png"></image>
-				<view class="text">今日佣金</view>
-				<view class="value">￥{{ commissionData.todaySum || 0 }}</view>
+		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;">
+			<tui-icon name="wealth-fill" :size="130" unit="rpx" color="#eb6a00" margin="0"></tui-icon>
+			<view style="margin-top: 26rpx;font-size: 36rpx;">推广佣金</view>
+			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
+				￥{{ Number.parseFloat(Number(commissionData.remainAmount)).toFixed(2) || 0 }}
 			</view>
-
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=2')">
-				<image class="img" src="../../../static/images/new-user/group/total-price.png"></image>
-				<view class="text">累计佣金</view>
-				<view class="value">￥{{ commissionData.remainAmount || 0 }}</view>
+			<view style="margin-top: 20rpx;font-size: 36rpx;">
+				可提现余额：￥
+				{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice)).toFixed(2) || 0 }}
 			</view>
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=3')">
-				<image class="img" src="../../../static/images/new-user/group/lu-price.png"></image>
-				<view class="text">途中佣金</view>
-				<view class="value">￥{{ commissionData.inTheAccount || 0 }}</view>
-			</view>
-		</view>
-
-		<!-- 列表统计 -->
-		<view class="list">
-			<view class="list-wrapper">
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user')">
-					<image class="img" src="../../../static/images//new-user/group/total-vip-number.png"></image>
-					<view class="text">累计会员(个)</view>
-					<view class="value">{{ commissionData.fans || 0 }}</view>
+			<view class="operation-btn">
+				<view style="padding-top: 100rpx;">
+					<tui-button
+						type="gray" width="280rpx" height="78rpx" margin="0"
+						@click="go('/another-tf/another-serve/withdraw/index')"
+					>
+						提现
+					</tui-button>
 				</view>
-
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?date=now')">
-					<image class="img" src="../../../static/images//new-user/group/today-vip-number.png"></image>
-					<view class="text">今日会员(个)</view>
-					<view class="value">{{ commissionData.todayFans || 0 }}</view>
+				<view style="padding-top: 18rpx;">
+					<tui-button
+						type="primary" width="280rpx" height="78rpx" margin="0"
+						@click="go('/another-tf/another-user/commission-statistics/commission-statistics')"
+					>
+						我的账本
+					</tui-button>
 				</view>
-
-				<!-- <view class="item">
-					<image class="img" src="../../static/images//new-user/group/can-whith.png"></image>
-					<view class="text">可提现(元)</view>
-					<view class="value">{{ commissionData.totalAmount || 0 }}</view>
-					</view>
-
-					<view class="item">
-					<image class="img" src="../../static/images//new-user/group/has-whitdh.png"></image>
-					<view class="text">已提现(元)</view>
-					<view class="value">{{ commissionData.withdrawAmount || 0 }}</view>
-					</view> -->
-			</view>
-
-			<view class="button-wrapper">
-				<!-- <view class="tip">可提现 ￥{{ commissionData.totalAmount || 0 }}</view> -->
-				<button
-					:class="{ disabled: !commissionData.totalAmount || commissionData.totalAmount == 0 }" class="uni-btn"
-					@click="handleWithdrawal(commissionData.totalAmount)"
-				>
-					去提现
-				</button>
 			</view>
 		</view>
 
-		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
 <script>
-import { getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
 
 export default {
-	data() {
-		return {
-			commissionData: {}
-		}
+	name: 'CommissionOperation',
+	onShow() {
+		this.getPricePlatformAll()
+		this.getCommissionData()
 	},
 
-	onShow() {
-		this.getCommissionData()
+	data() {
+		return {
+			pricePlatformInfo: {
+				totalPrice: '',
+				price: '',
+				rechargePrice: '',
+				voucherPrice: '',
+				distributorPrice: '',
+				commissionPrice: ''
+			},
+			commissionData: {
+				remainAmount: ''
+			}
+		}
 	},
 
 	methods: {
-		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
-		},
-
-		async getCommissionData() {
-			try {
-				const res = await getSmallAccountBookStatisticsApi()
-				this.commissionData = res.data
-			} catch (error) {
-				this.ttoast({
-					type: 'fail',
-					content: error || '获取佣金信息失败',
-					title: '获取佣金详情失败'
+		// 刷新用户信息
+		getPricePlatformAll() {
+			uni.showLoading()
+			getPricePlatformAllApi({})
+				.then((res) => {
+					uni.hideLoading()
+					this.pricePlatformInfo = res.data
 				})
-			} finally {
-				uni.stopPullDownRefresh()
-			}
+				.catch(() => {
+					uni.hideLoading()
+				})
 		},
-
-		async getVipCommissionStatistics() {
-
-		},
-
-		// 点击提现
-		handleWithdrawal(account) {
-			// if (!account) {
-			//   this.ttoast({
-			//     type: 'fail',
-			//     title: '佣金正在审批中'
-			//   });
-			//   return;
-			// }
-
-			uni.navigateTo({
-				url: '/another-tf/another-user/my-wallet/index'
-			})
+		getCommissionData() {
+			uni.showLoading()
+			getSmallAccountBookStatisticsApi({})
+				.then((res) => {
+					uni.hideLoading()
+					this.commissionData = res.data
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
 		}
-	},
-
-	onPullDownRefresh() {
-		this.getCommissionData()
 	}
 }
 </script>
 
 <style lang="less" scoped>
-.commision-page {
-	position: relative;
-	width: 100vw;
+.balance-operation {
 	min-height: 100vh;
-	background-color: #f5f7fb;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	background-color: #f8f9fb;
+	box-sizing: border-box;
 
-	.back {
-		position: absolute;
-		top: 40upx;
-		left: 40upx;
-		right: 40upx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+	/deep/ .j-header-container {
+		padding: 24rpx 0 10rpx;
+		background-color: #f5f5f5;
 
-		.uni-btn {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			font-size: 28upx;
-
-			.img {
-				width: 50upx;
-				height: 50upx;
-				margin-right: 8upx;
-			}
+		.title {
+			font-size: 36rpx;
+			color: #222229;
+			font-weight: normal;
 		}
 	}
 
-	.top-pane {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 206upx 56upx 56upx 56upx;
-		box-sizing: border-box;
-		width: 100vw;
-
-		.item {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
-			font-size: 26upx;
-			counter-reset: #3d3d3d;
-
-			.text {
-				margin: 16upx 0 12upx 0;
-			}
-
-			.value {
-				font-weight: 500;
-			}
+	.operation-btn {
+		/deep/ .tui-btn {
+			display: inline-block;
+			border-radius: 18rpx;
 		}
 	}
-
-	.list {
-		flex: 1;
-		width: 100vw;
-		background-color: #fff;
-		padding-bottom: 56upx;
-		border-radius: 80upx 80upx 0 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		.list-wrapper {
-			width: 100%;
-			padding: 60upx 56upx;
-			box-sizing: border-box;
-		}
-
-		.item {
-			display: flex;
-			align-items: center;
-			margin-bottom: 46upx;
-
-			.text {
-				flex: 1;
-
-				margin-right: 30upx;
-				margin-left: 30upx;
-			}
-		}
-
-		.button-wrapper {
-			width: 100%;
-
-			.tip {
-				text-align: center;
-				margin-bottom: 20upx;
-				font-size: 24upx;
-			}
-
-			.uni-btn {
-				height: 80upx;
-				width: 702upx;
-				margin: 0 auto;
-				background-color: #fe751a;
-				color: #fff;
-				font-size: 30upx;
-				font-weight: 500;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				transition: all 350ms;
-
-				&.disabled {
-					opacity: 0.7;
-				}
-
-				&:active {
-					background-color: #ff8f44;
-				}
-			}
-		}
-	}
-}
-
-.img {
-	width: 80upx;
-	height: 80upx;
-	flex-shrink: 0;
 }
 </style>

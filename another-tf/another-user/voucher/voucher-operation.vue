@@ -35,7 +35,7 @@
 						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
 							￥{{ typeof userAcount.number === 'number'
-								? Number.parseFloat(userAcount.number).toFixed(2) : '--' }}
+								? Number.parseFloat(Number(userAcount.number)).toFixed(2) : '--' }}
 						</view>
 					</view>
 				</view>
@@ -48,13 +48,14 @@
 			<view style="margin-top: 30rpx;">
 				<view>充值代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof voucherAcount.zongchongzhi === 'number' ? Number.parseFloat(voucherAcount.zongchongzhi).toFixed(2)
+					￥{{ typeof voucherAcount.zongchongzhi === 'number'
+						? Number.parseFloat(Number(voucherAcount.zongchongzhi)).toFixed(2)
 						: '--' }}
 				</view>
 			</view>
 			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
 			<view style="margin-top: 30rpx;">
-				<view>赠送代金券</view>
+				<view>兑换代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
 					<!-- ￥{{ typeof voucherAcount.zongzengsong === 'number' ? voucherAcount.zongzengsong : '--' }} -->
 					￥{{ Number.parseFloat(Number(userAcount.number) - Number(voucherAcount.zongchongzhi)).toFixed(2) || '--' }}
@@ -82,9 +83,9 @@
 			class="operation-btn"
 			style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;padding-bottom: 148rpx;"
 		>
-			<view style="padding-top: 100rpx;">
+			<view style="padding-top: 60rpx;">
 				<tui-button
-					type="warning" :size="36" width="328rpx" height="102rpx"
+					type="warning" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="(isShowVoucherPopup = true) && (showType = 'recharge')"
 				>
@@ -93,7 +94,7 @@
 			</view>
 			<view style="padding-top: 18rpx;">
 				<tui-button
-					type="gray" :size="36" width="328rpx" height="102rpx"
+					type="gray" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="(isShowVoucherPopup = true) && (showType = 'transfer')"
 				>
@@ -102,7 +103,7 @@
 			</view>
 			<view style="padding-top: 18rpx;">
 				<tui-button
-					type="primary" :size="36" width="328rpx" height="102rpx"
+					type="primary" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="go('/pages/index/voucher-zone')"
 				>

@@ -1,8 +1,10 @@
 <template>
 	<view class="invite-spell-container">
-		<JHeader title="邀请好友拼单" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="邀请好友拼单" :dark="false" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
 		<view class="grouped">
-			<view class="fs32 font-color-FFF">{{ remainPerson !== 0 ? '等待成团' : '已成团' }}</view>
+			<view class="fs32 font-color-FFF">
+				{{ (inviteSpell.person - inviteSpell.personList.length) !== 0 ? '等待成团' : '已成团' }}
+			</view>
 			<view class="fs26 number">{{ inviteSpell.person }}人团</view>
 		</view>
 		<view class="topBox">
@@ -13,10 +15,10 @@
 					<view class="flex-row-plus flex-sp-between">
 						<view class="flex-column-plus">
 							<view class="flex-row-plus mar-top-30 flex-items">
-								<label class="font-color-C83732 fs24">¥</label>
+								<label class="font-color-C83732 fs24">￥</label>
 								<label class="font-color-C83732 fs36 mar-left-5">{{ inviteSpell.price }}</label>
 								<label class="font-color-CCC discountsPriceLine fs26 mar-left-20">
-									¥{{ inviteSpell.originalPrice }}
+									￥{{ inviteSpell.originalPrice }}
 								</label>
 							</view>
 						</view>
@@ -31,31 +33,42 @@
 						v-for="(item, index) in inviteSpell.personList" :key="index"
 						class="flex-column flex-items-plus mar-left-20"
 					>
-						<image v-if="index == 0" class="head-icon border-FF7 z-index-0" :src="common.seamingImgUrl(item.headImage)"></image>
+						<image v-if="index == 0" class="head-icon border-FF7 z-index-0" :src="common.seamingImgUrl(item.headImage)">
+						</image>
 						<image v-else class="head-icon " :src="common.seamingImgUrl(item.headImage)"></image>
 						<view v-if="index == 0" class="fs18 colonel-box">团长</view>
 					</view>
-					<view v-for="ritem in remainPerson">
+					<view v-for="ritem in (inviteSpell.person - inviteSpell.personList.length)" :key="ritem">
 						<view class="replenish-icon flex-items-plus mar-left-20">?</view>
 					</view>
 				</view>
-				<view v-if="remainPerson !== 0">
+				<view v-if="(inviteSpell.person - inviteSpell.personList.length) !== 0">
 					<view class="mar-top-50 font-color-333">
 						还差<label class="font-color-C5AA7B">
-							{{ remainPerson }}
+							{{ inviteSpell.person - inviteSpell.personList.length }}
 						</label>人成团，距结束还剩
 						<tui-countdown
 							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-							border-color="transparent" :time="remainingTime"
+							border-color="transparent"
+							:time="Math.floor(inviteSpell.time / 1000)"
 						></tui-countdown>
 					</view>
-					<view v-if="type == 1" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="$refs.shareSpell.shareShow = true">
+					<view
+						v-if="inviteSpell.personList.some((item) => item.buyerUserId === $store.getters.userInfo.buyerUserId)"
+						class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="$refs.shareSpell.shareShow = true"
+					>
 						邀请好友拼单
 					</view>
-					<view v-if="type == 0" class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="goosDetailshowFlag = true">
+					<view
+						v-if="!inviteSpell.personList.some((item) => item.buyerUserId === $store.getters.userInfo.buyerUserId)"
+						class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="isShowDetails = true"
+					>
 						立即参团
 					</view>
-					<view v-if="type == 1" class="poster-but flex-items-plus mar-top-40" @click="goinvitePoster">
+					<view
+						v-if="inviteSpell.personList.some((item) => item.buyerUserId === $store.getters.userInfo.buyerUserId)"
+						class="poster-but flex-items-plus mar-top-40" @click="goInvitePoster"
+					>
 						生成邀请海报
 					</view>
 				</view>
@@ -76,123 +89,122 @@
 				</view>
 			</view>
 			<view class="mar-top-40">
-				<tui-steps :items="numList" :type="2" :active-steps="-1"></tui-steps>
+				<tui-steps
+					:items="[{ name: '选择商品 完成下单' }, { name: '支付开团 或参团' }, { name: '邀请好友 参与拼团' }, { name: '人满成团 失败退款' }]"
+					:type="2" :active-steps="-1"
+				></tui-steps>
 			</view>
 		</view>
 		<!-- 商品详情 -->
-		<tui-bottom-popup v-model="goosDetailshowFlag" class="goosDetailshow-box" radius @close="goosDetailshowFlag = false">
-			<view>
+		<tui-bottom-popup :show="isShowDetails" @close="isShowDetails = false">
+			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
-					<image class="detailImg" :src="common.seamingImgUrl(skuImg)"></image>
+					<image class="detailImg default-img" :src="common.seamingImgUrl(selectedSku.image)"></image>
 					<view class="flex-column-plus mar-left-40">
 						<view class="font-color-C5AA7B">
 							<label class="fs24">¥</label>
-							<label class="fs36 mar-left-10">{{ skuPrice }}</label>
+							<label
+								class="fs36 mar-left-10"
+								v-text="goodsDetail.activityType == 1 ? selectedSku.originalPrice : selectedSku.price"
+							></label>
 						</view>
-						<label class="fs24 font-color-999 mar-top-20">库存 {{ stockNumber }} 件</label>
+						<label class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</label>
 						<label class="fs24 mar-top-20">已选</label>
 					</view>
 				</view>
-				<view class="color-box flex-column-plus">
-					<view v-for="(attritem, index) in skuProdList.names" :key="index">
-						<label class="fs24 font-color-999">{{ attritem.skuName }}</label>
-						<view class="colorName-box">
-							<view v-for="(attrRes, resIndex) in attritem.values" :key="resIndex" class="pad-bot-30">
-								<label
-									class="colorName" :class="{ 'colorName-on': subIndex[index] == resIndex }"
-									@click="colorActiveClick(attrRes, index, resIndex)"
+
+				<view style="flex: 1;height: 0;overflow: hidden;padding: 30rpx;font-size: 26rpx;">
+					<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
+						<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="padding-bottom: 30rpx;">
+							<view v-if="nameItem.nameCode" style="color: #333333;">
+								{{ nameItem.skuName }}
+							</view>
+							<view style="display: flex;flex-wrap: wrap;align-items: center;margin: 0 -15rpx;">
+								<view
+									v-for="tag in nameItem.values" :key="tag.valueCode"
+									style="background-color: #FFFFFF;margin: 24rpx 15rpx 0;padding: 10rpx 32rpx;" :style="{
+										boxShadow: selectedAttr[nameItem.nameCode] === tag.valueCode ? '0 0 20rpx rgba(0, 0, 0, 0.1)' : 'none',
+										color: selectedAttr[nameItem.nameCode] === tag.valueCode ? '#C5AA7B' : tag.ifEnable ? '#cccccc' : '#333333',
+										border: selectedAttr[nameItem.nameCode] === tag.valueCode ? '2rpx solid #ffffff' : '2rpx solid #E4E5E6'
+									}" @click="handleClickSkuItem(nameItem.nameCode, tag)"
 								>
-									{{ attrRes.skuValue }}
-								</label>
+									{{ tag.skuValue }}
+								</view>
 							</view>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 				<view class="goodsNum-box flex-row-plus flex-sp-between">
 					<label class="font-color-999 fs24">数量</label>
 					<view class="goodsNum">
-						<label class="subtract" @click="numSub">-</label>
-						<label class="goodsNumber">{{ buyNum }}</label>
-						<label class="add" @click="numAdd">+</label>
+						<text class="subtract" @click="handleNumSub()">-</text>
+						<text class="goodsNumber">{{ number }}</text>
+						<text class="add" @click.stop="handleNumAdd()">+</text>
 					</view>
 				</view>
-				<view
-					class="flex-items-plus" style="padding-bottom: 50rpx;"
-				>
-					<view class="joinbuyBut" @click="getGroupSettlement(2)">确定</view>
+
+				<view style="padding: 0 18rpx 30rpx;">
+					<view style="display: flex;align-items: center;justify-content: center;">
+						<tui-button
+							type="black" width="190rpx" height="80rpx" margin="0"
+							:disabled="!selectedSku.stockNumber"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="getGroupSettlement(2)"
+						>
+							确定
+						</tui-button>
+					</view>
 				</view>
 			</view>
 		</tui-bottom-popup>
 		<ShareSpell
-			ref="shareSpell" :url="url" :url-parms="urlParms" :img="inviteSpell.image"
-			title="好友邀请您来拼单啦"
-			@shareCancel="$refs.shareSpell.shareShow = false"
+			ref="shareSpell"
+			:url="`/another-tf/another-serve/inviteSpell/index?collageId=${collageId}&orderId=${orderId}&productId=${productId}&skuId=${skuId}&shopGroupWorkId=${shopGroupWorkId}`"
+			:img="inviteSpell.image" title="好友邀请您来拼单啦" @shareCancel="$refs.shareSpell.shareShow = false"
 		>
 		</ShareSpell>
 	</view>
 </template>
 
 <script>
-import { T_STORAGE_KEY, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
+import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../utils'
+import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
 import { getProductDetailsByIdApi, getProductsSkuApi, getInviteWorkApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'InviteSpell',
 	data() {
 		return {
-			numList: [{
-				name: '选择商品 完成下单'
-			}, {
-				name: '支付开团 或参团'
-			}, {
-				name: '邀请好友 参与拼团'
-			}, {
-				name: '人满成团 失败退款'
-			}],
 			collageId: 0,
 			orderId: 0,
-			type: 0,
-			inviteSpell: {},
-			personLen: 0,
-			remainPerson: 0,
-			goosDetailshowFlag: false,
-			remainingTime: null,
 			productId: 0,
 			skuId: 0,
 			shopGroupWorkId: 0,
-			buyNum: 1,
-			skuProdId: 0,
-			skuImg: '',
-			skuPrice: 0,
-			stockNumber: 0,
-			skuProdList: {},
-			selectArr: [], // 存放被选中的值
-			subIndex: [], // 是否选中 因为不确定是多规格还是单规格，所以这里定义数组来判断
-			attrItemIdArr: [], // 存放被选中的id
+			inviteSpell: {
+				person: 0,
+				personList: [],
+				time: 0
+			},
 			shopId: 0,
-			attrList: [],
-			productDetail: {},
-			url: '',
-			shareTitle: '',
-			urlParms: ''
+			isShowDetails: false,
+			goodsDetail: {
+				activityType: 0,
+				names: []
+			},
+			number: 1,
+			selectedSku: {
+				image: '',
+				price: '',
+				originalPrice: '',
+				stockNumber: 0
+			},
+			selectedAttr: {}
 		}
 	},
 	onShareAppMessage(res) {
-		var that = this
-		// console.log('res=====',res);
-		if (res.from === 'button') {
-			// console.log('来自页面内转发按钮');
-		} else if (res.from === 'menu') {
-			// console.log('右上角菜单转发按钮');
-		}
-		this.url = '/another-tf/another-serve/inviteSpell/index?collageId=' +
-			this.collageId + '&orderId=' + this.orderId + '&type=0' + '&productId=' + this.productId + '&skuId=' +
-			this.skuId + '&shopGroupWorkId=' + this.shopGroupWorkId
-		this.shareTitle = `【仅剩${this.remainPerson}个名额】我${this.inviteSpell.price}元拼了${this.inviteSpell.productName}`
 		// 返回数据
 		return {
-			title: that.shareTitle,
-			path: that.url,
+			title: `【仅剩${this.inviteSpell.person - this.inviteSpell.personList.length}个名额】我${this.inviteSpell.price}元拼了${this.inviteSpell.productName}`,
+			path: `/another-tf/another-serve/inviteSpell/index?collageId=${this.collageId}&orderId=${this.orderId}&productId=${this.productId}&skuId=${this.skuId}&shopGroupWorkId=${this.shopGroupWorkId}`,
 			success(res) {
 				// 转发成功，可以把当前页面的链接发送给后端，用于记录当前页面被转发了多少次或其他业务
 				wx.request({
@@ -205,96 +217,103 @@ export default {
 					}
 				})
 			},
-			fail(res) {
+			fail(e) {
 				// 转发失败
 			}
 		}
 	},
 	onShow() {
-		// 判断是否登录
-		let item = {}
-		if (uni.getStorageSync(T_STORAGE_KEY)) {
-			item = uni.getStorageSync(T_STORAGE_KEY)
-		}
-		if (JSON.stringify(item) == '{}') {
-			this.getInviteSpell()
-		} else {
-			this.$store.dispatch('auth/refrshUserInfoAction', () => {
-				this.getInviteSpell()
+		uni.showLoading()
+		getInviteWorkApi({
+			collageId: this.collageId,
+			orderId: this.orderId
+		}).then((res) => {
+			this.inviteSpell = res.data
+			uni.hideLoading()
+		})
+			.catch((e) => {
+				uni.hideLoading()
 			})
-		}
 	},
 	onLoad(options) {
-		this.collageId = parseInt(options.collageId)
-		this.orderId = parseInt(options.orderId)
-		this.productId = parseInt(options.productId)
-		this.skuId = parseInt(options.skuId)
-		this.shopGroupWorkId = parseInt(options.shopGroupWorkId)
-
+		this.collageId = Number(options.collageId)
+		this.orderId = Number(options.orderId)
+		this.productId = Number(options.productId)
+		this.skuId = Number(options.skuId)
+		this.shopGroupWorkId = Number(options.shopGroupWorkId)
 		getProductsSkuApi({
 			skuId: this.skuId,
 			productId: this.productId
 		}).then((res) => {
-			this.skuProdList = res.data
-			this.attrList = res.data.names
-			// 渲染商详之后，默认先选中第一个规格
-			this.colorActiveClick(res.data.names[0].values[0], 0, 0)
-			this.skuProdId = this.skuId
-			this.skuImg = res.data.image
-			this.skuPrice = res.data.price
-			this.stockNumber = res.data.stockNumber
 			this.shopId = res.data.shopId
+			this.handleShowGoodsSkuSelect({ shopId: this.shopId, productId: this.productId, skuId: this.skuId })
 		})
-
-		getProductDetailsByIdApi({
-			shopId: this.shopId,
-			productId: this.productId,
-			skuId: this.skuId,
-			terminal: 1
-		}).then((res) => {
-			this.productDetail = res.data
-			for (let i = 0; i < res.data.attrList.length; i++) {
-				this.subIndex[i] = 0
-			}
-			this.attrItemIdArr[0] = res.data.attrList[0].attrValueList[0].id
-		})
-		// #ifdef MP-WEIXIN
-		this.url = '/another-tf/another-serve/inviteSpell/index?collageId=' +
-			this.collageId + '&orderId=' + this.orderId + '&productId=' + this.productId + '&skuId=' + this.skuId +
-			'&shopGroupWorkId=' + this.shopGroupWorkId
-		this.urlParms = this.collageId + '&orderId=' + this.orderId + '&productId=' + this.productId + '&skuId=' + this
-			.skuId + '&shopGroupWorkId=' + this.shopGroupWorkId
-		// #endif
-		// #ifndef MP-WEIXIN
-		this.url = '/another-tf/another-serve/inviteSpell/index?collageId=' +
-			this.collageId + '&orderId=' + this.orderId + '&productId=' + this.productId + '&skuId=' + this.skuId +
-			'&shopGroupWorkId=' + this.shopGroupWorkId
-		// #endif
 	},
 	methods: {
-		// 拼团下单
-		getGroupSettlement(type) {
-			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
-			const data = {
-				collageId: this.collageId,
-				number: this.buyNum,
-				productId: this.productId,
-				shopId: this.shopId,
-				skuId: this.skuProdId,
-				shopGroupWorkId: this.shopGroupWorkId,
-				type
+		async handleShowGoodsSkuSelect(productItem) {
+			this.goodsDetail = { names: [] }
+			this.selectedAttr = {}
+			uni.showLoading()
+			try {
+				const res = await getProductDetailsByIdApi({
+					shopId: productItem.shopId,
+					productId: productItem.productId,
+					skuId: productItem.skuId,
+					terminal: 1
+				})
+				this.goodsDetail = res.data
+				const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
+				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
+					this.goodsDetail.names[0].values.push({
+						skuValue: this.goodsDetail.names[0].skuName,
+						valueCode: '单款项'
+					})
+				}
+				skuCollectionListKeys.forEach((skuValueCodeItem) => {
+					if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
+				})
+				this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
+				this.$nextTick(() => {
+					if (productItem.skuId) {
+						this.handleSelectBySkuId(productItem.skuId)
+					} else {
+						this.goodsDetail.names.forEach((nameItem) => {
+							this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
+						})
+					}
+					this.isShowDetails = true
+				})
+			} finally {
+				uni.hideLoading()
 			}
-			uni.setStorageSync(T_SKU_ITEM_LIST, data)
-			this.goosDetailshowFlag = false
-			this.buyNum = 1
-			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=3'
+		},
+		handleSelectBySkuId(skuId) {
+			if (!skuId) return
+			Object.keys(this.goodsDetail.map).forEach((skuValueCodeItem) => {
+				if (this.goodsDetail.map[skuValueCodeItem].skuId === skuId) {
+					this.goodsDetail.names.forEach((nameItem) => {
+						nameItem.values.some((tag) => {
+							if (this.goodsDetail.map[skuValueCodeItem].valueCodes.split(',').includes(tag.valueCode)) {
+								this.handleClickSkuItem(nameItem.nameCode, tag)
+								return true
+							}
+							return false
+						})
+					})
+				}
 			})
 		},
-		// 数量减
-		numSub() {
-			if (this.buyNum > 1) {
-				this.buyNum = this.buyNum - 1
+		handleClickSkuItem(nameCode, tagItem) {
+			if (tagItem.ifEnable) return
+			const { goodsDetail, selectedAttr } = resolveGoodsDetailTagsSituation(this.goodsDetail, this.selectedAttr, nameCode, tagItem)
+			this.selectedAttr = selectedAttr
+			this.goodsDetail = goodsDetail
+			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
+		},
+
+		handleNumSub() {
+			if (this.number > 1) {
+				this.number = this.number - 1
 			} else {
 				uni.showToast({
 					title: '亲！至少一件哦！',
@@ -302,10 +321,9 @@ export default {
 				})
 			}
 		},
-		// 数量加
-		numAdd() {
-			if (this.buyNum < this.stockNumber) {
-				this.buyNum = this.buyNum + 1
+		handleNumAdd() {
+			if (this.number < this.selectedSku.stockNumber) {
+				this.number = this.number + 1
 			} else {
 				uni.showToast({
 					title: '库存不足！',
@@ -313,94 +331,50 @@ export default {
 				})
 			}
 		},
-		// 颜色选中事件
-		colorActiveClick(res, index, resIndex) {
-			this.selectArr[index] = res
-			this.subIndex[index] = resIndex
-			this.attrItemIdArr[index] = res.valueCode
 
-			const result = [] // 定义数组存储被选中的值
-			for (const i in this.attrList) {
-				result[i] = this.selectArr[i] ? this.selectArr[i] : ''
-				if (!this.subIndex[i]) {
-					this.subIndex[i] = 0
-				}
-				if (!this.attrItemIdArr[i]) {
-					this.attrItemIdArr[i] = this.attrList[i].values[0].valueCode
-				}
-			}
-			for (const i in this.attrList) {
-				var last = result[i] // 把选中的值存放到字符串last去
-				for (const k in this.attrList[i].item) {
-					result[i] = this.attrList[i].item[k].name // 赋值，存在直接覆盖，不存在往里面添加name值
-				}
-				result[i] = last // 还原，目的是记录点下去那个值，避免下一次执行循环时避免被覆盖
-			}
-			this.$forceUpdate() // 重绘
-
-			let attrkey = ''
-			for (let i = 0; i < this.attrItemIdArr.length; i++) {
-				attrkey += this.attrItemIdArr[i] + ','
-			}
-			attrkey = attrkey.substring(0, attrkey.length - 1)
-			const mapinfo = this.skuProdList.map
-			for (var key in mapinfo) {
-				if (attrkey == key) {
-					this.skuProdId = mapinfo[key].skuId
-					this.skuImg = mapinfo[key].skuImg
-					this.skuPrice = mapinfo[key].price
-					this.stockNumber = mapinfo[key].stockNumber
-				}
-			}
-		},
-		goinvitePoster() {
-			const data = {
-				image: this.inviteSpell.image,
-				headImage: this.inviteSpell.headImage,
-				productName: this.inviteSpell.productName,
-				person: this.inviteSpell.person,
-				originalPrice: this.inviteSpell.originalPrice,
-				price: this.inviteSpell.price,
+		// 拼团下单
+		getGroupSettlement(type) {
+			if (!this.selectedSku.skuId) return this.$showToast('请选择商品')
+			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
+			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
+			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
+			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
+			uni.setStorageSync(T_SKU_ITEM_LIST, {
 				collageId: this.collageId,
+				number: this.number,
 				productId: this.productId,
-				skuId: this.skuId,
-				orderId: this.orderId
-			}
+				shopId: this.shopId,
+				skuId: this.selectedSku.skuId,
+				shopGroupWorkId: this.shopGroupWorkId,
+				type
+			})
+			this.isShowDetails = false
 			uni.navigateTo({
-				url: '/another-tf/another-serve/invitePoster/index?data=' + JSON.stringify(data)
+				url: '/another-tf/another-serve/orderConfirm/index?type=3'
 			})
 		},
-		getInviteSpell() {
-			uni.showLoading({
-				mask: true,
-				title: '加载中...'
-			})
-			getInviteWorkApi({
-				collageId: this.collageId,
-				orderId: this.orderId
-			}).then((res) => {
-				this.inviteSpell = res.data
-				this.type = 0
-				this.inviteSpell.personList.forEach((item) => {
-					if (item.buyerUserId === this.$store.getters.userInfo.buyerUserId) {
-						this.type = 1
-					}
+
+		goInvitePoster() {
+			uni.navigateTo({
+				url: '/another-tf/another-serve/invitePoster/index?data=' + JSON.stringify({
+					image: this.inviteSpell.image,
+					headImage: this.inviteSpell.headImage,
+					productName: this.inviteSpell.productName,
+					person: this.inviteSpell.person,
+					originalPrice: this.inviteSpell.originalPrice,
+					price: this.inviteSpell.price,
+					collageId: this.collageId,
+					productId: this.productId,
+					skuId: this.skuId,
+					orderId: this.orderId
 				})
-				this.personLen = res.data.personList.length
-				this.remainPerson = res.data.person - this.personLen
-				this.remainingTime = Math.floor(res.data.time / 1000)
-				uni.hideLoading()
 			})
-				.catch((res) => {
-					uni.hideLoading()
-				})
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-
 .invite-spell-container {
 	background-color: #333333;
 	min-height: 100vh;
@@ -554,55 +528,6 @@ export default {
 				width: 180upx;
 				height: 180upx;
 			}
-		}
-
-		.color-box {
-			padding: 30upx 30upx;
-			border-bottom: 1upx solid #EDEDED;
-			width: 690upx;
-
-			.colorName-box {
-				display: flex;
-				flex-wrap: wrap;
-				flex-direction: row;
-				justify-content: flex-start;
-				align-items: center;
-				margin-top: 30upx;
-				margin-left: -30upx;
-
-				.colorName-on {
-					background-color: #FFE5D0;
-					color: #C5AA7B;
-					margin-left: 30upx;
-					padding: 10upx 32upx;
-					border-radius: 28upx;
-					border: 1upx solid #C5AA7B;
-					font-size: 26upx;
-					text-align: center;
-					z-index: 1;
-				}
-
-				.colorName {
-					background-color: #F5F5F5;
-					margin-left: 30upx;
-					padding: 10upx 32upx;
-					border-radius: 28upx;
-					font-size: 26upx;
-					z-index: 2;
-				}
-			}
-
-		}
-
-		.joinbuyBut {
-			width: 690upx;
-			height: 80upx;
-			border-radius: 40upx 40upx;
-			background-color: #3D3C3D;
-			color: #FFFEFE;
-			font-size: 28upx;
-			line-height: 80upx;
-			text-align: center;
 		}
 
 		.goodsNum-box {

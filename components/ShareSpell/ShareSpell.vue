@@ -67,10 +67,6 @@ export default {
 		title: {
 			type: String,
 			dafault: ''
-		},
-		urlParms: {
-			type: String,
-			default: ''
 		}
 	},
 	onShareAppMessage(e) {

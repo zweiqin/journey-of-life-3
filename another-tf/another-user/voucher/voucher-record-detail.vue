@@ -1,50 +1,118 @@
 <template>
 	<view class="voucher-record-detail-container">
-		<JHeader title="订单核销码" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;"></JHeader>
-		<view style="padding: 90upx 28upx 0;" class="write-off-bg">
-			<view style="text-align: center;color: #ffffff;">
-				<view style="font-size: 38upx;font-weight: bold;">
-					<text v-if="verificationStatus == '0'">待核销-待付款</text>
-					<text v-else-if="verificationStatus == '1'">待核销-已付款</text>
-					<text v-else-if="verificationStatus == '2'">已核销</text>
-					<text v-else-if="verificationStatus == '3'">已过期</text>
-					<text v-else-if="verificationStatus == '4'">已取消</text>
-					<text v-else>--</text>
-				</view>
-				<view style="margin: 30upx 0 58upx;font-size: 28upx;">{{ dataList.createTime || '--' }}</view>
-			</view>
-			<view style="position: relative;min-height: 40vh;background-color: #ffffff;border-radius: 28upx;">
-				<view>
-					<!-- <view
-						style="position: absolute;top: 160upx;left: 0;width: 0upx;height: 0upx;border: 17upx solid #ef5613;border-left-color: transparent;border-radius: 0% 50% 50% 0%;box-sizing: content-box;"
+		<JHeader title="收支明细" width="50" height="50"></JHeader>
+		<view v-if="voucherRecordData.id" style="padding: 240rpx 80rpx 0;">
+			<view v-if="[3, 2].includes(fromOrigin)">
+				<view style="display: flex;align-items: center;flex-direction: column;">
+					<view
+						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
+						:style="{ backgroundColor: [2, 4].includes(voucherRecordData.type) ? '#ef530e' : '#208f57' }"
+					>
+						<text
+							v-if="([ 2 ].includes(fromOrigin) && [2, 4].includes(voucherRecordData.type)) || ([ 3 ].includes(fromOrigin) && [ 4 ].includes(voucherRecordData.type))"
 						>
-						</view> -->
-					<view
-						style="position: absolute;top: 160upx;left: 0;width: 34upx;height: 34upx;background-color: #ef5613;clip-path: ellipse(50% 50% at 10% 50%)"
-					>
+							支
+						</text>
+						<text v-else>收</text>
 					</view>
-					<view
-						style="position: absolute;top: 160upx;right: 0;width: 34upx;height: 34upx;background-color: #ef5613;clip-path: ellipse(50% 50% at 90% 50%)"
-					>
+					<view style="margin-top: 40rpx;font-size: 42rpx;">
+						<text v-if="voucherRecordData.type === 1">充值</text>
+						<text v-else-if="voucherRecordData.type === 2">转赠</text>
+						<text v-else-if="voucherRecordData.type === 3">签到</text>
+						<text v-else-if="voucherRecordData.type === 4">抵扣</text>
+						<text v-else-if="voucherRecordData.type === 5">核销</text>
+						<text v-else-if="voucherRecordData.type === 6">抽奖</text>
+						<text v-else-if="voucherRecordData.type === 7">退款</text>
+						<text v-else-if="voucherRecordData.type === 8">充值赠送</text>
+						<text v-else-if="voucherRecordData.type === 9">下单</text>
+						<text v-else>--</text>
+					</view>
+					<view style="margin-top: 32rpx;font-size: 42rpx;">
+						{{ ([ 2 ].includes(fromOrigin) && [2, 4].includes(voucherRecordData.type)) ||
+							([ 3 ].includes(fromOrigin) && [ 4 ].includes(voucherRecordData.type)) ? '-' : '+' }}
+						{{ voucherRecordData.number }}代金券
 					</view>
 				</view>
-				<view v-if="verificationCodeUrl" style="padding: 82upx 40upx 0;font-weight: bold;">
-					<view style="display: flex;justify-content: center;padding-bottom: 34upx;font-size: 32upx;">
-						<view style="color: #222229;">核销码：{{ verificationCode || '--' }}</view>
-						<view style="margin-left: 28upx;color: #ef5613;" @click="$copy(verificationCode)">复制</view>
+				<view style="margin-top: 78rpx;font-size: 28rpx;">
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">支付时间</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.createTime }}</view>
 					</view>
-					<view style="text-align: center;">
-						<image
-							style="width: 420upx;border: 2upx solid #222229;border-radius: 28upx;" mode="widthFix"
-							:src="verificationCodeUrl"
-						/>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">方式</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">代金券</view>
 					</view>
-					<view style="padding: 32upx 0 42upx;font-size: 28upx;text-align: center;">
-						<view style="color: #222229;">向商家出示核销码进行核销</view>
-						<view style="margin-top: 32upx;color: #888889;">长按保存二维码</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">订单号</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderSn }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">类型</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.typeStrName }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">名称</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							<text v-if="[ 2 ].includes(fromOrigin) && voucherRecordData.username">
+								{{ voucherRecordData.username }}
+							</text>
+							<text v-else-if="[ 3 ].includes(fromOrigin) && voucherRecordData.userNameOne">
+								{{ voucherRecordData.userNameOne }}
+							</text>
+						</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">账号</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							<text v-if="[ 2 ].includes(fromOrigin) && voucherRecordData.username">
+								{{ voucherRecordData.userId || '--' }}
+							</text>
+							<text v-else-if="[ 3 ].includes(fromOrigin) && voucherRecordData.userNameOne">
+								{{ voucherRecordData.holdId || '--' }}
+							</text>
+						</view>
 					</view>
 				</view>
 			</view>
+			<view v-else-if="[ 1 ].includes(fromOrigin)">
+				<view style="display: flex;align-items: center;flex-direction: column;">
+					<view
+						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;background-color: #ef530e;border-radius: 50%;line-height: 1;"
+					>
+						收
+					</view>
+					<view style="margin-left: 14rpx;">
+						<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+							{{ voucherRecordData.typeStrName }}代金券
+						</view>
+					</view>
+					<view style="margin-top: 32rpx;font-size: 42rpx;">
+						+{{ voucherRecordData.number }}代金券
+					</view>
+				</view>
+				<view style="margin-top: 78rpx;font-size: 28rpx;">
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">创建时间</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.createTime }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">订单号</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderSn }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">类型</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.typeStrName }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">金额</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							￥{{ voucherRecordData.payGrade }}元（{{ ['未付款', '取消',
+								'已付款', '未发放', '已发放', '支付失败'][voucherRecordData.status] }}）
+						</view>
+					</view>
+				</view>
+			</view>
+
 		</view>
 	</view>
 </template>
@@ -57,9 +125,21 @@ export default {
 	},
 	data() {
 		return {
+			voucherRecordData: {
+				id: ''
+			},
+			fromOrigin: ''
 		}
 	},
-	onLoad() {
+	onLoad(options) {
+		uni.$on('sendVoucherRecordDetailMsg', (data) => {
+			console.log(data)
+			this.voucherRecordData = data.voucherRecordData
+			this.fromOrigin = Number(data.fromOrigin)
+		})
+	},
+	beforeDestroy() {
+		uni.$off('sendVoucherRecordDetailMsg')
 	},
 	methods: {
 	}
