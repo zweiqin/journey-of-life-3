@@ -1,9 +1,12 @@
 import {
 	CHNAGE_PRICE_PLATFORM_INFO,
 	CHNAGE_SHOP_CAR_NUMBER,
-	CHNAGE_LEVEL_TYPE
+	CHNAGE_LEVEL_TYPE,
+	CHNAGE_ACTIVITY_LIST
 } from './type'
+import store from '../index'
 import { getStorageKeyToken } from '../../utils'
+import { getUserCrmListApi } from '../../api/user'
 import { getPricePlatformAllApi, getCartListApi, getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
 
 export default {
@@ -12,7 +15,8 @@ export default {
 		return {
 			pricePlatformInfo: {},
 			shopCarNumber: 0,
-			levelType: 0
+			levelType: 0,
+			activityList: []
 		}
 	},
 
@@ -27,6 +31,10 @@ export default {
 
 		[CHNAGE_LEVEL_TYPE](state, levelType) {
 			state.levelType = levelType
+		},
+
+		[CHNAGE_ACTIVITY_LIST](state, activityList) {
+			state.activityList = activityList
 		}
 	},
 
@@ -44,6 +52,17 @@ export default {
 				.then((res) => {
 					commit(CHNAGE_LEVEL_TYPE, res.data.levelType)
 				})
+			// if (store.state.location.obtainLocationCount) {
+			if (store.state.location.locationInfo.streetNumber.location) {
+				getUserCrmListApi({
+					longitude: store.state.location.locationInfo.streetNumber.location.split(',')[0],
+					latitude: store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				})
+					.then((res) => {
+						commit(CHNAGE_ACTIVITY_LIST, res.data)
+					})
+			}
+			// }
 		}
 	}
 }

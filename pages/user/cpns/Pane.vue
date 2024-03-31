@@ -22,8 +22,8 @@
 						<view style="font-size: 22upx;color: #888889;">分享收益随时看</view>
 					</view>
 					<image
-						style="width: 92upx;height: 92upx;" :src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
-						mode="widthFix"
+						style="width: 92upx;height: 92upx;"
+						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
 					></image>
 				</view>
 				<view
@@ -35,8 +35,8 @@
 						<view style="font-size: 22upx;color: #888889;">分享一起赚钱</view>
 					</view>
 					<image
-						style="width: 92upx;height: 92upx;" :src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
-						mode="widthFix"
+						style="width: 92upx;height: 92upx;"
+						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
 					></image>
 				</view>
 			</view>
@@ -58,8 +58,8 @@
 					<view v-if="menu.name === '电子名片'" style="width: 100%;height: 100%;">
 						<view v-if="$store.state.app.terminal === 3" style="position: relative;width: 100%;height: 100%;">
 							<wx-open-launch-weapp
-								id="launch-btn" appid="wxb446588ba0dbb9d7" username="gh_5668ad6e5290" path="pages/index/index"
-								style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
+								id="launch-btn" appid="wxb446588ba0dbb9d7" username="gh_5668ad6e5290"
+								path="pages/index/index" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
 							>
 								<script type="text/wxtag-template">
 									<style>
@@ -107,17 +107,18 @@
 						></BeeIcon>
 						<text class="menu-name">{{ menu.name }}</text>
 						<tui-badge
-							v-if="menu.name === '购物车' && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
+							v-if="(menu.name === '购物车') && $store.getters.shopCarNumber" type="danger" right="36rpx" absolute
 							:scale-ratio="0.8" translate-x="40%" top="4rpx"
 						>
 							{{ $store.getters.shopCarNumber > 10 ? '10+' : $store.getters.shopCarNumber }}
 						</tui-badge>
-						<!-- <tui-badge
-							v-else-if="menu.name === '活动中心'" type="danger" absolute
-							:scale-ratio="0.9" translate-x="40%" top="4rpx"
+						<tui-badge
+							v-else-if="(menu.name === '活动中心') && $store.getters.activityList && $store.getters.activityList.length"
+							type="danger" absolute :scale-ratio="0.9" translate-x="-40%"
+							top="4rpx"
 						>
-							<view style="padding: 8rpx;">
-								家庭小卫士
+							<view style="padding: 2rpx;">
+								{{ $store.getters.activityList.length }}
 							</view>
 						</tui-badge> -->
 					</view>

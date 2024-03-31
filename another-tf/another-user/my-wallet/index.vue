@@ -19,7 +19,7 @@
 					<view>当前总余额(元)</view>
 					<view style="margin-top: 24rpx;font-size: 64rpx;">
 						<text style="padding: 0 30rpx 0 80rpx;">
-							{{ isShowcount ? '￥' + (pricePlatformInfo.totalPrice || 0) : '*****' }}
+							{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.totalPrice || 0)).toFixed(2) : '*****' }}
 						</text>
 						<tui-icon
 							:size="50" color="#ffffff" :name="isShowcount ? 'seen' : 'unseen'" unit="rpx"
@@ -56,14 +56,14 @@
 							<text>余额</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.rechargePrice || 0) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.rechargePrice || 0)).toFixed(2) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>
 				</tui-list-cell>
 				<tui-list-cell
 					unlined padding="0 28rpx" :size="30"
-					@click="go('/another-tf/another-user/commission-statistics/commission-operation')"
+					@click="go('/another-tf/another-user/commission-statistics/commission-statistics')"
 				>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
@@ -75,7 +75,7 @@
 							<text>推广佣金</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.commissionPrice || 0) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>
@@ -91,7 +91,7 @@
 							<text>代金券</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + (pricePlatformInfo.voucherPrice || 0) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.voucherPrice || 0)).toFixed(2) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>

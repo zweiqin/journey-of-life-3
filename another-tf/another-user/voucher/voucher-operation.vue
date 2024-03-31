@@ -20,8 +20,9 @@
 						<tui-button
 							type="white" plain link :size="36"
 							width="184rpx" height="68rpx" margin="0"
-							@click="go('/another-tf/another-user/voucher/voucher-record')"
+							@click="go('/another-tf/another-user/voucher/voucher')"
 						>
+							<!-- go('/another-tf/another-user/voucher/voucher-record') -->
 							收支明细
 						</tui-button>
 					</view>
@@ -34,7 +35,7 @@
 						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
 							￥{{ typeof userAcount.number === 'number'
-								? userAcount.number : '--' }}
+								? Number.parseFloat(Number(userAcount.number)).toFixed(2) : '--' }}
 						</view>
 					</view>
 				</view>
@@ -47,16 +48,17 @@
 			<view style="margin-top: 30rpx;">
 				<view>充值代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof
-						voucherAcount.zongchongzhi === 'number' ? voucherAcount.zongchongzhi : '--' }}
+					￥{{ typeof voucherAcount.zongchongzhi === 'number'
+						? Number.parseFloat(Number(voucherAcount.zongchongzhi)).toFixed(2)
+						: '--' }}
 				</view>
 			</view>
 			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
 			<view style="margin-top: 30rpx;">
-				<view>赠送代金券</view>
+				<view>兑换代金券</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
 					<!-- ￥{{ typeof voucherAcount.zongzengsong === 'number' ? voucherAcount.zongzengsong : '--' }} -->
-					￥{{ (Number(userAcount.number) - Number(voucherAcount.zongchongzhi)) || '--' }}
+					￥{{ Number.parseFloat(Number(userAcount.number) - Number(voucherAcount.zongchongzhi)).toFixed(2) || '--' }}
 				</view>
 			</view>
 			<!-- <view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
@@ -81,9 +83,9 @@
 			class="operation-btn"
 			style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;padding-bottom: 148rpx;"
 		>
-			<view style="padding-top: 100rpx;">
+			<view style="padding-top: 60rpx;">
 				<tui-button
-					type="warning" :size="36" width="328rpx" height="102rpx"
+					type="warning" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="(isShowVoucherPopup = true) && (showType = 'recharge')"
 				>
@@ -92,7 +94,7 @@
 			</view>
 			<view style="padding-top: 18rpx;">
 				<tui-button
-					type="gray" :size="36" width="328rpx" height="102rpx"
+					type="gray" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="(isShowVoucherPopup = true) && (showType = 'transfer')"
 				>
@@ -101,7 +103,7 @@
 			</view>
 			<view style="padding-top: 18rpx;">
 				<tui-button
-					type="primary" :size="36" width="328rpx" height="102rpx"
+					type="primary" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="go('/pages/index/voucher-zone')"
 				>
@@ -111,7 +113,7 @@
 		</view>
 
 		<view
-			style="position: fixed;left: 0;bottom: 0;width: 100%;padding: 10rpx 32rpx 44rpx;font-size: 24rpx;box-sizing: border-box;"
+			style="position: fixed;left: 0;bottom: 0;width: 100%;padding: 10rpx 32rpx 44rpx;font-size: 24rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view
 				style="width: 60%;margin: 0 auto;display: flex;justify-content: space-between;align-items: stretch;font-size: #222229;"
@@ -270,7 +272,10 @@
 							</view>
 						</view>
 						<view>
-							<view v-if="transferForm.buyerUserObj.buyerUserId" style="display: flex;align-items: center;padding: 2rpx 34rpx 0;">
+							<view
+								v-if="transferForm.buyerUserObj.buyerUserId"
+								style="display: flex;align-items: center;padding: 2rpx 34rpx 0;"
+							>
 								<image
 									style="width: 80rpx;height: 80rpx;border-radius: 50%;"
 									:src="common.seamingImgUrl(transferForm.buyerUserObj.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
