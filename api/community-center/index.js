@@ -9,6 +9,15 @@ import { USER_TOKEN } from 'constant';
 
 export const getOrderOfferApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/getOrderOffer', data);
 
+// 获取已上架的活动列表
+export const getUpActivityListApi = data => SheQu1Request('laoa-huozhu/api/hz/v1/third/activitys', data, 'get');
+
+// 获取活动详情
+export const getAcrivityDetailApi = id => SheQu1Request('laoa-huozhu/api/hz/v1/third/activitys/' + id, {}, 'get')
+
+// 创建活动订单图片
+export const createActivityOrderApi = data => SheQu1Request('laoa-huozhu/api/hz/v1/third/activity-orders', data)
+
 // 计算超距费
 export const getDistancePriceApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/getDistancePrice', data);
 
@@ -428,7 +437,7 @@ export const bankCardAnalysisApi = data => {
 }
 
 // 指派师傅服务
-export const apponitServerSFApi= data => {
+export const apponitServerSFApi = data => {
   return endRequest({
     url: "/api/shifu/consumerSelectSf",
     data,

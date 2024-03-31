@@ -1,17 +1,25 @@
 <template>
-  <view class="page-head" :class="{ fixed: fixed && scrollTop > fiexdHeight }" :style="{
-    height: height + 'rpx',
-    background: background,
-    padding: padding,
-    color: scrollTop > fiexdHeight ? fixedColor : color
-  }">
+  <view
+    class="page-head"
+    :class="{ fixed: fixed && scrollTop > fiexdHeight }"
+    :style="{
+      height: height + 'rpx',
+      background: background,
+      padding: padding,
+      color: scrollTop > fiexdHeight ? fixedColor : color,
+      'z-index': ZIndex
+    }"
+  >
     <view class="left">
       <slot name="left"></slot>
     </view>
-    <view class="center" :style="{
-      color: titleColor,
-      'font-weight': weight
-    }">
+    <view
+      class="center"
+      :style="{
+        color: titleColor,
+        'font-weight': weight
+      }"
+    >
       {{ title }}
     </view>
     <view class="right">
@@ -61,7 +69,8 @@ export default {
 
     color: String,
     fixedColor: String,
-    weight: String
+    weight: String,
+    ZIndex: Number
   }
 };
 </script>
@@ -82,6 +91,7 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  position: relative;
 
   &.fixed {
     position: fixed;

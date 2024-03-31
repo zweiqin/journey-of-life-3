@@ -112,14 +112,14 @@
 						>
 							{{ $store.getters.shopCarNumber > 10 ? '10+' : $store.getters.shopCarNumber }}
 						</tui-badge>
-						<tui-badge
+						<!-- <tui-badge
 							v-else-if="menu.name === '活动中心'" type="danger" absolute
 							:scale-ratio="0.9" translate-x="40%" top="4rpx"
 						>
 							<view style="padding: 8rpx;">
 								家庭小卫士
 							</view>
-						</tui-badge>
+						</tui-badge> -->
 					</view>
 				</view>
 				<view

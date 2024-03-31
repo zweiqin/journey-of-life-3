@@ -642,6 +642,12 @@
           "style": {
             "navigationBarTitleText": "服务卡"
           }
+        },
+        {
+          "path": "welfare/order",
+          "style": {
+            "navigationBarTitleText": "立即下单"
+          }
         }
       ]
     },
@@ -912,24 +918,30 @@
           }
         },
         {
-          "path": "sever/activityCenter/activity-withdrawal-record",
+          "path": "sever/activityCenter/activity-detail",
           "style": {
-            "navigationBarTitleText": "活动中心提现记录",
-            "onReachBottomDistance": 0
+            "navigationBarTitleText": "活动详情"
           }
         },
-        {
-          "path": "sever/activityCenter/activity-prod",
-          "style": {
-            "navigationBarTitleText": "商品详情"
-          }
-        },
-        {
-          "path": "sever/activityCenter/activity-code",
-          "style": {
-            "navigationBarTitleText": "活动推广"
-          }
-        },
+        // {
+        //   "path": "sever/activityCenter/activity-withdrawal-record",
+        //   "style": {
+        //     "navigationBarTitleText": "活动中心提现记录",
+        //     "onReachBottomDistance": 0
+        //   }
+        // },
+        // {
+        //   "path": "sever/activityCenter/activity-prod",
+        //   "style": {
+        //     "navigationBarTitleText": "商品详情"
+        //   }
+        // },
+        // {
+        //   "path": "sever/activityCenter/activity-code",
+        //   "style": {
+        //     "navigationBarTitleText": "活动推广"
+        //   }
+        // },
         // {
         //   "path": "Collection/Goods-Collection",
         //   "style": {
@@ -1976,24 +1988,24 @@
             "navigationBarTitleText": "填写退货物流"
           }
         },
-				{
-					"path": "another-serve/platformJoin/index",
-					"style": {
-						"navigationBarTitleText": "平台介入"
-					}
-				},
-				{
-					"path": "another-serve/afterSale/index",
-					"style": {
-						"navigationBarTitleText": "我的售后"
-					}
-				},
-				{
-					"path": "another-serve/afterSaleApplyRefund/index",
-					"style": {
-						"navigationBarTitleText": "申请退款"
-					}
-				},
+        {
+          "path": "another-serve/platformJoin/index",
+          "style": {
+            "navigationBarTitleText": "平台介入"
+          }
+        },
+        {
+          "path": "another-serve/afterSale/index",
+          "style": {
+            "navigationBarTitleText": "我的售后"
+          }
+        },
+        {
+          "path": "another-serve/afterSaleApplyRefund/index",
+          "style": {
+            "navigationBarTitleText": "申请退款"
+          }
+        },
         {
           "path": "another-serve/afterSaleApplyRetund/index",
           "style": {

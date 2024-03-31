@@ -41,17 +41,18 @@
       <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
     </view> -->
 
-    <view class="package package-1" @click="handleToOrder">
-      <view style="background: linear-gradient(270deg, #1648D5 -3%, #2B45D9 112%);" class="package-title"> 企业服务 </view>
+    <view class="package package-1" @click="handleToOrder('/community-center/enterprise-orders/home')">
+      <view style="background: linear-gradient(270deg, #1648d5 -3%, #2b45d9 112%)" class="package-title"> 企业服务 </view>
       <view class="content">
-        <view class="title-1">家具工厂<text class="vip-price">{{ XIAN.price }}</text></view>
+        <view class="title-1"
+          >家具工厂<text class="vip-price">{{ XIAN.price }}</text></view
+        >
         <view class="title-2">维修专项入口</view>
       </view>
       <button class="uni-btn">立即申请</button>
     </view>
 
     <view class="other-package">
-
       <!-- 399会员 -->
       <!-- <view class="package whole-package" @click="go('/community-center/vip-center/vip-detail?type=2')">
         <view class="package-title"> 家庭小卫士 </view>
@@ -80,8 +81,7 @@
         <image class="car car-2" src="../../../static/images/new-community/home/car.png"></image>
       </view> -->
 
-      <view class="package ilo-package server"
-        @click="go('/community-center/communityPackage/serviceCard')">
+      <view class="package ilo-package server" @click="handleToOrder('/user/sever/activityCenter/index')">
         <!-- <view class="package-title"
           style="position: relative; z-index: 10; background: linear-gradient(270deg, #178AF8 0%, #1175FC 97%);"> 限时钜惠
         </view>
@@ -96,13 +96,12 @@
     </view>
 
     <tui-toast ref="toast"></tui-toast>
-    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
   </view>
 </template>
 
 <script>
-import showModal from "../../../mixin/showModal.js";
+import showModal from '../../../mixin/showModal.js';
 
 export default {
   props: {
@@ -137,9 +136,9 @@ export default {
       this.isStart = true;
     },
 
-    handleToOrder() {
+    handleToOrder(url) {
       if (this.isLogin()) {
-        this.go('/community-center/enterprise-orders/home')
+        this.go(url);
       } else {
         console.log(1);
         this.$data._isShowTuiModel = true;
@@ -290,7 +289,6 @@ export default {
     background: url('../../../static/images/new-community/home/bg-v.png') no-repeat;
     background-size: cover;
 
-
     .package-title {
       background: linear-gradient(270deg, #1172fd 0%, #188ef7 97%);
     }
@@ -374,8 +372,8 @@ export default {
     .uni-btn {
       position: absolute;
       padding: 14upx 20upx;
-      color: #1748D5;
-      border: 1upx solid #1748D5;
+      color: #1748d5;
+      border: 1upx solid #1748d5;
       font-size: 28upx;
       border-radius: 100upx;
       bottom: 60upx;
