@@ -11,13 +11,12 @@
         <view class="cost">￥{{ activityDetail.money }}</view>
         <view class="gift">赠送{{ activityDetail.giftsMoney }}代金券</view>
       </view>
-      <view class="activity-name">活动名称</view>
+      <view class="activity-name">{{ activityDetail.name }}</view>
       <view class="activity-time"> 活动时间: {{ activityDetail.startTime.split(' ')[0] }} ~ {{ activityDetail.endTime.split(' ')[0] }} </view>
     </view>
 
     <view class="activity-detail">
       <tui-divider :size="30" dividerColor="#888">活动详情</tui-divider>
-
       <uParse v-if="activityDetail" :content="activityDetailContent"></uParse>
     </view>
 

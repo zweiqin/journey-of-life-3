@@ -37,7 +37,7 @@
     <!-- 服务内容 -->
     <!-- 维修商品 -->
     <view class="serve-user-goods-info section">
-      <view class="section-title">维修物品图片（选填）</view>
+      <view class="section-title">清洗空调图片（选填）</view>
       <view class="image-list">
         <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
           <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>

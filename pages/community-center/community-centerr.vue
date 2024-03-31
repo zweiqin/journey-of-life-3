@@ -168,7 +168,7 @@ export default {
 
         // 300清洗套餐
 
-        uni.navigateTo({ url: '/user/sever/activityCenter/index' });
+        uni.navigateTo({ url: '/user/sever/activityCenter/activity-detail?id=1' });
       } else {
         this.$data._isShowTuiModel = true;
       }

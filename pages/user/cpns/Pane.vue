@@ -120,7 +120,7 @@
 							<view style="padding: 2rpx;">
 								{{ $store.getters.activityList.length }}
 							</view>
-						</tui-badge> -->
+						</tui-badge> 
 					</view>
 				</view>
 				<view
