@@ -140,62 +140,6 @@ export const navs = [
   }
 ];
 
-//首页分类查询
-export const list = [
-  {
-    value: 2,
-    label: '家具服务',
-    icon: require('../../static/images/con-center/lgone.png'),
-    shadow: 'xxx'
-  },
-  {
-    value: 7,
-    label: '水电灯具',
-    icon: require('../../static/images/con-center/light.png'),
-    shadow: 'xxx',
-    flash: require('../../static/images/con-center/flash.png')
-  },
-  {
-    value: 5,
-    label: '家电服务',
-    icon: require('../../static/images/con-center/lgtwo.png'),
-    shadow: 'xxx'
-  },
-  {
-    value: 4,
-    label: '清洗保洁',
-    icon: require('../../static/images/con-center/lgfour.png'),
-    shadow: 'xxx',
-    logo: require('../../static/images/con-center/hot.png')
-  },
-  {
-    value: 13,
-    label: '墙面地面',
-    icon: require('../../static/images/con-center/lgfive.png'),
-    shadow: 'xxx'
-  },
-  {
-    value: 10,
-    label: '管道疏通',
-    icon: require('../../static/images/con-center/lgsix.png'),
-    shadow: 'xxx'
-  },
-  {
-    value: 279,
-    label: '除四害',
-    icon: require('../../static/images/con-center/lgseven.png'),
-    shadow: 'xxx'
-  },
-  {
-    value: 9,
-    label: '防水补漏',
-    icon: require('../../static/images/con-center/water.png'),
-    shadow: 'xxx',
-    water1: require('../../static/images/con-center/water1.png'),
-    water2: require('../../static/images/con-center/water2.png')
-  }
-];
-
 export const serviceType = [
   {
     value: 2,

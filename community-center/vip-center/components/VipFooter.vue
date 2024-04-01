@@ -3,11 +3,11 @@
 
     <view class="btns">
       <button @click="go('/user/sever/goldButler/gold-butler')" class="uni-btn">
-        <image class="" src="../../../static/images/con-center/vip/MORE-VIP.png"> </image>
+        <tui-icon :size="24" color="#873816" name="member-fill" margin="0"></tui-icon>
         <text>更多套餐会员</text>
       </button>
       <button @click="go('/user/sever/goldButler/gold-butler')" class="uni-btn">
-        <image class="" src="../../../static/images/con-center/vip/MY-VIP.png"> </image>
+        <tui-icon :size="24" color="#873816" name="wealth-fill" margin="0"></tui-icon>
         <text>我的会员</text>
       </button>
     </view>

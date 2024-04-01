@@ -17,7 +17,8 @@ export const deliveryInfo = [
     label: '提货地址',
     field: 'deliveryAddress',
     placeholder: '请输入提货地址',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     require: true,
     width: 10,
     height: 13,
@@ -26,10 +27,11 @@ export const deliveryInfo = [
   {
     field: 'deliveryAddressDetaile',
     placeholder: '请输入详细地址',
-    icon: require('../static/images/icon/location-logo.png'),
+    icon: 'gps',
+    iconColor: '#605d52',
     require: true,
-    width: 17,
-    height: 17
+    width: 12,
+    height: 12
   }
 ];
 
@@ -50,7 +52,8 @@ export const consigneeInfo = [
     label: '上门地址',
     field: 'consigneeAddress',
     placeholder: '请输入收货地址',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     require: true,
     width: 10,
     height: 13,
@@ -59,16 +62,18 @@ export const consigneeInfo = [
   {
     field: 'consigneeAddressDetail',
     placeholder: '请输入详细地址',
-    icon: require('../static/images/icon/location-logo.png'),
+    icon: 'gps',
+    iconColor: '#605d52',
     require: true,
-    width: 17,
-    height: 17
+    width: 12,
+    height: 12
   },
   {
     field: 'isElevator',
     label: '有无电梯',
     placeholder: '有无电梯',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     width: 10,
     height: 13,
     select: true
@@ -77,7 +82,8 @@ export const consigneeInfo = [
     field: 'floor',
     label: '居住楼层',
     placeholder: '请输入居住楼层',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     width: 10,
     height: 13
   }
@@ -100,7 +106,8 @@ export const consigneeVipInfo = [
     label: '上门地址',
     field: 'consigneeAddress',
     placeholder: '请输入上门地址',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     require: true,
     width: 10,
     height: 13,
@@ -110,16 +117,18 @@ export const consigneeVipInfo = [
     label: '详细地址',
     field: 'consigneeAddressDetail',
     placeholder: '请输入详细地址',
-    icon: require('../static/images/icon/location-logo.png'),
+    icon: 'gps',
+    iconColor: '#605d52',
     require: true,
-    width: 17,
-    height: 17
+    width: 12,
+    height: 12
   },
   {
     field: 'isElevator',
     label: '有无电梯',
     placeholder: '有无电梯',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     width: 10,
     height: 13,
     select: true
@@ -128,7 +137,8 @@ export const consigneeVipInfo = [
     field: 'floor',
     label: '居住楼层',
     placeholder: '请输入居住楼层',
-    icon: require('../static/images/con-center/right-arrow.png'),
+    icon: 'arrowright',
+    iconColor: '#888889',
     width: 10,
     height: 13
   }

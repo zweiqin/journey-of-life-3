@@ -2,9 +2,7 @@
   <view class="auth-container">
     <TuanPageHead title="企业认证" padding="0 32upx" weight="500">
       <block slot="left">
-        <image style="width: 64upx; height: 64upx;" src="../../static/images/con-center/order-detail-back.png"
-          @click="handleBack" class="back-icon">
-        </image>
+        <tui-icon :size="32" color="#999999" name="arrowleft" margin="30rpx 0" @click="handleBack"></tui-icon>
       </block>
     </TuanPageHead>
 

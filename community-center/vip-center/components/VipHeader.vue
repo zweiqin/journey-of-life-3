@@ -4,7 +4,7 @@
 			<TuanBack>
 				<tui-icon :size="30" name="arrowleft"></tui-icon>
 			</TuanBack>
-			<!-- <image @click="$emit('share')" class="share-icon" v-if="campaignsType != 0" src="../../../static/images/con-center/vip/share.png"></image> -->
+      <!-- <tui-icon v-if="campaignsType != 0" :size="44" color="#873816" name="share" margin="0" @click="$emit('share')"></tui-icon> -->
 		</view>
 
 		<view class="title">

@@ -1,10 +1,7 @@
 <template>
   <view class="vip-serves-pane" :style="{ 'border-radius': radius }">
     <view class="title">
-      <image
-        class="vip-icon"
-        src="../../../static/images/con-center/vip/VIP 2.png"
-      ></image>
+			<view style="font-style: italic;color: #ff4200;font-size: 40rpx;font-weight: bold;">VIP</view>
       <view class="vip-title">{{ subTitle }}</view>
     </view>
 
@@ -124,7 +121,7 @@ export default {
       font-size: 32upx;
       color: #000;
       font-weight: 500;
-      margin-left: 10upx;
+      margin-left: 20upx;
     }
   }
 

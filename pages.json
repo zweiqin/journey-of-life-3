@@ -625,24 +625,24 @@
             "navigationBarTitleText": "✍"
           }
         },
-        {
-          "path": "communityPackage/index",
-          "style": {
-            "navigationBarTitleText": "社区套餐"
-          }
-        },
-        {
-          "path": "communityPackage/myservicecard",
-          "style": {
-            "navigationBarTitleText": "我的服务卡"
-          }
-        },
-        {
-          "path": "communityPackage/serviceCard",
-          "style": {
-            "navigationBarTitleText": "服务卡"
-          }
-        },
+        // {
+        //   "path": "communityPackage/index",
+        //   "style": {
+        //     "navigationBarTitleText": "社区套餐"
+        //   }
+        // },
+        // {
+        //   "path": "communityPackage/myservicecard",
+        //   "style": {
+        //     "navigationBarTitleText": "我的服务卡"
+        //   }
+        // },
+        // {
+        //   "path": "communityPackage/serviceCard",
+        //   "style": {
+        //     "navigationBarTitleText": "服务卡"
+        //   }
+        // },
         {
           "path": "welfare/order",
           "style": {

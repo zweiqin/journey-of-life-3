@@ -15,7 +15,7 @@
         <view class="uploadImg">
           <view class="texts">上传文章封面</view>
           <view class="add-img-icon" v-if="!formData.postCover" @click="handleUploadImg()">
-            <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
+        		<tui-icon :size="40" color="#b3b2ad" name="add" margin="0"></tui-icon>
           </view>
           <view class="add-img-icon" v-else>
              <tui-icon @click="formData.postCover = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
@@ -29,7 +29,7 @@
               <view class="uploadImg">
                 <view class="texts">上传段落配套图片(非必传)</view>
                 <view class="add-img-icon" v-if="!item.imgUrl" @click="handleUploadTextImg(item)">
-                    <image class="add-icon" src="@/static/images/con-center/add-icon.png"></image>
+        					<tui-icon :size="40" color="#b3b2ad" name="add" margin="0"></tui-icon>
                 </view>
                 <view class="add-img-icon" v-else>
                     <tui-icon @click="item.imgUrl = ''" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>

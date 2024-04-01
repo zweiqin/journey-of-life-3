@@ -228,7 +228,7 @@ export default {
 			collageId: this.collageId,
 			orderId: this.orderId
 		}).then((res) => {
-			this.inviteSpell = res.data
+			this.inviteSpell = res.data.person ? res.data : { person: 0, personList: [], time: 0 }
 			uni.hideLoading()
 		})
 			.catch((e) => {
@@ -281,7 +281,6 @@ export default {
 							this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
 						})
 					}
-					this.isShowDetails = true
 				})
 			} finally {
 				uni.hideLoading()

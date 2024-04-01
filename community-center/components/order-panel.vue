@@ -23,11 +23,7 @@
           >
 
           <view class="edit" @click.stop="toEdit" v-if="data.status <= 2">
-            <image
-              src="../../static/images/con-center/edit.png"
-              mode="scaleToFill"
-              class="icon"
-            ></image>
+						<tui-icon :size="20" color="#999999" name="edit" margin="0 6rpx 0 0"></tui-icon>
             <text>修改订单</text>
           </view>
         </view>

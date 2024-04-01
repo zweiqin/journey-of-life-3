@@ -28,16 +28,7 @@
           </view>
         </slot>
       </view>
-      <img
-        @click="$emit('iconClick', data.label)"
-        class="img"
-        :style="{
-          width: data.width + 'px',
-          height: data.height + 'px',
-        }"
-        :src="data.icon"
-        alt=""
-      />
+			<tui-icon :size="data.width * 2 || data.height * 2" :color="data.iconColor" :name="data.icon" margin="0" @click="$emit('iconClick', data.label)"></tui-icon>
     </view>
 
     <view class="name-slot">
