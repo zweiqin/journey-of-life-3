@@ -88,14 +88,14 @@
 					style="font-family:宋体; font-size:10.5pt">一、适用范围</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">a) </span><span
-					style="font-family:宋体; font-size:10.5pt">在您注册本系统帐号时，您根据本系统要求提供的个人注册信息（包括手机号码）； </span></p>
+					style="font-family:宋体; font-size:10.5pt">在您注册本系统帐号时，您根据本系统要求提供的个人注册信息（包括<span style="font-weight: bold;color: #3e89fd;">手机号码</span>）； </span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">b) </span><span
 					style="font-family:宋体; font-size:10.5pt">在您使用本系统网络服务，或访问本系统平台网页时，本系统自动接收并记录的您的浏览器和计算机上的信息，包括但不限于您的</span><span
-					style="font-family:Calibri; font-size:10.5pt">IP</span><span
-					style="font-family:宋体; font-size:10.5pt">地址、浏览器的类型、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录等数据；</span></p>
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IP</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">地址、浏览器的类型、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录</span>等数据；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -107,16 +107,16 @@
 					style="font-family:Calibri; font-size:10.5pt">d</span><span
 					style="font-family:宋体; font-size:10.5pt">）位置信息：您使用</span><span
 					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
-					style="font-family:宋体; font-size:10.5pt">提供位置服务时，我们需要收集和处理您的位置信息。</span></p>
+					style="font-family:宋体; font-size:10.5pt">提供位置服务时，我们需要收集和处理您的<span style="font-weight: bold;color: #3e89fd;">位置信息</span>。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">e</span><span
 					style="font-family:宋体; font-size:10.5pt">）设备信息：为了保证</span><span
 					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
-					style="font-family:宋体; font-size:10.5pt">服务的正常运行，向您提供问题诊断或设备检测服务，我们会收集您的硬件型号、操作系统版本、设备配置、唯一设备标识符、网络设备硬件地址</span><span
-					style="font-family:Calibri; font-size:10.5pt">MAC</span><span
-					style="font-family:宋体; font-size:10.5pt">、设备连接信息以及设备状态信息等。基于不同的系统，设备信息表述文字有所不同。</span></p>
+					style="font-family:宋体; font-size:10.5pt">服务的正常运行，向您提供问题诊断或设备检测服务，我们会收集您的<span style="font-weight: bold;color: #3e89fd;">硬件型号、操作系统版本、设备配置、唯一设备标识符、网络设备硬件地址</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">MAC</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、设备连接信息以及设备状态信息</span>等。基于不同的系统，设备信息表述文字有所不同。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -131,7 +131,7 @@
 					style="font-family:宋体; font-size:10.5pt">电话权限</span><span
 					style="font-family:Calibri; font-size:10.5pt">(</span><span style="font-family:宋体; font-size:10.5pt">获取手机识别码
 				</span><span style="font-family:Calibri; font-size:10.5pt">):</span><span
-					style="font-family:宋体; font-size:10.5pt">您登录本平台识别您的设备身份，需要调用您的电话权限获取此项信息，除此之外不会基于其他用途进行调用。</span></p>
+					style="font-family:宋体; font-size:10.5pt">您登录本平台识别您的设备身份，需要调用您的<span style="font-weight: bold;color: #3e89fd;">电话权限</span>获取此项信息，除此之外不会基于其他用途进行调用。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -140,7 +140,7 @@
 					style="font-family:Calibri; font-size:10.5pt">(</span><span
 					style="font-family:宋体; font-size:10.5pt">读写存储</span><span
 					style="font-family:Calibri; font-size:10.5pt">):</span><span
-					style="font-family:宋体; font-size:10.5pt">为了存储必要的应用配置文件以及您所选择下载、更新的内容、报表，或读取您需要上传、同步的内容，需要调用您的存储权限。</span></p>
+					style="font-family:宋体; font-size:10.5pt">为了存储必要的应用配置文件以及您所选择下载、更新的内容、报表，或读取您需要上传、同步的内容，需要调用您的<span style="font-weight: bold;color: #3e89fd;">存储权限</span>。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -159,8 +159,8 @@
 					style="font-family:宋体; font-size:10.5pt">当您使用</span><span
 					style="font-family:宋体; font-size:10.5pt">更换头像或者意见反馈填写</span><span
 					style="font-family:宋体; font-size:10.5pt">功能时</span><span style="font-family:宋体; font-size:10.5pt">，</span><span
-					style="font-family:宋体; font-size:10.5pt">我们需要调用您的相</span><span
-					style="font-family:宋体; font-size:10.5pt">册获取图片</span><span
+					style="font-family:宋体; font-size:10.5pt">我们需要调用您的<span style="font-weight: bold;color: #3e89fd;">相</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">册</span>获取图片</span><span
 					style="font-family:宋体; font-size:10.5pt">权限</span><span style="font-family:宋体; font-size:10.5pt">填写</span><span
 					style="font-family:宋体; font-size:10.5pt">。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -201,7 +201,7 @@
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">团蜂家居使用团蜂账号体系，需要您使用团蜂家居注册或登录。在您注册成为 团蜂家居用户时，您需要至少提供手机号码以创建团蜂账号，并完善相关的网络身
-					份识别信息（如头像、昵称及登录密码等）；如果您仅需使用浏览功能，您无 需注册成为我们的用户以及提供上述信息。</span></p>
+					份识别信息（如<span style="font-weight: bold;color: #3e89fd;">头像、昵称及登录密码</span>等）；如果您仅需使用浏览功能，您无 需注册成为我们的用户以及提供上述信息。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -249,9 +249,9 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">使用目的：经您授权，我们会收集您的录音信息，以便为您提供语音搜索、智 能点餐等语音交互功能。</span></p>
+					style="font-family:宋体; font-size:10.5pt">使用目的：经您授权，我们会收集您的<span style="font-weight: bold;color: #3e89fd;">录音信息</span>，以便为您提供语音搜索、智 能点餐等语音交互功能。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">信息说明：我们仅在您使用对应功能时收集相应信息，通过申请麦克风权限以 便获得声音，以提供对应的识别后后续的交互功能。不同的系统显示的名称可
+					style="font-family:宋体; font-size:10.5pt">信息说明：我们仅在您使用对应功能时收集相应信息，通过申请<span style="font-weight: bold;color: #3e89fd;">麦克风权限</span>以 便获得声音，以提供对应的识别后后续的交互功能。不同的系统显示的名称可
 					能有所差异，如麦克风、录音权限等。 您可以自行选择开启或关闭麦克风授权，一旦关闭您将可能无法使用诸如“按 住说话”、语音交互等相关功能，但不会影响您使用浏览、下单等基本服务。
 					麦克风权限需要您的额外授权，您也可以在系统权限中自主控制，我们绝不会 私自开启您的麦克风权限，更不会非法利用非法手段进行相关信息的收集和使 用，请您放心。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -261,7 +261,7 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">使用目的：在您访问或使用我们服务的过程中，我们会收集您的设备信息，以 便获取屏幕分辨率等信息进行界面展示、避免其他设备的异常登录、留存必要
+					style="font-family:宋体; font-size:10.5pt">使用目的：在您访问或使用我们服务的过程中，我们会收集您的设备信息，以 便获取<span style="font-weight: bold;color: #3e89fd;">屏幕分辨率</span>等信息进行界面展示、避免其他设备的异常登录、留存必要
 					的日志信息，从而保障您的账号安全、交易安全和系统运行安全。此外，如您 未登录账号，我们使用您的设备信息以便为您推送对应的信息展示。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">信息说明：我们收集的设备状态包括您的设备型号、硬件序列号、设备 </span><span
@@ -285,7 +285,7 @@
 					style="font-family:Calibri; font-size:10.5pt">/</span><span
 					style="font-family:宋体; font-size:10.5pt">服务过程中，我们根据您使用的特定场景 可能会收集您提供的个人信息，以实现您所需要使用的功能。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">信息说明：我们会根据具体的场景请求您提供对应的信息并会严格依法保护您 的个人信息，例如下单需要您提供联系人信息、联系方式、收货地址信息，撰
+					style="font-family:宋体; font-size:10.5pt">信息说明：我们会根据具体的场景请求您提供对应的信息并会严格依法保护您 的个人信息，例如下单需要您提供<span style="font-weight: bold;color: #3e89fd;">联系人信息、联系方式、收货地址信息</span>，撰
 					写带图评价时需要提供昵称、头像、相关评价图片</span><span style="font-family:Calibri; font-size:10.5pt">/</span><span
 					style="font-family:宋体; font-size:10.5pt">视频等发布内容。</span><span style="font-family:Calibri; font-size:10.5pt">/</span><span
 					style="font-family:宋体; font-size:10.5pt">服务的基本功能。 除法律另有规定外，我们仅会在实现目的所必需的最短时间内留存您的相关个
@@ -379,60 +379,58 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">1</span><span
-					style="font-family:宋体; font-size:10.5pt">）基本信息（包括个人姓名、生日、性别、住址、个人电话号码、电子邮箱）；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）基本信息（包括<span style="font-weight: bold;color: #3e89fd;">个人姓名、生日、性别、住址、个人电话号码、电子邮箱</span>）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">2</span><span
-					style="font-family:宋体; font-size:10.5pt">）个人身份信息（包括身份证相关身份证明等）；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）个人身份信息（包括<span style="font-weight: bold;color: #3e89fd;">身份证相关身份证明</span>等）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">3</span><span
-					style="font-family:宋体; font-size:10.5pt">）财产信息（包括交易记录以及金币、钻石等虚拟财产信息）；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）财产信息（包括<span style="font-weight: bold;color: #3e89fd;">交易记录以及金币、钻石等虚拟财产信息</span>）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">4</span><span
-					style="font-family:宋体; font-size:10.5pt">）个人位置信息；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）<span style="font-weight: bold;color: #3e89fd;">个人位置信息</span>；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">5</span><span
-					style="font-family:宋体; font-size:10.5pt">）网络身份标识信息（包括系统账号、</span><span
-					style="font-family:Calibri; font-size:10.5pt">IP</span><span
-					style="font-family:宋体; font-size:10.5pt">地址、邮箱地址及与前述有关的密码、密保）；</span></p>
-			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">通讯录；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）网络身份标识信息（包括<span style="font-weight: bold;color: #3e89fd;">系统账号、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IP</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">地址、邮箱地址及与前述有关的密码、密保、通讯录</span>）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">6</span><span
-					style="font-family:宋体; font-size:10.5pt">）个人上网记录（包括搜索记录、软件使用记录、点击记录）；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）个人上网记录（包括<span style="font-weight: bold;color: #3e89fd;">搜索记录、软件使用记录、点击记录</span>）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">7</span><span
-					style="font-family:宋体; font-size:10.5pt">）个人常用设备信息（包括硬件型号、设备</span><span
-					style="font-family:Calibri; font-size:10.5pt">MAC</span><span
-					style="font-family:宋体; font-size:10.5pt">地址、操作系统类型）；</span></p>
+					style="font-family:宋体; font-size:10.5pt">）个人常用设备信息（包括<span style="font-weight: bold;color: #3e89fd;">硬件型号、设备</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">MAC</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">地址、操作系统类型</span>）；</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">（</span><span
 					style="font-family:Calibri; font-size:10.5pt">8</span><span
 					style="font-family:宋体; font-size:10.5pt">）软件列表唯一设备识别码（如</span><span
-					style="font-family:Calibri; font-size:10.5pt">IMEI/android ID/IDFA/OPENUDID/GUID</span><span
-					style="font-family:宋体; font-size:10.5pt">、</span><span
-					style="font-family:Calibri; font-size:10.5pt">SIM</span><span
-					style="font-family:宋体; font-size:10.5pt">卡</span><span
-					style="font-family:Calibri; font-size:10.5pt">IMSI</span><span
-					style="font-family:宋体; font-size:10.5pt">信息等在内的描述个人常用设备基本情况的信息，存在收集</span><span
-					style="font-family:Calibri; font-size:10.5pt">ICCID</span><span
-					style="font-family:宋体; font-size:10.5pt">、</span><span style="font-family:Calibri; font-size:10.5pt">Android
-					ID</span><span style="font-family:宋体; font-size:10.5pt">、</span><span
-					style="font-family:Calibri; font-size:10.5pt">IP</span><span
-					style="font-family:宋体; font-size:10.5pt">、</span><span
-					style="font-family:Calibri; font-size:10.5pt">IMSI</span><span
-					style="font-family:宋体; font-size:10.5pt">、</span><span
-					style="font-family:Calibri; font-size:10.5pt">SD</span><span
-					style="font-family:宋体; font-size:10.5pt">卡数据、</span><span
-					style="font-family:Calibri; font-size:10.5pt">IMEI</span><span
-					style="font-family:宋体; font-size:10.5pt">、安装列表、设备序列号、传感器、</span><span
-					style="font-family:Calibri; font-size:10.5pt">MAC</span><span
-					style="font-family:宋体; font-size:10.5pt">、剪切板的行为）。</span></p>
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IMEI/android ID/IDFA/OPENUDID/GUID</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">SIM</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">卡</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IMSI</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">信息</span>等在内的描述个人常用设备基本情况的信息，存在收集</span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">ICCID</span></span><span
+					style="font-family:宋体; font-size:10.5pt">、</span><span style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">Android ID</span>
+					</span><span style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IP</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IMSI</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">SD</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">卡数据、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">IMEI</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、安装列表、设备序列号、传感器、</span></span><span
+					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">MAC</span></span><span
+					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、剪切板的行为</span>）。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span

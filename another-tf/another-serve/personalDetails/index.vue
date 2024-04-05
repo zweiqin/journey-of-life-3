@@ -90,7 +90,10 @@
 		</view>
 
 		<!-- 修改性别弹窗 -->
-		<tui-select :list="sexList" reverse :show="sexShow" @confirm="handleConfirmSex" @close="sexShow = false"></tui-select>
+		<tui-select
+			:list="sexList" reverse :show="sexShow" @confirm="handleConfirmSex"
+			@close="sexShow = false"
+		></tui-select>
 
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
@@ -130,6 +133,20 @@
 				</tui-input>
 			</template>
 		</tui-dialog>
+
+		<tui-popup
+			:duration="500" :mode-class="[ 'fade-in' ]"
+			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
+		>
+			<view style="display: flex;align-items: center;padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
+				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+				<view style="flex: 1;">
+					<view>相机权限和相册权限使用说明：</view>
+					<view style="margin-top: 12rpx;">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于设置头像、修改头像等场景</view>
+				</view>
+			</view>
+		</tui-popup>
 	</view>
 </template>
 
@@ -141,6 +158,8 @@ export default {
 	name: 'PersonalDetails',
 	data() {
 		return {
+			showAuthPopupVisible: false,
+
 			// userId: '',
 			screenHeight: 0,
 			sexShow: false,
@@ -248,6 +267,7 @@ export default {
 			})
 		},
 		handleChooseImage() {
+			this.showAuthPopupVisible = true
 			uni.chooseImage({
 				count: 1,
 				success: (res) => {
@@ -259,6 +279,48 @@ export default {
 					this.ttoast('图片上传失败')
 				}
 			})
+			// // #ifdef APP
+			// const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+			// if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
+			// 	this.showAuthPopupVisible = true
+			// 	uni.chooseImage({
+			// 		count: 1,
+			// 		success: (res) => {
+			// 			uni.navigateTo({
+			// 				url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+			// 			})
+			// 		},
+			// 		fail: () => {
+			// 			this.ttoast('图片上传失败')
+			// 		}
+			// 	})
+			// } else {
+			// 	uni.chooseImage({
+			// 		count: 1,
+			// 		success: (res) => {
+			// 			uni.navigateTo({
+			// 				url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+			// 			})
+			// 		},
+			// 		fail: () => {
+			// 			this.ttoast('图片上传失败')
+			// 		}
+			// 	})
+			// }
+			// // #endif
+			// // #ifndef APP
+			// uni.chooseImage({
+			// 	count: 1,
+			// 	success: (res) => {
+			// 		uni.navigateTo({
+			// 			url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+			// 		})
+			// 	},
+			// 	fail: () => {
+			// 		this.ttoast('图片上传失败')
+			// 	}
+			// })
+			// // #endif
 		},
 		// 获取用户信息
 		getUserInfoData() {

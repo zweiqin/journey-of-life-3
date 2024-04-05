@@ -46,7 +46,13 @@
 			style="display: flex;justify-content: space-evenly;align-items: stretch;flex-wrap: wrap;padding-top: 42rpx;text-align: center;"
 		>
 			<view style="margin-top: 30rpx;">
-				<view>充值代金券</view>
+				<view
+					style="display: flex;align-items: center;justify-content: center;"
+					@click="(isShowTipsModal = true) && (showTipsType = '1')"
+				>
+					<text>充值代金券</text>
+					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
 					￥{{ typeof voucherAcount.zongchongzhi === 'number'
 						? Number.parseFloat(Number(voucherAcount.zongchongzhi)).toFixed(2)
@@ -55,7 +61,13 @@
 			</view>
 			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
 			<view style="margin-top: 30rpx;">
-				<view>兑换代金券</view>
+				<view
+					style="display: flex;align-items: center;justify-content: center;"
+					@click="(isShowTipsModal = true) && (showTipsType = '2')"
+				>
+					<text>兑换代金券</text>
+					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
 					<!-- ￥{{ typeof voucherAcount.zongzengsong === 'number' ? voucherAcount.zongzengsong : '--' }} -->
 					￥{{ Number.parseFloat(Number(userAcount.number) - Number(voucherAcount.zongchongzhi)).toFixed(2) || '--' }}
@@ -311,6 +323,37 @@
 			</view>
 		</tui-bottom-popup>
 
+		<tui-modal :show="isShowTipsModal" custom fadein :button="[]" width="78%" @cancel="isShowTipsModal = false">
+			<view v-if="showTipsType === '1'">
+				<view style="font-weight: bold;text-align: center;">充值代金券说明</view>
+				<view style="margin-top: 40rpx;">充值代金券为您通过充值所获得的代金券金额</view>
+				<view style="margin-top: 34rpx;">使用渠道：可在【商城】-【兑换专区】中进行兑换礼品</view>
+				<view class="operation-btn" style="margin-top: 34rpx;text-align: center;">
+					<tui-button
+						type="warning" :size="30" width="182rpx" height="60rpx"
+						margin="0"
+						@click="isShowTipsModal = false"
+					>
+						好的
+					</tui-button>
+				</view>
+			</view>
+			<view v-else-if="showTipsType === '2'">
+				<view style="font-weight: bold;text-align: center;">兑换代金券说明</view>
+				<view style="margin-top: 30rpx;">兑换代金券为通过平台消费所获得的代金券，其中包括消费社区服务、商圈商家商品及商城的商品。 以及好友转赠给您的代金券</view>
+				<view style="margin-top: 40rpx;">使用渠道：可在【商城】-【兑换专区】中进行兑换礼品</view>
+				<view class="operation-btn" style="margin-top: 36rpx;text-align: center;">
+					<tui-button
+						type="warning" :size="30" width="182rpx" height="60rpx"
+						margin="0"
+						@click="isShowTipsModal = false"
+					>
+						好的
+					</tui-button>
+				</view>
+			</view>
+		</tui-modal>
+
 		<tui-modal
 			:show="isShowVoucherModal" custom fadein :button="[]"
 			:z-index="995" :mask-z-index="994"
@@ -404,6 +447,10 @@ export default {
 				zongshouyi: '',
 				zongzengsong: ''
 			},
+
+			// 提示弹框展示
+			isShowTipsModal: false,
+			showTipsType: '',
 
 			isShowVoucherPopup: false,
 			isShowVoucherModal: false,
@@ -597,7 +644,7 @@ export default {
 	.operation-btn {
 		/deep/ .tui-btn {
 			display: inline-block;
-			border-radius: 18rpx;
+			border-radius: 10rpx;
 		}
 
 		/deep/ .tui-btn-warning {

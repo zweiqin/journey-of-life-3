@@ -33,7 +33,14 @@
         <view class="item hot-right">
           <view class="title-wrapper">
             <view class="main-title">销量榜单</view>
-            <view class="tag">好物推荐</view>
+            <view class="tag">
+						<!-- #ifdef APP -->
+							热销爆款
+						<!-- #endif -->
+						<!-- #ifndef APP -->
+							好物推荐
+						<!-- #endif -->
+						</view>
           </view>
           <view class="goods-wrapper">
             <VoucherGoods v-for="item in ad.good" :goodsData="item"></VoucherGoods>

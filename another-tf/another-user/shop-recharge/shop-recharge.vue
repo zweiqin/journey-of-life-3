@@ -4,9 +4,6 @@
       <view class="itemHeader">
         <image :src="common.seamingImgUrl(shopInfo.shopLogo)" mode="" class="avatar"></image>
         <text class="topTitle">{{ shopInfo.shopName }}</text>
-        <!-- <view class="openMerchanDetail" @click="gotoMerchan">
-            <text class="gotoUse">立即使用</text><image class="useMoney" src="@/static/images/entryOfMerchants/youjiantou.png"></image>
-        </view> -->
       </view>
       <view class="pane-1">
         <!-- <view>当前余额</view> -->

@@ -1409,6 +1409,12 @@
           }
         },
         {
+          "path": "another-user/selection-center/index",
+          "style": {
+            "navigationBarTitleText": "选品中心"
+          }
+        },
+        {
           "path": "another-user/brand-factory/index",
           "style": {
             "navigationBarTitleText": "品牌工厂"
@@ -2022,6 +2028,18 @@
           "path": "another-serve/shareProduct/index",
           "style": {
             "navigationBarTitleText": "分享"
+          }
+        },
+        {
+          "path": "another-user/product-category/index",
+          "style": {
+            "navigationBarTitleText": "商品类别"
+          }
+        },
+        {
+          "path": "another-user/product-selection-management/index",
+          "style": {
+            "navigationBarTitleText": "选品管理"
           }
         },
         {

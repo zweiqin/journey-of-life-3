@@ -1,18 +1,18 @@
 export const subInfoConfig = [
   {
-    icon: require('../../static/images/detail/caizhi.png'),
+    icon: 'bag',
     label: '材质',
     field: 'material',
     default: '无',
   },
   {
-    icon: require('../../static/images/detail/home.png'),
+    icon: 'home',
     label: '风格',
     field: 'styleName',
     default: '无',
   },
   {
-    icon: require('../../static/images/detail/yuantou.png'),
+    icon: 'house',
     label: '源头好货',
     field: 'source',
     default: '工厂直销',
@@ -21,16 +21,16 @@ export const subInfoConfig = [
 
 export const goodsInfoConfig = [
   {
-    icon: require('../../static/images/detail/kuaidi.png'),
+    icon: 'transport',
     label: '广东佛山',
     desc: '快递：免运费',
   },
   {
-    icon: require('../../static/images/detail/heart.png'),
+    icon: 'like',
     label: '七天无理由退货·1次破损补寄',
   },
   {
-    icon: require('../../static/images/detail/guige.png'),
+    icon: 'manage',
     label: '规格·颜色·尺寸选择...',
     key: 'sp',
     model: 'spsStr',

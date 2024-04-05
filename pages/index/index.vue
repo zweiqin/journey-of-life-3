@@ -28,8 +28,14 @@
             <HotPane :goodsData="ad.good" subTitle="抢新品">
               <block slot="title">
                 <view class="hot">
-                  <text class="text">好物推荐</text>
-                  <!--  -->
+                  <text class="text">
+										<!-- #ifdef APP -->
+											新品展示
+										<!-- #endif -->
+										<!-- #ifndef APP -->
+											好物推荐
+										<!-- #endif -->
+									</text>
                 </view>
               </block>
             </HotPane>

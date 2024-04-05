@@ -377,7 +377,7 @@ export const otherFunction = [
 		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
 		url: '/another-tf/another-user/franchisee-statistics/index',
 		showRole: [ 'franchisee' ]
-	}
+	},
 	// {
 	// 	name: '银行卡',
 	// 	icon: require('../../static/images/new-user/menu-icon/yinhangka.png'),
@@ -389,5 +389,20 @@ export const otherFunction = [
 	// 	icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 	// 	url: '/another-tf/another-serve/coupon/index'
 	// },
+	{
+		name: '选品中心',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/selection-center/index'
+	},
 	// shopServe
+	{
+		name: '商品类别',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/product-category/index'
+	},
+	{
+		name: '选品管理',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/product-selection-management/index'
+	}
 ]

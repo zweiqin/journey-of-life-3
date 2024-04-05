@@ -4,7 +4,8 @@
             <image :src="common.seamingImgUrl(datas.shopLogo)" mode="" class="avatar"></image>
             <text class="topTitle">{{ datas.shopName }}</text>
             <view class="openMerchanDetail" @click="gotoMerchan">
-                <text class="gotoUse">立即使用</text><image class="useMoney" src="@/static/images/entryOfMerchants/youjiantou.png"></image>
+                <text class="gotoUse">立即使用</text>
+								<tui-icon name="arrowright" color="#d1d1d6" size="32" unit="rpx" margin="0"></tui-icon>
             </view>
         </view>
         <view class="numberTitle">

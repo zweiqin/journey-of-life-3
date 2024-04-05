@@ -737,3 +737,54 @@ export const getSelectHotSearchApi = (data) => AnotherTFRequest('/app/selectHotS
 
 // 小程序支付参数
 export const getPayMiniProgramQueryApi = (data) => AnotherTFRequest('/collect/getSybPaySign', data, 'POST')
+
+// 商品类别
+// 商品类别管理查询
+export const getAllPlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/getAll', data, 'POST')
+
+// 商品类别编辑查询
+export const getByIdPlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/getById', data, 'POST')
+
+// 添加商品类别
+export const addPlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/save', data, 'POST')
+
+// 修改商品类别
+export const updatePlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/update', data, 'POST')
+
+// 删除商品类别
+export const deletePlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/delete', data, 'POST')
+
+// （商家）选品管理
+// 查询分类层级
+export const getClassifyPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/getClassify', data, 'POST')
+
+// 查询品牌列表
+export const getBrandListPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/getBrandList', data, 'POST')
+
+// 商品管理查询
+export const getAllPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/getAll', data, 'POST')
+
+// 修改商品查询
+export const getByIdPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/getById', data, 'POST')
+
+// 新增选品商品
+export const addSelectionProductApi = (data) => AnotherTFRequest('/platformProduct/save', data, 'POST')
+
+// 修改选品商品
+export const updateSelectionProductApi = (data) => AnotherTFRequest('/platformProduct/update', data, 'POST')
+
+// 删除选品商品
+export const deleteSelectionProductApi = (data) => AnotherTFRequest('/platformProduct/delete', data, 'POST')
+
+// 商品上下架
+export const updateStartPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/start', data, 'POST')
+
+// （用户）选品操作
+// c端选品中心
+export const getBuyerSelectionLibraryApi = (data) => AnotherTFRequest('/buyerSelection/H5SelectionLibrary', data, 'POST')
+
+// C端选择选品商品
+export const getBuyerSelectionSelectApi = (data) => AnotherTFRequest('/buyerSelection/selectBuyerLibrary', data, 'POST')
+
+// c端选品详情
+export const getBuyerSelectionDetailsApi = (data) => AnotherTFRequest('/buyerSelection/h5SelectionDetails', data, 'POST')

@@ -6,20 +6,19 @@
       <Carousel :list="goodsDetail.info.gallery.length ? goodsDetail.info.gallery.map((item) => common.seamingImgUrl(item)) : [common.seamingImgUrl(goodsDetail.info.picUrl)]" :height="390" :top="0" :radius="0"></Carousel>
 
       <view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
-        <view>
-          <image @click="handleBack" src="../../static/images/detail/back.png" mode="" />
+        <view style="padding: 10rpx;border-radius: 50%;background-color: rgba(0, 0, 0, 0.28);">
+					<tui-icon name="arrowleft" color="#ffffff" size="48" unit="rpx" margin="0" @click="handleBack"></tui-icon>
         </view>
 
-        <view style="display: flex">
-          <image style="margin-right: 20upx" @click="empty()" src="../../static/images/detail/brand.png" mode="" />
+        <view style="display: flex;align-items: center;">
+					<view style="padding: 16rpx;margin-right: 20rpx;border-radius: 50%;background-color: rgba(0, 0, 0, 0.28);">
+						<tui-icon name="shop" color="#ffffff" size="38" unit="rpx" margin="0" @click="empty()"></tui-icon>
+					</view>
 
           <BeeWxShare ref="beeWxShareRef" @click="handleShareGoods">
-            <!-- <image
-              @click=""
-              src="../../static/images/detail/share.png"
-              mode=""
-            /> -->
-            <image src="../../static/images/detail/share.png" mode="" />
+						<view style="padding: 16rpx;border-radius: 50%;background-color: rgba(0, 0, 0, 0.28);">
+							<tui-icon name="share" color="#ffffff" size="38" unit="rpx" margin="0"></tui-icon>
+						</view>
           </BeeWxShare>
         </view>
       </view>
@@ -32,7 +31,9 @@
         }"
       >
         <!-- #ifdef H5 -->
-        <image @click="handleBack" src="../../static/images/detail/top-back.png" mode="" />
+				<view style="position: absolute;top: 45%;left: 36upx;transform: translateY(-50%);height: 28upx;width: 16upx;">
+					<tui-icon name="arrowleft" color="#767676" size="54" unit="rpx" margin="0"></tui-icon>
+				</view>
         <!-- #endif -->
 
         <view class="center">
@@ -85,16 +86,11 @@
 
       <view class="salsed">
         <text>月销100+</text>
-        <!-- <image
-          class="share-tran"
-          src="../../static/images/detail/share-tran.png"
-          mode=""
-        /> -->
       </view>
 
       <view class="sub-info">
         <view class="item" v-for="(item, index) in subInfoConfig" :key="index">
-          <image :src="item.icon" mode="" />
+					<tui-icon :name="item.icon" color="#000000" size="48" unit="rpx"></tui-icon>
           <text>{{ item.label }}</text>
           <text class="attribute">{{ item.default }}</text>
         </view>
@@ -102,7 +98,7 @@
 
       <view class="buy-info">
         <view class="item" v-for="(item, index) in goodsInfoConfig" :key="index" @click="handleClickMenu(item)">
-          <image :src="item.icon" mode="" />
+					<tui-icon :name="item.icon" color="#000000" size="48" unit="rpx" margin="0 20rpx 0 0"></tui-icon>
           <view>
             <view class="label">{{ selectForm[item.model] || item.label }}</view>
             <view class="desc" v-if="item.desc">{{ item.desc }}</view>
@@ -113,10 +109,10 @@
       <view class="eval-wrapper">
         <view class="eval">
           <text>评价({{ commentInfo.count || 0 }})</text>
-          <text v-if="commentInfo.data.length > 1">
+          <view v-if="commentInfo.data.length > 1" style="display: flex;align-items: center;">
             <text @click="handleViewAllEval(commentInfo.data)">查看全部</text>
-            <image style="margin-bottom: -4upx" src="../../static/images/detail/right-arrow.png" mode="" />
-          </text>
+						<tui-icon name="arrowright" color="#000000" size="54" unit="rpx" margin="0"></tui-icon>
+          </view>
           <text v-else-if="!commentInfo.data.length">暂无评价</text>
         </view>
 
@@ -185,7 +181,7 @@
       >
         <view class="sub-title">
           <text>店铺推荐</text>
-          <image src="../../static/images/detail/right-arrow.png" mode="" />
+					<tui-icon name="arrowright" color="#ffffff" size="48" unit="rpx" margin="0"></tui-icon>
         </view>
 
         <view class="wrapper">
@@ -225,19 +221,20 @@
     <view class="footer">
       <view class="icon-wrapper">
         <view class="item" @click="go('/user/sever/shopCar/shopCar')">
-          <image src="../../static/images/detail/shap-active.png" mode="" />
+					<tui-icon name="cart" color="#e95d20" size="40" unit="rpx" margin="0"></tui-icon>
           <text>购物车</text>
           <view class="number" v-if="shopCarNumber">{{ shopCarNumber }}</view>
         </view>
 
         <!-- <view class="item" @click="handleChat"> -->
         <view class="item" @click="go('/user/sever/customer-service/customer-service')">
-          <image src="../../static/images/detail/kefu.png" mode="" />
+					<tui-icon name="kefu" color="#777777" size="40" unit="rpx" margin="0"></tui-icon>
           <text>客服</text>
         </view>
 
         <view class="item">
-          <image @click="handleCollect" :src="isCollect ? '../../static/images/detail/collection-active .png' : '../../static/images/detail/collection.png'" mode="" />
+					<tui-icon v-if="isCollect" name="star-fill" color="#e95d20" size="40" unit="rpx" margin="0" @click="handleCollect"></tui-icon>
+					<tui-icon v-else name="star" color="#777777" size="40" unit="rpx" margin="0" @click="handleCollect"></tui-icon>
           <text>收藏</text>
         </view>
       </view>
@@ -815,6 +812,7 @@ export default {
   .header-top {
     display: flex;
     justify-content: space-between;
+		align-items: center;
     width: 100%;
     position: absolute;
     left: 0;

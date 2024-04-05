@@ -107,7 +107,7 @@ export default {
     return {
       data: [],
       pupupLevelType: '',
-      popupImageUrl: '../../static/images/con-center/popup-image.png',
+      popupImageUrl: require('../../static/images/con-center/popup-image.png'),
       servePaneList: [],
       scrollTop: 0,
       timer: null

@@ -12,13 +12,12 @@
 			></Carousel>
 
 			<view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
-				<view>
-					<image src="../../../static/images/detail/back.png" mode="" @click="handleBack" />
+				<view style="padding: 10rpx;border-radius: 50%;background-color: rgba(0, 0, 0, 0.28);">
+					<tui-icon name="arrowleft" color="#ffffff" size="48" unit="rpx" margin="0" @click="handleBack"></tui-icon>
 				</view>
 
 				<view style="display: flex;">
 					<BeeWxShare ref="beeWxShareRef" @click="handleShareGoods">
-						<!-- <image src="../../../static/images/detail/share.png" mode="" /> -->
 					</BeeWxShare>
 					<view style="height: 64upx;padding: 0 20upx;display: flex;align-items: center;font-weight: 700;background-color: #bdbbb9;border-radius: 32upx;" @click="handleShareActivity">活动分享</view>
 				</view>
@@ -84,24 +83,19 @@
 		<view class="footer">
 			<view class="icon-wrapper">
 				<view class="item" @click="go('/user/sever/shopCar/shopCar')">
-					<image src="../../../static/images/detail/shap-active.png" mode="" />
+					<tui-icon name="cart" color="#e95d20" size="40" unit="rpx" margin="0"></tui-icon>
 					<text>购物车</text>
 					<view v-if="shopCarNumber" class="number">{{ shopCarNumber }}</view>
 				</view>
 
 				<view class="item" @click="go('/user/sever/customer-service/customer-service')">
-					<image src="../../../static/images/detail/kefu.png" mode="" />
+					<tui-icon name="kefu" color="#777777" size="40" unit="rpx" margin="0"></tui-icon>
 					<text>客服</text>
 				</view>
 
 				<view class="item">
-					<image
-						:src="
-							isCollect
-								? '../../../static/images/detail/collection-active .png'
-								: '../../../static/images/detail/collection.png'
-						" mode="" @click="handleCollect"
-					/>
+					<tui-icon v-if="isCollect" name="star-fill" color="#e95d20" size="40" unit="rpx" margin="0" @click="handleCollect"></tui-icon>
+					<tui-icon v-else name="star" color="#777777" size="40" unit="rpx" margin="0" @click="handleCollect"></tui-icon>
 					<text>收藏</text>
 				</view>
 			</view>
@@ -573,6 +567,7 @@ export default {
 	.header-top {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		width: 100%;
 		position: absolute;
 		left: 0;

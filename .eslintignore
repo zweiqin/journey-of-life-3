@@ -1,5 +1,7 @@
 node_modules/
 logistics/
 pages/index/
+pages/prod/
+pages/service-agreement/
 utils/payUtil.js
 community-center/
