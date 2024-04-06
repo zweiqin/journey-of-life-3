@@ -8,12 +8,17 @@
 					confirm-type="search" />
 			</view>
 			<view class="home" @click="handleToIndex">
-				<image src="../../../static/images/new-brand/detail/home.png" mode="" />
+				<tui-icon
+					name="home" :size="40" unit="rpx"
+					color="#ffffff" margin="0"
+				></tui-icon>
 			</view>
 
 			<view class="follow-wrapper">
-				<image @click="handleFollowStore" class="follow-icon" src="../../../static/images/new-brand/detail/follow.png"
-					mode="" />
+				<tui-icon
+					name="service" :size="40" unit="rpx"
+					color="#ffffff" margin="0" @click="handleFollowStore"
+				></tui-icon>
 			</view>
 		</view>
 
@@ -25,16 +30,22 @@
 				<view class="tags">
 					<view class="tag">
 						<view class="img-wrapper">
-							<image class="icon" src="../../../static/images/new-brand/index/shiming.png" mode="" />
+							<tui-icon
+								name="people-fill" :size="26" unit="rpx"
+								color="#ffffff" margin="0"
+							></tui-icon>
 						</view>
-						<text>实名认证</text>
+						<text style="background-color: #fff;">实名认证</text>
 					</view>
 
 					<view class="tag">
 						<view class="img-wrapper">
-							<image class="icon" src="../../../static/images/new-brand/index/shiming.png" mode="" />
+							<tui-icon
+								name="member-fill" :size="26" unit="rpx"
+								color="#ffffff" margin="0"
+							></tui-icon>
 						</view>
-						<text>品质保证</text>
+						<text style="background-color: #fff;">品质保证</text>
 					</view>
 				</view>
 			</view>
@@ -293,7 +304,7 @@ export default {
 						padding: 0 6upx;
 						border-radius: 0 8upx 8upx 0;
 						overflow: hidden;
-						background-color: #fff;
+						// background-color: #fff;
 					}
 
 					&:nth-child(1) {

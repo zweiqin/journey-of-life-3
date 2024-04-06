@@ -47,7 +47,7 @@
 					<BeeIcon
 						:size="38"
 						style="width: fit-content;margin: 0 auto;border-radius: 50%;line-height: 1;overflow: hidden;"
-						:src="item.classifyImage ? common.seamingImgUrl(item.classifyImage) : require('../../../static/images/index/design.png')"
+						:src="item.classifyImage ? common.seamingImgUrl(item.classifyImage) : require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</BeeIcon>
 				</view>

@@ -8,7 +8,6 @@
 					color="#767676"
 					margin="0" @click="handleBack"
 				></tui-icon>
-				<!-- <image class="avatar" src="/static/logo.png" mode="" /> -->
 				<image class="avatar" :src="common.seamingImgUrl(avatar)" mode="" />
 				<text class="kefu-name">{{ name }}</text>
 			</view>

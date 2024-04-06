@@ -14,12 +14,8 @@
     </view>
     <view class="goods-info">
       <view class="goods-name">
-        <view class="icon-wrapper"
-          ><image
-            class="icon"
-            src="../../../static/images/index/miaosha.png"
-            mode=""
-          />
+        <view class="icon-wrapper" style="font-size: 22rpx;color: #ffffff;">
+					秒杀
         </view>
         <view class="name">{{ data.name }}</view>
       </view>
@@ -88,8 +84,11 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 50upx;
-        height: 28upx;
+        // width: 50upx;
+        // height: 28upx;
+				width: fit-content;
+				padding: 2rpx 8rpx;
+				white-space: nowrap;
         background-color: #fa5151;
         border-radius: 4px;
         overflow: hidden;

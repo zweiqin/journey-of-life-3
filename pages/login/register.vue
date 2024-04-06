@@ -63,12 +63,12 @@
 			<view>
 				我已阅读并同意<text
 					style="color: #222229;"
-					@click="go('pages/service-agreement/service-agreement')"
+					@click="go('/pages/service-agreement/service-agreement')"
 				>
 					《用户服务协议》
 				</text>以及<text
 					style="color: #222229;"
-					@click="go('pages/service-agreement/privacy-policy')"
+					@click="go('/pages/service-agreement/privacy-policy')"
 				>
 					《隐私政策》
 				</text>

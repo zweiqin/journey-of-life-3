@@ -2,15 +2,25 @@
   <!-- 头部 -->
   <view class="header">
     <slot></slot>
-    <image class="img" src="../../../static/images/index/location.png" alt="定位" />
+		<tui-icon
+			name="gps" :size="36" unit="rpx"
+			color="#767676" margin="0"
+		></tui-icon>
     <TuanLocation>
       <text class="loaction">{{ $store.getters.currentCity || '定位失败' }}</text>
     </TuanLocation>
     <view class="search">
-      <image class="search-icon" src="../../../static/images/icon/search.png" alt="" />
+			<tui-icon
+				name="search" :size="28" unit="rpx"
+				color="#cccccc"
+				margin="0"
+			></tui-icon>
       <input type="text" @focus="$emit('focus')" />
     </view>
-    <image class="img" src="../../../static/images/index/ling.png" alt="响铃" />
+		<tui-icon
+			name="notice" :size="40" unit="rpx"
+			color="#767676" margin="0"
+		></tui-icon>
   </view>
 </template>
 

@@ -11,11 +11,10 @@
 				<text>{{ $store.getters.currentCity || '定位失败' }}</text>
 			</TuanLocation>
       <view class="search-wrapper">
-        <image
-          class="search-icon"
-          src="../static/images/index/search.png"
-          mode=""
-        />
+				<tui-icon
+					name="search" :size="28" unit="rpx"
+					color="#767676" margin="0"
+				></tui-icon>
         <input
           ref="inputRef"
           @focus="handleSeachInputFocus"
@@ -26,7 +25,10 @@
           class="text"
           :adjust-position="false"
         />
-        <image class="camera" src="../static/images/index/camera.png" mode="" />
+				<tui-icon
+					name="camera" :size="32" unit="rpx"
+					color="#777777" margin="0"
+				></tui-icon>
       </view>
     </view>
 

@@ -8,10 +8,7 @@
 					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'" @click="handleCollectToggle"
 				></BeeIcon>
 				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
-					<BeeIcon
-						:src="require('../../../../static/images/new-brand/detail/share.png')" :size="22"
-						style="margin-left: 24upx;"
-					></BeeIcon>
+					<BeeIcon :size="22" color="#333333" name="share" style="margin-left: 24upx;"></BeeIcon>
 				</BeeWxShare>
 			</view>
 		</view>

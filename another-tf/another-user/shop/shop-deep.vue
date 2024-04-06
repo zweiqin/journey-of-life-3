@@ -37,7 +37,7 @@
 				<view>
 					<BeeIcon
 						:size="34"
-						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</BeeIcon>
 				</view>

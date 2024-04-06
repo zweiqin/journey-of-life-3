@@ -116,7 +116,7 @@
             </view>
             <view class="imgBox left">
             <!-- <view class="imgBox left" :class="{isLeft:isLeft,isRight:!isLeft}" @click="isOne=true;isLeft = !isLeft"> -->
-              <image class="PresentationImage leftImg" :class="{isLeftSm:isLeft,isRightSm:!isLeft}" src="@/static/images/index/qian.png"></image>
+              <image class="PresentationImage leftImg" :class="{isLeftSm:isLeft,isRightSm:!isLeft}" :src="common.seamingImgUrl('1712372041183-qian.png')"></image>
               <view class="mask msleft">
 
               </view>
@@ -126,7 +126,7 @@
             </view>
             <view class="imgBox right">
             <!-- <view class="imgBox right" @click="isOne=true;isLeft = !isLeft" :class="{issRight:isLeft,issLeft:!isLeft}"> -->
-              <image class="PresentationImage rightImg" :class="{issRightSm:isLeft,issLeftSm:!isLeft}" src="@/static/images/index/hou.png"></image>
+              <image class="PresentationImage rightImg" :class="{issRightSm:isLeft,issLeftSm:!isLeft}" :src="common.seamingImgUrl('1712372044880-hou.png')"></image>
               <view class="mask msright">
 
               </view>

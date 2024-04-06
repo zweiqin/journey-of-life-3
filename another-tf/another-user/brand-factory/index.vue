@@ -128,7 +128,6 @@
 						</view>
 					</view>
 					<!-- <view style="display: flex; align-items: center;margin-top: 12rpx;">
-						<image style="width: 136rpx;" mode="widthFix" src="../../../static/images/icon/rate-icon.png"></image>
 						<view style="margin-left: 6rpx;">
 						<tui-rate active="#EF530E" :size="16" disabled :current="item.score || 0"></tui-rate>
 						</view>

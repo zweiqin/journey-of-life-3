@@ -2,14 +2,21 @@
   <view class="op-container">
     <view class="container">
       <view class="item" @click="$emit('call')">
-        <image src="../../../static/images/new-brand/detail/chat.png" mode="" />
+				<view style="padding: 8rpx;border: 4rpx solid #3a3629;border-radius: 50%;line-height: 1;">
+					<tui-icon
+						name="voipphone" :size="36" unit="rpx"
+						color="#3a3629" margin="0"
+					></tui-icon>
+				</view>
         <text>联系</text>
       </view>
       <view class="item" @click="$emit('navigate')">
-        <image
-          src="../../../static/images/new-brand/detail/locale.png"
-          mode=""
-        />
+				<view style="padding: 8rpx;border: 4rpx solid #3a3629;border-radius: 50%;line-height: 1;">
+					<tui-icon
+						name="send" :size="36" unit="rpx"
+						color="#3a3629" margin="0"
+					></tui-icon>
+				</view>
         <text>导航</text>
       </view>
     </view>

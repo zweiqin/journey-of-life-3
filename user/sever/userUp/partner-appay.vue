@@ -6,7 +6,12 @@
 			v-if="currentApplyType === 'sup-partner'" src="../../../static/images/user/bg2.png" mode=""
 			class="background"
 		/>
-		<img src="../../../static/images/icon/return-logo.png" alt="" class="return" @click="handleBack">
+		<view class="return">
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#ffffff" margin="0" @click="handleBack"
+			></tui-icon>
+		</view>
 
 		<view class="main-area">
 			<ApplyType v-model="currentApplyType"></ApplyType>
@@ -162,7 +167,7 @@ export default {
 	}
 
 	.return {
-		width: 24upx;
+		width: 48upx;
 		height: 48upx;
 		position: absolute;
 		top: 36upx;

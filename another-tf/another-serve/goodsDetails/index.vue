@@ -297,7 +297,7 @@ import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting, resolveGoodsDetailSkuSituation } from '../../../utils'
-import { getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -322,6 +322,7 @@ export default {
 			shopId: '',
 			productId: '', // 商品ID，有可能是缓存数据
 			skuId: '', // 产品ID
+			isSelection: 0,
 
 			returnTopFlag: false, // 回到顶部
 			collageId: 0, // 去拼团时的拼单ID
@@ -357,6 +358,7 @@ export default {
 		this.shopId = Number(options.shopId)
 		this.productId = Number(options.productId)
 		this.skuId = Number(options.skuId)
+		this.isSelection = Number(options.isSelection)
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
@@ -459,7 +461,13 @@ export default {
 				mask: true
 			})
 			try {
-				const res = await getProductDetailsByIdApi({
+				let _url
+				if (this.isSelection) {
+					_url = getBuyerSelectionDetailsApi
+				} else {
+					_url = getProductDetailsByIdApi
+				}
+				const res = await _url({
 					shopId: this.shopId,
 					productId: this.productId,
 					skuId: this.skuId,

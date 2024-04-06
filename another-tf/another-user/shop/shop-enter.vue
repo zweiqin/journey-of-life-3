@@ -37,7 +37,7 @@
 				<view>
 					<BeeIcon
 						:size="34"
-						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
+						:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</BeeIcon>
 				</view>
@@ -59,7 +59,7 @@
 					<view>
 						<BeeIcon
 							:size="34"
-							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/new-user/default-user-avatar.png')"
 						>
 						</BeeIcon>
 					</view>
@@ -75,7 +75,7 @@
 					<view>
 						<BeeIcon
 							:size="18" style="line-height: 1;"
-							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/index/design.png')"
+							:src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('../../../static/images/new-user/default-user-avatar.png')"
 						>
 						</BeeIcon>
 					</view>
@@ -116,7 +116,7 @@
 							<view>
 								<BeeIcon
 									width="180rpx" height="150rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
-									:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
+									:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/con-center/hongbao.png')"
 								>
 								</BeeIcon>
 								<view style="height: 10rpx;margin: 0 20rpx;background-color: #c8c9b7;border-radius: 0 0 20rpx 20rpx;">
@@ -294,7 +294,7 @@
 						<view>
 							<BeeIcon
 								width="180rpx" height="252rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
-								:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/index/explosion.webp')"
+								:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/con-center/hongbao.png')"
 							>
 							</BeeIcon>
 						</view>

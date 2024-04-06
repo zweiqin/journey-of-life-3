@@ -18,7 +18,11 @@
 					<view class="contact">{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
 				</view>
 				<view class="location">
-					<image src="../../static/images/icon/location-logo.png" alt="" class="location-logo" />
+					<tui-icon
+						name="gps" :size="42" unit="rpx"
+						color="#605d52"
+						margin="0"
+					></tui-icon>
 				</view>
 			</view>
 

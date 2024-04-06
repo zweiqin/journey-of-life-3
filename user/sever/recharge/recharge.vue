@@ -1,7 +1,11 @@
 <template>
 	<view class="recharge">
 		<view class="return">
-			<img src="../../../static/images/icon/return.png" alt="" class="return-logo" @click="handleBack">
+			<tui-icon
+				name="arrowleft" :size="48" unit="rpx"
+				color="#000000"
+				margin="0" @click="handleBack"
+			></tui-icon>
 		</view>
 		<view class="orange">
 			<view class="money">可用余额</view>

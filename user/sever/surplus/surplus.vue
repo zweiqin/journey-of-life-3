@@ -3,7 +3,11 @@
 		<view class="top-orange">
 			<view class="top-orange-main">
 				<view class="header">
-					<img src="../../../static/images/icon/return-logo.png" alt="" class="return" @click="handleBack">
+					<tui-icon
+						name="arrowleft" :size="48" unit="rpx"
+						color="#ffffff"
+						margin="0" @click="handleBack"
+					></tui-icon>
 					<view class="bill">我的账单</view>
 				</view>
 				<view class="money">可用余额</view>
@@ -16,12 +20,18 @@
 						<view class="recharge">
 							<view class="recharge-l">
 								<view class="recharge-round">
-									<img src="../../../static/images/icon/czhi.png" alt="" class="recharge-logo">
+									<tui-icon
+										name="wealth-fill" :size="40" unit="rpx"
+										color="#ffc117" margin="0"
+									></tui-icon>
 								</view>
 								<view class="text">充值</view>
 							</view>
 							<view class="recharge-r">
-								<img src="../../../static/images/icon/more-logo.png" alt="" class="recharge-more">
+								<tui-icon
+									name="arrowright" :size="32" unit="rpx"
+									color="#ffffff" margin="0"
+								></tui-icon>
 							</view>
 						</view>
 					</view>
@@ -29,12 +39,18 @@
 						<view class="cash">
 							<view class="cash-l">
 								<view class="cash-round">
-									<img src="../../../static/images/icon/tixain.png" alt="" class="cash-logo">
+									<tui-icon
+										name="up" :size="40" unit="rpx"
+										color="#ffc117" margin="0"
+									></tui-icon>
 								</view>
 								<view class="text">提现</view>
 							</view>
 							<view class="cash-r">
-								<img src="../../../static/images/icon/more-logo.png" alt="" class="cash-more">
+								<tui-icon
+									name="arrowright" :size="32" unit="rpx"
+									color="#ffffff" margin="0"
+								></tui-icon>
 							</view>
 						</view>
 					</view>
@@ -50,7 +66,10 @@
 				<view class="list" v-if="currentTab == 0">
 					<view class="list-left">
 						<view class="round">
-							<img src="../../../static/images/icon/czhi.png" alt="" class="logo">
+							<tui-icon
+								name="wealth-fill" :size="48" unit="rpx"
+								color="#ffc117" margin="0"
+							></tui-icon>
 						</view>
 						<view class="content">
 							<view class="vx">{{ item.label }}</view>
@@ -64,7 +83,10 @@
 				<view class="list" v-if="currentTab == 1">
 					<view class="list-left">
 						<view class="round">
-							<img src="../../../static/images/icon/tixain.png" alt="" class="logo">
+							<tui-icon
+								name="up" :size="48" unit="rpx"
+								color="#ffc117" margin="0"
+							></tui-icon>
 						</view>
 						<view class="content">
 							<view class="vx">{{ item.label }}</view>

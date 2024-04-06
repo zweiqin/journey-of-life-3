@@ -42,7 +42,11 @@
 
 			<view class="images">
 				<view class="zhiwen">
-					<image src="../../static/images/icon/zhi.png" alt="" />
+					<tui-icon
+						name="fingerprint" :size="128" unit="rpx"
+						color="#767676"
+						margin="0 0 12rpx 0"
+					></tui-icon>
 					<text>长按扫码</text>
 				</view>
 				<view style="text-align: center;">
@@ -200,12 +204,6 @@ export default {
 				align-items: center;
 				flex-direction: column;
 				color: #999999;
-
-				image {
-					width: 120rpx;
-					height: 120rpx;
-					margin-bottom: 10rpx;
-				}
 			}
 
 			image {

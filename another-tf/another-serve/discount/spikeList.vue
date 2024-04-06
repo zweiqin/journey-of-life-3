@@ -187,10 +187,7 @@ export default {
 		},
 		// 平台首页根据seckillId查询对应的秒杀商品列表
 		getPlatformSeckillsData(index) {
-			// uni.showLoading({
-			// 	mask: true,
-			// 	title: '数据加载中...',
-			// })
+			uni.showLoading()
 			getPlatformSeckillsCanvasApi({ seckillId: this.platformSeckillId })
 				.then((res) => {
 					uni.hideLoading()
@@ -207,8 +204,7 @@ export default {
 		// 平台秒杀头部时间
 		getQuerySession() {
 			getPlatformSeckillsQuerySessionApi({}).then((res) => {
-				let arr = []
-				arr = res.data
+				const arr = res.data
 				arr.forEach((item) => {
 					const obj = {}
 					obj.time = item

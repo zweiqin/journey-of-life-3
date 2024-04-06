@@ -15,12 +15,18 @@
 
         <view class="filter-btn" v-show="currentMenu === 0" @click="handleFilter">
           <text>筛选</text>
-          <image class="filter-icon" src="../../static/images/new-brand/detail/filter.png" mode="" />
+					<tui-icon
+						name="screen" :size="32" unit="rpx"
+						color="#605d52" margin="0 0 0 6rpx"
+					></tui-icon>
         </view>
 
         <view class="filter-btn" v-show="currentMenu === 1" @click="handleShare">
           <text>分享海报</text>
-          <image class="filter-icon" src="../../static/images/new-brand/detail/share.png" mode="" />
+					<tui-icon
+						name="share" :size="32" unit="rpx"
+						color="#333333" margin="0 0 0 6rpx"
+					></tui-icon>
         </view>
       </view>
 
@@ -37,9 +43,9 @@
       </view>
 
       <view class="desc" v-show="currentMenu === 1">
-        <image class="left" src="../../static/images/new-brand/detail/left.png" mode="" />
+        <text class="image left" style="font-size: 60rpx;color: #e2e2e0;">‘‘</text>
         <text>{{ brandDetail.desc }}</text>
-        <image class="right" src="../../static/images/new-brand/detail/right.png" mode="" />
+        <text class="image right" style="font-size: 60rpx;color: #e2e2e0;">’’</text>
       </view>
     </view>
 
@@ -346,19 +352,19 @@ export default {
     border-radius: 24upx;
     padding: 0 152upx;
 
-    image {
+    .image {
       position: absolute;
       width: 120upx;
       height: 120upx;
       flex-shrink: 0;
 
       &.left {
-        top: 32upx;
+        // top: 32upx;
         left: 32upx;
       }
 
       &.right {
-        bottom: 32upx;
+        // bottom: 32upx;
         right: 32upx;
       }
     }

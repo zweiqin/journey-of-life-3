@@ -1,7 +1,7 @@
 <template>
 	<view
 		class="shop-goods-container"
-		@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}`)"
+		@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}${detailedParameters}`)"
 	>
 		<view style="width: 340rpx;height: 340rpx;box-sizing: border-box;" :style="{ padding: picPadding }">
 			<image
@@ -50,6 +50,8 @@
 				>
 					<tui-icon name="plus" color="#000000" :size="28" unit="upx" bold></tui-icon>
 				</view>
+				<slot name="line" :data="cItem">
+				</slot>
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;">
 				<ATFActivityImage :type="cItem.activityType" style="margin: 10upx 2upx 0 0;"></ATFActivityImage>
@@ -77,6 +79,10 @@ export default {
 		shopId: {
 			type: [Number, String],
 			required: true
+		},
+		detailedParameters: {
+			type: String,
+			default: ''
 		},
 		cItem: {
 			type: Object,
