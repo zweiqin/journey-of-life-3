@@ -44,6 +44,11 @@
 					<view class="countdown-box flex-items-plus">{{ sec }}</view>
 				</view>
 			</view>
+			<!-- <tui-countdown
+				:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+				border-color="transparent"
+				:time="Math.floor(time / 1000)"
+				></tui-countdown> -->
 		</view>
 		<view class="spikeList mar-top-20">
 			<view v-if="spikeLikeList && spikeLikeList.length">

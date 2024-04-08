@@ -66,7 +66,9 @@
 					v-if="cItem.presenterVoucher"
 					style="width: fit-content;max-width: 218rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 				>
-					赠送 {{ cItem.presenterVoucher }} 代金券
+					赠送 {{ cItem.price
+						? `${(Number.parseFloat(cItem.presenterVoucher / cItem.price).toFixed(3) * 1000) / 10}%`
+						: cItem.presenterVoucher }} 代金券
 				</view>
 			</view>
 		</view>

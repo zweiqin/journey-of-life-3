@@ -21,7 +21,9 @@
 							v-if="proItem.presenterVoucher"
 							style="width: fit-content;margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 						>
-							赠送 {{ proItem.presenterVoucher }} 代金券
+							赠送 {{ proItem.price
+								? `${(Number.parseFloat(proItem.presenterVoucher / proItem.price).toFixed(3) * 1000) / 10}%`
+								: proItem.presenterVoucher }} 代金券
 						</view>
 						<view style="margin-top: 8upx;">
 							<view v-for="(vItem, vIndex) in proItem.values" :key="vIndex">

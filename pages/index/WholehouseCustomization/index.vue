@@ -34,7 +34,14 @@
             </view>
             <view class="screenTabs">
                 <view class="tabNavs">
-                    <text class="isActive">推荐</text>
+                    <text class="isActive">
+											<!-- #ifdef APP -->
+												新品
+											<!-- #endif -->
+											<!-- #ifndef APP -->
+												推荐
+											<!-- #endif -->
+										</text>
                     <text>本月热销</text>
                     <text>新品套餐</text>
                     <text>限时抢购</text>

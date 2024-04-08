@@ -164,7 +164,9 @@
 								v-if="item.presenterVoucher"
 								style="width: fit-content;margin-top: 4upx;padding: 2upx 12upx 6upx 2upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;"
 							>
-								赠送 {{ item.presenterVoucher }} 代金券
+								赠送 {{ item.price
+									? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
+									: item.presenterVoucher }} 代金券
 							</div>
 						</div>
 					</div>

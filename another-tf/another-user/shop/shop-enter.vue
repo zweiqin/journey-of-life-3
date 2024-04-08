@@ -8,9 +8,8 @@
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
 				</text>
 				<tui-input
-					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" placeholder="社区商圈"
-					clearable is-fillet padding="6rpx 10rpx 6rpx 26rpx"
-					style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
+					v-if="ownSearchBar.includes(currentType)" v-model="queryInfo.search" placeholder="社区商圈" clearable
+					is-fillet padding="6rpx 10rpx 6rpx 26rpx" style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
 				>
 					<template #right>
 						<tui-button
@@ -86,67 +85,107 @@
 
 		<!-- 限时秒杀 -->
 		<view
-			v-if="ownLimitedTimeSeckill.includes(currentType)"
-			style="margin: 14rpx 26rpx 0;padding: 22rpx;background: linear-gradient(122deg, #FDF3F1 2%, #FEEAEC 6%, #FFFBEF 12%, #FFFFFF 64%);border-radius: 20rpx;"
+			v-if="ownLimitedTimeSeckill.includes(currentType) && limitedTimeSeckillArr && limitedTimeSeckillArr.length"
+			style="margin: 14rpx 26rpx 0;padding: 2rpx 22rpx 22rpx;background: linear-gradient(122deg, #FDF3F1 2%, #FEEAEC 6%, #FFFBEF 12%, #FFFFFF 64%);border-radius: 20rpx;"
 		>
-			<view style="display: flex;align-items: center;">
-				<text style="font-size: 34rpx;font-weight: bold;">限时秒杀</text>
+			<view style="display: flex;flex-wrap: wrap;align-items: center;">
+				<text style="margin: 20rpx 18rpx 0 0;font-size: 34rpx;font-weight: bold;white-space: nowrap;">
+					{{ limitedTimeSeckillArr[seckillSwiperCurrent].seckillName || '限时秒杀' }}
+				</text>
 				<view
-					style="display: flex;align-items: center;margin-left: 18rpx;background-color: #fce5df;border-radius: 20rpx;"
+					style="display: flex;align-items: center;margin: 20rpx 0 0;background-color: #fce5df;border-radius: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
 				>
 					<view
 						style="width: 110rpx;height: 36rpx;padding: 6rpx 12rpx;font-size: 28rpx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20rpx 0 26rpx 20rpx;clip-path: polygon(0rpx 0rpx, 134rpx 0, 124rpx 8rpx, 124rpx 48rpx, 0 48rpx);"
 					>
-						<text style="margin-left: -10rpx;">距结束</text>
+						<text style="margin-left: -10rpx;">
+							<text v-if="Date.now() >= Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].endTime)">已结束</text>
+							<text
+								v-else-if="Date.now() >= Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].startTime)"
+							>
+								距结束
+							</text>
+							<text
+								v-else-if="Date.now() < Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].startTime)"
+							>
+								即将开始
+							</text>
+						</text>
 					</view>
-					<view style="font-size: 26rpx;font-weight: bold;color: #f84715;padding: 0 14rpx 0;">01:02:15</view>
+					<view style="font-size: 26rpx;font-weight: bold;color: #f84715;padding: 0 14rpx 0;">
+						<text v-if="Date.now() >= Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].endTime)">
+							{{ limitedTimeSeckillArr[seckillSwiperCurrent].endTime }}
+						</text>
+						<view v-else-if="Date.now() >= Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].startTime)">
+							<tui-countdown
+								:size="24" :colon-size="24" colon-color="#f84715" color="#f84715"
+								border-color="transparent" background-color="transparent"
+								:time="Math.floor((Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].endTime) - Date.now()) / 1000)"
+							></tui-countdown>
+						</view>
+						<text v-else-if="Date.now() < Date.parse(limitedTimeSeckillArr[seckillSwiperCurrent].startTime)">
+							{{ limitedTimeSeckillArr[seckillSwiperCurrent].startTime }}
+						</text>
+					</view>
 				</view>
 			</view>
-			<view style="margin-top: 20rpx;">
-				<swiper autoplay vertical style="width: 100%;height: 160rpx;">
-					<swiper-item
-						v-for="(item, index) in limitedTimeSeckillArr" :key="index"
-						style="display: flex;justify-content: space-between;align-items: center;"
-					>
-						<view
-							v-for="(part, count) in item" :key="count"
-							style="display: flex;align-items: center;justify-content: space-between;width: 49%;height: 100%;overflow: hidden;"
-							@click="go(`/pages/prod/prod?goodsId=${part.id}`)"
-						>
-							<view>
-								<BeeIcon
-									width="180rpx" height="150rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
-									:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/con-center/hongbao.png')"
-								>
-								</BeeIcon>
-								<view style="height: 10rpx;margin: 0 20rpx;background-color: #c8c9b7;border-radius: 0 0 20rpx 20rpx;">
-								</view>
-							</view>
-							<view
-								style="flex: 1;display: flex;flex-direction: column;justify-content: space-around;width: 0;height: 100%;margin-left: 20rpx;"
+			<swiper style="height: 208rpx;" @change="(e) => seckillSwiperCurrent = e.detail.current">
+				<swiper-item v-for="(item, index) in limitedTimeSeckillArr" :key="index">
+					<view v-if="item && item.products" style="margin-top: 20rpx;">
+						<swiper autoplay vertical style="height: 160rpx;">
+							<swiper-item
+								v-for="(section, count) in item.products" :key="count"
+								style="display: flex;justify-content: space-between;align-items: center;"
 							>
-								<view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ part.name }}</view>
 								<view
-									style="font-size: 26rpx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+									v-for="(part, number) in section" :key="number"
+									style="display: flex;align-items: center;justify-content: space-between;width: 49%;height: 100%;overflow: hidden;"
+									@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${part.shopId}&productId=${part.productId}&skuId=${part.skuId}`)"
 								>
-									{{ part.typeName }}
-								</view>
-								<view style="display: flex;flex-wrap: wrap;color: #ef530e;">
-									<text>
-										<text style="font-size: 24rpx;">￥</text>
-										<text style="font-weight: bold;">{{ part.price }}</text>
-									</text>
-									<text
-										style="padding: 4rpx 14rpx;margin-left: 10rpx;font-size: 24rpx;border: 1rpx solid #f9c1a6;border-radius: 16rpx;"
+									<view>
+										<BeeIcon
+											width="180rpx" height="150rpx"
+											style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
+											:src="part.image ? common.seamingImgUrl(part.image) : require('../../../static/images/con-center/hongbao.png')"
+										>
+										</BeeIcon>
+										<view
+											style="height: 10rpx;margin: 0 20rpx;background-color: #c8c9b7;border-radius: 0 0 20rpx 20rpx;"
+										>
+										</view>
+									</view>
+									<view
+										style="flex: 1;display: flex;flex-direction: column;justify-content: space-around;width: 0;height: 100%;margin-left: 20rpx;"
 									>
-										{{ part.discount }}折
-									</text>
+										<view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+											{{ part.productName }}
+										</view>
+										<view
+											style="font-size: 26rpx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+										>
+											剩{{ part.stockNumber }}件
+										</view>
+										<view style="display: flex;flex-wrap: wrap;color: #ef530e;">
+											<text>
+												<text style="font-size: 24rpx;">￥</text>
+												<text style="font-weight: bold;">{{ part.price }}</text>
+											</text>
+											<text
+												style="padding: 4rpx 14rpx;margin-left: 10rpx;font-size: 24rpx;border: 1rpx solid #f9c1a6;border-radius: 16rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+											>
+												降{{ item.seckillMoney }}元
+											</text>
+										</view>
+									</view>
 								</view>
-							</view>
-						</view>
-					</swiper-item>
-				</swiper>
-			</view>
+							</swiper-item>
+						</swiper>
+					</view>
+					<view v-else style="padding-bottom: 45upx;">
+						<tui-no-data :fixed="false" style="padding-top: 60upx;">该活动暂无商品～</tui-no-data>
+					</view>
+				</swiper-item>
+			</swiper>
 		</view>
 
 		<!-- 类别选择框（额外的同‘一级分类’的分类） -->
@@ -253,8 +292,7 @@
 					</view>
 					<view>
 						<tui-input
-							v-model="queryInfo.search" placeholder="搜索酒店/地名/关键词" clearable
-							padding="14rpx 0rpx"
+							v-model="queryInfo.search" placeholder="搜索酒店/地名/关键词" clearable padding="14rpx 0rpx"
 							:margin-top="20"
 							style="border-top: 1rpx solid rgba(216, 216, 216, 0.5);border-bottom: 1rpx solid rgba(216, 216, 216, 0.5);"
 						>
@@ -289,7 +327,7 @@
 				<view style="margin-top: 20rpx;">
 					<view
 						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18rpx;"
-						@click="go(`/pages/prod/prod?goodsId==${item.id}`)"
+						@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 					>
 						<view>
 							<BeeIcon
@@ -329,7 +367,8 @@
 									</view>
 									<tui-button
 										type="warning" width="140rpx" height="72rpx" shape="circle"
-										style="background: #ee6529!important;" @click="go(`/pages/prod/prod?goodsId==${item.id}`)"
+										style="background: #ee6529!important;"
+										@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 									>
 										抢购
 									</tui-button>
@@ -456,7 +495,7 @@ import { mapGetters } from 'vuex'
 import BrandShop from '../../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
-import { getShopCategorySonApi, getHomeBrandListApi } from '../../../api/anotherTFInterface'
+import { getShopCategorySonApi, getHomeBrandListApi, getPlatformSeckillsCanvasApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'ShopEnter',
@@ -501,6 +540,7 @@ export default {
 			menuBarArr: [],
 			ownLimitedTimeSeckill: [ '6' ],
 			limitedTimeSeckillArr: [],
+			seckillSwiperCurrent: 0,
 			// ownSelectionBox: ['2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 			ownSelectionBox: [],
 			selectionBoxArr: [],
@@ -549,8 +589,11 @@ export default {
 		this.currentType = Number(options.type) ? options.type : '0'
 		this.queryInfo.classifyId = options.id || ''
 		if (this.ownLimitedTimeSeckill.includes(this.currentType)) {
-			const seckillGoodsArr = [{ url: '', name: '菜a菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜d菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜e菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
-			this.limitedTimeSeckillArr = seckillGoodsArr.flatMap((item, index) => (index % 2 ? [] : [ seckillGoodsArr.slice(index, index + 2) ]))
+			const res = await getPlatformSeckillsCanvasApi({ seckillId: '' })
+			this.limitedTimeSeckillArr = res.data.map((item) => {
+				item.products = item.products.flatMap((section, index) => (index % 2 ? [] : [ item.products.slice(index, index + 2) ]))
+				return item
+			})
 		}
 		if (this.ownSelectionBox.includes(this.currentType)) {
 			if (this.currentType === '2') this.selectionBoxArr = ['全部', '品牌专卖', '独立大店', '企业连锁', '家居专卖']

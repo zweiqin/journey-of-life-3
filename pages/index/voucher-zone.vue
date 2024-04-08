@@ -48,7 +48,6 @@
         </view>
       </view>
 
-      <!-- 推荐 -->
       <view class="recommend-container">
         <!--  <view class="type-container">
           <view class="recommend-title" :class="{ active: currentType == 100101725 }"
@@ -85,7 +84,9 @@
                   可使用{{ item.voucherPrice }}代金券抵扣
                 </view>
                 <view class="voucher-num" v-if="item.presenterVoucher">
-                  赠送 {{ item.presenterVoucher }} 代金券
+                  赠送 {{ item.price
+										? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
+										: item.presenterVoucher }} 代金券
                 </view>
               </view>
             </view>
