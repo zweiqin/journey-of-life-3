@@ -248,13 +248,11 @@ export default {
 				})
 		},
 		handleConfirmTime(e) {
-			console.log(e.result)
 			this.queryInfo.time = e.result
 			this.getFinanceStatistics()
 		},
 
 		handleRechargeDialog(e) {
-			console.log(e)
 			if (e.index === 0) {
 				this.rechargeNum = ''
 				this.isShowRechargeDialog = false
@@ -278,6 +276,7 @@ export default {
 								this.rechargeNum = ''
 								this.isShowRechargeDialog = false
 								this.$showToast('提现成功', 'success')
+								this.getFinanceStatistics()
 							})
 							.catch(() => {
 								uni.hideLoading()

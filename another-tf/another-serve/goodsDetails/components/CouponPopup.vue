@@ -27,7 +27,7 @@
 									<view v-if="item.couponType == 2" class="discoun">{{ item.reduceMoney }}折</view>
 									<view class="info-date">{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}</view>
 									<view class="info-condition mar-top-30">{{ item.content }}</view>
-									<!--                  <view class="info-condition" v-if="item.couponType == 2">{{item.reduceMoney}}折优惠</view> -->
+									<!-- <view class="info-condition" v-if="item.couponType == 2">{{item.reduceMoney}}折优惠</view> -->
 									<ATFWXSendCoupon v-if="item.state === 3" :coupon-list="[ item ]" @success="success">
 										<view v-if="item.state === 3" class="use-btn mar-top-10">
 											立即领取
@@ -71,7 +71,7 @@
 									<view v-if="item.couponType === 2" class="info-condition">
 										{{ item.reduceMoney }}折优惠
 									</view>
-									<view v-if="item.state === 3" class="use-btn" @click="receiveTap(item, 1)">
+									<view v-if="item.state === 3" class="use-btn" @click="handleReceiveCoupon(item)">
 										立即领取
 									</view>
 									<view v-if="item.state === 0" class="use-btn">已领取</view>
@@ -107,6 +107,10 @@ export default {
 		shopMarkTools: {
 			type: Array,
 			default: () => []
+		},
+		shopId: {
+			type: Number,
+			default: 0
 		}
 	},
 	data() {
@@ -132,24 +136,15 @@ export default {
 			return time.split(' ')[0].split('-').join('.')
 		},
 		// 领取优惠券
-		receiveTap(couponItemInfo, type) {
+		handleReceiveCoupon(couponItemInfo) {
 			uni.showLoading({
 				mask: true,
 				title: '领取中...'
 			})
-			let ReceiveCoupon
-			if (type === 0) {
-				ReceiveCoupon = {
-					couponId: couponItemInfo.couponId,
-					shopId: this.shopId
-				}
-			} else {
-				ReceiveCoupon = {
-					shopCouponId: couponItemInfo.shopCouponId,
-					shopId: this.shopId
-				}
-			}
-			updateTakeCouponReceiveApi(ReceiveCoupon).then((res) => {
+			updateTakeCouponReceiveApi({
+				shopCouponId: couponItemInfo.shopCouponId,
+				shopId: this.shopId
+			}).then((res) => {
 				uni.hideLoading()
 				this.isShowSuccess = true
 				setTimeout(() => {

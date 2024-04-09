@@ -157,8 +157,8 @@
 
 		<!-- 优惠券选择器 -->
 		<CouponPopup
-			ref="refCouponPopup" :platform-mark-tools="goodsDetail.shopMarkTools"
-			:shop-mark-tools="goodsDetail.shopMarkTools"
+			ref="refCouponPopup" :platform-mark-tools="goodsDetail.markTools"
+			:shop-mark-tools="goodsDetail.shopMarkTools" :shop-id="goodsDetail.shopId"
 		></CouponPopup>
 	</view>
 </template>
