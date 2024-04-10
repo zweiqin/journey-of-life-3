@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { getSelectDictApi, getCodeBusinessApi } from '../../../../api/anotherTFInterface'
+import { getSelectDictApi, getVerifyCodeApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'FieldPaneRA',
@@ -165,7 +165,7 @@ export default {
 				this.$refs.refBindBankVerify[0].reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getCodeBusinessApi({ phone: this.form.phone })
+			getVerifyCodeApi({ phone: this.form.phone })
 				.then((res) => {
 					this.$refs.refBindBankVerify[0].success()
 					this.$showToast('发送成功，请注意查看手机短信')

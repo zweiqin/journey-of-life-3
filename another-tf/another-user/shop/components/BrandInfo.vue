@@ -198,7 +198,6 @@ export default {
 
 		handleSwiperChange(e) {
 			if (this.brandDetail.advertisement && this.brandDetail.advertisement.split(',').length === 1) {
-				console.log(e)
 				if (e.detail.current === 1) {
 					this.nextMargin = '0'
 					this.previousMargin = '80rpx'
