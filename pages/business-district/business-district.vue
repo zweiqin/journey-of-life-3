@@ -6,17 +6,14 @@
 		<!-- 菜单 -->
 		<NavBar ref="refNavBar" @view="handleToDetail"></NavBar>
 
-		<!-- 福利 -->
-		<WelfareBar></WelfareBar>
-
 		<!-- bar -->
-		<AdvertisementBar></AdvertisementBar>
+		<!-- <AdvertisementBar></AdvertisementBar> -->
 
 		<!-- package -->
 		<!-- <ActivityPackage></ActivityPackage> -->
 
 		<!-- 商家列表 -->
-		<view>
+		<view style="margin-top: 24rpx;">
 			<!-- <view style="padding-top: 20upx;">
 				<tui-waterfall :list-data="$data._list" :type="2" :page-size="queryParam.pageSize">
 				<template #left="{ entity }">
@@ -64,7 +61,6 @@ import loadData from '../../mixin/loadData'
 
 import PageHead from './components/PageHead.vue'
 import NavBar from './components/NavBar.vue'
-import WelfareBar from './components/WelfareBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
 // import BrandShop from './components/BrandShop.vue'
@@ -76,7 +72,6 @@ export default {
 	components: {
 		PageHead,
 		NavBar,
-		WelfareBar,
 		AdvertisementBar,
 		ActivityPackage
 		// BrandShop,

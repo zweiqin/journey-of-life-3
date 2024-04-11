@@ -7,12 +7,12 @@
 		>
 			<slot></slot>
 		</send-coupon>
-		<view v-else @click.stop="receiveCoupon">
+		<view v-else @click.stop="handleReceiveCoupons">
 			<slot></slot>
 		</view>
 		<!-- #endif -->
 		<!-- #ifndef MP-WEIXIN -->
-		<view @click.stop="receiveCoupon">
+		<view @click.stop="handleReceiveCoupons">
 			<slot></slot>
 		</view>
 		<!-- #endif -->
@@ -91,7 +91,7 @@ export default {
 			})
 		},
 		// 领取优惠券
-		receiveCoupon() {
+		handleReceiveCoupons() {
 			if (this.successList.length > 0) {
 				if (this.isExchange) {
 					// 积分兑换
@@ -238,7 +238,7 @@ export default {
 							break
 					}
 				})
-				this.receiveCoupon()
+				this.handleReceiveCoupons()
 			} else {
 				this.$emit('closeAd')
 			}

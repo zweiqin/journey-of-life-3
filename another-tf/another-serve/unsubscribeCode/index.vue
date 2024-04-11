@@ -35,7 +35,7 @@
 
 <script>
 import { T_STORAGE_KEY } from '../../../constant'
-import { getCodeBusinessApi, deleteUserInfoApi } from '../../../api/anotherTFInterface'
+import { getVerifyCodeApi, deleteUserInfoApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'UnsubscribeCode',
 	data() {
@@ -58,7 +58,7 @@ export default {
 			this.getVerify()
 		},
 		getVerify() {
-			getCodeBusinessApi({
+			getVerifyCodeApi({
 				phone: this.userInfo.phone
 			}).then((res) => {
 				this.sendCode()

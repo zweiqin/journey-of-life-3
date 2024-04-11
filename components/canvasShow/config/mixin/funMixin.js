@@ -104,7 +104,7 @@ export const tool = {
 				})
 			} else {
 				uni.navigateTo({
-					url: '/another-tf/another-serve/discount/groupBuy?'
+					url: '/another-tf/another-serve/discount/groupBuy'
 				})
 			}
 		},

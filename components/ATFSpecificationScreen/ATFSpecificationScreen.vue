@@ -142,6 +142,7 @@ export default {
 			this.goodsDetail = {}
 			this.spStr = '请选择商品规格'
 			this.selectedSku = {}
+			this.selectedAttr = {}
 			this.currentSku = []
 			this.number = 1
 			let data

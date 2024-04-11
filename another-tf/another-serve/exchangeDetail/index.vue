@@ -84,28 +84,11 @@
 				<view class="exchangeBtn">立即兑换</view>
 			</view>
 		</ATFWXSendCoupon>
-
-		<!-- 签到弹窗 -->
-		<tui-modal :show="exchangeTips" :custom="true" :fadein="true">
-			<view class="Put-box1">
-				<view class="text-align fs34 fs-bold">
-					是否兑换此优惠券
-				</view>
-				<view class="flex-display flex-sp-between">
-					<view class="btn" @click="exchangeTips = false">
-						取消
-					</view>
-					<view class="btn submit" @click="exchangeFn">
-						确定
-					</view>
-				</view>
-			</view>
-		</tui-modal>
 	</view>
 </template>
 
 <script>
-import { getCouponProductsApi, updateCreditExchangeCouponApi } from '../../../api/anotherTFInterface'
+import { getCouponProductsApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'ExchangeDetail',
@@ -122,8 +105,7 @@ export default {
 				stockNumber: 0,
 				credit: 0,
 				takeCount: 0
-			},
-			exchangeTips: false
+			}
 		}
 	},
 	onReachBottom() {
@@ -159,27 +141,6 @@ export default {
 				.catch(() => {
 					uni.hideLoading()
 				})
-		},
-		receiveCoupon() {
-			this.exchangeTips = true
-		},
-		exchangeFn() {
-			const paramsData = {
-				couponId: this.currentCoupon.couponId,
-				source: 3
-			}
-			updateCreditExchangeCouponApi(paramsData).then((res) => {
-				this.exchangeTips = false
-				uni.showToast({
-					title: '兑换成功',
-					icon: 'success'
-				})
-				setTimeout(() => {
-					uni.navigateTo({
-						url: '/another-tf/another-serve/integral/index?tabActive=2'
-					})
-				}, 1500)
-			})
 		},
 		// 商品详情
 		goodsDateils(shopId, productId, skuId) {

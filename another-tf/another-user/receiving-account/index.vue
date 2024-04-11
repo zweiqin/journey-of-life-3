@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getByIdBankApi, deleteBankDeleteApi, getCodeBusinessApi } from '../../../api/anotherTFInterface'
+import { getByIdBankApi, deleteBankDeleteApi, getVerifyCodeApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'ReceivingAccount',
 	components: {
@@ -125,7 +125,7 @@ export default {
 				this.$refs.refUnbindBankVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getCodeBusinessApi({ phone: this.unbindForm.phone })
+			getVerifyCodeApi({ phone: this.unbindForm.phone })
 				.then((res) => {
 					this.$refs.refUnbindBankVerify.success()
 					this.$showToast('发送成功，请注意查看手机短信')
