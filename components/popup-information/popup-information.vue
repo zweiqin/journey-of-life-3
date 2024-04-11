@@ -4,7 +4,7 @@
     <view v-show="type === 'activity' || type === 'upgrade'" class="container">
       <tui-landscape show :position="1" mask mask-closable :icon-size="28" icon-color="#FFFFFF" icon-left="50rpx" icon-right="50rpx" @close="close">
         <view @click="type = '' || $emit('click')">
-          <image :src="imgUrl" mode="widthFix" style="width: 500upx; max-height: 75vh" />
+          <image :src="imgUrl" mode="widthFix" style="width: 500upx; max-height: 75vh; border-radius: 20rpx;" />
           <!-- <view style="position: absolute;top: 52%;left:52%;font-size: 38rpx;font-weight: 700;">羊驼坐凳</view> -->
         </view>
 

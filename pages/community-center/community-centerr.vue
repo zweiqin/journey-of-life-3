@@ -12,7 +12,7 @@
             </TuanLocation>
             <image class="angle" src="../../static/images/new-community/home/arrow-down.png"></image>
           </view>
-          <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
+          <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务 <text v-if="isEmptyAddress">.</text> </view>
           <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
         </view>
 
@@ -39,7 +39,7 @@
       <!-- 四季专区 -->
       <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
-      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"> </ServerPane>
+      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"></ServerPane>
     </view>
 
     <!-- 组件支持 -->
@@ -55,42 +55,43 @@
     <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess"> </TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess"></TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-    <PopupInformation ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
+    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
       <view class="tip" slot="tip">参与即可获得 300 元代金券，机会难得</view>
     </PopupInformation>
 
-    <DragButton text="联系客服" is-dock exist-tab-bar @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"> </DragButton>
+    <DragButton text="联系客服" is-dock exist-tab-bar @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
   </view>
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../config';
-import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant';
-import { getServiceSortApi } from '../../api/community-center';
-import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface';
-import PopupInformation from '../../components/popup-information/popup-information';
-import showModal from 'mixin/showModal';
-import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type';
-import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue';
+import { A_TF_MAIN } from '../../config'
+import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { getServiceSortApi } from '../../api/community-center'
+import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
+import PopupInformation from '../../components/popup-information/popup-information'
+import showModal from 'mixin/showModal'
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
+import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue'
 // import PageBar from './cpns/PageBar.vue'
-import ServeMenus from './cpns/ServeMenus.vue';
-import VipPackage from './cpns/VipPackage.vue';
-import ServerPane from './cpns/ServerPane.vue';
+import ServeMenus from './cpns/ServeMenus.vue'
+import VipPackage from './cpns/VipPackage.vue'
+import ServerPane from './cpns/ServerPane.vue'
 // import FourSeasonsZone from './cpns/FourSeasonsZone.vue'
 // 赚小钱
-import MakeSmallFortune from './cpns/MakeSmallFortune.vue';
+import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
+import { getUpActivityListApi } from '../../api/community-center'
 
-const app = getApp();
+const app = getApp()
 
 export default {
   name: 'CommunityCenterr',
   onReady() {
-    console.log(app);
+    console.log(app)
   },
   components: {
     TuanFollowOfficialAccount,
@@ -107,55 +108,74 @@ export default {
     return {
       data: [],
       pupupLevelType: '',
-      popupImageUrl: require('../../static/images/con-center/popup-image.png'),
+      popupImageUrl: null,
       servePaneList: [],
       scrollTop: 0,
-      timer: null
-    };
+      timer: null,
+      activityList: [],
+      isEmptyAddress: false
+    }
   },
   onShow() {
     try {
       if ((window.location.origin + window.location.pathname + window.location.hash).includes('miniProgram')) {
-        this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true);
+        this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-    uni.removeStorageSync(T_COMMUNITY_ORDER_NO);
-    uni.removeStorageSync(ENTERPRISE_ORDERS_NO);
+    uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
+    uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
     this.$nextTick(() => {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
-      this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList();
-    });
-    this.showVipPostPopup();
+      this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
+    })
+    this.showVipPostPopup()
+    this.getActivityList()
   },
   mounted() {
     // #ifdef APP
-    this.$refs.checkedVersion.checkedVersion(true);
+    this.$refs.checkedVersion.checkedVersion(true)
     // #endif
 
     // #ifdef H5
     if (window.location.href.includes('?code')) {
-      let clearWXCodeUrl = window.location.origin + window.location.pathname;
+      let clearWXCodeUrl = window.location.origin + window.location.pathname
       if (getApp().globalData.isInMiniprogram) {
-        clearWXCodeUrl += '/?miniProgram=1';
+        clearWXCodeUrl += '/?miniProgram=1'
       }
-      window.location.href = clearWXCodeUrl;
+      window.location.href = clearWXCodeUrl
     }
     // #endif
 
-    this.getServiceOrder();
+    this.getServiceOrder()
 
     setTimeout(() => {
-      this.checkedWXBindMobile();
-    }, 1000);
+      this.checkedWXBindMobile()
+    }, 1000)
 
     if (getApp().globalData.isShowFollowOfficialAccount) {
-      this.$refs.tuanFollowOfficialAccountRef.show();
+      this.$refs.tuanFollowOfficialAccountRef.show()
     }
   },
 
   methods: {
+    // 获取活动订单列表
+    async getActivityList() {
+      try {
+        if (!!!this.$store.getters.detailAddress) {
+          this.isEmptyAddress = true
+        }
+        const res = await getUpActivityListApi({ focus: 'up', address: this.$store.getters.detailAddress })
+        if (res.statusCode === 20000) {
+          const activityList = res.data.activities
+          if (activityList.length) {
+            this.activityList = activityList
+            this.popupImageUrl = activityList[0].id == 1 ? require('../../static/images/con-center/popup-image.png') : activityList[0].cover
+          }
+        }
+      } catch (error) {}
+    },
     // 点击去弹窗详情
     handleToActiveDetail() {
       if (this.isLogin()) {
@@ -168,29 +188,29 @@ export default {
 
         // 300清洗套餐
 
-        uni.navigateTo({ url: '/user/sever/activityCenter/activity-detail?id=1' });
+        uni.navigateTo({ url: '/user/sever/activityCenter/activity-detail?id=' + this.activityList[0].id })
       } else {
-        this.$data._isShowTuiModel = true;
+        this.$data._isShowTuiModel = true
       }
     },
     // 获取服务分类
     async getServiceOrder() {
-      const res = await getServiceSortApi({});
+      const res = await getServiceSortApi({})
       if (res.statusCode === 20000) {
         for (const item of res.data) {
           if (this.servePaneList.length > 4) {
-            break;
+            break
           }
-          let list = item.children[0].children;
+          let list = item.children[0].children
           if (list.length < 6 && item.children[1] && item.children[1].children.length >= 6) {
-            list = item.children[1].children;
+            list = item.children[1].children
           }
           if (list.length % 3 === 0) {
             this.servePaneList.push({
               id: item.id,
               title: item.serverNameOne,
               children: list
-            });
+            })
           }
         }
       }
@@ -198,7 +218,7 @@ export default {
 
     // 初始化分享
     async handleInitShare() {
-      await this.handleShareServe(true);
+      await this.handleShareServe(true)
     },
 
     // 微信分享
@@ -212,54 +232,54 @@ export default {
         },
         successCb: () => {},
         failCb: () => {}
-      };
-      await this.$refs.beeWxShareRef.share(data, isQuit);
+      }
+      await this.$refs.beeWxShareRef.share(data, isQuit)
     },
 
     // 检查当前是否绑定手机号
     checkedWXBindMobile() {
-      if (this.$store.getters.popupImage) return;
-      if (this.isLogin()) this.$store.dispatch('auth/refrshUserInfoAction', this.handleShowBindMobilePopup);
+      if (this.$store.getters.popupImage) return
+      if (this.isLogin()) this.$store.dispatch('auth/refrshUserInfoAction', this.handleShowBindMobilePopup)
     },
 
     // 开始绑定手机号
     handleShowBindMobilePopup(refreshUserInfo) {
       if (app.globalData.isShowedBindMobilePopu) {
-        return;
+        return
       }
-      const userInfo = refreshUserInfo || uni.getStorageSync(USER_INFO);
+      const userInfo = refreshUserInfo || uni.getStorageSync(USER_INFO)
       if (userInfo && userInfo.weixinOpenid && !userInfo.phone) {
-        this.$refs.tuanWXLoginBindMobileRef.show();
+        this.$refs.tuanWXLoginBindMobileRef.show()
       }
     },
 
     handleResetGlobal() {
-      app.globalData.isShowedBindMobilePopu = true;
+      app.globalData.isShowedBindMobilePopu = true
     },
 
     onRefresh() {
-      const currentAddress = this.$store.getters.currentCity;
+      const currentAddress = this.$store.getters.currentCity
 
       try {
         if (currentAddress) {
-          this.$store.dispatch('community/getVipPackageList', currentAddress);
+          this.$store.dispatch('community/getVipPackageList', currentAddress)
         }
       } catch (error) {
-        console.log('社区首页刷新报错', error);
+        console.log('社区首页刷新报错', error)
       } finally {
         setTimeout(() => {
-          uni.stopPullDownRefresh();
-        }, 2000);
+          uni.stopPullDownRefresh()
+        }, 2000)
       }
     },
 
     handleBindPhoneSuccess() {
-      this.$store.dispatch('auth/refrshUserInfoAction');
+      this.$store.dispatch('auth/refrshUserInfoAction')
     },
     // 是否显示金管家或会员升级弹窗
     async isShowVipPostPopup() {
-      const userId = uni.getStorageSync(USER_ID);
-      if (!userId) return (app.globalData.isShowCommunityPopup = false);
+      const userId = uni.getStorageSync(USER_ID)
+      if (!userId) return (app.globalData.isShowCommunityPopup = false)
       // await userIsPurchaseApi({ userId, price: 399 })
       // 	.then((res) => {
       // 		if (res.statusCode === 20000) {
@@ -285,19 +305,19 @@ export default {
       if (app.globalData.isShowCommunityPopup) {
         await getSelectLevelPlatformRelationApi({})
           .then((res) => {
-            this.pupupLevelType = res.data ? res.data.levelType : '';
-            if (res.data && res.data.levelType === 1) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/new-community/home/ad1.png')); // 没购买产品
+            this.pupupLevelType = res.data ? res.data.levelType : ''
+            if (res.data && res.data.levelType === 1) (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/new-community/home/ad1.png')) // 没购买产品
             else if (res.data && res.data.levelType === 2)
-              (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-commander.png')); // 已购买产品，且不是团长
-            else if (res.data && res.data.levelType === 3) app.globalData.isShowCommunityPopup = false; // 已是团长，但不满足团长升合伙人条件
+              (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-commander.png')) // 已购买产品，且不是团长
+            else if (res.data && res.data.levelType === 3) app.globalData.isShowCommunityPopup = false // 已是团长，但不满足团长升合伙人条件
             else if (res.data && res.data.levelType === 4)
-              (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-partner.png')); // 已是团长，且满足团长升合伙人条件
-            else if (res.data && res.data.levelType === 5) app.globalData.isShowCommunityPopup = false; // 已经是合伙人
-            else if (res.data && res.data.levelType === 0) app.globalData.isShowCommunityPopup = false; // 其它情况
+              (app.globalData.isShowCommunityPopup = true) && (this.popupImageUrl = require('../../static/images/user/activity/upgrade-regimental-partner.png')) // 已是团长，且满足团长升合伙人条件
+            else if (res.data && res.data.levelType === 5) app.globalData.isShowCommunityPopup = false // 已经是合伙人
+            else if (res.data && res.data.levelType === 0) app.globalData.isShowCommunityPopup = false // 其它情况
           })
           .catch((e) => {
-            app.globalData.isShowCommunityPopup = false; // 报错情况
-          });
+            app.globalData.isShowCommunityPopup = false // 报错情况
+          })
       }
     },
 
@@ -306,44 +326,44 @@ export default {
       if (app.globalData.isShowCommunityPopup) {
         this.timer = setTimeout(() => {
           if (app.globalData.communityPopupCount < 4) {
-            app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1;
-            this.$refs.popupInformationRef && this.$refs.popupInformationRef.show();
+            app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1
+            this.$refs.popupInformationRef && this.$refs.popupInformationRef.show()
           } else {
-            clearTimeout(this.timer);
-            this.timer = null;
-            app.globalData.isShowCommunityPopup = false;
+            clearTimeout(this.timer)
+            this.timer = null
+            app.globalData.isShowCommunityPopup = false
           }
-        }, 500);
+        }, 500)
       }
     }
   },
 
   onLoad(options) {
-    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram);
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     // #ifdef H5
-    const script = document.createElement('script');
-    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js';
-    document.body.appendChild(script);
+    const script = document.createElement('script')
+    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
+    document.body.appendChild(script)
     setTimeout(() => {
-      this.handleInitShare();
-    }, 500);
+      this.handleInitShare()
+    }, 500)
     // #endif
     // }
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
+    this.scrollTop = e.scrollTop
   },
 
   onPullDownRefresh() {
-    this.onRefresh();
+    this.onRefresh()
   },
 
   onHide() {
-    clearTimeout(this.timer);
-    this.timer = null;
+    clearTimeout(this.timer)
+    this.timer = null
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

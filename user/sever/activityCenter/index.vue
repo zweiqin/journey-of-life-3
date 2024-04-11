@@ -7,10 +7,14 @@
     <view class="activity-container" v-if="activityList.length">
       <view class="activity-item" v-for="item in activityList" :key="item.id" @click="go('/user/sever/activityCenter/activity-detail?id=' + item.id)">
         <view class="activity-info" :class="{ expired: item.isExpired }">
-          <view class="name">{{ item.name }} <text class="tag">平台</text></view>
-          <view class="time"
-            >活动金额：<text class="price">￥{{ item.money }}</text></view
-          >
+          <view class="name">
+            {{ item.name }}
+            <text class="tag">平台</text>
+          </view>
+          <view class="time">
+            活动金额：
+            <text class="price">￥{{ item.money }}</text>
+          </view>
           <view class="time">赠送代金券：{{ item.giftsMoney }}</view>
           <view class="time">活动时间：{{ item.startTime.split(' ')[0] }} ~ {{ item.endTime.split(' ')[0] }}</view>
         </view>
@@ -18,7 +22,7 @@
       </view>
     </view>
 
-    <view class="no-data" v-else> 暂无活动~ </view>
+    <view class="no-data" v-else>暂无活动~</view>
 
     <tui-toast ref="toast"></tui-toast>
     <Loading v-show="isLoading"></Loading>
@@ -26,8 +30,8 @@
 </template>
 
 <script>
-import { getUpActivityListApi } from '../../../api/community-center';
-import Loading from '../../../pages/order/components/Loading.vue';
+import { getUpActivityListApi } from '../../../api/community-center'
+import Loading from '../../../pages/order/components/Loading.vue'
 
 export default {
   components: { Loading },
@@ -36,43 +40,43 @@ export default {
       isLoading: false,
       scrollTop: 0,
       activityList: []
-    };
+    }
   },
   onLoad() {
-    this.getUpActivityList();
+    this.getUpActivityList()
   },
   methods: {
     handleBack() {
-      uni.switchTab({ url: '/pages/user/user' });
+      uni.switchTab({ url: '/pages/user/user' })
     },
 
     async getUpActivityList() {
       try {
-        this.isLoading = true;
-        const res = await getUpActivityListApi({ focus: 'up' });
+        this.isLoading = true
+        const res = await getUpActivityListApi({ focus: 'up', address: this.$store.getters.detailAddress })
         if (res.statusCode === 20000) {
-          this.activityList = res.data.activities;
+          this.activityList = res.data.activities
         } else {
-          this.ttoast({ type: 'fail', title: res.statusMsg });
+          this.ttoast({ type: 'fail', title: res.statusMsg })
         }
       } catch (error) {
-        this.ttoast({ type: 'fail', title: '活动列表获取失败' });
+        this.ttoast({ type: 'fail', title: '活动列表获取失败' })
       } finally {
-        this.isLoading = false;
+        this.isLoading = false
       }
     }
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
+    this.scrollTop = e.scrollTop
   },
 
   async onPullDownRefresh() {
-    this.activityList = [];
-    await this.getUpActivityList();
-    uni.stopPullDownRefresh();
+    this.activityList = []
+    await this.getUpActivityList()
+    uni.stopPullDownRefresh()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
