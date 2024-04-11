@@ -12,7 +12,10 @@
             </TuanLocation>
             <image class="angle" src="../../static/images/new-community/home/arrow-down.png"></image>
           </view>
-          <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务 <text v-if="isEmptyAddress">.</text> </view>
+          <view class="placeholder" @click="go('/community-center/search')">
+            12大类，200+家居服务
+            <text v-if="isEmptyAddress">.</text>
+          </view>
           <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
         </view>
 
@@ -131,7 +134,9 @@ export default {
       this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
     })
     this.showVipPostPopup()
-    this.getActivityList()
+    this.$nextTick(() => {
+      this.getActivityList()
+    })
   },
   mounted() {
     // #ifdef APP
@@ -172,6 +177,9 @@ export default {
           if (activityList.length) {
             this.activityList = activityList
             this.popupImageUrl = activityList[0].id == 1 ? require('../../static/images/con-center/popup-image.png') : activityList[0].cover
+          } else {
+            this.activityList = []
+            this.popupImageUrl = undefined
           }
         }
       } catch (error) {}
