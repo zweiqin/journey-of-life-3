@@ -21,7 +21,7 @@
     </view>
 
     <view class="op-container">
-      <button class="uni-btn" @click="go('/pages/index/voucher-filter?categoryId=1294')">兑换专区</button>
+      <button class="uni-btn" @click="go('/another-tf/another-serve/goodsDetails/index?shopId=186&productId=12439&skuId=333510')">兑换专区</button>
       <button class="uni-btn order" @click="handleOrder">{{ activityDetail.isExpired ? '活动已结束' : '预约下单' }}</button>
     </view>
 
