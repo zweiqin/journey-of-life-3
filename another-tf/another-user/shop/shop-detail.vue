@@ -265,8 +265,10 @@ export default {
 			console.log(this.currentTab)
 			this.initShopCart()
 			// if (e.index === 1) return
-			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.query.page = 1
+			this.shopGoodsInfo.data = []
+			this.shopGoodsInfo.listTotal = 0
+			this.shopGoodsInfo.isEmpty = false
 			if (this.allTabData[e.index].classify && this.allTabData[e.index].classify.length) {
 				this.childsCurrent = 0
 				this.classifyId = this.allTabData[e.index].classify[0].classifyId
@@ -280,6 +282,10 @@ export default {
 		handleSelectChild(item, index) {
 			this.childsCurrent = index
 			this.classifyId = item.classifyId
+			this.shopGoodsInfo.query.page = 1
+			this.shopGoodsInfo.data = []
+			this.shopGoodsInfo.listTotal = 0
+			this.shopGoodsInfo.isEmpty = false
 			this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
@@ -305,6 +311,8 @@ export default {
 		handleGoodsSortTap(index) {
 			this.shopGoodsInfo.query.page = 1
 			this.shopGoodsInfo.data = []
+			this.shopGoodsInfo.listTotal = 0
+			this.shopGoodsInfo.isEmpty = false
 			if (index == 1) {
 				this.shopGoodsInfo.query.ifNew = this.shopGoodsInfo.query.ifNew != 0 ? 0 : 1,
 				this.shopGoodsInfo.query.type = 1,

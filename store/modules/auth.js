@@ -219,7 +219,7 @@ export default {
 				console.log(type)
 				if (type === 'phone') {
 					setTimeout(() => {
-						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo.userId)
+						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 						uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 						uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
 						commit(CHNAGE_USER_TOKEN, data.token)

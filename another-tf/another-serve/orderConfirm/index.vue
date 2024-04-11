@@ -143,10 +143,10 @@
 			></VoucherUse>
 
 			<view style="margin-top: 20upx;">
+				<!-- :show-tonglian-pay="$store.state.app.terminal !== 1" -->
 				<CashierList
 					show :price-pay="totalPrice"
 					:show-platform-pay="!!totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0"
-					:show-tonglian-pay="$store.state.app.terminal !== 1"
 					@change="(e) => payInfo = e"
 				/>
 			</view>

@@ -7,7 +7,7 @@
 		<NavBar ref="refNavBar" @view="handleToDetail"></NavBar>
 
 		<!-- bar -->
-		<!-- <AdvertisementBar></AdvertisementBar> -->
+		<AdvertisementBar></AdvertisementBar>
 
 		<!-- package -->
 		<!-- <ActivityPackage></ActivityPackage> -->

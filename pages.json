@@ -206,6 +206,12 @@
       }
     },
     {
+      "path": "pages/service-agreement/settle-agreement",
+      "style": {
+        "navigationBarTitleText": "商家入驻协议"
+      }
+    },
+    {
       "path": "pages/service-agreement/privacy-policy",
       "style": {
         "navigationBarTitleText": "团蜂隐私协议"

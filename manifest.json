@@ -2,8 +2,8 @@
     "name" : "团蜂",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.21",
-    "versionCode" : 121,
+    "versionName" : "1.0.22",
+    "versionCode" : 122,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",

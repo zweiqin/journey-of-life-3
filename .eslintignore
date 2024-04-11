@@ -4,6 +4,6 @@ stuff/
 pages/index/
 pages/prod/
 pages/hot/
-pages/service-agreement/
-utils/payUtil.js
+# pages/service-agreement/
+# utils/payUtil.js
 community-center/

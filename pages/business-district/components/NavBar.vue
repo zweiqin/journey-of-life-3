@@ -115,7 +115,7 @@ export default {
 .nav-bar-container {
 	width: 100%;
 	background-color: #fff;
-	margin: 24upx 0;
+	margin: 24upx 0 0;
 	border-radius: 20upx;
 
 	.nav-item {
