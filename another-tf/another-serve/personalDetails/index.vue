@@ -366,7 +366,7 @@ export default {
 		handleSendVerifyBindWX() {
 			if (!this.bindWXFormData.phone) {
 				this.$refs.refBindWXVerify.reset()
-				return this.$showToast('请填写手机号')
+				return this.$showToast('缺少手机号')
 			}
 			if (!/^1[3-9]\d{9}$/.test(this.bindWXFormData.phone)) {
 				this.$refs.refBindWXVerify.reset()
@@ -391,7 +391,7 @@ export default {
 		},
 		handleBindWX(e) {
 			if (e.index === 0) { } else if (e.index === 1) {
-				if (!this.bindWXFormData.phone) return this.$showToast('请填写手机号')
+				if (!this.bindWXFormData.phone) return this.$showToast('缺少手机号')
 				if (!this.bindWXFormData.verificationCode) return this.$showToast('请填写验证码')
 				uni.showLoading({
 					title: '操作中'

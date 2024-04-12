@@ -73,7 +73,7 @@
 
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-				<CashierList :price-pay="currentRechargeCount" show show-platform-pay @change="(e) => payInfo = e" />
+				<CashierList :price-pay="currentRechargeCount" show show-commission-pay show-platform-pay @change="(e) => payInfo = e" />
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"

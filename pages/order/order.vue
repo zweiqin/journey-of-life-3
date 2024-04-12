@@ -93,7 +93,8 @@
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
 				<CashierList
-					:price-pay="payObj.pricePay" show show-platform-pay :shop-id-pay="payObj.shopId"
+					:price-pay="payObj.pricePay" show show-commission-pay show-platform-pay
+					:shop-id-pay="payObj.shopId"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>
 				<tui-button

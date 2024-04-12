@@ -2,8 +2,8 @@
     "name" : "团蜂",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.22",
-    "versionCode" : 122,
+    "versionName" : "1.0.23",
+    "versionCode" : 123,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -143,9 +143,9 @@
                 "androidStyle" : "default",
                 "useOriginalMsgbox" : true,
                 "android" : {
-                    "hdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png",
-                    "xhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png",
-                    "xxhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/6956752698dddc8d555af5c5e30269b.png"
+                    "hdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/tinified-3a5160af-63d8-47ba-9ccf-77304906823c.png",
+                    "xhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/tinified-3a5160af-63d8-47ba-9ccf-77304906823c.png",
+                    "xxhdpi" : "D:/zwq/company_project/admin-ui/数字化营销门店/工作/h5项目/app相关/app图标图片/tinified-3a5160af-63d8-47ba-9ccf-77304906823c.png"
                 }
             }
         }

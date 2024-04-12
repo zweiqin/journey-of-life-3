@@ -1,5 +1,6 @@
 <template>
 	<view class="goods-details-container">
+		<view style="position: absolute;top:0;left: 0;">{{ viewUpdate }}</view>
 		<BeeBack>
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
@@ -34,7 +35,6 @@
 					ref="goodActivityDetail" :sku-select="selectedCurrentMsg.selectedSku"
 					:goods-detail="goodsDetail" @activityEnd="handleGetProductDetail"
 				/>
-
 				<view
 					v-if="goodsDetail.productBrief"
 					style="display: flex;align-items: center;margin-top: 10upx;padding: 10upx 20upx 10upx;font-size: 24upx;background-color: #ffffff;"
@@ -309,6 +309,7 @@ export default {
 	},
 	data() {
 		return {
+			viewUpdate: '',
 			replaceImgText: '<img style="max-width:100%;height:auto" ',
 			// 埋点对象
 			pointOption: {
@@ -341,6 +342,14 @@ export default {
 			},
 			selectedCurrentMsg: {
 				selectedSku: { // 当前选中SKU
+					image: '',
+					activityType: 0,
+					salePrice: 0,
+					price: 0,
+					stockNumber: 0,
+					voucherId: 0,
+					voucherPrice: 0,
+					presenterVoucher: 0,
 					collageOrders: [] // 当前商品拼单数据
 				},
 				currentSku: [], // 选中的SKU（子组件给当前页面做数据渲染）
@@ -508,6 +517,7 @@ export default {
 					}
 					await this.$refs.goodEvaluateAndQuestion.handleGetProblemList()
 				})
+				this.viewUpdate = ' '// 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
 			} finally {
 				uni.hideLoading()
 			}

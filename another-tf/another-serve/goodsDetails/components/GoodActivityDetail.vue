@@ -15,91 +15,96 @@
 			<tui-icon :size="18" color="#141414" name="share-fill"></tui-icon>
 			<label class="fs24 mar-left-5">分享</label>
 		</view>
-		<view class="goodgDes-box flex-start flex-column">
-			<view v-if="skuSelect.activityType === 0" class="flex-items flex-sp-between">
-				<view class="flex-items">
-					<label class="fs36 font-color-C83732">¥</label>
-					<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
-					<view class="flex-column-plus mar-left-20">
-						<label
-							v-if="skuSelect.price !== skuSelect.originalPrice"
-							class="fs24 font-color-999 discountsPriceLine mar-left-20"
-						>
-							¥ {{ skuSelect.originalPrice || 0 }}
-						</label>
+		<view class="goodgDes-box">
+			<view>
+				<view v-if="skuSelect.activityType === 0" class="flex-items flex-sp-between">
+					<view class="flex-items">
+						<label class="fs36 font-color-C83732">¥</label>
+						<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
+						<view class="flex-column-plus mar-left-20">
+							<label
+								v-if="skuSelect.price !== skuSelect.originalPrice"
+								class="fs24 font-color-999 discountsPriceLine mar-left-20"
+							>
+								¥ {{ skuSelect.originalPrice || 0 }}
+							</label>
+						</view>
+					</view>
+					<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
+				</view>
+				<view v-else-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="seckill-box">
+					<view class="flex-items flex-row flex-sp-between">
+						<view class="flex-column-plus">
+							<image
+								v-if="[2, 4].includes(skuSelect.activityType)" class="seckill-icon"
+								src="../../../../static/images/new-business/shop/seckillicon.png" mode=""
+							></image>
+							<image
+								v-if="[3, 5].includes(skuSelect.activityType)" class="discount-icon"
+								src="../../../../static/images/new-business/shop/discounticon.png" mode=""
+							></image>
+							<image
+								v-if="skuSelect.activityType === 1" class="spell-icon"
+								src="../../../../static/images/new-business/shop/spellicon.png" mode=""
+							></image>
+							<view class="flex-row-plus flex-items mar-top-10">
+								<label class="fs30 font-color-FFF">¥</label>
+								<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
+								<label class="fs28 mar-left-10 discountsPriceLine font-color-999">
+									¥
+									{{ skuSelect.originalPrice || 0 }}
+								</label>
+							</view>
+						</view>
+						<view v-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="countdown flex-column-plus">
+							<view v-if="skuSelect.ifEnable === 0">
+								<label class="fs28">距离结束剩余</label>
+								<view class="flex-row-plus fs34 flex-items-plus mar-top-10">
+									<view class="countdown-box flex-items-plus">{{ activeTimeObj.day }}</view>
+									<view class="font-color-999">天</view>
+									<view class="countdown-box flex-items-plus">{{ activeTimeObj.hour }}</view>
+									<view class="font-color-999">:</view>
+									<view class="countdown-box flex-items-plus">{{ activeTimeObj.min }}</view>
+									<view class="font-color-999">:</view>
+									<view class="countdown-box flex-items-plus">{{ activeTimeObj.sec }}</view>
+								</view>
+							</view>
+							<view v-else>
+								<label class="fs28 mar-right-20">即将开始：{{ skuSelect.startTime }}</label>
+							</view>
+						</view>
 					</view>
 				</view>
-				<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
-			</view>
-			<view v-else-if="skuSelect.activityType === 8">
-				<view class="flex-row-plus flex-items-plus">
-					<label class="fs30 font-color-FFF">¥</label>
-					<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
-					<label class="fs28 mar-left-10 discountsPriceLine font-color-CCC">
-						¥
-						{{ skuSelect.originalPrice || 0 }}
-					</label>
-				</view>
-				<view class="sceneNameBox">{{ goodsDetail.sceneName }}</view>
-			</view>
-			<view v-else class="seckill-box">
-				<view v-if="skuSelect.activityType === 9" class="flex-items flex-sp-between">
-					<view class="vipImg flex-items">
-						<image class="vip-icon" src="../../../../static/images/new-business/shop/vipDetail.png" mode="">
-						</image>
-					</view>
-					<view class="flex-row-plus flex-items-plus mar-left-30 mar-top-10">
+				<view v-else-if="skuSelect.activityType === 8">
+					<view class="flex-row-plus flex-items-plus">
 						<label class="fs30 font-color-FFF">¥</label>
 						<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
-						<label class="fs28 mar-left-10 discountsPriceLine font-color-999">
+						<label class="fs28 mar-left-10 discountsPriceLine font-color-CCC">
 							¥
 							{{ skuSelect.originalPrice || 0 }}
 						</label>
 					</view>
+					<view class="sceneNameBox">{{ goodsDetail.sceneName }}</view>
 				</view>
-				<view v-else class="flex-items flex-row flex-sp-between">
-					<view class="flex-column-plus">
-						<image
-							v-if="[2, 4].includes(skuSelect.activityType)" class="seckill-icon"
-							src="../../../../static/images/new-business/shop/seckillicon.png" mode=""
-						></image>
-						<image
-							v-if="[3, 5].includes(skuSelect.activityType)" class="discount-icon"
-							src="../../../../static/images/new-business/shop/discounticon.png" mode=""
-						></image>
-						<image
-							v-if="skuSelect.activityType === 1" class="spell-icon"
-							src="../../../../static/images/new-business/shop/spellicon.png" mode=""
-						></image>
-						<view class="flex-row-plus flex-items mar-top-10">
-							<label class="fs30 font-color-FFF">¥</label>
-							<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
-							<label class="fs28 mar-left-10 discountsPriceLine font-color-999">
-								¥
-								{{ skuSelect.originalPrice || 0 }}
-							</label>
-						</view>
+				<view
+					v-else-if="skuSelect.activityType === 9"
+					style="display: flex;justify-content: space-between;align-items: center;padding: 4rpx 8rpx;background-color: #333333;"
+				>
+					<view style="display: flex;align-items: center;">
+						<tui-icon :size="28" color="#dbc296" name="member" margin="0 10rpx 0 0"></tui-icon>
+						<text style="font-size: 36rpx;color: #dbc296;font-weight: bold;">会员价</text>
 					</view>
-					<view v-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="countdown flex-column-plus">
-						<view v-if="skuSelect.ifEnable === 0">
-							<label class="fs28">距离结束剩余</label>
-							<view class="flex-row-plus fs34 flex-items-plus mar-top-10">
-								<view class="countdown-box flex-items-plus">{{ activeTimeObj.day }}</view>
-								<view class="font-color-999">天</view>
-								<view class="countdown-box flex-items-plus">{{ activeTimeObj.hour }}</view>
-								<view class="font-color-999">:</view>
-								<view class="countdown-box flex-items-plus">{{ activeTimeObj.min }}</view>
-								<view class="font-color-999">:</view>
-								<view class="countdown-box flex-items-plus">{{ activeTimeObj.sec }}</view>
-							</view>
-						</view>
-						<view v-else>
-							<label class="fs28 mar-right-20">即将开始：{{ skuSelect.startTime }}</label>
-						</view>
+					<view style="display: flex;justify-content: space-between;align-items: end;">
+						<text style="margin-right: 10rpx;color: #ffffff;font-size: 34rpx;font-weight: bold;">
+							￥{{ skuSelect.price || 0 }}
+						</text>
+						<text style="font-size: 28rpx;text-decoration: line-through;color: #999999;">
+							￥{{ skuSelect.originalPrice || 0 }}
+						</text>
 					</view>
 				</view>
 			</view>
-			<view style="display: flex;align-items: center;flex-wrap: wrap;">
+			<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
 				<view
 					v-if="skuSelect.voucherId"
 					style="width: fit-content;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
@@ -116,8 +121,10 @@
 				</view>
 			</view>
 			<view class="nameContainer">
-				<view class="goodsName-box overflowNoDot mar-top-30 mar-left-30">
-					<label class="goodsName fs32 mar-left-20 ">{{ goodsDetail.productName }}</label>
+				<view
+					style="flex: 1;width: 0;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+				>
+					{{ goodsDetail.productName }}
 				</view>
 				<view class="collectBox " @click="handleCollect">
 					<tui-icon v-if="goodsDetail.ifCollect === 1" :size="24" color="#c5aa7b" name="star-fill"></tui-icon>
@@ -370,14 +377,13 @@ export default {
 
 		.nameContainer {
 			display: flex;
-
-			.goodsName-box {
-				width: 677upx;
-			}
+			justify-content: space-between;
+			align-items: center;
+			padding: 10rpx 12rpx 0;
 
 			.collectBox {
 				width: 80rpx;
-				margin: 0 30rpx 0 15rpx;
+				margin: 0 0 0 15rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -401,15 +407,9 @@ export default {
 
 	.seckill-box {
 		width: 100%;
-		background: url("../../../../static/images/new-business/shop/storeTop_Img.png") no-repeat left top;
+		background-color: #333333;
 
 		.seckill-icon {
-			width: 187rpx;
-			height: 41rpx;
-			background-size: contain;
-		}
-
-		.vip-icon {
 			width: 187rpx;
 			height: 41rpx;
 			background-size: contain;

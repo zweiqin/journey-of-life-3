@@ -59,6 +59,9 @@ export const resolveGoodsDetailSkuSituation = (goodsDetailOrigin) => new Promise
 	} catch (e) {
 		console.log(e)
 		uni.hideToast()
+		// setTimeout(() => {
+		// 	uni.showToast({ title: JSON.stringify(e), icon: 'none' })
+		// }, 3000)
 		// reject(goodsDetailOrigin)
 		resolve(goodsDetailOrigin)
 	}

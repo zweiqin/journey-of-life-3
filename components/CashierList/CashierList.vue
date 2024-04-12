@@ -7,7 +7,8 @@
 						<view class="icon-text">
 							<image class="pay-type-img-inner" :src="payment.icon" mode="widthFix" />
 							<text>{{ payment.label }}</text>
-							<text v-if="(payment.paymentMode === '5')">（余额：{{ pricePlatformInfo.totalPrice }}）</text>
+							<text v-if="(payment.paymentMode === '7')">（佣金：{{ pricePlatformInfo.commissionPrice }}）</text>
+							<text v-if="(payment.paymentMode === '5')">（余额：{{ pricePlatformInfo.rechargePrice }}）</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 							<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 								（手续费：￥{{ flowerObj.hbServiceChargeTotal }}）
@@ -78,6 +79,11 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		// 佣金支付
+		showCommissionPay: {
+			type: Boolean,
+			default: false
+		},
 		// 平台余额支付
 		showPlatformPay: {
 			type: Boolean,
@@ -124,7 +130,8 @@ export default {
 			},
 			// 平台余额相关
 			pricePlatformInfo: {
-				totalPrice: 0 // 账户总余额
+				rechargePrice: 0,
+				commissionPrice: ''
 			},
 			// 用户的商家充值的余额相关
 			priceShopInfo: {
@@ -133,6 +140,41 @@ export default {
 		}
 	},
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
+		showCommissionPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					uni.showLoading()
+					if (!this.paymentList.find((item) => item.paymentMode === '7')) {
+						this.paymentList.push({
+							label: '佣金支付',
+							paymentMode: '7',
+							icon: require('../../static/images/user/pay/yongjin.png'),
+							disabled: true
+						})
+					}
+					getPricePlatformAllApi({})
+						.then((res) => {
+							this.pricePlatformInfo = res.data
+							this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+							if (this.paymentList.find((item) => item.paymentMode === '7').disabled && (this.paymentMode === '7')) this.handleSetDisable()
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+						.catch((e) => {
+							if (this.paymentMode === '7') this.handleSetDisable()
+							if (this.paymentList.find((item) => item.paymentMode === '7')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '7'), 1)
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+				} else {
+					if (this.paymentMode === '7') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '7')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '7'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		showPlatformPay: {
 			handler(newValue, oldValue) {
 				if (newValue) {
@@ -148,7 +190,7 @@ export default {
 					getPricePlatformAllApi({})
 						.then((res) => {
 							this.pricePlatformInfo = res.data
-							this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.totalPrice)
+							this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 							if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 							this.handleNoticeFather()
 							uni.hideLoading()
@@ -206,19 +248,26 @@ export default {
 			deep: true
 		},
 		pricePay: {
+			// eslint-disable-next-line complexity
 			handler(newValue, oldValue) {
 				// console.log(1111)
 				if (newValue !== oldValue) {
 					if (this.paymentMode === '3') {
 						this.handleHbStagesAndPrice()
 					}
+					if (this.showCommissionPay) {
+						this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+						if (this.paymentList.find((item) => item.paymentMode === '7').disabled && (this.paymentMode === '7')) this.handleSetDisable()
+					} else if (!this.showCommissionPay && (this.paymentMode === '7')) {
+						this.handleSetDisable()
+					}
 					if (this.showPlatformPay) {
-						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.totalPrice)
+						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 						if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 					} else if (!this.showPlatformPay && (this.paymentMode === '5')) {
 						this.handleSetDisable()
 					}
-					if (this.shopIdPay) { // pricePay依赖shopIdPay，所以pricePay放后面
+					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
 						if (this.paymentList.find((item) => item.paymentMode === '6')) {
 							this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
 							if (this.paymentList.find((item) => item.paymentMode === '6').disabled && (this.paymentMode === '6')) this.handleSetDisable()
@@ -289,17 +338,32 @@ export default {
 				disabled: true
 			})
 		}
-		if (this.showPlatformPay) {
-			this.paymentList.push({
-				label: '平台余额支付',
-				paymentMode: '5',
-				icon: require('../../static/images/user/pay/platform-pay.png'),
-				disabled: true
-			})
+		if (this.showCommissionPay || this.showPlatformPay) {
+			if (this.showCommissionPay) {
+				this.paymentList.push({
+					label: '佣金支付',
+					paymentMode: '7',
+					icon: require('../../static/images/user/pay/yongjin.png'),
+					disabled: true
+				})
+			}
+			if (this.showPlatformPay) {
+				this.paymentList.push({
+					label: '平台余额支付',
+					paymentMode: '5',
+					icon: require('../../static/images/user/pay/platform-pay.png'),
+					disabled: true
+				})
+			}
 			getPricePlatformAllApi({})
 				.then((res) => {
 					this.pricePlatformInfo = res.data
-					this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.totalPrice)
+					if (this.showCommissionPay) {
+						this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+					}
+					if (this.showPlatformPay) {
+						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
+					}
 				})
 		}
 		if (this.shopIdPay) {

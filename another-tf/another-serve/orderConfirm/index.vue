@@ -143,9 +143,8 @@
 			></VoucherUse>
 
 			<view style="margin-top: 20upx;">
-				<!-- :show-tonglian-pay="$store.state.app.terminal !== 1" -->
 				<CashierList
-					show :price-pay="totalPrice"
+					show :price-pay="totalPrice" :show-commission-pay="!!totalPrice"
 					:show-platform-pay="!!totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0"
 					@change="(e) => payInfo = e"
 				/>
@@ -281,7 +280,7 @@
 <script>
 import { handleDoPay } from '../../../utils/payUtil'
 import { getQueryDictByNameApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
-import { T_RECEIVE_ITEM, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
+import { T_RECEIVE_ITEM, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST, T_PAY_ORDER } from '../../../constant'
 
 export default {
 	name: 'OrderConfirm',
@@ -351,7 +350,13 @@ export default {
 		this.brandId = options.brandId || ''
 	},
 	onShow() {
-		this.handleOnShow()
+		if (uni.getStorageSync(T_PAY_ORDER)) {
+			uni.switchTab({
+				url: '/pages/order/order'
+			})
+		} else {
+			this.handleOnShow()
+		}
 	},
 	methods: {
 		handleOnShow() {
