@@ -17,7 +17,14 @@
 				></tui-icon>
 				<text class="statusTitle">{{ (istopUp ? '充值' : '转赠') + (orderStatus ? '成功' : '失败') }}</text>
 			</view>
-			<image class="orderType" :src="imgSrc[Number(istopUp)]"></image>
+			<view style="margin-top: 74rpx;">
+				<view v-if="Number(istopUp)" style="border-radius: 50%;background-color: #ff380c;padding: 20rpx;font-size: 40rpx;color: #ffffff;font-weight: bold;line-height: 1;">
+					充
+				</view>
+				<view v-else style="border-radius: 50%;background-color: #3982f1;padding: 20rpx;font-size: 40rpx;color: #ffffff;font-weight: bold;line-height: 1;">
+					转
+				</view>
+			</view>
 			<view class="orderForm">{{ istopUp ? '代金券充值-平台充值' : '代金券转赠-平台转赠' }}</view>
 			<view class="orderCount">{{ count }}</view>
 			<button class="goBackFn" @click="goBack">{{ istopUp ? '再次充值' : '再次转赠' }}</button>
@@ -33,7 +40,6 @@ export default {
 			count: 0,
 			istopUp: false,
 			orderStatus: true,
-			imgSrc: [require('../../../static/images/user/voucher/zhuan.png'), require('../../../static/images/user/voucher/chon.png')],
 			statusImgSrc: [{ name: 'close-fill', color: '#e02208' }, { name: 'circle-fill', color: '#208f57' }]
 		}
 	},

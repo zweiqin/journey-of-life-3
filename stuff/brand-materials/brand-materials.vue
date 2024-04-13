@@ -22,22 +22,14 @@
                 <view class="tags">
                   <view class="tag">
                     <view class="img-wrapper">
-                      <image
-                        class="icon"
-                        src="../../static/images/new-brand/index/shiming.png"
-                        mode=""
-                      />
+											<tui-icon name="service-fill" color="#ffffff" size="24" unit="rpx" margin="0"></tui-icon>
                     </view>
                     <text>实名认证</text>
                   </view>
 
                   <view class="tag">
                     <view class="img-wrapper">
-                      <image
-                        class="icon"
-                        src="../../static/images/new-brand/index/shiming.png"
-                        mode=""
-                      />
+											<tui-icon name="service-fill" color="#ffffff" size="24" unit="rpx" margin="0"></tui-icon>
                     </view>
                     <text>品质保证</text>
                   </view>
@@ -45,20 +37,12 @@
 
                 <view class="rate-info">
                   <view class="collection-wrapper">
-                    <image
-                      class="icon"
-                      src="../../static/images/new-brand/index/collection.png"
-                      mode=""
-                    />
+										<tui-icon name="star" color="#b3b2ad" size="32" unit="rpx" margin="0 4rpx 0 0"></tui-icon>
                     <text>{{ getRandom(1000, 10000) }}</text>
                   </view>
 
                   <view class="collection-wrapper">
-                    <image
-                      class="icon"
-                      src="../../static/images/new-brand/index/zan.png"
-                      mode=""
-                    />
+										<tui-icon name="imface" color="#b3b2ad" size="32" unit="rpx" margin="0 4rpx 0 0"></tui-icon>
                     <text>{{ getRandom(1000, 10000) }}</text>
                   </view>
                 </view>

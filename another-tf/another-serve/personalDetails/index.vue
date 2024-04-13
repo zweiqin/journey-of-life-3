@@ -122,7 +122,7 @@
 			:show="isShowbindWXFDialog" title="绑定微信" @click="handleBindWX"
 		>
 			<template #content>
-				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请输入手机号" disabled></tui-input>
+				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请无法自动填入手机号" disabled></tui-input>
 				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
@@ -386,7 +386,7 @@ export default {
 			this.bindWXFormData.wechatOpenId = data.wechatOpenId
 			this.bindWXFormData.headImage = data.headImage
 			this.bindWXFormData.wechatName = data.wechatName
-			this.bindWXFormData.phone = data.phone
+			this.bindWXFormData.phone = data.phone || this.$store.getters.userInfo.phone
 			this.isShowbindWXFDialog = true
 		},
 		handleBindWX(e) {

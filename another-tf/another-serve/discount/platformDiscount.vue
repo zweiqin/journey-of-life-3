@@ -4,7 +4,7 @@
 		<view class="discountBg">
 			<view>折扣券</view>
 			<view class="discountInfoBox">
-				<view class="discountInfo">全场{{ discountInfo.discount }}折</view>
+				<view class="discountInfo">全场{{ discountInfo.discount || '--' }}折</view>
 			</view>
 		</view>
 		<view v-if="shopShowType == false" class="countdown">
@@ -104,11 +104,7 @@ export default {
 		this.queryInfo.discountId = options.discountId
 	},
 	onShow() {
-		this.getDiscountInfo()
-		this.getDiscountList()
-	},
-	methods: {
-		getDiscountInfo() {
+		if (this.queryInfo.discountId) {
 			getQueryPlatformDiscountApi({
 				discountId: this.queryInfo.discountId
 			}).then((res) => {
@@ -116,7 +112,10 @@ export default {
 				this.dateformat(new Date(this.discountInfo.endTime).getTime() - new Date().getTime())
 				this.countDown()
 			})
-		},
+		}
+		this.getDiscountList()
+	},
+	methods: {
 		getPercent(num, total) {
 			num = parseFloat(num)
 			total = parseFloat(total)

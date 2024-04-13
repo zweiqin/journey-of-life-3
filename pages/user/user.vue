@@ -132,7 +132,7 @@ export default {
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
 					if (storageKeyToken) {
-						jumpToOtherProject({ url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, toType: 'H5' })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}
 					return
 				} else if (item.type === 'shopInvitation') {

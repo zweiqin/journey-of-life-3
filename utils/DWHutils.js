@@ -197,19 +197,33 @@ export const isInWx = () => {
  * @returns
  */
 
+// eslint-disable-next-line complexity
 export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
-		// #ifdef H5
-		window.location.href = url
-		// #endif
-		// #ifdef APP
-		plus.runtime.openURL(url, cb)
-		// #endif
-		// #ifdef MP
-		uni.redirectTo({
-			url: `/user/view?target=${url}`
-		})
-		// #endif
+		if (isInWx()) {
+			if (isInMiniProgram || isH5InWebview()) {
+				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去小程序的webview
+					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
+					fail: () => {
+						setTimeout(() => { uni.switchTab({	url: '/pages/index/index' }) }, 2000)
+					}
+				})
+			} else {
+				window.location.href = url
+			}
+		} else {
+			// #ifdef H5
+			window.location.href = url
+			// #endif
+			// #ifdef APP
+			plus.runtime.openURL(url, cb)
+			// #endif
+			// #ifdef MP
+			uni.redirectTo({
+				url: `/user/view?target=${url}`
+			})
+			// #endif
+		}
 	} else if (toType === 'MP') {
 		if (isInWx()) {
 			if (isInMiniProgram || isH5InWebview()) {
