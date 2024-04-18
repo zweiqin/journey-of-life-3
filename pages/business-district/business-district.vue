@@ -1,28 +1,49 @@
 <template>
 	<view class="business-district-container">
 		<!-- 头部导航 -->
-		<PageHead></PageHead>
+		<view style="position: relative;z-index: 999;">
+			<view
+				style="position: relative;z-index: 997;padding: 42rpx 26rpx 0;margin: 0 -26rpx 0;"
+				:style="{ backgroundColor: filterOpened ? '#ffffff' : 'transparent' }"
+			>
+				<PageHead
+					:is-input="filterOpened" @input="(e) => queryParam.search = e"
+					@search="(e) => ((queryParam.search = e) && $refs.refStorePrimaryFilterBox.handleCloseDropdown()) || getBrandList()"
+				>
+				</PageHead>
+			</view>
 
-		<!-- 菜单 -->
-		<NavBar ref="refNavBar" @view="handleToDetail"></NavBar>
+			<!-- 菜单 -->
+			<NavBar ref="refNavBar" @view="handleToDetail"></NavBar>
 
-		<!-- bar -->
-		<AdvertisementBar></AdvertisementBar>
+			<!-- bar -->
+			<AdvertisementBar></AdvertisementBar>
 
-		<!-- package -->
-		<!-- <ActivityPackage></ActivityPackage> -->
+			<!-- package -->
+			<!-- <ActivityPackage></ActivityPackage> -->
+
+			<!-- 首要标签筛选框 -->
+			<view style="padding: 12rpx 52rpx;margin: 24rpx -26rpx 0;background-color: #ffffff;">
+				<StorePrimaryFilterBox
+					ref="refStorePrimaryFilterBox" :parent-classify-id="queryParam.classifyId" is-bold-icon
+					is-first-class dropdown-padding="6rpx 36rpx 0"
+					:translatey="(systermInfo.statusBarHeight || 0) + 108" @select="handleSelectPrimaryFilter"
+					@open="filterOpened = true" @close="filterOpened = false"
+				></StorePrimaryFilterBox>
+			</view>
+		</view>
 
 		<!-- 商家列表 -->
-		<view style="margin-top: 24rpx;">
-			<!-- <view style="padding-top: 20upx;">
+		<view style="margin-top: 16rpx;">
+			<!-- <view style="padding-top: 20rpx;">
 				<tui-waterfall :list-data="$data._list" :type="2" :page-size="queryParam.pageSize">
 				<template #left="{ entity }">
-				<view style="width: 338upx;">
+				<view style="width: 338rpx;">
 				<BrandShop :brand-info="entity"></BrandShop>
 				</view>
 				</template>
 				<template #right="{ entity }">
-				<view style="width: 338upx;">
+				<view style="width: 338rpx;">
 				<BrandShop :brand-info="entity"></BrandShop>
 				</view>
 				</template>
@@ -30,25 +51,25 @@
 				</view> -->
 			<view v-if="$data._list && $data._list.length">
 				<ATFCommonShop
-					v-for="shop in $data._list" :key="shop.shopId" :shop-info="shop" margin="22upx 0"
-					radius="20upx"
-					pic-width="222upx" pic-height="222upx" show-sign
+					v-for="shop in $data._list" :key="shop.shopId" :shop-info="shop" margin="22rpx 0"
+					radius="20rpx"
+					pic-width="222rpx" pic-height="222rpx" show-sign
 				></ATFCommonShop>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!$data._isEmpty && !$data._list.length
 						? 'loading' : !$data._isEmpty && $data._list.length && ($data._list.length >= $data._listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="$data._isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				<tui-no-data v-if="$data._isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 			</view>
 		</view>
 
 		<tui-toast ref="toast"></tui-toast>
 
 		<DragButton
-			text="联系客服" is-dock exist-tab-bar
+			:z-index="999" text="联系客服" is-dock exist-tab-bar
 			@btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"
 		>
 		</DragButton>
@@ -63,6 +84,7 @@ import PageHead from './components/PageHead.vue'
 import NavBar from './components/NavBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
+import StorePrimaryFilterBox from '../../another-tf/another-user/shop/components/StorePrimaryFilterBox.vue'
 // import BrandShop from './components/BrandShop.vue'
 import { getHomeBrandListApi } from '../../api/anotherTFInterface'
 import { getAdressDetailByLngLat } from '../../utils'
@@ -73,7 +95,8 @@ export default {
 		PageHead,
 		NavBar,
 		AdvertisementBar,
-		ActivityPackage
+		ActivityPackage,
+		StorePrimaryFilterBox
 		// BrandShop,
 	},
 	mixins: [
@@ -97,8 +120,12 @@ export default {
 			queryParam: {
 				search: '',
 				classifyId: '',
-				distance: '9999999999'
-			}
+				distance: '9999999999',
+				type: '',
+				volume: ''
+			},
+			filterOpened: false,
+			currentClassifyId: ''
 		}
 	},
 	async onShow() {
@@ -125,6 +152,7 @@ export default {
 						page: 1,
 						pageSize: this.$data._query.page * this.$data._query.pageSize,
 						...this.queryParam,
+						classifyId: this.currentClassifyId || this.queryParam.classifyId,
 						areaId: this.$store.state.location.locationInfo.adcode,
 						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
@@ -141,16 +169,17 @@ export default {
 			}
 		})
 		uni.$on('sendChooseAddressSuccessMsg', (data) => {
+			this.$data._query.page = 1
 			this.getBrandList()
 		})
 	},
 	computed: {
-		...mapGetters([ 'obtainLocationCount' ])
+		...mapGetters(['obtainLocationCount', 'systermInfo'])
 	},
 	watch: {
 		obtainLocationCount(val, oldVal) {
 			const pages = getCurrentPages()
-			if (pages[pages.length - 1].route === 'pages/business-district/business-district') this.getBrandList()
+			if (pages[pages.length - 1].route === 'pages/business-district/business-district') (this.$data._query.page = 1) && this.getBrandList()
 		}
 	},
 	methods: {
@@ -169,7 +198,13 @@ export default {
 						getAdressDetailByLngLat(queryLocation.latitude, queryLocation.longitude)
 							.then((res) => {
 								if (res.status === '1') {
-									this.$data._query = { ...this.$data._query, ...this.queryParam, ...queryLocation, areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode }
+									this.$data._query = {
+										...this.$data._query,
+										...this.queryParam,
+										classifyId: this.currentClassifyId || this.queryParam.classifyId,
+										areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode,
+										...queryLocation
+									}
 									if ((Date.now() - tempTime) >= 1000) {
 										this._loadData(null, () => this.isPositioning = true)
 									} else {
@@ -187,6 +222,7 @@ export default {
 						this.$data._query = {
 							...this.$data._query,
 							...this.queryParam,
+							classifyId: this.currentClassifyId || this.queryParam.classifyId,
 							areaId: this.$store.state.location.locationInfo.adcode,
 							longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 							latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
@@ -198,6 +234,7 @@ export default {
 				this.$data._query = {
 					...this.$data._query,
 					...this.queryParam,
+					classifyId: this.currentClassifyId || this.queryParam.classifyId,
 					areaId: this.$store.state.location.locationInfo.adcode,
 					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
@@ -213,12 +250,23 @@ export default {
 			this.$data._query = {
 				...this.$data._query,
 				...this.queryParam,
+				classifyId: this.currentClassifyId || this.queryParam.classifyId,
 				areaId: this.$store.state.location.locationInfo.adcode,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			}
 			this._loadData(null, () => this.isPositioning = false)
 			// #endif
+		},
+
+		handleSelectPrimaryFilter(e) {
+			console.log(e)
+			this.currentClassifyId = e.currentClassifyId || ''
+			this.queryParam.distance = e.distance * 1000 || '9999999999'
+			this.queryParam.type = e.type || ''
+			this.queryParam.volume = e.volume || ''
+			this.$data._query.page = 1
+			this.getBrandList()
 		},
 
 		// 点击常看详情
@@ -232,7 +280,7 @@ export default {
 		this.$data._list = []
 		this.$data._listTotal = 0
 		this.$data._isEmpty = false
-		this._loadData()
+		this.getBrandList()
 		uni.stopPullDownRefresh()
 	}
 
@@ -243,7 +291,7 @@ export default {
 .business-district-container {
 	min-height: 100vh;
 	background-color: #f6f6f6;
-	padding: 40upx 26upx 140upx;
+	padding: 0 26rpx 140rpx;
 	box-sizing: border-box;
 
 }

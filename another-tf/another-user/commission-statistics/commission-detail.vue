@@ -93,7 +93,7 @@ export default {
 
 	filters: {
 		filterType(type) {
-			return { 1: '关系链', 2: '商城', 3: '本地', 4: '服务' }[type]
+			return { 1: '关系链', 2: '商城', 3: '本地', 4: '服务', 5: '支付', 6: '退款' }[type]
 		}
 	},
 

@@ -6,7 +6,6 @@
       <!-- <view class="trend">
         <text class="trend-title">环比昨日</text>
         <text class="percentage">78%</text>
-        <image class="tag" src="../../../static/images/new-user/gudong/down.png"></image>
       </view> -->
     </view>
 
@@ -22,7 +21,6 @@
 
         <view class="item-order-count">{{ data.mallOrderTotal }}</view>
         <view class="item-trend">
-          <!-- <image class="tag" src="../../../static/images/new-user/gudong/up.png"></image> -->
           <text class="item-trend-percentage">{{ percentageData.mallOrderTotal || 0 }}%</text>
         </view>
       </view>
@@ -39,7 +37,6 @@
 
         <view class="item-order-count">{{ data.logisticsOrderTotal }}</view>
         <view class="item-trend">
-          <!-- <image class="tag" src="../../../static/images/new-user/gudong/up.png"></image> -->
           <text class="item-trend-percentage">{{ percentageData.logisticsOrderTotal || 0 }}%</text>
         </view>
       </view>
@@ -55,7 +52,6 @@
 
         <view class="item-order-count">{{ data.materialOrderTotal }}</view>
         <view class="item-trend">
-          <!-- <image class="tag" src="../../../static/images/new-user/gudong/up.png"></image> -->
           <text class="item-trend-percentage">{{ percentageData.materialOrderTotal || 0 }}%</text>
         </view>
       </view>
@@ -71,7 +67,6 @@
 
         <view class="item-order-count">{{ data.communityOrderTotal }}</view>
         <view class="item-trend">
-          <!-- <image class="tag" src="../../../static/images/new-user/gudong/up.png"></image> -->
           <text class="item-trend-percentage">{{ percentageData.communityOrderTotal || 0 }}%</text>
         </view>
       </view>

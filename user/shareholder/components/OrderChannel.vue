@@ -5,7 +5,9 @@
     <view class="list">
       <view class="item">
         <view class="left">
-          <image class="icon" src="../../../static/images/new-user/gudong/shop.png"></image>
+					<view style="background-color: #ffc117;padding: 10rpx;border-radius: 50%;">
+						<tui-icon name="bag-fill" color="#ffffff" size="50" unit="rpx" margin="0"></tui-icon>
+					</view>
           <text class="item-title">商城金额(元)</text>
           <text class="price-text">{{ data.mallOrderPriceTotal }}</text>
         </view>
@@ -18,7 +20,9 @@
 
       <view class="item">
         <view class="left">
-          <image class="icon" src="../../../static/images/new-user/gudong/wuliu.png"></image>
+					<view style="background-color: #409eff;padding: 10rpx;border-radius: 50%;">
+						<tui-icon name="transport-fill" color="#ffffff" size="50" unit="rpx" margin="0"></tui-icon>
+					</view>
           <text class="item-title">物流金额(元)</text>
           <text class="price-text">{{ data.logisticsOrderPriceTotal }}</text>
         </view>
@@ -31,7 +35,9 @@
 
       <view class="item">
         <view class="left">
-          <image class="icon" src="../../../static/images/new-user/gudong/stuff.png"></image>
+					<view style="background-color: #00b578;padding: 10rpx;border-radius: 50%;">
+						<tui-icon name="home-fill" color="#ffffff" size="50" unit="rpx" margin="0"></tui-icon>
+					</view>
           <text class="item-title">材料金额(元)</text>
           <text class="price-text">{{ data.materialOrderPriceTotal }}</text>
         </view>
@@ -44,7 +50,9 @@
 
       <view class="item">
         <view class="left">
-          <image class="icon" src="../../../static/images/new-user/gudong/community.png"></image>
+					<view style="background-color: #ff8c00;padding: 10rpx;border-radius: 50%;">
+						<tui-icon name="service-fill" color="#ffffff" size="50" unit="rpx" margin="0"></tui-icon>
+					</view>
           <text class="item-title">社区金额(元)</text>
           <text class="price-text">{{ data.communityOrderPriceTotal }}</text>
         </view>

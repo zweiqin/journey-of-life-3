@@ -39,11 +39,11 @@
 
         <view class="main-card-item">
           <JIcon width="30" height="30" type="phone"></JIcon
-          ><view
+          >
+					<BeeMakePhone :phone="nameCardDetail.phone"><view
             class="main-card-text"
-            @click="callPhone(nameCardDetail.phone)"
             >{{ nameCardDetail.phone }}</view
-          ></view
+          ></BeeMakePhone></view
         >
 
         <view class="main-card-item">
@@ -93,9 +93,11 @@
         <view class="pane-cheat-item">
           <JIcon width="36" height="36" type="mobile"></JIcon>
           <view class="title">手机</view>
-          <view class="value" @click="callPhone(nameCardDetail.phone)">{{
-            nameCardDetail.phone
-          }}</view>
+					<BeeMakePhone :phone="nameCardDetail.phone">
+						<view class="value">{{
+							nameCardDetail.phone
+						}}</view>
+					</BeeMakePhone>
         </view>
 
         <view class="pane-cheat-item">
@@ -228,11 +230,6 @@ export default {
       });
     },
 
-    callPhone(phone) {
-      uni.makePhoneCall({
-        phoneNumber: phone,
-      });
-    },
   },
 };
 </script>

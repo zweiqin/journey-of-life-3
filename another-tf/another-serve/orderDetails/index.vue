@@ -55,58 +55,23 @@
 			<view>
 				<view class="content" style="padding-bottom:200upx;">
 					<view style="margin: 24upx 30upx 0;">
-						<view v-if="dataList.state == 1" style="display: flex;align-items: center;justify-content: space-between;">
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待买家付款</text>
-							<text style="color: #1A66FF;font-size: 26upx;">待支付</text>
+						<view v-if="dataList.afterState" style="color: #222229;font-size: 34upx;font-weight: bold;">
+							<view v-if="[5, 6, 9].includes(dataList.afterState)">
+								{{ `【退】${afterConditionEnum(dataList.afterState)}-${orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].text}` }}
+							</view>
+							<view v-else>
+								{{ `【退】${afterConditionEnum(dataList.afterState)}` }}
+							</view>
 						</view>
-						<view
-							v-else-if="dataList.state == 2"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待卖家发货</text>
-							<text style="color: #1A66FF;font-size: 26upx;">付款后2-5个工作日发货</text>
-						</view>
-						<view
-							v-else-if="dataList.state == 8"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 等待核销</text>
-							<text style="color: #1A66FF;font-size: 26upx;">向商家出示核销码进行核销</text>
-						</view>
-						<view v-else-if="dataList.state == 3">
-							<!--  待收货 -->
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 卖家已发货</text>
-						</view>
-						<view
-							v-else-if="dataList.state == 4"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 交易成功</text>
-							<text style="color: #1A66FF;font-size: 26upx;">感谢您的使用</text>
-						</view>
-						<view
-							v-else-if="(dataList.state == 5) && dataList.collageId"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 拼团失败</text>
-							<text style="color: #1A66FF;font-size: 26upx;">剩余时间 00:00:00</text>
-						</view>
-						<view
-							v-else-if="dataList.state == 5"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 交易关闭</text>
-							<text style="color: #1A66FF;font-size: 26upx;">您已关闭了这笔交易</text>
-						</view>
-						<view
-							v-else-if="((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.moneyReturnList.status == 6))"
-							style="display: flex;align-items: center;justify-content: space-between;"
-						>
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 退款成功</text>
-							<text style="color: #1A66FF;font-size: 26upx;">该笔订单 ¥{{ dataList.paySum }} 退款，已原路退回</text>
-						</view>
-						<view v-else-if="dataList.state == 6">
-							<text style="color: #222229;font-size: 34upx;font-weight: bold;">● 待成团</text>
+						<view v-else>
+							<view style="display: flex;align-items: center;justify-content: space-between;">
+								<text style="color: #222229;font-size: 34upx;font-weight: bold;">
+									● {{ orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].text }}
+								</text>
+								<text style="color: #1A66FF;font-size: 26upx;">
+									{{ orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].message }}
+								</text>
+							</view>
 						</view>
 					</view>
 
@@ -204,7 +169,7 @@
 									<view style="color: #EF530E;" @click="$copy(dataList.orderFormid)">复制</view>
 								</view>
 								<view
-									v-if="[1, 8, 5, 6].includes(dataList.state) || ((dataList.returnType == 1) && (dataList.moneyReturnList.status == 4)) || ((dataList.returnType == 2) && (dataList.goodsReturn.status == 6))"
+									v-if="[1, 8, 5, 6].includes(dataList.state) || dataList.afterState"
 									style="display: flex;align-items: center;justify-content: space-between;padding-top: 32upx;"
 								>
 									<view>
@@ -478,6 +443,7 @@
 </template>
 
 <script>
+import { afterConditionEnum, orderPatternEnum } from '../../../components/ATFOrderInfo/config'
 import { handleDoPay } from '../../../utils/payUtil'
 import {
 	getOrderDetailApi,
@@ -497,6 +463,7 @@ export default {
 	name: 'OrderDetails',
 	data() {
 		return {
+			orderPatternEnum,
 			isIphone: false,
 			orderId: 0,
 			noticeId: 0,
@@ -510,6 +477,9 @@ export default {
 			// 订单相关
 			brandDetail: {},
 			dataList: {
+				afterState: '',
+				state: '',
+				orderType: '',
 				shopName: '',
 				orderFormid: null,
 				createTime: null,
@@ -557,6 +527,7 @@ export default {
 		this.getOrderDetailData(this.orderId)
 	},
 	methods: {
+		afterConditionEnum,
 		// 去商品详情
 		againCollage(productId, shopId, skuId, isStartAGroup, item) {
 			if (isStartAGroup) {

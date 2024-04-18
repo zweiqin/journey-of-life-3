@@ -7,8 +7,8 @@
       </view>
       <view class="pane-1">
         <!-- <view>当前余额</view> -->
-        <view class="account"> {{ shopInfo.balance }} <image class="eye-icon"
-            src="../../../static/images/new-user/shop-serve/eye-close.png"></image>
+        <view class="account"> {{ shopInfo.balance }}
+					<tui-icon name="unseen" color="#FFFFFF" size="34" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
         </view>
         <!-- <view class="total-account">当前赠送余额： {{ shopInfo.giveBalance }}元</view> -->
       </view>
@@ -255,8 +255,6 @@ export default {
       position: absolute;
       left: -344upx;
       top: -100upx;
-      background: url('../../../static/images/new-user/shop-serve/accoount-bg.png') no-repeat;
-      background-size: contain;
     }
 
     .pane-1 {

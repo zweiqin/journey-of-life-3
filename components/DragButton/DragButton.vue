@@ -1,6 +1,6 @@
 <template>
 	<view
-		id="_drag_button" class="drag" :style="'left: ' + left + 'px; top:' + top + 'px;'"
+		id="_drag_button" class="drag" :style="'left: ' + left + 'px; top:' + top + 'px; z-index:' + zIndex + '; '"
 		:class="{ transition: isDock && !isMove }" @touchstart="touchstart" @touchmove.stop.prevent="touchmove"
 		@touchend="touchend" @click.stop.prevent="click"
 	>
@@ -15,6 +15,10 @@
 export default {
 	name: 'DragButton',
 	props: {
+		zIndex: {
+			type: Number,
+			default: 10
+		},
 		text: {
 			type: String,
 			default: '按钮'
@@ -119,7 +123,6 @@ $uni-text-color-inverse: #ffffff;
 
 .drag {
 	position: fixed;
-	z-index: 10;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

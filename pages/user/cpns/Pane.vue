@@ -77,7 +77,7 @@
 									</view>
 									</view>
 								</script>
-								<!-- src="https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/new-user/menu-icon/dingyue.png" -->
+								<!-- src="https://www.tuanfengkeji.cn/TFShop_Uni_H5/static/images/xxx/xxx/xxx.png" -->
 								<!-- margin-top: 0.013333vw; font-size: 0.037333vw; width: 0.074667vw; -->
 								<!-- <template>
 									<view class="item">
@@ -120,7 +120,7 @@
 							<view style="padding: 2rpx;">
 								{{ $store.getters.activityList.length }}
 							</view>
-						</tui-badge> 
+						</tui-badge>
 					</view>
 				</view>
 				<view

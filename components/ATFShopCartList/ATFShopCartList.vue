@@ -221,7 +221,7 @@ export default {
 						}
 					})
 				} else {
-					return uni.$showToast('亲！至少一件哦！')
+					return uni.showToast({ title: '亲！至少一件哦！', icon: 'none' })
 				}
 			} else {
 				if (this.timer) clearTimeout(this.timer)
@@ -242,7 +242,7 @@ export default {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
 			if (selectSku.number >= selectSku.stockNumber) {
 				selectSku.number = selectSku.stockNumber
-				return uni.$showToast('库存不足！')
+				return uni.showToast({ title: '库存不足！', icon: 'none' })
 			}
 			if (selectSku.number < selectSku.stockNumber) {
 				if (this.timer) clearTimeout(this.timer)

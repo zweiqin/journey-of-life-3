@@ -12,19 +12,19 @@
 			<view style="margin-top: 20rpx;font-size: 28rpx;">
 				可提现金额：{{ price || 0 }}元
 			</view>
-			<view class="consignee-box bor-line-F7F7F7">
+			<!-- <view class="consignee-box bor-line-F7F7F7">
 				<input
-					v-model="withdrawalAmount" type="number" maxlength="9" class="fs28"
-					placeholder-class="consignee"
-					placeholder="请输入提现金额(元)" @input="applycheck"
+				v-model="withdrawalAmount" type="number" maxlength="9" class="fs28"
+				placeholder-class="consignee"
+				placeholder="请输入提现金额(元)" @input="applycheck"
 				/>
-			</view>
+				</view> -->
 			<view style="color: red;margin-top: 10rpx;">{{ errMsg }}</view>
 			<view v-if="!errMsg" style="margin-top: 10rpx;text-align: right;">
 				手续费：{{ typeof withdrawCharge === 'number' ? withdrawCharge : '--' }} 元
 			</view>
 			<view class="apply-box">
-				<view class="apply-withdraw" @click="applyWithdraw">申请提现</view>
+				<view class="apply-withdraw" @click="applyWithdraw">全部提现</view>
 			</view>
 		</view>
 		<view v-if="withdrawHistoryList && withdrawHistoryList.length" class="withdraw-history">
@@ -142,11 +142,12 @@ export default {
 			getPricePlatformAllApi({}).then((res) => {
 				this.price = res.data.price
 				this.withdrawHistoryList = res.data.withdrawals
+				this.withdrawalAmount = this.price
 			})
 		},
 		applycheck(e) {
 			// 正则表达试
-			e.target.value = e.target.value.match(/^\d*(\.?\d{0,2})/g)[0] || null
+			e.target.value = e.target.value.match(/^\d*(\.?\d{0,2})/g)[0] || ''
 			// 重新赋值给input
 			this.$nextTick(() => {
 				this.withdrawalAmount = e.target.value
@@ -160,7 +161,7 @@ export default {
 			}).then((res) => {
 				this.bankcardList = res.data
 				for (let i = 0; i < this.bankcardList.total; i++) {
-					this.bankcardselectList.push({ value: this.bankcardList.list[i].bankCard, text: this.bankcardList.list[i].bankName })
+					this.bankcardselectList.push({ value: this.bankcardList.list[i].bankCard, text: `${this.bankcardList.list[i].bankName}（${this.bankcardList.list[i].bankCard.slice(-4)}）` })
 				}
 			})
 		},
@@ -203,43 +204,37 @@ export default {
 					icon: 'none'
 				})
 			} else {
-				uni.showLoading()
-				updateSaveDistributorWithdrawApi({
-					bankName: this.bankName,
-					bankCard: this.bankCardNum,
-					withdrawalMoney: this.withdrawalAmount
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showToast({
-						title: '申请成功',
-						duration: 2000,
-						icon: 'none'
-					})
-					this.withdrawalAmount = ''
-					this.$nextTick(() => {
-						this.errMsg = ''
-					})
-					this.getBalance()
-					this.initBankcardList()
+				uni.showModal({
+					title: '提示',
+					content: '确认申请提现？',
+					success: (res) => {
+						if (res.confirm) {
+							uni.showLoading()
+							updateSaveDistributorWithdrawApi({
+								bankName: this.bankName,
+								bankCard: this.bankCardNum,
+								withdrawalMoney: this.withdrawalAmount
+							}).then((res) => {
+								uni.hideLoading()
+								uni.showToast({
+									title: '申请成功',
+									duration: 2000,
+									icon: 'none'
+								})
+								this.withdrawalAmount = ''
+								this.$nextTick(() => {
+									this.errMsg = ''
+								})
+								this.getBalance()
+								this.initBankcardList()
+							})
+								.catch((e) => {
+									uni.hideLoading()
+								})
+						}
+					}
 				})
-					.catch((e) => {
-						uni.hideLoading()
-					})
 			}
-			// else {
-			// 	let dotPos = this.withdrawalAmount.indexOf(".")
-			// 	let length = this.withdrawalAmount.length
-			// 	console.log(dotPos,222)
-			// 	console.log(length,333)
-			// 	if (length - dotPos > 3) {
-			// 		uni.showToast({
-			// 			title: "提现金额只能精确到小数点后两位",
-			// 			duration: 2000,
-			// 			icon: 'none'
-			// 		})
-			// 		return
-			// 	}
-			// }
 		}
 	}
 }

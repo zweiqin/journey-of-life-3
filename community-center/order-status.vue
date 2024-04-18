@@ -108,19 +108,21 @@
             <image class="avatar-img" :src="masterInfo.headUrl"></image>
           </view>
 
-          <view class="contect-master" v-if="masterInfo.tel" @click="handleCallMaster(masterInfo.tel)">
-						<tui-icon
-							name="voipphone" :size="40" unit="rpx"
-							color="#ef530e"
-							margin="0"
-						></tui-icon>
-            <text class="text">联系师傅</text>
-						<tui-icon
-							name="arrowright" :size="28" unit="rpx"
-							color="#888889"
-							margin="0"
-						></tui-icon>
-          </view>
+					<BeeMakePhone v-if="masterInfo.tel" :phone="masterInfo.tel">
+						<view class="contect-master">
+							<tui-icon
+								name="voipphone" :size="40" unit="rpx"
+								color="#ef530e"
+								margin="0"
+							></tui-icon>
+							<text class="text">联系师傅</text>
+							<tui-icon
+								name="arrowright" :size="28" unit="rpx"
+								color="#888889"
+								margin="0"
+							></tui-icon>
+						</view>
+					</BeeMakePhone>
         </view>
       </view>
 
@@ -294,19 +296,6 @@ export default {
     // 复制成功
     copySuccess() {
       this.ttoast('复制成功');
-    },
-
-    // 联系师傅
-    handleCallMaster(tel) {
-      uni.makePhoneCall({
-        phoneNumber: tel,
-        fail: () => {
-          this.ttoast({
-            type: 'fail',
-            title: '操作失败'
-          });
-        }
-      });
     },
 
     // 初始化额外信息
