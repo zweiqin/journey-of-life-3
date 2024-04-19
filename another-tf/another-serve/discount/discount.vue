@@ -1,7 +1,7 @@
 <template>
 	<view class="discount-container">
 		<JHeader :dark="false" title="限时折扣专区" width="50" height="50"></JHeader>
-		<view v-if="queryInfo.shopId && queryInfo.shopDiscountId" style="margin-top: 20rpx;color: #ffffff;;">
+		<view v-if="queryInfo.shopId && queryInfo.shopDiscountId" style="margin-top: 20rpx;color: #ffffff;">
 			<view v-if="discountData.state" style="display: flex;align-items: center;justify-content: center;">
 				<text>距活动结束剩余：</text>
 				<tui-countdown

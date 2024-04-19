@@ -63,7 +63,7 @@
 				</tui-list-cell>
 				<tui-list-cell
 					unlined padding="0 28rpx" :size="30"
-					@click="go('/another-tf/another-user/commission-statistics/commission-statistics')"
+					@click="go('/another-tf/another-user/commission-statistics/commission-operation')"
 				>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"

@@ -1541,6 +1541,13 @@
           }
         },
         {
+          "path": "another-user/commission-statistics/commission-record",
+          "style": {
+            "navigationBarTitleText": "佣金收支明细",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
           "path": "another-user/commission-statistics/commission-operation",
           "style": {
             "navigationBarTitleText": "推广佣金操作",

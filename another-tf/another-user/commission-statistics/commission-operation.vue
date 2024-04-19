@@ -5,7 +5,7 @@
 			<tui-button
 				type="black" width="220rpx" height="60rpx" margin="0"
 				plain link
-				@click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=2')"
+				@click="go('/another-tf/another-user/commission-statistics/commission-record')"
 			>
 				收支明细
 			</tui-button>
@@ -17,15 +17,19 @@
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
 				￥{{ Number.parseFloat(Number(commissionData.remainAmount)).toFixed(2) || 0 }}
 			</view>
+			<view v-if="commissionData.inTheAccount" style="margin-top: 20rpx;font-size: 36rpx;">
+				待到账：￥
+				{{ Number.parseFloat(Number(commissionData.inTheAccount)).toFixed(2) || 0 }}
+			</view>
 			<view style="margin-top: 20rpx;font-size: 36rpx;">
 				可提现余额：￥
-				{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice)).toFixed(2) || 0 }}
+				{{ Number.parseFloat(Number(commissionData.totalAmount)).toFixed(2) || 0 }}
 			</view>
 			<view class="operation-btn">
 				<view style="padding-top: 100rpx;">
 					<tui-button
 						type="gray" width="280rpx" height="78rpx" margin="0"
-						@click="go('/another-tf/another-serve/withdraw/index')"
+						@click="go('/another-tf/another-serve/withdraw/index?type=1')"
 					>
 						提现
 					</tui-button>
@@ -33,9 +37,9 @@
 				<view style="padding-top: 18rpx;">
 					<tui-button
 						type="primary" width="280rpx" height="78rpx" margin="0"
-						@click="go('/another-tf/another-user/commission-statistics/commission-statistics')"
+						@click="go('/another-tf/another-user/commission-statistics/vip-user')"
 					>
-						我的账本
+						我的会员
 					</tui-button>
 				</view>
 			</view>
@@ -45,44 +49,25 @@
 </template>
 
 <script>
-import { getPricePlatformAllApi, getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+import { getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CommissionOperation',
 	onShow() {
-		this.getPricePlatformAll()
 		this.getCommissionData()
 	},
 
 	data() {
 		return {
-			pricePlatformInfo: {
-				totalPrice: '',
-				price: '',
-				rechargePrice: '',
-				voucherPrice: '',
-				distributorPrice: '',
-				commissionPrice: ''
-			},
 			commissionData: {
-				remainAmount: ''
+				remainAmount: '',
+				inTheAccount: '',
+				totalAmount: ''
 			}
 		}
 	},
 
 	methods: {
-		// 刷新用户信息
-		getPricePlatformAll() {
-			uni.showLoading()
-			getPricePlatformAllApi({})
-				.then((res) => {
-					uni.hideLoading()
-					this.pricePlatformInfo = res.data
-				})
-				.catch(() => {
-					uni.hideLoading()
-				})
-		},
 		getCommissionData() {
 			uni.showLoading()
 			getSmallAccountBookStatisticsApi({})

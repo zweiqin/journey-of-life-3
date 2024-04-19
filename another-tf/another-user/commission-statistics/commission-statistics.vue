@@ -41,7 +41,7 @@
 					<view class="value">{{ commissionData.fans || 0 }}</view>
 				</view>
 
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?date=now')">
+				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?today=1')">
 					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
 						<tui-icon name="member-fill" color="#b548c6" size="42" unit="rpx" margin="0"></tui-icon>
 					</view>
@@ -132,7 +132,7 @@ export default {
 			// }
 
 			uni.navigateTo({
-				url: '/another-tf/another-serve/withdraw/index'
+				url: '/another-tf/another-serve/withdraw/index?type=1'
 			})
 		}
 	},
