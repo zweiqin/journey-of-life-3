@@ -1548,6 +1548,12 @@
           }
         },
         {
+          "path": "another-user/commission-statistics/commission-record-detail",
+          "style": {
+            "navigationBarTitleText": "佣金收支明细详情"
+          }
+        },
+        {
           "path": "another-user/commission-statistics/commission-operation",
           "style": {
             "navigationBarTitleText": "推广佣金操作",

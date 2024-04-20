@@ -57,7 +57,7 @@ export const myFunction = [
 		name: '我的账本',
 		icon: require('../../static/images/new-user/menu-icon/wodezhangben.png'),
 		// url: '/user/account-book/index', // 老的
-		url: '/another-tf/another-user/commission-statistics/commission-operation'
+		url: '/another-tf/another-user/commission-statistics/commission-statistics'
 		// url: '/another-tf/another-user/small-ledger/index'
 	},
 	{

@@ -9,13 +9,13 @@
 					@click="isShowTypePopup = true"
 				>
 					<view style="display: flex;align-items: center;font-size: 28rpx;line-height: 1;">
-						<text v-if="[ 3 ].includes(queryType)">
+						<text v-if="[ 0 ].includes(queryInfo.type)">
 							全部明细
 						</text>
-						<text v-else-if="[ 2 ].includes(queryType)">
+						<text v-else-if="[ 1 ].includes(queryInfo.type)">
 							支出
 						</text>
-						<text v-else-if="[ 1 ].includes(queryType)">
+						<text v-else-if="[ 2 ].includes(queryInfo.type)">
 							收入
 						</text>
 						<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
@@ -34,23 +34,9 @@
 							@click="timeDropdownShow = !timeDropdownShow"
 						>
 							<view style="margin-left: 10rpx;font-size: 26rpx;">
-								<text v-if="timeDropdownIndex === 0">全部</text>
-								<text v-else-if="timeDropdownIndex === 1">
-									{{ String(new Date().getFullYear()) }}年{{ String(new
-										Date().getMonth() + 1).padStart(2, '0') }}月{{ String(new Date().getDate()).padStart(2, '0') }}日
-								</text>
-								<text v-else-if="timeDropdownIndex === 2">
-									{{ String(new Date(Date.now() - 24 * 60 * 60 *
-										1000).getFullYear()) }}年{{ String(new Date(Date.now() - 24 * 60 * 60 * 1000).getMonth() +
-										1).padStart(2, '0') }}月{{ String(new Date(Date.now() - 24 * 60 * 60 * 1000).getDate()).padStart(2,
-										'0') }}日
-								</text>
-								<text v-else-if="timeDropdownIndex === 3">本周</text>
-								<text v-else-if="timeDropdownIndex === 4">
-									{{ String(new Date().getFullYear()) }}年{{ String(new
-										Date().getMonth() + 1).padStart(2, '0') }}月
-								</text>
-								<text v-else-if="timeDropdownIndex === 5">{{ String(new Date().getFullYear()) }}年</text>
+								<text v-if="queryInfo.today === 1">今日佣金</text>
+								<text v-else-if="queryInfo.today === 2">累计佣金</text>
+								<text v-else-if="queryInfo.today === 3">途中佣金</text>
 							</view>
 							<view
 								style="display: flex;align-items: center;justify-content: center;width: 20rpx;height: 20rpx;margin-left: 12rpx;padding: 4rpx;color: #ffffff;background-color: #000000;border-radius: 50%;"
@@ -63,10 +49,10 @@
 						<view style="width: fit-content;box-sizing: border-box;">
 							<tui-list-view
 								color="#ffffff" margin-top="2rpx"
-								style="width: fit-content;min-width: 100rpx;max-height: 28vh;overflow-y: auto;"
+								style="width: fit-content;min-width: 140rpx;max-height: 28vh;overflow-y: auto;"
 							>
 								<tui-list-cell
-									v-for="item in [{ name: '全部', value: 0 }, { name: '今天', value: 1 }, { name: '昨天', value: 2 }, { name: '本周', value: 3 }, { name: '本月', value: 4 }, { name: '本年', value: 5 }]"
+									v-for="item in [{ name: '今日佣金', value: 1 }, { name: '累计佣金', value: 2 }, { name: '途中佣金', value: 3 }]"
 									:key="item.value" padding="20rpx 0" color="#ffffff" background-color="transparent"
 									style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #999999;"
 									@click="handleSelectDropdown(item.value)"
@@ -80,123 +66,69 @@
 			</view>
 
 			<view style="margin-top: 12rpx;font-size: 28rpx;">
-				<view v-if="[ 3 ].includes(queryType)">
-					总收益￥{{ voucherAcount.zongshouyi }}
+				<view v-if="[ 0 ].includes(queryInfo.type)">
+					总收益￥{{ commissionAcount.quanbu }}
 				</view>
-				<view v-else-if="[ 2 ].includes(queryType)">
-					总支出￥{{ voucherAcount.zongzhichu }}
+				<view v-else-if="[ 1 ].includes(queryInfo.type)">
+					总支出￥{{ commissionAcount.zongzhichu }}
 				</view>
-				<view v-else-if="[ 1 ].includes(queryType)">
-					总充值￥{{ voucherAcount.zongchongzhi }}
+				<view v-else-if="[ 2 ].includes(queryInfo.type)">
+					总收入￥{{ commissionAcount.zongshouru }}
 				</view>
 			</view>
 
 			<view style="margin-top: 20rpx;">
-				<view v-if="[3, 2].includes(queryType)">
-					<view v-if="logsInfo.data.length > 0">
-						<view
-							v-for="(item, index) in logsInfo.data" :key="item.id"
-							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
-							@click="handleClickVoucherRecord(item)"
-						>
-							<view style="flex: 1;display: flex;align-items: center;">
-								<view
-									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-									:style="{ backgroundColor: [2, 4].includes(item.type) ? '#ef530e' : '#208f57' }"
-								>
-									<text
-										v-if="([ 2 ].includes(queryType) && [2, 4].includes(item.type)) || ([ 3 ].includes(queryType) && [ 4 ].includes(item.type))"
-									>
-										支
-									</text>
-									<text v-else>收</text>
-								</view>
-								<view style="margin-left: 14rpx;">
-									<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-										<text>
-											代金券
-											<text v-if="item.type === 1">充值</text>
-											<text v-else-if="item.type === 2">转赠</text>
-											<text v-else-if="item.type === 3">签到</text>
-											<text v-else-if="item.type === 4">抵扣</text>
-											<text v-else-if="item.type === 5">核销</text>
-											<text v-else-if="item.type === 6">抽奖</text>
-											<text v-else-if="item.type === 7">退款</text>
-											<text v-else-if="item.type === 8">充值赠送</text>
-											<text v-else-if="item.type === 9">下单</text>
-											<text v-else>--</text>
-										</text>
-										<text v-if="[ 2 ].includes(queryType) && item.username">
-											-{{ item.username }}
-										</text>
-										<text v-else-if="[ 3 ].includes(queryType) && item.userNameOne">
-											-{{ item.userNameOne }}
-										</text>
-									</view>
-									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
-								</view>
+				<view v-if="commissionRecordList.length > 0">
+					<view
+						v-for="(item, index) in commissionRecordList" :key="item.id"
+						style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+						@click="handleClickCommissionRecord(item)"
+					>
+						<view style="flex: 1;display: flex;align-items: center;">
+							<view
+								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
+								:style="{ backgroundColor: [5, 6].includes(item.type) ? '#208f57' : [1, 2, 3, 4].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
+							>
+								<text v-if="[5, 6].includes(item.type)">支</text>
+								<text v-else-if="[1, 2, 3, 4].includes(item.type)">收</text>
+								<text v-else>--</text>
 							</view>
-							<view style="margin-left: 12rpx;text-align: right;">
+							<view style="margin-left: 14rpx;">
 								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									价值{{ item.number / 2 }}元
-								</view>
-								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
-									<text>代金券：</text>
-									<text>
-										{{ ([ 2 ].includes(queryType) && [2, 4].includes(item.type)) ||
-											([ 3 ].includes(queryType) && [ 4 ].includes(item.type)) ? '-' : '+' }}
+									<text v-if="item.userNameOne">
+										{{ item.userNameOne }}-
 									</text>
-									<text>{{ item.number }}</text>
+									<text>
+										<text v-if="item.type === 1">关系链</text>
+										<text v-else-if="item.type === 2">商城</text>
+										<text v-else-if="item.type === 3">本地</text>
+										<text v-else-if="item.type === 4">服务</text>
+										<text v-else-if="item.type === 5">支付</text>
+										<text v-else-if="item.type === 6">退款</text>
+										<text v-else>--</text>
+									</text>
 								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
 							</view>
 						</view>
-					</view>
-					<view style="padding-bottom: 45rpx;">
-						<LoadingMore
-							:status="!logsInfo.isEmpty && !logsInfo.data.length
-								? 'loading' : !logsInfo.isEmpty && logsInfo.data.length && (logsInfo.data.length >= logsInfo.listTotal) ? 'no-more' : ''"
-						>
-						</LoadingMore>
-						<tui-no-data v-if="logsInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<view style="margin-left: 12rpx;text-align: right;">
+							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+								{{ [5, 6].includes(item.type) ? '-' : [1, 2, 3, 4].includes(item.type) ? '+' : '？' }}{{ item.amount }}元
+							</view>
+							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+								<text>订单总额：</text>
+								<text>{{ item.totalAmount }}</text>
+							</view>
+						</view>
 					</view>
 				</view>
-				<view v-else-if="[ 1 ].includes(queryType)">
-					<view v-if="orderInfo.data.length > 0">
-						<view
-							v-for="(item, index) in orderInfo.data" :key="item.id"
-							style="display: flex;align-items: center;justify-content: space-between;padding-top: 38rpx;"
-							@click="handleClickVoucherRecord(item)"
-						>
-							<view style="flex: 1;display: flex;align-items: center;">
-								<view
-									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;background-color: #ef530e;border-radius: 50%;line-height: 1;"
-								>
-									收
-								</view>
-								<view style="margin-left: 14rpx;">
-									<view style="font-size: 28rpx;font-weight: bold;color: #222229;">{{ item.typeStrName }}代金券</view>
-									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
-								</view>
-							</view>
-							<view style="text-align: right;">
-								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									￥{{ item.payGrade }}元（{{ ['未付款', '取消',
-										'已付款', '未发放', '已发放', '支付失败'][item.status] }}）
-								</view>
-								<view style="padding-right: 10rpx;margin-top: 6rpx;font-size: 24rpx;color: #888889;">
-									代金券：+{{ item.number }}
-								</view>
-							</view>
-						</view>
-					</view>
-					<view style="padding-bottom: 45rpx;">
-						<LoadingMore
-							:status="!orderInfo.isEmpty && !orderInfo.data.length
-								? 'loading' : !orderInfo.isEmpty && orderInfo.data.length && (orderInfo.data.length >= orderInfo.listTotal) ? 'no-more' : ''"
-						>
-						</LoadingMore>
-						<tui-no-data v-if="orderInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
-					</view>
+				<view style="padding-bottom: 45rpx;">
+					<LoadingMore
+						:status="!isEmpty && !commissionRecordList.length
+							? 'loading' : !isEmpty && commissionRecordList.length && (commissionRecordList.length >= commissionRecordTotal) ? 'no-more' : ''"
+					>
+					</LoadingMore>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
 				</view>
 			</view>
 		</view>
@@ -215,12 +147,12 @@
 							<view style="font-size: 28rpx;">收支类型</view>
 							<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;text-align: center;">
 								<view
-									v-for="(item, index) in [{ name: '流水', value: 3 }, { name: '收入', value: 1 }, { name: '支出', value: 2 }]"
+									v-for="(item, index) in [{ name: '全部', value: 0 }, { name: '支出', value: 1 }, { name: '收入', value: 2 }]"
 									:key="index"
 									style="flex: 1;padding: 10rpx 0;margin: 18rpx 6rpx 0;font-size: 26rpx;background-color: #f4f4f4;border-radius: 16rpx;"
 									:style="{
-										border: queryType === item.value ? '2rpx solid #ff4b10' : '2rpx solid #fff1ec',
-										color: queryType === item.value ? '#ff4b10' : '#000000'
+										border: queryInfo.type === item.value ? '2rpx solid #ff4b10' : '2rpx solid #fff1ec',
+										color: queryInfo.type === item.value ? '#ff4b10' : '#000000'
 									}" @click="handleSelectTypeActive(item)"
 								>
 									{{ item.name }}
@@ -235,103 +167,46 @@
 </template>
 
 <script>
-import { getTransferLogsVoucherShopHoldApi, getAllVoucherOrderApi, getTotalVoucherOrderApi } from '../../../api/anotherTFInterface'
+import { getCommissionDeatilListApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'VoucherRecord',
 	components: {
 	},
 	data() {
 		return {
-			voucherAcount: {
-				zongchongzhi: '',
+			commissionAcount: {
+				zongshouru: '',
 				zongzhichu: '',
-				zongshouyi: ''
+				quanbu: ''
 			},
 			isShowTypePopup: false,
 			timeDropdownShow: false,
-			timeDropdownIndex: 0,
-			queryType: 3,
-			logsInfo: {
-				query: {
-					page: 1,
-					pageSize: 20,
-					type: 3,
-					condition: 0
-				},
-				data: [],
-				listTotal: 0,
-				isEmpty: false
-			},
-			orderInfo: {
-				query: {
-					page: 1,
-					pageSize: 20,
-					type: 1,
-					status: '',
-					condition: 0
-				},
-				data: [],
-				listTotal: 0, // 列表数据总数
-				isEmpty: false // 列表是否为空
-			},
-			totalVoucherQuery: {
-				type: '',
-				condition: 0
+			isEmpty: false,
+			commissionRecordTotal: 0,
+			commissionRecordList: [],
+			queryInfo: {
+				page: 1,
+				pageSize: 20,
+				type: 0,
+				today: 2
 			}
 		}
 	},
 	onLoad() {
-		if ([3, 2].includes(this.queryType)) {
-			this.logsInfo.query.page = 1
-			this.getTransferLogsVoucherList()
-			this.getTotalVoucherData()
-		} else if ([ 1 ].includes(this.queryType)) {
-			this.orderInfo.query.page = 1
-			this.getAllVoucherOrderList()
-			this.getTotalVoucherData()
-		}
+		this.getCommissionStatisticsRecord()
 	},
 	methods: {
-		getTotalVoucherData() {
-			getTotalVoucherOrderApi({ ...this.totalVoucherQuery, type: this.queryType })
-				.then((res) => {
-					if ([ 3 ].includes(this.queryType)) {
-						this.voucherAcount.zongshouyi = res.data['总收益']
-					} else if ([ 2 ].includes(this.queryType)) {
-						this.voucherAcount.zongshouyi = res.data['总支出']
-					} else if ([ 1 ].includes(this.queryType)) {
-						this.voucherAcount.zongchongzhi = res.data['总充值']
-					}
-				})
-		},
-		getTransferLogsVoucherList(isLoadmore) {
+		getCommissionStatisticsRecord(isLoadmore) {
 			uni.showLoading()
-			getTransferLogsVoucherShopHoldApi({ ...this.logsInfo.query })
+			getCommissionDeatilListApi({ ...this.queryInfo })
 				.then((res) => {
-					this.logsInfo.listTotal = res.data.total
+					this.commissionRecordTotal = res.data.total
 					if (isLoadmore) {
-						this.logsInfo.data.push(...res.data.records)
+						this.commissionRecordList.push(...res.data.records)
 					} else {
-						this.logsInfo.data = res.data.records
+						this.commissionRecordList = res.data.records
 					}
-					this.logsInfo.isEmpty = this.logsInfo.data.length === 0
-					uni.hideLoading()
-				})
-				.catch(() => {
-					uni.hideLoading()
-				})
-		},
-		getAllVoucherOrderList(isLoadmore) {
-			uni.showLoading()
-			getAllVoucherOrderApi({ ...this.orderInfo.query })
-				.then((res) => {
-					this.orderInfo.listTotal = res.data.total
-					if (isLoadmore) {
-						this.orderInfo.data.push(...res.data.records)
-					} else {
-						this.orderInfo.data = res.data.records
-					}
-					this.orderInfo.isEmpty = this.orderInfo.data.length === 0
+					this.isEmpty = this.commissionRecordList.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {
@@ -339,77 +214,43 @@ export default {
 				})
 		},
 		handleSelectTypeActive(item) {
-			if (this.queryType === item.value) return
-			this.queryType = item.value
-			if ([3, 2].includes(this.queryType)) {
-				this.logsInfo.query.type = this.queryType
-				this.logsInfo.query.page = 1
-				this.logsInfo.data = []
-				this.logsInfo.listTotal = 0
-				this.logsInfo.isEmpty = false
-				this.getTransferLogsVoucherList()
-				this.getTotalVoucherData()
-				this.isShowTypePopup = false
-			} else if ([ 1 ].includes(this.queryType)) {
-				this.orderInfo.query.type = this.queryType
-				this.orderInfo.query.page = 1
-				this.orderInfo.data = []
-				this.orderInfo.listTotal = 0
-				this.orderInfo.isEmpty = false
-				this.getAllVoucherOrderList()
-				this.getTotalVoucherData()
-				this.isShowTypePopup = false
-			}
+			if (this.queryInfo.type === item.value) return
+			this.queryInfo.type = item.value
+			this.queryInfo.page = 1
+			this.commissionRecordList = []
+			this.commissionRecordTotal = 0
+			this.isEmpty = false
+			this.getCommissionStatisticsRecord()
+			this.isShowTypePopup = false
 		},
 		handleSelectDropdown(timeDropdownIndex) {
-			if (this.timeDropdownIndex === timeDropdownIndex) {
+			if (this.queryInfo.today === timeDropdownIndex) {
 				this.timeDropdownShow = false
 				return
 			}
-			this.timeDropdownIndex = timeDropdownIndex
-			this.totalVoucherQuery.condition = timeDropdownIndex
-			this.logsInfo.query.condition = this.timeDropdownIndex
-			this.orderInfo.query.condition = this.timeDropdownIndex
-			if ([3, 2].includes(this.queryType)) {
-				this.logsInfo.query.page = 1
-				this.logsInfo.data = []
-				this.logsInfo.listTotal = 0
-				this.logsInfo.isEmpty = false
-				this.getTransferLogsVoucherList()
-				this.getTotalVoucherData()
-				this.timeDropdownShow = false
-			} else if ([ 1 ].includes(this.queryType)) {
-				this.orderInfo.query.page = 1
-				this.orderInfo.data = []
-				this.orderInfo.listTotal = 0
-				this.orderInfo.isEmpty = false
-				this.getAllVoucherOrderList()
-				this.getTotalVoucherData()
-				this.timeDropdownShow = false
-			}
+			this.queryInfo.today = timeDropdownIndex
+			this.queryInfo.page = 1
+			this.commissionRecordList = []
+			this.commissionRecordTotal = 0
+			this.isEmpty = false
+			this.getCommissionStatisticsRecord()
+			this.timeDropdownShow = false
 		},
-		handleClickVoucherRecord(item) {
+		handleClickCommissionRecord(item) {
 			uni.navigateTo({
-				url: '/another-tf/another-user/voucher/voucher-record-detail',
+				url: '/another-tf/another-user/commission-statistics/commission-record-detail',
 				success: () => {
 					setTimeout(() => {
-						uni.$emit('sendVoucherRecordDetailMsg', { voucherRecordData: item, fromOrigin: this.queryType })
+						uni.$emit('sendCommissionRecordDetailMsg', { commissionRecordData: item })
 					}, 400)
 				}
 			})
 		}
 	},
 	onReachBottom() {
-		if ([3, 2].includes(this.queryType)) {
-			if (this.logsInfo.data.length < this.logsInfo.listTotal) {
-				++this.logsInfo.query.page
-				this.getTransferLogsVoucherList(true)
-			}
-		} else if ([ 1 ].includes(this.queryType)) {
-			if (this.orderInfo.data.length < this.orderInfo.listTotal) {
-				++this.orderInfo.query.page
-				this.getAllVoucherOrderList(true)
-			}
+		if (this.commissionRecordList.length < this.commissionRecordTotal) {
+			++this.queryInfo.page
+			this.getCommissionStatisticsRecord(true)
 		}
 	}
 }

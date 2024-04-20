@@ -24,7 +24,7 @@
 			</view>
 			<view style="padding: 20rpx 20rpx 0;">
 				<view style="margin-top: 20rpx;font-size: 28rpx;">
-					可提现金额：{{ withdrawalPrice || 0 }}元
+					可提现金额：{{ withdrawalPrice || 0 }}元（取整后 {{ withdrawalMoney }} 元）
 				</view>
 				<!-- <view style="margin-top: 12rpx;border-bottom: 2rpx solid #cccccc;">
 					<input
@@ -38,7 +38,7 @@
 				</view>
 				<view class="operation-btn">
 					<tui-button type="brown" width="520rpx" height="88rpx" margin="10rpx auto 0" @click="applyWithdraw">
-						全部提现
+						提现<text v-if="withdrawalMoney" style="padding: 0 0 0 8rpx;">{{ withdrawalMoney }}元</text>
 					</tui-button>
 				</view>
 			</view>
@@ -138,10 +138,8 @@ export default {
 				this.errMsg = '提现金额错误'
 			} else if (value === '') {
 				this.errMsg = '提现金额不能为空'
-			} else if (value === 0) {
-				this.errMsg = '提现金额不能等于零'
-			} else if (value < 1) {
-				this.errMsg = '提现金额不能小于1元'
+			} else if (value <= 1) {
+				this.errMsg = '提现金额要大于1元'
 			} else if (value > this.withdrawalPrice) {
 				this.errMsg = '余额不足，请重新输入申请金额'
 			} else if (parseFloat(value) > 1000000) {
@@ -170,13 +168,13 @@ export default {
 				getSmallAccountBookStatisticsApi({})
 					.then((res) => {
 						this.withdrawalPrice = res.data.totalAmount
-						this.withdrawalMoney = this.withdrawalPrice
+						this.withdrawalMoney = Math.floor(this.withdrawalPrice)
 					})
 			} else {
 				getPricePlatformAllApi({}).then((res) => {
 					this.withdrawalPrice = res.data.price
 					this.withdrawHistoryList = res.data.withdrawals
-					this.withdrawalMoney = this.withdrawalPrice
+					this.withdrawalMoney = Math.floor(this.withdrawalPrice)
 				})
 			}
 		},
@@ -233,7 +231,7 @@ export default {
 								bankName: this.bankcardselectList.find((i) => i.value === this.bankCardNum).bankName,
 								bankCard: this.bankCardNum,
 								withdrawalMoney: this.withdrawalMoney,
-								withdrawalType: this.withdrawalType
+								withdrawalType: Number(this.withdrawalType)
 							}).then((res) => {
 								uni.hideLoading()
 								uni.showToast({

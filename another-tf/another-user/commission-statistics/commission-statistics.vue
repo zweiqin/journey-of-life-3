@@ -6,27 +6,29 @@
 
 		<!-- 上面三个统计 -->
 		<view class="top-pane">
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=1')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
 				<view style="background-color: #b548c6;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="wealth-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>
 				<view class="text">今日佣金</view>
-				<view class="value">￥{{ commissionData.todaySum || 0 }}</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.todaySum || 0)).toFixed(2) }}</view>
 			</view>
 
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=2')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
 				<view style="background-color: #ff8700;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="wallet" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>
-				<view class="text">累计佣金</view>
-				<view class="value">￥{{ commissionData.remainAmount || 0 }}</view>
+				<!-- <view class="text">累计佣金</view>
+					<view class="value">￥{{ commissionData.remainAmount || 0 }}</view> -->
+				<view class="text">可提现</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.totalAmount || 0)).toFixed(2) }}</view>
 			</view>
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=3')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
 				<view style="background-color: #22b07d;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="bankcard-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>
 				<view class="text">途中佣金</view>
-				<view class="value">￥{{ commissionData.inTheAccount || 0 }}</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.inTheAccount || 0)).toFixed(2) }}</view>
 			</view>
 		</view>
 

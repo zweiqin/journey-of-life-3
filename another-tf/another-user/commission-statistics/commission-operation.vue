@@ -13,18 +13,22 @@
 
 		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;">
 			<tui-icon name="wealth-fill" :size="130" unit="rpx" color="#eb6a00" margin="0"></tui-icon>
-			<view style="margin-top: 26rpx;font-size: 36rpx;">推广佣金</view>
-			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
+			<!-- <view style="margin-top: 26rpx;font-size: 36rpx;">推广佣金</view>
+				<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
 				￥{{ Number.parseFloat(Number(commissionData.remainAmount)).toFixed(2) || 0 }}
+				</view> -->
+			<view style="margin-top: 26rpx;font-size: 36rpx;">可提现佣金</view>
+			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
+				￥{{ Number.parseFloat(Number(commissionData.totalAmount)).toFixed(2) || 0 }}
 			</view>
-			<view v-if="commissionData.inTheAccount" style="margin-top: 20rpx;font-size: 36rpx;">
+			<view style="margin-top: 20rpx;font-size: 36rpx;">
 				待到账：￥
 				{{ Number.parseFloat(Number(commissionData.inTheAccount)).toFixed(2) || 0 }}
 			</view>
-			<view style="margin-top: 20rpx;font-size: 36rpx;">
+			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">
 				可提现余额：￥
 				{{ Number.parseFloat(Number(commissionData.totalAmount)).toFixed(2) || 0 }}
-			</view>
+				</view> -->
 			<view class="operation-btn">
 				<view style="padding-top: 100rpx;">
 					<tui-button

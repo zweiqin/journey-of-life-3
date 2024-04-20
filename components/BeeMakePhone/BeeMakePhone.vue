@@ -48,9 +48,10 @@ export default {
 			// #ifdef APP
 			const systemInfo = uni.getSystemInfoSync()
 			if (systemInfo.platform.toLocaleLowerCase() == 'android') {
+				this.showAuthPopupVisible = true
 				const result = await permision.requestAndroidPermission('android.permission.CALL_PHONE')
 				if (result == 1) { // 已获得授权
-					this.showAuthPopupVisible = true
+					this.showAuthPopupVisible = false
 					uni.makePhoneCall({
 						phoneNumber: this.phone,
 						fail: () => {
@@ -58,6 +59,7 @@ export default {
 						}
 					})
 				} else if ((result == 0) || (result == -1)) { // 未获得授权/被永久拒绝权限
+					this.showAuthPopupVisible = false
 					uni.showToast({ title: '请先授权', icon: 'none' })
 				}
 			} else {
