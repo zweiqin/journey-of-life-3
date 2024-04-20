@@ -12,7 +12,7 @@
         <view class="gift">赠送{{ activityDetail.giftsMoney }}代金券</view>
       </view>
       <view class="activity-name">{{ activityDetail.name }}</view>
-      <view class="activity-time"> 活动时间: {{ activityDetail.startTime.split(' ')[0] }} ~ {{ activityDetail.endTime.split(' ')[0] }} </view>
+      <view class="activity-time">活动时间: {{ activityDetail.startTime.split(' ')[0] }} ~ {{ activityDetail.endTime.split(' ')[0] }}</view>
     </view>
 
     <view class="activity-detail">
@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import { marked } from 'marked';
-import { getAcrivityDetailApi } from '../../../api/community-center';
-import Loading from '../../../pages/order/components/Loading.vue';
-import uParse from '../../../components/u-parse/u-parse.vue';
+import { marked } from 'marked'
+import { getAcrivityDetailApi } from '../../../api/community-center'
+import Loading from '../../../pages/order/components/Loading.vue'
+import uParse from '../../../components/u-parse/u-parse.vue'
 
 export default {
   components: { Loading, uParse },
@@ -42,44 +42,45 @@ export default {
       isLoading: false,
       activityDetail: null,
       activityId: null
-    };
+    }
   },
   onLoad(params) {
-    this.activityId = params.id;
-    this.getAcrivityDetail();
+    this.activityId = params.id
+    this.getAcrivityDetail()
   },
   methods: {
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
 
     async getAcrivityDetail() {
       try {
-        const res = await getAcrivityDetailApi(this.activityId);
+        
+        const res = await getAcrivityDetailApi(this.activityId)
         if (res.statusCode === 20000) {
-          this.activityDetail = res.data;
+          this.activityDetail = res.data
         } else {
-          this.ttoast({ type: 'fail', title: res.statusMsg });
+          this.ttoast({ type: 'fail', title: res.statusMsg })
         }
       } catch (error) {
-        this.ttoast({ type: 'fail', title: '活动详情获取失败' });
+        this.ttoast({ type: 'fail', title: '活动详情获取失败' })
       }
     },
 
     // 点击下单
     handleOrder() {
       if (!this.activityDetail.isExpired) {
-        this.go('/community-center/welfare/order?id=' + this.activityDetail.id);
+        this.go('/community-center/welfare/order?id=' + this.activityDetail.id)
       }
     }
   },
 
   computed: {
     activityDetailContent() {
-      return this.activityDetail ? marked(this.activityDetail.info) : '';
+      return this.activityDetail ? marked(this.activityDetail.info) : ''
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
