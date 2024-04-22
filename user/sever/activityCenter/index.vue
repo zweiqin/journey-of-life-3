@@ -61,7 +61,6 @@ export default {
     },
 
     async getUpActivityList() {
-      alert('你他妈的在请求啥玩意味儿' + this.$store.getters.detailAddress)
       let currentAddress = this.$store.getters.detailAddress
       if (!currentAddress) {
         if (!currentAddress) {
@@ -73,7 +72,6 @@ export default {
         this.isLoading = true
         const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
-          alert('获取到了' + JSON.stringify(res.data.activities))
           this.activityList = res.data.activities
         } else {
           this.ttoast({ type: 'fail', title: res.statusMsg })

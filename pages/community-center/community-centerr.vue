@@ -163,26 +163,21 @@ export default {
     // 获取活动订单列表
     async getActivityList() {
       try {
-        alert('请求了')
         let currentAddress = this.$store.getters.detailAddress
         if (!currentAddress) {
           const { detail } = await this.$store.dispatch('location/getCurrentLocation')
           currentAddress = detail
         }
-        alert('获取到地址了' + currentAddress)
         const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
-          alert('进来了' + JSON.stringify(res.data.activities))
           const activityList = res.data.activities
           if (activityList.length) {
             this.activityList = activityList
             this.popupImageUrl = activityList[0].id == 1 ? require('../../static/images/con-center/popup-image.png') : activityList[0].cover
             this.showVipPostPopup()
-            alert('有数据中a1' + JSON.stringify(activityList))
           } else {
             this.activityList = []
             this.popupImageUrl = undefined
-            alert("没有数据" + JSON.stringify(activityList))
           }
         }
       } catch (error) {}

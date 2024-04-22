@@ -2,11 +2,7 @@
   <view class="community-order-container">
     <!-- 返回键 -->
     <view class="head">
-			<tui-icon
-				name="arrowleft" :size="42" unit="rpx"
-				color="#000000"
-				margin="0" @click="handleBack"
-			></tui-icon>
+      <tui-icon name="arrowleft" :size="42" unit="rpx" color="#000000" margin="0" @click="handleBack"></tui-icon>
     </view>
 
     <!-- 上门地址 -->
@@ -22,13 +18,9 @@
 
       <view v-else class="section-title">请添加上门地址</view>
 
-			<view class="address-icon" style="display: flex;justify-content: center;align-items: center;border: 2rpx solid #605d52;">
-				<tui-icon
-					name="gps" :size="42" unit="rpx"
-					color="#605d52"
-					margin="0"
-				></tui-icon>
-			</view>
+      <view class="address-icon" style="display: flex; justify-content: center; align-items: center; border: 2rpx solid #605d52">
+        <tui-icon name="gps" :size="42" unit="rpx" color="#605d52" margin="0"></tui-icon>
+      </view>
     </view>
 
     <!-- <view v-if="!isExistCommunityStore" class="alert-wrapper section" style="padding: 0">
@@ -52,23 +44,22 @@
     <view class="serve-info section">
       <view class="title-wrapper">
         <view class="section-title">服务类型</view>
-        <view class="serve-name"
-          >{{ currentServeInfo.name }}
+        <view class="serve-name">
+          {{ currentServeInfo.name }}
           <text class="serve-price" v-if="currentServeInfo.serverPrice && isByItNow === 1">
             <text
               :class="{
                 del: !!calcServePrice && calcServePrice.newPrice
               }"
               class="price-text"
-              >￥{{ (calcServePrice && calcServePrice.oldPrice) || currentServeInfo.serverPrice }}</text
             >
+              ￥{{ (calcServePrice && calcServePrice.oldPrice) || currentServeInfo.serverPrice }}
+            </text>
 
-            <text v-if="calcServePrice && calcServePrice.newPrice && calcServePrice.newPrice != 0" class="price-text"
-              >￥{{ (calcServePrice && calcServePrice.newPrice) || preferentialPrice }}</text
-            >
-            /{{ currentServeInfo.serverUnit }}</text
-          ></view
-        >
+            <text v-if="calcServePrice && calcServePrice.newPrice && calcServePrice.newPrice != 0" class="price-text">￥{{ (calcServePrice && calcServePrice.newPrice) || preferentialPrice }}</text>
+            /{{ currentServeInfo.serverUnit }}
+          </text>
+        </view>
       </view>
 
       <view class="car-info">
@@ -86,13 +77,9 @@
     <view class="serve-time section animate" @click="chooseTimeVisible = true">
       <view class="header-wrapper">
         <view class="section-title">请选择期望上门时间</view>
-				<view class="address-icon" style="display: flex;justify-content: center;align-items: center;border: 2rpx solid #605d52;">
-					<tui-icon
-						name="clock" :size="42" unit="rpx"
-						color="#605d52"
-						margin="0"
-					></tui-icon>
-				</view>
+        <view class="address-icon" style="display: flex; justify-content: center; align-items: center; border: 2rpx solid #605d52">
+          <tui-icon name="clock" :size="42" unit="rpx" color="#605d52" margin="0"></tui-icon>
+        </view>
       </view>
 
       <view class="choose-time">{{ orderForm.datetimerange }}</view>
@@ -108,13 +95,9 @@
         </view>
 
         <view class="add-img-icon item" @click="handleUploadImg">
-					<view class="add-icon">
-						<tui-icon
-							name="add" :size="64" unit="rpx"
-							color="#b3b2ad"
-							margin="0"
-						></tui-icon>
-					</view>
+          <view class="add-icon">
+            <tui-icon name="add" :size="64" unit="rpx" color="#b3b2ad" margin="0"></tui-icon>
+          </view>
         </view>
       </view>
 
@@ -180,7 +163,7 @@
 
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
-      <view class="pay-price" v-if="isByItNow === 1 && calcServePrice"> ￥{{ calcServePrice.oughtPrice }}</view>
+      <view class="pay-price" v-if="isByItNow === 1 && calcServePrice">￥{{ calcServePrice.oughtPrice }}</view>
       <button class="uni-btn" @click="handleConfirmOrder">
         {{ isOffer ? '获取价格中...' : '确认' }}
       </button>
@@ -192,13 +175,13 @@
 </template>
 
 <script>
-import { getUserId } from 'utils';
-import { debounce } from 'lodash-es';
-import { getAddressListApi } from '../api/address';
-import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant';
-import { IMG_UPLOAD_URL } from '../config';
-import ChooseTime from './componts/choose-time.vue';
-import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center';
+import { getUserId } from 'utils'
+import { debounce } from 'lodash-es'
+import { getAddressListApi } from '../api/address'
+import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
+import { IMG_UPLOAD_URL } from '../config'
+import ChooseTime from './componts/choose-time.vue'
+import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center'
 
 export default {
   components: { ChooseTime },
@@ -233,37 +216,37 @@ export default {
         }
       ],
       isShowPriceMode: 1
-    };
+    }
   },
 
   onLoad(options) {
-    this.currentServeInfo = options;
-    this.isByItNow = options.priceType === 'true' ? 1 : 2;
-    this.isShowPriceMode = this.isByItNow;
-    this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1;
+    this.currentServeInfo = options
+    this.isByItNow = options.priceType === 'true' ? 1 : 2
+    this.isShowPriceMode = this.isByItNow
+    this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1
   },
 
   onShow() {
-    this.getAddressList();
+    this.getAddressList()
   },
 
   methods: {
     // 返回
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
     // 获取收货地址
     async getAddressList() {
-      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS);
+      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS)
       if (choosedAddress) {
-        this.defualtAddress = choosedAddress;
+        this.defualtAddress = choosedAddress
         // this.checkAreaExistCommunitStore();
-        this.handleGetOrderPrice();
-        return;
+        this.handleGetOrderPrice()
+        return
       }
       const { data } = await getAddressListApi({
         userId: getUserId()
-      });
+      })
 
       // if (data.length) {
       //   this.defualtAddress = data.find((item) => item.isDefault);
@@ -272,13 +255,13 @@ export default {
       // }
 
       if (data.length) {
-        const defaultAddress = data.find((item) => item.isDefault);
+        const defaultAddress = data.find((item) => item.isDefault)
         if (defaultAddress) {
-          this.defualtAddress = defaultAddress;
+          this.defualtAddress = defaultAddress
         } else {
-          this.defualtAddress = data[0];
+          this.defualtAddress = data[0]
         }
-        this.handleGetOrderPrice();
+        this.handleGetOrderPrice()
       }
 
       if (this.defualtAddress) {
@@ -288,7 +271,7 @@ export default {
 
     // 获取选择的上门时间
     onChooseTime(time) {
-      this.orderForm.datetimerange = time;
+      this.orderForm.datetimerange = time
     },
 
     // 修改服务数量
@@ -297,20 +280,20 @@ export default {
         this.ttoast({
           type: 'fail',
           title: '最小服务单位是1'
-        });
-        return;
+        })
+        return
       }
-      this.orderForm.quantity += number;
+      this.orderForm.quantity += number
     },
 
     // 获取订单报价
     async handleGetOrderPrice() {
       if (this.isByItNow === 2 || !this.defualtAddress) {
-        return;
+        return
       }
 
       try {
-        this.isOffer = true;
+        this.isOffer = true
         const res = await getServicePriceApi({
           userId: getUserId(),
           serverInfoId: this.currentServeInfo.detailId,
@@ -318,18 +301,18 @@ export default {
           address: this.defualtAddress.detailedAddress
           // price: this.preferentialPrice || this.currentServeInfo.serverPrice,
           // // actualPrice: this.preferentialPrice,
-        });
+        })
 
         if (res.statusCode === 20000) {
-          this.calcServePrice = res.data;
+          this.calcServePrice = res.data
         } else {
           this.ttoast({
             type: 'fail',
             title: '报价失败'
-          });
+          })
         }
       } finally {
-        this.isOffer = false;
+        this.isOffer = false
       }
     },
 
@@ -337,19 +320,19 @@ export default {
     async checkAreaExistCommunitStore() {
       const res = await getIsOpenServerAreaApi({
         address: this.defualtAddress.detailedAddress && this.defualtAddress.detailedAddress.replace(' ', '')
-      });
+      })
       if (res.statusCode === 20000) {
-        this.isExistCommunityStore = res.data;
+        this.isExistCommunityStore = res.data
       }
     },
 
     // 点击上传图片
     handleUploadImg() {
-      const _this = this;
+      const _this = this
       uni.chooseImage({
         success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
+            uni.showLoading()
             uni.uploadFile({
               url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
@@ -358,31 +341,31 @@ export default {
                 userId: getUserId()
               },
               success: (uploadFileRes) => {
-                uni.hideLoading();
-                _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url);
+                uni.hideLoading()
+                _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
               },
               fail: (error) => {
-                uni.hideLoading();
+                uni.hideLoading()
                 _this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
+            })
           }
 
-          return;
+          return
         },
         fail: (fail) => {
-          console.log(fail);
+          console.log(fail)
         }
-      });
+      })
     },
 
     // 点击删除图片
     handleDeleteImg(img) {
-      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img);
+      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img)
     },
 
     // 确认提交订单
@@ -391,8 +374,8 @@ export default {
         this.ttoast({
           type: 'info',
           title: '获取订单价格中...'
-        });
-        return;
+        })
+        return
       }
 
       if (this.isSubmitOrder) {
@@ -400,46 +383,46 @@ export default {
           type: 'info',
           title: '请稍后...',
           content: '订单创建中'
-        });
+        })
 
-        return;
+        return
       }
 
       if (!this.defualtAddress || !this.defualtAddress.name) {
         this.ttoast({
           type: 'fail',
           title: '请选择上门地址'
-        });
-        return;
+        })
+        return
       }
 
       if (!this.orderForm.datetimerange) {
         this.ttoast({
           type: 'info',
           title: '请选择期望上门时间'
-        });
+        })
 
-        this.chooseTimeVisible = true;
-        return;
+        this.chooseTimeVisible = true
+        return
       }
 
-      if (!this.orderForm.orderGoodsList.length) {
-        const name = this.currentServeInfo.name;
-        if (!name.includes('维修') && !name.includes('修') && !name.includes('保') && !name.includes('补')) {
-          this.ttoast({
-            type: 'info',
-            title: '请上传服务物品图片'
-          });
+      // if (!this.orderForm.orderGoodsList.length) {
+      //   const name = this.currentServeInfo.name;
+      //   if (!name.includes('维修') && !name.includes('修') && !name.includes('保') && !name.includes('补')) {
+      //     this.ttoast({
+      //       type: 'info',
+      //       title: '请上传服务物品图片'
+      //     });
 
-          return;
-        }
-      }
-      this.isSubmitOrder = true;
+      //     return;
+      //   }
+      // }
+      this.isSubmitOrder = true
 
       try {
-        const { remarks, orderGoodsList, datetimerange } = this.orderForm;
-        const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null;
-        const payOrderPrice = (this.calcServePrice && this.calcServePrice.oughtPrice) || '';
+        const { remarks, orderGoodsList, datetimerange } = this.orderForm
+        const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
+        const payOrderPrice = (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
         const subOrderData = {
           userId: getUserId(),
           remarks: remarks || '',
@@ -462,58 +445,61 @@ export default {
           deliveryType: 4,
           price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
           actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || '',
-          serverTypeId: this.currentServeInfo.id
-        };
+          serverTypeId: this.currentServeInfo.id,
+          individualAccount: this.$store.state.auth && this.$store.state.auth.userInfo ? this.$store.state.auth.userInfo.phone : ''
+        }
 
         // 判断是否是师傅现场下单
         if (partnerCode) {
-          subOrderData.partnerCode = partnerCode;
-          subOrderData.spotOrder = 1;
+          subOrderData.partnerCode = partnerCode
+          subOrderData.spotOrder = 1
         }
 
-        const res = await getServiceOrderApi(subOrderData);
+        return
+
+        const res = await getServiceOrderApi(subOrderData)
         if (res.statusCode === 20000) {
-          this.ttoast('订单创建成功');
-          uni.removeStorageSync(SF_INVITE_CODE);
-          uni.setStorageSync('communityOrder', res.data);
+          this.ttoast('订单创建成功')
+          uni.removeStorageSync(SF_INVITE_CODE)
+          uni.setStorageSync('communityOrder', res.data)
           setTimeout(() => {
             uni.redirectTo({
               url: `/community-center/confirm-order?name1=${this.currentServeInfo.name}&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}
-        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${this.defualtAddress.mobile}&consigneeAddress=${
-                this.defualtAddress.detailedAddress.split(' ')[0]
-              }&consigneeAddressDetail=${this.defualtAddress.detailedAddress.split(' ')[1]}
+        &consigneeName=${this.defualtAddress.name}&consigneeMobile=${this.defualtAddress.mobile}&consigneeAddress=${this.defualtAddress.detailedAddress.split(' ')[0]}&consigneeAddressDetail=${
+                this.defualtAddress.detailedAddress.split(' ')[1]
+              }
         &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${res.data}`
-            });
-          }, 500);
+            })
+          }, 500)
         }
       } catch (error) {
-        console.log("订单创建报错啦", error)
+        console.log('订单创建报错啦', error)
         this.ttoast({
           type: 'fail',
           title: '订单创建失败',
           content: '请联系管理员'
-        });
+        })
       } finally {
-        this.isSubmitOrder = false;
+        this.isSubmitOrder = false
       }
     },
 
     // 修改报价模式
     handleSwitchPricingType(itemInfo) {
-      this.isByItNow = itemInfo.value;
-      this.handleGetOrderPrice();
-      this.$forceUpdate();
+      this.isByItNow = itemInfo.value
+      this.handleGetOrderPrice()
+      this.$forceUpdate()
     }
   },
 
   watch: {
     'orderForm.quantity': {
       handler: debounce(function () {
-        this.handleGetOrderPrice();
+        this.handleGetOrderPrice()
       }, 500)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
