@@ -4,15 +4,15 @@
       <TuanLocation free v-if="showLocation">
         <view class="address-wrapper">
           <text class="address-text">{{ currentAddress }}</text>
-          <image class="arrow-icon" src="../../../static/images/new-index/arrow-1.png"></image>
+					<tui-icon name="turningdown" color="#222229" size="48" unit="rpx"></tui-icon>
         </view>
       </TuanLocation>
       <view @click="go(`/another-tf/another-serve/search/index`)" class="input-view">{{ placeholder }}</view>
       <button v-if="showSearchBtn" class="search-input-btn uni-btn">搜索</button>
     </view>
     <button v-if="showMessage" class="uni-btn page-header-right" style="flex-shrink: 0;"
-      @click="go('/user/sever/customer-service/customer-service')">
-      <image class="message-icon" src="../../../static/images/new-index/message-1.png"></image>
+      >
+				<tui-icon name="message" color="#222229" size="60" unit="rpx" @click="go('/another-tf/another-user/customer-service/customer-service')"></tui-icon>
     </button>
   </view>
 </template>
@@ -108,7 +108,7 @@ export default {
       .address-text {
         font-size: 28upx;
         color: #222229;
-        margin-right: 8upx;
+        margin-right: 2upx;
       }
     }
 

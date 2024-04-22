@@ -50,10 +50,10 @@
 				</view>
 				<!--  商城 -->
 				<view v-show="currentOrderMode === 'shoppingMall'">
-					<BusinessOrder
+					<ATFBusinessOrder
 						v-for="(orderItem, orderIndex) in shoppingOrderList" :key="orderIndex" :data="orderItem"
-						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"
-					></BusinessOrder>
+						show-operate is-to-detail @refresh="getOrderList()" @pay-order="(e) => payObj = e"
+					></ATFBusinessOrder>
 					<view style="padding-bottom: 45upx;">
 						<LoadingMore
 							:status="!shoppingIsEmpty && !shoppingOrderList.length
@@ -66,10 +66,10 @@
 
 				<!--  商圈 -->
 				<view v-show="currentOrderMode === 'businessDistrict'">
-					<BusinessOrder
+					<ATFBusinessOrder
 						v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
-						show-operate @refresh="getOrderList()" @pay-order="(e) => payObj = e"
-					></BusinessOrder>
+						show-operate is-to-detail @refresh="getOrderList()" @pay-order="(e) => payObj = e"
+					></ATFBusinessOrder>
 					<view style="padding-bottom: 45upx;">
 						<LoadingMore
 							:status="!businessIsEmpty && !businessOrderList.length
@@ -127,7 +127,6 @@ import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
 import CancelOrder from './components/CancelOrder.vue'
-import BusinessOrder from './components/BusinessOrder.vue'
 import Loading from './components/Loading.vue'
 import NoData from './components/NoData.vue'
 import SubNavs from './components/SubNavs.vue'
@@ -145,7 +144,6 @@ export default {
 		NoData,
 		Loading,
 		CancelOrder,
-		BusinessOrder,
 		SubNavs,
 		AdditionalAmountOrder,
 		CommentTypeV1,

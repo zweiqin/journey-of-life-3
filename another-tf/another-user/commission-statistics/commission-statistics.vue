@@ -6,7 +6,7 @@
 
 		<!-- 上面三个统计 -->
 		<view class="top-pane">
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=1')">
 				<view style="background-color: #b548c6;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="wealth-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>
@@ -14,7 +14,7 @@
 				<view class="value">￥{{ Number.parseFloat(Number(commissionData.todaySum || 0)).toFixed(2) }}</view>
 			</view>
 
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=2')">
 				<view style="background-color: #ff8700;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="wallet" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>
@@ -23,7 +23,7 @@
 				<view class="text">可提现</view>
 				<view class="value">￥{{ Number.parseFloat(Number(commissionData.totalAmount || 0)).toFixed(2) }}</view>
 			</view>
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=3')">
 				<view style="background-color: #22b07d;border-radius: 18rpx;padding: 22rpx;">
 					<tui-icon name="bankcard-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 				</view>

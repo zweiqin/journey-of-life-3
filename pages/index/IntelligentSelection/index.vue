@@ -64,19 +64,19 @@
       <view class="main">
           <view class="styles" style="display: none;">
               <view class="stylesItem">
-                  <image class="itemImage" src="@/static/images/new-index/taocan/styles1.png"></image>
+                  <image class="itemImage" :src="common.seamingImgUrl('1713768041941-styles1.png')"></image>
                   <text class="itemText">新中式</text>
               </view>
               <view class="stylesItem">
-                  <image class="itemImage" src="@/static/images/new-index/taocan/styles2.png"></image>
+                  <image class="itemImage" :src="common.seamingImgUrl('1713768044562-styles2.png')"></image>
                   <text class="itemText">意式极简</text>
               </view>
               <view class="stylesItem">
-                  <image class="itemImage" src="@/static/images/new-index/taocan/styles3.png"></image>
+                  <image class="itemImage" :src="common.seamingImgUrl('1713768047120-styles3.png')"></image>
                   <text class="itemText">现代轻奢</text>
               </view>
               <view class="stylesItem">
-                  <image class="itemImage" src="@/static/images/new-index/taocan/styles4.png"></image>
+                  <image class="itemImage" :src="common.seamingImgUrl('1713768049644-styles4.png')"></image>
                   <text class="itemText">现代美式</text>
               </view>
           </view>
@@ -95,13 +95,15 @@
                   <text>限时抢购</text>
               </view>
               <view class="selectButton">
-                筛选 <image class="selectIcon" src="@/static/images/new-index/taocan/selectIocn.png"></image>
+                筛选
+								<view style="padding: 4rpx;background-color: #d3d3d3;line-height: 1;border-radius: 50%;margin-left: 4rpx;">
+									<tui-icon name="arrowdown" color="#ffffff" size="24" unit="rpx"></tui-icon>
+								</view>
               </view>
           </view>
           <view class="productList">
               <view v-for="(item, index) in listData" :key="item.classifyId" class="listItem" @click="gotoDetails(item)">
                   <image class="productImg" :src="item.image"></image>
-                  <!-- <image class="productImg" src="@/static/images/new-index/taocan/shopIcn.png"></image> -->
                   <view class="titleBox">
                       <view class="title">
                         <text>
@@ -116,7 +118,9 @@
                           </text>
                           <text class="amountR">￥{{ item.originalPrice }}</text>
                       </view>
-                      <image class="ShoppingCart" src="@/static/images/new-index/taocan/shopcar.png"></image>
+											<view class="ShoppingCart">
+												<tui-icon name="cart" color="#ffffff" size="36" unit="rpx"></tui-icon>
+											</view>
                   </view>
               </view>
           </view>
@@ -178,9 +182,6 @@ export default {
           //  url: `/pages/prod/prod?shopInfo=${JSON.stringify(this.goods)}&detailInfo=${JSON.stringify(this.voucherJudgment(this.goods))}`
           url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`
         });
-            // uni.navigateTo({
-            //      url: '/pages/index/WholehouseCustomization/newDetail/index'
-            // });
       },
   }
 }
@@ -484,6 +485,8 @@ export default {
                 }
             }
             .selectButton {
+								display: flex;
+								align-items: center;
                 box-sizing: border-box;
                 padding-left: 10rpx;
                 margin-left: 55rpx;
@@ -562,9 +565,13 @@ export default {
                         position: absolute;
                         bottom: 30rpx;
                         right: 10rpx;
+												display: flex;
+												align-items: center;
+												justify-content: center;
                         width: 50rpx;
                         height: 50rpx;
                         border-radius: 50%;
+												background-color: #e02208;
                     }
                 }
             }

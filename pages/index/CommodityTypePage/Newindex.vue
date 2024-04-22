@@ -26,7 +26,6 @@
 <script>
 	import NewGoodsPane from './cpns/NewGoodsPane.vue';
     import { getClassifyProducts2Api } from '@/api/anotherTFInterface';
-	// import { homeTopNavs } from './config';
 	export default {
 		components: {
 			NewGoodsPane

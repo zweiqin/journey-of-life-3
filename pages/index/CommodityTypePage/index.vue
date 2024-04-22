@@ -29,7 +29,6 @@
 	import { goodsListApi } from '@/api/goods';
 	import { getGoodsTypesApi, getTypeDetailList } from '@/api/home';
 	import loadMore from '@/mixin/loadMore';
-	// import { homeTopNavs } from './config';
 	export default {
 		components: {
 			NewGoodsPane
@@ -49,7 +48,6 @@
 		],
 		data() {
 			return {
-				// homeTopNavs: homeTopNavs,
 				ad: {
 					hot: [],
 					good: []

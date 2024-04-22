@@ -9,7 +9,7 @@
 			<text class="pageTitle">爆款专区</text>
 		</view>
 		<view class="header">
-			<image class="backgroundImg" src="@/static/images/new-index/topBgImg.png"></image>
+			<view class="backgroundImg" style="background-color: #e02208;"></view>
 			<!-- <view> -->
 			<!-- <tui-form ref="form">
 				<tui-input :lineLeft="false" placeholder="输入商品名" v-model="value"></tui-input>
@@ -33,14 +33,14 @@
 					</view>
 				</view>
 				<view class="filterItem" style="position: absolute;right: 0rpx;">
-					筛选<image style="width:21rpx;height:23rpx;margin-left:6rpx;" src="@/static/images/new-index/index-1/selecct.png"></image>
+					筛选
+					<tui-icon name="screen" color="#2c2c33" size="28" unit="rpx" margin="0 6rpx"></tui-icon>
 				</view>
 			</view>
 			<view class="GoodsListBox">
 				<view class="ListItem" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)" v-for="item in goodsList" :key="item.id">
 					<view class="GoodsIcon">
-						<image v-if="!item.image" src="@/static/images/new-index/index-1/goodsIcon.png"></image>
-						<image v-else :src="item.image"></image>
+						<image :src="common.seamingImgUrl(item.image)"></image>
 					</view>
 					<view class="GoodsDetils">
 						<text class="title">{{ item.productName || '小牛马' }}</text>
@@ -50,7 +50,7 @@
 						</view>
 						<text class="SalesVolume">已售200+</text>
 						<view class="PriceBox">
-							<image class="backgroundImg" src="@/static/images/new-index/redback.png"></image>
+							<view class="backgroundImg" style="background-color: #e02208;border-radius: 35% 0 0 35%;"></view>
 							<view class="Price Originals">
 								<text class="txt1" style="color: #888889;">原价</text>
 								<view class="txt2">
@@ -89,7 +89,7 @@ export default {
 			},
 			sortData: ['全部','客厅','餐厅','卧室','睡眠','其他'],
 			classifyId: '1124',
-			goodsList: [],
+			goodsList: [{}],
 			value: ''
 		};
 	},

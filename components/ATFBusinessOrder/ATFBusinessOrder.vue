@@ -1,5 +1,5 @@
 <template>
-	<view class="item ske-loading">
+	<view class="business-order">
 		<view class="order-list-top">
 			<view
 				v-if="!data.shopName.startsWith('团蜂')" style="display: flex;align-items: center;"
@@ -19,8 +19,7 @@
 		</view>
 		<view class="order-info-box">
 			<view
-				style="border-bottom: 1px solid #eeeeee;"
-				@click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)"
+				@click="isToDetail && go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)"
 			>
 				<view>
 					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" class="order-info-item">
@@ -77,42 +76,45 @@
 						显示全部
 					</tui-button>
 				</view>
-				<view class="total-price-box">
-					<template v-if="data.orderPrice !== undefined || data.discountPrice !== undefined">
-						总价￥{{
-							(data.orderPrice + data.logisticsPrice).toFixed(2)
-						}}，优惠￥{{ data.discountPrice }}
-						<text v-if="data.price > 0">
-							，{{ data.state === 1 ? '应付￥' : '实付￥' }}{{ data.price }}
+				<view style="font-size: 26upx;color: #333;text-align: right;padding: 18upx 0;">
+					<text v-if="data.orderPrice">
+						总价￥{{ (data.orderPrice + data.logisticsPrice).toFixed(2) }}
+						<text v-if="data.logisticsPrice">（含物流费￥{{ data.logisticsPrice }}）</text>
+						，优惠￥{{ data.discountPrice }}
+						<text v-if="data.price">
+							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ data.price }}
 						</text>
-					</template>
+					</text>
 				</view>
 			</view>
-			<view v-if="showOperate" class="btnBox flex-items" :class="{ flexSpBetween: data.state === 5 || data.state === 9 }">
+
+			<view v-if="showOperate" style="justify-content: space-between;border-top: 2rpx solid #eeeeee;">
+				<view style="padding: 20upx 0;display: flex;">
+					<tui-button
+						v-for="buttonItem in getOrderOptionButtonObj(data)" :key="buttonItem.name"
+						:type="buttonItem.btnType" plain width="150rpx" height="56rpx"
+						margin="0 18rpx 0 0" :size="28"
+						@click="handleOrderOptionButtonEvent(buttonItem)"
+					>
+						{{ buttonItem.name }}
+					</tui-button>
+				</view>
 				<!-- <tui-icon
 					v-if="data.state === 5 || data.state === 9" name="delete" :size="14" color="#333333"
 					@click="handleDeleteOrder(data)"
 					></tui-icon> -->
-				<view class="order-btn-box">
-					<text
-						v-for="buttonItem in getOrderOptionButtonObj(data)" :key="buttonItem.name" class="btn"
-						:class="[ buttonItem.className ]" @click.stop="handleOrderOptionButtonEvent(buttonItem)"
-					>
-						{{ buttonItem.name }}
-					</text>
-				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { afterConditionEnum, orderTypeEnum } from '../../../components/ATFOrderInfo/config'
-import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
-import { resolveShowCanNotBuyMsg } from '../../../utils'
+import { afterConditionEnum, orderTypeEnum } from '../../components/ATFOrderInfo/config'
+import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST } from '../../constant'
+import { resolveShowCanNotBuyMsg } from '../../utils'
 export default {
-	name: 'BusinessOrder',
+	name: 'ATFBusinessOrder',
 	props: {
 		data: {
 			type: Object,
@@ -120,7 +122,11 @@ export default {
 		},
 		showOperate: {
 			type: Boolean,
-			default: true
+			default: false
+		},
+		isToDetail: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -195,7 +201,7 @@ export default {
 			// if ([1, 6, 8].includes(state)) {
 			// 	orderNeedBtnList.push({
 			// 		name: '取消订单',
-			// 		className: 'l',
+			// 		btnType: 'black',
 			// 		functionName: 'handleCancelOrder',
 			// 		functionParams: [ orderItem ]
 			// 	})
@@ -204,7 +210,7 @@ export default {
 			if ([8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'handleOrderWriteOff',
 					functionParams: [ orderItem ]
 				})
@@ -213,7 +219,7 @@ export default {
 			if ([1, 8].includes(state)) {
 				orderNeedBtnList.push({
 					name: '立即付款',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handlePayOrder',
 					functionParams: [ orderItem ]
 				})
@@ -222,7 +228,7 @@ export default {
 			// if ([2, 3, 4, 9, 10].includes(state) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
 			// 	orderNeedBtnList.push({
 			// 		name: '申请售后',
-			// 		className: 'l',
+			// 		btnType: 'black',
 			// 		functionName: 'goAfterSalesService',
 			// 		functionParams: [ orderItem ]
 			// 	})
@@ -231,7 +237,7 @@ export default {
 			if ([ 1 ].includes(returnType)) {
 				orderNeedBtnList.push({
 					name: '退款详情',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'goRefundDetail',
 					functionParams: [ orderItem ]
 				})
@@ -240,7 +246,7 @@ export default {
 			if ([3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
 				orderNeedBtnList.push({
 					name: '查看物流',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'goLogisticsInformation',
 					functionParams: [ orderItem ]
 				})
@@ -249,7 +255,7 @@ export default {
 			if ([ 3 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '确认收货',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handleConfirmReceipt',
 					functionParams: [ orderItem ]
 				})
@@ -258,7 +264,7 @@ export default {
 			if ([ 6 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '邀请拼单',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'goSpellGroup',
 					functionParams: [ orderItem ]
 				})
@@ -267,7 +273,7 @@ export default {
 			if ([5, 4, 10].includes(state)) {
 				orderNeedBtnList.push({
 					name: collageId !== 0 ? '再次开团' : '再次购买',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handleBuyAgainEvent',
 					functionParams: [ orderItem ]
 				})
@@ -391,7 +397,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.item {
+.business-order {
 	margin-bottom: 20rpx;
 	background: #fff;
 	border-radius: 10rpx;
@@ -493,50 +499,6 @@ export default {
 					}
 				}
 			}
-		}
-
-		.total-price-box {
-			font-size: 26upx;
-			color: #333;
-			text-align: right;
-			padding: 18upx 0;
-		}
-
-		.btnBox {
-			width: 100%;
-			justify-content: flex-end;
-
-			.order-btn-box {
-				padding: 20upx 0;
-				display: flex;
-				flex-direction: row;
-				justify-content: flex-end;
-
-				.btn {
-					display: inline-view;
-					width: 150upx;
-					height: 56upx;
-					text-align: center;
-					line-height: 56upx;
-					font-size: 26upx;
-					color: #333;
-					margin-left: 20upx;
-				}
-
-				.btn.l {
-					border: 2rpx solid #333333;
-					color: #333;
-				}
-
-				.btn.r {
-					border: 2rpx solid #C5AA7B;
-					color: #C5AA7B;
-				}
-			}
-		}
-
-		.flexSpBetween {
-			justify-content: space-between;
 		}
 	}
 }
