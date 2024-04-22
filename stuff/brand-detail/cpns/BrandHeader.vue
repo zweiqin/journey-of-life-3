@@ -3,7 +3,9 @@
 		<view class="op-container" :class="{ fixed: scrollTop > 200 }">
 			<tui-icon class="back" @click="handleBack" name="arrowleft" color="#fff"></tui-icon>
 			<view class="search-container">
-				<image class="search-icon" src="../../../static/images/new-brand/index/search-icon.png" mode="" />
+				<view class="search-icon">
+					<tui-icon name="search" color="#b3b2ad" size="32" unit="rpx" margin="0"></tui-icon>
+				</view>
 				<input type="text" @confirm="$emit('search', searchKey)" v-model="searchKey" placeholder="请输入搜索内容" style="flex: 1"
 					confirm-type="search" />
 			</view>
@@ -217,8 +219,6 @@ export default {
 			margin: 0 32upx;
 
 			.search-icon {
-				width: 32upx;
-				height: 32upx;
 				padding-right: 16upx;
 				margin-right: 16upx;
 				border-right: 1upx solid #8f8d85;

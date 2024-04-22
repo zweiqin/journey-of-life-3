@@ -70,6 +70,28 @@
       <button class="btn" @click="handleAddSite">保存</button>
     </view>
 
+		<tui-popup
+			:duration="500" :mode-class="[ 'fade-in' ]"
+			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
+		>
+		<view style="padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
+			<view style="display: flex;align-items: center;">
+				<tui-icon name="gps" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+				<view style="flex: 1;">
+					<view>定位权限使用说明：</view>
+					<view style="margin-top: 12rpx;">"团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能</view>
+				</view>
+			</view>
+			<tui-button
+				type="warning" width="140rpx" height="58rpx" margin="20rpx auto 0"
+				@click="(showAuthPopupVisible = false) || handleOpenMap()"
+			>
+				确定
+			</tui-button>
+		</view>
+		</tui-popup>
+
     <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>
     <tui-toast ref="toast"></tui-toast>
   </view>
@@ -83,6 +105,7 @@ import { addressIntelligentRecogApi } from '../../api/logistics';
 export default {
   data() {
     return {
+      showAuthPopupVisible: false,
       form: {
         name: '',
         mobile: '',
@@ -211,19 +234,31 @@ export default {
 
     // 点击选择位置
     handleOpenMapToChooseAddress() {
-      const _this = this;
+			// #ifdef APP
+			const appAuthorizeSetting = uni.getAppAuthorizeSetting();
+			if (appAuthorizeSetting.locationAuthorized !== 'authorized') {
+				this.showAuthPopupVisible = true;
+			} else {
+				this.handleOpenMap()
+			}
+			// #endif
+			// #ifndef APP
+			this.handleOpenMap()
+			// #endif
+    },
+    handleOpenMap() {
       uni.chooseLocation({
-        success(res) {
+        success: (res) => {
           try {
             getAdressDetailByLngLat(res.latitude, res.longitude).then((parseRes) => {
               const { city, province, district, township } = parseRes.regeocode.addressComponent;
               const data1 = province + city + district;
-              _this.form.detailedAddress = data1 + township;
+              this.form.detailedAddress = data1 + township;
               let splitLen = data1.length;
               if (res.address.includes('街道') || res.address.includes('镇')) {
                 splitLen += district.length;
               }
-              _this.address = res.address.slice(splitLen) + res.name;
+              this.address = res.address.slice(splitLen) + res.name;
             });
           } catch (error) {}
         }

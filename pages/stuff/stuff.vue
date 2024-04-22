@@ -6,7 +6,7 @@
     <view class="main">
       <MianMenu></MianMenu>
       <image
-        src="../../static/images/new-brand/index/top-banner.png"
+        :src="common.seamingImgUrl('1712989223148-top-banner.png')"
         class="top-banner"
         mode=""
       />
@@ -15,7 +15,7 @@
       <Carousel
         :height="100"
         :list="[
-          require('../../static/images/new-brand/index/middle-banner.png'),
+          common.seamingImgUrl('1712989275471-middle-banner.png'),
         ]"
       ></Carousel>
 

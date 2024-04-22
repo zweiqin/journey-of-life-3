@@ -1,34 +1,50 @@
 <template>
 	<view class="container">
 		<JHeader title="提现" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
-		<view class="addressBack-box">
-			<view class="bankTag-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items" @click="handleBankTagClick">
-				<view class="fs28 addressTag">银行卡</view>
-				<view>
-					<label>{{ bankCardNum }}</label>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#b19970" margin="0 20rpx 0 0"></tui-icon>
+		<view style="padding: 10rpx 0 0;">
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 10rpx 30rpx;background-color: #ffffff;"
+				@click="handleBankTagClick"
+			>
+				<view style="font-size: 28rpx;">银行卡</view>
+				<view style="display: flex;align-items: center;">
+					<view>{{ bankCardNum }}</view>
+					<tui-icon name="arrowright" :size="48" unit="rpx" color="#b19970" margin="0 10rpx 0 0"></tui-icon>
 				</view>
 			</view>
-			<view style="margin-top: 20rpx;font-size: 28rpx;">
-				可提现金额：{{ price || 0 }}元
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 10rpx 30rpx;background-color: #ffffff;"
+				@click="withdrawalTypeShowFlag = true"
+			>
+				<view style="font-size: 28rpx;">提现类型</view>
+				<view style="display: flex;align-items: center;">
+					<view>{{ (withdrawalTypeList.find(i => i.value === withdrawalType) || { text: '出错了' }).text }}</view>
+					<tui-icon name="arrowright" :size="48" unit="rpx" color="#b19970" margin="0 10rpx 0 0"></tui-icon>
+				</view>
 			</view>
-			<view class="consignee-box bor-line-F7F7F7">
-				<input
-					v-model="withdrawalAmount" type="number" maxlength="9" class="fs28"
-					placeholder-class="consignee"
+			<view style="padding: 20rpx 20rpx 0;">
+				<view style="margin-top: 20rpx;font-size: 28rpx;">
+					可提现金额：{{ withdrawalPrice || 0 }}元（取整后 {{ withdrawalMoney }} 元）
+				</view>
+				<!-- <view style="margin-top: 12rpx;border-bottom: 2rpx solid #cccccc;">
+					<input
+					v-model="withdrawalMoney" type="number" maxlength="9"
 					placeholder="请输入提现金额(元)" @input="applycheck"
-				/>
-			</view>
-			<view style="color: red;margin-top: 10rpx;">{{ errMsg }}</view>
-			<view v-if="!errMsg" style="margin-top: 10rpx;text-align: right;">
-				手续费：{{ typeof withdrawCharge === 'number' ? withdrawCharge : '--' }} 元
-			</view>
-			<view class="apply-box">
-				<view class="apply-withdraw" @click="applyWithdraw">申请提现</view>
+					/>
+					</view> -->
+				<view style="color: #dc362e;margin-top: 6rpx;">{{ errMsg }}</view>
+				<view v-if="!errMsg" style="margin-top: 10rpx;text-align: right;">
+					手续费：{{ typeof withdrawCharge === 'number' ? withdrawCharge : '--' }} 元
+				</view>
+				<view class="operation-btn">
+					<tui-button type="brown" width="520rpx" height="88rpx" margin="10rpx auto 0" @click="applyWithdraw">
+						提现<text v-if="withdrawalMoney" style="padding: 0 0 0 8rpx;">{{ withdrawalMoney }}元</text>
+					</tui-button>
+				</view>
 			</view>
 		</view>
-		<view v-if="withdrawHistoryList && withdrawHistoryList.length" class="withdraw-history">
-			<view class="history-list">
+		<view v-if="withdrawHistoryList && withdrawHistoryList.length" style="margin-top: 14rpx;">
+			<view style="background-color: #ffffff;padding: 30rpx;">
 				<view style="padding: 0 0 18rpx;" class="fs30 font-color-333">历史记录</view>
 				<view
 					v-for="(item, index) in withdrawHistoryList" :key="index"
@@ -42,7 +58,9 @@
 							<view>{{ item.createTime }}</view>
 						</view>
 						<view>
-							<view style="padding: 10rpx 20rpx;background: #EEEEEE;color: #696868;">提现￥{{ item.withdrawalMoney }}</view>
+							<view style="padding: 10rpx 20rpx;background: #EEEEEE;color: #696868;">
+								提现￥{{ item.withdrawalMoney }}
+							</view>
 							<view style="font-size: 28rpx;color: #201f1f;text-align: center;">到账￥{{ item.actualReceipt }}</view>
 							<view class="text-align fs28 font-color-333">
 								<text v-if="item.state == 0">审核中</text>
@@ -61,116 +79,116 @@
 				</view>
 			</view>
 		</view>
-		<!-- 弹窗 -->
+
 		<tui-select
-			:list="bankcardselectList" reverse :show="bankTagShowFlag" @confirm="bankcardConfirm"
+			:list="bankcardselectList" reverse :show="bankTagShowFlag" @confirm="handleBankcardConfirm"
 			@close="bankTagShowFlag = false"
+		></tui-select>
+		<tui-select
+			:list="withdrawalTypeList" reverse :show="withdrawalTypeShowFlag"
+			@confirm="(e) => (withdrawalTypeShowFlag = false) || (withdrawalType = e.options.value)"
+			@close="withdrawalTypeShowFlag = false"
 		></tui-select>
 	</view>
 </template>
 
 <script>
-import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi } from '../../../api/anotherTFInterface'
-import { handleDebounce } from '../../../utils'
+import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi, getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+
 export default {
 	name: 'Withdraw',
-	filters: {
-		parseMoney(money) {
-			return parseFloat(money / 100).toFixed(2)
-		},
-		parseStatus(status) {
-			if (status == 0) {
-				return '审核中'
-			} else if (status == 1) {
-				return '已通过'
-			}
-			return '已拒绝'
-		}
-	},
 	data() {
 		return {
 			// 银行卡数据
-			bankcardList: [],
-			bankcardselectList: [ { value: '', label: '' } ],
+			bankcardselectList: [],
 			bankCardNum: '',
-			bankName: '',
 			bankTagShowFlag: false,
 			// 提现数据
-			price: 0,
+			withdrawalPrice: 0,
 			withdrawHistoryList: [],
-			withdrawalAmount: '',
+			withdrawalMoney: '',
 			errMsg: '',
+			withdrawalTypeList: [ { value: '1', text: '佣金', checked: false } ],
+			withdrawalType: '',
+			withdrawalTypeShowFlag: false,
 			// 手续费
-			withdrawCharge: '',
-			handleDebounce: ''
+			withdrawalTimer: '',
+			withdrawCharge: ''
 		}
 	},
 	onLoad(options) {
-		this.handleDebounce = handleDebounce(this.getCommission, 500)
-		this.initBankcardList()
-		this.getBalance()
+		this.withdrawalType = options.type || '1'
+		if (this.withdrawalType) (this.withdrawalTypeList.find((i) => i.value === this.withdrawalType) || {}).checked = true
+		getAllBankcardListApi({
+			page: 1,
+			pageSize: 9999
+		}).then((res) => {
+			this.bankcardselectList = res.data.list.map((item) => ({
+				value: item.bankCard,
+				text: `${item.bankName}（${item.bankCard.slice(-4)}）`,
+				bankName: item.bankName
+			}))
+		})
+		this.getWithdrawalData()
 	},
 
 	watch: {
-		withdrawalAmount(value) {
+		withdrawalMoney(value) {
 			if ((value + '').includes('.') && (value + '').split('.')[1].length > 2) {
 				this.errMsg = '提现金额错误'
 			} else if (value === '') {
 				this.errMsg = '提现金额不能为空'
-			} else if (value === 0) {
-				this.errMsg = '提现金额不能等于零'
-			} else if (value < 1) {
-				this.errMsg = '提现金额不能小于1元'
-			} else if (value > this.price) {
+			} else if (value <= 1) {
+				this.errMsg = '提现金额要大于1元'
+			} else if (value > this.withdrawalPrice) {
 				this.errMsg = '余额不足，请重新输入申请金额'
 			} else if (parseFloat(value) > 1000000) {
 				this.errMsg = '提现金额不能超过1000000'
 			} else {
 				this.errMsg = ''
-				this.handleDebounce()
+				if (this.withdrawalTimer) clearTimeout(this.withdrawalTimer)
+				this.withdrawalTimer = setTimeout(() => {
+					this.getCommission()
+				}, 600)
 			}
 		}
 	},
 	methods: {
 		getCommission() {
-			getCommissionBankApi({ amount: this.withdrawalAmount })
+			getCommissionBankApi({ amount: this.withdrawalMoney || 0 })
 				.then((res) => {
 					this.withdrawCharge = res.data.cost
 				})
 		},
-		getBalance() {
-			getPricePlatformAllApi({}).then((res) => {
-				this.price = res.data.price
-				this.withdrawHistoryList = res.data.withdrawals
-			})
+		getWithdrawalData() {
+			if (this.withdrawalType === '1') {
+				getPricePlatformAllApi({}).then((res) => {
+					this.withdrawHistoryList = res.data.withdrawals
+				})
+				getSmallAccountBookStatisticsApi({})
+					.then((res) => {
+						this.withdrawalPrice = res.data.totalAmount
+						this.withdrawalMoney = Math.floor(this.withdrawalPrice)
+					})
+			} else {
+				getPricePlatformAllApi({}).then((res) => {
+					this.withdrawalPrice = res.data.price
+					this.withdrawHistoryList = res.data.withdrawals
+					this.withdrawalMoney = Math.floor(this.withdrawalPrice)
+				})
+			}
 		},
 		applycheck(e) {
-			// 正则表达试
-			e.target.value = e.target.value.match(/^\d*(\.?\d{0,2})/g)[0] || null
-			// 重新赋值给input
 			this.$nextTick(() => {
-				this.withdrawalAmount = e.target.value
+				this.withdrawalMoney = e.target.value.match(/^\d*(\.?\d{0,2})/g)[0] || ''
 			})
 		},
-		initBankcardList() {
-			this.bankcardselectList = []
-			getAllBankcardListApi({
-				page: 1,
-				pageSize: 100
-			}).then((res) => {
-				this.bankcardList = res.data
-				for (let i = 0; i < this.bankcardList.total; i++) {
-					this.bankcardselectList.push({ value: this.bankcardList.list[i].bankCard, text: this.bankcardList.list[i].bankName })
-				}
-			})
-		},
-		bankcardConfirm(e) {
+		handleBankcardConfirm(e) {
 			this.bankTagShowFlag = false
 			this.bankCardNum = e.options.value
-			this.bankName = e.options.text
 		},
 		handleBankTagClick() {
-			if (this.bankcardList.total > 0) {
+			if (this.bankcardselectList.length) {
 				this.bankTagShowFlag = true
 			} else {
 				uni.showToast({
@@ -184,7 +202,7 @@ export default {
 			}
 		},
 		applyWithdraw() {
-			if (this.errMsg || !this.withdrawalAmount) {
+			if (this.errMsg || !this.withdrawalMoney) {
 				uni.showToast({
 					title: '提现金额有误',
 					duration: 2000,
@@ -203,43 +221,37 @@ export default {
 					icon: 'none'
 				})
 			} else {
-				uni.showLoading()
-				updateSaveDistributorWithdrawApi({
-					bankName: this.bankName,
-					bankCard: this.bankCardNum,
-					withdrawalMoney: this.withdrawalAmount
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showToast({
-						title: '申请成功',
-						duration: 2000,
-						icon: 'none'
-					})
-					this.withdrawalAmount = ''
-					this.$nextTick(() => {
-						this.errMsg = ''
-					})
-					this.getBalance()
-					this.initBankcardList()
+				uni.showModal({
+					title: '提示',
+					content: '确认申请提现？',
+					success: (res) => {
+						if (res.confirm) {
+							uni.showLoading()
+							updateSaveDistributorWithdrawApi({
+								bankName: this.bankcardselectList.find((i) => i.value === this.bankCardNum).bankName,
+								bankCard: this.bankCardNum,
+								withdrawalMoney: this.withdrawalMoney,
+								withdrawalType: Number(this.withdrawalType)
+							}).then((res) => {
+								uni.hideLoading()
+								uni.showToast({
+									title: '申请成功',
+									duration: 2000,
+									icon: 'none'
+								})
+								this.withdrawalMoney = ''
+								this.$nextTick(() => {
+									this.errMsg = ''
+								})
+								this.getWithdrawalData()
+							})
+								.catch((e) => {
+									uni.hideLoading()
+								})
+						}
+					}
 				})
-					.catch((e) => {
-						uni.hideLoading()
-					})
 			}
-			// else {
-			// 	let dotPos = this.withdrawalAmount.indexOf(".")
-			// 	let length = this.withdrawalAmount.length
-			// 	console.log(dotPos,222)
-			// 	console.log(length,333)
-			// 	if (length - dotPos > 3) {
-			// 		uni.showToast({
-			// 			title: "提现金额只能精确到小数点后两位",
-			// 			duration: 2000,
-			// 			icon: 'none'
-			// 		})
-			// 		return
-			// 	}
-			// }
 		}
 	}
 }
@@ -251,48 +263,9 @@ export default {
 	padding: 20rpx;
 	background-color: #F8F8F8;
 
-	.addressBack-box {
-		background-color: #FFFFFF;
-		padding: 30rpx 30rpx;
-
-		.consignee-box {
-			padding-bottom: 36rpx;
-			width: 690rpx;
-			margin-top: 20rpx;
-
-			.consignee {
-				color: #999999;
-				font-size: 28rpx;
-			}
-		}
-
-		.apply-withdraw {
-			width: 100%;
-			height: 100rpx;
-			line-height: 100rpx;
-			color: #FFEBC4;
-			text-align: center;
-			background: #333333;
-			margin: 0 auto;
-			margin-top: 20rpx;
-		}
-
-		.bankTag-box {
-			padding-bottom: 19px;
-
-			.addressTag {
-				color: #999999
-			}
-		}
-	}
-
-	.withdraw-history {
-		margin-top: 14rpx;
-
-		.history-list {
-			background: white;
-			padding: 30rpx;
-
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 18rpx;
 		}
 	}
 }

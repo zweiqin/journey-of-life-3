@@ -6,21 +6,29 @@
 
 		<!-- 上面三个统计 -->
 		<view class="top-pane">
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=1')">
-				<image class="img" src="../../../static/images/new-user/group/today-price.png"></image>
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+				<view style="background-color: #b548c6;border-radius: 18rpx;padding: 22rpx;">
+					<tui-icon name="wealth-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
+				</view>
 				<view class="text">今日佣金</view>
-				<view class="value">￥{{ commissionData.todaySum || 0 }}</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.todaySum || 0)).toFixed(2) }}</view>
 			</view>
 
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=2')">
-				<image class="img" src="../../../static/images/new-user/group/total-price.png"></image>
-				<view class="text">累计佣金</view>
-				<view class="value">￥{{ commissionData.remainAmount || 0 }}</view>
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+				<view style="background-color: #ff8700;border-radius: 18rpx;padding: 22rpx;">
+					<tui-icon name="wallet" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
+				</view>
+				<!-- <view class="text">累计佣金</view>
+					<view class="value">￥{{ commissionData.remainAmount || 0 }}</view> -->
+				<view class="text">可提现</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.totalAmount || 0)).toFixed(2) }}</view>
 			</view>
-			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-detail?tag=3')">
-				<image class="img" src="../../../static/images/new-user/group/lu-price.png"></image>
+			<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record')">
+				<view style="background-color: #22b07d;border-radius: 18rpx;padding: 22rpx;">
+					<tui-icon name="bankcard-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
+				</view>
 				<view class="text">途中佣金</view>
-				<view class="value">￥{{ commissionData.inTheAccount || 0 }}</view>
+				<view class="value">￥{{ Number.parseFloat(Number(commissionData.inTheAccount || 0)).toFixed(2) }}</view>
 			</view>
 		</view>
 
@@ -28,25 +36,33 @@
 		<view class="list">
 			<view class="list-wrapper">
 				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user')">
-					<image class="img" src="../../../static/images//new-user/group/total-vip-number.png"></image>
+					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
+						<tui-icon name="friendadd-fill" color="#32a7e2" size="42" unit="rpx" margin="0"></tui-icon>
+					</view>
 					<view class="text">累计会员(个)</view>
 					<view class="value">{{ commissionData.fans || 0 }}</view>
 				</view>
 
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?date=now')">
-					<image class="img" src="../../../static/images//new-user/group/today-vip-number.png"></image>
+				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?today=1')">
+					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
+						<tui-icon name="member-fill" color="#b548c6" size="42" unit="rpx" margin="0"></tui-icon>
+					</view>
 					<view class="text">今日会员(个)</view>
 					<view class="value">{{ commissionData.todayFans || 0 }}</view>
 				</view>
 
 				<!-- <view class="item">
-					<image class="img" src="../../static/images//new-user/group/can-whith.png"></image>
+					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
+					<tui-icon name="up" color="#f6c859" size="42" unit="rpx" margin="0"></tui-icon>
+					</view>
 					<view class="text">可提现(元)</view>
 					<view class="value">{{ commissionData.totalAmount || 0 }}</view>
 					</view>
 
 					<view class="item">
-					<image class="img" src="../../static/images//new-user/group/has-whitdh.png"></image>
+					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
+					<tui-icon name="circle-fill" color="#22b07d" size="42" unit="rpx" margin="0"></tui-icon>
+					</view>
 					<view class="text">已提现(元)</view>
 					<view class="value">{{ commissionData.withdrawAmount || 0 }}</view>
 					</view> -->
@@ -118,7 +134,7 @@ export default {
 			// }
 
 			uni.navigateTo({
-				url: '/another-tf/another-user/my-wallet/index'
+				url: '/another-tf/another-serve/withdraw/index?type=1'
 			})
 		}
 	},

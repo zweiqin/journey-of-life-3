@@ -37,22 +37,14 @@
         <view class="tags">
           <view class="tag">
             <view class="img-wrapper">
-              <image
-                class="icon"
-                src="../../static/images/new-brand/index/shiming.png"
-                mode=""
-              />
+							<tui-icon name="service-fill" color="#ffffff" size="24" unit="rpx" margin="0"></tui-icon>
             </view>
             <text>实名认证</text>
           </view>
 
           <view class="tag">
             <view class="img-wrapper">
-              <image
-                class="icon"
-                src="../../static/images/new-brand/index/shiming.png"
-                mode=""
-              />
+							<tui-icon name="service-fill" color="#ffffff" size="24" unit="rpx" margin="0"></tui-icon>
             </view>
             <text>品质保证</text>
           </view>

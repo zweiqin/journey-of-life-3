@@ -1,11 +1,16 @@
 <template>
   <view class="info-pane">
     <view class="header">
-      <image class="back" @click="handleBack" src="../../../static/images/new-user/gudong/back.png"></image>
+			<tui-icon name="arrowleft" color="#FFFFFF" size="52" unit="rpx" margin="0"></tui-icon>
     </view>
 
     <view class="share-holder-info">
-      <image class="avatar" :src="userInfo.avatarUrl"></image>
+			<view class="avatar">
+    	  <image style="width: 125upx;height: 125upx;border-radius: 16upx;" :src="userInfo.avatarUrl"></image>
+				<view style="position: absolute;bottom: 0;right: 0;margin-bottom: -10upx;margin-right: -10upx;padding: 10rpx;background-color: #e95d20;line-height: 1;border-radius: 50%;box-sizing: border-box;">
+					<tui-icon name="people-fill" color="#ffffff" size="28" unit="rpx" margin="0"></tui-icon>
+				</view>
+			</view>
       <view class="detail-info">
         <view class="nickname">{{ userInfo.nickName }} <text class="personal-tag"> (股东成员)</text> </view>
         <view class="mobile">{{ userInfo.phone }}</view>
@@ -43,10 +48,15 @@ export default {
   width: 100%;
 
   .header {
-    height: 104upx;
+    width: fit-content;
+    margin: 12rpx 0 0 24rpx;
+    padding: 8rpx;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    border-radius: 50%;
+    line-height: 1;
+		background-color: #1625b7;
 
     .back {
       width: 60upx;
@@ -73,20 +83,6 @@ export default {
       flex-shrink: 0;
       margin-right: 30upx;
       overflow: inherit;
-
-      &::after {
-        display: block;
-        position: absolute;
-        content: '';
-        width: 48upx;
-        height: 48upx;
-        background: url('../../../static/images/new-user/gudong/tag.png') no-repeat;
-        background-size: cover;
-        bottom: 0;
-        right: 0;
-        margin-bottom: -10upx;
-        margin-right: -10upx;
-      }
     }
 
     .detail-info {

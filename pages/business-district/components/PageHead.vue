@@ -1,6 +1,6 @@
 <template>
 	<view class="page-header-container">
-		<TuanAppShim bg="#fff"></TuanAppShim>
+		<TuanAppShim bg="transparent"></TuanAppShim>
 
 		<view class="container">
 			<view
@@ -19,16 +19,18 @@
 				</TuanLocation>
 				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
 				<tui-input
-					placeholder="社区商圈" disabled clearable
+					v-model="search"
+					:placeholder="isInput ? '' : '社区商圈'" :disabled="!isInput"
 					:border-bottom="false"
 					padding="6upx 10upx 6upx 2upx" placeholder-style="color: #292930;font-size: 28upx;"
-					background-color="transparent" style="flex: 1;margin-left: 14upx;" @click="go(`/another-tf/another-serve/search/index?searchType=shop`)"
+					background-color="transparent" style="flex: 1;margin-left: 14upx;"
+					@click="handleClickInput" @input="handleClickInput"
 				>
 					<template #right>
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							style="background: #ee692f!important;"
-							@click="go(`/another-tf/another-serve/search/index?searchType=shop`)"
+							@click="handleClickSearch"
 						>
 							搜索
 						</tui-button>
@@ -51,6 +53,34 @@
 
 <script>
 export default {
+	name: 'StorePrimaryFilterBox',
+	props: {
+		isInput: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data() {
+		return {
+			search: ''
+		}
+	},
+	methods: {
+		handleClickInput() {
+			if (this.isInput) {
+				this.$emit('input', this.search)
+			} else {
+				this.go(`/another-tf/another-serve/search/index?searchType=shop`)
+			}
+		},
+		handleClickSearch() {
+			if (this.isInput) {
+				this.$emit('search', this.search)
+			} else {
+				this.go(`/another-tf/another-serve/search/index?searchType=shop`)
+			}
+		}
+	}
 
 }
 </script>

@@ -17,14 +17,14 @@
 					<image class="planet-image" src="../../static/images/user/album/earth.svg" mode="heightFix" />
 					<view class="travel-slider-cities" :class="[ `travel-slider-cities-${imgList.length > 4 ? '8' : '4'}` ]">
 						<image class="cities-image" src="../../static/images/new-user/default-user-avatar.png" />
-						<image class="cities-image" src="../../static/images/new-user/star.png" />
+						<image class="cities-image" src="../../static/images/new-user/ju-logo.jpg" />
 						<image class="cities-image" src="../../static/images/new-user/default-user-avatar.png" />
-						<image class="cities-image" src="../../static/images/new-user/star.png" />
+						<image class="cities-image" src="../../static/images/new-user/ju-logo.jpg" />
 						<block v-if="imgList.length > 4">
 							<image class="cities-image" src="../../static/images/new-user/default-user-avatar.png" />
-							<image class="cities-image" src="../../static/images/new-user/star.png" />
+							<image class="cities-image" src="../../static/images/new-user/ju-logo.jpg" />
 							<image class="cities-image" src="../../static/images/new-user/default-user-avatar.png" />
-							<image class="cities-image" src="../../static/images/new-user/star.png" />
+							<image class="cities-image" src="../../static/images/new-user/ju-logo.jpg" />
 						</block>
 					</view>
 				</view>

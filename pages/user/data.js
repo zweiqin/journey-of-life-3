@@ -7,72 +7,6 @@ import { status } from './../../user/digital-store/newBusiness/config';
 
 import { ANOTHER_TF_SETTLE } from './../../config'
 
-export const shopOrderMneus = [
-	{
-		name: '待付款',
-		icon: require('../../static/images/new-user/orders/await-pay.png'),
-		url: '/user/orderForm/order-form?type=1'
-	},
-	{
-		name: '待发货',
-		icon: require('../../static/images/new-user/orders/await-fa.png'),
-		url: '/user/orderForm/order-form?type=2'
-	},
-	{
-		name: '待收货',
-		icon: require('../../static/images/new-user/orders/await-shou.png'),
-		url: '/user/orderForm/order-form?type=3'
-	},
-	{
-		name: '待评价',
-		icon: require('../../static/images/new-user/orders/await-ping.png'),
-		url: '/user/orderForm/order-form?type=4'
-	},
-	{
-		name: '所有订单',
-		icon: require('../../static/images/new-user/orders/all.png'),
-		url: '/user/orderForm/order-form?type=0'
-	}
-]
-
-export const shequOrderMenus = [
-	{
-		name: '待付款',
-		icon: require('../../static/images/new-user/orders/await-pay.png'),
-		url: '/community-center/order',
-		numberKey: 'WAIT_PAY'
-	},
-	{
-		name: '服务中',
-		icon: require('../../static/images/new-user/orders/await-fa.png'),
-		url: '/community-center/order',
-		numberKey: 'DISTRIBUTION'
-	},
-	{
-		name: '已完成',
-		icon: require('../../static/images/new-user/orders/await-jie.png'),
-		url: '/community-center/order',
-		numberKey: ''
-	},
-	{
-		name: '待评价',
-		icon: require('../../static/images/new-user/orders/await-fen.png'),
-		url: '/community-center/order',
-		numberKey: '',
-		navigate() {
-			uni.navigateTo({
-				url: '/community-center/comment-order/comment-order'
-			})
-		}
-	},
-
-	{
-		name: '所有订单',
-		icon: require('../../static/images/new-user/orders/all.png'),
-		url: '/community-center/order'
-	}
-]
-
 export const shequTwiceOrder = [
 	{
 		name: '待支付',
@@ -150,12 +84,12 @@ export const myFunction = [
 	// },
 	// {
 	// 	name: '会员升级',
-	// 	icon: require('../../static/images/new-user/menu-icon/huiyuanshengji.png'),
+	// 	icon: require('../../static/images/new-user/menu-icon/wodezhangben.png'),
 	// 	url: '/another-tf/another-user/user-upgrade/user-upgrade-application'
 	// },
 	// {
 	//   name: "会员升级", // 老团蜂的
-	//   icon: require("../../static/images/new-user/menu-icon/huiyuanshengji.png"),
+	//   icon: require("../../static/images/new-user/menu-icon/wodezhangben.png"),
 	//   url: "/user/sever/userUp/partner-appay",
 	// },
 	// {
@@ -349,7 +283,7 @@ export const otherFunction = [
 	},
 	{
 		name: '优惠券',
-		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 		url: '/another-tf/another-serve/coupon/list'
 	},
 	{
@@ -369,21 +303,21 @@ export const otherFunction = [
 	// },
 	{
 		name: '我的售后',
-		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/afterSale/index'
 	},
 	{
 		name: '加盟统计',
-		icon: require('../../static/images/new-user/menu-icon/shangjiatongji.png'),
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/franchisee-statistics/index',
 		showRole: [ 'franchisee' ]
 	},
-	// {
-	// 	name: '银行卡',
-	// 	icon: require('../../static/images/new-user/menu-icon/yinhangka.png'),
-	// 	// url: '/user/sever/bank-card/index',
-	// 	url: '/another-tf/another-serve/bankcard/index'
-	// },
+	{
+		name: '银行卡',
+		icon: require('../../static/images/new-user/menu-icon/yinhangka.png'),
+		// url: '/user/sever/bank-card/index',
+		url: '/another-tf/another-serve/bankcard/index'
+	},
 	{
 		name: '我的卡券',
 		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),

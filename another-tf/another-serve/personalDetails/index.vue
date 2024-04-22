@@ -122,7 +122,7 @@
 			:show="isShowbindWXFDialog" title="绑定微信" @click="handleBindWX"
 		>
 			<template #content>
-				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请输入手机号" disabled></tui-input>
+				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请无法自动填入手机号" disabled></tui-input>
 				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
@@ -136,7 +136,7 @@
 
 		<tui-popup
 			:duration="500" :mode-class="[ 'fade-in' ]"
-			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
 			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
 		>
 			<view style="display: flex;align-items: center;padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
@@ -267,7 +267,36 @@ export default {
 			})
 		},
 		handleChooseImage() {
-			this.showAuthPopupVisible = true
+			// #ifdef APP
+			const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+			if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
+				this.showAuthPopupVisible = true
+				uni.chooseImage({
+					count: 1,
+					success: (res) => {
+						uni.navigateTo({
+							url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+						})
+					},
+					fail: () => {
+						this.$showToast('图片上传失败')
+					}
+				})
+			} else {
+				uni.chooseImage({
+					count: 1,
+					success: (res) => {
+						uni.navigateTo({
+							url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
+						})
+					},
+					fail: () => {
+						this.$showToast('图片上传失败')
+					}
+				})
+			}
+			// #endif
+			// #ifndef APP
 			uni.chooseImage({
 				count: 1,
 				success: (res) => {
@@ -276,51 +305,10 @@ export default {
 					})
 				},
 				fail: () => {
-					this.ttoast('图片上传失败')
+					this.$showToast('图片上传失败')
 				}
 			})
-			// // #ifdef APP
-			// const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-			// if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
-			// 	this.showAuthPopupVisible = true
-			// 	uni.chooseImage({
-			// 		count: 1,
-			// 		success: (res) => {
-			// 			uni.navigateTo({
-			// 				url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
-			// 			})
-			// 		},
-			// 		fail: () => {
-			// 			this.ttoast('图片上传失败')
-			// 		}
-			// 	})
-			// } else {
-			// 	uni.chooseImage({
-			// 		count: 1,
-			// 		success: (res) => {
-			// 			uni.navigateTo({
-			// 				url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
-			// 			})
-			// 		},
-			// 		fail: () => {
-			// 			this.ttoast('图片上传失败')
-			// 		}
-			// 	})
-			// }
-			// // #endif
-			// // #ifndef APP
-			// uni.chooseImage({
-			// 	count: 1,
-			// 	success: (res) => {
-			// 		uni.navigateTo({
-			// 			url: '/another-tf/another-user/cropper/index?imgUrl=' + res.tempFilePaths[0]
-			// 		})
-			// 	},
-			// 	fail: () => {
-			// 		this.ttoast('图片上传失败')
-			// 	}
-			// })
-			// // #endif
+			// #endif
 		},
 		// 获取用户信息
 		getUserInfoData() {
@@ -386,7 +374,7 @@ export default {
 			this.bindWXFormData.wechatOpenId = data.wechatOpenId
 			this.bindWXFormData.headImage = data.headImage
 			this.bindWXFormData.wechatName = data.wechatName
-			this.bindWXFormData.phone = data.phone
+			this.bindWXFormData.phone = data.phone || this.$store.getters.userInfo.phone
 			this.isShowbindWXFDialog = true
 		},
 		handleBindWX(e) {

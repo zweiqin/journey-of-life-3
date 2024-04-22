@@ -11,7 +11,7 @@
       </scroll-view>
     </Search>
 
-    <view class="image-wrapper">
+    <view class="image-wrapper" :style="{ background: `url(${common.seamingImgUrl('1712992983926-brand-bg.png')}) no-repeat center top/cover` }">
       {{ currentCompany }}
     </view>
 
@@ -154,7 +154,6 @@ export default {
 .image-wrapper {
   width: 710upx;
   height: 200upx;
-  background: url('../../static/images/new-brand/index/brand-bg.png') no-repeat;
   background-size: cover;
   border-radius: 16upx;
   margin: 20upx auto;

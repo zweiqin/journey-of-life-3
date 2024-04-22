@@ -202,8 +202,8 @@
 		<!-- 首要标签筛选框 -->
 		<view v-if="ownPrimaryFilterBox.includes(currentType)" style="margin: 14rpx 26rpx 0;">
 			<StorePrimaryFilterBox
-				:type="currentType" :parent-classify-id="queryInfo.classifyId"
-				@select="handleSelectPrimaryFilter"
+				:parent-classify-id="queryInfo.classifyId" :default-class-text="currentType === '6' ? '全部美食' : ''"
+				padding="0 30rpx" @select="handleSelectPrimaryFilter"
 			></StorePrimaryFilterBox>
 		</view>
 
@@ -711,7 +711,7 @@ export default {
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-		z-index: 998;
+		z-index: 997;
 
 		.back-icon {
 			width: 48rpx;

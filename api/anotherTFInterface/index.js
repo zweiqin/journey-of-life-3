@@ -754,7 +754,7 @@ export const updatePlatformProductClassifyApi = (data) => AnotherTFRequest('/pla
 // 删除商品类别
 export const deletePlatformProductClassifyApi = (data) => AnotherTFRequest('/platformProductClassify/delete', data, 'POST')
 
-// （商家）选品管理
+// （商家）选品管理 TODO
 // 查询分类层级
 export const getClassifyPlatformProductApi = (data) => AnotherTFRequest('/platformProduct/getClassify', data, 'POST')
 

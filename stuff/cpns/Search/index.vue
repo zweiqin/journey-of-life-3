@@ -3,7 +3,9 @@
     <view class="search-ontainer">
       <tui-icon @click="handleBack" name="arrowleft"></tui-icon>
       <view class="search-container">
-        <image class="search-icon" src="../../../static/images/new-brand/index/search-icon.png" mode="" />
+				<view class="search-icon">
+					<tui-icon name="search" color="#b3b2ad" size="32" unit="rpx" margin="0"></tui-icon>
+				</view>
 
         <input v-model="serachValue" @confirm="$emit('search', serachValue)" confirm-type="search" type="text" :placeholder="placeholder" />
 
@@ -127,8 +129,6 @@ export default {
       box-sizing: border-box;
 
       .search-icon {
-        width: 32upx;
-        height: 32upx;
         margin-right: 16upx;
         padding-right: 16upx;
         border-right: 1upx solid #d5d4d1;

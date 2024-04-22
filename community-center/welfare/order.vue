@@ -73,6 +73,22 @@
       <button :loading="isLoading" @click="handleConfirmOrder" class="confirm-btn uni-btn">确认下单</button>
     </view>
 
+    <tui-popup
+      :duration="500"
+      :mode-class="['fade-in']"
+      :styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+      :show="showAuthPopupVisible"
+      @click="showAuthPopupVisible = false"
+    >
+      <view style="display: flex; align-items: center; padding: 26upx; background-color: #ffffff; border-radius: 20upx">
+        <tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+        <view style="flex: 1">
+          <view>相机权限和相册权限使用说明：</view>
+          <view style="margin-top: 12rpx">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于上传清洗、维修、安装的服务图片等场景</view>
+        </view>
+      </view>
+    </tui-popup>
+
     <!-- 选择时间 -->
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
     <tui-toast ref="toast"></tui-toast>
@@ -91,6 +107,7 @@ export default {
   components: { ChooseTime },
   data() {
     return {
+      showAuthPopupVisible: false,
       isLoading: false,
       scrollTop: 0,
       defualtAddress: null,
@@ -144,7 +161,20 @@ export default {
     },
 
     handleUploadImg() {
-      const _this = this
+      // #ifdef APP
+      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+      if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
+        this.showAuthPopupVisible = true
+        this.handleChooseImage()
+      } else {
+        this.handleChooseImage()
+      }
+      // #endif
+      // #ifndef APP
+      this.handleChooseImage()
+      // #endif
+    },
+    handleChooseImage() {
       uni.chooseImage({
         success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
@@ -158,11 +188,11 @@ export default {
               },
               success: (uploadFileRes) => {
                 uni.hideLoading()
-                _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
+                this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
               },
               fail: (error) => {
                 uni.hideLoading()
-                _this.ttoast({
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
@@ -170,7 +200,6 @@ export default {
               }
             })
           }
-
           return
         },
         fail: (fail) => {

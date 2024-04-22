@@ -247,14 +247,19 @@
 					<view style="margin-left: 20rpx;">{{ brandDetail.shopName || '--' }}</view>
 				</view>
 				<view class="bottom-btn">
-					<tui-button type="warning" width="274rpx" height="88rpx" shape="circle" @click="handleConnectBrand">
-						<view style="display: flex;align-items: center;">
-							<view style="padding: 8rpx;background-color: #ffffff;line-height: 1;border-radius: 50%;">
-								<tui-icon name="voipphone" :size="30" unit="rpx" color="#ef530e" margin="0"></tui-icon>
+					<BeeMakePhone ref="refBeeMakePhone" :phone="brandDetail.chargePersonPhone">
+						<tui-button
+							type="warning" width="274rpx" height="88rpx" shape="circle"
+							@click="$refs.refBeeMakePhone.handleMackPhone()"
+						>
+							<view style="display: flex;align-items: center;">
+								<view style="padding: 8rpx;background-color: #ffffff;line-height: 1;border-radius: 50%;">
+									<tui-icon name="voipphone" :size="30" unit="rpx" color="#ef530e" margin="0"></tui-icon>
+								</view>
+								<text style="margin-left: 10rpx;font-size: 32rpx;font-weight: bold;color: #ffffff;">联系商家</text>
 							</view>
-							<text style="margin-left: 10rpx;font-size: 32rpx;font-weight: bold;color: #ffffff;">联系商家</text>
-						</view>
-					</tui-button>
+						</tui-button>
+					</BeeMakePhone>
 				</view>
 			</view>
 		</view>
@@ -286,7 +291,8 @@ export default {
 				label: '',
 				shopAdress: '',
 				shopBrief: '',
-				videos: ''
+				videos: '',
+				chargePersonPhone: ''
 			},
 			currentWrapper: 0,
 			allTabList: [ '全部' ],
@@ -445,15 +451,6 @@ export default {
 						uni.hideLoading()
 					})
 			}
-		},
-		handleConnectBrand() {
-			if (!this.brandDetail.chargePersonPhone) this.$showToast('缺少商家电话')
-			uni.makePhoneCall({
-				phoneNumber: this.brandDetail.chargePersonPhone,
-				fail: () => {
-					this.$showToast('操作失败')
-				}
-			})
 		}
 	},
 	onReachBottom() {

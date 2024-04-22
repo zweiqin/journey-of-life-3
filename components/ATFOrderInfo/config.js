@@ -11,6 +11,65 @@ export const orderTypeEnum = {
 	10: '已核销'
 }
 
+export const orderPatternEnum = {
+	'1': {
+		text: '等待买家付款',
+		message: '待支付'
+	},
+	'2': {
+		text: '等待卖家发货',
+		message: '付款后2-5个工作日发货'
+	},
+	'3': {
+		text: '卖家已发货',
+		message: ''
+	},
+	'4': {
+		text: '交易成功',
+		message: '感谢您的使用'
+	},
+	'5': {
+		text: '交易关闭',
+		message: '您已关闭了这笔交易'
+	},
+	'5.5': {
+		text: '拼团失败',
+		message: '剩余时间 00:00:00'
+	},
+	'6': {
+		text: '待成团',
+		message: ''
+	},
+	'7': {
+		text: '待售后',
+		message: ''
+	},
+	'8': {
+		text: '待核销（未付款）',
+		message: ''
+	},
+	'9': {
+		text: '待核销（已付款）',
+		message: ''
+	},
+	'10': {
+		text: '已核销',
+		message: ''
+	},
+	'0': {
+		text: '出错了-0',
+		message: '出错了-0'
+	},
+	'undefined': {
+		text: '出错了-',
+		message: '出错了-'
+	},
+	'': {
+		text: '--',
+		message: '--'
+	}
+}
+
 export function afterConditionEnum(afterState, afterType) {
 	if (afterType === 1) { // 退款
 		return {

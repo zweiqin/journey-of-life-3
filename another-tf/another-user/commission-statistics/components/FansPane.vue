@@ -19,10 +19,10 @@
         <view class="phone-number">{{ fansInfo.phone ? fansInfo.phone.slice(0, 3) + '****' + fansInfo.phone.slice(7) : '-'
         }}
         </view>
-        <button class="uni-btn" @click="handleCallPhone(fansInfo.phone)">
-          <tui-icon class="icon" color="#ccc" :size="16" name="voipphone"></tui-icon>
-          拨打
-        </button>
+				<BeeMakePhone :phone="fansInfo.phone">
+					<tui-icon name="voipphone" color="#ccc" :size="16" margin="0 10rpx 0 0"></tui-icon>
+					<text style="color: #cccccc;">拨打</text>
+				</BeeMakePhone>
       </view>
 
       <view class="fans-wrapper">
@@ -55,12 +55,6 @@ export default {
   },
 
   methods: {
-    handleCallPhone(phone) {
-      if (!phone) return;
-      uni.makePhoneCall({
-        phoneNumber: phone
-      });
-    },
   },
 }
 </script>

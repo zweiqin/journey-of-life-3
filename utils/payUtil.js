@@ -441,7 +441,8 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			if (isInWx()) {
 				if (store.state.app.isInMiniProgram || isH5InWebview()) {
 					getPayMiniProgramQueryApi({
-						orderNo: submitInfo.orderSn,
+						orderFormid: submitInfo.orderFormid,
+						orderNo: submitInfo.orderSn || submitInfo.orderFormid,
 						purchaseMode,
 						paymentMode: submitInfo.paymentMode,
 						...otherArgs
@@ -486,7 +487,8 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				// #ifdef APP
 				// uni.showToast({ title: '暂不支持在APP使用通联支付', icon: 'none' })
 				getPayMiniProgramQueryApi({
-					orderNo: submitInfo.orderSn,
+					orderFormid: submitInfo.orderFormid,
+					orderNo: submitInfo.orderSn || submitInfo.orderFormid,
 					purchaseMode,
 					paymentMode: submitInfo.paymentMode,
 					...otherArgs
@@ -524,6 +526,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 								uni.showToast({ title: '请先安装微信', icon: 'none' })
 							}
 						}, function (e) {
+							uni.showToast({ title: '获取分享服务列表失败', icon: 'none' })
 							console.log('获取分享服务列表失败：' + e.message)
 						})
 						// }

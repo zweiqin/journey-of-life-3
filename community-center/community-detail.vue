@@ -174,11 +174,9 @@
     <!-- 底部在线咨询和立即下单和预约 -->
     <view class="foot">
       <view class="list">
-        <view class="online" @click="handleChat">
-          <!-- #ifdef H5 -->
+        <view class="online" @click="handleOpenCustomerService">
           <tui-icon :size="48" unit="rpx" color="#e95e20" name="kefu" margin="0"></tui-icon>
           <view class="name">在线咨询</view>
-          <!-- #endif -->
         </view>
         <view class="order-list">
           <!-- <view class="join">加入需求清单</view> -->
@@ -199,7 +197,9 @@
     <!-- 分享活动邀请码 -->
     <CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
 
-    <TuanChatKF ref="tuanChatKFRef"></TuanChatKF>
+		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+		</tui-bottom-popup>
   </view>
 </template>
 
@@ -267,7 +267,11 @@ export default {
       userId: '',
       shareCode: '',
       preferentialPrice: 0,
-      commentList: []
+      commentList: [],
+
+			// 客服
+			isShowCustomerServicePopup: false,
+			customerServiceList: []
     };
   },
 
@@ -579,9 +583,14 @@ export default {
       }
     },
 
-    // 聊天
-    handleChat() {
-      this.$refs.tuanChatKFRef.show();
+    // 打开客服
+    async handleOpenCustomerService() {
+			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+				shopId: ''
+			})
+			this.customerServiceList = res.data.filter((item) => item.name === '社区服务')
+			if (!this.customerServiceList.length) this.$showToast('暂无客服')
+			else this.isShowCustomerServicePopup = true
     }
   }
 };
@@ -590,6 +599,10 @@ export default {
 <style lang="less" scoped>
 .community-detail {
   background: #f7f8fa;
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 
   .head {
     background: #ffffff;

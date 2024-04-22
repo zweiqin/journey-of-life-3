@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { USER_INFO, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
+import { USER_INFO, T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
 import {
@@ -91,13 +91,13 @@ export default {
 		if (!getStorageKeyToken()) return
 		this.userId = getUserId() || ''
 		if (this.userId && !options.type && uni.getStorageSync(T_NEW_BIND_TYPE)) { // 如果原先有绑定id，例如注册/重新登陆了然后跳回来（options没携带绑定id），则是存储里的绑定id
-			this.userInfo = uni.getStorageSync(USER_INFO)
+			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
 			this.type = uni.getStorageSync(T_NEW_BIND_TYPE) || ''
 			this.code = uni.getStorageSync(T_NEW_BIND_CODE) || ''
 			this.otherSideUserId = uni.getStorageSync(T_NEW_BIND_ID) || ''
 			this.handleBusiness(true)
 		} else if (this.userId && options.type) { // 请求路径上面直接有绑定id参数
-			this.userInfo = uni.getStorageSync(USER_INFO)
+			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
 			this.type = options.type || ''
 			this.code = options.code || ''
 			this.otherSideUserId = options.userId || ''
@@ -196,7 +196,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject({ url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}`, toType: 'H5' })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
 			} else if (this.type === 'downloadApp') {
@@ -217,7 +217,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject({ url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.nickName}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, toType: 'H5' })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
 			} else if (this.type === 'bindLastUser') { // 旧系统

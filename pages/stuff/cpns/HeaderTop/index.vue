@@ -1,5 +1,5 @@
 <template>
-  <view class="top-header-container">
+  <view class="top-header-container" :style="{ background: `url(${common.seamingImgUrl('1712990221526-top-bg.png')}) no-repeat center top/cover`}">
     <h1>中国·龙江</h1>
     <h2>全球最大的家具材料产业集群</h2>
 
@@ -9,12 +9,14 @@
       <TuanLocation>
         <view class="locale">
           <text>{{ $store.getters.currentCity || '定位失败' }}</text>
-          <image class="locale-icon" src="../../../../static/images/new-brand/index/down-arrow.png"></image>
+					<tui-icon name="turningdown" color="#312606" size="48" unit="rpx" margin="0"></tui-icon>
         </view>
       </TuanLocation>
 
       <view class="search-wrapper">
-        <image class="search-icon" src="../../../../static/images/new-brand/index/search-icon.png" mode="" />
+				<view class="search-icon">
+					<tui-icon name="search" color="#b3b2ad" size="32" unit="rpx" margin="0"></tui-icon>
+				</view>
         <input
           v-model="searchValue"
           confirm-type="search"
@@ -25,7 +27,7 @@
       </view>
 
       <button class="uni-btn distribute" @click="go('/stuff/purchase/purchase')">
-        <image class="add-icon" src="../../../../static/images/new-brand/index/add-icon.png" mode="" />
+				<tui-icon name="add" color="#f98833" size="40" unit="rpx" margin="0"></tui-icon>
         <text>需求发布</text>
       </button>
     </view>
@@ -65,7 +67,6 @@ export default {
   box-sizing: border-box;
   height: 560upx;
   width: 100%;
-  background: url('../../../../static/images/new-brand/index/top-bg.png') no-repeat;
   background-size: cover;
 
   .back {
@@ -124,8 +125,6 @@ export default {
 
       .search-icon {
         flex-shrink: 0;
-        width: 32upx;
-        height: 32upx;
         padding-right: 16upx;
         margin-right: 16upx;
         border-right: 1upx solid #d5d4d1;
