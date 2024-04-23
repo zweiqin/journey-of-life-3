@@ -199,6 +199,7 @@
 					<view v-if="orderList && orderList.length">
 						<ATFBusinessOrder
 							v-for="(orderItem, orderIndex) in orderList" :key="orderIndex" :data="orderItem"
+							is-show-other
 						></ATFBusinessOrder>
 					</view>
 					<view style="padding-bottom: 45upx;">
