@@ -9,7 +9,7 @@
       <text class="pageTitle">全屋快装</text>
     </view>
     <view class="banner-wrapper">
-      <image class="banner-img" src="@/static/images/new-index/kuaizhuang/kuaizhuang-banner.png"></image>
+      <image class="banner-img" :src="common.seamingImgUrl('1713767485291-kuaizhuang-banner.png')"></image>
     </view>
 
     <view class="main">
@@ -18,19 +18,19 @@
         <view class="menu-list">
           <view class="menu-item">
             <view class="menu-name">客厅翻新</view>
-            <image src="@/static/images/new-index/kuaizhuang/ketingfanxin.png" class="menu-img"></image>
+            <image :src="common.seamingImgUrl('1713767553925-ketingfanxin.png')" class="menu-img"></image>
           </view>
           <view class="menu-item">
             <view class="menu-name">卧室翻新</view>
-            <image src="@/static/images/new-index/kuaizhuang/woshifanxin.png" class="menu-img"></image>
+            <image :src="common.seamingImgUrl('1713767558079-woshifanxin.png')" class="menu-img"></image>
           </view>
           <view class="menu-item">
             <view class="menu-name">餐厅翻新</view>
-            <image src="@/static/images/new-index/kuaizhuang/cantingfanxin.png" class="menu-img"></image>
+            <image :src="common.seamingImgUrl('1713767561426-cantingfanxin.png')" class="menu-img"></image>
           </view>
           <view class="menu-item">
             <view class="menu-name">全屋整装</view>
-            <image src="@/static/images/new-index/kuaizhuang/quanwuzhengzhuang.png" class="menu-img"></image>
+            <image :src="common.seamingImgUrl('1713767564479-quanwuzhengzhuang.png')" class="menu-img"></image>
           </view>
         </view>
 
@@ -80,15 +80,15 @@
 
         <view class="active-pane-list">
           <view class="item">
-            <image class="active-iamge" src="../../../static/images/new-index/kuaizhuang/a-1.png"></image>
+            <image class="active-iamge" :src="common.seamingImgUrl('1713767205327-a-1.png')"></image>
             <view class="active-title"><text style="color: #ef530e">免费</text>上门量房</view>
           </view>
           <view class="item">
-            <image class="active-iamge" src="../../../static/images/new-index/kuaizhuang/a-2.png"></image>
+            <image class="active-iamge" :src="common.seamingImgUrl('1713767209277-a-2.png')"></image>
             <view class="active-title"><text style="color: #ef530e">免费</text>老房诊断</view>
           </view>
           <view class="item">
-            <image class="active-iamge" src="../../../static/images/new-index/kuaizhuang/a-3.png"></image>
+            <image class="active-iamge" :src="common.seamingImgUrl('1713767211725-a-3.png')"></image>
             <view class="active-title"><text style="color: #ef530e">免费</text>门型规划</view>
           </view>
         </view>
@@ -155,7 +155,7 @@
           <view class="right-bar"></view>
         </view>
         <view class="Service_Content_Item">
-          <image class="Service_Content_Image" src="@/static/images/new-index/kuaizhuang/quanwukuaihzuang.png"></image>
+          <image class="Service_Content_Image" :src="common.seamingImgUrl('1713767385111-quanwukuaihzuang.png')"></image>
           <view class="conrtentText">
             <text class="conrtentTitle">客厅配置</text>
             <view class="conrtentTextBox">
@@ -169,7 +169,7 @@
           </view>
         </view>
         <view class="Service_Content_Item">
-          <image class="Service_Content_Image" src="@/static/images/new-index/kuaizhuang/quanwukuaihzuang2.png"></image>
+          <image class="Service_Content_Image" :src="common.seamingImgUrl('1713767388100-quanwukuaihzuang2.png')"></image>
           <view class="conrtentText">
             <text class="conrtentTitle">客厅配置</text>
             <view class="conrtentTextBox">
@@ -183,7 +183,7 @@
           </view>
         </view>
         <view class="Service_Content_Item">
-          <image class="Service_Content_Image" src="@/static/images/new-index/kuaizhuang/quanwukuaihzuang3.png"></image>
+          <image class="Service_Content_Image" :src="common.seamingImgUrl('1713767390646-quanwukuaihzuang3.png')"></image>
           <view class="conrtentText">
             <text class="conrtentTitle">客厅配置</text>
             <view class="conrtentTextBox">
@@ -197,7 +197,7 @@
           </view>
         </view>
         <view class="Service_Content_Item">
-          <image class="Service_Content_Image" src="@/static/images/new-index/kuaizhuang/quanwukuaihzuang4.png"></image>
+          <image class="Service_Content_Image" :src="common.seamingImgUrl('1713767393596-quanwukuaihzuang4.png')"></image>
           <view class="conrtentText">
             <text class="conrtentTitle">客厅配置</text>
             <view class="conrtentTextBox">
@@ -219,7 +219,7 @@
           <view class="title-text">服务内容</view>
           <view class="right-bar"></view>
         </view>
-        <image class="ServiceProcessImg" src="@/static/images/new-index/kuaizhuang/ServiceProcess.png"></image>
+        <image class="ServiceProcessImg" :src="common.seamingImgUrl('1713767668527-ServiceProcess.png')"></image>
       </view>
     </view>
   </view>

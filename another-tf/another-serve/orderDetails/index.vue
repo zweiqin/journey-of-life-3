@@ -174,7 +174,9 @@
 								>
 									<view>
 										<text style="color: #8F8F8F;">需付金额</text>
-										<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.price }}</text>
+										<text style="margin-left: 32upx;color: #222229;">
+											￥{{ Number.parseFloat(Number(dataList.price || 0)).toFixed(2) }}
+										</text>
 									</view>
 									<view v-if="[1, 6].includes(dataList.state)">
 										<view style="display: flex;align-items: center;color: #1A66FF;">
@@ -188,19 +190,27 @@
 								</view>
 								<view style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">商品总价</text>
-									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.orderPrice }}</text>
+									<text style="margin-left: 32upx;color: #222229;">
+										￥{{ Number.parseFloat(Number(dataList.orderPrice || 0)).toFixed(2) }}
+									</text>
 								</view>
 								<view v-if="[2, 3, 4, 9, 10].includes(dataList.state)" style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">实付金额</text>
-									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.price }}</text>
+									<text style="margin-left: 32upx;color: #222229;">
+										￥{{ Number.parseFloat(Number(dataList.price || 0)).toFixed(2) }}
+									</text>
 								</view>
 								<view style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">快递运费</text>
-									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.logisticsPrice }}</text>
+									<text style="margin-left: 32upx;color: #222229;">
+										￥{{ Number.parseFloat(Number(dataList.logisticsPrice || 0)).toFixed(2) }}
+									</text>
 								</view>
 								<view style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">平台优惠</text>
-									<text style="margin-left: 32upx;color: #222229;">¥{{ dataList.discountPrice }}</text>
+									<text style="margin-left: 32upx;color: #222229;">
+										￥{{ Number.parseFloat(Number(dataList.discountPrice || 0)).toFixed(2) }}
+									</text>
 								</view>
 							</view>
 							<view v-if="[3, 4].includes(dataList.state)" style="padding-top: 32upx;">

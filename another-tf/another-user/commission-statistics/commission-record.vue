@@ -2,26 +2,26 @@
 	<view class="voucher-record-container">
 		<JHeader title="收支明细" width="50" height="50"></JHeader>
 		<view style="padding: 20rpx 20rpx 0;">
-			<view class="top-btn">
+			<!-- <view class="top-btn">
 				<tui-button
-					type="white" width="200rpx" height="60rpx" shape="circle"
-					link margin="0"
-					@click="isShowTypePopup = true"
+				type="white" width="200rpx" height="60rpx" shape="circle"
+				link margin="0"
+				@click="isShowTypePopup = true"
 				>
-					<view style="display: flex;align-items: center;font-size: 28rpx;line-height: 1;">
-						<text v-if="[ 0 ].includes(queryInfo.type)">
-							全部明细
-						</text>
-						<text v-else-if="[ 1 ].includes(queryInfo.type)">
-							支出
-						</text>
-						<text v-else-if="[ 2 ].includes(queryInfo.type)">
-							收入
-						</text>
-						<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
-					</view>
+				<view style="display: flex;align-items: center;font-size: 28rpx;line-height: 1;">
+				<text v-if="[ 0 ].includes(queryInfo.type)">
+				全部明细
+				</text>
+				<text v-else-if="[ 1 ].includes(queryInfo.type)">
+				支出
+				</text>
+				<text v-else-if="[ 2 ].includes(queryInfo.type)">
+				收入
+				</text>
+				<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+				</view>
 				</tui-button>
-			</view>
+				</view> -->
 
 			<view style="margin-top: 18rpx;font-size: 28rpx;">
 				<tui-dropdown-list
@@ -87,10 +87,10 @@
 						<view style="flex: 1;display: flex;align-items: center;">
 							<view
 								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-								:style="{ backgroundColor: [5, 6].includes(item.type) ? '#208f57' : [1, 2, 3, 4].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
+								:style="{ backgroundColor: [5, 7].includes(item.type) ? '#208f57' : [1, 2, 3, 4, 6].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
 							>
-								<text v-if="[5, 6].includes(item.type)">支</text>
-								<text v-else-if="[1, 2, 3, 4].includes(item.type)">收</text>
+								<text v-if="[5, 7].includes(item.type)">支</text>
+								<text v-else-if="[1, 2, 3, 4, 6].includes(item.type)">收</text>
 								<text v-else>--</text>
 							</view>
 							<view style="margin-left: 14rpx;">
@@ -105,6 +105,7 @@
 										<text v-else-if="item.type === 4">服务</text>
 										<text v-else-if="item.type === 5">支付</text>
 										<text v-else-if="item.type === 6">退款</text>
+										<text v-else-if="item.type === 7">提现</text>
 										<text v-else>--</text>
 									</text>
 								</view>
@@ -113,11 +114,11 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ [5, 6].includes(item.type) ? '-' : [1, 2, 3, 4].includes(item.type) ? '+' : '？' }}{{ item.amount }}元
+								{{ [5, 7].includes(item.type) ? '-' : [1, 2, 3, 4, 6].includes(item.type) ? '+' : '？' }}{{ Number.parseFloat(Number(item.amount || 0)).toFixed(2) }}元
 							</view>
 							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>订单总额：</text>
-								<text>{{ item.totalAmount }}</text>
+								<text>{{ Number.parseFloat(Number(item.totalAmount || 0)).toFixed(2) }}</text>
 							</view>
 						</view>
 					</view>
@@ -192,7 +193,8 @@ export default {
 			}
 		}
 	},
-	onLoad() {
+	onLoad(options) {
+		this.queryInfo.today = Number(options.today) || 2
 		this.getCommissionStatisticsRecord()
 	},
 	methods: {
@@ -202,9 +204,9 @@ export default {
 				.then((res) => {
 					this.commissionRecordTotal = res.data.total
 					if (isLoadmore) {
-						this.commissionRecordList.push(...res.data.records)
+						this.commissionRecordList.push(...res.data.list)
 					} else {
-						this.commissionRecordList = res.data.records
+						this.commissionRecordList = res.data.list
 					}
 					this.isEmpty = this.commissionRecordList.length === 0
 					uni.hideLoading()

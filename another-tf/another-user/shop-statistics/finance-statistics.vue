@@ -137,14 +137,23 @@
 				<view v-if="financeStatisticsData.finances && financeStatisticsData.finances.length">
 					<tui-table>
 						<tui-tr>
-							<tui-td bold :span="8">日期</tui-td>
+							<tui-td bold :span="12">日期</tui-td>
 							<tui-td bold :span="8">收入（元）</tui-td>
 							<tui-td bold :span="8">支出（元）</tui-td>
+							<tui-td bold :span="8">操作</tui-td>
 						</tui-tr>
 						<tui-tr v-for="(item, index) in financeStatisticsData.finances" :key="index">
-							<tui-td :span="8">{{ item.time }}</tui-td>
+							<tui-td :span="12">{{ item.time }}</tui-td>
 							<tui-td :span="8">{{ item.income }}</tui-td>
 							<tui-td :span="8">{{ item.expenditure }}</tui-td>
+							<tui-td :span="8">
+								<tui-button
+									type="warning" width="100rpx" height="50rpx" margin="0 20upx 0 0"
+									shape="circle" @click="handleToAssociatedOrder(item)"
+								>
+									订单
+								</tui-button>
+							</tui-td>
 						</tui-tr>
 					</tui-table>
 				</view>
@@ -183,11 +192,32 @@
 				</view>
 			</template>
 		</tui-dialog>
+
+		<tui-bottom-popup :show="isShowOrderPopup" @close="isShowOrderPopup = false">
+			<view style="height: 100%;padding: 20upx;background-color: #f5f5f7;overflow-y: auto;box-sizing: border-box;">
+				<scroll-view scroll-y style="height: 100%;">
+					<view v-if="orderList && orderList.length">
+						<ATFBusinessOrder
+							v-for="(orderItem, orderIndex) in orderList" :key="orderIndex" :data="orderItem"
+							is-show-other
+						></ATFBusinessOrder>
+					</view>
+					<view style="padding-bottom: 45upx;">
+						<LoadingMore
+							:status="!isEmpty && !orderList.length
+								? 'loading' : !isEmpty && orderList.length && (orderList.length >= orderTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+					</view>
+				</scroll-view>
+			</view>
+		</tui-bottom-popup>
 	</view>
 </template>
 
 <script>
-import { getShopBankApi, getShopFinanceCountApi, addShopWithdrawalApi, getShopRechargeCountApi, addShopWithdrawalRechargeApi } from '../../../api/anotherTFInterface'
+import { getShopBankApi, getShopFinanceCountApi, addShopWithdrawalApi, getShopRechargeCountApi, addShopWithdrawalRechargeApi, getAllOrderListApi } from '../../../api/anotherTFInterface'
 import OrderWithdrawalDetails from './components/OrderWithdrawalDetails.vue'
 import RechargeCustomBusiness from './components/RechargeCustomBusiness.vue'
 
@@ -217,7 +247,13 @@ export default {
 			isShowCustomBusinessPopup: false,
 			// 提现相关
 			isShowRechargeDialog: false,
-			rechargeNum: ''
+			rechargeNum: '',
+
+			// 订单列表
+			isShowOrderPopup: false,
+			isEmpty: false,
+			orderList: [],
+			orderTotal: 0
 		}
 	},
 	onLoad(options) {
@@ -250,6 +286,21 @@ export default {
 		handleConfirmTime(e) {
 			this.queryInfo.time = e.result
 			this.getFinanceStatistics()
+		},
+		handleToAssociatedOrder(item) {
+			if (!item.orderFormids || !item.orderFormids.length) return this.$showToast('该流水暂无关联订单')
+			uni.showLoading()
+			getAllOrderListApi({ orderFormids: item.orderFormids, page: 1, pageSize: 9999, orderType: 1, state: '' })
+				.then((res) => {
+					this.orderTotal = res.data.total
+					this.orderList = res.data.list
+					this.isEmpty = this.orderList.length === 0
+					uni.hideLoading()
+					this.isShowOrderPopup = true
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
 		},
 
 		handleRechargeDialog(e) {

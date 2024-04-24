@@ -1,6 +1,8 @@
 <template>
-	<view class="item ske-loading">
-		<view class="order-list-top">
+	<view class="business-order">
+		<view
+			style="padding: 20rpx 30rpx;display: flex;align-items: center;justify-content: space-between;border-bottom: 2rpx solid #eeeeee;"
+		>
 			<view
 				v-if="!data.shopName.startsWith('团蜂')" style="display: flex;align-items: center;"
 				@click.stop="go(`/another-tf/another-user/shop/shop-detail?shopId=${data.shopId}`)"
@@ -9,110 +11,139 @@
 				<text style="font-size: 30rpx;color: #333;font-weight: bold;">{{ data.shopName }}</text>
 				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
 			</view>
-			<view class="order-status">
+			<view style="flex: 1;font-size: 32rpx;color: #C5AA7B;text-align: right;">
 				<text v-if="data.afterState">
-					<text v-if="[5, 6, 9].includes(data.afterState)">{{ `【退】${afterConditionEnum(data.afterState)}-${orderTypeEnum[data.state]}` }}</text>
+					<text v-if="[5, 6, 9].includes(data.afterState)">
+						{{ `【退】${afterConditionEnum(data.afterState)}-${orderTypeEnum[data.state]}` }}
+					</text>
 					<text v-else>{{ `【退】${afterConditionEnum(data.afterState)}` }}</text>
 				</text>
 				<text v-else>{{ orderTypeEnum[data.state] || '--' }}</text>
 			</view>
 		</view>
-		<view class="order-info-box">
-			<view
-				style="border-bottom: 1px solid #eeeeee;"
-				@click="go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)"
-			>
+		<view style="padding: 20rpx;">
+			<view @click="isToDetail && go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
 				<view>
-					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" class="order-info-item">
-						<image :src="skuItem.image" class="product-img default-img" />
-						<view class="info-box">
-							<text class="product-name">{{ skuItem.productName && skuItem.productName }}</text>
+					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" style="display: flex;padding: 20rpx 0 0;">
+						<image :src="skuItem.image" style="width: 180rpx;height: 180rpx;margin-right: 30rpx;" />
+						<view style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+							<view
+								v-if="skuItem.productName"
+								style="font-size: 26rpx;color: #333;display: -webkit-box;overflow: hidden;text-overflow: ellipsis;word-break: break-all;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+							>
+								{{ skuItem.productName }}
+							</view>
 							<view
 								v-if="skuItem.presenterVoucher"
-								style="width: fit-content;margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								style="width: fit-content;margin-top: 10rpx;padding: 6rpx 12rpx;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
 								赠送 {{ skuItem.price
 									? `${(Number.parseFloat(skuItem.presenterVoucher / skuItem.price).toFixed(3) * 1000) / 10}%`
 									: skuItem.presenterVoucher }} 代金券
 							</view>
-							<view class="product-sku">{{ skuItem.value && skuItem.value }}</view>
-							<view class="price-sku-box">
-								<view class="box-h flex-items-plus">
-									<text class="product-price">
-										<text class="fuhao">￥</text>
-										{{ skuItem.price || 0 }}
-									</text>
-									<text class="product-num">x {{ skuItem.number && skuItem.number }}</text>
+							<view v-if="skuItem.value" style="margin-top: 8rpx;font-size: 24rpx;color: #999999;">
+								{{ skuItem.value }}
+							</view>
+							<view style="display: flex;justify-content: space-between;">
+								<view style="font-size: 28rpx;">
+									<text style="color: #333333;">￥{{ skuItem.price || 0 }}</text>
+									<text style="margin-left: 20rpx;color: #999;">x {{ skuItem.number && skuItem.number }}</text>
 								</view>
 								<view v-if="showOperate">
-									<view
-										v-if="[3, 4].includes(data.state) && (data.orderType === 1)" class="evaluate"
-										@click.stop="go(`/another-tf/another-user/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+									<tui-button
+										v-if="[3, 4].includes(data.state) && (data.orderType === 1)" type="brown" width="150rpx"
+										height="56rpx" margin="8rpx 0 0" :size="28"
+										@click="go(`/another-tf/another-user/product-logistics/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
 									>
 										查看物流
-									</view>
-									<view
-										v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" class="evaluate2"
-										@click.stop="go(`/another-tf/another-serve/evaluate/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
+									</tui-button>
+									<tui-button
+										v-if="[4, 10].includes(data.state) && (skuItem.commentId === 0)" type="brown"
+										width="150rpx" height="56rpx" margin="8rpx 0 0" :size="28"
+										@click="go(`/another-tf/another-serve/evaluate/index?orderId=${data.orderId}&skuId=${skuItem.skuId}`)"
 									>
 										立即评价
-									</view>
-									<view
+									</tui-button>
+									<tui-button
 										v-if="[4, 10].includes(data.state) && (skuItem.commentId !== 0) && (data.skus[0].ifAdd !== 1)"
-										class="evaluate2" @click.stop="handleAddEvaluate(skuItem)"
+										type="brown" width="150rpx" height="56rpx" margin="8rpx 0 0"
+										:size="28"
+										@click="handleAddEvaluate(skuItem)"
 									>
 										追加评价
-									</view>
+									</tui-button>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view v-if="!isShowAll">
+				<view v-if="!isShowAll" style="padding: 20rpx 0 0;">
 					<tui-button
 						type="warning" plain width="180rpx" height="54rpx"
-						shape="circle" margin="18upx auto 0"
+						shape="circle" margin="0 auto"
 						@click="(isShowAll = true) && (showSkusArr = data.skus)"
 					>
 						显示全部
 					</tui-button>
 				</view>
-				<view class="total-price-box">
-					<template v-if="data.orderPrice !== undefined || data.discountPrice !== undefined">
-						总价￥{{
-							(data.orderPrice + data.logisticsPrice).toFixed(2)
-						}}，优惠￥{{ data.discountPrice }}
-						<text v-if="data.price > 0">
-							，{{ data.state === 1 ? '应付￥' : '实付￥' }}{{ data.price }}
+				<view style="font-size: 26rpx;color: #333333;text-align: right;padding: 20rpx 0 0;">
+					<text v-if="data.orderPrice">
+						总价￥{{ Number.parseFloat(Number(data.orderPrice || 0)).toFixed(2) }}
+						<text v-if="data.logisticsPrice">
+							，物流￥{{ Number.parseFloat(Number(data.logisticsPrice || 0)).toFixed(2) }}
 						</text>
-					</template>
-				</view>
-			</view>
-			<view v-if="showOperate" class="btnBox flex-items" :class="{ flexSpBetween: data.state === 5 || data.state === 9 }">
-				<!-- <tui-icon
-					v-if="data.state === 5 || data.state === 9" name="delete" :size="14" color="#333333"
-					@click="handleDeleteOrder(data)"
-					></tui-icon> -->
-				<view class="order-btn-box">
-					<text
-						v-for="buttonItem in getOrderOptionButtonObj(data)" :key="buttonItem.name" class="btn"
-						:class="[ buttonItem.className ]" @click.stop="handleOrderOptionButtonEvent(buttonItem)"
-					>
-						{{ buttonItem.name }}
+						，优惠￥{{ data.discountPrice }}
+						<text v-if="data.price">
+							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ data.price }}
+						</text>
 					</text>
 				</view>
+				<view v-if="isShowOther" style="font-size: 26rpx;padding: 20rpx 0 0;">
+					<view style="display: flex;align-items: center;justify-content: space-between;padding-top: 4upx;">
+						<view>
+							<text>订单编号</text>
+							<text style="margin-left: 32upx;">{{ data.orderFormid || '--' }}</text>
+						</view>
+						<view style="color: #EF530E;" @click="$copy(data.orderFormid)">复制</view>
+					</view>
+					<view style="padding-top: 4upx;">
+						<text>创建时间</text>
+						<text style="margin-left: 32upx;">{{ data.createTime || '--' }}</text>
+					</view>
+					<view style="padding-top: 4upx;">
+						<text>收货人</text>
+						<text style="margin-left: 32upx;">{{ data.receiveName || '--' }}</text>
+					</view>
+				</view>
+			</view>
+
+			<view v-if="showOperate" style="padding: 10rpx 0 0;">
+				<view style="display: flex;align-items: center;border-top: 2rpx solid #eeeeee;padding: 10rpx 0 0;">
+					<tui-button
+						v-for="buttonItem in getOrderOptionButtonObj(data)" :key="buttonItem.name"
+						:type="buttonItem.btnType" plain width="150rpx" height="56rpx"
+						margin="0 18rpx 0 0" :size="28"
+						@click="handleOrderOptionButtonEvent(buttonItem)"
+					>
+						{{ buttonItem.name }}
+					</tui-button>
+				</view>
+				<!-- <tui-icon
+					v-if="(data.state === 5) || (data.state === 9)" name="delete" :size="14" color="#333333"
+					@click="handleDeleteOrder(data)"
+					></tui-icon> -->
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { afterConditionEnum, orderTypeEnum } from '../../../components/ATFOrderInfo/config'
-import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
-import { resolveShowCanNotBuyMsg } from '../../../utils'
+import { afterConditionEnum, orderTypeEnum } from '../../components/ATFOrderInfo/config'
+import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../api/anotherTFInterface'
+import { T_SKU_ITEM_DTO_LIST } from '../../constant'
+import { resolveShowCanNotBuyMsg } from '../../utils'
 export default {
-	name: 'BusinessOrder',
+	name: 'ATFBusinessOrder',
 	props: {
 		data: {
 			type: Object,
@@ -120,7 +151,15 @@ export default {
 		},
 		showOperate: {
 			type: Boolean,
-			default: true
+			default: false
+		},
+		isToDetail: {
+			type: Boolean,
+			default: false
+		},
+		isShowOther: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -195,7 +234,7 @@ export default {
 			// if ([1, 6, 8].includes(state)) {
 			// 	orderNeedBtnList.push({
 			// 		name: '取消订单',
-			// 		className: 'l',
+			// 		btnType: 'black',
 			// 		functionName: 'handleCancelOrder',
 			// 		functionParams: [ orderItem ]
 			// 	})
@@ -204,7 +243,7 @@ export default {
 			if ([8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'handleOrderWriteOff',
 					functionParams: [ orderItem ]
 				})
@@ -213,7 +252,7 @@ export default {
 			if ([1, 8].includes(state)) {
 				orderNeedBtnList.push({
 					name: '立即付款',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handlePayOrder',
 					functionParams: [ orderItem ]
 				})
@@ -222,7 +261,7 @@ export default {
 			// if ([2, 3, 4, 9, 10].includes(state) && [0, 6].includes(Number(afterState)) && (skus[0].ifAdd !== 1) && skus.some((i) => i.classifyId != 1439)) {
 			// 	orderNeedBtnList.push({
 			// 		name: '申请售后',
-			// 		className: 'l',
+			// 		btnType: 'black',
 			// 		functionName: 'goAfterSalesService',
 			// 		functionParams: [ orderItem ]
 			// 	})
@@ -231,7 +270,7 @@ export default {
 			if ([ 1 ].includes(returnType)) {
 				orderNeedBtnList.push({
 					name: '退款详情',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'goRefundDetail',
 					functionParams: [ orderItem ]
 				})
@@ -240,7 +279,7 @@ export default {
 			if ([3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
 				orderNeedBtnList.push({
 					name: '查看物流',
-					className: 'l',
+					btnType: 'black',
 					functionName: 'goLogisticsInformation',
 					functionParams: [ orderItem ]
 				})
@@ -249,7 +288,7 @@ export default {
 			if ([ 3 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '确认收货',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handleConfirmReceipt',
 					functionParams: [ orderItem ]
 				})
@@ -258,7 +297,7 @@ export default {
 			if ([ 6 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '邀请拼单',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'goSpellGroup',
 					functionParams: [ orderItem ]
 				})
@@ -267,7 +306,7 @@ export default {
 			if ([5, 4, 10].includes(state)) {
 				orderNeedBtnList.push({
 					name: collageId !== 0 ? '再次开团' : '再次购买',
-					className: 'r',
+					btnType: 'warning',
 					functionName: 'handleBuyAgainEvent',
 					functionParams: [ orderItem ]
 				})
@@ -391,153 +430,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.item {
+.business-order {
 	margin-bottom: 20rpx;
 	background: #fff;
 	border-radius: 10rpx;
-
-	.order-list-top {
-		height: 96rpx;
-		padding: 0 30rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		border-bottom: 1upx solid #eeeeee;
-
-		.order-status {
-			flex: 1;
-			font-size: 32upx;
-			color: #C5AA7B;
-			text-align: right;
-		}
-	}
-
-	.order-info-box {
-		padding: 0 30upx;
-		box-sizing: border-box;
-
-		.order-info-item {
-			display: flex;
-			padding: 20upx 0;
-
-			.product-img {
-				width: 180upx;
-				height: 180upx;
-				margin-right: 30upx;
-			}
-
-			.info-box {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-
-				.product-name {
-					font-size: 26upx;
-					color: #333;
-					display: -webkit-box;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					word-break: break-all;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 2;
-				}
-
-				.product-sku {
-					font-size: 24upx;
-					color: #999;
-				}
-
-				.price-sku-box {
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;
-
-					.product-price {
-						font-size: 28upx;
-						color: #333;
-						font-weight: 400;
-
-						.fuhao {
-							font-size: 28upx;
-						}
-					}
-
-					.product-num {
-						display: inline-view;
-						font-size: 28upx;
-						margin-left: 20upx;
-						color: #999;
-					}
-
-					.evaluate {
-						height: 56upx;
-						text-align: center;
-						line-height: 56upx;
-						font-size: 26upx;
-						padding: 0 30upx;
-						color: #C5AA7B;
-						background: #333333;
-					}
-
-					.evaluate2 {
-						height: 56upx;
-						margin-top: 6upx;
-						text-align: center;
-						line-height: 56upx;
-						font-size: 26upx;
-						padding: 0 30upx;
-						background: #333333;
-						color: #C5AA7B;
-					}
-				}
-			}
-		}
-
-		.total-price-box {
-			font-size: 26upx;
-			color: #333;
-			text-align: right;
-			padding: 18upx 0;
-		}
-
-		.btnBox {
-			width: 100%;
-			justify-content: flex-end;
-
-			.order-btn-box {
-				padding: 20upx 0;
-				display: flex;
-				flex-direction: row;
-				justify-content: flex-end;
-
-				.btn {
-					display: inline-view;
-					width: 150upx;
-					height: 56upx;
-					text-align: center;
-					line-height: 56upx;
-					font-size: 26upx;
-					color: #333;
-					margin-left: 20upx;
-				}
-
-				.btn.l {
-					border: 2rpx solid #333333;
-					color: #333;
-				}
-
-				.btn.r {
-					border: 2rpx solid #C5AA7B;
-					color: #C5AA7B;
-				}
-			}
-		}
-
-		.flexSpBetween {
-			justify-content: space-between;
-		}
-	}
+	box-sizing: border-box;
 }
 </style>

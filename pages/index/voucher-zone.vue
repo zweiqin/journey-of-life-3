@@ -99,7 +99,6 @@
 </template>
 
 <script>
-// import { voucherNavs } from './config'
 import VoucherGoods from './cpns/VoucherGoods.vue';
 import VoucherDeatilGoodsPane from './cpns/VoucherDeatilGoodsPane.vue';
 import loadMore from '../../mixin/loadMore'
@@ -113,7 +112,6 @@ export default {
   },
   data() {
     return {
-      // voucherNavs: Object.freeze(voucherNavs),
       currentType: 100101725,
       ad: {
         hot: [],

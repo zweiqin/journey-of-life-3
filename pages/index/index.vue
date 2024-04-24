@@ -167,9 +167,6 @@ import HotPane from './cpns/HotPane.vue';
 import NewGoodsPane from './cpns/NewGoodsPane.vue';
 import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
 
-import { proDropList } from './config'
-
-import { homeTopNavs } from './config';
 export default {
   components: {
     PageHeader,
@@ -182,7 +179,31 @@ export default {
     return {
       scrollTop: 0,
       isShowPane: false,
-      homeTopNavs: homeTopNavs,
+      homeTopNavs: [
+				{
+					name: '爆品家具',
+					iconUrl: require('../../static/images/new-index/index-1/hot.png'),
+					// url: '/pages/hot/hot'
+					// url: '/pages/index/ExplosiveFurniture/index'
+					url: '/pages/index/Explosive/category'
+					// url: '/pages/furniture/furniture?goodsType=100101741&id=null'
+				},
+				{
+					name: '兑换专区',
+					iconUrl: require('../../static/images/new-index/index-1/duihuan.png'),
+					url: '/pages/index/voucher-zone'
+				},
+				{
+					name: '品牌家居',
+					iconUrl: require('../../static/images/new-index/index-1/pinpai.png'),
+					url: '/another-tf/another-user/brand-factory/index'
+				},
+				{
+					name: '智能选配',
+					iconUrl: require('../../static/images/new-index/index-1/aixp.png'),
+					url: '/pages/index/IntelligentSelection/index'
+				}
+			],
       queryList: {
         classifyId: '1193', // 分类ID 1160 备用ID 978 1163
         productName: '', // 商品名称
@@ -205,7 +226,6 @@ export default {
       translatey: 1154,
       scrollTop: 0,
       dropShow: false,
-      proDropList, // 筛选栏的样式 暂时不使用
       proDropData: [],
       submenus: [],
     };
