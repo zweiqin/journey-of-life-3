@@ -212,7 +212,7 @@ export const additionalFunction = [
 		name: '师傅端',
 		icon: require('../../static/images/new-user/menu-icon/shifuduan.png'),
 		type: 'external',
-		url: 'https://www.zhult.com/shifu/#/login'
+		url: 'https://www.zhult.com/shifu/'
 	},
 	{
 		name: '店长端',

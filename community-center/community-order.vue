@@ -455,8 +455,6 @@ export default {
           subOrderData.spotOrder = 1
         }
 
-        return
-
         const res = await getServiceOrderApi(subOrderData)
         if (res.statusCode === 20000) {
           this.ttoast('订单创建成功')
