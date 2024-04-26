@@ -145,7 +145,7 @@
 			<view style="margin-top: 20upx;">
 				<CashierList
 					show :price-pay="totalPrice" :show-commission-pay="!!totalPrice"
-					:show-platform-pay="!!totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0"
+					:show-platform-pay="!!totalPrice" :show-transaction-pay="!!totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0"
 					@change="(e) => payInfo = e"
 				/>
 			</view>

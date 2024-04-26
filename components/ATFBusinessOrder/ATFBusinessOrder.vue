@@ -37,9 +37,7 @@
 								v-if="skuItem.presenterVoucher"
 								style="width: fit-content;margin-top: 10rpx;padding: 6rpx 12rpx;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
-								赠送 {{ skuItem.price
-									? `${(Number.parseFloat(skuItem.presenterVoucher / skuItem.price).toFixed(3) * 1000) / 10}%`
-									: skuItem.presenterVoucher }} 代金券
+								赠送 {{ skuItem.presenterVoucher }} 代金券
 							</view>
 							<view v-if="skuItem.value" style="margin-top: 8rpx;font-size: 24rpx;color: #999999;">
 								{{ skuItem.value }}

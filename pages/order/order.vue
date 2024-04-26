@@ -94,7 +94,7 @@
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
 				<CashierList
 					:price-pay="payObj.pricePay" show show-commission-pay show-platform-pay
-					:shop-id-pay="payObj.shopId"
+					show-transaction-pay :shop-id-pay="payObj.shopId"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>
 				<tui-button

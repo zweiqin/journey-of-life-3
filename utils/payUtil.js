@@ -545,7 +545,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				uni.showToast({ title: '暂不支持在支付宝小程序使用通联支付', icon: 'none' })
 				// #endif
 			}
-		} else if ([5, 6, 7].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付
+		} else if ([5, 6, 7, 8].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、交易金支付
 			await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
 		}
 	}

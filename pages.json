@@ -1493,6 +1493,12 @@
           }
         },
         {
+          "path": "another-user/transaction-funds/trading-activities",
+          "style": {
+            "navigationBarTitleText": "交易金活动"
+          }
+        },
+        {
           "path": "another-user/my-wallet/balance-operation",
           "style": {
             "navigationBarTitleText": "余额操作"
@@ -1582,30 +1588,6 @@
           }
         },
         {
-          "path": "another-serve/bankcard/index",
-          "style": {
-            "navigationBarTitleText": "银行卡"
-          }
-        },
-        {
-          "path": "another-serve/bankcard/addBankcard",
-          "style": {
-            "navigationBarTitleText": "添加银行卡"
-          }
-        },
-        {
-          "path": "another-serve/collection/index",
-          "style": {
-            "navigationBarTitleText": "我的收藏"
-          }
-        },
-        {
-          "path": "another-serve/footprintList/index",
-          "style": {
-            "navigationBarTitleText": "浏览足迹"
-          }
-        },
-        {
           "path": "another-user/user-upgrade/user-upgrade-application",
           "style": {
             "navigationBarTitleText": "会员升级"
@@ -1678,12 +1660,6 @@
           }
         },
         {
-          "path": "another-serve/shopCar/shopCar",
-          "style": {
-            "navigationBarTitleText": "购物车"
-          }
-        },
-        {
           "path": "another-user/claasify-products/index",
           "style": {
             "navigationBarTitleText": "分类商品"
@@ -1717,6 +1693,36 @@
           "path": "another-serve/goodsDetails/index",
           "style": {
             "navigationBarTitleText": "商品详情"
+          }
+        },
+        {
+          "path": "another-serve/shopCar/shopCar",
+          "style": {
+            "navigationBarTitleText": "购物车"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/index",
+          "style": {
+            "navigationBarTitleText": "银行卡"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/addBankcard",
+          "style": {
+            "navigationBarTitleText": "添加银行卡"
+          }
+        },
+        {
+          "path": "another-serve/collection/index",
+          "style": {
+            "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
+          "path": "another-serve/footprintList/index",
+          "style": {
+            "navigationBarTitleText": "浏览足迹"
           }
         },
         {

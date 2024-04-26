@@ -96,13 +96,31 @@
 						</view>
 					</view>
 				</tui-list-cell>
+				<tui-list-cell
+					unlined padding="0 28rpx" :size="30"
+					@click="go('')"
+				>
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
+					>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<view style="width: 48rpx;margin-right: 34rpx;">
+								<tui-icon name="wealth" :size="48" unit="rpx" color="#ec970c" margin="0"></tui-icon>
+							</view>
+							<text>交易金</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) : '*****' }}</text>
+						</view>
+					</view>
+				</tui-list-cell>
 				<tui-list-cell unlined padding="0 28rpx" :size="30" @click="go('/another-tf/another-serve/coupon/index')">
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
 					>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<view style="width: 48rpx;margin-right: 34rpx;">
-								<tui-icon name="coupon" :size="48" unit="rpx" color="#c60022" margin="0"></tui-icon>
+								<tui-icon name="unreceive" :size="48" unit="rpx" color="#c60022" margin="0"></tui-icon>
 							</view>
 							<text>卡包</text>
 						</view>
@@ -149,6 +167,7 @@ export default {
 				rechargePrice: '', // 账户充值余额
 				voucherPrice: '', // 代金券余额
 				distributorPrice: '', // 账户分销金额
+				beeCoinPrice: '', // 交易金金额
 				commissionPrice: '' // 推广收益,关系链分佣
 			}
 		}

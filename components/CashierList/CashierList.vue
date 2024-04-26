@@ -9,6 +9,7 @@
 							<text>{{ payment.label }}</text>
 							<text v-if="(payment.paymentMode === '7')">（佣金：{{ pricePlatformInfo.commissionPrice }}）</text>
 							<text v-if="(payment.paymentMode === '5')">（余额：{{ pricePlatformInfo.rechargePrice }}）</text>
+							<text v-if="(payment.paymentMode === '8')">（余额：{{ pricePlatformInfo.beeCoinPrice }}）</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 							<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 								（手续费：￥{{ flowerObj.hbServiceChargeTotal }}）
@@ -89,6 +90,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 交易金支付
+		showTransactionPay: {
+			type: Boolean,
+			default: false
+		},
 		// 用户的商家充值的余额支付
 		shopIdPay: {
 			type: [String, Number],
@@ -131,7 +137,8 @@ export default {
 			// 平台余额相关
 			pricePlatformInfo: {
 				rechargePrice: 0,
-				commissionPrice: ''
+				commissionPrice: 0,
+				beeCoinPrice: 0
 			},
 			// 用户的商家充值的余额相关
 			priceShopInfo: {
@@ -210,6 +217,41 @@ export default {
 			immediate: false,
 			deep: true
 		},
+		showTransactionPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					uni.showLoading()
+					if (!this.paymentList.find((item) => item.paymentMode === '8')) {
+						this.paymentList.push({
+							label: '交易金支付',
+							paymentMode: '8',
+							icon: require('../../static/images/user/pay/jiaoyijin.png'),
+							disabled: true
+						})
+					}
+					getPricePlatformAllApi({})
+						.then((res) => {
+							this.pricePlatformInfo = res.data
+							this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+							if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+						.catch((e) => {
+							if (this.paymentMode === '8') this.handleSetDisable()
+							if (this.paymentList.find((item) => item.paymentMode === '8')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '8'), 1)
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+				} else {
+					if (this.paymentMode === '8') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '8')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '8'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		shopIdPay: {
 			handler(newValue, oldValue) {
 				// console.log(2222)
@@ -248,7 +290,6 @@ export default {
 			deep: true
 		},
 		pricePay: {
-			// eslint-disable-next-line complexity
 			handler(newValue, oldValue) {
 				// console.log(1111)
 				if (newValue !== oldValue) {
@@ -265,6 +306,12 @@ export default {
 						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 						if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 					} else if (!this.showPlatformPay && (this.paymentMode === '5')) {
+						this.handleSetDisable()
+					}
+					if (this.showTransactionPay) {
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+						if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
+					} else if (!this.showTransactionPay && (this.paymentMode === '8')) {
 						this.handleSetDisable()
 					}
 					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
@@ -338,7 +385,7 @@ export default {
 				disabled: true
 			})
 		}
-		if (this.showCommissionPay || this.showPlatformPay) {
+		if (this.showCommissionPay || this.showPlatformPay || this.showTransactionPay) {
 			if (this.showCommissionPay) {
 				this.paymentList.push({
 					label: '佣金支付',
@@ -355,6 +402,14 @@ export default {
 					disabled: true
 				})
 			}
+			if (this.showTransactionPay) {
+				this.paymentList.push({
+					label: '交易金支付',
+					paymentMode: '8',
+					icon: require('../../static/images/user/pay/jiaoyijin.png'),
+					disabled: true
+				})
+			}
 			getPricePlatformAllApi({})
 				.then((res) => {
 					this.pricePlatformInfo = res.data
@@ -363,6 +418,9 @@ export default {
 					}
 					if (this.showPlatformPay) {
 						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
+					}
+					if (this.showTransactionPay) {
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
 					}
 				})
 		}
