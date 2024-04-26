@@ -3,7 +3,7 @@
     <TuanPageHead :scroll-top="scrollTop" fixed title="活动中心" background="#fff" :z-index="9000001">
       <tui-icon slot="left" name="arrowleft" color="#3d3d3d" @click="handleBack"></tui-icon>
     </TuanPageHead>
-
+    {{ dot }}
     <view class="activity-container" v-if="activityList.length">
       <view class="activity-item" v-for="item in activityList" :key="item.id" @click="go('/user/sever/activityCenter/activity-detail?id=' + item.id)">
         <view class="activity-info" :class="{ expired: item.isExpired }">
@@ -42,8 +42,18 @@ export default {
       activityList: []
     }
   },
-  onLoad() {
+  mounted() {
     this.getUpActivityList()
+  },
+  computed: {
+    dot() {
+      if (!!!this.$store.getters.detailAddress) {
+        return '`'
+      } else {
+        this.getUpActivityList()
+        return '.'
+      }
+    }
   },
   methods: {
     handleBack() {
@@ -51,9 +61,16 @@ export default {
     },
 
     async getUpActivityList() {
+      let currentAddress = this.$store.getters.detailAddress
+      if (!currentAddress) {
+        if (!currentAddress) {
+          const { detail } = await this.$store.dispatch('location/getCurrentLocation')
+          currentAddress = detail
+        }
+      }
       try {
         this.isLoading = true
-        const res = await getUpActivityListApi({ focus: 'up', address: this.$store.getters.detailAddress })
+        const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
           this.activityList = res.data.activities
         } else {

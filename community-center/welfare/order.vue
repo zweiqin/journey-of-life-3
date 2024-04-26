@@ -73,19 +73,21 @@
       <button :loading="isLoading" @click="handleConfirmOrder" class="confirm-btn uni-btn">确认下单</button>
     </view>
 
-		<tui-popup
-			:duration="500" :mode-class="[ 'fade-in' ]"
-			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
-			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
-		>
-			<view style="display: flex;align-items: center;padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
-				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
-				<view style="flex: 1;">
-					<view>相机权限和相册权限使用说明：</view>
-					<view style="margin-top: 12rpx;">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于上传清洗、维修、安装的服务图片等场景</view>
-				</view>
-			</view>
-		</tui-popup>
+    <tui-popup
+      :duration="500"
+      :mode-class="['fade-in']"
+      :styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+      :show="showAuthPopupVisible"
+      @click="showAuthPopupVisible = false"
+    >
+      <view style="display: flex; align-items: center; padding: 26upx; background-color: #ffffff; border-radius: 20upx">
+        <tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+        <view style="flex: 1">
+          <view>相机权限和相册权限使用说明：</view>
+          <view style="margin-top: 12rpx">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于上传清洗、维修、安装的服务图片等场景</view>
+        </view>
+      </view>
+    </tui-popup>
 
     <!-- 选择时间 -->
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
@@ -94,18 +96,18 @@
 </template>
 
 <script>
-import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO } from '../../constant';
-import { getAddressListApi } from '../../api/address';
-import ChooseTime from '../componts/choose-time.vue';
-import { IMG_UPLOAD_URL } from '../../config';
-import { getUserId, isH5InWebview } from '../../utils';
-import { createActivityOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../../api/community-center';
+import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO } from '../../constant'
+import { getAddressListApi } from '../../api/address'
+import ChooseTime from '../componts/choose-time.vue'
+import { IMG_UPLOAD_URL } from '../../config'
+import { getUserId, isH5InWebview } from '../../utils'
+import { createActivityOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../../api/community-center'
 
 export default {
   components: { ChooseTime },
   data() {
     return {
-			showAuthPopupVisible: false,
+      showAuthPopupVisible: false,
       isLoading: false,
       scrollTop: 0,
       defualtAddress: null,
@@ -121,62 +123,62 @@ export default {
         remarks: '',
         orderGoodsList: []
       }
-    };
+    }
   },
   onShow() {
     if (uni.getStorageSync(T_COMMUNITY_ORDER_NO)) {
-      uni.switchTab({ url: '/pages/order/order' });
+      uni.switchTab({ url: '/pages/order/order' })
     }
-    this.getAddressList();
+    this.getAddressList()
   },
   onLoad(params) {
-    this.orderForm.activityId = params.id;
+    this.orderForm.activityId = params.id
   },
   methods: {
     async getAddressList() {
-      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS);
+      const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS)
       if (choosedAddress) {
-        this.defualtAddress = choosedAddress;
-        return;
+        this.defualtAddress = choosedAddress
+        return
       }
       const { data } = await getAddressListApi({
         userId: getUserId()
-      });
+      })
 
       if (data.length) {
-        const defaultAddress = data.find((item) => item.isDefault);
+        const defaultAddress = data.find((item) => item.isDefault)
         if (defaultAddress) {
-          this.defualtAddress = defaultAddress;
+          this.defualtAddress = defaultAddress
         } else {
-          this.defualtAddress = data[0];
+          this.defualtAddress = data[0]
         }
       }
     },
 
     // 获取选择的上门时间
     onChooseTime(time) {
-      this.orderForm.installDate = time;
+      this.orderForm.installDate = time
     },
 
     handleUploadImg() {
-			// #ifdef APP
-			const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-			if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
-				this.showAuthPopupVisible = true
-				this.handleChooseImage()
-			} else {
-				this.handleChooseImage()
-			}
-			// #endif
-			// #ifndef APP
-			this.handleChooseImage()
-			// #endif
+      // #ifdef APP
+      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+      if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
+        this.showAuthPopupVisible = true
+        this.handleChooseImage()
+      } else {
+        this.handleChooseImage()
+      }
+      // #endif
+      // #ifndef APP
+      this.handleChooseImage()
+      // #endif
     },
-		handleChooseImage(){
+    handleChooseImage() {
       uni.chooseImage({
         success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
+            uni.showLoading()
             uni.uploadFile({
               url: IMG_UPLOAD_URL,
               filePath: imgFile.path,
@@ -185,34 +187,34 @@ export default {
                 userId: getUserId()
               },
               success: (uploadFileRes) => {
-                uni.hideLoading();
-                this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url);
+                uni.hideLoading()
+                this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
               },
               fail: (error) => {
-                uni.hideLoading();
+                uni.hideLoading()
                 this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
+            })
           }
-          return;
+          return
         },
         fail: (fail) => {
-          console.log(fail);
+          console.log(fail)
         }
-      });
-		},
+      })
+    },
 
     // 点击删除图片
     handleDeleteImg(img) {
-      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img);
+      this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img)
     },
 
     handleBack() {
-      uni.navigateBack();
+      uni.navigateBack()
     },
 
     /**
@@ -220,52 +222,52 @@ export default {
      */
     async handleConfirmOrder() {
       if (!this.defualtAddress) {
-        return this.ttoast({ type: 'fail', title: '请选择服务地址' });
+        return this.ttoast({ type: 'fail', title: '请选择服务地址' })
       }
       if (!this.orderForm.installDate) {
-        this.chooseTimeVisible = true;
-        return this.ttoast({ type: 'fail', title: '请选择期望服务时间' });
+        this.chooseTimeVisible = true
+        return this.ttoast({ type: 'fail', title: '请选择期望服务时间' })
       }
-      const { name, mobile, detailedAddress } = this.defualtAddress;
-      const submitData = JSON.parse(JSON.stringify(this.orderForm));
-      submitData.consigneeAddress = detailedAddress.split(' ')[0];
-      submitData.consigneeAddressDetail = detailedAddress.split(' ')[1];
-      submitData.customerName = name;
-      submitData.mobile = mobile;
-      submitData.orderGoodsList = submitData.orderGoodsList.length ? submitData.orderGoodsList.map((goodsUrl) => ({ goodsUrl, goodsType: '团蜂' })) : [];
-
+      const { name, mobile, detailedAddress } = this.defualtAddress
+      const submitData = JSON.parse(JSON.stringify(this.orderForm))
+      submitData.consigneeAddress = detailedAddress.split(' ')[0]
+      submitData.consigneeAddressDetail = detailedAddress.split(' ')[1]
+      submitData.customerName = name
+      submitData.mobile = mobile
+      submitData.orderGoodsList = submitData.orderGoodsList.length ? submitData.orderGoodsList.map((goodsUrl) => ({ goodsUrl, goodsType: '团蜂' })) : []
+      submitData.individualAccount = this.$store.state.auth && this.$store.state.auth.userInfo ? this.$store.state.auth.userInfo.phone : ''
       try {
-        this.isLoading = true;
-        const createOrderRes = await createActivityOrderApi(submitData);
+        this.isLoading = true
+        const createOrderRes = await createActivityOrderApi(submitData)
         if (createOrderRes.statusCode === 20000) {
-          this.ttoast('订单创建成功');
-          uni.setStorageSync(T_COMMUNITY_ORDER_NO, createOrderRes.data.orderNo);
-          this.handlePay(createOrderRes.data.orderNo);
+          this.ttoast('订单创建成功')
+          uni.setStorageSync(T_COMMUNITY_ORDER_NO, createOrderRes.data.orderNo)
+          this.handlePay(createOrderRes.data.orderNo)
         } else {
-          this.ttoast({ type: 'fail', title: '下单失败', content: createOrderRes.statusMsg });
+          this.ttoast({ type: 'fail', title: '下单失败', content: createOrderRes.statusMsg })
         }
       } catch (error) {
-        this.ttoast({ type: 'fail', title: '下单失败', content: error });
+        this.ttoast({ type: 'fail', title: '下单失败', content: error })
       } finally {
-        this.isLoading = false;
+        this.isLoading = false
       }
     },
 
     // 支付
     async handlePay(orderNo) {
-      uni.setStorageSync(T_COMMUNITY_ORDER_NO, orderNo);
-      const _this = this;
+      uni.setStorageSync(T_COMMUNITY_ORDER_NO, orderNo)
+      const _this = this
       if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),
             orderNo: orderNo
-          });
+          })
 
           if (payAppesult.statusCode === 20000) {
-            let query = '';
+            let query = ''
             for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
+              query += key + '=' + payAppesult.data[key] + '&'
             }
 
             // console.log(payAppesult);
@@ -277,112 +279,112 @@ export default {
                   let res = await getServiceOrderPayApi({
                     orderNo: orderNo,
                     userId: getUserId()
-                  });
+                  })
 
-                  res = JSON.parse(res.data);
-                  const form = document.createElement('form');
-                  form.setAttribute('action', res.url);
-                  form.setAttribute('method', 'POST');
+                  res = JSON.parse(res.data)
+                  const form = document.createElement('form')
+                  form.setAttribute('action', res.url)
+                  form.setAttribute('method', 'POST')
 
-                  const data1 = JSON.parse(res.data);
-                  let input;
+                  const data1 = JSON.parse(res.data)
+                  let input
                   for (const key in data1) {
-                    input = document.createElement('input');
-                    input.name = key;
-                    input.value = data1[key];
-                    form.appendChild(input);
+                    input = document.createElement('input')
+                    input.name = key
+                    input.value = data1[key]
+                    form.appendChild(input)
                   }
 
-                  document.body.appendChild(form);
-                  form.submit();
-                  document.body.removeChild(form);
+                  document.body.appendChild(form)
+                  form.submit()
+                  document.body.removeChild(form)
                 } else {
                   _this.ttoast({
                     type: 'fail',
                     title: error
-                  });
+                  })
 
                   setTimeout(() => {
                     uni.switchTab({
                       url: '/pages/order/order'
-                    });
-                  }, 3000);
+                    })
+                  }, 3000)
                 }
               }
-            });
+            })
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
       } else {
         // #ifdef H5
         let res = await getServiceOrderPayApi({
           orderNo: orderNo,
           userId: getUserId()
-        });
+        })
 
-        res = JSON.parse(res.data);
+        res = JSON.parse(res.data)
 
-        const form = document.createElement('form');
-        form.setAttribute('action', res.url);
-        form.setAttribute('method', 'POST');
+        const form = document.createElement('form')
+        form.setAttribute('action', res.url)
+        form.setAttribute('method', 'POST')
 
-        const data1 = JSON.parse(res.data);
-        let input;
+        const data1 = JSON.parse(res.data)
+        let input
         for (const key in data1) {
-          input = document.createElement('input');
-          input.name = key;
-          input.value = data1[key];
-          form.appendChild(input);
+          input = document.createElement('input')
+          input.name = key
+          input.value = data1[key]
+          form.appendChild(input)
         }
 
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
+        document.body.appendChild(form)
+        form.submit()
+        document.body.removeChild(form)
         // #endif
 
         // #ifdef APP
         const payAppesult = await payOrderForBeeStewadAPPApi({
           userId: getUserId(),
           orderNo: orderNo
-        });
+        })
 
         if (payAppesult.statusCode === 20000) {
-          let query = '';
+          let query = ''
           for (const key in payAppesult.data) {
-            query += key + '=' + payAppesult.data[key] + '&';
+            query += key + '=' + payAppesult.data[key] + '&'
           }
 
           plus.share.getServices(
             function (res) {
-              let sweixin = null;
+              let sweixin = null
               for (let i in res) {
                 if (res[i].id == 'weixin') {
-                  sweixin = res[i];
+                  sweixin = res[i]
                 }
               }
-              console.log(sweixin);
+              console.log(sweixin)
               if (sweixin) {
                 sweixin.launchMiniProgram({
                   id: 'gh_e64a1a89a0ad',
                   type: 0,
                   path: 'pages/orderDetail/orderDetail?' + query
-                });
+                })
               }
             },
             function (e) {
-              console.log('获取分享服务列表失败：' + e.message);
+              console.log('获取分享服务列表失败：' + e.message)
             }
-          );
+          )
         }
         // #endif
       }
     }
   },
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
+    this.scrollTop = e.scrollTop
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

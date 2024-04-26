@@ -12,10 +12,7 @@
             </TuanLocation>
             <image class="angle" src="../../static/images/new-community/home/arrow-down.png"></image>
           </view>
-          <view class="placeholder" @click="go('/community-center/search')">
-            12大类，200+家居服务
-            <text v-if="isEmptyAddress">.</text>
-          </view>
+          <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
           <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
         </view>
 
@@ -63,7 +60,7 @@
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="upgrade" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
+    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
       <view class="tip" slot="tip">参与即可获得 300 元代金券，机会难得</view>
     </PopupInformation>
 
@@ -133,10 +130,8 @@ export default {
       // this.$refs.vipPackageRef.getDZPersonalizationConfig();
       this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
     })
+    this.getActivityList()
     this.showVipPostPopup()
-    this.$nextTick(() => {
-      this.getActivityList()
-    })
   },
   mounted() {
     // #ifdef APP
@@ -168,15 +163,18 @@ export default {
     // 获取活动订单列表
     async getActivityList() {
       try {
-        if (!!!this.$store.getters.detailAddress) {
-          this.isEmptyAddress = true
+        let currentAddress = this.$store.getters.detailAddress
+        if (!currentAddress) {
+          const { detail } = await this.$store.dispatch('location/getCurrentLocation')
+          currentAddress = detail
         }
-        const res = await getUpActivityListApi({ focus: 'up', address: this.$store.getters.detailAddress })
+        const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
           const activityList = res.data.activities
           if (activityList.length) {
             this.activityList = activityList
             this.popupImageUrl = activityList[0].id == 1 ? require('../../static/images/con-center/popup-image.png') : activityList[0].cover
+            this.showVipPostPopup()
           } else {
             this.activityList = []
             this.popupImageUrl = undefined
@@ -331,18 +329,16 @@ export default {
 
     async showVipPostPopup() {
       // await this.isShowVipPostPopup()
-      if (app.globalData.isShowCommunityPopup) {
-        this.timer = setTimeout(() => {
-          if (app.globalData.communityPopupCount < 4) {
-            app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1
-            this.$refs.popupInformationRef && this.$refs.popupInformationRef.show()
-          } else {
-            clearTimeout(this.timer)
-            this.timer = null
-            app.globalData.isShowCommunityPopup = false
-          }
-        }, 500)
-      }
+      this.timer = setTimeout(() => {
+        if (app.globalData.communityPopupCount < 4) {
+          app.globalData.communityPopupCount = app.globalData.communityPopupCount + 1
+          this.$refs.popupInformationRef && this.$refs.popupInformationRef.show()
+        } else {
+          clearTimeout(this.timer)
+          this.timer = null
+          app.globalData.isShowCommunityPopup = false
+        }
+      }, 500)
     }
   },
 
