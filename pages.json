@@ -1493,12 +1493,6 @@
           }
         },
         {
-          "path": "another-user/transaction-funds/trading-activities",
-          "style": {
-            "navigationBarTitleText": "交易金活动"
-          }
-        },
-        {
           "path": "another-user/my-wallet/balance-operation",
           "style": {
             "navigationBarTitleText": "余额操作"
@@ -1580,6 +1574,19 @@
         //     "enablePullDownRefresh": true
         //   }
         // },
+        {
+          "path": "another-user/transaction-funds/transaction-operation",
+          "style": {
+            "navigationBarTitleText": "交易金操作",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/transaction-funds/trading-activities",
+          "style": {
+            "navigationBarTitleText": "交易金活动"
+          }
+        },
         {
           "path": "another-user/commission-statistics/vip-user",
           "style": {

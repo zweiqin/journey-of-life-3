@@ -188,6 +188,27 @@
 		>
 			<template #content>
 				<view>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view style="font-size: 32rpx;color: #333333;">提现类型：</view>
+						<view style="flex: 1;">
+							<tui-radio-group v-model="withdrawalType">
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '交易金', value: '2' }]"
+										:key="index"
+									>
+										<tui-list-cell padding="16upx">
+											<view>
+												<tui-radio :checked="false" :value="item.value" color="#07c160" border-color="#999">
+												</tui-radio>
+												<text>{{ item.name }}</text>
+											</view>
+										</tui-list-cell>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+					</view>
 					<tui-input v-model="rechargeNum" padding="26upx 0" label="提现金额" type="number" placeholder="请填写提现金额"></tui-input>
 				</view>
 			</template>
@@ -248,6 +269,7 @@ export default {
 			// 提现相关
 			isShowRechargeDialog: false,
 			rechargeNum: '',
+			withdrawalType: '1',
 
 			// 订单列表
 			isShowOrderPopup: false,
@@ -309,6 +331,7 @@ export default {
 				this.isShowRechargeDialog = false
 			} else if (e.index === 1) {
 				if (!this.rechargeNum) return this.$showToast('请填写提现金额')
+				if (!this.withdrawalType) return this.$showToast('请选择提现类型')
 				uni.showLoading()
 				getShopBankApi({})
 					.then((result) => {
@@ -320,11 +343,13 @@ export default {
 							shopCode: result.data.shopCode,
 							bankName: result.data.bankName,
 							bankCard: result.data.bankCard,
-							withdrawalMoney: this.rechargeNum
+							withdrawalMoney: this.rechargeNum,
+							withdrawalType: Number(this.withdrawalType)
 						})
 							.then((res) => {
 								uni.hideLoading()
 								this.rechargeNum = ''
+								this.withdrawalType = '1'
 								this.isShowRechargeDialog = false
 								this.$showToast('提现成功', 'success')
 								this.getFinanceStatistics()

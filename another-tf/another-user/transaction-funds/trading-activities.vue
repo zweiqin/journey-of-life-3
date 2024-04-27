@@ -181,7 +181,7 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
-				ids: [ 116 ],
+				ids: [ 129 ],
 				shopSeckillId: 0
 			},
 			activeSession: 0

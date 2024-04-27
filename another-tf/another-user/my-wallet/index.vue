@@ -98,7 +98,7 @@
 				</tui-list-cell>
 				<tui-list-cell
 					unlined padding="0 28rpx" :size="30"
-					@click="go('')"
+					@click="go('/another-tf/another-user/transaction-funds/transaction-operation')"
 				>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
@@ -111,6 +111,7 @@
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) : '*****' }}</text>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>
 				</tui-list-cell>
