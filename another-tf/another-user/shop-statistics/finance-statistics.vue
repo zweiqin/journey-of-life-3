@@ -59,20 +59,20 @@
 			</view>
 			<view style="margin-top: 36upx;padding-bottom: 34upx;background-color: #ffffff;text-align: center;color: #222229;border-radius: 16upx;">
 				<view style="display: flex;justify-content: space-around;">
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;">
 							{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">累计营业额</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
 						</view>
 						<!-- 冻结金额 -->
 						<view style="margin-top: 14upx;font-size: 24upx;">途中金额</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--' }}
 						</view>
@@ -81,26 +81,67 @@
 					</view>
 				</view>
 				<view style="display: flex;justify-content: space-around;">
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
 							{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
 								: '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">可提现</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
 							{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
 								? financeStatisticsData.withdrawableStayMoney : '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">提现中</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
 						</view>
 						<!-- 赠送代金券 -->
 						<view style="margin-top: 14upx;font-size: 24upx;">总赠送</view>
+					</view>
+				</view>
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+							{{ typeof financeStatisticsData.beeWithdrawal === 'number' ? financeStatisticsData.beeWithdrawal
+								: '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">可提现交易金</view>
+					</view>
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
+							{{ typeof financeStatisticsData.beeFreeze === 'number'
+								? financeStatisticsData.beeFreeze : '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">待到账交易金</view>
+					</view>
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+							{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
+						</view>
+						<!-- 赠送代金券 -->
+						<view style="margin-top: 14upx;font-size: 24upx;">营业额交易金</view>
+					</view>
+				</view>
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+							{{ typeof financeStatisticsData.beeCoinRatio === 'number' ? financeStatisticsData.beeCoinRatio
+								: '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">交易金提现比例</view>
+					</view>
+					<view style="padding-top: 34upx;flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;"> </view>
+						<view style="margin-top: 14upx;font-size: 24upx;"> </view>
+					</view>
+					<view style="padding-top: 34upx;flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;"> </view>
+						<!-- 赠送代金券 -->
+						<view style="margin-top: 14upx;font-size: 24upx;"> </view>
 					</view>
 				</view>
 			</view>

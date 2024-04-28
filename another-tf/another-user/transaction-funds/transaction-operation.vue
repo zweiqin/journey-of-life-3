@@ -229,6 +229,9 @@ export default {
 				.catch(() => {
 					uni.hideLoading()
 				})
+		},
+		go(url){
+			console.log(url)
 		}
 	}
 }
