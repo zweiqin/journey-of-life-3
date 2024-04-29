@@ -144,8 +144,10 @@
 
 			<view style="margin-top: 20upx;">
 				<CashierList
-					show :price-pay="totalPrice" :show-commission-pay="!!totalPrice"
-					:show-platform-pay="!!totalPrice" :show-transaction-pay="!!totalPrice" :shop-id-pay="totalPrice ? shopIdPay : 0"
+					show :price-pay="totalPrice" :show-commission-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
+					:show-platform-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
+					:show-transaction-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
+					:shop-id-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && totalPrice ? shopIdPay : 0"
 					@change="(e) => payInfo = e"
 				/>
 			</view>
@@ -295,7 +297,8 @@ export default {
 	data() {
 		return {
 			settlement: {
-				voucherList: []
+				voucherList: [],
+				shops: []
 			},
 			fromType: 0,
 			brandId: 0,
@@ -863,39 +866,45 @@ export default {
 		handleChooseVoucher(e) {
 			console.log(e)
 			if (e.id) {
-				if (this.settlement.voucherTotalAll) {
-					if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) {
-						// 清除店铺优惠券数据
-						for (let index = 0; index < this.settlement.shops.length; index++) {
-							for (let i = 0; i < this.settlement.shops[index].shopCoupons.length; i++) {
-								this.settlement.shops[index].shopCoupons[i].checked = false
+				if (this.settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId))) {
+					if (this.settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
+						if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+							// 清除店铺优惠券数据
+							for (let index = 0; index < this.settlement.shops.length; index++) {
+								for (let i = 0; i < this.settlement.shops[index].shopCoupons.length; i++) {
+									this.settlement.shops[index].shopCoupons[i].checked = false
+								}
+								this.settlement.shops[index].currentCoupon = {}
+								this.settlement.shops[index].totalAfterDiscount = this.settlement.shops[index].total
 							}
-							this.settlement.shops[index].currentCoupon = {}
-							this.settlement.shops[index].totalAfterDiscount = this.settlement.shops[index].total
+							this.selectShopCoupon = []
+							// 清除平台优惠券数据
+							this.settlement.coupons && this.settlement.coupons.forEach((item) => {
+								item.checked = false
+							})
+							this.promotionInfoDTO = { couponId: 0, ifAdd: 1, reduceMoney: 0 }
+							this.checkedPlatformCoupon = undefined
+							this.settlement.shops.forEach((shopItem) => {
+								if (shopItem.skus) {
+									shopItem.skus.forEach((skuItem) => {
+										skuItem.buyerCouponId = null
+									})
+								}
+							})
+							// 取消选择积分
+							this.selectIntegral = false
+						} else {
+							this.$showToast('代金券数量不足！')
+							this.$refs.refVoucherUse.handleReset()
+							return
 						}
-						this.selectShopCoupon = []
-						// 清除平台优惠券数据
-						this.settlement.coupons && this.settlement.coupons.forEach((item) => {
-							item.checked = false
-						})
-						this.promotionInfoDTO = { couponId: 0, ifAdd: 1, reduceMoney: 0 }
-						this.checkedPlatformCoupon = undefined
-						this.settlement.shops.forEach((shopItem) => {
-							if (shopItem.skus) {
-								shopItem.skus.forEach((skuItem) => {
-									skuItem.buyerCouponId = null
-								})
-							}
-						})
-						// 取消选择积分
-						this.selectIntegral = false
 					} else {
-						this.$showToast('代金券数量不足！')
+						this.$showToast('商品不支持代金券！')
 						this.$refs.refVoucherUse.handleReset()
 						return
 					}
 				} else {
-					this.$showToast('商品不支持代金券！')
+					this.$showToast('包含交易金活动商品，无法使用代金券！')
 					this.$refs.refVoucherUse.handleReset()
 					return
 				}
@@ -966,6 +975,7 @@ export default {
 					skusobj.selected = curSku.selected
 					skusobj.platformSeckillId = curSku.platformSeckillId
 					skusobj.platformDiscountId = curSku.platformDiscountId
+					skusobj.platformCurrencyId = curSku.platformCurrencyId
 					skusobj.shopSeckillId = curSku.shopSeckillId
 					skusobj.shopDiscountId = curSku.shopDiscountId
 					skusobj.sceneId = curSku.sceneId

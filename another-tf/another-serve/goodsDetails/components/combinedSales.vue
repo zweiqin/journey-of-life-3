@@ -29,7 +29,7 @@
 					:class="tabIndex === index && 'on'"
 				>
 					<swiper
-						class="pro-box" :indicator-dots="false" :autoplay="true"
+						class="pro-box" :indicator-dots="false" autoplay
 						:display-multiple-items="item.composeProductInfoList.length < 3 ? item.composeProductInfoList.length : 3"
 						:disable-touch="item.composeProductInfoList.length <= 3" @change="(e) => swiperCurrent = e.detail.current"
 					>
@@ -281,11 +281,8 @@ export default {
 		},
 		// 根据活动显示不同价格
 		getPrice(item) {
-			// 所属活动 0-常规商品 1-拼团活动 2-秒杀活动 3-限时折扣活动 4-平台秒杀 5-平台折扣 6-定价捆绑 7-组合捆绑 8-场景营销 9-会员价
 			if (item.activityType) {
-				if (item.activityType === 0 || item.activityType === 6 || item.activityType === 7) {
-					return item.price
-				}
+				if (item.activityType === 6 || item.activityType === 7) return item.price
 				return item.originalPrice
 			}
 			return item.price

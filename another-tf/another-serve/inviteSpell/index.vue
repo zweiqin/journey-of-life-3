@@ -105,7 +105,7 @@
 							<label class="fs24">¥</label>
 							<label
 								class="fs36 mar-left-10"
-								v-text="goodsDetail.activityType == 1 ? selectedSku.originalPrice : selectedSku.price"
+								v-text="selectedSku.price"
 							></label>
 						</view>
 						<label class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</label>
@@ -187,7 +187,6 @@ export default {
 			shopId: 0,
 			isShowDetails: false,
 			goodsDetail: {
-				activityType: 0,
 				names: []
 			},
 			number: 1,

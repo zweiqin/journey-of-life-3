@@ -122,7 +122,6 @@
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
 						</view>
-						<!-- 赠送代金券 -->
 						<view style="margin-top: 14upx;font-size: 24upx;">营业额交易金</view>
 					</view>
 				</view>
@@ -140,7 +139,6 @@
 					</view>
 					<view style="padding-top: 34upx;flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;"> </view>
-						<!-- 赠送代金券 -->
 						<view style="margin-top: 14upx;font-size: 24upx;"> </view>
 					</view>
 				</view>
@@ -297,6 +295,10 @@ export default {
 				withdrawableMoney: '',
 				withdrawableStayMoney: '',
 				presenterVoucher: '',
+				beeWithdrawal: '',
+				beeFreeze: '',
+				beeTurnover: '',
+				beeCoinRatio: '',
 				finances: []
 			},
 			queryInfo: {

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<TuanAppShim bg="#fff"></TuanAppShim>
-		<view v-if="userId" class="my-order-container">
+		<view v-if="$store.getters.userInfo.buyerUserId" class="my-order-container">
 			<OrderHeader
 				ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
 				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList"
@@ -93,8 +93,11 @@
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
 				<CashierList
-					:price-pay="payObj.pricePay" show show-commission-pay show-platform-pay
-					show-transaction-pay :shop-id-pay="payObj.shopId"
+					:price-pay="payObj.pricePay" show
+					:show-commission-pay="!payObj.skus.some((b) => b.platformCurrencyId)"
+					:show-platform-pay="!payObj.skus.some((b) => b.platformCurrencyId)"
+					:show-transaction-pay="!payObj.skus.some((b) => b.platformCurrencyId)"
+					:shop-id-pay="!payObj.skus.some((b) => b.platformCurrencyId) ? payObj.shopId : 0"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>
 				<tui-button
@@ -209,6 +212,7 @@ export default {
 				showPayPopup: false,
 				pricePay: 0,
 				shopId: '',
+				skus: [],
 				payInfo: {}
 			}
 		}
@@ -528,6 +532,7 @@ export default {
 				showPayPopup: false,
 				pricePay: 0,
 				shopId: '',
+				skus: [],
 				payInfo: {}
 			}
 		}

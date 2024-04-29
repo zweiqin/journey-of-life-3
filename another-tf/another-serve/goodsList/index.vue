@@ -57,7 +57,7 @@
 							<p>{{ item.productName }}</p>
 							<view v-if="item.number != null" class="number">
 								<view class="numText">已售{{ item.number }}件</view>
-								<view v-if="item.total != 0 && item.activityType !== 0" class="numText">
+								<view v-if="item.total && item.activityType" class="numText">
 									限量{{ item.total }}件
 								</view>
 							</view>

@@ -44,7 +44,7 @@
 						<text>距离结束：</text>
 						<tui-countdown
 							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-							border-color="transparent"
+							border-color="transparent" days :is-colon="false"
 							:time="Math.floor((Date.parse(spikeLikeList[activeSession].endTime) - Date.now()) / 1000)"
 						></tui-countdown>
 					</view>
@@ -55,7 +55,7 @@
 						<text>距离开始：</text>
 						<tui-countdown
 							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-							border-color="transparent"
+							border-color="transparent" days :is-colon="false"
 							:time="Math.floor((Date.parse(spikeLikeList[activeSession].startTime) - Date.now()) / 1000)"
 						></tui-countdown>
 					</view>
@@ -181,7 +181,9 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
-				ids: [ 129 ],
+				ids: [ ...new Array(75).toString()
+					.split(',')
+					.map((item, index) => index + 135) ],
 				shopSeckillId: 0
 			},
 			activeSession: 0
@@ -227,6 +229,12 @@ export default {
 	min-height: 100vh;
 	background-color: #333333;
 	box-sizing: border-box;
+
+	/deep/ .tui-countdown-box {
+		.tui-colon-pad {
+			padding: 0 6rpx!important;
+		}
+	}
 
 	/deep/ .j-header-container {
 		padding: 24rpx 0 10rpx;

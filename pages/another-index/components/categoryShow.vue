@@ -23,7 +23,7 @@
 									<view class="buy-count">{{ item.users ? item.users : 0 }}人付款</view>
 								</view>
 								<div class="price-warp">
-									<image class="iconImg" :src="getPriceActivity(item.activityType)" />
+									<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 									<div class="price">
 										¥ {{ item.price }}
 									</div>
@@ -74,27 +74,6 @@ export default {
 			productList: [],
 			isFirst: true,
 			loading: true // 是否正在请求
-		}
-	},
-	computed: {
-		// 获取活动小图标
-		getPriceActivity() {
-			return (activityType) => {
-				switch (activityType) {
-					case 1:
-						return require('../../../static/images/new-business/shop/groupBuyIcon.png')
-					case 2:
-						return require('../../../static/images/new-business/shop/spikeIcon.png')
-					case 3:
-						return require('../../../static/images/new-business/shop/discountListIcon.png')
-					case 4:
-						return require('../../../static/images/new-business/shop/spikeIcon.png')
-					case 5:
-						return require('../../../static/images/new-business/shop/discountListIcon.png')
-					case 8:
-						return require('../../../static/images/new-business/shop/memberCenterIcon.png')
-				}
-			}
 		}
 	},
 	watch: {
@@ -289,12 +268,6 @@ export default {
 				display: flex;
 				align-items: baseline;
 				line-height: 56upx;
-
-				.iconImg {
-					width: 58rpx;
-					height: 36rpx;
-					margin-right: 10rpx;
-				}
 
 				.price {
 					color: #C83732;

@@ -1,25 +1,59 @@
 <template>
-	<view class="activity-image-container">
-		<image v-if="type === 1" class="iconImg" src="../../static/images/new-business/shop/groupBuyIcon.png" alt="拼团icon">
-		</image>
-		<image v-else-if="type === 2" class="iconImg" src="../../static/images/new-business/shop/spikeIcon.png" alt="秒杀活动">
-		</image>
-		<image
-			v-else-if="type === 3" class="iconImg discountIcon"
-			src="../../static/images/new-business/shop/xianshizhekou.png" alt="限时折扣活动"
-		></image>
-		<image v-else-if="type === 4" class="iconImg" src="../../static/images/new-business/shop/spikeIcon.png" alt="平台秒杀">
-		</image>
-		<image
-			v-else-if="type === 5" class="iconImg" src="../../static/images/new-business/shop/discountListIcon.png"
-			alt="平台折扣"
-		></image>
-		<image v-else-if="type === 8" class="iconImg" src="../../static/images/new-business/shop/jierizhekou.png" alt="场景营销">
-		</image>
-		<image
-			v-else-if="type === 9" class="iconImg" src="../../static/images/new-business/shop/memberCenterIcon.png"
-			alt="会员价"
-		></image>
+	<!-- 所属活动 0-常规商品 1-拼团活动 2-秒杀活动 3-限时折扣活动 4-平台秒杀 5-平台折扣 6-定价捆绑 7-组合捆绑 8-场景营销 9-会员价 10-平台交易金活动 -->
+	<view class="activity-image-container" :style="{ fontSize, fontWeight: bold ? 'bold' : 'normal' }">
+		<view v-if="type === 0">
+			<!-- 常规商品 -->
+		</view>
+		<view v-else-if="type === 1" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 拼团icon -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="friendadd" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">拼团价</text>
+		</view>
+		<view v-else-if="type === 2" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 秒杀活动 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="offline" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">秒杀价</text>
+		</view>
+		<view v-else-if="type === 3" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 限时折扣活动，折扣价 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="label" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">限时折扣</text>
+		</view>
+		<view v-else-if="type === 4" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 平台秒杀 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="offline" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">秒杀价</text>
+		</view>
+		<view v-else-if="type === 5" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 平台折扣 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="label" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">折扣价</text>
+		</view>
+		<view v-else-if="type === 6" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 定价捆绑 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">定价捆绑</text>
+		</view>
+		<view v-else-if="type === 7" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 组合捆绑 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">组合捆绑</text>
+		</view>
+		<view v-else-if="type === 8" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 场景营销 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">节日折扣</text>
+		</view>
+		<view v-else-if="type === 9" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 会员价 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="member" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">会员价</text>
+		</view>
+		<view v-else-if="type === 10" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 平台交易金活动 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">交易金活动</text>
+		</view>
 	</view>
 </template>
 
@@ -31,6 +65,30 @@ export default {
 		type: {
 			type: Number,
 			require: true
+		},
+		showIcon: {
+			type: Boolean,
+			default: false
+		},
+		backgroundColor: {
+			type: String,
+			default: '#333333'
+		},
+		fontSize: {
+			type: String,
+			default: '24rpx'
+		},
+		bold: {
+			type: Boolean,
+			default: false
+		},
+		italic: {
+			type: Boolean,
+			default: false
+		},
+		iconSize: {
+			type: Number,
+			default: 18
 		}
 	},
 	data() {
@@ -46,19 +104,17 @@ export default {
 
 <style lang="less" scoped>
 .activity-image-container {
-	display: inline-block;
 	width: fit-content;
-	line-height: 1;
 	box-sizing: border-box;
+	color: #cfb587;
 
-	.iconImg {
-		width: 58rpx;
-		height: 36rpx;
+	.activity-wrapper {
+		display: flex;
+		align-items: center;
+		// width: fit-content;
 		margin-right: 10rpx;
-	}
-
-	.discountIcon {
-		width: 100rpx;
+		padding: 4rpx 8rpx;
+		border-radius: 6rpx;
 	}
 }
 </style>

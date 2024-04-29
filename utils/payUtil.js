@@ -366,6 +366,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 		purchaseMode: payType,
 		...otherArgs
 	}).then((res) => {
+		console.log(JSON.stringify(res.data))
 		if (type) {
 			uni.removeStorageSync(T_PAY_ORDER)
 			uni.setStorageSync(T_PAY_ORDER, {
@@ -418,6 +419,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		mask: true,
 		title: '支付中...'
 	})
+	console.log(JSON.stringify(submitResult))
 	if (purchaseMode) { // 1-商城 2-本地 3-入驻 4-代金券 5-地图红包
 		const submitInfo = { ...submitResult, purchaseMode }
 		if (submitInfo.paymentMode === 999) {
@@ -447,6 +449,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 						paymentMode: submitInfo.paymentMode,
 						...otherArgs
 					}).then((res) => {
+						console.log(JSON.stringify(res.data))
 						if (res.code == 200) {
 							if (type) {
 								uni.removeStorageSync(T_PAY_ORDER)
@@ -501,35 +504,35 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 								TL_ORDER_NO: submitInfo.orderSn
 							})
 						}
-						// if (res.data.isZeroOrder === '1') { // 零元支付情况
-						// 	uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-						// } else {
-						delete res.data.isZeroOrder
-						let query = ''
-						for (const key in res.data) {
-							query += key + '=' + res.data[key] + '&'
-						}
-						plus.share.getServices(function (result) {
-							let sweixin = null
-							for (const i in result) {
-								if (result[i].id == 'weixin') {
-									sweixin = result[i]
+						if (res.data.isZeroOrder === '1') { // 零元支付情况
+							uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+						} else {
+							delete res.data.isZeroOrder
+							let query = ''
+							for (const key in res.data) {
+								query += key + '=' + res.data[key] + '&'
+							}
+							plus.share.getServices(function (result) {
+								let sweixin = null
+								for (const i in result) {
+									if (result[i].id == 'weixin') {
+										sweixin = result[i]
+									}
 								}
-							}
-							if (sweixin) {
-								sweixin.launchMiniProgram({
-									id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
-									type: 0,
-									path: 'pages/orderDetail/orderDetail?' + query
-								})
-							} else {
-								uni.showToast({ title: '请先安装微信', icon: 'none' })
-							}
-						}, function (e) {
-							uni.showToast({ title: '获取分享服务列表失败', icon: 'none' })
-							console.log('获取分享服务列表失败：' + e.message)
-						})
-						// }
+								if (sweixin) {
+									sweixin.launchMiniProgram({
+										id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
+										type: 0,
+										path: 'pages/orderDetail/orderDetail?' + query
+									})
+								} else {
+									uni.showToast({ title: '请先安装微信', icon: 'none' })
+								}
+							}, function (e) {
+								uni.showToast({ title: '获取分享服务列表失败', icon: 'none' })
+								console.log('获取分享服务列表失败：' + e.message)
+							})
+						}
 					}
 				})
 					.finally((e) => {
