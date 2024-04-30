@@ -673,8 +673,14 @@ export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', da
 export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data)
 
 // 交易金
-// 选择平台端蜜蜂币活动查询
+// 选择平台端交易金活动查询
 export const getPlatformBeeCurrencyApi = (data) => AnotherTFRequest('/canvas/getPlatformBeeCurrency', data)
+
+// 记录交易金
+export const updatePlatformBeeCurrencySaveBeeApi = (data) => AnotherTFRequest('/platformBeeCurrency/saveBee', data)
+
+// 交易金收支明细
+export const getBeeCurrencyDistributorApi = (data) => AnotherTFRequest('/distributor/getBeeCurrency', data)
 
 // 限时折扣
 // 专区首页数据查询

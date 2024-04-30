@@ -69,14 +69,20 @@
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
 				<view
-					v-if="skuSelect.voucherId"
-					style="width: fit-content;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					v-if="skuSelect.beeCoin"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+				>
+					赠送 {{ skuSelect.beeCoin }} 交易金
+				</view>
+				<view
+					v-if="skuSelect.voucherId && skuSelect.voucherPrice"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					可使用{{ skuSelect.voucherPrice }}代金券抵扣
 				</view>
 				<view
 					v-if="skuSelect.presenterVoucher"
-					style="width: fit-content;margin-left: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					赠送 {{ skuSelect.price
 						? `${(Number.parseFloat(skuSelect.presenterVoucher / skuSelect.price).toFixed(3) * 1000) / 10}%`

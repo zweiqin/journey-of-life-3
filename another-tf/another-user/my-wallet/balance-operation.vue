@@ -24,7 +24,7 @@
 			</view>
 			<view style="margin-top: 26rpx;font-size: 36rpx;">余额</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ pricePlatformInfo.rechargePrice || 0 }}
+				￥{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice)).toFixed(2) || 0 }}
 			</view>
 			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">可提现余额：￥{{ pricePlatformInfo.rechargePrice || 0 }}</view> -->
 			<view class="operation-btn">

@@ -35,6 +35,3 @@ export const ANOTHER_TF_INTERFACE = 'https://nsappapitest.tuanfengkeji.cn' // �
 export const ANOTHER_TF_UPLOAD = 'https://nsappapitest.tuanfengkeji.cn/file/upload' // 测试
 export const ANOTHER_TF_SETTLE = 'https://nsh51test.tuanfengkeji.cn' // 测试
 
-// 【干货】系统总结金银比价套利：定性定量的综合角度来看看金银比的三段历史（连载一）：https://mp.weixin.qq.com/s/dUlCXPlqcnM41f9Ledsq2A
-// 【黄金投资的逻辑】黄金价格的主要驱动力（连载二）：https://mp.weixin.qq.com/s/PYI4KsUJXqUyeso5ylTsMA
-// 【勘误】黄金的投资逻辑（系统总结金银比价套利连载）：https://mp.weixin.qq.com/s/-_7q3D8S-nqiEBfLEPUOkg

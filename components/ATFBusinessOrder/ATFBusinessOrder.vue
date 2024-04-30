@@ -35,7 +35,7 @@
 							</view>
 							<view
 								v-if="skuItem.presenterVoucher"
-								style="width: fit-content;margin-top: 10rpx;padding: 6rpx 12rpx;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
+								style="width: fit-content;padding: 6rpx 12rpx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
 								赠送 {{ skuItem.presenterVoucher }} 代金券
 							</view>

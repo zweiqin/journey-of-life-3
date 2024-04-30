@@ -350,6 +350,7 @@ export default {
 					voucherId: 0,
 					voucherPrice: 0,
 					presenterVoucher: 0,
+					beeCoin: 0,
 					collageOrders: [] // 当前商品拼单数据
 				},
 				currentSku: [], // 选中的SKU（子组件给当前页面做数据渲染）

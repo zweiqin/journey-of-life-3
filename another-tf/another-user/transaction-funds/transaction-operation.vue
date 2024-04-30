@@ -1,10 +1,20 @@
 <template>
 	<view class="balance-operation">
 		<JHeader title="余额" width="50" height="50"></JHeader>
-		<view style="display: flex;justify-content: flex-end;">
+		<view style="display: flex;justify-content: space-between;align-items: center;">
+			<tui-button
+				type="gray" width="240rpx" height="66rpx" margin="0"
+				plain link
+				@click="isShowExplainPopup = true"
+			>
+				<view style="display: flex;justify-content: center;align-items: center;">
+					<tui-icon name="explain" :size="34" unit="rpx" color="#020202" margin="0"></tui-icon>
+					<text style="margin-left: 4rpx;font-size: 34rpx;color: #020202;">交易金说明</text>
+				</view>
+			</tui-button>
 			<tui-button
 				type="black" width="220rpx" height="60rpx" margin="0"
-				plain link
+				plain link :size="34"
 				@click="go('/another-tf/another-user/transaction-funds/transaction-record')"
 			>
 				收支明细
@@ -12,154 +22,69 @@
 		</view>
 
 		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;">
-			<!-- <tui-icon name="wallet" :size="130" unit="rpx" color="#3481f5" bold margin="0"></tui-icon> -->
-			<view style="padding: 10rpx;background-color: #3481f5;border-radius: 50%;">
-				<view style="padding: 6rpx;background-color: #ffffff;border-radius: 50%;">
-					<view
-						style="display: flex;align-items: center;justify-content: center;width: 96rpx;height: 96rpx;padding: 6rpx;background-color: #3481f5;border-radius: 50%;box-sizing: border-box;"
-					>
-						<text style="font-size: 66rpx;font-weight: bold;color: #ffffff;">￥</text>
+			<view style="padding: 10rpx;background-color: #388ceb;border-radius: 50%;">
+				<view style="padding: 26rpx;background-color: #ffffff;border-radius: 50%;">
+					<view style="padding: 10rpx;background-color: #e78e00;border-radius: 10rpx;transform: rotateZ(45deg);">
+						<view style="width: 16rpx;height: 16rpx;background-color: #ffffff;box-sizing: border-box;"></view>
 					</view>
 				</view>
 			</view>
-			<view style="margin-top: 26rpx;font-size: 36rpx;">交易金</view>
+			<view style="margin-top: 56rpx;font-size: 36rpx;">交易金</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ pricePlatformInfo.rechargePrice || 0 }}
+				￥{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice)).toFixed(2) || 0 }}
 			</view>
-			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">可提现余额：￥{{ pricePlatformInfo.rechargePrice || 0 }}</view> -->
-			<view class="operation-btn">
-				<view style="padding-top: 100rpx;">
-					<tui-button type="danger" width="280rpx" height="78rpx" margin="0" @click="isShowRechargePopup = true">
-						充值
-					</tui-button>
+		</view>
+		<view class="operation-btn" style="position: fixed;bottom: 0;z-index: 1;width: 100%;padding: 40rpx 24rpx;text-align: center;box-sizing: border-box;">
+			<tui-button
+				type="gray" width="180rpx" height="60rpx" margin="0"
+				plain link
+				@click="isShowExplainPopup = true"
+			>
+				<view style="display: flex;justify-content: center;align-items: center;">
+					<text style="margin-right: 4rpx;font-size: 26rpx;color: #777777;">权益说明</text>
+					<tui-icon name="explain" :size="30" unit="rpx" color="#777777" margin="0"></tui-icon>
 				</view>
-				<!-- <view style="padding-top: 18rpx;">
-					<tui-button
-					type="gray" width="280rpx" height="78rpx" margin="0"
-					@click="go('/another-tf/another-serve/withdraw/index')"
-					>
-					提现
-					</tui-button>
-					</view> -->
-			</view>
+			</tui-button>
 		</view>
 
 		<tui-bottom-popup
-			:z-index="993" :mask-z-index="992" :show="isShowRechargePopup"
-			@close="isShowRechargePopup = false"
+			:z-index="993" :mask-z-index="992" :show="isShowExplainPopup"
+			@close="isShowExplainPopup = false"
 		>
-			<view style="padding: 26rpx 20rpx;">
-				<view style="padding: 0 36rpx;">
-					<view style="position: relative;color: #222229;text-align: center;">
-						<text>余额充值</text>
-						<view style="position: absolute;top: -14rpx;right: -16rpx;">
-							<tui-icon
-								name="close" color="#767676" size="46" unit="rpx"
-								@click="isShowRechargePopup = false"
-							></tui-icon>
-						</view>
-					</view>
-					<view
-						style="display: flex;align-items: center;flex-wrap: wrap;margin: 0 -12rpx;padding: 12rpx 0 0;text-align: center;"
-					>
-						<view
-							v-for="(item, index) in rechargeAmountsList" :key="index"
-							style="position: relative;width: 192rpx;margin: 16rpx 12rpx 0;padding: 48rpx 0;background-color: #f4f4f4;border-radius: 20rpx;"
-							:style="{ border: currentRechargeIndex === index ? '2rpx solid #ef520e' : '2rpx solid #f4f4f4' }"
-							@click="handleClickCurrentRecharge(item, index)"
-						>
-							<view>
-								<view
-									style="font-size: 42rpx;font-weight: bold;"
-									:style="{ color: currentRechargeIndex === index ? '#ef520e' : '#222229' }"
-								>
-									{{ item.amounts }}
-								</view>
-								<view
-									style="margin-top: 20rpx;font-size: 28rpx;"
-									:style="{ color: currentRechargeIndex === index ? '#222229' : '#888889' }"
-								>
-									代金券{{ item.voucherNum || '' }}
-								</view>
-							</view>
-							<view
-								v-if="currentRechargeIndex === index"
-								style="position: absolute;right: 0;bottom: 0;padding: 2rpx;border-radius: 60% 0 14rpx;background-color: #ef520e;overflow: hidden;"
-							>
-								<tui-icon name="check" color="#FFFFFF" size="34" unit="rpx"></tui-icon>
-							</view>
-						</view>
-					</view>
-					<view style="margin-top: 20rpx;">
-						<view style="color: #222229;">自定义金额：</view>
-						<view style="border-bottom: 2upx solid #bebebe;">
-							<tui-input
-								v-model="customRecharge" type="number" label="￥" :label-size="48"
-								label-color="#000000"
-								:label-width="80" placeholder="输入自定义金额" :border-bottom="false" padding="18rpx 2rpx 10rpx"
-								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectCustom"
-							>
-								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">赠送代金券{{ customRecharge || '' }}</text>
-								</template>
-							</tui-input>
-						</view>
-					</view>
+			<view style="padding: 26rpx 40rpx;">
+				<view style="text-align: center;">交易金说明</view>
+				<view style="margin-top: 34rpx;font-size: 30rpx;">
+					<view>1、如何获得交易金</view>
+					<view>用用户在团蜂平台的商城购买特定活动商品，根据消费金额获得一定比例的交易金（根据活动商品显示为准）；</view>
+					<view>2、使用规则</view>
+					<view>（1）交易金仅可在团蜂平台的【商圈】商家使用，用户可使用交易金进行支付抵扣商品费用（仅限又“支持交易金”标签的商家才可使用）；</view>
+					<view>（2）用户可通过“团蜂APP/小程序/H5-我的-我的钱包-交易金”的交易金页面查询交易金的数量和使用记录；</view>
+					<view>（3）已使用的交易金不支持撤销或退回；</view>
+					<view>（4）若用户暂停/注销账号，或用户存在违规行为的，则平台将取消该用户账号内的交易金权益。</view>
+					<view>3、使用交易金支付规则说明</view>
+					<view>（1）使用交易金支付仅可在团蜂平台支付方式下使用，不支持微信支付、外卡支付、余额支付、代金券支付、推广佣金支付。</view>
+					<view>（2）仅限有“支持交易金”标签的商家才可使用。</view>
+					<view>（3）若用户进行退款，在退款成功后，交易金会返回用户，退款记录可在“团蜂APP/小程序/H5-我的-我的钱包-蜜蜂币”，点击【收入明细】查看。</view>
 				</view>
-				<view style="padding: 32rpx 0 38rpx;text-align: center;">
+				<view style="margin-top: 28rpx;">
 					<tui-button
-						type="warning" width="680rpx" height="84rpx" margin="0 20rpx 0"
-						style="display: inline-block;background: linear-gradient(287deg, #EF530E 31%, #F77A42 104%)!important;border-radius: 16rpx;box-shadow: 0px 2px 2px 0px #FA6842,0px 5px 20px 0px rgba(250, 104, 66, 0.8);"
-						@click="handleShowModalRecharge"
+						type="warning" width="180rpx" height="64rpx" margin="0 auto"
+						@click="isShowExplainPopup = false"
 					>
-						立即充值
+						好的
 					</tui-button>
 				</view>
 			</view>
 		</tui-bottom-popup>
 
-		<tui-modal
-			:show="isShowModalRecharge" custom fadein :button="[]"
-			:z-index="995" :mask-z-index="994"
-			@cancel="isShowModalRecharge = false"
-		>
-			<view style="padding: 28rpx 0;text-align: center;">
-				<view>
-					<image style="width: 435rpx;height: 337rpx;" src="../../../static/images/common/modal-show.png"></image>
-				</view>
-				<view style="margin-top: 24rpx;font-size: 40rpx;color: #333333;">
-					<text>
-						确定要充值 {{ rechargeForm.amounts }} 吗？
-					</text>
-				</view>
-				<view style="margin-top: 22rpx;font-size: 36rpx;color: #687383;">
-					<text>
-						附赠 {{ rechargeForm.amounts }} 代金券
-					</text>
-				</view>
-				<view>
-					<tui-button
-						type="warning" width="238rpx" height="108rpx" margin="32rpx 0 0"
-						:size="40" shape="circle"
-						style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;"
-						@click="handleRecharge"
-					>
-						确定
-					</tui-button>
-				</view>
-			</view>
-		</tui-modal>
-
-		<CashierList :price-pay="rechargeForm.amounts || 0" @change="(e) => payInfo = e" />
 	</view>
 </template>
 
 <script>
-import { getPricePlatformAllApi, addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
-import { handleDoPay } from '../../../utils/payUtil'
+import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
 
 export default {
-	name: 'BalanceOperation',
+	name: 'TransactionOperation',
 	onShow() {
 		this.getPricePlatformAll()
 	},
@@ -172,24 +97,10 @@ export default {
 				rechargePrice: '',
 				voucherPrice: '',
 				distributorPrice: '',
+				beeCoinPrice: '',
 				commissionPrice: ''
 			},
-			isShowRechargePopup: false,
-			rechargeAmountsList: [
-				{ amounts: 1000, voucherNum: 1000 },
-				{ amounts: 1200, voucherNum: 1200 },
-				{ amounts: 1500, voucherNum: 1500 },
-				{ amounts: 1800, voucherNum: 1800 },
-				{ amounts: 2000, voucherNum: 2000 }
-			],
-			currentRechargeIndex: 0,
-			customRecharge: '',
-			// 充值
-			rechargeForm: {
-				amounts: 1000
-			},
-			payInfo: {},
-			isShowModalRecharge: false
+			isShowExplainPopup: false
 		}
 	},
 
@@ -199,35 +110,6 @@ export default {
 			getPricePlatformAllApi({})
 				.then((res) => {
 					this.pricePlatformInfo = res.data
-				})
-		},
-		handleClickCurrentRecharge(item, index) {
-			this.customRecharge = ''
-			this.currentRechargeIndex = index
-			this.rechargeForm.amounts = item.amounts
-		},
-		handleSelectCustom() {
-			this.currentRechargeIndex = ''
-			this.rechargeForm.amounts = this.customRecharge
-		},
-		handleShowModalRecharge() {
-			if (typeof this.currentRechargeIndex === 'number') {
-				if (!this.rechargeForm.amounts) return this.$showToast('缺少金额')
-			} else {
-				if (Number(this.customRecharge) < 50) return this.$showToast('充值金额不能少于50')
-				if (Number(this.customRecharge) > 100000) return this.$showToast('单次充值金额不能大于10万')
-				this.rechargeForm.amounts = this.customRecharge
-			}
-			this.isShowModalRecharge = true
-		},
-		handleRecharge() {
-			uni.showLoading()
-			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
-				.then(async (res) => {
-					await handleDoPay({ ...res.data, ...this.payInfo }, 8)
-				})
-				.catch(() => {
-					uni.hideLoading()
 				})
 		}
 	}
@@ -254,7 +136,6 @@ export default {
 	.operation-btn {
 		/deep/ .tui-btn {
 			display: inline-block;
-			border-radius: 18rpx;
 		}
 	}
 }

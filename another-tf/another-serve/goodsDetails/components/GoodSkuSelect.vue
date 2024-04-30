@@ -15,14 +15,20 @@
 						<view class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</view>
 						<view style="display: flex;align-items: center;flex-wrap: wrap;">
 							<view
-								v-if="selectedSku.voucherId"
-								style="width: fit-content;margin-top: 10upx;margin-right: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								v-if="selectedSku.beeCoin"
+								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							>
+								赠送 {{ selectedSku.beeCoin }} 交易金
+							</view>
+							<view
+								v-if="selectedSku.voucherId && selectedSku.voucherPrice"
+								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 							>
 								可使用{{ selectedSku.voucherPrice }}代金券抵扣
 							</view>
 							<view
 								v-if="selectedSku.presenterVoucher"
-								style="width: fit-content;margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 							>
 								赠送 {{ selectedSku.price
 									? `${(Number.parseFloat(selectedSku.presenterVoucher / selectedSku.price).toFixed(3) * 1000) / 10}%`
@@ -199,7 +205,8 @@ export default {
 				stockNumber: 0,
 				voucherId: 0,
 				voucherPrice: 0,
-				presenterVoucher: 0
+				presenterVoucher: 0,
+				beeCoin: 0
 			},
 			// 1加入购物车 2立即购买 3开团 4单独购买 6SKU选择
 			btnType: 0,

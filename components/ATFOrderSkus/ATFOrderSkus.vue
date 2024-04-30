@@ -19,7 +19,7 @@
 						</text>
 						<view
 							v-if="proItem.presenterVoucher"
-							style="width: fit-content;margin-top: 10upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 						>
 							赠送 {{ proItem.presenterVoucher }} 代金券
 						</view>

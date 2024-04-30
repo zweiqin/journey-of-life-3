@@ -1,27 +1,27 @@
 <template>
-	<view class="voucher-record-container">
+	<view class="transaction-record-container">
 		<JHeader title="收支明细" width="50" height="50"></JHeader>
 		<view style="padding: 20rpx 20rpx 0;">
-			<!-- <view class="top-btn">
+			<view class="top-btn">
 				<tui-button
-				type="white" width="200rpx" height="60rpx" shape="circle"
-				link margin="0"
-				@click="isShowTypePopup = true"
+					type="white" width="200rpx" height="60rpx" shape="circle"
+					link margin="0"
+					@click="isShowTypePopup = true"
 				>
-				<view style="display: flex;align-items: center;font-size: 28rpx;line-height: 1;">
-				<text v-if="[ 0 ].includes(queryInfo.type)">
-				全部明细
-				</text>
-				<text v-else-if="[ 1 ].includes(queryInfo.type)">
-				支出
-				</text>
-				<text v-else-if="[ 2 ].includes(queryInfo.type)">
-				收入
-				</text>
-				<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
-				</view>
+					<view style="display: flex;align-items: center;font-size: 28rpx;line-height: 1;">
+						<text v-if="[ 0 ].includes(queryInfo.type)">
+							全部明细
+						</text>
+						<text v-else-if="[ 1 ].includes(queryInfo.type)">
+							支出
+						</text>
+						<text v-else-if="[ 2 ].includes(queryInfo.type)">
+							收入
+						</text>
+						<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+					</view>
 				</tui-button>
-				</view> -->
+			</view>
 
 			<view style="margin-top: 18rpx;font-size: 28rpx;">
 				<tui-dropdown-list
@@ -34,9 +34,23 @@
 							@click="timeDropdownShow = !timeDropdownShow"
 						>
 							<view style="margin-left: 10rpx;font-size: 26rpx;">
-								<text v-if="queryInfo.today === 1">今日佣金</text>
-								<text v-else-if="queryInfo.today === 2">累计佣金</text>
-								<text v-else-if="queryInfo.today === 3">途中佣金</text>
+								<text v-if="queryInfo.time === 0">全部</text>
+								<text v-else-if="queryInfo.time === 1">
+									{{ String(new Date().getFullYear()) }}年{{ String(new
+										Date().getMonth() + 1).padStart(2, '0') }}月{{ String(new Date().getDate()).padStart(2, '0') }}日
+								</text>
+								<text v-else-if="queryInfo.time === 2">
+									{{ String(new Date(Date.now() - 24 * 60 * 60 *
+										1000).getFullYear()) }}年{{ String(new Date(Date.now() - 24 * 60 * 60 * 1000).getMonth() +
+										1).padStart(2, '0') }}月{{ String(new Date(Date.now() - 24 * 60 * 60 * 1000).getDate()).padStart(2,
+										'0') }}日
+								</text>
+								<text v-else-if="queryInfo.time === 3">本周</text>
+								<text v-else-if="queryInfo.time === 4">
+									{{ String(new Date().getFullYear()) }}年{{ String(new
+										Date().getMonth() + 1).padStart(2, '0') }}月
+								</text>
+								<text v-else-if="queryInfo.time === 5">{{ String(new Date().getFullYear()) }}年</text>
 							</view>
 							<view
 								style="display: flex;align-items: center;justify-content: center;width: 20rpx;height: 20rpx;margin-left: 12rpx;padding: 4rpx;color: #ffffff;background-color: #000000;border-radius: 50%;"
@@ -52,7 +66,7 @@
 								style="width: fit-content;min-width: 140rpx;max-height: 28vh;overflow-y: auto;"
 							>
 								<tui-list-cell
-									v-for="item in [{ name: '今日佣金', value: 1 }, { name: '累计佣金', value: 2 }, { name: '途中佣金', value: 3 }]"
+									v-for="item in [{ name: '全部', value: 0 }, { name: '今天', value: 1 }, { name: '昨天', value: 2 }, { name: '本周', value: 3 }, { name: '本月', value: 4 }, { name: '本年', value: 5 }]"
 									:key="item.value" padding="20rpx 0" color="#ffffff" background-color="transparent"
 									style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #999999;"
 									@click="handleSelectDropdown(item.value)"
@@ -67,46 +81,44 @@
 
 			<view style="margin-top: 12rpx;font-size: 28rpx;">
 				<view v-if="[ 0 ].includes(queryInfo.type)">
-					总收益￥{{ commissionAcount.quanbu }}
+					总收益￥{{ transactionAcount.quanbu }}
 				</view>
 				<view v-else-if="[ 1 ].includes(queryInfo.type)">
-					总支出￥{{ commissionAcount.zongzhichu }}
+					总支出￥{{ transactionAcount.zongzhichu }}
 				</view>
 				<view v-else-if="[ 2 ].includes(queryInfo.type)">
-					总收入￥{{ commissionAcount.zongshouru }}
+					总收入￥{{ transactionAcount.zongshouru }}
 				</view>
 			</view>
 
 			<view style="margin-top: 20rpx;">
-				<view v-if="commissionRecordList.length > 0">
+				<view v-if="transactionRecordList.length > 0">
 					<view
-						v-for="(item, index) in commissionRecordList" :key="item.id"
+						v-for="(item, index) in transactionRecordList" :key="item.id"
 						style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
-						@click="handleClickCommissionRecord(item)"
+						@click="handleClickTransactionRecord(item)"
 					>
 						<view style="flex: 1;display: flex;align-items: center;">
 							<view
 								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-								:style="{ backgroundColor: [5, 7].includes(item.type) ? '#208f57' : [1, 2, 3, 4, 6].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
+								:style="{ backgroundColor: item.fee > 0 ? '#208f57' : item.fee < 0 ? '#ef530e' : '#d8d8d8' }"
 							>
-								<text v-if="[5, 7].includes(item.type)">支</text>
-								<text v-else-if="[1, 2, 3, 4, 6].includes(item.type)">收</text>
+								<text v-if="item.fee > 0">支</text>
+								<text v-else-if="item.fee < 0">收</text>
 								<text v-else>--</text>
 							</view>
 							<view style="margin-left: 14rpx;">
 								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									<text v-if="item.userNameOne">
-										{{ item.userNameOne }}-
-									</text>
 									<text>
-										<text v-if="item.type === 1">关系链</text>
-										<text v-else-if="item.type === 2">商城</text>
-										<text v-else-if="item.type === 3">本地</text>
-										<text v-else-if="item.type === 4">服务</text>
-										<text v-else-if="item.type === 5">支付</text>
-										<text v-else-if="item.type === 6">退款</text>
-										<text v-else-if="item.type === 7">提现</text>
+										<text v-if="item.targetType === 1">充值</text>
+										<text v-else-if="item.targetType === 2">提现</text>
+										<text v-else-if="item.targetType === 3">订单</text>
+										<text v-else-if="item.targetType === 4">退款</text>
+										<text v-else-if="item.targetType === 5">赠送</text>
 										<text v-else>--</text>
+									</text>
+									<text v-if="item.number">
+										-{{ item.number }}
 									</text>
 								</view>
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
@@ -114,19 +126,28 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ [5, 7].includes(item.type) ? '-' : [1, 2, 3, 4, 6].includes(item.type) ? '+' : '？' }}{{ Number.parseFloat(Number(item.amount || 0)).toFixed(2) }}元
+								{{ item.fee > 0 ? '+' : item.fee < 0 ? '-' : '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
 							</view>
+							<!-- <view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+								<text>状态：</text>
+								<text v-if="item.resultType === 0">未完成</text>
+								<text v-else-if="item.resultType === 1">处理完成</text>
+								<text v-else>--</text>
+								</view> -->
 							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
-								<text>订单总额：</text>
-								<text>{{ Number.parseFloat(Number(item.totalAmount || 0)).toFixed(2) }}</text>
+								<text>余额：￥</text>
+								<text v-if="item.disposeAccountJson">
+									{{ JSON.parse(item.disposeAccountJson).beeCoinPrice || '--' }}
+								</text>
+								<text v-else>未知</text>
 							</view>
 						</view>
 					</view>
 				</view>
 				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
-						:status="!isEmpty && !commissionRecordList.length
-							? 'loading' : !isEmpty && commissionRecordList.length && (commissionRecordList.length >= commissionRecordTotal) ? 'no-more' : ''"
+						:status="!isEmpty && !transactionRecordList.length
+							? 'loading' : !isEmpty && transactionRecordList.length && (transactionRecordList.length >= transactionRecordTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
 					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
@@ -168,14 +189,14 @@
 </template>
 
 <script>
-import { getCommissionDeatilListApi } from '../../../api/anotherTFInterface'
+import { getBeeCurrencyDistributorApi } from '../../../api/anotherTFInterface'
 export default {
-	name: 'VoucherRecord',
+	name: 'TransactionRecord',
 	components: {
 	},
 	data() {
 		return {
-			commissionAcount: {
+			transactionAcount: {
 				zongshouru: '',
 				zongzhichu: '',
 				quanbu: ''
@@ -183,32 +204,31 @@ export default {
 			isShowTypePopup: false,
 			timeDropdownShow: false,
 			isEmpty: false,
-			commissionRecordTotal: 0,
-			commissionRecordList: [],
+			transactionRecordTotal: 0,
+			transactionRecordList: [],
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
 				type: 0,
-				today: 2
+				time: 0
 			}
 		}
 	},
 	onLoad(options) {
-		this.queryInfo.today = Number(options.today) || 2
-		this.getCommissionStatisticsRecord()
+		this.getTransactionStatisticsRecord()
 	},
 	methods: {
-		getCommissionStatisticsRecord(isLoadmore) {
+		getTransactionStatisticsRecord(isLoadmore) {
 			uni.showLoading()
-			getCommissionDeatilListApi({ ...this.queryInfo })
+			getBeeCurrencyDistributorApi({ ...this.queryInfo })
 				.then((res) => {
-					this.commissionRecordTotal = res.data.total
+					this.transactionRecordTotal = res.data.total
 					if (isLoadmore) {
-						this.commissionRecordList.push(...res.data.list)
+						this.transactionRecordList.push(...res.data.list)
 					} else {
-						this.commissionRecordList = res.data.list
+						this.transactionRecordList = res.data.list
 					}
-					this.isEmpty = this.commissionRecordList.length === 0
+					this.isEmpty = this.transactionRecordList.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {
@@ -219,47 +239,47 @@ export default {
 			if (this.queryInfo.type === item.value) return
 			this.queryInfo.type = item.value
 			this.queryInfo.page = 1
-			this.commissionRecordList = []
-			this.commissionRecordTotal = 0
+			this.transactionRecordList = []
+			this.transactionRecordTotal = 0
 			this.isEmpty = false
-			this.getCommissionStatisticsRecord()
+			this.getTransactionStatisticsRecord()
 			this.isShowTypePopup = false
 		},
 		handleSelectDropdown(timeDropdownIndex) {
-			if (this.queryInfo.today === timeDropdownIndex) {
+			if (this.queryInfo.time === timeDropdownIndex) {
 				this.timeDropdownShow = false
 				return
 			}
-			this.queryInfo.today = timeDropdownIndex
+			this.queryInfo.time = timeDropdownIndex
 			this.queryInfo.page = 1
-			this.commissionRecordList = []
-			this.commissionRecordTotal = 0
+			this.transactionRecordList = []
+			this.transactionRecordTotal = 0
 			this.isEmpty = false
-			this.getCommissionStatisticsRecord()
+			this.getTransactionStatisticsRecord()
 			this.timeDropdownShow = false
 		},
-		handleClickCommissionRecord(item) {
+		handleClickTransactionRecord(item) {
 			uni.navigateTo({
-				url: '/another-tf/another-user/commission-statistics/commission-record-detail',
+				url: '/another-tf/another-user/transaction-funds/transaction-record-detail',
 				success: () => {
 					setTimeout(() => {
-						uni.$emit('sendCommissionRecordDetailMsg', { commissionRecordData: item })
+						uni.$emit('sendTransactionRecordDetailMsg', { transactionRecordData: item })
 					}, 400)
 				}
 			})
 		}
 	},
 	onReachBottom() {
-		if (this.commissionRecordList.length < this.commissionRecordTotal) {
+		if (this.transactionRecordList.length < this.transactionRecordTotal) {
 			++this.queryInfo.page
-			this.getCommissionStatisticsRecord(true)
+			this.getTransactionStatisticsRecord(true)
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-.voucher-record-container {
+.transaction-record-container {
 	min-height: 100vh;
 	box-sizing: border-box;
 

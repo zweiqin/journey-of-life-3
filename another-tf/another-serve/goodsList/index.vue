@@ -74,19 +74,21 @@
 									￥{{ item.originalPrice }}
 								</view>
 							</view>
-							<view
-								v-if="item.voucherId && item.voucherPrice"
-								style="width: fit-content;margin-top: 4upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;vertical-align: middle;"
-							>
-								可使用{{ item.voucherPrice }}代金券抵扣
-							</view>
-							<view
-								v-if="item.presenterVoucher"
-								style="width: fit-content;margin-top: 4upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;vertical-align: middle;"
-							>
-								赠送 {{ item.price
-									? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
-									: item.presenterVoucher }} 代金券
+							<view style="display: flex;align-items: center;flex-wrap: wrap;">
+								<view
+									v-if="item.voucherId && item.voucherPrice"
+									style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								>
+									可使用{{ item.voucherPrice }}代金券抵扣
+								</view>
+								<view
+									v-if="item.presenterVoucher"
+									style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								>
+									赠送 {{ item.price
+										? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
+										: item.presenterVoucher }} 代金券
+								</view>
 							</view>
 							<!-- <view class="flex-display flex-sp-between flex-row mar-top-20 flex-items shopName">
 								<label class="fs22 font-color-FFEBC4">{{ item.shopName }}</label>

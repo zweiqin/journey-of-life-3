@@ -80,12 +80,22 @@
                 <view class="goods-name">{{ item.productName }}</view>
                 <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{
                   item.originalPrice }}</text> </view>
-                <view class="voucher-num" v-if="item.voucherId && item.voucherPrice">
-                  可使用{{ item.voucherPrice }}代金券抵扣
-                </view>
-                <view class="voucher-num" v-if="item.presenterVoucher">
-                  赠送 {{ item.presenterVoucher }} 代金券
-                </view>
+								<view style="display: flex;align-items: center;flex-wrap: wrap;">
+									<view
+										v-if="item.voucherId && item.voucherPrice"
+										style="width: fit-content;max-width: 268rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										可使用{{ item.voucherPrice }}代金券抵扣
+									</view>
+									<view
+										v-if="item.presenterVoucher"
+										style="width: fit-content;max-width: 268rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										赠送 {{ item.price
+											? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
+											: item.presenterVoucher }} 代金券
+									</view>
+								</view>
               </view>
             </view>
           </view>

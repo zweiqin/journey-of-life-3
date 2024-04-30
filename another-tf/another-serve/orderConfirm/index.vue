@@ -281,7 +281,7 @@
 
 <script>
 import { handleDoPay } from '../../../utils/payUtil'
-import { getQueryDictByNameApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi } from '../../../api/anotherTFInterface'
+import { getQueryDictByNameApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi } from '../../../api/anotherTFInterface'
 import { T_RECEIVE_ITEM, T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST, T_PAY_ORDER } from '../../../constant'
 
 export default {
@@ -1017,6 +1017,9 @@ export default {
 				addUserTrackReportDoPointerApi({
 					eventType: 3,
 					productIds: this.pointProductIds
+				})
+				updatePlatformBeeCurrencySaveBeeApi({
+					orderId: res.data.orderId
 				})
 				if (this.fromType == 2) {
 					const carSkusData = data.shops

@@ -1582,6 +1582,20 @@
           }
         },
         {
+          "path": "another-user/transaction-funds/transaction-record",
+          "style": {
+            "navigationBarTitleText": "交易金收支明细",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/transaction-funds/transaction-record-detail",
+          "style": {
+            "navigationBarTitleText": "交易金收支明细详情",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
           "path": "another-user/transaction-funds/trading-activities",
           "style": {
             "navigationBarTitleText": "交易金活动"

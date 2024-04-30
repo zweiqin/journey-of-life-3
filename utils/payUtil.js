@@ -458,23 +458,23 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 									TL_ORDER_NO: submitInfo.orderSn
 								})
 							}
-							// if (res.data.isZeroOrder === '1') { // 零元支付情况
-							// 	uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-							// } else {
-							delete res.data.isZeroOrder
-							let query = ''
-							for (const key in res.data) {
-								query += key + '=' + res.data[key] + '&'
-							}
-							wx.miniProgram.navigateTo({
-								url: '/pages/loading/loading?' + query + 'orderNo=' + submitInfo.orderSn + '&userId=' + getUserId(),
-								fail: () => {
-									uni.switchTab({
-										url: '/pages/order/order?type=shop&status=1'
-									})
+							if (res.data.isZeroOrder === '1') { // 零元支付情况
+								uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+							} else {
+								delete res.data.isZeroOrder
+								let query = ''
+								for (const key in res.data) {
+									query += key + '=' + res.data[key] + '&'
 								}
-							})
-							// }
+								wx.miniProgram.navigateTo({
+									url: '/pages/loading/loading?' + query + 'orderNo=' + submitInfo.orderSn + '&userId=' + getUserId(),
+									fail: () => {
+										uni.switchTab({
+											url: '/pages/order/order?type=shop&status=1'
+										})
+									}
+								})
+							}
 						}
 					})
 						.finally((e) => {

@@ -23,6 +23,7 @@
 					<text style="color: #777777;margin-left: 20upx;">粉丝数 {{ brandDetail.fansNumber }}</text>
 				</view>
 				<view v-if="brandDetail.voucherReturn || brandDetail.isVoucher" class="tags">
+					<view v-if="brandDetail.isBeeCoin" class="tag">支持交易金</view>
 					<view v-if="brandDetail.voucherReturn" class="tag">补贴代金券{{ brandDetail.voucherReturn || 0 }}%</view>
 					<view v-if="brandDetail.isVoucher" class="tag">支持代金券</view>
 				</view>
