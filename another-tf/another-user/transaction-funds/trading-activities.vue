@@ -201,7 +201,7 @@ export default {
 				pageSize: 20,
 				ids: [ ...new Array(75).toString()
 					.split(',')
-					.map((i, index) => index + 135) ],
+					.map((i, index) => index + 105) ],
 				shopSeckillId: 0
 			},
 			activeSession: 0

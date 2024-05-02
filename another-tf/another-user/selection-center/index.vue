@@ -6,23 +6,24 @@
 			style="display: flex;align-items: center;justify-content: space-around;padding: 20rpx 0;font-size: 26rpx;"
 		>
 			<view
-				:style="{ color: selectionGoodsInfo.query.ifNew == 1 ? '#ff7911' : '#000000' }"
+				:style="{ color: selectionGoodsInfo.query.ifNew === 1 ? '#ff7911' : selectionGoodsInfo.query.ifNew === 0 ? '#8dbcbd' : '#000000' }"
 				@click="handleGoodsSortTap(1)"
 			>
 				<text>新品</text>
 			</view>
-			<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+			<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
 				<text>价格</text>
 				<tui-icon
-					:name="selectionGoodsInfo.query.type == 1 ? 'turningup' : selectionGoodsInfo.query.type == 2 ? 'turningdown' : ''"
+					v-if="[1, 2].includes(selectionGoodsInfo.query.type)"
+					:name="selectionGoodsInfo.query.type === 1 ? 'turningup' : selectionGoodsInfo.query.type === 2 ? 'turningdown' : ''"
 					color="#666666" :size="16"
 				></tui-icon>
 			</view>
-			<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+			<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
 				<text>销量</text>
 				<tui-icon
 					v-if="[1, 2].includes(selectionGoodsInfo.query.volume)"
-					:name="selectionGoodsInfo.query.volume == 1 ? 'turningup' : selectionGoodsInfo.query.volume == 2 ? 'turningdown' : ''"
+					:name="selectionGoodsInfo.query.volume === 1 ? 'turningup' : selectionGoodsInfo.query.volume === 2 ? 'turningdown' : ''"
 					color="#666666" :size="16"
 				></tui-icon>
 			</view>
@@ -101,9 +102,9 @@ export default {
 			sortGoodsIndex: '',
 			selectionGoodsInfo: {
 				query: {
-					ifNew: 0,
-					type: 1,
-					volume: 0,
+					ifNew: 1,
+					type: '',
+					volume: '',
 					page: 1,
 					pageSize: 20,
 					groupId: ''
@@ -186,20 +187,20 @@ export default {
 		handleGoodsSortTap(index) {
 			this.selectionGoodsInfo.query.page = 1
 			this.selectionGoodsInfo.data = []
-			if (index == 1) {
-				this.selectionGoodsInfo.query.ifNew = this.selectionGoodsInfo.query.ifNew != 0 ? 0 : 1,
-				this.selectionGoodsInfo.query.type = 1,
-				this.selectionGoodsInfo.query.volume = 1,
+			if (index === 1) {
+				this.selectionGoodsInfo.query.ifNew = this.selectionGoodsInfo.query.ifNew ? 0 : 1
+				this.selectionGoodsInfo.query.type = ''
+				this.selectionGoodsInfo.query.volume = ''
 				this.sortGoodsIndex = index
-			} else if (index == 2) {
-				this.selectionGoodsInfo.query.ifNew = 0,
-				this.selectionGoodsInfo.query.type = this.selectionGoodsInfo.query.type != 1 ? 1 : 2,
-				this.selectionGoodsInfo.query.volume = 1,
+			} else if (index === 2) {
+				this.selectionGoodsInfo.query.ifNew = ''
+				this.selectionGoodsInfo.query.type = this.selectionGoodsInfo.query.type === 1 ? 2 : 1
+				this.selectionGoodsInfo.query.volume = ''
 				this.sortGoodsIndex = index
-			} else if (index == 3) {
-				this.selectionGoodsInfo.query.ifNew = 0,
-				this.selectionGoodsInfo.query.type = 1,
-				this.selectionGoodsInfo.query.volume = this.selectionGoodsInfo.query.volume != 1 ? 1 : 2,
+			} else if (index === 3) {
+				this.selectionGoodsInfo.query.ifNew = ''
+				this.selectionGoodsInfo.query.type = ''
+				this.selectionGoodsInfo.query.volume = this.selectionGoodsInfo.query.volume === 1 ? 2 : 1
 				this.sortGoodsIndex = index
 			}
 			this.getSelectionGoodsTemplate()

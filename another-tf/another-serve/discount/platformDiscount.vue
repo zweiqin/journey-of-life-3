@@ -89,7 +89,10 @@ export default {
 				volume: 1, // 销量
 				discountId: ''
 			},
-			discountInfo: {},
+			discountInfo: {
+				discount: '',
+				endTime: 0
+			},
 			sortIndex: 0
 		}
 	},

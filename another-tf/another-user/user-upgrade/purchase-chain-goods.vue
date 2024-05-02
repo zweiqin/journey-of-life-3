@@ -17,21 +17,22 @@
 			</view>
 			<view style="padding: 0 28upx;">
 				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
-					<view :style="{ color: queryInfo.ifNew ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
+					<view :style="{ color: queryInfo.ifNew === 1 ? '#ff7911' : queryInfo.ifNew === 0 ? '#8dbcbd' : '#000000' }" @click="handleGoodsSortTap(1)">
 						<text>新品</text>
 					</view>
-					<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+					<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
 						<text>价格</text>
 						<tui-icon
-							:name="queryInfo.type == 1 ? 'turningup' : queryInfo.type == 2 ? 'turningdown' : ''"
+							v-if="[1, 2].includes(queryInfo.type)"
+							:name="queryInfo.type === 1 ? 'turningup' : queryInfo.type === 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"
 						></tui-icon>
 					</view>
-					<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+					<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
 						<text>销量</text>
 						<tui-icon
 							v-if="[1, 2].includes(queryInfo.volume)"
-							:name="queryInfo.volume == 1 ? 'turningup' : queryInfo.volume == 2 ? 'turningdown' : ''"
+							:name="queryInfo.volume === 1 ? 'turningup' : queryInfo.volume === 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"
 						></tui-icon>
 					</view>
@@ -198,8 +199,8 @@ export default {
 				groupId: 822,
 				search: '',
 				ifNew: 1,
-				type: 1,
-				volume: 0,
+				type: '',
+				volume: '',
 				page: 1,
 				pageSize: 20
 			}
@@ -209,20 +210,20 @@ export default {
 		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
 			this.goodsList = []
-			if (index == 1) {
-				this.queryInfo.ifNew = this.queryInfo.ifNew != 0 ? 0 : 1,
-				this.queryInfo.type = 1,
-				this.queryInfo.volume = 1,
+			if (index === 1) {
+				this.queryInfo.ifNew = this.queryInfo.ifNew ? 0 : 1
+				this.queryInfo.type = ''
+				this.queryInfo.volume = ''
 				this.sortGoodsIndex = index
-			} else if (index == 2) {
-				this.queryInfo.ifNew = 0,
-				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2,
-				this.queryInfo.volume = 1,
+			} else if (index === 2) {
+				this.queryInfo.ifNew = ''
+				this.queryInfo.type = this.queryInfo.type === 1 ? 2 : 1
+				this.queryInfo.volume = ''
 				this.sortGoodsIndex = index
-			} else if (index == 3) {
-				this.queryInfo.ifNew = 0,
-				this.queryInfo.type = 1,
-				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2,
+			} else if (index === 3) {
+				this.queryInfo.ifNew = ''
+				this.queryInfo.type = ''
+				this.queryInfo.volume = this.queryInfo.volume === 1 ? 2 : 1
 				this.sortGoodsIndex = index
 			}
 			this.getShopGoodsTemplate()

@@ -6,10 +6,10 @@
 				<view style="display: flex;align-items: center;flex-direction: column;">
 					<view
 						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-						:style="{ backgroundColor: transactionRecordData.fee > 0 ? '#208f57' : transactionRecordData.fee < 0 ? '#ef530e' : '#d8d8d8' }"
+						:style="{ backgroundColor: [2, 3].includes(transactionRecordData.targetType) ? '#208f57' : [1, 4, 5].includes(transactionRecordData.targetType) ? '#ef530e' : '#d8d8d8' }"
 					>
-						<text v-if="transactionRecordData.fee > 0">支</text>
-						<text v-else-if="transactionRecordData.fee < 0">收</text>
+						<text v-if="[1, 4, 5].includes(transactionRecordData.targetType)">收</text>
+						<text v-else-if="[2, 3].includes(transactionRecordData.targetType)">支</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
@@ -21,7 +21,7 @@
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
-						{{ transactionRecordData.fee > 0 ? '+' : transactionRecordData.fee < 0 ? '-' : '？' }}{{
+						{{ [1, 4, 5].includes(transactionRecordData.targetType) ? '+' : [2, 3].includes(transactionRecordData.targetType) ? '-' : '？' }}{{
 							Number.parseFloat(Math.abs(transactionRecordData.fee) || 0).toFixed(2) }}元
 					</view>
 				</view>
@@ -56,20 +56,29 @@
 							<text v-else>--</text>
 						</view>
 					</view>
-					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+					<!-- <view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">变更前交易金</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
-							<text v-if="transactionRecordData.originalAccountJson">
-								{{ JSON.parse(transactionRecordData.originalAccountJson).beeCoinPrice || '--' }}
-							</text>
-							<text v-else>--</text>
+						<text v-if="transactionRecordData.originalAccountJson">
+						{{ JSON.parse(transactionRecordData.originalAccountJson).beeCoinPrice || '--' }}
+						</text>
+						<text v-else>--</text>
 						</view>
-					</view>
-					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						</view>
+						<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">变更后交易金</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
-							<text v-if="transactionRecordData.disposeAccountJson">
-								{{ JSON.parse(transactionRecordData.disposeAccountJson).beeCoinPrice || '--' }}
+						<text v-if="transactionRecordData.disposeAccountJson">
+						{{ JSON.parse(transactionRecordData.disposeAccountJson).beeCoinPrice || '--' }}
+						</text>
+						<text v-else>--</text>
+						</view>
+						</view> -->
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">交易金余额</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							<text v-if="transactionRecordData.beeCoinPrice">
+								{{ transactionRecordData.beeCoinPrice || '--' }}
 							</text>
 							<text v-else>--</text>
 						</view>
@@ -123,6 +132,7 @@ export default {
 				targetUuid: '',
 				status: '',
 				resultType: '',
+				beeCoinPrice: '',
 				originalAccountJson: '',
 				disposeAccountJson: ''
 			}

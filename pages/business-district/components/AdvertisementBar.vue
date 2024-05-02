@@ -216,7 +216,7 @@ export default {
 			})
 		getPlatformDiscountProductListApi({
 			page: 1,
-			pageSize: 9999,
+			pageSize: 20,
 			type: 1,
 			volume: 1,
 			discountId: ''
@@ -225,7 +225,7 @@ export default {
 		})
 		getCanvasCouponsApi({
 			page: 1,
-			pageSize: 9999
+			pageSize: 20
 		}).then((res) => {
 			this.couponList = res.data.list
 		})

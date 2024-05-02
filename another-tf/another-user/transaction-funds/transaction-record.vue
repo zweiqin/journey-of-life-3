@@ -101,10 +101,10 @@
 						<view style="flex: 1;display: flex;align-items: center;">
 							<view
 								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-								:style="{ backgroundColor: item.fee > 0 ? '#208f57' : item.fee < 0 ? '#ef530e' : '#d8d8d8' }"
+								:style="{ backgroundColor: [2, 3].includes(item.targetType) ? '#208f57' : [1, 4, 5].includes(item.targetType) ? '#ef530e' : '#d8d8d8' }"
 							>
-								<text v-if="item.fee > 0">支</text>
-								<text v-else-if="item.fee < 0">收</text>
+								<text v-if="[1, 4, 5].includes(item.targetType)">收</text>
+								<text v-else-if="[2, 3].includes(item.targetType)">支</text>
 								<text v-else>--</text>
 							</view>
 							<view style="margin-left: 14rpx;">
@@ -126,7 +126,7 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ item.fee > 0 ? '+' : item.fee < 0 ? '-' : '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
+								{{ [1, 4, 5].includes(item.targetType) ? '+' : [2, 3].includes(item.targetType) ? '-' : '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
 							</view>
 							<!-- <view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>状态：</text>
@@ -136,8 +136,11 @@
 								</view> -->
 							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>余额：￥</text>
-								<text v-if="item.disposeAccountJson">
+								<!-- <text v-if="item.disposeAccountJson">
 									{{ JSON.parse(item.disposeAccountJson).beeCoinPrice || '--' }}
+									</text> -->
+								<text v-if="item.beeCoinPrice">
+									{{ item.beeCoinPrice || '--' }}
 								</text>
 								<text v-else>未知</text>
 							</view>
