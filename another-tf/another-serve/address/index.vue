@@ -32,8 +32,8 @@
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="wxAddressNBox">
 			<view class="flex-items btnBox flex-sp-between">
-				<view class="wxAddress btn flex-items flex-center" @click="wxAddFn">
-					<image src="../../../static/images/new-business/shop/weixin2x.png"></image>
+				<view class="btn flex-items flex-center" @click="wxAddFn">
+					<tui-icon :size="50" color="#00c800" name="wechat" unit="rpx" margin="0 20rpx 0 0"></tui-icon>
 					<text>微信导入</text>
 				</view>
 				<view class="addAddressBtn btn" @click="addAddressClick">添加新地址</view>
@@ -146,6 +146,7 @@ export default {
 <style lang="scss" scoped>
 .address-container {
 	padding: 0 24rpx;
+	box-sizing: border-box;
 
 	.addAddress {
 		border-top: 2rpx solid #F3F4F5;
@@ -167,13 +168,13 @@ export default {
 	}
 
 	.wxAddressNBox {
+		width: 100%;
 		position: fixed;
 		bottom: 50upx;
-		width: 100%;
 		left: 0;
+		box-sizing: border-box;
 
 		.btnBox {
-			width: 100%;
 			background: #FFFFFF;
 			height: 120rpx;
 			padding: 0 50rpx;
@@ -191,14 +192,6 @@ export default {
 				color: #FFEBC4;
 				background: #333333;
 				border: 2rpx solid #333333;
-			}
-
-			.wxAddress {
-				image {
-					width: 45rpx;
-					height: 37rpx;
-					margin-right: 20rpx;
-				}
 			}
 		}
 	}

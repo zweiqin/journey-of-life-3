@@ -1,7 +1,7 @@
 <template>
 	<!-- 提交订单 -->
 	<view class="order-confirm-container">
-		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="content">
 			<view style="text-align: right;">
 				<tui-button
@@ -15,7 +15,7 @@
 			<!-- v-if="settlement.shopType !== 2" -->
 			<view>
 				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
-					<tui-icon name="position" :size="66" unit="upx" color="#333333" margin="0 20upx 0 0"></tui-icon>
+					<tui-icon name="position" :size="66" unit="rpx" color="#333333" margin="0 20rpx 0 0"></tui-icon>
 					<!-- 有地址的 -->
 					<view v-if="userAddressInfo.receiveId" class="address-r">
 						<view class="address-name-box">
@@ -30,14 +30,14 @@
 					<view v-else class="address-r">
 						<text>你还没有收货地址哦，点击这里添加</text>
 					</view>
-					<tui-icon name="arrowright" :size="62" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
+					<tui-icon name="arrowright" :size="62" unit="rpx" color="#999999" margin="0 0 0 20rpx"></tui-icon>
 				</view>
 			</view>
 			<view class="order-list-box">
 				<view v-for="(item, sIndex) in settlement.shops" :key="item.shopId" class="item">
 					<view v-if="!item.shopName.startsWith('团蜂')" class="order-list-top">
 						<view class="top-l">
-							<tui-icon name="shop" :size="34" unit="upx" color="#2b2b2b" margin="0 20upx 0 0"></tui-icon>
+							<tui-icon name="shop" :size="34" unit="rpx" color="#2b2b2b" margin="0 20rpx 0 0"></tui-icon>
 							<text class="shop-name">{{ item.shopName }}</text>
 						</view>
 					</view>
@@ -45,7 +45,7 @@
 						<view>
 							<view v-for="(cItem, index) in item.skus" :key="cItem.productId" class="order-info-item">
 								<image :src="common.seamingImgUrl(cItem.image)" class="product-img"></image>
-								<view class="info-box">
+								<view>
 									<text class="product-name">{{ cItem.productName }}</text>
 									<view class="product-sku">
 										<view v-for="(vItem, index) in cItem.values">
@@ -66,7 +66,7 @@
 							</view>
 							<view class="delivery-way-box">
 								<view>
-									<view style="display: flex;align-items: center;justify-content: space-between;font-size: 26upx;">
+									<view style="display: flex;align-items: center;justify-content: space-between;font-size: 26rpx;">
 										<view class="flex-items">
 											<text>配送方式</text>
 										</view>
@@ -94,7 +94,7 @@
 								<view v-if="item.currentCoupon && item.currentCoupon.couponType === 2" class="discount-info2">
 									{{ item.currentCoupon.reduceMoney }}折券
 								</view>
-								<tui-icon name="arrowright" :size="30" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
+								<tui-icon name="arrowright" :size="30" unit="rpx" color="#999999" margin="0 0 0 20rpx"></tui-icon>
 							</view>
 						</view>
 						<view class="order-total-box">
@@ -119,7 +119,7 @@
 					</view>
 					<view v-else-if="!settlement.coupons || !settlement.coupons.length" class="discount-label">无</view>
 					<view v-else class="discount-label">不使用</view>
-					<tui-icon name="arrowright" :size="30" unit="upx" color="#999999" margin="0 0 0 20upx"></tui-icon>
+					<tui-icon name="arrowright" :size="30" unit="rpx" color="#999999" margin="0 0 0 20rpx"></tui-icon>
 				</view>
 			</view>
 			<!--      积分支付 -->
@@ -142,12 +142,13 @@
 				@choose="handleChooseVoucher"
 			></VoucherUse>
 
-			<view style="margin-top: 20upx;">
+			<view style="margin-top: 20rpx;">
 				<CashierList
-					show :price-pay="totalPrice" :show-commission-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
-					:show-platform-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
-					:show-transaction-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && !!totalPrice"
-					:shop-id-pay="!settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId)) && totalPrice ? shopIdPay : 0"
+					show :price-pay="totalPrice"
+					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
+					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
+					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
+					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? shopIdPay : 0"
 					@change="(e) => payInfo = e"
 				/>
 			</view>
@@ -164,7 +165,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="order-confirm-box" style="padding-bottom:30upx;">
+		<view class="order-confirm-box" style="padding-bottom:30rpx;">
 			<view class="flex-items flex-sp-between">
 				<text class="num-box">共{{ totalCount }}件</text>
 				<view>
@@ -186,42 +187,41 @@
 		<!-- 活动弹框，平台优惠券 -->
 		<tui-bottom-popup class="activity-con" :show="isShowDiscount" @close="isShowDiscount = false">
 			<view class="activity-box" style="height: 1000rpx;">
-				<view class="title-box">
-					<tui-icon
-						name="close" :size="30" unit="upx" color="#999999"
-						style="padding: 30upx;position: absolute;top: 0;right: 0;" @click="isShowDiscount = false"
-					></tui-icon>
+				<view style="display: flex;justify-content: flex-end;padding: 12rpx;border-bottom: solid 1rpx #EEEEEE;">
+					<tui-icon name="close" :size="50" unit="rpx" color="#999999" @click="isShowDiscount = false"></tui-icon>
 				</view>
 				<view class="activity-coupon-box">
-					<scroll-view scroll-y="true" style="height: 900rpx;">
+					<scroll-view scroll-y style="height: 900rpx;">
 						<view class="content-box">
 							<view v-if="settlement.coupons && settlement.coupons.length">
-								<view class="label-lingqu">可用优惠券列表</view>
-								<view class="couponBox">
+								<view style="font-size: 28rpx;color: #333333;">可用优惠券列表</view>
+								<view style="display: flex;flex-wrap: wrap;justify-content: space-between;margin-top: 10rpx;">
 									<view
-										v-for="(usableItem, index) in settlement.coupons" :key="index" class="coupon-item"
+										v-for="(usableItem, index) in settlement.coupons" :key="index"
+										style="width: 48%;padding: 20rpx;margin-bottom: 30rpx;background-color: #eeeeee;border-radius: 100rpx;color: #C5AA7B;text-align: center;box-sizing: border-box;"
 										@click="couponItemTap(index, usableItem)"
 									>
-										<view v-if="usableItem.couponType === 1" class="money-box">
-											￥{{ usableItem.reduceMoney }}
+										<view style="font-size: 40rpx;padding-top: 30rpx;">
+											<text v-if="usableItem.couponType === 1">￥{{ usableItem.reduceMoney }}</text>
+											<text v-else>{{ usableItem.reduceMoney }}折券</text>
 										</view>
-										<view v-else class="money-box">
-											{{ usableItem.reduceMoney }}折券
+										<view style="font-size:22rpx;margin-top: 20rpx;color: #999999;">
+											{{ usableItem.startTime && usableItem.startTime.split(' ')[0].split('-').join('.')
+											}}-{{ usableItem.endTime && usableItem.endTime.split(' ')[0].split('-').join('.') }}
 										</view>
-										<view class="info-box">
-											<view class="date font-color-999" style="font-size:22upx;margin-top: 20upx;">
-												{{
-													getDate(usableItem.startTime.replace(/-/g, '.')).split(' ')[0]
-												}}-{{ getDate(usableItem.endTime.replace(/-/g, '.')).split(' ')[0] }}
-											</view>
-											<view class="info font-color-999">满{{ usableItem.fullMoney }}元可用</view>
+										<view style="margin-top: 10rpx;font-size: 24rpx;color: #999999;">
+											满{{ usableItem.fullMoney }}元可用
 										</view>
 										<tui-icon
-											v-if="usableItem.checked" name="circle-fill" :size="40" unit="upx"
+											v-if="usableItem.checked" name="circle-fill" :size="40" unit="rpx"
 											color="#c5aa7b"
-											margin="40upx 0 0 0"
+											margin="40rpx 0 0 0"
 										></tui-icon>
-										<tui-icon v-else name="circle" :size="40" unit="upx" color="#cccccc" margin="40upx 0 0 0"></tui-icon>
+										<tui-icon
+											v-else name="circle" :size="40" unit="rpx"
+											color="#cccccc"
+											margin="40rpx 0 0 0"
+										></tui-icon>
 									</view>
 								</view>
 							</view>
@@ -232,39 +232,41 @@
 		</tui-bottom-popup>
 		<tui-bottom-popup class="activity-con" :show="isShopCoupons" @close="isShopCoupons = false">
 			<view class="activity-box">
-				<view class="title-box">
-					<tui-icon
-						name="close" :size="100" unit="upx" color="#999999"
-						style="padding: 30upx;position: absolute;top: 0;right: 0;" @click="isShopCoupons = false"
-					></tui-icon>
+				<view style="display: flex;justify-content: flex-end;padding: 12rpx;border-bottom: solid 1rpx #EEEEEE;">
+					<tui-icon name="close" :size="50" unit="rpx" color="#999999" @click="isShopCoupons = false"></tui-icon>
 				</view>
 				<view class="activity-coupon-box">
-					<scroll-view scroll-y="true" style="height: 900rpx;">
+					<scroll-view scroll-y style="height: 900rpx;">
 						<view class="content-box">
 							<view v-if="shopCouponsLength">
-								<view class="label-lingqu">可用优惠券列表</view>
-								<view class="couponBox">
+								<view style="font-size: 28rpx;color: #333333;">可用优惠券列表</view>
+								<view style="display: flex;flex-wrap: wrap;justify-content: space-between;margin-top: 10rpx;">
 									<view
-										v-for="(sItem, index) in shopCouponslist.shopCoupons" :key="sItem.id" class="coupon-item"
+										v-for="(sItem, index) in shopCouponslist.shopCoupons" :key="sItem.id"
+										style="width: 48%;padding: 20rpx;margin-bottom: 30rpx;background-color: #eeeeee;border-radius: 100rpx;color: #C5AA7B;text-align: center;box-sizing: border-box;"
 										@click="shopCouponItemTap(index, sItem)"
 									>
-										<view v-if="sItem.couponType === 1" class="money-box">
-											￥{{ sItem.reduceMoney }}
+										<view style="font-size: 40rpx;padding-top: 30rpx;">
+											<text v-if="sItem.couponType === 1">￥{{ sItem.reduceMoney }}</text>
+											<text v-else>{{ sItem.reduceMoney }}折券</text>
 										</view>
-										<view v-else class="money-box">{{ sItem.reduceMoney }}折券</view>
-										<view class="date font-color-999" style="font-size:22upx;margin-top: 10upx;">
-											{{ getDate(sItem.startTime.replace(/-/g, '.')).split(' ')[0] }}-{{
-												getDate(sItem.endTime.replace(/-/g, '.')).split(' ')[0] }}
+										<view style="font-size:22rpx;margin-top: 10rpx;color: #999999;">
+											{{ sItem.startTime && sItem.startTime.split(' ')[0].split('-').join('.')
+											}}-{{ sItem.endTime && sItem.endTime.split(' ')[0].split('-').join('.') }}
 										</view>
-										<view class="info-box">
-											<view class="info font-color-999">满{{ sItem.fullMoney }}元可用</view>
+										<view style="margin-top: 10rpx;font-size: 24rpx;color: #999999;">
+											满{{ sItem.fullMoney }}元可用
 										</view>
 										<tui-icon
-											v-if="sItem.checked" name="circle-fill" :size="40" unit="upx"
+											v-if="sItem.checked" name="circle-fill" :size="40" unit="rpx"
 											color="#c5aa7b"
-											margin="40upx 0 0 0"
+											margin="40rpx 0 0 0"
 										></tui-icon>
-										<tui-icon v-else name="circle" :size="40" unit="upx" color="#cccccc" margin="40upx 0 0 0"></tui-icon>
+										<tui-icon
+											v-else name="circle" :size="40" unit="rpx"
+											color="#cccccc"
+											margin="40rpx 0 0 0"
+										></tui-icon>
 									</view>
 								</view>
 							</view>
@@ -426,7 +428,7 @@ export default {
 				})
 				// 如果没有地址时进入购买宝贝页面对下面的商品件数和总计进行赋值
 				if (!this.settlement.receive.receiveAdress) {
-					this.settlement.shops.map((item) => {
+					this.settlement.shops.forEach((item) => {
 						this.totalCount += item.number
 						this.totalPrice += item.total || item.totalNum
 					})
@@ -485,6 +487,7 @@ export default {
 				console.log(this.settlement)
 			})
 				.catch((e) => {
+					console.log(e)
 					uni.hideLoading()
 				})
 		},
@@ -866,7 +869,7 @@ export default {
 		handleChooseVoucher(e) {
 			console.log(e)
 			if (e.id) {
-				if (this.settlement.shops.some((a) => a.skus.some((b) => b.platformCurrencyId))) {
+				if (this.settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
 					if (this.settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
 						if (this.settlement.shops.some((item) => this.settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
 							// 清除店铺优惠券数据
@@ -1076,16 +1079,15 @@ export default {
 
 	.info-box {
 		flex: 1;
-		font-size: 24upx;
-		font-weight: 400;
+		font-size: 24rpx;
 		margin: 10rpx;
 	}
 
 	.content {
-		padding: 0 30upx 198upx;
+		padding: 0 30rpx 198rpx;
 
 		.discount-label {
-			font-size: 26upx;
+			font-size: 26rpx;
 			color: #333;
 		}
 
@@ -1099,11 +1101,11 @@ export default {
 		}
 
 		.address-box {
-			margin-top: 20upx;
+			margin-top: 20rpx;
 			background: #fff;
-			border-radius: 10upx;
+			border-radius: 10rpx;
 			width: 100%;
-			padding: 30upx;
+			padding: 30rpx;
 			box-sizing: border-box;
 			display: flex;
 			flex-direction: row;
@@ -1113,38 +1115,38 @@ export default {
 				flex: 1;
 				display: flex;
 				flex-direction: column;
-				font-size: 28upx;
+				font-size: 28rpx;
 				color: #333;
 
 				.address-name-box {
-					font-size: 30upx;
+					font-size: 30rpx;
 					color: #333;
 
 					.phone {
-						font-size: 24upx;
+						font-size: 24rpx;
 						color: #999;
-						margin-left: 20upx;
+						margin-left: 20rpx;
 					}
 				}
 
 				.address-info {
-					font-size: 28upx;
+					font-size: 28rpx;
 					color: #333;
-					margin-top: 15upx;
+					margin-top: 15rpx;
 				}
 			}
 		}
 
 		.order-list-box {
-			margin-top: 20upx;
+			margin-top: 20rpx;
 
 			.item {
 				background: #fff;
-				border-radius: 10upx;
-				border-bottom: 2upx solid #eeeeee;
+				border-radius: 10rpx;
+				border-bottom: 2rpx solid #eeeeee;
 
 				.order-list-top {
-					padding: 20upx 30upx;
+					padding: 20rpx 30rpx;
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
@@ -1155,7 +1157,7 @@ export default {
 						align-items: center;
 
 						.shop-name {
-							font-size: 30upx;
+							font-size: 30rpx;
 							color: #333;
 							font-weight: bold;
 						}
@@ -1163,66 +1165,64 @@ export default {
 				}
 
 				.order-info-box {
-					padding: 0 30upx;
+					padding: 0 30rpx;
 					box-sizing: border-box;
 
 					.order-info-item {
 						display: flex;
 						flex-direction: row;
-						padding: 20upx 0;
+						padding: 20rpx 0;
 
 						.product-img {
-							width: 180upx;
-							height: 180upx;
-							border-radius: 10upx;
-							margin-right: 30upx;
+							width: 180rpx;
+							height: 180rpx;
+							border-radius: 10rpx;
+							margin-right: 30rpx;
 						}
 
-						.info-box {
-							.product-name {
-								font-size: 26upx;
-								color: #333;
-								height: 68upx;
-								line-height: 34upx;
-								display: -webkit-box;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								word-break: break-all;
-								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
+						.product-name {
+							font-size: 26rpx;
+							color: #333;
+							height: 68rpx;
+							line-height: 34rpx;
+							display: -webkit-box;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							word-break: break-all;
+							-webkit-box-orient: vertical;
+							-webkit-line-clamp: 2;
+						}
+
+						.product-sku {
+							font-size: 24rpx;
+							font-weight: 500;
+							color: #999;
+							margin-left: -20rpx;
+							width: 100%;
+							display: flex;
+							flex-direction: row;
+						}
+
+						.price-sku-box {
+							width: 100%;
+							display: flex;
+							flex-direction: row;
+							justify-content: space-between;
+
+							.product-price {
+								font-size: 32rpx;
+								color: #C83732;
+								font-weight: 400;
+
+								.fuhao {
+									font-size: 28rpx;
+								}
 							}
 
-							.product-sku {
-								font-size: 24upx;
-								font-weight: 500;
+							.product-num {
+								font-size: 28rpx;
 								color: #999;
-								margin-left: -20upx;
-								width: 100%;
-								display: flex;
-								flex-direction: row;
-							}
-
-							.price-sku-box {
-								width: 100%;
-								display: flex;
-								flex-direction: row;
-								justify-content: space-between;
-
-								.product-price {
-									font-size: 32upx;
-									color: #C83732;
-									font-weight: 400;
-
-									.fuhao {
-										font-size: 28upx;
-									}
-								}
-
-								.product-num {
-									font-size: 28upx;
-									color: #999;
-									font-weight: 400;
-								}
+								font-weight: 400;
 							}
 						}
 					}
@@ -1254,11 +1254,11 @@ export default {
 					}
 
 					.order-total-box {
-						padding: 20upx 0;
+						padding: 20rpx 0;
 						text-align: right;
 
 						.total-num {
-							font-size: 26upx;
+							font-size: 26rpx;
 							color: #333;
 						}
 
@@ -1268,7 +1268,7 @@ export default {
 						}
 
 						.ml10 {
-							margin-left: 10upx;
+							margin-left: 10rpx;
 						}
 					}
 				}
@@ -1277,14 +1277,14 @@ export default {
 
 		.discount-item {
 			width: 100%;
-			height: 98upx;
+			height: 98rpx;
 			box-sizing: border-box;
-			margin: 20upx 0 0;
+			margin: 20rpx 0 0;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0 20upx;
+			padding: 0 20rpx;
 			background: white;
 		}
 
@@ -1315,24 +1315,24 @@ export default {
 		}
 
 		.order-flow-box {
-			margin-top: 20upx;
+			margin-top: 20rpx;
 			display: flex;
 			flex-direction: column;
 
 			.flow-word {
-				font-size: 24upx;
+				font-size: 24rpx;
 				color: #999;
 				display: flex;
 				flex-direction: column;
 			}
 
 			.mt25 {
-				margin-top: 20upx;
+				margin-top: 20rpx;
 			}
 
 			.mt50 {
-				margin-top: 30upx;
-				margin-bottom: 20upx;
+				margin-top: 30rpx;
+				margin-bottom: 20rpx;
 			}
 		}
 	}
@@ -1344,11 +1344,11 @@ export default {
 		left: 0;
 		width: 100%;
 		background: #fff;
-		padding: 30upx;
+		padding: 30rpx;
 		box-sizing: border-box;
 
 		.num-box {
-			font-size: 30upx;
+			font-size: 30rpx;
 			color: #999;
 		}
 
@@ -1389,18 +1389,7 @@ export default {
 			display: flex;
 			flex-direction: column;
 			width: 100%;
-			height: 1000upx;
-
-			.title-box {
-				width: 100%;
-				height: 100upx;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: center;
-				position: relative;
-				border-bottom: solid 1px #EEEEEE;
-			}
+			height: 1000rpx;
 
 			.activity-coupon-box {
 				display: flex;
@@ -1414,39 +1403,7 @@ export default {
 					box-sizing: border-box;
 					display: flex;
 					flex-direction: column;
-					padding: 30upx;
-
-					.label-lingqu {
-						width: 100%;
-						font-size: 28upx;
-						font-weight: 500;
-						color: rgba(51, 51, 51, 1);
-					}
-
-					.couponBox {
-						display: flex;
-						flex-flow: wrap;
-						margin-top: 30rpx;
-						justify-content: space-between;
-
-						.coupon-item {
-							width: 48%;
-							height: 291rpx;
-							background: url("../../../static/images/new-business/shop/couponsIcon.png") no-repeat center top;
-							margin-top: 20upx;
-							color: #C5AA7B;
-							flex-shrink: 0;
-							text-align: center;
-							padding-top: 1rpx;
-							background-size: contain;
-
-							.money-box {
-								font-size: 40upx;
-								font-weight: 500;
-								margin-top: 30rpx;
-							}
-						}
-					}
+					padding: 30rpx;
 				}
 			}
 		}

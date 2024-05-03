@@ -167,22 +167,22 @@
 
 				<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
 					<view
-						v-if="shopInfo.isBeeCoin"
+						v-if="shopInfo.isBeeCoin === 1"
 						style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 					>
 						支持交易金
-					</view>
-					<view
-						v-if="shopInfo.voucherReturn"
-						style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
-					>
-						补贴代金券{{ shopInfo.voucherReturn || 0 }}%
 					</view>
 					<view
 						v-if="shopInfo.isVoucher"
 						style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 					>
 						支持代金券
+					</view>
+					<view
+						v-if="shopInfo.voucherReturn"
+						style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
+					>
+						补贴代金券{{ shopInfo.voucherReturn || 0 }}%
 					</view>
 				</view>
 

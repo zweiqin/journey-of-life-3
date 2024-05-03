@@ -17,29 +17,44 @@
 						class="close-btn"
 						@click="onActivityClose"
 					></tui-icon>
-					<view class="shopCouponBox" :class="platformMarkTools.length === 0 && 'flex'">
-						<view v-if="platformMarkTools.length > 0" class="list">
-							<view v-for="(item, index) in platformMarkTools" :key="index" class="item" :class="{ received: item.state === 1 }">
-								<view class="info-box">
-									<view v-if="item.couponType == 1" class="discoun">
-										<text style="font-size: 28rpx">￥</text>{{ item.reduceMoney }}
+					<view class="shopCouponBox">
+						<view
+							v-if="platformMarkTools.length"
+							style="display: flex;align-items: stretch;justify-content: space-between;flex-wrap: wrap;"
+						>
+							<view
+								v-for="(item, index) in platformMarkTools" :key="index"
+								style="width: 48%;padding: 20rpx;margin-bottom: 30rpx;background-color: #eeeeee;border-radius: 100rpx;box-sizing: border-box;"
+							>
+								<view style="display: flex;flex-direction: column;align-items: center;text-align: center;">
+									<view
+										style="font-size: 40rpx;padding-top: 40rpx;"
+										:style="{ color: item.state === 1 ? '#999999' : '#C5AA7B' }"
+									>
+										<text v-if="item.couponType == 1">￥{{ item.reduceMoney }}</text>
+										<text v-if="item.couponType == 2">{{ item.reduceMoney }}折</text>
 									</view>
-									<view v-if="item.couponType == 2" class="discoun">{{ item.reduceMoney }}折</view>
-									<view class="info-date">{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}</view>
-									<view class="info-condition mar-top-30">{{ item.content }}</view>
-									<!-- <view class="info-condition" v-if="item.couponType == 2">{{item.reduceMoney}}折优惠</view> -->
-									<ATFWXSendCoupon v-if="item.state === 3" :coupon-list="[ item ]" @success="success">
-										<view v-if="item.state === 3" class="use-btn mar-top-10">
-											立即领取
-										</view>
-									</ATFWXSendCoupon>
-									<view v-if="item.state === 0" class="use-btn mar-top-10">已领取</view>
-									<view v-if="item.state === 1" class="use-btn mar-top-10">已使用</view>
+									<view style="font-size: 20rpx;color: #999999;">
+										{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}
+									</view>
+									<view style="font-size: 20rpx;color: #999999;">{{ item.content }}</view>
+									<view
+										style="font-size: 24rpx;color: #FFFFFF;padding: 10rpx;"
+										:style="{ backgroundColor: item.state === 1 ? '#CCCCCC' : '#C5AA7B' }"
+									>
+										<text v-if="item.state === 0">已领取</text>
+										<text v-else-if="item.state === 1">已使用</text>
+										<ATFWXSendCoupon v-else-if="item.state === 3" :coupon-list="[ item ]" @success="success">
+											<text v-if="item.state === 3">
+												立即领取
+											</text>
+										</ATFWXSendCoupon>
+									</view>
 								</view>
 							</view>
 						</view>
-						<view v-else class="emptyOrder-box flex-items-plus flex-column">
-							<label class="font-color-999 fs26 mar-top-30">你还没有优惠券哦～</label>
+						<view v-else style="padding-bottom: 45upx;">
+							<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有优惠券哦～</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -51,35 +66,44 @@
 						class="close-btn"
 						@click="onActivityClose"
 					></tui-icon>
-					<view class="shopCouponBox" :class="shopMarkTools.length === 0 && 'flex'">
-						<view v-if="shopMarkTools.length > 0" class="list">
+					<view class="shopCouponBox">
+						<view
+							v-if="shopMarkTools.length"
+							style="display: flex;align-items: stretch;justify-content: space-between;flex-wrap: wrap;"
+						>
 							<view
-								v-for="(item, index) in shopMarkTools" :key="index" class="item"
-								:class="{ received: item.state === 1 }"
+								v-for="(item, index) in shopMarkTools" :key="index"
+								style="width: 48%;padding: 20rpx;margin-bottom: 30rpx;background-color: #eeeeee;border-radius: 100rpx;box-sizing: border-box;"
 							>
-								<view class="info-box">
-									<view v-if="item.couponType === 1" class="discoun">
-										<text style="font-size: 28rpx">
-											￥
-										</text>{{ item.reduceMoney }}
+								<view style="display: flex;flex-direction: column;align-items: center;text-align: center;">
+									<view
+										style="font-size: 40rpx;padding-top: 40rpx;"
+										:style="{ color: item.state === 1 ? '#999999' : '#C5AA7B' }"
+									>
+										<text v-if="item.couponType == 1">￥{{ item.reduceMoney }}</text>
+										<text v-else-if="item.couponType == 2">{{ item.reduceMoney }}折</text>
 									</view>
-									<view v-if="item.couponType === 2" class="discoun">{{ item.reduceMoney }}折</view>
-									<view class="info-date">{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}</view>
-									<view v-if="item.couponType === 1" class="info-condition">
-										满{{ item.fullMoney }}元减{{ item.reduceMoney }}元
+									<view style="font-size: 20rpx;color: #999999;">
+										{{ getDate(item.startTime) }}-{{ getDate(item.endTime) }}
 									</view>
-									<view v-if="item.couponType === 2" class="info-condition">
-										{{ item.reduceMoney }}折优惠
+									<view style="font-size: 20rpx;color: #999999;">
+										<text v-if="item.couponType === 1">满{{ item.fullMoney }}元减{{ item.reduceMoney }}元</text>
+										<text v-else-if="item.couponType === 2">{{ item.reduceMoney }}折优惠</text>
 									</view>
-									<view v-if="item.state === 3" class="use-btn" @click="handleReceiveCoupon(item)">
-										立即领取
+									<view
+										style="font-size: 24rpx;color: #FFFFFF;padding: 10rpx;"
+										:style="{ backgroundColor: item.state === 1 ? '#CCCCCC' : '#C5AA7B' }"
+									>
+										<text v-if="item.state === 0">已领取</text>
+										<text v-else-if="item.state === 3" @click="handleReceiveCoupon(item)">
+											立即领取
+										</text>
 									</view>
-									<view v-if="item.state === 0" class="use-btn">已领取</view>
 								</view>
 							</view>
 						</view>
-						<view v-else class="emptyOrder-box flex-items-plus flex-column">
-							<label class="font-color-999 fs26 mar-top-30">你还没有优惠券哦～</label>
+						<view v-else style="padding-bottom: 45upx;">
+							<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有优惠券哦～</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -183,16 +207,15 @@ export default {
 	right: 0;
 	bottom: 0;
 	overflow: hidden;
-	// background-color: rgba(0, 0, 0, 0.6);
 	z-index: -1;
 	opacity: 0;
+	box-sizing: border-box;
 
 	&.show {
 		z-index: 1000;
 		opacity: 1;
 
 		.couponShow-box {
-			/*transform: translate3D(0px, 0px, 0px);*/
 			bottom: 0;
 		}
 	}
@@ -235,144 +258,15 @@ export default {
 		}
 
 		.close-btn {
-			width: 50upx;
-			height: 50upx;
-			box-sizing: border-box;
 			position: absolute;
 			top: 20upx;
 			right: 20upx;
 		}
 
-		// #ifdef MP-ALIPAY
-		.close-btn {
-			width: 30upx;
-			height: 30upx;
-			top: 10upx;
-			right: 10upx;
-		}
-
-		// #endif
 		.shopCouponBox {
 			height: 100%;
 			overflow: auto;
 			position: relative;
-
-			&.flex {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			.emptyOrder-box {
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				right: 0;
-				left: 0;
-				margin: auto;
-
-				// padding-top: 80upx;
-				.emptyOrder-img {
-					width: 225upx;
-					height: 196upx;
-				}
-			}
-
-			.list {
-				display: flex;
-				flex-wrap: wrap;
-			}
-
-			.item {
-				width: 50%;
-				height: 291rpx;
-				background: url("../../../../static/images/new-business/shop/couponsIcon.png") no-repeat center top;
-				border-radius: 10rpx;
-				margin-top: 20rpx;
-				display: flex;
-				flex-direction: row;
-				position: relative;
-				background-size: contain;
-				padding: 0 50rpx;
-				margin-bottom: 30rpx;
-			}
-
-			.received {
-				background: url("../../../../static/images/new-business/shop/couponsIcon1.png") no-repeat center top;
-				background-size: contain;
-
-				.discoun {
-					color: #999999;
-					padding-top: 35rpx;
-				}
-
-				.use-btn {
-					height: 48rpx;
-					border: 2rpx solid #CCCCCC;
-					line-height: 48rpx;
-					text-align: center;
-					font-size: 24rpx;
-					font-weight: 400;
-					background-color: #CCCCCC;
-					color: #FFFFFF;
-					margin: 50rpx auto 0 auto;
-					padding: 0 10rpx;
-				}
-			}
-
-			/*.item:last-child {*/
-			/*margin-bottom: 100rpx;*/
-			/*}*/
-
-			.discoun {
-				display: flex;
-				flex-direction: row;
-				align-items: baseline;
-				font-size: 40rpx;
-				color: #C5AA7B;
-				margin: 0 auto;
-				padding-top: 40rpx;
-			}
-
-			.discoun text {
-				display: inline-block;
-			}
-
-			.info-box {
-				width: 100%;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-			}
-
-			.info-condition {
-				font-size: 20rpx;
-				font-weight: 400;
-				color: #999999;
-				margin: 0 auto;
-			}
-
-			.info-date {
-				font-size: 20rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #999999;
-				margin: 10rpx auto;
-				line-height: 20rpx;
-			}
-
-			.use-btn {
-				height: 48rpx;
-				border: 2rpx solid #C5AA7B;
-				line-height: 48rpx;
-				text-align: center;
-				font-size: 24rpx;
-				font-weight: 400;
-				background-color: #C5AA7B;
-				color: #FFFFFF;
-				margin: 50rpx auto 0 auto;
-				padding: 0 10rpx;
-			}
 		}
 	}
 }

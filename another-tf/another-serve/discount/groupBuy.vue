@@ -65,9 +65,7 @@
 					<view class="originalPrice">原价: ¥{{ item.originalPrice }}</view>
 					<view class="price">
 						<view class="currentPrice flex-row-plus flex-items-plus font-color-FF7800">
-							<view class="iconBox">
-								<image src="../../../static/images/new-business/shop/groupBuyIcon.png"></image>
-							</view>
+							<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 							<view class="flex-row-plus flex-items priceInfo">
 								<label class="fs24">￥</label>
 								<label class="fs36">{{ item.price }}</label>
@@ -230,13 +228,6 @@ export default {
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-
-				.iconBox {
-					image {
-						width: 58rpx;
-						height: 36rpx;
-					}
-				}
 
 				p {
 					font-size: 26upx;

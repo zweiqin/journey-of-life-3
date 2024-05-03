@@ -2,13 +2,10 @@
 	<view v-if="selectComposeData && selectComposeData.length > 0" class="group-list">
 		<view class="group-warp">
 			<view class="title">
-				<label>
-					<image
-						class="title-img" src="../../../../static/images/new-business/shop/combinationIcon.png" alt="组合销售"
-						mode="widthFix"
-					>
-					</image>
-				</label>
+				<view style="display: flex;align-items: center;">
+					<tui-icon :size="30" color="#fc7901" name="notice-fill" unit="rpx" margin="0 10rpx 0 0"></tui-icon>
+					<text style="color: #d0b88c;font-size: 36rpx;font-style: italic;font-weight: bold;">组合销售</text>
+				</view>
 				<view class="price-text">
 					组合价：¥{{ composePrice }}
 				</view>
@@ -328,12 +325,7 @@ export default {
 	.title {
 		display: flex;
 		align-items: center;
-		position: relative;
 		justify-content: space-between;
-
-		.title-img {
-			width: 203rpx;
-		}
 
 		.price-text {
 			padding: 0 34rpx;

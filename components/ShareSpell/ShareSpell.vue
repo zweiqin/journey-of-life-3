@@ -7,28 +7,30 @@
 					<view class="ul">
 						<!-- #ifdef APP-PLUS -->
 						<view class="li" @click="share('weixin')">
-							<image class="icon" src="../../static/images/new-business/shop/weixin2x.png"></image>
+							<tui-icon :size="92" color="#00c800" name="wechat" unit="rpx" margin="0"></tui-icon>
 							<label class="label">微信</label>
 						</view>
 						<view class="li" @click="share('weixinpyq')">
-							<image class="icon" src="../../static/images/new-business/shop/pyq.png"></image>
+							<tui-icon :size="92" color="#00c800" name="moments" unit="rpx" margin="0"></tui-icon>
 							<label class="label">朋友圈</label>
 						</view>
 						<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
 						<view class="li">
 							<button open-type="share" :data-obj="wxShareData" class="share-button" @share="onShareAppMessage">
-								<image class="icon" src="../../static/images/new-business/shop/forward.png"></image>
+								<view style="padding: 16rpx;background-color: #ffffff;border-radius: 50%;line-height: 1;">
+									<tui-icon :size="60" color="#f5aa15" name="partake" unit="rpx" margin="0"></tui-icon>
+								</view>
 								<label class="label">好友</label>
 							</button>
 						</view>
 						<view class="li" @click="share('weixinpyq')">
-							<image class="icon" src="../../static/images/new-business/shop/pyq.png"></image>
+							<tui-icon :size="92" color="#00c800" name="moments" unit="rpx" margin="0"></tui-icon>
 							<label class="label">朋友圈</label>
 						</view>
 						<!-- #endif -->
 						<view class="li" @click="share('lianjie')">
-							<image class="icon" src="../../static/images/new-business/shop/lianjie2.png"></image>
+							<tui-icon :size="92" color="#00b5b8" name="applets" unit="rpx" margin="0"></tui-icon>
 							<label class="label">链接</label>
 						</view>
 					</view>

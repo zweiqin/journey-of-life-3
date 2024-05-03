@@ -15,9 +15,8 @@
 				<tui-steps direction="column" :items="steps" spacing="180rpx" :active-steps="0"></tui-steps>
 			</view>
 		</view>
-		<view v-else class="emptyOrder-box flex-items-plus flex-column">
-			<image class="emptyOrder-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
-			<label class="font-color-999 fs26 mar-top-30">你还没有物流信息哦～</label>
+		<view v-else style="padding-bottom: 45upx;">
+			<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有物流信息哦～</tui-no-data>
 		</view>
 	</view>
 </template>
