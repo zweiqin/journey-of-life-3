@@ -1025,20 +1025,20 @@
             "navigationBarTitleText": "银行卡表单"
           }
         },
-        {
-          "path": "sever/withdrawal/index",
-          "style": {
-            "navigationBarTitleText": "提现",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "sever/withdrawal/withdrawal-record",
-          "style": {
-            "navigationBarTitleText": "提现记录",
-            "usingComponents": {}
-          }
-        },
+        // {
+        //   "path": "sever/withdrawal/index",
+        //   "style": {
+        //     "navigationBarTitleText": "提现",
+        //     "usingComponents": {}
+        //   }
+        // },
+        // {
+        //   "path": "sever/withdrawal/withdrawal-record",
+        //   "style": {
+        //     "navigationBarTitleText": "提现记录",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
           "path": "sever/goldButler/gold-butler",
           "style": {

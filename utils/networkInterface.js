@@ -9,6 +9,9 @@ import { getProductDetailsByIdApi, getBanziProductCanSaleApi } from '../api/anot
 export const resolveGoodsDetailSkuSituation = (goodsDetailOrigin) => new Promise(async (resolve, reject) => {
 	try {
 		const goodsDetail = JSON.parse(JSON.stringify(goodsDetailOrigin))
+		if (!goodsDetail.receive || !goodsDetail.receive.receiveId) {
+			return resolve(goodsDetailOrigin)
+		}
 		const resCanSale = await getBanziProductCanSaleApi({
 			productId: goodsDetail.productId,
 			receiveId: goodsDetail.receive.receiveId,

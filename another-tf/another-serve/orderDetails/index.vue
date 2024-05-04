@@ -428,11 +428,12 @@
 				<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 					<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 						<CashierList
-							:price-pay="dataList.orderPrice" show
-							:show-commission-pay="dataList.skus.every((b) => !b.platformCurrencyId)"
-							:show-platform-pay="dataList.skus.every((b) => !b.platformCurrencyId)"
-							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId)"
-							:shop-id-pay="dataList.skus.every((b) => !b.platformCurrencyId) ? dataList.shopId : 0"
+							:price-pay="dataList.price" show
+							:show-commission-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-platform-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:shop-id-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price ? dataList.shopId : 0"
 							@change="(e) => payInfo = e"
 						/>
 						<tui-button

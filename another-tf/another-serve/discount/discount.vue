@@ -140,18 +140,10 @@ export default {
 				this.queryInfo.volume = 0
 			} else if (index == 2) {
 				this.queryInfo.volume = 0
-				if (this.queryInfo.type === 0) {
-					this.queryInfo.type = 1
-				} else {
-					this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				}
+				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
 			} else if (index == 3) {
 				this.queryInfo.type = 0
-				if (this.queryInfo.volume === 0) {
-					this.queryInfo.volume = 1
-				} else {
-					this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				}
+				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
 			}
 			this.getDiscountList()
 		},

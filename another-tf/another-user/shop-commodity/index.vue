@@ -128,14 +128,13 @@ export default {
 		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
 			this.shopList = []
+			this.sortGoodsIndex = index
 			if (index == 1) {
-				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2,
-				this.queryInfo.volume = 1,
-				this.sortGoodsIndex = index
+				this.queryInfo.volume = 0
+				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
 			} else if (index == 2) {
-				this.queryInfo.type = 1,
-				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2,
-				this.sortGoodsIndex = index
+				this.queryInfo.type = 0
+				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
 			}
 			this.getSearchProductsBusiness()
 		},

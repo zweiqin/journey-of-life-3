@@ -94,11 +94,11 @@ export default {
 	methods: {
 		getList() {
 			if (!this.search) return this.$showToast('请输入要搜索内容！')
-			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${this.search}`)
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${this.search}&shopType=1`)
 			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${this.search}`)
 		},
 		historySearch(search) {
-			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${search}`)
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${search}&shopType=1`)
 			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${search}`)
 		},
 		// 热门搜索

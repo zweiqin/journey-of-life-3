@@ -7,52 +7,52 @@
 		<view v-else-if="type === 1" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 拼团icon -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="friendadd" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">拼团价</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '拼团价' }}</text>
 		</view>
 		<view v-else-if="type === 2" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 秒杀活动 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="offline" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">秒杀价</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '秒杀价' }}</text>
 		</view>
 		<view v-else-if="type === 3" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 限时折扣活动，折扣价 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="label" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">限时折扣</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '限时折扣' }}</text>
 		</view>
 		<view v-else-if="type === 4" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 平台秒杀 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="offline" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">秒杀价</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '秒杀价' }}</text>
 		</view>
 		<view v-else-if="type === 5" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 平台折扣 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="label" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">折扣价</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '折扣价' }}</text>
 		</view>
 		<view v-else-if="type === 6" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 定价捆绑 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">定价捆绑</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '定价捆绑' }}</text>
 		</view>
 		<view v-else-if="type === 7" class="activity-wrapper" :style="{ backgroundColor }">
-			<!-- 组合捆绑 -->
+			<!-- 组合捆绑，组合销售？ -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">组合捆绑</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '组合捆绑' }}</text>
 		</view>
 		<view v-else-if="type === 8" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 场景营销 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">节日折扣</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '节日折扣' }}</text>
 		</view>
 		<view v-else-if="type === 9" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 会员价 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="member" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">会员价</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '会员价' }}</text>
 		</view>
 		<view v-else-if="type === 10" class="activity-wrapper" :style="{ backgroundColor }">
 			<!-- 平台交易金活动 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
-			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">交易金活动</text>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '交易金活动' }}</text>
 		</view>
 	</view>
 </template>
@@ -73,6 +73,10 @@ export default {
 		backgroundColor: {
 			type: String,
 			default: '#333333'
+		},
+		text: {
+			type: String,
+			default: ''
 		},
 		fontSize: {
 			type: String,

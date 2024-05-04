@@ -95,6 +95,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 惠市宝支付
+		showHuiShiBaoPay: {
+			type: Boolean,
+			default: false
+		},
 		// 用户的商家充值的余额支付
 		shopIdPay: {
 			type: [String, Number],
@@ -252,6 +257,29 @@ export default {
 			immediate: false,
 			deep: true
 		},
+		showHuiShiBaoPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					if (!this.paymentList.find((item) => item.paymentMode === '9')) {
+						this.paymentList.push({
+							label: '惠市宝支付',
+							paymentMode: '9',
+							icon: require('../../static/images/user/pay/huishibao.png'),
+							disabled: true
+						})
+					}
+					this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+					if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+					this.handleNoticeFather()
+				} else {
+					if (this.paymentMode === '9') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		shopIdPay: {
 			handler(newValue, oldValue) {
 				// console.log(2222)
@@ -314,6 +342,12 @@ export default {
 					} else if (!this.showTransactionPay && (this.paymentMode === '8')) {
 						this.handleSetDisable()
 					}
+					if (this.showHuiShiBaoPay) {
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+						if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+					} else if (!this.showHuiShiBaoPay && (this.paymentMode === '9')) {
+						this.handleSetDisable()
+					}
 					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
 						if (this.paymentList.find((item) => item.paymentMode === '6')) {
 							this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
@@ -360,6 +394,8 @@ export default {
 				icon: require('../../static/images/user/pay/wechat_pay.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.showAliPay) {
 			this.paymentList.push({
@@ -368,6 +404,8 @@ export default {
 				icon: require('../../static/images/user/pay/alipay.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.showHuabeiPay) {
 			this.paymentList.push({
@@ -376,6 +414,18 @@ export default {
 				icon: require('../../static/images/user/pay/huabei.png'),
 				disabled: true
 			})
+			// 获取花呗分期配置
+			getOrderHuabeiConfigApi({})
+				.then((res) => {
+					this.flowerObj.huabeiChargeType = res.data.huabeiChargeType
+					if (this.flowerObj.huabeiChargeType === 1) { // 如果后端返回的是用户支付手续费，设置费率信息
+						res.data.huabeiFeeRateList.forEach((rate, index) => {
+							this.flowerObj.hbByStagesList[index].rate = rate
+						})
+					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
+				})
 		}
 		if (this.showTonglianPay) {
 			this.paymentList.push({
@@ -384,6 +434,8 @@ export default {
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.showCommissionPay || this.showPlatformPay || this.showTransactionPay) {
 			if (this.showCommissionPay) {
@@ -422,7 +474,20 @@ export default {
 					if (this.showTransactionPay) {
 						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
 					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
 				})
+		}
+		if (this.showHuiShiBaoPay) {
+			this.paymentList.push({
+				label: '惠市宝支付',
+				paymentMode: '9',
+				icon: require('../../static/images/user/pay/huishibao.png'),
+				disabled: true
+			})
+			this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.shopIdPay) {
 			this.paymentList.push({
@@ -435,26 +500,10 @@ export default {
 				.then((res) => {
 					this.priceShopInfo = res.data
 					this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
+					this.handleSetDisable()
+					this.handleNoticeFather()
 				})
 		}
-	},
-	mounted() {
-		// 获取花呗分期配置
-		getOrderHuabeiConfigApi({})
-			.then((res) => {
-				this.flowerObj.huabeiChargeType = res.data.huabeiChargeType
-				if (this.flowerObj.huabeiChargeType === 1) { // 如果后端返回的是用户支付手续费，设置费率信息
-					res.data.huabeiFeeRateList.forEach((rate, index) => {
-						this.flowerObj.hbByStagesList[index].rate = rate
-					})
-				}
-				this.handleSetDisable()
-				this.handleNoticeFather()
-			})
-			.catch((e) => {
-				this.handleSetDisable()
-				this.handleNoticeFather()
-			})
 	},
 	methods: {
 		/**

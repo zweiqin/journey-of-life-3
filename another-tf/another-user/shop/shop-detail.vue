@@ -314,21 +314,19 @@ export default {
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.listTotal = 0
 			this.shopGoodsInfo.isEmpty = false
+			this.sortGoodsIndex = index
 			if (index === 1) {
 				this.shopGoodsInfo.query.ifNew = this.shopGoodsInfo.query.ifNew ? 0 : 1
 				this.shopGoodsInfo.query.type = ''
 				this.shopGoodsInfo.query.volume = ''
-				this.sortGoodsIndex = index
 			} else if (index === 2) {
 				this.shopGoodsInfo.query.ifNew = ''
 				this.shopGoodsInfo.query.type = this.shopGoodsInfo.query.type === 1 ? 2 : 1
 				this.shopGoodsInfo.query.volume = ''
-				this.sortGoodsIndex = index
 			} else if (index === 3) {
 				this.shopGoodsInfo.query.ifNew = ''
 				this.shopGoodsInfo.query.type = ''
 				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume === 1 ? 2 : 1
-				this.sortGoodsIndex = index
 			}
 			this.getShopGoodsTemplate()
 		}

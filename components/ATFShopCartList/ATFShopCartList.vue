@@ -26,7 +26,7 @@
 						</view>
 					</view>
 					<view v-if="item.currentRules && item.currentRules.number" class="rulesBox flex-items">
-						<image class="mar-right-20" src="../../static/images/new-business/shop/zuheIcon.png"></image>
+						<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
 						<view class="fs24 font-color-C83732">
 							已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
 						</view>

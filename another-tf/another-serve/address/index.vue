@@ -4,12 +4,11 @@
 		<JHeader width="50" height="50" title="地址管理" style="padding: 24upx 0 0;"></JHeader>
 		<view v-if="addressList && addressList.length" class="pad-bot-20 addAddress">
 			<view v-for="(item, index) in addressList" :key="index" class="addAddress-content flex-row-plus">
-				<view class="address-detail" @click="itemTap(item)">
+				<view class="address-detail" @click="handleSelectAddress(item)">
 					<view class="userName">
 						<text>{{ item.receiveName }}</text>
 						<text class="font-color-999 mar-left-30">
-							{{ item.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
-							}}
+							{{ item.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2') }}
 						</text>
 					</view>
 					<view class="defaultAD-box">
@@ -18,7 +17,7 @@
 						<text class="user-address font-color-999">{{ item.receiveAdress }}{{ item.address }}</text>
 					</view>
 				</view>
-				<tui-icon name="edit" :size="50" unit="upx" color="#cccccc" @click="editAdress(item)"></tui-icon>
+				<tui-icon name="edit" :size="50" unit="upx" color="#cccccc" @click="go(`/another-tf/another-serve/addAddress/index?receiveId=${item.receiveId}`)"></tui-icon>
 			</view>
 		</view>
 		<view style="padding-bottom: 45upx;">
@@ -36,13 +35,13 @@
 					<tui-icon :size="50" color="#00c800" name="wechat" unit="rpx" margin="0 20rpx 0 0"></tui-icon>
 					<text>微信导入</text>
 				</view>
-				<view class="addAddressBtn btn" @click="addAddressClick">添加新地址</view>
+				<view class="addAddressBtn btn" @click="go('/another-tf/another-serve/addAddress/index')">添加新地址</view>
 			</view>
 		</view>
 		<!-- #endif -->
 		<!-- #ifdef H5 || APP-PLUS || MP-ALIPAY -->
 		<view class="addAddress-box">
-			<view class="addAddress" @click="addAddressClick">添加新地址</view>
+			<view class="addAddress" @click="go('/another-tf/another-serve/addAddress/index')">添加新地址</view>
 		</view>
 		<!-- #endif -->
 	</view>
@@ -56,7 +55,7 @@ export default {
 	name: 'Address',
 	data() {
 		return {
-			type: 0,
+			isSelect: 0,
 			isEmpty: false,
 			addressList: [],
 			addresTotal: 0,
@@ -67,23 +66,12 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.type = options.type
+		this.isSelect = Number(options.isSelect) || 0
 	},
 	onShow() {
 		this.getAddressDataList()
 	},
 	methods: {
-		addAddressClick() {
-			if ([1, 2, 3].includes(this.type)) {
-				uni.navigateTo({
-					url: '/another-tf/another-serve/addAddress/index?type=1&ordertype=1'
-				})
-			} else {
-				uni.navigateTo({
-					url: '/another-tf/another-serve/addAddress/index?type=1'
-				})
-			}
-		},
 		getAddressDataList(isLoadmore) {
 			uni.showLoading()
 			getAllReceiveAddressApi(this.queryInfo).then((res) => {
@@ -100,13 +88,8 @@ export default {
 					uni.hideLoading()
 				})
 		},
-		editAdress(item) {
-			uni.navigateTo({
-				url: '/another-tf/another-serve/addAddress/index?type=2&receiveId=' + item.receiveId
-			})
-		},
-		itemTap(item) {
-			if (this.type == 1 || this.type == 2) {
+		handleSelectAddress(item) {
+			if (this.isSelect) {
 				uni.setStorageSync(T_RECEIVE_ITEM, item)
 				uni.navigateBack()
 			}
@@ -117,7 +100,7 @@ export default {
 				success(res) {
 					setTimeout(() => {
 						uni.navigateTo({
-							url: '/another-tf/another-serve/addAddress/index?type=3&wxAddressData=' + JSON.stringify({
+							url: '/another-tf/another-serve/addAddress/index?wxAddressData=' + JSON.stringify({
 								receiveName: res.userName,
 								phone: res.telNumber,
 								receiveAdress: `${res.provinceName}-${res.cityName}-${res.countyName}-${res.streetName}`,
@@ -129,8 +112,7 @@ export default {
 						})
 					}, 500)
 				},
-				fail: (e) => {
-				}
+				fail: (e) => {}
 			})
 		}
 	},

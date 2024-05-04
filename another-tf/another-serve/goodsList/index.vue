@@ -123,16 +123,20 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
-				search: '',
-				classifyId: '',
 				type: 0, // 价格排序条件
-				volume: 0 // 销量排序条件
+				volume: 0, // 销量排序条件
+				search: '',
+				shopType: '', // 1品牌厂家2商圈
+				classifyId: ''
 			}
 		}
 	},
 	onLoad(option) {
 		if (option.search) {
 			this.queryInfo.search = option.search
+		}
+		if (option.shopType) {
+			this.queryInfo.shopType = Number(option.shopType)
 		}
 		if (option.classifyId) {
 			this.queryInfo.classifyId = option.classifyId
@@ -142,26 +146,18 @@ export default {
 
 	methods: {
 		handleSortTap(index) {
-			this.sortIndex = index
-			this.goodsList = []
 			this.queryInfo.page = 1
+			this.goodsList = []
+			this.sortIndex = index
 			if (index === 1) {
 				this.queryInfo.type = 0
 				this.queryInfo.volume = 0
 			} else if (index === 2) {
 				this.queryInfo.volume = 0
-				if (this.queryInfo.type === 0) {
-					this.queryInfo.type = 1
-				} else {
-					this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				}
+				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
 			} else if (index === 3) {
 				this.queryInfo.type = 0
-				if (this.queryInfo.volume === 0) {
-					this.queryInfo.volume = 1
-				} else {
-					this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				}
+				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
 			}
 			this.getGoodsSearchList()
 		},

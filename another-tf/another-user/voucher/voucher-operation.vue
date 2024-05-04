@@ -412,7 +412,11 @@
 		</tui-modal>
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-				<CashierList :price-pay="rechargeForm.number / 2" show show-commission-pay show-platform-pay @change="(e) => payInfo = e" />
+				<CashierList
+					:price-pay="rechargeForm.number / 2" show
+					:show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
+					:show-hui-shi-bao-pay="!!rechargeForm.number" @change="(e) => payInfo = e"
+				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"

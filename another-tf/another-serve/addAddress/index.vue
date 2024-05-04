@@ -19,15 +19,14 @@
 			<view class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items">
 				<view class="fs28 location">所在地</view>
 				<view class="locationBox">
-					<JSubArea
-						:code="0" :text="addressData.receiveAdress" placeholder="请选择所在地"
-						@confirm="handleSelectArea"
-					></JSubArea>
+					<JSubArea :code="0" :text="addressData.receiveAdress" placeholder="请选择所在地" @confirm="handleSelectArea">
+					</JSubArea>
 					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
 				</view>
 			</view>
 			<view
-				v-if="selectTownshipId && communityList && communityList.length" class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items"
+				v-if="selectTownshipId && communityList && communityList.length"
+				class="location-box bor-line-F7F7F7 flex-row-plus flex-sp-between flex-items"
 				@click="isShowCommunityListSelect = true"
 			>
 				<view class="fs28 location">所在小区</view>
@@ -61,16 +60,16 @@
 				></tui-switch>
 			</view>
 		</view>
-		<view v-if="type == 2" class="deleteAddress-box" @click="delAddress">
+		<view v-if="addressData.receiveId" class="deleteAddress-box" @click="delAddress">
 			<text class="font-color-C5AA7B">删除收货地址</text>
 		</view>
 		<view class="saveAddress-box">
-			<view v-if="type == 1 || type == 3" class="saveAddress" @click="handleAddressClick">保存</view>
-			<view v-else class="saveAddress" @click="handleAddressClick">保存</view>
+			<view class="saveAddress" @click="handleAddressClick">保存</view>
 		</view>
 		<tui-picker
-			:show="addressTagShowFalg" :picker-data="addressTagList" :value="[ addressData.tag ]"
-			@hide="addressTagShowFalg = false" @change="(e) => addressData.tag = e.text"
+			:show="addressTagShowFalg"
+			:picker-data="[{ value: '1', text: '家' }, { value: '2', text: '公司' }, { value: '3', text: '学校' }]"
+			:value="[ addressData.tag ]" @hide="addressTagShowFalg = false" @change="(e) => addressData.tag = e.text"
 		>
 		</tui-picker>
 		<!-- 银行 -->
@@ -82,29 +81,13 @@
 </template>
 
 <script>
-import { T_RECEIVE_ITEM } from '../../../constant'
 import { getReceiveAddressByIdApi, updateReceiveAddressApi, addReceiveAddressApi, deleteReceiveAddressApi, getCityCommunitySelectApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'AddAddress',
 	data() {
 		return {
-			type: 1, // 1.添加新地址 2.编辑收货地址
-			addressTagList: [
-				{
-					value: '1',
-					text: '家'
-				},
-				{
-					value: '2',
-					text: '公司'
-				},
-				{
-					value: '3',
-					text: '学校'
-				}
-			],
+			eventName: '',
 			addressTagShowFalg: false,
-			ordertype: 0,
 			addressData: {
 				receiveId: '',
 				receiveName: '',
@@ -129,12 +112,11 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.type = options.type
-		if (options.ordertype == 1) this.ordertype = 1
-		this.addressData.receiveId = options.receiveId
-		if (this.type == 2) {
+		this.eventName = options.eventName || ''
+		this.addressData.receiveId = options.receiveId || ''
+		if (this.addressData.receiveId) {
 			uni.showLoading()
-			getReceiveAddressByIdApi({ receiveId: options.receiveId }).then((res) => {
+			getReceiveAddressByIdApi({ receiveId: this.addressData.receiveId }).then((res) => {
 				this.addressData.receiveName = res.data.receiveName
 				this.addressData.phone = res.data.receivePhone
 				this.addressData.receiveAdress = res.data.receiveAdress
@@ -153,9 +135,8 @@ export default {
 				uni.hideLoading()
 			})
 		}
-		if (this.type == 3) {
-			const obj = JSON.parse(options.wxAddressData)
-			this.addressData = { ...this.addressData, ...obj }
+		if (options.wxAddressData) {
+			this.addressData = { ...this.addressData, ...JSON.parse(options.wxAddressData) }
 		}
 	},
 	methods: {
@@ -190,40 +171,13 @@ export default {
 			this.selectCommunityId = e.options.value
 		},
 		handleAddressClick() {
-			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
-			if (!this.addressData.receiveName) {
-				this.$showToast('请输入收货人！')
-			} else if (!this.addressData.phone) {
-				this.$showToast('请输入手机号！')
-			} else if (!phoneCodeVerification.test(this.addressData.phone)) {
-				this.$showToast('请输入正确的手机号！')
-			} else if (!this.addressData.province || !this.addressData.city) {
-				this.$showToast('所在地不能为空！')
-			} else if (!this.addressData.address) {
-				this.$showToast('请输入详细地址！')
-			} else if (this.communityList && this.communityList.length && !this.addressData.communityName) {
-				this.$showToast('请选择所在社区！')
-			} else if ((this.type == 1) || (this.type == 3)) {
-				addReceiveAddressApi({
-					receiveName: this.addressData.receiveName,
-					receivePhone: this.addressData.phone,
-					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
-					areaId: this.addressData.areaId,
-					communityId: this.addressData.communityId,
-					address: this.addressData.address,
-					label: this.addressData.tag,
-					ifDefault: this.addressData.ifDefault
-				}).then((res) => {
-					if (this.ordertype == 1) {
-						uni.setStorageSync(T_RECEIVE_ITEM, res.data)
-						uni.navigateBack({
-							delta: 2
-						})
-					} else {
-						uni.navigateBack()
-					}
-				})
-			} else {
+			if (!this.addressData.receiveName) return this.$showToast('请输入收货人！')
+			if (!this.addressData.phone) return this.$showToast('请输入手机号！')
+			if (!/^[1][3-9][0-9]{9}$/.test(this.addressData.phone)) return this.$showToast('请输入正确的手机号！')
+			if (!this.addressData.province || !this.addressData.city) return this.$showToast('所在地不能为空！')
+			if (!this.addressData.address) return this.$showToast('请输入详细地址！')
+			if (this.communityList && this.communityList.length && !this.addressData.communityName) return this.$showToast('请选择所在社区！')
+			if (this.addressData.receiveId) {
 				updateReceiveAddressApi({
 					receiveId: this.addressData.receiveId,
 					receiveName: this.addressData.receiveName,
@@ -235,7 +189,26 @@ export default {
 					label: this.addressData.tag,
 					ifDefault: this.addressData.ifDefault
 				}).then((res) => {
-					uni.navigateBack()
+					uni.navigateBack({
+						delta: 1,
+						success: this.eventName ? uni.$emit(this.eventName) : () => { }
+					})
+				})
+			} else {
+				addReceiveAddressApi({
+					receiveName: this.addressData.receiveName,
+					receivePhone: this.addressData.phone,
+					receiveAdress: this.addressData.communityName ? `${this.addressData.receiveAdress}-${this.addressData.communityName}` : `${this.addressData.receiveAdress}`,
+					areaId: this.addressData.areaId,
+					communityId: this.addressData.communityId,
+					address: this.addressData.address,
+					label: this.addressData.tag,
+					ifDefault: this.addressData.ifDefault
+				}).then((res) => {
+					uni.navigateBack({
+						delta: 1,
+						success: this.eventName ? uni.$emit(this.eventName) : () => { }
+					})
 				})
 			}
 		},
@@ -252,7 +225,10 @@ export default {
 							receiveId: this.addressData.receiveId
 						}).then((res) => {
 							if (res.code === '200') {
-								uni.navigateBack()
+								uni.navigateBack({
+									delta: 1,
+									success: this.eventName ? uni.$emit(this.eventName) : () => { }
+								})
 							}
 						})
 					}

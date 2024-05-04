@@ -187,21 +187,19 @@ export default {
 		handleGoodsSortTap(index) {
 			this.selectionGoodsInfo.query.page = 1
 			this.selectionGoodsInfo.data = []
+			this.sortGoodsIndex = index
 			if (index === 1) {
 				this.selectionGoodsInfo.query.ifNew = this.selectionGoodsInfo.query.ifNew ? 0 : 1
 				this.selectionGoodsInfo.query.type = ''
 				this.selectionGoodsInfo.query.volume = ''
-				this.sortGoodsIndex = index
 			} else if (index === 2) {
 				this.selectionGoodsInfo.query.ifNew = ''
 				this.selectionGoodsInfo.query.type = this.selectionGoodsInfo.query.type === 1 ? 2 : 1
 				this.selectionGoodsInfo.query.volume = ''
-				this.sortGoodsIndex = index
 			} else if (index === 3) {
 				this.selectionGoodsInfo.query.ifNew = ''
 				this.selectionGoodsInfo.query.type = ''
 				this.selectionGoodsInfo.query.volume = this.selectionGoodsInfo.query.volume === 1 ? 2 : 1
-				this.sortGoodsIndex = index
 			}
 			this.getSelectionGoodsTemplate()
 		},

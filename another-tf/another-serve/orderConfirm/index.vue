@@ -14,7 +14,7 @@
 			</view>
 			<!-- v-if="settlement.shopType !== 2" -->
 			<view>
-				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?type=${fromType}`)">
+				<view class="address-box" @click="go(`/another-tf/another-serve/address/index?isSelect=1`)">
 					<tui-icon name="position" :size="66" unit="rpx" color="#333333" margin="0 20rpx 0 0"></tui-icon>
 					<!-- 有地址的 -->
 					<view v-if="userAddressInfo.receiveId" class="address-r">
@@ -148,6 +148,7 @@
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
+					:show-hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? shopIdPay : 0"
 					@change="(e) => payInfo = e"
 				/>

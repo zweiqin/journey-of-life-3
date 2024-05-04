@@ -113,16 +113,16 @@ export default {
 		sortTap(index) {
 			this.queryInfo.page = 1
 			this.discountList = []
+			this.sortIndex = index
 			if (index == 1) {
-				this.queryInfo.type = 1
-				this.queryInfo.volume = 1
-				this.sortIndex = index
+				this.queryInfo.type = 0
+				this.queryInfo.volume = 0
 			} else if (index == 2) {
+				this.queryInfo.volume = 0
 				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				this.sortIndex = index
 			} else if (index == 3) {
+				this.queryInfo.type = 0
 				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				this.sortIndex = index
 			}
 			this.getDiscountList()
 		},

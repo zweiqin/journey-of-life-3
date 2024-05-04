@@ -5,13 +5,13 @@
 				<image v-show="posterImage" class="poster-iamge" :src="posterImage" mode="widthFix" />
 				<l-painter v-show="!posterImage" ref="painter" is-canvas-to-temp-file-path @done="handlePainterSuccess">
 					<!-- :css="{
-						background: `url('../../../../static/images/new-business/order/orange-white-bg.png') no-repeat center top/cover`,
+						background: `url('../../../../static/xxx') no-repeat center top/cover`,
 						}"
 						background: backgroundImageContainer,
 						border-radius: 20rpx;
-						css="background-image: url('../../../../static/images/new-business/order/orange-white-bg.png') no-repeat center top/cover;" -->
+						css="background-image: url('../../../../static/xxx') no-repeat center top/cover;" -->
 					<!-- <l-painter-image
-						:src="require('../../../../static/images/new-business/order/orange-white-bg.png')"
+						:src="require('../../../../static/xxx')"
 						css="object-fit: cover;width: 100%;position: absolute;top: 0;left: 0;"
 						/> -->
 					<l-painter-view
@@ -162,7 +162,7 @@ export default {
 			posterImage: '',
 			logoBg: '#fff',
 			popupVisible: false,
-			// backgroundImageContainer: require('../../../../static/images/new-business/order/orange-white-bg.png'),
+			// backgroundImageContainer: require('../../../../static/xxx'),
 			headerTitle: '',
 			brandDetail: {},
 			goodsList: [],

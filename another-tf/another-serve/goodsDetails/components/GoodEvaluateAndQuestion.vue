@@ -120,21 +120,16 @@ export default {
 			problemsTotal: 0 // 问题总数
 		}
 	},
-	mounted() {
-		this.handleGetProblemList()
-	},
 	methods: {
 		/**
 		 * 获取问答数据
 		 * @return {Promise<void>}
 		 */
 
-		async handleGetProblemList() {
-			if (!this.goodsDetail.productId) {
-				return
-			}
+		async handleGetProblemList(productId) {
+			if (!productId && !this.goodsDetail.productId) return
 			const res = await getProblemsSeckillApi({
-				productId: this.goodsDetail.productId,
+				productId: productId || this.goodsDetail.productId,
 				page: 1,
 				pageSize: 2
 			})
