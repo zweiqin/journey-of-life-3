@@ -3,8 +3,26 @@
 		<view v-if="showType === 'writeOff'">
 			<!-- 核销相关 -->
 			<JHeader title="订单核销码" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;"></JHeader>
-			<view style="padding: 90upx 28upx 0;" class="write-off-bg">
-				<view style="text-align: center;color: #ffffff;">
+			<view style="padding: 90upx 28upx 0;position: relative;" class="write-off-bg">
+				<view style="position: absolute;top: 0;left: 0;width: 100%;height: 580upx;background-color: #ef5613;overflow: hidden;">
+					<view
+						style="position: absolute;top: 6%;left: 34%;width: 80upx;height: 80upx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: 15%;left: -7%;width: 280upx;height: 240upx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: -8%;left: 50%;width: 800upx;height: 920upx;background-color: #f16527;border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: -4%;left: 65%;width: 608upx;height: 838upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.1;"
+					>
+					</view>
+				</view>
+				<view style="position: relative;text-align: center;color: #ffffff;">
 					<view style="font-size: 38upx;font-weight: bold;">
 						<text v-if="verificationStatus == '0'">待核销-待付款</text>
 						<text v-else-if="verificationStatus == '1'">待核销-已付款</text>
@@ -797,7 +815,7 @@ export default {
 	}
 
 	.write-off-bg {
-		background: url('../../../static/images/new-business/order/orange-bg.png') no-repeat center top/contain;
+		// background: url('../../../static/xxx') no-repeat center top/contain;
 	}
 
 	.content {

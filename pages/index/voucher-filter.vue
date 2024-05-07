@@ -1,8 +1,7 @@
 <template>
   <view class="voucher-detail tui-skeleton">
     <view class="page-haeder">
-      <image @click="go('/pages/index/voucher-zone')" src="../../static/images/new-business/category/back.png"
-        class="back-icon"></image>
+			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="go('/pages/index/voucher-zone')"></tui-icon>
       <view class="search-container">
         <input type="text" class="input" v-model="searchValue" placeholder="请输入您想搜索的商品名称">
         <button @click="handleSearch" class="uni-btn">搜索</button>
@@ -245,14 +244,8 @@ export default {
   align-items: center;
   height: 128upx;
   background-color: #fff;
-  padding: 28upx 30upx;
+  padding: 28upx 30upx 28rpx 14rpx;
   box-sizing: border-box;
-
-  .back-icon {
-    width: 48upx;
-    height: 48upx;
-    flex-shrink: 0;
-  }
 
   .search-container {
     height: 72upx;

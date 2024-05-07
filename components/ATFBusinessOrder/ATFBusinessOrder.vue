@@ -84,17 +84,23 @@
 						显示全部
 					</tui-button>
 				</view>
-				<view style="font-size: 26rpx;color: #333333;text-align: right;padding: 20rpx 0 0;">
-					<text v-if="data.orderPrice">
+				<view style="text-align: right;">
+					<view
+						v-if="data.presenterVoucherAll && (data.skus.length !== 1) && (data.presenterVoucherAll !== data.skus[0].presenterVoucher)"
+						style="padding: 10rpx 0 0;font-size: 30rpx;color: #fa5151;"
+					>
+						总赠送 {{ data.presenterVoucherAll }} 代金券
+					</view>
+					<view v-if="data.orderPrice" style="padding: 20rpx 0 0;font-size: 26rpx;color: #333333;">
 						总价￥{{ Number.parseFloat(Number(data.orderPrice || 0)).toFixed(2) }}
 						<text v-if="data.logisticsPrice">
 							，物流￥{{ Number.parseFloat(Number(data.logisticsPrice || 0)).toFixed(2) }}
 						</text>
-						，优惠￥{{ data.discountPrice }}
+						，优惠￥{{ Number.parseFloat(Number(data.discountPrice || 0)).toFixed(2) }}
 						<text v-if="data.price">
-							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ data.price }}
+							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ Number.parseFloat(Number(data.price || 0)).toFixed(2) }}
 						</text>
-					</text>
+					</view>
 				</view>
 				<view v-if="isShowOther" style="font-size: 26rpx;padding: 20rpx 0 0;">
 					<view style="display: flex;align-items: center;justify-content: space-between;padding-top: 4upx;">

@@ -2,7 +2,7 @@
 	<view class="shop-container">
 		<!-- 顶部栏 -->
 		<view class="shop-header-container">
-			<image class="back-icon" src="../../../static/images/new-business/category/back.png" @click="back"></image>
+			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="back"></tui-icon>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36rpx;">
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
@@ -214,7 +214,10 @@
 
 		<!-- 酒店特殊中间结构 -->
 		<view v-if="ownSpecialHotelBox.includes(currentType)">
-			<view style="padding: 200rpx 26rpx 0;" class="special-hotel-box-bg">
+			<view
+				style="padding: 200rpx 26rpx 0;"
+				:style="{ background: `url(${common.seamingImgUrl('1714981334756-hotel-img.png')}) no-repeat center top/contain` }"
+			>
 				<view style="padding: 28rpx 22rpx;background-color: #ffffff;border-radius: 24rpx;">
 					<view class="special-hotel-tab">
 						<tui-tab
@@ -640,17 +643,11 @@ export default {
 		height: 108rpx;
 		width: 100vw;
 		background-color: #fff;
-		padding: 0 30rpx;
+		padding: 0 30rpx 0 14rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		z-index: 997;
-
-		.back-icon {
-			width: 48rpx;
-			height: 48rpx;
-			flex-shrink: 0;
-		}
 
 		.search-container {
 			flex: 1;
@@ -680,10 +677,6 @@ export default {
 				margin-left: -48rpx;
 			}
 		}
-	}
-
-	.special-hotel-box-bg {
-		background: url('../../../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;
 	}
 
 	.shop-card-line:not(:last-child) {

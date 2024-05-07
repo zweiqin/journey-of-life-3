@@ -357,7 +357,7 @@ async function bankCardPay(payInfo) {
 
 /**
  * 通联H5处理
- * @param payInfo 结算返回的支付信息
+ * @param data 结算返回的支付信息
  */
 
 async function h5TonglianPay(data, payType, type, otherArgs) {
@@ -410,10 +410,65 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 }
 
 /**
+ * 惠市宝支付
+ * @param data 结算返回的支付信息
+ */
+
+async function huiShiBaoPay(data, payType, type, otherArgs) {
+	await gotoOrderH5PayApi({
+		...data,
+		purchaseMode: payType,
+		...otherArgs
+	}).then((res) => {
+		console.log(JSON.stringify(res.data))
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
+		if (!res.data.Cshdk_Url) { // 零元支付情况
+			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+		} else {
+			const payData = res.data
+			const form = document.createElement('form')
+			form.setAttribute('action', res.data.Cshdk_Url)
+			form.setAttribute('method', 'POST')
+			let input
+			for (const key in payData) {
+				input = document.createElement('input')
+				input.name = key
+				input.value = payData[key]
+				form.appendChild(input)
+			}
+			document.body.appendChild(form)
+			form.submit()
+			document.body.removeChild(form)
+		}
+	})
+		.catch((e) => {
+			console.log(e)
+			uni.showToast({ title: '支付失败', icon: 'none' })
+			setTimeout(() => {
+				if ([1, 2].includes(data.purchaseMode)) {
+					uni.switchTab({ url: '/pages/order/order' })
+				} else if ([3, 4, 5].includes(data.purchaseMode)) {
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+				}
+			}, 2000)
+		})
+		.finally((e) => {
+			uni.hideLoading()
+		})
+}
+
+/**
  * 处理支付
  * @param submitResult 结算结果
  */
 
+// eslint-disable-next-line complexity
 export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', otherArgs = {}) {
 	uni.showLoading({
 		mask: true,
@@ -424,7 +479,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		const submitInfo = { ...submitResult, purchaseMode }
 		if (submitInfo.paymentMode === 999) {
 			await bankCardPay(submitInfo)
-		} else if (submitInfo.paymentMode === 1) { // 微信支付
+		} else if ([ 1 ].includes(submitInfo.paymentMode)) { // 微信支付
 			// #ifdef H5
 			await h5Pay(submitInfo)
 			// #endif
@@ -439,7 +494,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			await mpAliPay(submitInfo)
 			throw new Error('支付宝相关支付暂时只支持支付宝小程序')
 			// #endif
-		} else if (submitInfo.paymentMode === 4) { // 通联支付
+		} else if ([ 4 ].includes(submitInfo.paymentMode)) { // 通联支付
 			if (isInWx()) {
 				if (store.state.app.isInMiniProgram || isH5InWebview()) {
 					getPayMiniProgramQueryApi({
@@ -488,7 +543,6 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef APP
-				// uni.showToast({ title: '暂不支持在APP使用通联支付', icon: 'none' })
 				getPayMiniProgramQueryApi({
 					orderFormid: submitInfo.orderFormid,
 					orderNo: submitInfo.orderSn || submitInfo.orderFormid,
@@ -548,8 +602,51 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				uni.showToast({ title: '暂不支持在支付宝小程序使用通联支付', icon: 'none' })
 				// #endif
 			}
-		} else if ([5, 6, 7, 8, 9].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、交易金支付、惠市宝支付
-			await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+		} else if ([5, 6, 7, 8].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、交易金支付
+			if (isInWx()) {
+				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				} else {
+					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				}
+			} else {
+				// #ifdef H5
+				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				// #endif
+				// #ifdef APP
+				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				// #endif
+				// #ifdef MP-WEIXIN
+				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				// #endif
+				// #ifdef MP-ALIPAY
+				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				// #endif
+			}
+		} else if ([ 9 ].includes(submitInfo.paymentMode)) { // 惠市宝支付
+			if (isInWx()) {
+				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+					uni.showToast({ title: '暂不支持在微信小程序使用惠市宝支付', icon: 'none' })
+				} else {
+					await huiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
+				}
+			} else {
+				// #ifdef H5
+				await huiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
+				// #endif
+				// #ifdef APP
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持在APP使用惠市宝支付', icon: 'none' })
+				// #endif
+				// #ifdef MP-WEIXIN
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持在微信小程序使用惠市宝支付', icon: 'none' })
+				// #endif
+				// #ifdef MP-ALIPAY
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持在支付宝小程序使用惠市宝支付', icon: 'none' })
+				// #endif
+			}
 		}
 	}
 }
