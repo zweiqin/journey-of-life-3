@@ -13,8 +13,7 @@ export const navbarAll = [
 		storeName: '找师傅',
 		iconUrl: require('../../static/images/new-business/home/weixiu.png'),
 		type: 3
-		// tag: 'fix',
-		// tagUrl: require('../../static/images/new-business/home/fix.png')
+		// tag: 'fix'
 	},
 	{
 		storeName: '找家政',
@@ -51,8 +50,7 @@ export const navbarAll = [
 		storeName: '便民服务',
 		iconUrl: require('../../static/images/new-business/home/bianminfuwu.png'),
 		type: 0
-		// tag: 'phone-bill',
-		// tagUrl: require('../../static/images/new-business/home/youhui.png')
+		// tag: 'phone-bill'
 	},
 
 	{
@@ -64,8 +62,7 @@ export const navbarAll = [
 		storeName: '美容理发',
 		iconUrl: require('../../static/images/new-business/home/lifa.png'),
 		type: 12
-		// tag: 'sheng',
-		// tagUrl: require('../../static/images/new-business/home/sheng.png')
+		// tag: 'sheng'
 	},
 	{
 		storeName: '休闲娱乐',

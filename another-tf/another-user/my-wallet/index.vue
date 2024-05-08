@@ -28,7 +28,7 @@
 						></tui-icon>
 					</view>
 					<view style="margin-top: 22rpx;color: #ffffff;">
-						<text>可提现余额：{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.price || 0)).toFixed(2) : '*****' }}</text>
+						<text>可提现总余额：{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.price || 0)).toFixed(2) : '*****' }}</text>
 						<text
 							style="margin-left: 42rpx;padding: 6rpx 12rpx;font-size: 24rpx;background-color: #F26E34;border-radius: 8rpx;"
 							@click="handleMemberAccountWithdraw"

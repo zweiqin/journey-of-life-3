@@ -2,7 +2,7 @@
   <view class="q-home">
     <TuanAppShim></TuanAppShim>
     <view class="main-title">
-      <image class="title-img" src="../../static/images/new-community/enterprise-orders/title-img.png"></image>
+      <image class="title-img" :src="common.seamingImgUrl('1715136684057-title-img.png')"></image>
     </view>
 
     <view class="advantage">
@@ -12,14 +12,14 @@
       </view>
     </view>
 
-    <!-- <view class="current-server-shop">
-      龙江镇 文华社区店 <image class="icon" src="../../static/images/new-community/enterprise-orders/down-arrow.png"></image>
-    </view> -->
-
     <view class="main-area" :class="{ animate: isAnimate }">
-      <image class="img-1" src="../../static/images/new-community/enterprise-orders/lou-1.png"></image>
-      <image class="img-2" src="../../static/images/new-community/enterprise-orders/lou-2.png"></image>
-      <image class="img-3" src="../../static/images/new-community/enterprise-orders/lou-3.png"></image>
+      <image class="img-1" :src="common.seamingImgUrl('1715136857503-lou-1.png')"></image>
+      <image class="img-2" :src="common.seamingImgUrl('1715136860053-lou-2.png')"></image>
+      <image class="img-3" :src="common.seamingImgUrl('1715136862210-lou-3.png')"></image>
+			<view style="position: relative;width: fit-content;padding: 14rpx 16rpx 12rpx;font-size: 26rpx;color: #ef530e;border-radius: 22rpx 24rpx 0 0;background-color: #fef0e5;">
+				<tui-icon name="member-fill" color="#ef530e" size="32" unit="rpx" margin="0 12rpx 0 0"></tui-icon>
+				<text>已为300+企业提供服务</text>
+			</view>
       <view class="inner">
         <view class="menu-title">
           选择您需要的企业服务？
@@ -316,19 +316,6 @@ export default {
       position: absolute;
       top: -534upx;
       right: 4upx;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: -60upx;
-      left: 0;
-      width: 368upx;
-      height: 86upx;
-      display: block;
-      background: url('../../static/images/new-community/enterprise-orders/bar.png') no-repeat;
-      background-size: cover;
-      z-index: 9;
     }
 
     .inner {

@@ -13,11 +13,7 @@
 						style="display: flex;align-items: center;justify-content: space-between;"
 						@click="go('/another-tf/another-serve/discount/spikeList')"
 					>
-						<image
-							style="width: 112rpx;height: 24rpx;"
-							src="../../../static/images/new-business/home/miaoshahuodong.png"
-						>
-						</image>
+						<view style="font-style: italic;font-size: 26rpx;font-weight: bold;">秒杀活动</view>
 						<view style="display: flex;align-items: center;justify-content: space-between;">
 							<view style="font-size: 24rpx">更多</view>
 							<tui-icon name="arrowright" color="#000000" size="26" unit="rpx" margin="0 0 0 6rpx"></tui-icon>
@@ -77,11 +73,7 @@
 						style="display: flex;align-items: center;justify-content: space-between;"
 						@click="go('/another-tf/another-serve/discount/platformDiscount')"
 					>
-						<image
-							style="width: 112rpx;height: 24rpx;"
-							src="../../../static/images/new-business/home/xianshizhekou.png"
-						>
-						</image>
+						<view style="font-style: italic;font-size: 26rpx;font-weight: bold;">限时折扣</view>
 						<view style="display: flex;align-items: center;justify-content: space-between;">
 							<view style="font-size: 24rpx">更多</view>
 							<tui-icon name="arrowright" color="#000000" size="26" unit="rpx" margin="0 0 0 6rpx"></tui-icon>
@@ -134,11 +126,7 @@
 					@click="go('/another-tf/another-serve/coupon/list')"
 				>
 					<view style="display: flex;align-items: center;justify-content: space-between;">
-						<image
-							style="width: 112rpx;height: 24rpx;"
-							src="../../../static/images/new-business/home/tiantianlingquan.png"
-						>
-						</image>
+						<view style="font-style: italic;font-size: 26rpx;font-weight: bold;">天天领券</view>
 						<view style="display: flex;align-items: center;justify-content: space-between;">
 							<view style="font-size: 24rpx">更多</view>
 							<tui-icon name="arrowright" color="#000000" size="26" unit="rpx" margin="0 0 0 6rpx"></tui-icon>

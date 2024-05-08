@@ -61,11 +61,6 @@
           <view class="tag">最近</view>
           {{ currentChooseShopInfo.shopAddress }}
         </view>
-
-        <!-- <view class="distance">
-          <image class="tag" src="../../static/images/new-community/enterprise-orders/location.png"></image>
-          <view class="distance-text">123km</view>
-        </view> -->
       </view>
     </view>
 
@@ -75,8 +70,7 @@
         </view>
         <view class="value title flex" @click="handleAddServe">
           添加服务
-          <image style="width: 24upx; height: 24upx; flex-shrink: 0; margin-left: 14upx;"
-            src="../../static/images/new-community/enterprise-orders/add.png"></image>
+					<tui-icon name="plus" color="#222229" size="28" unit="rpx" margin="0 0 0 14rpx" bold></tui-icon>
         </view>
       </view>
 
@@ -93,11 +87,9 @@
           <view class="item">
             <view class="item-title">数量</view>
             <view class="count-wrapper">
-              <image class="dis" @click="handleChangeNumber(-1, item)"
-                src="../../static/images/new-community/enterprise-orders/dis.png"></image>
+							<tui-icon @click="handleChangeNumber(-1, item)" name="reduce" color="#222229" size="28" unit="rpx" margin="0 28rpx 0 0" bold></tui-icon>
               <view class="count">{{ item.number }} {{ item.unit }}</view>
-              <image @click="handleChangeNumber(1, item)" class="add"
-                src="../../static/images/new-community/enterprise-orders/add.png"></image>
+							<tui-icon @click="handleChangeNumber(1, item)" name="plus" color="#222229" size="28" unit="rpx" margin="0 0 0 28rpx" bold></tui-icon>
             </view>
           </view>
           <view class="item">
@@ -126,18 +118,16 @@
       <view class="bar" @click="chooseTimeVisible = true">
         <view class="title justify flex">期望上门时间 <view class="required">必填</view>
         </view>
-        <view class="value title flex">{{ orderForm.installDate || "请选择上门时间" }} <image
-            style="width: 21upx; height: 21upx; flex-shrink: 0; margin-left: 13upx;"
-            src="../../static/images/new-community/enterprise-orders/right-arrow.png"></image>
+        <view class="value title flex">{{ orderForm.installDate || "请选择上门时间" }}
+					<tui-icon name="arrowright" color="#222229" size="28" unit="rpx" margin="0 0 0 12rpx" bold></tui-icon>
         </view>
       </view>
 
       <view class="bar" @click="handleChoosePayMethod">
         <view class="title justify">付款方式
         </view>
-        <view class="value title flex">{{ orderForm.extraInfo.payType === 1 ? '余额支付' : '微信支付' }} <image
-            style="width: 21upx; height: 21upx; flex-shrink: 0; margin-left: 13upx;"
-            src="../../static/images/new-community/enterprise-orders/right-arrow.png"></image>
+        <view class="value title flex">{{ orderForm.extraInfo.payType === 1 ? '余额支付' : '微信支付' }}
+					<tui-icon name="arrowright" color="#222229" size="28" unit="rpx" margin="0 0 0 12rpx" bold></tui-icon>
         </view>
       </view>
     </view>

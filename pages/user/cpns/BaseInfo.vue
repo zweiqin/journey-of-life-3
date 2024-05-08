@@ -179,7 +179,7 @@
 					<view style="display: flex;align-items: center;justify-content: flex-end;">
 						<view style="text-align: right;">
 							<view style="font-size: 30rpx;">￥{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.totalPrice || 0)).toFixed(2) }}</view>
-							<view style="font-size: 26rpx;">可提现余额：{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.price || 0)).toFixed(2) }}</view>
+							<view style="font-size: 26rpx;">可提现总余额：{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.price || 0)).toFixed(2) }}</view>
 						</view>
 						<view>
 							<tui-icon name="arrowright" :size="34" unit="rpx" color="#ffffff" margin="0 0 0 10rpx"></tui-icon>
