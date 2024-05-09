@@ -358,5 +358,11 @@ export const otherFunction = [
 		name: '商家折扣',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
+	},
+	{
+		name: '套壳链接',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		type: 'outsideLink',
+		url: ''
 	}
 ]

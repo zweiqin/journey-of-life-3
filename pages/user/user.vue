@@ -10,7 +10,7 @@
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
-					{{ $store.state.app.terminal }}
+					{{ $store.state.app.terminal }}-a
 				</view>
 				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
 					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
@@ -35,6 +35,16 @@
 		>
 			<template #content>
 				<tui-input v-model="codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input>
+			</template>
+		</tui-dialog>
+
+		<!-- 链接跳转 -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowOutsideLinkDialog" title="套壳链接跳转" @click="handleOutsideLinkDialog"
+		>
+			<template #content>
+				<tui-input v-model="codeWordOutsideLink" type="text" placeholder="请输入链接地址"></tui-input>
 			</template>
 		</tui-dialog>
 	</view>
@@ -73,7 +83,10 @@ export default {
 
 			// 参与抽奖
 			isShowLotteryDialog: false,
-			codeWordLottery: ''
+			codeWordLottery: '',
+			// 套壳链接
+			isShowOutsideLinkDialog: false,
+			codeWordOutsideLink: ''
 		}
 	},
 	methods: {
@@ -100,6 +113,9 @@ export default {
 				return
 			} else if (item.type === 'electronicCard') {
 				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, programUrl: `pages/skip/skip`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
+				return
+			} else if (item.type === 'outsideLink') {
+				this.isShowOutsideLinkDialog = true
 				return
 			}
 			if (this.isLogin()) {
@@ -163,6 +179,14 @@ export default {
 			}
 			this.codeWordLottery = ''
 			this.isShowLotteryDialog = false
+		},
+		handleOutsideLinkDialog(e) {
+			if (e.index === 0) { } else if (e.index === 1) {
+				if (!this.codeWordOutsideLink) return this.$showToast('链接错误')
+				this.go('/user/view?target=' + this.codeWordOutsideLink)
+			}
+			this.codeWordOutsideLink = ''
+			this.isShowOutsideLinkDialog = false
 		}
 	}
 }

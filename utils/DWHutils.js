@@ -240,6 +240,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 					url: currentUrl,
 					token: uni.getStorageSync(USER_TOKEN)
 				}).then(({ data }) => {
+					// https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#62
 					wx.config({
 						debug: false, // 开启调试模式
 						appId: data.appId, // 必填，公众号的唯一标识
@@ -250,13 +251,15 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 							'updateAppMessageShareData',
 							'updateTimelineShareData',
 							'onMenuShareAppMessage',
-							'onMenuShareTimeline'
+							'onMenuShareTimeline',
+							'openLocation'
 						], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 						openTagList: [ 'wx-open-launch-weapp' ]
 					})
 					wx.ready(function () {
 						// config信息验证成功
 						// console.log(res);
+						cb && typeof cb === 'function' && cb()
 					})
 					wx.error(function (res) {
 						// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
