@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { T_SKU_ITEM_DTO_LIST } from '../../../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../../../constant'
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../../utils'
 import { getProductDetailsByIdApi, getProductSelectComposeApi } from '../../../../api/anotherTFInterface'
 
@@ -300,7 +300,7 @@ export default {
 				shopObj.skus.push(skusObj)
 			}
 			addCart.push(shopObj)
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCart)
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCart)
 			uni.navigateTo({
 				url: '/another-tf/another-serve/orderConfirm/index?type=1'
 			})

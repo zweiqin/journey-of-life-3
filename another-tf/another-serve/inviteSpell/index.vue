@@ -167,7 +167,7 @@
 
 <script>
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../utils'
-import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO } from '../../../constant'
 import { getProductDetailsByIdApi, getProductsSkuApi, getInviteWorkApi } from '../../../api/anotherTFInterface'
 
 export default {
@@ -336,8 +336,8 @@ export default {
 			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
 			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
 			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
-			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
-			uni.setStorageSync(T_SKU_ITEM_LIST, {
+			uni.removeStorageSync(T_SKU_ITEM_MSG_LIST)
+			uni.setStorageSync(T_SKU_ITEM_INFO, {
 				collageId: this.collageId,
 				number: this.number,
 				productId: this.productId,

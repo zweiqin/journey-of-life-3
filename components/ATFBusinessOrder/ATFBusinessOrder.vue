@@ -144,7 +144,7 @@
 <script>
 import { afterConditionEnum, orderTypeEnum } from '../../components/ATFOrderInfo/config'
 import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../constant'
 import { resolveShowCanNotBuyMsg } from '../../utils'
 export default {
 	name: 'ATFBusinessOrder',
@@ -420,7 +420,7 @@ export default {
 			const { canNotBuySkuList, canNotSaleSkuList } = await resolveShowCanNotBuyMsg(orderItem.skus)
 			if (canNotBuySkuList.length || canNotSaleSkuList.length) return
 			// 制造数据
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, [ {
 				ifWork: orderItem.ifWork,
 				shopId: orderItem.shopId,
 				shopName: orderItem.shopName,

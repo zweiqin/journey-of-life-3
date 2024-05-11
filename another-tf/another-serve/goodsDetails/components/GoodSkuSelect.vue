@@ -175,7 +175,7 @@
 <script>
 import { resolveGoodsDetailTagsSituation } from '../../../../utils'
 import { addCartShoppingApi, addUserTrackReportDoPointerApi, getCartListApi } from '../../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO } from '../../../../constant'
 
 export default {
 	name: 'GoodSkuSelect',
@@ -353,7 +353,7 @@ export default {
 					ifLogistics: 1
 				} ]
 			} ]
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, list)
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, list)
 			this.number = 1
 			this.isShowDetails = false
 			uni.navigateTo({
@@ -380,8 +380,8 @@ export default {
 				type: this.collageId ? 2 : 1,
 				collageId: this.collageId
 			}
-			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
-			uni.setStorageSync(T_SKU_ITEM_LIST, data)
+			uni.removeStorageSync(T_SKU_ITEM_MSG_LIST)
+			uni.setStorageSync(T_SKU_ITEM_INFO, data)
 			this.isShowDetails = false
 			this.number = 1
 			uni.navigateTo({

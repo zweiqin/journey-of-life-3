@@ -101,7 +101,7 @@ export default {
 			default: false
 		},
 		// 用户的商家充值的余额支付
-		shopIdPay: {
+		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
 			default: ''
 		}

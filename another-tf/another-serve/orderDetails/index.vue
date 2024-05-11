@@ -487,7 +487,7 @@ import {
 	getOrderRefundApi,
 	updateOrderConfirmApi
 } from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
 import { resolveShowCanNotBuyMsg } from '../../../utils'
 import { A_TF_MAIN } from '../../../config'
 
@@ -582,7 +582,7 @@ export default {
 			const { canNotBuySkuList, canNotSaleSkuList } = await resolveShowCanNotBuyMsg(orderItem.skus)
 			if (canNotBuySkuList.length || canNotSaleSkuList.length) return
 			// 制造数据
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, [ {
 				ifWork: orderItem.ifWork,
 				shopId: orderItem.shopId,
 				shopName: orderItem.shopName,

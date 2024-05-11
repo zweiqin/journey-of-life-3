@@ -56,7 +56,7 @@
 import {
 	getSettlementOrderApi
 } from '../../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../../../constant'
 
 export default {
 	name: 'StoreShopCart',
@@ -139,7 +139,7 @@ export default {
 						}
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
-					uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCartSelectedList)
+					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
 					this.go(`/another-tf/another-serve/orderConfirm/index?type=2&brandId=${this.brandId}`)
 				} else {
 					this.$showToast('请先勾选商品')

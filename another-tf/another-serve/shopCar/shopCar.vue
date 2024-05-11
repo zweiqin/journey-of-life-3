@@ -95,7 +95,7 @@
 
 <script>
 import DeleteModal from './components/DeleteModal'
-import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../../constant'
 import {
 	getSettlementOrderApi
 } from '../../../api/anotherTFInterface'
@@ -207,7 +207,7 @@ export default {
 						}
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
-					uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCartSelectedList)
+					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
 					this.go('/another-tf/another-serve/orderConfirm/index?type=2')
 				} else {
 					this.$showToast('请先勾选商品')
