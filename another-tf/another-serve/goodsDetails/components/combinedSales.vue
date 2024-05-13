@@ -302,7 +302,7 @@ export default {
 			addCart.push(shopObj)
 			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCart)
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=1'
+				url: '/another-tf/another-serve/paymentOrderConfirm/index?type=1'
 			})
 		}
 	}

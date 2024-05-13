@@ -1933,9 +1933,15 @@
           }
         },
         {
-          "path": "another-serve/orderConfirm/index",
+          "path": "another-serve/paymentOrderConfirm/index",
           "style": {
             "navigationBarTitleText": "购买宝贝"
+          }
+        },
+        {
+          "path": "another-serve/paymentCodeConfirm/index",
+          "style": {
+            "navigationBarTitleText": "付款码结算"
           }
         },
         {

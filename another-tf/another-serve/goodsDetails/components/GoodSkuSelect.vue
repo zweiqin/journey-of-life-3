@@ -357,7 +357,7 @@ export default {
 			this.number = 1
 			this.isShowDetails = false
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=1'
+				url: '/another-tf/another-serve/paymentOrderConfirm/index?type=1'
 			})
 		},
 
@@ -385,7 +385,7 @@ export default {
 			this.isShowDetails = false
 			this.number = 1
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=3'
+				url: '/another-tf/another-serve/paymentOrderConfirm/index?type=3'
 			})
 		}
 	}

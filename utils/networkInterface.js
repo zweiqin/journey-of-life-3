@@ -398,7 +398,6 @@ export const resolveUseShopCoupon = (params = {}) => {
 	const matchCouponNormalSkuList = []
 	const matchCouponPriceSkuList = []
 	if (couponItem.applyType !== 1) {
-		const ids = couponItem.ids
 		// 符合优惠券商品列表中的普通sku价格综合
 		let matchCouponNormalPrice = 0
 		// 符合定价捆绑且在优惠券商品列表中的价格综合
@@ -407,7 +406,7 @@ export const resolveUseShopCoupon = (params = {}) => {
 		let priceCount = 0
 		for (let idx = 0; idx < curShop.skus.length; idx++) {
 			if (curShop.skus[idx].priceId) priceCount++
-			if (ids.indexOf(curShop.skus[idx].productId) > -1) {
+			if (couponItem.ids.indexOf(curShop.skus[idx].productId) > -1) {
 				if (curShop.skus[idx].priceId) {
 					matchCouponPriceSkuList.push(curShop.skus[idx])
 				} else {
@@ -481,7 +480,7 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 		selectedPlatformCoupon: { couponId: '' }
 	}, params)
 	let settlement = JSON.parse(JSON.stringify(settlementOrigin))
-	const couponItem = settlement.shops[shopIndex].shopCoupons[couponIndex]
+	let couponItem = settlement.shops[shopIndex].shopCoupons[couponIndex]
 	let isShowShopCoupons = isShowShopCouponsOrigin
 	let selectedShopCouponList = JSON.parse(JSON.stringify(selectedShopCouponListOrigin))
 	let isSuccess = false
@@ -493,8 +492,7 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 		isShowShopCoupons = false
 		selectedShopCouponList = []
 		isSuccess = true
-	}
-	if (settlement.shops[shopIndex].total < couponItem.fullMoney) {
+	} else if (settlement.shops[shopIndex].total < couponItem.fullMoney) {
 		uni.showToast({ title: '不满足优惠券使用条件！', icon: 'none' })
 	} else if ((couponItem.couponType === 1) && (settlement.shops[shopIndex].total <= couponItem.reduceMoney)) {
 		uni.showToast({ title: '不可使用大于或等于商品金额的优惠劵！', icon: 'none' }) // 优惠券优惠金额不能大于等于合计金额！
@@ -502,8 +500,11 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 		uni.showToast({ title: '此券不可与平台券叠加！', icon: 'none' })
 	} else { // 选择优惠券
 		isShowShopCoupons = false
+		// console.log(couponItem === settlement.shops[shopIndex].shopCoupons[couponIndex]) // true
 		const useShopCouponObj = resolveUseShopCoupon({ settlement, shopIndex, couponIndex })
 		settlement = useShopCouponObj.settlement
+		// console.log(couponItem === settlement.shops[shopIndex].shopCoupons[couponIndex]) // false
+		couponItem = settlement.shops[shopIndex].shopCoupons[couponIndex]
 		if (useShopCouponObj.isUseShopCoupon) {
 			for (let i = 0; i < settlement.shops[shopIndex].shopCoupons.length; i++) {
 				settlement.shops[shopIndex].shopCoupons[i].checked = false
@@ -514,7 +515,7 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 			settlement.shops[shopIndex].skus.forEach((item) => {
 				if (item.buyerShopCouponId && (item.buyerShopCouponId !== couponItem.shopCouponId)) item.buyerShopCouponId = null
 			})
-			selectedShopCouponList.push(couponItem)
+			selectedShopCouponList.push(JSON.parse(JSON.stringify(couponItem)))
 		} else {
 			settlement.shops[shopIndex].totalAfterDiscount = settlement.shops[shopIndex].total
 		}
@@ -530,22 +531,22 @@ export const resolveShopCouponItemSelect = (params = {}) => {
  */
 
 export const resolvePlatformCouponItemSelect = (params = {}) => {
-	const { settlement: settlementOrigin, couponIndex, isShowDiscount: isShowDiscountOrigin, selectedPlatformCoupon: selectedPlatformCouponOrigin, selectedShopCouponList } = Object.assign({
+	const { settlement: settlementOrigin, couponIndex, isShowPlatformCoupon: isShowPlatformCouponOrigin, selectedPlatformCoupon: selectedPlatformCouponOrigin, selectedShopCouponList } = Object.assign({
 		settlement: { shops: [], coupons: [] },
 		couponIndex: 0,
-		isShowDiscount: false,
+		isShowPlatformCoupon: false,
 		selectedPlatformCoupon: { couponId: '' },
 		selectedShopCouponList: []
 	}, params)
 	const settlement = JSON.parse(JSON.stringify(settlementOrigin))
 	const couponItem = settlement.coupons[couponIndex]
-	let isShowDiscount = isShowDiscountOrigin
+	let isShowPlatformCoupon = isShowPlatformCouponOrigin
 	let selectedPlatformCoupon = JSON.parse(JSON.stringify(selectedPlatformCouponOrigin))
 	let isSuccess = false
 	if (!couponItem.checked && selectedShopCouponList.length) uni.showToast({ title: '不可与商家券叠加使用！', icon: 'none' })
 	if (couponItem.checked) { // 已选中的情况下取消选中
 		couponItem.checked = false
-		isShowDiscount = false
+		isShowPlatformCoupon = false
 		selectedPlatformCoupon = { couponId: '' }
 		settlement.shops.forEach((shopItem) => {
 			shopItem.skus && shopItem.skus.forEach((skuItem) => {
@@ -591,7 +592,7 @@ export const resolvePlatformCouponItemSelect = (params = {}) => {
 		} else {
 			// 如果是折扣券，需要记录，在什么基数上打折
 			couponItem.useMoney = totalPrice
-			isShowDiscount = false
+			isShowPlatformCoupon = false
 			selectedPlatformCoupon = couponItem
 			matchCouponSkuList.forEach((item) => {
 				item.buyerCouponId = couponItem.couponId
@@ -600,7 +601,7 @@ export const resolvePlatformCouponItemSelect = (params = {}) => {
 			isSuccess = true
 		}
 	}
-	return { settlement, isShowDiscount, selectedPlatformCoupon, isSuccess }
+	return { settlement, isShowPlatformCoupon, selectedPlatformCoupon, isSuccess }
 }
 
 /**
@@ -610,7 +611,7 @@ export const resolvePlatformCouponItemSelect = (params = {}) => {
  */
 
 export const resolveOrderPackageData = (params = {}) => {
-	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj } = Object.assign({
+	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo } = Object.assign({
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
 		skuItemMsgList: [],
@@ -619,7 +620,8 @@ export const resolveOrderPackageData = (params = {}) => {
 		selectIntegral: true,
 		integralRatio: 0,
 		totalPrice: 0,
-		voucherObj: { voucherTotalAll: 0, isVoucher: false, voucherId: 0 }
+		voucherObj: { voucherTotalAll: 0, isVoucher: false, voucherId: 0 },
+		otherInfo: {}
 	}, params)
 	uni.showLoading({ mask: true, title: '订单提交中...' })
 	let pointProductIds = ''
@@ -644,7 +646,7 @@ export const resolveOrderPackageData = (params = {}) => {
 		communityId: userAddressInfo.communityId,
 		couponId: (selectedPlatformCoupon && selectedPlatformCoupon.couponId) || 0,
 		price: totalPrice,
-		remark: '',
+		remark: otherInfo.remark,
 		shops: [],
 		discountPrice: 0,
 		shopSeckillId: null,
@@ -703,7 +705,7 @@ export const resolveOrderPackageData = (params = {}) => {
  */
 
 export const resolveSubmitOrder = async (params = {}) => {
-	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, payInfo } = Object.assign({
+	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo } = Object.assign({
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
 		skuItemMsgList: [],
@@ -713,6 +715,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 		integralRatio: 0,
 		totalPrice: 0,
 		voucherObj: { voucherTotalAll: 0, isVoucher: false, voucherId: 0 },
+		otherInfo: {},
 		payInfo: {}
 	}, params)
 	// 检查提交表单
@@ -728,7 +731,8 @@ export const resolveSubmitOrder = async (params = {}) => {
 		selectIntegral,
 		integralRatio,
 		totalPrice,
-		voucherObj
+		voucherObj,
+		otherInfo
 	})
 	uni.showLoading({ mask: true, title: '结算中...' })
 	try {
@@ -868,6 +872,16 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 		res.data.shops.forEach((item) => {
 			item.totalAfterDiscount = item.total
 		})
+		// res.data.shops[0].shopCoupons = [
+		// 	{ id: 111, ids: [ 12849 ], couponType: 1, reduceMoney: 4, fullMoney: 10, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' },
+		// 	{ id: 222, ids: [ 12849 ], couponType: 2, reduceMoney: 8, fullMoney: 12, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' },
+		// 	{ id: 333, ids: [ 12849 ], couponType: 1, reduceMoney: 6, fullMoney: 8, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' }
+		// ]
+		// res.data.coupons = [
+		// 	{ couponId: 1111, ids: [ 12849 ], couponType: 1, reduceMoney: 4, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' },
+		// 	{ couponId: 2222, ids: [ 12849 ], couponType: 2, reduceMoney: 8, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' },
+		// 	{ couponId: 3333, ids: [ 12849 ], couponType: 1, reduceMoney: 6, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' }
+		// ]
 		// 默认选中商家的第一张优惠券
 		for (let shopIndex = 0; shopIndex < res.data.shops.length; shopIndex++) {
 			if (res.data.shops[shopIndex].shopCoupons.length) {

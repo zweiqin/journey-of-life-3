@@ -590,7 +590,7 @@ export default {
 				shopSeckillId: orderItem.shopSeckillId,
 				skus: orderItem.skus
 			} ])
-			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
+			this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=1')
 		},
 
 		handleAddEvaluate(skuItem) {

@@ -208,7 +208,7 @@ export default {
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
 					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
-					this.go('/another-tf/another-serve/orderConfirm/index?type=2')
+					this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=2')
 				} else {
 					this.$showToast('请先勾选商品')
 				}

@@ -149,6 +149,7 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
+		// eslint-disable-next-line complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -220,6 +221,12 @@ export default {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
+			} else if (this.type === 'collection') { // 收款方付款结算
+				// http://localhost:8988/TFShop_Uni_H5/#/pages/jump/jump?type=collection&code=shopId=186~productId=12850~skuId=334097~terminal=1
+				const shopIdStr = this.code.split('~')[0]
+				const productIdStr = this.code.split('~')[1]
+				const skuIdStr = this.code.split('~')[2]
+				uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` })
 			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
 					.then(() => {
