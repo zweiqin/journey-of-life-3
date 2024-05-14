@@ -6,23 +6,42 @@
 				<view style="display: flex;align-items: center;flex-direction: column;">
 					<view
 						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-						:style="{ backgroundColor: [2, 3].includes(transactionRecordData.targetType) ? '#208f57' : [1, 4, 5].includes(transactionRecordData.targetType) ? '#ef530e' : '#d8d8d8' }"
+						:style="{
+							backgroundColor: [ 2 ].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType)) ? '#208f57'
+								: [1, 4].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType)) ? '#ef530e'
+									: '#d8d8d8'
+						}"
 					>
-						<text v-if="[1, 4, 5].includes(transactionRecordData.targetType)">收</text>
-						<text v-else-if="[2, 3].includes(transactionRecordData.targetType)">支</text>
+						<text
+							v-if="[1, 4].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType))"
+						>
+							收
+						</text>
+						<text
+							v-else-if="[ 2 ].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType))"
+						>
+							支
+						</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
 						<text v-if="transactionRecordData.targetType === 1">充值</text>
 						<text v-else-if="transactionRecordData.targetType === 2">提现</text>
-						<text v-else-if="transactionRecordData.targetType === 3">下单</text>
+						<text v-else-if="transactionRecordData.targetType === 3">
+							<text v-if="transactionRecordData.actionType === 4">订单（已退款）</text>
+							<text v-else>订单</text>
+						</text>
 						<text v-else-if="transactionRecordData.targetType === 4">退款</text>
-						<text v-else-if="transactionRecordData.targetType === 5">赠送</text>
+						<text v-else-if="transactionRecordData.targetType === 5">
+							<text v-if="transactionRecordData.actionType === 4">赠送（已退款）</text>
+							<text v-else>赠送</text>
+						</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
-						{{ [1, 4, 5].includes(transactionRecordData.targetType) ? '+' : [2, 3].includes(transactionRecordData.targetType) ? '-' : '？' }}{{
-							Number.parseFloat(Math.abs(transactionRecordData.fee) || 0).toFixed(2) }}元
+						{{ [1, 4, 5].includes(transactionRecordData.targetType) ? '+' : [2,
+							3].includes(transactionRecordData.targetType) ? '-' : '？' }}{{
+								Number.parseFloat(Math.abs(transactionRecordData.fee) || 0).toFixed(2) }}元
 					</view>
 				</view>
 				<view style="margin-top: 78rpx;font-size: 28rpx;">
@@ -77,8 +96,8 @@
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">交易金余额</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
-							<text v-if="transactionRecordData.beeCoinPrice">
-								{{ transactionRecordData.beeCoinPrice || '--' }}
+							<text v-if="typeof transactionRecordData.beeCoinPrice === 'number'">
+								{{ transactionRecordData.beeCoinPrice }}
 							</text>
 							<text v-else>--</text>
 						</view>

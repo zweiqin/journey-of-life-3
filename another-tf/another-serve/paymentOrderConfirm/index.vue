@@ -49,7 +49,8 @@
 			></ATFOrderIntegral>
 
 			<VoucherUse
-				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse"
+				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll"
+				ref="refVoucherUse" margin="20rpx 0 0"
 				:voucher-list="settlement.voucherList" :voucher-num="settlement.userVoucherDeductLimit"
 				@choose="handleChooseVoucher({ settlement, e: $event, selectedPlatformCoupon, selectedShopCouponList, selectIntegral, voucherObj })"
 			>

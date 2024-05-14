@@ -172,7 +172,7 @@ export default {
 						this.$showToast('绑定成功', 'success')
 						setTimeout(() => {
 							if (shareType === 1) {
-								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?storeId=${shopId}` })
+								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` })
 							} else if (shareType === 2) {
 								uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
 							}
@@ -211,9 +211,12 @@ export default {
 					.then((res) => { this.$showToast('绑定成功', 'success') })
 					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingShop') {
-				bindPlatformInfoCodeBindingApi({ phone: this.code, type: 1 })
-					.then((res) => { this.$showToast('绑定成功', 'success') })
-					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+				const shopId = this.code.split('~')[0]
+				// const phone = this.code.split('~')[1]
+				// bindPlatformInfoCodeBindingApi({ phone, type: 1 })
+				// 	.then((res) => { this.$showToast('绑定成功', 'success') })
+				// 	.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` }) }, 300)
 			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
 				const storageKeyToken = getStorageKeyToken()
 				if (storageKeyToken) {
@@ -226,7 +229,7 @@ export default {
 				const shopIdStr = this.code.split('~')[0]
 				const productIdStr = this.code.split('~')[1]
 				const skuIdStr = this.code.split('~')[2]
-				uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` })
+				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
 			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
 					.then(() => {

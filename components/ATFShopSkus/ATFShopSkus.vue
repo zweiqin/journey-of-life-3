@@ -1,25 +1,25 @@
 <template>
 	<view class="shop-skus-container" :style="{ margin }">
-		<view v-if="shopData.shopId" style="border-bottom: 2rpx solid #eeeeee;">
+		<view v-if="shopData.shopId">
 			<view>
 				<view v-if="isShowShopDetail" style="padding: 20rpx 0 0;">
 					<view style="display: flex;align-items: stretch;">
 						<image
-							style="width: 96upx;height: 96upx;margin-right: 30upx;border-radius: 10rpx"
+							style="width: 96rpx;height: 96rpx;margin-right: 30rpx;border-radius: 10rpx"
 							:src="common.seamingImgUrl(brandDetail.shopLogo)"
 						>
 						</image>
 						<view style="flex: 1;width: 0;">
 							<view
-								style="font-size: 30upx;color: #333;font-weight: bold;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+								style="font-size: 30rpx;color: #333;font-weight: bold;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
 							>
 								<text>{{ brandDetail.shopName }}</text>
 								<text v-if="brandDetail.shopBrief">（{{ brandDetail.shopBrief }}）</text>
 							</view>
-							<view style="margin-top: 12upx;display: flex;align-items: center;font-size: 28upx;">
+							<view style="margin-top: 12rpx;display: flex;align-items: center;font-size: 28rpx;">
 								<tui-icon name="position" :size="18" color="#767676"></tui-icon>
 								<text
-									style="margin-left: 8upx;flex: 1;width: 0;color: #767676;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									style="margin-left: 8rpx;flex: 1;width: 0;color: #767676;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 								>
 									{{ brandDetail.shopAdress || '--' }}
 								</text>
@@ -40,7 +40,7 @@
 			<view
 				style="padding: 0 30rpx;background-color: #ffffff;"
 				:style="{
-					borderRadius: isShowShopDetail ? '20rpx' : '0 0 20rpx 20rpx',
+					borderRadius: isShowShopDetail ? detailRadius : skusRadius,
 					margin: isShowShopDetail ? '20rpx 0 0' : '0'
 				}"
 			>
@@ -111,6 +111,7 @@
 					</text>
 					<text v-else style="margin-left: 10rpx;font-size: 46rpx;">￥0.00</text>
 				</view>
+				<view style="border-bottom: 2rpx solid #eeeeee;"></view>
 			</view>
 		</view>
 	</view>
@@ -125,6 +126,14 @@ export default {
 		margin: {
 			type: String,
 			default: ''
+		},
+		detailRadius: {
+			type: String,
+			default: '20rpx'
+		},
+		skusRadius: {
+			type: String,
+			default: '0 0 20rpx 20rpx'
 		},
 		shopData: {
 			type: Object,
@@ -162,5 +171,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.shop-skus-container {}
+.shop-skus-container {
+	box-sizing: border-box;
+}
 </style>

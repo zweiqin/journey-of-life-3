@@ -103,8 +103,16 @@
 								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
 								:style="{ backgroundColor: [2, 3].includes(item.targetType) ? '#208f57' : [1, 4, 5].includes(item.targetType) ? '#ef530e' : '#d8d8d8' }"
 							>
-								<text v-if="[1, 4, 5].includes(item.targetType)">收</text>
-								<text v-else-if="[2, 3].includes(item.targetType)">支</text>
+								<text
+									v-if="[1, 4].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType))"
+								>
+									收
+								</text>
+								<text
+									v-else-if="[ 2 ].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [ 4 ].includes(item.actionType))"
+								>
+									支
+								</text>
 								<text v-else>--</text>
 							</view>
 							<view style="margin-left: 14rpx;">
@@ -112,9 +120,15 @@
 									<text>
 										<text v-if="item.targetType === 1">充值</text>
 										<text v-else-if="item.targetType === 2">提现</text>
-										<text v-else-if="item.targetType === 3">订单</text>
+										<text v-else-if="item.targetType === 3">
+											<text v-if="item.actionType === 4">订单（已退款）</text>
+											<text v-else>订单</text>
+										</text>
 										<text v-else-if="item.targetType === 4">退款</text>
-										<text v-else-if="item.targetType === 5">赠送</text>
+										<text v-else-if="item.targetType === 5">
+											<text v-if="item.actionType === 4">赠送（已退款）</text>
+											<text v-else>赠送</text>
+										</text>
 										<text v-else>--</text>
 									</text>
 									<text v-if="item.number">
@@ -126,7 +140,8 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ [1, 4, 5].includes(item.targetType) ? '+' : [2, 3].includes(item.targetType) ? '-' : '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
+								{{ [1, 4, 5].includes(item.targetType) ? '+' : [2, 3].includes(item.targetType) ? '-' : '？' }}{{
+									Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
 							</view>
 							<!-- <view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>状态：</text>
@@ -139,8 +154,8 @@
 								<!-- <text v-if="item.disposeAccountJson">
 									{{ JSON.parse(item.disposeAccountJson).beeCoinPrice || '--' }}
 									</text> -->
-								<text v-if="item.beeCoinPrice">
-									{{ item.beeCoinPrice || '--' }}
+								<text v-if="typeof item.beeCoinPrice === 'number'">
+									{{ item.beeCoinPrice }}
 								</text>
 								<text v-else>未知</text>
 							</view>

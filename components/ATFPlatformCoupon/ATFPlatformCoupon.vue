@@ -1,7 +1,8 @@
 <template>
 	<view class="platform-coupon-container" :style="{ margin }">
 		<view
-			style="padding: 28rpx 20rpx;display: flex;align-items: center;justify-content: space-between;background-color: #ffffff;"
+			style="display: flex;align-items: center;justify-content: space-between;background-color: #ffffff;"
+			:style="{ padding, borderRadius: radius }"
 			@click="$emit('click')"
 		>
 			<view style="font-size: 26rpx;color: #333333;">平台优惠</view>
@@ -11,7 +12,7 @@
 					<text v-else> -￥{{ (parseInt((selectedPlatformCoupon.reduceMoney || 0) * 100) / 100).toFixed(2) }}</text>
 				</view>
 				<view v-else-if="!settlement.coupons || !settlement.coupons.length" style="font-size: 26rpx;color: #333333;">
-					无
+					暂无可用
 				</view>
 				<view v-else style="font-size: 26rpx;color: #333333;">不使用</view>
 				<tui-icon name="arrowright" :size="30" unit="rpx" color="#999999" margin="0 0 0 20rpx"></tui-icon>
@@ -68,6 +69,14 @@ export default {
 		margin: {
 			type: String,
 			default: ''
+		},
+		padding: {
+			type: String,
+			default: '28rpx 20rpx'
+		},
+		radius: {
+			type: String,
+			default: '0'
 		},
 		settlement: {
 			type: Object,

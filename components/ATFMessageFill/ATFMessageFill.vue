@@ -2,7 +2,7 @@
 	<view class="-message-fill-container" :style="{ margin }">
 		<view
 			style="padding: 28rpx 20rpx;background-color: #ffffff;font-size: 26rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-			:style="{ color: text ? color ? color : '' : '#999' }"
+			:style="{ color: text ? color ? color : '' : '#999', borderRadius: radius }"
 			@click="isShowPopup = true"
 		>
 			{{ text ? text : placeholder || "--" }}
@@ -41,6 +41,10 @@ export default {
 		margin: {
 			type: String,
 			default: ''
+		},
+		radius: {
+			type: String,
+			default: '0'
 		},
 		placeholder: {
 			type: String,

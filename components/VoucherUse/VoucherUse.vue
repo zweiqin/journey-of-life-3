@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<view class="line-pane" @click="handleChangeVoucher">
+	<view :style="{ margin }">
+		<view class="line-pane" :style="{ padding, borderRadius: radius }" @click="handleChangeVoucher">
 			<view style="font-size: 28upx;" class="title">代金券（余额：{{ voucherNum }}）</view>
 			<view style="display: flex;align-items: center;">
 				<view style="color: #999999">
@@ -64,8 +64,20 @@
 <script>
 
 export default {
-	name: 'CouponUse',
+	name: 'VoucherUse',
 	props: {
+		margin: {
+			type: String,
+			default: ''
+		},
+		padding: {
+			type: String,
+			default: '28rpx 20rpx'
+		},
+		radius: {
+			type: String,
+			default: '0'
+		},
 		voucherList: {
 			type: Array,
 			default: () => []
@@ -138,10 +150,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 100upx;
-	margin: 20upx 0 0;
-	padding: 20upx 18upx;
+	// padding: 28upx 20upx;
 	background-color: #fff;
-
 }
 </style>

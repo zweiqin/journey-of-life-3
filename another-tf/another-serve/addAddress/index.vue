@@ -30,8 +30,8 @@
 				@click="isShowCommunityListSelect = true"
 			>
 				<view class="fs28 location">所在小区</view>
-				<view :style="{ color: selectTownshipId ? '#999999' : '#000000' }">
-					请选择所在小区
+				<view :style="{ color: addressData.communityId ? '#000000' : '#999999' }">
+					{{ addressData.communityName || '请选择所在小区（可选）' }}
 				</view>
 			</view>
 			<view class="detailAddress-box">
@@ -106,7 +106,6 @@ export default {
 				tag: ''
 			},
 			selectTownshipId: '',
-			selectCommunityId: '',
 			communityList: [],
 			isShowCommunityListSelect: false
 		}
@@ -148,17 +147,24 @@ export default {
 			this.addressData.township = (e.areaInfo[3] && e.areaInfo[3].text) || ''
 			this.addressData.areaId = (e.areaInfo[e.areaInfo.length - 1] && e.areaInfo[e.areaInfo.length - 1].id) || ''
 			this.selectTownshipId = (e.areaInfo[3] && e.areaInfo[3].id) || ''
+			this.addressData.communityId = ''
+			this.addressData.communityName = ''
 			if (this.selectTownshipId) this.handleGetCommunityList(this.selectTownshipId)
 		},
 		handleGetCommunityList(cityId) {
 			uni.showLoading()
 			getCityCommunitySelectApi({ cityId })
 				.then(({ data }) => {
+					// this.communityList = data.map((item) => ({
+					// 	...item,
+					// 	value: item.id,
+					// 	text: item.communityName
+					// }))
 					this.communityList = data.map((item) => ({
-						...item,
-						value: item.id,
-						text: item.communityName
+						value: item,
+						text: item
 					}))
+					console.log(this.communityList)
 					uni.hideLoading()
 				})
 				.catch(() => {
@@ -168,7 +174,7 @@ export default {
 		handleSelectCommunityList(e) {
 			this.isShowCommunityListSelect = false
 			this.addressData.communityName = e.options.text
-			this.selectCommunityId = e.options.value
+			this.addressData.communityId = e.options.value
 		},
 		handleAddressClick() {
 			if (!this.addressData.receiveName) return this.$showToast('请输入收货人！')
@@ -176,7 +182,7 @@ export default {
 			if (!/^[1][3-9][0-9]{9}$/.test(this.addressData.phone)) return this.$showToast('请输入正确的手机号！')
 			if (!this.addressData.province || !this.addressData.city) return this.$showToast('所在地不能为空！')
 			if (!this.addressData.address) return this.$showToast('请输入详细地址！')
-			if (this.communityList && this.communityList.length && !this.addressData.communityName) return this.$showToast('请选择所在社区！')
+			// if (this.communityList && this.communityList.length && !this.addressData.communityName) return this.$showToast('请选择所在社区！')
 			if (this.addressData.receiveId) {
 				updateReceiveAddressApi({
 					receiveId: this.addressData.receiveId,

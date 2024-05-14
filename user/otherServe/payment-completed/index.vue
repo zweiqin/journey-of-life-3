@@ -1,32 +1,31 @@
 <template>
 	<view class="payment-completed-container">
-		<!-- <view style="padding: 30upx 20upx;color: #000000;">
+		<!-- <view style="padding: 30rpx 20rpx;color: #000000;">
 			<JHeader width="50" height="50" title="商品评价"></JHeader>
 			</view> -->
 		<view style="display: flex;flex-direction: column;align-items: center;">
 			<view style="margin-top: 20vh;">
-				<BeeIcon v-if="state === 'success'" name="circle-fill" :size="76" color="#95ec69"></BeeIcon>
-				<BeeIcon v-else-if="state === 'fail'" name="close-fill" :size="76" color="#eb0909"></BeeIcon>
+				<BeeIcon v-if="state === 'success'" name="circle-fill" :size="66" color="#ef530e"></BeeIcon>
+				<BeeIcon v-else-if="state === 'fail'" name="close-fill" :size="66" color="#979797"></BeeIcon>
 			</view>
 
-			<view style="margin-top: 5vh;font-size: 46upx;font-weight: bold;">
-				<text v-if="state === 'success'">支付成功</text>
-				<text v-else-if="state === 'fail'">支付失败</text>
+			<view style="margin-top: 5vh;font-size: 46rpx;font-weight: bold;">
+				<text v-if="state === 'success'">付 款 成 功</text>
+				<text v-else-if="state === 'fail'">付 款 失 败</text>
 			</view>
 
-			<view style="margin-top: 25vh;">
+			<view class="operation-btn" style="margin-top: 8vh;">
 				<tui-button
-					v-if="state === 'success'" type="gray-primary" width="280rpx" height="72rpx"
-					style="color: #1ab113!important;border-radius: 4rpx;" bold @click="handelClickBack"
+					v-if="state === 'success'" type="warning" width="320rpx" height="98rpx"
+					bold @click="handelClickBack"
 				>
-					回到首页
+					进 入 团 蜂
 				</tui-button>
 				<tui-button
-					v-else-if="state === 'fail'" type="danger" width="280rpx" height="72rpx"
-					plain
-					style="border-radius: 4rpx;" bold @click="handelClickBack"
+					v-else-if="state === 'fail'" type="warning" width="320rpx" height="98rpx"
+					bold @click="handelClickBack"
 				>
-					回到首页
+					回 到 首 页
 				</tui-button>
 			</view>
 		</view>
@@ -63,8 +62,18 @@ export default {
 .payment-completed-container {
 	min-height: 100vh;
 	width: 100%;
-	padding: 0 26upx;
-	background: #ffffff;
+	padding: 0 26rpx;
+	background: #f0f0f0;
 	box-sizing: border-box;
+
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 20rpx;
+		}
+
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
+	}
 }
 </style>

@@ -232,7 +232,7 @@ export default {
       const data = {
         data: {
           title: '团蜂家居社区服务中心',
-          desc: '一切和家居有关的问题，我们都能解决',
+          desc: '团蜂社区服务，点击下载',
           link: `${A_TF_MAIN}/#/`,
           imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
         },

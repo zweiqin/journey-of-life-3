@@ -12,16 +12,17 @@
 			<ATFOrderAddressSelect v-if="!userAddressInfo.receiveId" :data="userAddressInfo" margin="20rpx 0 0"></ATFOrderAddressSelect>
 
 			<view style="margin-top: 20rpx;">
-				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" is-show-shop-detail>
+				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" detail-radius="20rpx 20rpx 0 0" is-show-shop-detail>
 					<template #operateBody="obj">
 						<view style="padding-top: 20rpx;">
-							<view style="color: #222229;">输入金额（元）</view>
-							<view style="border-bottom: 2upx solid #bebebe;">
+							<view style="color: #222229;font-weight: bold;">输入金额（元）</view>
+							<!-- disabled @click，type="number" @input="handlePriceInput()" -->
+							<view style="border-bottom: 2upx solid #D8D8D8;">
 								<tui-input
-									type="number" label="￥" :label-size="48"
-									label-color="#000000"
-									:label-width="80" placeholder="输入金额" :border-bottom="false" padding="18rpx 2rpx 10rpx"
-									placeholder-style="color: #979797;font-size: 30rpx;" @input="handlePriceInput($event, sIndex)"
+									v-model="priceInputValue[obj.shopItem.shopId]" padding="18rpx 2rpx 10rpx" label="￥" :label-size="52"
+									label-color="#000000" :label-width="60" placeholder="输入金额" :border-bottom="false"
+									placeholder-style="color: #979797;font-size: 30rpx;" type="text"
+									disabled @click="(isShowDigitalKeyboard = true) && (shopPriceIndex = sIndex)"
 								>
 								</tui-input>
 							</view>
@@ -38,28 +39,37 @@
 			</view>
 			<ATFMessageFill
 				:text="otherInfo.remark" placeholder="添加备注" margin="0"
-				@confirm="(e) => otherInfo.remark = e.remark"
+				radius="0 0 24rpx 24rpx" @confirm="(e) => otherInfo.remark = e.remark"
 			>
 			</ATFMessageFill>
 
 			<ATFPlatformCoupon
-				:show="isShowPlatformCoupon" margin="20rpx 0 0" :settlement="settlement"
+				:show="isShowPlatformCoupon" margin="20rpx 0 0" padding="28rpx 20rpx 10rpx"
+				radius="24rpx 24rpx 0 0" :settlement="settlement"
 				:selected-platform-coupon="selectedPlatformCoupon" :selected-shop-coupon-list="selectedShopCouponList"
 				@click="handleShowPlatformCoupon" @close="isShowPlatformCoupon = false"
 				@select="handlePlatformCouponItemSelect"
 			>
 			</ATFPlatformCoupon>
-			<view style="padding: 0 20rpx;background-color: #ffffff;">
-				<view style="display: flex;align-items: center;justify-content: space-between;padding: 18rpx 0;border-top: 2rpx solid #D8D8D8;">
-					<text style="font-size: 30rpx;color: #999999;">
-						共{{ settlement.shops.reduce((total, value, index, arr) => total + value.number, 0) }}件
+			<VoucherUse
+				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse" padding="10rpx 20rpx 28rpx"
+				:voucher-list="settlement.voucherList" :voucher-num="settlement.userVoucherDeductLimit"
+				@choose="handleChooseVoucher({ settlement, e: $event, selectedPlatformCoupon, selectedShopCouponList, selectIntegral, voucherObj })"
+			>
+			</VoucherUse>
+			<view style="padding: 0 20rpx 18rpx;background-color: #ffffff;border-radius: 0 0 24rpx 24rpx;">
+				<view
+					style="display: flex;align-items: center;justify-content: space-between;padding: 18rpx 0 0;font-weight: bold;border-top: 2rpx solid #D8D8D8;"
+				>
+					<text style="color: #333333;">总计：</text>
+					<text style="color: #ff7911;">
+						<text v-if="totalPrice">￥{{ totalPrice.toFixed(2) }}</text>
+						<text v-else>￥0.00</text>
 					</text>
-					<view>
-						<text style="color: #333333;">合计：</text>
-						<text style="color: #ff7911;font-weight: bold;">
-							<text v-if="totalPrice">￥{{ totalPrice.toFixed(2) }}</text>
-							<text v-else>￥0.00</text>
-						</text>
+				</view>
+				<view v-if="voucherObj.voucherId" style="display: flex;justify-content: flex-end;">
+					<view style="width: fit-content;margin: 18rpx 0 0;padding: 4rpx 12rpx;font-size: 26rpx;color: #ffffff;background-color: #ef530e;border-radius: 14rpx;">
+						代金券已抵扣￥{{ voucherObj.voucherTotalAll }}
 					</view>
 				</view>
 			</view>
@@ -69,15 +79,9 @@
 				:select-integral="selectIntegral" @change="changeIntegral"
 			></ATFOrderIntegral>
 
-			<VoucherUse
-				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse"
-				:voucher-list="settlement.voucherList" :voucher-num="settlement.userVoucherDeductLimit"
-				@choose="handleChooseVoucher({ settlement, e: $event, selectedPlatformCoupon, selectedShopCouponList, selectIntegral, voucherObj })"
-			>
-			</VoucherUse>
-
 			<view style="margin-top: 20rpx;">
 				<CashierList
+					padding="8rpx 26rpx 6rpx" radius="24rpx"
 					show :price-pay="totalPrice"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
@@ -85,21 +89,34 @@
 					:show-hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="(e) => payInfo = e"
-				/>
+				>
+					<template #header="obj">
+						<view v-if="obj.paymentList && (obj.paymentList.length > 1)" style="padding-top: 20rpx;">
+							<view style="padding: 0 0 8rpx;font-size: 30rpx;font-weight: bold;">请选择支付方式：</view>
+						</view>
+					</template>
+				</CashierList>
 			</view>
 		</view>
 		<view
-			style="width: 100%;position: fixed;bottom: 0;left: 0;background: #ffffff;padding: 30rpx;box-sizing: border-box;"
+			class="operation-btn"
+			style="width: 100%;position: fixed;bottom: 0;left: 0;background: #f0f0f0;padding: 30rpx;box-sizing: border-box;"
 		>
 			<tui-button
 				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
 				:size="28"
 				:disabled="settlement.shops.some(i => i.receiveNotMatch)"
-				@click="resolveSubmitOrder({ settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo })"
+				@click="resolveSubmitOrder({ settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice: true })"
 			>
 				付款
 			</tui-button>
 		</view>
+		<tui-digital-keyboard
+			:show="isShowDigitalKeyboard" button-background="#07c160"
+			@confirm="handleConfirmKeyboard"
+			@click="(e) => priceInputValue[settlement.shops[shopPriceIndex].shopId] = `${priceInputValue[settlement.shops[shopPriceIndex].shopId]}${e.value}`"
+			@backspace="priceInputValue[settlement.shops[shopPriceIndex].shopId] = String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).substring(0, String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).length - 1)"
+		></tui-digital-keyboard>
 	</view>
 </template>
 
@@ -127,6 +144,9 @@ export default {
 			selectedAttr: {},
 			isGetDetail: false,
 			// 订单相关
+			isShowDigitalKeyboard: false,
+			shopPriceIndex: 0,
+			priceInputValue: {},
 			settlement: {
 				voucherList: [],
 				shops: []
@@ -266,13 +286,13 @@ export default {
 			this.goodsDetail = goodsDetail
 			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
 		},
-		handlePriceInput(value, shopIndex) {
+		handlePriceInput() {
 			for (let i = 0; i < this.settlement.shops.length; i++) {
 				for (let cIndex = 0; cIndex < this.settlement.shops[i].shopCoupons.length; cIndex++) {
 					this.settlement.shops[i].shopCoupons[cIndex].checked = false
 				}
 				this.settlement.shops[i].currentCoupon = {}
-				this.settlement.shops[i].totalAfterDiscount = value || 0
+				this.settlement.shops[i].totalAfterDiscount = this.priceInputValue[this.settlement.shops[i].shopId]
 			}
 			this.selectedShopCouponList = []
 			this.settlement.coupons && this.settlement.coupons.forEach((item) => {
@@ -294,6 +314,11 @@ export default {
 			}
 			this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
 		},
+		handleConfirmKeyboard(value, shopIndex) {
+			this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] = Number(this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId])
+			this.isShowDigitalKeyboard = false
+			this.handlePriceInput()
+		},
 
 		resolveSubmitOrder,
 		async handleOnShow() {
@@ -302,6 +327,7 @@ export default {
 				if (uni.getStorageSync(T_SKU_ITEM_MSG_LIST)) { // 1立即购买，2购物车结算
 					this.skuItemMsgList = uni.getStorageSync(T_SKU_ITEM_MSG_LIST)
 					orderSettlementObj = await resolveGetOrderSettlement({
+						isProductPay: this.goodsDetail.productId,
 						isGroup: false,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -315,6 +341,7 @@ export default {
 				} else if (uni.getStorageSync(T_SKU_ITEM_INFO)) { // 3拼团商品立即购买
 					this.skuItemInfo = uni.getStorageSync(T_SKU_ITEM_INFO)
 					orderSettlementObj = await resolveGetOrderSettlement({
+						isProductPay: this.goodsDetail.productId,
 						isGroup: true,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -330,7 +357,14 @@ export default {
 				this.userAddressInfo = orderSettlementObj.userAddressInfo
 				this.isShowShopCoupons = orderSettlementObj.isShowShopCoupons
 				this.selectedShopCouponList = orderSettlementObj.selectedShopCouponList
-				if (orderSettlementObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
+				const priceInputValue = {}
+				if (orderSettlementObj.isSuccess) {
+					this.settlement.shops.forEach((item) => {
+						priceInputValue[item.shopId] = this.priceInputValue[item.shopId] || ''
+					})
+					this.priceInputValue = priceInputValue
+					this.handlePriceInput()
+				}
 				console.log(this.settlement)
 			}
 		},
@@ -422,5 +456,15 @@ export default {
 	min-height: 100vh;
 	background-color: #f0f0f0;
 	box-sizing: border-box;
+
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 20rpx;
+		}
+
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
+	}
 }
 </style>

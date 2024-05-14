@@ -705,7 +705,7 @@ export const resolveOrderPackageData = (params = {}) => {
  */
 
 export const resolveSubmitOrder = async (params = {}) => {
-	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo } = Object.assign({
+	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice } = Object.assign({
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
 		skuItemMsgList: [],
@@ -716,9 +716,11 @@ export const resolveSubmitOrder = async (params = {}) => {
 		totalPrice: 0,
 		voucherObj: { voucherTotalAll: 0, isVoucher: false, voucherId: 0 },
 		otherInfo: {},
-		payInfo: {}
+		payInfo: {},
+		hasPrice: false
 	}, params)
 	// 检查提交表单
+	if (hasPrice && (totalPrice <= 0)) return uni.showToast({ title: '支付金额必须大于零', icon: 'none' })
 	if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
 	if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
 	// 处理表单
@@ -828,7 +830,8 @@ export const resolveVoucherSelect = (params = {}) => {
  */
 
 export const resolveGetOrderSettlement = async (params = {}) => {
-	const { isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon, voucherObj } = Object.assign({
+	const { isProductPay, isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon, voucherObj } = Object.assign({
+		isProductPay: false,
 		isGroup: false,
 		fromType: 0,
 		brandId: 0,
@@ -903,7 +906,9 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 			}
 		}
 		if (res.data.shopType) { // res.data.shopType === 1 // 1品牌商家，2商圈商家
-			if (uni.getStorageSync(T_RECEIVE_ITEM)) {
+			if (isProductPay) { // 如果是付款码商品
+				userAddressInfo = { receiveId: 581 }
+			} else if (uni.getStorageSync(T_RECEIVE_ITEM)) {
 				userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
 				userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
 			} else if (res.data.receive) {
