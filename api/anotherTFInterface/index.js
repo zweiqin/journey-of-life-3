@@ -545,6 +545,9 @@ export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/busines
 // /businessRechargeCustomers/getByRecharge 客户充值记录列表
 export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')
 
+// 生成商家收款码
+export const getPaymentGenerateCodeApi = (data) => AnotherTFRequest('/paymentCode/generateCode', data, 'POST')
+
 // 代金券
 // 获取可用代金券
 export const getVoucherApi = (data) => AnotherTFRequest('/voucher/getVoucher', data)

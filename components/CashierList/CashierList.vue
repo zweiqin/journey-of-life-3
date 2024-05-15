@@ -588,25 +588,25 @@ export default {
 				if (!this.pricePay) {
 					uni.showToast({ title: '缺少金额', icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.commissionPrice) {
-					uni.showToast({ title: '佣金不足', icon: 'none' })
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 佣金不足
 				}
 			} else if (payment.paymentMode === '5') {
 				if (!this.pricePay) {
 					uni.showToast({ title: '缺少金额', icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.rechargePrice) {
-					uni.showToast({ title: '平台余额不足', icon: 'none' })
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 平台余额不足
 				}
 			} else if (payment.paymentMode === '8') {
 				if (!this.pricePay) {
 					uni.showToast({ title: '缺少金额', icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
-					uni.showToast({ title: '交易金余额不足', icon: 'none' })
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 交易金余额不足
 				}
 			} else if (payment.paymentMode === '6') {
 				if (!this.pricePay) {
 					uni.showToast({ title: '缺少金额', icon: 'none' })
 				} else if (this.pricePay > this.priceShopInfo.current) {
-					uni.showToast({ title: '商家余额不足', icon: 'none' })
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 商家余额不足
 				}
 			}
 		},

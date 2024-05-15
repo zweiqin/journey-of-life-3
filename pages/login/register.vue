@@ -164,7 +164,7 @@ export default {
 				.then(() => {
 					if (!this.isReadAgreement) return this.$showToast('请先同意《用户服务协议》以及《隐私政策》')
 					updatePhoneLoginRegisterApi({
-						type: 1,
+						type: 1, // Encrypt(1)
 						phone: Encrypt(this.registerQuery.phone),
 						verificationCode: Encrypt(this.registerQuery.verificationCode),
 						password: Encrypt(this.registerQuery.password)

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { USER_INFO, T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
+import { T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
 import {

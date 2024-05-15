@@ -17,15 +17,15 @@
 			<view class="operation-btn" style="margin-top: 8vh;">
 				<tui-button
 					v-if="state === 'success'" type="warning" width="320rpx" height="98rpx"
-					bold @click="handelClickBack"
+					bold @click="handelBackOrder"
 				>
 					进 入 团 蜂
 				</tui-button>
 				<tui-button
 					v-else-if="state === 'fail'" type="warning" width="320rpx" height="98rpx"
-					bold @click="handelClickBack"
+					bold @click="handelBackOrder"
 				>
-					回 到 首 页
+					回 到 订 单 页 面
 				</tui-button>
 			</view>
 		</view>
@@ -53,7 +53,10 @@ export default {
 	methods: {
 		handelClickBack() {
 			this.$switchTab('/pages/index/index')
-		}
+		},
+		handelBackOrder() {
+			this.$switchTab('/pages/order/order')
+		},
 	}
 }
 </script>

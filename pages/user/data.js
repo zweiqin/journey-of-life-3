@@ -184,6 +184,12 @@ export const shopServe = [
 		icon: require('../../static/images/new-user/menu-icon/shoukuanzhanghu.png'),
 		url: '/another-tf/another-user/receiving-account/index',
 		showRole: ['shop', 'merchantStaff']
+	},
+	{
+		name: '商家收款码',
+		icon: require('../../static/images/new-user/menu-icon/shangjiashoukuanma.png'),
+		url: '/another-tf/another-user/collection-code/index',
+		showRole: ['shop', 'merchantStaff']
 	}
 ]
 

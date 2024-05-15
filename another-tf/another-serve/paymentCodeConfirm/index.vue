@@ -9,7 +9,10 @@
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30rpx 218rpx;">
-			<ATFOrderAddressSelect v-if="!userAddressInfo.receiveId" :data="userAddressInfo" margin="20rpx 0 0"></ATFOrderAddressSelect>
+			<ATFOrderAddressSelect
+				v-if="settlement.shops && settlement.shops.length && !userAddressInfo.receiveId"
+				:data="userAddressInfo" margin="20rpx 0 0"
+			></ATFOrderAddressSelect>
 
 			<view style="margin-top: 20rpx;">
 				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" detail-radius="20rpx 20rpx 0 0" is-show-shop-detail>
@@ -111,12 +114,18 @@
 				付款
 			</tui-button>
 		</view>
-		<tui-digital-keyboard
-			:show="isShowDigitalKeyboard" button-background="#07c160"
-			@confirm="handleConfirmKeyboard"
-			@click="(e) => priceInputValue[settlement.shops[shopPriceIndex].shopId] = `${priceInputValue[settlement.shops[shopPriceIndex].shopId]}${e.value}`"
-			@backspace="priceInputValue[settlement.shops[shopPriceIndex].shopId] = String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).substring(0, String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).length - 1)"
-		></tui-digital-keyboard>
+		<view>
+			<view
+				v-if="isShowDigitalKeyboard"
+				style="position: absolute;top: 0;bottom: 0;z-index: 2;width: 100vw;height: 100vh;background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(255, 255, 255, 0.01) 15%, rgba(255, 255, 255, 0.01) 25%, rgba(0, 0, 0, 0.6) 100%);"
+			></view>
+			<tui-digital-keyboard
+				:show="isShowDigitalKeyboard" button-background="#07c160"
+				@confirm="handleConfirmKeyboard"
+				@click="(e) => priceInputValue[settlement.shops[shopPriceIndex].shopId] = `${priceInputValue[settlement.shops[shopPriceIndex].shopId]}${e.value}`"
+				@backspace="priceInputValue[settlement.shops[shopPriceIndex].shopId] = String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).substring(0, String(priceInputValue[settlement.shops[shopPriceIndex].shopId]).length - 1)"
+			></tui-digital-keyboard>
+		</view>
 	</view>
 </template>
 
@@ -453,6 +462,7 @@ export default {
 
 <style lang="less" scoped>
 .payment-code-confirm-container {
+	position: relative;
 	min-height: 100vh;
 	background-color: #f0f0f0;
 	box-sizing: border-box;

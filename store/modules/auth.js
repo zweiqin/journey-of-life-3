@@ -42,6 +42,7 @@ export default {
 		phoneLoginRegisterAction({ state, commit, dispatch }, { isAfter, loginData } = { loginData: {} }) {
 			return new Promise((resolve, reject) => {
 				uni.showLoading({ mask: true })
+				// if (loginData.type) loginData.type = Encrypt(loginData.type)
 				if (loginData.phone) loginData.phone = Encrypt(loginData.phone)
 				if (loginData.password) loginData.password = Encrypt(loginData.password)
 				if (loginData.verificationCode) loginData.verificationCode = Encrypt(loginData.verificationCode)
