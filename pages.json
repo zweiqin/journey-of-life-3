@@ -2119,6 +2119,12 @@
           }
         },
         {
+          "path": "another-user/collection-code/collection-payment-code",
+          "style": {
+            "navigationBarTitleText": "商家收款"
+          }
+        },
+        {
           "path": "another-user/shop-statistics/index",
           "style": {
             "navigationBarTitleText": "商家统计"

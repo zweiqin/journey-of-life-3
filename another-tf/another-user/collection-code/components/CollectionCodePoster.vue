@@ -3,9 +3,9 @@
 		<view class="poster-container">
 			<view style="max-height: 75vh;overflow-y: auto;">
 				<image v-show="posterImage" class="poster-iamge" :src="posterImage" mode="widthFix" />
-				<l-painter v-show="!posterImage" ref="painter" is-canvas-to-temp-file-path @done="handlePainterSuccess">
+				<l-painter v-show="!posterImage" ref="painter" is-canvas-to-temp-file-path @done="isGenerate ? handleGenerateSuccess() : handlePainterSuccess()">
 					<l-painter-view css="text-align: center;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;">
-						<l-painter-view css="padding: 48rpx 0 24rpx 0;background-color: #ef530e;">
+						<l-painter-view css="padding: 42rpx 0 24rpx 0;background-color: #ef530e;">
 							<l-painter-view>
 								<l-painter-text
 									text="扫 码 消 费 有 补 贴"
@@ -13,7 +13,7 @@
 								/>
 							</l-painter-view>
 							<l-painter-view
-								css="position: relative;width: 420rpx;height: 420rpx;margin: 42rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
+								css="position: relative;width: 408rpx;height: 408rpx;margin: 36rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
 							>
 								<l-painter-view
 									css="position: absolute;left: 0;top: 0;width: 100%;height: 100%;box-sizing: border-box;"
@@ -30,7 +30,7 @@
 							</l-painter-view>
 						</l-painter-view>
 
-						<l-painter-view css="padding: 32rpx 0 38rpx 0;">
+						<l-painter-view css="padding: 30rpx 0 34rpx 0;">
 							<l-painter-text
 								:text="`${shopName}${shopBrief ? `（${shopBrief}）` : ''}`"
 								css="font-size: 26rpx;font-weight: bold;"
@@ -68,7 +68,8 @@ export default {
 	name: 'CollectionCodePoster',
 	data() {
 		return {
-			styles: Object.freeze({
+			isGenerate: false,
+			styles: {
 				'position': 'fixed',
 				'bottom': 0,
 				'top': 0,
@@ -79,19 +80,58 @@ export default {
 				'justify-content': 'center',
 				'align-items': 'flex-start',
 				'padding-top': '7vh',
-				'background': 'rgba(0, 0, 0, 0.6)'
+				'background': 'rgba(0, 0, 0, 0.6)',
+				'opacity': '1'
 				// 'pointer-events': 'visible'
-			}),
+			},
 			posterImage: '',
 			popupVisible: false,
 			shopName: '',
 			shopBrief: '',
-			shareCode: ''
+			shareCode: '',
+			handleGenerateSuccess: () => {}
 		}
 	},
 
 	methods: {
+		handleGeneratePic({ shopName, shopBrief, shareCode }) {
+			uni.showLoading()
+			return new Promise((resolve, reject) => {
+				this.handleGenerateSuccess = () => {
+					this.$nextTick(() => {
+						this.$refs.painter.canvasToTempFilePathSync({
+							fileType: 'jpg',
+							pathType: 'url',
+							quality: 1,
+							success: (res) => {
+								this.popupVisible = false
+								uni.hideLoading()
+								resolve(res.tempFilePath)
+							},
+							fail: (err) => {
+								this.popupVisible = false
+								uni.hideLoading()
+								reject(err)
+							}
+						})
+					})
+				}
+				this.isGenerate = true
+				this.styles.background = 'rgba(0, 0, 0, 0)'
+				this.styles.opacity = '0'
+				this.popupVisible = true
+				this.posterImage = ''
+				this.shopName = shopName
+				this.shopBrief = shopBrief
+				this.shareCode = shareCode
+				this.$forceUpdate()
+			})
+		},
+
 		show({ shopName, shopBrief, shareCode }) {
+			this.isGenerate = false
+			this.styles.background = 'rgba(0, 0, 0, 0.6)'
+			this.styles.opacity = '1'
 			this.posterImage = ''
 			this.shopName = shopName
 			this.shopBrief = shopBrief
@@ -164,24 +204,24 @@ export default {
 
 <style lang="less" scoped>
 .poster-container {
-	width: 670upx;
+	width: 524rpx;
 	text-align: center;
-	border-radius: 32upx;
+	border-radius: 32rpx;
 	box-sizing: border-box;
 
 	.uni-btn {
 		width: 80%;
-		height: 60upx;
-		font-size: 28upx;
-		line-height: 60upx;
+		height: 60rpx;
+		font-size: 28rpx;
+		line-height: 60rpx;
 		border-radius: 100px;
 		background-color: #fff;
-		margin: 16upx 0;
+		margin: 16rpx 0;
 	}
 
 	.poster-iamge {
-		width: 670upx;
-		border-radius: 32upx;
+		width: 524rpx;
+		border-radius: 32rpx;
 	}
 }
 

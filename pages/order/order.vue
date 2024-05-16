@@ -4,7 +4,7 @@
 		<view v-if="$store.getters.userInfo.buyerUserId" class="my-order-container">
 			<OrderHeader
 				ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
-				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList"
+				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode($event, true)" @search="handleSearchCommunityOrderList"
 			>
 			</OrderHeader>
 
@@ -261,18 +261,26 @@ export default {
 		}
 	},
 
-	onShow() {
+	onLoad(options) {
+		if (options.type) {
+			this.handleChangeOrderMode(options.type)
+		} else if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
+			this.handleChangeOrderMode(uni.getStorageSync(T_PAY_ORDER).type)
+		}
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
 		this.userId = uni.getStorageSync(USER_ID) || ''
+	},
+
+	onShow() {
 		this.$nextTick(() => {
 			this.getOrderList()
 		})
 	},
 
 	methods: {
-		handleChangeOrderMode(mode) {
+		handleChangeOrderMode(mode, isGetData = false) {
 			if (mode === this.currentOrderMode) return
 			switch (mode) {
 				case 'community':
@@ -298,7 +306,7 @@ export default {
 					this.currentStatus = 0
 				}
 				this.isShowSubNav = null
-				this.getOrderList()
+				isGetData && this.getOrderList()
 			})
 		},
 

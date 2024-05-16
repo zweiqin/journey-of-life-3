@@ -747,7 +747,8 @@ export const resolveSubmitOrder = async (params = {}) => {
 		updatePlatformBeeCurrencySaveBeeApi({
 			orderId: res.data.orderId
 		})
-		await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1)
+		// type订单类型1-父订单2-子订单
+		await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
 	} catch (e) {
 		uni.showToast({ title: `${e.message}-${e.errorData}`, icon: 'none' })
 	} finally {

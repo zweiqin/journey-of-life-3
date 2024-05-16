@@ -40,10 +40,12 @@ export default {
 	components: {},
 	data() {
 		return {
-			state: ''
+			state: '',
+			orderType: '',
 		}
 	},
 	onLoad(options) {
+		if (uni.getStorageSync(T_PAY_ORDER)) this.orderType = uni.getStorageSync(T_PAY_ORDER).type
 		uni.removeStorageSync(T_PAY_ORDER)
 		console.log(options.state)
 		this.state = options.state || 'success'
@@ -55,7 +57,7 @@ export default {
 			this.$switchTab('/pages/index/index')
 		},
 		handelBackOrder() {
-			this.$switchTab('/pages/order/order')
+			this.$switchTab(`/pages/index/index?type=${this.orderType}`)
 		},
 	}
 }

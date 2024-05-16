@@ -74,7 +74,7 @@
 
 		<view class="list">
 			<view v-if="fansShowList.length" class="list-container">
-				<FansPane v-for="item in fansShowList" :key="item.id" :fans-info="item" @view="handleViewFans"></FansPane>
+				<FansPane v-for="(item, index) in fansShowList" :key="index" :fans-info="item" @view="handleViewFans"></FansPane>
 			</view>
 			<view style="padding-bottom: 45upx;">
 				<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
@@ -97,7 +97,7 @@
 						@click="subFansListVisible = false"
 					></tui-icon>
 				</view>
-				<FansPane v-for="item in subFansInfo.paramLists" :key="item.id" :fans-info="item"></FansPane>
+				<FansPane v-for="(item, index) in subFansInfo.paramLists" :key="index" :fans-info="item"></FansPane>
 			</view>
 		</tui-bottom-popup>
 	</view>

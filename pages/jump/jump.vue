@@ -1,23 +1,54 @@
 <template>
 	<view class="jump-container">
-		<view v-if="viewType === 'verification'" style="padding: 44upx;">
+		<view v-if="viewType === 'verification'" style="padding: 44rpx;">
 			<JHeader tabbar="/pages/user/user" width="50" height="50" title="订单核销"></JHeader>
-			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40upx;">
+			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40rpx;">
 				<ATFOrderInfo :data="orderInfo"></ATFOrderInfo>
 			</view>
-			<view style="margin-top: 50upx;">
+			<view style="margin-top: 50rpx;">
 				<tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input>
 			</view>
-			<view>
-				<tui-button
-					margin="20upx 0 0 auto" type="green" width="260rpx" shape="circle"
-					@click="handleVerification()"
-				>
-					确认核销
-				</tui-button>
+			<view style="display: flex;justify-content: flex-end;align-items: center;margin: 20rpx 0 0;">
+				<view style="flex: 1;">
+					<tui-button
+						v-if="orderInfo.orderId"
+						margin="0 auto" type="warning" width="260rpx" shape="circle"
+						@click="go(`/another-tf/another-user/collection-code/collection-payment-code?collageId=${orderInfo.collageId}&money=${orderInfo.money}&orderId=${orderInfo.orderId}`)"
+					>
+						商家收款
+					</tui-button>
+				</view>
+				<view style="flex: 1;">
+					<tui-button
+						margin="0 auto" type="green" width="260rpx" shape="circle"
+						@click="handleVerification()"
+					>
+						确认核销
+					</tui-button>
+				</view>
 			</view>
 		</view>
-		<view v-else style="padding: 46upx;">
+		<view v-else-if="viewType === 'collection'" style="min-height: 100vh;background-color: #f0f0f0;" class="type-collection">
+			<view>
+				<image style="width: 100%;" :src="common.seamingImgUrl('1715843092164-付款页面（初始页面）.png')" mode="widthFix" />
+			</view>
+			<tui-modal show custom :button="[]" width="74%" :mask-closable="false">
+				<view>
+					<view style="text-align: center;">提示</view>
+					<view style="margin-top: 40rpx;font-size: 30rpx;color: #767676;">您未登录团蜂平台，请先登录！</view>
+					<view class="operation-btn" style="margin-top: 34rpx;text-align: center;">
+						<tui-button
+							type="warning" :size="30" width="222rpx" height="90rpx"
+							margin="0 auto"
+							@click="$redirectTo('/pages/login/login')"
+						>
+							去登录
+						</tui-button>
+					</view>
+				</view>
+			</tui-modal>
+		</view>
+		<view v-else style="padding: 46rpx;">
 			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
 		</view>
 	</view>
@@ -86,9 +117,15 @@ export default {
 	 * 生命周期函数--监听页面加载
 	 */
 
+	// eslint-disable-next-line complexity
 	onLoad(options) {
 		if (options.type) uni.setStorageSync(T_NEW_BIND_TYPE, options.type) || uni.setStorageSync(T_NEW_BIND_CODE, options.code || '') || uni.setStorageSync(T_NEW_BIND_ID, options.userId || '') // 有绑定id就进行存储，以防下面没登录跳到登录页
-		if (!getStorageKeyToken()) return
+		if (((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'collection') && !getStorageKeyToken({ isShowModal: false })) {
+			this.viewType = 'collection'
+			return
+		} else if (!getStorageKeyToken({ isShowisRedirectModal: true })) {
+			return
+		}
 		this.userId = getUserId() || ''
 		if (this.userId && !options.type && uni.getStorageSync(T_NEW_BIND_TYPE)) { // 如果原先有绑定id，例如注册/重新登陆了然后跳回来（options没携带绑定id），则是存储里的绑定id
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
@@ -194,7 +231,7 @@ export default {
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'toAnotherTFSettle') {
-				const storageKeyToken = getStorageKeyToken()
+				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
@@ -218,7 +255,7 @@ export default {
 				// 	.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` }) }, 300)
 			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
-				const storageKeyToken = getStorageKeyToken()
+				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
@@ -298,5 +335,16 @@ export default {
 .jump-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+	.type-collection {
+		.operation-btn {
+			/deep/ .tui-btn {
+				border-radius: 10rpx;
+			}
+
+			/deep/ .tui-btn-warning {
+				background-color: #ef530e !important;
+			}
+		}
+	}
 }
 </style>

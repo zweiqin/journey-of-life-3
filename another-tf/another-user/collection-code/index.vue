@@ -54,7 +54,8 @@
 				<view>
 					<tui-button
 						type="gray" width="520rpx" height="90rpx" margin="40rpx auto 0"
-						bold @click="isShowExplain = false"
+						bold
+						@click="isShowExplain = false"
 					>
 						知 道 了
 					</tui-button>
@@ -63,12 +64,14 @@
 			<view v-else style="padding: 0 0 66rpx;">
 				<tui-button
 					type="black" width="220rpx" height="60rpx" margin="0 auto"
-					plain link bold @click="isShowExplain = true"
+					plain link bold
+					@click="isShowExplain = true"
 				>
 					收款码使用说明
 				</tui-button>
 			</view>
 		</view>
+		<tui-gallery :urls="galleryUrls" :show="isShowGallery" @hide="isShowGallery = false"></tui-gallery>
 
 		<CollectionCodePoster ref="refCollectionCodePoster"></CollectionCodePoster>
 	</view>
@@ -83,10 +86,10 @@ export default {
 	components: { CollectionCodePoster },
 	data() {
 		return {
-			createCode: '',
-			qrcodeUrl: '',
 			codePicUrl: '',
-			isShowExplain: false
+			isShowExplain: false,
+			galleryUrls: [ { src: '', desc: '' } ],
+			isShowGallery: false
 		}
 	},
 	onLoad() {
@@ -95,13 +98,9 @@ export default {
 
 	methods: {
 		getCode() {
-			uni.showLoading({
-				title: '生成中...'
-			})
+			uni.showLoading()
 			getPaymentGenerateCodeApi({ codeType: '1', state: '1' })
 				.then((res) => {
-					this.createCode = res.data.invitationCode || ''
-					this.qrcodeUrl = `xxx&code=`
 					this.codePicUrl = res.data.shopCode
 					uni.hideLoading()
 				})
@@ -110,11 +109,18 @@ export default {
 				})
 		},
 
-		handlePreviewImage(url) {
-			uni.previewImage({
-				urls: [ url ],
-				current: 0
+		async handlePreviewImage(url) {
+			const generateUrl = await this.$refs.refCollectionCodePoster.handleGeneratePic({
+				shopName: this.$store.state.auth.identityInfo.shopInfo.shopName,
+				shopBrief: this.$store.state.auth.identityInfo.shopInfo.shopBrief,
+				shareCode: this.codePicUrl
 			})
+			this.galleryUrls = [ { src: generateUrl, desc: '' } ]
+			this.isShowGallery = true
+			// uni.previewImage({
+			// 	urls: [ url ],
+			// 	current: 0
+			// })
 		},
 		handleShare() {
 			if (this.codePicUrl) {
@@ -149,6 +155,12 @@ export default {
 		/deep/ .tui-btn-gray {
 			background-color: #d8d8d8 !important;
 			color: #000000 !important;
+		}
+	}
+
+	/deep/ .tui-gallery {
+		.tui-gallery__info {
+			display: none;
 		}
 	}
 }

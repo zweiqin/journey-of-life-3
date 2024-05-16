@@ -116,17 +116,23 @@ export const getStorageUserId = () => {
  * @returns
  */
 
-export const getStorageKeyToken = () => {
+export const getStorageKeyToken = (params = {}) => {
+	const { isShowModal, isRedirect } = Object.assign({
+		isShowModal: true,
+		isRedirect: false
+	}, params)
 	const userInfo = uni.getStorageSync(USER_INFO)
 	if (!userInfo || !userInfo.userId) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',
 			success(res) {
 				if (res.confirm) {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					if (isRedirect) {
+						uni.redirectTo({ url: '/pages/login/login' })
+					} else {
+						uni.navigateTo({ url: '/pages/login/login' })
+					}
 				} else if (res.cancel) {
 					// uni.navigateBack();
 				}
@@ -135,7 +141,7 @@ export const getStorageKeyToken = () => {
 		return
 	}
 	if (!userInfo || !userInfo.phone) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
 			content: '未绑定手机号码，是否去绑定？',
 			success(res) {
@@ -152,14 +158,16 @@ export const getStorageKeyToken = () => {
 	}
 	const storageKey = uni.getStorageSync(T_STORAGE_KEY)
 	if (!storageKey || !storageKey.token) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
 			content: '系统出错，请重新登陆',
 			success(res) {
 				if (res.confirm) {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					if (isRedirect) {
+						uni.redirectTo({ url: '/pages/login/login' })
+					} else {
+						uni.navigateTo({ url: '/pages/login/login' })
+					}
 				} else if (res.cancel) {
 					// uni.navigateBack();
 				}
