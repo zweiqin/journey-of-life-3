@@ -705,7 +705,8 @@ export const resolveOrderPackageData = (params = {}) => {
  */
 
 export const resolveSubmitOrder = async (params = {}) => {
-	const { settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice } = Object.assign({
+	const { isPayImmediately, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice } = Object.assign({
+		isPayImmediately: false,
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
 		skuItemMsgList: [],
@@ -719,40 +720,44 @@ export const resolveSubmitOrder = async (params = {}) => {
 		payInfo: {},
 		hasPrice: false
 	}, params)
-	// 检查提交表单
-	if (hasPrice && (totalPrice <= 0)) return uni.showToast({ title: '支付金额必须大于零', icon: 'none' })
-	if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
-	if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
-	// 处理表单
-	const orderPackageDataObj = resolveOrderPackageData({
-		settlement,
-		userAddressInfo,
-		skuItemMsgList,
-		skuItemInfo,
-		selectedPlatformCoupon,
-		selectIntegral,
-		integralRatio,
-		totalPrice,
-		voucherObj,
-		otherInfo
-	})
-	uni.showLoading({ mask: true, title: '结算中...' })
-	try {
-		const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode })
-		// 下单成功处理埋点
-		addUserTrackReportDoPointerApi({
-			eventType: 3,
-			productIds: orderPackageDataObj.pointProductIds
+	if (isPayImmediately) {
+		await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '')
+	} else {
+		// 检查提交表单
+		if (hasPrice && (totalPrice <= 0)) return uni.showToast({ title: '支付金额必须大于零', icon: 'none' })
+		if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
+		if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
+		// 处理表单
+		const orderPackageDataObj = resolveOrderPackageData({
+			settlement,
+			userAddressInfo,
+			skuItemMsgList,
+			skuItemInfo,
+			selectedPlatformCoupon,
+			selectIntegral,
+			integralRatio,
+			totalPrice,
+			voucherObj,
+			otherInfo
 		})
-		updatePlatformBeeCurrencySaveBeeApi({
-			orderId: res.data.orderId
-		})
-		// type订单类型1-父订单2-子订单
-		await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
-	} catch (e) {
-		uni.showToast({ title: `${e.message}-${e.errorData}`, icon: 'none' })
-	} finally {
-		uni.hideLoading()
+		uni.showLoading({ mask: true, title: '结算中...' })
+		try {
+			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode })
+			// 下单成功处理埋点
+			addUserTrackReportDoPointerApi({
+				eventType: 3,
+				productIds: orderPackageDataObj.pointProductIds
+			})
+			updatePlatformBeeCurrencySaveBeeApi({
+				orderId: res.data.orderId
+			})
+			// type订单类型1-父订单2-子订单
+			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
+		} catch (e) {
+			uni.showToast({ title: `${e.message}-${e.errorData}`, icon: 'none' })
+		} finally {
+			uni.hideLoading()
+		}
 	}
 }
 
@@ -923,6 +928,7 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 		if (res.data.shops.some((i) => i.receiveNotMatch)) uni.showToast({ title: '当前地址不支持配送，请参考红色字提示', icon: 'none' }) // 根据地址判断是否能下单
 		settlement = res.data
 		isSuccess = true
+		// console.log(settlement)
 	})
 		.catch((e) => {
 			console.log(e)

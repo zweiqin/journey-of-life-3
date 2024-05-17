@@ -102,10 +102,10 @@
 							<view style="flex: 1;display: flex;align-items: center;">
 								<view
 									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-									:style="{ backgroundColor: [2, 4].includes(item.type) ? '#ef530e' : '#208f57' }"
+									:style="{ backgroundColor: [2, 4, 7].includes(item.type) ? '#ef530e' : '#208f57' }"
 								>
 									<text
-										v-if="([ 2 ].includes(queryType) && [2, 4].includes(item.type)) || ([ 3 ].includes(queryType) && [ 4 ].includes(item.type))"
+										v-if="([ 2 ].includes(queryType) && [2, 4].includes(item.type)) || ([ 3 ].includes(queryType) && [4, 7].includes(item.type))"
 									>
 										支
 									</text>
@@ -144,7 +144,7 @@
 									<text>代金券：</text>
 									<text>
 										{{ ([ 2 ].includes(queryType) && [2, 4].includes(item.type)) ||
-											([ 3 ].includes(queryType) && [ 4 ].includes(item.type)) ? '-' : '+' }}
+											([ 3 ].includes(queryType) && [4, 7].includes(item.type)) ? '-' : '+' }}
 									</text>
 									<text>{{ item.number }}</text>
 								</view>

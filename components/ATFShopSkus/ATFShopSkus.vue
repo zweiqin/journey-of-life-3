@@ -26,6 +26,26 @@
 							</view>
 						</view>
 					</view>
+					<view style="display: flex;flex-wrap: wrap;padding: 4rpx 0;">
+						<view
+							v-if="brandDetail.isBeeCoin === 1"
+							style="width: fit-content;padding: 2rpx 6rpx;margin: 8rpx 6rpx 0 0;border: 1rpx solid rgba(226, 71, 71, 0.5);border-radius: 12rpx;font-size: 24rpx;color: #E24747;"
+						>
+							支持交易金
+						</view>
+						<view
+							v-if="brandDetail.isVoucher"
+							style="width: fit-content;padding: 2rpx 6rpx;margin: 8rpx 6rpx 0 0;border: 1rpx solid rgba(226, 71, 71, 0.5);border-radius: 12rpx;font-size: 24rpx;color: #E24747;"
+						>
+							支持代金券
+						</view>
+						<view
+							v-if="brandDetail.voucherReturn"
+							style="width: fit-content;padding: 2rpx 6rpx;margin: 8rpx 6rpx 0 0;border: 1rpx solid rgba(226, 71, 71, 0.5);border-radius: 12rpx;font-size: 24rpx;color: #E24747;"
+						>
+							补贴代金券{{ brandDetail.voucherReturn || 0 }}%
+						</view>
+					</view>
 				</view>
 				<view v-else>
 					<view
@@ -47,7 +67,7 @@
 				<view v-if="isShowSkus">
 					<view>
 						<view
-							v-for="skuItem in shopData.skus" :key="skuItem.productId"
+							v-for="skuItem in shopData.skus" :key="skuItem.skuId"
 							style="display: flex;align-items: center;padding: 20rpx 0;"
 						>
 							<image
@@ -162,6 +182,7 @@ export default {
 			})
 				.then((res) => {
 					this.brandDetail = res.data || {}
+					this.$emit('get-detail', JSON.parse(JSON.stringify(res.data)))
 				})
 		}
 	},

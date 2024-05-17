@@ -87,10 +87,10 @@
 						<view style="flex: 1;display: flex;align-items: center;">
 							<view
 								style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-								:style="{ backgroundColor: [5, 7].includes(item.type) ? '#208f57' : [1, 2, 3, 4, 6].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
+								:style="{ backgroundColor: [5, 7, 6].includes(item.type) ? '#208f57' : [1, 2, 3, 4].includes(item.type) ? '#ef530e' : '#d8d8d8' }"
 							>
-								<text v-if="[5, 7].includes(item.type)">支</text>
-								<text v-else-if="[1, 2, 3, 4, 6].includes(item.type)">收</text>
+								<text v-if="[5, 7, 6].includes(item.type)">支</text>
+								<text v-else-if="[1, 2, 3, 4].includes(item.type)">收</text>
 								<text v-else>--</text>
 							</view>
 							<view style="margin-left: 14rpx;">
@@ -114,7 +114,7 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ [5, 7].includes(item.type) ? '-' : [1, 2, 3, 4, 6].includes(item.type) ? '+' : '？' }}{{ Number.parseFloat(Number(item.amount || 0)).toFixed(2) }}元
+								{{ [5, 7, 6].includes(item.type) ? '-' : [1, 2, 3, 4].includes(item.type) ? '+' : '？' }}{{ Number.parseFloat(Number(item.amount || 0)).toFixed(2) }}元
 							</view>
 							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>订单总额：</text>
@@ -170,7 +170,7 @@
 <script>
 import { getCommissionDeatilListApi } from '../../../api/anotherTFInterface'
 export default {
-	name: 'VoucherRecord',
+	name: 'CommissionRecord',
 	components: {
 	},
 	data() {

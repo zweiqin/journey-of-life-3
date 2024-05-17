@@ -6,10 +6,10 @@
 				<view style="display: flex;align-items: center;flex-direction: column;">
 					<view
 						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-						:style="{ backgroundColor: [2, 4].includes(voucherRecordData.type) ? '#ef530e' : '#208f57' }"
+						:style="{ backgroundColor: [2, 4, 7].includes(voucherRecordData.type) ? '#ef530e' : '#208f57' }"
 					>
 						<text
-							v-if="([ 2 ].includes(fromOrigin) && [2, 4].includes(voucherRecordData.type)) || ([ 3 ].includes(fromOrigin) && [ 4 ].includes(voucherRecordData.type))"
+							v-if="([ 2 ].includes(fromOrigin) && [2, 4].includes(voucherRecordData.type)) || ([ 3 ].includes(fromOrigin) && [4, 7].includes(voucherRecordData.type))"
 						>
 							支
 						</text>
@@ -29,7 +29,7 @@
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
 						{{ ([ 2 ].includes(fromOrigin) && [2, 4].includes(voucherRecordData.type)) ||
-							([ 3 ].includes(fromOrigin) && [ 4 ].includes(voucherRecordData.type)) ? '-' : '+' }}
+							([ 3 ].includes(fromOrigin) && [4, 7].includes(voucherRecordData.type)) ? '-' : '+' }}
 						{{ voucherRecordData.number }}代金券
 					</view>
 				</view>

@@ -6,10 +6,10 @@
 				<view style="display: flex;align-items: center;flex-direction: column;">
 					<view
 						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;"
-						:style="{ backgroundColor: [5, 7].includes(commissionRecordData.type) ? '#208f57' : [1, 2, 3, 4, 6].includes(commissionRecordData.type) ? '#ef530e' : '#d8d8d8' }"
+						:style="{ backgroundColor: [5, 7, 6].includes(commissionRecordData.type) ? '#208f57' : [1, 2, 3, 4].includes(commissionRecordData.type) ? '#ef530e' : '#d8d8d8' }"
 					>
-						<text v-if="[5, 7].includes(commissionRecordData.type)">支</text>
-						<text v-else-if="[1, 2, 3, 4, 6].includes(commissionRecordData.type)">收</text>
+						<text v-if="[5, 7, 6].includes(commissionRecordData.type)">支</text>
+						<text v-else-if="[1, 2, 3, 4].includes(commissionRecordData.type)">收</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
@@ -23,8 +23,8 @@
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
-						{{ [5, 7].includes(commissionRecordData.type) ? '-'
-							: [1, 2, 3, 4, 6].includes(commissionRecordData.type) ? '+' : '？' }}
+						{{ [5, 7, 6].includes(commissionRecordData.type) ? '-'
+							: [1, 2, 3, 4].includes(commissionRecordData.type) ? '+' : '？' }}
 						{{ commissionRecordData.amount }}元
 					</view>
 				</view>
@@ -74,7 +74,7 @@
 <script>
 
 export default {
-	name: 'VoucherRecordDetail',
+	name: 'CommissionRecordDetail',
 	components: {
 	},
 	data() {

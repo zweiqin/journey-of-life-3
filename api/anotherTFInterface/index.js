@@ -500,6 +500,9 @@ export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderV
 // 核销订单
 export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST')
 
+// 检查支付完成后核销订单
+export const updateChkPaidAndWriteApi = (data) => AnotherTFRequest('/order/chkPaidAndWrite', data, 'POST')
+
 // 商家订单管理查询
 export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST')
 

@@ -11,26 +11,56 @@
 			<view style="display: flex;justify-content: flex-end;align-items: center;margin: 20rpx 0 0;">
 				<view style="flex: 1;">
 					<tui-button
-						v-if="orderInfo.orderId"
+						v-if="orderInfo.orderId && [ 8 ].includes(orderInfo.state)"
 						margin="0 auto" type="warning" width="260rpx" shape="circle"
-						@click="go(`/another-tf/another-user/collection-code/collection-payment-code?collageId=${orderInfo.collageId}&money=${orderInfo.money}&orderId=${orderInfo.orderId}`)"
+						@click="go(`/another-tf/another-user/collection-code/collection-payment-code?collageId=${orderInfo.collageId}&money=${orderInfo.price}&orderId=${orderInfo.orderId}`)"
 					>
 						商家收款
 					</tui-button>
 				</view>
 				<view style="flex: 1;">
 					<tui-button
+						v-if="[ 9 ].includes(orderInfo.state)"
 						margin="0 auto" type="green" width="260rpx" shape="circle"
 						@click="handleVerification()"
 					>
 						确认核销
+					</tui-button>
+					<tui-button
+						v-else-if="isOrderVerification" margin="0 auto" type="green" width="260rpx"
+						plain link
+					>
+						已自动核销
+					</tui-button>
+					<tui-button
+						v-else margin="0 auto" type="green" width="260rpx"
+						plain link
+					>
+						等待付款
 					</tui-button>
 				</view>
 			</view>
 		</view>
 		<view v-else-if="viewType === 'collection'" style="min-height: 100vh;background-color: #f0f0f0;" class="type-collection">
 			<view>
-				<image style="width: 100%;" :src="common.seamingImgUrl('1715843092164-付款页面（初始页面）.png')" mode="widthFix" />
+				<view
+					style="display: flex;align-items: center;justify-content: space-between;padding: 26rpx 20rpx 10rpx;background-color: #f5f5f5;"
+				>
+					<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
+					</BeeIcon>
+					<text style="flex: 1;margin-left: -40upx;text-align: center;">付款页面</text>
+				</view>
+				<view style="padding: 0 30rpx;">
+					<view style="margin-top: 20rpx;">
+						<ATFShopSkus
+							v-if="code"
+							:shop-data="{ shopId: code.split('~')[0].split('=')[1] }"
+							detail-radius="20rpx 20rpx 0 0" is-show-shop-detail
+						>
+						</ATFShopSkus>
+					</view>
+				</view>
+				<image style="width: 100%;" :src="common.seamingImgUrl('1715937397802-付款页面（初始页面）（1）.png')" mode="widthFix" />
 			</view>
 			<tui-modal show custom :button="[]" width="74%" :mask-closable="false">
 				<view>
@@ -62,6 +92,7 @@ import {
 	bindDistributorSalesCustomerApi,
 	getOrderDetailApi,
 	updateSetHxCodeApi,
+	updateChkPaidAndWriteApi,
 	bindPlatformRelationshipCodeApi,
 	bindPlatformRelationshipShopApi,
 	bindPlatformInfoCodeBindingApi,
@@ -109,7 +140,9 @@ export default {
 			viewType: '',
 			// verification的情况
 			orderId: '',
-			orderInfo: {}
+			orderInfo: {},
+			isOrderVerification: false,
+			verificationTicker: null
 		}
 	},
 
@@ -122,6 +155,7 @@ export default {
 		if (options.type) uni.setStorageSync(T_NEW_BIND_TYPE, options.type) || uni.setStorageSync(T_NEW_BIND_CODE, options.code || '') || uni.setStorageSync(T_NEW_BIND_ID, options.userId || '') // 有绑定id就进行存储，以防下面没登录跳到登录页
 		if (((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'collection') && !getStorageKeyToken({ isShowModal: false })) {
 			this.viewType = 'collection'
+			this.code = options.code || uni.getStorageSync(T_NEW_BIND_CODE) || ''
 			return
 		} else if (!getStorageKeyToken({ isShowisRedirectModal: true })) {
 			return
@@ -165,7 +199,15 @@ export default {
 	 * 生命周期函数--监听页面卸载
 	 */
 
-	onUnload() { },
+	onUnload() {
+		if (this.type === 'nothing') {
+		} else if (this.type === 'verification') {
+			if (this.verificationTicker) {
+				clearInterval(this.verificationTicker)
+				this.verificationTicker = null
+			}
+		}
+	},
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
@@ -227,6 +269,21 @@ export default {
 					noticeId: 0
 				}).then(({ data }) => {
 					this.orderInfo = data
+					if ([ 8 ].includes(data.state)) {
+						this.verificationTicker = setInterval(() => {
+							updateChkPaidAndWriteApi({ orderId: this.orderId })
+								.then((res) => {
+									if (res.json) {
+										if (JSON.parse(res.json).paid) {
+											clearInterval(this.verificationTicker)
+											this.verificationTicker = null
+											this.$showToast('自动核销成功', 'success')
+											this.isOrderVerification = true
+										}
+									}
+								})
+						}, 3000)
+					}
 				})
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)

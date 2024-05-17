@@ -138,8 +138,8 @@ export default {
 						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingFranchisee&code=`
 					})
 			} else if (type === 'shopInvitation') {
-				this.createCode = `${this.$store.state.auth.identityInfo.shopInfo.shopId || ''}~${this.userInfo.phone}`
-				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingShop&code=`
+				this.createCode = `${this.userInfo.phone}`
+				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingShop&code=${this.$store.state.auth.identityInfo.shopInfo.shopId || ''}~`
 				// this.$refs.uqrcode.make({})
 			} else if (type === 'teamMembersInvitation') {
 				getUserInfoCodeApi({

@@ -1,56 +1,18 @@
 <template>
-	<view class="user-invitation-container">
-		<JHeader title="商家收款" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;">
-			<template #ftFn>
-				<text style="padding-right: 18upx;font-size: 26upx;color: #2A2B23;">规则</text>
-			</template>
-		</JHeader>
-		<view>
-			<view v-if="codePicList && codePicList.length" style="padding: 40upx 0 0;">
-				<swiper
-					:current="1" previous-margin="150rpx" next-margin="150rpx" style="height: 698upx;"
-					@change="handleSwiperChange"
-				>
-					<swiper-item v-for="(item, index) in codePicList" :key="index">
-						<view
-							style="display: flex;align-items: center;width: 100%;height: 100%;"
-							:style="{ justifyContent: index === currentSwiper - 1 ? 'flex-end' : index === currentSwiper + 1 ? 'flex-start' : 'center' }"
-						>
-							<view style="position: relative;display: flex;">
-								<image
-									:src="item" style="border-radius: 20upx;" mode="widthFix"
-									:style="{ width: index === currentSwiper ? '428upx' : '350upx' }"
-								></image>
-								<view
-									v-if="index === currentSwiper"
-									style="position: absolute;left: 0;top: 0;display: flex;flex-direction: column;align-items: center;width: 100%;"
-								>
-									<view style="padding-top: 4upx;display: flex;align-items: center;font-size: 24upx;">
-										<BeeIcon
-											:size="18" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"
-											style="border-radius: 50%;overflow: hidden;"
-										></BeeIcon>
-										<view style="margin-left: 20upx;color: #222229;">
-											ID：{{ $store.getters.userInfo.buyerUserId || '--' }}
-										</view>
-									</view>
-									<view style="margin-top: 388upx;font-size: 22upx;color: #ffffff;">邀请码：{{ createCode || '--' }}</view>
-									<image
-										:src="codePicUrl" style="width: 36%;margin-top: 20upx;" mode="widthFix"
-										@click="handlePreviewImage(codePicUrl)"
-									/>
-								</view>
-							</view>
-						</view>
-					</swiper-item>
-				</swiper>
-			</view>
+	<view class="collection-payment-code-container">
+		<JHeader title="商家收款" width="50" height="50"></JHeader>
+		<view style="padding: 40upx 0 0;text-align: center;">
+			<view>临时收款码</view>
+			<image
+				:src="codePicUrl" style="width: 400rpx;margin-top: 20upx;" mode="widthFix"
+				@click="handlePreviewImage(codePicUrl)"
+			/>
 		</view>
 
 		<!-- 生成二维码 -->
 		<view>
 			<uqrcode
-				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl + createCode"
+				ref="uqrcode" class="generate-code-container" canvas-id="qrcode" :value="qrcodeUrl"
 				@complete="handleCompleteCode"
 			></uqrcode>
 		</view>
@@ -59,24 +21,24 @@
 
 <script>
 import { A_TF_MAIN } from '../../../config'
-import { getPlatformRelationshipCodeApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CollectionPaymentCode',
 	data() {
 		return {
-			rootUrl: A_TF_MAIN,
-			createCode: '',
+			collageId: '',
+			money: '',
+			orderId: '',
+			shopType: '',
 			qrcodeUrl: '',
-			codePicUrl: '',
-			currentSwiper: 1,
-			codePicList: [require('../../../static/images/user/code/code-red.png'), require('../../../static/images/user/code/code-pink.png'), require('../../../static/images/user/code/code-yellow.png')]
+			codePicUrl: ''
 		}
 	},
 	onLoad(options) {
 		this.collageId = options.collageId || ''
 		this.money = options.money || ''
 		this.orderId = options.orderId || ''
+		this.shopType = options.shopType || ''
 		this.getCode()
 	},
 
@@ -85,11 +47,7 @@ export default {
 			uni.showLoading({
 				title: '生成中...'
 			})
-			getPlatformRelationshipCodeApi({})
-				.then((res) => {
-					this.createCode = res.data.invitationCode || ''
-					this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.$store.getters.userInfo.buyerUserId}&type=bindingUser&code=`
-				})
+			this.qrcodeUrl = `${A_TF_MAIN}/#/another-tf/another-serve/paymentCodeConfirm/index?orderId=${this.orderId}&money=${this.money}&collageId=${this.collageId}`
 		},
 		// 完成
 		handleCompleteCode(e) {
@@ -104,9 +62,6 @@ export default {
 			}
 		},
 
-		handleSwiperChange(e) {
-			this.currentSwiper = e.detail.current
-		},
 		handlePreviewImage(url) {
 			uni.previewImage({
 				urls: [ url ],
@@ -123,15 +78,21 @@ export default {
 	top: -10000upx;
 }
 
-.user-invitation-container {
+.collection-payment-code-container {
 	min-height: 100vh;
 	padding-bottom: 216upx;
 	background-color: #f4f4f4;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container .title {
-		font-size: 36upx;
-		color: #2A2B23;
+	/deep/ .j-header-container {
+		padding: 18rpx 0 16rpx;
+		background-color: #f5f5f5;
+
+		.title {
+			font-size: 36rpx;
+			color: #222229;
+			font-weight: normal;
+		}
 	}
 }
 </style>
