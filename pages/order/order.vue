@@ -262,8 +262,9 @@ export default {
 	},
 
 	onLoad(options) {
-		if (options.type) {
-			this.handleChangeOrderMode(options.type)
+		if (getApp().globalData.orderTypeShow) {
+			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
+			getApp().globalData.orderTypeShow = ''
 		} else if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
 			this.handleChangeOrderMode(uni.getStorageSync(T_PAY_ORDER).type)
 		}
@@ -536,7 +537,7 @@ export default {
 		},
 
 		async handleShopGoPay() {
-			await handleDoPay(this.payObj.payInfo, 1)
+			await handleDoPay(this.payObj.payInfo, 1, '')
 			this.payObj = {
 				showPayPopup: false,
 				pricePay: 0,

@@ -788,7 +788,7 @@ export default {
 				orderId: this.dataList.orderId,
 				type: 2,
 				...this.payInfo
-			}, 1)
+			}, 1, '')
 		},
 
 		// 打开客服

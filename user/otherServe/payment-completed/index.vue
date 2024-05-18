@@ -41,23 +41,21 @@ export default {
 	data() {
 		return {
 			state: '',
-			orderType: '',
 		}
 	},
 	onLoad(options) {
-		if (uni.getStorageSync(T_PAY_ORDER)) this.orderType = uni.getStorageSync(T_PAY_ORDER).type
+		if (uni.getStorageSync(T_PAY_ORDER)) getApp().globalData.orderTypeShow = uni.getStorageSync(T_PAY_ORDER).type
 		uni.removeStorageSync(T_PAY_ORDER)
-		console.log(options.state)
 		this.state = options.state || 'success'
 	},
 	mounted() {
 	},
 	methods: {
 		handelClickBack() {
-			this.$switchTab('/pages/index/index')
+			this.$switchTab('/pages/order/order')
 		},
 		handelBackOrder() {
-			this.$switchTab(`/pages/index/index?type=${this.orderType}`)
+			this.$switchTab('/pages/order/order')
 		},
 	}
 }

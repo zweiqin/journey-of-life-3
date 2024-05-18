@@ -100,6 +100,7 @@ import {
 } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
+import { handleDoPay } from '../../utils/payUtil'
 
 export default {
 	name: 'Jump',
@@ -324,6 +325,14 @@ export default {
 				const productIdStr = this.code.split('~')[1]
 				const skuIdStr = this.code.split('~')[2]
 				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
+			} else if (this.type === 'wvHuiShiBaoPayTurn') { // 惠市宝在小程序套壳环境的支付结果回传
+				await handleDoPay({
+					collageId: Number(this.code.split('~')[3]),
+					money: '',
+					orderId: Number(this.code.split('~')[2]),
+					paymentMode: Number(this.code.split('~')[6]),
+					orderSn: Number(this.code.split('~')[4])
+				}, Number(this.code.split('~')[1]), this.code.split('~')[5], { isSuccess: Number(this.code.split('~')[0]) })
 			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
 					.then(() => {

@@ -19,7 +19,8 @@
 			<view style="margin-top: 20rpx;">
 				<ATFShopSkus
 					v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item"
-					detail-radius="20rpx 20rpx 0 0" is-show-shop-detail @get-detail="(e) => brandDetail = e"
+					detail-radius="20rpx 20rpx 0 0" is-show-shop-detail
+					@get-detail="(e) => (brandDetailValue = { ...brandDetailValue, [item.shopId]: e })"
 				>
 					<template #operateBody="obj">
 						<view style="padding-top: 20rpx;">
@@ -97,11 +98,16 @@
 						代金券已抵扣￥{{ voucherObj.voucherTotalAll }}
 					</view>
 				</view>
-				<view v-if="Object.values(priceInputValue).some(i => Number(i) > 0)" style="display: flex;justify-content: flex-end;">
+				<view
+					v-if="Object.values(priceInputValue).some(i => Number(i) > 0) && Object.values(brandDetailValue).some(i => Number(i.voucherReturn) > 0)"
+					style="display: flex;justify-content: flex-end;"
+				>
 					<view
 						style="width: fit-content;margin: 18rpx 0 0;padding: 4rpx 12rpx;font-size: 26rpx;color: #ed5c1b;background-color: #d8d8d8;border-radius: 14rpx;"
 					>
-						赠送{{ Object.values(priceInputValue).reduce((total, value, index, arr) => total + Number(value), 0) * brandDetail.voucherReturn / 100 }}代金券
+						赠送{{ Number.parseFloat(Object.keys(priceInputValue).reduce((total, value, index, arr) => total +
+							(Number(priceInputValue[value]) * ((brandDetailValue[value] && brandDetailValue[value].voucherReturn / 100) ||
+								0)), 0)).toFixed(2) * 1 }}代金券
 					</view>
 				</view>
 			</view>
@@ -114,11 +120,11 @@
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					padding="8rpx 26rpx 6rpx" radius="24rpx" show :price-pay="totalPrice"
-					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:show-hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
+					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
+					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
+					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
+					:show-hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
+					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="(e) => payInfo = e"
 				>
 					<template #header="obj">
@@ -137,7 +143,7 @@
 				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
 				:size="28"
 				:disabled="settlement.shops.some(i => i.receiveNotMatch)"
-				@click="resolveSubmitOrder({ isPayImmediately: !!otherInfo.orderId, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice: true })"
+				@click="resolveSubmitOrder({ isPayImmediately: !!otherInfo.orderId, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice: true, shamPriceText: '请输入金额' })"
 			>
 				付款
 			</tui-button>
@@ -167,7 +173,7 @@ export default {
 	data() {
 		return {
 			// 店铺详情相关
-			brandDetail: { voucherReturn: 0 },
+			brandDetailValue: [], // [{ voucherReturn: 0 }]
 			// 商品详情相关
 			viewUpdate: '',
 			goodsDetail: {
@@ -414,7 +420,11 @@ export default {
 			this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
 		},
 		handleConfirmKeyboard(value, shopIndex) {
-			this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] = Number(this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId]) || ''
+			if (this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] === '0') {
+				this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] = 0
+			} else {
+				this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] = Number(this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId]) || ''
+			}
 			this.isShowDigitalKeyboard = false
 			this.handlePriceInput()
 		},

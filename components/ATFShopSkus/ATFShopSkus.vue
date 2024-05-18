@@ -33,12 +33,12 @@
 						>
 							支持交易金
 						</view>
-						<view
+						<!-- <view
 							v-if="brandDetail.isVoucher"
 							style="width: fit-content;padding: 2rpx 6rpx;margin: 8rpx 6rpx 0 0;border: 1rpx solid rgba(226, 71, 71, 0.5);border-radius: 12rpx;font-size: 24rpx;color: #E24747;"
-						>
+							>
 							支持代金券
-						</view>
+							</view> -->
 						<view
 							v-if="brandDetail.voucherReturn"
 							style="width: fit-content;padding: 2rpx 6rpx;margin: 8rpx 6rpx 0 0;border: 1rpx solid rgba(226, 71, 71, 0.5);border-radius: 12rpx;font-size: 24rpx;color: #E24747;"

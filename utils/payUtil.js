@@ -1,5 +1,6 @@
+import { A_TF_MAIN } from '../config'
 import { T_PAY_ORDER } from '../constant'
-import { gotoOrderAppPayApi, gotoOrderH5PayApi, gotoOrderPayApi, payOrderSuccessApi, getPayMiniProgramQueryApi } from '../api/anotherTFInterface'
+import { gotoOrderAppPayApi, gotoOrderH5PayApi, getSessionKeyAppApi, gotoOrderPayApi, payOrderSuccessApi, getPayMiniProgramQueryApi } from '../api/anotherTFInterface'
 import store from '../store'
 import { getUserId, isInWx, isH5InWebview } from '.'
 
@@ -397,9 +398,9 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 			console.log(e)
 			uni.showToast({ title: '支付失败', icon: 'none' })
 			setTimeout(() => {
-				if ([1, 2].includes(data.purchaseMode)) {
+				if ([1, 2].includes(payType)) {
 					uni.switchTab({ url: '/pages/order/order' })
-				} else if ([3, 4, 5].includes(data.purchaseMode)) {
+				} else if ([3, 4, 5].includes(payType)) {
 					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 				}
 			}, 2000)
@@ -451,9 +452,9 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
 			console.log(e)
 			uni.showToast({ title: '支付失败', icon: 'none' })
 			setTimeout(() => {
-				if ([1, 2].includes(data.purchaseMode)) {
+				if ([1, 2].includes(payType)) {
 					uni.switchTab({ url: '/pages/order/order' })
-				} else if ([3, 4, 5].includes(data.purchaseMode)) {
+				} else if ([3, 4, 5].includes(payType)) {
 					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 				}
 			}, 2000)
@@ -468,13 +469,20 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
  * @param data 结算返回的支付信息
  */
 
-async function mpHuiShiBaoPay(data, payType, type, otherArgs) {
-	await gotoOrderH5PayApi({
-		...data,
-		purchaseMode: payType,
-		...otherArgs
-	}).then((res) => {
-		console.log(JSON.stringify(res.data))
+async function wvHuiShiBaoPay(data, payType, type, otherArgs = { stage: 'one' }) {
+	if (otherArgs.satge === 'one') {
+		delete otherArgs.satge
+		uni.postMessage({
+			data: {
+				event: 'wvHuiShiBaoPay',
+				data,
+				payType,
+				type,
+				otherArgs,
+				jumpType: `wvHuiShiBaoPayTurn`
+			}
+		})
+	} else if (!otherArgs.satge) { // isSuccess、payType、orderId、collageId
 		if (type) {
 			uni.removeStorageSync(T_PAY_ORDER)
 			uni.setStorageSync(T_PAY_ORDER, {
@@ -482,26 +490,102 @@ async function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 				TL_ORDER_NO: data.orderSn
 			})
 		}
-		if (!res.data.Cshdk_Url) {
-			uni.switchTab({ url: '/pages/order/order' })
-		} else {
-			// todo
+		if (otherArgs.isSuccess) {
+			if ([1, 2, 3, 4, 5].includes(payType)) {
+				if (data.collageId) await payOrderSuccessApi({ orderId: data.orderId, collageId: data.collageId })
+				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+			}
+		} else if ([1, 2, 3, 4, 5].includes(payType)) {
+			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 		}
-	})
-		.catch((e) => {
-			console.log(e)
-			uni.showToast({ title: '支付失败', icon: 'none' })
-			setTimeout(() => {
-				if ([1, 2].includes(data.purchaseMode)) {
-					uni.switchTab({ url: '/pages/order/order' })
-				} else if ([3, 4, 5].includes(data.purchaseMode)) {
-					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
-				}
-			}, 2000)
-		})
-		.finally((e) => {
-			uni.hideLoading()
-		})
+	}
+	// // , otherArgs = { stage: 'one' }
+	// if (otherArgs.satge === 'one') {
+	// 	delete otherArgs.satge
+	// 	uni.postMessage({
+	// 		data: {
+	// 			event: 'wvHuiShiBaoPay',
+	// 			data,
+	// 			payType,
+	// 			type,
+	// 			otherArgs: { ...otherArgs, stage: 'two' },
+	// 			jumpType: `wvHuiShiBaoPayTurn`
+	// 		}
+	// 	})
+	// } else if (otherArgs.satge === 'two') {
+	// 	// 考虑到跳转webview的该链接还需要让网页的isInMiniProgram重新赋值（或者在链接上的传参非常多），比较麻烦且可能会产生其它问题
+	// 	delete otherArgs.satge
+	// 	const code = otherArgs.code
+	// 	const result = await getSessionKeyAppApi({ code })
+	// 	await gotoOrderH5PayApi({
+	// 		...data,
+	// 		purchaseMode: payType,
+	// 		hsbSubPayType: '05',
+	// 		extJsonStr: JSON.stringify({
+	// 			'Sub_Appid': 'wx3cef6c7325c38a45', // 小程序appId
+	// 			'Sub_Openid': result.data.wechatOpenId // 微信用户openId
+	// 		}),
+	// 		...otherArgs
+	// 	}).then((res) => {
+	// 		console.log(JSON.stringify(res.data))
+	// 		if (type) {
+	// 			uni.removeStorageSync(T_PAY_ORDER)
+	// 			uni.setStorageSync(T_PAY_ORDER, {
+	// 				type,
+	// 				TL_ORDER_NO: data.orderSn
+	// 			})
+	// 		}
+	// 		if (!res.data.Cshdk_Url) {
+	// 			uni.switchTab({ url: '/pages/order/order' })
+	// 		} else {
+	// 			uni.postMessage({
+	// 				data: {
+	// 					event: 'wvHuiShiBaoPay',
+	// 					data,
+	// 					payType,
+	// 					type,
+	// 					otherArgs: { ...otherArgs, stage: 'three' },
+	// 					jumpType: `wvHuiShiBaoPayBack`
+	// 				}
+	// 			})
+	// 		}
+	// 	})
+	// 		.catch((e) => {
+	// 			console.log(e)
+	// 			uni.showToast({ title: '支付失败', icon: 'none' })
+	// 			setTimeout(() => {
+	// 				if ([1, 2].includes(payType)) {
+	// 					uni.switchTab({ url: '/pages/order/order' })
+	// 				} else if ([3, 4, 5].includes(payType)) {
+	// 					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+	// 				}
+	// 			}, 2000)
+	// 		})
+	// 		.finally((e) => {
+	// 			uni.hideLoading()
+	// 		})
+	// } else if (otherArgs.satge === 'three') {
+	// 	delete otherArgs.satge
+	// 	if ([1, 2].includes(payType)) {
+	// 		if (otherArgs.isSuccess) {
+	// 			if (data.collageId) await payOrderSuccessApi({ orderId: data.orderId, collageId: data.collageId })
+	// 			uni.showToast({ icon: 'none', title: '支付成功' })
+	// 			setTimeout(() => { uni.redirectTo({ url: '/another-tf/another-serve/paySuccessful/index?orderId=' + data.orderId }) }, 2000)
+	// 		} else {
+	// 			uni.showToast({ icon: 'none', title: '用户取消支付' })
+	// 			setTimeout(() => { uni.switchTab({ url: '/pages/order/order' }) }, 2000)
+	// 		}
+	// 	} else if ([3, 4, 5].includes(payType)) {
+	// 		if (otherArgs.isSuccess) {
+	// 			if (data.collageId) await payOrderSuccessApi({ orderId: data.orderId, collageId: data.collageId })
+	// 			uni.showToast({ icon: 'none', title: '支付成功' })
+	// 			setTimeout(() => { uni.redirectTo({ url: '/user/otherServe/payment-completed/index' }) }, 2000)
+	// 		} else {
+	// 			uni.showToast({ icon: 'none', title: '用户取消支付' })
+	// 			setTimeout(() => { uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' }) }, 2000)
+	// 		}
+	// 	}
+	// }
 }
 
 /**
@@ -566,7 +650,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 									url: '/pages/loading/loading?' + query + 'orderNo=' + submitInfo.orderSn + '&userId=' + getUserId(),
 									fail: () => {
 										uni.switchTab({
-											url: '/pages/order/order?type=shop&status=1'
+											url: '/pages/order/order'
 										})
 									}
 								})
@@ -667,13 +751,13 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		} else if ([ 9 ].includes(submitInfo.paymentMode)) { // 惠市宝支付
 			if (isInWx()) {
 				if (store.state.app.isInMiniProgram || isH5InWebview()) {
-					uni.showToast({ title: '暂不支持在微信小程序使用惠市宝支付', icon: 'none' })
+					await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				} else {
 					await h5HuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				}
 			} else {
 				// #ifdef H5
-				await h5HuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
+				await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef APP
 				uni.hideLoading()

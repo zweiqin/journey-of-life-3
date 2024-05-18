@@ -187,7 +187,7 @@ export default {
 				number: this.amount * 2,
 				payGrade: this.amount
 			}).then((res) => {
-				handleDoPay({ ...res.data, ...this.payInfo }, 4)
+				handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
 			})
 				.catch((err) => {
 					console.log(err)

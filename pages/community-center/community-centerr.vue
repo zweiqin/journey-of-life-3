@@ -134,6 +134,7 @@ export default {
     this.showVipPostPopup()
   },
   mounted() {
+    this.handleInitShare()
     // #ifdef APP
     this.$refs.checkedVersion.checkedVersion(true)
     // #endif
@@ -348,11 +349,12 @@ export default {
     const script = document.createElement('script')
     script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
     document.body.appendChild(script)
-    setTimeout(() => {
-      this.handleInitShare()
-    }, 500)
     // #endif
-    // }
+		if (options.jumpType) {
+			uni.redirectTo({
+				url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`
+			})
+		}
   },
 
   onPageScroll(e) {

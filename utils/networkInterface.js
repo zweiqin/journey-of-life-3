@@ -311,8 +311,8 @@ export const resolveCalcOrderTotal = (params = {}) => {
 	let selectIntegral = selectIntegralOrigin
 	let shopSumPrice = 0
 	for (let i = 0; i < settlement.shops.length; i++) {
-		totalPrice += parseFloat(settlement.shops[i].totalAfterDiscount)
-		shopSumPrice += parseFloat(settlement.shops[i].totalAfterDiscount)
+		totalPrice += parseFloat(Number(settlement.shops[i].totalAfterDiscount))
+		shopSumPrice += parseFloat(Number(settlement.shops[i].totalAfterDiscount))
 	}
 	if (voucherObj.voucherId) {
 		totalPrice = shopSumPrice - settlement.voucherTotalAll
@@ -705,7 +705,7 @@ export const resolveOrderPackageData = (params = {}) => {
  */
 
 export const resolveSubmitOrder = async (params = {}) => {
-	const { isPayImmediately, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice } = Object.assign({
+	const { isPayImmediately, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice, shamPriceText } = Object.assign({
 		isPayImmediately: false,
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
@@ -718,13 +718,14 @@ export const resolveSubmitOrder = async (params = {}) => {
 		voucherObj: { voucherTotalAll: 0, isVoucher: false, voucherId: 0 },
 		otherInfo: {},
 		payInfo: {},
-		hasPrice: false
+		hasPrice: false,
+		shamPriceText: '支付金额必须大于零'
 	}, params)
 	if (isPayImmediately) {
 		await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '')
 	} else {
 		// 检查提交表单
-		if (hasPrice && (totalPrice <= 0)) return uni.showToast({ title: '支付金额必须大于零', icon: 'none' })
+		if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
 		if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
 		if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
 		// 处理表单
