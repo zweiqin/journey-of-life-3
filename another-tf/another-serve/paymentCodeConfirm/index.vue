@@ -152,6 +152,7 @@
 			<view
 				v-if="isShowDigitalKeyboard"
 				style="position: absolute;top: 0;bottom: 0;z-index: 2;width: 100vw;height: 100vh;background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(255, 255, 255, 0.01) 15%, rgba(255, 255, 255, 0.01) 25%, rgba(0, 0, 0, 0.6) 100%);"
+				@click="handleConfirmKeyboard"
 			>
 			</view>
 			<tui-digital-keyboard

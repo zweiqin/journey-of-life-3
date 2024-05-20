@@ -2,7 +2,7 @@ import { A_TF_MAIN } from '../config'
 import { T_PAY_ORDER } from '../constant'
 import { gotoOrderAppPayApi, gotoOrderH5PayApi, getSessionKeyAppApi, gotoOrderPayApi, payOrderSuccessApi, getPayMiniProgramQueryApi } from '../api/anotherTFInterface'
 import store from '../store'
-import { getUserId, isInWx, isH5InWebview } from '.'
+import { getUserId, isInWx, isH5InWebview, jumpToOtherProject } from '.'
 
 // #ifdef H5
 const jweixin = require('jweixin-module')
@@ -469,20 +469,9 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
  * @param data 结算返回的支付信息
  */
 
-async function wvHuiShiBaoPay(data, payType, type, otherArgs = { stage: 'one' }) {
-	if (otherArgs.satge === 'one') {
-		delete otherArgs.satge
-		uni.postMessage({
-			data: {
-				event: 'wvHuiShiBaoPay',
-				data,
-				payType,
-				type,
-				otherArgs,
-				jumpType: `wvHuiShiBaoPayTurn`
-			}
-		})
-	} else if (!otherArgs.satge) { // isSuccess、payType、orderId、collageId
+async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
+	// 方式一：
+	if (typeof otherArgs.isSuccess === 'number') { // isSuccess、payType、orderId、collageId
 		if (type) {
 			uni.removeStorageSync(T_PAY_ORDER)
 			uni.setStorageSync(T_PAY_ORDER, {
@@ -498,7 +487,42 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs = { stage: 'one' })
 		} else if ([1, 2, 3, 4, 5].includes(payType)) {
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 		}
+	} else {
+		delete otherArgs.satge
+		// 尝试一
+		// uni.postMessage({
+		// 	data: {
+		// 		event: 'wvHuiShiBaoPay',
+		// 		data,
+		// 		payType,
+		// 		type,
+		// 		otherArgs,
+		// 		jumpType: `wvHuiShiBaoPayTurn`
+		// 	}
+		// })
+		// 尝试二
+		// var popup = window.open(...popup)
+		// popup.postMessage(
+		// 	"The user is 'bob' and the password is 'secret'",
+		// 	'https://www.tuanfengkeji.cn'
+		// )
+		// popup.postMessage('hello there!', 'https://test.tuanfengkeji.cn')
+		// function receiveMessage(event) {
+		// 	if (event.origin !== 'https://test.tuanfengkeji.cn') return
+		// }
+		// window.addEventListener('message', receiveMessage, false)
+		// 尝试三
+		// parent.postMessage('aaaaa', '*')
+		// 尝试四
+		jumpToOtherProject({
+			isInMiniProgram: store.state.app.isInMiniProgram,
+			programUrl: `pages/skip/skip`,
+			toType: 'MP',
+			query: `?type=wvHuiShiBaoPay&data=${JSON.stringify({ data, payType, type, otherArgs, jumpType: `wvHuiShiBaoPayTurn` })}`,
+			montageTerminal: [ 6 ]
+		})
 	}
+	// 方式二：
 	// // , otherArgs = { stage: 'one' }
 	// if (otherArgs.satge === 'one') {
 	// 	delete otherArgs.satge

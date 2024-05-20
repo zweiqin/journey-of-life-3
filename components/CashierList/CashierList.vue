@@ -105,11 +105,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// // 惠市宝支付
-		// showHuiShiBaoPay: {
-		// 	type: Boolean,
-		// 	default: false
-		// },
+		// 惠市宝支付
+		showHuiShiBaoPay: {
+			type: Boolean,
+			default: false
+		},
 		// 用户的商家充值的余额支付
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
@@ -118,7 +118,7 @@ export default {
 	},
 	data() {
 		return {
-			showHuiShiBaoPay: false,
+			// showHuiShiBaoPay: false,
 			paymentMode: '', // 支付方式 1微信 2支付宝 3花呗分期
 			paymentList: [],
 			// 花呗相关

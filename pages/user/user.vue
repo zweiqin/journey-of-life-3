@@ -152,7 +152,8 @@ export default {
 					}
 					return
 				} else if (item.type === 'shopInvitation') {
-					this.$refs.codeCreateRef.getCode('shopInvitation')
+					// this.$refs.codeCreateRef.getCode('shopInvitation')
+					this.go('/another-tf/another-user/shop-invitation/index')
 					return
 				}
 				if (!item.url) {
