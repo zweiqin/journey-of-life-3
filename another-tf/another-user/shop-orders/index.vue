@@ -49,10 +49,10 @@
 								<text style="color: #8F8F8F;">支付金额</text>
 								<text style="margin-left: 32upx;color: #EF530E;">￥{{ item.price }}</text>
 							</view>
-							<view style="margin-left: 32upx;color: #EF530E;">
+							<!-- <view style="margin-left: 32upx;color: #EF530E;">
 								<text v-if="item.paymentState">已支付</text>
 								<text v-else>未支付</text>
-							</view>
+								</view> -->
 						</view>
 						<view style="padding-top: 18upx;">
 							<text style="color: #8F8F8F;">订单状态</text>

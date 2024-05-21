@@ -9,7 +9,10 @@
 			>
 				<image :src="data.shopLogo" style="width: 36rpx;height: 36rpx;margin-right: 10rpx;" />
 				<text style="font-size: 30rpx;color: #333;font-weight: bold;">{{ data.shopName }}</text>
-				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
+				<tui-icon
+					v-if="data.skus.every(i => !(i.productPay === 1))" name="arrowright"
+					:size="25" color="#999999"
+				></tui-icon>
 			</view>
 			<view style="flex: 1;font-size: 32rpx;color: #C5AA7B;text-align: right;">
 				<text v-if="data.afterState">
@@ -22,6 +25,7 @@
 			</view>
 		</view>
 		<view style="padding: 20rpx;">
+			<!-- data.skus.every(i => !(i.productPay === 1)) &&  -->
 			<view @click="isToDetail && go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
 				<view>
 					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" style="display: flex;padding: 20rpx 0 0;">
@@ -47,7 +51,7 @@
 									<text style="color: #333333;">￥{{ skuItem.price || 0 }}</text>
 									<text style="margin-left: 20rpx;color: #999;">x {{ skuItem.number && skuItem.number }}</text>
 								</view>
-								<view v-if="showOperate">
+								<view v-if="showOperate && !(skuItem.productPay === 1)">
 									<tui-button
 										v-if="[3, 4].includes(data.state) && (data.orderType === 1)" type="brown" width="150rpx"
 										height="56rpx" margin="8rpx 0 0" :size="28"
@@ -244,7 +248,7 @@ export default {
 			// 	})
 			// }
 			// 核销码
-			if ([8, 9].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
 					btnType: 'black',
@@ -280,7 +284,7 @@ export default {
 				})
 			}
 			// 查看物流
-			if ([3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
+			if (skus.every((i) => !(i.productPay === 1)) && [3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
 				orderNeedBtnList.push({
 					name: '查看物流',
 					btnType: 'black',
@@ -289,7 +293,7 @@ export default {
 				})
 			}
 			// 确认收货
-			if ([ 3 ].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [ 3 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '确认收货',
 					btnType: 'warning',
@@ -298,7 +302,7 @@ export default {
 				})
 			}
 			// 邀请拼单
-			if ([ 6 ].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [ 6 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '邀请拼单',
 					btnType: 'warning',
@@ -307,7 +311,7 @@ export default {
 				})
 			}
 			// 再次开团 | 再次购买
-			if ([5, 4, 10].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [5, 4, 10].includes(state)) {
 				orderNeedBtnList.push({
 					name: collageId !== 0 ? '再次开团' : '再次购买',
 					btnType: 'warning',

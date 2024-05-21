@@ -120,6 +120,7 @@
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					padding="8rpx 26rpx 6rpx" radius="24rpx" show :price-pay="totalPrice"
+					missing-price-text="请输入金额"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
@@ -437,7 +438,7 @@ export default {
 				if (uni.getStorageSync(T_SKU_ITEM_MSG_LIST)) { // 1立即购买，2购物车结算
 					this.skuItemMsgList = uni.getStorageSync(T_SKU_ITEM_MSG_LIST)
 					orderSettlementObj = await resolveGetOrderSettlement({
-						isProductPay: this.goodsDetail.productId,
+						isProductPay: this.goodsDetail.productPay === 1,
 						isGroup: false,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -451,7 +452,7 @@ export default {
 				} else if (uni.getStorageSync(T_SKU_ITEM_INFO)) { // 3拼团商品立即购买
 					this.skuItemInfo = uni.getStorageSync(T_SKU_ITEM_INFO)
 					orderSettlementObj = await resolveGetOrderSettlement({
-						isProductPay: this.goodsDetail.productId,
+						isProductPay: this.goodsDetail.productPay === 1,
 						isGroup: true,
 						fromType: this.fromType,
 						brandId: this.brandId,

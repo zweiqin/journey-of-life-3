@@ -61,6 +61,10 @@ export default {
 			type: String,
 			default: '0rpx 15rpx'
 		},
+		missingPriceText: {
+			type: String,
+			default: '缺少金额'
+		},
 		radius: {
 			type: String,
 			default: '0'
@@ -105,11 +109,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// 惠市宝支付
-		showHuiShiBaoPay: {
-			type: Boolean,
-			default: false
-		},
+		// // 惠市宝支付
+		// showHuiShiBaoPay: {
+		// 	type: Boolean,
+		// 	default: false
+		// },
 		// 用户的商家充值的余额支付
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
@@ -118,7 +122,7 @@ export default {
 	},
 	data() {
 		return {
-			// showHuiShiBaoPay: false,
+			showHuiShiBaoPay: false,
 			paymentMode: '', // 支付方式 1微信 2支付宝 3花呗分期
 			paymentList: [],
 			// 花呗相关
@@ -586,25 +590,25 @@ export default {
 		handleClickPaymentMode(payment) {
 			if (payment.paymentMode === '7') {
 				if (!this.pricePay) {
-					uni.showToast({ title: '缺少金额', icon: 'none' })
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.commissionPrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 佣金不足
 				}
 			} else if (payment.paymentMode === '5') {
 				if (!this.pricePay) {
-					uni.showToast({ title: '缺少金额', icon: 'none' })
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.rechargePrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 平台余额不足
 				}
 			} else if (payment.paymentMode === '8') {
 				if (!this.pricePay) {
-					uni.showToast({ title: '缺少金额', icon: 'none' })
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 交易金余额不足
 				}
 			} else if (payment.paymentMode === '6') {
 				if (!this.pricePay) {
-					uni.showToast({ title: '缺少金额', icon: 'none' })
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.priceShopInfo.current) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 商家余额不足
 				}

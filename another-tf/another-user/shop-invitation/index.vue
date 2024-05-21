@@ -16,7 +16,7 @@
 				<view style="width: 100%;padding: 48rpx 0 24rpx;background-color: #ef530e;">
 					<view style="font-size: 44rpx;font-weight: bold;font-style: italic;color: #ffffff;">扫 码 消 费 有 补 贴</view>
 					<view
-						style="position: relative;width: 420rpx;height: 420rpx;margin: 42rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
+						style="position: relative;width: 420rpx;height: 420rpx;margin: 42rpx auto 0;background-color: #ffffff;border-radius: 10rpx;overflow: hidden;box-sizing: border-box;"
 					>
 						<view style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;box-sizing: border-box;">
 							<view style="display: flex;align-items: center;justify-content: center;width: 100%;height: 100%;">

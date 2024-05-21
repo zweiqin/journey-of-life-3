@@ -13,7 +13,7 @@
 								/>
 							</l-painter-view>
 							<l-painter-view
-								css="position: relative;width: 408rpx;height: 408rpx;margin: 36rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
+								css="position: relative;width: 408rpx;height: 408rpx;margin: 36rpx auto 0;background-color: #ffffff;border-radius: 10rpx;overflow: hidden;box-sizing: border-box;"
 							>
 								<l-painter-view
 									css="position: absolute;left: 0;top: 0;width: 100%;height: 100%;box-sizing: border-box;"

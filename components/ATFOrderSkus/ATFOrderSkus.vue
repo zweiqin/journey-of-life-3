@@ -2,12 +2,12 @@
 	<view class="order-skus-container">
 		<view
 			v-for="proItem in data" :key="proItem.productId"
-			style="display: flex;align-items: center;padding: 20upx 0;"
-			@click="goodsItemTap(proItem.shopId, proItem.productId, proItem.skuId)"
+			style="display: flex;align-items: center;padding: 20rpx 0;"
+			@click="data.every(i => !(i.productPay === 1)) && goodsItemTap(proItem.shopId, proItem.productId, proItem.skuId)"
 		>
 			<image
 				:src="common.seamingImgUrl(proItem.image)" class="default-img"
-				style="width: 90upx;height: 90upx;border-radius: 10upx;margin-right: 30upx;"
+				style="width: 90rpx;height: 90rpx;border-radius: 10rpx;margin-right: 30rpx;"
 			></image>
 			<view style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 				<view style="display: flex;align-items: center;justify-content: space-between;">
@@ -19,19 +19,19 @@
 						</text>
 						<view
 							v-if="proItem.presenterVoucher"
-							style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+							style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 						>
 							赠送 {{ proItem.presenterVoucher }} 代金券
 						</view>
-						<view style="margin-top: 8upx;">
+						<view style="margin-top: 8rpx;">
 							<view v-for="(vItem, vIndex) in proItem.values" :key="vIndex">
 								<text>{{ vItem }}</text>
 							</view>
 						</view>
 					</view>
-					<view style="margin-left: 10upx;display: flex;align-items: center;">
+					<view style="margin-left: 10rpx;display: flex;align-items: center;">
 						<view>￥{{ proItem.price }}</view>
-						<view style="margin-left: 20upx;">x {{ proItem.number }}</view>
+						<view style="margin-left: 20rpx;">x {{ proItem.number }}</view>
 					</view>
 				</view>
 				<slot name="rightFoot" :pro-item="proItem"></slot>

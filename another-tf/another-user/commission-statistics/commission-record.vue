@@ -104,16 +104,19 @@
 										<text v-else-if="item.type === 3">本地</text>
 										<text v-else-if="item.type === 4">服务</text>
 										<text v-else-if="item.type === 5">支付</text>
-										<text v-else-if="item.type === 6">退款</text>
-										<text v-else-if="item.type === 7">提现</text>
+										<text v-else-if="item.type === 6">佣金退款</text>
+										<text v-else-if="item.type === 7">佣金提现</text>
+										<text v-else-if="item.type === 8">交易金</text>
 										<text v-else>--</text>
 									</text>
+									<text v-if="item.isTo === 3">（已退款）</text>
 								</view>
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
 							</view>
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+								<!-- 对于6：非佣金付款的退款，应该显示“支”；客户使用佣金支付后发生退款，退回佣金，所以收支明细的退款应该是正数。 -->
 								{{ [5, 7, 6].includes(item.type) ? '-' : [1, 2, 3, 4].includes(item.type) ? '+' : '？' }}{{ Number.parseFloat(Number(item.amount || 0)).toFixed(2) }}元
 							</view>
 							<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">

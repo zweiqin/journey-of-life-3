@@ -18,8 +18,9 @@
 						<text v-else-if="commissionRecordData.type === 3">本地</text>
 						<text v-else-if="commissionRecordData.type === 4">服务</text>
 						<text v-else-if="commissionRecordData.type === 5">支付</text>
-						<text v-else-if="commissionRecordData.type === 6">退款</text>
-						<text v-else-if="commissionRecordData.type === 7">提现</text>
+						<text v-else-if="commissionRecordData.type === 6">佣金退款</text>
+						<text v-else-if="commissionRecordData.type === 7">佣金提现</text>
+						<text v-else-if="commissionRecordData.type === 8">交易金</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
@@ -46,10 +47,14 @@
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ commissionRecordData.totalAmount }}</view>
 					</view>
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
-						<view style="min-width: 112rpx;color: #6E7079">订单状态</view>
+						<view style="min-width: 112rpx;color: #6E7079">状态</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
-							<text v-if="commissionRecordData.isTo" style="color: #00ff00;">订单已完成</text>
-							<text v-else style="color: #ff0000;">订单未完成</text>
+							<text v-if="commissionRecordData.isTo === 0" style="color: #00ff00;">订单未完成</text>
+							<text v-else-if="commissionRecordData.isTo === 1" style="color: #ff0000;">确认收货</text>
+							<text v-else-if="commissionRecordData.isTo === 2" style="color: #ff0000;">已提现</text>
+							<text v-else-if="commissionRecordData.isTo === 3" style="color: #ff0000;">已退款</text>
+							<text v-else-if="commissionRecordData.isTo === 4" style="color: #ff0000;">已支付</text>
+							<text v-else style="color: #00ff00;">--</text>
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">

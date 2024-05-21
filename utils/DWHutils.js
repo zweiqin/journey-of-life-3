@@ -160,7 +160,7 @@ export const getStorageKeyToken = (params = {}) => {
 	if (!storageKey || !storageKey.token) {
 		isShowModal && uni.showModal({
 			title: '提示',
-			content: '系统出错，请重新登陆',
+			content: '您还未登录，请登陆！',
 			success(res) {
 				if (res.confirm) {
 					if (isRedirect) {

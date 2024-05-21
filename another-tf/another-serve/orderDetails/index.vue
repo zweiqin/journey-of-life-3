@@ -359,7 +359,10 @@
 											客服介入
 										</view>
 									</view>
-									<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;">
+									<view
+										v-if="dataList.skus.every(i => !(i.productPay === 1))"
+										style="display: flex;justify-content: flex-end;flex-wrap: wrap;"
+									>
 										<tui-button
 											v-if="[3, 4].includes(dataList.state) && (obj.proItem.commentId === 0) && obj.proItem.additionalComment"
 											type="blue" plain width="150upx" height="48rpx"
@@ -392,28 +395,30 @@
 
 				<view class="order-details-btn" :style="{ 'padding-bottom': (isIphone == true ? 40 : 0) + 'rpx' }">
 					<tui-button
-						v-if="[1, 6, 8].includes(dataList.state)" type="gray" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [1, 6, 8].includes(dataList.state)" type="gray" width="48%" height="82rpx"
 						plain
 						margin="20upx 0 0" style="border-radius: 8upx;" @click="cancelOrder"
 					>
 						取消订单
 					</tui-button>
 					<tui-button
-						v-if="[1, 8].includes(dataList.state)" type="warning" width="48%" height="82rpx"
-						margin="20upx 0 0"
+						v-if="[1, 8].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx" margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="showPayTypePopup = true"
 					>
 						提交支付
 					</tui-button>
 					<tui-button
-						v-if="[ 3 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 3 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="confirmReceiptTap"
 					>
 						确认完成
 					</tui-button>
 					<tui-button
-						v-if="[ 6 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 6 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;"
 						@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
@@ -421,21 +426,24 @@
 						邀请拼单
 					</tui-button>
 					<tui-button
-						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [5, 4, 10].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0" style="background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 					>
 						再次开团
 					</tui-button>
 					<tui-button
-						v-if="[ 5 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 5 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="delOrder"
 					>
 						删除订单
 					</tui-button>
 					<tui-button
-						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="100%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [5, 4, 10].includes(dataList.state)"
+						type="warning" width="100%" height="82rpx"
 						margin="20upx 0 0" style="min-width: 100%;background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
 					>
