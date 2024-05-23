@@ -4,6 +4,7 @@ import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './typ
 import store from '../index'
 import { getUrlCode } from '../../utils'
 import { refrshUserInfoApi } from '../../api/user'
+import { Encrypt } from '../../utils/secret'
 import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
 
 export default {
@@ -41,6 +42,10 @@ export default {
 		phoneLoginRegisterAction({ state, commit, dispatch }, { isAfter, loginData } = { loginData: {} }) {
 			return new Promise((resolve, reject) => {
 				uni.showLoading({ mask: true })
+				// if (loginData.type) loginData.type = Encrypt(loginData.type)
+				if (loginData.phone) loginData.phone = Encrypt(loginData.phone)
+				if (loginData.password) loginData.password = Encrypt(loginData.password)
+				if (loginData.verificationCode) loginData.verificationCode = Encrypt(loginData.verificationCode)
 				updatePhoneLoginRegisterApi({ ...loginData })
 					.then(({ data }) => {
 						console.log(data)

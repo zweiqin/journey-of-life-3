@@ -10,34 +10,8 @@
 						<div class="product-swiper-info">
 							<label class="product-name">{{ item.productName }}</label>
 							<div class="price-warp">
-								<!-- #ifdef MP-WEIXIN -->
-								<img v-if="item.activityType == 1" class="iconImg" src="../../../static/images/groupBuyIcon.png">
-								<img v-if="item.activityType == 2" class="iconImg" src="../../../static/images/spikeIcon.png">
-								<img v-if="item.activityType == 4" class="iconImg" src="../../../static/images/spikeIcon.png">
-								<img v-if="item.activityType == 3" class="iconImg" src="../../../static/images/discountListIcon.png">
-								<img v-if="item.activityType == 5" class="iconImg" src="../../../static/images/discountListIcon.png">
-								<img v-if="item.activityType == 9" class="iconImg" src="../../../static/images/memberCenterIcon.png">
-								<img
-									v-if="item.activityType == 8" class="iconImg"
-									src="../../../../../static/images/new-business/shop/jierizhekou.png"
-								>
-								<!-- #endif -->
-								<!-- #ifdef H5 || APP-PLUS -->
-								<image v-if="item.activityType == 1" class="iconImg" src="../../../static/images/groupBuyIcon.png">
-								</image>
-								<image v-if="item.activityType == 2" class="iconImg" src="../../../static/images/spikeIcon.png"></image>
-								<image v-if="item.activityType == 4" class="iconImg" src="../../../static/images/spikeIcon.png"></image>
-								<image v-if="item.activityType == 3" class="iconImg" src="../../../static/images/discountListIcon.png">
-								</image>
-								<image v-if="item.activityType == 5" class="iconImg" src="../../../static/images/discountListIcon.png">
-								</image>
-								<image v-if="item.activityType == 9" class="iconImg" src="../../../static/images/memberCenterIcon.png">
-								</image>
-								<image
-									v-if="item.activityType == 8" class="iconImg"
-									src="../../../../../static/images/new-business/shop/jierizhekou.png"
-								>
-								</image>
+								<!-- #ifdef MP-WEIXIN || H5 || APP-PLUS -->
+								<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 								<!-- #endif -->
 								<div class="price">
 									¥ {{ item.price }}
@@ -171,12 +145,6 @@ export default {
 				justify-content: center;
 				align-items: center;
 				line-height: 28upx;
-
-				.iconImg {
-					width: 58rpx;
-					height: 36rpx;
-					margin-right: 10rpx;
-				}
 
 				.price {
 					color: #C83732;

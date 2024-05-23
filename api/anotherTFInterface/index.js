@@ -500,6 +500,9 @@ export const getOrderVerificationHxCodeApi = (data) => AnotherTFRequest('/orderV
 // 核销订单
 export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', data, 'POST')
 
+// 检查支付完成后核销订单
+export const updateChkPaidAndWriteApi = (data) => AnotherTFRequest('/order/chkPaidAndWrite', data, 'POST')
+
 // 商家订单管理查询
 export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST')
 
@@ -544,6 +547,9 @@ export const getRechargeTotalCustomersApi = (data) => AnotherTFRequest('/busines
 
 // /businessRechargeCustomers/getByRecharge 客户充值记录列表
 export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCustomers/getByRecharge', data, 'POST')
+
+// 生成商家收款码
+export const getPaymentGenerateCodeApi = (data) => AnotherTFRequest('/paymentCode/generateCode', data, 'POST')
 
 // 代金券
 // 获取可用代金券
@@ -671,6 +677,16 @@ export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', da
 
 // 拼团专区首页数据查询
 export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data)
+
+// 交易金
+// 选择平台端交易金活动查询
+export const getPlatformBeeCurrencyApi = (data) => AnotherTFRequest('/canvas/getPlatformBeeCurrency', data)
+
+// 记录交易金
+export const updatePlatformBeeCurrencySaveBeeApi = (data) => AnotherTFRequest('/platformBeeCurrency/saveBee', data)
+
+// 交易金收支明细
+export const getBeeCurrencyDistributorApi = (data) => AnotherTFRequest('/distributor/getBeeCurrency', data)
 
 // 限时折扣
 // 专区首页数据查询

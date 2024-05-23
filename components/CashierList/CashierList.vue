@@ -1,23 +1,26 @@
 <template>
-	<view class="cashier-list-content">
+	<view class="cashier-list-content" :style="{ padding, borderRadius: radius }">
 		<view v-if="show">
+			<slot name="header" :payment-list="paymentList"></slot>
 			<tui-radio-group v-model="paymentMode" @change="handleChangePaymentMode">
-				<view v-for="payment in paymentList" :key="payment.paymentMode" class="cashier">
+				<view v-for="payment in paymentList" :key="payment.paymentMode" class="cashier" @click="handleClickPaymentMode(payment)">
 					<view class="cashier-item">
 						<view class="icon-text">
 							<image class="pay-type-img-inner" :src="payment.icon" mode="widthFix" />
 							<text>{{ payment.label }}</text>
 							<text v-if="(payment.paymentMode === '7')">（佣金：{{ pricePlatformInfo.commissionPrice }}）</text>
 							<text v-if="(payment.paymentMode === '5')">（余额：{{ pricePlatformInfo.rechargePrice }}）</text>
+							<text v-if="(payment.paymentMode === '8')">（余额：{{ pricePlatformInfo.beeCoinPrice }}）</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 							<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 								（手续费：￥{{ flowerObj.hbServiceChargeTotal }}）
 							</text>
 						</view>
-						<view class="radio">
+						<view>
+							<tui-icon v-if="payment.disabled" name="circle" :size="18" color="#d4d4d4"></tui-icon>
 							<tui-radio
-								:checked="false" :disabled="payment.disabled" :value="payment.paymentMode" color="#07c160"
-								border-color="#999"
+								v-else :checked="false" :disabled="payment.disabled" :value="payment.paymentMode"
+								color="#ef530e" border-color="#979797" :scale-ratio="0.8"
 							>
 							</tui-radio>
 						</view>
@@ -30,10 +33,10 @@
 									<view class="icon-text">
 										{{ flowerItem.numberOfStages }}期（￥{{ flowerItem.price }}/期）
 									</view>
-									<view class="radio-context">
+									<view style="display: flex;align-items: center;font-size: 24rpx;">
 										手续费：￥{{ flowerItem.serviceCharge }}/期
 										<tui-radio
-											class="radio" :checked="false" :disabled="flowerItem.disabled"
+											style="margin-left: 15rpx;" :checked="false" :disabled="flowerItem.disabled"
 											:value="flowerItem.numberOfStages" color="#c5aa7b" border-color="#999"
 										>
 										</tui-radio>
@@ -54,6 +57,18 @@ import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustom
 export default {
 	name: 'CashierList',
 	props: {
+		padding: {
+			type: String,
+			default: '0rpx 15rpx'
+		},
+		missingPriceText: {
+			type: String,
+			default: '缺少金额'
+		},
+		radius: {
+			type: String,
+			default: '0'
+		},
 		pricePay: {
 			type: Number,
 			default: 0
@@ -89,14 +104,25 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 交易金支付
+		showTransactionPay: {
+			type: Boolean,
+			default: false
+		},
+		// // 惠市宝支付
+		// showHuiShiBaoPay: {
+		// 	type: Boolean,
+		// 	default: false
+		// },
 		// 用户的商家充值的余额支付
-		shopIdPay: {
+		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
 			default: ''
 		}
 	},
 	data() {
 		return {
+			showHuiShiBaoPay: false,
 			paymentMode: '', // 支付方式 1微信 2支付宝 3花呗分期
 			paymentList: [],
 			// 花呗相关
@@ -131,7 +157,8 @@ export default {
 			// 平台余额相关
 			pricePlatformInfo: {
 				rechargePrice: 0,
-				commissionPrice: ''
+				commissionPrice: 0,
+				beeCoinPrice: 0
 			},
 			// 用户的商家充值的余额相关
 			priceShopInfo: {
@@ -210,6 +237,64 @@ export default {
 			immediate: false,
 			deep: true
 		},
+		showTransactionPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					uni.showLoading()
+					if (!this.paymentList.find((item) => item.paymentMode === '8')) {
+						this.paymentList.push({
+							label: '交易金支付',
+							paymentMode: '8',
+							icon: require('../../static/images/user/pay/jiaoyijin.png'),
+							disabled: true
+						})
+					}
+					getPricePlatformAllApi({})
+						.then((res) => {
+							this.pricePlatformInfo = res.data
+							this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+							if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+						.catch((e) => {
+							if (this.paymentMode === '8') this.handleSetDisable()
+							if (this.paymentList.find((item) => item.paymentMode === '8')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '8'), 1)
+							this.handleNoticeFather()
+							uni.hideLoading()
+						})
+				} else {
+					if (this.paymentMode === '8') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '8')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '8'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
+		showHuiShiBaoPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					if (!this.paymentList.find((item) => item.paymentMode === '9')) {
+						this.paymentList.push({
+							label: '惠市宝支付',
+							paymentMode: '9',
+							icon: require('../../static/images/user/pay/huishibao.png'),
+							disabled: true
+						})
+					}
+					this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+					if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+					this.handleNoticeFather()
+				} else {
+					if (this.paymentMode === '9') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		shopIdPay: {
 			handler(newValue, oldValue) {
 				// console.log(2222)
@@ -248,7 +333,6 @@ export default {
 			deep: true
 		},
 		pricePay: {
-			// eslint-disable-next-line complexity
 			handler(newValue, oldValue) {
 				// console.log(1111)
 				if (newValue !== oldValue) {
@@ -265,6 +349,18 @@ export default {
 						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 						if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 					} else if (!this.showPlatformPay && (this.paymentMode === '5')) {
+						this.handleSetDisable()
+					}
+					if (this.showTransactionPay) {
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+						if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
+					} else if (!this.showTransactionPay && (this.paymentMode === '8')) {
+						this.handleSetDisable()
+					}
+					if (this.showHuiShiBaoPay) {
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+						if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+					} else if (!this.showHuiShiBaoPay && (this.paymentMode === '9')) {
 						this.handleSetDisable()
 					}
 					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
@@ -313,6 +409,8 @@ export default {
 				icon: require('../../static/images/user/pay/wechat_pay.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.showAliPay) {
 			this.paymentList.push({
@@ -321,6 +419,8 @@ export default {
 				icon: require('../../static/images/user/pay/alipay.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.showHuabeiPay) {
 			this.paymentList.push({
@@ -329,6 +429,18 @@ export default {
 				icon: require('../../static/images/user/pay/huabei.png'),
 				disabled: true
 			})
+			// 获取花呗分期配置
+			getOrderHuabeiConfigApi({})
+				.then((res) => {
+					this.flowerObj.huabeiChargeType = res.data.huabeiChargeType
+					if (this.flowerObj.huabeiChargeType === 1) { // 如果后端返回的是用户支付手续费，设置费率信息
+						res.data.huabeiFeeRateList.forEach((rate, index) => {
+							this.flowerObj.hbByStagesList[index].rate = rate
+						})
+					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
+				})
 		}
 		if (this.showTonglianPay) {
 			this.paymentList.push({
@@ -337,8 +449,10 @@ export default {
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true
 			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
-		if (this.showCommissionPay || this.showPlatformPay) {
+		if (this.showCommissionPay || this.showPlatformPay || this.showTransactionPay) {
 			if (this.showCommissionPay) {
 				this.paymentList.push({
 					label: '佣金支付',
@@ -355,6 +469,14 @@ export default {
 					disabled: true
 				})
 			}
+			if (this.showTransactionPay) {
+				this.paymentList.push({
+					label: '交易金支付',
+					paymentMode: '8',
+					icon: require('../../static/images/user/pay/jiaoyijin.png'),
+					disabled: true
+				})
+			}
 			getPricePlatformAllApi({})
 				.then((res) => {
 					this.pricePlatformInfo = res.data
@@ -364,7 +486,23 @@ export default {
 					if (this.showPlatformPay) {
 						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 					}
+					if (this.showTransactionPay) {
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
 				})
+		}
+		if (this.showHuiShiBaoPay) {
+			this.paymentList.push({
+				label: '惠市宝支付',
+				paymentMode: '9',
+				icon: require('../../static/images/user/pay/huishibao.png'),
+				disabled: true
+			})
+			this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
+			this.handleSetDisable()
+			this.handleNoticeFather()
 		}
 		if (this.shopIdPay) {
 			this.paymentList.push({
@@ -377,32 +515,13 @@ export default {
 				.then((res) => {
 					this.priceShopInfo = res.data
 					this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
+					this.handleSetDisable()
+					this.handleNoticeFather()
 				})
 		}
 	},
-	mounted() {
-		// 获取花呗分期配置
-		getOrderHuabeiConfigApi({})
-			.then((res) => {
-				this.flowerObj.huabeiChargeType = res.data.huabeiChargeType
-				if (this.flowerObj.huabeiChargeType === 1) { // 如果后端返回的是用户支付手续费，设置费率信息
-					res.data.huabeiFeeRateList.forEach((rate, index) => {
-						this.flowerObj.hbByStagesList[index].rate = rate
-					})
-				}
-				this.handleSetDisable()
-				this.handleNoticeFather()
-			})
-			.catch((e) => {
-				this.handleSetDisable()
-				this.handleNoticeFather()
-			})
-	},
 	methods: {
-		/**
-		 * 根据环境更改可选支付项
-		 */
-
+		// 根据环境更改可选支付项
 		handleSetDisable() {
 			// #ifdef H5
 			if (this.showTonglianPay) {
@@ -445,12 +564,7 @@ export default {
 			// #endif
 		},
 
-		/**
-		 * 支付方式改变事件
-		 * @param paymentMode
-		 * @param disabled
-		 */
-
+		// 支付方式改变事件
 		handleChangePaymentMode(e) {
 			console.log(e.detail.value)
 			if (this.paymentList.find((item) => item.paymentMode === e.detail.value).disabled) {
@@ -472,6 +586,34 @@ export default {
 			this.handleHbStagesAndPrice()
 			this.handleNoticeFather()
 		},
+		// 支付方式点击事件
+		handleClickPaymentMode(payment) {
+			if (payment.paymentMode === '7') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (this.pricePay > this.pricePlatformInfo.commissionPrice) {
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 佣金不足
+				}
+			} else if (payment.paymentMode === '5') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (this.pricePay > this.pricePlatformInfo.rechargePrice) {
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 平台余额不足
+				}
+			} else if (payment.paymentMode === '8') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 交易金余额不足
+				}
+			} else if (payment.paymentMode === '6') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (this.pricePay > this.priceShopInfo.current) {
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 商家余额不足
+				}
+			}
+		},
 
 		/**
 		 * 处理花呗期数选择
@@ -486,10 +628,7 @@ export default {
 			this.handleNoticeFather()
 		},
 
-		/**
-		 * 处理花呗价格和手续费显示
-		 */
-
+		// 处理花呗价格和手续费显示
 		handleHbStagesAndPrice() {
 			if (this.paymentMode !== '3') return
 			this.flowerObj.hbByStagesList.forEach((stages) => {
@@ -505,10 +644,7 @@ export default {
 			})
 		},
 
-		/**
-		 * 通知父组件
-		 */
-
+		// 通知父组件
 		handleNoticeFather() {
 			this.$emit('change', {
 				paymentMode: Number(this.paymentMode),
@@ -522,13 +658,8 @@ export default {
 <style lang="less" scoped>
 .cashier-list-content {
 	width: 100%;
-	padding: 0rpx 15rpx;
 	box-sizing: border-box;
 	background: #fff;
-
-	.u-radio-group {
-		display: block !important;
-	}
 
 	.cashier {
 		border-bottom: 2rpx solid #d0d0d0;
@@ -554,16 +685,6 @@ export default {
 					width: 50rpx;
 					height: 50rpx;
 					margin-right: 15rpx;
-				}
-			}
-
-			.radio-context {
-				display: flex;
-				align-items: center;
-				font-size: 24rpx;
-
-				.radio {
-					margin-left: 15rpx;
 				}
 			}
 		}

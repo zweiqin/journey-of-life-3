@@ -2,9 +2,34 @@
 	<view class="menu-item" @click="$emit('click', data)">
 		<image class="menu-icon" :src="data.picUrl ? common.seamingImgUrl(data.picUrl) : data.iconUrl"></image>
 		<text>{{ data.storeName }}</text>
-		<img v-if="data.tag && data.tag === 'phone-bill'" class="phone-bil" :src="data.tagUrl" alt="">
-		<img v-else-if="data.tag && data.tag === 'fix'" class="fix" :src="data.tagUrl" alt="">
-		<img v-else-if="data.tag && data.tag === 'sheng'" class="sheng" :src="data.tagUrl" alt="">
+		<tui-badge
+			v-if="data.tag && data.tag === 'phone-bill'"
+			type="danger" absolute :scale-ratio="0.9" translate-x="26%"
+			top="-12rpx"
+		>
+			<view style="padding: 2rpx;">
+				充值9折
+			</view>
+		</tui-badge>
+		<tui-badge
+			v-else-if="data.tag && data.tag === 'sheng'"
+			type="danger" absolute translate-x="22%"
+			top="-12rpx"
+		>
+			<view>
+				省
+			</view>
+		</tui-badge>
+		<tui-badge
+			v-else-if="data.tag && data.tag === 'fix'"
+			type="danger" absolute translate-x="12%"
+			top="-12rpx"
+		>
+			<view>
+				火
+			</view>
+		</tui-badge>
+	</view>
 	</view>
 </template>
 

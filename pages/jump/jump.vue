@@ -1,36 +1,98 @@
 <template>
 	<view class="jump-container">
-		<view v-if="viewType === 'verification'" style="padding: 44upx;">
+		<view v-if="viewType === 'verification'" style="padding: 44rpx;">
 			<JHeader tabbar="/pages/user/user" width="50" height="50" title="订单核销"></JHeader>
-			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40upx;">
+			<view v-if="orderInfo && orderInfo.orderId" style="margin-top: 40rpx;">
 				<ATFOrderInfo :data="orderInfo"></ATFOrderInfo>
 			</view>
-			<view style="margin-top: 50upx;">
+			<view style="margin-top: 50rpx;">
 				<tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input>
 			</view>
-			<view>
-				<tui-button
-					margin="20upx 0 0 auto" type="green" width="260rpx" shape="circle"
-					@click="handleVerification()"
-				>
-					确认核销
-				</tui-button>
+			<view style="display: flex;justify-content: flex-end;align-items: center;margin: 20rpx 0 0;">
+				<view style="flex: 1;">
+					<tui-button
+						v-if="orderInfo.orderId && [ 8 ].includes(orderInfo.state)"
+						margin="0 auto" type="warning" width="260rpx" shape="circle"
+						@click="go(`/another-tf/another-user/collection-code/collection-payment-code?collageId=${orderInfo.collageId}&money=${orderInfo.price}&orderId=${orderInfo.orderId}`)"
+					>
+						商家收款
+					</tui-button>
+				</view>
+				<view style="flex: 1;">
+					<tui-button
+						v-if="[ 9 ].includes(orderInfo.state)"
+						margin="0 auto" type="green" width="260rpx" shape="circle"
+						@click="handleVerification()"
+					>
+						确认核销
+					</tui-button>
+					<tui-button
+						v-else-if="isOrderVerification" margin="0 auto" type="green" width="260rpx"
+						plain link
+					>
+						已自动核销
+					</tui-button>
+					<tui-button
+						v-else margin="0 auto" type="green" width="260rpx"
+						plain link
+					>
+						等待付款
+					</tui-button>
+				</view>
 			</view>
 		</view>
-		<view v-else style="padding: 46upx;">
+		<view v-else-if="viewType === 'collection'" style="min-height: 100vh;background-color: #f0f0f0;" class="type-collection">
+			<view>
+				<view
+					style="display: flex;align-items: center;justify-content: space-between;padding: 26rpx 20rpx 10rpx;background-color: #f5f5f5;"
+				>
+					<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
+					</BeeIcon>
+					<text style="flex: 1;margin-left: -40upx;text-align: center;">付款页面</text>
+				</view>
+				<view style="padding: 0 30rpx;">
+					<view style="margin-top: 20rpx;">
+						<ATFShopSkus
+							v-if="code"
+							:shop-data="{ shopId: code.split('~')[0].split('=')[1] }"
+							detail-radius="20rpx 20rpx 0 0" is-show-shop-detail
+						>
+						</ATFShopSkus>
+					</view>
+				</view>
+				<image style="width: 100%;" :src="common.seamingImgUrl('1715937397802-付款页面（初始页面）（1）.png')" mode="widthFix" />
+			</view>
+			<tui-modal show custom :button="[]" width="74%" :mask-closable="false">
+				<view>
+					<view style="text-align: center;">提示</view>
+					<view style="margin-top: 40rpx;font-size: 30rpx;color: #767676;">您未登录团蜂平台，请先登录！</view>
+					<view class="operation-btn" style="margin-top: 34rpx;text-align: center;">
+						<tui-button
+							type="warning" :size="30" width="222rpx" height="90rpx"
+							margin="0 auto"
+							@click="$redirectTo('/pages/login/login')"
+						>
+							去登录
+						</tui-button>
+					</view>
+				</view>
+			</tui-modal>
+		</view>
+		<view v-else style="padding: 46rpx;">
 			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
 		</view>
 	</view>
 </template>
 
 <script>
-import { USER_INFO, T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
+import { T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
 import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
 import {
 	bindDistributorSalesCustomerApi,
 	getOrderDetailApi,
 	updateSetHxCodeApi,
+	updateChkPaidAndWriteApi,
 	bindPlatformRelationshipCodeApi,
 	bindPlatformRelationshipShopApi,
 	bindPlatformInfoCodeBindingApi,
@@ -38,6 +100,7 @@ import {
 } from '../../api/anotherTFInterface'
 import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
+import { handleDoPay } from '../../utils/payUtil'
 
 export default {
 	name: 'Jump',
@@ -78,7 +141,9 @@ export default {
 			viewType: '',
 			// verification的情况
 			orderId: '',
-			orderInfo: {}
+			orderInfo: {},
+			isOrderVerification: false,
+			verificationTicker: null
 		}
 	},
 
@@ -86,9 +151,16 @@ export default {
 	 * 生命周期函数--监听页面加载
 	 */
 
+	// eslint-disable-next-line complexity
 	onLoad(options) {
 		if (options.type) uni.setStorageSync(T_NEW_BIND_TYPE, options.type) || uni.setStorageSync(T_NEW_BIND_CODE, options.code || '') || uni.setStorageSync(T_NEW_BIND_ID, options.userId || '') // 有绑定id就进行存储，以防下面没登录跳到登录页
-		if (!getStorageKeyToken()) return
+		if (((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'collection') && !getStorageKeyToken({ isShowModal: false })) {
+			this.viewType = 'collection'
+			this.code = options.code || uni.getStorageSync(T_NEW_BIND_CODE) || ''
+			return
+		} else if (!getStorageKeyToken({ isShowisRedirectModal: true })) {
+			return
+		}
 		this.userId = getUserId() || ''
 		if (this.userId && !options.type && uni.getStorageSync(T_NEW_BIND_TYPE)) { // 如果原先有绑定id，例如注册/重新登陆了然后跳回来（options没携带绑定id），则是存储里的绑定id
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
@@ -128,7 +200,15 @@ export default {
 	 * 生命周期函数--监听页面卸载
 	 */
 
-	onUnload() { },
+	onUnload() {
+		if (this.type === 'nothing') {
+		} else if (this.type === 'verification') {
+			if (this.verificationTicker) {
+				clearInterval(this.verificationTicker)
+				this.verificationTicker = null
+			}
+		}
+	},
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
@@ -149,6 +229,7 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
+		// eslint-disable-next-line complexity
 		async handleBusiness(isFromLogin) {
 			console.log(isFromLogin)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
@@ -171,7 +252,7 @@ export default {
 						this.$showToast('绑定成功', 'success')
 						setTimeout(() => {
 							if (shareType === 1) {
-								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?storeId=${shopId}` })
+								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` })
 							} else if (shareType === 2) {
 								uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
 							}
@@ -189,11 +270,26 @@ export default {
 					noticeId: 0
 				}).then(({ data }) => {
 					this.orderInfo = data
+					if ([ 8 ].includes(data.state)) {
+						this.verificationTicker = setInterval(() => {
+							updateChkPaidAndWriteApi({ orderId: this.orderId })
+								.then((res) => {
+									if (res.json) {
+										if (JSON.parse(res.json).paid) {
+											clearInterval(this.verificationTicker)
+											this.verificationTicker = null
+											this.$showToast('自动核销成功', 'success')
+											this.isOrderVerification = true
+										}
+									}
+								})
+						}, 3000)
+					}
 				})
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'toAnotherTFSettle') {
-				const storageKeyToken = getStorageKeyToken()
+				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
@@ -210,16 +306,33 @@ export default {
 					.then((res) => { this.$showToast('绑定成功', 'success') })
 					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingShop') {
-				bindPlatformInfoCodeBindingApi({ phone: this.code, type: 1 })
-					.then((res) => { this.$showToast('绑定成功', 'success') })
-					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+				const shopId = this.code.split('~')[0]
+				// const phone = this.code.split('~')[1]
+				// bindPlatformInfoCodeBindingApi({ phone, type: 1 })
+				// 	.then((res) => { this.$showToast('绑定成功', 'success') })
+				// 	.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` }) }, 300)
 			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
-				const storageKeyToken = getStorageKeyToken()
+				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
+			} else if (this.type === 'collection') { // 收款方付款结算
+				// http://localhost:8988/TFShop_Uni_H5/#/pages/jump/jump?type=collection&code=shopId=186~productId=12850~skuId=334097~terminal=1
+				const shopIdStr = this.code.split('~')[0]
+				const productIdStr = this.code.split('~')[1]
+				const skuIdStr = this.code.split('~')[2]
+				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
+			} else if (this.type === 'wvHuiShiBaoPayTurn') { // 惠市宝在小程序套壳环境的支付结果回传
+				await handleDoPay({
+					collageId: Number(this.code.split('~')[3]),
+					money: '',
+					orderId: Number(this.code.split('~')[2]),
+					paymentMode: Number(this.code.split('~')[6]),
+					orderSn: Number(this.code.split('~')[4])
+				}, Number(this.code.split('~')[1]), this.code.split('~')[5], { isSuccess: Number(this.code.split('~')[0]) })
 			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
 					.then(() => {
@@ -288,5 +401,16 @@ export default {
 .jump-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+	.type-collection {
+		.operation-btn {
+			/deep/ .tui-btn {
+				border-radius: 10rpx;
+			}
+
+			/deep/ .tui-btn-warning {
+				background-color: #ef530e !important;
+			}
+		}
+	}
 }
 </style>

@@ -55,7 +55,9 @@
 				</view>
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;">
-				<ATFActivityImage :type="cItem.activityType" style="margin: 10rpx 2rpx 0 0;"></ATFActivityImage>
+				<view style="margin: 10rpx 0 0;">
+					<ATFActivityImage :type="cItem.activityType"></ATFActivityImage>
+				</view>
 				<view
 					v-if="cItem.voucherId && cItem.voucherPrice"
 					style="width: fit-content;max-width: 218rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"

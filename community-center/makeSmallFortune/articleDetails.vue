@@ -58,11 +58,21 @@
                 {{ (isChkPick?'已领取':textData.redPacketInfo.remainingPacket > 0?'领取奖励':'已结束')}}
             </button> -->
             <view class="tui-modal-mask" :class="[isMaske ? 'tui-mask-show' : '']" @click.prevent="isMaske = false">
-                  <image class="starts sta1" src="@/static/images/new-community/redBookText/start1.png"></image>
-                  <image class="starts sta2" src="@/static/images/new-community/redBookText/start2.png"></image>
-                  <image class="starts sta3" src="@/static/images/new-community/redBookText/start3.png"></image>
-                  <image class="starts sta4" src="@/static/images/new-community/redBookText/start4.png"></image>
-                  <image class="starts sta5" src="@/static/images/new-community/redBookText/start5.png"></image>
+									<view class="starts sta1">
+										<tui-icon name="star-fill" color="#fce6ac" size="58" unit="rpx" margin="0" bold></tui-icon>
+									</view>
+									<view class="starts sta2">
+										<tui-icon name="star-fill" color="#fce6ac" size="52" unit="rpx" margin="0" bold></tui-icon>
+									</view>
+									<view class="starts sta3">
+										<tui-icon name="star-fill" color="#fce6ac" size="52" unit="rpx" margin="0" bold></tui-icon>
+									</view>
+									<view class="starts sta4">
+										<tui-icon name="star-fill" color="#fce6ac" size="44" unit="rpx" margin="0" bold></tui-icon>
+									</view>
+									<view class="starts sta5">
+										<tui-icon name="star-fill" color="#fce6ac" size="54" unit="rpx" margin="0" bold></tui-icon>
+									</view>
                   <view class="RedEnvelope">
                     <view class="redTop" v-if="redPacketInfo">
                        {{ redPacketInfo.amount? ` 恭喜获得${numDelivery(redPacketInfo.amount)}元红包`:'没领到红包。。。' }}
@@ -70,10 +80,9 @@
                     <view class="redTop" v-else>
                        红包已领完
                     </view>
-                    <image v-if="isMaske" class="Content" src="@/static/images/new-community/redBookText/contant.png"></image>
-                    <image class="TopLayer" src="@/static/images/new-community/redBookText/topimg.png"></image>
-                    <image class="btn" src="@/static/images/new-community/redBookText/btn.png"></image>
-                    <view class="text" v-if="redPacketInfo">
+                    <image v-if="isMaske" class="Content" :src="common.seamingImgUrl('1715139665281-contant.png')"></image>
+                    <image class="TopLayer" :src="common.seamingImgUrl('1715139746764-topimg.png')"></image>
+                    <view class="text" v-if="redPacketInfo" style="padding: 18rpx 66rpx;background-color: #f6d497;border-radius: 16rpx;">
                         {{ redPacketInfo.amount? `开心收下`:'`(*>﹏<*)′' }}
                     </view>
                     <view class="text2">
@@ -147,7 +156,8 @@ export default {
                 postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
                 postCover: require('@/static/images/new-community/home/bagayalu.png'),
                 header: require('@/static/images/new-community/home/avatar1.png'),
-                username: '蔡徐坤'
+                username: '--',
+            		redPacketInfo: {},
             },
             formData: {
                 redPacketId: "",
@@ -155,7 +165,7 @@ export default {
             },
             isOverTimer: false,
             setTimeoutText: 10,
-            redPacketInfo: null,
+            redPacketInfo: {},
         }
     },
     methods: {

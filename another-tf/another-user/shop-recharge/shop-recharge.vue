@@ -73,7 +73,11 @@
 
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-				<CashierList :price-pay="currentRechargeCount" show show-commission-pay show-platform-pay @change="(e) => payInfo = e" />
+				<CashierList
+					:price-pay="currentRechargeCount" show
+					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
+					:show-hui-shi-bao-pay="!!currentRechargeCount" @change="(e) => payInfo = e"
+				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"
@@ -169,7 +173,7 @@ export default {
         rechargeBalance: this.currentRechargeCount,
         remark: 'normal'
       }).then(res => {
-        handleDoPay({ ...res.data, ...this.payInfo }, 7)
+        handleDoPay({ ...res.data, ...this.payInfo }, 7, '')
         console.log(res);
       }).catch(err => {
         console.log(err);

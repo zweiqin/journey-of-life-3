@@ -2,7 +2,7 @@
 	<view class="shop-container">
 		<!-- 顶部栏 -->
 		<view class="shop-header-container">
-			<image class="back-icon" src="../../../static/images/new-business/category/back.png" @click="back"></image>
+			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="back"></tui-icon>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36rpx;">
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
@@ -214,7 +214,10 @@
 
 		<!-- 酒店特殊中间结构 -->
 		<view v-if="ownSpecialHotelBox.includes(currentType)">
-			<view style="padding: 200rpx 26rpx 0;" class="special-hotel-box-bg">
+			<view
+				style="padding: 200rpx 26rpx 0;"
+				:style="{ background: `url(${common.seamingImgUrl('1714981334756-hotel-img.png')}) no-repeat center top/contain` }"
+			>
 				<view style="padding: 28rpx 22rpx;background-color: #ffffff;border-radius: 24rpx;">
 					<view class="special-hotel-tab">
 						<tui-tab
@@ -308,76 +311,11 @@
 					</view>
 				</view>
 			</view>
-			<view
-				style="margin: 14rpx 26rpx 0;padding: 22rpx 22rpx 36rpx;background: linear-gradient(150deg, #FDF3F1 3%, #FEEAEC 6%, #FFFBEF 10%, #FFFFFF 45%);"
-			>
-				<view style="display: flex;align-items: center;">
-					<text style="font-size: 34rpx;font-weight: bold;">超低一口价</text>
-					<view
-						style="display: flex;align-items: center;margin-left: 18rpx;background-color: #fce5df;border-radius: 20rpx;"
-					>
-						<view
-							style="width: 110rpx;height: 36rpx;padding: 6rpx 12rpx;font-size: 28rpx;color: #ffffff;text-align: center;background-color: #f15d43;border-radius: 20rpx 0 26rpx 20rpx;clip-path: polygon(0rpx 0rpx, 134rpx 0, 124rpx 8rpx, 124rpx 48rpx, 0 48rpx);"
-						>
-							<text style="margin-left: -10rpx;">限时购</text>
-						</view>
-						<view style="font-size: 26rpx;font-weight: bold;color: #f84715;padding: 0 14rpx 0;">01:02:15</view>
-					</view>
-				</view>
-				<view style="margin-top: 20rpx;">
-					<view
-						v-for="(item, index) in specialHotelGoodsArr" :key="index" style="display: flex;margin-top: 18rpx;"
-						@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
-					>
-						<view>
-							<BeeIcon
-								width="180rpx" height="252rpx" style="width: fit-content;border-radius: 22rpx;overflow: hidden;"
-								:src="item.url ? common.seamingImgUrl(item.url) : require('../../../static/images/con-center/hongbao.png')"
-							>
-							</BeeIcon>
-						</view>
-						<view style="flex: 1;width: 0;margin-left: 20rpx;">
-							<view
-								style="font-size: 34rpx;font-weight: bold;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
-							>
-								{{ item.name }}
-							</view>
-							<view
-								style="margin-top: 6rpx;font-size: 26rpx;color: #9e9e9e;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-							>
-								{{ item.typeName }}
-							</view>
-							<view style="margin-top: 8rpx;">
-								<view style="font-size: 26rpx;color: #9e9e9e;text-align: right;">已售100+</view>
-								<view style="display: flex;justify-content: flex-end;align-items: center;margin-top: 14rpx;">
-									<view style="margin-right: 12rpx;">
-										<view style="font-size: 26rpx;color: #9e9e9e;text-align: right;">1晚价</view>
-										<view style="display: flex;align-items: center;color: #ef530e;">
-											<view style="font-size: 24rpx;color: #9e9e9e;text-decoration: line-through;">￥444.44</view>
-											<text>
-												<text style="font-size: 24rpx;">￥</text>
-												<text style="font-size: 38rpx;font-weight: bold;">{{ item.price }}</text>
-											</text>
-											<text
-												style="padding: 2rpx 10rpx;margin-left: 10rpx;font-size: 24rpx;border: 1rpx solid #f9c1a6;border-radius: 12rpx;white-space: nowrap;"
-											>
-												{{ item.discount }}折
-											</text>
-										</view>
-									</view>
-									<tui-button
-										type="warning" width="140rpx" height="72rpx" shape="circle"
-										style="background: #ee6529!important;"
-										@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
-									>
-										抢购
-									</tui-button>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
+		</view>
+
+		<!-- 平台限时折扣显示框 -->
+		<view v-if="ownPlatformDiscountBox.includes(currentType)" style="margin: 14rpx 26rpx 0;">
+			<PlatformDiscountGoods></PlatformDiscountGoods>
 		</view>
 
 		<view v-if="ownShopCardBox.includes(currentType) && nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
@@ -495,11 +433,12 @@ import { mapGetters } from 'vuex'
 import BrandShop from '../../../pages/business-district/components/BrandShop.vue'
 import StorePrimaryFilterBox from './components/StorePrimaryFilterBox.vue'
 import StoreSecondaryFilterBox from './components/StoreSecondaryFilterBox.vue'
+import PlatformDiscountGoods from './components/PlatformDiscountGoods.vue'
 import { getShopCategorySonApi, getHomeBrandListApi, getPlatformSeckillsCanvasApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'ShopEnter',
-	components: { BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox },
+	components: { BrandShop, StorePrimaryFilterBox, StoreSecondaryFilterBox, PlatformDiscountGoods },
 	data() {
 		return {
 			transformation: {
@@ -548,7 +487,6 @@ export default {
 			ownPrimaryFilterBox: [ '6' ],
 			ownSecondaryFilterBox: ['7', '8'],
 			ownSpecialHotelBox: [ '11' ],
-			specialHotelGoodsArr: [],
 			specialHotelBoxObj: {
 				tabIndex: 0,
 				startDate: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1)}-${String(new Date().getDate())}`,
@@ -556,6 +494,7 @@ export default {
 				startWeek: '',
 				endWeek: ''
 			},
+			ownPlatformDiscountBox: [ '11' ],
 			ownShopCardBox: ['0', '1', '2', '3', '4', '6', '9', '12', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'],
 			ownShopCardWithLineBox: ['13', '26'],
 			ownShopCardWithGoodsBox: ['7', '8'],
@@ -612,9 +551,6 @@ export default {
 			else if (this.currentType === '21') this.selectionBoxArr = ['热映影片', '大剧场', '销量最高', '评分最高']
 			else if (this.currentType === '22') this.selectionBoxArr = ['全部', '商学院', '电商直播', '开店']
 			else if (this.currentType === '23') this.selectionBoxArr = ['推荐', '酒吧']
-		}
-		if (this.ownSpecialHotelBox.includes(this.currentType)) {
-			this.specialHotelGoodsArr = [{ url: '', name: '爆款】59元住全国 平日酒店晚通兑换券 中秋不加价 全国全国全国全国全国各器官svdsbv', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜b菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐dvfdgbvhjfdbfjbnfdhbu套餐套餐', price: 99.99, discount: 9.9 }, { url: '', name: '菜c菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜', typeName: '套餐套餐套餐套餐', price: 99.99, discount: 9.9 }]
 		}
 		if (this.ownShopCardBox.includes(this.currentType) || this.ownShopCardWithLineBox.includes(this.currentType) || this.ownShopCardWithGoodsBox.includes(this.currentType) || this.ownBrandCardBox.includes(this.currentType) || this.ownBrandCardWithPriceBox.includes(this.currentType)) {
 			this.getNearByShopList()
@@ -707,17 +643,11 @@ export default {
 		height: 108rpx;
 		width: 100vw;
 		background-color: #fff;
-		padding: 0 30rpx;
+		padding: 0 30rpx 0 14rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		z-index: 997;
-
-		.back-icon {
-			width: 48rpx;
-			height: 48rpx;
-			flex-shrink: 0;
-		}
 
 		.search-container {
 			flex: 1;
@@ -747,10 +677,6 @@ export default {
 				margin-left: -48rpx;
 			}
 		}
-	}
-
-	.special-hotel-box-bg {
-		background: url('../../../static/images/new-business/category/hotel-img.png') no-repeat center top/contain;
 	}
 
 	.shop-card-line:not(:last-child) {

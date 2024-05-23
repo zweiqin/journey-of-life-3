@@ -37,7 +37,7 @@
 					</template>
 				</tui-input>
 			</view>
-			<view class="more">
+			<view class="more" @click="go('/another-tf/another-user/shop/shop-enter?type=0&id=')">
 				<view class="bar-wrapper">
 					<view class="bar-item"></view>
 					<view class="bar-item"></view>

@@ -1,7 +1,7 @@
 <template>
 	<view class="activity-package-container">
 		<view class="left-container" @click="go('/another-tf/another-user/user-upgrade/purchase-chain-goods')">
-			<image src="../../../static/images/new-business/home/user-upgrade-goods.png" style="width: 100%;height: 100%;" mode="aspectFit"></image>
+			<image :src="common.seamingImgUrl('1715131443970-user-upgrade-goods.png')" style="width: 100%;height: 100%;" mode="aspectFit"></image>
 			<view style="position: absolute;top: 8upx;width: 100%;font-size: 38upx;font-weight: bold;color: #ffffff;text-align: center;">
 				<view>会员升级</view>
 				<view style="margin-top: 12upx;">会员升级大礼包</view>
@@ -12,10 +12,10 @@
 		<view class="right-container">
 			<view class="right-item" @click="empty()">
 				<view class="item-title">充话费享折扣</view>
-				<image class="zhe" src="../../../static/images/new-business/home/zhe.png"></image>
+				<image class="zhe" :src="common.seamingImgUrl('1715131551385-zhe.png')"></image>
 				<view class="button-wrapper">
 					<button class="item-btn uni-btn">立即体验</button>
-					<image class="bao" src="../../../static/images/new-business/home/bao.png"></image>
+					<image class="bao" :src="common.seamingImgUrl('1715131556808-bao.png')"></image>
 				</view>
 			</view>
 
@@ -24,8 +24,8 @@
 					<view class="title">加油券</view>
 					<view class="count">100+领取</view>
 				</view>
-				<image src="../../../static//images//new-business/home/car.png" class="car"></image>
-				<image src="../../../static//images//new-business/home/cao.png" class="cao"></image>
+				<image :src="common.seamingImgUrl('1715131676246-car.png')" class="car"></image>
+				<image :src="common.seamingImgUrl('1715131679232-cao.png')" class="cao"></image>
 				<view class="button-wrapper">
 					<button class="item-btn uni-btn">立即体验</button>
 				</view>

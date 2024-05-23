@@ -24,7 +24,7 @@
 			</view>
 			<view style="margin-top: 26rpx;font-size: 36rpx;">余额</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ pricePlatformInfo.rechargePrice || 0 }}
+				￥{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice)).toFixed(2) || 0 }}
 			</view>
 			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">可提现余额：￥{{ pricePlatformInfo.rechargePrice || 0 }}</view> -->
 			<view class="operation-btn">
@@ -142,7 +142,7 @@
 						type="warning" width="238rpx" height="108rpx" margin="32rpx 0 0"
 						:size="40" shape="circle"
 						style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;"
-						@click="handleRecharge"
+						@click="showPayTypePopup = true"
 					>
 						确定
 					</tui-button>
@@ -150,7 +150,18 @@
 			</view>
 		</tui-modal>
 
-		<CashierList :price-pay="rechargeForm.amounts || 0" @change="(e) => payInfo = e" />
+		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
+			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+				<CashierList :price-pay="rechargeForm.amounts || 0" show :show-hui-shi-bao-pay="!!rechargeForm.amounts" @change="(e) => payInfo = e" />
+				<tui-button
+					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					shape="circle"
+					@click="handleRecharge"
+				>
+					确认支付
+				</tui-button>
+			</view>
+		</tui-bottom-popup>
 	</view>
 </template>
 
@@ -188,6 +199,7 @@ export default {
 			rechargeForm: {
 				amounts: 1000
 			},
+			showPayTypePopup: false,
 			payInfo: {},
 			isShowModalRecharge: false
 		}
@@ -224,7 +236,7 @@ export default {
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
 				.then(async (res) => {
-					await handleDoPay({ ...res.data, ...this.payInfo }, 8)
+					await handleDoPay({ ...res.data, ...this.payInfo }, 8, '')
 				})
 				.catch(() => {
 					uni.hideLoading()

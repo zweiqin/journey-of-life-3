@@ -101,6 +101,7 @@
 
 <script>
 import { updatePhoneLoginRegisterApi, getVerifyCodeApi } from '../../api/anotherTFInterface'
+import { Encrypt } from '../../utils/secret'
 
 export default {
 	name: 'Register',
@@ -163,10 +164,10 @@ export default {
 				.then(() => {
 					if (!this.isReadAgreement) return this.$showToast('请先同意《用户服务协议》以及《隐私政策》')
 					updatePhoneLoginRegisterApi({
-						type: 1,
-						phone: this.registerQuery.phone,
-						verificationCode: this.registerQuery.verificationCode,
-						password: this.registerQuery.password
+						type: 1, // Encrypt(1)
+						phone: Encrypt(this.registerQuery.phone),
+						verificationCode: Encrypt(this.registerQuery.verificationCode),
+						password: Encrypt(this.registerQuery.password)
 					}).then((res) => {
 						this.$store.dispatch('auth/LoginAfterAction', { type: 'phone', data: res.data })
 						this.hasRegister = true

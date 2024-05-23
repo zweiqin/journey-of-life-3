@@ -116,17 +116,23 @@ export const getStorageUserId = () => {
  * @returns
  */
 
-export const getStorageKeyToken = () => {
+export const getStorageKeyToken = (params = {}) => {
+	const { isShowModal, isRedirect } = Object.assign({
+		isShowModal: true,
+		isRedirect: false
+	}, params)
 	const userInfo = uni.getStorageSync(USER_INFO)
 	if (!userInfo || !userInfo.userId) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',
 			success(res) {
 				if (res.confirm) {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					if (isRedirect) {
+						uni.redirectTo({ url: '/pages/login/login' })
+					} else {
+						uni.navigateTo({ url: '/pages/login/login' })
+					}
 				} else if (res.cancel) {
 					// uni.navigateBack();
 				}
@@ -135,7 +141,7 @@ export const getStorageKeyToken = () => {
 		return
 	}
 	if (!userInfo || !userInfo.phone) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
 			content: '未绑定手机号码，是否去绑定？',
 			success(res) {
@@ -152,14 +158,16 @@ export const getStorageKeyToken = () => {
 	}
 	const storageKey = uni.getStorageSync(T_STORAGE_KEY)
 	if (!storageKey || !storageKey.token) {
-		uni.showModal({
+		isShowModal && uni.showModal({
 			title: '提示',
-			content: '系统出错，请重新登陆',
+			content: '您还未登录，请登陆！',
 			success(res) {
 				if (res.confirm) {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					if (isRedirect) {
+						uni.redirectTo({ url: '/pages/login/login' })
+					} else {
+						uni.navigateTo({ url: '/pages/login/login' })
+					}
 				} else if (res.cancel) {
 					// uni.navigateBack();
 				}
@@ -240,6 +248,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 					url: currentUrl,
 					token: uni.getStorageSync(USER_TOKEN)
 				}).then(({ data }) => {
+					// https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#62
 					wx.config({
 						debug: false, // 开启调试模式
 						appId: data.appId, // 必填，公众号的唯一标识
@@ -250,13 +259,15 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 							'updateAppMessageShareData',
 							'updateTimelineShareData',
 							'onMenuShareAppMessage',
-							'onMenuShareTimeline'
+							'onMenuShareTimeline',
+							'openLocation'
 						], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 						openTagList: ['wx-open-launch-weapp']
 					})
 					wx.ready(function () {
 						// config信息验证成功
 						// console.log(res);
+						cb && typeof cb === 'function' && cb()
 					})
 					wx.error(function (res) {
 						// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。

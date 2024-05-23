@@ -50,26 +50,32 @@
 
 			<view style="display: flex;flex-wrap: wrap;padding: 4upx 0;">
 				<view
-					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 2upx 6upx;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
+					v-if="brandInfo.isBeeCoin === 1"
+					style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
-					补贴代金券{{ brandInfo.voucherReturn ? brandInfo.voucherReturn : 0 }}%
+					支持交易金
 				</view>
 				<view
 					v-if="brandInfo.isVoucher"
-					style="width: fit-content;margin-top: 8upx;padding: 2upx 6upx;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
+					style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
 					支持代金券
+				</view>
+				<view
+					style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
+				>
+					补贴代金券{{ brandInfo.voucherReturn ? brandInfo.voucherReturn : 0 }}%
 				</view>
 			</view>
 
 			<view v-if="bottomType === 'detail'" class="brand-detail">
 				<view class="other-info">
 					<view v-if="brandInfo.distance" class="item">
-						<image class="icon" src="../../../static/images/new-business/home/location.png"></image>
+						<tui-icon name="gps" color="#ef530e" size="26" unit="rpx" margin="0 4rpx 0 0"></tui-icon>
 						<text>{{ brandInfo.distance || 0 }}km</text>
 					</view>
 					<view class="item">
-						<image style="width: 44upx" class="icon" src="../../../static/images/new-business/home/views.png"></image>
+						<tui-icon name="friendadd" color="#888889" size="28" unit="rpx" margin="0 6rpx 0 0"></tui-icon>
 						<text style="color: #888889">{{ brandInfo.fansNumber || 0 }}</text>
 					</view>
 				</view>
@@ -131,19 +137,6 @@ export default {
 
 	.brand-logo-container {
 		position: relative;
-
-		&::after {
-			content: '';
-			display: block;
-			position: absolute;
-			bottom: -20upx;
-			left: 50%;
-			transform: translateX(-50%);
-			height: 251upx;
-			background: url('../../../static/images/new-business/home/diu.png') no-repeat;
-			background-size: cover;
-			z-index: -1;
-		}
 	}
 
 	.brand-info {
@@ -154,11 +147,6 @@ export default {
 		.brand-title-wrapper {
 			display: flex;
 			align-items: center;
-
-			.icon {
-				width: 32upx;
-				height: 32upx;
-			}
 
 			.name {
 				flex: 1;

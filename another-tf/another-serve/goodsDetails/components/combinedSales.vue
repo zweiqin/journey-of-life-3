@@ -2,13 +2,10 @@
 	<view v-if="selectComposeData && selectComposeData.length > 0" class="group-list">
 		<view class="group-warp">
 			<view class="title">
-				<label>
-					<image
-						class="title-img" src="../../../../static/images/new-business/shop/combinationIcon.png" alt="组合销售"
-						mode="widthFix"
-					>
-					</image>
-				</label>
+				<view style="display: flex;align-items: center;">
+					<tui-icon :size="30" color="#fc7901" name="notice-fill" unit="rpx" margin="0 10rpx 0 0"></tui-icon>
+					<text style="color: #d0b88c;font-size: 36rpx;font-style: italic;font-weight: bold;">组合销售</text>
+				</view>
 				<view class="price-text">
 					组合价：¥{{ composePrice }}
 				</view>
@@ -29,7 +26,7 @@
 					:class="tabIndex === index && 'on'"
 				>
 					<swiper
-						class="pro-box" :indicator-dots="false" :autoplay="true"
+						class="pro-box" :indicator-dots="false" autoplay
 						:display-multiple-items="item.composeProductInfoList.length < 3 ? item.composeProductInfoList.length : 3"
 						:disable-touch="item.composeProductInfoList.length <= 3" @change="(e) => swiperCurrent = e.detail.current"
 					>
@@ -116,7 +113,7 @@
 </template>
 
 <script>
-import { T_SKU_ITEM_DTO_LIST } from '../../../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../../../constant'
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../../utils'
 import { getProductDetailsByIdApi, getProductSelectComposeApi } from '../../../../api/anotherTFInterface'
 
@@ -281,11 +278,8 @@ export default {
 		},
 		// 根据活动显示不同价格
 		getPrice(item) {
-			// 所属活动 0-常规商品 1-拼团活动 2-秒杀活动 3-限时折扣活动 4-平台秒杀 5-平台折扣 6-定价捆绑 7-组合捆绑 8-场景营销 9-会员价
 			if (item.activityType) {
-				if (item.activityType === 0 || item.activityType === 6 || item.activityType === 7) {
-					return item.price
-				}
+				if (item.activityType === 6 || item.activityType === 7) return item.price
 				return item.originalPrice
 			}
 			return item.price
@@ -306,9 +300,9 @@ export default {
 				shopObj.skus.push(skusObj)
 			}
 			addCart.push(shopObj)
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCart)
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCart)
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=1'
+				url: '/another-tf/another-serve/paymentOrderConfirm/index?type=1'
 			})
 		}
 	}
@@ -331,12 +325,7 @@ export default {
 	.title {
 		display: flex;
 		align-items: center;
-		position: relative;
 		justify-content: space-between;
-
-		.title-img {
-			width: 203rpx;
-		}
 
 		.price-text {
 			padding: 0 34rpx;

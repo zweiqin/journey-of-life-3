@@ -24,7 +24,8 @@
 			</view>
 			<view style="padding: 20rpx 20rpx 0;">
 				<view style="margin-top: 20rpx;font-size: 28rpx;">
-					可提现金额：{{ withdrawalPrice || 0 }}元（取整后 {{ withdrawalMoney }} 元）
+					可提现金额：{{ withdrawalPrice || 0 }}元
+					<!-- （取整后 {{ withdrawalMoney }} 元） -->
 				</view>
 				<!-- <view style="margin-top: 12rpx;border-bottom: 2rpx solid #cccccc;">
 					<input
@@ -168,13 +169,13 @@ export default {
 				getSmallAccountBookStatisticsApi({})
 					.then((res) => {
 						this.withdrawalPrice = res.data.totalAmount
-						this.withdrawalMoney = Math.floor(this.withdrawalPrice)
+						this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
 					})
 			} else {
 				getPricePlatformAllApi({}).then((res) => {
 					this.withdrawalPrice = res.data.price
 					this.withdrawHistoryList = res.data.withdrawals
-					this.withdrawalMoney = Math.floor(this.withdrawalPrice)
+					this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
 				})
 			}
 		},

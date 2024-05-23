@@ -78,23 +78,24 @@
 					style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;"
 				>
 					<view
-						:style="{ color: shopGoodsInfo.query.ifNew == 1 ? '#ff7911' : '#000000' }"
+						:style="{ color: shopGoodsInfo.query.ifNew === 1 ? '#ff7911' : shopGoodsInfo.query.ifNew === 0 ? '#8dbcbd' : '#000000' }"
 						@click="handleGoodsSortTap(1)"
 					>
 						<text>新品</text>
 					</view>
-					<view :style="{ color: sortGoodsIndex == 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+					<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
 						<text>价格</text>
 						<tui-icon
-							:name="shopGoodsInfo.query.type == 1 ? 'turningup' : shopGoodsInfo.query.type == 2 ? 'turningdown' : ''"
+							v-if="[1, 2].includes(shopGoodsInfo.query.type)"
+							:name="shopGoodsInfo.query.type === 1 ? 'turningup' : shopGoodsInfo.query.type === 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"
 						></tui-icon>
 					</view>
-					<view :style="{ color: sortGoodsIndex == 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+					<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
 						<text>销量</text>
 						<tui-icon
 							v-if="[1, 2].includes(shopGoodsInfo.query.volume)"
-							:name="shopGoodsInfo.query.volume == 1 ? 'turningup' : shopGoodsInfo.query.volume == 2 ? 'turningdown' : ''"
+							:name="shopGoodsInfo.query.volume === 1 ? 'turningup' : shopGoodsInfo.query.volume === 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"
 						></tui-icon>
 					</view>
@@ -173,8 +174,8 @@ export default {
 			shopGoodsInfo: {
 				query: {
 					ifNew: 1, // 是否新品
-					type: 1, // 价格排序条件
-					volume: 0, // 销量排序条件
+					type: '', // 价格排序条件
+					volume: '', // 销量排序条件
 					page: 1, // 当前页
 					pageSize: 20 // 每页记录数
 				},
@@ -313,21 +314,19 @@ export default {
 			this.shopGoodsInfo.data = []
 			this.shopGoodsInfo.listTotal = 0
 			this.shopGoodsInfo.isEmpty = false
-			if (index == 1) {
-				this.shopGoodsInfo.query.ifNew = this.shopGoodsInfo.query.ifNew != 0 ? 0 : 1,
-				this.shopGoodsInfo.query.type = 1,
-				this.shopGoodsInfo.query.volume = 1,
-				this.sortGoodsIndex = index
-			} else if (index == 2) {
-				this.shopGoodsInfo.query.ifNew = 0,
-				this.shopGoodsInfo.query.type = this.shopGoodsInfo.query.type != 1 ? 1 : 2,
-				this.shopGoodsInfo.query.volume = 1,
-				this.sortGoodsIndex = index
-			} else if (index == 3) {
-				this.shopGoodsInfo.query.ifNew = 0,
-				this.shopGoodsInfo.query.type = 1,
-				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume != 1 ? 1 : 2,
-				this.sortGoodsIndex = index
+			this.sortGoodsIndex = index
+			if (index === 1) {
+				this.shopGoodsInfo.query.ifNew = this.shopGoodsInfo.query.ifNew ? 0 : 1
+				this.shopGoodsInfo.query.type = ''
+				this.shopGoodsInfo.query.volume = ''
+			} else if (index === 2) {
+				this.shopGoodsInfo.query.ifNew = ''
+				this.shopGoodsInfo.query.type = this.shopGoodsInfo.query.type === 1 ? 2 : 1
+				this.shopGoodsInfo.query.volume = ''
+			} else if (index === 3) {
+				this.shopGoodsInfo.query.ifNew = ''
+				this.shopGoodsInfo.query.type = ''
+				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume === 1 ? 2 : 1
 			}
 			this.getShopGoodsTemplate()
 		}

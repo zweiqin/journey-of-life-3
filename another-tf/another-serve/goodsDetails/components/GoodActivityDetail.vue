@@ -1,7 +1,7 @@
 <template>
 	<view class="good-activity-detail-container">
 		<!-- 商品详情 -->
-		<swiper class="goodsImgswiper-box " :indicator-dots="true" :autoplay="true">
+		<swiper class="goodsImgswiper-box " indicator-dots autoplay>
 			<swiper-item v-for="(imgItem, index) in goodsDetail.images" :key="index">
 				<image
 					v-if="!isVideoSource(imgItem)" mode="aspectFit" class="goodsImg default-img"
@@ -19,101 +19,70 @@
 			<view>
 				<view v-if="skuSelect.activityType === 0" class="flex-items flex-sp-between">
 					<view class="flex-items">
-						<label class="fs36 font-color-C83732">¥</label>
+						<label class="fs36 font-color-C83732">￥</label>
 						<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
 						<view class="flex-column-plus mar-left-20">
 							<label
 								v-if="skuSelect.price !== skuSelect.originalPrice"
 								class="fs24 font-color-999 discountsPriceLine mar-left-20"
 							>
-								¥ {{ skuSelect.originalPrice || 0 }}
+								￥ {{ skuSelect.originalPrice || 0 }}
 							</label>
 						</view>
 					</view>
 					<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
 				</view>
-				<view v-else-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="seckill-box">
+				<view v-else-if="[1, 2, 3, 4, 5, 8, 9, 10].includes(skuSelect.activityType)" style="background-color: #333333;">
 					<view class="flex-items flex-row flex-sp-between">
 						<view class="flex-column-plus">
-							<image
-								v-if="[2, 4].includes(skuSelect.activityType)" class="seckill-icon"
-								src="../../../../static/images/new-business/shop/seckillicon.png" mode=""
-							></image>
-							<image
-								v-if="[3, 5].includes(skuSelect.activityType)" class="discount-icon"
-								src="../../../../static/images/new-business/shop/discounticon.png" mode=""
-							></image>
-							<image
-								v-if="skuSelect.activityType === 1" class="spell-icon"
-								src="../../../../static/images/new-business/shop/spellicon.png" mode=""
-							></image>
+							<ATFActivityImage
+								:type="skuSelect.activityType" show-icon background-color="transparent"
+								font-size="40rpx" bold italic :icon-size="28"
+							></ATFActivityImage>
 							<view class="flex-row-plus flex-items mar-top-10">
-								<label class="fs30 font-color-FFF">¥</label>
+								<label class="fs30 font-color-FFF">￥</label>
 								<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
 								<label class="fs28 mar-left-10 discountsPriceLine font-color-999">
-									¥
-									{{ skuSelect.originalPrice || 0 }}
+									￥{{ skuSelect.originalPrice || 0 }}
 								</label>
 							</view>
 						</view>
-						<view v-if="[1, 2, 3, 4, 5].includes(skuSelect.activityType)" class="countdown flex-column-plus">
-							<view v-if="skuSelect.ifEnable === 0">
-								<label class="fs28">距离结束剩余</label>
-								<view class="flex-row-plus fs34 flex-items-plus mar-top-10">
-									<view class="countdown-box flex-items-plus">{{ activeTimeObj.day }}</view>
-									<view class="font-color-999">天</view>
-									<view class="countdown-box flex-items-plus">{{ activeTimeObj.hour }}</view>
-									<view class="font-color-999">:</view>
-									<view class="countdown-box flex-items-plus">{{ activeTimeObj.min }}</view>
-									<view class="font-color-999">:</view>
-									<view class="countdown-box flex-items-plus">{{ activeTimeObj.sec }}</view>
-								</view>
+						<view v-if="[1, 2, 3, 4, 5, 10].includes(skuSelect.activityType)">
+							<view v-if="(skuSelect.ifEnable === 0)" style="text-align: center;">
+								<view style="padding-bottom: 10rpx;font-size: 28rpx;color: #cccccc;">距离结束剩余</view>
+								<tui-countdown
+									:width="42" :height="42" :size="30" :colon-size="30"
+									colon-color="#999999"
+									color="#FFEBC4" border-color="transparent" background-color="#525252" days
+									:is-colon="false"
+									:time="Math.floor((Date.parse(skuSelect.endTime) - Date.now()) / 1000)"
+									@end="handleEndActivity"
+								></tui-countdown>
 							</view>
 							<view v-else>
 								<label class="fs28 mar-right-20">即将开始：{{ skuSelect.startTime }}</label>
 							</view>
 						</view>
-					</view>
-				</view>
-				<view v-else-if="skuSelect.activityType === 8">
-					<view class="flex-row-plus flex-items-plus">
-						<label class="fs30 font-color-FFF">¥</label>
-						<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
-						<label class="fs28 mar-left-10 discountsPriceLine font-color-CCC">
-							¥
-							{{ skuSelect.originalPrice || 0 }}
-						</label>
-					</view>
-					<view class="sceneNameBox">{{ goodsDetail.sceneName }}</view>
-				</view>
-				<view
-					v-else-if="skuSelect.activityType === 9"
-					style="display: flex;justify-content: space-between;align-items: center;padding: 4rpx 8rpx;background-color: #333333;"
-				>
-					<view style="display: flex;align-items: center;">
-						<tui-icon :size="28" color="#dbc296" name="member" margin="0 10rpx 0 0"></tui-icon>
-						<text style="font-size: 36rpx;color: #dbc296;font-weight: bold;">会员价</text>
-					</view>
-					<view style="display: flex;justify-content: space-between;align-items: end;">
-						<text style="margin-right: 10rpx;color: #ffffff;font-size: 34rpx;font-weight: bold;">
-							￥{{ skuSelect.price || 0 }}
-						</text>
-						<text style="font-size: 28rpx;text-decoration: line-through;color: #999999;">
-							￥{{ skuSelect.originalPrice || 0 }}
-						</text>
+						<view v-else-if="[ 8 ].includes(skuSelect.activityType)">{{ goodsDetail.sceneName }}</view>
 					</view>
 				</view>
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
 				<view
-					v-if="skuSelect.voucherId"
-					style="width: fit-content;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					v-if="skuSelect.beeCoin"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+				>
+					赠送 {{ skuSelect.beeCoin }} 交易金
+				</view>
+				<view
+					v-if="skuSelect.voucherId && skuSelect.voucherPrice"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					可使用{{ skuSelect.voucherPrice }}代金券抵扣
 				</view>
 				<view
 					v-if="skuSelect.presenterVoucher"
-					style="width: fit-content;margin-left: 12upx;padding: 6upx 12upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
 					赠送 {{ skuSelect.price
 						? `${(Number.parseFloat(skuSelect.presenterVoucher / skuSelect.price).toFixed(3) * 1000) / 10}%`
@@ -172,7 +141,7 @@
 
 <script>
 import CouponPopup from './CouponPopup'
-import { timeFormatting, isVideoSource } from '../../../../utils'
+import { isVideoSource } from '../../../../utils'
 import { getProductSharePicApi, updateCollectCancelPUTApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
 
 export default {
@@ -194,15 +163,6 @@ export default {
 	},
 	data() {
 		return {
-			// 活动倒计时
-			timeDifference: 0,
-			activeTimeObj: {
-				day: '00',
-				hour: '00',
-				min: '00',
-				sec: '00'
-			},
-			countdownInterval: null,
 			// 分享
 			shareObj: {
 				url: '',
@@ -216,54 +176,16 @@ export default {
 			}
 		}
 	},
-	watch: {
-		skuSelect: {
-			handler(newVal) {
-				if ([1, 2, 3, 4, 5].includes(newVal.activityType) && (newVal.ifEnable === 0)) {
-					this.$refs.goodActivityDetail.handleGetCountDownNumber(newVal.endTime)
-				}
-			},
-			immediate: false,
-			deep: true
-		}
-	},
 	methods: {
 		isVideoSource,
 
-		/**
-		 * 初始化活动倒计时
-		 * @param endTimestamp
-		 */
-
-		handleGetCountDownNumber(endTimestamp) {
-			// 与当前时间的时间差（秒）
-			this.timeDifference = (new Date(endTimestamp.substring(0, 19).replace(/-/g, '/')).getTime() - new Date().getTime()) / 1000
-			this.activeTimeObj = timeFormatting(this.timeDifference)
-			this.handleCountDown()
-		},
-
-		/**
-		 * 开始倒计时
-		 */
-
-		handleCountDown() {
-			if (this.countdownInterval) {
-				return
-			}
-			this.countdownInterval = setInterval(() => {
-				if (this.timeDifference <= 0) {
-					clearInterval(this.countdownInterval)
-					uni.showToast({
-						title: '活动结束',
-						duration: 2000,
-						icon: 'none'
-					})
-					this.$emit('activityEnd')
-				} else {
-					this.timeDifference--
-					this.activeTimeObj = timeFormatting(this.timeDifference)
-				}
-			}, 1000)
+		handleEndActivity() {
+			uni.showToast({
+				title: '活动结束',
+				duration: 2000,
+				icon: 'none'
+			})
+			this.$emit('activityEnd')
 		},
 
 		/**
@@ -350,6 +272,12 @@ export default {
 .good-activity-detail-container {
 	box-sizing: border-box;
 
+	/deep/ .tui-countdown-box {
+		.tui-colon-pad {
+			padding: 0 6rpx !important;
+		}
+	}
+
 	.goodsImgswiper-box {
 		width: 750upx;
 		height: 750upx;
@@ -402,47 +330,6 @@ export default {
 				width: 614upx;
 				padding-top: 20upx;
 			}
-		}
-	}
-
-	.seckill-box {
-		width: 100%;
-		background-color: #333333;
-
-		.seckill-icon {
-			width: 187rpx;
-			height: 41rpx;
-			background-size: contain;
-		}
-
-		.discount-icon {
-			width: 187rpx;
-			height: 41rpx;
-			background-size: contain;
-		}
-
-		.spell-icon {
-			width: 182rpx;
-			height: 37rpx;
-			background-size: contain;
-			margin-bottom: 20rpx;
-		}
-
-		.countdown {
-			text-align: center;
-
-			label {
-				text-align: center;
-				color: #CCCCCC;
-			}
-		}
-
-		.countdown-box {
-			padding: 0 8rpx;
-			height: 48rpx;
-			color: #FFEBC4;
-			background-color: #525252;
-			margin: 10rpx;
 		}
 	}
 }

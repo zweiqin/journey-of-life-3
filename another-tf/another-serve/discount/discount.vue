@@ -53,9 +53,7 @@
 						<view class="originalPrice">原价: ￥{{ item.originalPrice }}</view>
 						<view class="price">
 							<view class="currentPrice flex-row-plus flex-items-plus font-color-FF7800">
-								<view class="iconBox">
-									<image src="../../../static/images/new-business/shop/discountListIcon.png"></image>
-								</view>
+								<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 								<view class="flex-row-plus flex-items priceInfo">
 									<label class="fs24">￥</label>
 									<label class="fs36">{{ item.price }}</label>
@@ -142,18 +140,10 @@ export default {
 				this.queryInfo.volume = 0
 			} else if (index == 2) {
 				this.queryInfo.volume = 0
-				if (this.queryInfo.type === 0) {
-					this.queryInfo.type = 1
-				} else {
-					this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				}
+				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
 			} else if (index == 3) {
 				this.queryInfo.type = 0
-				if (this.queryInfo.volume === 0) {
-					this.queryInfo.volume = 1
-				} else {
-					this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				}
+				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
 			}
 			this.getDiscountList()
 		},
@@ -210,13 +200,6 @@ export default {
 
 			.itemInfo {
 				flex: 1;
-
-				.iconBox {
-					image {
-						width: 58rpx;
-						height: 36rpx;
-					}
-				}
 
 				p {
 					font-size: 26upx;

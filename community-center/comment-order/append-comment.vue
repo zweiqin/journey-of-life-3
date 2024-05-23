@@ -179,10 +179,6 @@ export default {
           uni.redirectTo({
             url: '/community-center/comment-order/comment-order'
           });
-
-          // uni.switchTab({
-          //   url: '/pages/order/order?type=shop&status=5'
-          // });
         }, 2000);
       } catch (error) {
         this.ttoast({

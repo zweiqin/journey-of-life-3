@@ -1,7 +1,7 @@
 <template>
       <view class="MakeSmallFortuneBox">
         <view class="shop-header-container">
-			<image class="back-icon" src="@/static/images/new-business/category/back.png" @click="goBack"></image>
+			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="goBack"></tui-icon>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36upx;">文章中心</text>
 				<tui-input
@@ -130,17 +130,11 @@ export default {
 		height: 108upx;
 		width: 100vw;
 		background-color: #fff;
-		padding: 0 30upx;
+		padding: 0 30upx 0 14rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		z-index: 9;
-
-		.back-icon {
-			width: 48upx;
-			height: 48upx;
-			flex-shrink: 0;
-		}
 
 		.search-container {
 			flex: 1;

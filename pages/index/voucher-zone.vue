@@ -1,7 +1,7 @@
 <template>
   <view class="voucher-zone-container">
     <view class="page-haeder">
-      <image @click="handleBack" src="../../static/images/new-business/category/back.png" class="back-icon"></image>
+			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="handleBack"></tui-icon>
       <view class="search-container" @click="go(`/another-tf/another-serve/search/index`)">
         <input type="text" class="input" placeholder="请输入您想搜索的商品">
         <button class="uni-btn">搜索</button>
@@ -80,14 +80,22 @@
                 <view class="goods-name">{{ item.productName }}</view>
                 <view class="price">￥{{ item.price }} <text v-if="item.originalPrice" class="origin-price">￥{{
                   item.originalPrice }}</text> </view>
-                <view class="voucher-num" v-if="item.voucherId && item.voucherPrice">
-                  可使用{{ item.voucherPrice }}代金券抵扣
-                </view>
-                <view class="voucher-num" v-if="item.presenterVoucher">
-                  赠送 {{ item.price
-										? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
-										: item.presenterVoucher }} 代金券
-                </view>
+								<view style="display: flex;align-items: center;flex-wrap: wrap;">
+									<view
+										v-if="item.voucherId && item.voucherPrice"
+										style="width: fit-content;max-width: 268rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										可使用{{ item.voucherPrice }}代金券抵扣
+									</view>
+									<view
+										v-if="item.presenterVoucher"
+										style="width: fit-content;max-width: 268rpx;padding: 2rpx 8rpx;margin: 10rpx 6rpx 0 0;color: #E24747;font-size: 26rpx;border: 1rpx solid #e247478c;border-radius: 8rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										赠送 {{ item.price
+											? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
+											: item.presenterVoucher }} 代金券
+									</view>
+								</view>
               </view>
             </view>
           </view>
@@ -183,14 +191,8 @@ export default {
     align-items: center;
     height: 128upx;
     background-color: #fff;
-    padding: 28upx 30upx;
+    padding: 28upx 30upx 28rpx 14rpx;
     box-sizing: border-box;
-
-    .back-icon {
-      width: 48upx;
-      height: 48upx;
-      flex-shrink: 0;
-    }
 
     .search-container {
       height: 72upx;

@@ -111,7 +111,11 @@
 		</tui-modal>
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-				<CashierList :price-pay="amount" show show-commission-pay show-platform-pay @change="(e) => payInfo = e" />
+				<CashierList
+					:price-pay="amount" show
+					:show-commission-pay="!!amount" :show-platform-pay="!!amount"
+					:show-hui-shi-bao-pay="!!amount" @change="(e) => payInfo = e"
+				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"
@@ -183,7 +187,7 @@ export default {
 				number: this.amount * 2,
 				payGrade: this.amount
 			}).then((res) => {
-				handleDoPay({ ...res.data, ...this.payInfo }, 4)
+				handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
 			})
 				.catch((err) => {
 					console.log(err)

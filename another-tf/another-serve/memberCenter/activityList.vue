@@ -9,11 +9,6 @@
 					<span>{{ hou }}</span><i>:</i><span>{{ min }}</span><i>:</i><span>{{ sec }}</span>
 				</view>
 			</view>
-			<!--	  <view class="filterBox" v-else> -->
-			<!--		<view class="item" :class="selectIndex == 0 ? 'selected' : ''" @click="synthesize"><span>综合</span></view> -->
-			<!--		<view class="item" :class="selectIndex == 1 ? 'selected' : ''" @click="sales"><span>销量</span></view> -->
-			<!--		<view class="item" :class="selectIndex == 2 ? 'selected' : ''" @click="priceClick"><span>价格</span></view> -->
-			<!--	  </view> -->
 			<view id="boxFixed" class="nav-warp">
 				<view class="shop-list-nav" :class="{ 'is-fixed': isFixed }">
 					<view class="nav-item-sort" @click="sortTap(1)">
@@ -47,9 +42,7 @@
 						<view class="currentPrice">
 							<view class="originalPrice">原价: ¥{{ item.originalPrice }}</view>
 							<view class="flex-row-plus flex-items-plus">
-								<view class="iconBox">
-									<image src="../../../static/images/new-business/shop/memberCenterIcon.png"></image>
-								</view>
+								<ATFActivityImage :type="9"></ATFActivityImage>
 								<view class="flex-row-plus flex-items priceInfo">
 									<label class="fs24">￥</label>
 									<label class="fs36">{{ item.price }}</label>
@@ -146,55 +139,19 @@ export default {
 		sortTap(index) {
 			this.page = 1
 			this.discountList = []
+			this.sortIndex = index
 			if (index == 1) {
-				this.type = null
-				this.volume = null
-				this.sortIndex = index
+				this.type = 0
+				this.volume = 0
 			} else if (index == 2) {
+				this.volume = 0
 				this.type = this.type != 1 ? 1 : 2
-				this.volume = null
-				this.sortIndex = index
 			} else if (index == 3) {
-				this.type = null
+				this.type = 0
 				this.volume = this.volume != 1 ? 1 : 2
-				this.sortIndex = index
 			}
 			this.getMemberList()
 		},
-		// synthesize(){
-		// 	this.volume =1//销量
-		// 	this.type = 1//价格
-		// 	this.page = 1
-		// 	this.selectIndex = 0
-		// 	this.discountList = []
-		// 	this.getDiscountDataList()
-		// },
-		// sales(){
-		// 	//销量
-		// 	if(this.volume == 1){
-		// 		this.volume = 2
-		// 	}else{
-		// 		this.volume = 1
-		// 	}
-		// 	this.type = 1//价格
-		// 	this.page = 1
-		// 	this.selectIndex = 1
-		// 	this.discountList = []
-		// 	this.getDiscountDataList()
-		// },
-		// priceClick(){
-		// 	this.volume =1//销量
-		// 	//价格
-		// 	if(this.type == 1){
-		// 		this.type = 2
-		// 	}else{
-		// 		this.type = 1
-		// 	}
-		// 	this.page = 1
-		// 	this.selectIndex = 2
-		// 	this.discountList = []
-		// 	this.getDiscountDataList()
-		// },
 		gogoodsDetails(shopId, productId, skuId) {
 			uni.navigateTo({
 				url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}`
@@ -381,13 +338,6 @@ page {
 
 			.itemInfo {
 				flex: 1;
-
-				.iconBox {
-					image {
-						width: 58rpx;
-						height: 36rpx;
-					}
-				}
 
 				p {
 					font-size: 26upx;

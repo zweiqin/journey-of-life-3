@@ -1,10 +1,10 @@
 <template>
-  <view class="voucher-wrapper" :class="{ active: start }" @click="go('/pages/index/voucher-zone')">
+  <view class="voucher-wrapper" :class="{ active: start }" @click="go('/another-tf/another-user/transaction-funds/trading-activities')">
     <view class="voucher-item first-el"></view>
     <view class="voucher-item next-el"></view>
     <view class="voucher-item top-el">
-      <view class="title">代金券专区</view>
-      <view class="sub-title">免费享好物</view>
+      <view class="title">爆品家具专区</view>
+      <view class="sub-title">返还交易金</view>
       <!-- todo 加动画 -->
     </view>
 

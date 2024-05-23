@@ -56,7 +56,7 @@
 			:show="dropdownShow" :height="0" :translatey="translatey" background-color="#ffffff"
 			style="position: fixed;left: 0;z-index: 996;" @close="handleCloseDropdown()"
 		>
-			<view :style="{ padding: dropdownPadding }">
+			<view :style="{ padding: dropdownPadding }" style="box-sizing: border-box;">
 				<view style="display: flex;justify-content: space-between;align-items: center;font-size: 28rpx;">
 					<view
 						style="display: flex;align-items: center;"
@@ -135,10 +135,10 @@
 					<view v-else-if="dropdownType === 'classification'" style="padding-bottom: 66rpx;">
 						<view v-if="isFirstClass">
 							<view v-if="classifyTreeList && classifyTreeList.length" style="max-height: 85vh;overflow-y: auto;">
-								<view style="display: flex;justify-content: space-between;flex-wrap: wrap;width: 100%;">
+								<view style="display: flex;flex-wrap: wrap;margin: 0 -10rpx;">
 									<view
 										v-for="item in classifyTreeList" :key="item.id"
-										style="position: relative;width: 23%;padding: 10rpx 0;margin: 0 0 20rpx;font-size: 24rpx;text-align: center;white-space: nowrap;background-color: #d8d8d8;border-radius: 16rpx;box-sizing: border-box;"
+										style="position: relative;width: 152rpx;padding: 10rpx 0;margin: 0 10rpx 20rpx;font-size: 24rpx;text-align: center;white-space: nowrap;background-color: #d8d8d8;border-radius: 16rpx;box-sizing: border-box;"
 										:style="{
 											border: item.id === currentClassifyTab ? '2rpx solid #ff4b10' : '2rpx solid #fff1ec',
 											color: item.id === currentClassifyTab ? '#ff4b10' : '#000000'
@@ -322,7 +322,7 @@ export default {
 
 			// 分类数据
 			classifyTreeList: [],
-			currentClassifyTab: '',
+			currentClassifyTab: '0',
 			currentClassifyList: [],
 			classificationText: ''
 		}
@@ -330,9 +330,14 @@ export default {
 	created() {
 		getShopOneClassifyApi({ classifyId: this.parentClassifyId })
 			.then((res) => {
-				this.classifyTreeList = res.data || []
-				if (this.classifyTreeList && this.classifyTreeList.length) {
-					(this.currentClassifyTab = this.classifyTreeList[0].id) && (this.currentClassifyList = this.classifyTreeList[0].childs || [])
+				if (res.data && res.data.length) {
+					if (this.isFirstClass) {
+						this.classifyTreeList = [{ id: '0', storeName: '全部品类', childs: [] }, ...res.data]
+					} else {
+						this.classifyTreeList = res.data || []
+						this.currentClassifyTab = this.classifyTreeList[0].id
+						this.currentClassifyList = this.classifyTreeList[0].childs || []
+					}
 				}
 			})
 	},
@@ -355,16 +360,18 @@ export default {
 			// console.log('handleCloseDropdown', this.dropdownType)
 		},
 		handleSelectClassify(e) {
-			this.primaryFilterBoxObj.currentClassifyId = e.id || ''
+			this.primaryFilterBoxObj.currentClassifyId = Number(e.id) || ''
 			this.classificationText = e.storeName
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false
+			this.$emit('close')
 		},
 		handleSelectNearby(e) {
 			this.primaryFilterBoxObj.distance = e || ''
 			this.nearbyText = e ? `${e}km` : '附近'
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false
+			this.$emit('close')
 		},
 		handleSelectSort(e, name) {
 			if (e === 0) {
@@ -379,6 +386,7 @@ export default {
 			this.sortText = name
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false
+			this.$emit('close')
 		},
 		handleSelectFilterTime(e, name) {
 			// if (this.filterTimeText === name) {
@@ -439,6 +447,7 @@ export default {
 		handleSelectFilterConfirm() {
 			this.$emit('select', this.primaryFilterBoxObj)
 			this.dropdownShow = false
+			this.$emit('close')
 		}
 	}
 }

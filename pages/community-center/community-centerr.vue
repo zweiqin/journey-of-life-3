@@ -134,6 +134,7 @@ export default {
     this.showVipPostPopup()
   },
   mounted() {
+    this.handleInitShare()
     // #ifdef APP
     this.$refs.checkedVersion.checkedVersion(true)
     // #endif
@@ -232,7 +233,7 @@ export default {
       const data = {
         data: {
           title: '团蜂家居社区服务中心',
-          desc: '一切和家居有关的问题，我们都能解决',
+          desc: '团蜂社区服务，点击下载',
           link: `${A_TF_MAIN}/#/`,
           imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
         },
@@ -348,11 +349,12 @@ export default {
     const script = document.createElement('script')
     script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
     document.body.appendChild(script)
-    setTimeout(() => {
-      this.handleInitShare()
-    }, 500)
     // #endif
-    // }
+		if (options.jumpType) {
+			uni.redirectTo({
+				url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`
+			})
+		}
   },
 
   onPageScroll(e) {

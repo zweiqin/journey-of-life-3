@@ -11,80 +11,100 @@
 			<view v-else style="height: 100upx;"></view>
 			<view style="padding: 42upx 40upx 0;">
 				<view
-					style="position: relative;min-height: 500upx;padding: 54upx 40upx;border-radius: 20upx;"
+					style="position: relative;min-height: 500upx;padding: 54upx 40upx;border-radius: 20upx;background-color: #ef530e;overflow: hidden;"
 					class="my-share-bg"
 				>
-					<tui-icon
-						v-if="!isSharer" name="close" :size="25" color="#F5F4F6"
-						style="position: absolute;top: 40upx;right: 40upx;" @click="$switchTab('/pages/index/index')"
-					></tui-icon>
-					<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;color: #ffffff;">
-						来自{{ fromSharerName }}的分享
+					<view>
+						<view
+							style="position: absolute;top: -4%;left: -6%;width: 180upx;height: 180upx;background: linear-gradient(91deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+						>
+						</view>
+						<view
+							style="position: absolute;top: -3%;left: 28%;width: 66upx;height: 66upx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+						>
+						</view>
+						<view
+							style="position: absolute;top: -8%;left: 32%;width: 800upx;height: 1920upx;background-color: #f16527;border-radius: 50%;"
+						>
+						</view>
+						<view
+							style="position: absolute;top: -4%;left: 60%;width: 608upx;height: 1838upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.1;"
+						>
+						</view>
 					</view>
-					<view style="padding: 30upx 28upx;margin: 45upx 0 0;background-color: #ffffff;border-radius: 20upx;">
-						<view @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
-							<view style="display: flex;align-items: stretch;">
-								<image
-									style="width: 96upx;height: 96upx;margin-right: 24upx;border-radius: 50%"
-									:src="common.seamingImgUrl(brandDetail.shopLogo)"
-								>
-								</image>
-								<view style="flex: 1;display: flex;flex-direction: column;justify-content: flex-start;width: 0;">
-									<text style="font-size: 30upx;color: #333;font-weight: bold;">{{ brandDetail.shopName }}</text>
-									<view style="font-size: 24upx;color: #969699;">
-										<view style="margin-top: 4upx;">
-											<tui-icon name="card-fill" :size="20" color="#ff6619"></tui-icon>
-											<view style="margin-left: 10upx;display: inline-block;line-height: 40upx;vertical-align: top;">
-												实名认证
+					<view style="position: relative;">
+						<tui-icon
+							v-if="!isSharer" name="close" :size="25" color="#F5F4F6"
+							style="position: absolute;top: 0;right: 40upx;" @click="$switchTab('/pages/index/index')"
+						></tui-icon>
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;color: #ffffff;">
+							来自{{ fromSharerName }}的分享
+						</view>
+						<view style="padding: 30upx 28upx;margin: 45upx 0 0;background-color: #ffffff;border-radius: 20upx;">
+							<view @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
+								<view style="display: flex;align-items: stretch;">
+									<image
+										style="width: 96upx;height: 96upx;margin-right: 24upx;border-radius: 50%"
+										:src="common.seamingImgUrl(brandDetail.shopLogo)"
+									>
+									</image>
+									<view style="flex: 1;display: flex;flex-direction: column;justify-content: flex-start;width: 0;">
+										<text style="font-size: 30upx;color: #333;font-weight: bold;">{{ brandDetail.shopName }}</text>
+										<view style="font-size: 24upx;color: #969699;">
+											<view style="margin-top: 4upx;">
+												<tui-icon name="card-fill" :size="20" color="#ff6619"></tui-icon>
+												<view style="margin-left: 10upx;display: inline-block;line-height: 40upx;vertical-align: top;">
+													实名认证
+												</view>
 											</view>
-										</view>
-										<view style="margin-top: 16upx;">
-											<text style="color: #969699;">店铺评分：</text>
-											<text style="color: #303030;">{{ brandDetail.score }}</text>
-											<text style="margin-left: 42upx;color: #969699;">月售：</text>
-											<text style="color: #303030;">{{ brandDetail.monthlySales }}</text>
+											<view style="margin-top: 16upx;">
+												<text style="color: #969699;">店铺评分：</text>
+												<text style="color: #303030;">{{ brandDetail.score }}</text>
+												<text style="margin-left: 42upx;color: #969699;">月售：</text>
+												<text style="color: #303030;">{{ brandDetail.monthlySales }}</text>
+											</view>
 										</view>
 									</view>
 								</view>
+								<view style="margin-top: 12upx;display: flex;align-items: center;font-size: 24upx;">
+									<tui-icon name="gps" :size="14" color="#222229"></tui-icon>
+									<text v-if="!$store.getters.obtainLocationCount" style="margin-left: 4upx;">
+										定位中
+									</text>
+									<text v-else style="margin-left: 4upx;">{{ brandDetail.distance || 0 }}Km</text>
+									<text
+										style="margin-left: 30upx;flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										{{ brandDetail.shopAdress || '--' }}
+									</text>
+									<text style="margin-left: 64upx;font-weight: bold;color: #EF530E;" @click.stop="handleNavigate">
+										导航
+									</text>
+								</view>
 							</view>
-							<view style="margin-top: 12upx;display: flex;align-items: center;font-size: 24upx;">
-								<tui-icon name="gps" :size="14" color="#222229"></tui-icon>
-								<text v-if="!$store.getters.obtainLocationCount" style="margin-left: 4upx;">
-									定位中
-								</text>
-								<text v-else style="margin-left: 4upx;">{{ brandDetail.distance || 0 }}Km</text>
-								<text
-									style="margin-left: 30upx;flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-								>
-									{{ brandDetail.shopAdress || '--' }}
-								</text>
-								<text style="margin-left: 64upx;font-weight: bold;color: #EF530E;" @click.stop="handleNavigate">
-									导航
-								</text>
-							</view>
-						</view>
 
-						<view style="margin: 58upx 0 30upx;font-size: 28upx;color: #222229;">
-							<view style="font-weight: bold;">
-								<text style="color: #e02208;">●</text>
-								<text style="margin-left: 8upx;">商品信息（{{ goodsArr.length }}）</text>
-							</view>
-							<view style="max-height: 40vh;margin-top: 24upx;overflow-y: auto;">
-								<view
-									v-for="(item, index) in goodsDetailsArr" :key="item.productId"
-									style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 24upx;"
-									@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
-								>
-									<view style="flex: 1;display: flex;align-items: center;">
-										<image
-											:src="common.seamingImgUrl(item.image || item.images[0])"
-											style="width: 90upx;height: 90upx;border-radius: 10upx;margin-right: 30upx;"
-										></image>
-										<view style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-											{{ item.productName }}
+							<view style="margin: 58upx 0 30upx;font-size: 28upx;color: #222229;">
+								<view style="font-weight: bold;">
+									<text style="color: #e02208;">●</text>
+									<text style="margin-left: 8upx;">商品信息（{{ goodsArr.length }}）</text>
+								</view>
+								<view style="max-height: 40vh;margin-top: 24upx;overflow-y: auto;">
+									<view
+										v-for="(item, index) in goodsDetailsArr" :key="item.productId"
+										style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 24upx;"
+										@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
+									>
+										<view style="flex: 1;display: flex;align-items: center;">
+											<image
+												:src="common.seamingImgUrl(item.image || item.images[0])"
+												style="width: 90upx;height: 90upx;border-radius: 10upx;margin-right: 30upx;"
+											></image>
+											<view style="flex: 1;width: 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+												{{ item.productName }}
+											</view>
 										</view>
+										<view style="margin-left: 16upx;">￥{{ item.price }}</view>
 									</view>
-									<view style="margin-left: 16upx;">￥{{ item.price }}</view>
 								</view>
 							</view>
 						</view>
@@ -342,7 +362,7 @@ export default {
 	}
 
 	.my-share-bg {
-		background: url('../../../static/images/new-business/order/orange-white-bg.png') no-repeat center top/cover;
+		// background: url('../../../static/xxx') no-repeat center top/cover;
 	}
 }
 </style>

@@ -41,7 +41,7 @@
 					<view class="originalPrice">原价: ￥{{ item.originalPrice }}</view>
 					<view class="price">
 						<view class="currentPrice flex-row-plus flex-items-plus font-color-FF7800">
-							<image style="width: 58rpx;height: 36rpx;" src="../../../static/images/new-business/shop/discountListIcon.png"></image>
+							<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 							<view class="flex-row-plus flex-items priceInfo">
 								<label class="fs24">￥</label>
 								<label class="fs36">{{ item.price }}</label>
@@ -89,7 +89,10 @@ export default {
 				volume: 1, // 销量
 				discountId: ''
 			},
-			discountInfo: {},
+			discountInfo: {
+				discount: '',
+				endTime: 0
+			},
 			sortIndex: 0
 		}
 	},
@@ -110,16 +113,16 @@ export default {
 		sortTap(index) {
 			this.queryInfo.page = 1
 			this.discountList = []
+			this.sortIndex = index
 			if (index == 1) {
-				this.queryInfo.type = 1
-				this.queryInfo.volume = 1
-				this.sortIndex = index
+				this.queryInfo.type = 0
+				this.queryInfo.volume = 0
 			} else if (index == 2) {
+				this.queryInfo.volume = 0
 				this.queryInfo.type = this.queryInfo.type != 1 ? 1 : 2
-				this.sortIndex = index
 			} else if (index == 3) {
+				this.queryInfo.type = 0
 				this.queryInfo.volume = this.queryInfo.volume != 1 ? 1 : 2
-				this.sortIndex = index
 			}
 			this.getDiscountList()
 		},

@@ -9,7 +9,10 @@
 			>
 				<image :src="data.shopLogo" style="width: 36rpx;height: 36rpx;margin-right: 10rpx;" />
 				<text style="font-size: 30rpx;color: #333;font-weight: bold;">{{ data.shopName }}</text>
-				<tui-icon name="arrowright" :size="25" color="#999999"></tui-icon>
+				<tui-icon
+					v-if="data.skus.every(i => !(i.productPay === 1))" name="arrowright"
+					:size="25" color="#999999"
+				></tui-icon>
 			</view>
 			<view style="flex: 1;font-size: 32rpx;color: #C5AA7B;text-align: right;">
 				<text v-if="data.afterState">
@@ -22,6 +25,7 @@
 			</view>
 		</view>
 		<view style="padding: 20rpx;">
+			<!-- data.skus.every(i => !(i.productPay === 1)) &&  -->
 			<view @click="isToDetail && go(`/another-tf/another-serve/orderDetails/index?orderId=${data.orderId}`)">
 				<view>
 					<view v-for="(skuItem, skuIndex) in showSkusArr" :key="skuIndex" style="display: flex;padding: 20rpx 0 0;">
@@ -35,11 +39,9 @@
 							</view>
 							<view
 								v-if="skuItem.presenterVoucher"
-								style="width: fit-content;margin-top: 10rpx;padding: 6rpx 12rpx;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
+								style="width: fit-content;padding: 6rpx 12rpx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
-								赠送 {{ skuItem.price
-									? `${(Number.parseFloat(skuItem.presenterVoucher / skuItem.price).toFixed(3) * 1000) / 10}%`
-									: skuItem.presenterVoucher }} 代金券
+								赠送 {{ skuItem.presenterVoucher }} 代金券
 							</view>
 							<view v-if="skuItem.value" style="margin-top: 8rpx;font-size: 24rpx;color: #999999;">
 								{{ skuItem.value }}
@@ -49,7 +51,7 @@
 									<text style="color: #333333;">￥{{ skuItem.price || 0 }}</text>
 									<text style="margin-left: 20rpx;color: #999;">x {{ skuItem.number && skuItem.number }}</text>
 								</view>
-								<view v-if="showOperate">
+								<view v-if="showOperate && !(skuItem.productPay === 1)">
 									<tui-button
 										v-if="[3, 4].includes(data.state) && (data.orderType === 1)" type="brown" width="150rpx"
 										height="56rpx" margin="8rpx 0 0" :size="28"
@@ -86,17 +88,23 @@
 						显示全部
 					</tui-button>
 				</view>
-				<view style="font-size: 26rpx;color: #333333;text-align: right;padding: 20rpx 0 0;">
-					<text v-if="data.orderPrice">
+				<view style="text-align: right;">
+					<view
+						v-if="data.presenterVoucherAll && (data.skus.length !== 1) && (data.presenterVoucherAll !== data.skus[0].presenterVoucher)"
+						style="padding: 10rpx 0 0;font-size: 30rpx;color: #fa5151;"
+					>
+						总赠送 {{ data.presenterVoucherAll }} 代金券
+					</view>
+					<view v-if="data.orderPrice" style="padding: 20rpx 0 0;font-size: 26rpx;color: #333333;">
 						总价￥{{ Number.parseFloat(Number(data.orderPrice || 0)).toFixed(2) }}
 						<text v-if="data.logisticsPrice">
 							，物流￥{{ Number.parseFloat(Number(data.logisticsPrice || 0)).toFixed(2) }}
 						</text>
-						，优惠￥{{ data.discountPrice }}
+						，优惠￥{{ Number.parseFloat(Number(data.discountPrice || 0)).toFixed(2) }}
 						<text v-if="data.price">
-							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ data.price }}
+							，{{ [1, 8].includes(data.state) ? '应付￥' : '实付￥' }}{{ Number.parseFloat(Number(data.price || 0)).toFixed(2) }}
 						</text>
-					</text>
+					</view>
 				</view>
 				<view v-if="isShowOther" style="font-size: 26rpx;padding: 20rpx 0 0;">
 					<view style="display: flex;align-items: center;justify-content: space-between;padding-top: 4upx;">
@@ -140,7 +148,7 @@
 <script>
 import { afterConditionEnum, orderTypeEnum } from '../../components/ATFOrderInfo/config'
 import { deleteShopOrderApi, cancelShopOrderApi, updateOrderConfirmApi } from '../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST } from '../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../constant'
 import { resolveShowCanNotBuyMsg } from '../../utils'
 export default {
 	name: 'ATFBusinessOrder',
@@ -240,7 +248,7 @@ export default {
 			// 	})
 			// }
 			// 核销码
-			if ([8, 9].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [8, 9].includes(state)) {
 				orderNeedBtnList.push({
 					name: '核销码',
 					btnType: 'black',
@@ -276,7 +284,7 @@ export default {
 				})
 			}
 			// 查看物流
-			if ([3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
+			if (skus.every((i) => !(i.productPay === 1)) && [3, 4].includes(state) && (orderType === 2)) { // orderType：1半子，2商城
 				orderNeedBtnList.push({
 					name: '查看物流',
 					btnType: 'black',
@@ -285,7 +293,7 @@ export default {
 				})
 			}
 			// 确认收货
-			if ([ 3 ].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [ 3 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '确认收货',
 					btnType: 'warning',
@@ -294,7 +302,7 @@ export default {
 				})
 			}
 			// 邀请拼单
-			if ([ 6 ].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [ 6 ].includes(state)) {
 				orderNeedBtnList.push({
 					name: '邀请拼单',
 					btnType: 'warning',
@@ -303,7 +311,7 @@ export default {
 				})
 			}
 			// 再次开团 | 再次购买
-			if ([5, 4, 10].includes(state)) {
+			if (skus.every((i) => !(i.productPay === 1)) && [5, 4, 10].includes(state)) {
 				orderNeedBtnList.push({
 					name: collageId !== 0 ? '再次开团' : '再次购买',
 					btnType: 'warning',
@@ -349,14 +357,15 @@ export default {
 			uni.showModal(modalOptions)
 		},
 		handlePayOrder(orderItem) {
-			const { orderPrice, collageId, orderId, shopId } = orderItem
+			const { price, collageId, orderId, shopId, skus } = orderItem
 			this.$emit('pay-order', {
 				showPayPopup: true,
-				pricePay: orderPrice,
+				pricePay: price,
 				shopId,
+				skus,
 				payInfo: {
 					collageId,
-					money: orderPrice,
+					money: price,
 					orderId,
 					type: 2
 				}
@@ -415,7 +424,7 @@ export default {
 			const { canNotBuySkuList, canNotSaleSkuList } = await resolveShowCanNotBuyMsg(orderItem.skus)
 			if (canNotBuySkuList.length || canNotSaleSkuList.length) return
 			// 制造数据
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, [ {
 				ifWork: orderItem.ifWork,
 				shopId: orderItem.shopId,
 				shopName: orderItem.shopName,
@@ -423,7 +432,7 @@ export default {
 				shopSeckillId: orderItem.shopSeckillId,
 				skus: orderItem.skus
 			} ])
-			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
+			this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=1')
 		}
 	}
 }

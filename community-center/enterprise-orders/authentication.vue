@@ -14,12 +14,11 @@
         <view class="img-wrapper" style=" margin-bottom: 24upx;">
           <view class="example uploader">
             <image style="width: 88upx; height: 128upx;"
-              src="../../static/images/new-community/enterprise-orders/temp.png"></image>
+              :src="common.seamingImgUrl('1715135254984-temp.png')"></image>
           </view>
           <view v-if="!authForm.createOrUpdateCompanyParam.businessLicense" class="uploader"
             @click="handleUploadImg('businessLicense')">
-            <image style="width: 39upx; height: 39upx;"
-              src="../../static/images/new-community/enterprise-orders/image.png"></image>
+						<tui-icon name="pic" color="#c6c7cb" size="44" unit="rpx" margin="0"></tui-icon>
             点击上传图片
           </view>
 
@@ -101,8 +100,7 @@
         <view class="img-wrapper" v-if="!authForm.createOrUpdateCompanyParam.companyLogo"
           @click="handleUploadImg('companyLogo')">
           <view class="uploader">
-            <image style="width: 39upx; height: 39upx; margin-bottom: 24upx;"
-              src="../../static/images/new-community/enterprise-orders/image.png"></image>
+						<tui-icon name="pic" color="#c6c7cb" size="44" unit="rpx" margin="0 0 24rpx"></tui-icon>
             点击上传图片
           </view>
         </view>

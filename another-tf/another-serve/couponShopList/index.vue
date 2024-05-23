@@ -43,9 +43,7 @@
 							<view class="flex-row-plus flex-item mar-top-30">
 								<view class="discountsPriceLine font-color-999">¥{{ item.originalPrice }}</view>
 								<view class="mar-left-30 font-color-C5AA7B flex-row-plus">
-									<label v-if="item.activityType == 1" class="fs30">拼团价</label>
-									<label v-if="item.activityType == 2" class="fs30">秒杀价</label>
-									<label v-if="item.activityType == 3" class="fs30">折扣价</label>
+									<ATFActivityImage :type="item.activityType"></ATFActivityImage>
 									<b>￥</b>
 									<label class="fs28">{{ item.price }}</label>
 								</view>

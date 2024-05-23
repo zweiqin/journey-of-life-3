@@ -50,6 +50,7 @@ export default {
 		// getUserId();
 	},
 	globalData: {
+		orderTypeShow: '',
 		// 定义全局请求队列
 		requestQueue: [],
 		// 是否正在进行登陆
@@ -121,7 +122,7 @@ export default {
 			// console.log('onError出错了');
 			// uni.showLoading({
 			// 	title: '断线了，正在重新连接......',
-			// 	mask: true    
+			// 	mask: true
 			// })
 			// uni.showToast({
 			// 	title: 'Error出错了' + errMsg,

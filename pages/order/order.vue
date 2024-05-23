@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<TuanAppShim bg="#fff"></TuanAppShim>
-		<view v-if="userId" class="my-order-container">
+		<view v-if="$store.getters.userInfo.buyerUserId" class="my-order-container">
 			<OrderHeader
 				ref="orderHeaderRef" :current-status="currentStatus" :menus="navMenus" :current-mode="currentOrderMode"
-				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode" @search="handleSearchCommunityOrderList"
+				@change-status="handleChangeStatus" @change-mode="handleChangeOrderMode($event, true)" @search="handleSearchCommunityOrderList"
 			>
 			</OrderHeader>
 
@@ -93,8 +93,12 @@
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
 				<CashierList
-					:price-pay="payObj.pricePay" show show-commission-pay show-platform-pay
-					:shop-id-pay="payObj.shopId"
+					:price-pay="payObj.pricePay" show
+					:show-commission-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
+					:show-platform-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
+					:show-transaction-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
+					:show-hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
+					:shop-id-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>
 				<tui-button
@@ -209,6 +213,7 @@ export default {
 				showPayPopup: false,
 				pricePay: 0,
 				shopId: '',
+				skus: [],
 				payInfo: {}
 			}
 		}
@@ -256,18 +261,27 @@ export default {
 		}
 	},
 
-	onShow() {
+	onLoad(options) {
+		if (getApp().globalData.orderTypeShow) {
+			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
+			getApp().globalData.orderTypeShow = ''
+		} else if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
+			this.handleChangeOrderMode(uni.getStorageSync(T_PAY_ORDER).type)
+		}
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
 		this.userId = uni.getStorageSync(USER_ID) || ''
+	},
+
+	onShow() {
 		this.$nextTick(() => {
 			this.getOrderList()
 		})
 	},
 
 	methods: {
-		handleChangeOrderMode(mode) {
+		handleChangeOrderMode(mode, isGetData = false) {
 			if (mode === this.currentOrderMode) return
 			switch (mode) {
 				case 'community':
@@ -293,7 +307,7 @@ export default {
 					this.currentStatus = 0
 				}
 				this.isShowSubNav = null
-				this.getOrderList()
+				isGetData && this.getOrderList()
 			})
 		},
 
@@ -523,11 +537,12 @@ export default {
 		},
 
 		async handleShopGoPay() {
-			await handleDoPay(this.payObj.payInfo, 1)
+			await handleDoPay(this.payObj.payInfo, 1, '')
 			this.payObj = {
 				showPayPopup: false,
 				pricePay: 0,
 				shopId: '',
+				skus: [],
 				payInfo: {}
 			}
 		}

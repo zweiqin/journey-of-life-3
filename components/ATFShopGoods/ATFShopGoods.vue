@@ -54,7 +54,9 @@
 				</slot>
 			</view>
 			<view style="display: flex;align-items: center;flex-wrap: wrap;">
-				<ATFActivityImage :type="cItem.activityType" style="margin: 10upx 2upx 0 0;"></ATFActivityImage>
+				<view style="margin: 10rpx 0 0;">
+					<ATFActivityImage :type="cItem.activityType"></ATFActivityImage>
+				</view>
 				<view
 					v-if="cItem.voucherId && cItem.voucherPrice"
 					style="width: fit-content;max-width: 218rpx;padding: 2upx 8upx;margin: 10upx 6upx 0 0;color: #E24747;font-size: 26upx;border: 1upx solid #e247478c;border-radius: 8upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"

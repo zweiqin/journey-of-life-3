@@ -59,20 +59,20 @@
 			</view>
 			<view style="margin-top: 36upx;padding-bottom: 34upx;background-color: #ffffff;text-align: center;color: #222229;border-radius: 16upx;">
 				<view style="display: flex;justify-content: space-around;">
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;">
 							{{ typeof financeStatisticsData.turnover === 'number' ? financeStatisticsData.turnover : '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">累计营业额</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.frozenMoney === 'number' ? financeStatisticsData.frozenMoney : '--' }}
 						</view>
 						<!-- 冻结金额 -->
 						<view style="margin-top: 14upx;font-size: 24upx;">途中金额</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--' }}
 						</view>
@@ -81,26 +81,65 @@
 					</view>
 				</view>
 				<view style="display: flex;justify-content: space-around;">
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
 							{{ typeof financeStatisticsData.withdrawableMoney === 'number' ? financeStatisticsData.withdrawableMoney
 								: '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">可提现</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
 							{{ typeof financeStatisticsData.withdrawableStayMoney === 'number'
 								? financeStatisticsData.withdrawableStayMoney : '--' }}
 						</view>
 						<view style="margin-top: 14upx;font-size: 24upx;">提现中</view>
 					</view>
-					<view style="padding-top: 34upx;">
+					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
 						</view>
 						<!-- 赠送代金券 -->
 						<view style="margin-top: 14upx;font-size: 24upx;">总赠送</view>
+					</view>
+				</view>
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+							{{ typeof financeStatisticsData.beeWithdrawal === 'number' ? financeStatisticsData.beeWithdrawal
+								: '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">可提现交易金</view>
+					</view>
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
+							{{ typeof financeStatisticsData.beeFreeze === 'number'
+								? financeStatisticsData.beeFreeze : '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">待到账交易金</view>
+					</view>
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
+							{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">营业额交易金</view>
+					</view>
+				</view>
+				<view style="display: flex;justify-content: space-around;">
+					<view style="padding-top: 34upx; flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #208F57;">
+							{{ typeof financeStatisticsData.beeCoinRatio === 'number' ? financeStatisticsData.beeCoinRatio
+								: '--' }}
+						</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">交易金提现比例</view>
+					</view>
+					<view style="padding-top: 34upx;flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;"> </view>
+						<view style="margin-top: 14upx;font-size: 24upx;"> </view>
+					</view>
+					<view style="padding-top: 34upx;flex:1;">
+						<view style="font-size: 34upx;font-weight: bold;color: #E02208;"> </view>
+						<view style="margin-top: 14upx;font-size: 24upx;"> </view>
 					</view>
 				</view>
 			</view>
@@ -188,6 +227,27 @@
 		>
 			<template #content>
 				<view>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view style="font-size: 32rpx;color: #333333;">提现类型：</view>
+						<view style="flex: 1;">
+							<tui-radio-group v-model="withdrawalType">
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '交易金', value: '2' }]"
+										:key="index"
+									>
+										<tui-list-cell padding="16upx">
+											<view>
+												<tui-radio :checked="false" :value="item.value" color="#07c160" border-color="#999">
+												</tui-radio>
+												<text>{{ item.name }}</text>
+											</view>
+										</tui-list-cell>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+					</view>
 					<tui-input v-model="rechargeNum" padding="26upx 0" label="提现金额" type="number" placeholder="请填写提现金额"></tui-input>
 				</view>
 			</template>
@@ -235,6 +295,10 @@ export default {
 				withdrawableMoney: '',
 				withdrawableStayMoney: '',
 				presenterVoucher: '',
+				beeWithdrawal: '',
+				beeFreeze: '',
+				beeTurnover: '',
+				beeCoinRatio: '',
 				finances: []
 			},
 			queryInfo: {
@@ -248,6 +312,7 @@ export default {
 			// 提现相关
 			isShowRechargeDialog: false,
 			rechargeNum: '',
+			withdrawalType: '1',
 
 			// 订单列表
 			isShowOrderPopup: false,
@@ -309,6 +374,7 @@ export default {
 				this.isShowRechargeDialog = false
 			} else if (e.index === 1) {
 				if (!this.rechargeNum) return this.$showToast('请填写提现金额')
+				if (!this.withdrawalType) return this.$showToast('请选择提现类型')
 				uni.showLoading()
 				getShopBankApi({})
 					.then((result) => {
@@ -320,11 +386,13 @@ export default {
 							shopCode: result.data.shopCode,
 							bankName: result.data.bankName,
 							bankCard: result.data.bankCard,
-							withdrawalMoney: this.rechargeNum
+							withdrawalMoney: this.rechargeNum,
+							withdrawalType: Number(this.withdrawalType)
 						})
 							.then((res) => {
 								uni.hideLoading()
 								this.rechargeNum = ''
+								this.withdrawalType = '1'
 								this.isShowRechargeDialog = false
 								this.$showToast('提现成功', 'success')
 								this.getFinanceStatistics()

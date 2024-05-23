@@ -1025,20 +1025,20 @@
             "navigationBarTitleText": "银行卡表单"
           }
         },
-        {
-          "path": "sever/withdrawal/index",
-          "style": {
-            "navigationBarTitleText": "提现",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "sever/withdrawal/withdrawal-record",
-          "style": {
-            "navigationBarTitleText": "提现记录",
-            "usingComponents": {}
-          }
-        },
+        // {
+        //   "path": "sever/withdrawal/index",
+        //   "style": {
+        //     "navigationBarTitleText": "提现",
+        //     "usingComponents": {}
+        //   }
+        // },
+        // {
+        //   "path": "sever/withdrawal/withdrawal-record",
+        //   "style": {
+        //     "navigationBarTitleText": "提现记录",
+        //     "usingComponents": {}
+        //   }
+        // },
         {
           "path": "sever/goldButler/gold-butler",
           "style": {
@@ -1575,34 +1575,37 @@
         //   }
         // },
         {
-          "path": "another-user/commission-statistics/vip-user",
+          "path": "another-user/transaction-funds/transaction-operation",
           "style": {
-            "navigationBarTitleText": "会员列表",
+            "navigationBarTitleText": "交易金操作",
             "enablePullDownRefresh": true
           }
         },
         {
-          "path": "another-serve/bankcard/index",
+          "path": "another-user/transaction-funds/transaction-record",
           "style": {
-            "navigationBarTitleText": "银行卡"
+            "navigationBarTitleText": "交易金收支明细",
+            "enablePullDownRefresh": true
           }
         },
         {
-          "path": "another-serve/bankcard/addBankcard",
+          "path": "another-user/transaction-funds/transaction-record-detail",
           "style": {
-            "navigationBarTitleText": "添加银行卡"
+            "navigationBarTitleText": "交易金收支明细详情",
+            "enablePullDownRefresh": true
           }
         },
         {
-          "path": "another-serve/collection/index",
+          "path": "another-user/transaction-funds/trading-activities",
           "style": {
-            "navigationBarTitleText": "我的收藏"
+            "navigationBarTitleText": "交易金活动"
           }
         },
         {
-          "path": "another-serve/footprintList/index",
+          "path": "another-user/commission-statistics/vip-user",
           "style": {
-            "navigationBarTitleText": "浏览足迹"
+            "navigationBarTitleText": "会员列表",
+            "enablePullDownRefresh": true
           }
         },
         {
@@ -1678,12 +1681,6 @@
           }
         },
         {
-          "path": "another-serve/shopCar/shopCar",
-          "style": {
-            "navigationBarTitleText": "购物车"
-          }
-        },
-        {
           "path": "another-user/claasify-products/index",
           "style": {
             "navigationBarTitleText": "分类商品"
@@ -1717,6 +1714,36 @@
           "path": "another-serve/goodsDetails/index",
           "style": {
             "navigationBarTitleText": "商品详情"
+          }
+        },
+        {
+          "path": "another-serve/shopCar/shopCar",
+          "style": {
+            "navigationBarTitleText": "购物车"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/index",
+          "style": {
+            "navigationBarTitleText": "银行卡"
+          }
+        },
+        {
+          "path": "another-serve/bankcard/addBankcard",
+          "style": {
+            "navigationBarTitleText": "添加银行卡"
+          }
+        },
+        {
+          "path": "another-serve/collection/index",
+          "style": {
+            "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
+          "path": "another-serve/footprintList/index",
+          "style": {
+            "navigationBarTitleText": "浏览足迹"
           }
         },
         {
@@ -1906,9 +1933,15 @@
           }
         },
         {
-          "path": "another-serve/orderConfirm/index",
+          "path": "another-serve/paymentOrderConfirm/index",
           "style": {
             "navigationBarTitleText": "购买宝贝"
+          }
+        },
+        {
+          "path": "another-serve/paymentCodeConfirm/index",
+          "style": {
+            "navigationBarTitleText": "付款码结算"
           }
         },
         {
@@ -2068,6 +2101,12 @@
           }
         },
         {
+          "path": "another-user/shop-invitation/index",
+          "style": {
+            "navigationBarTitleText": "商家码"
+          }
+        },
+        {
           "path": "another-user/receiving-account/index",
           "style": {
             "navigationBarTitleText": "收款账户"
@@ -2077,6 +2116,18 @@
           "path": "another-user/receiving-account/receiving-account-form",
           "style": {
             "navigationBarTitleText": "收款账户表单"
+          }
+        },
+        {
+          "path": "another-user/collection-code/index",
+          "style": {
+            "navigationBarTitleText": "收款账户"
+          }
+        },
+        {
+          "path": "another-user/collection-code/collection-payment-code",
+          "style": {
+            "navigationBarTitleText": "商家收款"
           }
         },
         {

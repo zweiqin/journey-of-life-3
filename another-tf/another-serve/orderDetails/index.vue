@@ -3,8 +3,26 @@
 		<view v-if="showType === 'writeOff'">
 			<!-- 核销相关 -->
 			<JHeader title="订单核销码" width="50" height="50" style="padding: 24upx 0 18upx;background-color: #ffffff;"></JHeader>
-			<view style="padding: 90upx 28upx 0;" class="write-off-bg">
-				<view style="text-align: center;color: #ffffff;">
+			<view style="padding: 90upx 28upx 0;position: relative;" class="write-off-bg">
+				<view style="position: absolute;top: 0;left: 0;width: 100%;height: 580upx;background-color: #ef5613;overflow: hidden;">
+					<view
+						style="position: absolute;top: 6%;left: 34%;width: 80upx;height: 80upx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: 15%;left: -7%;width: 280upx;height: 240upx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: -8%;left: 50%;width: 800upx;height: 920upx;background-color: #f16527;border-radius: 50%;"
+					>
+					</view>
+					<view
+						style="position: absolute;top: -4%;left: 65%;width: 608upx;height: 838upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.1;"
+					>
+					</view>
+				</view>
+				<view style="position: relative;text-align: center;color: #ffffff;">
 					<view style="font-size: 38upx;font-weight: bold;">
 						<text v-if="verificationStatus == '0'">待核销-待付款</text>
 						<text v-else-if="verificationStatus == '1'">待核销-已付款</text>
@@ -341,7 +359,10 @@
 											客服介入
 										</view>
 									</view>
-									<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;">
+									<view
+										v-if="dataList.skus.every(i => !(i.productPay === 1))"
+										style="display: flex;justify-content: flex-end;flex-wrap: wrap;"
+									>
 										<tui-button
 											v-if="[3, 4].includes(dataList.state) && (obj.proItem.commentId === 0) && obj.proItem.additionalComment"
 											type="blue" plain width="150upx" height="48rpx"
@@ -374,28 +395,30 @@
 
 				<view class="order-details-btn" :style="{ 'padding-bottom': (isIphone == true ? 40 : 0) + 'rpx' }">
 					<tui-button
-						v-if="[1, 6, 8].includes(dataList.state)" type="gray" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [1, 6, 8].includes(dataList.state)" type="gray" width="48%" height="82rpx"
 						plain
 						margin="20upx 0 0" style="border-radius: 8upx;" @click="cancelOrder"
 					>
 						取消订单
 					</tui-button>
 					<tui-button
-						v-if="[1, 8].includes(dataList.state)" type="warning" width="48%" height="82rpx"
-						margin="20upx 0 0"
+						v-if="[1, 8].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx" margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="showPayTypePopup = true"
 					>
 						提交支付
 					</tui-button>
 					<tui-button
-						v-if="[ 3 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 3 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="confirmReceiptTap"
 					>
 						确认完成
 					</tui-button>
 					<tui-button
-						v-if="[ 6 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 6 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;"
 						@click="goInviteSpll(dataList.collageId, dataList.orderId, dataList.skus[0].productId, dataList.skus[0].skuId, dataList.shopGroupWorkId)"
@@ -403,21 +426,24 @@
 						邀请拼单
 					</tui-button>
 					<tui-button
-						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [5, 4, 10].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0" style="background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, true, dataList)"
 					>
 						再次开团
 					</tui-button>
 					<tui-button
-						v-if="[ 5 ].includes(dataList.state)" type="warning" width="48%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [ 5 ].includes(dataList.state)"
+						type="warning" width="48%" height="82rpx"
 						margin="20upx 0 0"
 						style="background: #ef530e!important;border-radius: 8upx;" @click="delOrder"
 					>
 						删除订单
 					</tui-button>
 					<tui-button
-						v-if="[5, 4, 10].includes(dataList.state)" type="warning" width="100%" height="82rpx"
+						v-if="dataList.skus.every(i => !(i.productPay === 1)) && [5, 4, 10].includes(dataList.state)"
+						type="warning" width="100%" height="82rpx"
 						margin="20upx 0 0" style="min-width: 100%;background: #ef530e!important;border-radius: 8upx;"
 						@click="againCollage(dataList.skus[0].productId, dataList.shopId, dataList.skus[0].skuId, false, dataList)"
 					>
@@ -428,8 +454,12 @@
 				<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 					<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 						<CashierList
-							:price-pay="dataList.orderPrice" show show-commission-pay show-platform-pay
-							:shop-id-pay="dataList.shopId"
+							:price-pay="dataList.price" show
+							:show-commission-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-platform-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:show-hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
+							:shop-id-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price ? dataList.shopId : 0"
 							@change="(e) => payInfo = e"
 						/>
 						<tui-button
@@ -465,7 +495,7 @@ import {
 	getOrderRefundApi,
 	updateOrderConfirmApi
 } from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_DTO_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
 import { resolveShowCanNotBuyMsg } from '../../../utils'
 import { A_TF_MAIN } from '../../../config'
 
@@ -560,7 +590,7 @@ export default {
 			const { canNotBuySkuList, canNotSaleSkuList } = await resolveShowCanNotBuyMsg(orderItem.skus)
 			if (canNotBuySkuList.length || canNotSaleSkuList.length) return
 			// 制造数据
-			uni.setStorageSync(T_SKU_ITEM_DTO_LIST, [ {
+			uni.setStorageSync(T_SKU_ITEM_MSG_LIST, [ {
 				ifWork: orderItem.ifWork,
 				shopId: orderItem.shopId,
 				shopName: orderItem.shopName,
@@ -568,7 +598,7 @@ export default {
 				shopSeckillId: orderItem.shopSeckillId,
 				skus: orderItem.skus
 			} ])
-			this.go('/another-tf/another-serve/orderConfirm/index?type=1')
+			this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=1')
 		},
 
 		handleAddEvaluate(skuItem) {
@@ -766,7 +796,7 @@ export default {
 				orderId: this.dataList.orderId,
 				type: 2,
 				...this.payInfo
-			}, 1)
+			}, 1, '')
 		},
 
 		// 打开客服
@@ -793,7 +823,7 @@ export default {
 	}
 
 	.write-off-bg {
-		background: url('../../../static/images/new-business/order/orange-bg.png') no-repeat center top/contain;
+		// background: url('../../../static/xxx') no-repeat center top/contain;
 	}
 
 	.content {

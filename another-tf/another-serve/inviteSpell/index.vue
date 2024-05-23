@@ -105,7 +105,7 @@
 							<label class="fs24">¥</label>
 							<label
 								class="fs36 mar-left-10"
-								v-text="goodsDetail.activityType == 1 ? selectedSku.originalPrice : selectedSku.price"
+								v-text="selectedSku.price"
 							></label>
 						</view>
 						<label class="fs24 font-color-999 mar-top-20">库存 {{ selectedSku.stockNumber }} 件</label>
@@ -167,7 +167,7 @@
 
 <script>
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../utils'
-import { T_SKU_ITEM_DTO_LIST, T_SKU_ITEM_LIST } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO } from '../../../constant'
 import { getProductDetailsByIdApi, getProductsSkuApi, getInviteWorkApi } from '../../../api/anotherTFInterface'
 
 export default {
@@ -187,7 +187,6 @@ export default {
 			shopId: 0,
 			isShowDetails: false,
 			goodsDetail: {
-				activityType: 0,
 				names: []
 			},
 			number: 1,
@@ -337,8 +336,8 @@ export default {
 			if (this.selectedSku.ifEnable) return this.$showToast('该商品不可售')
 			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
 			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
-			uni.removeStorageSync(T_SKU_ITEM_DTO_LIST)
-			uni.setStorageSync(T_SKU_ITEM_LIST, {
+			uni.removeStorageSync(T_SKU_ITEM_MSG_LIST)
+			uni.setStorageSync(T_SKU_ITEM_INFO, {
 				collageId: this.collageId,
 				number: this.number,
 				productId: this.productId,
@@ -349,7 +348,7 @@ export default {
 			})
 			this.isShowDetails = false
 			uni.navigateTo({
-				url: '/another-tf/another-serve/orderConfirm/index?type=3'
+				url: '/another-tf/another-serve/paymentOrderConfirm/index?type=3'
 			})
 		},
 

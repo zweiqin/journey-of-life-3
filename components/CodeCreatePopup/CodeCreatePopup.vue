@@ -65,7 +65,7 @@
 					</view>
 					<view
 						v-else-if="type === 'shopInvitation'" style="font-size: 26rpx;color: #06a6f0;"
-						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingShop&code=${createCode}`)"
+						@click="$copy(`${rootUrl}/#/pages/jump/jump?userId=${userInfo.buyerUserId}&type=bindingShop&code=${$store.state.auth.identityInfo.shopInfo.shopId || ''}~${createCode}`)"
 					>
 						复制链接
 					</view>
@@ -138,8 +138,8 @@ export default {
 						this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingFranchisee&code=`
 					})
 			} else if (type === 'shopInvitation') {
-				this.createCode = this.userInfo.phone || ''
-				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingShop&code=`
+				this.createCode = `${this.userInfo.phone}`
+				this.qrcodeUrl = `${this.rootUrl}/#/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=bindingShop&code=${this.$store.state.auth.identityInfo.shopInfo.shopId || ''}~`
 				// this.$refs.uqrcode.make({})
 			} else if (type === 'teamMembersInvitation') {
 				getUserInfoCodeApi({

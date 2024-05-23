@@ -33,13 +33,21 @@
 			<ATFShopCartList ref="refATFShopCartList" is-to-shop @update-msg="handleUpdateMoneyAndNum">
 				<!-- 购物车为空 -->
 				<template #empty>
-					<view class="emptyCart-box flex-items-plus flex-column">
-						<image class="emptyCart-img" src="../../../static/images/new-business/shop/bgnull.png"></image>
-						<label class="font-color-999 fs26 mar-top-30">你的购物车还没有宝贝哦</label>
-						<label class="font-color-999 fs26 mar-top-10">快去首页选一个吧～</label>
-						<view class="goToShopping" @click="$switchTab('/pages/index/index')">
-							去购物
-						</view>
+					<view style="padding-bottom: 45upx;">
+						<tui-no-data :fixed="false" style="padding-top: 60upx;">
+							<view>
+								<view>你的购物车还没有宝贝哦</view>
+								<view style="margin-top: 20rpx;">快去首页选一个吧～</view>
+								<view style="margin-top: 20rpx;">
+									<tui-button
+										type="black" width="280rpx" height="96rpx"
+										margin="0 auto" @click="$switchTab('/pages/index/index')"
+									>
+										选择
+									</tui-button>
+								</view>
+							</view>
+						</tui-no-data>
 					</view>
 				</template>
 			</ATFShopCartList>
@@ -87,7 +95,7 @@
 
 <script>
 import DeleteModal from './components/DeleteModal'
-import { T_SKU_ITEM_DTO_LIST } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST } from '../../../constant'
 import {
 	getSettlementOrderApi
 } from '../../../api/anotherTFInterface'
@@ -199,8 +207,8 @@ export default {
 						}
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
-					uni.setStorageSync(T_SKU_ITEM_DTO_LIST, addCartSelectedList)
-					this.go('/another-tf/another-serve/orderConfirm/index?type=2')
+					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
+					this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=2')
 				} else {
 					this.$showToast('请先勾选商品')
 				}
