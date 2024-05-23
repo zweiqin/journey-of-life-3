@@ -28,7 +28,7 @@ export default {
 				},
 				country: '中国',
 				township: '大良街道',
-				businessAreas: [[]],
+				businessAreas: [ [] ],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: '0757'
@@ -56,6 +56,7 @@ export default {
 			uni.setStorageSync(T_SELECTED_ADDRESS, {
 				type: 'default',
 				data: {
+					province: state.locationInfo.province,
 					city: state.locationInfo.city,
 					distinguish: state.locationInfo.district,
 					town: state.locationInfo.township
@@ -78,7 +79,7 @@ export default {
 				},
 				country: '中国',
 				township: typeof detailInfo.township === 'object' ? '' : detailInfo.township,
-				businessAreas: [[]],
+				businessAreas: [ [] ],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: ''
@@ -115,7 +116,7 @@ export default {
 											resolve(finalRes)
 										}
 									} catch (error) {
-										console.log("草了啊", error);
+										console.log('草了啊', error)
 									}
 								})
 								.catch((e) => {

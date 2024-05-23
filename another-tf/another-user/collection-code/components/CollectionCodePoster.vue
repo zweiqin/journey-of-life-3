@@ -5,7 +5,13 @@
 				<image v-show="posterImage" class="poster-iamge" :src="posterImage" mode="widthFix" />
 				<l-painter v-show="!posterImage" ref="painter" is-canvas-to-temp-file-path @done="isGenerate ? handleGenerateSuccess() : handlePainterSuccess()">
 					<l-painter-view css="text-align: center;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;">
-						<l-painter-view css="padding: 42rpx 0 24rpx 0;background-color: #ef530e;">
+						<l-painter-view css="padding: 18rpx 0 24rpx 0;background-color: #ef530e;">
+							<l-painter-view>
+								<l-painter-text
+									text="团蜂同城生活"
+									css="font-size: 34rpx;font-weight: bold;font-style: italic;color: #ffffff;letter-spacing: 4rpx;"
+								/>
+							</l-painter-view>
 							<l-painter-view>
 								<l-painter-text
 									text="扫 码 消 费 有 补 贴"
@@ -13,7 +19,7 @@
 								/>
 							</l-painter-view>
 							<l-painter-view
-								css="position: relative;width: 408rpx;height: 408rpx;margin: 36rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
+								css="position: relative;width: 408rpx;height: 408rpx;margin: 10rpx auto 0;background-color: #ffffff;border-radius: 16rpx;overflow: hidden;box-sizing: border-box;"
 							>
 								<l-painter-view
 									css="position: absolute;left: 0;top: 0;width: 100%;height: 100%;box-sizing: border-box;"

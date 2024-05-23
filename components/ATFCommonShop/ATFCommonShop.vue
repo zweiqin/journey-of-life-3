@@ -23,10 +23,15 @@
 							{{ shopInfo.shopName || shopInfo.chargePersonName || '附近商家' }}
 						</view>
 					</view>
-					<image
-						v-if="showSign && shopInfo.contractState" src="../../static/images/new-community/home/gold-star.png"
-						style="width: 48upx;height: 48upx;"
-					></image>
+					<view v-if="showSign && shopInfo.contractState" style="padding: 2rpx;background-color: #f5bc59;border-radius: 50%;">
+						<view style="padding: 4rpx;background-color: #fff4d2;border-radius: 50%;">
+							<view
+								style="display: flex;justify-content: center;align-items: align-items;width: 30rpx;height: 30rpx;padding: 2rpx;background-color: #a24f03;border-radius: 50%;line-height: 1.2;"
+							>
+								<tui-icon name="star-fill" :size="22" unit="rpx" color="#fed05f"></tui-icon>
+							</view>
+						</view>
+					</view>
 				</view>
 
 				<view class="shop-middle" :style="{ marginTop: bottomType !== 'brief' ? '10upx' : '0' }">
@@ -155,7 +160,7 @@
 						</view>
 					</view>
 					<view v-if="shopInfo.distance" class="brief-right">
-						<image class="icon" src="../../static/images/new-community/home/location.png"></image>
+						<tui-icon name="gps" :size="24" unit="rpx" color="#eb520e" margin="0 8rpx 0 0"></tui-icon>
 						<text>{{ shopInfo.distance || 0 }}Km</text>
 					</view>
 				</view>
@@ -186,18 +191,18 @@
 					</view>
 				</view>
 
-				<view v-if="bottomType === 'display'" class="bottom-detail">
+				<view v-if="bottomType !== 'display'" class="bottom-detail">
 					<view class="op-info">
 						<view class="item">
-							<image class="icon" src="../../static/images/new-community/home/follow.png"></image>
+							<tui-icon name="like" :size="26" unit="rpx" color="#888889" margin="0 8rpx 0 0"></tui-icon>
 							<text class="num">{{ shopInfo.score || 0 }}</text>
 						</view>
 						<view class="item">
-							<image class="icon" src="../../static/images/new-community/home/views.png"></image>
+							<tui-icon name="satisfied" :size="26" unit="rpx" color="#888889" margin="0 8rpx 0 0"></tui-icon>
 							<text class="num">{{ shopInfo.fansNumber || 0 }}</text>
 						</view>
 						<view v-if="shopInfo.distance" class="item">
-							<image class="icon" src="../../static/images/new-community/home/location.png"></image>
+							<tui-icon name="gps" :size="28" unit="rpx" color="#eb520e" margin="0 8rpx 0 0"></tui-icon>
 							<text class="num">{{ shopInfo.distance || 0 }}Km</text>
 						</view>
 					</view>
@@ -311,16 +316,12 @@ export default {
 			.op-info {
 				display: flex;
 				align-items: center;
+				padding-top: 6rpx;
 
 				.item {
 					display: flex;
 					align-items: center;
 					width: 33%;
-
-					.icon {
-						width: 44upx;
-						height: 44upx;
-					}
 
 					.num {
 						color: #888889;
@@ -388,11 +389,6 @@ export default {
 				margin-left: 20upx;
 				color: #ef530e;
 				font-size: 24upx;
-
-				.icon {
-					width: 44upx;
-					height: 44upx;
-				}
 			}
 		}
 	}

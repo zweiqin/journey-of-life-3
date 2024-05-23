@@ -42,7 +42,7 @@
 		<view v-if="type == 2" class="gift">
 			<image class="gift-icon" src="../../static/images/con-center/vip/gift.png"></image>
 			<text>送价值980元品牌超值大礼包</text>
-			<image class="gift-detail" src="../../static/images/new-community/home/vip.png"></image>
+			<image class="gift-detail" :src="common.seamingImgUrl('1716445887642-vip.png')"></image>
 		</view>
 
 		<!-- 赠品 -->

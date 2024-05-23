@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<tui-swipe-action
-				v-for="(item, index) in messageList" :key="item.footprintId"
+				v-for="(item, index) in messageList" :key="item.noticeId"
 				:params="{ index, noticeId: item.noticeId }" :open="item.show" :actions="options" :closable="false"
 				class="swipe-list-item" @click="productClick"
 			>
@@ -34,7 +34,7 @@
 								</view>
 								<view class="messageTypeR">{{ item.createTime }}</view>
 							</view>
-							<view>
+							<view v-if="item.htmlData">
 								<rich-text class="messageInfo" :nodes="item.htmlData"></rich-text>
 							</view>
 						</view>

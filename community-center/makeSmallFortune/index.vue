@@ -63,21 +63,24 @@ export default {
             queryInfo: {
                 search: ''
             },
-            tabs: [{
-                name: '赚小钱',
-                imgUrl: require('@/static/images/new-community/home/book.png')
-            },{
-                name: '邻里互动',
-                imgUrl: require('@/static/images/new-community/home/message.png')
-            },{
-                name: '发布记录',
-                imgUrl: require('@/static/images/new-community/home/wodefabu.png')
-            },{
-                name: '去发布',
-                imgUrl: require('@/static/images/new-community/home/ding.png')
-            }]
+            tabs: []
         }
     },
+    onLoad() {
+        this.tabs = [{
+                name: '赚小钱',
+                imgUrl: this.common.seamingImgUrl('1716363109864-book.png')
+            },{
+                name: '邻里互动',
+                imgUrl: this.common.seamingImgUrl('1716363118286-message.png')
+            },{
+                name: '发布记录',
+                imgUrl: this.common.seamingImgUrl('1716363130239-wodefabu.png')
+            },{
+                name: '去发布',
+                imgUrl: this.common.seamingImgUrl('1716363140283-ding.png')
+            }]
+		},
     onShow() {
         uni.setNavigationBarTitle({
 				title: '赚小钱'

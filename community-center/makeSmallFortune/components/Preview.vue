@@ -10,7 +10,7 @@
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
                 <image v-if="textData.header" :src="textData.header" class="PublisherInfoAvatar"></image>
-                <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
+                <image v-else src="../../../static/images/new-user/default-user-avatar.png" class="PublisherInfoAvatar"></image>
                 <text class="PublisherName">{{ textData.username }}</text>
             </view>
         </view>
@@ -18,12 +18,10 @@
             <view v-if="item.text" class="content" v-html="item.text"></view>
             <view class="images" v-if="item.imgUrl">
                 <img class="imageItem" :src="item.imgUrl" />
-                <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
             </view>
         </view>
         <!-- <view class="images">
             <image class="imageItem" v-if="textData.postCover" :src="textData.postCover"></image>
-            <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image>
         </view>
         <view class="content">
             内容: {{ textData.postContent }}
@@ -41,7 +39,7 @@
             </view>
             <view class="ReleaseTime">
                 <view class="fenxiang">
-                    <image class="fenxiangimg" src="@/static/images/new-community/home/fenxaing.png"></image>
+										<tui-icon name="share" :size="40" unit="rpx" color="#08377f"></tui-icon>
                     <text class="fxtxt">分享</text>
                 </view>
             </view>
