@@ -94,6 +94,7 @@ import ServerPane from './cpns/ServerPane.vue'
 // 赚小钱
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 import { getUpActivityListApi } from '../../api/community-center'
+import { importJsSDK } from '../../utils'
 
 const app = getApp()
 
@@ -355,10 +356,7 @@ export default {
   onLoad(options) {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     // #ifdef H5
-    const script = document.createElement('script')
-    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
-    script.setAttribute('id', 'WX_JS_SDK')
-    document.body.appendChild(script)
+    importJsSDK()
     // #endif
     if (options.jumpType) {
       uni.redirectTo({
@@ -551,4 +549,5 @@ export default {
     font-weight: 500;
     margin: 30rpx 0;
   }
-}</style>
+}
+</style>

@@ -1,8 +1,23 @@
 // #ifdef H5
+import wx from 'weixin-js-sdk'
 import { getConfigApi } from '../api/auth'
 import { USER_TOKEN } from '../constant'
 import wxShare from './wxshare'
 // #endif
+
+/**
+ * @description 导入jssdk
+ * @returns
+ */
+export const importJsSDK = () => {
+  const id = 'WX_JS_SDK'
+  const isExisted = document.querySelector(`#${id}`)
+  if (isExisted) return
+  const script = document.createElement('script')
+  script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
+  script.setAttribute('id', id)
+  document.body.appendChild(script)
+}
 
 /**
  * @typedef {Object} MessageOptions 消息配置
@@ -15,8 +30,9 @@ import wxShare from './wxshare'
  * @param {MessageOptions} data 分享的配置信息
  */
 export const setMiniprogramShareConfig = (data) => {
+  if (!wx) importJsSDK()
   let path = data.path
-  path = `pages/index/index?url=${encodeURI(path.replace("?", '[params]'))}`
+  path = `pages/index/index?url=${encodeURI(path.replace('?', '[params]'))}`
   wx.miniProgram.postMessage({
     data: { ...data, path }
   })
