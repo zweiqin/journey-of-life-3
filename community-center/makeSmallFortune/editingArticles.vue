@@ -74,8 +74,7 @@ export default {
             }],
             formData: {
                 postId: '',
-                postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: require('@/static/images/new-community/home/avatar1.png'),
+                header: '',
                 username: '蔡徐坤',
                 region: '440606',
                 publishUserId: "", // 发布者id

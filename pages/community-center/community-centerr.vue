@@ -10,7 +10,7 @@
             <TuanLocation>
               <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
             </TuanLocation>
-            <image class="angle" src="../../static/images/new-community/home/arrow-down.png"></image>
+						<tui-icon name="turningdown" :size="34" unit="rpx" color="#222229" margin="0 0 0 2rpx"></tui-icon>
           </view>
           <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
           <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
@@ -176,8 +176,16 @@ export default {
       try {
         let currentAddress = this.$store.getters.detailAddress
         if (!currentAddress) {
+					// #ifdef APP
+					const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+					if (lastAddress) {
+						currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.distinguish + lastAddress.data.town
+					}
+					// #endif
+					// #ifndef APP
           const { detail } = await this.$store.dispatch('location/getCurrentLocation')
           currentAddress = detail
+					// #endif
         }
         const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
@@ -476,12 +484,6 @@ export default {
       .address-text {
         color: #222229;
         font-size: 28upx;
-      }
-
-      .angle {
-        width: 36upx;
-        height: 36upx;
-        margin-left: 6upx;
       }
     }
 

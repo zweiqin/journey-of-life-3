@@ -295,7 +295,7 @@ export default {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram || isH5InWebview(), url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
-			} else if (this.type === 'downloadApp') {
+			} else if (this.type === 'downloadApp') { // 为了不用登录，则直接跳/pages/download/download
 				setTimeout(() => { uni.redirectTo({ url: '/pages/download/download' }) }, 300)
 			} else if (this.type === 'bindingUser') {
 				bindPlatformRelationshipCodeApi({ code: this.code })

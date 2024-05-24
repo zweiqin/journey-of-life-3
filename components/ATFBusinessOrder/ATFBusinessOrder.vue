@@ -89,8 +89,9 @@
 					</tui-button>
 				</view>
 				<view style="text-align: right;">
+					<!-- data.presenterVoucherAll && (data.skus.length !== 1) && (data.presenterVoucherAll !== data.skus[0].presenterVoucher) -->
 					<view
-						v-if="data.presenterVoucherAll && (data.skus.length !== 1) && (data.presenterVoucherAll !== data.skus[0].presenterVoucher)"
+						v-if="data.presenterVoucherAll && ((data.presenterVoucherAll !== data.skus.reduce((total, value, index, arr) => total + value.presenterVoucher, 0)) || (data.skus.length !== 1))"
 						style="padding: 10rpx 0 0;font-size: 30rpx;color: #fa5151;"
 					>
 						总赠送 {{ data.presenterVoucherAll }} 代金券

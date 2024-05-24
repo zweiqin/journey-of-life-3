@@ -10,7 +10,7 @@
         <view class="PublisherInfo">
             <view class="PublisherInfoBox">
                 <image v-if="textData.head" :src="textData.head" class="PublisherInfoAvatar"></image>
-                <image v-else :src="require('@/static/images/new-community/home/avatar1.png')" class="PublisherInfoAvatar"></image>
+                <image v-else src="../../static/images/new-user/default-user-avatar.png" class="PublisherInfoAvatar"></image>
                 <text class="PublisherName">{{ textData.username || '烧电焊的小黄鸭' }}</text>
             </view>
             <!-- <view class="PublishAddress">
@@ -23,7 +23,6 @@
             </view>
             <view class="images" v-if="item.imgUrl">
                 <img class="imageItem" :src="item.imgUrl" />
-                <!-- <image class="imageItem" v-else :src="require('@/static/images/new-community/home/bagayalu.png')"></image> -->
             </view>
         </view>
         <view class="guanggao" v-if="textData.redPacketInfo.link">
@@ -98,7 +97,7 @@
             </view>
             <view class="ReleaseTime">
                 <view class="fenxiang" @click="shares">
-                    <image class="fenxiangimg" src="@/static/images/new-community/home/fenxaing.png"></image>
+										<tui-icon name="share" :size="40" unit="rpx" color="#08377f"></tui-icon>
                     <text class="fxtxt">分享</text>
                 </view>
             </view>
@@ -154,8 +153,8 @@ export default {
             textData: {
                 postTitle: '劲爆！0元可在附近就能开店快速落地！',
                 postContent: '且夫水之积也不厚，则其负大舟也无力。覆杯水于 坳堂之上，则芥为之舟。置杯焉则胶，水浅而舟大 也。风之积也不厚，则其负大翼也无力。故九万里 则风斯在下矣，而后乃今培风；背负青天而莫之夭 阏者，而后乃今将图南。',
-                postCover: require('@/static/images/new-community/home/bagayalu.png'),
-                header: require('@/static/images/new-community/home/avatar1.png'),
+                postCover: '',
+                header: '',
                 username: '--',
             		redPacketInfo: {},
             },

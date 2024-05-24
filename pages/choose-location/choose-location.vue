@@ -327,22 +327,23 @@ export default {
       if (isHot) {
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
-          data: data
+          data: { province: '', ...data }
         });
         await this.$store.dispatch('location/getDetailAddress', data);
       } else {
-        await this.$store.dispatch('location/getDetailAddress', {
-          city: this.tabs[0].select,
-          distinguish: this.tabs[1].select,
-          town: data.name
-        });
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'detail',
           data: {
+						province: '',
             city: this.tabs[0].select,
             distinguish: this.tabs[1].select,
             town: data.name
           }
+        });
+        await this.$store.dispatch('location/getDetailAddress', {
+          city: this.tabs[0].select,
+          distinguish: this.tabs[1].select,
+          town: data.name
         });
       }
       uni.hideLoading();

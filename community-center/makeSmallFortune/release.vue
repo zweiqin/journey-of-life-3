@@ -46,7 +46,6 @@ export default {
             current: 0,
             isTesps: true,
             formData: {
-                postCover: require('@/static/images/new-community/home/bagayalu.png'),
                 header: uni.getStorageSync(USER_INFO).avatarUrl,
                 username: uni.getStorageSync(USER_INFO).nickName,
                 region: '440606',

@@ -2,9 +2,10 @@
 	<view class="ArticlesItem">
 		<view class="ArticlesItemTop">
 			<view class="ArticlesCoverSheetBox" @click="gotoArticleDetails">
-				<!-- @/static/images/new-community/home/CoverSheet.png -->
-				<image class="ArticlesCoverSheet" :src="datas.postCover ? datas.postCover : require(&quot;@/static/images/new-community/home/CoverSheet.png&quot;)"></image>
-				<image v-if="!(datas.remainingPacket > 0)" class="ArticlesCoverSheet overPng" src="@/static/images/new-community/home/isOver.png"></image>
+				<image class="ArticlesCoverSheet" :src="datas.postCover ? datas.postCover : require('../../../static/images/new-user/default-user-avatar.png')"></image>
+				<view v-if="!(datas.remainingPacket > 0)" class="overPng">
+					<view style="padding: 14rpx 0;border-top: 2rpx solid #ffffff;border-bottom: 2rpx solid #ffffff;">已结束</view>
+				</view>
 			</view>
 			<view class="LeftInformation">
 				<view class="title"  @click="gotoArticleDetails">{{ datas.postTitle || '无题 / 巅峰造诣' }}</view>
@@ -141,10 +142,22 @@ export default {
           }
           .overPng {
             position: absolute;
-            top: -10rpx;
-            left: -20rpx;
-            width: 258rpx;
-            height: 255rpx;
+            top: 30rpx;
+            left: 20rpx;
+						// padding: 52rpx;
+            width: 170rpx;
+            height: 172rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						border: 4rpx solid #ffffff;
+						border-radius: 50%;
+						color: #ffffff;
+						font-size: 38rpx;
+						text-align: center;
+						white-space: nowrap;
+        		transform: rotate(-30deg);
+						box-sizing: border-box;
           }
     }
     .LeftInformation {
