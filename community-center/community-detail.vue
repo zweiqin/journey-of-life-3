@@ -348,7 +348,7 @@ export default {
 
       if (!this.isArtificial) {
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}`
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}&detailId=${this.detailId}`
         });
       } else if (!this.serverPrice == 0) {
         uni.navigateTo({
@@ -412,7 +412,6 @@ export default {
       this.serviceDetail = res.data;
       this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList);
       // console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
-
       this.currentTab = res.data[0].id;
       this.switchTab(this.serviceDetail[0]);
       // console.log('666', this.serviceDetail)
