@@ -1,24 +1,18 @@
 <template>
 	<view class="brand-detail-container">
 
-		<BeeBack
-			:success-cb="successCb"
-			style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;"
-		>
+		<BeeBack :success-cb="successCb"
+			style="position: sticky;top: 0;z-index: 3;padding-top: 16upx;background-color: #ffffff;">
 			<view style="display: flex;align-items: center;justify-content: space-between;">
-				<BeeIcon
-					name="arrowleft" :size="34" color="#222229"
-					style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;"
-				>
+				<BeeIcon name="arrowleft" :size="34" color="#222229"
+					style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;">
 				</BeeIcon>
 				<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
-			<BrandInfo
-				:brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
-				@refresh="getBrandDetail"
-			></BrandInfo>
+			<BrandInfo :brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
+				@refresh="getBrandDetail"></BrandInfo>
 		</view>
 
 		<!-- <view
@@ -33,34 +27,24 @@
 			</view> -->
 
 		<!-- ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食']allTabList.map(i => i.classifyName) -->
-		<tui-tab
-			:tabs="allTabList" :current="currentTab" scroll background-color="transparent"
-			:size="32" bold
-			bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e"
-			slider-height="4px"
-			@change="handleTabChange"
-		></tui-tab>
+		<tui-tab :tabs="allTabList" :current="currentTab" scroll background-color="transparent" :size="32" bold bottom="6upx"
+			color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+			@change="handleTabChange"></tui-tab>
 
-		<view
-			v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length"
-			style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;"
-		>
-			<view
-				v-for="(item, index) in allTabData[currentTab].classify" :key="index"
+		<view v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length"
+			style="margin-top: 4rpx;padding: 0rpx 20rpx;display: flex;align-items: center;overflow-x: auto;white-space: nowrap;">
+			<view v-for="(item, index) in allTabData[currentTab].classify" :key="index"
 				style="padding: 12rpx 10rpx;margin-right: 10rpx;font-size: 30rpx;border-radius: 8rpx;"
 				:style="{ color: index == childsCurrent ? '#ffffff' : '#8c8b8d', backgroundColor: index == childsCurrent ? '#ff8000' : '#fefeff' }"
-				@click="handleSelectChild(item, index)"
-			>
+				@click="handleSelectChild(item, index)">
 				{{ item.classifyName }}
 			</view>
 		</view>
 
 		<view style="background-color: #fff;padding: 4upx 20upx 0 20upx;margin-top: 10upx;">
 			<view v-if="currentTab === -1">
-				<CanvasPage
-					v-if="componentsData && componentsData.length" :components-data="componentsData"
-					:terminal="terminal" :type-id="3" :shop-id="Number(shopId)"
-				>
+				<CanvasPage v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
+					:type-id="3" :shop-id="Number(shopId)">
 				</CanvasPage>
 				<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false" style="margin-top: 40upx;">
 					商家未装修首页
@@ -74,46 +58,35 @@
 						</swiper-item>
 					</swiper>
 				</view>
-				<view
-					style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;"
-				>
+				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
 					<view
 						:style="{ color: shopGoodsInfo.query.ifNew === 1 ? '#ff7911' : shopGoodsInfo.query.ifNew === 0 ? '#8dbcbd' : '#000000' }"
-						@click="handleGoodsSortTap(1)"
-					>
+						@click="handleGoodsSortTap(1)">
 						<text>新品</text>
 					</view>
 					<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
 						<text>价格</text>
-						<tui-icon
-							v-if="[1, 2].includes(shopGoodsInfo.query.type)"
+						<tui-icon v-if="[1, 2].includes(shopGoodsInfo.query.type)"
 							:name="shopGoodsInfo.query.type === 1 ? 'turningup' : shopGoodsInfo.query.type === 2 ? 'turningdown' : ''"
-							color="#666666" :size="16"
-						></tui-icon>
+							color="#666666" :size="16"></tui-icon>
 					</view>
 					<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
 						<text>销量</text>
-						<tui-icon
-							v-if="[1, 2].includes(shopGoodsInfo.query.volume)"
+						<tui-icon v-if="[1, 2].includes(shopGoodsInfo.query.volume)"
 							:name="shopGoodsInfo.query.volume === 1 ? 'turningup' : shopGoodsInfo.query.volume === 2 ? 'turningdown' : ''"
-							color="#666666" :size="16"
-						></tui-icon>
+							color="#666666" :size="16"></tui-icon>
 					</view>
 				</view>
 				<view v-if="shopGoodsInfo.data && shopGoodsInfo.data.length" style="width: 100%;">
 					<tui-waterfall :list-data="shopGoodsInfo.data" :type="2">
 						<template #left="{ entity }">
-							<ATFShopGoods
-								:shop-id="shopId" :c-item="entity" show-sales
-								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
-							>
+							<ATFShopGoods :shop-id="shopId" :c-item="entity" show-sales
+								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)">
 							</ATFShopGoods>
 						</template>
 						<template #right="{ entity }">
-							<ATFShopGoods
-								:shop-id="shopId" :c-item="entity" show-sales
-								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
-							>
+							<ATFShopGoods :shop-id="shopId" :c-item="entity" show-sales
+								@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)">
 							</ATFShopGoods>
 						</template>
 					</tui-waterfall>
@@ -121,8 +94,7 @@
 				<view style="padding-bottom: 45upx;">
 					<LoadingMore
 						:status="!shopGoodsInfo.isEmpty && !shopGoodsInfo.data.length
-							? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''"
-					>
+							? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''">
 					</LoadingMore>
 					<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
 				</view>
@@ -142,7 +114,7 @@ import BrandInfo from './components/BrandInfo'
 import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
 import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
-import { navigationAddress } from '../../../utils'
+import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 
 export default {
 	name: 'ShopDetail',
@@ -160,8 +132,8 @@ export default {
 			},
 			shopId: null,
 			brandDetail: {},
-			allTabList: [ '商品' ],
-			allTabData: [ { classifyName: '商品', classifyId: 0 } ], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
+			allTabList: ['商品'],
+			allTabData: [{ classifyName: '商品', classifyId: 0 }], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
 			currentTab: 0,
 			childsCurrent: -1,
 			// 首页
@@ -230,6 +202,11 @@ export default {
 				})
 				console.log(data)
 				this.brandDetail = data || {}
+				setMiniprogramShareConfig({
+					title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+					path: 'http://localhost:8988/TFShop_Uni_H5/#/another-tf/another-user/shop/shop-detail?shopId=' + this.brandDetail.shopId,
+					imageUrl: this.brandDetail.shopLogo || 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/feed73b67bb541edb82b41a0937dbdad.jpg'
+				})
 				uni.hideLoading()
 			} catch (error) {
 				console.log(error)

@@ -2,7 +2,7 @@ import { T_REDIRECT_TYPE, T_NEW_BIND_TYPE, USER_INFO, USER_ID, USER_TOKEN, T_USE
 import { A_TF_MAIN } from '../../config'
 import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './type'
 import store from '../index'
-import { getUrlCode } from '../../utils'
+import { getUrlCode, isH5InWebview } from '../../utils'
 import { refrshUserInfoApi } from '../../api/user'
 import { Encrypt } from '../../utils/secret'
 import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
@@ -88,7 +88,7 @@ export default {
 				if ((loginData.terminal === 6) || (loginData.terminal === 3)) {
 					loginData.terminal = 3
 					const appid = 'wxb19ccb829623be12' // 团蜂wxb19ccb829623be12，新巨蜂wx603b04a561e4683e，别的wxdf390bb4f8a67641
-					const local = store.state.app.isInMiniProgram ? `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}?miniProgram=1` : `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}`
+					const local = (store.state.app.isInMiniProgram || isH5InWebview()) ? `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}?miniProgram=1` : `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}`
 					const code = getUrlCode().code
 					if (!code) {
 						// 如https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb19ccb829623be12&redirect_uri=http%3A%2F%2Flocalhost%3A8988%2FTFShop_Uni_H5%2F%23%2Fpages%2Flogin%2Flogin&response_type=code&scope=snsapi_userinfo#wechat_redirect

@@ -9,7 +9,7 @@ import { jumpToOtherProject, isInWx, isH5InWebview } from './index'
 export const navigationAddress = (destination) => {
 	if (isInWx()) {
 		if (store.state.app.isInMiniProgram || isH5InWebview()) {
-			jumpToOtherProject({ isInMiniProgram: store.state.app.isInMiniProgram, programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=navigationAddress&latitude=${destination.split(',')[1]}&longitude=${destination.split(',')[0]}`, montageTerminal: [ 6 ] })
+			jumpToOtherProject({ isInMiniProgram: store.state.app.isInMiniProgram || isH5InWebview(), programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=navigationAddress&latitude=${destination.split(',')[1]}&longitude=${destination.split(',')[0]}`, montageTerminal: [ 6 ] })
 		} else {
 			jumpToOtherProject({ toType: 'MP' }, () => {
 				wx.openLocation({

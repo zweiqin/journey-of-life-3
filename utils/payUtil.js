@@ -599,7 +599,7 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 		if (res.token) res.Authorization = res.token
 		if (res.ssoUserInfo && res.ssoUserInfo.token) res['satoken-user'] = res.ssoUserInfo.token
 		jumpToOtherProject({
-			isInMiniProgram: store.state.app.isInMiniProgram,
+			isInMiniProgram: store.state.app.isInMiniProgram || isH5InWebview(),
 			programUrl: `pages/skip/skip`,
 			toType: 'MP',
 			query: `?type=wvHuiShiBaoPay&data=${JSON.stringify({ data, payType, type, otherArgs, jumpType: `wvHuiShiBaoPayTurn`, Authorization: res.Authorization || '', satokenUser: res['satoken-user'] || '' })}`,

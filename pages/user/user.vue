@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { getStorageKeyToken, jumpToOtherProject } from '../../utils'
+import { getStorageKeyToken, jumpToOtherProject, isH5InWebview } from '../../utils'
 import BaseInfo from './cpns/BaseInfo'
 import Pane from './cpns/Pane.vue'
 import showModalMixin from '../../mixin/showModal'
@@ -112,7 +112,7 @@ export default {
 				this.go('/user/view?target=' + item.url)
 				return
 			} else if (item.type === 'electronicCard') {
-				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, programUrl: `pages/skip/skip`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
+				if (!(this.$store.state.app.terminal === 3)) jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram || isH5InWebview(), id: 'gh_5668ad6e5290', appId: 'wxb446588ba0dbb9d7', url: `pages/index/index`, programUrl: `pages/skip/skip`, toType: 'MP', query: '?type=electronicCard', montageTerminal: [ 6 ] })
 				return
 			} else if (item.type === 'outsideLink') {
 				this.isShowOutsideLinkDialog = true
@@ -148,7 +148,7 @@ export default {
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
 					if (storageKeyToken) {
-						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram || isH5InWebview(), url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}
 					return
 				} else if (item.type === 'shopInvitation') {
