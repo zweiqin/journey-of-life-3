@@ -78,7 +78,7 @@ import Button from './components/button.vue';
 import Remarks from './components/remarks.vue';
 import Header from './components/header.vue';
 import { consigneeVipInfo } from './config';
-import { getUserId, throttle, getAdressDetailByLngLat, isH5InWebview } from '../utils';
+import { getUserId, throttle, getAdressDetailByLngLat } from '../utils';
 import { createRepairOrderApi, payOrderForBeeStewadApi, getIsOpenServerAreaApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
 import { getAddressListApi } from '../api/address';
 
@@ -264,7 +264,7 @@ export default {
           return;
         }
         if (createOrderRes.statusCode == 20000) {
-          if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+          if (this.$store.state.app.isInMiniProgram) {
             const payAppesult = await payOrderForBeeStewadAPPApi({
               userId: getUserId(),
               orderNo: createOrderRes.data
@@ -282,11 +282,7 @@ export default {
               wx.miniProgram.navigateTo({
                 url: '/pages/loading/loading?' + query + 'orderNo=' + createOrderRes.data + '&userId=' + getUserId(),
                 fail: async () => {
-                  // uni.redirectTo({
-                  //   url: `/community-center/order`,
-                  // });
-
-                  if (!isH5InWebview()) {
+                  if (!this.$store.state.app.isInMiniProgram) {
                     const payResult = await payOrderForBeeStewadApi({
                       userId: getUserId(),
                       orderNo: createOrderRes.data

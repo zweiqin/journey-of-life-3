@@ -115,6 +115,7 @@ import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
 import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
+import { A_TF_MAIN } from '../../../config';
 
 export default {
 	name: 'ShopDetail',
@@ -204,8 +205,8 @@ export default {
 				this.brandDetail = data || {}
 				setMiniprogramShareConfig({
 					title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
-					path: 'http://localhost:8988/TFShop_Uni_H5/#/another-tf/another-user/shop/shop-detail?shopId=' + this.brandDetail.shopId,
-					imageUrl: this.brandDetail.shopLogo || 'https://zhult-com.oss-cn-beijing.aliyuncs.com/commodity/feed73b67bb541edb82b41a0937dbdad.jpg'
+					path: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
 				})
 				uni.hideLoading()
 			} catch (error) {

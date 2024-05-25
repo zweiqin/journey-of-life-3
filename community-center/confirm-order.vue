@@ -56,7 +56,7 @@
 <script>
 import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
 import { T_COMMUNITY_ORDER_NO } from '../constant';
-import { getUserId, throttle, isH5InWebview } from '../utils';
+import { getUserId, throttle } from '../utils';
 
 export default {
   name: 'Confirm-order',
@@ -105,7 +105,7 @@ export default {
     async getServiceOrderPay() {
       uni.setStorageSync(T_COMMUNITY_ORDER_NO, this.orderNo);
       const _this = this
-      if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+      if (this.$store.state.app.isInMiniProgram) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),
@@ -117,13 +117,10 @@ export default {
             for (const key in payAppesult.data) {
               query += key + '=' + payAppesult.data[key] + '&';
             }
-
-            // console.log(payAppesult);
-
             wx.miniProgram.navigateTo({
               url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
               fail: async () => {
-                if (!isH5InWebview()) {
+                if (!this.$store.state.app.isInMiniProgram) {
                   let res = await getServiceOrderPayApi({
                     orderNo: this.orderNo,
                     userId: getUserId()

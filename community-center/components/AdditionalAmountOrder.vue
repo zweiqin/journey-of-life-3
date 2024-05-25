@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getUserId, isH5InWebview } from "utils";
+import { getUserId } from "utils";
 import {
   payAdditionalOrderApi,
   payOrderForBeeStewadAPPApi,
@@ -61,7 +61,7 @@ export default {
   methods: {
     async handlePayOrder() {
       const _this = this
-      if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+      if (this.$store.state.app.isInMiniProgram) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),
@@ -73,9 +73,6 @@ export default {
             for (const key in payAppesult.data) {
               query += key + "=" + payAppesult.data[key] + "&";
             }
-
-            // console.log(payAppesult);
-
             wx.miniProgram.navigateTo({
               url:
                 "/pages/loading/loading?" +
@@ -85,7 +82,7 @@ export default {
                 "&userId=" +
                 getUserId(),
               fail: async () => {
-                if (!isH5InWebview()) {
+                if (!this.$store.state.app.isInMiniProgram) {
                   let res = await payAdditionalOrderApi({
                     orderNo: this.orderData.extraNo,
                     userId: getUserId(),

@@ -8,7 +8,7 @@ import store from '@/store'
 
 import { USER_INFO, ENTERPRISE_ORDERS_NO } from '@/constant'
 
-import { getUserId, throttle, isH5InWebview } from '@/utils';
+import { getUserId, throttle } from '@/utils';
 
 
 async function createFormSubmission(orderNo) { //! 创建表单前往支付页面
@@ -56,7 +56,7 @@ async function h5WebViewPay(orderNo) {
       "&userId=" +
       getUserId(),
     fail: async () => {
-      if (!isH5InWebview()) {
+      if (!store.state.app.isInMiniProgram) {
         createFormSubmission(orderNo)
       } else {
         _this.ttoast({
@@ -95,7 +95,7 @@ export async function communityPayment(res) {
     });
   }
 
-  if(store.state.app.isInMiniProgram || isH5InWebview()) { //! 如果处于移动端的webview
+  if(store.state.app.isInMiniProgram) { //! 如果处于移动端的webview
     h5WebViewPay(orderNo)
   }else {
     // #ifdef H5

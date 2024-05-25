@@ -1,8 +1,8 @@
 <script>
 // app.js
-import { getUserId } from './utils'
+import { getUserId, isH5InWebview } from './utils'
 import { BASE_WS_API } from './config'
-import { whoami } from './api/auth'
+import { CHANGE_IS_IN_MINIPROGRAM } from './store/modules/type'
 import { T_SELECTED_ADDRESS } from './constant'
 import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 
@@ -22,6 +22,7 @@ export default {
 				}
 			}
 		})
+		if (isH5InWebview()) this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true)
 		this.$store.dispatch('app/getSystermTerminal')
 		// #ifdef H5
 		this.globalData.terminal = 2

@@ -3,13 +3,13 @@ import { jsonp } from 'vue-jsonp'
 // #endif
 const wx = require('weixin-js-sdk')
 import store from '../store/index'
-import { jumpToOtherProject, isInWx, isH5InWebview } from './index'
+import { jumpToOtherProject, isInWx } from './index'
 
 // 导航去某地
 export const navigationAddress = (destination) => {
 	if (isInWx()) {
-		if (store.state.app.isInMiniProgram || isH5InWebview()) {
-			jumpToOtherProject({ isInMiniProgram: store.state.app.isInMiniProgram || isH5InWebview(), programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=navigationAddress&latitude=${destination.split(',')[1]}&longitude=${destination.split(',')[0]}`, montageTerminal: [ 6 ] })
+		if (store.state.app.isInMiniProgram) {
+			jumpToOtherProject({ isInMiniProgram: store.state.app.isInMiniProgram, programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=navigationAddress&latitude=${destination.split(',')[1]}&longitude=${destination.split(',')[0]}`, montageTerminal: [ 6 ] })
 		} else {
 			jumpToOtherProject({ toType: 'MP' }, () => {
 				wx.openLocation({

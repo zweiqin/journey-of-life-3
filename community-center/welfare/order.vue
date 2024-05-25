@@ -100,7 +100,7 @@ import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO } from '../../constant'
 import { getAddressListApi } from '../../api/address'
 import ChooseTime from '../componts/choose-time.vue'
 import { IMG_UPLOAD_URL } from '../../config'
-import { getUserId, isH5InWebview } from '../../utils'
+import { getUserId } from '../../utils'
 import { createActivityOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../../api/community-center'
 
 export default {
@@ -257,7 +257,7 @@ export default {
     async handlePay(orderNo) {
       uni.setStorageSync(T_COMMUNITY_ORDER_NO, orderNo)
       const _this = this
-      if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+      if (this.$store.state.app.isInMiniProgram) {
         try {
           const payAppesult = await payOrderForBeeStewadAPPApi({
             userId: getUserId(),
@@ -269,13 +269,10 @@ export default {
             for (const key in payAppesult.data) {
               query += key + '=' + payAppesult.data[key] + '&'
             }
-
-            // console.log(payAppesult);
-
             wx.miniProgram.navigateTo({
               url: '/pages/loading/loading?' + query + 'orderNo=' + orderNo + '&userId=' + getUserId(),
               fail: async () => {
-                if (!isH5InWebview()) {
+                if (!this.$store.state.app.isInMiniProgram) {
                   let res = await getServiceOrderPayApi({
                     orderNo: orderNo,
                     userId: getUserId()

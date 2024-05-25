@@ -174,7 +174,7 @@ import PayMethods from './components/PayMethods.vue'
 import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
 import { USER_INFO, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
-import { getUserId, throttle, isH5InWebview } from '@/utils';
+import { getUserId, throttle } from '@/utils';
 import { IMG_UPLOAD_URL } from '../../config';
 import { validateOrderForm } from './data'
 
@@ -603,7 +603,7 @@ export default {
               })
             }
           } else {
-            if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+            if (this.$store.state.app.isInMiniProgram) {
               try {
                 const payAppesult = await payOrderForBeeStewadAPPApi({
                   userId: getUserId(),
@@ -615,13 +615,10 @@ export default {
                   for (const key in payAppesult.data) {
                     query += key + '=' + payAppesult.data[key] + '&';
                   }
-
-                  // console.log(payAppesult);
-
                   wx.miniProgram.navigateTo({
                     url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
                     fail: async () => {
-                      if (!isH5InWebview()) {
+                      if (!this.$store.state.app.isInMiniProgram) {
                         let res = await getServiceOrderPayApi({
                           orderNo: orderNo,
                           userId: getUserId()

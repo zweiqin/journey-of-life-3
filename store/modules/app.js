@@ -1,5 +1,5 @@
 import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO, CHANGE_SYSTERM_TERMINAL } from './type'
-import { isInWx, isH5InWebview, jumpToOtherProject } from '../../utils'
+import { isInWx, jumpToOtherProject } from '../../utils'
 import { getCustomerServiceAppletKfApi, getCustomerServiceH5KfApi, getCustomerServicePCKfApi, getAllCustomerServiceApi } from '../../api/anotherTFInterface'
 
 export default {
@@ -7,8 +7,8 @@ export default {
 	state() {
 		return {
 			isInMiniProgram: false, // 是否套壳的
-			systermInfo: {},
 			terminal: 0,
+			systermInfo: {},
 			platformOperationShopId: 186
 		}
 	},
@@ -21,13 +21,13 @@ export default {
 			}
 		},
 
+		[CHANGE_SYSTERM_TERMINAL](state, terminal) {
+			state.terminal = terminal
+		},
+
 		[CHANGE_SYSTERM_INFO](state, system) {
 			state.systermInfo = system
 			console.log(system)
-		},
-
-		[CHANGE_SYSTERM_TERMINAL](state, terminal) {
-			state.terminal = terminal
 		}
 	},
 
@@ -49,7 +49,7 @@ export default {
 		getSystermTerminal({ state, dispatch, commit }) {
 			return new Promise((resolve, reject) => {
 				if (isInWx()) {
-					if (state.isInMiniProgram || isH5InWebview()) {
+					if (state.isInMiniProgram) {
 						commit(CHANGE_SYSTERM_TERMINAL, 6)
 					} else {
 						commit(CHANGE_SYSTERM_TERMINAL, 3)
@@ -68,6 +68,7 @@ export default {
 					commit(CHANGE_SYSTERM_TERMINAL, 4)
 					// #endif
 				}
+				resolve(state.terminal)
 			})
 		},
 

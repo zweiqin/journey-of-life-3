@@ -4,7 +4,6 @@ import store from '../store'
 import { payOrderGoodsApi, payOrderGoodsAPPApi } from '../api/goods'
 import { payBOrderH5, payOtherPlatformApi } from '../api/community-center'
 import { getUserId } from './index'
-import {isH5InWebview} from '../utils'
 
 // export const payH5Method = (res, type) => {
 // 	uni.removeStorageSync(T_PAY_ORDER)
@@ -47,7 +46,7 @@ export const payFn = (data, payType, type = 'DEFAULT', otherArgs = {}) => {
 	// console.log(mapState('app', [ 'isInMiniProgram' ]).isInMiniProgram)
 	// console.log({ ...mapState({ 'isInMiniProgram': (state) => state.isInMiniProgram }) })
 	console.log(store.state.app.isInMiniProgram)
-	if (store.state.app.isInMiniProgram || isH5InWebview()) {  // || getApp().globalData.isInMiniprogram
+	if (store.state.app.isInMiniProgram) {  // || getApp().globalData.isInMiniprogram
 		payOrderGoodsAPPApi({
 			userId: getUserId(),
 			orderNo: data.orderSn,
@@ -172,7 +171,7 @@ export const payFn = (data, payType, type = 'DEFAULT', otherArgs = {}) => {
 
 export const payShopFn = (data, payType, type = 'DEFAULT', otherArgs = {}) => {
 	console.log(store.state.app.isInMiniProgram)
-	if (store.state.app.isInMiniProgram || isH5InWebview()) {
+	if (store.state.app.isInMiniProgram) {
 		payOtherPlatformApi({
 			userId: getUserId(),
 			orderNo: data.orderNo,

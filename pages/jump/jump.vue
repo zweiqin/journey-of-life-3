@@ -98,7 +98,7 @@ import {
 	bindPlatformInfoCodeBindingApi,
 	addDrawParticipateLotteryApi
 } from '../../api/anotherTFInterface'
-import { getUserId, getStorageKeyToken, jumpToOtherProject, isH5InWebview } from '../../utils'
+import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 import { handleDoPay } from '../../utils/payUtil'
 
@@ -292,7 +292,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram || isH5InWebview(), url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
 			} else if (this.type === 'downloadApp') { // 为了不用登录，则直接跳/pages/download/download
@@ -316,7 +316,7 @@ export default {
 				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
-						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram || isH5InWebview(), url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
 					}, 300)
 				}
 			} else if (this.type === 'collection') { // 收款方付款结算

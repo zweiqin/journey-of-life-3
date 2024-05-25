@@ -33,7 +33,7 @@ import {
   payOrderForBeeStewadAPPApi,
   orderPayH5PabUseBlanceApi
 } from "../api/community-center";
-import { getUserId, useCopy, isH5InWebview } from "../utils";
+import { getUserId, useCopy } from "../utils";
 import Header from "./components/header.vue";
 import ChoosePayType from './enterprise-orders/components/PayMethods.vue'
 
@@ -75,7 +75,7 @@ export default {
             })
           }
         } else {
-          if (this.$store.state.app.isInMiniProgram || isH5InWebview()) {
+          if (this.$store.state.app.isInMiniProgram) {
             const payAppesult = await payOrderForBeeStewadAPPApi({
               userId: getUserId(),
               orderNo: this.orderNo,
@@ -96,7 +96,7 @@ export default {
                   "&userId=" +
                   getUserId(),
                 fail: (error) => {
-                  if (!isH5InWebview()) {
+                  if (!this.$store.state.app.isInMiniProgram) {
                     payOrderForEndApi({
                       orderNo: this.orderNo,
                       userId: getUserId(),

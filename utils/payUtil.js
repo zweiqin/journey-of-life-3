@@ -1,7 +1,7 @@
 import { T_PAY_ORDER, T_STORAGE_KEY } from '../constant'
 import { gotoOrderAppPayApi, gotoOrderH5PayApi, getSessionKeyAppApi, gotoOrderPayApi, payOrderSuccessApi, getPayMiniProgramQueryApi } from '../api/anotherTFInterface'
 import store from '../store'
-import { getUserId, isInWx, isH5InWebview, jumpToOtherProject } from './index'
+import { getUserId, isInWx, jumpToOtherProject } from './index'
 
 // #ifdef H5
 const jweixin = require('jweixin-module')
@@ -599,7 +599,7 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 		if (res.token) res.Authorization = res.token
 		if (res.ssoUserInfo && res.ssoUserInfo.token) res['satoken-user'] = res.ssoUserInfo.token
 		jumpToOtherProject({
-			isInMiniProgram: store.state.app.isInMiniProgram || isH5InWebview(),
+			isInMiniProgram: store.state.app.isInMiniProgram,
 			programUrl: `pages/skip/skip`,
 			toType: 'MP',
 			query: `?type=wvHuiShiBaoPay&data=${JSON.stringify({ data, payType, type, otherArgs, jumpType: `wvHuiShiBaoPayTurn`, Authorization: res.Authorization || '', satokenUser: res['satoken-user'] || '' })}`,
@@ -801,7 +801,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			await bankCardPay(submitResult, purchaseMode, type, otherArgs)
 		} else if ([ 1 ].includes(submitInfo.paymentMode)) { // 微信支付
 			if (isInWx()) {
-				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+				if (store.state.app.isInMiniProgram) {
 					await payH5InWechat(submitInfo)
 				} else {
 					await payH5InWechat(submitInfo)
@@ -823,7 +823,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			}
 		} else if ([2, 3].includes(submitInfo.paymentMode)) { // 支付宝
 			if (isInWx()) {
-				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+				if (store.state.app.isInMiniProgram) {
 					uni.hideLoading()
 					uni.showToast({ title: '暂不支持在此端使用支付宝支付', icon: 'none' })
 				} else {
@@ -850,7 +850,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			}
 		} else if ([ 4 ].includes(submitInfo.paymentMode)) { // 通联支付
 			if (isInWx()) {
-				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+				if (store.state.app.isInMiniProgram) {
 					await wvTonglianPay(submitResult, purchaseMode, type, otherArgs)
 				} else {
 					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
@@ -873,7 +873,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			}
 		} else if ([5, 6, 7, 8].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、交易金支付
 			if (isInWx()) {
-				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+				if (store.state.app.isInMiniProgram) {
 					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
 				} else {
 					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
@@ -894,7 +894,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 			}
 		} else if ([ 9 ].includes(submitInfo.paymentMode)) { // 惠市宝支付
 			if (isInWx()) {
-				if (store.state.app.isInMiniProgram || isH5InWebview()) {
+				if (store.state.app.isInMiniProgram) {
 					await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				} else {
 					await h5HuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)

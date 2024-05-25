@@ -209,7 +209,7 @@ export const isInWx = () => {
 export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
 		if (isInWx()) {
-			if (isInMiniProgram || isH5InWebview()) {
+			if (isInMiniProgram) {
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去小程序的webview
 					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
 					fail: () => {
@@ -234,7 +234,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 		}
 	} else if (toType === 'MP') {
 		if (isInWx()) {
-			if (isInMiniProgram || isH5InWebview()) {
+			if (isInMiniProgram) {
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去其它小程序页面
 					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
 					fail: () => {
@@ -262,7 +262,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 							'onMenuShareTimeline',
 							'openLocation'
 						], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-						openTagList: ['wx-open-launch-weapp']
+						openTagList: [ 'wx-open-launch-weapp' ]
 					})
 					wx.ready(function () {
 						// config信息验证成功
