@@ -213,7 +213,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去小程序的webview
 					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
 					fail: () => {
-						setTimeout(() => { uni.switchTab({	url: '/pages/index/index' }) }, 2000)
+						setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }) }, 2000)
 					}
 				})
 			} else {
@@ -238,7 +238,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去其它小程序页面
 					url: query && montageTerminal && montageTerminal.includes(6) ? `/${programUrl}${query}` : `/${programUrl}`,
 					fail: () => {
-						setTimeout(() => { uni.switchTab({	url: '/pages/index/index' }) }, 2000)
+						setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }) }, 2000)
 					}
 				})
 			} else {
@@ -262,7 +262,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 							'onMenuShareTimeline',
 							'openLocation'
 						], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-						openTagList: [ 'wx-open-launch-weapp' ]
+						openTagList: ['wx-open-launch-weapp']
 					})
 					wx.ready(function () {
 						// config信息验证成功
@@ -436,8 +436,6 @@ export const getUrlCode = () => {
 			theRequest[strs[i].split('=')[0]] = strs[i].split('=')[1]
 		}
 	}
-
-	console.log('code结果', theRequest)
 	return theRequest
 }
 // #endif

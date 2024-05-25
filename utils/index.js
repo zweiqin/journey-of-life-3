@@ -32,3 +32,4 @@ export { request2 } from './request'
 // #ifdef H5
 export { getUrlCode } from './DWHutils'
 // #endif
+export * from './share'

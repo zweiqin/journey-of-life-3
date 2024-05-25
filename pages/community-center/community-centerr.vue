@@ -39,7 +39,8 @@
       <!-- 四季专区 -->
       <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
-      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"></ServerPane>
+      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title"
+        :list="item.children"></ServerPane>
     </view>
 
     <!-- 组件支持 -->
@@ -50,25 +51,30 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+      @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
     <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess"></TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess">
+    </TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
+    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl"
+      @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
       <view class="tip" slot="tip">参与即可获得 300 元代金券，机会难得</view>
     </PopupInformation>
 
-    <DragButton text="联系客服" is-dock exist-tab-bar @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
+    <DragButton text="联系客服" is-dock exist-tab-bar
+      @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
   </view>
 </template>
 
 <script>
+
 import { A_TF_MAIN } from '../../config'
 import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
@@ -85,6 +91,7 @@ import ServerPane from './cpns/ServerPane.vue'
 // 赚小钱
 import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 import { getUpActivityListApi } from '../../api/community-center'
+import { importJsSDK } from '../../utils'
 
 const app = getApp()
 
@@ -189,7 +196,7 @@ export default {
             this.popupImageUrl = undefined
           }
         }
-      } catch (error) {}
+      } catch (error) { }
     },
     // 点击去弹窗详情
     handleToActiveDetail() {
@@ -245,8 +252,8 @@ export default {
           link: `${A_TF_MAIN}/#/`,
           imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
         },
-        successCb: () => {},
-        failCb: () => {}
+        successCb: () => { },
+        failCb: () => { }
       }
       await this.$refs.beeWxShareRef.share(data, isQuit)
     },
@@ -354,15 +361,13 @@ export default {
   onLoad(options) {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     // #ifdef H5
-    const script = document.createElement('script')
-    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
-    document.body.appendChild(script)
+    importJsSDK()
     // #endif
-		if (options.jumpType) {
-			uni.redirectTo({
-				url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`
-			})
-		}
+    if (options.jumpType) {
+      uni.redirectTo({
+        url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`
+      })
+    }
   },
 
   onPageScroll(e) {

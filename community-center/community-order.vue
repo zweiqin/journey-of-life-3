@@ -446,6 +446,8 @@ export default {
           price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
           actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || '',
           serverTypeId: this.currentServeInfo.id,
+          serverId: this.currentServeInfo.detailId,
+          bizType: 1,
           individualAccount: this.$store.state.auth && this.$store.state.auth.userInfo ? this.$store.state.auth.userInfo.phone : ''
         }
 
