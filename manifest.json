@@ -186,7 +186,7 @@
         "usingComponents" : true
     },
     "h5" : {
-        "title" : "团蜂家居",
+        "title" : "团蜂生活",
         "domain" : "",
         "devServer" : {
             "disableHostCheck" : true,

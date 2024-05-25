@@ -50,9 +50,6 @@
 						去验证
 					</button>
 					<!-- #endif -->
-					<!-- #ifndef MP-ALIPAY -->
-					去验证
-					<!-- #endif -->
 				</view>
 			</view>
 			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
@@ -66,15 +63,26 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="agreement">
-			<view class="agreement agreement_top" @click="protocol('app_privacy_agreement')">
+		<view style="margin: 20rpx auto 0;font-size: 28rpx;color: #333;background-color: #ffffff;">
+			<view
+				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
+				@click="protocol('app_privacy_agreement')"
+			>
 				<text>用户隐私协议</text>
 				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
 			</view>
-			<view class="agreement" @click="protocol('app_user_agreement')">
+			<view
+				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
+				@click="protocol('app_user_agreement')"
+			>
 				<text>用户服务协议</text>
 				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
+			</view>
+			<view
+				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
+			>
+				<text>系统版本</text>
+				<text>v{{ systemVersion }}</text>
 			</view>
 		</view>
 
@@ -122,7 +130,10 @@
 			:show="isShowbindWXFDialog" title="绑定微信" @click="handleBindWX"
 		>
 			<template #content>
-				<tui-input v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请无法自动填入手机号" disabled></tui-input>
+				<tui-input
+					v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请无法自动填入手机号"
+					disabled
+				></tui-input>
 				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
@@ -153,11 +164,13 @@
 <script>
 import { updateWxPhoneAppApi, updateAliPhoneAppApi, getVerifyCodeApi, updateForgetPasswordUserApi } from '../../../api/anotherTFInterface'
 import { getUrlCode } from '../../../utils'
+import { SYSTEM_VERSION } from '../../../config'
 
 export default {
 	name: 'PersonalDetails',
 	data() {
 		return {
+			systemVersion: SYSTEM_VERSION,
 			showAuthPopupVisible: false,
 
 			// userId: '',
@@ -450,43 +463,11 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.agreement {
-	width: 710rpx;
-	margin: 20rpx auto 0;
-	background-color: #ffffff;
-	box-sizing: border-box;
-
-	.agreement_top {
-		&::after {
-			content: "";
-			display: block;
-			position: absolute;
-			left: 32rpx;
-			bottom: 0;
-			width: 646rpx;
-			height: 4rpx;
-			background: #F5F7FA;
-		}
-	}
-
-	.agreement {
-		width: 100%;
-		height: 108rpx;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		font-size: 28rpx;
-		color: #333;
-		padding: 0 10rpx 0 32rpx;
-		box-sizing: border-box;
-		position: relative;
-	}
-}
-
 .container {
 	width: 100%;
 	background-color: #F7F7F7;
 	padding: 20rpx;
+	box-sizing: border-box;
 
 	.personalBack-box {
 		width: 100%;

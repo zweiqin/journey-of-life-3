@@ -13,14 +13,14 @@
 						<tui-icon name="turningdown" :size="34" unit="rpx" color="#222229" margin="0 0 0 2rpx"></tui-icon>
           </view>
           <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
-          <image class="search-icon" src="../../static/images/new-community/home/searc-icon.png"></image>
+					<tui-icon name="search" :size="32" unit="rpx" color="#ef530e" margin="0"></tui-icon>
         </view>
 
         <view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
         <view class="image-list">
-          <image src="../../static/images/new-community/home/p-1.png" class="p-img" @click="go('/community-center/service-sort/index?value=288&name=家政服务')"></image>
-          <image src="../../static/images/new-community/home/p-2.png" class="p-img" @click="go('/community-center/service-sort/index?value=2&name=家具维保')"></image>
-          <image src="../../static/images/new-community/home/p-3.png" class="p-img" @click="go('/community-center/service-sort/index?value=13&name=旧房翻新')"></image>
+          <image :src="common.seamingImgUrl('1716517536510-p-1.png')" class="p-img" @click="go('/community-center/service-sort/index?value=288&name=家政服务')"></image>
+          <image :src="common.seamingImgUrl('1716517542887-p-2.png')" class="p-img" @click="go('/community-center/service-sort/index?value=2&name=家具维保')"></image>
+          <image :src="common.seamingImgUrl('1716517546905-p-3.png')" class="p-img" @click="go('/community-center/service-sort/index?value=13&name=旧房翻新')"></image>
         </view>
       </view>
     </view>

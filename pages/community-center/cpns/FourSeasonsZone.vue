@@ -1,7 +1,7 @@
 <template>
   <view class="serve-shop-container">
     <view class="bar">
-      <image class="bar-img" src="../../../static/images/new-community/home/ad-bar-2.png"></image>
+      <image class="bar-img" :src="common.seamingImgUrl('1716520162223-ad-bar-2.png')"></image>
     </view>
 
     <view class="shop-list">

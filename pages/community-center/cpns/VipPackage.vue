@@ -2,6 +2,7 @@
   <view class="vip-package-container" :class="{ active: isStart }">
     <!-- 限时钜惠 -->
     <!-- <view v-if="XIAN && XIAN.name" class="package package-1"
+			:style="{ background: `url(${common.seamingImgUrl('1716521305562-bg-v.png')}) no-repeat center top/contain` }"
       @click="go('/community-center/vip-center/vip-detail?type=1')">
       <view class="package-title"> {{ XIAN.name }} </view>
 
@@ -12,15 +13,16 @@
 
       <button class="uni-btn">立省300</button>
 
-      <image class="gift" src="../../../static/images/new-community/home/gift.png"></image>
-      <image class="left-package" src="../../../static/images/new-community/home/left-package.png"></image>
-      <image class="right-top" src="../../../static/images/new-community/home/right-top.png"></image>
-      <image class="money" src="../../../static/images/new-community/home/money.png"></image>
-      <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
-      <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
+      <image class="gift" :src="common.seamingImgUrl('1716520591946-gift.png')"></image>
+      <image class="left-package" :src="common.seamingImgUrl('1716520635240-left-package.png')"></image>
+      <image class="right-top" :src="common.seamingImgUrl('1716520663907-right-top.png')"></image>
+      <image class="money" :src="common.seamingImgUrl('1716520697441-money.png')"></image>
+      <image class="bi-1" :src="common.seamingImgUrl('1716520704965-bi-1.png')"></image>
+      <image class="bottom-right" :src="common.seamingImgUrl('1716520708544-bottom-right.png')"></image>
     </view>
 
-    <view v-else class="package package-1" @click="
+    <view v-else class="package package-1"
+			:style="{ background: `url(${common.seamingImgUrl('1716521305562-bg-v.png')}) no-repeat center top/contain` }" @click="
       go(
         '/community-center/community-detail?id=357&serverNameThree=洗衣机清洗服务&serverImageUrl=xxx'
       )
@@ -33,15 +35,19 @@
       </view>
 
       <button class="uni-btn">立即抢购</button>
-      <image class="gift" src="../../../static/images/new-community/home/gift.png"></image>
-      <image class="left-package" src="../../../static/images/new-community/home/left-package.png"></image>
-      <image class="right-top" src="../../../static/images/new-community/home/right-top.png"></image>
-      <image class="money" src="../../../static/images/new-community/home/money.png"></image>
-      <image class="bi-1" src="../../../static/images/new-community/home/bi-1.png"></image>
-      <image class="bottom-right" src="../../../static/images/new-community/home/bottom-right.png"></image>
+      <image class="gift" :src="common.seamingImgUrl('1716520591946-gift.png')"></image>
+      <image class="left-package" :src="common.seamingImgUrl('1716520635240-left-package.png')"></image>
+      <image class="right-top" :src="common.seamingImgUrl('1716520663907-right-top.png')"></image>
+      <image class="money" :src="common.seamingImgUrl('1716520697441-money.png')"></image>
+      <image class="bi-1" :src="common.seamingImgUrl('1716520704965-bi-1.png')"></image>
+      <image class="bottom-right" :src="common.seamingImgUrl('1716520708544-bottom-right.png')"></image>
     </view> -->
 
-    <view class="package package-1" @click="handleToOrder('/community-center/enterprise-orders/home')">
+    <view
+			class="package package-1"
+			:style="{ background: `url(${common.seamingImgUrl('1716521305562-bg-v.png')}) no-repeat center top/contain` }"
+			@click="handleToOrder('/community-center/enterprise-orders/home')"
+		>
       <view style="background: linear-gradient(270deg, #1648d5 -3%, #2b45d9 112%)" class="package-title"> 企业服务 </view>
       <view class="content">
         <view class="title-1"
@@ -49,7 +55,12 @@
         >
         <view class="title-2">维修专项入口</view>
       </view>
-      <button class="uni-btn">立即申请</button>
+      <button class="uni-btn" style="display: flex;align-items: center;">
+				<text>立即申请</text>
+				<view style="margin-left: 8rpx;padding: 4rpx;background-color: #1748d5;border-radius: 50%;line-height: 1;">
+					<tui-icon name="arrowright" :size="24" unit="rpx" color="#ffffff" margin="0"></tui-icon>
+				</view>
+			</button>
     </view>
 
     <view class="other-package">
@@ -59,12 +70,16 @@
         <view class="title"><text class="vip-price">399</text>全年套餐</view>
         <button class="uni-btn">立省1500</button>
 
-        <image class="li" src="../../../static/images/new-community/home/li.png"></image>
-        <image class="king" src="../../../static/images/new-community/home/king.png"></image> 
+        <image class="li" :src="common.seamingImgUrl('1716520816211-li.png')"></image>
+        <image class="king" :src="common.seamingImgUrl('1716520841476-king.png')"></image> 
       </view>-->
 
       <!-- 499会员 -->
-      <view class="package whole-package v-499" @click="go(`/another-tf/another-user/claasify-products/index?type=auxiliaryMaterials&id=1446`)"></view>
+      <view
+				class="package whole-package"
+				:style="{ background: `url(${common.seamingImgUrl('1716521088541-fucaicaoshi.png')}) no-repeat center top/contain` }"
+				@click="go(`/another-tf/another-user/claasify-products/index?type=auxiliaryMaterials&id=1446`)">
+			</view>
 
       <!-- <view class="package ilo-package" @click="empty()">
         <view class="package-title"> 加油劵 </view>
@@ -72,16 +87,20 @@
           <view>加油</view>
           <view class="title-2">立省</view>
           <view class="arrow-container">
-            <image class="arrow" src="../../../static/images/new-community/home/arrow.png"></image>
+            <image class="arrow" :src="common.seamingImgUrl('1716520899732-arrow.png')"></image>
           </view>
         </view>
         <button class="uni-btn">立即体验</button>
 
-        <image class="car" src="../../../static/images/new-community/home/car.png"></image>
-        <image class="car car-2" src="../../../static/images/new-community/home/car.png"></image>
+        <image class="car" :src="common.seamingImgUrl('1716520907517-car.png')"></image>
+        <image class="car car-2" :src="common.seamingImgUrl('1716520907517-car.png')"></image>
       </view> -->
 
-      <view class="package ilo-package server" @click="handleToOrder('/user/sever/activityCenter/index')">
+      <view
+				class="package ilo-package"
+				:style="{ background: `url(${common.seamingImgUrl('1716521404336-taocanzhuanqu.png')}) no-repeat center top/contain` }"
+				@click="handleToOrder('/user/sever/activityCenter/index')"
+			>
         <!-- <view class="package-title"
           style="position: relative; z-index: 10; background: linear-gradient(270deg, #178AF8 0%, #1175FC 97%);"> 限时钜惠
         </view>
@@ -277,17 +296,10 @@ export default {
     }
   }
 
-  .v-499 {
-    background: url('../../../static/images/new-community/home/fucaicaoshi.png') no-repeat !important;
-    background-size: cover !important;
-  }
-
   .package-1 {
     position: relative;
     width: 326upx;
     height: 342upx;
-    background: url('../../../static/images/new-community/home/bg-v.png') no-repeat;
-    background-size: cover;
 
     .package-title {
       background: linear-gradient(270deg, #1172fd 0%, #188ef7 97%);
@@ -381,19 +393,6 @@ export default {
       padding-right: 60upx;
       background-color: #fff;
       z-index: 100;
-
-      &::after {
-        position: absolute;
-        content: '';
-        display: block;
-        width: 30upx;
-        height: 30upx;
-        background: url('../../../static/images/new-community/home/to.png') no-repeat;
-        background-size: cover;
-        left: 134upx;
-        top: 50%;
-        transform: translateY(-50%);
-      }
     }
   }
 
@@ -460,12 +459,6 @@ export default {
       width: 340upx;
       height: 158upx;
       background: linear-gradient(270deg, #fff0d9 0%, #fefaef 98%);
-
-      &.server {
-        background: url('../../../static/images/new-community/home/taocanzhuanqu.png') no-repeat;
-        background-size: cover;
-        position: relative;
-      }
 
       .package-title {
         background: linear-gradient(270deg, #ff9554 0%, #fdbc75 97%);

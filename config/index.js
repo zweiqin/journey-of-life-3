@@ -1,3 +1,5 @@
+export const SYSTEM_VERSION = '1.0.25' // 版本
+
 // // 线上助力通
 // export const SheQu1_URL = 'https://www.zhult.com/' // 线上
 // // export const SheQu1_URL = "http://192.168.0.144:8781/"; // 本地

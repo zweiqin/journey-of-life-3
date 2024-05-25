@@ -1,6 +1,6 @@
 <template>
   <view class="no-data-container">
-    <image class="no-icon" mode="widthFix" src="../../../static/images/new-community/home/no-order.png"></image>
+		<tui-icon name="nodata" :size="100" unit="rpx" color="#cccccc" margin="0"></tui-icon>
     <text class="text">暂无订单</text>
     <view class="tip" v-show="isSeach">试试清空搜索条件？<button class="uni-btn" @click="$emit('clear')">清空搜索</button></view>
   </view>

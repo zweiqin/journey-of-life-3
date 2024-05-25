@@ -1,7 +1,7 @@
 <template>
   <view class="serve-shop-container">
     <view class="bar">
-      <image class="bar-img" src="../../../static/images/new-community/home/wdnmdBanner.png"></image>
+      <image class="bar-img" :src="common.seamingImgUrl('1716520279093-wdnmdBanner.png')"></image>
     </view>
 
     <view class="shop-list">
@@ -30,14 +30,10 @@
 //             title: '',
 //             timer: '',
 //             isOver: true,
-//             readerAvata: [
-//               require('@/static/images/new-community/home/avatar1.png'),
-//               require('@/static/images/new-community/home/avatar2.png'),
-//               require('@/static/images/new-community/home/avatar3.png')
-//             ],
+//             readerAvata: [],
 //             maxPrice: '99',
 //             isReadNumber: '666',
-//             coverSheet: require('@/static/images/new-community/home/CoverSheet.png')
+//             coverSheet: ''
 //           }
 //         ]
 import { getPostList } from '@/api/community-center/makeSmallFortune'

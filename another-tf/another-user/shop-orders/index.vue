@@ -91,27 +91,38 @@
 										</view>
 									</view>
 									<view>
+										<view
+											style="padding-top: 18upx;display: flex;justify-content: space-between;align-items: center;"
+										>
+											<view style="padding-top: 18upx;">
+												<text style="color: #8F8F8F;">核销人和核销账号</text>
+												<text style="margin-left: 32upx;">{{ item.writePhone || '--' }}</text>
+											</view>
+											<view v-if="item.writePhone" style="color: #EF530E;" @click="$copy(item.writePhone)">复制</view>
+										</view>
 										<view style="padding-top: 18upx;">
 											<text style="color: #8F8F8F;">商品总价</text>
 											<text style="margin-left: 32upx;color: #EF530E;">￥{{ item.orderPrice }}</text>
 										</view>
-										<view style="padding-top: 18upx;display: flex;justify-content: space-between;align-items: center;">
-											<view>
-												<text style="color: #8F8F8F;">收货人姓名</text>
-												<text style="margin-left: 32upx;">{{ item.receiveName || '--' }}</text>
+										<view v-if="!$store.state.auth.identityInfo.type.includes(8) && !$store.state.auth.identityInfo.type.includes(9)">
+											<view style="padding-top: 18upx;display: flex;justify-content: space-between;align-items: center;">
+												<view>
+													<text style="color: #8F8F8F;">收货人姓名</text>
+													<text style="margin-left: 32upx;">{{ item.receiveName || '--' }}</text>
+												</view>
+												<view>
+													<text style="color: #8F8F8F;">手机号</text>
+													<text style="margin-left: 32upx;">{{ item.receivePhone || '--' }}</text>
+												</view>
 											</view>
-											<view>
-												<text style="color: #8F8F8F;">手机号</text>
-												<text style="margin-left: 32upx;">{{ item.receivePhone || '--' }}</text>
+											<view style="padding-top: 18upx;">
+												<text style="color: #8F8F8F;">收货人地址</text>
+												<text style="margin-left: 32upx;">{{ item.receiveAdress || '--' }}</text>
 											</view>
-										</view>
-										<view style="padding-top: 18upx;">
-											<text style="color: #8F8F8F;">收货人地址</text>
-											<text style="margin-left: 32upx;">{{ item.receiveAdress || '--' }}</text>
-										</view>
-										<view style="padding-top: 18upx;">
-											<text style="color: #8F8F8F;">详细地址</text>
-											<text style="margin-left: 32upx;">{{ item.address || '--' }}</text>
+											<view style="padding-top: 18upx;">
+												<text style="color: #8F8F8F;">详细地址</text>
+												<text style="margin-left: 32upx;">{{ item.address || '--' }}</text>
+											</view>
 										</view>
 									</view>
 									<view v-if="item.logisticsName || item.deliverFormid">

@@ -5,12 +5,13 @@
 				<view class="GroundGlass">
 					<p class="Logo"></p>
 					<view class="AppName">团蜂家居 App</view>
+					<view style="padding: 10px 0;color: #ffffff;">版本：v{{ systemVersion }}</view>
 					<view v-if="!isWeixin">
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240304091645.apk" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240524120940.apk" class="DownLoaButton">
 							<span class="iconfont icon-anzhuo"></span> 安卓下载
 						</a>
 						<!-- <a download href="https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1709636108448-__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton"> -->
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0523170458.ipa" class="DownLoaButton">
 							<span class="iconfont icon-iOS"></span> IOS下载
 						</a>
 					</view>
@@ -51,10 +52,13 @@
 </template>
 
 <script>
+import { SYSTEM_VERSION } from '../../config'
+
 export default {
 	name: 'Download',
 	data() {
 		return {
+			systemVersion: SYSTEM_VERSION,
 			isShowMask: false,
 			isWeixin: true
 		}
@@ -181,15 +185,15 @@ export default {
 
 		.AppName {
 			margin-top: 5%;
+			margin-bottom: 5%;
 			width: 80%;
-			height: 60px;
+			// height: 52px;
 			opacity: 1;
 			font-family: AlibabaPuHuiTiH;
 			font-size: 40px;
 			font-weight: 600;
 			letter-spacing: 0.1rem;
 			text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
-			margin-bottom: 30%;
 			color: #fff;
 		}
 
