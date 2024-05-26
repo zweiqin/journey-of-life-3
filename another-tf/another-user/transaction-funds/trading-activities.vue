@@ -1,6 +1,6 @@
 <template>
 	<view class="trading-activities-container">
-		<JHeader title="交易金专区" width="50" height="50"></JHeader>
+		<JHeader title="消费金专区" width="50" height="50"></JHeader>
 		<view style="margin-top: 20rpx;">
 			<scroll-view scroll-x>
 				<view
@@ -80,7 +80,7 @@
 				v-if="spikeLikeList[activeSession].content"
 				style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
 				>
-				交易金赠送规则：{{ spikeLikeList[activeSession].content }}
+				消费金赠送规则：{{ spikeLikeList[activeSession].content }}
 				</view>
 				<view
 				v-if="spikeLikeList[activeSession].remark"
@@ -96,7 +96,7 @@
 					? 'loading' : !isEmpty && spikeLikeList.length && (spikeLikeList.length >= spikeLikeTotal) ? '' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">请期待交易金活动</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">请期待消费金活动</tui-no-data>
 		</view>
 
 		<view
@@ -174,7 +174,7 @@
 							v-if="item.beeCoin"
 							style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 						>
-							赠送 {{ item.beeCoin }} 交易金
+							赠送 {{ item.beeCoin }} 消费金
 						</view>
 					</view>
 					<view style="margin-top: 10rpx;font-size: 26rpx;text-align: right;">

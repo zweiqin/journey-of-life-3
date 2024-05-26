@@ -104,7 +104,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// 交易金支付
+		// 消费金支付
 		showTransactionPay: {
 			type: Boolean,
 			default: false
@@ -243,7 +243,7 @@ export default {
 					uni.showLoading()
 					if (!this.paymentList.find((item) => item.paymentMode === '8')) {
 						this.paymentList.push({
-							label: '交易金支付',
+							label: '消费金支付',
 							paymentMode: '8',
 							icon: require('../../static/images/user/pay/jiaoyijin.png'),
 							disabled: true
@@ -471,7 +471,7 @@ export default {
 			}
 			if (this.showTransactionPay) {
 				this.paymentList.push({
-					label: '交易金支付',
+					label: '消费金支付',
 					paymentMode: '8',
 					icon: require('../../static/images/user/pay/jiaoyijin.png'),
 					disabled: true
@@ -604,7 +604,7 @@ export default {
 				if (!this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
-					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 交易金余额不足
+					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 消费金余额不足
 				}
 			} else if (payment.paymentMode === '6') {
 				if (!this.pricePay) {

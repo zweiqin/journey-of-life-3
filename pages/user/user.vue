@@ -148,8 +148,9 @@ export default {
 					return
 				} else if (item.type === 'settle') {
 					const storageKeyToken = getStorageKeyToken()
+					console.log(Encrypt(storageKeyToken))
 					if (storageKeyToken) {
-						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${item.url}/#/?username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${Encrypt(storageKeyToken)}`, montageTerminal: [ 6 ] })
+						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${item.url}/#/?username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, montageTerminal: [ 6 ] })
 					}
 					return
 				} else if (item.type === 'shopInvitation') {

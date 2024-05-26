@@ -4,7 +4,7 @@
     <view class="voucher-item next-el"></view>
     <view class="voucher-item top-el">
       <view class="title">爆品家具专区</view>
-      <view class="sub-title">返还交易金</view>
+      <view class="sub-title">返还消费金</view>
       <!-- todo 加动画 -->
     </view>
 

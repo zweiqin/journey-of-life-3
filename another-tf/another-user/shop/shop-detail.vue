@@ -203,11 +203,13 @@ export default {
 				})
 				console.log(data)
 				this.brandDetail = data || {}
-				setMiniprogramShareConfig({
-					title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
-					path: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
-					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
-				})
+				if (this.$store.state.app.terminal === 3) {
+					setMiniprogramShareConfig({
+						title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+						path: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+						imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+					})
+				}
 				uni.hideLoading()
 			} catch (error) {
 				console.log(error)

@@ -53,7 +53,7 @@
 					v-if="brandInfo.isBeeCoin === 1"
 					style="width: fit-content;padding: 2upx 6upx;margin: 8upx 6upx 0 0;border: 1upx solid rgba(226, 71, 71, 0.5);border-radius: 12upx;font-size: 24upx;color: #E24747;"
 				>
-					支持交易金
+					支持消费金
 				</view>
 				<view
 					v-if="brandInfo.isVoucher"

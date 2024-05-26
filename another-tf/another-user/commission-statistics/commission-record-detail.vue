@@ -20,7 +20,7 @@
 						<text v-else-if="commissionRecordData.type === 5">支付</text>
 						<text v-else-if="commissionRecordData.type === 6">佣金退款</text>
 						<text v-else-if="commissionRecordData.type === 7">佣金提现</text>
-						<text v-else-if="commissionRecordData.type === 8">交易金</text>
+						<text v-else-if="commissionRecordData.type === 8">消费金</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">

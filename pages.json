@@ -1577,28 +1577,28 @@
         {
           "path": "another-user/transaction-funds/transaction-operation",
           "style": {
-            "navigationBarTitleText": "交易金操作",
+            "navigationBarTitleText": "消费金操作",
             "enablePullDownRefresh": true
           }
         },
         {
           "path": "another-user/transaction-funds/transaction-record",
           "style": {
-            "navigationBarTitleText": "交易金收支明细",
+            "navigationBarTitleText": "消费金收支明细",
             "enablePullDownRefresh": true
           }
         },
         {
           "path": "another-user/transaction-funds/transaction-record-detail",
           "style": {
-            "navigationBarTitleText": "交易金收支明细详情",
+            "navigationBarTitleText": "消费金收支明细详情",
             "enablePullDownRefresh": true
           }
         },
         {
           "path": "another-user/transaction-funds/trading-activities",
           "style": {
-            "navigationBarTitleText": "交易金活动"
+            "navigationBarTitleText": "消费金活动"
           }
         },
         {

@@ -107,7 +107,7 @@
 							<view style="width: 48rpx;margin-right: 34rpx;">
 								<tui-icon name="wealth" :size="48" unit="rpx" color="#ec970c" margin="0"></tui-icon>
 							</view>
-							<text>交易金</text>
+							<text>消费金</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
 							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) : '*****' }}</text>
@@ -168,7 +168,7 @@ export default {
 				rechargePrice: '', // 账户充值余额
 				voucherPrice: '', // 代金券余额
 				distributorPrice: '', // 账户分销金额
-				beeCoinPrice: '', // 交易金金额
+				beeCoinPrice: '', // 消费金金额
 				commissionPrice: '' // 推广收益,关系链分佣
 			}
 		}

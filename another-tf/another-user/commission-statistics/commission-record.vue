@@ -106,7 +106,7 @@
 										<text v-else-if="item.type === 5">支付</text>
 										<text v-else-if="item.type === 6">佣金退款</text>
 										<text v-else-if="item.type === 7">佣金提现</text>
-										<text v-else-if="item.type === 8">交易金</text>
+										<text v-else-if="item.type === 8">消费金</text>
 										<text v-else>--</text>
 									</text>
 									<text v-if="item.isTo === 3">（已退款）</text>

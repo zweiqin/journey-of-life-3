@@ -819,7 +819,7 @@ export const resolveVoucherSelect = (params = {}) => {
 				isFail = true
 			}
 		} else {
-			uni.showToast({ title: '包含交易金活动商品，无法使用代金券！', icon: 'none' })
+			uni.showToast({ title: '包含消费金活动商品，无法使用代金券！', icon: 'none' })
 			isFail = true
 		}
 	}

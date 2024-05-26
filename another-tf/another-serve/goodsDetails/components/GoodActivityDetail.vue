@@ -72,7 +72,7 @@
 					v-if="skuSelect.beeCoin"
 					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
 				>
-					赠送 {{ skuSelect.beeCoin }} 交易金
+					赠送 {{ skuSelect.beeCoin }} 消费金
 				</view>
 				<view
 					v-if="skuSelect.voucherId && skuSelect.voucherPrice"

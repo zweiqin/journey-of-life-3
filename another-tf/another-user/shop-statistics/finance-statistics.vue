@@ -109,20 +109,20 @@
 							{{ typeof financeStatisticsData.beeWithdrawal === 'number' ? financeStatisticsData.beeWithdrawal
 								: '--' }}
 						</view>
-						<view style="margin-top: 14upx;font-size: 24upx;">可提现交易金</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">可提现消费金</view>
 					</view>
 					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;">
 							{{ typeof financeStatisticsData.beeFreeze === 'number'
 								? financeStatisticsData.beeFreeze : '--' }}
 						</view>
-						<view style="margin-top: 14upx;font-size: 24upx;">待到账交易金</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">待到账消费金</view>
 					</view>
 					<view style="padding-top: 34upx; flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #E02208;">
 							{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
 						</view>
-						<view style="margin-top: 14upx;font-size: 24upx;">营业额交易金</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">营业额消费金</view>
 					</view>
 				</view>
 				<view style="display: flex;justify-content: space-around;">
@@ -131,7 +131,7 @@
 							{{ typeof financeStatisticsData.beeCoinRatio === 'number' ? financeStatisticsData.beeCoinRatio
 								: '--' }}
 						</view>
-						<view style="margin-top: 14upx;font-size: 24upx;">交易金提现比例</view>
+						<view style="margin-top: 14upx;font-size: 24upx;">消费金提现比例</view>
 					</view>
 					<view style="padding-top: 34upx;flex:1;">
 						<view style="font-size: 34upx;font-weight: bold;color: #1A66FF;"> </view>
@@ -233,7 +233,7 @@
 							<tui-radio-group v-model="withdrawalType">
 								<view style="display: flex;flex-wrap: wrap;align-items: center;">
 									<tui-label
-										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '交易金', value: '2' }]"
+										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '消费金', value: '2' }]"
 										:key="index"
 									>
 										<tui-list-cell padding="16upx">

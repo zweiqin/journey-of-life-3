@@ -678,14 +678,14 @@ export const getInviteWorkApi = (data) => AnotherTFRequest('/work/getInvite', da
 // 拼团专区首页数据查询
 export const getIndexWorkApi = (data) => AnotherTFRequest('/work/getIndex', data)
 
-// 交易金
-// 选择平台端交易金活动查询
+// 消费金
+// 选择平台端消费金活动查询
 export const getPlatformBeeCurrencyApi = (data) => AnotherTFRequest('/canvas/getPlatformBeeCurrency', data)
 
-// 记录交易金
+// 记录消费金
 export const updatePlatformBeeCurrencySaveBeeApi = (data) => AnotherTFRequest('/platformBeeCurrency/saveBee', data)
 
-// 交易金收支明细
+// 消费金收支明细
 export const getBeeCurrencyDistributorApi = (data) => AnotherTFRequest('/distributor/getBeeCurrency', data)
 
 // 限时折扣
