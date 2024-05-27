@@ -87,7 +87,7 @@
 <script>
 import { T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
-import { checkBindApi, bindLastUserApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
+import { checkBindApi, bindLastUserApi, bindFranchiseesApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
 import {
 	bindDistributorSalesCustomerApi,
 	getOrderDetailApi,
@@ -386,6 +386,30 @@ export default {
 				bindchangeActivityUserApi({ userId: this.userId, userCode: bindActivityId, type: campaignsType })
 					.then((res) => { this.$showToast('绑定成功', 'success') })
 					.finally((e) => { setTimeout(() => { uni.redirectTo({ url: '/user/sever/activityCenter/index' }) }, 2000) })
+			} else if (this.type === 'bindFranchisees'){ // 用户绑定加盟商
+				bindFranchiseesApi({
+					franchiseesSn: this.code,
+					phone: this.$store.getters.userInfo.phone
+				})
+				.then((res) => {
+					switch (res.statusCode * 1) {
+						case 501:
+						  this.$showToast('您已绑定其他加盟商', 'none')
+							break;
+						case 502:
+						  this.$showToast('自己不能绑定自己', 'none')
+							break;
+						case 503:
+						  this.$showToast('该账号的上级已绑定到其他加盟商', 'none')
+							break;
+						case 20000:
+						  this.$showToast('加盟商绑定成功', 'success')
+							break
+						default:
+						  this.$showToast('加盟商绑定失败', 'none')
+					}
+				})
+				.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
 			}
 		},
 		handleVerification() {
