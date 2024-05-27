@@ -31,10 +31,22 @@
 		<!-- 参与抽奖输入暗语 -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-			:show="isShowLotteryDialog" title="暗语" @click="handleLotteryDialog"
+			:show="isShowLotteryDialog" title="团蜂抽奖系统" @click="handleLotteryDialog"
 		>
 			<template #content>
-				<tui-input v-model="codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input>
+				<view style="text-align: left;">
+					<!-- <tui-input v-model="lotteryForm.codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input> -->
+					<tui-input
+						v-model="lotteryForm.name" label="用户名称" :label-size="26" padding="20rpx 0 20rpx 0"
+						type="text"
+						placeholder="请输入用户名称"
+					></tui-input>
+					<JUpload
+						title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)"
+						@upload="(e) => (lotteryForm.url = e) && $forceUpdate()" @delete="lotteryForm.url = '' || $forceUpdate()"
+					>
+					</JUpload>
+				</view>
 			</template>
 		</tui-dialog>
 
@@ -83,7 +95,11 @@ export default {
 
 			// 参与抽奖
 			isShowLotteryDialog: false,
-			codeWordLottery: '',
+			lotteryForm: {
+				codeWordLottery: '',
+				name: '',
+				url: ''
+			},
 			// 套壳链接
 			isShowOutsideLinkDialog: false,
 			codeWordOutsideLink: ''
@@ -177,10 +193,12 @@ export default {
 		},
 		handleLotteryDialog(e) {
 			if (e.index === 0) { } else if (e.index === 1) {
-				if (!(this.codeWordLottery === '新年快乐')) return this.$showToast('暗语错误')
-				this.go(`/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=participateLottery&code=`)
+				// if (!(this.lotteryForm.codeWordLottery === '团蜂')) return this.$showToast('暗语错误')
+				if (!this.lotteryForm.name) return this.$showToast('请输入用户名称')
+				if (!this.lotteryForm.url) return this.$showToast('请选择用户头像')
+				this.go(`/pages/jump/jump?userId=${this.userInfo.buyerUserId}&type=participateLottery&code=${encodeURIComponent(this.lotteryForm.name)}~${encodeURIComponent(this.lotteryForm.url)}`)
 			}
-			this.codeWordLottery = ''
+			this.lotteryForm.codeWordLottery = ''
 			this.isShowLotteryDialog = false
 		},
 		handleOutsideLinkDialog(e) {

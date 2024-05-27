@@ -55,16 +55,16 @@
 				<view style="text-align: center;">消费金说明</view>
 				<view style="margin-top: 34rpx;font-size: 30rpx;">
 					<view>1、如何获得消费金</view>
-					<view>用用户在团蜂平台的商城购买特定活动商品，根据消费金额获得一定比例的消费金（根据活动商品显示为准）；</view>
+					<view>用用户在{{ APPLY_NAME }}平台的商城购买特定活动商品，根据消费金额获得一定比例的消费金（根据活动商品显示为准）；</view>
 					<view>2、使用规则</view>
-					<view>（1）消费金仅可在团蜂平台的【商圈】商家使用，用户可使用消费金进行支付抵扣商品费用（仅限又“支持消费金”标签的商家才可使用）；</view>
-					<view>（2）用户可通过“团蜂APP/小程序/H5-我的-我的钱包-消费金”的消费金页面查询消费金的数量和使用记录；</view>
+					<view>（1）消费金仅可在{{ APPLY_NAME }}平台的【商圈】商家使用，用户可使用消费金进行支付抵扣商品费用（仅限又“支持消费金”标签的商家才可使用）；</view>
+					<view>（2）用户可通过“{{ APPLY_NAME }}APP/小程序/H5-我的-我的钱包-消费金”的消费金页面查询消费金的数量和使用记录；</view>
 					<view>（3）已使用的消费金不支持撤销或退回；</view>
 					<view>（4）若用户暂停/注销账号，或用户存在违规行为的，则平台将取消该用户账号内的消费金权益。</view>
 					<view>3、使用消费金支付规则说明</view>
-					<view>（1）使用消费金支付仅可在团蜂平台支付方式下使用，不支持微信支付、外卡支付、余额支付、代金券支付、推广佣金支付。</view>
+					<view>（1）使用消费金支付仅可在{{ APPLY_NAME }}平台支付方式下使用，不支持微信支付、外卡支付、余额支付、代金券支付、推广佣金支付。</view>
 					<view>（2）仅限有“支持消费金”标签的商家才可使用。</view>
-					<view>（3）若用户进行退款，在退款成功后，消费金会返回用户，退款记录可在“团蜂APP/小程序/H5-我的-我的钱包-蜜蜂币”，点击【收入明细】查看。</view>
+					<view>（3）若用户进行退款，在退款成功后，消费金会返回用户，退款记录可在“{{ APPLY_NAME }}APP/小程序/H5-我的-我的钱包-蜜蜂币”，点击【收入明细】查看。</view>
 				</view>
 				<view style="margin-top: 28rpx;">
 					<tui-button
@@ -82,6 +82,7 @@
 
 <script>
 import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
+import { APPLY_NAME } from '../../../config'
 
 export default {
 	name: 'TransactionOperation',
@@ -91,6 +92,7 @@ export default {
 
 	data() {
 		return {
+			APPLY_NAME,
 			pricePlatformInfo: {
 				totalPrice: '',
 				price: '',

@@ -13,7 +13,7 @@
           alt=""
         />
         <div class="detail-wrapper">
-          <view class="name">团蜂</view>
+          <view class="name">{{ APPLY_NAME }}</view>
         </div>
       </view>
       <view class="content">
@@ -23,7 +23,7 @@
         售、展会于一体的科技营销落地型公司
       </view>
       <view class="tip"
-        >关注团蜂，下单不迷路!
+        >关注{{ APPLY_NAME }}，下单不迷路!
         <button @click="handleToFollow" :loading="loading" class="uni-btn">
           {{ loading ? "跳转中..." : "去关注" }}
         </button></view
@@ -33,9 +33,11 @@
 </template>
 
 <script>
+import { APPLY_NAME } from '../../../config'
 export default {
   data() {
     return {
+			APPLY_NAME,
       followOfficialAccountVisible: false,
       loading: false,
     };

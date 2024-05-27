@@ -64,16 +64,18 @@
 			</view>
 		</view>
 		<view style="margin: 20rpx auto 0;font-size: 28rpx;color: #333;background-color: #ffffff;">
+			<!-- go('/another-tf/another-serve/protocol/index?type=app_privacy_agreement') -->
 			<view
 				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
-				@click="protocol('app_privacy_agreement')"
+				@click="go('/pages/service-agreement/privacy-policy')"
 			>
 				<text>用户隐私协议</text>
 				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
 			</view>
+			<!-- go('/another-tf/another-serve/protocol/index?type=app_user_agreement') -->
 			<view
 				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
-				@click="protocol('app_user_agreement')"
+				@click="go('/pages/service-agreement/service-agreement')"
 			>
 				<text>用户服务协议</text>
 				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
@@ -82,7 +84,7 @@
 				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
 			>
 				<text>系统版本</text>
-				<text>v{{ systemVersion }}</text>
+				<text>v{{ SYSTEM_VERSION }}</text>
 			</view>
 		</view>
 
@@ -154,7 +156,7 @@
 				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
 				<view style="flex: 1;">
 					<view>相机权限和相册权限使用说明：</view>
-					<view style="margin-top: 12rpx;">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于设置头像、修改头像等场景</view>
+					<view style="margin-top: 12rpx;">"{{ APPLY_NAME }}"想访问您的相机和相册，将根据你的上传的图片，用于设置头像、修改头像等场景</view>
 				</view>
 			</view>
 		</tui-popup>
@@ -164,13 +166,14 @@
 <script>
 import { updateWxPhoneAppApi, updateAliPhoneAppApi, getVerifyCodeApi, updateForgetPasswordUserApi } from '../../../api/anotherTFInterface'
 import { getUrlCode } from '../../../utils'
-import { SYSTEM_VERSION } from '../../../config'
+import { SYSTEM_VERSION, APPLY_NAME } from '../../../config'
 
 export default {
 	name: 'PersonalDetails',
 	data() {
 		return {
-			systemVersion: SYSTEM_VERSION,
+			SYSTEM_VERSION,
+			APPLY_NAME,
 			showAuthPopupVisible: false,
 
 			// userId: '',
@@ -222,12 +225,6 @@ export default {
 		})
 	},
 	methods: {
-		// 多商户用户协议
-		protocol(type) {
-			uni.navigateTo({
-				url: '/another-tf/another-serve/protocol/index?type=' + type
-			})
-		},
 		cancellation() {
 			uni.showModal({
 				title: '温馨提示',

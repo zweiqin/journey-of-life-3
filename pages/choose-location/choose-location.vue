@@ -115,7 +115,7 @@
       @click="showAuthPopupVisible = false">
       <view class="address-text">
         <tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
-        "团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
+        "{{ APPLY_NAME }}"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
       </view>
     </tui-popup>
 
@@ -126,9 +126,11 @@
 <script>
 import { T_SELECTED_ADDRESS } from 'constant';
 import { hotCities } from './data';
+import { APPLY_NAME } from '../../config'
 export default {
   data() {
     return {
+			APPLY_NAME,
       currentTab: 0,
       cityList: [],
       searchValue: '',

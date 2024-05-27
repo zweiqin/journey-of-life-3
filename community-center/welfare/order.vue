@@ -84,7 +84,7 @@
         <tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
         <view style="flex: 1">
           <view>相机权限和相册权限使用说明：</view>
-          <view style="margin-top: 12rpx">"团蜂"想访问您的相机和相册，将根据你的上传的图片，用于上传清洗、维修、安装的服务图片等场景</view>
+          <view style="margin-top: 12rpx">"{{ APPLY_NAME }}"想访问您的相机和相册，将根据你的上传的图片，用于上传清洗、维修、安装的服务图片等场景</view>
         </view>
       </view>
     </tui-popup>
@@ -99,7 +99,7 @@
 import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO } from '../../constant'
 import { getAddressListApi } from '../../api/address'
 import ChooseTime from '../componts/choose-time.vue'
-import { IMG_UPLOAD_URL } from '../../config'
+import { APPLY_NAME, IMG_UPLOAD_URL } from '../../config'
 import { getUserId } from '../../utils'
 import { createActivityOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../../api/community-center'
 
@@ -107,6 +107,7 @@ export default {
   components: { ChooseTime },
   data() {
     return {
+			APPLY_NAME,
       showAuthPopupVisible: false,
       isLoading: false,
       scrollTop: 0,

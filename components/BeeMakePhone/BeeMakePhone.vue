@@ -12,7 +12,7 @@
 				<tui-icon name="voipphone" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
 				<view style="flex: 1;">
 					<view>拨打电话权限使用说明：</view>
-					<view style="margin-top: 12rpx;">"团蜂"想访问您的拨打电话权限，用于向商家、普通用户拨打电话等场景</view>
+					<view style="margin-top: 12rpx;">"{{ APPLY_NAME }}"想访问您的拨打电话权限，用于向商家、普通用户拨打电话等场景</view>
 				</view>
 			</view>
 		</tui-popup>
@@ -21,6 +21,7 @@
 
 <script>
 import permision from '../../uni_modules/js_sdk/wa-permission/permission.js'
+import { APPLY_NAME } from '../../config'
 
 export default {
 	name: 'BeeMakePhone',
@@ -31,6 +32,7 @@ export default {
 	},
 	data() {
 		return {
+			APPLY_NAME,
 			showAuthPopupVisible: false
 		}
 	},

@@ -62,7 +62,7 @@
 				</view>
 				<view style="margin-top: 24upx;padding: 34upx 32upx 88upx;background-color: #ffffff;border-radius: 24upx;">
 					<view style="font-weight: bold;">推广说明</view>
-					<view style="color: #EF530E;margin-top: 18upx;">1、可以通过团蜂家居APP、团蜂公众号、小程序进入，进行注册邀请好友</view>
+					<view style="color: #EF530E;margin-top: 18upx;">1、可以通过{{ APPLY_NAME }}APP、团蜂公众号、小程序进入，进行注册邀请好友</view>
 					<view style="margin-top: 24upx;">2、注册后海报中是您的专属二维码和邀请码</view>
 					<view style="margin-top: 24upx;">3、好友通过您的邀请进行注册后，Ta将成为您的名下会员，如果您的身份升至团长或合伙人，您将享受分享带来的收益，会自动计入您的账号！</view>
 				</view>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../../config'
+import { APPLY_NAME, A_TF_MAIN } from '../../../config'
 import InvitationPromotionPoster from './components/InvitationPromotionPoster.vue'
 import { getPlatformRelationshipCodeApi } from '../../../api/anotherTFInterface'
 
@@ -115,6 +115,7 @@ export default {
 	components: { InvitationPromotionPoster },
 	data() {
 		return {
+			APPLY_NAME,
 			rootUrl: A_TF_MAIN,
 			createCode: '',
 			qrcodeUrl: '',

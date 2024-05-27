@@ -80,7 +80,7 @@
 				<tui-icon name="gps" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
 				<view style="flex: 1;">
 					<view>定位权限使用说明：</view>
-					<view style="margin-top: 12rpx;">"团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能</view>
+					<view style="margin-top: 12rpx;">"{{ APPLY_NAME }}"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能</view>
 				</view>
 			</view>
 			<tui-button
@@ -101,10 +101,12 @@
 import { getAddressSaveApi, getAddressDetailApi, updateAddressApi } from '../../api/address';
 import { getUserId, getAdressDetailByLngLat } from '../../utils';
 import { addressIntelligentRecogApi } from '../../api/logistics';
+import { APPLY_NAME } from '../../config'
 
 export default {
   data() {
     return {
+			APPLY_NAME,
       showAuthPopupVisible: false,
       form: {
         name: '',

@@ -247,7 +247,7 @@ export default {
     async handleShareServe(isQuit) {
       const data = {
         data: {
-          title: '团蜂家居社区服务中心',
+          title: '团蜂生活社区服务中心',
           desc: '团蜂社区服务，点击下载',
           link: `${A_TF_MAIN}/#/`,
           imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`

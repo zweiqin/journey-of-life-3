@@ -1,4 +1,7 @@
-export const SYSTEM_VERSION = '1.0.25' // 版本
+export const SYSTEM_VERSION = '1.0.26' // 版本
+export const APPLY_NAME = '团蜂生活' // 应用名称
+
+// --------------------------------------------------
 
 // 线上助力通
 export const SheQu1_URL = 'https://www.zhult.com/' // 线上
@@ -26,6 +29,8 @@ export const ANOTHER_TF_INTERFACE = 'https://nsappapi.tuanfengkeji.cn' // 线上
 export const ANOTHER_TF_UPLOAD = 'https://nsappapi.tuanfengkeji.cn/file/upload' // 线上
 // 新团蜂入驻端项目地址
 export const ANOTHER_TF_SETTLE = 'https://nsh51.tuanfengkeji.cn' // 线上
+
+// --------------------------------------------------
 
 // export const SheQu1_URL = 'https://test.zhult.com/' // 测试
 // export const SheQu_URL = 'https://test.tuanfengkeji.cn/dts-app-api' // 测试

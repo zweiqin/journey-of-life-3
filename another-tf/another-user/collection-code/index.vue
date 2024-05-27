@@ -51,7 +51,7 @@
 				style="padding: 30rpx 42rpx 32rpx;background-color: #ffffff;border-radius: 38rpx 38rpx 0 0;"
 			>
 				<view style="text-align: center;font-weight: bold;">商家收款码使用说明</view>
-				<view style="margin-top: 20rpx;">商家收款码仅限已入驻团蜂平台的商家使用，请勿向他人出租商家收款码，否则可能被他人用于违法犯罪活动。</view>
+				<view style="margin-top: 20rpx;">商家收款码仅限已入驻{{ APPLY_NAME }}平台的商家使用，请勿向他人出租商家收款码，否则可能被他人用于违法犯罪活动。</view>
 				<view>
 					<tui-button
 						type="gray" width="520rpx" height="90rpx" margin="40rpx auto 0"
@@ -81,12 +81,14 @@
 <script>
 import CollectionCodePoster from './components/CollectionCodePoster.vue'
 import { getPaymentGenerateCodeApi } from '../../../api/anotherTFInterface'
+import { APPLY_NAME } from '../../../config'
 
 export default {
 	name: 'CollectionCode',
 	components: { CollectionCodePoster },
 	data() {
 		return {
+			APPLY_NAME,
 			codePicUrl: '',
 			isShowExplain: false,
 			galleryUrls: [ { src: '', desc: '' } ],

@@ -16,7 +16,7 @@
     <view class="account-wrapper">
       <image class="app-icon" src="../../static/images/new-user/fee.icon.png"></image>
       <view class="info">
-        <view class="app-title">团蜂家居</view>
+        <view class="app-title">团蜂</view>
         <view class="id"><text class="text">用户名</text>：{{ $store.getters.userInfo.nickName }} <text
             class="text">团蜂ID</text>：{{
               $store.getters.userInfo.userId }}</view>

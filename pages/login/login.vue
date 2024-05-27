@@ -12,8 +12,9 @@
 				<view class="txt">欢迎来到</view>
 				<view class="txt">团蜂社区</view>
 			</view>
-			<view class="" style="margin-top: 48rpx;margin-left: -6rpx;">
-				<text class="appTitle">年轻的社区生活元宇宙</text>
+			<view style="margin-top: 48rpx;margin-left: -6rpx;color: #ffffff;">
+				<text style="font-size: 34rpx;line-height: 42rpx;">年轻的社区生活元宇宙</text>
+				<text style="margin-left: 8rpx;font-size: 22rpx;">v{{ SYSTEM_VERSION }}</text>
 			</view>
 		</view>
 		<view class="login-form">
@@ -144,11 +145,13 @@ import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
 import { getVerifyCodeApi, updateForgetPasswordUserApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import { getUrlCode } from '../../utils'
+import { SYSTEM_VERSION } from '../../config'
 
 export default {
 	name: 'Login',
 	data() {
 		return {
+			SYSTEM_VERSION,
 			loginType: 'verificationCode', // password,verificationCode
 			loginQuery: {
 				phone: '',
@@ -331,14 +334,6 @@ export default {
 			-webkit-box-reflect: below 2px -webkit-linear-gradient(top, rgba(250, 250, 250, 0), rgba(250, 250, 250, 0) 70%, rgba(255, 255, 255, 0.644));
 			box-reflect: below 0px linear-gradient(top, rgba(250, 250, 250, 0), rgba(250, 250, 250, .05) 70%, rgba(250, 250, 250, 0.3));
 		}
-	}
-
-	.appTitle {
-		font-family: 思源黑体;
-		font-size: 34rpx;
-		font-weight: normal;
-		line-height: 42rpx;
-		color: rgba(255, 255, 255, 0.914);
 	}
 
 	.login-form {

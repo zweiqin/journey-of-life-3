@@ -58,7 +58,7 @@
 			</view>
 			<view>
 				<view v-if="[ '1' ].includes(currentType)">
-					<view>团蜂为您提供完整的家居设计服务，包括室内空间布局，风格搭配及收纳解决方案</view>
+					<view>{{ APPLY_NAME }}为您提供完整的家居设计服务，包括室内空间布局，风格搭配及收纳解决方案</view>
 					<view>
 						<view style="display: flex;align-items: center;margin-top: 12rpx;">
 							<tui-icon :size="58" unit="rpx" bold color="#208f57" name="check" margin="0 20rpx 0 0"></tui-icon>
@@ -341,12 +341,14 @@
 
 <script>
 import { getServiceSortApi } from '../../api/community-center'
+import { APPLY_NAME } from '../../config'
 
 export default {
 	name: 'ServiceDetail',
 	props: {},
 	data() {
 		return {
+			APPLY_NAME,
 			serviceSortData: [],
 			transformation: {
 				0: '未知',

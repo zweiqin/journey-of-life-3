@@ -2,7 +2,7 @@
 	<view class="container">
 		<div>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">团蜂家居隐私政策</span></p>
+					style="font-family:宋体; font-size:10.5pt">{{ APPLY_NAME }}隐私政策</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">发布及生效时间：</span><span
 					style="font-family:Calibri; font-size:10.5pt">202</span><span
@@ -48,17 +48,17 @@
 					style="font-family:宋体; font-size:10.5pt">本政策仅适用于</span><span
 					style="font-family:宋体; font-size:10.5pt; font-weight:bold">广东团蜂科技有限公司</span><span
 					style="font-family:宋体; font-size:10.5pt">提供的产品和服务及其延伸的功能（以下简称“</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">”）。如我们提供的某款产品有单独的隐私政策或相应的用户服务协议当中存在特殊约定，则该产品的隐私政策将优先适用；该款产品隐私政策和用户服务协议未涵盖的内容，以本政策内容为准。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本系统不会将这些信息对外披露或向第三方提供。本系统会不时更新本隐私权政策。
 					您在同意本系统服务使用协议之时，即视为您已经同意本隐私权政策全部内容。本隐私权政策属于本系统服务使用协议不可分割的一部分。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:宋体; font-size:10.5pt">本政策适用于“</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">”提供的所有产品和服务</span><span
 					style="font-family:宋体; font-size:10.5pt">。在您使用“</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">”各项产品或者服务前，请您务必仔细阅读并透彻理解本政策，特别是以粗体</span><span
 					style="font-family:Calibri; font-size:10.5pt">/</span><span
 					style="font-family:宋体; font-size:10.5pt">粗体下划线标识的条款，您应重点阅读，确保您充分理解和同意后再开始使用。本政策中涉及的专业词汇，我司尽量以简明通俗的表述向您解释，以便于您理解。</span>
@@ -106,14 +106,14 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">d</span><span
 					style="font-family:宋体; font-size:10.5pt">）位置信息：您使用</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">提供位置服务时，我们需要收集和处理您的<span style="font-weight: bold;color: #3e89fd;">位置信息</span>。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">e</span><span
 					style="font-family:宋体; font-size:10.5pt">）设备信息：为了保证</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">服务的正常运行，向您提供问题诊断或设备检测服务，我们会收集您的<span style="font-weight: bold;color: #3e89fd;">硬件型号、操作系统版本、设备配置、唯一设备标识符、网络设备硬件地址</span></span><span
 					style="font-family:Calibri; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">MAC</span></span><span
 					style="font-family:宋体; font-size:10.5pt"><span style="font-weight: bold;color: #3e89fd;">、设备连接信息以及设备状态信息</span>等。基于不同的系统，设备信息表述文字有所不同。</span></p>
@@ -200,7 +200,7 @@
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
-					style="font-family:宋体; font-size:10.5pt">团蜂家居使用团蜂账号体系，需要您使用团蜂家居注册或登录。在您注册成为 团蜂家居用户时，您需要至少提供手机号码以创建团蜂账号，并完善相关的网络身
+					style="font-family:宋体; font-size:10.5pt">{{ APPLY_NAME }}使用团蜂账号体系，需要您使用{{ APPLY_NAME }}注册或登录。在您注册成为 {{ APPLY_NAME }}用户时，您需要至少提供手机号码以创建团蜂账号，并完善相关的网络身
 					份识别信息（如<span style="font-weight: bold;color: #3e89fd;">头像、昵称及登录密码</span>等）；如果您仅需使用浏览功能，您无 需注册成为我们的用户以及提供上述信息。</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">&#xa0;</span></p>
@@ -625,9 +625,9 @@
 			</p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
 					style="font-family:Calibri; font-size:10.5pt">a) </span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">帐号均有安全保护功能，请妥善保管您的用户名及密码信息。</span><span
-					style="font-family:宋体; font-size:10.5pt; font-weight:bold">团蜂家居</span><span
+					style="font-family:宋体; font-size:10.5pt; font-weight:bold">{{ APPLY_NAME }}</span><span
 					style="font-family:宋体; font-size:10.5pt">将通过对用户密码进行加密等安全措施确保您的信息不丢失，不被滥用和变造。尽管有前述安全措施，但同时也请您注意在信息网络上不存在“完善的安全措施”。 
 				</span></p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span
@@ -684,7 +684,15 @@
 </template>
 
 <script>
-export default {}
+import { APPLY_NAME } from '../../config'
+export default {
+	name: 'PrivacyPolicy',
+	data() {
+		return {
+			APPLY_NAME,
+		}
+	},
+}
 </script>
 
 <style lang="less" scoped>

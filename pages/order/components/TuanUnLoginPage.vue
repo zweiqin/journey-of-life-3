@@ -1,7 +1,7 @@
 <template>
   <view class="un-login-page">
     <image class="logo" src="../../../static/images/new-user/fee.icon.png"></image>
-    <view class="page-title">团蜂</view>
+    <view class="page-title">{{ APPLY_NAME }}</view>
 
     <view class="tip">
       <view>为了给您提供更好的服务</view>
@@ -14,7 +14,13 @@
 </template>
 
 <script>
+import { APPLY_NAME } from '../../../config'
 export default {
+	data() {
+		return {
+			APPLY_NAME,
+		}
+	},
   methods: {
     handleSkip() {
       uni.switchTab({ url: '/pages/community-center/community-centerr' });

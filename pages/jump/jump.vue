@@ -238,7 +238,7 @@ export default {
 			if (this.type === 'nothing') {
 				this.$switchTab('/pages/user/user')
 			} else if (this.type === 'participateLottery') {
-				addDrawParticipateLotteryApi({})
+				addDrawParticipateLotteryApi({ name: decodeURIComponent(this.code.split('~')[0]), url: decodeURIComponent(this.code.split('~')[1]) })
 					.then((res) => { this.$showToast('参与成功') })
 					.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 			} else if (this.type === 'bindingSalesCustomer') { // 绑定分销关系，salesId分销员ID

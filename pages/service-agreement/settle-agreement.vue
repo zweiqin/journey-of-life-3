@@ -104,7 +104,7 @@
 			</span>
 		</h4>
 		<p style="background-color: #ffffff; line-height: 22.5pt; margin: 0;">
-			<span>甲方入驻乙方旗下【团蜂】网络服务平台，设立店铺并获得相应后台的账户及密码，甲方可以通过供应商后台进行店铺日常经营管理和商品销售。乙方提供相应的平台服务。乙方收取甲方团蜂会员消费营销额（协商折扣）折的折扣（特价除外）。</span>
+			<span>甲方入驻乙方旗下【{{ APPLY_NAME }}】网络服务平台，设立店铺并获得相应后台的账户及密码，甲方可以通过供应商后台进行店铺日常经营管理和商品销售。乙方提供相应的平台服务。乙方收取甲方团蜂会员消费营销额（协商折扣）折的折扣（特价除外）。</span>
 		</p>
 
 		<h4 style="background-color: #ffffff;margin: 10pt 0 0">
@@ -275,10 +275,13 @@
 </template>
 
 <script>
+import { APPLY_NAME } from '../../config'
+
 export default {
 	name: 'SettleAgreement',
 	data() {
 		return {
+			APPLY_NAME,
 			scrollTop: 0,
 			tabbar: null
 		}
