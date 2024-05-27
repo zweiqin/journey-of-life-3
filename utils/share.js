@@ -32,7 +32,7 @@ export const importJsSDK = () => {
 export const setMiniprogramShareConfig = (data) => {
   if (!wx) importJsSDK()
   let path = data.path
-  path = `pages/index/index?url=${encodeURI(path.replace('?', '[params]'))}`
+  path = `pages/index/index?url=${encodeURI(path.replace('?', '[params]').replace('&', '[and]'))}`
   wx.miniProgram.postMessage({
     data: { ...data, path }
   })
