@@ -10,10 +10,8 @@
       <view @click="go(`/another-tf/another-serve/search/index`)" class="input-view">{{ placeholder }}</view>
       <button v-if="showSearchBtn" class="search-input-btn uni-btn">搜索</button>
     </view>
-    <button v-if="showMessage" class="uni-btn page-header-right" style="flex-shrink: 0;"
-      >
-				<tui-icon name="message" color="#222229" size="60" unit="rpx" @click="go('/another-tf/another-user/customer-service/customer-service')"></tui-icon>
-    </button>
+		<!-- /another-tf/another-user/customer-service/customer-service -->
+		<tui-icon v-if="showMessage" name="message" color="#222229" size="60" unit="rpx" @click="go('/another-tf/another-serve/messageCenter/index')"></tui-icon>
   </view>
 </template>
 

@@ -75,7 +75,7 @@
 					<view style="margin: 24upx 30upx 0;">
 						<view v-if="dataList.afterState" style="color: #222229;font-size: 34upx;font-weight: bold;">
 							<view v-if="[5, 6, 9].includes(dataList.afterState)">
-								{{ `【退】${afterConditionEnum(dataList.afterState)}-${orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].text}` }}
+								{{ `【退】${afterConditionEnum(dataList.afterState)}-${orderPatternEnum[[ 5 ].includes(dataList.state) && dataList.collageId ? 5.5 : dataList.state].text}` }}
 							</view>
 							<view v-else>
 								{{ `【退】${afterConditionEnum(dataList.afterState)}` }}
@@ -84,10 +84,10 @@
 						<view v-else>
 							<view style="display: flex;align-items: center;justify-content: space-between;">
 								<text style="color: #222229;font-size: 34upx;font-weight: bold;">
-									● {{ orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].text }}
+									● {{ orderPatternEnum[[ 5 ].includes(dataList.state) && dataList.collageId ? 5.5 : dataList.state].text }}
 								</text>
 								<text style="color: #1A66FF;font-size: 26upx;">
-									{{ orderPatternEnum[(dataList.state == 5) && dataList.collageId ? 5.5 : dataList.state].message }}
+									{{ orderPatternEnum[[ 5 ].includes(dataList.state) && dataList.collageId ? 5.5 : dataList.state].message }}
 								</text>
 							</view>
 						</view>
@@ -167,15 +167,19 @@
 									<text style="color: #8F8F8F;">下单时间</text>
 									<text style="margin-left: 32upx;color: #222229;">{{ dataList.createTime || '--' }}</text>
 								</view>
-								<view v-if="dataList.state == 3" style="padding-top: 32upx;">
+								<view v-if="[ 3 ].includes(dataList.state)" style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">付款时间</text>
 									<text style="margin-left: 32upx;color: #222229;">{{ dataList.paymentTime || '--' }}</text>
 								</view>
-								<view v-if="(dataList.state == 3) || (dataList.state == 4)" style="padding-top: 32upx;">
+								<view v-if="[8, 9, 10].includes(dataList.state)" style="padding-top: 32upx;">
+									<text style="color: #8F8F8F;">核销人和核销账号</text>
+									<text style="margin-left: 32upx;color: #222229;">{{ dataList.writePhone || '--' }}</text>
+								</view>
+								<view v-if="[3, 4].includes(dataList.state)" style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">发货时间</text>
 									<text style="margin-left: 32upx;color: #222229;">{{ dataList.dileveryTime || '--' }}</text>
 								</view>
-								<view v-if="dataList.state == 4" style="padding-top: 32upx;">
+								<view v-if="[ 4 ].includes(dataList.state)" style="padding-top: 32upx;">
 									<text style="color: #8F8F8F;">成交时间</text>
 									<text style="margin-left: 32upx;color: #222229;">{{ dataList.receiveTime || '--' }}</text>
 								</view>

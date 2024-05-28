@@ -1,5 +1,5 @@
 export const SYSTEM_VERSION = '1.0.26' // 版本
-export const APPLY_NAME = '团蜂生活' // 应用名称
+export const APPLY_NAME = '团蜂' // 应用名称
 
 // --------------------------------------------------
 

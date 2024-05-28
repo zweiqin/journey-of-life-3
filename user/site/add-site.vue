@@ -75,21 +75,21 @@
 			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
 			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
 		>
-		<view style="padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
-			<view style="display: flex;align-items: center;">
-				<tui-icon name="gps" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
-				<view style="flex: 1;">
-					<view>定位权限使用说明：</view>
-					<view style="margin-top: 12rpx;">"{{ APPLY_NAME }}"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能</view>
+			<view style="padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
+				<view style="display: flex;align-items: center;">
+					<tui-icon name="gps" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+					<view style="flex: 1;">
+						<view>定位权限使用说明：</view>
+						<view style="margin-top: 12rpx;">"{{ APPLY_NAME }}"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能</view>
+					</view>
 				</view>
+				<tui-button
+					type="warning" width="140rpx" height="58rpx" margin="20rpx auto 0"
+					@click="(showAuthPopupVisible = false) || handleOpenMap()"
+				>
+					确定
+				</tui-button>
 			</view>
-			<tui-button
-				type="warning" width="140rpx" height="58rpx" margin="20rpx auto 0"
-				@click="(showAuthPopupVisible = false) || handleOpenMap()"
-			>
-				确定
-			</tui-button>
-		</view>
 		</tui-popup>
 
     <TuanCity @confirm="handleConfirmAddress" ref="TuanCityRef"></TuanCity>

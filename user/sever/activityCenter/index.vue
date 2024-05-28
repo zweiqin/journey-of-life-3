@@ -63,10 +63,16 @@ export default {
     async getUpActivityList() {
       let currentAddress = this.$store.getters.detailAddress
       if (!currentAddress) {
-        if (!currentAddress) {
-          const { detail } = await this.$store.dispatch('location/getCurrentLocation')
-          currentAddress = detail
-        }
+				// #ifdef APP
+				const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+				if (lastAddress) {
+					currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.distinguish + lastAddress.data.town
+				}
+				// #endif
+				// #ifndef APP
+				const { detail } = await this.$store.dispatch('location/getCurrentLocation')
+				currentAddress = detail
+				// #endif
       }
       try {
         this.isLoading = true

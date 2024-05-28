@@ -169,6 +169,22 @@
       </button>
     </view>
 
+		<tui-popup
+			:duration="500"
+			:mode-class="['fade-in']"
+			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+			:show="showAuthPopupVisible"
+			@click="showAuthPopupVisible = false"
+		>
+			<view style="display: flex; align-items: center; padding: 26upx; background-color: #ffffff; border-radius: 20upx">
+				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+				<view style="flex: 1">
+					<view>相机权限和相册权限使用说明：</view>
+					<view style="margin-top: 12rpx">"{{ APPLY_NAME }}"想访问您的相机和相册，将根据你的上传的图片，用于上传需要清洗、维修、安装相关的物品图片等场景</view>
+				</view>
+			</view>
+		</tui-popup>
+
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
     <tui-toast ref="toast"></tui-toast>
   </view>
@@ -179,7 +195,7 @@ import { getUserId } from 'utils'
 import { debounce } from 'lodash-es'
 import { getAddressListApi } from '../api/address'
 import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
-import { IMG_UPLOAD_URL } from '../config'
+import { APPLY_NAME, IMG_UPLOAD_URL } from '../config'
 import ChooseTime from './componts/choose-time.vue'
 import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center'
 
@@ -187,6 +203,8 @@ export default {
   components: { ChooseTime },
   data() {
     return {
+			APPLY_NAME,
+      showAuthPopupVisible: false,
       // 收货地址
       defualtAddress: null,
       // 当前选中的服务信息
@@ -326,9 +344,21 @@ export default {
       }
     },
 
-    // 点击上传图片
     handleUploadImg() {
-      const _this = this
+      // #ifdef APP
+      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+      if (appAuthorizeSetting.albumAuthorized !== 'authorized') {
+        this.showAuthPopupVisible = true
+        this.handleChooseImage()
+      } else {
+        this.handleChooseImage()
+      }
+      // #endif
+      // #ifndef APP
+      this.handleChooseImage()
+      // #endif
+    },
+    handleChooseImage() {
       uni.chooseImage({
         success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
@@ -342,11 +372,11 @@ export default {
               },
               success: (uploadFileRes) => {
                 uni.hideLoading()
-                _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
+                this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
               },
               fail: (error) => {
                 uni.hideLoading()
-                _this.ttoast({
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
@@ -354,7 +384,6 @@ export default {
               }
             })
           }
-
           return
         },
         fail: (fail) => {

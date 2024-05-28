@@ -10,7 +10,7 @@
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
-					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-a
+					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.26.1
 				</view>
 				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
 					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
@@ -41,11 +41,11 @@
 						type="text"
 						placeholder="请输入用户名称"
 					></tui-input>
-					<JUpload
+					<ATFUpload
 						title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)"
 						@upload="(e) => (lotteryForm.url = e) && $forceUpdate()" @delete="lotteryForm.url = '' || $forceUpdate()"
 					>
-					</JUpload>
+					</ATFUpload>
 				</view>
 			</template>
 		</tui-dialog>

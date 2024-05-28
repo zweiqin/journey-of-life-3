@@ -5,7 +5,7 @@ import { AnotherTFRequest } from '../../utils'
  */
 
 // 参与抽奖
-export const addDrawParticipateLotteryApi = (data) => AnotherTFRequest('/draw/addDraw', data)
+export const addDrawParticipateLotteryApi = (data) => AnotherTFRequest('/draw/addDraw', data, 'POST')
 
 /**
  * @description 商城相关接口
