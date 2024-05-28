@@ -138,6 +138,7 @@ import AdditionalAmountOrder from '../../community-center/components/AdditionalA
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue'
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue'
 import { handleDoPay } from '../../utils/payUtil'
+import {importJsSDK} from '../../utils'
 
 export default {
 	name: 'Order',
@@ -262,6 +263,8 @@ export default {
 	},
 
 	onLoad(options) {
+		importJsSDK()
+		this.userId = uni.getStorageSync(USER_ID) || ''
 		if (getApp().globalData.orderTypeShow) {
 			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
 			getApp().globalData.orderTypeShow = ''
@@ -271,7 +274,6 @@ export default {
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
-		this.userId = uni.getStorageSync(USER_ID) || ''
 	},
 
 	onShow() {
