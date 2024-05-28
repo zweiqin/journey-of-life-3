@@ -359,7 +359,7 @@ export default {
   },
 
   onLoad(options) {
-    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !options.miniProgram)
+    this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     // #ifdef H5
     importJsSDK()
     // #endif

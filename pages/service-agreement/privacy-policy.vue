@@ -231,8 +231,8 @@
 					为了存储必要的应用配置文件以及您所选择下载、更新的内容、报表，或读取您需要上传、同步的内容，需要调用您的<span
 						style="font-weight: bold;color: #3e89fd;"
 					>
-						存储权限
-					</span>。
+						存储权限。
+					</span>
 				</span>
 			</p>
 			<p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
