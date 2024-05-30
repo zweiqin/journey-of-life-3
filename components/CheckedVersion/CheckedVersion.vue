@@ -37,6 +37,7 @@
 <script>
 import { checkedVersionApi } from '../../api/app'
 export default {
+	name: 'CheckedVersion',
   data() {
     return {
       logVisible: false,
@@ -62,20 +63,22 @@ export default {
       const _this = this
       uni.getSystemInfo({
         success: async function (res) {
-          const { data } = await checkedVersionApi({ version: res.appVersion })
-          console.log('lailelaodi', data);
-          if (!data.isNew) {
-            _this.logVisible = true
-            _this.logs = data.data
-          } else {
-            if (!tag) {
-              uni.showToast({
-                title: '当前已是最新版本',
-                duration: 2000,
-                icon: 'none',
-              })
-            }
-          }
+					if (res.platform.toLocaleLowerCase() == 'android') {
+						const { data } = await checkedVersionApi({ version: res.appVersion })
+						console.log('lailelaodi', data);
+						if (!data.isNew) {
+							_this.logVisible = true
+							_this.logs = data.data
+						} else {
+							if (!tag) {
+								uni.showToast({
+									title: '当前已是最新版本',
+									duration: 2000,
+									icon: 'none',
+								})
+							}
+						}
+					}
         },
       })
     },

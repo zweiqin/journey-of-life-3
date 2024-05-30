@@ -161,8 +161,8 @@ export default {
 					// 	text: item.communityName
 					// }))
 					this.communityList = data.map((item) => ({
-						value: item,
-						text: item
+						value: item.id,
+						text: item.communityName
 					}))
 					console.log(this.communityList)
 					uni.hideLoading()

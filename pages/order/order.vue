@@ -138,7 +138,7 @@ import AdditionalAmountOrder from '../../community-center/components/AdditionalA
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue'
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue'
 import { handleDoPay } from '../../utils/payUtil'
-import {importJsSDK} from '../../utils'
+import { importJsSDK } from '../../utils'
 
 export default {
 	name: 'Order',
@@ -404,6 +404,7 @@ export default {
 					this.loadingStatus = 'more'
 				}
 			} else if (this.currentOrderMode === 'shoppingMall') {
+				if (!isLoadmore) this.shoppingQueryInfo.page = 1
 				uni.showLoading()
 				getAllOrderListApi({ ...this.shoppingQueryInfo, state: this.currentStatus || '' })
 					.then((res) => {
@@ -420,6 +421,7 @@ export default {
 						uni.hideLoading()
 					})
 			} else if (this.currentOrderMode === 'businessDistrict') {
+				if (!isLoadmore) this.businessQueryInfo.page = 1
 				uni.showLoading()
 				getAllOrderListApi({ ...this.businessQueryInfo, state: this.currentStatus || '' })
 					.then((res) => {
