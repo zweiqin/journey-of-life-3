@@ -19,10 +19,10 @@
         "modules" : {
             "Camera" : {},
             "OAuth" : {},
-            "Share" : {},
             "VideoPlayer" : {},
             "Maps" : {},
-            "Geolocation" : {}
+            "Geolocation" : {},
+            "Share" : {}
         },
         "distribute" : {
             "android" : {

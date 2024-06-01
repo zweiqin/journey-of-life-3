@@ -115,8 +115,6 @@ import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
 import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
-import { A_TF_MAIN } from '../../../config';
-import { CHANGE_IS_IN_MINIPROGRAM } from '../../../store/modules/type'
 
 export default {
 	name: 'ShopDetail',
@@ -161,7 +159,7 @@ export default {
 	},
 
 	onLoad(options) {
-	  this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
+	  // this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		this.shopId = options.shopId
 		this.getBrandDetail()
 		getShopClassifyApi({
@@ -205,12 +203,16 @@ export default {
 				})
 				console.log(data)
 				this.brandDetail = data || {}
-				if(this.$store.state.app.isInMiniProgram){
+				if (this.$store.state.app.terminal === 6) {
 					setMiniprogramShareConfig({
-					  title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
-					  path: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}&miniProgram=1`,
-					  imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
-				  })
+						data: {
+							event: 'sharingPageTurn',
+							webPath: `/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+							title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+							path: 'pages/index/index',
+							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+						}
+					})
 				}
 				uni.hideLoading()
 			} catch (error) {

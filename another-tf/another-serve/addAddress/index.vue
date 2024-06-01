@@ -149,17 +149,12 @@ export default {
 			this.selectTownshipId = (e.areaInfo[3] && e.areaInfo[3].id) || ''
 			this.addressData.communityId = ''
 			this.addressData.communityName = ''
-			if (this.selectTownshipId) this.handleGetCommunityList(this.selectTownshipId)
+			// if (this.selectTownshipId) this.handleGetCommunityList(this.selectTownshipId)
 		},
 		handleGetCommunityList(cityId) {
 			uni.showLoading()
 			getCityCommunitySelectApi({ cityId })
 				.then(({ data }) => {
-					// this.communityList = data.map((item) => ({
-					// 	...item,
-					// 	value: item.id,
-					// 	text: item.communityName
-					// }))
 					this.communityList = data.map((item) => ({
 						value: item.id,
 						text: item.communityName

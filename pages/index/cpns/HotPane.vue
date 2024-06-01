@@ -7,7 +7,7 @@
 
     <view class="pane-content">
       <!-- @click="go('/pages/prod/prod?goodsId=' + goods.productId)" -->
-      <view class="item" v-for="goods in goodsData" :key="goods.productId">
+      <view class="item" v-for="goods in goodsData" :key="goods.productId" @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${goods.shopId}&productId=${goods.productId}&skuId=${goods.skuId}`)">
         <image :src="common.seamingImgUrl(goods.image)" class="item-image"></image>
         <view class="price-wrapper">
           ￥<text class="price-text">

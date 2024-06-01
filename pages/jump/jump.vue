@@ -154,11 +154,18 @@ export default {
 	// eslint-disable-next-line complexity
 	onLoad(options) {
 		if (options.type) uni.setStorageSync(T_NEW_BIND_TYPE, options.type) || uni.setStorageSync(T_NEW_BIND_CODE, options.code || '') || uni.setStorageSync(T_NEW_BIND_ID, options.userId || '') // 有绑定id就进行存储，以防下面没登录跳到登录页
-		if (((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'collection') && !getStorageKeyToken({ isShowModal: false })) {
+		if (((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'collection') && !getStorageKeyToken({ isShowModal: false, isRedirect: true })) {
 			this.viewType = 'collection'
 			this.code = options.code || uni.getStorageSync(T_NEW_BIND_CODE) || ''
 			return
-		} else if (!getStorageKeyToken({ isShowisRedirectModal: true })) {
+		} else if ((options.type || uni.getStorageSync(T_NEW_BIND_TYPE)) === 'sharingPageTurn') {
+			this.code = options.code || uni.getStorageSync(T_NEW_BIND_CODE) || ''
+			uni.removeStorageSync(T_NEW_BIND_TYPE)
+			uni.removeStorageSync(T_NEW_BIND_CODE)
+			uni.removeStorageSync(T_NEW_BIND_ID)
+			setTimeout(() => { uni.redirectTo({ url: decodeURIComponent(this.code) }) }, 300)
+			return
+		} else if (!getStorageKeyToken({ isRedirect: true })) {
 			return
 		}
 		this.userId = getUserId() || ''
@@ -231,7 +238,8 @@ export default {
 		// 业务逻辑
 		// eslint-disable-next-line complexity
 		async handleBusiness(isFromLogin) {
-			console.log(isFromLogin)
+			// console.log(isFromLogin)
+			console.log(this.code)
 			uni.removeStorageSync(T_NEW_BIND_TYPE)
 			uni.removeStorageSync(T_NEW_BIND_CODE)
 			uni.removeStorageSync(T_NEW_BIND_ID)
@@ -289,7 +297,7 @@ export default {
 			} else if (this.type === 'invitation') {
 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'toAnotherTFSettle') {
-				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
+				const storageKeyToken = getStorageKeyToken({ isRedirect: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, montageTerminal: [ 6 ] })
@@ -313,7 +321,7 @@ export default {
 				// 	.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` }) }, 300)
 			} else if (this.type === 'bindingTeamMembers') { // 这里指团长和合伙人，其它还有会员、股东
-				const storageKeyToken = getStorageKeyToken({ isShowisRedirectModal: true })
+				const storageKeyToken = getStorageKeyToken({ isRedirect: true })
 				if (storageKeyToken) {
 					setTimeout(() => {
 						jumpToOtherProject({ isInMiniProgram: this.$store.state.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}&code=${this.code}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${this.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, montageTerminal: [ 6 ] })
@@ -386,30 +394,30 @@ export default {
 				bindchangeActivityUserApi({ userId: this.userId, userCode: bindActivityId, type: campaignsType })
 					.then((res) => { this.$showToast('绑定成功', 'success') })
 					.finally((e) => { setTimeout(() => { uni.redirectTo({ url: '/user/sever/activityCenter/index' }) }, 2000) })
-			} else if (this.type === 'bindFranchisees'){ // 用户绑定加盟商
+			} else if (this.type === 'bindFranchisees') { // 用户绑定加盟商
 				bindFranchiseesApi({
 					franchiseesSn: this.code,
 					phone: this.$store.getters.userInfo.phone
 				})
-				.then((res) => {
-					switch (res.statusCode * 1) {
-						case 501:
-						  this.$showToast('您已绑定其他加盟商', 'none')
-							break;
-						case 502:
-						  this.$showToast('自己不能绑定自己', 'none')
-							break;
-						case 503:
-						  this.$showToast('该账号的上级已绑定到其他加盟商', 'none')
-							break;
-						case 20000:
-						  this.$showToast('加盟商绑定成功', 'success')
-							break
-						default:
-						  this.$showToast('加盟商绑定失败', 'none')
-					}
-				})
-				.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
+					.then((res) => {
+						switch (res.statusCode * 1) {
+							case 501:
+								this.$showToast('您已绑定其他加盟商', 'none')
+								break
+							case 502:
+								this.$showToast('自己不能绑定自己', 'none')
+								break
+							case 503:
+								this.$showToast('该账号的上级已绑定到其他加盟商', 'none')
+								break
+							case 20000:
+								this.$showToast('加盟商绑定成功', 'success')
+								break
+							default:
+								this.$showToast('加盟商绑定失败', 'none')
+						}
+					})
+					.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
 			}
 		},
 		handleVerification() {
