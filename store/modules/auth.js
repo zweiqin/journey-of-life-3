@@ -121,17 +121,21 @@ export default {
 					uni.showToast({ title: '暂不支持！', icon: 'none' })
 					reject()
 				} else if (loginData.terminal === 1) {
+					// 要先在微信开放平台开通微信登录
 					uni.login({
 						provider: 'weixin',
+						// onlyAuthorize: true,
 						success(loginRes) {
-							uni.getUserInfo({ // 获取用户信息
+							// loginData.code = loginRes.code
+							uni.getUserInfo({
 								provider: 'weixin',
 								success(infoRes) {
-									updateWXAppLoginApi({ wechatOpenId: infoRes.userInfo.openId }).then(({ data }) => {
-										uni.hideLoading()
-										if (isAfter) dispatch('LoginAfterAction', { type: 'wx', data: { ...data, wechatOpenId: infoRes.userInfo.openId, headImage: infoRes.userInfo.avatarUrl } })
-										resolve(data)
-									})
+									updateWXAppLoginApi({ wechatOpenId: infoRes.userInfo.openId })
+										.then(({ data }) => {
+											uni.hideLoading()
+											if (isAfter) dispatch('LoginAfterAction', { type: 'wx', data: { ...data, wechatOpenId: infoRes.userInfo.openId, headImage: infoRes.userInfo.avatarUrl } })
+											resolve(data)
+										})
 										.catch((err) => {
 											uni.hideLoading()
 											reject(err)
@@ -139,7 +143,7 @@ export default {
 								},
 								fail: (err) => {
 									uni.hideLoading()
-									uni.showToast({ title: '微信登录授权失败', icon: 'none' })
+									uni.showToast({ title: '微信获取用户信息失败', icon: 'none' })
 									reject(err)
 								}
 							})
@@ -217,6 +221,7 @@ export default {
 			})
 		},
 
+		// eslint-disable-next-line complexity
 		LoginAfterAction({ state, commit, dispatch }, { type, data }) {
 			try {
 				const tabbarList = ['pages/index/index', 'pages/business-district/business-district', '/pages/community-center/community-center', 'pages/order/order', '/pages/user/user']
@@ -262,13 +267,38 @@ export default {
 							commit(CHNAGE_USER_INFO, data)
 							if (data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, data.roleId]) ] })
 							dispatch('updateIdentityInfo')
-							if (this.redirect) {
-								uni.removeStorageSync(T_REDIRECT_TYPE)
-								window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
-							} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
-								window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
+							if ((store.state.app.terminal === 6) || (store.state.app.terminal === 3)) {
+								if (this.redirect) {
+									uni.removeStorageSync(T_REDIRECT_TYPE)
+									window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
+								} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
+									window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
+								} else {
+									window.location.replace(`${A_TF_MAIN}/#/pages/community-center/community-centerr`)
+								}
+							} else if ((store.state.app.terminal === 2) || (store.state.app.terminal === 1)) {
+								if (redirect) {
+									uni.removeStorageSync(T_REDIRECT_TYPE)
+									if (tabbarList.includes(this.redirect)) {
+										uni.switchTab({
+											url: this.redirect
+										})
+									} else {
+										uni.redirectTo({
+											url: this.redirect
+										})
+									}
+								} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
+									uni.redirectTo({
+										url: '/pages/jump/jump'
+									})
+								} else {
+									uni.switchTab({
+										url: '/pages/community-center/community-centerr'
+									})
+								}
 							} else {
-								window.location.replace(`${A_TF_MAIN}/#/pages/community-center/community-centerr`)
+								uni.showToast({ title: '未能识别系统信息', icon: 'none' })
 							}
 						} else if (data.phone && (!data.oldShopUserInfo || !data.oldShopUserInfo.userInfo)) {
 							uni.showToast({ title: '系统错误，未能同步用户数据', icon: 'none' })
@@ -277,8 +307,16 @@ export default {
 						} else {
 							uni.showToast({ title: '未能识别的错误', icon: 'none' })
 						}
-					} else {
-						window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`) // data=${JSON.stringify(data)}&
+					} else if (data.ifFirst == 1) {
+						if ((store.state.app.terminal === 6) || (store.state.app.terminal === 3)) {
+							window.location.replace(`${A_TF_MAIN}/#/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`)
+						} else if ((store.state.app.terminal === 2) || (store.state.app.terminal === 1)) {
+							uni.redirectTo({
+								url: `/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`
+							})
+						} else {
+							uni.showToast({ title: '未能识别系统信息', icon: 'none' })
+						}
 					}
 				} else if (type === 'alipay') {
 					if (data.ifFirst == 0) {
@@ -309,7 +347,7 @@ export default {
 								url: '/pages/community-center/community-centerr'
 							})
 						}
-					} else { // 第一次登录，绑定手机号
+					} else if (data.ifFirst == 1) { // 第一次登录，绑定手机号
 						uni.redirectTo({
 							url: `/another-tf/another-serve/bindPhone/index?wechatOpenId=${data.wechatOpenId || ''}&headImage=${data.headImage || ''}&wechatName=${data.wechatName || ''}&buyerUserId=${data.buyerUserId || ''}`
 						})

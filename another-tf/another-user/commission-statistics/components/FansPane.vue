@@ -6,14 +6,14 @@
     </view>
     <view class="info">
       <view class="name">{{ fansInfo.userName }}
-        <!-- <tui-icon margin="0 0 0 10upx" :color="fansInfo.gender === 0 ? '#10aeff' : '#f37e7d'" name="friendadd-fill" :size="18"></tui-icon> -->
+        <!-- <tui-icon margin="0 0 0 10rpx" :color="fansInfo.gender === 0 ? '#10aeff' : '#f37e7d'" name="friendadd-fill" :size="18"></tui-icon> -->
         <!-- <view class="add-time">绑定时间:{{ fansInfo.addTime }}</view> -->
 
-        <view class="account-wrapper" style="font-size: 24upx; color: #3d3d3d; "> 产生佣金: <text style="color: #f40;">￥{{
+        <view class="account-wrapper" style="font-size: 24rpx; color: #3d3d3d; "> 产生佣金: <text style="color: #f40;">￥{{
           fansInfo.amount }}</text></view>
       </view>
 
-			<view style="font-size: 26upx;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
+			<view style="font-size: 26rpx;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
 
       <view class="phone">
         <view class="phone-number">{{ fansInfo.phone ? fansInfo.phone.slice(0, 3) + '****' + fansInfo.phone.slice(7) : '-'
@@ -61,20 +61,20 @@ export default {
 
 <style lang="less" scoped>
 .item {
-  margin-top: 30upx;
-  padding: 20upx;
+  margin-top: 30rpx;
+  padding: 20rpx;
   box-sizing: border-box;
-  width: 700upx;
+  margin: 0 20rpx 8rpx;
   background-color: #fff;
-  border-radius: 10upx;
+  border-radius: 10rpx;
   display: flex;
   align-items: flex-start;
 
   .avatar-wrapper {
     position: relative;
-    border-radius: 10upx;
+    border-radius: 10rpx;
     overflow: hidden;
-    border: 1upx solid #f3f3f3;
+    border: 1rpx solid #f3f3f3;
 
     .mask {
       position: absolute;
@@ -82,37 +82,37 @@ export default {
       right: 0;
       bottom: 0;
       width: 100%;
-      height: 40upx;
+      height: 40rpx;
       background-color: rgba(0, 0, 0, 0.5);
-      font-size: 24upx;
+      font-size: 24rpx;
       color: #fff;
       text-align: center;
-      line-height: 40upx;
+      line-height: 40rpx;
     }
   }
 
   .avatar {
     flex-shrink: 0;
-    width: 100upx;
-    height: 100upx;
-    border-radius: 10upx;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 10rpx;
     display: block;
   }
 
   .info {
     flex: 1;
-    margin-left: 20upx;
+    margin-left: 20rpx;
 
     .name {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      font-size: 28upx;
+      font-size: 28rpx;
       font-weight: 500;
 
       .add-time {
-        font-size: 24upx;
+        font-size: 24rpx;
       }
     }
 
@@ -120,17 +120,17 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 24upx;
-      margin-top: 16upx;
+      font-size: 24rpx;
+      margin-top: 16rpx;
 
       .uni-btn {
         display: flex;
         align-items: center;
         color: #ccc;
-        font-size: 24upx;
+        font-size: 24rpx;
 
         .icon {
-          margin-right: 10upx !important;
+          margin-right: 10rpx !important;
         }
       }
     }
@@ -138,11 +138,11 @@ export default {
 }
 
 .fans-wrapper {
-  font-size: 24upx;
+  font-size: 24rpx;
   color: #3d3d3d;
   display: flex;
   align-items: center;
-  margin-top: 20upx;
+  margin-top: 20rpx;
 
   .fans-item {
     flex: 1;

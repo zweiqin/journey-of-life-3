@@ -39,7 +39,7 @@
 				style="margin: 42rpx 0 0;display: flex;justify-content: space-around;align-items: center;font-size: 30rpx;color: #507AFC;font-weight: bold;"
 			>
 				<view v-if="codePicUrl" @click="handleShare">
-					保存收款码
+					保存商家店铺码
 				</view>
 			</view>
 		</view>

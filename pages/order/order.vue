@@ -264,6 +264,9 @@ export default {
 
 	onLoad(options) {
 		importJsSDK()
+	},
+
+	onShow() {
 		this.userId = uni.getStorageSync(USER_ID) || ''
 		if (getApp().globalData.orderTypeShow) {
 			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
@@ -274,9 +277,6 @@ export default {
 		uni.removeStorageSync(T_PAY_ORDER)
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
-	},
-
-	onShow() {
 		this.$nextTick(() => {
 			this.getOrderList()
 		})

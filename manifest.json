@@ -2,8 +2,8 @@
     "name" : "团蜂",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.26",
-    "versionCode" : 126,
+    "versionName" : "1.0.27",
+    "versionCode" : 127,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -96,16 +96,17 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
+                        "appid" : "wxb19ccb829623be12",
                         "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
+                        "appid" : "wxb19ccb829623be12",
                         "UniversalLinks" : "https://www.tuanfengkeji.cn/uni-universallinks/__UNI__B07FE0F/"
                     }
-                }
+                },
+                "payment" : {}
             },
             "icons" : {
                 "android" : {
@@ -152,7 +153,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wxc0aec85efc6b05e5",
+        "appid" : "wx3cef6c7325c38a45",
         "setting" : {
             "urlCheck" : false
         },

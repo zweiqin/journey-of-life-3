@@ -10,7 +10,7 @@
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
-					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.26.17
+					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.27.1
 				</view>
 				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
 					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
@@ -29,26 +29,28 @@
 		<CodeCreatePopup ref="codeCreateRef"></CodeCreatePopup>
 
 		<!-- 参与抽奖输入暗语 -->
-		<tui-dialog
-			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-			:show="isShowLotteryDialog" title="团蜂抽奖系统" @click="handleLotteryDialog"
-		>
-			<template #content>
-				<view style="text-align: left;">
-					<!-- <tui-input v-model="lotteryForm.codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input> -->
-					<tui-input
-						v-model="lotteryForm.name" label="用户名称" :label-size="26" padding="20rpx 0 20rpx 0"
-						type="text"
-						placeholder="请输入用户名称"
-					></tui-input>
-					<ATFUpload
-						title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)"
-						@upload="(e) => (lotteryForm.url = e) && $forceUpdate()" @delete="lotteryForm.url = '' || $forceUpdate()"
-					>
-					</ATFUpload>
-				</view>
-			</template>
-		</tui-dialog>
+		<view class="lottery-dialog">
+			<tui-dialog
+				style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+				:show="isShowLotteryDialog" title="团蜂抽奖系统" @click="handleLotteryDialog"
+			>
+				<template #content>
+					<view style="text-align: left;">
+						<!-- <tui-input v-model="lotteryForm.codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input> -->
+						<tui-input
+							v-model="lotteryForm.name" label="用户名称" :label-size="26" padding="20rpx 0 20rpx 0"
+							type="text"
+							placeholder="请输入用户名称"
+						></tui-input>
+						<ATFUpload
+							title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)" purpose-text="设置用户在抽奖模块里的头像，以便展示抽奖结果"
+							@upload="(e) => (lotteryForm.url = e) && $forceUpdate()" @delete="lotteryForm.url = '' || $forceUpdate()"
+						>
+						</ATFUpload>
+					</view>
+				</template>
+			</tui-dialog>
+		</view>
 
 		<!-- 链接跳转 -->
 		<tui-dialog
@@ -215,7 +217,7 @@ export default {
 
 <style lang="less" scoped>
 .user-page-container {
-	widows: 100vw;
+	position: relative;
 	min-height: 100vh;
 	background-color: #f6f6f5;
 	padding-bottom: 120upx;
@@ -244,6 +246,13 @@ export default {
 
 		/deep/ .order-pane {
 			margin-top: 20upx;
+		}
+	}
+
+	.lottery-dialog {
+		/deep/ .tui-dialog {
+			top: 30%;
+			transform: none;
 		}
 	}
 }

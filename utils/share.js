@@ -10,6 +10,7 @@ import wxShare from './wxshare'
  * @returns
  */
 export const importJsSDK = () => {
+	// #ifdef H5
   const id = 'WX_JS_SDK'
   const isExisted = document.querySelector(`#${id}`)
   if (isExisted) return
@@ -17,19 +18,25 @@ export const importJsSDK = () => {
   script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
   script.setAttribute('id', id)
   document.body.appendChild(script)
+	// #endif
 }
 
 /**
  * @typedef {Object} MessageOptions 消息配置
+ * @property {String} event 事件名称
  * @property {String} title 分享的标题
- * @property {String} path 分享的路径
+ * @property {String} path 分享的小程序页面的路径
  * @property {String} imageUrl 分享的图片
+ * @property {String} webPath 分享的本项目页面的路径
  * @property {Promise} promise 同onShareAppMessage的promise
  *
  * @description 配置小程序分享
  * @param {MessageOptions} data 分享的配置信息
  */
-export const setMiniprogramShareConfig = (data) => {
+export const setMiniprogramShareConfig = (data = { data: {} }) => {
+	data.data = Object.assign({
+		path: 'pages/index/index',
+	}, data.data)
   if (!wx) importJsSDK()
   // let path = data.path
   // path = `pages/index/index?url=${encodeURI(path.replace('?', '[params]').replace('&', '[and]').replace('#', '[井]'))}`
