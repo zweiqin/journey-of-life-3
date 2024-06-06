@@ -254,21 +254,31 @@ export default {
 				const shopId = this.code.split('~')[1]
 				const productId = this.code.split('~')[2]
 				const skuId = this.code.split('~')[3]
-				const salesId = this.code.split('~')[4]
-				bindDistributorSalesCustomerApi({ shopId, distributorId: salesId })
-					.then((res) => {
-						this.$showToast('绑定成功', 'success')
-						setTimeout(() => {
-							if (shareType === 1) {
-								uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` })
-							} else if (shareType === 2) {
-								uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
-							}
-						}, 2000)
-					})
-					.catch((e) => {
-						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
-					})
+				const salesId = Number(this.code.split('~')[4])
+				if (salesId) {
+					bindDistributorSalesCustomerApi({ shopId, distributorId: salesId })
+						.then((res) => {
+							this.$showToast('绑定成功', 'success')
+							setTimeout(() => {
+								if (shareType === 1) {
+									uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` })
+								} else if (shareType === 2) {
+									uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
+								}
+							}, 2000)
+						})
+						.catch((e) => {
+							setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
+						})
+				} else {
+					setTimeout(() => {
+						if (shareType === 1) {
+							uni.redirectTo({ url: `/another-tf/another-user/shop/shop-detail?shopId=${shopId}` })
+						} else if (shareType === 2) {
+							uni.redirectTo({ url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${productId}&skuId=${skuId}` })
+						}
+					}, 300)
+				}
 			} else if (this.type === 'verification') {
 				this.orderId = this.code.split('~')[0]
 				console.log(this.code.split('~')[1])

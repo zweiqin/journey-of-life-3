@@ -1,55 +1,63 @@
 <template>
-	<div>
-		<tui-bottom-popup :show="shareShow" @close="cancel(1)">
+	<view class="share-spell-container">
+		<tui-bottom-popup :show="shareShow" @close="(shareShow = false) || $emit('shareCancel')">
 			<view class="share">
 				<text class="h3">邀请好友</text>
 				<view class="share-list">
 					<view class="ul">
-						<!-- #ifdef APP-PLUS -->
-						<view class="li" @click="share('weixin')">
+						<!-- #ifdef APP -->
+						<view class="li" @click="handleShare('weixin')">
 							<tui-icon :size="92" color="#00c800" name="wechat" unit="rpx" margin="0"></tui-icon>
-							<label class="label">微信</label>
+							<view style="padding-top: 22rpx;font-size: 24rpx;color: #333333;">微信</view>
 						</view>
-						<view class="li" @click="share('weixinpyq')">
+						<view class="li" @click="handleShare('weixinpyq')">
 							<tui-icon :size="92" color="#00c800" name="moments" unit="rpx" margin="0"></tui-icon>
-							<label class="label">朋友圈</label>
+							<view style="padding-top: 22rpx;font-size: 24rpx;color: #333333;">朋友圈</view>
 						</view>
 						<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
 						<view class="li">
-							<button open-type="share" :data-obj="wxShareData" class="share-button" @share="onShareAppMessage">
-								<view style="padding: 16rpx;background-color: #ffffff;border-radius: 50%;line-height: 1;">
-									<tui-icon :size="60" color="#f5aa15" name="partake" unit="rpx" margin="0"></tui-icon>
-								</view>
-								<label class="label">好友</label>
+							<button
+								open-type="share" :data-obj="{ url }" style="padding: 0;line-height: 1;"
+								@share="onShareAppMessage"
+							>
+								<tui-icon :size="92" color="#f5aa15" name="partake" unit="rpx" margin="0"></tui-icon>
+								<view style="padding-top: 22rpx;font-size: 24rpx;color: #333333;">好友</view>
 							</button>
 						</view>
-						<view class="li" @click="share('weixinpyq')">
+						<view class="li" @click="handleShare('weixinpyq')">
 							<tui-icon :size="92" color="#00c800" name="moments" unit="rpx" margin="0"></tui-icon>
-							<label class="label">朋友圈</label>
+							<view style="padding-top: 22rpx;font-size: 24rpx;color: #333333;">朋友圈</view>
 						</view>
 						<!-- #endif -->
-						<view class="li" @click="share('lianjie')">
+						<view class="li" @click="handleShare('lianjie')">
 							<tui-icon :size="92" color="#00b5b8" name="applets" unit="rpx" margin="0"></tui-icon>
-							<label class="label">链接</label>
+							<view style="padding-top: 22rpx;font-size: 24rpx;color: #333333;">链接</view>
 						</view>
 					</view>
 				</view>
-				<view class="btn-close" @click="cancel(1)">取消</view>
-			</view>
-		</tui-bottom-popup>
-		<tui-bottom-popup :show="wapShow" @close="cancel(2)">
-			<view class="share-h5">
-				<view class="text">
-					点击浏览器下方
-					<view class="icon">
-						<tui-icon :size="28" color="#ffffff" name="more-fill"></tui-icon>
-					</view>
-					即可进行分享
+				<view class="operation-btn" style="text-align: center;">
+					<tui-button
+						type="black" width="220rpx" height="60rpx" margin="0"
+						plain link
+						@click="(shareShow = false) || $emit('shareCancel')"
+					>
+						取消
+					</tui-button>
 				</view>
 			</view>
 		</tui-bottom-popup>
-	</div>
+
+		<tui-bottom-popup :show="wapShow" @close="wapShow = false">
+			<view>
+				<view style="display: flex;align-items: center;padding: 20rpx;font-size: 30rpx;">
+					<text>点击浏览器下方</text>
+					<tui-icon :size="28" color="#333333" name="more-fill" margin="0 6rpx"></tui-icon>
+					<text>即可进行分享</text>
+				</view>
+			</view>
+		</tui-bottom-popup>
+	</view>
 </template>
 
 <script>
@@ -87,10 +95,7 @@ export default {
 	data() {
 		return {
 			shareShow: false,
-			wapShow: false,
-			wxShareData: {
-				url: ''
-			}
+			wapShow: false
 		}
 	},
 	computed: {
@@ -98,18 +103,7 @@ export default {
 			return A_TF_MAIN + '/#' + this.url
 		}
 	},
-	mounted() {
-		this.wxShareData = this.url
-	},
 	methods: {
-		cancel(key) {
-			if (key === 1) {
-				this.shareShow = false
-				this.$emit('shareCancel')
-			} else if (key === 2) {
-				this.wapShow = false
-			}
-		},
 		wxShare(type) {
 			// #ifdef APP
 			uni.share({
@@ -133,7 +127,7 @@ export default {
 			})
 			// #endif
 		},
-		share(key) {
+		handleShare(key) {
 			switch (key) {
 				case 'weixin':
 					this.wxShare('WXSceneSession')
@@ -187,79 +181,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.share {
-	background-color: #F8F8F8;
-	text-align: center;
+.share-spell-container {
+	box-sizing: border-box;
 
-	.h3 {
-		font-size: 30rpx;
-		color: #333333;
-		line-height: 42rpx;
-		padding: 30rpx 0;
-		border-bottom: 2px solid #F0F0F0;
-		display: block;
+	uni-button::after {
+		border: none;
 	}
 
-	.share-list {
-		padding: 40rpx 0 54rpx;
+	.operation-btn {
+		/deep/ .tui-btn {
+			display: inline-block;
+		}
+	}
 
-		.ul {
-			display: flex;
-			justify-content: space-around;
+	.share {
+		text-align: center;
 
-			.li {
-				&::after {
-					border: none;
-				}
+		.h3 {
+			font-size: 30rpx;
+			color: #333333;
+			padding: 30rpx 0;
+			border-bottom: 2px solid #F0F0F0;
+			display: block;
+		}
 
-				.icon {
-					display: block;
-					width: 92rpx;
-					height: 92rpx;
-				}
+		.share-list {
+			padding: 40rpx 0 54rpx;
+			background-color: #F8F8F8;
 
-				.label {
-					padding-top: 22rpx;
-					font-size: 24rpx;
-					line-height: 34rpx;
-					color: #333333;
-					display: block;
+			.ul {
+				display: flex;
+				justify-content: space-around;
+
+				.li {
+					&::after {
+						border: none;
+					}
+
+					.icon {
+						display: block;
+						width: 92rpx;
+						height: 92rpx;
+					}
 				}
 			}
 		}
 	}
-
-	.btn-close {
-		background-color: #fff;
-		padding: 30rpx 0;
-		font-size: 26rpx;
-		color: #333;
-	}
-}
-
-.share-h5 {
-	padding: 0 20rpx;
-	display: flex;
-	justify-content: center;
-
-	.text {
-		line-height: 100rpx;
-		font-size: 30px;
-
-		.icon {
-			background-color: #333;
-			border-radius: 50%;
-			display: inline-block;
-			width: 40rpx;
-			height: 40rpx;
-			text-align: center;
-			line-height: 40rpx;
-			margin: 0 10rpx;
-		}
-	}
-}
-
-.share-button::after {
-	border: none;
 }
 </style>

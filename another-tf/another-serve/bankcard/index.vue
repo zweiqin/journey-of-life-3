@@ -52,7 +52,7 @@ export default {
 	methods: {
 		addBankcardClick() {
 			uni.navigateTo({
-				url: '/another-tf/another-serve/bankcard/addBankcard?type=1'
+				url: '/another-tf/another-serve/bankcard/addBankcard'
 			})
 		},
 		getBankcardDataList(isLoadmore) {
@@ -73,7 +73,7 @@ export default {
 		},
 		itemTap(id) {
 			uni.navigateTo({
-				url: `/another-tf/another-serve/bankcard/addBankcard?id=${id}&type=2`
+				url: `/another-tf/another-serve/bankcard/addBankcard?id=${id}`
 			})
 		},
 		encodeCardNum(cardNum) {

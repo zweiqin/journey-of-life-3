@@ -160,63 +160,7 @@ export default {
 	data() {
 		return {
 			isEmpty: false,
-			productCategoryList: [
-				{
-					'depth': 1,
-					'categoryName': '23',
-					'categoryPath': '',
-					'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png',
-					'childs': [
-						{
-							'depth': 2,
-							'categoryName': '43',
-							'categoryPath': '',
-							'parentName': '23',
-							'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png',
-							'childs': [
-								{
-									'depth': 3,
-									'categoryName': '54',
-									'categoryPath': '',
-									'parentName': '43',
-									'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png'
-								},
-								{
-									'depth': 3,
-									'categoryName': '54',
-									'categoryPath': '',
-									'parentName': '43',
-									'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png'
-								}
-							]
-						}
-					]
-				},
-				{
-					'depth': 1,
-					'categoryName': '23',
-					'categoryPath': '',
-					'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png',
-					'childs': [
-						{
-							'depth': 2,
-							'categoryName': '43',
-							'categoryPath': '',
-							'parentName': '23',
-							'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png',
-							'childs': [
-								{
-									'depth': 3,
-									'categoryName': '54',
-									'categoryPath': '',
-									'parentName': '43',
-									'categoryImg': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/太过分结核杆菌1.png'
-								}
-							]
-						}
-					]
-				}
-			],
+			productCategoryList: [],
 			productCategoryTotal: 0,
 			queryInfo: {
 				page: 1,

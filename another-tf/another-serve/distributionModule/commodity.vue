@@ -106,7 +106,7 @@ export default {
 					url: `/another-tf/another-serve/distributionModule/shareProduct?shareType=2&shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}&shareImg=${res.data}&salesId=${this.distributorId}`
 				})
 			})
-				.catch((res) => {
+				.catch((e) => {
 					uni.hideLoading()
 				})
 		}

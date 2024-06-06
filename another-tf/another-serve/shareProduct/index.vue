@@ -1,55 +1,46 @@
 <template>
-	<view>
+	<view class="share-product-container">
 		<tui-popup show mode="fade" style="background-color: rgba(0,0,0,0.4);">
 			<view class="warp">
 				<view class="rect" @tap.stop>
 					<!-- 关闭按钮 -->
-					<view class="guanbiView">
-						<!-- #ifdef MP-WEIXIN -->
+					<view>
 						<tui-icon
 							name="close" :size="30" color="#ffffff" margin="0 0 0 -23upx"
-							style="position: absolute;top: -80rpx;left: 50%;" @click="showcos"
+							style="position: absolute;top: -80rpx;left: 50%;" @click="handleBack"
 						></tui-icon>
-						<!-- #endif -->
-						<!-- #ifdef H5 || APP-PLUS -->
-						<tui-icon
-							name="close" :size="30" color="#ffffff" margin="0 0 0 -23upx"
-							style="position: absolute;top: -80rpx;left: 50%;" @click="showcos"
-						></tui-icon>
-						<!-- #endif -->
 					</view>
 					<!-- 内容 -->
-					<view class="imgBox">
-						<view
-							v-if="shareType == 1" class="boxInner imgBoxShop"
-							:style="{ 'backgroundImage': 'url(' + erweima + ')' }"
-						></view>
-						<view v-else class="boxInner imgBoxProduct" :style="{ 'backgroundImage': 'url(' + erweima + ')' }">
-						</view>
+					<view>
+						<image
+							v-if="shareType === 1" mode="widthFix" style="min-width: 426upx;min-height: 814upx;"
+							:src="shareImg"
+						></image>
+						<image
+							v-else-if="shareType === 2" mode="widthFix" style="min-width: 426upx;min-height: 700upx;"
+							:src="shareImg"
+						></image>
+						<view v-else>未能获取分享类型</view>
 					</view>
-					<!-- 分享 -->
 				</view>
 			</view>
-			<view class="fenx" :style="{ 'height': (isIphone === true ? 140 : 130) + 'rpx' }">
-				<view class="shareBox width100" hover-class="btn-click" @click="WXfenx">
-					<view style="flex: 1;text-align: center;display: flex;align-items: center;">
-						<view style="margin-left: 120rpx;">
-							<tui-icon name="pic-fill" :size="32" color="#7dc932"></tui-icon>
-						</view>
-						<view style="margin-left: 10rpx;font-size: 28rpx;color: #333333">保存到本地</view>
-					</view>
+
+			<view
+				style="position: fixed;bottom: 101rpx;z-index: 1;display: flex;align-items: center;width: 100%;background-color: #F7F7F7;"
+				:style="{ 'height': (isIphone === true ? 140 : 130) + 'rpx' }"
+			>
+				<view style="flex: 1;display: flex;align-items: center;justify-content: center;" @click="handleSaveImg">
+					<tui-icon name="pic-fill" :size="32" color="#7dc932"></tui-icon>
+					<view style="margin-left: 10rpx;font-size: 28rpx;color: #333333">保存到本地</view>
 				</view>
-				<view class="linkBtnBox" hover-class="btn-click" @click="FZlianj">
-					<view style="flex: 1;text-align: center;display: flex;align-items: center;">
-						<view
-							class="linkBox"
-							style="width: fit-content;height: fit-content;padding: 14upx;background-color: #f3b44b;border-radius: 50%;line-height: 1;"
-						>
-							<tui-icon name="link" :size="18" color="#ffffff"></tui-icon>
-						</view>
-						<view style="margin-left: 10rpx;">
-							复制链接
-						</view>
+				<view style="flex: 1;display: flex;align-items: center;justify-content: center;" @click="handleCopyLink">
+					<view
+						style="width: fit-content;height: fit-content;padding: 14upx;background-color: #f3b44b;border-radius: 50%;line-height: 1;"
+					>
+						<tui-icon name="link" :size="18" color="#ffffff"></tui-icon>
+					</view>
+					<view style="margin-left: 10rpx;">
+						复制链接
 					</view>
 				</view>
 			</view>
@@ -59,17 +50,19 @@
 
 <script>
 import { A_TF_MAIN } from '../../../config'
+import { saveImg } from '../../../utils'
+
 export default {
 	name: 'ShareProduct',
 	data() {
 		return {
-			shareType: 1,
+			shareType: '',
 			salesId: null,
 			shopId: null,
 			productId: null,
 			skuId: 0,
 			isIphone: false,
-			erweima: ''
+			shareImg: ''
 		}
 	},
 	onLoad(options) {
@@ -89,115 +82,111 @@ export default {
 		if (options.shopId) {
 			this.shopId = options.shopId
 		}
-		this.erweima = options.shareImg
+		this.shareImg = options.shareImg
 	},
 	methods: {
-		showcos() {
+		handleBack() {
 			uni.navigateBack({
 				delta: 1
 			})
 		},
 
 		// 保存图片到本地
-		WXfenx() {
-			// #ifdef APP || MP-WEIXIN || MP-ALIPAY
-			// uni.showLoading({
-			// 	title: '图片保存中...'
-			// })
-			// #endif
-
-			// #ifdef APP
-			uni.downloadFile({
-				url: this.erweima,
-				success: (res) => {
-					if (res.statusCode === 200) {
+		handleSaveImg() {
+			if (this.$store.state.app.terminal === 6) {
+				uni.showToast({
+					title: '请长按图片保存',
+					icon: 'none'
+				})
+			} else if (this.$store.state.app.terminal === 3) {
+				uni.showToast({
+					title: '请长按图片保存',
+					icon: 'none'
+				})
+			} else {
+				// #ifdef H5
+				saveImg(this.shareImg)
+				// #endif
+				// #ifdef APP
+				uni.downloadFile({
+					url: this.shareImg,
+					success: (res) => {
+						if (res.statusCode === 200) {
+							uni.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success() {
+									uni.hideLoading()
+									uni.showToast({
+										title: '已保存图片'
+									})
+								},
+								fail() {
+									uni.hideLoading()
+									uni.showToast({
+										title: '保存失败',
+										icon: 'none'
+									})
+								}
+							})
+						}
+					}
+				})
+				// #endif
+				// #ifdef MP-WEIXIN || MP-ALIPAY
+				uni.getImageInfo({
+					src: this.shareImg,
+					success(image) {
 						uni.saveImageToPhotosAlbum({
-							filePath: res.tempFilePath,
+							filePath: image.path,
 							success() {
 								uni.hideLoading()
 								uni.showToast({
-									title: '保存成功'
+									title: '已保存图片'
 								})
 							},
 							fail() {
 								uni.hideLoading()
-								uni.showToast({
-									title: '保存失败',
-									icon: 'none'
+								uni.showModal({
+									title: '图片保存失败',
+									content: '请确认是否已开启授权',
+									confirmText: '开启授权',
+									success(res) {
+										if (res
+											.confirm
+										) {
+											uni.openSetting({
+												success(settingdata) {
+													if (settingdata.authSetting['scope.writePhotosAlbum']) {
+														uni.showToast({
+															title: '授权成功，请重试哦~',
+															icon: 'none'
+														})
+													} else {
+														uni.showToast({
+															title: '请确定已打开保存权限',
+															icon: 'none'
+														})
+													}
+												}
+											})
+										}
+									}
 								})
 							}
 						})
-					}
-				}
-			})
+					},
+					fail(e) { }
+				})
 			// #endif
-
-			// #ifdef MP-WEIXIN || MP-ALIPAY
-			uni.getImageInfo({
-				src: this.erweima,
-				success(image) {
-					uni.saveImageToPhotosAlbum({
-						filePath: image.path,
-						success() {
-							uni.hideLoading()
-							uni.showToast({
-								title: '图片保存成功'
-							})
-						},
-						fail() {
-							uni.hideLoading()
-							uni.showModal({
-								title: '图片保存失败',
-								content: '请确认是否已开启授权',
-								confirmText: '开启授权',
-								success(res) {
-									if (res
-										.confirm
-									) {
-										uni.openSetting({
-											success(settingdata) {
-												if (settingdata
-													.authSetting[
-														'scope.writePhotosAlbum'
-													]
-												) {
-													uni.showToast({
-														title: '授权成功，请重试哦~',
-														icon: 'none'
-													})
-												} else {
-													uni.showToast({
-														title: '请确定已打开保存权限',
-														icon: 'none'
-													})
-												}
-											}
-										})
-									}
-								}
-							})
-						}
-					})
-				},
-				fail(err) { }
-			})
-			// #endif
-			// #ifdef H5
-			var oA = document.createElement('a')
-			oA.download = '' // 设置下载的文件名，默认是’下载’
-			oA.href = this.erweima
-			document.body.appendChild(oA)
-			oA.click()
-			oA.remove() // 下载之后把创建的元素删除
-			// #endif
+			}
 		},
 		// 复制链接
-		FZlianj() {
+		handleCopyLink() {
 			let link
 			if (this.salesId) {
 				link = `${A_TF_MAIN}/#/pages/jump/jump?userId=&type=bindingSalesCustomer&code=${this.shareType}~${this.shopId}~${this.productId}~${this.skuId}~${this.salesId}`
 			} else if (this.shareType === 1) {
-				link = `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?storeId=${this.shopId}`
+				link = `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.shopId}`
 			} else if (this.shareType === 2) {
 				link = `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.shopId}&productId=${this.productId}&skuId=${this.skuId}`
 			}
@@ -232,78 +221,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.warp {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
+.share-product-container {
+	box-sizing: border-box;
 
-}
+	.warp {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 
-.rect {
-	background-color: #fff;
-	position: relative;
-	margin-top: -20rpx;
-
-	.imgBox {
-
-		.boxInner {
-			display: inline-block;
-			background-size: contain !important;
-			background-position: center top !important;
-			background-repeat: no-repeat !important;
-		}
-
-		.imgBoxShop {
-			min-height: 814upx;
-			min-width: 426upx;
-		}
-
-		.imgBoxProduct {
-			min-height: 700upx;
-			min-width: 426upx;
-		}
-	}
-}
-
-.fenx {
-	position: fixed;
-	bottom: 101rpx;
-	z-index: 10001;
-	background-color: #F7F7F7;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	color: #343434;
-
-	view {
-		line-height: 98rpx;
 	}
 
-	image {
-		width: 50rpx;
-		height: 50rpx !important;
-		display: inline-block;
-		margin-top: 25rpx;
+	.rect {
+		background-color: #fff;
+		position: relative;
+		margin-top: -20rpx;
 	}
-}
-
-.shareBox {
-	width: 100%;
-}
-
-.linkBtnBox {
-	flex: 1;
-	width: 50%;
-	text-align: center;
-	display: flex;
-
-	.linkBox {
-		margin-left: 70rpx;
-	}
-}
-
-.width100 {
-	width: 50%;
 }
 </style>

@@ -125,11 +125,7 @@
 		>
 		</tui-actionsheet>
 
-		<ShareSpell
-			ref="shareSpell" :url="shareObj.url" :img="shareObj.image" :title="shareObj.title"
-			@shareCancel="shareCancel"
-		>
-		</ShareSpell>
+		<ShareSpell ref="refShareSpell" :url="shareObj.url" :img="shareObj.image" :title="shareObj.title"></ShareSpell>
 
 		<!-- 优惠券选择器 -->
 		<CouponPopup
@@ -251,17 +247,14 @@ export default {
 					uni.hideLoading()
 				})
 		},
-		shareCancel() {
-			this.$refs.shareSpell.shareShow = false
-		},
 		handleShareSelect(e) {
 			if (e.index === 0) {
 				this.sharePoster()
 			} else {
-				this.shareObj.url = '/another-tf/another-serve/goodsDetails/index?shopId=' + this.goodsDetail.shopId + '&productId=' + this.goodsDetail.productId + '&skuId=' + this.skuSelect.skuId
+				this.shareObj.url = `/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.skuSelect.skuId}`
 				this.shareObj.image = this.goodsDetail.images[0]
-				this.shareObj.title = `【shop】好友分享了一个好物给您！${this.goodsDetail.productName} ￥${this.goodsDetail.price} `
-				this.$refs.shareSpell.shareShow = true
+				this.shareObj.title = `【shop】好友分享了一个好物给您！${this.goodsDetail.productName}-￥${this.goodsDetail.price}`
+				this.$refs.refShareSpell.shareShow = true
 			}
 		}
 	}
@@ -276,6 +269,14 @@ export default {
 		.tui-colon-pad {
 			padding: 0 6rpx !important;
 		}
+	}
+
+	/deep/ .tui-actionsheet {
+		z-index: 996;
+	}
+
+	/deep/ .tui-actionsheet-mask {
+		z-index: 995;
 	}
 
 	.goodsImgswiper-box {
