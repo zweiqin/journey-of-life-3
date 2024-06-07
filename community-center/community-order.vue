@@ -28,7 +28,7 @@
     </view> -->
 
     <!-- 计价类型 -->
-    <view class="serve-info section" v-if="isShowPriceMode === 1">
+    <!-- <view class="serve-info section" v-if="isShowPriceMode === 1">
       <view class="title-wrapper">
         <view class="section-title">计价类型</view>
         <view class="radio-group">
@@ -38,7 +38,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
 
     <!-- 服务项目 -->
     <view class="serve-info section">
