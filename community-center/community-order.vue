@@ -205,7 +205,7 @@
 <script>
 import { getUserId } from 'utils'
 import { debounce } from 'lodash-es'
-import { getAddressListApi } from '../api/address'
+import { getAddressListApi, getAreaIdByAddressApi } from '../api/address'
 import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
 import { APPLY_NAME, IMG_UPLOAD_URL } from '../config'
 import ChooseTime from './componts/choose-time.vue'
@@ -257,7 +257,7 @@ export default {
     this.isByItNow = options.priceType === 'true' ? 1 : 2
     this.isShowPriceMode = this.isByItNow
     this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1
-    this.getCommunityList()
+    // this.getCommunityList()
   },
 
   onShow() {
@@ -267,7 +267,6 @@ export default {
   methods: {
     // 选择小区
     handleChooseCommunity(data) {
-      console.log('nima', data)
       this.chooseCommunityDetail = data
     },
     // 返回
@@ -278,7 +277,12 @@ export default {
     async getAddressList() {
       const choosedAddress = uni.getStorageSync(T_SELECT_ADDRESS)
       if (choosedAddress) {
+        const originSelectAddress = this.defualtAddress ? JSON.parse(JSON.stringify(this.defualtAddress)) : ''
         this.defualtAddress = choosedAddress
+        if (!originSelectAddress || (originSelectAddress && originSelectAddress.detailedAddress !== choosedAddress.detailedAddress)) {
+          this.getCommunityList()
+        }
+
         // this.checkAreaExistCommunitStore();
         this.handleGetOrderPrice()
         return
@@ -300,6 +304,7 @@ export default {
         } else {
           this.defualtAddress = data[0]
         }
+        this.getCommunityList()
         this.handleGetOrderPrice()
       }
 
@@ -545,12 +550,22 @@ export default {
     // 获取小区列表
     async getCommunityList() {
       try {
+        this.chooseCommunityDetail = null
+        const { detailedAddress } = this.defualtAddress || {}
+        if (!detailedAddress) return
+        const getAreaIdRes = await getAreaIdByAddressApi({
+          detailAddress: detailedAddress
+        })
+        if (getAreaIdRes.statusCode !== 20000) return
+
         const res = await getCommunityListApi({
           pageNo: 1,
-          pageSize: 10000
+          pageSize: 10000,
+          counCode: getAreaIdRes.data
         })
 
         if (res.statusCode === 20000) {
+          uni.showLoading({ title: '加载中...' })
           this.communityList = res.data.records
           const codeTownsStr = this.communityList.map((item) => item.areaId).join(',')
           const addressDetailList = await getAreaDetailInfoApi({
@@ -574,14 +589,15 @@ export default {
             type: 'fail'
           })
         }
-
-        console.log(res)
       } catch (error) {
-        this.$ttoast({
+        console.log(error);
+        this.ttoast({
           type: 'fail',
           title: '小区列表获取失败',
           content: error
         })
+      } finally {
+        uni.hideLoading()
       }
     }
   },
