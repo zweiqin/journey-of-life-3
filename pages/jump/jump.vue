@@ -78,6 +78,17 @@
 				</view>
 			</tui-modal>
 		</view>
+		<view v-else-if="viewType === 'chooseIdentity'"  style="min-height: 100vh;background-color: #f0f0f0; padding: 30rpx; box-sizing: border-box;" class="bind-b">
+    <view class="wrapper">
+			<view class="choose-title"> <tui-icon :size="18" margin="0 10rpx 0 0" name="people-fill" color="rgb(233, 93, 32)"></tui-icon> 请选择您的身份</view>
+			<view class="list">
+				<view :class="{active: currentIdentity === 1}" @click="currentIdentity = 1" class="item">社区门店 <tui-icon :size="18" v-if="currentIdentity === 1" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+				<view :class="{active: currentIdentity === 2}" @click="currentIdentity = 2" class="item">工厂 <tui-icon :size="18" v-if="currentIdentity === 2" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+				<view :class="{active: currentIdentity === 3}" @click="currentIdentity = 3" class="item">本地商圈 <tui-icon :size="18" v-if="currentIdentity === 3" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+			</view>
+			<button @click="handleBindB" class="uni-btn bind-btn" :loading="chooseIdentityLoading">确认</button>
+		</view>
+		</view>
 		<view v-else style="padding: 46rpx;">
 			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
 		</view>
@@ -87,7 +98,7 @@
 <script>
 import { T_STORAGE_KEY, T_NEW_BIND_TYPE, T_NEW_BIND_CODE, T_NEW_BIND_ID, SF_INVITE_CODE } from '../../constant'
 import { ANOTHER_TF_SETTLE } from '../../config'
-import { checkBindApi, bindLastUserApi, bindFranchiseesApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi } from '../../api/user'
+import { checkBindApi, bindLastUserApi, bindFranchiseesApi, bindServiceUserBindingApi, bindPartnerInviteApi, bindPartnerGroupApi, bindchangeActivityUserApi, bindBFranchiseesApi } from '../../api/user'
 import {
 	bindDistributorSalesCustomerApi,
 	getOrderDetailApi,
@@ -143,7 +154,9 @@ export default {
 			orderId: '',
 			orderInfo: {},
 			isOrderVerification: false,
-			verificationTicker: null
+			verificationTicker: null,
+			currentIdentity: 1,
+			chooseIdentityLoading: false
 		}
 	},
 
@@ -428,12 +441,37 @@ export default {
 						}
 					})
 					.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
+			}else if(this.type === 'bBindFranchisees'){
+				this.viewType = 'chooseIdentity';
 			}
 		},
 		handleVerification() {
 			updateSetHxCodeApi({ orderId: this.orderId, noticeId: 0 })
 				.then((res) => { this.$showToast('核销成功', 'success') })
 				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+		},
+		// 加盟商绑定门店
+	  async	handleBindB(){
+			try {
+				this.chooseIdentityLoading = true
+			  const res = await bindBFranchiseesApi({
+					franchiseesSn: this.code,
+					phone: this.$store.getters.userInfo.phone,
+					shopType1Enum: this.currentIdentity
+				})
+
+				if(res.statusCode === 20000){
+				  this.$showToast('绑定成功', 'success')
+				}else {
+				  this.$showToast('绑定失败' + res.statusMsg, 'none')
+				}
+			} catch (e) {
+				this.$showToast('绑定失败' + e.message, 'none')
+			} finally{
+				this.chooseIdentityLoading = false
+				this.viewType = ''
+				setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000);
+			}
 		}
 	}
 }
@@ -451,6 +489,56 @@ export default {
 
 			/deep/ .tui-btn-warning {
 				background-color: #ef530e !important;
+			}
+		}
+	}
+
+	.bind-b{
+		.wrapper{
+			box-sizing: border-box;
+			padding: 30rpx;
+			border-radius: 10rpx;
+
+			.choose-title{
+				color: rgb(233, 93, 32); 
+				font-weight: 500;
+				margin-bottom: 36rpx;
+			}
+
+			.list{
+				.item{
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 20rpx 30rpx;
+			    background-color: #fff;
+			    border-radius: 20rpx;
+			    margin-top: 40rpx;
+			    font-size: 28rpx;
+					color: #3d3d3d;
+					transition: all 350ms;
+    
+			    &.active{
+			    	color: #000;
+						font-weight: 500;
+						box-shadow: 0px 6px 12px  rgba(0, 0, 0, 0.16);
+			    }
+				}
+			}
+
+			.bind-btn{
+        margin:  140rpx auto 0;
+				background-color: #ef530e;
+				height: 90rpx;
+				color: #fff;
+				font-size: 28rpx;
+				line-height: 90rpx;
+				letter-spacing: 0.2em;
+				transition: all 350ms;
+
+				&:active{
+					opacity: 0.8;
+				}
 			}
 		}
 	}

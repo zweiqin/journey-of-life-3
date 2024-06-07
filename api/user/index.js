@@ -363,6 +363,9 @@ export const bindPartnerInviteApi = (data) => endRequest({
 // 用户绑定加盟商franchiseesSn phone
 export const bindFranchiseesApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/bindShop', data, 'GET')
 
+// 门店绑定加盟商franchiseesSn phone
+export const bindBFranchiseesApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/storesBindFranchiseesSn', data, 'GET')
+
 // 团蜂用户提现余额
 export const withdrawalBalanceApi = (data) => shopRequest('/dtsWithdrawalLogs/withdrawalBalance', data, 'get')
 

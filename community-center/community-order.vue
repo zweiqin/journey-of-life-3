@@ -28,7 +28,7 @@
     </view> -->
 
     <!-- 计价类型 -->
-    <view class="serve-info section" v-if="isShowPriceMode === 1">
+    <!-- <view class="serve-info section" v-if="isShowPriceMode === 1">
       <view class="title-wrapper">
         <view class="section-title">计价类型</view>
         <view class="radio-group">
@@ -38,7 +38,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
 
     <!-- 服务项目 -->
     <view class="serve-info section">
@@ -83,6 +83,17 @@
       </view>
 
       <view class="choose-time">{{ orderForm.datetimerange }}</view>
+    </view>
+
+    <view v-if="communityList.length" class="serve-time section animate" @click="$refs.chooseCommunityRef && $refs.chooseCommunityRef.open(communityList)">
+      <view class="header-wrapper">
+        <view class="section-title" style="font-size: 28rpx">所属小区</view>
+        <view class="address-icon" style="display: flex; justify-content: center; align-items: center; border: 2rpx solid #605d52">
+          <tui-icon name="home-fill" :size="42" unit="rpx" color="#605d52" margin="0"></tui-icon>
+        </view>
+      </view>
+
+      <view class="choose-time" v-if="chooseCommunityDetail">{{ chooseCommunityDetail.communityName }}</view>
     </view>
 
     <!-- 维修商品 -->
@@ -164,29 +175,30 @@
     <!-- 确认按钮 -->
     <view class="btn-wrapper">
       <view class="pay-price" v-if="isByItNow === 1 && calcServePrice">￥{{ calcServePrice.oughtPrice }}</view>
-      <button class="uni-btn" @click="handleConfirmOrder">
+      <button :loading="isSubmitOrder" class="uni-btn" @click="handleConfirmOrder">
         {{ isOffer ? '获取价格中...' : '确认' }}
       </button>
     </view>
 
-		<tui-popup
-			:duration="500"
-			:mode-class="['fade-in']"
-			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
-			:show="showAuthPopupVisible"
-			@click="showAuthPopupVisible = false"
-		>
-			<view style="display: flex; align-items: center; padding: 26upx; background-color: #ffffff; border-radius: 20upx">
-				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
-				<view style="flex: 1">
-					<view>相机权限和相册权限使用说明：</view>
-					<view style="margin-top: 12rpx">"{{ APPLY_NAME }}"想访问您的相机和相册，将根据你的上传的图片，用于上传需要清洗、维修、安装相关的物品图片等场景</view>
-				</view>
-			</view>
-		</tui-popup>
+    <tui-popup
+      :duration="500"
+      :mode-class="['fade-in']"
+      :styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
+      :show="showAuthPopupVisible"
+      @click="showAuthPopupVisible = false"
+    >
+      <view style="display: flex; align-items: center; padding: 26upx; background-color: #ffffff; border-radius: 20upx">
+        <tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
+        <view style="flex: 1">
+          <view>相机权限和相册权限使用说明：</view>
+          <view style="margin-top: 12rpx">"{{ APPLY_NAME }}"想访问您的相机和相册，将根据你的上传的图片，用于上传需要清洗、维修、安装相关的物品图片等场景</view>
+        </view>
+      </view>
+    </tui-popup>
 
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
     <tui-toast ref="toast"></tui-toast>
+    <ChooseCommunity @confirm="handleChooseCommunity" ref="chooseCommunityRef"></ChooseCommunity>
   </view>
 </template>
 
@@ -197,13 +209,14 @@ import { getAddressListApi } from '../api/address'
 import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
 import { APPLY_NAME, IMG_UPLOAD_URL } from '../config'
 import ChooseTime from './componts/choose-time.vue'
-import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi } from '../api/community-center'
+import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi, getCommunityListApi, getAreaDetailInfoApi } from '../api/community-center'
+import ChooseCommunity from './components/ChooseCommunity.vue'
 
 export default {
-  components: { ChooseTime },
+  components: { ChooseTime, ChooseCommunity },
   data() {
     return {
-			APPLY_NAME,
+      APPLY_NAME,
       showAuthPopupVisible: false,
       // 收货地址
       defualtAddress: null,
@@ -233,7 +246,9 @@ export default {
           value: 2
         }
       ],
-      isShowPriceMode: 1
+      isShowPriceMode: 1,
+      communityList: [], // 小区列表
+      chooseCommunityDetail: null
     }
   },
 
@@ -242,6 +257,7 @@ export default {
     this.isByItNow = options.priceType === 'true' ? 1 : 2
     this.isShowPriceMode = this.isByItNow
     this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1
+    this.getCommunityList()
   },
 
   onShow() {
@@ -249,6 +265,11 @@ export default {
   },
 
   methods: {
+    // 选择小区
+    handleChooseCommunity(data) {
+      console.log('nima', data)
+      this.chooseCommunityDetail = data
+    },
     // 返回
     handleBack() {
       uni.navigateBack()
@@ -474,10 +495,11 @@ export default {
           deliveryType: 4,
           price: (this.calcServePrice && this.calcServePrice.sumPrice) || '',
           actualPrice: (this.calcServePrice && this.calcServePrice.oughtPrice) || '',
-          serverTypeId: this.currentServeInfo.id,
-          serverId: this.currentServeInfo.detailId,
+          serverTypeId: this.currentServeInfo.id !== 'undefined' ? this.currentServeInfo.id : undefined,
+          serverId: this.currentServeInfo.detailId !== 'undefined' ? this.currentServeInfo.detailId : undefined,
           bizType: 1,
-          individualAccount: this.$store.state.auth && this.$store.state.auth.userInfo ? this.$store.state.auth.userInfo.phone : ''
+          individualAccount: this.$store.state.auth && this.$store.state.auth.userInfo ? this.$store.state.auth.userInfo.phone : '',
+          communityId: this.chooseCommunityDetail ? this.chooseCommunityDetail.id : undefined
         }
 
         // 判断是否是师傅现场下单
@@ -518,6 +540,49 @@ export default {
       this.isByItNow = itemInfo.value
       this.handleGetOrderPrice()
       this.$forceUpdate()
+    },
+
+    // 获取小区列表
+    async getCommunityList() {
+      try {
+        const res = await getCommunityListApi({
+          pageNo: 1,
+          pageSize: 10000
+        })
+
+        if (res.statusCode === 20000) {
+          this.communityList = res.data.records
+          const codeTownsStr = this.communityList.map((item) => item.areaId).join(',')
+          const addressDetailList = await getAreaDetailInfoApi({
+            codeTownsStr: codeTownsStr,
+            pageNo: 1,
+            pageSize: 1000
+          })
+
+          if (addressDetailList.statusCode === 20000 && addressDetailList.data.records && Array.isArray(addressDetailList.data.records)) {
+            addressDetailList.data.records.forEach((item) => {
+              const { codeTown, nameCity, nameCoun, nameProv, nameTown } = item
+              const curretData = this.communityList.find((data) => data.areaId == codeTown)
+              if (curretData) {
+                curretData.areaAddress = nameProv + nameCity + nameCoun + nameTown
+              }
+            })
+          }
+        } else {
+          this.ttoast({
+            title: '小区列表获取失败',
+            type: 'fail'
+          })
+        }
+
+        console.log(res)
+      } catch (error) {
+        this.$ttoast({
+          type: 'fail',
+          title: '小区列表获取失败',
+          content: error
+        })
+      }
     }
   },
 
