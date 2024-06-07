@@ -270,7 +270,7 @@
 <script>
 import { A_TF_MAIN } from '../../../config'
 import { getFactoryDetailApi, getShopClassifyApi, getShopProductsApi, updateCollectToCollectApi, updateCollectCancelApi } from '../../../api/anotherTFInterface'
-import { navigationAddress } from '../../../utils'
+import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 import BrandGoods from './components/BrandGoods.vue'
 
 export default {
@@ -355,6 +355,16 @@ export default {
 				})
 				console.log(data)
 				this.brandDetail = data || {}
+				if (this.$store.state.app.terminal === 6) {
+					setMiniprogramShareConfig({
+						data: {
+							event: 'sharingPageTurn',
+							webPath: `/another-tf/another-user/brand-factory/detail?shopId=${this.brandDetail.shopId}`,
+							title: `团蜂品牌工厂--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+						}
+					})
+				}
 				uni.hideLoading()
 			} catch (error) {
 				console.log(error)

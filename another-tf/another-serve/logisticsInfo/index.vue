@@ -44,10 +44,8 @@ export default {
 				express,
 				deliverFormid
 			}).then((res) => {
-				const traces = res.data
-				const len = traces.length
-				for (let i = 0; i < len; i++) {
-					const item = traces[i]
+				for (let i = 0; i < res.data.length; i++) {
+					const item = res.data[i]
 					this.steps.push({
 						title: item.reason,
 						desc: item.time

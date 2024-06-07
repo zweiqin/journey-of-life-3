@@ -5,7 +5,7 @@
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;"></BeeIcon>
 				<view
 					class="search-btn" style="flex: 1;display: flex;align-items: center;"
-					@click.stop="go(`/another-tf/another-serve/search/index`)"
+					@click.stop="() => {}"
 				>
 					<text style="font-weight: bold;font-size: 36rpx;">品牌搜索</text>
 					<tui-input
@@ -15,7 +15,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="go(`/another-tf/another-serve/search/index`)"
+								@click="$data._query.search && ($data._query.page = 1) && _loadData()"
 							>
 								搜索
 							</tui-button>

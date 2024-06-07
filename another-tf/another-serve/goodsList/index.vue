@@ -126,17 +126,15 @@ export default {
 				type: 0, // 价格排序条件
 				volume: 0, // 销量排序条件
 				search: '',
-				shopType: '', // 1品牌厂家2商圈
-				classifyId: ''
+				shopType: '', // 1品牌厂家（团蜂自营？）2商圈 // 用于关键字搜索
+				classifyId: '' // 用于分类搜索
 			}
 		}
 	},
 	onLoad(option) {
-		if (option.search) {
-			this.queryInfo.search = option.search
-		}
-		if (option.shopType) {
-			this.queryInfo.shopType = Number(option.shopType)
+		if (option.search || option.shopType) {
+			this.queryInfo.search = option.search || ''
+			this.queryInfo.shopType = Number(option.shopType) || 1
 		}
 		if (option.classifyId) {
 			this.queryInfo.classifyId = option.classifyId

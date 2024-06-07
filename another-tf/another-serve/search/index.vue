@@ -78,6 +78,7 @@ export default {
 	data() {
 		return {
 			searchType: 'goods', // goods或shop
+			shopType: '',
 			search: '',
 			historyList: [],
 			hotSearchList: [],
@@ -86,6 +87,7 @@ export default {
 	},
 	onLoad(option) {
 		this.searchType = option.searchType || 'goods'
+		if (this.searchType === 'goods') this.shopType = Number(option.shopType) || 1
 	},
 	onShow() {
 		this.findSearchHistory()
@@ -94,11 +96,11 @@ export default {
 	methods: {
 		getList() {
 			if (!this.search) return this.$showToast('请输入要搜索内容！')
-			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${this.search}&shopType=1`)
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${this.search}&shopType=${this.shopType}`)
 			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${this.search}`)
 		},
 		historySearch(search) {
-			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${search}&shopType=1`)
+			if (this.searchType === 'goods') this.go(`/another-tf/another-serve/goodsList/index?search=${search}&shopType=${this.shopType}`)
 			else if (this.searchType === 'shop') this.go(`/another-tf/another-user/shop-commodity/index?search=${search}`)
 		},
 		// 热门搜索

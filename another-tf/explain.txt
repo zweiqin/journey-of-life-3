@@ -1,0 +1,17 @@
+
+商家或商品的搜索的相关页面：
+搜索页：/another-tf/another-serve/search/index
+商家商品列表页（商家的分组商品列表）：/another-tf/another-user/shop-goods/index
+商品列表页（可根据分类或关键字，查询团蜂自营或商圈里的商品）：/another-tf/another-serve/goodsList/index
+分类商品页（根据分类查商品及子级分类等）：/another-tf/another-user/claasify-products/index
+商家商品页（根据关键字，查询商圈商家及其商品）：/another-tf/another-user/shop-commodity/index
+
+
+
+
+
+
+
+
+
+

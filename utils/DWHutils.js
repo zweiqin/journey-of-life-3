@@ -183,20 +183,20 @@ export const getStorageKeyToken = (params = {}) => {
  */
 
 export const isH5InWebview = () => {
+	// #ifdef H5
 	const ua = navigator.userAgent.toLowerCase()
-	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
+	if (typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))) return true
+	// #endif
+	return false
 }
 
 // 判断当前是否处于微信环境
 export const isInWx = () => {
 	// #ifdef H5
 	var ua = navigator.userAgent.toLowerCase()
-	return ua.match(/MicroMessenger/i) == 'micromessenger'
+	if (ua.match(/MicroMessenger/i) == 'micromessenger') return true
 	// #endif
-
-	// #ifdef APP
 	return false
-	// #endif
 }
 
 /**

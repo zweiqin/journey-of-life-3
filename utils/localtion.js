@@ -150,20 +150,20 @@ export function MapLoader(onSuccess, onFail) {
 
 // 判断用户是否给了定位权限
 export const isUserEmpowerLocationPermission = () => new Promise(async (resolve, reject) => {
+	// #ifdef H5
 	if (!navigator.permissions && !navigator.permissions.query) {
-		reject(false)
+		return reject(false)
 	}
 	const permissionStatus = await navigator.permissions.query({
 		name: 'geolocation'
 	})
-
 	const state = permissionStatus.state
 	if (state === 'granted') {
-		resolve(true)
+		return resolve(true)
 	} else if (state === 'denied') {
-		reject(false)
+		return reject(false)
 	}
-
+	// #endif
 	setTimeout(() => {
 		reject('prompt')
 	}, 3000)

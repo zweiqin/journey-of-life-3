@@ -39,7 +39,7 @@
 				</view>
 				<view class="operation-btn">
 					<tui-button type="brown" width="520rpx" height="88rpx" margin="10rpx auto 0" @click="applyWithdraw">
-						提现<text v-if="withdrawalMoney" style="padding: 0 0 0 8rpx;">{{ withdrawalMoney }}元</text>
+						提现<text v-if="withdrawalMoney" style="padding: 0 0 0 8rpx;">{{ Number.parseFloat(Number(withdrawalMoney || 0)).toFixed(2) }}元</text>
 					</tui-button>
 				</view>
 			</view>
@@ -120,24 +120,29 @@ export default {
 	onLoad(options) {
 		this.withdrawalType = options.type || '1'
 		if (this.withdrawalType) (this.withdrawalTypeList.find((i) => i.value === this.withdrawalType) || {}).checked = true
-		getAllBankcardListApi({
-			page: 1,
-			pageSize: 9999
-		}).then((res) => {
-			this.bankcardselectList = res.data.list.map((item) => ({
-				value: item.bankCard,
-				text: `${item.bankName}（${item.bankCard.slice(-4)}）`,
-				bankName: item.bankName
-			}))
-		})
 		this.getWithdrawalData()
+	},
+	onShow() {
+		if (!this.bankcardselectList.length) {
+			getAllBankcardListApi({
+				page: 1,
+				pageSize: 9999
+			}).then((res) => {
+				this.bankcardselectList = res.data.list.map((item) => ({
+					value: item.bankCard,
+					text: `${item.bankName}（${item.bankCard.slice(-4)}）`,
+					bankName: item.bankName
+				}))
+			})
+		}
 	},
 
 	watch: {
 		withdrawalMoney(value) {
-			if ((value + '').includes('.') && (value + '').split('.')[1].length > 2) {
-				this.errMsg = '提现金额错误'
-			} else if (value === '') {
+			// if ((value + '').includes('.') && (value + '').split('.')[1].length > 2) {
+			// 	this.errMsg = '提现金额错误'
+			// } else
+			if (value === '') {
 				this.errMsg = '提现金额不能为空'
 			} else if (value <= 1) {
 				this.errMsg = '提现金额要大于1元'

@@ -13,23 +13,29 @@
 				<input v-model="username" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="请填写真实姓名" />
 			</view>
 			<view class="iphoneNum-box bor-line-F7F7F7">
-				<input v-model="phone" type="number" maxlength="11" class="fs28" placeholder-class="iphoneNum"
-					placeholder="请填写手机号码" />
+				<input
+					v-model="phone" type="number" maxlength="11" class="fs28"
+					placeholder-class="iphoneNum"
+					placeholder="请填写手机号码"
+				/>
 			</view>
 			<view class="consignee-box bor-line-F7F7F7">
 				<input v-model="bankName" maxlength="20" class="fs28" placeholder-class="consignee" placeholder="请填写银行名称" />
 			</view>
 			<view class="cardnum">
-				<input v-model="cardNum" type="number" class="fs28" maxlength="20" placeholder-class="detailAddress"
-					placeholder="请填写卡号" />
+				<input
+					v-model="cardNum" type="number" class="fs28" maxlength="20"
+					placeholder-class="detailAddress"
+					placeholder="请填写卡号"
+				/>
 			</view>
 		</view>
-		<view v-if="type == 2" class="deleteBankcard-box">
+		<view v-if="bankcardId" class="deleteBankcard-box">
 			<label class="font-color-C5AA7B" @click="delBankcard">删除银行卡</label>
 		</view>
 		<view class="saveAddress-box">
-			<view v-if="type == 1" class="saveAddress" @click="saveBankcardClick">添加银行卡</view>
-			<view v-else class="saveAddress" @click="saveBankcardClick">保存</view>
+			<view v-if="bankcardId" class="saveAddress" @click="saveBankcardClick">保存</view>
+			<view v-else class="saveAddress" @click="saveBankcardClick">添加银行卡</view>
 		</view>
 
 		<tui-toast ref="toast"></tui-toast>
@@ -40,115 +46,67 @@
 import { getByIdUserBankcardApi, addUserBankcardApi, updateUserBankcardApi, deleteUserBankcardApi } from '../../../api/anotherTFInterface'
 import { bankCardAnalysisApi } from '../../../api/community-center'
 import { USER_INFO, T_STORAGE_KEY } from '../../../constant'
-import { ANOTHER_TF_UPLOAD } from '../../../config';
-
+import { ANOTHER_TF_UPLOAD } from '../../../config'
 
 export default {
 	name: 'AddBankcard',
 	data() {
 		return {
-			show: false,
-			type: 1, // 1.添加银行卡 2.编辑银行卡
 			cardNum: '',
 			bankcardId: '',
-			bankCode: '',
 			bankName: '',
 			username: '',
 			phone: '',
-			id: '',
 			uploadBandCard: null
 		}
 	},
 	onLoad(options) {
-		const userInfo = uni.getStorageSync(USER_INFO);
+		const userInfo = uni.getStorageSync(USER_INFO)
 		if (userInfo) {
 			this.phone = userInfo.phone
 		}
-		if (options.type) {
-			this.type = options.type
-		}
-		if (this.type == 2) {
-			this.bankcardId = options.id
-			this.renderBankcard(this.bankcardId)
+		this.bankcardId = options.id || ''
+		if (this.bankcardId) {
+			getByIdUserBankcardApi({ bankId: this.bankcardId })
+				.then((res) => {
+					const bankCard = res.data
+					this.username = bankCard.name
+					this.phone = bankCard.phone
+					this.bankName = bankCard.bankName
+					this.cardNum = bankCard.bankCard
+				})
 		}
 	},
 	methods: {
-		renderBankcard(bankcardId) {
-			getByIdUserBankcardApi({ bankId: bankcardId }).then((res) => {
-				const bankCard = res.data
-				this.id = bankcardId
-				this.username = bankCard.name
-				this.phone = bankCard.phone
-				this.bankName = bankCard.bankName
-				this.bankCode = bankCard.bankCode
-				this.cardNum = bankCard.bankCard
-			})
-		},
 		// 新增或更新银行卡
 		saveBankcardClick() {
-			const _ = this
-			const phoneCodeVerification = /^[1][3-9][0-9]{9}$/
-			if (this.username == '') {
-				uni.showToast({
-					title: '请输入姓名！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.phone == '') {
-				uni.showToast({
-					title: '请输入手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (!phoneCodeVerification.test(this.phone)) {
-				uni.showToast({
-					title: '请输入正确的手机号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.bankName == '') {
-				uni.showToast({
-					title: '请填写银行名称！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.cardNum == '') {
-				uni.showToast({
-					title: '请输入卡号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.cardNum.length != 16 && this.cardNum.length != 19) {
-				uni.showToast({
-					title: '请输入正确的卡号！',
-					duration: 2000,
-					icon: 'none'
-				})
-			} else if (this.type == 1) {
-				addUserBankcardApi({
-					name: this.username,
-					phone: this.phone,
-					bankName: this.bankName,
-					bankCard: this.cardNum
-				}).then((res) => {
-					uni.showToast({
-						title: '添加成功',
-						duration: 2000,
-						icon: 'none'
-					})
-					setTimeout(() => {
-						uni.navigateBack()
-					}, 2000)
-				})
-			} else {
+			if (!this.username) return this.$showToast('请输入姓名！')
+			if (!this.phone) return this.$showToast('请输入手机号！')
+			if (!/^[1][3-9][0-9]{9}$/.test(this.phone)) return this.$showToast('请输入正确的手机号！')
+			if (!this.bankName) return this.$showToast('请填写银行名称！')
+			if (!this.cardNum) return this.$showToast('请输入卡号！')
+			if ((this.cardNum.length != 16) && (this.cardNum.length != 19)) return this.$showToast('请输入正确的卡号！')
+			if (this.bankcardId) {
 				updateUserBankcardApi({
-					bankId: this.id,
+					bankId: this.bankcardId,
 					name: this.username,
 					phone: this.phone,
 					bankName: this.bankName,
 					bankCard: this.cardNum
 				}).then((res) => {
 					this.$showToast('操作成功')
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 2000)
+				})
+			} else {
+				addUserBankcardApi({
+					name: this.username,
+					phone: this.phone,
+					bankName: this.bankName,
+					bankCard: this.cardNum
+				}).then((res) => {
+					this.$showToast('添加成功')
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 2000)
@@ -175,7 +133,6 @@ export default {
 					}
 				}
 			})
-
 		},
 
 		handleUploadImg() {
@@ -186,7 +143,7 @@ export default {
 					if (!imgPath) return
 					uni.showLoading({
 						title: '上传中...'
-					});
+					})
 					uni.uploadFile({
 						url: ANOTHER_TF_UPLOAD,
 						filePath: imgPath,
@@ -198,61 +155,54 @@ export default {
 							'folderId': -1
 						},
 						success: (uploadFileRes) => {
-							uni.hideLoading();
+							uni.hideLoading()
 							const imgUrl = JSON.parse(uploadFileRes.data).data.url
 							_this.uploadBandCard = imgUrl
 							_this.bankCardAnalysis(imgUrl)
 						},
 						fail: (error) => {
-							uni.hideLoading();
+							uni.hideLoading()
 							_this.ttoast({
 								type: 'fail',
 								title: '图片上传失败',
 								content: error
-							});
+							})
 						}
-					});
-
-					return;
+					})
 				},
 				fail: (fail) => {
-					console.log(fail);
+					console.log(fail)
 				}
-			});
-
-
+			})
 		},
 
 		async bankCardAnalysis(imageUrl) {
 			if (!imageUrl) {
 				this.ttoast({
 					type: 'fail',
-					title: "银行卡解析失败",
-					content: "请填写银行卡信息"
+					title: '银行卡解析失败',
+					content: '请填写银行卡信息'
 				})
-
 				return
 			}
-
 			try {
 				uni.showLoading({
 					title: '银行卡解析中...'
-				});
+				})
 				const data = await bankCardAnalysisApi({
 					imageUrl
 				})
-
 				this.bankName = (data.cardName + '').replaceAll(' ', '')
 				this.cardNum = (data.cardNum + '').replaceAll(' ', '')
 			} catch (err) {
 				this.ttoast({
 					type: 'fail',
-					title: "银行卡解析失败",
-					content: "请填写银行卡信息"
+					title: '银行卡解析失败',
+					content: '请填写银行卡信息'
 				})
 				this.uploadBandCard = ''
 			} finally {
-				uni.hideLoading();
+				uni.hideLoading()
 			}
 		}
 	}

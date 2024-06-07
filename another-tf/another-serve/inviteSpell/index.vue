@@ -55,7 +55,7 @@
 					</view>
 					<view
 						v-if="inviteSpell.personList.some((item) => item.buyerUserId === $store.getters.userInfo.buyerUserId)"
-						class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="$refs.shareSpell.shareShow = true"
+						class="offered-but font-color-FFF flex-items-plus mar-top-60" @click="$refs.refShareSpell.shareShow = true"
 					>
 						邀请好友拼单
 					</view>
@@ -157,9 +157,9 @@
 			</view>
 		</tui-bottom-popup>
 		<ShareSpell
-			ref="shareSpell"
+			ref="refShareSpell"
 			:url="`/another-tf/another-serve/inviteSpell/index?collageId=${collageId}&orderId=${orderId}&productId=${productId}&skuId=${skuId}&shopGroupWorkId=${shopGroupWorkId}`"
-			:img="inviteSpell.image" title="好友邀请您来拼单啦" @shareCancel="$refs.shareSpell.shareShow = false"
+			:img="inviteSpell.image" title="好友邀请您来拼单啦"
 		>
 		</ShareSpell>
 	</view>

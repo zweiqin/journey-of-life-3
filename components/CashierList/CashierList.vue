@@ -8,9 +8,9 @@
 						<view class="icon-text">
 							<image class="pay-type-img-inner" :src="payment.icon" mode="widthFix" />
 							<text>{{ payment.label }}</text>
-							<text v-if="(payment.paymentMode === '7')">（佣金：{{ pricePlatformInfo.commissionPrice }}）</text>
-							<text v-if="(payment.paymentMode === '5')">（余额：{{ pricePlatformInfo.rechargePrice }}）</text>
-							<text v-if="(payment.paymentMode === '8')">（余额：{{ pricePlatformInfo.beeCoinPrice }}）</text>
+							<text v-if="(payment.paymentMode === '7')">（佣金：{{ Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}）</text>
+							<text v-if="(payment.paymentMode === '5')">（余额：{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice || 0)).toFixed(2) }}）</text>
+							<text v-if="(payment.paymentMode === '8')">（余额：{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) }}）</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 							<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 								（手续费：￥{{ flowerObj.hbServiceChargeTotal }}）

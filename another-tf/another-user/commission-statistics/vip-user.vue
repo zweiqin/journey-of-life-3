@@ -89,7 +89,7 @@
 			:z-index="1002" :mask-z-index="1001" :show="subFansListVisible"
 			@close="subFansListVisible = false"
 		>
-			<view class="fans-list">
+			<scroll-view scroll-y class="fans-list">
 				<view class="fans-header">
 					<view class="fans-title"><text class="user-name">{{ subFansInfo.phone }}</text> 的粉丝列表</view>
 					<tui-icon
@@ -98,7 +98,7 @@
 					></tui-icon>
 				</view>
 				<FansPane v-for="(item, index) in subFansInfo.paramLists" :key="index" :fans-info="item"></FansPane>
-			</view>
+			</scroll-view>
 		</tui-bottom-popup>
 	</view>
 </template>
@@ -298,11 +298,7 @@ export default {
 
 	.fans-list {
 		background-color: #f4f4f4;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
 		height: 800rpx;
-		overflow: auto;
 
 		.fans-header {
 			display: flex;

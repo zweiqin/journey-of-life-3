@@ -360,9 +360,7 @@ export default {
 
   onLoad(options) {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
-    // #ifdef H5
     importJsSDK()
-    // #endif
     if (options.jumpType) {
       uni.redirectTo({
         url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`
