@@ -76,7 +76,7 @@
 <script>
 
 import { A_TF_MAIN } from '../../config'
-import { T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { T_SELECTED_ADDRESS, T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
 import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
 import PopupInformation from '../../components/popup-information/popup-information'
@@ -176,7 +176,7 @@ export default {
 					// #ifdef APP
 					const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
 					if (lastAddress) {
-						currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.distinguish + lastAddress.data.town
+						currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.district + lastAddress.data.town
 					}
 					// #endif
 					// #ifndef APP

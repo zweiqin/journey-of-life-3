@@ -149,7 +149,10 @@ export default {
 
 		// 设置用户定位
 		async setUserLocation() {
-			// #ifdef H5
+			// #ifdef APP
+			this.useStorageLocation()
+			// #endif
+			// #ifndef APP
 			try {
 				this.globalData.isHasLocationPermission = true
 				await this.$store.dispatch('location/getCurrentLocation', (res) => {
@@ -171,10 +174,6 @@ export default {
 					this.useStorageLocation()
 				}
 			}, 2000)
-			// #endif
-
-			// #ifdef APP
-			this.useStorageLocation()
 			// #endif
 		},
 

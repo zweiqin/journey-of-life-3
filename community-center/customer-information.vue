@@ -235,7 +235,7 @@
 <script>
 import JCity from "../components/JCity/JCity.vue";
 import chooseTime from "./componts/choose-time.vue";
-import { SF_INVITE_CODE } from "../constant";
+import { T_SELECTED_ADDRESS, SF_INVITE_CODE } from "../constant";
 import { getServicePriceApi } from "../api/community-center";
 import { getUserId, getAdressDetailByLngLat } from "../utils";
 import { getUserInfoByIdApi } from "../api/community-center";
@@ -524,45 +524,21 @@ export default {
 
     //根据用户地址判断该区域是否开通了站长
     async getIsOpenServerArea() {
-      const _this = this;
-      // #ifdef H5
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === "1") {
-              // console.log('1111', res)
-              const result = res.regeocode;
-              console.log(result);
-              _this.address =
-                result.addressComponent.province +
-                result.addressComponent.city +
-                result.addressComponent.district +
-                result.addressComponent.township;
-              // console.log('this.address', _this.address)
-
-              _this.a();
-
-              _this.s = result.formatted_address;
-              _this.addressDetail = _this.s.slice(_this.address.length);
-              // console.log('addressDetail', _this.addressDetail)
-            }
-          });
-        },
-      });
-      // #endif
-
-      // #ifdef APP
-      const locationInfo = this.$store.state.location;
-      this.address =
-        locationInfo.locationInfo.province +
-        locationInfo.locationInfo.city +
-        locationInfo.locationInfo.district;
-      this.a();
-      this.addressDetail = locationInfo.detailAddress.slice(
-        _this.address.length
-      );
-      // #endif
+			// #ifdef APP
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+			const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '') + (lastAddress.data.town || '')
+			this.address = currentAddress
+			this.a()
+			this.s = lastAddress.data.detailAddress
+			this.addressDetail = this.s.slice(this.address.length)
+			// #endif
+			// #ifndef APP
+			await this.$store.dispatch('location/getCurrentLocation', (data) => {
+				this.address = data.province + data.city + data.district
+				this.a()
+				this.addressDetail = data.detailAddress.slice(this.address.length)
+			})
+			// #endif
     },
 
     // 点击选择地址

@@ -130,7 +130,7 @@ export default {
 	},
 	async onShow() {
 		// if (this.$data._list.length && (this.$data._list.length <= this.queryParam.pageSize)) { // 针对初次渲染完成前切换到其它页面导致瀑布流只有单列的问题
-		// 	const currentAddress = await getCurrentLocation()
+		// 	const currentAddress = await getCurrentLocation() // 注意APP端的隐私合规检测问题
 		// 	const res = await getHomeBrandListApi({ pageNo: 1, pageSize: this.queryParam.pageNo * this.queryParam.pageSize, address: currentAddress + '' })
 		// 	if (res.statusCode === 20000) {
 		// 		if (res.data) {

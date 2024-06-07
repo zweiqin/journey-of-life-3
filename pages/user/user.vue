@@ -10,7 +10,7 @@
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
-					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.27.2
+					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.27.22
 				</view>
 				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
 					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>

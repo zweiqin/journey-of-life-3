@@ -234,14 +234,14 @@ export default {
     async handleChooseCurrentAddress(chooseAddressInfo, type) {
       const dispatchData = {
         city: '',
-        distinguish: '',
+        district: '',
         town: ''
       }
       if (type === 'city') {
         dispatchData.city = chooseAddressInfo.name
       } else if (type === 'distinguish') {
         dispatchData.city = this.tabs[0].select
-        dispatchData.distinguish = chooseAddressInfo.name
+        dispatchData.district = chooseAddressInfo.name
       }
       try {
         uni.showLoading()
@@ -329,7 +329,7 @@ export default {
       if (isHot) {
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
-          data: { province: '', ...data }
+          data: { province: '', detailAddress: '', ...data, district: data.district }
         });
         await this.$store.dispatch('location/getDetailAddress', data);
       } else {
@@ -338,13 +338,14 @@ export default {
           data: {
 						province: '',
             city: this.tabs[0].select,
-            distinguish: this.tabs[1].select,
-            town: data.name
+            district: this.tabs[1].select,
+            town: data.name,
+            detailAddress: ''
           }
         });
         await this.$store.dispatch('location/getDetailAddress', {
           city: this.tabs[0].select,
-          distinguish: this.tabs[1].select,
+          district: this.tabs[1].select,
           town: data.name
         });
       }

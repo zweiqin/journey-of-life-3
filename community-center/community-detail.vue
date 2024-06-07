@@ -215,6 +215,7 @@ import charge from '../community-center/componts/charge';
 import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center';
 import { getUserId, getAdressDetailByLngLat } from '../utils';
 import CommentList from './components/CommentList.vue';
+import { T_SELECTED_ADDRESS } from '../constant'
 
 /**
  * 这个页面我tm，好恶心
@@ -303,12 +304,9 @@ export default {
   onShow() {
     this.getServiceDetail();
     const info = uni.getStorageSync('guawyi8sa');
-    // console.log('info', info);
     if (info.address && info.addressDetail) {
       this.addressInfo = info.address + info.addressDetail;
-      // console.log('addressInfo', this.addressInfo);
     }
-
     this.addressDetail = this.addressInfo;
     // console.log('addressDetail', this.addressDetail);
     this.address = info.address;
@@ -456,43 +454,28 @@ export default {
     },
 
     async getIsOpenServerArea() {
-      // #ifdef H5
-      const _this = this;
-      uni.getLocation({
-        type: 'gcj02',
-        success(res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude).then((res) => {
-            if (res.status === '1') {
-              // console.log('1111', res)
-              const result = res.regeocode;
-              _this.address = result.addressComponent.province + result.addressComponent.city + result.addressComponent.district;
-              // console.log('this.address', _this.address)
-              _this.a();
-              _this.addressDetail = result.formatted_address;
-              // console.log('addressDetail', _this.addressDetail)
-            }
-          });
-        }
-      });
-      // #endif
-
-      // #ifdef APP
-      const locationInfo = this.$store.state.location;
-      this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district;
-      // this.a();
-      this.addressDetail = locationInfo.detailAddress;
-      // #endif
+			// #ifdef APP
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+			const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '')
+      this.address = currentAddress
+      // this.a()
+      this.addressDetail = lastAddress.data.detailAddress || ''
+			// #endif
+			// #ifndef APP
+			await this.$store.dispatch('location/getCurrentLocation', (data) => {
+				this.address = data.province + data.city + data.district
+				this.a()
+				this.addressDetail = data.detailAddress
+			})
+			// #endif
     },
 
     async a() {
       const res = await getIsOpenServerAreaApi({
         address: this.address
       });
-      // console.log('res', res)
       this.tips = res.data;
-      // console.log('tips', this.tips)
       this.type = this.tips ? 1 : 2;
-      // console.log('type', this.type)
     },
 
     // 预览图

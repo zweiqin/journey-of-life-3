@@ -53,6 +53,7 @@ import { getSearchDataApi } from '../../api/community-center'
 import sort from '../../community-center/componts'
 import { getAdressDetailByLngLat } from '../../utils'
 import { getIsOpenServerAreaApi } from '../../api/community-center'
+import { T_SELECTED_ADDRESS } from '../../constant'
 export default {
 	name: 'Service-sort',
 	components: {
@@ -159,33 +160,19 @@ export default {
 		//根据用户地址判断该区域是否开通了站长
 		async getIsOpenServerArea() {
 			this.addressDetail = '定位中...'
-			const _this = this
-			// #ifdef H5
-			uni.getLocation({
-				type: 'gcj02',
-				success: function (res) {
-					getAdressDetailByLngLat(res.latitude, res.longitude).then(res => {
-						if (res.status === '1') {
-							const result = res.regeocode
-							_this.addressDetail = result.addressComponent.township
-
-							_this.address =
-								result.addressComponent.province +
-								result.addressComponent.city +
-								result.addressComponent.district
-
-							_this.a()
-						}
-					})
-				},
-			})
-			// #endif
-
 			// #ifdef APP
-			const locationInfo = this.$store.state.location
-			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
-			this.addressDetail = locationInfo.locationInfo.township
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+			const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '')
+			this.address = currentAddress
 			this.a()
+			this.addressDetail = lastAddress.data.town || ''
+			// #endif
+			// #ifndef APP
+			await this.$store.dispatch('location/getCurrentLocation', (data) => {
+				this.addressDetail = data.detailAddress
+				this.address = data.province + data.city + data.district
+				this.a()
+			})
 			// #endif
 		},
 

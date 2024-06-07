@@ -92,7 +92,7 @@ import PayBar from './components/PayBar.vue'
 import VipFooter from './components/VipFooter.vue'
 import PosterPopup from './components/PosterPopup.vue'
 import { getServeListApi } from '../../api/community-center'
-import { USER_ID, T_COMMUNITY_ORDER_NO } from '../../constant'
+import { T_SELECTED_ADDRESS, USER_ID, T_COMMUNITY_ORDER_NO } from '../../constant'
 import showModal from '../../mixin/showModal'
 import { getPurchaseRecordApi, getPurchaseRecord2Api, getCreateCodeApi } from '../../api/user'
 import { queryDynamicDataApi } from '../../api/address'
@@ -169,6 +169,18 @@ export default {
 					}
 					count--
 				}, 1000)
+				// #ifdef APP
+				const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+				if (lastAddress) {
+					const currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.district + lastAddress.data.town
+					this.getData(currentAddress, () => {
+						uni.hideLoading()
+						clearInterval(timer)
+						timer = null
+					})
+				}
+				// #endif
+				// #ifndef APP
 				await this.$store.dispatch('location/getCurrentLocation', (data) => {
 					_this.getData(data.detail, () => {
 						uni.hideLoading()
@@ -176,6 +188,7 @@ export default {
 						timer = null
 					})
 				})
+				// #endif
 			} else {
 				this.getData(currentDetail, () => {
 					uni.hideLoading()
