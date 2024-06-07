@@ -58,8 +58,9 @@ export default {
 				data: {
 					province: state.locationInfo.province,
 					city: state.locationInfo.city,
-					distinguish: state.locationInfo.district,
-					town: state.locationInfo.township
+					district: state.locationInfo.district,
+					town: state.locationInfo.township,
+					detailAddress: state.detailAddress
 				}
 			})
 		},
@@ -103,14 +104,18 @@ export default {
 									try {
 										if (detailInfo && detailInfo.status === '1' && detailInfo.regeocode) {
 											commit(CHANGE_LOCATION_INFO, detailInfo.regeocode)
-											const addressDetail = detailInfo.regeocode
+											const tempProvince = detailInfo.regeocode.addressComponent.province === 'object' ? '' : detailInfo.regeocode.addressComponent.province
+											const tempCity = detailInfo.regeocode.addressComponent.city === 'object' ? '' : detailInfo.regeocode.addressComponent.city
+											const tempDistrict = detailInfo.regeocode.addressComponent.district === 'object' ? '' : detailInfo.regeocode.addressComponent.district
+											const tempTown = detailInfo.regeocode.addressComponent.township === 'object' ? '' : detailInfo.regeocode.addressComponent.township
+											const tempDetailAddress = detailInfo.regeocode.formatted_address === 'object' ? '' : detailInfo.regeocode.formatted_address
 											const finalRes = {
-												detail:
-													addressDetail.addressComponent.province +
-													addressDetail.addressComponent.city +
-													addressDetail.addressComponent.district +
-													addressDetail.addressComponent.township,
-												town: addressDetail.addressComponent.township
+												detail: tempProvince + tempCity + tempDistrict + tempTown,
+												province: tempProvince,
+												city: tempCity,
+												district: tempDistrict,
+												town: tempTown,
+												detailAddress: tempDetailAddress
 											}
 											onSuccess && typeof onSuccess === 'function' && onSuccess(finalRes)
 											resolve(finalRes)
@@ -145,17 +150,17 @@ export default {
 		},
 
 		async getDetailAddress({ commit, dispatch }, data) {
-			const res = await getLngLatByAddress(data.city + data.distinguish + data.town)
+			const res = await getLngLatByAddress(data.city + data.district + data.town)
 			if (res.status == '1') {
 				const detailInfo = res.geocodes[0]
 				commit(CHANGE_LOACTION_DETAIL_INFO, {
 					detailInfo,
 					currentCity: data.town || '',
-					currentShopCity: data.town || data.distinguish || data.city
+					currentShopCity: data.town || data.district || data.city
 				})
-				// dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
+				// dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.district + data.town, { root: true })
 				commit('community/CHANGE_HOME_STORE', data.town, { root: true })
-				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.distinguish + data.town, { root: true })
+				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.district + data.town, { root: true })
 			}
 		}
 	}

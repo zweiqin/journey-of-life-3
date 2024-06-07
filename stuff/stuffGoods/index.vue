@@ -91,32 +91,17 @@ export default {
       }
     },
 
-    getLocation() {
+    async getLocation() {
       this.addressDetail = '定位中...';
-      const _this = this;
-      // #ifdef H5
-      uni.getLocation({
-        type: 'gcj02',
-        success: function (res) {
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status === '1') {
-                const result = res.regeocode;
-                _this.addressDetail = result.addressComponent.township;
-                console.log('addressDetail', _this.addressDetail);
-              }
-            })
-            .catch(() => {
-              _this.addressDetail = '定位失败';
-            });
-        }
-      });
-      // #endif
-
-      // #ifdef APP
-      const locationInfo = this.$store.state.location;
-      this.addressDetail = locationInfo.locationInfo.township;
-      // #endif
+			// #ifdef APP
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+			this.addressDetail = lastAddress.data.town || ''
+			// #endif
+			// #ifndef APP
+			await this.$store.dispatch('location/getCurrentLocation', (data) => {
+				this.addressDetail = data.town
+			})
+			// #endif
     },
 
     //获取商品列表接口

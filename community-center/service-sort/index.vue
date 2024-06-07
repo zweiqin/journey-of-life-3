@@ -183,6 +183,7 @@
 <script>
 import { getServiceSortApi, getIsOpenServerAreaApi } from '../../api/community-center'
 import { getAdressDetailByLngLat, getUserId } from '../../utils'
+import { T_SELECTED_ADDRESS } from '../../constant'
 export default {
 	name: 'ServiceSort',
 	props: {},
@@ -233,35 +234,25 @@ export default {
 		// 根据用户地址判断该区域是否开通了站长
 		async getIsOpenServerArea() {
 			this.addressDetail = '定位中...'
-			const _this = this
-			// #ifdef H5
-			uni.getLocation({
-				type: 'gcj02',
-				success(result) {
-					getAdressDetailByLngLat(result.latitude, result.longitude).then(async (res) => {
-						if (res.status === '1') {
-							_this.addressDetail = res.regeocode.addressComponent.township
-							_this.address =
-								res.regeocode.addressComponent.province +
-								res.regeocode.addressComponent.city +
-								res.regeocode.addressComponent.district
-							const resResult = await getIsOpenServerAreaApi({
-								address: this.address
-							})
-							this.tips = resResult.data
-						}
-					})
-				}
-			})
-			// #endif
 			// #ifdef APP
-			const locationInfo = this.$store.state.location
-			this.address = locationInfo.locationInfo.province + locationInfo.locationInfo.city + locationInfo.locationInfo.district
-			this.addressDetail = locationInfo.locationInfo.township
+			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+			const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '')
+			this.address = currentAddress
+			this.addressDetail = lastAddress.data.town || ''
 			const resResult = await getIsOpenServerAreaApi({
 				address: this.address
 			})
 			this.tips = resResult.data
+			// #endif
+			// #ifndef APP
+			await this.$store.dispatch('location/getCurrentLocation', async (data) => {
+				this.addressDetail = data.town
+				this.address = data.province + data.city + data.district
+				const resResult = await getIsOpenServerAreaApi({
+					address: this.address
+				})
+				this.tips = resResult.data
+			})
 			// #endif
 		},
 

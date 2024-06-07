@@ -1,5 +1,5 @@
 export const SYSTEM_VERSION = '1.0.27' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
-export const APPLY_NAME = '团蜂生活' // 应用名称
+export const APPLY_NAME = '团蜂' // 应用名称
 
 // --------------------------------------------------
 

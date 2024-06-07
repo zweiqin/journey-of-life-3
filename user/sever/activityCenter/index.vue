@@ -66,7 +66,7 @@ export default {
 				// #ifdef APP
 				const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
 				if (lastAddress) {
-					currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.distinguish + lastAddress.data.town
+					currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.district + lastAddress.data.town
 				}
 				// #endif
 				// #ifndef APP
