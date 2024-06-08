@@ -1,27 +1,27 @@
 <template>
 	<view :style="{ margin }">
 		<view class="line-pane" :style="{ padding, borderRadius: radius }" @click="handleChangeVoucher">
-			<view style="font-size: 28upx;" class="title">代金券（余额：{{ voucherNum }}）</view>
+			<view style="font-size: 28rpx;" class="title">代金券（余额：{{ voucherNum }}）</view>
 			<view style="display: flex;align-items: center;">
 				<view style="color: #999999">
 					<text v-if="voucherSelected && (voucherList.length === 1)">已选择</text>
 					<text v-else>{{ voucherName }}</text>
 				</view>
-				<tui-icon name="arrowright" size="22" color="#979797" style="padding: 2upx 0 2upx 8upx;"></tui-icon>
+				<tui-icon name="arrowright" size="22" color="#979797" style="padding: 2rpx 0 2rpx 8rpx;"></tui-icon>
 			</view>
 		</view>
 		<tui-drawer mode="bottom" :visible="drawerVisible" @close="drawerVisible = false">
-			<view style="height: 55vh;padding: 20upx;overflow-y: auto;">
-				<view style="padding: 0 16upx;font-size: 34upx;color: #1e1e1e;text-align: right;">
+			<view style="height: 55vh;padding: 20rpx;overflow-y: auto;">
+				<view style="padding: 0 16rpx;font-size: 34rpx;color: #1e1e1e;text-align: right;">
 					代金券余额：<text style="font-weight: bold;">{{ voucherNum }}</text>
 				</view>
 				<view v-if="voucherList && voucherList.length">
 					<view style="text-align: right;">
-						<tui-radio-group :value="String(voucherSelected)" style="" @change="handleRadioChange">
+						<tui-radio-group :value="String(voucherSelected)" @change="handleRadioChange">
 							<tui-label>
-								<tui-list-cell padding="16upx">
+								<tui-list-cell padding="16rpx">
 									<view>
-										<text style="padding-right: 10upx;">不使用</text>
+										<text style="padding-right: 10rpx;">不使用</text>
 										<tui-radio value="0" color="#e98166" border-color="#999"></tui-radio>
 									</view>
 								</tui-list-cell>
@@ -34,12 +34,12 @@
 					<view>
 						<view v-for="item in voucherList" :key="item.id" class="item">
 							<view
-								style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;margin: 20upx;border: 1upx solid #b1b0b0;border-radius: 12upx;"
+								style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx;margin: 20rpx;border: 1rpx solid #b1b0b0;border-radius: 12rpx;"
 							>
 								<view style="flex: 1;">
 									<view style="display: flex;justify-content: space-between;">
 										<text>{{ item.voucherName }}</text>
-										<!-- <text style="padding-right: 50upx;color: #b1b0b0;">{{ item.ratio }} : 1</text> -->
+										<!-- <text style="padding-right: 50rpx;color: #b1b0b0;">{{ item.ratio }} : 1</text> -->
 									</view>
 									<view>{{ item.desc }}</view>
 								</view>
@@ -68,7 +68,7 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
 		},
 		padding: {
 			type: String,
@@ -150,7 +150,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	// padding: 28upx 20upx;
+	// padding: 28rpx 20rpx;
 	background-color: #fff;
 }
 </style>

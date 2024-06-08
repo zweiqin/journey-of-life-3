@@ -86,7 +86,7 @@
 				<view :class="{active: currentIdentity === 2}" @click="currentIdentity = 2" class="item">工厂 <tui-icon :size="18" v-if="currentIdentity === 2" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
 				<view :class="{active: currentIdentity === 3}" @click="currentIdentity = 3" class="item">本地商圈 <tui-icon :size="18" v-if="currentIdentity === 3" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
 			</view>
-			<button @click="handleBindB" class="uni-btn bind-btn" :loading="chooseIdentityLoading">确认</button>
+			<button @click="handleBBindFranchisees" class="uni-btn bind-btn" :loading="chooseIdentityLoading">确认</button>
 		</view>
 		</view>
 		<view v-else style="padding: 46rpx;">
@@ -155,6 +155,7 @@ export default {
 			orderInfo: {},
 			isOrderVerification: false,
 			verificationTicker: null,
+			// bBindFranchisees的情况
 			currentIdentity: 1,
 			chooseIdentityLoading: false
 		}
@@ -441,7 +442,7 @@ export default {
 						}
 					})
 					.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
-			}else if(this.type === 'bBindFranchisees'){
+			} else if (this.type === 'bBindFranchisees') {
 				this.viewType = 'chooseIdentity';
 			}
 		},
@@ -451,7 +452,7 @@ export default {
 				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 		},
 		// 加盟商绑定门店
-	  async	handleBindB(){
+	  async	handleBBindFranchisees() {
 			try {
 				this.chooseIdentityLoading = true
 			  const res = await bindBFranchiseesApi({

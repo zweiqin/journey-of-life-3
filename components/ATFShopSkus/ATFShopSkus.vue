@@ -145,7 +145,7 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
 		},
 		detailRadius: {
 			type: String,

@@ -1,5 +1,5 @@
 <template>
-	<view class="order-address-select-container" :style="{ margin }">
+	<view class="order-address-select-container" :style="{ margin, padding }">
 		<view
 			style="background: #ffffff;border-radius: 10rpx;padding: 30rpx;display: flex;align-items: center;font-size: 28rpx;color: #333;"
 			@click="go(`/another-tf/another-serve/address/index?isSelect=1`)"
@@ -29,7 +29,11 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
+		},
+		padding: {
+			type: String,
+			default: '0'
 		},
 		data: {
 			type: Object,

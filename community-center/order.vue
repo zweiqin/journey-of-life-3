@@ -164,7 +164,7 @@ export default {
 		if (this.pages === this.query.pageNo) {
 			uni.showToast({
 				title: '没有单啦',
-				icon: 'fail'
+				icon: 'error'
 			})
 			return
 		}

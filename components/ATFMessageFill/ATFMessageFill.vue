@@ -40,7 +40,7 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
 		},
 		radius: {
 			type: String,

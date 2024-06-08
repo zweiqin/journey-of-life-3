@@ -13,9 +13,14 @@
 				</tui-button>
 			</view>
 			<!-- v-if="settlement.shopType !== 2" -->
-			<ATFOrderAddressSelect :data="userAddressInfo" margin="20rpx 0 0"></ATFOrderAddressSelect>
+			<ATFOrderAddressSelect :data="userAddressInfo" padding="20rpx 0 0"></ATFOrderAddressSelect>
 
-			<view style="margin-top: 20rpx;">
+			<ATFCommunityAssociation
+				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				@change="(e) => otherInfo = { ...otherInfo, ...e }"
+			></ATFCommunityAssociation>
+
+			<view style="padding-top: 20rpx;">
 				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" is-show-skus>
 					<template #operateBody="obj">
 						<ATFShopCoupons
@@ -152,7 +157,11 @@ export default {
 			integralRatio: '', // 积分兑换比例。总积分可减多少元=integralNum*integralRatio
 			// 其它信息
 			otherInfo: {
-				remark: ''
+				remark: '',
+				// 加盟商和社区店分佣情况
+				benefitinFranchiseesPhone: '',
+				communityPhone: '',
+				commissionSharingRatio: []
 			}
 		}
 	},

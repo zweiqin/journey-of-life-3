@@ -650,7 +650,10 @@ export const resolveOrderPackageData = (params = {}) => {
 		shops: [],
 		discountPrice: 0,
 		shopSeckillId: null,
-		...voucherObj
+		...voucherObj,
+		franchiseePhone: otherInfo.benefitinFranchiseesPhone, // 加盟商号码。不是加盟商就不用传。
+		communityPhone: otherInfo.communityPhone, // 选择的小区的ID
+		franchiseeRule: otherInfo.commissionSharingRatio || [] // 小区店和加盟商分佣比例。
 	}
 	if (skuItemMsgList && skuItemMsgList.length) {
 		if (skuItemMsgList[0].shopDiscountId) {

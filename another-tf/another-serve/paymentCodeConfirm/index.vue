@@ -12,11 +12,16 @@
 		</BeeBack>
 		<view style="padding: 0 30rpx 218rpx;">
 			<ATFOrderAddressSelect
-				v-if="settlement.shops && settlement.shops.length && !userAddressInfo.receiveId"
-				:data="userAddressInfo" margin="20rpx 0 0"
+				v-if="!otherInfo.orderId && settlement.shops && settlement.shops.length && !userAddressInfo.receiveId"
+				:data="userAddressInfo" padding="20rpx 0 0"
 			></ATFOrderAddressSelect>
 
-			<view style="margin-top: 20rpx;">
+			<ATFCommunityAssociation
+				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				@change="(e) => otherInfo = { ...otherInfo, ...e }"
+			></ATFCommunityAssociation>
+
+			<view style="padding-top: 2rpx;">
 				<ATFShopSkus
 					v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item"
 					detail-radius="20rpx 20rpx 0 0" is-show-shop-detail
@@ -68,7 +73,7 @@
 			</ATFMessageFill>
 
 			<ATFPlatformCoupon
-				:show="isShowPlatformCoupon" margin="20rpx 0 0" padding="28rpx 20rpx 10rpx"
+				:show="isShowPlatformCoupon" margin="20rpx 0 0" padding-in="28rpx 20rpx 10rpx"
 				radius="24rpx 24rpx 0 0" :settlement="settlement" :selected-platform-coupon="selectedPlatformCoupon"
 				:selected-shop-coupon-list="selectedShopCouponList" @click="handleShowPlatformCoupon"
 				@close="isShowPlatformCoupon = false" @select="handlePlatformCouponItemSelect"
@@ -229,7 +234,11 @@ export default {
 				remark: '',
 				// 核销情况
 				orderId: '',
-				collageId: ''
+				collageId: '',
+				// 加盟商和社区店分佣情况
+				benefitinFranchiseesPhone: '',
+				communityPhone: '',
+				commissionSharingRatio: []
 			}
 		}
 	},
@@ -242,7 +251,6 @@ export default {
 				noticeId: 0
 			}).then(({ data }) => {
 				if ([ 8 ].includes(data.state)) {
-					this.userAddressInfo = { receiveId: '0' }
 					this.settlement = {
 						'receive': { 'receiveId': '0' },
 						'shops': [ {

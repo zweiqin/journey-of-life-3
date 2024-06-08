@@ -65,8 +65,20 @@ export const getServiceDetailApi = (data) => SheQuRequest('/api/community/server
 // 获取订单报价
 export const getServicePriceApi = (data) => SheQuRequest('/api/community/serverInfo/getOrderQuote', data);
 
+// 根据消费者手机号获取订单的相关受益人
+export const getOrderAssociatedBeneficiaryApi = data => SheQu1Request('laoa-huozhu/api/hz/common/third/getOrderAssociatedBeneficiary', data, 'get')
+
 // 获取小区列表
 export const getCommunityListApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanCommunity/third/getCommunityPage', data, 'get')
+
+// 根据详细地址获取区级编号
+export const getCounCodeByDetailAddressApi = data => SheQu1Request('laoa-huozhu/api/hz/common/third/getCounCodeByDetailAddress', data, 'get')
+
+// 获取加盟商分佣百分比
+export const getFranchiseesCommissionApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getFranchiseesCommission', data, 'get')
+
+// 获取小区分佣百分比
+export const getCommunityCommissionApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getCommunityCommission', data, 'get')
 
 // 根据小区areaID查询详细地址
 export const getAreaDetailInfoApi = data => SheQu1Request('laoa-huozhu/api/hz/moduanCommunity/third/querySysArea1', data, 'POST')

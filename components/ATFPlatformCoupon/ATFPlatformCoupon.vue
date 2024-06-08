@@ -1,8 +1,8 @@
 <template>
-	<view class="platform-coupon-container" :style="{ margin }">
+	<view class="platform-coupon-container" :style="{ margin, padding }">
 		<view
 			style="display: flex;align-items: center;justify-content: space-between;background-color: #ffffff;"
-			:style="{ padding, borderRadius: radius }"
+			:style="{ padding: paddingIn, borderRadius: radius }"
 			@click="$emit('click')"
 		>
 			<view style="font-size: 26rpx;color: #333333;">平台优惠</view>
@@ -68,9 +68,13 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
 		},
 		padding: {
+			type: String,
+			default: '0'
+		},
+		paddingIn: {
 			type: String,
 			default: '28rpx 20rpx'
 		},

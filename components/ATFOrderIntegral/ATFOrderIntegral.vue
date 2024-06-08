@@ -23,7 +23,7 @@ export default {
 	props: {
 		margin: {
 			type: String,
-			default: ''
+			default: '0'
 		},
 		integralNum: {
 			type: Number,
