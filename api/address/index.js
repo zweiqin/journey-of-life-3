@@ -41,3 +41,7 @@ export const queryDynamicDataApi = (data) => SheQu1Request(
 	data,
 	'get'
 )
+
+
+// 根据详细地址请求区域编码
+export const getAreaIdByAddressApi = data => SheQu1Request('laoa-huozhu/api/hz/common/third/getCounCodeByDetailAddress', data, 'get')

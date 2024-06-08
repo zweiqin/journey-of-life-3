@@ -83,7 +83,7 @@
 			<view class="choose-title"> <tui-icon :size="18" margin="0 10rpx 0 0" name="people-fill" color="rgb(233, 93, 32)"></tui-icon> 请选择您的身份</view>
 			<view class="list">
 				<view :class="{active: currentIdentity === 1}" @click="currentIdentity = 1" class="item">社区门店 <tui-icon :size="18" v-if="currentIdentity === 1" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
-				<view :class="{active: currentIdentity === 2}" @click="currentIdentity = 2" class="item">工厂 <tui-icon :size="18" v-if="currentIdentity === 2" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+				<view :class="{active: currentIdentity === 2}" @click="currentIdentity = 2" class="item">商家 <tui-icon :size="18" v-if="currentIdentity === 2" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
 				<view :class="{active: currentIdentity === 3}" @click="currentIdentity = 3" class="item">本地商圈 <tui-icon :size="18" v-if="currentIdentity === 3" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
 			</view>
 			<button @click="handleBBindFranchisees" class="uni-btn bind-btn" :loading="chooseIdentityLoading">确认</button>

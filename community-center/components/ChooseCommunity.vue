@@ -3,7 +3,7 @@
     <view class="choose-community-wrapper">
       <view class="header">
         选择小区
-        <tui-icon name="close" :size="18" class="close-icon"></tui-icon>
+        <tui-icon @click="handleClose" name="close" :size="18" class="close-icon"></tui-icon>
       </view>
       <view class="list">
         <view class="community-item" @click="currentCommunityId = item.id" v-for="item in communityList" :key="item.id">
