@@ -561,7 +561,8 @@ export default {
         const res = await getCommunityListApi({
           pageNo: 1,
           pageSize: 10000,
-          counCode: getAreaIdRes.data
+          counCode: getAreaIdRes.data,
+          isCommunityAccount: 1
         })
 
         if (res.statusCode === 20000) {

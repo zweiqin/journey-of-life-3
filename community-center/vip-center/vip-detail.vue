@@ -163,7 +163,7 @@ export default {
 						clearInterval(timer)
 						timer = setTimeout(() => {
 							uni.redirectTo({
-								url: '/pages/choose-location/choose-location?backUrl=|community-center|vip-center|vip-detail_type=1'
+								url: '/pages/choose-location/choose-location?backUrl=|community-center|vip-center|vip-detail_type=' + this.type
 							})
 						}, 2000)
 					}
@@ -200,6 +200,7 @@ export default {
 
 		// 获取数据
 		async getData(currentDetail, fn) {
+			if(!currentDetail) return
 			try {
 				const res = await queryDynamicDataApi({
 					address: currentDetail && JSON.stringify(currentDetail) != '[]' ? currentDetail : '',
@@ -244,7 +245,6 @@ export default {
 
 		// 渲染数据
 		async addData(res, isCustom) {
-			// debugger
 			if (!Array.isArray(res.data)) {
 				await this.getServeList()
 				return
@@ -259,7 +259,6 @@ export default {
 					await this.getServeList()
 				}
 			} else {
-				// debugger
 				this.indulgenceData = res.data.filter((item) => item.serverType === 2)
 				if (isCustom && this.indulgenceData.length) {
 					const serveContentList = this.indulgenceData[0].serverContent.split(',')

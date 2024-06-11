@@ -5,7 +5,7 @@
     </TuanPageHead>
     {{ dot }}
     <view class="activity-container" v-if="activityList.length">
-      <view class="activity-item" v-for="item in activityList" :key="item.id" @click="go('/user/sever/activityCenter/activity-detail?id=' + item.id)">
+      <view class="activity-item" v-for="item in activityList" :key="item.id" @click="handleViewDeatil(item)">
         <view class="activity-info" :class="{ expired: item.isExpired }">
           <view class="name">
             {{ item.name }}
@@ -87,6 +87,13 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+
+    handleViewDeatil(activeDetail){
+      if(activeDetail.name === '金管家399'){
+        return this.go('/user/sever/goldButler/gold-butler')
+      }
+      this.go('/user/sever/activityCenter/activity-detail?id=' + activeDetail.id)
     }
   },
 

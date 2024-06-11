@@ -79,7 +79,7 @@
         <!-- <view class="open1" v-if="status == 2">已开通</view> -->
         <view class="open2" @click="handleToOpen">
           <view class="money">￥399</view>
-          <view class="go">立即开通</view>
+          <view class="go" style="opacity: 0.4">活动已过期</view>
         </view>
       </view>
 
@@ -154,7 +154,8 @@
       <view class="f-left"
         >仅需: <text>￥{{ 399 }}</text></view
       >
-      <view class="f-right" @click="handleToOpen">立即开通</view>
+      <!-- <view class="f-right" @click="handleToOpen">立即开通</view> -->
+      <view class="f-right" style="opacity: 0.7">活动已过期</view>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
@@ -254,6 +255,7 @@ export default {
       });
     },
     handleToOpen() {
+      return
       uni.navigateTo({ url: '/community-center/vip-center/vip-detail?type=2' });
     },
     handleToBook(value, item) {
