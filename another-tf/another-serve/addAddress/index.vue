@@ -225,12 +225,10 @@ export default {
 						deleteReceiveAddressApi({
 							receiveId: this.addressData.receiveId
 						}).then((res) => {
-							if (res.code === '200') {
-								uni.navigateBack({
-									delta: 1,
-									success: this.eventName ? uni.$emit(this.eventName) : () => { }
-								})
-							}
+							uni.navigateBack({
+								delta: 1,
+								success: this.eventName ? uni.$emit(this.eventName) : () => { }
+							})
 						})
 					}
 				}

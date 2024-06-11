@@ -87,6 +87,7 @@
 import { getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
 
 export default {
+	name: 'CommissionStatistics',
 	data() {
 		return {
 			commissionData: {}
@@ -106,14 +107,11 @@ export default {
 
 		async getCommissionData() {
 			try {
-				const res = await getSmallAccountBookStatisticsApi()
+				const res = await getSmallAccountBookStatisticsApi({ _isShowToast: false })
 				this.commissionData = res.data
-			} catch (error) {
-				this.ttoast({
-					type: 'fail',
-					content: error || '获取佣金信息失败',
-					title: '获取佣金详情失败'
-				})
+			} catch (e) {
+				if (e.data) this.ttoast({ type: 'fail', content: `${e.data.message}-${e.data.errorData}`, title: '获取佣金详情失败' })
+				else this.ttoast({ type: 'fail', content: `请求：${e.errMsg}`, title: '获取佣金详情失败' })
 			} finally {
 				uni.stopPullDownRefresh()
 			}

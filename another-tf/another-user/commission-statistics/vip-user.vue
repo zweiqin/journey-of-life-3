@@ -146,7 +146,6 @@ export default {
 				.catch((e) => {
 					uni.hideLoading()
 					this.isLoading = false
-					this.$showToast('会员列表获取失败')
 				})
 				.finally((e) => {
 					uni.stopPullDownRefresh()

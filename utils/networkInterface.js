@@ -746,7 +746,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 		})
 		uni.showLoading({ mask: true, title: '结算中...' })
 		try {
-			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode })
+			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode, _isShowToast: false }) // 通过_isShowToast为false更全面
 			// 下单成功处理埋点
 			addUserTrackReportDoPointerApi({
 				eventType: 3,
@@ -758,7 +758,8 @@ export const resolveSubmitOrder = async (params = {}) => {
 			// type订单类型1-父订单2-子订单
 			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
 		} catch (e) {
-			uni.showToast({ title: `${e.message}-${e.errorData}`, icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误
 		} finally {
 			uni.hideLoading()
 		}

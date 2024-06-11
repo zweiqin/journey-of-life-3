@@ -159,9 +159,6 @@ export default {
 			})
 				.catch((e) => {
 					uni.hideLoading()
-					uni.showToast({
-						title: e.message
-					})
 				})
 		}
 	}

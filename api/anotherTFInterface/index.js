@@ -711,6 +711,13 @@ export const getPlatformSeckillsCanvasApi = (data) => AnotherTFRequest('/canvas/
 // 平台秒杀查询今日场次
 export const getPlatformSeckillsQuerySessionApi = (data) => AnotherTFRequest('/platform-seckill/querySession', data)
 
+// 组合活动
+// 选择平台端组合活动查询
+export const getPlatformComposeCanvasApi = (data) => AnotherTFRequest('/canvas/getPlatformCompose', data)
+
+// 记录组合活动相关
+export const updateSavePlatformComposeApi = (data) => AnotherTFRequest('/platformCompose/saveCompose', data)
+
 // 评价
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')

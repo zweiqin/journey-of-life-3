@@ -131,7 +131,7 @@
 <script>
 import Fields from './Fields.vue'
 import Package from './Package.vue'
-import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface';
+import { getClaasifyProductsApi } from '@/api/anotherTFInterface';
 
 // import { tempData } from './data'
 export default {
