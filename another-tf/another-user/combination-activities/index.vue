@@ -1,6 +1,32 @@
 <template>
 	<view class="combination-activities-container">
 		<JHeader title="组合活动专区" width="50" height="50"></JHeader>
+		<view style="padding: 18rpx;">
+			<tui-checkbox-group
+				:value="queryInfo.stateList"
+				@change="(e) => (queryInfo.stateList = e.detail.value) && (queryInfo.page = 1) && getCombinationActivitiesList()"
+			>
+				<view style="display: flex;flex-wrap: wrap;align-items: center;">
+					<view style="font-size: 34rpx;font-weight: bold;color: #333333;">活动状态筛选：</view>
+					<tui-label
+						v-for="(item, index) in [{ name: '报名未开始', value: '0' }, { name: '报名进行中', value: '1' }, { name: '活动待开始', value: '2' }, { name: '活动进行中', value: '3' }, { name: '活动已结束', value: '4' }]"
+						:key="index"
+					>
+						<tui-list-cell padding="6rpx 16rpx">
+							<view>
+								<tui-checkbox
+									:checked="queryInfo.stateList.includes(item.value)" :value="item.value"
+									color="#07c160" border-color="#999"
+								>
+								</tui-checkbox>
+								<text>{{ item.name }}</text>
+							</view>
+						</tui-list-cell>
+					</tui-label>
+				</view>
+			</tui-checkbox-group>
+		</view>
+
 		<view style="margin-top: 20rpx;">
 			<scroll-view scroll-x>
 				<view
@@ -32,63 +58,63 @@
 					</view>
 				</view>
 			</scroll-view>
-			<!-- <view
+			<view
 				v-if="combinationActivityList[activeSession]"
 				style="margin: 20rpx 20rpx 0;padding: 20rpx;background-color: #eeeeee;border-radius: 20rpx;"
-				>
+			>
 				<view>
-				<view
-				v-if="[ 3 ].includes(combinationActivityList[activeSession].state)"
-				style="display: flex;align-items: center;justify-content: center;"
-				>
-				<text>距离结束：</text>
-				<tui-countdown
-				:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-				border-color="transparent"
-				days :is-colon="false"
-				:time="Math.floor((Date.parse(combinationActivityList[activeSession].endTime) - Date.now()) / 1000)"
-				></tui-countdown>
-				</view>
-				<view
-				v-else-if="[0, 1, 2].includes(combinationActivityList[activeSession].state)"
-				style="display: flex;align-items: center;justify-content: center;"
-				>
-				<text>距离开始：</text>
-				<tui-countdown
-				:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-				border-color="transparent"
-				days :is-colon="false"
-				:time="Math.floor((Date.parse(combinationActivityList[activeSession].startTime) - Date.now()) / 1000)"
-				></tui-countdown>
-				</view>
+					<view
+						v-if="[ 3 ].includes(combinationActivityList[activeSession].state)"
+						style="display: flex;align-items: center;justify-content: center;"
+					>
+						<text>距离结束：</text>
+						<tui-countdown
+							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+							border-color="transparent"
+							days :is-colon="false"
+							:time="Math.floor((Date.parse(combinationActivityList[activeSession].endTime) - Date.now()) / 1000)"
+						></tui-countdown>
+					</view>
+					<view
+						v-else-if="[0, 1, 2].includes(combinationActivityList[activeSession].state)"
+						style="display: flex;align-items: center;justify-content: center;"
+					>
+						<text>距离开始：</text>
+						<tui-countdown
+							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+							border-color="transparent"
+							days :is-colon="false"
+							:time="Math.floor((Date.parse(combinationActivityList[activeSession].startTime) - Date.now()) / 1000)"
+						></tui-countdown>
+					</view>
 				</view>
 				<view style="display: flex;align-items: center;margin-top: 12rpx;color: #ffffff;font-size: 30rpx;">
-				<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-				<text v-if="combinationActivityList[activeSession].ifAdd">可叠加优惠券</text>
-				<text v-else>不可叠加优惠券</text>
-				</view>
-				<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-				<text v-if="combinationActivityList[activeSession].ifLimit">限购{{ combinationActivityList[activeSession].limitNumber }}件/人</text>
-				<text v-else>无限购</text>
-				</view>
-				<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-				<text v-if="combinationActivityList[activeSession].ifBond">商家需要保证金￥{{ combinationActivityList[activeSession].bondMoney }}</text>
-				<text v-else>商家无需保证金</text>
-				</view>
-				</view>
-				<view
-				v-if="combinationActivityList[activeSession].content"
-				style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
-				>
-				赠送规则：{{ combinationActivityList[activeSession].content }}
+					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="combinationActivityList[activeSession].ifAdd">可叠加优惠券</text>
+						<text v-else>不可叠加优惠券</text>
+					</view>
+					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="combinationActivityList[activeSession].ifLimit">限购{{ combinationActivityList[activeSession].limitNumber }}件/人</text>
+						<text v-else>无限购</text>
+					</view>
+					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="combinationActivityList[activeSession].ifBond">商家需要保证金￥{{ combinationActivityList[activeSession].bondMoney }}</text>
+						<text v-else>商家无需保证金</text>
+					</view>
 				</view>
 				<view
-				v-if="combinationActivityList[activeSession].remark"
-				style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
+					v-if="combinationActivityList[activeSession].content"
+					style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
 				>
-				备注：{{ combinationActivityList[activeSession].remark }}
+					赠送规则：{{ combinationActivityList[activeSession].content }}
 				</view>
-				</view> -->
+				<view
+					v-if="combinationActivityList[activeSession].remark"
+					style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
+				>
+					备注：{{ combinationActivityList[activeSession].remark }}
+				</view>
+			</view>
 		</view>
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
@@ -117,7 +143,7 @@
 					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 10rpx;">
 						<view>
 							<view style="display: flex;align-items: flex-end;">
-								<!-- <view style="font-size: 26rpx;color: #FF7800;">活动价</view> -->
+								<view style="font-size: 26rpx;color: #FF7800;">活动价</view>
 								<view style="display: flex;align-items: flex-end;color: #C83732;">
 									<view style="font-size: 24rpx;">￥</view>
 									<view style="font-size: 36rpx;">{{ item.price }}</view>
@@ -158,12 +184,12 @@
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
-						<!-- <view
+						<view
 							v-if="item.discount"
 							style="width: fit-content;padding: 0 8rpx;margin: 10upx 6upx 0 0;color: #C5AA7B;font-size: 26rpx;border: 2rpx solid #E4E5E6;"
-							>
+						>
 							直降 {{ item.discount }} 元
-							</view> -->
+						</view>
 						<view
 							v-if="item.limitNumber"
 							style="width: fit-content;padding: 0 8rpx;margin: 10upx 6upx 0 0;color: #C5AA7B;font-size: 26rpx;border: 2rpx solid #E4E5E6;"
@@ -201,12 +227,13 @@ export default {
 				pageSize: 20,
 				// ids: [], // 不传查全部
 				shopId: '',
-				stateList: []
+				stateList: ['0', '1', '2', '3', '4']
 			},
 			activeSession: 0
 		}
 	},
 	onLoad(options) {
+		if (options.shopId) this.queryInfo.shopId = Number(options.shopId)
 		if (options.combinationId) {
 			this.queryInfo.ids = [ Number(options.combinationId) ]
 		}
@@ -214,6 +241,7 @@ export default {
 	},
 	methods: {
 		getCombinationActivitiesList(isLoadmore) {
+			console.log(this.queryInfo)
 			uni.showLoading()
 			getPlatformComposeCanvasApi(this.queryInfo).then((res) => {
 				this.combinationActivityTotal = res.data.page.total

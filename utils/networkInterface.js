@@ -794,36 +794,41 @@ export const resolveVoucherSelect = (params = {}) => {
 	let isFail = false
 	if (voucherId) {
 		if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
-			if (settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
-				if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
-					// 清除店铺优惠券数据
-					for (let i = 0; i < settlement.shops.length; i++) {
-						for (let cIndex = 0; cIndex < settlement.shops[i].shopCoupons.length; cIndex++) {
-							settlement.shops[i].shopCoupons[cIndex].checked = false
+			if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
+				if (settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
+					if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+						// 清除店铺优惠券数据
+						for (let i = 0; i < settlement.shops.length; i++) {
+							for (let cIndex = 0; cIndex < settlement.shops[i].shopCoupons.length; cIndex++) {
+								settlement.shops[i].shopCoupons[cIndex].checked = false
+							}
+							settlement.shops[i].currentCoupon = {}
+							settlement.shops[i].totalAfterDiscount = settlement.shops[i].total
 						}
-						settlement.shops[i].currentCoupon = {}
-						settlement.shops[i].totalAfterDiscount = settlement.shops[i].total
+						selectedShopCouponList = []
+						// 清除平台优惠券数据
+						settlement.coupons && settlement.coupons.forEach((item) => {
+							item.checked = false
+						})
+						selectedPlatformCoupon = { couponId: '' }
+						settlement.shops.forEach((shopItem) => {
+							if (shopItem.skus) {
+								shopItem.skus.forEach((skuItem) => {
+									skuItem.buyerCouponId = null
+								})
+							}
+						})
+						selectIntegral = false // 取消选择积分
+					} else {
+						uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+						isFail = true
 					}
-					selectedShopCouponList = []
-					// 清除平台优惠券数据
-					settlement.coupons && settlement.coupons.forEach((item) => {
-						item.checked = false
-					})
-					selectedPlatformCoupon = { couponId: '' }
-					settlement.shops.forEach((shopItem) => {
-						if (shopItem.skus) {
-							shopItem.skus.forEach((skuItem) => {
-								skuItem.buyerCouponId = null
-							})
-						}
-					})
-					selectIntegral = false // 取消选择积分
 				} else {
-					uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+					uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
 					isFail = true
 				}
 			} else {
-				uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
+				uni.showToast({ title: '包含组合活动商品，无法使用代金券！', icon: 'none' })
 				isFail = true
 			}
 		} else {

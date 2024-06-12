@@ -2,7 +2,7 @@
 	<view class="cashier-list-content" :style="{ padding, borderRadius: radius }">
 		<view v-if="show">
 			<slot name="header" :payment-list="paymentList"></slot>
-			<tui-radio-group v-model="paymentMode" @change="handleChangePaymentMode">
+			<tui-radio-group :value="paymentMode" @change="handleChangePaymentMode">
 				<view v-for="payment in paymentList" :key="payment.paymentMode" class="cashier" @click="handleClickPaymentMode(payment)">
 					<view class="cashier-item">
 						<view class="icon-text">
@@ -27,7 +27,7 @@
 					</view>
 					<!-- 花呗分期 -->
 					<view v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)" class="ali-hb-content">
-						<tui-radio-group v-model="flowerObj.hbByStagesPeriods" @change="handleChangePeriods">
+						<tui-radio-group :value="flowerObj.hbByStagesPeriods" @change="handleChangePeriods">
 							<view v-for="(flowerItem, index) in flowerObj.hbByStagesList" :key="index" class="cashier">
 								<view class="cashier-item">
 									<view class="icon-text">
