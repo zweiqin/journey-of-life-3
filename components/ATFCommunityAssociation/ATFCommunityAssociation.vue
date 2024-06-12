@@ -6,7 +6,7 @@
 				style="display: flex;align-items: center;justify-content: space-between;background-color: #ffffff;"
 				:style="{ padding: paddingIn, borderRadius: radius }" @click="isShowPopup = true"
 			>
-				<view style="font-size: 26rpx;color: #333333;">请选择关联社区店</view>
+				<view style="font-size: 26rpx;color: #333333;">所属小区</view>
 				<view style="display: flex;align-items: center;">
 					<view v-if="selectedCommunityStore && selectedCommunityStore.id" style="color: #C5AA7B;">
 						<text>{{ selectedCommunityStore.communityName || '--' }}</text>

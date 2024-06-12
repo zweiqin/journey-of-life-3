@@ -16,12 +16,7 @@
 				:data="userAddressInfo" padding="20rpx 0 0"
 			></ATFOrderAddressSelect>
 
-			<ATFCommunityAssociation
-				padding="20rpx 0 0" :community-address-info="userAddressInfo"
-				@change="(e) => otherInfo = { ...otherInfo, ...e }"
-			></ATFCommunityAssociation>
-
-			<view style="padding-top: 2rpx;">
+			<view style="padding-top: 20rpx;">
 				<ATFShopSkus
 					v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item"
 					detail-radius="20rpx 20rpx 0 0" is-show-shop-detail
@@ -121,6 +116,11 @@
 				margin="20rpx 0 0" :integral-num="integralNum" :integral-ratio="integralRatio"
 				:select-integral="selectIntegral" @change="changeIntegral"
 			></ATFOrderIntegral>
+
+			<ATFCommunityAssociation
+				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				@change="(e) => otherInfo = { ...otherInfo, ...e }"
+			></ATFCommunityAssociation>
 
 			<view style="margin-top: 20rpx;">
 				<CashierList
@@ -267,7 +267,7 @@ export default {
 								'priceId': 0,
 								'buyerShopCouponId': 0,
 								'buyerCouponId': null
-							})), // 结算组装 ifLogistics: 0, selected: 1, platformCurrencyId: 0, platformSeckillId: 0, platformDiscountId: 0, shopSeckillId: 0, shopDiscountId: 0, sceneId: 0, useMember: false, composeId: 0, useCredit: 0, useCreditAmount: 0,
+							})), // 结算组装 ifLogistics: 0, selected: 1, platformCurrencyId: 0, platformComposeId: 0, platformSeckillId: 0, platformDiscountId: 0, shopSeckillId: 0, shopDiscountId: 0, sceneId: 0, useMember: false, composeId: 0, useCredit: 0, useCreditAmount: 0,
 							'distribution': { 'logisticsId': 0, 'distributionName': '全国包邮', 'distributionPrice': 0 },
 							'number': 1,
 							'total': Number(options.money),

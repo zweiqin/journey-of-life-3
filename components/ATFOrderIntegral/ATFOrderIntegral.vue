@@ -1,7 +1,7 @@
 <template>
 	<!-- 积分支付 -->
-	<view class="shop-skus-container" :style="{ margin }">
-		<view v-if="integralNum" style="margin: 20rpx 0 0;">
+	<view class="order-integral-container">
+		<view v-if="integralNum" :style="{ margin }">
 			<view
 				style="padding: 28rpx 20rpx;display: flex;justify-content: space-between;align-items: center;font-size: 26rpx;background-color: #ffffff;"
 			>
@@ -19,7 +19,7 @@
 <script>
 
 export default {
-	name: 'ATFShopSkus',
+	name: 'ATFOrderIntegral',
 	props: {
 		margin: {
 			type: String,
@@ -48,5 +48,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.shop-skus-container {}
+.order-integral-container {}
 </style>

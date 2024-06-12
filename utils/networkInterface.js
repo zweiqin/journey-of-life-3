@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { handleDoPay } from './payUtil'
-import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi } from '../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi, updateSavePlatformComposeApi } from '../api/anotherTFInterface'
 import { T_RECEIVE_ITEM } from '../constant'
 
 /**
@@ -682,6 +682,7 @@ export const resolveOrderPackageData = (params = {}) => {
 			skusobj.platformSeckillId = curSku.platformSeckillId
 			skusobj.platformDiscountId = curSku.platformDiscountId
 			skusobj.platformCurrencyId = curSku.platformCurrencyId
+			skusobj.platformComposeId = curSku.platformComposeId
 			skusobj.shopSeckillId = curSku.shopSeckillId
 			skusobj.shopDiscountId = curSku.shopDiscountId
 			skusobj.sceneId = curSku.sceneId
@@ -753,6 +754,9 @@ export const resolveSubmitOrder = async (params = {}) => {
 				productIds: orderPackageDataObj.pointProductIds
 			})
 			updatePlatformBeeCurrencySaveBeeApi({
+				orderId: res.data.orderId
+			})
+			updateSavePlatformComposeApi({
 				orderId: res.data.orderId
 			})
 			// type订单类型1-父订单2-子订单
