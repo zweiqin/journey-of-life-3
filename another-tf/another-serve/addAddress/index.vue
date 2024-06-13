@@ -128,8 +128,8 @@ export default {
 				this.addressData.area = this.addressData.defaultRegion[2] || ''
 				this.addressData.township = this.addressData.defaultRegion[3] || ''
 				this.addressData.communityName = this.addressData.defaultRegion[4] || ''
-				this.addressData.areaId = this.addressData.areaId || ''
-				this.addressData.communityId = this.addressData.communityId || ''
+				this.addressData.areaId = res.data.areaId || ''
+				this.addressData.communityId = res.data.communityId || ''
 				this.addressData.receiveId = res.data.receiveId
 				uni.hideLoading()
 			})

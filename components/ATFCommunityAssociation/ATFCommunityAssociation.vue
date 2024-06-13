@@ -36,7 +36,7 @@
 											<template #right>
 												<tui-button
 													type="warning" width="120rpx" height="50rpx" shape="circle"
-													@click="(selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = '') ||
+													@click="(selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = selectedCommunityStore.communityAccount.account = '') ||
 														((queryInfo.pageNo = 1) && getAllCommunityList())"
 												>
 													搜索
@@ -52,7 +52,7 @@
 									<view style="flex: 1;">
 									<tui-radio-group
 									:value="queryInfo.isCommunityAccount"
-									@change="(e) => (selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = '') ||
+									@change="(e) => (selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = selectedCommunityStore.communityAccount.account = '') ||
 									(((queryInfo.isCommunityAccount = e.detail.value) || true) && (queryInfo.pageNo = 1) && getAllCommunityList())"
 									>
 									<view style="display: flex;flex-wrap: wrap;align-items: center;">
@@ -177,32 +177,32 @@ export default {
 			selectedCommunityStore: {
 				id: '',
 				communityName: '',
-				communitySn: ''
+				communitySn: '',
 				// areaId: '',
 				// shopId: '',
 				// franchiseesShopId: '',
 				// bindFranchiseesTime: '',
 				// commissionRate: '',
-				// communityAccount: {
-				// 	id: '',
-				// 	openid: '',
-				// 	payId: '',
-				// 	account: '',
-				// 	password: '',
-				// 	headUrl: '',
-				// 	salt: '',
-				// 	typ: '',
-				// 	mobile: '',
-				// 	status: 1,
-				// 	isCertification: '',
-				// 	createTime: '',
-				// 	updateTime: '',
-				// 	verCode: null,
-				// 	graphCode: null,
-				// 	accountType: '',
-				// 	shopId: '',
-				// 	bindShopTime: ''
-				// }
+				communityAccount: {
+					account: ''
+					// mobile: '',
+					// 	id: '',
+					// 	openid: '',
+					// 	payId: '',
+					// 	password: '',
+					// 	headUrl: '',
+					// 	salt: '',
+					// 	typ: '',
+					// 	status: 1,
+					// 	isCertification: '',
+					// 	createTime: '',
+					// 	updateTime: '',
+					// 	verCode: null,
+					// 	graphCode: null,
+					// 	accountType: '',
+					// 	shopId: '',
+					// 	bindShopTime: ''
+				}
 			}
 		}
 	},
@@ -234,6 +234,7 @@ export default {
 				this.selectedCommunityStore.id = ''
 				this.selectedCommunityStore.communityName = ''
 				this.selectedCommunityStore.communitySn = ''
+				this.selectedCommunityStore.communityAccount.account = ''
 				if (this.benefitinFranchiseesPhone && newValue.receiveId && !newValue.receiveAdress) {
 					uni.showLoading()
 					getReceiveAddressByIdApi({ receiveId: newValue.receiveId }).then((res) => {
@@ -256,10 +257,10 @@ export default {
 	created() {
 		getOrderAssociatedBeneficiaryApi({ consumerPhone: this.$store.getters.userInfo.phone })
 			.then((res) => {
-				this.benefitinFranchiseesPhone = res.data.franchisees || ''
+				this.benefitinFranchiseesPhone = res.data.franchisees || '111'
 				this.$emit('change', {
 					benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-					communityPhone: this.selectedCommunityStore.id,
+					communityPhone: this.selectedCommunityStore.communityAccount.account,
 					commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 				})
 				if (this.benefitinFranchiseesPhone) {
@@ -270,7 +271,7 @@ export default {
 									this.commissionSharingRatio = ['', Number(res.data[1]), Number(res.data[2])]
 									this.$emit('change', {
 										benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-										communityPhone: this.selectedCommunityStore.id,
+										communityPhone: this.selectedCommunityStore.communityAccount.account,
 										commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 									})
 								} else {
@@ -375,9 +376,10 @@ export default {
 			this.selectedCommunityStore.id = item.id
 			this.selectedCommunityStore.communityName = item.communityName
 			this.selectedCommunityStore.communitySn = item.communitySn
+			this.selectedCommunityStore.communityAccount.account = item.communityAccount.account
 			this.$emit('change', {
 				benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-				communityPhone: this.selectedCommunityStore.id,
+				communityPhone: this.selectedCommunityStore.communityAccount.account,
 				commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 			})
 			uni.showLoading()
@@ -390,7 +392,7 @@ export default {
 							this.isShowPopup = false
 							this.$emit('change', {
 								benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-								communityPhone: this.selectedCommunityStore.id,
+								communityPhone: this.selectedCommunityStore.communityAccount.account,
 								commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 							})
 						} else {
