@@ -126,6 +126,8 @@
         </view>
       </view>
 
+      <QualityAssuranceCard :info="orderDetail.qualityAssuranceCardBO" :status="orderDetail.qualityAssuranceCardBO.status" v-if="orderDetail.qualityAssuranceCardBO"></QualityAssuranceCard>
+
       <view class="item comment" v-if="orderComment">
         <view class="item-title">评价</view>
         <view class="content">
@@ -217,8 +219,10 @@ import { getCommOrderDeatilApi, cancelOrderApi, apponitServerSFApi } from '../ap
 import { orderStatusMap, orderInfoFieldMap } from './config';
 import { isVideoSource, getUserId } from '../utils';
 import showModalMixin from 'mixin/showModal';
+import QualityAssuranceCard from '../user/quality-assurance-card/components/QualityAssuranceCard.vue'
 
 export default {
+  components: {QualityAssuranceCard},
   data() {
     return {
       orderNo: '',

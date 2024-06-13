@@ -1288,6 +1288,24 @@
           "style": {
             "navigationBarTitleText": "支付完成"
           }
+        },
+        {
+          "path": "quality-assurance-card/quality-assurance-card",
+          "style": {
+            "navigationBarTitleText": "我的质保卡"
+          }
+        },
+        {
+          "path": "quality-assurance-card/applied",
+          "style": {
+            "navigationBarTitleText": "质保卡申请记录"
+          }
+        },
+        {
+          "path": "quality-assurance-card/quality-assurance-card-detail",
+          "style": {
+            "navigationBarTitleText": "质保卡详情"
+          }
         }
       ]
     },
