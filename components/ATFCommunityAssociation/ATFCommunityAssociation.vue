@@ -36,7 +36,7 @@
 											<template #right>
 												<tui-button
 													type="warning" width="120rpx" height="50rpx" shape="circle"
-													@click="(selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = selectedCommunityStore.communityAccount.account = '') ||
+													@click="(selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }) &&
 														((queryInfo.pageNo = 1) && getAllCommunityList())"
 												>
 													搜索
@@ -52,7 +52,7 @@
 									<view style="flex: 1;">
 									<tui-radio-group
 									:value="queryInfo.isCommunityAccount"
-									@change="(e) => (selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = selectedCommunityStore.communityAccount.account = '') ||
+									@change="(e) => (selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }) &&
 									(((queryInfo.isCommunityAccount = e.detail.value) || true) && (queryInfo.pageNo = 1) && getAllCommunityList())"
 									>
 									<view style="display: flex;flex-wrap: wrap;align-items: center;">
@@ -231,10 +231,7 @@ export default {
 				this.queryInfo.counCode = ''
 				this.queryInfo.franchiseesPhone = ''
 				this.communityStoreList = []
-				this.selectedCommunityStore.id = ''
-				this.selectedCommunityStore.communityName = ''
-				this.selectedCommunityStore.communitySn = ''
-				this.selectedCommunityStore.communityAccount.account = ''
+				this.selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }
 				if (this.benefitinFranchiseesPhone && newValue.receiveId && !newValue.receiveAdress) {
 					uni.showLoading()
 					getReceiveAddressByIdApi({ receiveId: newValue.receiveId }).then((res) => {
@@ -373,10 +370,7 @@ export default {
 		// 社区店选择
 		handleCommunityStoreItemTap(item) {
 			if (this.selectedCommunityStore.id === item.id) return
-			this.selectedCommunityStore.id = item.id
-			this.selectedCommunityStore.communityName = item.communityName
-			this.selectedCommunityStore.communitySn = item.communitySn
-			this.selectedCommunityStore.communityAccount.account = item.communityAccount.account
+			this.selectedCommunityStore = { ...item, communityAccount: item.communityAccount || { account: '' } }
 			this.$emit('change', {
 				benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
 				communityPhone: this.selectedCommunityStore.communityAccount.account,
