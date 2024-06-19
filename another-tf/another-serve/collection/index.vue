@@ -366,11 +366,9 @@ export default {
 			} else {
 				const tempArr = []
 				this.productInfo.data.forEach((value, index) => {
-					if (value.selected == 1) {
-						tempArr.push(value.collectId)
-					}
+					if (value.selected == 1) tempArr.push(value.collectId)
 				})
-				deleteCollectToCollectApi({ tempArr }).then((res) => {
+				deleteCollectToCollectApi({ ids: tempArr }).then((res) => {
 					this.delshow = false
 					uni.hideLoading()
 					this.$showToast('删除成功')
@@ -406,11 +404,9 @@ export default {
 				uni.showLoading()
 				const tempArr = []
 				this.storeInfo.data.forEach((value, index) => {
-					if (value.selected == 1) {
-						tempArr.push(value.collectId)
-					}
+					if (value.selected == 1) tempArr.push(value.collectId)
 				})
-				deleteCollectToCollectApi({ tempArr }).then((res) => {
+				deleteCollectToCollectApi({ ids: tempArr }).then((res) => {
 					this.delshow = false
 					uni.hideLoading()
 					this.$showToast('删除成功')

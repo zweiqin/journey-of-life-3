@@ -15,11 +15,6 @@
 			<!-- v-if="settlement.shopType !== 2" -->
 			<ATFOrderAddressSelect :data="userAddressInfo" padding="20rpx 0 0"></ATFOrderAddressSelect>
 
-			<ATFCommunityAssociation
-				padding="20rpx 0 0" :community-address-info="userAddressInfo"
-				@change="(e) => otherInfo = { ...otherInfo, ...e }"
-			></ATFCommunityAssociation>
-
 			<view style="padding-top: 20rpx;">
 				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" is-show-skus>
 					<template #operateBody="obj">
@@ -52,6 +47,11 @@
 				margin="20rpx 0 0" :integral-num="integralNum" :integral-ratio="integralRatio"
 				:select-integral="selectIntegral" @change="changeIntegral"
 			></ATFOrderIntegral>
+
+			<ATFCommunityAssociation
+				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				@change="(e) => otherInfo = { ...otherInfo, ...e }"
+			></ATFCommunityAssociation>
 
 			<VoucherUse
 				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll"

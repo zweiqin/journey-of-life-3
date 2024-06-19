@@ -716,7 +716,7 @@ function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 		uni.login({
 			provider: 'weixin',
 			success: (res) => {
-				getSessionKeyAppApi({ code: res.code })
+				getSessionKeyAppApi({ code: res.code, _isShowToast: false })
 					.then(async (res1) => {
 						await gotoOrderH5PayApi({
 							...data,
@@ -726,7 +726,8 @@ function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 							extJsonStr: JSON.stringify({
 								'Sub_Appid': 'wx3cef6c7325c38a45', // 小程序appId
 								'Sub_Openid': res1.data.wechatOpenId // 微信用户openId
-							})
+							}),
+							_isShowToast: false
 						}).then((res2) => {
 							if (type) {
 								uni.removeStorageSync(T_PAY_ORDER)
@@ -764,13 +765,15 @@ function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 						})
 							.catch((e) => {
 								uni.hideLoading()
-								failOperation(e.message)
+								if (e.data) failOperation(`${e.data.message}-${e.data.errorData}`)
+								else failOperation(`请求：${e.errMsg}`)
 								reject(e)
 							})
 					})
 					.catch((e) => {
 						uni.hideLoading()
-						failOperation(e.message)
+						if (e.data) failOperation(`${e.data.message}-${e.data.errorData}`)
+						else failOperation(`请求：${e.errMsg}`)
 						reject(e)
 					})
 			},

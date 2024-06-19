@@ -338,11 +338,13 @@ export default {
       // uni.navigateTo({ url: "../community-center/community-order" });
       // const let var
 
-      uni.showToast({
-        title: '请选择服务类型',
-        icon: 'none',
-        duration: 2000
-      });
+      if (!this.serverTypeId) {
+				return uni.showToast({
+					title: '请选择服务类型',
+					icon: 'none',
+					duration: 2000
+				});
+			}
 
       if (!this.isArtificial) {
         uni.navigateTo({

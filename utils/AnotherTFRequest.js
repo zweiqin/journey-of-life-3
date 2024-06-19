@@ -23,7 +23,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 				if (res.statusCode == 200) {
 					if ((res.data.code === '200') || (res.data.code === '')) {
 						resolve(res.data)
-					} else if ((res.data.code === '20004') || (res.data.code === '20005') || (res.data.code == 40005)) {
+					} else if ((res.data.code === '20004') || (res.data.code === '20005') || (res.data.code == 40005)) { // 有res.data
 						uni.showModal({
 							title: '提示',
 							content: '账号未登录，请重新登陆！',
@@ -41,7 +41,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 							}
 						})
 						reject(res)
-					} else {
+					} else { // 有res.data
 						reject(res) // 先执行完下面拦截器内的逻辑，再执行拦截器之外的逻辑。reject则返回res的信息，用于区分resolve的res.data的数据结构（通过(res.data).code==='200'或''）
 						// 这里是根据接口报错的情况。如果为true，对于小程序环境，则替换拦截器之外的catch里进行其它的toast，对于非小程序环境则不替换。
 						// 如果为false则都不替换。但针对于以下其它网络本身的reject情况，为true则都替换。所以如果外面有要展示的toast，则最好通过_isShowToast为false更全面
@@ -65,7 +65,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 							// #endif
 						}
 					}
-				} else {
+				} else { // 没有res.data
 					reject(res)
 					console.log('请求错误', res)
 					if (_isShowToast) {
@@ -80,7 +80,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 					}
 				}
 			},
-			fail: (e) => {
+			fail: (e) => { // 没有e.data
 				// hideLoading()
 				reject(e)
 				console.log('请求失败', e)
@@ -88,7 +88,7 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 					Promise.resolve().then(() => {
 						Promise.resolve().then(() => {
 							uni.showToast({
-								title: `请求失败：${res.errMsg}`,
+								title: `请求失败：${e.errMsg}`,
 								icon: 'none'
 							})
 						})

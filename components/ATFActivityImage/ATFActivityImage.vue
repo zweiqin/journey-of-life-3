@@ -1,5 +1,5 @@
 <template>
-	<!-- 所属活动 0-常规商品 1-拼团活动 2-秒杀活动 3-限时折扣活动 4-平台秒杀 5-平台折扣 6-定价捆绑 7-组合捆绑 8-场景营销 9-会员价 10-平台消费金活动 -->
+	<!-- 所属活动 0-常规商品 1-拼团活动 2-秒杀活动 3-限时折扣活动 4-平台秒杀 5-平台折扣 6-定价捆绑 7-组合捆绑 8-场景营销 9-会员价 10-平台消费金活动 11-组合活动 -->
 	<view class="activity-image-container" :style="{ fontSize, fontWeight: bold ? 'bold' : 'normal' }">
 		<view v-if="type === 0">
 			<!-- 常规商品 -->
@@ -53,6 +53,11 @@
 			<!-- 平台消费金活动 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
 			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '消费金活动' }}</text>
+		</view>
+		<view v-else-if="type === 11" class="activity-wrapper" :style="{ backgroundColor }">
+			<!-- 平台消费金活动 -->
+			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
+			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '组合活动' }}</text>
 		</view>
 	</view>
 </template>

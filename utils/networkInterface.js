@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { handleDoPay } from './payUtil'
-import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi } from '../api/anotherTFInterface'
+import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi, updateSavePlatformComposeApi } from '../api/anotherTFInterface'
 import { T_RECEIVE_ITEM } from '../constant'
 
 /**
@@ -682,6 +682,7 @@ export const resolveOrderPackageData = (params = {}) => {
 			skusobj.platformSeckillId = curSku.platformSeckillId
 			skusobj.platformDiscountId = curSku.platformDiscountId
 			skusobj.platformCurrencyId = curSku.platformCurrencyId
+			skusobj.platformComposeId = curSku.platformComposeId
 			skusobj.shopSeckillId = curSku.shopSeckillId
 			skusobj.shopDiscountId = curSku.shopDiscountId
 			skusobj.sceneId = curSku.sceneId
@@ -746,7 +747,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 		})
 		uni.showLoading({ mask: true, title: '结算中...' })
 		try {
-			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode })
+			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode, _isShowToast: false }) // 通过_isShowToast为false更全面
 			// 下单成功处理埋点
 			addUserTrackReportDoPointerApi({
 				eventType: 3,
@@ -755,10 +756,14 @@ export const resolveSubmitOrder = async (params = {}) => {
 			updatePlatformBeeCurrencySaveBeeApi({
 				orderId: res.data.orderId
 			})
+			updateSavePlatformComposeApi({
+				orderId: res.data.orderId
+			})
 			// type订单类型1-父订单2-子订单
 			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
 		} catch (e) {
-			uni.showToast({ title: `${e.message}-${e.errorData}`, icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误
 		} finally {
 			uni.hideLoading()
 		}
@@ -789,36 +794,41 @@ export const resolveVoucherSelect = (params = {}) => {
 	let isFail = false
 	if (voucherId) {
 		if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
-			if (settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
-				if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
-					// 清除店铺优惠券数据
-					for (let i = 0; i < settlement.shops.length; i++) {
-						for (let cIndex = 0; cIndex < settlement.shops[i].shopCoupons.length; cIndex++) {
-							settlement.shops[i].shopCoupons[cIndex].checked = false
+			if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
+				if (settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
+					if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+						// 清除店铺优惠券数据
+						for (let i = 0; i < settlement.shops.length; i++) {
+							for (let cIndex = 0; cIndex < settlement.shops[i].shopCoupons.length; cIndex++) {
+								settlement.shops[i].shopCoupons[cIndex].checked = false
+							}
+							settlement.shops[i].currentCoupon = {}
+							settlement.shops[i].totalAfterDiscount = settlement.shops[i].total
 						}
-						settlement.shops[i].currentCoupon = {}
-						settlement.shops[i].totalAfterDiscount = settlement.shops[i].total
+						selectedShopCouponList = []
+						// 清除平台优惠券数据
+						settlement.coupons && settlement.coupons.forEach((item) => {
+							item.checked = false
+						})
+						selectedPlatformCoupon = { couponId: '' }
+						settlement.shops.forEach((shopItem) => {
+							if (shopItem.skus) {
+								shopItem.skus.forEach((skuItem) => {
+									skuItem.buyerCouponId = null
+								})
+							}
+						})
+						selectIntegral = false // 取消选择积分
+					} else {
+						uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+						isFail = true
 					}
-					selectedShopCouponList = []
-					// 清除平台优惠券数据
-					settlement.coupons && settlement.coupons.forEach((item) => {
-						item.checked = false
-					})
-					selectedPlatformCoupon = { couponId: '' }
-					settlement.shops.forEach((shopItem) => {
-						if (shopItem.skus) {
-							shopItem.skus.forEach((skuItem) => {
-								skuItem.buyerCouponId = null
-							})
-						}
-					})
-					selectIntegral = false // 取消选择积分
 				} else {
-					uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+					uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
 					isFail = true
 				}
 			} else {
-				uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
+				uni.showToast({ title: '包含组合活动商品，无法使用代金券！', icon: 'none' })
 				isFail = true
 			}
 		} else {

@@ -9,7 +9,7 @@
 				class="goodsDetails-box flex-display flex-column mar-left-30"
 				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
-				<view v-if="item.activityType == 0" class="goodsDetails flex-items-plus flex-row mar-top-30">
+				<view v-if="item.activityType === 0" class="goodsDetails flex-items-plus flex-row mar-top-30">
 					<image class="goodsImg" :src="common.seamingImgUrl(item.image)"></image>
 					<view class="mar-left-30">
 						<view class="goodsName-box overflowNoDot">

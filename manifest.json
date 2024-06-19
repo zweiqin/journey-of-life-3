@@ -58,11 +58,7 @@
                 "urlschemewhitelist" : "alipays,alipay,safepay,weixin,wechat",
                 "capabilities" : {
                     "entitlements" : {
-                        "com.apple.developer.associated-domains" : [
-                            "applinks:static-mp-29b88e72-555b-4891-9a2e-f797e1a8bd08.next.bspapp.com",
-                            "applinks:www.tuanfengkeji.cn",
-                            "applinks:nsappapi.tuanfengkeji.cn"
-                        ]
+                        "com.apple.developer.associated-domains" : [ "applinks:www.tuanfengkeji.cn" ]
                     }
                 },
                 "privacyDescription" : {

@@ -69,7 +69,9 @@ export default {
 					.catch((err) => {
 						uni.hideLoading()
 						// // #ifdef MP
-						// uni.showToast({ title: (err && err.message) || JSON.stringify(err), icon: 'none' })
+						// 这里是单独考虑拦截器里的toast被上面的hideLoading隐藏的情况
+						// if (err.data) uni.showToast({ title: `${err.data.message}-${err.data.errorData}`, icon: 'none' })
+						// else uni.showToast({ title: `请求：${err.errMsg}`, icon: 'none' })
 						// // #endif
 						reject(err)
 					})

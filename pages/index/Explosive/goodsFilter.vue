@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getClaasifyProductsApi, getFirstClassifyApi } from '@/api/anotherTFInterface'
+import { getClaasifyProductsApi } from '@/api/anotherTFInterface'
 import Goods from './cpns/goods.vue'
 import MainMenus from './components/main-menus.vue'
 import SubMenus from './components/sub-menus.vue'

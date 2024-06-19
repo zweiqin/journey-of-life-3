@@ -6,7 +6,7 @@
 				style="display: flex;align-items: center;justify-content: space-between;background-color: #ffffff;"
 				:style="{ padding: paddingIn, borderRadius: radius }" @click="isShowPopup = true"
 			>
-				<view style="font-size: 26rpx;color: #333333;">请选择关联社区店</view>
+				<view style="font-size: 26rpx;color: #333333;">所属小区</view>
 				<view style="display: flex;align-items: center;">
 					<view v-if="selectedCommunityStore && selectedCommunityStore.id" style="color: #C5AA7B;">
 						<text>{{ selectedCommunityStore.communityName || '--' }}</text>
@@ -36,7 +36,7 @@
 											<template #right>
 												<tui-button
 													type="warning" width="120rpx" height="50rpx" shape="circle"
-													@click="(selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = '') ||
+													@click="(selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }) &&
 														((queryInfo.pageNo = 1) && getAllCommunityList())"
 												>
 													搜索
@@ -45,37 +45,36 @@
 										</tui-input>
 									</view>
 								</view>
-								<view
-									class="search-btn"
+								<!-- <view
 									style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 0 12rpx;"
-								>
+									>
 									<text style="font-size: 34rpx;">是否社区账号</text>
 									<view style="flex: 1;">
-										<tui-radio-group
-											:value="queryInfo.isCommunityAccount"
-											@change="(e) => (selectedCommunityStore.id = selectedCommunityStore.communityName = selectedCommunityStore.communitySn = '') ||
-												(((queryInfo.isCommunityAccount = e.detail.value) || true) && (queryInfo.pageNo = 1) && getAllCommunityList())"
-										>
-											<view style="display: flex;flex-wrap: wrap;align-items: center;">
-												<tui-label
-													v-for="(item, index) in [{ name: '全部', value: '' }, { name: '否', value: '0' }, { name: '是', value: '1' }]"
-													:key="index"
-												>
-													<tui-list-cell padding="0 16rpx">
-														<view>
-															<tui-radio
-																:checked="queryInfo.isCommunityAccount === item.value" :value="item.value"
-																color="#07c160" border-color="#999"
-															>
-															</tui-radio>
-															<text>{{ item.name }}</text>
-														</view>
-													</tui-list-cell>
-												</tui-label>
-											</view>
-										</tui-radio-group>
+									<tui-radio-group
+									:value="queryInfo.isCommunityAccount"
+									@change="(e) => (selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }) &&
+									(((queryInfo.isCommunityAccount = e.detail.value) || true) && (queryInfo.pageNo = 1) && getAllCommunityList())"
+									>
+									<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+									v-for="(item, index) in [{ name: '全部', value: '' }, { name: '否', value: '0' }, { name: '是', value: '1' }]"
+									:key="index"
+									>
+									<tui-list-cell padding="0 16rpx">
+									<view>
+									<tui-radio
+									:checked="queryInfo.isCommunityAccount === item.value" :value="item.value"
+									color="#07c160" border-color="#999"
+									>
+									</tui-radio>
+									<text>{{ item.name }}</text>
 									</view>
-								</view>
+									</tui-list-cell>
+									</tui-label>
+									</view>
+									</tui-radio-group>
+									</view>
+									</view> -->
 
 								<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 16rpx;">
 									<view style="font-size: 34rpx;font-weight: bold;color: #333333;">选择关联社区店：</view>
@@ -167,7 +166,7 @@ export default {
 			queryInfo: {
 				counCode: '', // 区编码。次序1
 				franchiseesPhone: '', // 加盟商手机号。次序2。另外次序3为相关次序字段传空
-				isCommunityAccount: '', // ""-全部，"0"-否，"1"-是
+				isCommunityAccount: '1', // ""-全部，"0"-否，"1"-是
 				keyWord: '',
 				pageNo: 1,
 				pageSize: 20
@@ -178,32 +177,32 @@ export default {
 			selectedCommunityStore: {
 				id: '',
 				communityName: '',
-				communitySn: ''
+				communitySn: '',
 				// areaId: '',
 				// shopId: '',
 				// franchiseesShopId: '',
 				// bindFranchiseesTime: '',
 				// commissionRate: '',
-				// communityAccount: {
-				// 	id: '',
-				// 	openid: '',
-				// 	payId: '',
-				// 	account: '',
-				// 	password: '',
-				// 	headUrl: '',
-				// 	salt: '',
-				// 	typ: '',
-				// 	mobile: '',
-				// 	status: 1,
-				// 	isCertification: '',
-				// 	createTime: '',
-				// 	updateTime: '',
-				// 	verCode: null,
-				// 	graphCode: null,
-				// 	accountType: '',
-				// 	shopId: '',
-				// 	bindShopTime: ''
-				// }
+				communityAccount: {
+					account: ''
+					// mobile: '',
+					// 	id: '',
+					// 	openid: '',
+					// 	payId: '',
+					// 	password: '',
+					// 	headUrl: '',
+					// 	salt: '',
+					// 	typ: '',
+					// 	status: 1,
+					// 	isCertification: '',
+					// 	createTime: '',
+					// 	updateTime: '',
+					// 	verCode: null,
+					// 	graphCode: null,
+					// 	accountType: '',
+					// 	shopId: '',
+					// 	bindShopTime: ''
+				}
 			}
 		}
 	},
@@ -232,9 +231,7 @@ export default {
 				this.queryInfo.counCode = ''
 				this.queryInfo.franchiseesPhone = ''
 				this.communityStoreList = []
-				this.selectedCommunityStore.id = ''
-				this.selectedCommunityStore.communityName = ''
-				this.selectedCommunityStore.communitySn = ''
+				this.selectedCommunityStore = { id: '', communityName: '', communitySn: '', communityAccount: { account: '' } }
 				if (this.benefitinFranchiseesPhone && newValue.receiveId && !newValue.receiveAdress) {
 					uni.showLoading()
 					getReceiveAddressByIdApi({ receiveId: newValue.receiveId }).then((res) => {
@@ -257,11 +254,10 @@ export default {
 	created() {
 		getOrderAssociatedBeneficiaryApi({ consumerPhone: this.$store.getters.userInfo.phone })
 			.then((res) => {
-				res.data.franchisees = '1111' // todo
-				this.benefitinFranchiseesPhone = res.data.franchisees || ''
+				this.benefitinFranchiseesPhone = res.data.franchisees || '111'
 				this.$emit('change', {
 					benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-					communityPhone: this.selectedCommunityStore.id,
+					communityPhone: this.selectedCommunityStore.communityAccount.account,
 					commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 				})
 				if (this.benefitinFranchiseesPhone) {
@@ -272,7 +268,7 @@ export default {
 									this.commissionSharingRatio = ['', Number(res.data[1]), Number(res.data[2])]
 									this.$emit('change', {
 										benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-										communityPhone: this.selectedCommunityStore.id,
+										communityPhone: this.selectedCommunityStore.communityAccount.account,
 										commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 									})
 								} else {
@@ -374,12 +370,10 @@ export default {
 		// 社区店选择
 		handleCommunityStoreItemTap(item) {
 			if (this.selectedCommunityStore.id === item.id) return
-			this.selectedCommunityStore.id = item.id
-			this.selectedCommunityStore.communityName = item.communityName
-			this.selectedCommunityStore.communitySn = item.communitySn
+			this.selectedCommunityStore = { ...item, communityAccount: item.communityAccount || { account: '' } }
 			this.$emit('change', {
 				benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-				communityPhone: this.selectedCommunityStore.id,
+				communityPhone: this.selectedCommunityStore.communityAccount.account,
 				commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 			})
 			uni.showLoading()
@@ -392,7 +386,7 @@ export default {
 							this.isShowPopup = false
 							this.$emit('change', {
 								benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-								communityPhone: this.selectedCommunityStore.id,
+								communityPhone: this.selectedCommunityStore.communityAccount.account,
 								commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
 							})
 						} else {

@@ -1813,6 +1813,12 @@
           }
         },
         {
+          "path": "another-user/combination-activities/index",
+          "style": {
+            "navigationBarTitleText": "组合活动"
+          }
+        },
+        {
           "path": "another-serve/messageDetail/index",
           "style": {
             "navigationBarTitleText": "公告详情"

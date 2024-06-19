@@ -33,6 +33,7 @@
 import { getRandomSortProductApi } from '../../api/anotherTFInterface'
 
 export default {
+	name: 'ATFHoteRecommed',
 	data() {
 		return {
 			listQuery: {
@@ -51,14 +52,7 @@ export default {
 			this.listQuery.timestamp = new Date().getTime()
 			getRandomSortProductApi(this.listQuery).then((res) => {
 				uni.stopPullDownRefresh()
-				if (res.code == 200) {
-					this.productList = res.data.list
-				} else {
-					uni.showToast({
-						title: res.message,
-						icon: 'none'
-					})
-				}
+				this.productList = res.data.list || []
 			})
 		},
 		// 商品详情

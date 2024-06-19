@@ -10,10 +10,10 @@
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
-					{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.27.23
+					<view style="text-align: center;background-color: #afafaf;">{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-1.0.27.26</view>
 				</view>
-				<view v-else style="margin-top: 24upx;" @click="isShowOther = true">
-					<view style="width: 632upx;height: 12upx;margin: 0 auto;background-color: #f1f1ef;"></view>
+				<view v-else style="margin-top: 24rpx;" @click="isShowOther = true">
+					<view style="width: 632rpx;height: 12rpx;margin: 0 auto;background-color: #f1f1ef;"></view>
 				</view>
 			</view>
 		</view>
@@ -220,21 +220,21 @@ export default {
 	position: relative;
 	min-height: 100vh;
 	background-color: #f6f6f5;
-	padding-bottom: 120upx;
+	padding-bottom: 140rpx;
 
 	.main-area {
 		width: 100%;
-		padding: 0 32upx 32upx;
+		padding: 0 32rpx 32rpx;
 		box-sizing: border-box;
 
 		/deep/ .menu-title {
-			font-size: 24upx;
+			font-size: 24rpx;
 			color: #3a3629;
 		}
 
 		/deep/ .menu-icon {
-			width: 64upx;
-			height: 64upx;
+			width: 64rpx;
+			height: 64rpx;
 		}
 
 		/deep/ .menu-item {
@@ -245,7 +245,7 @@ export default {
 		}
 
 		/deep/ .order-pane {
-			margin-top: 20upx;
+			margin-top: 20rpx;
 		}
 	}
 
@@ -268,12 +268,12 @@ export default {
 	min-width: 100vw;
 	max-width: 100vw;
 	flex-direction: row;
-	// padding-top: 30upx;
+	// padding-top: 30rpx;
 }
 
 /deep/ .tui-loadmore-tips {
 	color: #ff7a4e;
-	margin-bottom: 40upx;
+	margin-bottom: 40rpx;
 }
 
 /deep/ .tui-loading-center {

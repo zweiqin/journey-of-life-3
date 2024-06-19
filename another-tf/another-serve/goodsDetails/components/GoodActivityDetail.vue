@@ -32,7 +32,7 @@
 					</view>
 					<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
 				</view>
-				<view v-else-if="[1, 2, 3, 4, 5, 8, 9, 10].includes(skuSelect.activityType)" style="background-color: #333333;">
+				<view v-else-if="[1, 2, 3, 4, 5, 8, 9, 10, 11].includes(skuSelect.activityType)" style="background-color: #333333;">
 					<view class="flex-items flex-row flex-sp-between">
 						<view class="flex-column-plus">
 							<ATFActivityImage
@@ -47,7 +47,7 @@
 								</label>
 							</view>
 						</view>
-						<view v-if="[1, 2, 3, 4, 5, 10].includes(skuSelect.activityType)">
+						<view v-if="[1, 2, 3, 4, 5, 10, 11].includes(skuSelect.activityType)">
 							<view v-if="(skuSelect.ifEnable === 0)" style="text-align: center;">
 								<view style="padding-bottom: 10rpx;font-size: 28rpx;color: #cccccc;">距离结束剩余</view>
 								<tui-countdown

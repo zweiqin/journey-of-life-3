@@ -192,31 +192,44 @@ export default {
 					type: 'gcj02',
 					highAccuracyExpireTime: 1000,
 					success: (result) => {
-						queryLocation.longitude = result.longitude
-						queryLocation.latitude = result.latitude
-						console.log(result)
-						getAdressDetailByLngLat(queryLocation.latitude, queryLocation.longitude)
-							.then((res) => {
-								if (res.status === '1') {
-									this.$data._query = {
-										...this.$data._query,
-										...this.queryParam,
-										classifyId: this.currentClassifyId || this.queryParam.classifyId,
-										areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode,
-										...queryLocation
-									}
-									if ((Date.now() - tempTime) >= 1000) {
-										this._loadData(null, () => this.isPositioning = true)
+						if (result.longitude && result.latitude) {
+							queryLocation.longitude = result.longitude
+							queryLocation.latitude = result.latitude
+							console.log(result)
+							getAdressDetailByLngLat(queryLocation.latitude, queryLocation.longitude)
+								.then((res) => {
+									if (res.status === '1') {
+										this.$data._query = {
+											...this.$data._query,
+											...this.queryParam,
+											classifyId: this.currentClassifyId || this.queryParam.classifyId,
+											areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode,
+											...queryLocation
+										}
+										if ((Date.now() - tempTime) >= 1000) {
+											this._loadData(null, () => this.isPositioning = true)
+										} else {
+											this._loadData(null, () => this.isPositioning = false)
+										}
 									} else {
-										this._loadData(null, () => this.isPositioning = false)
+										this.$showToast('查询失败')
 									}
-								} else {
+								})
+								.catch(() => {
 									this.$showToast('查询失败')
-								}
-							})
-							.catch(() => {
-								this.$showToast('查询失败')
-							})
+								})
+						} else {
+							this.$showToast('定位请求失败')
+							this.$data._query = {
+								...this.$data._query,
+								...this.queryParam,
+								classifyId: this.currentClassifyId || this.queryParam.classifyId,
+								areaId: this.$store.state.location.locationInfo.adcode,
+								longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+								latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+							}
+							this._loadData()
+						}
 					},
 					fail: () => {
 						this.$data._query = {

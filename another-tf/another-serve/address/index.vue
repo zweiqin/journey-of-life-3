@@ -17,7 +17,23 @@
 						<text class="user-address font-color-999">{{ item.receiveAdress }}{{ item.address }}</text>
 					</view>
 				</view>
-				<tui-icon name="edit" :size="50" unit="upx" color="#cccccc" @click="go(`/another-tf/another-serve/addAddress/index?receiveId=${item.receiveId}`)"></tui-icon>
+				<view style="text-align: center;">
+					<view>
+						<tui-icon
+							name="edit" :size="50" unit="upx" color="#cccccc"
+							@click="go(`/another-tf/another-serve/addAddress/index?receiveId=${item.receiveId}`)"
+						></tui-icon>
+					</view>
+					<view>
+						<tui-button
+							v-if="isSelect"
+							type="black" width="118rpx" height="54rpx"
+							margin="8rpx 0 0" @click="handleSelectAddress(item)"
+						>
+							选择
+						</tui-button>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view style="padding-bottom: 45upx;">
@@ -112,7 +128,7 @@ export default {
 						})
 					}, 500)
 				},
-				fail: (e) => {}
+				fail: (e) => { }
 			})
 		}
 	},
