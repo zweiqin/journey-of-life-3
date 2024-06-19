@@ -12,7 +12,7 @@ export const qualityAssuranceCardStatus = [
     value: 5,
     icon: require('../../static/images/new-user/quality-assurance-card/invalid.png'),
     color: '#979797',
-    type: 'history,mine',
+    type: 'mine, history',
     disabled: false,
     applyText: '申请质保服务(已失效)'
   }

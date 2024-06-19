@@ -10,7 +10,9 @@
 
     <view class="tabs flex-items">
       <!-- 关于减一see: './config.js' -->
-      <view @click="handleChangeStatus(tab.value - 1)" class="item flex-items" v-for="tab in tabs" :key="tab.value" :class="{ active: tab.value - 1 === currentTab }">{{ tab.name }}</view>
+      <view @click="handleChangeStatus(tab.value - 1)" class="item flex-items" v-for="tab in tabs" :key="tab.value" :class="{ active: tab.value - 1 === currentTab }">
+        {{ tab.name === '已失效' ? '已取消' : tab.name }}
+      </view>
     </view>
 
     <view class="history-list">
@@ -33,7 +35,7 @@
 
     <tui-modal :show="cancelTipVisible" @click="handleClickModal" title="提示" content="确定要取消申请吗？"></tui-modal>
 
-    <CancelApplyServePopup ref="cancelApplyServePopupRef"></CancelApplyServePopup>
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
@@ -41,12 +43,11 @@
 import { getQualityAssuranceCardApplysApi, cancelQualityAssuranceCardServeApi } from '../../api/community-center'
 import { qualityAssuranceCardStatus } from './config'
 import ApplyHistoryDetail from './components/ApplyHistoryDetail.vue'
-import CancelApplyServePopup from './components/CancelApplyServePopup.vue'
 import loadMore from '../../mixin/loadMore'
 import { getUserId } from '../../utils'
 
 export default {
-  components: { ApplyHistoryDetail, CancelApplyServePopup },
+  components: { ApplyHistoryDetail },
   data() {
     return {
       tabs: qualityAssuranceCardStatus.filter((item) => item.type.includes('history')),
@@ -54,7 +55,7 @@ export default {
       currentCollapseIndex: 0,
       cancelTipVisible: false,
       cancelServeForm: {
-        qualityAssuranceCardSerialNumber: '',
+        serialNumber: '',
         userId: getUserId()
       }
     }
@@ -94,12 +95,33 @@ export default {
     async handleClickModal(e) {
       try {
         if (e.index) {
+          uni.showLoading({ title: '取消中...' })
+          if (!this.cancelServeForm.serialNumber) {
+            this.ttoast({ type: 'fail', title: '质保卡编号为空' })
+          } else {
+            const res = await cancelQualityAssuranceCardServeApi(this.cancelServeForm)
+            if (res.statusCode === 20000) {
+              this.ttoast('取消成功')
+              this.cancelTipVisible = false
+              this.$data._query.pageNo = 1
+              this.$data._list = []
+              this.getData()
+            } else {
+              throw new Error(res.statusMsg)
+            }
+          }
+        } else {
+          this.cancelTipVisible = false
         }
-      } catch (error) {}
+      } catch (error) {
+        this.ttoast({ type: 'fail', title: '取消失败', content: error.message })
+      } finally {
+        uni.hideLoading()
+      }
     },
 
     handleCancelServe(e) {
-      this.cancelServeForm.qualityAssuranceCardSerialNumber = e
+      this.cancelServeForm.serialNumber = e
       this.cancelTipVisible = true
     }
   }

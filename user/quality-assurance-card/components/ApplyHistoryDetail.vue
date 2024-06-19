@@ -2,45 +2,45 @@
   <view class="apply-history-detail-container">
     <tui-collapse @click="$emit('changeCurrent', tag)" :index="tag" :current="currentCollapseIndex">
       <template v-slot:title>
-        <view class="header" :style="{ 'border-bottom': tag === currentCollapseIndex ? '1rpx solid #cccc' : 'none' }">空调清洗服务 - ZB123465498631</view>
+        <view class="header" :style="{ 'border-bottom': tag === currentCollapseIndex ? '1rpx solid #cccc' : 'none' }">{{ info.type }} - {{ info.qualityAssuranceCardSerialNumber }}</view>
       </template>
       <template v-slot:content>
         <view class="title flex-items flex-sp-between">
           申请详情
-          <view class="status">处理中</view>
+          <view class="status">{{ cardStatusInfo.name === '已失效' ? '已取消' : cardStatusInfo.name }}</view>
         </view>
         <view class="main">
           <view class="detail-info">
             <view class="item flex-items">
               <view class="label">申请编号：</view>
-              <view class="value">447847854555454515552</view>
+              <view class="value">{{ info.qualityAssuranceCardSerialNumber || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">申请时间：</view>
-              <view class="value">2024年5月27日 12:00:00</view>
+              <view class="value">{{ info.createTime || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">申请人：</view>
-              <view class="value">梁先生</view>
+              <view class="value">{{ info.insuredPerson || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">联系电话：</view>
-              <view class="value">13588996655</view>
+              <view class="value">{{ info.tel || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">服务类型：</view>
-              <view class="value">空调清洗服务</view>
+              <view class="value">{{ info.type || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">处理人：</view>
-              <view class="value">蔡志伟</view>
+              <view class="value">{{ info.masterName || '--' }}</view>
             </view>
             <view class="item flex-items">
               <view class="label">处理人电话：</view>
-              <view class="value">15866332211</view>
+              <view class="value">{{ info.masterTel || '--' }}</view>
             </view>
 
-            <button class="comment-btn" @click="$emit('cancel', info.qualityAssuranceCardSerialNumber)">取消申请</button>
+            <button v-if="info.status === 1" class="comment-btn" @click="$emit('cancel', info.serialNumber)">取消申请</button>
           </view>
         </view>
 
@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { getCurrentStatusInfo } from '../config'
+
 export default {
   props: {
     currentCollapseIndex: {
@@ -87,6 +89,14 @@ export default {
   methods: {
     setRate(e) {
       this.currentRate = e.index
+    }
+  },
+
+  computed: {
+    cardStatusInfo() {
+      const res = getCurrentStatusInfo(this.info ? this.info.status + 1 : 2)
+      this.$emit('set-btn', res)
+      return res
     }
   }
 }

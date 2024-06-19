@@ -14,7 +14,10 @@
         <view class="title">质保卡说明:</view>
         质保期为社区服务完成之日期起计算。若服务在保修期内出现质量问题，可在线提交质保申请，售后人员进行处理。
       </view>
-      <view class="section-title">质保卡信息</view>
+      <view class="section-title flex-items flex-sp-between">
+        质保卡信息
+        <button class="uni-btn history-list-btn" @click="go('/user/quality-assurance-card/applied')">查看申请记录</button>
+      </view>
       <view class="section-wrapper">
         <view class="item flex-items">
           <text class="label">享保人:</text>
@@ -41,7 +44,7 @@
         </view>
       </view>
 
-      <view class="section-title">质保卡申请记录</view>
+      <view class="section-title" v-if="cardDetailInfo.applyBOs.length">质保卡申请记录</view>
       <view class="section-wrapper" v-for="item in cardDetailInfo.applyBOs" :key="item.id">
         <view class="item flex-items">
           <text class="label">申请编号:</text>
@@ -69,7 +72,9 @@
         </view>
       </view>
 
-      <button @click="handleOpServe" v-if="currentStatusOpInfo.applyText" :class="currentStatusOpInfo.disabled ? 'disabled' : ''" class="uni-btn">{{ currentStatusOpInfo.applyText }}</button>
+      <button @click="handleOpServe" v-if="currentStatusOpInfo.applyText" :class="currentStatusOpInfo.disabled ? 'disabled' : ''" class="uni-btn cancel-btn">
+        {{ currentStatusOpInfo.applyText }}
+      </button>
     </view>
 
     <tui-toast ref="toast"></tui-toast>
@@ -103,7 +108,11 @@ export default {
 
   filters: {
     formatStatus(value) {
-      return getCurrentStatusInfo((value + 1) | 2).name
+      let currentStatusText = getCurrentStatusInfo(value + 1).name
+      if (currentStatusText === '已失效') {
+        currentStatusText = '已取消'
+      }
+      return currentStatusText
     }
   },
 
@@ -142,8 +151,6 @@ export default {
     },
 
     handleOpServe() {
-      console.log(this.currentStatusOpInfo)
-
       const { value } = this.currentStatusOpInfo
       switch (value) {
         case 1:
@@ -179,7 +186,8 @@ export default {
       }
     }
 
-    .section-title {
+    .section-title,
+    .history-list-btn {
       line-height: 2.2;
       color: #000;
       font-size: 24rpx;
@@ -211,7 +219,7 @@ export default {
       }
     }
 
-    .uni-btn {
+    .cancel-btn {
       width: 100%;
       height: 100rpx;
       display: flex;
