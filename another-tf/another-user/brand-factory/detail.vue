@@ -361,7 +361,7 @@ export default {
 							event: 'sharingPageTurn',
 							webPath: `/another-tf/another-user/brand-factory/detail?shopId=${this.brandDetail.shopId}`,
 							title: `团蜂品牌工厂--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
-							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl(this.brandDetail.advertisement) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
 						}
 					})
 				}

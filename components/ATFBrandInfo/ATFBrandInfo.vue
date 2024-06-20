@@ -112,10 +112,10 @@
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../../../config'
-import { updateCollectCancelApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
+import { A_TF_MAIN } from '../../config'
+import { updateCollectCancelApi, updateCollectToCollectApi } from '../../api/anotherTFInterface'
 export default {
-	name: 'BrandInfo',
+	name: 'ATFBrandInfo',
 	props: {
 		brandDetail: {
 			type: Object,

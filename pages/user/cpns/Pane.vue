@@ -177,68 +177,47 @@ export default {
 	watch: {
 		'menuData': {
 			handler(newVal) {
-				if (!this.menuData) return this.renderMenu = this.specialPane = []
-				const haveSpecialData = []
-				const renderMenuArr = []
-				newVal.forEach((item) => {
-					if (item.name === '我的账本' || item.name === '我的推广') {
-						haveSpecialData.push(item)
-					} else if (item.showRole) {
-						if (item.showRole.includes('shop') && this.$store.state.auth.identityInfo.type.includes(9)) renderMenuArr.push(item)
-						if (item.showRole.includes('merchantStaff') && this.$store.state.auth.identityInfo.type.includes(8)) renderMenuArr.push(item)
-						if (item.showRole.includes('franchisee') && this.$store.state.auth.identityInfo.type.includes(1)) renderMenuArr.push(item)
-					} else {
-						if (item.name === '电子名片') {
-							if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {
-								jumpToOtherProject({ toType: 'MP' })
-								this.hasElectronicCardConfig = true
-							}
-						}
-						renderMenuArr.push(item)
-					}
-					this.specialPane = haveSpecialData
-					this.renderMenu = renderMenuArr
-				})
+				this.handleRenderView(newVal, this.$store.state.auth.identityInfo.type)
 			},
 			immediate: true,
 			deep: true
 		},
 		'$store.state.auth.identityInfo.type': {
 			handler(newVal) {
-				if (!this.menuData) return this.renderMenu = this.specialPane = []
-				const haveSpecialData = []
-				const renderMenuArr = []
-				this.menuData.forEach((item) => {
-					if (item.name === '我的账本' || item.name === '我的推广') {
-						haveSpecialData.push(item)
-					} else if (item.showRole) {
-						if (item.showRole.includes('shop') && newVal.includes(9)) renderMenuArr.push(item)
-						if (item.showRole.includes('merchantStaff') && newVal.includes(8)) renderMenuArr.push(item)
-						if (item.showRole.includes('franchisee') && newVal.includes(1)) renderMenuArr.push(item)
-					} else {
-						if (item.name === '电子名片') {
-							if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {
-								jumpToOtherProject({ toType: 'MP' })
-								this.hasElectronicCardConfig = true
-							}
-						}
-						renderMenuArr.push(item)
-					}
-				})
-				this.specialPane = haveSpecialData
-				this.renderMenu = renderMenuArr
+				this.handleRenderView(this.menuData, newVal)
 			},
 			immediate: true,
 			deep: true
 		}
 	},
-
-	beforeMount() {
-		// console.log(this.menuData)
-	},
-	created() {
+	methods: {
+		handleRenderView(menuData, roleInfoArr) {
+			if (!menuData) return this.renderMenu = this.specialPane = []
+			const haveSpecialData = []
+			const renderMenuArr = []
+			menuData.forEach((item) => {
+				if (item.name === '我的账本' || item.name === '我的推广') {
+					haveSpecialData.push(item)
+				} else if (item.showRole) {
+					if (item.showRole.includes('shop') && roleInfoArr.includes(9)) renderMenuArr.push(item)
+					if (item.showRole.includes('merchantStaff') && roleInfoArr.includes(8)) renderMenuArr.push(item)
+					if (item.showRole.includes('franchisee') && roleInfoArr.includes(1)) renderMenuArr.push(item)
+					if (item.showRole.includes('copartner') && (roleInfoArr.includes(13) || roleInfoArr.includes(14))) renderMenuArr.push(item)
+					if (item.showRole.includes('regimentalcommander') && roleInfoArr.includes(15)) renderMenuArr.push(item)
+				} else {
+					if (item.name === '电子名片') {
+						if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {
+							jumpToOtherProject({ toType: 'MP' })
+							this.hasElectronicCardConfig = true
+						}
+					}
+					renderMenuArr.push(item)
+				}
+				this.specialPane = haveSpecialData
+				this.renderMenu = renderMenuArr
+			})
+		}
 	}
-
 }
 </script>
 

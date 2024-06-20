@@ -1421,6 +1421,12 @@
           }
         },
         {
+          "path": "another-user/selection-center/shop-selection",
+          "style": {
+            "navigationBarTitleText": "商家选品"
+          }
+        },
+        {
           "path": "another-user/brand-factory/index",
           "style": {
             "navigationBarTitleText": "品牌工厂"

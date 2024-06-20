@@ -43,7 +43,7 @@
 					>
 						<template #line="obj">
 							<tui-button
-								v-if="[3, 4, 5].includes(levelType)"
+								v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15)"
 								type="warning" width="106rpx" height="54rpx"
 								margin="0" shape="circle"
 								@click="handleSelectSelection(obj.data)"
@@ -60,7 +60,7 @@
 					>
 						<template #line="obj">
 							<tui-button
-								v-if="[3, 4, 5].includes(levelType)"
+								v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15)"
 								type="warning" width="106rpx" height="54rpx"
 								margin="0" shape="circle"
 								@click="handleSelectSelection(obj.data)"
@@ -90,12 +90,11 @@
 </template>
 
 <script>
-import { getSelectLevelPlatformRelationApi, getShopClassifyApi, getBuyerSelectionLibraryApi, getBuyerSelectionSelectApi } from '../../../api/anotherTFInterface'
+import { getShopClassifyApi, getBuyerSelectionLibraryApi, getBuyerSelectionSelectApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'SelectionCenter',
 	data() {
 		return {
-			levelType: '',
 			allTabData: [],
 			selectionTagShowFalg: false,
 			classifyName: '',
@@ -116,10 +115,6 @@ export default {
 		}
 	},
 	onLoad() {
-		getSelectLevelPlatformRelationApi({})
-			.then((res) => {
-				this.levelType = res.data.levelType
-			})
 		getShopClassifyApi({
 			shopId: ''
 		}).then((res) => {

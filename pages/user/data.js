@@ -225,6 +225,12 @@ export const additionalFunction = [
 		icon: require('../../static/images/new-user/menu-icon/dianzhangduan.png'),
 		type: 'external',
 		url: 'https://www.zhult.com/zhanzhang/#/login'
+	},
+	{
+		name: '选品中心',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/selection-center/index',
+		showRole: ['copartner', 'regimentalcommander']
 	}
 ]
 
@@ -328,11 +334,6 @@ export const otherFunction = [
 		name: '我的卡券',
 		icon: require('../../static/images/new-user/menu-icon/shenqingkaidian.png'),
 		url: '/another-tf/another-serve/coupon/index'
-	},
-	{
-		name: '选品中心',
-		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-		url: '/another-tf/another-user/selection-center/index'
 	},
 	{
 		name: '组合活动',

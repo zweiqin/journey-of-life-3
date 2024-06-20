@@ -5,7 +5,7 @@ import store from '../index'
 import { getUrlCode } from '../../utils'
 import { refrshUserInfoApi } from '../../api/user'
 import { Encrypt } from '../../utils/secret'
-import { getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
+import { getSelectLevelPlatformRelationApi, getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
 
 export default {
 	namespaced: true,
@@ -14,7 +14,7 @@ export default {
 			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
 			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
 			identityInfo: {
-				type: [], // 9商家或8商家员工，1加盟商，2代理商
+				type: [], // 9商家或8商家员工，1加盟商，2代理商，11关系链没购买产品，12关系链已购买产品且不是团长，13关系链已是团长但不满足团长升合伙人条件，14关系链已是团长且满足团长升合伙人条件，15关系链已经是合伙人，10关系链其它情况
 				shopInfo: {}
 			}
 		}
@@ -437,24 +437,42 @@ export default {
 		// 获取身份（是否商家）
 		updateIdentityInfo({ state, dispatch, commit }) {
 			return new Promise((resolve, reject) => {
-				const userInfo = uni.getStorageSync(T_STORAGE_KEY)
-				if (userInfo && userInfo.phone) {
-					getIsShopByUserApi({ mobile: userInfo.phone })
-						.then((res) => {
-							if (res.data && res.data.shopId) {
-								if (res.data.staff) {
-									commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 8]) ], shopInfo: res.data || {} })
-								} else {
-									commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res.data || {} })
-								}
-							}
-							resolve(res.data)
-						})
-						.catch((err) => {
-							uni.hideToast()
-							reject(err)
-						})
-				}
+				getSelectLevelPlatformRelationApi({})
+					.then((res1) => {
+						if (res1.data) {
+							if (res1.data.levelType === 1) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 11]) ] })
+							else if (res1.data.levelType === 2) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 12]) ] })
+							else if (res1.data.levelType === 3) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 13]) ] })
+							else if (res1.data.levelType === 4) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 14]) ] })
+							else if (res1.data.levelType === 5) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 15]) ] })
+							else if (res1.data.levelType === 0) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 10]) ] })
+						} else {
+							commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 10]) ] })
+						}
+						const userInfo = uni.getStorageSync(T_STORAGE_KEY)
+						if (userInfo && userInfo.phone) {
+							getIsShopByUserApi({ mobile: userInfo.phone })
+								.then((res2) => {
+									if (res2.data && res2.data.shopId) {
+										if (res2.data.staff) {
+											commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 8]) ], shopInfo: res2.data || {} })
+										} else {
+											commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res2.data || {} })
+										}
+									}
+									resolve(res2.data)
+								})
+								.catch((err) => {
+									uni.hideToast()
+									reject(err)
+								})
+						} else {
+							reject()
+						}
+					})
+					.catch((err) => {
+						reject(err)
+					})
 			})
 		}
 	}

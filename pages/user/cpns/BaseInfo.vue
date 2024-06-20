@@ -25,20 +25,20 @@
 							</view>
 							<view style="display: flex;justify-content: center;align-items: flex-end;">
 								<image
-									v-if="[1, 2].includes($store.getters.levelType)"
+									v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/huiyuan.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								></image>
 								<image
-									v-if="[3, 4].includes($store.getters.levelType)"
+									v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/tuanzhang.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								>
 								</image>
 								<image
-									v-if="[ 5 ].includes($store.getters.levelType)"
+									v-if="$store.state.auth.identityInfo.type.includes(15)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/hehuoren.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
@@ -83,9 +83,9 @@
 								@click.stop="go('/another-tf/another-user/user-upgrade/user-upgrade-application')"
 							>
 								<text>当前等级：</text>
-								<text v-if="[1, 2].includes($store.getters.levelType)">普通会员</text>
-								<text v-if="[3, 4].includes($store.getters.levelType)">团长</text>
-								<text v-if="[ 5 ].includes($store.getters.levelType)">合伙人</text>
+								<text v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)">普通会员</text>
+								<text v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)">团长</text>
+								<text v-if="$store.state.auth.identityInfo.type.includes(15)">合伙人</text>
 								<text style="margin-left: 4upx;">></text>
 							</view>
 						</view>
@@ -209,7 +209,7 @@
 		>
 			<view style="position: relative;">
 				<view
-					v-if="(frameType === 'relationship') && [3, 4, 5].includes($store.getters.levelType)"
+					v-if="(frameType === 'relationship') && ($store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15))"
 					class="rotation-box"
 				>
 				</view>
@@ -227,9 +227,9 @@
 						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
 					>
 						<template v-if="frameType === 'relationship'">
-							<text v-if="[1, 2].includes($store.getters.levelType)">您是普通会员</text>
-							<text v-if="[3, 4].includes($store.getters.levelType)">恭喜你成为团长</text>
-							<text v-if="[ 5 ].includes($store.getters.levelType)">恭喜你成为合伙人</text>
+							<text v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)">您是普通会员</text>
+							<text v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)">恭喜你成为团长</text>
+							<text v-if="$store.state.auth.identityInfo.type.includes(15)">恭喜你成为合伙人</text>
 						</template>
 						<template v-else-if="frameType === 'shop'">
 							<text>您是商家</text>

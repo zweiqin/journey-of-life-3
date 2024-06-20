@@ -314,16 +314,6 @@ export default {
       // 		app.globalData.isShowCommunityPopup = true
       // 	})
 
-      // if (app.globalData.isShowCommunityPopup) {
-      // 	await getSelectLevelPlatformRelationApi({ relationshipLevelId: 2 })
-      // 		.then((res) => {
-      // 			app.globalData.isShowCommunityPopup = false // 满足申请条件（已购买关系链产品或已经是团长）
-      // 		})
-      // 		.catch((e) => {
-      // 			uni.hideToast()
-      // 			app.globalData.isShowCommunityPopup = true // 没购买产品
-      // 		})
-      // }
       if (app.globalData.isShowCommunityPopup) {
         await getSelectLevelPlatformRelationApi({})
           .then((res) => {
