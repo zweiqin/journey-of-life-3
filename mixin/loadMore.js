@@ -1,7 +1,7 @@
 export default (options) => {
   const {
     api,
-    mapKey = { totalPages: "totalPages", list: "goodsList", size: "size" },
+    mapKey = { totalPages: "totalPages", list: "goodsList", size: "size", page: 'page' },
     beforeFn,
     afterFn,
     beforeReachBottomfn,
@@ -13,7 +13,7 @@ export default (options) => {
     data() {
       return {
         _query: {
-          page: 1,
+          [mapKey.page]: 1,
           [mapKey.size]: 20,
         },
         _status: "none",
@@ -33,7 +33,6 @@ export default (options) => {
           } else {
             res = await api(this.$data._query);
           }
-
 
           this.$data._totalPages = res.data[mapKey.totalPages];
           if (isLoadmore) {
