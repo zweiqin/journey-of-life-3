@@ -341,52 +341,86 @@ async function bankCardPay(data, payType, type, otherArgs) {
  */
 
 async function h5TonglianPay(data, payType, type, otherArgs) {
-	await gotoOrderH5PayApi({
-		...data,
-		purchaseMode: payType,
-		...otherArgs
-	}).then((res) => {
-		console.log(JSON.stringify(res.data))
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
-		if (!res.data.package) { // 零元支付情况
-			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-		} else {
-			const payData = JSON.parse(res.data.package)
-			const form = document.createElement('form')
-			form.setAttribute('action', res.data.mwebUrl)
-			form.setAttribute('method', 'POST')
-			let input
-			for (const key in payData) {
-				input = document.createElement('input')
-				input.name = key
-				input.value = payData[key]
-				form.appendChild(input)
+	if (isInWx()) {
+		await gotoOrderH5PayApi({
+			...data,
+			purchaseMode: payType,
+			...otherArgs
+		}).then((res) => {
+			console.log(JSON.stringify(res.data))
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderSn
+				})
 			}
-			document.body.appendChild(form)
-			form.submit()
-			document.body.removeChild(form)
-		}
-	})
-		.catch((e) => {
-			console.log(e)
-			uni.showToast({ title: '支付失败', icon: 'none' })
-			setTimeout(() => {
-				if ([1, 2].includes(payType)) {
-					uni.switchTab({ url: '/pages/order/order' })
-				} else if ([3, 4, 5].includes(payType)) {
-					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+			if (!res.data.package) { // 零元支付情况
+				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+			} else {
+				const payData = JSON.parse(res.data.package)
+				const form = document.createElement('form')
+				form.setAttribute('action', res.data.mwebUrl)
+				form.setAttribute('method', 'POST')
+				let input
+				for (const key in payData) {
+					input = document.createElement('input')
+					input.name = key
+					input.value = payData[key]
+					form.appendChild(input)
 				}
-			}, 2000)
+				document.body.appendChild(form)
+				form.submit()
+				document.body.removeChild(form)
+			}
 		})
-		.finally((e) => {
-			uni.hideLoading()
+			.catch((e) => {
+				console.log(e)
+				uni.showToast({ title: '支付失败', icon: 'none' })
+				setTimeout(() => {
+					if ([1, 2].includes(payType)) {
+						uni.switchTab({ url: '/pages/order/order' })
+					} else if ([3, 4, 5].includes(payType)) {
+						uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+					}
+				}, 2000)
+			})
+			.finally((e) => {
+				uni.hideLoading()
+			})
+	} else {
+		await getPayMiniProgramQueryApi({
+			orderFormid: data.orderFormid, // 无此传参
+			orderNo: data.orderSn || data.orderFormid,
+			purchaseMode: payType,
+			paymentMode: data.paymentMode,
+			...otherArgs
+		}).then((res) => {
+			console.log(JSON.stringify(res.data))
+			if (res.code == 200) {
+				if (type) {
+					uni.removeStorageSync(T_PAY_ORDER)
+					uni.setStorageSync(T_PAY_ORDER, {
+						type,
+						TL_ORDER_NO: data.orderSn
+					})
+				}
+				if (res.data.isZeroOrder === '1') { // 零元支付情况
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+				} else {
+					delete res.data.isZeroOrder
+					let query = ''
+					for (const key in res.data) {
+						query += key + '=' + res.data[key] + '&'
+					}
+					location.href = `weixin://dl/business/?appid=wx3cef6c7325c38a45&path=pages/loading/loading&query=${query}orderNo=${data.orderSn}&userId=${getUserId()}`
+				}
+			}
 		})
+			.finally((e) => {
+				uni.hideLoading()
+			})
+	}
 }
 
 /**
@@ -396,7 +430,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 
 async function wvTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid,
+		orderFormid: data.orderFormid, // 无此传参
 		orderNo: data.orderSn || data.orderFormid,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
@@ -442,7 +476,7 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 
 async function appTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid,
+		orderFormid: data.orderFormid, // 无此传参
 		orderNo: data.orderSn || data.orderFormid,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,

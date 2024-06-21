@@ -110,7 +110,7 @@ export default {
 
   mixins: [loadMore({
     api: getClaasifyProductsApi,
-    mapKey: { totalPages: "total", list: "list", size: "pageSize" }
+    mapKey: { totalPages: "total", list: "list", size: "pageSize", page: 'page' }
   })],
 
   onLoad(params) {

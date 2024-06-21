@@ -205,7 +205,6 @@ export const isInWx = () => {
  * @returns
  */
 
-// eslint-disable-next-line complexity
 export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
 		if (isInWx()) {

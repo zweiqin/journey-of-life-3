@@ -43,7 +43,7 @@ export default {
 
   mixins: [loadMore({
     api: getBrandListBySelectApi,
-    mapKey: { totalPages: "totalPages", list: "brandList", size: "limit" }
+    mapKey: { totalPages: "totalPages", list: "brandList", size: "limit", page: 'page' }
   })],
 
   data() {
