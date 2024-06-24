@@ -796,6 +796,8 @@ export default {
 				collageId: this.dataList.collageId,
 				money: this.dataList.orderPrice,
 				orderId: this.dataList.orderId,
+				orderFormid: this.dataList.orderFormid,
+				orderSn: this.dataList.orderFormid,
 				type: 2,
 				...this.payInfo
 			}, 1, '')

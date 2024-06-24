@@ -22,7 +22,7 @@
 						></tui-icon>
 					</view>
 					<text class="txt2" style="display: flex;">
-						<text v-if="((showType == 'income') && [4, 7].includes(item.type)) || ((showType == 'expenditure') && [2, 4].includes(item.type))">-</text>
+						<text v-if="((showType == 'income') && [ 4 ].includes(item.type)) || ((showType == 'expenditure') && [2, 4].includes(item.type))">-</text>
 						<text v-else>+</text> {{ item.number }}
 					</text>
 					<view class="itemDetails">

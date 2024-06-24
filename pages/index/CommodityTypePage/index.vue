@@ -36,7 +36,7 @@
 		mixins: [
 			loadMore({
 			api: goodsListApi,
-			mapKey: { totalPages: 'totalPages', list: 'goodsList', size: 'size' },
+			mapKey: { totalPages: 'totalPages', list: 'goodsList', size: 'size', page: 'page' },
 			dataFn(goodsArr) {
 				if (!this.ad.hot.length) {
 				this.ad.hot.push(...goodsArr.slice(0, 2));

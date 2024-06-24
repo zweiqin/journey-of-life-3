@@ -128,7 +128,7 @@ export default {
   },
   mixins: [loadMore({
     api: getClaasifyProductsApi,
-    mapKey: { totalPages: "total", list: "list", size: "pageSize" },
+    mapKey: { totalPages: "total", list: "list", size: "pageSize", page: 'page' },
     dataFn(goodsArr) {
       if (!this.ad.hot.length) {
         this.ad.hot.push(...goodsArr.slice(0, 2))

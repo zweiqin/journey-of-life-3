@@ -109,11 +109,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// // 惠市宝支付
-		// showHuiShiBaoPay: {
-		// 	type: Boolean,
-		// 	default: false
-		// },
+		// 惠市宝支付
+		showHuiShiBaoPay: {
+			type: Boolean,
+			default: false
+		},
 		// 用户的商家充值的余额支付
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
@@ -122,7 +122,6 @@ export default {
 	},
 	data() {
 		return {
-			showHuiShiBaoPay: false,
 			paymentMode: '', // 支付方式 1微信 2支付宝 3花呗分期
 			paymentList: [],
 			// 花呗相关
@@ -277,7 +276,7 @@ export default {
 				if (newValue) {
 					if (!this.paymentList.find((item) => item.paymentMode === '9')) {
 						this.paymentList.push({
-							label: '惠市宝支付',
+							label: '惠市宝支付（支持微信/支付宝/银联）',
 							paymentMode: '9',
 							icon: require('../../static/images/user/pay/huishibao.png'),
 							disabled: true
@@ -495,7 +494,7 @@ export default {
 		}
 		if (this.showHuiShiBaoPay) {
 			this.paymentList.push({
-				label: '惠市宝支付',
+				label: '惠市宝支付（支持微信/支付宝/银联）',
 				paymentMode: '9',
 				icon: require('../../static/images/user/pay/huishibao.png'),
 				disabled: true

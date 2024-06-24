@@ -55,11 +55,11 @@
 <script>
 import {
 	getSettlementOrderApi
-} from '../../../../api/anotherTFInterface'
-import { T_SKU_ITEM_MSG_LIST } from '../../../../constant'
+} from '../../api/anotherTFInterface'
+import { T_SKU_ITEM_MSG_LIST } from '../../constant'
 
 export default {
-	name: 'StoreShopCart',
+	name: 'ATFStoreShopCart',
 	components: {},
 	props: {
 		brandId: {

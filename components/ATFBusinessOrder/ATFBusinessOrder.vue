@@ -358,7 +358,7 @@ export default {
 			uni.showModal(modalOptions)
 		},
 		handlePayOrder(orderItem) {
-			const { price, collageId, orderId, shopId, skus } = orderItem
+			const { price, collageId, orderId, orderFormid, shopId, skus } = orderItem
 			this.$emit('pay-order', {
 				showPayPopup: true,
 				pricePay: price,
@@ -368,6 +368,8 @@ export default {
 					collageId,
 					money: price,
 					orderId,
+					orderFormid,
+					orderSn: orderFormid,
 					type: 2
 				}
 			})

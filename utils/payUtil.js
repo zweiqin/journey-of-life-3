@@ -1,3 +1,4 @@
+import { ANOTHER_TF_INTERFACE } from '../config'
 import { T_PAY_ORDER, T_STORAGE_KEY } from '../constant'
 import { gotoOrderAppPayApi, gotoOrderH5PayApi, getSessionKeyAppApi, gotoOrderPayApi, payOrderSuccessApi, getPayMiniProgramQueryApi } from '../api/anotherTFInterface'
 import store from '../store'
@@ -340,52 +341,86 @@ async function bankCardPay(data, payType, type, otherArgs) {
  */
 
 async function h5TonglianPay(data, payType, type, otherArgs) {
-	await gotoOrderH5PayApi({
-		...data,
-		purchaseMode: payType,
-		...otherArgs
-	}).then((res) => {
-		console.log(JSON.stringify(res.data))
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
-		if (!res.data.package) { // 零元支付情况
-			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-		} else {
-			const payData = JSON.parse(res.data.package)
-			const form = document.createElement('form')
-			form.setAttribute('action', res.data.mwebUrl)
-			form.setAttribute('method', 'POST')
-			let input
-			for (const key in payData) {
-				input = document.createElement('input')
-				input.name = key
-				input.value = payData[key]
-				form.appendChild(input)
+	if (isInWx()) {
+		await gotoOrderH5PayApi({
+			...data,
+			purchaseMode: payType,
+			...otherArgs
+		}).then((res) => {
+			console.log(JSON.stringify(res.data))
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderSn
+				})
 			}
-			document.body.appendChild(form)
-			form.submit()
-			document.body.removeChild(form)
-		}
-	})
-		.catch((e) => {
-			console.log(e)
-			uni.showToast({ title: '支付失败', icon: 'none' })
-			setTimeout(() => {
-				if ([1, 2].includes(payType)) {
-					uni.switchTab({ url: '/pages/order/order' })
-				} else if ([3, 4, 5].includes(payType)) {
-					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+			if (!res.data.package) { // 零元支付情况
+				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+			} else {
+				const payData = JSON.parse(res.data.package)
+				const form = document.createElement('form')
+				form.setAttribute('action', res.data.mwebUrl)
+				form.setAttribute('method', 'POST')
+				let input
+				for (const key in payData) {
+					input = document.createElement('input')
+					input.name = key
+					input.value = payData[key]
+					form.appendChild(input)
 				}
-			}, 2000)
+				document.body.appendChild(form)
+				form.submit()
+				document.body.removeChild(form)
+			}
 		})
-		.finally((e) => {
-			uni.hideLoading()
+			.catch((e) => {
+				console.log(e)
+				uni.showToast({ title: '支付失败', icon: 'none' })
+				setTimeout(() => {
+					if ([1, 2].includes(payType)) {
+						uni.switchTab({ url: '/pages/order/order' })
+					} else if ([3, 4, 5].includes(payType)) {
+						uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+					}
+				}, 2000)
+			})
+			.finally((e) => {
+				uni.hideLoading()
+			})
+	} else {
+		await getPayMiniProgramQueryApi({
+			orderFormid: data.orderFormid, // 无此传参
+			orderNo: data.orderSn || data.orderFormid,
+			purchaseMode: payType,
+			paymentMode: data.paymentMode,
+			...otherArgs
+		}).then((res) => {
+			console.log(JSON.stringify(res.data))
+			if (res.code == 200) {
+				if (type) {
+					uni.removeStorageSync(T_PAY_ORDER)
+					uni.setStorageSync(T_PAY_ORDER, {
+						type,
+						TL_ORDER_NO: data.orderSn
+					})
+				}
+				if (res.data.isZeroOrder === '1') { // 零元支付情况
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+				} else {
+					delete res.data.isZeroOrder
+					let query = ''
+					for (const key in res.data) {
+						query += key + '=' + res.data[key] + '&'
+					}
+					location.href = `weixin://dl/business/?appid=wx3cef6c7325c38a45&path=pages/loading/loading&query=${query}orderNo=${data.orderSn}&userId=${getUserId()}`
+				}
+			}
 		})
+			.finally((e) => {
+				uni.hideLoading()
+			})
+	}
 }
 
 /**
@@ -395,7 +430,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 
 async function wvTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid,
+		orderFormid: data.orderFormid, // 无此传参
 		orderNo: data.orderSn || data.orderFormid,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
@@ -441,7 +476,7 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 
 async function appTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid,
+		orderFormid: data.orderFormid, // 无此传参
 		orderNo: data.orderSn || data.orderFormid,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
@@ -553,13 +588,6 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
 async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 	// 方式一：
 	if (typeof otherArgs.isSuccess === 'number') { // isSuccess、payType、orderId、collageId
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
 		if (otherArgs.isSuccess) {
 			if ([1, 2, 3, 4, 5].includes(payType)) {
 				if (data.collageId) await payOrderSuccessApi({ orderId: data.orderId, collageId: data.collageId })
@@ -569,7 +597,13 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 		}
 	} else {
-		delete otherArgs.satge
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
 		// 尝试一
 		// uni.postMessage({
 		// 	data: {
@@ -600,11 +634,15 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 		if (res.ssoUserInfo && res.ssoUserInfo.token) res['satoken-user'] = res.ssoUserInfo.token
 		jumpToOtherProject({
 			isInMiniProgram: store.state.app.isInMiniProgram,
+			id: 'gh_c5b32d0f9bc9',
+			appId: 'wx3cef6c7325c38a45',
+			url: `pages/skip/skip`,
 			programUrl: `pages/skip/skip`,
 			toType: 'MP',
-			query: `?type=wvHuiShiBaoPay&data=${JSON.stringify({ data, payType, type, otherArgs, jumpType: `wvHuiShiBaoPayTurn`, Authorization: res.Authorization || '', satokenUser: res['satoken-user'] || '' })}`,
-			montageTerminal: [ 6 ]
+			query: `?type=wvHuiShiBaoPay&data=${encodeURIComponent(JSON.stringify({ data, payType, type, otherArgs, jumpType: `wvHuiShiBaoPayTurn`, Authorization: res.Authorization || '', satokenUser: res['satoken-user'] || '', baseUrl: ANOTHER_TF_INTERFACE }))}`,
+			montageTerminal: [6, 5, 1, 2, 4]
 		})
+		uni.hideLoading()
 	}
 	// 方式二：
 	// // , otherArgs = { stage: 'one' }
@@ -904,11 +942,11 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				}
 			} else {
 				// #ifdef H5
-				await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
+				await h5HuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
+				// await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef APP
-				uni.hideLoading()
-				uni.showToast({ title: '暂不支持在APP使用惠市宝支付', icon: 'none' })
+				await wvHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef MP-WEIXIN
 				await mpHuiShiBaoPay(submitResult, purchaseMode, type, otherArgs)
