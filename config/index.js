@@ -1,8 +1,3 @@
-export const SYSTEM_VERSION = '1.0.27' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
-export const APPLY_NAME = '团蜂' // 应用名称
-
-// --------------------------------------------------
-
 // // 线上助力通
 // export const SheQu1_URL = 'https://www.zhult.com/' // 线上
 // // export const SheQu1_URL = "http://192.168.0.144:8781/"; // 本地
@@ -39,4 +34,9 @@ export const A_TF_MAIN = 'https://test.tuanfengkeji.cn/TFShop_Uni_H5' // 测试
 export const ANOTHER_TF_INTERFACE = 'https://nsappapitest.tuanfengkeji.cn' // 测试
 export const ANOTHER_TF_UPLOAD = 'https://nsappapitest.tuanfengkeji.cn/file/upload' // 测试
 export const ANOTHER_TF_SETTLE = 'https://nsh51test.tuanfengkeji.cn' // 测试
+
+// --------------------------------------------------
+export const SYSTEM_VERSION = '1.0.27' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
+export const APPLY_NAME = '团蜂' // 应用名称
+export const ENV = A_TF_MAIN.includes('test') ? 'development' : 'production' // 环境
 

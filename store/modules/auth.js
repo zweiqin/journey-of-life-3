@@ -1,5 +1,5 @@
 import { T_REDIRECT_TYPE, T_NEW_BIND_TYPE, USER_INFO, USER_ID, USER_TOKEN, T_USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
-import { A_TF_MAIN } from '../../config'
+import { A_TF_MAIN, ENV } from '../../config'
 import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './type'
 import store from '../index'
 import { getUrlCode } from '../../utils'
@@ -49,7 +49,7 @@ export default {
 				updatePhoneLoginRegisterApi({ ...loginData })
 					.then(({ data }) => {
 						console.log(data)
-						if (data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) {
+						if (((ENV === 'production') && data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) || (ENV === 'development')) {
 							try {
 								uni.hideLoading()
 								uni.showToast({ title: '登录成功', icon: 'none' })
@@ -262,7 +262,7 @@ export default {
 				} else if (type === 'wx') {
 					if (data.ifFirst == 0) {
 						if (data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) {
-							uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo.userId)
+							uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 							uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 							uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
 							commit(CHNAGE_USER_TOKEN, data.token)
@@ -322,7 +322,7 @@ export default {
 					}
 				} else if (type === 'alipay') {
 					if (data.ifFirst == 0) {
-						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo.userId)
+						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 						uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 						uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
 						commit(CHNAGE_USER_TOKEN, data.token)
