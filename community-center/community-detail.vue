@@ -198,7 +198,7 @@
     <CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
 
 		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
-			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+			<ATFCustomerService shop-id="" :data="customerServiceList"></ATFCustomerService>
 		</tui-bottom-popup>
   </view>
 </template>

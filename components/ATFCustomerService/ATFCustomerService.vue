@@ -57,7 +57,7 @@ export default {
 	methods: {
 		handleFlyToService(openKfId) {
 			this.$store.dispatch('app/flyToServiceAction', {
-				shopId: this.shopId,
+				shopId: '', // this.shopId
 				openKfId
 			})
 		}
