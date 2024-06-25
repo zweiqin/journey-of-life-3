@@ -97,6 +97,7 @@
 		>
 			<view style="padding-top: 60rpx;">
 				<tui-button
+					v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15)"
 					type="warning" :size="36" width="280rpx" height="78rpx"
 					margin="0"
 					@click="(isShowVoucherPopup = true) && (showType = 'recharge')"
@@ -254,7 +255,7 @@
 								v-model="customTransfer" type="number" label="券" :label-size="48"
 								label-color="#000000"
 								:label-width="80" placeholder="输入自定义代金券" :border-bottom="false" padding="18rpx 2rpx 10rpx"
-								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectTransferCustom"
+								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectTransferCustom" @input="handleSelectTransferCustom"
 							>
 								<template #right>
 									<text style="font-size: 30rpx;color: #979797;">价值{{ customTransfer / 2 || '' }}</text>

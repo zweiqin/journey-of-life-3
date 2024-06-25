@@ -228,6 +228,7 @@ export default {
 			try {
 				const tabbarList = ['pages/index/index', 'pages/business-district/business-district', '/pages/community-center/community-center', 'pages/order/order', '/pages/user/user']
 				const redirect = uni.getStorageSync(T_REDIRECT_TYPE)
+				commit(CHNAGE_USER_IDENTITY, { type: [], shopInfo: {} })
 				console.log(type)
 				if (type === 'phone') {
 					setTimeout(() => {

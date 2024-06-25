@@ -25,48 +25,48 @@
 							</view>
 							<view style="display: flex;justify-content: center;align-items: flex-end;">
 								<image
-									v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)"
+									v-if="$store.state.auth.identityInfo.type.includes(15)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
-									src="../../../static/images/user/displayBadges/huiyuan.png"
+									src="../../../static/images/user/displayBadges/hehuoren.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								></image>
 								<image
-									v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)"
+									v-else-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
 									src="../../../static/images/user/displayBadges/tuanzhang.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								>
 								</image>
 								<image
-									v-if="$store.state.auth.identityInfo.type.includes(15)"
+									v-else-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)"
 									style="width: 48rpx;height: 48rpx;margin: 0 5rpx;"
-									src="../../../static/images/user/displayBadges/hehuoren.png"
+									src="../../../static/images/user/displayBadges/huiyuan.png"
 									@click.stop="(frameType = 'relationship') && (isShowGloryFrame = true)"
 								>
 								</image>
-								<view @click.stop="(frameType = 'shop') && (isShowGloryFrame = true)">
-									<tui-icon
-										v-if="$store.state.auth.identityInfo.type.includes(9)" name="shop-fill" :size="42"
-										unit="upx" color="#ff973f" margin="0 5upx 0 0"
-									></tui-icon>
+								<view
+									v-if="$store.state.auth.identityInfo.type.includes(9)"
+									@click.stop="(frameType = 'shop') && (isShowGloryFrame = true)"
+								>
+									<tui-icon name="shop-fill" :size="42" unit="upx" color="#ff973f" margin="0 5upx 0 0"></tui-icon>
 								</view>
-								<view @click.stop="(frameType = 'merchantStaff') && (isShowGloryFrame = true)">
-									<tui-icon
-										v-if="$store.state.auth.identityInfo.type.includes(8)" name="shop" :size="42" unit="upx"
-										color="#ff973f" margin="0 5upx 0 0"
-									></tui-icon>
+								<view
+									v-else-if="$store.state.auth.identityInfo.type.includes(8)"
+									@click.stop="(frameType = 'merchantStaff') && (isShowGloryFrame = true)"
+								>
+									<tui-icon name="shop" :size="42" unit="upx" color="#ff973f" margin="0 5upx 0 0"></tui-icon>
 								</view>
-								<view @click.stop="(frameType = 'franchisee') && (isShowGloryFrame = true)">
-									<tui-icon
-										v-if="$store.state.auth.identityInfo.type.includes(1)" name="friendadd-fill" :size="42"
-										unit="upx" color="#e19220" margin="0 5upx 0 0"
-									></tui-icon>
+								<view
+									v-if="$store.state.auth.identityInfo.type.includes(1)"
+									@click.stop="(frameType = 'franchisee') && (isShowGloryFrame = true)"
+								>
+									<tui-icon name="friendadd-fill" :size="42" unit="upx" color="#e19220" margin="0 5upx 0 0"></tui-icon>
 								</view>
-								<view @click.stop="(frameType = 'agent') && (isShowGloryFrame = true)">
-									<tui-icon
-										v-if="$store.state.auth.identityInfo.type.includes(2)" name="wealth-fill" :size="42"
-										unit="upx" color="#e19220" margin="0 5upx 0 0"
-									></tui-icon>
+								<view
+									v-if="$store.state.auth.identityInfo.type.includes(2)"
+									@click.stop="(frameType = 'agent') && (isShowGloryFrame = true)"
+								>
+									<tui-icon name="wealth-fill" :size="42" unit="upx" color="#e19220" margin="0 5upx 0 0"></tui-icon>
 								</view>
 							</view>
 						</view>
@@ -83,9 +83,17 @@
 								@click.stop="go('/another-tf/another-user/user-upgrade/user-upgrade-application')"
 							>
 								<text>当前等级：</text>
-								<text v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)">普通会员</text>
-								<text v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)">团长</text>
 								<text v-if="$store.state.auth.identityInfo.type.includes(15)">合伙人</text>
+								<text
+									v-else-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)"
+								>
+									团长
+								</text>
+								<text
+									v-else-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)"
+								>
+									普通会员
+								</text>
 								<text style="margin-left: 4upx;">></text>
 							</view>
 						</view>
@@ -178,8 +186,14 @@
 					</view>
 					<view style="display: flex;align-items: center;justify-content: flex-end;">
 						<view style="text-align: right;">
-							<view style="font-size: 30rpx;">￥{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.totalPrice || 0)).toFixed(2) }}</view>
-							<view style="font-size: 26rpx;">可提现总余额：{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.price || 0)).toFixed(2) }}</view>
+							<view style="font-size: 30rpx;">
+								￥{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.totalPrice ||
+									0)).toFixed(2) }}
+							</view>
+							<view style="font-size: 26rpx;">
+								可提现总余额：{{ Number.parseFloat(Number($store.getters.pricePlatformInfo.price ||
+									0)).toFixed(2) }}
+							</view>
 						</view>
 						<view>
 							<tui-icon name="arrowright" :size="34" unit="rpx" color="#ffffff" margin="0 0 0 10rpx"></tui-icon>
@@ -227,9 +241,17 @@
 						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
 					>
 						<template v-if="frameType === 'relationship'">
-							<text v-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)">您是普通会员</text>
-							<text v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)">恭喜你成为团长</text>
 							<text v-if="$store.state.auth.identityInfo.type.includes(15)">恭喜你成为合伙人</text>
+							<text
+								v-else-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14)"
+							>
+								恭喜你成为团长
+							</text>
+							<text
+								v-else-if="$store.state.auth.identityInfo.type.includes(11) || $store.state.auth.identityInfo.type.includes(12)"
+							>
+								您是普通会员
+							</text>
 						</template>
 						<template v-else-if="frameType === 'shop'">
 							<text>您是商家</text>
