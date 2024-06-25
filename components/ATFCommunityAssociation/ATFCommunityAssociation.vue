@@ -254,7 +254,7 @@ export default {
 	created() {
 		getOrderAssociatedBeneficiaryApi({ consumerPhone: this.$store.getters.userInfo.phone })
 			.then((res) => {
-				this.benefitinFranchiseesPhone = res.data.franchisees || '111'
+				this.benefitinFranchiseesPhone = res.data.franchisees || ''
 				this.$emit('change', {
 					benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
 					communityPhone: this.selectedCommunityStore.communityAccount.account,
