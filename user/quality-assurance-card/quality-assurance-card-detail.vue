@@ -58,6 +58,12 @@
           <text class="label">服务类型:</text>
           {{ cardDetailInfo.type }}
         </view>
+        <view class="item flex-items">
+          <text class="label">问题反馈:</text>
+          <view class="value" style="flex: 1; flex-wrap: wrap; color: #f40">
+            {{ item.problemFeedback }}
+          </view>
+        </view>
         <view class="item blod flex-items">
           <text class="label">处理状态:</text>
           {{ item.status | formatStatus }}
@@ -203,9 +209,10 @@ export default {
       margin-bottom: 20rpx;
 
       .item {
-        height: 54rpx;
+        min-height: 54rpx;
         font-size: 24rpx;
         color: #000;
+        align-items: flex-start;
 
         &.blod {
           font-weight: bold;
@@ -215,6 +222,7 @@ export default {
           width: 140rpx;
           margin-right: 11rpx;
           font-weight: normal;
+          white-space: nowrap;
         }
       }
     }
