@@ -10,7 +10,7 @@
       <image class="status-icon" :src="cardStatusInfo.icon"></image>
     </view>
     <view class="sub-title">保修期至</view>
-    <view class="time">{{ info.expireDate }}</view>
+    <view class="time">{{ info.expireDate ?  info.expireDate.split(' ')[0] : info.expireDate }}</view>
     <view class="info-wrapper flex-items flex-sp-between">
       <view class="info-item">
         <view class="label">质保服务类型</view>
