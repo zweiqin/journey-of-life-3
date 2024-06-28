@@ -11,7 +11,7 @@
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
 					<view style="text-align: center;background-color: #afafaf;">
-						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ $store.state.auth.identityInfo.type }}-1.0.27.29
+						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ ENV }}-{{ $store.state.auth.identityInfo.type }}-1.0.27.30
 					</view>
 				</view>
 				<view v-else style="margin-top: 24rpx;" @click="isShowOther = true">
@@ -74,6 +74,7 @@ import showModalMixin from '../../mixin/showModal'
 import { T_STORAGE_KEY } from '../../constant'
 import { myFunction, additionalFunction, shopServe, myPreferential, otherFunction } from './data'
 import { Encrypt } from '../../utils/secret'
+import { ENV } from '../../config'
 
 export default {
 	name: 'User',
@@ -87,6 +88,7 @@ export default {
 	},
 	data() {
 		return {
+			ENV,
 			timer: null,
 			myFunction,
 			shopServe,

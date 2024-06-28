@@ -425,7 +425,7 @@ export default {
 			const data = {
 				data: {
 					title: `团蜂品牌工厂 - ${this.brandDetail.shopName}`,
-					desc: this.brandDetail.shopBrief,
+					desc: this.brandDetail.shopBrief || '--',
 					link: `${A_TF_MAIN}/#/another-tf/another-user/brand-factory/detail?shopId=${this.brandDetail.shopId}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 				},

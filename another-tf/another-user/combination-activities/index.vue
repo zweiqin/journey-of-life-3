@@ -4,7 +4,7 @@
 		<view style="padding: 18rpx;">
 			<tui-checkbox-group
 				:value="queryInfo.stateList"
-				@change="(e) => (queryInfo.stateList = e.detail.value) && (queryInfo.page = 1) && getCombinationActivitiesList()"
+				@change="(e) => (JSON.stringify(queryInfo.stateList) !== JSON.stringify(e.detail.value)) && (queryInfo.stateList = e.detail.value) && (queryInfo.page = 1) && getCombinationActivitiesList()"
 			>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
 					<view style="font-size: 34rpx;font-weight: bold;color: #333333;">活动状态筛选：</view>
@@ -42,7 +42,7 @@
 						<view
 							:style="{ color: [ 4 ].includes(item.state) ? '#999999' : index === activeSession ? '#C83732' : '#ffffff' }"
 						>
-							{{ item.currencyName || '--' }}
+							{{ item.composeName || '--' }}
 						</view>
 						<view :style="{ color: index === activeSession ? '#000000' : '#ffffff' }">
 							<view v-if="[ 4 ].includes(item.state)">已结束</view>
@@ -97,10 +97,10 @@
 						<text v-if="combinationActivityList[activeSession].ifLimit">限购{{ combinationActivityList[activeSession].limitNumber }}件/人</text>
 						<text v-else>无限购</text>
 					</view>
-					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+					<!-- <view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
 						<text v-if="combinationActivityList[activeSession].ifBond">商家需要保证金￥{{ combinationActivityList[activeSession].bondMoney }}</text>
 						<text v-else>商家无需保证金</text>
-					</view>
+						</view> -->
 				</view>
 				<view
 					v-if="combinationActivityList[activeSession].content"
@@ -244,12 +244,14 @@ export default {
 			console.log(this.queryInfo)
 			uni.showLoading()
 			getPlatformComposeCanvasApi(this.queryInfo).then((res) => {
-				this.combinationActivityTotal = res.data.page.total
-				if (isLoadmore) {
-					this.combinationActivityList.push(...res.data.page.list)
-				} else {
-					this.combinationActivityList = res.data.page.list
-				}
+				this.combinationActivityTotal = res.data.length
+				this.combinationActivityList = res.data
+				// this.combinationActivityTotal = res.data.page.total
+				// if (isLoadmore) {
+				// 	this.combinationActivityList.push(...res.data.page.list)
+				// } else {
+				// 	this.combinationActivityList = res.data.page.list
+				// }
 				this.isEmpty = this.combinationActivityList.length === 0
 				uni.hideLoading()
 			})

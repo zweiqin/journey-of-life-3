@@ -243,6 +243,8 @@
 			</view>
 		</view>
 
+		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()"></BeeWxShare>
+
 		<!-- 回到顶部 -->
 		<view class="returnTopService-box">
 			<view
@@ -298,11 +300,12 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import CombinedSales from './components/combinedSales'
 import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
-import { timeFormatting, resolveGoodsDetailSkuSituation } from '../../../utils'
+import { timeFormatting, resolveGoodsDetailSkuSituation, setMiniprogramShareConfig } from '../../../utils'
 import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
@@ -368,6 +371,22 @@ export default {
 			// 客服
 			isShowCustomerServicePopup: false,
 			customerServiceList: []
+		}
+	},
+	watch: {
+		goodsDetail: {
+			handler(newV) {
+				if (newV.productId) {
+					this.productId = newV.productId
+					// #ifdef H5
+					this.$nextTick(() => {
+						this.handleShareServe(true)
+					})
+					// #endif
+				}
+			},
+			immediate: true,
+			deep: true
 		}
 	},
 	onLoad(options) {
@@ -520,6 +539,16 @@ export default {
 				// const sameSkuProduct = Object.values(res.data.map).find((item) => item.skuId === res.data.skuId) || {}
 				// this.goodsDetail = { ...res.data, voucherId: sameSkuProduct.voucherId || '', voucherPrice: sameSkuProduct.voucherPrice || '' }
 				this.goodsDetail = res.data
+				if (this.$store.state.app.terminal === 6) {
+					setMiniprogramShareConfig({
+						data: {
+							event: 'sharingPageTurn',
+							webPath: `/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}`,
+							title: `商品详情 - ${this.goodsDetail.productName}`,
+							imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
+						}
+					})
+				}
 				// 处理单规格商品，如果是单款式商品，需要特殊处理goodsDetail.names
 				const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
 				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
@@ -555,6 +584,21 @@ export default {
 			} finally {
 				uni.hideLoading()
 			}
+		},
+
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `商品详情 - ${this.goodsDetail.productName}`,
+					desc: this.goodsDetail.productBrief || '--',
+					link: `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}`,
+					imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
 		},
 
 		// 打开客服
