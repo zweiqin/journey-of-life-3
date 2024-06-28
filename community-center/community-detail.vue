@@ -17,19 +17,22 @@
 
       <!-- 轮播图 -->
       <view class="goods">
-        <Carousel ref="carouselRef" :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0" :height="270" :top="-40"> </Carousel>
+        <Carousel ref="carouselRef" :is-lazy-load="false" :list="serverUrls.length == 0 ? [serverUrl] : serverUrls" class="img" :radius="0" :height="270" :top="-40"></Carousel>
         <image src="../static/images/con-center/imagebg.png" @click="handlePrev" mode="" class="imagebg" />
         <view class="goods-name">{{ title }}</view>
         <view class="price-name">{{ isArtificial ? '优惠价' : '起步价' }}</view>
         <view v-if="!isArtificial" class="goods-price">
-          <view class="logo"
-            >￥<text>{{ startPrice || '30' }}</text></view
-          >/起
+          <view class="logo">
+            ￥
+            <text>{{ startPrice || '30' }}</text>
+          </view>
+          /起
         </view>
         <view v-if="isArtificial" class="goods-price">
-          <view class="logo"
-            >￥<text>{{ preferentialPrice || serverPrice }}</text></view
-          >
+          <view class="logo">
+            ￥
+            <text>{{ preferentialPrice || serverPrice }}</text>
+          </view>
         </view>
       </view>
 
@@ -74,10 +77,11 @@
       </view>
 
       <!-- 服务4级分类的人工报价 -->
-      <view v-if="!isArtificial" class="start-price"
-        >￥<text>{{ startPrice || '30' }}</text
-        >/起</view
-      >
+      <view v-if="!isArtificial" class="start-price">
+        ￥
+        <text>{{ startPrice || '30' }}</text>
+        /起
+      </view>
     </view>
 
     <tui-alerts
@@ -111,8 +115,9 @@
             background-color: #feebe9;
             clip-path: polygon(0rpx 50%, 18% 0, 100% 0, 100% 100%, 18% 100%);
           "
-          >服务已开通</view
         >
+          服务已开通
+        </view>
       </view>
     </view>
 
@@ -180,7 +185,7 @@
         </view>
         <view class="order-list">
           <!-- <view class="join">加入需求清单</view> -->
-          <view class="order" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
+          <view class="order" :style="{ opacity: !this.serverTypeId || !this.detailId ? '0.5' : '1' }" @click="handleToServiceOrderHome">{{ isArtificial ? '立即下单' : '立即预约' }}</view>
         </view>
       </view>
     </view>
@@ -197,24 +202,26 @@
     <!-- 分享活动邀请码 -->
     <CommunityDetailPoster ref="communityDetailPosterRef"></CommunityDetailPoster>
 
-		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
-			<ATFCustomerService shop-id="" :data="customerServiceList"></ATFCustomerService>
-		</tui-bottom-popup>
+    <tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+      <ATFCustomerService shop-id="" :data="customerServiceList"></ATFCustomerService>
+    </tui-bottom-popup>
+
+    <tui-toast ref="toast"></tui-toast>
   </view>
 </template>
 
 <script>
-import { A_TF_MAIN } from '../config';
-import Carousel from '../components/carousel';
-import uParse from '../components/u-parse/u-parse.vue';
-import CommunityDetailPoster from './components/CommunityDetailPoster.vue';
-import { marked } from 'marked';
-import { splitProject } from './componts/utile';
-import item from '../community-center/componts/item';
-import charge from '../community-center/componts/charge';
-import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center';
-import { getUserId, getAdressDetailByLngLat } from '../utils';
-import CommentList from './components/CommentList.vue';
+import { A_TF_MAIN } from '../config'
+import Carousel from '../components/carousel'
+import uParse from '../components/u-parse/u-parse.vue'
+import CommunityDetailPoster from './components/CommunityDetailPoster.vue'
+import { marked } from 'marked'
+import { splitProject } from './componts/utile'
+import item from '../community-center/componts/item'
+import charge from '../community-center/componts/charge'
+import { getServiceDetailApi, getServeCommentListApi, getIsOpenServerAreaApi } from '../api/community-center'
+import { getUserId, getAdressDetailByLngLat } from '../utils'
+import CommentList from './components/CommentList.vue'
 import { T_SELECTED_ADDRESS } from '../constant'
 
 /**
@@ -270,46 +277,46 @@ export default {
       preferentialPrice: 0,
       commentList: [],
 
-			// 客服
-			isShowCustomerServicePopup: false,
-			customerServiceList: []
-    };
+      // 客服
+      isShowCustomerServicePopup: false,
+      customerServiceList: []
+    }
   },
 
   computed: {
     goodsInfoDetail() {
-      return this.serverInfo ? marked(this.serverInfo) : '';
+      return this.serverInfo ? marked(this.serverInfo) : ''
     }
   },
 
   created() {},
   onLoad(options) {
-    this.userId = getUserId() || '';
+    this.userId = getUserId() || ''
 
-    this.serverTypeId = options.id * 1;
-    this.serverImageUrl = options.serverImageUrl;
-    this.title = options.serverNameThree;
-    this.getCommentList();
+    this.serverTypeId = options.id * 1
+    this.serverImageUrl = options.serverImageUrl
+    this.title = options.serverNameThree
+    this.getCommentList()
     uni.setNavigationBarTitle({
       title: this.title
-    });
+    })
     // this.serverUrl = options.serverImageUrl
-    this.getIsOpenServerArea();
+    this.getIsOpenServerArea()
     // #ifdef H5
     this.$nextTick(() => {
-      this.handleShareServe(true);
-    });
+      this.handleShareServe(true)
+    })
     // #endif
   },
   onShow() {
-    this.getServiceDetail();
-    const info = uni.getStorageSync('guawyi8sa');
+    this.getServiceDetail()
+    const info = uni.getStorageSync('guawyi8sa')
     if (info.address && info.addressDetail) {
-      this.addressInfo = info.address + info.addressDetail;
+      this.addressInfo = info.address + info.addressDetail
     }
-    this.addressDetail = this.addressInfo;
+    this.addressDetail = this.addressInfo
     // console.log('addressDetail', this.addressDetail);
-    this.address = info.address;
+    this.address = info.address
     // console.log('address', this.address);
     // this.a();
   },
@@ -318,19 +325,19 @@ export default {
     // 获取评论列表
     async getCommentList() {
       try {
-        const commentList = await getServeCommentListApi({ serverTypeId: this.serverTypeId });
-        this.commentList = commentList;
+        const commentList = await getServeCommentListApi({ serverTypeId: this.serverTypeId })
+        this.commentList = commentList
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     handleToServiceListHome(item) {
       uni.navigateTo({
         url: `/community-center/service-sort/index?value=${item.value}&name=${item.name}`
-      });
+      })
     },
     handleToAddress() {
-      uni.navigateTo({ url: '/community-center/add-address' });
+      uni.navigateTo({ url: '/community-center/add-address' })
     },
 
     handleToServiceOrderHome() {
@@ -339,114 +346,125 @@ export default {
       // const let var
 
       if (!this.serverTypeId) {
-				return uni.showToast({
-					title: '请选择服务类型',
-					icon: 'none',
-					duration: 2000
-				});
-			}
+        return uni.showToast({
+          title: '请选择服务类型',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+
+      if (!this.serverTypeId || !this.detailId) {
+        return this.ttoast({ type: 'info', title: '数据加载中，请稍后重试' })
+      }
 
       if (!this.isArtificial) {
         uni.navigateTo({
           url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}&detailId=${this.detailId}`
-        });
+        })
       } else if (!this.serverPrice == 0) {
         uni.navigateTo({
           url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}`
-        });
+        })
       } else {
-        console.log('sb kuaixuan');
+        console.log('sb kuaixuan')
       }
     },
 
     toJump(index) {
-      this.currentMoveTab = index;
+      this.currentMoveTab = index
       if (this.currentMoveTab == 0) {
         document.getElementById('norm').scrollIntoView({
           behavior: 'smooth',
           block: 'start'
-        });
+        })
       } else if (this.currentMoveTab == 1) {
         document.getElementById('detail').scrollIntoView({
           behavior: 'smooth',
           block: 'start'
-        });
+        })
       }
     },
 
     switchTab(item1) {
       // console.log('12345', item1)
-      this.currentTab = item1.id;
-      this.serverTypeId = item1.serverTypeId;
-      this.serverPrice = item1.serverPrice;
-      this.serverInfoName = item1.serverInfoName;
-      this.serverUnit = item1.serverUnit;
-      this.serverIntroduction = item1.serverIntroduction;
-      this.detailId = item1.id;
-      this.preferentialPrice = item1.preferentialPrice;
+      this.currentTab = item1.id
+      this.serverTypeId = item1.serverTypeId
+      this.serverPrice = item1.serverPrice
+      this.serverInfoName = item1.serverInfoName
+      this.serverUnit = item1.serverUnit
+      this.serverIntroduction = item1.serverIntroduction
+      this.detailId = item1.id
+      this.preferentialPrice = item1.preferentialPrice
       // console.log('详情id', this.detailId)
     },
 
     // 社区服务详情
     async getServiceDetail() {
-      // this.serverTypeId=this.serviceDetail.serverTypeId;
-      const res = await getServiceDetailApi({
-        // serverTypeId: 109,
-        serverTypeId: this.serverTypeId
-      });
+      try {
+        uni.showLoading({
+          title: '数据加载中...'
+        })
+        // this.serverTypeId=this.serviceDetail.serverTypeId;
+        const res = await getServiceDetailApi({
+          // serverTypeId: 109,
+          serverTypeId: this.serverTypeId
+        })
 
-      // console.log(this.$store.getters);
-      const dzAttribute = await this.$store.dispatch('community/getMyAttribute', this.$store.getters.detailAddress);
-      if (dzAttribute && Array.isArray(dzAttribute) && dzAttribute.length) {
-        res.data.forEach((origin) => {
-          dzAttribute.forEach((attr) => {
-            if (attr.correspondServerInfoId === origin.id) {
-              origin.serverInfoName = attr.serverInfoName;
-              origin.serverPrice = attr.serverPrice;
-              origin.serverUnit = attr.serverUnit;
-              origin.preferentialPrice = attr.preferentialPrice;
-            }
-          });
-        });
+        // console.log(this.$store.getters);
+        const dzAttribute = await this.$store.dispatch('community/getMyAttribute', this.$store.getters.detailAddress)
+        if (dzAttribute && Array.isArray(dzAttribute) && dzAttribute.length) {
+          res.data.forEach((origin) => {
+            dzAttribute.forEach((attr) => {
+              if (attr.correspondServerInfoId === origin.id) {
+                origin.serverInfoName = attr.serverInfoName
+                origin.serverPrice = attr.serverPrice
+                origin.serverUnit = attr.serverUnit
+                origin.preferentialPrice = attr.preferentialPrice
+              }
+            })
+          })
+        }
+        this.serviceDetail = res.data
+        this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList)
+        // console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
+        this.currentTab = res.data[0].id
+        this.switchTab(this.serviceDetail[0])
+        // console.log('666', this.serviceDetail)
+
+        this.serverInfo = this.serviceDetail[0].serverInfo
+        // console.log('服务详情内容', this.serverInfo)
+
+        this.isArtificial = this.serviceDetail[0].isArtificial
+        this.length = this.serviceDetail.length
+        // console.log('是否一口价', this.isArtificial)
+        // const type = this.isArtificial
+        // console.log('type', type)
+        // if (type === 'true') {
+        // 	this.a = 1
+        // } else {
+        // 	this.a = 2
+        // }
+
+        this.serverIntroduction = this.serviceDetail[0].serverIntroduction
+        // console.log('介绍', this.serverIntroduction)
+
+        this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find((item) => item)
+        // console.log('图片', this.serverUrl)
+
+        this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1)
+        // console.log('轮播图', this.serverUrls)
+
+        this.startPrice = this.serviceDetail[0].startPrice
+        // console.log('起步价', this.startPrice);
+
+        this.chargeDescription = this.serviceDetail[0].chargeDescription
+        // console.log('收费说明', this.chargeDescription);
+
+        this.serverContent = this.serviceDetail[0].serverContent.split('，')
+        // console.log('服务具体内容', this.serverContent);
+      } finally {
+        uni.hideLoading()
       }
-      this.serviceDetail = res.data;
-      this.serviceDetail.chargeDetailsList = splitProject(res.data[0].chargeDetailsList);
-      // console.log('chargeDetailsList', this.serviceDetail.chargeDetailsList);
-      this.currentTab = res.data[0].id;
-      this.switchTab(this.serviceDetail[0]);
-      // console.log('666', this.serviceDetail)
-
-      this.serverInfo = this.serviceDetail[0].serverInfo;
-      // console.log('服务详情内容', this.serverInfo)
-
-      this.isArtificial = this.serviceDetail[0].isArtificial;
-      this.length = this.serviceDetail.length;
-      // console.log('是否一口价', this.isArtificial)
-      // const type = this.isArtificial
-      // console.log('type', type)
-      // if (type === 'true') {
-      // 	this.a = 1
-      // } else {
-      // 	this.a = 2
-      // }
-
-      this.serverIntroduction = this.serviceDetail[0].serverIntroduction;
-      // console.log('介绍', this.serverIntroduction)
-
-      this.serverUrl = this.serviceDetail[0].serverImageUrl.split(',').find((item) => item);
-      // console.log('图片', this.serverUrl)
-
-      this.serverUrls = this.serviceDetail[0].serverImageUrl.split(',').slice(1);
-      // console.log('轮播图', this.serverUrls)
-
-      this.startPrice = this.serviceDetail[0].startPrice;
-      // console.log('起步价', this.startPrice);
-
-      this.chargeDescription = this.serviceDetail[0].chargeDescription;
-      // console.log('收费说明', this.chargeDescription);
-
-      this.serverContent = this.serviceDetail[0].serverContent.split('，');
-      // console.log('服务具体内容', this.serverContent);
 
       // this.serverInfo = this.serviceDetail[0].serverInfo
       // console.log('服务详情', this.serverInfo);
@@ -456,60 +474,60 @@ export default {
     },
 
     async getIsOpenServerArea() {
-			// #ifdef APP
-			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
-			const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '')
+      // #ifdef APP
+      const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS) || { data: {} }
+      const currentAddress = (lastAddress.data.province || '') + (lastAddress.data.city || '') + (lastAddress.data.district || '')
       this.address = currentAddress
       // this.a()
       this.addressDetail = lastAddress.data.detailAddress || ''
-			// #endif
-			// #ifndef APP
-			await this.$store.dispatch('location/getCurrentLocation', (data) => {
-				this.address = data.province + data.city + data.district
-				this.a()
-				this.addressDetail = data.detailAddress
-			})
-			// #endif
+      // #endif
+      // #ifndef APP
+      await this.$store.dispatch('location/getCurrentLocation', (data) => {
+        this.address = data.province + data.city + data.district
+        this.a()
+        this.addressDetail = data.detailAddress
+      })
+      // #endif
     },
 
     async a() {
       const res = await getIsOpenServerAreaApi({
         address: this.address
-      });
-      this.tips = res.data;
-      this.type = this.tips ? 1 : 2;
+      })
+      this.tips = res.data
+      this.type = this.tips ? 1 : 2
     },
 
     // 预览图
     handlePrev() {
-      this.$refs.carouselRef.prev();
+      this.$refs.carouselRef.prev()
     },
 
     previewImage(index) {
       // console.log(index)
-      const imgsArray = [];
-      imgsArray[0] = index;
+      const imgsArray = []
+      imgsArray[0] = index
 
       uni.previewImage({
         urls: imgsArray,
         current: 0
-      });
+      })
     },
 
     // 点击分享
     async handleClickShare() {
-      await this.handleShareServe();
-      this.handleShare();
+      await this.handleShareServe()
+      this.handleShare()
     },
 
     // 微信分享
     async handleShareServe(isQuit) {
-      const _this = this;
-      let desc;
+      const _this = this
+      let desc
       if (_this.serverTypeId === 313) {
-        desc = '想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。';
+        desc = '想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。'
       } else {
-        desc = '售后质保·服务专业·极速退款·意外承包';
+        desc = '售后质保·服务专业·极速退款·意外承包'
       }
       const data = {
         data: {
@@ -520,73 +538,73 @@ export default {
         },
         successCb: () => {},
         failCb: () => {}
-      };
-      await this.$refs.beeWxShareRef.share(data, isQuit);
+      }
+      await this.$refs.beeWxShareRef.share(data, isQuit)
     },
 
     // 点击分享
     handleShare() {
       uni.showLoading({
         title: '活动邀请码生成中...'
-      });
-      const _this = this;
-      let topDesc;
-      let downDesc;
+      })
+      const _this = this
+      let topDesc
+      let downDesc
       if (_this.serverTypeId === 313) {
-        topDesc = `想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。`;
-        downDesc = `把优惠推荐给亲朋好友，下单清洗空调每满3台，免费赠送价值336元床垫清洗除螨一张或沙发清洗一个位的兑换券一张，可直接下单兑换。`;
+        topDesc = `想要空调风大省电制冷效果好，空调清洗少不了。现在清洗空调，最低只需58元/台。每户同时清洗3台空调以上，免费赠送价值336元床垫清洗除螨一张。`
+        downDesc = `把优惠推荐给亲朋好友，下单清洗空调每满3台，免费赠送价值336元床垫清洗除螨一张或沙发清洗一个位的兑换券一张，可直接下单兑换。`
       } else {
-        topDesc = '售后质保·服务专业·极速退款·意外承包';
-        downDesc = `-----------`;
+        topDesc = '售后质保·服务专业·极速退款·意外承包'
+        downDesc = `-----------`
       }
       this.$refs.uqrcode.make({
         success: () => {
-          uni.hideLoading();
+          uni.hideLoading()
           _this.$refs.communityDetailPosterRef.show({
             shareCode: this.shareCode,
             logo: this.serverUrl || this.serverImageUrl,
             headerTitle: `${this.title}`,
             topDesc,
             downDesc
-          });
+          })
         }
-      });
+      })
     },
 
     // 完成
     handleCompleteCode(e) {
-      const _this = this;
+      const _this = this
       if (e.success) {
         this.$refs.uqrcode.toTempFilePath({
           success: (res) => {
             if (!_this.shareCode) {
-              _this.shareCode = res.tempFilePath;
+              _this.shareCode = res.tempFilePath
             }
           }
-        });
+        })
       }
     },
 
     // 打开客服
     async handleOpenCustomerService() {
-			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
-				shopId: ''
-			})
-			this.customerServiceList = res.data.filter((item) => item.name === '社区服务')
-			if (!this.customerServiceList.length) this.$showToast('暂无客服')
-			else this.isShowCustomerServicePopup = true
+      const res = await this.$store.dispatch('app/getCustomerServiceAction', {
+        shopId: ''
+      })
+      this.customerServiceList = res.data.filter((item) => item.name === '社区服务')
+      if (!this.customerServiceList.length) this.$showToast('暂无客服')
+      else this.isShowCustomerServicePopup = true
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
 .community-detail {
   background: #f7f8fa;
 
-	/deep/ .tui-popup-class.tui-bottom-popup {
-		height: 85vh !important;
-	}
+  /deep/ .tui-popup-class.tui-bottom-popup {
+    height: 85vh !important;
+  }
 
   .head {
     background: #ffffff;
@@ -1246,6 +1264,10 @@ export default {
           background: linear-gradient(270deg, #e95d20 0%, #ff8f1f 100%);
           text-align: center;
           line-height: 78upx;
+
+          &.disabled {
+            opacity: 0.6;
+          }
         }
       }
     }

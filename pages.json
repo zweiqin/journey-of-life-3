@@ -654,6 +654,12 @@
           "style": {
             "navigationBarTitleText": "立即下单"
           }
+        },
+        {
+          "path": "payment/payment",
+          "style": {
+            "navigationBarTitleText": "支付"
+          }
         }
       ]
     },
