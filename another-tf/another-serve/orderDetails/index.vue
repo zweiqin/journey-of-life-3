@@ -796,6 +796,8 @@ export default {
 				collageId: this.dataList.collageId,
 				money: this.dataList.orderPrice,
 				orderId: this.dataList.orderId,
+				orderFormid: this.dataList.orderFormid,
+				orderSn: this.dataList.orderFormid,
 				type: 2,
 				...this.payInfo
 			}, 1, '')
@@ -804,7 +806,7 @@ export default {
 		// 打开客服
 		async handleOpenCustomerService() {
 			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
-				shopId: this.dataList.shopId
+				shopId: '' // this.dataList.shopId
 			})
 			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')

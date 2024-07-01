@@ -112,10 +112,10 @@
 </template>
 
 <script>
-import { A_TF_MAIN } from '../../../../config'
-import { updateCollectCancelApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
+import { A_TF_MAIN } from '../../config'
+import { updateCollectCancelApi, updateCollectToCollectApi } from '../../api/anotherTFInterface'
 export default {
-	name: 'BrandInfo',
+	name: 'ATFBrandInfo',
 	props: {
 		brandDetail: {
 			type: Object,
@@ -212,7 +212,7 @@ export default {
 		// 打开客服
 		async handleOpenCustomerService() {
 			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
-				shopId: this.brandDetail.shopId
+				shopId: '' // this.brandDetail.shopId
 			})
 			this.customerServiceList = res.data
 			if (!this.customerServiceList.length) this.$showToast('暂无客服')

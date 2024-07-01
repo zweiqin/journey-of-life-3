@@ -654,6 +654,12 @@
           "style": {
             "navigationBarTitleText": "立即下单"
           }
+        },
+        {
+          "path": "payment/payment",
+          "style": {
+            "navigationBarTitleText": "支付"
+          }
         }
       ]
     },
@@ -1288,6 +1294,24 @@
           "style": {
             "navigationBarTitleText": "支付完成"
           }
+        },
+        {
+          "path": "quality-assurance-card/quality-assurance-card",
+          "style": {
+            "navigationBarTitleText": "我的质保卡"
+          }
+        },
+        {
+          "path": "quality-assurance-card/applied",
+          "style": {
+            "navigationBarTitleText": "质保卡申请记录"
+          }
+        },
+        {
+          "path": "quality-assurance-card/quality-assurance-card-detail",
+          "style": {
+            "navigationBarTitleText": "质保卡详情"
+          }
         }
       ]
     },
@@ -1438,6 +1462,12 @@
           }
         },
         {
+          "path": "another-user/selection-center/shop-selection",
+          "style": {
+            "navigationBarTitleText": "商家选品"
+          }
+        },
+        {
           "path": "another-user/brand-factory/index",
           "style": {
             "navigationBarTitleText": "品牌工厂"
@@ -1545,18 +1575,18 @@
             "navigationBarTitleText": "代金券收支明细详情"
           }
         },
-        {
-          "path": "another-user/voucher/voucher",
-          "style": {
-            "navigationBarTitleText": "代金券"
-          }
-        },
-        {
-          "path": "another-user/voucher/orderStatus",
-          "style": {
-            "navigationBarTitleText": "代金券订单完成状态"
-          }
-        },
+        // {
+        //   "path": "another-user/voucher/voucher",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券"
+        //   }
+        // },
+        // {
+        //   "path": "another-user/voucher/orderStatus",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券订单完成状态"
+        //   }
+        // },
         {
           "path": "another-user/commission-statistics/commission-record",
           "style": {

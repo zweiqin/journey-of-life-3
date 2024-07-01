@@ -22,7 +22,6 @@ export default {
   // 个人中心
   pricePlatformInfo: (state) => state.user.pricePlatformInfo,
   shopCarNumber: (state) => state.user.shopCarNumber,
-  levelType: (state) => state.user.levelType,
   activityList: (state) => state.user.activityList,
 
   // 社区

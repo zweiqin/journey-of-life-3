@@ -103,7 +103,7 @@ export default {
       }
     },
 
-    // 代金券转增
+    // 代金券转赠
     handleVoucherTranfer(item) {
       this.$refs.transferVoucherRef && this.$refs.transferVoucherRef.show(item);
     },

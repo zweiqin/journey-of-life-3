@@ -12,8 +12,8 @@
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
-			<BrandInfo :brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
-				@refresh="getBrandDetail"></BrandInfo>
+			<ATFBrandInfo :brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
+				@refresh="getBrandDetail"></ATFBrandInfo>
 		</view>
 
 		<!-- <view
@@ -111,24 +111,20 @@
 		<ATFSpecificationScreen ref="refATFSpecificationScreen" @success="initShopCart"></ATFSpecificationScreen>
 
 		<view v-if="brandDetail.shopId">
-			<StoreShopCart ref="refStoreShopCart" :brand-id="brandDetail.shopId"></StoreShopCart>
+			<ATFStoreShopCart ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"></ATFStoreShopCart>
 		</view>
 	</view>
 </template>
 
 <script>
-import BrandInfo from './components/BrandInfo'
 import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
-import StoreShopCart from './components/StoreShopCart.vue'
 import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 
 export default {
 	name: 'ShopDetail',
 	components: {
-		BrandInfo,
 		CanvasPage,
-		StoreShopCart
 	},
 
 	data() {
@@ -196,8 +192,8 @@ export default {
 
 	methods: {
 		initShopCart() {
-			if (this.brandDetail.shopId && this.$refs.refStoreShopCart && this.$refs.refStoreShopCart.$refs.refATFShopCartList) {
-				this.$refs.refStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
+			if (this.brandDetail.shopId && this.$refs.refATFStoreShopCart && this.$refs.refATFStoreShopCart.$refs.refATFShopCartList) {
+				this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
 			}
 		},
 		async getBrandDetail() {

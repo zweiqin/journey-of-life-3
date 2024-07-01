@@ -167,7 +167,7 @@ export default {
 						// window.open(serviceURL) safari浏览器不支持window.open
 						window.location.href = serviceURL
 					} else if ([ 6 ].includes(state.terminal)) {
-						jumpToOtherProject({ isInMiniProgram: state.isInMiniProgram, programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=customerService&url=${encodeURI(serviceURL)}&corpId=${corpId}`, montageTerminal: [ 6 ] })
+						jumpToOtherProject({ isInMiniProgram: state.isInMiniProgram, programUrl: `pages/skip/skip`, toType: 'MP', query: `?type=customerService&url=${encodeURIComponent(serviceURL)}&corpId=${corpId}`, montageTerminal: [ 6 ] })
 						// 壳里套壳方案不可行，因为跳转客服需要真正的微信环境
 						// uni.redirectTo({
 						// 	url: `/user/view?target=${serviceURL}`

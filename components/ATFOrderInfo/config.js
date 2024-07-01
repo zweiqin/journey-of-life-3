@@ -8,7 +8,8 @@ export const orderTypeEnum = {
 	7: '待售后',
 	8: '待核销（未付款）',
 	9: '待核销（已付款）',
-	10: '已核销'
+	10: '已核销（已付款）',
+	11: '已核销（未付款）'
 }
 
 export const orderPatternEnum = {
@@ -53,7 +54,11 @@ export const orderPatternEnum = {
 		message: ''
 	},
 	'10': {
-		text: '已核销',
+		text: '已核销（已付款）',
+		message: ''
+	},
+	'11': {
+		text: '已核销（未付款）',
 		message: ''
 	},
 	'0': {

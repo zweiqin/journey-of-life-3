@@ -2,23 +2,19 @@
   <view class="order-info-wrapper">
     <TuanPageHead title="订单详情" fixed :scrollTop="scrollTop">
       <block slot="left">
-				<tui-icon
-					name="arrowleft" :size="64" unit="rpx"
-					color="#222229"
-					margin="0" @click="handleToOrderList"
-				></tui-icon>
+        <tui-icon name="arrowleft" :size="64" unit="rpx" color="#222229" margin="0" @click="handleToOrderList"></tui-icon>
       </block>
     </TuanPageHead>
     <view class="c-order-detail" v-if="orderDetail" :style="{ marginTop: scrollTop > 300 ? '100upx' : '' }">
       <view class="item order-info">
         <!-- <view class="order-status" :style="{ color: orderStatusMap[orderDetail.status].color }"> {{ orderStatusMap[orderDetail.status].label }} </view> -->
-        <view class="order-status"> {{ orderStatusMap[orderDetail.status].label }} </view>
+        <view class="order-status">{{ orderStatusMap[orderDetail.status].label }}</view>
         <view class="order-info-detail">
           <block v-for="item in orderInfoFieldMap" :key="item.label">
             <view class="order-detail-item" v-if="!!orderDetail[item.field]">
               <view class="title">{{ item.label }}</view>
               <view class="content">{{ item.format ? item.format(orderDetail) : orderDetail[item.field] }}</view>
-              <view class="op" v-if="item.op" @click="item.op.handler(orderDetail, copySuccess)">{{ item.op.label }} </view>
+              <view class="op" v-if="item.op" @click="item.op.handler(orderDetail, copySuccess)">{{ item.op.label }}</view>
             </view>
           </block>
         </view>
@@ -32,7 +28,8 @@
             <view class="serve-base-info">
               <view class="serve-name">{{ item.serverName }}</view>
               <view class="serve-count">
-                <text class="price-text">￥{{ item.serverPrice }}</text> x {{ item.number }}
+                <text class="price-text">￥{{ item.serverPrice }}</text>
+                x {{ item.number }}
                 <text v-if="item.unit">/{{ item.unit }}</text>
               </view>
             </view>
@@ -43,15 +40,16 @@
           </view>
         </view>
 
-        <view v-if="(extraInfo.sfQuotas && extraInfo.sfQuotas.length) && !masterInfo" class="sfs-list-wrapper">
+        <view v-if="extraInfo.sfQuotas && extraInfo.sfQuotas.length && !masterInfo" class="sfs-list-wrapper">
           <view class="title">已报价的师傅</view>
           <view class="sf-offer-pane" v-for="item in extraInfo.sfQuotas" :key="item.worker.id">
             <image class="avata-img" :src="item.worker.headUrl"></image>
             <view class="sf-info">
               <view class="sf-name">{{ item.worker.name.slice(0, 1) }}师傅</view>
-              <view class="order-offer"
-                >报价: <text class="offer-price">￥{{ item.quotaPrice }}</text></view
-              >
+              <view class="order-offer">
+                报价:
+                <text class="offer-price">￥{{ item.quotaPrice }}</text>
+              </view>
             </view>
             <button class="uni-btn apponit-btn" @click="handleSelectSF(item)">选择该师傅</button>
           </view>
@@ -72,6 +70,15 @@
                 <view class="tui-order-title">{{ item.msg }}</view>
                 <view class="node-time">{{ item.createTime }}</view>
               </view>
+              <view class="images" v-if="item.url">
+                <image
+                  @click="handlePreviewSource(index, item.url.split(','), true)"
+                  class="image"
+                  v-for="(image, index) in item.url.split(',')"
+                  :key="index"
+                  :src="image"
+                ></image>
+              </view>
             </template>
           </tui-timeaxis-item>
         </tui-time-axis>
@@ -86,11 +93,7 @@
               <view class="left">
                 <text class="master-name">{{ masterInfo.name }}</text>
                 <view class="rate">
-									<tui-icon
-										name="star-fill" :size="24" unit="rpx"
-										color="#ff9554"
-										margin="0"
-									></tui-icon>
+                  <tui-icon name="star-fill" :size="24" unit="rpx" color="#ff9554" margin="0"></tui-icon>
                   <text class="rate-text">{{ masterInfo.score || '5.0' }}</text>
                 </view>
                 <view class="tag tag1">已认证</view>
@@ -108,28 +111,22 @@
             <image class="avatar-img" :src="masterInfo.headUrl"></image>
           </view>
 
-					<BeeMakePhone v-if="masterInfo.tel" :phone="masterInfo.tel">
-						<view class="contect-master">
-							<tui-icon
-								name="voipphone" :size="40" unit="rpx"
-								color="#ef530e"
-								margin="0"
-							></tui-icon>
-							<text class="text">联系师傅</text>
-							<tui-icon
-								name="arrowright" :size="28" unit="rpx"
-								color="#888889"
-								margin="0"
-							></tui-icon>
-						</view>
-					</BeeMakePhone>
+          <BeeMakePhone v-if="masterInfo.tel" :phone="masterInfo.tel">
+            <view class="contect-master">
+              <tui-icon name="voipphone" :size="40" unit="rpx" color="#ef530e" margin="0"></tui-icon>
+              <text class="text">联系师傅</text>
+              <tui-icon name="arrowright" :size="28" unit="rpx" color="#888889" margin="0"></tui-icon>
+            </view>
+          </BeeMakePhone>
         </view>
       </view>
+
+      <QualityAssuranceCard :info="orderDetail.qualityAssuranceCardBO" :status="orderDetail.qualityAssuranceCardBO.status" v-if="orderDetail.qualityAssuranceCardBO"></QualityAssuranceCard>
 
       <view class="item comment" v-if="orderComment">
         <view class="item-title">评价</view>
         <view class="content">
-          <view class="comment-text"> {{ orderComment.content }}</view>
+          <view class="comment-text">{{ orderComment.content }}</view>
           <view class="rate-item">
             <view class="title">服务态度</view>
             <tui-rate :size="16" :current="orderComment.serverScore"></tui-rate>
@@ -143,7 +140,7 @@
           <view class="comment-source-list">
             <block v-for="(item, index) in orderComment.commentFile" :key="index">
               <view class="item img" v-if="!isVideoSource(item)">
-                <image @click="handlePreviewSource(index, orderComment.commentFile, true)" class="img" :src="item"> </image>
+                <image @click="handlePreviewSource(index, orderComment.commentFile, true)" class="img" :src="item"></image>
               </view>
               <view class="item video" @click="handlePreviewSource(index, orderComment.commentFile, false)" v-else>
                 <video class="video-source" :src="item"></video>
@@ -153,7 +150,7 @@
         </view>
       </view>
 
-      <view class="tip"> </view>
+      <view class="tip"></view>
     </view>
 
     <view class="footer" :class="{ fix: scrollTop === 0 }" :style="{ backgroundColor: scrollTop > 100 ? '#fff' : '' }" v-if="orderDetail && [0, 1, 2].includes(orderDetail.status)">
@@ -174,8 +171,8 @@
       title="提示"
       content="确定要取消订单吗？"
       @click="
-        isShowChooseReason = true;
-        $data._isShowTuiModel = false;
+        isShowChooseReason = true
+        $data._isShowTuiModel = false
       "
     ></tui-modal>
 
@@ -184,13 +181,13 @@
       :maskZIndex="1001"
       :show="isShowChooseReason"
       @close="
-        isShowChooseReason = false;
-        cancelRemarks = '订单下错了';
-        isOther = false;
+        isShowChooseReason = false
+        cancelRemarks = '订单下错了'
+        isOther = false
       "
     >
       <view class="choose-reason-container">
-        <view class="title"> 取消订单 </view>
+        <view class="title">取消订单</view>
 
         <view class="list">
           <view class="list-item" v-for="item in reasonList" :key="item" @click="handleChooseCancelReason(item)">
@@ -213,12 +210,14 @@
 </template>
 
 <script>
-import { getCommOrderDeatilApi, cancelOrderApi, apponitServerSFApi } from '../api/community-center';
-import { orderStatusMap, orderInfoFieldMap } from './config';
-import { isVideoSource, getUserId } from '../utils';
-import showModalMixin from 'mixin/showModal';
+import { getCommOrderDeatilApi, cancelOrderApi, apponitServerSFApi } from '../api/community-center'
+import { orderStatusMap, orderInfoFieldMap } from './config'
+import { isVideoSource, getUserId } from '../utils'
+import showModalMixin from 'mixin/showModal'
+import QualityAssuranceCard from '../user/quality-assurance-card/components/QualityAssuranceCard.vue'
 
 export default {
+  components: { QualityAssuranceCard },
   data() {
     return {
       orderNo: '',
@@ -237,16 +236,16 @@ export default {
       isCanceling: false,
       currentSelectSFInfo: { worker: { name: '' } },
       userSelectSFModalVisible: false
-    };
+    }
   },
   mixins: [showModalMixin()],
   onLoad(options) {
-    this.orderNo = options.orderNo;
-    this.currentSelectSFInfo = { worker: { name: '' } };
+    this.orderNo = options.orderNo
+    this.currentSelectSFInfo = { worker: { name: '' } }
   },
 
   mounted() {
-    this.getOrderInfo();
+    this.getOrderInfo()
   },
 
   methods: {
@@ -255,55 +254,55 @@ export default {
       try {
         const res = await getCommOrderDeatilApi({
           orderNo: this.orderNo
-        });
+        })
 
         if (res.statusCode === 20000) {
-          this.orderDetail = res.data;
-          console.log(this.orderDetail);
-          this.orderStatusLogList = res.data.orderStatusLogList || [];
-          this.masterInfo = res.data.orderWorkerInfoVo || null;
-          this.extraInfo = res.data.extraInfo;
+          this.orderDetail = res.data
+          console.log(this.orderDetail)
+          this.orderStatusLogList = res.data.orderStatusLogList || []
+          this.masterInfo = res.data.orderWorkerInfoVo || null
+          this.extraInfo = res.data.extraInfo
           if (this.extraInfo) {
-            this.initExtraInfo(this.extraInfo);
+            this.initExtraInfo(this.extraInfo)
           }
           if (this.masterInfo && this.masterInfo.skillExpertise) {
-            this.masterInfo.skillExpertise = this.masterInfo.skillExpertise.split(',');
+            this.masterInfo.skillExpertise = this.masterInfo.skillExpertise.split(',')
           }
-          this.orderComment = this.orderDetail.laoaModuanComment || null;
+          this.orderComment = this.orderDetail.laoaModuanComment || null
           if (this.orderComment) {
-            this.orderComment.commentFile = [...this.orderComment.commentFile.split(',')];
+            this.orderComment.commentFile = [...this.orderComment.commentFile.split(',')]
           }
         } else {
           this.ttoast({
             type: 'fail',
             title: res.statusMsg
-          });
+          })
         }
 
-        uni.stopPullDownRefresh();
+        uni.stopPullDownRefresh()
       } catch (error) {
-        console.log(error);
+        console.log(error)
 
-        console.log(this.$refs);
+        console.log(this.$refs)
         this.ttoast({
           type: 'fail',
           title: '订单详情获取失败',
           content: error
-        });
+        })
       }
     },
 
     // 复制成功
     copySuccess() {
-      this.ttoast('复制成功');
+      this.ttoast('复制成功')
     },
 
     // 初始化额外信息
     initExtraInfo(extraInfo) {
       try {
-        this.extraInfo = JSON.parse(extraInfo);
+        this.extraInfo = JSON.parse(extraInfo)
       } catch (error) {
-        console.log('额外信息解析失败');
+        console.log('额外信息解析失败')
       }
     },
 
@@ -311,15 +310,15 @@ export default {
       // uni.navigateTo({ url: `../community-center/order` });
       uni.switchTab({
         url: '/pages/order/order'
-      });
+      })
     },
     handleChooseCancelReason(reason) {
       if (reason !== '其他') {
-        this.isOther = false;
-        this.cancelRemarks = reason;
+        this.isOther = false
+        this.cancelRemarks = reason
       } else {
-        this.isOther = true;
-        this.cancelRemarks = '';
+        this.isOther = true
+        this.cancelRemarks = ''
       }
     },
 
@@ -329,47 +328,47 @@ export default {
           type: 'info',
           title: '订单取消中',
           content: '请勿重复点击'
-        });
-        return;
+        })
+        return
       }
 
       if (!this.cancelRemarks) {
         this.ttoast({
           type: 'info',
           title: '请输入取消订单原因'
-        });
+        })
       }
 
       try {
-        this.isCanceling = true;
+        this.isCanceling = true
 
         const res = await cancelOrderApi({
           cancelRemarks: this.cancelRemarks,
           userId: getUserId(),
           id: this.orderDetail.id
-        });
+        })
 
         if (res.statusCode === 20000) {
-          this.ttoast('订单取消成功');
-          this.cancelRemarks = '订单下错了';
-          this.isOther = false;
-          this.isShowChooseReason = false;
-          this.getOrderInfo();
+          this.ttoast('订单取消成功')
+          this.cancelRemarks = '订单下错了'
+          this.isOther = false
+          this.isShowChooseReason = false
+          this.getOrderInfo()
         } else {
           this.ttoast({
             type: 'fail',
             title: '订单取消失败',
             content: res.statusMsg
-          });
+          })
         }
       } catch (error) {
         this.ttoast({
           type: 'fail',
           title: '订单取消失败',
           content: error
-        });
+        })
       } finally {
-        this.isCanceling = false;
+        this.isCanceling = false
       }
     },
 
@@ -379,17 +378,17 @@ export default {
         uni.previewImage({
           current: index,
           urls: list.filter((item) => !isVideoSource(item))
-        });
+        })
       } else {
-        const videoList = list.filter((url) => isVideoSource(url));
-        this.$refs.tuanVideoPreviewRef.showModel(list[index], videoList);
+        const videoList = list.filter((url) => isVideoSource(url))
+        this.$refs.tuanVideoPreviewRef.showModel(list[index], videoList)
       }
     },
 
     // 指定师傅
     handleSelectSF(item) {
-      this.currentSelectSFInfo = item;
-      this.userSelectSFModalVisible = true;
+      this.currentSelectSFInfo = item
+      this.userSelectSFModalVisible = true
     },
 
     async handleModalClick(e) {
@@ -398,36 +397,36 @@ export default {
           await apponitServerSFApi({
             orderNo: this.orderNo,
             sfUserId: this.currentSelectSFInfo.userId
-          });
+          })
           this.ttoast({
             type: 'success',
             title: '指定成功'
-          });
-          this.getOrderInfo();
+          })
+          this.getOrderInfo()
         } catch (error) {
           this.ttoast({
             type: 'fail',
             title: '指定失败',
             content: error
-          });
+          })
         } finally {
-          this.userSelectSFModalVisible = false;
+          this.userSelectSFModalVisible = false
         }
       } else {
-        this.currentSelectSFInfo = { worker: { name: '' } };
-        this.userSelectSFModalVisible = false;
+        this.currentSelectSFInfo = { worker: { name: '' } }
+        this.userSelectSFModalVisible = false
       }
     }
   },
 
   onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
+    this.scrollTop = e.scrollTop
   },
 
   onPullDownRefresh() {
-    this.getOrderInfo();
+    this.getOrderInfo()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -575,6 +574,22 @@ view {
     .node-time {
       color: #888889;
       font-size: 24upx;
+    }
+
+    .images {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 10rpx;
+
+      .image {
+        width: 100rpx;
+        height: 100rpx;
+        margin-right: 20rpx;
+        border-radius: 10rpx;
+        margin-bottom: 10rpx;
+      }
     }
   }
 

@@ -1,6 +1,16 @@
 <template>
 	<view class="selection-center-container">
-		<JHeader title="选品中心" width="50" height="50"></JHeader>
+		<JHeader title="选品中心" width="50" height="50">
+			<template #ftFn>
+				<!-- &isSelection=1 -->
+				<tui-button
+					type="primary" width="180rpx" height="58rpx" margin="0 10rpx 0 0 "
+					@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${$store.state.auth.identityInfo.shopInfo.shopId}`)"
+				>
+					商家选品
+				</tui-button>
+			</template>
+		</JHeader>
 
 		<view
 			style="display: flex;align-items: center;justify-content: space-around;padding: 20rpx 0;font-size: 26rpx;"
@@ -43,7 +53,7 @@
 					>
 						<template #line="obj">
 							<tui-button
-								v-if="[3, 4, 5].includes(levelType)"
+								v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15)"
 								type="warning" width="106rpx" height="54rpx"
 								margin="0" shape="circle"
 								@click="handleSelectSelection(obj.data)"
@@ -60,7 +70,7 @@
 					>
 						<template #line="obj">
 							<tui-button
-								v-if="[3, 4, 5].includes(levelType)"
+								v-if="$store.state.auth.identityInfo.type.includes(13) || $store.state.auth.identityInfo.type.includes(14) || $store.state.auth.identityInfo.type.includes(15)"
 								type="warning" width="106rpx" height="54rpx"
 								margin="0" shape="circle"
 								@click="handleSelectSelection(obj.data)"
@@ -90,12 +100,11 @@
 </template>
 
 <script>
-import { getSelectLevelPlatformRelationApi, getShopClassifyApi, getBuyerSelectionLibraryApi, getBuyerSelectionSelectApi } from '../../../api/anotherTFInterface'
+import { getShopClassifyApi, getBuyerSelectionLibraryApi, getBuyerSelectionSelectApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'SelectionCenter',
 	data() {
 		return {
-			levelType: '',
 			allTabData: [],
 			selectionTagShowFalg: false,
 			classifyName: '',
@@ -116,10 +125,6 @@ export default {
 		}
 	},
 	onLoad() {
-		getSelectLevelPlatformRelationApi({})
-			.then((res) => {
-				this.levelType = res.data.levelType
-			})
 		getShopClassifyApi({
 			shopId: ''
 		}).then((res) => {

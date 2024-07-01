@@ -24,7 +24,7 @@
 						<tui-icon name="close" :size="50" unit="rpx" color="#999999" @click="isShowPopup = false"></tui-icon>
 					</view>
 					<view>
-						<scroll-view scroll-y style="height: 900rpx;">
+						<scroll-view scroll-y style="height: 900rpx;" @scrolltolower="handleScrolltolower">
 							<view style="padding: 30rpx;">
 								<view class="search-btn" style="display: flex;align-items: center;padding: 20rpx 0 12rpx;">
 									<text style="font-size: 34rpx;">搜索词</text>
@@ -254,7 +254,7 @@ export default {
 	created() {
 		getOrderAssociatedBeneficiaryApi({ consumerPhone: this.$store.getters.userInfo.phone })
 			.then((res) => {
-				this.benefitinFranchiseesPhone = res.data.franchisees || '111'
+				this.benefitinFranchiseesPhone = res.data.franchisees || ''
 				this.$emit('change', {
 					benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
 					communityPhone: this.selectedCommunityStore.communityAccount.account,

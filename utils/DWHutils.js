@@ -205,7 +205,6 @@ export const isInWx = () => {
  * @returns
  */
 
-// eslint-disable-next-line complexity
 export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl, toType, query, montageTerminal }, cb = () => { }) => {
 	if (toType === 'H5') {
 		if (isInWx()) {
@@ -277,7 +276,7 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 			}
 		} else {
 			// #ifdef H5
-			location.href = 'weixin://dl/business/?appid=wxb446588ba0dbb9d7&path=pages/index/index'
+			location.href = `weixin://dl/business/?appid=${appId}&path=${url}&query=${query && montageTerminal && montageTerminal.includes(5) ? query.replace('?', '') : ''}`
 			// #endif
 			// #ifdef APP
 			plus.share.getServices(function (result) {
@@ -293,6 +292,8 @@ export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, programUrl
 						type: 0,
 						path: query && montageTerminal && montageTerminal.includes(1) ? url + query : url
 					})
+				} else {
+					uni.showToast({ title: '请先安装微信', icon: 'none' })
 				}
 			}, function (e) {
 				console.log('获取分享服务列表失败：' + e.message)
