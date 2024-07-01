@@ -1,6 +1,16 @@
 <template>
 	<view class="selection-center-container">
-		<JHeader title="选品中心" width="50" height="50"></JHeader>
+		<JHeader title="选品中心" width="50" height="50">
+			<template #ftFn>
+				<!-- &isSelection=1 -->
+				<tui-button
+					type="primary" width="180rpx" height="58rpx" margin="0 10rpx 0 0 "
+					@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${$store.state.auth.identityInfo.shopInfo.shopId}`)"
+				>
+					商家选品
+				</tui-button>
+			</template>
+		</JHeader>
 
 		<view
 			style="display: flex;align-items: center;justify-content: space-around;padding: 20rpx 0;font-size: 26rpx;"

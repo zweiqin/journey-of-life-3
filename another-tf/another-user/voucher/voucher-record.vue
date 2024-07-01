@@ -178,9 +178,9 @@
 					</view>
 				</view>
 				<view v-else-if="[ 2 ].includes(queryType)">
-					<view v-if="orderInfo.data.length > 0">
+					<view v-if="outgoingInfo.data.length > 0">
 						<view
-							v-for="(item, index) in orderInfo.data" :key="item.id"
+							v-for="(item, index) in outgoingInfo.data" :key="item.id"
 							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
 							@click="handleClickVoucherRecord(item)"
 						>
@@ -219,11 +219,11 @@
 					</view>
 					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
-							:status="!orderInfo.isEmpty && !orderInfo.data.length
-								? 'loading' : !orderInfo.isEmpty && orderInfo.data.length && (orderInfo.data.length >= orderInfo.listTotal) ? 'no-more' : ''"
+							:status="!outgoingInfo.isEmpty && !outgoingInfo.data.length
+								? 'loading' : !outgoingInfo.isEmpty && outgoingInfo.data.length && (outgoingInfo.data.length >= outgoingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="orderInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="outgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 3 ].includes(queryType)">
@@ -355,7 +355,7 @@ export default {
 			this.accountingInfo.query.page = 1
 			this.getAccountingLogsList()
 		} else if ([ 2 ].includes(this.queryType)) {
-			this.orderInfo.query.page = 1
+			this.outgoingInfo.query.page = 1
 			this.getOutgoingLogsList()
 		} else if ([ 3 ].includes(this.queryType)) {
 			this.orderInfo.query.page = 1

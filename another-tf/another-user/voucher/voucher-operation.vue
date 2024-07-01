@@ -1,7 +1,7 @@
 <template>
 	<view class="voucher-operation-container">
 		<JHeader title="代金券" width="50" height="50"></JHeader>
-		<VoucherChoose padding="20rpx 0 0" @change="(e) => voucherChooseInfo = e"></VoucherChoose>
+		<VoucherChoose padding="20rpx 0 0" @change="(e) => (voucherChooseInfo = e) && getVoucherData()"></VoucherChoose>
 		<view
 			style="position: relative;padding: 8rpx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
@@ -513,7 +513,11 @@ export default {
 		}
 	},
 	onShow() {
-		this.getVoucherData()
+		if (this.voucherChooseInfo.platformVoucherId) {
+			this.getVoucherData()
+		} else {
+			this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+		}
 	},
 	methods: {
 		getVoucherData() {

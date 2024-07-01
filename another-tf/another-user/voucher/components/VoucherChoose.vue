@@ -49,7 +49,7 @@
 								<view v-if="chosenVoucher.platformVoucherId" style="text-align: right;">
 									<tui-radio-group
 										:value="String(chosenVoucher.platformVoucherId)"
-										@change="(e) => handleCommunityStoreItemTap(JSON.parse(JSON.stringify(chosenVoucherOrign)))"
+										@change="(e) => handleVoucherItemTap(JSON.parse(JSON.stringify(chosenVoucherOrign)))"
 									>
 										<tui-label>
 											<tui-list-cell padding="0 16rpx">
@@ -66,7 +66,7 @@
 								<view
 									v-for="(item, index) in platformVoucherList" :key="index"
 									style="padding: 10rpx 30rpx 10rpx 40rpx;margin-bottom: 30rpx;background-color: #eeeeee;border-radius: 100rpx;"
-									@click="handleCommunityStoreItemTap(item)"
+									@click="handleVoucherItemTap(item)"
 								>
 									<view style="display: flex;justify-content: space-between;align-items: center;">
 										<view>
@@ -159,7 +159,7 @@ export default {
 	async created() {
 		await this.getAllPlatformVoucherList()
 		if (this.platformVoucherList && this.platformVoucherList.length) {
-			this.handleCommunityStoreItemTap(this.platformVoucherList[0])
+			this.handleVoucherItemTap(this.platformVoucherList[0])
 		}
 	},
 	methods: {
@@ -182,7 +182,7 @@ export default {
 		},
 
 		// 平台代金券选择
-		handleCommunityStoreItemTap(item) {
+		handleVoucherItemTap(item) {
 			if (this.chosenVoucher.platformVoucherId === item.platformVoucherId) return
 			this.chosenVoucher = item
 			this.isShowPopup = false

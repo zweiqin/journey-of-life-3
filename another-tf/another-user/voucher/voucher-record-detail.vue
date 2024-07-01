@@ -131,6 +131,10 @@
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderFormid || '--' }}</view>
 					</view>
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">第三方支付ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.trxId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">支付时间</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.payTime || '--' }}</view>
 					</view>
