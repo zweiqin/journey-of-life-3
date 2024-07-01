@@ -811,3 +811,7 @@ export const getBuyerSelectionSelectApi = (data) => AnotherTFRequest('/buyerSele
 
 // c端选品详情
 export const getBuyerSelectionDetailsApi = (data) => AnotherTFRequest('/buyerSelection/h5SelectionDetails', data, 'POST')
+
+
+// 代金券抵扣
+export const getVoucherApiExchange = (params) => AnotherTFRequest('/buyerVoucherEntryRecord/deductionOrder', params, 'GET')

@@ -49,7 +49,7 @@ export default {
 				updatePhoneLoginRegisterApi({ ...loginData })
 					.then(({ data }) => {
 						console.log(data)
-						if (data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) {
+						if ('data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone') {
 							try {
 								uni.hideLoading()
 								uni.showToast({ title: '登录成功', icon: 'none' })

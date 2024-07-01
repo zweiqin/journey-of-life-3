@@ -7,7 +7,8 @@
 				<BeeIcon name="arrowleft" :size="34" color="#222229"
 					style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
+				<text
+					style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
@@ -27,8 +28,8 @@
 			</view> -->
 
 		<!-- ['商品', '四季鲜蔬', '火锅食材', '烧烤食材', '鲜果礼篮', '粮油副食']allTabList.map(i => i.classifyName) -->
-		<tui-tab :tabs="allTabList" :current="currentTab" scroll background-color="transparent" :size="32" bold bottom="6upx"
-			color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
+		<tui-tab :tabs="allTabList" :current="currentTab" scroll background-color="transparent" :size="32" bold
+			bottom="6upx" color="#222229" selected-color="#222229" slider-bg-color="#ef530e" slider-height="4px"
 			@change="handleTabChange"></tui-tab>
 
 		<view v-if="allTabData[currentTab].classify && allTabData[currentTab].classify.length"
@@ -43,10 +44,11 @@
 
 		<view style="background-color: #fff;padding: 4upx 20upx 0 20upx;margin-top: 10upx;">
 			<view v-if="currentTab === -1">
-				<CanvasPage v-if="componentsData && componentsData.length" :components-data="componentsData" :terminal="terminal"
-					:type-id="3" :shop-id="Number(shopId)">
+				<CanvasPage v-if="componentsData && componentsData.length" :components-data="componentsData"
+					:terminal="terminal" :type-id="3" :shop-id="Number(shopId)">
 				</CanvasPage>
-				<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false" style="margin-top: 40upx;">
+				<tui-no-data v-else-if="componentsData && !componentsData.length" :fixed="false"
+					style="margin-top: 40upx;">
 					商家未装修首页
 				</tui-no-data>
 			</view>
@@ -54,23 +56,27 @@
 				<view v-if="bannerInfoList && bannerInfoList.length" style="background: #f7f7f7;padding: 20upx 30upx;">
 					<swiper indicator-dots="true">
 						<swiper-item v-for="(item, index) in bannerInfoList" :key="index">
-							<image :src="item.bannerImage" style="width: 100%;height: 280upx;border-radius: 20upx;"></image>
+							<image :src="item.bannerImage" style="width: 100%;height: 280upx;border-radius: 20upx;">
+							</image>
 						</swiper-item>
 					</swiper>
 				</view>
-				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
+				<view
+					style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
 					<view
 						:style="{ color: shopGoodsInfo.query.ifNew === 1 ? '#ff7911' : shopGoodsInfo.query.ifNew === 0 ? '#8dbcbd' : '#000000' }"
 						@click="handleGoodsSortTap(1)">
 						<text>新品</text>
 					</view>
-					<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(2)">
+					<view :style="{ color: sortGoodsIndex === 2 ? '#ff7911' : '#000000' }"
+						@click="handleGoodsSortTap(2)">
 						<text>价格</text>
 						<tui-icon v-if="[1, 2].includes(shopGoodsInfo.query.type)"
 							:name="shopGoodsInfo.query.type === 1 ? 'turningup' : shopGoodsInfo.query.type === 2 ? 'turningdown' : ''"
 							color="#666666" :size="16"></tui-icon>
 					</view>
-					<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(3)">
+					<view :style="{ color: sortGoodsIndex === 3 ? '#ff7911' : '#000000' }"
+						@click="handleGoodsSortTap(3)">
 						<text>销量</text>
 						<tui-icon v-if="[1, 2].includes(shopGoodsInfo.query.volume)"
 							:name="shopGoodsInfo.query.volume === 1 ? 'turningup' : shopGoodsInfo.query.volume === 2 ? 'turningdown' : ''"
@@ -94,9 +100,10 @@
 				<view style="padding-bottom: 45upx;">
 					<LoadingMore
 						:status="!shopGoodsInfo.isEmpty && !shopGoodsInfo.data.length
-							? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''">
+			? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''">
 					</LoadingMore>
-					<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+					<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false"
+						style="margin-top: 60upx;">暂无数据</tui-no-data>
 				</view>
 			</view>
 		</view>
@@ -149,7 +156,7 @@ export default {
 					type: '', // 价格排序条件
 					volume: '', // 销量排序条件
 					page: 1, // 当前页
-					pageSize: 20 // 每页记录数
+					pageSize: 20, // 每页记录数
 				},
 				data: [],
 				listTotal: 0, // 列表数据总数
@@ -159,7 +166,7 @@ export default {
 	},
 
 	onLoad(options) {
-	  // this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
+		// this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		this.shopId = options.shopId
 		this.getBrandDetail()
 		getShopClassifyApi({
@@ -277,7 +284,8 @@ export default {
 			getShopProductsApi({
 				...this.shopGoodsInfo.query,
 				shopId: this.shopId,
-				groupId: this.classifyId
+				groupId: this.classifyId,
+				counterType: 2
 			}).then((res) => {
 				this.shopGoodsInfo.listTotal = res.data.page.total
 				if (isLoadmore) {

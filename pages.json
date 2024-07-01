@@ -1395,7 +1395,24 @@
     },
     {
       "root": "another-tf",
+      "name": "another-tf",
       "pages": [
+        {
+          "path": "another-user/exchange/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换专区"
+          }
+        },
+        {
+          "path": "another-user/voucherPay/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换商品结算"
+          }
+        },
         {
           "path": "another-user/shop/shop-enter",
           "style": {

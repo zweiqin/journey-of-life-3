@@ -70,14 +70,14 @@ const service = (base_url, hideLoading) => function (url, data = {}, method = 'p
 					reject(res.data.errmsg)
 					return
 				} else if (res.data.errmsg == '用户未登录') {
-					uni.showModal({
-						title: '提示',
-						content: '您还未登录，请先去登录',
-						showCancel: true,
-						success(res) {
-							uni.navigateTo({ url: '/pages/login/login' })
-						}
-					})
+					// uni.showModal({
+					// 	title: '提示',
+					// 	content: '您还未登录，请先去登录',
+					// 	showCancel: true,
+					// 	success(res) {
+					// 		uni.navigateTo({ url: '/pages/login/login' })
+					// 	}
+					// })
 				} else {
 					resolve(res.data)
 				}
