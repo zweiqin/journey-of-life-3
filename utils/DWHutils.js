@@ -64,22 +64,22 @@ export const getUserId = () => {
 		//   icon: "none",
 		// });
 
-		// uni.navigateTo({
-		//   url: "/pages/login/login",
-		// });
-		// uni.showModal({
-		// 	title: '提示',
-		// 	content: '您还未登录，是否去登录？',
-		// 	success(res) {
-		// 		if (res.confirm) {
-		// 			uni.navigateTo({
-		// 				url: '/pages/login/login'
-		// 			})
-		// 		} else if (res.cancel) {
-		// 			// uni.navigateBack();
-		// 		}
-		// 	}
-		// })
+		uni.navigateTo({
+		  url: "/pages/login/login",
+		});
+		uni.showModal({
+			title: '提示',
+			content: '您还未登录，是否去登录？',
+			success(res) {
+				if (res.confirm) {
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				} else if (res.cancel) {
+					// uni.navigateBack();
+				}
+			}
+		})
 		return
 	}
 	return userId

@@ -43,14 +43,14 @@ const service = base_url => {
             }
           } else {
             if (res.data.errmsg == '用户未登录' || res.data.errno === 501) {
-              // uni.showModal({
-              //   title: '提示',
-              //   content: '您还未登录，请先去登录',
-              //   showCancel: true,
-              //   success: function (res) {
-              //     uni.navigateTo({ url: '/pages/auth/login/login' })
-              //   },
-              // })
+              uni.showModal({
+                title: '提示',
+                content: '您还未登录，请先去登录',
+                showCancel: true,
+                success: function (res) {
+                  uni.navigateTo({ url: '/pages/auth/login/login' })
+                },
+              })
             } else if (res.data.errno !== 0) {
               showError && uni.showToast({
                 title: res.data.errmsg,
