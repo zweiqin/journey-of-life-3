@@ -77,11 +77,11 @@ export const myFunction = [
 		icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
 		type: 'userInvitation'
 	},
-  {
+	{
   	name: '质保卡',
   	icon: require('../../static/images/new-user/menu-icon/quality-assurance-card.png'),
   	url: '/user/quality-assurance-card/quality-assurance-card'
-  },
+	}
 	// {
 	// 	name: '我的推广',
 	// 	icon: require('../../static/images/new-user/menu-icon/wodetuiguang.png'),
@@ -235,7 +235,7 @@ export const additionalFunction = [
 		name: '选品中心',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/selection-center/index',
-		showRole: ['copartner', 'regimentalcommander']
+		showRole: ['regimentalcommander', 'copartner']
 	}
 ]
 

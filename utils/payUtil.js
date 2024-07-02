@@ -390,8 +390,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 			})
 	} else {
 		await getPayMiniProgramQueryApi({
-			orderFormid: data.orderFormid, // 无此传参
-			orderNo: data.orderSn || data.orderFormid,
+			orderNo: data.orderSn,
 			purchaseMode: payType,
 			paymentMode: data.paymentMode,
 			...otherArgs
@@ -430,8 +429,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 
 async function wvTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid, // 无此传参
-		orderNo: data.orderSn || data.orderFormid,
+		orderNo: data.orderSn,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
 		...otherArgs
@@ -476,8 +474,7 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 
 async function appTonglianPay(data, payType, type, otherArgs) {
 	await getPayMiniProgramQueryApi({
-		orderFormid: data.orderFormid, // 无此传参
-		orderNo: data.orderSn || data.orderFormid,
+		orderNo: data.orderSn,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
 		...otherArgs

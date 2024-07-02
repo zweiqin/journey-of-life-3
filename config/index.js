@@ -1,4 +1,4 @@
-// // 线上助力通
+// 线上助力通
 // export const SheQu1_URL = 'https://www.zhult.com/' // 线上
 // // export const SheQu1_URL = "http://192.168.0.144:8781/"; // 本地
 // // 线上团蜂
@@ -25,7 +25,7 @@
 // // 新团蜂入驻端项目地址
 // export const ANOTHER_TF_SETTLE = 'https://nsh51.tuanfengkeji.cn' // 线上
 
-export const SheQu1_URL = '/lao/' // 测试
+export const SheQu1_URL = 'https://test.zhult.com/' // 测试
 export const SheQu_URL = 'https://test.tuanfengkeji.cn/dts-app-api' // 测试
 export const RUAN_URL = 'https://test.tuanfengkeji.cn/dts-app-api/wx' // 测试
 export const IMG_UPLOAD_URL = 'https://test.tuanfengkeji.cn/dts-app-api/wx/storage/upload' // 测试

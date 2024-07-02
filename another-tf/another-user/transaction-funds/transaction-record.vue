@@ -23,7 +23,7 @@
 				</tui-button>
 			</view>
 
-			<view style="margin-top: 18rpx;font-size: 28rpx;">
+			<view style="padding: 18rpx 0 0;font-size: 28rpx;">
 				<tui-dropdown-list
 					:show="timeDropdownShow" :top="55" background-color="#474747"
 					@close="timeDropdownShow = false"

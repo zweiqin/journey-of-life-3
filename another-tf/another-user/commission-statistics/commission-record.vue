@@ -1,5 +1,5 @@
 <template>
-	<view class="voucher-record-container">
+	<view class="commission-record-container">
 		<JHeader title="收支明细" width="50" height="50"></JHeader>
 		<view style="padding: 20rpx 20rpx 0;">
 			<!-- <view class="top-btn">
@@ -23,7 +23,7 @@
 				</tui-button>
 				</view> -->
 
-			<view style="margin-top: 18rpx;font-size: 28rpx;">
+			<view style="padding: 18rpx 0 0;font-size: 28rpx;">
 				<tui-dropdown-list
 					:show="timeDropdownShow" :top="55" background-color="#474747"
 					@close="timeDropdownShow = false"
@@ -262,7 +262,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.voucher-record-container {
+.commission-record-container {
 	min-height: 100vh;
 	box-sizing: border-box;
 

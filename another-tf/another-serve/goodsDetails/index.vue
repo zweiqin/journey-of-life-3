@@ -66,7 +66,7 @@
 					</view>
 
 					<!-- 选择SKU -->
-					<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
+					<view class="fs24 chooseSize-box flex-start" v-if="isShowCart != 1" @click="handleShowGoodsSkuSelect(6)">
 						<view class="chooseSize-content flex-items flex-row flex-sp-between">
 							<view class="flex-row-plus">
 								<label class="fs26 mar-left-30 font-color-999">选择</label>
@@ -177,13 +177,14 @@
 							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 							<label class="fs22">店铺</label>
 						</view>
-						<view class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
+						<view class="btns flex-column-plus mar-left-10 flex-items" v-if="isShowCart != 1" @click="handleOpenCustomerService">
 							<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 							<label class="fs22">客服</label>
 						</view>
 						<view
 							class="btns flex-column-plus mar-left-10 flex-items Cart"
 							@click="go('/another-tf/another-serve/shopCar/shopCar')"
+							v-if="isShowCart != 1"
 						>
 							<view v-if="allCartNum > 0" class="cartAllNum">
 								{{ allCartNum }}
@@ -227,6 +228,7 @@
 								margin="0 0 0 40rpx"
 								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
 								@click="handleShowGoodsSkuSelect(1)"
+								v-if="isShowCart != 1"
 							>
 								加入购物车
 							</tui-button>
@@ -243,6 +245,8 @@
 			</view>
 		</view>
 
+		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()"></BeeWxShare>
+
 		<!-- 回到顶部 -->
 		<view class="returnTopService-box">
 			<view
@@ -254,7 +258,7 @@
 		</view>
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
-			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId"
+			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId" :skuId="skuId" :isShowCart="isShowCart"
 			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 			@change-goods-detail="(obj) => goodsDetail = obj"
 		/>
@@ -298,11 +302,12 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import CombinedSales from './components/combinedSales'
 import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
-import { timeFormatting, resolveGoodsDetailSkuSituation } from '../../../utils'
+import { timeFormatting, resolveGoodsDetailSkuSituation, setMiniprogramShareConfig } from '../../../utils'
 import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
 
 export default {
@@ -367,7 +372,25 @@ export default {
 
 			// 客服
 			isShowCustomerServicePopup: false,
-			customerServiceList: []
+			customerServiceList: [],
+			//  控制下面购物车按钮
+			isShowCart: null
+		}
+	},
+	watch: {
+		goodsDetail: {
+			handler(newV, oldV) {
+				if (newV.productId && (newV.productId !== oldV.productId)) {
+					this.productId = newV.productId
+					// #ifdef H5
+					this.$nextTick(() => {
+						this.handleShareServe(true)
+					})
+					// #endif
+				}
+			},
+			immediate: true,
+			deep: true
 		}
 	},
 	onLoad(options) {
@@ -376,6 +399,9 @@ export default {
 		this.productId = Number(options.productId)
 		this.skuId = Number(options.skuId)
 		this.isSelection = Number(options.isSelection)
+		if(options.isShowCart == "1"){
+			this.isShowCart = 1
+		}
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
@@ -478,6 +504,7 @@ export default {
 				this.$refs.refGoodSkuSelect.btnType = btnType
 				this.$refs.refGoodSkuSelect.isShowDetails = true
 			} else {
+				if(this.isShowCart == 1) return
 				uni.showModal({
 					title: '温馨提示',
 					content: '系统检测到您未填写收货地址，部分功能将会受限，是否现在去填写？',
@@ -520,6 +547,16 @@ export default {
 				// const sameSkuProduct = Object.values(res.data.map).find((item) => item.skuId === res.data.skuId) || {}
 				// this.goodsDetail = { ...res.data, voucherId: sameSkuProduct.voucherId || '', voucherPrice: sameSkuProduct.voucherPrice || '' }
 				this.goodsDetail = res.data
+				if (this.$store.state.app.terminal === 6) {
+					setMiniprogramShareConfig({
+						data: {
+							event: 'sharingPageTurn',
+							webPath: `/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}&isSelection=${this.isSelection}`,
+							title: `商品详情 - ${this.goodsDetail.productName}`,
+							imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
+						}
+					})
+				}
 				// 处理单规格商品，如果是单款式商品，需要特殊处理goodsDetail.names
 				const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
 				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
@@ -551,10 +588,25 @@ export default {
 						this.handleSetDownTime()
 					}
 				})
-				this.viewUpdate = ' '// 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
+				this.viewUpdate = ' ' // 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
 			} finally {
 				uni.hideLoading()
 			}
+		},
+
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `商品详情 - ${this.goodsDetail.productName}`,
+					desc: this.goodsDetail.productBrief || '--',
+					link: `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}&isSelection=${this.isSelection}`,
+					imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
 		},
 
 		// 打开客服

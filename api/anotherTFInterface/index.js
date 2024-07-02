@@ -567,11 +567,39 @@ export const updateTransferVoucherShopHoldApi = (data) => AnotherTFRequest('/vou
 // /voucherOrder/getTotal 获取代金券总数据
 export const getTotalVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getTotal', data, 'POST')
 
-// /voucherShopHold/transferLogs 获取代金券转增数据
+// /voucherShopHold/transferLogs 获取代金券转赠数据
 export const getTransferLogsVoucherShopHoldApi = (data) => AnotherTFRequest('/voucherShopHold/transferLogs', data, 'POST')
 
 // /voucherOrder/getAll 获取代金券充值数据
 export const getAllVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/getAll', data, 'POST')
+
+// 新代金券
+// 分页查询平台代金券
+export const getAllPlatformVoucherApi = (data) => AnotherTFRequest('/platformVoucher/getAll', data, 'POST')
+
+// 充值代金券统计
+export const getByUserOrderVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getByUserOrderVoucher', data)
+
+// 兑换代金券统计
+export const getBuyerTotalVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/buyerTotal', data)
+
+// 代金券购买提交订单
+export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/submitVoucher', data, 'POST')
+
+// 充值代金券转赠
+export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
+
+// 兑换代金券转赠
+export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
+
+// 代金券入账记录
+export const getBuyerVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/entryRecord', data, 'POST')
+
+// 代金券出账记录
+export const getBuyerVoucherOutgoingRecordApi = (data) => AnotherTFRequest('/buyerVoucherOutgoingRecord/outgoingRecord', data, 'POST')
+
+// 分页查询用户充值代金券订单表
+export const getAllBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getAll', data)
 
 // 用户银行卡相关接口
 // 查询用户所有银行卡
@@ -638,6 +666,9 @@ export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettl
 
 // 提交订单
 export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
+
+// 代金券抵扣
+export const getVoucherApiExchange = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/deductionOrder', data, 'GET')
 
 // 秒杀专区
 // 商品问答数据查询

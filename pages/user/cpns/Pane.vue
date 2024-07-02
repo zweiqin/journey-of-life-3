@@ -202,8 +202,8 @@ export default {
 					if (item.showRole.includes('shop') && roleInfoArr.includes(9)) renderMenuArr.push(item)
 					if (item.showRole.includes('merchantStaff') && roleInfoArr.includes(8)) renderMenuArr.push(item)
 					if (item.showRole.includes('franchisee') && roleInfoArr.includes(1)) renderMenuArr.push(item)
-					if (item.showRole.includes('copartner') && (roleInfoArr.includes(13) || roleInfoArr.includes(14))) renderMenuArr.push(item)
-					if (item.showRole.includes('regimentalcommander') && roleInfoArr.includes(15)) renderMenuArr.push(item)
+					if (item.showRole.includes('regimentalcommander') && (roleInfoArr.includes(13) || roleInfoArr.includes(14))) renderMenuArr.push(item)
+					if (item.showRole.includes('copartner') && roleInfoArr.includes(15)) renderMenuArr.push(item)
 				} else {
 					if (item.name === '电子名片') {
 						if ((this.$store.state.app.terminal === 3) && !this.hasElectronicCardConfig) {

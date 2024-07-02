@@ -1439,6 +1439,22 @@
           }
         },
         {
+          "path": "another-user/exchange/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换专区"
+          }
+        },
+        {
+          "path": "another-user/voucherPay/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换商品结算"
+          }
+        },
+        {
           "path": "another-user/selection-center/index",
           "style": {
             "navigationBarTitleText": "选品中心"
@@ -1558,18 +1574,18 @@
             "navigationBarTitleText": "代金券收支明细详情"
           }
         },
-        {
-          "path": "another-user/voucher/voucher",
-          "style": {
-            "navigationBarTitleText": "代金券"
-          }
-        },
-        {
-          "path": "another-user/voucher/orderStatus",
-          "style": {
-            "navigationBarTitleText": "代金券订单完成状态"
-          }
-        },
+        // {
+        //   "path": "another-user/voucher/voucher",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券"
+        //   }
+        // },
+        // {
+        //   "path": "another-user/voucher/orderStatus",
+        //   "style": {
+        //     "navigationBarTitleText": "代金券订单完成状态"
+        //   }
+        // },
         {
           "path": "another-user/commission-statistics/commission-record",
           "style": {
