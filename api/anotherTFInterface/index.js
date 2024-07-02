@@ -667,6 +667,9 @@ export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettl
 // 提交订单
 export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
 
+// 代金券抵扣
+export const getVoucherApiExchange = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/deductionOrder', data, 'GET')
+
 // 秒杀专区
 // 商品问答数据查询
 export const getProblemsSeckillApi = (data) => AnotherTFRequest('/seckill/getProblems', data)

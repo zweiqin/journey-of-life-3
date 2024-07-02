@@ -1439,6 +1439,22 @@
           }
         },
         {
+          "path": "another-user/exchange/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换专区"
+          }
+        },
+        {
+          "path": "another-user/voucherPay/index",
+          "style": {
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff",
+						"navigationBarTitleText": "兑换商品结算"
+          }
+        },
+        {
           "path": "another-user/selection-center/index",
           "style": {
             "navigationBarTitleText": "选品中心"
