@@ -753,12 +753,18 @@ export const resolveSubmitOrder = async (params = {}) => {
 				eventType: 3,
 				productIds: orderPackageDataObj.pointProductIds
 			})
-			updatePlatformBeeCurrencySaveBeeApi({
-				orderId: res.data.orderId
-			})
-			updateSavePlatformComposeApi({
-				orderId: res.data.orderId
-			})
+			if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
+			} else {
+				updatePlatformBeeCurrencySaveBeeApi({
+					orderId: res.data.orderId
+				})
+			}
+			// if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
+			// } else {
+			// 	updateSavePlatformComposeApi({
+			// 		orderId: res.data.orderId
+			// 	})
+			// }
 			// type订单类型1-父订单2-子订单
 			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
 		} catch (e) {

@@ -66,7 +66,7 @@
 					</view>
 
 					<!-- 选择SKU -->
-					<view class="fs24 chooseSize-box flex-start" v-if="isShowCart != 1" @click="handleShowGoodsSkuSelect(6)">
+					<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
 						<view class="chooseSize-content flex-items flex-row flex-sp-between">
 							<view class="flex-row-plus">
 								<label class="fs26 mar-left-30 font-color-999">选择</label>
@@ -177,14 +177,14 @@
 							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
 							<label class="fs22">店铺</label>
 						</view>
-						<view class="btns flex-column-plus mar-left-10 flex-items" v-if="isShowCart != 1" @click="handleOpenCustomerService">
+						<view v-if="!isExchange" class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
 							<tui-icon :size="24" color="#333333" name="message"></tui-icon>
 							<label class="fs22">客服</label>
 						</view>
 						<view
+							v-if="!isExchange"
 							class="btns flex-column-plus mar-left-10 flex-items Cart"
 							@click="go('/another-tf/another-serve/shopCar/shopCar')"
-							v-if="isShowCart != 1"
 						>
 							<view v-if="allCartNum > 0" class="cartAllNum">
 								{{ allCartNum }}
@@ -224,11 +224,11 @@
 						</view>
 						<view v-else style="display: flex;align-items: center;justify-content: flex-end;">
 							<tui-button
-								type="gray" width="190rpx" height="80rpx" plain
+								v-if="!isExchange" type="gray" width="190rpx" height="80rpx"
+								plain
 								margin="0 0 0 40rpx"
 								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
 								@click="handleShowGoodsSkuSelect(1)"
-								v-if="isShowCart != 1"
 							>
 								加入购物车
 							</tui-button>
@@ -258,7 +258,8 @@
 		</view>
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
-			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId" :skuId="skuId" :isShowCart="isShowCart"
+			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId" :sku-id="skuId"
+			:is-exchange="Boolean(isExchange)"
 			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 			@change-goods-detail="(obj) => goodsDetail = obj"
 		/>
@@ -334,7 +335,8 @@ export default {
 			shopId: '',
 			productId: '', // 商品ID，有可能是缓存数据
 			skuId: '', // 产品ID
-			isSelection: 0,
+			isSelection: 0, // 是否选品
+			isExchange: 0, // 是否兑换专区商品
 
 			returnTopFlag: false, // 回到顶部
 			collageId: 0, // 去拼团时的拼单ID
@@ -372,9 +374,7 @@ export default {
 
 			// 客服
 			isShowCustomerServicePopup: false,
-			customerServiceList: [],
-			//  控制下面购物车按钮
-			isShowCart: null
+			customerServiceList: []
 		}
 	},
 	watch: {
@@ -398,10 +398,8 @@ export default {
 		this.shopId = Number(options.shopId)
 		this.productId = Number(options.productId)
 		this.skuId = Number(options.skuId)
-		this.isSelection = Number(options.isSelection)
-		if(options.isShowCart == "1"){
-			this.isShowCart = 1
-		}
+		this.isSelection = Number(options.isSelection) || 0
+		this.isExchange = Number(options.isExchange) || 0
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
@@ -503,8 +501,11 @@ export default {
 				this.collageId = 0
 				this.$refs.refGoodSkuSelect.btnType = btnType
 				this.$refs.refGoodSkuSelect.isShowDetails = true
+			} else if (this.isExchange) {
+				this.collageId = 0
+				this.$refs.refGoodSkuSelect.btnType = btnType
+				this.$refs.refGoodSkuSelect.isShowDetails = true
 			} else {
-				if(this.isShowCart == 1) return
 				uni.showModal({
 					title: '温馨提示',
 					content: '系统检测到您未填写收货地址，部分功能将会受限，是否现在去填写？',

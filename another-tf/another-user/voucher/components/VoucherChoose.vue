@@ -187,7 +187,8 @@ export default {
 			this.chosenVoucher = item
 			this.isShowPopup = false
 			this.$emit('change', {
-				platformVoucherId: this.chosenVoucher.platformVoucherId
+				platformVoucherId: this.chosenVoucher.platformVoucherId,
+				purchaseRatio: this.chosenVoucher.purchaseRatio
 			})
 		},
 		handleScrolltolower() {

@@ -53,6 +53,10 @@
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">来源名称</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.sourceName || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">来源订单编号</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderFormid || '--' }}</view>
 					</view>
@@ -78,6 +82,7 @@
 						<text v-else-if="voucherRecordData.waterType === 2">商圈兑换</text>
 						<text v-else-if="voucherRecordData.waterType === 3">社区兑换</text>
 						<text v-else-if="voucherRecordData.waterType === 4">转出</text>
+						<text v-else-if="voucherRecordData.waterType === 5">专区兑换</text>
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
@@ -92,6 +97,14 @@
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">出账用户ID</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.buyerUserId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">目标ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.destinationId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">目标名称</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.destinationName || '--' }}</view>
 					</view>
 					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
 						<view style="min-width: 112rpx;color: #6E7079">兑换订单编号</view>
