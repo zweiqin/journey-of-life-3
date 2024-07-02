@@ -590,7 +590,7 @@ export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVouc
 export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
 
 // 兑换代金券转赠
-export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/getByUserVoucher', data, 'POST')
+export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
 
 // 代金券入账记录
 export const getBuyerVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/entryRecord', data, 'POST')

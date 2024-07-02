@@ -375,8 +375,8 @@ export default {
 	},
 	watch: {
 		goodsDetail: {
-			handler(newV) {
-				if (newV.productId) {
+			handler(newV, oldV) {
+				if (newV.productId && (newV.productId !== oldV.productId)) {
 					this.productId = newV.productId
 					// #ifdef H5
 					this.$nextTick(() => {
@@ -394,7 +394,7 @@ export default {
 		this.shopId = Number(options.shopId)
 		this.productId = Number(options.productId)
 		this.skuId = Number(options.skuId)
-		this.isSelection = Number(options.isSelection)
+		this.isSelection = Number(options.isSelection) || 0
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
@@ -543,7 +543,7 @@ export default {
 					setMiniprogramShareConfig({
 						data: {
 							event: 'sharingPageTurn',
-							webPath: `/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}`,
+							webPath: `/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}&isSelection=${this.isSelection}`,
 							title: `商品详情 - ${this.goodsDetail.productName}`,
 							imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
 						}
@@ -580,7 +580,7 @@ export default {
 						this.handleSetDownTime()
 					}
 				})
-				this.viewUpdate = ' '// 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
+				this.viewUpdate = ' ' // 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
 			} finally {
 				uni.hideLoading()
 			}
@@ -592,7 +592,7 @@ export default {
 				data: {
 					title: `商品详情 - ${this.goodsDetail.productName}`,
 					desc: this.goodsDetail.productBrief || '--',
-					link: `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}`,
+					link: `${A_TF_MAIN}/#/another-tf/another-serve/goodsDetails/index?shopId=${this.goodsDetail.shopId}&productId=${this.goodsDetail.productId}&skuId=${this.goodsDetail.skuId}&isSelection=${this.isSelection}`,
 					imageUrl: this.common.seamingImgUrl(this.goodsDetail.images[0])
 				},
 				successCb: () => { },

@@ -120,6 +120,10 @@ export default {
 		brandDetail: {
 			type: Object,
 			required: true
+		},
+		isSelection: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -136,8 +140,8 @@ export default {
 
 	watch: {
 		brandDetail: {
-			handler(newV) {
-				if (newV.shopId) {
+			handler(newV, oldV) {
+				if (newV.shopId && (newV.shopId !== oldV.shopId)) {
 					this.shopId = newV.shopId
 					// #ifdef H5
 					this.$nextTick(() => {
@@ -186,9 +190,9 @@ export default {
 			if (!this.isLogin()) return
 			const data = {
 				data: {
-					title: `团蜂社区商圈 - ${this.brandDetail.shopName}`,
+					title: `团蜂${this.isSelection ? '选品中心' : '社区商圈'} - ${this.brandDetail.shopName}`,
 					desc: this.brandDetail.shopBrief,
-					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}&isSelection=${Number(this.isSelection)}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 				},
 				successCb: () => { },

@@ -503,6 +503,7 @@ export default {
 				buyerUserObj: { // 后端无需
 					buyerUserId: ''
 				},
+				voucherId: '',
 				buyerUserId: '',
 				voucherNum: 50
 			},
@@ -591,6 +592,11 @@ export default {
 				}
 				this.isShowVoucherModal = true
 			} else if (this.showType === 'transfer') {
+				if (this.voucherChooseInfo.platformVoucherId) {
+					this.transferForm.voucherId = this.voucherChooseInfo.platformVoucherId
+				} else {
+					return this.$showToast('缺少代金券种类')
+				}
 				if (!this.transferForm.voucherType) return this.$showToast('缺少转赠类型')
 				if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
 				if (typeof this.currentTransferIndex === 'number') {

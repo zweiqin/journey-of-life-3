@@ -7,11 +7,14 @@
 				<BeeIcon name="arrowleft" :size="34" color="#222229"
 					style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">门店详情</text>
+				<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">
+					<text v-if="isSelection">商家选品</text>
+					<text v-else>门店详情</text>
+				</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30upx 28upx;background-color: #ffffff;">
-			<ATFBrandInfo :brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
+			<ATFBrandInfo :is-selection="Boolean(isSelection)" :brand-detail="brandDetail" style="padding-top: 40upx;" @navgation="handleNavigate"
 				@refresh="getBrandDetail"></ATFBrandInfo>
 		</view>
 
@@ -127,6 +130,7 @@ export default {
 				if (pages[pages.length - 2].route === 'pages/business-district/business-district') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
 			},
 			shopId: null,
+			isSelection: 0,
 			brandDetail: {},
 			allTabList: ['商品'],
 			allTabData: [{ classifyName: '商品', classifyId: 0 }], // [{ classifyName: '商品', classifyId: 0 }, { classifyName: '首页', classifyId: 0 }]
@@ -157,6 +161,7 @@ export default {
 	onLoad(options) {
 	  // this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
 		this.shopId = options.shopId
+		this.isSelection = Number(options.isSelection) || 0
 		this.getBrandDetail()
 		getShopClassifyApi({
 			shopId: this.shopId
@@ -203,7 +208,7 @@ export default {
 					setMiniprogramShareConfig({
 						data: {
 							event: 'sharingPageTurn',
-							webPath: `/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}`,
+							webPath: `/another-tf/another-user/shop/shop-detail?shopId=${this.brandDetail.shopId}&isSelection=${this.isSelection}`,
 							title: `团蜂本地生活--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
 							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo) || this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
 						}

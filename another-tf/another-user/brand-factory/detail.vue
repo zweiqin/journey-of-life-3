@@ -329,8 +329,8 @@ export default {
 
 	watch: {
 		brandDetail: {
-			handler(newV) {
-				if (newV.shopId) {
+			handler(newV, oldV) {
+				if (newV.shopId && (newV.shopId !== oldV.shopId)) {
 					this.shopId = newV.shopId
 					// #ifdef H5
 					this.$nextTick(() => {
