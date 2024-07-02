@@ -126,7 +126,7 @@
 import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs, shoppingSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
 import { getAllOrderListApi } from '../../api/anotherTFInterface'
-import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO, IS_SWITCH_ORDER } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
@@ -264,6 +264,7 @@ export default {
 
 	onLoad(options) {
 		importJsSDK()
+		uni.removeStorageSync(IS_SWITCH_ORDER);
 	},
 
 	onShow() {

@@ -1,9 +1,10 @@
 <template>
   <view class="confirm-btn">
     <button
+      :loading="loading"
       :style="{
         background: type === 'error' ? '#e95d20' : bgc ? bgc : '',
-        'border-color': type === 'error' ? '#f90' : bgc ? bgc : '',
+        'border-color': type === 'error' ? '#f90' : bgc ? bgc : ''
       }"
       @click="$emit('click')"
     >
@@ -16,11 +17,12 @@
 export default {
   props: {
     type: {
-      type: String,
+      type: String
     },
 
     bgc: String,
-  },
+    loading: Boolean
+  }
 }
 </script>
 

@@ -331,6 +331,11 @@ export const orderPayH5PabUseBlanceApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/orderPayH5PabUseBlance', data, 'POST')
 }
 
+// 惠市宝支付
+export const orderPayByCCBApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/uniOrderPayH5', data)
+}
+
 // 获取商圈商品报价
 export const getQuotationApi = (data) => {
   return endRequest({

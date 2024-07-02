@@ -197,7 +197,7 @@
                     }
                 },
                 "/lao/" : {
-                    "target" : "http://192.168.0.83:8783/",
+                    "target" : "https://test.zhult.com/",
                     "changeOrigin" : true,
                     "pathRewrite" : {
                         "^/lao/" : "/"
