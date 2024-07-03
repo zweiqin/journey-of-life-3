@@ -1421,6 +1421,12 @@
       "root": "another-tf",
       "pages": [
         {
+          "path": "another-user/1ILoveMorningMeeting/index",
+          "style": {
+            "navigationBarTitleText": "1ILoveMorningMeeting"
+          }
+        },
+        {
           "path": "another-user/shop/shop-enter",
           "style": {
             "navigationBarTitleText": "商圈二级页面"
