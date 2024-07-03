@@ -7,7 +7,7 @@
 			>
 				<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40upx;text-align: center;">付款页面</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">付款页面</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 0 30rpx 218rpx;">
@@ -39,7 +39,7 @@
 							<view v-else>
 								<view style="color: #222229;font-weight: bold;">输入金额（元）</view>
 								<!-- disabled @click，type="number" @input="handlePriceInput()" -->
-								<view style="border-bottom: 2upx solid #D8D8D8;">
+								<view style="border-bottom: 2rpx solid #D8D8D8;">
 									<tui-input
 										v-model="priceInputValue[obj.shopItem.shopId]" padding="18rpx 2rpx 10rpx" label="￥"
 										:label-size="52" label-color="#000000" :label-width="60" placeholder="输入金额"

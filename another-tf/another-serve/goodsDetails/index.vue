@@ -5,12 +5,12 @@
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40upx;text-align: center;line-height: 2.5;">商品详情</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;line-height: 2.5;">商品详情</text>
 			</view>
 		</BeeBack>
 
 		<view>
-			<view style="padding-bottom: 160upx;">
+			<view style="padding-bottom: 160rpx;">
 				<view v-if="goodsDetail.productId">
 					<!--  拼团滚动 -->
 					<view class="news-box">
@@ -38,10 +38,10 @@
 					/>
 					<view
 						v-if="goodsDetail.productBrief"
-						style="display: flex;align-items: center;margin-top: 10upx;padding: 10upx 20upx 10upx;font-size: 24upx;background-color: #ffffff;"
+						style="display: flex;align-items: center;margin-top: 10rpx;padding: 10rpx 20rpx 10rpx;font-size: 24rpx;background-color: #ffffff;"
 					>
 						<view style="color: #999999;">卖点</view>
-						<view style="flex: 1;margin-left: 20upx;">{{ goodsDetail.productBrief }}</view>
+						<view style="flex: 1;margin-left: 20rpx;">{{ goodsDetail.productBrief }}</view>
 					</view>
 
 					<!-- 发货 -->
@@ -71,7 +71,7 @@
 							<view class="flex-row-plus">
 								<label class="fs26 mar-left-30 font-color-999">选择</label>
 								<view style="flex: 1;">
-									<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10upx 6upx;">
+									<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10rpx 6rpx;">
 										{{ item.skuText || '-' }}
 									</view>
 								</view>
@@ -93,7 +93,7 @@
 								<view class="allMore" @click="showGroupBuyList = true">
 									查看全部
 								</view>
-								<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
+								<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10rpx"></tui-icon>
 							</view>
 						</view>
 						<view
@@ -154,7 +154,7 @@
 					</view>
 					<!-- 详细信息 -->
 					<view style="background-color: #FFFFFF;margin-top: 20rpx;padding: 20rpx 30rpx;">
-						<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10upx;">
+						<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 							<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
 							<label style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</label>
 							<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
@@ -209,14 +209,14 @@
 							<tui-button
 								type="gray" width="190rpx" height="80rpx" plain
 								margin="0 0 0 40rpx"
-								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
+								style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(4)"
 							>
 								单独购买
 							</tui-button>
 							<tui-button
 								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
-								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;"
+								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(3)"
 							>
 								我要开团
@@ -227,14 +227,14 @@
 								v-if="!isExchange" type="gray" width="190rpx" height="80rpx"
 								plain
 								margin="0 0 0 40rpx"
-								style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;"
+								style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(1)"
 							>
 								加入购物车
 							</tui-button>
 							<tui-button
 								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
-								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;"
+								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(2)"
 							>
 								立即购买
@@ -271,7 +271,7 @@
 			<view class="popupDiscountTit">这些人正在拼单</view>
 			<view class="groupBuy">
 				<view class="groupBuyList">
-					<scroll-view style="height: 480upx;" scroll-y>
+					<scroll-view style="height: 480rpx;" scroll-y>
 						<view
 							v-for="(aitem, index) in selectedCurrentMsg.selectedSku.collageOrders" :key="index"
 							class="groupBuyItem1"
@@ -628,7 +628,7 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 	background-color: #f8f8f8;
-	padding-bottom: 180upx;
+	padding-bottom: 180rpx;
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
@@ -637,7 +637,7 @@ export default {
 	.express-box {
 		height: 100rpx;
 		padding-left: 30rpx;
-		margin-top: 10upx;
+		margin-top: 10rpx;
 		background-color: #FFFFFF;
 
 		image {
