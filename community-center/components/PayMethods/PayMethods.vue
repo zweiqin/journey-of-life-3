@@ -34,7 +34,7 @@ export default {
     orderNo: { type: String },
     supports: {
       type: Array,
-      default: () => [PAY_METHOD_IDS.ALLINPAY, PAY_METHOD_IDS.CCB, PAY_METHOD_IDS.BALANCE]
+      default: () => [PAY_METHOD_IDS.ALLINPAY, PAY_METHOD_IDS.BALANCE]
     }
   },
   data() {
