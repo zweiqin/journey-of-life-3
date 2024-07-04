@@ -1,6 +1,6 @@
 <template>
   <view class="exchange">
-    <view class="top-tab">百丈园的兑换专区</view>
+    <view class="top-tab">{{ shopName }}的兑换专区</view>
     <view class="sarch-box">
       <tui-input
         placeholder="请输入您想兑换的商品"
@@ -47,6 +47,7 @@
         </view>
       </view>
       <LoadingMore :status="isLoading" text="没有更多兑换商品了"></LoadingMore>
+      <view class="btn" @click="go('/pages/index/voucher-zone')" >更多礼品到兑换专区</view>
     </view>
   </view>
 </template>
@@ -212,6 +213,18 @@ export default {
       }
     }
   }
+}
+
+.btn{
+  width: 500rpx;
+  height: 70rpx;
+  margin: 0 auto;
+  background-color: #ef530e;
+  text-align: center;
+  line-height: 70rpx;
+  color: #ffffff;
+  font-size: 26rpx;
+  border-radius: 10rpx;
 }
 
 ::v-deep .tui-input__border {
