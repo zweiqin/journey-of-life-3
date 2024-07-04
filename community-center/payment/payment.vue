@@ -1,95 +1,202 @@
 <template>
-  <view class="payment-container">
-    <TuanPageHead title="扫码结算" background="#fff">
-      <block slot="left">
-        <tui-icon name="arrowleft" :size="64" unit="rpx" color="#222229" margin="0" @click=""></tui-icon>
-      </block>
-    </TuanPageHead>
+  <view>
+    <view class="payment-container tui-skeleton" v-if="payMentForm.tfUserId">
+      <TuanPageHead title="扫码结算" background="#fff" class="tui-skeleton-rect">
+        <block slot="left">
+          <tui-icon @click="handleBack(backConfig.url)" :name="backConfig.icon" :size="backConfig.size" unit="rpx" :color="backConfig.color" margin="0"></tui-icon>
+        </block>
+      </TuanPageHead>
 
-    <view class="main">
-      <view class="shop-info">
-        <image class="shop-avatar" src="https://img2.baidu.com/it/u=560949573,2715140329&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1719594000&t=0781201bb1a033cbc735d0d2d6cf66ad"></image>
-        <view class="shop-name-address">
-          <view class="shop-name">文化社区店</view>
-          <view class="shop-address">USD防护都是国际大厦光大卡户籍卡·1</view>
-        </view>
-      </view>
-
-      <view class="pay-number-wrapper" style="z-index: 99999; position: relative; transition: box-shadow 300ms" :style="{ 'box-shadow': numberKeyBoardVisible ? '0 0 32rpx #ccc' : '' }">
-        <view class="title">输入金额（元）</view>
-        <view class="input-wrapper" @click="numberKeyBoardVisible = true">
-          <view class="input-false" :class="{ focus: numberKeyBoardVisible, empty: !numberKeyBoardVisible && !payMentForm.payNumber }">
-            {{ inputValue }}
+      <view class="main">
+        <view class="shop-info">
+          <image class="shop-avatar tui-skeleton-circular" :src="shopInfo.shopLogo || require('../../static/images/new-user/default-user-avatar.png')"></image>
+          <view class="shop-name-address">
+            <view class="shop-name tui-skeleton-fillet">{{ shopInfo.shopName || '社区店' }}</view>
+            <view class="shop-address tui-skeleton-fillet">{{ shopInfo.shopAddress || '社区店地址' }}</view>
           </view>
         </view>
-      </view>
-    </view>
 
-    <view class="ben-wrapper">
-      <button class="uni-btn" :class="{ disabled: !!payMentForm.payNumber }" :loading="isLoading" @click="handleConfirmPay">确认支付</button>
-    </view>
+        <!-- 输入支付金额 -->
+        <view class="pay-number-wrapper" style="z-index: 99999; position: relative; transition: box-shadow 300ms" :style="{ 'box-shadow': numberKeyBoardVisible ? '0 0 32rpx #ccc' : '' }">
+          <view class="title tui-skeleton-fillet">输入金额（元）</view>
+          <view class="input-wrapper" @click="numberKeyBoardVisible = true">
+            <view class="input-false tui-skeleton-fillet" :class="{ focus: numberKeyBoardVisible, empty: !numberKeyBoardVisible && !payMentForm.amount }">
+              {{ inputValue }}
+            </view>
+          </view>
+        </view>
 
-    <!-- 数字键盘 -->
-    <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="numberKeyBoardVisible" @close="numberKeyBoardVisible = false">
-      <view style="background-color: #fff; height: 432rpx">
-        <tui-digital-keyboard @confirm="numberKeyBoardVisible = false" @backspace="handleDelete" @click="handleInput" show buttonBackground="#f40" buttonText="确认"></tui-digital-keyboard>
+        <!-- 输入订单备注 -->
+        <view class="remark-wrapper">
+          <view class="title tui-skeleton-fillet">
+            订单备注
+            <text class="tip">（选填）</text>
+          </view>
+
+          <tui-textarea v-model="payMentForm.remark" isCounter :borderBottom="false" :marginTop="20" placeholder="请输入内容" padding="18rpx 0 0" :size="28"></tui-textarea>
+        </view>
+
+        <!-- 选择支付方式 -->
+        <view class="pay-list">
+          <PayMethods :supports="supports" ref="payMethodsRef">
+            <view class="title tui-skeleton-fillet" slot="title">支付方式</view>
+          </PayMethods>
+        </view>
       </view>
-    </tui-bottom-popup>
+
+      <view class="ben-wrapper">
+        <button class="uni-btn" :class="{ disabled: !(payMentForm.amount && payMentForm.tfUserId && payMentForm.shopAccountId) }" :loading="isLoading" @click="handleConfirmPay">确认支付</button>
+      </view>
+
+      <!-- 数字键盘 -->
+      <tui-bottom-popup :zIndex="1002" :maskZIndex="1001" :show="numberKeyBoardVisible" @close="numberKeyBoardVisible = false">
+        <view style="background-color: #fff; height: 432rpx">
+          <tui-digital-keyboard @confirm="numberKeyBoardVisible = false" @backspace="handleDelete" @click="handleInput" show buttonBackground="#f40" buttonText="确认"></tui-digital-keyboard>
+        </view>
+      </tui-bottom-popup>
+    </view>
 
     <!-- toast -->
     <tui-toast ref="toast"></tui-toast>
+    <!-- 骨架 -->
+    <tui-skeleton v-if="skeletonShow"></tui-skeleton>
+    <!-- 未登录 -->
+    <TuanUnLoginPage :to="backPath" v-if="!payMentForm.tfUserId" message="您还未登录，无法支付" subMessage="" :skip="false"></TuanUnLoginPage>
   </view>
 </template>
 
 <script>
+import { USER_ID } from '../../constant'
+import { getShopInfoApi, createPaymentCodeOrderApi } from '../../api/community-center/index'
+import PayMethods from '../../community-center/components/PayMethods/PayMethods.vue'
+import { PAY_METHOD_IDS } from '../../community-center/components/PayMethods/utils'
+import TuanUnLoginPage from '../../pages/order/components/TuanUnLoginPage.vue'
+
 export default {
+  components: { PayMethods, TuanUnLoginPage },
   data() {
     return {
       numberKeyBoardVisible: false,
       payMentForm: {
-        payNumber: ''
+        amount: '',
+        tfUserId: '',
+        shopAccountId: null,
+        remark: ''
       },
-      isLoading: false
+      isLoading: false,
+      skeletonShow: true,
+      dzId: null,
+      shopInfo: {
+        shopName: '',
+        shopLogo: '',
+        shopAddress: ''
+      },
+      supports: [PAY_METHOD_IDS.ALLINPAY],
+      backPath: ''
     }
   },
 
+  onLoad(options) {
+    this.payMentForm.shopAccountId = options.accountId
+    this.getShopInfo()
+  },
+
+  onShow() {
+    this.payMentForm.tfUserId = uni.getStorageSync(USER_ID)
+  },
+
   methods: {
+    // 点击返回
+    handleBack(url) {
+      if (url) {
+        uni.switchTab({ url })
+      } else {
+        uni.navigateBack()
+      }
+    },
+    // 获取门店信息
+    async getShopInfo() {
+      try {
+        if (!this.payMentForm.shopAccountId) {
+          this.ttoast({ type: 'info', title: '门店id获取失败' })
+          this.skeletonShow = false
+          setTimeout(() => {
+            uni.switchTab({ url: '/' })
+          }, 2000)
+          return
+        }
+        const res = await getShopInfoApi({ accountId: this.payMentForm.shopAccountId })
+        if (res.statusCode === 20000) {
+          Object.keys(this.shopInfo).forEach((key) => {
+            this.shopInfo[key] = res.data[key]
+          })
+          // setTimeout(() => {
+          this.skeletonShow = false
+          // }, 2000)
+          this.backPath = '/community-center/payment/payment?accountId=' + this.payMentForm.shopAccountId
+        } else {
+          throw new Error(res.statusMsg)
+        }
+      } catch (error) {
+        this.skeletonShow = false
+        this.ttoast({ type: 'fail', title: '社区店信息获取失败', content: error.message })
+      }
+    },
+
     // 输入金额
     handleInput({ value }) {
-      const payNumber = this.payMentForm.payNumber
-      const hasDecimal = payNumber.includes('.')
+      const amount = this.payMentForm.amount
+      const hasDecimal = amount.includes('.')
       if (value === '.' && hasDecimal) {
         return
       }
-      const decimalPart = hasDecimal ? payNumber.split('.')[1] : ''
+      const decimalPart = hasDecimal ? amount.split('.')[1] : ''
       if (hasDecimal && decimalPart.length >= 2) {
-        this.payMentForm.payNumber = payNumber.slice(0, -1) + value
+        this.payMentForm.amount = amount.slice(0, -1) + value
       } else {
-        this.payMentForm.payNumber += value
+        this.payMentForm.amount += value
       }
     },
 
+    // 删除
     handleDelete() {
-      this.payMentForm.payNumber = this.payMentForm.payNumber.slice(0, -1)
+      this.payMentForm.amount = this.payMentForm.amount.slice(0, -1)
     },
 
-    handleConfirmPay() {
-      if (!this.payMentForm.payNumber) {
+    // 点击确认
+    async handleConfirmPay() {
+      if (!this.payMentForm.amount) {
         return this.ttoast({
           type: 'fail',
           title: '请输入支付金额'
         })
       }
-      this.isLoading = true
+      try {
+        this.isLoading = true
+        const res = await createPaymentCodeOrderApi(this.payMentForm)
+        await this.$refs.payMethodsRef.pay(true, res.data)
+      } catch (error) {
+      } finally {
+        this.isLoading = false
+      }
     }
   },
 
   computed: {
     inputValue() {
       if (this.numberKeyBoardVisible) {
-        return this.payMentForm.payNumber
+        return this.payMentForm.amount
       } else {
-        return this.payMentForm.payNumber || '请输入支付金额'
+        return this.payMentForm.amount || '请输入支付金额'
+      }
+    },
+
+    backConfig() {
+      const pageStack = getCurrentPages()
+      if (pageStack.length > 1) {
+        return { icon: 'arrowleft', url: '', size: 64, color: '#222229' }
+      } else {
+        return { icon: 'home-fill', url: '/', size: 50, color: '#ea5b1d' }
       }
     }
   }
@@ -142,6 +249,10 @@ export default {
         }
 
         .shop-address {
+          width: 550rpx;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
           font-size: 24rpx;
           color: #3d3d3d;
         }
@@ -205,6 +316,37 @@ export default {
         }
       }
     }
+
+    .remark-wrapper {
+      padding: 20rpx 30rpx;
+      box-sizing: border-box;
+      background-color: #fff;
+      margin-top: 40rpx;
+      border-radius: 20rpx;
+
+      .title {
+        font-size: 28rpx;
+        color: #3d3d3d;
+
+        .tip {
+          font-size: 24rpx;
+          color: #ccc;
+        }
+      }
+    }
+
+    .pay-list {
+      padding: 20rpx 30rpx;
+      box-sizing: border-box;
+      background-color: #fff;
+      margin-top: 40rpx;
+      border-radius: 20rpx;
+
+      .title {
+        font-size: 28rpx;
+        color: #3d3d3d;
+      }
+    }
   }
 
   .ben-wrapper {
@@ -225,7 +367,7 @@ export default {
       width: 100%;
       height: 88rpx;
       line-height: 88rpx;
-      background-color: #f40;
+      background-color: #ea5b1d;
       color: #fff;
       font-size: 28rpx;
       letter-spacing: 0.1em;

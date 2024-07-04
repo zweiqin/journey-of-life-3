@@ -6,7 +6,7 @@ import store from '../../../store'
 /**
  * 支付方法
  */
-export const h5AppMiniprogramPayUtil = async (Pay, payData) => {
+export const h5AppMiniprogramPayUtil = async (Pay, payData, { isCustorm, payConfig }) => {
   const p = new Pay(payData)
   // #ifdef APP
   await p.appPay()
@@ -16,7 +16,7 @@ export const h5AppMiniprogramPayUtil = async (Pay, payData) => {
   if (store.state.app.isInMiniProgram) {
     await p.miniProgramPay()
   } else {
-    await p.h5Pay()
+    await p.h5Pay(isCustorm, payConfig)
   }
   // #endif
 }
@@ -34,8 +34,8 @@ export const paymentMethods = (ctx) => ({
   },
 
   // 通联支付
-  [PAY_METHOD_IDS.ALLINPAY]: async (payData) => {
-    await h5AppMiniprogramPayUtil(AllinPay, payData)
+  [PAY_METHOD_IDS.ALLINPAY]: async (payData, payConfig) => {
+    await h5AppMiniprogramPayUtil(AllinPay, payData, payConfig)
   },
 
   // 惠市宝支付

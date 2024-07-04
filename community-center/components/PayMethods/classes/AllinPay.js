@@ -9,7 +9,10 @@ export class AllinPay extends Pay {
     this.payData = payData
   }
   // H5支付
-  async h5Pay() {
+  async h5Pay(isCustorm, payConfig) {
+    if (isCustorm) {
+      return this.jumpH5Pay(JSON.parse(payConfig))
+    }
     const res = await payOrderForEndApi(this.payData)
     if (res.statusCode === 20000) {
       try {

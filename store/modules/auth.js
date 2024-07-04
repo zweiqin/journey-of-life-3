@@ -241,13 +241,13 @@ export default {
 						dispatch('updateIdentityInfo')
 						if (redirect) {
 							uni.removeStorageSync(T_REDIRECT_TYPE)
-							if (tabbarList.includes(this.redirect)) {
+							if (tabbarList.includes(redirect)) {
 								uni.switchTab({
-									url: this.redirect
+									url: redirect
 								})
 							} else {
 								uni.redirectTo({
-									url: this.redirect
+									url: redirect
 								})
 							}
 						} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
@@ -271,9 +271,9 @@ export default {
 							if (data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, data.roleId]) ] })
 							dispatch('updateIdentityInfo')
 							if ((store.state.app.terminal === 6) || (store.state.app.terminal === 3)) {
-								if (this.redirect) {
+								if (redirect) {
 									uni.removeStorageSync(T_REDIRECT_TYPE)
-									window.location.replace(`${A_TF_MAIN}/#${this.redirect}`)
+									window.location.replace(`${A_TF_MAIN}/#${redirect}`)
 								} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
 									window.location.replace(`${A_TF_MAIN}/#/pages/jump/jump`)
 								} else {
@@ -282,13 +282,13 @@ export default {
 							} else if ((store.state.app.terminal === 2) || (store.state.app.terminal === 1)) {
 								if (redirect) {
 									uni.removeStorageSync(T_REDIRECT_TYPE)
-									if (tabbarList.includes(this.redirect)) {
+									if (tabbarList.includes(redirect)) {
 										uni.switchTab({
-											url: this.redirect
+											url: redirect
 										})
 									} else {
 										uni.redirectTo({
-											url: this.redirect
+											url: redirect
 										})
 									}
 								} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {
@@ -332,13 +332,13 @@ export default {
 						dispatch('updateIdentityInfo')
 						if (redirect) {
 							uni.removeStorageSync(T_REDIRECT_TYPE)
-							if (tabbarList.includes(this.redirect)) {
+							if (tabbarList.includes(redirect)) {
 								uni.switchTab({
-									url: this.redirect
+									url: redirect
 								})
 							} else {
 								uni.redirectTo({
-									url: this.redirect
+									url: redirect
 								})
 							}
 						} else if (uni.getStorageSync(T_NEW_BIND_TYPE)) {

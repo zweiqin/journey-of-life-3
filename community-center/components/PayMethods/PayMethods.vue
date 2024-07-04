@@ -1,11 +1,17 @@
 <template>
   <view class="pay-methods-conntainer">
-    <slot name="titel">
+    <slot name="title">
       <view class="title">请选择支付方式</view>
     </slot>
 
     <view class="methods-list">
-      <view class="item" :class="{ active: currentSelectPayMethodId === item.payMethodId }" v-for="item in payMethodsList" :key="item.payMethodId" @click="handleChangePayMethod(item.payMethodId)">
+      <view
+        class="item tui-skeleton-fillet"
+        :class="{ active: currentSelectPayMethodId === item.payMethodId }"
+        v-for="item in payList"
+        :key="item.payMethodId"
+        @click="handleChangePayMethod(item.payMethodId)"
+      >
         <view class="pay-name">
           <image class="pay-icon" :src="item.icon"></image>
           <view class="name">{{ item.name }}</view>
@@ -25,16 +31,20 @@ import { paymentMethods } from './payment.config.js'
 
 export default {
   props: {
-    orderNo: { type: String, required: true }
+    orderNo: { type: String },
+    supports: {
+      type: Array,
+      default: () => [PAY_METHOD_IDS.ALLINPAY, PAY_METHOD_IDS.CCB, PAY_METHOD_IDS.BALANCE]
+    }
   },
   data() {
     return {
       payMethodsList: [
         { name: '通联支付(微信)', icon: require('../../../static/images/user/pay/tonglian.png'), payMethodId: PAY_METHOD_IDS.ALLINPAY },
-        { name: '惠市宝', icon: require('../../../static/images/user/pay/huishibao.png'), payMethodId: PAY_METHOD_IDS.CCB },
+        { name: '惠市宝支付(支持微信/支付宝/银联)', icon: require('../../../static/images/user/pay/huishibao.png'), payMethodId: PAY_METHOD_IDS.CCB },
         { name: '余额', icon: require('../../../static/images/user/pay/platform-pay.png'), payMethodId: PAY_METHOD_IDS.BALANCE }
       ],
-      currentSelectPayMethodId: 2,
+      currentSelectPayMethodId: 1,
       payLoading: false
     }
   },
@@ -44,19 +54,26 @@ export default {
       this.currentSelectPayMethodId = payMethodId
     },
 
-    async pay() {
+    async pay(isCustorm, payConfig) {
       if (this.payLoading) {
         return this.ttoast({ type: 'info', title: '支付中...' })
       }
       const payData = { orderNo: this.orderNo, userId: getUserId() }
+
       try {
+        if (!payData.orderNo && !isCustorm) {
+          throw new Error('支付订单号为空')
+        }
         this.setPayLoading(true)
         await (
           paymentMethods(this)[this.currentSelectPayMethodId] ||
           (() => {
             throw new Error('未知的支付方式')
           })
-        )(payData)
+        )(payData, {
+          isCustorm,
+          payConfig
+        })
       } catch (error) {
         this.ttoast({ type: 'fail', title: '支付失败', content: error.message })
       } finally {
@@ -78,6 +95,12 @@ export default {
     setPayLoading(status) {
       this.payLoading = status
       this.$emit('setLoading', status)
+    }
+  },
+
+  computed: {
+    payList() {
+      return this.payMethodsList.filter((item) => this.supports.includes(item.payMethodId))
     }
   }
 }
