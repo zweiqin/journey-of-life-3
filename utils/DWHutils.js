@@ -64,9 +64,9 @@ export const getUserId = () => {
 		//   icon: "none",
 		// });
 
-		uni.navigateTo({
-		  url: "/pages/login/login",
-		});
+		// uni.navigateTo({
+		//   url: "/pages/login/login",
+		// });
 		uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',

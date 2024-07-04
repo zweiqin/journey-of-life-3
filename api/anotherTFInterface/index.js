@@ -590,7 +590,7 @@ export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVouc
 export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
 
 // 兑换代金券转赠
-export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/getByUserVoucher', data, 'POST')
+export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
 
 // 代金券入账记录
 export const getBuyerVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/entryRecord', data, 'POST')
@@ -666,6 +666,9 @@ export const getSettlementOrderApi = (data) => AnotherTFRequest('/order/getSettl
 
 // 提交订单
 export const updatePlaceOrderSubmitApi = (data) => AnotherTFRequest('/order/submit', data, 'POST')
+
+// 代金券抵扣
+export const getVoucherApiExchange = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/deductionOrder', data, 'GET')
 
 // 秒杀专区
 // 商品问答数据查询
@@ -839,7 +842,3 @@ export const getBuyerSelectionSelectApi = (data) => AnotherTFRequest('/buyerSele
 
 // c端选品详情
 export const getBuyerSelectionDetailsApi = (data) => AnotherTFRequest('/buyerSelection/h5SelectionDetails', data, 'POST')
-
-
-// 代金券抵扣
-export const getVoucherApiExchange = (params) => AnotherTFRequest('/buyerVoucherEntryRecord/deductionOrder', params, 'GET')

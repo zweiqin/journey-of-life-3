@@ -191,10 +191,11 @@
 									{{ item.number }}
 								</view>
 								<view
+									v-if="voucherChooseInfo.purchaseRatio"
 									style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentRechargeIndex === index ? '#222229' : '#888889' }"
 								>
-									售价{{ item.value || '' }}
+									售价{{ item.number / voucherChooseInfo.purchaseRatio || '' }}
 								</view>
 							</view>
 							<view
@@ -215,7 +216,12 @@
 								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectRechargeCustom"
 							>
 								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">售价{{ customRecharge / 2 || '' }}</text>
+									<text
+										v-if="voucherChooseInfo.purchaseRatio"
+										style="font-size: 30rpx;color: #979797;"
+									>
+										售价{{ customRecharge / voucherChooseInfo.purchaseRatio || '' }}
+									</text>
 								</template>
 							</tui-input>
 						</view>
@@ -248,10 +254,11 @@
 									{{ item.voucherNum }}
 								</view>
 								<view
+									v-if="voucherChooseInfo.purchaseRatio"
 									style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentTransferIndex === index ? '#222229' : '#888889' }"
 								>
-									价值{{ item.value || '' }}
+									价值{{ item.voucherNum / voucherChooseInfo.purchaseRatio || '' }}
 								</view>
 							</view>
 							<view
@@ -273,7 +280,9 @@
 								@input="handleSelectTransferCustom"
 							>
 								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">价值{{ customTransfer / 2 || '' }}</text>
+									<text v-if="voucherChooseInfo.purchaseRatio" style="font-size: 30rpx;color: #979797;">
+										价值{{ customTransfer / voucherChooseInfo.purchaseRatio || '' }}
+									</text>
 								</template>
 							</tui-input>
 						</view>
@@ -409,10 +418,11 @@
 						确定要转赠 {{ transferForm.voucherNum }} 代金券吗？
 					</text>
 				</view>
-				<view style="margin-top: 22rpx;font-size: 36rpx;color: #687383;">
-					<text>
-						价值 {{ transferForm.voucherNum / 2 }} 元
-					</text>
+				<view
+					v-if="voucherChooseInfo.purchaseRatio"
+					style="margin-top: 22rpx;font-size: 36rpx;color: #687383;"
+				>
+					价值 {{ transferForm.voucherNum / voucherChooseInfo.purchaseRatio }} 元
 				</view>
 				<view>
 					<tui-button
@@ -458,7 +468,8 @@ export default {
 		return {
 			// 选择的代金券种类
 			voucherChooseInfo: {
-				platformVoucherId: ''
+				platformVoucherId: '',
+				purchaseRatio: ''
 			},
 			// 账户数据
 			voucherAcount: {
@@ -473,11 +484,11 @@ export default {
 			showType: '', // recharge，transfer
 			// 充值
 			rechargeAmountsList: [
-				{ number: 50, value: 25 },
-				{ number: 100, value: 50 },
-				{ number: 200, value: 100 },
-				{ number: 1000, value: 500 },
-				{ number: 2000, value: 1000 }
+				{ number: 50 },
+				{ number: 100 },
+				{ number: 200 },
+				{ number: 1000 },
+				{ number: 2000 }
 			],
 			currentRechargeIndex: 0,
 			customRecharge: '',
@@ -490,11 +501,11 @@ export default {
 			payInfo: {},
 			// 转赠
 			transferAmountsList: [
-				{ voucherNum: 50, value: 25 },
-				{ voucherNum: 100, value: 50 },
-				{ voucherNum: 200, value: 100 },
-				{ voucherNum: 1000, value: 500 },
-				{ voucherNum: 2000, value: 1000 }
+				{ voucherNum: 50 },
+				{ voucherNum: 100 },
+				{ voucherNum: 200 },
+				{ voucherNum: 1000 },
+				{ voucherNum: 2000 }
 			],
 			currentTransferIndex: 0,
 			customTransfer: '',
@@ -503,6 +514,7 @@ export default {
 				buyerUserObj: { // 后端无需
 					buyerUserId: ''
 				},
+				voucherId: '',
 				buyerUserId: '',
 				voucherNum: 50
 			},
@@ -591,6 +603,11 @@ export default {
 				}
 				this.isShowVoucherModal = true
 			} else if (this.showType === 'transfer') {
+				if (this.voucherChooseInfo.platformVoucherId) {
+					this.transferForm.voucherId = this.voucherChooseInfo.platformVoucherId
+				} else {
+					return this.$showToast('缺少代金券种类')
+				}
 				if (!this.transferForm.voucherType) return this.$showToast('缺少转赠类型')
 				if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
 				if (typeof this.currentTransferIndex === 'number') {
@@ -605,7 +622,7 @@ export default {
 
 		handleRecharge() {
 			uni.showLoading()
-			this.rechargeForm.payGrade = this.rechargeForm.number / 2
+			this.rechargeForm.payGrade = this.rechargeForm.number / this.voucherChooseInfo.purchaseRatio
 			submitBuyerVoucherOrderApi({ ...this.rechargeForm })
 				.then(async (res) => {
 					await handleDoPay({ ...res.data, ...this.payInfo }, 4, '')

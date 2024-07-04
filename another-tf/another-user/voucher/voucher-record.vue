@@ -83,7 +83,7 @@
 			<view v-if="[ 3 ].includes(queryType)" style="padding: 18rpx 0 0;">
 				<tui-radio-group
 					:value="orderInfo.query.status"
-					@change="(e) => ((orderInfo.query.status = e.detail.value) || true) && (orderInfo.query.page = 1) && getAllVoucherOrderList()"
+					@change="(e) => orderInfo.query.status !== e.detail.value && ((orderInfo.query.status = e.detail.value) || true) && (orderInfo.query.page = 1) && getAllVoucherOrderList()"
 				>
 					<view style="display: flex;flex-wrap: wrap;align-items: center;">
 						<text style="font-size: 30rpx;">选择状态：</text>
@@ -130,8 +130,8 @@
 								>
 									<text>收</text>
 								</view>
-								<view style="margin-left: 14rpx;">
-									<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 										<text>
 											代金券
 											<text v-if="item.waterType === 1">充值</text>
@@ -160,7 +160,7 @@
 							</view>
 							<view style="margin-left: 12rpx;text-align: right;">
 								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									价值{{ item.number / 2 }}元
+									来源：{{ item.sourceName || '--' }}
 								</view>
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 									<text>代金券：+{{ item.number }}</text>
@@ -190,14 +190,15 @@
 								>
 									<text>支</text>
 								</view>
-								<view style="margin-left: 14rpx;">
-									<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 										<text>
 											代金券
 											<text v-if="item.waterType === 1">商城兑换</text>
 											<text v-else-if="item.waterType === 2">商圈兑换</text>
 											<text v-else-if="item.waterType === 3">社区兑换</text>
 											<text v-else-if="item.waterType === 4">转出</text>
+											<text v-else-if="item.waterType === 5">专区兑换</text>
 											<text v-else>--</text>
 										</text>
 										<text v-if="item.orderFormid">
@@ -209,7 +210,7 @@
 							</view>
 							<view style="margin-left: 12rpx;text-align: right;">
 								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									价值{{ item.number / 2 }}元
+									目标：{{ item.destinationName || '--' }}
 								</view>
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 									<text>代金券：-{{ item.number }}</text>
@@ -239,8 +240,8 @@
 								>
 									<text>收</text>
 								</view>
-								<view style="margin-left: 14rpx;">
-									<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 										<text>
 											编号{{ item.orderFormid }}
 										</text>

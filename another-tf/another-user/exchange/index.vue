@@ -98,7 +98,7 @@ export default {
     //  去到详情
     goDetail(item){
       uni.navigateTo({
-         url: `/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}&isShowCart=1`
+         url: `/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}&isExchange=1`
       });
     }
   },
