@@ -6,7 +6,7 @@ import store from '../../../store'
 /**
  * 支付方法
  */
-export const h5AppMiniprogramPayUtil = async (Pay, payData, { isCustorm, payConfig }) => {
+export const h5AppMiniprogramPayUtil = async (Pay, payData, { isCustorm, payConfig } = {}) => {
   const p = new Pay(payData)
   // #ifdef APP
   await p.appPay()
