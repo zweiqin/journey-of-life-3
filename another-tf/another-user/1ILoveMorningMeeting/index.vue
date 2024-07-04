@@ -1,23 +1,23 @@
 <template>
 	<view class="i-love-morning-meeting-container">
-		<JHeader title="团蜂科技" width="50" height="50"></JHeader>
+		i-love-morning-meeting
 	</view>
 </template>
 
 <script>
+
 export default {
 	name: '1ILoveMorningMeeting',
 	components: {
 	},
-	onLoad(options) {
-	},
 	data() {
 		return {
-			isCustom: false
+			isDetail: 0
 		}
 	},
+	onLoad(options) {
+	},
 	methods: {
-
 	}
 }
 </script>

@@ -381,5 +381,10 @@ export const otherFunction = [
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		type: 'outsideLink',
 		url: ''
+	},
+	{
+		name: 'mm链接',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/1ILoveMorningMeeting/index'
 	}
 ]
