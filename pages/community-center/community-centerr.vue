@@ -10,10 +10,10 @@
             <TuanLocation>
               <view class="address-text">{{ $store.getters.currentCity || '定位失败' }}</view>
             </TuanLocation>
-						<tui-icon name="turningdown" :size="34" unit="rpx" color="#222229" margin="0 0 0 2rpx"></tui-icon>
+            <tui-icon name="turningdown" :size="34" unit="rpx" color="#222229" margin="0 0 0 2rpx"></tui-icon>
           </view>
           <view class="placeholder" @click="go('/community-center/search')">12大类，200+家居服务</view>
-					<tui-icon name="search" :size="32" unit="rpx" color="#ef530e" margin="0"></tui-icon>
+          <tui-icon name="search" :size="32" unit="rpx" color="#ef530e" margin="0"></tui-icon>
         </view>
 
         <view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
@@ -39,8 +39,7 @@
       <!-- 四季专区 -->
       <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
-      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title"
-        :list="item.children"></ServerPane>
+      <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"></ServerPane>
     </view>
 
     <!-- 组件支持 -->
@@ -51,32 +50,27 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
     <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
     <!-- 判断微信绑定手机号 -->
-    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess">
-    </TuanWXLoginBindMobile>
+    <TuanWXLoginBindMobile ref="tuanWXLoginBindMobileRef" @close="handleResetGlobal" @success="handleBindPhoneSuccess"></TuanWXLoginBindMobile>
 
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
-    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl"
-      @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
+    <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
       <view class="tip" slot="tip">参与即可获得 300 元代金券，机会难得</view>
     </PopupInformation>
 
-    <DragButton text="联系客服" is-dock exist-tab-bar
-      @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
+    <DragButton text="联系客服" is-dock exist-tab-bar @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
   </view>
 </template>
 
 <script>
-
 import { A_TF_MAIN } from '../../config'
-import { T_SELECTED_ADDRESS, T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { T_SELECTED_ADDRESS, T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRISE_ORDERS_NO, IS_SWITCH_ORDER } from '../../constant'
 import { getServiceSortApi } from '../../api/community-center'
 import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
 import PopupInformation from '../../components/popup-information/popup-information'
@@ -173,16 +167,16 @@ export default {
       try {
         let currentAddress = this.$store.getters.detailAddress
         if (!currentAddress) {
-					// #ifdef APP
-					const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
-					if (lastAddress) {
-						currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.district + lastAddress.data.town
-					}
-					// #endif
-					// #ifndef APP
+          // #ifdef APP
+          const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+          if (lastAddress) {
+            currentAddress = lastAddress.data.province + lastAddress.data.city + lastAddress.data.district + lastAddress.data.town
+          }
+          // #endif
+          // #ifndef APP
           const { detail } = await this.$store.dispatch('location/getCurrentLocation')
           currentAddress = detail
-					// #endif
+          // #endif
         }
         const res = await getUpActivityListApi({ focus: 'up', address: currentAddress })
         if (res.statusCode === 20000) {
@@ -196,7 +190,7 @@ export default {
             this.popupImageUrl = undefined
           }
         }
-      } catch (error) { }
+      } catch (error) {}
     },
     // 点击去弹窗详情
     handleToActiveDetail() {
@@ -252,8 +246,8 @@ export default {
           link: `${A_TF_MAIN}/#/`,
           imageUrl: `${A_TF_MAIN}/static/images/new-user/fee.icon.png`
         },
-        successCb: () => { },
-        failCb: () => { }
+        successCb: () => {},
+        failCb: () => {}
       }
       await this.$refs.beeWxShareRef.share(data, isQuit)
     },
@@ -351,6 +345,10 @@ export default {
   onLoad(options) {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     importJsSDK()
+    if (options.isCommunityOrder || uni.getStorageSync(IS_SWITCH_ORDER)) {
+      uni.setStorageSync(IS_SWITCH_ORDER, 1);
+      uni.switchTab({ url: '/pages/order/order' })
+    }
     if (options.jumpType) {
       uni.redirectTo({
         url: `/pages/jump/jump?userId=&type=${options.jumpType}&code=${options.code}`

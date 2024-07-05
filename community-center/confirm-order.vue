@@ -1,6 +1,6 @@
 <template>
   <view class="confirm-order">
-		<JHeader title="确认订单" width="50" height="50"></JHeader>
+    <JHeader title="确认订单" width="50" height="50"></JHeader>
 
     <view class="main">
       <view class="service-list">
@@ -26,13 +26,12 @@
           <view class="text">人工报价</view>
         </view>
       </view>
-      <view class="pay-list">
-        <view class="text">支付方式</view>
-        <view class="name">微信支付</view>
-      </view>
       <view class="name-list">
         <view class="text">收款方</view>
         <view class="name">团蜂社区</view>
+      </view>
+      <view class="pay-list" v-if="pricingType == 1">
+        <PayMethods :orderNo="orderNo" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
       </view>
     </view>
 
@@ -42,7 +41,7 @@
         <view class="number">{{ this.oughtPrice }}</view>
         <view class="point"></view>
       </view>
-      <view class="on-pay" @click="payThrottleFn">确定支付</view>
+      <view class="on-pay" :loading="isLoading" @click="payThrottleFn">确定支付</view>
     </view>
 
     <view class="foot2" v-if="pricingType == 2">
@@ -54,13 +53,14 @@
 </template>
 
 <script>
-import { getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../api/community-center';
-import { T_COMMUNITY_ORDER_NO } from '../constant';
-import { getUserId, throttle } from '../utils';
+import { T_COMMUNITY_ORDER_NO } from '../constant'
+import { getUserId, throttle } from '../utils'
+import PayMethods from './components/PayMethods/PayMethods.vue'
 
 export default {
   name: 'Confirm-order',
   props: {},
+  components: { PayMethods },
   data() {
     return {
       orderType: 1,
@@ -77,12 +77,13 @@ export default {
       dataUrl: '',
       pricingType: '',
       imgList: [],
-      payThrottleFn: () => { }
-    };
+      payThrottleFn: () => {},
+      isLoading: false
+    }
   },
   onShow() {
     if (uni.getStorageSync(T_COMMUNITY_ORDER_NO)) {
-      this.handleBack();
+      this.handleBack()
     }
   },
   methods: {
@@ -92,155 +93,161 @@ export default {
       // });
       uni.switchTab({
         url: '/pages/order/order'
-      });
+      })
     },
 
     handleToOrderStatus() {
       uni.navigateTo({
         url: `/community-center/order-status?orderNo=${this.orderNo}`
-      });
+      })
+    },
+
+    handleSetLoading(status) {
+      this.isLoading = status
     },
 
     //订单支付
     async getServiceOrderPay() {
-      uni.setStorageSync(T_COMMUNITY_ORDER_NO, this.orderNo);
-      const _this = this
-      if (this.$store.state.app.isInMiniProgram) {
-        try {
-          const payAppesult = await payOrderForBeeStewadAPPApi({
-            userId: getUserId(),
-            orderNo: this.orderNo
-          });
+      uni.setStorageSync(T_COMMUNITY_ORDER_NO, this.orderNo)
+      this.$refs.payMethodsRef.pay()
+      return
 
-          if (payAppesult.statusCode === 20000) {
-            let query = '';
-            for (const key in payAppesult.data) {
-              query += key + '=' + payAppesult.data[key] + '&';
-            }
-            wx.miniProgram.navigateTo({
-              url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
-              fail: async () => {
-                if (!this.$store.state.app.isInMiniProgram) {
-                  let res = await getServiceOrderPayApi({
-                    orderNo: this.orderNo,
-                    userId: getUserId()
-                  });
+      // if (this.$store.state.app.isInMiniProgram) {
+      //   try {
+      //     const payAppesult = await payOrderForBeeStewadAPPApi({
+      //       userId: getUserId(),
+      //       orderNo: this.orderNo
+      //     })
 
-                  res = JSON.parse(res.data);
-                  const form = document.createElement('form');
-                  form.setAttribute('action', res.url);
-                  form.setAttribute('method', 'POST');
+      //     if (payAppesult.statusCode === 20000) {
+      //       let query = ''
+      //       for (const key in payAppesult.data) {
+      //         query += key + '=' + payAppesult.data[key] + '&'
+      //       }
+      //       wx.miniProgram.navigateTo({
+      //         url: '/pages/loading/loading?' + query + 'orderNo=' + this.orderNo + '&userId=' + getUserId(),
+      //         fail: async () => {
+      //           if (!this.$store.state.app.isInMiniProgram) {
+      //             let res = await getServiceOrderPayApi({
+      //               orderNo: this.orderNo,
+      //               userId: getUserId()
+      //             })
 
-                  const data1 = JSON.parse(res.data);
-                  let input;
-                  for (const key in data1) {
-                    input = document.createElement('input');
-                    input.name = key;
-                    input.value = data1[key];
-                    form.appendChild(input);
-                  }
+      //             res = JSON.parse(res.data)
+      //             const form = document.createElement('form')
+      //             form.setAttribute('action', res.url)
+      //             form.setAttribute('method', 'POST')
 
-                  document.body.appendChild(form);
-                  form.submit();
-                  document.body.removeChild(form);
-                } else {
-                  _this.ttoast({
-                    type: "fail",
-                    title: error,
-                  });
+      //             const data1 = JSON.parse(res.data)
+      //             let input
+      //             for (const key in data1) {
+      //               input = document.createElement('input')
+      //               input.name = key
+      //               input.value = data1[key]
+      //               form.appendChild(input)
+      //             }
 
-                  setTimeout(() => {
-                    uni.switchTab({
-                      url: "/pages/order/order",
-                    });
-                  }, 3000);
-                }
-              }
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        // #ifdef H5
-        let res = await getServiceOrderPayApi({
-          orderNo: this.orderNo,
-          userId: getUserId()
-        });
+      //             document.body.appendChild(form)
+      //             form.submit()
+      //             document.body.removeChild(form)
+      //           } else {
+      //             _this.ttoast({
+      //               type: 'fail',
+      //               title: error
+      //             })
 
-        res = JSON.parse(res.data);
+      //             setTimeout(() => {
+      //               uni.switchTab({
+      //                 url: '/pages/order/order'
+      //               })
+      //             }, 3000)
+      //           }
+      //         }
+      //       })
+      //     }
+      //   } catch (error) {
+      //     console.log(error)
+      //   }
+      // } else {
+      //   // #ifdef H5
+      //   let res = await getServiceOrderPayApi({
+      //     orderNo: this.orderNo,
+      //     userId: getUserId()
+      //   })
 
-        const form = document.createElement('form');
-        form.setAttribute('action', res.url);
-        form.setAttribute('method', 'POST');
+      //   res = JSON.parse(res.data)
 
-        const data1 = JSON.parse(res.data);
-        let input;
-        for (const key in data1) {
-          input = document.createElement('input');
-          input.name = key;
-          input.value = data1[key];
-          form.appendChild(input);
-        }
+      //   const form = document.createElement('form')
+      //   form.setAttribute('action', res.url)
+      //   form.setAttribute('method', 'POST')
 
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
-        // #endif
+      //   const data1 = JSON.parse(res.data)
+      //   let input
+      //   for (const key in data1) {
+      //     input = document.createElement('input')
+      //     input.name = key
+      //     input.value = data1[key]
+      //     form.appendChild(input)
+      //   }
 
-        // #ifdef APP
-        const payAppesult = await payOrderForBeeStewadAPPApi({
-          userId: getUserId(),
-          orderNo: this.orderNo
-        });
+      //   document.body.appendChild(form)
+      //   form.submit()
+      //   document.body.removeChild(form)
+      //   // #endif
 
-        if (payAppesult.statusCode === 20000) {
-          let query = '';
-          for (const key in payAppesult.data) {
-            query += key + '=' + payAppesult.data[key] + '&';
-          }
+      //   // #ifdef APP
+      //   const payAppesult = await payOrderForBeeStewadAPPApi({
+      //     userId: getUserId(),
+      //     orderNo: this.orderNo
+      //   })
 
-          plus.share.getServices(
-            function (res) {
-              let sweixin = null;
-              for (let i in res) {
-                if (res[i].id == 'weixin') {
-                  sweixin = res[i];
-                }
-              }
-              console.log(sweixin);
-              if (sweixin) {
-                sweixin.launchMiniProgram({
-                  id: 'gh_e64a1a89a0ad',
-                  type: 0,
-                  path: 'pages/orderDetail/orderDetail?' + query
-                });
-              }
-            },
-            function (e) {
-              console.log('获取分享服务列表失败：' + e.message);
-            }
-          );
-        }
-        // #endif
-      }
+      //   if (payAppesult.statusCode === 20000) {
+      //     let query = ''
+      //     for (const key in payAppesult.data) {
+      //       query += key + '=' + payAppesult.data[key] + '&'
+      //     }
+
+      //     plus.share.getServices(
+      //       function (res) {
+      //         let sweixin = null
+      //         for (let i in res) {
+      //           if (res[i].id == 'weixin') {
+      //             sweixin = res[i]
+      //           }
+      //         }
+      //         console.log(sweixin)
+      //         if (sweixin) {
+      //           sweixin.launchMiniProgram({
+      //             id: 'gh_e64a1a89a0ad',
+      //             type: 0,
+      //             path: 'pages/orderDetail/orderDetail?' + query
+      //           })
+      //         }
+      //       },
+      //       function (e) {
+      //         console.log('获取分享服务列表失败：' + e.message)
+      //       }
+      //     )
+      //   }
+      //   // #endif
+      // }
     }
   },
   onLoad(options) {
-    console.log(options);
-    this.payThrottleFn = throttle(this.getServiceOrderPay, 1000);
-    this.name1 = options.name1;
-    this.oughtPrice = options.oughtPrice;
-    this.content = options.content;
-    this.consigneeName = options.consigneeName;
-    this.consigneeMobile = options.consigneeMobile;
-    this.consigneeAddress = options.consigneeAddress;
-    this.consigneeAddressDetail = options.consigneeAddressDetail;
-    this.installDate = options.installDate;
-    this.pricingType = options.pricingType;
-    console.log('报价类型', this.pricingType);
-    this.orderNo = options.data;
-    console.log('订单号', this.orderNo);
+    console.log(options)
+    this.payThrottleFn = throttle(this.getServiceOrderPay, 1000)
+    this.name1 = options.name1
+    this.oughtPrice = options.oughtPrice
+    this.content = options.content
+    this.consigneeName = options.consigneeName
+    this.consigneeMobile = options.consigneeMobile
+    this.consigneeAddress = options.consigneeAddress
+    this.consigneeAddressDetail = options.consigneeAddressDetail
+    this.installDate = options.installDate
+    this.pricingType = options.pricingType
+    console.log('报价类型', this.pricingType)
+    this.orderNo = options.data
+    console.log('订单号', this.orderNo)
     // this.images = JSON.parse(options.images)
     // console.log('images', this.images);
     // const imgList = this.images.map(item => { return { goodsType: '团蜂', goodsUrl: item } })
@@ -249,20 +256,19 @@ export default {
 
     // this.getServiceOrder();
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
 .confirm-order {
-
-	/deep/ .j-header-container {
+  /deep/ .j-header-container {
     padding: 40upx 34upx 36upx 26upx;
-		.title {
-			font-size: 36upx;
+    .title {
+      font-size: 36upx;
       font-weight: bold;
       color: #3d3d3d;
-		}
-	}
+    }
+  }
 
   .main {
     padding: 56upx 34upx 0upx 34upx;
@@ -319,11 +325,14 @@ export default {
         font-size: 32upx;
         color: rgba(0, 0, 0, 0.85);
 
-        .logo {}
+        .logo {
+        }
 
-        .number {}
+        .number {
+        }
 
-        .point {}
+        .point {
+        }
       }
 
       .price-list2 {
@@ -393,11 +402,14 @@ export default {
       font-weight: 500;
       color: #fa5151;
 
-      .logo {}
+      .logo {
+      }
 
-      .number {}
+      .number {
+      }
 
-      .point {}
+      .point {
+      }
     }
 
     .on-pay {

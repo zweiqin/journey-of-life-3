@@ -4,29 +4,43 @@
     <view class="page-title">{{ APPLY_NAME }}</view>
 
     <view class="tip">
-      <view>为了给您提供更好的服务</view>
-      <view>我们需要您的授权哦~</view>
+      <view>{{ message }}</view>
+      <view>{{ subMessage }}</view>
     </view>
 
-    <button class="uni-btn" @click="go('/pages/login/login')">立即登录</button>
-    <button class="uni-btn skip" @click="handleSkip">暂时跳过</button>
+    <button class="uni-btn" @click="handleLogin">立即登录</button>
+    <button class="uni-btn skip" v-if="skip" @click="handleSkip">暂时跳过</button>
   </view>
 </template>
 
 <script>
 import { APPLY_NAME } from '../../../config'
 export default {
-	data() {
-		return {
-			APPLY_NAME,
-		}
-	},
+  props: {
+    skip: { type: Boolean, default: true },
+    message: { type: String, default: '为了给您提供更好的服务' },
+    subMessage: { type: String, default: '我们需要您的授权哦~' },
+    to: { type: String, default: '' }
+  },
+  data() {
+    return {
+      APPLY_NAME
+    }
+  },
   methods: {
     handleSkip() {
-      uni.switchTab({ url: '/pages/community-center/community-centerr' });
+      uni.switchTab({ url: '/pages/community-center/community-centerr' })
+    },
+
+    handleLogin() {
+      let loginPath = '/pages/login/login'
+      if (this.to) {
+        loginPath += '?to=' + this.to
+      }
+      this.go(loginPath)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

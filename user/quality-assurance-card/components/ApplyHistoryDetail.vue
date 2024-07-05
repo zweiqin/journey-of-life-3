@@ -32,6 +32,10 @@
               <view class="value">{{ info.type || '--' }}</view>
             </view>
             <view class="item flex-items">
+              <view class="label">问题反馈：</view>
+              <view class="value" style="color: #f40">{{ info.problemFeedback || '--' }}</view>
+            </view>
+            <view class="item flex-items">
               <view class="label">处理人：</view>
               <view class="value">{{ info.masterName || '--' }}</view>
             </view>
@@ -161,15 +165,23 @@ export default {
       box-sizing: border-box;
       background-color: #fff;
       .item {
-        height: 64rpx;
+        min-height: 44rpx;
         font-size: 24rpx;
         color: #000;
+        align-items: flex-start;
+        margin-bottom: 10rpx;
 
         .label {
           width: 148rpx;
 
           margin-right: 64rpx;
-          line-height: 64rpx;
+          // line-height: 64rpx;
+          white-space: nowrap;
+        }
+
+        .value {
+          flex: 1;
+          flex-wrap: wrap;
         }
       }
     }
