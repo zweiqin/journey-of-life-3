@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustomersApi } from '../../api/anotherTFInterface'
+import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustomersApi, getShopCheckListDetailApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'CashierList',
@@ -109,10 +109,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// 惠市宝支付
-		showHuiShiBaoPay: {
-			type: Boolean,
-			default: false
+		// 惠市宝支付。含义为商家Id或是否支持。只支持单个商家。如果必定支持惠市宝支付，则为true。不支持则为0或false。
+		huiShiBaoPay: {
+			type: [Boolean, String, Number],
+			default: ''
 		},
 		// 用户的商家充值的余额支付
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
@@ -158,6 +158,10 @@ export default {
 				rechargePrice: 0,
 				commissionPrice: 0,
 				beeCoinPrice: 0
+			},
+			// 商家的其它详情信息相关
+			detailShopInfo: {
+				hsbMrchId: ''
 			},
 			// 用户的商家充值的余额相关
 			priceShopInfo: {
@@ -271,9 +275,10 @@ export default {
 			immediate: false,
 			deep: true
 		},
-		showHuiShiBaoPay: {
+		huiShiBaoPay: {
 			handler(newValue, oldValue) {
-				if (newValue) {
+				if (newValue && (newValue !== oldValue)) {
+					uni.showLoading()
 					if (!this.paymentList.find((item) => item.paymentMode === '9')) {
 						this.paymentList.push({
 							label: '惠市宝支付（支持微信/支付宝/银联）',
@@ -282,10 +287,29 @@ export default {
 							disabled: true
 						})
 					}
-					this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
-					if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
-					this.handleNoticeFather()
-				} else {
+					if (newValue === true) {
+						this.detailShopInfo = { hsbMrchId: '0' }
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+						if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+						this.handleNoticeFather()
+						uni.hideLoading()
+					} else {
+						getShopCheckListDetailApi({ shopIds: this.shopIdPay })
+							.then((res) => {
+								this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
+								this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+								if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+								this.handleNoticeFather()
+								uni.hideLoading()
+							})
+							.catch((e) => {
+								if (this.paymentMode === '9') this.handleSetDisable()
+								if (this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
+								this.handleNoticeFather()
+								uni.hideLoading()
+							})
+					}
+				} else if (!newValue) {
 					if (this.paymentMode === '9') this.handleSetDisable()
 					if (this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
 					this.handleNoticeFather()
@@ -332,6 +356,7 @@ export default {
 			deep: true
 		},
 		pricePay: {
+			// eslint-disable-next-line complexity
 			handler(newValue, oldValue) {
 				// console.log(1111)
 				if (newValue !== oldValue) {
@@ -356,14 +381,16 @@ export default {
 					} else if (!this.showTransactionPay && (this.paymentMode === '8')) {
 						this.handleSetDisable()
 					}
-					if (this.showHuiShiBaoPay) {
-						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
-						if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
-					} else if (!this.showHuiShiBaoPay && (this.paymentMode === '9')) {
+					if (this.huiShiBaoPay) {
+						if (this.paymentList.find((item) => item.paymentMode === '9')) {
+							this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+							if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+						}
+					} else if (!this.huiShiBaoPay && (this.paymentMode === '9')) {
 						this.handleSetDisable()
 					}
 					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
-						if (this.paymentList.find((item) => item.paymentMode === '6')) {
+						if (this.paymentList.find((item) => item.paymentMode === '6')) { // 因为pricePay放后面，所以上面的shopIdPay的监听的同步代码里必然会有该项。这里严谨点
 							this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
 							if (this.paymentList.find((item) => item.paymentMode === '6').disabled && (this.paymentMode === '6')) this.handleSetDisable()
 						}
@@ -492,16 +519,27 @@ export default {
 					this.handleNoticeFather()
 				})
 		}
-		if (this.showHuiShiBaoPay) {
+		if (this.huiShiBaoPay) {
 			this.paymentList.push({
 				label: '惠市宝支付（支持微信/支付宝/银联）',
 				paymentMode: '9',
 				icon: require('../../static/images/user/pay/huishibao.png'),
 				disabled: true
 			})
-			this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay
-			this.handleSetDisable()
-			this.handleNoticeFather()
+			if (this.huiShiBaoPay === true) {
+				this.detailShopInfo = { hsbMrchId: '0' }
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				this.handleSetDisable()
+				this.handleNoticeFather()
+			} else {
+				getShopCheckListDetailApi({ shopIds: this.huiShiBaoPay })
+					.then((res) => {
+						this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+						this.handleSetDisable()
+						this.handleNoticeFather()
+					})
+			}
 		}
 		if (this.shopIdPay) {
 			this.paymentList.push({
@@ -604,6 +642,12 @@ export default {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 消费金余额不足
+				}
+			} else if (payment.paymentMode === '9') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (!this.detailShopInfo.hsbMrchId) {
+					uni.showToast({ title: '该商家未开通惠市宝服务', icon: 'none' }) // 该商家未开通惠市宝服务
 				}
 			} else if (payment.paymentMode === '6') {
 				if (!this.pricePay) {

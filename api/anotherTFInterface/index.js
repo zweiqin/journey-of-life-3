@@ -259,6 +259,9 @@ export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', dat
 // 店铺首页查询，查询店铺详情
 export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
 
+// 获取商家扩展信息列表
+export const getShopCheckListDetailApi = (data) => AnotherTFRequest('/check/getShopCheckList', data)
+
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)
 
