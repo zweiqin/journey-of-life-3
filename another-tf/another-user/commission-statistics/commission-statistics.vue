@@ -17,25 +17,18 @@
 		<!-- 列表统计 -->
 		<view class="list">
 			<view class="list-wrapper">
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=2')">
-					<view style="background-color: #ff8700;border-radius: 18rpx;padding: 22rpx;">
-						<tui-icon name="reduce" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
-					</view>
-					<view class="text">累计佣金</view>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-				</view>
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=1')">
+				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?type=1')">
 					<view style="background-color: #b548c6;border-radius: 18rpx;padding: 22rpx;">
 						<tui-icon name="wealth-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 					</view>
-					<view class="text">今日佣金</view>
+					<view class="text">佣金入账</view>
 					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 				</view>
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?today=3')">
+				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?type=2')">
 					<view style="background-color: #22b07d;border-radius: 18rpx;padding: 22rpx;">
 						<tui-icon name="bankcard-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
 					</view>
-					<view class="text">途中佣金</view>
+					<view class="text">佣金出账</view>
 					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 				</view>
 
@@ -71,7 +64,7 @@
 </template>
 
 <script>
-import { getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CommissionStatistics',
@@ -102,7 +95,7 @@ export default {
 
 		async getPricePlatformAll() {
 			try {
-				const res = await getSmallAccountBookStatisticsApi({ _isShowToast: false })
+				const res = await getPricePlatformAllApi({ _isShowToast: false })
 				this.pricePlatformInfo = res.data
 			} catch (e) {
 				if (e.data) this.ttoast({ type: 'fail', content: `${e.data.message}-${e.data.errorData}`, title: '获取佣金详情失败' })
