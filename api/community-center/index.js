@@ -142,6 +142,14 @@ export const payOrderForBeeStewadAPPApi = (data) =>
     'X-Dts-Admin-Token': uni.getStorageSync(USER_TOKEN)
   })
 
+/**
+ * 获取门店信息
+ */
+export const getShopInfoApi = (data) => SheQu1Request('laoa-huozhu/api/hz/shop/third/getShopInfo', data, 'GET')
+
+/** */
+export const createPaymentCodeOrderApi = data => SheQu1Request('laoa-huozhu/api/hz/shop/third/collectionCodePay', data)
+
 // 热门搜索
 export const getHotSearchKeyApi = (data) =>
   SheQuRequest('/api/community/serverInfo/getHotSearch', data, 'get', null, {
@@ -331,6 +339,11 @@ export const orderPayH5PabUseBlanceApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/orderPayH5PabUseBlance', data, 'POST')
 }
 
+// 惠市宝支付
+export const orderPayByCCBApi = (data) => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/uniOrderPayH5', data)
+}
+
 // 获取商圈商品报价
 export const getQuotationApi = (data) => {
   return endRequest({
@@ -478,14 +491,12 @@ export const applyQualityAssuranceApi = (data) => SheQu1Request('laoa-huozhu/api
  */
 export const getQualityAssuranceCardsListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card/third/getQualityAssuranceCards', data, 'GET')
 
-
 /**
  * 获取质保卡申请列表
  */
-export const getQualityAssuranceCardApplysApi = data => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card-apply/third/getQualityAssuranceCardApplys', data, 'GET')
-
+export const getQualityAssuranceCardApplysApi = (data) => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card-apply/third/getQualityAssuranceCardApplys', data, 'GET')
 
 /**
  * 取消质保
  */
-export const cancelQualityAssuranceCardServeApi = data => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card-apply/third/cancel', data, 'post')
+export const cancelQualityAssuranceCardServeApi = (data) => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card-apply/third/cancel', data, 'post')

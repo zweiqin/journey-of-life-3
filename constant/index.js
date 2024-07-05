@@ -39,6 +39,7 @@ export const T_COMMUNITY_ORDER_NO = 'T_COMMUNITY_ORDER_NO'
 // 乱七八糟妈的
 export const SF_INVITE_CODE = 'SF_INVITE_CODE'
 export const ENTERPRISE_ORDERS_NO = 'ENTERPRISE_ORDERS_NO'
+export const IS_SWITCH_ORDER = 'IS_SWITCH_ORDER'
 
 export const clearAllCache = () => {
 	[
@@ -68,7 +69,8 @@ export const clearAllCache = () => {
 		T_PAY_GOODS,
 		T_PAY_ORDER,
 		T_COMMUNITY_ORDER_NO,
-		SF_INVITE_CODE
+		SF_INVITE_CODE,
+		IS_SWITCH_ORDER
 	].forEach((item) => {
 		uni.removeStorageSync(item)
 	})
