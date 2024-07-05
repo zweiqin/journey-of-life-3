@@ -1,3 +1,5 @@
+import { isSuppersCCBApi } from '../../../api/community-center'
+
 export const createPayForm = ({ data, url } = {}) => {
   if (!url) {
     throw new Error('H5支付信息错误')
@@ -35,4 +37,14 @@ export const PAY_METHOD_IDS = {
   ALLINPAY: 1,
   CCB: 2,
   BALANCE: 3
+}
+
+export const isSupportsCCB = async (orderNo) => {
+  if (!orderNo) return false
+  try {
+    const res = await isSuppersCCBApi(orderNo)
+    console.log("hjshcajjcjc", res);
+  } catch (error) {
+    return false
+  }
 }

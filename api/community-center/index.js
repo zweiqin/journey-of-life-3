@@ -344,6 +344,11 @@ export const orderPayByCCBApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/uniOrderPayH5', data)
 }
 
+// 模拟下单获取是否支持惠市宝支付
+export const isSuppersCCBApi = orderNo => {
+return SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getShopByOrderSn?orderSn=' + orderNo, {}, 'GET')
+}
+
 // 获取商圈商品报价
 export const getQuotationApi = (data) => {
   return endRequest({
