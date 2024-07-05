@@ -40,7 +40,7 @@
       </view>
     </view>
     <view class="footer-box">
-      <view class="surplus"> 剩余代金券余额：{{ balanceCoupon }} </view>
+      <view class="surplus"> 代金券余额：{{ balanceCoupon }} </view>
       <view class="all-number">
         <view class="number">共{{ shopInfo.skus[0].number }}件</view>
         <view class="number-price"

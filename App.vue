@@ -33,6 +33,7 @@ export default {
 		// #ifdef MP
 		this.globalData.terminal = 1
 		// #endif
+	
 	},
 	onShow() {
 		// 判断浏览器环境
