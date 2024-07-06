@@ -34,7 +34,8 @@ export class CCBPay extends Pay {
       if (res.statusCode === 20000) {
         const payRes = res.data
         if (payRes && payRes.hsbPayRespParamStr && payRes.hsbPayRespParamStr.Cshdk_Url) {
-          this.jumpH5Pay({ url: payRes.hsbPayRespParamStr.Cshdk_Url })
+          // this.jumpH5Pay({ url: payRes.hsbPayRespParamStr.Cshdk_Url })
+          location.href = payRes.hsbPayRespParamStr.Cshdk_Url
         }
       } else {
         throw new Error(res.statusMsg)
