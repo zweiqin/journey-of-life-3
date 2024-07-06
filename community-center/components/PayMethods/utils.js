@@ -43,7 +43,7 @@ export const isSupportsCCB = async (orderNo) => {
   if (!orderNo) return false
   try {
     const res = await isSuppersCCBApi(orderNo)
-    console.log("hjshcajjcjc", res);
+    return res.statusCode === 20000 && res.data && res.data.hsbMrchId
   } catch (error) {
     return false
   }
