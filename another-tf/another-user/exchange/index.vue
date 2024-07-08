@@ -47,8 +47,13 @@
         </view>
       </view>
       <LoadingMore :status="isLoading" text="没有更多兑换商品了"></LoadingMore>
-      <view class="btn" @click="go('/pages/index/voucher-zone')" >更多礼品到兑换专区</view>
+     
     </view>
+    <view class="go-box">
+        <view class="btn" @click="go('/pages/index/voucher-zone')"
+          >更多礼品到兑换专区</view
+        >
+      </view>
   </view>
 </template>
 
@@ -56,16 +61,16 @@
 import { getShopProductsApi } from "@/api/anotherTFInterface";
 
 export default {
-  onLoad(option){
+  onLoad(option) {
     this.shopName = option.shopName;
-    this.queryData.shopId = option.shopId
+    this.queryData.shopId = option.shopId;
     this.getList();
   },
   data() {
     return {
       // 从地址中获取参数
-      shopName:"",
-      shopId:"",
+      shopName: "",
+      shopId: "",
       queryData: {
         ifNew: 1,
         type: "",
@@ -87,7 +92,7 @@ export default {
       this.isLoading = "loading";
       try {
         let res = await getShopProductsApi(this.queryData);
-        this.productList = [...this.productList,...res.data.page.list];
+        this.productList = [...this.productList, ...res.data.page.list];
         this.total = res.data.page.total;
       } finally {
         if (this.total == this.productList.length) {
@@ -96,15 +101,15 @@ export default {
       }
     },
     //  去到详情
-    goDetail(item){
+    goDetail(item) {
       uni.navigateTo({
-         url: `/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}&isExchange=1`
+        url: `/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}&isExchange=1`,
       });
-    }
+    },
   },
   // 触底加载
   onReachBottom() {
-    if(this.total == this.productList.length) return
+    if (this.total == this.productList.length) return;
     this.queryData.page++;
     this.getList();
   },
@@ -215,16 +220,26 @@ export default {
   }
 }
 
-.btn{
-  width: 500rpx;
-  height: 70rpx;
-  margin: 0 auto;
-  background-color: #ef530e;
-  text-align: center;
-  line-height: 70rpx;
-  color: #ffffff;
-  font-size: 26rpx;
-  border-radius: 10rpx;
+.go-box {
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  align-items: center;
+  /* background-color: #ffffff; */
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  .btn {
+    width: 500rpx;
+    height: 70rpx;
+    margin: 0 auto;
+    background-color: #ef530e;
+    text-align: center;
+    line-height: 70rpx;
+    color: #ffffff;
+    font-size: 26rpx;
+    border-radius: 10rpx;
+  }
 }
 
 ::v-deep .tui-input__border {
