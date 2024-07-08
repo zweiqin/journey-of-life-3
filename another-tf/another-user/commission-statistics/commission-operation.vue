@@ -1,5 +1,5 @@
 <template>
-	<view class="balance-operation">
+	<view class="commission-operation">
 		<JHeader title="推广佣金" width="50" height="50"></JHeader>
 		<view style="display: flex;justify-content: flex-end;">
 			<tui-button
@@ -15,19 +15,15 @@
 			<tui-icon name="wealth-fill" :size="130" unit="rpx" color="#eb6a00" margin="0"></tui-icon>
 			<!-- <view style="margin-top: 26rpx;font-size: 36rpx;">推广佣金</view>
 				<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ Number.parseFloat(Number(commissionData.remainAmount)).toFixed(2) || 0 }}
+				￥{{ Number.parseFloat(Number(pricePlatformInfo.remainAmount)).toFixed(2) || 0 }}
 				</view> -->
 			<view style="margin-top: 26rpx;font-size: 36rpx;">可提现佣金</view>
 			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ Number.parseFloat(Number(commissionData.totalAmount)).toFixed(2) || 0 }}
-			</view>
-			<view style="margin-top: 20rpx;font-size: 36rpx;">
-				待到账：￥
-				{{ Number.parseFloat(Number(commissionData.inTheAccount)).toFixed(2) || 0 }}
+				￥{{ Number.parseFloat(Number(pricePlatformInfo.commissionPrice)).toFixed(2) || 0 }}
 			</view>
 			<!-- <view style="margin-top: 20rpx;font-size: 36rpx;">
-				可提现余额：￥
-				{{ Number.parseFloat(Number(commissionData.totalAmount)).toFixed(2) || 0 }}
+				待到账：￥
+				{{ Number.parseFloat(Number(pricePlatformInfo.inTheAccount)).toFixed(2) || 0 }}
 				</view> -->
 			<view class="operation-btn">
 				<view style="padding-top: 100rpx;">
@@ -53,31 +49,35 @@
 </template>
 
 <script>
-import { getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CommissionOperation',
 	onShow() {
-		this.getCommissionData()
+		this.getPricePlatformAll()
 	},
 
 	data() {
 		return {
-			commissionData: {
-				remainAmount: '',
-				inTheAccount: '',
-				totalAmount: ''
+			pricePlatformInfo: {
+				totalPrice: '',
+				price: '',
+				rechargePrice: '',
+				voucherPrice: '',
+				distributorPrice: '',
+				beeCoinPrice: '',
+				commissionPrice: ''
 			}
 		}
 	},
 
 	methods: {
-		getCommissionData() {
+		getPricePlatformAll() {
 			uni.showLoading()
-			getSmallAccountBookStatisticsApi({})
+			getPricePlatformAllApi({})
 				.then((res) => {
 					uni.hideLoading()
-					this.commissionData = res.data
+					this.pricePlatformInfo = res.data
 				})
 				.catch(() => {
 					uni.hideLoading()
@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.balance-operation {
+.commission-operation {
 	min-height: 100vh;
 	background-color: #f8f9fb;
 	box-sizing: border-box;

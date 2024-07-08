@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi, getSmallAccountBookStatisticsApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'Withdraw',
@@ -170,16 +170,13 @@ export default {
 			if (this.withdrawalType === '1') {
 				getPricePlatformAllApi({}).then((res) => {
 					this.withdrawHistoryList = res.data.withdrawals
+					this.withdrawalPrice = res.data.commissionPrice
+					this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
 				})
-				getSmallAccountBookStatisticsApi({})
-					.then((res) => {
-						this.withdrawalPrice = res.data.totalAmount
-						this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
-					})
 			} else {
 				getPricePlatformAllApi({}).then((res) => {
-					this.withdrawalPrice = res.data.price
 					this.withdrawHistoryList = res.data.withdrawals
+					this.withdrawalPrice = res.data.price
 					this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
 				})
 			}

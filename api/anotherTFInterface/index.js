@@ -197,14 +197,20 @@ export const getSelectApplyPlatformRelationApi = (data) => AnotherTFRequest('/pl
 // 查询是否满足升级条件
 export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/platformRelationshipApply/selectLevel', data, 'POST')
 
-// 我的账本 // 佣金金额统计
-export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
-
 // 今日会员，累计会员 // 每个等级统计
 export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
 
+// 我的账本 // 佣金金额统计
+export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
+
 // 获取佣金列表 // 佣金金额记录
 export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+
+// 分页查询用户佣金入账记录表
+export const getAllCommissionEntryRecordApi = (data) => AnotherTFRequest('/buyerCommissionEntryRecord/getAll', data, 'POST')
+
+// 分页查询用户佣金出账记录表
+export const getAllCommissionOutgoingRecordApi = (data) => AnotherTFRequest('/buyerCommissionOutgoingRecord/getAll', data, 'POST')
 
 // 加盟商统计模块
 export const getFranchiseeStatisticsApi = (data) => AnotherTFRequest('/platformFranchiseeBinding/franchiseeStatistics', data, 'POST')
@@ -258,6 +264,9 @@ export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', dat
 
 // 店铺首页查询，查询店铺详情
 export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
+
+// 获取商家扩展信息列表
+export const getShopCheckListDetailApi = (data) => AnotherTFRequest('/check/getShopCheckList', data)
 
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)

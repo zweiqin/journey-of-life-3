@@ -76,7 +76,7 @@
 				<CashierList
 					:price-pay="currentRechargeCount" show
 					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
-					:show-hui-shi-bao-pay="!!currentRechargeCount" @change="(e) => payInfo = e"
+					:hui-shi-bao-pay="!!currentRechargeCount" @change="(e) => payInfo = e"
 				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
