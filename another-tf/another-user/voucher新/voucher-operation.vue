@@ -1,6 +1,7 @@
 <template>
 	<view class="voucher-operation-container">
 		<JHeader title="代金券" width="50" height="50"></JHeader>
+		<VoucherChoose padding="20rpx 0 0" @change="(e) => (voucherChooseInfo = e) && getVoucherData()"></VoucherChoose>
 		<view
 			style="position: relative;padding: 8rpx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
@@ -20,9 +21,8 @@
 						<tui-button
 							type="white" plain link :size="36"
 							width="184rpx" height="68rpx" margin="0"
-							@click="go('/another-tf/another-user/voucher/voucher')"
+							@click="go('/another-tf/another-user/voucher/voucher-record')"
 						>
-							<!-- go('/another-tf/another-user/voucher/voucher-record') -->
 							收支明细
 						</tui-button>
 					</view>
@@ -34,8 +34,8 @@
 						</view>
 						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
-							￥{{ typeof userAcount.number === 'number'
-								? Number.parseFloat(Number(userAcount.number)).toFixed(2) : '--' }}
+							￥{{ Number.parseFloat(voucherAcount.chongzhiRechargeTotal + voucherAcount.duihuanRechargeTotal).toFixed(2)
+							}}
 						</view>
 					</view>
 				</view>
@@ -54,8 +54,8 @@
 					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
 				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof voucherAcount.zongchongzhi === 'number'
-						? Number.parseFloat(Number(voucherAcount.zongchongzhi)).toFixed(2)
+					￥{{ typeof voucherAcount.chongzhiRechargeTotal === 'number'
+						? Number.parseFloat(Number(voucherAcount.chongzhiRechargeTotal)).toFixed(2)
 						: '--' }}
 				</view>
 			</view>
@@ -69,26 +69,11 @@
 					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
 				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					<!-- ￥{{ typeof voucherAcount.zongzengsong === 'number' ? voucherAcount.zongzengsong : '--' }} -->
-					￥{{ Number.parseFloat(Number(userAcount.number) - Number(voucherAcount.zongchongzhi)).toFixed(2) || '--' }}
+					￥{{ typeof voucherAcount.duihuanRechargeTotal === 'number'
+						? Number.parseFloat(Number(voucherAcount.duihuanRechargeTotal)).toFixed(2)
+						: '--' }}
 				</view>
 			</view>
-			<!-- <view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
-				<view style="margin-top: 30rpx;">
-				<view>总支出</view>
-				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-				￥{{ typeof
-				voucherAcount.zongzhichu === 'number' ? voucherAcount.zongzhichu : '--' }}
-				</view>
-				</view>
-				<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
-				<view style="margin-top: 30rpx;">
-				<view>总收益</view>
-				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-				￥{{ typeof voucherAcount.zongshouyi ===
-				'number' ? voucherAcount.zongshouyi : '--' }}
-				</view>
-				</view> -->
 		</view>
 
 		<view
@@ -159,6 +144,35 @@
 						></tui-icon>
 					</view>
 				</view>
+				<view v-if="showType === 'transfer'" style="padding: 0 36rpx;">
+					<view style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 0 12rpx;">
+						<text style="font-size: 28rpx;">请选择转赠类型</text>
+						<view style="flex: 1;">
+							<tui-radio-group
+								:value="transferForm.voucherType"
+								@change="(e) => transferForm.voucherType = e.detail.value"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+										v-for="(item, index) in [{ name: '充值代金券', value: '1' }, { name: '兑换代金券', value: '2' }]"
+										:key="index"
+									>
+										<tui-list-cell padding="6rpx 16rpx">
+											<view>
+												<tui-radio
+													:checked="transferForm.voucherType === item.value" :value="item.value"
+													color="#07c160" border-color="#999"
+												>
+												</tui-radio>
+												<text>{{ item.name }}</text>
+											</view>
+										</tui-list-cell>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+					</view>
+				</view>
 				<view v-if="showType === 'recharge'" style="padding: 0 36rpx;">
 					<view
 						style="display: flex;align-items: center;flex-wrap: wrap;margin: 0 -12rpx;padding: 12rpx 0 0;text-align: center;"
@@ -177,10 +191,11 @@
 									{{ item.number }}
 								</view>
 								<view
+									v-if="voucherChooseInfo.purchaseRatio"
 									style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentRechargeIndex === index ? '#222229' : '#888889' }"
 								>
-									售价{{ item.value || '' }}
+									售价{{ item.number / voucherChooseInfo.purchaseRatio || '' }}
 								</view>
 							</view>
 							<view
@@ -201,7 +216,12 @@
 								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectRechargeCustom"
 							>
 								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">售价{{ customRecharge / 2 || '' }}</text>
+									<text
+										v-if="voucherChooseInfo.purchaseRatio"
+										style="font-size: 30rpx;color: #979797;"
+									>
+										售价{{ customRecharge / voucherChooseInfo.purchaseRatio || '' }}
+									</text>
 								</template>
 							</tui-input>
 						</view>
@@ -234,10 +254,11 @@
 									{{ item.voucherNum }}
 								</view>
 								<view
+									v-if="voucherChooseInfo.purchaseRatio"
 									style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentTransferIndex === index ? '#222229' : '#888889' }"
 								>
-									价值{{ item.value || '' }}
+									价值{{ item.voucherNum / voucherChooseInfo.purchaseRatio || '' }}
 								</view>
 							</view>
 							<view
@@ -255,10 +276,13 @@
 								v-model="customTransfer" type="number" label="券" :label-size="48"
 								label-color="#000000"
 								:label-width="80" placeholder="输入自定义代金券" :border-bottom="false" padding="18rpx 2rpx 10rpx"
-								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectTransferCustom" @input="handleSelectTransferCustom"
+								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectTransferCustom"
+								@input="handleSelectTransferCustom"
 							>
 								<template #right>
-									<text style="font-size: 30rpx;color: #979797;">价值{{ customTransfer / 2 || '' }}</text>
+									<text v-if="voucherChooseInfo.purchaseRatio" style="font-size: 30rpx;color: #979797;">
+										价值{{ customTransfer / voucherChooseInfo.purchaseRatio || '' }}
+									</text>
 								</template>
 							</tui-input>
 						</view>
@@ -306,9 +330,9 @@
 							<view style="margin-left: 20rpx;font-size: 42rpx">{{ transferForm.voucherNum || '--' }}</view>
 						</view>
 						<view style="font-size: 28rpx;text-align: right;">
-							可用代金券：{{ typeof userAcount.number === 'number'
-								? userAcount.number
-								: '--' }}
+							可用代金券：
+							<text v-if="transferForm.voucherType === '1'">{{ voucherAcount.chongzhiRechargeTotal }}</text>
+							<text v-else-if="transferForm.voucherType === '2'">{{ voucherAcount.duihuanRechargeTotal }}</text>
 						</view>
 					</view>
 					<view style="padding: 32rpx 0 38rpx;text-align: center;">
@@ -394,10 +418,11 @@
 						确定要转赠 {{ transferForm.voucherNum }} 代金券吗？
 					</text>
 				</view>
-				<view style="margin-top: 22rpx;font-size: 36rpx;color: #687383;">
-					<text>
-						价值 {{ transferForm.voucherNum / 2 }} 元
-					</text>
+				<view
+					v-if="voucherChooseInfo.purchaseRatio"
+					style="margin-top: 22rpx;font-size: 36rpx;color: #687383;"
+				>
+					价值 {{ transferForm.voucherNum / voucherChooseInfo.purchaseRatio }} 元
 				</view>
 				<view>
 					<tui-button
@@ -414,9 +439,9 @@
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 				<CashierList
-					:price-pay="rechargeForm.number / 2" show
-					:show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
-					:show-hui-shi-bao-pay="!!rechargeForm.number" @change="(e) => payInfo = e"
+					:price-pay="rechargeForm.number / 2" show :show-commission-pay="!!rechargeForm.number"
+					:show-platform-pay="!!rechargeForm.number" :hui-shi-bao-pay="!!rechargeForm.number"
+					@change="(e) => payInfo = e"
 				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
@@ -432,46 +457,43 @@
 </template>
 
 <script>
-import { getByUserVoucherShopHoldApi, getTotalVoucherOrderApi, submitVoucherOrderApi, updateTransferVoucherShopHoldApi, getBandUserInfoApi } from '../../../api/anotherTFInterface'
+import VoucherChoose from './components/VoucherChoose.vue'
+import { getByUserOrderVoucherOrderApi, getBuyerTotalVoucherEntryRecordApi, submitBuyerVoucherOrderApi, updateTransferVoucherOrderApi, updateByUserVoucherEntryRecordApi, getBandUserInfoApi } from '../../../api/anotherTFInterface'
 import { handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'VoucherOperation',
+	components: { VoucherChoose },
 	data() {
 		return {
-			userAcount: {
-				id: '',
-				buyerUserId: '',
-				voucherId: '',
-				remainNumber: '', // 累计代金券
-				number: ''
+			// 选择的代金券种类
+			voucherChooseInfo: {
+				platformVoucherId: '',
+				purchaseRatio: ''
 			},
+			// 账户数据
 			voucherAcount: {
-				zongchongzhi: '',
-				zongzhichu: '',
-				zongshouyi: '',
-				zongzengsong: ''
+				chongzhiRechargeTotal: 0,
+				duihuanRechargeTotal: 0
 			},
-
 			// 提示弹框展示
 			isShowTipsModal: false,
 			showTipsType: '',
-
 			isShowVoucherPopup: false,
 			isShowVoucherModal: false,
 			showType: '', // recharge，transfer
 			// 充值
 			rechargeAmountsList: [
-				{ number: 50, value: 25 },
-				{ number: 100, value: 50 },
-				{ number: 200, value: 100 },
-				{ number: 1000, value: 500 },
-				{ number: 2000, value: 1000 }
+				{ number: 50 },
+				{ number: 100 },
+				{ number: 200 },
+				{ number: 1000 },
+				{ number: 2000 }
 			],
 			currentRechargeIndex: 0,
 			customRecharge: '',
 			rechargeForm: {
-				voucherId: '1',
+				voucherId: '',
 				number: 50,
 				payGrade: ''
 			},
@@ -479,18 +501,20 @@ export default {
 			payInfo: {},
 			// 转赠
 			transferAmountsList: [
-				{ voucherNum: 50, value: 25 },
-				{ voucherNum: 100, value: 50 },
-				{ voucherNum: 200, value: 100 },
-				{ voucherNum: 1000, value: 500 },
-				{ voucherNum: 2000, value: 1000 }
+				{ voucherNum: 50 },
+				{ voucherNum: 100 },
+				{ voucherNum: 200 },
+				{ voucherNum: 1000 },
+				{ voucherNum: 2000 }
 			],
 			currentTransferIndex: 0,
 			customTransfer: '',
 			transferForm: {
-				buyerUserObj: {
+				voucherType: '1', // 后端无需
+				buyerUserObj: { // 后端无需
 					buyerUserId: ''
 				},
+				voucherId: '',
 				buyerUserId: '',
 				voucherNum: 50
 			},
@@ -501,24 +525,25 @@ export default {
 		}
 	},
 	onShow() {
-		this.getVoucherData()
+		if (this.voucherChooseInfo.platformVoucherId) {
+			this.getVoucherData()
+		} else {
+			this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+		}
 	},
 	methods: {
 		getVoucherData() {
 			uni.showLoading()
-			getByUserVoucherShopHoldApi({})
+			getByUserOrderVoucherOrderApi({})
 				.then((res) => {
-					this.userAcount = res.data
+					this.voucherAcount.chongzhiRechargeTotal = Number(res.data.rechargeTotal)
 					uni.hideLoading()
 				})
 				.catch((e) => {
 					uni.hideLoading()
 				})
-			getTotalVoucherOrderApi({
-				type: 1, // 1-充值记录 2-转赠记录 3-流水记录
-				condition: 0 // 0-全部 1-今天 2-昨天 3-本周 4-本月 5-本年
-			}).then((res) => {
-				this.voucherAcount.zongchongzhi = res.data['总充值']
+			getBuyerTotalVoucherEntryRecordApi({}).then((res) => {
+				this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
 			})
 		},
 		handleClickCurrentRecharge(item, index) {
@@ -565,6 +590,11 @@ export default {
 		},
 		handleShowModal() {
 			if (this.showType === 'recharge') {
+				if (this.voucherChooseInfo.platformVoucherId) {
+					this.rechargeForm.voucherId = this.voucherChooseInfo.platformVoucherId
+				} else {
+					return this.$showToast('缺少代金券种类')
+				}
 				if (typeof this.currentRechargeIndex === 'number') {
 					if (!this.rechargeForm.number) return this.$showToast('缺少代金券数量')
 				} else {
@@ -573,6 +603,12 @@ export default {
 				}
 				this.isShowVoucherModal = true
 			} else if (this.showType === 'transfer') {
+				if (this.voucherChooseInfo.platformVoucherId) {
+					this.transferForm.voucherId = this.voucherChooseInfo.platformVoucherId
+				} else {
+					return this.$showToast('缺少代金券种类')
+				}
+				if (!this.transferForm.voucherType) return this.$showToast('缺少转赠类型')
 				if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
 				if (typeof this.currentTransferIndex === 'number') {
 					if (!this.transferForm.voucherNum) return this.$showToast('缺少代金券数量')
@@ -586,8 +622,8 @@ export default {
 
 		handleRecharge() {
 			uni.showLoading()
-			this.rechargeForm.payGrade = this.rechargeForm.number / 2
-			submitVoucherOrderApi({ ...this.rechargeForm })
+			this.rechargeForm.payGrade = this.rechargeForm.number / this.voucherChooseInfo.purchaseRatio
+			submitBuyerVoucherOrderApi({ ...this.rechargeForm })
 				.then(async (res) => {
 					await handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
 					uni.hideLoading()
@@ -601,8 +637,14 @@ export default {
 		},
 		handleTransfer() {
 			uni.showLoading()
+			let _url
+			if (this.transferForm.voucherType === '1') {
+				_url = updateTransferVoucherOrderApi
+			} else if (this.transferForm.voucherType === '2') {
+				_url = updateByUserVoucherEntryRecordApi
+			}
 			this.transferForm.buyerUserId = this.transferForm.buyerUserObj.buyerUserId
-			updateTransferVoucherShopHoldApi({ ...this.transferForm })
+			_url({ ...this.transferForm })
 				.then((res) => {
 					uni.hideLoading()
 					this.$showToast('转赠成功')

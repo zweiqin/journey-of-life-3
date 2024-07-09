@@ -1580,12 +1580,12 @@
             "navigationBarTitleText": "代金券收支明细详情"
           }
         },
-        // {
-        //   "path": "another-user/voucher/voucher",
-        //   "style": {
-        //     "navigationBarTitleText": "代金券"
-        //   }
-        // },
+        {
+          "path": "another-user/voucher/voucher",
+          "style": {
+            "navigationBarTitleText": "代金券"
+          }
+        },
         // {
         //   "path": "another-user/voucher/orderStatus",
         //   "style": {
