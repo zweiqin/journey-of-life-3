@@ -600,19 +600,7 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 		} else {
 			const payData = res.data
-			const form = document.createElement('form')
-			form.setAttribute('action', res.data.Cshdk_Url)
-			form.setAttribute('method', 'POST')
-			let input
-			for (const key in payData) {
-				input = document.createElement('input')
-				input.name = key
-				input.value = payData[key]
-				form.appendChild(input)
-			}
-			document.body.appendChild(form)
-			form.submit()
-			document.body.removeChild(form)
+			location.href = payData.Cshdk_Url
 		}
 	})
 		.catch((e) => {

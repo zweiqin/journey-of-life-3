@@ -5,7 +5,6 @@
 // export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api' // 线上
 
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 线上
-// // export const RUAN_URL = 'http://192.168.0.91:8089/demo/wx' // 本地
 
 // export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload' // 线上
 

@@ -1853,6 +1853,12 @@
           }
         },
         {
+          "path": "another-user/combination-activities/combination-activity-products",
+          "style": {
+            "navigationBarTitleText": "组合活动商品"
+          }
+        },
+        {
           "path": "another-serve/messageDetail/index",
           "style": {
             "navigationBarTitleText": "公告详情"

@@ -55,7 +55,7 @@
 			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '消费金活动' }}</text>
 		</view>
 		<view v-else-if="type === 11" class="activity-wrapper" :style="{ backgroundColor }">
-			<!-- 平台消费金活动 -->
+			<!-- 组合活动 -->
 			<tui-icon v-if="showIcon" :size="iconSize" color="#dbc296" name="service" margin="0 4rpx 0 0"></tui-icon>
 			<text :style="{ fontStyle: italic ? 'italic' : 'normal' }">{{ text || '组合活动' }}</text>
 		</view>
