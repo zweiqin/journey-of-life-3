@@ -38,7 +38,7 @@ export const ANOTHER_TF_SETTLE = 'https://nsh51test.tuanfengkeji.cn' // 测试
 // export const ANOTHER_TF_INTERFACE = 'http://192.168.0.91:9107' // 本地
 
 // --------------------------------------------------
-export const SYSTEM_VERSION = '1.0.27' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
+export const SYSTEM_VERSION = '1.0.28' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
 export const APPLY_NAME = '团蜂' // 应用名称
 export const ENV = A_TF_MAIN.includes('test') ? 'development' : 'production' // 环境
 

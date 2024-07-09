@@ -524,6 +524,60 @@ async function appTonglianPay(data, payType, type, otherArgs) {
 }
 
 /**
+ * 佣金支付H5处理
+ * @param data 结算返回的支付信息
+ */
+
+async function h5CommissionPay(data, payType, type, otherArgs) {
+	await gotoOrderH5PayApi({
+		...data,
+		purchaseMode: payType,
+		...otherArgs
+	}).then((res) => {
+		console.log(JSON.stringify(res.data))
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
+		if (!res.data.package) { // 零元支付情况
+			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+		} else {
+			const payData = JSON.parse(res.data.package)
+			const form = document.createElement('form')
+			form.setAttribute('action', res.data.mwebUrl)
+			form.setAttribute('method', 'POST')
+			let input
+			for (const key in payData) {
+				input = document.createElement('input')
+				input.name = key
+				input.value = payData[key]
+				form.appendChild(input)
+			}
+			document.body.appendChild(form)
+			form.submit()
+			document.body.removeChild(form)
+		}
+	})
+		.catch((e) => {
+			console.log(e)
+			uni.showToast({ title: '支付失败', icon: 'none' })
+			setTimeout(() => {
+				if ([1, 2].includes(payType)) {
+					uni.switchTab({ url: '/pages/order/order' })
+				} else if ([3, 4, 5].includes(payType)) {
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+				}
+			}, 2000)
+		})
+		.finally((e) => {
+			uni.hideLoading()
+		})
+}
+
+/**
  * 惠市宝支付H5处理
  * @param data 结算返回的支付信息
  */
@@ -912,22 +966,22 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		} else if ([5, 6, 7, 8].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、消费金支付
 			if (isInWx()) {
 				if (store.state.app.isInMiniProgram) {
-					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+					await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				} else {
-					await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+					await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				}
 			} else {
 				// #ifdef H5
-				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef APP
-				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef MP-WEIXIN
-				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 				// #ifdef MP-ALIPAY
-				await h5TonglianPay(submitResult, purchaseMode, type, otherArgs)
+				await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)
 				// #endif
 			}
 		} else if ([ 9 ].includes(submitInfo.paymentMode)) { // 惠市宝支付
