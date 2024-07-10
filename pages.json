@@ -1859,6 +1859,18 @@
           }
         },
         {
+          "path": "another-user/lottery-activities/index",
+          "style": {
+            "navigationBarTitleText": "抽奖活动"
+          }
+        },
+        {
+          "path": "another-user/lottery-activities/lottery-record",
+          "style": {
+            "navigationBarTitleText": "中奖记录"
+          }
+        },
+        {
           "path": "another-serve/messageDetail/index",
           "style": {
             "navigationBarTitleText": "公告详情"

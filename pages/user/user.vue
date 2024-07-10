@@ -11,7 +11,7 @@
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
 					<view style="text-align: center;background-color: #afafaf;">
-						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ ENV }}-{{ $store.state.auth.identityInfo.type }}-1.0.28.3
+						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ ENV }}-{{ $store.state.auth.identityInfo.type }}-1.0.28.5
 					</view>
 				</view>
 				<view v-else style="margin-top: 24rpx;" @click="isShowOther = true">

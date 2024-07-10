@@ -40,37 +40,39 @@
 				</view> -->
 			<view style="display: flex;justify-content: space-between;flex-wrap: wrap;align-items: center;">
 				<view style="font-size: 30rpx;">选择活动类型：</view>
-				<tui-dropdown-list
-					:show="typeDropdownShow" :top="55" background-color="#ffffff"
-					@close="typeDropdownShow = false"
-				>
-					<template #selectionbox>
-						<view
-							style="height: auto;padding: 10rpx 16rpx;color: #222229;background-color: #ffffff;"
-							@click="typeDropdownShow = !typeDropdownShow"
-						>
-							<text style="font-size: 26rpx;">{{ typeDropdownName || '' }}</text>
-							<tui-icon name="arrowdown" :size="14" color="#222229" margin="0 0 0 14rpx"></tui-icon>
-						</view>
-					</template>
-					<template #dropdownbox>
-						<view style="width: fit-content;box-sizing: border-box;">
-							<tui-list-view
-								color="#777" margin-top="2rpx"
-								style="width: fit-content;min-width: 180rpx;max-height: 28vh;overflow-y: auto;"
+				<view style="flex: 1;display: flex;justify-content: flex-end;background-color: #ffffff;">
+					<tui-dropdown-list
+						:show="typeDropdownShow" :top="55" background-color="#ffffff"
+						@close="typeDropdownShow = false"
+					>
+						<template #selectionbox>
+							<view
+								style="height: auto;padding: 10rpx 16rpx;color: #222229;background-color: #ffffff;"
+								@click="typeDropdownShow = !typeDropdownShow"
 							>
-								<tui-list-cell
-									v-for="item in dropdownList"
-									:key="item.name" padding="20rpx 0"
-									style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #999999;"
-									@click="((queryInfo.ids = item.value) && (typeDropdownName = item.name) && (queryInfo.page = 1) && (typeDropdownShow = false)) || getCombinationActivitiesList()"
+								<text style="font-size: 26rpx;">{{ typeDropdownName || '' }}</text>
+								<tui-icon name="arrowdown" :size="14" color="#222229" margin="0 0 0 14rpx"></tui-icon>
+							</view>
+						</template>
+						<template #dropdownbox>
+							<view style="width: fit-content;box-sizing: border-box;">
+								<tui-list-view
+									color="#777" margin-top="2rpx"
+									style="width: fit-content;min-width: 200rpx;max-height: 28vh;overflow-y: auto;"
 								>
-									{{ item.name }}
-								</tui-list-cell>
-							</tui-list-view>
-						</view>
-					</template>
-				</tui-dropdown-list>
+									<tui-list-cell
+										v-for="item in dropdownList"
+										:key="item.name" padding="10rpx 0"
+										style="width: fit-content;margin: 0 auto;"
+										@click="((queryInfo.ids = item.value) && (typeDropdownName = item.name) && (queryInfo.page = 1) && (typeDropdownShow = false)) || getCombinationActivitiesList()"
+									>
+										{{ item.name }}
+									</tui-list-cell>
+								</tui-list-view>
+							</view>
+						</template>
+					</tui-dropdown-list>
+				</view>
 			</view>
 		</view>
 
@@ -86,7 +88,7 @@
 						<text>{{ dropdownList.find((i) => i.value[0] === item.composeId).name }}</text>
 					</view>
 					<view
-						style="display: flex;justify-content: center;align-items: center;width: 100%;height: 352rpx;background-color: #ef530e;"
+						style="display: flex;justify-content: center;align-items: center;width: 100%;height: 220rpx;background-color: #ef530e;"
 					>
 						<view style="max-width: 52%;font-weight: bold;font-size: 44rpx;color: #ffffff;text-align: center;font-style: italic;letter-spacing: 4rpx;word-break: break-all;line-height: 1.5;">
 							{{ item.composeName }}
@@ -311,7 +313,7 @@ export default {
 	/deep/ .tui-dropdown-view {
 		height: auto !important;
 		width: fit-content;
-		margin-left: -48rpx;
+		margin-left: -68rpx;
 	}
 
 	.middle-btn {

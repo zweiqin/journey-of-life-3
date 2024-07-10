@@ -758,6 +758,16 @@ export const getPlatformComposeCanvasApi = (data) => AnotherTFRequest('/canvas/g
 // 记录组合活动相关
 export const updateSavePlatformComposeApi = (data) => AnotherTFRequest('/platformCompose/saveCompose', data)
 
+// 用户抽奖模块
+// 抽奖活动
+export const getPlatformLotteryApi = (data) => AnotherTFRequest('/lottery/getPlatformLottery', data)
+
+// 抽奖入口
+export const updateDoDrawIdApi = (data) => AnotherTFRequest('/lottery/doDrawId', data)
+
+// 中奖记录
+export const getLotteryRecordApi = (data) => AnotherTFRequest('/lotteryRecord/getRecord', data)
+
 // 评价
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')

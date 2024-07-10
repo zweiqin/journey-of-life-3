@@ -346,6 +346,11 @@ export const otherFunction = [
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/combination-activities/index'
 	},
+	{
+		name: '抽奖活动',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/lottery-activities/index'
+	},
 	// shopServe
 	{
 		name: '商品类别',
