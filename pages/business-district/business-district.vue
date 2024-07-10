@@ -23,7 +23,7 @@
 			<!-- <ActivityPackage></ActivityPackage> -->
 
 			<!-- 专属活动 -->
-			<!-- <ExclusiveActivities margin="24rpx 0 0"></ExclusiveActivities> -->
+			<ExclusiveActivities margin="24rpx 0 0"></ExclusiveActivities>
 
 			<!-- 首要标签筛选框 -->
 			<view style="padding: 12rpx 52rpx;margin: 24rpx -26rpx 0;background-color: #ffffff;">

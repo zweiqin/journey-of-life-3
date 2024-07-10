@@ -14,7 +14,7 @@
 				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
 				<image
-					:src="common.seamingImgUrl(item.image)"
+					:src="common.seamingImgUrl(item.image) || require('../../../static/images/new-user/fee.icon.png')"
 					style="width: 180rpx;height: 180rpx;margin-right: 30rpx;border-radius: 10rpx;"
 				/>
 				<view style="flex: 1;">
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'CombinationActivityProducts',
@@ -105,7 +106,8 @@ export default {
 				pageSize: 20,
 				ids: [],
 				shopId: '',
-				stateList: ['0', '1', '2', '3', '4']
+				stateList: ['0', '1', '2', '3', '4'],
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
 			}
 		}
 	},
@@ -115,11 +117,23 @@ export default {
 		}
 		this.getCombinationActivitiesList()
 	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+		}
+	},
 	methods: {
 		getCombinationActivitiesList(isLoadmore) {
 			console.log(this.queryInfo)
 			uni.showLoading()
-			getPlatformComposeCanvasApi(this.queryInfo).then((res) => {
+			getPlatformComposeCanvasApi({
+				...this.queryInfo,
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+			}).then((res) => {
 				this.combinationActivityTotal = res.data.length
 				this.combinationActivityList = res.data
 				// this.combinationActivityTotal = res.data.page.total

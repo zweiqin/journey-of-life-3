@@ -1,6 +1,17 @@
 <template>
 	<view class="combination-activities-container">
-		<JHeader title="活动中心" width="50" height="50"></JHeader>
+		<JHeader title="活动中心" width="50" height="50">
+			<template #ftFn>
+				<text style="padding-right: 18rpx;color: #222229;">
+					{{
+						$store.state.location.locationInfo.township ||
+							$store.state.location.locationInfo.district ||
+							$store.state.location.locationInfo.city ||
+							$store.state.location.locationInfo.province
+					}}
+				</text>
+			</template>
+		</JHeader>
 		<view style="padding: 18rpx;">
 			<!-- <view>
 				<tui-checkbox-group
@@ -74,10 +85,13 @@
 					>
 						<text>{{ dropdownList.find((i) => i.value[0] === item.composeId).name }}</text>
 					</view>
-					<tui-lazyload-img
-						width="100%" height="352rpx" mode="aspectFit" radius="20rpx 20rpx 0 0"
-						background-color="#ef530e" src="../../../static/images/new-user/fee.icon.png"
-					></tui-lazyload-img>
+					<view
+						style="display: flex;justify-content: center;align-items: center;width: 100%;height: 352rpx;background-color: #ef530e;"
+					>
+						<view style="max-width: 52%;font-weight: bold;font-size: 44rpx;color: #ffffff;text-align: center;font-style: italic;letter-spacing: 4rpx;word-break: break-all;line-height: 1.5;">
+							{{ item.composeName }}
+						</view>
+					</view>
 					<view
 						style="position: absolute;bottom: -28rpx;right: -18rpx;width: 172rpx;height: 172rpx;display: flex;align-items: center;justify-content: center;padding: 14rpx;white-space: nowrap;border: 4rpx solid #ffffff;border-radius: 50%;transform: rotate(-30deg);box-sizing: border-box;"
 					>
@@ -199,6 +213,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'CombinationActivities',
@@ -215,7 +230,8 @@ export default {
 				pageSize: 20,
 				ids: [], // 不传查全部
 				shopId: '',
-				stateList: ['0', '1', '2', '3', '4']
+				stateList: ['0', '1', '2', '3', '4'],
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
 			}
 		}
 	},
@@ -238,11 +254,23 @@ export default {
 		}
 		this.getCombinationActivitiesList()
 	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+		}
+	},
 	methods: {
 		getCombinationActivitiesList(isLoadmore) {
-			console.log(this.queryInfo)
+			if (!this.queryInfo.address) this.$showToast('缺少定位数据')
 			uni.showLoading()
-			getPlatformComposeCanvasApi(this.queryInfo).then((res) => {
+			getPlatformComposeCanvasApi({
+				...this.queryInfo,
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+			}).then((res) => {
 				this.combinationActivityTotal = res.data.length
 				this.combinationActivityList = res.data
 				// this.combinationActivityTotal = res.data.page.total

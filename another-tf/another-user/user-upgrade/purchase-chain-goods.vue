@@ -206,6 +206,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getShopProductsApi, getSelectLevelPlatformRelationApi, getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'PurchaseChainGoods',
@@ -258,6 +259,15 @@ export default {
 			combinationProductList: []
 		}
 	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+		}
+	},
 	methods: {
 		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
@@ -301,10 +311,11 @@ export default {
 				pageSize: 9999,
 				ids: [ 32 ],
 				shopId: '',
-				stateList: ['0', '1', '2', '3', '4']
+				stateList: ['0', '1', '2', '3', '4'],
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
 			})
 				.then((res) => {
-					this.combinationActivityList = res.data
+					this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))
 					this.combinationProductList = this.combinationActivityList.map((i) => i.products).reduce((t, v) => t.concat(v), [])
 				})
 		},
