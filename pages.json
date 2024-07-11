@@ -18,10 +18,20 @@
       }
     },
     {
-      "path": "pages/index/index",
+      "path": "pages/index/indexTwo",
+      // "path": "pages/index/index",
       // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商城",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/classify/index",
+      // "path": "pages/index/index",
+      // "path": "pages/another-index/index",
+      "style": {
+        "navigationBarTitleText": "商品类别",
         "navigationStyle": "custom"
       }
     },
@@ -2236,7 +2246,8 @@
     "height": "60px",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/index/indexTwo",
+        // "pagePath": "pages/index/index",
         // "pagePath": "pages/another-index/index",
         "text": "商城",
         "iconPath": "/static/images/tabbar/furniture.png",

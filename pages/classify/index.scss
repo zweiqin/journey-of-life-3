@@ -1,0 +1,186 @@
+//  混入使用弹性布局
+@mixin flex($justify, $flexDir: flase, $gap: 0rpx) {
+  display: flex;
+  align-items: center;
+  @if $justify {
+    justify-content: $justify;
+  }
+  @if $flexDir {
+    flex-direction: $flexDir;
+  }
+  gap: $gap;
+}
+
+.classify {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding-bottom: 146rpx;
+  .classify-header {
+    width: 100%;
+    height: 88rpx;
+    text-align: center;
+    line-height: 88rpx;
+    position: relative;
+    .icon {
+      position: absolute;
+      left: 40rpx;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .classify-sarch {
+    width: 100%;
+    padding: 30rpx 20rpx 13rpx 20rpx;
+    box-sizing: border-box;
+    .search-box {
+      width: 100%;
+      height: 70rpx;
+      line-height: 70rpx;
+      color: #888889;
+      border-radius: 50rpx;
+      border: 2rpx solid #ef5511;
+      position: relative;
+      font-size: 28rpx;
+      padding-left: 28rpx;
+      box-sizing: border-box;
+      .btn {
+        width: 112rpx;
+        height: 55rpx;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 11rpx;
+        background: linear-gradient(270deg, #ef530e 0%, #ee6c33 100%);
+        text-align: center;
+        line-height: 55rpx;
+        border-radius: 50rpx;
+        color: #ffffff;
+        font-size: 24rpx;
+      }
+    }
+  }
+  .first-classify {
+    width: 100%;
+    padding-left: 16rpx;
+    box-sizing: border-box;
+    .scroll-box {
+      position: relative;
+      /* z-index: 1001; */
+      box-sizing: border-box;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      padding: 10upx 20upx;
+      background-color: #f3f3f3;
+
+      .item {
+        margin: 10rpx 0rpx;
+        width: 130upx;
+        height: 170upx;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-size: 24upx;
+        padding: 16upx 12upx;
+        box-sizing: border-box;
+        margin-right: 12upx;
+        border-radius: 10upx;
+        flex-shrink: 0;
+        transition: all 350ms;
+        background-color: #fff;
+
+        .icons {
+          width: 120upx;
+          height: 120upx;
+          object-fit: cover;
+          margin-bottom: 10upx;
+        }
+
+        &.active {
+          box-shadow: 0px 2px 5px 1px rgba(175, 175, 175, 0.6);
+        }
+      }
+    }
+  }
+  .two-classify {
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
+    .two-scroll {
+      width: 100%;
+      white-space: nowrap;
+      .scroll-view-item {
+        display: inline-block;
+        width: 107rpx;
+        height: 45rpx;
+        text-align: center;
+        line-height: 45rpx;
+        background-color: #EFEFEF;
+        font-size: 22rpx;
+        color: rgba(0, 0, 0, 0.6);
+        margin-left: 16rpx;
+        border-radius: 4rpx;
+        &:first-of-type{
+            margin-left: 16rpx;
+        }
+        &.active{
+            background-color: #FFD9C5;
+            color: #EE5714;
+        }
+      }
+    }
+  }
+  .product-container{
+    width: 100%;
+    padding: 0 16rpx;
+    box-sizing: border-box;
+    .product-list{
+        @include flex(space-between,null,18rpx);
+        flex-wrap: wrap;
+        .product-item{
+            width: 348rpx;
+            height: 546rpx;
+            // image{
+            //     width: 348rpx;
+            //     height: 376rpx;
+            //     border-radius: 20rpx;
+            // }
+            .title{
+                width: 100%;
+                box-sizing: border-box;
+                padding-left: 16rpx;
+                margin-top: 32rpx;
+                margin-bottom: 14rpx;
+                font-size: 32rpx;
+                color: #222229;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .price-box{
+                width: 100%;
+                box-sizing: border-box;
+                padding-left: 16rpx;
+                @include flex(flex-start,null,10rpx);
+                .one-price{
+                    color: #E24747;
+                    font-weight: 600;
+                    font-size: 32rpx;
+                }
+                .voucher{
+                    width: 127rpx;
+                    height: 32rpx;
+                    text-align: center;
+                    line-height: 32rpx;
+                    color: #E24747;
+                    border: 1rpx solid #E02208;
+                    font-size: 22rpx;
+                    border-radius: 8rpx;
+                }
+            }
+        }
+    }
+  }
+}
