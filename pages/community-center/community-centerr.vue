@@ -26,18 +26,73 @@
     </view>
 
     <view style="background: linear-gradient(180deg, #ffffff 0%, #f4f4f4); padding-bottom: 30upx">
-      <view style="padding: 0 30upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
+      <view style="padding: 0 22upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
         <ServeMenus></ServeMenus>
-        <VipPackage :scroll-top="scrollTop"></VipPackage>
-      </view>
+        <!-- <VipPackage :scroll-top="scrollTop"></VipPackage> -->
+        <SummerPackage @empty-login="$data._isShowTuiModel = true"></SummerPackage>
 
-      <!-- 赚小钱 -->
-      <view class="MakeSmallFortune">
-        <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
+        <view style="display: flex; justify-content: space-between; align-items: stretch; margin-top: 20rpx;">
+          <view style="position: relative; width: 30.2%; height: 310rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=1')">
+            <!-- <view style="position: absolute;top: 18rpx;left: 10rpx;">
+					<view style="font-size: 32rpx;font-weight: bold;">全屋整装</view>
+					<view style="margin-top: 16rpx;font-size: 24rpx;color: #333333;">让您的生活空间焕然一新 尽享舒适与品质</view>
+					<image
+					style="width: 200rpx;" :src="common.seamingImgUrl('1710933374752-quanwuzhengzhuang-bg.png')"
+					mode="widthFix"
+					/>
+					</view> -->
+            <image style="width: 100%; height: 100%" :src="common.seamingImgUrl('1710933374752-quanwuzhengzhuang-bg.png')" mode="scaleToFill" />
+          </view>
+          <view style="width: 34%">
+            <view style="height: 150rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=3')">
+              <!-- <view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
+						<view style="font-size: 32rpx;font-weight: bold;">阳台改造</view>
+						<view style="margin-top: 6rpx;font-size: 24rpx;color: #333333;">阳台换新颜</view>
+						<image
+						style="position: absolute;bottom: 0;right: 0;width: 114rpx;"
+						:src="common.seamingImgUrl('1710933435472-yangtaigaizao-bg.png')" mode="widthFix"
+						/>
+						</view> -->
+              <image style="width: 100%; height: 100%" :src="common.seamingImgUrl('1710933435472-yangtaigaizao-bg.png')" mode="scaleToFill" />
+            </view>
+            <view style="height: 150rpx; margin-top: 10rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=4')">
+              <!-- <view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
+						<view style="font-size: 32rpx;font-weight: bold;">窗帘升级</view>
+						<view style="margin-top: 6rpx;font-size: 24rpx;color: #333333;">设计更时尚</view>
+						<image
+						style="position: absolute;bottom: 0;right: 0;width: 124rpx;"
+						:src="common.seamingImgUrl('1710933544682-chuanglianshengji-bg.png')" mode="widthFix"
+						/>
+						</view> -->
+              <image style="width: 100%; height: 100%" :src="common.seamingImgUrl('1710933544682-chuanglianshengji-bg.png')" mode="scaleToFill" />
+            </view>
+          </view>
+          <view style="width: 34%">
+            <view style="height: 150rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=2')">
+              <!-- <view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
+						<view style="font-size: 32rpx;font-weight: bold;">卫生间改造</view>
+						<view style="margin-top: 6rpx;font-size: 24rpx;color: #333333;">空间再释放</view>
+						<image
+						style="position: absolute;bottom: -20rpx;right: -10rpx;width: 132rpx;"
+						:src="common.seamingImgUrl('1710933618047-weishengjiangaizao-bg.png')" mode="widthFix"
+						/>
+						</view> -->
+              <image style="width: 100%; height: 100%" :src="common.seamingImgUrl('1710933618047-weishengjiangaizao-bg.png')" mode="scaleToFill" />
+            </view>
+            <view style="height: 150rpx; margin-top: 10rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=5')">
+              <!-- <view style="position: relative;height: 100%;padding: 18rpx 0 0 10rpx;box-sizing: border-box;">
+						<view style="font-size: 32rpx;font-weight: bold;">家具翻新</view>
+						<view style="margin-top: 6rpx;font-size: 24rpx;color: #333333;">焕新如初见</view>
+						<image
+						style="position: absolute;bottom: -18rpx;right: 0;width: 184rpx;"
+						:src="common.seamingImgUrl('1710933645837-jiajufanxin-bg.png')" mode="widthFix"
+						/>
+						</view> -->
+              <image style="width: 100%; height: 100%" :src="common.seamingImgUrl('1710933645837-jiajufanxin-bg.png')" mode="scaleToFill" />
+            </view>
+          </view>
+        </view>
       </view>
-
-      <!-- 四季专区 -->
-      <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
       <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"></ServerPane>
     </view>
@@ -77,13 +132,13 @@ import PopupInformation from '../../components/popup-information/popup-informati
 import showModal from 'mixin/showModal'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue'
+import SummerPackage from './cpns/SummerPackage.vue'
 // import PageBar from './cpns/PageBar.vue'
 import ServeMenus from './cpns/ServeMenus.vue'
-import VipPackage from './cpns/VipPackage.vue'
+// import VipPackage from './cpns/VipPackage.vue'
 import ServerPane from './cpns/ServerPane.vue'
 // import FourSeasonsZone from './cpns/FourSeasonsZone.vue'
 // 赚小钱
-import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 import { getUpActivityListApi } from '../../api/community-center'
 import { importJsSDK } from '../../utils'
 
@@ -98,11 +153,11 @@ export default {
     TuanFollowOfficialAccount,
     // PageBar,
     ServeMenus,
-    VipPackage,
+    // VipPackage,
     // FourSeasonsZone,
     ServerPane,
     PopupInformation,
-    MakeSmallFortune
+    SummerPackage
   },
   mixins: [showModal()],
   data() {
@@ -127,10 +182,6 @@ export default {
     }
     uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
     uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
-    this.$nextTick(() => {
-      // this.$refs.vipPackageRef.getDZPersonalizationConfig();
-      this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
-    })
     this.getActivityList()
     this.showVipPostPopup()
   },
@@ -346,7 +397,7 @@ export default {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     importJsSDK()
     if (options.isCommunityOrder || uni.getStorageSync(IS_SWITCH_ORDER)) {
-      uni.setStorageSync(IS_SWITCH_ORDER, 1);
+      uni.setStorageSync(IS_SWITCH_ORDER, 1)
       uni.switchTab({ url: '/pages/order/order' })
     }
     if (options.jumpType) {

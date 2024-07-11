@@ -12,7 +12,7 @@ export default () => {
 
     methods: {
       async payVali(orderNo) {
-        if (isSupportsCCB(orderNo)) {
+        if (await isSupportsCCB(orderNo)) {
           this.payList.push(PAY_METHOD_IDS.CCB)
         }
       }
