@@ -31,7 +31,7 @@
         <view class="name">团蜂社区</view>
       </view>
       <view class="pay-list" v-if="pricingType == 1">
-        <PayMethods :orderNo="orderNo" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
+        <PayMethods :orderNo="orderNo" ref="payMethodsRef" :supports="payList" @setLoading="handleSetLoading"></PayMethods>
       </view>
     </view>
 
@@ -54,13 +54,14 @@
 
 <script>
 import { T_COMMUNITY_ORDER_NO } from '../constant'
-import { getUserId, throttle } from '../utils'
+import { throttle } from '../utils'
 import PayMethods from './components/PayMethods/PayMethods.vue'
+
+import communityPay from '../mixin/communityPay'
 
 export default {
   name: 'Confirm-order',
-  props: {},
-  components: { PayMethods },
+  mixins: [communityPay()],
   data() {
     return {
       orderType: 1,
@@ -88,9 +89,6 @@ export default {
   },
   methods: {
     handleBack() {
-      // uni.navigateTo({
-      // 	url: `/community-center/order`,
-      // });
       uni.switchTab({
         url: '/pages/order/order'
       })
@@ -231,10 +229,14 @@ export default {
       //   }
       //   // #endif
       // }
+    },
+
+    async setPayMethod() {
+      if (isSupportsCCB(this.orderNo)) {
+      }
     }
   },
   onLoad(options) {
-    console.log(options)
     this.payThrottleFn = throttle(this.getServiceOrderPay, 1000)
     this.name1 = options.name1
     this.oughtPrice = options.oughtPrice
@@ -245,16 +247,8 @@ export default {
     this.consigneeAddressDetail = options.consigneeAddressDetail
     this.installDate = options.installDate
     this.pricingType = options.pricingType
-    console.log('报价类型', this.pricingType)
     this.orderNo = options.data
-    console.log('订单号', this.orderNo)
-    // this.images = JSON.parse(options.images)
-    // console.log('images', this.images);
-    // const imgList = this.images.map(item => { return { goodsType: '团蜂', goodsUrl: item } })
-    // console.log('imgList', imgList);
-    // this.imgList = imgList
-
-    // this.getServiceOrder();
+    this.payVali(this.orderNo)
   }
 }
 </script>

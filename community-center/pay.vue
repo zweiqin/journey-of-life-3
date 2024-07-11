@@ -11,15 +11,12 @@
     </view>
 
     <view class="pay-list-wrapper">
-      <PayMethods :orderNo="orderNo" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
+      <PayMethods :orderNo="orderNo" :supports="payList"  ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
     </view>
 
     <Button type="error" @click="handlePay" :loading="isLoading">支付</Button>
 
     <tui-toast ref="toast"></tui-toast>
-
-    <!-- 修改支付方式 -->
-    <ChoosePayType @confirm="handleChangePayMethod" ref="choosePayMehtodRef"></ChoosePayType>
   </view>
 </template>
 
@@ -28,11 +25,11 @@ import Button from './components/button.vue'
 import { payOrderForEndApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../api/community-center'
 import { getUserId, useCopy } from '../utils'
 import Header from './components/header.vue'
-import ChoosePayType from './enterprise-orders/components/PayMethods.vue'
-import PayMethods from './components/PayMethods/PayMethods.vue'
+import communityPay from '../mixin/communityPay'
 
 export default {
-  components: { Button, Header, ChoosePayType, PayMethods },
+  components: { Button, Header },
+  mixins: [communityPay()],
   data() {
     return {
       orderNo: '',
@@ -220,6 +217,7 @@ export default {
     this.orderNo = option.orderNo
     this.payMoney = option.price
     this.payType = option.payType || undefined
+    this.payVali(this.orderNo)
   }
 }
 </script>
