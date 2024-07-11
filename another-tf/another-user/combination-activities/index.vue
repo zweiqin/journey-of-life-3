@@ -12,7 +12,15 @@
 				</text>
 			</template>
 		</JHeader>
-		<view style="padding: 18rpx;">
+		<view style="display: flex;justify-content: flex-end;margin-top: 10rpx;">
+			<tui-button
+				type="primary" width="180rpx" height="60rpx" margin="0 20rpx 0 0"
+				shape="circle" @click="go('/user/sever/activityCenter/index')"
+			>
+				社区活动
+			</tui-button>
+		</view>
+		<view style="padding: 10rpx 18rpx 18rpx;">
 			<!-- <view>
 				<tui-checkbox-group
 				:value="queryInfo.stateList"
