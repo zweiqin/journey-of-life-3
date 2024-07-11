@@ -1,5 +1,6 @@
 <template>
   <view class="community-order-container">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
     <!-- 返回键 -->
     <view class="head">
       <tui-icon name="arrowleft" :size="42" unit="rpx" color="#000000" margin="0" @click="handleBack"></tui-icon>
@@ -40,7 +41,7 @@
       </view>
     </view> -->
 
-    <!-- 服务项目 -->
+    <!-- 服务项目 -->n
     <view class="serve-info section">
       <view class="title-wrapper">
         <view class="section-title">服务类型</view>

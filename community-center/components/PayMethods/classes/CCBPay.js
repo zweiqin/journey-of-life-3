@@ -3,6 +3,7 @@ import { orderPayByCCBApi } from '../../../../api/community-center'
 import { ENV } from '../../../../config/index'
 import { getConfigStr } from '../utils'
 import { T_STORAGE_KEY } from 'constant'
+import { getSessionKeyAppApi } from '../../../../api/anotherTFInterface'
 
 // docs: apifox ——>  20240626
 export class CCBPay extends Pay {
@@ -71,22 +72,22 @@ export class CCBPay extends Pay {
   }
 
   async appPay() {
-    try {
-      const res = await orderPayByCCBApi({
-        ...this.payData,
-        extPayJsonStr: JSON.stringify(this.payData.extPayJsonStr)
-      })
-
-      if (res.statusCode === 20000) {
-        const payRes = res.data
-        if (payRes && payRes.hsbPayRespParamStr && payRes.hsbPayRespParamStr.Cshdk_Url) {
-          uni.navigateTo({ url: '/user/view?target=' + payRes.hsbPayRespParamStr.Cshdk_Url })
+    uni.login({
+      provider: 'weixin',
+      onlyAuthorize: true,
+      success: async (res) => {
+        try {
+          console.log("有code了哦", res);
+          const keys = await getSessionKeyAppApi({ code: res.code, _isShowToast: false })
+          console.log("拿到了", keys);
+        } catch (error) {
+          console.log("报错了，凑了哦", error);
+          throw new Error(error.message)
         }
-      } else {
-        throw new Error(res.statusMsg)
+      },
+      fail(error) {
+        throw new Error(error.message)
       }
-    } catch (error) {
-      throw new Error(error)
-    }
+    })
   }
 }

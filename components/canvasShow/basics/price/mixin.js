@@ -1,5 +1,5 @@
 import { directive, Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
+// import 'swiper/css/swiper.css'
 import api from '../../config/api'
 import {funMixin} from '../../config/mixin'
 

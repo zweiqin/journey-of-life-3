@@ -1,5 +1,6 @@
 <template>
   <view class="community-detail">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
     <view class="head">
       <!-- 顶部区域 -->
       <JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx">
