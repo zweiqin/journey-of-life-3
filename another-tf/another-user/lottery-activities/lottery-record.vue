@@ -14,10 +14,10 @@
 				<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">中奖时间：{{ item.creatTime || '--' }}</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
 			<view v-if="!isLoading && !lotteryRecordList.length">
-				<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无中奖记录～</tui-no-data>
+				<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂无中奖记录～</tui-no-data>
 			</view>
 		</view>
 	</view>

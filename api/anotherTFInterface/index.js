@@ -861,7 +861,3 @@ export const getBuyerSelectionSelectApi = (data) => AnotherTFRequest('/buyerSele
 
 // c端选品详情
 export const getBuyerSelectionDetailsApi = (data) => AnotherTFRequest('/buyerSelection/h5SelectionDetails', data, 'POST')
-
-
-//  获取首页所有商品
-export const getIndexAllGoodsApi = (params) => AnotherTFRequest('/classify/getClaasifyProducts', params, 'GET')

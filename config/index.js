@@ -3,18 +3,13 @@
 // // export const SheQu1_URL = "http://192.168.0.144:8781/"; // 本地
 // // 线上团蜂
 // export const SheQu_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api' // 线上
-
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx' // 线上
-
 // export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload' // 线上
-
 // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-app-api/ws' // 线上
 // // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8080/api/ws'; // 线上
 // // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket'  // 测试
-
 // // 师傅的
 // export const sf = 'https://www.zhult.com/samrtWorker' // 线上
-
 // // 团蜂H5项目地址
 // export const A_TF_MAIN = 'https://www.tuanfengkeji.cn/TFShop_Uni_H5' // 线上
 // // 新团蜂H5的接口路径

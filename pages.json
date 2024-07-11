@@ -28,8 +28,6 @@
     },
     {
       "path": "pages/classify/index",
-      // "path": "pages/index/index",
-      // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商品类别",
         "navigationStyle": "custom"
@@ -2264,7 +2262,6 @@
     "height": "60px",
     "list": [
       {
-        // "pagePath": "pages/index/indexTwo",
         "pagePath": "pages/index/index",
         // "pagePath": "pages/another-index/index",
         "text": "商城",
