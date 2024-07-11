@@ -1,5 +1,20 @@
 export const communityServeMenu = [
   {
+    label: '家电维保',
+    icon: require('../../static/images/new-community/home/jiadian.png'),
+    url: '/community-center/service-sort/index?value=5&name=家电维保'
+  },
+  {
+    label: '家具维保',
+    icon: require('../../static/images/new-community/home/jiaju.png'),
+    url: '/community-center/service-sort/index?value=2&name=家具维保'
+  },
+  {
+    label: '家政服务',
+    icon: require('../../static/images/new-community/home/qingxi.png'),
+    url: '/community-center/service-sort/index?value=288&name=家政服务'
+  },
+  {
     label: '装修服务',
     icon: require('../../static/images/new-community/home/zhuangxiufuwu.png'),
     url: '/community-center/service-sort/index?value=579&name=装修服务'
@@ -30,31 +45,16 @@ export const communityServeMenu = [
     url: '/community-center/service-sort/index?value=10&name=管道疏通'
   },
   {
-    label: '家具维保',
-    icon: require('../../static/images/new-community/home/jiaju.png'),
-    url: '/community-center/service-sort/index?value=2&name=家具维保'
-  },
-  {
-    label: '家电维保',
-    icon: require('../../static/images/new-community/home/jiadian.png'),
-    url: '/community-center/service-sort/index?value=5&name=家电维保'
-  },
-  {
     label: '水电灯具',
     icon: require('../../static/images/new-community/home/shuidian.png'),
     url: '/community-center/service-sort/index?value=7&name=水电灯具'
-  },
-  {
-    label: '家政服务',
-    icon: require('../../static/images/new-community/home/qingxi.png'),
-    url: '/community-center/service-sort/index?value=288&name=家政服务'
   },
   {
     label: '更多',
     icon: require('../../static/images/new-community/home/quanbu.png'),
     url: '/community-center/service-sort/index?value=2&name=家具维保'
   }
-];
+]
 
 // 社区1.0
 export const mainNav = [
@@ -85,7 +85,7 @@ export const mainNav = [
     icon: 'xxx',
     background: 'linear-gradient(137deg, #3662EC 24%, #8A38F5 147%)'
   }
-];
+]
 
 export const navs = [
   {
@@ -138,7 +138,7 @@ export const navs = [
     icon: 'xxx',
     background: 'linear-gradient(137deg, #07B9B9 24%, #00B578 146%)'
   }
-];
+]
 
 export const serviceType = [
   {
@@ -159,7 +159,7 @@ export const serviceType = [
     a: 'xxx',
     round: 'xxx'
   }
-];
+]
 
 export const countList = [
   {
@@ -174,4 +174,4 @@ export const countList = [
     name: '服务家庭',
     value: '120万+'
   }
-];
+]
