@@ -6,7 +6,7 @@
 				<view class="serve-name">{{ serve.label }}</view>
 			</view>
 		</view>
-		<view style="display: flex;justify-content: space-between;align-items: stretch;">
+		<view v-if="false" style="display: flex;justify-content: space-between;align-items: stretch;">
 			<view
 				style="position: relative;width: 30.2%;height: 310rpx;background-color: #f6f6f6;overflow: hidden;"
 				@click="go('/community-center/service-detail/index?id=1')"

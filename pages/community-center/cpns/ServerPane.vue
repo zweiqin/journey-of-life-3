@@ -17,7 +17,8 @@
     <view class="list">
       <view class="item" @click="handleToServiceDetail(item)" v-for="item in list.slice(0, 6)" :key="item.id">
         <view class="image-wrapper">
-          <image class="serve-img" :src="item.serverImageUrl.split(',')[0]"></image>
+          <!-- <image class="serve-img" :src="item.serverImageUrl.split(',')[0]"></image> -->
+          <tui-lazyload-img width="200rpx" height="100%" :src="item.serverImageUrl.split(',')[0]"></tui-lazyload-img>
         </view>
 
         <view class="title">{{ item.serverNameThree }}</view>
@@ -105,6 +106,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
+/deep/ .tui-lazyload__img {
+  width: 200rpx !important;
+  height: 200rpx !important;
+}
 .server-pane {
   padding-bottom: 20upx;
   border-radius: 20upx;

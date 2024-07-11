@@ -26,18 +26,11 @@
     </view>
 
     <view style="background: linear-gradient(180deg, #ffffff 0%, #f4f4f4); padding-bottom: 30upx">
-      <view style="padding: 0 30upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
+      <view style="padding: 0 22upx; width: 100%; box-sizing: border-box; margin-bottom: 24upx">
         <ServeMenus></ServeMenus>
-        <VipPackage :scroll-top="scrollTop"></VipPackage>
+        <!-- <VipPackage :scroll-top="scrollTop"></VipPackage> -->
+        <SummerPackage @empty-login="$data._isShowTuiModel = true"></SummerPackage>
       </view>
-
-      <!-- 赚小钱 -->
-      <view class="MakeSmallFortune">
-        <MakeSmallFortune ref="refMakeSmallFortune"></MakeSmallFortune>
-      </view>
-
-      <!-- 四季专区 -->
-      <!-- <FourSeasonsZone></FourSeasonsZone> -->
 
       <ServerPane v-for="(item, index) in servePaneList" :id="item.id" :key="index" :title="item.title" :list="item.children"></ServerPane>
     </view>
@@ -77,13 +70,13 @@ import PopupInformation from '../../components/popup-information/popup-informati
 import showModal from 'mixin/showModal'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue'
+import SummerPackage from './cpns/SummerPackage.vue'
 // import PageBar from './cpns/PageBar.vue'
 import ServeMenus from './cpns/ServeMenus.vue'
-import VipPackage from './cpns/VipPackage.vue'
+// import VipPackage from './cpns/VipPackage.vue'
 import ServerPane from './cpns/ServerPane.vue'
 // import FourSeasonsZone from './cpns/FourSeasonsZone.vue'
 // 赚小钱
-import MakeSmallFortune from './cpns/MakeSmallFortune.vue'
 import { getUpActivityListApi } from '../../api/community-center'
 import { importJsSDK } from '../../utils'
 
@@ -98,11 +91,11 @@ export default {
     TuanFollowOfficialAccount,
     // PageBar,
     ServeMenus,
-    VipPackage,
+    // VipPackage,
     // FourSeasonsZone,
     ServerPane,
     PopupInformation,
-    MakeSmallFortune
+    SummerPackage
   },
   mixins: [showModal()],
   data() {
@@ -127,10 +120,6 @@ export default {
     }
     uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
     uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
-    this.$nextTick(() => {
-      // this.$refs.vipPackageRef.getDZPersonalizationConfig();
-      this.$refs.refMakeSmallFortune && this.$refs.refMakeSmallFortune.getPostList()
-    })
     this.getActivityList()
     this.showVipPostPopup()
   },
@@ -346,7 +335,7 @@ export default {
     this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!options.miniProgram)
     importJsSDK()
     if (options.isCommunityOrder || uni.getStorageSync(IS_SWITCH_ORDER)) {
-      uni.setStorageSync(IS_SWITCH_ORDER, 1);
+      uni.setStorageSync(IS_SWITCH_ORDER, 1)
       uni.switchTab({ url: '/pages/order/order' })
     }
     if (options.jumpType) {
