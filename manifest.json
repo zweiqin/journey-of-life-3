@@ -2,8 +2,8 @@
     "name" : "团蜂",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.27",
-    "versionCode" : 127,
+    "versionName" : "1.0.28",
+    "versionCode" : 128,
     "transformPx" : false,
     "app-plus" : {
         "animationType" : "slide-in-left",
@@ -197,7 +197,7 @@
                     }
                 },
                 "/lao/" : {
-                    "target" : "https://test.zhult.com/",
+                    "target" : "http://192.168.0.83:8783/",
                     "changeOrigin" : true,
                     "pathRewrite" : {
                         "^/lao/" : "/"
