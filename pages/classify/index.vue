@@ -57,6 +57,7 @@
           class="product-item"
           v-for="item in goodsList"
           :key="item.productId"
+          @click="goGoodsDetsil(item)""
         >
           <tui-lazyload-img
             width="348rpx"
@@ -66,13 +67,14 @@
             mode="scaleToFill"
           ></tui-lazyload-img>
           <!-- <image class="" :src="https://img1.baidu.com/it/u=1845374591,668063497&fm=253&fmt=auto&app=138&f=JPEG?w=501&h=500" /> -->
-          <view class="title">1+3+贵妃无忧沙发贵妃无忧沙发贵妃无忧沙发</view>
+          <view class="title">{{ item.productName }}</view>
           <view class="price-box">
-            <view class="one-price">￥599</view>
+            <view class="one-price">￥{{ item.price }}</view>
             <view class="voucher">可用代金券</view>
           </view>
         </view>
       </view>
+      <LoadingMore :status="loading" text="没有更多的商品了"></LoadingMore>
     </view>
   </view>
 </template>
@@ -124,31 +126,45 @@ export default {
         [{ classifyId: this.classifyId, classifyName: "全部" }]
       );
       this.queryData.classifyId = list[0].classifyId;
-      console.log(list, 87787887);
       //  请求二级分类下面的商品数据
       // this.getProducts()
       return list;
     },
+    //  计算当前是不是加载状态 用于加载组件
+    loading() {
+      if(this.isLoading == true){
+        return 'loading'
+      }else if(this.isLoading == 'no-more'){
+        return 'no-more'
+      }
+    }
   },
   methods: {
     //  获取一级分类下的分类
     async getOneClassify() {
       let res = await getFirstClassifyApi({ classifyId: this.classifyId });
       this.firstClasslyList = res.data;
-      if (res.data.length <= 0) return;
+      if (res.data.length <= 0) {
+        this.isLoading = 'no-more'
+        return
+      };
       this.firstClassId = res.data[0].classifyId;
     },
     //  获取分类下面的商品
     async getProducts() {
         try {
-            this.ifLoging = true
+            this.isLoading = true
             let res = await getClaasifyProductsApi(this.queryData);
+            if(res.data.list.length <= 0) {
+              console.log("走到这里了啦");
+              this.isLoading = 'no-more'
+              return
+            }
             this.goodsList = [...this.goodsList,...res.data.list];
+            this.isLoading = false
         } finally{
-            this.ifLoging = false
+            
         }
-      
-     
     },
     //  一级类别点击事件
     changeFirst(item) {
@@ -161,6 +177,12 @@ export default {
       this.queryData.classifyId = item.classifyId;
     //    重置商品数据
     this.goodsList = []
+    },
+        //  去到详情页面
+        goGoodsDetsil(shopItem) {
+      uni.navigateTo({
+        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`,
+      });
     },
     back() {
       uni.navigateBack();
