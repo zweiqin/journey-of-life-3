@@ -29,9 +29,9 @@
         >
           <view
             class="item"
-            v-for="item in firstClasslyList"
+            v-for="(item,index) in firstClasslyList"
             :class="firstClassId == item.classifyId ? 'active' : ''"
-            :key="item.classifyId"
+            :key="index"
             @click="changeFirst(item)"
           >
             <image class="icons" :src="item.classifyImage" />
@@ -44,8 +44,9 @@
       <scroll-view scroll-x="true" class="two-scroll" scroll-with-animation>
         <view
           class="scroll-view-item"
-          v-for="item in twoClasslyList"
+          v-for="(item,index) in twoClasslyList"
           :class="queryData.classifyId == item.classifyId ? 'active' : ''"
+          :key="index"
           @click="changeSecond(item)"
           >{{ item.classifyName }}</view
         >
@@ -123,7 +124,7 @@ export default {
           }
           return prev;
         },
-        [{ classifyId: this.classifyId, classifyName: "全部" }]
+        [{ classifyId: this.firstClassId, classifyName: "全部" }]
       );
       this.queryData.classifyId = list[0].classifyId;
       //  请求二级分类下面的商品数据
@@ -156,7 +157,6 @@ export default {
             this.isLoading = true
             let res = await getClaasifyProductsApi(this.queryData);
             if(res.data.list.length <= 0) {
-              console.log("走到这里了啦");
               this.isLoading = 'no-more'
               return
             }
@@ -169,6 +169,7 @@ export default {
     //  一级类别点击事件
     changeFirst(item) {
       this.firstClassId = item.classifyId;
+      this.goodsList =[]
     },
     //  二级分类点击事件
     changeSecond(item) {

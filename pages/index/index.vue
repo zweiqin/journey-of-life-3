@@ -139,7 +139,7 @@ export default {
         },
       ],
       queryData: {
-        classifyId: "",
+        classifyId: "1160",
         productName: "",
         search: "",
         type: 1,
