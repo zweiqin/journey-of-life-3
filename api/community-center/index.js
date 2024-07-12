@@ -106,6 +106,11 @@ export const getCommOrderDeatilApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/getMdOrderInfoByNo', data, 'get')
 }
 
+// 用户审批股东申请
+export const shareholderApprStoreBindApplicationApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/common/third/shareholderApprStoreBindAppli', data, 'get')
+}
+
 /**
  * 社区服务列表
  */
