@@ -28,8 +28,6 @@
     },
     {
       "path": "pages/classify/index",
-      // "path": "pages/index/index",
-      // "path": "pages/another-index/index",
       "style": {
         "navigationBarTitleText": "商品类别",
         "navigationStyle": "custom"
@@ -1863,6 +1861,24 @@
           }
         },
         {
+          "path": "another-user/combination-activities/combination-activity-products",
+          "style": {
+            "navigationBarTitleText": "组合活动商品"
+          }
+        },
+        {
+          "path": "another-user/lottery-activities/index",
+          "style": {
+            "navigationBarTitleText": "抽奖活动"
+          }
+        },
+        {
+          "path": "another-user/lottery-activities/lottery-record",
+          "style": {
+            "navigationBarTitleText": "中奖记录"
+          }
+        },
+        {
           "path": "another-serve/messageDetail/index",
           "style": {
             "navigationBarTitleText": "公告详情"
@@ -2246,7 +2262,6 @@
     "height": "60px",
     "list": [
       {
-        // "pagePath": "pages/index/indexTwo",
         "pagePath": "pages/index/index",
         // "pagePath": "pages/another-index/index",
         "text": "商城",

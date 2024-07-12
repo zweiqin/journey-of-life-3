@@ -40,7 +40,8 @@ export const myFunction = [
 	{
 		name: '活动中心',
 		icon: require('../../static/images/new-user/menu-icon/huodongzhongxin.png'),
-		url: '/user/sever/activityCenter/index'
+		// url: '/user/sever/activityCenter/index',
+		url: '/another-tf/another-user/combination-activities/index'
 	},
 	{
 		name: '足迹',
@@ -344,6 +345,11 @@ export const otherFunction = [
 		name: '组合活动',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/combination-activities/index'
+	},
+	{
+		name: '抽奖活动',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/lottery-activities/index'
 	},
 	// shopServe
 	{

@@ -60,7 +60,7 @@
 					v-if="goodsList && goodsList.length"
 					style="display: flex;justify-content: space-between;flex-wrap: wrap;width: 100%;margin-top: 32rpx;"
 				>
-					<view v-for="(item, index) in combinationProductList" :key="index" style="width: 47%;">
+					<view v-for="(item, index) in goodsList" :key="index" style="width: 47%;">
 						<view
 							style="position: relative;padding: 4rpx;border-radius: 30rpx;overflow: hidden;"
 							:style="{ backgroundImage: selectGoods.productId === item.productId ? 'linear-gradient(180deg, #FFD5AB 0%, #F52E29 100%)' : 'linear-gradient(212deg, #F3F0F0 4%, #FCDBDB 96%)' }"
@@ -106,7 +106,7 @@
 							</tui-button>
 						</view>
 					</view>
-					<view v-for="(item, index) in goodsList" :key="index" style="width: 47%;">
+					<view v-for="(item, index) in combinationProductList" :key="index" style="width: 47%;">
 						<view
 							style="position: relative;padding: 4rpx;border-radius: 30rpx;overflow: hidden;"
 							:style="{ backgroundImage: selectGoods.productId === item.productId ? 'linear-gradient(180deg, #FFD5AB 0%, #F52E29 100%)' : 'linear-gradient(212deg, #F3F0F0 4%, #FCDBDB 96%)' }"
@@ -115,7 +115,7 @@
 							<view
 								style="position: absolute;top: 0;left: 0;z-index: 1;width: 110rpx;padding: 10rpx 16rpx;font-size: 30rpx;color: #ffffff;text-align: center;background: linear-gradient(270deg, #EE6C33 0%, #F52E29 98%);border-radius: 30rpx 0 30rpx 0;"
 							>
-								<text>权益 {{ combinationProductList.length + 1 }}</text>
+								<text>权益 {{ goodsList.length + 1 }}</text>
 							</view>
 							<view
 								style="padding: 80rpx 0 24rpx;background: linear-gradient(212deg, #F3F0F0 4%, #FCDBDB 96%);border-radius: 26rpx;overflow: hidden;"
@@ -206,6 +206,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getShopProductsApi, getSelectLevelPlatformRelationApi, getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'PurchaseChainGoods',
@@ -258,6 +259,15 @@ export default {
 			combinationProductList: []
 		}
 	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+		}
+	},
 	methods: {
 		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
@@ -299,14 +309,13 @@ export default {
 			getPlatformComposeCanvasApi({
 				page: 1,
 				pageSize: 9999,
-				ids: [ ...new Array(10).toString()
-					.split(',')
-					.map((i, index) => index + 1001) ],
+				ids: [ 47 ],
 				shopId: '',
-				stateList: ['0', '1', '2', '3', '4']
+				stateList: ['0', '1', '2', '3', '4'],
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
 			})
 				.then((res) => {
-					this.combinationActivityList = res.data
+					this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))
 					this.combinationProductList = this.combinationActivityList.map((i) => i.products).reduce((t, v) => t.concat(v), [])
 				})
 		},

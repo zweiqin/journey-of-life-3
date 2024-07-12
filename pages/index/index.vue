@@ -48,14 +48,14 @@
     <view class="index-activity">
       <image
         class=""
-        src="@/static/images/new-index/index-2/active_1.png"
+        :src="common.seamingImgUrl('1720686383500-active_1.png')"
         @click="
           go('/another-tf/another-user/transaction-funds/trading-activities')
         "
       />
       <image
         class=""
-        src="@/static/images/new-index/index-2/active_2.png"
+        :src="common.seamingImgUrl('1720686386621-active_2.png')"
         @click="expect"
       />
     </view>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { getIndexAllGoodsApi } from "@/api/anotherTFInterface";
+import { getClaasifyProductsApi } from "@/api/anotherTFInterface";
 export default {
   data() {
     return {
@@ -180,7 +180,7 @@ export default {
         this.ifLoging = true;
         let {
           data: { list },
-        } = await getIndexAllGoodsApi(this.queryData);
+        } = await getClaasifyProductsApi(this.queryData);
         this.shopList = [...this.shopList, ...list];
         this.ifLoging = false;
       } finally {

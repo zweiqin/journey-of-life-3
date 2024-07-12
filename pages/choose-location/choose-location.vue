@@ -329,9 +329,9 @@ export default {
       if (isHot) {
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'hot',
-          data: { province: '', detailAddress: '', ...data, district: data.district }
+          data: { province: '', detailAddress: '', ...data, district: data.distinguish }
         });
-        await this.$store.dispatch('location/getDetailAddress', data);
+        await this.$store.dispatch('location/getDetailAddress', { ...data, district: data.distinguish });
       } else {
         uni.setStorageSync(T_SELECTED_ADDRESS, {
           type: 'detail',

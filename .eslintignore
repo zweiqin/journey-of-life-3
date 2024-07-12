@@ -4,6 +4,7 @@ stuff/
 pages/index/
 pages/prod/
 pages/hot/
+pages/choose-location/
 # user/
 # pages/service-agreement/
 # utils/payUtil.js

@@ -3,7 +3,15 @@
     <TuanPageHead :scroll-top="scrollTop" fixed title="活动中心" background="#fff" :z-index="9000001">
       <tui-icon slot="left" name="arrowleft" color="#3d3d3d" @click="handleBack"></tui-icon>
     </TuanPageHead>
-    {{ dot }}
+    	{{ dot }}
+		<!-- <view style="display: flex;justify-content: flex-end;">
+			<tui-button
+				type="primary" width="180rpx" height="60rpx" margin="0 20rpx 0 0"
+				shape="circle" @click="go('/another-tf/another-user/combination-activities/index')"
+			>
+				组合活动
+			</tui-button>
+		</view> -->
     <view class="activity-container" v-if="activityList.length">
       <view class="activity-item" v-for="item in activityList" :key="item.id" @click="handleViewDeatil(item)">
         <view class="activity-info" :class="{ expired: item.isExpired }">
