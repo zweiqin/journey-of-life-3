@@ -73,6 +73,7 @@
               height="328rpx"
               :src="item.image || ''"
               radius="16rpx 16rpx 0 0"
+              mode="aspectFill"
             ></tui-lazyload-img>
           </view>
           <view class="item-title">{{ item.productName }}</view>
