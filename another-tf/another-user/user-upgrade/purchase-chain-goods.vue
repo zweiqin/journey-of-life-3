@@ -309,7 +309,7 @@ export default {
 			getPlatformComposeCanvasApi({
 				page: 1,
 				pageSize: 9999,
-				ids: [ 32 ],
+				ids: [ 47 ],
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
 				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
