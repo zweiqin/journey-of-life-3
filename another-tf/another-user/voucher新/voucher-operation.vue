@@ -34,8 +34,7 @@
 						</view>
 						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
-							￥{{ Number.parseFloat(voucherAcount.chongzhiRechargeTotal + voucherAcount.duihuanRechargeTotal).toFixed(2)
-							}}
+							￥{{ Number.parseFloat(voucherAcount.chongzhiRechargeTotal + voucherAcount.duihuanRechargeTotal).toFixed(2) }}
 						</view>
 					</view>
 				</view>

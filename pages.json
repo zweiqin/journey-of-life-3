@@ -1662,6 +1662,12 @@
           }
         },
         {
+          "path": "another-user/community-card/index",
+          "style": {
+            "navigationBarTitleText": "社区卡包"
+          }
+        },
+        {
           "path": "another-user/commission-statistics/vip-user",
           "style": {
             "navigationBarTitleText": "会员列表",

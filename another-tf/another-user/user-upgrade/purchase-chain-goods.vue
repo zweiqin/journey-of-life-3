@@ -289,21 +289,22 @@ export default {
 			this.getShopGoodsTemplate()
 		},
 		getShopGoodsTemplate(isLoadmore) {
-			uni.showLoading()
-			getShopProductsApi(this.queryInfo)
-				.then((res) => {
-					this.goodsTotal = res.data.page.total
-					if (isLoadmore) {
-						this.goodsList.push(...res.data.page.list)
-					} else {
-						this.goodsList = res.data.page.list
-					}
-					this.isEmpty = this.goodsList.length === 0
-					uni.hideLoading()
-				})
-				.catch((e) => {
-					uni.hideLoading()
-				})
+			// uni.showLoading()
+			// getShopProductsApi(this.queryInfo)
+			// 	.then((res) => {
+			// 		this.goodsTotal = res.data.page.total
+			// 		if (isLoadmore) {
+			// 			this.goodsList.push(...res.data.page.list)
+			// 		} else {
+			// 			this.goodsList = res.data.page.list
+			// 		}
+			// 		this.isEmpty = this.goodsList.length === 0
+			// 		uni.hideLoading()
+			// 	})
+			// 	.catch((e) => {
+			// 		uni.hideLoading()
+			// 	})
+			this.isEmpty = true
 		},
 		getCombinationActivitiesList() {
 			getPlatformComposeCanvasApi({
