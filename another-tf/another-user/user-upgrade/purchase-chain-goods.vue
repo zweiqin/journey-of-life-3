@@ -1,7 +1,7 @@
 <template>
 	<view class="purchase-chain-goods-container">
 		<view v-if="!isShowUpgrade" :style="{ paddingBottom: selectGoods.productId ? '200rpx' : '10rpx' }">
-			<view style="padding: 0 0 100rpx;background: linear-gradient(164deg, #FFC3C3 8%, #FFF5E5 50%, #FFFFFF 78%);">
+			<view style="padding: 0 0 76rpx;background: linear-gradient(164deg, #FFC3C3 8%, #FFF5E5 50%, #FFFFFF 78%);">
 				<JHeader title="会员升级大礼包" width="50" height="50" style="padding: 24rpx 0 0;">
 					<template #ftFn>
 						<text style="padding-right: 18rpx;color: #222229;">规则</text>
@@ -16,6 +16,10 @@
 				</view>
 			</view>
 			<view style="padding: 0 28rpx;">
+				<view style="display: flex;justify-content: flex-end;align-items: center;margin-bottom: 20rpx;">
+					<view style="font-size: 34rpx;font-weight: bold;">所在区域：</view>
+					<JAnyArea :text="activityAddress" @confirm="handleSelectArea"></JAnyArea>
+				</view>
 				<view style="display: flex;align-items: center;justify-content: space-around;padding: 10rpx 0;font-size: 26rpx;">
 					<view :style="{ color: queryInfo.ifNew === 1 ? '#ff7911' : queryInfo.ifNew === 0 ? '#8dbcbd' : '#000000' }" @click="handleGoodsSortTap(1)">
 						<text>新品</text>
@@ -54,10 +58,10 @@
 						</template>
 					</tui-input>
 				</view>
-				<view style="font-size: 36rpx;font-weight: bold;margin-top: 20rpx;">超值权益多选一</view>
+				<view style="font-size: 36rpx;font-weight: bold;margin-top: 20rpx;">超值商品多选一</view>
 				<!-- 商品列表 -->
 				<view
-					v-if="goodsList && goodsList.length"
+					v-if="(goodsList && goodsList.length) || (combinationProductList && combinationProductList.length)"
 					style="display: flex;justify-content: space-between;flex-wrap: wrap;width: 100%;margin-top: 32rpx;"
 				>
 					<view v-for="(item, index) in goodsList" :key="index" style="width: 47%;">
@@ -69,7 +73,7 @@
 							<view
 								style="position: absolute;top: 0;left: 0;z-index: 1;width: 110rpx;padding: 10rpx 16rpx;font-size: 30rpx;color: #ffffff;text-align: center;background: linear-gradient(270deg, #EE6C33 0%, #F52E29 98%);border-radius: 30rpx 0 30rpx 0;"
 							>
-								<text>权益 {{ index + 1 }}</text>
+								<text>商品 {{ index + 1 }}</text>
 							</view>
 							<view
 								style="padding: 80rpx 0 24rpx;background: linear-gradient(212deg, #F3F0F0 4%, #FCDBDB 96%);border-radius: 26rpx;overflow: hidden;"
@@ -115,7 +119,7 @@
 							<view
 								style="position: absolute;top: 0;left: 0;z-index: 1;width: 110rpx;padding: 10rpx 16rpx;font-size: 30rpx;color: #ffffff;text-align: center;background: linear-gradient(270deg, #EE6C33 0%, #F52E29 98%);border-radius: 30rpx 0 30rpx 0;"
 							>
-								<text>权益 {{ goodsList.length + 1 }}</text>
+								<text>商品 {{ goodsList.length + index + 1 }}</text>
 							</view>
 							<view
 								style="padding: 80rpx 0 24rpx;background: linear-gradient(212deg, #F3F0F0 4%, #FCDBDB 96%);border-radius: 26rpx;overflow: hidden;"
@@ -169,7 +173,7 @@
 			>
 				<view style="font-size: 24rpx;color: #222229;">
 					<tui-icon name="about" :size="24" unit="rpx" color="#444444"></tui-icon>
-					会员套餐同个账号仅可享受一次超值权益
+					会员套餐同个账号仅可享受一次超值商品
 				</view>
 				<view style="padding: 20rpx 0 18rpx;text-align: center;">
 					<tui-button
@@ -210,6 +214,30 @@ import { mapGetters } from 'vuex'
 import { getShopProductsApi, getSelectLevelPlatformRelationApi, getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'PurchaseChainGoods',
+	data() {
+		return {
+			isShowUpgrade: false,
+			selectGoods: {},
+			sortGoodsIndex: 1,
+			isEmpty: false,
+			goodsList: [],
+			goodsTotal: 0,
+			queryInfo: {
+				shopId: 456,
+				groupId: 822,
+				search: '',
+				ifNew: 1,
+				type: '',
+				volume: '',
+				page: 1,
+				pageSize: 20
+			},
+			activityAddress: '',
+			activityRegion: '',
+			combinationActivityList: [],
+			combinationProductList: []
+		}
+	},
 	onLoad(options) {
 		getSelectLevelPlatformRelationApi({})
 			.then((res) => {
@@ -235,40 +263,25 @@ export default {
 					this.getCombinationActivitiesList()
 				}
 			})
-	},
-
-	data() {
-		return {
-			isShowUpgrade: false,
-			selectGoods: {},
-			sortGoodsIndex: 1,
-			isEmpty: false,
-			goodsList: [],
-			goodsTotal: 0,
-			queryInfo: {
-				shopId: 456,
-				groupId: 822,
-				search: '',
-				ifNew: 1,
-				type: '',
-				volume: '',
-				page: 1,
-				pageSize: 20
-			},
-			combinationActivityList: [],
-			combinationProductList: []
-		}
+		this.activityAddress = [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
 	},
 	computed: {
 		...mapGetters([ 'obtainLocationCount' ])
 	},
 	watch: {
 		obtainLocationCount(val, oldVal) {
-			const pages = getCurrentPages()
-			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+			if (!this.activityRegion) {
+				const pages = getCurrentPages()
+				if (pages[pages.length - 1].route === 'another-tf/another-user/user-upgrade/purchase-chain-goods') this.getCombinationActivitiesList()
+			}
 		}
 	},
 	methods: {
+		handleSelectArea(data) {
+			this.activityAddress = [data.province.text, data.city.text, data.county.text, data.township.text].filter((i) => i).join('-')
+			this.activityRegion = data.township.id || data.county.id || data.city.id || data.province.id
+			this.getCombinationActivitiesList()
+		},
 		handleGoodsSortTap(index) {
 			this.queryInfo.page = 1
 			this.goodsList = []
@@ -313,11 +326,15 @@ export default {
 				ids: [ 47 ],
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
-				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+				address: this.activityAddress
 			})
 				.then((res) => {
 					this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))
 					this.combinationProductList = this.combinationActivityList.map((i) => i.products).reduce((t, v) => t.concat(v), [])
+				})
+				.catch((res) => {
+					this.combinationActivityList = []
+					this.combinationProductList = []
 				})
 		},
 		handleCloseLandscape() {

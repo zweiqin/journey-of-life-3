@@ -123,7 +123,7 @@ export default {
 	watch: {
 		obtainLocationCount(val, oldVal) {
 			const pages = getCurrentPages()
-			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/combination-activity-products') this.getCombinationActivitiesList()
 		}
 	},
 	methods: {

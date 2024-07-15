@@ -3,40 +3,40 @@
 		<view style="position: relative;">
 			<JHeader
 				:title="relationLevelName ? `${relationLevelName}升级` : title" width="50" height="50" :dark="false"
-				style="position: absolute;top: 0;left: 0;z-index: 1;width: 100%;padding: 24upx 0 0;color: #ffffff;"
+				style="position: absolute;top: 0;left: 0;z-index: 1;width: 100%;padding: 24rpx 0 0;color: #ffffff;"
 			>
 			</JHeader>
 			<image
 				src="../../../../static/images/user/activity/upgrade-pic.png"
-				style="width: 750upx;height: 413upx;vertical-align: bottom;"
+				style="width: 750rpx;height: 413rpx;vertical-align: bottom;"
 			>
 			</image>
-			<view style="position: absolute;top: 260upx;left: 64upx;">
+			<view style="position: absolute;top: 260rpx;left: 64rpx;">
 				<view v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
-					<view style="font-size: 48upx;color: #ffffff;">升级{{ relationshipLevelName }}</view>
-					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">
+					<view style="font-size: 48rpx;color: #ffffff;">升级{{ relationshipLevelName }}</view>
+					<view style="margin-top: 10rpx;font-size: 28rpx;color: #BBBABF;">
 						<text v-if="relationshipLevelName === '团长'">购买指定商品</text>
 						<text v-else-if="relationshipLevelName === '合伙人'">邀请团长</text>
 						<text v-else>填写表单</text>
 					</view>
 				</view>
 				<view v-else-if="[ 5 ].includes(upgradeLevelType)">
-					<view style="font-size: 48upx;color: #ffffff;">合伙人</view>
+					<view style="font-size: 48rpx;color: #ffffff;">合伙人</view>
 				</view>
 				<view v-else>
-					<view style="font-size: 48upx;color: #ffffff;">升级</view>
-					<view style="margin-top: 10upx;font-size: 28upx;color: #BBBABF;">填写表单</view>
+					<view style="font-size: 48rpx;color: #ffffff;">升级</view>
+					<view style="margin-top: 10rpx;font-size: 28rpx;color: #BBBABF;">填写表单</view>
 				</view>
 			</view>
 		</view>
-		<view style="padding: 36upx 24upx;background-color: #ffffff;">
-			<view style="padding: 20upx 18upx;background-color: #f5f4fb;">
+		<view style="padding: 36rpx 24rpx;background-color: #ffffff;">
+			<view style="padding: 20rpx 18rpx;background-color: #f5f4fb;">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view style="display: flex;align-items: center;">
 						<BeeIcon :size="30" :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></BeeIcon>
-						<view style="margin-left: 20upx;color: #222229;">{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}</view>
+						<view style="margin-left: 20rpx;color: #222229;">{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}</view>
 					</view>
-					<view style="font-size: 28upx;color: #533A23;">
+					<view style="font-size: 28rpx;color: #533A23;">
 						<text v-if="[1, 2, 3, 4].includes(upgradeLevelType) && relationshipLevelName">
 							{{ relationshipLevelName }}升级
 						</text>
@@ -44,18 +44,18 @@
 						<text v-else>不可升级</text>
 					</view>
 				</view>
-				<view style="margin-top: 20upx;font-size: 24upx;color: #9E9E9E;">
+				<view style="margin-top: 20rpx;font-size: 24rpx;color: #9E9E9E;">
 					<text v-if="[2, 4].includes(upgradeLevelType)">已满足申请条件</text>
 					<text v-else-if="[ 5 ].includes(upgradeLevelType)">恭喜您已经是合伙人</text>
 					<text v-else-if="[0, 1, 3].includes(upgradeLevelType)">不满足角色的升级条件</text>
 					<text v-else>无法获取信息，请重试！</text>
 				</view>
 			</view>
-			<view v-if="isShowLock" style="margin-top: 76upx;">
+			<view v-if="isShowLock" style="margin-top: 76rpx;">
 				<view v-if="[1, 2, 3, 4].includes(upgradeLevelType)" style="text-align: center;">
 					<tui-button
-						type="warning" width="680upx" height="104upx" margin="20upx 0"
-						style="display: inline-block;font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;"
+						type="warning" width="680rpx" height="104rpx" margin="20rpx 0"
+						style="display: inline-block;font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10rpx;"
 						@click="handleClickUnlock"
 					>
 						{{ relationLevelName ? '立刻升级' : '立即升级' }}
@@ -63,8 +63,8 @@
 				</view>
 			</view>
 			<view v-else>
-				<view style="font-weight: bold;margin-top: 36upx;">填写申请信息</view>
-				<view style="padding: 0 10upx;">
+				<view style="font-weight: bold;margin-top: 36rpx;">填写申请信息</view>
+				<view style="padding: 0 10rpx;">
 					<view v-for="item in fields" :key="item.label">
 						<view v-if="item.field === 'id'"></view>
 						<view v-else-if="item.field === 'region'" class="item">
@@ -122,8 +122,8 @@
 									:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 								></textarea>
 								<tui-icon
-									name="position" :size="35" unit="upx" color="#999999"
-									style="position: absolute;right: 20upx;bottom: 20upx;"
+									name="position" :size="35" unit="rpx" color="#999999"
+									style="position: absolute;right: 20rpx;bottom: 20rpx;"
 									@click="handleClickPosition"
 								></tui-icon>
 							</view>
@@ -255,10 +255,10 @@ export default {
 				this.$emit('unlock')
 				this.isShowLock = false
 				if (this.upgradeLevelType === 2) {
-					if (this.$store.state.location.locationInfo.towncode) {
+					if (this.$store.getters.obtainLocationCount && this.$store.state.location.locationInfo.towncode) {
 						this.form.address = this.$store.state.location.detailAddress || ''
-						// this.form.region = this.$store.state.location.locationInfo.towncode || ''
-						// this.form.regionName = (this.$store.state.location.locationInfo.province + this.$store.state.location.locationInfo.city + this.$store.state.location.locationInfo.district + this.$store.state.location.locationInfo.township) || ''
+						this.form.region = this.$store.state.location.locationInfo.towncode || ''
+						this.form.regionName = [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('')
 					}
 					this.form.name = this.$store.getters.userInfo.name || ''
 					this.form.phone = this.$store.getters.userInfo.phone || ''
@@ -343,7 +343,7 @@ export default {
 @import "../../../../style/mixin.less";
 
 .field-pane-container {
-	// margin-top: 30upx;
+	// margin-top: 30rpx;
 
 	.title {
 		font-size: @f14;
@@ -352,9 +352,9 @@ export default {
 	}
 
 	.item {
-		padding: 20upx 0;
-		// border-bottom: 1upx solid #d8d8d8;
-		margin-top: 20upx;
+		padding: 20rpx 0;
+		// border-bottom: 1rpx solid #d8d8d8;
+		margin-top: 20rpx;
 
 		.region-select {
 			/deep/ .value {
@@ -364,17 +364,17 @@ export default {
 
 		.input-wrapper {
 			.flex();
-			font-size: 30upx;
+			font-size: 30rpx;
 			color: @c3d;
 
 			.sub-title {
-				margin-right: 20upx;
+				margin-right: 20rpx;
 				font-weight: bold;
 			}
 
 			/deep/ .uni-input-placeholder,
 			/deep/ .uni-textarea-placeholder {
-				font-size: 30upx;
+				font-size: 30rpx;
 				color: @c9;
 			}
 
@@ -384,10 +384,10 @@ export default {
 			}
 
 			.textarea {
-				margin-top: 20upx;
+				margin-top: 20rpx;
 				width: 100%;
 				height: 40px;
-				font-size: 24upx;
+				font-size: 24rpx;
 			}
 		}
 	}

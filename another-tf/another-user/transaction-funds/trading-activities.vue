@@ -106,6 +106,7 @@
 			<view
 				v-for="(item, index) in tradingActivityList[activeSession].products" :key="index"
 				style="display: flex;padding: 20rpx;margin-bottom: 20rpx;background: #ffefff;border-radius: 10rpx;"
+				@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 			>
 				<image :src="common.seamingImgUrl(item.image)" style="width: 260rpx;height: 260rpx;margin-right: 30rpx;" />
 				<view style="flex: 1;">
@@ -131,7 +132,6 @@
 							<view
 								v-if="[ 3 ].includes(tradingActivityList[activeSession].state)"
 								style="min-width: 132rpx;padding: 12rpx 10rpx;text-align: center;background: linear-gradient(90deg, #C83732 0%, #E25C44 100%);box-shadow: 0rpx 6rpx 12rpx rgba(233, 0, 0, 0.3);border-radius: 10rpx;"
-								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 							>
 								<view style="color: #333333;">去抢购</view>
 								<view style="margin-top: 6rpx;border-radius: 10rpx;overflow: hidden;">
