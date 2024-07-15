@@ -678,6 +678,7 @@ export const resolveOrderPackageData = (params = {}) => {
 			skusobj.skuId = curSku.skuId
 			skusobj.number = curSku.number
 			skusobj.ifLogistics = curSku.ifLogistics
+			skusobj.distribution = curSku.distribution
 			skusobj.selected = curSku.selected
 			skusobj.platformSeckillId = curSku.platformSeckillId
 			skusobj.platformDiscountId = curSku.platformDiscountId

@@ -236,7 +236,7 @@ export default {
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
 				.then(async (res) => {
-					await handleDoPay({ ...res.data, ...this.payInfo }, 8, '')
+					await handleDoPay({ ...res.data, orderSn: res.data.orderSn || res.data.orderNumber, ...this.payInfo }, 8, '')
 				})
 				.catch(() => {
 					uni.hideLoading()

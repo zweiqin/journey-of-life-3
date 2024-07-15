@@ -10,12 +10,18 @@
 				>
 					<view style="display: flex;align-items: center;padding: 0 20rpx;font-size: 28rpx;line-height: 1;">
 						<text v-if="[ 1 ].includes(queryType)">
-							入账记录
+							兑换代金券入账记录
 						</text>
 						<text v-else-if="[ 2 ].includes(queryType)">
-							出账记录
+							兑换代金券出账记录
 						</text>
-						<text v-else-if="[ 3 ].includes(queryType)">
+						<text v-if="[ 3 ].includes(queryType)">
+							充值代金券入账记录
+						</text>
+						<text v-else-if="[ 4 ].includes(queryType)">
+							充值代金券出账记录
+						</text>
+						<text v-else-if="[ 5 ].includes(queryType)">
 							充值代金券订单
 						</text>
 						<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
@@ -80,7 +86,7 @@
 				</tui-dropdown-list>
 			</view>
 
-			<view v-if="[ 3 ].includes(queryType)" style="padding: 18rpx 0 0;">
+			<view v-if="[ 5 ].includes(queryType)" style="padding: 18rpx 0 0;">
 				<tui-radio-group
 					:value="orderInfo.query.status"
 					@change="(e) => orderInfo.query.status !== e.detail.value && ((orderInfo.query.status = e.detail.value) || true) && (orderInfo.query.page = 1) && getAllVoucherOrderList()"
@@ -106,21 +112,21 @@
 
 			<!-- <view style="margin-top: 12rpx;font-size: 28rpx;">
 				<view v-if="[ 1 ].includes(queryType)">
-				总入账￥{{ voucherAcount.zongruzhang }}
+				兑换代金券总入账￥{{ voucherAcount.zongruzhang }}
 				</view>
 				<view v-else-if="[ 2 ].includes(queryType)">
-				总出账￥{{ voucherAcount.zongchuzhang }}
+				兑换代金券总出账￥{{ voucherAcount.zongchuzhang }}
 				</view>
-				<view v-else-if="[ 3 ].includes(queryType)">
+				<view v-else-if="[ 5 ].includes(queryType)">
 				总充值￥{{ voucherAcount.zongchongzhi }}
 				</view>
 				</view> -->
 
 			<view style="margin-top: 20rpx;">
 				<view v-if="[ 1 ].includes(queryType)">
-					<view v-if="accountingInfo.data.length > 0">
+					<view v-if="exchangeAccountingInfo.data.length > 0">
 						<view
-							v-for="(item, index) in accountingInfo.data" :key="item.id"
+							v-for="(item, index) in exchangeAccountingInfo.data" :key="item.id"
 							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
 							@click="handleClickVoucherRecord(item)"
 						>
@@ -170,17 +176,17 @@
 					</view>
 					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
-							:status="!accountingInfo.isEmpty && !accountingInfo.data.length
-								? 'loading' : !accountingInfo.isEmpty && accountingInfo.data.length && (accountingInfo.data.length >= accountingInfo.listTotal) ? 'no-more' : ''"
+							:status="!exchangeAccountingInfo.isEmpty && !exchangeAccountingInfo.data.length
+								? 'loading' : !exchangeAccountingInfo.isEmpty && exchangeAccountingInfo.data.length && (exchangeAccountingInfo.data.length >= exchangeAccountingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="accountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="exchangeAccountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 2 ].includes(queryType)">
-					<view v-if="outgoingInfo.data.length > 0">
+					<view v-if="exchangeOutgoingInfo.data.length > 0">
 						<view
-							v-for="(item, index) in outgoingInfo.data" :key="item.id"
+							v-for="(item, index) in exchangeOutgoingInfo.data" :key="item.id"
 							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
 							@click="handleClickVoucherRecord(item)"
 						>
@@ -220,14 +226,114 @@
 					</view>
 					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
-							:status="!outgoingInfo.isEmpty && !outgoingInfo.data.length
-								? 'loading' : !outgoingInfo.isEmpty && outgoingInfo.data.length && (outgoingInfo.data.length >= outgoingInfo.listTotal) ? 'no-more' : ''"
+							:status="!exchangeOutgoingInfo.isEmpty && !exchangeOutgoingInfo.data.length
+								? 'loading' : !exchangeOutgoingInfo.isEmpty && exchangeOutgoingInfo.data.length && (exchangeOutgoingInfo.data.length >= exchangeOutgoingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="outgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="exchangeOutgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 3 ].includes(queryType)">
+					<view v-if="rechargeAccountingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in rechargeAccountingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #ef530e;"
+								>
+									<text>收</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">充值</text>
+											<text v-else-if="item.waterType === 2">退款</text>
+											<text v-else>--</text>
+										</text>
+										<text>
+											-
+											<text v-if="item.sourceType === 1">平台</text>
+											<text v-else-if="item.sourceType === 2">商家</text>
+											<text v-else-if="item.sourceType === 3">用户</text>
+											<text v-else-if="item.sourceType === 4">社区</text>
+											<text v-else-if="item.sourceType === 5">旧数据同步</text>
+											<text v-else>--</text>
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									来源：{{ item.sourceName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：+{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!rechargeAccountingInfo.isEmpty && !rechargeAccountingInfo.data.length
+								? 'loading' : !rechargeAccountingInfo.isEmpty && rechargeAccountingInfo.data.length && (rechargeAccountingInfo.data.length >= rechargeAccountingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="rechargeAccountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
+				<view v-else-if="[ 4 ].includes(queryType)">
+					<view v-if="rechargeOutgoingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in rechargeOutgoingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #208f57;"
+								>
+									<text>支</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">账户转出</text>
+											<text v-else-if="item.waterType === 2">专区兑换</text>
+											<text v-else>--</text>
+										</text>
+										<text v-if="item.orderFormid">
+											-{{ item.orderFormid }}
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									目标：{{ item.destinationName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：-{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!rechargeOutgoingInfo.isEmpty && !rechargeOutgoingInfo.data.length
+								? 'loading' : !rechargeOutgoingInfo.isEmpty && rechargeOutgoingInfo.data.length && (rechargeOutgoingInfo.data.length >= rechargeOutgoingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="rechargeOutgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
+				<view v-else-if="[ 5 ].includes(queryType)">
 					<view v-if="orderInfo.data.length > 0">
 						<view
 							v-for="(item, index) in orderInfo.data" :key="item.id"
@@ -285,7 +391,7 @@
 							<view style="font-size: 28rpx;">收支类型</view>
 							<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;text-align: center;">
 								<view
-									v-for="(item, index) in [{ name: '入账记录', value: 1 }, { name: '出账记录', value: 2 }, { name: '充值代金券订单', value: 3 }]"
+									v-for="(item, index) in [{ name: '兑换代金券入账记录', value: 1 }, { name: '兑换代金券出账记录', value: 2 }, { name: '充值代金券入账记录', value: 3 }, { name: '充值代金券出账记录', value: 4 }, { name: '充值代金券订单', value: 5 }]"
 									:key="index"
 									style="padding: 10rpx 34rpx;margin: 18rpx 6rpx 0;font-size: 26rpx;background-color: #f4f4f4;border-radius: 16rpx;"
 									:style="{
@@ -305,7 +411,7 @@
 </template>
 
 <script>
-import { getBuyerVoucherEntryRecordApi, getBuyerVoucherOutgoingRecordApi, getAllBuyerVoucherOrderApi } from '../../../api/anotherTFInterface'
+import { getBuyerVoucherEntryRecordApi, getBuyerVoucherOutgoingRecordApi, getAllBuyerVoucherOrderApi, getAllEntryRecordApi, getAllOutgoingRecordApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'VoucherRecord',
 	components: {
@@ -321,7 +427,7 @@ export default {
 			timeDropdownShow: false,
 			timeDropdownIndex: 0,
 			queryType: 1,
-			accountingInfo: {
+			exchangeAccountingInfo: {
 				query: {
 					page: 1,
 					pageSize: 20
@@ -330,7 +436,25 @@ export default {
 				listTotal: 0,
 				isEmpty: false
 			},
-			outgoingInfo: {
+			exchangeOutgoingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			rechargeAccountingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			rechargeOutgoingInfo: {
 				query: {
 					page: 1,
 					pageSize: 20
@@ -353,45 +477,85 @@ export default {
 	},
 	onLoad() {
 		if ([ 1 ].includes(this.queryType)) {
-			this.accountingInfo.query.page = 1
-			this.getAccountingLogsList()
+			this.exchangeAccountingInfo.query.page = 1
+			this.getExchangeAccountingLogsList()
 		} else if ([ 2 ].includes(this.queryType)) {
-			this.outgoingInfo.query.page = 1
-			this.getOutgoingLogsList()
+			this.exchangeOutgoingInfo.query.page = 1
+			this.getExchangeOutgoingLogsList()
 		} else if ([ 3 ].includes(this.queryType)) {
+			this.rechargeAccountingInfo.query.page = 1
+			this.getRechargeAccountingLogsList()
+		} else if ([ 4 ].includes(this.queryType)) {
+			this.rechargeOutgoingInfo.query.page = 1
+			this.getRechargeOutgoingLogsList()
+		} else if ([ 5 ].includes(this.queryType)) {
 			this.orderInfo.query.page = 1
 			this.getAllVoucherOrderList()
 		}
 	},
 	methods: {
-		getAccountingLogsList(isLoadmore) {
+		getExchangeAccountingLogsList(isLoadmore) {
 			uni.showLoading()
-			getBuyerVoucherEntryRecordApi({ ...this.accountingInfo.query })
+			getBuyerVoucherEntryRecordApi({ ...this.exchangeAccountingInfo.query })
 				.then((res) => {
-					this.accountingInfo.listTotal = res.data.total
+					this.exchangeAccountingInfo.listTotal = res.data.total
 					if (isLoadmore) {
-						this.accountingInfo.data.push(...res.data.list)
+						this.exchangeAccountingInfo.data.push(...res.data.list)
 					} else {
-						this.accountingInfo.data = res.data.list
+						this.exchangeAccountingInfo.data = res.data.list
 					}
-					this.accountingInfo.isEmpty = this.accountingInfo.data.length === 0
+					this.exchangeAccountingInfo.isEmpty = this.exchangeAccountingInfo.data.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {
 					uni.hideLoading()
 				})
 		},
-		getOutgoingLogsList(isLoadmore) {
+		getExchangeOutgoingLogsList(isLoadmore) {
 			uni.showLoading()
-			getBuyerVoucherOutgoingRecordApi({ ...this.outgoingInfo.query })
+			getBuyerVoucherOutgoingRecordApi({ ...this.exchangeOutgoingInfo.query })
 				.then((res) => {
-					this.outgoingInfo.listTotal = res.data.total
+					this.exchangeOutgoingInfo.listTotal = res.data.total
 					if (isLoadmore) {
-						this.outgoingInfo.data.push(...res.data.list)
+						this.exchangeOutgoingInfo.data.push(...res.data.list)
 					} else {
-						this.outgoingInfo.data = res.data.list
+						this.exchangeOutgoingInfo.data = res.data.list
 					}
-					this.outgoingInfo.isEmpty = this.outgoingInfo.data.length === 0
+					this.exchangeOutgoingInfo.isEmpty = this.exchangeOutgoingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getRechargeAccountingLogsList(isLoadmore) {
+			uni.showLoading()
+			getAllEntryRecordApi({ ...this.rechargeAccountingInfo.query })
+				.then((res) => {
+					this.rechargeAccountingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.rechargeAccountingInfo.data.push(...res.data.list)
+					} else {
+						this.rechargeAccountingInfo.data = res.data.list
+					}
+					this.rechargeAccountingInfo.isEmpty = this.rechargeAccountingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getRechargeOutgoingLogsList(isLoadmore) {
+			uni.showLoading()
+			getAllOutgoingRecordApi({ ...this.rechargeOutgoingInfo.query })
+				.then((res) => {
+					this.rechargeOutgoingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.rechargeOutgoingInfo.data.push(...res.data.list)
+					} else {
+						this.rechargeOutgoingInfo.data = res.data.list
+					}
+					this.rechargeOutgoingInfo.isEmpty = this.rechargeOutgoingInfo.data.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {
@@ -419,20 +583,34 @@ export default {
 			if (this.queryType === item.value) return
 			this.queryType = item.value
 			if ([ 1 ].includes(this.queryType)) {
-				this.accountingInfo.query.page = 1
-				this.accountingInfo.data = []
-				this.accountingInfo.listTotal = 0
-				this.accountingInfo.isEmpty = false
-				this.getAccountingLogsList()
+				this.exchangeAccountingInfo.query.page = 1
+				this.exchangeAccountingInfo.data = []
+				this.exchangeAccountingInfo.listTotal = 0
+				this.exchangeAccountingInfo.isEmpty = false
+				this.getExchangeAccountingLogsList()
 				this.isShowTypePopup = false
 			} else if ([ 2 ].includes(this.queryType)) {
-				this.outgoingInfo.query.page = 1
-				this.outgoingInfo.data = []
-				this.outgoingInfo.listTotal = 0
-				this.outgoingInfo.isEmpty = false
-				this.getOutgoingLogsList()
+				this.exchangeOutgoingInfo.query.page = 1
+				this.exchangeOutgoingInfo.data = []
+				this.exchangeOutgoingInfo.listTotal = 0
+				this.exchangeOutgoingInfo.isEmpty = false
+				this.getExchangeOutgoingLogsList()
 				this.isShowTypePopup = false
 			} else if ([ 3 ].includes(this.queryType)) {
+				this.rechargeAccountingInfo.query.page = 1
+				this.rechargeAccountingInfo.data = []
+				this.rechargeAccountingInfo.listTotal = 0
+				this.rechargeAccountingInfo.isEmpty = false
+				this.getRechargeAccountingLogsList()
+				this.isShowTypePopup = false
+			} else if ([ 4 ].includes(this.queryType)) {
+				this.rechargeOutgoingInfo.query.page = 1
+				this.rechargeOutgoingInfo.data = []
+				this.rechargeOutgoingInfo.listTotal = 0
+				this.rechargeOutgoingInfo.isEmpty = false
+				this.getRechargeOutgoingLogsList()
+				this.isShowTypePopup = false
+			} else if ([ 5 ].includes(this.queryType)) {
 				this.orderInfo.query.page = 1
 				this.orderInfo.data = []
 				this.orderInfo.listTotal = 0
@@ -448,20 +626,34 @@ export default {
 			}
 			this.timeDropdownIndex = timeDropdownIndex
 			if ([ 1 ].includes(this.queryType)) {
-				this.accountingInfo.query.page = 1
-				this.accountingInfo.data = []
-				this.accountingInfo.listTotal = 0
-				this.accountingInfo.isEmpty = false
-				this.getAccountingLogsList()
+				this.exchangeAccountingInfo.query.page = 1
+				this.exchangeAccountingInfo.data = []
+				this.exchangeAccountingInfo.listTotal = 0
+				this.exchangeAccountingInfo.isEmpty = false
+				this.getExchangeAccountingLogsList()
 				this.timeDropdownShow = false
 			} else if ([ 2 ].includes(this.queryType)) {
-				this.outgoingInfo.query.page = 1
-				this.outgoingInfo.data = []
-				this.outgoingInfo.listTotal = 0
-				this.outgoingInfo.isEmpty = false
-				this.getOutgoingLogsList()
+				this.exchangeOutgoingInfo.query.page = 1
+				this.exchangeOutgoingInfo.data = []
+				this.exchangeOutgoingInfo.listTotal = 0
+				this.exchangeOutgoingInfo.isEmpty = false
+				this.getExchangeOutgoingLogsList()
 				this.timeDropdownShow = false
 			} else if ([ 3 ].includes(this.queryType)) {
+				this.rechargeAccountingInfo.query.page = 1
+				this.rechargeAccountingInfo.data = []
+				this.rechargeAccountingInfo.listTotal = 0
+				this.rechargeAccountingInfo.isEmpty = false
+				this.getRechargeAccountingLogsList()
+				this.timeDropdownShow = false
+			} else if ([ 4 ].includes(this.queryType)) {
+				this.rechargeOutgoingInfo.query.page = 1
+				this.rechargeOutgoingInfo.data = []
+				this.rechargeOutgoingInfo.listTotal = 0
+				this.rechargeOutgoingInfo.isEmpty = false
+				this.getRechargeOutgoingLogsList()
+				this.timeDropdownShow = false
+			} else if ([ 5 ].includes(this.queryType)) {
 				this.orderInfo.query.page = 1
 				this.orderInfo.data = []
 				this.orderInfo.listTotal = 0
@@ -483,16 +675,26 @@ export default {
 	},
 	onReachBottom() {
 		if ([ 1 ].includes(this.queryType)) {
-			if (this.accountingInfo.data.length < this.accountingInfo.listTotal) {
-				++this.accountingInfo.query.page
-				this.getAccountingLogsList(true)
+			if (this.exchangeAccountingInfo.data.length < this.exchangeAccountingInfo.listTotal) {
+				++this.exchangeAccountingInfo.query.page
+				this.getExchangeAccountingLogsList(true)
 			}
 		} else if ([ 2 ].includes(this.queryType)) {
-			if (this.outgoingInfo.data.length < this.outgoingInfo.listTotal) {
-				++this.outgoingInfo.query.page
-				this.getOutgoingLogsList(true)
+			if (this.exchangeOutgoingInfo.data.length < this.exchangeOutgoingInfo.listTotal) {
+				++this.exchangeOutgoingInfo.query.page
+				this.getExchangeOutgoingLogsList(true)
 			}
 		} else if ([ 3 ].includes(this.queryType)) {
+			if (this.rechargeAccountingInfo.data.length < this.rechargeAccountingInfo.listTotal) {
+				++this.rechargeAccountingInfo.query.page
+				this.getExchangeOutgoingLogsList(true)
+			}
+		} else if ([ 4 ].includes(this.queryType)) {
+			if (this.rechargeOutgoingInfo.data.length < this.rechargeOutgoingInfo.listTotal) {
+				++this.rechargeOutgoingInfo.query.page
+				this.getExchangeOutgoingLogsList(true)
+			}
+		} else if ([ 5 ].includes(this.queryType)) {
 			if (this.orderInfo.data.length < this.orderInfo.listTotal) {
 				++this.orderInfo.query.page
 				this.getAllVoucherOrderList(true)

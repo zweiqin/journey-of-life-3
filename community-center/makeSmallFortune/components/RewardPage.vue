@@ -25,7 +25,7 @@
 			<view style="background-color: #ffffff;">
 				<view style="display: flex;align-items: flex-start;padding: 40upx 30rpx 0rpx 30rpx;">
 					<text style="font-weight: bold;">文章归属地：</text>
-					<JAnyArea :text="cityText" @confirm="handleChooseCity"></JAnyArea>
+					<JAnyArea :text="cityText" @confirm="handleSelectArea"></JAnyArea>
 				</view>
 				<view style="padding: 0rpx 30rpx;">
 					<tui-input
@@ -143,9 +143,9 @@ export default {
 		}
 	},
 	methods: {
-		handleChooseCity(data) {
+		handleSelectArea(data) {
 			this.cityText = data.area
-			this.region = (data.county.id || data.city.id || data.province.id) + ''
+			this.region = data.county.id || data.city.id || data.province.id
 		},
 		handleRelease() {
 			if (!this.formData.publishUserId) return this.$showToast('缺少发布者信息')

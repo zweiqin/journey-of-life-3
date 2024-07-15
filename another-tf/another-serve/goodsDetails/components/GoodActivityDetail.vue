@@ -36,8 +36,11 @@
 					<view class="flex-items flex-row flex-sp-between">
 						<view class="flex-column-plus">
 							<ATFActivityImage
-								:type="skuSelect.activityType" show-icon background-color="transparent"
-								font-size="40rpx" bold italic :icon-size="28"
+								:type="skuSelect.activityType" :show-icon="[1, 2, 3, 4, 5, 8, 9, 10].includes(skuSelect.activityType)"
+								background-color="transparent"
+								:text="[ 11 ].includes(skuSelect.activityType) ? goodsDetail.activityName : ''"
+								:font-size="[ 11 ].includes(skuSelect.activityType) ? '36rpx' : '40rpx'"
+								bold italic :icon-size="28"
 							></ATFActivityImage>
 							<view class="flex-row-plus flex-items mar-top-10">
 								<label class="fs30 font-color-FFF">￥</label>

@@ -1,118 +1,212 @@
 <template>
 	<view class="combination-activities-container">
-		<JHeader title="组合活动专区" width="50" height="50"></JHeader>
-		<view style="padding: 18rpx;">
-			<tui-checkbox-group
+		<JHeader title="活动中心" width="50" height="50">
+			<template #ftFn>
+				<text style="padding-right: 18rpx;color: #222229;">
+					{{
+						$store.state.location.locationInfo.township ||
+							$store.state.location.locationInfo.district ||
+							$store.state.location.locationInfo.city ||
+							$store.state.location.locationInfo.province
+					}}
+				</text>
+			</template>
+		</JHeader>
+		<view style="padding: 10rpx 18rpx 18rpx;">
+			<!-- <view>
+				<tui-checkbox-group
 				:value="queryInfo.stateList"
 				@change="(e) => (JSON.stringify(queryInfo.stateList) !== JSON.stringify(e.detail.value)) && (queryInfo.stateList = e.detail.value) && (queryInfo.page = 1) && getCombinationActivitiesList()"
-			>
+				>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
-					<view style="font-size: 34rpx;font-weight: bold;color: #333333;">活动状态筛选：</view>
-					<tui-label
-						v-for="(item, index) in [{ name: '报名未开始', value: '0' }, { name: '报名进行中', value: '1' }, { name: '活动待开始', value: '2' }, { name: '活动进行中', value: '3' }, { name: '活动已结束', value: '4' }]"
-						:key="index"
-					>
-						<tui-list-cell padding="6rpx 16rpx">
-							<view>
-								<tui-checkbox
-									:checked="queryInfo.stateList.includes(item.value)" :value="item.value"
-									color="#07c160" border-color="#999"
-								>
-								</tui-checkbox>
-								<text>{{ item.name }}</text>
-							</view>
-						</tui-list-cell>
-					</tui-label>
+				<view style="font-size: 34rpx;font-weight: bold;color: #333333;">活动状态筛选：</view>
+				<tui-label
+				v-for="(item, index) in [{ name: '报名未开始', value: '0' }, { name: '报名进行中', value: '1' }, { name: '活动待开始', value: '2' }, { name: '活动进行中', value: '3' }, { name: '活动已结束', value: '4' }]"
+				:key="index"
+				>
+				<tui-list-cell padding="6rpx 16rpx">
+				<view>
+				<tui-checkbox
+				:checked="queryInfo.stateList.includes(item.value)" :value="item.value" color="#07c160"
+				border-color="#999"
+				>
+				</tui-checkbox>
+				<text>{{ item.name }}</text>
 				</view>
-			</tui-checkbox-group>
+				</tui-list-cell>
+				</tui-label>
+				</view>
+				</tui-checkbox-group>
+				</view> -->
+			<view style="display: flex;justify-content: space-between;flex-wrap: wrap;align-items: center;">
+				<view style="font-size: 30rpx;">选择活动类型：</view>
+				<view style="flex: 1;display: flex;justify-content: flex-end;background-color: #ffffff;">
+					<tui-dropdown-list
+						:show="typeDropdownShow" :top="55" background-color="#ffffff"
+						@close="typeDropdownShow = false"
+					>
+						<template #selectionbox>
+							<view
+								style="height: auto;padding: 10rpx 16rpx;color: #222229;background-color: #ffffff;"
+								@click="typeDropdownShow = !typeDropdownShow"
+							>
+								<text style="font-size: 26rpx;">{{ typeDropdownName || '' }}</text>
+								<tui-icon name="arrowdown" :size="14" color="#222229" margin="0 0 0 14rpx"></tui-icon>
+							</view>
+						</template>
+						<template #dropdownbox>
+							<view style="width: fit-content;box-sizing: border-box;">
+								<tui-list-view
+									color="#777" margin-top="2rpx"
+									style="width: fit-content;min-width: 200rpx;max-height: 28vh;overflow-y: auto;"
+								>
+									<tui-list-cell
+										v-for="item in dropdownList"
+										:key="item.name" padding="10rpx 0"
+										style="width: fit-content;margin: 0 auto;"
+										@click="((queryInfo.ids = item.value) && (typeDropdownName = item.name) && (queryInfo.page = 1) && (typeDropdownShow = false)) || getCombinationActivitiesList()"
+									>
+										{{ item.name }}
+									</tui-list-cell>
+									<tui-list-cell
+										padding="10rpx 0"
+										style="width: fit-content;margin: 0 auto;"
+										@click="go('/user/sever/activityCenter/index')"
+									>
+										社区系统活动
+									</tui-list-cell>
+								</tui-list-view>
+							</view>
+						</template>
+					</tui-dropdown-list>
+				</view>
+			</view>
 		</view>
 
-		<view style="margin-top: 20rpx;">
-			<scroll-view scroll-x>
-				<view
-					v-if="combinationActivityList && combinationActivityList.length"
-					style="display: flex;align-items: stretch;white-space: nowrap;padding: 0 0 0 18rpx;"
-				>
+		<view v-if="combinationActivityList && combinationActivityList.length" style="padding: 0 24rpx;">
+			<view
+				v-for="item in combinationActivityList" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
+			>
+				<view style="position: relative;line-height: 1;">
 					<view
-						v-for="(item, index) in combinationActivityList" :key="index"
-						style="margin-right: 18rpx;padding: 18rpx;color: #9499a8;font-size: 28rpx;text-align: center;border-radius: 24rpx;"
-						:style="{ backgroundColor: index === activeSession ? '#dddddd' : '#555555' }"
-						@click="activeSession = index"
+						v-if="item.composeId && dropdownList.find((i) => i.value[0] === item.composeId)"
+						style="position: absolute;top: 0;left: 0;z-index: 1;padding: 16rpx 44rpx;font-size: 28rpx;text-align: center;background-color: #ffffff;border-radius: 20rpx 0 20rpx 0;"
+					>
+						<text>{{ dropdownList.find((i) => i.value[0] === item.composeId).name }}</text>
+					</view>
+					<view
+						style="display: flex;justify-content: center;align-items: center;width: 100%;height: 220rpx;background-color: #ef530e;"
+					>
+						<view style="max-width: 52%;font-weight: bold;font-size: 44rpx;color: #ffffff;text-align: center;font-style: italic;letter-spacing: 4rpx;word-break: break-all;line-height: 1.5;">
+							{{ item.composeName }}
+						</view>
+					</view>
+					<view
+						style="position: absolute;bottom: -28rpx;right: -18rpx;width: 172rpx;height: 172rpx;display: flex;align-items: center;justify-content: center;padding: 14rpx;white-space: nowrap;border: 4rpx solid #ffffff;border-radius: 50%;transform: rotate(-30deg);box-sizing: border-box;"
 					>
 						<view
-							:style="{ color: [ 4 ].includes(item.state) ? '#999999' : index === activeSession ? '#C83732' : '#ffffff' }"
+							style="display: flex;align-items: center;justify-content: center;width: 100%;height: 100%;border: 2rpx dashed #ffffff;border-radius: 50%;"
 						>
-							{{ item.composeName || '--' }}
-						</view>
-						<view :style="{ color: index === activeSession ? '#000000' : '#ffffff' }">
-							<view v-if="[ 4 ].includes(item.state)">已结束</view>
-							<view v-else-if="[ 3 ].includes(item.state)">抢购中</view>
-							<view v-else-if="[0, 1, 2].includes(item.state)">即将开始</view>
-						</view>
-						<view
-							v-if="[0, 1, 2].includes(item.state)"
-							:style="{ color: index === activeSession ? '#000000' : '#ffffff' }"
-						>
-							{{ item.startTime || '--' }}
+							<view
+								style="padding: 14rpx 0;color: #ffffff;border-top: 2rpx solid #ffffff;border-bottom: 2rpx solid #ffffff;"
+							>
+								<text v-if="[ 4 ].includes(item.state)">已结束</text>
+								<text v-else-if="[ 3 ].includes(item.state)">进行中</text>
+								<text v-else-if="[0, 1, 2].includes(item.state)">待开始</text>
+							</view>
 						</view>
 					</view>
 				</view>
-			</scroll-view>
-			<view
-				v-if="combinationActivityList[activeSession]"
-				style="margin: 20rpx 20rpx 0;padding: 20rpx;background-color: #eeeeee;border-radius: 20rpx;"
-			>
-				<view>
-					<view
-						v-if="[ 3 ].includes(combinationActivityList[activeSession].state)"
+				<view style="padding: 10rpx 40rpx;background-color: #ffffff;">
+					<view style="font-weight: bold;">{{ item.composeName }}</view>
+					<!-- <view
+						style="margin: 20rpx 20rpx 0;padding: 20rpx;background-color: #eeeeee;border-radius: 20rpx;"
+						>
+						<view>
+						<view
+						v-if="[ 3 ].includes(item.state)"
 						style="display: flex;align-items: center;justify-content: center;"
-					>
+						>
 						<text>距离结束：</text>
 						<tui-countdown
-							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-							border-color="transparent"
-							days :is-colon="false"
-							:time="Math.floor((Date.parse(combinationActivityList[activeSession].endTime) - Date.now()) / 1000)"
+						:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+						border-color="transparent"
+						days :is-colon="false"
+						:time="Math.floor((Date.parse(item.endTime) - Date.now()) / 1000)"
 						></tui-countdown>
-					</view>
-					<view
-						v-else-if="[0, 1, 2].includes(combinationActivityList[activeSession].state)"
+						</view>
+						<view
+						v-else-if="[0, 1, 2].includes(item.state)"
 						style="display: flex;align-items: center;justify-content: center;"
-					>
+						>
 						<text>距离开始：</text>
 						<tui-countdown
-							:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
-							border-color="transparent"
-							days :is-colon="false"
-							:time="Math.floor((Date.parse(combinationActivityList[activeSession].startTime) - Date.now()) / 1000)"
+						:size="24" :colon-size="24" colon-color="#1A66FF" color="#1A66FF"
+						border-color="transparent"
+						days :is-colon="false"
+						:time="Math.floor((Date.parse(item.startTime) - Date.now()) / 1000)"
 						></tui-countdown>
-					</view>
-				</view>
-				<view style="display: flex;align-items: center;margin-top: 12rpx;color: #ffffff;font-size: 30rpx;">
-					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-						<text v-if="combinationActivityList[activeSession].ifAdd">可叠加优惠券</text>
+						</view>
+						</view>
+						<view style="display: flex;align-items: center;margin-top: 12rpx;color: #ffffff;font-size: 30rpx;">
+						<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="item.ifAdd">可叠加优惠券</text>
 						<text v-else>不可叠加优惠券</text>
-					</view>
-					<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-						<text v-if="combinationActivityList[activeSession].ifLimit">限购{{ combinationActivityList[activeSession].limitNumber }}件/人</text>
+						</view>
+						<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="item.ifLimit">
+						限购{{
+						item.limitNumber }}件/人
+						</text>
 						<text v-else>无限购</text>
-					</view>
-					<!-- <view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
-						<text v-if="combinationActivityList[activeSession].ifBond">商家需要保证金￥{{ combinationActivityList[activeSession].bondMoney }}</text>
+						</view>
+						<view style="padding: 6rpx 12rpx;background-color: #1b9fff;margin-right: 12rpx;border-radius: 8rpx;">
+						<text v-if="item.ifBond">商家需要保证金￥{{ item.bondMoney }}</text>
 						<text v-else>商家无需保证金</text>
+						</view>
+						</view>
+						<view
+						v-if="item.content"
+						style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
+						>
+						赠送规则：{{ item.content }}
+						</view>
+						<view
+						v-if="item.remark"
+						style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
+						>
+						备注：{{ item.remark }}
+						</view>
 						</view> -->
-				</view>
-				<view
-					v-if="combinationActivityList[activeSession].content"
-					style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
-				>
-					赠送规则：{{ combinationActivityList[activeSession].content }}
-				</view>
-				<view
-					v-if="combinationActivityList[activeSession].remark"
-					style="margin-top: 12rpx;word-break: break-all;font-size: 26rpx;"
-				>
-					备注：{{ combinationActivityList[activeSession].remark }}
+					<view style="margin-top: 28rpx;font-size: 28rpx;color: #8d8d8e;">
+						<!-- <view>
+							<view>报名时间：</view>
+							<view style="display: flex;align-items: center;flex-wrap: wrap;">
+							<text>{{ item.signStartTime }}-</text>
+							<text>{{ item.signEndTime }}</text>
+							</view>
+							</view> -->
+						<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 8rpx;">
+							<view>
+								<view>活动时间：</view>
+								<view style="display: flex;align-items: center;flex-wrap: wrap;">
+									<text>{{ item.startTime }}-</text>
+									<text>{{ item.endTime }}</text>
+								</view>
+							</view>
+							<view
+								class="middle-btn"
+								style="display: flex;align-items: center;justify-content: flex-end;margin-left: 6rpx;"
+							>
+								<tui-button
+									type="danger" width="174rpx" height="60rpx" shape="circle"
+									@click="go(`/another-tf/another-user/combination-activities/combination-activity-products?combinationId=${item.composeId}`)"
+								>
+									参加活动
+								</tui-button>
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -124,112 +218,30 @@
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">请期待组合活动</tui-no-data>
 		</view>
-
-		<view
-			v-if="combinationActivityList[activeSession] && combinationActivityList[activeSession].products.length"
-			style="margin: 4rpx 20rpx 0;"
-		>
-			<view
-				v-for="(item, index) in combinationActivityList[activeSession].products" :key="index"
-				style="display: flex;padding: 20rpx;margin-bottom: 20rpx;background: #ffefff;border-radius: 10rpx;"
-			>
-				<image :src="common.seamingImgUrl(item.image)" style="width: 260rpx;height: 260rpx;margin-right: 30rpx;" />
-				<view style="flex: 1;">
-					<view
-						style="font-size: 28rpx;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
-					>
-						{{ item.productName }}
-					</view>
-					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 10rpx;">
-						<view>
-							<view style="display: flex;align-items: flex-end;">
-								<view style="font-size: 26rpx;color: #FF7800;">活动价</view>
-								<view style="display: flex;align-items: flex-end;color: #C83732;">
-									<view style="font-size: 24rpx;">￥</view>
-									<view style="font-size: 36rpx;">{{ item.price }}</view>
-								</view>
-							</view>
-							<text style="margin-top: 20rpx;font-size: 24rpx;text-decoration: line-through;color: #cccccc;">
-								原价: ￥{{ item.originalPrice }}
-							</text>
-						</view>
-						<view>
-							<view
-								v-if="[ 3 ].includes(combinationActivityList[activeSession].state)"
-								style="min-width: 132rpx;padding: 12rpx 10rpx;text-align: center;background: linear-gradient(90deg, #C83732 0%, #E25C44 100%);box-shadow: 0rpx 6rpx 12rpx rgba(233, 0, 0, 0.3);border-radius: 10rpx;"
-								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
-							>
-								<view style="color: #333333;">去抢购</view>
-								<view style="margin-top: 6rpx;border-radius: 10rpx;overflow: hidden;">
-									<progress
-										activeColor="#c5aa7b"
-										:percent="item.total ? Math.round((parseFloat(item.limitStockNumber || item.stockNumber) / parseFloat(item.total)) * 10000) / 100 : 0"
-										active stroke-width="5"
-									/>
-								</view>
-							</view>
-							<view
-								v-else-if="[0, 1, 2].includes(combinationActivityList[activeSession].state)"
-								style="min-width: 132rpx;padding: 12rpx 10rpx;text-align: center;background: linear-gradient(90deg, #29C790 0%, #75D98C 100%);box-shadow: 0 6rpx 12rpx rgba(52, 203, 144, 0.3);border-radius: 10rpx;"
-							>
-								<view style="color: #666666;">即将开始</view>
-								<view style="margin-top: 6rpx;border-radius: 10rpx;overflow: hidden;">
-									<progress
-										activeColor="#c5aa7b"
-										:percent="item.total ? Math.round((parseFloat(item.limitStockNumber || item.stockNumber) / parseFloat(item.total)) * 10000) / 100 : 0"
-										active stroke-width="5"
-									/>
-								</view>
-							</view>
-						</view>
-					</view>
-					<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
-						<view
-							v-if="item.discount"
-							style="width: fit-content;padding: 0 8rpx;margin: 10upx 6upx 0 0;color: #C5AA7B;font-size: 26rpx;border: 2rpx solid #E4E5E6;"
-						>
-							直降 {{ item.discount }} 元
-						</view>
-						<view
-							v-if="item.limitNumber"
-							style="width: fit-content;padding: 0 8rpx;margin: 10upx 6upx 0 0;color: #C5AA7B;font-size: 26rpx;border: 2rpx solid #E4E5E6;"
-						>
-							限量{{ item.limitNumber }}件
-						</view>
-						<view
-							v-if="item.beeCoin"
-							style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
-						>
-							赠送 {{ item.beeCoin }} 消费金
-						</view>
-					</view>
-					<view style="margin-top: 10rpx;font-size: 26rpx;text-align: right;">
-						<text v-if="item.workUsers" style="margin-right: 10rpx;">已拼{{ item.workUsers }}人</text>
-						<text>剩余{{ item.limitStockNumber || item.stockNumber }}件</text>
-					</view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getPlatformComposeCanvasApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'CombinationActivities',
 	data() {
 		return {
+			dropdownList: [{ name: '全部', value: [] }, { name: '商圈活动', value: [ 26 ] }, { name: '商城活动', value: [ 27 ] }, { name: '团长升级活动', value: [ 47 ] }, { name: '社区活动', value: [ 29 ] }],
+			typeDropdownShow: false,
+			typeDropdownName: '全部',
 			isEmpty: false,
 			combinationActivityList: [],
 			combinationActivityTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
-				// ids: [], // 不传查全部
+				ids: [], // 不传查全部
 				shopId: '',
-				stateList: ['0', '1', '2', '3', '4']
-			},
-			activeSession: 0
+				stateList: ['0', '1', '2', '3', '4'],
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+			}
 		}
 	},
 	onLoad(options) {
@@ -237,13 +249,37 @@ export default {
 		if (options.combinationId) {
 			this.queryInfo.ids = [ Number(options.combinationId) ]
 		}
+		if (options.type) {
+			if (options.type === 'upgrade') {
+				this.queryInfo.ids = [ 47 ]
+			} else if (options.type === 'shoppingMall') {
+				this.queryInfo.ids = [ 27 ]
+			} else if (options.type === 'businessDistrict') {
+				this.queryInfo.ids = [ 26 ]
+			} else if (options.type === 'community') {
+				this.queryInfo.ids = [ 29 ]
+			}
+			this.typeDropdownName = (this.dropdownList.find((i) => i.value[0] === this.queryInfo.ids[0]) || { name: '错误' }).name
+		}
 		this.getCombinationActivitiesList()
+	},
+	computed: {
+		...mapGetters([ 'obtainLocationCount' ])
+	},
+	watch: {
+		obtainLocationCount(val, oldVal) {
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'another-tf/another-user/combination-activities/index') this.getCombinationActivitiesList()
+		}
 	},
 	methods: {
 		getCombinationActivitiesList(isLoadmore) {
-			console.log(this.queryInfo)
+			if (!this.queryInfo.address) this.$showToast('缺少定位数据')
 			uni.showLoading()
-			getPlatformComposeCanvasApi(this.queryInfo).then((res) => {
+			getPlatformComposeCanvasApi({
+				...this.queryInfo,
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+			}).then((res) => {
 				this.combinationActivityTotal = res.data.length
 				this.combinationActivityList = res.data
 				// this.combinationActivityTotal = res.data.page.total
@@ -272,7 +308,7 @@ export default {
 <style lang="less" scoped>
 .combination-activities-container {
 	min-height: 100vh;
-	background-color: #f8f9fb;
+	background-color: #f4f4f4;
 	box-sizing: border-box;
 
 	/deep/ .tui-countdown-box {
@@ -281,8 +317,22 @@ export default {
 		}
 	}
 
+	/deep/ .tui-dropdown-view {
+		height: auto !important;
+		width: fit-content;
+		margin-left: -68rpx;
+	}
+
+	.middle-btn {
+		/deep/ .tui-btn {
+			color: #ff380c;
+			background: #feeeee !important;
+		}
+	}
+
 	/deep/ .j-header-container {
 		padding: 24rpx 0 10rpx;
+		background-color: #ffffff;
 
 		.title {
 			font-size: 36rpx;

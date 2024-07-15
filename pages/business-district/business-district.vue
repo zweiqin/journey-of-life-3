@@ -22,6 +22,9 @@
 			<!-- package -->
 			<!-- <ActivityPackage></ActivityPackage> -->
 
+			<!-- 专属活动 -->
+			<ExclusiveActivities margin="24rpx 0 0"></ExclusiveActivities>
+
 			<!-- 首要标签筛选框 -->
 			<view style="padding: 12rpx 52rpx;margin: 24rpx -26rpx 0;background-color: #ffffff;">
 				<StorePrimaryFilterBox
@@ -84,6 +87,7 @@ import PageHead from './components/PageHead.vue'
 import NavBar from './components/NavBar.vue'
 import AdvertisementBar from './components/AdvertisementBar.vue'
 import ActivityPackage from './components/ActivityPackage.vue'
+import ExclusiveActivities from './components/ExclusiveActivities.vue'
 import StorePrimaryFilterBox from '../../another-tf/another-user/shop/components/StorePrimaryFilterBox.vue'
 // import BrandShop from './components/BrandShop.vue'
 import { getHomeBrandListApi } from '../../api/anotherTFInterface'
@@ -96,6 +100,7 @@ export default {
 		NavBar,
 		AdvertisementBar,
 		ActivityPackage,
+		ExclusiveActivities,
 		StorePrimaryFilterBox
 		// BrandShop,
 	},

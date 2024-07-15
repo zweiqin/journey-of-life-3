@@ -43,7 +43,7 @@
 							</view>
 							<view style="margin-left: 12rpx;text-align: right;">
 								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-									-{{ Number.parseFloat(Number(item.commissionNumber || 0)).toFixed(2) }}元
+									+{{ Number.parseFloat(Number(item.commissionNumber || 0)).toFixed(2) }}元
 								</view>
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 									<text>

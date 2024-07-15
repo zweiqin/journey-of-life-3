@@ -84,7 +84,7 @@
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
-						+{{ commissionRecordData.commissionNumber }}元
+						-{{ commissionRecordData.commissionNumber }}元
 					</view>
 				</view>
 				<view style="margin-top: 78rpx;font-size: 28rpx;">

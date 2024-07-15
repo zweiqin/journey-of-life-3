@@ -299,6 +299,7 @@ export default {
 								this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
 								this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
 								if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+								if (!this.detailShopInfo.hsbMrchId && this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
 								this.handleNoticeFather()
 								uni.hideLoading()
 							})
@@ -426,6 +427,7 @@ export default {
 			deep: true
 		}
 	},
+	// eslint-disable-next-line complexity
 	created() {
 		this.paymentList = []
 		if (this.showWechatPay) {
@@ -537,6 +539,7 @@ export default {
 						this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
 						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
 						this.handleSetDisable()
+						if (!this.detailShopInfo.hsbMrchId && this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
 						this.handleNoticeFather()
 					})
 			}

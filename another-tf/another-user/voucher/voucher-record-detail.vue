@@ -124,6 +124,110 @@
 						<text>收</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
+						<text v-if="voucherRecordData.waterType === 1">充值</text>
+						<text v-else-if="voucherRecordData.waterType === 2">退款</text>
+						<text v-else>--</text>
+					</view>
+					<view style="margin-top: 32rpx;font-size: 42rpx;">
+						+{{ voucherRecordData.number }}代金券
+					</view>
+				</view>
+				<view style="margin-top: 78rpx;font-size: 28rpx;">
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">平台代金券ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.platformVoucherId }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">入账用户ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.buyerUserId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">来源类型</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							<text v-if="voucherRecordData.sourceType === 1">平台</text>
+							<text v-else-if="voucherRecordData.sourceType === 2">商家</text>
+							<text v-else-if="voucherRecordData.sourceType === 3">用户</text>
+							<text v-else-if="voucherRecordData.sourceType === 4">社区</text>
+							<text v-else-if="voucherRecordData.sourceType === 5">旧数据同步</text>
+							<text v-else>--</text>
+						</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">来源ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">
+							<text v-if="voucherRecordData.sourceId === 0">平台</text>
+							<text v-else>{{ voucherRecordData.sourceId }}</text>
+						</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">来源名称</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.sourceName || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">来源订单编号</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderFormid || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">有效时间</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.effectiveTime || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">创建时间</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.createTime }}</view>
+					</view>
+				</view>
+			</view>
+			<view v-else-if="[ 4 ].includes(fromOrigin)">
+				<view style="display: flex;align-items: center;flex-direction: column;">
+					<view
+						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #208f57;"
+					>
+						<text>支</text>
+					</view>
+					<view style="margin-top: 40rpx;font-size: 42rpx;">
+						<text v-if="voucherRecordData.waterType === 1">账户转出</text>
+						<text v-else-if="voucherRecordData.waterType === 2">专区兑换</text>
+						<text v-else>--</text>
+					</view>
+					<view style="margin-top: 32rpx;font-size: 42rpx;">
+						+{{ voucherRecordData.number }}代金券
+					</view>
+				</view>
+				<view style="margin-top: 78rpx;font-size: 28rpx;">
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">平台代金券ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.platformVoucherId }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">出账用户ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.buyerUserId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">目标ID</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.destinationId || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">目标名称</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.destinationName || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">兑换订单编号</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.orderFormid || '--' }}</view>
+					</view>
+					<view style="display: flex;align-items: center;margin-bottom: 24rpx;">
+						<view style="min-width: 112rpx;color: #6E7079">创建时间</view>
+						<view style="flex: 1;margin: 0 0 0 40rpx;font-size: 24rpx;">{{ voucherRecordData.createTime }}</view>
+					</view>
+				</view>
+			</view>
+			<view v-else-if="[ 5 ].includes(fromOrigin)">
+				<view style="display: flex;align-items: center;flex-direction: column;">
+					<view
+						style="width: fit-content;padding: 28rpx;font-size: 52rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #ef530e;"
+					>
+						<text>收</text>
+					</view>
+					<view style="margin-top: 40rpx;font-size: 42rpx;">
 						{{ ['未付款', '取消', '已付款', '支付失败'][voucherRecordData.status] }}
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
