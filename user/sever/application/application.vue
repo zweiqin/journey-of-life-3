@@ -4,8 +4,23 @@
       <tui-icon @click="handleBack" style="margin-left: -28upx" slot="left" color="#000" :size="28" name="arrowleft"></tui-icon>
     </TuanPageHead>
 
+    <view class="shop-info" v-if="shopInfo">
+      <image class="shop-logo" :src="shopInfo.shopLogo"></image>
+      <view class="info-wrapper">
+        <view class="shop-name">{{ shopInfo.shopName }}</view>
+        <view class="address">
+          <tui-icon name="home-fill" :size="15" margin="0 10rpx 0 0"></tui-icon>
+          {{ shopInfo.shopAddress }}
+        </view>
+      </view>
+    </view>
+
     <view class="application-content">
-      客家话参加考试单据号说法很大萨卡打卡机说法合计广大司机GV会更大号成绩单GV结果登记序号较大选举初级中初级中级车甲AH就好几次干啥子精细化工成绩在干哈成绩干哈最喜欢就不错就这些更好成绩中间件吃饺子HC建筑工程直接
+      <view class="title">门店留言:</view>
+
+      <view class="content">
+        {{ currentInviteInfo.content }}
+      </view>
     </view>
 
     <view class="footer">
@@ -19,8 +34,8 @@
 </template>
 
 <script>
-import { shareholderApprStoreBindApplicationApi } from '../../../api/community-center'
-import { USER_ID } from '../../../constant'
+import { shareholderApprStoreBindApplicationApi, getInviteListApi, getShopInfoByIdApi } from '../../../api/community-center'
+import { USER_ID, USER_INFO } from '../../../constant'
 export default {
   data() {
     return {
@@ -29,7 +44,9 @@ export default {
         applicationId: undefined,
         approveAct: undefined // 1: 同意, 2：拒绝
       },
-      isLoading: ''
+      isLoading: '',
+      currentInviteInfo: {},
+      shopInfo: null
     }
   },
 
@@ -41,6 +58,8 @@ export default {
     if (!uni.getStorageSync(USER_ID)) {
       uni.redirectTo({ url: `/pages/login/login?to=/user/sever/application/application?id=${options.id}` })
     }
+
+    this.getInviteInfo()
   },
 
   methods: {
@@ -78,6 +97,35 @@ export default {
 
     home() {
       uni.switchTab({ url: '/' })
+    },
+
+    async getInviteInfo() {
+      const userInfo = uni.getStorageSync(USER_INFO)
+      if (!userInfo.phone) {
+        return this.home()
+      }
+      const res = await getInviteListApi({
+        bizType: 2,
+        inviteUserPhone: userInfo.phone, // 被邀请人手机号
+        pageNo: 1,
+        pageSize: 100
+      })
+
+
+      if (res.statusCode === 20000) {
+        const current = res.data.records.find((item) => item.id == this.applicationForm.applicationId)
+        if (current) {
+          this.currentInviteInfo = current
+          const res2 = await getShopInfoByIdApi({ userIds: current.userId })
+          if (Array.isArray(res2.data) && res2.data.length) {
+            this.shopInfo = res2.data[0]
+          }
+        } else {
+          this.home()
+        }
+      } else {
+        this.home()
+      }
     }
   },
 
@@ -105,8 +153,59 @@ export default {
     font-size: 30rpx;
     color: #3d3d3d;
     line-height: 1.5;
+
+    .title {
+      font-size: 30rpx;
+    }
+
+    .content {
+      width: 100%;
+      min-height: 300rpx;
+      background-color: #f6f6f6;
+      margin-top: 10rpx;
+      padding: 20rpx;
+      box-sizing: border-box;
+      color: #000;
+      border-radius: 10rpx;
+    }
   }
 
+  .shop-info {
+    width: 93vw;
+    margin: 20rpx auto 0;
+    background-color: #fff;
+    padding: 20rpx;
+    border-radius: 20rpx;
+    box-sizing: border-box;
+    font-size: 30rpx;
+    color: #3d3d3d;
+    line-height: 1.5;
+    display: flex;
+
+    .shop-logo {
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 20rpx;
+      flex-shrink: 0;
+      margin-right: 20rpx;
+    }
+
+    .info-wrapper {
+      .shop-name {
+        font-weight: 500;
+        margin-bottom: 10rpx;
+      }
+
+      .address {
+        font-size: 28rpx;
+        color: #666666;
+        width: 560rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
   .footer {
     position: fixed;
     bottom: 0;

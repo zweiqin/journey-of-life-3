@@ -107,9 +107,17 @@ export const getCommOrderDeatilApi = (data) => {
 }
 
 // 用户审批股东申请
-export const shareholderApprStoreBindApplicationApi = data => {
+export const shareholderApprStoreBindApplicationApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/common/third/shareholderApprStoreBindAppli', data, 'get')
 }
+
+// 用户获取自己被邀请成为股东列表
+export const getInviteListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/common/third/getApplicationPageByPhone', data, 'get')
+
+/**
+ * 获取门店信息
+ */
+export const getShopInfoByIdApi = data => SheQu1Request('laoa-huozhu/api/hz/common/third/getShopListByIds', data, 'get')
 
 /**
  * 社区服务列表
@@ -153,7 +161,7 @@ export const payOrderForBeeStewadAPPApi = (data) =>
 export const getShopInfoApi = (data) => SheQu1Request('laoa-huozhu/api/hz/shop/third/getShopInfo', data, 'GET')
 
 /** */
-export const createPaymentCodeOrderApi = data => SheQu1Request('laoa-huozhu/api/hz/shop/third/collectionCodePay', data)
+export const createPaymentCodeOrderApi = (data) => SheQu1Request('laoa-huozhu/api/hz/shop/third/collectionCodePay', data)
 
 // 热门搜索
 export const getHotSearchKeyApi = (data) =>
@@ -350,8 +358,8 @@ export const orderPayByCCBApi = (data) => {
 }
 
 // 模拟下单获取是否支持惠市宝支付
-export const isSuppersCCBApi = orderNo => {
-return SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getShopByOrderSn?orderSn=' + orderNo, {}, 'GET')
+export const isSuppersCCBApi = (orderNo) => {
+  return SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getShopByOrderSn?orderSn=' + orderNo, {}, 'GET')
 }
 
 // 获取商圈商品报价
