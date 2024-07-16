@@ -29,7 +29,7 @@ export default {
       })
 
       if (res.statusCode === 20000) {
-        const canOP = res.data.records.find((item) => item.status <= 2)
+        const canOP = res.data.records.find((item) => item.status < 2)
         if (canOP) {
           this.currentInfo = canOP
         }
