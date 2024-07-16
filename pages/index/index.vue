@@ -73,6 +73,7 @@
               height="328rpx"
               :src="item.image || ''"
               radius="16rpx 16rpx 0 0"
+              mode="aspectFill"
             ></tui-lazyload-img>
           </view>
           <view class="item-title">{{ item.productName }}</view>
@@ -104,29 +105,27 @@ export default {
         {
           name: "爆品专区",
           iconUrl: require("@/static/images/new-index/index-2/icon_2.png"),
-          url: "/pages/classify/index?classifyId=1160&className=爆品专区",
-          // 1586
+          // 爆品专区（1586）
         },
         {
           name: "家具甄选",
           iconUrl: require("@/static/images/new-index/index-2/icon_3.png"),
-          url: "/pages/classify/index?classifyId=978&className=家具甄选",
-          // 1587
+          url: "/pages/classify/index?classifyId=1160&className=家具甄选",
         },
         {
           name: "灯饰甄选",
           iconUrl: require("@/static/images/new-index/index-2/icon_4.png"),
-          // url: "/pages/classify/index?classifyId=1588&className=灯饰甄选",
+          // 灯饰甄选（1585）
         },
         {
           name: "软装甄选",
           iconUrl: require("@/static/images/new-index/index-2/icon_5.png"),
-          // url: "/pages/classify/index?classifyId=1589&className=灯饰甄选",
+          // 软装甄选（1587)
         },
         {
           name: "建材甄选",
           iconUrl: require("@/static/images/new-index/index-2/icon_6.png"),
-          // url: "/pages/classify/index?classifyId=1590&className=建材甄选",
+          // 建材甄选（1588）
         },
         {
           name: "辅材工具",
@@ -140,7 +139,7 @@ export default {
         },
       ],
       queryData: {
-        classifyId: "",
+        classifyId: "1160",
         productName: "",
         search: "",
         type: 1,

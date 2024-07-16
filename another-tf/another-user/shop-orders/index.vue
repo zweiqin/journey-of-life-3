@@ -59,6 +59,10 @@
 							<text style="margin-left: 32rpx;color: #EF530E;">{{ orderTypeEnum[item.state] || '--' }}</text>
 						</view>
 						<view style="padding-top: 18rpx;">
+							<text style="color: #8F8F8F;">扣除活动佣金</text>
+							<text style="margin-left: 32rpx;color: #EF530E;">￥{{ item.activityPrice }}</text>
+						</view>
+						<view style="padding-top: 18rpx;">
 							<text style="color: #8F8F8F;">备注</text>
 							<text style="margin-left: 32rpx;word-break: break-all;">{{ item.remark || '--' }}</text>
 						</view>

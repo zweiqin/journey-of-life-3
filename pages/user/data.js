@@ -342,6 +342,11 @@ export const otherFunction = [
 		url: '/another-tf/another-serve/coupon/index'
 	},
 	{
+		name: '社区卡包',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/community-card/index'
+	},
+	{
 		name: '组合活动',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/combination-activities/index'

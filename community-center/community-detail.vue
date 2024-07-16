@@ -276,6 +276,7 @@ export default {
       shareCode: '',
       preferentialPrice: 0,
       commentList: [],
+      cardId: '',
 
       // 客服
       isShowCustomerServicePopup: false,
@@ -296,6 +297,7 @@ export default {
     this.serverTypeId = options.id * 1
     this.serverImageUrl = options.serverImageUrl
     this.title = options.serverNameThree
+    this.cardId = options.cardId || ''
     this.getCommentList()
     uni.setNavigationBarTitle({
       title: this.title
@@ -359,11 +361,11 @@ export default {
 
       if (!this.isArtificial) {
         uni.navigateTo({
-          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}&detailId=${this.detailId}`
+          url: `/community-center/community-order?name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&imgUrl=${this.serverUrl}&detailId=${this.detailId}&cardId=${this.cardId}`
         })
       } else if (!this.serverPrice == 0) {
         uni.navigateTo({
-          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}`
+          url: `/community-center/community-order?serverInfoUrl=${this.serverInfoUrl}&serverPrice=${this.serverPrice}&serverInfoName=${this.serverInfoName}&serverUnit=${this.serverUnit}&name=${this.title}&id=${this.serverTypeId}&priceType=${this.isArtificial}&detailId=${this.detailId}&imgUrl=${this.serverUrl}&preferentialPrice=${this.preferentialPrice}&cardId=${this.cardId}`
         })
       } else {
         console.log('sb kuaixuan')

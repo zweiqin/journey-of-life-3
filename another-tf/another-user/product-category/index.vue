@@ -90,7 +90,7 @@
 												<view v-if="part.childs && part.childs.length">
 													<tui-list-view>
 														<tui-list-cell
-															v-for="(section, number) in part.childs" :key="number"
+															v-for="(section, count) in part.childs" :key="count"
 															background-color="transparent"
 														>
 															<view style="display: flex;align-items: center;padding-right: 54rpx;">

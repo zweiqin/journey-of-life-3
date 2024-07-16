@@ -14,7 +14,6 @@
 			</view>
 			<view style="margin-top: 48rpx;margin-left: -6rpx;color: #ffffff;">
 				<text style="font-size: 34rpx;line-height: 42rpx;">年轻的社区生活元宇宙</text>
-				<text style="margin-left: 8rpx;font-size: 22rpx;">v{{ SYSTEM_VERSION }}</text>
 			</view>
 		</view>
 		<view class="login-form">
@@ -112,6 +111,9 @@
 					</view>
 					<view style="margin-top: 12rpx;font-size: 26rpx;color: #ffffff;">微信登录</view>
 				</view>
+			</view>
+			<view style="margin-top: 58rpx;font-size: 22rpx;color: #ffffff;">
+				<text>版本号：v{{ SYSTEM_VERSION }}</text>
 			</view>
 		</view>
 
