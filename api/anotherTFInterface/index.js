@@ -268,6 +268,9 @@ export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex'
 // 获取商家扩展信息列表
 export const getShopCheckListDetailApi = (data) => AnotherTFRequest('/check/getShopCheckList', data)
 
+// 商家是否停用
+export const getShopIsNotDeactivateApi = (data) => AnotherTFRequest('/check/getShopIsNotDeactivate', data)
+
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)
 

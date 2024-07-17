@@ -158,6 +158,8 @@ export default {
 			// 其它信息
 			otherInfo: {
 				remark: '',
+				// 是否可以结算
+				isCanPay: false,
 				// 加盟商和社区店分佣情况
 				benefitinFranchiseesPhone: '',
 				communityPhone: '',
@@ -216,6 +218,7 @@ export default {
 						voucherObj: this.voucherObj
 					})
 				}
+				this.otherInfo.isCanPay = true
 				this.settlement = orderSettlementObj.settlement
 				this.userAddressInfo = orderSettlementObj.userAddressInfo
 				this.isShowShopCoupons = orderSettlementObj.isShowShopCoupons
