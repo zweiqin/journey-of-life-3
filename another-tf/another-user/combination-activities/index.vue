@@ -85,7 +85,7 @@
 
 		<view v-if="combinationActivityList && combinationActivityList.length" style="padding: 0 24rpx;">
 			<view
-				v-for="item in combinationActivityList" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
+				v-for="item in combinationActivityList.filter(i => !i.composeName.includes('不启用'))" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
 			>
 				<view style="position: relative;line-height: 1;">
 					<view
