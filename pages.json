@@ -1320,6 +1320,12 @@
           "style": {
             "navigationBarTitleText": "质保卡详情"
           }
+        },
+        {
+          "path": "sever/application/application",
+          "style": {
+            "navigationBarTitleText": "邀请"
+          } 
         }
       ]
     },

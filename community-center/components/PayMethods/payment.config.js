@@ -25,7 +25,7 @@ export const paymentMethods = (ctx) => ({
   // 余额支付
   [PAY_METHOD_IDS.BALANCE]: async (payData) => {
     const res = await orderPayH5PabUseBlanceApi(payData)
-    this.handleRes(res, () => {
+    ctx.handleRes(res, () => {
       ctx.ttoast('支付成功')
       setTimeout(() => {
         uni.switchTab({ url: '/pages/order/order' })
