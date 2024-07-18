@@ -1320,6 +1320,12 @@
           "style": {
             "navigationBarTitleText": "质保卡详情"
           }
+        },
+        {
+          "path": "sever/application/application",
+          "style": {
+            "navigationBarTitleText": "邀请"
+          } 
         }
       ]
     },
@@ -1662,6 +1668,12 @@
           }
         },
         {
+          "path": "another-user/community-card/index",
+          "style": {
+            "navigationBarTitleText": "社区卡包"
+          }
+        },
+        {
           "path": "another-user/commission-statistics/vip-user",
           "style": {
             "navigationBarTitleText": "会员列表",
@@ -1876,6 +1888,12 @@
           "path": "another-user/lottery-activities/lottery-record",
           "style": {
             "navigationBarTitleText": "中奖记录"
+          }
+        },
+        {
+          "path": "another-user/sign-in-prize/send-voucher",
+          "style": {
+            "navigationBarTitleText": "签到送代金券"
           }
         },
         {

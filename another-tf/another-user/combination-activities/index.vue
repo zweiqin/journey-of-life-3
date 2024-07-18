@@ -12,14 +12,6 @@
 				</text>
 			</template>
 		</JHeader>
-		<view style="display: flex;justify-content: flex-end;margin-top: 10rpx;">
-			<tui-button
-				type="primary" width="180rpx" height="60rpx" margin="0 20rpx 0 0"
-				shape="circle" @click="go('/user/sever/activityCenter/index')"
-			>
-				社区活动
-			</tui-button>
-		</view>
 		<view style="padding: 10rpx 18rpx 18rpx;">
 			<!-- <view>
 				<tui-checkbox-group
@@ -76,6 +68,13 @@
 									>
 										{{ item.name }}
 									</tui-list-cell>
+									<tui-list-cell
+										padding="10rpx 0"
+										style="width: fit-content;margin: 0 auto;"
+										@click="go('/user/sever/activityCenter/index')"
+									>
+										社区系统活动
+									</tui-list-cell>
 								</tui-list-view>
 							</view>
 						</template>
@@ -86,7 +85,7 @@
 
 		<view v-if="combinationActivityList && combinationActivityList.length" style="padding: 0 24rpx;">
 			<view
-				v-for="item in combinationActivityList" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
+				v-for="item in combinationActivityList.filter(i => !i.composeName.includes('不启用'))" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
 			>
 				<view style="position: relative;line-height: 1;">
 					<view
@@ -180,13 +179,13 @@
 						</view>
 						</view> -->
 					<view style="margin-top: 28rpx;font-size: 28rpx;color: #8d8d8e;">
-						<view>
+						<!-- <view>
 							<view>报名时间：</view>
 							<view style="display: flex;align-items: center;flex-wrap: wrap;">
-								<text>{{ item.signStartTime }}-</text>
-								<text>{{ item.signEndTime }}</text>
+							<text>{{ item.signStartTime }}-</text>
+							<text>{{ item.signEndTime }}</text>
 							</view>
-						</view>
+							</view> -->
 						<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 8rpx;">
 							<view>
 								<view>活动时间：</view>

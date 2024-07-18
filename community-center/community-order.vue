@@ -98,7 +98,7 @@
 
     <!-- 维修商品 -->
     <view class="serve-user-goods-info section">
-      <view class="section-title">维修物品图片</view>
+      <view class="section-title">图片</view>
       <view class="image-list">
         <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
           <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
@@ -210,6 +210,7 @@ import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
 import { APPLY_NAME, IMG_UPLOAD_URL } from '../config'
 import ChooseTime from './componts/choose-time.vue'
 import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi, getCommunityListApi, getAreaDetailInfoApi } from '../api/community-center'
+import { updateDeleteRedisCardHolderApi } from '../api/anotherTFInterface'
 import ChooseCommunity from './components/ChooseCommunity.vue'
 
 export default {
@@ -248,7 +249,8 @@ export default {
       ],
       isShowPriceMode: 1,
       communityList: [], // 小区列表
-      chooseCommunityDetail: null
+      chooseCommunityDetail: null,
+      cardId: ''
     }
   },
 
@@ -257,6 +259,7 @@ export default {
     this.isByItNow = options.priceType === 'true' ? 1 : 2
     this.isShowPriceMode = this.isByItNow
     this.preferentialPrice = options.preferentialPrice === 'null' ? null : options.preferentialPrice * 1
+    this.cardId = options.cardId || ''
     // this.getCommunityList()
   },
 
@@ -518,6 +521,7 @@ export default {
           this.ttoast('订单创建成功')
           uni.removeStorageSync(SF_INVITE_CODE)
           uni.setStorageSync('communityOrder', res.data)
+					if(this.cardId) updateDeleteRedisCardHolderApi({ cardId: this.cardId })
           setTimeout(() => {
             uni.redirectTo({
               url: `/community-center/confirm-order?name1=${this.currentServeInfo.name}&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}

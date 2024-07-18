@@ -268,6 +268,9 @@ export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex'
 // 获取商家扩展信息列表
 export const getShopCheckListDetailApi = (data) => AnotherTFRequest('/check/getShopCheckList', data)
 
+// 商家是否停用
+export const getShopIsNotDeactivateApi = (data) => AnotherTFRequest('/check/getShopIsNotDeactivate', data)
+
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)
 
@@ -458,6 +461,16 @@ export const updateTakeCouponReceiveApi = (data) => AnotherTFRequest('/coupon/ta
 // 领取优惠券
 export const updateCouponBuildParam4PlugApi = (data) => AnotherTFRequest('/coupon/buildParam4Plug', data, 'POST')
 
+// 卡包
+// 分页查询社区卡包信息表
+export const getAllCommunityCardHolderApi = (data) => AnotherTFRequest('/communityCardHolder/getAll', data, 'POST')
+
+// 已失效卡券
+export const getIsLoseAllCommunityCardHolderApi = (data) => AnotherTFRequest('/communityCardHolder/getIsLoseAll', data, 'POST')
+
+// 社区下单成功调用（删除延迟任务）
+export const updateDeleteRedisCardHolderApi = (data) => AnotherTFRequest('/communityCardHolder/deleteRedis', data, 'POST')
+
 // 首页广告
 // 成为商家的客户
 export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST')
@@ -586,8 +599,11 @@ export const getAllVoucherOrderApi = (data) => AnotherTFRequest('/voucherOrder/g
 // 分页查询平台代金券
 export const getAllPlatformVoucherApi = (data) => AnotherTFRequest('/platformVoucher/getAll', data, 'POST')
 
-// 充值代金券统计
-export const getByUserOrderVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getByUserOrderVoucher', data)
+// // 充值代金券统计（旧）
+// export const getByUserOrderVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getByUserOrderVoucher', data)
+
+// 查询用户充值金额（独立账号）
+export const getByUserOrderVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/getRechargeTotal', data)
 
 // 兑换代金券统计
 export const getBuyerTotalVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/buyerTotal', data)
@@ -595,17 +611,26 @@ export const getBuyerTotalVoucherEntryRecordApi = (data) => AnotherTFRequest('/b
 // 代金券购买提交订单
 export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/submitVoucher', data, 'POST')
 
-// 充值代金券转赠
-export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
+// // 充值代金券转赠（旧）
+// export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
+
+// 充值代金券转赠(独立账号)
+export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/transferVoucher', data, 'POST')
 
 // 兑换代金券转赠
 export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
 
-// 代金券入账记录
+// 兑换代金券入账记录
 export const getBuyerVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/entryRecord', data, 'POST')
 
-// 代金券出账记录
+// 兑换代金券出账记录
 export const getBuyerVoucherOutgoingRecordApi = (data) => AnotherTFRequest('/buyerVoucherOutgoingRecord/outgoingRecord', data, 'POST')
+
+// 充值代金券入账记录
+export const getAllEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/getAll', data, 'POST')
+
+// 充值代金券出账记录
+export const getAllOutgoingRecordApi = (data) => AnotherTFRequest('/buyerVoucherOrderOutgoingRecord/getAll', data, 'POST')
 
 // 分页查询用户充值代金券订单表
 export const getAllBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getAll', data)

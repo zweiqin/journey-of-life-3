@@ -342,6 +342,11 @@ export const otherFunction = [
 		url: '/another-tf/another-serve/coupon/index'
 	},
 	{
+		name: '社区卡包',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/community-card/index'
+	},
+	{
 		name: '组合活动',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/combination-activities/index'
@@ -381,6 +386,11 @@ export const otherFunction = [
 		name: '商家折扣',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
+	},
+	{
+		name: '签到有奖',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/sign-in-prize/send-voucher'
 	},
 	{
 		name: '套壳链接',

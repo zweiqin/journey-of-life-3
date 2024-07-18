@@ -4,14 +4,14 @@
 		<BaseInfo ref="baseInfoRef"></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
+			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
 			<Pane title="商家服务" :menu-data="shopServe" @menu-click="handleNavigate"></Pane>
 			<Pane title="附加功能" :menu-data="additionalFunction" @menu-click="handleNavigate"></Pane>
-			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
 			<view>
 				<view v-if="isShowOther">
 					<Pane title="其它功能" :menu-data="otherFunction" @menu-click="handleNavigate"></Pane>
 					<view style="text-align: center;background-color: #afafaf;">
-						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ ENV }}-{{ $store.state.auth.identityInfo.type }}-1.0.28.5
+						{{ $store.state.app.terminal }}-{{ isH5InWebview() }}-{{ ENV }}-{{ $store.state.auth.identityInfo.type }}-1.0.28.9
 					</view>
 				</view>
 				<view v-else style="margin-top: 24rpx;" @click="isShowOther = true">
