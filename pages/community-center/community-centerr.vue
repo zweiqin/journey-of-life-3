@@ -3,7 +3,7 @@
     <TuanAppShim bg="#fedfcd"></TuanAppShim>
 
     <!-- 是否有人邀请成为股东 -->
-    <CheckShareholderInvite></CheckShareholderInvite>
+    <CheckShareholderInvite ref="checkShareholderInviteRef"></CheckShareholderInvite>
     <view class="page-header">
       <view style="padding: 0 30upx">
         <view class="top-title"></view>
@@ -189,6 +189,9 @@ export default {
     uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
     this.getActivityList()
     this.showVipPostPopup()
+    this.$nextTick(() => {
+      this.$refs.checkShareholderInviteRef.check()
+    })
   },
   mounted() {
     this.handleInitShare()

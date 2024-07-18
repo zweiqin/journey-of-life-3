@@ -1,5 +1,13 @@
 <template>
-    <tui-alerts @close="currentInfo = null" v-if="currentInfo" closable @click="go('/user/sever/application/application?id=' + currentInfo.id)" type="info" title="诚邀您成为门店股东" desc="有社区门店邀请您成为股东啦！点击查看详情"></tui-alerts>
+  <tui-alerts
+    @close="handleCloseAlert"
+    v-if="currentInfo"
+    closable
+    @click="go('/user/sever/application/application?id=' + currentInfo.id)"
+    type="info"
+    title="诚邀您成为门店股东"
+    desc="有社区门店邀请您成为股东啦！点击查看详情"
+  ></tui-alerts>
 </template>
 
 <script>
@@ -11,14 +19,12 @@ export default {
       currentInfo: null
     }
   },
-  mounted() {
-    const userInfo = uni.getStorageSync(USER_INFO)
-    this.getInviteList(userInfo)
-  },
 
   methods: {
-    async getInviteList(userInfo) {
-      if (!userInfo.phone) {
+    async check() {
+      const app = getApp()
+      const userInfo = uni.getStorageSync(USER_INFO)
+      if (!userInfo.phone || app.globalData.isCloseInviteAlert) {
         return
       }
       const res = await getInviteListApi({
@@ -34,6 +40,12 @@ export default {
           this.currentInfo = canOP
         }
       }
+    },
+
+    handleCloseAlert() {
+      this.currentInfo = null
+      const app = getApp()
+      app.globalData.isCloseInviteAlert = true
     }
   }
 }
