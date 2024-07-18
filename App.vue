@@ -73,8 +73,8 @@ export default {
     isIphone: false,
     // 画布设备 1 小程序，2 H5，3 App 4 电脑
     terminal: '',
-    // 是否显示了邀请提醒
-    isShowInvitationNotice: false
+    // 是否显示邀请提醒
+    isCloseInviteAlert: false
   },
   data() {
     return {
