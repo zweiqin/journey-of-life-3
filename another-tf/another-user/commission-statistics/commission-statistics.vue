@@ -1,61 +1,97 @@
 <template>
-	<view class="commision-page">
-		<view class="back">
-			<tui-icon name="arrowleft" color="#000" :size="30" @click="handleBack"></tui-icon>
-		</view>
-
-		<view class="top-pane">
-			<view class="item">
-				<view style="background-color: #ff8700;border-radius: 18rpx;padding: 22rpx;">
-					<tui-icon name="wallet" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
+	<view class="commission-statistics-container">
+		<JHeader title="我的账本" width="50" height="50"></JHeader>
+		<view style="background-color: #f1f1f1;padding: 32rpx 34rpx 0;">
+			<view
+				style="display: flex;justify-content: space-between;align-items: center;padding: 40rpx 42rpx 76rpx;background-color: #ffe9d7;"
+				:style="{ background: `url(${common.seamingImgUrl('1721199293161-orange-line-bg.png')}) no-repeat center top/cover` }"
+			>
+				<view style="color: #FFFFFF;">
+					<view style="font-size: 28rpx">可提现（元）</view>
+					<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">￥{{ Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}</view>
 				</view>
-				<view class="text">可提现</view>
-				<view class="value">￥{{ Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}</view>
+				<view class="middle-btn">
+					<tui-button
+						type="white" width="168rpx" height="62rpx" margin="0 0 0 20rpx"
+						shape="circle" :size="28"
+						@click="handleWithdrawal(pricePlatformInfo.commissionPrice)"
+					>
+						<view style="display: flex;align-items: center;line-height: 1;">
+							<text>去提现</text>
+							<tui-icon name="arrowright" color="#eb672c" :size="30" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+						</view>
+					</tui-button>
+				</view>
 			</view>
 		</view>
 
 		<!-- 列表统计 -->
-		<view class="list">
-			<view class="list-wrapper">
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?type=1')">
-					<view style="background-color: #b548c6;border-radius: 18rpx;padding: 22rpx;">
-						<tui-icon name="wealth-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
-					</view>
-					<view class="text">佣金入账</view>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-				</view>
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/commission-record?type=2')">
-					<view style="background-color: #22b07d;border-radius: 18rpx;padding: 22rpx;">
-						<tui-icon name="bankcard-fill" color="#ffffff" size="42" unit="rpx" margin="0"></tui-icon>
-					</view>
-					<view class="text">佣金出账</view>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-				</view>
-
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user')">
-					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
-						<tui-icon name="friendadd-fill" color="#32a7e2" size="42" unit="rpx" margin="0"></tui-icon>
-					</view>
-					<view class="text">累计会员(个)</view>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-				</view>
-
-				<view class="item" @click="go('/another-tf/another-user/commission-statistics/vip-user?today=1')">
-					<view style="background-color: #eaf6fc;border-radius: 18rpx;padding: 22rpx;">
-						<tui-icon name="member-fill" color="#b548c6" size="42" unit="rpx" margin="0"></tui-icon>
-					</view>
-					<view class="text">今日会员(个)</view>
-					<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
-				</view>
-			</view>
-
-			<view class="button-wrapper">
-				<button
-					:class="{ disabled: !pricePlatformInfo.commissionPrice }" class="uni-btn"
-					@click="handleWithdrawal(pricePlatformInfo.commissionPrice)"
+		<view style="margin-top: -46rpx;background-color: #f1f1f1;">
+			<view style="padding: 0 44rpx;background-color: #fcfcfc;border-radius: 26rpx 26rpx 0 0;overflow: hidden;">
+				<view
+					style="position: relative;height: 56rpx;border-radius: 0 0 20rpx 20rpx;overflow: hidden;background-color: #ffe9d6;box-shadow: 0px -4px 8px 6px #ffe9d6;"
 				>
-					去提现
-				</button>
+					<view
+						style="position: absolute;top: 0;left: 50%;width: 32rpx;height: 14rpx;margin-left: -16rpx;background-color: #fc841a;clip-path: polygon(0 0, 100% 0, 50% 100%);"
+					>
+					</view>
+				</view>
+				<view style="margin: 30rpx -20rpx 0 0;">
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 34rpx 0;"
+						@click="go('/another-tf/another-user/commission-statistics/commission-record?type=1')"
+					>
+						<view style="display: flex;align-items: center;">
+							<image
+								:src="common.seamingImgUrl('1721203463844-yongjinruzhang.png')"
+								style="width: 36rpx;height: 36rpx;margin-right: 18rpx;" mode="widthFix"
+							/>
+							<view>佣金入账</view>
+						</view>
+						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+					</view>
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 34rpx 0;"
+						@click="go('/another-tf/another-user/commission-statistics/commission-record?type=2')"
+					>
+						<view style="display: flex;align-items: center;">
+							<image
+								:src="common.seamingImgUrl('1721203471792-yongjinchuzhang.png')"
+								style="width: 36rpx;height: 36rpx;margin-right: 18rpx;" mode="widthFix"
+							/>
+							<view>佣金出账</view>
+						</view>
+						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+					</view>
+
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 34rpx 0;"
+						@click="go('/another-tf/another-user/commission-statistics/vip-user')"
+					>
+						<view style="display: flex;align-items: center;">
+							<image
+								:src="common.seamingImgUrl('1721203481796-leijihuiyuan.png')"
+								style="width: 36rpx;height: 36rpx;margin-right: 18rpx;" mode="widthFix"
+							/>
+							<view>累计会员</view>
+						</view>
+						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+					</view>
+
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 34rpx 0;"
+						@click="go('/another-tf/another-user/commission-statistics/vip-user?today=1')"
+					>
+						<view style="display: flex;align-items: center;">
+							<image
+								:src="common.seamingImgUrl('1721203486190-jinrihuiyuan.png')"
+								style="width: 36rpx;height: 36rpx;margin-right: 18rpx;" mode="widthFix"
+							/>
+							<view>今日会员</view>
+						</view>
+						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+					</view>
+				</view>
 			</view>
 		</view>
 
@@ -87,12 +123,6 @@ export default {
 	},
 
 	methods: {
-		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
-		},
-
 		async getPricePlatformAll() {
 			try {
 				const res = await getPricePlatformAllApi({ _isShowToast: false })
@@ -132,124 +162,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.commision-page {
-	position: relative;
-	width: 100vw;
+.commission-statistics-container {
 	min-height: 100vh;
-	background-color: #f5f7fb;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	background-color: #fcfcfc;
+	box-sizing: border-box;
 
-	.back {
-		position: absolute;
-		top: 40rpx;
-		left: 40rpx;
-		right: 40rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+	/deep/ .j-header-container {
+		padding: 18rpx 0 16rpx;
+		background-color: #ffffff;
 
-		.uni-btn {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			font-size: 28rpx;
-
-			.img {
-				width: 50rpx;
-				height: 50rpx;
-				margin-right: 8rpx;
-			}
+		.title {
+			font-size: 34rpx;
+			color: #222229;
 		}
 	}
 
-	.top-pane {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 206rpx 56rpx 56rpx 56rpx;
-		box-sizing: border-box;
-		width: 100vw;
-
-		.item {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
-			font-size: 26rpx;
-			counter-reset: #3d3d3d;
-
-			.text {
-				margin: 16rpx 0 12rpx 0;
-			}
+	.middle-btn {
+		/deep/ .tui-btn {
+			color: #ea6024 !important;
+			background: #fff3e4 !important;
 		}
 	}
-
-	.list {
-		flex: 1;
-		width: 100vw;
-		background-color: #fff;
-		padding-bottom: 56rpx;
-		border-radius: 80rpx 80rpx 0 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		.list-wrapper {
-			width: 100%;
-			padding: 60rpx 56rpx;
-			box-sizing: border-box;
-		}
-
-		.item {
-			display: flex;
-			align-items: center;
-			margin-bottom: 46rpx;
-
-			.text {
-				flex: 1;
-				margin-right: 30rpx;
-				margin-left: 30rpx;
-			}
-		}
-
-		.button-wrapper {
-			width: 100%;
-
-			.tip {
-				text-align: center;
-				margin-bottom: 20rpx;
-				font-size: 24rpx;
-			}
-
-			.uni-btn {
-				height: 80rpx;
-				width: 702rpx;
-				margin: 0 auto;
-				background-color: #fe751a;
-				color: #fff;
-				font-size: 30rpx;
-				font-weight: 500;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				transition: all 350ms;
-
-				&.disabled {
-					opacity: 0.7;
-				}
-
-				&:active {
-					background-color: #ff8f44;
-				}
-			}
-		}
-	}
-}
-
-.img {
-	width: 80rpx;
-	height: 80rpx;
-	flex-shrink: 0;
 }
 </style>

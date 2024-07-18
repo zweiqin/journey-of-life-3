@@ -1891,6 +1891,12 @@
           }
         },
         {
+          "path": "another-user/sign-in-prize/send-voucher",
+          "style": {
+            "navigationBarTitleText": "签到送代金券"
+          }
+        },
+        {
           "path": "another-serve/messageDetail/index",
           "style": {
             "navigationBarTitleText": "公告详情"

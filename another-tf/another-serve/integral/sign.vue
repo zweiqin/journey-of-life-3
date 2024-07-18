@@ -1,21 +1,27 @@
 <template>
-	<view v-if="ifShow" class="signBox">
-		<JHeader title="签到领积分" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="integral-container">
+		<JHeader title="签到领积分" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="signBg">
-			<view style="font-size: 44upx;font-weight: bold;text-align: center;">每日签到送积分</view>
-			<view v-if="continuousNum" class="signDayNumBox flex-center">
+			<view style="font-size: 44rpx;font-weight: bold;text-align: center;">每日签到送积分</view>
+			<view
+				v-if="signList && signList.length && signList[signList.length - 1].continueDay"
+				class="signDayNumBox flex-center"
+			>
 				<view class="signDayNum fs28">
 					当前周期已连续签到
-					<text class="fs40">{{ continuousNum || '0' }}</text>
+					<text class="fs40">{{ signList[signList.length - 1].continueDay || 0 }}</text>
 					天
 				</view>
 			</view>
-			<view v-if="currentDay == lastDay" class="signState flex-center mar-top-30">
+			<view
+				v-if="isSignIn"
+				class="signState flex-center mar-top-30"
+			>
 				<view class="signStateBg flex-items flex-center noSign">
 					<text class="fs48">已签到</text>
 				</view>
 			</view>
-			<view v-if="currentDay != lastDay" class="signState flex-center mar-top-30" @click="signInFn">
+			<view v-else class="signState flex-center mar-top-30" @click="handleSignIn">
 				<view class="signStateBg flex-items flex-center">
 					<text class="fs48">未签到</text>
 				</view>
@@ -24,22 +30,28 @@
 				<view class="calendarBg">
 					<view class="calendar-box">
 						<view class="month">
-							<tui-icon name="arrowleft" :size="48" unit="upx" color="#C5AA7B" @click="lastMonth"></tui-icon>
-							<view>{{ year }}年{{ month }}月</view>
-							<tui-icon name="arrowright" :size="48" unit="upx" color="#C5AA7B" @click="nextMonth"></tui-icon>
-							<picker v-if="checkDate" class="picker" mode="date" fields="month" @change="changeDate" />
+							<tui-icon name="arrowleft" :size="48" unit="rpx" color="#C5AA7B" @click="handleLastMonth"></tui-icon>
+							<view>{{ yearShow }}年{{ monthShow }}月</view>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#C5AA7B" @click="handleNextMonth"></tui-icon>
+							<picker
+								class="picker" mode="date" fields="month"
+								@change="(e) => (yearShow = Number(e.detail.value.split('-')[0])) && (monthShow = Number(e.detail.value.split('-')[1])) && getSignData()"
+							/>
 						</view>
 						<view class="week">
-							<view v-for="weeks in weekArr" :style="'color:' + (weeks == weeked ? bgweek : '') + ';'">
+							<view
+								v-for="(weeks, index) in ['日', '一', '二', '三', '四', '五', '六']" :key="weeks"
+								:style="'color:' + (index === new Date().getDay() ? '#C5AA7B' : '') + ';'"
+							>
 								{{ weeks }}
 							</view>
 						</view>
 						<view class="day">
-							<view v-for="(days, index) in dayArr" :key="index" class="dayItem" @click="signToday(days, index)">
+							<view v-for="(days, index) in dayArr" :key="index" class="dayItem">
 								<view
 									:class="[
-										{ 'checkday': days.date == '' },
-										{ 'choose': days.date == currentDay },
+										{ 'checkday': days.date === '' },
+										{ 'choose': days.date === currentDay },
 										{ 'select': days.select === 1 }
 									]" class="dayValue"
 								>
@@ -55,13 +67,18 @@
 					<view>
 						<view class="fs32 font-color-333">积分兑换红包优惠券</view>
 						<view class="fs24 font-color-999 mar-top-10">各种大额红包等你兑换哦</view>
-						<view class="fs24 font-color-FFF exchangeBtn mar-top-20" @click="goToexchange">马上兑换</view>
+						<view
+							class="fs24 font-color-FFF exchangeBtn mar-top-20"
+							@click="go('/another-tf/another-serve/integral/index?tabActive=2')"
+						>
+							马上兑换
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<!-- 签到弹窗 -->
-		<tui-modal :show="signTips" :custom="true" :fadein="true">
+		<tui-modal :show="signTips" custom fadein>
 			<view class="Put-box1">
 				<view class="text-align fs34 fs-bold">
 					签到成功
@@ -89,185 +106,129 @@ export default {
 	data() {
 		return {
 			signList: [],
-			year: new Date().getFullYear(), // 当前年
-			month: new Date().getMonth() + 1, // 当前月
-			continuousNum: '', // 连续签到天数
+			yearShow: new Date().getFullYear(), // 当前年
+			monthShow: new Date().getMonth() + 1, // 当前月
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
-			currentMonth: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
-			lastDay: '',
-			weeked: '', // 今天周几
+			isSignIn: true,
 			dayArr: [], // 当前月每日
-			day: new Date().getDate(), // 当前日
-			weekArr: ['日', '一', '二', '三', '四', '五', '六'], // 每周
-			type: 'sign',
-			checkDate: true,
-			bgweek: '#C5AA7B',
-			bgday: '#C5AA7B',
-			signTips: false,
-			ifShow: false
+			signTips: false
 		}
 	},
 	onLoad() {
 		this.getSignData()
 	},
 	methods: {
-		getSignData() {
-			// uni.showLoading({
-			//   mask: true,
-			//   title: '请稍等...',
-			// })
-			const selectMonth = this.year + '-' + this.formatNum(this.month)
-			const that = this
-			updateCreditSelectByMonthApi({ month: `${this.year}-${this.formatNum(this.month)}` })
-				.then((res) => {
-					// uni.hideLoading()
-					that.ifShow = true
-					that.signList = res.data
-					// 初始日期
-					that.initDate()
-					// 今天日期
-					if (that.currentMonth === selectMonth) {
-						that.continuousNum = that.signList[that.signList.length - 1].continueDay || 0
-						that.lastDay = that.signList[that.signList.length - 1].createTime.substring(0, 10)
-					}
-					// 今天周几
-					that.weeked = that.weekArr[new Date().getDay()]
-					// 签到功能
-					if (that.type !== 'calendar') {
-						for (const i in that.dayArr) {
-							that.$set(this.dayArr[i], 'flag', false)
-						}
-					}
-					that.signList.forEach((item) => {
-						item.day = parseInt(item.createTime.slice(8, 10))
-					})
-					for (let i = 0; i < that.signList.length; i++) {
-						for (let j = 0; j < that.dayArr.length; j++) {
-							if (that.signList[i].day === that.dayArr[j].day && that.dayArr[j].date !== '') {
-								that.dayArr[j].select = 1
-							}
-						}
-					}
-				})
-		},
 		// 签到
-		signInFn() {
-			// uni.showLoading({
-			//   mask: true,
-			//   title: '请稍等...',
-			// })
+		handleSignIn() {
+			uni.showLoading({
+				mask: true,
+				title: '签到中...'
+			})
 			updateCreditSignInApi({}).then((res) => {
-				// uni.hideLoading()
+				uni.hideLoading()
 				this.getSignData()
 				this.signTips = true
 			})
 		},
-		// 格式化日期位数
-		formatNum(num) {
-			return num < 10 ? '0' + num : num
-		},
-		// 选择年月
-		changeDate(e) {
-			const that = this
-			that.year = parseInt(e.detail.value.split('-')[0])
-			that.month = parseInt(e.detail.value.split('-')[1])
+		// 上一个月
+		handleLastMonth() {
+			if (this.monthShow === 1) {
+				this.yearShow -= 1
+				this.monthShow = 12
+			} else {
+				this.monthShow -= 1
+			}
 			this.getSignData()
 		},
-		// 点击签到
-		signToday(obj, index) {
+		// 下一个月
+		handleNextMonth() {
+			if (this.monthShow === 12) {
+				this.yearShow += 1
+				this.monthShow = 1
+			} else {
+				this.monthShow += 1
+			}
+			this.getSignData()
+		},
+		getSignData() {
+			uni.showLoading({
+				mask: true,
+				title: '请稍等...'
+			})
+			updateCreditSelectByMonthApi({ month: `${this.yearShow}-${String(this.monthShow).padStart(2, '0')}` })
+				.then((res) => {
+					uni.hideLoading()
+					this.initDate()
+					this.signList = res.data
+					if (`${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}` === `${this.yearShow}-${String(this.monthShow).padStart(2, '0')}`) {
+						this.isSignIn = !!(this.signList && this.signList.length && (this.currentDay === this.signList[this.signList.length - 1].createTime.substring(0, 10)))
+					}
+					this.signList.forEach((item) => {
+						item.day = Number(item.createTime.slice(8, 10))
+						for (let j = 0; j < this.dayArr.length; j++) {
+							if ((item.day === this.dayArr[j].day) && this.dayArr[j].date) {
+								this.dayArr[j].select = 1
+							}
+						}
+					})
+				})
 		},
 		// 初始化日期
 		initDate() {
-			const that = this
-			that.dayArr = []
-			// 当前月总天数
-			const totalDay = new Date(that.year, that.month, 0).getDate()
+			this.dayArr = []
+			const totalDay = new Date(this.yearShow, this.monthShow, 0).getDate() // 当前月总天数
 			// 遍历总天数将日期逐个添加至数组
 			for (let i = 1; i <= totalDay; i++) {
 				// 得到需补充天数
-				const value = new Date(that.year, that.month - 1, i).getDay()
+				const value = new Date(this.yearShow, this.monthShow - 1, i).getDay()
 				// 补充前面空白日期
-				if (i === 1 && value !== 0) that.addBefore(value)
+				if ((i === 1) && (value !== 0)) {
+					const totalDay = new Date(this.yearShow, this.monthShow - 1, 0).getDate()
+					for (let k = 0; k < value; k++) {
+						const obj = {}
+						obj.date = ''
+						obj.day = totalDay - (value - k) + 1
+						this.dayArr.push(obj)
+					}
+				}
 				// 添加本月日期
 				const obj = {}
-				obj.date = that.year + '-' + that.formatNum(that.month) + '-' + that.formatNum(i)
+				obj.date = `${this.yearShow}-${String(this.monthShow).padStart(2, '0')}-${String(i).padStart(2, '0')}`
 				obj.day = i
 				obj.select = 0
-				that.dayArr.push(obj)
+				this.dayArr.push(obj)
 				// 补充后面空白日期
-				if (i === totalDay && value !== 6) that.addAfter(value)
+				if ((i === totalDay) && (value !== 6)) {
+					for (let k = 0; k < (6 - value); k++) {
+						const obj = {}
+						obj.date = ''
+						obj.day = k + 1
+						this.dayArr.push(obj)
+					}
+				}
 			}
-		},
-		// 补充前面空白日期
-		addBefore(value) {
-			const that = this
-			const totalDay = new Date(that.year, that.month - 1, 0).getDate()
-			for (let i = 0; i < value; i++) {
-				const obj = {}
-				obj.date = ''
-				obj.day = totalDay - (value - i) + 1
-				that.dayArr.push(obj)
-			}
-		},
-		// 补充后空白日期
-		addAfter(value) {
-			const that = this
-			for (let i = 0; i < (6 - value); i++) {
-				const obj = {}
-				obj.date = ''
-				obj.day = i + 1
-				that.dayArr.push(obj)
-			}
-		},
-		// 上一个月
-		lastMonth() {
-			const that = this
-			if (that.month === 1) {
-				that.year -= 1
-				that.month = 12
-			} else {
-				that.month -= 1
-			}
-			that.getSignData()
-		},
-		// 下一个月
-		nextMonth() {
-			const that = this
-			if (that.month === 12) {
-				that.year += 1
-				that.month = 1
-			} else {
-				that.month += 1
-			}
-			that.getSignData()
-		},
-		goToexchange() {
-			uni.navigateTo({
-				url: '/another-tf/another-serve/integral/index?tabActive=2'
-			})
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-.signBox {
+.integral-container {
+	min-height: 100%;
 	background-color: #F8F8F8;
-	padding-bottom: 50rpx;
+	box-sizing: border-box;
 
 	.signBg {
 		background-size: contain;
 		min-height: 100vh;
-		padding-top: 160rpx;
+		padding-top: 40rpx;
 
 		.signDayNumBox {
 			width: 100%;
 
 			.signDayNum {
-				color: #93866F;
 
 				text {
-					color: #FDF3D0;
 					margin: 0 10rpx;
 				}
 			}
@@ -410,9 +371,9 @@ export default {
 		text-align: center;
 		margin-top: 40rpx;
 		border: 2rpx solid #333333;
-		height: 80upx;
-		line-height: 80upx;
-		width: 240upx;
+		height: 80rpx;
+		line-height: 80rpx;
+		width: 240rpx;
 		color: #333333;
 	}
 

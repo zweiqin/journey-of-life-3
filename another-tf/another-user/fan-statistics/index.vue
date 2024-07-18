@@ -1,26 +1,26 @@
 <template>
 	<view class="fan-statistics-container">
-		<JHeader title="粉丝统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view style="padding: 0 28upx;">
-			<view v-if="statistics.userName" style="display: flex;align-items: center;font-size: 36upx;">
+		<JHeader title="粉丝统计" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<view style="padding: 0 28rpx;">
+			<view v-if="statistics.userName" style="display: flex;align-items: center;font-size: 36rpx;">
 				<view>
-					<JAvatar :src="common.seamingImgUrl(statistics.headImage)" :size="60" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+					<JAvatar :src="common.seamingImgUrl(statistics.headImage)" :size="60" style="margin: 0 24rpx 0 0;line-height: 1;"></JAvatar>
 				</view>
-				<view style="margin-right: 16upx;">{{ statistics.userName }}</view>
+				<view style="margin-right: 16rpx;">{{ statistics.userName }}</view>
 				<view>【{{ statistics.phone }}】</view>
 			</view>
-			<view v-if="statistics.paramLists && statistics.paramLists.length" style="margin-top: 20upx;">
-				<view style="font-size: 28upx;font-weight: bold;">粉丝列表</view>
-				<view style="margin-top: 20upx;">
-					<view v-for="(item, index) in statistics.paramLists" :key="index" style="margin-bottom: 20upx;">
+			<view v-if="statistics.paramLists && statistics.paramLists.length" style="margin-top: 20rpx;">
+				<view style="font-size: 28rpx;font-weight: bold;">粉丝列表</view>
+				<view style="margin-top: 20rpx;">
+					<view v-for="(item, index) in statistics.paramLists" :key="index" style="margin-bottom: 20rpx;">
 						<tui-collapse :index="index" :current="currentIndexMain" hd-bg-color="#ffffff" @click="changeCurrentMain">
 							<template #title>
 								<tui-list-cell background-color="transparent">
 									<view style="display: flex;align-items: center;">
 										<view>
-											<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+											<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="40" style="margin: 0 24rpx 0 0;line-height: 1;"></JAvatar>
 										</view>
-										<view style="margin-right: 16upx;">{{ item.userName }}</view>
+										<view style="margin-right: 16rpx;">{{ item.userName }}</view>
 										<view>【{{ item.phone }}】</view>
 									</view>
 								</tui-list-cell>
@@ -30,16 +30,16 @@
 								<view v-if="item.paramLists && item.paramLists.length">
 									<view
 										v-for="(part, count) in item.paramLists" :key="count"
-										style="display: flex;align-items: center;padding: 18upx 0 18upx 38upx;margin-bottom: 4upx;background-color: #ebebea;"
+										style="display: flex;align-items: center;padding: 18rpx 0 18rpx 38rpx;margin-bottom: 4rpx;background-color: #ebebea;"
 									>
 										<view>
-											<JAvatar :src="common.seamingImgUrl(part.headImage)" :size="40" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+											<JAvatar :src="common.seamingImgUrl(part.headImage)" :size="40" style="margin: 0 24rpx 0 0;line-height: 1;"></JAvatar>
 										</view>
-										<view style="margin-right: 16upx;">{{ part.userName }}</view>
+										<view style="margin-right: 16rpx;">{{ part.userName }}</view>
 										<view>【{{ part.phone }}】</view>
 									</view>
 								</view>
-								<view v-else style="padding: 28upx 0;text-align: center;background-color: #ebebea;">
+								<view v-else style="padding: 28rpx 0;text-align: center;background-color: #ebebea;">
 									该粉丝暂无下级粉丝~
 								</view>
 
@@ -48,7 +48,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-else style="padding-top: 48upx;text-align: center;">
+			<view v-else style="padding-top: 48rpx;text-align: center;">
 				暂无粉丝！
 			</view>
 		</view>
