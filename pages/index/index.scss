@@ -70,7 +70,7 @@
 
     }
     .index-tool {
-      padding-bottom: 32rpx;
+      // padding-bottom: 32rpx;
       .tool-list {
         width: 100%;
         flex-wrap: wrap;
@@ -94,7 +94,7 @@
 
   .index-activity{
     padding: 16rpx 32rpx;
-    padding-top: 50rpx;
+    padding-top: 32rpx;
     // box-sizing: border-box;
     @include flex(space-between,null);
     image{

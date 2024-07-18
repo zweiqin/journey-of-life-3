@@ -147,7 +147,7 @@ export default {
         // pageSize: 10,
 
         shopId: '186',
-				groupId: '1297',
+				groupId: '1294',
 				search: '',
 				ifNew: 1,
 				type: 1,
