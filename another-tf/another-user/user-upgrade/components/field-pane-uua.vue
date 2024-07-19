@@ -63,7 +63,7 @@
 				</view>
 			</view>
 			<view v-else>
-				<view style="font-weight: bold;margin-top: 36rpx;">填写申请信息</view>
+				<view style="font-weight: bold;margin-top: 36rpx;">确认信息</view>
 				<view style="padding: 0 10rpx;">
 					<view v-for="item in fields" :key="item.label">
 						<view v-if="item.field === 'id'"></view>
@@ -240,9 +240,9 @@ export default {
 					} else if (res.data && res.data.levelType === 0) {
 						this.relationLevelName = ''
 					}
-					// this.upgradeLevelType = 2
-					// this.relationLevelName = '团长'
-					// this.relationshipLevelName = '团长'
+					// this.upgradeLevelType = 4
+					// this.relationLevelName = '合伙人'
+					// this.relationshipLevelName = '合伙人'
 					uni.hideLoading()
 				})
 				.catch((e) => {

@@ -117,31 +117,31 @@ export default {
 			const data = {
 				...this.form.basicInfo
 			}
-			if (!data.region) {
-				this.$showToast('请选择所在区域')
-				return
-			}
+			// if (!data.region) {
+			// 	this.$showToast('请选择所在区域')
+			// 	return
+			// }
+			// if (!data.address) {
+			// 	this.$showToast('请填写详细地址')
+			// 	return
+			// }
+			// if (!data.name) {
+			// 	this.$showToast('请填写姓名')
+			// 	return
+			// }
+			// if (
+			// 	!/^1[3456789]\d{9}$/.test(data.phone)
+			// ) {
+			// 	this.$showToast('手机号码格式错误')
+			// 	return
+			// }
 			if (!data.relationshipLevelId) {
 				this.$showToast('缺少会员类型')
 				return
 			}
-			if (!data.name) {
-				this.$showToast('请填写姓名')
-				return
-			}
-			if (
-				!/^1[3456789]\d{9}$/.test(data.phone)
-			) {
-				this.$showToast('手机号码格式错误')
-				return
-			}
-			if (!data.address) {
-				this.$showToast('请填写详细地址')
-				return
-			}
 			uni.showModal({
 				title: '提示',
-				content: '确认提交会员升级申请？',
+				content: '确认进行会员升级？',
 				success: (res) => {
 					if (res.confirm) {
 						addPlatformRelationshipApplyApi(data).then((res) => {
@@ -178,6 +178,16 @@ export default {
 			uni.navigateBack()
 		},
 		handleUnlock() {
+			if (this.$refs.refFieldPaneUUA.upgradeLevelType === 4) {
+				this.applyUserUpgradeOne = [
+					{
+						label: '会员类型：',
+						field: 'relationshipLevelId',
+						type: 'select',
+						placeholder: '请选择会员类型'
+					}
+				]
+			}
 			this.isShowBottomBtn = true
 		}
 	}

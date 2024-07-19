@@ -5,33 +5,33 @@
 		<view style="padding: 0 24rpx;background-color: #ffffff;">
 			<tui-tabs
 				style="width: 702rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="72" :padding="24"
-				item-width="351rpx" selected-color="#ef530e" bold slider-bg-color="#ef530e"
+				item-width="234rpx" selected-color="#ef530e" bold slider-bg-color="#ef530e"
 				:size="32"
-				:tabs="[{ name: '待使用' }, { name: '已失效' }]" :current-tab="currentTab" @change="handleCurrentChange"
+				:tabs="[{ name: '待使用' }, { name: '已失效' }, { name: '已使用' }]" :current-tab="currentTab" @change="handleCurrentChange"
 			></tui-tabs>
 		</view>
-		<view v-if="currentTab === 0" style="padding: 10rpx 18rpx 0;">
+		<!-- <view v-if="currentTab === 0" style="padding: 10rpx 18rpx 0;">
 			<tui-radio-group
-				:value="communityCardInfo.query.isUse"
-				@change="(e) => communityCardInfo.query.isUse !== e.detail.value && ((communityCardInfo.query.isUse = e.detail.value) || true) && (communityCardInfo.query.page = 1) && getCommunityCardList()"
+			:value="communityCardInfo.query.isUse"
+			@change="(e) => communityCardInfo.query.isUse !== e.detail.value && ((communityCardInfo.query.isUse = e.detail.value) || true) && (communityCardInfo.query.page = 1) && getCommunityCardList()"
 			>
-				<view style="display: flex;flex-wrap: wrap;align-items: center;">
-					<!-- <text style="font-size: 30rpx;">是否使用：</text> -->
-					<tui-label v-for="(item, index) in [{ name: '待使用', value: '0' }, { name: '已使用', value: '1' }]" :key="index">
-						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
-							<tui-radio
-								:checked="communityCardInfo.query.isUse === item.value" :value="item.value" color="#07c160"
-								border-color="#999" :scale-ratio="0.8"
-							>
-							</tui-radio>
-							<text>{{ item.name }}</text>
-						</view>
-					</tui-label>
-				</view>
+			<view style="display: flex;flex-wrap: wrap;align-items: center;">
+			<text style="font-size: 30rpx;">是否使用：</text>
+			<tui-label v-for="(item, index) in [{ name: '待使用', value: '0' }, { name: '已使用', value: '1' }]" :key="index">
+			<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+			<tui-radio
+			:checked="communityCardInfo.query.isUse === item.value" :value="item.value" color="#07c160"
+			border-color="#999" :scale-ratio="0.8"
+			>
+			</tui-radio>
+			<text>{{ item.name }}</text>
+			</view>
+			</tui-label>
+			</view>
 			</tui-radio-group>
-		</view>
+			</view> -->
 		<view style="padding: 20rpx;">
-			<view v-if="currentTab === 0">
+			<view v-if="(currentTab === 0) || (currentTab === 2)">
 				<view v-if="communityCardInfo.data && communityCardInfo.data.length">
 					<view v-for="(item, index) in communityCardInfo.data" :key="index" style="margin-bottom: 20rpx;">
 						<tui-collapse
@@ -39,87 +39,10 @@
 							@click="changeCurrentMain"
 						>
 							<template #title>
-								<tui-list-view>
-									<tui-list-cell background-color="transparent" padding="20rpx 18rpx 20rpx 32rpx">
-										<view v-if="item.businessFieldsArr && item.businessFieldsArr.length">
-											<view
-												v-for="(section, count) in item.businessFieldsArr" :key="section.id"
-												style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 4rpx;padding: 16rpx;background-color: #f55243;border-radius: 16rpx;"
-											>
-												<view style="display: flex;justify-content: space-between;align-items: stretch;">
-													<view
-														style="position: relative;width: 110rpx;margin-left: -34rpx;padding: 40rpx;text-align: center;font-weight: bold;color: #C82209;background: linear-gradient(90deg, #FFDB9D 0%, #FFC157 99%);border-radius: 18rpx 0 0 18rpx;"
-													>
-														<view
-															style="position: absolute;top: 50%;left: 0;transform: translateY(-50%);width: 28rpx;height: 28rpx;background-color: #fdfdfd;clip-path: ellipse(50% 50% at 0% 50%)"
-														>
-														</view>
-														<view style="margin-left: -14rpx;">
-															<text style="font-size: 28rpx;">￥</text>
-															<text style="font-size: 48rpx;">{{ section.serverPrice || '--' }}</text>
-														</view>
-													</view>
-													<view style="width: 40rpx;margin-left: -20rpx;background-color: #ffc157;border-radius: 50%;"></view>
-												</view>
-												<view style="flex: 1;width: 0;margin-left: 30rpx;color: #FFEDD2;">
-													<view style="font-size: 32rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-														{{ section.serverInfoName || '--' }}
-													</view>
-													<view
-														v-if="section.serverIntroduction"
-														style="margin-top: 10rpx;font-size: 28rpx;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
-													>
-														{{ section.serverIntroduction || '--' }}
-													</view>
-												</view>
-												<view class="middle-btn">
-													<tui-button
-														type="white" width="108rpx" height="52rpx" margin="0 0 0 20rpx"
-														:size="26"
-														@click="go(`/community-center/community-detail?id=${section.id}&serverNameThree=${section.serverInfoName}&serverImageUrl=${section.serverImageUrl}&cardId=${item.cardId}`)"
-													>
-														去使用
-													</tui-button>
-												</view>
-											</view>
-											<view style="display: flex;justify-content: space-between;margin-top: 10rpx;font-size: 26rpx;color: #b1b1b1;">
-												<view>有效天数：{{ item.cardEffectiveTime || '--' }}</view>
-												<view v-if="!item.isLose">已失效</view>
-											</view>
-										</view>
-										<view v-else style="padding-top: 18rpx;text-align: center;">
-											该卡包暂无服务！
-										</view>
-									</tui-list-cell>
-								</tui-list-view>
+								<UserCommunityCard :card-data="item"></UserCommunityCard>
 							</template>
 							<template #content>
-								<view style="padding: 26rpx 22rpx;font-size: 30rpx;background-color: #ffe7c2;border-radius: 28rpx;">
-									<view style="display: flex;justify-content: space-between;align-items: center;">
-										<!-- <view>ID：{{ item.cardId }}</view> -->
-										<view style="font-size: 34rpx;font-weight: bold;">
-											<text v-if="item.isUse === 0">未使用</text>
-											<text v-else-if="item.isUse === 1">已使用</text>
-											<text v-else>--</text>
-										</view>
-										<view>关联配置ID：{{ item.activityId || '--' }}</view>
-									</view>
-									<view style="margin-top: 10rpx;">
-										<view>
-											卡券使用范围：
-											<text v-if="item.cardRange === 1">指定</text>
-											<text v-else-if="item.cardRange === 2">全部</text>
-											<text v-else>--</text>
-										</view>
-										<view v-if="(item.cardRange === 1) && item.cardJson" style="word-break: break-all;">
-											指定区域（行政编码）：{{
-												item.cardJson || '--' }}
-										</view>
-									</view>
-									<view v-if="item.businessFields" style="margin-top: 10rpx;color: #68686b;">
-										获取时间：{{ item.createTime || '--' }}
-									</view>
-								</view>
+								<UserCommunityCard show-type="message" :card-data="item"></UserCommunityCard>
 							</template>
 						</tui-collapse>
 					</view>
@@ -134,72 +57,21 @@
 				</view>
 			</view>
 			<view v-else-if="currentTab === 1">
-				<tui-list-view v-if="invalidCardInfo.data && invalidCardInfo.data.length" margin-top="10rpx">
-					<tui-list-cell
-						v-for="(item, index) in invalidCardInfo.data" :key="item.cardId" background-color="transparent"
-						padding="0 0 32rpx" :color="item.isLose ? '#333333' : '#888888'"
-					>
-						<view style="padding: 26rpx 22rpx;background-color: #ffe7c2;border-radius: 28rpx;">
-							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<!-- <view>ID：{{ item.cardId }}</view> -->
-								<view style="font-size: 34rpx;font-weight: bold;">
-									<text v-if="item.isUse === 0">未使用</text>
-									<text v-else-if="item.isUse === 1">已使用</text>
-									<text v-else>--</text>
-								</view>
-								<view>关联配置ID：{{ item.activityId || '--' }}</view>
-							</view>
-							<view v-if="item.businessFieldsArr && item.businessFieldsArr.length" style="margin-top: 10rpx;">
-								<view style="padding: 0 14rpx;font-size: 32rpx;font-weight: bold;">● 绑定服务列表：</view>
-								<view
-									v-for="(section, count) in item.businessFieldsArr" :key="section.id"
-									style="display: flex;justify-content: space-between;align-items: center;margin-top: 4rpx;padding: 16rpx;background-color: #ffffff;border-radius: 16rpx;"
-								>
-									<view style="flex: 1;">
-										<view>
-											社区业务内容：{{ section.serverInfoName || '--' }}（{{ section.id || '--' }}）
-										</view>
-										<view v-if="section.serverIntroduction">
-											介绍：{{ section.serverInfoName || '--' }}
-										</view>
-									</view>
-									<view style="margin: 0 0 0 20rpx;text-align: center;">
-										<view style="font-weight: bold;color: #e00d32;">￥{{ section.serverPrice || '--' }}</view>
-										<view>
-											<tui-button
-												v-if="item.isLose" type="warning" width="148rpx" height="52rpx"
-												margin="10rpx 0 0"
-												shape="circle"
-												@click="go(`/community-center/community-detail?id=${section.id}&serverNameThree=${section.serverInfoName}&serverImageUrl=${section.serverImageUrl}&cardId=${item.cardId}`)"
-											>
-												去下单
-											</tui-button>
-										</view>
-									</view>
-								</view>
-							</view>
-							<view style="margin-top: 10rpx;">
-								<view>
-									卡券使用范围：
-									<text v-if="item.cardRange === 1">指定</text>
-									<text v-else-if="item.cardRange === 2">全部</text>
-									<text v-else>--</text>
-								</view>
-								<view v-if="(item.cardRange === 1) && item.cardJson" style="word-break: break-all;">
-									指定区域（行政编码）：{{
-										item.cardJson || '--' }}
-								</view>
-							</view>
-							<view style="display: flex;justify-content: space-between;margin-top: 10rpx;">
-								<view>有效天数：{{ item.cardEffectiveTime || '--' }}</view>
-								<view v-if="!item.isLose">已失效</view>
-							</view>
-							<view v-if="item.businessFields" style="margin-top: 10rpx;color: #68686b;">
-								获取时间：{{ item.createTime || '--' }}
-							</view>
-						</view>
-					</tui-list-cell>
-				</tui-list-view>
+				<view v-if="invalidCardInfo.data && invalidCardInfo.data.length">
+					<view v-for="(item, index) in invalidCardInfo.data" :key="index" style="margin-bottom: 20rpx;">
+						<tui-collapse
+							:index="index" :current="currentIndexMain" :arrow="false" hd-bg-color="#ffffff"
+							@click="changeCurrentMain"
+						>
+							<template #title>
+								<UserCommunityCard :card-data="item"></UserCommunityCard>
+							</template>
+							<template #content>
+								<UserCommunityCard show-type="message" :card-data="item"></UserCommunityCard>
+							</template>
+						</tui-collapse>
+					</view>
+				</view>
 				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!invalidCardInfo.isEmpty && !invalidCardInfo.data.length
@@ -217,10 +89,11 @@
 
 <script>
 import { getAllCommunityCardHolderApi, getIsLoseAllCommunityCardHolderApi } from '../../../api/anotherTFInterface'
+import UserCommunityCard from './components/UserCommunityCard.vue'
 
 export default {
 	name: 'CommunityCard',
-	components: {},
+	components: { UserCommunityCard },
 	data() {
 		return {
 			currentTab: 0,
@@ -231,7 +104,58 @@ export default {
 					pageSize: 10,
 					isUse: '0'
 				},
-				data: [],
+				data: [
+					{
+						cardId: 111,
+						activityId: 222,
+						buyerUserId: 333,
+						businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2',
+						cardEffectiveTime: 'hdshvcsbudhvbeygvs',
+						cardRange: 1,
+						cardJson: '12121,12113,121231,13131,1233131',
+						isLose: 1,
+						isUse: 0,
+						createTime: 'dbvuhsgvyervyrsdhvg',
+						businessFieldsArr: [
+							{
+								'id': 311,
+								'serverTypeId': 313,
+								'serverInfoName': '挂机空调清洗（内机）',
+								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hxsk7qdakyxb4tc2of00.png',
+								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒wasegvdfbnfdxbfdba',
+								'isArtificial': true,
+								'serverPrice': 88.00,
+								'preferentialPrice': 0.00,
+								'serverUnit': '台',
+								'whetherShelf': 1,
+								'validityPeriod': 0,
+								'createTime': '2023-04-11 09:00:44',
+								'updateTime': '2024-07-01 11:55:28',
+								'serverTypeName': '家电维保-清冼保养',
+								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
+								'serverChargeDetailsList': []
+							},
+							{
+								'id': 312,
+								'serverTypeId': 313,
+								'serverInfoName': '方形柜机空调清洗（内机）',
+								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/3beh8k4uje504q24n48g.png',
+								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒\n',
+								'isArtificial': true,
+								'serverPrice': 128.00,
+								'preferentialPrice': null,
+								'serverUnit': '台',
+								'whetherShelf': 1,
+								'validityPeriod': 0,
+								'createTime': '2023-04-11 09:04:59',
+								'updateTime': '2024-06-28 02:06:43',
+								'serverTypeName': '家电维保-清冼保养',
+								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
+								'serverChargeDetailsList': []
+							}
+						]
+					}, { cardId: 111, activityId: 222, buyerUserId: 333, businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2', cardEffectiveTime: 'hdshvcsbudhvbeygvs', cardRange: 1, cardJson: '12121,12113,121231,13131,1233131', isLose: 1, isUse: 1, createTime: 'dbvuhsgvyervyrsdhvg' }, {}
+				],
 				listTotal: 0,
 				isEmpty: false
 			},
@@ -241,7 +165,58 @@ export default {
 					page: 1,
 					pageSize: 10
 				},
-				data: [],
+				data: [
+					{
+						cardId: 111,
+						activityId: 222,
+						buyerUserId: 333,
+						businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2',
+						cardEffectiveTime: 'hdshvcsbudhvbeygvs',
+						cardRange: 1,
+						cardJson: '12121,12113,121231,13131,1233131',
+						isLose: 1,
+						isUse: 1,
+						createTime: 'dbvuhsgvyervyrsdhvg',
+						businessFieldsArr: [
+							{
+								'id': 311,
+								'serverTypeId': 313,
+								'serverInfoName': '挂机空调清洗（内机）',
+								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hxsk7qdakyxb4tc2of00.png',
+								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒wasegvdfbnfdxbfdba',
+								'isArtificial': true,
+								'serverPrice': 88.00,
+								'preferentialPrice': 0.00,
+								'serverUnit': '台',
+								'whetherShelf': 1,
+								'validityPeriod': 0,
+								'createTime': '2023-04-11 09:00:44',
+								'updateTime': '2024-07-01 11:55:28',
+								'serverTypeName': '家电维保-清冼保养',
+								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
+								'serverChargeDetailsList': []
+							},
+							{
+								'id': 312,
+								'serverTypeId': 313,
+								'serverInfoName': '方形柜机空调清洗（内机）',
+								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/3beh8k4uje504q24n48g.png',
+								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒\n',
+								'isArtificial': true,
+								'serverPrice': 128.00,
+								'preferentialPrice': null,
+								'serverUnit': '台',
+								'whetherShelf': 1,
+								'validityPeriod': 0,
+								'createTime': '2023-04-11 09:04:59',
+								'updateTime': '2024-06-28 02:06:43',
+								'serverTypeName': '家电维保-清冼保养',
+								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
+								'serverChargeDetailsList': []
+							}
+						]
+					}, { cardId: 111, activityId: 222, buyerUserId: 333, businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2', cardEffectiveTime: 'hdshvcsbudhvbeygvs', cardRange: 1, cardJson: '12121,12113,121231,13131,1233131', isLose: 1, isUse: 1, createTime: 'dbvuhsgvyervyrsdhvg' }, {}
+				],
 				listTotal: 0,
 				isEmpty: false
 			}
@@ -252,25 +227,39 @@ export default {
 	},
 	methods: {
 		handleCurrentChange(e) {
+			this.currentIndexMain = -1
 			this.currentTab = e.index
 			// 缓存每个tab里的数据
 			if (this.currentTab === 0) {
+				this.communityCardInfo.query.isUse = '0'
+				this.communityCardInfo.query.page = 1
+				this.communityCardInfo.data = []
+				this.communityCardInfo.listTotal = 0
+				this.communityCardInfo.isEmpty = false
+				this.getCommunityCardList()
 			} else if (this.currentTab === 1) {
 				if (!this.invalidCardInfo.isEmpty && !this.invalidCardInfo.data.length) this.getInvalidCardList()
+			} else if (this.currentTab === 2) {
+				this.communityCardInfo.query.isUse = '1'
+				this.communityCardInfo.query.page = 1
+				this.communityCardInfo.data = []
+				this.communityCardInfo.listTotal = 0
+				this.communityCardInfo.isEmpty = false
+				this.getCommunityCardList()
 			}
 			// 每点一个tab就重新进行对它的请求
-			// if (this.currentTab === 0) {
+			// if ((this.currentTab === 0) || (this.currentTab === 2)) {
 			// 	this.communityCardInfo.query.page = 1
 			// 	this.communityCardInfo.data = []
 			// 	this.communityCardInfo.listTotal = 0
 			// 	this.communityCardInfo.isEmpty = false
-			// 	this.getApplyByStoreList()
+			// 	this.getCommunityCardList()
 			// } else if (this.currentTab === 1) {
 			// 	this.invalidCardInfo.query.page = 1
 			// 	this.invalidCardInfo.data = []
 			// 	this.invalidCardInfo.listTotal = 0
 			// 	this.invalidCardInfo.isEmpty = false
-			// 	this.getApplyByUserList()
+			// 	this.getInvalidCardList()
 			// }
 		},
 		getCommunityCardList(isLoadmore) {
@@ -318,7 +307,7 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.currentTab === 0) {
+		if ((this.currentTab === 0) || (this.currentTab === 2)) {
 			if (this.communityCardInfo.data.length < this.communityCardInfo.listTotal) {
 				++this.communityCardInfo.query.page
 				this.getCommunityCardList(true)
@@ -358,14 +347,6 @@ export default {
 	.tui-collapse {
 		/deep/ .tui-collapse-head {
 			border-radius: 28rpx;
-		}
-	}
-
-	.middle-btn {
-		/deep/ .tui-btn {
-			color: #D12727 !important;
-			background: #ffedd2 !important;
-			border-radius: 10rpx;
 		}
 	}
 }
