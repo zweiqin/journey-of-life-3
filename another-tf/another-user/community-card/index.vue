@@ -104,58 +104,7 @@ export default {
 					pageSize: 10,
 					isUse: '0'
 				},
-				data: [
-					{
-						cardId: 111,
-						activityId: 222,
-						buyerUserId: 333,
-						businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2',
-						cardEffectiveTime: 'hdshvcsbudhvbeygvs',
-						cardRange: 1,
-						cardJson: '12121,12113,121231,13131,1233131',
-						isLose: 1,
-						isUse: 0,
-						createTime: 'dbvuhsgvyervyrsdhvg',
-						businessFieldsArr: [
-							{
-								'id': 311,
-								'serverTypeId': 313,
-								'serverInfoName': '挂机空调清洗（内机）',
-								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hxsk7qdakyxb4tc2of00.png',
-								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒wasegvdfbnfdxbfdba',
-								'isArtificial': true,
-								'serverPrice': 88.00,
-								'preferentialPrice': 0.00,
-								'serverUnit': '台',
-								'whetherShelf': 1,
-								'validityPeriod': 0,
-								'createTime': '2023-04-11 09:00:44',
-								'updateTime': '2024-07-01 11:55:28',
-								'serverTypeName': '家电维保-清冼保养',
-								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
-								'serverChargeDetailsList': []
-							},
-							{
-								'id': 312,
-								'serverTypeId': 313,
-								'serverInfoName': '方形柜机空调清洗（内机）',
-								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/3beh8k4uje504q24n48g.png',
-								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒\n',
-								'isArtificial': true,
-								'serverPrice': 128.00,
-								'preferentialPrice': null,
-								'serverUnit': '台',
-								'whetherShelf': 1,
-								'validityPeriod': 0,
-								'createTime': '2023-04-11 09:04:59',
-								'updateTime': '2024-06-28 02:06:43',
-								'serverTypeName': '家电维保-清冼保养',
-								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
-								'serverChargeDetailsList': []
-							}
-						]
-					}, { cardId: 111, activityId: 222, buyerUserId: 333, businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2', cardEffectiveTime: 'hdshvcsbudhvbeygvs', cardRange: 1, cardJson: '12121,12113,121231,13131,1233131', isLose: 1, isUse: 1, createTime: 'dbvuhsgvyervyrsdhvg' }, {}
-				],
+				data: [],
 				listTotal: 0,
 				isEmpty: false
 			},
@@ -165,58 +114,7 @@ export default {
 					page: 1,
 					pageSize: 10
 				},
-				data: [
-					{
-						cardId: 111,
-						activityId: 222,
-						buyerUserId: 333,
-						businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2',
-						cardEffectiveTime: 'hdshvcsbudhvbeygvs',
-						cardRange: 1,
-						cardJson: '12121,12113,121231,13131,1233131',
-						isLose: 1,
-						isUse: 1,
-						createTime: 'dbvuhsgvyervyrsdhvg',
-						businessFieldsArr: [
-							{
-								'id': 311,
-								'serverTypeId': 313,
-								'serverInfoName': '挂机空调清洗（内机）',
-								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/hxsk7qdakyxb4tc2of00.png',
-								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒wasegvdfbnfdxbfdba',
-								'isArtificial': true,
-								'serverPrice': 88.00,
-								'preferentialPrice': 0.00,
-								'serverUnit': '台',
-								'whetherShelf': 1,
-								'validityPeriod': 0,
-								'createTime': '2023-04-11 09:00:44',
-								'updateTime': '2024-07-01 11:55:28',
-								'serverTypeName': '家电维保-清冼保养',
-								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
-								'serverChargeDetailsList': []
-							},
-							{
-								'id': 312,
-								'serverTypeId': 313,
-								'serverInfoName': '方形柜机空调清洗（内机）',
-								'serverInfoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/3beh8k4uje504q24n48g.png',
-								'serverIntroduction': '蒸发器、接水盘、过滤网、外壳等深度清洗、杀菌、消毒\n',
-								'isArtificial': true,
-								'serverPrice': 128.00,
-								'preferentialPrice': null,
-								'serverUnit': '台',
-								'whetherShelf': 1,
-								'validityPeriod': 0,
-								'createTime': '2023-04-11 09:04:59',
-								'updateTime': '2024-06-28 02:06:43',
-								'serverTypeName': '家电维保-清冼保养',
-								'serverImageUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/5ub5gxq8btzj41dyewdk.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/cbcl11hwac3imq3pm9bc.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/k2y9voxtnik637lqk059.png,https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/9clf6yvvfnwf9ltbh0p6.png',
-								'serverChargeDetailsList': []
-							}
-						]
-					}, { cardId: 111, activityId: 222, buyerUserId: 333, businessFields: 'sdhvuhjdsgbvsaj caoshceaoucvwo啊安哦我才2的2地基地2评分大家2配电间2', cardEffectiveTime: 'hdshvcsbudhvbeygvs', cardRange: 1, cardJson: '12121,12113,121231,13131,1233131', isLose: 1, isUse: 1, createTime: 'dbvuhsgvyervyrsdhvg' }, {}
-				],
+				data: [],
 				listTotal: 0,
 				isEmpty: false
 			}

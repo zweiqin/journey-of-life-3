@@ -305,7 +305,7 @@ export default {
 			this.brandId = options.brandId || ''
 			uni.showLoading()
 			try {
-				const result = await getShopIsNotDeactivateApi({})
+				const result = await getShopIsNotDeactivateApi({ shopId: options.shopId })
 				if (result.data) {
 					this.$showToast('商家已停用')
 				} else {

@@ -1,9 +1,9 @@
 <template>
 	<view class="base-info-container">
-		<view style="font-size: 36upx;font-weight: bold;color: #2A2B23;">个人中心</view>
+		<view style="font-size: 36rpx;font-weight: bold;color: #2A2B23;">个人中心</view>
 		<view class="user-info">
 			<Avatar
-				margin="0 12upx 0 0" :size="49"
+				margin="0 12rpx 0 0" :size="49"
 				:src="$store.getters.userInfo.token ? common.seamingImgUrl($store.getters.userInfo.headImage) : require('../../../static/images/new-user/default-user-avatar.png')"
 				@click="$store.getters.userInfo.token && go('/another-tf/another-serve/personalDetails/index')"
 			></Avatar>
@@ -17,10 +17,10 @@
 				<view v-else style="display: flex;justify-content: space-between;align-items: center;">
 					<view style="color: #222229;" @click="go('/another-tf/another-serve/personalDetails/index')">
 						<view style="display: flex;align-items: flex-end;">
-							<!-- <view style="padding: 6upx 8upx;margin-right: 12upx;font-size: 34upx;background-color: #e7e3e0;">
+							<!-- <view style="padding: 6rpx 8rpx;margin-right: 12rpx;font-size: 34rpx;background-color: #e7e3e0;">
 								{{ $store.getters.userInfo.memberLevelName }}
 								</view> -->
-							<view style="margin-right: 12upx;font-size: 34upx;font-weight: bold;">
+							<view style="margin-right: 12rpx;font-size: 34rpx;font-weight: bold;">
 								{{ $store.getters.userInfo.name || $store.getters.userInfo.wechatName || '--' }}
 							</view>
 							<view style="display: flex;justify-content: center;align-items: flex-end;">
@@ -48,38 +48,38 @@
 									v-if="$store.state.auth.identityInfo.type.includes(9)"
 									@click.stop="(frameType = 'shop') && (isShowGloryFrame = true)"
 								>
-									<tui-icon name="shop-fill" :size="42" unit="upx" color="#ff973f" margin="0 5upx 0 0"></tui-icon>
+									<tui-icon name="shop-fill" :size="42" unit="rpx" color="#ff973f" margin="0 5rpx 0 0"></tui-icon>
 								</view>
 								<view
 									v-else-if="$store.state.auth.identityInfo.type.includes(8)"
 									@click.stop="(frameType = 'merchantStaff') && (isShowGloryFrame = true)"
 								>
-									<tui-icon name="shop" :size="42" unit="upx" color="#ff973f" margin="0 5upx 0 0"></tui-icon>
+									<tui-icon name="shop" :size="42" unit="rpx" color="#ff973f" margin="0 5rpx 0 0"></tui-icon>
 								</view>
 								<view
 									v-if="$store.state.auth.identityInfo.type.includes(1)"
 									@click.stop="(frameType = 'franchisee') && (isShowGloryFrame = true)"
 								>
-									<tui-icon name="friendadd-fill" :size="42" unit="upx" color="#e19220" margin="0 5upx 0 0"></tui-icon>
+									<tui-icon name="friendadd-fill" :size="42" unit="rpx" color="#e19220" margin="0 5rpx 0 0"></tui-icon>
 								</view>
 								<view
 									v-if="$store.state.auth.identityInfo.type.includes(2)"
 									@click.stop="(frameType = 'agent') && (isShowGloryFrame = true)"
 								>
-									<tui-icon name="wealth-fill" :size="42" unit="upx" color="#e19220" margin="0 5upx 0 0"></tui-icon>
+									<tui-icon name="wealth-fill" :size="42" unit="rpx" color="#e19220" margin="0 5rpx 0 0"></tui-icon>
 								</view>
 							</view>
 						</view>
 						<view
-							style="display: flex;align-items: center;align-items: center;box-sizing: border-box;margin-top: 12upx;flex-wrap: wrap;font-size: 20upx;"
+							style="display: flex;align-items: center;align-items: center;box-sizing: border-box;margin-top: 12rpx;flex-wrap: wrap;font-size: 20rpx;"
 						>
 							<!-- <view>成长值</view> -->
 							<!-- {{ $store.getters.userInfo.growth || 0 }} / {{ $store.getters.userInfo.nextLevelGrowth || 0 }} -->
-							<view style="padding: 6upx 20upx;margin-right: 16upx;background-color: #ffffff;border-radius: 18upx;">
+							<view style="padding: 6rpx 20rpx;margin-right: 16rpx;background-color: #ffffff;border-radius: 18rpx;">
 								ID：{{ $store.getters.userInfo.buyerUserId }}
 							</view>
 							<view
-								style="padding: 6upx 20upx;background-color: #ffffff;border-radius: 18upx;"
+								style="padding: 6rpx 20rpx;background-color: #ffffff;border-radius: 18rpx;"
 								@click.stop="go('/another-tf/another-user/user-upgrade/user-upgrade-application')"
 							>
 								<text>当前等级：</text>
@@ -94,17 +94,17 @@
 								>
 									普通会员
 								</text>
-								<text style="margin-left: 4upx;">></text>
+								<text style="margin-left: 4rpx;">></text>
 							</view>
 						</view>
 					</view>
 					<view style="flex: 1;text-align: right;">
-						<view style="display: flex;align-items: center;justify-content: flex-end;padding-right: 30upx;">
+						<view style="display: flex;align-items: center;justify-content: flex-end;padding-right: 30rpx;">
 							<view
-								style="position: relative;margin-right: 24upx;"
+								style="position: relative;margin-right: 24rpx;"
 								@click="go('/another-tf/another-serve/messageCenter/index')"
 							>
-								<tui-icon name="message" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
+								<tui-icon name="message" :size="60" unit="rpx" color="##222229" margin="0"></tui-icon>
 								<tui-badge
 									v-show="$store.getters.userInfo.notRead" type="danger" right="-6rpx" absolute
 									:scale-ratio="0.8" translate-x="38%" top="-6rpx"
@@ -113,7 +113,7 @@
 								</tui-badge>
 							</view>
 							<view @click="go('/another-tf/another-serve/personalDetails/index')">
-								<tui-icon name="setup" :size="60" unit="upx" color="##222229" margin="0"></tui-icon>
+								<tui-icon name="setup" :size="60" unit="rpx" color="##222229" margin="0"></tui-icon>
 							</view>
 						</view>
 					</view>
@@ -125,7 +125,7 @@
 				style="text-align: center;" @click="$refs.codeCreateRef.getCode('teamMembersInvitation')"
 				>
 				<tui-icon name="qrcode" :size="24" color="#222229"></tui-icon>
-				<view style="font-size: 24upx;color: #8f8d85;">
+				<view style="font-size: 24rpx;color: #8f8d85;">
 				<text>入驻码</text>
 				</view>
 				</view> -->
@@ -159,18 +159,18 @@
 			</view>
 			</view> -->
 
-		<view style="padding-top: 38upx;">
+		<view style="padding-top: 38rpx;">
 			<view
-				style="position: relative;padding: 20upx 12rpx 18rpx 36rpx;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);border-radius: 20rpx;overflow: hidden;"
+				style="position: relative;padding: 20rpx 12rpx 18rpx 36rpx;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);border-radius: 20rpx;overflow: hidden;"
 				@click="go('/another-tf/another-user/my-wallet/index')"
 			>
 				<view>
 					<view
-						style="position: absolute;top: -360%;left: -50%;width: 600upx;height: 620upx;background-color: #f16527;border-radius: 50%;"
+						style="position: absolute;top: -360%;left: -50%;width: 600rpx;height: 620rpx;background-color: #f16527;border-radius: 50%;"
 					>
 					</view>
 					<view
-						style="position: absolute;top: -360%;left: -50%;width: 508upx;height: 538upx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.2;"
+						style="position: absolute;top: -360%;left: -50%;width: 508rpx;height: 538rpx;background: linear-gradient(101deg, #FFFFFF 26%, rgba(255, 255, 255, 0.0001) 154%);border-radius: 50%;opacity: 0.2;"
 					>
 					</view>
 				</view>
@@ -201,7 +201,7 @@
 					</view>
 				</view>
 			</view>
-			<view style="padding-top: 24upx;" @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')">
+			<view style="padding-top: 24rpx;" @click="go('/another-tf/another-user/user-upgrade/user-upgrade-application')">
 				<image
 					src="../../../static/images/user/activity/499huiyuan.png" mode="widthFix"
 					style="width: 100%;vertical-align: middle;"
@@ -229,16 +229,16 @@
 				</view>
 				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
 					<image
-						style="position: absolute;top: 180upx;left: 50%;transform: translateX(-50%);width: 174upx;height: 174upx;border-radius: 40upx;"
+						style="position: absolute;top: 180rpx;left: 50%;transform: translateX(-50%);width: 174rpx;height: 174rpx;border-radius: 40rpx;"
 						:src="common.seamingImgUrl($store.getters.userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</image>
 					<image
 						src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix"
-						style="width: 500upx;"
+						style="width: 500rpx;"
 					/>
 					<view
-						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
+						style="width: 304rpx;margin: 4rpx auto 0;padding: 18rpx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2rpx solid #FFDBAB;border-radius: 50rpx;"
 					>
 						<template v-if="frameType === 'relationship'">
 							<text v-if="$store.state.auth.identityInfo.type.includes(15)">恭喜你成为合伙人</text>
@@ -350,18 +350,18 @@ export default {
 	position: relative;
 	background: linear-gradient(138deg, #FFFCE7 13%, #F7EBDF 54%);
 	background-size: cover;
-	padding: 48upx 32upx 0upx;
+	padding: 48rpx 32rpx 0rpx;
 	box-sizing: border-box;
 
 	.user-info {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 38upx;
+		margin-top: 38rpx;
 
 		/deep/ .avatar-container {
 			image {
-				border: 2upx solid #f1f1f0;
+				border: 2rpx solid #f1f1f0;
 				background-color: #fff;
 				box-sizing: border-box;
 			}
@@ -371,15 +371,15 @@ export default {
 			flex: 1;
 
 			.logout-title {
-				font-size: 28upx;
+				font-size: 28rpx;
 				font-weight: bold;
-				line-height: 42upx;
+				line-height: 42rpx;
 			}
 
 			.logout-tip {
-				font-size: 24upx;
-				line-height: 36upx;
-				margin-top: 6upx;
+				font-size: 24rpx;
+				line-height: 36rpx;
+				margin-top: 6rpx;
 
 				text {
 					color: #ffc117;
@@ -393,7 +393,7 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 32upx;
+		margin-top: 32rpx;
 		color: #222229;
 
 		.account-item {
@@ -404,13 +404,13 @@ export default {
 			flex-direction: column;
 
 			.account-number {
-				font-size: 42upx;
+				font-size: 42rpx;
 				font-weight: bold;
 			}
 
 			.account-title {
-				margin-top: 10upx;
-				font-size: 24upx;
+				margin-top: 10rpx;
+				font-size: 24rpx;
 			}
 		}
 	}

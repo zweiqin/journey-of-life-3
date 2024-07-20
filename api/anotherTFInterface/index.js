@@ -252,6 +252,22 @@ export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/sel
 // 签到
 export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST')
 
+// 积分签到
+// 积分兑换优惠券
+export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
+
+// 积分签到
+export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
+
+// 根据月份查询签到记录
+export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
+
+// 查询可以积分兑换的优惠券
+export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
+
+// 查询积分记录
+export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
+
 // 购物车
 // 商家购物车查询
 export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data)
@@ -477,22 +493,6 @@ export const updateDeleteRedisCardHolderApi = (data) => AnotherTFRequest('/commu
 // 首页广告
 // 成为商家的客户
 export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST')
-
-// 积分签到
-// 积分兑换优惠券
-export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
-
-// 积分签到
-export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
-
-// 根据月份查询签到记录
-export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
-
-// 查询可以积分兑换的优惠券
-export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
-
-// 查询积分记录
-export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
 
 // 首页广告
 // 获取首页广告

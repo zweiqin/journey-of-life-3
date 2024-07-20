@@ -1849,18 +1849,6 @@
           }
         },
         {
-          "path": "another-serve/memberCenter/activityList",
-          "style": {
-            "navigationBarTitleText": "会员专区"
-          }
-        },
-        {
-          "path": "another-serve/memberCenter/index",
-          "style": {
-            "navigationBarTitleText": "会员中心"
-          }
-        },
-        {
           "path": "another-serve/combination/index",
           "style": {
             "navigationBarTitleText": "组合优惠"
@@ -1891,9 +1879,45 @@
           }
         },
         {
+          "path": "another-serve/memberCenter/activityList",
+          "style": {
+            "navigationBarTitleText": "会员专区"
+          }
+        },
+        {
+          "path": "another-serve/memberCenter/index",
+          "style": {
+            "navigationBarTitleText": "会员中心"
+          }
+        },
+        {
+          "path": "another-serve/memberCenter/memberSign",
+          "style": {
+            "navigationBarTitleText": "会员签到"
+          }
+        },
+        {
           "path": "another-user/sign-in-prize/send-voucher",
           "style": {
             "navigationBarTitleText": "签到送代金券"
+          }
+        },
+        {
+          "path": "another-serve/integral/index",
+          "style": {
+            "navigationBarTitleText": "我的积分"
+          }
+        },
+        {
+          "path": "another-serve/integral/sign",
+          "style": {
+            "navigationBarTitleText": "签到领积分"
+          }
+        },
+        {
+          "path": "another-serve/exchangeDetail/index",
+          "style": {
+            "navigationBarTitleText": "积分兑换"
           }
         },
         {
@@ -2056,24 +2080,6 @@
           "path": "another-serve/addAddress/index",
           "style": {
             "navigationBarTitleText": "地址管理"
-          }
-        },
-        {
-          "path": "another-serve/integral/index",
-          "style": {
-            "navigationBarTitleText": "我的积分"
-          }
-        },
-        {
-          "path": "another-serve/integral/sign",
-          "style": {
-            "navigationBarTitleText": "签到领积分"
-          }
-        },
-        {
-          "path": "another-serve/exchangeDetail/index",
-          "style": {
-            "navigationBarTitleText": "积分兑换"
           }
         },
         {

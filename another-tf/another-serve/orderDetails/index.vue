@@ -3,7 +3,7 @@
 		<view v-if="showType === 'writeOff'">
 			<!-- 核销相关 -->
 			<JHeader title="订单核销码" width="50" height="50" style="padding: 24rpx 0 18rpx;background-color: #ffffff;"></JHeader>
-			<view style="padding: 90rpx 28rpx 0;position: relative;" class="write-off-bg">
+			<view style="position: relative;padding: 90rpx 28rpx 0;" class="write-off-bg">
 				<view style="position: absolute;top: 0;left: 0;width: 100%;height: 580rpx;background-color: #ef5613;overflow: hidden;">
 					<view
 						style="position: absolute;top: 6%;left: 34%;width: 80rpx;height: 80rpx;background: linear-gradient(141deg, #f27842 30%, #ef5a18 70%);border-radius: 50%;"
