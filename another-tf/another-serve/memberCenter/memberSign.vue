@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="会员签到" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="会员签到" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="avatarTop">
 			<view class="avatarBox">
 				<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
@@ -38,13 +38,13 @@
 			<view class="signDateList">
 				<view v-for="(item, index) in recordList" :key="item.signinId" class="signItem">
 					<view class="topIcon">
-						<tui-icon name="member-fill" :size="60" unit="upx" color="#fdbc3d"></tui-icon>
+						<tui-icon name="member-fill" :size="60" unit="rpx" color="#fdbc3d"></tui-icon>
 					</view>
 					<view class="dateInfo">{{ index + 1 }}天</view>
 				</view>
 				<view v-for="index in (7 - recordList.length)" :key="index" class="signItem">
 					<view class="topIcon">
-						<tui-icon name="circle-selected" :size="60" unit="upx" color="#b0b0b0"></tui-icon>
+						<tui-icon name="circle-selected" :size="60" unit="rpx" color="#b0b0b0"></tui-icon>
 					</view>
 					<!-- #ifdef MP-WEIXIN -->
 					<view class="dateInfo">{{ recordList.length + index + 1 }}天</view>
@@ -71,13 +71,13 @@
 					<view class="rightBtn">+{{ item.growth }}</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !signList.length
 						? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无签到记录~</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无签到记录~</tui-no-data>
 			</view>
 		</view>
 	</view>

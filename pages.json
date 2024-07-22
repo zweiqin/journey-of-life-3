@@ -1903,6 +1903,12 @@
           }
         },
         {
+          "path": "another-user/sign-in-prize/send-transaction",
+          "style": {
+            "navigationBarTitleText": "消费金额度签到"
+          }
+        },
+        {
           "path": "another-serve/integral/index",
           "style": {
             "navigationBarTitleText": "我的积分"
