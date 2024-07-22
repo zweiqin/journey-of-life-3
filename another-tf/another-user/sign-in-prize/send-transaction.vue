@@ -1,11 +1,9 @@
 <template>
-	<view class="send-voucher-container">
+	<view class="send-transaction-container">
 		<view
 			:style="{ background: `url(${common.seamingImgUrl('1721380294717-orange-white-bg-color.png')}) no-repeat center top/contain` }"
 		>
-			<JHeader :dark="false" title="签到送代金券" width="50" height="50"></JHeader>
-			<VoucherChoose v-show="false" padding="20rpx 0 0" @change="(e) => (voucherChooseInfo = e) && getVoucherData()">
-			</VoucherChoose>
+			<JHeader :dark="false" title="消费金额度签到" width="50" height="50"></JHeader>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
 				<view style="position: absolute;top: 2%;right: 3%;width: 252rpx;">
@@ -187,18 +185,12 @@
 </template>
 
 <script>
-import VoucherChoose from '../voucher/components/VoucherChoose.vue'
 import { getSelectSigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
 
 export default {
-	name: 'SendVoucher',
-	components: { VoucherChoose },
+	name: 'SendTransaction',
 	data() {
 		return {
-			voucherChooseInfo: {
-				platformVoucherId: '',
-				purchaseRatio: ''
-			},
 			voucherAcount: {
 				chongzhiRechargeTotal: 0,
 				duihuanRechargeTotal: 0
@@ -225,11 +217,7 @@ export default {
 		this.getExchangeAccountingLogsList()
 	},
 	onShow() {
-		if (this.voucherChooseInfo.platformVoucherId) {
-			this.getVoucherData()
-		} else {
-			this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
-		}
+		this.getVoucherData()
 	},
 	methods: {
 		getVoucherData() {
@@ -322,7 +310,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.send-voucher-container {
+.send-transaction-container {
 	min-height: 100vh;
 	padding: 0 0 72rpx;
 	background-color: #f6f6f6;

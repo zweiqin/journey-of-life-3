@@ -252,12 +252,12 @@
 								>
 									{{ item.voucherNum }}
 								</view>
-								<view
+								<!-- <view
 									v-if="voucherChooseInfo.purchaseRatio" style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentTransferIndex === index ? '#222229' : '#888889' }"
-								>
+									>
 									价值{{ item.voucherNum / voucherChooseInfo.purchaseRatio || '' }}
-								</view>
+									</view> -->
 							</view>
 							<view
 								v-if="currentTransferIndex === index"
@@ -277,11 +277,11 @@
 								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectTransferCustom"
 								@input="handleSelectTransferCustom"
 							>
-								<template #right>
+								<!-- <template #right>
 									<text v-if="voucherChooseInfo.purchaseRatio" style="font-size: 30rpx;color: #979797;">
-										价值{{ customTransfer / voucherChooseInfo.purchaseRatio || '' }}
+									价值{{ customTransfer / voucherChooseInfo.purchaseRatio || '' }}
 									</text>
-								</template>
+									</template> -->
 							</tui-input>
 						</view>
 					</view>
@@ -416,9 +416,9 @@
 						确定要转赠 {{ transferForm.voucherNum }} 代金券吗？
 					</text>
 				</view>
-				<view v-if="voucherChooseInfo.purchaseRatio" style="margin-top: 22rpx;font-size: 36rpx;color: #687383;">
+				<!-- <view v-if="voucherChooseInfo.purchaseRatio" style="margin-top: 22rpx;font-size: 36rpx;color: #687383;">
 					价值 {{ transferForm.voucherNum / voucherChooseInfo.purchaseRatio }} 元
-				</view>
+					</view> -->
 				<view>
 					<tui-button
 						type="warning" width="238rpx" height="108rpx" margin="32rpx 0 0"
@@ -537,9 +537,14 @@ export default {
 				.catch((e) => {
 					uni.hideLoading()
 				})
-			getBuyerTotalVoucherEntryRecordApi({}).then((res) => {
-				this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
-			})
+			getBuyerTotalVoucherEntryRecordApi({})
+				.then((res) => {
+					this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
 		},
 		handleClickCurrentRecharge(item, index) {
 			this.customRecharge = ''

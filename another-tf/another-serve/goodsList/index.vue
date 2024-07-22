@@ -1,10 +1,10 @@
 <template>
 	<view class="goods-list-container">
-		<JHeader title="商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="商品列表" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="flex-items-plus flex-row search">
 			<view class="searchBg">
 				<view class="searchImg-box flex-items-plus">
-					<tui-icon style="position: absolute;left: 0;" name="search" :size="50" unit="upx" color="#d1d1d1"></tui-icon>
+					<tui-icon style="position: absolute;left: 0;" name="search" :size="50" unit="rpx" color="#d1d1d1"></tui-icon>
 					<input
 						v-model="queryInfo.search" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
 						placeholder="请输入您想要的宝贝"
@@ -77,13 +77,13 @@
 							<view style="display: flex;align-items: center;flex-wrap: wrap;">
 								<view
 									v-if="item.voucherId && item.voucherPrice"
-									style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+									style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 								>
 									可使用{{ item.voucherPrice }}代金券抵扣
 								</view>
 								<view
 									v-if="item.presenterVoucher"
-									style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+									style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 								>
 									赠送 {{ item.price
 										? `${(Number.parseFloat(item.presenterVoucher / item.price).toFixed(3) * 1000) / 10}%`
@@ -98,13 +98,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !goodsList.length
 					? 'loading' : !isEmpty && goodsList.length && (goodsList.length >= goodsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -193,7 +193,7 @@ export default {
 
 <style lang="less" scoped>
 input {
-	padding-left: 80upx;
+	padding-left: 80rpx;
 }
 
 .goods-list-container {
@@ -231,14 +231,14 @@ input {
 	}
 
 	.search-box {
-		width: 400upx;
-		height: 66upx;
+		width: 400rpx;
+		height: 66rpx;
 	}
 
 	.searchboxPlace {
-		font-size: 26upx;
+		font-size: 26rpx;
 		color: #A9A9A9;
-		padding-right: 30upx;
+		padding-right: 30rpx;
 	}
 
 	.goodsDetails-box {
@@ -246,14 +246,14 @@ input {
 		margin-top: 20rpx;
 
 		.spikeList {
-			border-bottom: 1upx solid #EDEDED;
+			border-bottom: 1rpx solid #EDEDED;
 			padding-top: 30rpx;
-			padding-bottom: 30upx;
+			padding-bottom: 30rpx;
 			position: relative;
 
 			.listItem {
 				display: flex;
-				border-bottom: 1upx solid #EEEEEE;
+				border-bottom: 1rpx solid #EEEEEE;
 				padding-left: 30rpx;
 
 				&:last-child {
@@ -261,9 +261,9 @@ input {
 				}
 
 				.itemBox {
-					width: 220upx;
-					height: 220upx;
-					margin-right: 30upx;
+					width: 220rpx;
+					height: 220rpx;
+					margin-right: 30rpx;
 
 					img {
 						width: 100%;
@@ -275,10 +275,10 @@ input {
 					flex: 1;
 
 					p {
-						font-size: 26upx;
+						font-size: 26rpx;
 						color: #333333;
-						line-height: 40upx;
-						margin-bottom: 30upx;
+						line-height: 40rpx;
+						margin-bottom: 30rpx;
 						text-overflow: -o-ellipsis-lastline;
 						overflow: hidden;
 						text-overflow: ellipsis;
@@ -290,7 +290,7 @@ input {
 
 					.number {
 						color: #999999;
-						font-size: 26upx;
+						font-size: 26rpx;
 						display: flex;
 						align-items: center;
 

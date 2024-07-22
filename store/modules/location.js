@@ -167,8 +167,8 @@ export default {
 			}
 		},
 
-		async updateUserLocation({rootState}, address){
-			if(rootState.auth && rootState.auth.userInfo && rootState.auth.userInfo.phone && address && typeof address === 'string' ){
+		async updateUserLocation({ rootState }, address) {
+			if (rootState.auth && rootState.auth.userInfo && rootState.auth.userInfo.phone && address && typeof address === 'string') {
 				updateUserLocationApi({
 					address,
 					phone: rootState.auth.userInfo.phone

@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="会员签到" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="会员签到" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="avatarTop">
 			<view class="avatarBox">
 				<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
@@ -16,15 +16,15 @@
 			<view class="accumulate flex-items flex-sp-between">
 				<view class="accumulateTit">
 					<label class="fs6">已累计签到</label>
-					<text class="fs6">{{ historyTotal }}天</text>
+					<text class="fs6">{{ signTotal }}天</text>
 				</view>
-				<view class="toSignBtn fs24" :class="{ active: currentData === upDate }" @click="signInFn">
-					{{ currentData === upDate ? '已签到' : '立即签到' }}
+				<view class="toSignBtn fs24" :class="{ active: currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10) }" @click="handleSignIn">
+					{{ currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10) ? '已签到' : '立即签到' }}
 				</view>
 			</view>
 			<view class="points">
 				<label>
-					{{ currentData === upDate ? '明' : '今' }}日签到可获得<text>
+					{{ currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10) ? '明' : '今' }}日签到可获得<text>
 						{{ recordList.length === 0 ? '10积分' : '' }}
 					</text>
 				</label>
@@ -38,13 +38,13 @@
 			<view class="signDateList">
 				<view v-for="(item, index) in recordList" :key="item.signinId" class="signItem">
 					<view class="topIcon">
-						<tui-icon name="member-fill" :size="60" unit="upx" color="#fdbc3d"></tui-icon>
+						<tui-icon name="member-fill" :size="60" unit="rpx" color="#fdbc3d"></tui-icon>
 					</view>
 					<view class="dateInfo">{{ index + 1 }}天</view>
 				</view>
-				<view v-for="index in noSign" :key="index" class="signItem">
+				<view v-for="index in (7 - recordList.length)" :key="index" class="signItem">
 					<view class="topIcon">
-						<tui-icon name="circle-selected" :size="60" unit="upx" color="#b0b0b0"></tui-icon>
+						<tui-icon name="circle-selected" :size="60" unit="rpx" color="#b0b0b0"></tui-icon>
 					</view>
 					<!-- #ifdef MP-WEIXIN -->
 					<view class="dateInfo">{{ recordList.length + index + 1 }}天</view>
@@ -60,8 +60,8 @@
 		</view>
 		<view class="signInList">
 			<view class="signTit fs30 font-color-333">签到明细</view>
-			<view v-if="historyList && historyList.length" class="signInBox">
-				<view v-for="item in historyList" :key="item.signinId" class="signItem flex-items flex-sp-between">
+			<view v-if="signList && signList.length" class="signInBox">
+				<view v-for="item in signList" :key="item.signinId" class="signItem flex-items flex-sp-between">
 					<view class="itemLeft flex-items">
 						<view class="leftInfo">
 							<label class="fs28 font-color-333">签到</label>
@@ -71,13 +71,13 @@
 					<view class="rightBtn">+{{ item.growth }}</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
-					:status="!isEmpty && !historyList.length
-						? 'loading' : !isEmpty && historyList.length && (historyList.length >= historyTotal) ? 'no-more' : ''"
+					:status="!isEmpty && !signList.length
+						? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无签到记录~</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无签到记录~</tui-no-data>
 			</view>
 		</view>
 	</view>
@@ -91,13 +91,11 @@ export default {
 	data() {
 		return {
 			levelInfo: {},
-			recordList: {},
-			noSign: 7,
-			currentData: '',
-			upDate: '',
+			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
+			recordList: [],
 			isEmpty: false,
-			historyList: [],
-			historyTotal: 0,
+			signList: [],
+			signTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20
@@ -105,76 +103,69 @@ export default {
 		}
 	},
 	onLoad() {
-		this.getDate()
 		this.$store.dispatch('auth/refrshUserInfoAction', () => {
 			getMemberByMemberLevelIdApi({ memberLevelId: this.$store.getters.userInfo.memberLevelId })
 				.then((res) => {
 					this.levelInfo = res.data
 				})
 		})
-		this.getSelectSigninRecordList()
-		this.getSelectSigninHistory()
+		this.getSignInRecord()
+		this.getSignInHistory()
 	},
 	methods: {
-		getDate() {
-			const year = new Date().getFullYear()
-			const month = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1) : new Date().getMonth() + 1
-			const date = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()
-			this.currentData = year + '-' + month + '-' + date
-		},
-		getSelectSigninRecordList() {
-			this.noSign = 7
+		getSignInRecord() {
 			uni.showLoading({
 				mask: true,
 				title: '加载中...'
 			})
-			getSelectSigninRecordListApi({}).then((res) => {
-				uni.hideLoading()
-				this.recordList = res.data
-				this.noSign = this.noSign - this.recordList.length
-				const newDate = this.recordList[this.recordList.length - 1]
-				this.upDate = newDate.createTime.slice(0, 10)
-			})
+			getSelectSigninRecordListApi({})
+				.then((res) => {
+					uni.hideLoading()
+					this.recordList = res.data
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
 		},
-		getSelectSigninHistory(isLoadmore) {
+		getSignInHistory(isLoadmore) {
 			uni.showLoading()
 			getSelectSigninHistoryApi(this.queryInfo).then((res) => {
-				this.historyTotal = res.data.total
+				this.signTotal = res.data.total
 				if (isLoadmore) {
-					this.historyList.push(...res.data.list)
+					this.signList.push(...res.data.list)
 				} else {
-					this.historyList = res.data.list
+					this.signList = res.data.list
 				}
-				this.isEmpty = this.historyList.length === 0
+				this.isEmpty = this.signList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
 					uni.hideLoading()
 				})
 		},
-		// 签到
-		signInFn() {
-			if (this.upDate !== this.currentData) {
+		handleSignIn() {
+			if (((this.recordList[this.recordList.length - 1] || {}).createTime || '').slice(0, 10) !== this.currentDay) {
 				uni.showLoading({
 					mask: true,
 					title: '请稍等...'
 				})
-				updateMemberSignInApi({}).then((res) => {
-					uni.hideLoading()
-					uni.showToast({
-						title: '签到成功！',
-						icon: 'none'
+				updateMemberSignInApi({})
+					.then((res) => {
+						uni.hideLoading()
+						this.$showToast('签到成功！')
+						this.getSignInRecord()
+						this.getSignInHistory()
 					})
-					this.getSelectSigninRecordList()
-					this.getSelectSigninHistory()
-				})
+					.catch((e) => {
+						uni.hideLoading()
+					})
 			}
 		}
 	},
 	onReachBottom() {
-		if (this.historyList.length < this.historyTotal) {
+		if (this.signList.length < this.signTotal) {
 			++this.queryInfo.page
-			this.getSelectSigninHistory(true)
+			this.getSignInHistory(true)
 		}
 	}
 }
@@ -207,7 +198,6 @@ export default {
 	.nameBox {
 		.name {
 			font-size: 36rpx;
-			color: #FFFFFF;
 			font-weight: bold;
 		}
 

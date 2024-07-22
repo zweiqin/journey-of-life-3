@@ -1,6 +1,6 @@
 <template>
 	<view class="exclusive-activities-container" :style="{ margin }">
-		<view @click="go('/another-tf/another-user/combination-activities/index?type=businessDistrict')">
+		<view @click="go('/another-tf/another-user/combination-activities/index?configType=6')">
 			<image
 				:src="common.seamingImgUrl('1720493830042-shangquanzhuanshuhuodong.png')" style="width: 100%;"
 				mode="widthFix"

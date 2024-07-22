@@ -75,7 +75,12 @@
 							/>
 							<view>累计会员</view>
 						</view>
-						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+						<view style="display: flex;align-items: center;">
+							<text style="color: #656565;line-height: 1;">
+								{{ fansDataInfo.fans }}个
+							</text>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 16rpx"></tui-icon>
+						</view>
 					</view>
 
 					<view
@@ -89,7 +94,12 @@
 							/>
 							<view>今日会员</view>
 						</view>
-						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+						<view style="display: flex;align-items: center;">
+							<text style="color: #656565;line-height: 1;">
+								{{ fansDataInfo.todayFans }}个
+							</text>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 16rpx"></tui-icon>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -100,7 +110,7 @@
 </template>
 
 <script>
-import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getFansListApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CommissionStatistics',
@@ -114,12 +124,17 @@ export default {
 				distributorPrice: '',
 				beeCoinPrice: '',
 				commissionPrice: ''
+			},
+			fansDataInfo: {
+				fans: 0, // 当前粉丝数
+				todayFans: 0 // 今日粉丝
 			}
 		}
 	},
 
 	onShow() {
 		this.getPricePlatformAll()
+		this.getCommissionStatistics()
 	},
 
 	methods: {
@@ -135,8 +150,15 @@ export default {
 			}
 		},
 
-		async getVipCommissionStatistics() {
-
+		getCommissionStatistics() {
+			uni.showLoading()
+			getFansListApi({ today: 0 }).then((res) => {
+				this.fansDataInfo = res.data
+				uni.hideLoading()
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
 		},
 
 		// 点击提现

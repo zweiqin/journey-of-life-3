@@ -6,18 +6,18 @@
 		></FieldPaneUUA>
 		<view
 			v-if="isShowBottomBtn"
-			style="position: fixed;bottom: 0;z-index: 1;display: flex;justify-content: space-between;width: 100%;padding: 18upx;background-color: #ffffff;box-sizing: border-box;"
+			style="position: fixed;bottom: 0;z-index: 1;display: flex;justify-content: space-between;width: 100%;padding: 18rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<tui-button
-				type="black" width="330upx" height="104upx" margin="20upx 0"
+				type="black" width="330rpx" height="104rpx" margin="20rpx 0"
 				plain
-				style="font-weight: bold;border-radius: 10upx;" @click="handleBack"
+				style="font-weight: bold;border-radius: 10rpx;" @click="handleBack"
 			>
 				点击取消
 			</tui-button>
 			<tui-button
-				type="warning" width="330upx" height="104upx" margin="20upx 0"
-				style="font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10upx;" @click="submit"
+				type="warning" width="330rpx" height="104rpx" margin="20rpx 0"
+				style="font-weight: bold;color: #F5CEA8;background: #2C2B30!important;border-radius: 10rpx;" @click="submit"
 			>
 				确认升级
 			</tui-button>
@@ -32,13 +32,13 @@
 				<view v-if="displayBadgesMsg.name" class="rotation-box"></view>
 				<view style="position: relative;max-height: 75vh;overflow-y: auto;">
 					<image
-						style="position: absolute;top: 180upx;left: 50%;transform: translateX(-50%);width: 174upx;height: 174upx;border-radius: 40upx;"
+						style="position: absolute;top: 180rpx;left: 50%;transform: translateX(-50%);width: 174rpx;height: 174rpx;border-radius: 40rpx;"
 						:src="common.seamingImgUrl($store.getters.userInfo.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
 					>
 					</image>
-					<image src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix" style="width: 500upx;" />
+					<image src="../../../static/images/user/displayBadges/glory-frame.png" mode="widthFix" style="width: 500rpx;" />
 					<view
-						style="width: 304upx;margin: 4upx auto 0;padding: 18upx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2upx solid #FFDBAB;border-radius: 50upx;"
+						style="width: 304rpx;margin: 4rpx auto 0;padding: 18rpx;color: #fff;font-weight: bold;text-align: center;vertical-align: bottom;background: linear-gradient(180deg, #feb623 0%, #e8120c 100%);border: 2rpx solid #FFDBAB;border-radius: 50rpx;"
 					>
 						<text>恭喜你成为{{ displayBadgesMsg.name }}</text>
 					</view>
@@ -117,31 +117,31 @@ export default {
 			const data = {
 				...this.form.basicInfo
 			}
-			if (!data.region) {
-				this.$showToast('请选择所在区域')
-				return
-			}
-			if (!data.relationshipLevelId) {
-				this.$showToast('缺少会员类型')
-				return
-			}
-			if (!data.name) {
-				this.$showToast('请填写姓名')
-				return
-			}
-			if (
-				!/^1[3456789]\d{9}$/.test(data.phone)
-			) {
-				this.$showToast('手机号码格式错误')
-				return
-			}
-			if (!data.address) {
-				this.$showToast('请填写详细地址')
-				return
-			}
+			// if (!data.region) {
+			// 	this.$showToast('请选择所在区域')
+			// 	return
+			// }
+			// if (!data.address) {
+			// 	this.$showToast('请填写详细地址')
+			// 	return
+			// }
+			// if (!data.name) {
+			// 	this.$showToast('请填写姓名')
+			// 	return
+			// }
+			// if (
+			// 	!/^1[3456789]\d{9}$/.test(data.phone)
+			// ) {
+			// 	this.$showToast('手机号码格式错误')
+			// 	return
+			// }
+			// if (!data.relationshipLevelId) {
+			// 	this.$showToast('缺少会员类型')
+			// 	return
+			// }
 			uni.showModal({
 				title: '提示',
-				content: '确认提交会员升级申请？',
+				content: '确认进行会员升级？',
 				success: (res) => {
 					if (res.confirm) {
 						addPlatformRelationshipApplyApi(data).then((res) => {
@@ -178,6 +178,16 @@ export default {
 			uni.navigateBack()
 		},
 		handleUnlock() {
+			if (this.$refs.refFieldPaneUUA.upgradeLevelType === 4) {
+				this.applyUserUpgradeOne = [
+					{
+						label: '会员类型：',
+						field: 'relationshipLevelId',
+						type: 'select',
+						placeholder: '请选择会员类型'
+					}
+				]
+			}
 			this.isShowBottomBtn = true
 		}
 	}
@@ -208,8 +218,8 @@ export default {
 .user-upgrade-application-container {
 	width: 100%;
 	min-height: 100vh;
-	// padding: 40upx 40upx 140upx 40upx;
-	padding-bottom: 184upx;
+	// padding: 40rpx 40rpx 140rpx 40rpx;
+	padding-bottom: 184rpx;
 	background-color: #f5f4f9;
 	box-sizing: border-box;
 	position: relative;
@@ -218,7 +228,7 @@ export default {
 		position: fixed;
 		bottom: -1px;
 		z-index: 2;
-		padding: 20upx 40upx;
+		padding: 20rpx 40rpx;
 		left: 0;
 		display: flex;
 		justify-content: center;
@@ -226,16 +236,16 @@ export default {
 		background-color: #fff;
 		width: 100%;
 		box-sizing: border-box;
-		margin-top: 272upx;
+		margin-top: 272rpx;
 	}
 
 	.btn {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 72upx;
-		width: 306upx;
-		font-size: 32upx;
+		height: 72rpx;
+		width: 306rpx;
+		font-size: 32rpx;
 		color: #fff;
 		margin: 0;
 		background-color: #07b9b9;

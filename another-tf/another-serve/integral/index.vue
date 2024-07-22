@@ -38,7 +38,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="signBox flex-items flex-sp-between mar-top-30" @click="goToSign">
+		<view class="signBox flex-items flex-sp-between mar-top-30" @click="go('/another-tf/another-serve/integral/sign')">
 			<view class="flex-items flex-sp-between">
 				<tui-icon name="member-fill" :size="96" unit="upx" color="#fdbc3d" margin="0 20upx 0 0"></tui-icon>
 				<view class="signText fs28 font-color-C5AA7B">积分签到</view>
@@ -138,7 +138,7 @@
 				<tui-no-data v-if="creditCouponInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无优惠券~</tui-no-data>
 			</view>
 		</view>
-		<tui-modal :show="isConvertible" :custom="true" :fadein="true">
+		<tui-modal :show="isConvertible" custom fadein>
 			<view class="Put-box1">
 				<view class="text-align fs34 fs-bold">
 					温馨提示
@@ -147,7 +147,7 @@
 					您的积分不够哦，请获取更多的积分!
 				</view>
 				<view class="flex-display flex-sp-between">
-					<view class="btn" @click="goToSign">
+					<view class="btn" @click="go('/another-tf/another-serve/integral/sign')">
 						去签到
 					</view>
 				</view>
@@ -265,12 +265,6 @@ export default {
 				.then((res) => {
 					this.levelInfo = res.data
 				})
-		},
-		// 签到
-		goToSign() {
-			uni.navigateTo({
-				url: '/another-tf/another-serve/integral/sign'
-			})
 		},
 		// 跳转到兑换优惠详情
 		goExchangeDetail(item) {

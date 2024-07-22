@@ -64,7 +64,6 @@
 					v-if="(goodsList && goodsList.length) || (combinationProductList && combinationProductList.length)"
 					style="display: flex;justify-content: space-between;flex-wrap: wrap;width: 100%;margin-top: 32rpx;"
 				>
-				
 					<view v-for="(item, index) in goodsList" :key="index" style="width: 47%;">
 						<view
 							style="position: relative;padding: 4rpx;border-radius: 30rpx;overflow: hidden;"
@@ -328,17 +327,11 @@ export default {
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
 				address: this.activityAddress,
-				configType:1
+				configType: 1
 			})
 				.then((res) => {
-					const { data } = res
-					let list = data.reduce((prev,item,index)=>{
-						prev = [...prev,...item.products]
-						return prev
-					},[])
-					this.combinationProductList = list 
-					// this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))
-					// this.combinationProductList = this.combinationActivityList.map((i) => i.products).reduce((t, v) => t.concat(v), [])
+					this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))
+					this.combinationProductList = this.combinationActivityList.map((i) => i.products).reduce((t, v) => t.concat(v), [])
 				})
 				.catch((res) => {
 					this.combinationActivityList = []
