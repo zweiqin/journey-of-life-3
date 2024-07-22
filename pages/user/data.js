@@ -398,6 +398,11 @@ export const otherFunction = [
 		url: '/another-tf/another-user/sign-in-prize/send-voucher'
 	},
 	{
+		name: '签到有金',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/sign-in-prize/send-transaction'
+	},
+	{
 		name: '套壳链接',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		type: 'outsideLink',

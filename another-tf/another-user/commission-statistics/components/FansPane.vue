@@ -17,16 +17,18 @@
 				</view>
 			</view>
 
-			<view style="margin: 16rpx 0;font-size: 26rpx;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
+			<view style="padding: 16rpx 0;font-size: 26rpx;text-align: right;">{{ fansInfo.updateTime || '--' }}</view>
 
-			<view class="phone" @click.stop="() => { }">
+			<view class="phone">
 				<view class="phone-number">
 					{{ fansInfo.phone ? fansInfo.phone.slice(0, 3) + '****' + fansInfo.phone.slice(7) : '-' }}
 				</view>
-				<BeeMakePhone :phone="fansInfo.phone">
-					<tui-icon name="voipphone" color="#ccc" :size="16" margin="0 10rpx 0 0"></tui-icon>
-					<text style="color: #cccccc;">拨打</text>
-				</BeeMakePhone>
+				<view @click.stop="() => { }">
+					<BeeMakePhone :phone="fansInfo.phone">
+						<tui-icon name="voipphone" color="#ccc" :size="16" margin="0 10rpx 0 0"></tui-icon>
+						<text style="color: #cccccc;">拨打</text>
+					</BeeMakePhone>
+				</view>
 			</view>
 
 			<view class="fans-wrapper">
