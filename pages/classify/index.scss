@@ -168,6 +168,11 @@
                     color: #E24747;
                     font-weight: 600;
                     font-size: 32rpx;
+                    @include flex(null,null,2rpx);
+                    text{
+                      font-size: 28rpx;
+                      margin-left: 2rpx;
+                    }
                 }
                 .voucher{
                     width: 127rpx;
