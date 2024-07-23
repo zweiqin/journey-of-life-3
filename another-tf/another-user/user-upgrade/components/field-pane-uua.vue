@@ -63,7 +63,7 @@
 				</view>
 			</view>
 			<view v-else>
-				<view style="font-weight: bold;margin-top: 36rpx;">填写申请信息</view>
+				<view style="font-weight: bold;margin-top: 36rpx;">确认信息</view>
 				<view style="padding: 0 10rpx;">
 					<view v-for="item in fields" :key="item.label">
 						<view v-if="item.field === 'id'"></view>
@@ -240,9 +240,9 @@ export default {
 					} else if (res.data && res.data.levelType === 0) {
 						this.relationLevelName = ''
 					}
-					// this.upgradeLevelType = 2
-					// this.relationLevelName = '团长'
-					// this.relationshipLevelName = '团长'
+					// this.upgradeLevelType = 4
+					// this.relationLevelName = '合伙人'
+					// this.relationshipLevelName = '合伙人'
 					uni.hideLoading()
 				})
 				.catch((e) => {
@@ -263,17 +263,17 @@ export default {
 					this.form.name = this.$store.getters.userInfo.name || ''
 					this.form.phone = this.$store.getters.userInfo.phone || ''
 				} else if (this.upgradeLevelType === 4) {
-					getSelectApplyPlatformRelationApi({})
-						.then((res) => {
-							if (res.data && res.data.applyId) {
-								// this.$showToast('已存在申请')
-								this.form.region = res.data.region
-								this.form.address = res.data.address
-								this.form.name = res.data.name
-								this.form.phone = res.data.phone
-								this.getPlatformRelationshipLevelList(this.form.region)
-							}
-						})
+					// getSelectApplyPlatformRelationApi({})
+					// 	.then((res) => {
+					// 		if (res.data && res.data.applyId) {
+					// 			// this.$showToast('已存在申请')
+					// 			this.form.region = res.data.region
+					// 			this.form.address = res.data.address
+					// 			this.form.name = res.data.name
+					// 			this.form.phone = res.data.phone
+					// 			this.getPlatformRelationshipLevelList(this.form.region)
+					// 		}
+					// 	})
 				}
 			} else if (this.upgradeLevelType === 1) {
 				this.go('/another-tf/another-user/user-upgrade/purchase-chain-goods')
@@ -296,27 +296,27 @@ export default {
 			this.getPlatformRelationshipLevelList(this.form.region)
 		},
 		getPlatformRelationshipLevelList(manageArea) {
-			uni.showLoading()
-			getPlatformRelationshipLevelApi({ manageArea })
-				.then((res) => {
-					this.relationshipLevelList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
-						...item,
-						value: item.levelNum,
-						text: item.levelName
-					}))
-					if (!this.relationshipLevelList.length) {
-						this.relationLevelName = ''
-						this.relationshipLevelName = ''
-						this.form.relationshipLevelId = ''
-					} else {
-						this.relationshipLevelName = this.relationshipLevelList[0].levelName
-						this.form.relationshipLevelId = this.relationshipLevelList[0].relationshipLevelId
-					}
-					uni.hideLoading()
-				})
-				.catch((e) => {
-					uni.hideLoading()
-				})
+			// uni.showLoading()
+			// getPlatformRelationshipLevelApi({ manageArea })
+			// 	.then((res) => {
+			// 		this.relationshipLevelList = res.data.filter((item) => item.levelName !== '会员').map((item) => ({
+			// 			...item,
+			// 			value: item.levelNum,
+			// 			text: item.levelName
+			// 		}))
+			// 		if (!this.relationshipLevelList.length) {
+			// 			this.relationLevelName = ''
+			// 			this.relationshipLevelName = ''
+			// 			this.form.relationshipLevelId = ''
+			// 		} else {
+			// 			this.relationshipLevelName = this.relationshipLevelList[0].levelName
+			// 			this.form.relationshipLevelId = this.relationshipLevelList[0].relationshipLevelId
+			// 		}
+			// 		uni.hideLoading()
+			// 	})
+			// 	.catch((e) => {
+			// 		uni.hideLoading()
+			// 	})
 		},
 		handleSelectRelationshipLevelList(e) {
 			console.log(e)

@@ -242,9 +242,9 @@ export const additionalFunction = [
 
 export const myPreferential = [
 	{
-		name: '签到积分',
+		name: '会员签到',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-		url: '/another-tf/another-serve/integral/index'
+		url: '/another-tf/another-serve/memberCenter/memberSign'
 	},
 	// #ifndef APP
 	{
@@ -388,9 +388,19 @@ export const otherFunction = [
 		url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
 	},
 	{
+		name: '签到积分',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-serve/integral/index'
+	},
+	{
 		name: '签到有奖',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
 		url: '/another-tf/another-user/sign-in-prize/send-voucher'
+	},
+	{
+		name: '签到有金',
+		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+		url: '/another-tf/another-user/sign-in-prize/send-transaction'
 	},
 	{
 		name: '套壳链接',

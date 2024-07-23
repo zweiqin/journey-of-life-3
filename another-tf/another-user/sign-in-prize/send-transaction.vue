@@ -1,20 +1,18 @@
 <template>
-	<view class="send-voucher-container">
+	<view class="send-transaction-container">
 		<view
 			:style="{ background: `url(${common.seamingImgUrl('1721380294717-orange-white-bg-color.png')}) no-repeat center top/contain` }"
 		>
-			<JHeader :dark="false" title="签到送代金券" width="50" height="50"></JHeader>
-			<VoucherChoose v-show="false" padding="20rpx 0 0" @change="(e) => (voucherChooseInfo = e) && getVoucherData()">
-			</VoucherChoose>
+			<JHeader :dark="false" title="消费金额度签到" width="50" height="50"></JHeader>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
 				<view style="position: absolute;top: 2%;right: 3%;width: 252rpx;">
 					<image style="width: 100%" :src="common.seamingImgUrl('1721380308499-calendar-image.png')" mode="widthFix" />
 				</view>
 				<view style="color: #ffffff;">
-					<view style="text-shadow: 0px 1px 0px #FB6D04;">当前兑换代金券</view>
+					<view style="text-shadow: 0px 1px 0px #048CFB;">当前兑换代金券</view>
 					<view style="display: flex;align-items: flex-end;margin-top: 32rpx;">
-						<view style="font-size: 54rpx;font-weight: bold;text-shadow: 0px 1px 0px #FB6D04;">
+						<view style="font-size: 54rpx;font-weight: bold;text-shadow: 0px 1px 0px #048CFB;">
 							{{ typeof voucherAcount.duihuanRechargeTotal === 'number'
 								? Number.parseFloat(Number(voucherAcount.duihuanRechargeTotal)).toFixed(2)
 								: '--' }}
@@ -32,20 +30,20 @@
 					</view>
 				</view>
 				<view
-					style="margin-top: 28rpx;padding: 30rpx 24rpx;background: linear-gradient(180deg, #FFE9CE 0%, #FFFFFF 22%);border-radius: 20rpx;"
+					style="margin-top: 28rpx;padding: 30rpx 24rpx;background: linear-gradient(180deg, #FFF8CE -17%, #CEECFF -7%, #FFFFFF 22%);border-radius: 20rpx;"
 				>
 					<view>
 						<text style="font-weight: bold;">已累计签到</text>
-						<text style="margin-left: 8rpx;color: #EA5C1E;">{{ recordList.length }}天</text>
+						<text style="margin-left: 8rpx;color: #1E7AEA;">{{ recordList.length }}天</text>
 					</view>
 					<view style="margin-top: 58rpx;">
 						<view style="display: flex;align-items: center;text-align: center;">
 							<view
 								v-for="(item, index) in recordList" :key="item.signinId"
-								style="flex: 1;margin: 0 6rpx;padding: 8rpx;color: #ffffff;background: linear-gradient(151deg, #FFBC69 0%, #FFA331 100%), #F2F1EF;border-radius: 84rpx;"
+								style="flex: 1;margin: 0 6rpx;padding: 8rpx;color: #ffffff;background: linear-gradient(151deg, #69D0FF 0%, #31A9FF 100%), #F2F1EF;border-radius: 84rpx;"
 							>
 								<view
-									style="display: inline-block;width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #ffe96f 0%, #ff9c07 100%);border-radius: 50%;box-shadow: 0px 4px 8px 0px #FF7300;overflow: hidden;"
+									style="display: inline-block;width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #ffe96f 0%, #ff9c07 100%);border-radius: 50%;box-shadow: 0px 4px 8px 0px #0073FF;overflow: hidden;"
 								>
 									<view
 										style="width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #feb606 0%, #ff9301 100%);border-radius: 50%;line-height: 1;"
@@ -57,10 +55,10 @@
 							</view>
 							<view
 								v-for="index in (7 - recordList.length)" :key="index"
-								style="flex: 1;margin: 0 6rpx;padding: 8rpx;color: #ffaf38;background: #FFEEC5;border-radius: 84rpx;"
+								style="flex: 1;margin: 0 6rpx;padding: 8rpx;color: #9FACB9;background: #EFF6FD;border-radius: 84rpx;"
 							>
 								<view
-									style="display: inline-block;width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #ffe96f 0%, #ff9c07 100%);border-radius: 50%;box-shadow: 0px 4px 8px 0px #FF7300;overflow: hidden;"
+									style="display: inline-block;width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #ffe96f 0%, #ff9c07 100%);border-radius: 50%;overflow: hidden;"
 								>
 									<view
 										style="width: fit-content;padding: 8rpx;background: linear-gradient(180deg, #feb606 0%, #ff9301 100%);border-radius: 50%;line-height: 1;"
@@ -73,8 +71,8 @@
 						</view>
 						<view v-if="stepsList && stepsList.length" style="margin-top: 30rpx;">
 							<tui-steps
-								:items="stepsList" spacing="120rpx" :active-steps="activeSteps" active-color="#ff9415"
-								deactive-color="#ffebd2" background-color="#ff938d"
+								:items="stepsList" spacing="120rpx" :active-steps="activeSteps" active-color="#1e7aea"
+								deactive-color="#eff6fd" background-color="#ff938d"
 							></tui-steps>
 						</view>
 					</view>
@@ -94,12 +92,6 @@
 							签到领代金券
 						</tui-button>
 					</view>
-				</view>
-				<view style="margin-top: 30rpx;">
-					<image
-						style="width: 100%;" :src="common.seamingImgUrl('1721380304898-duihuanzhuanqu.png')" mode="widthFix"
-						@click="go('/pages/index/voucher-zone')"
-					/>
 				</view>
 				<view style="margin-top: 24rpx;">
 					<view style="font-size: 34rpx;font-weight: bold;">兑换代金券入账记录</view>
@@ -142,7 +134,7 @@
 									</view>
 								</view>
 								<view style="margin-left: 12rpx;text-align: right;">
-									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #ea5f23;">
+									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #1E7AEA;">
 										<text>+{{ item.number }}</text>
 									</view>
 								</view>
@@ -187,26 +179,17 @@
 </template>
 
 <script>
-import VoucherChoose from '../voucher/components/VoucherChoose.vue'
 import { getSelectSigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
 
 export default {
-	name: 'SendVoucher',
-	components: { VoucherChoose },
+	name: 'SendTransaction',
 	data() {
 		return {
-			voucherChooseInfo: {
-				platformVoucherId: '',
-				purchaseRatio: ''
-			},
 			voucherAcount: {
 				chongzhiRechargeTotal: 0,
 				duihuanRechargeTotal: 0
 			},
-			stepsList: [
-				// { title: '1天' },
-				// { title: '2天', name: 'about-fill', size: '0', activeIcon: 'about-fill' }
-			],
+			stepsList: [],
 			activeSteps: -1,
 			isShowSignFrame: false,
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
@@ -225,11 +208,7 @@ export default {
 		this.getExchangeAccountingLogsList()
 	},
 	onShow() {
-		if (this.voucherChooseInfo.platformVoucherId) {
-			this.getVoucherData()
-		} else {
-			this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
-		}
+		this.getVoucherData()
 	},
 	methods: {
 		getVoucherData() {
@@ -252,6 +231,14 @@ export default {
 				.then((res) => {
 					uni.hideLoading()
 					this.recordList = res.data
+					this.recordList = [{
+						'signinId': 183,
+						'buyerUserId': 2123,
+						'termId': 1,
+						'growth': 10,
+						'createTime': '2024-07-22 09:15:24',
+						'updateTime': '2024-07-22 09:15:24'
+					}, ...res.data]
 					this.stepsList = new Array(7).toString()
 						.split(',')
 						.map((i, index) => {
@@ -322,7 +309,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.send-voucher-container {
+.send-transaction-container {
 	min-height: 100vh;
 	padding: 0 0 72rpx;
 	background-color: #f6f6f6;
@@ -341,8 +328,8 @@ export default {
 	.middle-btn {
 		/deep/ .tui-btn-warning {
 			color: #FFFFFF !important;
-			background: linear-gradient(180deg, #FFA93F 0%, #FF842D 100%) !important;
-			text-shadow: 0px 1px 0px #FB6D04;
+			background: linear-gradient(180deg, #62c9ff 0%, #2d9bff 100%) !important;
+			text-shadow: 0px 1px 0px #048CFB;
 		}
 
 		/deep/ .tui-btn-gray {

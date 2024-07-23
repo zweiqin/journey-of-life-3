@@ -323,10 +323,11 @@ export default {
 			getPlatformComposeCanvasApi({
 				page: 1,
 				pageSize: 9999,
-				ids: [ 47 ],
+				// ids: [ 47 ],
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
-				address: this.activityAddress
+				address: this.activityAddress,
+				configType: 1
 			})
 				.then((res) => {
 					this.combinationActivityList = res.data.filter((item) => [ 3 ].includes(item.state))

@@ -21,8 +21,8 @@
             "OAuth" : {},
             "VideoPlayer" : {},
             "Maps" : {},
-            "Geolocation" : {},
-            "Share" : {}
+            "Share" : {},
+            "Geolocation" : {}
         },
         "distribute" : {
             "android" : {

@@ -10,6 +10,7 @@ import { getInviteListApi } from './api/community-center'
 export default {
   name: 'App',
   onLaunch(options) {
+    this.globalData.appOptions = options
     // this.connectSocket()
     if (this.isLogin()) {
       getPurchaseRecordApi({ userId: getUserId(), price: 299 })
@@ -52,6 +53,7 @@ export default {
     // getUserId();
   },
   globalData: {
+    appOptions: { path: '', query: {}, referrerInfo: {}, scene: '' },
     orderTypeShow: '',
     // 定义全局请求队列
     requestQueue: [],
@@ -157,22 +159,24 @@ export default {
       this.useStorageLocation()
       // #endif
       // #ifndef APP
-      try {
-        this.globalData.isHasLocationPermission = true
-        await this.$store.dispatch('location/getCurrentLocation', (res) => {
-          // this.$store.dispatch('community/getHomePopupImage', res.detail)
-          this.$store.commit('community/CHANGE_HOME_STORE', res.town)
-          this.$store.dispatch('community/getVipPackageList', res.detail)
-        })
-      } catch (error) {
-        this.globalData.isHasLocationPermission = false
-        const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
-        if (lastAddress) {
-          this.$store.dispatch('location/getDetailAddress', lastAddress.data)
-        } else {
-          // 后端兜底1
-        }
-      }
+			if (!['pages/service-agreement/privacy-policy', 'pages/service-agreement/service-agreement'].includes(this.globalData.appOptions.path)) {
+				try {
+					this.globalData.isHasLocationPermission = true
+					await this.$store.dispatch('location/getCurrentLocation', (res) => {
+						// this.$store.dispatch('community/getHomePopupImage', res.detail)
+						this.$store.commit('community/CHANGE_HOME_STORE', res.town)
+						this.$store.dispatch('community/getVipPackageList', res.detail)
+					})
+				} catch (error) {
+					this.globalData.isHasLocationPermission = false
+					const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+					if (lastAddress) {
+						this.$store.dispatch('location/getDetailAddress', lastAddress.data)
+					} else {
+						// 后端兜底1
+					}
+				}
+			}
       setTimeout(() => {
         if (!this.$store.getters.currentCity) {
           this.useStorageLocation()

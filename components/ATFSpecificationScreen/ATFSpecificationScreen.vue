@@ -2,7 +2,7 @@
 	<view class="specification-screen-container">
 
 		<tui-landscape
-			:show="showSpecification" :position="1" :mask-closable="true" icon-left="50rpx"
+			:show="showSpecification" :position="1" mask-closable icon-left="50rpx"
 			icon-right="50rpx" :z-index="998" :mask-z-index="997"
 			@close="showSpecification = false"
 		>
