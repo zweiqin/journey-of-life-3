@@ -107,7 +107,8 @@ export default {
 				ids: [],
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
-				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-'),
+				configType: ''
 			}
 		}
 	},
@@ -115,6 +116,7 @@ export default {
 		if (options.combinationId) {
 			this.queryInfo.ids = [ Number(options.combinationId) ]
 		}
+		if (options.configType) this.queryInfo.configType = options.configType
 		this.getCombinationActivitiesList()
 	},
 	computed: {

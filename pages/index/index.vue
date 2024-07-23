@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { getClaasifyProductsApi } from "@/api/anotherTFInterface";
+import { getShopProductsApi } from "@/api/anotherTFInterface";
 export default {
   data() {
     return {
@@ -139,13 +139,25 @@ export default {
         },
       ],
       queryData: {
-        classifyId: "1160",
-        productName: "",
-        search: "",
-        type: 1,
-        page: 1,
-        pageSize: 10,
+        // classifyId: "1160",
+        // productName: "",
+        // search: "",
+        // type: 1,
+        // page: 1,
+        // pageSize: 10,
+
+        shopId: '186',
+				groupId: '1294',
+				search: '',
+				ifNew: 1,
+				type: 1,
+				volume: 0,
+				page: 1,
+				pageSize: 20,
+        counterType:2
       },
+      //  所有商品
+      allTotal: 0,
       shopList: [],
       ifLoging: false,
       //  控制头部padding
@@ -179,9 +191,10 @@ export default {
       try {
         this.ifLoging = true;
         let {
-          data: { list },
-        } = await getClaasifyProductsApi(this.queryData);
-        this.shopList = [...this.shopList, ...list];
+          data: { page },
+        } = await getShopProductsApi(this.queryData);
+        this.shopList = [...this.shopList, ...page.list];
+        this.allTotal = page.total;
         this.ifLoging = false;
       } finally {
         uni.hideLoading();
@@ -231,6 +244,10 @@ export default {
 
   //    触底加载
   onReachBottom() {
+    if(this.allTotal >= this.shopList.length){
+      uni.showToast({ title: "没有更多数据了", icon: "none", duration: 2000 });
+      return;
+    }
     //  做节流
     if (this.ifLoging) return;
     this.queryData.page++;

@@ -7,6 +7,7 @@ import {
 	getAdressDetailByLngLat,
 	getLngLatByAddress
 } from '@/utils'
+import { updateUserLocationApi } from '../../api/address'
 
 export default {
 	namespaced: true,
@@ -118,6 +119,7 @@ export default {
 												detailAddress: tempDetailAddress
 											}
 											onSuccess && typeof onSuccess === 'function' && onSuccess(finalRes)
+											dispatch('updateUserLocation', detailInfo.regeocode.formatted_address)
 											resolve(finalRes)
 										}
 									} catch (error) {
@@ -161,6 +163,16 @@ export default {
 				// dispatch('community/getHomePopupImage', detailInfo.province + data.city + data.district + data.town, { root: true })
 				commit('community/CHANGE_HOME_STORE', data.town, { root: true })
 				dispatch('community/getVipPackageList', detailInfo.province + data.city + data.district + data.town, { root: true })
+				dispatch('updateUserLocation', detailInfo.formatted_address)
+			}
+		},
+
+		async updateUserLocation({ rootState }, address) {
+			if (rootState.auth && rootState.auth.userInfo && rootState.auth.userInfo.phone && address && typeof address === 'string') {
+				updateUserLocationApi({
+					address,
+					phone: rootState.auth.userInfo.phone
+				})
 			}
 		}
 	}

@@ -1,6 +1,9 @@
 <template>
   <view class="community-center-container">
     <TuanAppShim bg="#fedfcd"></TuanAppShim>
+
+    <!-- 是否有人邀请成为股东 -->
+    <CheckShareholderInvite></CheckShareholderInvite>
     <view class="page-header">
       <view style="padding: 0 30upx">
         <view class="top-title"></view>
@@ -31,7 +34,7 @@
         <!-- <VipPackage :scroll-top="scrollTop"></VipPackage> -->
         <SummerPackage @empty-login="$data._isShowTuiModel = true"></SummerPackage>
 
-        <view style="display: flex; justify-content: space-between; align-items: stretch; margin-top: 20rpx;">
+        <view style="display: flex; justify-content: space-between; align-items: stretch; margin-top: 20rpx">
           <view style="position: relative; width: 30.2%; height: 310rpx; background-color: #f6f6f6; overflow: hidden" @click="go('/community-center/service-detail/index?id=1')">
             <!-- <view style="position: absolute;top: 18rpx;left: 10rpx;">
 					<view style="font-size: 32rpx;font-weight: bold;">全屋整装</view>
@@ -129,6 +132,7 @@ import { T_SELECTED_ADDRESS, T_COMMUNITY_ORDER_NO, USER_INFO, USER_ID, ENTERPRIS
 import { getServiceSortApi } from '../../api/community-center'
 import { getSelectLevelPlatformRelationApi } from '../../api/anotherTFInterface'
 import PopupInformation from '../../components/popup-information/popup-information'
+import CheckShareholderInvite from './cpns/CheckShareholderInvite.vue'
 import showModal from 'mixin/showModal'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import TuanFollowOfficialAccount from './cpns/TuanFollowOfficialAccount.vue'
@@ -157,7 +161,8 @@ export default {
     // FourSeasonsZone,
     ServerPane,
     PopupInformation,
-    SummerPackage
+    SummerPackage,
+    CheckShareholderInvite
   },
   mixins: [showModal()],
   data() {

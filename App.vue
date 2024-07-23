@@ -3,189 +3,216 @@
 import { getUserId, isH5InWebview } from './utils'
 import { BASE_WS_API } from './config'
 import { CHANGE_IS_IN_MINIPROGRAM } from './store/modules/type'
-import { T_SELECTED_ADDRESS } from './constant'
+import { T_SELECTED_ADDRESS, USER_INFO } from './constant'
 import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
+import { getInviteListApi } from './api/community-center'
 
 export default {
-	name: 'App',
-	onLaunch(options) {
-		// this.connectSocket()
-		if (this.isLogin()) {
-			getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-			getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
-			this.$store.dispatch('auth/refrshUserInfoAction')
-		}
-		uni.getSystemInfo({
-			success: (res) => {
-				if (res.safeArea.top > 20 && res.model.indexOf('iPhone') !== -1) {
-					this.globalData.isIphone = true
-				}
-			}
-		})
-		if (isH5InWebview()) this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true)
-		this.$store.dispatch('app/getSystermTerminal')
-		// #ifdef H5
-		this.globalData.terminal = 2
-		// #endif
-		// #ifdef APP || APP-NVUE
-		this.globalData.terminal = 3
-		// #endif
-		// #ifdef MP
-		this.globalData.terminal = 1
-		// #endif
-	
-	},
-	onShow() {
-		// 判断浏览器环境
-		// if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
-		// }
-		// const state = util.getUrlKey('state')
-		// const code = util.getUrlKey('code')
-		// if ((state == 'needCode' || state == 'unNeedCode') && code) {
-		// 	let path = window.location.href
-		// 	if (path.indexOf('code=') > 0 && path.indexOf('&state=unNeedCode') > -1) {
-		// 		http.mpLogin(null, code)
-		// 		path = path.substring(0, path.indexOf('code=') - 1)
-		// 		history.replaceState({}, '', path)
-		// 	}
-		// }
-		// getUserId();
-	},
-	globalData: {
-		orderTypeShow: '',
-		// 定义全局请求队列
-		requestQueue: [],
-		// 是否正在进行登陆
-		isLanding: false,
-		// 购物车商品数量
-		totalCartCount: 0,
-		// 是否一直显示 弹窗
-		isShowCommunityPopup: true,
-		// 是否已经打开过绑定手机号弹窗
-		isShowedBindMobilePopu: false,
-		// 用户是否授权获取当前位置
-		isHasLocationPermission: true,
-		// 是否显示关注公众号
-		isShowFollowOfficialAccount: false,
-		// 压屏窗弹出次数
-		communityPopupCount: 0,
-		// 判断设备是否为 iPhone
-		isIphone: false,
-		// 画布设备 1 小程序，2 H5，3 App 4 电脑
-		terminal: ''
-	},
-	data() {
-		return {
-			scene: ''
-		}
-	},
+  name: 'App',
+  onLaunch(options) {
+    this.globalData.appOptions = options
+    // this.connectSocket()
+    if (this.isLogin()) {
+      getPurchaseRecordApi({ userId: getUserId(), price: 299 })
+      getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
+      this.$store.dispatch('auth/refrshUserInfoAction')
+    }
+    uni.getSystemInfo({
+      success: (res) => {
+        if (res.safeArea.top > 20 && res.model.indexOf('iPhone') !== -1) {
+          this.globalData.isIphone = true
+        }
+      }
+    })
+    if (isH5InWebview()) this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, true)
+    this.$store.dispatch('app/getSystermTerminal')
+    // #ifdef H5
+    this.globalData.terminal = 2
+    // #endif
+    // #ifdef APP || APP-NVUE
+    this.globalData.terminal = 3
+    // #endif
+    // #ifdef MP
+    this.globalData.terminal = 1
+    // #endif
+  },
+  onShow() {
+    // 判断浏览器环境
+    // if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
+    // }
+    // const state = util.getUrlKey('state')
+    // const code = util.getUrlKey('code')
+    // if ((state == 'needCode' || state == 'unNeedCode') && code) {
+    // 	let path = window.location.href
+    // 	if (path.indexOf('code=') > 0 && path.indexOf('&state=unNeedCode') > -1) {
+    // 		http.mpLogin(null, code)
+    // 		path = path.substring(0, path.indexOf('code=') - 1)
+    // 		history.replaceState({}, '', path)
+    // 	}
+    // }
+    // getUserId();
+  },
+  globalData: {
+    appOptions: { path: '', query: {}, referrerInfo: {}, scene: '' },
+    orderTypeShow: '',
+    // 定义全局请求队列
+    requestQueue: [],
+    // 是否正在进行登陆
+    isLanding: false,
+    // 购物车商品数量
+    totalCartCount: 0,
+    // 是否一直显示 弹窗
+    isShowCommunityPopup: true,
+    // 是否已经打开过绑定手机号弹窗
+    isShowedBindMobilePopu: false,
+    // 用户是否授权获取当前位置
+    isHasLocationPermission: true,
+    // 是否显示关注公众号
+    isShowFollowOfficialAccount: false,
+    // 压屏窗弹出次数
+    communityPopupCount: 0,
+    // 判断设备是否为 iPhone
+    isIphone: false,
+    // 画布设备 1 小程序，2 H5，3 App 4 电脑
+    terminal: '',
+    // 是否显示了邀请提醒
+    isShowInvitationNotice: false
+  },
+  data() {
+    return {
+      scene: ''
+    }
+  },
 
-	mounted() {
-		this.setUserLocation()
+  mounted() {
+    this.setUserLocation()
 
-		this.$store.dispatch('app/getUserSystermInfo')
+    this.$store.dispatch('app/getUserSystermInfo')
 
-		// // #ifdef APP
-		// this.$store.dispatch("community/getHomePopupImage");
-		// // #endif
+    // // #ifdef APP
+    // this.$store.dispatch("community/getHomePopupImage");
+    // // #endif
 
-		const launchOptions = uni.getLaunchOptionsSync()
-		this.scene = launchOptions.scene
-	},
-	methods: {
-		connectSocket() {
-			if (this.isLogin()) {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandle: uni.connectSocket({
-						url: `${BASE_WS_API}/${getUserId()}`,
-						complete: () => { }
+    const launchOptions = uni.getLaunchOptionsSync()
+    this.scene = launchOptions.scene
+    this.getInviteList()
+  },
+  methods: {
+    connectSocket() {
+      if (this.isLogin()) {
+        this.$store.dispatch('customerService/joinCustomerServiceChat', {
+          ref: this,
+          wsHandle: uni.connectSocket({
+            url: `${BASE_WS_API}/${getUserId()}`,
+            complete: () => {}
+          })
+        })
+      }
+    },
+    onOpen() {
+      // console.log('onOpen连接成功');
+    },
+    onMessage(evt) {
+      // console.log('onMessage收到消息', evt);
+      // const data = JSON.parse(evt.data)
+      // console.log(data)
+      // if (data.status == 10400) {
+      // 	uni.showToast({
+      // 		title: '网络不给力，请检查网络连接',
+      // 		icon: 'none'
+      // 	}) // 弹出提示框
+      // } else if (data.status == 13140) {
+      // 	this.$store.dispatch('customerService/getChatList')
+      // }
+    },
+    onError(errMsg) {
+      // console.log('onError出错了');
+      // uni.showLoading({
+      // 	title: '断线了，正在重新连接......',
+      // 	mask: true
+      // })
+      // uni.showToast({
+      // 	title: 'Error出错了' + errMsg,
+      // 	icon: 'none',
+      // 	duration: 2000
+      // })
+    },
+    onClose() {
+      // console.log('onClose关闭了');
+      this.timer && clearTimeout(this.timer)
+      if (this.isLogin()) {
+        this.timer = setTimeout(() => {
+          this.$store.dispatch('customerService/joinCustomerServiceChat', {
+            ref: '',
+            wsHandle: uni.connectSocket({
+              url: `${BASE_WS_API}/${getUserId()}`,
+              complete: () => {}
+            })
+          })
+        }, 2000)
+      }
+    },
+
+    // 设置用户定位
+    async setUserLocation() {
+      // #ifdef APP
+      this.useStorageLocation()
+      // #endif
+      // #ifndef APP
+			if (!['pages/service-agreement/privacy-policy', 'pages/service-agreement/service-agreement'].includes(this.globalData.appOptions.path)) {
+				try {
+					this.globalData.isHasLocationPermission = true
+					await this.$store.dispatch('location/getCurrentLocation', (res) => {
+						// this.$store.dispatch('community/getHomePopupImage', res.detail)
+						this.$store.commit('community/CHANGE_HOME_STORE', res.town)
+						this.$store.dispatch('community/getVipPackageList', res.detail)
 					})
-				})
-			}
-		},
-		onOpen() {
-			// console.log('onOpen连接成功');
-		},
-		onMessage(evt) {
-			// console.log('onMessage收到消息', evt);
-			// const data = JSON.parse(evt.data)
-			// console.log(data)
-			// if (data.status == 10400) {
-			// 	uni.showToast({
-			// 		title: '网络不给力，请检查网络连接',
-			// 		icon: 'none'
-			// 	}) // 弹出提示框
-			// } else if (data.status == 13140) {
-			// 	this.$store.dispatch('customerService/getChatList')
-			// }
-		},
-		onError(errMsg) {
-			// console.log('onError出错了');
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			// uni.showToast({
-			// 	title: 'Error出错了' + errMsg,
-			// 	icon: 'none',
-			// 	duration: 2000
-			// })
-		},
-		onClose() {
-			// console.log('onClose关闭了');
-			this.timer && clearTimeout(this.timer)
-			if (this.isLogin()) {
-				this.timer = setTimeout(() => {
-					this.$store.dispatch('customerService/joinCustomerServiceChat', {
-						ref: '',
-						wsHandle: uni.connectSocket({
-							url: `${BASE_WS_API}/${getUserId()}`,
-							complete: () => { }
-						})
-					})
-				}, 2000)
-			}
-		},
-
-		// 设置用户定位
-		async setUserLocation() {
-			// #ifdef APP
-			this.useStorageLocation()
-			// #endif
-			// #ifndef APP
-			try {
-				this.globalData.isHasLocationPermission = true
-				await this.$store.dispatch('location/getCurrentLocation', (res) => {
-					// this.$store.dispatch('community/getHomePopupImage', res.detail)
-					this.$store.commit('community/CHANGE_HOME_STORE', res.town)
-					this.$store.dispatch('community/getVipPackageList', res.detail)
-				})
-			} catch (error) {
-				this.globalData.isHasLocationPermission = false
-				const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
-				if (lastAddress) {
-					this.$store.dispatch('location/getDetailAddress', lastAddress.data)
-				} else {
-					// 后端兜底1
+				} catch (error) {
+					this.globalData.isHasLocationPermission = false
+					const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+					if (lastAddress) {
+						this.$store.dispatch('location/getDetailAddress', lastAddress.data)
+					} else {
+						// 后端兜底1
+					}
 				}
 			}
-			setTimeout(() => {
-				if (!this.$store.getters.currentCity) {
-					this.useStorageLocation()
-				}
-			}, 2000)
-			// #endif
-		},
+      setTimeout(() => {
+        if (!this.$store.getters.currentCity) {
+          this.useStorageLocation()
+        }
+      }, 2000)
+      // #endif
+    },
 
-		// 使用本地数据
-		useStorageLocation() {
-			const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
-			if (lastAddress) {
-				this.$store.dispatch('location/getDetailAddress', lastAddress.data)
-			}
-		}
-	}
+    // 使用本地数据
+    useStorageLocation() {
+      const lastAddress = uni.getStorageSync(T_SELECTED_ADDRESS)
+      if (lastAddress) {
+        this.$store.dispatch('location/getDetailAddress', lastAddress.data)
+      }
+    },
+
+    async getInviteList() {
+      const userInfo = uni.getStorageSync(USER_INFO)
+      if (userInfo && userInfo.phone) {
+        try {
+          const res = await getInviteListApi({
+            bizType: 2,
+            inviteUserPhone: userInfo.phone, // 被邀请人手机号
+            pageNo: 1,
+            pageSize: 100
+          })
+
+          if (res.statusCode === 20000) {
+            this.globalData.isShowInvitationNotice = !!res.data.records.length
+          }
+        } catch (error) {
+          this.globalData.isShowInvitationNotice = false
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -385,21 +412,21 @@ uni-rich-text img {
 }
 
 .flex-column {
-  flex-direction: column
+  flex-direction: column;
 }
 
 .flex-column-plus {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
 .flex-row {
-  flex-direction: row
+  flex-direction: row;
 }
 
 .flex-row-plus {
   display: flex;
-  flex-direction: row
+  flex-direction: row;
 }
 
 .flex-sp-around {
@@ -416,12 +443,12 @@ uni-rich-text img {
 
 .flex-wrap-1 {
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .flex-nowrap-1 {
   display: flex;
-  flex-wrap: nowrap
+  flex-wrap: nowrap;
 }
 
 .align-end {
@@ -634,7 +661,7 @@ uni-rich-text img {
 }
 
 .backColorFFF {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .pos-abs {
@@ -642,23 +669,23 @@ uni-rich-text img {
 }
 
 .bor-bot-line {
-  border-bottom: #C8C7CC 1upx solid;
+  border-bottom: #c8c7cc 1upx solid;
 }
 
 .bor-line-F7F7F7 {
-  border-bottom: #F7F7F7 1upx solid;
+  border-bottom: #f7f7f7 1upx solid;
 }
 
 .bor-line-E5E5E5 {
-  border-bottom: #E5E5E5 1upx solid;
+  border-bottom: #e5e5e5 1upx solid;
 }
 
 .borRig-line-E5E5E5 {
-  border-right: #DDDDDD 2upx solid;
+  border-right: #dddddd 2upx solid;
 }
 
 .borRig-line-20 {
-  border-bottom: #F7F7F7 20upx solid;
+  border-bottom: #f7f7f7 20upx solid;
 }
 
 .font-color-red {
@@ -666,15 +693,15 @@ uni-rich-text img {
 }
 
 .font-color-FFF {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .font-color-8A734A {
-  color: #8A734A;
+  color: #8a734a;
 }
 
 .font-color-71521B {
-  color: #71521B;
+  color: #71521b;
 }
 
 .font-color-222 {
@@ -698,35 +725,35 @@ uni-rich-text img {
 }
 
 .font-color-DDD {
-  color: #DDDDDD;
+  color: #dddddd;
 }
 
 .font-color-CCC {
-  color: #CCCCCC;
+  color: #cccccc;
 }
 
 .font-color-FFEBC4 {
-  color: #FFEBC4;
+  color: #ffebc4;
 }
 
 .font-color-1CC363 {
-  color: #1CC363;
+  color: #1cc363;
 }
 
 .font-color-47A7EE {
-  color: #47A7EE;
+  color: #47a7ee;
 }
 
 .font-color-C5AA7B {
-  color: #C5AA7B;
+  color: #c5aa7b;
 }
 
 .font-color-FF7700 {
-  color: #FF7700;
+  color: #ff7700;
 }
 
 .font-color-FF7911 {
-  color: #FF7911;
+  color: #ff7911;
 }
 
 .font-color-80 {
@@ -734,15 +761,15 @@ uni-rich-text img {
 }
 
 .font-color-DD {
-  color: #DD524D;
+  color: #dd524d;
 }
 
 .font-color-C83732 {
-  color: #C83732;
+  color: #c83732;
 }
 
 .font-color-3F {
-  color: #3F536E;
+  color: #3f536e;
 }
 
 .font-color-009 {
@@ -773,7 +800,7 @@ uni-rich-text img {
 }
 
 .border-bottom-Line {
-  border-bottom: 1upx solid #EDEDED;
+  border-bottom: 1upx solid #ededed;
 }
 
 .decoration {
@@ -784,7 +811,7 @@ uni-rich-text img {
   margin-top: 25upx;
 
   .uni-checkbox-input {
-    border-color: #C5AA7B !important;
+    border-color: #c5aa7b !important;
     width: 30upx;
     height: 30upx;
   }
@@ -794,14 +821,14 @@ uni-rich-text img {
   }
 
   .uni-checkbox-input-checked {
-    background: #C5AA7B;
+    background: #c5aa7b;
   }
 }
 
 .footprint {
   .itemList {
     .uni-checkbox-input {
-      border-color: #C5AA7B !important;
+      border-color: #c5aa7b !important;
       width: 36upx;
       height: 36upx;
       border-radius: 50%;
@@ -813,7 +840,7 @@ uni-rich-text img {
     }
 
     .uni-checkbox-input-checked {
-      background: #C5AA7B;
+      background: #c5aa7b;
     }
   }
 }

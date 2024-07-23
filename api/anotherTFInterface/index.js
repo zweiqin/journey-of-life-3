@@ -200,11 +200,14 @@ export const getSelectLevelPlatformRelationApi = (data) => AnotherTFRequest('/pl
 // 今日会员，累计会员 // 每个等级统计
 export const getFansListApi = (data) => AnotherTFRequest('/platformRelationship/getStatistics', data, 'POST')
 
-// 我的账本 // 佣金金额统计
+// （废）我的账本 // 佣金金额统计
 export const getSmallAccountBookStatisticsApi = (data = {}) => AnotherTFRequest('/platformRelationship/getStatisticsAmount', data, 'POST')
 
-// 获取佣金列表 // 佣金金额记录
+// （废）获取佣金列表 // 佣金金额记录
 export const getCommissionDeatilListApi = (data) => AnotherTFRequest('/platformRelationship/getStatisticsRecord', data, 'POST')
+
+// 今日会员记录
+export const getRelationshipTodayRdListApi = (data) => AnotherTFRequest('/platformRelationship/getTodayRdList', data, 'POST')
 
 // 分页查询用户佣金入账记录表
 export const getAllCommissionEntryRecordApi = (data) => AnotherTFRequest('/buyerCommissionEntryRecord/getAll', data, 'POST')
@@ -249,6 +252,22 @@ export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/sel
 // 签到
 export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST')
 
+// 积分签到
+// 积分兑换优惠券
+export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
+
+// 积分签到
+export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
+
+// 根据月份查询签到记录
+export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
+
+// 查询可以积分兑换的优惠券
+export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
+
+// 查询积分记录
+export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
+
 // 购物车
 // 商家购物车查询
 export const getShopCartApi = (data) => AnotherTFRequest('/cart/getShopCart', data)
@@ -267,6 +286,9 @@ export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex'
 
 // 获取商家扩展信息列表
 export const getShopCheckListDetailApi = (data) => AnotherTFRequest('/check/getShopCheckList', data)
+
+// 商家是否停用
+export const getShopIsNotDeactivateApi = (data) => AnotherTFRequest('/check/getShopIsNotDeactivate', data)
 
 // 查询店铺分类
 export const getShopCategoryLevelApi = (data) => AnotherTFRequest('/shopCategory/getShopCategoryLevel', data)
@@ -471,22 +493,6 @@ export const updateDeleteRedisCardHolderApi = (data) => AnotherTFRequest('/commu
 // 首页广告
 // 成为商家的客户
 export const addTakeBatchCouponApi = (data) => AnotherTFRequest('/coupon/takeBatchCoupon', data, 'POST')
-
-// 积分签到
-// 积分兑换优惠券
-export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
-
-// 积分签到
-export const updateCreditSignInApi = (data) => AnotherTFRequest('/credit/signIn', data, 'POST')
-
-// 根据月份查询签到记录
-export const updateCreditSelectByMonthApi = (data) => AnotherTFRequest('/credit/selectByMonth', data, 'POST')
-
-// 查询可以积分兑换的优惠券
-export const getSelectCreditCouponListApi = (data) => AnotherTFRequest('/credit/selectCreditCouponList', data, 'POST')
-
-// 查询积分记录
-export const getSelectCreditRecordApi = (data) => AnotherTFRequest('/credit/selectCreditRecord', data, 'POST')
 
 // 首页广告
 // 获取首页广告

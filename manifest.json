@@ -21,8 +21,8 @@
             "OAuth" : {},
             "VideoPlayer" : {},
             "Maps" : {},
-            "Geolocation" : {},
-            "Share" : {}
+            "Share" : {},
+            "Geolocation" : {}
         },
         "distribute" : {
             "android" : {
@@ -51,7 +51,8 @@
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ],
                 "minSdkVersion" : 21,
-                "targetSdkVersion" : 31
+                "targetSdkVersion" : 31,
+                "excludePermissions" : []
             },
             "ios" : {
                 "dSYMs" : false,

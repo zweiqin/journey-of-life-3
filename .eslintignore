@@ -5,6 +5,7 @@ pages/index/
 pages/prod/
 pages/hot/
 pages/choose-location/
+App.vue
 # user/
 # pages/service-agreement/
 # utils/payUtil.js

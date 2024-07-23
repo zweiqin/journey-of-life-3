@@ -98,7 +98,7 @@
 
     <!-- 维修商品 -->
     <view class="serve-user-goods-info section">
-      <view class="section-title">维修物品图片</view>
+      <view class="section-title">图片</view>
       <view class="image-list">
         <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
           <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>

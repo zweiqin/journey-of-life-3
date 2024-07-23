@@ -10,8 +10,8 @@
 				<template #selectionbox>
 					<view style="height: auto;color: #080808;" @click="typeDropdownShow = !typeDropdownShow">
 						<text>类型∨</text>
-						<text style="margin-left: 10upx;;font-size: 26upx;">
-							<text v-if="isToday">今日会员</text>
+						<text style="margin-left: 10rpx;;font-size: 26rpx;">
+							<text v-if="fansDataInfo.query.isToday">今日会员</text>
 							<text v-else>累计会员</text>
 						</text>
 					</view>
@@ -20,19 +20,19 @@
 					<view style="width: fit-content;box-sizing: border-box;">
 						<tui-list-view
 							color="#777" margin-top="2rpx"
-							style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
+							style="width: fit-content;min-width: 150rpx;max-height: 28vh;overflow-y: auto;"
 						>
 							<tui-list-cell
 								padding="20rpx 0" color="#ffffff" background-color="transparent"
-								style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
-								@click="(typeDropdownShow = false) || (isToday = 1) && getCommanderVipUserList()"
+								style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
+								@click="(typeDropdownShow = false) || (fansDataInfo.query.isToday = 1) && getRelationshipUserList()"
 							>
 								今日会员
 							</tui-list-cell>
 							<tui-list-cell
 								padding="20rpx 0" color="#ffffff" background-color="transparent"
-								style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
-								@click="(typeDropdownShow = false) || (isToday = 0) || getCommanderVipUserList()"
+								style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
+								@click="(typeDropdownShow = false) || (fansDataInfo.query.isToday = 0) || getRelationshipUserList()"
 							>
 								累计会员
 							</tui-list-cell>
@@ -41,46 +41,18 @@
 				</template>
 			</tui-dropdown-list>
 		</view>
-		<view class="search-btn" style="display: flex;align-items: center;padding: 20rpx 40rpx 12rpx;">
-			<text style="font-weight: bold;font-size: 34rpx;">手机号</text>
-			<view style="flex: 1;margin-left: 16rpx;">
-				<tui-input
-					v-model="phoneQuery" placeholder="根据手机号筛选" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
-					background-color="transparent"
-				>
-					<template #right>
-						<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleFansListFilter">
-							筛选
-						</tui-button>
-					</template>
-				</tui-input>
-			</view>
-		</view>
-		<view class="search-btn" style="display: flex;align-items: center;padding: 0 40rpx 12rpx;">
-			<text style="font-weight: bold;font-size: 34rpx;">用户名</text>
-			<view style="flex: 1;margin-left: 16rpx;">
-				<tui-input
-					v-model="userNameQuery" placeholder="根据用户名筛选" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
-					background-color="transparent"
-				>
-					<template #right>
-						<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleFansListFilter">
-							筛选
-						</tui-button>
-					</template>
-				</tui-input>
-			</view>
-		</view>
 
-		<view class="list">
-			<view v-if="fansShowList.length" class="list-container">
-				<FansPane v-for="(item, index) in fansShowList" :key="index" :fans-info="item" @view="handleViewFans"></FansPane>
+		<view style="margin-top: 20rpx;">
+			<view v-if="fansDataInfo.data && fansDataInfo.data.length">
+				<FansPane v-for="(item, index) in fansDataInfo.data" :key="index" :fans-info="item" @view="handleViewFans"></FansPane>
 			</view>
-			<view style="padding-bottom: 45upx;">
-				<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
-				<view v-if="!isLoading && !fansShowList.length">
-					<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据...</tui-no-data>
-				</view>
+			<view style="padding-bottom: 45rpx;">
+				<LoadingMore
+					:status="!fansDataInfo.isEmpty && !fansDataInfo.data.length
+						? 'loading' : !fansDataInfo.isEmpty && fansDataInfo.data.length && (fansDataInfo.data.length >= fansDataInfo.listTotal) ? 'no-more' : ''"
+				>
+				</LoadingMore>
+				<tui-no-data v-if="fansDataInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据...</tui-no-data>
 			</view>
 		</view>
 
@@ -89,22 +61,35 @@
 			:z-index="1002" :mask-z-index="1001" :show="subFansListVisible"
 			@close="subFansListVisible = false"
 		>
-			<scroll-view scroll-y class="fans-list">
-				<view class="fans-header">
-					<view class="fans-title"><text class="user-name">{{ subFansInfo.phone }}</text> 的粉丝列表</view>
+			<scroll-view scroll-y style="height: 900rpx;background-color: #dfdfde;" @scrolltolower="handleScrolltolower">
+				<view style="display: flex;align-items: center;justify-content: space-between;padding: 16rpx 28rpx;">
+					<view>
+						<text style="color: orange;">{{ subFansInfo.query.phone || '--' }}</text>
+						的粉丝列表
+					</view>
 					<tui-icon
-						class="close-icon" :size="20" name="close" color="#ccc"
+						:size="20" name="close" color="#ccc"
 						@click="subFansListVisible = false"
 					></tui-icon>
 				</view>
-				<FansPane v-for="(item, index) in subFansInfo.paramLists" :key="index" :fans-info="item"></FansPane>
+				<view v-if="subFansInfo.data && subFansInfo.data.length">
+					<FansPane v-for="(item, index) in subFansInfo.data" :key="index" :fans-info="item"></FansPane>
+				</view>
+				<view style="padding-bottom: 45rpx;">
+					<LoadingMore
+						:status="!subFansInfo.isEmpty && !subFansInfo.data.length
+							? 'loading' : !subFansInfo.isEmpty && subFansInfo.data.length && (subFansInfo.data.length >= subFansInfo.listTotal) ? 'no-more' : ''"
+					>
+					</LoadingMore>
+					<tui-no-data v-if="subFansInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无粉丝数据</tui-no-data>
+				</view>
 			</scroll-view>
 		</tui-bottom-popup>
 	</view>
 </template>
 
 <script>
-import { getFansListApi } from '../../../api/anotherTFInterface'
+import { getRelationshipTodayRdListApi } from '../../../api/anotherTFInterface'
 import FansPane from './components/FansPane.vue'
 export default {
 	name: 'VipUser',
@@ -114,69 +99,97 @@ export default {
 	data() {
 		return {
 			typeDropdownShow: false,
-			isToday: '',
-			phoneQuery: '',
-			userNameQuery: '',
-			fansDataList: [],
-			fansShowList: [],
-			isLoading: true,
+			fansDataInfo: {
+				query: {
+					page: 1,
+					pageSize: 20,
+					isToday: '', // 0-全部 1-今日
+					phone: ''
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
 			subFansListVisible: false,
 			subFansInfo: {
-				phone: '',
-				paramLists: []
+				query: {
+					page: 1,
+					pageSize: 20,
+					isToday: 0,
+					phone: '' // 电话
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
 			}
 		}
 	},
 	onLoad(options) {
-		this.isToday = Number(options.today) || 0
-		this.getCommanderVipUserList()
+		this.fansDataInfo.query.isToday = Number(options.today) || 0
+		this.getRelationshipUserList()
 	},
 	methods: {
-		getCommanderVipUserList() {
+		getRelationshipUserList(isLoadmore) {
 			uni.showLoading()
-			this.isLoading = true
-			getFansListApi({
-				today: this.isToday
-			}).then((res) => {
-				this.fansDataList = res.data.paramLists
-				this.fansShowList = this.fansDataList
+			getRelationshipTodayRdListApi({ ...this.fansDataInfo.query }).then((res) => {
+				this.fansDataInfo.listTotal = res.data.total
+				if (isLoadmore) {
+					this.fansDataInfo.data.push(...res.data.list)
+				} else {
+					this.fansDataInfo.data = res.data.list
+				}
+				this.fansDataInfo.isEmpty = this.fansDataInfo.data.length === 0
 				uni.hideLoading()
-				this.isLoading = false
 			})
 				.catch((e) => {
 					uni.hideLoading()
-					this.isLoading = false
 				})
-				.finally((e) => {
-					uni.stopPullDownRefresh()
+		},
+		getSubFansList(isLoadmore) {
+			uni.showLoading({
+				title: '加载中'
+			})
+			getRelationshipTodayRdListApi({ ...this.subFansInfo.query })
+				.then((res) => {
+					this.subFansInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.subFansInfo.data.push(...res.data.list)
+					} else {
+						this.subFansInfo.data = res.data.list
+					}
+					this.subFansInfo.isEmpty = this.subFansInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
 				})
 		},
 		// 查看粉丝列表
 		handleViewFans(currentFansInfo) {
-			const { paramLists } = currentFansInfo
-			if (paramLists && paramLists.length) {
-				this.subFansInfo = currentFansInfo
-				this.subFansListVisible = true
-			} else {
-				this.$showToast('该用户暂无粉丝')
-			}
+			this.subFansInfo.query.phone = currentFansInfo.phone
+			this.subFansInfo.query.page = 1
+			this.subFansInfo.data = []
+			this.subFansInfo.listTotal = 0
+			this.subFansInfo.isEmpty = false
+			this.getSubFansList()
+			this.subFansListVisible = true
 		},
-
-		handleFansListFilter() {
-			this.fansShowList = this.fansDataList.filter((item) => {
-				if (item.phone.includes(this.phoneQuery) && item.userName.includes(this.userNameQuery)) {
-					return true
-				}
-				if (item.paramLists && item.paramLists.length) {
-					return item.paramLists.some((section) => section.phone.includes(this.phoneQuery) && section.userName.includes(this.userNameQuery))
-				}
-				return false
-			})
+		handleScrolltolower() {
+			if (this.subFansInfo.data.length < this.subFansInfo.listTotal) {
+				++this.subFansInfo.query.page
+				this.getSubFansList(true)
+			}
 		}
 	},
-
 	onPullDownRefresh() {
-		this.getCommanderVipUserList()
+		this.fansDataInfo.query.page = 1
+		this.getRelationshipUserList()
+	},
+	onReachBottom() {
+		if (this.fansDataInfo.data.length < this.fansDataInfo.listTotal) {
+			++this.fansDataInfo.query.page
+			this.getRelationshipUserList(true)
+		}
 	}
 }
 </script>
@@ -198,127 +211,10 @@ export default {
 		}
 	}
 
-	.search-btn {
-		/deep/ .tui-input__wrap {
-			border: 2rpx solid #EF5511;
-			border-radius: 8rpx;
-		}
-	}
-
 	/deep/ .tui-dropdown-view {
 		height: auto !important;
 		width: fit-content;
-		margin-left: 58upx;
-	}
-
-	.list {
-		.list-container {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
-
-			.item {
-				margin-top: 30rpx;
-				padding: 20rpx;
-				box-sizing: border-box;
-				width: 700rpx;
-				background-color: #fff;
-				border-radius: 10rpx;
-				display: flex;
-				align-items: flex-start;
-
-				.avatar-wrapper {
-					position: relative;
-					border-radius: 10rpx;
-					overflow: hidden;
-
-					.mask {
-						position: absolute;
-						left: 0;
-						right: 0;
-						bottom: 0;
-						width: 100%;
-						height: 40rpx;
-						background-color: rgba(0, 0, 0, 0.5);
-						font-size: 24rpx;
-						color: #fff;
-						text-align: center;
-						line-height: 40rpx;
-					}
-				}
-
-				.avatar {
-					flex-shrink: 0;
-					width: 100rpx;
-					height: 100rpx;
-					border-radius: 10rpx;
-					display: block;
-				}
-
-				.info {
-					flex: 1;
-					margin-left: 20rpx;
-
-					.name {
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-
-						font-size: 28rpx;
-						font-weight: 500;
-
-						.add-time {
-							font-size: 24rpx;
-						}
-					}
-
-					.phone {
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						font-size: 24rpx;
-						margin-top: 16rpx;
-
-						.uni-btn {
-							display: flex;
-							align-items: center;
-							color: #ccc;
-							font-size: 24rpx;
-
-							.icon {
-								margin-right: 10rpx !important;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	.fans-list {
-		background-color: #f4f4f4;
-		height: 800rpx;
-
-		.fans-header {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 100%;
-			position: relative;
-			height: 90rpx;
-			margin-bottom: -20rpx;
-
-			.user-name {
-				color: orange;
-			}
-
-			.close-icon {
-				position: absolute;
-				right: 40rpx;
-				top: 50%;
-				transform: translateY(-50%);
-			}
-		}
+		margin-left: 58rpx;
 	}
 }
 </style>

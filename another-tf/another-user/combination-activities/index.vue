@@ -42,15 +42,15 @@
 				<view style="font-size: 30rpx;">选择活动类型：</view>
 				<view style="flex: 1;display: flex;justify-content: flex-end;background-color: #ffffff;">
 					<tui-dropdown-list
-						:show="typeDropdownShow" :top="55" background-color="#ffffff"
-						@close="typeDropdownShow = false"
+						:show="configDropdownShow" :top="55" background-color="#ffffff"
+						@close="configDropdownShow = false"
 					>
 						<template #selectionbox>
 							<view
 								style="height: auto;padding: 10rpx 16rpx;color: #222229;background-color: #ffffff;"
-								@click="typeDropdownShow = !typeDropdownShow"
+								@click="configDropdownShow = !configDropdownShow"
 							>
-								<text style="font-size: 26rpx;">{{ typeDropdownName || '' }}</text>
+								<text style="font-size: 26rpx;">{{ configDropdownName || '' }}</text>
 								<tui-icon name="arrowdown" :size="14" color="#222229" margin="0 0 0 14rpx"></tui-icon>
 							</view>
 						</template>
@@ -61,10 +61,10 @@
 									style="width: fit-content;min-width: 200rpx;max-height: 28vh;overflow-y: auto;"
 								>
 									<tui-list-cell
-										v-for="item in dropdownList"
+										v-for="item in configDropdownList"
 										:key="item.name" padding="10rpx 0"
 										style="width: fit-content;margin: 0 auto;"
-										@click="((queryInfo.ids = item.value) && (typeDropdownName = item.name) && (queryInfo.page = 1) && (typeDropdownShow = false)) || getCombinationActivitiesList()"
+										@click="((queryInfo.configType = item.value) && (configDropdownName = item.name) && (queryInfo.page = 1) && (configDropdownShow = false)) || getCombinationActivitiesList()"
 									>
 										{{ item.name }}
 									</tui-list-cell>
@@ -85,14 +85,14 @@
 
 		<view v-if="combinationActivityList && combinationActivityList.length" style="padding: 0 24rpx;">
 			<view
-				v-for="item in combinationActivityList" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
+				v-for="item in combinationActivityList.filter(i => !i.composeName.includes('不启用'))" :key="item.id" style="margin: 0 0 32rpx;border-radius: 20rpx;overflow: hidden;"
 			>
 				<view style="position: relative;line-height: 1;">
 					<view
-						v-if="item.composeId && dropdownList.find((i) => i.value[0] === item.composeId)"
+						v-if="queryInfo.configType"
 						style="position: absolute;top: 0;left: 0;z-index: 1;padding: 16rpx 44rpx;font-size: 28rpx;text-align: center;background-color: #ffffff;border-radius: 20rpx 0 20rpx 0;"
 					>
-						<text>{{ dropdownList.find((i) => i.value[0] === item.composeId).name }}</text>
+						<text>{{ configDropdownList.find((i) => i.value === queryInfo.configType).name }}</text>
 					</view>
 					<view
 						style="display: flex;justify-content: center;align-items: center;width: 100%;height: 220rpx;background-color: #ef530e;"
@@ -228,9 +228,12 @@ export default {
 	name: 'CombinationActivities',
 	data() {
 		return {
-			dropdownList: [{ name: '全部', value: [] }, { name: '商圈活动', value: [ 26 ] }, { name: '商城活动', value: [ 27 ] }, { name: '团长升级活动', value: [ 47 ] }, { name: '社区活动', value: [ 29 ] }],
+			typeDropdownList: [{ name: '全部', value: [] }, { name: '商圈活动', value: [ 26 ] }, { name: '商城活动', value: [ 27 ] }, { name: '团长升级活动', value: [ 47 ] }, { name: '社区活动', value: [ 29 ] }],
 			typeDropdownShow: false,
 			typeDropdownName: '全部',
+			configDropdownList: [{ name: '全部', value: '' }, { name: '升级活动', value: '1' }, { name: '分佣活动', value: '2' }, { name: '社区活动', value: '3' }, { name: '赠券活动', value: '4' }, { name: '赠金活动', value: '5' }, { name: '商圈订单活动', value: '6' }, { name: '爆品家具', value: '7' }, { name: '社区订单活动', value: '8' }, { name: '用户代金券转赠', value: '9' }, { name: '商家代金券转赠', value: '10' }, { name: '同城联盟卡', value: '11' }],
+			configDropdownShow: false,
+			configDropdownName: '全部',
 			isEmpty: false,
 			combinationActivityList: [],
 			combinationActivityTotal: 0,
@@ -240,7 +243,8 @@ export default {
 				ids: [], // 不传查全部
 				shopId: '',
 				stateList: ['0', '1', '2', '3', '4'],
-				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-')
+				address: [this.$store.state.location.locationInfo.province, this.$store.state.location.locationInfo.city, this.$store.state.location.locationInfo.district, this.$store.state.location.locationInfo.township].filter((i) => i).join('-'),
+				configType: '' // 1升级活动，2分佣活动，3社区活动，4赠券活动，5赠金活动，6商圈订单，7爆品家具，8社区订单，9用户代金券转赠，10商家代金券转赠，11同城联盟卡
 			}
 		}
 	},
@@ -259,8 +263,9 @@ export default {
 			} else if (options.type === 'community') {
 				this.queryInfo.ids = [ 29 ]
 			}
-			this.typeDropdownName = (this.dropdownList.find((i) => i.value[0] === this.queryInfo.ids[0]) || { name: '错误' }).name
+			this.configDropdownName = (this.typeDropdownList.find((i) => i.value[0] === this.queryInfo.ids[0]) || { name: '错误' }).name
 		}
+		if (options.configType) this.queryInfo.configType = options.configType
 		this.getCombinationActivitiesList()
 	},
 	computed: {

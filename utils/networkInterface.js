@@ -726,54 +726,58 @@ export const resolveSubmitOrder = async (params = {}) => {
 		hasPrice: false,
 		shamPriceText: '支付金额必须大于零'
 	}, params)
-	if (isPayImmediately) {
-		await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '')
-	} else {
-		// 检查提交表单
-		if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
-		if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
-		if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
-		// 处理表单
-		const orderPackageDataObj = resolveOrderPackageData({
-			settlement,
-			userAddressInfo,
-			skuItemMsgList,
-			skuItemInfo,
-			selectedPlatformCoupon,
-			selectIntegral,
-			integralRatio,
-			totalPrice,
-			voucherObj,
-			otherInfo
-		})
-		uni.showLoading({ mask: true, title: '结算中...' })
-		try {
-			const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode, _isShowToast: false }) // 通过_isShowToast为false更全面
-			// 下单成功处理埋点
-			addUserTrackReportDoPointerApi({
-				eventType: 3,
-				productIds: orderPackageDataObj.pointProductIds
+	if (otherInfo.isCanPay) {
+		if (isPayImmediately) {
+			await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '')
+		} else {
+			// 检查提交表单
+			if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
+			if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
+			if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
+			// 处理表单
+			const orderPackageDataObj = resolveOrderPackageData({
+				settlement,
+				userAddressInfo,
+				skuItemMsgList,
+				skuItemInfo,
+				selectedPlatformCoupon,
+				selectIntegral,
+				integralRatio,
+				totalPrice,
+				voucherObj,
+				otherInfo
 			})
-			if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
-			} else {
-				updatePlatformBeeCurrencySaveBeeApi({
-					orderId: res.data.orderId
+			uni.showLoading({ mask: true, title: '结算中...' })
+			try {
+				const res = await updatePlaceOrderSubmitApi({ ...orderPackageDataObj.data, paymentMode: payInfo.paymentMode, _isShowToast: false }) // 通过_isShowToast为false更全面
+				// 下单成功处理埋点
+				addUserTrackReportDoPointerApi({
+					eventType: 3,
+					productIds: orderPackageDataObj.pointProductIds
 				})
+				if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
+				} else {
+					updatePlatformBeeCurrencySaveBeeApi({
+						orderId: res.data.orderId
+					})
+				}
+				if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
+				} else {
+					updateSavePlatformComposeApi({
+						orderId: res.data.orderId
+					})
+				}
+				// type订单类型1-父订单2-子订单
+				await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
+			} catch (e) {
+				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+				else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误
+			} finally {
+				uni.hideLoading()
 			}
-			// if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
-			// } else {
-			// 	updateSavePlatformComposeApi({
-			// 		orderId: res.data.orderId
-			// 	})
-			// }
-			// type订单类型1-父订单2-子订单
-			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
-		} catch (e) {
-			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
-			else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误
-		} finally {
-			uni.hideLoading()
 		}
+	} else {
+		uni.showToast({ title: '无法结算', icon: 'none' })
 	}
 }
 

@@ -70,8 +70,8 @@
           <!-- <image class="" :src="https://img1.baidu.com/it/u=1845374591,668063497&fm=253&fmt=auto&app=138&f=JPEG?w=501&h=500" /> -->
           <view class="title">{{ item.productName }}</view>
           <view class="price-box">
-            <view class="one-price">￥{{ item.price }}</view>
-            <view class="voucher">可用代金券</view>
+            <view class="one-price">￥{{ item.price }}<text>起</text></view>
+            <view class="voucher">可赠送代金券</view>
           </view>
         </view>
       </view>

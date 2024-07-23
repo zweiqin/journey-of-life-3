@@ -1,5 +1,5 @@
 <template>
-	<view class="balance-operation">
+	<view class="transaction-operation-operation">
 		<JHeader title="余额" width="50" height="50"></JHeader>
 		<view style="display: flex;justify-content: space-between;align-items: center;">
 			<tui-button
@@ -119,7 +119,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.balance-operation {
+.transaction-operation-operation {
 	min-height: 100vh;
 	background-color: #f8f9fb;
 	box-sizing: border-box;

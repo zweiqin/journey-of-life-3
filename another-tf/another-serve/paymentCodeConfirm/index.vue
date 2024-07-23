@@ -172,7 +172,7 @@
 
 <script>
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherSelect, resolveSubmitOrder } from '../../../utils'
-import { getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
+import { getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
 
 export default {
@@ -232,6 +232,8 @@ export default {
 			// 其它信息
 			otherInfo: {
 				remark: '',
+				// 是否可以结算
+				isCanPay: false,
 				// 核销情况
 				orderId: '',
 				collageId: '',
@@ -251,6 +253,7 @@ export default {
 				noticeId: 0
 			}).then(({ data }) => {
 				if ([ 8 ].includes(data.state)) {
+					this.otherInfo.isCanPay = true
 					this.settlement = {
 						'receive': { 'receiveId': '0' },
 						'shops': [ {
@@ -302,56 +305,61 @@ export default {
 			this.brandId = options.brandId || ''
 			uni.showLoading()
 			try {
-				const res = await getProductDetailsByIdApi({
-					shopId: Number(options.shopId),
-					productId: Number(options.productId),
-					skuId: Number(options.skuId),
-					terminal: 1
-				})
-				this.goodsDetail = res.data
-				const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
-				if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
-					this.goodsDetail.names[0].values.push({
-						skuValue: this.goodsDetail.names[0].skuName,
-						valueCode: '单款项'
+				// const result = await getShopIsNotDeactivateApi({ shopId: options.shopId })
+				if (!'result.data') {
+					this.$showToast('商家已停用')
+				} else {
+					const res = await getProductDetailsByIdApi({
+						shopId: Number(options.shopId),
+						productId: Number(options.productId),
+						skuId: Number(options.skuId),
+						terminal: 1
 					})
-				}
-				skuCollectionListKeys.forEach((skuValueCodeItem) => {
-					if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
-				})
-				this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
-				this.$nextTick(() => {
-					if (Number(options.skuId)) {
-						this.handleSelectBySkuId(Number(options.skuId))
-					} else {
-						this.goodsDetail.names.forEach((nameItem) => {
-							this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
+					this.goodsDetail = res.data
+					const skuCollectionListKeys = Object.keys(this.goodsDetail.map)
+					if ((skuCollectionListKeys.length === 1) && (skuCollectionListKeys[0] === '单款项')) {
+						this.goodsDetail.names[0].values.push({
+							skuValue: this.goodsDetail.names[0].skuName,
+							valueCode: '单款项'
 						})
 					}
-					const list = [ {
-						ifWork: 0,
-						shopId: this.goodsDetail.shopId,
-						shopName: this.goodsDetail.shopName,
-						shopDiscountId: this.goodsDetail.shopDiscountId || '',
-						shopSeckillId: this.goodsDetail.shopSeckillId || '',
-						skus: [ {
-							productId: this.goodsDetail.productId,
-							skuId: this.selectedSku.skuId,
-							productName: this.goodsDetail.productName,
-							image: this.selectedSku.image,
-							price: this.selectedSku.price,
-							weight: 0,
-							number: this.number,
-							SKU: '',
-							total: this.selectedSku.price * this.number,
-							ifLogistics: 1
+					skuCollectionListKeys.forEach((skuValueCodeItem) => {
+						if (!this.goodsDetail.map[skuValueCodeItem].image) this.goodsDetail.map[skuValueCodeItem].image = this.goodsDetail.images[0]
+					})
+					this.goodsDetail = await resolveGoodsDetailSkuSituation(this.goodsDetail)
+					this.$nextTick(() => {
+						if (Number(options.skuId)) {
+							this.handleSelectBySkuId(Number(options.skuId))
+						} else {
+							this.goodsDetail.names.forEach((nameItem) => {
+								this.handleClickSkuItem(nameItem.nameCode, nameItem.values[0])
+							})
+						}
+						const list = [ {
+							ifWork: 0,
+							shopId: this.goodsDetail.shopId,
+							shopName: this.goodsDetail.shopName,
+							shopDiscountId: this.goodsDetail.shopDiscountId || '',
+							shopSeckillId: this.goodsDetail.shopSeckillId || '',
+							skus: [ {
+								productId: this.goodsDetail.productId,
+								skuId: this.selectedSku.skuId,
+								productName: this.goodsDetail.productName,
+								image: this.selectedSku.image,
+								price: this.selectedSku.price,
+								weight: 0,
+								number: this.number,
+								SKU: '',
+								total: this.selectedSku.price * this.number,
+								ifLogistics: 1
+							} ]
 						} ]
-					} ]
-					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, list)
-					this.isGetDetail = true
-					this.handleOnShowBefore(this.isGetDetail)
-				})
-				this.viewUpdate = ' '
+						uni.setStorageSync(T_SKU_ITEM_MSG_LIST, list)
+						this.isGetDetail = true
+						this.handleOnShowBefore(this.isGetDetail)
+					})
+					this.viewUpdate = ' '
+				}
 			} finally {
 				uni.hideLoading()
 			}
@@ -472,6 +480,7 @@ export default {
 						voucherObj: this.voucherObj
 					})
 				}
+				this.otherInfo.isCanPay = true
 				this.settlement = orderSettlementObj.settlement
 				this.userAddressInfo = orderSettlementObj.userAddressInfo
 				this.isShowShopCoupons = orderSettlementObj.isShowShopCoupons

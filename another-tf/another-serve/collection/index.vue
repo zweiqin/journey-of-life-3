@@ -1,9 +1,9 @@
 <template>
 	<view class="collection-container">
-		<JHeader title="我的收藏" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的收藏" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="tabsbox">
 			<tui-tabs
-				style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="60" :padding="0"
+				style="width: 750rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="60" :padding="0"
 				item-width="375rpx" selected-color="#333333" bold slider-bg-color="#cccccc"
 				:tabs="[{ name: '商品' }, { name: '店铺' }]" :current-tab="collectionTypeFlag"
 				@change="collectionTypeActive"
@@ -14,7 +14,7 @@
 				<view class="wid function-box">
 					<view v-if="allCheckShow" class="finishbox" @click="allCheckShow = false">完成</view>
 					<view v-else class="flex-row-plus editicon-box flex-items fs28" @click="editClick">
-						<tui-icon name="edit" :size="40" unit="upx" color="#333333"></tui-icon>
+						<tui-icon name="edit" :size="40" unit="rpx" color="#333333"></tui-icon>
 						<text class="mar-left-10">编辑</text>
 					</view>
 				</view>
@@ -29,13 +29,13 @@
 									<view class="item wid flex-row-plus flex-display">
 										<view v-show="allCheckShow" class="flex-items selctBtn">
 											<tui-icon
-												v-if="item.selected == 1" name="circle-fill" :size="40" unit="upx"
+												v-if="item.selected == 1" name="circle-fill" :size="40" unit="rpx"
 												color="#c5aa7b"
-												margin="0 30upx 0 0" @click="productItemSel(index, 0)"
+												margin="0 30rpx 0 0" @click="productItemSel(index, 0)"
 											></tui-icon>
 											<tui-icon
-												v-else name="circle" :size="40" unit="upx"
-												color="#cccccc" margin="0 30upx 0 0"
+												v-else name="circle" :size="40" unit="rpx"
+												color="#cccccc" margin="0 30rpx 0 0"
 												@click="productItemSel(index, 1)"
 											></tui-icon>
 										</view>
@@ -72,13 +72,13 @@
 				<view v-show="allCheckShow" class="allcheck-box flex-row-plus flex-sp-between flex-items">
 					<view class="left">
 						<tui-icon
-							v-if="isAllProCheck" name="circle-fill" :size="40" unit="upx"
-							color="#c5aa7b" margin="0 30upx 0 0"
+							v-if="isAllProCheck" name="circle-fill" :size="40" unit="rpx"
+							color="#c5aa7b" margin="0 30rpx 0 0"
 							@click="allProductSel(0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="0 30upx 0 0"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="0 30rpx 0 0"
 							@click="allProductSel(1)"
 						></tui-icon>
 						<text>全选</text>
@@ -89,20 +89,20 @@
 				</view>
 				<view v-if="allCheckShow" class="pad-bot-140"></view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!productInfo.isEmpty && !productInfo.data.length
 						? 'loading' : !productInfo.isEmpty && productInfo.data.length && (productInfo.data.length >= productInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="productInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无收藏</tui-no-data>
+				<tui-no-data v-if="productInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无收藏</tui-no-data>
 			</view>
 		</view>
 		<view v-if="collectionTypeFlag == 1">
 			<view v-if="storeInfo.data.length > 0">
 				<view v-if="allCheckShow" class="finishbox" @click="allCheckShow = false">完成</view>
 				<view v-else class="flex-row-plus editicon-box flex-items fs28" @click="editClick">
-					<tui-icon name="edit" :size="40" unit="upx" color="#333333"></tui-icon>
+					<tui-icon name="edit" :size="40" unit="rpx" color="#333333"></tui-icon>
 					<text class="mar-left-10">编辑</text>
 				</view>
 				<view class="swipe-box swipeBox">
@@ -115,13 +115,13 @@
 								<view class="item wid flex-row-plus flex-display">
 									<view v-show="allCheckShow" class="selctBtn flex-items">
 										<tui-icon
-											v-if="item.selected == 1" name="circle-fill" :size="40" unit="upx"
+											v-if="item.selected == 1" name="circle-fill" :size="40" unit="rpx"
 											color="#c5aa7b"
-											margin="0 30upx 0 0" @click="storeItemSel(index, 0)"
+											margin="0 30rpx 0 0" @click="storeItemSel(index, 0)"
 										></tui-icon>
 										<tui-icon
-											v-else name="circle" :size="40" unit="upx"
-											color="#cccccc" margin="0 30upx 0 0"
+											v-else name="circle" :size="40" unit="rpx"
+											color="#cccccc" margin="0 30rpx 0 0"
 											@click="storeItemSel(index, 1)"
 										></tui-icon>
 									</view>
@@ -164,13 +164,13 @@
 				<view v-show="allCheckShow" class="allcheck-box flex-row-plus flex-sp-between flex-items">
 					<view class="left">
 						<tui-icon
-							v-if="isAllStoreCheck" name="circle-fill" :size="40" unit="upx"
-							color="#c5aa7b" margin="30upx"
+							v-if="isAllStoreCheck" name="circle-fill" :size="40" unit="rpx"
+							color="#c5aa7b" margin="30rpx"
 							@click="allStoreSel(0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="30upx"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="30rpx"
 							@click="allStoreSel(1)"
 						></tui-icon>
 						<text>全选</text>
@@ -181,13 +181,13 @@
 				</view>
 				<view v-if="allCheckShow" class="pad-bot-140"></view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!storeInfo.isEmpty && !storeInfo.data.length
 						? 'loading' : !storeInfo.isEmpty && storeInfo.data.length && (storeInfo.data.length >= storeInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="storeInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无收藏</tui-no-data>
+				<tui-no-data v-if="storeInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无收藏</tui-no-data>
 			</view>
 		</view>
 
@@ -209,7 +209,7 @@
 				</view>
 			</view>
 			<view v-if="delshow" class="cancelDel" @click="delshow = false">
-				<tui-icon name="close" :size="60" unit="upx" color="#f0f0f0"></tui-icon>
+				<tui-icon name="close" :size="60" unit="rpx" color="#f0f0f0"></tui-icon>
 			</view>
 		</tui-modal>
 	</view>
@@ -629,13 +629,13 @@ export default {
 		background-color: #FFFFFF;
 		width: 100%;
 		position: fixed;
-		bottom: 0upx;
+		bottom: 0rpx;
 
 		.left {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: #666;
 		}
 
@@ -647,11 +647,11 @@ export default {
 		}
 
 		.btn-delete {
-			width: 232upx;
-			height: 104upx;
-			line-height: 104upx;
+			width: 232rpx;
+			height: 104rpx;
+			line-height: 104rpx;
 			text-align: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: #FFFFFF;
 			background: #C83732;
 		}
@@ -662,8 +662,8 @@ export default {
 			text-align: center;
 			margin-top: 40rpx;
 			border: 1px solid #333333;
-			height: 80upx;
-			line-height: 80upx;
+			height: 80rpx;
+			line-height: 80rpx;
 			width: 100%;
 			color: #333333;
 		}

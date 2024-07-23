@@ -36,12 +36,10 @@ export const getAddressDetailApi = (data) => RuanRequest('/address/detail', data
 export const deleteAddressApi = (data) => RuanRequest('/newaddress/deleteById?id=' + data.id, data, 'DELETE')
 
 // 根据地址动态查询对应的数据
-export const queryDynamicDataApi = (data) => SheQu1Request(
-	'laoa-huozhu/api/hz/order/third/queryDynamicData',
-	data,
-	'get'
-)
-
+export const queryDynamicDataApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/queryDynamicData', data, 'get')
 
 // 根据详细地址请求区域编码
-export const getAreaIdByAddressApi = data => SheQu1Request('laoa-huozhu/api/hz/common/third/getCounCodeByDetailAddress', data, 'get')
+export const getAreaIdByAddressApi = (data) => SheQu1Request('laoa-huozhu/api/hz/common/third/getCounCodeByDetailAddress', data, 'get')
+
+// 更新用户所在区域
+export const updateUserLocationApi = (data) => SheQu1Request('laoa-huozhu/api/hz/common/third/updateUserArea', data, 'get')
