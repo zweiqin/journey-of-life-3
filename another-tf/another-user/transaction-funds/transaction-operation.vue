@@ -1,6 +1,6 @@
 <template>
 	<view class="transaction-operation-operation">
-		<JHeader title="余额" width="50" height="50"></JHeader>
+		<JHeader title="消费金" width="50" height="50"></JHeader>
 		<view style="display: flex;justify-content: space-between;align-items: center;">
 			<tui-button
 				type="gray" width="240rpx" height="66rpx" margin="0"
