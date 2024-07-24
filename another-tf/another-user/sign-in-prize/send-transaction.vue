@@ -1,32 +1,33 @@
 <template>
 	<view class="send-transaction-container">
 		<view
-			:style="{ background: `url(${common.seamingImgUrl('1721380294717-orange-white-bg-color.png')}) no-repeat center top/contain` }"
+			:style="{ background: `url(${common.seamingImgUrl('1721703584058-blue-white-bg-color.png')}) no-repeat center top/contain` }"
 		>
-			<JHeader :dark="false" title="消费金额度签到" width="50" height="50"></JHeader>
+			<JHeader :dark="false" title="消费金提现额度签到" width="50" height="50"></JHeader>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
-				<view style="position: absolute;top: 2%;right: 3%;width: 252rpx;">
-					<image style="width: 100%" :src="common.seamingImgUrl('1721380308499-calendar-image.png')" mode="widthFix" />
+				<view style="position: absolute;top: 2%;right: 3%;width: 292rpx;">
+					<image style="width: 100%" :src="common.seamingImgUrl('1721703581195-gold-money.png')" mode="widthFix" />
 				</view>
 				<view style="color: #ffffff;">
-					<view style="text-shadow: 0px 1px 0px #048CFB;">当前兑换代金券</view>
-					<view style="display: flex;align-items: flex-end;margin-top: 32rpx;">
-						<view style="font-size: 54rpx;font-weight: bold;text-shadow: 0px 1px 0px #048CFB;">
-							{{ typeof voucherAcount.duihuanRechargeTotal === 'number'
-								? Number.parseFloat(Number(voucherAcount.duihuanRechargeTotal)).toFixed(2)
-								: '--' }}
+					<view style="display: flex;align-items: center;text-shadow: 0px 1px 0px #048CFB;">
+						<view>
+							<view>消费金总额（元）</view>
+							<view style="font-size: 54rpx;font-weight: bold;">
+								{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice)).toFixed(2) || 0 }}
+							</view>
 						</view>
-						<view
-							style="margin-left: 20rpx;padding: 6rpx 16rpx;background: rgba(255, 255, 255, 0.2);border-radius: 32rpx;"
-						>
-							<text v-if="currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10)">
-								今日已签到
-							</text>
-							<text v-else>
-								今日未签到
-							</text>
+						<view style="margin-left: 20rpx;">
+							<view>可提现消费金（元）</view>
+							<view style="font-size: 54rpx;font-weight: bold;">--</view>
 						</view>
+					</view>
+					<view
+						style="width: fit-content;margin: 24rpx 0 0;padding: 6rpx 30rpx;font-size: 28rpx;background: rgba(255, 255, 255, 0.2);border-radius: 32rpx;"
+						@click="go('/another-tf/another-user/transaction-funds/transaction-operation')"
+					>
+						<text>去提现</text>
+						<tui-icon name="arrowright" color="#ffffff" :size="26" unit="rpx" margin="0 0 0 8rpx"></tui-icon>
 					</view>
 				</view>
 				<view
@@ -92,61 +93,46 @@
 							签到领代金券
 						</tui-button>
 					</view>
+					<view
+						style="display: flex;align-items: center;justify-content: center;margin-top: 38rpx;font-size: 26rpx;color: #1e7aea;"
+						@click="go('/another-tf/another-user/transaction-funds/transaction-operation')"
+					>
+						<text>进入消费金账户</text>
+						<tui-icon name="arrowright" color="#1e7aea" :size="26" unit="rpx" margin="0 0 0 8rpx"></tui-icon>
+					</view>
 				</view>
 				<view style="margin-top: 24rpx;">
-					<view style="font-size: 34rpx;font-weight: bold;">兑换代金券入账记录</view>
+					<view style="font-size: 34rpx;font-weight: bold;">签到明细</view>
 					<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
-						<view v-if="exchangeAccountingList && exchangeAccountingList.length" style="padding: 12rpx 28rpx;">
+						<view v-if="signList && signList.length" style="padding: 12rpx 28rpx;">
 							<view
-								v-for="(item, index) in exchangeAccountingList" :key="item.id"
+								v-for="(item, index) in signList" :key="item.id"
 								style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
-								@click="handleClickVoucherRecord(item)"
 							>
 								<view style="flex: 1;display: flex;align-items: center;">
 									<view style="flex: 1;width: 0;margin-left: 14rpx;">
 										<view
 											style="font-size: 30rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 										>
-											<text>
-												代金券
-												<text v-if="item.waterType === 1">充值</text>
-												<text v-else-if="item.waterType === 2">转入</text>
-												<text v-else-if="item.waterType === 3">签到</text>
-												<text v-else-if="item.waterType === 4">抽奖</text>
-												<text v-else-if="item.waterType === 5">充值赠送</text>
-												<text v-else-if="item.waterType === 6">商城下单</text>
-												<text v-else-if="item.waterType === 7">商圈下单</text>
-												<text v-else-if="item.waterType === 8">社区下单</text>
-												<text v-else-if="item.waterType === 9">活动</text>
-												<text v-else-if="item.waterType === 10">退款</text>
-												<text v-else>--</text>
-											</text>
-											<text>
-												-
-												<text v-if="item.sourceType === 1">平台</text>
-												<text v-else-if="item.sourceType === 2">商家</text>
-												<text v-else-if="item.sourceType === 3">用户</text>
-												<text v-else-if="item.sourceType === 4">社区</text>
-												<text v-else>--</text>
-											</text>
+											<text>签到</text>
 										</view>
 										<view style="margin-top: 16rpx;font-size: 26rpx;color: #888889;">{{ item.createTime }}</view>
 									</view>
 								</view>
 								<view style="margin-left: 12rpx;text-align: right;">
 									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #1E7AEA;">
-										<text>+{{ item.number }}</text>
+										<text>+1</text>
 									</view>
 								</view>
 							</view>
 						</view>
-						<view style="padding-bottom: 4rpx;">
+						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
-								:status="!isEmpty && !exchangeAccountingList.length
-									? 'loading' : !isEmpty && exchangeAccountingList.length && (exchangeAccountingList.length >= exchangeAccountingTotal) ? 'no-more' : ''"
+								:status="!isEmpty && !signList.length
+									? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+							<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无签到记录~</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -159,18 +145,18 @@
 		>
 			<view style="position: relative;" @click="isShowSignFrame = false">
 				<view style="position: absolute;z-index: 1;top: 228rpx;left: 0;width: 100%;text-align: center;">
-					<view style="display: flex;align-items: center;justify-content: center;color: #e60e0e;">
-						<view style="margin-right: 12rpx;font-size: 44rpx;font-weight: bold;">已发放</view>
-						<view>代金券</view>
+					<view style="display: flex;align-items: center;justify-content: center;color: #1e7aea;">
+						<view style="margin-right: 12rpx;font-size: 44rpx;font-weight: bold;">已增加</view>
+						<view>消费金额度</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: center;margin-top: 28rpx;">
 						<view style="color: #999794;">明天签到可继续</view>
-						<view style="margin: 0 6rpx;color: #e60e0e;">获得</view>
-						<view style="color: #999794;">代金券</view>
+						<view style="margin: 0 6rpx;color: #1e7aea;">获得</view>
+						<view style="color: #999794;">提现额度</view>
 					</view>
 				</view>
 				<image
-					:src="common.seamingImgUrl('1721611410057-sign-success-bg.png')" mode="widthFix"
+					:src="common.seamingImgUrl('1721703590990-sign-success-frame.png')" mode="widthFix"
 					style="width: 500rpx;max-height: 75vh;"
 				/>
 			</view>
@@ -179,15 +165,20 @@
 </template>
 
 <script>
-import { getSelectSigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
+import { getSelectSigninRecordListApi, updateMemberSignInApi, getPricePlatformAllApi, getSelectSigninHistoryApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendTransaction',
 	data() {
 		return {
-			voucherAcount: {
-				chongzhiRechargeTotal: 0,
-				duihuanRechargeTotal: 0
+			pricePlatformInfo: {
+				totalPrice: '',
+				price: '',
+				rechargePrice: '',
+				voucherPrice: '',
+				distributorPrice: '',
+				beeCoinPrice: '',
+				commissionPrice: ''
 			},
 			stepsList: [],
 			activeSteps: -1,
@@ -195,8 +186,8 @@ export default {
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
 			recordList: [],
 			isEmpty: false,
-			exchangeAccountingList: [],
-			exchangeAccountingTotal: 0,
+			signList: [],
+			signTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20
@@ -205,21 +196,16 @@ export default {
 	},
 	onLoad() {
 		this.getSignInRecord()
-		this.getExchangeAccountingLogsList()
+		this.getSignInHistory()
 	},
 	onShow() {
-		this.getVoucherData()
+		this.getPricePlatformAll()
 	},
 	methods: {
-		getVoucherData() {
-			uni.showLoading()
-			getBuyerTotalVoucherEntryRecordApi({})
+		getPricePlatformAll() {
+			getPricePlatformAllApi({})
 				.then((res) => {
-					this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
-					uni.hideLoading()
-				})
-				.catch((e) => {
-					uni.hideLoading()
+					this.pricePlatformInfo = res.data
 				})
 		},
 		getSignInRecord() {
@@ -231,14 +217,6 @@ export default {
 				.then((res) => {
 					uni.hideLoading()
 					this.recordList = res.data
-					this.recordList = [{
-						'signinId': 183,
-						'buyerUserId': 2123,
-						'termId': 1,
-						'growth': 10,
-						'createTime': '2024-07-22 09:15:24',
-						'updateTime': '2024-07-22 09:15:24'
-					}, ...res.data]
 					this.stepsList = new Array(7).toString()
 						.split(',')
 						.map((i, index) => {
@@ -265,44 +243,34 @@ export default {
 						// this.$showToast('签到成功！')
 						this.isShowSignFrame = true
 						this.getSignInRecord()
-						this.getExchangeAccountingLogsList()
+						this.getSignInHistory()
 					})
 					.catch((e) => {
 						uni.hideLoading()
 					})
 			}
 		},
-		getExchangeAccountingLogsList(isLoadmore) {
+		getSignInHistory(isLoadmore) {
 			uni.showLoading()
-			getBuyerVoucherEntryRecordApi(this.queryInfo).then((res) => {
-				this.exchangeAccountingTotal = res.data.total
+			getSelectSigninHistoryApi(this.queryInfo).then((res) => {
+				this.signTotal = res.data.total
 				if (isLoadmore) {
-					this.exchangeAccountingList.push(...res.data.list)
+					this.signList.push(...res.data.list)
 				} else {
-					this.exchangeAccountingList = res.data.list
+					this.signList = res.data.list
 				}
-				this.isEmpty = this.exchangeAccountingList.length === 0
+				this.isEmpty = this.signList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
 					uni.hideLoading()
 				})
-		},
-		handleClickVoucherRecord(item) {
-			uni.navigateTo({
-				url: '/another-tf/another-user/voucher/voucher-record-detail',
-				success: () => {
-					setTimeout(() => {
-						uni.$emit('sendVoucherRecordDetailMsg', { voucherRecordData: item, fromOrigin: 1 })
-					}, 400)
-				}
-			})
 		}
 	},
 	onReachBottom() {
-		if (this.exchangeAccountingList.length < this.exchangeAccountingTotal) {
+		if (this.signList.length < this.signTotal) {
 			++this.queryInfo.page
-			this.getExchangeAccountingLogsList(true)
+			this.getSignInHistory(true)
 		}
 	}
 }
