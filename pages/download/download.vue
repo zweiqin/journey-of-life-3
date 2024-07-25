@@ -5,13 +5,13 @@
 				<view class="GroundGlass">
 					<p class="Logo"></p>
 					<view class="AppName">{{ APPLY_NAME }} App</view>
-					<view style="padding: 10px 0;color: #ffffff;">版本：v1.0.27</view>
+					<view style="padding: 10px 0;color: #ffffff;">版本：v{{ SYSTEM_VERSION }}</view>
 					<view v-if="!isWeixin">
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240705202937.apk" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240725110941.apk" class="DownLoaButton">
 							<span class="iconfont icon-anzhuo"></span> 安卓下载
 						</a>
 						<!-- <a download href="https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1709636108448-__UNI__B07FE0F_0304164457.ipa" class="DownLoaButton"> -->
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0705202344.ipa" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0725112331.ipa" class="DownLoaButton">
 							<span class="iconfont icon-iOS"></span> IOS下载
 						</a>
 					</view>
@@ -52,13 +52,14 @@
 </template>
 
 <script>
-import { APPLY_NAME } from '../../config'
+import { APPLY_NAME, SYSTEM_VERSION } from '../../config'
 
 export default {
 	name: 'Download',
 	data() {
 		return {
 			APPLY_NAME,
+			SYSTEM_VERSION,
 			isShowMask: false,
 			isWeixin: true
 		}

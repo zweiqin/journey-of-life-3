@@ -673,6 +673,9 @@ export const getByIdBankApi = (data) => AnotherTFRequest('/shopBank/getById', da
 // 字典下拉数据查询
 export const getSelectDictApi = (data) => AnotherTFRequest('/dict/getSelect', data, 'POST')
 
+// 尝试对半子订单进行确认收货
+export const updateOrderTryConfirmForBanziApi = (data) => AnotherTFRequest('/order/tryConfirmForBanzi', data)
+
 // 确认收货
 export const updateOrderConfirmApi = (data) => AnotherTFRequest('/order/confirm', data, 'POST')
 
