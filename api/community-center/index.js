@@ -148,7 +148,7 @@ export const payOrderForBeeStewadAPPApi = (data) =>
 export const getShopInfoApi = (data) => SheQu1Request('laoa-huozhu/api/hz/shop/third/getShopInfo', data, 'GET')
 
 /** */
-export const createPaymentCodeOrderApi = data => SheQu1Request('laoa-huozhu/api/hz/shop/third/collectionCodePay', data)
+export const createPaymentCodeOrderApi = (data) => SheQu1Request('laoa-huozhu/api/hz/shop/third/collectionCodePay', data)
 
 // 热门搜索
 export const getHotSearchKeyApi = (data) =>
@@ -344,9 +344,14 @@ export const orderPayByCCBApi = (data) => {
   return SheQu1Request('laoa-huozhu/api/hz/order/third/uniOrderPayH5', data)
 }
 
+// 收款码惠市宝支付
+export const orderPayByCCBForCodeApi = data => {
+  return SheQu1Request('laoa-huozhu/api/hz/order/third/uniOrderPayH5', data)
+}
+
 // 模拟下单获取是否支持惠市宝支付
-export const isSuppersCCBApi = orderNo => {
-return SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getShopByOrderSn?orderSn=' + orderNo, {}, 'GET')
+export const isSuppersCCBApi = (orderNo) => {
+  return SheQu1Request('laoa-huozhu/api/hz/moduanShop/third/getShopByOrderSn?orderSn=' + orderNo, {}, 'GET')
 }
 
 // 获取商圈商品报价
@@ -505,3 +510,8 @@ export const getQualityAssuranceCardApplysApi = (data) => SheQu1Request('laoa-hu
  * 取消质保
  */
 export const cancelQualityAssuranceCardServeApi = (data) => SheQu1Request('laoa-huozhu/api/hz/quality-assurance-card-apply/third/cancel', data, 'post')
+
+/**
+ * 判断该门店是否支持收款码支付
+ */
+export const canCCBPayForCommunityStoreApi = (accountId) => SheQu1Request('laoa-huozhu/api/hz/shop/third/getShopInfo', { accountId }, 'GET')

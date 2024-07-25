@@ -25,7 +25,12 @@ export class CCBPay extends Pay {
     }
   }
 
-  async h5Pay() {
+  async h5Pay(isCustorm, payConfig) {
+    if (isCustorm) {
+      const data = JSON.parse(payConfig)
+      location.href = data.hsbPayRespParamStr.Cshdk_Url
+      return
+    }
     try {
       const res = await orderPayByCCBApi({
         ...this.payData,
@@ -72,22 +77,6 @@ export class CCBPay extends Pay {
   }
 
   async appPay() {
-    uni.login({
-      provider: 'weixin',
-      onlyAuthorize: true,
-      success: async (res) => {
-        try {
-          console.log("有code了哦", res);
-          const keys = await getSessionKeyAppApi({ code: res.code, _isShowToast: false })
-          console.log("拿到了", keys);
-        } catch (error) {
-          console.log("报错了，凑了哦", error);
-          throw new Error(error.message)
-        }
-      },
-      fail(error) {
-        throw new Error(error.message)
-      }
-    })
+    return
   }
 }

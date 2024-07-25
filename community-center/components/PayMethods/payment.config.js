@@ -39,7 +39,7 @@ export const paymentMethods = (ctx) => ({
   },
 
   // 惠市宝支付
-  [PAY_METHOD_IDS.CCB]: async (payData) => {
-    await h5AppMiniprogramPayUtil(CCBPay, payData)
+  [PAY_METHOD_IDS.CCB]: async (payData, payConfig) => {
+    await h5AppMiniprogramPayUtil(CCBPay, payData, payConfig)
   }
 })
