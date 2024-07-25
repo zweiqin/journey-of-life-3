@@ -7,7 +7,7 @@
 					v-if="!isVideoSource(imgItem)" mode="aspectFit" class="goodsImg default-img"
 					:src="common.seamingImgUrl(imgItem)"
 				></image>
-				<video v-else style="width: 750upx; height: 750upx;" :src="common.seamingImgUrl(imgItem)"></video>
+				<video v-else style="width: 750rpx; height: 750rpx;" :src="common.seamingImgUrl(imgItem)"></video>
 			</swiper-item>
 		</swiper>
 		<!-- 分享 -->
@@ -73,19 +73,19 @@
 			<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
 				<view
 					v-if="skuSelect.beeCoin"
-					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 				>
 					赠送 {{ skuSelect.beeCoin }} 消费金
 				</view>
 				<view
 					v-if="skuSelect.voucherId && skuSelect.voucherPrice"
-					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 				>
 					可使用{{ skuSelect.voucherPrice }}代金券抵扣
 				</view>
 				<view
 					v-if="skuSelect.presenterVoucher"
-					style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 				>
 					赠送 {{ skuSelect.price
 						? `${(Number.parseFloat(skuSelect.presenterVoucher / skuSelect.price).toFixed(3) * 1000) / 10}%`
@@ -115,7 +115,7 @@
 					</view>
 					<view class="flex-items">
 						<label class="fs24 font-color-C5AA7B">领券</label>
-						<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
+						<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10rpx"></tui-icon>
 					</view>
 				</view>
 			</view>
@@ -283,29 +283,29 @@ export default {
 	}
 
 	.goodsImgswiper-box {
-		width: 750upx;
-		height: 750upx;
+		width: 750rpx;
+		height: 750rpx;
 
 		.goodsImg {
-			width: 750upx;
-			height: 750upx;
+			width: 750rpx;
+			height: 750rpx;
 		}
 	}
 
 	.share-box {
-		width: 200upx;
-		height: 60upx;
+		width: 200rpx;
+		height: 60rpx;
 		background-color: #FFFFFF;
-		border-radius: 30upx 0 0 30upx;
+		border-radius: 30rpx 0 0 30rpx;
 		position: absolute;
-		top: 110upx;
+		top: 110rpx;
 		right: 0;
 		z-index: 99;
 	}
 
 	.goodgDes-box {
 		background-color: #FFFFFF;
-		padding: 30upx 25upx 25upx;
+		padding: 30rpx 25rpx 25rpx;
 
 		.nameContainer {
 			display: flex;
@@ -328,11 +328,11 @@ export default {
 			flex-direction: row;
 			justify-content: center;
 			align-items: flex-end;
-			border-top: 1upx solid #EDEDED;
+			border-top: 1rpx solid #EDEDED;
 
 			.activity-content {
-				width: 614upx;
-				padding-top: 20upx;
+				width: 614rpx;
+				padding-top: 20rpx;
 			}
 		}
 	}

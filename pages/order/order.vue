@@ -125,7 +125,7 @@
 <script>
 import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs, shoppingSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
-import { getAllOrderListApi } from '../../api/anotherTFInterface'
+import { getAllOrderListApi, updateOrderTryConfirmForBanziApi } from '../../api/anotherTFInterface'
 import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO, IS_SWITCH_ORDER } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
@@ -264,7 +264,7 @@ export default {
 
 	onLoad(options) {
 		importJsSDK()
-		uni.removeStorageSync(IS_SWITCH_ORDER);
+		uni.removeStorageSync(IS_SWITCH_ORDER)
 	},
 
 	onShow() {
@@ -371,6 +371,7 @@ export default {
 		},
 
 		// 发起请求获取列表数据
+		// eslint-disable-next-line complexity
 		async getOrderList(isLoadmore) {
 			if (this.currentOrderMode === 'community') {
 				if (!isLoadmore) {
@@ -409,14 +410,46 @@ export default {
 				uni.showLoading()
 				getAllOrderListApi({ ...this.shoppingQueryInfo, state: this.currentStatus || '' })
 					.then((res) => {
-						this.shoppingListTotal = res.data.total
-						if (isLoadmore) {
-							this.shoppingOrderList.push(...res.data.list)
+						const pendingOrderList = res.data.list.filter((item) => item.skus.some((section) => section.banziSkuId) && [ 3 ].includes(item.state))
+						if (pendingOrderList && pendingOrderList.length) {
+							uni.hideLoading()
+							uni.showLoading({
+								title: '处理中...'
+							})
+							Promise.all(pendingOrderList.map((item) => updateOrderTryConfirmForBanziApi({ subOrderSn: item.orderFormid })))
+								.then((res) => {
+									uni.hideLoading()
+									uni.showLoading({
+										title: '请求中...'
+									})
+									getAllOrderListApi({ ...this.shoppingQueryInfo, state: this.currentStatus || '' })
+										.then((result) => {
+											this.shoppingListTotal = result.data.total
+											if (isLoadmore) {
+												this.shoppingOrderList.push(...result.data.list)
+											} else {
+												this.shoppingOrderList = result.data.list
+											}
+											this.shoppingIsEmpty = this.shoppingOrderList.length === 0
+											uni.hideLoading()
+										})
+										.catch(() => {
+											uni.hideLoading()
+										})
+								})
+								.catch(() => {
+									uni.hideLoading()
+								})
 						} else {
-							this.shoppingOrderList = res.data.list
+							this.shoppingListTotal = res.data.total
+							if (isLoadmore) {
+								this.shoppingOrderList.push(...res.data.list)
+							} else {
+								this.shoppingOrderList = res.data.list
+							}
+							this.shoppingIsEmpty = this.shoppingOrderList.length === 0
+							uni.hideLoading()
 						}
-						this.shoppingIsEmpty = this.shoppingOrderList.length === 0
-						uni.hideLoading()
 					})
 					.catch(() => {
 						uni.hideLoading()

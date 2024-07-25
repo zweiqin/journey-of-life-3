@@ -16,19 +16,19 @@
 						<view style="display: flex;align-items: center;flex-wrap: wrap;">
 							<view
 								v-if="selectedSku.beeCoin"
-								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
 								赠送 {{ selectedSku.beeCoin }} 消费金
 							</view>
 							<view
 								v-if="selectedSku.voucherId && selectedSku.voucherPrice"
-								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
 								可使用{{ selectedSku.voucherPrice }}代金券抵扣
 							</view>
 							<view
 								v-if="selectedSku.presenterVoucher"
-								style="width: fit-content;padding: 6upx 12upx;margin: 10upx 6upx 0 0;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 22upx;"
+								style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
 							>
 								赠送 {{ selectedSku.price
 									? `${(Number.parseFloat(selectedSku.presenterVoucher / selectedSku.price).toFixed(3) * 1000) / 10}%`
@@ -38,7 +38,7 @@
 					</view>
 				</view>
 
-				<view style="flex: 1;height: 0;overflow: hidden;padding: 30upx;font-size: 26rpx;">
+				<view style="flex: 1;height: 0;overflow: hidden;padding: 30rpx;font-size: 26rpx;">
 					<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
 						<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="padding-bottom: 30rpx;">
 							<view v-if="nameItem.nameCode" style="color: #333333;">
@@ -47,7 +47,7 @@
 							<view style="display: flex;flex-wrap: wrap;align-items: center;margin: 0 -15rpx;">
 								<view
 									v-for="tag in nameItem.values" :key="tag.valueCode"
-									style="background-color: #FFFFFF;margin: 24rpx 15upx 0;padding: 10upx 32upx;" :style="{
+									style="background-color: #FFFFFF;margin: 24rpx 15rpx 0;padding: 10rpx 32rpx;" :style="{
 										boxShadow: selectedAttr[nameItem.nameCode] === tag.valueCode ? '0 0 20rpx rgba(0, 0, 0, 0.1)' : 'none',
 										color: selectedAttr[nameItem.nameCode] === tag.valueCode ? '#C5AA7B' : tag.ifEnable ? '#cccccc' : '#333333',
 										border: selectedAttr[nameItem.nameCode] === tag.valueCode ? '2rpx solid #ffffff' : '2rpx solid #E4E5E6'
@@ -89,7 +89,7 @@
 						<tui-button
 							type="gray" width="190rpx" height="80rpx" plain
 							margin="0" :disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;" @click="handleBuyNow"
+							style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;" @click="handleBuyNow"
 						>
 							单独购买
 						</tui-button>
@@ -97,7 +97,7 @@
 							v-if="!isExchange"
 							type="black" width="190rpx" height="80rpx" margin="0"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyWithGroup"
 						>
 							我要开团
 						</tui-button>
@@ -107,14 +107,14 @@
 							v-if="!isExchange"
 							type="gray" width="190rpx" height="80rpx" plain
 							margin="0" :disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #333333!important;border-radius: 8upx;" @click="handleAddCart"
+							style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;" @click="handleAddCart"
 						>
 							加入购物车
 						</tui-button>
 						<tui-button
 							type="black" width="190rpx" height="80rpx" margin="0"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyNow"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyNow"
 						>
 							立即购买
 						</tui-button>
@@ -129,7 +129,7 @@
 						<tui-button
 							type="black" width="590rpx" height="80rpx" margin="0 0 0 16rpx"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyWithGroup"
 						>
 							确定
 						</tui-button>
@@ -142,7 +142,7 @@
 						<tui-button
 							type="black" width="590rpx" height="80rpx" margin="0 0 0 16rpx"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyWithGroup"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyWithGroup"
 						>
 							去拼团
 						</tui-button>
@@ -155,7 +155,7 @@
 							v-if="btnType === 1" type="black" width="590rpx" height="80rpx"
 							margin="0 0 0 16rpx"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleAddCart"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleAddCart"
 						>
 							确认
 						</tui-button>
@@ -163,7 +163,7 @@
 							v-else type="black" width="590rpx" height="80rpx"
 							margin="0 0 0 16rpx"
 							:disabled="!selectedSku.stockNumber"
-							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8upx;" @click="handleBuyNow"
+							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyNow"
 						>
 							确认
 						</tui-button>
@@ -415,20 +415,20 @@ export default {
 	box-sizing: border-box;
 
 	.detailImg-box {
-		padding-top: 30upx;
-		padding-left: 30upx;
-		border-bottom: 1upx solid #EDEDED;
-		padding-bottom: 20upx;
-		width: 690upx;
+		padding-top: 30rpx;
+		padding-left: 30rpx;
+		border-bottom: 1rpx solid #EDEDED;
+		padding-bottom: 20rpx;
+		width: 690rpx;
 
 		.detailImg {
-			width: 180upx;
-			height: 180upx;
+			width: 180rpx;
+			height: 180rpx;
 		}
 	}
 
 	.goodsNumCent {
-		padding: 0 30upx;
+		padding: 0 30rpx;
 
 		.goodsNum-box {
 			width: 100%;
@@ -436,20 +436,20 @@ export default {
 			border-top: 2rpx solid #EDEDED;
 
 			.goodsNum {
-				height: 50upx;
+				height: 50rpx;
 				display: flex;
 				align-items: center;
 
 				.item {
-					width: 50upx;
-					height: 50upx;
+					width: 50rpx;
+					height: 50rpx;
 					line-height: 48rpx;
-					border: 1upx solid #999999;
+					border: 1rpx solid #999999;
 					text-align: center;
 				}
 
 				.subtract {
-					border-right: 0upx;
+					border-right: 0rpx;
 				}
 
 				.goodsNumber {
@@ -457,7 +457,7 @@ export default {
 				}
 
 				.add {
-					border-left: 0upx;
+					border-left: 0rpx;
 				}
 			}
 		}
