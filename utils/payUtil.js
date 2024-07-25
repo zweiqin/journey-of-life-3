@@ -795,6 +795,7 @@ function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 			success: (res) => {
 				getSessionKeyAppApi({ code: res.code, _isShowToast: false })
 					.then(async (res1) => {
+						console.log("妈卖批", res1);
 						await gotoOrderH5PayApi({
 							...data,
 							purchaseMode: payType,

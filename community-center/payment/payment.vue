@@ -38,7 +38,7 @@
 
         <!-- 选择支付方式 -->
         <view class="pay-list">
-          <PayMethods :supports="supports" ref="payMethodsRef">
+          <PayMethods :supports="payList" ref="payMethodsRef">
             <view class="title tui-skeleton-fillet" slot="title">支付方式</view>
           </PayMethods>
         </view>
@@ -66,14 +66,17 @@
 </template>
 
 <script>
-import { USER_ID } from '../../constant'
-import { getShopInfoApi, createPaymentCodeOrderApi } from '../../api/community-center/index'
+import { USER_ID, USER_INFO } from '../../constant'
+import { getShopInfoApi, createPaymentCodeOrderApi, canCCBPayForCommunityStoreApi } from '../../api/community-center/index'
 import PayMethods from '../../community-center/components/PayMethods/PayMethods.vue'
 import { PAY_METHOD_IDS } from '../../community-center/components/PayMethods/utils'
 import TuanUnLoginPage from '../../pages/order/components/TuanUnLoginPage.vue'
+import communityPay from '../../mixin/communityPay'
+import { ENV } from '../../config/index'
 
 export default {
   components: { PayMethods, TuanUnLoginPage },
+  mixins: [communityPay('shopId')],
   data() {
     return {
       numberKeyBoardVisible: false,
@@ -92,17 +95,20 @@ export default {
         shopAddress: ''
       },
       supports: [PAY_METHOD_IDS.ALLINPAY],
-      backPath: ''
+      backPath: '',
+      userInfo: null
     }
   },
 
   onLoad(options) {
     this.payMentForm.shopAccountId = options.accountId
     this.getShopInfo()
+    this.payVali(options.accountId)
   },
 
   onShow() {
     this.payMentForm.tfUserId = uni.getStorageSync(USER_ID)
+    this.userInfo = uni.getStorageSync(USER_INFO)
   },
 
   methods: {
@@ -171,11 +177,33 @@ export default {
           title: '请输入支付金额'
         })
       }
+
+      this.isLoading = true
+
       try {
-        this.isLoading = true
-        const res = await createPaymentCodeOrderApi(this.payMentForm)
+        const payInfo = this.$refs.payMethodsRef.getPayMethod()
+        let submitData = JSON.parse(JSON.stringify(this.payMentForm))
+
+        if (payInfo) {
+          const { payMethodId } = payInfo
+
+          if (payMethodId === PAY_METHOD_IDS.CCB) {
+            submitData = {
+              ...submitData,
+              terminalType: '1',
+              payType: '6',
+              hsbSubPayType: '03',
+              hsbPyRsltNtcSn: ENV === 'development' ? '3' : '4',
+              hsbPgfcRetUrlAdr: 'htts://www.baidu.com',
+              extPayJsonStr: JSON.stringify({ Py_Ordr_Tpcd: '04', Sub_Appid: 'wx3cef6c7325c38a45', Sub_Openid: '' }),
+              payUserPhone: this.userInfo.phone
+            }
+          }
+        }
+
+        const res = await createPaymentCodeOrderApi(submitData)
+
         await this.$refs.payMethodsRef.pay(true, res.data)
-      } catch (error) {
       } finally {
         this.isLoading = false
       }
@@ -221,6 +249,7 @@ export default {
 .payment-container {
   min-height: 100vh;
   background-color: #f6f6f6;
+  padding-bottom: 120rpx;
 
   .main {
     padding: 30rpx;

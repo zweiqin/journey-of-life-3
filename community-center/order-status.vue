@@ -1,5 +1,6 @@
 <template>
   <view class="order-info-wrapper">
+    <TuanAppShim bg="#fbe7d3"></TuanAppShim>
     <TuanPageHead title="订单详情" fixed :scrollTop="scrollTop">
       <block slot="left">
         <tui-icon name="arrowleft" :size="64" unit="rpx" color="#222229" margin="0" @click="handleToOrderList"></tui-icon>

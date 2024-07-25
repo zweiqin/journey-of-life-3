@@ -1,5 +1,6 @@
 <template>
 	<view class="service-sort-container">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
 		<JHeader title="社区服务分类" width="50" height="50"></JHeader>
 
 		<view style="display: flex;align-items: center;padding: 8rpx 14rpx 22rpx 18rpx;background-color: #ffffff;">

@@ -3,6 +3,7 @@ import { orderPayByCCBApi } from '../../../../api/community-center'
 import { ENV } from '../../../../config/index'
 import { getConfigStr } from '../utils'
 import { T_STORAGE_KEY } from 'constant'
+import { getSessionKeyAppApi } from '../../../../api/anotherTFInterface'
 
 // docs: apifox ——>  20240626
 export class CCBPay extends Pay {
@@ -24,7 +25,12 @@ export class CCBPay extends Pay {
     }
   }
 
-  async h5Pay() {
+  async h5Pay(isCustorm, payConfig) {
+    if (isCustorm) {
+      const data = JSON.parse(payConfig)
+      location.href = data.hsbPayRespParamStr.Cshdk_Url
+      return
+    }
     try {
       const res = await orderPayByCCBApi({
         ...this.payData,
@@ -71,22 +77,6 @@ export class CCBPay extends Pay {
   }
 
   async appPay() {
-    try {
-      const res = await orderPayByCCBApi({
-        ...this.payData,
-        extPayJsonStr: JSON.stringify(this.payData.extPayJsonStr)
-      })
-
-      if (res.statusCode === 20000) {
-        const payRes = res.data
-        if (payRes && payRes.hsbPayRespParamStr && payRes.hsbPayRespParamStr.Cshdk_Url) {
-          uni.navigateTo({ url: '/user/view?target=' + payRes.hsbPayRespParamStr.Cshdk_Url })
-        }
-      } else {
-        throw new Error(res.statusMsg)
-      }
-    } catch (error) {
-      throw new Error(error)
-    }
+    return
   }
 }

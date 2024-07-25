@@ -1,5 +1,6 @@
 <template>
   <view class="comment-order-container">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
     <TuanPageHead title="订单评价" background="#fff">
       <tui-icon @click="handleBack" style="margin-left: -28upx" slot="left" color="#000" :size="28" name="arrowleft"></tui-icon>
     </TuanPageHead>

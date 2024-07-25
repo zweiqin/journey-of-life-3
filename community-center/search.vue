@@ -1,5 +1,6 @@
 <template>
 	<view class="search-container">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
 		<view class="search-wrapper" :class="{ fixed: scrollTop > 100 }">
 			<tui-icon name="arrowleft" @click="handleBack"></tui-icon>
 
