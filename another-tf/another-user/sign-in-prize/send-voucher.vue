@@ -148,13 +148,13 @@
 								</view>
 							</view>
 						</view>
-						<view style="padding-bottom: 4rpx;">
+						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
 								:status="!isEmpty && !exchangeAccountingList.length
 									? 'loading' : !isEmpty && exchangeAccountingList.length && (exchangeAccountingList.length >= exchangeAccountingTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -188,7 +188,7 @@
 
 <script>
 import VoucherChoose from '../voucher/components/VoucherChoose.vue'
-import { getSelectSigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
+import { getCurrencySigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendVoucher',
@@ -248,7 +248,7 @@ export default {
 				mask: true,
 				title: '加载中...'
 			})
-			getSelectSigninRecordListApi({})
+			getCurrencySigninRecordListApi({})
 				.then((res) => {
 					uni.hideLoading()
 					this.recordList = res.data

@@ -183,6 +183,7 @@ export default {
 				rechargePrice: '',
 				voucherPrice: '',
 				distributorPrice: '',
+				beeCoinPrice: '',
 				commissionPrice: ''
 			},
 			isShowRechargePopup: false,

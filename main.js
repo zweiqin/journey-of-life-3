@@ -12,7 +12,6 @@ Vue.config.productionTip = false
 // echar引入
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
-Vue.prototype.$baseImgUrl = 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/'
 Vue.filter('replacestar', function (value) {
 	if (!value) return ''
 	let str = value
@@ -32,6 +31,7 @@ Vue.mixin({
 				seamingImgUrl(url) {
 					if (!url) return ''
 					// return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
+					// return url.startsWith('https://') ? url : 'https://cos.tuanfengkeji.cn/' + url
 					if (url.startsWith('http://')) {
 						return url.replace('http://', 'https://')
 					} else if (url.startsWith('https://')) {
