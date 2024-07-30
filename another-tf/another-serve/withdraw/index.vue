@@ -82,19 +82,19 @@
 		</view>
 
 		<tui-select
-			:list="bankcardselectList" reverse :show="bankTagShowFlag" @confirm="handleBankcardConfirm"
+			:list="bankcardselectList" reverse :show="bankTagShowFlag" @confirm="handleSelectBankcard"
 			@close="bankTagShowFlag = false"
 		></tui-select>
 		<tui-select
 			:list="withdrawalTypeList" reverse :show="withdrawalTypeShowFlag"
-			@confirm="(e) => (withdrawalTypeShowFlag = false) || (withdrawalType = e.options.value)"
+			@confirm="handleSelectWithdrawalTypeList"
 			@close="withdrawalTypeShowFlag = false"
 		></tui-select>
 	</view>
 </template>
 
 <script>
-import { getPricePlatformAllApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getBeeSelectAmountEntryRecordApi, getAllBankcardListApi, updateSaveDistributorWithdrawApi, getCommissionBankApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'Withdraw',
@@ -109,7 +109,7 @@ export default {
 			withdrawHistoryList: [],
 			withdrawalMoney: '',
 			errMsg: '',
-			withdrawalTypeList: [ { value: '1', text: '佣金', checked: false } ],
+			withdrawalTypeList: [{ value: '1', text: '佣金', checked: false }, { value: '2', text: '消费金', checked: false }],
 			withdrawalType: '',
 			withdrawalTypeShowFlag: false,
 			// 手续费
@@ -119,7 +119,16 @@ export default {
 	},
 	onLoad(options) {
 		this.withdrawalType = options.type || '1'
-		if (this.withdrawalType) (this.withdrawalTypeList.find((i) => i.value === this.withdrawalType) || {}).checked = true
+		if (this.withdrawalType) {
+			this.withdrawalTypeList = this.withdrawalTypeList.map((item) => {
+				if (item.value === this.withdrawalType) {
+					item.checked = true
+				} else {
+					item.checked = false
+				}
+				return item
+			})
+		}
 		this.getWithdrawalData()
 	},
 	onShow() {
@@ -173,6 +182,14 @@ export default {
 					this.withdrawalPrice = res.data.commissionPrice
 					this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
 				})
+			} else if (this.withdrawalType === '2') {
+				getBeeSelectAmountEntryRecordApi({}).then((res) => {
+					this.withdrawalPrice = res.data.beeToBeWithdrawnPrice
+					this.withdrawalMoney = this.withdrawalPrice // Math.floor(this.withdrawalPrice)
+				})
+				getPricePlatformAllApi({}).then((res) => {
+					this.withdrawHistoryList = res.data.withdrawals
+				})
 			} else {
 				getPricePlatformAllApi({}).then((res) => {
 					this.withdrawHistoryList = res.data.withdrawals
@@ -185,10 +202,6 @@ export default {
 			this.$nextTick(() => {
 				this.withdrawalMoney = e.target.value.match(/^\d*(\.?\d{0,2})/g)[0] || ''
 			})
-		},
-		handleBankcardConfirm(e) {
-			this.bankTagShowFlag = false
-			this.bankCardNum = e.options.value
 		},
 		handleBankTagClick() {
 			if (this.bankcardselectList.length) {
@@ -203,6 +216,22 @@ export default {
 					this.go('/another-tf/another-serve/bankcard/addBankcard')
 				}, 2000)
 			}
+		},
+		handleSelectBankcard(e) {
+			this.bankTagShowFlag = false
+			this.bankCardNum = e.options.value
+		},
+		handleSelectWithdrawalTypeList(e) {
+			this.withdrawalTypeShowFlag = false
+			this.withdrawalType = e.options.value
+			this.withdrawalTypeList = this.withdrawalTypeList.map((item) => {
+				if (item.value === this.withdrawalType) {
+					item.checked = true
+				} else {
+					item.checked = false
+				}
+				return item
+			})
 		},
 		applyWithdraw() {
 			if (this.errMsg || !this.withdrawalMoney) {

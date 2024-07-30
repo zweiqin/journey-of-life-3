@@ -45,7 +45,7 @@
 					</view>
 					<NoData v-show="noDataVisible" :is-seach="!!communityQueryInfo.orderNo" @clear="clearSearch()"></NoData>
 					<Loading v-show="isLoading" style="z-index: 1;"></Loading>
-					<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20upx" :status="loadingStatus">
+					<LoadingMore v-show="loadingStatus !== 'more'" style="margin-top: 20rpx" :status="loadingStatus">
 					</LoadingMore>
 				</view>
 				<!--  商城 -->
@@ -54,13 +54,13 @@
 						v-for="(orderItem, orderIndex) in shoppingOrderList" :key="orderIndex" :data="orderItem"
 						show-operate is-to-detail @refresh="getOrderList()" @pay-order="(e) => payObj = e"
 					></ATFBusinessOrder>
-					<view style="padding-bottom: 45upx;">
+					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
 							:status="!shoppingIsEmpty && !shoppingOrderList.length
 								? 'loading' : !shoppingIsEmpty && shoppingOrderList.length && (shoppingOrderList.length >= shoppingListTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="shoppingIsEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="shoppingIsEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</view>
 
@@ -70,13 +70,13 @@
 						v-for="(orderItem, orderIndex) in businessOrderList" :key="orderIndex" :data="orderItem"
 						show-operate is-to-detail @refresh="getOrderList()" @pay-order="(e) => payObj = e"
 					></ATFBusinessOrder>
-					<view style="padding-bottom: 45upx;">
+					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
 							:status="!businessIsEmpty && !businessOrderList.length
 								? 'loading' : !businessIsEmpty && businessOrderList.length && (businessOrderList.length >= businessListTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</view>
 
@@ -91,7 +91,7 @@
 
 		<!-- 商圈支付 -->
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
-			<view v-if="payObj.showPayPopup" style="padding: 60upx 0 128upx;">
+			<view v-if="payObj.showPayPopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="payObj.pricePay" show
 					:show-commission-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
@@ -102,7 +102,7 @@
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>
 				<tui-button
-					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 					shape="circle"
 					@click="handleShopGoPay"
 				>
@@ -653,7 +653,7 @@ export default {
 		min-height: 100vh;
 		background-color: #f5f5f7;
 		position: relative;
-		padding: 220upx 30upx 124upx;
+		padding: 220rpx 30rpx 124rpx;
 		box-sizing: border-box;
 
 		&.ani {

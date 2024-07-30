@@ -172,7 +172,7 @@
 
 <script>
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherSelect, resolveSubmitOrder } from '../../../utils'
-import { getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
+import { getShopIdCodeRelationshipCodeApi, bindPlatformRelationshipCodeApi, getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
 
 export default {
@@ -303,6 +303,13 @@ export default {
 		} else {
 			this.fromType = options.type || ''
 			this.brandId = options.brandId || ''
+			getShopIdCodeRelationshipCodeApi({ shopId: Number(options.shopId) })
+				.then((result) => {
+					bindPlatformRelationshipCodeApi({ code: result.data.invitationCode })
+						.then((res) => {
+							this.$showToast('绑定成功', 'success')
+						})
+				})
 			uni.showLoading()
 			try {
 				// const result = await getShopIsNotDeactivateApi({ shopId: options.shopId })

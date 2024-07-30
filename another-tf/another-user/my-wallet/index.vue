@@ -168,7 +168,7 @@ export default {
 				rechargePrice: '', // 账户充值余额
 				voucherPrice: '', // 代金券余额
 				distributorPrice: '', // 账户分销金额
-				beeCoinPrice: '', // 消费金金额
+				beeCoinPrice: '', // 消费金金额，可消费的消费金
 				commissionPrice: '' // 推广收益,关系链分佣
 			}
 		}
