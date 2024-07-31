@@ -1,16 +1,16 @@
 <template>
 	<view class="live-list-page">
-		<JHeader title="直播推荐" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="直播推荐" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="live-list">
 			<LiveBox v-for="item in roomList" :key="item.roomid" class="live-item" :live-data="item" />
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !roomList.length
 					? 'loading' : !isEmpty && roomList.length && (roomList.length >= roomTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无直播~</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无直播~</tui-no-data>
 		</view>
 	</view>
 </template>

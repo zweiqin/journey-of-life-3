@@ -12,6 +12,7 @@
 							<text v-if="(payment.paymentMode === '5')">（余额：{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice || 0)).toFixed(2) }}）</text>
 							<text v-if="(payment.paymentMode === '8')">（余额：{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) }}）</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
+							<text v-if="(payment.paymentMode === '11')">（余额：{{ voucherPay.userVoucherDeductLimit }}）</text>
 							<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 								（手续费：￥{{ flowerObj.hbServiceChargeTotal }}）
 							</text>
@@ -118,6 +119,12 @@ export default {
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
 			default: ''
+		},
+		// 代金券支付
+		voucherPay: {
+			type: Object,
+			// 所有商品可使用多少代金券抵扣，用户代金券余额，是否可以使用代金券支付，不能使用代金券支付的说明
+			default: () => ({ voucherTotalAll: 0, userVoucherDeductLimit: 0, isCanVoucher: false, noVoucherText: '无法使用代金券支付' })
 		}
 	},
 	data() {
@@ -170,6 +177,29 @@ export default {
 		}
 	},
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
+		voucherPay: {
+			handler(newValue, oldValue) {
+				if (newValue.voucherTotalAll && (newValue.isCanVoucher !== oldValue.isCanVoucher)) {
+					if (!this.paymentList.find((item) => item.paymentMode === '11')) {
+						this.paymentList.push({
+							label: '代金券支付',
+							paymentMode: '11',
+							icon: require('../../static/images/user/pay/daijinquan.png'),
+							disabled: true
+						})
+					}
+					this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+					if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
+					this.handleNoticeFather()
+				} else if (!newValue.voucherTotalAll) {
+					if (this.paymentMode === '11') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '11')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '11'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		showCommissionPay: {
 			handler(newValue, oldValue) {
 				if (newValue) {
@@ -294,7 +324,7 @@ export default {
 						this.handleNoticeFather()
 						uni.hideLoading()
 					} else {
-						getShopCheckListDetailApi({ shopIds: this.shopIdPay })
+						getShopCheckListDetailApi({ shopIds: this.huiShiBaoPay })
 							.then((res) => {
 								this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
 								this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
@@ -363,6 +393,12 @@ export default {
 				if (newValue !== oldValue) {
 					if (this.paymentMode === '3') {
 						this.handleHbStagesAndPrice()
+					}
+					if (this.voucherPay.voucherTotalAll) {
+						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+						if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
+					} else if (!this.voucherPay.voucherTotalAll && (this.paymentMode === '11')) {
+						this.handleSetDisable()
 					}
 					if (this.showCommissionPay) {
 						this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
@@ -475,6 +511,16 @@ export default {
 				label: '通联支付（微信）',
 				paymentMode: '4',
 				icon: require('../../static/images/user/pay/tonglian.png'),
+				disabled: true
+			})
+			this.handleSetDisable()
+			this.handleNoticeFather()
+		}
+		if (this.voucherPay.voucherTotalAll) {
+			this.paymentList.push({
+				label: '代金券支付',
+				paymentMode: '11',
+				icon: require('../../static/images/user/pay/daijinquan.png'),
 				disabled: true
 			})
 			this.handleSetDisable()
@@ -628,7 +674,13 @@ export default {
 		},
 		// 支付方式点击事件
 		handleClickPaymentMode(payment) {
-			if (payment.paymentMode === '7') {
+			if (payment.paymentMode === '11') {
+				if (!this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (!this.voucherPay.isCanVoucher) {
+					uni.showToast({ title: this.voucherPay.noVoucherText, icon: 'none' }) // 无法使用代金券支付
+				}
+			} else if (payment.paymentMode === '7') {
 				if (!this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.commissionPrice) {

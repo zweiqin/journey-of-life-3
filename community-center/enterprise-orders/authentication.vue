@@ -123,9 +123,8 @@
 
 <script>
 import { bAuthApi, getAuthedCompanyListApi, OCRRecognitionApi } from '../../api/community-center'
-import { IMG_UPLOAD_URL } from '../../config';
-import { USER_INFO } from '../../constant'
-import { getUserId } from '../../utils'
+import { ANOTHER_TF_UPLOAD } from '../../config';
+import { USER_INFO, T_STORAGE_KEY } from '../../constant'
 
 export default {
   data() {
@@ -160,46 +159,44 @@ export default {
       uni.navigateBack();
     },
     handleUploadImg(type) {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
+            uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
                 if (type === 'businessLicense') {
                   this.isMask = false
                 }
                 uni.hideLoading();
-                _this.authForm.createOrUpdateCompanyParam[type] = JSON.parse(uploadFileRes.data).data.url
+                this.authForm.createOrUpdateCompanyParam[type] = JSON.parse(uploadFileRes.data).data.url
                 if (type === 'businessLicense') {
-                  _this.handlerecognition(JSON.parse(uploadFileRes.data).data.url)
+                  this.handlerecognition(JSON.parse(uploadFileRes.data).data.url)
                 }
-                _this.ttoast('上传成功')
-              },
+                this.ttoast('上传成功')
+							},
               fail: (error) => {
-                uni.hideLoading();
-                _this.ttoast({
+                uni.hideLoading()
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
-          }
-
-          return;
-        },
-        fail: (fail) => {
-          console.log(fail);
-        }
-      });
+						})
+					}
+				}
+			})
     },
 
     // 获取已认证公司联系人

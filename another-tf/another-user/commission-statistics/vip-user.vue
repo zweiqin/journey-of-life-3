@@ -52,7 +52,7 @@
 						? 'loading' : !fansDataInfo.isEmpty && fansDataInfo.data.length && (fansDataInfo.data.length >= fansDataInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="fansDataInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据...</tui-no-data>
+				<tui-no-data v-if="fansDataInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据...</tui-no-data>
 			</view>
 		</view>
 
@@ -81,7 +81,7 @@
 							? 'loading' : !subFansInfo.isEmpty && subFansInfo.data.length && (subFansInfo.data.length >= subFansInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="subFansInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无粉丝数据</tui-no-data>
+					<tui-no-data v-if="subFansInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无粉丝数据</tui-no-data>
 				</view>
 			</scroll-view>
 		</tui-bottom-popup>

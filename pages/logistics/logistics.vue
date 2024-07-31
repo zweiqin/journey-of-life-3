@@ -14,7 +14,7 @@
     <view class="tools">
       <image class="left" @click="handleToPage('/logistics/mail')" src="../../static/images/wuliu/jikuaidi.png" alt="" />
       <view class="right">
-        <image style="width: 100%; height: 236upx; flex: none" class="img" @click="handleToPage('/logistics/collect-package')" src="../../static/images/wuliu/qukuaidi.png" alt="" />
+        <image style="width: 100%; height: 236rpx; flex: none" class="img" @click="handleToPage('/logistics/collect-package')" src="../../static/images/wuliu/qukuaidi.png" alt="" />
 
         <image class="img" @click="handleToPage('/logistics/find-logistics')" src="../../static/images/wuliu/quanguo.png" alt="" />
       </view>
@@ -58,7 +58,7 @@
         </view>
 
 				<view v-else>
-					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+					<tui-no-data :fixed="false" style="padding-top: 100rpx;">暂无数据</tui-no-data>
 				</view>
       </view>
     </view>
@@ -176,17 +176,17 @@ export default {
 
 <style lang="less" scoped>
 .logistics-page {
-  padding: 54upx 30upx 80upx 30upx;
+  padding: 54rpx 30rpx 80rpx 30rpx;
 
   .tools {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 360upx;
-    margin-top: 24upx;
+    height: 360rpx;
+    margin-top: 24rpx;
 
     .left {
-      width: 308upx;
+      width: 308rpx;
       height: 100%;
     }
 
@@ -197,20 +197,20 @@ export default {
       justify-content: space-between;
       align-items: center;
       flex-direction: column;
-      padding-left: 20upx;
+      padding-left: 20rpx;
 
       .img {
         width: 100%;
 
         &:nth-child(1) {
-          height: 220upx;
+          height: 220rpx;
           flex: 1;
           box-sizing: border-box;
-          padding-bottom: 20upx;
+          padding-bottom: 20rpx;
         }
 
         &:nth-child(2) {
-          height: 108upx;
+          height: 108rpx;
         }
       }
     }
@@ -221,22 +221,22 @@ export default {
     justify-content: flex-start;
     align-items: center;
     color: #3d3d3d;
-    font-size: 32upx;
+    font-size: 32rpx;
     font-weight: bold;
-    line-height: 44upx;
-    margin-top: 40upx;
-    margin-bottom: 32upx;
+    line-height: 44rpx;
+    margin-top: 40rpx;
+    margin-bottom: 32rpx;
 
     .item {
       position: relative;
-      margin-right: 74upx;
+      margin-right: 74rpx;
       &::before {
         content: '';
         transition: all 350ms;
       }
 
       .number {
-        margin-left: 4upx;
+        margin-left: 4rpx;
         color: #3662ec;
       }
 
@@ -246,7 +246,7 @@ export default {
           display: block;
           content: '';
           width: 50%;
-          height: 4upx;
+          height: 4rpx;
           bottom: -25%;
           left: 50%;
           transform: translateX(-50%);
@@ -259,12 +259,12 @@ export default {
   .views {
     display: flex;
     align-items: center;
-    margin-bottom: 22upx;
+    margin-bottom: 22rpx;
 
     .item {
-      margin-right: 72upx;
+      margin-right: 72rpx;
       color: #999999;
-      font-size: 24upx;
+      font-size: 24rpx;
 
       .number {
         color: #000000;
@@ -275,32 +275,32 @@ export default {
   .orders {
     width: 100%;
     box-sizing: border-box;
-    padding-bottom: 48upx;
-    border-radius: 20upx;
-    margin-bottom: 36upx;
+    padding-bottom: 48rpx;
+    border-radius: 20rpx;
+    margin-bottom: 36rpx;
     background: linear-gradient(133deg, #2748b4 0%, rgba(39, 72, 180, 0) 100%);
 
     .banner {
       width: 70%;
-      height: 100upx;
+      height: 100rpx;
       display: block;
-      padding: 40upx 0 20upx 20upx;
+      padding: 40rpx 0 20rpx 20rpx;
     }
 
     .main {
       width: 95%;
       margin: 0 auto;
       background-color: linear-gradient(133deg, #2748b4 0%, rgba(39, 72, 180, 0) 100%);
-      padding: 24upx 0 24upx 0;
+      padding: 24rpx 0 24rpx 0;
 
       .order-item {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         flex-shrink: 0;
-        padding: 0 30upx;
-        margin-bottom: 48upx;
-        border: 1upx dotted #999;
+        padding: 0 30rpx;
+        margin-bottom: 48rpx;
+        border: 1rpx dotted #999;
         background-color: #fff;
         border-radius: 5px;
 
@@ -308,22 +308,22 @@ export default {
           height: 100%;
           .text {
             color: #3d3d3d;
-            font-size: 24upx;
-            margin: 16upx 0;
+            font-size: 24rpx;
+            margin: 16rpx 0;
 
             &.op {
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
-              max-width: 280upx;
+              max-width: 280rpx;
             }
           }
         }
 
         .goods-img {
-          width: 254upx;
-          height: 166upx;
-          border-radius: 20upx;
+          width: 254rpx;
+          height: 166rpx;
+          border-radius: 20rpx;
         }
       }
 
@@ -338,21 +338,21 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20upx;
+    margin-top: 20rpx;
 
     .package {
-      width: 120upx;
-      border-radius: 20upx;
-      margin-right: 30upx;
+      width: 120rpx;
+      border-radius: 20rpx;
+      margin-right: 30rpx;
     }
   }
 
   .kefu {
     position: fixed;
     top: 60%;
-    right: 10upx;
-    width: 80upx;
-    height: 80upx;
+    right: 10rpx;
+    width: 80rpx;
+    height: 80rpx;
     border-radius: 50%;
     background-color: #ff8f1f;
     display: flex;
@@ -360,7 +360,7 @@ export default {
     align-items: center;
 
     .img {
-      width: 54upx;
+      width: 54rpx;
     }
   }
 }

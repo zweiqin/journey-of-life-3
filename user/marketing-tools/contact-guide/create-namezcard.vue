@@ -82,12 +82,7 @@
     </Collapse>
 
     <Collapse ref="collapseRef" title="图片" :collapse="false">
-      <JMoreUpload
-        style="margin-top: 20px"
-        @upload="handleUploadImg"
-        @delete="handleDeleteImg"
-        :imgs="form.imgs"
-      ></JMoreUpload>
+			<ATFMoreUpload style="margin-top: 20px" :imgs="fileList" @upload="handleSaveImg" @delete="handleDeleteImg"></ATFMoreUpload>
     </Collapse>
 
     <Collapse
@@ -130,7 +125,8 @@ import {
 } from "../../../api/user";
 import { baseInfoFields, connects } from "./config";
 import { getUserId } from "../../../utils";
-import { IMG_UPLOAD_URL } from "../../../config";
+import { ANOTHER_TF_UPLOAD } from "../../../config";
+import { T_STORAGE_KEY } from '../../../constant'
 
 export default {
   components: {
@@ -225,37 +221,39 @@ export default {
     },
 
     // 上传图片
-    handleUploadImg(img) {
-      this.form.imgs.push(img);
+    handleSaveImg(imgUrl) {
+      this.form.imgs.push(imgUrl);
+			this.$forceUpdate()
     },
-
     // 删除图片
-    handleDeleteImg(img) {
-      const index = this.form.imgs.findIndex((item) => item === img);
-      if (index !== -1) {
-        this.form.imgs.splice(index, 1);
-      }
-    },
+		handleDeleteImg(imgUrl) {
+			this.form.imgs.splice(this.form.imgs.findIndex((item) => item === imgUrl), 1)
+			this.$forceUpdate()
+		},
 
     // 获取图片
     getImg(e) {
-      const _this = this;
-      uni.showLoading({
-        title: "头像上传中",
-      });
-      uni.uploadFile({
-        url: IMG_UPLOAD_URL,
-        filePath: e,
-        name: "file",
-        success: (uploadFileRes) => {
-          console.log(JSON.parse(uploadFileRes.data).data.url);
-          _this.form.headPic = JSON.parse(uploadFileRes.data).data.url;
-          uni.hideLoading();
-        },
-        complete: () => {
-          uni.hideLoading();
-        },
-      });
+			uni.showLoading({
+				title: "头像上传中",
+			})
+			uni.uploadFile({
+				url: ANOTHER_TF_UPLOAD,
+				filePath: e,
+				name: 'file',
+				header: {
+					Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+				},
+				formData: {
+					'folderId': -1
+				},
+				success: (uploadFileRes) => {
+					this.form.headPic = JSON.parse(uploadFileRes.data).data.url
+					uni.hideLoading()
+				},
+				fail: (error) => {
+					uni.hideLoading()
+				}
+			})
     },
 
     // 上传头像
@@ -273,18 +271,25 @@ export default {
           uni.showLoading({
             title: "视频上传中",
           });
-          uni.uploadFile({
-            url: IMG_UPLOAD_URL,
-            filePath: res.tempFilePath,
-            name: "file",
-            success: (uploadFileRes) => {
-              _this.$showToast("上传成功", "success");
-              _this.form.video = JSON.parse(uploadFileRes.data).data.url;
-            },
-            complete: () => {
-              uni.hideLoading();
-            },
-          });
+					uni.uploadFile({
+						url: ANOTHER_TF_UPLOAD,
+						filePath: res.tempFilePath,
+						name: 'file',
+						header: {
+							Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+						},
+						formData: {
+							'folderId': -1
+						},
+						success: (uploadFileRes) => {
+							this.$showToast("上传成功", "success")
+							this.form.video = JSON.parse(uploadFileRes.data).data.url
+							uni.hideLoading()
+						},
+						fail: (error) => {
+							uni.hideLoading()
+						}
+					})
         },
       });
     },

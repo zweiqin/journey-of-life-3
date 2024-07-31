@@ -1,7 +1,7 @@
 <template>
 	<view class="information-sentry-container">
 		<div class="header">
-			<tui-icon name="arrowleft" color="#767676" :size="48" unit="upx" @click="handleBack"></tui-icon>
+			<tui-icon name="arrowleft" color="#767676" :size="48" unit="rpx" @click="handleBack"></tui-icon>
 			<h2
 				:style="{
 					flex: searchActive ? 'none' : 1
@@ -11,8 +11,8 @@
 			</h2>
 			<view class="search" :class="{ active: searchActive }">
 				<tui-icon
-					name="search" color="#767676" :size="32" unit="upx"
-					margin="0 10upx 0 0"
+					name="search" color="#767676" :size="32" unit="rpx"
+					margin="0 10rpx 0 0"
 					@click="handleSearch"
 				></tui-icon>
 
@@ -54,7 +54,7 @@
 		</view>
 
 		<view v-show="!list.length">
-			<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+			<tui-no-data :fixed="false" style="padding-top: 100rpx;">暂无数据</tui-no-data>
 		</view>
 
 		<tui-icon
@@ -191,7 +191,7 @@ export default {
 @import "../../style/var.less";
 
 .information-sentry-container {
-	padding: 40upx 34upx;
+	padding: 40rpx 34rpx;
 	box-sizing: border-box;
 
 	.header {
@@ -200,15 +200,15 @@ export default {
 		h2 {
 			flex: 1;
 			font-weight: normal;
-			font-size: 32upx;
+			font-size: 32rpx;
 			color: @c0;
-			margin-left: 34upx;
+			margin-left: 34rpx;
 			flex-shrink: 0;
 		}
 
 		.search {
 			position: relative;
-			width: 32upx;
+			width: 32rpx;
 			display: flex;
 			align-items: center;
 			margin-left: 10px;
@@ -234,10 +234,10 @@ export default {
 	}
 
 	.navs {
-		padding: 34upx;
+		padding: 34rpx;
 		.flex();
 		color: @c9;
-		font-size: 28upx;
+		font-size: 28rpx;
 
 		.item {
 			transition: all 350ms;

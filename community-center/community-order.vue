@@ -206,8 +206,8 @@
 import { getUserId } from 'utils'
 import { debounce } from 'lodash-es'
 import { getAddressListApi, getAreaIdByAddressApi } from '../api/address'
-import { T_SELECT_ADDRESS, SF_INVITE_CODE } from '../constant'
-import { APPLY_NAME, IMG_UPLOAD_URL } from '../config'
+import { T_SELECT_ADDRESS, SF_INVITE_CODE, T_STORAGE_KEY } from '../constant'
+import { APPLY_NAME, ANOTHER_TF_UPLOAD } from '../config'
 import ChooseTime from './componts/choose-time.vue'
 import { getServicePriceApi, getServiceOrderApi, getIsOpenServerAreaApi, getCommunityListApi, getAreaDetailInfoApi } from '../api/community-center'
 import { updateDeleteRedisCardHolderApi } from '../api/anotherTFInterface'
@@ -388,21 +388,25 @@ export default {
       // #endif
     },
     handleChooseImage() {
-      uni.chooseImage({
-        success: (chooseImageRes) => {
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
             uni.showLoading()
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
                 uni.hideLoading()
                 this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
-              },
+							},
               fail: (error) => {
                 uni.hideLoading()
                 this.ttoast({
@@ -411,14 +415,10 @@ export default {
                   content: error
                 })
               }
-            })
-          }
-          return
-        },
-        fail: (fail) => {
-          console.log(fail)
-        }
-      })
+						})
+					}
+				}
+			})
     },
 
     // 点击删除图片

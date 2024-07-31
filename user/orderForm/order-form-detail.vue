@@ -112,7 +112,8 @@ import {
 } from '../../api/order'
 import { getUserId, payFn } from '../../utils'
 import { orderOpButtons } from './config'
-import { IMG_UPLOAD_URL } from '../../config'
+import { T_STORAGE_KEY } from '../../constant'
+import { ANOTHER_TF_UPLOAD } from '../../config'
 
 export default {
 	name: 'OrderFormDetail',
@@ -174,15 +175,21 @@ export default {
 
 		// 上传图片
 		handleUploadImg() {
-			const _this = this
 			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
 				success: (chooseImageRes) => {
 					uni.uploadFile({
-						url: IMG_UPLOAD_URL,
+						url: ANOTHER_TF_UPLOAD,
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
+						header: {
+							Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+						},
+						formData: {
+							'folderId': -1
+						},
 						success: (uploadFileRes) => {
-							_this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url)
+							this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url)
 						}
 					})
 				}

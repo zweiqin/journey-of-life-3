@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
-		<BeeBack style="padding: 10upx 0;">
+		<BeeBack style="padding: 10rpx 0;">
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40upx;text-align: center;">购物车</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">购物车</text>
 			</view>
 		</BeeBack>
 		<!-- 骨架屏 -->
@@ -33,8 +33,8 @@
 			<ATFShopCartList ref="refATFShopCartList" is-to-shop @update-msg="handleUpdateMoneyAndNum">
 				<!-- 购物车为空 -->
 				<template #empty>
-					<view style="padding-bottom: 45upx;">
-						<tui-no-data :fixed="false" style="padding-top: 60upx;">
+					<view style="padding-bottom: 45rpx;">
+						<tui-no-data :fixed="false" style="padding-top: 60rpx;">
 							<view>
 								<view>你的购物车还没有宝贝哦</view>
 								<view style="margin-top: 20rpx;">快去首页选一个吧～</view>
@@ -56,13 +56,13 @@
 				<view class="cart-bottom">
 					<view class="left">
 						<tui-icon
-							v-if="cartMsgObj.isAllCheck" name="circle-fill" :size="40" unit="upx"
+							v-if="cartMsgObj.isAllCheck" name="circle-fill" :size="40" unit="rpx"
 							color="#c5aa7b"
-							margin="40upx" @click="$refs.refATFShopCartList && $refs.refATFShopCartList.handleSelectAll(0)"
+							margin="40rpx" @click="$refs.refATFShopCartList && $refs.refATFShopCartList.handleSelectAll(0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="40upx"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="40rpx"
 							@click="$refs.refATFShopCartList && $refs.refATFShopCartList.handleSelectAll(1)"
 						></tui-icon>
 						<text>全选</text>
@@ -223,7 +223,7 @@ export default {
 <style lang="scss" scoped>
 .content {
 	box-sizing: border-box;
-	padding-bottom: 120upx;
+	padding-bottom: 120rpx;
 
 	.cart-bg {
 		width: 100%;

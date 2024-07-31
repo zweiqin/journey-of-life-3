@@ -5,13 +5,13 @@
 				<view v-if="item.skus.length > 0" class="item" :style="{ maxHeight }">
 					<view class="shop-box">
 						<tui-icon
-							v-if="item.selected === 1" name="circle-fill" :size="40" unit="upx"
+							v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
 							color="#c5aa7b"
-							margin="40upx" @click="handleSelectShop(index, 0)"
+							margin="40rpx" @click="handleSelectShop(index, 0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="40upx"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="40rpx"
 							@click="handleSelectShop(index, 1)"
 						></tui-icon>
 						<view class="shop-name-box" @click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
@@ -19,8 +19,8 @@
 							<text class="shop-name">{{ item.shopName }}</text>
 							<tui-icon
 								v-if="isToShop"
-								name="arrowright" :size="30" unit="upx" color="#999999"
-								margin="0 0 0 30upx"
+								name="arrowright" :size="30" unit="rpx" color="#999999"
+								margin="0 0 0 30rpx"
 								class="arrow-right-img"
 							></tui-icon>
 						</view>
@@ -34,13 +34,13 @@
 					<view v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" class="product-list-box">
 						<view class="pro-item">
 							<tui-icon
-								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="upx"
+								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
 								color="#c5aa7b"
-								margin="40upx" @click="handleSelectSku(index, cIndex, 0)"
+								margin="40rpx" @click="handleSelectSku(index, cIndex, 0)"
 							></tui-icon>
 							<tui-icon
-								v-else name="circle" :size="40" unit="upx"
-								color="#cccccc" margin="40upx"
+								v-else name="circle" :size="40" unit="rpx"
+								color="#cccccc" margin="40rpx"
 								@click="handleSelectSku(index, cIndex, 1)"
 							></tui-icon>
 							<view
@@ -76,11 +76,11 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore :status="isLoading && isFirstLoading ? 'loading' : ''"></LoadingMore>
 			<view v-if="!isLoading && !shopCartList.length">
 				<slot name="empty" :data="shopCartList">
-					<tui-no-data :fixed="false" style="padding-top: 60upx;">购物车空空如也~</tui-no-data>
+					<tui-no-data :fixed="false" style="padding-top: 60rpx;">购物车空空如也~</tui-no-data>
 				</slot>
 			</view>
 		</view>

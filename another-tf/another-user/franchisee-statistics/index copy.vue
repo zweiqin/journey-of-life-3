@@ -1,48 +1,48 @@
 <template>
 	<view class="finance-statistics-container">
-		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view
-			style="padding: 8upx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
+			style="padding: 8rpx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
-			<view style="font-size: 28upx;">
+			<view style="font-size: 28rpx;">
 				<view>累计收益</view>
-				<view style="margin-top: 24upx;font-size: 64upx;">{{ franchiseeStatisticsData.accumulateIncome || 0 }}</view>
-				<view style="margin-top: 22upx;color: #f6a07a;">待提现：{{ franchiseeStatisticsData.withdrawalIncome || 0 }}元</view>
+				<view style="margin-top: 24rpx;font-size: 64rpx;">{{ franchiseeStatisticsData.accumulateIncome || 0 }}</view>
+				<view style="margin-top: 22rpx;color: #f6a07a;">待提现：{{ franchiseeStatisticsData.withdrawalIncome || 0 }}元</view>
 			</view>
 			<view
-				style="display: flex;justify-content: space-evenly;margin-top: 76upx;padding: 20upx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
+				style="display: flex;justify-content: space-evenly;margin-top: 76rpx;padding: 20rpx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
 			>
 				<view>
 					<view style="color: #f7a783;">今日商家数</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.shopTodayNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.shopTodayNum || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view>
 					<view style="color: #f7a783;">累计商家数</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.shopAllNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.shopAllNum || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view>
 					<view style="color: #f7a783;">今日收益</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.todayIncome || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.todayIncome || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view>
 					<view style="color: #f7a783;">预计收益</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.wayIncome || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.wayIncome || 0 }}</view>
 				</view>
 			</view>
 		</view>
 
-		<view style="padding: 0 24upx;background-color: #ffffff;">
+		<view style="padding: 0 24rpx;background-color: #ffffff;">
 			<tui-tabs
-				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="351" :padding="24"
+				style="width: 702rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="351" :padding="24"
 				item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 				:tabs="[{ name: '今天' }, { name: '全部' }]" :current-tab="currentTab"
 				@change="handleCurrentChange"
 			></tui-tabs>
 		</view>
-		<view style="padding: 20upx;">
+		<view style="padding: 20rpx;">
 			<tui-list-view v-if="shopIncomeList && shopIncomeList.length">
 				<tui-list-cell v-for="(item, index) in shopIncomeList" :key="item.id">
 					<view style="display: flex;justify-content: space-between;">
@@ -55,13 +55,13 @@
 					</view>
 				</tui-list-cell>
 			</tui-list-view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !shopIncomeList.length
 						? 'loading' : !isEmpty && shopIncomeList.length && (shopIncomeList.length >= shopIncomeTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无粉丝~</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无粉丝~</tui-no-data>
 			</view>
 		</view>
 	</view>
@@ -150,7 +150,7 @@ export default {
 	background-color: #f6f6f6;
 	.tui-tabs-view{
 		/deep/ .tui-tabs-slider{
-		margin-left: -24upx;
+		margin-left: -24rpx;
 		}
 	}
 }

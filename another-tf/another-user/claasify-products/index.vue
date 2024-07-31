@@ -2,24 +2,24 @@
 	<view class="claasify-products-container">
 		<JHeader
 			:title="transformation[currentType]" width="50" height="50"
-			style="padding: 24upx 0 18upx;background-color: #ffffff;"
+			style="padding: 24rpx 0 18rpx;background-color: #ffffff;"
 		></JHeader>
-		<view v-if="ownSearchBar.includes(currentType)" style="padding: 0 0 12upx;background-color: #ffffff;">
-			<view style="display: flex;align-items: center;margin: 0 28upx;border: 2upx solid #EF5511;border-radius: 50upx;">
+		<view v-if="ownSearchBar.includes(currentType)" style="padding: 0 0 12rpx;background-color: #ffffff;">
+			<view style="display: flex;align-items: center;margin: 0 28rpx;border: 2rpx solid #EF5511;border-radius: 50rpx;">
 				<TuanLocation
 					free event-name="sendChooseAddressSuccessMsg"
-					style="display: flex;align-items: center;padding-left: 18upx;line-height: 1;"
+					style="display: flex;align-items: center;padding-left: 18rpx;line-height: 1;"
 				>
-					<text style="max-width: 130upx;font-size:28upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+					<text style="max-width: 130rpx;font-size:28rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 						{{ $store.getters.currentShopCity || '定位失败' }}
 					</text>
 					<BeeIcon :size="26" name="turningdown" color="#222229"></BeeIcon>
 				</TuanLocation>
-				<view style="width: 4upx;height: 28upx;background-color: #f6f6f8;"></view>
+				<view style="width: 4rpx;height: 28rpx;background-color: #f6f6f8;"></view>
 				<tui-input
 					v-model="queryInfo.search" :placeholder="transformation[currentType]" clearable
-					:border-bottom="false" padding="6upx 10upx 6upx 2upx" placeholder-style="color: #222229;font-size: 28upx;"
-					background-color="transparent" style="flex: 1;margin-left: 14upx;"
+					:border-bottom="false" padding="6rpx 10rpx 6rpx 2rpx" placeholder-style="color: #222229;font-size: 28rpx;"
+					background-color="transparent" style="flex: 1;margin-left: 14rpx;"
 				>
 					<template #right>
 						<tui-button
@@ -37,10 +37,10 @@
 		<!-- 菜单栏 -->
 		<view
 			v-if="ownMenuBar.includes(currentType)"
-			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14upx 26upx 0;padding: 24upx 22upx 2upx;color: #222229;background-color: #ffffff;border-radius: 20upx;"
+			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14rpx 26rpx 0;padding: 24rpx 22rpx 2rpx;color: #222229;background-color: #ffffff;border-radius: 20rpx;"
 		>
 			<view
-				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 22upx;text-align: center;"
+				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 22rpx;text-align: center;"
 				@click="go(`/another-tf/another-serve/goodsList/index?classifyId=${item.classifyId}`)"
 			>
 				<view>
@@ -51,38 +51,38 @@
 					>
 					</BeeIcon>
 				</view>
-				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.classifyName }}</view>
+				<view style="margin-top: 6rpx;font-size: 26rpx;white-space: nowrap;">{{ item.classifyName }}</view>
 			</view>
 		</view>
 
 		<view
 			v-if="ownGoodsCardBox.includes(currentType) && goodsList.length"
-			style="margin: 14upx 26upx 0;box-sizing: border-box;"
+			style="margin: 14rpx 26rpx 0;box-sizing: border-box;"
 		>
 			<tui-waterfall :list-data="goodsList" :type="2">
 				<template #left="{ entity }">
 					<ATFShopGoods
-						:shop-id="entity.shopId" :c-item="entity" pic-padding="16upx" price-color="#333333"
+						:shop-id="entity.shopId" :c-item="entity" pic-padding="16rpx" price-color="#333333"
 						:show-icon="false" show-brief
 					>
 					</ATFShopGoods>
 				</template>
 				<template #right="{ entity }">
 					<ATFShopGoods
-						:shop-id="entity.shopId" :c-item="entity" pic-padding="16upx" price-color="#333333"
+						:shop-id="entity.shopId" :c-item="entity" pic-padding="16rpx" price-color="#333333"
 						:show-icon="false" show-brief
 					>
 					</ATFShopGoods>
 				</template>
 			</tui-waterfall>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !goodsList.length
 					? 'loading' : !isEmpty && goodsList.length && (goodsList.length >= goodsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -165,7 +165,7 @@ export default {
 	box-sizing: border-box;
 
 	/deep/ .j-header-container .title {
-		font-size: 36upx;
+		font-size: 36rpx;
 		color: #222229;
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="我的积分" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的积分" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="memberBox">
 			<view class="posBox">
 				<view class="memberBoxTop">
@@ -40,23 +40,23 @@
 		</view>
 		<view class="signBox flex-items flex-sp-between mar-top-30" @click="go('/another-tf/another-serve/integral/sign')">
 			<view class="flex-items flex-sp-between">
-				<tui-icon name="member-fill" :size="96" unit="upx" color="#fdbc3d" margin="0 20upx 0 0"></tui-icon>
+				<tui-icon name="member-fill" :size="96" unit="rpx" color="#fdbc3d" margin="0 20rpx 0 0"></tui-icon>
 				<view class="signText fs28 font-color-C5AA7B">积分签到</view>
 			</view>
-			<tui-icon name="arrowright" :size="48" unit="upx" color="#C5AA7B"></tui-icon>
+			<tui-icon name="arrowright" :size="48" unit="rpx" color="#C5AA7B"></tui-icon>
 		</view>
 		<view class="signTabs mar-top-30 flex-items">
 			<view :class="{ active: currentTab === 0 }" class="tabItem flex-items flex-center" @click="handleChangeTab(0)">
 				<tui-icon
-					name="order" :size="40" unit="upx" :color="currentTab === 0 ? '#ffebc4' : '#999999'"
-					margin="0 20upx 0 0"
+					name="order" :size="40" unit="rpx" :color="currentTab === 0 ? '#ffebc4' : '#999999'"
+					margin="0 20rpx 0 0"
 				></tui-icon>
 				<text>积分明细</text>
 			</view>
 			<view :class="{ active: currentTab === 1 }" class="tabItem flex-items flex-center" @click="handleChangeTab(1)">
 				<tui-icon
-					name="exchange" :size="40" unit="upx" :color="currentTab === 1 ? '#ffebc4' : '#999999'"
-					margin="0 20upx 0 0"
+					name="exchange" :size="40" unit="rpx" :color="currentTab === 1 ? '#ffebc4' : '#999999'"
+					margin="0 20rpx 0 0"
 				></tui-icon>
 				<text>积分兑换</text>
 			</view>
@@ -65,7 +65,7 @@
 			<view v-if="integralInfo.data && integralInfo.data.length">
 				<view v-for="(item, index) in integralInfo.data" :key="index" class="signItem flex-items flex-sp-between">
 					<view class="leftBox flex-items">
-						<tui-icon name="service-fill" :size="90" unit="upx" color="#fabe69" margin="0 30upx 0 0"></tui-icon>
+						<tui-icon name="service-fill" :size="90" unit="rpx" color="#fabe69" margin="0 30rpx 0 0"></tui-icon>
 						<view class="leftInfo">
 							<label class="fs28 font-color-333">{{ item.recordContent }}</label>
 							<view class="fs24 font-color-999">{{ item.createTime }}</view>
@@ -74,13 +74,13 @@
 					<view class="rightBtn">{{ item.recordType === 1 ? '+' : '-' }}{{ item.credit }}</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!integralInfo.isEmpty && !integralInfo.data.length
 						? 'loading' : !integralInfo.isEmpty && integralInfo.data.length && (integralInfo.data.length >= integralInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="integralInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无记录~</tui-no-data>
+				<tui-no-data v-if="integralInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无记录~</tui-no-data>
 			</view>
 		</view>
 		<view v-else class="signExchange mar-top-20">
@@ -129,13 +129,13 @@
 					</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!creditCouponInfo.isEmpty && !creditCouponInfo.data.length
 						? 'loading' : !creditCouponInfo.isEmpty && creditCouponInfo.data.length && (creditCouponInfo.data.length >= creditCouponInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="creditCouponInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无优惠券~</tui-no-data>
+				<tui-no-data v-if="creditCouponInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无优惠券~</tui-no-data>
 			</view>
 		</view>
 		<tui-modal :show="isConvertible" custom fadein>
@@ -152,7 +152,7 @@
 					</view>
 				</view>
 				<view v-if="isConvertible" class="cancelDel" @click="isConvertible = false">
-					<tui-icon name="close" :size="60" unit="upx" color="#f0f0f0"></tui-icon>
+					<tui-icon name="close" :size="60" unit="rpx" color="#f0f0f0"></tui-icon>
 				</view>
 			</view>
 		</tui-modal>

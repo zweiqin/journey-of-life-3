@@ -228,7 +228,7 @@
 									? 'loading' : !shopGoodsInfo.isEmpty && shopGoodsInfo.data.length && (shopGoodsInfo.data.length >= shopGoodsInfo.listTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+							<tui-no-data v-if="shopGoodsInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -322,9 +322,6 @@ export default {
 			this.allTabList = this.allTabData.map((item) => item.classifyName)
 		})
 		this.getShopGoodsTemplate()
-	},
-
-	computed: {
 	},
 
 	watch: {

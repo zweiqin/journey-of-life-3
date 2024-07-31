@@ -72,7 +72,7 @@
 									</view>
 									<view
 										v-else
-										style="padding: 2rpx 0 6upx;text-align: center;background-color: #ebebea;font-size: 24rpx;"
+										style="padding: 2rpx 0 6rpx;text-align: center;background-color: #ebebea;font-size: 24rpx;"
 									>
 										缺少项目
 									</view>
@@ -132,10 +132,10 @@
 								</view>
 								</view> -->
 						</view>
-						<view style="padding-bottom: 45upx;">
+						<view style="padding-bottom: 45rpx;">
 							<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
 							<view v-if="!isLoading && !serviceSortData.length">
-								<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无数据~</tui-no-data>
+								<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 							</view>
 						</view>
 					</view>
@@ -163,14 +163,14 @@
 											<view style="font-size: 28rpx;">{{ serve.serverNameThree }}</view>
 										</view>
 									</view>
-									<view v-else style="padding-bottom: 45upx;">
-										<tui-no-data :fixed="false" style="padding-top: 60upx;">这里空空如也～</tui-no-data>
+									<view v-else style="padding-bottom: 45rpx;">
+										<tui-no-data :fixed="false" style="padding-top: 60rpx;">这里空空如也～</tui-no-data>
 									</view>
 								</view>
 							</scroll-view>
 						</view>
-						<view v-else style="padding-bottom: 45upx;">
-							<tui-no-data :fixed="false" style="padding-top: 60upx;">该分类缺少项目</tui-no-data>
+						<view v-else style="padding-bottom: 45rpx;">
+							<tui-no-data :fixed="false" style="padding-top: 60rpx;">该分类缺少项目</tui-no-data>
 						</view>
 
 					</view>

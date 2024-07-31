@@ -50,7 +50,7 @@
       </view>
 
 			<view v-else>
-				<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+				<tui-no-data :fixed="false" style="padding-top: 100rpx;">暂无数据</tui-no-data>
 			</view>
     </view>
   </view>
@@ -138,7 +138,7 @@ export default {
 
 <style lang="less" scoped>
 .value-added-services {
-  padding: 60upx 26upx;
+  padding: 60rpx 26rpx;
   box-sizing: border-box;
   min-height: 100vh;
   background: linear-gradient(180deg, #07b9b9 0%, #ffffff 100%);
@@ -148,7 +148,7 @@ export default {
     align-items: center;
 
     .back {
-      width: 16upx;
+      width: 16rpx;
     }
 
     .title {
@@ -156,29 +156,29 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       color: #fff;
-      font-size: 32upx;
+      font-size: 32rpx;
     }
   }
 
   .main {
     background-color: #fff;
-    padding: 30upx;
-    border-radius: 20upx;
-    margin-top: 40upx;
+    padding: 30rpx;
+    border-radius: 20rpx;
+    margin-top: 40rpx;
 
     .find-wuliu {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      border-bottom: 1upx solid #d8d8d8;
+      border-bottom: 1rpx solid #d8d8d8;
 
       .search {
         display: flex;
         align-items: center;
         justify-content: center;
         color: #3d3d3d;
-        font-size: 36upx;
+        font-size: 36rpx;
         font-weight: bold;
 
         .from{
@@ -188,8 +188,8 @@ export default {
         }
 
         .icon {
-          width: 72upx;
-          margin: 0 110upx;
+          width: 72rpx;
+          margin: 0 110rpx;
         }
 
         .desc {
@@ -202,12 +202,12 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 260upx;
-        height: 72upx;
-        border-radius: 20upx;
+        width: 260rpx;
+        height: 72rpx;
+        border-radius: 20rpx;
         background-color: #07b9b9;
         color: #fff;
-        margin: 40upx 0;
+        margin: 40rpx 0;
       }
     }
 
@@ -217,9 +217,9 @@ export default {
       flex-wrap: wrap;
 
       .img {
-        width: 300upx;
-        height: 136upx;
-        margin: 32upx 0;
+        width: 300rpx;
+        height: 136rpx;
+        margin: 32rpx 0;
       }
     }
   }

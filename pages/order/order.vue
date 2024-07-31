@@ -60,7 +60,7 @@
 								? 'loading' : !shoppingIsEmpty && shoppingOrderList.length && (shoppingOrderList.length >= shoppingListTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="shoppingIsEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="shoppingIsEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</view>
 
@@ -76,7 +76,7 @@
 								? 'loading' : !businessIsEmpty && businessOrderList.length && (businessOrderList.length >= businessListTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="businessIsEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</view>
 

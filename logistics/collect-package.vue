@@ -55,7 +55,7 @@
         </view>
 
 				<view v-else>
-					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+					<tui-no-data :fixed="false" style="padding-top: 100rpx;">暂无数据</tui-no-data>
 				</view>
       </view>
     </view>
@@ -292,7 +292,7 @@ export default {
 // }
 
 .collect-package {
-  padding: 68upx 40upx;
+  padding: 68rpx 40rpx;
   box-sizing: border-box;
   background: linear-gradient(180deg, #00b578 0%, #ffffff 100%);
   min-height: 100vh;
@@ -302,7 +302,7 @@ export default {
     align-items: center;
 
     .back {
-      width: 16upx;
+      width: 16rpx;
     }
 
     .title {
@@ -310,27 +310,27 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       color: #fff;
-      font-size: 32upx;
+      font-size: 32rpx;
     }
   }
 
   .main {
     width: 100%;
-    border-radius: 20upx;
+    border-radius: 20rpx;
     background-color: #fff;
-    padding: 20upx;
+    padding: 20rpx;
     min-height: 100vh;
-    margin-top: 34upx;
+    margin-top: 34rpx;
     box-sizing: border-box;
 
     .search {
       position: relative;
       width: 100%;
-      height: 60upx;
+      height: 60rpx;
       box-sizing: border-box;
-      padding: 10upx 20upx 10upx 60upx;
+      padding: 10rpx 20rpx 10rpx 60rpx;
       background-color: #efefef;
-      border-radius: 30upx;
+      border-radius: 30rpx;
 
       .search-input {
         width: 100%;
@@ -339,28 +339,28 @@ export default {
 
       .img {
         position: absolute;
-        left: 16upx;
+        left: 16rpx;
         top: 50%;
         transform: translateY(-50%);
-        width: 32upx;
+        width: 32rpx;
       }
     }
 
     .order-list {
       width: 100%;
       box-sizing: border-box;
-      padding: 40upx 26upx;
+      padding: 40rpx 26rpx;
 
       .navs {
         display: flex;
         justify-content: space-between;
         align-items: center;
         color: #000000;
-        font-size: 28upx;
+        font-size: 28rpx;
 
         .nav-item {
           position: relative;
-          padding-bottom: 6upx;
+          padding-bottom: 6rpx;
           border-bottom: 2px solid transparent;
           font-weight: 500;
           transition: all 350ms;
@@ -373,7 +373,7 @@ export default {
 
       .orders {
         .order-wrapper {
-          margin-top: 30upx;
+          margin-top: 30rpx;
           border-bottom: 1px solid #d8d8d8;
 
           &:last-child {
@@ -387,9 +387,9 @@ export default {
             line-height: 1.5;
 
             .img {
-              width: 254upx;
-              height: 166upx;
-              border-radius: 20upx;
+              width: 254rpx;
+              height: 166rpx;
+              border-radius: 20rpx;
             }
 
             .info {
@@ -398,9 +398,9 @@ export default {
               flex-direction: column;
               align-items: flex-start;
               justify-content: space-around;
-              // margin: 0 28upx;
+              // margin: 0 28rpx;
               color: #3d3d3d;
-              font-size: 24upx;
+              font-size: 24rpx;
             }
           }
 
@@ -408,15 +408,15 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 18upx 0;
+            margin: 18rpx 0;
             color: #3d3d3d;
-            font-size: 28upx;
+            font-size: 28rpx;
             font-weight: bold;
             .btns {
               display: flex;
               .btn {
                 font-size: 12px;
-                padding: 0px 18upx;
+                padding: 0px 18rpx;
                 margin: 0 10px;
                 color: #fff;
                 background-color: #3662ec;

@@ -69,7 +69,7 @@
 								? 'loading' : !accountingInfo.isEmpty && accountingInfo.data.length && (accountingInfo.data.length >= accountingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="accountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="accountingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 2 ].includes(queryType)">
@@ -115,7 +115,7 @@
 								? 'loading' : !outgoingInfo.isEmpty && outgoingInfo.data.length && (outgoingInfo.data.length >= outgoingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="outgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="outgoingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 			</view>

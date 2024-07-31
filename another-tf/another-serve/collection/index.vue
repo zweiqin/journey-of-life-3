@@ -95,7 +95,7 @@
 						? 'loading' : !productInfo.isEmpty && productInfo.data.length && (productInfo.data.length >= productInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="productInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无收藏</tui-no-data>
+				<tui-no-data v-if="productInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无收藏</tui-no-data>
 			</view>
 		</view>
 		<view v-if="collectionTypeFlag == 1">
@@ -187,7 +187,7 @@
 						? 'loading' : !storeInfo.isEmpty && storeInfo.data.length && (storeInfo.data.length >= storeInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="storeInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无收藏</tui-no-data>
+				<tui-no-data v-if="storeInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无收藏</tui-no-data>
 			</view>
 		</view>
 

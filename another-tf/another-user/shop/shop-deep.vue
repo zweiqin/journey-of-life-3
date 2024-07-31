@@ -1,15 +1,15 @@
 <template>
 	<view class="shop-deep-container">
 
-		<BeeBack style="padding: 20upx 0;">
+		<BeeBack style="padding: 20rpx 0;">
 			<view style="display: flex;align-items: center;justify-content: space-between;">
 				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;"></BeeIcon>
 				<view style="flex: 1;display: flex;align-items: center;" @click.stop="() => {}">
-					<text style="font-weight: bold;font-size: 36upx;">{{ title }}</text>
+					<text style="font-weight: bold;font-size: 36rpx;">{{ title }}</text>
 					<tui-input
 						v-model="queryInfo.search" placeholder="社区商圈"
-						clearable is-fillet padding="6upx 10upx 6upx 26upx"
-						style="flex: 1;margin-left: 16upx;border: 2upx solid #EF5511;"
+						clearable is-fillet padding="6rpx 10rpx 6rpx 26rpx"
+						style="flex: 1;margin-left: 16rpx;border: 2rpx solid #EF5511;"
 					>
 						<template #right>
 							<tui-button
@@ -28,10 +28,10 @@
 		<!-- 菜单栏 -->
 		<view
 			v-if="menuBarArr && menuBarArr.length"
-			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14upx 26upx 0;padding: 22upx 22upx 2upx;background-color: #ffffff;border-radius: 20upx;"
+			style="display: flex;align-items: center;flex-wrap: wrap;margin: 14rpx 26rpx 0;padding: 22rpx 22rpx 2rpx;background-color: #ffffff;border-radius: 20rpx;"
 		>
 			<view
-				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20upx;text-align: center;"
+				v-for="item in menuBarArr" :key="item.id" style="width: 20%;margin-bottom: 20rpx;text-align: center;"
 				@click="getNearByShopList(false, item.id)"
 			>
 				<view>
@@ -41,24 +41,24 @@
 					>
 					</BeeIcon>
 				</view>
-				<view style="margin-top: 6upx;font-size: 26upx;white-space: nowrap;">{{ item.storeName }}</view>
+				<view style="margin-top: 6rpx;font-size: 26rpx;white-space: nowrap;">{{ item.storeName }}</view>
 			</view>
 		</view>
 
-		<view v-if="nearbyShopList.length" style="margin: 14upx 26upx 0;">
+		<view v-if="nearbyShopList.length" style="margin: 14rpx 26rpx 0;">
 			<ATFCommonShop
 				v-for="shop in nearbyShopList" :key="shop.shopId" :shop-info="shop" bottom-type="brief"
-				margin="22upx 0"
-				radius="20upx"
+				margin="22rpx 0"
+				radius="20rpx"
 			></ATFCommonShop>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !nearbyShopList.length
 					? 'loading' : !isEmpty && nearbyShopList.length && (nearbyShopList.length >= nearbyTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">{{ `${title} 类目暂无商家认证` }}</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">{{ `${title} 类目暂无商家认证` }}</tui-no-data>
 		</view>
 
 	</view>

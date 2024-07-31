@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="我的评价" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的评价" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view>
 			<!-- 我的评论 -->
 			<view class="evaluateTitle-box flex-row-plus flex-sp-around">
@@ -77,13 +77,13 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!commentInfo.isEmpty && !commentInfo.data.length
 							? 'loading' : !commentInfo.isEmpty && commentInfo.data.length && (commentInfo.data.length >= commentInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="commentInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">你还没有评论哦～</tui-no-data>
+					<tui-no-data v-if="commentInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">你还没有评论哦～</tui-no-data>
 				</view>
 
 			</view>
@@ -138,13 +138,13 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!commentPicInfo.isEmpty && !commentPicInfo.data.length
 							? 'loading' : !commentPicInfo.isEmpty && commentPicInfo.data.length && (commentPicInfo.data.length >= commentPicInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="commentPicInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">你还没有评论哦～</tui-no-data>
+					<tui-no-data v-if="commentPicInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">你还没有评论哦～</tui-no-data>
 				</view>
 
 			</view>
@@ -335,12 +335,12 @@ export default {
 
 	.evaluateTitle-box {
 		color: #CCCCCC;
-		margin-top: 26upx;
+		margin-top: 26rpx;
 		border-bottom: 2rpx solid #F3F4F5;
 
 		.evaluateTitle-on {
-			padding-bottom: 20upx;
-			border-bottom: 4upx solid #C5AA7B;
+			padding-bottom: 20rpx;
+			border-bottom: 4rpx solid #C5AA7B;
 			color: #333333;
 		}
 	}
@@ -349,19 +349,19 @@ export default {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-		padding: 30upx 30upx;
+		padding: 30rpx 30rpx;
 		margin: 10rpx 10rpx;
 		background-color: #FFFFFF;
 		border-bottom: 2rpx solid #F3F4F5;
 
 		.evaluate-content {
-			width: 670upx;
+			width: 670rpx;
 			display: flex;
 			justify-content: space-between;
 
 			.user-headSmallImg {
-				width: 46upx;
-				height: 46upx;
+				width: 46rpx;
+				height: 46rpx;
 				border-radius: 50%;
 			}
 
@@ -375,45 +375,45 @@ export default {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			margin-left: -9upx;
+			margin-left: -9rpx;
 
 			.evaluate-Img {
-				width: 224upx;
-				height: 224upx;
-				border-radius: 10upx;
-				margin-left: 9upx;
-				margin-top: 9upx;
+				width: 224rpx;
+				height: 224rpx;
+				border-radius: 10rpx;
+				margin-left: 9rpx;
+				margin-top: 9rpx;
 			}
 		}
 
 		.goodsDes-box {
 			background-color: #F7F7F7;
-			padding: 20upx 44upx 20upx 20upx;
+			padding: 20rpx 44rpx 20rpx 20rpx;
 
 			.goodsDes-img {
-				width: 180upx;
-				height: 180upx;
-				border-radius: 10upx;
+				width: 180rpx;
+				height: 180rpx;
+				border-radius: 10rpx;
 			}
 
 			.goodsDesText-box {
-				width: 416upx;
-				margin-left: 30upx;
+				width: 416rpx;
+				margin-left: 30rpx;
 			}
 		}
 
 		.addComments-box {
-			border-top: 1upx solid #EEEEEE;
-			margin-top: 35upx;
+			border-top: 1rpx solid #EEEEEE;
+			margin-top: 35rpx;
 		}
 	}
 
 	.addCommentsBut {
-		width: 140upx;
-		height: 58upx;
+		width: 140rpx;
+		height: 58rpx;
 		background: #333333;
-		font-size: 26upx;
-		line-height: 58upx;
+		font-size: 26rpx;
+		line-height: 58rpx;
 		text-align: center;
 		color: #C5AA7B;
 	}

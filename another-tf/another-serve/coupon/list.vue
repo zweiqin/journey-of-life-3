@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-list-container">
-		<JHeader title="优惠券" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="优惠券" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<template v-if="couponList && couponList.length">
 			<view v-for="item in couponList" :key="item.couponId" class="couponItem flex-items">
 				<view class="itemLeft" @click="go(`/another-tf/another-serve/coupon/product?id=${item.couponId}`)">
@@ -39,13 +39,13 @@
 				</view>
 			</view>
 		</template>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !couponList.length
 					? 'loading' : !isEmpty && couponList.length && (couponList.length >= couponTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无优惠券</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无优惠券</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -105,7 +105,7 @@ export default {
 	min-height: 100%;
 	background-color: #f8f8f8;
 	box-sizing: border-box;
-	padding: 0 20rpx 40upx;
+	padding: 0 20rpx 40rpx;
 
 	.couponItem {
 		background: #333333;

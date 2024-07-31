@@ -73,7 +73,7 @@
 					</view>
 				</view>
 				<view v-else>
-					<tui-no-data :fixed="false" style="margin-top: 100rpx;">{{ queryInfo.manageArea ? '暂无商品' : '暂无数据，请先选择区域' }}</tui-no-data>
+					<tui-no-data :fixed="false" style="padding-top: 100rpx;">{{ queryInfo.manageArea ? '暂无商品' : '暂无数据，请先选择区域' }}</tui-no-data>
 				</view>
 			</view>
 

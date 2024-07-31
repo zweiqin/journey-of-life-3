@@ -1,13 +1,13 @@
 <template>
-	<view class="customer-service-container" style="height: 100%;padding: 20upx;box-sizing: border-box;">
+	<view class="customer-service-container" style="height: 100%;padding: 20rpx;box-sizing: border-box;">
 		<scroll-view scroll-y style="height: 100%;">
 			<view v-if="data && data.length">
 				<view
 					v-for="(item, index) in data" :key="index"
-					style="display: flex;justify-content: space-between;align-items: center;margin-top: 30upx;"
+					style="display: flex;justify-content: space-between;align-items: center;margin-top: 30rpx;"
 				>
 					<view style="flex: 1;display: flex;justify-content: space-between;align-items: center;">
-						<JAvatar :src="common.seamingImgUrl(item.headImg)" :size="80" style="margin: 0 24upx 0 0;line-height: 1;">
+						<JAvatar :src="common.seamingImgUrl(item.headImg)" :size="80" style="margin: 0 24rpx 0 0;line-height: 1;">
 						</JAvatar>
 						<view style="flex: 1;display: flex;justify-content: space-between;">
 							<view>{{ item.name }}</view>
@@ -17,7 +17,7 @@
 							</view>
 						</view>
 					</view>
-					<view style="margin-left: 46upx;">
+					<view style="margin-left: 46rpx;">
 						<tui-button
 							type="warning" width="120rpx" height="50rpx" shape="circle"
 							@click="handleFlyToService(item.openKfId)"
@@ -28,7 +28,7 @@
 				</view>
 			</view>
 			<view v-else>
-				<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无客服</tui-no-data>
+				<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂无客服</tui-no-data>
 			</view>
 		</scroll-view>
 	</view>

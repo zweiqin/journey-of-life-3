@@ -130,9 +130,8 @@
 
 <script>
 import { buildUserCrmSlbumApi } from '../../api/user'
-import { USER_INFO } from '../../constant'
-import { getUserId } from '../../utils'
-import { IMG_UPLOAD_URL } from '../../config'
+import { USER_INFO, T_STORAGE_KEY } from '../../constant'
+import { ANOTHER_TF_UPLOAD } from '../../config'
 export default {
 	name: 'AddAlbum',
 	// props: {
@@ -198,22 +197,28 @@ export default {
 			}
 		},
 		chooseImgFace() {
-			const _this = this
 			uni.chooseImage({
 				count: 1,
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
 				success: (chooseImageRes) => {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: IMG_UPLOAD_URL,
+							url: ANOTHER_TF_UPLOAD,
 							filePath: imgFile.path,
 							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
 							formData: {
-								userId: getUserId()
+								'folderId': -1
 							},
 							success: (uploadFileRes) => {
 								uni.hideLoading()
-								_this.imagesFace.push(JSON.parse(uploadFileRes.data).data.url)
+								this.imagesFace.push(JSON.parse(uploadFileRes.data).data.url)
+							},
+							fail: (error) => {
+								uni.hideLoading()
 							}
 						})
 					}
@@ -234,21 +239,27 @@ export default {
 			})
 		},
 		chooseImg() {
-			const _this = this
 			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
 				success: (chooseImageRes) => {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: IMG_UPLOAD_URL,
+							url: ANOTHER_TF_UPLOAD,
 							filePath: imgFile.path,
 							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
 							formData: {
-								userId: getUserId()
+								'folderId': -1
 							},
 							success: (uploadFileRes) => {
 								uni.hideLoading()
-								_this.images.push(JSON.parse(uploadFileRes.data).data.url)
+								this.images.push(JSON.parse(uploadFileRes.data).data.url)
+							},
+							fail: (error) => {
+								uni.hideLoading()
 							}
 						})
 					}
@@ -269,22 +280,28 @@ export default {
 			})
 		},
 		chooseImgEnd() {
-			const _this = this
 			uni.chooseImage({
 				count: 1,
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
 				success: (chooseImageRes) => {
 					for (const imgFile of chooseImageRes.tempFiles) {
 						uni.showLoading()
 						uni.uploadFile({
-							url: IMG_UPLOAD_URL,
+							url: ANOTHER_TF_UPLOAD,
 							filePath: imgFile.path,
 							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
 							formData: {
-								userId: getUserId()
+								'folderId': -1
 							},
 							success: (uploadFileRes) => {
 								uni.hideLoading()
-								_this.imagesEnd.push(JSON.parse(uploadFileRes.data).data.url)
+								this.imagesEnd.push(JSON.parse(uploadFileRes.data).data.url)
+							},
+							fail: (error) => {
+								uni.hideLoading()
 							}
 						})
 					}
