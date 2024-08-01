@@ -1,6 +1,6 @@
 <template>
 	<view class="unliquidated-container">
-		<JHeader :dark="false" title="未结算奖励" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader :dark="false" title="未结算奖励" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view>
 			<view class="unliquidated-topBackImg flex-items flex-column">
 				<view class="totalAward-content flex-column font-color-FFF">
@@ -21,7 +21,7 @@
 			</view>
 			<view>
 				<tui-tabs
-					style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="60" :padding="0"
+					style="width: 750rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="60" :padding="0"
 					item-width="375rpx" selected-color="#C5AA7B" bold slider-bg-color="#999999"
 					background-color="#333333" unlined
 					:tabs="[{ name: '直接奖励' }, { name: '间接奖励' }]" :current-tab="awardTypeFlag" @change="awardTypeActive"
@@ -40,7 +40,7 @@
 								</view>
 								<view>
 									<tui-icon
-										:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="upx" margin="0"
+										:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="rpx" margin="0"
 										color="#b7b7b7"
 									></tui-icon>
 								</view>
@@ -57,13 +57,13 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!directSalesInfo.isEmpty && !directSalesInfo.data.length
 							? 'loading' : !directSalesInfo.isEmpty && directSalesInfo.data.length && (directSalesInfo.data.length >= directSalesInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="directSalesInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">这里空空如也～</tui-no-data>
+					<tui-no-data v-if="directSalesInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">这里空空如也～</tui-no-data>
 				</view>
 			</view>
 			<view v-if="awardTypeFlag == 1">
@@ -79,7 +79,7 @@
 								</view>
 								<view>
 									<tui-icon
-										:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="upx" margin="0"
+										:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="rpx" margin="0"
 										color="#b7b7b7"
 									></tui-icon>
 								</view>
@@ -99,13 +99,13 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!secondhandSalesInfo.isEmpty && !secondhandSalesInfo.data.length
 							? 'loading' : !secondhandSalesInfo.isEmpty && secondhandSalesInfo.data.length && (secondhandSalesInfo.data.length >= secondhandSalesInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="secondhandSalesInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">这里空空如也～</tui-no-data>
+					<tui-no-data v-if="secondhandSalesInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">这里空空如也～</tui-no-data>
 				</view>
 			</view>
 		</view>
@@ -245,7 +245,7 @@ export default {
 		width: 100%;
 		background-color: #535353;
 		margin-top: 30 rpx;
-		padding-bottom: 20upx;
+		padding-bottom: 20rpx;
 
 		.totalAward-content {
 			width: 90%;
@@ -266,8 +266,8 @@ export default {
 
 	.directAward-box {
 		width: 94%;
-		border-bottom: 1 upx solid #666666;
-		padding: 30 upx;
+		border-bottom: 1 rpx solid #666666;
+		padding: 30 rpx;
 		display: flex;
 		justify-content: flex-start;
 		flex-direction: column;
@@ -281,7 +281,7 @@ export default {
 		}
 
 		.commission-box {
-			width: 260 upx;
+			width: 260 rpx;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<view class="spikeListBox">
-		<JHeader :dark="false" title="会员专区" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader :dark="false" title="会员专区" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="spikeBgBox">
 			<view class="discountBg">
 			</view>
@@ -55,13 +55,13 @@
 					</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !discountList.length
 						? 'loading' : !isEmpty && discountList.length && (discountList.length >= discountListTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 			</view>
 		</view>
 	</view>
@@ -281,7 +281,7 @@ page {
 	.countdown {
 		display: flex;
 		justify-content: center;
-		height: 80upx;
+		height: 80rpx;
 		align-items: center;
 		width: 100%;
 		color: #CCCCCC;
@@ -289,36 +289,36 @@ page {
 		.endDate {
 			display: flex;
 			align-items: center;
-			margin-left: 20upx;
+			margin-left: 20rpx;
 
 			span {
 				min-width: 44rpx;
 				padding: 0 8rpx;
-				height: 52upx;
-				line-height: 52upx;
+				height: 52rpx;
+				line-height: 52rpx;
 				background: #999999;
 				display: block;
-				font-size: 26upx;
+				font-size: 26rpx;
 				color: #FFEBC4;
 				text-align: center;
 			}
 
 			i {
-				font-size: 26upx;
+				font-size: 26rpx;
 				color: #999999;
 				font-style: normal;
-				margin: 0 8upx;
+				margin: 0 8rpx;
 			}
 		}
 	}
 
 	.spikeList {
-		padding: 20upx 30upx 20upx 30upx;
+		padding: 20rpx 30rpx 20rpx 30rpx;
 
 		.listItem {
 			display: flex;
 			padding: 30rpx;
-			margin-bottom: 30upx;
+			margin-bottom: 30rpx;
 			background: #FFFFFF;
 
 			&:last-child {
@@ -326,9 +326,9 @@ page {
 			}
 
 			.itemBox {
-				width: 260upx;
-				height: 260upx;
-				margin-right: 30upx;
+				width: 260rpx;
+				height: 260rpx;
+				margin-right: 30rpx;
 
 				img {
 					width: 100%;
@@ -340,11 +340,11 @@ page {
 				flex: 1;
 
 				p {
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: #333333;
-					line-height: 40upx;
+					line-height: 40rpx;
 					height: 115rpx;
-					margin-bottom: 20upx;
+					margin-bottom: 20rpx;
 					text-overflow: -o-ellipsis-lastline;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -366,8 +366,8 @@ page {
 				}
 
 				.originalPrice {
-					font-size: 24upx;
-					margin: 20upx 0;
+					font-size: 24rpx;
+					margin: 20rpx 0;
 					text-decoration: line-through;
 					color: #CCCCCC;
 				}
@@ -384,8 +384,8 @@ page {
 
 					.snapUpBtn {
 						margin-top: 20rpx;
-						width: 140upx;
-						height: 84upx;
+						width: 140rpx;
+						height: 84rpx;
 						line-height: 84rpx;
 						text-align: center;
 						background: #333333;
@@ -408,7 +408,7 @@ page {
 	}
 	.filterBox {
 		display: flex;
-		height: 80upx;
+		height: 80rpx;
 		align-items: center;
 		width: 100%;
 		background: #FFFFFF;

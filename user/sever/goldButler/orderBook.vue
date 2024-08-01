@@ -70,7 +70,8 @@
 <script>
 import { getSetMealListApi, reservationServiceApi } from '../../../api/user';
 import { getUserId } from '../../../utils';
-import { IMG_UPLOAD_URL } from '../../../config';
+import { T_STORAGE_KEY } from '../../../constant'
+import { ANOTHER_TF_UPLOAD } from '../../../config';
 import chooseTime from '../../../community-center/componts/choose-time.vue';
 export default {
   components: { chooseTime },
@@ -109,27 +110,32 @@ export default {
     },
     //图片上传
     chooseImg() {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
-          for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
-                uni.hideLoading();
-                _this.images.push(JSON.parse(uploadFileRes.data).data.url);
-              }
-            });
-          }
-          return;
-        }
-      });
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
+					for (const imgFile of chooseImageRes.tempFiles) {
+						uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
+								uni.hideLoading()
+								this.images.push(JSON.parse(uploadFileRes.data).data.url)
+							},
+							fail: (error) => {
+								uni.hideLoading()
+							}
+						})
+					}
+				}
+			})
     },
     removeBackground(img) {
       const _this = this;

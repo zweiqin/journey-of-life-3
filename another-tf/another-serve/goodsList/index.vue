@@ -104,7 +104,7 @@
 					? 'loading' : !isEmpty && goodsList.length && (goodsList.length >= goodsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>

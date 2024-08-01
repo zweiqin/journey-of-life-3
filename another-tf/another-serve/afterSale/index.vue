@@ -1,7 +1,7 @@
 <!-- 售后列表 -->
 <template>
 	<view>
-		<JHeader title="我的售后" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的售后" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="content">
 			<view class="order-list-box">
 				<view>
@@ -10,10 +10,10 @@
 							<view class="top-l" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
 								<image :src="common.seamingImgUrl(item.shopLogo)" class="shop-img"></image>
 								<text class="shop-name">{{ item.shopName }}</text>
-								<tui-icon name="arrowright" :size="24" unit="upx" color="#999999" margin="0 0 0 15upx"></tui-icon>
+								<tui-icon name="arrowright" :size="24" unit="rpx" color="#999999" margin="0 0 0 15rpx"></tui-icon>
 							</view>
 							<view class="top-r">
-								<tui-icon name="wealth" :size="50" unit="upx" color="#c5aa7b" margin="0 8upx 0 0"></tui-icon>
+								<tui-icon name="wealth" :size="50" unit="rpx" color="#c5aa7b" margin="0 8rpx 0 0"></tui-icon>
 								<text class="order-status">{{ item.afterType == 1 ? '退款' : '退货' }}</text>
 							</view>
 						</view>
@@ -73,13 +73,13 @@
 						</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!isEmpty && !findReturnDatalist.length
 							? 'loading' : !isEmpty && findReturnDatalist.length && (findReturnDatalist.length >= findReturnDatalistTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 				</view>
 			</view>
 		</view>
@@ -251,8 +251,8 @@ page {
 		text-align: center;
 		margin-top: 40rpx;
 		border: 2rpx solid #333333;
-		height: 80upx;
-		line-height: 80upx;
+		height: 80rpx;
+		line-height: 80rpx;
 		width: 100%;
 		color: #333333;
 	}
@@ -265,19 +265,19 @@ page {
 }
 
 .order-list-box {
-	padding: 20upx 30upx 0;
+	padding: 20rpx 30rpx 0;
 	box-sizing: border-box;
 }
 
 .order-list-box .item {
-	margin-bottom: 20upx;
+	margin-bottom: 20rpx;
 	background: #fff;
-	border-radius: 10upx;
+	border-radius: 10rpx;
 }
 
 .order-list-top {
-	height: 96upx;
-	padding: 0 30upx;
+	height: 96rpx;
+	padding: 0 30rpx;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
@@ -293,13 +293,13 @@ page {
 }
 
 .shop-img {
-	width: 36upx;
-	height: 36upx;
-	margin-right: 10upx;
+	width: 36rpx;
+	height: 36rpx;
+	margin-right: 10rpx;
 }
 
 .shop-name {
-	font-size: 30upx;
+	font-size: 30rpx;
 	color: #333;
 	font-weight: bold;
 }
@@ -316,21 +316,21 @@ page {
 }
 
 .order-info-box {
-	padding: 0 30upx;
+	padding: 0 30rpx;
 	box-sizing: border-box;
 }
 
 .order-info-item {
 	display: flex;
 	flex-direction: row;
-	padding: 20upx 0;
+	padding: 20rpx 0;
 }
 
 .product-img {
-	width: 180upx;
-	height: 180upx;
-	border-radius: 10upx;
-	margin-right: 30upx;
+	width: 180rpx;
+	height: 180rpx;
+	border-radius: 10rpx;
+	margin-right: 30rpx;
 }
 
 .info-box {
@@ -341,10 +341,10 @@ page {
 }
 
 .product-name {
-	font-size: 26upx;
+	font-size: 26rpx;
 	color: #333;
-	height: 68upx;
-	line-height: 34upx;
+	height: 68rpx;
+	line-height: 34rpx;
 	display: -webkit-box;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -360,37 +360,37 @@ page {
 }
 
 .product-sku {
-	font-size: 24upx;
+	font-size: 24rpx;
 	color: #999;
 }
 
 .product-price {
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #333;
 	font-weight: 400;
 }
 
 .product-price .fuhao {
-	font-size: 32upx;
+	font-size: 32rpx;
 	color: #C83732;
 	font-weight: bold;
 }
 
 .total-price-box {
-	font-size: 26upx;
+	font-size: 26rpx;
 	color: #333;
 	border: 2rpx solid #E4E5E6;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 70upx;
-	line-height: 70upx;
+	height: 70rpx;
+	line-height: 70rpx;
 	margin: 0 30rpx;
 }
 
 .total-price-l {
-	margin-left: 40upx;
-	font-size: 30upx;
+	margin-left: 40rpx;
+	font-size: 30rpx;
 	color: #333;
 }
 
@@ -399,7 +399,7 @@ page {
 }
 
 .order-btn-box {
-	padding: 30upx 0;
+	padding: 30rpx 0;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -407,13 +407,13 @@ page {
 
 .order-btn-box .btn {
 	display: inline-view;
-	width: 140upx;
-	height: 58upx;
+	width: 140rpx;
+	height: 58rpx;
 	text-align: center;
-	line-height: 58upx;
-	font-size: 26upx;
+	line-height: 58rpx;
+	font-size: 26rpx;
 	color: #333;
-	margin-left: 20upx;
+	margin-left: 20rpx;
 }
 
 .order-btn-box .btn.l {

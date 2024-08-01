@@ -180,7 +180,7 @@
 								? 'loading' : !exchangeAccountingInfo.isEmpty && exchangeAccountingInfo.data.length && (exchangeAccountingInfo.data.length >= exchangeAccountingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="exchangeAccountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="exchangeAccountingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 2 ].includes(queryType)">
@@ -230,7 +230,7 @@
 								? 'loading' : !exchangeOutgoingInfo.isEmpty && exchangeOutgoingInfo.data.length && (exchangeOutgoingInfo.data.length >= exchangeOutgoingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="exchangeOutgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="exchangeOutgoingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 3 ].includes(queryType)">
@@ -283,7 +283,7 @@
 								? 'loading' : !rechargeAccountingInfo.isEmpty && rechargeAccountingInfo.data.length && (rechargeAccountingInfo.data.length >= rechargeAccountingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="rechargeAccountingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="rechargeAccountingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 4 ].includes(queryType)">
@@ -330,7 +330,7 @@
 								? 'loading' : !rechargeOutgoingInfo.isEmpty && rechargeOutgoingInfo.data.length && (rechargeOutgoingInfo.data.length >= rechargeOutgoingInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="rechargeOutgoingInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="rechargeOutgoingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 				<view v-else-if="[ 5 ].includes(queryType)">
@@ -371,7 +371,7 @@
 								? 'loading' : !orderInfo.isEmpty && orderInfo.data.length && (orderInfo.data.length >= orderInfo.listTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="orderInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据~</tui-no-data>
+						<tui-no-data v-if="orderInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
 			</view>

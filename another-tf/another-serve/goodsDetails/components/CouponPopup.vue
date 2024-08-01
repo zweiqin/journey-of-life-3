@@ -2,9 +2,9 @@
 	<view class="coupon-popup" :class="showActivity && 'show'">
 		<view class="mask" @click="closePopup"></view>
 		<view id="popupInner" class="couponShow-box">
-			<view style="padding: 0 20upx;">
+			<view style="padding: 0 20rpx;">
 				<tui-tabs
-					style="width: 710upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="355" :padding="20"
+					style="width: 710rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="355" :padding="20"
 					item-width="355rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
 					:tabs="activeTypeList"
 					:current-tab="activeTypeFlag" @change="(e) => activeTypeFlag = e.index"
@@ -13,7 +13,7 @@
 			<view v-show="activeTypeFlag === 0">
 				<view class="couponShow">
 					<tui-icon
-						name="close" :size="25" unit="upx" color="#999999"
+						name="close" :size="25" unit="rpx" color="#999999"
 						class="close-btn"
 						@click="onActivityClose"
 					></tui-icon>
@@ -53,8 +53,8 @@
 								</view>
 							</view>
 						</view>
-						<view v-else style="padding-bottom: 45upx;">
-							<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有优惠券哦～</tui-no-data>
+						<view v-else style="padding-bottom: 45rpx;">
+							<tui-no-data :fixed="false" style="padding-top: 60rpx;">你还没有优惠券哦～</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -62,7 +62,7 @@
 			<view v-show="activeTypeFlag === 1">
 				<view class="couponShow">
 					<tui-icon
-						name="close" :size="25" unit="upx" color="#999999"
+						name="close" :size="25" unit="rpx" color="#999999"
 						class="close-btn"
 						@click="onActivityClose"
 					></tui-icon>
@@ -102,15 +102,15 @@
 								</view>
 							</view>
 						</view>
-						<view v-else style="padding-bottom: 45upx;">
-							<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有优惠券哦～</tui-no-data>
+						<view v-else style="padding-bottom: 45rpx;">
+							<tui-no-data :fixed="false" style="padding-top: 60rpx;">你还没有优惠券哦～</tui-no-data>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view v-if="isShowSuccess" class="receive-success">
 				<view class="success-box">
-					<tui-icon name="coupon" :size="65" unit="upx" color="#ffffff"></tui-icon>
+					<tui-icon name="coupon" :size="65" unit="rpx" color="#ffffff"></tui-icon>
 					<view class="text">领取成功</view>
 				</view>
 			</view>
@@ -222,7 +222,7 @@ export default {
 
 	.tui-tabs-view {
 		/deep/ .tui-tabs-slider {
-			margin-left: -20upx;
+			margin-left: -20rpx;
 		}
 	}
 
@@ -259,8 +259,8 @@ export default {
 
 		.close-btn {
 			position: absolute;
-			top: 20upx;
-			right: 20upx;
+			top: 20rpx;
+			right: 20rpx;
 		}
 
 		.shopCouponBox {
@@ -284,18 +284,18 @@ export default {
 	z-index: 8888;
 
 	.success-box {
-		width: 380upx;
-		height: 280upx;
+		width: 380rpx;
+		height: 280rpx;
 		background: rgba(0, 0, 0, 0.5);
-		border-radius: 10upx;
+		border-radius: 10rpx;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 
 		.text {
-			font-size: 28upx;
-			margin-top: 50upx;
+			font-size: 28rpx;
+			margin-top: 50rpx;
 			font-weight: 400;
 			color: rgba(255, 255, 255, 1);
 		}

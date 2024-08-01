@@ -1,65 +1,65 @@
 <template>
 	<view class="finance-statistics-container">
-		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view
-			style="padding: 8upx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
+			style="padding: 8rpx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
 			<view
-				style="display: flex;justify-content: space-evenly;margin-top: 4upx;padding: 20upx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
+				style="display: flex;justify-content: space-evenly;margin-top: 4rpx;padding: 20rpx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
 			>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">今日收益</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.todayIncome || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.todayIncome || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">预计收益</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.wayIncome || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.wayIncome || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">累计收益</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.accumulateIncome || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.accumulateIncome || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">商家数</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.shopNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.shopNum || 0 }}</view>
 				</view>
 			</view>
 			<view
-				style="display: flex;justify-content: space-evenly;margin-top: 4upx;padding: 20upx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
+				style="display: flex;justify-content: space-evenly;margin-top: 4rpx;padding: 20rpx 0;background: linear-gradient(0deg, rgba(255, 255, 255, 0.0001) 0%, rgba(255, 255, 255, 0.15) 99%);"
 			>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">今日团长</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.TZTodayNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.TZTodayNum || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">累计团长</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.TZAccumulateNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.TZAccumulateNum || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">今日合伙人</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.HHTodayNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.HHTodayNum || 0 }}</view>
 				</view>
-				<view style="width: 2upx;background-color: #f37d49;"></view>
+				<view style="width: 2rpx;background-color: #f37d49;"></view>
 				<view style="flex: 1;">
 					<view style="color: #f7a783;">累计合伙人</view>
-					<view style="margin-top: 10upx;">{{ franchiseeStatisticsData.HHAccumulateNum || 0 }}</view>
+					<view style="margin-top: 10rpx;">{{ franchiseeStatisticsData.HHAccumulateNum || 0 }}</view>
 				</view>
 			</view>
 		</view>
 
-		<view style="padding: 0 24upx;background-color: #ffffff;">
+		<view style="padding: 0 24rpx;background-color: #ffffff;">
 			<tui-tabs
-				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="351" :padding="24"
+				style="width: 702rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="351" :padding="24"
 				item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 				:tabs="[{ name: '商家' }, { name: '团长/合伙人' }]" :current-tab="currentTab" @change="handleCurrentChange"
 			></tui-tabs>
 		</view>
-		<view style="padding: 20upx;">
+		<view style="padding: 20rpx;">
 			<view v-if="currentTab === 0">
 				<view style="display: flex;justify-content: flex-end;">
 					<tui-dropdown-list
@@ -69,32 +69,32 @@
 						<template #selectionbox>
 							<view style="height: auto;color: #080808;" @click="shopDropdownShow = !shopDropdownShow">
 								<text>类型∨</text>
-								<text style="margin-left: 10upx;;font-size: 26upx;">{{ shopDropdownName || '' }}</text>
+								<text style="margin-left: 10rpx;;font-size: 26rpx;">{{ shopDropdownName || '' }}</text>
 							</view>
 						</template>
 						<template #dropdownbox>
 							<view style="width: fit-content;box-sizing: border-box;">
 								<tui-list-view
 									color="#777" margin-top="2rpx"
-									style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
+									style="width: fit-content;min-width: 150rpx;max-height: 28vh;overflow-y: auto;"
 								>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeShopInfo.query.type = 6) && (shopDropdownName = '今日收益') && (shopDropdownShow = false)) || getFranchiseeShopList()"
 									>
 										今日收益
 									</tui-list-cell>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeShopInfo.query.type = 7) && (shopDropdownName = '预计收益') && (shopDropdownShow = false)) || getFranchiseeShopList()"
 									>
 										预计收益
 									</tui-list-cell>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeShopInfo.query.type = 8) && (shopDropdownName = '累计收益') && (shopDropdownShow = false)) || getFranchiseeShopList()"
 									>
 										累计收益
@@ -104,10 +104,10 @@
 						</template>
 					</tui-dropdown-list>
 				</view>
-				<tui-list-view v-if="franchiseeShopInfo.data && franchiseeShopInfo.data.length" margin-top="20upx">
+				<tui-list-view v-if="franchiseeShopInfo.data && franchiseeShopInfo.data.length" margin-top="20rpx">
 					<tui-list-cell v-for="(item, index) in franchiseeShopInfo.data" :key="item.id">
 						<view style="display: flex;align-items: center;">
-							<JAvatar :src="common.seamingImgUrl(item.shopLogo)" :size="80" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+							<JAvatar :src="common.seamingImgUrl(item.shopLogo)" :size="80" style="margin: 0 24rpx 0 0;line-height: 1;"></JAvatar>
 							<view style="flex: 1;">
 								<view style="display: flex;justify-content: space-between;">
 									<view>{{ item.shopName }}</view>
@@ -122,13 +122,13 @@
 						</view>
 					</tui-list-cell>
 				</tui-list-view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!franchiseeShopInfo.isEmpty && !franchiseeShopInfo.data.length
 							? 'loading' : !franchiseeShopInfo.isEmpty && franchiseeShopInfo.data.length && (franchiseeShopInfo.data.length >= franchiseeShopInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="franchiseeShopInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无提问内容</tui-no-data>
+					<tui-no-data v-if="franchiseeShopInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无提问内容</tui-no-data>
 				</view>
 			</view>
 			<view v-else-if="currentTab === 1">
@@ -140,32 +140,32 @@
 						<template #selectionbox>
 							<view style="height: auto;color: #080808;" @click="commanderDropdownShow = !commanderDropdownShow">
 								<text>类型∨</text>
-								<text style="margin-left: 10upx;;font-size: 26upx;">{{ commanderDropdownName || '' }}</text>
+								<text style="margin-left: 10rpx;;font-size: 26rpx;">{{ commanderDropdownName || '' }}</text>
 							</view>
 						</template>
 						<template #dropdownbox>
 							<view style="width: fit-content;box-sizing: border-box;">
 								<tui-list-view
 									color="#777" margin-top="2rpx"
-									style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
+									style="width: fit-content;min-width: 150rpx;max-height: 28vh;overflow-y: auto;"
 								>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeCommanderInfo.query.type = 6) && (commanderDropdownName = '今日收益') && (commanderDropdownShow = false)) || getFranchiseeCommanderList()"
 									>
 										今日收益
 									</tui-list-cell>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeCommanderInfo.query.type = 7) && (commanderDropdownName = '预计收益') && (commanderDropdownShow = false)) || getFranchiseeCommanderList()"
 									>
 										预计收益
 									</tui-list-cell>
 									<tui-list-cell
 										padding="20rpx 0"
-										style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
+										style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
 										@click="((franchiseeCommanderInfo.query.type = 8) && (commanderDropdownName = '累计收益') && (commanderDropdownShow = false)) || getFranchiseeCommanderList()"
 									>
 										累计收益
@@ -175,10 +175,10 @@
 						</template>
 					</tui-dropdown-list>
 				</view>
-				<tui-list-view v-if="franchiseeCommanderInfo.data && franchiseeCommanderInfo.data.length" margin-top="20upx">
+				<tui-list-view v-if="franchiseeCommanderInfo.data && franchiseeCommanderInfo.data.length" margin-top="20rpx">
 					<tui-list-cell v-for="(item, index) in franchiseeCommanderInfo.data" :key="item.id">
 						<view style="display: flex;align-items: center;">
-							<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="80" style="margin: 0 24upx 0 0;line-height: 1;"></JAvatar>
+							<JAvatar :src="common.seamingImgUrl(item.headImage)" :size="80" style="margin: 0 24rpx 0 0;line-height: 1;"></JAvatar>
 							<view style="flex: 1;">
 								<view style="display: flex;justify-content: space-between;">
 									<view>{{ item.name }}</view>
@@ -191,7 +191,7 @@
 						</view>
 					</tui-list-cell>
 				</tui-list-view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!franchiseeCommanderInfo.isEmpty && !franchiseeCommanderInfo.data.length
 							? 'loading' : !franchiseeCommanderInfo.isEmpty && franchiseeCommanderInfo.data.length && (franchiseeCommanderInfo.data.length >= franchiseeCommanderInfo.listTotal) ? 'no-more' : ''"
@@ -199,7 +199,7 @@
 					</LoadingMore>
 					<tui-no-data
 						v-if="franchiseeCommanderInfo.isEmpty" :fixed="false"
-						style="margin-top: 60upx;"
+						style="padding-top: 60rpx;"
 					>
 						暂无提问内容
 					</tui-no-data>
@@ -358,14 +358,14 @@ export default {
 
 	.tui-tabs-view {
 		/deep/ .tui-tabs-slider {
-			margin-left: -24upx;
+			margin-left: -24rpx;
 		}
 	}
 
 	/deep/ .tui-dropdown-view {
 		height: auto !important;
 		width: fit-content;
-		margin-left: 48upx;
+		margin-left: 48rpx;
 	}
 }
 </style>

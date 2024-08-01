@@ -172,10 +172,10 @@ import ChooseShopSite from './components/ChooseShopSite.vue'
 import ChooseTime from '../componts/choose-time.vue'
 import PayMethods from './components/PayMethods.vue'
 import { getBAuthInfoApi, getOrderQuotationApi, getShopSiteListApi, createRepairOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceApi } from '../../api/community-center'
-import { USER_INFO, ENTERPRISE_ORDERS_NO } from '../../constant'
+import { USER_INFO, ENTERPRISE_ORDERS_NO, T_STORAGE_KEY } from '../../constant'
 import { getBuServeListApi } from '../../api/community-center'
-import { getUserId, throttle } from '@/utils';
-import { IMG_UPLOAD_URL } from '../../config';
+import { getUserId } from '@/utils';
+import { ANOTHER_TF_UPLOAD } from '../../config';
 import { validateOrderForm } from './data'
 
 export default {
@@ -411,40 +411,38 @@ export default {
 
     // 点击上传图片
     handleUploadImg(target) {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
-                uni.hideLoading();
+            uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
+                uni.hideLoading()
                 target.images.push(JSON.parse(uploadFileRes.data).data.url)
-                _this.ttoast('上传成功')
-              },
+                this.ttoast('上传成功')
+							},
               fail: (error) => {
-                uni.hideLoading();
-                _this.ttoast({
+                uni.hideLoading()
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
-          }
-
-          return;
-        },
-        fail: (fail) => {
-          console.log(fail);
-        }
-      });
+						})
+					}
+				}
+			})
     },
 
     // 删除图片

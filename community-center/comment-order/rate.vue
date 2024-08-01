@@ -79,7 +79,8 @@
 </template>
 
 <script>
-import { IMG_UPLOAD_URL } from '../../config';
+import { ANOTHER_TF_UPLOAD } from '../../config';
+import { T_STORAGE_KEY } from '../../constant'
 import { getUserId } from '../../utils';
 import { publishCommentApi } from '../../api/community-center';
 import { isVideoSource } from '../../utils';
@@ -142,36 +143,37 @@ export default {
 
     // 上传图片
     handleUploadImg() {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              success: (uploadFileRes) => {
-                uni.hideLoading();
-                _this.commentForm.commentFile.push(JSON.parse(uploadFileRes.data).data.url);
-              },
+            uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
+                uni.hideLoading()
+                this.commentForm.commentFile.push(JSON.parse(uploadFileRes.data).data.url)
+							},
               fail: (error) => {
-                uni.hideLoading();
-                _this.ttoast({
+                uni.hideLoading()
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
-          }
-
-          return;
-        },
-        fail: (fail) => {
-          console.log(fail);
-        }
-      });
+						})
+					}
+				}
+			})
     },
 
     // 预览图片

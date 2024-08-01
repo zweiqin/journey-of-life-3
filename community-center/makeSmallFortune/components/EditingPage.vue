@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import { IMG_UPLOAD_URL } from '../../../config';
-import { getUserId } from '@/utils';
+import { ANOTHER_TF_UPLOAD } from '../../../config';
+import { T_STORAGE_KEY } from '../../../constant'
 import { selectCategory } from '@/api/community-center/makeSmallFortune'
 import tuiSelect from '@/components/thorui/tui-select/tui-select.vue'
 export default {
@@ -114,76 +114,71 @@ export default {
 		},
         // 点击上传图片
         handleUploadImg(Key) {
-            // this.imgKeyName = Key; // 存一次键名 方便后面赋值
-            const _this = this;
-            uni.chooseImage({
-                success: (chooseImageRes) => {
-                    for (const imgFile of chooseImageRes.tempFiles) {
-                        uni.showLoading();
-                        uni.uploadFile({
-                        url: IMG_UPLOAD_URL,
-                        filePath: imgFile.path,
-                        name: 'file',
-                        formData: {
-                            userId: getUserId()
-                        },
-                        success: (uploadFileRes) => {
-                            uni.hideLoading();
-                            this.formData.postCover = JSON.parse(uploadFileRes.data).data.url
-                            // console.log(this.formData.postCover)
-                        },
-                        fail: (error) => {
-                            uni.hideLoading();
-                            _this.ttoast({
-                            type: 'fail',
-                            title: '图片上传失败',
-                            content: error
-                            });
-                        }
-                        });
-                    }
-                    return;
-                    },
-                    fail: (fail) => {
-                        console.log(fail);
-                    }
-                });
+					uni.chooseImage({
+						extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+						success: (chooseImageRes) => {
+							for (const imgFile of chooseImageRes.tempFiles) {
+								uni.showLoading()
+								uni.uploadFile({
+									url: ANOTHER_TF_UPLOAD,
+									filePath: imgFile.path,
+									name: 'file',
+									header: {
+										Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+									},
+									formData: {
+										'folderId': -1
+									},
+									success: (uploadFileRes) => {
+										uni.hideLoading()
+										this.formData.postCover = JSON.parse(uploadFileRes.data).data.url
+									},
+									fail: (error) => {
+										uni.hideLoading()
+										this.ttoast({
+											type: 'fail',
+											title: '图片上传失败',
+											content: error
+										})
+									}
+								})
+							}
+						}
+					})
         },
         handleUploadTextImg(item) { // 懒得封装了，傻逼玩意，直接开摆
-            const _this = this;
-            // let item = item;
-            uni.chooseImage({
-                success: (chooseImageRes) => {
-                    for (const imgFile of chooseImageRes.tempFiles) {
-                        uni.showLoading();
-                        uni.uploadFile({
-                        url: IMG_UPLOAD_URL,
-                        filePath: imgFile.path,
-                        name: 'file',
-                        formData: {
-                            userId: getUserId()
-                        },
-                        success: (uploadFileRes) => {
-                            uni.hideLoading();
-                            item.imgUrl = JSON.parse(uploadFileRes.data).data.url
-                            this.formDataAdd()
-                        },
-                        fail: (error) => {
-                            uni.hideLoading();
-                            _this.ttoast({
-                            type: 'fail',
-                            title: '图片上传失败',
-                            content: error
-                            });
-                        }
-                        });
-                    }
-                    return;
-                    },
-                    fail: (fail) => {
-                        console.log(fail);
-                    }
-                });
+					uni.chooseImage({
+						extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+						success: (chooseImageRes) => {
+							for (const imgFile of chooseImageRes.tempFiles) {
+								uni.showLoading()
+								uni.uploadFile({
+									url: ANOTHER_TF_UPLOAD,
+									filePath: imgFile.path,
+									name: 'file',
+									header: {
+										Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+									},
+									formData: {
+										'folderId': -1
+									},
+									success: (uploadFileRes) => {
+										uni.hideLoading()
+										item.imgUrl = JSON.parse(uploadFileRes.data).data.url
+										this.formDataAdd()
+									},
+									fail: (error) => {
+										uni.hideLoading()
+										this.ttoast({
+											type: 'fail',
+											title: '图片上传失败',
+											content: error
+										})
+									}
+								})
+							}
+						}
+					})
         },
         createdParagraph() {
             this.paragraphData.push({

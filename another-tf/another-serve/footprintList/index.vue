@@ -1,11 +1,11 @@
 <template>
 	<view class="footprint-box-container">
-		<JHeader title="浏览足迹" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="浏览足迹" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="footprintList && footprintList.length">
 			<view class="wid function-box">
 				<view v-if="allCheckShow" class="finishbox" @click="allCheckShow = false">完成</view>
 				<view v-else class="flex-row-plus editicon-box flex-items fs28" @click="editClick">
-					<tui-icon name="edit" :size="40" unit="upx" color="#333333"></tui-icon>
+					<tui-icon name="edit" :size="40" unit="rpx" color="#333333"></tui-icon>
 					<label class="mar-left-10">编辑</label>
 				</view>
 			</view>
@@ -25,13 +25,13 @@
 							<view class="item wid flex-display">
 								<view v-if="allCheckShow" class="selectIconBox">
 									<tui-icon
-										v-if="item.selected == 1" name="circle-fill" :size="40" unit="upx"
+										v-if="item.selected == 1" name="circle-fill" :size="40" unit="rpx"
 										color="#c5aa7b"
-										margin="0 30upx 0 0" @click="footItemSel(index, findex, 0)"
+										margin="0 30rpx 0 0" @click="footItemSel(index, findex, 0)"
 									></tui-icon>
 									<tui-icon
-										v-else name="circle" :size="40" unit="upx"
-										color="#cccccc" margin="0 30upx 0 0"
+										v-else name="circle" :size="40" unit="rpx"
+										color="#cccccc" margin="0 30rpx 0 0"
 										@click="footItemSel(index, findex, 1)"
 									></tui-icon>
 								</view>
@@ -64,13 +64,13 @@
 			<view v-show="allCheckShow" class="allcheck-box flex-row-plus flex-sp-between flex-items">
 				<view class="left">
 					<tui-icon
-						v-if="isAllCheck" name="circle-fill" :size="40" unit="upx"
-						color="#c5aa7b" margin="0 30upx 0 0"
+						v-if="isAllCheck" name="circle-fill" :size="40" unit="rpx"
+						color="#c5aa7b" margin="0 30rpx 0 0"
 						@click="allSel(0)"
 					></tui-icon>
 					<tui-icon
-						v-else name="circle" :size="40" unit="upx"
-						color="#cccccc" margin="0 30upx 0 0"
+						v-else name="circle" :size="40" unit="rpx"
+						color="#cccccc" margin="0 30rpx 0 0"
 						@click="allSel(1)"
 					></tui-icon>
 					<text>全选</text>
@@ -81,13 +81,13 @@
 			</view>
 			<view v-if="allCheckShow" class="pad-bot-140"></view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !footprintList.length
 					? 'loading' : !isEmpty && footprintList.length && (footprintList.length >= footprintTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 
 		<!-- 删除确认弹窗 -->
@@ -102,7 +102,7 @@
 				<view class="btn submit" @click="footprintDel">确定</view>
 			</view>
 			<view v-if="cardModal" class="cancelDel" @click="cardModal = false">
-				<tui-icon name="close" :size="60" unit="upx" color="#f0f0f0"></tui-icon>
+				<tui-icon name="close" :size="60" unit="rpx" color="#f0f0f0"></tui-icon>
 			</view>
 		</tui-modal>
 	</view>
@@ -307,7 +307,7 @@ export default {
 			background: #FFFFFF;
 
 			.selectIconBox {
-				margin-right: 14upx;
+				margin-right: 14rpx;
 				display: flex;
 				align-items: center;
 			}
@@ -331,13 +331,13 @@ export default {
 		padding: 10rpx 0;
 		width: 100%;
 		position: fixed;
-		bottom: 0upx;
+		bottom: 0rpx;
 
 		.left {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: #666;
 		}
 
@@ -354,7 +354,7 @@ export default {
 			background: #C83732;
 			line-height: 100rpx;
 			text-align: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: #FFFFFF;
 		}
 	}
@@ -364,8 +364,8 @@ export default {
 			text-align: center;
 			margin-top: 40rpx;
 			border: 1px solid #333333;
-			height: 80upx;
-			line-height: 80upx;
+			height: 80rpx;
+			line-height: 80rpx;
 			width: 100%;
 			color: #333333;
 		}

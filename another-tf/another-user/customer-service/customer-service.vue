@@ -16,9 +16,6 @@ export default {
 	},
 	onLoad() {
 		this.$store.dispatch('customerService/getCustomerServiceList')
-	},
-
-	computed: {
 	}
 }
 </script>

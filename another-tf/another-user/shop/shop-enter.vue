@@ -2,7 +2,7 @@
 	<view class="shop-container">
 		<!-- 顶部栏 -->
 		<view class="shop-header-container">
-			<tui-icon name="arrowleft" :size="60" unit="upx" margin="0" color="#222229" bold @click="back"></tui-icon>
+			<tui-icon name="arrowleft" :size="60" unit="rpx" margin="0" color="#222229" bold @click="back"></tui-icon>
 			<view class="search-container">
 				<text style="font-weight: bold;font-size: 36rpx;">
 					{{ transformation[currentType] || `出错了${currentType}~${queryInfo.classifyId}` }}
@@ -181,8 +181,8 @@
 							</swiper-item>
 						</swiper>
 					</view>
-					<view v-else style="padding-bottom: 45upx;">
-						<tui-no-data :fixed="false" style="padding-top: 60upx;">该活动暂无商品～</tui-no-data>
+					<view v-else style="padding-bottom: 45rpx;">
+						<tui-no-data :fixed="false" style="padding-top: 60rpx;">该活动暂无商品～</tui-no-data>
 					</view>
 				</swiper-item>
 			</swiper>

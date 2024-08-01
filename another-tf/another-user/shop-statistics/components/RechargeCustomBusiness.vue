@@ -10,10 +10,10 @@
 						@click="changeCurrentRecharge"
 					>
 						<template #title>
-							<tui-list-cell background-color="transparent" padding="26upx 80upx 26upx 30upx">
+							<tui-list-cell background-color="transparent" padding="26rpx 80rpx 26rpx 30rpx">
 								<view style="display: flex;justify-content: space-between;align-items: center;">
 									<view>ID：{{ item.id }}</view>
-									<view style="font-size: 26upx;color: #605D52;text-align: right;">
+									<view style="font-size: 26rpx;color: #605D52;text-align: right;">
 										<view>客户余额：{{ item.buyerUserBalance }}</view>
 										<view>充值余额：{{ item.recharge }}</view>
 									</view>
@@ -21,25 +21,25 @@
 							</tui-list-cell>
 						</template>
 						<template #content>
-							<view style="margin: 0 24upx;background-color: #ebebea;">
+							<view style="margin: 0 24rpx;background-color: #ebebea;">
 								<view v-if="item.orderList && item.orderList.length">
 									<tui-list-view>
 										<tui-list-cell
 											v-for="part in item.orderList" :key="part.orderFormid"
 											background-color="transparent"
 										>
-											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 16upx;">
+											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 16rpx;">
 												<text>订单ID：{{ part.orderFormid || '--' }}</text>
 												<text>状态：{{ orderTypeEnum[part.state] || '--' }}</text>
 											</view>
-											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 16upx;">
+											<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 16rpx;">
 												<text style="color: red;">总价：￥{{ part.orderPrice || '0' }}</text>
 												<text style="color: red;">支付：￥{{ part.price || '0' }}</text>
 											</view>
 										</tui-list-cell>
 									</tui-list-view>
 								</view>
-								<view v-else style="padding: 28upx 0;text-align: center;">
+								<view v-else style="padding: 28rpx 0;text-align: center;">
 									客户消费订单列表空空如也~
 								</view>
 							</view>
@@ -47,13 +47,13 @@
 					</tui-collapse>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !rechargeList.length
 						? 'loading' : !isEmpty && rechargeList.length && (rechargeList.length >= rechargeTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无客户充值数据</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无客户充值数据</tui-no-data>
 			</view>
 		</scroll-view>
 	</view>

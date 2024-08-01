@@ -1,16 +1,16 @@
 <template>
 	<view class="application-record-container">
-		<view style="padding: 30upx 20upx;color: #000000;">
+		<view style="padding: 30rpx 20rpx;color: #000000;">
 			<JHeader width="50" height="50" title="活动中心提现记录"></JHeader>
 		</view>
 		<view v-if="withdrawalRecordList && withdrawalRecordList.length">
-			<view v-for="(item, index) in withdrawalRecordList" :key="index" class="" style="padding-bottom: 45upx;">
+			<view v-for="(item, index) in withdrawalRecordList" :key="index" class="" style="padding-bottom: 45rpx;">
 				<tui-card
 					:title="{ text: '' }"
 					:tag="{ text: `${String(new Date(item.addTime).getFullYear())}/${String(new Date(item.addTime).getMonth() + 1).padStart(2, '0')}/${String(new Date(item.addTime).getDate()).padStart(2, '0')}` }"
 				>
 					<template #body>
-						<view style="padding: 20upx 30upx;">
+						<view style="padding: 20rpx 30rpx;">
 							<view>
 								<text>类型：</text>
 								<text v-if="item.type === 0">活动中心</text>

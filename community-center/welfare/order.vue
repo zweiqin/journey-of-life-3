@@ -96,10 +96,10 @@
 </template>
 
 <script>
-import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO } from '../../constant'
+import { T_SELECT_ADDRESS, T_COMMUNITY_ORDER_NO, T_STORAGE_KEY } from '../../constant'
 import { getAddressListApi } from '../../api/address'
 import ChooseTime from '../componts/choose-time.vue'
-import { APPLY_NAME, IMG_UPLOAD_URL } from '../../config'
+import { APPLY_NAME, ANOTHER_TF_UPLOAD } from '../../config'
 import { getUserId } from '../../utils'
 import { createActivityOrderApi, getServiceOrderPayApi, payOrderForBeeStewadAPPApi } from '../../api/community-center'
 
@@ -176,37 +176,37 @@ export default {
       // #endif
     },
     handleChooseImage() {
-      uni.chooseImage({
-        success: (chooseImageRes) => {
-          for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading()
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
-                uni.hideLoading()
-                this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
-              },
-              fail: (error) => {
-                uni.hideLoading()
-                this.ttoast({
-                  type: 'fail',
-                  title: '图片上传失败',
-                  content: error
-                })
-              }
-            })
-          }
-          return
-        },
-        fail: (fail) => {
-          console.log(fail)
-        }
-      })
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
+					for (const imgFile of chooseImageRes.tempFiles) {
+						uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
+								uni.hideLoading()
+								this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url)
+							},
+							fail: (error) => {
+								uni.hideLoading()
+								this.ttoast({
+									type: 'fail',
+									title: '图片上传失败',
+									content: error
+								})
+							}
+						})
+					}
+				}
+			})
     },
 
     // 点击删除图片

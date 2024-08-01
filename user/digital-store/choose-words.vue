@@ -1,7 +1,7 @@
 <template>
   <view class="choose-words-container" ref="containerRef">
     <view class="header">
-      <tui-icon name="arrowleft" color="#767676" :size="48" unit="upx" @click="handleBack"></tui-icon>
+      <tui-icon name="arrowleft" color="#767676" :size="48" unit="rpx" @click="handleBack"></tui-icon>
       <h2>选择话术</h2>
     </view>
 
@@ -21,7 +21,7 @@
       </view>
 
 				<view  v-show="!list.length">
-					<tui-no-data :fixed="false" style="margin-top: 100upx;">暂无数据</tui-no-data>
+					<tui-no-data :fixed="false" style="padding-top: 100rpx;">暂无数据</tui-no-data>
 				</view>
     </view>
 
@@ -142,7 +142,7 @@ page{
 }
 
 .choose-words-container {
-  padding: 30upx 40upx;
+  padding: 30rpx 40rpx;
   padding-bottom: 40px;
   overflow: scroll;
 
@@ -152,9 +152,9 @@ page{
     h2 {
       flex: 1;
       font-weight: normal;
-      font-size: 32upx;
+      font-size: 32rpx;
       color: @c0;
-      margin-left: 34upx;
+      margin-left: 34rpx;
       flex-shrink: 0;
     }
   }
@@ -164,10 +164,10 @@ page{
       margin: 20px 0;
     }
     .item {
-      padding: 20upx;
+      padding: 20rpx;
       box-sizing: border-box;
-      margin: 20upx 0;
-      box-shadow: 0px 10upx 26upx #ccc;
+      margin: 20rpx 0;
+      box-shadow: 0px 10rpx 26rpx #ccc;
       border-radius: 5px;
 
       .header {
@@ -189,7 +189,7 @@ page{
   .set-my-words {
     text-align: right;
     color: #409eff;
-    margin: 34upx 0;
+    margin: 34rpx 0;
   }
 
   .my {
@@ -200,16 +200,16 @@ page{
 
     .textarea {
       width: 100%;
-      border: 1upx solid #ccc;
+      border: 1rpx solid #ccc;
       border-radius: 10px;
       box-sizing: border-box;
-      padding: 20upx;
+      padding: 20rpx;
       margin-top: 20px;
       transition: all 350ms;
     }
 
     .add-btn {
-      margin-top: 40upx;
+      margin-top: 40rpx;
       background-color: #409eff;
       color: @cw;
     }

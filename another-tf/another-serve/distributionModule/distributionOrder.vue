@@ -1,6 +1,6 @@
 <template>
 	<view class="distribution-order-container">
-		<JHeader title="我的分销订单" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的分销订单" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="findMySalesDatalist && findMySalesDatalist.length">
 			<view v-for="(item, index) in findMySalesDatalist" :key="index" class="flex-center clientList-box">
 				<view class="directAward-box font-color-656 fs26">
@@ -13,7 +13,7 @@
 						</view>
 						<view>
 							<tui-icon
-								:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="upx" margin="0"
+								:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="rpx" margin="0"
 								color="#b7b7b7"
 							></tui-icon>
 						</view>
@@ -35,13 +35,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !findMySalesDatalist.length
 					? 'loading' : !isEmpty && findMySalesDatalist.length && (findMySalesDatalist.length >= findMySalesDataTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">这里空空如也~</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">这里空空如也~</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -112,16 +112,16 @@ export default {
 		justify-content: flex-start;
 		flex-direction: column;
 		background-color: #FFFFFF;
-		padding: 40upx 20upx;
-		margin-top: 30upx;
+		padding: 40rpx 20rpx;
+		margin-top: 30rpx;
 
 		.orderId-box {
-			width: 320upx;
+			width: 320rpx;
 
 		}
 
 		.commission-box {
-			width: 340upx;
+			width: 340rpx;
 		}
 
 		.state {
@@ -133,8 +133,8 @@ export default {
 		}
 
 		.upBox {
-			border-top: 1upx solid #EDEDED;
-			margin-top: 30upx;
+			border-top: 1rpx solid #EDEDED;
+			margin-top: 30rpx;
 		}
 	}
 }

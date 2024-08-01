@@ -119,7 +119,7 @@
 										? 'loading' : !isEmpty && communityStoreList.length && (communityStoreList.length >= communityListTotal) ? 'no-more' : ''"
 								>
 								</LoadingMore>
-								<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+								<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 							</view>
 						</scroll-view>
 					</view>

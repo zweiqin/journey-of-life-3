@@ -1,6 +1,6 @@
 <template>
 	<view class="commodity-container">
-		<JHeader title="推广商品" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="推广商品" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view>
 			<view v-if="productList && productList.length">
 				<view
@@ -27,13 +27,13 @@
 					</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !productList.length
 						? 'loading' : !isEmpty && productList.length && (productList.length >= productTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 			</view>
 		</view>
 	</view>
@@ -126,35 +126,35 @@ export default {
 	box-sizing: border-box;
 
 	.goodsDetails-box {
-		width: 690upx;
+		width: 690rpx;
 
 		.goodsDetails {
 			position: relative;
-			border-bottom: 1upx solid #EDEDED;
-			padding-bottom: 30upx;
+			border-bottom: 1rpx solid #EDEDED;
+			padding-bottom: 30rpx;
 
 			.goodsName-box {
-				width: 389upx;
-				height: 85upx;
+				width: 389rpx;
+				height: 85rpx;
 			}
 
 			.goodsImg {
-				width: 260upx;
-				height: 260upx;
+				width: 260rpx;
+				height: 260rpx;
 			}
 		}
 
 	}
 
 	.fenxiang {
-		height: 50upx;
-		line-height: 50upx;
-		width: 120upx;
+		height: 50rpx;
+		line-height: 50rpx;
+		width: 120rpx;
 		color: #FFEBC4;
 		text-align: center;
 		position: absolute;
 		background-color: #333333;
-		right: 10upx;
+		right: 10rpx;
 	}
 }
 </style>

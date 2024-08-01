@@ -4,7 +4,6 @@
 // // 线上团蜂
 // export const SheQu_URL = 'https://www.tuanfengkeji.cn/dts-app-api' // 线上
 // export const RUAN_URL = 'https://www.tuanfengkeji.cn/dts-app-api/wx' // 线上
-// export const IMG_UPLOAD_URL = 'https://nsappapi.tuanfengkeji.cn/file/upload' // 线上
 // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-app-api/ws' // 线上
 // // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8080/api/ws'; // 线上
 // // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket'  // 测试
@@ -22,7 +21,6 @@
 export const SheQu1_URL = 'https://test.zhult.com/' // 测试
 export const SheQu_URL = 'https://test.tuanfengkeji.cn/dts-app-api' // 测试
 export const RUAN_URL = 'https://test.tuanfengkeji.cn/dts-app-api/wx' // 测试
-export const IMG_UPLOAD_URL = 'https://nsappapitest.tuanfengkeji.cn/file/upload' // 测试
 export const sf = 'https://test.zhult.com/samrtWorker' // 测试
 export const A_TF_MAIN = 'https://test.tuanfengkeji.cn/TFShop_Uni_H5' // 测试
 export const ANOTHER_TF_INTERFACE = 'https://nsappapitest.tuanfengkeji.cn' // 测试

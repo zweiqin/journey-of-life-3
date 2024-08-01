@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="银行卡" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="银行卡" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="bankcardList && bankcardList.length" class="bankcardList">
 			<view v-for="(item, index) in bankcardList" :key="index" class="addBankcard-content flex-row-plus">
 				<view class="bankcard-detail" @click="itemTap(item.bankId)">
@@ -16,13 +16,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !bankcardList.length
 					? 'loading' : !isEmpty && bankcardList.length && (bankcardList.length >= bankcardTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂未添加银行卡</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂未添加银行卡</tui-no-data>
 		</view>
 
 		<view class="addBankcard-box">
@@ -104,15 +104,15 @@ export default {
 
 	.addBankcard-box {
 		position: fixed;
-		bottom: 50upx;
-		left: 30upx;
+		bottom: 50rpx;
+		left: 30rpx;
 
 		.addBankcard {
-			width: 690upx;
-			height: 100upx;
+			width: 690rpx;
+			height: 100rpx;
 			color: #FFEBC4;
 			text-align: center;
-			line-height: 100upx;
+			line-height: 100rpx;
 			background: #333333;
 		}
 	}
@@ -121,7 +121,7 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		margin-bottom: 30rpx;
 
 		.bankcard-detail {

@@ -1,10 +1,10 @@
 <template>
 	<view class="shop-commodity-container">
-		<JHeader title="商家商品" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="商家商品" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="flex-items-plus flex-row search">
 			<view class="searchBg">
 				<view class="searchImg-box flex-items-plus">
-					<tui-icon style="position: absolute;left: 0;" name="search" :size="50" unit="upx" color="#d1d1d1"></tui-icon>
+					<tui-icon style="position: absolute;left: 0;" name="search" :size="50" unit="rpx" color="#d1d1d1"></tui-icon>
 					<input
 						v-model="queryInfo.search" class="search-box" maxlength="20" placeholder-class="searchboxPlace"
 						placeholder="请输入您想要的宝贝"
@@ -15,7 +15,7 @@
 				</label>
 			</view>
 		</view>
-		<view style="display: flex;align-items: center;justify-content: space-around;padding: 10upx 0;font-size: 26upx;">
+		<view style="display: flex;align-items: center;justify-content: space-around;padding: 10rpx 0;font-size: 26rpx;">
 			<view :style="{ color: sortGoodsIndex == 1 ? '#ff7911' : '#000000' }" @click="handleGoodsSortTap(1)">
 				<text>价格</text>
 				<tui-icon
@@ -36,35 +36,35 @@
 		<view v-if="shopList && shopList.length" class="shop-list">
 			<ATFCommonShop
 				v-for="shop in shopList" :key="shop.shopId" :shop-info="shop" bottom-type="detail"
-				margin="22upx 0"
-				radius="20upx"
+				margin="22rpx 0"
+				radius="20rpx"
 			>
-				<view style="padding: 20upx 26upx">
+				<view style="padding: 20rpx 26rpx">
 					<scroll-view scroll-x="true">
 						<view style="display: flex;">
 							<view
 								v-for="item in shop.productList"
 								:key="item.productId"
-								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18upx;"
+								style="display: flex;flex-direction: column;justify-content: space-between;padding-right: 18rpx;"
 								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
 							>
-								<view style="width: 160upx;">
+								<view style="width: 160rpx;">
 									<tui-lazyload-img
-										width="100%" height="168upx" mode="scaleToFill" radius="20upx"
+										width="100%" height="168rpx" mode="scaleToFill" radius="20rpx"
 										:src="common.seamingImgUrl(item.image)"
 									></tui-lazyload-img>
 									<view
 										style="line-height: 1;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 									>
-										<text style="font-size: 24upx;">{{ item.productName }}</text>
+										<text style="font-size: 24rpx;">{{ item.productName }}</text>
 									</view>
 								</view>
-								<view style="margin-top: 14upx;display: flex;align-items: center;flex-wrap: wrap;">
-									<view style="font-size: 28upx;font-weight: bold;color: #E02208;margin-right: 10upx;">
-										<text style="font-size: 26upx;">￥</text>
+								<view style="margin-top: 14rpx;display: flex;align-items: center;flex-wrap: wrap;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #E02208;margin-right: 10rpx;">
+										<text style="font-size: 26rpx;">￥</text>
 										{{ item.price }}
 									</view>
-									<view v-if="item.price !== item.originalPrice" style="font-size: 24upx;color: #979797;text-decoration: line-through;">
+									<view v-if="item.price !== item.originalPrice" style="font-size: 24rpx;color: #979797;text-decoration: line-through;">
 										￥{{ item.originalPrice }}
 									</view>
 								</view>
@@ -74,13 +74,13 @@
 				</view>
 			</ATFCommonShop>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !shopList.length
 					? 'loading' : !isEmpty && shopList.length && (shopList.length >= shopTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -172,7 +172,7 @@ export default {
 
 <style lang="less" scoped>
 input {
-	padding-left: 80upx;
+	padding-left: 80rpx;
 }
 
 .shop-commodity-container {
@@ -210,19 +210,19 @@ input {
 	}
 
 	.search-box {
-		width: 400upx;
-		height: 66upx;
+		width: 400rpx;
+		height: 66rpx;
 	}
 
 	.shop-list {
-		padding: 20upx;
+		padding: 20rpx;
 		box-sizing: border-box;
 
 		.sub-menus {
 			display: flex;
 			align-items: center;
-			margin-top: 8upx;
-			margin-left: 36upx;
+			margin-top: 8rpx;
+			margin-left: 36rpx;
 		}
 	}
 }

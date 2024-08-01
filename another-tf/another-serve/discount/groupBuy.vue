@@ -46,7 +46,7 @@
 		</view>
 		<view class="spikeList mar-top-20">
 			<view v-for="(item, index) in groupBuyList" :key="index" class="listItem">
-				<view style="width: 260upx;height: 260upx;margin-right: 30upx;">
+				<view style="width: 260rpx;height: 260rpx;margin-right: 30rpx;">
 					<image :src="common.seamingImgUrl(item.image)"></image>
 				</view>
 				<view class="itemInfo">
@@ -97,13 +97,13 @@
 					</view>
 				</view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!isEmpty && !groupBuyList.length
 						? 'loading' : !isEmpty && groupBuyList.length && (groupBuyList.length >= groupBuyTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 			</view>
 		</view>
 	</view>
@@ -203,12 +203,12 @@ export default {
 	}
 
 	.spikeList {
-		padding: 0upx 30upx 20upx 30upx;
+		padding: 0rpx 30rpx 20rpx 30rpx;
 
 		.listItem {
 			display: flex;
-			padding: 30upx;
-			margin-bottom: 30upx;
+			padding: 30rpx;
+			margin-bottom: 30rpx;
 			background: #FFFFFF;
 
 			&:last-child {
@@ -222,10 +222,10 @@ export default {
 				justify-content: space-between;
 
 				p {
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: #333333;
-					line-height: 40upx;
-					margin-bottom: 20upx;
+					line-height: 40rpx;
+					margin-bottom: 20rpx;
 					text-overflow: -o-ellipsis-lastline;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -249,8 +249,8 @@ export default {
 				}
 
 				.originalPrice {
-					font-size: 24upx;
-					margin-top: 20upx;
+					font-size: 24rpx;
+					margin-top: 20rpx;
 					text-decoration: line-through;
 					color: #CCCCCC;
 				}
@@ -266,8 +266,8 @@ export default {
 					}
 
 					.snapUpBtn {
-						width: 160upx;
-						height: 84upx;
+						width: 160rpx;
+						height: 84rpx;
 						text-align: center;
 						background: linear-gradient(90deg, #C83732 0%, #E25C44 100%);
 						box-shadow: 0rpx 6rpx 12rpx rgba(233, 0, 0, 0.3);

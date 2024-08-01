@@ -1,9 +1,9 @@
 <template>
 	<view class="question-box">
-		<JHeader title="我的问答" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的问答" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="tabsbox">
 			<tui-tabs
-				style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="375" :padding="0"
+				style="width: 750rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="375" :padding="0"
 				item-width="375rpx" selected-color="#C5AA7B" bold slider-bg-color="#ffffff"
 				:tabs="questionTypeList"
 				:current-tab="questionTypeFlag" @change="questionTypeActive"
@@ -14,7 +14,7 @@
 				<view class="wid function-box">
 					<view v-if="allCheckShow" class="finishbox" @click="finishClick">完成</view>
 					<view v-else class="flex-row-plus editicon-box flex-items fs28" @click="editClick">
-						<tui-icon name="edit" :size="40" unit="upx" color="#333333"></tui-icon>
+						<tui-icon name="edit" :size="40" unit="rpx" color="#333333"></tui-icon>
 						<text class="mar-left-10">编辑</text>
 					</view>
 				</view>
@@ -29,13 +29,13 @@
 								<view class="item wid flex-row-plus flex-items">
 									<view v-show="allCheckShow">
 										<tui-icon
-											v-if="item.selected == 1" name="circle-fill" :size="40" unit="upx"
+											v-if="item.selected == 1" name="circle-fill" :size="40" unit="rpx"
 											color="#c5aa7b"
-											margin="30upx" @click="problemItemSel(index, 0)"
+											margin="30rpx" @click="problemItemSel(index, 0)"
 										></tui-icon>
 										<tui-icon
-											v-else name="circle" :size="40" unit="upx"
-											color="#cccccc" margin="30upx"
+											v-else name="circle" :size="40" unit="rpx"
+											color="#cccccc" margin="30rpx"
 											@click="problemItemSel(index, 1)"
 										></tui-icon>
 									</view>
@@ -67,13 +67,13 @@
 				<view v-show="allCheckShow" class="allcheck-box flex-row-plus flex-sp-between flex-items">
 					<view class="left">
 						<tui-icon
-							v-if="isAllProblemCheck" name="circle-fill" :size="40" unit="upx"
+							v-if="isAllProblemCheck" name="circle-fill" :size="40" unit="rpx"
 							color="#c5aa7b"
-							margin="0 30upx 0 0" @click="allProblemSel(0)"
+							margin="0 30rpx 0 0" @click="allProblemSel(0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="0 30upx 0 0"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="0 30rpx 0 0"
 							@click="allProblemSel(1)"
 						></tui-icon>
 						<text>全选</text>
@@ -84,20 +84,20 @@
 				</view>
 				<view v-if="allCheckShow" class="pad-bot-140"></view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!problemInfo.isEmpty && !problemInfo.data.length
 						? 'loading' : !problemInfo.isEmpty && problemInfo.data.length && (problemInfo.data.length >= problemInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="problemInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无提问内容</tui-no-data>
+				<tui-no-data v-if="problemInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无提问内容</tui-no-data>
 			</view>
 		</view>
 		<view v-if="questionTypeFlag == 1">
 			<view v-if="answerInfo.data.length > 0">
 				<view v-if="allCheckShow" class="finishbox" @click="finishClick">完成</view>
 				<view v-else class="flex-row-plus editicon-box flex-items fs28" @click="editClick">
-					<tui-icon name="edit" :size="40" unit="upx" color="#333333"></tui-icon>
+					<tui-icon name="edit" :size="40" unit="rpx" color="#333333"></tui-icon>
 					<text class="mar-left-10">编辑</text>
 				</view>
 				<view class="swipe-box">
@@ -112,13 +112,13 @@
 									<view class="flex-items-plus flex-row wid">
 										<view v-show="allCheckShow">
 											<tui-icon
-												v-if="item.selected == 1" name="circle-fill" :size="40" unit="upx"
+												v-if="item.selected == 1" name="circle-fill" :size="40" unit="rpx"
 												color="#c5aa7b"
-												margin="0 30upx 0 0" @click="answerItemSel(index, 0)"
+												margin="0 30rpx 0 0" @click="answerItemSel(index, 0)"
 											></tui-icon>
 											<tui-icon
-												v-else name="circle" :size="40" unit="upx"
-												color="#cccccc" margin="0 30upx 0 0"
+												v-else name="circle" :size="40" unit="rpx"
+												color="#cccccc" margin="0 30rpx 0 0"
 												@click="answerItemSel(index, 1)"
 											></tui-icon>
 										</view>
@@ -150,7 +150,7 @@
 												</view>
 												<view class="qAarrow mar-top-30 flex-items">
 													<text class="fs24 font-color-C5AA7B">共{{ item.count }}个回答</text>
-													<tui-icon :size="24" color="#a7916a" name="arrowright" margin="0 0 0 15upx"></tui-icon>
+													<tui-icon :size="24" color="#a7916a" name="arrowright" margin="0 0 0 15rpx"></tui-icon>
 												</view>
 											</view>
 										</view>
@@ -163,13 +163,13 @@
 				<view v-show="allCheckShow" class="allcheck-box flex-row-plus flex-sp-between flex-items">
 					<view class="left">
 						<tui-icon
-							v-if="isAllAnswerCheck" name="circle-fill" :size="40" unit="upx"
+							v-if="isAllAnswerCheck" name="circle-fill" :size="40" unit="rpx"
 							color="#c5aa7b"
-							margin="0 30upx 0 0" @click="allAnswerSel(0)"
+							margin="0 30rpx 0 0" @click="allAnswerSel(0)"
 						></tui-icon>
 						<tui-icon
-							v-else name="circle" :size="40" unit="upx"
-							color="#cccccc" margin="0 30upx 0 0"
+							v-else name="circle" :size="40" unit="rpx"
+							color="#cccccc" margin="0 30rpx 0 0"
 							@click="allAnswerSel(1)"
 						></tui-icon>
 						<text>全选</text>
@@ -180,13 +180,13 @@
 				</view>
 				<view v-if="allCheckShow" class="pad-bot-140"></view>
 			</view>
-			<view style="padding-bottom: 45upx;">
+			<view style="padding-bottom: 45rpx;">
 				<LoadingMore
 					:status="!answerInfo.isEmpty && !answerInfo.data.length
 						? 'loading' : !answerInfo.isEmpty && answerInfo.data.length && (answerInfo.data.length >= answerInfo.listTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="answerInfo.isEmpty" :fixed="false" style="margin-top: 60upx;">暂无问答内容</tui-no-data>
+				<tui-no-data v-if="answerInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无问答内容</tui-no-data>
 			</view>
 		</view>
 		<!-- 删除确认弹窗 -->
@@ -203,7 +203,7 @@
 				</view>
 			</view>
 			<view class="cancelDel" @click="cancelClick">
-				<tui-icon name="circle-fill" :size="60" unit="upx" color="#fafafa"></tui-icon>
+				<tui-icon name="circle-fill" :size="60" unit="rpx" color="#fafafa"></tui-icon>
 			</view>
 		</tui-modal>
 	</view>
@@ -513,8 +513,8 @@ page {
 			text-align: center;
 			margin-top: 40rpx;
 			border: 1px solid #333333;
-			height: 80upx;
-			line-height: 80upx;
+			height: 80rpx;
+			line-height: 80rpx;
 			width: 100%;
 			color: #333333;
 		}
@@ -616,13 +616,13 @@ page {
 		background-color: #FFFFFF;
 		width: 100%;
 		position: fixed;
-		bottom: 0upx;
+		bottom: 0rpx;
 
 		.left {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: #666;
 		}
 
@@ -634,11 +634,11 @@ page {
 		}
 
 		.btn-delete {
-			width: 230upx;
-			height: 100upx;
-			line-height: 100upx;
+			width: 230rpx;
+			height: 100rpx;
+			line-height: 100rpx;
 			text-align: center;
-			font-size: 30upx;
+			font-size: 30rpx;
 			color: #FFFFFF;
 			background: #C83732;
 		}
