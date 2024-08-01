@@ -1,5 +1,6 @@
 <template>
   <view class="order-info-wrapper">
+    <TuanAppShim bg="#fbe7d3"></TuanAppShim>
     <TuanPageHead title="订单详情" fixed :scrollTop="scrollTop">
       <block slot="left">
         <tui-icon name="arrowleft" :size="64" unit="rpx" color="#222229" margin="0" @click="handleToOrderList"></tui-icon>
@@ -71,13 +72,12 @@
                 <view class="node-time">{{ item.createTime }}</view>
               </view>
               <view class="images" v-if="item.url">
-                <image
-                  @click="handlePreviewSource(index, item.url.split(','), true)"
-                  class="image"
-                  v-for="(image, index) in item.url.split(',')"
-                  :key="index"
-                  :src="image"
-                ></image>
+                <block v-for="(image, index) in item.url.split(',')" :key="index">
+                  <image v-if="!isVideoSource(image)" @click="handlePreviewSource(index, item.url.split(','), true)" class="image" :src="image"></image>
+                  <view  v-else @click.stop="handlePreviewSource(index, item.url.split(','), false)">
+                    <video :controls="false" :src="image" class="image"></video>
+                  </view>
+                </block>
               </view>
             </template>
           </tui-timeaxis-item>

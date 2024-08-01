@@ -1,5 +1,6 @@
 <template>
   <view class="community-order-container">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
     <!-- 返回键 -->
     <view class="head">
       <tui-icon name="arrowleft" :size="42" unit="rpx" color="#000000" margin="0" @click="handleBack"></tui-icon>
@@ -98,7 +99,7 @@
 
     <!-- 维修商品 -->
     <view class="serve-user-goods-info section">
-      <view class="section-title">图片</view>
+      <view class="section-title">图片（选填）</view>
       <view class="image-list">
         <view class="add-img-icon item" v-for="item in orderForm.orderGoodsList" :key="item">
           <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteImg(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
@@ -108,6 +109,31 @@
         <view class="add-img-icon item" @click="handleUploadImg">
           <view class="add-icon">
             <tui-icon name="add" :size="64" unit="rpx" color="#b3b2ad" margin="0"></tui-icon>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-title">视频（选填）</view>
+      <view class="image-list">
+        <view class="add-img-icon item video-item" v-for="(item, index) in orderForm.videoList" :key="item">
+          <tui-icon v-show="!chooseTimeVisible" @click="handleDeleteVideo(item)" name="close-fill" color="#FC4023" :size="17" class="close-icon"></tui-icon>
+          <video
+            autoplay
+            muted
+            @fullscreenchange="handleFullscreenchange"
+            @click="requestVideoScreen(index)"
+            :id="'video_' + index"
+            ref="videoListRef"
+            :controls="isShowVideoControl"
+            class="goods-img"
+            mode="aspectFit"
+            :src="item"
+          ></video>
+        </view>
+
+        <view class="add-img-icon item" @click="handleUploadVideo">
+          <view class="add-icon">
+            <tui-icon name="add" :size="64" unit="rpx" background="#fff" color="#b3b2ad" margin="0"></tui-icon>
           </view>
         </view>
       </view>
@@ -199,6 +225,8 @@
     <ChooseTime @choose="onChooseTime" v-model="chooseTimeVisible"></ChooseTime>
     <tui-toast ref="toast"></tui-toast>
     <ChooseCommunity @confirm="handleChooseCommunity" ref="chooseCommunityRef"></ChooseCommunity>
+    <!-- 预览视频 -->
+    <TuanVideoPreview ref="tuanVideoPreviewRef"></TuanVideoPreview>
   </view>
 </template>
 
@@ -228,7 +256,8 @@ export default {
         datetimerange: '', // 期望上门时间
         quantity: 1, // 数量
         orderGoodsList: [], // 图片
-        remarks: '' // 备注信息
+        remarks: '', // 备注信息
+        videoList: []
       },
       chooseTimeVisible: false,
       changeNumberFn: () => {},
@@ -250,9 +279,13 @@ export default {
       isShowPriceMode: 1,
       communityList: [], // 小区列表
       chooseCommunityDetail: null,
-      cardId: ''
+      cardId: '',
+      videoContextObj: {},
+      isShowVideoControl: false
     }
   },
+
+  mounted() {},
 
   onLoad(options) {
     this.currentServeInfo = options
@@ -421,9 +454,54 @@ export default {
 			})
     },
 
+    // 上传视频
+    handleUploadVideo() {
+      const _this = this
+      uni.chooseVideo({
+        maxDuration: 15,
+        success: (data) => {
+          const { size, tempFilePath } = data
+          let templateSize = size / 1024
+          templateSize = templateSize / 1024
+          if (templateSize > 50) {
+            return _this.ttoast({
+              type: 'fail',
+              title: '视频大小不能超过50M',
+              content: error
+            })
+          }
+          uni.showLoading({ title: '视频上传中...' })
+          uni.uploadFile({
+            url: ANOTHER_TF_UPLOAD,
+            filePath: tempFilePath,
+            name: 'file',
+            header: {
+              Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+            },
+            formData: {
+              folderId: -1
+            },
+            success: (uploadFileRes) => {
+              _this.orderForm.videoList.push(JSON.parse(uploadFileRes.data).data.url)
+              uni.hideLoading()
+              _this.ttoast('上传成功')
+            },
+            fail: (fail) => {
+              uni.hideLoading()
+            }
+          })
+        }
+      })
+    },
+
     // 点击删除图片
     handleDeleteImg(img) {
       this.orderForm.orderGoodsList = this.orderForm.orderGoodsList.filter((item) => item !== img)
+    },
+
+    // 点击删除图片
+    handleDeleteVideo(video) {
+      this.orderForm.videoList = this.orderForm.videoList.filter((item) => item !== video)
     },
 
     // 确认提交订单
@@ -478,13 +556,14 @@ export default {
       this.isSubmitOrder = true
 
       try {
-        const { remarks, orderGoodsList, datetimerange } = this.orderForm
+        const { remarks, orderGoodsList, datetimerange, videoList } = this.orderForm
+        const tempSource = [...videoList, ...orderGoodsList]
         const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
         const payOrderPrice = (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
         const subOrderData = {
-          userId: getUserId(),
+          // userId: getUserId(),
           remarks: remarks || '',
-          orderGoodsList: orderGoodsList.map((item) => ({
+          orderGoodsList: tempSource.map((item) => ({
             goodsType: '团蜂',
             goodsUrl: item
           })),
@@ -521,7 +600,7 @@ export default {
           this.ttoast('订单创建成功')
           uni.removeStorageSync(SF_INVITE_CODE)
           uni.setStorageSync('communityOrder', res.data)
-					if(this.cardId) updateDeleteRedisCardHolderApi({ cardId: this.cardId })
+          if (this.cardId) updateDeleteRedisCardHolderApi({ cardId: this.cardId })
           setTimeout(() => {
             uni.redirectTo({
               url: `/community-center/confirm-order?name1=${this.currentServeInfo.name}&oughtPrice=${payOrderPrice}&content=${this.orderForm.remarks}
@@ -531,6 +610,8 @@ export default {
         &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${res.data}`
             })
           }, 500)
+        }else{
+          throw new Error(res.statusMsg)
         }
       } catch (error) {
         console.log('订单创建报错啦', error)
@@ -595,7 +676,7 @@ export default {
           })
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
         this.ttoast({
           type: 'fail',
           title: '小区列表获取失败',
@@ -604,6 +685,27 @@ export default {
       } finally {
         uni.hideLoading()
       }
+    },
+
+    // 全屏播放
+    requestVideoScreen(index) {
+      const key = 'video_' + index
+      let videoContext = this.videoContextObj[key]
+      if (!videoContext) {
+        videoContext = uni.createVideoContext(key)
+        this.videoContextObj[key] = videoContext
+      }
+      videoContext.requestFullScreen()
+      this.isShowVideoControl = true
+      videoContext.pause()
+      setTimeout(() => {
+        videoContext.play()
+      }, 500)
+    },
+
+    // 全屏发生变化
+    handleFullscreenchange(e) {
+      this.isShowVideoControl = e.detail.fullScreen
     }
   },
 
@@ -618,6 +720,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/ .uni-video-cover {
+  display: none !important;
+}
 .community-order-container {
   width: 100vw;
   min-height: 100vh;
@@ -840,6 +945,9 @@ export default {
           align-items: center;
           justify-content: center;
 
+          &.video-item {
+          }
+
           &:active {
             .add-icon {
               transform: scale(1.3);
@@ -900,6 +1008,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100000000;
 
   .pay-price {
     font-size: 48upx;

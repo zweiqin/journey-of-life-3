@@ -38,6 +38,8 @@ export default {
         const canOP = res.data.records.find((item) => item.status < 2)
         if (canOP) {
           this.currentInfo = canOP
+        }else{
+          this.currentInfo = null
         }
       }
     },

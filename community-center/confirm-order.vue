@@ -1,5 +1,6 @@
 <template>
   <view class="confirm-order">
+    <TuanAppShim bg="#ffff"></TuanAppShim>
     <JHeader title="确认订单" width="50" height="50"></JHeader>
 
     <view class="main">
@@ -62,6 +63,7 @@ import communityPay from '../mixin/communityPay'
 export default {
   name: 'Confirm-order',
   mixins: [communityPay()],
+  components: { PayMethods },
   data() {
     return {
       orderType: 1,

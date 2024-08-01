@@ -7,7 +7,7 @@
         <video
           v-if="videoList.length === 1"
           style="width: 100vw"
-          :src="common.seamingImgUrl(videoList[0])"
+          :src="common.seamingImgUrl(videoList[0].url)"
         ></video>
 
         <swiper :current="currentIndex" @change="handleSwiperChange" class="swiper-container" v-if="videoList.length > 1">
