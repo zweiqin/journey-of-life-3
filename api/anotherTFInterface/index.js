@@ -270,10 +270,10 @@ export const updateCurrencySignInApi = (data) => AnotherTFRequest('/buyerBeeSign
 export const getVoucherSigninRecordListApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectVoucherSigninRecordList', data)
 
 // 查询代金券签到明细
-export const getVoucherSigninHistoryApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectBeeSigninHistory', data)
+export const getVoucherSigninHistoryApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectVoucherSigninHistory', data)
 
 // 代金券签到
-export const updateVoucherSignInApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/signIn', data, 'POST')
+export const updateVoucherSignInApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/signInVoucher', data, 'POST')
 
 // 积分签到
 // 积分兑换优惠券

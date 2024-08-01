@@ -140,8 +140,9 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
-								{{ [1, 4, 5].includes(item.targetType) ? '+' : [2, 3].includes(item.targetType) ? '-' : '？' }}{{
-									Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
+								{{ [1, 4].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) ? '+'
+									: [ 2 ].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) ? '-'
+										: '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}元
 							</view>
 							<!-- <view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 								<text>状态：</text>

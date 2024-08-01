@@ -1,6 +1,7 @@
 <template>
 	<view class="transaction-operation-operation">
 		<JHeader title="消费金账户" width="50" height="50"></JHeader>
+
 		<view style="display: flex;justify-content: space-between;align-items: center;">
 			<tui-button type="gray" width="240rpx" height="66rpx" margin="0" plain link @click="isShowExplainPopup = true">
 				<view style="display: flex;justify-content: center;align-items: center;">
@@ -17,94 +18,155 @@
 			</tui-button>
 		</view>
 
-		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;">
-			<view style="padding: 10rpx;background-color: #388ceb;border-radius: 50%;">
-				<view style="padding: 26rpx;background-color: #ffffff;border-radius: 50%;">
-					<view style="padding: 10rpx;background-color: #e78e00;border-radius: 10rpx;transform: rotateZ(45deg);">
-						<view style="width: 16rpx;height: 16rpx;background-color: #ffffff;box-sizing: border-box;"></view>
+		<view style="padding: 12rpx 34rpx 0;">
+			<view
+				style="padding: 52rpx 42rpx 36rpx;border-radius: 20rpx;"
+				:style="{ background: `url(${common.seamingImgUrl('1721199293161-orange-line-bg.png')}) no-repeat center top/cover` }"
+			>
+				<view style="text-align: left;white-space: nowrap;">
+					<view
+						style="display: flex;align-items: center;justify-content: space-between;flex-wrap: wrap;margin: 0 -15rpx;"
+					>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">总消费金（元）</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beePrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">可消费</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beeConsumptionPrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">可签到</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beeSignPrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
+					<!-- <view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;" @click="isShowTransactionDialog = true">
+						<view style="font-size: 28rpx">
+						<text>待选择</text>
+						<tui-icon name="arrowright" color="#000000" :size="30" unit="rpx" margin="0 0 0 4rpx"></tui-icon>
+						</view>
+						<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;color: #1A66FF;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+						{{ Number.parseFloat(Number(transactionInfo.beeSelectedPrice)).toFixed(2) || 0 }}
+						</view>
+						</view> -->
+					</view>
+					<view
+						style="display: flex;align-items: center;justify-content: space-between;flex-wrap: wrap;"
+					>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">签到待提现</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beeToBeWithdrawnPrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">签到已提现</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beeWithdrawnPrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
+						<view style="flex: 1;margin: 0 15rpx 30rpx;color: #FFFFFF;">
+							<view style="font-size: 28rpx">签到待结算</view>
+							<view style="margin-top: 20rpx;font-size: 48rpx;font-weight: bold;text-shadow: 0px 2px 2px rgba(232, 89, 0, 0.51);">
+								{{ Number.parseFloat(Number(transactionInfo.beeToBeSettledPrice)).toFixed(2) || 0 }}
+							</view>
+						</view>
 					</view>
 				</view>
-			</view>
-			<view style="margin-top: 56rpx;font-size: 36rpx;">总消费金</view>
-			<view style="margin-top: 26rpx;font-size: 74rpx;font-weight: bold;">
-				￥{{ Number.parseFloat(Number(transactionInfo.beePrice)).toFixed(2) || 0 }}
-			</view>
-			<view style="width: 100%;text-align: center;">
-				<view style="display: flex;justify-content: space-around;padding-top: 26rpx;">
-					<view style="flex: 1;">
-						<view style="font-size: 36rpx;font-weight: bold;">
-							{{ Number.parseFloat(Number(transactionInfo.beeConsumptionPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">可消费</view>
-					</view>
-					<view style="flex: 1;">
-						<view style="font-size: 36rpx;font-weight: bold;">
-							{{ Number.parseFloat(Number(transactionInfo.beeSignPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">可签到</view>
-					</view>
-					<view style="flex: 1;" @click="isShowTransactionDialog = true">
-						<view style="font-size: 36rpx;font-weight: bold;color: #1A66FF;">
-							{{ Number.parseFloat(Number(transactionInfo.beeSelectedPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">
-							<text>待选择</text>
-							<tui-icon name="arrowright" color="#000000" :size="30" unit="rpx" margin="0 0 0 4rpx"></tui-icon>
-						</view>
-					</view>
-				</view>
-				<view style="display: flex;justify-content: space-around;padding-top: 26rpx;">
-					<view style="flex: 1;">
-						<view style="font-size: 36rpx;font-weight: bold;">
-							{{ Number.parseFloat(Number(transactionInfo.beeToBeWithdrawnPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">签到待提现</view>
-					</view>
-					<view style="flex: 1;">
-						<view style="font-size: 36rpx;font-weight: bold;">
-							{{ Number.parseFloat(Number(transactionInfo.beeWithdrawnPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">签到已提现</view>
-					</view>
-					<view style="flex: 1;">
-						<view style="font-size: 36rpx;font-weight: bold;">
-							{{ Number.parseFloat(Number(transactionInfo.beeToBeSettledPrice)).toFixed(2) || 0 }}
-						</view>
-						<view style="margin-top: 10rpx;font-size: 30rpx;">签到待结算</view>
-					</view>
-				</view>
-			</view>
-			<view>
-				<view style="padding-top: 100rpx;">
+				<view class="middle-btn" style="display: flex;align-items: center;justify-content: space-between;margin: 0 -15rpx;">
 					<tui-button
-						type="gray" width="280rpx" height="78rpx" margin="0"
+						type="white" width="100%" height="74rpx" margin="0 15rpx"
+						:size="28" bold
 						@click="go('/another-tf/another-serve/withdraw/index?type=2')"
 					>
-						提现
+						<view style="display: flex;align-items: center;line-height: 1;">
+							<text>去提现</text>
+							<tui-icon name="arrowright" color="#eb672c" :size="30" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+						</view>
+					</tui-button>
+					<tui-button
+						v-if="transactionInfo.beeSelectedPrice"
+						type="white" width="100%" height="74rpx" margin="0 15rpx"
+						:size="28" bold
+						@click="isShowTransactionDialog = true"
+					>
+						待选择（{{ Number.parseFloat(Number(transactionInfo.beeSelectedPrice)).toFixed(2) }}）
 					</tui-button>
 				</view>
 			</view>
 		</view>
-		<view
-			class="operation-btn"
-			style="position: fixed;bottom: 0;z-index: 1;width: 100%;padding: 40rpx 24rpx;text-align: center;box-sizing: border-box;"
-		>
-			<tui-button type="gray" width="180rpx" height="60rpx" margin="0" plain link @click="isShowExplainPopup = true">
-				<view style="display: flex;justify-content: center;align-items: center;">
-					<text style="margin-right: 4rpx;font-size: 26rpx;color: #777777;">权益说明</text>
-					<tui-icon name="explain" :size="30" unit="rpx" color="#777777" margin="0"></tui-icon>
+
+		<view style="margin-top: 24rpx;padding: 0 34rpx;">
+			<view style="font-size: 34rpx;font-weight: bold;">消费金明细</view>
+			<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
+				<view v-if="transactionRecordList && transactionRecordList.length" style="padding: 12rpx 28rpx;">
+					<view
+						v-for="(item, index) in transactionRecordList" :key="item.id"
+						style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
+						@click="handleClickTransactionRecord(item)"
+					>
+						<view style="flex: 1;display: flex;align-items: center;">
+							<view style="flex: 1;width: 0;margin-left: 14rpx;">
+								<view
+									style="font-size: 30rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+								>
+									<text>
+										<text v-if="item.targetType === 1">充值</text>
+										<text v-else-if="item.targetType === 2">提现</text>
+										<text v-else-if="item.targetType === 3">
+											<text v-if="item.actionType === 4">订单（已退款）</text>
+											<text v-else>订单</text>
+										</text>
+										<text v-else-if="item.targetType === 4">退款</text>
+										<text v-else-if="item.targetType === 5">
+											<text v-if="item.actionType === 4">赠送（已退款）</text>
+											<text v-else>赠送</text>
+										</text>
+										<text v-else>--</text>
+									</text>
+									<text v-if="item.number">
+										-{{ item.number }}
+									</text>
+								</view>
+								<view style="margin-top: 16rpx;font-size: 26rpx;color: #888889;">{{ item.createTime }}</view>
+							</view>
+						</view>
+						<view style="margin-left: 12rpx;text-align: right;">
+							<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #ea5e21;">
+								<text>
+									{{ [1, 4].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) ? '+'
+										: [ 2 ].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) ? '-'
+											: '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}
+								</text>
+							</view>
+						</view>
+					</view>
 				</view>
-			</tui-button>
+				<view style="padding-bottom: 45rpx;">
+					<LoadingMore
+						:status="!isEmpty && !transactionRecordList.length
+							? 'loading' : !isEmpty && transactionRecordList.length && (transactionRecordList.length >= transactionRecordTotal) ? 'no-more' : ''"
+					>
+					</LoadingMore>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无签到记录~</tui-no-data>
+				</view>
+			</view>
 		</view>
 
 		<tui-dialog
-			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确认提现', color: '#586c94' }]"
-			:show="isShowTransactionDialog" title="订单财务提现" @click="handleTransactionDialog"
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确认选择', color: '#586c94' }]"
+			:show="isShowTransactionDialog" title="消费金用途选择" @click="handleTransactionDialog"
 		>
 			<template #content>
 				<view>
+					<view style="margin: 0 0 10rpx;">待选择：{{ Number.parseFloat(Number(transactionInfo.beeSelectedPrice)).toFixed(2) || 0 }}</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
-						<view style="font-size: 32rpx;color: #333333;">提现类型：</view>
+						<view style="font-size: 32rpx;color: #333333;">类型：</view>
 						<view style="flex: 1;">
 							<tui-radio-group
 								:value="transactionType"
@@ -127,10 +189,10 @@
 							</tui-radio-group>
 						</view>
 					</view>
-					<tui-input
+					<!-- <tui-input
 						v-model="transactionSelectAmount" padding="26rpx 0" label="消费金数额" type="number"
 						placeholder="请输入消费金数额"
-					></tui-input>
+						></tui-input> -->
 				</view>
 			</template>
 		</tui-dialog>
@@ -163,13 +225,14 @@
 </template>
 
 <script>
-import { getBeeSelectAmountEntryRecordApi, getBeeSelectEntryRecordApi } from '../../../api/anotherTFInterface'
+import { getBeeSelectAmountEntryRecordApi, getBeeCurrencyDistributorApi, getBeeSelectEntryRecordApi } from '../../../api/anotherTFInterface'
 import { APPLY_NAME } from '../../../config'
 
 export default {
 	name: 'TransactionOperation',
 	onShow() {
 		this.getTransactionAll()
+		this.getTransactionStatisticsRecord()
 	},
 
 	data() {
@@ -185,10 +248,19 @@ export default {
 				beeToBeSettledPrice: '' // 签到待结算消费金
 			},
 			isShowExplainPopup: false,
+			isEmpty: false,
+			transactionRecordTotal: 0,
+			transactionRecordList: [],
+			queryInfo: {
+				page: 1,
+				pageSize: 20,
+				type: 0,
+				time: 0
+			},
 			// 消费金选择相关
 			isShowTransactionDialog: false,
-			transactionType: '1',
-			transactionSelectAmount: ''
+			transactionType: '1'
+			// transactionSelectAmount: '',
 		}
 	},
 
@@ -200,29 +272,65 @@ export default {
 					this.transactionInfo = res.data
 				})
 		},
+		getTransactionStatisticsRecord(isLoadmore) {
+			uni.showLoading()
+			getBeeCurrencyDistributorApi({ ...this.queryInfo })
+				.then((res) => {
+					this.transactionRecordTotal = res.data.total
+					if (isLoadmore) {
+						this.transactionRecordList.push(...res.data.list)
+					} else {
+						this.transactionRecordList = res.data.list
+					}
+					this.isEmpty = this.transactionRecordList.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		handleClickTransactionRecord(item) {
+			uni.navigateTo({
+				url: '/another-tf/another-user/transaction-funds/transaction-record-detail',
+				success: () => {
+					setTimeout(() => {
+						uni.$emit('sendTransactionRecordDetailMsg', { transactionRecordData: item })
+					}, 400)
+				}
+			})
+		},
 		handleTransactionDialog(e) {
 			if (e.index === 0) {
-				this.transactionSelectAmount = ''
+				// this.transactionSelectAmount = ''
 				this.isShowTransactionDialog = false
 			} else if (e.index === 1) {
-				if (!this.transactionSelectAmount) return this.$showToast('缺少消费金数额')
+				// if (!this.transactionSelectAmount) return this.$showToast('缺少消费金数额')
 				if (!this.transactionType) return this.$showToast('请选择消费金用途')
 				uni.showLoading()
 				getBeeSelectEntryRecordApi({
-					type: Number(this.transactionType),
-					amount: this.transactionSelectAmount
+					type: Number(this.transactionType)
+					// amount: this.transactionSelectAmount
 				})
 					.then((res) => {
 						uni.hideLoading()
-						this.transactionSelectAmount = ''
+						// this.transactionSelectAmount = ''
 						this.transactionType = '1'
 						this.isShowTransactionDialog = false
 						this.$showToast('操作成功', 'success')
+						setTimeout(() => {
+							this.getTransactionAll()
+						}, 2000)
 					})
 					.catch(() => {
 						uni.hideLoading()
 					})
 			}
+		}
+	},
+	onReachBottom() {
+		if (this.transactionRecordList.length < this.transactionRecordTotal) {
+			++this.queryInfo.page
+			this.getTransactionStatisticsRecord(true)
 		}
 	}
 }
@@ -231,23 +339,23 @@ export default {
 <style lang="less" scoped>
 .transaction-operation-operation {
 	min-height: 100vh;
-	background-color: #f8f9fb;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
 	/deep/ .j-header-container {
-		padding: 24rpx 0 10rpx;
-		background-color: #f5f5f5;
+		padding: 18rpx 0 16rpx;
+		background-color: #ffffff;
 
 		.title {
-			font-size: 36rpx;
+			font-size: 34rpx;
 			color: #222229;
-			font-weight: normal;
 		}
 	}
 
-	.operation-btn {
-		/deep/ .tui-btn {
-			display: inline-block;
+	.middle-btn {
+		/deep/ .tui-btn-white {
+			color: #ea6024 !important;
+			background: #fff3e4 !important;
 		}
 	}
 }

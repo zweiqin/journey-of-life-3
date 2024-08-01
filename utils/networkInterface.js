@@ -648,7 +648,9 @@ export const resolveOrderPackageData = (params = {}) => {
 		shopSeckillId: null,
 		franchiseePhone: otherInfo.benefitinFranchiseesPhone, // 加盟商号码。不是加盟商就不用传。
 		communityPhone: otherInfo.communityPhone, // 选择的小区的ID
-		franchiseeRule: otherInfo.commissionSharingRatio || [] // 小区店和加盟商分佣比例。
+		franchiseeRule: otherInfo.commissionSharingRatio || [], // 小区店和加盟商分佣比例。
+		// voucherId: settlement.voucherList[0] && settlement.voucherList[0].platformVoucherId || ''
+		voucherId: otherInfo.voucherId || '' // 选择代金券支付后选择的代金券Id
 	}
 	if (skuItemMsgList && skuItemMsgList.length) {
 		if (skuItemMsgList[0].shopDiscountId) {

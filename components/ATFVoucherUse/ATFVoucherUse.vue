@@ -1,6 +1,6 @@
 <template>
 	<view :style="{ margin }">
-		<view class="line-pane" :style="{ padding, borderRadius: radius }" @click="handleChangeVoucher">
+		<view class="line-pane" :style="{ padding, borderRadius: radius }" @click="handleClickVoucher">
 			<view style="font-size: 28rpx;" class="title">代金券（余额：{{ voucherNum }}）</view>
 			<view style="display: flex;align-items: center;">
 				<view style="color: #999999">
@@ -17,7 +17,7 @@
 				</view>
 				<view v-if="voucherList && voucherList.length">
 					<view style="text-align: right;">
-						<tui-radio-group :value="String(voucherSelected)" @change="handleRadioChange">
+						<tui-radio-group :value="String(voucherSelected)" @change="handleChangeVoucher">
 							<tui-label>
 								<tui-list-cell padding="16rpx">
 									<view>
@@ -64,7 +64,7 @@
 <script>
 
 export default {
-	name: 'VoucherUse',
+	name: 'ATFVoucherUse',
 	props: {
 		margin: {
 			type: String,
@@ -110,7 +110,7 @@ export default {
 		}
 	},
 	methods: {
-		handleChangeVoucher() {
+		handleClickVoucher() {
 			if (!this.voucherSelected && (this.voucherList.length === 1)) {
 				this.voucherName = this.voucherList[0].voucherName
 				this.voucherSelected = this.voucherList[0].id
@@ -124,7 +124,7 @@ export default {
 			this.voucherSelected = 0
 			this.drawerVisible = false
 		},
-		handleRadioChange(e) {
+		handleChangeVoucher(e) {
 			console.log(e)
 			this.voucherName = '点击使用'
 			if (this.voucherSelected !== Number(e.detail.value)) {
