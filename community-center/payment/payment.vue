@@ -69,14 +69,14 @@
 import { USER_ID, USER_INFO } from '../../constant'
 import { getShopInfoApi, createPaymentCodeOrderApi, canCCBPayForCommunityStoreApi } from '../../api/community-center/index'
 import PayMethods from '../../community-center/components/PayMethods/PayMethods.vue'
-import { PAY_METHOD_IDS } from '../../community-center/components/PayMethods/utils'
+import { PAY_METHOD_IDS, PAY_METHOD_TYPE } from '../../community-center/components/PayMethods/utils'
 import TuanUnLoginPage from '../../pages/order/components/TuanUnLoginPage.vue'
 import communityPay from '../../mixin/communityPay'
 import { ENV } from '../../config/index'
 
 export default {
   components: { PayMethods, TuanUnLoginPage },
-  mixins: [communityPay('shopId')],
+  mixins: [communityPay(PAY_METHOD_TYPE.SHOP_ID)],
   data() {
     return {
       numberKeyBoardVisible: false,
