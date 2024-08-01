@@ -561,7 +561,7 @@ export default {
         const partnerCode = uni.getStorageSync(SF_INVITE_CODE) || null
         const payOrderPrice = (this.calcServePrice && this.calcServePrice.oughtPrice) || ''
         const subOrderData = {
-          // userId: getUserId(),
+          userId: getUserId(),
           remarks: remarks || '',
           orderGoodsList: tempSource.map((item) => ({
             goodsType: '团蜂',
