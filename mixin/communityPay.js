@@ -17,6 +17,9 @@ export default (validType = PAY_METHOD_TYPE.ORDER_NO, payMenths = ['ccb']) => {
         if (payMenths.includes('ccb') && (await isSupportsCCB(params, validType))) {
           this.payList.push(PAY_METHOD_IDS.CCB)
         }
+        if (validType === PAY_METHOD_TYPE.SHOP_ID) {
+          this.payList = this.payList.filter((item) => item !== PAY_METHOD_IDS.BALANCE)
+        }
       }
     }
   }
