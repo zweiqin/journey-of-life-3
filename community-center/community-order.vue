@@ -257,7 +257,7 @@ export default {
         quantity: 1, // 数量
         orderGoodsList: [], // 图片
         remarks: '', // 备注信息
-        videoList: ['https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1721963110063-video(4).mp4']
+        videoList: []
       },
       chooseTimeVisible: false,
       changeNumberFn: () => {},
