@@ -75,6 +75,7 @@ export default {
           payConfig
         })
       } catch (error) {
+        console.log(error);
         this.ttoast({ type: 'fail', title: '支付失败', content: error.message })
       } finally {
         this.setPayLoading(false)
@@ -95,6 +96,10 @@ export default {
     setPayLoading(status) {
       this.payLoading = status
       this.$emit('setLoading', status)
+    },
+
+    getPayMethod(){
+      return this.payMethodsList.find(item => item.payMethodId === this.currentSelectPayMethodId)
     }
   },
 

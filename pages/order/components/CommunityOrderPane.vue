@@ -1,7 +1,7 @@
 <template>
   <view class="community-order-pane-container" v-if="orderInfo" @click="handleViewOrderDetail">
     <view class="order-header">
-      <view class="order-no"> 订单编号： {{ orderInfo.orderNo }} </view>
+      <view class="order-no">订单编号： {{ orderInfo.orderNo }}</view>
       <view class="order-status">{{ setOrderStatus(orderInfo.status) }}</view>
     </view>
 
@@ -10,7 +10,7 @@
 
       <view class="item">
         <view class="title">服务类型</view>
-        <view class="value">{{ orderInfo.dictName }}</view>
+        <view class="value">{{ orderInfo.dictName || (isPaycodeOrder ? '(待店长编辑)' : '--') }}</view>
       </view>
 
       <view class="item">
@@ -23,13 +23,13 @@
       <button class="uni-btn detail">详情</button>
       <button class="uni-btn pay" v-if="orderInfo.status === 0" @click.stop="handleToPayOrder">去付款</button>
       <button class="uni-btn cancel" v-if="orderInfo.status <= 2" @click.stop="$emit('cancel', orderInfo)">取消</button>
-      <button class="uni-btn edit" v-if="orderInfo.status <= 2 && extraInfo != 1" @click.stop="handleEditOrder">修改</button>
+      <button class="uni-btn edit" v-if="orderInfo.status <= 2 && extraInfo != 1 && !isPaycodeOrder" @click.stop="handleEditOrder">修改</button>
     </view>
   </view>
 </template>
 
 <script>
-import { communityOrderStatusList } from '../config';
+import { communityOrderStatusList } from '../config'
 export default {
   props: {
     orderInfo: {
@@ -39,25 +39,25 @@ export default {
   },
 
   mounted() {
-    this.orderStatusList = communityOrderStatusList;
+    this.orderStatusList = communityOrderStatusList
   },
 
   data() {
     return {
       orderStatusList: [],
       cancelOrderReasonList: []
-    };
+    }
   },
 
   methods: {
     //  设置订单状态
     setOrderStatus(status) {
-      status = Number(status);
-      const orderStatusInfo = this.orderStatusList.find((item) => item.value === status);
+      status = Number(status)
+      const orderStatusInfo = this.orderStatusList.find((item) => item.value === status)
       if (orderStatusInfo) {
-        return orderStatusInfo.label;
+        return orderStatusInfo.label
       } else {
-        return '';
+        return ''
       }
     },
 
@@ -65,39 +65,46 @@ export default {
     handleViewOrderDetail() {
       uni.navigateTo({
         url: `/community-center/order-status?orderNo=${this.orderInfo.orderNo}`
-      });
+      })
     },
 
     // 支付订单、
     handleToPayOrder() {
       uni.navigateTo({
         url: '/community-center/pay?price=' + this.orderInfo.actualPrice + '&orderNo=' + this.orderInfo.orderNo + '&payType=' + this.extraInfo
-      });
+      })
     },
 
     // 修改订单
     handleEditOrder() {
-      let url = this.orderInfo.deliveryType === 4 ? '/community-center/repair' : '/community-center/delivery-install';
+      let url = this.orderInfo.deliveryType === 4 ? '/community-center/repair' : '/community-center/delivery-install'
       uni.navigateTo({
         url: url + '?orderNo=' + this.orderInfo.orderNo
-      });
+      })
     }
   },
 
   computed: {
     extraInfo() {
-      let extraInfo = this.orderInfo.extraInfo;
+      let extraInfo = this.orderInfo.extraInfo
       if (extraInfo) {
         try {
-          extraInfo = JSON.parse(extraInfo);
-          return extraInfo.payType;
+          extraInfo = JSON.parse(extraInfo)
+          return extraInfo.payType
         } catch (error) {
-          return undefined;
+          return undefined
         }
       }
+    },
+
+    isPaycodeOrder() {
+      if (typeof this.orderInfo !== 'object') {
+        return false
+      }
+      return [1, 2].includes(+this.orderInfo.collectionCodeOrder)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

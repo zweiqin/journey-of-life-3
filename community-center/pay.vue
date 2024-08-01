@@ -1,5 +1,6 @@
 <template>
   <view class="pay-page">
+    <TuanAppShim bg="#e95d20"></TuanAppShim>
     <Header bgc="#e95d20" title="订单支付" tabbar="/pages/order/order"></Header>
     <view class="item">
       <span class="label">需支付:</span>
@@ -11,7 +12,7 @@
     </view>
 
     <view class="pay-list-wrapper">
-      <PayMethods :orderNo="orderNo" :supports="payList"  ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
+      <PayMethods :orderNo="orderNo" :supports="payList" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
     </view>
 
     <Button type="error" @click="handlePay" :loading="isLoading">支付</Button>
@@ -26,9 +27,10 @@ import { payOrderForEndApi, payOrderForBeeStewadAPPApi, orderPayH5PabUseBlanceAp
 import { getUserId, useCopy } from '../utils'
 import Header from './components/header.vue'
 import communityPay from '../mixin/communityPay'
+import PayMethods from './components/PayMethods/PayMethods.vue'
 
 export default {
-  components: { Button, Header },
+  components: { Button, Header, PayMethods },
   mixins: [communityPay()],
   data() {
     return {

@@ -1,4 +1,4 @@
-import { isSuppersCCBApi } from '../../../api/community-center'
+import { isSuppersCCBApi, canCCBPayForCommunityStoreApi } from '../../../api/community-center'
 
 export const createPayForm = ({ data, url } = {}) => {
   if (!url) {
@@ -39,10 +39,21 @@ export const PAY_METHOD_IDS = {
   BALANCE: 3
 }
 
-export const isSupportsCCB = async (orderNo) => {
-  if (!orderNo) return false
+export const PAY_METHOD_TYPE = {
+  ORDER_NO: 'ORDER_NO',
+  SHOP_ID: 'SHOP_ID'
+}
+
+/**
+ * @description 更具订单号查询是否支持惠市宝支付
+ * @param {string} params 订单号 | 门店id
+ * @returns
+ */
+export const isSupportsCCB = async (params, type = PAY_METHOD_TYPE.ORDER_NO) => {
+  if (!params) return false
   try {
-    const res = await isSuppersCCBApi(orderNo)
+    const api = type === PAY_METHOD_TYPE.ORDER_NO ? isSuppersCCBApi : canCCBPayForCommunityStoreApi
+    const res = await api(params)
     return res.statusCode === 20000 && res.data && res.data.hsbMrchId
   } catch (error) {
     return false
