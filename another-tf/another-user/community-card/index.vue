@@ -166,7 +166,7 @@ export default {
 			})
 			getAllCommunityCardHolderApi({ ...this.communityCardInfo.query })
 				.then((res) => {
-					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? JSON.parse(i.businessFields) : [] }))
+					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? [ JSON.parse(i.businessFields) ] : [] }))
 					this.communityCardInfo.listTotal = res.data.total
 					if (isLoadmore) {
 						this.communityCardInfo.data.push(...res.data.list)
@@ -186,7 +186,7 @@ export default {
 			})
 			getIsLoseAllCommunityCardHolderApi({ ...this.invalidCardInfo.query })
 				.then((res) => {
-					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? JSON.parse(i.businessFields) : [] }))
+					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? [ JSON.parse(i.businessFields) ] : [] }))
 					this.invalidCardInfo.listTotal = res.data.total
 					if (isLoadmore) {
 						this.invalidCardInfo.data.push(...res.data.list)

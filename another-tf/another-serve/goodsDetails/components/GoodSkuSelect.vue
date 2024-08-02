@@ -364,8 +364,11 @@ export default {
 			this.isShowDetails = false
 			if (this.isExchange) {
 				uni.navigateTo({
-					url: '/another-tf/another-user/voucherPay/index'
+					url: '/another-tf/another-serve/paymentOrderConfirm/index?type=1&isExchange=1'
 				})
+				// uni.navigateTo({
+				// 	url: '/another-tf/another-user/voucherPay/index'
+				// })
 			} else {
 				uni.navigateTo({
 					url: '/another-tf/another-serve/paymentOrderConfirm/index?type=1'

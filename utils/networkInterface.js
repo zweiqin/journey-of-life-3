@@ -347,8 +347,9 @@ export const resolveCalcOrderTotal = (params = {}) => {
  */
 
 export const resolveIntegralSelect = (params = {}) => {
-	const { vm, totalPrice: totalPriceOrigin, integralNum, integralRatio, selectIntegral: selectIntegralOrigin, payInfo } = Object.assign({
+	const { vm, settlement, totalPrice: totalPriceOrigin, integralNum, integralRatio, selectIntegral: selectIntegralOrigin, payInfo } = Object.assign({
 		vm: {},
+		settlement: { shops: [] },
 		selectIntegral: true,
 		totalPrice: 0,
 		integralNum: 0,
@@ -363,6 +364,12 @@ export const resolveIntegralSelect = (params = {}) => {
 			vm.selectIntegral = false
 		})
 		uni.showToast({ title: '已选择代金券支付，无法使用其它优惠', icon: 'none' })
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1)) && (selectIntegral === false)) {
+		selectIntegral = true
+		vm && vm.$nextTick && vm.$nextTick(() => {
+			vm.selectIntegral = false
+		})
+		uni.showToast({ title: '包含兑换专柜商品，无法使用积分！', icon: 'none' })
 	} else {
 		selectIntegral = !selectIntegral
 		if (selectIntegral) {
@@ -489,6 +496,8 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 		isShowShopCoupons = false
 		selectedShopCouponList = []
 		isSuccess = true
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) {
+		uni.showToast({ title: '包含兑换专柜商品，无法使用商家券！', icon: 'none' })
 	} else if (settlement.shops[shopIndex].total < couponItem.fullMoney) {
 		uni.showToast({ title: '不满足优惠券使用条件！', icon: 'none' })
 	} else if ((couponItem.couponType === 1) && (settlement.shops[shopIndex].total <= couponItem.reduceMoney)) {
@@ -540,7 +549,8 @@ export const resolvePlatformCouponItemSelect = (params = {}) => {
 	let isShowPlatformCoupon = isShowPlatformCouponOrigin
 	let selectedPlatformCoupon = JSON.parse(JSON.stringify(selectedPlatformCouponOrigin))
 	let isSuccess = false
-	if (!couponItem.checked && selectedShopCouponList.length) uni.showToast({ title: '不可与商家券叠加使用！', icon: 'none' })
+	if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) return uni.showToast({ title: '包含兑换专柜商品，无法使用平台券！', icon: 'none' })
+	if (!couponItem.checked && selectedShopCouponList.length) return uni.showToast({ title: '不可与商家券叠加使用！', icon: 'none' })
 	if (couponItem.checked) { // 已选中的情况下取消选中
 		couponItem.checked = false
 		isShowPlatformCoupon = false
@@ -936,7 +946,8 @@ export const resolveVoucherPaySelect = (params = {}) => {
  */
 
 export const resolveGetOrderSettlement = async (params = {}) => {
-	const { isProductPay, isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon } = Object.assign({
+	const { isExchangeCounter, isProductPay, isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon } = Object.assign({
+		isExchangeCounter: false,
 		isProductPay: false,
 		isGroup: false,
 		fromType: 0,
@@ -989,35 +1000,46 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 		// 	{ couponId: 2222, ids: [ 12849 ], couponType: 2, reduceMoney: 8, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' },
 		// 	{ couponId: 3333, ids: [ 12849 ], couponType: 1, reduceMoney: 6, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' }
 		// ]
-		// 默认选中商家的第一张优惠券
 		for (let shopIndex = 0; shopIndex < res.data.shops.length; shopIndex++) {
-			if (res.data.shops[shopIndex].shopCoupons.length) {
-				res.data.shops[shopIndex].shopCoupons.forEach((item) => {
-					item.checked = false
+			if (isExchangeCounter) {
+				// 兑换专柜商品只能使用代金券支付
+				res.data.shops[shopIndex].skus.forEach((item) => {
+					item.counterType = 1
 				})
-				const shopCouponItemSelectObj = resolveShopCouponItemSelect({
-					settlement: res.data,
-					shopIndex,
-					couponIndex: 0,
-					isShowShopCoupons,
-					selectedShopCouponList,
-					selectedPlatformCoupon
-				})
-				res.data = shopCouponItemSelectObj.settlement
-				isShowShopCoupons = shopCouponItemSelectObj.isShowShopCoupons
-				selectedShopCouponList = shopCouponItemSelectObj.selectedShopCouponList
-				if (shopCouponItemSelectObj.isSuccess) isSuccess = true
+			} else {
+				// 默认选中商家的第一张优惠券
+				if (res.data.shops[shopIndex].shopCoupons.length) {
+					res.data.shops[shopIndex].shopCoupons.forEach((item) => {
+						item.checked = false
+					})
+					const shopCouponItemSelectObj = resolveShopCouponItemSelect({
+						settlement: res.data,
+						shopIndex,
+						couponIndex: 0,
+						isShowShopCoupons,
+						selectedShopCouponList,
+						selectedPlatformCoupon
+					})
+					res.data = shopCouponItemSelectObj.settlement
+					isShowShopCoupons = shopCouponItemSelectObj.isShowShopCoupons
+					selectedShopCouponList = shopCouponItemSelectObj.selectedShopCouponList
+					if (shopCouponItemSelectObj.isSuccess) isSuccess = true
+				}
 			}
 		}
 		if (res.data.shopType) { // res.data.shopType === 1 // 1品牌商家，2商圈商家
-			if (isProductPay) { // 如果是付款码商品
-				userAddressInfo = { receiveId: 581 }
-			} else if (uni.getStorageSync(T_RECEIVE_ITEM)) {
-				userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
-				userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
-			} else if (res.data.receive) {
-				userAddressInfo = res.data.receive || {}
-				userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+			if (res.data.shops.some((a) => a.skus.some((b) => !(b.counterType === 1)))) {
+				if (isProductPay) { // 如果是付款码商品
+					userAddressInfo = { receiveId: 581 }
+				} else if (uni.getStorageSync(T_RECEIVE_ITEM)) {
+					userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
+					userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+				} else if (res.data.receive) {
+					userAddressInfo = res.data.receive || {}
+					userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+				}
+			} else { // 兑换专柜商品
+				userAddressInfo = { receiveId: 485 }
 			}
 		} else {
 			userAddressInfo = { receiveId: 485 }
