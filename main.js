@@ -31,7 +31,6 @@ Vue.mixin({
 				seamingImgUrl(url) {
 					if (!url) return ''
 					// return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
-					// return url.startsWith('https://') ? url : 'https://cos.tuanfengkeji.cn/' + url
 					if (url.startsWith('http://')) {
 						return url.replace('http://', 'https://')
 					} else if (url.startsWith('https://')) {

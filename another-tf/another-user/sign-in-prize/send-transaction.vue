@@ -106,9 +106,9 @@
 				<view style="margin-top: 24rpx;">
 					<view style="font-size: 34rpx;font-weight: bold;">签到明细</view>
 					<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
-						<view v-if="signList && signList.length" style="padding: 12rpx 28rpx;">
+						<view v-if="signTransactionList && signTransactionList.length" style="padding: 12rpx 28rpx;">
 							<view
-								v-for="(item, index) in signList" :key="item.id"
+								v-for="(item, index) in signTransactionList" :key="item.id"
 								style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
 							>
 								<view style="flex: 1;display: flex;align-items: center;">
@@ -130,8 +130,8 @@
 						</view>
 						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
-								:status="!isEmpty && !signList.length
-									? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
+								:status="!isEmpty && !signTransactionList.length
+									? 'loading' : !isEmpty && signTransactionList.length && (signTransactionList.length >= signTransactionTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
 							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无签到记录~</tui-no-data>
@@ -188,8 +188,8 @@ export default {
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
 			recordList: [],
 			isEmpty: false,
-			signList: [],
-			signTotal: 0,
+			signTransactionList: [],
+			signTransactionTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20
@@ -234,6 +234,7 @@ export default {
 				})
 		},
 		handleSignIn() {
+			if (!this.transactionInfo.beeSignPrice) return this.$showToast('缺少可签到消费金，无法签到')
 			if (((this.recordList[this.recordList.length - 1] || {}).createTime || '').slice(0, 10) !== this.currentDay) {
 				uni.showLoading({
 					mask: true,
@@ -255,13 +256,13 @@ export default {
 		getSignInHistory(isLoadmore) {
 			uni.showLoading()
 			getCurrencySigninHistoryApi(this.queryInfo).then((res) => {
-				this.signTotal = res.data.total
+				this.signTransactionTotal = res.data.total
 				if (isLoadmore) {
-					this.signList.push(...res.data.list)
+					this.signTransactionList.push(...res.data.list)
 				} else {
-					this.signList = res.data.list
+					this.signTransactionList = res.data.list
 				}
-				this.isEmpty = this.signList.length === 0
+				this.isEmpty = this.signTransactionList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
@@ -270,7 +271,7 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.signList.length < this.signTotal) {
+		if (this.signTransactionList.length < this.signTransactionTotal) {
 			++this.queryInfo.page
 			this.getSignInHistory(true)
 		}

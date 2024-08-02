@@ -56,13 +56,13 @@
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					show :price-pay="totalPrice"
-					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
+					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
 					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
-					@change="handlePaymentSelect"
+					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
 				/>
 			</view>
 			<view style="margin-top: 20rpx;font-size: 24rpx;color: #999;">
@@ -155,7 +155,9 @@ export default {
 				// 加盟商和社区店分佣情况
 				benefitinFranchiseesPhone: '',
 				communityPhone: '',
-				commissionSharingRatio: []
+				commissionSharingRatio: [],
+				// 选择代金券支付后选择的代金券Id
+				voucherId: ''
 			}
 		}
 	},
@@ -269,7 +271,7 @@ export default {
 			if (shopCouponItemSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 		},
 
-		// 选择代金券支付
+		// 选择支付
 		handlePaymentSelect(e) {
 			this.payInfo = e
 			if (this.payInfo.paymentMode === 11) {
