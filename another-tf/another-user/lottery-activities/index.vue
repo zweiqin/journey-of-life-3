@@ -85,7 +85,7 @@
 					? 'loading' : !isEmpty && lotteryActivityList.length && (lotteryActivityList.length >= lotteryActivityTotal) ? '' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">请期待组合活动</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">请期待组合活动</tui-no-data>
 		</view>
 	</view>
 </template>

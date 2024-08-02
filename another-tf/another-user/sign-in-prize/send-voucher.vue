@@ -53,7 +53,7 @@
 										<tui-icon name="check" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">1</view>
+								<view style="padding: 14rpx 0;">{{ item.beeVoucher || 0 }}</view>
 							</view>
 							<view
 								v-for="index in (7 - recordList.length)" :key="index"
@@ -68,7 +68,7 @@
 										<tui-icon name="star-fill" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">1</view>
+								<view style="padding: 14rpx 0;">？</view>
 							</view>
 						</view>
 						<view v-if="stepsList && stepsList.length" style="margin-top: 30rpx;">
@@ -102,59 +102,37 @@
 					/>
 				</view>
 				<view style="margin-top: 24rpx;">
-					<view style="font-size: 34rpx;font-weight: bold;">兑换代金券入账记录</view>
+					<view style="font-size: 34rpx;font-weight: bold;">签到明细</view>
 					<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
-						<view v-if="exchangeAccountingList && exchangeAccountingList.length" style="padding: 12rpx 28rpx;">
+						<view v-if="signVoucherList && signVoucherList.length" style="padding: 12rpx 28rpx;">
 							<view
-								v-for="(item, index) in exchangeAccountingList" :key="item.id"
+								v-for="(item, index) in signVoucherList" :key="item.id"
 								style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
-								@click="handleClickVoucherRecord(item)"
 							>
 								<view style="flex: 1;display: flex;align-items: center;">
 									<view style="flex: 1;width: 0;margin-left: 14rpx;">
 										<view
 											style="font-size: 30rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 										>
-											<text>
-												代金券
-												<text v-if="item.waterType === 1">充值</text>
-												<text v-else-if="item.waterType === 2">转入</text>
-												<text v-else-if="item.waterType === 3">签到</text>
-												<text v-else-if="item.waterType === 4">抽奖</text>
-												<text v-else-if="item.waterType === 5">充值赠送</text>
-												<text v-else-if="item.waterType === 6">商城下单</text>
-												<text v-else-if="item.waterType === 7">商圈下单</text>
-												<text v-else-if="item.waterType === 8">社区下单</text>
-												<text v-else-if="item.waterType === 9">活动</text>
-												<text v-else-if="item.waterType === 10">退款</text>
-												<text v-else>--</text>
-											</text>
-											<text>
-												-
-												<text v-if="item.sourceType === 1">平台</text>
-												<text v-else-if="item.sourceType === 2">商家</text>
-												<text v-else-if="item.sourceType === 3">用户</text>
-												<text v-else-if="item.sourceType === 4">社区</text>
-												<text v-else>--</text>
-											</text>
+											<text>签到</text>
 										</view>
 										<view style="margin-top: 16rpx;font-size: 26rpx;color: #888889;">{{ item.createTime }}</view>
 									</view>
 								</view>
 								<view style="margin-left: 12rpx;text-align: right;">
-									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #ea5f23;">
-										<text>+{{ item.number }}</text>
+									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #1E7AEA;">
+										<text>+{{ item.beeVoucher || 0 }}</text>
 									</view>
 								</view>
 							</view>
 						</view>
-						<view style="padding-bottom: 4rpx;">
+						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
-								:status="!isEmpty && !exchangeAccountingList.length
-									? 'loading' : !isEmpty && exchangeAccountingList.length && (exchangeAccountingList.length >= exchangeAccountingTotal) ? 'no-more' : ''"
+								:status="!isEmpty && !signVoucherList.length
+									? 'loading' : !isEmpty && signVoucherList.length && (signVoucherList.length >= signVoucherTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -188,7 +166,7 @@
 
 <script>
 import VoucherChoose from '../voucher/components/VoucherChoose.vue'
-import { getSelectSigninRecordListApi, updateMemberSignInApi, getBuyerTotalVoucherEntryRecordApi, getBuyerVoucherEntryRecordApi } from '../../../api/anotherTFInterface'
+import { getVoucherSigninRecordListApi, updateVoucherSignInApi, getBuyerTotalVoucherEntryRecordApi, getVoucherSigninHistoryApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendVoucher',
@@ -200,7 +178,6 @@ export default {
 				purchaseRatio: ''
 			},
 			voucherAcount: {
-				chongzhiRechargeTotal: 0,
 				duihuanRechargeTotal: 0
 			},
 			stepsList: [
@@ -212,8 +189,8 @@ export default {
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
 			recordList: [],
 			isEmpty: false,
-			exchangeAccountingList: [],
-			exchangeAccountingTotal: 0,
+			signVoucherList: [],
+			signVoucherTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20
@@ -222,13 +199,13 @@ export default {
 	},
 	onLoad() {
 		this.getSignInRecord()
-		this.getExchangeAccountingLogsList()
+		this.getSignInHistory()
 	},
 	onShow() {
 		if (this.voucherChooseInfo.platformVoucherId) {
 			this.getVoucherData()
 		} else {
-			this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+			this.voucherAcount = { duihuanRechargeTotal: 0 }
 		}
 	},
 	methods: {
@@ -248,7 +225,7 @@ export default {
 				mask: true,
 				title: '加载中...'
 			})
-			getSelectSigninRecordListApi({})
+			getVoucherSigninRecordListApi({})
 				.then((res) => {
 					uni.hideLoading()
 					this.recordList = res.data
@@ -272,50 +249,40 @@ export default {
 					mask: true,
 					title: '请稍等...'
 				})
-				updateMemberSignInApi({})
+				updateVoucherSignInApi({})
 					.then((res) => {
 						uni.hideLoading()
 						// this.$showToast('签到成功！')
 						this.isShowSignFrame = true
 						this.getSignInRecord()
-						this.getExchangeAccountingLogsList()
+						this.getSignInHistory()
 					})
 					.catch((e) => {
 						uni.hideLoading()
 					})
 			}
 		},
-		getExchangeAccountingLogsList(isLoadmore) {
+		getSignInHistory(isLoadmore) {
 			uni.showLoading()
-			getBuyerVoucherEntryRecordApi(this.queryInfo).then((res) => {
-				this.exchangeAccountingTotal = res.data.total
+			getVoucherSigninHistoryApi(this.queryInfo).then((res) => {
+				this.signVoucherTotal = res.data.total
 				if (isLoadmore) {
-					this.exchangeAccountingList.push(...res.data.list)
+					this.signVoucherList.push(...res.data.list)
 				} else {
-					this.exchangeAccountingList = res.data.list
+					this.signVoucherList = res.data.list
 				}
-				this.isEmpty = this.exchangeAccountingList.length === 0
+				this.isEmpty = this.signVoucherList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
 					uni.hideLoading()
 				})
-		},
-		handleClickVoucherRecord(item) {
-			uni.navigateTo({
-				url: '/another-tf/another-user/voucher/voucher-record-detail',
-				success: () => {
-					setTimeout(() => {
-						uni.$emit('sendVoucherRecordDetailMsg', { voucherRecordData: item, fromOrigin: 1 })
-					}, 400)
-				}
-			})
 		}
 	},
 	onReachBottom() {
-		if (this.exchangeAccountingList.length < this.exchangeAccountingTotal) {
+		if (this.signVoucherList.length < this.signVoucherTotal) {
 			++this.queryInfo.page
-			this.getExchangeAccountingLogsList(true)
+			this.getSignInHistory(true)
 		}
 	}
 }

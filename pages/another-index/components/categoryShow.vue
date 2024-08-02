@@ -38,8 +38,8 @@
 			</view>
 
 			<!-- 空状态 -->
-			<view style="padding-bottom: 45upx;">
-				<tui-no-data v-if="!loading && productList.length < 0" :fixed="false" style="margin-top: 60upx;">这里空空如也</tui-no-data>
+			<view style="padding-bottom: 45rpx;">
+				<tui-no-data v-if="!loading && productList.length < 0" :fixed="false" style="padding-top: 60rpx;">这里空空如也</tui-no-data>
 			</view>
 
 			<!-- 底部提示 -->
@@ -152,7 +152,7 @@ export default {
 
 	.product-list {
 		position: relative;
-		padding: 0 13upx;
+		padding: 0 13rpx;
 		width: 100%;
 
 		//min-height: 60vh;
@@ -162,7 +162,7 @@ export default {
 			flex-direction: row;
 
 			&.swiper {
-				height: 620upx;
+				height: 620rpx;
 			}
 		}
 
@@ -171,20 +171,20 @@ export default {
 		}
 
 		&-item-warp {
-			margin: 0 0 20upx 0;
+			margin: 0 0 20rpx 0;
 		}
 
 		&-item {
-			width: 348upx;
-			padding: 0 7upx;
+			width: 348rpx;
+			padding: 0 7rpx;
 			box-sizing: content-box;
 		}
 
 		&-img {
-			width: 348upx;
-			height: 348upx;
+			width: 348rpx;
+			height: 348rpx;
 			background-color: #d0d0d0;
-			border-radius: 10upx 10upx 0 0;
+			border-radius: 10rpx 10rpx 0 0;
 
 			.img {
 				width: 100%;
@@ -196,22 +196,22 @@ export default {
 		&-info {
 			background-color: #FFFFFF;
 			//box-shadow: 0px 0px 15px 0px rgba(52, 52, 52, 0.15);
-			border-radius: 0 0 10upx 10upx;
-			padding: 20upx;
+			border-radius: 0 0 10rpx 10rpx;
+			padding: 20rpx;
 
 			label {
 				font-weight: normal;
 			}
 
 			.product-name {
-				font-size: 28upx;
+				font-size: 28rpx;
 				color: #333;
 				display: block;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				margin-bottom: 18upx;
-				line-height: 40upx;
+				margin-bottom: 18rpx;
+				line-height: 40rpx;
 			}
 
 			.flex {
@@ -221,19 +221,19 @@ export default {
 
 			.shop-box {
 				background-color: #333333;
-				border-radius: 0upx 20upx 20upx 0upx;
-				line-height: 40upx;
+				border-radius: 0rpx 20rpx 20rpx 0rpx;
+				line-height: 40rpx;
 				display: flex;
 				align-items: center;
-				height: 40upx;
-				margin-right: 10upx;
+				height: 40rpx;
+				margin-right: 10rpx;
 				float: left;
 
 				.shop-name {
-					font-size: 20upx;
+					font-size: 20rpx;
 					color: #FFEBC4;
-					padding: 0 8upx 0 12upx;
-					line-height: 40upx;
+					padding: 0 8rpx 0 12rpx;
+					line-height: 40rpx;
 					display: inline-block;
 					float: left;
 					max-width: 170rpx;
@@ -243,14 +243,14 @@ export default {
 				}
 
 				.shop-logo {
-					border: 2upx solid #707070;
+					border: 2rpx solid #707070;
 					border-radius: 50%;
 					overflow: hidden;
 					float: right;
 
 					img {
-						width: 34upx;
-						height: 34upx;
+						width: 34rpx;
+						height: 34rpx;
 						display: block;
 					}
 				}
@@ -258,25 +258,25 @@ export default {
 
 			.buy-count {
 				color: #C5AA7B;
-				font-size: 20upx;
-				border: 2upx solid #E4E5E6;
-				line-height: 36upx;
-				padding: 0 5upx;
+				font-size: 20rpx;
+				border: 2rpx solid #E4E5E6;
+				line-height: 36rpx;
+				padding: 0 5rpx;
 			}
 
 			.price-warp {
 				display: flex;
 				align-items: baseline;
-				line-height: 56upx;
+				line-height: 56rpx;
 
 				.price {
 					color: #C83732;
-					font-size: 40upx;
-					margin-right: 20upx;
+					font-size: 40rpx;
+					margin-right: 20rpx;
 				}
 
 				.original-price {
-					font-size: 24upx;
+					font-size: 24rpx;
 					color: #ccc;
 					text-decoration: line-through;
 				}

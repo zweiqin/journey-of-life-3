@@ -1,7 +1,7 @@
 <!-- 地址列表 -->
 <template>
 	<view class="address-container">
-		<JHeader width="50" height="50" title="地址管理" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader width="50" height="50" title="地址管理" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="addressList && addressList.length" class="pad-bot-20 addAddress">
 			<view v-for="(item, index) in addressList" :key="index" class="addAddress-content flex-row-plus">
 				<view class="address-detail" @click="handleSelectAddress(item)">
@@ -20,7 +20,7 @@
 				<view style="text-align: center;">
 					<view>
 						<tui-icon
-							name="edit" :size="50" unit="upx" color="#cccccc"
+							name="edit" :size="50" unit="rpx" color="#cccccc"
 							@click="go(`/another-tf/another-serve/addAddress/index?receiveId=${item.receiveId}`)"
 						></tui-icon>
 					</view>
@@ -36,13 +36,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !addressList.length
 					? 'loading' : !isEmpty && addressList.length && (addressList.length >= addresTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">你还没有添加地址哦～</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">你还没有添加地址哦～</tui-no-data>
 		</view>
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="wxAddressNBox">
@@ -153,12 +153,12 @@ export default {
 
 	.addAddress-box {
 		position: fixed;
-		bottom: 50upx;
-		left: 30upx;
+		bottom: 50rpx;
+		left: 30rpx;
 
 		.addAddress {
-			width: 690upx;
-			height: 100upx;
+			width: 690rpx;
+			height: 100rpx;
 			color: #FFEBC4;
 			text-align: center;
 			background: #333333;
@@ -168,7 +168,7 @@ export default {
 	.wxAddressNBox {
 		width: 100%;
 		position: fixed;
-		bottom: 50upx;
+		bottom: 50rpx;
 		left: 0;
 		box-sizing: border-box;
 
@@ -231,7 +231,7 @@ export default {
 		}
 
 		.defaultAD-box {
-			width: 455upx;
+			width: 455rpx;
 		}
 	}
 }

@@ -1,9 +1,9 @@
 <template>
 	<view class="coupon-product-container">
-		<JHeader title="可用商品" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="可用商品" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="productList">
 			<view class="couponTit flex-items">
-				<tui-icon name="coupon" :size="66" unit="upx" color="#c83732" margin=" 0 15upx 0 0"></tui-icon>
+				<tui-icon name="coupon" :size="66" unit="rpx" color="#c83732" margin=" 0 15rpx 0 0"></tui-icon>
 				<text v-if="currentCoupon.discountMode === 1" class="fs24 font-color-C83732">
 					以下商品使用满{{ currentCoupon.fullMoney }}元减{{ currentCoupon.reduceMoney }}元的优惠券
 				</text>
@@ -24,13 +24,13 @@
 						<view class="productPrice font-color-C83732 fs40">￥{{ item.price }}</view>
 					</view>
 				</view>
-				<view style="padding-bottom: 45upx;">
+				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
 						:status="!isEmpty && !productList.length
 							? 'loading' : !isEmpty && productList.length && (productList.length >= productTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无可用商品～</tui-no-data>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无可用商品～</tui-no-data>
 				</view>
 			</view>
 		</view>

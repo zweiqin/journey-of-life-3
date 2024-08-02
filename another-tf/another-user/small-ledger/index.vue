@@ -27,9 +27,6 @@ export default {
 			.catch((e) => {
 				uni.hideLoading()
 			})
-	},
-
-	computed: {
 	}
 }
 </script>

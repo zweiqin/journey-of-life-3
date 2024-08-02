@@ -1,6 +1,6 @@
 <template>
 	<view class="message-center-container">
-		<JHeader title="消息中心" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="消息中心" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="messageList && messageList.length">
 			<view class="flex-items flex-sp-between fs26 topTitBox">
 				<view>
@@ -21,14 +21,14 @@
 							<view class="messageType">
 								<view v-if="item.noticeType == 1" class="messageTypeL">
 									<view class="iconBox">
-										<tui-icon name="notice" :size="50" unit="upx" color="#ffffff"></tui-icon>
+										<tui-icon name="notice" :size="50" unit="rpx" color="#ffffff"></tui-icon>
 										<view v-if="item.ifRead === 0" class="redBox"></view>
 									</view>
 									<span>订单消息</span>
 								</view>
 								<view v-else class="messageTypeL">
 									<view class="iconBox">
-										<tui-icon name="notice" :size="50" unit="upx" color="#ffffff"></tui-icon>
+										<tui-icon name="notice" :size="50" unit="rpx" color="#ffffff"></tui-icon>
 									</view>
 									<span>系统公告</span>
 								</view>
@@ -42,13 +42,13 @@
 				</template>
 			</tui-swipe-action>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !messageList.length
 					? 'loading' : !isEmpty && messageList.length && (messageList.length >= messageTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无消息</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无消息</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -221,7 +221,7 @@ export default {
 	}
 
 	.swipe-list-item {
-		margin-bottom: 20upx !important;
+		margin-bottom: 20rpx !important;
 	}
 
 	.messageItem {
@@ -231,7 +231,7 @@ export default {
 
 		.messageBox {
 			.messageType {
-				padding: 30upx;
+				padding: 30rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -244,17 +244,17 @@ export default {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					margin-right: 20upx;
+					margin-right: 20rpx;
 					position: relative;
 
 					.redBox {
-						width: 20upx;
-						height: 20upx;
+						width: 20rpx;
+						height: 20rpx;
 						background-color: red;
 						border-radius: 50%;
 						position: absolute;
-						right: 0upx;
-						top: 0upx;
+						right: 0rpx;
+						top: 0rpx;
 					}
 				}
 
@@ -263,34 +263,34 @@ export default {
 					align-items: center;
 
 					span {
-						font-size: 32upx;
+						font-size: 32rpx;
 						color: #333333;
 					}
 				}
 
 				.messageTypeR {
 					color: #CCCCCC;
-					font-size: 24upx;
+					font-size: 24rpx;
 				}
 			}
 
 			.messageInfo {
-				width: 670upx;
+				width: 670rpx;
 				display: block;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				margin: 20upx 40upx 20upx;
+				margin: 20rpx 40rpx 20rpx;
 
 				img {
 					width: 100%;
-					margin-bottom: 25upx;
+					margin-bottom: 25rpx;
 				}
 
 				p {
-					padding: 0 40upx;
+					padding: 0 40rpx;
 					color: #999999;
-					font-size: 28upx;
+					font-size: 28rpx;
 				}
 			}
 		}

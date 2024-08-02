@@ -73,7 +73,7 @@ export default {
       shopId: "",
       queryData: {
         ifNew: 1,
-        type: "",
+        type: 2,
         volume: "",
         page: 1,
         pageSize: 10,

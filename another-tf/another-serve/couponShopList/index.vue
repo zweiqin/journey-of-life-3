@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-shop-list-container">
-		<JHeader title="优惠券可用商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="优惠券可用商品列表" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 
 		<!-- 商品列表 -->
 		<view>
@@ -23,7 +23,7 @@
 						</view>
 						<view class="flex-display flex-sp-between flex-row mar-top-10 flex-items">
 							<label class="fs22 font-color-999">{{ item.shopName }}</label>
-							<tui-icon name="arrowright" :size="24" unit="upx" color="#9f8a66" margin="0"></tui-icon>
+							<tui-icon name="arrowright" :size="24" unit="rpx" color="#9f8a66" margin="0"></tui-icon>
 						</view>
 					</view>
 				</view>
@@ -50,7 +50,7 @@
 							</view>
 							<view class="flex-display flex-sp-between flex-row mar-top-10 flex-items">
 								<label class="fs22 font-color-999">{{ item.shopName }}</label>
-								<tui-icon name="arrowright" :size="24" unit="upx" color="#9f8a66" margin="0"></tui-icon>
+								<tui-icon name="arrowright" :size="24" unit="rpx" color="#9f8a66" margin="0"></tui-icon>
 							</view>
 						</view>
 					</view>
@@ -58,13 +58,13 @@
 			</view>
 		</view>
 
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !couponProductList.length
 					? 'loading' : !isEmpty && couponProductList.length && (couponProductList.length >= couponProductsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">无可用商品</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">无可用商品</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -121,7 +121,7 @@ export default {
 
 <style lang="less" scoped>
 input {
-	padding-left: 80upx;
+	padding-left: 80rpx;
 }
 
 .coupon-shop-list-container {
@@ -129,20 +129,20 @@ input {
 	box-sizing: border-box;
 
 	.goodsDetails-box {
-		width: 690upx;
+		width: 690rpx;
 
 		.goodsDetails {
-			border-bottom: 1upx solid #EDEDED;
-			padding-bottom: 30upx;
+			border-bottom: 1rpx solid #EDEDED;
+			padding-bottom: 30rpx;
 
 			.goodsName-box {
-				width: 389upx;
-				height: 85upx;
+				width: 389rpx;
+				height: 85rpx;
 			}
 
 			.goodsImg {
-				width: 260upx;
-				height: 260upx;
+				width: 260rpx;
+				height: 260rpx;
 			}
 		}
 
@@ -150,21 +150,21 @@ input {
 
 	.spikeList {
 		padding-top: 30rpx;
-		border-bottom: 1upx solid #EDEDED;
+		border-bottom: 1rpx solid #EDEDED;
 
 		.listItem {
 			display: flex;
-			border-bottom: 1upx solid #EEEEEE;
-			margin-bottom: 30upx;
+			border-bottom: 1rpx solid #EEEEEE;
+			margin-bottom: 30rpx;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
 			.itemBox {
-				width: 260upx;
-				height: 260upx;
-				margin-right: 30upx;
+				width: 260rpx;
+				height: 260rpx;
+				margin-right: 30rpx;
 
 				image {
 					width: 100%;
@@ -176,10 +176,10 @@ input {
 				flex: 1;
 
 				p {
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: #333333;
-					line-height: 40upx;
-					margin-bottom: 20upx;
+					line-height: 40rpx;
+					margin-bottom: 20rpx;
 					text-overflow: -o-ellipsis-lastline;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -191,7 +191,7 @@ input {
 
 				.number {
 					color: #999999;
-					font-size: 26upx;
+					font-size: 26rpx;
 				}
 			}
 		}

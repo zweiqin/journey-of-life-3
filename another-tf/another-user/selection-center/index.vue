@@ -87,7 +87,7 @@
 					? 'loading' : !selectionGoodsInfo.isEmpty && selectionGoodsInfo.data.length && (selectionGoodsInfo.data.length >= selectionGoodsInfo.listTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="selectionGoodsInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="selectionGoodsInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 
 		<tui-picker

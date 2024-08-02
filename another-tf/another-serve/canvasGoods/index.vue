@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="商品列表" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="商品列表" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="goodsList.length > 0" class="listBox">
 			<view
 				v-for="(item, index) in goodsList" :key="index" class="goodsDetails-box flex-display flex-column"
@@ -21,7 +21,7 @@
 								<label class="fs30 font-color-C83732">¥</label>
 								<label class="fs36 font-color-C83732 mar-left-10">{{ item.price }}</label>
 							</view>
-							<view style="margin-left: 20upx; color: #CCCCCC;text-decoration:line-through">
+							<view style="margin-left: 20rpx; color: #CCCCCC;text-decoration:line-through">
 								<label class="fs24">¥{{ item.originalPrice }}</label>
 							</view>
 						</view>
@@ -58,13 +58,13 @@
 		</view>
 
 		<!-- 搜索为空 -->
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !goodsList.length
 					? 'loading' : !isEmpty && goodsList.length && (goodsList.length >= goodsTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -150,7 +150,7 @@ export default {
 
 <style lang="less" scoped>
 input {
-	padding-left: 80upx;
+	padding-left: 80rpx;
 }
 
 .container {
@@ -164,14 +164,14 @@ input {
 		box-sizing: border-box;
 
 		.goodsDetails {
-			border-bottom: 1upx solid #EDEDED;
+			border-bottom: 1rpx solid #EDEDED;
 			padding-top: 30rpx;
-			padding-bottom: 30upx;
+			padding-bottom: 30rpx;
 			position: relative;
 
 			.goodsName-box {
-				width: 389upx;
-				height: 85upx;
+				width: 389rpx;
+				height: 85rpx;
 			}
 
 			.shopName {
@@ -186,8 +186,8 @@ input {
 			}
 
 			.goodsImg {
-				width: 260upx;
-				height: 260upx;
+				width: 260rpx;
+				height: 260rpx;
 			}
 		}
 
@@ -195,22 +195,22 @@ input {
 
 	.spikeList {
 		padding-top: 30rpx;
-		border-bottom: 1upx solid #EDEDED;
+		border-bottom: 1rpx solid #EDEDED;
 
 		.listItem {
 			display: flex;
-			// padding-bottom: 10upx;
-			border-bottom: 1upx solid #EEEEEE;
-			margin-bottom: 30upx;
+			// padding-bottom: 10rpx;
+			border-bottom: 1rpx solid #EEEEEE;
+			margin-bottom: 30rpx;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
 			.itemBox {
-				width: 260upx;
-				height: 260upx;
-				margin-right: 30upx;
+				width: 260rpx;
+				height: 260rpx;
+				margin-right: 30rpx;
 
 				img {
 					width: 100%;
@@ -222,10 +222,10 @@ input {
 				flex: 1;
 
 				p {
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: #333333;
-					line-height: 40upx;
-					margin-bottom: 20upx;
+					line-height: 40rpx;
+					margin-bottom: 20rpx;
 					text-overflow: -o-ellipsis-lastline;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -237,7 +237,7 @@ input {
 
 				.number {
 					color: #999999;
-					font-size: 26upx;
+					font-size: 26rpx;
 					display: flex;
 					align-items: center;
 

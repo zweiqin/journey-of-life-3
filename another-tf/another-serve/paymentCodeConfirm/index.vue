@@ -74,13 +74,6 @@
 				@close="isShowPlatformCoupon = false" @select="handlePlatformCouponItemSelect"
 			>
 			</ATFPlatformCoupon>
-			<VoucherUse
-				v-if="settlement.userVoucherDeductLimit && settlement.voucherTotalAll" ref="refVoucherUse"
-				padding="10rpx 20rpx 28rpx" :voucher-list="settlement.voucherList"
-				:voucher-num="settlement.userVoucherDeductLimit"
-				@choose="handleChooseVoucher({ settlement, e: $event, selectedPlatformCoupon, selectedShopCouponList, selectIntegral, voucherObj })"
-			>
-			</VoucherUse>
 			<view style="padding: 0 20rpx 18rpx;background-color: #ffffff;border-radius: 0 0 24rpx 24rpx;">
 				<view
 					style="display: flex;align-items: center;justify-content: space-between;padding: 18rpx 0 0;font-weight: bold;border-top: 2rpx solid #D8D8D8;"
@@ -91,11 +84,11 @@
 						<text v-else>￥0.00</text>
 					</text>
 				</view>
-				<view v-if="voucherObj.voucherId" style="display: flex;justify-content: flex-end;">
+				<view v-if="payInfo.paymentMode === 11" style="display: flex;justify-content: flex-end;">
 					<view
 						style="width: fit-content;margin: 18rpx 0 0;padding: 4rpx 12rpx;font-size: 26rpx;color: #ffffff;background-color: #ef530e;border-radius: 14rpx;"
 					>
-						代金券已抵扣￥{{ voucherObj.voucherTotalAll }}
+						代金券支付可抵扣￥{{ settlement.voucherTotalAll }}
 					</view>
 				</view>
 				<view
@@ -126,12 +119,13 @@
 				<CashierList
 					padding="8rpx 26rpx 6rpx" radius="24rpx" show :price-pay="totalPrice"
 					missing-price-text="请输入金额"
+					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
-					@change="(e) => payInfo = e"
+					@change="handlePaymentSelect"
 				>
 					<template #header="obj">
 						<view v-if="obj.paymentList && (obj.paymentList.length > 1)" style="padding-top: 20rpx;">
@@ -149,7 +143,7 @@
 				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
 				:size="28"
 				:disabled="settlement.shops.some(i => i.receiveNotMatch)"
-				@click="resolveSubmitOrder({ isPayImmediately: !!otherInfo.orderId, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, voucherObj, otherInfo, payInfo, hasPrice: true, shamPriceText: '请输入金额' })"
+				@click="resolveSubmitOrder({ isPayImmediately: !!otherInfo.orderId, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, otherInfo, payInfo, hasPrice: true, shamPriceText: '请输入金额' })"
 			>
 				付款
 			</tui-button>
@@ -171,8 +165,8 @@
 </template>
 
 <script>
-import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherSelect, resolveSubmitOrder } from '../../../utils'
-import { getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
+import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherData, resolveVoucherPaySelect, resolveSubmitOrder } from '../../../utils'
+import { getShopIdCodeRelationshipCodeApi, bindPlatformRelationshipCodeApi, getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
 
 export default {
@@ -200,7 +194,10 @@ export default {
 			shopPriceIndex: 0,
 			priceInputValue: {},
 			settlement: {
+				userVoucherDeductLimit: 0,
+				voucherTotalAll: 0,
 				voucherList: [],
+				coupons: [],
 				shops: []
 			},
 			fromType: 0,
@@ -208,7 +205,7 @@ export default {
 			skuItemMsgList: [],
 			totalPrice: 0, // 合计
 			userAddressInfo: { receiveId: '' },
-			payInfo: {}, // 支付相关
+			payInfo: { paymentMode: '', huabeiPeriod: -1 }, // 支付相关
 			// 拼团相关
 			skuItemInfo: {},
 			// 店铺优惠券相关
@@ -216,11 +213,7 @@ export default {
 			shopCouponsList: [],
 			selectedShopCouponList: [], // 已选择店铺优惠券
 			// 代金券相关
-			voucherObj: {
-				voucherTotalAll: 0,
-				isVoucher: false,
-				voucherId: 0
-			},
+			voucherObj: { isCanVoucher: false, noVoucherText: '无法使用代金券支付' },
 			// 平台优惠券相关
 			isShowPlatformCoupon: false,
 			shopIndex: 0, // 选中的店铺使用店铺优惠券
@@ -303,6 +296,13 @@ export default {
 		} else {
 			this.fromType = options.type || ''
 			this.brandId = options.brandId || ''
+			getShopIdCodeRelationshipCodeApi({ shopId: Number(options.shopId) })
+				.then((result) => {
+					bindPlatformRelationshipCodeApi({ code: result.data.invitationCode })
+						.then((res) => {
+							this.$showToast('绑定成功', 'success')
+						})
+				})
 			uni.showLoading()
 			try {
 				// const result = await getShopIsNotDeactivateApi({ shopId: options.shopId })
@@ -430,12 +430,9 @@ export default {
 				}
 			})
 			this.selectIntegral = false
-			this.voucherObj = {
-				voucherTotalAll: 0,
-				isVoucher: false,
-				voucherId: 0
-			}
-			this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
+			const voucherDataObj = resolveVoucherData({ settlement: this.settlement, voucherObj: this.voucherObj })
+			this.voucherObj = voucherDataObj.voucherObj
+			this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 		},
 		handleConfirmKeyboard(value, shopIndex) {
 			if (this.priceInputValue[this.settlement.shops[this.shopPriceIndex].shopId] === '0') {
@@ -462,8 +459,7 @@ export default {
 						skuItemMsgList: this.skuItemMsgList,
 						isShowShopCoupons: this.isShowShopCoupons,
 						selectedShopCouponList: this.selectedShopCouponList,
-						selectedPlatformCoupon: this.selectedPlatformCoupon,
-						voucherObj: this.voucherObj
+						selectedPlatformCoupon: this.selectedPlatformCoupon
 					})
 				} else if (uni.getStorageSync(T_SKU_ITEM_INFO)) { // 3拼团商品立即购买
 					this.skuItemInfo = uni.getStorageSync(T_SKU_ITEM_INFO)
@@ -476,8 +472,7 @@ export default {
 						skuItemMsgList: this.skuItemMsgList,
 						isShowShopCoupons: this.isShowShopCoupons,
 						selectedShopCouponList: this.selectedShopCouponList,
-						selectedPlatformCoupon: this.selectedPlatformCoupon,
-						voucherObj: this.voucherObj
+						selectedPlatformCoupon: this.selectedPlatformCoupon
 					})
 				}
 				this.otherInfo.isCanPay = true
@@ -500,11 +495,12 @@ export default {
 		changeIntegral() {
 			const IntegralSelectObj = resolveIntegralSelect({
 				vm: this,
+				settlement: this.settlement,
 				selectIntegral: this.selectIntegral,
 				totalPrice: this.totalPrice,
 				integralNum: this.integralNum,
 				integralRatio: this.integralRatio,
-				voucherObj: this.voucherObj
+				payInfo: this.payInfo
 			})
 			this.selectIntegral = IntegralSelectObj.selectIntegral
 			this.totalPrice = IntegralSelectObj.totalPrice
@@ -512,7 +508,7 @@ export default {
 
 		// 展示平台端优惠券
 		handleShowPlatformCoupon() {
-			if (this.voucherObj.voucherId) return this.$showToast('已选择代金券，无法使用其它优惠')
+			if (this.payInfo.paymentMode === 11) return this.$showToast('已选择代金券支付，无法使用其它优惠')
 			if (this.settlement.coupons && this.settlement.coupons.length) {
 				if (this.selectedShopCouponList.length) this.$showToast('不可叠加已选择的店铺券')
 				this.isShowPlatformCoupon = true
@@ -524,11 +520,11 @@ export default {
 			this.settlement = platformCouponItemSelectObj.settlement
 			this.isShowPlatformCoupon = platformCouponItemSelectObj.isShowPlatformCoupon
 			this.selectedPlatformCoupon = platformCouponItemSelectObj.selectedPlatformCoupon
-			if (platformCouponItemSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
+			if (platformCouponItemSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 		},
 		// 显示店铺优惠券
 		handleShowShopCoupons(item, sIndex) {
-			if (this.voucherObj.voucherId) return this.$showToast('已选择代金券，无法使用其它优惠')
+			if (this.payInfo.paymentMode === 11) return this.$showToast('已选择代金券支付，无法使用其它优惠')
 			if (item.shopCoupons.length) {
 				this.shopIndex = sIndex
 				this.shopCouponsList = item.shopCoupons
@@ -541,26 +537,27 @@ export default {
 			this.settlement = shopCouponItemSelectObj.settlement
 			this.isShowShopCoupons = shopCouponItemSelectObj.isShowShopCoupons
 			this.selectedShopCouponList = shopCouponItemSelectObj.selectedShopCouponList
-			if (shopCouponItemSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
+			if (shopCouponItemSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 		},
 
-		// 选择代金券
-		handleChooseVoucher(obj) {
-			const voucherSelectObj = resolveVoucherSelect({
-				settlement: obj.settlement,
-				voucherId: obj.e.id,
-				selectedPlatformCoupon: obj.selectedPlatformCoupon,
-				selectedShopCouponList: obj.selectedShopCouponList,
-				selectIntegral: obj.selectIntegral,
-				voucherObj: obj.voucherObj
-			})
-			this.settlement = voucherSelectObj.settlement
-			this.selectedShopCouponList = voucherSelectObj.selectedShopCouponList
-			this.selectedPlatformCoupon = voucherSelectObj.selectedPlatformCoupon
-			this.selectIntegral = voucherSelectObj.selectIntegral
-			this.voucherObj = voucherSelectObj.voucherObj
-			if (voucherSelectObj.isSuccess) this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral, voucherObj: this.voucherObj })
-			if (voucherSelectObj.isFail) this.$refs.refVoucherUse.handleReset()
+		// 选择支付
+		handlePaymentSelect(e) {
+			// this.payInfo = e // 该方式结合在视图层展示payInfo信息会出现死循环
+			this.payInfo.paymentMode = e.paymentMode
+			this.payInfo.huabeiPeriod = e.huabeiPeriod
+			if (this.payInfo.paymentMode === 11) {
+				const voucherPaySelectObj = resolveVoucherPaySelect({
+					settlement: this.settlement,
+					selectedPlatformCoupon: this.selectedPlatformCoupon,
+					selectedShopCouponList: this.selectedShopCouponList,
+					selectIntegral: this.selectIntegral
+				})
+				this.settlement = voucherPaySelectObj.settlement
+				this.selectedShopCouponList = voucherPaySelectObj.selectedShopCouponList
+				this.selectedPlatformCoupon = voucherPaySelectObj.selectedPlatformCoupon
+				this.selectIntegral = voucherPaySelectObj.selectIntegral
+				this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
+			}
 		},
 
 		getOrderTotal(obj) {
@@ -568,8 +565,7 @@ export default {
 				settlement: obj.settlement,
 				selectedPlatformCoupon: obj.selectedPlatformCoupon,
 				integralRatio: obj.integralRatio,
-				selectIntegral: obj.selectIntegral,
-				voucherObj: obj.voucherObj
+				selectIntegral: obj.selectIntegral
 			})
 			this.integralNum = orderTotalObj.integralNum
 			this.selectIntegral = orderTotalObj.selectIntegral

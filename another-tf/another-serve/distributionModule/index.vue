@@ -1,6 +1,6 @@
 <template>
 	<view class="distribution-module-container">
-		<JHeader title="分销中心" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="分销中心" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view v-if="storeDataList.length > 0" class="inStoreBackImg flex-items-plus">
 			<label>选择进入的店铺</label>
 		</view>
@@ -29,13 +29,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !storeDataList.length
 					? 'loading' : !isEmpty && storeDataList.length && (storeDataList.length >= storeDataTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">这里空空如也~</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">这里空空如也~</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -93,19 +93,19 @@ export default {
 
 	.inStoreBackImg {
 		width: 100%;
-		height: 100upx;
+		height: 100rpx;
 		background: #333333;
 		color: #FFFFFF;
 	}
 
 	.store-box {
-		width: 690upx;
+		width: 690rpx;
 		background: #FFFFFF;
 		padding: 22rpx;
 
 		.storeLogoImg {
-			width: 140upx;
-			height: 140upx;
+			width: 140rpx;
+			height: 140rpx;
 		}
 
 		.income {

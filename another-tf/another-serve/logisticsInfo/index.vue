@@ -1,13 +1,13 @@
 <!-- 物流详情 -->
 <template>
 	<view>
-		<JHeader title="订单物流信息" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view v-if="steps.length > 0" class="content" style="padding-bottom:100upx;">
+		<JHeader title="订单物流信息" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<view v-if="steps.length > 0" class="content" style="padding-bottom:100rpx;">
 			<view class="order-details-information mt20">
 				<view class="order-title-box">
 					<view class="order-title padd-l">
 						<text class="line"></text>
-						<text style="margin-left: 10upx;">物流信息</text>
+						<text style="margin-left: 10rpx;">物流信息</text>
 					</view>
 				</view>
 			</view>
@@ -15,8 +15,8 @@
 				<tui-steps direction="column" :items="steps" spacing="180rpx" :active-steps="0"></tui-steps>
 			</view>
 		</view>
-		<view v-else style="padding-bottom: 45upx;">
-			<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有物流信息哦～</tui-no-data>
+		<view v-else style="padding-bottom: 45rpx;">
+			<tui-no-data :fixed="false" style="padding-top: 60rpx;">你还没有物流信息哦～</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -60,11 +60,11 @@ export default {
 
 <style lang="less" scoped>
 .emptyOrder-box {
-	margin-top: 70upx;
+	margin-top: 70rpx;
 
 	.emptyOrder-img {
-		width: 113upx;
-		height: 98upx;
+		width: 113rpx;
+		height: 98rpx;
 	}
 }
 
@@ -73,11 +73,11 @@ page {
 }
 
 .logistics {
-	padding: 20upx 20upx;
+	padding: 20rpx 20rpx;
 }
 
 .content {
-	padding: 0 0 120upx 0;
+	padding: 0 0 120rpx 0;
 }
 
 .order-details-information {
@@ -86,13 +86,13 @@ page {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 98upx;
+	height: 98rpx;
 
 }
 
 .order-details-information .order-title {
-	font-size: 30upx;
-	margin-left: 30upx;
+	font-size: 30rpx;
+	margin-left: 30rpx;
 	color: #333;
 	font-weight: 500;
 	display: flex;
@@ -101,13 +101,13 @@ page {
 }
 
 .order-details-information .order-title .line {
-	width: 10upx;
-	height: 30upx;
+	width: 10rpx;
+	height: 30rpx;
 	background: #ff7911;
-	margin-right: 10upx;
+	margin-right: 10rpx;
 }
 
 .mt20 {
-	margin-top: 20upx;
+	margin-top: 20rpx;
 }
 </style>

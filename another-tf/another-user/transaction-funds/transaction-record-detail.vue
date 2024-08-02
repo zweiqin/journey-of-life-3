@@ -39,9 +39,9 @@
 						<text v-else>--</text>
 					</view>
 					<view style="margin-top: 32rpx;font-size: 42rpx;">
-						{{ [1, 4, 5].includes(transactionRecordData.targetType) ? '+' : [2,
-							3].includes(transactionRecordData.targetType) ? '-' : '？' }}{{
-								Number.parseFloat(Math.abs(transactionRecordData.fee) || 0).toFixed(2) }}元
+						{{ [1, 4].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType)) ? '+'
+							: [ 2 ].includes(transactionRecordData.targetType) || ([ 5 ].includes(transactionRecordData.targetType) && [1, 2, 3, 5].includes(transactionRecordData.actionType)) || ([ 3 ].includes(transactionRecordData.targetType) && [ 4 ].includes(transactionRecordData.actionType)) ? '-'
+								: '？' }}{{ Number.parseFloat(Math.abs(transactionRecordData.fee) || 0).toFixed(2) }}元
 					</view>
 				</view>
 				<view style="margin-top: 78rpx;font-size: 28rpx;">

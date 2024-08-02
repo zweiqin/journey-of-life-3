@@ -77,7 +77,7 @@
 						? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
 				>
 				</LoadingMore>
-				<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无签到记录~</tui-no-data>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无签到记录~</tui-no-data>
 			</view>
 		</view>
 	</view>

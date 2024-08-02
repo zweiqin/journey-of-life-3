@@ -16,7 +16,7 @@
     </view>
 
 		<view v-if="!siteList.length">
-			<tui-no-data :fixed="false" style="margin-top: 100upx;">还没有地址，快去添加吧~</tui-no-data>
+			<tui-no-data :fixed="false" style="padding-top: 100rpx;">还没有地址，快去添加吧~</tui-no-data>
 		</view>
     <view v-else class="site-detail" v-for="(item, id) in siteList" :key="id">
       <view class="site-detail-frame">
@@ -201,7 +201,7 @@ export default {
 @import "../../style/var.less";
 
 .site {
-  // padding-bottom: 120upx;
+  // padding-bottom: 120rpx;
   box-sizing: border-box;
   background-color: #f6f6f6;
   width: 100vw;
@@ -211,9 +211,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 36upx 36upx 36upx 40upx;
-    // margin-top: 74upx;
-    // margin-bottom: 18upx;
+    padding: 36rpx 36rpx 36rpx 40rpx;
+    // margin-top: 74rpx;
+    // margin-bottom: 18rpx;
   }
 
   .title-left-view {
@@ -226,44 +226,44 @@ export default {
   }
 
   .return {
-    width: 24upx;
-    height: 48upx;
+    width: 24rpx;
+    height: 48rpx;
   }
 
   .manage {
     font-size: @f16;
-    // margin-right: 54upx;
+    // margin-right: 54rpx;
   }
 
   .back {
     width: @hw24;
     height: @hw24;
-    margin-left: 48upx;
-    margin-right: 50upx;
+    margin-left: 48rpx;
+    margin-right: 50rpx;
   }
 
   .site-detail-choseall {
   }
 
   .site-detail {
-    margin-left: 20upx;
-    margin-right: 20upx;
-    margin-bottom: 20upx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    margin-bottom: 20rpx;
 
     .site-detail-frame {
       // width: 95%;
-      border-radius: 24upx;
+      border-radius: 24rpx;
       background: #ffffff;
       box-sizing: border-box;
       border: 0.5px solid #ececec;
       margin: 0 auto;
-      padding: 32upx;
+      padding: 32rpx;
     }
 
     .site-default-img {
-      width: 34upx;
-      height: 34upx;
-      margin-right: 18upx;
+      width: 34rpx;
+      height: 34rpx;
+      margin-right: 18rpx;
     }
 
     .site-detail-fram-text {
@@ -271,57 +271,57 @@ export default {
 
     .site-detail-top {
       display: flex;
-      margin-bottom: 6upx;
+      margin-bottom: 6rpx;
       align-items: center;
     }
 
     .site-detail-icon {
-      width: 32upx;
-      height: 41upx;
+      width: 32rpx;
+      height: 41rpx;
     }
 
     .site-detail-pca {
       display: flex;
       font-size: @f14;
-      margin-bottom: 3upx;
+      margin-bottom: 3rpx;
       justify-content: space-between;
     }
 
     .detail-site {
       // font-size: @f14;
-      font-size: 28upx;
+      font-size: 28rpx;
       font-weight: 500;
-      margin: 20upx 0;
+      margin: 20rpx 0;
       color: #141000;
     }
 
     .site-detail-name {
       font-size: @f16;
-      margin-left: 22upx;
-      margin-right: 14upx;
+      margin-left: 22rpx;
+      margin-right: 14rpx;
       color: #141000;
     }
 
     .site-detail-phone {
-      font-size: 32upx;
+      font-size: 32rpx;
       // font-weight: 350;
       color: #141000;
     }
 
     .default-site {
-      margin-left: 42upx;
-      border-radius: 20upx;
+      margin-left: 42rpx;
+      border-radius: 20rpx;
       box-sizing: border-box;
       border: 0.5px solid #ffcb05;
-      padding: 0 20upx;
+      padding: 0 20rpx;
       color: #ffcb05;
-      font-size: 24upx;
+      font-size: 24rpx;
       font-weight: 350;
     }
 
     .compile {
-      height: 32upx;
-      height: 32upx;
+      height: 32rpx;
+      height: 32rpx;
     }
 
     .site-detail-pca1 {
@@ -329,36 +329,36 @@ export default {
     }
 
     .province {
-      margin-right: 10upx;
+      margin-right: 10rpx;
     }
 
     .city {
-      margin-right: 10upx;
+      margin-right: 10rpx;
     }
 
     .area {
-      margin-right: 10upx;
+      margin-right: 10rpx;
     }
   }
 
   .site-bottom {
     // width: 95%;
-    height: 88upx;
+    height: 88rpx;
     // margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 100upx;
+    border-radius: 100rpx;
     background: #ffcb05;
     color: white;
-    font-size: 32upx;
+    font-size: 32rpx;
     font-weight: 500;
-    margin: 0 32upx 16upx 32upx;
+    margin: 0 32rpx 16rpx 32rpx;
   }
 
   .site-detail-boundary {
-    margin-top: 14upx;
-    margin-bottom: 26upx;
+    margin-top: 14rpx;
+    margin-bottom: 26rpx;
     border: 0.5px solid #d8d8d8;
   }
 
@@ -366,15 +366,15 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 26upx;
+    margin-top: 26rpx;
 
     .site-default-text {
-      font-size: 20upx;
+      font-size: 20rpx;
     }
 
     .site-delete {
-      width: 33upx;
-      height: 37upx;
+      width: 33rpx;
+      height: 37rpx;
     }
   }
 
@@ -383,15 +383,15 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    // height: 100upx;
+    // height: 100rpx;
     // background-color: #fff;
-    // padding-top: 10upx;
+    // padding-top: 10rpx;
     box-sizing: border-box;
   }
 
   .choose-address {
     color: #fc7037;
-    padding: 10upx 20upx;
+    padding: 10rpx 20rpx;
     color: #fff;
     border-radius: 100px;
     background-color: #fc7037;

@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-container">
-		<JHeader title="我的卡券" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="我的卡券" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="list">
 			<view v-for="(item, index) in couponDataList" v-if="item.state === 0" :key="index" class="item">
 				<view class="info-box">
@@ -15,10 +15,10 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore :status="isLoading ? 'loading' : ''"></LoadingMore>
 			<view v-if="!isLoading && !couponDataList.length">
-				<tui-no-data :fixed="false" style="padding-top: 60upx;">你还没有优惠券哦～</tui-no-data>
+				<tui-no-data :fixed="false" style="padding-top: 60rpx;">你还没有优惠券哦～</tui-no-data>
 			</view>
 		</view>
 	</view>

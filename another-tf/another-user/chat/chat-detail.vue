@@ -37,20 +37,20 @@
 										<view
 											v-if="item.message.content.customerServiceList && item.message.content.customerServiceList.length"
 										>
-											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
+											<view style="padding: 20rpx;color: #2d73de;text-align: center;border-bottom: 4rpx solid #2d73de;">
 												客服列表
 											</view>
 											<view>
 												<view
 													v-for="(part, count) in item.message.content.customerServiceList" :key="count"
-													style="padding: 8upx;color: #4d89ff;" @click="handleClickService(part)"
+													style="padding: 8rpx;color: #4d89ff;" @click="handleClickService(part)"
 												>
 													{{ `${count + 1}、${part.name}` }}
 												</view>
 											</view>
 										</view>
-										<view v-else style="padding-bottom: 45upx;">
-											<tui-no-data :fixed="false" style="padding-top: 60upx;">暂无客服~</tui-no-data>
+										<view v-else style="padding-bottom: 45rpx;">
+											<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂无客服~</tui-no-data>
 										</view>
 									</view>
 								</view>
@@ -64,13 +64,13 @@
 									<view class="words">
 										<view>{{ item.message.content.content }}</view>
 										<view v-if="item.message.content.questionList && item.message.content.questionList.length">
-											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
+											<view style="padding: 20rpx;color: #2d73de;text-align: center;border-bottom: 4rpx solid #2d73de;">
 												热门问题
 											</view>
 											<view>
 												<view
 													v-for="(part, count) in item.message.content.questionList" :key="count"
-													style="padding: 8upx;color: #4d89ff;" @click="handleClickQuestion(part)"
+													style="padding: 8rpx;color: #4d89ff;" @click="handleClickQuestion(part)"
 												>
 													{{ `${count + 1}、${part.content}` }}
 												</view>
@@ -87,24 +87,24 @@
 								<view v-else class="kefu-wrapper">
 									<view class="words">
 										<view v-if="item.message.content && item.message.content.length">
-											<view v-for="(section, num) in item.message.content" :key="num" style="margin-bottom: 10upx;">
+											<view v-for="(section, num) in item.message.content" :key="num" style="margin-bottom: 10rpx;">
 												<view>{{ section.content || '无答案内容' }}</view>
-												<view v-if="section.link" style="margin-top: 20upx;">
+												<view v-if="section.link" style="margin-top: 20rpx;">
 													<text>关联链接：{{ section.link }}</text>
-													<text style="margin-left: 28upx;color: #ef5613;" @click="$copy(section.link)">复制</text>
+													<text style="margin-left: 28rpx;color: #ef5613;" @click="$copy(section.link)">复制</text>
 												</view>
-												<view v-if="section.picUrl" style="margin-top: 20upx;text-align: center;">
+												<view v-if="section.picUrl" style="margin-top: 20rpx;text-align: center;">
 													<TuanImage
-														:width="192" :height="192" radius="10upx"
+														:width="192" :height="192" radius="10rpx"
 														:src="common.seamingImgUrl(section.picture)"
 													></TuanImage>
 												</view>
-												<view v-if="section.problemList && section.problemList.length" style="margin-top: 18upx;">
+												<view v-if="section.problemList && section.problemList.length" style="margin-top: 18rpx;">
 													<view>您可以直接点击以下问题直接咨询</view>
 													<view>
 														<view
 															v-for="(part, count) in section.problemList" :key="count"
-															style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
+															style="display: flex;justify-content: space-between;align-items: center;padding: 4rpx;border-top: 2rpx solid #f0efef;"
 															@click="handleClickQuestion(part)"
 														>
 															<view>{{ `${count + 1}、${part.content}` }}</view>
@@ -116,8 +116,8 @@
 												</view>
 											</view>
 										</view>
-										<view v-else style="padding-bottom: 45upx;">
-											<tui-no-data :fixed="false" style="padding-top: 60upx;">无答案内容~</tui-no-data>
+										<view v-else style="padding-bottom: 45rpx;">
+											<tui-no-data :fixed="false" style="padding-top: 60rpx;">无答案内容~</tui-no-data>
 										</view>
 									</view>
 								</view>
@@ -131,10 +131,10 @@
 									<view class="words">
 										<view v-if="item.message.content && item.message.content.length">
 											<view>您是不是想问（可以点击以下问题咨询）：</view>
-											<view style="margin-top: 16upx;">
+											<view style="margin-top: 16rpx;">
 												<view
 													v-for="(part, count) in item.message.content" :key="part.id"
-													style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
+													style="display: flex;justify-content: space-between;align-items: center;padding: 4rpx;border-top: 2rpx solid #f0efef;"
 													@click="handleClickQuestion(part)"
 												>
 													<view>{{ `${count + 1}、${part.name}` }}</view>
@@ -162,7 +162,7 @@
 								<view v-if="item.message.fromUser.id === userInfo.buyerUserId" class="my-wrapper">
 									<view class="image">
 										<image
-											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)"
+											style="width: 350rpx;" class="img" :src="common.seamingImgUrl(item.message.content)"
 											mode="widthFix" @click="preview(common.seamingImgUrl(item.message.content))"
 										/>
 									</view>
@@ -170,7 +170,7 @@
 								<view v-else class="kefu-wrapper">
 									<view class="image">
 										<image
-											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)"
+											style="width: 350rpx;" class="img" :src="common.seamingImgUrl(item.message.content)"
 											mode="widthFix" @click="preview(common.seamingImgUrl(item.message.content))"
 										/>
 									</view>
@@ -258,11 +258,11 @@
 					translate-y="-110%" triangle-right="18rpx"
 					triangle-bottom="-22rpx"
 				>
-					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handleSendImg">发送图片</view>
-					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handlePopup('Order')">发送订单</view>
-					<view v-if="Number(chat)" style="padding: 16upx 10upx;" @click="handlePopup('Goods')">发送商品</view>
+					<view v-if="Number(chat)" style="padding: 16rpx 10rpx;" @click="handleSendImg">发送图片</view>
+					<view v-if="Number(chat)" style="padding: 16rpx 10rpx;" @click="handlePopup('Order')">发送订单</view>
+					<view v-if="Number(chat)" style="padding: 16rpx 10rpx;" @click="handlePopup('Goods')">发送商品</view>
 					<!-- <view
-						v-if="!Number(chat)" style="padding: 16upx 10upx;"
+						v-if="!Number(chat)" style="padding: 16rpx 10rpx;"
 						@click="handleOpenCustomerService"
 						>
 						转人工
@@ -965,7 +965,7 @@ export default {
 	.scroll-Y {
 		flex: 1;
 		height: 0;
-		padding-bottom: 144upx;
+		padding-bottom: 144rpx;
 	}
 
 	.header-container {
@@ -973,10 +973,10 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		height: 120upx;
+		height: 120rpx;
 		background-color: #fff;
-		border-radius: 0 0 48upx 48upx;
-		padding: 32upx;
+		border-radius: 0 0 48rpx 48rpx;
+		padding: 32rpx;
 		box-sizing: border-box;
 
 		// &.fixed {
@@ -992,26 +992,26 @@ export default {
 			justify-content: flex-start;
 
 			.back-icon {
-				width: 24upx;
-				height: 48upx;
+				width: 24rpx;
+				height: 48rpx;
 			}
 
 			.avatar {
-				width: 60upx;
-				height: 60upx;
+				width: 60rpx;
+				height: 60rpx;
 				border-radius: 50%;
-				margin: 0 16upx 0 32upx;
+				margin: 0 16rpx 0 32rpx;
 			}
 
 			.kefu-name {
 				color: #3a3629;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 	}
 
 	.message-wrapper {
-		padding: 32upx;
+		padding: 32rpx;
 		box-sizing: border-box;
 	}
 
@@ -1020,13 +1020,13 @@ export default {
 
 		.time-wrapper {
 			text-align: center;
-			margin: 20upx 0;
+			margin: 20rpx 0;
 
 			.time {
 				margin: 0 auto;
 				display: inline-block;
-				padding: 7upx 24upx;
-				line-height: 42upx;
+				padding: 7rpx 24rpx;
+				line-height: 42rpx;
 				background-color: #fff;
 				border-radius: 100px;
 				color: #8f8d85;
@@ -1034,11 +1034,11 @@ export default {
 		}
 
 		.words {
-			// max-width: 750upx;
-			padding: 24upx;
+			// max-width: 750rpx;
+			padding: 24rpx;
 			box-sizing: border-box;
-			font-size: 28upx;
-			line-height: 42upx;
+			font-size: 28rpx;
+			line-height: 42rpx;
 			word-break: break-all;
 			background: #fff;
 			clear: both;
@@ -1046,7 +1046,7 @@ export default {
 
 		.kefu-wrapper {
 			.words {
-				margin-right: 48upx;
+				margin-right: 48rpx;
 				float: left;
 				border-radius: 0px 24px 24px 24px;
 			}
@@ -1068,7 +1068,7 @@ export default {
 		}
 
 		.my-wrapper {
-			margin-left: 48upx;
+			margin-left: 48rpx;
 
 			.words {
 				float: right;
@@ -1099,7 +1099,7 @@ export default {
 	.op-footer {
 		position: fixed;
 		bottom: 0;
-		padding: 32upx;
+		padding: 32rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -1109,11 +1109,11 @@ export default {
 		.send-wrapper {
 			flex: 1;
 			background-color: #fff;
-			border-radius: 100upx;
-			height: 80upx;
+			border-radius: 100rpx;
+			height: 80rpx;
 			display: flex;
 			align-items: center;
-			padding: 10upx 30upx;
+			padding: 10rpx 30rpx;
 			box-sizing: border-box;
 
 		}

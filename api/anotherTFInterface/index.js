@@ -179,6 +179,9 @@ export const addPlatformRelationshipApplyApi = (data) => AnotherTFRequest('/plat
 // 查询用户Code邀请二维码
 export const getPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/getCode', data)
 
+// 商家ID查询绑定用户邀请码
+export const getShopIdCodeRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/getShopIdCode', data)
+
 // 用户绑定
 export const bindPlatformRelationshipCodeApi = (data) => AnotherTFRequest('/platformRelationshipCode/bingCode', data)
 
@@ -251,6 +254,26 @@ export const getSelectSigninHistoryApi = (data) => AnotherTFRequest('/member/sel
 
 // 签到
 export const updateMemberSignInApi = (data) => AnotherTFRequest('/member/signIn', data, 'POST')
+
+// 消费金签到
+// 查询消费金签到列表
+export const getCurrencySigninRecordListApi = (data) => AnotherTFRequest('/buyerBeeSigninRecord/selectBeeSigninRecordList', data)
+
+// 查询消费金签到明细
+export const getCurrencySigninHistoryApi = (data) => AnotherTFRequest('/buyerBeeSigninRecord/selectBeeSigninHistory', data)
+
+// 消费金签到
+export const updateCurrencySignInApi = (data) => AnotherTFRequest('/buyerBeeSigninRecord/signIn', data, 'POST')
+
+// 代金券签到
+// 查询代金券签到列表
+export const getVoucherSigninRecordListApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectVoucherSigninRecordList', data)
+
+// 查询代金券签到明细
+export const getVoucherSigninHistoryApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectVoucherSigninHistory', data)
+
+// 代金券签到
+export const updateVoucherSignInApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/signInVoucher', data, 'POST')
 
 // 积分签到
 // 积分兑换优惠券
@@ -758,6 +781,12 @@ export const updatePlatformBeeCurrencySaveBeeApi = (data) => AnotherTFRequest('/
 
 // 消费金收支明细
 export const getBeeCurrencyDistributorApi = (data) => AnotherTFRequest('/distributor/getBeeCurrency', data)
+
+// 查询消费金余额
+export const getBeeSelectAmountEntryRecordApi = (data) => AnotherTFRequest('/buyerBeeEntryRecord/beeSelectAmount', data, 'POST')
+
+// 消费金选择
+export const getBeeSelectEntryRecordApi = (data) => AnotherTFRequest('/buyerBeeEntryRecord/beeSelect', data, 'POST')
 
 // 限时折扣
 // 专区首页数据查询

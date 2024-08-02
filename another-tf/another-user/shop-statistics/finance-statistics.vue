@@ -21,9 +21,9 @@
 			<tui-tabs
 				style="width: 172rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="80" :slider-height="54"
 				:padding="289" slider-radius="8rpx" item-width="80rpx" selected-color="#ffffff"
-				bold :height="54" color="#222229"
-				slider-bg-color="#ef530e" background-color="transparent" :tabs="[{ name: '充值' }, { name: '订单' }]"
-				:current-tab="currentTab" @change="handleCurrentChange"
+				bold :height="54"
+				color="#222229" slider-bg-color="#ef530e" background-color="transparent"
+				:tabs="[{ name: '充值' }, { name: '订单' }]" :current-tab="currentTab" @change="handleCurrentChange"
 			></tui-tabs>
 			<view style="text-align: right;">
 				<tui-button
@@ -57,7 +57,9 @@
 				<text v-else-if="pageType === 'order'">订单</text>
 				<text>财务数据</text>
 			</view>
-			<view style="margin-top: 36rpx;padding-bottom: 34rpx;background-color: #ffffff;text-align: center;color: #222229;border-radius: 16rpx;">
+			<view
+				style="margin-top: 36rpx;padding-bottom: 34rpx;background-color: #ffffff;text-align: center;color: #222229;border-radius: 16rpx;"
+			>
 				<view style="display: flex;justify-content: space-around;">
 					<view style="padding-top: 34rpx; flex:1;">
 						<view style="font-size: 34rpx;font-weight: bold;">
@@ -97,7 +99,9 @@
 					</view>
 					<view style="padding-top: 34rpx; flex:1;">
 						<view style="font-size: 34rpx;font-weight: bold;color: #E02208;">
-							{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher : '--' }}
+							{{ typeof financeStatisticsData.presenterVoucher === 'number' ? financeStatisticsData.presenterVoucher
+								: '--'
+							}}
 						</view>
 						<!-- 赠送代金券 -->
 						<view style="margin-top: 14rpx;font-size: 24rpx;">总赠送</view>
@@ -166,8 +170,7 @@
 						<text style="margin-left: 10rpx;font-size: 26rpx;">{{ queryInfo.time || '选择日期' }}</text>
 					</view>
 					<tui-datetime
-						ref="dateTimeFinance" :type="3" radius
-						:end-year="new Date().getFullYear()"
+						ref="dateTimeFinance" :type="3" radius :end-year="new Date().getFullYear()"
 						@confirm="handleConfirmTime"
 					></tui-datetime>
 				</view>
@@ -188,7 +191,8 @@
 							<tui-td :span="8">
 								<tui-button
 									type="warning" width="100rpx" height="50rpx" margin="0 20rpx 0 0"
-									shape="circle" @click="handleToAssociatedOrder(item)"
+									shape="circle"
+									@click="handleToAssociatedOrder(item)"
 								>
 									订单
 								</tui-button>
@@ -230,7 +234,10 @@
 					<view style="display: flex;justify-content: space-between;align-items: center;">
 						<view style="font-size: 32rpx;color: #333333;">提现类型：</view>
 						<view style="flex: 1;">
-							<tui-radio-group v-model="withdrawalType">
+							<tui-radio-group
+								:value="withdrawalType"
+								@change="handleChangeType"
+							>
 								<view style="display: flex;flex-wrap: wrap;align-items: center;">
 									<tui-label
 										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '消费金', value: '2' }]"
@@ -248,7 +255,11 @@
 							</tui-radio-group>
 						</view>
 					</view>
-					<tui-input v-model="rechargeNum" padding="26rpx 0" label="提现金额" type="number" placeholder="请填写提现金额"></tui-input>
+					<tui-input
+						v-model="rechargeNum" padding="26rpx 0" label="提现金额" type="number"
+						placeholder="缺少提现金额"
+						disabled
+					></tui-input>
 				</view>
 			</template>
 		</tui-dialog>
@@ -268,7 +279,7 @@
 								? 'loading' : !isEmpty && orderList.length && (orderList.length >= orderTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</scroll-view>
 			</view>
@@ -368,12 +379,20 @@ export default {
 				})
 		},
 
+		handleChangeType(e) {
+			this.withdrawalType = e.detail.value
+			if (this.withdrawalType === '1') {
+				this.rechargeNum = this.financeStatisticsData.withdrawableMoney || ''
+			} else if (this.withdrawalType === '2') {
+				this.rechargeNum = this.financeStatisticsData.beeWithdrawal || ''
+			}
+		},
 		handleRechargeDialog(e) {
 			if (e.index === 0) {
 				this.rechargeNum = ''
 				this.isShowRechargeDialog = false
 			} else if (e.index === 1) {
-				if (!this.rechargeNum) return this.$showToast('请填写提现金额')
+				if (!this.rechargeNum) return this.$showToast('缺少提现金额')
 				if (!this.withdrawalType) return this.$showToast('请选择提现类型')
 				uni.showLoading()
 				getShopBankApi({})

@@ -53,7 +53,7 @@
 							? 'loading' : !communityCardInfo.isEmpty && communityCardInfo.data.length && (communityCardInfo.data.length >= communityCardInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="communityCardInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无卡包</tui-no-data>
+					<tui-no-data v-if="communityCardInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无卡包</tui-no-data>
 				</view>
 			</view>
 			<view v-else-if="currentTab === 1">
@@ -78,7 +78,7 @@
 							? 'loading' : !invalidCardInfo.isEmpty && invalidCardInfo.data.length && (invalidCardInfo.data.length >= invalidCardInfo.listTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="invalidCardInfo.isEmpty" :fixed="false" style="margin-top: 60rpx;">
+					<tui-no-data v-if="invalidCardInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">
 						暂无失效卡券
 					</tui-no-data>
 				</view>
@@ -166,7 +166,7 @@ export default {
 			})
 			getAllCommunityCardHolderApi({ ...this.communityCardInfo.query })
 				.then((res) => {
-					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? JSON.parse(i.businessFields) : [] }))
+					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? [ JSON.parse(i.businessFields) ] : [] }))
 					this.communityCardInfo.listTotal = res.data.total
 					if (isLoadmore) {
 						this.communityCardInfo.data.push(...res.data.list)
@@ -186,7 +186,7 @@ export default {
 			})
 			getIsLoseAllCommunityCardHolderApi({ ...this.invalidCardInfo.query })
 				.then((res) => {
-					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? JSON.parse(i.businessFields) : [] }))
+					res.data.list = res.data.list.map((i) => ({ ...i, businessFieldsArr: i.businessFields ? [ JSON.parse(i.businessFields) ] : [] }))
 					this.invalidCardInfo.listTotal = res.data.total
 					if (isLoadmore) {
 						this.invalidCardInfo.data.push(...res.data.list)

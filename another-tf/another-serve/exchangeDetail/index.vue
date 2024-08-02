@@ -1,6 +1,6 @@
 <template>
 	<view class="exchangeDetailBox">
-		<JHeader title="积分兑换" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="积分兑换" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="topBg">
 			<view class="exchangeCoupon flex-items">
 				<view class="couponInfo">
@@ -67,13 +67,13 @@
 						<view class="productTit mar-top-10 fs28 font-color-333">{{ item.productName }}</view>
 						<view class="productPrice font-color-C83732 fs40">￥{{ item.price }}</view>
 					</view>
-					<view style="padding-bottom: 45upx;">
+					<view style="padding-bottom: 45rpx;">
 						<LoadingMore
 							:status="!isEmpty && !productList.length
 								? 'loading' : !isEmpty && productList.length && (productList.length >= productListTotal) ? 'no-more' : ''"
 						>
 						</LoadingMore>
-						<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">暂无数据</tui-no-data>
+						<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据</tui-no-data>
 					</view>
 				</view>
 			</view>
@@ -267,7 +267,7 @@ export default {
 	}
 
 	.exchangeBtnBg {
-		width: 750upx;
+		width: 750rpx;
 		height: 164rpx;
 		background: #FFFFFF;
 		box-shadow: 0 -1rpx 0rpx rgba(197, 202, 207, 0.5);
@@ -293,8 +293,8 @@ export default {
 			text-align: center;
 			margin-top: 40rpx;
 			border: 1px solid #333333;
-			height: 80upx;
-			line-height: 80upx;
+			height: 80rpx;
+			line-height: 80rpx;
 			width: 100%;
 			color: #333333;
 		}

@@ -18,8 +18,6 @@ export default {
 		return {
 		}
 	},
-	computed: {
-	},
 	methods: {
 		handleBack() {
 			uni.navigateBack()

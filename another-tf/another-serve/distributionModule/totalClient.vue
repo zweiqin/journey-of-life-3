@@ -1,6 +1,6 @@
 <template>
 	<view class="total-client-container">
-		<JHeader :dark="false" title="累计客户" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader :dark="false" title="累计客户" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
 		<view class="totalClient-topBackImg">
 			<view class="topBg">
 				<view class="font-color-8A734A pad-top-40 fs60">{{ salesCustomerDataTotal }}</view>
@@ -18,7 +18,7 @@
 							</view>
 						</view>
 						<tui-icon
-							:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="upx" margin="0"
+							:name="item.ifOpen ? 'arrowup' : 'arrowdown'" :size="30" unit="rpx" margin="0"
 							color="#b7b7b7"
 						></tui-icon>
 					</view>
@@ -34,13 +34,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-bottom: 45upx;">
+		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !salesCustomerDataList.length
 					? 'loading' : !isEmpty && salesCustomerDataList.length && (salesCustomerDataList.length >= salesCustomerDataTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60upx;">这里空空如也~</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">这里空空如也~</tui-no-data>
 		</view>
 	</view>
 </template>
@@ -108,7 +108,7 @@ export default {
 		padding: 0 20rpx;
 
 		.topBg {
-			height: 196upx;
+			height: 196rpx;
 			background-color: #f5e3c7;
 			margin-top: 50rpx;
 			text-align: center;
@@ -141,10 +141,10 @@ export default {
 		justify-content: flex-start;
 		flex-direction: column;
 		background-color: #FFFFFF;
-		padding: 50upx 20upx;
+		padding: 50rpx 20rpx;
 
 		.orderId-box {
-			width: 320upx;
+			width: 320rpx;
 			display: flex;
 			justify-content: flex-start;
 			flex-direction: row;

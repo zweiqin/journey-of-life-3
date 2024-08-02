@@ -12,14 +12,16 @@
 				<view style="color: #ffffff;">
 					<view style="display: flex;align-items: center;text-shadow: 0px 1px 0px #048CFB;">
 						<view>
-							<view>消费金总额（元）</view>
+							<view>可签到消费金（元）</view>
 							<view style="font-size: 54rpx;font-weight: bold;">
-								{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice)).toFixed(2) || 0 }}
+								{{ Number.parseFloat(Number(transactionInfo.beeSignPrice)).toFixed(2) || 0 }}
 							</view>
 						</view>
 						<view style="margin-left: 20rpx;">
 							<view>可提现消费金（元）</view>
-							<view style="font-size: 54rpx;font-weight: bold;">--</view>
+							<view style="font-size: 54rpx;font-weight: bold;">
+								{{ Number.parseFloat(Number(transactionInfo.beeToBeWithdrawnPrice)).toFixed(2) || 0 }}
+							</view>
 						</view>
 					</view>
 					<view
@@ -40,7 +42,7 @@
 					<view style="margin-top: 58rpx;">
 						<view style="display: flex;align-items: center;text-align: center;">
 							<view
-								v-for="(item, index) in recordList" :key="item.signinId"
+								v-for="(item, index) in recordList" :key="item.termId"
 								style="flex: 1;margin: 0 6rpx;padding: 8rpx;color: #ffffff;background: linear-gradient(151deg, #69D0FF 0%, #31A9FF 100%), #F2F1EF;border-radius: 84rpx;"
 							>
 								<view
@@ -52,7 +54,7 @@
 										<tui-icon name="check" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">1</view>
+								<view style="padding: 14rpx 0;">{{ item.beeAmount || 0 }}</view>
 							</view>
 							<view
 								v-for="index in (7 - recordList.length)" :key="index"
@@ -67,7 +69,7 @@
 										<tui-icon name="star-fill" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">1</view>
+								<view style="padding: 14rpx 0;">？</view>
 							</view>
 						</view>
 						<view v-if="stepsList && stepsList.length" style="margin-top: 30rpx;">
@@ -104,9 +106,9 @@
 				<view style="margin-top: 24rpx;">
 					<view style="font-size: 34rpx;font-weight: bold;">签到明细</view>
 					<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
-						<view v-if="signList && signList.length" style="padding: 12rpx 28rpx;">
+						<view v-if="signTransactionList && signTransactionList.length" style="padding: 12rpx 28rpx;">
 							<view
-								v-for="(item, index) in signList" :key="item.id"
+								v-for="(item, index) in signTransactionList" :key="item.id"
 								style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
 							>
 								<view style="flex: 1;display: flex;align-items: center;">
@@ -121,18 +123,18 @@
 								</view>
 								<view style="margin-left: 12rpx;text-align: right;">
 									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #1E7AEA;">
-										<text>+1</text>
+										<text>+{{ item.beeAmount || 0 }}</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
-								:status="!isEmpty && !signList.length
-									? 'loading' : !isEmpty && signList.length && (signList.length >= signTotal) ? 'no-more' : ''"
+								:status="!isEmpty && !signTransactionList.length
+									? 'loading' : !isEmpty && signTransactionList.length && (signTransactionList.length >= signTransactionTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">暂无签到记录~</tui-no-data>
+							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无签到记录~</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -165,20 +167,20 @@
 </template>
 
 <script>
-import { getSelectSigninRecordListApi, updateMemberSignInApi, getPricePlatformAllApi, getSelectSigninHistoryApi } from '../../../api/anotherTFInterface'
+import { getCurrencySigninRecordListApi, updateCurrencySignInApi, getBeeSelectAmountEntryRecordApi, getCurrencySigninHistoryApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendTransaction',
 	data() {
 		return {
-			pricePlatformInfo: {
-				totalPrice: '',
-				price: '',
-				rechargePrice: '',
-				voucherPrice: '',
-				distributorPrice: '',
-				beeCoinPrice: '',
-				commissionPrice: ''
+			transactionInfo: {
+				beePrice: '',
+				beeSelectedPrice: '',
+				beeSignPrice: '',
+				beeConsumptionPrice: '',
+				beeToBeWithdrawnPrice: '',
+				beeWithdrawnPrice: '',
+				beeToBeSettledPrice: ''
 			},
 			stepsList: [],
 			activeSteps: -1,
@@ -186,8 +188,8 @@ export default {
 			currentDay: `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
 			recordList: [],
 			isEmpty: false,
-			signList: [],
-			signTotal: 0,
+			signTransactionList: [],
+			signTransactionTotal: 0,
 			queryInfo: {
 				page: 1,
 				pageSize: 20
@@ -199,13 +201,13 @@ export default {
 		this.getSignInHistory()
 	},
 	onShow() {
-		this.getPricePlatformAll()
+		this.getTransactionAll()
 	},
 	methods: {
-		getPricePlatformAll() {
-			getPricePlatformAllApi({})
+		getTransactionAll() {
+			getBeeSelectAmountEntryRecordApi({})
 				.then((res) => {
-					this.pricePlatformInfo = res.data
+					this.transactionInfo = res.data
 				})
 		},
 		getSignInRecord() {
@@ -213,7 +215,7 @@ export default {
 				mask: true,
 				title: '加载中...'
 			})
-			getSelectSigninRecordListApi({})
+			getCurrencySigninRecordListApi({})
 				.then((res) => {
 					uni.hideLoading()
 					this.recordList = res.data
@@ -232,12 +234,13 @@ export default {
 				})
 		},
 		handleSignIn() {
+			if (!this.transactionInfo.beeSignPrice) return this.$showToast('缺少可签到消费金，无法签到')
 			if (((this.recordList[this.recordList.length - 1] || {}).createTime || '').slice(0, 10) !== this.currentDay) {
 				uni.showLoading({
 					mask: true,
 					title: '请稍等...'
 				})
-				updateMemberSignInApi({})
+				updateCurrencySignInApi({})
 					.then((res) => {
 						uni.hideLoading()
 						// this.$showToast('签到成功！')
@@ -252,14 +255,14 @@ export default {
 		},
 		getSignInHistory(isLoadmore) {
 			uni.showLoading()
-			getSelectSigninHistoryApi(this.queryInfo).then((res) => {
-				this.signTotal = res.data.total
+			getCurrencySigninHistoryApi(this.queryInfo).then((res) => {
+				this.signTransactionTotal = res.data.total
 				if (isLoadmore) {
-					this.signList.push(...res.data.list)
+					this.signTransactionList.push(...res.data.list)
 				} else {
-					this.signList = res.data.list
+					this.signTransactionList = res.data.list
 				}
-				this.isEmpty = this.signList.length === 0
+				this.isEmpty = this.signTransactionList.length === 0
 				uni.hideLoading()
 			})
 				.catch((e) => {
@@ -268,7 +271,7 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.signList.length < this.signTotal) {
+		if (this.signTransactionList.length < this.signTransactionTotal) {
 			++this.queryInfo.page
 			this.getSignInHistory(true)
 		}

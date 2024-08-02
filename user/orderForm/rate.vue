@@ -112,7 +112,8 @@
 import { getUserId } from 'utils';
 import { getOrderDetailApi, postCommentApi } from '../../api/order';
 import { rateOrderWholeList } from './config';
-import { IMG_UPLOAD_URL } from '../../config';
+import { T_STORAGE_KEY } from '../../constant'
+import { ANOTHER_TF_UPLOAD } from '../../config';
 
 export default {
   onLoad(params) {
@@ -207,42 +208,37 @@ export default {
 
     // 晒图
     handleUploadImg(index) {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
+			uni.chooseImage({
+				extension: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'image'],
+				success: (chooseImageRes) => {
           for (const imgFile of chooseImageRes.tempFiles) {
-            uni.showLoading();
-            uni.uploadFile({
-              url: IMG_UPLOAD_URL,
-              filePath: imgFile.path,
-              name: 'file',
-              formData: {
-                userId: getUserId()
-              },
-              success: (uploadFileRes) => {
-                uni.hideLoading();
-
-                console.log('上传成功', JSON.parse(uploadFileRes.data).data.url);
-                // _this.orderForm.orderGoodsList.push(JSON.parse(uploadFileRes.data).data.url);
-                _this.rateForm.commentGoods[index].pic.push(JSON.parse(uploadFileRes.data).data.url);
-              },
+            uni.showLoading()
+						uni.uploadFile({
+							url: ANOTHER_TF_UPLOAD,
+							filePath: imgFile.path,
+							name: 'file',
+							header: {
+								Authorization: (uni.getStorageSync(T_STORAGE_KEY) || {}).token
+							},
+							formData: {
+								'folderId': -1
+							},
+							success: (uploadFileRes) => {
+                uni.hideLoading()
+                this.rateForm.commentGoods[index].pic.push(JSON.parse(uploadFileRes.data).data.url)
+							},
               fail: (error) => {
-                uni.hideLoading();
-                _this.ttoast({
+                uni.hideLoading()
+                this.ttoast({
                   type: 'fail',
                   title: '图片上传失败',
                   content: error
-                });
+                })
               }
-            });
-          }
-
-          return;
-        },
-        fail: (fail) => {
-          console.log(fail);
-        }
-      });
+						})
+					}
+				}
+			})
     },
 
     // 点击删除图片
