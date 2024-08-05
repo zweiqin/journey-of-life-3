@@ -32,7 +32,7 @@
         <view class="name">团蜂社区</view>
       </view>
       <view class="pay-list" v-if="pricingType == 1">
-        <PayMethods :orderNo="orderNo" ref="payMethodsRef" :supports="payList" @setLoading="handleSetLoading"></PayMethods>
+        <PayMethods :currentSelectPayMethodId="currentSelectPayMethodId" :orderNo="orderNo" ref="payMethodsRef" :supports="payList" @setLoading="handleSetLoading"></PayMethods>
       </view>
     </view>
 

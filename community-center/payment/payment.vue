@@ -38,7 +38,7 @@
 
         <!-- 选择支付方式 -->
         <view class="pay-list">
-          <PayMethods :supports="payList" ref="payMethodsRef">
+          <PayMethods :currentSelectPayMethodId="currentSelectPayMethodId" :supports="payList" ref="payMethodsRef">
             <view class="title tui-skeleton-fillet" slot="title">支付方式</view>
           </PayMethods>
         </view>

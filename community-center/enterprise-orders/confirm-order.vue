@@ -154,7 +154,7 @@
     <!-- 选择期望上门时间 -->
     <ChooseTime @choose="handleChooseInstallTime" v-model="chooseTimeVisible"></ChooseTime>
     <!-- 选择支付方式 -->
-    <PayMethods ref="payMethodRef" @confirm="handleChangePayType"></PayMethods>
+    <PayMethods :currentSelectPayMethodId="currentSelectPayMethodId" ref="payMethodRef" @confirm="handleChangePayType"></PayMethods>
     <!-- tip -->
     <tui-modal :show="isShowDeleteServeModal" title="提示" content="您要删除当前服务吗" @click="handleChangeServe"></tui-modal>
     <!-- toast -->
