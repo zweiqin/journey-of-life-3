@@ -35,6 +35,10 @@ export default {
     supports: {
       type: Array,
       default: () => [PAY_METHOD_IDS.ALLINPAY, PAY_METHOD_IDS.BALANCE]
+    },
+    currentSelectPayMethodId: {
+      type: Number,
+      default: PAY_METHOD_IDS.ALLINPAY
     }
   },
   data() {
@@ -44,7 +48,6 @@ export default {
         { name: '惠市宝支付(支持微信/支付宝/银联)', icon: require('../../../static/images/user/pay/huishibao.png'), payMethodId: PAY_METHOD_IDS.CCB },
         { name: '余额', icon: require('../../../static/images/user/pay/platform-pay.png'), payMethodId: PAY_METHOD_IDS.BALANCE }
       ],
-      currentSelectPayMethodId: 1,
       payLoading: false
     }
   },
@@ -75,7 +78,7 @@ export default {
           payConfig
         })
       } catch (error) {
-        console.log(error);
+        console.log(error)
         this.ttoast({ type: 'fail', title: '支付失败', content: error.message })
       } finally {
         this.setPayLoading(false)
@@ -98,8 +101,8 @@ export default {
       this.$emit('setLoading', status)
     },
 
-    getPayMethod(){
-      return this.payMethodsList.find(item => item.payMethodId === this.currentSelectPayMethodId)
+    getPayMethod() {
+      return this.payMethodsList.find((item) => item.payMethodId === this.currentSelectPayMethodId)
     }
   },
 
