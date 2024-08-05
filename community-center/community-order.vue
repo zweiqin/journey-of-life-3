@@ -227,6 +227,8 @@
     <ChooseCommunity @confirm="handleChooseCommunity" ref="chooseCommunityRef"></ChooseCommunity>
     <!-- 预览视频 -->
     <TuanVideoPreview ref="tuanVideoPreviewRef"></TuanVideoPreview>
+    <!-- 显示进度条 -->
+    <TuanProgress :progress="videUploadProgress" :show="videUploadProgress !== 0 && videUploadProgress !== 100"></TuanProgress>
   </view>
 </template>
 
@@ -281,7 +283,8 @@ export default {
       chooseCommunityDetail: null,
       cardId: '',
       videoContextObj: {},
-      isShowVideoControl: false
+      isShowVideoControl: false,
+      videUploadProgress: 0
     }
   },
 
@@ -470,8 +473,8 @@ export default {
               content: error
             })
           }
-          uni.showLoading({ title: '视频上传中...' })
-          uni.uploadFile({
+          // uni.showLoading({ title: '视频上传中...' })
+          const uploadTask = uni.uploadFile({
             url: ANOTHER_TF_UPLOAD,
             filePath: tempFilePath,
             name: 'file',
@@ -483,11 +486,23 @@ export default {
             },
             success: (uploadFileRes) => {
               _this.orderForm.videoList.push(JSON.parse(uploadFileRes.data).data.url)
-              uni.hideLoading()
+              _this.videUploadProgress = 100
+              // uni.hideLoading()
               _this.ttoast('上传成功')
+
             },
             fail: (fail) => {
-              uni.hideLoading()
+              // uni.hideLoading()
+              _this.ttoast({
+                type: 'fail',
+                title: '上传失败',
+                content: fail
+              })
+            }
+          })
+          uploadTask.onProgressUpdate((res) => {
+            if (res.progress !== 100) {
+              this.videUploadProgress = res.progress
             }
           })
         }
@@ -610,7 +625,7 @@ export default {
         &installDate=${this.orderForm.datetimerange}&pricingType=${this.isByItNow}&images=${JSON.stringify(this.orderForm.orderGoodsList)}&data=${res.data}`
             })
           }, 500)
-        }else{
+        } else {
           throw new Error(res.statusMsg)
         }
       } catch (error) {
