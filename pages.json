@@ -2235,7 +2235,7 @@
         {
           "path": "another-user/collection-code/index",
           "style": {
-            "navigationBarTitleText": "收款账户"
+            "navigationBarTitleText": "商家点单码"
           }
         },
         {

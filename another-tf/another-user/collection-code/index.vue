@@ -6,7 +6,7 @@
 			>
 				<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40rpx;text-align: center;">商家收款码</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">商家点单码</text>
 			</view>
 		</BeeBack>
 		<view style="padding: 60rpx 76rpx 42rpx;margin: 40rpx 36rpx 0;background-color: #ffffff;border-radius: 18rpx;">
@@ -40,7 +40,7 @@
 				style="margin: 42rpx 0 0;display: flex;justify-content: space-around;align-items: center;font-size: 30rpx;color: #507AFC;font-weight: bold;"
 			>
 				<view v-if="codePicUrl" @click="handleShare">
-					保存收款码
+					保存商家点单码
 				</view>
 			</view>
 		</view>
@@ -50,8 +50,8 @@
 				v-if="isShowExplain"
 				style="padding: 30rpx 42rpx 32rpx;background-color: #ffffff;border-radius: 38rpx 38rpx 0 0;"
 			>
-				<view style="text-align: center;font-weight: bold;">商家收款码使用说明</view>
-				<view style="margin-top: 20rpx;">商家收款码仅限已入驻{{ APPLY_NAME }}平台的商家使用，请勿向他人出租商家收款码，否则可能被他人用于违法犯罪活动。</view>
+				<view style="text-align: center;font-weight: bold;">商家点单码使用说明</view>
+				<view style="margin-top: 20rpx;">商家点单码仅限已入驻{{ APPLY_NAME }}平台的商家使用，请勿向他人出租商家点单码，否则可能被他人用于违法犯罪活动。</view>
 				<view>
 					<tui-button
 						type="gray" width="520rpx" height="90rpx" margin="40rpx auto 0"
@@ -68,7 +68,7 @@
 					plain link bold
 					@click="isShowExplain = true"
 				>
-					收款码使用说明
+					商家点单码使用说明
 				</tui-button>
 			</view>
 		</view>
@@ -137,7 +137,7 @@ export default {
 					return this.$showToast('缺少商家信息')
 				}
 			} else {
-				return this.$showToast('缺少商家收款码！')
+				return this.$showToast('缺少商家点单码！')
 			}
 		}
 	}

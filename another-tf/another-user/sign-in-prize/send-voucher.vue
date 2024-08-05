@@ -22,7 +22,7 @@
 						<view
 							style="margin-left: 20rpx;padding: 6rpx 16rpx;background: rgba(255, 255, 255, 0.2);border-radius: 32rpx;"
 						>
-							<text v-if="currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10)">
+							<text v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))">
 								今日已签到
 							</text>
 							<text v-else>
@@ -80,7 +80,7 @@
 					</view>
 					<view class="middle-btn" style="margin-top: 30rpx;">
 						<tui-button
-							v-if="currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10)"
+							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
 							type="gray" width="440rpx" height="82rpx" margin="0 auto"
 							shape="circle" :size="32" bold disabled
 						>
@@ -146,7 +146,13 @@
 			<view style="position: relative;" @click="isShowSignFrame = false">
 				<view style="position: absolute;z-index: 1;top: 228rpx;left: 0;width: 100%;text-align: center;">
 					<view style="display: flex;align-items: center;justify-content: center;color: #e60e0e;">
-						<view style="margin-right: 12rpx;font-size: 44rpx;font-weight: bold;">已发放</view>
+						<view
+							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
+							style="margin-right: 12rpx;font-size: 44rpx;font-weight: bold;"
+						>
+							+{{ recordList[recordList.length - 1].beeVoucher || 0 }}
+						</view>
+						<view v-else style="margin-right: 12rpx;font-size: 44rpx;font-weight: bold;">已发放</view>
 						<view>代金券</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: center;margin-top: 28rpx;">
@@ -157,7 +163,7 @@
 				</view>
 				<image
 					:src="common.seamingImgUrl('1721611410057-sign-success-bg.png')" mode="widthFix"
-					style="width: 500rpx;max-height: 75vh;"
+					style="width: 572rpx;max-height: 75vh;"
 				/>
 			</view>
 		</tui-landscape>

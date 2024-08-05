@@ -6,7 +6,7 @@
 			<JHeader :dark="false" title="消费金提现额度签到" width="50" height="50"></JHeader>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
-				<view style="position: absolute;top: 2%;right: 3%;width: 292rpx;">
+				<view style="position: absolute;top: 2%;right: 3%;width: 360rpx;">
 					<image style="width: 100%" :src="common.seamingImgUrl('1721703581195-gold-money.png')" mode="widthFix" />
 				</view>
 				<view style="color: #ffffff;">
@@ -33,7 +33,7 @@
 					</view>
 				</view>
 				<view
-					style="margin-top: 28rpx;padding: 30rpx 24rpx;background: linear-gradient(180deg, #FFF8CE -17%, #CEECFF -7%, #FFFFFF 22%);border-radius: 20rpx;"
+					style="margin-top: 28rpx;padding: 30rpx 24rpx 40rpx;background: linear-gradient(180deg, #FFF8CE -17%, #CEECFF -7%, #FFFFFF 22%);border-radius: 20rpx;"
 				>
 					<view>
 						<text style="font-weight: bold;">已累计签到</text>
@@ -81,7 +81,7 @@
 					</view>
 					<view class="middle-btn" style="margin-top: 30rpx;">
 						<tui-button
-							v-if="currentDay === ((recordList[recordList.length - 1] || {}).createTime || '').slice(0, 10)"
+							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
 							type="gray" width="440rpx" height="82rpx" margin="0 auto"
 							shape="circle" :size="32" bold disabled
 						>

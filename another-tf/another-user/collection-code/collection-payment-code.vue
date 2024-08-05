@@ -2,7 +2,7 @@
 	<view class="collection-payment-code-container">
 		<JHeader title="商家收款" width="50" height="50"></JHeader>
 		<view style="padding: 40upx 0 0;text-align: center;">
-			<view>临时收款码</view>
+			<view>临时商家点单码</view>
 			<image
 				:src="codePicUrl" style="width: 400rpx;margin-top: 20upx;" mode="widthFix"
 				@click="handlePreviewImage(codePicUrl)"

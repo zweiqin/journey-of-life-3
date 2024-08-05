@@ -13,7 +13,10 @@
 				</tui-button>
 			</view>
 			<!-- v-if="settlement.shopType !== 2" -->
-			<ATFOrderAddressSelect :data="userAddressInfo" padding="20rpx 0 0"></ATFOrderAddressSelect>
+			<ATFOrderAddressSelect
+				v-if="settlement.shops.some((a) => a.skus.some((b) => !(b.counterType === 1)))"
+				:data="userAddressInfo" padding="20rpx 0 0"
+			></ATFOrderAddressSelect>
 
 			<view style="padding-top: 20rpx;">
 				<ATFShopSkus v-for="(item, sIndex) in settlement.shops" :key="item.shopId" :shop-data="item" is-show-skus>
@@ -56,12 +59,13 @@
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					show :price-pay="totalPrice"
+					:show-tonglian-pay="settlement.shops.every((a) => a.skus.every((b) => !(b.counterType === 1)))"
 					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
-					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && !!totalPrice"
-					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
-					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
+					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
+					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
+					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
+					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
+					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
 				/>
 			</view>
@@ -147,6 +151,8 @@ export default {
 			selectIntegral: true,
 			integralNum: 0,
 			integralRatio: '', // 积分兑换比例。总积分可减多少元=integralNum*integralRatio
+			// 是否兑换专区商品
+			isExchangeCounter: false,
 			// 其它信息
 			otherInfo: {
 				remark: '',
@@ -164,6 +170,7 @@ export default {
 	onLoad(options) {
 		this.fromType = options.type
 		this.brandId = options.brandId || ''
+		this.isExchangeCounter = Boolean(Number(options.isExchange) || 0)
 	},
 	onShow() {
 		if (uni.getStorageSync(T_PAY_ORDER)) {
@@ -188,6 +195,7 @@ export default {
 				if (uni.getStorageSync(T_SKU_ITEM_MSG_LIST)) { // 1立即购买，2购物车结算
 					this.skuItemMsgList = uni.getStorageSync(T_SKU_ITEM_MSG_LIST)
 					orderSettlementObj = await resolveGetOrderSettlement({
+						isExchangeCounter: this.isExchangeCounter,
 						isGroup: false,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -200,6 +208,7 @@ export default {
 				} else if (uni.getStorageSync(T_SKU_ITEM_INFO)) { // 3拼团商品立即购买
 					this.skuItemInfo = uni.getStorageSync(T_SKU_ITEM_INFO)
 					orderSettlementObj = await resolveGetOrderSettlement({
+						isExchangeCounter: this.isExchangeCounter,
 						isGroup: true,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -227,6 +236,7 @@ export default {
 		changeIntegral() {
 			const IntegralSelectObj = resolveIntegralSelect({
 				vm: this,
+				settlement: this.settlement,
 				selectIntegral: this.selectIntegral,
 				totalPrice: this.totalPrice,
 				integralNum: this.integralNum,

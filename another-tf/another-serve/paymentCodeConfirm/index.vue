@@ -495,6 +495,7 @@ export default {
 		changeIntegral() {
 			const IntegralSelectObj = resolveIntegralSelect({
 				vm: this,
+				settlement: this.settlement,
 				selectIntegral: this.selectIntegral,
 				totalPrice: this.totalPrice,
 				integralNum: this.integralNum,
@@ -541,7 +542,9 @@ export default {
 
 		// 选择支付
 		handlePaymentSelect(e) {
-			this.payInfo = e
+			// this.payInfo = e // 该方式结合在视图层展示payInfo信息会出现死循环
+			this.payInfo.paymentMode = e.paymentMode
+			this.payInfo.huabeiPeriod = e.huabeiPeriod
 			if (this.payInfo.paymentMode === 11) {
 				const voucherPaySelectObj = resolveVoucherPaySelect({
 					settlement: this.settlement,

@@ -223,9 +223,7 @@ export default {
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
 		voucherPay: {
 			handler(newValue, oldValue) {
-				console.log(newValue.voucherTotalAll)
 				if (newValue.voucherTotalAll !== oldValue.voucherTotalAll) {
-					console.log(111)
 					if (newValue.voucherTotalAll) {
 						if (!this.paymentList.find((item) => item.paymentMode === '11')) {
 							this.paymentList.push({
@@ -368,7 +366,8 @@ export default {
 					if (newValue === true) {
 						this.detailShopInfo = { hsbMrchId: '0' }
 						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-						if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+						// if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+						this.handleSetDisable()
 						this.handleNoticeFather()
 						uni.hideLoading()
 					} else {
@@ -376,7 +375,8 @@ export default {
 							.then((res) => {
 								this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
 								this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-								if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
+								// if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable() // 加上该判断则是不主动选择。但当其它默认不行的时候，会被动备用选择
+								this.handleSetDisable()
 								if (!this.detailShopInfo.hsbMrchId && this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
 								this.handleNoticeFather()
 								uni.hideLoading()
@@ -435,7 +435,6 @@ export default {
 			deep: true
 		},
 		pricePay: {
-			// eslint-disable-next-line complexity
 			handler(newValue, oldValue) {
 				// console.log(1111)
 				if (newValue !== oldValue) {
@@ -511,7 +510,6 @@ export default {
 			deep: true
 		}
 	},
-	// eslint-disable-next-line complexity
 	created() {
 		this.paymentList = []
 		if (this.showWechatPay) {
@@ -656,43 +654,64 @@ export default {
 	},
 	methods: {
 		// 根据环境更改可选支付项
+		// eslint-disable-next-line complexity
 		handleSetDisable() {
 			// #ifdef H5
-			if (this.showTonglianPay) {
+			if (this.huiShiBaoPay) {
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			} else if (this.showTonglianPay) {
 				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 				this.paymentMode = '4'
+			} else if (this.voucherPay.voucherTotalAll) {
+				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			} else {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
 				this.paymentMode = ''
 			}
 			// #endif
 			// #ifdef APP
-			if (this.showTonglianPay) {
+			if (this.huiShiBaoPay) {
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			} else if (this.showTonglianPay) {
 				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 				this.paymentMode = '4'
+			} else if (this.voucherPay.voucherTotalAll) {
+				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			} else {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
 				this.paymentMode = ''
 			}
 			// #endif
 			// #ifdef MP-WEIXIN
-			if (this.showTonglianPay) {
+			if (this.huiShiBaoPay) {
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			} else if (this.showTonglianPay) {
 				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 				this.paymentMode = '4'
+			} else if (this.voucherPay.voucherTotalAll) {
+				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			} else {
 				// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
 				this.paymentMode = '' // 1
 			}
 			// #endif
 			// #ifdef MP-ALIPAY
-			if (this.showTonglianPay) {
+			if (this.huiShiBaoPay) {
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			} else if (this.showTonglianPay) {
 				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 				this.paymentMode = '4'
+			} else if (this.voucherPay.voucherTotalAll) {
+				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			} else {
 				// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
 				// if(this.flowerInfo.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = true
 				this.paymentMode = '' // 2
 			}
 			// #endif
