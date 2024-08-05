@@ -12,7 +12,7 @@
     </view>
 
     <view class="pay-list-wrapper">
-      <PayMethods :orderNo="orderNo" :supports="payList" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
+      <PayMethods :currentSelectPayMethodId="currentSelectPayMethodId" :orderNo="orderNo" :supports="payList" ref="payMethodsRef" @setLoading="handleSetLoading"></PayMethods>
     </view>
 
     <Button type="error" @click="handlePay" :loading="isLoading">支付</Button>
