@@ -8,8 +8,8 @@
 			</VoucherChoose>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
-				<view style="position: absolute;top: 2%;right: 3%;width: 252rpx;">
-					<image style="width: 100%" :src="common.seamingImgUrl('1721380308499-calendar-image.png')" mode="widthFix" />
+				<view style="position: absolute;top: 2%;right: 3%;width: 310rpx;">
+					<image style="width: 100%" :src="common.seamingImgUrl('1722926120996-calendar-image.png')" mode="widthFix" />
 				</view>
 				<view style="color: #ffffff;">
 					<view style="text-shadow: 0px 1px 0px #FB6D04;">当前兑换代金券</view>
@@ -23,16 +23,16 @@
 							style="margin-left: 20rpx;padding: 6rpx 16rpx;background: rgba(255, 255, 255, 0.2);border-radius: 32rpx;"
 						>
 							<text v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))">
-								今日已签到
+								已签到
 							</text>
 							<text v-else>
-								今日未签到
+								未签到
 							</text>
 						</view>
 					</view>
 				</view>
 				<view
-					style="margin-top: 28rpx;padding: 30rpx 24rpx;background: linear-gradient(180deg, #FFE9CE 0%, #FFFFFF 22%);border-radius: 20rpx;"
+					style="margin-top: 28rpx;padding: 30rpx 24rpx 0;background: linear-gradient(180deg, #FFE9CE 0%, #FFFFFF 22%);border-radius: 20rpx;"
 				>
 					<view>
 						<text style="font-weight: bold;">已累计签到</text>
@@ -78,21 +78,26 @@
 							></tui-steps>
 						</view>
 					</view>
-					<view class="middle-btn" style="margin-top: 30rpx;">
+					<view class="middle-btn" style="padding: 30rpx 0 2rpx;">
 						<tui-button
 							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
-							type="gray" width="440rpx" height="82rpx" margin="0 auto"
+							type="gray" width="440rpx" height="82rpx" margin="0 auto 32rpx"
 							shape="circle" :size="32" bold disabled
 						>
 							今日已签到，明日再来
 						</tui-button>
-						<tui-button
+						<image
+							v-else style="display: block;width: 488rpx;margin: 0 auto;"
+							:src="common.seamingImgUrl('1722927078231-b-to-sign.png')" mode="widthFix"
+							@click="handleSignIn"
+						/>
+						<!-- <tui-button
 							v-else type="warning" width="440rpx" height="82rpx"
 							margin="0 auto" shape="circle" :size="32"
 							bold @click="handleSignIn"
-						>
+							>
 							签到领代金券
-						</tui-button>
+							</tui-button> -->
 					</view>
 				</view>
 				<view style="margin-top: 30rpx;">
@@ -156,8 +161,14 @@
 						<view>代金券</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: center;margin-top: 28rpx;">
-						<view style="color: #999794;">明天签到可继续</view>
-						<view style="margin: 0 6rpx;color: #e60e0e;">获得</view>
+						<view style="color: #999794;">明天签到可获得</view>
+						<view
+							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
+							style="margin: 0 6rpx;color: #e60e0e;"
+						>
+							{{ recordList[recordList.length - 1].beeVoucher || 0 }}
+						</view>
+						<view v-else style="margin: 0 6rpx;color: #e60e0e;">相同</view>
 						<view style="color: #999794;">代金券</view>
 					</view>
 				</view>

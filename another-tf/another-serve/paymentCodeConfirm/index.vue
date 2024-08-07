@@ -238,6 +238,10 @@ export default {
 		}
 	},
 	async onLoad(options) {
+		// #ifdef H5
+		const pages = getCurrentPages()
+		if (pages.length > 1) uni.removeStorageSync(T_PAY_ORDER)
+		// #endif
 		if (options.orderId) {
 			this.otherInfo.orderId = Number(options.orderId) || ''
 			this.otherInfo.collageId = Number(options.collageId) || ''

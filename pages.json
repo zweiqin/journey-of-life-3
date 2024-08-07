@@ -68,6 +68,12 @@
       }
     },
     {
+      "path": "pages/navigation/navigation",
+      "style": {
+        "navigationBarTitleText": "导航"
+      }
+    },
+    {
       "path": "pages/download/download",
       "style": {
         "navigationBarTitleText": "团蜂 APP"

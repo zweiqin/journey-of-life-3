@@ -78,16 +78,16 @@
 				</view>
 			</tui-modal>
 		</view>
-		<view v-else-if="viewType === 'chooseIdentity'"  style="min-height: 100vh;background-color: #f0f0f0; padding: 30rpx; box-sizing: border-box;" class="bind-b">
-    <view class="wrapper">
-			<view class="choose-title"> <tui-icon :size="18" margin="0 10rpx 0 0" name="people-fill" color="rgb(233, 93, 32)"></tui-icon> 请选择您的身份</view>
-			<view class="list">
-				<view :class="{active: currentIdentity === 1}" @click="currentIdentity = 1" class="item">社区门店 <tui-icon :size="18" v-if="currentIdentity === 1" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
-				<view :class="{active: currentIdentity === 2}" @click="currentIdentity = 2" class="item">商家 <tui-icon :size="18" v-if="currentIdentity === 2" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
-				<view :class="{active: currentIdentity === 3}" @click="currentIdentity = 3" class="item">本地商圈 <tui-icon :size="18" v-if="currentIdentity === 3" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+		<view v-else-if="viewType === 'chooseIdentity'" style="min-height: 100vh;background-color: #f0f0f0; padding: 30rpx; box-sizing: border-box;" class="bind-b">
+			<view class="wrapper">
+				<view class="choose-title"> <tui-icon :size="18" margin="0 10rpx 0 0" name="people-fill" color="rgb(233, 93, 32)"></tui-icon> 请选择您的身份</view>
+				<view class="list">
+					<view :class="{ active: currentIdentity === 1 }" class="item" @click="currentIdentity = 1">社区门店 <tui-icon v-if="currentIdentity === 1" :size="18" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+					<view :class="{ active: currentIdentity === 2 }" class="item" @click="currentIdentity = 2">商家 <tui-icon v-if="currentIdentity === 2" :size="18" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+					<view :class="{ active: currentIdentity === 3 }" class="item" @click="currentIdentity = 3">本地商圈 <tui-icon v-if="currentIdentity === 3" :size="18" name="circle-fill" color="rgb(233, 93, 32)"></tui-icon></view>
+				</view>
+				<button class="uni-btn bind-btn" :loading="chooseIdentityLoading" @click="handleBBindFranchisees">确认</button>
 			</view>
-			<button @click="handleBBindFranchisees" class="uni-btn bind-btn" :loading="chooseIdentityLoading">确认</button>
-		</view>
 		</view>
 		<view v-else style="padding: 46rpx;">
 			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
@@ -356,7 +356,13 @@ export default {
 				const shopIdStr = this.code.split('~')[0]
 				const productIdStr = this.code.split('~')[1]
 				const skuIdStr = this.code.split('~')[2]
-				setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
+				// setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
+				setTimeout(() => { uni.redirectTo({ url: `/pages/navigation/navigation?target=${encodeURIComponent('/another-tf/another-serve/paymentCodeConfirm/index?type=1&' + shopIdStr + '&' + productIdStr + '&' + skuIdStr)}` }) }, 300)
+			} else if (this.type === 'tempCollection') { // 临时收款码结算
+				const orderIdStr = this.code.split('~')[0]
+				const moneyStr = this.code.split('~')[1]
+				const collageIdStr = this.code.split('~')[2]
+				setTimeout(() => { uni.redirectTo({ url: `/pages/navigation/navigation?target=${encodeURIComponent('/another-tf/another-serve/paymentCodeConfirm/index?type=1&' + orderIdStr + '&' + moneyStr + '&' + collageIdStr)}` }) }, 300)
 			} else if (this.type === 'wvHuiShiBaoPayTurn') { // 惠市宝在小程序套壳环境的支付结果回传
 				await handleDoPay({
 					collageId: Number(this.code.split('~')[3]),
@@ -443,7 +449,7 @@ export default {
 					})
 					.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
 			} else if (this.type === 'bBindFranchisees') {
-				this.viewType = 'chooseIdentity';
+				this.viewType = 'chooseIdentity'
 			}
 		},
 		handleVerification() {
@@ -452,26 +458,26 @@ export default {
 				.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
 		},
 		// 加盟商绑定门店
-	  async	handleBBindFranchisees() {
+		async	handleBBindFranchisees() {
 			try {
 				this.chooseIdentityLoading = true
-			  const res = await bindBFranchiseesApi({
+				const res = await bindBFranchiseesApi({
 					franchiseesSn: this.code,
 					phone: this.$store.getters.userInfo.phone,
 					shopType1Enum: this.currentIdentity
 				})
 
-				if(res.statusCode === 20000){
-				  this.$showToast('绑定成功', 'success')
-				}else {
-				  this.$showToast('绑定失败' + res.statusMsg, 'none')
+				if (res.statusCode === 20000) {
+					this.$showToast('绑定成功', 'success')
+				} else {
+					this.$showToast('绑定失败' + res.statusMsg, 'none')
 				}
 			} catch (e) {
 				this.$showToast('绑定失败' + e.message, 'none')
-			} finally{
+			} finally {
 				this.chooseIdentityLoading = false
 				this.viewType = ''
-				setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000);
+				setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000)
 			}
 		}
 	}
@@ -501,7 +507,7 @@ export default {
 			border-radius: 10rpx;
 
 			.choose-title{
-				color: rgb(233, 93, 32); 
+				color: rgb(233, 93, 32);
 				font-weight: 500;
 				margin-bottom: 36rpx;
 			}
@@ -518,7 +524,7 @@ export default {
 			    font-size: 28rpx;
 					color: #3d3d3d;
 					transition: all 350ms;
-    
+
 			    &.active{
 			    	color: #000;
 						font-weight: 500;
