@@ -168,6 +168,10 @@ export default {
 		}
 	},
 	onLoad(options) {
+		// #ifdef H5
+		const pages = getCurrentPages()
+		if (pages.length > 1) uni.removeStorageSync(T_PAY_ORDER)
+		// #endif
 		this.fromType = options.type
 		this.brandId = options.brandId || ''
 		this.isExchangeCounter = Boolean(Number(options.isExchange) || 0)

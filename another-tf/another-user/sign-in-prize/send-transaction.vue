@@ -79,24 +79,29 @@
 							></tui-steps>
 						</view>
 					</view>
-					<view class="middle-btn" style="margin-top: 30rpx;">
+					<view class="middle-btn" style="padding: 30rpx 0 2rpx;">
 						<tui-button
 							v-if="currentDay === (recordList[recordList.length - 1] && recordList[recordList.length - 1].createTime.slice(0, 10))"
-							type="gray" width="440rpx" height="82rpx" margin="0 auto"
+							type="gray" width="440rpx" height="82rpx" margin="0 auto 32rpx"
 							shape="circle" :size="32" bold disabled
 						>
 							今日已签到，明日再来
 						</tui-button>
-						<tui-button
+						<image
+							v-else style="display: block;width: 488rpx;margin: 0 auto;"
+							:src="common.seamingImgUrl('1722928223516-b-go-sign.png')" mode="widthFix"
+							@click="handleSignIn"
+						/>
+						<!-- <tui-button
 							v-else type="warning" width="440rpx" height="82rpx"
 							margin="0 auto" shape="circle" :size="32"
 							bold @click="handleSignIn"
-						>
+							>
 							签到领代金券
-						</tui-button>
+							</tui-button> -->
 					</view>
 					<view
-						style="display: flex;align-items: center;justify-content: center;margin-top: 38rpx;font-size: 26rpx;color: #1e7aea;"
+						style="display: flex;align-items: center;justify-content: center;font-size: 26rpx;color: #1e7aea;"
 						@click="go('/another-tf/another-user/transaction-funds/transaction-operation')"
 					>
 						<text>进入消费金账户</text>
@@ -122,7 +127,7 @@
 									</view>
 								</view>
 								<view style="margin-left: 12rpx;text-align: right;">
-									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #1E7AEA;">
+									<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #EA5C1E;">
 										<text>+{{ item.beeAmount || 0 }}</text>
 									</view>
 								</view>
