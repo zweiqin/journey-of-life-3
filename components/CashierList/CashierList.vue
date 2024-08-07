@@ -16,12 +16,10 @@
 									Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}）
 							</text>
 							<text v-if="(payment.paymentMode === '5')">
-								（余额：{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice ||
-									0)).toFixed(2) }}）
+								（余额：{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice || 0)).toFixed(2) }}）
 							</text>
 							<text v-if="(payment.paymentMode === '8')">
-								（余额：{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice ||
-									0)).toFixed(2) }}）
+								（余额：{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) }}）
 							</text>
 							<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 							<text v-if="(payment.paymentMode === '11')">（余额：{{ voucherPay.userVoucherDeductLimit }}）</text>
@@ -135,6 +133,12 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		// 代金券支付
+		voucherPay: {
+			type: Object,
+			// 所有商品可使用多少代金券抵扣，用户代金券余额，是否可以使用代金券支付，不能使用代金券支付的说明
+			default: () => ({ voucherTotalAll: 0, userVoucherDeductLimit: 0, voucherList: [], isCanVoucher: false, noVoucherText: '无法使用代金券支付' })
+		},
 		// 佣金支付
 		showCommissionPay: {
 			type: Boolean,
@@ -159,12 +163,6 @@ export default {
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
 			default: ''
-		},
-		// 代金券支付
-		voucherPay: {
-			type: Object,
-			// 所有商品可使用多少代金券抵扣，用户代金券余额，是否可以使用代金券支付，不能使用代金券支付的说明
-			default: () => ({ voucherTotalAll: 0, userVoucherDeductLimit: 0, voucherList: [], isCanVoucher: false, noVoucherText: '无法使用代金券支付' })
 		}
 	},
 	data() {
@@ -221,6 +219,28 @@ export default {
 		}
 	},
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
+		showTonglianPay: {
+			handler(newValue, oldValue) {
+				if (newValue) {
+					if (!this.paymentList.find((item) => item.paymentMode === '4')) {
+						this.paymentList.push({
+							label: '通联支付（微信）',
+							paymentMode: '4',
+							icon: require('../../static/images/user/pay/tonglian.png'),
+							disabled: true
+						})
+					}
+					this.handleSetDisable()
+					this.handleNoticeFather()
+				} else {
+					if (this.paymentMode === '4') this.handleSetDisable()
+					if (this.paymentList.find((item) => item.paymentMode === '4')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '4'), 1)
+					this.handleNoticeFather()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		voucherPay: {
 			handler(newValue, oldValue) {
 				if (newValue.voucherTotalAll !== oldValue.voucherTotalAll) {
@@ -234,7 +254,8 @@ export default {
 							})
 						}
 						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
-						if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
+						// if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
+						this.handleSetDisable()
 						this.handleNoticeFather()
 					} else if (!newValue.voucherTotalAll) {
 						if (this.paymentMode === '11') this.handleSetDisable()
@@ -486,28 +507,6 @@ export default {
 			},
 			immediate: false,
 			deep: true
-		},
-		showTonglianPay: {
-			handler(newValue, oldValue) {
-				if (newValue) {
-					if (!this.paymentList.find((item) => item.paymentMode === '4')) {
-						this.paymentList.push({
-							label: '通联支付（微信）',
-							paymentMode: '4',
-							icon: require('../../static/images/user/pay/tonglian.png'),
-							disabled: true
-						})
-					}
-					this.handleSetDisable()
-					this.handleNoticeFather()
-				} else {
-					if (this.paymentMode === '4') this.handleSetDisable()
-					if (this.paymentList.find((item) => item.paymentMode === '4')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '4'), 1)
-					this.handleNoticeFather()
-				}
-			},
-			immediate: false,
-			deep: true
 		}
 	},
 	created() {
@@ -656,65 +655,82 @@ export default {
 		// 根据环境更改可选支付项
 		// eslint-disable-next-line complexity
 		handleSetDisable() {
-			// #ifdef H5
+			// this.paymentMode = ''
+			// if (this.huiShiBaoPay) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '9')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+			// 		if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			// 	}
+			// } else if (this.showTonglianPay) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '4')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+			// 		this.paymentMode = '4'
+			// 	}
+			// } else if (this.voucherPay.voucherTotalAll) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '11')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+			// 		if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
+			// 	}
+			// } else {
+			// 	// #ifdef H5
+			// 	// #endif
+			// 	// #ifdef APP
+			// 	// #endif
+			// 	// #ifdef MP-WEIXIN
+			// 	// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
+			// 	// this.paymentMode = '1'
+			// 	// #endif
+			// 	// #ifdef MP-ALIPAY
+			// 	// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
+			// 	// if(this.flowerInfo.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
+			// 	// this.paymentMode = '2'
+			// 	// #endif
+			// }
+
+			// this.paymentMode = ''
+			// if (this.voucherPay.voucherTotalAll) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '11')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+			// 		if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
+			// 	}
+			// }
+			// if (this.showTonglianPay) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '4')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+			// 		this.paymentMode = '4'
+			// 	}
+			// }
+			// if (this.huiShiBaoPay) {
+			// 	if (this.paymentList.find((item) => item.paymentMode === '9')) {
+			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+			// 		if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+			// 	}
+			// }
+
+			this.paymentMode = ''
 			if (this.huiShiBaoPay) {
-				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
-			} else if (this.showTonglianPay) {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-				this.paymentMode = '4'
-			} else if (this.voucherPay.voucherTotalAll) {
-				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
-				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
-			} else {
-				this.paymentMode = ''
+				if (this.paymentList.find((item) => item.paymentMode === '9')) {
+					this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+					if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
+				}
 			}
-			// #endif
-			// #ifdef APP
-			if (this.huiShiBaoPay) {
-				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
-			} else if (this.showTonglianPay) {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-				this.paymentMode = '4'
-			} else if (this.voucherPay.voucherTotalAll) {
-				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
-				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
-			} else {
-				this.paymentMode = ''
+			if (!this.paymentMode) {
+				if (this.showTonglianPay) {
+					if (this.paymentList.find((item) => item.paymentMode === '4')) {
+						this.paymentList.find((item) => item.paymentMode === '4').disabled = false
+						this.paymentMode = '4'
+					}
+				}
 			}
-			// #endif
-			// #ifdef MP-WEIXIN
-			if (this.huiShiBaoPay) {
-				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
-			} else if (this.showTonglianPay) {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-				this.paymentMode = '4'
-			} else if (this.voucherPay.voucherTotalAll) {
-				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
-				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
-			} else {
-				// this.paymentList.find((item) => item.paymentMode === '1').disabled = false
-				this.paymentMode = '' // 1
+			if (!this.paymentMode) {
+				if (this.voucherPay.voucherTotalAll) {
+					if (this.paymentList.find((item) => item.paymentMode === '11')) {
+						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+						if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
+					}
+				}
 			}
-			// #endif
-			// #ifdef MP-ALIPAY
-			if (this.huiShiBaoPay) {
-				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
-				if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
-			} else if (this.showTonglianPay) {
-				this.paymentList.find((item) => item.paymentMode === '4').disabled = false
-				this.paymentMode = '4'
-			} else if (this.voucherPay.voucherTotalAll) {
-				this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
-				if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
-			} else {
-				// this.paymentList.find((item) => item.paymentMode === '2').disabled = false
-				// if(this.flowerInfo.huabeiChargeType) this.paymentList.find((item) => item.paymentMode === '3').disabled = false
-				this.paymentMode = '' // 2
-			}
-			// #endif
+			console.log(this.paymentMode)
 		},
 
 		// 支付方式改变事件

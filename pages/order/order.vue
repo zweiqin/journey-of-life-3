@@ -565,10 +565,11 @@ export default {
 			}
 		},
 
-		// 是否可以下拉加载
 		canReachBottomLoad() {
 			if (this.currentOrderMode === 'community') {
 				return ![-3, -2].includes(this.currentStatus)
+			} else if (this.currentOrderMode === 'shoppingMall') {
+				return true
 			} else if (this.currentOrderMode === 'businessDistrict') {
 				return true
 			}
