@@ -47,7 +47,7 @@ export default {
 			uni.showLoading({
 				title: '生成中...'
 			})
-			this.qrcodeUrl = `${A_TF_MAIN}/#/another-tf/another-serve/paymentCodeConfirm/index?orderId=${this.orderId}&money=${this.money}&collageId=${this.collageId}`
+			this.qrcodeUrl = `${A_TF_MAIN}/#/pages/jump/jump?type=tempCollection&code=orderId=${this.orderId}~money=${this.money}~collageId=${this.collageId}`
 		},
 		// 完成
 		handleCompleteCode(e) {

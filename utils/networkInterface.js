@@ -738,6 +738,15 @@ export const resolveSubmitOrder = async (params = {}) => {
 		} else {
 			// 检查提交表单
 			if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
+			if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) {
+				if (!settlement.userVoucherDeductLimit) {
+					return uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+				} else if (!settlement.userVoucherDeductLimit) {
+					return uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
+				} else if (payInfo.paymentMode !== 11) {
+					return uni.showToast({ title: '包含兑换专柜商品，只能用代金券支付！', icon: 'none' })
+				}
+			}
 			if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
 			if (!userAddressInfo.receiveId) return uni.showToast({ title: '请选择收货地址', icon: 'none' })
 			// 处理表单

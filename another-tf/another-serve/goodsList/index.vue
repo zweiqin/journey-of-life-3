@@ -198,7 +198,7 @@ input {
 
 .goods-list-container {
 	position: relative;
-	min-height: 100%;
+	min-height: 100vh;
 	background-color: #f8f8f8;
 	box-sizing: border-box;
 
