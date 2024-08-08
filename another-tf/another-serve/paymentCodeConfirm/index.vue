@@ -12,7 +12,7 @@
 		</BeeBack>
 		<view style="padding: 0 30rpx 218rpx;">
 			<ATFOrderAddressSelect
-				v-if="!otherInfo.orderId && settlement.shops && settlement.shops.length && !userAddressInfo.receiveId"
+				v-if="!otherInfo.orderId && settlement.shops && settlement.shops.length && !userAddressInfo.receiveId && (settlement.shopType !== 2)"
 				:data="userAddressInfo" padding="20rpx 0 0"
 			></ATFOrderAddressSelect>
 
@@ -194,6 +194,7 @@ export default {
 			shopPriceIndex: 0,
 			priceInputValue: {},
 			settlement: {
+				shopType: '',
 				userVoucherDeductLimit: 0,
 				voucherTotalAll: 0,
 				voucherList: [],
