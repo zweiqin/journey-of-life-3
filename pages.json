@@ -2349,7 +2349,11 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "团蜂",
     "navigationBarTextStyle": "black",
-    "titleNView": false,
+		"titleNView": false,
+		// "navigationStyle": "default",
+		// "titleNView": {
+		// 	"type": "default"
+		// },
     "app-plus": {
       "animationType": "slide-in-right",
       "animationDuration": 300

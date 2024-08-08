@@ -806,42 +806,4 @@ uni-rich-text img {
 .decoration {
   text-decoration: line-through;
 }
-
-.anonymous {
-  margin-top: 25upx;
-
-  .uni-checkbox-input {
-    border-color: #c5aa7b !important;
-    width: 30upx;
-    height: 30upx;
-  }
-
-  .uni-checkbox-input-checked:before {
-    font-size: 30upx !important;
-  }
-
-  .uni-checkbox-input-checked {
-    background: #c5aa7b;
-  }
-}
-
-.footprint {
-  .itemList {
-    .uni-checkbox-input {
-      border-color: #c5aa7b !important;
-      width: 36upx;
-      height: 36upx;
-      border-radius: 50%;
-      margin-right: 20upx;
-    }
-
-    .uni-checkbox-input-checked:before {
-      font-size: 36upx !important;
-    }
-
-    .uni-checkbox-input-checked {
-      background: #c5aa7b;
-    }
-  }
-}
 </style>

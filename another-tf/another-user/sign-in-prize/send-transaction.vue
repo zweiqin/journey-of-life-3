@@ -7,7 +7,7 @@
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">
 				<view style="position: absolute;top: 2%;right: 3%;width: 360rpx;">
-					<image style="width: 100%" :src="common.seamingImgUrl('1721703581195-gold-money.png')" mode="widthFix" />
+					<image style="width: 100%" :src="common.seamingImgUrl('1722998438111-gold-money.png')" mode="widthFix" />
 				</view>
 				<view style="color: #ffffff;">
 					<view style="display: flex;align-items: center;text-shadow: 0px 1px 0px #048CFB;">
@@ -89,7 +89,7 @@
 						</tui-button>
 						<image
 							v-else style="display: block;width: 488rpx;margin: 0 auto;"
-							:src="common.seamingImgUrl('1722928223516-b-go-sign.png')" mode="widthFix"
+							:src="common.seamingImgUrl('1722998431059-b-go-sign.png')" mode="widthFix"
 							@click="handleSignIn"
 						/>
 						<!-- <tui-button

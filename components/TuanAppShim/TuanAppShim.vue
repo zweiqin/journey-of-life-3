@@ -31,5 +31,14 @@ export default {
 </script>
 
 <style lang="less">
-.tuan-app-shim-container {}
+.tuan-app-shim-container {
+
+	// .uni-navbar {
+	// 	padding-top: var(--status-bar-height);
+	// }
+	// .status_bar {
+	// 	height: var(--status-bar-height);
+	// 	width: 100%;
+	// }
+}
 </style>
