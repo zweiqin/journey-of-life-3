@@ -74,7 +74,7 @@
               <view class="images" v-if="item.url">
                 <block v-for="(image, index) in item.url.split(',')" :key="index">
                   <image v-if="!isVideoSource(image)" @click="handlePreviewSource(index, item.url.split(','), true)" class="image" :src="image"></image>
-                  <view  v-else @click.stop="handlePreviewSource(index, item.url.split(','), false)">
+                  <view v-else @click.stop="handlePreviewSource(index, item.url.split(','), false)">
                     <video :controls="false" :src="image" class="image"></video>
                   </view>
                 </block>
@@ -91,7 +91,7 @@
           <view class="base-info">
             <view class="wrapper">
               <view class="left">
-                <text class="master-name">{{ masterInfo.name }}</text>
+                <text class="master-name">{{ masterInfo.name ? (masterInfo.name + '').slice(0, 1) + '**' : masterInfo.name }}</text>
                 <view class="rate">
                   <tui-icon name="star-fill" :size="24" unit="rpx" color="#ff9554" margin="0"></tui-icon>
                   <text class="rate-text">{{ masterInfo.score || '5.0' }}</text>
@@ -111,7 +111,7 @@
             <image class="avatar-img" :src="masterInfo.headUrl"></image>
           </view>
 
-          <BeeMakePhone v-if="masterInfo.tel" :phone="masterInfo.tel">
+          <BeeMakePhone v-if="masterInfo.tel && (orderDetail.status < 6 || orderDetail.status === 31)" :phone="masterInfo.tel">
             <view class="contect-master">
               <tui-icon name="voipphone" :size="40" unit="rpx" color="#ef530e" margin="0"></tui-icon>
               <text class="text">联系师傅</text>
