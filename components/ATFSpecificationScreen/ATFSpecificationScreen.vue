@@ -110,6 +110,10 @@ export default {
 		btnText: {
 			type: String,
 			default: ''
+		},
+		splicingId: {
+			type: Number,
+			default: 0
 		}
 	},
 
@@ -207,12 +211,12 @@ export default {
 			this.selectedAttr = selectedAttr
 			this.goodsDetail = goodsDetail
 			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
-			if (this.selectedSku.skuId) this.getCurrentSkuName()
+			this.getCurrentSkuName()
 		},
 
 		// 获取选择后的文本显示
 		getCurrentSkuName() {
-			if (this.selectedSku.valueCodes) {
+			if (this.selectedSku.skuId && this.selectedSku.valueCodes) {
 				let str = ''
 				const currentSku = []
 				this.goodsDetail.names.forEach((nameItem) => {
@@ -230,8 +234,11 @@ export default {
 					})
 				})
 				this.spStr = str + this.number + '（数量）'
+				this.currentSku = currentSku
 				return currentSku
 			}
+			this.spStr = '请选择商品规格'
+			this.currentSku = []
 			return []
 		},
 
@@ -246,7 +253,9 @@ export default {
 						const tempGoodsInfo = {
 							selectedSku: this.selectedSku,
 							currentSku: this.currentSku,
-							number: this.number
+							number: this.number,
+							shopId: this.goodsDetail.shopId,
+							productId: this.goodsDetail.productId
 						}
 						if (tempGoodsInfo.number > this.selectedSku.stockNumber) {
 							this.$showToast('该货品库存为' + this.selectedSku.stockNumber)
@@ -256,13 +265,14 @@ export default {
 							uni.showLoading()
 							addCartShoppingApi({
 								skuId: this.selectedSku.skuId,
-								number: this.number
+								number: this.number,
+								splicingId: this.splicingId
 							})
 								.then((res) => {
 									uni.hideLoading()
 									if (this.showSuccessToast) this.ttoast('购物车添加成功')
 									this.showSpecification = false
-									this.$emit('success')
+									this.$emit('success', tempGoodsInfo)
 								})
 								.catch((e) => {
 									uni.hideLoading()

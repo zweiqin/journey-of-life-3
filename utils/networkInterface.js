@@ -1040,13 +1040,13 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 			if (res.data.shops.some((a) => a.skus.some((b) => !(b.counterType === 1)))) {
 				if (isProductPay) { // 如果是付款码商品
 					userAddressInfo = { receiveId: 581 }
-				} else if (settlement.shopType !== 2) {
+				} else if (res.data.shopType !== 2) {
 					if (uni.getStorageSync(T_RECEIVE_ITEM)) {
 						userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
-						userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+						userAddressInfo.receivePhone = (userAddressInfo.receivePhone && userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')) || ''
 					} else if (res.data.receive) {
 						userAddressInfo = res.data.receive || {}
-						userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+						userAddressInfo.receivePhone = (userAddressInfo.receivePhone && userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')) || ''
 					}
 				} else {
 					userAddressInfo = { receiveId: 485 }

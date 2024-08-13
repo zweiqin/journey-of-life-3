@@ -94,10 +94,10 @@
 			<view v-if="payObj.showPayPopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="payObj.pricePay" show
+					:hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
 					:show-commission-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
 					:show-platform-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
 					:show-transaction-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
-					:hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
 					:shop-id-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
 				/>

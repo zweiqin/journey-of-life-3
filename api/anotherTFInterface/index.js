@@ -304,6 +304,17 @@ export const updateNumberCartGoodsApi = (data) => AnotherTFRequest('/cart/update
 // 删除购物车商品
 export const deleteCartGoodsApi = (data) => AnotherTFRequest('/cart/delete', data, 'POST')
 
+// 拼单
+// 发起拼单
+export const updateStartSplicingOrdersApi = (data) => AnotherTFRequest('/splicingOrders/splicingOrders', data)
+
+// 结束拼单
+export const updateEndSplicingOrdersApi = (data) => AnotherTFRequest('/splicingOrders/endSplicingOrders', data)
+
+// 被邀请拼单者进入拼单页面调用
+export const updateInvitedSplicingOrdersApi = (data) => AnotherTFRequest('/splicingOrders/invitedSplicingOrders', data)
+
+// 商家
 // 店铺首页查询，查询店铺详情
 export const getIndexShopDetailApi = (data) => AnotherTFRequest('/shop/getIndex', data)
 

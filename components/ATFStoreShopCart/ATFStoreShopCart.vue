@@ -5,15 +5,15 @@
 				mode="bottom" :visible="visibleDrawer" :mask-z-index="996" :z-index="998"
 				@close="visibleDrawer = false"
 			>
-				<view style="padding-bottom: 102upx;">
-					<view style="padding: 20upx 0;display: flex;align-items: center;justify-content: space-between;">
+				<view style="padding-bottom: 102rpx;">
+					<view style="padding: 20rpx 0;display: flex;align-items: center;justify-content: space-between;">
 						<BeeIcon
 							name="arrowleft" :size="34" color="#222229"
-							style="width: fit-content;padding: 1upx;margin-left: 30upx;border: 1upx solid #eeeeee;border-radius: 50%;line-height: 1;z-index: 1;"
+							style="width: fit-content;padding: 1rpx;margin-left: 30rpx;border: 1rpx solid #eeeeee;border-radius: 50%;line-height: 1;z-index: 1;"
 							@click="visibleDrawer = false"
 						>
 						</BeeIcon>
-						<text style="flex: 1;margin-left: -104upx;text-align: center;font-size: 38upx;font-weight: bold;">商家购物车</text>
+						<text style="flex: 1;margin-left: -104rpx;text-align: center;font-size: 38rpx;font-weight: bold;">商家购物车</text>
 					</view>
 					<ATFShopCartList
 						ref="refATFShopCartList" type="single" :shop-id="brandId" is-sub-delete
@@ -23,20 +23,20 @@
 			</tui-drawer>
 		</view>
 		<view
-			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;"
+			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view
-				style="display: flex;justify-content: flex-end;align-items: flex-end;font-size: 28upx;"
+				style="display: flex;justify-content: flex-end;align-items: flex-end;font-size: 28rpx;"
 				@click="visibleDrawer = !visibleDrawer"
 			>
 				<view
-					style="position: absolute;left: 46upx;bottom: 26upx;padding: 28upx;background-color: #ff973f;border-radius: 50%;"
+					style="position: absolute;left: 46rpx;bottom: 26rpx;padding: 28rpx;background-color: #ff973f;border-radius: 50%;"
 				>
-					<tui-icon name="cart" :size="56" unit="upx" color="#fbfbfb"></tui-icon>
+					<tui-icon name="cart" :size="56" unit="rpx" color="#fbfbfb"></tui-icon>
 				</view>
-				<text style="color: #949494;padding-right: 12upx;">共{{ cartMsgObj.allNum }}件</text>
+				<text style="color: #949494;padding-right: 12rpx;">共{{ cartMsgObj.allNum }}件</text>
 				<text>合计：</text>
-				<text style="padding-right: 20upx;font-weight: bold;font-size: 42upx;color: #ff1111;">
+				<text style="padding-right: 20rpx;font-weight: bold;font-size: 42rpx;color: #ff1111;">
 					￥{{ cartMsgObj.checkMoney }}
 				</text>
 				<view>

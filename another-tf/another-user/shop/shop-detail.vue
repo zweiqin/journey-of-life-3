@@ -291,7 +291,6 @@ export default {
 		handleTabChange(e) {
 			this.currentTab = e.index
 			console.log(this.currentTab)
-			this.initShopCart()
 			// if (e.index === 1) return
 			this.shopGoodsInfo.query.page = 1
 			this.shopGoodsInfo.data = []

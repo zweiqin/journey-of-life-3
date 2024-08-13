@@ -59,12 +59,12 @@
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					show :price-pay="totalPrice"
+					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					:show-tonglian-pay="settlement.shops.every((a) => a.skus.every((b) => !(b.counterType === 1)))"
 					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
-					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
 				/>

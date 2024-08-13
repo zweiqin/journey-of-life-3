@@ -97,7 +97,7 @@ export default {
 				this.$showToast('缺少卡号')
 				return
 			}
-			if (!(/^([1-9]{1})(\d{15}|\d{18})$/).test(data.cardNumber)) {
+			if (!(/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/).test(data.cardNumber)) {
 				this.$showToast('卡号格式错误')
 				return
 			}

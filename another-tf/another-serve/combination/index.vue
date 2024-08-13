@@ -274,7 +274,8 @@ export default {
 			try {
 				await addCartShoppingApi({
 					skuId: this.selectedSku.skuId,
-					number: this.number
+					number: this.number,
+					splicingId: 0
 				})
 				uni.showToast({
 					title: '添加成功',
