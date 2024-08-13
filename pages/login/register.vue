@@ -13,6 +13,11 @@
 						:border-top="false" color="#222229" clearable size="34"
 					></tui-input>
 				</view>
+				<view>
+					<ATFGraphicVerificationCode
+						ref="refATFGraphicVerificationCode"
+					></ATFGraphicVerificationCode>
+				</view>
 				<view class="formItem">
 					<tui-input
 						v-model="registerQuery.verificationCode" placeholder-style="color: #f3c1c4;font-size: 32rpx;"
@@ -128,14 +133,20 @@ export default {
 				this.$refs.refRegisterVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.registerQuery.phone })
-				.then((res) => {
-					this.$refs.refRegisterVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refRegisterVerify.reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
+				getVerifyCodeApi({ phone: this.registerQuery.phone })
+					.then((res) => {
+						this.$refs.refRegisterVerify.success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCode.handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refRegisterVerify.reset()
+					})
+			} else {
+				this.$refs.refRegisterVerify.reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		},
 
 		addAcount() {

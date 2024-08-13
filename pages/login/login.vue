@@ -37,6 +37,13 @@
 					</tui-input>
 				</view>
 				<view v-if="loginType === 'verificationCode'">
+					<view>
+						<ATFGraphicVerificationCode
+							ref="refATFGraphicVerificationCodeLogin"
+							input-padding="26rpx 20rpx 26rpx 0" input-style="color: #f3c1c4;font-size: 32rpx;"
+							input-border-color="#EA5B1D" input-label-color="#ffffff" input-color="#ffffff"
+						></ATFGraphicVerificationCode>
+					</view>
 					<tui-input
 						v-model="loginQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
 						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
@@ -128,6 +135,11 @@
 					v-model="resettingFormData.newPassword" label="确认密码" type="password"
 					placeholder="请再次输入密码"
 				></tui-input>
+				<view>
+					<ATFGraphicVerificationCode
+						ref="refATFGraphicVerificationCodeResetting"
+					></ATFGraphicVerificationCode>
+				</view>
 				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
 					<template #right>
 						<tui-countdown-verify
@@ -201,14 +213,20 @@ export default {
 				this.$refs.refLoginVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.loginQuery.phone })
-				.then((res) => {
-					this.$refs.refLoginVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refLoginVerify.reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCodeLogin && this.$refs.refATFGraphicVerificationCodeLogin.handleVerify()) {
+				getVerifyCodeApi({ phone: this.loginQuery.phone })
+					.then((res) => {
+						this.$refs.refLoginVerify.success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCodeLogin.handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refLoginVerify.reset()
+					})
+			} else {
+				this.$refs.refLoginVerify.reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		},
 		// 点击登录
 		handleLogin() {
@@ -269,14 +287,20 @@ export default {
 				this.$refs.refResettingPasswordVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.resettingFormData.phone })
-				.then((res) => {
-					this.$refs.refResettingPasswordVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refResettingPasswordVerify.reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCodeResetting && this.$refs.refATFGraphicVerificationCodeResetting.handleVerify()) {
+				getVerifyCodeApi({ phone: this.resettingFormData.phone })
+					.then((res) => {
+						this.$refs.refResettingPasswordVerify.success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCodeResetting.handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refResettingPasswordVerify.reset()
+					})
+			} else {
+				this.$refs.refResettingPasswordVerify.reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		},
 		handleResettingPassword(e) {
 			if (e.index === 0) { } else if (e.index === 1) {
