@@ -138,20 +138,19 @@
 
 		<ATFSpecificationScreen
 			ref="refATFSpecificationScreen" :splicing-id="receivedSplicingId"
-			btn-text="加入拼单" @success="handleSelectGoods"
+			btn-text="加入拼单" @success="initShopCart"
 		></ATFSpecificationScreen>
 
-		<view v-if="receivedSplicingId">
-			<ATFSelectedSplicingGoods ref="refATFSelectedSplicingGoods" :splicing-id="receivedSplicingId"></ATFSelectedSplicingGoods>
+		<view v-if="brandDetail.shopId && receivedSplicingId">
+			<ATFStoreShopCart ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"></ATFStoreShopCart>
 		</view>
 
 	</view>
 </template>
 
 <script>
-import { T_SELECTED_SPLICING } from '../../../constant'
 import { mapGetters } from 'vuex'
-import { getIndexShopDetailApi, getShopProductsApi, getShopClassifyApi } from '../../../api/anotherTFInterface'
+import { updateInvitedSplicingOrdersApi, getIndexShopDetailApi, getShopProductsApi, getShopClassifyApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 
 export default {
@@ -184,14 +183,21 @@ export default {
 	onLoad(options) {
 		this.receivedSplicingId = Number(options.splicingId) || 0
 		this.shopId = options.shopId || ''
-		this.getBrandDetail()
-		getShopClassifyApi({
-			shopId: this.shopId
-		}).then((res) => {
-			this.allTabData = this.allTabData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
-			this.allTabList = this.allTabData.map((item) => item.classifyName)
+		updateInvitedSplicingOrdersApi({
+			splicingId: this.receivedSplicingId
+		}).then((result) => {
+			this.getBrandDetail()
+			getShopClassifyApi({
+				shopId: this.shopId
+			}).then((res) => {
+				this.allTabData = this.allTabData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+				this.allTabList = this.allTabData.map((item) => item.classifyName)
+			})
+			this.getShopGoodsTemplate()
 		})
-		this.getShopGoodsTemplate()
+	},
+	onShow() {
+		this.initShopCart()
 	},
 	computed: {
 		...mapGetters([ 'obtainLocationCount' ])
@@ -203,9 +209,9 @@ export default {
 		}
 	},
 	methods: {
-		initSplicingGoods() {
-			if (this.receivedSplicingId && this.$refs.refATFSelectedSplicingGoods) {
-				this.$refs.refATFSelectedSplicingGoods.getSplicingGoodsData()
+		initShopCart() {
+			if (this.brandDetail.shopId && this.$refs.refATFStoreShopCart && this.$refs.refATFStoreShopCart.$refs.refATFShopCartList) {
+				this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
 			}
 		},
 		async getBrandDetail() {
@@ -305,45 +311,6 @@ export default {
 				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume === 1 ? 2 : 1
 			}
 			this.getShopGoodsTemplate()
-		},
-		handleSelectGoods(e) {
-			const selectedSplicing = uni.getStorageSync(T_SELECTED_SPLICING) || []
-			const selectedSplicingItem = selectedSplicing.find((i) => i.splicingId === this.receivedSplicingId)
-			if (selectedSplicingItem) {
-				const selectedGoodsItem = selectedSplicingItem.data.find((i) => i.skuId === e.selectedSku.skuId)
-				if (selectedGoodsItem) {
-					selectedGoodsItem.number = selectedGoodsItem.number + e.number
-				} else {
-					selectedSplicingItem.data.push({
-						selected: 1,
-						shopId: e.shopId,
-						productId: e.productId,
-						skuId: e.selectedSku.skuId,
-						image: e.selectedSku.image,
-						productName: e.productName,
-						value: e.currentSku.map((i) => i.skuText).join('，'),
-						price: e.selectedSku.price,
-						number: e.number
-					})
-				}
-			} else {
-				selectedSplicing.push({
-					splicingId: this.receivedSplicingId,
-					data: [ {
-						selected: 1,
-						shopId: e.shopId,
-						productId: e.productId,
-						skuId: e.selectedSku.skuId,
-						image: e.selectedSku.image,
-						productName: e.productName,
-						value: e.currentSku.map((i) => i.skuText).join('，'),
-						price: e.selectedSku.price,
-						number: e.number
-					} ]
-				})
-			}
-			uni.setStorageSync(T_SELECTED_SPLICING, selectedSplicing)
-			this.initSplicingGoods()
 		}
 	},
 	onReachBottom() {

@@ -632,7 +632,7 @@ export const resolveOrderPackageData = (params = {}) => {
 	uni.showLoading({ mask: true, title: '订单提交中...' })
 	let pointProductIds = ''
 	let sumitType = ''
-	if (skuItemMsgList) {
+	if (skuItemMsgList && skuItemMsgList.length) {
 		if (skuItemMsgList[0].shopDiscountId) {
 			sumitType = 4
 		} else if (skuItemMsgList[0].shopSeckillId) {

@@ -132,7 +132,7 @@ export default {
 				if (this.cartMsgObj.checkNum) {
 					const addCartSelectedList = []
 					for (let i = 0; i < shopCartList.length; i++) {
-						const shopObj = { shopId: shopCartList[i].shopId, skus: [] }
+						const shopObj = { shopId: shopCartList[i].shopId, splicingId: shopCartList[i].splicingId, skus: [] }
 						for (let j = 0; j < shopCartList[i].skus.length; j++) {
 							const theCurrentSku = shopCartList[i].skus[j]
 							if (theCurrentSku.selected) shopObj.skus.push({ ifLogistics: theCurrentSku.ifLogistics, number: theCurrentSku.number, selected: theCurrentSku.selected, skuId: theCurrentSku.skuId })

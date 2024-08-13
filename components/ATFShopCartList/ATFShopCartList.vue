@@ -1,7 +1,7 @@
 <template>
 	<view class="cart-list-box">
-		<view v-if="shopCartList && shopCartList.length">
-			<view v-for="(item, index) in shopCartList" :key="item.shopId" class="itemBox">
+		<view v-if="entireCartList && entireCartList.length">
+			<view v-for="(item, index) in entireCartList" :key="item.shopId" class="itemBox">
 				<view v-if="item.skus.length > 0" class="item" :style="{ maxHeight }">
 					<view class="shop-box">
 						<tui-icon
@@ -31,7 +31,7 @@
 							已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
 						</view>
 					</view>
-					<view v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" class="product-list-box">
+					<view v-for="(skuItem, cIndex) in entireCartList[index].skus" :key="cIndex" class="product-list-box">
 						<view class="pro-item">
 							<tui-icon
 								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
@@ -78,8 +78,8 @@
 		</view>
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore :status="isLoading && isFirstLoading ? 'loading' : ''"></LoadingMore>
-			<view v-if="!isLoading && !shopCartList.length">
-				<slot name="empty" :data="shopCartList">
+			<view v-if="!isLoading && !entireCartList.length">
+				<slot name="empty" :data="entireCartList">
 					<tui-no-data :fixed="false" style="padding-top: 60rpx;">购物车空空如也~</tui-no-data>
 				</slot>
 			</view>
@@ -115,8 +115,10 @@ export default {
 	},
 	data() {
 		return {
+			showType: '',
 			timer: '',
-			shopCartList: [], // 购物车数据
+			entireCartList: [], // 所有购物车数据
+			shopCartList: [], // 商家购物车数据
 			isLoading: true, // 购物车是否为空
 			isFirstLoading: true
 		}
@@ -126,11 +128,17 @@ export default {
 	},
 	methods: {
 		getShopCartListData() {
-			return this.shopCartList
+			if (this.showType === 'all') {
+				return this.entireCartList.map((item) => ({ shopId: item.shopId, splicingId: item.splicingId, skus: item.skus }))
+			} else if (this.showType === 'single') {
+				const tempSkus = []
+				return this.shopCartList.map((item) => ({ shopId: item.shopId, splicingId: item.splicingId, skus: tempSkus }))
+			}
 		},
 		// 获取购物车列表
 		async getShopCartData(type = 'all', cb) {
 			try {
+				this.showType = type
 				this.isLoading = true
 				let res
 				if (type === 'all') {
