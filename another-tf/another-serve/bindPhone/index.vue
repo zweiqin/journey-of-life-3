@@ -22,9 +22,12 @@
 		<view v-else-if="verifyType === 1" class="phoneVerify">
 			<view class="iphoneNum-box flex-row-plus flex-items">
 				<tui-icon :size="50" color="#cccccc" name="mobile" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
-				<view>
-					<input v-model="phone" maxlength="11" type="number" placeholder="请输入您的手机号" />
-				</view>
+				<input v-model="phone" maxlength="11" type="number" placeholder="请输入您的手机号" />
+			</view>
+			<view>
+				<ATFGraphicVerificationCode
+					ref="refATFGraphicVerificationCode" input-padding="26rpx 0 26rpx 88rpx"
+				></ATFGraphicVerificationCode>
 			</view>
 			<view class="mar-top-20">
 				<view class="code-box">
@@ -111,14 +114,20 @@ export default {
 				this.$refs.refBindPhoneVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.phone })
-				.then((res) => {
-					this.$refs.refBindPhoneVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refBindPhoneVerify.reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
+				getVerifyCodeApi({ phone: this.phone })
+					.then((res) => {
+						this.$refs.refBindPhoneVerify.success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCode.handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refBindPhoneVerify.reset()
+					})
+			} else {
+				this.$refs.refBindPhoneVerify.reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		},
 
 		handleBindPhone() {
@@ -243,6 +252,7 @@ export default {
 		padding: 20rpx 30rpx;
 
 		.iphoneNum-box {
+			padding-bottom: 20rpx;
 			border-bottom: 1rpx solid #DDDDDD;
 		}
 

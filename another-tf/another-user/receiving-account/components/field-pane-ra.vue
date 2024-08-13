@@ -24,6 +24,11 @@
 			</view>
 			<view v-else-if="item.field === 'phone'" class="item">
 				<template>
+					<view>
+						<ATFGraphicVerificationCode
+							ref="refATFGraphicVerificationCode" input-padding="0 0 26rpx 0"
+						></ATFGraphicVerificationCode>
+					</view>
 					<view
 						class="input-wrapper" :style="{
 							'flex-direction': item.type === 'textarea' ? 'column' : '',
@@ -165,14 +170,20 @@ export default {
 				this.$refs.refBindBankVerify[0].reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.form.phone })
-				.then((res) => {
-					this.$refs.refBindBankVerify[0].success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refBindBankVerify[0].reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCode[0] && this.$refs.refATFGraphicVerificationCode[0].handleVerify()) {
+				getVerifyCodeApi({ phone: this.form.phone })
+					.then((res) => {
+						this.$refs.refBindBankVerify[0].success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCode[0].handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refBindBankVerify[0].reset()
+					})
+			} else {
+				this.$refs.refBindBankVerify[0].reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		}
 	}
 }

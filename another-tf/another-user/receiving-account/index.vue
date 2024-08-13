@@ -47,6 +47,11 @@
 			@click="handleUnbindBank"
 		>
 			<template #content>
+				<view>
+					<ATFGraphicVerificationCode
+						ref="refATFGraphicVerificationCode"
+					></ATFGraphicVerificationCode>
+				</view>
 				<tui-input v-model="unbindForm.phone" label="手机号" type="number" placeholder="请输入手机号">
 					<template #right>
 						<tui-countdown-verify ref="refUnbindBankVerify" width="144rpx" @send="handleSendVerify"></tui-countdown-verify>
@@ -125,14 +130,20 @@ export default {
 				this.$refs.refUnbindBankVerify.reset()
 				return this.$showToast('请输入正确的手机号')
 			}
-			getVerifyCodeApi({ phone: this.unbindForm.phone })
-				.then((res) => {
-					this.$refs.refUnbindBankVerify.success()
-					this.$showToast('发送成功，请注意查看手机短信')
-				})
-				.catch(() => {
-					this.$refs.refUnbindBankVerify.reset()
-				})
+			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
+				getVerifyCodeApi({ phone: this.unbindForm.phone })
+					.then((res) => {
+						this.$refs.refUnbindBankVerify.success()
+						this.$showToast('发送成功，请注意查看手机短信')
+						this.$refs.refATFGraphicVerificationCode.handleResetData()
+					})
+					.catch(() => {
+						this.$refs.refUnbindBankVerify.reset()
+					})
+			} else {
+				this.$refs.refUnbindBankVerify.reset()
+				return this.$showToast('请输入正确的图文码')
+			}
 		}
 	}
 }

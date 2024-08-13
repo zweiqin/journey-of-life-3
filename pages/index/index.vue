@@ -244,7 +244,7 @@ export default {
 
   //    触底加载
   onReachBottom() {
-    if(this.allTotal >= this.shopList.length){
+    if(this.shopList.length >= this.allTotal){
       uni.showToast({ title: "没有更多数据了", icon: "none", duration: 2000 });
       return;
     }

@@ -1,34 +1,40 @@
 <template>
-	<!-- 登录 -->
-	<view class="container">
-		<JHeader title="注销账户手机认证" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
-		<view class="iphoneNum-box flex-row-plus flex-items">
-			<view style="margin-right: 30rpx">
-				<tui-icon :size="50" color="#cccccc" name="mobile" unit="upx" margin="0"></tui-icon>
-			</view>
-			<view>
-				<input
-					v-model="userInfo.phone" maxlength="11" placeholder-class="iphoneNum-input" type="number"
-					disabled
-					placeholder="请输入您的手机号"
-				/>
-			</view>
-		</view>
-		<view class="flex-row-plus mar-top-20 flex-center">
-			<view class="code-box">
+	<view class="unsubscribe-code-container">
+		<JHeader title="注销账户手机认证" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<view style="padding: 20rpx 30rpx;">
+			<view class="iphoneNum-box flex-row-plus flex-items">
 				<view style="margin-right: 30rpx">
-					<tui-icon :size="50" color="#cccccc" name="shield" unit="upx" margin="0"></tui-icon>
+					<tui-icon :size="50" color="#cccccc" name="mobile" unit="rpx" margin="0"></tui-icon>
 				</view>
 				<view>
-					<input v-model="code" maxlength="6" placeholder-class="codeNum-input" placeholder="请输入验证码" />
+					<input
+						v-model="userInfo.phone" maxlength="11" placeholder-class="iphoneNum-input" type="number"
+						disabled
+						placeholder="请输入您的手机号"
+					/>
 				</view>
 			</view>
-			<view :class="disabled === true ? 'on' : ''" :disabled="disabled" class="getcode" @click="codede">
-				{{ text }}
+			<view>
+				<ATFGraphicVerificationCode
+					ref="refATFGraphicVerificationCode" input-padding="26rpx 0 26rpx 88rpx"
+				></ATFGraphicVerificationCode>
 			</view>
-		</view>
-		<view class="mar-top-60">
-			<view class="registerBut mar-top-100" @click="unsubscribe">立即注销</view>
+			<view class="flex-row-plus mar-top-20">
+				<view class="code-box">
+					<view style="margin-right: 30rpx">
+						<tui-icon :size="50" color="#cccccc" name="shield" unit="rpx" margin="0"></tui-icon>
+					</view>
+					<view>
+						<input v-model="code" maxlength="6" placeholder-class="codeNum-input" placeholder="请输入验证码" />
+					</view>
+				</view>
+				<view :class="disabled === true ? 'on' : ''" :disabled="disabled" class="getcode" @click="handleSendVerify">
+					{{ text }}
+				</view>
+			</view>
+			<view class="mar-top-60">
+				<view class="registerBut mar-top-100" @click="unsubscribe">立即注销</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -52,17 +58,17 @@ export default {
 		this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
 	},
 	methods: {
-
 		// 获取验证码
-		codede() {
-			this.getVerify()
-		},
-		getVerify() {
-			getVerifyCodeApi({
-				phone: this.userInfo.phone
-			}).then((res) => {
-				this.sendCode()
-			})
+		handleSendVerify() {
+			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
+				getVerifyCodeApi({
+					phone: this.userInfo.phone
+				}).then((res) => {
+					this.sendCode()
+				})
+			} else {
+				return this.$showToast('请输入正确的图文码')
+			}
 		},
 		// 账户注销
 		unsubscribe() {
@@ -93,20 +99,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
+.unsubscribe-code-container {
 	background-color: #FFFFFF;
 	min-height: 100vh;
+	box-sizing: border-box;
 
 	.iphoneNum-box {
-		margin: 100upx auto 0;
+		padding: 100rpx 0 20rpx;
 		border-bottom: 1rpx solid #DDDDDD;
-		height: 100rpx;
-		width: 600rpx;
 
 		.iphoneNum-input {
 			color: #999999;
 			font-size: 28rpx;
-			font-weight: 400;
 		}
 	}
 
@@ -145,7 +149,7 @@ export default {
 		width: 600rpx;
 		text-align: center;
 		line-height: 100rpx;
-		margin: 30upx auto 0;
+		margin: 30rpx auto 0;
 	}
 }
 </style>
