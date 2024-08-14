@@ -126,7 +126,7 @@
 import { communityOrderStatusList, communityAppendOrderNavs, communityCommentOrder, businessSubNavs, shoppingSubNavs } from './config'
 import { getEndOrderListApi, getTwicePayOrderListApi } from '../../api/community-center'
 import { getAllOrderListApi, updateOrderTryConfirmForBanziApi } from '../../api/anotherTFInterface'
-import { USER_ID, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO, IS_SWITCH_ORDER } from '../../constant'
+import { USER_ID, USER_INFO, T_PAY_ORDER, T_COMMUNITY_ORDER_NO, ENTERPRISE_ORDERS_NO, IS_SWITCH_ORDER } from '../../constant'
 import TuanUnLoginPage from './components/TuanUnLoginPage.vue'
 import OrderHeader from './components/OrderHeader.vue'
 import CommunityOrderPane from './components/CommunityOrderPane.vue'
@@ -269,6 +269,11 @@ export default {
 
 	onShow() {
 		this.userId = uni.getStorageSync(USER_ID) || ''
+		this.userInfo = uni.getStorageSync(USER_INFO) || {}
+		if(!this.userInfo.phone){
+      this.$store.dispatch('auth/logoutAction')
+			return uni.navigateTo({url: '/pages/login//login'})
+		}
 		if (getApp().globalData.orderTypeShow) {
 			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
 			getApp().globalData.orderTypeShow = ''
@@ -383,7 +388,7 @@ export default {
 					this.loadingStatus = 'loading'
 					const res = await getEndOrderListApi({
 						...this.communityQueryInfo,
-						userId: this.userId
+						phone: this.userInfo.phone
 					})
 					if (res.statusCode === 20000) {
 						this.communityOrderList.push(...res.data)
