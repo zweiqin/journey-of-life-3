@@ -197,7 +197,22 @@ export default {
 		handleSettlementTap() {
 			if (this.$refs.refATFShopCartList) {
 				const shopCartList = this.$refs.refATFShopCartList.getShopCartListData()
-				if (this.cartMsgObj.checkNum) {
+				const shopCartSplicingItem = shopCartList.find((i) => i.splicingId)
+				if (shopCartList.find((i) => i.splicingId)) {
+					uni.showModal({
+						title: '温馨提示',
+						content: '系统检测到您的购物车存在拼单，请先结算或取消该拼单',
+						confirmText: '现在处理',
+						cancelText: '暂不填写',
+						success: (res) => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: `/another-tf/another-user/shop/shop-detail?shopId=${shopCartSplicingItem.shopId}`
+								})
+							}
+						}
+					})
+				} else if (this.cartMsgObj.checkNum) {
 					const addCartSelectedList = []
 					for (let i = 0; i < shopCartList.length; i++) {
 						const shopObj = { shopId: shopCartList[i].shopId, splicingId: shopCartList[i].splicingId, skus: [] }

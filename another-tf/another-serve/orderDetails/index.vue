@@ -527,6 +527,7 @@ export default {
 				shopName: '',
 				orderFormid: null,
 				createTime: null,
+				price: 0,
 				orderPrice: 0,
 				logisticsPrice: 0,
 				discountPrice: 0,
@@ -794,7 +795,7 @@ export default {
 		async handleShopGoPay() {
 			await handleDoPay({
 				collageId: this.dataList.collageId,
-				money: this.dataList.orderPrice,
+				money: this.dataList.price,
 				orderId: this.dataList.orderId,
 				orderFormid: this.dataList.orderFormid,
 				orderSn: this.dataList.orderFormid,

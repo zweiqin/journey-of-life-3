@@ -1,38 +1,159 @@
 <template>
-	<view class="cart-list-box">
-		<view v-if="entireCartList && entireCartList.length">
-			<view v-for="(item, index) in entireCartList" :key="item.shopId" class="itemBox">
-				<view v-if="item.skus.length > 0" class="item" :style="{ maxHeight }">
-					<view class="shop-box">
-						<tui-icon
-							v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
-							color="#c5aa7b"
-							margin="40rpx" @click="handleSelectShop(index, 0)"
-						></tui-icon>
-						<tui-icon
-							v-else name="circle" :size="40" unit="rpx"
-							color="#cccccc" margin="40rpx"
-							@click="handleSelectShop(index, 1)"
-						></tui-icon>
-						<view class="shop-name-box" @click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
+	<view class="shop-cart-list-container">
+		<view v-if="shopCartList && shopCartList.length">
+			<view v-for="(item, index) in shopCartList" :key="item.shopId">
+				<view v-if="(type === 'single') && shopCartList[0].splicingId">
+					<view
+						v-if="item.skus && item.skus.length"
+						style="overflow-y: auto;" :style="{ maxHeight }"
+					>
+						<view
+							style="margin-top: 5rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;line-height: 1;"
+							@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
+						>
 							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
-							<text class="shop-name">{{ item.shopName }}</text>
+							<text
+								style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
+							>
+								{{ item.shopName }}
+							</text>
 							<tui-icon
-								v-if="isToShop"
-								name="arrowright" :size="30" unit="rpx" color="#999999"
-								margin="0 0 0 30rpx"
-								class="arrow-right-img"
+								v-if="isToShop" name="arrowright" :size="32" unit="rpx"
+								color="#999999"
+								margin="0 0 0 16rpx"
 							></tui-icon>
 						</view>
-					</view>
-					<view v-if="item.currentRules && item.currentRules.number" class="rulesBox flex-items">
-						<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
-						<view class="fs24 font-color-C83732">
-							已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+						<view
+							v-if="item.currentRules && item.currentRules.number"
+							style="display: flex;align-items: center;height: 86rpx;background: #F9F6F1;padding: 0 20rpx;"
+						>
+							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
+							<view style="font-size: 24rpx;color: #C83732;">
+								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+							</view>
 						</view>
 					</view>
-					<view v-for="(skuItem, cIndex) in entireCartList[index].skus" :key="cIndex" class="product-list-box">
-						<view class="pro-item">
+					<view>
+						<view
+							v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
+						>
+							<view>{{ section.name }}</view>
+							<view>
+								<view
+									v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
+								>
+									<view style="display: flex;align-items: center;">
+										<tui-icon
+											v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
+											color="#c5aa7b"
+											margin="40rpx" @click="handleSelectSku(index, cIndex, 0)"
+										></tui-icon>
+										<tui-icon
+											v-else name="circle" :size="40" unit="rpx"
+											color="#cccccc" margin="40rpx"
+											@click="handleSelectSku(index, cIndex, 1)"
+										></tui-icon>
+										<view
+											style="flex: 1;display: flex;padding: 30rpx 30rpx 30rpx 0;"
+											@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
+										>
+											<image
+												:src="common.seamingImgUrl(skuItem.image)"
+												style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin-right: 30rpx;"
+												class="pro-img default-img"
+											></image>
+											<view
+												style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+											>
+												<view
+													style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+												>
+													{{ skuItem.productName }}
+												</view>
+												<view
+													style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
+												>
+													<text v-if="skuItem.value">{{ skuItem.value }}</text>
+													<text v-else>默认规格</text>
+												</view>
+												<view style="display: flex;align-items: center;justify-content: space-between;">
+													<view style="font-size: 36rpx;color: #333333;">
+														<text style="font-size: 24rpx;">￥</text>
+														<text>{{ skuItem.price }}</text>
+													</view>
+													<view
+														style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+													>
+														<view
+															style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+															@click.stop="handleSubSkuNumber(index, cIndex)"
+														>
+															-
+														</view>
+														<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
+														<view
+															style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+															@click.stop="handleAddSkuNumber(index, cIndex)"
+														>
+															+
+														</view>
+													</view>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else>
+					<view
+						v-if="item.skus && item.skus.length"
+						style="overflow-y: auto;" :style="{ maxHeight }"
+					>
+						<view style="margin-top: 5rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;">
+							<tui-icon
+								v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
+								color="#c5aa7b" margin="40rpx"
+								@click="handleSelectShop(index, 0)"
+							></tui-icon>
+							<tui-icon
+								v-else name="circle" :size="40" unit="rpx"
+								color="#cccccc" margin="40rpx"
+								@click="handleSelectShop(index, 1)"
+							></tui-icon>
+							<view
+								style="display: flex;align-items: center;line-height: 1;"
+								@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
+							>
+								<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+								<text
+									style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
+								>
+									{{ item.shopName }}
+								</text>
+								<tui-icon
+									v-if="isToShop" name="arrowright" :size="32" unit="rpx"
+									color="#999999"
+									margin="0 0 0 16rpx"
+								></tui-icon>
+							</view>
+						</view>
+						<view
+							v-if="item.currentRules && item.currentRules.number"
+							style="display: flex;align-items: center;height: 86rpx;background: #F9F6F1;padding: 0 20rpx;"
+						>
+							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
+							<view style="font-size: 24rpx;color: #C83732;">
+								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+							</view>
+						</view>
+					</view>
+					<view
+						v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" style="padding: 8rpx 0;"
+					>
+						<view style="display: flex;align-items: center;">
 							<tui-icon
 								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
 								color="#c5aa7b"
@@ -44,29 +165,49 @@
 								@click="handleSelectSku(index, cIndex, 1)"
 							></tui-icon>
 							<view
-								class="pro-r"
+								style="flex: 1;display: flex;padding: 30rpx 30rpx 30rpx 0;"
 								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
 							>
-								<image :src="common.seamingImgUrl(skuItem.image)" class="pro-img default-img"></image>
-								<view class="pro-r-r">
-									<view class="pro-name">{{ skuItem.productName }}</view>
-									<view class="sku-box">
+								<image
+									:src="common.seamingImgUrl(skuItem.image)"
+									style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin-right: 30rpx;"
+									class="pro-img default-img"
+								></image>
+								<view
+									style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+								>
+									<view
+										style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+									>
+										{{ skuItem.productName }}
+									</view>
+									<view
+										style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
+									>
 										<text v-if="skuItem.value">{{ skuItem.value }}</text>
 										<text v-else>默认规格</text>
 									</view>
-									<view class="pro-price-num-box">
-										<view class="pro-price-box">
-											<text class="fuhao">￥</text>
+									<view style="display: flex;align-items: center;justify-content: space-between;">
+										<view style="font-size: 36rpx;color: #333333;">
+											<text style="font-size: 24rpx;">￥</text>
 											<text>{{ skuItem.price }}</text>
 										</view>
-										<view class="pro-num-box">
-											<text class="num-btn r" @click.stop="handleSubSkuNumber(index, cIndex)">
+										<view
+											style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+										>
+											<view
+												style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+												@click.stop="handleSubSkuNumber(index, cIndex)"
+											>
 												-
-											</text>
-											<text class="num">{{ skuItem.number }}</text>
-											<text class="num-btn l" @click.stop="handleAddSkuNumber(index, cIndex)">
+											</view>
+											<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
+											<view
+												style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+												@click.stop="handleAddSkuNumber(index, cIndex)"
+											>
 												+
-											</text>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -78,8 +219,8 @@
 		</view>
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore :status="isLoading && isFirstLoading ? 'loading' : ''"></LoadingMore>
-			<view v-if="!isLoading && !entireCartList.length">
-				<slot name="empty" :data="entireCartList">
+			<view v-if="!isLoading && !shopCartList.length">
+				<slot name="empty" :data="shopCartList">
 					<tui-no-data :fixed="false" style="padding-top: 60rpx;">购物车空空如也~</tui-no-data>
 				</slot>
 			</view>
@@ -115,10 +256,8 @@ export default {
 	},
 	data() {
 		return {
-			showType: '',
 			timer: '',
-			entireCartList: [], // 所有购物车数据
-			shopCartList: [], // 商家购物车数据
+			shopCartList: [], // 购物车数据，每个元素的skus必有值（已对数据处理）。但在商家购物车的情况下，有拼单就会cartUserList
 			isLoading: true, // 购物车是否为空
 			isFirstLoading: true
 		}
@@ -128,48 +267,368 @@ export default {
 	},
 	methods: {
 		getShopCartListData() {
-			if (this.showType === 'all') {
-				return this.entireCartList.map((item) => ({ shopId: item.shopId, splicingId: item.splicingId, skus: item.skus }))
-			} else if (this.showType === 'single') {
-				const tempSkus = []
-				return this.shopCartList.map((item) => ({ shopId: item.shopId, splicingId: item.splicingId, skus: tempSkus }))
-			}
+			return this.shopCartList
 		},
 		// 获取购物车列表
 		async getShopCartData(type = 'all', cb) {
 			try {
-				this.showType = type
 				this.isLoading = true
 				let res
 				if (type === 'all') {
 					res = await getCartListApi({})
-				} else if (type === 'single') {
-					res = await getShopCartApi({ shopId: this.shopId })
-				}
-				// const emptySkuShopArray = [] // sku为空的山沟
-				res.data.forEach((shopObj, shopIndex) => {
-					shopObj.priceNumber = 0
-					shopObj.rules = []
-					shopObj.currentRules = {}
-					shopObj.ids = 0
-					// 处理下架商品
-					for (let i = shopObj.skus.length - 1; i >= 0; i--) {
-						if (shopObj.skus[i].shelveState === 0) { // shelveState是否上架
-							shopObj.skus.splice(i, 1) // 删掉下架商品 // todo 失效商品
-							continue
-						}
-						if (shopObj.skus[i].activityType === 6 && shopObj.skus[i].selected === 1) {
-							shopObj.priceNumber += shopObj.skus[i].number
-						}
-					}
-					// 根据店铺索引获取规则
-					this.getDataGroup(shopObj).then((result) => {
-						shopObj.rules = result.data ? result.data[0].rules : {}
-						this.handleSetGroupGood(shopIndex)
+					res.data.forEach((shopObj) => {
+						shopObj.priceNumber = 0
+						shopObj.rules = []
+						shopObj.currentRules = {}
+						shopObj.ids = 0
+						// 处理下架商品
+						shopObj.skus.forEach((section, i) => {
+							if (section.shelveState === 0) { // shelveState是否上架
+								shopObj.skus.splice(i, 1) // 删掉下架商品
+								return
+							}
+							if (section.activityType === 6 && section.selected === 1) {
+								shopObj.priceNumber += section.number
+							}
+						})
 					})
-					// shopObj.skus.length === 0 ? emptySkuShopArray.push(shopObj) : undefined
+				} else if (type === 'single') {
+					// res = await getShopCartApi({ shopId: this.shopId })
+					res = { data: [
+						{
+							'shopId': 268,
+							'shopName': '百丈园（龙江店）',
+							'selected': 1,
+							'splicingId': 4,
+							'skus': [],
+							'cartUserList': [
+								{
+									'buyerUserId': 3840,
+									'name': 'MJ82794',
+									'phone': '13000000019',
+									'headImage': 'https://zk-cereshop.oss-cn-shenzhen.aliyuncs.com/zkthink/2022-01-11/6a05d44b9e0947a2add5a37c94953750_default_head_img.png',
+									'cartSkuList': [
+										{
+											'shopId': 268,
+											'commentId': 0,
+											'ifAdd': 0,
+											'productId': 12431,
+											'classifyId': 0,
+											'skuId': 333497,
+											'productName': '七彩捞鸡',
+											'originalPrice': 138.00,
+											'price': 128.00,
+											'actualPrice': 0,
+											'weight': 0.00,
+											'ifCredit': 0,
+											'creditLimit': 0,
+											'number': 1,
+											'stockNumber': 994,
+											'total': 128.00,
+											'image': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1712653433041-七彩捞鸡.png',
+											'value': '一只',
+											'values': [
+												'一只'
+											],
+											'ifLogistics': 0,
+											'ifOversold': 0,
+											'selected': 1,
+											'activityType': 0,
+											'ifAfter': 0,
+											'distribution': 0,
+											'afterState': 0,
+											'shelveState': 1,
+											'shopGroupWorkId': 0,
+											'shopSeckillId': 0,
+											'shopDiscountId': 0,
+											'platformCurrencyId': 0,
+											'platformComposeId': 0,
+											'platformSeckillId': 0,
+											'platformDiscountId': 0,
+											'useMember': false,
+											'priceId': 0,
+											'composeId': 0,
+											'composeIdList': [],
+											'sceneId': 0,
+											'map': {
+												'单款项': {
+													'valueCodes': '',
+													'skuId': 333497,
+													'originalPrice': 138.00,
+													'price': 128.00,
+													'salePrice': 0,
+													'image': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1712653433041-七彩捞鸡.png',
+													'stockNumber': 994,
+													'activityType': 0,
+													'shopGroupWorkId': 0,
+													'shopSeckillId': 0,
+													'shopDiscountId': 0,
+													'platformCurrencyId': 0,
+													'platformComposeId': 0,
+													'platformSeckillId': 0,
+													'platformDiscountId': 0,
+													'startTime': '',
+													'endTime': '',
+													'time': 10000,
+													'ifEnable': 0,
+													'person': 0,
+													'collageOrders': [],
+													'total': 0,
+													'beeCoin': 0,
+													'voucherId': 0,
+													'voucherPrice': 0,
+													'presenterVoucher': 0,
+													'platformGuidePrice': 0,
+													'platformBasePrice': 0,
+													'manufacturerBasePrice': 0,
+													'manufacturerGuidePrice': 0
+												}
+											},
+											'ifCouponAdd': 1,
+											'markTools': [],
+											'shopMarkTools': [],
+											'activityId': 0,
+											'useCredit': 0,
+											'useCreditAmount': 0,
+											'logisticsPrice': 0,
+											'pricingPrice': 0,
+											'discountPrice': 0,
+											'shopDiscountPrice': 0,
+											'buyerCouponId': 0,
+											'buyerShopCouponId': 0,
+											'voucherPrice': 0,
+											'voucherId': 0,
+											'orderType': 0,
+											'productPay': 0,
+											'splicingId': 4,
+											'presenterVoucher': 0,
+											'banziSkuId': 0,
+											'buyerUserId': 3840,
+											'userList': [],
+											'sku': ''
+										}
+									]
+								},
+								{
+									'buyerUserId': 2123,
+									'name': '大写',
+									'phone': '13539102414',
+									'headImage': 'https://thirdwx.qlogo.cn/mmopen/vi_32/uiaAQ1NMsxEAes03wBXje2pARrqGMAvdO69AkLOcGsICt8YB9EF0OCjEgKwaicVVLtECqyU8Occj8x2KJQCzko5PJUFSCMickn9sbH6ThIr0uc/132',
+									'cartSkuList': [
+										{
+											'shopId': 268,
+											'commentId': 0,
+											'ifAdd': 0,
+											'productId': 12431,
+											'classifyId': 0,
+											'skuId': 333497,
+											'productName': '七彩捞鸡',
+											'originalPrice': 138.00,
+											'price': 128.00,
+											'actualPrice': 0,
+											'weight': 0.00,
+											'ifCredit': 0,
+											'creditLimit': 0,
+											'number': 1,
+											'stockNumber': 994,
+											'total': 128.00,
+											'image': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1712653433041-七彩捞鸡.png',
+											'value': '一只',
+											'values': [
+												'一只'
+											],
+											'ifLogistics': 0,
+											'ifOversold': 0,
+											'selected': 1,
+											'activityType': 0,
+											'ifAfter': 0,
+											'distribution': 0,
+											'afterState': 0,
+											'shelveState': 1,
+											'shopGroupWorkId': 0,
+											'shopSeckillId': 0,
+											'shopDiscountId': 0,
+											'platformCurrencyId': 0,
+											'platformComposeId': 0,
+											'platformSeckillId': 0,
+											'platformDiscountId': 0,
+											'useMember': false,
+											'priceId': 0,
+											'composeId': 0,
+											'composeIdList': [],
+											'sceneId': 0,
+											'map': {},
+											'ifCouponAdd': 1,
+											'markTools': [],
+											'shopMarkTools': [],
+											'activityId': 0,
+											'useCredit': 0,
+											'useCreditAmount': 0,
+											'logisticsPrice': 0,
+											'pricingPrice': 0,
+											'discountPrice': 0,
+											'shopDiscountPrice': 0,
+											'buyerCouponId': 0,
+											'buyerShopCouponId': 0,
+											'voucherPrice': 0,
+											'voucherId': 0,
+											'orderType': 0,
+											'productPay': 0,
+											'splicingId': 4,
+											'presenterVoucher': 0,
+											'banziSkuId': 0,
+											'buyerUserId': 2123,
+											'userList': [],
+											'sku': ''
+										},
+										{
+											'shopId': 268,
+											'commentId': 0,
+											'ifAdd': 0,
+											'productId': 12433,
+											'classifyId': 0,
+											'skuId': 333499,
+											'productName': '生坑皖鱼',
+											'originalPrice': 98.00,
+											'price': 88.00,
+											'actualPrice': 0,
+											'weight': 0.00,
+											'ifCredit': 0,
+											'creditLimit': 0,
+											'number': 1,
+											'stockNumber': 999,
+											'total': 88.00,
+											'image': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1712654538021-生坑皖鱼.png',
+											'value': '一条',
+											'values': [
+												'一条'
+											],
+											'ifLogistics': 0,
+											'ifOversold': 0,
+											'selected': 1,
+											'activityType': 0,
+											'ifAfter': 0,
+											'distribution': 0,
+											'afterState': 0,
+											'shelveState': 1,
+											'shopGroupWorkId': 0,
+											'shopSeckillId': 0,
+											'shopDiscountId': 0,
+											'platformCurrencyId': 0,
+											'platformComposeId': 0,
+											'platformSeckillId': 0,
+											'platformDiscountId': 0,
+											'useMember': false,
+											'priceId': 0,
+											'composeId': 0,
+											'composeIdList': [],
+											'sceneId': 0,
+											'map': {
+												'单款项': {
+													'valueCodes': '',
+													'skuId': 333499,
+													'originalPrice': 98.00,
+													'price': 88.00,
+													'salePrice': 0,
+													'image': 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/1712654538021-生坑皖鱼.png',
+													'stockNumber': 999,
+													'activityType': 0,
+													'shopGroupWorkId': 0,
+													'shopSeckillId': 0,
+													'shopDiscountId': 0,
+													'platformCurrencyId': 0,
+													'platformComposeId': 0,
+													'platformSeckillId': 0,
+													'platformDiscountId': 0,
+													'startTime': '',
+													'endTime': '',
+													'time': 10000,
+													'ifEnable': 0,
+													'person': 0,
+													'collageOrders': [],
+													'total': 0,
+													'beeCoin': 0,
+													'voucherId': 0,
+													'voucherPrice': 0,
+													'presenterVoucher': 0,
+													'platformGuidePrice': 0,
+													'platformBasePrice': 0,
+													'manufacturerBasePrice': 0,
+													'manufacturerGuidePrice': 0
+												}
+											},
+											'ifCouponAdd': 1,
+											'markTools': [],
+											'shopMarkTools': [],
+											'activityId': 0,
+											'useCredit': 0,
+											'useCreditAmount': 0,
+											'logisticsPrice': 0,
+											'pricingPrice': 0,
+											'discountPrice': 0,
+											'shopDiscountPrice': 0,
+											'buyerCouponId': 0,
+											'buyerShopCouponId': 0,
+											'voucherPrice': 0,
+											'voucherId': 0,
+											'orderType': 0,
+											'productPay': 0,
+											'splicingId': 4,
+											'presenterVoucher': 0,
+											'banziSkuId': 0,
+											'buyerUserId': 2123,
+											'userList': [],
+											'sku': ''
+										}
+									]
+								}
+							]
+						}
+					] }
+					res.data.forEach((shopObj) => {
+						shopObj.priceNumber = 0
+						shopObj.rules = []
+						shopObj.currentRules = {}
+						shopObj.ids = 0
+						shopObj.cartUserList.forEach((section) => {
+							section.cartSkuList.forEach((part, i) => {
+								if (part.shelveState === 0) {
+									shopObj.skus.splice(i, 1)
+									return
+								}
+								if (part.activityType === 6 && part.selected === 1) {
+									shopObj.priceNumber += part.number
+								}
+							})
+						})
+						// 处理skus数据
+						const tempSkus = []
+						shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
+							.forEach((section) => {
+								const tempSkuItem = tempSkus.find((i) => i.skuId === section.skuId)
+								if (tempSkuItem) {
+									tempSkuItem.number = tempSkuItem.number + section.number
+									tempSkuItem.total = section.price * section.number
+								} else {
+									tempSkus.push(JSON.parse(JSON.stringify(section)))
+								}
+							})
+						shopObj.skus = tempSkus
+					})
+				}
+				res.data.forEach((shopObj, shopIndex) => {
+					if (shopObj.ids) { // 根据店铺索引获取规则。获取组合定价
+						getPricesCanvasApi({
+							shopId: shopObj.shopId,
+							ids: shopObj.ids,
+							page: 1,
+							pageSize: 10
+						}).then((result) => {
+							shopObj.rules = result.data ? result.data[0].rules : {}
+							this.handleSetGroupGood(shopIndex)
+						})
+					}
 				})
-				// emptySkuShopArray.length == res.data.length?
 				this.shopCartList = res.data.filter((item) => item.skus && item.skus.length)
 				this.$emit('update-msg', this.shopCartList)
 			} catch (e) {
@@ -180,32 +639,6 @@ export default {
 				this.isFirstLoading = false
 				cb && typeof cb === 'function' && cb()
 			}
-		},
-
-		/**
-		 * 获取组合定价
-		 * @param item
-		 * @return {Promise<unknown>}
-		 */
-
-		getDataGroup(item) {
-			return new Promise((resolve, reject) => {
-				if (item.ids) {
-					getPricesCanvasApi({
-						shopId: item.shopId,
-						ids: item.ids,
-						page: 1,
-						pageSize: 10
-					}).then((res) => {
-						resolve(res)
-					})
-						.catch((e) => {
-							reject(e)
-						})
-				} else {
-					resolve([])
-				}
-			})
 		},
 
 		/**
@@ -392,191 +825,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cart-list-box {
+.shop-cart-list-container {
 	box-sizing: border-box;
-
-	.itemBox {
-		.item {
-			background: #fff;
-			border-bottom: 16rpx solid #F8F9FA;
-			overflow-y: auto;
-
-			.shop-box {
-				margin-top: 5rpx;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				border-bottom: 1px solid #eee;
-				position: relative;
-
-				.shop-name-box {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-
-					.shop-img {
-						width: 36rpx;
-						height: 36rpx;
-						margin-right: 10rpx;
-					}
-
-					.shop-name {
-						font-size: 30rpx;
-						color: #333;
-						font-weight: bold;
-						display: inline-block;
-						margin-left: 10rpx;
-					}
-
-					.arrow-right-img {
-						position: absolute;
-						right: 30rpx;
-					}
-				}
-			}
-
-			.rulesBox {
-				height: 86rpx;
-				background: #F9F6F1;
-				padding: 0 20rpx;
-
-				image {
-					width: 126rpx;
-					height: 46rpx;
-				}
-			}
-
-			.product-list-box {
-				margin: 8rpx 0;
-
-				.pro-item {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-
-					.pro-r {
-						flex: 1;
-						border-bottom: 1px solid #eee;
-						display: flex;
-						flex-direction: row;
-						padding: 30rpx 30rpx 30rpx 0;
-						box-sizing: border-box;
-						overflow: hidden;
-
-						.pro-img {
-							width: 180rpx;
-							height: 180rpx;
-							border-radius: 10rpx;
-							margin-right: 30rpx;
-						}
-
-						.pro-r-r {
-							flex: 1;
-							font-size: 26rpx;
-							color: #333;
-							overflow: hidden;
-							display: flex;
-							flex-direction: column;
-							justify-content: space-between;
-
-							.pro-name {
-								height: 66rpx;
-								line-height: 33rpx;
-								display: -webkit-box;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								word-break: break-all;
-								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
-							}
-
-							.sku-box {
-								width: auto;
-								display: inline;
-								height: 40rpx;
-								border-radius: 4rpx;
-								padding: 0 0 0 10rpx;
-								box-sizing: border-box;
-								font-size: 24rpx;
-								color: #999;
-
-								text {
-									border: 2rpx solid #E4E5E6;
-									padding: 2rpx 10rpx;
-								}
-							}
-
-							.pro-price-num-box {
-								display: flex;
-								flex-direction: row;
-								align-items: center;
-								justify-content: space-between;
-
-								.pro-price-box {
-									font-size: 36rpx;
-									color: #333333;
-									font-weight: 400;
-
-									.fuhao {
-										font-size: 24rpx;
-									}
-								}
-
-								.pro-num-box {
-									width: 140rpx;
-									height: 40rpx;
-									border: 1px solid #ddd;
-									border-radius: 4rpx;
-									display: flex;
-									flex-direction: row;
-									justify-content: space-between;
-									overflow: hidden;
-
-									.num-btn {
-										font-size: 34rpx;
-										color: #999999;
-										display: inline-block;
-										width: 40rpx;
-										text-align: center;
-										line-height: 32rpx;
-										height: 40rpx;
-									}
-
-									.num-btn.r {
-										border-right: 1px solid #ddd;
-									}
-
-									.num-btn.l {
-										border-left: 1px solid #ddd;
-									}
-
-									.num {
-										font-size: 26rpx;
-										color: #333;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				.pro-item:last-of-type .pro-r {
-					border-bottom: none;
-				}
-			}
-		}
-	}
-
-	.itemBox:first-child {
-		.shop-box {
-			border-top: 2rpx solid #eee;
-		}
-	}
-
-	.itemBox:last-child {
-		.item {
-			border-bottom: none;
-		}
-	}
 }
 </style>
