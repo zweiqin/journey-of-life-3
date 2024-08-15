@@ -37,27 +37,14 @@
 					</tui-input>
 				</view>
 				<view v-if="loginType === 'verificationCode'">
-					<view>
-						<ATFGraphicVerificationCode
-							ref="refATFGraphicVerificationCodeLogin"
-							input-padding="26rpx 20rpx 26rpx 0" input-style="color: #f3c1c4;font-size: 32rpx;"
-							input-border-color="#EA5B1D" input-label-color="#ffffff" input-color="#ffffff"
-						></ATFGraphicVerificationCode>
-					</view>
-					<tui-input
-						v-model="loginQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
-						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
-					>
-						<template #right>
-							<tui-countdown-verify
-								v-if="loginType === 'verificationCode'" ref="refLoginVerify" width="188rpx"
-								height="48rpx" border-width="0" text="获取验证码" :size="30"
-								color="#dddddd"
-								@send="handleSendVerify"
-							></tui-countdown-verify>
-						</template>
-					</tui-input>
+					<ATFGraphicVerificationCode
+						type="code" :phone="loginQuery.phone"
+						input-padding="26rpx 20rpx 26rpx 0" input-style="color: #f3c1c4;font-size: 32rpx;"
+						input-border-color="#EA5B1D" input-label-color="#ffffff" input-color="#ffffff"
+						countdown-width="188rpx" countdown-height="48rpx" countdown-text="获取验证码"
+						:countdown-size="30" countdownborder-width="0" countdown-color="#dddddd"
+						@input="e => loginQuery.verificationCode = e"
+					></ATFGraphicVerificationCode>
 				</view>
 			</tui-form>
 		</view>
@@ -135,19 +122,11 @@
 					v-model="resettingFormData.newPassword" label="确认密码" type="password"
 					placeholder="请再次输入密码"
 				></tui-input>
-				<view>
-					<ATFGraphicVerificationCode
-						ref="refATFGraphicVerificationCodeResetting"
-					></ATFGraphicVerificationCode>
-				</view>
-				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
-					<template #right>
-						<tui-countdown-verify
-							ref="refResettingPasswordVerify" width="144rpx"
-							@send="handleSendVerifyResettingPassword"
-						></tui-countdown-verify>
-					</template>
-				</tui-input>
+				<ATFGraphicVerificationCode
+					type="code" :phone="resettingFormData.phone"
+					input-type="number" input-label="验证码"
+					countdown-width="144rpx" @input="e => resettingFormData.verificationCode = e"
+				></ATFGraphicVerificationCode>
 			</template>
 		</tui-dialog>
 	</view>
@@ -156,7 +135,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
-import { getVerifyCodeApi, updateForgetPasswordUserApi } from '../../api/anotherTFInterface'
+import { updateForgetPasswordUserApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import { getUrlCode } from '../../utils'
 import { SYSTEM_VERSION } from '../../config'
@@ -203,31 +182,6 @@ export default {
 		...mapGetters([ 'terminal' ])
 	},
 	methods: {
-		// 获取验证码
-		handleSendVerify() {
-			if (!this.loginQuery.phone) {
-				this.$refs.refLoginVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.loginQuery.phone)) {
-				this.$refs.refLoginVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCodeLogin && this.$refs.refATFGraphicVerificationCodeLogin.handleVerify()) {
-				getVerifyCodeApi({ phone: this.loginQuery.phone })
-					.then((res) => {
-						this.$refs.refLoginVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCodeLogin.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refLoginVerify.reset()
-					})
-			} else {
-				this.$refs.refLoginVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
-		},
 		// 点击登录
 		handleLogin() {
 			const validateRules = [ {
@@ -277,30 +231,6 @@ export default {
 		},
 		async handleWXLogin() {
 			await this.$store.dispatch('auth/wxLoginAction', { isAfter: true })
-		},
-		handleSendVerifyResettingPassword() {
-			if (!this.resettingFormData.phone) {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.resettingFormData.phone)) {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCodeResetting && this.$refs.refATFGraphicVerificationCodeResetting.handleVerify()) {
-				getVerifyCodeApi({ phone: this.resettingFormData.phone })
-					.then((res) => {
-						this.$refs.refResettingPasswordVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCodeResetting.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refResettingPasswordVerify.reset()
-					})
-			} else {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
 		},
 		handleResettingPassword(e) {
 			if (e.index === 0) { } else if (e.index === 1) {

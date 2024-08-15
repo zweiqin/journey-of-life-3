@@ -116,19 +116,11 @@
 					v-model="resettingFormData.newPassword" label="确认密码" type="password"
 					placeholder="请再次输入密码"
 				></tui-input>
-				<view>
-					<ATFGraphicVerificationCode
-						ref="refATFGraphicVerificationCodeResetting"
-					></ATFGraphicVerificationCode>
-				</view>
-				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
-					<template #right>
-						<tui-countdown-verify
-							ref="refResettingPasswordVerify" width="144upx"
-							@send="handleSendVerifyResettingPassword"
-						></tui-countdown-verify>
-					</template>
-				</tui-input>
+				<ATFGraphicVerificationCode
+					type="code" :phone="resettingFormData.phone"
+					input-type="number" input-label="验证码"
+					countdown-width="144rpx" @input="e => resettingFormData.verificationCode = e"
+				></ATFGraphicVerificationCode>
 			</template>
 		</tui-dialog>
 
@@ -138,22 +130,14 @@
 		>
 			<template #content>
 				<tui-input
-					v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="请无法自动填入手机号"
+					v-model="bindWXFormData.phone" label="手机号" type="number" placeholder="无法自动填入手机号"
 					disabled
 				></tui-input>
-				<view>
-					<ATFGraphicVerificationCode
-						ref="refATFGraphicVerificationCodeWX"
-					></ATFGraphicVerificationCode>
-				</view>
-				<tui-input v-model="bindWXFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
-					<template #right>
-						<tui-countdown-verify
-							ref="refBindWXVerify" width="144upx"
-							@send="handleSendVerifyBindWX"
-						></tui-countdown-verify>
-					</template>
-				</tui-input>
+				<ATFGraphicVerificationCode
+					type="code" :phone="bindWXFormData.phone"
+					input-type="number" input-label="验证码"
+					countdown-width="144rpx" @input="e => bindWXFormData.verificationCode = e"
+				></ATFGraphicVerificationCode>
 			</template>
 		</tui-dialog>
 
@@ -174,7 +158,7 @@
 </template>
 
 <script>
-import { updateWxPhoneAppApi, updateAliPhoneAppApi, getVerifyCodeApi, updateForgetPasswordUserApi } from '../../../api/anotherTFInterface'
+import { updateWxPhoneAppApi, updateAliPhoneAppApi, updateForgetPasswordUserApi } from '../../../api/anotherTFInterface'
 import { getUrlCode } from '../../../utils'
 import { SYSTEM_VERSION, APPLY_NAME } from '../../../config'
 
@@ -371,30 +355,6 @@ export default {
 				}
 			})
 		},
-		handleSendVerifyBindWX() {
-			if (!this.bindWXFormData.phone) {
-				this.$refs.refBindWXVerify.reset()
-				return this.$showToast('缺少手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.bindWXFormData.phone)) {
-				this.$refs.refBindWXVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCodeWX && this.$refs.refATFGraphicVerificationCodeWX.handleVerify()) {
-				getVerifyCodeApi({ phone: this.bindWXFormData.phone })
-					.then((res) => {
-						this.$refs.refBindWXVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCodeWX.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refBindWXVerify.reset()
-					})
-			} else {
-				this.$refs.refBindWXVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
-		},
 		async handleWXBind() {
 			const data = await this.$store.dispatch('auth/wxLoginAction', { isAfter: false, pageUrl: '/another-tf/another-serve/personalDetails/index' })
 			this.bindWXFormData.wechatOpenId = data.wechatOpenId
@@ -428,30 +388,6 @@ export default {
 			this.bindWXFormData.phone = ''
 			this.bindWXFormData.verificationCode = ''
 			this.isShowbindWXFDialog = false
-		},
-		handleSendVerifyResettingPassword() {
-			if (!this.resettingFormData.phone) {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.resettingFormData.phone)) {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCodeResetting && this.$refs.refATFGraphicVerificationCodeResetting.handleVerify()) {
-				getVerifyCodeApi({ phone: this.resettingFormData.phone })
-					.then((res) => {
-						this.$refs.refResettingPasswordVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCodeResetting.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refResettingPasswordVerify.reset()
-					})
-			} else {
-				this.$refs.refResettingPasswordVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
 		},
 		handleResettingPassword(e) {
 			if (e.index === 0) { } else if (e.index === 1) {

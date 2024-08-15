@@ -17,6 +17,9 @@ export const getAnotherTFTokenApi = (data) => AnotherTFRequest('/app/tmpLoginOrR
 // 获取支付宝小程序手机号绑定
 export const updateAliPhoneAppApi = (data) => AnotherTFRequest('/app/updateAliPhone', data, 'POST')
 
+// 获取验证码
+export const getVerificationImageCaptchaApi = (data) => AnotherTFRequest('/captcha/get/verification/image', data)
+
 // 获取短信验证码
 export const getCodeBusinessApi = (data) => AnotherTFRequest('/app/getCode', data, 'POST')
 

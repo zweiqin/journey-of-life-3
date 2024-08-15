@@ -63,7 +63,7 @@ export default {
 	},
 
 	methods: {
-		handleGenerateCode() {
+		handleGenerateText() {
 			uni.showLoading()
 			return new Promise((resolve, reject) => {
 				this.handleGenerateSuccess = () => {
@@ -125,7 +125,7 @@ export default {
 		getRandomWord(length) {
 			let name = ''
 			for (let i = 0; i < length; i++) {
-				name += String.fromCharCode(Math.floor(Math.random() * (0x4e00 - 0x9fa5) + 0x9fa5))
+				name += String.fromCharCode(Math.floor(Math.random() * (0x4e00 - 0x9fa5) + 0x9fa5)) // 全部汉字。可选用常用汉字的Unicode码
 			}
 			return name
 		},
