@@ -13,26 +13,14 @@
 						:border-top="false" color="#222229" clearable size="34"
 					></tui-input>
 				</view>
-				<view>
-					<ATFGraphicVerificationCode
-						ref="refATFGraphicVerificationCode"
-					></ATFGraphicVerificationCode>
-				</view>
-				<view class="formItem">
-					<tui-input
-						v-model="registerQuery.verificationCode" placeholder-style="color: #f3c1c4;font-size: 32rpx;"
-						background-color="transparent" :border-top="false" border-color="#EA5B1D" label-color="#ffffff"
-						placeholder="请输入验证码" color="#222229"
-					>
-						<template #right>
-							<tui-countdown-verify
-								ref="refRegisterVerify" width="188rpx" height="48rpx" border-width="0"
-								text="获取验证码"
-								:size="30" color="#EF530E" @send="handleSendVerify"
-							></tui-countdown-verify>
-						</template>
-					</tui-input>
-				</view>
+				<ATFGraphicVerificationCode
+					type="code" :phone="registerQuery.phone"
+					input-style="color: #f3c1c4;font-size: 32rpx;"
+					input-border-color="#EA5B1D" input-label-color="#ffffff"
+					countdown-width="188rpx" countdown-height="48rpx" countdown-text="获取验证码"
+					:countdown-size="30" countdownborder-width="0" countdown-color="#EF530E"
+					@input="e => registerQuery.verificationCode = e"
+				></ATFGraphicVerificationCode>
 				<view class="formItem">
 					<tui-input
 						v-model="registerQuery.password" placeholder-class="inputs" type="password" border-color="#EA5B1D"
@@ -105,7 +93,7 @@
 </template>
 
 <script>
-import { updatePhoneLoginRegisterApi, getVerifyCodeApi } from '../../api/anotherTFInterface'
+import { updatePhoneLoginRegisterApi } from '../../api/anotherTFInterface'
 import { Encrypt } from '../../utils/secret'
 
 export default {
@@ -123,32 +111,6 @@ export default {
 		}
 	},
 	methods: {
-		// 获取验证码
-		handleSendVerify() {
-			if (!this.registerQuery.phone) {
-				this.$refs.refRegisterVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.registerQuery.phone)) {
-				this.$refs.refRegisterVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
-				getVerifyCodeApi({ phone: this.registerQuery.phone })
-					.then((res) => {
-						this.$refs.refRegisterVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCode.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refRegisterVerify.reset()
-					})
-			} else {
-				this.$refs.refRegisterVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
-		},
-
 		addAcount() {
 			this.$refs.form.validate(this.registerQuery, [
 				{

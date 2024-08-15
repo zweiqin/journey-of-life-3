@@ -22,13 +22,8 @@
 					</view>
 				</view>
 			</view>
-			<view v-else-if="item.field === 'phone'" class="item">
+			<view v-else-if="item.field === 'code'" class="item">
 				<template>
-					<view>
-						<ATFGraphicVerificationCode
-							ref="refATFGraphicVerificationCode" input-padding="0 0 26rpx 0"
-						></ATFGraphicVerificationCode>
-					</view>
 					<view
 						class="input-wrapper" :style="{
 							'flex-direction': item.type === 'textarea' ? 'column' : '',
@@ -36,13 +31,12 @@
 						}"
 					>
 						<view class="sub-title">{{ item.label }}</view>
-						<view class="input" style="display: flex;justify-content: space-between;align-items: center;">
-							<input
-								v-if="item.type === 'input'" :value="form[item.field]" :disabled="false"
-								type="number"
-								:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-							/>
-							<tui-countdown-verify ref="refBindBankVerify" width="144upx" @send="handleSendVerify"></tui-countdown-verify>
+						<view class="input">
+							<ATFGraphicVerificationCode
+								type="code" :phone="form.phone"
+								input-type="number" input-padding="0 20rpx 0 0"
+								countdown-width="144rpx" @input="e => handleInput(item.field, e)"
+							></ATFGraphicVerificationCode>
 						</view>
 					</view>
 				</template>
@@ -58,7 +52,7 @@
 						<view class="sub-title">{{ item.label }}</view>
 						<input
 							v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-							:type="item.field === 'cardNumber' || item.field === 'code' ? 'number' : 'text'"
+							:type="item.field === 'cardNumber' || item.field === 'phone' ? 'number' : 'text'"
 							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 						/>
 					</view>
@@ -75,7 +69,7 @@
 </template>
 
 <script>
-import { getSelectDictApi, getVerifyCodeApi } from '../../../../api/anotherTFInterface'
+import { getSelectDictApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'FieldPaneRA',
@@ -93,7 +87,9 @@ export default {
 
 	data() {
 		return {
-			form: {},
+			form: {
+				phone: ''
+			},
 			bankList: [],
 			isShowBankListSelect: false,
 			checkCard: {
@@ -157,32 +153,10 @@ export default {
 		},
 		handleInput(field, e) {
 			console.log(field, e)
-			if (field === 'cardName' || field === 'cardNumber' || field === 'phone' || field === 'code') {
+			if (field === 'cardName' || field === 'cardNumber' || field === 'phone') {
 				this.form[field] = e.detail.value
-			}
-		},
-		handleSendVerify() {
-			if (!this.form.phone) {
-				this.$refs.refBindBankVerify[0].reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.form.phone)) {
-				this.$refs.refBindBankVerify[0].reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCode[0] && this.$refs.refATFGraphicVerificationCode[0].handleVerify()) {
-				getVerifyCodeApi({ phone: this.form.phone })
-					.then((res) => {
-						this.$refs.refBindBankVerify[0].success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCode[0].handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refBindBankVerify[0].reset()
-					})
-			} else {
-				this.$refs.refBindBankVerify[0].reset()
-				return this.$showToast('请输入正确的图文码')
+			} else if (field === 'code') {
+				this.form[field] = e
 			}
 		}
 	}

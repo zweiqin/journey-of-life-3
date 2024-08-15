@@ -32,18 +32,13 @@
 			<view class="mar-top-20">
 				<view class="code-box">
 					<tui-icon :size="50" color="#cccccc" name="shield" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
-					<tui-input
-						v-model="code" padding="26rpx 20rpx 26rpx 0" background-color="transparent" label-color="#ffffff"
-						placeholder="请输入验证码"
-					>
-						<template #right>
-							<tui-countdown-verify
-								ref="refBindPhoneVerify" width="188rpx" height="48rpx" border-width="0"
-								text="获取验证码"
-								:size="30" color="#dddddd" @send="handleSendVerify"
-							></tui-countdown-verify>
-						</template>
-					</tui-input>
+					<ATFGraphicVerificationCode
+						type="code" :phone="phone"
+						input-padding="26rpx 20rpx 26rpx 0" input-label-color="#ffffff"
+						countdown-width="188rpx" countdown-height="48rpx" countdown-text="获取验证码"
+						:countdown-size="30" countdownborder-width="0" countdown-color="#dddddd"
+						@input="e => code = e"
+					></ATFGraphicVerificationCode>
 				</view>
 			</view>
 
@@ -79,7 +74,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getVerifyCodeApi, updateAliPhoneAppApi, getSessionKeyAppApi, updateSetWxPhoneAppApi, updateWxPhoneAppApi } from '../../../api/anotherTFInterface'
+import { updateAliPhoneAppApi, getSessionKeyAppApi, updateSetWxPhoneAppApi, updateWxPhoneAppApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'BindPhone',
 	data() {
@@ -104,32 +99,6 @@ export default {
 		...mapGetters([ 'terminal' ])
 	},
 	methods: {
-		// 获取验证码
-		handleSendVerify() {
-			if (!this.phone) {
-				this.$refs.refBindPhoneVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.phone)) {
-				this.$refs.refBindPhoneVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
-				getVerifyCodeApi({ phone: this.phone })
-					.then((res) => {
-						this.$refs.refBindPhoneVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCode.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refBindPhoneVerify.reset()
-					})
-			} else {
-				this.$refs.refBindPhoneVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
-		},
-
 		handleBindPhone() {
 			if ([ 4 ].includes(this.$store.state.app.terminal)) {
 				this.updateAliPhone(this.phone, false)

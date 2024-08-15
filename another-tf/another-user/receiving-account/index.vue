@@ -47,24 +47,19 @@
 			@click="handleUnbindBank"
 		>
 			<template #content>
-				<view>
-					<ATFGraphicVerificationCode
-						ref="refATFGraphicVerificationCode"
-					></ATFGraphicVerificationCode>
-				</view>
-				<tui-input v-model="unbindForm.phone" label="手机号" type="number" placeholder="请输入手机号">
-					<template #right>
-						<tui-countdown-verify ref="refUnbindBankVerify" width="144rpx" @send="handleSendVerify"></tui-countdown-verify>
-					</template>
-				</tui-input>
-				<tui-input v-model="unbindForm.code" label="验证码" type="number" placeholder="请输入验证码"></tui-input>
+				<tui-input v-model="unbindForm.phone" label="手机号" type="number" placeholder="请输入手机号"></tui-input>
+				<ATFGraphicVerificationCode
+					type="code" :phone="unbindForm.phone"
+					input-type="number" input-label="验证码"
+					countdown-width="144rpx" @input="e => unbindForm.code = e"
+				></ATFGraphicVerificationCode>
 			</template>
 		</tui-dialog>
 	</view>
 </template>
 
 <script>
-import { getByIdBankApi, deleteBankDeleteApi, getVerifyCodeApi } from '../../../api/anotherTFInterface'
+import { getByIdBankApi, deleteBankDeleteApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'ReceivingAccount',
 	components: {
@@ -120,30 +115,6 @@ export default {
 			this.unbindForm.phone = ''
 			this.unbindForm.code = ''
 			this.isShowUnbindBankDialog = false
-		},
-		handleSendVerify() {
-			if (!this.unbindForm.phone) {
-				this.$refs.refUnbindBankVerify.reset()
-				return this.$showToast('请填写手机号')
-			}
-			if (!/^1[3-9]\d{9}$/.test(this.unbindForm.phone)) {
-				this.$refs.refUnbindBankVerify.reset()
-				return this.$showToast('请输入正确的手机号')
-			}
-			if (this.$refs.refATFGraphicVerificationCode && this.$refs.refATFGraphicVerificationCode.handleVerify()) {
-				getVerifyCodeApi({ phone: this.unbindForm.phone })
-					.then((res) => {
-						this.$refs.refUnbindBankVerify.success()
-						this.$showToast('发送成功，请注意查看手机短信')
-						this.$refs.refATFGraphicVerificationCode.handleResetData()
-					})
-					.catch(() => {
-						this.$refs.refUnbindBankVerify.reset()
-					})
-			} else {
-				this.$refs.refUnbindBankVerify.reset()
-				return this.$showToast('请输入正确的图文码')
-			}
 		}
 	}
 }
