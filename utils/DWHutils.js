@@ -121,41 +121,41 @@ export const getStorageKeyToken = (params = {}) => {
 		isShowModal: true,
 		isRedirect: false
 	}, params)
-	const userInfo = uni.getStorageSync(USER_INFO)
-	if (!userInfo || !userInfo.userId) {
-		isShowModal && uni.showModal({
-			title: '提示',
-			content: '您还未登录，是否去登录？',
-			success(res) {
-				if (res.confirm) {
-					if (isRedirect) {
-						uni.redirectTo({ url: '/pages/login/login' })
-					} else {
-						uni.navigateTo({ url: '/pages/login/login' })
-					}
-				} else if (res.cancel) {
-					// uni.navigateBack();
-				}
-			}
-		})
-		return
-	}
-	if (!userInfo || !userInfo.phone) {
-		isShowModal && uni.showModal({
-			title: '提示',
-			content: '未绑定手机号码，是否去绑定？',
-			success(res) {
-				if (res.confirm) {
-					uni.switchTab({
-						url: '/pages/index/index'
-					})
-				} else if (res.cancel) {
-					// uni.navigateBack();
-				}
-			}
-		})
-		return
-	}
+	// const userInfo = uni.getStorageSync(USER_INFO)
+	// if (!userInfo || !userInfo.userId) {
+	// 	isShowModal && uni.showModal({
+	// 		title: '提示',
+	// 		content: '您还未登录，是否去登录？',
+	// 		success(res) {
+	// 			if (res.confirm) {
+	// 				if (isRedirect) {
+	// 					uni.redirectTo({ url: '/pages/login/login' })
+	// 				} else {
+	// 					uni.navigateTo({ url: '/pages/login/login' })
+	// 				}
+	// 			} else if (res.cancel) {
+	// 				// uni.navigateBack();
+	// 			}
+	// 		}
+	// 	})
+	// 	return
+	// }
+	// if (!userInfo || !userInfo.phone) {
+	// 	isShowModal && uni.showModal({
+	// 		title: '提示',
+	// 		content: '未绑定手机号码，是否去绑定？',
+	// 		success(res) {
+	// 			if (res.confirm) {
+	// 				uni.switchTab({
+	// 					url: '/pages/index/index'
+	// 				})
+	// 			} else if (res.cancel) {
+	// 				// uni.navigateBack();
+	// 			}
+	// 		}
+	// 	})
+	// 	return
+	// }
 	const storageKey = uni.getStorageSync(T_STORAGE_KEY)
 	if (!storageKey || !storageKey.token) {
 		isShowModal && uni.showModal({

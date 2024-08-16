@@ -423,6 +423,9 @@ export default {
 	background-color: #F7F7F7;
 	padding: 20rpx;
 	box-sizing: border-box;
+	/deep/ .tui-dialog {
+		overflow: visible;
+	}
 
 	.personalBack-box {
 		width: 100%;

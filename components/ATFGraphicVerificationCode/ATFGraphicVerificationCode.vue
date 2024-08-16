@@ -1,5 +1,8 @@
 <template>
 	<view class="graphic-verification-code-container">
+		<!-- 防止外层包了一层dialog，因外层高度不够而受到overflow:hidden的影响 -->
+		<!-- <view v-if="isShowGraphicVerificationDialog" style="height: 250px;"></view> -->
+
 		<view v-if="type === 'code'">
 			<tui-input
 				:value="inpuValue" :type="inputType" :padding="inputPadding" :placeholder-style="inputStyle"
@@ -19,72 +22,70 @@
 			<slot name="other" :phone="phone"></slot>
 		</view>
 
-		<tui-dialog style="position: relative;z-index: 888;" :buttons="[]" :show="isShowGraphicVerificationDialog" title="">
-			<template #content>
-				<view v-if="verificationType === 'imageText'">
-					<view style="font-size: 34rpx;font-weight: bold;color: #000000;margin-top: 38rpx;">图文码验证</view>
-					<view>
-						<tui-input
-							:value="inputText" label="" type="text" placeholder="请输入图文码"
-							padding="26rpx 0 4rpx"
-							@input="handleCodeInput"
-						>
-							<template #right>
-								<image
-									v-if="generateUrl" style="width: 256rpx;height: 64rpx;" :src="generateUrl" mode="scaleToFill"
-									@click="handleGenerateCode()"
-								/>
-								<text v-else>图文码生成中...</text>
-							</template>
-						</tui-input>
-						<view style="text-align: right;color: #0000ff;" @click="handleGenerateCode()">点击刷新</view>
+		<view style="position: relative;z-index: 888;">
+			<tui-dialog :buttons="[]" :show="isShowGraphicVerificationDialog" title="">
+				<template #content>
+					<view v-if="verificationType === 'imageText'">
+						<view style="font-size: 34rpx;font-weight: bold;color: #000000;margin-top: 38rpx;">图文码验证</view>
+						<view>
+							<tui-input
+								:value="inputText" label="" type="text" placeholder="请输入图文码"
+								padding="26rpx 0 4rpx"
+								@input="handleCodeInput"
+							>
+								<template #right>
+									<image
+										v-if="generateUrl" style="width: 256rpx;height: 64rpx;" :src="generateUrl" mode="scaleToFill"
+										@click="handleGenerateCode()"
+									/>
+									<text v-else>图文码生成中...</text>
+								</template>
+							</tui-input>
+							<view style="text-align: right;color: #0000ff;" @click="handleGenerateCode()">点击刷新</view>
+						</view>
+						<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 28rpx;">
+							<tui-button
+								type="gray" width="47%" height="86rpx" margin="0"
+								:size="28"
+								@click="isShowGraphicVerificationDialog = false"
+							>
+								取 消
+							</tui-button>
+							<tui-button type="warning" width="47%" height="86rpx" margin="0" :size="28" @click="handleConfirmText">
+								确 认
+							</tui-button>
+						</view>
 					</view>
-					<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 28rpx;">
-						<tui-button
-							type="gray" width="47%" height="86rpx" margin="0"
+					<view v-if="verificationType === 'sliding'">
+						<view style="font-size: 34rpx;font-weight: bold;color: #000000;margin-top: 38rpx;">滑动码验证</view>
+						<view style="margin: 28rpx -40rpx 0;">
+							<SliderCaptcha
+								v-model="slideVisible" :options="slideOptions" :loading="slideLoading"
+								@check="handleConfirmSlide" @close="isShowGraphicVerificationDialog = false" @refresh="getSliderOptions"
+								@error="getSliderOptions"
+							>
+								<template #title>安全验证</template>
+								<template #successText>验证通过</template>
+								<template #errorText>
+									<text style="color: #dc362e;">是不是太难了，换一个</text>
+								</template>
+								<template #tips>拖动下方滑块完成拼图</template>
+								<template #question>请尽快完成滑动自定义提示</template>
+							</SliderCaptcha>
+						</view>
+						<!-- <view style="display: flex;justify-content: center;margin-top: 28rpx;">
+							<tui-button
+							type="gray" width="60%" height="66rpx" margin="0"
 							:size="28"
 							@click="isShowGraphicVerificationDialog = false"
-						>
+							>
 							取 消
-						</tui-button>
-						<tui-button type="warning" width="47%" height="86rpx" margin="0" :size="28" @click="handleConfirmText">
-							确 认
-						</tui-button>
+							</tui-button>
+							</view> -->
 					</view>
-				</view>
-				<view v-if="verificationType === 'sliding'">
-					<view style="font-size: 34rpx;font-weight: bold;color: #000000;margin-top: 38rpx;">滑动码验证</view>
-					<view style="margin: 28rpx -40rpx 0;">
-						<SliderCaptcha
-							v-model="slideVisible"
-							:options="slideOptions"
-							:loading="slideLoading"
-							@check="handleConfirmSlide"
-							@close="isShowGraphicVerificationDialog = false"
-							@refresh="getSliderOptions"
-							@error="getSliderOptions"
-						>
-							<template #title>安全验证</template>
-							<template #successText>验证通过</template>
-							<template #errorText>
-								<text style="color: #dc362e;">是不是太难了，换一个</text>
-							</template>
-							<template #tips>拖动下方滑块完成拼图</template>
-							<!-- <template #question>自定义提示</template> -->
-						</SliderCaptcha>
-					</view>
-					<!-- <view style="display: flex;justify-content: center;margin-top: 28rpx;">
-						<tui-button
-						type="gray" width="60%" height="66rpx" margin="0"
-						:size="28"
-						@click="isShowGraphicVerificationDialog = false"
-						>
-						取 消
-						</tui-button>
-						</view> -->
-				</view>
-			</template>
-		</tui-dialog>
+				</template>
+			</tui-dialog>
+		</view>
 
 		<GraphicPoster ref="refGraphicPoster" @success="(e) => generatedCode = e"></GraphicPoster>
 	</view>
@@ -336,6 +337,11 @@ export default {
 	box-sizing: border-box;
 
 	/deep/ .tui-dialog {
+		// top: 8%;
+		// transform: none;
+		// max-height: 100%;
+		max-height: none;
+
 		.tui-dialog__hd {
 			display: none;
 		}

@@ -1,7 +1,7 @@
 <template>
 	<view class="user-page-container">
 		<TuanAppShim bg="#f6eadf"></TuanAppShim>
-		<BaseInfo ref="baseInfoRef"></BaseInfo>
+		<BaseInfo></BaseInfo>
 		<view class="main-area">
 			<Pane title="我的功能" :menu-data="myFunction" @menu-click="handleNavigate"></Pane>
 			<Pane title="我的优惠" :menu-data="myPreferential" @menu-click="handleNavigate"></Pane>
@@ -116,7 +116,6 @@ export default {
 		init() {
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
 			if (this.isLogin()) {
-				this.$refs.baseInfoRef && this.$refs.baseInfoRef.userIsPurchase()
 				this.$store.dispatch('auth/refrshUserInfoAction')
 				this.$store.dispatch('user/getCountAction')
 			}
