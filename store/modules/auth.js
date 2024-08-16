@@ -49,22 +49,22 @@ export default {
 				updatePhoneLoginRegisterApi({ ...loginData })
 					.then(({ data }) => {
 						console.log(data)
-						if (((ENV === 'production') && data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) || (ENV === 'development')) {
-							try {
-								uni.hideLoading()
-								uni.showToast({ title: '登录成功', icon: 'none' })
-								if (isAfter) dispatch('LoginAfterAction', { type: 'phone', data })
-								resolve(data)
-							} catch (err) {
-								uni.hideLoading()
-								uni.showToast({ title: JSON.stringify(err), icon: 'none' })
-								reject(err)
-							}
-						} else {
+						// if (((ENV === 'production') && data.phone && data.oldShopUserInfo && data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.phone) || (ENV === 'development')) {
+						try {
 							uni.hideLoading()
-							uni.showToast({ title: '系统错误，未能注册手机号', icon: 'none' })
-							reject()
+							uni.showToast({ title: '登录成功', icon: 'none' })
+							if (isAfter) dispatch('LoginAfterAction', { type: 'phone', data })
+							resolve(data)
+						} catch (err) {
+							uni.hideLoading()
+							uni.showToast({ title: JSON.stringify(err), icon: 'none' })
+							reject(err)
 						}
+						// } else {
+						// 	uni.hideLoading()
+						// 	uni.showToast({ title: '系统错误，未能注册手机号', icon: 'none' })
+						// 	reject()
+						// }
 					})
 					.catch((err) => {
 						uni.hideLoading()
@@ -225,6 +225,7 @@ export default {
 
 		// eslint-disable-next-line complexity
 		LoginAfterAction({ state, commit, dispatch }, { type, data }) {
+			data.oldShopUserInfo && Object.keys(data.oldShopUserInfo).length ? '' : data.oldShopUserInfo = { userInfo: {} }
 			try {
 				const tabbarList = ['pages/index/index', 'pages/business-district/business-district', '/pages/community-center/community-center', 'pages/order/order', '/pages/user/user']
 				const redirect = uni.getStorageSync(T_REDIRECT_TYPE)

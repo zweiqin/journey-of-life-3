@@ -13,9 +13,7 @@
 			</view>
 		</view>
 		<view v-else style="padding: 45rpx 0;">
-			<tui-card
-				:title="{ text: `账号：${bankMessage.cardNumber}` }"
-			>
+			<tui-card :title="{ text: `账号：${bankMessage.cardNumber}` }">
 				<template #body>
 					<view style="padding: 10rpx 32rpx;">
 						<view>持卡人：{{ bankMessage.cardName }}</view>
@@ -42,15 +40,13 @@
 		</view>
 
 		<tui-dialog
-			style="position: relative;z-index: 888;"
-			:buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]" :show="isShowUnbindBankDialog" title="解绑银行卡"
-			@click="handleUnbindBank"
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="isShowUnbindBankDialog" title="解绑银行卡" @click="handleUnbindBank"
 		>
 			<template #content>
 				<tui-input v-model="unbindForm.phone" label="手机号" type="number" placeholder="请输入手机号"></tui-input>
 				<ATFGraphicVerificationCode
-					type="code" :phone="unbindForm.phone"
-					input-type="number" input-label="验证码"
+					type="code" :phone="unbindForm.phone" input-type="number" input-label="验证码"
 					countdown-width="144rpx" @input="e => unbindForm.code = e"
 				></ATFGraphicVerificationCode>
 			</template>
@@ -96,7 +92,7 @@ export default {
 				})
 		},
 		handleUnbindBank(e) {
-			if (e.index === 0) {} else if (e.index === 1) {
+			if (e.index === 0) { } else if (e.index === 1) {
 				if (!this.unbindForm.phone) return this.$showToast('请填写手机号')
 				if (!this.unbindForm.code) return this.$showToast('请填写验证码')
 				uni.showLoading({
@@ -122,8 +118,12 @@ export default {
 
 <style lang="less" scoped>
 .receiving-account-container {
-  width: 100%;
-  min-height: 100vh;
+	width: 100%;
+	min-height: 100vh;
 	background-color: #f5f4f9;
+
+	/deep/ .tui-dialog {
+		overflow: visible;
+	}
 }
 </style>

@@ -109,7 +109,7 @@ import {
 	bindPlatformInfoCodeBindingApi,
 	addDrawParticipateLotteryApi
 } from '../../api/anotherTFInterface'
-import { getUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
+import { getStorageUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'
 import { handleDoPay } from '../../utils/payUtil'
 
@@ -182,7 +182,7 @@ export default {
 		} else if (!getStorageKeyToken({ isRedirect: true })) {
 			return
 		}
-		this.userId = getUserId() || ''
+		this.userId = getStorageUserId() || ''
 		if (this.userId && !options.type && uni.getStorageSync(T_NEW_BIND_TYPE)) { // 如果原先有绑定id，例如注册/重新登陆了然后跳回来（options没携带绑定id），则是存储里的绑定id
 			this.userInfo = uni.getStorageSync(T_STORAGE_KEY)
 			this.type = uni.getStorageSync(T_NEW_BIND_TYPE) || ''

@@ -4,7 +4,6 @@ import { getUserId, isH5InWebview } from './utils'
 import { BASE_WS_API } from './config'
 import { CHANGE_IS_IN_MINIPROGRAM } from './store/modules/type'
 import { T_SELECTED_ADDRESS, USER_INFO } from './constant'
-import { getPurchaseRecordApi, getPurchaseRecord2Api } from './api/user'
 import { getInviteListApi } from './api/community-center'
 
 export default {
@@ -12,11 +11,6 @@ export default {
   onLaunch(options) {
     this.globalData.appOptions = options
     // this.connectSocket()
-    if (this.isLogin()) {
-      getPurchaseRecordApi({ userId: getUserId(), price: 299 })
-      getPurchaseRecord2Api({ userId: getUserId(), price: 399 })
-      this.$store.dispatch('auth/refrshUserInfoAction')
-    }
     uni.getSystemInfo({
       success: (res) => {
         if (res.safeArea.top > 20 && res.model.indexOf('iPhone') !== -1) {

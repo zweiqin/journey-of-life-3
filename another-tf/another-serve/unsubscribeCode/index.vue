@@ -14,11 +14,6 @@
 					/>
 				</view>
 			</view>
-			<view>
-				<ATFGraphicVerificationCode
-					ref="refATFGraphicVerificationCode" input-padding="26rpx 0 26rpx 88rpx"
-				></ATFGraphicVerificationCode>
-			</view>
 			<view class="code-box mar-top-20">
 				<tui-icon :size="50" color="#cccccc" name="shield" unit="rpx" margin="0 30rpx 0 0"></tui-icon>
 				<ATFGraphicVerificationCode

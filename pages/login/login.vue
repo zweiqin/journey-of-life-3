@@ -269,6 +269,10 @@ export default {
 	padding-bottom: 66rpx;
 	background-color: #EA5B1D;
 
+	/deep/ .tui-dialog {
+		overflow: visible;
+	}
+
 	.logoText {
 		width: 100vw;
 		height: 280rpx;
