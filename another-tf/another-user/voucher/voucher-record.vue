@@ -687,12 +687,12 @@ export default {
 		} else if ([ 3 ].includes(this.queryType)) {
 			if (this.rechargeAccountingInfo.data.length < this.rechargeAccountingInfo.listTotal) {
 				++this.rechargeAccountingInfo.query.page
-				this.getExchangeOutgoingLogsList(true)
+				this.getRechargeAccountingLogsList(true)
 			}
 		} else if ([ 4 ].includes(this.queryType)) {
 			if (this.rechargeOutgoingInfo.data.length < this.rechargeOutgoingInfo.listTotal) {
 				++this.rechargeOutgoingInfo.query.page
-				this.getExchangeOutgoingLogsList(true)
+				this.getRechargeOutgoingLogsList(true)
 			}
 		} else if ([ 5 ].includes(this.queryType)) {
 			if (this.orderInfo.data.length < this.orderInfo.listTotal) {

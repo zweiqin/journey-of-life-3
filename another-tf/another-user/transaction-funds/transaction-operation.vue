@@ -102,11 +102,11 @@
 		</view>
 
 		<view style="margin-top: 24rpx;padding: 0 34rpx;">
-			<view style="font-size: 34rpx;font-weight: bold;">消费金明细</view>
+			<view style="font-size: 34rpx;font-weight: bold;">消费金收入明细</view>
 			<view style="margin-top: 24rpx;background-color: #ffffff;border-radius: 18rpx;">
-				<view v-if="transactionRecordList && transactionRecordList.length" style="padding: 12rpx 28rpx;">
+				<view v-if="transactionAccountingList && transactionAccountingList.length" style="padding: 12rpx 28rpx;">
 					<view
-						v-for="(item, index) in transactionRecordList" :key="item.id"
+						v-for="(item, index) in transactionAccountingList" :key="item.id"
 						style="display: flex;align-items: center;justify-content: space-between;padding: 24rpx 0;border-bottom: 2rpx solid #efefef;"
 						@click="handleClickTransactionRecord(item)"
 					>
@@ -116,21 +116,28 @@
 									style="font-size: 30rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 								>
 									<text>
-										<text v-if="item.targetType === 1">充值</text>
-										<text v-else-if="item.targetType === 2">提现</text>
-										<text v-else-if="item.targetType === 3">
-											<text v-if="item.actionType === 4">订单（已退款）</text>
-											<text v-else>订单</text>
-										</text>
-										<text v-else-if="item.targetType === 4">退款</text>
-										<text v-else-if="item.targetType === 5">
-											<text v-if="item.actionType === 4">赠送（已退款）</text>
-											<text v-else>赠送</text>
-										</text>
+										<text v-if="item.sourceType === 1">平台</text>
+										<text v-else-if="item.sourceType === 2">商圈</text>
+										<text v-else-if="item.sourceType === 3">商城</text>
+										<text v-else-if="item.sourceType === 4">社区</text>
+										<text v-else-if="item.sourceType === 5">用户</text>
 										<text v-else>--</text>
 									</text>
-									<text v-if="item.number">
-										-{{ item.number }}
+									<text>
+										-
+										<text v-if="item.waterType === -1">退款退回（消费）</text>
+										<text v-else-if="item.waterType === 1">升级活动</text>
+										<text v-else-if="item.waterType === 2">分佣活动</text>
+										<text v-else-if="item.waterType === 3">社区活动</text>
+										<text v-else-if="item.waterType === 4">赠券活动</text>
+										<text v-else-if="item.waterType === 5">赠金活动</text>
+										<text v-else-if="item.waterType === 6">商圈订单</text>
+										<text v-else-if="item.waterType === 7">爆品家具</text>
+										<text v-else-if="item.waterType === 8">社区订单</text>
+										<text v-else-if="item.waterType === 9">用户代金券转增</text>
+										<text v-else-if="item.waterType === 10">商家代金券转赠</text>
+										<text v-else-if="item.waterType === 11">同城联盟卡</text>
+										<text v-else>--</text>
 									</text>
 								</view>
 								<view style="margin-top: 16rpx;font-size: 26rpx;color: #888889;">{{ item.createTime }}</view>
@@ -138,19 +145,15 @@
 						</view>
 						<view style="margin-left: 12rpx;text-align: right;">
 							<view style="margin-top: 6rpx;font-size: 34rpx;font-weight: bold;color: #ea5e21;">
-								<text>
-									{{ [1, 4].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) ? '+'
-										: [ 2 ].includes(item.targetType) || ([ 5 ].includes(item.targetType) && [1, 2, 3, 5].includes(item.actionType)) || ([ 3 ].includes(item.targetType) && [ 4 ].includes(item.actionType)) ? '-'
-											: '？' }}{{ Number.parseFloat(Math.abs(item.fee) || 0).toFixed(2) }}
-								</text>
+								+{{ Number.parseFloat(Number(item.number || 0)).toFixed(2) }}
 							</view>
 						</view>
 					</view>
 				</view>
 				<view style="padding-bottom: 45rpx;">
 					<LoadingMore
-						:status="!isEmpty && !transactionRecordList.length
-							? 'loading' : !isEmpty && transactionRecordList.length && (transactionRecordList.length >= transactionRecordTotal) ? 'no-more' : ''"
+						:status="!isEmpty && !transactionAccountingList.length
+							? 'loading' : !isEmpty && transactionAccountingList.length && (transactionAccountingList.length >= transactionAccountingTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
 					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无记录~</tui-no-data>
@@ -232,7 +235,7 @@ export default {
 	name: 'TransactionOperation',
 	onShow() {
 		this.getTransactionAll()
-		this.getTransactionStatisticsRecord()
+		this.getTransactionAccountingRecord()
 	},
 
 	data() {
@@ -249,8 +252,8 @@ export default {
 			},
 			isShowExplainPopup: false,
 			isEmpty: false,
-			transactionRecordTotal: 0,
-			transactionRecordList: [],
+			transactionAccountingTotal: 0,
+			transactionAccountingList: [],
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
@@ -272,17 +275,17 @@ export default {
 					this.transactionInfo = res.data
 				})
 		},
-		getTransactionStatisticsRecord(isLoadmore) {
+		getTransactionAccountingRecord(isLoadmore) {
 			uni.showLoading()
 			getBeeCurrencyDistributorApi({ ...this.queryInfo })
 				.then((res) => {
-					this.transactionRecordTotal = res.data.total
+					this.transactionAccountingTotal = res.data.total
 					if (isLoadmore) {
-						this.transactionRecordList.push(...res.data.list)
+						this.transactionAccountingList.push(...res.data.list)
 					} else {
-						this.transactionRecordList = res.data.list
+						this.transactionAccountingList = res.data.list
 					}
-					this.isEmpty = this.transactionRecordList.length === 0
+					this.isEmpty = this.transactionAccountingList.length === 0
 					uni.hideLoading()
 				})
 				.catch(() => {
@@ -294,7 +297,7 @@ export default {
 				url: '/another-tf/another-user/transaction-funds/transaction-record-detail',
 				success: () => {
 					setTimeout(() => {
-						uni.$emit('sendTransactionRecordDetailMsg', { transactionRecordData: item })
+						uni.$emit('sendTransactionRecordDetailMsg', { transactionRecordData: item, fromOrigin: 2 })
 					}, 400)
 				}
 			})
@@ -328,9 +331,9 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.transactionRecordList.length < this.transactionRecordTotal) {
+		if (this.transactionAccountingList.length < this.transactionAccountingTotal) {
 			++this.queryInfo.page
-			this.getTransactionStatisticsRecord(true)
+			this.getTransactionAccountingRecord(true)
 		}
 	}
 }

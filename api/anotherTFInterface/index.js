@@ -268,6 +268,9 @@ export const getCurrencySigninHistoryApi = (data) => AnotherTFRequest('/buyerBee
 // 消费金签到
 export const updateCurrencySignInApi = (data) => AnotherTFRequest('/buyerBeeSigninRecord/signIn', data, 'POST')
 
+// 消费金签到每天数量
+export const getCurrencyDayListApi = (data) => AnotherTFRequest('/buyerBeeSigninRecord/beeDayList', data)
+
 // 代金券签到
 // 查询代金券签到列表
 export const getVoucherSigninRecordListApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/selectVoucherSigninRecordList', data)
@@ -277,6 +280,9 @@ export const getVoucherSigninHistoryApi = (data) => AnotherTFRequest('/buyerVouc
 
 // 代金券签到
 export const updateVoucherSignInApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/signInVoucher', data, 'POST')
+
+// 代金券签到每天数量
+export const getVoucherDayListApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/voucherDayList', data)
 
 // 积分签到
 // 积分兑换优惠券
@@ -793,8 +799,11 @@ export const getPlatformBeeCurrencyApi = (data) => AnotherTFRequest('/canvas/get
 // 记录消费金
 export const updatePlatformBeeCurrencySaveBeeApi = (data) => AnotherTFRequest('/platformBeeCurrency/saveBee', data)
 
-// 消费金收支明细
+// 消费金收支明细（新，收？）
 export const getBeeCurrencyDistributorApi = (data) => AnotherTFRequest('/distributor/getBeeCurrency', data)
+
+// 消费金支出记录
+export const getBeeCurrencyUpApi = (data) => AnotherTFRequest('/distributor/getBeeUpCurrency', data)
 
 // 查询消费金余额
 export const getBeeSelectAmountEntryRecordApi = (data) => AnotherTFRequest('/buyerBeeEntryRecord/beeSelectAmount', data, 'POST')
