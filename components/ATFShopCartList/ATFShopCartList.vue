@@ -5,126 +5,11 @@
 				<view v-if="(type === 'single') && shopCartList[0].splicingId">
 					<view
 						v-if="item.skus && item.skus.length"
-						style="overflow-y: auto;" :style="{ maxHeight }"
+						style="padding: 0 0 24rpx 0;overflow-y: auto;" :style="{ maxHeight }"
 					>
-						<view
-							style="margin-top: 5rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;line-height: 1;"
-							@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
-						>
-							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
-							<text
-								style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
-							>
-								{{ item.shopName }}
-							</text>
-							<tui-icon
-								v-if="isToShop" name="arrowright" :size="32" unit="rpx"
-								color="#999999"
-								margin="0 0 0 16rpx"
-							></tui-icon>
-						</view>
-						<view
-							v-if="item.currentRules && item.currentRules.number"
-							style="display: flex;align-items: center;height: 86rpx;background: #F9F6F1;padding: 0 20rpx;"
-						>
-							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
-							<view style="font-size: 24rpx;color: #C83732;">
-								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
-							</view>
-						</view>
-					</view>
-					<view>
-						<view
-							v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
-						>
-							<view>{{ section.name }}</view>
-							<view>
-								<view
-									v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
-								>
-									<view style="display: flex;align-items: center;">
-										<tui-icon
-											v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
-											color="#c5aa7b"
-											margin="40rpx" @click="handleSelectSku(index, cIndex, 0)"
-										></tui-icon>
-										<tui-icon
-											v-else name="circle" :size="40" unit="rpx"
-											color="#cccccc" margin="40rpx"
-											@click="handleSelectSku(index, cIndex, 1)"
-										></tui-icon>
-										<view
-											style="flex: 1;display: flex;padding: 30rpx 30rpx 30rpx 0;"
-											@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
-										>
-											<image
-												:src="common.seamingImgUrl(skuItem.image)"
-												style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin-right: 30rpx;"
-												class="pro-img default-img"
-											></image>
-											<view
-												style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
-											>
-												<view
-													style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
-												>
-													{{ skuItem.productName }}
-												</view>
-												<view
-													style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
-												>
-													<text v-if="skuItem.value">{{ skuItem.value }}</text>
-													<text v-else>默认规格</text>
-												</view>
-												<view style="display: flex;align-items: center;justify-content: space-between;">
-													<view style="font-size: 36rpx;color: #333333;">
-														<text style="font-size: 24rpx;">￥</text>
-														<text>{{ skuItem.price }}</text>
-													</view>
-													<view
-														style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
-													>
-														<view
-															style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
-															@click.stop="handleSubSkuNumber(index, cIndex)"
-														>
-															-
-														</view>
-														<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
-														<view
-															style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
-															@click.stop="handleAddSkuNumber(index, cIndex)"
-														>
-															+
-														</view>
-													</view>
-												</view>
-											</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view v-else>
-					<view
-						v-if="item.skus && item.skus.length"
-						style="overflow-y: auto;" :style="{ maxHeight }"
-					>
-						<view style="margin-top: 5rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;">
-							<tui-icon
-								v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
-								color="#c5aa7b" margin="40rpx"
-								@click="handleSelectShop(index, 0)"
-							></tui-icon>
-							<tui-icon
-								v-else name="circle" :size="40" unit="rpx"
-								color="#cccccc" margin="40rpx"
-								@click="handleSelectShop(index, 1)"
-							></tui-icon>
+						<view style="padding: 18rpx 16rpx 18rpx 32rpx;display: flex;align-items: center;border-bottom: 2rpx solid #9e9e9e;">
 							<view
-								style="display: flex;align-items: center;line-height: 1;"
+								style="display: flex;align-items: center;line-height: 1;margin-left: 30rpx;"
 								@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
 							>
 								<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
@@ -142,71 +27,198 @@
 						</view>
 						<view
 							v-if="item.currentRules && item.currentRules.number"
-							style="display: flex;align-items: center;height: 86rpx;background: #F9F6F1;padding: 0 20rpx;"
+							style="display: flex;align-items: center;background: #F9F6F1;padding: 6rpx 16rpx 6rpx 32rpx;"
 						>
 							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
 							<view style="font-size: 24rpx;color: #C83732;">
 								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
 							</view>
 						</view>
+						<!-- <view
+							v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
+							>
+							<view>{{ section.name }}</view>
+							<view>
+							<view
+							v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
+							> -->
+						<view style="padding: 0 26rpx 0 32rpx;">
+							<view
+								v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
+							>
+								<view
+									style="display: flex;align-items: center;margin: 0 0 4rpx 0;padding: 8rpx 0 4rpx 16rpx;font-size: 28rpx;border-bottom: 1rpx solid #fcebeb"
+								>
+									<tui-icon
+										name="people-fill" :size="36" unit="rpx"
+										color="#dc362e" margin="0"
+									></tui-icon>
+									<text style="margin-left: 6rpx;color: #dc362e;">{{ section.name }}</text>
+									<text v-if="section.buyerUserId === $store.getters.userInfo.buyerUserId">（我）</text>
+								</view>
+								<view>
+									<view
+										v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
+									>
+										<view style="display: flex;align-items: center;">
+											<view
+												style="flex: 1;display: flex;padding: 30rpx 0;"
+												@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${part.productId}&skuId=${part.skuId}`)"
+											>
+												<image
+													:src="common.seamingImgUrl(part.image)"
+													style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin: 0 30rpx;"
+													class="pro-img default-img"
+												></image>
+												<view
+													style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+												>
+													<view
+														style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+													>
+														{{ part.productName }}
+													</view>
+													<view
+														style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
+													>
+														<text v-if="part.value">{{ part.value }}</text>
+														<text v-else>默认规格</text>
+													</view>
+													<view style="display: flex;align-items: center;justify-content: space-between;">
+														<view style="font-size: 36rpx;color: #333333;">
+															<text style="font-size: 24rpx;">￥</text>
+															<text>{{ part.price }}</text>
+														</view>
+														<view
+															v-if="section.buyerUserId === $store.getters.userInfo.buyerUserId"
+															style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+														>
+															<view
+																style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+																@click.stop="handleSubUserSku(index, count, number)"
+															>
+																-
+															</view>
+															<view style="font-size: 26rpx;color: #333;">{{ part.number }}</view>
+															<view
+																style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+																@click.stop="handleAddUserSku(index, count, number)"
+															>
+																+
+															</view>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
 					</view>
+				</view>
+				<view v-else>
 					<view
-						v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" style="padding: 8rpx 0;"
+						v-if="item.skus && item.skus.length"
+						style="padding: 0 0 24rpx 0;overflow-y: auto;" :style="{ maxHeight }"
 					>
-						<view style="display: flex;align-items: center;">
+						<view style="padding: 18rpx 16rpx 18rpx 32rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;">
 							<tui-icon
-								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
-								color="#c5aa7b"
-								margin="40rpx" @click="handleSelectSku(index, cIndex, 0)"
+								v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
+								color="#c5aa7b" margin="0"
+								@click="handleSelectShop(index, 0)"
 							></tui-icon>
 							<tui-icon
 								v-else name="circle" :size="40" unit="rpx"
-								color="#cccccc" margin="40rpx"
-								@click="handleSelectSku(index, cIndex, 1)"
+								color="#cccccc" margin="0"
+								@click="handleSelectShop(index, 1)"
 							></tui-icon>
 							<view
-								style="flex: 1;display: flex;padding: 30rpx 30rpx 30rpx 0;"
-								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
+								style="display: flex;align-items: center;line-height: 1;margin-left: 30rpx;"
+								@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
 							>
-								<image
-									:src="common.seamingImgUrl(skuItem.image)"
-									style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin-right: 30rpx;"
-									class="pro-img default-img"
-								></image>
-								<view
-									style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+								<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+								<text
+									style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
 								>
+									{{ item.shopName }}
+								</text>
+								<tui-icon
+									v-if="isToShop" name="arrowright" :size="32" unit="rpx"
+									color="#999999"
+									margin="0 0 0 16rpx"
+								></tui-icon>
+							</view>
+						</view>
+						<view
+							v-if="item.currentRules && item.currentRules.number"
+							style="display: flex;align-items: center;background: #F9F6F1;padding: 6rpx 16rpx 6rpx 32rpx;"
+						>
+							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
+							<view style="font-size: 24rpx;color: #C83732;">
+								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+							</view>
+						</view>
+						<view style="padding: 0 26rpx 0 32rpx;">
+							<view
+								v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" style="padding: 8rpx 0;"
+							>
+								<view style="display: flex;align-items: center;">
+									<tui-icon
+										v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
+										color="#c5aa7b"
+										margin="0" @click="handleSelectSku(index, cIndex, 0)"
+									></tui-icon>
+									<tui-icon
+										v-else name="circle" :size="40" unit="rpx"
+										color="#cccccc" margin="0"
+										@click="handleSelectSku(index, cIndex, 1)"
+									></tui-icon>
 									<view
-										style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+										style="flex: 1;display: flex;padding: 30rpx 0;"
+										@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
 									>
-										{{ skuItem.productName }}
-									</view>
-									<view
-										style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
-									>
-										<text v-if="skuItem.value">{{ skuItem.value }}</text>
-										<text v-else>默认规格</text>
-									</view>
-									<view style="display: flex;align-items: center;justify-content: space-between;">
-										<view style="font-size: 36rpx;color: #333333;">
-											<text style="font-size: 24rpx;">￥</text>
-											<text>{{ skuItem.price }}</text>
-										</view>
+										<image
+											:src="common.seamingImgUrl(skuItem.image)"
+											style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin: 0 30rpx;"
+											class="pro-img default-img"
+										></image>
 										<view
-											style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+											style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
 										>
 											<view
-												style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
-												@click.stop="handleSubSkuNumber(index, cIndex)"
+												style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 											>
-												-
+												{{ skuItem.productName }}
 											</view>
-											<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
 											<view
-												style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
-												@click.stop="handleAddSkuNumber(index, cIndex)"
+												style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
 											>
-												+
+												<text v-if="skuItem.value">{{ skuItem.value }}</text>
+												<text v-else>默认规格</text>
+											</view>
+											<view style="display: flex;align-items: center;justify-content: space-between;">
+												<view style="font-size: 36rpx;color: #333333;">
+													<text style="font-size: 24rpx;">￥</text>
+													<text>{{ skuItem.price }}</text>
+												</view>
+												<view
+													style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+												>
+													<view
+														style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+														@click.stop="handleSubSkuNumber(index, cIndex)"
+													>
+														-
+													</view>
+													<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
+													<view
+														style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+														@click.stop="handleAddSkuNumber(index, cIndex)"
+													>
+														+
+													</view>
+												</view>
 											</view>
 										</view>
 									</view>
@@ -270,6 +282,7 @@ export default {
 			return this.shopCartList
 		},
 		// 获取购物车列表
+		// eslint-disable-next-line max-lines-per-function
 		async getShopCartData(type = 'all', cb) {
 			try {
 				this.isLoading = true
@@ -282,11 +295,8 @@ export default {
 						shopObj.currentRules = {}
 						shopObj.ids = 0
 						// 处理下架商品
+						shopObj.skus = shopObj.skus.filter((section) => !(section.shelveState === 0)) // shelveState是否上架
 						shopObj.skus.forEach((section, i) => {
-							if (section.shelveState === 0) { // shelveState是否上架
-								shopObj.skus.splice(i, 1) // 删掉下架商品
-								return
-							}
 							if (section.activityType === 6 && section.selected === 1) {
 								shopObj.priceNumber += section.number
 							}
@@ -590,12 +600,9 @@ export default {
 						shopObj.rules = []
 						shopObj.currentRules = {}
 						shopObj.ids = 0
-						shopObj.cartUserList.forEach((section) => {
-							section.cartSkuList.forEach((part, i) => {
-								if (part.shelveState === 0) {
-									shopObj.skus.splice(i, 1)
-									return
-								}
+						shopObj.cartUserList && shopObj.cartUserList.forEach((section) => {
+							section.cartSkuList = section.cartSkuList.filter((part) => !(part.shelveState === 0))
+							section.cartSkuList.forEach((part) => {
 								if (part.activityType === 6 && part.selected === 1) {
 									shopObj.priceNumber += part.number
 								}
@@ -603,17 +610,17 @@ export default {
 						})
 						// 处理skus数据
 						const tempSkus = []
-						shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
-							.forEach((section) => {
-								const tempSkuItem = tempSkus.find((i) => i.skuId === section.skuId)
+						shopObj.cartUserList && shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
+							.forEach((part) => {
+								const tempSkuItem = tempSkus.find((i) => i.skuId === part.skuId)
 								if (tempSkuItem) {
-									tempSkuItem.number = tempSkuItem.number + section.number
-									tempSkuItem.total = section.price * section.number
+									tempSkuItem.number = tempSkuItem.number + part.number
+									tempSkuItem.total = part.price * part.number
 								} else {
-									tempSkus.push(JSON.parse(JSON.stringify(section)))
+									tempSkus.push(JSON.parse(JSON.stringify(part)))
 								}
 							})
-						shopObj.skus = tempSkus
+						tempSkus.length && (shopObj.skus = tempSkus)
 					})
 				}
 				res.data.forEach((shopObj, shopIndex) => {
@@ -680,6 +687,48 @@ export default {
 		 */
 
 		handleAddSkuNumber(shopIndex, skuIndex) {
+			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
+			if (selectSku.number >= selectSku.stockNumber) {
+				selectSku.number = selectSku.stockNumber
+				return uni.showToast({ title: '库存不足！', icon: 'none' })
+			}
+			if (selectSku.number < selectSku.stockNumber) {
+				if (this.timer) clearTimeout(this.timer)
+				++selectSku.number
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
+			}
+		},
+
+		// 用户SKU数量减
+		handleSubUserSku(shopIndex, userIndex, skuIndex) {
+			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
+			if (selectSku.number <= 1) {
+				if (this.isSubDelete) {
+					uni.showModal({
+						title: '提示',
+						content: '是否将该商品移出购物车？',
+						success: async (res) => {
+							if (res.confirm) {
+								await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
+								await this.getShopCartData(this.type)
+							}
+						}
+					})
+				} else {
+					return uni.showToast({ title: '亲！至少一件哦！', icon: 'none' })
+				}
+			} else {
+				if (this.timer) clearTimeout(this.timer)
+				--selectSku.number
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
+			}
+		},
+		// 用户SKU数量加
+		handleAddUserSku(shopIndex, userIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
 			if (selectSku.number >= selectSku.stockNumber) {
 				selectSku.number = selectSku.stockNumber

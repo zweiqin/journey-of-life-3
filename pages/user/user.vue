@@ -140,6 +140,9 @@ export default {
 			} else if (item.type === 'outsideLink') {
 				this.isShowOutsideLinkDialog = true
 				return
+			} else if (item.type === 'notActivity') {
+				this.$showToast('活动尚未开启，敬请期待！')
+				return
 			}
 			if (this.isLogin()) {
 				if (item.type === 'participateLottery') {
