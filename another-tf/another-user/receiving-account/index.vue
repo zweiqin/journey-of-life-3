@@ -73,7 +73,7 @@ export default {
 			isShowUnbindBankDialog: false
 		}
 	},
-	onLoad() {
+	onShow() {
 		this.getBankMessage()
 	},
 
