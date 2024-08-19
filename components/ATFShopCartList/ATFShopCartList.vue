@@ -1,72 +1,225 @@
 <template>
-	<view class="cart-list-box">
+	<view class="shop-cart-list-container">
 		<view v-if="shopCartList && shopCartList.length">
-			<view v-for="(item, index) in shopCartList" :key="item.shopId" class="itemBox">
-				<view v-if="item.skus.length > 0" class="item" :style="{ maxHeight }">
-					<view class="shop-box">
-						<tui-icon
-							v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
-							color="#c5aa7b"
-							margin="40rpx" @click="handleSelectShop(index, 0)"
-						></tui-icon>
-						<tui-icon
-							v-else name="circle" :size="40" unit="rpx"
-							color="#cccccc" margin="40rpx"
-							@click="handleSelectShop(index, 1)"
-						></tui-icon>
-						<view class="shop-name-box" @click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)">
-							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
-							<text class="shop-name">{{ item.shopName }}</text>
-							<tui-icon
-								v-if="isToShop"
-								name="arrowright" :size="30" unit="rpx" color="#999999"
-								margin="0 0 0 30rpx"
-								class="arrow-right-img"
-							></tui-icon>
+			<view v-for="(item, index) in shopCartList" :key="item.shopId">
+				<view v-if="(type === 'single') && shopCartList[0].splicingId">
+					<view
+						v-if="item.skus && item.skus.length"
+						style="padding: 0 0 24rpx 0;overflow-y: auto;" :style="{ maxHeight }"
+					>
+						<view style="padding: 18rpx 16rpx 18rpx 32rpx;display: flex;align-items: center;border-bottom: 2rpx solid #9e9e9e;">
+							<view
+								style="display: flex;align-items: center;line-height: 1;margin-left: 30rpx;"
+								@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
+							>
+								<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+								<text
+									style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
+								>
+									{{ item.shopName }}
+								</text>
+								<tui-icon
+									v-if="isToShop" name="arrowright" :size="32" unit="rpx"
+									color="#999999"
+									margin="0 0 0 16rpx"
+								></tui-icon>
+							</view>
+						</view>
+						<view
+							v-if="item.currentRules && item.currentRules.number"
+							style="display: flex;align-items: center;background: #F9F6F1;padding: 6rpx 16rpx 6rpx 32rpx;"
+						>
+							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
+							<view style="font-size: 24rpx;color: #C83732;">
+								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+							</view>
+						</view>
+						<!-- <view
+							v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
+							>
+							<view>{{ section.name }}</view>
+							<view>
+							<view
+							v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
+							> -->
+						<view style="padding: 0 26rpx 0 32rpx;">
+							<view
+								v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
+							>
+								<view
+									style="display: flex;align-items: center;margin: 0 0 4rpx 0;padding: 8rpx 0 4rpx 16rpx;font-size: 28rpx;border-bottom: 1rpx solid #fcebeb"
+								>
+									<tui-icon
+										name="people-fill" :size="36" unit="rpx"
+										color="#dc362e" margin="0"
+									></tui-icon>
+									<text style="margin-left: 6rpx;color: #dc362e;">{{ section.name }}</text>
+									<text v-if="section.buyerUserId === $store.getters.userInfo.buyerUserId">（我）</text>
+								</view>
+								<view>
+									<view
+										v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
+									>
+										<view style="display: flex;align-items: center;">
+											<view
+												style="flex: 1;display: flex;padding: 30rpx 0;"
+												@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${part.productId}&skuId=${part.skuId}`)"
+											>
+												<image
+													:src="common.seamingImgUrl(part.image)"
+													style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin: 0 30rpx;"
+													class="pro-img default-img"
+												></image>
+												<view
+													style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+												>
+													<view
+														style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+													>
+														{{ part.productName }}
+													</view>
+													<view
+														style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
+													>
+														<text v-if="part.value">{{ part.value }}</text>
+														<text v-else>默认规格</text>
+													</view>
+													<view style="display: flex;align-items: center;justify-content: space-between;">
+														<view style="font-size: 36rpx;color: #333333;">
+															<text style="font-size: 24rpx;">￥</text>
+															<text>{{ part.price }}</text>
+														</view>
+														<view
+															v-if="section.buyerUserId === $store.getters.userInfo.buyerUserId"
+															style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+														>
+															<view
+																style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+																@click.stop="handleSubUserSku(index, count, number)"
+															>
+																-
+															</view>
+															<view style="font-size: 26rpx;color: #333;">{{ part.number }}</view>
+															<view
+																style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+																@click.stop="handleAddUserSku(index, count, number)"
+															>
+																+
+															</view>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
 						</view>
 					</view>
-					<view v-if="item.currentRules && item.currentRules.number" class="rulesBox flex-items">
-						<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
-						<view class="fs24 font-color-C83732">
-							已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
-						</view>
-					</view>
-					<view v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" class="product-list-box">
-						<view class="pro-item">
+				</view>
+				<view v-else>
+					<view
+						v-if="item.skus && item.skus.length"
+						style="padding: 0 0 24rpx 0;overflow-y: auto;" :style="{ maxHeight }"
+					>
+						<view style="padding: 18rpx 16rpx 18rpx 32rpx;display: flex;align-items: center;border-bottom: 1rpx solid #eee;">
 							<tui-icon
-								v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
-								color="#c5aa7b"
-								margin="40rpx" @click="handleSelectSku(index, cIndex, 0)"
+								v-if="item.selected === 1" name="circle-fill" :size="40" unit="rpx"
+								color="#c5aa7b" margin="0"
+								@click="handleSelectShop(index, 0)"
 							></tui-icon>
 							<tui-icon
 								v-else name="circle" :size="40" unit="rpx"
-								color="#cccccc" margin="40rpx"
-								@click="handleSelectSku(index, cIndex, 1)"
+								color="#cccccc" margin="0"
+								@click="handleSelectShop(index, 1)"
 							></tui-icon>
 							<view
-								class="pro-r"
-								@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
+								style="display: flex;align-items: center;line-height: 1;margin-left: 30rpx;"
+								@click="isToShop && go(`/another-tf/another-user/shop/shop-detail?shopId=${item.shopId}`)"
 							>
-								<image :src="common.seamingImgUrl(skuItem.image)" class="pro-img default-img"></image>
-								<view class="pro-r-r">
-									<view class="pro-name">{{ skuItem.productName }}</view>
-									<view class="sku-box">
-										<text v-if="skuItem.value">{{ skuItem.value }}</text>
-										<text v-else>默认规格</text>
-									</view>
-									<view class="pro-price-num-box">
-										<view class="pro-price-box">
-											<text class="fuhao">￥</text>
-											<text>{{ skuItem.price }}</text>
-										</view>
-										<view class="pro-num-box">
-											<text class="num-btn r" @click.stop="handleSubSkuNumber(index, cIndex)">
-												-
-											</text>
-											<text class="num">{{ skuItem.number }}</text>
-											<text class="num-btn l" @click.stop="handleAddSkuNumber(index, cIndex)">
-												+
-											</text>
+								<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+								<text
+									style="margin-left: 10rpx;font-size: 30rpx;font-weight: bold;color: #333;"
+								>
+									{{ item.shopName }}
+								</text>
+								<tui-icon
+									v-if="isToShop" name="arrowright" :size="32" unit="rpx"
+									color="#999999"
+									margin="0 0 0 16rpx"
+								></tui-icon>
+							</view>
+						</view>
+						<view
+							v-if="item.currentRules && item.currentRules.number"
+							style="display: flex;align-items: center;background: #F9F6F1;padding: 6rpx 16rpx 6rpx 32rpx;"
+						>
+							<ATFActivityImage :type="7" text="组合销售"></ATFActivityImage>
+							<view style="font-size: 24rpx;color: #C83732;">
+								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
+							</view>
+						</view>
+						<view style="padding: 0 26rpx 0 32rpx;">
+							<view
+								v-for="(skuItem, cIndex) in shopCartList[index].skus" :key="cIndex" style="padding: 8rpx 0;"
+							>
+								<view style="display: flex;align-items: center;">
+									<tui-icon
+										v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
+										color="#c5aa7b"
+										margin="0" @click="handleSelectSku(index, cIndex, 0)"
+									></tui-icon>
+									<tui-icon
+										v-else name="circle" :size="40" unit="rpx"
+										color="#cccccc" margin="0"
+										@click="handleSelectSku(index, cIndex, 1)"
+									></tui-icon>
+									<view
+										style="flex: 1;display: flex;padding: 30rpx 0;"
+										@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${skuItem.productId}&skuId=${skuItem.skuId}`)"
+									>
+										<image
+											:src="common.seamingImgUrl(skuItem.image)"
+											style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin: 0 30rpx;"
+											class="pro-img default-img"
+										></image>
+										<view
+											style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;font-size: 26rpx;color: #333;"
+										>
+											<view
+												style="overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+											>
+												{{ skuItem.productName }}
+											</view>
+											<view
+												style="width: fit-content;padding: 0 0 0 10rpx;border-radius: 4rpx;font-size: 24rpx;color: #999;border: 2rpx solid #E4E5E6;padding: 2rpx 10rpx;"
+											>
+												<text v-if="skuItem.value">{{ skuItem.value }}</text>
+												<text v-else>默认规格</text>
+											</view>
+											<view style="display: flex;align-items: center;justify-content: space-between;">
+												<view style="font-size: 36rpx;color: #333333;">
+													<text style="font-size: 24rpx;">￥</text>
+													<text>{{ skuItem.price }}</text>
+												</view>
+												<view
+													style="display: flex;justify-content: space-between;width: 140rpx;height: 40rpx;border: 1rpx solid #ddd;border-radius: 4rpx;"
+												>
+													<view
+														style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-right: 1rpx solid #ddd;"
+														@click.stop="handleSubSkuNumber(index, cIndex)"
+													>
+														-
+													</view>
+													<view style="font-size: 26rpx;color: #333;">{{ skuItem.number }}</view>
+													<view
+														style="width: 40rpx;height: 40rpx;font-size: 34rpx;color: #999999;text-align: center;line-height: 32rpx;border-left: 1rpx solid #ddd;"
+														@click.stop="handleAddSkuNumber(index, cIndex)"
+													>
+														+
+													</view>
+												</view>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -116,7 +269,7 @@ export default {
 	data() {
 		return {
 			timer: '',
-			shopCartList: [], // 购物车数据
+			shopCartList: [], // 购物车数据，每个元素的skus必有值（已对数据处理）。但在商家购物车的情况下，有拼单就会cartUserList
 			isLoading: true, // 购物车是否为空
 			isFirstLoading: true
 		}
@@ -129,39 +282,69 @@ export default {
 			return this.shopCartList
 		},
 		// 获取购物车列表
+		// eslint-disable-next-line max-lines-per-function
 		async getShopCartData(type = 'all', cb) {
 			try {
 				this.isLoading = true
 				let res
 				if (type === 'all') {
 					res = await getCartListApi({})
+					res.data.forEach((shopObj) => {
+						shopObj.priceNumber = 0
+						shopObj.rules = []
+						shopObj.currentRules = {}
+						shopObj.ids = 0
+						// 处理下架商品
+						shopObj.skus = shopObj.skus.filter((section) => !(section.shelveState === 0)) // shelveState是否上架
+						shopObj.skus.forEach((section, i) => {
+							if (section.activityType === 6 && section.selected === 1) {
+								shopObj.priceNumber += section.number
+							}
+						})
+					})
 				} else if (type === 'single') {
 					res = await getShopCartApi({ shopId: this.shopId })
-				}
-				// const emptySkuShopArray = [] // sku为空的山沟
-				res.data.forEach((shopObj, shopIndex) => {
-					shopObj.priceNumber = 0
-					shopObj.rules = []
-					shopObj.currentRules = {}
-					shopObj.ids = 0
-					// 处理下架商品
-					for (let i = shopObj.skus.length - 1; i >= 0; i--) {
-						if (shopObj.skus[i].shelveState === 0) { // shelveState是否上架
-							shopObj.skus.splice(i, 1) // 删掉下架商品 // todo 失效商品
-							continue
-						}
-						if (shopObj.skus[i].activityType === 6 && shopObj.skus[i].selected === 1) {
-							shopObj.priceNumber += shopObj.skus[i].number
-						}
-					}
-					// 根据店铺索引获取规则
-					this.getDataGroup(shopObj).then((result) => {
-						shopObj.rules = result.data ? result.data[0].rules : {}
-						this.handleSetGroupGood(shopIndex)
+					res.data.forEach((shopObj) => {
+						shopObj.priceNumber = 0
+						shopObj.rules = []
+						shopObj.currentRules = {}
+						shopObj.ids = 0
+						shopObj.cartUserList && shopObj.cartUserList.forEach((section) => {
+							section.cartSkuList = section.cartSkuList.filter((part) => !(part.shelveState === 0))
+							section.cartSkuList.forEach((part) => {
+								if (part.activityType === 6 && part.selected === 1) {
+									shopObj.priceNumber += part.number
+								}
+							})
+						})
+						// 处理skus数据
+						const tempSkus = []
+						shopObj.cartUserList && shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
+							.forEach((part) => {
+								const tempSkuItem = tempSkus.find((i) => i.skuId === part.skuId)
+								if (tempSkuItem) {
+									tempSkuItem.number = tempSkuItem.number + part.number
+									tempSkuItem.total = part.price * part.number
+								} else {
+									tempSkus.push(JSON.parse(JSON.stringify(part)))
+								}
+							})
+						tempSkus.length && (shopObj.skus = tempSkus)
 					})
-					// shopObj.skus.length === 0 ? emptySkuShopArray.push(shopObj) : undefined
+				}
+				res.data.forEach((shopObj, shopIndex) => {
+					if (shopObj.ids) { // 根据店铺索引获取规则。获取组合定价
+						getPricesCanvasApi({
+							shopId: shopObj.shopId,
+							ids: shopObj.ids,
+							page: 1,
+							pageSize: 10
+						}).then((result) => {
+							shopObj.rules = result.data ? result.data[0].rules : {}
+							this.handleSetGroupGood(shopIndex)
+						})
+					}
 				})
-				// emptySkuShopArray.length == res.data.length?
 				this.shopCartList = res.data.filter((item) => item.skus && item.skus.length)
 				this.$emit('update-msg', this.shopCartList)
 			} catch (e) {
@@ -172,32 +355,6 @@ export default {
 				this.isFirstLoading = false
 				cb && typeof cb === 'function' && cb()
 			}
-		},
-
-		/**
-		 * 获取组合定价
-		 * @param item
-		 * @return {Promise<unknown>}
-		 */
-
-		getDataGroup(item) {
-			return new Promise((resolve, reject) => {
-				if (item.ids) {
-					getPricesCanvasApi({
-						shopId: item.shopId,
-						ids: item.ids,
-						page: 1,
-						pageSize: 10
-					}).then((res) => {
-						resolve(res)
-					})
-						.catch((e) => {
-							reject(e)
-						})
-				} else {
-					resolve([])
-				}
-			})
 		},
 
 		/**
@@ -240,6 +397,48 @@ export default {
 
 		handleAddSkuNumber(shopIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].skus[skuIndex]
+			if (selectSku.number >= selectSku.stockNumber) {
+				selectSku.number = selectSku.stockNumber
+				return uni.showToast({ title: '库存不足！', icon: 'none' })
+			}
+			if (selectSku.number < selectSku.stockNumber) {
+				if (this.timer) clearTimeout(this.timer)
+				++selectSku.number
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
+			}
+		},
+
+		// 用户SKU数量减
+		handleSubUserSku(shopIndex, userIndex, skuIndex) {
+			const selectSku = this.shopCartList[shopIndex].cartUserList[userIndex].cartSkuList[skuIndex]
+			if (selectSku.number <= 1) {
+				if (this.isSubDelete) {
+					uni.showModal({
+						title: '提示',
+						content: '是否将该商品移出购物车？',
+						success: async (res) => {
+							if (res.confirm) {
+								await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
+								await this.getShopCartData(this.type)
+							}
+						}
+					})
+				} else {
+					return uni.showToast({ title: '亲！至少一件哦！', icon: 'none' })
+				}
+			} else {
+				if (this.timer) clearTimeout(this.timer)
+				--selectSku.number
+				this.timer = setTimeout(() => {
+					this.handleUpdateCart(selectSku.skuId, selectSku.number)
+				}, 600)
+			}
+		},
+		// 用户SKU数量加
+		handleAddUserSku(shopIndex, userIndex, skuIndex) {
+			const selectSku = this.shopCartList[shopIndex].cartUserList[userIndex].cartSkuList[skuIndex]
 			if (selectSku.number >= selectSku.stockNumber) {
 				selectSku.number = selectSku.stockNumber
 				return uni.showToast({ title: '库存不足！', icon: 'none' })
@@ -384,191 +583,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cart-list-box {
+.shop-cart-list-container {
 	box-sizing: border-box;
-
-	.itemBox {
-		.item {
-			background: #fff;
-			border-bottom: 16rpx solid #F8F9FA;
-			overflow-y: auto;
-
-			.shop-box {
-				margin-top: 5rpx;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				border-bottom: 1px solid #eee;
-				position: relative;
-
-				.shop-name-box {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-
-					.shop-img {
-						width: 36rpx;
-						height: 36rpx;
-						margin-right: 10rpx;
-					}
-
-					.shop-name {
-						font-size: 30rpx;
-						color: #333;
-						font-weight: bold;
-						display: inline-block;
-						margin-left: 10rpx;
-					}
-
-					.arrow-right-img {
-						position: absolute;
-						right: 30rpx;
-					}
-				}
-			}
-
-			.rulesBox {
-				height: 86rpx;
-				background: #F9F6F1;
-				padding: 0 20rpx;
-
-				image {
-					width: 126rpx;
-					height: 46rpx;
-				}
-			}
-
-			.product-list-box {
-				margin: 8rpx 0;
-
-				.pro-item {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-
-					.pro-r {
-						flex: 1;
-						border-bottom: 1px solid #eee;
-						display: flex;
-						flex-direction: row;
-						padding: 30rpx 30rpx 30rpx 0;
-						box-sizing: border-box;
-						overflow: hidden;
-
-						.pro-img {
-							width: 180rpx;
-							height: 180rpx;
-							border-radius: 10rpx;
-							margin-right: 30rpx;
-						}
-
-						.pro-r-r {
-							flex: 1;
-							font-size: 26rpx;
-							color: #333;
-							overflow: hidden;
-							display: flex;
-							flex-direction: column;
-							justify-content: space-between;
-
-							.pro-name {
-								height: 66rpx;
-								line-height: 33rpx;
-								display: -webkit-box;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								word-break: break-all;
-								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
-							}
-
-							.sku-box {
-								width: auto;
-								display: inline;
-								height: 40rpx;
-								border-radius: 4rpx;
-								padding: 0 0 0 10rpx;
-								box-sizing: border-box;
-								font-size: 24rpx;
-								color: #999;
-
-								text {
-									border: 2rpx solid #E4E5E6;
-									padding: 2rpx 10rpx;
-								}
-							}
-
-							.pro-price-num-box {
-								display: flex;
-								flex-direction: row;
-								align-items: center;
-								justify-content: space-between;
-
-								.pro-price-box {
-									font-size: 36rpx;
-									color: #333333;
-									font-weight: 400;
-
-									.fuhao {
-										font-size: 24rpx;
-									}
-								}
-
-								.pro-num-box {
-									width: 140rpx;
-									height: 40rpx;
-									border: 1px solid #ddd;
-									border-radius: 4rpx;
-									display: flex;
-									flex-direction: row;
-									justify-content: space-between;
-									overflow: hidden;
-
-									.num-btn {
-										font-size: 34rpx;
-										color: #999999;
-										display: inline-block;
-										width: 40rpx;
-										text-align: center;
-										line-height: 32rpx;
-										height: 40rpx;
-									}
-
-									.num-btn.r {
-										border-right: 1px solid #ddd;
-									}
-
-									.num-btn.l {
-										border-left: 1px solid #ddd;
-									}
-
-									.num {
-										font-size: 26rpx;
-										color: #333;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				.pro-item:last-of-type .pro-r {
-					border-bottom: none;
-				}
-			}
-		}
-	}
-
-	.itemBox:first-child {
-		.shop-box {
-			border-top: 2rpx solid #eee;
-		}
-	}
-
-	.itemBox:last-child {
-		.item {
-			border-bottom: none;
-		}
-	}
 }
 </style>

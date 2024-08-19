@@ -244,7 +244,8 @@ export const myPreferential = [
 	{
 		name: '签到有奖',
 		icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-		url: '/another-tf/another-user/sign-in-prize/send-voucher'
+		// url: '/another-tf/another-user/sign-in-prize/send-voucher',
+		type: 'notActivity'
 	},
 	{
 		name: '签到有金',

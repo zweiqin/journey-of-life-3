@@ -84,7 +84,7 @@
 					<CombinedSales :shop-id="shopId" :product-id="productId"></CombinedSales>
 					<!-- 拼单列表 -->
 					<view
-						v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders.length"
+						v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders && selectedCurrentMsg.selectedSku.collageOrders.length"
 						class="goodsDiscount"
 					>
 						<view class="questionTit mar-left-30 flex-items flex-row flex-sp-between">
@@ -259,7 +259,7 @@
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
 			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId" :sku-id="skuId"
-			:is-exchange="Boolean(isExchange)"
+			:is-exchange="Boolean(isExchange)" :splicing-id="splicingId"
 			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 			@change-goods-detail="(obj) => goodsDetail = obj"
 		/>
@@ -309,7 +309,7 @@ import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
 import { timeFormatting, resolveGoodsDetailSkuSituation, setMiniprogramShareConfig } from '../../../utils'
-import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi } from '../../../api/anotherTFInterface'
+import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi, getShopCartApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -323,6 +323,13 @@ export default {
 		return {
 			viewUpdate: '',
 			replaceImgText: '<img style="max-width:100%;height:auto" ',
+			isIphone: getApp().globalData.isIphone,
+			shopId: '',
+			productId: '', // 商品ID，有可能是缓存数据
+			skuId: '', // 产品ID
+			isSelection: 0, // 是否选品
+			isExchange: 0, // 是否兑换专区商品
+			returnTopFlag: false, // 回到顶部
 			// 埋点对象
 			pointOption: {
 				inTime: null,
@@ -331,18 +338,13 @@ export default {
 					productIds: ''
 				}
 			},
-			isIphone: getApp().globalData.isIphone,
-			shopId: '',
-			productId: '', // 商品ID，有可能是缓存数据
-			skuId: '', // 产品ID
-			isSelection: 0, // 是否选品
-			isExchange: 0, // 是否兑换专区商品
-
-			returnTopFlag: false, // 回到顶部
+			// 拼团
 			collageId: 0, // 去拼团时的拼单ID
 			broadCastList: [], // 拼团滚动数据
 			showGroupBuyList: false, // 是否展示拼单弹窗
 			shopGroupWorkTicker: null, // 拼团倒计时定时器
+			// 拼单
+			splicingId: 0,
 			// 商品详情
 			goodsDetail: {
 				receive: {},
@@ -405,6 +407,9 @@ export default {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
 		})
 		if (this.allCartNum > 99) this.allCartNum = '...'
+		getShopCartApi({ shopId: this.shopId }).then((res) => {
+			this.splicingId = (res.data[0] && res.data[0].splicingId) || 0
+		})
 		uni.$on('sendAddressSuccessMsg', (data) => {
 			this.handleGetProductDetail()
 		})

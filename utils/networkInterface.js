@@ -631,20 +631,10 @@ export const resolveOrderPackageData = (params = {}) => {
 	}, params)
 	uni.showLoading({ mask: true, title: '订单提交中...' })
 	let pointProductIds = ''
-	let sumitType = ''
-	if (skuItemMsgList) {
-		if (skuItemMsgList[0].shopDiscountId) {
-			sumitType = 4
-		} else if (skuItemMsgList[0].shopSeckillId) {
-			sumitType = 3
-		}
-	} else if (skuItemInfo) {
-		sumitType = skuItemInfo.type // 1发起拼团(单独开团)，2参与拼团(拼团)
-	}
 	const data = {
 		shopDiscountId: null,
 		collageId: (skuItemInfo && skuItemInfo.collageId) || 0,
-		type: sumitType, // 1发起拼团，2参与拼团，3秒杀活动，4限时折扣活动
+		type: '', // 1发起拼团，2参与拼团，3秒杀活动，4限时折扣活动
 		// type: this.fromType, // 1立即购买，2购物车结算，3拼团商品立即购买
 		shopGroupWorkId: (skuItemInfo && skuItemInfo.shopGroupWorkId) || 0,
 		receiveId: userAddressInfo.receiveId,
@@ -660,14 +650,20 @@ export const resolveOrderPackageData = (params = {}) => {
 		communityPhone: otherInfo.communityPhone, // 选择的小区的ID
 		franchiseeRule: otherInfo.commissionSharingRatio || [], // 小区店和加盟商分佣比例。
 		// voucherId: settlement.voucherList[0] && settlement.voucherList[0].platformVoucherId || ''
-		voucherId: otherInfo.voucherId || '' // 选择代金券支付后选择的代金券Id
+		voucherId: otherInfo.voucherId || '', // 选择代金券支付后选择的代金券Id
+		splicingId: 0
 	}
 	if (skuItemMsgList && skuItemMsgList.length) {
+		data.splicingId = skuItemMsgList[0].splicingId || 0
 		if (skuItemMsgList[0].shopDiscountId) {
+			data.type = 4
 			data.shopDiscountId = skuItemMsgList[0].shopDiscountId
 		} else if (skuItemMsgList[0].shopSeckillId) {
+			data.type = 3
 			data.shopSeckillId = skuItemMsgList[0].shopSeckillId
 		}
+	} else if (skuItemInfo) {
+		data.type = skuItemInfo.type // 1发起拼团(单独开团)，2参与拼团(拼团)
 	}
 	for (let shopIndex = 0; shopIndex < settlement.shops.length; shopIndex++) {
 		const shopObj = {}
@@ -1040,13 +1036,13 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 			if (res.data.shops.some((a) => a.skus.some((b) => !(b.counterType === 1)))) {
 				if (isProductPay) { // 如果是付款码商品
 					userAddressInfo = { receiveId: 581 }
-				} else if (settlement.shopType !== 2) {
+				} else if (res.data.shopType !== 2) {
 					if (uni.getStorageSync(T_RECEIVE_ITEM)) {
 						userAddressInfo = uni.getStorageSync(T_RECEIVE_ITEM)
-						userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+						userAddressInfo.receivePhone = (userAddressInfo.receivePhone && userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')) || ''
 					} else if (res.data.receive) {
 						userAddressInfo = res.data.receive || {}
-						userAddressInfo.receivePhone = userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')
+						userAddressInfo.receivePhone = (userAddressInfo.receivePhone && userAddressInfo.receivePhone.replace(/(\d{3})\d+(\d{4})$/, '$1****$2')) || ''
 					}
 				} else {
 					userAddressInfo = { receiveId: 485 }

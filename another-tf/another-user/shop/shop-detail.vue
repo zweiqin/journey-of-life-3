@@ -17,12 +17,48 @@
 				</text>
 			</view>
 		</BeeBack>
-		<view style="padding: 0 30rpx 28rpx;background-color: #ffffff;">
+		<view style="padding: 0 30rpx 14rpx;background-color: #ffffff;">
 			<ATFBrandInfo
-				:is-selection="Boolean(isSelection)" :brand-detail="brandDetail" style="padding-top: 40rpx;" @navgation="handleNavigate"
+				ref="refATFBrandInfo"
+				:is-selection="Boolean(isSelection)" :brand-detail="brandDetail"
+				style="padding-top: 40rpx;" @navgation="handleNavigate"
 				@refresh="getBrandDetail"
 			></ATFBrandInfo>
 		</view>
+		<!-- <view style="padding: 0 30rpx;background-color: #ffffff;">
+			<view
+			style="padding: 14rpx 0 28rpx;border-top: 1rpx dashed #dddddd;"
+			>
+			<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
+			<tui-button
+			type="warning" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleStartSplicing"
+			>
+			发起拼单
+			</tui-button>
+			</view>
+			<view v-else style="display: flex;align-items: center;justify-content: space-between;">
+			<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
+			<view style="display: flex;align-items: center;justify-content: flex-end;">
+			<tui-button
+			type="blue" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleShareServe"
+			>
+			分享拼单
+			</tui-button>
+			<tui-button
+			type="danger" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleEndSplicing"
+			>
+			结束拼单
+			</tui-button>
+			</view>
+			</view>
+			</view>
+			</view> -->
 
 		<!-- <view
 			style="display: flex;justify-content: space-between;align-items: center;padding: 18rpx 30rpx;margin-top: 18rpx;background-color: #ffffff;"
@@ -147,17 +183,24 @@
 			</view>
 		</view>
 
-		<ATFSpecificationScreen ref="refATFSpecificationScreen" @success="initShopCart"></ATFSpecificationScreen>
+		<ATFSpecificationScreen
+			ref="refATFSpecificationScreen" is-splicing :splicing-id="initiatedSplicingId"
+			@success="initShopCart"
+		></ATFSpecificationScreen>
 
 		<view v-if="brandDetail.shopId">
-			<ATFStoreShopCart ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"></ATFStoreShopCart>
+			<ATFStoreShopCart
+				ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"
+				@update-msg="(e) => initiatedSplicingId = (e[0] && e[0].splicingId) || 0"
+			></ATFStoreShopCart>
 		</view>
 	</view>
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import CanvasPage from '../../../components/canvasShow/canvasShowPage.vue'
-import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi } from '../../../api/anotherTFInterface'
+import { getIndexShopDetailApi, checkDistributorHasApplyApi, getShopClassifyApi, getShopProductsApi, getShopBannerApi, getCanvasApi, addShopBusinessBuyerUserApi, updateStartSplicingOrdersApi, updateEndSplicingOrdersApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 
 export default {
@@ -197,7 +240,8 @@ export default {
 				data: [],
 				listTotal: 0, // 列表数据总数
 				isEmpty: false // 列表是否为空
-			}
+			},
+			initiatedSplicingId: 0
 		}
 	},
 
@@ -291,7 +335,6 @@ export default {
 		handleTabChange(e) {
 			this.currentTab = e.index
 			console.log(this.currentTab)
-			this.initShopCart()
 			// if (e.index === 1) return
 			this.shopGoodsInfo.query.page = 1
 			this.shopGoodsInfo.data = []
@@ -357,6 +400,50 @@ export default {
 				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume === 1 ? 2 : 1
 			}
 			this.getShopGoodsTemplate()
+		},
+		handleStartSplicing() {
+			uni.showLoading()
+			updateStartSplicingOrdersApi({
+				shopId: this.shopId
+			}).then((res) => {
+				uni.hideLoading()
+				this.$showToast('发起成功')
+				setTimeout(() => {
+					this.initShopCart()
+				}, 1000)
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleEndSplicing() {
+			uni.showLoading()
+			updateEndSplicingOrdersApi({
+				splicingId: this.initiatedSplicingId
+			}).then((res) => {
+				uni.hideLoading()
+				this.$showToast('结束成功')
+				setTimeout(() => {
+					this.initShopCart()
+				}, 1000)
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `拼单分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+					desc: this.brandDetail.shopBrief || '--',
+					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.brandDetail.shopId}&splicingId=${this.initiatedSplicingId}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			if (this.$refs.refATFBrandInfo) this.$refs.refATFBrandInfo.$refs.beeWxShareRef.share(data, isQuit)
 		}
 	},
 	onReachBottom() {

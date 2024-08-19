@@ -459,10 +459,10 @@
 					<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 						<CashierList
 							:price-pay="dataList.price" show
+							:hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? dataList.shopId : 0"
 							:show-commission-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
 							:show-platform-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
 							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
-							:hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? dataList.shopId : 0"
 							:shop-id-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? dataList.shopId : 0"
 							@change="(e) => payInfo = e"
 						/>
@@ -527,6 +527,7 @@ export default {
 				shopName: '',
 				orderFormid: null,
 				createTime: null,
+				price: 0,
 				orderPrice: 0,
 				logisticsPrice: 0,
 				discountPrice: 0,
@@ -794,7 +795,7 @@ export default {
 		async handleShopGoPay() {
 			await handleDoPay({
 				collageId: this.dataList.collageId,
-				money: this.dataList.orderPrice,
+				money: this.dataList.price,
 				orderId: this.dataList.orderId,
 				orderFormid: this.dataList.orderFormid,
 				orderSn: this.dataList.orderFormid,

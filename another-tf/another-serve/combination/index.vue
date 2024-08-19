@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../../utils'
+import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, getShopCartApi } from '../../../utils'
 import { getSelectByPriceIdApi, getSelectProductListByPriceIdApi, getProductDetailsByIdApi, addCartShoppingApi } from '../../../api/anotherTFInterface'
 
 export default {
@@ -271,10 +271,15 @@ export default {
 			if (this.selectedSku.stockNumber < 1) return this.$showToast('该商品库存不足')
 			if (this.selectedSku.stockNumber && (this.number > this.selectedSku.stockNumber)) return this.$showToast('已超出最大数量限制')
 			uni.showLoading()
+			let splicingId
+			await getShopCartApi({ shopId: this.goodsDetail.shopId }).then((res) => {
+				splicingId = (res.data[0] && res.data[0].splicingId) || 0
+			})
 			try {
 				await addCartShoppingApi({
 					skuId: this.selectedSku.skuId,
-					number: this.number
+					number: this.number,
+					splicingId
 				})
 				uni.showToast({
 					title: '添加成功',
