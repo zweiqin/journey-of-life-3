@@ -311,7 +311,7 @@ export const updateStartSplicingOrdersApi = (data) => AnotherTFRequest('/splicin
 // 结束拼单
 export const updateEndSplicingOrdersApi = (data) => AnotherTFRequest('/splicingOrders/endSplicingOrders', data)
 
-// 被邀请拼单者进入拼单页面调用
+// 被邀请拼单者进入拼单页面调用（原购物车商品变为该拼单购物车商品）
 export const updateInvitedSplicingOrdersApi = (data) => AnotherTFRequest('/splicingOrders/invitedSplicingOrders', data)
 
 // 商家

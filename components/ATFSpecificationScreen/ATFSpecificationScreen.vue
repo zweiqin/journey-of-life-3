@@ -88,7 +88,7 @@
 
 <script>
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation } from '../../utils'
-import { getProductDetailsByIdApi, addCartShoppingApi } from '../../api/anotherTFInterface'
+import { getProductDetailsByIdApi, addCartShoppingApi, getShopCartApi } from '../../api/anotherTFInterface'
 export default {
 	name: 'ATFSpecificationScreen',
 	props: {
@@ -110,6 +110,10 @@ export default {
 		btnText: {
 			type: String,
 			default: ''
+		},
+		isSplicing: {
+			type: Boolean,
+			default: false
 		},
 		splicingId: {
 			type: Number,
@@ -263,10 +267,18 @@ export default {
 						}
 						if (tempGoodsInfo.selectedSku.skuId) {
 							uni.showLoading()
+							let splicingId
+							if (this.isSplicing) {
+								splicingId = this.splicingId
+							} else {
+								await getShopCartApi({ shopId: this.goodsDetail.shopId }).then((res) => {
+									splicingId = (res.data[0] && res.data[0].splicingId) || 0
+								})
+							}
 							addCartShoppingApi({
 								skuId: this.selectedSku.skuId,
 								number: this.number,
-								splicingId: this.splicingId
+								splicingId
 							})
 								.then((res) => {
 									uni.hideLoading()

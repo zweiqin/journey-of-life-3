@@ -136,8 +136,10 @@
 			</view>
 		</view>
 
+		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()"></BeeWxShare>
+
 		<ATFSpecificationScreen
-			ref="refATFSpecificationScreen" :splicing-id="receivedSplicingId"
+			ref="refATFSpecificationScreen" is-splicing :splicing-id="receivedSplicingId"
 			btn-text="加入拼单" @success="initShopCart"
 		></ATFSpecificationScreen>
 
@@ -149,6 +151,7 @@
 </template>
 
 <script>
+import { A_TF_MAIN } from '../../../config'
 import { mapGetters } from 'vuex'
 import { updateInvitedSplicingOrdersApi, getIndexShopDetailApi, getShopProductsApi, getShopClassifyApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
@@ -206,6 +209,20 @@ export default {
 		obtainLocationCount(val, oldVal) {
 			const pages = getCurrentPages()
 			if (pages[pages.length - 1].route === 'another-tf/another-user/shop/splicing-reception') this.getBrandDetail()
+		},
+		brandDetail: {
+			handler(newV, oldV) {
+				if (newV.shopId && (newV.shopId !== oldV.shopId)) {
+					this.shopId = newV.shopId
+					// #ifdef H5
+					this.$nextTick(() => {
+						this.handleShareServe(true)
+					})
+					// #endif
+				}
+			},
+			immediate: true,
+			deep: true
 		}
 	},
 	methods: {
@@ -311,6 +328,20 @@ export default {
 				this.shopGoodsInfo.query.volume = this.shopGoodsInfo.query.volume === 1 ? 2 : 1
 			}
 			this.getShopGoodsTemplate()
+		},
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `拼单分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+					desc: this.brandDetail.shopBrief,
+					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.shopId}&splicingId=${this.receivedSplicingId}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
+				},
+				successCb: () => { },
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
 		}
 	},
 	onReachBottom() {

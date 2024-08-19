@@ -86,6 +86,7 @@ export default {
 
 	methods: {
 		async handleUpdateMoneyAndNum(cartData) {
+			this.$emit('update-msg', cartData)
 			uni.showLoading()
 			let allNumber = 0
 			let checkNumber = 0
