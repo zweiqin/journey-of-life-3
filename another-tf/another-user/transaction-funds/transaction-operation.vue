@@ -153,7 +153,7 @@
 							? 'loading' : !isEmpty && transactionRecordList.length && (transactionRecordList.length >= transactionRecordTotal) ? 'no-more' : ''"
 					>
 					</LoadingMore>
-					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无签到记录~</tui-no-data>
+					<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无记录~</tui-no-data>
 				</view>
 			</view>
 		</view>

@@ -1,7 +1,7 @@
 <template>
 	<view
 		class="shop-goods-container"
-		@click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}&isSelection=${Number(isSelection)}`)"
+		@click="isToDetail && go(`/another-tf/another-serve/goodsDetails/index?shopId=${shopId}&productId=${cItem.productId}&skuId=${cItem.skuId}&isSelection=${Number(isSelection)}`)"
 	>
 		<view style="width: 340rpx;height: 340rpx;box-sizing: border-box;" :style="{ padding: picPadding }">
 			<image
@@ -83,6 +83,10 @@ export default {
 		shopId: {
 			type: [Number, String],
 			required: true
+		},
+		isToDetail: {
+			type: Boolean,
+			default: true
 		},
 		isSelection: {
 			type: Boolean,

@@ -52,6 +52,13 @@
 										<view v-else style="padding-bottom: 45rpx;">
 											<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂无客服~</tui-no-data>
 										</view>
+										<view style="margin-top: 24rpx;padding-top: 10rpx;border-top: 1rpx dashed #2d73de;">
+											<BeeMakePhone phone="400-9955-601">
+												<view>
+													或联系人工<text style="margin-left: 6rpx;color: #4d89ff;">400-9955-601</text>
+												</view>
+											</BeeMakePhone>
+										</view>
 									</view>
 								</view>
 							</view>

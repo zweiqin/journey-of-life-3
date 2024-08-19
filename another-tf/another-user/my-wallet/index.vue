@@ -110,7 +110,7 @@
 							<text>消费金</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: center;">
-							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) : '*****' }}</text>
+							<text>{{ isShowcount ? '￥' + Number.parseFloat(Number(transactionInfo.beePrice || 0)).toFixed(2) : '*****' }}</text>
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
 						</view>
 					</view>
@@ -151,12 +151,13 @@
 </template>
 
 <script>
-import { getPricePlatformAllApi } from '../../../api/anotherTFInterface'
+import { getPricePlatformAllApi, getBeeSelectAmountEntryRecordApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'PlatformRecharge',
 	onShow() {
 		this.getPricePlatformAll()
+		this.getTransactionAll()
 	},
 
 	data() {
@@ -170,6 +171,15 @@ export default {
 				distributorPrice: '', // 账户分销金额
 				beeCoinPrice: '', // 消费金金额，可消费的消费金
 				commissionPrice: '' // 推广收益,关系链分佣
+			},
+			transactionInfo: {
+				beePrice: '',
+				beeSelectedPrice: '',
+				beeSignPrice: '',
+				beeConsumptionPrice: '',
+				beeToBeWithdrawnPrice: '',
+				beeWithdrawnPrice: '',
+				beeToBeSettledPrice: ''
 			}
 		}
 	},
@@ -180,6 +190,12 @@ export default {
 			getPricePlatformAllApi({})
 				.then((res) => {
 					this.pricePlatformInfo = res.data
+				})
+		},
+		getTransactionAll() {
+			getBeeSelectAmountEntryRecordApi({})
+				.then((res) => {
+					this.transactionInfo = res.data
 				})
 		},
 

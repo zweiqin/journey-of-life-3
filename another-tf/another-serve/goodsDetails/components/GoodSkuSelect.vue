@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<view class="content">
 		<tui-bottom-popup :show="isShowDetails" @close="isShowDetails = false">
 			<view class="goosDetailshow-box">
 				<view class="detailImg-box flex-row-plus">
@@ -171,7 +171,7 @@
 				</view>
 			</view>
 		</tui-bottom-popup>
-	</div>
+	</view>
 </template>
 
 <script>
@@ -193,6 +193,10 @@ export default {
 		isExchange: {
 			type: Boolean,
 			default: false
+		},
+		splicingId: {
+			type: Number,
+			default: 0
 		}
 	},
 	data() {
@@ -212,7 +216,8 @@ export default {
 				voucherId: 0,
 				voucherPrice: 0,
 				presenterVoucher: 0,
-				beeCoin: 0
+				beeCoin: 0,
+				collageOrders: []
 			},
 			// 1加入购物车 2立即购买 3开团 4单独购买 6SKU选择
 			btnType: 0,
@@ -247,12 +252,12 @@ export default {
 			this.selectedAttr = selectedAttr
 			this.$emit('change-goods-detail', goodsDetail)
 			this.selectedSku = Object.values(this.goodsDetail.map).find((skuItem) => skuItem.valueCodes.split(',').every((nameCodeItem) => Object.values(this.selectedAttr).includes(nameCodeItem))) || {}
-			if (this.selectedSku.skuId) this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
+			this.$emit('current-select-sku', { selectedSku: this.selectedSku, currentSku: this.getCurrentSkuName(), number: this.number })
 		},
 
 		// 获取选择后的文本显示
 		getCurrentSkuName() {
-			if (this.selectedSku.valueCodes) {
+			if (this.selectedSku.skuId && this.selectedSku.valueCodes) {
 				const currentSku = []
 				this.goodsDetail.names.forEach((nameItem) => {
 					nameItem.values.some((tag) => {
@@ -306,7 +311,8 @@ export default {
 			try {
 				await addCartShoppingApi({
 					skuId: this.selectedSku.skuId,
-					number: this.number
+					number: this.number,
+					splicingId: this.splicingId
 				})
 				// 埋点
 				addUserTrackReportDoPointerApi({

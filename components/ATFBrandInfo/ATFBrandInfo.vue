@@ -185,7 +185,6 @@ export default {
 			}
 		},
 
-		// 分享
 		handleShareServe(isQuit) {
 			if (!this.isLogin()) return
 			const data = {

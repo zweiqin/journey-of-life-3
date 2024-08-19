@@ -75,8 +75,9 @@
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 				<CashierList
 					:price-pay="currentRechargeCount" show
+					:hui-shi-bao-pay="!!currentRechargeCount"
 					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
-					:hui-shi-bao-pay="!!currentRechargeCount" @change="(e) => payInfo = e"
+					@change="(e) => payInfo = e"
 				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
