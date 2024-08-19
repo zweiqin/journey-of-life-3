@@ -54,7 +54,7 @@
 										<tui-icon name="check" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">{{ item.beeAmount || 0 }}</view>
+								<view style="padding: 14rpx 0;">{{ transactionDayList[index] || item.beeAmount || 0 }}</view>
 							</view>
 							<view
 								v-for="index in (7 - recordList.length)" :key="index"
@@ -69,7 +69,7 @@
 										<tui-icon name="star-fill" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">？</view>
+								<view style="padding: 14rpx 0;">{{ transactionDayList[recordList.length - 1 + index] || '？' }}</view>
 							</view>
 						</view>
 						<view v-if="stepsList && stepsList.length" style="margin-top: 30rpx;">
@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import { getCurrencySigninRecordListApi, updateCurrencySignInApi, getBeeSelectAmountEntryRecordApi, getCurrencySigninHistoryApi } from '../../../api/anotherTFInterface'
+import { getCurrencyDayListApi, getCurrencySigninRecordListApi, updateCurrencySignInApi, getBeeSelectAmountEntryRecordApi, getCurrencySigninHistoryApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendTransaction',
@@ -187,6 +187,7 @@ export default {
 				beeWithdrawnPrice: '',
 				beeToBeSettledPrice: ''
 			},
+			transactionDayList: [],
 			stepsList: [],
 			activeSteps: -1,
 			isShowSignFrame: false,
@@ -202,6 +203,10 @@ export default {
 		}
 	},
 	onLoad() {
+		getCurrencyDayListApi({})
+			.then((res) => {
+				this.transactionDayList = res.data || []
+			})
 		this.getSignInRecord()
 		this.getSignInHistory()
 	},

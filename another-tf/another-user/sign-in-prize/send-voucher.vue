@@ -53,7 +53,7 @@
 										<tui-icon name="check" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">{{ item.beeVoucher || 0 }}</view>
+								<view style="padding: 14rpx 0;">{{ voucherDayList[index] || item.beeVoucher || 0 }}</view>
 							</view>
 							<view
 								v-for="index in (7 - recordList.length)" :key="index"
@@ -68,7 +68,7 @@
 										<tui-icon name="star-fill" color="#ffffff" :size="32" unit="rpx" margin="0"></tui-icon>
 									</view>
 								</view>
-								<view style="padding: 14rpx 0;">？</view>
+								<view style="padding: 14rpx 0;">{{ voucherDayList[recordList.length - 1 + index] || '？' }}</view>
 							</view>
 						</view>
 						<view v-if="stepsList && stepsList.length" style="margin-top: 30rpx;">
@@ -183,7 +183,7 @@
 
 <script>
 import VoucherChoose from '../voucher/components/VoucherChoose.vue'
-import { getVoucherSigninRecordListApi, updateVoucherSignInApi, getBuyerTotalVoucherEntryRecordApi, getVoucherSigninHistoryApi } from '../../../api/anotherTFInterface'
+import { getVoucherDayListApi, getVoucherSigninRecordListApi, updateVoucherSignInApi, getBuyerTotalVoucherEntryRecordApi, getVoucherSigninHistoryApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'SendVoucher',
@@ -197,6 +197,7 @@ export default {
 			voucherAcount: {
 				duihuanRechargeTotal: 0
 			},
+			voucherDayList: [],
 			stepsList: [
 				// { title: '1天' },
 				// { title: '2天', name: 'about-fill', size: '0', activeIcon: 'about-fill' }
@@ -215,6 +216,10 @@ export default {
 		}
 	},
 	onLoad() {
+		getVoucherDayListApi({})
+			.then((res) => {
+				this.voucherDayList = res.data || []
+			})
 		this.getSignInRecord()
 		this.getSignInHistory()
 	},
