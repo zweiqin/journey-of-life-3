@@ -53,6 +53,7 @@
 
 			<ATFCommunityAssociation
 				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				:shop-data="{ shopType: settlement.shopType, shops: settlement.shops }"
 				@change="(e) => otherInfo = { ...otherInfo, ...e }"
 			></ATFCommunityAssociation>
 

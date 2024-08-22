@@ -25,40 +25,40 @@
 				@refresh="getBrandDetail"
 			></ATFBrandInfo>
 		</view>
-		<view style="padding: 0 30rpx;background-color: #ffffff;">
+		<!-- <view style="padding: 0 30rpx;background-color: #ffffff;">
 			<view
-				style="padding: 14rpx 0 28rpx;border-top: 1rpx dashed #dddddd;"
+			style="padding: 14rpx 0 28rpx;border-top: 1rpx dashed #dddddd;"
 			>
-				<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
-					<tui-button
-						type="warning" width="180rpx" height="58rpx" shape="circle"
-						plain margin="0 0 0 18rpx" bold
-						@click="handleStartSplicing"
-					>
-						发起拼单
-					</tui-button>
-				</view>
-				<view v-else style="display: flex;align-items: center;justify-content: space-between;">
-					<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
-					<view style="display: flex;align-items: center;justify-content: flex-end;">
-						<tui-button
-							type="blue" width="180rpx" height="58rpx" shape="circle"
-							plain margin="0 0 0 18rpx" bold
-							@click="handleShareServe"
-						>
-							分享拼单
-						</tui-button>
-						<tui-button
-							type="danger" width="180rpx" height="58rpx" shape="circle"
-							plain margin="0 0 0 18rpx" bold
-							@click="handleEndSplicing"
-						>
-							结束拼单
-						</tui-button>
-					</view>
-				</view>
+			<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
+			<tui-button
+			type="warning" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleStartSplicing"
+			>
+			发起拼单
+			</tui-button>
 			</view>
-		</view>
+			<view v-else style="display: flex;align-items: center;justify-content: space-between;">
+			<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
+			<view style="display: flex;align-items: center;justify-content: flex-end;">
+			<tui-button
+			type="blue" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleShareServe"
+			>
+			分享拼单
+			</tui-button>
+			<tui-button
+			type="danger" width="180rpx" height="58rpx" shape="circle"
+			plain margin="0 0 0 18rpx" bold
+			@click="handleEndSplicing"
+			>
+			结束拼单
+			</tui-button>
+			</view>
+			</view>
+			</view>
+			</view> -->
 
 		<!-- <view
 			style="display: flex;justify-content: space-between;align-items: center;padding: 18rpx 30rpx;margin-top: 18rpx;background-color: #ffffff;"
