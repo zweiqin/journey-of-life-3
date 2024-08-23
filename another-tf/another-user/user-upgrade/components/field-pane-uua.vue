@@ -3,7 +3,6 @@
 		<view style="position: relative;">
 			<JHeader
 				:title="relationLevelName ? `${relationLevelName}升级` : title" width="50" height="50" :dark="false"
-				style="position: absolute;top: 0;left: 0;z-index: 1;width: 100%;padding: 24rpx 0 0;color: #ffffff;"
 			>
 			</JHeader>
 			<image
@@ -344,6 +343,18 @@ export default {
 
 .field-pane-container {
 	// margin-top: 30rpx;
+
+	/deep/ .j-header-container{
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		width: 100%;
+		.j-header-wrapper {
+			padding: 24rpx 0 0;
+			color: #ffffff;
+		}
+	}
 
 	.title {
 		font-size: @f14;

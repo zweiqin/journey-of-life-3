@@ -1,6 +1,6 @@
 <template>
 	<view class="distribution-module-container">
-		<JHeader title="分销中心" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="分销中心" width="50" height="50"></JHeader>
 		<view v-if="storeDataList.length > 0" class="inStoreBackImg flex-items-plus">
 			<label>选择进入的店铺</label>
 		</view>
@@ -90,6 +90,9 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 	background-color: #F8F8F8;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.inStoreBackImg {
 		width: 100%;

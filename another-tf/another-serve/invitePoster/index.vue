@@ -1,6 +1,6 @@
 <template>
 	<view class="invitePoster-box">
-		<JHeader title="生成邀请海报" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="生成邀请海报" width="50" height="50"></JHeader>
 		<view class="poster-box flex-items-plus flex-column">
 			<image class="header-img mar-top-10" :src="common.seamingImgUrl(data.headImage)"></image>
 			<label class="mar-top-30">发现一件好物，快来和我一起拼</label>
@@ -16,7 +16,7 @@
 					</view>
 				</view>
 				<view class="flex-column-plus flex-items-plus">
-					<image style="width: 180upx;height: 180upx;" :src="qrcode"></image>
+					<image style="width: 180rpx;height: 180rpx;" :src="qrcode"></image>
 					<label class="font-color-666">扫描二维码</label>
 				</view>
 			</view>
@@ -377,6 +377,11 @@ export default {
 	min-height: 100vh;
 	background-color: #F7F7F7;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.bor-reu-8 {
 		border-radius: 8rpx;
 	}

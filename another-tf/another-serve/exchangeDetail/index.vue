@@ -1,6 +1,6 @@
 <template>
 	<view class="exchangeDetailBox">
-		<JHeader title="积分兑换" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="积分兑换" width="50" height="50"></JHeader>
 		<view class="topBg">
 			<view class="exchangeCoupon flex-items">
 				<view class="couponInfo">
@@ -170,6 +170,9 @@ export default {
 	background-color: #F8F8F8;
 	min-height: 100vh;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.topBg {
 		background-color: #333333;

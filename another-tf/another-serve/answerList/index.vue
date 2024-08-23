@@ -1,6 +1,6 @@
 <template>
-	<view class="wid bor-line-F7F7F7">
-		<JHeader title="全部问答" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="answer-list-container">
+		<JHeader title="全部问答" width="50" height="50"></JHeader>
 		<view class="qaBox">
 			<view class="qaTopInfo">
 				<view class="qaTopInfoBox">
@@ -92,62 +92,70 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.qaBox {
-	padding-bottom: 140upx;
+.answer-list-container {
+	min-height: 100vh;
+	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
-	.qaTopInfo {
-		margin-top: 20upx;
-		margin-bottom: 30upx;
-		padding: 0 40upx;
+	.qaBox {
+		padding-bottom: 140rpx;
 
-		.qaTopInfoBox {
-			border-radius: 10upx;
-			display: flex;
-			align-items: center;
-			padding: 15upx 20upx;
-			margin-bottom: 55upx;
-			background: #F6F6F6;
+		.qaTopInfo {
+			margin-top: 20rpx;
+			margin-bottom: 30rpx;
+			padding: 0 40rpx;
 
-			image {
-				width: 60upx;
-				height: 60upx;
-				border-radius: 5upx;
-				margin-right: 20upx;
-			}
+			.qaTopInfoBox {
+				border-radius: 10rpx;
+				display: flex;
+				align-items: center;
+				padding: 15rpx 20rpx;
+				margin-bottom: 55rpx;
+				background: #F6F6F6;
 
-			.qaInfoText {
-				h3 {
-					font-size: 30upx;
-					font-weight: 500;
-					color: #333333;
+				image {
+					width: 60rpx;
+					height: 60rpx;
+					border-radius: 5rpx;
+					margin-right: 20rpx;
 				}
 
-				span {
-					font-size: 24upx;
-					color: #999999;
+				.qaInfoText {
+					h3 {
+						font-size: 30rpx;
+						font-weight: 500;
+						color: #333333;
+					}
+
+					span {
+						font-size: 24rpx;
+						color: #999999;
+					}
 				}
 			}
 		}
-	}
 
-	.putQuestionsBox {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		background: #FFFFFF;
-	}
+		.putQuestionsBox {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			background: #FFFFFF;
+		}
 
-	.putQuestionsBtn {
-		width: 421upx;
-		height: 67upx;
-		line-height: 67upx;
-		text-align: center;
-		background: #333333;
-		border-radius: 5upx;
-		display: block;
-		margin: 35rpx auto 35rpx auto;
-		color: #FFEBC4;
+		.putQuestionsBtn {
+			width: 421rpx;
+			height: 67rpx;
+			line-height: 67rpx;
+			text-align: center;
+			background: #333333;
+			border-radius: 5rpx;
+			display: block;
+			margin: 35rpx auto 35rpx auto;
+			color: #FFEBC4;
+		}
 	}
 }
 </style>

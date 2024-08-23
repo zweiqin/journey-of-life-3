@@ -1,6 +1,6 @@
 <template>
 	<view class="qaBox">
-		<JHeader title="提问" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="提问" width="50" height="50"></JHeader>
 		<view class="qaTopInfo">
 			<view class="qaTopInfoBox">
 				<image :src="common.seamingImgUrl(qudata.images[0])"></image>
@@ -94,36 +94,40 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .qaBox {
-	padding: 0 30upx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
+	padding: 0 30rpx;
 
 	.qaTopInfo {
-		margin-top: 20upx;
-		margin-bottom: 30upx;
+		margin-top: 20rpx;
+		margin-bottom: 30rpx;
 
 		.qaTopInfoBox {
 			display: flex;
 			align-items: center;
-			padding: 15upx 20upx;
-			margin-bottom: 55upx;
+			padding: 15rpx 20rpx;
+			margin-bottom: 55rpx;
 
 			image {
-				width: 120upx;
-				height: 120upx;
-				margin-right: 20upx;
+				width: 120rpx;
+				height: 120rpx;
+				margin-right: 20rpx;
 				border: 2rpx solid #E4E5E6;
 			}
 
 			.qaInfoText {
 				h3 {
-					font-size: 30upx;
+					font-size: 30rpx;
 					font-weight: 500;
 					color: #333333;
 				}
 
 				span {
-					font-size: 24upx;
+					font-size: 24rpx;
 					color: #CCCCCC;
 					margin-top: 20rpx;
 				}
@@ -135,11 +139,11 @@ export default {
 		width: 100%;
 
 		textarea {
-			padding: 30upx;
+			padding: 30rpx;
 			box-sizing: border-box;
-			min-height: 300upx;
+			min-height: 300rpx;
 			background: #FFFFFF;
-			border: 2upx solid #EEEEEE;
+			border: 2rpx solid #EEEEEE;
 			width: 100%;
 			color: #666666;
 		}
@@ -154,12 +158,12 @@ export default {
 
 		.putQuestionsBtn {
 			width: 90%;
-			height: 100upx;
-			line-height: 100upx;
+			height: 100rpx;
+			line-height: 100rpx;
 			text-align: center;
 			background: #333333;
 			display: block;
-			margin: 0 auto 70upx auto;
+			margin: 0 auto 70rpx auto;
 			color: #FFEBC4;
 			font-size: 28rpx;
 		}

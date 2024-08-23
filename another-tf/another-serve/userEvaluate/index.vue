@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="我的评价" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的评价" width="50" height="50"></JHeader>
 		<view>
 			<!-- 我的评论 -->
 			<view class="evaluateTitle-box flex-row-plus flex-sp-around">
@@ -332,6 +332,10 @@ export default {
 	background-color: #FFFFFF;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.evaluateTitle-box {
 		color: #CCCCCC;

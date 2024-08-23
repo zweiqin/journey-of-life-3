@@ -296,7 +296,7 @@ export default {
 	background-color: #f6f6f6;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 10rpx 10rpx;
 
 		.title {

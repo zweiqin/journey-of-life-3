@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-shop-list-container">
-		<JHeader title="优惠券可用商品列表" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="优惠券可用商品列表" width="50" height="50"></JHeader>
 
 		<!-- 商品列表 -->
 		<view>
@@ -127,6 +127,9 @@ input {
 .coupon-shop-list-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.goodsDetails-box {
 		width: 690rpx;

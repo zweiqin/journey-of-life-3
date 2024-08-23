@@ -1,6 +1,6 @@
 <template>
 	<view class="footprint-box-container">
-		<JHeader title="浏览足迹" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="浏览足迹" width="50" height="50"></JHeader>
 		<view v-if="footprintList && footprintList.length">
 			<view class="wid function-box">
 				<view v-if="allCheckShow" class="finishbox" @click="allCheckShow = false">完成</view>
@@ -271,6 +271,9 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 	background-color: #f7f7f7;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.function-box {
 		background-color: #FFFFFF;

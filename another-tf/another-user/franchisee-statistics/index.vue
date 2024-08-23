@@ -1,6 +1,6 @@
 <template>
 	<view class="finance-statistics-container">
-		<JHeader title="加盟商统计" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="加盟商统计" width="50" height="50"></JHeader>
 		<view
 			style="padding: 8rpx 0 0;text-align: center;color: #ffffff;background: linear-gradient(90deg, #EF530E 0%, #EF530E 100%);overflow: hidden;"
 		>
@@ -355,6 +355,10 @@ export default {
 	min-height: 100vh;
 	width: 100%;
 	background-color: #f6f6f6;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.tui-tabs-view {
 		/deep/ .tui-tabs-slider {

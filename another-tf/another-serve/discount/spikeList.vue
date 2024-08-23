@@ -229,7 +229,7 @@ export default {
 	background-color: #333333;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 10rpx;
 
 		.title {

@@ -324,7 +324,7 @@ export default {
 		background-color: #fff;
 	}
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 30upx 40upx;
 		box-sizing: border-box;
 		background-color: #fff;

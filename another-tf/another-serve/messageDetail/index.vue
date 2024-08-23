@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<JHeader title="公告详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="message-detail-container">
+		<JHeader title="公告详情" width="50" height="50"></JHeader>
 		<view class="messageDetail">
 			<h3 class="detailTit">{{ messageDateils.noticeTitle }}</h3>
 			<view v-if="messageDateils.createTime" class="detailTime">时间：{{ messageDateils.createTime }}</view>
@@ -87,34 +87,41 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.messageDetail {
-	padding: 30upx;
+.message-detail-container {
 
-	h3 {
-		font-size: 36upx;
-		color: #333333;
-		margin-bottom: 40upx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
 	}
 
-	.detailTime {
-		font-size: 28upx;
-		color: #666666;
-		margin-bottom: 50upx;
-	}
+	.messageDetail {
+		padding: 30rpx;
 
-	.detailInfo {
-		word-wrap: break-word;
-
-		p {
-			font-size: 28upx;
+		h3 {
+			font-size: 36rpx;
 			color: #333333;
-			line-height: 48upx;
-			text-indent: 1em;
-			margin-bottom: 50upx;
+			margin-bottom: 40rpx;
 		}
 
-		img {
-			width: 100%;
+		.detailTime {
+			font-size: 28rpx;
+			color: #666666;
+			margin-bottom: 50rpx;
+		}
+
+		.detailInfo {
+			word-wrap: break-word;
+
+			p {
+				font-size: 28rpx;
+				color: #333333;
+				line-height: 48rpx;
+				text-indent: 1em;
+				margin-bottom: 50rpx;
+			}
+
+			img {
+				width: 100%;
+			}
 		}
 	}
 }

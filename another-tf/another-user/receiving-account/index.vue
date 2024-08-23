@@ -1,6 +1,6 @@
 <template>
 	<view class="receiving-account-container">
-		<JHeader title="收款账户" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="收款账户" width="50" height="50"></JHeader>
 		<view v-if="!bankMessage.cardNumber">
 			<tui-no-data :fixed="false" style="padding-top: 60rpx;">暂未绑定收款账户</tui-no-data>
 			<view style="width: 70%;margin: 14rpx auto;">
@@ -121,6 +121,10 @@ export default {
 	width: 100%;
 	min-height: 100vh;
 	background-color: #f5f4f9;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	/deep/ .tui-dialog {
 		overflow: visible;

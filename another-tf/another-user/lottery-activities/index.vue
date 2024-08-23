@@ -159,7 +159,7 @@ export default {
 		vertical-align: bottom;
 	}
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 10rpx;
 		background-color: #f5f5f5;
 

@@ -1,14 +1,14 @@
 <!-- 退货/退款填写物流信息 -->
 <template>
 	<view class="add-logistics-container">
-		<JHeader title="填写退货物流" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="填写退货物流" width="50" height="50"></JHeader>
 		<view class="content">
 			<view class="afterSale-select-box mt20">
 				<view class="item" @click="openWaySelect">
 					<view class="l">物流公司</view>
 					<view class="r-box">
 						<text>{{ SendReturnQuery.logisticsName }}</text>
-						<tui-icon name="arrowright" :size="24" unit="upx" color="#999999" margin="0 0 0 10upx"></tui-icon>
+						<tui-icon name="arrowright" :size="24" unit="rpx" color="#999999" margin="0 0 0 10rpx"></tui-icon>
 					</view>
 				</view>
 
@@ -158,28 +158,32 @@ export default {
 	background-color: #F7F7F7;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 }
 
 .content {
-	padding: 0 0 120upx;
+	padding: 0 0 120rpx;
 	box-sizing: border-box;
 }
 
 .afterSale-select-box {
 	width: 100%;
 	background: #fff;
-	padding: 0 30upx;
+	padding: 0 30rpx;
 	box-sizing: border-box;
 }
 
 .afterSale-select-box .item {
-	height: 100upx;
+	height: 100rpx;
 	border-bottom: 1px solid #e5e5e5;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #333;
 }
 
@@ -210,7 +214,7 @@ export default {
 }
 
 .mt20 {
-	margin-top: 20upx;
+	margin-top: 20rpx;
 }
 
 .r-box-input {
@@ -220,9 +224,9 @@ export default {
 }
 
 .upload-title {
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #333;
-	padding: 30upx 0;
+	padding: 30rpx 0;
 }
 
 .order-confirm-box {
@@ -230,10 +234,10 @@ export default {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 120upx;
+	height: 120rpx;
 	background: #fff;
 	box-shadow: 0px 0px 10px 0px rgba(87, 69, 9, 0.3);
-	padding: 0 30upx;
+	padding: 0 30rpx;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
@@ -243,10 +247,10 @@ export default {
 
 .order-confirm-box .btn {
 	width: 100%;
-	height: 80upx;
-	line-height: 80upx;
+	height: 80rpx;
+	line-height: 80rpx;
 	background: #333333;
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #F5DEB2;
 	text-align: center;
 }

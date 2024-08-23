@@ -285,7 +285,7 @@ export default {
 				consumerPhone: this.$store.getters.userInfo.phone,
 				consumptionType: this.shopData.shopType,
 				storePhone,
-				storeType: this.shopData.shopType
+				storeType: this.shopData.shopType === 1 ? 2 : this.shopData.shopType === 2 ? 3 : ''
 			})
 				.then((result) => {
 					this.benefitinFranchiseesPhone = result.data.franchisees || ''

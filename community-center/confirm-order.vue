@@ -257,7 +257,7 @@ export default {
 
 <style lang="less" scoped>
 .confirm-order {
-  /deep/ .j-header-container {
+  /deep/ .j-header-wrapper {
     padding: 40upx 34upx 36upx 26upx;
     .title {
       font-size: 36upx;

@@ -2,7 +2,6 @@
 	<view class="claasify-products-container">
 		<JHeader
 			:title="transformation[currentType]" width="50" height="50"
-			style="padding: 24rpx 0 18rpx;background-color: #ffffff;"
 		></JHeader>
 		<view v-if="ownSearchBar.includes(currentType)" style="padding: 0 0 12rpx;background-color: #ffffff;">
 			<view style="display: flex;align-items: center;margin: 0 28rpx;border: 2rpx solid #EF5511;border-radius: 50rpx;">
@@ -164,9 +163,13 @@ export default {
 	background-color: #f5f4f6;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container .title {
-		font-size: 36rpx;
-		color: #222229;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 18rpx;
+		background-color: #ffffff;
+		.title {
+			font-size: 36rpx;
+			color: #2A2B23;
+		}
 	}
 }
 </style>

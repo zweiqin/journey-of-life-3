@@ -1,6 +1,6 @@
 <template>
 	<view class="community-card-container">
-		<JHeader title="社区卡包" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="社区卡包" width="50" height="50"></JHeader>
 
 		<view style="padding: 0 24rpx;background-color: #ffffff;">
 			<tui-tabs
@@ -226,7 +226,11 @@ export default {
 	width: 100%;
 	background-color: #f1f1f1;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
+	/deep/ .j-header-wrapper {
 		background-color: #ffffff;
 
 		.title {

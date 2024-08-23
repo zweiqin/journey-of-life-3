@@ -227,6 +227,19 @@ uni-page-head {
   display: none;
 }
 
+// #ifdef APP
+// 在APP端无效的
+// uni-app.uni-app--maxwidth {
+// 	margin-top: 100rpx;
+// }
+// uni-app.uni-app--showtabbar {
+// 	margin-top: 0;
+// }
+// uni-page-body {
+// 	margin-top: 100rpx;
+// }
+// #endif
+
 uni-page-wrapper {
   height: 100%;
 }

@@ -592,7 +592,7 @@ export default {
   // background: #f1f2f6;
   padding-bottom: 168upx;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
     padding: 40upx 34upx 20upx 26upx;
 		.title {
 			font-size: 36upx;

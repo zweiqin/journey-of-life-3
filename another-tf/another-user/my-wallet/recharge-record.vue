@@ -1,6 +1,6 @@
 <template>
 	<view class="recharge-record-container">
-		<JHeader title="平台充值流水记录" width="50" height="50" style="padding: 24rpx 0 10rpx;background-color: #f5f5f5;"></JHeader>
+		<JHeader title="平台充值流水记录" width="50" height="50"></JHeader>
 		<view style="padding: 40rpx 26rpx;">
 			<view style="font-size: 34rpx;font-weight: bold;">明细统计</view>
 			<view v-if="rechargeRecordList && rechargeRecordList.length" style="margin-top: 40rpx;">
@@ -118,5 +118,10 @@ export default {
 	position: relative;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 10rpx;
+		background-color: #f5f5f5;
+	}
 }
 </style>

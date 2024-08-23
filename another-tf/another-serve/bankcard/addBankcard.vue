@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="添加银行卡" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="添加银行卡" width="50" height="50"></JHeader>
 		<view class="upload-bank-card">
 			<view class="image-wrapper">
 				<view class="uploader" @click="handleUploadImg">{{ uploadBandCard ? '重新上传' : '上传照片' }}</view>
@@ -214,29 +214,32 @@ export default {
 	background-color: #F7F7F7;
 	min-height: 100vh;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.addressBack-box {
-		padding: 30upx 30upx;
+		padding: 30rpx 30rpx;
 
 		.consignee-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 20upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 20rpx;
 
 			.consignee {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
 		.iphoneNum-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 36upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 36rpx;
 
 			.iphoneNum {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
@@ -247,15 +250,15 @@ export default {
 
 	.saveAddress-box {
 		position: fixed;
-		bottom: 50upx;
-		left: 30upx;
+		bottom: 50rpx;
+		left: 30rpx;
 
 		.saveAddress {
-			width: 690upx;
-			height: 100upx;
+			width: 690rpx;
+			height: 100rpx;
 			color: #FFEBC4;
 			text-align: center;
-			line-height: 100upx;
+			line-height: 100rpx;
 			background: #333333;
 		}
 	}
@@ -264,14 +267,14 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 670upx;
-		height: 408upx;
+		width: 670rpx;
+		height: 408rpx;
 		background-color: #F7FBFF;
-		margin: 30upx auto;
+		margin: 30rpx auto;
 
 		.image-wrapper {
-			width: 585upx;
-			height: 375upx;
+			width: 585rpx;
+			height: 375rpx;
 			background-color: #fff;
 			position: relative;
 
@@ -284,14 +287,14 @@ export default {
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				width: 143upx;
-				height: 143upx;
+				width: 143rpx;
+				height: 143rpx;
 				border-radius: 100px;
 				background: rgba(4, 3, 33, 0.6);
 				transform: translate(-50%, -50%);
 				color: #fff;
-				font-size: 28upx;
-				line-height: 143upx;
+				font-size: 28rpx;
+				line-height: 143rpx;
 				text-align: center;
 				transition: all 350ms;
 				z-index: 10;
@@ -302,9 +305,9 @@ export default {
 			}
 
 			.tip {
-				font-size: 24upx;
+				font-size: 24rpx;
 				letter-spacing: 0.4em;
-				margin-top: 300upx;
+				margin-top: 300rpx;
 				text-align: center;
 				color: #ccc;
 			}
@@ -314,8 +317,8 @@ export default {
 
 .deleteBankcard-box {
 	background-color: #FFFFFF;
-	padding: 30upx 30upx;
-	margin-top: 20upx;
+	padding: 30rpx 30rpx;
+	margin-top: 20rpx;
 	text-align: center;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<JHeader :title="`《${APPLY_NAME}》商城协议`" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="protocol-container">
+		<JHeader :title="`《${APPLY_NAME}》商城协议`" width="50" height="50"></JHeader>
 		<view id="text">
 			<rich-text :nodes="item.dictDescribe"></rich-text>
 		</view>
@@ -43,8 +43,15 @@ export default {
 }
 </script>
 
-<style scoped>
-#text {
-	padding: 40rpx;
+<style lang="less" scoped>
+.protocol-container {
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
+	#text {
+		padding: 40rpx;
+	}
 }
 </style>

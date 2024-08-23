@@ -1,9 +1,9 @@
 <template>
 	<view class="payCourteous">
-		<JHeader title="评价成功" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="评价成功" width="50" height="50"></JHeader>
 		<view class="evaBox">
 			<view class="imgBox">
-				<tui-icon name="wallet" :size="166" unit="upx" color="#333333"></tui-icon>
+				<tui-icon name="wallet" :size="166" unit="rpx" color="#333333"></tui-icon>
 			</view>
 			<view class="successful">评价成功</view>
 			<view class="btnBox fs28 font-color-333">
@@ -44,6 +44,9 @@ export default {
 	border-top: 2rpx solid #F3F4F5;
 	background-color: #F8F8F8;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.evaBox {
 		padding: 30rpx 30rpx 50rpx 30rpx;

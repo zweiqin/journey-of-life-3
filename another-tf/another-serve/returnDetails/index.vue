@@ -1,7 +1,7 @@
 <!-- 退货详情 -->
 <template>
 	<view class="return-details-container">
-		<JHeader title="退货详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="退货详情" width="50" height="50"></JHeader>
 		<view>
 			<view class="order-details-status">
 				<view style="font-size: 34rpx;text-align: center;">{{ afterConditionEnum(afterState) }}</view>
@@ -114,7 +114,7 @@
 			</view>
 		</view>
 		<tui-popup :show="intervention" mode="fade" style="background-color: rgba(0,0,0,0.4);">
-			<view class="interventionBox" style="background-color: #ffffff;border-radius: 14upx;">
+			<view class="interventionBox" style="background-color: #ffffff;border-radius: 14rpx;">
 				<view class="intTit">申请平台介入</view>
 				<textarea
 					v-model="reason" class="textarea-text" maxlength="200" placeholder-style="color:#BBBBBB"
@@ -224,21 +224,25 @@ export default {
 	background: #f7f7f7;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.order-details-status {
 		padding: 30rpx;
 		background-color: #333333;
-		font-size: 30upx;
+		font-size: 30rpx;
 		color: #ffffff;
 	}
 
 	.order-details-info-box {
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		box-sizing: border-box;
 		background: #fff;
 	}
 
 	.order-details-info-box.mt20 {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 	}
 
 	.order-details-price {
@@ -246,43 +250,43 @@ export default {
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		height: 100upx;
+		height: 100rpx;
 		border-bottom: 1px solid #e5e5e5;
-		font-size: 30upx;
+		font-size: 30rpx;
 		color: #333;
 	}
 
 	.order-details-price .price-box {
-		font-size: 36upx;
+		font-size: 36rpx;
 		color: #ff7911;
 	}
 
 	.order-details-price .fuhao {
-		font-size: 24upx;
+		font-size: 24rpx;
 	}
 
 	.address-box {
 		background: #fff;
-		padding: 30upx 0;
+		padding: 30rpx 0;
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
-		font-size: 28upx;
+		font-size: 28rpx;
 		color: #333;
 		border-bottom: 1px solid #e5e5e5;
 	}
 
 	.address-info {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		font-size: 28upx;
+		font-size: 28rpx;
 		color: #999;
 	}
 
 	.ml30 {
-		margin-left: 30upx;
+		margin-left: 30rpx;
 	}
 
 	.address-box .address-info-r .item {
@@ -292,7 +296,7 @@ export default {
 
 	.address-box .address-info-r .title {
 		display: inline-block;
-		width: 100upx;
+		width: 100rpx;
 		text-align: justify;
 		text-justify: distribute-all-lines;
 		text-align-last: justify;
@@ -300,7 +304,7 @@ export default {
 
 	.address-box .address-info-r .item .r {
 		flex: 1;
-		line-height: 40upx;
+		line-height: 40rpx;
 	}
 
 	.return-explain-box {
@@ -311,15 +315,15 @@ export default {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		line-height: 40upx;
+		line-height: 40rpx;
 	}
 
 	.address-info-r .item .circle {
-		width: 8upx;
-		height: 8upx;
+		width: 8rpx;
+		height: 8rpx;
 		border-radius: 50%;
 		background: #bbb;
-		margin-right: 10upx;
+		margin-right: 10rpx;
 	}
 
 	.return-explain-btn {
@@ -327,20 +331,20 @@ export default {
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-end;
-		margin-top: 20upx;
+		margin-top: 20rpx;
 	}
 
 	.return-explain-btn .btn {
-		width: 130upx;
-		height: 56upx;
+		width: 130rpx;
+		height: 56rpx;
 		background: #fff;
 		border: 1px solid #bbb;
-		border-radius: 4upx;
+		border-radius: 4rpx;
 		text-align: center;
-		line-height: 56upx;
-		margin-left: 20upx;
+		line-height: 56rpx;
+		margin-left: 20rpx;
 		color: #333;
-		font-size: 26upx;
+		font-size: 26rpx;
 	}
 
 	.return-explain-btn .btn.on {
@@ -349,25 +353,25 @@ export default {
 	}
 
 	.order-list-box {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 	}
 
 	.order-list-box .title {
-		padding: 30upx;
+		padding: 30rpx;
 		box-sizing: border-box;
-		font-size: 30upx;
+		font-size: 30rpx;
 		color: #333;
 		background: #fff;
 	}
 
 	.order-list-box .item {
-		margin-bottom: 20upx;
+		margin-bottom: 20rpx;
 		background: #fff;
-		border-radius: 10upx;
+		border-radius: 10rpx;
 	}
 
 	.order-info-box {
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		box-sizing: border-box;
 	}
 
@@ -378,14 +382,14 @@ export default {
 	.order-info-item {
 		display: flex;
 		flex-direction: row;
-		padding: 20upx 0;
+		padding: 20rpx 0;
 	}
 
 	.product-img {
-		width: 180upx;
-		height: 180upx;
-		border-radius: 10upx;
-		margin-right: 30upx;
+		width: 180rpx;
+		height: 180rpx;
+		border-radius: 10rpx;
+		margin-right: 30rpx;
 	}
 
 	.info-box {
@@ -395,10 +399,10 @@ export default {
 	}
 
 	.product-name {
-		font-size: 26upx;
+		font-size: 26rpx;
 		color: #333;
-		height: 68upx;
-		line-height: 34upx;
+		height: 68rpx;
+		line-height: 34rpx;
 		display: -webkit-box;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -408,21 +412,21 @@ export default {
 	}
 
 	.product-sku {
-		font-size: 24upx;
+		font-size: 24rpx;
 		color: #999;
 	}
 
 	.delivery-way-box {
 		display: flex;
 		flex-direction: column;
-		margin: 30upx 0 10upx;
+		margin: 30rpx 0 10rpx;
 	}
 
 	.delivery-way-box .item {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		font-size: 26upx;
+		font-size: 26rpx;
 		color: #333;
 	}
 
@@ -449,16 +453,16 @@ export default {
 	}
 
 	.interventionBox .intTit {
-		height: 100upx;
-		line-height: 100upx;
+		height: 100rpx;
+		line-height: 100rpx;
 		text-align: center;
-		border-bottom: 1upx solid #EEE;
-		font-size: 32upx;
+		border-bottom: 1rpx solid #EEE;
+		font-size: 32rpx;
 	}
 
 	.interventionBox .textarea-text {
-		padding: 20upx;
-		font-size: 20upx;
+		padding: 20rpx;
+		font-size: 20rpx;
 		height: 200rpx;
 	}
 

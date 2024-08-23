@@ -2,7 +2,6 @@
 	<view class="advanced-role-application-container">
 		<JHeader
 			:dark="false" title="" width="50" height="50"
-			style="padding: 24upx 40upx 210upx;background-color: transparent;"
 		></JHeader>
 		<view class="main-area">
 			<view class="title">
@@ -145,47 +144,52 @@ export default {
 	background-size: cover;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 40rpx 210rpx;
+		background-color: transparent;
+	}
+
 	.main-area {
 		position: relative;
-		width: 622upx;
+		width: 622rpx;
 		min-height: 500px;
 		background-color: #fff;
 		margin: 0 auto;
-		padding: 112upx 32upx 40upx;
+		padding: 112rpx 32rpx 40rpx;
 		box-sizing: border-box;
-		border-radius: 24upx;
+		border-radius: 24rpx;
 
 		.title {
 			position: absolute;
 			color: #fff;
-			width: 502upx;
-			height: 112upx;
+			width: 502rpx;
+			height: 112rpx;
 			background: url('../../../static/images/user/daili/title-wrapper.png') no-repeat;
 			background-size: cover;
-			top: -26upx;
+			top: -26rpx;
 			left: 50%;
 			transform: translateX(-50%);
-			font-size: 42upx;
+			font-size: 42rpx;
 			font-weight: bold;
 			text-align: center;
-			line-height: 112upx;
+			line-height: 112rpx;
 		}
 
 		.item {
-			margin-bottom: 30upx;
+			margin-bottom: 30rpx;
 
 			.item-title {
 				color: #3a3629;
-				font-size: 28upx;
-				margin-bottom: 18upx;
+				font-size: 28rpx;
+				margin-bottom: 18rpx;
 			}
 
 			.field-wrapper {
 				width: 100%;
 				background-color: #f6f6f5;
-				height: 96upx;
-				border-radius: 16upx;
-				padding: 27upx 24upx;
+				height: 96rpx;
+				border-radius: 16rpx;
+				padding: 27rpx 24rpx;
 				box-sizing: border-box;
 				display: flex;
 				align-items: center;
@@ -193,19 +197,19 @@ export default {
 
 				input {
 					flex: 1;
-					font-size: 28upx;
+					font-size: 28rpx;
 				}
 			}
 		}
 
 		.uni-btn {
 			border-radius: 100px;
-			height: 96upx;
+			height: 96rpx;
 			background-color: #ffd152;
-			margin-top: 68upx;
-			font-size: 28upx;
+			margin-top: 68rpx;
+			font-size: 28rpx;
 			color: #fff;
-			line-height: 96upx;
+			line-height: 96rpx;
 			font-weight: 500;
 		}
 	}

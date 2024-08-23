@@ -254,7 +254,7 @@ export default {
 		}
 	}
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 10rpx;
 
 		.title {

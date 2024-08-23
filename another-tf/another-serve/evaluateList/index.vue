@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="宝贝评价" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="宝贝评价" width="50" height="50"></JHeader>
 		<!-- 查看全部评论 -->
 		<view class="evaluateTag-box">
 			<view class="evaluateTag-text">
@@ -113,49 +113,52 @@ export default {
 	min-height: 100vh;
 	background-color: #FFFFFF;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.evaluateTag-box {
-		margin-top: 10upx;
-		margin-left: 10upx;
-		padding-bottom: 10upx;
+		margin-top: 10rpx;
+		margin-left: 10rpx;
+		padding-bottom: 10rpx;
 		display: flex;
 		flex-wrap: wrap;
 
 		.evaluateTag-text {
 			background-color: #333333;
-			padding: 16upx 14upx;
+			padding: 16rpx 14rpx;
 			color: #FFFFFF;
-			margin-left: 20upx;
-			margin-top: 20upx;
+			margin-left: 20rpx;
+			margin-top: 20rpx;
 		}
 	}
 
 	.img-item {
-		width: 223upx;
-		height: 223upx;
-		border-radius: 10upx;
-		margin-right: 10upx;
-		margin-top: 10upx;
+		width: 223rpx;
+		height: 223rpx;
+		border-radius: 10rpx;
+		margin-right: 10rpx;
+		margin-top: 10rpx;
 	}
 
 	.evaluateList-box {
-		padding-bottom: 30upx;
+		padding-bottom: 30rpx;
 
 		.evaluate-contentbox {
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
-			padding: 30upx 30upx;
+			padding: 30rpx 30rpx;
 			background-color: #FFFFFF;
 
 			.evaluate-content {
-				width: 670upx;
+				width: 670rpx;
 				display: flex;
 				justify-content: space-between;
 
 				.user-headSmallImg {
-					width: 60upx;
-					height: 60upx;
+					width: 60rpx;
+					height: 60rpx;
 					border-radius: 50%;
 				}
 			}
@@ -164,20 +167,20 @@ export default {
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
-				margin-left: -9upx;
+				margin-left: -9rpx;
 			}
 
 			.addEvaluate {
-				margin-top: 20upx;
+				margin-top: 20rpx;
 
 				.addEvaluateText {
-					margin: 25upx 0;
+					margin: 25rpx 0;
 				}
 			}
 
 			.praisebig-box {
-				border-top: 1upx solid #EEEEEE;
-				padding-top: 30upx;
+				border-top: 1rpx solid #EEEEEE;
+				padding-top: 30rpx;
 			}
 		}
 	}

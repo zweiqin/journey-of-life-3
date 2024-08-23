@@ -1,12 +1,12 @@
 <template>
 	<view class="payCourteous">
-		<JHeader title="支付成功" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="支付成功" width="50" height="50"></JHeader>
 		<view class="payTitBox flex-items flex-center" :style="{ 'padding-top': topHeight + 'px' }">
 			<view class="payTit fs30">支付成功</view>
 		</view>
 		<view class="resultCard">
 			<view class="imgBox">
-				<tui-icon name="wallet" :size="166" unit="upx" color="#333333"></tui-icon>
+				<tui-icon name="wallet" :size="166" unit="rpx" color="#333333"></tui-icon>
 			</view>
 			<view class="successful">支付成功</view>
 			<view class="btnBox fs28 font-color-333">
@@ -15,7 +15,7 @@
 			</view>
 			<view v-if="orderPolite.growth || orderPolite.couponList" class="orderPolite">
 				<view>
-					<tui-icon name="service-fill" :size="186" unit="upx" color="#f94f98"></tui-icon>
+					<tui-icon name="service-fill" :size="186" unit="rpx" color="#f94f98"></tui-icon>
 				</view>
 				<view class="rightInfo">
 					<view v-if="orderPolite.credit" class="growthBox">
@@ -93,6 +93,10 @@ export default {
 
 <style lang="less" scoped>
 .payCourteous {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.payTitBox {
 		height: 100rpx;
 		position: fixed;

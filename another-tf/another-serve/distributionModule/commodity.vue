@@ -1,6 +1,6 @@
 <template>
 	<view class="commodity-container">
-		<JHeader title="推广商品" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="推广商品" width="50" height="50"></JHeader>
 		<view>
 			<view v-if="productList && productList.length">
 				<view
@@ -124,6 +124,9 @@ export default {
 .commodity-container {
 	min-height: 100%;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.goodsDetails-box {
 		width: 690rpx;

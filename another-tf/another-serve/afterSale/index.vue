@@ -1,7 +1,7 @@
 <!-- 售后列表 -->
 <template>
 	<view>
-		<JHeader title="我的售后" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的售后" width="50" height="50"></JHeader>
 		<view class="content">
 			<view class="order-list-box">
 				<view>
@@ -241,9 +241,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 page {
 	background-color: #F7F7F7;
+}
+
+/deep/ .j-header-wrapper {
+	padding: 24rpx 0 0;
 }
 
 .Put-box1 {
