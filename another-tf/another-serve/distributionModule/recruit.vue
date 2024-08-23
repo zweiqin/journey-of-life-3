@@ -1,13 +1,15 @@
 <template>
 	<view class="recruit-container">
-		<JHeader title="分销员招募令" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="分销员招募令" width="50" height="50"></JHeader>
 		<!-- 申请分销员 -->
 		<view class="topBackImg flex-items flex-column">
 			<view class="content mar-top-36">
 				<view class="topColor"></view>
 				<view class="text-box mar-left-30">
 					<label class="fs-bold">分销员是什么？</label>
-					<view class="fs24 font-color-656 mar-top-20">分销员是我们为拥有推广能力的用户推出的运营计划。你只需将高品质商品分享推荐给他人，收获他人的感谢的同时，挣得属于自己的利润。</view>
+					<view class="fs24 font-color-656 mar-top-20">
+						分销员是我们为拥有推广能力的用户推出的运营计划。你只需将高品质商品分享推荐给他人，收获他人的感谢的同时，挣得属于自己的利润。
+					</view>
 				</view>
 				<view class="text-box mar-top-20 mar-left-30">
 					<label class="fs-bold">我该怎么成为分销员？</label>
@@ -62,7 +64,10 @@
 			</view>
 
 		</view>
-		<view class="butBox flex-items-plus" :style="{ 'padding-bottom': (isIphone === true ? 20 : 0) + 'rpx' }" @click="informationShowClick">
+		<view
+			class="butBox flex-items-plus" :style="{ 'padding-bottom': (isIphone === true ? 20 : 0) + 'rpx' }"
+			@click="informationShowClick"
+		>
 			<view class="submitbut">我要成为分销员</view>
 		</view>
 		<!-- 填写信息弹窗 -->
@@ -78,7 +83,10 @@
 					</view>
 					<view class="flex-items flex-row mar-top-30 phoneStyle">
 						<label class="fs26 font-color-656">联系电话<label class="font-color-red">*</label></label>
-						<input v-model="mobile" class="recruitIphone mar-left-20 fs26" disabled="disabled" type="number" maxlength="11" />
+						<input
+							v-model="mobile" class="recruitIphone mar-left-20 fs26" disabled="disabled" type="number"
+							maxlength="11"
+						/>
 					</view>
 					<view class="flex-items flex-row mar-top-30 mar-left-40">
 						<label class="fs26 font-color-656">邀请码</label>
@@ -180,106 +188,114 @@ export default {
 }
 </script>
 
-<style lang="scss">
-	.recruit-container {
-		.topBackImg {
-			width: 100%;
-			height: 260upx;
-			background-color: #373737;
-			background-size: 100% 260upx;
+<style lang="less" scoped>
+.recruit-container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
-			.content {
-				width: 690upx;
-				background-color: #FFFFFF;
+	.topBackImg {
+		width: 100%;
+		height: 260rpx;
+		background-color: #373737;
+		background-size: 100% 260rpx;
 
-				.topColor {
-					height: 60upx;
-				}
+		.content {
+			width: 690rpx;
+			background-color: #FFFFFF;
 
-				.text-box {
-					width: 622upx;
-
-					.textDes {
-						width: 598upx;
-						line-height: 40upx;
-					}
-				}
+			.topColor {
+				height: 60rpx;
 			}
 
+			.text-box {
+				width: 622rpx;
+
+				.textDes {
+					width: 598rpx;
+					line-height: 40rpx;
+				}
+			}
 		}
 
-		.butBox {
-			height: 130upx;
-			width: 100%;
-			position: absolute;
-			bottom: 0upx;
-			left: 0upx;
-			background-color: #FFFFFF;
-			box-shadow: 0upx 3upx 12upx #999999;
+	}
+
+	.butBox {
+		height: 130rpx;
+		width: 100%;
+		position: absolute;
+		bottom: 0rpx;
+		left: 0rpx;
+		background-color: #FFFFFF;
+		box-shadow: 0rpx 3rpx 12rpx #999999;
+
+		.submitbut {
+			height: 80rpx;
+			width: 690rpx;
+			background: #333333;
+			font-size: 28rpx;
+			text-align: center;
+			line-height: 80rpx;
+			color: #FFEBC4;
+		}
+	}
+
+	.informationShow-box {
+		position: relative;
+		background-color: #ffffff;
+		border-radius: 14rpx;
+
+		.flex-items {
+			input {
+				padding-left: 16rpx;
+			}
+		}
+
+		.phoneStyle {
+			input {
+				background: #EEEEEE;
+				color: #999999;
+			}
+		}
+
+		.informationShow-centent {
+			width: 520rpx;
+			height: 550rpx;
+
+			.recruitName {
+				border: 2rpx solid #DDDDDD;
+				width: 300rpx;
+				height: 48rpx;
+			}
+
+			.recruitIphone {
+				border: 2rpx solid #DDDDDD;
+				width: 300rpx;
+				height: 48rpx;
+			}
+
+			.massageDes-but {
+				position: absolute;
+				bottom: 0;
+			}
+
+			.exitBut {
+				border: 1rpx solid #E5E5E5;
+				width: 260rpx;
+				height: 90rpx;
+				text-align: center;
+				line-height: 90rpx;
+			}
 
 			.submitbut {
-				height: 80upx;
-				width: 690upx;
-				background: #333333;
-				font-size: 28upx;
+				background-color: #333333;
+				width: 260rpx;
+				height: 90rpx;
 				text-align: center;
-				line-height: 80upx;
-        color: #FFEBC4;
-			}
-		}
-
-		.informationShow-box {
-			position: relative;
-			background-color: #ffffff;
-			border-radius: 14upx;
-      .flex-items {
-        input {
-          padding-left: 16upx;
-        }
-      }
-      .phoneStyle {
-        input {
-          background: #EEEEEE;
-          color: #999999;
-        }
-      }
-			.informationShow-centent {
-				width: 520upx;
-				height: 550upx;
-				.recruitName {
-					border: 2upx solid #DDDDDD;
-					width: 300upx;
-					height: 48upx;
-				}
-
-				.recruitIphone {
-					border: 2upx solid #DDDDDD;
-					width: 300upx;
-					height: 48upx;
-				}
-
-				.massageDes-but {
-					position: absolute;
-					bottom: 0;
-				}
-
-				.exitBut {
-					border: 1upx solid #E5E5E5;
-					width: 260upx;
-					height: 90upx;
-					text-align: center;
-					line-height: 90upx;
-				}
-
-				.submitbut {
-					background-color: #333333;
-					width: 260upx;
-					height: 90upx;
-					text-align: center;
-					line-height: 90upx;
-					color: #FFFFFF;
-				}
+				line-height: 90rpx;
+				color: #FFFFFF;
 			}
 		}
 	}
+}
 </style>

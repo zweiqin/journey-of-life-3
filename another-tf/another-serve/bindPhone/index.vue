@@ -97,7 +97,7 @@ export default {
 		handleBindPhone() {
 			if ([ 4 ].includes(this.$store.state.app.terminal)) {
 				this.updateAliPhone(this.phone, false)
-			} else if ([2, 3].includes(this.$store.state.app.terminal)) {
+			} else if ([6, 3, 2, 1].includes(this.$store.state.app.terminal)) {
 				this.updateWxPhone()
 			}
 		},

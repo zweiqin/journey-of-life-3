@@ -131,7 +131,7 @@
 
 <script>
 import { getOrderAssociatedBeneficiaryApi, getCommunityListApi, getAreaDetailInfoApi, getCounCodeByDetailAddressApi, getFranchiseesCommissionApi, getCommunityCommissionApi } from '../../api/community-center'
-import { getReceiveAddressByIdApi } from '../../api/anotherTFInterface'
+import { getIndexShopDetailApi, getReceiveAddressByIdApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'ATFCommunityAssociation',
@@ -155,6 +155,10 @@ export default {
 		communityAddressInfo: {
 			type: Object,
 			default: () => ({ receiveId: '' })
+		},
+		shopData: {
+			type: Object,
+			default: () => ({ shopType: '', shops: [] })
 		}
 	},
 	data() {
@@ -208,6 +212,16 @@ export default {
 	},
 
 	watch: {
+		shopData: {
+			handler(newValue, oldValue) {
+				console.log(newValue)
+				if ((newValue.shopType !== oldValue.shopType) || (newValue.shops !== oldValue.shops)) {
+					this.initData()
+				}
+			},
+			immediate: false,
+			deep: true
+		},
 		benefitinFranchiseesPhone: { // 理论只会在首次加载时变化一次
 			handler(newValue, oldValue) {
 				if (newValue && this.communityAddressInfo.receiveId && !this.communityAddressInfo.receiveAdress) {
@@ -252,40 +266,59 @@ export default {
 	},
 
 	created() {
-		getOrderAssociatedBeneficiaryApi({ consumerPhone: this.$store.getters.userInfo.phone })
-			.then((res) => {
-				this.benefitinFranchiseesPhone = res.data.franchisees || ''
-				this.$emit('change', {
-					benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-					communityPhone: this.selectedCommunityStore.communityAccount.account,
-					commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
-				})
-				if (this.benefitinFranchiseesPhone) {
-					getFranchiseesCommissionApi({ franchiseesPhone: this.$store.getters.userInfo.phone })
-						.then((res) => {
-							if (res && res.version) {
-								if (res.statusCode === 20000) {
-									this.commissionSharingRatio = ['', Number(res.data[1]), Number(res.data[2])]
-									this.$emit('change', {
-										benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
-										communityPhone: this.selectedCommunityStore.communityAccount.account,
-										commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
-									})
-								} else {
-									console.log('接口报错', res)
-									this.$showToast(res.statusMsg)
-								}
-							} else {
-								this.$showToast(`请求错误`)
-							}
-						})
-						.catch((e) => {
-							this.$showToast(`请求失败：${e.errMsg}`)
-						})
-				}
-			})
+		this.initData(true)
 	},
 	methods: {
+		async initData(isGetRatio) {
+			let storePhone = ''
+			if (this.shopData.shops && (this.shopData.shops.length === 1)) {
+				await getIndexShopDetailApi({
+					shopId: this.shopData.shops[0].shopId,
+					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				})
+					.then((res) => {
+						storePhone = res.data.chargePersonPhone || ''
+					})
+			}
+			getOrderAssociatedBeneficiaryApi({
+				consumerPhone: this.$store.getters.userInfo.phone,
+				consumptionType: this.shopData.shopType,
+				storePhone,
+				storeType: this.shopData.shopType === 1 ? 2 : this.shopData.shopType === 2 ? 3 : ''
+			})
+				.then((result) => {
+					this.benefitinFranchiseesPhone = result.data.franchisees || ''
+					this.$emit('change', {
+						benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
+						communityPhone: this.selectedCommunityStore.communityAccount.account,
+						commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
+					})
+					if (this.benefitinFranchiseesPhone && isGetRatio) {
+						getFranchiseesCommissionApi({ franchiseesPhone: this.$store.getters.userInfo.phone })
+							.then((res) => {
+								if (res && res.version) {
+									if (res.statusCode === 20000) {
+										this.commissionSharingRatio = ['', Number(res.data[1]), Number(res.data[2])]
+										this.$emit('change', {
+											benefitinFranchiseesPhone: this.benefitinFranchiseesPhone,
+											communityPhone: this.selectedCommunityStore.communityAccount.account,
+											commissionSharingRatio: JSON.parse(JSON.stringify(this.commissionSharingRatio))
+										})
+									} else {
+										console.log('接口报错', res)
+										this.$showToast(res.statusMsg)
+									}
+								} else {
+									this.$showToast(`请求错误`)
+								}
+							})
+							.catch((e) => {
+								this.$showToast(`请求失败：${e.errMsg}`)
+							})
+					}
+				})
+		},
 		getCounCodeByDetailAddress(detailAddress) {
 			uni.showLoading()
 			getCounCodeByDetailAddressApi({ detailAddress: detailAddress.replaceAll('-', '') })

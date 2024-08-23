@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="追加评价" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="追加评价" width="50" height="50"></JHeader>
 		<!-- 追加评论 -->
 		<view class="addEvaluate-box flex-items-plus flex-column-plus">
 			<view class="addEvaluate flex-column-plus">
@@ -120,20 +120,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .container {
 	background-color: #F7F7F7;
 	min-height: 100vh;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.addEvaluate-box {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 
 		.addEvaluate {
-			width: 690upx;
+			width: 690rpx;
 			background-color: #FFFFFF;
-			border-radius: 10upx;
-			padding-bottom: 30upx;
+			border-radius: 10rpx;
+			padding-bottom: 30rpx;
 
 			.addEvaluateText {
 				font-weight: bold;
@@ -141,14 +145,14 @@ export default {
 
 			.addEvaluateTitle-box {
 				.title-img {
-					width: 90upx;
-					height: 90upx;
-					border-radius: 4upx;
+					width: 90rpx;
+					height: 90rpx;
+					border-radius: 4rpx;
 				}
 
 				.title-textbox {
-					width: 530upx;
-					margin-left: 20upx;
+					width: 530rpx;
+					margin-left: 20rpx;
 					font-weight: bold;
 
 					.sukValue {
@@ -162,22 +166,22 @@ export default {
 
 		.textarea-box {
 			.textarea-text {
-				width: 610upx;
-				height: 200upx;
+				width: 610rpx;
+				height: 200rpx;
 				background-color: #FFFFFF;
-				font-size: 26upx;
-				padding: 20upx 20upx;
+				font-size: 26rpx;
+				padding: 20rpx 20rpx;
 				border: 2rpx solid #E4E5E6;
 			}
 		}
 
 		.addPicture-box {
 			background-color: #F5F5F5;
-			width: 40upx;
-			height: 40upx;
-			margin-top: 100upx;
-			margin-left: 100upx;
-			border-radius: 10upx;
+			width: 40rpx;
+			height: 40rpx;
+			margin-top: 100rpx;
+			margin-left: 100rpx;
+			border-radius: 10rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -187,16 +191,16 @@ export default {
 
 	.butBox {
 		position: absolute;
-		bottom: 40upx;
+		bottom: 40rpx;
 
 		.submitbut {
-			height: 100upx;
-			width: 690upx;
+			height: 100rpx;
+			width: 690rpx;
 			background: #333333;
 			color: #FFEBC4;
-			font-size: 28upx;
+			font-size: 28rpx;
 			text-align: center;
-			line-height: 100upx;
+			line-height: 100rpx;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<view class="finance-statistics-container">
-		<JHeader title="商家服务" width="50" height="50" style="padding: 24rpx 0 0;background-color: #ffffff;">
+		<JHeader title="商家服务" width="50" height="50">
 			<!-- <template #ftFn>
 				<text style="padding-right: 18rpx;font-size: 26rpx;color: #222229;">帮助</text>
 				</template> -->
@@ -313,6 +313,7 @@ export default {
 				finances: []
 			},
 			queryInfo: {
+				paymentMode: '', // 1普通订单2消费金3代金券4余额5佣金
 				condition: 2,
 				time: ''
 			},
@@ -348,8 +349,12 @@ export default {
 		getFinanceStatistics() {
 			this.isLoading = true
 			let api
-			if (this.pageType === 'order') api = getShopFinanceCountApi
-			else if (this.pageType === 'recharge') api = getShopRechargeCountApi
+			if (this.pageType === 'order') {
+				api = getShopFinanceCountApi
+				this.queryInfo.paymentMode = 1
+			} else if (this.pageType === 'recharge') {
+				api = getShopRechargeCountApi
+			}
 			api({ ...this.queryInfo })
 				.then((res) => {
 					this.financeStatisticsData = res.data
@@ -447,7 +452,7 @@ export default {
 		}
 	}
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 0;
 		background-color: #ffffff;
 

@@ -1,6 +1,6 @@
 <template>
 	<view class="collection-container">
-		<JHeader title="我的收藏" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的收藏" width="50" height="50"></JHeader>
 		<view class="tabsbox">
 			<tui-tabs
 				style="width: 750rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="60" :padding="0"
@@ -518,6 +518,9 @@ export default {
 	min-height: 100vh;
 	background-color: #F7F7F7;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.function-box {
 		background-color: #F7F7F7;

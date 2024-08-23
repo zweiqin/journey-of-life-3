@@ -276,6 +276,7 @@ export default {
 							disabled: true
 						})
 					}
+					this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 					this.handleSetDisable()
 					this.handleNoticeFather()
 				} else {
@@ -518,6 +519,7 @@ export default {
 				icon: require('../../static/images/user/pay/wechat_pay.png'),
 				disabled: true
 			})
+			this.paymentList.find((item) => item.paymentMode === '1').disabled = false
 			this.handleSetDisable()
 			this.handleNoticeFather()
 		}
@@ -528,6 +530,7 @@ export default {
 				icon: require('../../static/images/user/pay/alipay.png'),
 				disabled: true
 			})
+			this.paymentList.find((item) => item.paymentMode === '2').disabled = false
 			this.handleSetDisable()
 			this.handleNoticeFather()
 		}
@@ -541,6 +544,7 @@ export default {
 			// 获取花呗分期配置
 			getOrderHuabeiConfigApi({})
 				.then((res) => {
+					this.paymentList.find((item) => item.paymentMode === '3').disabled = false
 					this.flowerInfo.huabeiChargeType = res.data.huabeiChargeType
 					if (this.flowerInfo.huabeiChargeType === 1) { // 如果后端返回的是用户支付手续费，设置费率信息
 						res.data.huabeiFeeRateList.forEach((rate, index) => {
@@ -581,6 +585,7 @@ export default {
 				icon: require('../../static/images/user/pay/tonglian.png'),
 				disabled: true
 			})
+			this.paymentList.find((item) => item.paymentMode === '4').disabled = false
 			this.handleSetDisable()
 			this.handleNoticeFather()
 		}
@@ -591,6 +596,7 @@ export default {
 				icon: require('../../static/images/user/pay/daijinquan.png'),
 				disabled: true
 			})
+			this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
 			this.handleSetDisable()
 			this.handleNoticeFather()
 		}

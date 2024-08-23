@@ -1,6 +1,6 @@
 <template>
 	<view class="register-container">
-		<JHeader title="" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="" width="50" height="50"></JHeader>
 		<view class="titleBox">
 			<p class="bigTitle">填写注册信息</p>
 			<p class="tips">请仔细填写以下信息，以免后期登陆异常</p>
@@ -159,6 +159,10 @@ export default {
 	position: relative;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.disbleds {
 		background-color: #EF530E !important;

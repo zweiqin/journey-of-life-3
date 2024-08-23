@@ -290,7 +290,7 @@ export default {
   padding-bottom: 400upx;
   // box-sizing: border-box;
 
-  /deep/ .j-header-container {
+  /deep/ .j-header-wrapper {
     padding: 20upx;
     box-sizing: border-box;
     background: #fff;

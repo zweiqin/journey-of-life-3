@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="我的积分" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的积分" width="50" height="50"></JHeader>
 		<view class="memberBox">
 			<view class="posBox">
 				<view class="memberBoxTop">
@@ -298,6 +298,10 @@ export default {
 	background-color: #F8F8F8;
 	min-height: 100vh;
 	padding: 0 20rpx;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.memberBox {
 		min-height: 230rpx;

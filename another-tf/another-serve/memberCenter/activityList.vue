@@ -1,6 +1,6 @@
 <template>
 	<view class="spikeListBox">
-		<JHeader :dark="false" title="会员专区" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader :dark="false" title="会员专区" width="50" height="50"></JHeader>
 		<view class="spikeBgBox">
 			<view class="discountBg">
 			</view>
@@ -260,6 +260,11 @@ page {
 
 <style lang="less" scoped>
 .spikeListBox {
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.discountBg {
 		width: 100%;
 		height: 440rpx;

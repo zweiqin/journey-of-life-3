@@ -1,6 +1,6 @@
 <template>
 	<view class="goods-list-container">
-		<JHeader title="商品列表" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="商品列表" width="50" height="50"></JHeader>
 		<view class="flex-items-plus flex-row search">
 			<view class="searchBg">
 				<view class="searchImg-box flex-items-plus">
@@ -201,6 +201,10 @@ input {
 	min-height: 100vh;
 	background-color: #f8f8f8;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.search {
 		padding: 20rpx;

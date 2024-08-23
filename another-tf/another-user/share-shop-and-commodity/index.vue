@@ -1,13 +1,13 @@
 <template>
 	<view class="share-shop-and-commodity-container">
 		<view v-if="!shopId && !goodsArr.length">
-			<JHeader title="我的分享" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+			<JHeader title="我的分享" width="50" height="50"></JHeader>
 			<view style="padding-bottom: 45rpx;">
 				<tui-no-data :fixed="false" style="padding-top: 60rpx;">分享已失效</tui-no-data>
 			</view>
 		</view>
 		<view v-else>
-			<JHeader v-if="isSharer" title="我的分享" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+			<JHeader v-if="isSharer" title="我的分享" width="50" height="50"></JHeader>
 			<view v-else style="height: 100rpx;"></view>
 			<view style="padding: 42rpx 40rpx 0;">
 				<view
@@ -355,6 +355,10 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 	background-color: #f5f4f6;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.generate-code-container {
 		position: absolute;

@@ -709,7 +709,7 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 18rpx 0 16rpx;
 		background-color: #f5f5f5;
 

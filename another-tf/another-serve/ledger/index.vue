@@ -1,6 +1,6 @@
 <template>
 	<view class="ledger-container">
-		<JHeader title="推广中心" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="推广中心" width="50" height="50"></JHeader>
 		<view class="top-bg"></view>
 		<view class="top-bar">
 			<text class="textCenter">佣金明细</text>
@@ -230,11 +230,15 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.top-bg {
 		// background-image: linear-gradient(#011375, #011375);
 		background-size: 100% 100%;
 		position: absolute;
-		top: 60upx;
+		top: 60rpx;
 		left: 0;
 		width: 100%;
 		height: 368rpx;

@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<JHeader title="账户注销" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="账户注销" width="50" height="50"></JHeader>
 		<view class="content-text">
 			<view class="text-align fs32 fs-bold">
 				账户注销重要提醒
@@ -32,12 +32,12 @@
 		<view class="content-text">
 			<view class="agreement">
 				<tui-icon
-					v-if="agreement" name="circle-fill" :size="34" unit="upx"
-					color="#c5aa7b" margin="0 15upx 0 0" @click="agreement = false"
+					v-if="agreement" name="circle-fill" :size="34" unit="rpx"
+					color="#c5aa7b" margin="0 15rpx 0 0" @click="agreement = false"
 				></tui-icon>
 				<tui-icon
-					v-else name="circle" :size="34" unit="upx"
-					color="#cccccc" margin="0 15upx 0 0" @click="agreement = true"
+					v-else name="circle" :size="34" unit="rpx"
+					color="#cccccc" margin="0 15rpx 0 0" @click="agreement = true"
 				></tui-icon>
 				<text class="font-color-999">我已阅读并同意</text>
 				<text class="font-color-C5AA7B" @click="go('/another-tf/another-serve/protocol/index?type=app_user_agreement')">《账户注销重要提醒》</text>
@@ -72,9 +72,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .content {
 	background-color: #F5F5F5;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.content-text {
 		margin: 30rpx;

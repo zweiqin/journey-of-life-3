@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="会员签到" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="会员签到" width="50" height="50"></JHeader>
 		<view class="avatarTop">
 			<view class="avatarBox">
 				<image :src="common.seamingImgUrl($store.getters.userInfo.headImage)"></image>
@@ -178,6 +178,10 @@ export default {
 	background: #F8F8F8;
 	background-size: contain;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.avatarTop {
 		text-align: center;

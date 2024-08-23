@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-list-container">
-		<JHeader title="优惠券" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="优惠券" width="50" height="50"></JHeader>
 		<template v-if="couponList && couponList.length">
 			<view v-for="item in couponList" :key="item.couponId" class="couponItem flex-items">
 				<view class="itemLeft" @click="go(`/another-tf/another-serve/coupon/product?id=${item.couponId}`)">
@@ -106,6 +106,9 @@ export default {
 	background-color: #f8f8f8;
 	box-sizing: border-box;
 	padding: 0 20rpx 40rpx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.couponItem {
 		background: #333333;

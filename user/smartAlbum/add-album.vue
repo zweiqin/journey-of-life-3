@@ -1,18 +1,18 @@
 <template>
 	<view class="community-order">
-		<JHeader title="新建画册" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="新建画册" width="50" height="50"></JHeader>
 
 		<view class="add-album-content">
 			<view class="item-wrapper">
 				<view class="add-album-title">画册名称</view>
 				<view class="add-album-value">
-					<input v-model="form.atlasName" type="text" class="common-text" placeholder="请填写画册名称" style="padding-bottom: 32upx" />
+					<input v-model="form.atlasName" type="text" class="common-text" placeholder="请填写画册名称" style="padding-bottom: 32rpx" />
 				</view>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-album-title">画册类型</view>
-				<view class="add-album-value"><input v-model="form.atlasType" type="text" class="common-text" placeholder="请填写画册类型" style="padding-bottom: 32upx" /></view>
+				<view class="add-album-value"><input v-model="form.atlasType" type="text" class="common-text" placeholder="请填写画册类型" style="padding-bottom: 32rpx" /></view>
 			</view>
 		</view>
 
@@ -29,10 +29,10 @@
 							:key="img"
 							style="
                 position: relative;
-                width: 160upx;
-                height: 160upx;
-                margin-right: 20upx;
-                margin-bottom: 20upx;
+                width: 160rpx;
+                height: 160rpx;
+                margin-right: 20rpx;
+                margin-bottom: 20rpx;
               "
 						>
 							<img :src="img" alt="" class="img1" />
@@ -44,7 +44,7 @@
 					<view
 						v-if="imagesFace.length === 0"
 						class="upload"
-						style="margin-right: 6upx"
+						style="margin-right: 6rpx"
 						@click="chooseImgFace"
 					>
 						+
@@ -64,10 +64,10 @@
 							:key="img"
 							style="
                 position: relative;
-                width: 160upx;
-                height: 160upx;
-                margin-right: 20upx;
-                margin-bottom: 20upx;
+                width: 160rpx;
+                height: 160rpx;
+                margin-right: 20rpx;
+                margin-bottom: 20rpx;
               "
 						>
 							<img :src="img" alt="" class="img1" />
@@ -78,7 +78,7 @@
 					</view>
 					<view
 						class="upload"
-						style="margin-right: 6upx"
+						style="margin-right: 6rpx"
 						@click="chooseImg"
 					>
 						+
@@ -98,10 +98,10 @@
 							:key="img"
 							style="
                 position: relative;
-                width: 160upx;
-                height: 160upx;
-                margin-right: 20upx;
-                margin-bottom: 20upx;
+                width: 160rpx;
+                height: 160rpx;
+                margin-right: 20rpx;
+                margin-bottom: 20rpx;
               "
 						>
 							<img :src="img" alt="" class="img1" />
@@ -113,7 +113,7 @@
 					<view
 						v-if="imagesEnd.length === 0"
 						class="upload"
-						style="margin-right: 6upx"
+						style="margin-right: 6rpx"
 						@click="chooseImgEnd"
 					>
 						+
@@ -327,18 +327,23 @@ export default {
 
 <style lang="less" scoped>
 .community-order {
-  padding-bottom: 180upx;
+  padding-bottom: 180rpx;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
   .title-list {
-    padding: 40upx 54upx 36upx 16upx;
+    padding: 40rpx 54rpx 36rpx 16rpx;
     display: flex;
     .return {
-      width: 48upx;
-      height: 48upx;
+      width: 48rpx;
+      height: 48rpx;
     }
     .title {
       flex: 1;
       text-align: center;
-      font-size: 36upx;
+      font-size: 36rpx;
       font-weight: bold;
       color: #3d3d3d;
     }
@@ -347,23 +352,23 @@ export default {
 		// flex: 1;
 		// width: 100%;
 		background: #FFFFFF;
-		border-radius: 24upx;
-		margin: 36upx 20upx 0 20upx;
-		padding: 32upx 32upx 0 32upx;
+		border-radius: 24rpx;
+		margin: 36rpx 20rpx 0 20rpx;
+		padding: 32rpx 32rpx 0 32rpx;
 
 		.item-wrapper {
 			display: flex;
 			align-items: flex-start;
 			justify-content: space-between;
-			// margin-top: 46upx;
+			// margin-top: 46rpx;
 			// width: 100%;
-			// height: 74upx;
-			padding-bottom: 32upx;
+			// height: 74rpx;
+			padding-bottom: 32rpx;
 
 			.add-album-title {
-				flex: 0 0 140upx;
+				flex: 0 0 140rpx;
 				text-align: left;
-				font-size: 28upx;
+				font-size: 28rpx;
 				color: #141000;
 
 				// font-weight: bold;
@@ -376,14 +381,14 @@ export default {
 
 			.common-text {
 				color: #141000;
-				font-size: 28upx;
-				// padding-bottom: 20upx;
+				font-size: 28rpx;
+				// padding-bottom: 20rpx;
 			}
 
 			.add-album-value {
 				flex: 1;
-				// max-width: 340upx;
-				// margin-right: 96upx;
+				// max-width: 340rpx;
+				// margin-right: 96rpx;
 				width: 100%;
 				// height: 100%;
 				border-bottom: 1px solid #F1F1F0;
@@ -392,77 +397,77 @@ export default {
 		}
 	}
   .body {
-    padding: 36upx 30upx 0upx 30upx;
+    padding: 36rpx 30rpx 0rpx 30rpx;
     .item-image {
       display: flex;
       align-items: center;
-      padding-top: 36upx;
-      padding-bottom: 28upx;
+      padding-top: 36rpx;
+      padding-bottom: 28rpx;
       .tag {
         font-weight: 600;
         color: #fa5151;
       }
       .name {
-        font-size: 32upx;
+        font-size: 32rpx;
         font-weight: 500;
         color: #3d3d3d;
       }
     }
 
     .upload-pane {
-      border-radius: 20upx;
+      border-radius: 20rpx;
       display: flex;
       flex-wrap: wrap;
 
       .img1 {
-        width: 160upx;
-        height: 160upx;
-        border-radius: 20upx;
+        width: 160rpx;
+        height: 160rpx;
+        border-radius: 20rpx;
       }
       .img2 {
-        width: 40upx;
-        height: 40upx;
+        width: 40rpx;
+        height: 40rpx;
         position: absolute;
-        right: -15upx;
-        top: -15upx;
+        right: -15rpx;
+        top: -15rpx;
         background: white;
         border-radius: 50%;
       }
 
       .upload {
         margin: 0;
-        width: 160upx;
-        height: 160upx;
+        width: 160rpx;
+        height: 160rpx;
         background-color: #ececec;
-        border-radius: 20upx;
+        border-radius: 20rpx;
         color: #767676;
         text-align: center;
-        line-height: 160upx;
-        font-size: 60upx;
+        line-height: 160rpx;
+        font-size: 60rpx;
       }
     }
     .foot {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 30upx 30upx 30upx 30upx;
+      padding: 30rpx 30rpx 30rpx 30rpx;
       width: 100%;
       box-sizing: border-box;
       position: fixed;
       left: 0;
       bottom: 0;
       background: #ffffff;
-      border-top: 8upx solid #f7f8fa;
+      border-top: 8rpx solid #f7f8fa;
       .on {
-        font-size: 32upx;
+        font-size: 32rpx;
         font-weight: bold;
         color: #ffffff;
-        width: 408upx;
-        height: 80upx;
-        border-radius: 100upx;
+        width: 408rpx;
+        height: 80rpx;
+        border-radius: 100rpx;
         background: linear-gradient(270deg, #e95e20 0%, #ff8f1f 100%);
         text-align: center;
-        line-height: 80upx;
+        line-height: 80rpx;
       }
     }
   }

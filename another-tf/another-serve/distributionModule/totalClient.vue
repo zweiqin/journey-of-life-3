@@ -1,6 +1,6 @@
 <template>
 	<view class="total-client-container">
-		<JHeader :dark="false" title="累计客户" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader :dark="false" title="累计客户" width="50" height="50"></JHeader>
 		<view class="totalClient-topBackImg">
 			<view class="topBg">
 				<view class="font-color-8A734A pad-top-40 fs60">{{ salesCustomerDataTotal }}</view>
@@ -103,6 +103,9 @@ export default {
 	min-height: 100%;
 	background-color: #333333;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.totalClient-topBackImg {
 		padding: 0 20rpx;

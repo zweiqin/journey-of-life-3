@@ -1,6 +1,6 @@
 <template>
 	<view class="unsubscribe-code-container">
-		<JHeader title="注销账户手机认证" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="注销账户手机认证" width="50" height="50"></JHeader>
 		<view style="padding: 20rpx 30rpx;">
 			<view class="iphoneNum-box flex-row-plus flex-items">
 				<view style="margin-right: 30rpx">
@@ -65,6 +65,10 @@ export default {
 	background-color: #FFFFFF;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.iphoneNum-box {
 		padding: 100rpx 0 20rpx;

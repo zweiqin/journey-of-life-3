@@ -2,7 +2,7 @@
 	<view class="purchase-chain-goods-container">
 		<view v-if="!isShowUpgrade" :style="{ paddingBottom: selectGoods.productId ? '200rpx' : '10rpx' }">
 			<view style="padding: 0 0 76rpx;background: linear-gradient(164deg, #FFC3C3 8%, #FFF5E5 50%, #FFFFFF 78%);">
-				<JHeader title="会员升级大礼包" width="50" height="50" style="padding: 24rpx 0 0;">
+				<JHeader title="会员升级大礼包" width="50" height="50">
 					<template #ftFn>
 						<text style="padding-right: 18rpx;color: #222229;">规则</text>
 					</template>
@@ -356,9 +356,12 @@ export default {
 	width: 100%;
 	min-height: 100vh;
 	box-sizing: border-box;
-	/deep/ .j-header-container .title {
-		font-size: 36rpx;
-		color: #222229;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+		.title {
+			font-size: 36rpx;
+			color: #222229;
+		}
 	}
 }
 </style>

@@ -54,7 +54,7 @@ export const payOrderForEndApi = (data) => SheQu1Request('laoa-huozhu/api/hz/ord
  * @description 获取末端订单列表
  */
 
-export const getEndOrderListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/orderPagelistNew', data)
+export const getEndOrderListApi = (data) => SheQu1Request('laoa-huozhu/api/hz/order/third/orderPagelist', data)
 
 // 线上
 // 查询社区服务分类

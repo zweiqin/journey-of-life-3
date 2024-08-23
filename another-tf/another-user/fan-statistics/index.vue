@@ -1,6 +1,6 @@
 <template>
 	<view class="fan-statistics-container">
-		<JHeader title="粉丝统计" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="粉丝统计" width="50" height="50"></JHeader>
 		<view style="padding: 0 28rpx;">
 			<view v-if="statistics.userName" style="display: flex;align-items: center;font-size: 36rpx;">
 				<view>
@@ -104,5 +104,9 @@ export default {
 	min-height: 100vh;
 	background-color: #f9f9f9;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 }
 </style>

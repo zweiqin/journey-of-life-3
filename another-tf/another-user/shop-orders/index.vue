@@ -1,6 +1,6 @@
 <template>
 	<view class="orders-container">
-		<JHeader title="商家订单" width="50" height="50" style="padding: 24rpx 0;background-color: #ffffff;">
+		<JHeader title="商家订单" width="50" height="50">
 			<template #ftFn>
 				<text
 					style="padding-right: 18rpx;font-size: 26rpx;color: #222229;"
@@ -290,6 +290,11 @@ export default {
 	padding: 0 0 60rpx;
 	background-color: #f5f4f6;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0;
+		background-color: #ffffff;
+	}
 
 	.navs {
 		width: 100%;

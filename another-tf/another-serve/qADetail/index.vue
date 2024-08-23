@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<JHeader title="问答详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="q-a-detail-container">
+		<JHeader title="问答详情" width="50" height="50"></JHeader>
 		<view v-if="ifShow" class="qaBox">
 			<view class="qaTopInfo">
 				<view class="qaTopInfoBox" @click="goGoodsDetails">
@@ -117,175 +117,181 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.qaBox {
-	padding: 0 30upx;
-
-	.qaTopInfo {
-		margin-top: 20upx;
-
-		.qaTopInfoBox {
-			border-radius: 10upx;
-			display: flex;
-			align-items: center;
-			padding: 15upx 20upx;
-			margin-bottom: 55upx;
-
-			image {
-				border: 2px solid #E4E5E6;
-				width: 120upx;
-				height: 120upx;
-				margin-right: 20upx;
-			}
-
-			.qaInfoText {
-				h3 {
-					font-size: 30upx;
-					font-weight: 500;
-					color: #333333;
-					margin-bottom: 20rpx;
-				}
-
-				span {
-					font-size: 24upx;
-					color: #999999;
-				}
-			}
-		}
-
-		.qaTitBox {
-			padding-bottom: 30upx;
-			border-bottom: 1upx solid #EEEEEE;
-
-			.qaTit {
-				display: flex;
-				align-items: center;
-				margin-bottom: 35upx;
-
-				i {
-					width: 38upx;
-					height: 38upx;
-					background: #C83732;
-					font-style: normal;
-					text-align: center;
-					color: #FFFFFF;
-					font-size: 20upx;
-					margin-right: 30upx;
-				}
-
-				h3 {
-					font-size: 28upx;
-					font-weight: 500;
-					color: #333333;
-				}
-			}
-
-			.qaTitTime {
-				display: flex;
-				align-items: center;
-
-				img {
-					width: 44upx;
-					height: 44upx;
-					margin-right: 20upx;
-				}
-
-				.qaName {
-					font-size: 28upx;
-					color: #666666;
-					margin-right: 35upx;
-				}
-
-				.qaTimeInfo {
-					color: #CCCCCC;
-					font-size: 22upx;
-				}
-			}
-		}
+.q-a-detail-container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
 	}
 
-	.answerListBox {
-		.answerNum {
-			font-size: 24upx;
-			color: #CCCCCC;
-			margin-bottom: 40upx;
-			margin-top: 30upx;
-		}
+	.qaBox {
+		padding: 0 30rpx;
 
-		.answerList {
-			padding-bottom: 50upx;
+		.qaTopInfo {
+			margin-top: 20rpx;
 
-			.answerItem {
-				margin-bottom: 10upx;
+			.qaTopInfoBox {
+				border-radius: 10rpx;
+				display: flex;
+				align-items: center;
+				padding: 15rpx 20rpx;
+				margin-bottom: 55rpx;
 
-				.itemTit {
+				image {
+					border: 2px solid #E4E5E6;
+					width: 120rpx;
+					height: 120rpx;
+					margin-right: 20rpx;
+				}
+
+				.qaInfoText {
+					h3 {
+						font-size: 30rpx;
+						font-weight: 500;
+						color: #333333;
+						margin-bottom: 20rpx;
+					}
+
+					span {
+						font-size: 24rpx;
+						color: #999999;
+					}
+				}
+			}
+
+			.qaTitBox {
+				padding-bottom: 30rpx;
+				border-bottom: 1rpx solid #EEEEEE;
+
+				.qaTit {
 					display: flex;
 					align-items: center;
-					justify-content: space-between;
+					margin-bottom: 35rpx;
 
-					.itemAvatarBox {
-						display: flex;
-
-						img {
-							width: 46upx;
-							height: 46upx;
-							margin-right: 20upx;
-						}
-
-						.answerName {
-							font-size: 26upx;
-							color: #333333;
-							font-weight: bold;
-						}
+					i {
+						width: 38rpx;
+						height: 38rpx;
+						background: #C83732;
+						font-style: normal;
+						text-align: center;
+						color: #FFFFFF;
+						font-size: 20rpx;
+						margin-right: 30rpx;
 					}
 
-					.answerTime {
-						color: #CCCCCC;
-						font-size: 20upx;
+					h3 {
+						font-size: 28rpx;
+						font-weight: 500;
+						color: #333333;
 					}
 				}
 
-				.answerInfo {
-					color: #333333;
-					font-size: 28upx;
-					margin-top: 20upx;
-					font-weight: 400;
+				.qaTitTime {
+					display: flex;
+					align-items: center;
+
+					img {
+						width: 44rpx;
+						height: 44rpx;
+						margin-right: 20rpx;
+					}
+
+					.qaName {
+						font-size: 28rpx;
+						color: #666666;
+						margin-right: 35rpx;
+					}
+
+					.qaTimeInfo {
+						color: #CCCCCC;
+						font-size: 22rpx;
+					}
 				}
 			}
 		}
-	}
 
-	.answerBtn {
-		position: fixed;
-		width: 100%;
-		bottom: 0;
-		left: 0;
-
-		.answerBtnBox {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
-			padding: 30upx;
-			background: #FFFFFF;
-
-			input {
-				margin-right: 30upx;
-				width: 530upx;
-				background: #F1F1F1;
-				min-height: 84upx;
-				padding-left: 30upx;
-				font-size: 28upx;
-				color: #999999;
+		.answerListBox {
+			.answerNum {
+				font-size: 24rpx;
+				color: #CCCCCC;
+				margin-bottom: 40rpx;
+				margin-top: 30rpx;
 			}
 
-			.answerButton {
-				width: 152upx;
-				height: 84upx;
-				background: #333333;
-				text-align: center;
-				line-height: 84upx;
-				font-size: 30upx;
-				color: #FFEBC4;
+			.answerList {
+				padding-bottom: 50rpx;
+
+				.answerItem {
+					margin-bottom: 10rpx;
+
+					.itemTit {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+
+						.itemAvatarBox {
+							display: flex;
+
+							img {
+								width: 46rpx;
+								height: 46rpx;
+								margin-right: 20rpx;
+							}
+
+							.answerName {
+								font-size: 26rpx;
+								color: #333333;
+								font-weight: bold;
+							}
+						}
+
+						.answerTime {
+							color: #CCCCCC;
+							font-size: 20rpx;
+						}
+					}
+
+					.answerInfo {
+						color: #333333;
+						font-size: 28rpx;
+						margin-top: 20rpx;
+						font-weight: 400;
+					}
+				}
+			}
+		}
+
+		.answerBtn {
+			position: fixed;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+
+			.answerBtnBox {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 100%;
+				padding: 30rpx;
+				background: #FFFFFF;
+
+				input {
+					margin-right: 30rpx;
+					width: 530rpx;
+					background: #F1F1F1;
+					min-height: 84rpx;
+					padding-left: 30rpx;
+					font-size: 28rpx;
+					color: #999999;
+				}
+
+				.answerButton {
+					width: 152rpx;
+					height: 84rpx;
+					background: #333333;
+					text-align: center;
+					line-height: 84rpx;
+					font-size: 30rpx;
+					color: #FFEBC4;
+				}
 			}
 		}
 	}

@@ -303,7 +303,7 @@ export default {
 		margin-left: 2rpx;
 	}
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 0;
 		background-color: #ffffff;
 

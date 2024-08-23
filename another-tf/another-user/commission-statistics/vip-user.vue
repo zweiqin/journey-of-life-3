@@ -200,7 +200,7 @@ export default {
 	padding: 0 0 40rpx;
 	background-color: #f6f6f5;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 18rpx 0 16rpx;
 		background-color: #f5f5f5;
 

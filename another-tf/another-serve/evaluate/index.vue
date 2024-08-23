@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="评价" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="评价" width="50" height="50"></JHeader>
 		<!-- 评论商品 -->
 		<view class="addEvaluate-box flex-items-plus flex-column-plus">
 			<view class="addEvaluate flex-column-plus">
@@ -16,9 +16,9 @@
 				<view class="fs26 mar-top-50 flex-display flex-sp-around">
 					<label>宝贝描述</label>
 					<tui-rate :current="commentStar" :size="20" normal="#b2b2b2" active="#C5AA7B" @change="onCommentStarChange"></tui-rate>
-					<label v-if="commentStar < 2" style="width: 80upx;">差</label>
-					<label v-else-if="commentStar < 4" style="width: 80upx;">好</label>
-					<label v-else style="width: 80upx;">非常好</label>
+					<label v-if="commentStar < 2" style="width: 80rpx;">差</label>
+					<label v-else-if="commentStar < 4" style="width: 80rpx;">好</label>
+					<label v-else style="width: 80rpx;">非常好</label>
 				</view>
 				<view class="textarea-box mar-top-40 mar-left-20">
 					<textarea
@@ -39,23 +39,23 @@
 				<view class="fs26 mar-top-30 flex-display flex-sp-around">
 					<label>描述相符</label>
 					<tui-rate :current="descStar" :size="20" normal="#b2b2b2" active="#C5AA7B" @change="ondescStarChange"></tui-rate>
-					<label v-if="descStar < 2" style="width: 80upx;">差</label>
-					<label v-else-if="descStar < 4" style="width: 80upx;">好</label>
-					<label v-else style="width: 80upx;">非常好</label>
+					<label v-if="descStar < 2" style="width: 80rpx;">差</label>
+					<label v-else-if="descStar < 4" style="width: 80rpx;">好</label>
+					<label v-else style="width: 80rpx;">非常好</label>
 				</view>
 				<view class="fs26 mar-top-50 flex-display flex-sp-around">
 					<label>物流服务</label>
 					<tui-rate :current="logisticsStar" :size="20" normal="#b2b2b2" active="#C5AA7B" @change="onlogisticsStarChange"></tui-rate>
-					<label v-if="logisticsStar < 2" style="width: 80upx;">差</label>
-					<label v-else-if="logisticsStar < 4" style="width: 80upx;">好</label>
-					<label v-else style="width: 80upx;">非常好</label>
+					<label v-if="logisticsStar < 2" style="width: 80rpx;">差</label>
+					<label v-else-if="logisticsStar < 4" style="width: 80rpx;">好</label>
+					<label v-else style="width: 80rpx;">非常好</label>
 				</view>
 				<view class="fs26 mar-top-50 flex-display flex-sp-around">
 					<label>服务态度</label>
 					<tui-rate :current="serviceStar" :size="20" normal="#b2b2b2" active="#C5AA7B" @change="onserviceStarChange"></tui-rate>
-					<label v-if="serviceStar < 2" style="width: 80upx;">差</label>
-					<label v-else-if="serviceStar < 4" style="width: 80upx;">好</label>
-					<label v-else style="width: 80upx;">非常好</label>
+					<label v-if="serviceStar < 2" style="width: 80rpx;">差</label>
+					<label v-else-if="serviceStar < 4" style="width: 80rpx;">好</label>
+					<label v-else style="width: 80rpx;">非常好</label>
 				</view>
 			</view>
 		</view>
@@ -170,27 +170,30 @@ export default {
 	min-height: 100vh;
 	background-color: #F7F7F7;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.addEvaluate-box {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 
 		.addEvaluate {
-			width: 690upx;
+			width: 690rpx;
 			height: auto;
 			background-color: #FFFFFF;
-			border-radius: 10upx;
-			padding-bottom: 30upx;
+			border-radius: 10rpx;
+			padding-bottom: 30rpx;
 
 			.addEvaluateTitle-box {
 				.title-img {
-					width: 90upx;
-					height: 90upx;
-					border-radius: 4upx;
+					width: 90rpx;
+					height: 90rpx;
+					border-radius: 4rpx;
 				}
 
 				.title-textbox {
-					width: 530upx;
-					margin-left: 20upx;
+					width: 530rpx;
+					margin-left: 20rpx;
 				}
 
 			}
@@ -198,41 +201,41 @@ export default {
 
 		.textarea-box {
 			.textarea-text {
-				width: 610upx;
-				height: 200upx;
-				font-size: 26upx;
-				padding: 20upx 20upx;
+				width: 610rpx;
+				height: 200rpx;
+				font-size: 26rpx;
+				padding: 20rpx 20rpx;
 				border: 2rpx solid #E4E5E6;
 			}
 		}
 	}
 
 	.storeEvaluate-box {
-		margin-top: 20upx;
-		margin-left: 30upx;
-		height: 440upx;
+		margin-top: 20rpx;
+		margin-left: 30rpx;
+		height: 440rpx;
 
 		.storeEvaluate {
 			background-color: #FFFFFF;
-			width: 690upx;
-			height: 270upx;
-			border-radius: 10upx;
+			width: 690rpx;
+			height: 270rpx;
+			border-radius: 10rpx;
 		}
 	}
 
 	.butBox {
 		position: fixed;
-		bottom: 20upx;
+		bottom: 20rpx;
 		width: 100%;
 
 		.submitbut {
-			height: 100upx;
-			width: 690upx;
+			height: 100rpx;
+			width: 690rpx;
 			background: #333333;
 			color: #FFEBC4;
-			font-size: 28upx;
+			font-size: 28rpx;
 			text-align: center;
-			line-height: 100upx;
+			line-height: 100rpx;
 			margin: 0 auto;
 		}
 	}

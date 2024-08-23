@@ -1,6 +1,6 @@
 <template>
 	<view class="total-personnel-container">
-		<JHeader :dark="false" title="累计分销员" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader :dark="false" title="累计分销员" width="50" height="50"></JHeader>
 		<view class="totalClient-topBackImg">
 			<view class="topBg">
 				<view class="font-color-8A734A mar-top-30 fs60">{{ subordinateSalesDataTotal }}</view>
@@ -100,6 +100,9 @@ export default {
 .total-personnel-container {
 	min-height: 100%;
 	background-color: #333333;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 	box-sizing: border-box;
 
 	.totalClient-topBackImg {

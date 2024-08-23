@@ -1,7 +1,7 @@
 <!-- 修改个人信息 -->
 <template>
 	<view class="container fs28" :style="{ height: screenHeight + 'px' }">
-		<JHeader title="个人信息" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="个人信息" width="50" height="50"></JHeader>
 		<view class="headBox">
 			<view class="personalHead-box flex-sp-between flex-display flex-items">
 				<label>头像</label>
@@ -40,8 +40,8 @@
 			</view>
 		</view>
 
-		<view style="margin-top: 30upx;background-color: #ffffff;">
-			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
+		<view style="margin-top: 30rpx;background-color: #ffffff;">
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28rpx 38rpx;">
 				<view>手机号</view>
 				<view v-if="$store.getters.userInfo.phone" class="font-color-C5AA7B">{{ $store.getters.userInfo.phone }}</view>
 				<view v-else class="font-color-C5AA7B">
@@ -52,7 +52,7 @@
 					<!-- #endif -->
 				</view>
 			</view>
-			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28upx 38upx;">
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 28rpx 38rpx;">
 				<view>微信账号</view>
 				<view v-if="$store.getters.userInfo.wechatOpenId">已绑定</view>
 				<view
@@ -70,7 +70,7 @@
 				@click="go('/pages/service-agreement/privacy-policy')"
 			>
 				<text>用户隐私协议</text>
-				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
+				<tui-icon :size="60" color="#999999" name="arrowright" unit="rpx" margin="0"></tui-icon>
 			</view>
 			<!-- go('/another-tf/another-serve/protocol/index?type=app_user_agreement') -->
 			<view
@@ -78,7 +78,7 @@
 				@click="go('/pages/service-agreement/service-agreement')"
 			>
 				<text>用户服务协议</text>
-				<tui-icon :size="60" color="#999999" name="arrowright" unit="upx" margin="0"></tui-icon>
+				<tui-icon :size="60" color="#999999" name="arrowright" unit="rpx" margin="0"></tui-icon>
 			</view>
 			<view
 				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
@@ -88,8 +88,8 @@
 			</view>
 		</view>
 
-		<view style="margin-top: 30upx;background-color: #ffffff;">
-			<view style="padding: 28upx 38upx;" @click="isShowResettingPasswordDialog = true">重置密码 ></view>
+		<view style="margin-top: 30rpx;background-color: #ffffff;">
+			<view style="padding: 28rpx 38rpx;" @click="isShowResettingPasswordDialog = true">重置密码 ></view>
 		</view>
 
 		<view class="mar-top-100">
@@ -146,7 +146,7 @@
 			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
 			:show="showAuthPopupVisible" @click="showAuthPopupVisible = false"
 		>
-			<view style="display: flex;align-items: center;padding: 26upx;background-color: #ffffff;border-radius: 20upx;">
+			<view style="display: flex;align-items: center;padding: 26rpx;background-color: #ffffff;border-radius: 20rpx;">
 				<tui-icon name="pic-fill" :size="60" unit="rpx" color="#e95d20" margin="0 20rpx 0 0"></tui-icon>
 				<view style="flex: 1;">
 					<view>相机权限和相册权限使用说明：</view>
@@ -423,6 +423,9 @@ export default {
 	background-color: #F7F7F7;
 	padding: 20rpx;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 	/deep/ .tui-dialog {
 		overflow: visible;
 	}
@@ -433,9 +436,9 @@ export default {
 
 		.personalHead-box {
 			width: 90%;
-			border-bottom: 1upx solid #E5E5E5;
-			padding-bottom: 20upx;
-			margin-top: 36upx;
+			border-bottom: 1rpx solid #E5E5E5;
+			padding-bottom: 20rpx;
+			margin-top: 36rpx;
 
 			.nameInput {
 				text-align: right;
@@ -444,19 +447,19 @@ export default {
 
 		.personalHead-box1 {
 			width: 90%;
-			margin-top: 36upx;
-			padding-bottom: 20upx;
+			margin-top: 36rpx;
+			padding-bottom: 20rpx;
 
 			.user-headImg {
-				width: 120upx;
-				height: 112upx;
+				width: 120rpx;
+				height: 112rpx;
 				border-radius: 50%;
 			}
 		}
 	}
 
 	.exitLoginBut {
-		height: 100upx;
+		height: 100rpx;
 		background: #333333;
 		color: #FFEBC4;
 	}
@@ -484,8 +487,8 @@ export default {
 		}
 
 		.user-headImg {
-			width: 120upx;
-			height: 112upx;
+			width: 120rpx;
+			height: 112rpx;
 			border-radius: 50%;
 		}
 	}

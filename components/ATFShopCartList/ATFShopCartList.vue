@@ -2,7 +2,7 @@
 	<view class="shop-cart-list-container">
 		<view v-if="shopCartList && shopCartList.length">
 			<view v-for="(item, index) in shopCartList" :key="item.shopId">
-				<view v-if="(type === 'single') && shopCartList[0].splicingId">
+				<view v-if="(type === 'single') && item.splicingId">
 					<view
 						v-if="item.skus && item.skus.length"
 						style="padding: 0 0 24rpx 0;overflow-y: auto;" :style="{ maxHeight }"
@@ -309,27 +309,30 @@ export default {
 						shopObj.rules = []
 						shopObj.currentRules = {}
 						shopObj.ids = 0
-						shopObj.cartUserList && shopObj.cartUserList.forEach((section) => {
-							section.cartSkuList = section.cartSkuList.filter((part) => !(part.shelveState === 0))
-							section.cartSkuList.forEach((part) => {
-								if (part.activityType === 6 && part.selected === 1) {
-									shopObj.priceNumber += part.number
-								}
+						// cartUserList有元素就肯定是拼单，skus有元素就肯定不是拼单
+						if (shopObj.cartUserList && shopObj.cartUserList.length) {
+							shopObj.cartUserList && shopObj.cartUserList.forEach((section) => {
+								section.cartSkuList = section.cartSkuList.filter((part) => !(part.shelveState === 0))
+								section.cartSkuList.forEach((part) => {
+									if (part.activityType === 6 && part.selected === 1) {
+										shopObj.priceNumber += part.number
+									}
+								})
 							})
-						})
-						// 处理skus数据
-						const tempSkus = []
-						shopObj.cartUserList && shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
-							.forEach((part) => {
-								const tempSkuItem = tempSkus.find((i) => i.skuId === part.skuId)
-								if (tempSkuItem) {
-									tempSkuItem.number = tempSkuItem.number + part.number
-									tempSkuItem.total = part.price * part.number
-								} else {
-									tempSkus.push(JSON.parse(JSON.stringify(part)))
-								}
-							})
-						tempSkus.length && (shopObj.skus = tempSkus)
+							// 处理skus数据
+							const tempSkus = []
+							shopObj.cartUserList && shopObj.cartUserList.map((i) => i.cartSkuList).reduce((t, v) => t.concat(v), [])
+								.forEach((part) => {
+									const tempSkuItem = tempSkus.find((i) => i.skuId === part.skuId)
+									if (tempSkuItem) {
+										tempSkuItem.number = tempSkuItem.number + part.number
+										tempSkuItem.total = part.price * part.number
+									} else {
+										tempSkus.push(JSON.parse(JSON.stringify(part)))
+									}
+								})
+							tempSkus.length && (shopObj.skus = tempSkus)
+						}
 					})
 				}
 				res.data.forEach((shopObj, shopIndex) => {

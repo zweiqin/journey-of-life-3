@@ -2,7 +2,7 @@
 	<view class="order-details-container">
 		<view v-if="showType === 'writeOff'">
 			<!-- 核销相关 -->
-			<JHeader title="订单核销码" width="50" height="50" style="padding: 24rpx 0 18rpx;background-color: #ffffff;"></JHeader>
+			<JHeader title="订单核销码" width="50" height="50"></JHeader>
 			<view style="position: relative;padding: 90rpx 28rpx 0;" class="write-off-bg">
 				<view style="position: absolute;top: 0;left: 0;width: 100%;height: 580rpx;background-color: #ef5613;overflow: hidden;">
 					<view
@@ -69,7 +69,7 @@
 		</view>
 
 		<view v-else-if="showType === 'detail'">
-			<JHeader title="订单详情" width="50" height="50" style="padding: 24rpx 0 18rpx;background-color: #ffffff;"></JHeader>
+			<JHeader title="订单详情" width="50" height="50"></JHeader>
 			<view>
 				<view class="content" style="padding-bottom:200rpx;">
 					<view style="margin: 24rpx 30rpx 0;">
@@ -822,6 +822,11 @@ export default {
 	min-height: 100vh;
 	background: #f5f4f6;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 18rpx;
+		background-color: #ffffff;
+	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;

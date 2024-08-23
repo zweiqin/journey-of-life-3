@@ -1,6 +1,6 @@
 <template>
 	<view class="afterSale-apply-refund-container">
-		<JHeader title="申请退款" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="申请退款" width="50" height="50"></JHeader>
 		<view style="padding-bottom:200rpx;">
 			<view v-for="(item, index) in orderList" :key="index" class="order-list-box">
 				<view class="item">
@@ -359,6 +359,10 @@ export default {
 .afterSale-apply-refund-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.order-list-box {
 		padding: 20rpx 30rpx;

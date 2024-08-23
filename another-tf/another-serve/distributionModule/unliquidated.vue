@@ -1,6 +1,6 @@
 <template>
 	<view class="unliquidated-container">
-		<JHeader :dark="false" title="未结算奖励" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader :dark="false" title="未结算奖励" width="50" height="50"></JHeader>
 		<view>
 			<view class="unliquidated-topBackImg flex-items flex-column">
 				<view class="totalAward-content flex-column font-color-FFF">
@@ -240,6 +240,9 @@ export default {
 	min-height: 100%;
 	background-color: #333333;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.unliquidated-topBackImg {
 		width: 100%;

@@ -1,6 +1,6 @@
 <template>
 	<view class="live-list-page">
-		<JHeader title="直播推荐" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="直播推荐" width="50" height="50"></JHeader>
 		<view class="live-list">
 			<LiveBox v-for="item in roomList" :key="item.roomid" class="live-item" :live-data="item" />
 		</view>
@@ -66,8 +66,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .live-list-page {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 	.live-list {
 		width: 100%;
 		display: flex;

@@ -1,7 +1,7 @@
 <!-- 物流详情 -->
 <template>
 	<view class="product-logistics-container">
-		<JHeader title="产品物流信息" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="产品物流信息" width="50" height="50"></JHeader>
 		<view class="product-logistics_info">
 			<view class="texts">快递商家：{{ orderDetail.info.name || '--' }}</view>
 			<view class="texts">快递单号：{{ orderDetail.info.no || '--' }}</view>
@@ -123,7 +123,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 /* :root {
 	--hue: 223;
 	--bg: rgb(227, 228, 232);
@@ -137,6 +137,10 @@ export default {
 .product-logistics-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 }
 
 .product-logistics_info {

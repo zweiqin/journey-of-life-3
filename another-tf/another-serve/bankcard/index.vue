@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="银行卡" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="银行卡" width="50" height="50"></JHeader>
 		<view v-if="bankcardList && bankcardList.length" class="bankcardList">
 			<view v-for="(item, index) in bankcardList" :key="index" class="addBankcard-content flex-row-plus">
 				<view class="bankcard-detail" @click="itemTap(item.bankId)">
@@ -94,6 +94,10 @@ export default {
 
 <style lang="less" scoped>
 .container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.bankcardList {
 		background-size: contain;
 		display: block;

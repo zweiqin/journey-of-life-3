@@ -1,6 +1,6 @@
 <template>
 	<view class="distribution-order-container">
-		<JHeader title="我的分销订单" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的分销订单" width="50" height="50"></JHeader>
 		<view v-if="findMySalesDatalist && findMySalesDatalist.length">
 			<view v-for="(item, index) in findMySalesDatalist" :key="index" class="flex-center clientList-box">
 				<view class="directAward-box font-color-656 fs26">
@@ -105,6 +105,9 @@ export default {
 	min-height: 100%;
 	background-color: #F8F8F8;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.directAward-box {
 		width: 95%;

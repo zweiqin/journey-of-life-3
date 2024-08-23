@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-product-container">
-		<JHeader title="可用商品" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="可用商品" width="50" height="50"></JHeader>
 		<view class="productList">
 			<view class="couponTit flex-items">
 				<tui-icon name="coupon" :size="66" unit="rpx" color="#c83732" margin=" 0 15rpx 0 0"></tui-icon>
@@ -107,6 +107,9 @@ export default {
 	min-height: 100%;
 	background-color: #ffffff;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.productList {
 		.couponTit {

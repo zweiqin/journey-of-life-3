@@ -1,6 +1,6 @@
 <template>
 	<view class="memberCenter">
-		<JHeader title="会员中心" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="会员中心" width="50" height="50"></JHeader>
 		<view
 			class="memberBg"
 			:style="{ 'backgroundImage': 'url(' + memberListData[activeIndex].memberLevelBackground + ')', 'padding-top': paddingTop + 'px' }"
@@ -9,8 +9,8 @@
 				<view class="memberTopInfo">
 					<view class="backBox">
 						<tui-icon
-							name="arrowleft" :size="50" unit="upx" color="#ffffff"
-							margin="0 10upx 0 10upx"
+							name="arrowleft" :size="50" unit="rpx" color="#ffffff"
+							margin="0 10rpx 0 10rpx"
 							@click="back"
 						></tui-icon>
 					</view>
@@ -94,7 +94,7 @@
 						<view class="signItem flex-items flex-sp-between">
 							<view class="itemLeft flex-items">
 								<view class="leftIcon">
-									<tui-icon name="bag-fill" :size="92" unit="upx" color="#f7f0de" margin="0 30upx 0 0"></tui-icon>
+									<tui-icon name="bag-fill" :size="92" unit="rpx" color="#f7f0de" margin="0 30rpx 0 0"></tui-icon>
 								</view>
 								<view class="leftInfo">
 									<label class="fs28 font-color-333">购物</label>
@@ -216,11 +216,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .memberCenter {
 	min-height: 800rpx;
 	background-size: contain;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.memberBg {
 		background-repeat: no-repeat;

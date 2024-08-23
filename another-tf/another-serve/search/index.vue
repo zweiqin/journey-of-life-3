@@ -1,12 +1,12 @@
 <template>
-	<view>
-		<JHeader title="搜索" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="search-container">
+		<JHeader title="搜索" width="50" height="50"></JHeader>
 		<!-- 搜索商品 -->
 		<view>
 			<view class="flex-items-plus flex-row mar-top-20">
 				<view class="searchImg-box flex-items-plus">
 					<tui-icon
-						style="position: absolute;left: 38upx;" name="search" :size="65" unit="upx"
+						style="position: absolute;left: 38rpx;" name="search" :size="65" unit="rpx"
 						color="#d1d1d1"
 					></tui-icon>
 					<input
@@ -24,12 +24,12 @@
 				<label class="fs30 font-color-999 fs-weight-300">热门搜索</label>
 				<tui-icon
 					v-if="isSee" name="seen" color="#393939" :size="40"
-					unit="upx" style="position: absolute;right: 30upx;"
-					@click="isSee = !isSee"
+					unit="rpx"
+					style="position: absolute;right: 30rpx;" @click="isSee = !isSee"
 				></tui-icon>
 				<tui-icon
 					v-else name="unseen" color="#393939" :size="40"
-					unit="upx" style="position: absolute;right: 30upx;"
+					unit="rpx" style="position: absolute;right: 30rpx;"
 					@click="isSee = !isSee"
 				></tui-icon>
 			</view>
@@ -51,7 +51,11 @@
 		<view class="historyBox tipsBox">
 			<view v-if="historyList.length > 0" class="boxTitle mar-leftgetList-30">
 				<label class="fs30 font-color-999 fs-weight-300 ">历史搜索</label>
-				<tui-icon name="delete" color="#333333" :size="30" unit="upx" style="position: absolute;right: 30upx;" @click="historyDelAll"></tui-icon>
+				<tui-icon
+					name="delete" color="#333333" :size="30" unit="rpx"
+					style="position: absolute;right: 30rpx;"
+					@click="historyDelAll"
+				></tui-icon>
 			</view>
 			<view class="historySear-box flex-wrap-1 flex-row">
 				<view
@@ -61,7 +65,7 @@
 					<view class="boxContent historyText line1" @click="historySearch(item.search)">{{ item.search }}</view>
 					<label class="font-color-DDD fs22 pad-topbot-10 text-align">|</label>
 					<view class="historyIconBox" @click="historyDelOne(item.searchId)">
-						<tui-icon name="shut" color="#9e9e9e" :size="16" unit="upx"></tui-icon>
+						<tui-icon name="shut" color="#9e9e9e" :size="16" unit="rpx"></tui-icon>
 					</view>
 				</view>
 			</view>
@@ -154,86 +158,92 @@ export default {
 </script>
 
 <style lang='less' scoped>
-input {
-	padding-left: 80upx;
-}
+.search-container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
-.searchImg-box {
+	input {
+		padding-left: 80rpx;
+	}
 
-	.search-box {
+	.searchImg-box {
+
+		.search-box {
+			background-color: #F1F1F1;
+			width: 530rpx;
+			height: 66rpx;
+		}
+
+		.searchboxPlace {
+			font-size: 26rpx;
+			color: #A9A9A9;
+			padding-right: 30rpx;
+		}
+
+		.searchClose-icon {
+			width: 30rpx;
+			height: 30rpx;
+			margin-left: -50rpx;
+			z-index: 99999;
+		}
+	}
+
+	// 热门搜索
+	.hotSearchBox {
+		padding: 0 36rpx;
+
+		.historyText {
+			flex: 1;
+		}
+
+		.notSeeContent {
+			margin-top: 20rpx;
+			text-align: center;
+			font-size: 24rpx;
+			color: #CCCCCC;
+		}
+	}
+
+	.line {
+		margin: 70rpx 0;
+		height: 2rpx;
+		background: #F3F4F5;
+	}
+
+	// 历史搜索
+	.historyBox {
+		padding: 0 36rpx;
+
+		.historySear-box {
+			width: 100%;
+		}
+
+		.historyIconBox {
+			width: 50rpx;
+		}
+	}
+
+	.tipsBox {
+		padding: 15rpx 24rpx;
+	}
+
+	.boxTitle {
+		margin: 30rpx 0;
+	}
+
+	.historySearDel-box {
+		height: 54rpx;
+		line-height: 54rpx;
+		margin: 15rpx 15rpx;
 		background-color: #F1F1F1;
-		width: 530upx;
-		height: 66upx;
-	}
-
-	.searchboxPlace {
-		font-size: 26upx;
-		color: #A9A9A9;
-		padding-right: 30upx;
-	}
-
-	.searchClose-icon {
-		width: 30upx;
-		height: 30upx;
-		margin-left: -50upx;
-		z-index: 99999;
-	}
-}
-
-// 热门搜索
-.hotSearchBox {
-	padding: 0 36upx;
-
-	.historyText {
-		flex: 1;
-	}
-
-	.notSeeContent {
-		margin-top: 20upx;
 		text-align: center;
-		font-size: 24upx;
-		color: #CCCCCC;
-	}
-}
+		overflow: hidden;
 
-.line {
-	margin: 70upx 0;
-	height: 2upx;
-	background: #F3F4F5;
-}
-
-// 历史搜索
-.historyBox {
-	padding: 0 36upx;
-
-	.historySear-box {
-		width: 100%;
-	}
-
-	.historyIconBox {
-		width: 50upx;
-	}
-}
-
-.tipsBox {
-	padding: 15rpx 24rpx;
-}
-
-.boxTitle {
-	margin: 30rpx 0;
-}
-
-.historySearDel-box {
-	height: 54upx;
-	line-height: 54upx;
-	margin: 15rpx 15rpx;
-	background-color: #F1F1F1;
-	text-align: center;
-	overflow: hidden;
-
-	.boxContent {
-		font-size: 28rpx;
-		padding: 0 30rpx;
+		.boxContent {
+			font-size: 28rpx;
+			padding: 0 30rpx;
+		}
 	}
 }
 </style>

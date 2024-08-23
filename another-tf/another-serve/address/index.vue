@@ -1,7 +1,7 @@
 <!-- 地址列表 -->
 <template>
 	<view class="address-container">
-		<JHeader width="50" height="50" title="地址管理" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader width="50" height="50" title="地址管理"></JHeader>
 		<view v-if="addressList && addressList.length" class="pad-bot-20 addAddress">
 			<view v-for="(item, index) in addressList" :key="index" class="addAddress-content flex-row-plus">
 				<view class="address-detail" @click="handleSelectAddress(item)">
@@ -141,10 +141,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .address-container {
 	padding: 0 24rpx;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.addAddress {
 		border-top: 2rpx solid #F3F4F5;

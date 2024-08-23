@@ -1,6 +1,6 @@
 <template>
 	<view class="question-box">
-		<JHeader title="我的问答" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的问答" width="50" height="50"></JHeader>
 		<view class="tabsbox">
 			<tui-tabs
 				style="width: 750rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="375" :padding="0"
@@ -490,6 +490,10 @@ page {
 }
 
 .question-box {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.empty-box {
 		display: flex;
 		justify-content: center;

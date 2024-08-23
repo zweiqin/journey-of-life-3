@@ -1,6 +1,6 @@
 <template>
 	<view class="combination-container">
-		<JHeader :dark="false" title="组合优惠" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader :dark="false" title="组合优惠" width="50" height="50"></JHeader>
 		<view class="topInfo">
 			<view class="topBg">
 				<swiper circular autoplay vertical :duration="2000">
@@ -320,6 +320,10 @@ export default {
 	background-color: #333333;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;

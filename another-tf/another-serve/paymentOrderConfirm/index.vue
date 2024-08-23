@@ -1,7 +1,7 @@
 <template>
 	<!-- 提交订单 -->
 	<view class="payment-order-confirm-container">
-		<JHeader title="购买宝贝" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="购买宝贝" width="50" height="50"></JHeader>
 		<view style="padding: 0 30rpx 218rpx;">
 			<view style="text-align: right;">
 				<tui-button
@@ -53,6 +53,7 @@
 
 			<ATFCommunityAssociation
 				padding="20rpx 0 0" :community-address-info="userAddressInfo"
+				:shop-data="{ shopType: settlement.shopType, shops: settlement.shops }"
 				@change="(e) => otherInfo = { ...otherInfo, ...e }"
 			></ATFCommunityAssociation>
 
@@ -344,5 +345,8 @@ export default {
 	min-height: 100vh;
 	background-color: #F7F7F7;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 }
 </style>

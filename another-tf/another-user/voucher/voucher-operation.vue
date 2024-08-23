@@ -148,7 +148,34 @@
 					</view>
 				</view>
 				<view v-if="showType === 'transfer'" style="padding: 0 36rpx;">
-					<view style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 0 12rpx;">
+					<view style="display: flex;justify-content: space-between;align-items: center;padding: 8rpx 0;">
+						<text style="font-size: 28rpx;">请选择转赠对象</text>
+						<view style="flex: 1;">
+							<tui-radio-group
+								:value="transferForm.voucherTarget"
+								@change="(e) => transferForm.voucherTarget = e.detail.value"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+										v-for="(item, index) in [{ name: '用户', value: '1' }, { name: '商家', value: '2' }]"
+										:key="index"
+									>
+										<tui-list-cell padding="6rpx 16rpx">
+											<view>
+												<tui-radio
+													:checked="transferForm.voucherTarget === item.value" :value="item.value"
+													color="#07c160" border-color="#999"
+												>
+												</tui-radio>
+												<text>{{ item.name }}</text>
+											</view>
+										</tui-list-cell>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+					</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;padding: 8rpx 0;">
 						<text style="font-size: 28rpx;">请选择转赠类型</text>
 						<view style="flex: 1;">
 							<tui-radio-group
@@ -210,7 +237,7 @@
 					</view>
 					<view style="margin-top: 20rpx;">
 						<view style="color: #222229;">自定义代金券：</view>
-						<view style="border-bottom: 2upx solid #bebebe;">
+						<view style="border-bottom: 2rpx solid #bebebe;">
 							<tui-input
 								v-model="customRecharge" type="number" label="券" :label-size="48"
 								label-color="#000000"
@@ -269,7 +296,7 @@
 					</view>
 					<view style="margin-top: 20rpx;">
 						<view style="color: #222229;">自定义代金券：</view>
-						<view style="border-bottom: 2upx solid #bebebe;">
+						<view style="border-bottom: 2rpx solid #bebebe;">
 							<tui-input
 								v-model="customTransfer" type="number" label="券" :label-size="48"
 								label-color="#000000"
@@ -286,42 +313,57 @@
 						</view>
 					</view>
 					<view style="margin-top: 42rpx;color: #222229;">
-						<view class="search-btn" style="display: flex;align-items: center;">
-							<text style="font-size: 28rpx;">转赠账号</text>
-							<view style="flex: 1;margin-left: 16rpx;">
-								<tui-input
-									v-model="userQueryForm.value" placeholder="请输入用户ID / 手机号" is-fillet
-									padding="6rpx 10rpx 6rpx 26rpx" background-color="transparent" :size="42"
-									placeholder-style="color: #979797;font-size: 30rpx;"
+						<view v-if="transferForm.voucherTarget === '1'">
+							<view class="search-btn" style="display: flex;align-items: center;">
+								<text style="font-size: 28rpx;">转赠账号</text>
+								<view style="flex: 1;margin-left: 16rpx;">
+									<tui-input
+										v-model="userQueryForm.value" placeholder="请输入用户ID / 手机号" is-fillet
+										padding="6rpx 10rpx 6rpx 26rpx" background-color="transparent" :size="42"
+										placeholder-style="color: #979797;font-size: 30rpx;"
+									>
+										<template #right>
+											<tui-button
+												v-if="transferForm.voucherTarget === '1'"
+												type="danger" :size="28" width="80rpx" height="40rpx"
+												shape="circle"
+												@click="getTransferUserInfo"
+											>
+												查询
+											</tui-button>
+										</template>
+									</tui-input>
+								</view>
+							</view>
+							<view>
+								<view
+									v-if="transferForm.buyerUserObj.buyerUserId"
+									style="display: flex;align-items: center;padding: 2rpx 34rpx 0;"
 								>
-									<template #right>
-										<tui-button
-											type="danger" :size="28" width="80rpx" height="40rpx"
-											shape="circle"
-											@click="getTransferUserInfo"
-										>
-											查询
-										</tui-button>
-									</template>
-								</tui-input>
+									<image
+										style="width: 80rpx;height: 80rpx;border-radius: 50%;"
+										:src="common.seamingImgUrl(transferForm.buyerUserObj.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
+									>
+									</image>
+									<text style="margin-left: 36rpx;font-size: 42rpx;">
+										{{ transferForm.buyerUserObj.nickName ||
+											transferForm.buyerUserObj.wechatName || transferForm.buyerUserObj.phone }}
+									</text>
+								</view>
+								<view v-else style="height: 84rpx;"></view>
 							</view>
 						</view>
-						<view>
-							<view
-								v-if="transferForm.buyerUserObj.buyerUserId"
-								style="display: flex;align-items: center;padding: 2rpx 34rpx 0;"
-							>
-								<image
-									style="width: 80rpx;height: 80rpx;border-radius: 50%;"
-									:src="common.seamingImgUrl(transferForm.buyerUserObj.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
-								>
-								</image>
-								<text style="margin-left: 36rpx;font-size: 42rpx;">
-									{{ transferForm.buyerUserObj.nickName ||
-										transferForm.buyerUserObj.wechatName || transferForm.buyerUserObj.phone }}
-								</text>
+						<view v-else-if="transferForm.voucherTarget === '2'" style="margin-bottom: 56rpx;">
+							<view style="display: flex;align-items: center;">
+								<text style="font-size: 28rpx;">商家手机号</text>
+								<view style="flex: 1;margin-left: 16rpx;">
+									<tui-input
+										v-model="transferForm.shopPhone" placeholder="请输入商家手机号" is-fillet
+										padding="6rpx 10rpx 6rpx 26rpx" background-color="transparent" :size="42"
+										placeholder-style="color: #979797;font-size: 30rpx;"
+									></tui-input>
+								</view>
 							</view>
-							<view v-else style="height: 84rpx;"></view>
 						</view>
 						<view style="display: flex;align-items: center;">
 							<view style="font-size: 28rpx">转赠代金券</view>
@@ -432,14 +474,14 @@
 			</view>
 		</tui-modal>
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="rechargeForm.number / 2" show :hui-shi-bao-pay="!!rechargeForm.number"
 					:show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
 					@change="(e) => payInfo = e"
 				/>
 				<tui-button
-					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 					shape="circle"
 					@click="handleRecharge"
 				>
@@ -453,7 +495,7 @@
 
 <script>
 import VoucherChoose from './components/VoucherChoose.vue'
-import { getByUserOrderVoucherOrderApi, getBuyerTotalVoucherEntryRecordApi, submitBuyerVoucherOrderApi, updateTransferVoucherOrderApi, updateByUserVoucherEntryRecordApi, getBandUserInfoApi } from '../../../api/anotherTFInterface'
+import { getByUserOrderVoucherOrderApi, getBuyerTotalVoucherEntryRecordApi, submitBuyerVoucherOrderApi, updateTransferVoucherOrderApi, updateByUserVoucherEntryRecordApi, updateTransferVoucherIntoApi, updateByIntoVoucherEntryRecordApi, getBandUserInfoApi } from '../../../api/anotherTFInterface'
 import { handleDoPay } from '../../../utils/payUtil'
 
 export default {
@@ -505,12 +547,14 @@ export default {
 			currentTransferIndex: 0,
 			customTransfer: '',
 			transferForm: {
+				voucherTarget: '1', // 后端无需
 				voucherType: '1', // 后端无需
 				buyerUserObj: { // 后端无需
 					buyerUserId: ''
 				},
 				voucherId: '',
 				buyerUserId: '',
+				shopPhone: '',
 				voucherNum: 50
 			},
 			userQueryForm: {
@@ -608,6 +652,7 @@ export default {
 				} else {
 					return this.$showToast('缺少代金券种类')
 				}
+				if (!this.transferForm.voucherTarget) return this.$showToast('缺少转赠对象')
 				if (!this.transferForm.voucherType) return this.$showToast('缺少转赠类型')
 				if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
 				if (typeof this.currentTransferIndex === 'number') {
@@ -638,12 +683,20 @@ export default {
 		handleTransfer() {
 			uni.showLoading()
 			let _url
-			if (this.transferForm.voucherType === '1') {
-				_url = updateTransferVoucherOrderApi
-			} else if (this.transferForm.voucherType === '2') {
-				_url = updateByUserVoucherEntryRecordApi
+			if (this.transferForm.voucherTarget === '1') {
+				this.transferForm.buyerUserId = this.transferForm.buyerUserObj.buyerUserId
+				if (this.transferForm.voucherType === '1') {
+					_url = updateTransferVoucherOrderApi
+				} else if (this.transferForm.voucherType === '2') {
+					_url = updateByUserVoucherEntryRecordApi
+				}
+			} else if (this.transferForm.voucherTarget === '2') {
+				if (this.transferForm.voucherType === '1') {
+					_url = updateTransferVoucherIntoApi
+				} else if (this.transferForm.voucherType === '2') {
+					_url = updateByIntoVoucherEntryRecordApi
+				}
 			}
-			this.transferForm.buyerUserId = this.transferForm.buyerUserObj.buyerUserId
 			_url({ ...this.transferForm })
 				.then((res) => {
 					uni.hideLoading()
@@ -669,7 +722,7 @@ export default {
 	background-color: #f8f9fb;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 10rpx;
 		background-color: #f5f5f5;
 

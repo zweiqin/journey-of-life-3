@@ -1,7 +1,7 @@
 <!-- 退货/退款上传凭证 -->
 <template>
-	<view>
-		<JHeader title="平台介入" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+	<view class="platform-join-container">
+		<JHeader title="平台介入" width="50" height="50"></JHeader>
 		<view class="content">
 			<view class="afterSale-select-box mt20">
 				<view class="item item-start">
@@ -9,8 +9,7 @@
 				</view>
 				<textarea
 					v-model="reason" maxlength="200" class="text-area" placeholder="填写相关问题"
-					placeholder-style="color:#bbb;"
-					bindinput="proofRemarkInput"
+					placeholder-style="color:#bbb;" bindinput="proofRemarkInput"
 				></textarea>
 			</view>
 
@@ -18,10 +17,7 @@
 				<view class="upload-title">举证图片</view>
 				<view class="upload-img-box">
 					<view class="mar-left-10 mar-top-10 evaluateImg">
-						<ATFMoreUpload
-							:imgs="fileList"
-							@upload="handleSaveImg" @delete="handleDeleteImg"
-						></ATFMoreUpload>
+						<ATFMoreUpload :imgs="fileList" @upload="handleSaveImg" @delete="handleDeleteImg"></ATFMoreUpload>
 					</view>
 				</view>
 			</view>
@@ -100,104 +96,110 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.content {
-	padding: 0 0 120upx;
-	box-sizing: border-box;
-}
+.platform-join-container {
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
-.afterSale-select-box {
-	width: 100%;
-	background: #fff;
-	padding: 0 30upx 30upx 30upx;
-	box-sizing: border-box;
-}
+	.content {
+		padding: 0 0 120rpx;
+		box-sizing: border-box;
+	}
 
-.afterSale-select-box .item {
-	height: 100upx;
-	border-bottom: 1px solid #e5e5e5;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 28upx;
-	color: #333;
-}
+	.afterSale-select-box {
+		width: 100%;
+		background: #fff;
+		padding: 0 30rpx 30rpx 30rpx;
+		box-sizing: border-box;
+	}
 
-.afterSale-select-box .item:last-of-type {
-	border-bottom: none;
-}
+	.afterSale-select-box .item {
+		height: 100rpx;
+		border-bottom: 1px solid #e5e5e5;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 28rpx;
+		color: #333;
+	}
 
-.afterSale-select-box .item.item-start {
-	justify-content: flex-start;
-}
+	.afterSale-select-box .item:last-of-type {
+		border-bottom: none;
+	}
 
-.afterSale-select-box .item .l {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
+	.afterSale-select-box .item.item-start {
+		justify-content: flex-start;
+	}
 
-.afterSale-select-box .item .afterSale-img {
-	width: 26upx;
-	height: 26upx;
-	margin-right: 20upx;
-}
+	.afterSale-select-box .item .l {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 
-.afterSale-select-box .item .r-box {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	color: #999;
-}
+	.afterSale-select-box .item .afterSale-img {
+		width: 26rpx;
+		height: 26rpx;
+		margin-right: 20rpx;
+	}
 
-.mt20 {
-	margin-top: 20upx;
-}
+	.afterSale-select-box .item .r-box {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		color: #999;
+	}
 
-.upload-title {
-	font-size: 28upx;
-	color: #333;
-	padding: 30upx 0;
-}
+	.mt20 {
+		margin-top: 20rpx;
+	}
 
-.upload-img-box {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	padding: 0 0 30upx;
-	align-items: flex-start;
-}
+	.upload-title {
+		font-size: 28rpx;
+		color: #333;
+		padding: 30rpx 0;
+	}
 
-.order-confirm-box {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 120upx;
-	background: #fff;
-	padding: 0 30upx;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
+	.upload-img-box {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding: 0 0 30rpx;
+		align-items: flex-start;
+	}
 
-.order-confirm-box .btn {
-	width: 100%;
-	height: 80upx;
-	line-height: 80upx;
-	background: #333333;
-	font-size: 28upx;
-	color: #C5AA7B;
-	text-align: center;
-}
+	.order-confirm-box {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 120rpx;
+		background: #fff;
+		padding: 0 30rpx;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
 
-.text-area {
-	width: 690upx;
-	background: #F7F7F7;
-	padding: 30upx;
-	box-sizing: border-box;
-	margin-bottom: 30upx;
+	.order-confirm-box .btn {
+		width: 100%;
+		height: 80rpx;
+		line-height: 80rpx;
+		background: #333333;
+		font-size: 28rpx;
+		color: #C5AA7B;
+		text-align: center;
+	}
+
+	.text-area {
+		width: 690rpx;
+		background: #F7F7F7;
+		padding: 30rpx;
+		box-sizing: border-box;
+		margin-bottom: 30rpx;
+	}
 }
 </style>

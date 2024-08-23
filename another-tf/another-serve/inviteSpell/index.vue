@@ -1,6 +1,6 @@
 <template>
 	<view class="invite-spell-container">
-		<JHeader title="邀请好友拼单" :dark="false" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="邀请好友拼单" :dark="false" width="50" height="50"></JHeader>
 		<view class="grouped">
 			<view class="fs32 font-color-FFF">
 				{{ (inviteSpell.person - inviteSpell.personList.length) !== 0 ? '等待成团' : '已成团' }}
@@ -378,6 +378,10 @@ export default {
 	min-height: 100vh;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
+
 	.grouped {
 		text-align: center;
 		padding-top: 40rpx;
@@ -515,39 +519,39 @@ export default {
 
 	.goosDetailshow-box {
 		.detailImg-box {
-			margin-top: 30upx;
-			margin-left: 30upx;
-			border-radius: 10upx;
-			border-bottom: 1upx solid #EDEDED;
-			padding-bottom: 20upx;
-			width: 690upx;
+			margin-top: 30rpx;
+			margin-left: 30rpx;
+			border-radius: 10rpx;
+			border-bottom: 1rpx solid #EDEDED;
+			padding-bottom: 20rpx;
+			width: 690rpx;
 
 			.detailImg {
-				width: 180upx;
-				height: 180upx;
+				width: 180rpx;
+				height: 180rpx;
 			}
 		}
 
 		.goodsNum-box {
-			padding: 30upx 30upx;
-			width: 690upx;
-			padding-bottom: 268upx;
+			padding: 30rpx 30rpx;
+			width: 690rpx;
+			padding-bottom: 268rpx;
 
 			.goodsNumber {
-				border: 1upx solid #999999;
-				padding: 3upx 20upx;
+				border: 1rpx solid #999999;
+				padding: 3rpx 20rpx;
 			}
 
 			.subtract {
-				border: 1upx solid #999999;
-				padding: 3upx 20upx;
-				margin-right: -1upx;
+				border: 1rpx solid #999999;
+				padding: 3rpx 20rpx;
+				margin-right: -1rpx;
 			}
 
 			.add {
-				border: 1upx solid #999999;
-				padding: 3upx 20upx;
-				margin-left: -1upx;
+				border: 1rpx solid #999999;
+				padding: 3rpx 20rpx;
+				margin-left: -1rpx;
 			}
 		}
 	}

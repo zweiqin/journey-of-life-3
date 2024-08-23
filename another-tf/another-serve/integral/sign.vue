@@ -1,6 +1,6 @@
 <template>
 	<view class="integral-container">
-		<JHeader title="签到领积分" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="签到领积分" width="50" height="50"></JHeader>
 		<view class="signBg">
 			<view style="font-size: 44rpx;font-weight: bold;text-align: center;">每日签到送积分</view>
 			<view
@@ -217,6 +217,9 @@ export default {
 	min-height: 100%;
 	background-color: #F8F8F8;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.signBg {
 		background-size: contain;

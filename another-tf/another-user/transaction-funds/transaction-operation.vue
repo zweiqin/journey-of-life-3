@@ -345,7 +345,7 @@ export default {
 	background-color: #f1f1f1;
 	box-sizing: border-box;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 18rpx 0 16rpx;
 		background-color: #ffffff;
 

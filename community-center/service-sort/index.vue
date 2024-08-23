@@ -355,7 +355,7 @@ export default {
 	flex-direction: column;
 	padding: 0 0 14rpx;
 
-	/deep/ .j-header-container {
+	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 10rpx;
 		background-color: #ffffff;
 

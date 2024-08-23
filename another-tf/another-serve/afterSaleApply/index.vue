@@ -1,7 +1,7 @@
 <!-- 申请售后 -->
 <template>
 	<view class="after-sale-apply-container">
-		<JHeader title="选择商品" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="选择商品" width="50" height="50"></JHeader>
 		<view class="content">
 			<view class="order-list-box">
 				<view class="item">
@@ -196,27 +196,31 @@ export default {
 	background-color: #F8F8F8;
 	min-height: 100vh;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 }
 
 .order-list-box {
-	padding: 20upx 30upx;
+	padding: 20rpx 30rpx;
 	box-sizing: border-box;
 }
 
 .order-list-box .item {
 	background: #fff;
-	border-radius: 10upx;
+	border-radius: 10rpx;
 }
 
 .order-info-box {
-	padding: 0 30upx;
+	padding: 0 30rpx;
 	box-sizing: border-box;
 }
 
 .order-info-item {
 	display: flex;
 	flex-direction: row;
-	padding: 10upx 20upx;
+	padding: 10rpx 20rpx;
 	border-bottom: solid 1px #eee;
 }
 
@@ -225,10 +229,10 @@ export default {
 }
 
 .product-img {
-	width: 180upx;
-	height: 180upx;
-	border-radius: 10upx;
-	margin-right: 30upx;
+	width: 180rpx;
+	height: 180rpx;
+	border-radius: 10rpx;
+	margin-right: 30rpx;
 }
 
 .info-box {
@@ -238,10 +242,10 @@ export default {
 }
 
 .product-name {
-	font-size: 26upx;
+	font-size: 26rpx;
 	color: #333;
-	height: 68upx;
-	line-height: 34upx;
+	height: 68rpx;
+	line-height: 34rpx;
 	display: -webkit-box;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -254,27 +258,27 @@ export default {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-top: 10upx;
+	margin-top: 10rpx;
 }
 
 .product-sku {
-	font-size: 24upx;
+	font-size: 24rpx;
 	color: #999;
-	margin-top: 30upx;
+	margin-top: 30rpx;
 }
 
 .product-price {
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #333;
 	font-weight: 400;
 }
 
 .product-price .fuhao {
-	font-size: 28upx;
+	font-size: 28rpx;
 }
 
 .product-num {
-	font-size: 28upx;
+	font-size: 28rpx;
 	color: #999;
 }
 

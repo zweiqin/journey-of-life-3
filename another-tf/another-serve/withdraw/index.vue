@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="提现" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="提现" width="50" height="50"></JHeader>
 		<view style="padding: 10rpx 0 0;">
 			<view
 				style="display: flex;align-items: center;justify-content: space-between;padding: 10rpx 30rpx;background-color: #ffffff;"
@@ -294,6 +294,10 @@ export default {
 	min-height: 100vh;
 	padding: 20rpx;
 	background-color: #F8F8F8;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.operation-btn {
 		/deep/ .tui-btn {

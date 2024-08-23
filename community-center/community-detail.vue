@@ -3,9 +3,9 @@
     <TuanAppShim bg="#ffff"></TuanAppShim>
     <view class="head">
       <!-- 顶部区域 -->
-      <JHeader :title="title" width="50" height="50" style="padding: 24upx 0 20upx">
+      <JHeader :title="title" width="50" height="50">
         <template #ftFn>
-          <view style="display: flex; align-items: center; justify-content: space-between; padding-right: 18upx">
+          <view style="display: flex; align-items: center; justify-content: space-between; padding-right: 18rpx">
             <tui-icon name="gps" :size="20" color="#2b2b2b"></tui-icon>
             <TuanLocation>
               <text class="locale">
@@ -87,7 +87,7 @@
 
     <tui-alerts
       @click="go('/pages/choose-location/choose-location')"
-      style="margin: 30upx 0"
+      style="margin: 30rpx 0"
       type="clear"
       :title="'您当前定位【' + $store.getters.currentCity + '】是否准确？'"
       desc="为了对您精准服务，请确认当前定位是否准确！点击可修改当前定位"
@@ -108,9 +108,9 @@
         <view
           class="open"
           style="
-            padding-right: 24upx;
+            padding-right: 24rpx;
             text-align: right;
-            font-size: 28upx;
+            font-size: 28rpx;
             color: #ff1717;
             font-weight: bold;
             background-color: #feebe9;
@@ -605,19 +605,23 @@ export default {
 .community-detail {
   background: #f7f8fa;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 20rpx;
+	}
+
   /deep/ .tui-popup-class.tui-bottom-popup {
     height: 85vh !important;
   }
 
   .head {
     background: #ffffff;
-    // padding-right: 20upx;
+    // padding-right: 20rpx;
     box-sizing: border-box;
 
     .goods {
-      // margin: 0upx 82upx;
+      // margin: 0rpx 82rpx;
       width: 100%;
-      height: 640upx;
+      height: 640rpx;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -625,7 +629,7 @@ export default {
 
       .img {
         width: 100%;
-        // height: 340upx;
+        // height: 340rpx;
         position: absolute;
         z-index: 0;
 
@@ -642,13 +646,13 @@ export default {
       .goods-name {
         white-space: nowrap;
         position: absolute;
-        bottom: 28upx;
-        left: 68upx;
-        font-size: 42upx;
+        bottom: 28rpx;
+        left: 68rpx;
+        font-size: 42rpx;
         font-weight: bold;
         color: #ffffff;
-        width: 380upx;
-        height: 94upx;
+        width: 380rpx;
+        height: 94rpx;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -656,13 +660,13 @@ export default {
 
       .price-name {
         position: absolute;
-        bottom: 112upx;
-        right: 74upx;
-        font-size: 28upx;
+        bottom: 112rpx;
+        right: 74rpx;
+        font-size: 28rpx;
         font-weight: bold;
         color: #0519d4;
-        width: 150upx;
-        height: 40upx;
+        width: 150rpx;
+        height: 40rpx;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -675,56 +679,56 @@ export default {
         justify-content: center;
         white-space: nowrap;
         color: #ffffff;
-        font-size: 24upx;
+        font-size: 24rpx;
         font-weight: bold;
-        right: 80upx;
-        bottom: 20upx;
-        width: 150upx;
-        height: 84upx;
+        right: 80rpx;
+        bottom: 20rpx;
+        width: 150rpx;
+        height: 84rpx;
 
         .logo {
-          font-size: 42upx;
+          font-size: 42rpx;
         }
 
         text {
-          font-size: 52upx;
+          font-size: 52rpx;
         }
       }
     }
 
     .range {
-      font-size: 46upx;
+      font-size: 46rpx;
       font-weight: bold;
-      line-height: 70upx;
+      line-height: 70rpx;
       color: #fc4023;
-      padding: 18upx 0 0 24upx;
-      border-top: 2upx solid #f1f1f0;
+      padding: 18rpx 0 0 24rpx;
+      border-top: 2rpx solid #f1f1f0;
     }
 
     .name-list {
       display: flex;
       justify-content: space-between;
-      padding-left: 30upx;
-      padding-top: 30upx;
+      padding-left: 30rpx;
+      padding-top: 30rpx;
 
       .name-detail {
         .name {
-          font-size: 32upx;
+          font-size: 32rpx;
           font-weight: bold;
           color: #141000;
         }
 
         .content {
-          padding-top: 12upx;
-          font-size: 28upx;
-          line-height: 36upx;
+          padding-top: 12rpx;
+          font-size: 28rpx;
+          line-height: 36rpx;
           color: #8f8d85;
         }
       }
 
       .a {
-        width: 120upx;
-        height: 80upx;
+        width: 120rpx;
+        height: 80rpx;
         display: flex;
         align-items: flex-end;
 
@@ -732,18 +736,18 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          border-radius: 100upx 0upx 0upx 100upx;
+          border-radius: 100rpx 0rpx 0rpx 100rpx;
           background: #f7f8fa;
-          width: 120upx;
-          height: 50upx;
+          width: 120rpx;
+          height: 50rpx;
 
           .image {
-            width: 40upx;
-            height: 40upx;
+            width: 40rpx;
+            height: 40rpx;
           }
 
           .text {
-            font-size: 28upx;
+            font-size: 28rpx;
             color: #3d3d3d;
           }
         }
@@ -751,74 +755,74 @@ export default {
     }
 
     .type {
-      margin-left: 30upx;
-      padding-bottom: 20upx;
-      padding-top: 10upx;
-      font-size: 28upx;
+      margin-left: 30rpx;
+      padding-bottom: 20rpx;
+      padding-top: 10rpx;
+      font-size: 28rpx;
       font-weight: bold;
       color: #3d3d3d;
       border-bottom: 1px solid #f1f1f0;
     }
 
     .price-list {
-      padding-top: 30upx;
-      padding-left: 30upx;
-      padding-right: 30upx;
-      padding-bottom: 30upx;
+      padding-top: 30rpx;
+      padding-left: 30rpx;
+      padding-right: 30rpx;
+      padding-bottom: 30rpx;
       white-space: nowrap;
       display: flex;
       // flex-wrap: wrap;
       // .item {
-      //   margin-right: 10upx;
-      //   margin-bottom: 40upx;
-      //   width: 210upx;
-      //   height: 70upx;
-      //   border-radius: 10upx;
-      //   border: 2upx solid #999999;
+      //   margin-right: 10rpx;
+      //   margin-bottom: 40rpx;
+      //   width: 210rpx;
+      //   height: 70rpx;
+      //   border-radius: 10rpx;
+      //   border: 2rpx solid #999999;
       //   &.active {
       //     background: #fa5151;
       //     color: #fa5151;
       //   }
 
       //   .m {
-      //     padding-left: 6upx;
-      //     width: 210upx;
-      //     height: 70upx;
+      //     padding-left: 6rpx;
+      //     width: 210rpx;
+      //     height: 70rpx;
       //     display: flex;
       //     flex-direction: column;
       //     justify-content: center;
       //     .first {
-      //       font-size: 28upx;
+      //       font-size: 28rpx;
       //       font-weight: 400;
       //       color: #999999;
       //     }
       //     .second {
-      //       // margin-top: 4upx;
+      //       // margin-top: 4rpx;
       //       .row {
       //         display: flex;
       //         align-items: center;
       //         .specs {
-      //           font-size: 24upx;
+      //           font-size: 24rpx;
       //           font-weight: 400;
       //           color: #999999;
       //         }
       //         .number {
-      //           font-size: 28upx;
+      //           font-size: 28rpx;
       //           font-weight: 400;
       //           color: #999999;
       //         }
       //         .money {
-      //           font-size: 24upx;
+      //           font-size: 24rpx;
       //           font-weight: 400;
       //           color: #999999;
       //         }
       //         .unit {
-      //           font-size: 24upx;
+      //           font-size: 24rpx;
       //           font-weight: 400;
       //           color: #999999;
       //         }
       //         .qi {
-      //           font-size: 24upx;
+      //           font-size: 24rpx;
       //           font-weight: 400;
       //           color: #999999;
       //         }
@@ -829,15 +833,15 @@ export default {
     }
 
     .start-price {
-      margin-left: 30upx;
-      padding-top: 16upx;
-      padding-bottom: 30upx;
+      margin-left: 30rpx;
+      padding-top: 16rpx;
+      padding-bottom: 30rpx;
       color: #fc4023;
-      font-size: 30upx;
+      font-size: 30rpx;
       font-weight: 500;
 
       text {
-        font-size: 60upx;
+        font-size: 60rpx;
         font-weight: bold;
       }
     }
@@ -845,39 +849,39 @@ export default {
 
   .add {
     background: #ffffff;
-    // height: 104upx;
-    margin-top: 10upx;
+    // height: 104rpx;
+    margin-top: 10rpx;
     display: flex;
     flex-direction: column;
-    padding: 26upx 0upx 20upx 0upx;
+    padding: 26rpx 0rpx 20rpx 0rpx;
 
     .add-list {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 0upx 20upx 0upx 36upx;
+      padding: 0rpx 20rpx 0rpx 36rpx;
 
       .left {
         display: flex;
 
         .left-logo {
-          width: 32upx;
-          height: 32upx;
+          width: 32rpx;
+          height: 32rpx;
         }
 
         .left-address {
-          width: 450upx;
-          font-size: 28upx;
+          width: 450rpx;
+          font-size: 28rpx;
           font-weight: 500;
           color: #3d3d3d;
-          padding-left: 10upx;
+          padding-left: 10rpx;
         }
       }
 
       .right {
         .jump {
-          width: 32upx;
-          height: 32upx;
+          width: 32rpx;
+          height: 32rpx;
         }
       }
     }
@@ -885,18 +889,18 @@ export default {
     .kaitong {
       display: flex;
       justify-content: flex-end;
-      padding-top: 10upx;
+      padding-top: 10rpx;
 
       .open {
-        width: 200upx;
-        height: 48upx;
-        line-height: 48upx;
+        width: 200rpx;
+        height: 48rpx;
+        line-height: 48rpx;
       }
 
       .close {
-        width: 200upx;
-        height: 48upx;
-        line-height: 48upx;
+        width: 200rpx;
+        height: 48rpx;
+        line-height: 48rpx;
       }
     }
   }
@@ -904,9 +908,9 @@ export default {
   .mid {
     display: flex;
     align-items: center;
-    height: 104upx;
-    margin-top: 10upx;
-    margin-bottom: 10upx;
+    height: 104rpx;
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
     background: #ffffff;
 
     .text-list {
@@ -914,26 +918,26 @@ export default {
       flex: 1;
       align-items: center;
       // justify-content: space-between;
-      padding: 0upx 20upx 0upx 30upx;
+      padding: 0rpx 20rpx 0rpx 30rpx;
 
       .ensure {
-        font-size: 28upx;
+        font-size: 28rpx;
         font-weight: bold;
         color: #3d3d3d;
       }
 
       .poster {
-        font-size: 24upx;
+        font-size: 24rpx;
         color: #3d3d3d;
         flex: 1;
-        padding-left: 30upx;
+        padding-left: 30rpx;
         display: flex;
-        gap: 0upx 40upx;
+        gap: 0rpx 40rpx;
       }
 
       .more {
-        width: 32upx;
-        height: 32upx;
+        width: 32rpx;
+        height: 32rpx;
       }
     }
   }
@@ -943,29 +947,29 @@ export default {
 
     .top {
       .top-img {
-        // width: 752upx;
-        // height: 760upx;
+        // width: 752rpx;
+        // height: 760rpx;
         width: 100%;
       }
     }
 
     .top-list {
-      padding: 30upx 80upx 0 80upx;
+      padding: 30rpx 80rpx 0 80rpx;
       display: flex;
       justify-content: space-between;
 
       .item {
-        font-size: 32upx;
+        font-size: 32rpx;
         color: #b3b2ad;
         position: relative;
 
         &.active {
-          font-size: 32upx;
+          font-size: 32rpx;
           font-weight: bold;
           color: #e95d20;
 
           &::after {
-            width: 56upx;
+            width: 56rpx;
           }
         }
 
@@ -974,10 +978,10 @@ export default {
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
-          bottom: -12upx;
+          bottom: -12rpx;
           width: 0;
-          height: 4upx;
-          border-radius: 10upx;
+          height: 4rpx;
+          border-radius: 10rpx;
           background-color: #e95d20;
           transition: all 350ms ease-in;
         }
@@ -985,17 +989,17 @@ export default {
     }
 
     .explain {
-      padding: 0upx 30upx 40upx 30upx;
+      padding: 0rpx 30rpx 40rpx 30rpx;
 
       .explain-title {
-        font-size: 28upx;
+        font-size: 28rpx;
         font-weight: bold;
       }
 
       .explain-text {
-        font-size: 28upx;
+        font-size: 28rpx;
         color: #8f8d85;
-        padding-top: 10upx;
+        padding-top: 10rpx;
       }
     }
 
@@ -1005,23 +1009,23 @@ export default {
 
       .bg {
         width: 100%;
-        height: 850upx;
+        height: 850rpx;
       }
 
       .bg-logo {
-        width: 360upx;
-        height: 70upx;
+        width: 360rpx;
+        height: 70rpx;
         position: absolute;
-        top: 60upx;
-        left: 44upx;
+        top: 60rpx;
+        left: 44rpx;
       }
 
       .bg-text {
         width: 100%;
         position: absolute;
-        top: 174upx;
-        left: 0upx;
-        font-size: 64upx;
+        top: 174rpx;
+        left: 0rpx;
+        font-size: 64rpx;
         color: #ffffff;
         display: flex;
         flex-direction: column;
@@ -1033,34 +1037,34 @@ export default {
         display: flex;
         // justify-content: center;
         position: absolute;
-        top: 400upx;
+        top: 400rpx;
         left: 0;
         width: 100%;
 
         .bg-img {
-          width: 516upx;
-          height: 258upx;
+          width: 516rpx;
+          height: 258rpx;
         }
       }
 
       .girl-img {
-        width: 450upx;
-        height: 492upx;
+        width: 450rpx;
+        height: 492rpx;
         position: absolute;
-        top: 348upx;
+        top: 348rpx;
         right: 0;
       }
     }
 
     .mid-content {
-      padding-top: 40upx;
+      padding-top: 40rpx;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 144upx;
-      font-size: 48upx;
+      height: 144rpx;
+      font-size: 48rpx;
       font-weight: bold;
       color: #e95d20;
       white-space: nowrap;
@@ -1076,10 +1080,10 @@ export default {
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
-          bottom: -14upx;
-          width: 160upx;
-          height: 4upx;
-          border-radius: 10upx;
+          bottom: -14rpx;
+          width: 160rpx;
+          height: 4rpx;
+          border-radius: 10rpx;
           background-color: #e95d20;
           transition: all 350ms ease-in;
         }
@@ -1087,19 +1091,19 @@ export default {
     }
 
     .serverContent-list {
-      padding: 88upx 56upx 0upx 56upx;
-      gap: 20upx 0upx;
+      padding: 88rpx 56rpx 0rpx 56rpx;
+      gap: 20rpx 0rpx;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
 
       .serverContent {
-        width: 200upx;
-        height: 140upx;
-        border-radius: 20upx;
+        width: 200rpx;
+        height: 140rpx;
+        border-radius: 20rpx;
         background: #fff6ef;
-        border: 2upx solid #e95d20;
-        font-size: 36upx;
+        border: 2rpx solid #e95d20;
+        font-size: 36rpx;
         font-weight: bold;
         color: #e95d20;
         display: flex;
@@ -1110,21 +1114,21 @@ export default {
 
     .middle {
       width: 100%;
-      height: 1928upx;
+      height: 1928rpx;
 
       .mid-img {
         width: 100%;
-        height: 1928upx;
+        height: 1928rpx;
       }
     }
 
     .process {
       width: 100%;
-      height: 480upx;
+      height: 480rpx;
 
       .process-img {
         width: 100%;
-        height: 480upx;
+        height: 480rpx;
       }
     }
 
@@ -1135,53 +1139,53 @@ export default {
     }
 
     .case-show {
-      // padding: 40upx 0;
+      // padding: 40rpx 0;
 
       .text {
         width: 100%;
         display: flex;
         justify-content: center;
-        padding-top: 74upx;
+        padding-top: 74rpx;
 
         .text1 {
-          font-size: 48upx;
+          font-size: 48rpx;
           font-weight: bold;
           color: #3d3d3d;
         }
 
         .text2 {
-          font-size: 48upx;
+          font-size: 48rpx;
           font-weight: bold;
           color: #ea6f3a;
         }
       }
 
       .show-img {
-        // padding: 40upx 0upx 54upx 0upx;
+        // padding: 40rpx 0rpx 54rpx 0rpx;
 
         .img1 {
           width: 100%;
-          height: 810upx;
+          height: 810rpx;
         }
 
         .img2 {
           width: 100%;
-          height: 514upx;
+          height: 514rpx;
         }
 
         .img3 {
           width: 100%;
-          height: 344upx;
+          height: 344rpx;
         }
       }
     }
   }
 
   .other {
-    // margin-top: 20upx;
+    // margin-top: 20rpx;
     background: #ffffff;
     width: 100%;
-    height: 280upx;
+    height: 280rpx;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -1190,30 +1194,30 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 10upx;
-      width: 200upx;
+      padding-top: 10rpx;
+      width: 200rpx;
 
       .text {
-        font-size: 32upx;
+        font-size: 32rpx;
         color: #3d3d3d;
       }
 
       .show {
-        width: 40upx;
-        height: 40upx;
+        width: 40rpx;
+        height: 40rpx;
       }
     }
   }
 
   .foot {
     background: #ffffff;
-    padding: 30upx 30upx 30upx 30upx;
+    padding: 30rpx 30rpx 30rpx 30rpx;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     box-sizing: border-box;
-    border-top: 8upx solid #f7f8fa;
+    border-top: 8rpx solid #f7f8fa;
     z-index: 100;
 
     .list {
@@ -1221,23 +1225,23 @@ export default {
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      height: 82upx;
+      height: 82rpx;
 
       .online {
-        width: 96upx;
-        height: 82upx;
+        width: 96rpx;
+        height: 82rpx;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
 
         .seek {
-          width: 48upx;
-          height: 48upx;
+          width: 48rpx;
+          height: 48rpx;
         }
 
         .name {
-          font-size: 24upx;
+          font-size: 24rpx;
           white-space: nowrap;
         }
       }
@@ -1248,25 +1252,25 @@ export default {
         width: 75%;
 
         .join {
-          font-size: 32upx;
-          width: 270upx;
-          height: 80upx;
-          border-radius: 100upx;
-          border: 2upx solid #999999;
+          font-size: 32rpx;
+          width: 270rpx;
+          height: 80rpx;
+          border-radius: 100rpx;
+          border: 2rpx solid #999999;
           color: #999999;
           text-align: center;
-          line-height: 78upx;
+          line-height: 78rpx;
         }
 
         .order {
-          font-size: 32upx;
+          font-size: 32rpx;
           color: #ffffff;
-          width: 220upx;
-          height: 80upx;
-          border-radius: 100upx;
+          width: 220rpx;
+          height: 80rpx;
+          border-radius: 100rpx;
           background: linear-gradient(270deg, #e95d20 0%, #ff8f1f 100%);
           text-align: center;
-          line-height: 78upx;
+          line-height: 78rpx;
 
           &.disabled {
             opacity: 0.6;
@@ -1278,7 +1282,7 @@ export default {
 
   .generate-code-container {
     position: absolute;
-    top: -10000upx;
+    top: -10000rpx;
   }
 }
 </style>

@@ -663,6 +663,12 @@ export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVouc
 // 充值代金券转赠(独立账号)
 export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/transferVoucher', data, 'POST')
 
+// 充值代金券：用户转入商家
+export const updateTransferVoucherIntoApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferUserVoucherInto', data, 'POST')
+
+// 兑换代金券：用户转入商家
+export const updateByIntoVoucherEntryRecordApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferVoucherInto', data, 'POST')
+
 // 兑换代金券转赠
 export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
 

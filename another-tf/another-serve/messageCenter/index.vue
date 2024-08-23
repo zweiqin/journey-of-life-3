@@ -1,6 +1,6 @@
 <template>
 	<view class="message-center-container">
-		<JHeader title="消息中心" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="消息中心" width="50" height="50"></JHeader>
 		<view v-if="messageList && messageList.length">
 			<view class="flex-items flex-sp-between fs26 topTitBox">
 				<view>
@@ -204,6 +204,10 @@ export default {
 	min-height: 100vh;
 	background: #ffffff;
 	box-sizing: border-box;
+
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.topTitBox {
 		height: 100rpx;

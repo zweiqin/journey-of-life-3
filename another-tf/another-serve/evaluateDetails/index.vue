@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<JHeader title="评价详情" width="50" height="50" style="padding: 24upx 0 0;"></JHeader>
+		<JHeader title="评价详情" width="50" height="50"></JHeader>
 		<!-- 评论详情 -->
 		<view class="evaluate-contentbox">
 			<view class="evaluate-content flex-items flex-row flex-sp-between">
@@ -172,23 +172,26 @@ export default {
 
 <style lang="less" scoped>
 .container {
-	padding-bottom: 30upx;
+	padding-bottom: 30rpx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.evaluate-contentbox {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-		padding: 30upx 30upx;
+		padding: 30rpx 30rpx;
 		background-color: #FFFFFF;
 
 		.evaluate-content {
-			width: 670upx;
+			width: 670rpx;
 			display: flex;
 			justify-content: space-between;
 
 			.user-headSmallImg {
-				width: 46upx;
-				height: 46upx;
+				width: 46rpx;
+				height: 46rpx;
 				border-radius: 50%;
 			}
 		}
@@ -197,36 +200,36 @@ export default {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
-			margin-left: -9upx;
+			margin-left: -9rpx;
 
 			.evaluate-Img {
-				width: 224upx;
-				height: 224upx;
-				border-radius: 10upx;
-				margin-left: 9upx;
-				margin-top: 9upx;
+				width: 224rpx;
+				height: 224rpx;
+				border-radius: 10rpx;
+				margin-left: 9rpx;
+				margin-top: 9rpx;
 			}
 		}
 
 		.goodsDes-box {
 			background-color: #F7F7F7;
-			padding: 20upx 44upx 20upx 20upx;
+			padding: 20rpx 44rpx 20rpx 20rpx;
 
 			.goodsDes-img {
-				width: 180upx;
-				height: 180upx;
-				border-radius: 10upx;
+				width: 180rpx;
+				height: 180rpx;
+				border-radius: 10rpx;
 			}
 
 			.goodsDesText-box {
-				width: 416upx;
-				margin-left: 30upx;
+				width: 416rpx;
+				margin-left: 30rpx;
 			}
 		}
 
 		.addComments-box {
-			border-top: 1upx solid #EEEEEE;
-			margin-top: 35upx;
+			border-top: 1rpx solid #EEEEEE;
+			margin-top: 35rpx;
 		}
 	}
 
@@ -236,23 +239,23 @@ export default {
 		justify-content: space-between;
 
 		.addComments-box {
-			height: 100upx;
-			width: 330upx;
+			height: 100rpx;
+			width: 330rpx;
 			background-color: #FFFFFF;
 			color: #333333;
 			border: 2rpx solid #333333;
 		}
 
 		.addPraise-box {
-			height: 100upx;
-			width: 330upx;
+			height: 100rpx;
+			width: 330rpx;
 			background: #333333;
 			color: #FFFFFF;
 		}
 
 		.addPraise-box1 {
-			height: 100upx;
-			width: 690upx;
+			height: 100rpx;
+			width: 690rpx;
 			background: #333333;
 			color: #FFFFFF;
 		}
@@ -261,7 +264,7 @@ export default {
 
 	.linkBox {
 		position: absolute;
-		bottom: 20upx;
+		bottom: 20rpx;
 		width: 100%;
 	}
 }

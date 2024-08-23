@@ -1,15 +1,18 @@
 <template>
 	<view class="j-header-container">
-		<JBack v-bind="$attrs" :dark="dark"></JBack>
-		<view
-			class="title" :style="{
-				color: !dark ? '#fff' : ''
-			}"
-		>
-			{{ title }}
-		</view>
-		<view class="footerFn">
-			<slot name="ftFn"></slot>
+		<TuanAppShim bg="transparent"></TuanAppShim>
+		<view class="j-header-wrapper">
+			<JBack v-bind="$attrs" :dark="dark"></JBack>
+			<view
+				class="title" :style="{
+					color: !dark ? '#fff' : ''
+				}"
+			>
+				{{ title }}
+			</view>
+			<view class="footerFn">
+				<slot name="ftFn"></slot>
+			</view>
 		</view>
 	</view>
 </template>
@@ -31,27 +34,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../style/mixin.less";
-
 .j-header-container {
-	position: relative;
-	// display: flex;
-	// justify-content: space-between;
+	box-sizing: border-box;
 
-	.flex(center, center);
+	.j-header-wrapper {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-	.title {
-		font-size: 32upx;
-		color: #3d3d3d;
-		font-weight: bold;
-		// margin-top: -8upx;
-		flex: 1;
-		text-align: center;
-		margin-left: -50upx;
+		.title {
+			font-size: 32rpx;
+			color: #3d3d3d;
+			font-weight: bold;
+			// margin-top: -8rpx;
+			flex: 1;
+			text-align: center;
+			margin-left: -50rpx;
+		}
+
+		.footerFn {
+			position: absolute;
+			right: 0rpx;
+		}
 	}
-	.footerFn {
-		position: absolute;
-		right: 0rpx;
-	}
+
 }
 </style>

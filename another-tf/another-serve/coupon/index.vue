@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-container">
-		<JHeader title="我的卡券" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+		<JHeader title="我的卡券" width="50" height="50"></JHeader>
 		<view class="list">
 			<view v-for="(item, index) in couponDataList" v-if="item.state === 0" :key="index" class="item">
 				<view class="info-box">
@@ -69,6 +69,9 @@ export default {
 .coupon-container {
 	min-height: 100vh;
 	box-sizing: border-box;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
+	}
 
 	.list {
 		display: flex;

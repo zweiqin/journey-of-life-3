@@ -1,7 +1,7 @@
 <!-- 物流详情 -->
 <template>
-	<view>
-		<JHeader title="订单物流信息" width="50" height="50" style="padding: 24rpx 0 0;"></JHeader>
+	<view class="logistics-info-container">
+		<JHeader title="订单物流信息" width="50" height="50"></JHeader>
 		<view v-if="steps.length > 0" class="content" style="padding-bottom:100rpx;">
 			<view class="order-details-information mt20">
 				<view class="order-title-box">
@@ -59,55 +59,53 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.emptyOrder-box {
-	margin-top: 70rpx;
+.logistics-info-container {
 
-	.emptyOrder-img {
-		width: 113rpx;
-		height: 98rpx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0 0;
 	}
-}
 
-page {
-	background: #f7f7f7;
-}
+	page {
+		background: #f7f7f7;
+	}
 
-.logistics {
-	padding: 20rpx 20rpx;
-}
+	.logistics {
+		padding: 20rpx 20rpx;
+	}
 
-.content {
-	padding: 0 0 120rpx 0;
-}
+	.content {
+		padding: 0 0 120rpx 0;
+	}
 
-.order-details-information {
-	background: #fff;
-	flex-shrink: 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	height: 98rpx;
+	.order-details-information {
+		background: #fff;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 98rpx;
 
-}
+	}
 
-.order-details-information .order-title {
-	font-size: 30rpx;
-	margin-left: 30rpx;
-	color: #333;
-	font-weight: 500;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
+	.order-details-information .order-title {
+		font-size: 30rpx;
+		margin-left: 30rpx;
+		color: #333;
+		font-weight: 500;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 
-.order-details-information .order-title .line {
-	width: 10rpx;
-	height: 30rpx;
-	background: #ff7911;
-	margin-right: 10rpx;
-}
+	.order-details-information .order-title .line {
+		width: 10rpx;
+		height: 30rpx;
+		background: #ff7911;
+		margin-right: 10rpx;
+	}
 
-.mt20 {
-	margin-top: 20rpx;
+	.mt20 {
+		margin-top: 20rpx;
+	}
 }
 </style>

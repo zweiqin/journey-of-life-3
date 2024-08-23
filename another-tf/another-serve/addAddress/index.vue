@@ -1,7 +1,7 @@
 <template>
 	<!-- 编辑/添加地址 -->
 	<view class="add-address-container">
-		<JHeader width="50" height="50" title="地址管理" style="padding: 24upx 0;"></JHeader>
+		<JHeader width="50" height="50" title="地址管理"></JHeader>
 		<view class="addressBack-box">
 			<view class="consignee-box bor-line-F7F7F7">
 				<input
@@ -21,7 +21,7 @@
 				<view class="locationBox">
 					<JSubArea :code="0" :text="addressData.receiveAdress" placeholder="请选择所在地" @confirm="handleSelectArea">
 					</JSubArea>
-					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
+					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20rpx"></tui-icon>
 				</view>
 			</view>
 			<view
@@ -49,7 +49,7 @@
 				<view class="fs28 addressTag">地址标签</view>
 				<view class="flex-items">
 					<text>{{ addressData.tag }}</text>
-					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20upx"></tui-icon>
+					<tui-icon :size="31" color="#999999" name="arrowright" margin="0 0 0 20rpx"></tui-icon>
 				</view>
 			</view>
 			<view class="defaultState-box flex-row-plus flex-sp-between flex-items">
@@ -238,46 +238,50 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .add-address-container {
 	background-color: #F7F7F7;
 	min-height: 100vh;
 	box-sizing: border-box;
 
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 0;
+	}
+
 	.addressBack-box {
 		background-color: #FFFFFF;
-		padding: 30upx 30upx;
+		padding: 30rpx 30rpx;
 
 		.consignee-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 20upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 20rpx;
 
 			.consignee {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
 		.iphoneNum-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 36upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 36rpx;
 
 			.iphoneNum {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
 		.location-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 36upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 36rpx;
 
 			.location {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 
 			.locationBox {
@@ -287,9 +291,9 @@ export default {
 		}
 
 		.detailAddress-box {
-			padding-bottom: 36upx;
-			width: 690upx;
-			margin-top: 36upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
+			margin-top: 36rpx;
 
 			input {
 				width: 100%;
@@ -297,48 +301,48 @@ export default {
 
 			.detailAddress {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 	}
 
 	.addressTagBack-box {
 		background-color: #FFFFFF;
-		padding: 30upx 30upx;
-		margin-top: 20upx;
+		padding: 30rpx 30rpx;
+		margin-top: 20rpx;
 
 		.addressTag-box {
-			padding-bottom: 36upx;
-			width: 690upx;
+			padding-bottom: 36rpx;
+			width: 690rpx;
 
 			.addressTag {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 
 		.defaultState-box {
-			padding-bottom: 10upx;
-			width: 690upx;
-			margin-top: 36upx;
+			padding-bottom: 10rpx;
+			width: 690rpx;
+			margin-top: 36rpx;
 
 			.defaultState {
 				color: #999999;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 		}
 	}
 
 	.saveAddress-box {
 		position: fixed;
-		bottom: 50upx;
-		left: 30upx;
+		bottom: 50rpx;
+		left: 30rpx;
 
 		.saveAddress {
-			width: 690upx;
-			height: 100upx;
+			width: 690rpx;
+			height: 100rpx;
 			text-align: center;
-			line-height: 100upx;
+			line-height: 100rpx;
 			background: #333333;
 			color: #FFEBC4;
 		}
@@ -364,7 +368,7 @@ export default {
 
 .deleteAddress-box {
 	background-color: #FFFFFF;
-	padding: 30upx 30upx;
-	margin-top: 20upx;
+	padding: 30rpx 30rpx;
+	margin-top: 20rpx;
 }
 </style>
