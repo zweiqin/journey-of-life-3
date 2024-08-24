@@ -1,15 +1,19 @@
 <template>
 	<view class="-message-fill-container" :style="{ margin }">
 		<view
+			v-if="show"
 			style="padding: 28rpx 20rpx;background-color: #ffffff;font-size: 26rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
 			:style="{ color: text ? color ? color : '' : '#999', borderRadius: radius }"
 			@click="isShowPopup = true"
 		>
 			{{ text ? text : placeholder || "--" }}
 		</view>
-		<tui-bottom-popup :show="isShowPopup" @close="isShowPopup = false">
+		<tui-bottom-popup
+			:z-index="messageZIndex" :mask-z-index="messageMaskZIndex"
+			:show="isShowPopup" @close="isShowPopup = false"
+		>
 			<scroll-view scroll-y style="height: 100%;max-height: 50vh;">
-				<view style="padding: 20rpx 46rpx 28rpx;">
+				<view :style="{ padding: messagePadding }">
 					<view>
 						<view style="font-weight: bold;">备注说明</view>
 						<view style="margin-top: 28rpx;padding: 26rpx 30rpx;background-color: #f1f1f1;">
@@ -38,6 +42,10 @@
 export default {
 	name: 'ATFMessageFill',
 	props: {
+		show: {
+			type: Boolean,
+			default: true
+		},
 		margin: {
 			type: String,
 			default: '0'
@@ -57,6 +65,18 @@ export default {
 		text: {
 			type: String,
 			default: ''
+		},
+		messagePadding: {
+			type: String,
+			default: '20rpx 46rpx 28rpx'
+		},
+		messageZIndex: {
+			type: Number,
+			default: 997
+		},
+		messageMaskZIndex: {
+			type: Number,
+			default: 996
 		}
 	},
 	data() {
@@ -76,7 +96,7 @@ export default {
 		},
 		handleConfirm() {
 			this.$emit('confirm', this.formData)
-			this.isShowPopup = false
+			// this.isShowPopup = false
 		}
 	}
 }

@@ -1,11 +1,11 @@
 <template>
-	<view class="back-container" @click="handleBack">
+	<view class="bee-back-container" @click="handleBack">
+		<TuanAppShim bg="transparent"></TuanAppShim>
 		<slot></slot>
 	</view>
 </template>
 
 <script>
-// import { tabbarList } from '../../common/globalData'
 
 export default {
 	name: 'BeeBack',
@@ -72,3 +72,9 @@ export default {
 	}
 }
 </script>
+
+<style lang="less" scoped>
+.bee-back-container {
+	box-sizing: border-box;
+}
+</style>

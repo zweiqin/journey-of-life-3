@@ -2291,6 +2291,13 @@
           "style": {
             "navigationBarTitleText": "充值历史记录"
           }
+        },
+				// 其它体系
+        {
+          "path": "another-user/meal-table/meal-reception",
+          "style": {
+            "navigationBarTitleText": "点餐接收"
+          }
         }
       ]
     }

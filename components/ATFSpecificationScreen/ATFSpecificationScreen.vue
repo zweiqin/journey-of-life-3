@@ -3,32 +3,32 @@
 
 		<tui-landscape
 			:show="showSpecification" :position="1" mask-closable icon-left="50rpx"
-			icon-right="50rpx" :z-index="998" :mask-z-index="997"
+			icon-right="50rpx" :z-index="997" :mask-z-index="996"
 			@close="showSpecification = false"
 		>
 			<view
-				style="position: relative;width: 600upx;max-height: 75vh;padding: 46upx 46upx 0;box-sizing: border-box;overflow-y: auto;background-color: #ffffff;border-radius: 40upx;"
+				style="position: relative;width: 600rpx;max-height: 75vh;padding: 46rpx 46rpx 0;box-sizing: border-box;overflow-y: auto;background-color: #ffffff;border-radius: 40rpx;"
 			>
 				<view v-if="selectedSku" style="display: flex;align-items: center;">
 					<image
-						style="width: 180upx;height: 180upx;"
+						style="width: 180rpx;height: 180rpx;"
 						:src="common.seamingImgUrl(selectedSku.image || (goodsDetail.images && goodsDetail.images[0]))" mode=""
 					/>
 					<view
-						style="flex: 1;margin-left: 40upx;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+						style="flex: 1;margin-left: 40rpx;word-break: break-all;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 					>
-						<text style="font-size: 34upx;font-weight: bold;">{{ goodsDetail.productName }}</text>
+						<text style="font-size: 34rpx;font-weight: bold;">{{ goodsDetail.productName }}</text>
 					</view>
 				</view>
 
 				<view v-if="goodsDetail.names">
-					<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="margin-top: 20upx;">
-						<view v-if="nameItem.nameCode" style="font-size: 26upx;color: #a5a4a4;">{{ nameItem.skuName }}</view>
-						<view style="display: flex;flex-wrap: wrap;margin-top: 10upx;font-size: 28upx;">
+					<view v-for="nameItem in goodsDetail.names" :key="nameItem.nameCode" style="margin-top: 20rpx;">
+						<view v-if="nameItem.nameCode" style="font-size: 26rpx;color: #a5a4a4;">{{ nameItem.skuName }}</view>
+						<view style="display: flex;flex-wrap: wrap;margin-top: 10rpx;font-size: 28rpx;">
 							<view
 								v-for="tag in nameItem.values" :key="tag.valueCode"
-								style="width: fit-content;padding: 6upx 28upx;margin-right: 20upx;border-radius: 20upx;" :style="{
-									border: selectedAttr[nameItem.nameCode] == tag.valueCode ? '1upx solid #ffbd87' : '1upx solid #c2c2c2',
+								style="width: fit-content;padding: 6rpx 28rpx;margin-right: 20rpx;border-radius: 20rpx;" :style="{
+									border: selectedAttr[nameItem.nameCode] == tag.valueCode ? '1rpx solid #ffbd87' : '1rpx solid #c2c2c2',
 									backgroundColor: selectedAttr[nameItem.nameCode] == tag.valueCode ? '#fffce3' : 'transparent'
 								}" @click="handleClickSkuItem(nameItem.nameCode, tag)"
 							>
@@ -38,24 +38,27 @@
 					</view>
 				</view>
 
-				<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 20upx;">
+				<view
+					v-if="showNumber"
+					style="display: flex;justify-content: space-between;align-items: center;margin-top: 20rpx;"
+				>
 					<view>数量</view>
 					<view>
 						<uni-number-box v-model="number" :min="1" :max="maxNumber"></uni-number-box>
 					</view>
 				</view>
-				<view style="position: sticky;bottom: 0;margin-top: 40upx;padding-bottom: 20upx;background-color: #ffffff;">
+				<view style="position: sticky;bottom: 0;margin-top: 40rpx;padding-bottom: 20rpx;background-color: #ffffff;">
 					<view
-						style="padding: 12upx 46upx;margin: 0 -46upx;font-size: 28upx;color: #868686;background-color: #efefef;"
+						style="padding: 12rpx 46rpx;margin: 0 -46rpx;font-size: 28rpx;color: #868686;background-color: #efefef;"
 					>
 						<text>已选规格：</text>
 						<text>{{ spStr }}</text>
 					</view>
-					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 20upx;">
+					<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 20rpx;">
 						<view>
 							<view v-if="selectedSku">
-								<text style="font-size: 28upx;">总计</text>
-								<text style="margin-left: 10upx;font-size: 38upx;color: #ff0505;">
+								<text style="font-size: 28rpx;">总计</text>
+								<text style="margin-left: 10rpx;font-size: 38rpx;color: #ff0505;">
 									￥{{ selectedSku.price * number || 0 }}
 								</text>
 							</view>
@@ -118,6 +121,10 @@ export default {
 		splicingId: {
 			type: Number,
 			default: 0
+		},
+		showNumber: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -312,7 +319,11 @@ export default {
 				const tempGoodsInfo = {
 					selectedSku: this.selectedSku,
 					currentSku: this.currentSku,
-					number: this.number
+					number: this.number,
+					shopId: this.goodsDetail.shopId,
+					productId: this.goodsDetail.productId,
+					productName: this.goodsDetail.productName,
+					skuImage: this.selectedSku.image || (this.goodsDetail.images && this.goodsDetail.images[0]) || ''
 				}
 				if (tempGoodsInfo.number > tempGoodsInfo.selectedSku.stockNumber) {
 					this.$showToast('该货品库存为' + tempGoodsInfo.selectedSku.stockNumber)

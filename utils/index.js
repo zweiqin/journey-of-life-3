@@ -1,5 +1,6 @@
 export { RuanRequest, SheQuRequest, SheQu1Request, shopRequest, endRequest, shopRequest1 } from './DWHRequest'
 export { AnotherTFRequest } from './AnotherTFRequest.js'
+export { MerProjectRequest } from './MerProjectRequest.js'
 export {
 	fomartNumber,
 	removeCache,

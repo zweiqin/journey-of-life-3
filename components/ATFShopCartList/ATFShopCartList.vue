@@ -167,12 +167,12 @@
 									<tui-icon
 										v-if="skuItem.selected == 1" name="circle-fill" :size="40" unit="rpx"
 										color="#c5aa7b"
-										margin="0" @click="handleSelectSku(index, cIndex, 0)"
+										margin="0" @click="handleChooseSku(index, cIndex, 0)"
 									></tui-icon>
 									<tui-icon
 										v-else name="circle" :size="40" unit="rpx"
 										color="#cccccc" margin="0"
-										@click="handleSelectSku(index, cIndex, 1)"
+										@click="handleChooseSku(index, cIndex, 1)"
 									></tui-icon>
 									<view
 										style="flex: 1;display: flex;padding: 30rpx 0;"
@@ -497,7 +497,7 @@ export default {
 		 * @param type 是否选中 0否1是
 		 */
 
-		handleSelectSku(shopIndex, skuIndex, type) {
+		handleChooseSku(shopIndex, skuIndex, type) {
 			const shopObj = this.shopCartList[shopIndex]
 			const skuObj = this.shopCartList[shopIndex].skus[skuIndex]
 			skuObj.selected = type

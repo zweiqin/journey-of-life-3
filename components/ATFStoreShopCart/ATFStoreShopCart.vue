@@ -2,7 +2,7 @@
 	<view>
 		<view>
 			<tui-drawer
-				mode="bottom" :visible="visibleDrawer" :mask-z-index="996" :z-index="998"
+				mode="bottom" :visible="visibleDrawer" :mask-z-index="993" :z-index="994"
 				@close="visibleDrawer = false"
 			>
 				<view style="padding-bottom: 102rpx;">
@@ -23,7 +23,7 @@
 			</tui-drawer>
 		</view>
 		<view
-			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20rpx;background-color: #ffffff;box-sizing: border-box;"
+			style="position: fixed;bottom: 0;z-index: 995;width: 100%;padding: 20rpx;background-color: #ffffff;box-sizing: border-box;"
 		>
 			<view
 				style="display: flex;justify-content: flex-end;align-items: flex-end;font-size: 28rpx;"
